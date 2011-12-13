@@ -98,9 +98,9 @@ Please [Download the Aspose.Words for .NET Examples](https://github.com/asposewo
 
 3. Once downloaded you can open the examples by opening the appropriate solution file (.sln) according to the version of Visual Studio installed on your system.
 
-+ Aspose.Words.Samples.2005.sln - Open with Microsoft Visual Studio 2005
-+ Aspose.Words.Samples.2008.sln - Open with Microsoft Visual Studio 2008
-+ Aspose.Words.Samples.2010.sln - Open with Microsoft Visual Studio 2010
+      Aspose.Words.Samples.2005.sln - Open with Microsoft Visual Studio 2005
+      Aspose.Words.Samples.2008.sln - Open with Microsoft Visual Studio 2008
+      Aspose.Words.Samples.2010.sln - Open with Microsoft Visual Studio 2010
 
 4. The example should be ready to compile. Click on "Debug" menu and choose one of the following menu items to start the example:
 
