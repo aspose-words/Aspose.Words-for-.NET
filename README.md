@@ -92,17 +92,17 @@ Please [Download the Aspose.Words for .NET Examples](https://github.com/asposewo
 
 ##How to use the Examples?
 
-1. Firstly make sure that you have downloaded and installed the latest version of [Aspose.Words for .NET](http://www.aspose.com/community/files/51/.net-components/aspose.words-for-.net/category1188.aspx). We recommend using the .MSI installer for fast installation and seamless intergration with the examples.
+Firstly make sure that you have downloaded and installed the latest version of [Aspose.Words for .NET](http://www.aspose.com/community/files/51/.net-components/aspose.words-for-.net/category1188.aspx). We recommend using the .MSI installer for fast installation and seamless intergration with the examples.
 
-2. Download the examples from the above link. The solution files for Microsoft Visual Studio 2005, 2008 and 2010 are provided with the examples. 
+Download the examples from the above link. The solution files for Microsoft Visual Studio 2005, 2008 and 2010 are provided with the examples. 
 
-3. Once downloaded you can open the examples by opening the appropriate solution file (.sln) according to the version of Visual Studio installed on your system.
+Once downloaded you can open the examples by opening the appropriate solution file (.sln) according to the version of Visual Studio installed on your system.
 
-      Aspose.Words.Samples.2005.sln - Open with Microsoft Visual Studio 2005
-      Aspose.Words.Samples.2008.sln - Open with Microsoft Visual Studio 2008
-      Aspose.Words.Samples.2010.sln - Open with Microsoft Visual Studio 2010
+- Aspose.Words.Samples.2005.sln - Open with Microsoft Visual Studio 2005
+- Aspose.Words.Samples.2008.sln - Open with Microsoft Visual Studio 2008
+- Aspose.Words.Samples.2010.sln - Open with Microsoft Visual Studio 2010
 
-4. The example should be ready to compile. Click on "Debug" menu and choose one of the following menu items to start the example:
+The example should be ready to compile. Click on "Debug" menu and choose one of the following menu items to start the example:
 
 - Start Debugging
 - Start Without Debugging
