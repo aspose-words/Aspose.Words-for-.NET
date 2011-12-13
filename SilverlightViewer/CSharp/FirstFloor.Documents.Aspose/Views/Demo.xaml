@@ -1,0 +1,34 @@
+﻿<navigation:Page x:Class="FirstFloor.Documents.Aspose.Views.Demo" 
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           mc:Ignorable="d"
+           xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+           xmlns:demo="clr-namespace:FirstFloor.Documents.Aspose.Views"
+           d:DesignWidth="640" d:DesignHeight="480"
+           Title="Demo">
+    <Grid x:Name="LayoutRoot">
+        <ScrollViewer x:Name="PageScrollViewer" Style="{StaticResource PageScrollViewerStyle}">
+            <StackPanel x:Name="ContentStackPanel">
+                <TextBlock Style="{StaticResource HeaderTextStyle}" Text="Upload document"/>
+                <TextBlock Style="{StaticResource ContentTextStyle}">
+                    Upload a document from local disk. The document will be converted to XPS on-the-fly by the document service on the server. Uploaded
+                    documents are not be stored on the server.
+                </TextBlock>
+                <Border Style="{StaticResource BorderStyle}" Width="222" MinHeight="68" Margin="8,4,4,4" HorizontalAlignment="Left">
+                    <StackPanel>
+                        <HyperlinkButton Content="Select document..." Click="Button_Click" />
+                        <TextBlock Text="A local document of type DOC, DOCX, RTF, WordML, ODT or HTML" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+                <TextBlock Style="{StaticResource HeaderTextStyle}" Text="Pre-loaded test documents"/>
+                <TextBlock Style="{StaticResource ContentTextStyle}">
+                    View and download test documents.
+                </TextBlock>
+                <demo:DocumentExplorer x:Name="explorer" />
+            </StackPanel>
+        </ScrollViewer>
+        <demo:DocumentViewer x:Name="viewer" Visibility="Collapsed" Close="viewer_Close"  />
+    </Grid>
+</navigation:Page>
