@@ -48,7 +48,7 @@ Please [download the Aspose.<product name> for <platform> examples](<link to the
 
 + **Website:** [www.aspose.com](http://www.aspose.com)
 + **Product Home:** [<product name with platform>](<product link>)
-+ **Download:** [Downlolad <product name with platform>](<product's download link)
++ **Download:** [Download <product name with platform>](<product's download link)
 + **Documentation:** [<product name with platform> Documentation](product's documentation link)
 + **Forum:** [<product name with platform> Forum](<product family forum link>)
 + **Blog:** [<product name with platform> Blog](<product family blog link>)
