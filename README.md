@@ -1,4 +1,4 @@
-#Aspose.<Product> for <Platform> Examples Repository
+#Aspose.Words for .NET Examples Repository
 
 <Description of the product - please note that in this file, we'll refer the demos as examples.>
 
