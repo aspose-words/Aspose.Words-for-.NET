@@ -16,13 +16,13 @@ Using Aspose.Words for .NET in your project gives you the following benefits:
 
 + Minimal Learning Curve
 
-These example projects provide helpful demonstrations and code when using Aspose.Words for .NET .
+These example projects provide helpful demonstrations and code when using Aspose.Words for .NET.
 
 ##What's Included in this Examples Repository?
 
 ###Code
 
-All examples are each contained in separate folders at the root of the repository. Each example is provided in both C# and Visual Basic. Each example contains a Program.cs or Program.vb code file. The main entry point for the examples is always found in this file.
+All examples are contained in separate folders at the root of the repository. Each example is provided in both C# and Visual Basic. Each example contains a Program.cs or Program.vb code file. The main entry point for the examples is always found in this file.
 
 <table>
   <tr><th>Example<th>Description</th></tr>
@@ -34,13 +34,13 @@ All examples are each contained in separate folders at the root of the repositor
   <tr><td>CheckFormat</td><td>Shows how to use FileFormatUtil to check input file formats and if they are supported by Aspose.Words.</td></tr>
   <tr><td>CompressImages</td><td>Compresses all images in a document that are above the specified PPI.</td></tr>
   <tr><td>CopyBookmarkedText</td><td>Extracts text from a bookmarked range and shows how to import it into a new document.</td></tr>
-  <tr><td>DocumentInDB</td><td>Demonstrates loading and saving a document into a Microsoft Access Database.</td></tr>
-  <tr><td>DocumentPreviewAndPrint</td><td>Shows how to print an Aspose.Words Document with a standard .NET Print Preview dialog. </td></tr>
+  <tr><td>DocumentInDB</td><td>Demonstrates loading and saving a document into a Microsoft Access Database for use in Aspose.Words.</td></tr>
+  <tr><td>DocumentPreviewAndPrint</td><td>Shows how to preview and print an Aspose.Words Document with a standard .NET Print Preview dialog. </td></tr>
   <tr><td>Examples</td><td>Contains numerous small but fully working code snippets that are used within the documentation.</td></tr>
   <tr><td>Excel2Word</td><td>Demonstrates interoperability between Aspose.Words and Aspose.Cells by importing a worksheet into a word document.</td></tr>
   <tr><td>ExtractContent</td><td>Provides code to extract fully formatted content from a document between selected nodes.</td></tr>
   <tr><td>ExtractContentBasedOnStyles</td><td>Extracts content from a document based on styles.</td></tr>
-  <tr><td>FindAndHighlight</td><td>Finds and highlights all instances of specified text in the document.</td></tr>
+  <tr><td>FindAndHighlight</td><td>Finds and highlights all instances of specified text in a document.</td></tr>
   <tr><td>ImageColorFilters</td><td>Saves a document as a TIFF image using different compression settings.</td></tr>
   <tr><td>ImageToPdf</td><td>Shows how to convert any common input image formats such as JPEG, PNG, TIFF and WMF to PDF.</td></tr>
   <tr><td>ImportFootnotesFromHtml</td><td>Shows how to round trip footnotes by providing code which imports footnotes from HTML.</td></tr>
@@ -51,7 +51,7 @@ All examples are each contained in separate folders at the root of the repositor
   <tr><td>MulitpleDocsInMailMerge</td><td>Produces a new document for every record generated during mail merge.</td></tr>
   <tr><td>MulitplePagesOnSheet</td><td>Provides code to print multiple pages from a Word document onto one sheet of paper.</td></tr>
   <tr><td>NestedMailMerge</td><td>Shows how to easily merge data directly from a relational data source into a document by using Nested Mail Merge.</td></tr>
-  <tr><td>ProcessComments</td><td>Prints information about comments found in a input Word document.</td></tr>
+  <tr><td>ProcessComments</td><td>Prints information about the markup comments found in a input Word document.</td></tr>
   <tr><td>RemoveBreaks</td><td>Demonstrates how to remove page and section breaks from a document loaded into Aspose.Words.</td></tr>
   <tr><td>RemoveEmptyRegions</td><td>Shows how to easily remove mail merge regions from a document that were not merged with data.</td></tr>
   <tr><td>RenderShapes</td><td>Shows to render shapes (Textbox, AutoShape, Graphics etc.) independently from the document to an image.</td></tr>
@@ -62,10 +62,10 @@ All examples are each contained in separate folders at the root of the repositor
   <tr><td>SilverlightViewer</td><td>This example demonstrates the integration of Aspose.Words for .NET and Document Toolkit, an XPS document viewer library for Silverlight.</td></tr>
   <tr><td>SplitIntoHtmlPages</td><td>Exports a word document into separate HTML articles based on heading styles.</td></tr>
   <tr><td>UntangleRowBookmarks</td><td>Demonstrates how to fix bookmarks if they are incorrectly loaded in table rows.</td></tr>
-  <tr><td>WindowsAzure</td><td>Demonstrates Aspose.Words for .NET with use in the cloud.</td></tr>
+  <tr><td>WindowsAzure</td><td>Demonstrates how to use Aspose.Words for .NET in the cloud.</td></tr>
   <tr><td>Word2Help</td><td>Expands on the SplitIntoHtmlPages example by producing fully named HTML articles from the source Word document.</td></tr>
   <tr><td>XMLMailMerge</td><td>Shows how to perform mail merge from an XML document.</td></tr>
-  <tr><td>XpsPrint</td><td>Shows how to print an Aspose.Words Document using the XPS Print Api.</td></tr>
+  <tr><td>XpsPrint</td><td>Shows how to print an Aspose.Words Document using the XPS Print API.</td></tr>
 </table>
 
 ###Data
