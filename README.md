@@ -54,7 +54,7 @@ All examples are contained in separate folders at the root of the repository. Ea
   <tr><td>ProcessComments</td><td>Prints information about the markup comments found in a input Word document.</td></tr>
   <tr><td>RemoveBreaks</td><td>Demonstrates how to remove page and section breaks from a document loaded into Aspose.Words.</td></tr>
   <tr><td>RemoveEmptyRegions</td><td>Shows how to easily remove mail merge regions from a document that were not merged with data.</td></tr>
-  <tr><td>RenderShapes</td><td>Shows to render shapes (Textbox, AutoShape, Graphics etc.) independently from the document to an image.</td></tr>
+  <tr><td>RenderShapes</td><td>Shows to render shapes (Textbox, AutoShape, Graphics etc.) independently from the document to image.</td></tr>
   <tr><td>ReplaceFieldsWithStaticText</td><td>Provides code to automatically convert all fields of a certain type to plain text (Ctrl+Shift+F9 in Word).</td></tr>
   <tr><td>SaveAsMultipageTiff</td><td>Shows how to save a document with many pages into a multi-paged TIFF image.</td></tr>
   <tr><td>SaveHtmlAndEmail</td><td>Demonstrates converting a document to HTML for use in e-mail with the .NET Email API.</td></tr>
@@ -64,7 +64,7 @@ All examples are contained in separate folders at the root of the repository. Ea
   <tr><td>UntangleRowBookmarks</td><td>Demonstrates how to fix bookmarks if they are incorrectly loaded in table rows.</td></tr>
   <tr><td>WindowsAzure</td><td>Demonstrates how to use Aspose.Words for .NET in the cloud.</td></tr>
   <tr><td>Word2Help</td><td>Expands on the SplitIntoHtmlPages example by producing fully named HTML articles from the source Word document.</td></tr>
-  <tr><td>XMLMailMerge</td><td>Shows how to perform mail merge from an XML document.</td></tr>
+  <tr><td>XMLMailMerge</td><td>Shows how to perform mail merge from an XML datasource.</td></tr>
   <tr><td>XpsPrint</td><td>Shows how to print an Aspose.Words Document using the XPS Print API.</td></tr>
 </table>
 
