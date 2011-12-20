@@ -106,6 +106,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExNestedMailMergeCustom.cs" />
     <Compile Include="ExSwfSaveOptions.cs" />
     <Compile Include="ExField.cs" />
     <Compile Include="ExRendering.cs" />
@@ -232,6 +233,7 @@
     <None Include="Data\MailMerge.InsertCheckBox.doc" />
     <None Include="Data\MailMerge.InsertHtml.doc" />
     <None Include="Data\MailMerge.MergeImage.doc" />
+    <None Include="Data\NestedMailMerge.CustomDataSource.doc" />
     <None Include="Data\Node.RecurseAllNodes.doc" />
     <None Include="Data\PageSetup.PageNumbering.doc" />
     <None Include="Data\Properties.doc" />

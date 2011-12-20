@@ -49,6 +49,17 @@ End Namespace
 'ExEnd
 
 Public Class DataRelationExample
+	Public Shared Sub CreateRelationship()
+		Dim dataSet As New DataSet()
+		Dim orderTable As New DataTable()
+		Dim itemTable As New DataTable()
+		'ExStart
+		'ExId:NestedMailMergeCreateRelationship
+		'ExSummary:Shows how to create a simple DataRelation for use in nested mail merge.
+		dataSet.Relations.Add(New DataRelation("OrderToItem", orderTable.Columns("Order_Id"), itemTable.Columns("Order_Id")))
+		'ExEnd
+	End Sub
+
 	Public Shared Sub DisableForeignKeyConstraints()
 		Dim dataSet As New DataSet()
 		Dim orderTable As New DataTable()

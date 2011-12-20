@@ -51,6 +51,18 @@ namespace NestedMailMerge
 
 public class DataRelationExample
 {
+    public static void CreateRelationship()
+    {
+        DataSet dataSet = new DataSet();
+        DataTable orderTable = new DataTable();
+        DataTable itemTable = new DataTable();
+        //ExStart
+        //ExId:NestedMailMergeCreateRelationship
+        //ExSummary:Shows how to create a simple DataRelation for use in nested mail merge.
+        dataSet.Relations.Add(new DataRelation("OrderToItem", orderTable.Columns["Order_Id"], itemTable.Columns["Order_Id"]));
+        //ExEnd
+    }
+
     public static void DisableForeignKeyConstraints()
     {
         DataSet dataSet = new DataSet();
