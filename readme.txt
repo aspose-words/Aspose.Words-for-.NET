@@ -34,7 +34,7 @@ Open the appropriate solution file (.sln) in Microsoft Visual Studio. Click on "
 Software Requirements
 ==========================================
 
-- Aspose.Words for .NET 10.4.0 or later (Remove any Aspose.Words for .NET assembly from GAC to get rid of possible errors)
+- Aspose.Words for .NET 10.6.0 or later (Remove any Aspose.Words for .NET assembly from GAC to get rid of possible errors)
 - Additional libraries Aspose.Network for .NET 6.4 and Apose.Cells for .NET 6.0 or later are required to compile some sample projects that  demonstrate integration between several Aspose products. These libraries are shipped with the MSI installer, if this has been used then no extra actions are required. In any other case these libraries must be downloaded manually from the Aspose site.
 - Some samples require extra frameworks:
   - There are samples which demonstrate integration with the Silverlight or Ajax frameworks.
