@@ -9,8 +9,10 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Data;
+using System.Diagnostics;
 
 using Aspose.Words;
+using Aspose.Words.Reporting;
 
 namespace RemoveEmptyRegions
 {
@@ -23,30 +25,26 @@ namespace RemoveEmptyRegions
             string dataDir = new Uri(new Uri(exeDir), @"../../Data/").LocalPath;
 
             //ExStart
-            //ExFor:MailMerge.RemoveEmptyRegions
             //ExId:RemoveEmptyRegions
             //ExSummary:Shows how to remove unmerged mail merge regions from the document.
             // Open the document.
             Document doc = new Document(dataDir + "TestFile.doc");
 
-            // Create a dummy data source containing two empty DataTables which corresponds to the regions in the document.
+            // Create a dummy data source containing no data.
             DataSet data = new DataSet();
-            DataTable suppliers = new DataTable();
-            DataTable storeDetails = new DataTable();
-            suppliers.TableName = "Suppliers";
-            storeDetails.TableName = "StoreDetails";
-            data.Tables.Add(suppliers);
-            data.Tables.Add(storeDetails);
 
-            // Set the RemoveEmptyRegions to true in order to remove unmerged mail merge regions from the document.
-            doc.MailMerge.RemoveEmptyRegions = true;
+            // Set the appropriate mail merge clean up options to remove any unused regions from the document.
+            doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveUnusedRegions;
 
-            // Execute mail merge. It will have no effect as there is no data.
+            // Execute mail merge which will have no effect as there is no data. However the regions found in the document will be removed
+            // automatically as they are unused.
             doc.MailMerge.ExecuteWithRegions(data);
 
             // Save the output document to disk.
             doc.Save(dataDir + "TestFile.RemoveEmptyRegions Out.doc");
             //ExEnd
+
+            Debug.Assert(doc.MailMerge.GetFieldNames().Length == 0, "Error: There are still unused regions remaining in the document");
         }
     }
 }

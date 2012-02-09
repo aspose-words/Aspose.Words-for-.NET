@@ -30,19 +30,21 @@ Namespace ApplyCustomLogicToEmptyRegions
 			' Open the document.
 			Dim doc As New Document(dataDir & "TestFile.doc")
 
-			' Create a data source which contains empty DataTables with no data.
+			' Create a data source which has some data missing.
 			' This will result in some regions that are merged and some that remain after executing mail merge.
 			Dim data As DataSet = GetDataSource()
 
-			' Set the RemoveEmptyRegions to false as we want to handle the unmerged regions manually.
-			doc.MailMerge.RemoveEmptyRegions = False
+			' Make sure that we have not set the removal of any unused regions as we will handle them manually.
+			' We achieve this by removing the RemoveUnusedRegions flag from the cleanup options by using the bitwise XOR operator.
+			doc.MailMerge.CleanupOptions = doc.MailMerge.CleanupOptions Xor MailMergeCleanupOptions.RemoveUnusedRegions
+
 			' Execute mail merge. Some regions will be merged with data, others left unmerged.
 			doc.MailMerge.ExecuteWithRegions(data)
 
 			' The regions which contained data now would of been merged. Any regions which had no data and were
 			' not merged will still remain in the document.
 			Dim mergedDoc As Document = doc.Clone() 'ExSkip
-			' Apply logic to each empty region left in the document using the logic set out in the handler.
+			' Apply logic to each unused region left in the document using the logic set out in the handler.
 			' The handler class must implement the IFieldMergingCallback interface.
 			ExecuteCustomLogicOnEmptyRegions(doc, New EmptyRegionsHandler())
 
@@ -53,7 +55,7 @@ Namespace ApplyCustomLogicToEmptyRegions
 			' Reload the original merged document.
 			doc = mergedDoc.Clone()
 
-			' Apply different logic to empty regions this time.
+			' Apply different logic to unused regions this time.
 			ExecuteCustomLogicOnEmptyRegions(doc, New EmptyRegionsHandler_MergeTable())
 
 			doc.Save(dataDir & "TestFile.CustomLogicEmptyRegions2 Out.doc")
@@ -112,28 +114,28 @@ Namespace ApplyCustomLogicToEmptyRegions
 
 		'ExStart
 		'ExId:ExecuteCustomLogicOnEmptyRegionsMethod
-		'ExSummary:Shows how to execute custom logic on empty regions using the specified handler.
+		'ExSummary:Shows how to execute custom logic on unused regions using the specified handler.
 		''' <summary>
-		''' Applies logic defined in the passed handler class to all empty regions in the document. This allows to manually control
-		''' how empty regions are handled in the document.
+		''' Applies logic defined in the passed handler class to all unused regions in the document. This allows to manually control
+		''' how unused regions are handled in the document.
 		''' </summary>
-		''' <param name="doc">The document containing empty regions</param>
+		''' <param name="doc">The document containing unused regions</param>
 		''' <param name="handler">The handler which implements the IFieldMergingCallback interface and defines the logic to be applied to each unmerged region.</param>
 		Public Shared Sub ExecuteCustomLogicOnEmptyRegions(ByVal doc As Document, ByVal handler As IFieldMergingCallback)
 			ExecuteCustomLogicOnEmptyRegions(doc, handler, Nothing) ' Pass null to handle all regions found in the document.
 		End Sub
 
 		''' <summary>
-		''' Applies logic defined in the passed handler class to specific empty regions in the document as defined in regionsList. This allows to manually control
-		''' how empty regions are handled in the document.
+		''' Applies logic defined in the passed handler class to specific unused regions in the document as defined in regionsList. This allows to manually control
+		''' how unused regions are handled in the document.
 		''' </summary>
-		''' <param name="doc">The document containing empty regions</param>
+		''' <param name="doc">The document containing unused regions</param>
 		''' <param name="handler">The handler which implements the IFieldMergingCallback interface and defines the logic to be applied to each unmerged region.</param>
 		''' <param name="regionsList">A list of strings corresponding to the region names that are to be handled by the supplied handler class. Other regions encountered will not be handled and are removed automatically.</param>
 		Public Shared Sub ExecuteCustomLogicOnEmptyRegions(ByVal doc As Document, ByVal handler As IFieldMergingCallback, ByVal regionsList As ArrayList)
 			' Certain regions can be skipped from applying logic to by not adding the table name inside the CreateEmptyDataSource method.
-			' Set this property to true so any regions which are not handled by the user's logic are removed automatically.
-			doc.MailMerge.RemoveEmptyRegions = True
+			' Enable this cleanup option so any regions which are not handled by the user's logic are removed automatically.
+			doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveUnusedRegions
 
 			' Set the user's handler which is called for each unmerged region.
 			doc.MailMerge.FieldMergingCallback = handler
@@ -206,7 +208,7 @@ Namespace ApplyCustomLogicToEmptyRegions
 			Public Sub FieldMerging(ByVal args As FieldMergingArgs) Implements IFieldMergingCallback.FieldMerging
 				'ExStart
 				'ExId:ContactDetailsCodeVariation
-				'ExSummary:Shows how to replace an empty region with a message and remove extra paragraphs.
+				'ExSummary:Shows how to replace an unused region with a message and remove extra paragraphs.
 				' Store the parent paragraph of the current field for easy access.
 				Dim parentParagraph As Paragraph = args.Field.Start.ParentParagraph
 
@@ -235,8 +237,8 @@ Namespace ApplyCustomLogicToEmptyRegions
 				'ExStart
 				'ExFor:Cell.IsFirstCell
 				'ExId:SuppliersCodeVariation
-				'ExSummary:Shows how to merge all the parent cells of an empty region and display a message within the table.
-				' Replace the empty region in the table with a "no records" message and merge all cells into one.
+				'ExSummary:Shows how to merge all the parent cells of an unused region and display a message within the table.
+				' Replace the unused region in the table with a "no records" message and merge all cells into one.
 				If args.TableName = "Suppliers" Then
 					If CStr(args.FieldValue) Is "FirstField" Then
 						' We will use the first paragraph to display our message. Make it centered within the table. The other fields in other cells 
@@ -266,14 +268,12 @@ Namespace ApplyCustomLogicToEmptyRegions
 		''' <summary>
 		''' Returns the data used to merge the TestFile document.
 		''' This dataset purposely contains only rows for the StoreDetails region and only a select few for the child region. 
-		''' The other DataTables are left empty so they will not be merged.
 		''' </summary>
 		Private Shared Function GetDataSource() As DataSet
 			' Create a new DataSet and DataTable objects to be used for mail merge.
 			Dim data As New DataSet()
 			Dim storeDetails As New DataTable("StoreDetails")
 			Dim contactDetails As New DataTable("ContactDetails")
-			Dim suppliers As New DataTable("Suppliers")
 
 			' Add columns for the ContactDetails table.
 			contactDetails.Columns.Add("ID")
@@ -298,7 +298,6 @@ Namespace ApplyCustomLogicToEmptyRegions
 			' Include the tables in the DataSet.
 			data.Tables.Add(storeDetails)
 			data.Tables.Add(contactDetails)
-			data.Tables.Add(suppliers)
 
 			' Setup the relation between the parent table (StoreDetails) and the child table (ContactDetails).
 			data.Relations.Add(storeDetails.Columns("ID"), contactDetails.Columns("ID"))

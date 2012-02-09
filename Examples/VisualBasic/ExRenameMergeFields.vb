@@ -98,7 +98,7 @@ Namespace Examples
 			Dim fieldCode As Run = CType(mFieldStart.NextSibling, Run)
 			Dim match As Match = gRegex.Match(fieldCode.Text)
 
-			Dim newFieldCode As String = String.Format("{0} {1} {2}", match.Groups("start").Value, fieldName, match.Groups("end").Value)
+			Dim newFieldCode As String = String.Format(" {0}{1} ", match.Groups("start").Value, fieldName)
 			fieldCode.Text = newFieldCode
 
 			' But sometimes the field code can consist of more than one run, delete these runs.
@@ -158,7 +158,7 @@ Namespace Examples
 		Private ReadOnly mFieldSeparator As Node
 		Private ReadOnly mFieldEnd As Node
 
-		Private Shared ReadOnly gRegex As New Regex("\s*(?<start>\S+)\s+(?<name>\S+)\s+(?<end>.+)")
+		Private Shared ReadOnly gRegex As New Regex("\s*(?<start>MERGEFIELD\s|)(\s|)(?<name>\S+)\s+")
 	End Class
 End Namespace
 'ExEnd

@@ -355,6 +355,56 @@ Namespace Examples
 		End Sub
 
 		<Test> _
+		Public Sub Doc2EpubSave()
+			'ExStart
+			'ExId:Doc2EpubSave
+			'ExSummary:Converts a document to EPUB using default save options.
+
+			' Open an existing document from disk.
+			Dim doc As New Document(MyDir & "Document.EpubConversion.doc")
+
+			' Save the document in EPUB format.
+			doc.Save(MyDir & "Document.EpubConversion Out.epub")
+			'ExEnd
+		End Sub
+
+		<Test> _
+		Public Sub Doc2EpubSaveWithOptions()
+			'ExStart
+			'ExFor:HtmlSaveOptions
+			'ExFor:HtmlSaveOptions.Encoding
+			'ExFor:HtmlSaveOptions.DocumentSplitCriteria
+			'ExFor:HtmlSaveOptions.ExportDocumentProperties
+			'ExFor:HtmlSaveOptions.SaveFormat
+			'ExId:Doc2EpubSaveWithOptions
+			'ExSummary:Converts a document to EPUB with save options specified.
+			' Open an existing document from disk.
+			Dim doc As New Document(MyDir & "Document.EpubConversion.doc")
+
+			' Create a new instance of HtmlSaveOptions. This object allows us to set options that control
+			' how the output document is saved.
+			Dim saveOptions As New HtmlSaveOptions()
+
+			' Specify the desired encoding.
+			saveOptions.Encoding = System.Text.Encoding.UTF8
+
+			' Specify at what elements to split the internal HTML at. This creates a new HTML within the EPUB 
+			' which allows you to limit the size of each HTML part. This is useful for readers which cannot read 
+			' HTML files greater than a certain size e.g 300kb.
+			saveOptions.DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph
+
+			' Specify that we want to export document properties.
+			saveOptions.ExportDocumentProperties = True
+
+			' Specify that we want to save in EPUB format.
+			saveOptions.SaveFormat = SaveFormat.Epub
+
+			' Export the document as an EPUB file.
+			doc.Save(MyDir & "Document.EpubConversion Out.epub", saveOptions)
+			'ExEnd
+		End Sub
+
+		<Test> _
 		Public Sub SaveHtmlPrettyFormat()
 			'ExStart
 			'ExFor:SaveOptions.PrettyFormat
@@ -659,9 +709,9 @@ Namespace Examples
 				' In automation you were required to insert a new section break at this point, however in Aspose.Words we 
 				' don't need to do anything here as the appended document is imported as separate sectons already.
 
-				' If this is the second document or above being appended then unlink the headers and footers.
+				' If this is the second document or above being appended then unlink all headers footers in this section 
+				' from the headers and footers of the previous section.
 				If i > 1 Then
-					' Unlink all headers footers in this section from the headers and footers of the previous section.
 					doc.Sections(i).HeadersFooters.LinkToPrevious(False)
 				End If
 			Next i

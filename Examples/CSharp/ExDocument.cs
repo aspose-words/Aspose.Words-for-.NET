@@ -375,6 +375,59 @@ namespace Examples
         }
 
         [Test]
+        public void Doc2EpubSave()
+        {
+            //ExStart
+            //ExId:Doc2EpubSave
+            //ExSummary:Converts a document to EPUB using default save options.
+
+            // Open an existing document from disk.
+            Document doc = new Document(MyDir + "Document.EpubConversion.doc");
+
+            // Save the document in EPUB format.
+            doc.Save(MyDir + "Document.EpubConversion Out.epub");
+            //ExEnd
+        }
+
+        [Test]
+        public void Doc2EpubSaveWithOptions()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions
+            //ExFor:HtmlSaveOptions.Encoding
+            //ExFor:HtmlSaveOptions.DocumentSplitCriteria
+            //ExFor:HtmlSaveOptions.ExportDocumentProperties
+            //ExFor:HtmlSaveOptions.SaveFormat
+            //ExId:Doc2EpubSaveWithOptions
+            //ExSummary:Converts a document to EPUB with save options specified.
+            // Open an existing document from disk.
+            Document doc = new Document(MyDir + "Document.EpubConversion.doc");
+
+            // Create a new instance of HtmlSaveOptions. This object allows us to set options that control
+            // how the output document is saved.
+            HtmlSaveOptions saveOptions =
+                new HtmlSaveOptions();
+
+            // Specify the desired encoding.
+            saveOptions.Encoding = System.Text.Encoding.UTF8;
+
+            // Specify at what elements to split the internal HTML at. This creates a new HTML within the EPUB 
+            // which allows you to limit the size of each HTML part. This is useful for readers which cannot read 
+            // HTML files greater than a certain size e.g 300kb.
+            saveOptions.DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph;
+
+            // Specify that we want to export document properties.
+            saveOptions.ExportDocumentProperties = true;
+
+            // Specify that we want to save in EPUB format.
+            saveOptions.SaveFormat = SaveFormat.Epub;
+
+            // Export the document as an EPUB file.
+            doc.Save(MyDir + "Document.EpubConversion Out.epub", saveOptions);
+            //ExEnd
+        }
+
+        [Test]
         public void SaveHtmlPrettyFormat()
         {
             //ExStart

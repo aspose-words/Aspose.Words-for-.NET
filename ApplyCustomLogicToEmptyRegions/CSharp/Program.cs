@@ -31,19 +31,21 @@ namespace ApplyCustomLogicToEmptyRegions
             // Open the document.
             Document doc = new Document(dataDir + "TestFile.doc");
 
-            // Create a data source which contains empty DataTables with no data.
+            // Create a data source which has some data missing.
             // This will result in some regions that are merged and some that remain after executing mail merge.
             DataSet data = GetDataSource();
 
-            // Set the RemoveEmptyRegions to false as we want to handle the unmerged regions manually.
-            doc.MailMerge.RemoveEmptyRegions = false;
+            // Make sure that we have not set the removal of any unused regions as we will handle them manually.
+            // We achieve this by removing the RemoveUnusedRegions flag from the cleanup options by using the bitwise XOR operator.
+            doc.MailMerge.CleanupOptions = doc.MailMerge.CleanupOptions ^ MailMergeCleanupOptions.RemoveUnusedRegions;
+            
             // Execute mail merge. Some regions will be merged with data, others left unmerged.
             doc.MailMerge.ExecuteWithRegions(data);
 
             // The regions which contained data now would of been merged. Any regions which had no data and were
             // not merged will still remain in the document.
             Document mergedDoc = doc.Clone(); //ExSkip
-            // Apply logic to each empty region left in the document using the logic set out in the handler.
+            // Apply logic to each unused region left in the document using the logic set out in the handler.
             // The handler class must implement the IFieldMergingCallback interface.
             ExecuteCustomLogicOnEmptyRegions(doc, new EmptyRegionsHandler());
 
@@ -54,7 +56,7 @@ namespace ApplyCustomLogicToEmptyRegions
             // Reload the original merged document.
             doc = mergedDoc.Clone();
 
-            // Apply different logic to empty regions this time.
+            // Apply different logic to unused regions this time.
             ExecuteCustomLogicOnEmptyRegions(doc, new EmptyRegionsHandler_MergeTable());
 
             doc.Save(dataDir + "TestFile.CustomLogicEmptyRegions2 Out.doc");
@@ -120,12 +122,12 @@ namespace ApplyCustomLogicToEmptyRegions
 
         //ExStart
         //ExId:ExecuteCustomLogicOnEmptyRegionsMethod
-        //ExSummary:Shows how to execute custom logic on empty regions using the specified handler.
+        //ExSummary:Shows how to execute custom logic on unused regions using the specified handler.
         /// <summary>
-        /// Applies logic defined in the passed handler class to all empty regions in the document. This allows to manually control
-        /// how empty regions are handled in the document.
+        /// Applies logic defined in the passed handler class to all unused regions in the document. This allows to manually control
+        /// how unused regions are handled in the document.
         /// </summary>
-        /// <param name="doc">The document containing empty regions</param>
+        /// <param name="doc">The document containing unused regions</param>
         /// <param name="handler">The handler which implements the IFieldMergingCallback interface and defines the logic to be applied to each unmerged region.</param>
         public static void ExecuteCustomLogicOnEmptyRegions(Document doc, IFieldMergingCallback handler)
         {
@@ -133,17 +135,17 @@ namespace ApplyCustomLogicToEmptyRegions
         }
 
         /// <summary>
-        /// Applies logic defined in the passed handler class to specific empty regions in the document as defined in regionsList. This allows to manually control
-        /// how empty regions are handled in the document.
+        /// Applies logic defined in the passed handler class to specific unused regions in the document as defined in regionsList. This allows to manually control
+        /// how unused regions are handled in the document.
         /// </summary>
-        /// <param name="doc">The document containing empty regions</param>
+        /// <param name="doc">The document containing unused regions</param>
         /// <param name="handler">The handler which implements the IFieldMergingCallback interface and defines the logic to be applied to each unmerged region.</param>
         /// <param name="regionsList">A list of strings corresponding to the region names that are to be handled by the supplied handler class. Other regions encountered will not be handled and are removed automatically.</param>
         public static void ExecuteCustomLogicOnEmptyRegions(Document doc, IFieldMergingCallback handler, ArrayList regionsList)
         {
             // Certain regions can be skipped from applying logic to by not adding the table name inside the CreateEmptyDataSource method.
-            // Set this property to true so any regions which are not handled by the user's logic are removed automatically.
-            doc.MailMerge.RemoveEmptyRegions = true;
+            // Enable this cleanup option so any regions which are not handled by the user's logic are removed automatically.
+            doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveUnusedRegions;
 
             // Set the user's handler which is called for each unmerged region.
             doc.MailMerge.FieldMergingCallback = handler;
@@ -222,7 +224,7 @@ namespace ApplyCustomLogicToEmptyRegions
             {
                 //ExStart
                 //ExId:ContactDetailsCodeVariation
-                //ExSummary:Shows how to replace an empty region with a message and remove extra paragraphs.
+                //ExSummary:Shows how to replace an unused region with a message and remove extra paragraphs.
                 // Store the parent paragraph of the current field for easy access.
                 Paragraph parentParagraph = args.Field.Start.ParentParagraph;
 
@@ -254,8 +256,8 @@ namespace ApplyCustomLogicToEmptyRegions
                 //ExStart
                 //ExFor:Cell.IsFirstCell
                 //ExId:SuppliersCodeVariation
-                //ExSummary:Shows how to merge all the parent cells of an empty region and display a message within the table.
-                // Replace the empty region in the table with a "no records" message and merge all cells into one.
+                //ExSummary:Shows how to merge all the parent cells of an unused region and display a message within the table.
+                // Replace the unused region in the table with a "no records" message and merge all cells into one.
                 if (args.TableName == "Suppliers")
                 {
                     if ((string)args.FieldValue == "FirstField")
@@ -288,7 +290,6 @@ namespace ApplyCustomLogicToEmptyRegions
         /// <summary>
         /// Returns the data used to merge the TestFile document.
         /// This dataset purposely contains only rows for the StoreDetails region and only a select few for the child region. 
-        /// The other DataTables are left empty so they will not be merged.
         /// </summary>
         private static DataSet GetDataSource()
         {
@@ -296,7 +297,6 @@ namespace ApplyCustomLogicToEmptyRegions
             DataSet data = new DataSet();
             DataTable storeDetails = new DataTable("StoreDetails");
             DataTable contactDetails = new DataTable("ContactDetails");
-            DataTable suppliers = new DataTable("Suppliers");
 
             // Add columns for the ContactDetails table.
             contactDetails.Columns.Add("ID");
@@ -321,7 +321,6 @@ namespace ApplyCustomLogicToEmptyRegions
             // Include the tables in the DataSet.
             data.Tables.Add(storeDetails);
             data.Tables.Add(contactDetails);
-            data.Tables.Add(suppliers);
 
             // Setup the relation between the parent table (StoreDetails) and the child table (ContactDetails).
             data.Relations.Add(storeDetails.Columns["ID"], contactDetails.Columns["ID"]);

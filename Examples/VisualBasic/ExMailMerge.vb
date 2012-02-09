@@ -278,8 +278,32 @@ Namespace Examples
 			'ExStart
 			'ExFor:MailMerge.DeleteFields
 			'ExId:MailMergeDeleteFields
-			'ExSummary:Shows how to delete all merge fields from a document.
+			'ExSummary:Shows how to delete all merge fields from a document without executing mail merge.
 			doc.MailMerge.DeleteFields()
+			'ExEnd
+		End Sub
+
+		<Test> _
+		Public Sub RemoveContainingFields()
+			Dim doc As New Document()
+			'ExStart
+			'ExFor:MailMerge.CleanupOptions
+			'ExFor:MailMergeCleanupOptions
+			'ExId:MailMergeRemoveContainingFields
+			'ExSummary:Shows how to instruct the mail merge engine to remove any containing fields from around a merge field during mail merge.
+			doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveContainingFields
+			'ExEnd
+		End Sub
+
+		<Test> _
+		Public Sub RemoveUnusedFields()
+			Dim doc As New Document()
+			'ExStart
+			'ExFor:MailMerge.CleanupOptions
+			'ExFor:MailMergeCleanupOptions
+			'ExId:MailMergeRemoveUnusedFields
+			'ExSummary:Shows how to automatically remove unmerged merge fields during mail merge.
+			doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveUnusedFields
 			'ExEnd
 		End Sub
 
@@ -287,10 +311,11 @@ Namespace Examples
 		Public Sub RemoveEmptyParagraphs()
 			Dim doc As New Document()
 			'ExStart
-			'ExFor:MailMerge.RemoveEmptyParagraphs
+			'ExFor:MailMerge.CleanupOptions
+			'ExFor:MailMergeCleanupOptions
 			'ExId:MailMergeRemoveEmptyParagraphs
 			'ExSummary:Shows how to make sure empty paragraphs that result from merging fields with no data are removed from the document.
-			doc.MailMerge.RemoveEmptyParagraphs = True
+			doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveEmptyParagraphs
 			'ExEnd
 		End Sub
 

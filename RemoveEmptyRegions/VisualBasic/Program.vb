@@ -11,8 +11,10 @@ Imports System
 Imports System.IO
 Imports System.Reflection
 Imports System.Data
+Imports System.Diagnostics
 
 Imports Aspose.Words
+Imports Aspose.Words.Reporting
 
 Namespace RemoveEmptyRegions
 	Friend Class RemoveEmptyRegions
@@ -22,30 +24,26 @@ Namespace RemoveEmptyRegions
 			Dim dataDir As String = New Uri(New Uri(exeDir), "../../Data/").LocalPath
 
 			'ExStart
-			'ExFor:MailMerge.RemoveEmptyRegions
 			'ExId:RemoveEmptyRegions
 			'ExSummary:Shows how to remove unmerged mail merge regions from the document.
 			' Open the document.
 			Dim doc As New Document(dataDir & "TestFile.doc")
 
-			' Create a dummy data source containing two empty DataTables which corresponds to the regions in the document.
+			' Create a dummy data source containing no data.
 			Dim data As New DataSet()
-			Dim suppliers As New DataTable()
-			Dim storeDetails As New DataTable()
-			suppliers.TableName = "Suppliers"
-			storeDetails.TableName = "StoreDetails"
-			data.Tables.Add(suppliers)
-			data.Tables.Add(storeDetails)
 
-			' Set the RemoveEmptyRegions to true in order to remove unmerged mail merge regions from the document.
-			doc.MailMerge.RemoveEmptyRegions = True
+			' Set the appropriate mail merge clean up options to remove any unused regions from the document.
+			doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveUnusedRegions
 
-			' Execute mail merge. It will have no effect as there is no data.
+			' Execute mail merge which will have no effect as there is no data. However the regions found in the document will be removed
+			' automatically as they are unused.
 			doc.MailMerge.ExecuteWithRegions(data)
 
 			' Save the output document to disk.
 			doc.Save(dataDir & "TestFile.RemoveEmptyRegions Out.doc")
 			'ExEnd
+
+			Debug.Assert(doc.MailMerge.GetFieldNames().Length = 0, "Error: There are still unused regions remaining in the document")
 		End Sub
 	End Class
 End Namespace

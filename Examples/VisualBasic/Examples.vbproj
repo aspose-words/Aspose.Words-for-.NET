@@ -89,6 +89,7 @@
     </Reference>
     <Reference Include="nunit.framework">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\NUnit 2\bin\net-2.0\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -265,6 +266,9 @@
     <None Include="Data\Table.Document.doc" />
     <None Include="Data\Table.NestedTables.doc" />
     <None Include="Data\Visitor.ToText.doc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="My Project\" />
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) != ''" />

@@ -103,7 +103,7 @@ namespace Examples
             Run fieldCode = (Run)mFieldStart.NextSibling;
             Match match = gRegex.Match(fieldCode.Text);
 
-            string newFieldCode = string.Format("{0} {1} {2}", match.Groups["start"].Value, fieldName, match.Groups["end"].Value);
+            string newFieldCode = string.Format(" {0}{1} ", match.Groups["start"].Value, fieldName);
             fieldCode.Text = newFieldCode;
 
             // But sometimes the field code can consist of more than one run, delete these runs.
@@ -160,7 +160,7 @@ namespace Examples
         private readonly Node mFieldSeparator;
         private readonly Node mFieldEnd;
 
-        private static readonly Regex gRegex = new Regex(@"\s*(?<start>\S+)\s+(?<name>\S+)\s+(?<end>.+)");
+        private static readonly Regex gRegex = new Regex(@"\s*(?<start>MERGEFIELD\s|)(\s|)(?<name>\S+)\s+");
     }
 }
 //ExEnd

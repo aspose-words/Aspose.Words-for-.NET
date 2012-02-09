@@ -1,4 +1,4 @@
-﻿//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
 // Copyright 2001-2011 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
@@ -301,8 +301,34 @@ namespace Examples
             //ExStart
             //ExFor:MailMerge.DeleteFields
             //ExId:MailMergeDeleteFields
-            //ExSummary:Shows how to delete all merge fields from a document.
+            //ExSummary:Shows how to delete all merge fields from a document without executing mail merge.
             doc.MailMerge.DeleteFields();
+            //ExEnd
+        }
+
+        [Test]
+        public void RemoveContainingFields()
+        {
+            Document doc = new Document();
+            //ExStart
+            //ExFor:MailMerge.CleanupOptions
+            //ExFor:MailMergeCleanupOptions
+            //ExId:MailMergeRemoveContainingFields
+            //ExSummary:Shows how to instruct the mail merge engine to remove any containing fields from around a merge field during mail merge.
+            doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveContainingFields;
+            //ExEnd
+        }
+
+        [Test]
+        public void RemoveUnusedFields()
+        {
+            Document doc = new Document();
+            //ExStart
+            //ExFor:MailMerge.CleanupOptions
+            //ExFor:MailMergeCleanupOptions
+            //ExId:MailMergeRemoveUnusedFields
+            //ExSummary:Shows how to automatically remove unmerged merge fields during mail merge.
+            doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveUnusedFields;
             //ExEnd
         }
 
@@ -311,10 +337,11 @@ namespace Examples
         {
             Document doc = new Document();
             //ExStart
-            //ExFor:MailMerge.RemoveEmptyParagraphs
+            //ExFor:MailMerge.CleanupOptions
+            //ExFor:MailMergeCleanupOptions
             //ExId:MailMergeRemoveEmptyParagraphs
             //ExSummary:Shows how to make sure empty paragraphs that result from merging fields with no data are removed from the document.
-            doc.MailMerge.RemoveEmptyParagraphs = true;
+            doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveEmptyParagraphs;
             //ExEnd
         }
 
