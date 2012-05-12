@@ -372,6 +372,7 @@ Namespace Examples
 		Public Sub Doc2EpubSaveWithOptions()
 			'ExStart
 			'ExFor:HtmlSaveOptions
+			'ExFor:HtmlSaveOptions.#ctor
 			'ExFor:HtmlSaveOptions.Encoding
 			'ExFor:HtmlSaveOptions.DocumentSplitCriteria
 			'ExFor:HtmlSaveOptions.ExportDocumentProperties
@@ -752,6 +753,8 @@ Namespace Examples
 				Console.WriteLine("Signatures belonging to this document are NOT valid")
 			End If
 			'ExEnd
+
+			Assert.True(doc.DigitalSignatures.IsValid)
 		End Sub
 
 		<Test> _
@@ -762,6 +765,7 @@ Namespace Examples
 			'ExFor:DigitalSignature.IsValid
 			'ExFor:DigitalSignature.Comments
 			'ExFor:DigitalSignature.SignTime
+			'ExFor:DigitalSignature.SignatureType
 			'ExFor:DigitalSignature.Certificate
 			'ExId:ValidateIndividualSignatures
 			'ExSummary:Shows how to validate each signature in a document and display basic information about the signature.
@@ -772,16 +776,24 @@ Namespace Examples
 				Console.WriteLine("*** Signature Found ***")
 				Console.WriteLine("Is valid: " & signature.IsValid)
 				Console.WriteLine("Reason for signing: " & signature.Comments) ' This property is available in MS Word documents only.
+				Console.WriteLine("Signature type: " & signature.SignatureType.ToString())
 				Console.WriteLine("Time of signing: " & signature.SignTime)
-				Console.WriteLine("Subject name: " & signature.Certificate.SubjectName.Name)
+				Console.WriteLine("Subject name: " & signature.Certificate.SubjectName)
 				Console.WriteLine("Issuer name: " & signature.Certificate.IssuerName.Name)
 				Console.WriteLine()
 			Next signature
 			'ExEnd
+
+			Dim digitalSig As DigitalSignature = doc.DigitalSignatures(0)
+			Assert.True(digitalSig.IsValid)
+			Assert.AreEqual("Test Sign", digitalSig.Comments)
+			Assert.AreEqual("XmlDsig", digitalSig.SignatureType.ToString())
+			Assert.True(digitalSig.Certificate.Subject.Contains("Aspose Pty Ltd"))
+			Assert.True(digitalSig.Certificate.IssuerName.Name.Contains("VeriSign"))
 		End Sub
 
-		' I don't think there is any point including the certificate along with the sample documents 
-		' so expect this exception instead since the file is not there.
+		' We don't include a sample certificate with the examples
+		' so this exception is expected instead since the file is not there.
 		<Test, ExpectedException(GetType(System.Security.Cryptography.CryptographicException))> _
 		Public Sub SignPDFDocument()
 			'ExStart
@@ -830,12 +842,13 @@ Namespace Examples
 			' Gather the files which will be appended to our template document.
 			' In this case we add the optional parameter to include the search only for files with the ".doc" extension.
 			Dim files As New ArrayList(Directory.GetFiles(MyDir, "*.doc"))
-			' The list of files may come in any order, let's sort the files by name so the documents are appended alphabetically.
+			' The list of files may come in any order, let's sort the files by name so the documents are enumerated alphabetically.
 			files.Sort()
 
 			' Iterate through every file in the directory and append each one to the end of the template document.
 			For Each fileName As String In files
-				' We have some encrypted test documents in our directory, skip them.
+				' We have some encrypted test documents in our directory, Aspose.Words can open encrypted documents 
+				' but only with the correct password. Let's just skip them here for simplicity.
 				Dim info As FileFormatInfo = FileFormatUtil.DetectFileFormat(fileName)
 				If info.IsEncrypted Then
 					Continue For

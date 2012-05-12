@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
@@ -19,11 +19,9 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject></StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -88,7 +86,6 @@
       <HintPath>..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\NUnit 2\bin\net-2.0\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System">
@@ -115,9 +112,7 @@
     <Compile Include="ExNestedMailMergeCustom.vb" />
     <Compile Include="ExSwfSaveOptions.vb" />
     <Compile Include="ExField.vb" />
-    <Compile Include="ExRendering.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="ExRendering.vb" />
     <Compile Include="ExComment.vb" />
     <Compile Include="ExInsertDocument.vb" />
     <Compile Include="ExMossDoc2Pdf.vb" />
@@ -266,9 +261,6 @@
     <None Include="Data\Table.Document.doc" />
     <None Include="Data\Table.NestedTables.doc" />
     <None Include="Data\Visitor.ToText.doc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="My Project\" />
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) != ''" />

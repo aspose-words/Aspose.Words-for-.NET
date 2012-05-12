@@ -8,6 +8,7 @@
 
 Imports Microsoft.VisualBasic
 Imports System
+Imports System.Collections
 Imports System.Diagnostics
 Imports System.Drawing
 Imports System.Drawing.Printing
@@ -15,11 +16,11 @@ Imports System.Drawing.Text
 Imports System.IO
 Imports System.Windows.Forms
 Imports Aspose.Words
+Imports Aspose.Words.Fonts
 Imports Aspose.Words.Rendering
 Imports Aspose.Words.Saving
 Imports NUnit.Framework
-Imports Aspose.Words.Fonts
-Imports System.Collections
+
 
 Namespace Examples
 	<TestFixture> _
@@ -123,6 +124,7 @@ Namespace Examples
 		Public Sub SaveAsXps()
 			'ExStart
 			'ExFor:XpsSaveOptions
+			'ExFor:XpsSaveOptions.#ctor
 			'ExFor:Document.Save(String)
 			'ExFor:Document.Save(Stream, SaveFormat)
 			'ExFor:Document.Save(String, SaveOptions)
@@ -151,6 +153,7 @@ Namespace Examples
 		<Test> _
 		Public Sub SaveAsImage()
 			'ExStart
+			'ExFor:ImageSaveOptions.#ctor
 			'ExFor:Document.Save(String)
 			'ExFor:Document.Save(Stream, SaveFormat)
 			'ExFor:Document.Save(String, SaveOptions)
@@ -206,7 +209,7 @@ Namespace Examples
 			options.PageIndex = 0
 			options.PageCount = 1
 
-			doc.Save(MyDir & "Rendering.SaveToTiffCompression Out.tif", options)
+			doc.Save(MyDir & "Rendering.SaveToTiffCompression Out.tiff", options)
 			'ExEnd
 		End Sub
 
@@ -709,78 +712,291 @@ Namespace Examples
 
 		<Test> _
 		Public Sub SetTrueTypeFontsFolder()
-			' Store the font folders currently used so we can restore them later. 
-			Dim fontFolders() As String = FontSettings.GetFontsFolders()
+			' Store the font sources currently used so we can restore them later. 
+			Dim fontSources() As FontSourceBase = FontSettings.GetFontsSources()
 
 			'ExStart
 			'ExFor:FontSettings
 			'ExFor:FontSettings.SetFontsFolder(String, Boolean)
 			'ExId:SetFontsFolderCustomFolder
-			'ExSummary:Demonstrates how to set the folder Aspose.Words uses to look for TrueType fonts during rendering.
+			'ExSummary:Demonstrates how to set the folder Aspose.Words uses to look for TrueType fonts during rendering or embedding of fonts.
 			Dim doc As New Document(MyDir & "Rendering.doc")
 
-			' Set fonts to be scanned for under the specified directory. Do not search within sub-folders.
+			' Note that this setting will override any default font sources that are being searched by default. Now only these folders will be searched for 
+			' fonts when rendering or embedding fonts. To add an extra font source while keeping system font sources then use both FontSettings.GetFontSources and 
+			' FontSettings.SetFontSources instead.
 			FontSettings.SetFontsFolder("C:\MyFonts\", False)
 
 			doc.Save(MyDir & "Rendering.SetFontsFolder Out.pdf")
 			'ExEnd
 
-			' Restore the original folders used to search for fonts.
-			FontSettings.SetFontsFolders(fontFolders, True)
+			' Restore the original sources used to search for fonts.
+			FontSettings.SetFontsSources(fontSources)
 		End Sub
 
 		<Test> _
 		Public Sub SetFontsFoldersMultipleFolders()
-			' Store the font folders currently used so we can restore them later. 
-			Dim fontFolders() As String = FontSettings.GetFontsFolders()
+			' Store the font sources currently used so we can restore them later. 
+			Dim fontSources() As FontSourceBase = FontSettings.GetFontsSources()
 
 			'ExStart
 			'ExFor:FontSettings
 			'ExFor:FontSettings.SetFontsFolders(String[], Boolean)
 			'ExId:SetFontsFoldersMultipleFolders
-			'ExSummary:Demonstrates how to set Aspose.Words to look in multiple folders for TrueType fonts when rendering.
+			'ExSummary:Demonstrates how to set Aspose.Words to look in multiple folders for TrueType fonts when rendering or embedding fonts.
 			Dim doc As New Document(MyDir & "Rendering.doc")
 
-			' Pass true to the second parameter to search within all sub-folders of the specified folders as well.
+			' Note that this setting will override any default font sources that are being searched by default. Now only these folders will be searched for 
+			' fonts when rendering or embedding fonts. To add an extra font source while keeping system font sources then use both FontSettings.GetFontSources and 
+			' FontSettings.SetFontSources instead.
 			FontSettings.SetFontsFolders(New String() {"C:\MyFonts\", "D:\Misc\Fonts\"}, True)
 
 			doc.Save(MyDir & "Rendering.SetFontsFolders Out.pdf")
 			'ExEnd
 
-			' Restore the original folders used to search for fonts.
-			FontSettings.SetFontsFolders(fontFolders, True)
+			' Restore the original sources used to search for fonts.
+			FontSettings.SetFontsSources(fontSources)
 		End Sub
 
 		<Test> _
 		Public Sub SetFontsFoldersSystemAndCustomFolder()
-			' Store the font folders currently used so we can restore them later. 
-			Dim origFontFolders() As String = FontSettings.GetFontsFolders()
+			' Store the font sources currently used so we can restore them later. 
+			Dim origFontSources() As FontSourceBase = FontSettings.GetFontsSources()
 
 			'ExStart
-			'ExFor:FontSettings
-			'ExFor:FontSettings.SetFontsFolders(String[], Boolean)
+			'ExFor:FontSettings            
+			'ExFor:FontSettings.GetFontsSources()
+			'ExFor:FontSettings.SetFontsSources()
 			'ExId:SetFontsFoldersSystemAndCustomFolder
-			'ExSummary:Demonstrates how to set Aspose.Words to look for TrueType fonts in system folders and a custom defined folder as well.
+			'ExSummary:Demonstrates how to set Aspose.Words to look for TrueType fonts in system folders as well as a custom defined folder when scanning for fonts.
 			Dim doc As New Document(MyDir & "Rendering.doc")
 
-			' Retrieve the array of environment-dependent font folders that are searched by default. For example this will contain "Windows\Fonts\" on a Windows machines.
-			Dim fontFolders As New ArrayList(FontSettings.GetFontsFolders())
+			' Retrieve the array of environment-dependent font sources that are searched by default. For example this will contain a "Windows\Fonts\" source on a Windows machines.
+			' We add this array to a new ArrayList to make adding or removing font entries much easier.
+			Dim fontSources As New ArrayList(FontSettings.GetFontsSources())
 
-			' Add our custom folder to the list.
-			fontFolders.Add("C:\MyFonts\")
+			' Add a new folder source which will instruct Aspose.Words to search the following folder for fonts. 
+			Dim folderFontSource As New FolderFontSource("C:\MyFonts\", True)
 
-			' Convert the list into an array and pass it to the FontSettings class.
-			FontSettings.SetFontsFolders(CType(fontFolders.ToArray(GetType(String)), String()), True)
+			' Add the custom folder which contains our fonts to the list of existing font sources.
+			fontSources.Add(folderFontSource)
+
+			' Convert the Arraylist of source back into a primitive array of FontSource objects.
+			Dim updatedFontSources() As FontSourceBase = CType(fontSources.ToArray(GetType(FontSourceBase)), FontSourceBase())
+
+			' Apply the new set of font sources to use.
+			FontSettings.SetFontsSources(updatedFontSources)
 
 			doc.Save(MyDir & "Rendering.SetFontsFolders Out.pdf")
 			'ExEnd
 
-			' Verify that folders are set correctly.
-			Assert.True(FontSettings.GetFontsFolders()(0).ToLower().Contains("fonts")) ' Regardless of OS the system fonts path should contain "Fonts".
-			Assert.AreEqual("C:\MyFonts\", FontSettings.GetFontsFolders()(1))
+			' Verify that font sources are set correctly.
+			Assert.IsInstanceOf(GetType(SystemFontSource), FontSettings.GetFontsSources()(0)) ' The first source should be a system font source.
+			Assert.IsInstanceOf(GetType(FolderFontSource), FontSettings.GetFontsSources()(1)) ' The second source should be our folder font source.
 
-			' Restore the original folders used to search for fonts.
-			FontSettings.SetFontsFolders(origFontFolders, True)
+			Dim folderSource As FolderFontSource = (CType(FontSettings.GetFontsSources()(1), FolderFontSource))
+			Assert.AreEqual("C:\MyFonts\", folderSource.FolderPath)
+			Assert.True(folderSource.ScanSubfolders)
+
+			' Restore the original sources used to search for fonts.
+			FontSettings.SetFontsSources(origFontSources)
+		End Sub
+
+		<Test> _
+		Public Sub SetDefaultFontName()
+			'ExStart
+			'ExFor:FontSettings.DefaultFontName
+			'ExId:SetDefaultFontName
+			'ExSummary:Demonstrates how to specify what font to substitute for a missing font during rendering.
+			Dim doc As New Document(MyDir & "Rendering.doc")
+
+			' If the default font defined here cannot be found during rendering then the closest font on the machine is used instead.
+			FontSettings.DefaultFontName = "Arial Unicode MS"
+
+			' Now the set default font is used in place of any missing fonts during any rendering calls.
+			doc.Save(MyDir & "Rendering.SetDefaultFont Out.pdf")
+			doc.Save(MyDir & "Rendering.SetDefaultFont Out.xps")
+			'ExEnd
+		End Sub
+
+		<Test> _
+		Public Sub RecieveFontSubstitutionNotification()
+			' Store the font sources currently used so we can restore them later. 
+			Dim origFontSources() As FontSourceBase = FontSettings.GetFontsSources()
+
+			'ExStart
+			'ExFor:IWarningCallback
+			'ExFor:SaveOptions.WarningCallback
+			'ExId:FontSubstitutionNotification
+			'ExSummary:Demonstrates how to recieve notifications of font substitutions by using IWarningCallback.
+			' Load the document to render.
+			Dim doc As New Document(MyDir & "Document.doc")
+
+			' We can choose the default font to use in the case of any missing fonts.
+			FontSettings.DefaultFontName = "Arial"
+
+			' For testing we will set Aspose.Words to look for fonts only in a folder which doesn't exist. Since Aspose.Words won't
+			' find any fonts in the specified directory, then during rendering the fonts in the document will be subsuited with the default 
+			' font specified under FontSettings.DefaultFontName. We can pick up on this subsuition using our callback.
+			FontSettings.SetFontsFolder(String.Empty, False)
+
+			' Create a new class implementing IWarningCallback which collect any warnings produced during document save.
+			Dim callback As New HandleDocumentWarnings()
+
+			' We assign the callback to the appropriate save options class. In this case, we are going to save to PDF
+			' so we create a PdfSaveOptions class and assign the callback there.
+			Dim saveOptions As New PdfSaveOptions()
+			saveOptions.WarningCallback = callback
+
+			' Pass the save options along with the save path to the save method.
+			doc.Save(MyDir & "Rendering.MissingFontNotification Out.pdf", saveOptions)
+			'ExEnd
+
+			Assert.Greater(callback.mFontWarnings.Count, 0)
+			Assert.True(callback.mFontWarnings(0).WarningType = WarningType.FontSubstitution)
+			Assert.True(callback.mFontWarnings(0).Description.Contains("has not been found"))
+
+			' Restore default fonts. 
+			FontSettings.SetFontsSources(origFontSources)
+		End Sub
+
+		'ExStart
+		'ExFor:IWarningCallback
+		'ExFor:SaveOptions.WarningCallback
+		'ExId:FontSubstitutionWarningCallback
+		'ExSummary:Demonstrates how to implement the IWarningCallback to be notified of any font substitution during document save.
+		Public Class HandleDocumentWarnings
+			Implements IWarningCallback
+			''' <summary>
+			''' Our callback only needs to implement the "Warning" method. This method is called whenever there is a
+			''' potential issue during document procssing. The callback can be set to listen for warnings generated during document
+			''' load and/or document save.
+			''' </summary>
+			Public Sub Warning(ByVal info As WarningInfo) Implements IWarningCallback.Warning
+				' We are only interested in fonts being substituted.
+				If info.WarningType = WarningType.FontSubstitution Then
+					Console.WriteLine("Font substitution: " & info.Description)
+					mFontWarnings.Warning(info) 'ExSkip
+				End If
+			End Sub
+
+			Public mFontWarnings As New WarningInfoCollection() 'ExSkip
+		End Class
+		'ExEnd
+
+		<Test> _
+		Public Sub RecieveFontSubstitutionUpdatePageLayout()
+			' Store the font sources currently used so we can restore them later. 
+			Dim origFontSources() As FontSourceBase = FontSettings.GetFontsSources()
+
+			' Load the document to render.
+			Dim doc As New Document(MyDir & "Document.doc")
+
+			' We can choose the default font to use in the case of any missing fonts.
+			FontSettings.DefaultFontName = "Arial"
+
+			' For testing we will set Aspose.Words to look for fonts only in a folder which doesn't exist. Since Aspose.Words won't
+			' find any fonts in the specified directory, then during rendering the fonts in the document will be subsuited with the default 
+			' font specified under FontSettings.DefaultFontName. We can pick up on this subsuition using our callback.
+			FontSettings.SetFontsFolder(String.Empty, False)
+
+			'ExStart
+			'ExId:FontSubstitutionUpdatePageLayout
+			'ExSummary:Demonstrates how IWarningCallback will still recieve warning notifcations even if UpdatePageLayout is called before document save.
+			' When you call UpdatePageLayout the document is rendered in memory. Any warnings that occured during rendering
+			' are stored until the document save and then sent to the appropriate WarningCallback.
+			doc.UpdatePageLayout()
+
+			' Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
+			Dim callback As New HandleDocumentWarnings()
+			Dim saveOptions As New PdfSaveOptions()
+			saveOptions.WarningCallback = callback
+
+			' Even though the document was rendered previously, any save warnings are notified to the user during document save.
+			doc.Save(MyDir & "Rendering.FontsNotificationUpdatePageLayout Out.pdf", saveOptions)
+			'ExEnd
+
+			Assert.Greater(callback.mFontWarnings.Count, 0)
+			Assert.True(callback.mFontWarnings(0).WarningType = WarningType.FontSubstitution)
+			Assert.True(callback.mFontWarnings(0).Description.Contains("has not been found"))
+
+			' Restore default fonts. 
+			FontSettings.SetFontsSources(origFontSources)
+		End Sub
+
+		<Test> _
+		Public Sub EmbedFullFontsInPdf()
+			'ExStart
+			'ExFor:PdfSaveOptions.#ctor
+			'ExFor:PdfSaveOptions.EmbedFullFonts
+			'ExId:EmbedFullFonts
+			'ExSummary:Demonstrates how to set Aspose.Words to embed full fonts in the output PDF document.
+			' Load the document to render.
+			Dim doc As New Document(MyDir & "Rendering.doc")
+
+			' Aspose.Words embeds full fonts by default when EmbedFullFonts is set to true. The property below can be changed
+			' each time a document is rendered.
+			Dim options As New PdfSaveOptions()
+			options.EmbedFullFonts = True
+
+			' The output PDF will be embedded with all fonts found in the document.
+			doc.Save(MyDir & "Rendering.EmbedFullFonts Out.pdf")
+			'ExEnd
+		End Sub
+
+		<Test> _
+		Public Sub SubsetFontsInPdf()
+			'ExStart
+			'ExFor:PdfSaveOptions.EmbedFullFonts
+			'ExId:Subset
+			'ExSummary:Demonstrates how to set Aspose.Words to subset fonts in the output PDF.
+			' Load the document to render.
+			Dim doc As New Document(MyDir & "Rendering.doc")
+
+			' To subset fonts in the output PDF document, simply create new PdfSaveOptions and set EmbedFullFonts to false.
+			Dim options As New PdfSaveOptions()
+			options.EmbedFullFonts = False
+
+			' The output PDF will contain subsets of the fonts in the document. Only the glyphs used
+			' in the document are included in the PDF fonts.
+			doc.Save(MyDir & "Rendering.SubsetFonts Out.pdf")
+			'ExEnd
+		End Sub
+
+		<Test> _
+		Public Sub DisableEmbeddingStandardWindowsFonts()
+			'ExStart
+			'ExFor:PdfSaveOptions.EmbedStandardWindowsFonts
+			'ExId:EmbedStandardWindowsFonts
+			'ExSummary:Shows how to set Aspose.Words to skip embedding Arial and Times New Roman fonts into a PDF document.
+			' Load the document to render.
+			Dim doc As New Document(MyDir & "Rendering.doc")
+
+			' To disable embedding standard windows font use the PdfSaveOptions and set the EmbedStandardWindowsFonts property to false.
+			Dim options As New PdfSaveOptions()
+			options.EmbedStandardWindowsFonts = False
+
+			' The output PDF will be saved without embedding standard windows fonts.
+			doc.Save(MyDir & "Rendering.DisableEmbedWindowsFonts Out.pdf")
+			'ExEnd
+		End Sub
+
+		<Test> _
+		Public Sub DisableEmbeddingCoreFonts()
+			'ExStart
+			'ExFor:PdfSaveOptions.UseCoreFonts
+			'ExId:DisableUseOfCoreFonts
+			'ExSummary:Shows how to set Aspose.Words to avoid embedding core fonts and let the reader subsuite PDF Type 1 fonts instead.
+			' Load the document to render.
+			Dim doc As New Document(MyDir & "Rendering.doc")
+
+			' To disable embedding of core fonts and subsuite PDF type 1 fonts set UseCoreFonts to true.
+			Dim options As New PdfSaveOptions()
+			options.UseCoreFonts = True
+
+			' The output PDF will not be embedded with core fonts such as Arial, Times New Roman etc.
+			doc.Save(MyDir & "Rendering.DisableEmbedWindowsFonts Out.pdf")
+			'ExEnd
 		End Sub
 
 		<Test> _

@@ -96,6 +96,7 @@ namespace Examples
             Document doc = new Document(MyDir + "Document.doc");
 
             //ExStart
+            //ExFor:SwfSaveOptions.#ctor
             //ExFor:SwfSaveOptions
             //ExFor:SwfSaveOptions.LogoImageBytes
             //ExFor:SwfSaveOptions.LogoLink
