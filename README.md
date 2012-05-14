@@ -16,10 +16,24 @@ Using Aspose.Words for .NET in your project gives you the following benefits:
 
 + Minimal Learning Curve
 
-These example projects provide helpful demonstrations and code when using Aspose.Words for .NET.
+These example projects provide helpful demonstrations and code when using Aspose.Words for .NET. You will need to [download Aspose.Words for .NET](http://www.aspose.com/community/files/51/.net-components/aspose.words-for-.net/default.aspx) separately and it will work in evaluation mode.
 
 ## Aspose.Words for .NET at a Glance
 ![Aspose.Words Overview](http://www.aspose.com/Aspose.Words/Images/aspose.words-for-.net.jpg "The Main Features of Aspose.Words for .NET")
+
+## Open Source Feel of Aspose.Words
+
+Aspose.Words for .NET and Aspose.Words for Java are successful commercial products, but our philosophy is to develop them using our unique "*open-source feel*" approach. In other words, we at Aspose are extremely customer driven and this shows in:
+
++ Frequent releases (at least 1-2 a month).
++ Features are prioritized according to your requests.
++ Unlimited free technical support for anyone.
++ Helpful support in the forums and answers within 12-24 hours.
++ Live chat with experienced technical advisors.
+
+We think that customers who use our products feel that they use an open source product because of the extent they can influence the project, but with the security of a fully committed talented team working on the project.
+
+The Aspose.Words for .NET examples published here at GitHub is a part of the above effort.
 
 ##What's Included in this Examples Repository?
 
@@ -110,6 +124,17 @@ The example should be ready to compile. Click on "Debug" menu and choose one of 
 - Start Debugging
 - Start Without Debugging
 
+## Support and Contribution
+
+Feel free to comment on the samples provided, open issues, discussions and request more samples. We provide full support for this project.
+
+You can contribute by reviewing and sending feedback by trying out new features as they are implemented, submit bugs reports and help us verify fixes as they are released.
+
+## What to do if I encounter a Problem or a Bug?
+
+We provide full technical support to everyone, regardless of whether they have purchased a license, or are just evaluating the product. Please post a message on the Aspose.Words forum with a description of your issue and any input document/code. We will reply within 12-24 hours with some helpful feedback.
+
+We fix all bugs reported to us and try to implement all features requested by customers. To submit a bug report or for any general inquries, please post a message in the [Aspose.Words Forum](http://www.aspose.com/community/forums/aspose.words-product-family/75/showforum.aspx).
 
 ##Contact Us
 
