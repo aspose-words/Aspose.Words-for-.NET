@@ -53,10 +53,10 @@ Software Requirements
 IIS Requirements
 ==========================================
 
-All demos can run with the ASP.NET Development Server installed with Visual Studio.
+All samples can run with the ASP.NET Development Server installed with Visual Studio.
 
 
-Running the Samples under Linux and MacOS (using Mono)
+Running the Samples under Linux or MacOS (using Mono)
 ==========================================
 
 The Aspose.Words for .NET samples have been tested on Linux (Ubuntu 11.04) and using the Mono Framework (2.10). There is a good chance that the samples will work well under other operating systems as well but these have yet to be tested.
@@ -68,14 +68,14 @@ For the samples to work properly you should copy the "Samples" folder to the tar
 Alternatively, you can run the samples from any location on the machine by running the "Linux-Register-Dll-With-MonoDevelop.sh" script found in the Dlls Only archive. Note that this script must be run with root privileges. This will add Aspose.Words to the GAC and add an assembly reference to the appropriate location within MonoDevelop. Any extra Dlls required can be downloaded and located manually. 
 
 
-Software Requirements for Running Demos on Linux
+Software Requirements for Running Demos on Linux or MacOS
 ==========================================
 
 - The Mono Framework installed
 - The "libgda" drivers package installed.
 
-Currently there are issues with OleConnection on Linux which is used to access databases in some demos. This causes certain demos which use the connection to fail with an exception stating that a required driver is missing. More details on what causes this are being investigated and this issue updated as soon as possible. 
+Currently there are issues with OleConnection on Linux and MacOS which is used to access databases in some demos. This causes certain demos which use the connection to fail with an exception stating that a required driver is missing. More details on what causes this are being investigated and this issue updated as soon as possible. 
 
 
 http://www.aspose.com/
-Copyright (c) 2001-2011 Aspose Pty Ltd. All Rights Reserved.
+Copyright (c) 2001-2012 Aspose Pty Ltd. All Rights Reserved.

@@ -18,6 +18,9 @@ Using Aspose.Words for .NET in your project gives you the following benefits:
 
 These example projects provide helpful demonstrations and code when using Aspose.Words for .NET.
 
+## Aspose.Words for .NET at a Glance
+![Aspose.Words Overview](http://www.aspose.com/Aspose.Words/Images/aspose.words-for-.net.jpg "The Main Features of Aspose.Words for .NET")
+
 ##What's Included in this Examples Repository?
 
 ###Code
@@ -113,7 +116,7 @@ The example should be ready to compile. Click on "Debug" menu and choose one of 
 + **Website:** [www.aspose.com](http://www.aspose.com)
 + **Product Home:** [Aspose.Words for .NET](http://www.aspose.com/categories/.net-components/aspose.words-for-.net/default.aspx)
 + **Download:** [Download Aspose.Words for .NET](http://www.aspose.com/community/files/51/.net-components/aspose.words-for-.net/category1188.aspx)
-+ **Documentation:** [Aspose.Words for .NET Documentation](http://www.aspose.com/documentation/.net-components/aspose.words-for-.net/index.html)
++ **Documentation:** [Aspose.Words for .NET Documentation](http://www.aspose.com/docs/display/wordsnet/Home)
 + **Forum:** [Aspose.Words for .NET Forum](http://www.aspose.com/community/forums/aspose.words-product-family/75/showforum.aspx)
 + **Blog:** [Aspose.Words for .NET Blog](http://www.aspose.com/blogs/aspose-products/aspose-words-product-family.html)
 
