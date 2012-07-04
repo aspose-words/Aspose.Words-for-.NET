@@ -188,6 +188,10 @@ namespace Excel2Word
                         wordsRow.AppendChild(wordsCell);
                     }
                 }
+
+                // We want the table to take only as much of the page as required.
+                wordsTable.PreferredWidth = PreferredWidth.Auto;
+
                 //Add Word table to ArrayList
                 tablePartList.Add(wordsTable);
 
@@ -214,7 +218,9 @@ namespace Excel2Word
             //Get Excel cell from collection
             Aspose.Cells.Cell excelCell = cells[rowIndex, columnIndex];
             //Set cell width
-            wordsCell.CellFormat.Width = ConvertUtil.PixelToPoint(cells.GetColumnWidthPixel(columnIndex));
+            double cellWidth = ConvertUtil.PixelToPoint(cells.GetColumnWidthPixel(columnIndex));
+            wordsCell.CellFormat.PreferredWidth = PreferredWidth.FromPoints(cellWidth);
+            wordsCell.CellFormat.Width = ConvertUtil.PixelToPoint(cellWidth);
             //Set background color
             wordsCell.CellFormat.Shading.ForegroundPatternColor = excelCell.GetDisplayStyle().ForegroundColor;
             wordsCell.CellFormat.Shading.BackgroundPatternColor = excelCell.GetDisplayStyle().BackgroundColor;
