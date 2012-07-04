@@ -36,7 +36,7 @@ Namespace ApplyCustomLogicToEmptyRegions
 
 			' Make sure that we have not set the removal of any unused regions as we will handle them manually.
 			' We achieve this by removing the RemoveUnusedRegions flag from the cleanup options by using the bitwise XOR operator.
-			doc.MailMerge.CleanupOptions = doc.MailMerge.CleanupOptions Xor MailMergeCleanupOptions.RemoveUnusedRegions
+			doc.MailMerge.CleanupOptions = doc.MailMerge.CleanupOptions And Not MailMergeCleanupOptions.RemoveUnusedRegions
 
 			' Execute mail merge. Some regions will be merged with data, others left unmerged.
 			doc.MailMerge.ExecuteWithRegions(data)

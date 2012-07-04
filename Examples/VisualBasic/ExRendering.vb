@@ -21,7 +21,6 @@ Imports Aspose.Words.Rendering
 Imports Aspose.Words.Saving
 Imports NUnit.Framework
 
-
 Namespace Examples
 	<TestFixture> _
 	Public Class ExRendering
