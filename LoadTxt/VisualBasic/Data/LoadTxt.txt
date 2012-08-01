@@ -1,3 +1,15 @@
-On the Insert tab, the galleries include items that are designed to coordinate with the overall look of your document. You can use these galleries to insert tables, headers, footers, lists, cover pages, and other document building blocks. When you create pictures, charts, or diagrams, they also coordinate with your current document look.
-You can easily change the formatting of selected text in the document text by choosing a look for the selected text from the Quick Styles gallery on the Home tab. You can also format text directly by using the other controls on the Home tab. Most controls offer a choice of using the look from the current theme or using a format that you specify directly.
-To change the overall look of your document, choose new Theme elements on the Page Layout tab. To change the looks available in the Quick Style gallery, use the Change Current Quick Style Set command. Both the Themes gallery and the Quick Styles gallery provide reset commands so that you can always restore the look of your document to the original contained in your current template.
+	Despite the fact txt format itself provides us with only "text" features for document lay-out, an ordinary txt file may contains many different pieces of formatting.
+	One of the text features is using "Tab" key to make indented paragraphs.
+		Paragraphs also may be nested within one another by using multiple "Tab" to increase the indent.
+
+Many txt files aslo contain lists formatted with bullets. The bullet symbol may take any of a variety of shapes, such as:
+- circular.
+- square.
+- diamond.
+- arrow.
+- etc.
+
+An alternative method to format data is to use a numbered list. Here is some examples of using numbers and characters for making numbered list:
+1. Arabic numerals (1, 2, 3, ...).
+2. Roman numerals (I, II, III, ... or i, ii, iii, ...).
+3. Letters (A, B, C, ... or a, b, c, ...).

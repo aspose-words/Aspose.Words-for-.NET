@@ -24,23 +24,11 @@ Namespace LoadTxt
 			Dim exeDir As String = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar
 			Dim dataDir As String = New Uri(New Uri(exeDir), "../../Data/").LocalPath
 
-			' This object will help us generate the document.
-			Dim builder As New DocumentBuilder()
+			' The encoding of the text file is automatically detected.
+			Dim doc As New Document(dataDir & "LoadTxt.txt")
 
-			' You might need to specify a different encoding depending on your plain text files.
-			Using reader As New StreamReader(dataDir & "LoadTxt.txt", Encoding.UTF8)
-				' Read plain text "lines" and convert them into paragraphs in the document.
-				Dim line As String = Nothing
-				line = reader.ReadLine()
-				Do While line IsNot Nothing
-					builder.Writeln(line)
-					line = reader.ReadLine()
-				Loop
-			End Using
-
-			' Save in any Aspose.Words supported format.
-			builder.Document.Save(dataDir & "LoadTxt Out.docx")
-			builder.Document.Save(dataDir & "LoadTxt Out.html")
+			' Save as any Aspose.Words supported format, such as DOCX.
+			doc.Save(dataDir & "LoadTxt Out.docx")
 		End Sub
 	End Class
 End Namespace
