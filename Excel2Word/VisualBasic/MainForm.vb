@@ -58,8 +58,7 @@ Namespace Excel2Word
 
 		Private Shared Sub RunConvert(ByVal srcFileName As String, ByVal dstFileName As String)
 			'Open Excel Workbook using Aspose.Cells.
-			Dim workbook As New Workbook()
-			workbook.Open(srcFileName)
+			Dim workbook As New Workbook(srcFileName)
 
 			'Convert workbook to Word document
 			Dim converter As New ConverterXls2Doc()

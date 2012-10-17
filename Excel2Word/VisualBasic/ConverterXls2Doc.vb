@@ -1067,7 +1067,7 @@ Namespace Excel2Word
 			'Create new Shape
 			Dim wordsShape As New Aspose.Words.Drawing.Shape(doc, Aspose.Words.Drawing.ShapeType.Image)
 			'Set image
-			wordsShape.ImageData.SetImage(excelPicture.Data)
+			wordsShape.ImageData.ImageBytes = excelPicture.Data
 			'Import Picture properties inhereted from Shape
 			ImportShapeProperties(wordsShape, CType(excelPicture, Aspose.Cells.Drawing.Shape))
 			Return wordsShape
