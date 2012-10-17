@@ -1313,7 +1313,7 @@ namespace Excel2Word
             //Create new Shape
             Aspose.Words.Drawing.Shape wordsShape = new Aspose.Words.Drawing.Shape(doc, Aspose.Words.Drawing.ShapeType.Image);
             //Set image
-            wordsShape.ImageData.SetImage(excelPicture.Data);
+            wordsShape.ImageData.ImageBytes = excelPicture.Data;
             //Import Picture properties inhereted from Shape
             ImportShapeProperties(wordsShape, (Aspose.Cells.Drawing.Shape)excelPicture);
             return wordsShape;

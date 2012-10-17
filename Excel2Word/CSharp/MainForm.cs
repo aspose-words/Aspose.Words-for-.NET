@@ -63,8 +63,7 @@ namespace Excel2Word
         private static void RunConvert(string srcFileName, string dstFileName)
         {
             //Open Excel Workbook using Aspose.Cells.
-            Workbook workbook = new Workbook();
-            workbook.Open(srcFileName);
+            Workbook workbook = new Workbook(srcFileName);
             
             //Convert workbook to Word document
             ConverterXls2Doc converter = new ConverterXls2Doc();
