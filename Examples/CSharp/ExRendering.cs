@@ -686,7 +686,7 @@ namespace Examples
                 // orientation and paper trays. This code is called by the .NET printing framework before 
                 // each page is printed and we get a chance to specify how the page is to be printed.
                 PageInfo pageInfo = mDocument.GetPageInfo(mCurrentPage - 1);
-                e.PageSettings.PaperSize = pageInfo.GetDotNetPaperSize(PrinterSettings);
+                e.PageSettings.PaperSize = pageInfo.GetDotNetPaperSize(new PrinterSettingsContainer(PrinterSettings));
                 // MS Word stores the paper source (printer tray) for each section as a printer-specfic value.
                 // To obtain the correct tray value you will need to use the RawKindValue returned
                 // by .NET for your printer.
@@ -1085,6 +1085,20 @@ namespace Examples
             // Render the document to PDF format with the specified permissions.
             doc.Save(MyDir + "Rendering.SpecifyPermissions Out.pdf", saveOptions);
             //ExEnd
+        }
+
+        [Test]
+        public void SetPdfNumeralFormat()
+        {
+            Document doc = new Document(MyDir + "Rendering.NumeralFormat.doc");
+            //ExStart
+            //ExFor:PdfSaveOptions.NumeralFormat
+            //ExSummary:Demonstrates how to set the numeral format used when saving to PDF.
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.NumeralFormat = NumeralFormat.Context;
+            //ExEnd
+
+            doc.Save(MyDir + "Rendering.NumeralFormat Out.pdf", options);
         }
     }
 }
