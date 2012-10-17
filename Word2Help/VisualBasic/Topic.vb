@@ -52,7 +52,7 @@ Namespace Word2Help
 		End Sub
 
 		Private Shared Sub ThrowTopicException(ByVal message As String, ByVal section As Section)
-			Throw New Exception(message & " Section text: " & section.Body.ToTxt().Substring(0, 50))
+			Throw New Exception(message & " Section text: " & section.Body.ToString(SaveFormat.Text).Substring(0, 50))
 		End Sub
 
 		Private Sub FixHyperlinks(ByVal originalDoc As DocumentBase, ByVal fixUrl As String)

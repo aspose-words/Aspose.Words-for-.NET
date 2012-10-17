@@ -251,7 +251,7 @@ namespace Examples
             //ExFor:List
             //ExFor:ListCollection
             //ExFor:ListCollection.Add(ListTemplate)
-            //ExFor:ListCollection.AddCopy
+            //ExFor:ListCollection.AddCopy(List)
             //ExFor:ListLevel.StartAt
             //ExFor:ListTemplate
             //ExFor:ListFormat.List
@@ -523,7 +523,7 @@ namespace Examples
         
         //ExStart
         //ExFor:ListCollection
-        //ExFor:ListCollection.AddCopy
+        //ExFor:ListCollection.AddCopy(List)
         //ExFor:ListCollection.GetEnumerator
         //ExSummary:Enumerates through all lists defined in one document and creates a sample of those lists in another document.
         public void PrintOutAllLists()
@@ -716,7 +716,7 @@ namespace Examples
         {
             //ExStart
             //ExFor:Document.UpdateListLabels()
-            //ExFor:Node.ToTxt
+            //ExFor:Node.ToString(SaveFormat)
             //ExFor:ListLabel
             //ExFor:Paragraph.ListLabel
             //ExFor:ListLabel.LabelValue
@@ -736,7 +736,7 @@ namespace Examples
 
                     // This is the text we get when actually getting when we output this node to text format. 
                     // The list labels are not included in this text output. Trim any paragraph formatting characters.
-                    string paragraphText = paragraph.ToTxt().Trim();
+                    string paragraphText = paragraph.ToString(SaveFormat.Text).Trim();
                     Console.WriteLine("Exported Text: " + paragraphText);
 
                     ListLabel label = paragraph.ListLabel;

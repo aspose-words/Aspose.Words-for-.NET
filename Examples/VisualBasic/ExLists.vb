@@ -245,7 +245,7 @@ Namespace Examples
 			'ExFor:List
 			'ExFor:ListCollection
 			'ExFor:ListCollection.Add(ListTemplate)
-			'ExFor:ListCollection.AddCopy
+			'ExFor:ListCollection.AddCopy(List)
 			'ExFor:ListLevel.StartAt
 			'ExFor:ListTemplate
 			'ExFor:ListFormat.List
@@ -503,7 +503,7 @@ Namespace Examples
 
 		'ExStart
 		'ExFor:ListCollection
-		'ExFor:ListCollection.AddCopy
+		'ExFor:ListCollection.AddCopy(List)
 		'ExFor:ListCollection.GetEnumerator
 		'ExSummary:Enumerates through all lists defined in one document and creates a sample of those lists in another document.
 		Public Sub PrintOutAllLists()
@@ -686,7 +686,7 @@ Namespace Examples
 		Public Sub GetListLabels()
 			'ExStart
 			'ExFor:Document.UpdateListLabels()
-			'ExFor:Node.ToTxt
+			'ExFor:Node.ToString(SaveFormat)
 			'ExFor:ListLabel
 			'ExFor:Paragraph.ListLabel
 			'ExFor:ListLabel.LabelValue
@@ -704,7 +704,7 @@ Namespace Examples
 
 					' This is the text we get when actually getting when we output this node to text format. 
 					' The list labels are not included in this text output. Trim any paragraph formatting characters.
-					Dim paragraphText As String = paragraph.ToTxt().Trim()
+					Dim paragraphText As String = paragraph.ToString(SaveFormat.Text).Trim()
 					Console.WriteLine("Exported Text: " & paragraphText)
 
 					Dim label As ListLabel = paragraph.ListLabel

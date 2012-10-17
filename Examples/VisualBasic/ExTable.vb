@@ -54,9 +54,9 @@ Namespace Examples
 					' Iterate through all cells in the row
 					For Each cell As Cell In row.Cells
 						Dim cellIndex As Integer = row.Cells.IndexOf(cell)
-						' Get the content of this cell
-						Dim cellText As String = cell.ToTxt().Trim()
-						' Print the content of the cell
+						' Get the plain text content of this cell.
+						Dim cellText As String = cell.ToString(SaveFormat.Text).Trim()
+						' Print the content of the cell.
 						Console.WriteLine(Constants.vbTab + Constants.vbTab & "Contents of Cell:{0} = ""{1}""", cellIndex, cellText)
 					Next cell
 					'Console.WriteLine();
@@ -476,7 +476,7 @@ Namespace Examples
 			doc.Save(MyDir & "Table.ReplaceCellText Out.doc")
 			'ExEnd
 
-			Assert.AreEqual("20", table.LastRow.LastCell.ToTxt().Trim())
+			Assert.AreEqual("20", table.LastRow.LastCell.ToString(SaveFormat.Text).Trim())
 		End Sub
 
 		<Test> _
@@ -490,7 +490,7 @@ Namespace Examples
 			Dim table As Table = CType(doc.GetChild(NodeType.Table, 0, True), Table)
 
 			' The range text will include control characters such as "\a" for a cell.
-			' You can call ToTxt() on the desired node to find the plain text.
+			' You can call ToString on the desired node to retrieve the plain text content.
 
 			' Print the plain text range of the table to the screen.
 			Console.WriteLine("Contents of the table: ")
@@ -548,7 +548,7 @@ Namespace Examples
 			Next cell
 			'ExEnd
 
-			Assert.AreEqual(String.Empty, tableClone.ToTxt().Trim())
+			Assert.AreEqual(String.Empty, tableClone.ToString(SaveFormat.Text).Trim())
 		End Sub
 
 		<Test> _
@@ -656,7 +656,7 @@ Namespace Examples
 
 			' Verify that the row was cloned and appended properly.
 			Assert.AreEqual(5, table.Rows.Count)
-			Assert.AreEqual(String.Empty, table.LastRow.ToTxt().Trim())
+			Assert.AreEqual(String.Empty, table.LastRow.ToString(SaveFormat.Text).Trim())
 			Assert.AreEqual(2, table.LastRow.Cells.Count)
 		End Sub
 
@@ -874,7 +874,7 @@ Namespace Examples
 			Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, True).Count)
 			Assert.AreEqual(1, doc.GetChildNodes(NodeType.Row, True).Count)
 			Assert.AreEqual(2, doc.GetChildNodes(NodeType.Cell, True).Count)
-			Assert.AreEqual("Row 1, Cell 1 Text" & Constants.vbCrLf & "Row 1, Cell 2 Text", doc.FirstSection.Body.Tables(0).ToTxt().Trim())
+			Assert.AreEqual("Row 1, Cell 1 Text" & Constants.vbCrLf & "Row 1, Cell 2 Text", doc.FirstSection.Body.Tables(0).ToString(SaveFormat.Text).Trim())
 		End Sub
 
 		'ExStart

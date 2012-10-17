@@ -35,7 +35,7 @@ namespace Examples
             footnote.FirstParagraph.Runs.Add(new Run(doc, "Footnote text."));
             //ExEnd
 
-            Assert.AreEqual("Footnote text.", doc.GetChildNodes(NodeType.Footnote, true)[0].ToTxt().Trim());
+            Assert.AreEqual("Footnote text.", doc.GetChildNodes(NodeType.Footnote, true)[0].ToString(SaveFormat.Text).Trim());
         }
 
         [Test]

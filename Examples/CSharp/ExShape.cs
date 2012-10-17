@@ -29,16 +29,16 @@ namespace Examples
             //ExSummary:Shows how to delete all shapes from a document.
             // Here we get all shapes from the document node, but you can do this for any smaller
             // node too, for example delete shapes from a single section or a paragraph.
-            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true, false);
+            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
             shapes.Clear();
 
             // There could also be group shapes, they have different node type, remove them all too.
-            NodeCollection groupShapes = doc.GetChildNodes(NodeType.GroupShape, true, false);
+            NodeCollection groupShapes = doc.GetChildNodes(NodeType.GroupShape, true);
             groupShapes.Clear();
             //ExEnd
 
-            Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true, false).Count);
-            Assert.AreEqual(0, doc.GetChildNodes(NodeType.GroupShape, true, false).Count);
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).Count);
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.GroupShape, true).Count);
             doc.Save(MyDir + "Shape.DeleteAllShapes Out.doc");
         }
 

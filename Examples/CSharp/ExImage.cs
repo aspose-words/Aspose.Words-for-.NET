@@ -266,7 +266,7 @@ namespace Examples
         public void DeleteAllImages()
         {
             Document doc = new Document(MyDir + "Image.SampleImages.doc");
-            Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true, false).Count);
+            Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
             
             //ExStart
             //ExFor:Shape.HasImage
@@ -274,7 +274,7 @@ namespace Examples
             //ExSummary:Shows how to delete all images from a document.
             // Here we get all shapes from the document node, but you can do this for any smaller
             // node too, for example delete shapes from a single section or a paragraph.
-            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true, false);
+            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
             // We cannot delete shape nodes while we enumerate through the collection.
             // One solution is to add nodes that we want to delete to a temporary array and delete afterwards.
@@ -291,7 +291,7 @@ namespace Examples
                 shape.Remove();
             //ExEnd
 
-            Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true, false).Count);
+            Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
             doc.Save(MyDir + "Image.DeleteAllImages Out.doc");
         }
 
@@ -299,7 +299,7 @@ namespace Examples
         public void DeleteAllImagesPreOrder()
         {
             Document doc = new Document(MyDir + "Image.SampleImages.doc");
-            Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true, false).Count);
+            Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
             
             //ExStart
             //ExFor:Node.NextPreOrder
@@ -322,7 +322,7 @@ namespace Examples
             }
             //ExEnd
 
-            Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true, false).Count);
+            Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
             doc.Save(MyDir + "Image.DeleteAllImagesPreOrder Out.doc");
         }
 
@@ -334,7 +334,7 @@ namespace Examples
         //ExFor:FileFormatUtil.ImageTypeToExtension(Aspose.Words.Drawing.ImageType)
         //ExFor:ImageData.ImageType
         //ExFor:ImageData.Save(string)
-        //ExFor:CompositeNode.GetChildNodes(NodeType, bool, bool)
+        //ExFor:CompositeNode.GetChildNodes(NodeType, bool)
         //ExId:ExtractImagesToFiles
         //ExSummary:Shows how to extract images from a document and save them as files.
         [Test] //ExSkip
@@ -342,7 +342,7 @@ namespace Examples
         {
             Document doc = new Document(MyDir + "Image.SampleImages.doc");
 
-            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true, false);
+            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
             int imageIndex = 0;			
             foreach (Shape shape in shapes)
             {

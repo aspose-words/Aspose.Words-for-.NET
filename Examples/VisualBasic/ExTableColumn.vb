@@ -104,7 +104,7 @@ Namespace Examples
 				Dim builder As New StringBuilder()
 
 				For Each cell As Cell In Cells
-					builder.Append(cell.ToTxt())
+					builder.Append(cell.ToString(SaveFormat.Text))
 				Next cell
 
 				Return builder.ToString()
@@ -147,8 +147,8 @@ Namespace Examples
 			doc.Save(MyDir & "Table.RemoveColumn Out.doc")
 
 			Assert.AreEqual(16, table.GetChildNodes(NodeType.Cell, True).Count)
-			Assert.AreEqual("Cell 3 contents", table.Rows(2).Cells(2).ToTxt().Trim())
-			Assert.AreEqual("Cell 3 contents", table.LastRow.Cells(2).ToTxt().Trim())
+			Assert.AreEqual("Cell 3 contents", table.Rows(2).Cells(2).ToString(SaveFormat.Text).Trim())
+			Assert.AreEqual("Cell 3 contents", table.LastRow.Cells(2).ToString(SaveFormat.Text).Trim())
 		End Sub
 
 		<Test> _
@@ -175,8 +175,8 @@ Namespace Examples
 			doc.Save(MyDir & "Table.InsertColumn Out.doc")
 
 			Assert.AreEqual(24, table.GetChildNodes(NodeType.Cell, True).Count)
-			Assert.AreEqual("Column Text 0", table.FirstRow.Cells(1).ToTxt().Trim())
-			Assert.AreEqual("Column Text 3", table.LastRow.Cells(1).ToTxt().Trim())
+			Assert.AreEqual("Column Text 0", table.FirstRow.Cells(1).ToString(SaveFormat.Text).Trim())
+			Assert.AreEqual("Column Text 3", table.LastRow.Cells(1).ToString(SaveFormat.Text).Trim())
 		End Sub
 
 		<Test> _

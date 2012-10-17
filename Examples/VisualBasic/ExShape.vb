@@ -29,16 +29,16 @@ Namespace Examples
 			'ExSummary:Shows how to delete all shapes from a document.
 			' Here we get all shapes from the document node, but you can do this for any smaller
 			' node too, for example delete shapes from a single section or a paragraph.
-			Dim shapes As NodeCollection = doc.GetChildNodes(NodeType.Shape, True, False)
+			Dim shapes As NodeCollection = doc.GetChildNodes(NodeType.Shape, True)
 			shapes.Clear()
 
 			' There could also be group shapes, they have different node type, remove them all too.
-			Dim groupShapes As NodeCollection = doc.GetChildNodes(NodeType.GroupShape, True, False)
+			Dim groupShapes As NodeCollection = doc.GetChildNodes(NodeType.GroupShape, True)
 			groupShapes.Clear()
 			'ExEnd
 
-			Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, True, False).Count)
-			Assert.AreEqual(0, doc.GetChildNodes(NodeType.GroupShape, True, False).Count)
+			Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, True).Count)
+			Assert.AreEqual(0, doc.GetChildNodes(NodeType.GroupShape, True).Count)
 			doc.Save(MyDir & "Shape.DeleteAllShapes Out.doc")
 		End Sub
 

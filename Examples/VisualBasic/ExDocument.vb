@@ -873,14 +873,14 @@ Namespace Examples
 			Dim doc As New Document(MyDir & "Rendering.doc")
 
 			' This is for illustration purposes only, remember how many run nodes we had in the original document.
-			Dim runsBefore As Integer = doc.GetChildNodes(NodeType.Run, True, False).Count
+			Dim runsBefore As Integer = doc.GetChildNodes(NodeType.Run, True).Count
 
 			' Join runs with the same formatting. This is useful to speed up processing and may also reduce redundant
 			' tags when exporting to HTML which will reduce the output file size.
 			Dim joinCount As Integer = doc.JoinRunsWithSameFormatting()
 
 			' This is for illustration purposes only, see how many runs are left after joining.
-			Dim runsAfter As Integer = doc.GetChildNodes(NodeType.Run, True, False).Count
+			Dim runsAfter As Integer = doc.GetChildNodes(NodeType.Run, True).Count
 
 			Console.WriteLine("Number of runs before:{0}, after:{1}, joined:{2}", runsBefore, runsAfter, joinCount)
 
@@ -971,12 +971,12 @@ Namespace Examples
 		End Sub
 
 		<Test> _
-		Public Sub DocumentGetText_ToTxt()
+		Public Sub DocumentGetText_ToString()
 			'ExStart
 			'ExFor:CompositeNode.GetText
-			'ExFor:Node.ToTxt
+			'ExFor:Node.ToString(SaveFormat)
 			'ExId:NodeTxtExportDifferences
-			'ExSummary:Shows the difference between calling the GetText and ToTxt methods on a node.
+			'ExSummary:Shows the difference between calling the GetText and ToString methods on a node.
 			Dim doc As New Document()
 
 			' Enter a dummy field into the document.
@@ -986,10 +986,10 @@ Namespace Examples
 			' GetText will retrieve all field codes and special characters
 			Console.WriteLine("GetText() Result: " & doc.GetText())
 
-			' ToTxt will not retrieve fields code or special characters, but will still contain some natural formatting characters
-			' such as paragraph markers etc. This is the same as "viewing" the document as if it was opened in a text editor
-			' Only the results of fields are shown without any internal codes or characters
-			Console.WriteLine("ToTxt() Result: " & doc.ToTxt())
+			' ToString will export the node to the specified format. When converted to text it will not retrieve fields code 
+			' or special characters, but will still contain some natural formatting characters such as paragraph markers etc. 
+			' This is the same as "viewing" the document as if it was opened in a text editor.
+			Console.WriteLine("ToString() Result: " & doc.ToString(SaveFormat.Text))
 			'ExEnd
 		End Sub
 

@@ -107,7 +107,7 @@ namespace Examples
                 StringBuilder builder = new StringBuilder();
 
                 foreach (Cell cell in Cells)
-                    builder.Append(cell.ToTxt());
+                    builder.Append(cell.ToString(SaveFormat.Text));
 
                 return builder.ToString();
             }
@@ -151,8 +151,8 @@ namespace Examples
             doc.Save(MyDir + "Table.RemoveColumn Out.doc");
 
             Assert.AreEqual(16, table.GetChildNodes(NodeType.Cell, true).Count);
-            Assert.AreEqual("Cell 3 contents", table.Rows[2].Cells[2].ToTxt().Trim());
-            Assert.AreEqual("Cell 3 contents", table.LastRow.Cells[2].ToTxt().Trim());
+            Assert.AreEqual("Cell 3 contents", table.Rows[2].Cells[2].ToString(SaveFormat.Text).Trim());
+            Assert.AreEqual("Cell 3 contents", table.LastRow.Cells[2].ToString(SaveFormat.Text).Trim());
         }
 
         [Test]
@@ -179,8 +179,8 @@ namespace Examples
             doc.Save(MyDir + "Table.InsertColumn Out.doc");
 
             Assert.AreEqual(24, table.GetChildNodes(NodeType.Cell, true).Count);
-            Assert.AreEqual("Column Text 0", table.FirstRow.Cells[1].ToTxt().Trim());
-            Assert.AreEqual("Column Text 3", table.LastRow.Cells[1].ToTxt().Trim());
+            Assert.AreEqual("Column Text 0", table.FirstRow.Cells[1].ToString(SaveFormat.Text).Trim());
+            Assert.AreEqual("Column Text 3", table.LastRow.Cells[1].ToString(SaveFormat.Text).Trim());
         }
 
         [Test]

@@ -35,7 +35,7 @@ Namespace Examples
 			footnote.FirstParagraph.Runs.Add(New Run(doc, "Footnote text."))
 			'ExEnd
 
-			Assert.AreEqual("Footnote text.", doc.GetChildNodes(NodeType.Footnote, True)(0).ToTxt().Trim())
+			Assert.AreEqual("Footnote text.", doc.GetChildNodes(NodeType.Footnote, True)(0).ToString(SaveFormat.Text).Trim())
 		End Sub
 
 		<Test> _

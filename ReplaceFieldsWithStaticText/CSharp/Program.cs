@@ -46,11 +46,11 @@ namespace ReplaceFieldsWithStaticText
             /// <param name="targetFieldType">The FieldType of the field to convert to static text.</param>
             public static void ConvertFieldsToStaticText(CompositeNode compositeNode, FieldType targetFieldType)
             {
-                string originalNodeText = compositeNode.ToTxt(); //ExSkip
+                string originalNodeText = compositeNode.ToString(SaveFormat.Text); //ExSkip
                 FieldsHelper helper = new FieldsHelper(targetFieldType);
                 compositeNode.Accept(helper);
 
-                Debug.Assert(originalNodeText.Equals(compositeNode.ToTxt()), "Error: Text of the node converted differs from the original"); //ExSkip
+                Debug.Assert(originalNodeText.Equals(compositeNode.ToString(SaveFormat.Text)), "Error: Text of the node converted differs from the original"); //ExSkip
                 foreach (Node node in compositeNode.GetChildNodes(NodeType.Any, true)) //ExSkip
                     Debug.Assert(!(node is FieldChar && ((FieldChar)node).FieldType.Equals(targetFieldType)), "Error: A field node that should be removed still remains."); //ExSkip         
             }

@@ -495,7 +495,7 @@ namespace Examples
             Document doc = new Document(MyDir + "Font.Names.doc");
 
             // Select all runs in the document.
-            NodeCollection runs = doc.GetChildNodes(NodeType.Run, true, false);
+            NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
 
             // Use a hashtable so we will keep only unique font names.
             Hashtable fontNames = new Hashtable();

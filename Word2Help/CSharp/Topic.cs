@@ -51,7 +51,7 @@ namespace Word2Help
 
         private static void ThrowTopicException(string message, Section section)
         {
-            throw new Exception(message + " Section text: " + section.Body.ToTxt().Substring(0, 50));
+            throw new Exception(message + " Section text: " + section.Body.ToString(SaveFormat.Text).Substring(0, 50));
         }
 
         private void FixHyperlinks(DocumentBase originalDoc, string fixUrl)

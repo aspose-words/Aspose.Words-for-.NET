@@ -472,7 +472,7 @@ Namespace Examples
 			Dim doc As New Document(MyDir & "Font.Names.doc")
 
 			' Select all runs in the document.
-			Dim runs As NodeCollection = doc.GetChildNodes(NodeType.Run, True, False)
+			Dim runs As NodeCollection = doc.GetChildNodes(NodeType.Run, True)
 
 			' Use a hashtable so we will keep only unique font names.
 			Dim fontNames As New Hashtable()

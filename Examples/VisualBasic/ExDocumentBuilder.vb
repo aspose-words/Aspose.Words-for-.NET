@@ -1563,7 +1563,7 @@ Namespace Examples
 			builder.InsertFootnote(FootnoteType.Footnote, "Footnote text.")
 			'ExEnd
 
-			Assert.AreEqual("Footnote text.", doc.GetChildNodes(NodeType.Footnote, True)(0).ToTxt().Trim())
+			Assert.AreEqual("Footnote text.", doc.GetChildNodes(NodeType.Footnote, True)(0).ToString(SaveFormat.Text).Trim())
 		End Sub
 
 		<Test> _

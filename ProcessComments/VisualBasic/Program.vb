@@ -62,7 +62,7 @@ Namespace ProcessComments
 			Dim comments As NodeCollection = doc.GetChildNodes(NodeType.Comment, True)
 			' Look through all comments and gather information about them.
 			For Each comment As Comment In comments
-				collectedComments.Add(comment.Author & " " & comment.DateTime & " " & comment.ToTxt())
+				collectedComments.Add(comment.Author & " " & comment.DateTime & " " & comment.ToString(SaveFormat.Text))
 			Next comment
 			Return collectedComments
 		End Function
@@ -80,7 +80,7 @@ Namespace ProcessComments
 			' Look through all comments and gather information about those written by the authorName author.
 			For Each comment As Comment In comments
 				If comment.Author = authorName Then
-					collectedComments.Add(comment.Author & " " & comment.DateTime & " " & comment.ToTxt())
+					collectedComments.Add(comment.Author & " " & comment.DateTime & " " & comment.ToString(SaveFormat.Text))
 				End If
 			Next comment
 			Return collectedComments

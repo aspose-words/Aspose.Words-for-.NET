@@ -44,11 +44,11 @@ Namespace ReplaceFieldsWithStaticText
 			''' <param name="compositeNode">The node in which all descendants of the specified FieldType will be converted to static text.</param>
 			''' <param name="targetFieldType">The FieldType of the field to convert to static text.</param>
 			Public Shared Sub ConvertFieldsToStaticText(ByVal compositeNode As CompositeNode, ByVal targetFieldType As FieldType)
-				Dim originalNodeText As String = compositeNode.ToTxt() 'ExSkip
+				Dim originalNodeText As String = compositeNode.ToString(SaveFormat.Text) 'ExSkip
 				Dim helper As New FieldsHelper(targetFieldType)
 				compositeNode.Accept(helper)
 
-				Debug.Assert(originalNodeText.Equals(compositeNode.ToTxt()), "Error: Text of the node converted differs from the original") 'ExSkip
+				Debug.Assert(originalNodeText.Equals(compositeNode.ToString(SaveFormat.Text)), "Error: Text of the node converted differs from the original") 'ExSkip
 				For Each node As Node In compositeNode.GetChildNodes(NodeType.Any, True) 'ExSkip
 					Debug.Assert(Not(TypeOf node Is FieldChar AndAlso (CType(node, FieldChar)).FieldType.Equals(targetFieldType)), "Error: A field node that should be removed still remains.") 'ExSkip
 				Next node

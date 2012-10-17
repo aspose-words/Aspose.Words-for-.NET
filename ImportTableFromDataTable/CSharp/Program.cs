@@ -73,8 +73,8 @@ namespace ImportTableFromDataTable
             doc.ExpandTableStylesToDirectFormatting();
             Debug.Assert(table.Rows.Count == 6, "Unexpected row count");
             Debug.Assert(doc.GetChildNodes(NodeType.Table, true).Count == 1, "Unexpected table count");
-            Debug.Assert(table.FirstRow.FirstCell.ToTxt().Trim() == "EmployeeID", "Unexpected header text");
-            Debug.Assert(table.Rows[2].Cells[2].ToTxt().Trim() == "Andrew", "Unexpected row text");
+            Debug.Assert(table.FirstRow.FirstCell.ToString(SaveFormat.Text).Trim() == "EmployeeID", "Unexpected header text");
+            Debug.Assert(table.Rows[2].Cells[2].ToString(SaveFormat.Text).Trim() == "Andrew", "Unexpected row text");
             Debug.Assert(table.Rows[1].FirstCell.CellFormat.Shading.BackgroundPatternColor != Color.Empty, "Unexpected cell shading");
         }
 

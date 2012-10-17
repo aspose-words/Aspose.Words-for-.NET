@@ -63,7 +63,7 @@ namespace ProcessComments
             // Look through all comments and gather information about them.
             foreach (Comment comment in comments)
             {
-                collectedComments.Add(comment.Author + " " + comment.DateTime + " " + comment.ToTxt());
+                collectedComments.Add(comment.Author + " " + comment.DateTime + " " + comment.ToString(SaveFormat.Text));
             }
             return collectedComments;
         }
@@ -83,7 +83,7 @@ namespace ProcessComments
             foreach (Comment comment in comments)
             {
                 if (comment.Author == authorName)
-                    collectedComments.Add(comment.Author + " " + comment.DateTime + " " + comment.ToTxt());
+                    collectedComments.Add(comment.Author + " " + comment.DateTime + " " + comment.ToString(SaveFormat.Text));
             }
             return collectedComments;
         }

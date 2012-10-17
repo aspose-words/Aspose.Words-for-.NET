@@ -57,9 +57,9 @@ namespace Examples
                     foreach (Cell cell in row.Cells)
                     {
                         int cellIndex = row.Cells.IndexOf(cell);
-                        // Get the content of this cell
-                        string cellText = cell.ToTxt().Trim();
-                        // Print the content of the cell
+                        // Get the plain text content of this cell.
+                        string cellText = cell.ToString(SaveFormat.Text).Trim();
+                        // Print the content of the cell.
                         Console.WriteLine("\t\tContents of Cell:{0} = \"{1}\"", cellIndex, cellText);
                     }
                     //Console.WriteLine();
@@ -503,7 +503,7 @@ namespace Examples
             doc.Save(MyDir + "Table.ReplaceCellText Out.doc");
             //ExEnd
 
-            Assert.AreEqual("20", table.LastRow.LastCell.ToTxt().Trim());
+            Assert.AreEqual("20", table.LastRow.LastCell.ToString(SaveFormat.Text).Trim());
         }
 
         [Test]
@@ -518,7 +518,7 @@ namespace Examples
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             // The range text will include control characters such as "\a" for a cell.
-            // You can call ToTxt() on the desired node to find the plain text.
+            // You can call ToString on the desired node to retrieve the plain text content.
 
             // Print the plain text range of the table to the screen.
             Console.WriteLine("Contents of the table: ");
@@ -576,7 +576,7 @@ namespace Examples
                 cell.RemoveAllChildren();
             //ExEnd
 
-            Assert.AreEqual(String.Empty, tableClone.ToTxt().Trim());
+            Assert.AreEqual(String.Empty, tableClone.ToString(SaveFormat.Text).Trim());
         }
 
         [Test]
@@ -681,7 +681,7 @@ namespace Examples
 
             // Verify that the row was cloned and appended properly.
             Assert.AreEqual(5, table.Rows.Count);
-            Assert.AreEqual(string.Empty, table.LastRow.ToTxt().Trim());
+            Assert.AreEqual(string.Empty, table.LastRow.ToString(SaveFormat.Text).Trim());
             Assert.AreEqual(2, table.LastRow.Cells.Count);
         }
 
@@ -906,7 +906,7 @@ namespace Examples
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count);
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Row, true).Count);
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.Cell, true).Count);
-            Assert.AreEqual("Row 1, Cell 1 Text\r\nRow 1, Cell 2 Text", doc.FirstSection.Body.Tables[0].ToTxt().Trim());
+            Assert.AreEqual("Row 1, Cell 1 Text\r\nRow 1, Cell 2 Text", doc.FirstSection.Body.Tables[0].ToString(SaveFormat.Text).Trim());
         }
 
         //ExStart

@@ -40,7 +40,7 @@ namespace ExtractContentBasedOnStyles
             ArrayList paragraphs = ParagraphsByStyleName(doc, paraStyle);
             Console.WriteLine(string.Format("Paragraphs with \"{0}\" styles ({1}):", paraStyle, paragraphs.Count));
             foreach (Paragraph paragraph in paragraphs)
-                Console.Write(paragraph.ToTxt());
+                Console.Write(paragraph.ToString(SaveFormat.Text));
 
             // Collect runs with defined styles. 
             // Show the number of collected runs and display the text of this runs.

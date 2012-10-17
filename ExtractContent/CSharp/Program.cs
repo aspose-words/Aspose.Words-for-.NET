@@ -133,7 +133,7 @@ namespace ExtractContent
             // Get the node from the list. There should only be one paragraph returned in the list.
             Node node = (Node)extractedNodes[0];
             // Print the text of this node to the console.
-            Console.WriteLine(node.ToTxt());
+            Console.WriteLine(node.ToString(SaveFormat.Text));
             //ExEnd
         }
 

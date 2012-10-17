@@ -249,7 +249,7 @@ Namespace Examples
 		<Test> _
 		Public Sub DeleteAllImages()
 			Dim doc As New Document(MyDir & "Image.SampleImages.doc")
-			Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, True, False).Count)
+			Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, True).Count)
 
 			'ExStart
 			'ExFor:Shape.HasImage
@@ -257,7 +257,7 @@ Namespace Examples
 			'ExSummary:Shows how to delete all images from a document.
 			' Here we get all shapes from the document node, but you can do this for any smaller
 			' node too, for example delete shapes from a single section or a paragraph.
-			Dim shapes As NodeCollection = doc.GetChildNodes(NodeType.Shape, True, False)
+			Dim shapes As NodeCollection = doc.GetChildNodes(NodeType.Shape, True)
 
 			' We cannot delete shape nodes while we enumerate through the collection.
 			' One solution is to add nodes that we want to delete to a temporary array and delete afterwards.
@@ -275,14 +275,14 @@ Namespace Examples
 			Next shape
 			'ExEnd
 
-			Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, True, False).Count)
+			Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, True).Count)
 			doc.Save(MyDir & "Image.DeleteAllImages Out.doc")
 		End Sub
 
 		<Test> _
 		Public Sub DeleteAllImagesPreOrder()
 			Dim doc As New Document(MyDir & "Image.SampleImages.doc")
-			Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, True, False).Count)
+			Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, True).Count)
 
 			'ExStart
 			'ExFor:Node.NextPreOrder
@@ -304,7 +304,7 @@ Namespace Examples
 			Loop
 			'ExEnd
 
-			Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, True, False).Count)
+			Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, True).Count)
 			doc.Save(MyDir & "Image.DeleteAllImagesPreOrder Out.doc")
 		End Sub
 
@@ -316,14 +316,14 @@ Namespace Examples
 		'ExFor:FileFormatUtil.ImageTypeToExtension(Aspose.Words.Drawing.ImageType)
 		'ExFor:ImageData.ImageType
 		'ExFor:ImageData.Save(string)
-		'ExFor:CompositeNode.GetChildNodes(NodeType, bool, bool)
+		'ExFor:CompositeNode.GetChildNodes(NodeType, bool)
 		'ExId:ExtractImagesToFiles
 		'ExSummary:Shows how to extract images from a document and save them as files.
 		<Test> _
 		Public Sub ExtractImagesToFiles()
 			Dim doc As New Document(MyDir & "Image.SampleImages.doc")
 
-			Dim shapes As NodeCollection = doc.GetChildNodes(NodeType.Shape, True, False)
+			Dim shapes As NodeCollection = doc.GetChildNodes(NodeType.Shape, True)
 			Dim imageIndex As Integer = 0
 			For Each shape As Shape In shapes
 				If shape.HasImage Then

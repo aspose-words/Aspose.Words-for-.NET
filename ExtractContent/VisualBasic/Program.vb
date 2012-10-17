@@ -127,7 +127,7 @@ Namespace ExtractContent
 			' Get the node from the list. There should only be one paragraph returned in the list.
 			Dim node As Node = CType(extractedNodes(0), Node)
 			' Print the text of this node to the console.
-			Console.WriteLine(node.ToTxt())
+			Console.WriteLine(node.ToString(SaveFormat.Text))
 			'ExEnd
 		End Sub
 

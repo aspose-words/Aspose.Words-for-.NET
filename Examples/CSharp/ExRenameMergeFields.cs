@@ -34,7 +34,7 @@ namespace Examples
             Document doc = new Document(MyDir + "RenameMergeFields.doc");
 
             // Select all field start nodes so we can find the merge fields.
-            NodeCollection fieldStarts = doc.GetChildNodes(NodeType.FieldStart, true, false);
+            NodeCollection fieldStarts = doc.GetChildNodes(NodeType.FieldStart, true);
             foreach (FieldStart fieldStart in fieldStarts)
             {
                 if (fieldStart.FieldType.Equals(FieldType.FieldMergeField))

@@ -39,7 +39,7 @@ Namespace ExtractContentBasedOnStyles
 			Dim paragraphs As ArrayList = ParagraphsByStyleName(doc, paraStyle)
 			Console.WriteLine(String.Format("Paragraphs with ""{0}"" styles ({1}):", paraStyle, paragraphs.Count))
 			For Each paragraph As Paragraph In paragraphs
-				Console.Write(paragraph.ToTxt())
+				Console.Write(paragraph.ToString(SaveFormat.Text))
 			Next paragraph
 
 			' Collect runs with defined styles. 
