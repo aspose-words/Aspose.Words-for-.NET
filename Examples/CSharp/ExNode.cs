@@ -9,6 +9,7 @@ using System;
 using Aspose.Words;
 using Aspose.Words.Tables;
 using NUnit.Framework;
+using Aspose.Words.Saving;
 
 namespace Examples
 {
@@ -485,6 +486,115 @@ namespace Examples
             // i.e A paragraph node will always return NodeType.Paragraph, a table node will always return NodeType.Table.
             Console.WriteLine("NodeType of Paragraph: " + Node.NodeTypeToString(para.NodeType));
             Console.WriteLine("NodeType of Table: " + Node.NodeTypeToString(table.NodeType));
+            //ExEnd
+        }
+
+        [Test]
+        public void ConvertNodeToHtmlWithDefaultOptions()
+        {
+            //ExStart
+            //ExFor:Node.ToString(SaveFormat)
+            //ExSummary:Exports the content of a node to string in HTML format using default options.
+            Document doc = new Document(MyDir + "Document.doc");
+
+            // Extract the last paragraph in the document to convert to HTML.
+            Node node = doc.LastSection.Body.LastParagraph;
+
+            // When ToString is called using the SaveFormat overload then conversion is executed using default save options. 
+            // When saving to HTML using default options the following settings are set:
+            //   ExportImagesAsBase64 = true
+            //   CssStyleSheetType = CssStyleSheetType.Inline
+            //   ExportFontResources = false
+            string nodeAsHtml = node.ToString(SaveFormat.Html);
+            //ExEnd
+
+            Assert.AreEqual("<p style=\"margin:0pt\"><span style=\"font-family:'Times New Roman'; font-size:12pt\">Hello World!</span></p>", nodeAsHtml);
+        }
+
+        [Test]
+        public void ConvertNodeToHtmlWithSaveOptions()
+        {
+            //ExStart
+            //ExFor:Node.ToString(SaveOptions)
+            //ExSummary:Exports the content of a node to string in HTML format using custom specified options.
+            Document doc = new Document(MyDir + "Document.doc");
+
+            // Extract the last paragraph in the document to convert to HTML.
+            Node node = doc.LastSection.Body.LastParagraph;
+
+            // Create an instance of HtmlSaveOptions and set a few options.
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.ExportHeadersFootersMode = ExportHeadersFootersMode.PerSection;
+            saveOptions.ExportRelativeFontSize = true;
+
+            // Convert the document to HTML and return as a string. Pass the instance of HtmlSaveOptions to
+            // to use the specified options during the conversion.
+            string nodeAsHtml = node.ToString(saveOptions);
+            //ExEnd
+
+            Assert.AreEqual("<p style=\"margin:0pt\"><span style=\"font-family:'Times New Roman'\">Hello World!</span></p>", nodeAsHtml);
+        }
+
+        [Test]
+        public void TypedNodeCollectionToArray()
+        {
+            Document doc = new Document();
+
+            //ExStart
+            //ExFor:ParagraphCollection.ToArray
+            //ExSummary:Demonstrates typed implementations of ToArray on classes derived from NodeCollection.
+            // You can use ToArray to return a typed array of nodes.
+            Paragraph[] paras = doc.FirstSection.Body.Paragraphs.ToArray();
+            //ExEnd
+
+            Assert.Greater(paras.Length,  0);
+        }
+
+        [Test]
+        public void NodeEnumerationHotRemove()
+        {
+            //ExStart
+            //ExFor:ParagraphCollection.ToArray
+            //ExSummary:Demonstrates how to use "hot remove" to remove a node during enumeration.
+            DocumentBuilder builder = new DocumentBuilder();
+            builder.Writeln("The first paragraph");
+            builder.Writeln("The second paragraph");
+            builder.Writeln("The third paragraph");
+            builder.Writeln("The fourth paragraph");
+
+            // Hot remove allows a node to be removed from a live collection and have the enumeration continue.
+            foreach (Paragraph para in builder.Document.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true))
+            {
+                if (para.Range.Text.Contains("third"))
+                {
+                    // Enumeration will continue even after this node is removed.
+                    para.Remove();
+                }
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void EnumerationHotRemoveLimitations()
+        {
+            //ExStart
+            //ExFor:ParagraphCollection.ToArray
+            //ExSummary:Demonstrates an example breakage of the node collection enumerator.
+            DocumentBuilder builder = new DocumentBuilder();
+            builder.Writeln("The first paragraph");
+            builder.Writeln("The second paragraph");
+            builder.Writeln("The third paragraph");
+            builder.Writeln("The fourth paragraph");
+
+            // This causes unexpected behavior, the fourth pargraph in the collection is not visited.
+            foreach (Paragraph para in builder.Document.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true))
+            {
+                if (para.Range.Text.Contains("third"))
+                {
+                    para.PreviousSibling.Remove();
+                    para.Remove();
+                }
+            }
             //ExEnd
         }
     }

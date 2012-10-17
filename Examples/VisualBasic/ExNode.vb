@@ -11,6 +11,7 @@ Imports System
 Imports Aspose.Words
 Imports Aspose.Words.Tables
 Imports NUnit.Framework
+Imports Aspose.Words.Saving
 
 Namespace Examples
 	<TestFixture> _
@@ -465,6 +466,106 @@ Namespace Examples
 			' i.e A paragraph node will always return NodeType.Paragraph, a table node will always return NodeType.Table.
 			Console.WriteLine("NodeType of Paragraph: " & Node.NodeTypeToString(para.NodeType))
 			Console.WriteLine("NodeType of Table: " & Node.NodeTypeToString(table.NodeType))
+			'ExEnd
+		End Sub
+
+		<Test> _
+		Public Sub ConvertNodeToHtmlWithDefaultOptions()
+			'ExStart
+			'ExFor:Node.ToString(SaveFormat)
+			'ExSummary:Exports the content of a node to string in HTML format using default options.
+			Dim doc As New Document(MyDir & "Document.doc")
+
+			' Extract the last paragraph in the document to convert to HTML.
+			Dim node As Node = doc.LastSection.Body.LastParagraph
+
+			' When ToString is called using the SaveFormat overload then conversion is executed using default save options. 
+			' When saving to HTML using default options the following settings are set:
+			'   ExportImagesAsBase64 = true
+			'   CssStyleSheetType = CssStyleSheetType.Inline
+			'   ExportFontResources = false
+			Dim nodeAsHtml As String = node.ToString(SaveFormat.Html)
+			'ExEnd
+
+			Assert.AreEqual("<p style=""margin:0pt""><span style=""font-family:'Times New Roman'; font-size:12pt"">Hello World!</span></p>", nodeAsHtml)
+		End Sub
+
+		<Test> _
+		Public Sub ConvertNodeToHtmlWithSaveOptions()
+			'ExStart
+			'ExFor:Node.ToString(SaveOptions)
+			'ExSummary:Exports the content of a node to string in HTML format using custom specified options.
+			Dim doc As New Document(MyDir & "Document.doc")
+
+			' Extract the last paragraph in the document to convert to HTML.
+			Dim node As Node = doc.LastSection.Body.LastParagraph
+
+			' Create an instance of HtmlSaveOptions and set a few options.
+			Dim saveOptions As New HtmlSaveOptions()
+			saveOptions.ExportHeadersFootersMode = ExportHeadersFootersMode.PerSection
+			saveOptions.ExportRelativeFontSize = True
+
+			' Convert the document to HTML and return as a string. Pass the instance of HtmlSaveOptions to
+			' to use the specified options during the conversion.
+			Dim nodeAsHtml As String = node.ToString(saveOptions)
+			'ExEnd
+
+			Assert.AreEqual("<p style=""margin:0pt""><span style=""font-family:'Times New Roman'"">Hello World!</span></p>", nodeAsHtml)
+		End Sub
+
+		<Test> _
+		Public Sub TypedNodeCollectionToArray()
+			Dim doc As New Document()
+
+			'ExStart
+			'ExFor:ParagraphCollection.ToArray
+			'ExSummary:Demonstrates typed implementations of ToArray on classes derived from NodeCollection.
+			' You can use ToArray to return a typed array of nodes.
+			Dim paras() As Paragraph = doc.FirstSection.Body.Paragraphs.ToArray()
+			'ExEnd
+
+			Assert.Greater(paras.Length, 0)
+		End Sub
+
+		<Test> _
+		Public Sub NodeEnumerationHotRemove()
+			'ExStart
+			'ExFor:ParagraphCollection.ToArray
+			'ExSummary:Demonstrates how to use "hot remove" to remove a node during enumeration.
+			Dim builder As New DocumentBuilder()
+			builder.Writeln("The first paragraph")
+			builder.Writeln("The second paragraph")
+			builder.Writeln("The third paragraph")
+			builder.Writeln("The fourth paragraph")
+
+			' Hot remove allows a node to be removed from a live collection and have the enumeration continue.
+			For Each para As Paragraph In builder.Document.FirstSection.Body.GetChildNodes(NodeType.Paragraph, True)
+				If para.Range.Text.Contains("third") Then
+					' Enumeration will continue even after this node is removed.
+					para.Remove()
+				End If
+			Next para
+			'ExEnd
+		End Sub
+
+		<Test> _
+		Public Sub EnumerationHotRemoveLimitations()
+			'ExStart
+			'ExFor:ParagraphCollection.ToArray
+			'ExSummary:Demonstrates an example breakage of the node collection enumerator.
+			Dim builder As New DocumentBuilder()
+			builder.Writeln("The first paragraph")
+			builder.Writeln("The second paragraph")
+			builder.Writeln("The third paragraph")
+			builder.Writeln("The fourth paragraph")
+
+			' This causes unexpected behavior, the fourth pargraph in the collection is not visited.
+			For Each para As Paragraph In builder.Document.FirstSection.Body.GetChildNodes(NodeType.Paragraph, True)
+				If para.Range.Text.Contains("third") Then
+					para.PreviousSibling.Remove()
+					para.Remove()
+				End If
+			Next para
 			'ExEnd
 		End Sub
 	End Class
