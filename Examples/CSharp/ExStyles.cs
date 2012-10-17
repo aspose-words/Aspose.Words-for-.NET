@@ -1,4 +1,4 @@
-﻿//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
 // Copyright 2001-2011 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
@@ -8,6 +8,7 @@
 using System;
 using Aspose.Words;
 using NUnit.Framework;
+using System.Drawing;
 
 namespace Examples
 {
@@ -95,6 +96,80 @@ namespace Examples
 
             doc.Save(MyDir + "Document.TableOfContentsTabStops Out.doc");
             //ExEnd
+        }
+
+        [Test]
+        public void CopyStyleSameDocument()
+        {
+            Document doc = new Document(MyDir + "Document.doc");
+
+            //ExStart
+            //ExFor:StyleCollection.AddCopy
+            //ExFor:Style.Name
+            //ExSummary:Demonstrates how to copy a style within the same document.
+            // The AddCopy method creates a copy of the specified style and automatically generates a new name for the style, such as "Heading 1_0".
+            Style newStyle = doc.Styles.AddCopy(doc.Styles["Heading 1"]);
+
+            // You can change the new style name if required as the Style.Name property is read-write.
+            newStyle.Name = "My Heading 1";
+            //ExEnd
+
+            Assert.NotNull(newStyle);
+            Assert.AreEqual("My Heading 1", newStyle.Name);
+            Assert.AreEqual(doc.Styles["Heading 1"].Type, newStyle.Type);
+        }
+
+        [Test]
+        public void CopyStyleDifferentDocument()
+        {
+            Document dstDoc = new Document();
+            Document srcDoc = new Document();
+
+            //ExStart
+            //ExFor:StyleCollection.AddCopy
+            //ExSummary:Demonstrates how to copy style from one document into a different document.
+            // This is the style in the source document to copy to the destination document.
+            Style srcStyle = srcDoc.Styles[StyleIdentifier.Heading1];
+
+            // Change the font of the heading style to red.
+            srcStyle.Font.Color = Color.Red;
+
+            // The AddCopy method can be used to copy a style from a different document.
+            Style newStyle = dstDoc.Styles.AddCopy(srcStyle);
+            //ExEnd
+
+            Assert.NotNull(newStyle);
+            Assert.AreEqual("Heading 1_0", newStyle.Name);
+            Assert.AreEqual(Color.Red.ToArgb(), newStyle.Font.Color.ToArgb());
+        }
+
+        [Test]
+        public void OverwriteStyleDifferentDocument()
+        {         
+            Document dstDoc = new Document();
+            Document srcDoc = new Document();
+
+            //ExStart
+            //ExFor:StyleCollection.AddCopy
+            //ExId:OverwriteStyleDifferentDocument   
+            //ExSummary:Demonstrates how to copy a style from one document to another and overide an existing style in the destination document.
+            // This is the style in the source document to copy to the destination document.
+            Style srcStyle = srcDoc.Styles[StyleIdentifier.Heading1];
+
+            // Change the font of the heading style to red.
+            srcStyle.Font.Color = Color.Red;
+
+            // The AddCopy method can be used to copy a style to a different document.
+            Style newStyle = dstDoc.Styles.AddCopy(srcStyle);
+
+            // The name of the new style can be changed to the name of any existing style. Doing this will override the existing style.
+            newStyle.Name = "Heading 1";
+            //ExEnd
+
+            Assert.NotNull(newStyle);
+            Assert.AreEqual("Heading 1", newStyle.Name);
+            Assert.IsNull(dstDoc.Styles["Heading 1_0"]);
+            Assert.AreEqual(Color.Red.ToArgb(), newStyle.Font.Color.ToArgb());
         }
     }
 }

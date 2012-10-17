@@ -10,6 +10,7 @@ Imports Microsoft.VisualBasic
 Imports System
 Imports Aspose.Words
 Imports NUnit.Framework
+Imports System.Drawing
 
 Namespace Examples
 	<TestFixture> _
@@ -89,6 +90,77 @@ Namespace Examples
 
 			doc.Save(MyDir & "Document.TableOfContentsTabStops Out.doc")
 			'ExEnd
+		End Sub
+
+		<Test> _
+		Public Sub CopyStyleSameDocument()
+			Dim doc As New Document(MyDir & "Document.doc")
+
+			'ExStart
+			'ExFor:StyleCollection.AddCopy
+			'ExFor:Style.Name
+			'ExSummary:Demonstrates how to copy a style within the same document.
+			' The AddCopy method creates a copy of the specified style and automatically generates a new name for the style, such as "Heading 1_0".
+			Dim newStyle As Style = doc.Styles.AddCopy(doc.Styles("Heading 1"))
+
+			' You can change the new style name if required as the Style.Name property is read-write.
+			newStyle.Name = "My Heading 1"
+			'ExEnd
+
+			Assert.NotNull(newStyle)
+			Assert.AreEqual("My Heading 1", newStyle.Name)
+			Assert.AreEqual(doc.Styles("Heading 1").Type, newStyle.Type)
+		End Sub
+
+		<Test> _
+		Public Sub CopyStyleDifferentDocument()
+			Dim dstDoc As New Document()
+			Dim srcDoc As New Document()
+
+			'ExStart
+			'ExFor:StyleCollection.AddCopy
+			'ExSummary:Demonstrates how to copy style from one document into a different document.
+			' This is the style in the source document to copy to the destination document.
+			Dim srcStyle As Style = srcDoc.Styles(StyleIdentifier.Heading1)
+
+			' Change the font of the heading style to red.
+			srcStyle.Font.Color = Color.Red
+
+			' The AddCopy method can be used to copy a style from a different document.
+			Dim newStyle As Style = dstDoc.Styles.AddCopy(srcStyle)
+			'ExEnd
+
+			Assert.NotNull(newStyle)
+			Assert.AreEqual("Heading 1_0", newStyle.Name)
+			Assert.AreEqual(Color.Red.ToArgb(), newStyle.Font.Color.ToArgb())
+		End Sub
+
+		<Test> _
+		Public Sub OverwriteStyleDifferentDocument()
+			Dim dstDoc As New Document()
+			Dim srcDoc As New Document()
+
+			'ExStart
+			'ExFor:StyleCollection.AddCopy
+			'ExId:OverwriteStyleDifferentDocument   
+			'ExSummary:Demonstrates how to copy a style from one document to another and overide an existing style in the destination document.
+			' This is the style in the source document to copy to the destination document.
+			Dim srcStyle As Style = srcDoc.Styles(StyleIdentifier.Heading1)
+
+			' Change the font of the heading style to red.
+			srcStyle.Font.Color = Color.Red
+
+			' The AddCopy method can be used to copy a style to a different document.
+			Dim newStyle As Style = dstDoc.Styles.AddCopy(srcStyle)
+
+			' The name of the new style can be changed to the name of any existing style. Doing this will override the existing style.
+			newStyle.Name = "Heading 1"
+			'ExEnd
+
+			Assert.NotNull(newStyle)
+			Assert.AreEqual("Heading 1", newStyle.Name)
+			Assert.IsNull(dstDoc.Styles("Heading 1_0"))
+			Assert.AreEqual(Color.Red.ToArgb(), newStyle.Font.Color.ToArgb())
 		End Sub
 	End Class
 End Namespace
