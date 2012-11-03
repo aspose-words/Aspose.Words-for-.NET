@@ -824,7 +824,7 @@ namespace Examples
                 Console.WriteLine("Reason for signing: " + signature.Comments); // This property is available in MS Word documents only.
                 Console.WriteLine("Signature type: " + signature.SignatureType.ToString());
                 Console.WriteLine("Time of signing: " + signature.SignTime);
-                Console.WriteLine("Subject name: " + signature.Certificate.SubjectName);
+                Console.WriteLine("Subject name: " + signature.Certificate.SubjectName.ToString());
                 Console.WriteLine("Issuer name: " + signature.Certificate.IssuerName.Name);
                 Console.WriteLine();
             }
