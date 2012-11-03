@@ -30,6 +30,7 @@ Namespace ImageToPdf
 			ConvertImageToPdf(dataDir & "Test.png", dataDir & "TestPng Out.pdf")
 			ConvertImageToPdf(dataDir & "Test.wmf", dataDir & "TestWmf Out.pdf")
 			ConvertImageToPdf(dataDir & "Test.tiff", dataDir & "TestTiff Out.pdf")
+			ConvertImageToPdf(dataDir & "Test.gif", dataDir & "TestGif Out.pdf")
 		End Sub
 
 		''' <summary>
@@ -45,8 +46,12 @@ Namespace ImageToPdf
 
 			' Read the image from file, ensure it is disposed.
 			Using image As Image = Image.FromFile(inputFileName)
+				' Find which dimension the frames in this image represent. For example 
+				' the frames of a BMP or TIFF are "page dimension" whereas frames of a GIF image are "time dimension". 
+				Dim dimension As New FrameDimension(image.FrameDimensionsList(0))
+
 				' Get the number of frames in the image.
-				Dim framesCount As Integer = image.GetFrameCount(FrameDimension.Page)
+				Dim framesCount As Integer = image.GetFrameCount(dimension)
 
 				' Loop through all frames.
 				For frameIdx As Integer = 0 To framesCount - 1
@@ -56,7 +61,7 @@ Namespace ImageToPdf
 					End If
 
 					' Select active frame.
-					image.SelectActiveFrame(FrameDimension.Page, frameIdx)
+					image.SelectActiveFrame(dimension, frameIdx)
 
 					' We want the size of the page to be the same as the size of the image.
 					' Convert pixels to points to size the page to the actual image size.

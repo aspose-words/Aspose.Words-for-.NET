@@ -31,6 +31,7 @@ namespace ImageToPdf
             ConvertImageToPdf(dataDir + "Test.png", dataDir + "TestPng Out.pdf");
             ConvertImageToPdf(dataDir + "Test.wmf", dataDir + "TestWmf Out.pdf");
             ConvertImageToPdf(dataDir + "Test.tiff", dataDir + "TestTiff Out.pdf");
+            ConvertImageToPdf(dataDir + "Test.gif", dataDir + "TestGif Out.pdf");
         }
 
         /// <summary>
@@ -48,8 +49,12 @@ namespace ImageToPdf
             // Read the image from file, ensure it is disposed.
             using (Image image = Image.FromFile(inputFileName))
             {
+                // Find which dimension the frames in this image represent. For example 
+                // the frames of a BMP or TIFF are "page dimension" whereas frames of a GIF image are "time dimension". 
+                FrameDimension dimension = new FrameDimension(image.FrameDimensionsList[0]); 
+
                 // Get the number of frames in the image.
-                int framesCount = image.GetFrameCount(FrameDimension.Page);
+                int framesCount = image.GetFrameCount(dimension);
 
                 // Loop through all frames.
                 for (int frameIdx = 0; frameIdx < framesCount; frameIdx++)
@@ -59,7 +64,7 @@ namespace ImageToPdf
                         builder.InsertBreak(BreakType.SectionBreakNewPage);
 
                     // Select active frame.
-                    image.SelectActiveFrame(FrameDimension.Page, frameIdx);
+                    image.SelectActiveFrame(dimension, frameIdx);
 
                     // We want the size of the page to be the same as the size of the image.
                     // Convert pixels to points to size the page to the actual image size.
