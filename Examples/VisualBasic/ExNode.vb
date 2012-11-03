@@ -34,8 +34,7 @@ Namespace Examples
 		Public Sub CloneCompositeNode()
 			'ExStart
 			'ExFor:Node
-			'ExFor:CompositeNode.Clone
-			'ExFor:Paragraph.Clone
+			'ExFor:Node.Clone
 			'ExSummary:Shows how to clone composite nodes with and without their child nodes.
 			' Create a new empty document.
 			Dim doc As New Document()

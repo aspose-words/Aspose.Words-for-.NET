@@ -35,8 +35,7 @@ namespace Examples
         {
             //ExStart
             //ExFor:Node
-            //ExFor:CompositeNode.Clone
-            //ExFor:Paragraph.Clone
+            //ExFor:Node.Clone
             //ExSummary:Shows how to clone composite nodes with and without their child nodes.
             // Create a new empty document.
             Document doc = new Document();
