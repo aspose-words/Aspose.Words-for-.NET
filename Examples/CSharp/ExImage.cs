@@ -334,6 +334,9 @@ namespace Examples
         //ExFor:FileFormatUtil.ImageTypeToExtension(Aspose.Words.Drawing.ImageType)
         //ExFor:ImageData.ImageType
         //ExFor:ImageData.Save(string)
+        //ExFor:DrawingMLImageData
+        //ExFor:DrawingMLImageData.ImageType
+        //ExFor:DrawingMLImageData.Save(string)
         //ExFor:CompositeNode.GetChildNodes(NodeType, bool)
         //ExId:ExtractImagesToFiles
         //ExSummary:Shows how to extract images from a document and save them as files.
@@ -351,6 +354,20 @@ namespace Examples
                     string imageFileName = string.Format(
                         "Image.ExportImages.{0} Out{1}", imageIndex, FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType));
                     shape.ImageData.Save(MyDir + imageFileName);
+                    imageIndex++;
+                }
+            }
+
+            // Newer Microsoft Word documents (such as DOCX) may contain a different type of image container called DrawingML.
+            // Repeat the process to extract these if they are present in the loaded document.
+            NodeCollection dmlShapes = doc.GetChildNodes(NodeType.DrawingML, true);
+            foreach (DrawingML dml in dmlShapes)
+            {
+                if (dml.HasImage)
+                {
+                    string imageFileName = string.Format(
+                        "Image.ExportImages.{0} Out{1}", imageIndex, FileFormatUtil.ImageTypeToExtension(dml.ImageData.ImageType));
+                    dml.ImageData.Save(MyDir + imageFileName);
                     imageIndex++;
                 }
             }
