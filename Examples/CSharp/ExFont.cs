@@ -148,7 +148,6 @@ namespace Examples
             // Add a run of normal text.
             run = new Run(doc, "Normal text");
             para.AppendChild(run);
-            para.AppendChild(run);
 
             // Add a run of text that appears as subscript.
             run = new Run(doc, "Subscript");

@@ -143,7 +143,6 @@ Namespace Examples
 			' Add a run of normal text.
 			run = New Run(doc, "Normal text")
 			para.AppendChild(run)
-			para.AppendChild(run)
 
 			' Add a run of text that appears as subscript.
 			run = New Run(doc, "Subscript")
