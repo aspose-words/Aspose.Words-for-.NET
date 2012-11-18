@@ -1,4 +1,4 @@
-﻿//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
 // Copyright 2001-2011 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
@@ -44,6 +44,7 @@ namespace Examples
             builder.CellFormat.VerticalMerge = CellMerge.None;
             builder.Write("Text in another cell");
             builder.EndRow();
+            builder.EndTable();
             //ExEnd
         }
 
@@ -74,6 +75,7 @@ namespace Examples
             builder.InsertCell();
             builder.Write("Text in another cell.");
             builder.EndRow();
+            builder.EndTable();
             //ExEnd
         }
     }

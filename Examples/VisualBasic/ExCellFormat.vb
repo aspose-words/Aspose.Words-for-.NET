@@ -45,6 +45,7 @@ Namespace Examples
 			builder.CellFormat.VerticalMerge = CellMerge.None
 			builder.Write("Text in another cell")
 			builder.EndRow()
+			builder.EndTable()
 			'ExEnd
 		End Sub
 
@@ -74,6 +75,7 @@ Namespace Examples
 			builder.InsertCell()
 			builder.Write("Text in another cell.")
 			builder.EndRow()
+			builder.EndTable()
 			'ExEnd
 		End Sub
 	End Class
