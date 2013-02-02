@@ -1,5 +1,5 @@
 '////////////////////////////////////////////////////////////////////////
-' Copyright 2001-2011 Aspose Pty Ltd. All Rights Reserved.
+' Copyright 2001-2013 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -130,10 +130,10 @@ Namespace Examples
 
 			' Set the page tray used for each section based off the paper size used in the section.
 			For Each section As Section In doc.Sections
-				If section.PageSetup.PaperSize = PaperSize.Letter Then
+				If section.PageSetup.PaperSize Is PaperSize.Letter Then
 					section.PageSetup.FirstPageTray = printerTrayForLetter
 					section.PageSetup.OtherPagesTray = printerTrayForLetter
-				ElseIf section.PageSetup.PaperSize = PaperSize.A4 Then
+				ElseIf section.PageSetup.PaperSize Is PaperSize.A4 Then
 					section.PageSetup.FirstPageTray = printerTrayForA4
 					section.PageSetup.OtherPagesTray = printerTrayForA4
 				End If

@@ -1,5 +1,5 @@
 '////////////////////////////////////////////////////////////////////////
-' Copyright 2001-2011 Aspose Pty Ltd. All Rights Reserved.
+' Copyright 2001-2013 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -871,7 +871,7 @@ Namespace Examples
 			''' potential issue during document procssing. The callback can be set to listen for warnings generated during document
 			''' load and/or document save.
 			''' </summary>
-			Public Sub Warning(ByVal info As WarningInfo) Implements IWarningCallback.Warning
+			Public Sub Warning(ByVal info As WarningInfo)
 				' We are only interested in fonts being substituted.
 				If info.WarningType = WarningType.FontSubstitution Then
 					Console.WriteLine("Font substitution: " & info.Description)

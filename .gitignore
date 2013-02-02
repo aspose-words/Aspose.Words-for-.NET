@@ -7,12 +7,10 @@ bin/
 * Out.*
 *.ldb
 _ReSharper*/
-*.iws
 out/
 *.user
 Out/
-BuildLog.txt
 Out*/
-TestFile*.png
 Data/*Out*
-Data/*from DB*
+Thumbs.db
+*.lic

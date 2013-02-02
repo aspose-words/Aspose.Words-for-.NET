@@ -1,5 +1,5 @@
 '////////////////////////////////////////////////////////////////////////
-' Copyright 2001-2011 Aspose Pty Ltd. All Rights Reserved.
+' Copyright 2001-2013 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -125,7 +125,7 @@ Namespace Examples
 			Dim nodeList As New ArrayList()
 
 			For Each start As FieldStart In doc.GetChildNodes(NodeType.FieldStart, True)
-				If start.FieldType = FieldType.FieldTOC Then
+				If start.FieldType Is FieldType.FieldTOC Then
 					' Add all FieldStarts which are of type FieldTOC.
 					fieldStarts.Add(start)
 				End If
@@ -149,7 +149,7 @@ Namespace Examples
 				' of the current TOC and we can stop here.
 				If currentNode.NodeType = NodeType.FieldEnd Then
 					Dim fieldEnd As FieldEnd = CType(currentNode, FieldEnd)
-					If fieldEnd.FieldType = FieldType.FieldTOC Then
+					If fieldEnd.FieldType Is FieldType.FieldTOC Then
 						isRemoving = False
 					End If
 				End If

@@ -1,5 +1,5 @@
 '////////////////////////////////////////////////////////////////////////
-' Copyright 2001-2011 Aspose Pty Ltd. All Rights Reserved.
+' Copyright 2001-2013 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -113,7 +113,7 @@ Namespace Examples
 			''' <summary>
 			''' The name of the data source. Used by Aspose.Words only when executing mail merge with repeatable regions.
 			''' </summary>
-			Public ReadOnly Property TableName() As String Implements IMailMergeDataSource.TableName
+			Public ReadOnly Property TableName() As String
 				Get
 					Return "Customer"
 				End Get
@@ -122,7 +122,7 @@ Namespace Examples
 			''' <summary>
 			''' Aspose.Words calls this method to get a value for every data field.
 			''' </summary>
-			Public Function GetValue(ByVal fieldName As String, <System.Runtime.InteropServices.Out()> ByRef fieldValue As Object) As Boolean Implements IMailMergeDataSource.GetValue
+			Public Function GetValue(ByVal fieldName As String, <System.Runtime.InteropServices.Out()> ByRef fieldValue As Object) As Boolean
 				Select Case fieldName
 					Case "FullName"
 						fieldValue = mCustomers(mRecordIndex).FullName
@@ -141,7 +141,7 @@ Namespace Examples
 			''' <summary>
 			''' A standard implementation for moving to a next record in a collection.
 			''' </summary>
-			Public Function MoveNext() As Boolean Implements IMailMergeDataSource.MoveNext
+			Public Function MoveNext() As Boolean
 				If (Not IsEof) Then
 					mRecordIndex += 1
 				End If
@@ -149,7 +149,7 @@ Namespace Examples
 				Return ((Not IsEof))
 			End Function
 
-			Public Function GetChildDataSource(ByVal tableName As String) As IMailMergeDataSource Implements IMailMergeDataSource.GetChildDataSource
+			Public Function GetChildDataSource(ByVal tableName As String) As IMailMergeDataSource
 				Return Nothing
 			End Function
 
