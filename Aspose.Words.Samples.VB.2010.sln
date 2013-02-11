@@ -76,6 +76,16 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "RenderShapes", "RenderShape
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ImportTableFromDataTable", "ImportTableFromDataTable\VisualBasic\ImportTableFromDataTable.vbproj", "{B36ADC9F-140E-4503-AB3E-9F36B2678DDB}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AddImageToEachPage", "AddImageToEachPage\VisualBasic\AddImageToEachPage.vbproj", "{DC75F7C0-A886-41D8-B03A-53F3DD5BC1D5}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DocumentLayoutHelper", "DocumentLayoutHelper\VisualBasic\DocumentLayoutHelper.vbproj", "{7D7C16B1-1554-46B2-9887-197F31F90DAB}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EnumerateLayoutElements", "EnumerateLayoutElements\VisualBasic\EnumerateLayoutElements.vbproj", "{CBC03503-C320-4966-A748-06024A472168}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PageSplitter", "PageSplitter\VisualBasic\PageSplitter.vbproj", "{EFF1076B-BE48-4F9D-8672-4B82E677EC61}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PageNumbersOfNodes", "PageNumbersOfNodes\VisualBasic\PageNumbersOfNodes.vbproj", "{5A285B2C-33C7-40B8-AA3B-8999661148BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -234,6 +244,26 @@ Global
 		{B36ADC9F-140E-4503-AB3E-9F36B2678DDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B36ADC9F-140E-4503-AB3E-9F36B2678DDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B36ADC9F-140E-4503-AB3E-9F36B2678DDB}.Release|Any CPU.Build.0 = Release|Any CPU		
+		{DC75F7C0-A886-41D8-B03A-53F3DD5BC1D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC75F7C0-A886-41D8-B03A-53F3DD5BC1D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC75F7C0-A886-41D8-B03A-53F3DD5BC1D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC75F7C0-A886-41D8-B03A-53F3DD5BC1D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D7C16B1-1554-46B2-9887-197F31F90DAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D7C16B1-1554-46B2-9887-197F31F90DAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D7C16B1-1554-46B2-9887-197F31F90DAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D7C16B1-1554-46B2-9887-197F31F90DAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBC03503-C320-4966-A748-06024A472168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBC03503-C320-4966-A748-06024A472168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBC03503-C320-4966-A748-06024A472168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBC03503-C320-4966-A748-06024A472168}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFF1076B-BE48-4F9D-8672-4B82E677EC61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFF1076B-BE48-4F9D-8672-4B82E677EC61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFF1076B-BE48-4F9D-8672-4B82E677EC61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFF1076B-BE48-4F9D-8672-4B82E677EC61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A285B2C-33C7-40B8-AA3B-8999661148BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A285B2C-33C7-40B8-AA3B-8999661148BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A285B2C-33C7-40B8-AA3B-8999661148BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A285B2C-33C7-40B8-AA3B-8999661148BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
