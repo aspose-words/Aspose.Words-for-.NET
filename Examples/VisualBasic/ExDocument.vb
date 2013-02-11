@@ -971,6 +971,25 @@ Namespace Examples
 		End Sub
 
 		<Test> _
+		Public Sub ControlListLabelsExportToHtml()
+			Dim doc As New Document(MyDir & "Lists.PrintOutAllLists.doc")
+			Dim saveOptions As New HtmlSaveOptions(SaveFormat.Html)
+
+			' This option uses <ul> and <ol> tags are used for list label representation if it doesn't cause formatting loss, 
+			' otherwise HTML <p> tag is used. This is also the default value.
+			saveOptions.ExportListLabels = ExportListLabels.Auto
+			doc.Save(MyDir & "Document.ExportListLabels Auto Out.html", saveOptions)
+
+			' Using this option the <p> tag is used for any list label representation.
+			saveOptions.ExportListLabels = ExportListLabels.AsInlineText
+			doc.Save(MyDir & "Document.ExportListLabels InlineText Out.html", saveOptions)
+
+			' The <ul> and <ol> tags are used for list label representation. Some formatting loss is possible.
+			saveOptions.ExportListLabels = ExportListLabels.ByHtmlTags
+			doc.Save(MyDir & "Document.ExportListLabels HtmlTags Out.html", saveOptions)
+		End Sub
+
+		<Test> _
 		Public Sub DocumentGetText_ToString()
 			'ExStart
 			'ExFor:CompositeNode.GetText
