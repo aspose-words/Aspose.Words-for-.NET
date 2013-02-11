@@ -49,6 +49,42 @@ Namespace Examples
 		End Sub
 
 		<Test> _
+		Public Sub GetFieldFromDocument()
+			'ExStart
+			'ExFor:FieldChar.GetField
+			'ExId:GetField
+			'ExSummary:Demonstrates how to retrieve the field class from an existing FieldStart node in the document.
+			Dim doc As New Document(MyDir & "Document.TableOfContents.doc")
+
+			Dim fieldStart As FieldStart = CType(doc.GetChild(NodeType.FieldStart, 0, True), FieldStart)
+
+			' Retrieve the facade object which represents the field in the document.
+			Dim field As Field = fieldStart.GetField()
+
+			Console.WriteLine("Field code:" & field.GetFieldCode())
+			Console.WriteLine("Field result: " & field.Result)
+			Console.WriteLine("Is locked: " & field.IsLocked)
+
+			' This updates only this field in the document.
+			field.Update()
+			'ExEnd
+		End Sub
+
+		<Test> _
+		Public Sub GetFieldFromFieldCollection()
+			'ExStart
+			'ExId:GetFieldFromFieldCollection
+			'ExSummary:Demonstrates how to retrieve a field using the range of a node.
+			Dim doc As New Document(MyDir & "Document.TableOfContents.doc")
+
+			Dim field As Field = doc.Range.Fields(0)
+
+			' This should be the first field in the document - a TOC field.
+			Console.WriteLine(field.Type)
+			'ExEnd
+		End Sub
+
+		<Test> _
 		Public Sub InsertTCField()
 			'ExStart
 			'ExId:InsertTCField
@@ -89,78 +125,23 @@ Namespace Examples
 			doc.Save(MyDir & "Field.ChangeLocale Out.doc")
 		End Sub
 
-		''' <summary>
-		''' This calls the below method to resolve skipping of [Test] in VB.NET.
-		''' </summary>
 		<Test> _
-		Public Sub RemoveTOCFromDocumentCaller()
-			RemoveTOCFromDocument()
-		End Sub
-
-		'ExStart
-		'ExFor:CompositeNode.GetChildNodes(NodeType, Boolean)
-		'ExId:RemoveTableOfContents
-		'ExSummary:Demonstrates how to remove a specified TOC from a document.
 		Public Sub RemoveTOCFromDocument()
+			'ExStart
+			'ExFor:CompositeNode.GetChildNodes(NodeType, Boolean)
+			'ExId:RemoveTableOfContents
+			'ExSummary:Demonstrates how to remove a specified TOC from a document.
 			' Open a document which contains a TOC.
 			Dim doc As New Document(MyDir & "Document.TableOfContents.doc")
 
-			' Remove the first table of contents from the document.
-			RemoveTableOfContents(doc, 0)
+			' Remove the first TOC from the document.
+			Dim tocField As Field = doc.Range.Fields(0)
+			tocField.Remove()
 
 			' Save the output.
 			doc.Save(MyDir & "Document.TableOfContentsRemoveTOC Out.doc")
+			'ExEnd
 		End Sub
-
-		''' <summary>
-		''' Removes the specified table of contents field from the document.
-		''' </summary>
-		''' <param name="doc">The document to remove the field from.</param>
-		''' <param name="index">The zero-based index of the TOC to remove.</param>
-		Private Shared Sub RemoveTableOfContents(ByVal doc As Document, ByVal index As Integer)
-			' Store the FieldStart nodes of TOC fields in the document for quick access.
-			Dim fieldStarts As New ArrayList()
-			' This is a list to store the nodes found inside the specified TOC. They will be removed
-			' at thee end of this method.
-			Dim nodeList As New ArrayList()
-
-			For Each start As FieldStart In doc.GetChildNodes(NodeType.FieldStart, True)
-				If start.FieldType Is FieldType.FieldTOC Then
-					' Add all FieldStarts which are of type FieldTOC.
-					fieldStarts.Add(start)
-				End If
-			Next start
-
-			' Ensure the TOC specified by the passed index exists.
-			If index > fieldStarts.Count - 1 Then
-				Throw New ArgumentOutOfRangeException("TOC index is out of range")
-			End If
-
-			Dim isRemoving As Boolean = True
-			' Get the FieldStart of the specified TOC.
-			Dim currentNode As Node = CType(fieldStarts(index), Node)
-
-			Do While isRemoving
-				' It is safer to store these nodes and delete them all at once later.
-				nodeList.Add(currentNode)
-				currentNode = currentNode.NextPreOrder(doc)
-
-				' Once we encounter a FieldEnd node of type FieldTOC then we know we are at the end
-				' of the current TOC and we can stop here.
-				If currentNode.NodeType = NodeType.FieldEnd Then
-					Dim fieldEnd As FieldEnd = CType(currentNode, FieldEnd)
-					If fieldEnd.FieldType Is FieldType.FieldTOC Then
-						isRemoving = False
-					End If
-				End If
-			Loop
-
-			' Remove all nodes found in the specified TOC.
-			For Each node As Node In nodeList
-				node.Remove()
-			Next node
-		End Sub
-		'ExEnd
 
 		'ExStart
 		'ExId:TCFieldsRangeReplace

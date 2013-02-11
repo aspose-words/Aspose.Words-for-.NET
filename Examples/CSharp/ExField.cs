@@ -50,6 +50,44 @@ namespace Examples
         }
 
         [Test]
+        public void GetFieldFromDocument()
+        {
+            //ExStart
+            //ExFor:FieldChar.GetField
+            //ExId:GetField
+            //ExSummary:Demonstrates how to retrieve the field class from an existing FieldStart node in the document.
+            Document doc = new Document(MyDir + "Document.TableOfContents.doc");
+
+            FieldStart fieldStart = (FieldStart)doc.GetChild(NodeType.FieldStart, 0, true);
+
+            // Retrieve the facade object which represents the field in the document.
+            Field field = fieldStart.GetField();
+            
+            Console.WriteLine("Field code:" + field.GetFieldCode());
+            Console.WriteLine("Field result: " + field.Result);
+            Console.WriteLine("Is locked: " + field.IsLocked);
+
+            // This updates only this field in the document.
+            field.Update();
+            //ExEnd
+        }
+
+        [Test]
+        public void GetFieldFromFieldCollection()
+        {
+            //ExStart
+            //ExId:GetFieldFromFieldCollection
+            //ExSummary:Demonstrates how to retrieve a field using the range of a node.
+            Document doc = new Document(MyDir + "Document.TableOfContents.doc");
+
+            Field field = doc.Range.Fields[0];
+
+            // This should be the first field in the document - a TOC field.
+            Console.WriteLine(field.Type);
+            //ExEnd
+        }
+
+        [Test]
         public void InsertTCField()
         {
             //ExStart
@@ -92,84 +130,24 @@ namespace Examples
             doc.Save(MyDir + "Field.ChangeLocale Out.doc");
         }
 
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
         [Test]
-        public void RemoveTOCFromDocumentCaller()
-        {
-            RemoveTOCFromDocument();
-        }
-
-        //ExStart
-        //ExFor:CompositeNode.GetChildNodes(NodeType, Boolean)
-        //ExId:RemoveTableOfContents
-        //ExSummary:Demonstrates how to remove a specified TOC from a document.
         public void RemoveTOCFromDocument()
         {
+            //ExStart
+            //ExFor:CompositeNode.GetChildNodes(NodeType, Boolean)
+            //ExId:RemoveTableOfContents
+            //ExSummary:Demonstrates how to remove a specified TOC from a document.
             // Open a document which contains a TOC.
             Document doc = new Document(MyDir + "Document.TableOfContents.doc");
 
-            // Remove the first table of contents from the document.
-            RemoveTableOfContents(doc, 0);
+            // Remove the first TOC from the document.
+            Field tocField = doc.Range.Fields[0];
+            tocField.Remove();
 
             // Save the output.
             doc.Save(MyDir + "Document.TableOfContentsRemoveTOC Out.doc");
+            //ExEnd
         }
-
-        /// <summary>
-        /// Removes the specified table of contents field from the document.
-        /// </summary>
-        /// <param name="doc">The document to remove the field from.</param>
-        /// <param name="index">The zero-based index of the TOC to remove.</param>
-        static void RemoveTableOfContents(Document doc, int index)
-        {
-            // Store the FieldStart nodes of TOC fields in the document for quick access.
-            ArrayList fieldStarts = new ArrayList();
-            // This is a list to store the nodes found inside the specified TOC. They will be removed
-            // at thee end of this method.
-            ArrayList nodeList = new ArrayList();
-
-            foreach (FieldStart start in doc.GetChildNodes(NodeType.FieldStart, true))
-            {
-                if (start.FieldType == FieldType.FieldTOC)
-                {
-                    // Add all FieldStarts which are of type FieldTOC.
-                    fieldStarts.Add(start);
-                }
-            }
-
-            // Ensure the TOC specified by the passed index exists.
-            if (index > fieldStarts.Count - 1)
-                throw new ArgumentOutOfRangeException("TOC index is out of range");
-
-            bool isRemoving = true;
-            // Get the FieldStart of the specified TOC.
-            Node currentNode = (Node)fieldStarts[index];
-
-            while (isRemoving)
-            {
-                // It is safer to store these nodes and delete them all at once later.
-                nodeList.Add(currentNode);
-                currentNode = currentNode.NextPreOrder(doc);
-
-                // Once we encounter a FieldEnd node of type FieldTOC then we know we are at the end
-                // of the current TOC and we can stop here.
-                if (currentNode.NodeType == NodeType.FieldEnd)
-                {
-                    FieldEnd fieldEnd = (FieldEnd)currentNode;
-                    if (fieldEnd.FieldType == FieldType.FieldTOC)
-                        isRemoving = false;
-                }
-            }
-
-            // Remove all nodes found in the specified TOC.
-            foreach (Node node in nodeList)
-            {
-                node.Remove();
-            }
-        }
-        //ExEnd
 
         [Test]
         //ExStart
