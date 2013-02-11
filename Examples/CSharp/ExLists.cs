@@ -426,7 +426,7 @@ namespace Examples
             //ExFor:Paragraph.ListFormat
             //ExFor:ListFormat.List
             //ExFor:ListFormat.ListLevelNumber
-            //ExFor:ListCollection.Item
+            //ExFor:ListCollection.Item(Int32)
             //ExSummary:Applies list formatting of an existing list to a collection of paragraphs.
             Body body = doc.FirstSection.Body;
             Aspose.Words.Lists.List list = doc.Lists[0];
@@ -565,7 +565,7 @@ namespace Examples
             //ExStart
             //ExFor:ListCollection.Document
             //ExFor:ListCollection.Count
-            //ExFor:ListCollection.Item
+            //ExFor:ListCollection.Item(Int32)
             //ExFor:ListCollection.GetListByListId
             //ExFor:List.Document
             //ExFor:List.ListId

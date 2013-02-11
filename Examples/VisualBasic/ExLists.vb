@@ -414,7 +414,7 @@ Namespace Examples
 			'ExFor:Paragraph.ListFormat
 			'ExFor:ListFormat.List
 			'ExFor:ListFormat.ListLevelNumber
-			'ExFor:ListCollection.Item
+			'ExFor:ListCollection.Item(Int32)
 			'ExSummary:Applies list formatting of an existing list to a collection of paragraphs.
 			Dim body As Body = doc.FirstSection.Body
 			Dim list As Aspose.Words.Lists.List = doc.Lists(0)
@@ -540,7 +540,7 @@ Namespace Examples
 			'ExStart
 			'ExFor:ListCollection.Document
 			'ExFor:ListCollection.Count
-			'ExFor:ListCollection.Item
+			'ExFor:ListCollection.Item(Int32)
 			'ExFor:ListCollection.GetListByListId
 			'ExFor:List.Document
 			'ExFor:List.ListId

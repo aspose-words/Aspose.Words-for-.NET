@@ -113,7 +113,7 @@ Namespace Examples
 			''' <summary>
 			''' The name of the data source. Used by Aspose.Words only when executing mail merge with repeatable regions.
 			''' </summary>
-			Public ReadOnly Property TableName() As String
+			Public ReadOnly Property TableName() As String Implements IMailMergeDataSource.TableName
 				Get
 					Return "Customer"
 				End Get
@@ -122,7 +122,7 @@ Namespace Examples
 			''' <summary>
 			''' Aspose.Words calls this method to get a value for every data field.
 			''' </summary>
-			Public Function GetValue(ByVal fieldName As String, <System.Runtime.InteropServices.Out()> ByRef fieldValue As Object) As Boolean
+			Public Function GetValue(ByVal fieldName As String, <System.Runtime.InteropServices.Out()> ByRef fieldValue As Object) As Boolean Implements IMailMergeDataSource.GetValue
 				Select Case fieldName
 					Case "FullName"
 						fieldValue = mCustomers(mRecordIndex).FullName
@@ -141,7 +141,7 @@ Namespace Examples
 			''' <summary>
 			''' A standard implementation for moving to a next record in a collection.
 			''' </summary>
-			Public Function MoveNext() As Boolean
+			Public Function MoveNext() As Boolean Implements IMailMergeDataSource.MoveNext
 				If (Not IsEof) Then
 					mRecordIndex += 1
 				End If
@@ -149,7 +149,7 @@ Namespace Examples
 				Return ((Not IsEof))
 			End Function
 
-			Public Function GetChildDataSource(ByVal tableName As String) As IMailMergeDataSource
+			Public Function GetChildDataSource(ByVal tableName As String) As IMailMergeDataSource Implements IMailMergeDataSource.GetChildDataSource
 				Return Nothing
 			End Function
 
