@@ -6,14 +6,6 @@ This package contains C# and VB.NET Sample Projects for Aspose.Words for .NET.
 
 The Sample Projects are additional projects that are distributed separately from the Aspose.Words for .NET itself.
 
-The solution files of Microsoft Visual Studio 2005, 2008 and 2010 are provided. 
-
-Please open the solution file (.sln) according to the version of Visual Studio installed on your system.
-
-Aspose.Words.Samples.2005.sln - Open with Microsoft Visual Studio 2005
-Aspose.Words.Samples.2008.sln - Open with Microsoft Visual Studio 2008
-Aspose.Words.Samples.2010.sln - Open with Microsoft Visual Studio 2010
-
 How to Install
 ==========================================
 
@@ -34,7 +26,7 @@ Open the appropriate solution file (.sln) in Microsoft Visual Studio. Click on "
 Software Requirements
 ==========================================
 
-- Aspose.Words for .NET 10.6.0 or later (Remove any Aspose.Words for .NET assembly from GAC to get rid of possible errors)
+- Aspose.Words for .NET 13.1.0 or later (Remove any Aspose.Words for .NET assembly from GAC to get rid of possible errors)
 - Additional libraries Aspose.Network for .NET 6.4 and Apose.Cells for .NET 6.0 or later are required to compile some sample projects that  demonstrate integration between several Aspose products. These libraries are shipped with the MSI installer, if this has been used then no extra actions are required. In any other case these libraries must be downloaded manually from the Aspose site.
 - Some samples require extra frameworks:
   - There are samples which demonstrate integration with the Silverlight or Ajax frameworks.
@@ -78,4 +70,4 @@ Currently there are issues with OleConnection on Linux and MacOS which is used t
 
 
 http://www.aspose.com/
-Copyright (c) 2001-2012 Aspose Pty Ltd. All Rights Reserved.
+Copyright (c) 2001-2013 Aspose Pty Ltd. All Rights Reserved.

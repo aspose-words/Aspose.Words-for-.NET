@@ -958,8 +958,8 @@ Namespace Examples
 		End Sub
 
 		Public Function PrintCellMergeType(ByVal cell As Cell) As String
-			Dim isHorizontallyMerged As Boolean = cell.CellFormat.HorizontalMerge IsNot CellMerge.None
-			Dim isVerticallyMerged As Boolean = cell.CellFormat.VerticalMerge IsNot CellMerge.None
+			Dim isHorizontallyMerged As Boolean = cell.CellFormat.HorizontalMerge <> CellMerge.None
+			Dim isVerticallyMerged As Boolean = cell.CellFormat.VerticalMerge <> CellMerge.None
 			Dim cellLocation As String = String.Format("R{0}, C{1}", cell.ParentRow.ParentTable.IndexOf(cell.ParentRow) + 1, cell.ParentRow.IndexOf(cell) + 1)
 
 			If isHorizontallyMerged AndAlso isVerticallyMerged Then
@@ -999,16 +999,16 @@ Namespace Examples
 			' Verify the cells were merged
 			Dim mergedCellsCount As Integer = 0
 			For Each cell As Cell In table.GetChildNodes(NodeType.Cell, True)
-				If cell.CellFormat.HorizontalMerge IsNot CellMerge.None OrElse cell.CellFormat.HorizontalMerge IsNot CellMerge.None Then
+				If cell.CellFormat.HorizontalMerge <> CellMerge.None OrElse cell.CellFormat.HorizontalMerge <> CellMerge.None Then
 					mergedCellsCount += 1
 				End If
 			Next cell
 
 			Assert.AreEqual(4, mergedCellsCount)
-			Assert.True(table.Rows(2).Cells(2).CellFormat.HorizontalMerge Is CellMerge.First)
-			Assert.True(table.Rows(2).Cells(2).CellFormat.VerticalMerge Is CellMerge.First)
-			Assert.True(table.Rows(3).Cells(3).CellFormat.HorizontalMerge Is CellMerge.Previous)
-			Assert.True(table.Rows(3).Cells(3).CellFormat.VerticalMerge Is CellMerge.Previous)
+			Assert.True(table.Rows(2).Cells(2).CellFormat.HorizontalMerge = CellMerge.First)
+			Assert.True(table.Rows(2).Cells(2).CellFormat.VerticalMerge = CellMerge.First)
+			Assert.True(table.Rows(3).Cells(3).CellFormat.HorizontalMerge = CellMerge.Previous)
+			Assert.True(table.Rows(3).Cells(3).CellFormat.VerticalMerge = CellMerge.Previous)
 		End Sub
 
 		'ExStart
