@@ -802,6 +802,26 @@ Namespace Examples
 		End Sub
 
 		<Test> _
+		Public Sub SaveToPdfWithJpegImageCompression()
+			'ExStart
+			'ExFor:PdfSaveOptions.ImageCompression
+			'ExFor:PdfSaveOptions.JpegQuality
+			'ExFor:PdfImageCompression
+			'ExId:SaveToPdfJpegImageCompression
+			'ExSummary:Demonstrates how to save images to PDF using JPEG encoding to decrease file size.
+			Dim doc As New Document(MyDir & "Rendering.doc")
+
+			Dim options As New PdfSaveOptions()
+
+			' Use JPEG compression at 50% quality to reduce file size.
+			options.ImageCompression = PdfImageCompression.Jpeg
+			options.JpegQuality = 50
+
+			doc.Save(MyDir & "Rendering.JpegImageCompression Out.pdf", options)
+			'ExEnd
+		End Sub
+
+		<Test> _
 		Public Sub SetDefaultFontName()
 			'ExStart
 			'ExFor:FontSettings.DefaultFontName
@@ -871,7 +891,7 @@ Namespace Examples
 			''' potential issue during document procssing. The callback can be set to listen for warnings generated during document
 			''' load and/or document save.
 			''' </summary>
-			Public Sub Warning(ByVal info As WarningInfo)
+			Public Sub Warning(ByVal info As WarningInfo) Implements IWarningCallback.Warning
 				' We are only interested in fonts being substituted.
 				If info.WarningType = WarningType.FontSubstitution Then
 					Console.WriteLine("Font substitution: " & info.Description)
