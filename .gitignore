@@ -1,16 +1,18 @@
+
 Temp/
 obj/
 classes/
 generated/
 *.suo
 bin/
-* Out.*
+* Out*
+* out*
 *.ldb
+Thumbs.db
 _ReSharper*/
 out/
+*.lic
 *.user
 Out/
 Out*/
 Data/*Out*
-Thumbs.db
-*.lic
