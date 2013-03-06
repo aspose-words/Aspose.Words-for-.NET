@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Data>
+  <Folders>
+    <Folder>
+      <Title>Quick Start</Title>
+      <Description>These examples are quick start tutorials and are made up of common tasks to help you get started with Aspose.Words. 
+
+Common topics such as creating new documents, loading and converting existing documents, find and replace, mail merge and printing and more are covered in these examples.</Description>
+      <FolderName>QuickStart</FolderName>
+      <Order>1</Order>
+      <Examples>
+        <Example>
+          <Title>Hello World</Title>
+          <Description>This example demonstrates how to create a new Aspose.Words document, insert some text and save it as a Microsoft Word document.
+
+This is the perfect example for a first time user to get an idea of how easy Aspose.Words is to work with.</Description>
+          <FolderName>HelloWorld</FolderName>
+          <Order>1</Order>
+          <DocLink>
+            <DisplayName>Working with Document</DisplayName>
+            <Url>Working+with+Document</Url>
+          </DocLink>
+          <OutputFiles>
+            <DataFile>
+              <Path>..\Data\HelloWorld Out.docx</Path>
+            </DataFile>
+          </OutputFiles>
+          <Type>Console</Type>
+        </Example>
+      </Examples>
+    </Folder>
+  </Folders>
+</Data>
