@@ -66,6 +66,27 @@ During the appending process any styles and other document features are copied t
           </DocLink>
           <Type>Console</Type>
         </Example>
+        <Example>
+          <Title>Simple Find and Replace Text</Title>
+          <Description>Demonstrates a simple find a replace text operation in a document and saves the result back to disk.</Description>
+          <FolderName>FindAndReplace</FolderName>
+          <Order>4</Order>
+          <DocLink>
+            <DisplayName>Using Find and Replace</DisplayName>
+            <Url>Using+Find+and+Replace</Url>
+          </DocLink>
+          <InputFiles>
+            <DataFile>
+              <Path>..\Data\ReplaceSimple.doc</Path>
+            </DataFile>
+          </InputFiles>
+          <OutputFiles>
+            <DataFile>
+              <Path>..\Data\ReplaceSimple Out.doc</Path>
+            </DataFile>
+          </OutputFiles>
+          <Type>Console</Type>
+        </Example>
       </Examples>
     </Folder>
   </Folders>

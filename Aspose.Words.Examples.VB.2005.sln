@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppendDocuments", "QuickSta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplyLicense", "QuickStart\ApplyLicense\VisualBasic\ApplyLicense.vbproj", "{84113C35-7FA1-430A-ACD4-333F0064FE87}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindAndReplace", "QuickStart\FindAndReplace\VisualBasic\FindAndReplace.vbproj", "{F2840BC4-BBC5-48B3-A5BC-AE7EEB7640D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,9 @@ Global
 		{84113C35-7FA1-430A-ACD4-333F0064FE87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{84113C35-7FA1-430A-ACD4-333F0064FE87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84113C35-7FA1-430A-ACD4-333F0064FE87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2840BC4-BBC5-48B3-A5BC-AE7EEB7640D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2840BC4-BBC5-48B3-A5BC-AE7EEB7640D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2840BC4-BBC5-48B3-A5BC-AE7EEB7640D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -31,5 +36,6 @@ Global
 		{17497BE2-931C-4A14-A96E-1823C1F4ABB7} = {6E941DD1-CDAC-4503-B7DB-425C12A75E61}
 		{5CDDDEEF-585E-4A01-9997-C5D10CB9070B} = {6E941DD1-CDAC-4503-B7DB-425C12A75E61}
 		{84113C35-7FA1-430A-ACD4-333F0064FE87} = {6E941DD1-CDAC-4503-B7DB-425C12A75E61}
+		{F2840BC4-BBC5-48B3-A5BC-AE7EEB7640D1} = {6E941DD1-CDAC-4503-B7DB-425C12A75E61}
 	EndGlobalSection
 EndGlobal
