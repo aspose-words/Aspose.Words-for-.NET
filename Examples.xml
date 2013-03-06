@@ -87,6 +87,23 @@ During the appending process any styles and other document features are copied t
           </OutputFiles>
           <Type>Console</Type>
         </Example>
+        <Example>
+          <Title>Simple Mail Merge</Title>
+          <Description>Performs a simple insertion of data into predefined merge fields found in a Microsoft Word document. This is referred to as "mail merge" and is the primary method to insert data into documents.
+
+Aspose.Words provides a powerful mail merge engine with many different features. 
+
+- Perform mail merge of data directly from databases, arrays, and custom business objects of any kind. 
+- Merge multiple rows of data into a document by using mail merge regions, this includes nesting regions for merging hierarchical parent-child data (from a database for example).
+- Use different options to control how merge fields are cleaned up after mail merge is executed.</Description>
+          <FolderName>SimpleMailMerge</FolderName>
+          <Order>5</Order>
+          <DocLink>
+            <DisplayName>How to  Execute Simple Mail Merge</DisplayName>
+            <Url>How+to++Execute+Simple+Mail+Merge</Url>
+          </DocLink>
+          <Type>Console</Type>
+        </Example>
       </Examples>
     </Folder>
   </Folders>
