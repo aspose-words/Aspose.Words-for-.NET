@@ -166,6 +166,29 @@ Aspose.Words provides a powerful mail merge engine with many more features such 
             <DisplayName>How to  Convert a Document to PDF</DisplayName>
             <Url>How+to++Convert+a+Document+to+PDF</Url>
           </DocLink>
+          <InputFiles>
+            <DataFile>
+              <Path>..\Data\Template.doc</Path>
+            </DataFile>
+          </InputFiles>
+          <OutputFiles>
+            <DataFile>
+              <Path>..\Data\Doc2PdfSave Out.pdf</Path>
+            </DataFile>
+          </OutputFiles>
+          <Type>Console</Type>
+        </Example>
+        <Example>
+          <Title>Update Fields</Title>
+          <Description>Fields in Microsoft Word documents are complex. There are over 50 field types (each needs its own result calculation procedure), formulas and expressions, bookmarks and references, functions and various switches. Fields can also be nested.
+
+Aspose.Words preserves all fiels during open/save and conversions. It is possible to update results of most common fields, including Table of Contents field so they appear just like how they are updated in Microsoft Word.</Description>
+          <FolderName>UpdateFields</FolderName>
+          <Order>9</Order>
+          <DocLink>
+            <DisplayName>About Field Update</DisplayName>
+            <Url>About+Field+Update</Url>
+          </DocLink>
           <Type>Console</Type>
         </Example>
       </Examples>
