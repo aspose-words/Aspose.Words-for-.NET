@@ -27,6 +27,19 @@ This is the perfect example for a first time user to get an idea of how easy Asp
           </OutputFiles>
           <Type>Console</Type>
         </Example>
+        <Example>
+          <Title>Append Documents</Title>
+          <Description>This example demonstrates how to join one document to the end of another document by using just one line of code.
+  
+The document being appended to is referred to as the "destination document" and the document being appended is the "source document". During the appending process any styles and other document features are copied to the destination document.</Description>
+          <FolderName>AppendDocuments</FolderName>
+          <Order>2</Order>
+          <DocLink>
+            <DisplayName>Joining and Appending Documents</DisplayName>
+            <Url>Joining+and+Appending+Documents</Url>
+          </DocLink>
+          <Type>Console</Type>
+        </Example>
       </Examples>
     </Folder>
   </Folders>

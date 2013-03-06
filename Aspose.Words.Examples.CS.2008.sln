@@ -4,6 +4,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "QuickStart", "QuickStart", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld", "QuickStart\HelloWorld\CSharp\HelloWorld.csproj", "{17497BE2-931C-4A14-A96E-1823C1F4ABB7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppendDocuments", "QuickStart\AppendDocuments\CSharp\AppendDocuments.csproj", "{5CDDDEEF-585E-4A01-9997-C5D10CB9070B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,11 +15,15 @@ Global
 		{17497BE2-931C-4A14-A96E-1823C1F4ABB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{17497BE2-931C-4A14-A96E-1823C1F4ABB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17497BE2-931C-4A14-A96E-1823C1F4ABB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CDDDEEF-585E-4A01-9997-C5D10CB9070B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CDDDEEF-585E-4A01-9997-C5D10CB9070B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CDDDEEF-585E-4A01-9997-C5D10CB9070B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{17497BE2-931C-4A14-A96E-1823C1F4ABB7} = {6E941DD1-CDAC-4503-B7DB-425C12A75E61}
+		{5CDDDEEF-585E-4A01-9997-C5D10CB9070B} = {6E941DD1-CDAC-4503-B7DB-425C12A75E61}
 	EndGlobalSection
 EndGlobal
