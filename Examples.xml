@@ -35,7 +35,7 @@ When appending documents the document which is appended to is referred to as the
 
 During the appending process any styles and other document features are copied to the destination document. The ImportFormatMode controls hows styles and formatting from the document being joined are handled. In this example formatting of the documnent being joined is retained.</Description>
           <FolderName>AppendDocuments</FolderName>
-          <Order>2</Order>
+          <Order>8</Order>
           <DocLink>
             <DisplayName>Joining and Appending Documents</DisplayName>
             <Url>Joining+and+Appending+Documents</Url>
@@ -59,7 +59,7 @@ During the appending process any styles and other document features are copied t
           <Title>Applying a License</Title>
           <Description>Demonstrates how to apply a temporary or permanent license in order to remove evaluation restrictions from the Aspose.Words library.</Description>
           <FolderName>ApplyLicense</FolderName>
-          <Order>3</Order>
+          <Order>4</Order>
           <DocLink>
             <DisplayName>License Aspose.Words</DisplayName>
             <Url>License+Aspose.Words</Url>
@@ -70,7 +70,7 @@ During the appending process any styles and other document features are copied t
           <Title>Simple Find and Replace Text</Title>
           <Description>Demonstrates a simple find a replace text operation in a document and saves the result back to disk.</Description>
           <FolderName>FindAndReplace</FolderName>
-          <Order>4</Order>
+          <Order>5</Order>
           <DocLink>
             <DisplayName>Using Find and Replace</DisplayName>
             <Url>Using+Find+and+Replace</Url>
@@ -98,7 +98,7 @@ Aspose.Words provides a powerful mail merge engine with many more features such 
 - Use custom handlers to perform any sort of logic during mail merge, for example applying alternating row shading to a table row. 
 - Use different options to control how merge fields are cleaned up after mail merge is executed.</Description>
           <FolderName>SimpleMailMerge</FolderName>
-          <Order>5</Order>
+          <Order>7</Order>
           <DocLink>
             <DisplayName>How to  Execute Simple Mail Merge</DisplayName>
             <Url>How+to++Execute+Simple+Mail+Merge</Url>
@@ -119,7 +119,7 @@ Aspose.Words provides a powerful mail merge engine with many more features such 
           <Title>Load and Save to Disk</Title>
           <Description>Demonstrates how to load a DOC document from disk and save it to DOCX format at the same location.</Description>
           <FolderName>LoadAndSaveToDisk</FolderName>
-          <Order>6</Order>
+          <Order>2</Order>
           <DocLink>
             <DisplayName>Opening from a File</DisplayName>
             <Url>Opening+from+a+File</Url>
@@ -140,7 +140,7 @@ Aspose.Words provides a powerful mail merge engine with many more features such 
           <Title>Load and Save to Stream</Title>
           <Description>Shows how to open a document from a memory stream and save it to another stream in RTF format. This is useful for when an application needs to load and save documents without writing anything to the disk. Many applications such as web services accept input or output as stream parameters.</Description>
           <FolderName>LoadAndSaveToStream</FolderName>
-          <Order>7</Order>
+          <Order>3</Order>
           <DocLink>
             <DisplayName>Opening from a Stream</DisplayName>
             <Url>Opening+from+a+Stream</Url>
@@ -161,7 +161,7 @@ Aspose.Words provides a powerful mail merge engine with many more features such 
           <Title>Convert a Document to PDF</Title>
           <Description>To convert any document loaded into Aspose.Words to PDF simply invoke the Document.Save method and specify a file name with a ".PDF" extension. When saving to a stream use the SaveFormat or SaveOption classes to specify the desired output format.</Description>
           <FolderName>Doc2Pdf</FolderName>
-          <Order>8</Order>
+          <Order>9</Order>
           <DocLink>
             <DisplayName>How to  Convert a Document to PDF</DisplayName>
             <Url>How+to++Convert+a+Document+to+PDF</Url>
@@ -186,7 +186,7 @@ Aspose.Words preserves all fiels during open/save and conversions. It is possibl
 
 This example demonstrates how to insert a TOC into a document along with a few headings and then update fields so the content of TOC is generated automatically.</Description>
           <FolderName>UpdateFields</FolderName>
-          <Order>9</Order>
+          <Order>10</Order>
           <DocLink>
             <DisplayName>Supported Fields List</DisplayName>
             <Url>About+Field+Update</Url>
@@ -206,7 +206,7 @@ The Aspose.Words Document Object Model (DOM) is an in-memory representation of a
 
 When Aspose.Words reads a Word document into memory, objects of different types are created to represent various document elements. Every run of text, paragraph, table, section is a node, and even the document itself is a node. Aspose.Words defines a class for every type of document node.</Description>
           <FolderName>WorkingWithNodes</FolderName>
-          <Order>10</Order>
+          <Order>6</Order>
           <DocLink>
             <DisplayName>Node Classes</DisplayName>
             <Url>Node+Classes</Url>
