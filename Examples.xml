@@ -182,12 +182,34 @@ Aspose.Words provides a powerful mail merge engine with many more features such 
           <Title>Update Fields</Title>
           <Description>Fields in Microsoft Word documents are complex. There are over 50 field types (each needs its own result calculation procedure), formulas and expressions, bookmarks and references, functions and various switches. Fields can also be nested.
 
-Aspose.Words preserves all fiels during open/save and conversions. It is possible to update results of most common fields, including Table of Contents field so they appear just like how they are updated in Microsoft Word.</Description>
+Aspose.Words preserves all fiels during open/save and conversions. It is possible to update results of most common fields, including Table of Contents field so they appear just like how they are updated in Microsoft Word.
+
+This example demonstrates how to insert a TOC into a document along with a few headings and then update fields so the content of TOC is generated automatically.</Description>
           <FolderName>UpdateFields</FolderName>
           <Order>9</Order>
           <DocLink>
-            <DisplayName>About Field Update</DisplayName>
+            <DisplayName>Supported Fields List</DisplayName>
             <Url>About+Field+Update</Url>
+          </DocLink>
+          <OutputFiles>
+            <DataFile>
+              <Path>..\Data\Document Field Update Out.docx</Path>
+            </DataFile>
+          </OutputFiles>
+          <Type>Console</Type>
+        </Example>
+        <Example>
+          <Title>Working with the Nodes of a Document</Title>
+          <Description>By using the classes of the Aspose.Words DOM, you can obtain detailed programmatic access to elements and formatting of a document.
+  
+The Aspose.Words Document Object Model (DOM) is an in-memory representation of a Word document. The Aspose.Words DOM allows you to programmatically read, manipulate and modify content and formatting of a Word document.
+
+When Aspose.Words reads a Word document into memory, objects of different types are created to represent various document elements. Every run of text, paragraph, table, section is a node, and even the document itself is a node. Aspose.Words defines a class for every type of document node.</Description>
+          <FolderName>WorkingWithNodes</FolderName>
+          <Order>10</Order>
+          <DocLink>
+            <DisplayName>Node Classes</DisplayName>
+            <Url>Node+Classes</Url>
           </DocLink>
           <Type>Console</Type>
         </Example>
