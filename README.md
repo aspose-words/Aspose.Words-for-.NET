@@ -39,7 +39,7 @@ The Aspose.Words for .NET examples published here at GitHub is a part of the abo
 
 ###Code
 
-All examples are contained in separate folders at the root of the repository. Each example is provided in both C# and Visual Basic. Each example contains a Program.cs or Program.vb code file. The main entry point for the examples is always found in this file.
+All examples are provided as separate projects in both C# and Visual Basic. Each example contains a Program.cs or Program.vb code file which contains the main entry point of the program.
 
 <table>
   <tr><th>Example<th>Description</th></tr>
@@ -87,14 +87,14 @@ All examples are contained in separate folders at the root of the repository. Ea
 
 ###Data
 
-+ Input Documents - Each example contains a Data directory which contains any input Word Documents used in the example.
++ Input Documents - Each example directory contains a Data directory which contains any input documents or files used in the example.
 + Northwind.mdb - Many examples use this Microsoft Access Database found under the "Database" directory for demonstrating merging data into documents.
 
 ###Output
 
 + Most examples will perform operations on documents and save them into the Data directory. This directory is found inside each of the examples e.g "\(ExampleName)\CSharp\Data\".
 + Other examples print output to the console.
-+ Some printing examples will display a print preview dialog and allow you to print the document output.
++ Some examples may display print preview dialog and print to a specified printer.
 
 
 ###Help Material
@@ -109,20 +109,22 @@ Please [Download the Aspose.Words for .NET Examples](https://github.com/asposewo
 
 ##How to use the Examples?
 
-Firstly make sure that you have downloaded and installed the latest version of [Aspose.Words for .NET](http://www.aspose.com/community/files/51/.net-components/aspose.words-for-.net/category1188.aspx). We recommend using the .MSI installer for fast installation and seamless intergration with the examples.
+Firstly make sure that you have downloaded and installed the latest version of [Aspose.Words for .NET](http://www.aspose.com/community/files/51/.net-components/aspose.words-for-.net/category1188.aspx). We recommend using the .MSI installer for fast installation and seamless integration with the examples.
 
-Download the examples from the above link. The solution files for Microsoft Visual Studio 2005, 2008 and 2010 are provided with the examples. 
+Download the examples from the above link. The solution files for Microsoft Visual Studio 2005, 2008, 2010 and 2012 are provided with the examples.
 
-Once downloaded you can open the examples by opening the appropriate solution file (.sln) according to the version of Visual Studio installed on your system.
+Once downloaded you can open the examples by opening the appropriate solution file (.sln) according to the version of Visual Studio or your other development tool installed on your system:
 
-- Aspose.Words.Samples.2005.sln - Open with Microsoft Visual Studio 2005
-- Aspose.Words.Samples.2008.sln - Open with Microsoft Visual Studio 2008
-- Aspose.Words.Samples.2010.sln - Open with Microsoft Visual Studio 2010
+- Microsoft Visual Studio 2005 – Open Aspose.Words.Examples.2005.sln
+- Microsoft Visual Studio 2008 – Open Aspose.Words.Examples.2008.sln
+- Microsoft Visual Studio 2010 and Microsoft Visual Studio 2012 – Open Aspose.Words.Examples.2010.sln
+- MonoDevelop and SharpDevelop can open any version of the solutions above
 
-The example should be ready to compile. Click on "Debug" menu and choose one of the following menu items to start the example:
+The examples are sorted into folders and are ready to compile. To run, right click on the corresponding project:
 
-- Start Debugging
-- Start Without Debugging
+- Any version of Microsoft Visual Studio - Select Debug and Start New Instance
+- MonoDevelop - Select Run Item
+- SharpDevelop – Select Run Project
 
 ## Support and Contribution
 
