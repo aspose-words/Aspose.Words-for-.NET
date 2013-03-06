@@ -121,8 +121,8 @@ Aspose.Words provides a powerful mail merge engine with many more features such 
           <FolderName>LoadAndSaveToDisk</FolderName>
           <Order>6</Order>
           <DocLink>
-            <DisplayName>Loading, Saving and Converting</DisplayName>
-            <Url>Loading,+Saving+and+Converting</Url>
+            <DisplayName>Opening from a File</DisplayName>
+            <Url>Opening+from+a+File</Url>
           </DocLink>
           <InputFiles>
             <DataFile>
@@ -134,6 +134,17 @@ Aspose.Words provides a powerful mail merge engine with many more features such 
               <Path>..\Data\Document Out.docx</Path>
             </DataFile>
           </OutputFiles>
+          <Type>Console</Type>
+        </Example>
+        <Example>
+          <Title>Load and Save to Stream</Title>
+          <Description>Shows how to open a document from a memory stream and save it to another stream in RTF format. This is useful for when an application needs to load and save documents without writing anything to the disk. Many applications such as web services accept input or output as stream parameters.</Description>
+          <FolderName>LoadAndSaveToStream</FolderName>
+          <Order>7</Order>
+          <DocLink>
+            <DisplayName>Opening from a Stream</DisplayName>
+            <Url>Opening+from+a+Stream</Url>
+          </DocLink>
           <Type>Console</Type>
         </Example>
       </Examples>
