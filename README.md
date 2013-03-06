@@ -92,7 +92,7 @@ All examples are provided as separate projects in both C# and Visual Basic. Each
 
 ###Output
 
-+ Most examples will perform operations on documents and save them into the Data directory. This directory is found inside each of the examples e.g "\(ExampleName)\CSharp\Data\".
++ Most examples will perform operations on documents and save them into the Data directory found in the example directory.
 + Other examples print output to the console.
 + Some examples may display print preview dialog and print to a specified printer.
 
