@@ -1,0 +1,18 @@
+
+Temp/
+obj/
+classes/
+generated/
+*.suo
+bin/
+* Out*
+* out*
+*.ldb
+Thumbs.db
+_ReSharper*/
+out/
+*.lic
+*.user
+Out/
+Out*/
+Data/*Out*

@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Data>
+  <Folders>
+    <Folder>
+      <Title>Quick Start</Title>
+      <Description>These examples are quick start tutorials and are made up of common tasks to help you get started with Aspose.Words. 
+
+Common topics such as creating new documents, loading and converting existing documents, find and replace, mail merge and printing and more are covered in these examples.</Description>
+      <FolderName>QuickStart</FolderName>
+      <Order>1</Order>
+      <Examples>
+        <Example>
+          <Title>Hello World</Title>
+          <Description>This example demonstrates how to create a new Aspose.Words document, insert some text and save it as a Microsoft Word document.
+
+This is the perfect example for a first time user to get an idea of how easy Aspose.Words is to work with.</Description>
+          <FolderName>HelloWorld</FolderName>
+          <Order>1</Order>
+          <DocLink>
+            <DisplayName>Working with Document</DisplayName>
+            <Url>Working+with+Document</Url>
+          </DocLink>
+          <OutputFiles>
+            <DataFile>
+              <Path>..\Data\HelloWorld Out.docx</Path>
+            </DataFile>
+          </OutputFiles>
+          <Type>Console</Type>
+        </Example>
+        <Example>
+          <Title>Append Documents</Title>
+          <Description>This example demonstrates how to join one document to the end of another document by using just one line of code.
+
+When appending documents the document which is appended to is referred to as the "destination document" and the document being appended is the "source document". 
+
+During the appending process any styles and other document features are copied to the destination document. The ImportFormatMode controls hows styles and formatting from the document being joined are handled. In this example formatting of the documnent being joined is retained.</Description>
+          <FolderName>AppendDocuments</FolderName>
+          <Order>2</Order>
+          <DocLink>
+            <DisplayName>Joining and Appending Documents</DisplayName>
+            <Url>Joining+and+Appending+Documents</Url>
+          </DocLink>
+          <InputFiles>
+            <DataFile>
+              <Path>..\Data\TestFile.Destination.doc</Path>
+            </DataFile>
+            <DataFile>
+              <Path>..\Data\TestFile.Source.doc</Path>
+            </DataFile>
+          </InputFiles>
+          <OutputFiles>
+            <DataFile>
+              <Path>..\Data\TestFile Out.docx</Path>
+            </DataFile>
+          </OutputFiles>
+          <Type>Console</Type>
+        </Example>
+        <Example>
+          <Title>Applying a License</Title>
+          <Description>Demonstrates how to apply a temporary or permanent license in order to remove evaluation restrictions from the Aspose.Words library.</Description>
+          <FolderName>ApplyLicense</FolderName>
+          <Order>3</Order>
+          <DocLink>
+            <DisplayName>License Aspose.Words</DisplayName>
+            <Url>License+Aspose.Words</Url>
+          </DocLink>
+          <Type>Console</Type>
+        </Example>
+        <Example>
+          <Title>Simple Find and Replace Text</Title>
+          <Description>Demonstrates a simple find a replace text operation in a document and saves the result back to disk.</Description>
+          <FolderName>FindAndReplace</FolderName>
+          <Order>4</Order>
+          <DocLink>
+            <DisplayName>Using Find and Replace</DisplayName>
+            <Url>Using+Find+and+Replace</Url>
+          </DocLink>
+          <InputFiles>
+            <DataFile>
+              <Path>..\Data\ReplaceSimple.doc</Path>
+            </DataFile>
+          </InputFiles>
+          <OutputFiles>
+            <DataFile>
+              <Path>..\Data\ReplaceSimple Out.doc</Path>
+            </DataFile>
+          </OutputFiles>
+          <Type>Console</Type>
+        </Example>
+        <Example>
+          <Title>Simple Mail Merge</Title>
+          <Description>Performs a simple insertion of data into predefined merge fields found in a Microsoft Word document. This is referred to as "mail merge" and is the primary method to insert data into documents.
+
+Aspose.Words provides a powerful mail merge engine with many more features such as:
+
+- Perform mail merge of data from databases, arrays, and custom business objects of any kind. Merge images from disk or stream directly into the document.
+- Merge blocks of data into a document and automatically grow table rows by using mail merge regions, this includes nesting regions for merging hierarchical parent-child data (from a database for example).
+- Use custom handlers to perform any sort of logic during mail merge, for example applying alternating row shading to a table row. 
+- Use different options to control how merge fields are cleaned up after mail merge is executed.</Description>
+          <FolderName>SimpleMailMerge</FolderName>
+          <Order>5</Order>
+          <DocLink>
+            <DisplayName>How to  Execute Simple Mail Merge</DisplayName>
+            <Url>How+to++Execute+Simple+Mail+Merge</Url>
+          </DocLink>
+          <InputFiles>
+            <DataFile>
+              <Path>..\Data\Template.doc</Path>
+            </DataFile>
+          </InputFiles>
+          <OutputFiles>
+            <DataFile>
+              <Path>..\Data\MailMerge Result Out.docx</Path>
+            </DataFile>
+          </OutputFiles>
+          <Type>Console</Type>
+        </Example>
+        <Example>
+          <Title>Load and Save to Disk</Title>
+          <Description>Demonstrates how to load a DOC document from disk and save it to DOCX format at the same location.</Description>
+          <FolderName>LoadAndSaveToDisk</FolderName>
+          <Order>6</Order>
+          <DocLink>
+            <DisplayName>Opening from a File</DisplayName>
+            <Url>Opening+from+a+File</Url>
+          </DocLink>
+          <InputFiles>
+            <DataFile>
+              <Path>..\Data\Document.doc</Path>
+            </DataFile>
+          </InputFiles>
+          <OutputFiles>
+            <DataFile>
+              <Path>..\Data\Document Out.docx</Path>
+            </DataFile>
+          </OutputFiles>
+          <Type>Console</Type>
+        </Example>
+        <Example>
+          <Title>Load and Save to Stream</Title>
+          <Description>Shows how to open a document from a memory stream and save it to another stream in RTF format. This is useful for when an application needs to load and save documents without writing anything to the disk. Many applications such as web services accept input or output as stream parameters.</Description>
+          <FolderName>LoadAndSaveToStream</FolderName>
+          <Order>7</Order>
+          <DocLink>
+            <DisplayName>Opening from a Stream</DisplayName>
+            <Url>Opening+from+a+Stream</Url>
+          </DocLink>
+          <InputFiles>
+            <DataFile>
+              <Path>..\Data\Document.doc</Path>
+            </DataFile>
+          </InputFiles>
+          <OutputFiles>
+            <DataFile>
+              <Path>..\Data\Document Out.rtf</Path>
+            </DataFile>
+          </OutputFiles>
+          <Type>Console</Type>
+        </Example>
+        <Example>
+          <Title>Convert a Document to PDF</Title>
+          <Description>To convert any document loaded into Aspose.Words to PDF simply invoke the Document.Save method and specify a file name with a ".PDF" extension. When saving to a stream use the SaveFormat or SaveOption classes to specify the desired output format.</Description>
+          <FolderName>Doc2Pdf</FolderName>
+          <Order>8</Order>
+          <DocLink>
+            <DisplayName>How to  Convert a Document to PDF</DisplayName>
+            <Url>How+to++Convert+a+Document+to+PDF</Url>
+          </DocLink>
+          <InputFiles>
+            <DataFile>
+              <Path>..\Data\Template.doc</Path>
+            </DataFile>
+          </InputFiles>
+          <OutputFiles>
+            <DataFile>
+              <Path>..\Data\Doc2PdfSave Out.pdf</Path>
+            </DataFile>
+          </OutputFiles>
+          <Type>Console</Type>
+        </Example>
+        <Example>
+          <Title>Update Fields</Title>
+          <Description>Fields in Microsoft Word documents are complex. There are over 50 field types (each needs its own result calculation procedure), formulas and expressions, bookmarks and references, functions and various switches. Fields can also be nested.
+
+Aspose.Words preserves all fiels during open/save and conversions. It is possible to update results of most common fields, including Table of Contents field so they appear just like how they are updated in Microsoft Word.
+
+This example demonstrates how to insert a TOC into a document along with a few headings and then update fields so the content of TOC is generated automatically.</Description>
+          <FolderName>UpdateFields</FolderName>
+          <Order>9</Order>
+          <DocLink>
+            <DisplayName>Supported Fields List</DisplayName>
+            <Url>About+Field+Update</Url>
+          </DocLink>
+          <OutputFiles>
+            <DataFile>
+              <Path>..\Data\Document Field Update Out.docx</Path>
+            </DataFile>
+          </OutputFiles>
+          <Type>Console</Type>
+        </Example>
+        <Example>
+          <Title>Working with the Nodes of a Document</Title>
+          <Description>By using the classes of the Aspose.Words DOM, you can obtain detailed programmatic access to elements and formatting of a document.
+  
+The Aspose.Words Document Object Model (DOM) is an in-memory representation of a Word document. The Aspose.Words DOM allows you to programmatically read, manipulate and modify content and formatting of a Word document.
+
+When Aspose.Words reads a Word document into memory, objects of different types are created to represent various document elements. Every run of text, paragraph, table, section is a node, and even the document itself is a node. Aspose.Words defines a class for every type of document node.</Description>
+          <FolderName>WorkingWithNodes</FolderName>
+          <Order>10</Order>
+          <DocLink>
+            <DisplayName>Node Classes</DisplayName>
+            <Url>Node+Classes</Url>
+          </DocLink>
+          <Type>Console</Type>
+        </Example>
+      </Examples>
+    </Folder>
+  </Folders>
+</Data>
