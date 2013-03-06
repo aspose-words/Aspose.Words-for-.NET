@@ -145,6 +145,27 @@ Aspose.Words provides a powerful mail merge engine with many more features such 
             <DisplayName>Opening from a Stream</DisplayName>
             <Url>Opening+from+a+Stream</Url>
           </DocLink>
+          <InputFiles>
+            <DataFile>
+              <Path>..\Data\Document.doc</Path>
+            </DataFile>
+          </InputFiles>
+          <OutputFiles>
+            <DataFile>
+              <Path>..\Data\Document Out.rtf</Path>
+            </DataFile>
+          </OutputFiles>
+          <Type>Console</Type>
+        </Example>
+        <Example>
+          <Title>Convert a Document to PDF</Title>
+          <Description>To convert any document loaded into Aspose.Words to PDF simply invoke the Document.Save method and specify a file name with a ".PDF" extension. When saving to a stream use the SaveFormat or SaveOption classes to specify the desired output format.</Description>
+          <FolderName>Doc2Pdf</FolderName>
+          <Order>8</Order>
+          <DocLink>
+            <DisplayName>How to  Convert a Document to PDF</DisplayName>
+            <Url>How+to++Convert+a+Document+to+PDF</Url>
+          </DocLink>
           <Type>Console</Type>
         </Example>
       </Examples>

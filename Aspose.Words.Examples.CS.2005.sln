@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadAndSaveToDisk", "QuickS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadAndSaveToStream", "QuickStart\LoadAndSaveToStream\CSharp\LoadAndSaveToStream.csproj", "{138D77DD-9E6F-47A2-B10A-06000E9EE555}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Doc2Pdf", "QuickStart\Doc2Pdf\CSharp\Doc2Pdf.csproj", "{389E25D3-5B19-4674-B159-D50F2917B847}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,9 @@ Global
 		{138D77DD-9E6F-47A2-B10A-06000E9EE555}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{138D77DD-9E6F-47A2-B10A-06000E9EE555}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{138D77DD-9E6F-47A2-B10A-06000E9EE555}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{389E25D3-5B19-4674-B159-D50F2917B847}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{389E25D3-5B19-4674-B159-D50F2917B847}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{389E25D3-5B19-4674-B159-D50F2917B847}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,5 +60,6 @@ Global
 		{442717CD-8494-4A5F-BE31-DFF735C99CF4} = {6E941DD1-CDAC-4503-B7DB-425C12A75E61}
 		{2DBC7D60-1FEB-4F3D-85EF-AFD3FCF910D5} = {6E941DD1-CDAC-4503-B7DB-425C12A75E61}
 		{138D77DD-9E6F-47A2-B10A-06000E9EE555} = {6E941DD1-CDAC-4503-B7DB-425C12A75E61}
+		{389E25D3-5B19-4674-B159-D50F2917B847} = {6E941DD1-CDAC-4503-B7DB-425C12A75E61}
 	EndGlobalSection
 EndGlobal
