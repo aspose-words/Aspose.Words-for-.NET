@@ -30,13 +30,39 @@ This is the perfect example for a first time user to get an idea of how easy Asp
         <Example>
           <Title>Append Documents</Title>
           <Description>This example demonstrates how to join one document to the end of another document by using just one line of code.
-  
-The document being appended to is referred to as the "destination document" and the document being appended is the "source document". During the appending process any styles and other document features are copied to the destination document.</Description>
+
+When appending documents the document which is appended to is referred to as the "destination document" and the document being appended is the "source document". 
+
+During the appending process any styles and other document features are copied to the destination document. The ImportFormatMode controls hows styles and formatting from the document being joined are handled. In this example formatting of the documnent being joined is retained.</Description>
           <FolderName>AppendDocuments</FolderName>
           <Order>2</Order>
           <DocLink>
             <DisplayName>Joining and Appending Documents</DisplayName>
             <Url>Joining+and+Appending+Documents</Url>
+          </DocLink>
+          <InputFiles>
+            <DataFile>
+              <Path>..\Data\TestFile.Destination.doc</Path>
+            </DataFile>
+            <DataFile>
+              <Path>..\Data\TestFile.Source.doc</Path>
+            </DataFile>
+          </InputFiles>
+          <OutputFiles>
+            <DataFile>
+              <Path>..\Data\TestFile Out.docx</Path>
+            </DataFile>
+          </OutputFiles>
+          <Type>Console</Type>
+        </Example>
+        <Example>
+          <Title>Applying a License</Title>
+          <Description>Demonstrates how to apply a temporary or permanent license in order to remove evaluation restrictions from the Aspose.Words library.</Description>
+          <FolderName>ApplyLicense</FolderName>
+          <Order>3</Order>
+          <DocLink>
+            <DisplayName>License Aspose.Words</DisplayName>
+            <Url>License+Aspose.Words</Url>
           </DocLink>
           <Type>Console</Type>
         </Example>

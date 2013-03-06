@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld", "QuickStart\He
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppendDocuments", "QuickStart\AppendDocuments\CSharp\AppendDocuments.csproj", "{5CDDDEEF-585E-4A01-9997-C5D10CB9070B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplyLicense", "QuickStart\ApplyLicense\CSharp\ApplyLicense.csproj", "{84113C35-7FA1-430A-ACD4-333F0064FE87}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +20,9 @@ Global
 		{5CDDDEEF-585E-4A01-9997-C5D10CB9070B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5CDDDEEF-585E-4A01-9997-C5D10CB9070B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CDDDEEF-585E-4A01-9997-C5D10CB9070B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84113C35-7FA1-430A-ACD4-333F0064FE87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84113C35-7FA1-430A-ACD4-333F0064FE87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84113C35-7FA1-430A-ACD4-333F0064FE87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -25,5 +30,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{17497BE2-931C-4A14-A96E-1823C1F4ABB7} = {6E941DD1-CDAC-4503-B7DB-425C12A75E61}
 		{5CDDDEEF-585E-4A01-9997-C5D10CB9070B} = {6E941DD1-CDAC-4503-B7DB-425C12A75E61}
+		{84113C35-7FA1-430A-ACD4-333F0064FE87} = {6E941DD1-CDAC-4503-B7DB-425C12A75E61}
 	EndGlobalSection
 EndGlobal
