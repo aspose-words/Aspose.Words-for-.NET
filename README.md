@@ -115,16 +115,16 @@ Download the examples from the above link. The solution files for Microsoft Visu
 
 Once downloaded you can open the examples by opening the appropriate solution file (.sln) according to the version of Visual Studio or your other development tool installed on your system:
 
-- Microsoft Visual Studio 2005 – Open Aspose.Words.Examples.2005.sln
-- Microsoft Visual Studio 2008 – Open Aspose.Words.Examples.2008.sln
-- Microsoft Visual Studio 2010 and Microsoft Visual Studio 2012 – Open Aspose.Words.Examples.2010.sln
-- MonoDevelop and SharpDevelop can open any version of the solutions above
++ Microsoft Visual Studio 2005 - Open Aspose.Words.Examples.2005.sln
++ Microsoft Visual Studio 2008 - Open Aspose.Words.Examples.2008.sln
++ Microsoft Visual Studio 2010 and Microsoft Visual Studio 2012 - Open Aspose.Words.Examples.2010.sln
++ MonoDevelop and SharpDevelop can open any version of the solutions above
 
 The examples are sorted into folders and are ready to compile. To run, right click on the corresponding project:
 
-- Any version of Microsoft Visual Studio - Select Debug and Start New Instance
-- MonoDevelop - Select Run Item
-- SharpDevelop – Select Run Project
++ Any version of Microsoft Visual Studio - Select Debug and Start New Instance
++ MonoDevelop - Select Run Item
++ SharpDevelop - Select Run Project
 
 ## Support and Contribution
 
