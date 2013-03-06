@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld", "QuickStart\He
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppendDocuments", "QuickStart\AppendDocuments\VisualBasic\AppendDocuments.vbproj", "{5CDDDEEF-585E-4A01-9997-C5D10CB9070B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplyLicense", "QuickStart\ApplyLicense\VisualBasic\ApplyLicense.vbproj", "{84113C35-7FA1-430A-ACD4-333F0064FE87}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
