@@ -20,7 +20,7 @@ Namespace LoadAndSaveToDisk
 			' Load the document from the absolute path on disk.
 			Dim doc As New Document(dataDir & "Document.doc")
 
-			' Save the document as DOCX document.");
+            ' Save the document to disk in DOCX format.
 			doc.Save(dataDir & "Document Out.docx")
 		End Sub
 	End Class

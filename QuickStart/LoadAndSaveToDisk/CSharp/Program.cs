@@ -21,7 +21,7 @@ namespace LoadAndSaveToDisk
             // Load the document from the absolute path on disk.
             Document doc = new Document(dataDir + "Document.doc");
 
-            // Save the document as DOCX document.");
+            // Save the document to disk in DOCX format.
             doc.Save(dataDir + "Document Out.docx");
         }
     }
