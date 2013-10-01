@@ -98,9 +98,9 @@ Aspose.Words provides a powerful mail merge engine with many more features such 
 - Use custom handlers to perform any sort of logic during mail merge, for example applying alternating row shading to a table row. 
 - Use different options to control how merge fields are cleaned up after mail merge is executed.</Description>
           <FolderName>SimpleMailMerge</FolderName>
-          <Order>7</Order>
+          <Order>8</Order>
           <DocLink>
-            <DisplayName>How to  Execute Simple Mail Merge</DisplayName>
+            <DisplayName>How to Execute Simple Mail Merge</DisplayName>
             <Url>How+to++Execute+Simple+Mail+Merge</Url>
           </DocLink>
           <InputFiles>
@@ -163,7 +163,7 @@ Aspose.Words provides a powerful mail merge engine with many more features such 
           <FolderName>Doc2Pdf</FolderName>
           <Order>9</Order>
           <DocLink>
-            <DisplayName>How to  Convert a Document to PDF</DisplayName>
+            <DisplayName>How to Convert a Document to PDF</DisplayName>
             <Url>How+to++Convert+a+Document+to+PDF</Url>
           </DocLink>
           <InputFiles>
