@@ -1,4 +1,4 @@
-#Aspose.Words for .NET Examples Repository
+##Aspose.Words for .NET Examples Repository
 
 This package contains C# and VB.NET Example Projects for [Aspose.Words for .NET](http://www.aspose.com/categories/.net-components/aspose.words-for-.net/default.aspx).
 
@@ -17,6 +17,16 @@ Using Aspose.Words for .NET in your project gives you the following benefits:
 + Minimal Learning Curve
 
 These example projects provide helpful demonstrations and code when using Aspose.Words for .NET. You will need to [download Aspose.Words for .NET](http://www.aspose.com/community/files/51/.net-components/aspose.words-for-.net/default.aspx) separately and it will work in evaluation mode.
+<br/><br/>
+<p align="center">
+  <a title="Download Examples Dashboard" href="http://www.aspose.com/community/files/72/java-components/aspose-examples-for-java/default.aspx">
+	<img src="https://raw.github.com/AsposeExamples/java-examples-dashboard/master/images/downloadDasboard-Button-Large.png" />
+  </a>
+  &nbsp;
+  <a title="Download Examples ZIP" href="https://github.com/asposewords/Aspose_Words_NET/archive/master.zip">
+	<img src="https://raw.github.com/AsposeExamples/java-examples-dashboard/master/images/downloadZip-Button-Large.png" />
+  </a>
+</p>
 
 ## Aspose.Words for .NET at a Glance
 ![Aspose.Words Overview](http://www.aspose.com/Aspose.Words/Images/aspose.words-for-.net.jpg "The Main Features of Aspose.Words for .NET")
