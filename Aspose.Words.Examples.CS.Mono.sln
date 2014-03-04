@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspose.Words Examples", "Aspose.Words Examples.csproj", "{0EB3511A-65F6-401A-973C-E054E40A77D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspose.Words ExamplesMono", "Aspose.Words ExamplesMono.csproj", "{535630C4-77EE-4C45-A9A0-CBE97567889B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +8,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0EB3511A-65F6-401A-973C-E054E40A77D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0EB3511A-65F6-401A-973C-E054E40A77D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0EB3511A-65F6-401A-973C-E054E40A77D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{535630C4-77EE-4C45-A9A0-CBE97567889B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{535630C4-77EE-4C45-A9A0-CBE97567889B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{535630C4-77EE-4C45-A9A0-CBE97567889B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
