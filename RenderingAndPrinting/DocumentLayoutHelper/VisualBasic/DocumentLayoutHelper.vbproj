@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4BA3E5E0-AF92-4B44-9948-61BFA3D753FA}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>DocumentLayoutHelperExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>DocumentLayoutHelper</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -43,10 +43,13 @@
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LayoutEntities.vb" />
     <Compile Include="Program.vb" />
+    <Compile Include="RenderedDocument.vb" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Data\TestFile.docx">

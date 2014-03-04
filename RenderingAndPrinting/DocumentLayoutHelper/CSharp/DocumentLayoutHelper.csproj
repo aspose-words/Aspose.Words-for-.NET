@@ -39,10 +39,13 @@
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LayoutEntities.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="RenderedDocument.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Data\TestFile.docx">

@@ -129,7 +129,9 @@
     <Compile Include="QuickStart\SimpleMailMerge\VisualBasic\Program.vb" />
     <Compile Include="QuickStart\UpdateFields\VisualBasic\Program.vb" />
     <Compile Include="QuickStart\WorkingWithNodes\VisualBasic\Program.vb" />
+    <Compile Include="RenderingAndPrinting\DocumentLayoutHelper\VisualBasic\LayoutEntities.vb" />
     <Compile Include="RenderingAndPrinting\DocumentLayoutHelper\VisualBasic\Program.vb" />
+    <Compile Include="RenderingAndPrinting\DocumentLayoutHelper\VisualBasic\RenderedDocument.vb" />
     <Compile Include="RenderingAndPrinting\EnumerateLayoutElements\VisualBasic\Program.vb" />
     <Compile Include="RenderingAndPrinting\PrintDocument\DocumentPreviewAndPrint\VisualBasic\Program.vb" />
     <Compile Include="RenderingAndPrinting\PrintDocument\MultiplePagesOnSheet\VisualBasic\Program.vb" />

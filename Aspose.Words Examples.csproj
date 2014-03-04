@@ -125,7 +125,9 @@
     <Compile Include="QuickStart\SimpleMailMerge\CSharp\Program.cs" />
     <Compile Include="QuickStart\UpdateFields\CSharp\Program.cs" />
     <Compile Include="QuickStart\WorkingWithNodes\CSharp\Program.cs" />
+    <Compile Include="RenderingAndPrinting\DocumentLayoutHelper\CSharp\LayoutEntities.cs" />
     <Compile Include="RenderingAndPrinting\DocumentLayoutHelper\CSharp\Program.cs" />
+    <Compile Include="RenderingAndPrinting\DocumentLayoutHelper\CSharp\RenderedDocument.cs" />
     <Compile Include="RenderingAndPrinting\EnumerateLayoutElements\CSharp\Program.cs" />
     <Compile Include="RenderingAndPrinting\PrintDocument\DocumentPreviewAndPrint\CSharp\Program.cs" />
     <Compile Include="RenderingAndPrinting\PrintDocument\MultiplePagesOnSheet\CSharp\Program.cs" />
