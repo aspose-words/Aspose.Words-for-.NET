@@ -1,4 +1,5 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+//////////////////////////////////////////////////////////////////////////
+// Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -12,7 +13,7 @@ using Aspose.Words.Markup;
 using Aspose.Words.Fields;
 using Aspose.Words.Lists;
 
-namespace PageSplitter
+namespace PageSplitterExample
 {
     /// <summary>
     /// Splits a document into multiple sections so that each page begins and ends at a section boundary.

@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -13,9 +14,9 @@ Imports Aspose.Words
 Imports Aspose.Words.Layout
 Imports Aspose.Words.Tables
 
-Namespace DocumentLayoutHelper
+Namespace DocumentLayoutHelperExample
 	Public Class Program
-		Shared Sub Main(ByVal args() As String)
+		Public Shared Sub Main()
 			Dim dataDir As String = Path.GetFullPath("../../../Data/")
 
 			Dim doc As New Document(dataDir & "TestFile.docx")

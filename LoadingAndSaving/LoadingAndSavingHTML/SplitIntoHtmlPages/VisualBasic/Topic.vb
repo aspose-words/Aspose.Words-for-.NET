@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -7,7 +8,7 @@
 
 Imports Microsoft.VisualBasic
 Imports System
-Namespace SplitIntoHtmlPages
+Namespace SplitIntoHtmlPagesExample
 	''' <summary>
 	''' A simple class to hold a topic title and HTML file name together.
 	''' </summary>

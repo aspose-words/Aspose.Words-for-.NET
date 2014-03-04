@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -11,7 +12,7 @@ Imports Aspose.Words
 Imports Aspose.Words.Drawing
 Imports Aspose.Words.Fields
 
-Namespace DocumentExplorer
+Namespace DocumentExplorerExample
 	' Classes inherited from the Item class provide specialized representation of particular 
 	' document nodes by overriding virtual methods and properties of the base class.
 

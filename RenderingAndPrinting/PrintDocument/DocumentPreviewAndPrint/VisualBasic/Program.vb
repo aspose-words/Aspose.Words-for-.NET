@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -14,7 +15,7 @@ Imports System.Windows.Forms
 Imports Aspose.Words
 Imports Aspose.Words.Rendering
 
-Namespace DocumentPreviewAndPrint
+Namespace DocumentPreviewAndPrintExample
 	'ExStart
 	'ExId:DocumentPreviewAndPrint_ActivePrintPreviewDialog_OnShown
 	'ExSummary:Brings the Print Preview dialog to the front.
@@ -40,7 +41,7 @@ Namespace DocumentPreviewAndPrint
 	''' seem to show when calling from a 64-bit application.
 	''' </summary>
 	Public Class Program
-		Public Shared Sub Main(ByVal args() As String)
+		Public Shared Sub Main()
 			' The path to the documents directory.
 			Dim dataDir As String = Path.GetFullPath("../../../Data/")
 

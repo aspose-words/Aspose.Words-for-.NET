@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -11,7 +12,7 @@ Imports System.ComponentModel
 Imports System.IO
 Imports System.Runtime.InteropServices
 
-Namespace XpsPrint
+Namespace XpsPrintExample
 	''' <summary>
 	''' A utility class that converts a document to XPS using Aspose.Words and then sends to the XpsPrint API.
 	''' </summary>

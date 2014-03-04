@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{17497BE2-931C-4A14-A96E-1823C1F4ABB7}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>HelloWorldExample</RootNamespace>
     <AssemblyName>HelloWorld</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -49,9 +49,7 @@
     <Compile Include="Program.vb" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Data\**\*" Exclude="..\Data\*Out*">
-      <Link>Data\Data\</Link>
-    </None>
+<!-- DataFiles -->
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) != ''" />

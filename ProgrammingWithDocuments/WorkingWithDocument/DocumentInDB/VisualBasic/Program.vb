@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -14,13 +15,13 @@ Imports System.Reflection
 
 Imports Aspose.Words
 
-Namespace DocumentInDB
+Namespace DocumentInDBExample
 	''' <summary>
 	''' This project is set to target the x86 platform because there is no 64-bit driver available 
 	''' for the Access database used in this sample.
 	''' </summary>
 	Friend Class Program
-		Public Shared Sub Main(ByVal args() As String)
+		Public Shared Sub Main()
 			' Sample infrastructure.
 			Dim exeDir As String = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar
 			Dim dataDir As String = New Uri(New Uri(exeDir), "../../Data/").LocalPath

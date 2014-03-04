@@ -1,16 +1,16 @@
-// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+//////////////////////////////////////////////////////////////////////////
+// Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
-//14/9/06 by Vladimir Averkin
 using System;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Reflection;
 
-namespace Word2Help
+namespace Word2HelpExample
 {
     /// <summary>
     /// This project converts documentation stored inside a DOC format to a series of HTML documents. This output is in 
@@ -18,7 +18,7 @@ namespace Word2Help
     /// </summary>
     public class Starter 
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             // Specifies the source directory, processes all *.doc files found in it.
             string dataDir = Path.GetFullPath("../../../Data/");

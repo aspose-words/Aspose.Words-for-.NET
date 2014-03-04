@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B73280E1-1652-49A8-937C-ED3FEFA44322}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>ImportTableFromDataTableExample</RootNamespace>
     <AssemblyName>ImportTableFromDataTable</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -13,7 +14,7 @@ Imports Aspose.Words
 Imports Aspose.Words.Reporting
 Imports Aspose.Words.Saving
 
-Namespace SplitIntoHtmlPages
+Namespace SplitIntoHtmlPagesExample
 	''' <summary>
 	''' This class takes a Microsoft Word document, splits it into topics at paragraphs formatted
 	''' with the Heading 1 style and saves every topic as an HTML file.

@@ -1,4 +1,5 @@
-// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+//////////////////////////////////////////////////////////////////////////
+// Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -8,11 +9,11 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace SplitIntoHtmlPages
+namespace SplitIntoHtmlPagesExample
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             // You need to have a valid license for Aspose.Words.
             // The best way is to embed the license as a resource into the project

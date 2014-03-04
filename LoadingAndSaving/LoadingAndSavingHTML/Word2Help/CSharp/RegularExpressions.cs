@@ -1,13 +1,13 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+//////////////////////////////////////////////////////////////////////////
+// Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
-//22/9/06 by Vladimir Averkin
 using System.Text.RegularExpressions;
 
-namespace Word2Help
+namespace Word2HelpExample
 {
     /// <summary>
     /// Central storage for regular expressions used in the project.

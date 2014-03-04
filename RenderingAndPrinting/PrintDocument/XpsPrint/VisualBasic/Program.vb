@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -10,7 +11,7 @@ Imports System
 Imports System.IO
 Imports System.Reflection
 
-Namespace XpsPrint
+Namespace XpsPrintExample
 	''' <summary>
 	''' This sample shows how to convert a document to XPS by means of Aspose.Words and then print with the XpsPrint API.
 	''' This sample supports both x86 and x64 platforms.
@@ -33,7 +34,7 @@ Namespace XpsPrint
 		''' The main entry point of the application.
 		''' </summary>
 		<STAThread> _
-		Public Shared Sub Main(ByVal args() As String)
+		Public Shared Sub Main()
 			Try
 			' The path to the documents directory.
 			Dim dataDir As String = Path.GetFullPath("../../../Data/")

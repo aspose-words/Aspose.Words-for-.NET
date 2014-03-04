@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5BDC68C3-1853-4C06-B553-5B9F8F108357}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>PageSplitterExample</RootNamespace>
     <AssemblyName>PageSplitter</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -49,7 +49,12 @@
     <Compile Include="Program.vb" />
   </ItemGroup>
   <ItemGroup>
-<!-- DataFiles -->
+    <None Include="..\Data\Rendering.doc">
+      <Link>Data\Rendering.doc</Link>
+    </None>
+    <None Include="..\Data\Sample Documentation.doc">
+      <Link>Data\Sample Documentation.doc</Link>
+    </None>
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) != ''" />

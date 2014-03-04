@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -9,7 +10,7 @@ Imports Microsoft.VisualBasic
 Imports System
 Imports System.Windows.Forms
 
-Namespace SaveHtmlAndEmail
+Namespace SaveHtmlAndEmailExample
 	Friend NotInheritable Class Program
 		''' <summary>
 		''' The main entry point for the application.
@@ -17,7 +18,7 @@ Namespace SaveHtmlAndEmail
 		Private Sub New()
 		End Sub
 		<STAThread> _
-		Public Shared Sub Main(ByVal args() As String)
+		Public Shared Sub Main()
 			Application.EnableVisualStyles()
 			Application.SetCompatibleTextRenderingDefault(False)
 			Application.Run(New MainForm())

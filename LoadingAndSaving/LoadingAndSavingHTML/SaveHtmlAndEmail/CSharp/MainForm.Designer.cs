@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 //////////////////////////////////////////////////////////////////////////
 // Copyright 2001-2013 Aspose Pty Ltd. All Rights Reserved.
 //
@@ -6,7 +6,7 @@
 // is only intended as a supplement to the documentation, and is provided
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
-namespace SaveHtmlAndEmail
+namespace SaveHtmlAndEmailExample
 {
     partial class MainForm
     {
@@ -265,4 +265,3 @@ namespace SaveHtmlAndEmail
         private System.Windows.Forms.CheckBox checkboxAuth;
     }
 }
-

@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -12,7 +13,7 @@ Imports System.Text.RegularExpressions
 Imports Aspose.Words
 Imports Aspose.Words.Fields
 
-Namespace Word2Help
+Namespace Word2HelpExample
 	''' <summary>
 	''' This "facade" class makes it easier to work with a hyperlink field in a Word document. 
 	''' 

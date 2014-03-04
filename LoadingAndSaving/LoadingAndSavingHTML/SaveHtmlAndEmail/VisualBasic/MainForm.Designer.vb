@@ -9,7 +9,7 @@
 
 Imports Microsoft.VisualBasic
 Imports System
-Namespace SaveHtmlAndEmail
+Namespace SaveHtmlAndEmailExample
 	Partial Public Class MainForm
 		''' <summary>
 		''' Required designer variable.
@@ -263,4 +263,3 @@ Namespace SaveHtmlAndEmail
 		Private checkboxAuth As System.Windows.Forms.CheckBox
 	End Class
 End Namespace
-

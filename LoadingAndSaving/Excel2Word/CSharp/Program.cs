@@ -1,4 +1,5 @@
-// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+//////////////////////////////////////////////////////////////////////////
+// Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -7,7 +8,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Excel2Word
+namespace Excel2WordExample
 {
     public class Program
     {
@@ -15,7 +16,7 @@ namespace Excel2Word
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        public static void Main(string[] args)
+        public static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

@@ -1,10 +1,10 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
 ' "as is", without warranty of any kind, either expressed or implied.
 '////////////////////////////////////////////////////////////////////////
-'14/9/06 by Vladimir Averkin
 
 Imports Microsoft.VisualBasic
 Imports System
@@ -12,13 +12,13 @@ Imports System.Text.RegularExpressions
 Imports System.IO
 Imports System.Reflection
 
-Namespace Word2Help
+Namespace Word2HelpExample
 	''' <summary>
 	''' This project converts documentation stored inside a DOC format to a series of HTML documents. This output is in 
 	''' a form that can then be easily compiled together into a single compiled help file (CHM) by using the Microsoft HTML Help workshop application.
 	''' </summary>
 	Public Class Starter
-		Public Shared Sub Main(ByVal args() As String)
+		Public Shared Sub Main()
 			Dim exeDir As String = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar
 			' Specifies the source directory, processes all *.doc files found in it.
 			Dim dataDir As String = New Uri(New Uri(exeDir), "../../Data/").LocalPath

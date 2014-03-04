@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{389E25D3-5B19-4674-B159-D50F2917B847}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Doc2Pdf</RootNamespace>
+    <RootNamespace>Doc2PdfExample</RootNamespace>
     <AssemblyName>Doc2Pdf</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -45,8 +45,8 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Data\**\*" Exclude="..\Data\*Out*">
-      <Link>Data\Data\</Link>
+    <None Include="..\Data\Template.doc">
+      <Link>Data\Template.doc</Link>
     </None>
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->

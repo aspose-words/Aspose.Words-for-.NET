@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5CDDDEEF-585E-4A01-9997-C5D10CB9070B}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>AppendDocumentsExample</RootNamespace>
     <AssemblyName>AppendDocuments</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -49,8 +49,11 @@
     <Compile Include="Program.vb" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Data\**\*" Exclude="..\Data\*Out*">
-      <Link>Data\Data\</Link>
+    <None Include="..\Data\TestFile.Destination.doc">
+      <Link>Data\TestFile.Destination.doc</Link>
+    </None>
+    <None Include="..\Data\TestFile.Source.doc">
+      <Link>Data\TestFile.Source.doc</Link>
     </None>
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->

@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -16,11 +17,11 @@ Imports Aspose.Words
 Imports Aspose.Words.Tables
 Imports Aspose.Words.Fields
 
-Namespace ExtractContent
+Namespace ExtractContentExample
 	Public Class Program
 		Private Shared mDataDir As String
 
-		Public Shared Sub Main(ByVal args() As String)
+		Public Shared Sub Main()
 			' The path to the documents directory.
 			mDataDir = New Uri(New Uri(exeDir), "../../Data/").LocalPath
 

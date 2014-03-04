@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -18,7 +19,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyConfiguration("")>
 <Assembly: AssemblyProduct("XpsPrint")>
 <Assembly: AssemblyCompany("Aspose Pty")>
-<Assembly: AssemblyCopyright("Copyright © Aspose Pty 2009")>
+<Assembly: AssemblyCopyright("Copyright ï¿½ Aspose Pty 2009")>
 <Assembly: AssemblyTrademark("")>
 <Assembly: AssemblyCulture("")>
 

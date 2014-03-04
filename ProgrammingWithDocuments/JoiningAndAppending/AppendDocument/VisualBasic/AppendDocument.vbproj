@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D363C78C-A7EF-4C52-87E4-5658F30CB95C}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>AppendDocumentExample</RootNamespace>
     <AssemblyName>AppendDocument</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -49,7 +49,21 @@
     <Compile Include="Program.vb" />
   </ItemGroup>
   <ItemGroup>
-<!-- DataFiles -->
+    <None Include="..\Data\TestFile.Destination.doc">
+      <Link>Data\TestFile.Destination.doc</Link>
+    </None>
+    <None Include="..\Data\TestFile.DestinationList.doc">
+      <Link>Data\TestFile.DestinationList.doc</Link>
+    </None>
+    <None Include="..\Data\TestFile.Source.doc">
+      <Link>Data\TestFile.Source.doc</Link>
+    </None>
+    <None Include="..\Data\TestFile.SourceList.doc">
+      <Link>Data\TestFile.SourceList.doc</Link>
+    </None>
+    <None Include="..\Data\TestFile.SourcePageSetup.doc">
+      <Link>Data\TestFile.SourcePageSetup.doc</Link>
+    </None>
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) != ''" />

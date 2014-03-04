@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -10,9 +11,9 @@ Imports System
 Imports System.IO
 Imports System.Reflection
 
-Namespace SplitIntoHtmlPages
+Namespace SplitIntoHtmlPagesExample
 	Public Class Program
-		Public Shared Sub Main(ByVal args() As String)
+		Public Shared Sub Main()
 			' You need to have a valid license for Aspose.Words.
 			' The best way is to embed the license as a resource into the project
 			' and specify only file name without path in the following call.

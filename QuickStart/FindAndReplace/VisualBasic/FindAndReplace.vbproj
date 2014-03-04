@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F2840BC4-BBC5-48B3-A5BC-AE7EEB7640D1}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>FindAndReplaceExample</RootNamespace>
     <AssemblyName>FindAndReplace</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -49,8 +49,8 @@
     <Compile Include="Program.vb" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Data\**\*" Exclude="..\Data\*Out*">
-      <Link>Data\Data\</Link>
+    <None Include="..\Data\ReplaceSimple.doc">
+      <Link>Data\ReplaceSimple.doc</Link>
     </None>
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->

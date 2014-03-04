@@ -1,5 +1,5 @@
 '////////////////////////////////////////////////////////////////////////
-' Copyright 2001-2013 Aspose Pty Ltd. All Rights Reserved.
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -11,9 +11,9 @@ Imports System.IO
 
 Imports Aspose.Words
 
-Namespace SimpleMailMerge
+Namespace SimpleMailMergeExample
 	Public Class Program
-		Public Shared Sub Main(ByVal args() As String)
+		Public Shared Sub Main()
 			' The path to the documents directory.
 			Dim dataDir As String = Path.GetFullPath("../../../Data/")
 

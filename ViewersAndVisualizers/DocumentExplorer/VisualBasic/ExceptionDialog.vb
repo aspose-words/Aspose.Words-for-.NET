@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -9,7 +10,7 @@ Imports Microsoft.VisualBasic
 Imports System
 Imports System.Windows.Forms
 
-Namespace DocumentExplorer
+Namespace DocumentExplorerExample
 
 	''' <summary>
 	''' Provides full information about application exception.

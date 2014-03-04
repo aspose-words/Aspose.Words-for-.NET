@@ -1,4 +1,5 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+//////////////////////////////////////////////////////////////////////////
+// Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -10,7 +11,7 @@ using System.Collections;
 using Aspose.Words;
 using Aspose.Words.Layout;
 
-namespace PageSplitter
+namespace PageSplitterExample
 {
     /// <summary>
     /// Provides methods for extracting nodes of a document which are rendered on a specified pages.

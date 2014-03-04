@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -17,9 +18,9 @@ Imports Aspose.Words
 Imports Aspose.Words.Reporting
 
 
-Namespace LINQtoXMLMailMerge
+Namespace LINQtoXMLMailMergeExample
 	Public Class Program
-		Public Shared Sub Main(ByVal args() As String)
+		Public Shared Sub Main()
 			' The sample infrastructure.
 			Dim dataDir As String = Path.GetFullPath("../../../Data/")
 

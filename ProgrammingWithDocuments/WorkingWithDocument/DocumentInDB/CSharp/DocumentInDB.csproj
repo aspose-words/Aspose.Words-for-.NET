@@ -47,7 +47,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-<!-- DataFiles -->
+    <None Include="..\Data\DocDB.mdb">
+      <Link>Data\DocDB.mdb</Link>
+    </None>
+    <None Include="..\Data\TestFile.doc">
+      <Link>Data\TestFile.doc</Link>
+    </None>
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="$(MSBuildToolsPath) != ''" />

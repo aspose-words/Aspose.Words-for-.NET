@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{66F04C67-69C2-425D-A60E-C9DD394CF12A}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>Word2HelpExample</RootNamespace>
     <AssemblyName>Word2Help</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -49,7 +49,18 @@
     <Compile Include="Program.vb" />
   </ItemGroup>
   <ItemGroup>
-<!-- DataFiles -->
+    <None Include="..\Data\banner.html">
+      <Link>Data\banner.html</Link>
+    </None>
+    <None Include="..\Data\footer.html">
+      <Link>Data\footer.html</Link>
+    </None>
+    <None Include="..\Data\header.html">
+      <Link>Data\header.html</Link>
+    </None>
+    <None Include="..\Data\Sample Documentation.doc">
+      <Link>Data\Sample Documentation.doc</Link>
+    </None>
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) != ''" />

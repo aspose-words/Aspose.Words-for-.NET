@@ -1,4 +1,5 @@
-// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+//////////////////////////////////////////////////////////////////////////
+// Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -14,7 +15,7 @@ using System.Windows.Forms;
 
 using Aspose.Words;
 
-namespace MultiplePagesOnSheet
+namespace MultiplePagesOnSheetExample
 {
     /// <summary>
     /// A subclass of the .NET Print Preview dialog. This extension only is used only to work around the .NET PrintPreviewDialog
@@ -38,7 +39,7 @@ namespace MultiplePagesOnSheet
     /// </summary>
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             // The path to the documents directory.
             string dataDir = Path.GetFullPath("../../../Data/");

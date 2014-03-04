@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{EE57A802-BF35-4B7C-8A6C-3DE4A154DD3B}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>ImageToPdfExample</RootNamespace>
     <AssemblyName>ImageToPdf</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -49,7 +49,21 @@
     <Compile Include="Program.vb" />
   </ItemGroup>
   <ItemGroup>
-<!-- DataFiles -->
+    <None Include="..\Data\Test.gif">
+      <Link>Data\Test.gif</Link>
+    </None>
+    <None Include="..\Data\Test.jpg">
+      <Link>Data\Test.jpg</Link>
+    </None>
+    <None Include="..\Data\Test.png">
+      <Link>Data\Test.png</Link>
+    </None>
+    <None Include="..\Data\Test.tiff">
+      <Link>Data\Test.tiff</Link>
+    </None>
+    <None Include="..\Data\Test.wmf">
+      <Link>Data\Test.wmf</Link>
+    </None>
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) != ''" />

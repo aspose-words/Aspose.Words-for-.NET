@@ -1,10 +1,10 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+//////////////////////////////////////////////////////////////////////////
+// Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
-//14/9/06 by Vladimir Averkin
 using System;
 using System.IO;
 using System.Collections;
@@ -12,7 +12,7 @@ using System.Text;
 using System.Xml;
 using Aspose.Words;
 
-namespace Word2Help
+namespace Word2HelpExample
 {
     /// <summary>
     /// This is the main class.

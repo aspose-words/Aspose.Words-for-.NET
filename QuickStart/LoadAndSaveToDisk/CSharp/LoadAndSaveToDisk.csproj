@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2DBC7D60-1FEB-4F3D-85EF-AFD3FCF910D5}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>LoadAndSaveToDisk</RootNamespace>
+    <RootNamespace>LoadAndSaveToDiskExample</RootNamespace>
     <AssemblyName>LoadAndSaveToDisk</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -45,8 +45,8 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Data\**\*" Exclude="..\Data\*Out*">
-      <Link>Data\Data\</Link>
+    <None Include="..\Data\Document.doc">
+      <Link>Data\Document.doc</Link>
     </None>
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->

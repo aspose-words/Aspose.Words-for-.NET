@@ -1,4 +1,5 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+//////////////////////////////////////////////////////////////////////////
+// Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -11,7 +12,7 @@ using Aspose.Words;
 using Aspose.Words.Reporting;
 using Aspose.Words.Saving;
 
-namespace SplitIntoHtmlPages
+namespace SplitIntoHtmlPagesExample
 {
     /// <summary>
     /// This class takes a Microsoft Word document, splits it into topics at paragraphs formatted

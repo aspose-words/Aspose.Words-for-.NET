@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -16,7 +17,7 @@ Imports System.Windows.Forms
 
 Imports Aspose.Words
 
-Namespace MultiplePagesOnSheet
+Namespace MultiplePagesOnSheetExample
 	''' <summary>
 	''' A subclass of the .NET Print Preview dialog. This extension only is used only to work around the .NET PrintPreviewDialog
 	''' class not appearing in front of other windows by default.
@@ -37,7 +38,7 @@ Namespace MultiplePagesOnSheet
 	''' seem to show when calling from a 64-bit application.
 	''' </summary>
 	Public Class Program
-		Public Shared Sub Main(ByVal args() As String)
+		Public Shared Sub Main()
 			' The path to the documents directory.
 			Dim dataDir As String = Path.GetFullPath("../../../Data/")
 

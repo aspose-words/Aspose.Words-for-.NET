@@ -1,5 +1,5 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
-namespace Excel2Word
+// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+namespace Excel2WordExample
 {
     partial class MainForm
     {
@@ -85,4 +85,3 @@ namespace Excel2Word
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
     }
 }
-

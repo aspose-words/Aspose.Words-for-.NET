@@ -1,4 +1,6 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
 ' "as is", without warranty of any kind, either expressed or implied.
@@ -6,7 +8,7 @@
 
 Imports Microsoft.VisualBasic
 Imports System
-Namespace DocumentExplorer
+Namespace DocumentExplorerExample
 	''' <summary>
 	''' Shows an About form for this application.
 	''' </summary>
@@ -63,7 +65,7 @@ Namespace DocumentExplorer
 			Me.label2.Name = "label2"
 			Me.label2.Size = New System.Drawing.Size(364, 20)
 			Me.label2.TabIndex = 2
-			Me.label2.Text = "Copyright © 2002-2010 Aspose Pty Ltd. All Rights Reserved. "
+			Me.label2.Text = "Copyright ï¿½ 2002-2010 Aspose Pty Ltd. All Rights Reserved. "
 			Me.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 			' 
 			' textBox1

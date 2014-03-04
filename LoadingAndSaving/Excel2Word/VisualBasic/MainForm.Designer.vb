@@ -2,7 +2,7 @@
 
 Imports Microsoft.VisualBasic
 Imports System
-Namespace Excel2Word
+Namespace Excel2WordExample
 	Partial Public Class MainForm
 		''' <summary>
 		''' Required designer variable.
@@ -83,4 +83,3 @@ Namespace Excel2Word
 		Private saveFileDialog As System.Windows.Forms.SaveFileDialog
 	End Class
 End Namespace
-

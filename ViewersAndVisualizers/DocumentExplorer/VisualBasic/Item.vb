@@ -1,3 +1,4 @@
+'////////////////////////////////////////////////////////////////////////
 ' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
@@ -15,7 +16,7 @@ Imports System.Text
 Imports System.Windows.Forms
 Imports Aspose.Words
 
-Namespace DocumentExplorer
+Namespace DocumentExplorerExample
 	''' <summary>
 	''' Base class to provide GUI representation for document nodes.
 	''' </summary>
@@ -216,7 +217,7 @@ Namespace DocumentExplorer
 			gControlCharacters.Add(ControlChar.NonBreakingHyphenChar, "[!NonBreakingHyphen!]")
 			gControlCharacters.Add(ControlChar.NonBreakingSpaceChar, "[!NonBreakingSpace!]")
 			gControlCharacters.Add(ControlChar.OptionalHyphenChar, "[!OptionalHyphen!]")
-			gControlCharacters.Add(ControlChar.ParagraphBreakChar, "¶" & Constants.vbCrLf)
+			gControlCharacters.Add(ControlChar.ParagraphBreakChar, "ï¿½" & Constants.vbCrLf)
 			gControlCharacters.Add(ControlChar.SectionBreakChar, "[!SectionBreak!]" & Constants.vbCrLf)
 			gControlCharacters.Add(ControlChar.TabChar, "[!Tab!]")
 		End Sub

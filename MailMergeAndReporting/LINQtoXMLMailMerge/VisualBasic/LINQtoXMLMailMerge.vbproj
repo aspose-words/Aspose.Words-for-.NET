@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0697F567-1E1F-4BA0-8809-1940B64764C7}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>LINQtoXMLMailMergeExample</RootNamespace>
     <AssemblyName>LINQtoXMLMailMerge</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -49,7 +49,12 @@
     <Compile Include="Program.vb" />
   </ItemGroup>
   <ItemGroup>
-<!-- DataFiles -->
+    <None Include="..\Data\PurchaseOrder.xml">
+      <Link>Data\PurchaseOrder.xml</Link>
+    </None>
+    <None Include="..\Data\TestFile.doc">
+      <Link>Data\TestFile.doc</Link>
+    </None>
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) != ''" />

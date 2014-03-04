@@ -1,13 +1,10 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
 ' "as is", without warranty of any kind, either expressed or implied.
 '////////////////////////////////////////////////////////////////////////
-'ExStart
-'ExFor:MailMerge.Execute(DataRow)
-'ExId:MultipleDocsInMailMerge
-'ExSummary:Produce multiple documents during mail merge.
 
 Imports Microsoft.VisualBasic
 Imports System
@@ -18,9 +15,9 @@ Imports System.Reflection
 
 Imports Aspose.Words
 
-Namespace MultipleDocsInMailMerge
+Namespace MultipleDocsInMailMergeExample
 	Public Class Program
-		Public Shared Sub Main(ByVal args() As String)
+		Public Shared Sub Main()
 			'Sample infrastructure.
 			Dim dataDir As String = Path.GetFullPath("../../../Data/")
 

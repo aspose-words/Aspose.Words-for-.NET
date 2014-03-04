@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -9,7 +10,7 @@ Imports Microsoft.VisualBasic
 Imports System.Collections
 Imports Aspose.Words.Reporting
 
-Namespace SplitIntoHtmlPages
+Namespace SplitIntoHtmlPagesExample
 	''' <summary>
 	''' A custom data source for Aspose.Words mail merge.
 	''' Returns topic objects.

@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -12,7 +13,7 @@ Imports System.Collections
 Imports Aspose.Words
 Imports Aspose.Words.Layout
 
-Namespace PageSplitter
+Namespace PageSplitterExample
 	''' <summary>
 	''' Splits a document into multiple documents, one per page.
 	''' </summary>

@@ -1,4 +1,5 @@
-// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+//////////////////////////////////////////////////////////////////////////
+// Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -14,11 +15,11 @@ using Aspose.Words.Fields;
 using Aspose.Words.Tables;
 using System.Diagnostics;
 
-namespace ReplaceFieldsWithStaticText
+namespace ReplaceFieldsWithStaticTextExample
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             // The path to the documents directory.
             string dataDir = Path.GetFullPath("../../../Data/");

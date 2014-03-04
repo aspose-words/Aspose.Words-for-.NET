@@ -1,10 +1,10 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
 ' "as is", without warranty of any kind, either expressed or implied.
 '////////////////////////////////////////////////////////////////////////
-'18/9/06 by Vladimir Averkin
 
 Imports Microsoft.VisualBasic
 Imports System
@@ -14,7 +14,7 @@ Imports Aspose.Words
 Imports Aspose.Words.Fields
 Imports Aspose.Words.Saving
 
-Namespace Word2Help
+Namespace Word2HelpExample
 	''' <summary>
 	''' Represents a single topic that will be written as an HTML file.
 	''' </summary>

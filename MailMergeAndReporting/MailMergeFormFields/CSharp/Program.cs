@@ -1,12 +1,10 @@
-// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+//////////////////////////////////////////////////////////////////////////
+// Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
-//ExStart
-//ExId:MailMergeFormFields
-//ExSummary:Complete source code of a program that inserts checkboxes and text input form fields into a document during mail merge.
 using System;
 using System.IO;
 using System.Reflection;
@@ -14,7 +12,7 @@ using Aspose.Words;
 using Aspose.Words.Fields;
 using Aspose.Words.Reporting;
 
-namespace MailMergeFormFields
+namespace MailMergeFormFieldsExample
 {
     /// <summary>
     /// This sample shows how to insert check boxes and text input form fields during mail merge into a document.
@@ -24,7 +22,7 @@ namespace MailMergeFormFields
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        public static void Main(string[] args)
+        public static void Main()
         {
             Program program = new Program();
             program.Execute();

@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{138D77DD-9E6F-47A2-B10A-06000E9EE555}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>LoadAndSaveToStream</RootNamespace>
+    <RootNamespace>LoadAndSaveToStreamExample</RootNamespace>
     <AssemblyName>LoadAndSaveToStream</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -45,8 +45,8 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Data\**\*" Exclude="..\Data\*Out*">
-      <Link>Data\Data\</Link>
+    <None Include="..\Data\Document.doc">
+      <Link>Data\Document.doc</Link>
     </None>
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->

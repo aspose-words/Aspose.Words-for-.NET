@@ -1,4 +1,5 @@
-' Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+'////////////////////////////////////////////////////////////////////////
+' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 '
 ' This file is part of Aspose.Words. The source code in this file
 ' is only intended as a supplement to the documentation, and is provided
@@ -12,7 +13,7 @@ Imports System.Reflection
 
 Imports Aspose.Words
 
-Namespace CopyBookmarkedText
+Namespace CopyBookmarkedTextExample
 	''' <summary>
 	''' Shows how to copy bookmarked text from one document to another while preserving all content and formatting.
 	''' 
@@ -29,7 +30,7 @@ Namespace CopyBookmarkedText
 		''' <summary>
 		''' The main entry point for the application.
 		''' </summary>
-		Public Shared Sub Main(ByVal args() As String)
+		Public Shared Sub Main()
 			Dim dataDir As String = Path.GetFullPath("../../../Data/")
 
 			' Load the source document.

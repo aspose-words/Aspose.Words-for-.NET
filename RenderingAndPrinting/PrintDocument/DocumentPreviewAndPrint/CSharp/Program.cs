@@ -1,4 +1,5 @@
-// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+//////////////////////////////////////////////////////////////////////////
+// Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -12,7 +13,7 @@ using System.Windows.Forms;
 using Aspose.Words;
 using Aspose.Words.Rendering;
 
-namespace DocumentPreviewAndPrint
+namespace DocumentPreviewAndPrintExample
 {
     //ExStart
     //ExId:DocumentPreviewAndPrint_ActivePrintPreviewDialog_OnShown
@@ -41,7 +42,7 @@ namespace DocumentPreviewAndPrint
     /// </summary>
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             // The path to the documents directory.
             string dataDir = Path.GetFullPath("../../../Data/");
