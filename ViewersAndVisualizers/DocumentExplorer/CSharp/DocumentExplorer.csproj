@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BE3192C2-A305-44F9-809A-6F2AE9F09139}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>DocumentExplorerExample</RootNamespace>
+    <AssemblyName>DocumentExplorer</AssemblyName>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.Words">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExceptionDialog.resx">
+      <DependentUpon>ExceptionDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GoToPageForm.resx">
+      <DependentUpon>GoToPageForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewerForm.resx">
+      <DependentUpon>ViewerForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="DocumentItems.cs" />
+    <Compile Include="ExceptionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GoToPageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Item.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Preview.cs" />
+    <Compile Include="ViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App.ico" />
+    <EmbeddedResource Include="Icons\CustomXmlMarkup.ico" />
+    <EmbeddedResource Include="Icons\Comment.ico" />
+    <EmbeddedResource Include="Icons\CommentRangeEnd.ico" />
+    <EmbeddedResource Include="Icons\CommentRangeStart.ico" />
+    <EmbeddedResource Include="Icons\SmartTag.ico" />
+    <EmbeddedResource Include="Icons\DrawingML.ico" />
+    <EmbeddedResource Include="Icons\StructuredDocumentTag.ico" />
+    <EmbeddedResource Include="Icons\Body.ico" />
+    <EmbeddedResource Include="Icons\BookmarkEnd.ico" />
+    <EmbeddedResource Include="Icons\BookmarkStart.ico" />
+    <EmbeddedResource Include="Icons\Cell.ico" />
+    <EmbeddedResource Include="Icons\Collapse.ico" />
+    <EmbeddedResource Include="Icons\Document.ico" />
+    <EmbeddedResource Include="Icons\Expand.ico" />
+    <EmbeddedResource Include="Icons\FieldEnd.ico" />
+    <EmbeddedResource Include="Icons\FieldSeparator.ico" />
+    <EmbeddedResource Include="Icons\FieldStart.ico" />
+    <EmbeddedResource Include="Icons\Footer.ico" />
+    <EmbeddedResource Include="Icons\Footnote.ico" />
+    <EmbeddedResource Include="Icons\FormCheckBox.ico" />
+    <EmbeddedResource Include="Icons\FormDropDown.ico" />
+    <EmbeddedResource Include="Icons\FormField.ico" />
+    <EmbeddedResource Include="Icons\FormTextInput.ico" />
+    <EmbeddedResource Include="Icons\GroupShape.ico" />
+    <EmbeddedResource Include="Icons\Header.ico" />
+    <EmbeddedResource Include="Icons\HeaderFooter.ico" />
+    <EmbeddedResource Include="Icons\InlineShape.ico" />
+    <EmbeddedResource Include="Icons\Node.ico" />
+    <EmbeddedResource Include="Icons\OleControl.ico" />
+    <EmbeddedResource Include="Icons\OleObject.ico" />
+    <EmbeddedResource Include="Icons\Paragraph.ico" />
+    <EmbeddedResource Include="Icons\Row.ico" />
+    <EmbeddedResource Include="Icons\Run.ico" />
+    <EmbeddedResource Include="Icons\Section.ico" />
+    <EmbeddedResource Include="Icons\Shape.ico" />
+    <EmbeddedResource Include="Icons\SpecialChar.ico" />
+    <EmbeddedResource Include="Icons\Table.ico" />
+  </ItemGroup>
+  <ItemGroup>
+<!-- DataFiles -->
+  </ItemGroup>
+  <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="$(MSBuildToolsPath) != ''" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" Condition="$(MSBuildToolsPath) == ''" />
+</Project>
