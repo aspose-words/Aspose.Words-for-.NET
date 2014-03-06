@@ -19,7 +19,7 @@ namespace DocumentPreviewAndPrintExample
     //ExId:DocumentPreviewAndPrint_ActivePrintPreviewDialog_OnShown
     //ExSummary:Brings the Print Preview dialog to the front.
     /// <summary>
-    /// A subclass of the .NET Print Preview dialog. This extension only is used only to work around the .NET PrintPreviewDialog
+    /// A subclass of the .NET Print Preview dialog. This extension is used only to work around the .NET PrintPreviewDialog
     /// class not appearing in front of other windows by default.
     /// </summary>
     class ActivePrintPreviewDialog : PrintPreviewDialog

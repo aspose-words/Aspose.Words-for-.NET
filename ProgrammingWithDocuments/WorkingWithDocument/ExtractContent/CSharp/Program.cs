@@ -24,7 +24,7 @@ namespace ExtractContentExample
         public static void Main()
         {
             // The path to the documents directory.
-            mDataDir = new Uri(new Uri(exeDir), @"../../Data/").LocalPath;
+            mDataDir = Path.GetFullPath("../../../Data/");
 
             // Call methods to test extraction of different types from the document.
             ExtractContentBetweenParagraphs();

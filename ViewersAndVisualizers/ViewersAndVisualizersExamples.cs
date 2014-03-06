@@ -14,7 +14,7 @@ namespace Examples.ViewersAndVisualizers
         {
             TestHelper.SetDataDir("ViewersAndVisualizers/DocumentExplorer");
 
-            DocumentExplorerExample.Program.Main();
+            DocumentExplorerExample.MainForm.Main();
         }
 
     }

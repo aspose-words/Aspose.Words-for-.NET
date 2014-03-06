@@ -14,7 +14,7 @@ namespace Examples.LoadingAndSaving
         {
             TestHelper.SetDataDir("LoadingAndSaving/Excel2Word");
 
-            Excel2WordExample.Program.Main();
+            Excel2WordExample.MainForm.Main();
         }
 
         [TestMethod, Test, Owner("Console")]

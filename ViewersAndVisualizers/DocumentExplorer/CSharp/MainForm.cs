@@ -416,7 +416,7 @@ namespace DocumentExplorerExample
         #endregion
 
         [STAThread]
-        static void Main()
+        public static void Main()
         {
             Application.EnableVisualStyles();
             Application.DoEvents();

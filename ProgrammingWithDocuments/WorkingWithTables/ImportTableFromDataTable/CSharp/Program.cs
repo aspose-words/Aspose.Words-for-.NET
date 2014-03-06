@@ -29,7 +29,7 @@ namespace ImportTableFromDataTableExample
             // The path to the documents directory.
             string dataDir = Path.GetFullPath("../../../Data/");
             // This is the location to our database. You must have the Examples folder extracted as well for the database to be found.
-            string databaseDir = new Uri(new Uri(exeDir), "../../../../Examples/Common/Database/").LocalPath;
+            string databaseDir = Path.GetFullPath("../../../../Examples/Common/Database/");
 
             // Create the output directory if it doesn't exist.
             if (!Directory.Exists(dataDir))

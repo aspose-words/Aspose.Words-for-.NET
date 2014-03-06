@@ -20,23 +20,6 @@ namespace Excel2WordExample
         public MainForm()
         {
             InitializeComponent();
-            string wordsLicenseFile = Path.Combine(Application.StartupPath, "Aspose.Words.lic");
-            if (File.Exists(wordsLicenseFile))
-            {
-                //This shows how to license Aspose.Words.
-                //If you don't specify a license, Aspose.Words works in evaluation mode.
-                Aspose.Words.License license = new Aspose.Words.License();
-                license.SetLicense(wordsLicenseFile);
-            }
-
-            string cellsLicenseFile = Path.Combine(Application.StartupPath, "Aspose.Cells.lic");
-            if (File.Exists(cellsLicenseFile))
-            {
-                //This shows how to license Aspose.Cells.
-                //If you don't specify a license, Aspose.Cells works in evaluation mode.
-                Aspose.Cells.License license = new Aspose.Cells.License();
-                license.SetLicense(cellsLicenseFile);
-            }
         }
 
         private void buttonConvert_Click(object sender, EventArgs e)

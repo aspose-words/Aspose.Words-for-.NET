@@ -14,7 +14,7 @@ namespace Examples.ProgrammingWithDocuments.WorkingWithDocument
         {
             TestHelper.SetDataDir("ProgrammingWithDocuments/WorkingWithDocument/DocumentInDB");
 
-            DocumentInDBExample.Program.Main();
+            DocumentInDBExample.MainForm.Main();
         }
 
         [TestMethod, Test, Owner("Console")]

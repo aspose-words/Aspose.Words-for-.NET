@@ -14,6 +14,7 @@ using System.Text;
 using System.Windows.Forms;
 using Aspose.Words;
 using Aspose.Words.Saving;
+using System.Web.UI.WebControls;
 
 namespace SaveHtmlAndEmailExample
 {
@@ -193,6 +194,17 @@ namespace SaveHtmlAndEmailExample
             {
                 e.Handled = true;
             } 
+        }
+
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        public static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm());
         }
     }
 }

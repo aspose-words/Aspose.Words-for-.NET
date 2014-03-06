@@ -24,7 +24,7 @@ namespace AppendDocumentExample
         public static void Main()
         {
             // The path to the documents directory.
-            gDataDir = new Uri(new Uri(exeDir), @"../../Data/").LocalPath;
+            gDataDir = Path.GetFullPath("../../../Data/");
 
             // Run each of the sample code snippets.
             AppendDocument_SimpleAppendDocument();
