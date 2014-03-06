@@ -9,10 +9,12 @@
 Imports Microsoft.VisualBasic
 Imports System
 Imports System.Collections
-Imports System.Linq
-Imports System.Xml.Linq
 Imports System.IO
 Imports System.Reflection
+#If (Not NET20) Then
+Imports System.Linq
+Imports System.Xml.Linq
+#End If
 
 Imports Aspose.Words
 Imports Aspose.Words.Reporting
@@ -21,6 +23,7 @@ Imports Aspose.Words.Reporting
 Namespace LINQtoXMLMailMergeExample
 	Public Class Program
 		Public Shared Sub Main()
+#If (Not NET20) Then
 			' The sample infrastructure.
 			Dim dataDir As String = Path.GetFullPath("../../../Data/")
 
@@ -75,6 +78,9 @@ Namespace LINQtoXMLMailMergeExample
 			' Save the output document.
 			doc.Save(dataDir & "TestFile Out.doc")
 			'ExEnd
+#Else
+			Throw New InvalidOperationException("This example requires the .NET Framework v3.5 or above to run." & "Make sure that the target framework of this project is set to 3.5 or above.")
+#End If
 		End Sub
 
 		''' <summary>
@@ -129,7 +135,7 @@ Namespace LINQtoXMLMailMergeExample
 			'ExStart
 			'ExId:LINQtoXMLMailMerge_get_value
 			'ExSummary:Getting the field value in the custom data source.
-			Public Function GetValue(ByVal fieldName As String, <System.Runtime.InteropServices.Out()> ByRef fieldValue As Object) As Boolean
+			Public Function GetValue(ByVal fieldName As String, <System.Runtime.InteropServices.Out()> ByRef fieldValue As Object) As Boolean Implements IMailMergeDataSource.GetValue
 				' Use reflection to get the property by name from the current object.
 				Dim obj As Object = mEnumerator.Current
 
@@ -152,7 +158,7 @@ Namespace LINQtoXMLMailMergeExample
 			'ExStart
 			'ExId:LINQtoXMLMailMerge_move_next
 			'ExSummary:Moving through the data records.
-			Public Function MoveNext() As Boolean
+			Public Function MoveNext() As Boolean Implements IMailMergeDataSource.MoveNext
 				Return mEnumerator.MoveNext()
 			End Function
 			'ExEnd
@@ -163,14 +169,14 @@ Namespace LINQtoXMLMailMergeExample
 			'ExStart
 			'ExId:LINQtoXMLMailMerge_table_name
 			'ExSummary:The table name property.
-			Public ReadOnly Property TableName() As String
+			Public ReadOnly Property TableName() As String Implements IMailMergeDataSource.TableName
 				Get
 					Return mTableName
 				End Get
 			End Property
 			'ExEnd
 
-			Public Function GetChildDataSource(ByVal tableName As String) As IMailMergeDataSource
+			Public Function GetChildDataSource(ByVal tableName As String) As IMailMergeDataSource Implements IMailMergeDataSource.GetChildDataSource
 				Return Nothing
 			End Function
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -129,8 +129,12 @@
     <Compile Include="RenderingAndPrinting\DocumentLayoutHelper\CSharp\Program.cs" />
     <Compile Include="RenderingAndPrinting\DocumentLayoutHelper\CSharp\RenderedDocument.cs" />
     <Compile Include="RenderingAndPrinting\EnumerateLayoutElements\CSharp\Program.cs" />
-    <Compile Include="RenderingAndPrinting\PrintDocument\DocumentPreviewAndPrint\CSharp\Program.cs" />
-    <Compile Include="RenderingAndPrinting\PrintDocument\MultiplePagesOnSheet\CSharp\Program.cs" />
+    <Compile Include="RenderingAndPrinting\PrintDocument\DocumentPreviewAndPrint\CSharp\Program.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RenderingAndPrinting\PrintDocument\MultiplePagesOnSheet\CSharp\Program.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="RenderingAndPrinting\PrintDocument\PrintDocumentExamples.cs" />
     <Compile Include="RenderingAndPrinting\PrintDocument\XpsPrint\CSharp\Program.cs" />
     <Compile Include="RenderingAndPrinting\RenderingAndPrintingExamples.cs" />
@@ -322,4 +326,7 @@
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="$(MSBuildToolsPath) != ''" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" Condition="$(MSBuildToolsPath) == ''" />
+  <PropertyGroup>
+    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">NET20</DefineConstants>
+  </PropertyGroup>
 </Project>

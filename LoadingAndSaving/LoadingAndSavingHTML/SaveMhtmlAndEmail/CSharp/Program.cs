@@ -9,8 +9,10 @@ using System;
 using System.IO;
 using System.Reflection;
 
-using Aspose.Network.Mail;
 using Aspose.Words;
+#if EmailInstalled
+using Aspose.Email.Mail;
+#endif
 
 namespace SaveMhtmlAndEmailExample
 {
@@ -18,6 +20,8 @@ namespace SaveMhtmlAndEmailExample
     {
         public static void Main()
         {
+#if !EmailInstalled
+
             // The path to the documents directory.
             string dataDir = Path.GetFullPath("../../../Data/");
 
@@ -46,6 +50,10 @@ namespace SaveMhtmlAndEmailExample
             client.AuthenticationMethod = SmtpAuthentication.None;
             client.Send(message);
             //ExEnd
+#else
+            throw new InvalidOperationException("This example requires the use of Aspose.Email." + 
+                                                "Make sure Aspose.Email.dll is present in the bin\net2.0 folder.");
+#endif
         }
     }
 }

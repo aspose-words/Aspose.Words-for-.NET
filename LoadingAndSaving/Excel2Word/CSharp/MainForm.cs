@@ -8,8 +8,10 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
-using Aspose.Cells;
 using Aspose.Words;
+#if CellsInstalled
+using Aspose.Cells;
+#endif
 
 namespace Excel2WordExample
 {
@@ -62,6 +64,7 @@ namespace Excel2WordExample
 
         private static void RunConvert(string srcFileName, string dstFileName)
         {
+            #if CellsInstalled
             //Open Excel Workbook using Aspose.Cells.
             Workbook workbook = new Workbook(srcFileName);
             
@@ -71,6 +74,21 @@ namespace Excel2WordExample
 
             // Save using Aspose.Words. 
             doc.Save(dstFileName);
+#else
+            throw new InvalidOperationException("This example requires the use of Aspose.Cells." + 
+                                    "Make sure Aspose.Cells.dll is present in the bin\net2.0 folder.");
+#endif
+        }
+
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        public static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm());
         }
     }
 }

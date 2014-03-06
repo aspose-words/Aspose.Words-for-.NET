@@ -33,7 +33,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <DefineConstants Condition=" Exists('..\..\..\..\..\Bin\net2.0\Aspose.Email.dll') " >EmailInstalled</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Aspose.Email ">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Email.dll</HintPath>
+    </Reference>
     <Reference Include="Aspose.Words">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
@@ -45,9 +52,7 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Data\DinnerInvitationDemo.doc">
-      <Link>Data\DinnerInvitationDemo.doc</Link>
-    </None>
+<!-- DataFiles -->
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="$(MSBuildToolsPath) != ''" />

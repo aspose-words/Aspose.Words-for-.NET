@@ -10,8 +10,10 @@ Imports Microsoft.VisualBasic
 Imports System
 Imports System.IO
 Imports System.Windows.Forms
-Imports Aspose.Cells
 Imports Aspose.Words
+#If CellsInstalled Then
+Imports Aspose.Cells
+#End If
 
 Namespace Excel2WordExample
 	Partial Public Class MainForm
@@ -57,6 +59,7 @@ Namespace Excel2WordExample
 		End Sub
 
 		Private Shared Sub RunConvert(ByVal srcFileName As String, ByVal dstFileName As String)
+			#If CellsInstalled Then
 			'Open Excel Workbook using Aspose.Cells.
 			Dim workbook As New Workbook(srcFileName)
 
@@ -66,6 +69,19 @@ Namespace Excel2WordExample
 
 			' Save using Aspose.Words. 
 			doc.Save(dstFileName)
+#Else
+			Throw New InvalidOperationException("This example requires the use of Aspose.Cells." & "Make sure Aspose.Cells.dll is present in the bin" & Constants.vbLf & "et2.0 folder.")
+#End If
+		End Sub
+
+		''' <summary>
+		''' The main entry point for the application.
+		''' </summary>
+		<STAThread> _
+		Public Shared Sub Main()
+			Application.EnableVisualStyles()
+			Application.SetCompatibleTextRenderingDefault(False)
+			Application.Run(New MainForm())
 		End Sub
 	End Class
 End Namespace

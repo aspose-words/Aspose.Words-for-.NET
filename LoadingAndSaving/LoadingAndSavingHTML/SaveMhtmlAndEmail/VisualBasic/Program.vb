@@ -11,12 +11,16 @@ Imports System
 Imports System.IO
 Imports System.Reflection
 
-Imports Aspose.Network.Mail
 Imports Aspose.Words
+#If EmailInstalled Then
+Imports Aspose.Email.Mail
+#End If
 
 Namespace SaveMhtmlAndEmailExample
 	Public Class Program
 		Public Shared Sub Main()
+#If (Not EmailInstalled) Then
+
 			' The path to the documents directory.
 			Dim dataDir As String = Path.GetFullPath("../../../Data/")
 
@@ -45,6 +49,9 @@ Namespace SaveMhtmlAndEmailExample
 			client.AuthenticationMethod = SmtpAuthentication.None
 			client.Send(message)
 			'ExEnd
+#Else
+			Throw New InvalidOperationException("This example requires the use of Aspose.Email." & "Make sure Aspose.Email.dll is present in the bin" & Constants.vbLf & "et2.0 folder.")
+#End If
 		End Sub
 	End Class
 End Namespace

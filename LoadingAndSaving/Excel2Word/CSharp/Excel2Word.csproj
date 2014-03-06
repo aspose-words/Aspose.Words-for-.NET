@@ -29,7 +29,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <DefineConstants Condition=" Exists('..\..\..\..\..\Bin\net2.0\Aspose.Cells.dll') " >CellsInstalled</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Aspose.Cells ">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Cells.dll</HintPath>
+    </Reference>
     <Reference Include="Aspose.Words">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
@@ -47,72 +54,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Data\_testDrawing.xls">
-      <Link>Data\_testDrawing.xls</Link>
-    </None>
-    <None Include="..\Data\+2008 calendar1.xls">
-      <Link>Data\+2008 calendar1.xls</Link>
-    </None>
-    <None Include="..\Data\+-4011.xls">
-      <Link>Data\+-4011.xls</Link>
-    </None>
-    <None Include="..\Data\+Expense budget1.xls">
-      <Link>Data\+Expense budget1.xls</Link>
-    </None>
-    <None Include="..\Data\+Expense report1.xls">
-      <Link>Data\+Expense report1.xls</Link>
-    </None>
-    <None Include="..\Data\+Five-day event schedule1.xls">
-      <Link>Data\+Five-day event schedule1.xls</Link>
-    </None>
-    <None Include="..\Data\+Generic staff paper1.xls">
-      <Link>Data\+Generic staff paper1.xls</Link>
-    </None>
-    <None Include="..\Data\+House cleaning checklist1.xls">
-      <Link>Data\+House cleaning checklist1.xls</Link>
-    </None>
-    <None Include="..\Data\+Marketing budget plan1.xls">
-      <Link>Data\+Marketing budget plan1.xls</Link>
-    </None>
-    <None Include="..\Data\+Marketing tactical plan1.xls">
-      <Link>Data\+Marketing tactical plan1.xls</Link>
-    </None>
-    <None Include="..\Data\+Personal budget1.xls">
-      <Link>Data\+Personal budget1.xls</Link>
-    </None>
-    <None Include="..\Data\+Personal monthly budget1.xls">
-      <Link>Data\+Personal monthly budget1.xls</Link>
-    </None>
-    <None Include="..\Data\+Pet-sitting invoice1.xls">
-      <Link>Data\+Pet-sitting invoice1.xls</Link>
-    </None>
-    <None Include="..\Data\+PivotTable report position recall1.xls">
-      <Link>Data\+PivotTable report position recall1.xls</Link>
-    </None>
-    <None Include="..\Data\+testChart.xls">
-      <Link>Data\+testChart.xls</Link>
-    </None>
-    <None Include="..\Data\+testMergedCells.xls">
-      <Link>Data\+testMergedCells.xls</Link>
-    </None>
-    <None Include="..\Data\+Travel service invoice1.xls">
-      <Link>Data\+Travel service invoice1.xls</Link>
-    </None>
-    <None Include="..\Data\Personal budget1.xls">
-      <Link>Data\Personal budget1.xls</Link>
-    </None>
-    <None Include="..\Data\Sales order1.xls">
-      <Link>Data\Sales order1.xls</Link>
-    </None>
-    <None Include="..\Data\Secret Santa gift exchange list1.xls">
-      <Link>Data\Secret Santa gift exchange list1.xls</Link>
-    </None>
-    <None Include="..\Data\Travel service invoice1.xls">
-      <Link>Data\Travel service invoice1.xls</Link>
-    </None>
-    <None Include="..\Data\Weekly time sheet1.xls">
-      <Link>Data\Weekly time sheet1.xls</Link>
-    </None>
+<!-- DataFiles -->
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="$(MSBuildToolsPath) != ''" />

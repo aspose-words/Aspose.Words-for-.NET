@@ -7,10 +7,12 @@
 //////////////////////////////////////////////////////////////////////////
 using System;
 using System.Collections;
-using System.Linq;
-using System.Xml.Linq;
 using System.IO;
 using System.Reflection;
+#if !NET20 
+using System.Linq;
+using System.Xml.Linq;
+#endif
 
 using Aspose.Words;
 using Aspose.Words.Reporting;
@@ -22,6 +24,7 @@ namespace LINQtoXMLMailMergeExample
     {
         public static void Main()
         {
+#if !NET20
             // The sample infrastructure.
             string dataDir = Path.GetFullPath("../../../Data/");
 
@@ -94,6 +97,10 @@ namespace LINQtoXMLMailMergeExample
             // Save the output document.
             doc.Save(dataDir + "TestFile Out.doc");
             //ExEnd
+#else
+            throw new InvalidOperationException("This example requires the .NET Framework v3.5 or above to run." +
+                                   "Make sure that the target framework of this project is set to 3.5 or above.");
+#endif
         }
 
         /// <summary>
