@@ -84,6 +84,6 @@ namespace AddImageToEachPageExample
             builder.Writeln("This is a custom note for page " + page);
         }
 
-        public static string gDataDir = Path.GetFullPath("../../Data/");
+        public static string gDataDir = Path.GetFullPath("../../../Data/");
     }
 }

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -49,10 +49,23 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml " />
+    <Reference Include="Aspose.Email ">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Email.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Net">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="Aspose.Cells ">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Cells.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LoadingAndSaving\CheckFormat\CSharp\Program.cs" />
@@ -72,10 +85,16 @@
     </Compile>
     <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\SaveMhtmlAndEmail\CSharp\Program.cs" />
     <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\CSharp\Program.cs" />
+    <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\CSharp\TocMailMergeDataSource.cs" />
+    <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\CSharp\Topic.cs" />
+    <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\CSharp\Worker.cs" />
     <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\Word2Help\CSharp\Program.cs" />
     <Compile Include="LoadingAndSaving\LoadingAndSavingTxt\LoadingAndSavingTxtExamples.cs" />
     <Compile Include="LoadingAndSaving\LoadingAndSavingTxt\LoadTxt\CSharp\Program.cs" />
+    <Compile Include="LoadingAndSaving\PageSplitter\CSharp\DocumentPageSplitter.cs" />
+    <Compile Include="LoadingAndSaving\PageSplitter\CSharp\PageNumberFinder.cs" />
     <Compile Include="LoadingAndSaving\PageSplitter\CSharp\Program.cs" />
+    <Compile Include="LoadingAndSaving\PageSplitter\CSharp\SectionSplitter.cs" />
     <Compile Include="LoadingAndSaving\SavingToPdfFormat\ImageToPdf\CSharp\Program.cs" />
     <Compile Include="LoadingAndSaving\SavingToPdfFormat\SavingToPdfFormatExamples.cs" />
     <Compile Include="MailMergeAndReporting\ApplyCustomLogicToEmptyRegions\CSharp\Program.cs" />
@@ -110,6 +129,7 @@
     <Compile Include="ProgrammingWithDocuments\WorkingWithImages\AddImageToEachPage\CSharp\Program.cs" />
     <Compile Include="ProgrammingWithDocuments\WorkingWithImages\AddWatermark\CSharp\Program.cs" />
     <Compile Include="ProgrammingWithDocuments\WorkingWithImages\CompressImages\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithImages\CompressImages\CSharp\Resampler.cs" />
     <Compile Include="ProgrammingWithDocuments\WorkingWithImages\WorkingWithImagesExamples.cs" />
     <Compile Include="ProgrammingWithDocuments\WorkingWithStyles\ExtractContentBasedOnStyles\CSharp\Program.cs" />
     <Compile Include="ProgrammingWithDocuments\WorkingWithStyles\WorkingWithStylesExamples.cs" />
@@ -130,6 +150,8 @@
     <Compile Include="RenderingAndPrinting\DocumentLayoutHelper\CSharp\LayoutEntities.cs" />
     <Compile Include="RenderingAndPrinting\DocumentLayoutHelper\CSharp\Program.cs" />
     <Compile Include="RenderingAndPrinting\DocumentLayoutHelper\CSharp\RenderedDocument.cs" />
+    <Compile Include="RenderingAndPrinting\EnumerateLayoutElements\CSharp\LayoutInfoWriter.cs" />
+    <Compile Include="RenderingAndPrinting\EnumerateLayoutElements\CSharp\OutlineLayoutEntitiesRenderer.cs" />
     <Compile Include="RenderingAndPrinting\EnumerateLayoutElements\CSharp\Program.cs" />
     <Compile Include="RenderingAndPrinting\PrintDocument\DocumentPreviewAndPrint\CSharp\Program.cs">
       <SubType>Form</SubType>
@@ -139,6 +161,7 @@
     </Compile>
     <Compile Include="RenderingAndPrinting\PrintDocument\PrintDocumentExamples.cs" />
     <Compile Include="RenderingAndPrinting\PrintDocument\XpsPrint\CSharp\Program.cs" />
+    <Compile Include="RenderingAndPrinting\PrintDocument\XpsPrint\CSharp\XpsPrintHelper.cs" />
     <Compile Include="RenderingAndPrinting\RenderingAndPrintingExamples.cs" />
     <Compile Include="RenderingAndPrinting\RenderingToImage\ImageColorFilters\CSharp\Program.cs" />
     <Compile Include="RenderingAndPrinting\RenderingToImage\RenderingToImageExamples.cs" />
@@ -238,29 +261,6 @@
     <None Include="LoadingAndSaving\CheckFormat\Data\Test File (rtf).rtf" />
     <None Include="LoadingAndSaving\CheckFormat\Data\Test File (WordML).xml" />
     <None Include="LoadingAndSaving\CheckFormat\Data\Test File (XML).xml" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\_testDrawing.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+2008 calendar1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+-4011.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Expense budget1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Expense report1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Five-day event schedule1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Generic staff paper1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+House cleaning checklist1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Marketing budget plan1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Marketing tactical plan1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Personal budget1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Personal monthly budget1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Pet-sitting invoice1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+PivotTable report position recall1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+testChart.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+testMergedCells.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Travel service invoice1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\Personal budget1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\Sales order1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\Secret Santa gift exchange list1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\Travel service invoice1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\Weekly time sheet1.xls" />
-    <None Include="LoadingAndSaving\LoadingAndSavingHTML\SaveMhtmlAndEmail\Data\DinnerInvitationDemo.doc" />
     <None Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\Data\SOI 2007-2012-DeeM with footnote added.doc" />
     <None Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\Data\TocTemplate.doc" />
     <None Include="LoadingAndSaving\LoadingAndSavingHTML\Word2Help\Data\banner.html" />
@@ -276,8 +276,6 @@
     <None Include="LoadingAndSaving\SavingToPdfFormat\ImageToPdf\Data\Test.tiff" />
     <None Include="LoadingAndSaving\SavingToPdfFormat\ImageToPdf\Data\Test.wmf" />
     <None Include="MailMergeAndReporting\ApplyCustomLogicToEmptyRegions\Data\TestFile.doc" />
-    <None Include="MailMergeAndReporting\LINQtoXMLMailMerge\Data\PurchaseOrder.xml" />
-    <None Include="MailMergeAndReporting\LINQtoXMLMailMerge\Data\TestFile.doc" />
     <None Include="MailMergeAndReporting\MailMergeFormFields\Data\Template.doc" />
     <None Include="MailMergeAndReporting\MultipleDocsInMailMerge\Data\Customers.mdb" />
     <None Include="MailMergeAndReporting\MultipleDocsInMailMerge\Data\TestFile.doc" />

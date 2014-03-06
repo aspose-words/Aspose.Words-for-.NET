@@ -11,7 +11,7 @@ Namespace Examples.LoadingAndSaving
 	        Public Sub Excel2Word()
 	            TestHelper.SetDataDir("LoadingAndSaving/Excel2Word")
 	
-	            Excel2WordExample.Program.Main()
+	            Excel2WordExample.MainForm.Main()
         End Sub
 
         <TestMethod(), Test(), Owner("Console")> _

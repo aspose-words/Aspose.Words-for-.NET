@@ -20,7 +20,7 @@ namespace SaveMhtmlAndEmailExample
     {
         public static void Main()
         {
-#if !EmailInstalled
+#if EmailInstalled
 
             // The path to the documents directory.
             string dataDir = Path.GetFullPath("../../../Data/");

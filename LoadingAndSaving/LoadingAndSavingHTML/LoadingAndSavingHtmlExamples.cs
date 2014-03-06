@@ -38,7 +38,7 @@ namespace Examples.LoadingAndSaving.LoadingAndSavingHtml
         {
             TestHelper.SetDataDir("LoadingAndSaving/LoadingAndSavingHtml/SaveHtmlAndEmail");
 
-            SaveHtmlAndEmailExample.Program.Main();
+            SaveHtmlAndEmailExample.MainForm.Main();
         }
 
     }

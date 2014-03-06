@@ -11,7 +11,7 @@ Namespace Examples.ProgrammingWithDocuments.WorkingWithDocument
 	        Public Sub DocumentInDB()
 	            TestHelper.SetDataDir("ProgrammingWithDocuments/WorkingWithDocument/DocumentInDB")
 	
-	            DocumentInDBExample.Program.Main()
+	            DocumentInDBExample.MainForm.Main()
         End Sub
 
         <TestMethod(), Test(), Owner("Console")> _

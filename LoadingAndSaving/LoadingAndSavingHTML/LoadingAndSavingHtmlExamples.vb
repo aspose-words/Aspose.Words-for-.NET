@@ -32,7 +32,7 @@ Namespace Examples.LoadingAndSaving.LoadingAndSavingHtml
 	        Public Sub SaveHtmlAndEmail()
 	            TestHelper.SetDataDir("LoadingAndSaving/LoadingAndSavingHtml/SaveHtmlAndEmail")
 	
-	            SaveHtmlAndEmailExample.Program.Main()
+	            SaveHtmlAndEmailExample.MainForm.Main()
         End Sub
 
 	End Class

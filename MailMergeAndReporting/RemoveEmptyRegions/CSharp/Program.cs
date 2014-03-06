@@ -16,7 +16,7 @@ using Aspose.Words.Reporting;
 
 namespace RemoveEmptyRegionsExample
 {
-    class RemoveEmptyRegions
+    public class Program
     {
         public static void Main()
         {

@@ -11,7 +11,7 @@ Namespace Examples.ViewersAndVisualizers
 	        Public Sub DocumentExplorer()
 	            TestHelper.SetDataDir("ViewersAndVisualizers/DocumentExplorer")
 	
-	            DocumentExplorerExample.Program.Main()
+	            DocumentExplorerExample.MainForm.Main()
         End Sub
 
 	End Class

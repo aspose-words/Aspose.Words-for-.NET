@@ -53,6 +53,14 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Aspose.Email ">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Email.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Cells ">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Cells.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LoadingAndSaving\CheckFormat\VisualBasic\Program.vb" />
@@ -217,6 +225,7 @@
       <DependentUpon>ViewerForm.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Folder Include="RenderingAndPrinting\RenderingToImage\RenderShapes\VisualBasic\My Project\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LoadingAndSaving\CheckFormat\Data\Test File (doc).doc" />
@@ -234,29 +243,6 @@
     <None Include="LoadingAndSaving\CheckFormat\Data\Test File (rtf).rtf" />
     <None Include="LoadingAndSaving\CheckFormat\Data\Test File (WordML).xml" />
     <None Include="LoadingAndSaving\CheckFormat\Data\Test File (XML).xml" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\_testDrawing.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+2008 calendar1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+-4011.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Expense budget1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Expense report1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Five-day event schedule1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Generic staff paper1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+House cleaning checklist1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Marketing budget plan1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Marketing tactical plan1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Personal budget1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Personal monthly budget1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Pet-sitting invoice1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+PivotTable report position recall1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+testChart.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+testMergedCells.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\+Travel service invoice1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\Personal budget1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\Sales order1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\Secret Santa gift exchange list1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\Travel service invoice1.xls" />
-    <None Include="LoadingAndSaving\Excel2Word\Data\Weekly time sheet1.xls" />
-    <None Include="LoadingAndSaving\LoadingAndSavingHTML\SaveMhtmlAndEmail\Data\DinnerInvitationDemo.doc" />
     <None Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\Data\SOI 2007-2012-DeeM with footnote added.doc" />
     <None Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\Data\TocTemplate.doc" />
     <None Include="LoadingAndSaving\LoadingAndSavingHTML\Word2Help\Data\banner.html" />
@@ -272,8 +258,6 @@
     <None Include="LoadingAndSaving\SavingToPdfFormat\ImageToPdf\Data\Test.tiff" />
     <None Include="LoadingAndSaving\SavingToPdfFormat\ImageToPdf\Data\Test.wmf" />
     <None Include="MailMergeAndReporting\ApplyCustomLogicToEmptyRegions\Data\TestFile.doc" />
-    <None Include="MailMergeAndReporting\LINQtoXMLMailMerge\Data\PurchaseOrder.xml" />
-    <None Include="MailMergeAndReporting\LINQtoXMLMailMerge\Data\TestFile.doc" />
     <None Include="MailMergeAndReporting\MailMergeFormFields\Data\Template.doc" />
     <None Include="MailMergeAndReporting\MultipleDocsInMailMerge\Data\Customers.mdb" />
     <None Include="MailMergeAndReporting\MultipleDocsInMailMerge\Data\TestFile.doc" />
@@ -324,4 +308,7 @@
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) != ''" />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) == ''" />
+  <PropertyGroup>
+    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">NET20</DefineConstants>
+  </PropertyGroup>
 </Project>
