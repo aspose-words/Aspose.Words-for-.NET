@@ -235,10 +235,13 @@ Converting from one document format to another in Aspose.Words is very easy and 
           <Order>4</Order>
           <InputFiles>
             <DataFile>
-              <Path>..\Data\+-4011.xls</Path>
+              <Path>..\Data\_testDrawing.xls</Path>
             </DataFile>
             <DataFile>
               <Path>..\Data\+2008 calendar1.xls</Path>
+            </DataFile>
+            <DataFile>
+              <Path>..\Data\+-4011.xls</Path>
             </DataFile>
             <DataFile>
               <Path>..\Data\+Expense budget1.xls</Path>
@@ -296,9 +299,6 @@ Converting from one document format to another in Aspose.Words is very easy and 
             </DataFile>
             <DataFile>
               <Path>..\Data\Weekly time sheet1.xls</Path>
-            </DataFile>
-            <DataFile>
-              <Path>..\Data\_testDrawing.xls</Path>
             </DataFile>
           </InputFiles>
           <Type>WinForm</Type>

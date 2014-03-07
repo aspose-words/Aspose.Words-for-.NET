@@ -99,7 +99,7 @@ namespace LINQtoXMLMailMergeExample
             //ExEnd
 #else
             throw new InvalidOperationException("This example requires the .NET Framework v3.5 or above to run." +
-                                   "Make sure that the target framework of this project is set to 3.5 or above.");
+                                   " Make sure that the target framework of this project is set to 3.5 or above.");
 #endif
         }
 

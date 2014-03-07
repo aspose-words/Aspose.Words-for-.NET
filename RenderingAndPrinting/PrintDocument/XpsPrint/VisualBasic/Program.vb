@@ -11,6 +11,8 @@ Imports System
 Imports System.IO
 Imports System.Reflection
 
+Imports Aspose.Words
+
 Namespace XpsPrintExample
 	''' <summary>
 	''' This sample shows how to convert a document to XPS by means of Aspose.Words and then print with the XpsPrint API.
@@ -42,7 +44,7 @@ Namespace XpsPrintExample
 'ExId:XpsPrint_Main
 'ExSummary:Invoke the utility class to print via XPS.
 				' Open a sample document in Aspose.Words.
-				Dim document As New Aspose.Words.Document(dataDir & "SampleDocument.doc")
+				Dim document As Aspose.Words.Document = New Document(dataDir & "SampleDocument.doc")
 
 				' Specify the name of the printer you want to print to.
 				Const printerName As String = "\\COMPANY\Brother MFC-885CW Printer"

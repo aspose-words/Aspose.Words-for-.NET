@@ -7,7 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0697F567-1E1F-4BA0-8809-1940B64764C7}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <AssemblyName>LINQtoXMLMailMerge</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -38,7 +39,9 @@
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.vb" />
@@ -51,10 +54,13 @@
       <Link>Data\TestFile.doc</Link>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="My Project\" />
+  </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) != ''" />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) == ''" />
   <PropertyGroup>
-    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">NET20</DefineConstants>
+      <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">NET20</DefineConstants>
   </PropertyGroup>
 </Project>

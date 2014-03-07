@@ -10,6 +10,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
 
+using Aspose.Words;
+
 namespace XpsPrintExample
 {
     /// <summary>
@@ -42,7 +44,7 @@ namespace XpsPrintExample
 
             // Use Aspose.Words to convert the document to XPS and store in a memory stream.
             MemoryStream stream = new MemoryStream();
-            document.Save(stream, Aspose.Words.SaveFormat.Xps);
+            document.Save(stream, SaveFormat.Xps);
             stream.Position = 0;
 
             Print(stream, printerName, jobName, isWait);

@@ -9,6 +9,8 @@ using System;
 using System.IO;
 using System.Reflection;
 
+using Aspose.Words;
+
 namespace XpsPrintExample
 {
     /// <summary>
@@ -44,7 +46,7 @@ namespace XpsPrintExample
 //ExId:XpsPrint_Main
 //ExSummary:Invoke the utility class to print via XPS.
                 // Open a sample document in Aspose.Words.
-                Aspose.Words.Document document = new Aspose.Words.Document(dataDir + "SampleDocument.doc");
+                Aspose.Words.Document document = new Document(dataDir + "SampleDocument.doc");
 
                 // Specify the name of the printer you want to print to.
                 const string printerName = @"\\COMPANY\Brother MFC-885CW Printer";

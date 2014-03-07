@@ -12,6 +12,8 @@ Imports System.ComponentModel
 Imports System.IO
 Imports System.Runtime.InteropServices
 
+Imports Aspose.Words
+
 Namespace XpsPrintExample
 	''' <summary>
 	''' A utility class that converts a document to XPS using Aspose.Words and then sends to the XpsPrint API.
@@ -41,7 +43,7 @@ Namespace XpsPrintExample
 
 			' Use Aspose.Words to convert the document to XPS and store in a memory stream.
 			Dim stream As New MemoryStream()
-			document.Save(stream, Aspose.Words.SaveFormat.Xps)
+			document.Save(stream, SaveFormat.Xps)
 			stream.Position = 0
 
 			Print(stream, printerName, jobName, isWait)

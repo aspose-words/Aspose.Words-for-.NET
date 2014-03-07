@@ -53,6 +53,8 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml " />
+    <Reference Include="System.Linq" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="Aspose.Email ">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Email.dll</HintPath>

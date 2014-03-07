@@ -8,12 +8,12 @@
     <ProjectGuid>{5CDDDEEF-585E-4A01-9997-C5D10CB9070B}</ProjectGuid>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Examples</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>Aspose.Words.Examples</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <StartupObject>Examples.Examples.QuickStart.AsposeExamples</StartupObject>
+    <StartupObject>Examples.QuickStart.AsposeExamples</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,6 +24,7 @@
     <DefineTrace>true</DefineTrace>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">NET20</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,6 +34,7 @@
     <DefineTrace>true</DefineTrace>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">NET20</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Aspose.Words">
@@ -53,6 +55,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml " />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="Aspose.Email ">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Email.dll</HintPath>
@@ -246,6 +249,7 @@
       <DependentUpon>ViewerForm.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Folder Include="MailMergeAndReporting\LINQtoXMLMailMerge\VisualBasic\My Project\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LoadingAndSaving\CheckFormat\Data\Test File (doc).doc" />
@@ -354,6 +358,6 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) != ''" />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) == ''" />
   <PropertyGroup>
-    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">NET20</DefineConstants>
+    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">NET20=true</DefineConstants>
   </PropertyGroup>
 </Project>

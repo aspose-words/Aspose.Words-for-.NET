@@ -24,17 +24,17 @@ Namespace LINQtoXMLMailMergeExample
 	Public Class Program
 		Public Shared Sub Main()
 #If (Not NET20) Then
-			' The sample infrastructure.
-			Dim dataDir As String = Path.GetFullPath("../../../Data/")
+            ' The sample infrastructure.
+            Dim dataDir As String = Path.GetFullPath("../../../Data/")
 
-			' Load the XML document.
-			Dim orderXml As XElement = XElement.Load(dataDir & "PurchaseOrder.xml")
+            ' Load the XML document.
+            Dim orderXml As XElement = XElement.Load(dataDir & "PurchaseOrder.xml")
 
-			' Query the purchase order xml file using LINQ to extract the order items 
-			' into an object of an anonymous type. 
-			'
-			' Make sure you give the properties of the anonymous type the same names as 
-			' the MERGEFIELD fields in the document.
+            ' Query the purchase order xml file using LINQ to extract the order items 
+            ' into an object of an anonymous type. 
+            '
+            ' Make sure you give the properties of the anonymous type the same names as 
+            ' the MERGEFIELD fields in the document.
 			'
 			' To pass the actual values stored in the XML element or attribute to Aspose.Words, 
 			' we need to cast them to string. This is to prevent the XML tags being inserted into the final document when
@@ -43,45 +43,45 @@ Namespace LINQtoXMLMailMergeExample
 			'ExStart
 			'ExId:LINQtoXMLMailMerge_query_items
 			'ExSummary:LINQ to XML query for ordered items.
-			Dim orderItems = From order In orderXml.Descendants("Item") _
-			                 Select New With {Key .PartNumber = CStr(order.Attribute("PartNumber")), Key .ProductName = CStr(order.Element("ProductName")), Key .Quantity = CStr(order.Element("Quantity")), Key .USPrice = CStr(order.Element("USPrice")), Key .Comment = CStr(order.Element("Comment")), Key .ShipDate = CStr(order.Element("ShipDate"))}
-			'ExEnd
+            Dim orderItems = From order In orderXml.Descendants("Item") _
+            Select New With {Key .PartNumber = CStr(order.Attribute("PartNumber")), Key .ProductName = CStr(order.Element("ProductName")), Key .Quantity = CStr(order.Element("Quantity")), Key .USPrice = CStr(order.Element("USPrice")), Key .Comment = CStr(order.Element("Comment")), Key .ShipDate = CStr(order.Element("ShipDate"))}
+            'ExEnd
 
-			' Query the delivery (shipping) address using LINQ.
-			'ExStart
-			'ExId:LINQtoXMLMailMerge_query_delivery
-			'ExSummary:LINQ to XML query for delivery address.
-			Dim deliveryAddress = From delivery In orderXml.Elements("Address") _
-			                      Where (CStr(delivery.Attribute("Type")) = "Shipping") _
-			                      Select New With {Key .Name = CStr(delivery.Element("Name")), Key .Country = CStr(delivery.Element("Country")), Key .Zip = CStr(delivery.Element("Zip")), Key .State = CStr(delivery.Element("State")), Key .City = CStr(delivery.Element("City")), Key .Street = CStr(delivery.Element("Street"))}
-			'ExEnd
+            ' Query the delivery (shipping) address using LINQ.
+            'ExStart
+            'ExId:LINQtoXMLMailMerge_query_delivery
+            'ExSummary:LINQ to XML query for delivery address.
+            Dim deliveryAddress = From delivery In orderXml.Elements("Address") _
+            Where (CStr(delivery.Attribute("Type")) = "Shipping") _
+            '                        Select New With {Key .Name = CStr(delivery.Element("Name")), Key .Country = CStr(delivery.Element("Country")), Key .Zip = CStr(delivery.Element("Zip")), Key .State = CStr(delivery.Element("State")), Key .City = CStr(delivery.Element("City")), Key .Street = CStr(delivery.Element("Street"))}
+            'ExEnd
 
-			' Create custom Aspose.Words mail merge data sources based on the LINQ queries.
-			Dim orderItemsDataSource As New MyMailMergeDataSource(orderItems, "Items")
-			Dim deliveryDataSource As New MyMailMergeDataSource(deliveryAddress)
+            ' Create custom Aspose.Words mail merge data sources based on the LINQ queries.
+            Dim orderItemsDataSource As New MyMailMergeDataSource(orderItems, "Items")
+            Dim deliveryDataSource As New MyMailMergeDataSource(deliveryAddress)
 
-			'ExStart
-			'ExFor:MailMerge.ExecuteWithRegions(Aspose.Words.Reporting.IMailMergeDataSource)
-			'ExId:LINQtoXMLMailMerge_call
-			'ExSummary:Perform the mail merge and save the result.
-			' Open the template document.
-			Dim doc As New Document(dataDir & "TestFile.doc")
+            'ExStart
+            'ExFor:MailMerge.ExecuteWithRegions(Aspose.Words.Reporting.IMailMergeDataSource)
+            'ExId:LINQtoXMLMailMerge_call
+            'ExSummary:Perform the mail merge and save the result.
+            ' Open the template document.
+            Dim doc As New Document(dataDir & "TestFile.doc")
 
-			' Fill the document with data from our data sources.
-			' Using mail merge regions for populating the order items table is required
-			' because it allows the region to be repeated in the document for each order item.
-			doc.MailMerge.ExecuteWithRegions(orderItemsDataSource)
+            ' Fill the document with data from our data sources.
+            ' Using mail merge regions for populating the order items table is required
+            ' because it allows the region to be repeated in the document for each order item.
+            doc.MailMerge.ExecuteWithRegions(orderItemsDataSource)
 
-			' The standard mail merge without regions is used for the delivery address.
-			doc.MailMerge.Execute(deliveryDataSource)
+            ' The standard mail merge without regions is used for the delivery address.
+            doc.MailMerge.Execute(deliveryDataSource)
 
-			' Save the output document.
-			doc.Save(dataDir & "TestFile Out.doc")
-			'ExEnd
+            ' Save the output document.
+            doc.Save(dataDir & "TestFile Out.doc")
+            'ExEnd
 #Else
-			Throw New InvalidOperationException("This example requires the .NET Framework v3.5 or above to run." & "Make sure that the target framework of this project is set to 3.5 or above.")
+            Throw New InvalidOperationException("This example requires the .NET Framework v3.5 or above to run." & " Make sure that the target framework of this project is set to 3.5 or above.")
 #End If
-		End Sub
+        End Sub
 
 		''' <summary>
 		''' Aspose.Words does not accept LINQ queries as an input for mail merge directly, 
