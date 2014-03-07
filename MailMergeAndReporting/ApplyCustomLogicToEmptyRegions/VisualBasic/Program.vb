@@ -155,7 +155,7 @@ Namespace ApplyCustomLogicToEmptyRegionsExample
 			''' <summary>
 			''' Called for each field belonging to an unmerged region in the document.
 			''' </summary>
-			Public Sub FieldMerging(ByVal args As FieldMergingArgs)
+			Public Sub FieldMerging(ByVal args As FieldMergingArgs) Implements IFieldMergingCallback.FieldMerging
 				' Change the text of each field of the ContactDetails region individually.
 				If args.TableName = "ContactDetails" Then
 					' Set the text of the field based off the field name.
@@ -193,7 +193,7 @@ Namespace ApplyCustomLogicToEmptyRegionsExample
 				Return (para.ParagraphFormat.StyleIdentifier >= StyleIdentifier.Heading1 AndAlso para.ParagraphFormat.StyleIdentifier <= StyleIdentifier.Heading9)
 			End Function
 
-			Public Sub ImageFieldMerging(ByVal args As ImageFieldMergingArgs)
+			Public Sub ImageFieldMerging(ByVal args As ImageFieldMergingArgs) Implements IFieldMergingCallback.ImageFieldMerging
 				' Do Nothing
 			End Sub
 		End Class
@@ -204,7 +204,7 @@ Namespace ApplyCustomLogicToEmptyRegionsExample
 			''' <summary>
 			''' Called for each field belonging to an unmerged region in the document.
 			''' </summary>
-			Public Sub FieldMerging(ByVal args As FieldMergingArgs)
+			Public Sub FieldMerging(ByVal args As FieldMergingArgs) Implements IFieldMergingCallback.FieldMerging
 				'ExStart
 				'ExId:ContactDetailsCodeVariation
 				'ExSummary:Shows how to replace an unused region with a message and remove extra paragraphs.
@@ -217,7 +217,7 @@ Namespace ApplyCustomLogicToEmptyRegionsExample
 					' Called for the first field encountered in a region. This can be used to execute logic on the first field
 					' in the region without needing to hard code the field name. Often the base logic is applied to the first field and 
 					' different logic for other fields. The rest of the fields in the region will have a null FieldValue.
-					If CStr(args.FieldValue) = "FirstField" Then
+					If CStr(args.FieldValue) Is "FirstField" Then
 						' Remove the "Name:" tag from the start of the paragraph
 						parentParagraph.Range.Replace("Name:", String.Empty, False, False)
 						' Set the text of the first field to display a message stating that there are no records.
@@ -239,7 +239,7 @@ Namespace ApplyCustomLogicToEmptyRegionsExample
 				'ExSummary:Shows how to merge all the parent cells of an unused region and display a message within the table.
 				' Replace the unused region in the table with a "no records" message and merge all cells into one.
 				If args.TableName = "Suppliers" Then
-					If CStr(args.FieldValue) = "FirstField" Then
+					If CStr(args.FieldValue) Is "FirstField" Then
 						' We will use the first paragraph to display our message. Make it centered within the table. The other fields in other cells 
 						' within the table will be merged and won't be displayed so we don't need to do anything else with them.
 						parentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Center
@@ -259,7 +259,7 @@ Namespace ApplyCustomLogicToEmptyRegionsExample
 				'ExEnd
 			End Sub
 
-			Public Sub ImageFieldMerging(ByVal args As ImageFieldMergingArgs)
+			Public Sub ImageFieldMerging(ByVal args As ImageFieldMergingArgs) Implements IFieldMergingCallback.ImageFieldMerging
 				' Do Nothing
 			End Sub
 		End Class

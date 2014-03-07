@@ -7,10 +7,10 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{19CC33F3-5219-442A-A328-5D73D24EDCDF}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>SaveHtmlAndEmailExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>SaveHtmlAndEmail</AssemblyName>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Binary</OptionCompare>
     <OptionStrict>Off</OptionStrict>
@@ -39,8 +39,16 @@
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainForm.vb">
@@ -51,7 +59,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-<!-- DataFiles -->
+    <!-- DataFiles -->
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) != ''" />

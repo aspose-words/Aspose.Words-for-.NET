@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E111F9B0-AC23-4F0F-90CA-9F21441E6C83}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ProcessCommentsExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>ProcessComments</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E63EE679-6D84-4968-8917-F4C56A2F0DC2}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>FindAndHighlightExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>FindAndHighlight</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -43,6 +43,7 @@
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

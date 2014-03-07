@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{7F68E54E-B7D8-41BA-9DE8-F7947AA5F9BD}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>CheckFormatExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>CheckFormat</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

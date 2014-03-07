@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D491B202-EE8E-4BDE-9B05-F8478CF76F97}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>SplitIntoHtmlPagesExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>SplitIntoHtmlPages</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -43,10 +43,14 @@
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.vb" />
+    <Compile Include="TocMailMergeDataSource.vb" />
+    <Compile Include="Topic.vb" />
+    <Compile Include="Worker.vb" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Data\SOI 2007-2012-DeeM with footnote added.doc">

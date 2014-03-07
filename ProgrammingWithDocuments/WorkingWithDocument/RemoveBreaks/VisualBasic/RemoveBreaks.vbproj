@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{15025A37-59CF-47C2-96BC-9278E77CBFBD}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>RemoveBreaksExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>RemoveBreaks</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

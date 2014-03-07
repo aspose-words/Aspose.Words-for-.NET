@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B60B9460-F66B-49A5-B8D2-FB644E0E47F8}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>AutoFitTablesExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>AutoFitTables</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A232F924-D109-4E56-8EFA-77AF48F958A1}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>PageNumbersOfNodesExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>PageNumbersOfNodes</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

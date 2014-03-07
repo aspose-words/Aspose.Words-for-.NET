@@ -217,7 +217,7 @@ Namespace DocumentExplorerExample
 			gControlCharacters.Add(ControlChar.NonBreakingHyphenChar, "[!NonBreakingHyphen!]")
 			gControlCharacters.Add(ControlChar.NonBreakingSpaceChar, "[!NonBreakingSpace!]")
 			gControlCharacters.Add(ControlChar.OptionalHyphenChar, "[!OptionalHyphen!]")
-			gControlCharacters.Add(ControlChar.ParagraphBreakChar, "�" & Constants.vbCrLf)
+			gControlCharacters.Add(ControlChar.ParagraphBreakChar, "¶" & Constants.vbCrLf)
 			gControlCharacters.Add(ControlChar.SectionBreakChar, "[!SectionBreak!]" & Constants.vbCrLf)
 			gControlCharacters.Add(ControlChar.TabChar, "[!Tab!]")
 		End Sub

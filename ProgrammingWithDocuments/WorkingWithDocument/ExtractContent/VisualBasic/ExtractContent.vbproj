@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A5460C2E-E659-4372-A793-7A8B03625CDB}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ExtractContentExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>ExtractContent</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -43,6 +43,7 @@
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

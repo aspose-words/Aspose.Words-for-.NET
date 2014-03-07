@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{83E53F1A-F00F-4238-BE83-84F0AEA9B392}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>NestedMailMergeExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>NestedMailMerge</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -43,6 +43,7 @@
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

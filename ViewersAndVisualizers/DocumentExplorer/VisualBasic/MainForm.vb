@@ -386,7 +386,7 @@ Namespace DocumentExplorerExample
 		#End Region
 
 		<STAThread> _
-		Shared Sub Main()
+		Public Shared Sub Main()
 			Application.EnableVisualStyles()
 			Application.DoEvents()
 			Application.Run(New MainForm())

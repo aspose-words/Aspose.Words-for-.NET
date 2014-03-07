@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E4B0195E-B8D6-436E-8098-F57BDC3A8524}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ExtractContentBasedOnStylesExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>ExtractContentBasedOnStyles</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

@@ -177,5 +177,15 @@ Namespace SaveHtmlAndEmailExample
 				e.Handled = True
 			End If
 		End Sub
+
+		''' <summary>
+		''' The main entry point for the application.
+		''' </summary>
+		<STAThread> _
+		Public Shared Sub Main()
+			Application.EnableVisualStyles()
+			Application.SetCompatibleTextRenderingDefault(False)
+			Application.Run(New MainForm())
+		End Sub
 	End Class
 End Namespace

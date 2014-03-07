@@ -78,6 +78,6 @@ Namespace AddImageToEachPageExample
 			builder.Writeln("This is a custom note for page " & page)
 		End Sub
 
-		Public Shared gDataDir As String = Path.GetFullPath("../../Data/")
+		Public Shared gDataDir As String = Path.GetFullPath("../../../Data/")
 	End Class
 End Namespace

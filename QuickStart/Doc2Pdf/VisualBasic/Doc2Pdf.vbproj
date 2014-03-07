@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{389E25D3-5B19-4674-B159-D50F2917B847}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Doc2PdfExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>Doc2Pdf</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

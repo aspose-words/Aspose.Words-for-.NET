@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F2840BC4-BBC5-48B3-A5BC-AE7EEB7640D1}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>FindAndReplaceExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>FindAndReplace</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

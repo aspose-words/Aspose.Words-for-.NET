@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D363C78C-A7EF-4C52-87E4-5658F30CB95C}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>AppendDocumentExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>AppendDocument</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1B1FD815-4B38-4827-A397-DBDC12E343BB}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ApplyCustomLogicToEmptyRegionsExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>ApplyCustomLogicToEmptyRegions</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -43,6 +43,7 @@
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

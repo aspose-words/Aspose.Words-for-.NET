@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5E8FD942-EC38-4576-B5A8-4CACE22E64BC}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>EnumerateLayoutElementsExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>EnumerateLayoutElements</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -43,9 +43,12 @@
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LayoutInfoWriter.vb" />
+    <Compile Include="OutlineLayoutEntitiesRenderer.vb" />
     <Compile Include="Program.vb" />
   </ItemGroup>
   <ItemGroup>

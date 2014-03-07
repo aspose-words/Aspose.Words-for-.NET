@@ -23,7 +23,7 @@ Namespace ExtractContentExample
 
 		Public Shared Sub Main()
 			' The path to the documents directory.
-			mDataDir = New Uri(New Uri(exeDir), "../../Data/").LocalPath
+			mDataDir = Path.GetFullPath("../../../Data/")
 
 			' Call methods to test extraction of different types from the document.
 			ExtractContentBetweenParagraphs()

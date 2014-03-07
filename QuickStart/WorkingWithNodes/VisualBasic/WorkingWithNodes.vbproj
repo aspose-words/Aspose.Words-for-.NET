@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F0E57805-DFC8-4561-93EE-F957BEED3B4D}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>WorkingWithNodesExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>WorkingWithNodes</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

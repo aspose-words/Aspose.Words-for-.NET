@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{66F04C67-69C2-425D-A60E-C9DD394CF12A}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Word2HelpExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>Word2Help</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

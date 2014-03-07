@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{9FF20A9B-A493-4510-B51B-71D956FE742C}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>CopyBookmarkedTextExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>CopyBookmarkedText</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

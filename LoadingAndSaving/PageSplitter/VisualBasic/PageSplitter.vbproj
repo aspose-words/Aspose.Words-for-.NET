@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5BDC68C3-1853-4C06-B553-5B9F8F108357}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>PageSplitterExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>PageSplitter</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -46,7 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DocumentPageSplitter.vb" />
+    <Compile Include="PageNumberFinder.vb" />
     <Compile Include="Program.vb" />
+    <Compile Include="SectionSplitter.vb" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Data\Rendering.doc">

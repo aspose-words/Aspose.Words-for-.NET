@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{442717CD-8494-4A5F-BE31-DFF735C99CF4}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>SimpleMailMergeExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>SimpleMailMerge</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B37C72E9-7A2B-4D98-8E79-44626536D048}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>AddImageToEachPageExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>AddImageToEachPage</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -43,6 +43,7 @@
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

@@ -20,21 +20,6 @@ Namespace Excel2WordExample
 		Inherits Form
 		Public Sub New()
 			InitializeComponent()
-			Dim wordsLicenseFile As String = Path.Combine(Application.StartupPath, "Aspose.Words.lic")
-			If File.Exists(wordsLicenseFile) Then
-				'This shows how to license Aspose.Words.
-				'If you don't specify a license, Aspose.Words works in evaluation mode.
-				Dim license As New Aspose.Words.License()
-				license.SetLicense(wordsLicenseFile)
-			End If
-
-			Dim cellsLicenseFile As String = Path.Combine(Application.StartupPath, "Aspose.Cells.lic")
-			If File.Exists(cellsLicenseFile) Then
-				'This shows how to license Aspose.Cells.
-				'If you don't specify a license, Aspose.Cells works in evaluation mode.
-				Dim license As New Aspose.Cells.License()
-				license.SetLicense(cellsLicenseFile)
-			End If
 		End Sub
 
 		Private Sub buttonConvert_Click(ByVal sender As Object, ByVal e As EventArgs) Handles buttonConvert.Click

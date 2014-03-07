@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{6B08E3ED-6947-4B45-8739-7F4E44543D6E}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>LoadTxtExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>LoadTxt</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

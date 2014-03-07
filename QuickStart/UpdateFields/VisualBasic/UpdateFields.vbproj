@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{34657D7B-E90C-47E5-8EDB-53968746B1F6}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>UpdateFieldsExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>UpdateFields</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

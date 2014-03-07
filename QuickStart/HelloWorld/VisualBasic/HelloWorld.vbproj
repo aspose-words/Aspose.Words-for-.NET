@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{17497BE2-931C-4A14-A96E-1823C1F4ABB7}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>HelloWorldExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>HelloWorld</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

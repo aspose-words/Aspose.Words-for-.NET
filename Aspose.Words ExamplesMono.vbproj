@@ -54,11 +54,18 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml " />
     <Reference Include="Aspose.Email ">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Email.dll</HintPath>
     </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Net">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="Aspose.Cells ">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Cells.dll</HintPath>
@@ -82,10 +89,16 @@
     </Compile>
     <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\SaveMhtmlAndEmail\VisualBasic\Program.vb" />
     <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\VisualBasic\Program.vb" />
+    <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\VisualBasic\TocMailMergeDataSource.vb" />
+    <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\VisualBasic\Topic.vb" />
+    <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\VisualBasic\Worker.vb" />
     <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\Word2Help\VisualBasic\Program.vb" />
     <Compile Include="LoadingAndSaving\LoadingAndSavingTxt\LoadingAndSavingTxtExamples.vb" />
     <Compile Include="LoadingAndSaving\LoadingAndSavingTxt\LoadTxt\VisualBasic\Program.vb" />
+    <Compile Include="LoadingAndSaving\PageSplitter\VisualBasic\DocumentPageSplitter.vb" />
+    <Compile Include="LoadingAndSaving\PageSplitter\VisualBasic\PageNumberFinder.vb" />
     <Compile Include="LoadingAndSaving\PageSplitter\VisualBasic\Program.vb" />
+    <Compile Include="LoadingAndSaving\PageSplitter\VisualBasic\SectionSplitter.vb" />
     <Compile Include="LoadingAndSaving\SavingToPdfFormat\ImageToPdf\VisualBasic\Program.vb" />
     <Compile Include="LoadingAndSaving\SavingToPdfFormat\SavingToPdfFormatExamples.vb" />
     <Compile Include="MailMergeAndReporting\ApplyCustomLogicToEmptyRegions\VisualBasic\Program.vb" />
@@ -120,6 +133,7 @@
     <Compile Include="ProgrammingWithDocuments\WorkingWithImages\AddImageToEachPage\VisualBasic\Program.vb" />
     <Compile Include="ProgrammingWithDocuments\WorkingWithImages\AddWatermark\VisualBasic\Program.vb" />
     <Compile Include="ProgrammingWithDocuments\WorkingWithImages\CompressImages\VisualBasic\Program.vb" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithImages\CompressImages\VisualBasic\Resampler.vb" />
     <Compile Include="ProgrammingWithDocuments\WorkingWithImages\WorkingWithImagesExamples.vb" />
     <Compile Include="ProgrammingWithDocuments\WorkingWithStyles\ExtractContentBasedOnStyles\VisualBasic\Program.vb" />
     <Compile Include="ProgrammingWithDocuments\WorkingWithStyles\WorkingWithStylesExamples.vb" />
@@ -140,11 +154,18 @@
     <Compile Include="RenderingAndPrinting\DocumentLayoutHelper\VisualBasic\LayoutEntities.vb" />
     <Compile Include="RenderingAndPrinting\DocumentLayoutHelper\VisualBasic\Program.vb" />
     <Compile Include="RenderingAndPrinting\DocumentLayoutHelper\VisualBasic\RenderedDocument.vb" />
+    <Compile Include="RenderingAndPrinting\EnumerateLayoutElements\VisualBasic\LayoutInfoWriter.vb" />
+    <Compile Include="RenderingAndPrinting\EnumerateLayoutElements\VisualBasic\OutlineLayoutEntitiesRenderer.vb" />
     <Compile Include="RenderingAndPrinting\EnumerateLayoutElements\VisualBasic\Program.vb" />
-    <Compile Include="RenderingAndPrinting\PrintDocument\DocumentPreviewAndPrint\VisualBasic\Program.vb" />
-    <Compile Include="RenderingAndPrinting\PrintDocument\MultiplePagesOnSheet\VisualBasic\Program.vb" />
+    <Compile Include="RenderingAndPrinting\PrintDocument\DocumentPreviewAndPrint\VisualBasic\Program.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RenderingAndPrinting\PrintDocument\MultiplePagesOnSheet\VisualBasic\Program.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="RenderingAndPrinting\PrintDocument\PrintDocumentExamples.vb" />
     <Compile Include="RenderingAndPrinting\PrintDocument\XpsPrint\VisualBasic\Program.vb" />
+    <Compile Include="RenderingAndPrinting\PrintDocument\XpsPrint\VisualBasic\XpsPrintHelper.vb" />
     <Compile Include="RenderingAndPrinting\RenderingAndPrintingExamples.vb" />
     <Compile Include="RenderingAndPrinting\RenderingToImage\ImageColorFilters\VisualBasic\Program.vb" />
     <Compile Include="RenderingAndPrinting\RenderingToImage\RenderingToImageExamples.vb" />
@@ -227,7 +248,6 @@
       <DependentUpon>ViewerForm.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Folder Include="RenderingAndPrinting\RenderingToImage\RenderShapes\VisualBasic\My Project\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LoadingAndSaving\CheckFormat\Data\Test File (doc).doc" />
@@ -245,6 +265,29 @@
     <None Include="LoadingAndSaving\CheckFormat\Data\Test File (rtf).rtf" />
     <None Include="LoadingAndSaving\CheckFormat\Data\Test File (WordML).xml" />
     <None Include="LoadingAndSaving\CheckFormat\Data\Test File (XML).xml" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\_testDrawing.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+2008 calendar1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+-4011.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Expense budget1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Expense report1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Five-day event schedule1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Generic staff paper1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+House cleaning checklist1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Marketing budget plan1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Marketing tactical plan1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Personal budget1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Personal monthly budget1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Pet-sitting invoice1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+PivotTable report position recall1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+testChart.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+testMergedCells.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Travel service invoice1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\Personal budget1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\Sales order1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\Secret Santa gift exchange list1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\Travel service invoice1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\Weekly time sheet1.xls" />
+    <None Include="LoadingAndSaving\LoadingAndSavingHTML\SaveMhtmlAndEmail\Data\DinnerInvitationDemo.doc" />
     <None Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\Data\SOI 2007-2012-DeeM with footnote added.doc" />
     <None Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\Data\TocTemplate.doc" />
     <None Include="LoadingAndSaving\LoadingAndSavingHTML\Word2Help\Data\banner.html" />
@@ -260,6 +303,8 @@
     <None Include="LoadingAndSaving\SavingToPdfFormat\ImageToPdf\Data\Test.tiff" />
     <None Include="LoadingAndSaving\SavingToPdfFormat\ImageToPdf\Data\Test.wmf" />
     <None Include="MailMergeAndReporting\ApplyCustomLogicToEmptyRegions\Data\TestFile.doc" />
+    <None Include="MailMergeAndReporting\LINQtoXMLMailMerge\Data\PurchaseOrder.xml" />
+    <None Include="MailMergeAndReporting\LINQtoXMLMailMerge\Data\TestFile.doc" />
     <None Include="MailMergeAndReporting\MailMergeFormFields\Data\Template.doc" />
     <None Include="MailMergeAndReporting\MultipleDocsInMailMerge\Data\Customers.mdb" />
     <None Include="MailMergeAndReporting\MultipleDocsInMailMerge\Data\TestFile.doc" />

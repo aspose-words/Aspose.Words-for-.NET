@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{61657813-91D9-42FE-B366-8E4C5860DD6D}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>DocumentInDBExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>DocumentInDB</AssemblyName>
     <OldToolsVersion>3.5</OldToolsVersion>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>

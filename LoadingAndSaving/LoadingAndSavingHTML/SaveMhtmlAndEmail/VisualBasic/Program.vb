@@ -19,7 +19,7 @@ Imports Aspose.Email.Mail
 Namespace SaveMhtmlAndEmailExample
 	Public Class Program
 		Public Shared Sub Main()
-#If (Not EmailInstalled) Then
+#If EmailInstalled Then
 
 			' The path to the documents directory.
 			Dim dataDir As String = Path.GetFullPath("../../../Data/")

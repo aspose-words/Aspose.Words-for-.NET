@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{EE57A802-BF35-4B7C-8A6C-3DE4A154DD3B}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ImageToPdfExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>ImageToPdf</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -43,6 +43,7 @@
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{3F8454D1-808C-468F-8935-BF627544C1F2}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>DocumentPreviewAndPrintExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>DocumentPreviewAndPrint</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -43,10 +43,14 @@
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.vb" />
+    <Compile Include="Program.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Data\TestFile.doc">

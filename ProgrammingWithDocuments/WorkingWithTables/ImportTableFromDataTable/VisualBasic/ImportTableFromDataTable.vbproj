@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B73280E1-1652-49A8-937C-ED3FEFA44322}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ImportTableFromDataTableExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>ImportTableFromDataTable</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -43,13 +43,15 @@
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.vb" />
   </ItemGroup>
   <ItemGroup>
-<!-- DataFiles -->
+    <!-- DataFiles -->
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) != ''" />

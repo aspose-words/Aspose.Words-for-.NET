@@ -65,7 +65,7 @@ Namespace DocumentExplorerExample
 			Me.label2.Name = "label2"
 			Me.label2.Size = New System.Drawing.Size(364, 20)
 			Me.label2.TabIndex = 2
-			Me.label2.Text = "Copyright � 2002-2010 Aspose Pty Ltd. All Rights Reserved. "
+			Me.label2.Text = "Copyright © 2002-2010 Aspose Pty Ltd. All Rights Reserved. "
 			Me.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 			' 
 			' textBox1

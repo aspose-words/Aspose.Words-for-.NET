@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F0BFB092-F906-4F2E-8BAC-8AF194F26027}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>XpsPrintExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>XpsPrint</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.vb" />
+    <Compile Include="XpsPrintHelper.vb" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Data\SampleDocument.doc">

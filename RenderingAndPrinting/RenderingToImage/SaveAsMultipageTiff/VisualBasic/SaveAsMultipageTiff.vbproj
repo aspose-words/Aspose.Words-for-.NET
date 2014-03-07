@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B617E969-D9CE-4711-9F63-D1F8FF2A5436}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>SaveAsMultipageTiffExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>SaveAsMultipageTiff</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

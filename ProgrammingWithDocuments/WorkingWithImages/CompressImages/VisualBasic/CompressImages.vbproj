@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{10B8D06B-F643-467E-938D-2359CD50E08C}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>CompressImagesExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>CompressImages</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -43,10 +43,12 @@
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.vb" />
+    <Compile Include="Resampler.vb" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Data\Test.docx">

@@ -17,7 +17,7 @@ Imports Aspose.Words
 Imports Aspose.Words.Reporting
 
 Namespace RemoveEmptyRegionsExample
-	Friend Class RemoveEmptyRegions
+	Public Class Program
 		Public Shared Sub Main()
 			' The path to the documents directory.
 			Dim dataDir As String = Path.GetFullPath("../../../Data/")

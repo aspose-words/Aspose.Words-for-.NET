@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{84113C35-7FA1-430A-ACD4-333F0064FE87}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ApplyLicenseExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>ApplyLicense</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

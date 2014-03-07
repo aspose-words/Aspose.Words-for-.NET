@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2DBC7D60-1FEB-4F3D-85EF-AFD3FCF910D5}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>LoadAndSaveToDiskExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>LoadAndSaveToDisk</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

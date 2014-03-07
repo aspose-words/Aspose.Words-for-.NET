@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{138D77DD-9E6F-47A2-B10A-06000E9EE555}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>LoadAndSaveToStreamExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>LoadAndSaveToStream</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

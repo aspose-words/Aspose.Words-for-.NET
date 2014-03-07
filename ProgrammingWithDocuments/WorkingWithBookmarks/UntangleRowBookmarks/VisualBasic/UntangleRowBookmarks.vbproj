@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{504C312B-71B7-4E49-AFC4-B6504AFFD3BB}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>UntangleRowBookmarksExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>UntangleRowBookmarks</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

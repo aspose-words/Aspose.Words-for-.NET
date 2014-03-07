@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{56B59F88-B276-46EC-8128-49B509B0057C}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MailMergeFormFieldsExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>MailMergeFormFields</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

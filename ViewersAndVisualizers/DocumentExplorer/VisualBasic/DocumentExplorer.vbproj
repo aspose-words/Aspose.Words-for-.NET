@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{BE3192C2-A305-44F9-809A-6F2AE9F09139}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>DocumentExplorerExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>DocumentExplorer</AssemblyName>
     <OldToolsVersion>3.5</OldToolsVersion>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
@@ -41,6 +41,7 @@
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml " />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AboutForm.resx">
@@ -66,7 +67,6 @@
     <Compile Include="AboutForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AssemblyInfo.vb" />
     <Compile Include="DocumentItems.vb" />
     <Compile Include="ExceptionDialog.vb">
       <SubType>Form</SubType>
@@ -124,7 +124,7 @@
     <EmbeddedResource Include="Icons\Table.ico" />
   </ItemGroup>
   <ItemGroup>
-<!-- DataFiles -->
+    <!-- DataFiles -->
   </ItemGroup>
   <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) != ''" />

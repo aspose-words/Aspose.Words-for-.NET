@@ -41,8 +41,7 @@ Namespace NestedMailMergeExample
 			Debug.Assert(doc.MailMerge.GetFieldNames().Length = 0, "There was a problem with mail merge") 'ExSkip
 		End Sub
 	End Class
-End Namespace
-'ExEnd
+End Namespace 'ExEnd
 
 Public Class DataRelationExample
 	Public Shared Sub CreateRelationship()

@@ -23,7 +23,7 @@ Namespace AppendDocumentExample
 
 		Public Shared Sub Main()
 			' The path to the documents directory.
-			gDataDir = New Uri(New Uri(exeDir), "../../Data/").LocalPath
+			gDataDir = Path.GetFullPath("../../../Data/")
 
 			' Run each of the sample code snippets.
 			AppendDocument_SimpleAppendDocument()
@@ -305,7 +305,7 @@ Namespace AppendDocumentExample
 				' section is encountered.
 				Dim nodes() As Node = section.GetChildNodes(NodeType.FieldStart, True).ToArray()
 				For Each fieldStart As FieldStart In nodes
-					If fieldStart.FieldType Is FieldType.FieldNumPages Then
+					If fieldStart.FieldType = FieldType.FieldNumPages Then
 						' Get the field code.
 						Dim fieldCode As String = GetFieldCode(fieldStart)
 						' Since the NUMPAGES field does not take any additional parameters we can assume the remaining part of the field

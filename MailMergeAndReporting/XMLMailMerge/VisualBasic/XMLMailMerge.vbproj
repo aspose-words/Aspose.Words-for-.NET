@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F0FEF594-D6D7-4281-A54C-821DBC75EB5D}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>XMLMailMergeExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>XMLMailMerge</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -43,6 +43,7 @@
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

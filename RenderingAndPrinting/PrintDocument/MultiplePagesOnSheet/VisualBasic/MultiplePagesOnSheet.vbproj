@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2AC428E8-11EB-4E13-AF5D-7952D32FC818}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MultiplePagesOnSheetExample</RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>MultiplePagesOnSheet</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -43,10 +43,14 @@
       <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.vb" />
+    <Compile Include="Program.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Data\TestFile.doc">
