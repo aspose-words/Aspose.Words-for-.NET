@@ -32,8 +32,8 @@ namespace Aspose.Words.Layout
             mLayoutCollector = new LayoutCollector(doc);
             mEnumerator = new LayoutEnumerator(doc);
             ProcessLayoutElements(this);
-            CollectLinesAndAddToMarkers();
             LinkLayoutMarkersToNodes(doc);
+            CollectLinesAndAddToMarkers();
         }
 
         /// <summary>
@@ -118,12 +118,22 @@ namespace Aspose.Words.Layout
                         {
                             if (span.Kind == "PARAGRAPH" || span.Kind == "ROW" || span.Kind == "CELL" || span.Kind == "SECTION")
                             {
-                                mLayoutToLinesLookup.Add(span.LayoutObject, collectedLines);
+                                Node node = mLayoutToNodeLookup[span.LayoutObject];
+
+                                if (node.NodeType == NodeType.Row)
+                                    node = ((Row)node).LastCell.LastParagraph;
+
+                                foreach (RenderedLine collectedLine in collectedLines)
+                                    collectedLine.SetParentNode(node);
+
                                 collectedLines = new List<RenderedLine>();
                             }
                             else
                             {
-                                mLayoutToSpanLookup.Add(span.LayoutObject, span);
+                                if (mLayoutToNodeLookup.ContainsKey(span.LayoutObject))
+                                {
+                                    span.SetParentNode(mLayoutToNodeLookup[span.LayoutObject]);
+                                }
                             }
                         }
                     }
@@ -135,42 +145,16 @@ namespace Aspose.Words.Layout
         {
             foreach (Node node in doc.GetChildNodes(NodeType.Any, true))
             {
-                switch (node.NodeType)
-                {
-                    case NodeType.Paragraph:
-                        foreach (RenderedLine line in GetLinesOfNode(node))
-                            line.SetParentNode(node);
-                        break;
+                object entity = mLayoutCollector.GetEntity(node);
 
-                    case NodeType.Row:
-                        foreach (RenderedLine line in GetLinesOfNode(node))
-                            line.SetParentNode(((Row)node).LastCell.LastParagraph);
-                        break;
-
-                    default:
-                        if (mLayoutCollector.GetEntity(node) != null)
-                            mLayoutToSpanLookup[mLayoutCollector.GetEntity(node)].SetParentNode(node);
-                        break;
-                }
+                if (entity != null)
+                    mLayoutToNodeLookup.Add(entity, node);
             }
-        }
-
-        private List<RenderedLine> GetLinesOfNode(Node node)
-        {
-            List<RenderedLine> lines = new List<RenderedLine>();
-            object nodeEntity = mLayoutCollector.GetEntity(node);
-
-            if (nodeEntity != null && mLayoutToLinesLookup.ContainsKey(nodeEntity))
-                lines = mLayoutToLinesLookup[nodeEntity];
-
-            return lines;
         }
 
         private LayoutCollector mLayoutCollector;
         private LayoutEnumerator mEnumerator;
-        private static Dictionary<object, List<RenderedLine>> mLayoutToLinesLookup =
-                new Dictionary<object, List<RenderedLine>>();
-        private static Dictionary<object, RenderedSpan> mLayoutToSpanLookup =
-                new Dictionary<object, RenderedSpan>();
+        private static Dictionary<object, Node> mLayoutToNodeLookup =
+                new Dictionary<object, Node>();
     }
 }

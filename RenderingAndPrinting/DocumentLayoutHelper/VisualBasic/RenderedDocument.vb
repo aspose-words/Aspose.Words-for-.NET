@@ -32,8 +32,8 @@ Namespace Aspose.Words.Layout
 			mLayoutCollector = New LayoutCollector(doc)
 			mEnumerator = New LayoutEnumerator(doc)
 			ProcessLayoutElements(Me)
-			CollectLinesAndAddToMarkers()
 			LinkLayoutMarkersToNodes(doc)
+			CollectLinesAndAddToMarkers()
 		End Sub
 
 		''' <summary>
@@ -107,10 +107,21 @@ Namespace Aspose.Words.Layout
 						collectedLines.Add(line)
 						For Each span As RenderedSpan In line.Spans
 							If span.Kind = "PARAGRAPH" OrElse span.Kind = "ROW" OrElse span.Kind = "CELL" OrElse span.Kind = "SECTION" Then
-								mLayoutToLinesLookup.Add(span.LayoutObject, collectedLines)
+								Dim node As Node = mLayoutToNodeLookup(span.LayoutObject)
+
+								If node.NodeType = NodeType.Row Then
+									node = (CType(node, Row)).LastCell.LastParagraph
+								End If
+
+								For Each collectedLine As RenderedLine In collectedLines
+									collectedLine.SetParentNode(node)
+								Next collectedLine
+
 								collectedLines = New List(Of RenderedLine)()
 							Else
-								mLayoutToSpanLookup.Add(span.LayoutObject, span)
+								If mLayoutToNodeLookup.ContainsKey(span.LayoutObject) Then
+									span.SetParentNode(mLayoutToNodeLookup(span.LayoutObject))
+								End If
 							End If
 						Next span
 					Next line
@@ -120,39 +131,16 @@ Namespace Aspose.Words.Layout
 
 		Private Sub LinkLayoutMarkersToNodes(ByVal doc As Document)
 			For Each node As Node In doc.GetChildNodes(NodeType.Any, True)
-				Select Case node.NodeType
-					Case NodeType.Paragraph
-						For Each line As RenderedLine In GetLinesOfNode(node)
-							line.SetParentNode(node)
-						Next line
+				Dim entity As Object = mLayoutCollector.GetEntity(node)
 
-					Case NodeType.Row
-						For Each line As RenderedLine In GetLinesOfNode(node)
-							line.SetParentNode((CType(node, Row)).LastCell.LastParagraph)
-						Next line
-
-					Case Else
-						If mLayoutCollector.GetEntity(node) IsNot Nothing Then
-							mLayoutToSpanLookup(mLayoutCollector.GetEntity(node)).SetParentNode(node)
-						End If
-				End Select
+				If entity IsNot Nothing Then
+					mLayoutToNodeLookup.Add(entity, node)
+				End If
 			Next node
 		End Sub
 
-		Private Function GetLinesOfNode(ByVal node As Node) As List(Of RenderedLine)
-			Dim lines As List(Of RenderedLine) = New List(Of RenderedLine)()
-			Dim nodeEntity As Object = mLayoutCollector.GetEntity(node)
-
-			If nodeEntity IsNot Nothing AndAlso mLayoutToLinesLookup.ContainsKey(nodeEntity) Then
-				lines = mLayoutToLinesLookup(nodeEntity)
-			End If
-
-			Return lines
-		End Function
-
 		Private mLayoutCollector As LayoutCollector
 		Private mEnumerator As LayoutEnumerator
-		Private Shared mLayoutToLinesLookup As Dictionary(Of Object, List(Of RenderedLine)) = New Dictionary(Of Object, List(Of RenderedLine))()
-		Private Shared mLayoutToSpanLookup As Dictionary(Of Object, RenderedSpan) = New Dictionary(Of Object, RenderedSpan)()
+		Private Shared mLayoutToNodeLookup As Dictionary(Of Object, Node) = New Dictionary(Of Object, Node)()
 	End Class
 End Namespace
