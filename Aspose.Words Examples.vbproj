@@ -24,7 +24,6 @@
     <DefineTrace>true</DefineTrace>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">NET20</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,7 +33,6 @@
     <DefineTrace>true</DefineTrace>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">NET20</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Aspose.Words">
@@ -358,6 +356,6 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) != ''" />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) == ''" />
   <PropertyGroup>
-    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">NET20=true</DefineConstants>
+    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">NET20</DefineConstants>
   </PropertyGroup>
 </Project>
