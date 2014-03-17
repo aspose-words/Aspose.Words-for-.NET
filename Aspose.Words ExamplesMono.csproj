@@ -191,6 +191,9 @@
     </Compile>
     <Compile Include="ViewersAndVisualizers\ViewersAndVisualizersExamples.cs" />
     <Content Include="ViewersAndVisualizers\DocumentExplorer\CSharp\App.ico" />
+    <EmbeddedResource Include="LoadingAndSaving\LoadingAndSavingHTML\SaveHtmlAndEmail\CSharp\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
       <SubType>Designer</SubType>

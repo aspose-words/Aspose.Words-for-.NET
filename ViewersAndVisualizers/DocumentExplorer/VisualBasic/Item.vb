@@ -164,7 +164,7 @@ Namespace DocumentExplorerExample
 		''' <returns>The stream. Don't forget to close it when finished.</returns>
 		Friend Shared Function FetchResourceStream(ByVal resourceName As String) As Stream
 			Dim asm As System.Reflection.Assembly = System.Reflection.Assembly.GetExecutingAssembly()
-			Dim fullName As String = String.Format("{0}.{1}", asm.GetName().Name, resourceName)
+			Dim fullName As String = String.Format("{0}Example.{1}", asm.GetName().Name, resourceName)
 			Dim stream As Stream = asm.GetManifestResourceStream(fullName)
 
 			' Ugly optimization so conversion to VB.NET can work.
@@ -217,7 +217,7 @@ Namespace DocumentExplorerExample
 			gControlCharacters.Add(ControlChar.NonBreakingHyphenChar, "[!NonBreakingHyphen!]")
 			gControlCharacters.Add(ControlChar.NonBreakingSpaceChar, "[!NonBreakingSpace!]")
 			gControlCharacters.Add(ControlChar.OptionalHyphenChar, "[!OptionalHyphen!]")
-			gControlCharacters.Add(ControlChar.ParagraphBreakChar, "Â¶" & Constants.vbCrLf)
+			gControlCharacters.Add(ControlChar.ParagraphBreakChar, "¶" & Constants.vbCrLf)
 			gControlCharacters.Add(ControlChar.SectionBreakChar, "[!SectionBreak!]" & Constants.vbCrLf)
 			gControlCharacters.Add(ControlChar.TabChar, "[!Tab!]")
 		End Sub
@@ -228,7 +228,7 @@ Namespace DocumentExplorerExample
 		Public Shared Function CreateItem(ByVal aNode As Node) As Item
 			Dim typeName As String = aNode.NodeType.ToString() & "Item"
 			If gItemSet.Contains(typeName) Then
-				Return CType(Activator.CreateInstance(Type.GetType("DocumentExplorer." & typeName), New Object() {aNode}), Item)
+				Return CType(Activator.CreateInstance(Type.GetType("DocumentExplorerExample." & typeName), New Object() {aNode}), Item)
 			Else
 				Return New Item(aNode)
 			End If

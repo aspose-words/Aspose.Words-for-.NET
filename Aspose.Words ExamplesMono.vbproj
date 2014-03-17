@@ -194,6 +194,9 @@
     </Compile>
     <Compile Include="ViewersAndVisualizers\ViewersAndVisualizersExamples.vb" />
     <Content Include="ViewersAndVisualizers\DocumentExplorer\VisualBasic\App.ico" />
+    <EmbeddedResource Include="LoadingAndSaving\LoadingAndSavingHTML\SaveHtmlAndEmail\VisualBasic\MainForm.resx">
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\VisualBasic\AboutForm.resx">
       <DependentUpon>AboutForm.vb</DependentUpon>
       <SubType>Designer</SubType>

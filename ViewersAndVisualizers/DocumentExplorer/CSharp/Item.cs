@@ -1,4 +1,4 @@
-//////////////////////////////////////////////////////////////////////////
+﻿//////////////////////////////////////////////////////////////////////////
 // Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
@@ -178,7 +178,7 @@ namespace DocumentExplorerExample
 		internal static Stream FetchResourceStream(string resourceName)
 		{
 			Assembly asm = Assembly.GetExecutingAssembly();
-			string fullName = string.Format("{0}.{1}", asm.GetName().Name, resourceName);
+			string fullName = string.Format("{0}Example.{1}", asm.GetName().Name, resourceName);
 			Stream stream = asm.GetManifestResourceStream(fullName);
 
 			// Ugly optimization so conversion to VB.NET can work.
@@ -247,7 +247,7 @@ namespace DocumentExplorerExample
 		{
 			string typeName = aNode.NodeType.ToString() + "Item";
 			if (gItemSet.Contains(typeName))
-				return (Item)Activator.CreateInstance(Type.GetType("DocumentExplorer." + typeName), new object[] {aNode});
+				return (Item)Activator.CreateInstance(Type.GetType("DocumentExplorerExample." + typeName), new object[] {aNode});
 			else
 				return new Item(aNode);
 		}
