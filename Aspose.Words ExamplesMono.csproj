@@ -112,6 +112,7 @@
     <Compile Include="ProgrammingWithDocuments\JoiningAndAppending\AppendDocument\CSharp\Program.cs" />
     <Compile Include="ProgrammingWithDocuments\JoiningAndAppending\JoiningAndAppendingExamples.cs" />
     <Compile Include="ProgrammingWithDocuments\UsingFindAndReplace\FindAndHighlight\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\UsingFindAndReplace\ReplaceTextWithField\CSharp\Program.cs" />
     <Compile Include="ProgrammingWithDocuments\UsingFindAndReplace\UsingFindAndReplaceExamples.cs" />
     <Compile Include="ProgrammingWithDocuments\WorkingWithBookmarks\CopyBookmarkedText\CSharp\Program.cs" />
     <Compile Include="ProgrammingWithDocuments\WorkingWithBookmarks\UntangleRowBookmarks\CSharp\Program.cs" />
@@ -128,6 +129,8 @@
     <Compile Include="ProgrammingWithDocuments\WorkingWithDocument\PageNumbersOfNodes\CSharp\Program.cs" />
     <Compile Include="ProgrammingWithDocuments\WorkingWithDocument\RemoveBreaks\CSharp\Program.cs" />
     <Compile Include="ProgrammingWithDocuments\WorkingWithDocument\WorkingWithDocumentExamples.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithFields\InsertNestedFields\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithFields\RemoveField\CSharp\Program.cs" />
     <Compile Include="ProgrammingWithDocuments\WorkingWithFields\ReplaceFieldsWithStaticText\CSharp\Program.cs" />
     <Compile Include="ProgrammingWithDocuments\WorkingWithFields\WorkingWithFieldsExamples.cs" />
     <Compile Include="ProgrammingWithDocuments\WorkingWithImages\AddImageToEachPage\CSharp\Program.cs" />
@@ -323,6 +326,7 @@
     <None Include="ProgrammingWithDocuments\JoiningAndAppending\AppendDocument\Data\TestFile.SourceList.doc" />
     <None Include="ProgrammingWithDocuments\JoiningAndAppending\AppendDocument\Data\TestFile.SourcePageSetup.doc" />
     <None Include="ProgrammingWithDocuments\UsingFindAndReplace\FindAndHighlight\Data\TestFile.doc" />
+    <None Include="ProgrammingWithDocuments\UsingFindAndReplace\ReplaceTextWithField\Data\Field.ReplaceTextWithFields.doc" />
     <None Include="ProgrammingWithDocuments\WorkingWithBookmarks\CopyBookmarkedText\Data\Template.doc" />
     <None Include="ProgrammingWithDocuments\WorkingWithBookmarks\UntangleRowBookmarks\Data\TestDefect1352.doc" />
     <None Include="ProgrammingWithDocuments\WorkingWithComments\ProcessComments\Data\TestFile.doc" />
@@ -331,6 +335,7 @@
     <None Include="ProgrammingWithDocuments\WorkingWithDocument\ExtractContent\Data\TestFile.doc" />
     <None Include="ProgrammingWithDocuments\WorkingWithDocument\PageNumbersOfNodes\Data\TestFile.docx" />
     <None Include="ProgrammingWithDocuments\WorkingWithDocument\RemoveBreaks\Data\TestFile.doc" />
+    <None Include="ProgrammingWithDocuments\WorkingWithFields\RemoveField\Data\Field.RemoveField.doc" />
     <None Include="ProgrammingWithDocuments\WorkingWithFields\ReplaceFieldsWithStaticText\Data\TestFile.doc" />
     <None Include="ProgrammingWithDocuments\WorkingWithImages\AddImageToEachPage\Data\Aspose Logo.png" />
     <None Include="ProgrammingWithDocuments\WorkingWithImages\AddImageToEachPage\Data\TestFile.doc" />

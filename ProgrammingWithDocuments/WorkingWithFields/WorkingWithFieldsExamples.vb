@@ -14,5 +14,19 @@ Namespace Examples.ProgrammingWithDocuments.WorkingWithFields
 	            ReplaceFieldsWithStaticTextExample.Program.Main()
         End Sub
 
+        <TestMethod(), Test(), Owner("Console")> _
+	        Public Sub InsertNestedFields()
+	            TestHelper.SetDataDir("ProgrammingWithDocuments/WorkingWithFields/InsertNestedFields")
+	
+	            InsertNestedFieldsExample.Program.Main()
+        End Sub
+
+        <TestMethod(), Test(), Owner("Console")> _
+	        Public Sub RemoveField()
+	            TestHelper.SetDataDir("ProgrammingWithDocuments/WorkingWithFields/RemoveField")
+	
+	            RemoveFieldExample.Program.Main()
+        End Sub
+
 	End Class
 End Namespace

@@ -17,5 +17,13 @@ namespace Examples.ProgrammingWithDocuments.UsingFindAndReplace
             FindAndHighlightExample.Program.Main();
         }
 
+        [TestMethod, Test, Owner("Console")]
+        public void ReplaceTextWithField()
+        {
+            TestHelper.SetDataDir("ProgrammingWithDocuments/UsingFindAndReplace/ReplaceTextWithField");
+
+            ReplaceTextWithFieldExample.Program.Main();
+        }
+
     }
 }

@@ -14,5 +14,12 @@ Namespace Examples.ProgrammingWithDocuments.UsingFindAndReplace
 	            FindAndHighlightExample.Program.Main()
         End Sub
 
+        <TestMethod(), Test(), Owner("Console")> _
+	        Public Sub ReplaceTextWithField()
+	            TestHelper.SetDataDir("ProgrammingWithDocuments/UsingFindAndReplace/ReplaceTextWithField")
+	
+	            ReplaceTextWithFieldExample.Program.Main()
+        End Sub
+
 	End Class
 End Namespace

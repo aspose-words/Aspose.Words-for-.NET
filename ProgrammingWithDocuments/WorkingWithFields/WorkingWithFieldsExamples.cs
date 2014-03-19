@@ -17,5 +17,21 @@ namespace Examples.ProgrammingWithDocuments.WorkingWithFields
             ReplaceFieldsWithStaticTextExample.Program.Main();
         }
 
+        [TestMethod, Test, Owner("Console")]
+        public void InsertNestedFields()
+        {
+            TestHelper.SetDataDir("ProgrammingWithDocuments/WorkingWithFields/InsertNestedFields");
+
+            InsertNestedFieldsExample.Program.Main();
+        }
+
+        [TestMethod, Test, Owner("Console")]
+        public void RemoveField()
+        {
+            TestHelper.SetDataDir("ProgrammingWithDocuments/WorkingWithFields/RemoveField");
+
+            RemoveFieldExample.Program.Main();
+        }
+
     }
 }

@@ -802,6 +802,38 @@ It is possible to update results of some of the most popular fields.</Descriptio
               </InputFiles>
               <Type>Console</Type>
             </Example>
+            <Example>
+              <Title>Insert Nested Fields</Title>
+              <Description>Demonstrates how to use DocumentBuilder to position and insert a field inside the field code of a different field.</Description>
+              <FolderName>InsertNestedFields</FolderName>
+              <Order>2</Order>
+              <DocLink>
+                <DisplayName>Inserting Fields into a Document</DisplayName>
+                <Url>Inserting+Fields+into+a+Document</Url>
+              </DocLink>
+              <OutputFiles>
+                <DataFile>
+                  <Path>..\Data\InsertNestedFields Out.docx</Path>
+                </DataFile>
+              </OutputFiles>
+              <Type>Console</Type>
+            </Example>
+            <Example>
+              <Title>Remove Field</Title>
+              <Description>Demonstrates how to remove a field from a document using the Field facade.</Description>
+              <FolderName>RemoveField</FolderName>
+              <Order>3</Order>
+              <DocLink>
+                <DisplayName>Removing a Field</DisplayName>
+                <Url>Removing+a+Field</Url>
+              </DocLink>
+              <InputFiles>
+                <DataFile>
+                  <Path>..\Data\Field.RemoveField.doc</Path>
+                </DataFile>
+              </InputFiles>
+              <Type>Console</Type>
+            </Example>
           </Examples>
         </Folder>
         <Folder>
@@ -848,6 +880,18 @@ Aspose.Words has a wide range of support for comments and allows you to add, man
               <InputFiles>
                 <DataFile>
                   <Path>..\Data\TestFile.doc</Path>
+                </DataFile>
+              </InputFiles>
+              <Type>Console</Type>
+            </Example>
+            <Example>
+              <Title>Replacing Text with a Field</Title>
+              <Description>This code demonstrates how to find plain text markers in a document and replace each occurrence with a merge field at the position of the text.</Description>
+              <FolderName>ReplaceTextWithField</FolderName>
+              <Order>2</Order>
+              <InputFiles>
+                <DataFile>
+                  <Path>..\Data\Field.ReplaceTextWithFields.doc</Path>
                 </DataFile>
               </InputFiles>
               <Type>Console</Type>
@@ -1192,7 +1236,7 @@ The most important advantage of the Aspose.Words page layout engine is that it t
     </Folder>
     <Folder>
       <Title>Viewers and Visualizers</Title>
-      <Description>Aspose.Words provides a rich API and powerful rendering features. These examples demonstrate viewers that are driven using Aspose.Words , as well as applications which highlight ways to visualize the Aspose.Words document object model.</Description>
+      <Description>Aspose.Words provides a rich API and powerful rendering features. These examples demonstrate viewers that are driven using Aspose.Words, as well as applications which highlight ways to visualize the Aspose.Words document object model.</Description>
       <FolderName>ViewersAndVisualizers</FolderName>
       <Order>6</Order>
       <Examples>
