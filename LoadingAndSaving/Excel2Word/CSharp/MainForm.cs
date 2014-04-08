@@ -58,7 +58,7 @@ namespace Excel2WordExample
             // Save using Aspose.Words. 
             doc.Save(dstFileName);
 #else
-            throw new InvalidOperationException("This example requires the use of Aspose.Cells." + 
+            throw new InvalidOperationException(@"This example requires the use of Aspose.Cells." + 
                                     "Make sure Aspose.Cells.dll is present in the bin\net2.0 folder.");
 #endif
         }

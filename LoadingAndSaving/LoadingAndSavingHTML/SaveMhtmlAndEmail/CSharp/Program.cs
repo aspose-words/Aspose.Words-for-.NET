@@ -51,7 +51,7 @@ namespace SaveMhtmlAndEmailExample
             client.Send(message);
             //ExEnd
 #else
-            throw new InvalidOperationException("This example requires the use of Aspose.Email." + 
+            throw new InvalidOperationException(@"This example requires the use of Aspose.Email." + 
                                                 "Make sure Aspose.Email.dll is present in the bin\net2.0 folder.");
 #endif
         }
