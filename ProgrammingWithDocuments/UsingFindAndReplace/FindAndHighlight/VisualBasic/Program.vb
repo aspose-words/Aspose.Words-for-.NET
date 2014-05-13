@@ -26,7 +26,7 @@ Namespace FindAndHighlightExample
 
 			' We want the "your document" phrase to be highlighted.
 			Dim regex As New Regex("your document", RegexOptions.IgnoreCase)
-			doc.Range.Replace(regex, New ReplaceEvaluatorFindAndHighlight(), True)
+            doc.Range.Replace(regex, New ReplaceEvaluatorFindAndHighlight(), False)
 
 			' Save the output document.
 			doc.Save(dataDir & "TestFile Out.doc")

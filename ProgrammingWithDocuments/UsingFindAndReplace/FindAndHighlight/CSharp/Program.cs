@@ -27,7 +27,7 @@ namespace FindAndHighlightExample
 
             // We want the "your document" phrase to be highlighted.
             Regex regex = new Regex("your document", RegexOptions.IgnoreCase);
-            doc.Range.Replace(regex, new ReplaceEvaluatorFindAndHighlight(), true);
+            doc.Range.Replace(regex, new ReplaceEvaluatorFindAndHighlight(), false);
 
             // Save the output document.
             doc.Save(dataDir + "TestFile Out.doc");
