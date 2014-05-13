@@ -72,7 +72,7 @@ namespace Aspose.Words.Layout
                 {
                     RenderedRow row = (RenderedRow)entity;
                     if(row.Table == node)
-                        entities.Add(entity);                  
+                        entities.Add(entity);
                 }
             }
 
@@ -116,21 +116,21 @@ namespace Aspose.Words.Layout
                         collectedLines.Add(line);
                         foreach (RenderedSpan span in line.Spans)
                         {
-                            if (span.Kind == "PARAGRAPH" || span.Kind == "ROW" || span.Kind == "CELL" || span.Kind == "SECTION")
+                            if (mLayoutToNodeLookup.ContainsKey(span.LayoutObject))
                             {
-                                Node node = mLayoutToNodeLookup[span.LayoutObject];
+                                if (span.Kind == "PARAGRAPH" || span.Kind == "ROW" || span.Kind == "CELL" || span.Kind == "SECTION")
+                                {
+                                    Node node = mLayoutToNodeLookup[span.LayoutObject];
 
-                                if (node.NodeType == NodeType.Row)
-                                    node = ((Row)node).LastCell.LastParagraph;
+                                    if (node.NodeType == NodeType.Row)
+                                        node = ((Row)node).LastCell.LastParagraph;
 
-                                foreach (RenderedLine collectedLine in collectedLines)
-                                    collectedLine.SetParentNode(node);
+                                    foreach (RenderedLine collectedLine in collectedLines)
+                                        collectedLine.SetParentNode(node);
 
-                                collectedLines = new List<RenderedLine>();
-                            }
-                            else
-                            {
-                                if (mLayoutToNodeLookup.ContainsKey(span.LayoutObject))
+                                    collectedLines = new List<RenderedLine>();
+                                }
+                                else
                                 {
                                     span.SetParentNode(mLayoutToNodeLookup[span.LayoutObject]);
                                 }

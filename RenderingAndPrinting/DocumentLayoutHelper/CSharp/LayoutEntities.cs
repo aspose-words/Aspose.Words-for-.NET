@@ -515,7 +515,7 @@ namespace Aspose.Words.Layout
         {
             get
             {
-                Paragraph para = Cells.First.Lines.First.Paragraph;
+                Paragraph para = Cells.First.Lines.First != null ? Cells.First.Lines.First.Paragraph : null;
                 return para != null ? para.GetAncestor(NodeType.Row) : para;
             }
         }
@@ -589,7 +589,10 @@ namespace Aspose.Words.Layout
         {
             get
             {
-                return Lines.First.Paragraph != null ? Lines.First.Paragraph.GetAncestor(NodeType.Cell) : null;
+                if (Lines.First == null)
+                    return null;
+                else
+                    return Lines.First.Paragraph != null ? Lines.First.Paragraph.GetAncestor(NodeType.Cell) : null;
             }
         }
     }

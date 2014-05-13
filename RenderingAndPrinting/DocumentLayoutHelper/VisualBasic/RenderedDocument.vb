@@ -98,36 +98,36 @@ Namespace Aspose.Words.Layout
 			CollectLinesOfMarkersCore(LayoutEntityType.Comment)
 		End Sub
 
-		Private Sub CollectLinesOfMarkersCore(ByVal type As LayoutEntityType)
-			Dim collectedLines As List(Of RenderedLine) = New List(Of RenderedLine)()
+        Private Sub CollectLinesOfMarkersCore(ByVal type As LayoutEntityType)
+            Dim collectedLines As List(Of RenderedLine) = New List(Of RenderedLine)()
 
-			For Each page As RenderedPage In Pages
-				For Each story As LayoutEntity In page.GetChildEntities(type, False)
-					For Each line As RenderedLine In story.GetChildEntities(LayoutEntityType.Line, True)
-						collectedLines.Add(line)
-						For Each span As RenderedSpan In line.Spans
-							If span.Kind = "PARAGRAPH" OrElse span.Kind = "ROW" OrElse span.Kind = "CELL" OrElse span.Kind = "SECTION" Then
-								Dim node As Node = mLayoutToNodeLookup(span.LayoutObject)
+            For Each page As RenderedPage In Pages
+                For Each story As LayoutEntity In page.GetChildEntities(type, False)
+                    For Each line As RenderedLine In story.GetChildEntities(LayoutEntityType.Line, True)
+                        collectedLines.Add(line)
+                        For Each span As RenderedSpan In line.Spans
+                            If mLayoutToNodeLookup.ContainsKey(span.LayoutObject) Then
+                                If span.Kind = "PARAGRAPH" OrElse span.Kind = "ROW" OrElse span.Kind = "CELL" OrElse span.Kind = "SECTION" Then
+                                    Dim node As Node = mLayoutToNodeLookup(span.LayoutObject)
 
-								If node.NodeType = NodeType.Row Then
-									node = (CType(node, Row)).LastCell.LastParagraph
-								End If
+                                    If node.NodeType = NodeType.Row Then
+                                        node = (CType(node, Row)).LastCell.LastParagraph
+                                    End If
 
-								For Each collectedLine As RenderedLine In collectedLines
-									collectedLine.SetParentNode(node)
-								Next collectedLine
+                                    For Each collectedLine As RenderedLine In collectedLines
+                                        collectedLine.SetParentNode(node)
+                                    Next collectedLine
 
-								collectedLines = New List(Of RenderedLine)()
-							Else
-								If mLayoutToNodeLookup.ContainsKey(span.LayoutObject) Then
-									span.SetParentNode(mLayoutToNodeLookup(span.LayoutObject))
-								End If
-							End If
-						Next span
-					Next line
-				Next story
-			Next page
-		End Sub
+                                    collectedLines = New List(Of RenderedLine)()
+                                Else
+                                    span.SetParentNode(mLayoutToNodeLookup(span.LayoutObject))
+                                End If
+                            End If
+                        Next span
+                    Next line
+                Next story
+            Next page
+        End Sub
 
 		Private Sub LinkLayoutMarkersToNodes(ByVal doc As Document)
 			For Each node As Node In doc.GetChildNodes(NodeType.Any, True)

@@ -487,10 +487,11 @@ Namespace Aspose.Words.Layout
 		''' </summary>
 		''' <remarks>This property may return null for nodes that are inside the header or footer.</remarks>
 		Public Overrides ReadOnly Property ParentNode() As Node
-			Get
-				Dim para As Paragraph = Cells.First.Lines.First.Paragraph
-				Return If(para IsNot Nothing, para.GetAncestor(NodeType.Row), para)
-			End Get
+            Get
+                Dim para As Paragraph
+                para = If(Cells.First.Lines.First IsNot Nothing, Cells.First.Lines.First.Paragraph, Nothing)
+                Return If(para IsNot Nothing, para.GetAncestor(NodeType.Row), para)
+            End Get
 		End Property
 	End Class
 
@@ -565,9 +566,13 @@ Namespace Aspose.Words.Layout
 		''' </summary>
 		''' <remarks>This property may return null for nodes that are inside the header or footer.</remarks>
 		Public Overrides ReadOnly Property ParentNode() As Node
-			Get
-				Return If(Lines.First.Paragraph IsNot Nothing, Lines.First.Paragraph.GetAncestor(NodeType.Cell), Nothing)
-			End Get
+            Get
+                If Lines.First Is Nothing Then
+                    Return Nothing
+                Else
+                    Return If(Lines.First.Paragraph IsNot Nothing, Lines.First.Paragraph.GetAncestor(NodeType.Cell), Nothing)
+                End If
+            End Get
 		End Property
 	End Class
 
