@@ -140,7 +140,7 @@ namespace RenderShapesExample
                 using (Graphics gr = Graphics.FromImage(image))
                 {
                     // Clear the shape with the background color of the document.
-                    gr.Clear(Color.White);
+                    gr.Clear(shape.Document.PageColor);
                     // Center the rotation using translation method below
                     gr.TranslateTransform((float)image.Width / 8, (float)image.Height / 2);
                     // Rotate the image by 45 degrees.
