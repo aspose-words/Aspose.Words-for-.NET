@@ -114,7 +114,7 @@ For further details on setting up the examples and any requirements refer to the
 
 ##Download the Examples
 
-Please [Download the Aspose.Words for .NET Examples](https://github.com/asposewords/Aspose_Words_NET/downloads) to try them at your end.
+Please [Download the Aspose.Words for .NET Examples](https://github.com/asposewords/Aspose_Words_NET/archive/master.zip) to try them at your end.
 
 
 ##How to use the Examples?
