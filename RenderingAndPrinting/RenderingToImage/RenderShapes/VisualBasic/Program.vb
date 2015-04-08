@@ -212,10 +212,10 @@ Namespace RenderShapesExample
 		''' <param name="path">The path to save the rendered image to.</param>
 		''' <param name="imageOptions">The image options to use during rendering. This can be null.</param>
 		Public Shared Sub RenderNode(ByVal node As Node, ByVal filePath As String, ByVal imageOptions As ImageSaveOptions)
-			' Run some argument checks.
-			If node Is Nothing Then
-				Throw New ArgumentException("Node cannot be null")
-			End If
+			' This code is taken from public API samples of AW.
+			' Previously to find opaque bounds of the shape the function
+			' that checks every pixel of the rendered image was used.
+			' For now opaque bounds is got using ShapeRenderer.GetOpaqueRectangleInPixels method.
 
 			' If no image options are supplied, create default options.
 			If imageOptions Is Nothing Then
@@ -234,7 +234,7 @@ Namespace RenderShapesExample
 
 			' Create a temporary shape to store the target node in. This shape will be rendered to retrieve
 			' the rendered content of the node.
-			Dim shape As New Shape(doc, ShapeType.TextBox)
+			Dim shape As Shape = New Shape(doc, ShapeType.TextBox)
 			Dim parentSection As Section = CType(node.GetAncestor(NodeType.Section), Section)
 
 			' Assume that the node cannot be larger than the page in size.
@@ -246,7 +246,7 @@ Namespace RenderShapesExample
 			shape.Stroked = False
 
 			' Move up through the DOM until we find node which is suitable to insert into a Shape (a node with a parent can contain paragraph, tables the same as a shape).
-			' Each parent node is cloned on the way up so even a descendant node passed to this method can be rendered. 
+			' Each parent node is cloned on the way up so even a descendant node passed to this method can be rendered.
 			' Since we are working with the actual nodes of the document we need to clone the target node into the temporary shape.
 			Dim currentNode As Node = node
 			Do While Not(TypeOf currentNode.ParentNode Is InlineStory OrElse TypeOf currentNode.ParentNode Is Story OrElse TypeOf currentNode.ParentNode Is ShapeBase)
@@ -262,23 +262,23 @@ Namespace RenderShapesExample
 
 			' Render the shape to stream so we can take advantage of the effects of the ImageSaveOptions class.
 			' Retrieve the rendered image and remove the shape from the document.
-			Dim stream As New MemoryStream()
-			shape.GetShapeRenderer().Save(stream, imageOptions)
+			Dim stream As MemoryStream = New MemoryStream()
+			Dim renderer As ShapeRenderer = shape.GetShapeRenderer()
+			renderer.Save(stream, imageOptions)
 			shape.Remove()
 
-			' Load the image into a new bitmap.
-			Using renderedImage As New Bitmap(stream)
-				' Extract the actual content of the image by cropping transparent space around
-				' the rendered shape.
-				Dim cropRectangle As Rectangle = FindBoundingBoxAroundNode(renderedImage)
+			Dim crop As Rectangle = renderer.GetOpaqueRectangleInPixels(imageOptions.Scale, imageOptions.Resolution)
 
-				Dim croppedImage As New Bitmap(cropRectangle.Width, cropRectangle.Height)
+			' Load the image into a new bitmap.
+			Using renderedImage As Bitmap = New Bitmap(stream)
+				Dim croppedImage As Bitmap = New Bitmap(crop.Width, crop.Height)
 				croppedImage.SetResolution(imageOptions.Resolution, imageOptions.Resolution)
 
 				' Create the final image with the proper background color.
 				Using g As Graphics = Graphics.FromImage(croppedImage)
 					g.Clear(savePaperColor)
-					g.DrawImage(renderedImage, New Rectangle(0, 0, croppedImage.Width, croppedImage.Height), cropRectangle.X, cropRectangle.Y, cropRectangle.Width, cropRectangle.Height, GraphicsUnit.Pixel)
+					g.DrawImage(renderedImage, New Rectangle(0, 0, croppedImage.Width, croppedImage.Height), crop.X, crop.Y, crop.Width, crop.Height, GraphicsUnit.Pixel)
+
 					croppedImage.Save(filePath)
 				End Using
 			End Using
