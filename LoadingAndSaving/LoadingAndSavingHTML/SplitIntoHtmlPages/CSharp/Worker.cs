@@ -9,8 +9,8 @@ using System.Collections;
 using System.IO;
 using System.Text;
 using Aspose.Words;
-using Aspose.Words.Reporting;
 using Aspose.Words.Saving;
+using Aspose.Words.MailMerging;
 
 namespace SplitIntoHtmlPagesExample
 {

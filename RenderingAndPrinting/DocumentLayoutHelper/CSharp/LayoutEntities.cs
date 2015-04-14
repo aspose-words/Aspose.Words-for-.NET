@@ -672,7 +672,7 @@ namespace Aspose.Words.Layout
                 if (shape != null)
                     return shape;
                 else
-                    return lines.First.ParentNode.GetAncestor(NodeType.DrawingML);
+                    return lines.First.ParentNode.GetAncestor(NodeType.Shape);
             }
         }
     }

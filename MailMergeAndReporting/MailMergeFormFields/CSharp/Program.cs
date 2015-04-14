@@ -10,7 +10,7 @@ using System.IO;
 using System.Reflection;
 using Aspose.Words;
 using Aspose.Words.Fields;
-using Aspose.Words.Reporting;
+using Aspose.Words.MailMerging;
 
 namespace MailMergeFormFieldsExample
 {

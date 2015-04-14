@@ -30,21 +30,12 @@ namespace CompressImagesExample
             int count = 0;
 
             // Convert VML shapes.
-            foreach (Shape vmlShape in doc.GetChildNodes(NodeType.Shape, true, false))
+            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
             {
                 // It is important to use this method to correctly get the picture shape size in points even if the picture is inside a group shape.
-                SizeF shapeSizeInPoints = vmlShape.SizeInPoints;
+                SizeF shapeSizeInPoints = shape.SizeInPoints;
 
-                if (ResampleCore(vmlShape.ImageData, shapeSizeInPoints, desiredPpi, jpegQuality))
-                    count++;
-            }
-
-            // Convert DrawingML shapes.
-            foreach (DrawingML dmlShape in doc.GetChildNodes(NodeType.DrawingML, true, false))
-            {
-                // In MS Word the size of a DrawingML shape is always in points at the moment.
-                SizeF shapeSizeInPoints = dmlShape.Size;
-                if (ResampleCore(dmlShape.ImageData, shapeSizeInPoints, desiredPpi, jpegQuality))
+                if (ResampleCore(shape.ImageData, shapeSizeInPoints, desiredPpi, jpegQuality))
                     count++;
             }
 
@@ -54,7 +45,7 @@ namespace CompressImagesExample
         /// <summary>
         /// Resamples one VML or DrawingML image
         /// </summary>
-        private static bool ResampleCore(IImageData imageData, SizeF shapeSizeInPoints, int ppi, int jpegQuality)
+        private static bool ResampleCore(ImageData imageData, SizeF shapeSizeInPoints, int ppi, int jpegQuality)
         {
             // The are actually several shape types that can have an image (picture, ole object, ole control), let's skip other shapes.
             if (imageData == null)

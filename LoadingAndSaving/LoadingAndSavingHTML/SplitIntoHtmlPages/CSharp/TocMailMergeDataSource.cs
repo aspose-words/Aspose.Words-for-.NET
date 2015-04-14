@@ -6,7 +6,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 using System.Collections;
-using Aspose.Words.Reporting;
+using Aspose.Words.MailMerging;
 
 namespace SplitIntoHtmlPagesExample
 {

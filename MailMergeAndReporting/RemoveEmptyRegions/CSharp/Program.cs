@@ -12,7 +12,7 @@ using System.Data;
 using System.Diagnostics;
 
 using Aspose.Words;
-using Aspose.Words.Reporting;
+using Aspose.Words.MailMerging;
 
 namespace RemoveEmptyRegionsExample
 {

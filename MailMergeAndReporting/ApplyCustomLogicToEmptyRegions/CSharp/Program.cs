@@ -12,8 +12,8 @@ using System.Reflection;
 using System.Collections;
 
 using Aspose.Words;
-using Aspose.Words.Reporting;
 using Aspose.Words.Tables;
+using Aspose.Words.MailMerging;
 
 namespace ApplyCustomLogicToEmptyRegionsExample
 {

@@ -48,8 +48,8 @@ namespace CompressImagesExample
 
             // Verify that the first image was compressed by checking the new Ppi.
             doc = new Document(dstFileName);
-            DrawingML shape = (DrawingML)doc.GetChild(NodeType.DrawingML, 0, true);
-            double imagePpi = shape.ImageData.ImageSize.WidthPixels / ConvertUtil.PointToInch(shape.Size.Width);
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            double imagePpi = shape.ImageData.ImageSize.WidthPixels / ConvertUtil.PointToInch(shape.SizeInPoints.Width);
 
             Debug.Assert(imagePpi < 150, "Image was not resampled successfully.");
 

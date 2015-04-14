@@ -32,13 +32,11 @@ namespace RenderShapesExample
 
             // Retrieve the target shape from the document. In our sample document this is the first shape.
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            DrawingML drawingML = (DrawingML)doc2.GetChild(NodeType.DrawingML, 0, true);
 
             // Test rendering of different types of nodes.
             RenderShapeToDisk(dataDir, shape);
             RenderShapeToStream(dataDir, shape);
             RenderShapeToGraphics(dataDir, shape);
-            RenderDrawingMLToDisk(dataDir, drawingML);
             RenderCellToImage(dataDir, doc);
             RenderRowToImage(dataDir, doc);
             RenderParagraphToImage(dataDir, doc);
@@ -97,19 +95,6 @@ namespace RenderShapesExample
 
             // Save the rendered image to the stream using different options.
             r.Save(stream, imageOptions);
-            //ExEnd
-        }
-
-        public static void RenderDrawingMLToDisk(string dataDir, DrawingML drawingML)
-        {
-            //ExStart
-            //ExFor:DrawingML.GetShapeRenderer
-            //ExFor:ShapeRenderer.Save(String, ImageSaveOptions)
-            //ExFor:DrawingML
-            //ExId:RenderDrawingMLToDisk
-            //ExSummary:Shows how to render a DrawingML image independent of the document to a JPEG image on the disk.
-            // Save the DrawingML image to disk in JPEG format and using default options.
-            drawingML.GetShapeRenderer().Save(dataDir + "TestFile.RenderDrawingML Out.jpg", null);
             //ExEnd
         }
 

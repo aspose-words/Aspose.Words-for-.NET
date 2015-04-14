@@ -15,7 +15,7 @@ using System.Xml.Linq;
 #endif
 
 using Aspose.Words;
-using Aspose.Words.Reporting;
+using Aspose.Words.MailMerging;
 
 
 namespace LINQtoXMLMailMergeExample
