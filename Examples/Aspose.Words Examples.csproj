@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0EB3511A-65F6-401A-973C-E054E40A77D9}</ProjectGuid>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Examples</RootNamespace>
+    <AssemblyName>Aspose.Words.Examples</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <StartupObject>Examples.QuickStart.AsposeExamples</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Test\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Test\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.Words">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Bin\net2.0\Aspose.Words.dll</HintPath>
+    </Reference>
+    <Reference Include="Helpers">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Helpers\Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Helpers\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml " />
+    <Reference Include="System.Linq" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Aspose.Email ">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Email.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Net">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="Aspose.Cells ">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Cells.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="LoadingAndSaving\CheckFormat\CSharp\Program.cs" />
+    <Compile Include="LoadingAndSaving\Excel2Word\CSharp\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoadingAndSaving\Excel2Word\CSharp\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoadingAndSaving\LoadingAndSavingExamples.cs" />
+    <Compile Include="LoadingAndSaving\LoadingAndSavingHtml\LoadingAndSavingHtmlExamples.cs" />
+    <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\SaveHtmlAndEmail\CSharp\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\SaveHtmlAndEmail\CSharp\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\SaveMhtmlAndEmail\CSharp\Program.cs" />
+    <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\CSharp\Program.cs" />
+    <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\CSharp\TocMailMergeDataSource.cs" />
+    <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\CSharp\Topic.cs" />
+    <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\CSharp\Worker.cs" />
+    <Compile Include="LoadingAndSaving\LoadingAndSavingHTML\Word2Help\CSharp\Program.cs" />
+    <Compile Include="LoadingAndSaving\LoadingAndSavingTxt\LoadingAndSavingTxtExamples.cs" />
+    <Compile Include="LoadingAndSaving\LoadingAndSavingTxt\LoadTxt\CSharp\Program.cs" />
+    <Compile Include="LoadingAndSaving\PageSplitter\CSharp\DocumentPageSplitter.cs" />
+    <Compile Include="LoadingAndSaving\PageSplitter\CSharp\PageNumberFinder.cs" />
+    <Compile Include="LoadingAndSaving\PageSplitter\CSharp\Program.cs" />
+    <Compile Include="LoadingAndSaving\PageSplitter\CSharp\SectionSplitter.cs" />
+    <Compile Include="LoadingAndSaving\SavingToPdfFormat\ImageToPdf\CSharp\Program.cs" />
+    <Compile Include="LoadingAndSaving\SavingToPdfFormat\SavingToPdfFormatExamples.cs" />
+    <Compile Include="MailMergeAndReporting\ApplyCustomLogicToEmptyRegions\CSharp\Program.cs" />
+    <Compile Include="MailMergeAndReporting\LINQtoXMLMailMerge\CSharp\Program.cs" />
+    <Compile Include="MailMergeAndReporting\MailMergeAndReportingExamples.cs" />
+    <Compile Include="MailMergeAndReporting\MailMergeFormFields\CSharp\Program.cs" />
+    <Compile Include="MailMergeAndReporting\MultipleDocsInMailMerge\CSharp\Program.cs" />
+    <Compile Include="MailMergeAndReporting\NestedMailMerge\CSharp\Program.cs" />
+    <Compile Include="MailMergeAndReporting\RemoveEmptyRegions\CSharp\Program.cs" />
+    <Compile Include="MailMergeAndReporting\XMLMailMerge\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\JoiningAndAppending\AppendDocument\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\JoiningAndAppending\JoiningAndAppendingExamples.cs" />
+    <Compile Include="ProgrammingWithDocuments\UsingFindAndReplace\FindAndHighlight\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\UsingFindAndReplace\ReplaceTextWithField\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\UsingFindAndReplace\UsingFindAndReplaceExamples.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithBookmarks\CopyBookmarkedText\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithBookmarks\UntangleRowBookmarks\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithBookmarks\WorkingWithBookmarksExamples.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithComments\ProcessComments\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithComments\WorkingWithCommentsExamples.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithDocument\DocumentInDB\CSharp\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProgrammingWithDocuments\WorkingWithDocument\DocumentInDB\CSharp\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProgrammingWithDocuments\WorkingWithDocument\ExtractContent\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithDocument\PageNumbersOfNodes\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithDocument\RemoveBreaks\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithDocument\WorkingWithDocumentExamples.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithFields\InsertNestedFields\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithFields\RemoveField\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithFields\ReplaceFieldsWithStaticText\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithFields\WorkingWithFieldsExamples.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithImages\AddImageToEachPage\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithImages\AddWatermark\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithImages\CompressImages\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithImages\CompressImages\CSharp\Resampler.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithImages\WorkingWithImagesExamples.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithStyles\ExtractContentBasedOnStyles\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithStyles\WorkingWithStylesExamples.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithTables\AutoFitTables\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithTables\ImportTableFromDataTable\CSharp\Program.cs" />
+    <Compile Include="ProgrammingWithDocuments\WorkingWithTables\WorkingWithTablesExamples.cs" />
+    <Compile Include="QuickStart\AppendDocuments\CSharp\Program.cs" />
+    <Compile Include="QuickStart\ApplyLicense\CSharp\Program.cs" />
+    <Compile Include="QuickStart\Doc2Pdf\CSharp\Program.cs" />
+    <Compile Include="QuickStart\FindAndReplace\CSharp\Program.cs" />
+    <Compile Include="QuickStart\HelloWorld\CSharp\Program.cs" />
+    <Compile Include="QuickStart\LoadAndSaveToDisk\CSharp\Program.cs" />
+    <Compile Include="QuickStart\LoadAndSaveToStream\CSharp\Program.cs" />
+    <Compile Include="QuickStart\QuickStartExamples.cs" />
+    <Compile Include="QuickStart\SimpleMailMerge\CSharp\Program.cs" />
+    <Compile Include="QuickStart\UpdateFields\CSharp\Program.cs" />
+    <Compile Include="QuickStart\WorkingWithNodes\CSharp\Program.cs" />
+    <Compile Include="RenderingAndPrinting\DocumentLayoutHelper\CSharp\LayoutEntities.cs" />
+    <Compile Include="RenderingAndPrinting\DocumentLayoutHelper\CSharp\Program.cs" />
+    <Compile Include="RenderingAndPrinting\DocumentLayoutHelper\CSharp\RenderedDocument.cs" />
+    <Compile Include="RenderingAndPrinting\EnumerateLayoutElements\CSharp\LayoutInfoWriter.cs" />
+    <Compile Include="RenderingAndPrinting\EnumerateLayoutElements\CSharp\OutlineLayoutEntitiesRenderer.cs" />
+    <Compile Include="RenderingAndPrinting\EnumerateLayoutElements\CSharp\Program.cs" />
+    <Compile Include="RenderingAndPrinting\PrintDocument\DocumentPreviewAndPrint\CSharp\Program.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RenderingAndPrinting\PrintDocument\MultiplePagesOnSheet\CSharp\Program.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RenderingAndPrinting\PrintDocument\PrintDocumentExamples.cs" />
+    <Compile Include="RenderingAndPrinting\PrintDocument\XpsPrint\CSharp\Program.cs" />
+    <Compile Include="RenderingAndPrinting\PrintDocument\XpsPrint\CSharp\XpsPrintHelper.cs" />
+    <Compile Include="RenderingAndPrinting\RenderingAndPrintingExamples.cs" />
+    <Compile Include="RenderingAndPrinting\RenderingToImage\ImageColorFilters\CSharp\Program.cs" />
+    <Compile Include="RenderingAndPrinting\RenderingToImage\RenderingToImageExamples.cs" />
+    <Compile Include="RenderingAndPrinting\RenderingToImage\RenderShapes\CSharp\Program.cs" />
+    <Compile Include="RenderingAndPrinting\RenderingToImage\SaveAsMultipageTiff\CSharp\Program.cs" />
+    <Compile Include="ViewersAndVisualizers\DocumentExplorer\CSharp\AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewersAndVisualizers\DocumentExplorer\CSharp\DocumentItems.cs" />
+    <Compile Include="ViewersAndVisualizers\DocumentExplorer\CSharp\ExceptionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewersAndVisualizers\DocumentExplorer\CSharp\GoToPageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Item.cs" />
+    <Compile Include="ViewersAndVisualizers\DocumentExplorer\CSharp\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Preview.cs" />
+    <Compile Include="ViewersAndVisualizers\DocumentExplorer\CSharp\ViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewersAndVisualizers\ViewersAndVisualizersExamples.cs" />
+    <Content Include="ViewersAndVisualizers\DocumentExplorer\CSharp\App.ico" />
+    <EmbeddedResource Include="LoadingAndSaving\LoadingAndSavingHTML\SaveHtmlAndEmail\CSharp\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\ExceptionDialog.resx">
+      <DependentUpon>ExceptionDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\GoToPageForm.resx">
+      <DependentUpon>GoToPageForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\Body.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\BookmarkEnd.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\BookmarkStart.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\Cell.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\Collapse.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\Comment.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\CommentRangeEnd.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\CommentRangeStart.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\CustomXmlMarkup.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\Document.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\DrawingML.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\Expand.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\FieldEnd.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\FieldSeparator.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\FieldStart.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\Footer.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\Footnote.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\FormCheckBox.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\FormDropDown.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\FormField.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\FormTextInput.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\GroupShape.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\Header.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\HeaderFooter.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\InlineShape.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\Node.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\OleControl.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\OleObject.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\Paragraph.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\Row.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\Run.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\Section.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\Shape.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\SmartTag.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\SpecialChar.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\StructuredDocumentTag.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\Icons\Table.ico" />
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewersAndVisualizers\DocumentExplorer\CSharp\ViewerForm.resx">
+      <DependentUpon>ViewerForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LoadingAndSaving\CheckFormat\Data\Test File (doc).doc" />
+    <None Include="LoadingAndSaving\CheckFormat\Data\Test File (docm).docm" />
+    <None Include="LoadingAndSaving\CheckFormat\Data\Test File (docx).docx" />
+    <None Include="LoadingAndSaving\CheckFormat\Data\Test File (dot).dot" />
+    <None Include="LoadingAndSaving\CheckFormat\Data\Test File (dotx).dotx" />
+    <None Include="LoadingAndSaving\CheckFormat\Data\Test File (enc).doc" />
+    <None Include="LoadingAndSaving\CheckFormat\Data\Test File (enc).docx" />
+    <None Include="LoadingAndSaving\CheckFormat\Data\Test File (HTML).html" />
+    <None Include="LoadingAndSaving\CheckFormat\Data\Test File (JPG).jpg" />
+    <None Include="LoadingAndSaving\CheckFormat\Data\Test File (MHTML).mhtml" />
+    <None Include="LoadingAndSaving\CheckFormat\Data\Test File (odt).odt" />
+    <None Include="LoadingAndSaving\CheckFormat\Data\Test File (pre97).doc" />
+    <None Include="LoadingAndSaving\CheckFormat\Data\Test File (rtf).rtf" />
+    <None Include="LoadingAndSaving\CheckFormat\Data\Test File (WordML).xml" />
+    <None Include="LoadingAndSaving\CheckFormat\Data\Test File (XML).xml" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\_testDrawing.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+2008 calendar1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+-4011.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Expense budget1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Expense report1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Five-day event schedule1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Generic staff paper1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+House cleaning checklist1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Marketing budget plan1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Marketing tactical plan1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Personal budget1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Personal monthly budget1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Pet-sitting invoice1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+PivotTable report position recall1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+testChart.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+testMergedCells.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\+Travel service invoice1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\Personal budget1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\Sales order1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\Secret Santa gift exchange list1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\Travel service invoice1.xls" />
+    <None Include="LoadingAndSaving\Excel2Word\Data\Weekly time sheet1.xls" />
+    <None Include="LoadingAndSaving\LoadingAndSavingHTML\SaveMhtmlAndEmail\Data\DinnerInvitationDemo.doc" />
+    <None Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\Data\SOI 2007-2012-DeeM with footnote added.doc" />
+    <None Include="LoadingAndSaving\LoadingAndSavingHTML\SplitIntoHtmlPages\Data\TocTemplate.doc" />
+    <None Include="LoadingAndSaving\LoadingAndSavingHTML\Word2Help\Data\banner.html" />
+    <None Include="LoadingAndSaving\LoadingAndSavingHTML\Word2Help\Data\footer.html" />
+    <None Include="LoadingAndSaving\LoadingAndSavingHTML\Word2Help\Data\header.html" />
+    <None Include="LoadingAndSaving\LoadingAndSavingHTML\Word2Help\Data\Sample Documentation.doc" />
+    <None Include="LoadingAndSaving\LoadingAndSavingTxt\LoadTxt\Data\LoadTxt.txt" />
+    <None Include="LoadingAndSaving\PageSplitter\Data\Rendering.doc" />
+    <None Include="LoadingAndSaving\PageSplitter\Data\Sample Documentation.doc" />
+    <None Include="LoadingAndSaving\SavingToPdfFormat\ImageToPdf\Data\Test.gif" />
+    <None Include="LoadingAndSaving\SavingToPdfFormat\ImageToPdf\Data\Test.jpg" />
+    <None Include="LoadingAndSaving\SavingToPdfFormat\ImageToPdf\Data\Test.png" />
+    <None Include="LoadingAndSaving\SavingToPdfFormat\ImageToPdf\Data\Test.tiff" />
+    <None Include="LoadingAndSaving\SavingToPdfFormat\ImageToPdf\Data\Test.wmf" />
+    <None Include="MailMergeAndReporting\ApplyCustomLogicToEmptyRegions\Data\TestFile.doc" />
+    <None Include="MailMergeAndReporting\LINQtoXMLMailMerge\Data\PurchaseOrder.xml" />
+    <None Include="MailMergeAndReporting\LINQtoXMLMailMerge\Data\TestFile.doc" />
+    <None Include="MailMergeAndReporting\MailMergeFormFields\Data\Template.doc" />
+    <None Include="MailMergeAndReporting\MultipleDocsInMailMerge\Data\Customers.mdb" />
+    <None Include="MailMergeAndReporting\MultipleDocsInMailMerge\Data\TestFile.doc" />
+    <None Include="MailMergeAndReporting\NestedMailMerge\Data\CustomerData.xml" />
+    <None Include="MailMergeAndReporting\NestedMailMerge\Data\Invoice Template.doc" />
+    <None Include="MailMergeAndReporting\NestedMailMerge\Data\OrdersSchema.xsd" />
+    <None Include="MailMergeAndReporting\RemoveEmptyRegions\Data\TestFile.doc" />
+    <None Include="MailMergeAndReporting\XMLMailMerge\Data\Customers.xml" />
+    <None Include="MailMergeAndReporting\XMLMailMerge\Data\TestFile.doc" />
+    <None Include="ProgrammingWithDocuments\JoiningAndAppending\AppendDocument\Data\TestFile.Destination.doc" />
+    <None Include="ProgrammingWithDocuments\JoiningAndAppending\AppendDocument\Data\TestFile.DestinationList.doc" />
+    <None Include="ProgrammingWithDocuments\JoiningAndAppending\AppendDocument\Data\TestFile.Source.doc" />
+    <None Include="ProgrammingWithDocuments\JoiningAndAppending\AppendDocument\Data\TestFile.SourceList.doc" />
+    <None Include="ProgrammingWithDocuments\JoiningAndAppending\AppendDocument\Data\TestFile.SourcePageSetup.doc" />
+    <None Include="ProgrammingWithDocuments\UsingFindAndReplace\FindAndHighlight\Data\TestFile.doc" />
+    <None Include="ProgrammingWithDocuments\UsingFindAndReplace\ReplaceTextWithField\Data\Field.ReplaceTextWithFields.doc" />
+    <None Include="ProgrammingWithDocuments\WorkingWithBookmarks\CopyBookmarkedText\Data\Template.doc" />
+    <None Include="ProgrammingWithDocuments\WorkingWithBookmarks\UntangleRowBookmarks\Data\TestDefect1352.doc" />
+    <None Include="ProgrammingWithDocuments\WorkingWithComments\ProcessComments\Data\TestFile.doc" />
+    <None Include="ProgrammingWithDocuments\WorkingWithDocument\DocumentInDB\Data\DocDB.mdb" />
+    <None Include="ProgrammingWithDocuments\WorkingWithDocument\DocumentInDB\Data\TestFile.doc" />
+    <None Include="ProgrammingWithDocuments\WorkingWithDocument\ExtractContent\Data\TestFile.doc" />
+    <None Include="ProgrammingWithDocuments\WorkingWithDocument\PageNumbersOfNodes\Data\TestFile.docx" />
+    <None Include="ProgrammingWithDocuments\WorkingWithDocument\RemoveBreaks\Data\TestFile.doc" />
+    <None Include="ProgrammingWithDocuments\WorkingWithFields\RemoveField\Data\Field.RemoveField.doc" />
+    <None Include="ProgrammingWithDocuments\WorkingWithFields\ReplaceFieldsWithStaticText\Data\TestFile.doc" />
+    <None Include="ProgrammingWithDocuments\WorkingWithImages\AddImageToEachPage\Data\Aspose Logo.png" />
+    <None Include="ProgrammingWithDocuments\WorkingWithImages\AddImageToEachPage\Data\TestFile.doc" />
+    <None Include="ProgrammingWithDocuments\WorkingWithImages\AddWatermark\Data\TestFile.doc" />
+    <None Include="ProgrammingWithDocuments\WorkingWithImages\CompressImages\Data\Test.docx" />
+    <None Include="ProgrammingWithDocuments\WorkingWithStyles\ExtractContentBasedOnStyles\Data\TestFile.doc" />
+    <None Include="ProgrammingWithDocuments\WorkingWithTables\AutoFitTables\Data\TestFile.doc" />
+    <None Include="QuickStart\AppendDocuments\Data\TestFile.Destination.doc" />
+    <None Include="QuickStart\AppendDocuments\Data\TestFile.Source.doc" />
+    <None Include="QuickStart\Doc2Pdf\Data\Template.doc" />
+    <None Include="QuickStart\FindAndReplace\Data\ReplaceSimple.doc" />
+    <None Include="QuickStart\LoadAndSaveToDisk\Data\Document.doc" />
+    <None Include="QuickStart\LoadAndSaveToStream\Data\Document.doc" />
+    <None Include="QuickStart\SimpleMailMerge\Data\Template.doc" />
+    <None Include="RenderingAndPrinting\DocumentLayoutHelper\Data\TestFile.docx" />
+    <None Include="RenderingAndPrinting\EnumerateLayoutElements\Data\TestFile.docx" />
+    <None Include="RenderingAndPrinting\PrintDocument\DocumentPreviewAndPrint\Data\TestFile.doc" />
+    <None Include="RenderingAndPrinting\PrintDocument\MultiplePagesOnSheet\Data\TestFile.doc" />
+    <None Include="RenderingAndPrinting\PrintDocument\XpsPrint\Data\SampleDocument.doc" />
+    <None Include="RenderingAndPrinting\RenderingToImage\ImageColorFilters\Data\TestFile.docx" />
+    <None Include="RenderingAndPrinting\RenderingToImage\RenderShapes\Data\TestFile.doc" />
+    <None Include="RenderingAndPrinting\RenderingToImage\RenderShapes\Data\TestFile.docx" />
+    <None Include="RenderingAndPrinting\RenderingToImage\SaveAsMultipageTiff\Data\TestFile.doc" />
+  </ItemGroup>
+  <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="$(MSBuildToolsPath) != ''" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" Condition="$(MSBuildToolsPath) == ''" />
+  <PropertyGroup>
+    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">NET20</DefineConstants>
+  </PropertyGroup>
+</Project>

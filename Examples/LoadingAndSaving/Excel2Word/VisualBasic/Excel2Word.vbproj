@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1AA395B4-9BF3-4810-BB91-88B2382810E6}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace></RootNamespace>
+    <AssemblyName>Excel2Word</AssemblyName>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DefineConstants Condition=" Exists('..\..\..\..\..\Bin\net2.0\Aspose.Cells.dll') " >CellsInstalled</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.Cells ">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Cells.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Words">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MainForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.vb">
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Data\_testDrawing.xls">
+      <Link>Data\_testDrawing.xls</Link>
+    </None>
+    <None Include="..\Data\+2008 calendar1.xls">
+      <Link>Data\+2008 calendar1.xls</Link>
+    </None>
+    <None Include="..\Data\+-4011.xls">
+      <Link>Data\+-4011.xls</Link>
+    </None>
+    <None Include="..\Data\+Expense budget1.xls">
+      <Link>Data\+Expense budget1.xls</Link>
+    </None>
+    <None Include="..\Data\+Expense report1.xls">
+      <Link>Data\+Expense report1.xls</Link>
+    </None>
+    <None Include="..\Data\+Five-day event schedule1.xls">
+      <Link>Data\+Five-day event schedule1.xls</Link>
+    </None>
+    <None Include="..\Data\+Generic staff paper1.xls">
+      <Link>Data\+Generic staff paper1.xls</Link>
+    </None>
+    <None Include="..\Data\+House cleaning checklist1.xls">
+      <Link>Data\+House cleaning checklist1.xls</Link>
+    </None>
+    <None Include="..\Data\+Marketing budget plan1.xls">
+      <Link>Data\+Marketing budget plan1.xls</Link>
+    </None>
+    <None Include="..\Data\+Marketing tactical plan1.xls">
+      <Link>Data\+Marketing tactical plan1.xls</Link>
+    </None>
+    <None Include="..\Data\+Personal budget1.xls">
+      <Link>Data\+Personal budget1.xls</Link>
+    </None>
+    <None Include="..\Data\+Personal monthly budget1.xls">
+      <Link>Data\+Personal monthly budget1.xls</Link>
+    </None>
+    <None Include="..\Data\+Pet-sitting invoice1.xls">
+      <Link>Data\+Pet-sitting invoice1.xls</Link>
+    </None>
+    <None Include="..\Data\+PivotTable report position recall1.xls">
+      <Link>Data\+PivotTable report position recall1.xls</Link>
+    </None>
+    <None Include="..\Data\+testChart.xls">
+      <Link>Data\+testChart.xls</Link>
+    </None>
+    <None Include="..\Data\+testMergedCells.xls">
+      <Link>Data\+testMergedCells.xls</Link>
+    </None>
+    <None Include="..\Data\+Travel service invoice1.xls">
+      <Link>Data\+Travel service invoice1.xls</Link>
+    </None>
+    <None Include="..\Data\Personal budget1.xls">
+      <Link>Data\Personal budget1.xls</Link>
+    </None>
+    <None Include="..\Data\Sales order1.xls">
+      <Link>Data\Sales order1.xls</Link>
+    </None>
+    <None Include="..\Data\Secret Santa gift exchange list1.xls">
+      <Link>Data\Secret Santa gift exchange list1.xls</Link>
+    </None>
+    <None Include="..\Data\Travel service invoice1.xls">
+      <Link>Data\Travel service invoice1.xls</Link>
+    </None>
+    <None Include="..\Data\Weekly time sheet1.xls">
+      <Link>Data\Weekly time sheet1.xls</Link>
+    </None>
+  </ItemGroup>
+  <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) != ''" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" Condition="$(MSBuildToolsPath) == ''" />
+</Project>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7F68E54E-B7D8-41BA-9DE8-F7947AA5F9BD}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>CheckFormatExample</RootNamespace>
+    <AssemblyName>CheckFormat</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.Words">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Bin\net2.0\Aspose.Words.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Data\Test File (doc).doc">
+      <Link>Data\Test File (doc).doc</Link>
+    </None>
+    <None Include="..\Data\Test File (docm).docm">
+      <Link>Data\Test File (docm).docm</Link>
+    </None>
+    <None Include="..\Data\Test File (docx).docx">
+      <Link>Data\Test File (docx).docx</Link>
+    </None>
+    <None Include="..\Data\Test File (dot).dot">
+      <Link>Data\Test File (dot).dot</Link>
+    </None>
+    <None Include="..\Data\Test File (dotx).dotx">
+      <Link>Data\Test File (dotx).dotx</Link>
+    </None>
+    <None Include="..\Data\Test File (enc).doc">
+      <Link>Data\Test File (enc).doc</Link>
+    </None>
+    <None Include="..\Data\Test File (enc).docx">
+      <Link>Data\Test File (enc).docx</Link>
+    </None>
+    <None Include="..\Data\Test File (HTML).html">
+      <Link>Data\Test File (HTML).html</Link>
+    </None>
+    <None Include="..\Data\Test File (JPG).jpg">
+      <Link>Data\Test File (JPG).jpg</Link>
+    </None>
+    <None Include="..\Data\Test File (MHTML).mhtml">
+      <Link>Data\Test File (MHTML).mhtml</Link>
+    </None>
+    <None Include="..\Data\Test File (odt).odt">
+      <Link>Data\Test File (odt).odt</Link>
+    </None>
+    <None Include="..\Data\Test File (pre97).doc">
+      <Link>Data\Test File (pre97).doc</Link>
+    </None>
+    <None Include="..\Data\Test File (rtf).rtf">
+      <Link>Data\Test File (rtf).rtf</Link>
+    </None>
+    <None Include="..\Data\Test File (WordML).xml">
+      <Link>Data\Test File (WordML).xml</Link>
+    </None>
+    <None Include="..\Data\Test File (XML).xml">
+      <Link>Data\Test File (XML).xml</Link>
+    </None>
+  </ItemGroup>
+  <!-- Conditional build path import - added for VS2005 compatibility (since there is no MSBuildToolsPath in VS2005) -->
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="$(MSBuildToolsPath) != ''" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" Condition="$(MSBuildToolsPath) == ''" />
+</Project>

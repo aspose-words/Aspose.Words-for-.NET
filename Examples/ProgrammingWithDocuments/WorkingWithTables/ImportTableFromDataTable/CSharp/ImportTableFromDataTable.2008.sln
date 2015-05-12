@@ -1,0 +1,18 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportTableFromDataTable", "ImportTableFromDataTable.csproj", "{B73280E1-1652-49A8-937C-ED3FEFA44322}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B73280E1-1652-49A8-937C-ED3FEFA44322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B73280E1-1652-49A8-937C-ED3FEFA44322}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B73280E1-1652-49A8-937C-ED3FEFA44322}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

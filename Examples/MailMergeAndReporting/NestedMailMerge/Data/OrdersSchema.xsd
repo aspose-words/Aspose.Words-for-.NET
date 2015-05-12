@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding ="utf-8"?>
+<xs:schema id="OrdersSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Orders">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Order">
+          <xs:complexType>
+             <xs:sequence>
+               <xs:element name="Number" type="xs:integer" />
+               <xs:element name="Address" type="xs:string" />
+               <xs:element name="Suburb" type="xs:string" />
+               <xs:element name="City" type="xs:string" />
+               <xs:element name="Phonenumber" type="xs:string"/>
+               <xs:element name="Date" type="xs:string" />
+               <xs:element name="Total" type="xs:decimal" />
+               <xs:element name="Item">
+                 <xs:complexType>
+                   <xs:sequence>
+                      <xs:element name="Name" type="xs:string" />
+                      <xs:element name="Price" type="xs:decimal" />
+                      <xs:element name="Quantity" type="xs:integer" />
+                      <xs:element name="ItemTotal" type="xs:decimal" />
+                      <xs:element name="CustomerPhone" type="xs:string" />
+                   </xs:sequence>
+                 </xs:complexType>
+               </xs:element>
+             </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
