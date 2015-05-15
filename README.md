@@ -1,17 +1,14 @@
 ##Aspose.Words for .NET Repository
 
-This package contains [Examples](https://github.com/asposewords/Aspose_Words_NET/tree/master/Examples) and Showcase projects for [Aspose.Words for .NET](http://www.aspose.com/categories/.net-components/aspose.words-for-.net/default.aspx).
+This package contains [Examples](https://github.com/asposewords/Aspose_Words_NET/tree/master/Examples) and Showcase projects for [Aspose.Words for .NET](http://www.aspose.com/categories/.net-components/aspose.words-for-.net/default.aspx) and will help you write your own applications.
 
-## Examples
+<p align="center">
+  <a title="Download Examples ZIP" href="https://github.com/asposewords/Aspose_Words_NET/archive/master.zip">
+	<img src="https://raw.github.com/AsposeExamples/java-examples-dashboard/master/images/downloadZip-Button-Large.png" />
+  </a>
+</p>
 
-An example is a small piece of source code that covers one operation like
-
-+ [Apply Aspose license](https://github.com/asposewords/Aspose_Words_NET/tree/master/Examples/QuickStart/ApplyLicense/CSharp)
-+ [Convert DOC to PDF](https://github.com/asposewords/Aspose_Words_NET/tree/master/Examples/QuickStart/Doc2Pdf/CSharp)
-+ [Find and highlight text](https://github.com/asposewords/Aspose_Words_NET/tree/master/Examples/ProgrammingWithDocuments/UsingFindAndReplace/FindAndHighlight/CSharp) etc
-
-## Showcases
-A showcase project is like a real world application. It covers several features of an Aspose product. Our current showcase projects are
-
-+ [Document Comparison by Aspose.Words for .NET](https://github.com/asposewords/Aspose_Words_NET/tree/master/Showcases/Document_Comparison_by_Aspose_Words_for_NET)
-
+Directory | Description
+--------- | -----------
+[Examples](https://github.com/asposewords/Aspose_Words_NET/tree/master/Examples)  | A collection of Java examples that help you learn how to product features
+[Showcases](https://github.com/asposewords/Aspose_Words_NET/tree/master/Showcases)  | Standalone ready-to-use applications that demonstrate some specific usecases
