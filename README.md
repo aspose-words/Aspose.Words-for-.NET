@@ -10,5 +10,5 @@ This package contains [Examples](https://github.com/asposewords/Aspose_Words_NET
 
 Directory | Description
 --------- | -----------
-[Examples](https://github.com/asposewords/Aspose_Words_NET/tree/master/Examples)  | A collection of Java examples that help you learn how to product features
+[Examples](https://github.com/asposewords/Aspose_Words_NET/tree/master/Examples)  | A collection of .NET examples that help you learn how to product features
 [Showcases](https://github.com/asposewords/Aspose_Words_NET/tree/master/Showcases)  | Standalone ready-to-use applications that demonstrate some specific use cases
