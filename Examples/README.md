@@ -1,4 +1,4 @@
-##Aspose.Words for .NET Examples Repository
+##Aspose.Words for .NET Examples
 
 This package contains C# and VB.NET Example Projects for [Aspose.Words for .NET](http://www.aspose.com/categories/.net-components/aspose.words-for-.net/default.aspx).
 
