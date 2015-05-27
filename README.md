@@ -1,4 +1,4 @@
-##Aspose.Words for .NET Repository
+##Aspose.Words for .NET
 
 This package contains [Examples](https://github.com/asposewords/Aspose_Words_NET/tree/master/Examples) and Showcase projects for [Aspose.Words for .NET](http://www.aspose.com/categories/.net-components/aspose.words-for-.net/default.aspx) and will help you write your own applications.
 
