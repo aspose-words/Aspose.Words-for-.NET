@@ -2,6 +2,8 @@
 
 This package contains [Examples](https://github.com/asposewords/Aspose_Words_NET/tree/master/Examples) and Showcase projects for [Aspose.Words for .NET](http://www.aspose.com/categories/.net-components/aspose.words-for-.net/default.aspx) and will help you write your own applications.
 
+Aspose.Words for .NET is a class library that enables your applications to perform a great range of document processing tasks. Aspose.Words supports DOC, DOCX, RTF, HTML, OpenDocument, PDF, XPS, EPUB and other formats. With Aspose.Words you can generate, modify, convert, render and print documents without utilizing Microsoft Word.
+
 <p align="center">
 
   <a title="Download complete Aspose.Words for .NET source code" href="https://github.com/asposewords/Aspose_Words_NET/archive/master.zip">
