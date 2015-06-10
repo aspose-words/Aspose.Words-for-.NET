@@ -20,3 +20,4 @@ TestResults/
 *.vsmdi
 test-results/
 *.userprefs
+packages/
