@@ -17,7 +17,7 @@ namespace CSharp.Quick_Start
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir();
+            string dataDir = _RunExamples.GetDataDir_QuickStart();
 
             // Demonstrates how to insert fields and update them using Aspose.Words.
 

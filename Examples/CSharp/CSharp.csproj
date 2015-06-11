@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>CSharp.Loading_and_Saving._RunExamples</StartupObject>
+    <StartupObject>CSharp._RunExamples</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Aspose.Words, Version=15.5.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
@@ -42,6 +42,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,55 +51,69 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Loading-and-Saving\CheckFormat.cs" />
-    <Compile Include="Loading-and-Saving\_RunExamples.cs" />
-    <Compile Include="Programming-With-Documents\Find-and-Replace\FindAndHighlight.cs" />
-    <Compile Include="Programming-With-Documents\Find-and-Replace\ReplaceTextWithField.cs" />
-    <Compile Include="Programming-With-Documents\Joining-and-Appending\AppendDocumentManually.cs" />
-    <Compile Include="Programming-With-Documents\Joining-and-Appending\BaseDocument.cs" />
-    <Compile Include="Programming-With-Documents\Joining-and-Appending\ConvertNumPageFields.cs" />
-    <Compile Include="Programming-With-Documents\Joining-and-Appending\DifferentPageSetup.cs" />
-    <Compile Include="Programming-With-Documents\Joining-and-Appending\JoinContinuous.cs" />
-    <Compile Include="Programming-With-Documents\Joining-and-Appending\JoinNewPage.cs" />
-    <Compile Include="Programming-With-Documents\Joining-and-Appending\KeepSourceFormatting.cs" />
-    <Compile Include="Programming-With-Documents\Joining-and-Appending\KeepSourceTogether.cs" />
-    <Compile Include="Programming-With-Documents\Joining-and-Appending\LinkHeadersFooters.cs" />
-    <Compile Include="Programming-With-Documents\Joining-and-Appending\ListKeepSourceFormatting.cs" />
-    <Compile Include="Programming-With-Documents\Joining-and-Appending\ListUseDestinationStyles.cs" />
-    <Compile Include="Programming-With-Documents\Joining-and-Appending\PrependDocument.cs" />
-    <Compile Include="Programming-With-Documents\Joining-and-Appending\RemoveSourceHeadersFooters.cs" />
-    <Compile Include="Programming-With-Documents\Joining-and-Appending\RestartPageNumbering.cs" />
-    <Compile Include="Programming-With-Documents\Joining-and-Appending\SimpleAppendDocument.cs" />
-    <Compile Include="Programming-With-Documents\Joining-and-Appending\UnlinkHeadersFooters.cs" />
-    <Compile Include="Programming-With-Documents\Joining-and-Appending\UpdatePageLayout.cs" />
-    <Compile Include="Programming-With-Documents\Joining-and-Appending\UseDestinationStyles.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Bookmarks\CopyBookmarkedText.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Bookmarks\UntangleRowBookmarks.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Comments\ProcessComments.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Document\Common.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Document\ExtractContentBetweenBlockLevelNodes.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Document\ExtractContentBetweenBookmark.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Document\ExtractContentBetweenCommentRange.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Document\ExtractContentBetweenParagraphs.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Document\ExtractContentBetweenParagraphStyles.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Document\ExtractContentBetweenRuns.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Document\ExtractContentUsingField.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Document\PageNumbersOfNodes.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Document\RemoveBreaks.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Fields\ConvertFieldsInBody.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Fields\ConvertFieldsInDocument.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Fields\ConvertFieldsInParagraph.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Fields\FieldsHelper.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Fields\InsertNestedFields.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Fields\RemoveField.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Images\AddImageToEachPage.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Images\AddWatermark.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Images\CompressImages.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Styles\ExtractContentBasedOnStyles.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Tables\AutoFitTableToContents.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Tables\AutoFitTableToFixedColumnWidths.cs" />
-    <Compile Include="Programming-With-Documents\Working-with-Tables\AutoFitTableToWindow.cs" />
-    <Compile Include="Programming-With-Documents\_RunExamples.cs" />
+    <Compile Include="Loading-and-Saving\ImageToPdf.cs" />
+    <Compile Include="Loading-and-Saving\LoadTxt.cs" />
+    <Compile Include="Loading-and-Saving\PageSplitter.cs" />
+    <Compile Include="Loading-and-Saving\SplitIntoHtmlPages.cs" />
+    <Compile Include="Mail-Merge\ApplyCustomLogicToEmptyRegions.cs" />
+    <Compile Include="Mail-Merge\LINQtoXMLMailMerge.cs" />
+    <Compile Include="Mail-Merge\MailMergeFormFields.cs" />
+    <Compile Include="Mail-Merge\MultipleDocsInMailMerge.cs" />
+    <Compile Include="Mail-Merge\NestedMailMerge.cs" />
+    <Compile Include="Mail-Merge\RemoveEmptyRegions.cs" />
+    <Compile Include="Mail-Merge\XMLMailMerge.cs" />
+    <Compile Include="Programming-Documents\Find-Replace\FindAndHighlight.cs" />
+    <Compile Include="Programming-Documents\Find-Replace\ReplaceTextWithField.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\AppendDocumentManually.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\BaseDocument.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\ConvertNumPageFields.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\DifferentPageSetup.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\JoinContinuous.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\JoinNewPage.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\KeepSourceFormatting.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\KeepSourceTogether.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\LinkHeadersFooters.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\ListKeepSourceFormatting.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\ListUseDestinationStyles.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\PrependDocument.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\RemoveSourceHeadersFooters.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\RestartPageNumbering.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\SimpleAppendDocument.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\UnlinkHeadersFooters.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\UpdatePageLayout.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\UseDestinationStyles.cs" />
+    <Compile Include="Programming-Documents\Bookmarks\CopyBookmarkedText.cs" />
+    <Compile Include="Programming-Documents\Bookmarks\UntangleRowBookmarks.cs" />
+    <Compile Include="Programming-Documents\Comments\ProcessComments.cs" />
+    <Compile Include="Programming-Documents\Document\Common.cs" />
+    <Compile Include="Programming-Documents\Document\ExtractContentBetweenBlockLevelNodes.cs" />
+    <Compile Include="Programming-Documents\Document\ExtractContentBetweenBookmark.cs" />
+    <Compile Include="Programming-Documents\Document\ExtractContentBetweenCommentRange.cs" />
+    <Compile Include="Programming-Documents\Document\ExtractContentBetweenParagraphs.cs" />
+    <Compile Include="Programming-Documents\Document\ExtractContentBetweenParagraphStyles.cs" />
+    <Compile Include="Programming-Documents\Document\ExtractContentBetweenRuns.cs" />
+    <Compile Include="Programming-Documents\Document\ExtractContentUsingField.cs" />
+    <Compile Include="Programming-Documents\Document\PageNumbersOfNodes.cs" />
+    <Compile Include="Programming-Documents\Document\RemoveBreaks.cs" />
+    <Compile Include="Programming-Documents\Fields\ConvertFieldsInBody.cs" />
+    <Compile Include="Programming-Documents\Fields\ConvertFieldsInDocument.cs" />
+    <Compile Include="Programming-Documents\Fields\ConvertFieldsInParagraph.cs" />
+    <Compile Include="Programming-Documents\Fields\FieldsHelper.cs" />
+    <Compile Include="Programming-Documents\Fields\InsertNestedFields.cs" />
+    <Compile Include="Programming-Documents\Fields\RemoveField.cs" />
+    <Compile Include="Programming-Documents\Images\AddImageToEachPage.cs" />
+    <Compile Include="Programming-Documents\Images\AddWatermark.cs" />
+    <Compile Include="Programming-Documents\Images\CompressImages.cs" />
+    <Compile Include="Programming-Documents\Styles\ExtractContentBasedOnStyles.cs" />
+    <Compile Include="Programming-Documents\Tables\AutoFitTableToContents.cs" />
+    <Compile Include="Programming-Documents\Tables\AutoFitTableToFixedColumnWidths.cs" />
+    <Compile Include="Programming-Documents\Tables\AutoFitTableToWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Quick-Start\AppendDocuments.cs" />
     <Compile Include="Quick-Start\ApplyLicense.cs" />
     <Compile Include="Quick-Start\Doc2Pdf.cs" />
@@ -109,9 +124,38 @@
     <Compile Include="Quick-Start\SimpleMailMerge.cs" />
     <Compile Include="Quick-Start\UpdateFields.cs" />
     <Compile Include="Quick-Start\WorkingWithNodes.cs" />
-    <Compile Include="Quick-Start\_RunExamples.cs" />
+    <Compile Include="Rendering-Printing\DocumentLayoutHelper.cs" />
+    <Compile Include="Rendering-Printing\DocumentPreviewAndPrint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Rendering-Printing\EnumerateLayoutElements.cs" />
+    <Compile Include="Rendering-Printing\ImageColorFilters.cs" />
+    <Compile Include="Rendering-Printing\RenderShape.cs" />
+    <Compile Include="Rendering-Printing\SaveAsMultipageTiff.cs" />
+    <Compile Include="Viewers-Visualizers\Document-Explorer\AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Viewers-Visualizers\Document-Explorer\DocumentItems.cs" />
+    <Compile Include="Viewers-Visualizers\Document-Explorer\ExceptionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Viewers-Visualizers\Document-Explorer\GoToPageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Viewers-Visualizers\Document-Explorer\Item.cs" />
+    <Compile Include="Viewers-Visualizers\Document-Explorer\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Viewers-Visualizers\Document-Explorer\Preview.cs" />
+    <Compile Include="Viewers-Visualizers\Document-Explorer\ViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="_RunExamples.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Loading-and-Saving\Data\Split\Rendering.doc" />
+    <None Include="Loading-and-Saving\Data\Split\Sample Documentation.doc" />
+    <None Include="Loading-and-Saving\Data\SOI 2007-2012-DeeM with footnote added.doc" />
     <None Include="Loading-and-Saving\Data\Test File %28doc%29.doc" />
     <None Include="Loading-and-Saving\Data\Test File %28docm%29.docm" />
     <None Include="Loading-and-Saving\Data\Test File %28docx%29.docx" />
@@ -123,36 +167,111 @@
     <None Include="Loading-and-Saving\Data\Test File %28odt%29.odt" />
     <None Include="Loading-and-Saving\Data\Test File %28pre97%29.doc" />
     <None Include="Loading-and-Saving\Data\Test File %28rtf%29.rtf" />
+    <None Include="Loading-and-Saving\Data\Test.wmf" />
+    <None Include="Loading-and-Saving\Data\TocTemplate.doc" />
+    <None Include="Mail-Merge\Data\Template.doc" />
+    <None Include="Mail-Merge\Data\TestFile.doc" />
     <None Include="packages.config" />
-    <None Include="Programming-With-Documents\Find-and-Replace\Data\Field.ReplaceTextWithFields.doc" />
-    <None Include="Programming-With-Documents\Find-and-Replace\Data\TestFile.doc" />
-    <None Include="Programming-With-Documents\Working-with-Bookmarks\Data\Template.doc" />
-    <None Include="Programming-With-Documents\Working-with-Bookmarks\Data\TestDefect1352.doc" />
-    <None Include="Programming-With-Documents\Working-with-Comments\Data\TestFile.doc" />
-    <None Include="Programming-With-Documents\Working-with-Document\Data\TestFile.doc" />
-    <None Include="Programming-With-Documents\Working-with-Document\Data\TestFile.docx" />
-    <None Include="Programming-With-Documents\Working-with-Fields\Data\Field.RemoveField.doc" />
-    <None Include="Programming-With-Documents\Working-with-Fields\Data\TestFile.doc" />
-    <None Include="Programming-With-Documents\Working-with-Images\Data\Test.docx" />
-    <None Include="Programming-With-Documents\Working-with-Images\Data\TestFile.doc" />
-    <None Include="Programming-With-Documents\Working-with-Styles\Data\TestFile.doc" />
-    <None Include="Programming-With-Documents\Working-with-Tables\Data\TestFile.doc" />
+    <None Include="Programming-Documents\Find-Replace\Data\Field.ReplaceTextWithFields.doc" />
+    <None Include="Programming-Documents\Find-Replace\Data\TestFile.doc" />
+    <None Include="Programming-Documents\Bookmarks\Data\Template.doc" />
+    <None Include="Programming-Documents\Bookmarks\Data\TestDefect1352.doc" />
+    <None Include="Programming-Documents\Comments\Data\TestFile.doc" />
+    <None Include="Programming-Documents\Document\Data\TestFile.doc" />
+    <None Include="Programming-Documents\Document\Data\TestFile.docx" />
+    <None Include="Programming-Documents\Fields\Data\Field.RemoveField.doc" />
+    <None Include="Programming-Documents\Fields\Data\TestFile.doc" />
+    <None Include="Programming-Documents\Images\Data\Test.docx" />
+    <None Include="Programming-Documents\Images\Data\TestFile.doc" />
+    <None Include="Programming-Documents\Styles\Data\TestFile.doc" />
+    <None Include="Programming-Documents\Tables\Data\TestFile.doc" />
     <None Include="Quick-Start\Data\Document.doc" />
     <None Include="Quick-Start\Data\MailMerge Template.doc" />
     <None Include="Quick-Start\Data\ReplaceSimple.doc" />
     <None Include="Quick-Start\Data\Template.doc" />
     <None Include="Quick-Start\Data\TestFile.Destination.doc" />
     <None Include="Quick-Start\Data\TestFile.Source.doc" />
+    <None Include="Rendering-Printing\Data\doc+2.doc" />
+    <None Include="Rendering-Printing\Data\TestFile.docx" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Programming-With-Documents\Joining-and-Appending\Data\" />
+    <Folder Include="Programming-Documents\Joining-Appending\Data\" />
+    <Folder Include="Viewers-Visualizers\Data\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Loading-and-Saving\Data\LoadTxt.txt" />
     <Content Include="Loading-and-Saving\Data\Test File %28HTML%29.html" />
     <Content Include="Loading-and-Saving\Data\Test File %28JPG%29.jpg" />
     <Content Include="Loading-and-Saving\Data\Test File %28WordML%29.xml" />
     <Content Include="Loading-and-Saving\Data\Test File %28XML%29.xml" />
-    <Content Include="Programming-With-Documents\Working-with-Images\Data\Aspose Logo.png" />
+    <Content Include="Loading-and-Saving\Data\Test.gif" />
+    <Content Include="Loading-and-Saving\Data\Test.jpg" />
+    <Content Include="Loading-and-Saving\Data\Test.png" />
+    <Content Include="Loading-and-Saving\Data\Test.tiff" />
+    <Content Include="Mail-Merge\Data\Customers.mdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Programming-Documents\Images\Data\Aspose Logo.png" />
+    <Content Include="Viewers-Visualizers\Document-Explorer\App.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Body.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\BookmarkEnd.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\BookmarkStart.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Cell.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Collapse.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Comment.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\CommentRangeEnd.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\CommentRangeStart.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\CustomXmlMarkup.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Document.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\DrawingML.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Expand.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\FieldEnd.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\FieldSeparator.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\FieldStart.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Footer.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Footnote.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\FormCheckBox.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\FormDropDown.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\FormField.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\FormTextInput.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\GroupShape.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Header.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\HeaderFooter.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\InlineShape.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Node.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\OfficeMath.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\OleControl.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\OleObject.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Paragraph.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Row.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Run.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Section.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Shape.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\SmartTag.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\SpecialChar.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\StructuredDocumentTag.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Table.ICO" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\ExceptionDialog.resx">
+      <DependentUpon>ExceptionDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\GoToPageForm.resx">
+      <DependentUpon>GoToPageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\ViewerForm.resx">
+      <DependentUpon>ViewerForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

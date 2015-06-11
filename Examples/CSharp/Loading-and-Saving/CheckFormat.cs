@@ -13,14 +13,14 @@ using Aspose.Words;
 using Aspose.Words.Tables;
 using System.Diagnostics;
 
-namespace CSharp.Loading_and_Saving
+namespace CSharp.Loading_Saving
 {
     class CheckFormat
     {
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir();
+            string dataDir = _RunExamples.GetDataDir_LoadingAndSaving();
 
             string supportedDir = dataDir + "OutSupported";
             string unknownDir = dataDir + "OutUnknown";

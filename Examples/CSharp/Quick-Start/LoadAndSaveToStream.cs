@@ -17,7 +17,7 @@ namespace CSharp.Quick_Start
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir();
+            string dataDir = _RunExamples.GetDataDir_QuickStart();
 
             // Open the stream. Read only access is enough for Aspose.Words to load a document.
             Stream stream = File.OpenRead(dataDir + "Document.doc");

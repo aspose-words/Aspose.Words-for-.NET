@@ -17,7 +17,7 @@ namespace CSharp.Quick_Start
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir();
+            string dataDir = _RunExamples.GetDataDir_QuickStart();
 
             // Load the document from disk.
             Document doc = new Document(dataDir + "Template.doc");
