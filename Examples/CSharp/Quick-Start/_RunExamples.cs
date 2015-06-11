@@ -13,6 +13,15 @@ namespace CSharp.Quick_Start
         {
             // Run the examples. Un-comment the one you want to run
             AppendDocuments.Run();
+            ApplyLicense.Run();
+            Doc2Pdf.Run();
+            FindAndReplace.Run();
+            HelloWorld.Run();
+            LoadAndSaveToDisk.Run();
+            LoadAndSaveToStream.Run();
+            SimpleMailMerge.Run();
+            UpdateFields.Run();
+            WorkingWithNodes.Run();
 
             // Stop before exiting
             Console.WriteLine("\n\nProgram Finished. Press any key to exit....");

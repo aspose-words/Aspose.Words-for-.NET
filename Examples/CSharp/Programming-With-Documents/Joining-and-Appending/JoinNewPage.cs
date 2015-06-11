@@ -5,34 +5,31 @@
 // is only intended as a supplement to the documentation, and is provided
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
+using System;
 using System.IO;
 
 using Aspose.Words;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace CSharp.Quick_Start
+namespace CSharp.Programming_With_Documents.Joining_and_Appending
 {
-    class AppendDocuments
+    class JoinNewPage
     {
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir();
+            string dataDir = _RunExamples.GetDataDir_JoiningAndAppending();
 
-            // Load the destination and source documents from disk.
             Document dstDoc = new Document(dataDir + "TestFile.Destination.doc");
             Document srcDoc = new Document(dataDir + "TestFile.Source.doc");
 
-            // Append the source document to the destination document while keeping the original formatting of the source document.
+            // Set the appended document to start on a new page.
+            srcDoc.FirstSection.PageSetup.SectionStart = SectionStart.NewPage;
+
+            // Append the source document using the original styles found in the source document.
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
+            dstDoc.Save(dataDir + "TestFile.JoinNewPage Out.doc");
 
-            dstDoc.Save(dataDir + "TestFile Out.docx");
-
-            Console.WriteLine("\nDocument appended successfully.\nFile saved at " + dataDir + "TestFile Out.docx");
+            Console.WriteLine("\nDocument appended successfully with new section start.\nFile saved at " + dataDir + "TestFile.JoinNewPage Out.doc");
         }
     }
 }

@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>CSharp.Quick_Start._RunExamples</StartupObject>
+    <StartupObject>CSharp.Loading_and_Saving._RunExamples</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Aspose.Words, Version=15.5.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,16 +49,111 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Loading-and-Saving\CheckFormat.cs" />
+    <Compile Include="Loading-and-Saving\_RunExamples.cs" />
+    <Compile Include="Programming-With-Documents\Find-and-Replace\FindAndHighlight.cs" />
+    <Compile Include="Programming-With-Documents\Find-and-Replace\ReplaceTextWithField.cs" />
+    <Compile Include="Programming-With-Documents\Joining-and-Appending\AppendDocumentManually.cs" />
+    <Compile Include="Programming-With-Documents\Joining-and-Appending\BaseDocument.cs" />
+    <Compile Include="Programming-With-Documents\Joining-and-Appending\ConvertNumPageFields.cs" />
+    <Compile Include="Programming-With-Documents\Joining-and-Appending\DifferentPageSetup.cs" />
+    <Compile Include="Programming-With-Documents\Joining-and-Appending\JoinContinuous.cs" />
+    <Compile Include="Programming-With-Documents\Joining-and-Appending\JoinNewPage.cs" />
+    <Compile Include="Programming-With-Documents\Joining-and-Appending\KeepSourceFormatting.cs" />
+    <Compile Include="Programming-With-Documents\Joining-and-Appending\KeepSourceTogether.cs" />
+    <Compile Include="Programming-With-Documents\Joining-and-Appending\LinkHeadersFooters.cs" />
+    <Compile Include="Programming-With-Documents\Joining-and-Appending\ListKeepSourceFormatting.cs" />
+    <Compile Include="Programming-With-Documents\Joining-and-Appending\ListUseDestinationStyles.cs" />
+    <Compile Include="Programming-With-Documents\Joining-and-Appending\PrependDocument.cs" />
+    <Compile Include="Programming-With-Documents\Joining-and-Appending\RemoveSourceHeadersFooters.cs" />
+    <Compile Include="Programming-With-Documents\Joining-and-Appending\RestartPageNumbering.cs" />
+    <Compile Include="Programming-With-Documents\Joining-and-Appending\SimpleAppendDocument.cs" />
+    <Compile Include="Programming-With-Documents\Joining-and-Appending\UnlinkHeadersFooters.cs" />
+    <Compile Include="Programming-With-Documents\Joining-and-Appending\UpdatePageLayout.cs" />
+    <Compile Include="Programming-With-Documents\Joining-and-Appending\UseDestinationStyles.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Bookmarks\CopyBookmarkedText.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Bookmarks\UntangleRowBookmarks.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Comments\ProcessComments.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Document\Common.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Document\ExtractContentBetweenBlockLevelNodes.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Document\ExtractContentBetweenBookmark.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Document\ExtractContentBetweenCommentRange.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Document\ExtractContentBetweenParagraphs.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Document\ExtractContentBetweenParagraphStyles.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Document\ExtractContentBetweenRuns.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Document\ExtractContentUsingField.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Document\PageNumbersOfNodes.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Document\RemoveBreaks.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Fields\ConvertFieldsInBody.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Fields\ConvertFieldsInDocument.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Fields\ConvertFieldsInParagraph.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Fields\FieldsHelper.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Fields\InsertNestedFields.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Fields\RemoveField.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Images\AddImageToEachPage.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Images\AddWatermark.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Images\CompressImages.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Styles\ExtractContentBasedOnStyles.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Tables\AutoFitTableToContents.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Tables\AutoFitTableToFixedColumnWidths.cs" />
+    <Compile Include="Programming-With-Documents\Working-with-Tables\AutoFitTableToWindow.cs" />
+    <Compile Include="Programming-With-Documents\_RunExamples.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quick-Start\AppendDocuments.cs" />
+    <Compile Include="Quick-Start\ApplyLicense.cs" />
+    <Compile Include="Quick-Start\Doc2Pdf.cs" />
+    <Compile Include="Quick-Start\FindAndReplace.cs" />
+    <Compile Include="Quick-Start\HelloWorld.cs" />
+    <Compile Include="Quick-Start\LoadAndSaveToDisk.cs" />
+    <Compile Include="Quick-Start\LoadAndSaveToStream.cs" />
+    <Compile Include="Quick-Start\SimpleMailMerge.cs" />
+    <Compile Include="Quick-Start\UpdateFields.cs" />
+    <Compile Include="Quick-Start\WorkingWithNodes.cs" />
     <Compile Include="Quick-Start\_RunExamples.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Loading-and-Saving\Data\Test File %28doc%29.doc" />
+    <None Include="Loading-and-Saving\Data\Test File %28docm%29.docm" />
+    <None Include="Loading-and-Saving\Data\Test File %28docx%29.docx" />
+    <None Include="Loading-and-Saving\Data\Test File %28dot%29.dot" />
+    <None Include="Loading-and-Saving\Data\Test File %28dotx%29.dotx" />
+    <None Include="Loading-and-Saving\Data\Test File %28enc%29.doc" />
+    <None Include="Loading-and-Saving\Data\Test File %28enc%29.docx" />
+    <None Include="Loading-and-Saving\Data\Test File %28MHTML%29.mhtml" />
+    <None Include="Loading-and-Saving\Data\Test File %28odt%29.odt" />
+    <None Include="Loading-and-Saving\Data\Test File %28pre97%29.doc" />
+    <None Include="Loading-and-Saving\Data\Test File %28rtf%29.rtf" />
     <None Include="packages.config" />
+    <None Include="Programming-With-Documents\Find-and-Replace\Data\Field.ReplaceTextWithFields.doc" />
+    <None Include="Programming-With-Documents\Find-and-Replace\Data\TestFile.doc" />
+    <None Include="Programming-With-Documents\Working-with-Bookmarks\Data\Template.doc" />
+    <None Include="Programming-With-Documents\Working-with-Bookmarks\Data\TestDefect1352.doc" />
+    <None Include="Programming-With-Documents\Working-with-Comments\Data\TestFile.doc" />
+    <None Include="Programming-With-Documents\Working-with-Document\Data\TestFile.doc" />
+    <None Include="Programming-With-Documents\Working-with-Document\Data\TestFile.docx" />
+    <None Include="Programming-With-Documents\Working-with-Fields\Data\Field.RemoveField.doc" />
+    <None Include="Programming-With-Documents\Working-with-Fields\Data\TestFile.doc" />
+    <None Include="Programming-With-Documents\Working-with-Images\Data\Test.docx" />
+    <None Include="Programming-With-Documents\Working-with-Images\Data\TestFile.doc" />
+    <None Include="Programming-With-Documents\Working-with-Styles\Data\TestFile.doc" />
+    <None Include="Programming-With-Documents\Working-with-Tables\Data\TestFile.doc" />
+    <None Include="Quick-Start\Data\Document.doc" />
+    <None Include="Quick-Start\Data\MailMerge Template.doc" />
+    <None Include="Quick-Start\Data\ReplaceSimple.doc" />
+    <None Include="Quick-Start\Data\Template.doc" />
     <None Include="Quick-Start\Data\TestFile.Destination.doc" />
     <None Include="Quick-Start\Data\TestFile.Source.doc" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Programming-With-Documents\Joining-and-Appending\Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Loading-and-Saving\Data\Test File %28HTML%29.html" />
+    <Content Include="Loading-and-Saving\Data\Test File %28JPG%29.jpg" />
+    <Content Include="Loading-and-Saving\Data\Test File %28WordML%29.xml" />
+    <Content Include="Loading-and-Saving\Data\Test File %28XML%29.xml" />
+    <Content Include="Programming-With-Documents\Working-with-Images\Data\Aspose Logo.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
