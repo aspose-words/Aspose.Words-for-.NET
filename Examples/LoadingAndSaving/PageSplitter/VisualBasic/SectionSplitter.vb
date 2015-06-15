@@ -160,14 +160,6 @@ Namespace PageSplitterExample
 			Return VisitorAction.Continue
 		End Function
 
-		Public Overrides Function VisitCustomXmlMarkupEnd(ByVal customXmlMarkup As CustomXmlMarkup) As VisitorAction
-			If IsCompositeAcrossPage(customXmlMarkup) Then
-				SplitComposite(customXmlMarkup)
-			End If
-
-			Return VisitorAction.Continue
-		End Function
-
 		Public Overrides Function VisitStructuredDocumentTagEnd(ByVal sdt As StructuredDocumentTag) As VisitorAction
 			If IsCompositeAcrossPage(sdt) Then
 				SplitComposite(sdt)
