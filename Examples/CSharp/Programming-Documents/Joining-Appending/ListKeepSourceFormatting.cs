@@ -17,7 +17,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir_JoiningAndAppending();
+            string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
 
             Document dstDoc = new Document(dataDir + "TestFile.DestinationList.doc");
             Document srcDoc = new Document(dataDir + "TestFile.SourceList.doc");

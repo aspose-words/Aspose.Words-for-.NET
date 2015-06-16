@@ -21,7 +21,7 @@ namespace CSharp.Programming_Documents.Working_with_Fields
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir_WorkingWithFields();
+            string dataDir = RunExamples.GetDataDir_WorkingWithFields();
 
             Document doc = new Document(dataDir + "TestFile.doc");
 

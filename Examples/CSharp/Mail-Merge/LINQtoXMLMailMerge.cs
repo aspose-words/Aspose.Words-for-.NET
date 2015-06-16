@@ -27,7 +27,7 @@ namespace CSharp.Mail_Merge
         {
 #if !NET20
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir_MailMergeAndReporting(); ;
+            string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); ;
 
             // Load the XML document.
             XElement orderXml = XElement.Load(dataDir + "PurchaseOrder.xml");

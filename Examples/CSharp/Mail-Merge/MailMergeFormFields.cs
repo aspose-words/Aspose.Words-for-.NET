@@ -27,7 +27,7 @@ namespace CSharp.Mail_Merge
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir_MailMergeAndReporting(); ;
+            string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); ;
 
             // Load the template document.
             Document doc = new Document(dataDir + "Template.doc");

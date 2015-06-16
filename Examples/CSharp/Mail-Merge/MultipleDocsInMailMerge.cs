@@ -21,7 +21,7 @@ namespace CSharp.Mail_Merge
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir_MailMergeAndReporting(); ;
+            string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); ;
             
             // Open the database connection.
             string connString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + dataDir + "Customers.mdb";

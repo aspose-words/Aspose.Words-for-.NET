@@ -23,7 +23,7 @@ namespace CSharp.Programming_Documents.Working_with_Images
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir_WorkingWithImages();
+            string dataDir = RunExamples.GetDataDir_WorkingWithImages();
 
             Document doc = new Document(dataDir + "TestFile.Watermark.doc");
             InsertWatermarkText(doc, "CONFIDENTIAL");

@@ -18,7 +18,7 @@ namespace CSharp.Programming_Documents.Bookmarks
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir_WorkingWithBookmarks();
+            string dataDir = RunExamples.GetDataDir_WorkingWithBookmarks();
 
             // Load the source document.
             Document srcDoc = new Document(dataDir + "Template.doc");

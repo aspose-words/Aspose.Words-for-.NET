@@ -20,7 +20,7 @@ namespace CSharp.Programming_Documents.Find_and_Replace
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir_FindAndReplace();
+            string dataDir = RunExamples.GetDataDir_FindAndReplace();
 
             Document doc = new Document(dataDir + "Field.ReplaceTextWithFields.doc");
 

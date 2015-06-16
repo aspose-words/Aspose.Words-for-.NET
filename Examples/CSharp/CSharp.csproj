@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>CSharp._RunExamples</StartupObject>
+    <StartupObject>CSharp.RunExamples</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Aspose.Words, Version=15.5.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
@@ -150,7 +150,7 @@
     <Compile Include="Viewers-Visualizers\Document-Explorer\ViewerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="_RunExamples.cs" />
+    <Compile Include="RunExamples.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Loading-and-Saving\Data\Split\Rendering.doc" />

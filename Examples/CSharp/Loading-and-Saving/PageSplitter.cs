@@ -27,7 +27,7 @@ namespace CSharp.Loading_Saving
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir_LoadingAndSaving() + "Split";
+            string dataDir = RunExamples.GetDataDir_LoadingAndSaving() + "Split";
 
             SplitAllDocumentsToPages(dataDir);
 

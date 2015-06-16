@@ -18,7 +18,7 @@ namespace CSharp.Programming_Documents.Comments
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir_WorkingWithComments();
+            string dataDir = RunExamples.GetDataDir_WorkingWithComments();
 
             // Open the document.
             Document doc = new Document(dataDir + "TestFile.doc");

@@ -19,7 +19,7 @@ namespace CSharp.Rendering_and_Printing
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir_RenderingAndPrinting(); ;
+            string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); ;
 
             // Open the document.
             Document doc = new Document(dataDir + "TestFile Multipage TIFF.doc");

@@ -20,7 +20,7 @@ namespace CSharp.Loading_Saving
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir_LoadingAndSaving();
+            string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
             string supportedDir = dataDir + "OutSupported";
             string unknownDir = dataDir + "OutUnknown";

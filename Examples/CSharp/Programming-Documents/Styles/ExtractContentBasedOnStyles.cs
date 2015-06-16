@@ -26,7 +26,7 @@ namespace CSharp.Programming_Documents.Working_with_Styles
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir_WorkingWithStyles();
+            string dataDir = RunExamples.GetDataDir_WorkingWithStyles();
 
             // Open the document.
             Document doc = new Document(dataDir + "TestFile.doc");

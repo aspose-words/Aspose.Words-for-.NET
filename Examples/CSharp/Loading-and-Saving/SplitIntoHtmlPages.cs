@@ -30,7 +30,7 @@ namespace CSharp.Loading_Saving
 
 
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir_LoadingAndSaving();
+            string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
             string srcFileName = dataDir + "SOI 2007-2012-DeeM with footnote added.doc";
             string tocTemplate = dataDir + "TocTemplate.doc";

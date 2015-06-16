@@ -19,7 +19,7 @@ namespace CSharp.Programming_Documents.Bookmarks
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir_WorkingWithBookmarks();
+            string dataDir = RunExamples.GetDataDir_WorkingWithBookmarks();
 
             // Load a document.
             Document doc = new Document(dataDir + "TestDefect1352.doc");

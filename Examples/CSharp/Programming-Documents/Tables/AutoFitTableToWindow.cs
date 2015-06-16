@@ -20,7 +20,7 @@ namespace CSharp.Programming_Documents.Working_with_Tables
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir_WorkingWithTables();
+            string dataDir = RunExamples.GetDataDir_WorkingWithTables();
 
             // Open the document
             Document doc = new Document(dataDir + "TestFile.doc");

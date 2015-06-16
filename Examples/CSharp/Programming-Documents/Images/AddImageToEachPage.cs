@@ -22,7 +22,7 @@ namespace CSharp.Programming_Documents.Working_with_Images
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = _RunExamples.GetDataDir_WorkingWithImages();
+            string dataDir = RunExamples.GetDataDir_WorkingWithImages();
 
             // This a document that we want to add an image and custom text for each page without using the header or footer.
             Document doc = new Document(dataDir + "TestFile.doc");
