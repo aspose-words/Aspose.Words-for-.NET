@@ -1,0 +1,363 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{218C2CA6-5944-4573-AD84-4669247A592B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <StartupObject>RunExamples</StartupObject>
+    <RootNamespace>
+    </RootNamespace>
+    <AssemblyName>VisualBasic</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Console</MyType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>VisualBasic.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>VisualBasic.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.Words, Version=15.5.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Aspose.Words.15.5.0\lib\net3.5-client\Aspose.Words.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Loading-and-Saving\CheckFormat.vb" />
+    <Compile Include="Loading-and-Saving\ImageToPdf.vb" />
+    <Compile Include="Loading-and-Saving\LoadTxt.vb" />
+    <Compile Include="Loading-and-Saving\PageSplitter.vb" />
+    <Compile Include="Loading-and-Saving\SplitIntoHtmlPages.vb" />
+    <Compile Include="Mail-Merge\ApplyCustomLogicToEmptyRegions.vb" />
+    <Compile Include="Mail-Merge\LINQtoXMLMailMerge.vb" />
+    <Compile Include="Mail-Merge\MailMergeFormFields.vb" />
+    <Compile Include="Mail-Merge\MultipleDocsInMailMerge.vb" />
+    <Compile Include="Mail-Merge\NestedMailMerge.vb" />
+    <Compile Include="Mail-Merge\RemoveEmptyRegions.vb" />
+    <Compile Include="Mail-Merge\XMLMailMerge.vb" />
+    <Compile Include="Programming-Documents\Bookmarks\CopyBookmarkedText.vb" />
+    <Compile Include="Programming-Documents\Bookmarks\UntangleRowBookmarks.vb" />
+    <Compile Include="Programming-Documents\Comments\ProcessComments.vb" />
+    <Compile Include="Programming-Documents\Document\ExtractContent.vb" />
+    <Compile Include="Programming-Documents\Document\PageNumbersOfNodes.vb" />
+    <Compile Include="Programming-Documents\Document\RemoveBreaks.vb" />
+    <Compile Include="Programming-Documents\Fields\ConvertFieldsInBody.vb" />
+    <Compile Include="Programming-Documents\Fields\ConvertFieldsInDocument.vb" />
+    <Compile Include="Programming-Documents\Fields\ConvertFieldsInParagraph.vb" />
+    <Compile Include="Programming-Documents\Fields\InsertNestedFields.vb" />
+    <Compile Include="Programming-Documents\Fields\RemoveField.vb" />
+    <Compile Include="Programming-Documents\Find-Replace\FindAndHighlight.vb" />
+    <Compile Include="Programming-Documents\Find-Replace\ReplaceTextWithField.vb" />
+    <Compile Include="Programming-Documents\Images\AddImageToEachPage.vb" />
+    <Compile Include="Programming-Documents\Images\AddWatermark.vb" />
+    <Compile Include="Programming-Documents\Images\CompressImages.vb" />
+    <Compile Include="Programming-Documents\Joining-Appending\AppendDocumentManually.vb" />
+    <Compile Include="Programming-Documents\Joining-Appending\BaseDocument.vb" />
+    <Compile Include="Programming-Documents\Joining-Appending\ConvertNumPageFields.vb" />
+    <Compile Include="Programming-Documents\Joining-Appending\DifferentPageSetup.vb" />
+    <Compile Include="Programming-Documents\Joining-Appending\JoinContinuous.vb" />
+    <Compile Include="Programming-Documents\Joining-Appending\JoinNewPage.vb" />
+    <Compile Include="Programming-Documents\Joining-Appending\KeepSourceFormatting.vb" />
+    <Compile Include="Programming-Documents\Joining-Appending\KeepSourceTogether.vb" />
+    <Compile Include="Programming-Documents\Joining-Appending\LinkHeadersFooters.vb" />
+    <Compile Include="Programming-Documents\Joining-Appending\ListKeepSourceFormatting.vb" />
+    <Compile Include="Programming-Documents\Joining-Appending\ListUseDestinationStyles.vb" />
+    <Compile Include="Programming-Documents\Joining-Appending\PrependDocument.vb" />
+    <Compile Include="Programming-Documents\Joining-Appending\RemoveSourceHeadersFooters.vb" />
+    <Compile Include="Programming-Documents\Joining-Appending\RestartPageNumbering.vb" />
+    <Compile Include="Programming-Documents\Joining-Appending\SimpleAppendDocument.vb" />
+    <Compile Include="Programming-Documents\Joining-Appending\UnlinkHeadersFooters.vb" />
+    <Compile Include="Programming-Documents\Joining-Appending\UpdatePageLayout.vb" />
+    <Compile Include="Programming-Documents\Joining-Appending\UseDestinationStyles.vb" />
+    <Compile Include="Programming-Documents\Styles\ExtractContentBasedOnStyles.vb" />
+    <Compile Include="Programming-Documents\Tables\AutoFitTableToContents.vb" />
+    <Compile Include="Programming-Documents\Tables\AutoFitTableToFixedColumnWidths.vb" />
+    <Compile Include="Programming-Documents\Tables\AutoFitTableToWindow.vb" />
+    <Compile Include="Quick-Start\AppendDocuments.vb" />
+    <Compile Include="Quick-Start\ApplyLicense.vb" />
+    <Compile Include="Quick-Start\Doc2Pdf.vb" />
+    <Compile Include="Quick-Start\FindAndReplace.vb" />
+    <Compile Include="Quick-Start\HelloWorld.vb" />
+    <Compile Include="Quick-Start\LoadAndSaveToDisk.vb" />
+    <Compile Include="Quick-Start\LoadAndSaveToStream.vb" />
+    <Compile Include="Quick-Start\SimpleMailMerge.vb" />
+    <Compile Include="Quick-Start\UpdateFields.vb" />
+    <Compile Include="Quick-Start\WorkingWithNodes.vb" />
+    <Compile Include="Rendering-Printing\DocumentLayoutHelper.vb" />
+    <Compile Include="Rendering-Printing\DocumentPreviewAndPrint.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Rendering-Printing\EnumerateLayoutElements.vb" />
+    <Compile Include="Rendering-Printing\ImageColorFilters.vb" />
+    <Compile Include="Rendering-Printing\RenderShape.vb" />
+    <Compile Include="Rendering-Printing\SaveAsMultipageTiff.vb" />
+    <Compile Include="RunExamples.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Viewers-Visualizers\Document-Explorer\AboutForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Viewers-Visualizers\Document-Explorer\DocumentItems.vb" />
+    <Compile Include="Viewers-Visualizers\Document-Explorer\ExceptionDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Viewers-Visualizers\Document-Explorer\GoToPageForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Viewers-Visualizers\Document-Explorer\Item.vb" />
+    <Compile Include="Viewers-Visualizers\Document-Explorer\MainForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Viewers-Visualizers\Document-Explorer\Preview.vb" />
+    <Compile Include="Viewers-Visualizers\Document-Explorer\ViewerForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\AboutForm.resx">
+      <DependentUpon>AboutForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\ExceptionDialog.resx">
+      <DependentUpon>ExceptionDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\GoToPageForm.resx">
+      <DependentUpon>GoToPageForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\MainForm.resx">
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\ViewerForm.resx">
+      <DependentUpon>ViewerForm.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Programming-Documents\Comments\Data\Test File Out.doc" />
+    <None Include="Programming-Documents\Comments\Data\TestFile.doc" />
+    <None Include="Programming-Documents\Document\Data\TestFile Out.doc" />
+    <None Include="Programming-Documents\Document\Data\TestFile.BookmarkExclusive Out.doc" />
+    <None Include="Programming-Documents\Document\Data\TestFile.BookmarkInclusive Out.doc" />
+    <None Include="Programming-Documents\Document\Data\TestFile.CommentExclusive Out.doc" />
+    <None Include="Programming-Documents\Document\Data\TestFile.CommentInclusive Out.doc" />
+    <None Include="Programming-Documents\Document\Data\TestFile.doc" />
+    <None Include="Programming-Documents\Document\Data\TestFile.docx" />
+    <None Include="Programming-Documents\Document\Data\TestFile.DuplicatedContent Out.doc" />
+    <None Include="Programming-Documents\Document\Data\TestFile.Fields Out.doc" />
+    <None Include="Programming-Documents\Document\Data\TestFile.Paragraphs Out.doc" />
+    <None Include="Programming-Documents\Document\Data\TestFile.Styles Out.doc" />
+    <None Include="Programming-Documents\Fields\Data\Field.RemoveField.doc" />
+    <None Include="Programming-Documents\Fields\Data\InsertNestedFields Out.docx" />
+    <None Include="Programming-Documents\Fields\Data\TestFile.doc" />
+    <None Include="Programming-Documents\Fields\Data\TestFileBody Out.doc" />
+    <None Include="Programming-Documents\Fields\Data\TestFileDocument Out.doc" />
+    <None Include="Programming-Documents\Fields\Data\TestFileParagraph Out.doc" />
+    <None Include="Programming-Documents\Find-Replace\Data\Field.ReplaceTextWithFields Out.doc" />
+    <None Include="Programming-Documents\Find-Replace\Data\Field.ReplaceTextWithFields.doc" />
+    <None Include="Programming-Documents\Find-Replace\Data\TestFile Out.doc" />
+    <None Include="Programming-Documents\Find-Replace\Data\TestFile.doc" />
+    <None Include="Programming-Documents\Images\Data\Test.docx" />
+    <None Include="Programming-Documents\Images\Data\Test.docx.Resampled Out.docx" />
+    <None Include="Programming-Documents\Images\Data\TestFile Out.docx" />
+    <None Include="Programming-Documents\Images\Data\TestFile.doc" />
+    <None Include="Programming-Documents\Images\Data\TestFile.Watermark Out.doc" />
+    <None Include="Programming-Documents\Images\Data\TestFile.Watermark.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestDcc.KeepSourceTogether Out.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.Append Manual Out.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.Append Manual Out.pdf" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.BaseDocument Out.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.ConvertNumPageFields Out.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.Destination.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.DestinationList.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.DifferentPageSetup Out.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.JoinContinuous Out.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.JoinNewPage Out.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.KeepSourceFormatting Out.docx" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.LinkHeadersFooters Out.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.ListKeepSourceFormatting Out.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.ListUseDestinationStyles Out.docx" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.Prepend.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.RemoveSourceHeadersFooters Out.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.RestartPageNumbering Out.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.SimpleAppendDocument Out.docx" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.Source.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.SourceList.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.SourcePageSetup.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.UnlinkHeadersFooters Out.doc" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.UpdatePageLayout Out.pdf" />
+    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.UseDestinationStyles Out.doc" />
+    <None Include="Programming-Documents\Styles\Data\TestFile.doc" />
+    <None Include="Programming-Documents\Tables\Data\TestFile.AutoFitToContents Out.doc" />
+    <None Include="Programming-Documents\Tables\Data\TestFile.AutoFitToWindow Out.doc" />
+    <None Include="Programming-Documents\Tables\Data\TestFile.doc" />
+    <None Include="Programming-Documents\Tables\Data\TestFile.FixedWidth Out.doc" />
+    <None Include="Quick-Start\Data\Doc2PdfSave Out.pdf" />
+    <None Include="Quick-Start\Data\Document Field Update Out.docx" />
+    <None Include="Quick-Start\Data\Document Out.docx" />
+    <None Include="Quick-Start\Data\Document Out.rtf" />
+    <None Include="Quick-Start\Data\Document.doc" />
+    <None Include="Quick-Start\Data\HelloWorld Out.docx" />
+    <None Include="Quick-Start\Data\MailMerge Result Out.docx" />
+    <None Include="Quick-Start\Data\MailMerge Template.doc" />
+    <None Include="Quick-Start\Data\ReplaceSimple Out.doc" />
+    <None Include="Quick-Start\Data\ReplaceSimple.doc" />
+    <None Include="Quick-Start\Data\Template.doc" />
+    <None Include="Quick-Start\Data\TestFile Out.docx" />
+    <None Include="Quick-Start\Data\TestFile.Destination.doc" />
+    <None Include="Quick-Start\Data\TestFile.Source.doc" />
+    <None Include="Rendering-Printing\Data\doc+2.doc" />
+    <None Include="Rendering-Printing\Data\TestFile Multipage TIFF.doc" />
+    <None Include="Rendering-Printing\Data\TestFile RenderShape.doc" />
+    <None Include="Rendering-Printing\Data\TestFile RenderShape.docx" />
+    <None Include="Rendering-Printing\Data\TestFile.Colors.docx" />
+    <None Include="Rendering-Printing\Data\TestFile.doc" />
+    <None Include="Rendering-Printing\Data\TestFile.docx" />
+    <None Include="Rendering-Printing\Data\TestFile.EnumerateLayout.docx" />
+    <None Include="Rendering-Printing\Data\TestFile.RenderToDisk Out.emf" />
+    <None Include="Viewers-Visualizers\Data\TestFile.Source.doc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Loading-and-Saving\Data\" />
+    <Folder Include="Mail-Merge\Data\" />
+    <Folder Include="Programming-Documents\Bookmarks\Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Programming-Documents\Images\Data\Aspose Logo.png" />
+    <Content Include="Rendering-Printing\Data\result black and white.tiff" />
+    <Content Include="Rendering-Printing\Data\result Ccitt4.tiff" />
+    <Content Include="Rendering-Printing\Data\Result Colors.tiff" />
+    <Content Include="Rendering-Printing\Data\Result Grayscale.tiff" />
+    <Content Include="Rendering-Printing\Data\result Rle.tiff" />
+    <Content Include="Rendering-Printing\Data\TestFile Multipage TIFF Out.tiff" />
+    <Content Include="Rendering-Printing\Data\TestFile Page 1 Out.png" />
+    <Content Include="Rendering-Printing\Data\TestFile Page 2 Out.png" />
+    <Content Include="Rendering-Printing\Data\TestFile.RenderCell Out.png" />
+    <Content Include="Rendering-Printing\Data\TestFile.RenderParagraph Out.png" />
+    <Content Include="Rendering-Printing\Data\TestFile.RenderRow Out.png" />
+    <Content Include="Rendering-Printing\Data\TestFile.RenderToGraphics.png" />
+    <Content Include="Rendering-Printing\Data\TestFile.RenderToStream Out.jpg" />
+    <Content Include="Rendering-Printing\Data\TestFileWithOptions Out.tiff" />
+    <Content Include="Viewers-Visualizers\Document-Explorer\App.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Body.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\BookmarkEnd.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\BookmarkStart.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Cell.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Collapse.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Comment.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\CommentRangeEnd.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\CommentRangeStart.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\CustomXmlMarkup.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Document.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\DrawingML.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Expand.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\FieldEnd.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\FieldSeparator.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\FieldStart.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Footer.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Footnote.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\FormCheckBox.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\FormDropDown.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\FormField.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\FormTextInput.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\GroupShape.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Header.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\HeaderFooter.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\InlineShape.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Node.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\OleControl.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\OleObject.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Paragraph.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Row.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Run.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Section.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Shape.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\SmartTag.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\SpecialChar.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\StructuredDocumentTag.ico" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Table.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
