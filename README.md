@@ -15,7 +15,7 @@ Directory | Description
 --------- | -----------
 [Examples](https://github.com/asposewords/Aspose_Words_NET/tree/master/Examples)  | A collection of .NET examples that help you learn how to product features
 [Showcases](https://github.com/asposewords/Aspose_Words_NET/tree/master/Showcases)  | Standalone ready-to-use applications that demonstrate some specific use cases
-[Plugins](https://github.com/asposewords/Aspose_Words_NET/tree/master/Plugins)  | Standalone Plugins that will demonstrate one or multiple features on Aspose.Words for .NET
+[Plugins](Plugins)  | Standalone Plugins that will demonstrate one or multiple features on Aspose.Words for .NET
 
 ## Resources
 
