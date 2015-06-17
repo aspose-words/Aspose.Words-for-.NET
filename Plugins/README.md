@@ -1,4 +1,4 @@
 ## Aspose.Words for .NET Plugins
 
 This section contains the following Platforms
-* [Microsoft Dynamics CRM]
+* [Microsoft Dynamics CRM](Dynamics CRM)
