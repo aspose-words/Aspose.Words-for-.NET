@@ -10,4 +10,4 @@ This package contains C# and VB.NET Example Projects for [Aspose.Words for .NET]
 
 ## How to Run the Examples?
 
-Each example is provided in the form of a separate Visual Studio project. You can just download the repository, browse the folder and open the file in Visual Studio. For more details, visit our [documentation website](http://www.aspose.com/docs/display/wordsnet/How+to+Run+the+Examples).
+There are two Visual projects, one for C# and other for Visual Basic examples. You can just download the repository, browse the folder and open the file in Visual Studio. For more details, visit our [documentation website](http://www.aspose.com/docs/display/wordsnet/How+to+Run+the+Examples).
