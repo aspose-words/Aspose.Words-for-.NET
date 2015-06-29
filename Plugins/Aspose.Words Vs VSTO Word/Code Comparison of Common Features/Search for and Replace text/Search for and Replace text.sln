@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSTO Words", "VSTO Words\VSTO Words.csproj", "{6FA0E461-0856-4154-9FD1-478A272DBCDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspose Words", "Aspose Words\Aspose Words.csproj", "{3E06CC2D-E147-4EC3-9AEC-13E9977C62E6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6FA0E461-0856-4154-9FD1-478A272DBCDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FA0E461-0856-4154-9FD1-478A272DBCDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FA0E461-0856-4154-9FD1-478A272DBCDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FA0E461-0856-4154-9FD1-478A272DBCDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E06CC2D-E147-4EC3-9AEC-13E9977C62E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E06CC2D-E147-4EC3-9AEC-13E9977C62E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E06CC2D-E147-4EC3-9AEC-13E9977C62E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E06CC2D-E147-4EC3-9AEC-13E9977C62E6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
