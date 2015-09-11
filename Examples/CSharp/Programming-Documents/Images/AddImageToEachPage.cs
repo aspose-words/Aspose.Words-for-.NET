@@ -49,6 +49,9 @@ namespace CSharp.Programming_Documents.Working_with_Images
                 }
             }
 
+            // Call UpdatePageLayout() method if file is to be saved as PDF or image format
+            doc.UpdatePageLayout();
+
             doc.Save(dataDir + "TestFile Out.docx");
 
             Console.WriteLine("\nInserted images on each page of the document successfully.\nFile saved at " + dataDir + "TestFile Out.docx");
