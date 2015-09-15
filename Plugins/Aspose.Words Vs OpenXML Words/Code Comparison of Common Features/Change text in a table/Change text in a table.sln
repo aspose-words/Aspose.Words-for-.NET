@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenXML Word", "OpenXML Word\OpenXML Word.csproj", "{728F1B3B-A630-48EA-BE91-E11C4B76C52C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspose Words", "Aspose Words\Aspose Words.csproj", "{6880B696-B3B9-4CD3-807D-FFE0EB0F81BF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{728F1B3B-A630-48EA-BE91-E11C4B76C52C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{728F1B3B-A630-48EA-BE91-E11C4B76C52C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{728F1B3B-A630-48EA-BE91-E11C4B76C52C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{728F1B3B-A630-48EA-BE91-E11C4B76C52C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6880B696-B3B9-4CD3-807D-FFE0EB0F81BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6880B696-B3B9-4CD3-807D-FFE0EB0F81BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6880B696-B3B9-4CD3-807D-FFE0EB0F81BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6880B696-B3B9-4CD3-807D-FFE0EB0F81BF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
