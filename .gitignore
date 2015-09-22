@@ -21,3 +21,4 @@ TestResults/
 test-results/
 *.userprefs
 packages/
+*.gitattributes
