@@ -6,3 +6,4 @@ This section contains the following Plugins
 * [Aspose .NET Document Generator](Aspose .NET Document Generator)
 * [Aspose .NET Document Merger](Aspose .NET Document Merger)
 * [Aspose.DuplicateDocument](Aspose.DuplicateDocument)
+* [Aspose .NET Quote Generator](Aspose .NET Quote Generator)

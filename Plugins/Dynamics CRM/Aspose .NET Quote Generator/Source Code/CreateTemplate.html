@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="http://cdn.ckeditor.com/4.5.3/full/ckeditor.js"></script>
+    <script src="JQuery.js"></script>
+    <script src="SDK.REST.js"></script>
+    <script src="CreateTemplate.js"></script>
+    <script>
+        AddButton();
+        CKEDITOR.config.allowedContent = true;
+        $(document).ready(CKEditorDocumentReady);
+    </script>
+    <style>
+        .cke_button__addfields_icon {
+            display: none !important;
+        }
+
+        .cke_button__addfields_label {
+            display: inline !important;
+        }
+    </style>
+</head>
+<body>
+    <textarea name="editor1" id="editor1"></textarea>
+</body>
+</html>

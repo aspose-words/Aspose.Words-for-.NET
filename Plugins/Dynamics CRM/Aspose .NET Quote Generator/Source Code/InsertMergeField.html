@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="http://cdn.ckeditor.com/4.5.3/full/ckeditor.js"></script>
+    <link href="AsposeStyles.css" rel="stylesheet" />
+    <script src="../ClientGlobalContext.js.aspx" type="text/javascript"></script>
+    <script src="JQuery.js"></script>
+    <script src="SDK.MetaData.js"></script>
+    <script src="CreateTemplate.js"></script>
+</head>
+<body onload="LoadFields();">
+    <div class="Main">
+        <h2>Quote Template</h2>
+        <div class="Label">
+            Select Field to insert in the template
+        </div>
+        <div style="width:100%">
+            <table>
+                <tr>
+                    <th class="Label">
+                        Fields
+                    </th>
+                    <td class="Value">
+                        <select id="DD_Fields"></select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="buttons-left">
+            <!--<button class="footerbutton" type="button">Button</button>-->
+        </div>
+        <div class="buttons-right">
+            <button class="footerbutton" type="button" onclick="return Insert();">Insert</button>&nbsp;
+            <button class="footerbutton" type="button" onclick="closeWindow(false);">Cancel</button>
+        </div>
+    </div>
+</body>
+</html>
