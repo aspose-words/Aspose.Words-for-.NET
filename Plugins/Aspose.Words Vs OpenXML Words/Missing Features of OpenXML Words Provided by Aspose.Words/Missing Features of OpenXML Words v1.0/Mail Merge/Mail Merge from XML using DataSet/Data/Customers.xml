@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customers>
+  <customer Name="John Ben Jan" ID="1" Domain="History" City="Boston"/>
+  <customer Name="Lisa Lane" ID="2" Domain="Chemistry" City="LA"/>
+  <customer Name="Dagomir Zits" ID="3" Domain="Heraldry" City="Milwaukee"/>
+  <customer Name="Sara Careira Santy" ID="4" Domain="IT" City="Miami"/>
+</customers>
