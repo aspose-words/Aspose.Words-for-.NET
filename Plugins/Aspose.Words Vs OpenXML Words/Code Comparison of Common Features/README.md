@@ -1,4 +1,4 @@
-## Code Comparison of Features between Aspose.Words and VSTO Word
+## Code Comparison of Features between Aspose.Words and OpenXML Word
 
 This section contains the following Examples
 * [Add table to Word Document](Add table to Word Document)
