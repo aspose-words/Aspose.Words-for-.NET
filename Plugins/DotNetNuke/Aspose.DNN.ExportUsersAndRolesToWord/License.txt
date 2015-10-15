@@ -1,0 +1,11 @@
+﻿<div class="License">
+	<h3>License</h3>
+	<p class="Owner">
+		Aspose.com  <a href=http://www.aspose.com>http://www.aspose.com</a> Copyright(c) 2014 by Aspose.com
+	</p>
+    <p>
+        This product is Licensed under GNU General Public License version 2 (GPLv2).
+		<br>
+		Please check <a href="http://asposednn.codeplex.com/license">http://asposednn.codeplex.com/license</a> for details.
+    </p>
+</div>

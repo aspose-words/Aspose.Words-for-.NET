@@ -1,0 +1,16 @@
+﻿<h3>Aspose Export Users and Roles to Word</h3>
+	Aspose .NET Export Users and Roles to Word Module allows developers to export DNN Users along with their roles into Microsoft Word or OpenOffice Document. This module demonstrates the powerful document building feature by Aspose.Word. This initial version of the module is enriched with the following cool features to make the Export process simple and easy to use
+	<ul>
+	<li>Easily Choose Users along with their Roles to Export. You can select one or more users along with their roles to export.</li>
+	<li> You can export to all the different formats supported by Microsoft Word and OpenOffice.</li>
+	<li>You can easily download Exported Documents to your local machine.</li>	
+	</ul>
+	Please check <a href="http://www.aspose.com/blogs/index.php">our blogs</a> for further updates.
+	
+	If you have any questions please feel free to contact us via <a href="mailto:marketplace@aspose.com">marketplace@aspose.com</a><br />
+	<a href=http://www.aspose.com>Aspose</a> - Your File Format APIs<br />
+<hr/>
+<div class="License">
+	<h3>About Aspose Export Users and Roles to Word</h3>
+	<p>Aspose Export Users and Roles to Word is an open source module from Aspose that allows you to export DNN Users along with their roles into Microsoft Word or OpenOffice Document.</p>	
+</div>
