@@ -1,0 +1,11 @@
+.exportBtn{
+    height: 36px;
+}
+
+.dnnActions li:last-child{
+    margin-right:0px;
+}
+
+.dnnActions{
+    float:right;
+}

@@ -1,0 +1,107 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Aspose.DNN.ExportUsersAndRolesToWord" type="Module" version="00.00.01">
+      <friendlyName>Aspose Export Users and Roles to Word</friendlyName>
+      <description>Aspose .NET Export Users and Roles to Word module allows you to export DNN Users and their Roles to a Microsoft Word / OpenOffice Document.</description>
+      <iconFile>Images/aspose_logo.gif</iconFile>
+      <owner>
+        <name>Aspose.com</name>
+        <organization>Aspose.com</organization>
+        <url>http://www.aspose.com</url>
+        <email>assad.mahmood@aspose.com</email>
+      </owner>
+      <license src="License.txt"></license>
+      <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+      <dependencies>
+        <dependency type="CoreVersion">07.00.02</dependency>
+      </dependencies>
+      
+      <components>
+        <component type="Script">
+          <scripts>
+            <basePath>DesktopModules\Aspose.DNN.ExportUsersAndRolesToWord</basePath>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>00.00.01.SqlDataProvider</name>
+              <version>00.00.01</version>
+            </script>
+            <script type="UnInstall">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>Uninstall.SqlDataProvider</name>
+              <version>00.00.01</version>
+            </script>
+          </scripts>
+        </component>
+
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/Aspose.DNN.ExportUsersAndRolesToWord</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+
+        <component type="Module">
+          <desktopModule>
+            <moduleName>Aspose.DNN.ExportUsersAndRolesToWord</moduleName>
+            <foldername>Aspose.DNN.ExportUsersAndRolesToWord</foldername>
+            <businessControllerClass>Aspose.DotNetNuke.Modules.Aspose.DNN.ExportUsersAndRolesToWord.Components.FeatureController</businessControllerClass>
+            <supportedFeatures />
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>Aspose.DNN.ExportUsersAndRolesToWord</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>DesktopModules/Aspose.DNN.ExportUsersAndRolesToWord/View.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Edit</controlKey>
+                    <controlSrc>DesktopModules/Aspose.DNN.ExportUsersAndRolesToWord/Edit.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>Edit Content</controlTitle>
+                    <controlType>Edit</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                    <supportsPopUps>True</supportsPopUps>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Settings</controlKey>
+                    <controlSrc>DesktopModules/Aspose.DNN.ExportUsersAndRolesToWord/Settings.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>Aspose.DNN.ExportUsersAndRolesToWord Settings</controlTitle>
+                    <controlType>Edit</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <name>Aspose.DNN.ExportUsersAndRolesToWord.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Aspose.Words.dll</name>
+              <path>bin</path>
+            </assembly>
+          </assemblies>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>
