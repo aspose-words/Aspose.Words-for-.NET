@@ -1,0 +1,11 @@
+E:\ASPOSE\Aspose Tasks\Aamir.Waseem\UmbracoCmsV7\WebUmbracoCmsV7VS\WebUmbracoCmsV7VS\bin\Aspose.UmbracoQuoteGenerator.dll
+E:\ASPOSE\Aspose Tasks\Aamir.Waseem\UmbracoCmsV7\WebUmbracoCmsV7VS\WebUmbracoCmsV7VS\bin\Aspose.UmbracoQuoteGenerator.pdb
+E:\ASPOSE\Sialkot_Team_Local\Umbraco\Aspose.UmbracoQuoteGenerator\bin\Aspose.UmbracoQuoteGenerator.dll
+E:\ASPOSE\Sialkot_Team_Local\Umbraco\Aspose.UmbracoQuoteGenerator\bin\Aspose.UmbracoQuoteGenerator.pdb
+E:\ASPOSE\Sialkot_Team_Local\Umbraco\Aspose.UmbracoQuoteGenerator\bin\Aspose.Words.xml
+E:\ASPOSE\Aspose Tasks\Aamir.Waseem\UmbracoCms625\bin\Aspose.UmbracoQuoteGenerator.dll
+E:\ASPOSE\Aspose Tasks\Aamir.Waseem\UmbracoCms625\bin\Aspose.UmbracoQuoteGenerator.pdb
+E:\ASPOSE\Aspose Tasks\Aamir.Waseem\UmbracoCms625Plugins\UmbracoCms625Plugins\bin\Aspose.UmbracoQuoteGenerator.dll
+E:\ASPOSE\Aspose Tasks\Aamir.Waseem\UmbracoCms625Plugins\UmbracoCms625Plugins\bin\Aspose.UmbracoQuoteGenerator.pdb
+E:\ASPOSE\Sialkot_Team_Local\Umbraco\Aspose.UmbracoQuoteGenerator\obj\Debug\Aspose.UmbracoQuoteGenerator.dll
+E:\ASPOSE\Sialkot_Team_Local\Umbraco\Aspose.UmbracoQuoteGenerator\obj\Debug\Aspose.UmbracoQuoteGenerator.pdb
