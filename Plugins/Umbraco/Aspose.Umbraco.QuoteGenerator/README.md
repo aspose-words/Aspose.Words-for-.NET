@@ -18,7 +18,7 @@ This initial version of the module is enriched with the following features to ma
 * Allow to enter quotation T&C (Terms & Conditions)
 * Mail Merge Template is already created and placed in template folder in the package and will be used to export the quotation in a pre-defined MailMerge template.
 * Allow to export quotation to PDF (.Pdf), MS Word 2003-2007 (.Doc), Office Open XML WordprocessingML (.Docx), ODF Text Document (.Odt), Tiff Image/s (.Tiff), JPEG Image (.Jpeg), PNG Image (.Png).
-*Aspose.Words Features*
+**Aspose.Words Features**
 * Simple MailMerge
 * Data Table MailMerge
 * Compressed Image Embed
