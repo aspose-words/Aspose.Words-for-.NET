@@ -38,6 +38,6 @@ In order to setup Aspose .NET Quote Generator for Umbraco module you need to hav
 
 Please feel free to contact us if you wish to install this module on an older version of Umbraco.
 
-For most complete documentation of the project, check Aspose .NET for Umbraco
+For complete documentation of this project, please check the link below
 
 http://www.aspose.com/docs/display/wordsnet/4.1.1.3+Quote+Generator+Module
