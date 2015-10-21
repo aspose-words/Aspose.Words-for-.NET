@@ -1,4 +1,6 @@
-﻿This initial version of the module is enriched with the following features to make the quote generating process effective, simple and easy to use.
+﻿**Aspose .NET Quote Generator for Umbraco**
+
+This initial version of the module is enriched with the following features to make the quote generating process effective, simple and easy to use.
 
 **Module Features**
 * Generate quotations with MailMerged template
@@ -26,6 +28,7 @@
 * License Verification & Embed 
 
 **System Requirements**
+
 In order to setup Aspose .NET Quote Generator for Umbraco module you need to have the following requirements met:
 * Umbraco 6.2.5 & Umbraco 6 versions
 * Microsoft .NET Framework 4.0
