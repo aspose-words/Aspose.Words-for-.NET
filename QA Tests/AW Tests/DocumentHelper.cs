@@ -46,8 +46,40 @@ namespace QA_Tests
             //Insert new table with two rows and two cells
             InsertTable(doc);
 
-            //Insert new paragraph with text
             builder.Writeln("Hello World!");
+
+            // Continued on page 2 of the document content
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // Creating TOC entries
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
+
+            builder.Writeln("Heading 1");
+
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading2;
+
+            builder.Writeln("Heading 1.1");
+            builder.Writeln("Heading 1.2");
+
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading4;
+
+            builder.Writeln("Heading 1.1.1.1");
+            builder.Writeln("Heading 1.1.1.2");
+
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
+
+            builder.Writeln("Heading 2.1");
+
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading5;
+
+            builder.Writeln("Heading 2.1.1.1.1");
+            builder.Writeln("Heading 2.1.1.1.2");
+            builder.Writeln("Heading 2.1.1.1.3");
+
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading9;
+
+            builder.Writeln("Heading 2.1.1.1.1.1.1.1.1");
+            builder.Write("Heading 2.1.1.1.1.1.1.1.2");
 
             return doc;
         }
