@@ -432,14 +432,6 @@ namespace CSharp.Loading_Saving
             return VisitorAction.Continue;
         }
 
-        public VisitorAction VisitCustomXmlMarkupEnd(CustomXmlMarkup customXmlMarkup)
-        {
-            if (IsCompositeAcrossPage(customXmlMarkup))
-                SplitComposite(customXmlMarkup);
-
-            return VisitorAction.Continue;
-        }
-
         public override VisitorAction VisitStructuredDocumentTagEnd(StructuredDocumentTag sdt)
         {
             if (IsCompositeAcrossPage(sdt))
