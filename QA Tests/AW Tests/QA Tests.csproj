@@ -32,8 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words, Version=15.8.1.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.15.8.1\lib\net20\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=15.9.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.15.9.0\lib\net20\Aspose.Words.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -48,10 +48,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tests\Paragraph\ExInsertField.cs" />
     <Compile Include="Tests\Paragraph\InsertField.cs" />
     <Compile Include="Tests\QATestsBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DocumentHelper.cs" />
+    <Compile Include="Tests\SaveOptions\Html\ExHtmlFixedSaveOptions_Encoding.cs" />
+    <Compile Include="Tests\SaveOptions\Html\HtmlFixedSaveOptions_Encoding.cs" />
+    <Compile Include="Tests\SaveOptions\Pdf\ExOutlineOptions.cs" />
+    <Compile Include="Tests\SaveOptions\Pdf\OutlineOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
