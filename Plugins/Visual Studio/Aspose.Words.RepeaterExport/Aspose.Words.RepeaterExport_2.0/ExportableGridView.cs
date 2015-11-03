@@ -136,7 +136,7 @@ namespace Aspose.Words.RepeaterExport
 
             string heading = string.IsNullOrEmpty(ExportFileHeading) ? string.Empty : ExportFileHeading;
 
-            string pageSource = "<html><head></head><body>" + heading + sw.ToString() + "</body></html>";
+            string pageSource = "<html><head></head><body>" + heading + hw.ToString() + "</body></html>";
 
             // Check for license and apply if exists
             if (File.Exists(LicenseFilePath))
