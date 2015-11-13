@@ -50,6 +50,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LINQ\Common.cs" />
+    <Compile Include="LINQ\Contract.cs" />
+    <Compile Include="LINQ\Client.cs" />
+    <Compile Include="LINQ\BulletedList.cs" />
+    <Compile Include="LINQ\CommonList.cs" />
+    <Compile Include="LINQ\CommonMasterDetail.cs" />
+    <Compile Include="LINQ\BubbleChart.cs" />
+    <Compile Include="LINQ\ChartWithFilteringGroupingOrdering.cs" />
+    <Compile Include="LINQ\ScatterChart.cs" />
+    <Compile Include="LINQ\PieChart.cs" />
+    <Compile Include="LINQ\InTableWithFilteringGroupingSorting.cs" />
+    <Compile Include="LINQ\InTableMasterDetail.cs" />
+    <Compile Include="LINQ\InTableAlternateContent.cs" />
+    <Compile Include="LINQ\InTableList.cs" />
+    <Compile Include="LINQ\MulticoloredNumberedList.cs" />
+    <Compile Include="LINQ\NumberedList.cs" />
+    <Compile Include="LINQ\InParagraphList.cs" />
+    <Compile Include="LINQ\SingleRow.cs" />
+    <Compile Include="LINQ\Manager.cs" />
+    <Compile Include="LINQ\HelloWorld.cs" />
+    <Compile Include="LINQ\Sender.cs" />
     <Compile Include="Loading-and-Saving\CheckFormat.cs" />
     <Compile Include="Loading-and-Saving\ImageToPdf.cs" />
     <Compile Include="Loading-and-Saving\LoadTxt.cs" />
@@ -153,6 +174,22 @@
     <Compile Include="RunExamples.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="LINQ\Data\BulletedList.doc" />
+    <None Include="LINQ\Data\CommonList.doc" />
+    <None Include="LINQ\Data\CommonMasterDetail.doc" />
+    <None Include="LINQ\Data\BubbleChart.docx" />
+    <None Include="LINQ\Data\ChartWithFilteringGroupingOrdering.docx" />
+    <None Include="LINQ\Data\ScatterChart.docx" />
+    <None Include="LINQ\Data\InTableWithFilteringGroupingSorting.doc" />
+    <None Include="LINQ\Data\InTableMasterDetail.doc" />
+    <None Include="LINQ\Data\InTableAlternateContent.doc" />
+    <None Include="LINQ\Data\InTableList.doc" />
+    <None Include="LINQ\Data\MulticoloredNumberedList.doc" />
+    <None Include="LINQ\Data\NumberedList.doc" />
+    <None Include="LINQ\Data\InParagraphList.doc" />
+    <None Include="LINQ\Data\PieChart.docx" />
+    <None Include="LINQ\Data\SingleRow.doc" />
+    <None Include="LINQ\Data\HelloWorld.doc" />
     <None Include="Loading-and-Saving\Data\Split\Rendering.doc" />
     <None Include="Loading-and-Saving\Data\Split\Sample Documentation.doc" />
     <None Include="Loading-and-Saving\Data\SOI 2007-2012-DeeM with footnote added.doc" />
@@ -199,6 +236,7 @@
     <Folder Include="Viewers-Visualizers\Data\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="LINQ\Data\photo.png" />
     <Content Include="Loading-and-Saving\Data\LoadTxt.txt" />
     <Content Include="Loading-and-Saving\Data\Test File %28HTML%29.html" />
     <Content Include="Loading-and-Saving\Data\Test File %28JPG%29.jpg" />
