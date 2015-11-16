@@ -1,11 +1,12 @@
 ﻿using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
+using QA_Tests.Tests;
 
-namespace QA_Tests.Tests.SaveOptions.Pdf
+namespace QA_Tests.Examples.Saving
 {
     [TestFixture]
-    internal class ExOutlineOptions : QaTestsBase
+    internal class ExPdfSaveOptions : QaTestsBase
     {
         [Test]
         public void CreateMissingOutlineLevels()
@@ -13,7 +14,7 @@ namespace QA_Tests.Tests.SaveOptions.Pdf
             //ExStart
             //ExFor:Saving.PdfSaveOptions.OutlineOptions.CreateMissingOutlineLevels
             //ExSummary:Shows how to create missing outline levels saving the document in pdf
-            Document doc = new Document();
+            Aspose.Words.Document doc = new Aspose.Words.Document();
 
             DocumentBuilder builder = new DocumentBuilder(doc);
 

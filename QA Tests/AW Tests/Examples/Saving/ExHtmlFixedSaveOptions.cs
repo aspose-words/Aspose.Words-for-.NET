@@ -2,11 +2,12 @@
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
+using QA_Tests.Tests;
 
-namespace QA_Tests.Tests.SaveOptions.Html
+namespace QA_Tests.Examples.Saving
 {
     [TestFixture]
-    internal class ExHtmlFixedSaveOptionsEncoding : QaTestsBase
+    internal class ExHtmlFixedSaveOptions : QaTestsBase
     {
         [Test]
         public void UseEncoding()
@@ -14,7 +15,7 @@ namespace QA_Tests.Tests.SaveOptions.Html
             //ExStart
             //ExFor:Saving.HtmlFixedSaveOptions.Encoding
             //ExSummary:Shows how to use "Encoding" parameter with "HtmlFixedSaveOptions"
-            Document doc = new Document();
+            Aspose.Words.Document doc = new Aspose.Words.Document();
 
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello World!");

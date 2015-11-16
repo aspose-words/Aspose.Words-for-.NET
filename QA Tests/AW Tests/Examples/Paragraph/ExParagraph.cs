@@ -1,11 +1,12 @@
 ﻿using Aspose.Words;
 using Aspose.Words.Fields;
 using NUnit.Framework;
+using QA_Tests.Tests;
 
-namespace QA_Tests.Tests
+namespace QA_Tests.Examples
 {
     [TestFixture]
-    internal class ExInsertField : QaTestsBase
+    internal class ExParagraph : QaTestsBase
     {
         [Test]
         public void InsertField()
@@ -13,7 +14,7 @@ namespace QA_Tests.Tests
             //ExStart
             //ExFor:Paragraph.InsertField
             //ExSummary:Shows how to insert field using several methods: "field code", "field code and field value", "field code and field value after a run of text"
-            Document doc = new Document();
+            Aspose.Words.Document doc = new Aspose.Words.Document();
 
             //Get the first paragraph of the document
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
