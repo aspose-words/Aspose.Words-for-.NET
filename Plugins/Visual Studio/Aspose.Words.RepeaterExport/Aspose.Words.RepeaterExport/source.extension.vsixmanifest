@@ -1,26 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
-  <Metadata>
-    <Identity Id="26a3b4d5-d6e2-4b8b-be0d-ec62ad90cbcb" Version="1.0" Language="en-US" Publisher="Aspose" />
-    <DisplayName>Aspose.Words.RepeaterExport</DisplayName>
-    <Description>Export Repeater To Word (Doc, Dot, Docx, Docm, Dotx, Dotm, Rtf, Odt, Ott and Txt formats) using Aspose.Words</Description>
-    <MoreInfo>http://asposevs.codeplex.com/</MoreInfo>
+<Vsix xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2010">
+  <Identifier Id="Aspose.Words.RepeaterExport..53b84b61-256d-40cf-a46c-c4dbc04f3172">
+    <Name>Aspose Export Repeater To Word Control</Name>
+    <Author>Zeeshan Shafqat</Author>
+    <Version>1.0</Version>
+    <Description xml:space="preserve">Export Repeater To Word (Doc, Dot, Docx, Docm, Dotx, Dotm, Rtf, Odt, Ott and Txt formats) using Aspose.Words</Description>
+    <Locale>1033</Locale>
+    <MoreInfoUrl>http://asposevs.codeplex.com/</MoreInfoUrl>
     <License>License.txt</License>
     <GettingStartedGuide>http://asposevs.codeplex.com/</GettingStartedGuide>
-    <ReleaseNotes>http://asposevs.codeplex.com/</ReleaseNotes>
-    <Icon>aspose-logo-50.png</Icon>
+    <Icon>aspose.ico</Icon>
     <PreviewImage>preview.png</PreviewImage>
-  </Metadata>
-  <Installation InstalledByMsi="true" AllUsers="true">
-    <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[12.0,13.0)" />
-    <InstallationTarget Version="[12.0,13.0)" Id="Microsoft.VisualStudio.Ultimate" />
-    <InstallationTarget Version="[12.0,13.0)" Id="Microsoft.VisualStudio.Premium" />
-    <InstallationTarget Version="[12.0,13.0)" Id="Microsoft.VisualStudio.IntegratedShell" />
-  </Installation>
-  <Dependencies>
-    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
-    <Dependency Id="Microsoft.VisualStudio.MPF.12.0" DisplayName="Visual Studio MPF 12.0" d:Source="Installed" Version="[12.0]" />
-  </Dependencies>
-  <Assets>
-  </Assets>
-</PackageManifest>
+    <SupportedProducts>
+      <VisualStudio Version="10.0">
+        <Edition>Ultimate</Edition>
+        <Edition>Premium</Edition>
+        <Edition>Pro</Edition>
+        <Edition>IntegratedShell</Edition>
+      </VisualStudio>
+      <VisualStudio Version="11.0">
+        <Edition>Ultimate</Edition>
+        <Edition>Premium</Edition>
+        <Edition>Pro</Edition>
+        <Edition>IntegratedShell</Edition>
+      </VisualStudio>
+      <VisualStudio Version="12.0">
+        <Edition>Ultimate</Edition>
+        <Edition>Premium</Edition>
+        <Edition>Pro</Edition>
+        <Edition>IntegratedShell</Edition>
+      </VisualStudio>
+    </SupportedProducts>
+    <SupportedFrameworkRuntimeEdition MinVersion="2.0" MaxVersion="4.5" />
+  </Identifier>
+  <References />
+  <Content>
+    <ToolboxControl>|%CurrentProject%;PkgdefProjectOutputGroup|</ToolboxControl>
+  </Content>
+</Vsix>
