@@ -47,9 +47,8 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words, Version=15.5.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Aspose.Words.15.5.0\lib\net3.5-client\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words">
+      <HintPath>..\packages\Aspose.Words.15.10.0\lib\net40\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -72,6 +71,27 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LINQ\BubbleChart.vb" />
+    <Compile Include="LINQ\BulletedList.vb" />
+    <Compile Include="LINQ\ChartWithFilteringGroupingOrdering.vb" />
+    <Compile Include="LINQ\Client.vb" />
+    <Compile Include="LINQ\Common.vb" />
+    <Compile Include="LINQ\CommonList.vb" />
+    <Compile Include="LINQ\CommonMasterDetail.vb" />
+    <Compile Include="LINQ\Contract.vb" />
+    <Compile Include="LINQ\HelloWorld.vb" />
+    <Compile Include="LINQ\InParagraphList.vb" />
+    <Compile Include="LINQ\InTableAlternateContent.vb" />
+    <Compile Include="LINQ\InTableList.vb" />
+    <Compile Include="LINQ\InTableMasterDetail.vb" />
+    <Compile Include="LINQ\InTableWithFilteringGroupingSorting.vb" />
+    <Compile Include="LINQ\Manager.vb" />
+    <Compile Include="LINQ\MulticoloredNumberedList.vb" />
+    <Compile Include="LINQ\NumberedList.vb" />
+    <Compile Include="LINQ\PieChart.vb" />
+    <Compile Include="LINQ\ScatterChart.vb" />
+    <Compile Include="LINQ\Sender.vb" />
+    <Compile Include="LINQ\SingleRow.vb" />
     <Compile Include="Loading-and-Saving\CheckFormat.vb" />
     <Compile Include="Loading-and-Saving\ImageToPdf.vb" />
     <Compile Include="Loading-and-Saving\LoadTxt.vb" />
@@ -199,6 +219,22 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="LINQ\Data\BubbleChart.docx" />
+    <None Include="LINQ\Data\BulletedList.doc" />
+    <None Include="LINQ\Data\ChartWithFilteringGroupingOrdering.docx" />
+    <None Include="LINQ\Data\CommonList.doc" />
+    <None Include="LINQ\Data\CommonMasterDetail.doc" />
+    <None Include="LINQ\Data\HelloWorld.doc" />
+    <None Include="LINQ\Data\InParagraphList.doc" />
+    <None Include="LINQ\Data\InTableAlternateContent.doc" />
+    <None Include="LINQ\Data\InTableList.doc" />
+    <None Include="LINQ\Data\InTableMasterDetail.doc" />
+    <None Include="LINQ\Data\InTableWithFilteringGroupingSorting.doc" />
+    <None Include="LINQ\Data\MulticoloredNumberedList.doc" />
+    <None Include="LINQ\Data\NumberedList.doc" />
+    <None Include="LINQ\Data\PieChart.docx" />
+    <None Include="LINQ\Data\ScatterChart.docx" />
+    <None Include="LINQ\Data\SingleRow.doc" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -298,6 +334,7 @@
     <Folder Include="Programming-Documents\Bookmarks\Data\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="LINQ\Data\photo.png" />
     <Content Include="Programming-Documents\Images\Data\Aspose Logo.png" />
     <Content Include="Rendering-Printing\Data\result black and white.tiff" />
     <Content Include="Rendering-Printing\Data\result Ccitt4.tiff" />
