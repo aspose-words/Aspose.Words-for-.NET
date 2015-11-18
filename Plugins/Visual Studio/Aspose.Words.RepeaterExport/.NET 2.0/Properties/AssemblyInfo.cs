@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Aspose.Words.RepeaterExport_2.0")]
+[assembly: AssemblyTitle("Aspose.Words.RepeaterExport")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Aspose.Words.RepeaterExport_2.0")]
+[assembly: AssemblyProduct("Aspose.Words.RepeaterExport")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("aab341a0-0924-458f-b9e2-90bb3755a388")]
+[assembly: Guid("6ca64ee5-3dc2-46c4-a72f-d9edfecacec6")]
 
 // Version information for an assembly consists of the following four values:
 //

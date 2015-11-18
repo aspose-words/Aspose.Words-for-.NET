@@ -20,7 +20,6 @@ namespace Aspose.Words.RepeaterExport
         Doc, Dot, Docx, Docm, Dotx, Dotm, Rtf, Odt, Ott, Txt
     }
 
-    [ProvideToolboxControl("Aspose", false)]
     [ToolboxBitmap(typeof(ExportRepeaterToWord), "icon.bmp")]
     public class ExportRepeaterToWord : Repeater, INamingContainer, IPostBackDataHandler
     {
@@ -72,9 +71,14 @@ namespace Aspose.Words.RepeaterExport
 
         protected override void CreateChildControls()
         {
-            if (wordExportButton == null)
-                CreateExportButton();
-            Controls.Add(wordExportButton);
+            base.CreateChildControls();
+
+            if (Page.IsPostBack)
+            {
+                if (wordExportButton == null)
+                    CreateExportButton();
+                Controls.Add(wordExportButton);
+            }
         }
 
         public bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
@@ -92,7 +96,7 @@ namespace Aspose.Words.RepeaterExport
         {
             wordExportButton = new Button();
             wordExportButton.Text = string.IsNullOrEmpty(ExportButtonText) ? "Export to Word" : ExportButtonText;
-            wordExportButton.ID = "__aspose_export_to_word_repeater";
+            wordExportButton.ID = "__aspose_export_to_word_Repeater";
             wordExportButton.Click += new EventHandler(ExportButton_Click);
         }
 
@@ -100,26 +104,24 @@ namespace Aspose.Words.RepeaterExport
         {
         }
 
-        private String CalculateWidth()
-        {
-            string strWidth = "auto";
-            //if (!this.Width.IsEmpty)
-            //{
-            //    strWidth = String.Format("{0}{1}", this.Width.Value, ((this.Width.Type == UnitType.Percentage) ? "%" : "px"));
-            //}
-            return strWidth;
-        }
+
 
         protected override void Render(HtmlTextWriter writer)
         {
-            writer.Write("<div style='width:" + CalculateWidth() + "'>");
+            if (!Page.IsPostBack)
+            {
+                if (wordExportButton == null)
+                    CreateExportButton();
+                Controls.Add(wordExportButton);
+            }
+
             writer.Write("<div class='" + ExportButtonCssClass + "'>");
             wordExportButton.RenderControl(writer);
             wordExportButton.Visible = false;
             writer.Write("</div>");
             writer.Write("<div>");
             base.Render(writer);
-            writer.Write("</div></div>");
+            writer.Write("</div>");
         }
 
         protected void ExportButton_Click(object sender, EventArgs e)
@@ -127,17 +129,25 @@ namespace Aspose.Words.RepeaterExport
             StringWriter sw = new StringWriter();
             HtmlTextWriter hw = new HtmlTextWriter(sw);
 
-            if (ExportDataSource != null)
-            {
-                this.DataSource = ExportDataSource;
-                this.DataBind();
-            }
+            hw.RenderBeginTag("table");
 
-            this.Render(hw);
+            try
+            {
+                Control HeaderTemplate = this.Controls[0].Controls[0];
+                HeaderTemplate.RenderControl(hw);
+            }
+            catch (Exception)
+            { }
+
+            foreach (RepeaterItem rItem in this.Items)
+            {
+                rItem.RenderControl(hw);
+            }
+            hw.RenderEndTag();
 
             string heading = string.IsNullOrEmpty(ExportFileHeading) ? string.Empty : ExportFileHeading;
 
-            string pageSource = "<html><head></head><body>" + heading + hw.ToString() + "</body></html>";
+            string pageSource = "<html><head></head><body>" + heading + sw.ToString() + "</body></html>";
 
             // Check for license and apply if exists
             if (File.Exists(LicenseFilePath))
@@ -148,37 +158,29 @@ namespace Aspose.Words.RepeaterExport
 
             MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(pageSource));
             Document doc = new Document(stream);
-            
-            WordOutputFormat format;
-            if (Enum.TryParse<WordOutputFormat>(ExportOutputFormat.ToString(), out format))
+
+            string extension = ExportOutputFormat.ToString().ToLower();
+
+            if (string.IsNullOrEmpty(extension)) extension = "doc";
+            string fileName = System.Guid.NewGuid() + "." + extension;
+
+            if (!string.IsNullOrEmpty(ExportOutputPathOnServer) && Directory.Exists(ExportOutputPathOnServer))
             {
-                string extension = ExportOutputFormat.ToString().ToLower();
-
-                if (string.IsNullOrEmpty(extension)) extension = "doc";
-                string fileName = System.Guid.NewGuid() + "." + extension;
-
-                if (!string.IsNullOrEmpty(ExportOutputPathOnServer) && Directory.Exists(ExportOutputPathOnServer))
+                try
                 {
-                    try
-                    {
-                        doc.Save(ExportOutputPathOnServer + "\\" + fileName);
-                    }
-                    catch (Exception) { }
+                    doc.Save(ExportOutputPathOnServer + "\\" + fileName);
                 }
-
-                if (ExportInLandscape)
-                {
-                    foreach (Section section in doc)
-                        section.PageSetup.Orientation = Orientation.Landscape;
-                }
-                
-                doc.Save(HttpContext.Current.Response, fileName, ContentDisposition.Inline, null);
-                HttpContext.Current.Response.End();
+                catch (Exception) { }
             }
-            else
+
+            if (ExportInLandscape)
             {
-                HttpContext.Current.Response.Write("Invalid export format, must be one of Doc, Dot, Docx, Docm, Dotx, Dotm, Rtf, Odt, Ott, Txt");
+                foreach (Section section in doc)
+                    section.PageSetup.Orientation = Orientation.Landscape;
             }
+
+            doc.Save(HttpContext.Current.Response, fileName, ContentDisposition.Inline, null);
+            HttpContext.Current.Response.End();
         }
     }
 }
