@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Vsix xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2010">
+  <Identifier Id="Aspose.Words.ListViewExport..53b84b61-256d-40cf-a46c-c4dbc04f3172">
+    <Name>Aspose Export ListView To Word Control</Name>
+    <Author>Aamir Waseem</Author>
+    <Version>1.0</Version>
+    <Description xml:space="preserve">Export ListView To Word (Doc, Dot, Docx, Docm, Dotx, Dotm, Rtf, Odt, Ott and Txt formats) using Aspose.Words</Description>
+    <Locale>1033</Locale>
+    <MoreInfoUrl>http://asposevs.codeplex.com/</MoreInfoUrl>
+    <License>License.txt</License>
+    <GettingStartedGuide>http://asposevs.codeplex.com/</GettingStartedGuide>
+    <Icon>aspose.ico</Icon>
+    <PreviewImage>preview.png</PreviewImage>
+    <SupportedProducts>
+      <VisualStudio Version="10.0">
+        <Edition>Ultimate</Edition>
+        <Edition>Premium</Edition>
+        <Edition>Pro</Edition>
+        <Edition>IntegratedShell</Edition>
+      </VisualStudio>
+      <VisualStudio Version="11.0">
+        <Edition>Ultimate</Edition>
+        <Edition>Premium</Edition>
+        <Edition>Pro</Edition>
+        <Edition>IntegratedShell</Edition>
+      </VisualStudio>
+      <VisualStudio Version="12.0">
+        <Edition>Ultimate</Edition>
+        <Edition>Premium</Edition>
+        <Edition>Pro</Edition>
+        <Edition>IntegratedShell</Edition>
+      </VisualStudio>
+      <VisualStudio Version="13.0">
+        <Edition>Ultimate</Edition>
+        <Edition>Premium</Edition>
+        <Edition>Pro</Edition>
+        <Edition>IntegratedShell</Edition>
+      </VisualStudio>
+    </SupportedProducts>
+    <SupportedFrameworkRuntimeEdition MinVersion="3.5" MaxVersion="4.5" />
+  </Identifier>
+  <References />
+  <Content>
+    <ToolboxControl>|%CurrentProject%;PkgdefProjectOutputGroup|</ToolboxControl>
+  </Content>
+</Vsix>
