@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports DocumentExplorerExample
+Imports LINQ
 
 Module RunExamples
 
@@ -142,12 +143,36 @@ Module RunExamples
 
         'MainForm.Run()
 
+        '' =====================================================
+        '' =====================================================
+        '' LINQ
+        '' =====================================================
+        '' =====================================================
+        'LINQ.HelloWorld.Run()
+        'SingleRow.Run()
+        'InParagraphList.Run()
+        'BulletedList.Run()
+        'NumberedList.Run()
+        'MulticoloredNumberedList.Run()
+        'CommonList.Run()
+        'InTableList.Run()
+        'InTableAlternateContent.Run()
+        'CommonMasterDetail.Run()
+        'InTableMasterDetail.Run()
+        'InTableWithFilteringGroupingSorting.Run()
+        'PieChart.Run()
+        'ScatterChart.Run()
+        'BubbleChart.Run()
+        'ChartWithFilteringGroupingOrdering.Run()
 
         ' Stop before exiting
         Console.WriteLine(vbNewLine + vbNewLine + "Program Finished. Press any key to exit....")
         Console.ReadKey()
     End Sub
 
+    Public Function GetDataDir_LINQ() As [String]
+        Return Path.GetFullPath("../../LINQ/Data/")
+    End Function
 
     Public Function GetDataDir_LoadingAndSaving() As [String]
         Return Path.GetFullPath("../../Loading-and-Saving/Data/")

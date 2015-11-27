@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspose.Words.RepeaterExport_DotNet_2.0", ".NET 2.0\Aspose.Words.RepeaterExport_DotNet_2.0.csproj", "{D773C32F-6001-470C-9436-B07E11FB5776}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspose.Words.RepeaterExport", "Aspose.Words.RepeaterExport\Aspose.Words.RepeaterExport.csproj", "{B093B244-E5B8-4008-984A-A3EE59F56DF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspose.Words.RepeaterExport.Website", "Aspose.Words.RepeaterExport.Website\Aspose.Words.RepeaterExport.Website.csproj", "{1C830D7E-52E9-40B3-86FE-654847CC9AEA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D773C32F-6001-470C-9436-B07E11FB5776}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D773C32F-6001-470C-9436-B07E11FB5776}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D773C32F-6001-470C-9436-B07E11FB5776}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D773C32F-6001-470C-9436-B07E11FB5776}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B093B244-E5B8-4008-984A-A3EE59F56DF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B093B244-E5B8-4008-984A-A3EE59F56DF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B093B244-E5B8-4008-984A-A3EE59F56DF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B093B244-E5B8-4008-984A-A3EE59F56DF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C830D7E-52E9-40B3-86FE-654847CC9AEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C830D7E-52E9-40B3-86FE-654847CC9AEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C830D7E-52E9-40B3-86FE-654847CC9AEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C830D7E-52E9-40B3-86FE-654847CC9AEA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

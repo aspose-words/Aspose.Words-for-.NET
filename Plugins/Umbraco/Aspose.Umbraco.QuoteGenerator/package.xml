@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<umbPackage>
+  <files>
+    <file>
+      <guid>UmbracoQuoteGenerator.ascx</guid>
+      <orgPath>/usercontrols/Aspose.UmbracoQuoteGenerator</orgPath>
+      <orgName>UmbracoQuoteGenerator.ascx</orgName>
+    </file>
+    <file>
+      <guid>Aspose.UmbracoQuoteGenerator.dll</guid>
+      <orgPath>/bin</orgPath>
+      <orgName>Aspose.UmbracoQuoteGenerator.dll</orgName>
+    </file>
+    <file>
+      <guid>Aspose.Words.dll</guid>
+      <orgPath>/bin</orgPath>
+      <orgName>Aspose.Words.dll</orgName>
+    </file>
+    <file>
+      <guid>MailMerge_Template.doc</guid>
+      <orgPath>/usercontrols/Aspose.UmbracoQuoteGenerator/Templates</orgPath>
+      <orgName>MailMerge_Template.doc</orgName>
+    </file>
+    <file>
+      <guid>UmbracoQuoteGenerator.css</guid>
+      <orgPath>/usercontrols/Aspose.UmbracoQuoteGenerator/Css</orgPath>
+      <orgName>UmbracoQuoteGenerator.css</orgName>
+    </file>
+    <file>
+      <guid>aspose.ico</guid>
+      <orgPath>/usercontrols/Aspose.UmbracoQuoteGenerator/Images</orgPath>
+      <orgName>aspose.ico</orgName>
+    </file>
+  </files>
+  <info>
+    <package>
+      <name>Aspose .NET Quote Generator for Umbraco</name>
+      <version>1.0</version>
+      <license url="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License version 2 (GPLv2)</license>
+      <url>https://asposeumbraco.codeplex.com/</url>
+      <requirements>
+        <major>3</major>
+        <minor>0</minor>
+        <patch>0</patch>
+      </requirements>
+    </package>
+    <author>
+      <name>Aamir Waseem</name>
+      <website>http://www.aspose.com/</website>
+    </author>
+    <readme>
+      <![CDATA[Aspose .NET Quote Generator for Umbraco is an open source module from Aspose that enable users to generate Quotes in your Umbraco site without requiring any other software. It uses the powerful features of Aspose.Words for .NET to allow you to easily generate quotations.
+		  
+			<p style="padding-left:30px">Please check our <a href="http://goo.gl/BPfouq">blog post</a> for more details <a href="http://goo.gl/BPfouq"> http://goo.gl/BPfouq</a></p>
+		]]>
+    </readme>
+  </info>
+  <DocumentTypes />
+  <Templates />
+  <Stylesheets />
+  <Macros>
+    <macro>
+      <name>Aspose .NET Quote Generator for Umbraco</name>
+      <alias>Aspose.UmbracoQuoteGenerator</alias>
+      <scriptType>/usercontrols/Aspose.UmbracoQuoteGenerator/UmbracoQuoteGenerator.ascx</scriptType>
+      <scriptAssembly>
+      </scriptAssembly>
+      <xslt>
+      </xslt>
+      <useInEditor>True</useInEditor>
+      <refreshRate>0</refreshRate>
+    </macro>
+  </Macros>
+  <DictionaryItems />
+  <Languages />
+  <DataTypes />
+  <Actions>
+  </Actions>
+</umbPackage>

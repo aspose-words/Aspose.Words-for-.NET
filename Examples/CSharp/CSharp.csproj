@@ -11,21 +11,6 @@
     <AssemblyName>CSharp</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -50,8 +35,9 @@
     <StartupObject>CSharp.RunExamples</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words">
-      <HintPath>C:\wamp\www\aspose\dlls\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=15.9.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Aspose.Words.15.9.0\lib\net40\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -64,6 +50,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LINQ\Common.cs" />
+    <Compile Include="LINQ\Contract.cs" />
+    <Compile Include="LINQ\Client.cs" />
+    <Compile Include="LINQ\BulletedList.cs" />
+    <Compile Include="LINQ\CommonList.cs" />
+    <Compile Include="LINQ\CommonMasterDetail.cs" />
+    <Compile Include="LINQ\BubbleChart.cs" />
+    <Compile Include="LINQ\ChartWithFilteringGroupingOrdering.cs" />
+    <Compile Include="LINQ\ScatterChart.cs" />
+    <Compile Include="LINQ\PieChart.cs" />
+    <Compile Include="LINQ\InTableWithFilteringGroupingSorting.cs" />
+    <Compile Include="LINQ\InTableMasterDetail.cs" />
+    <Compile Include="LINQ\InTableAlternateContent.cs" />
+    <Compile Include="LINQ\InTableList.cs" />
+    <Compile Include="LINQ\MulticoloredNumberedList.cs" />
+    <Compile Include="LINQ\NumberedList.cs" />
+    <Compile Include="LINQ\InParagraphList.cs" />
+    <Compile Include="LINQ\SingleRow.cs" />
+    <Compile Include="LINQ\Manager.cs" />
+    <Compile Include="LINQ\HelloWorld.cs" />
+    <Compile Include="LINQ\Sender.cs" />
     <Compile Include="Loading-and-Saving\CheckFormat.cs" />
     <Compile Include="Loading-and-Saving\ImageToPdf.cs" />
     <Compile Include="Loading-and-Saving\LoadTxt.cs" />
@@ -167,6 +174,22 @@
     <Compile Include="RunExamples.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="LINQ\Data\BulletedList.doc" />
+    <None Include="LINQ\Data\CommonList.doc" />
+    <None Include="LINQ\Data\CommonMasterDetail.doc" />
+    <None Include="LINQ\Data\BubbleChart.docx" />
+    <None Include="LINQ\Data\ChartWithFilteringGroupingOrdering.docx" />
+    <None Include="LINQ\Data\ScatterChart.docx" />
+    <None Include="LINQ\Data\InTableWithFilteringGroupingSorting.doc" />
+    <None Include="LINQ\Data\InTableMasterDetail.doc" />
+    <None Include="LINQ\Data\InTableAlternateContent.doc" />
+    <None Include="LINQ\Data\InTableList.doc" />
+    <None Include="LINQ\Data\MulticoloredNumberedList.doc" />
+    <None Include="LINQ\Data\NumberedList.doc" />
+    <None Include="LINQ\Data\InParagraphList.doc" />
+    <None Include="LINQ\Data\PieChart.docx" />
+    <None Include="LINQ\Data\SingleRow.doc" />
+    <None Include="LINQ\Data\HelloWorld.doc" />
     <None Include="Loading-and-Saving\Data\Split\Rendering.doc" />
     <None Include="Loading-and-Saving\Data\Split\Sample Documentation.doc" />
     <None Include="Loading-and-Saving\Data\SOI 2007-2012-DeeM with footnote added.doc" />
@@ -213,6 +236,7 @@
     <Folder Include="Viewers-Visualizers\Data\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="LINQ\Data\photo.png" />
     <Content Include="Loading-and-Saving\Data\LoadTxt.txt" />
     <Content Include="Loading-and-Saving\Data\Test File %28HTML%29.html" />
     <Content Include="Loading-and-Saving\Data\Test File %28JPG%29.jpg" />
@@ -286,28 +310,6 @@
     <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\ViewerForm.resx">
       <DependentUpon>ViewerForm.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 4.5</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

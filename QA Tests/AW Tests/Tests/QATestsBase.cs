@@ -61,14 +61,24 @@ namespace QA_Tests.Tests
             get { return gMyDir; }
         }
 
+        /// <summary>
+        /// Gets the path of the demo database. Ends with a back slash.
+        /// </summary>
+        internal static string DatabaseDir
+        {
+            get { return gDatabaseDir; }
+        }
+
         static QaTestsBase()
         {
             gAssemblyDir = GetAssemblyDir(Assembly.GetExecutingAssembly());
             gMyDir = new Uri(new Uri(gAssemblyDir), @"../../Data/").LocalPath;
+            gDatabaseDir = new Uri(new Uri(gAssemblyDir), @"../../Data/Database/").LocalPath;
         }
 
         private static readonly string gAssemblyDir;
         private static readonly string gMyDir;
+        private static readonly string gDatabaseDir;
 
         /// <summary>
         /// This is where the test license is on my development machine.

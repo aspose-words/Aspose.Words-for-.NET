@@ -11,6 +11,7 @@ using CSharp.Programming_Documents.Working_with_Styles;
 using CSharp.Programming_Documents.Working_with_Tables;
 using CSharp.Quick_Start;
 using CSharp.Rendering_and_Printing;
+using CSharp.LINQ;
 using DocumentExplorerExample;
 using System;
 using System.Collections.Generic;
@@ -170,11 +171,38 @@ namespace CSharp
 
             //MainForm.Run();
 
+            //// =====================================================
+            //// =====================================================
+            //// LINQ
+            //// =====================================================
+            //// =====================================================
+
+            //CSharp.LINQ.HelloWorld.Run();
+            //SingleRow.Run();
+            //InParagraphList.Run();
+            //BulletedList.Run();
+            //NumberedList.Run();
+            //MulticoloredNumberedList.Run();
+            //CommonList.Run();
+            //InTableList.Run();
+            //InTableAlternateContent.Run();
+            //CommonMasterDetail.Run();
+            //InTableMasterDetail.Run();
+            //InTableWithFilteringGroupingSorting.Run();
+            //PieChart.Run();
+            //ScatterChart.Run();
+            //BubbleChart.Run();
+            //ChartWithFilteringGroupingOrdering.Run();
+         
             // Stop before exiting
             Console.WriteLine("\n\nProgram Finished. Press any key to exit....");
             Console.ReadKey();
         }
 
+        public static String GetDataDir_LINQ()
+        {
+            return Path.GetFullPath("../../LINQ/Data/");
+        }
         public static String GetDataDir_LoadingAndSaving()
         {
             return Path.GetFullPath("../../Loading-and-Saving/Data/");
