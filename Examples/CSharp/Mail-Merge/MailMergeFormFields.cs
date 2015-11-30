@@ -39,7 +39,7 @@ namespace CSharp.Mail_Merge
             String[] fieldNames = new String[] {"RecipientName", "SenderName", "FaxNumber", "PhoneNumber",
                 "Subject", "Body", "Urgent", "ForReview", "PleaseComment"};
             Object[] fieldValues = new Object[] {"Josh", "Jenny", "123456789", "", "Hello",
-                "Test message 1", true, false, true};
+                "<b>HTML Body Test message 1</b>", true, false, true};
 
             // Execute the mail merge.
             doc.MailMerge.Execute(fieldNames, fieldValues);
@@ -75,6 +75,13 @@ namespace CSharp.Mail_Merge
 
                     // Nothing else to do for this field.
                     return;
+                }
+
+                // We want to insert html during mail merge.
+                if (e.FieldName == "Body")
+                {
+                    mBuilder.MoveToMergeField(e.FieldName);                    
+                    mBuilder.InsertHtml((string)e.FieldValue);
                 }
 
                 // Another example, we want the Subject field to come out as text input form field.
