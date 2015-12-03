@@ -28,7 +28,7 @@ Public Class MailMergeFormFields
 
         ' This is the data for mail merge.
         Dim fieldNames() As String = {"RecipientName", "SenderName", "FaxNumber", "PhoneNumber", "Subject", "Body", "Urgent", "ForReview", "PleaseComment"}
-        Dim fieldValues() As Object = {"Josh", "Jenny", "123456789", "", "Hello", "Test message 1", True, False, True}
+        Dim fieldValues() As Object = {"Josh", "Jenny", "123456789", "", "Hello", "<b>HTML Body Test message 1</b>", True, False, True}
 
         ' Execute the mail merge.
         doc.MailMerge.Execute(fieldNames, fieldValues)
@@ -63,6 +63,12 @@ Public Class MailMergeFormFields
 
                 ' Nothing else to do for this field.
                 Return
+            End If
+
+            ' We want to insert html during mail merge.
+            If e.FieldName = "Body" Then
+                mBuilder.MoveToMergeField(e.FieldName)
+                mBuilder.InsertHtml(DirectCast(e.FieldValue, String))
             End If
 
             ' Another example, we want the Subject field to come out as text input form field.
