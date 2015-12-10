@@ -1,0 +1,247 @@
+﻿* {
+    margin: 0;
+}
+
+.Main {
+    left: 20px;
+    right: 8px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    margin-top: 0px;
+    border-color: rgb(255, 255, 255);
+    width: 90%;
+    background-color: rgb(255, 255, 255);
+    margin-bottom: -50px; /* the bottom margin is the negative value of the footer's height */
+}
+
+div {
+    display: inline-block;
+}
+
+h2, h3 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 10px;
+    color: rgb(102, 102, 102);
+    font-family: Segoe UI, Tahoma, Arial;
+}
+
+h2 {
+    font-size: 21px;
+    font-weight: normal;
+}
+
+h3 {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin-left: 0px;
+    margin-right: 0px;
+    background-color: #FFFFFF;
+    color: rgb(0, 0, 0);
+    font-family: "Segoe UI",Arial,Sans-Serif;
+    font-size: 12px;
+    text-align: left;
+    scrollbar-3dlight-color: #f0f0f0;
+    scrollbar-arrow-color: #1e395b;
+    scrollbar-base-color: #cdcdcd;
+    scrollbar-darkshadow-color: #f0f0f0;
+    scrollbar-face-color: #cdcdcd;
+    scrollbar-highlight-color: #cdcdcd;
+    scrollbar-shadow-color: #cdcdcd;
+    scrollbar-track-color: #f0f0f0;
+}
+
+table {
+    width: 100%;
+}
+
+.Label {
+    /*width: 30%;*/
+    color: rgb(102, 102, 102);
+    text-align: left;
+}
+
+.Value {
+}
+
+required {
+    color: red;
+    font-weight: bolder;
+    padding-left: 5px;
+}
+
+input[type=button] {
+    font-family: Segoe UI;
+    border: 1px solid #C6C6C6;
+    font-size: 11px;
+    color: #444444;
+    text-align: center;
+    cursor: pointer;
+}
+
+select, input[type=text], textarea {
+    width: 90%;
+}
+
+select, input, textarea, img {
+    border: 1px solid #CCCCCC;
+    font-weight: 600;
+    color: #000000;
+    font-size: 12px;
+    font-family: Segoe UI, Arial, sans-serif;
+}
+
+    input[type=radio] {
+        border: none;
+    }
+
+select {
+    -moz-appearance: none;
+    text-indent: 0.01px;
+    -webkit-appearance: none;
+}
+
+    select::-ms-expand {
+        display: none;
+    }
+
+textarea {
+    overflow: auto;
+    resize: none;
+    scrollbar-arrow-color: rgb(102, 102, 102);
+}
+
+.footer, .push {
+    background-color: #F8F8F8;
+    border-top-color: #ffffff;
+    /*position: absolute;*/
+    bottom: 0px;
+    width: 100%;
+    min-width: 288px;
+    height: 44px;
+    text-align: right;
+    position: fixed;
+    display: block;
+    /*overflow: auto;*/
+}
+
+.buttons-right {
+    text-align: right;
+    float: right;
+    margin-right: 30px;
+}
+
+.buttons-left {
+    text-align: left;
+    float: left;
+    margin-left: 30px;
+}
+
+.footerbutton {
+    line-height: 16px;
+    height: 20px;
+    width: 84px;
+    text-align: center;
+    cursor: pointer;
+    border-width: 1px;
+    border-style: solid;
+    background-repeat: repeat-x;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 12px;
+    color: #444444;
+    background-color: #FFFFFF;
+    height: 24px;
+    font-family: Segoe UI,Tahoma,Arial;
+    border: 1px solid #C6C6C6;
+    background-image: none;
+    margin-top: 10px;
+    width: auto;
+    min-width: 80px;
+    white-space: nowrap;
+}
+
+    .footerbutton:hover {
+        background-color: #B1D6F0;
+    }
+
+.topbutton {
+    line-height: 16px;
+    height: 20px;
+    width: 84px;
+    text-align: center;
+    cursor: pointer;
+    border-width: 1px;
+    border-style: solid;
+    background-repeat: repeat-x;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 12px;
+    color: #444444;
+    background-color: #FFFFFF;
+    height: 24px;
+    font-family: Segoe UI,Tahoma,Arial;
+    border: 1px solid #C6C6C6;
+    background-image: none;
+    margin-top: 0px;
+    width: auto;
+    min-width: 80px;
+    white-space: nowrap;
+}
+
+    .topbutton:hover {
+        background-color: #B1D6F0;
+    }
+
+.Error {
+    text-align: left;
+    color: red;
+    font-weight: bold;
+}
+
+.Success {
+    text-align: left;
+    color: green;
+    font-weight: bold;
+}
+
+.Width30 {
+    width: 30%;
+}
+
+.Width100 {
+    width: 100%;
+}
+
+.loaderStyle {
+    vertical-align: central;
+    text-align: center;
+    cursor: wait;
+    background: #F0F0F0;
+    font-size: 15px;
+    position: absolute;
+    visibility: visible;
+    left: 475px;
+    top: 300px;
+    width: 75px;
+    height: 75px;
+}
+
+    .loaderStyle img {
+        margin-top: 10px;
+        border: none;
+    }
+
+.IFrame {
+    width: 100%;
+    height: 77%;
+    border: none;
+}
