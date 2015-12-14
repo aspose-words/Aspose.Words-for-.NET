@@ -1368,5 +1368,109 @@ namespace QA_Tests.Examples.Document
             //ExEnd
         }
 
+        [Test]
+        public void CompareEx()
+        {
+            //ExStart
+            //ExFor:Document.Compare
+            //ExId:CompareEx
+            //ExSummary:Shows how to apply the compare method to two documents and then use the results. 
+            Aspose.Words.Document doc1 = new Aspose.Words.Document(MyDir + "Document1.doc");
+            Aspose.Words.Document doc2 = new Aspose.Words.Document(MyDir + "Document2.doc");
+
+            // Both documents must have no revisions or an exception will be thrown.
+            if (doc1.Revisions.Count == 0 && doc2.Revisions.Count == 0)
+                doc1.Compare(doc2, "authorName", DateTime.Now);
+
+            // If doc1 and doc2 are different, doc1 now has some revisons after comparison, which can now be viewed and processed.
+            foreach (Aspose.Words.Revision r in doc1)
+                Console.WriteLine(r.RevisionType);
+
+            // All the revisions in doc1 are differences between doc1 and doc2, so accepting them on doc1 transforms doc1 into doc2.
+            doc1.Revisions.AcceptAll();
+            // doc1, when saved, now resembles doc2.
+            doc1.Save(MyDir + "Document3.doc");
+            //ExEnd
+        }
+
+        [Test]
+        public void RemoveExternalSchemaReferencesEx()
+        {
+            //ExStart
+            //ExFor:Document.RemoveExternalSchemaReferences
+            //ExId:RemoveExternalSchemaReferencesEx
+            //ExSummary:Shows how to remove all external XML schema references from a document. 
+            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            doc.RemoveExternalSchemaReferences();
+            //ExEnd
+        }
+
+        [Test]
+        public void RemoveUnusedResourcesEx()
+        {
+            //ExStart
+            //ExFor:Document.RemoveUnusedResources
+            //ExId:RemoveUnusedResourcesEx
+            //ExSummary:Shows how to remove all unused styles and lists from a document. 
+            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            doc.RemoveUnusedResources();
+            //ExEnd
+        }
+        //finish
+        [Test]
+        public void StartTrackRevisionsEx()
+        {
+            //ExStart
+            //ExFor:Document.StartTrackRevisions
+            //ExId:StartTrackRevisionsEx
+            //ExSummary:Shows how StartTrackRevisions() affects document editing. 
+            Aspose.Words.Document doc = new Aspose.Words.Document();
+            doc.FirstSection.Body.FirstParagraph.Runs.Add(new Run(doc, "Hello world!"));
+
+            Console.WriteLine(doc.Revisions.Count); // 0
+
+            doc.StartTrackRevisions("author", DateTime.Now);
+            doc.FirstSection.Body.AppendParagraph("Hello again!");
+
+            Console.WriteLine(doc.Revisions.Count); // 2
+
+            // The "Hello world!" text we added before doc.StartTrackRevisions() shows up as plain text in the output doc.
+            // However, the "Hello again!" text we added after doc.StartTrackRevisions() is a revision in the output.
+            doc.Save(MyDir + "Document.StartTrackRevisions.doc");
+            //ExEnd
+        }
+
+        [Test]
+        public void StopTrackRevisionsEx()
+        {
+            //ExStart
+            //ExFor:Document.StopTrackRevisions
+            //ExId:StopTrackRevisionsEx
+            //ExSummary:Shows how to stop StartTrackRevisions(). 
+            Aspose.Words.Document doc = new Aspose.Words.Document();
+            doc.StopTrackRevisions();
+            //ExEnd
+        }
+
+        [Test]
+        public void UpdateThumbnailEx()
+        {
+            //ExStart
+            //ExFor:Document.UpdateThumbnail
+            //ExId:UpdateThumbnailEx
+            //ExSummary:Shows how to update a document's thumbnail with and without ThumbnailGeneratingOptions.
+            Aspose.Words.Document doc = new Aspose.Words.Document();
+
+            // Update document's thumbnail the default way. 
+            doc.UpdateThumbnail();
+
+            // Review/change thumbnail options and update document's thumbnail.
+            ThumbnailGeneratingOptions tgo = new ThumbnailGeneratingOptions();
+            Console.WriteLine("Thumbnail size: {0}", tgo.ThumbnailSize);
+            tgo.GenerateFromFirstPage = true;
+            doc.UpdateThumbnail(tgo);
+            //ExEnd
+        }
+
     }
 }
