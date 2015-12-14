@@ -1375,21 +1375,22 @@ namespace QA_Tests.Examples.Document
             //ExFor:Document.Compare
             //ExId:CompareEx
             //ExSummary:Shows how to apply the compare method to two documents and then use the results. 
-            Aspose.Words.Document doc1 = new Aspose.Words.Document(MyDir + "Document1.doc");
-            Aspose.Words.Document doc2 = new Aspose.Words.Document(MyDir + "Document2.doc");
+            Aspose.Words.Document doc1 = new Aspose.Words.Document(MyDir + "Document.Compare.1.doc");
+            Aspose.Words.Document doc2 = new Aspose.Words.Document(MyDir + "Document.Compare.2.doc");
 
-            // Both documents must have no revisions or an exception will be thrown.
+            // Both documents should have no revisions or an exception will be thrown.
             if (doc1.Revisions.Count == 0 && doc2.Revisions.Count == 0)
                 doc1.Compare(doc2, "authorName", DateTime.Now);
 
             // If doc1 and doc2 are different, doc1 now has some revisons after comparison, which can now be viewed and processed.
-            foreach (Aspose.Words.Revision r in doc1)
+            foreach (Aspose.Words.Revision r in doc1.Revisions)
                 Console.WriteLine(r.RevisionType);
 
             // All the revisions in doc1 are differences between doc1 and doc2, so accepting them on doc1 transforms doc1 into doc2.
             doc1.Revisions.AcceptAll();
+
             // doc1, when saved, now resembles doc2.
-            doc1.Save(MyDir + "Document3.doc");
+            doc1.Save(MyDir + "Document.CompareEx.doc");
             //ExEnd
         }
 
@@ -1416,7 +1417,7 @@ namespace QA_Tests.Examples.Document
             doc.RemoveUnusedResources();
             //ExEnd
         }
-        //finish
+
         [Test]
         public void StartTrackRevisionsEx()
         {
@@ -1430,6 +1431,7 @@ namespace QA_Tests.Examples.Document
             Console.WriteLine(doc.Revisions.Count); // 0
 
             doc.StartTrackRevisions("author", DateTime.Now);
+
             doc.FirstSection.Body.AppendParagraph("Hello again!");
 
             Console.WriteLine(doc.Revisions.Count); // 2
@@ -1464,13 +1466,15 @@ namespace QA_Tests.Examples.Document
             // Update document's thumbnail the default way. 
             doc.UpdateThumbnail();
 
-            // Review/change thumbnail options and update document's thumbnail.
-            ThumbnailGeneratingOptions tgo = new ThumbnailGeneratingOptions();
+            // Review/change thumbnail options and then update document's thumbnail.
+            Aspose.Words.Rendering.ThumbnailGeneratingOptions tgo
+                = new Aspose.Words.Rendering.ThumbnailGeneratingOptions();
+
             Console.WriteLine("Thumbnail size: {0}", tgo.ThumbnailSize);
             tgo.GenerateFromFirstPage = true;
+
             doc.UpdateThumbnail(tgo);
             //ExEnd
         }
-
     }
 }
