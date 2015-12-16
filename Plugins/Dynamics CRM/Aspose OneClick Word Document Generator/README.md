@@ -1,7 +1,7 @@
 ## Aspose .NET OneClick Word Document for Microsoft Dynamics CRM
-[![aspose Words for net e1378287014402 ](http://www.aspose.com/blogs/wp-content/uploads/2013/09/aspose-Words-for-net-e1378287014402.png "Aspose.Words or .NET logo")](http://www.aspose.com/word-component-suite.aspx)The Aspose .NET OneClick Word Document Generator is open source add-on used to generate and export documents from CRM. You can design template in word and attach in CRM and generate document as you want. You can use OneClick Word Document Generator with Account, Contact, Lead, Opportunity and Quote Entity. It provides option to Attach the generated document with the record itself and you can download the document as well. This add-on can also resolve option set and look-up fields. In addition it allows you to save the document in multiple formats like doc, docx, bmp, html, jpeg, pdf, png, rtf and text. Aspose .NET OneClick Word Document Generator can be used with CRM on-premises and CRM Online.
+[![aspose Words for net e1378287014402 ](http://www.aspose.com/blogs/wp-content/uploads/2013/09/aspose-Words-for-net-e1378287014402.png "Aspose.Words or .NET logo")](http://www.aspose.com/word-component-suite.aspx)The Aspose .NET OneClick Word Document Generator is an open source add-on used to generate and export documents from CRM. You can design template in word and attach in CRM and generate document as you want. You can use OneClick Word Document Generator with Account, Contact, Lead, Opportunity and Quote Entity. It provides option to Attach the generated document with the record itself and you can download the document as well. This add-on can also resolve option set and look-up fields. In addition it allows you to save the document in multiple formats like DOC, DOCX, BMP, HTML, JPEG, PDF, PNG, RTF and TXT. Aspose .NET OneClick Word Document Generator can be used with CRM on-premises and CRM Online.
 
-[![Free Download](http://cdn.aspose.com/Images/marketplace/free-download-icon-aspose-mp.png "Free Download")](https://asposewordsnet.codeplex.com/releases/view/618907 "Free Download") [![Video Demo](http://cdn.aspose.com/Images/marketplace/video-demo-icon-aspose-mp.png)](https://youtu.be/FY3z8JBY18k "Video Demo") [![Open Source](http://cdn.aspose.com/Images/marketplace/open-source-icon-aspose-mp.png "Source Code")](https://asposewordsnet.codeplex.com/SourceControl/latest#Plugins/Dynamics CRM/Aspose OneClick Word Document Generator/ "Source Code")
+[![Free Download](http://cdn.aspose.com/Images/marketplace/free-download-icon-aspose-mp.png "Free Download")](https://asposewordsmscrm.codeplex.com/releases/view/618981 "Free Download") [![Video Demo](http://cdn.aspose.com/Images/marketplace/video-demo-icon-aspose-mp.png)](https://youtu.be/FY3z8JBY18k "Video Demo") [![Open Source](http://cdn.aspose.com/Images/marketplace/open-source-icon-aspose-mp.png "Source Code")](https://asposewordsmscrm.codeplex.com/SourceControl/latest#Aspose OneClick Word Document Generator/ "Source Code")
 
 ## Features in this Release
 
@@ -13,7 +13,7 @@ The release of this add-on supports the following features:
 *   One click button that can Generate document.
 *   Generated documents can be downloaded as well as attached with the same entity record.
 *   A ribbon button is also provided to choose the template and generate document.
-*   Allows you to save the document in multiple formats like doc, docx, bmp, html, jpeg, pdf, png, rtf and text.
+*   Allows you to save the document in multiple formats like DOC, DOCX, BMP, HTML, JPEG, PDF, PNG, RTF and TXT.
 
 ## Download, Installation and Usage
 
@@ -34,7 +34,7 @@ Start a free trial today – all you need is to [sign up](http://www.aspose.com/co
 
 Your feedback is very important to us. Please feel free to provide feedback and raise feature requirements. We are keen to implement customer driven features since we are a 100% customer driven company.
 
-## Related Links
+## Other CRM Plugins by Aspose
 
 *   [Aspose .NET Document Generator](http://www.aspose.com/docs/display/wordsnet/5.1+Aspose+.NET+Document+Generator)
 *   [Aspose .NET Document Merger](http://www.aspose.com/docs/display/wordsnet/5.3+Aspose+.NET+Document+Merger)
