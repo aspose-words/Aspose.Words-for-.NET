@@ -1735,5 +1735,20 @@ namespace QA_Tests.Examples.Document
             builder.InsertDocument(docToInsert, ImportFormatMode.KeepSourceFormatting);
             //ExEnd
         }
+
+
+        [Test]
+        public void StartEditableRangeEx()
+        {
+            //ExStart
+            //ExFor:StartEditableRange
+            //ExId:StartEditableRangeEx
+            //ExSummary:Shows how to use StartEditableRange.
+            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.StartEditableRange();
+            //ExEnd
+        }
     }
 }
