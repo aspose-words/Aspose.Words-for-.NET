@@ -1736,7 +1736,6 @@ namespace QA_Tests.Examples.Document
             //ExEnd
         }
 
-
         [Test]
         public void StartEditableRangeEx()
         {
@@ -1748,6 +1747,22 @@ namespace QA_Tests.Examples.Document
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.StartEditableRange();
+            //ExEnd
+        }
+
+        [Test]
+        public void MoveToFieldEx()
+        {
+            //ExStart
+            //ExFor:MoveToField
+            //ExId:MoveToFieldEx
+            //ExSummary:Shows how to use MoveToField.
+            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Aspose.Words.Fields.Field field = builder.InsertField("PAGE");
+
+            builder.MoveToField(field, true);
             //ExEnd
         }
     }
