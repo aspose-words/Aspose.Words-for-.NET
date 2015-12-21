@@ -1765,5 +1765,27 @@ namespace QA_Tests.Examples.Document
             builder.MoveToField(field, true);
             //ExEnd
         }
+
+        [Test]
+        public void InsertHtmlEx()
+        {
+            //ExStart
+            //ExFor:InsertHtml(string, boolean)
+            //ExId:InsertHtmlEx
+            //ExSummary:Inserts HTML into a document using DocumentBuilder.
+            Aspose.Words.Document doc = new Aspose.Words.Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            bool useBuilderFormatting = true;
+
+            builder.InsertHtml(
+                "<P align='right'>Paragraph right</P>" +
+                "<b>Implicit paragraph left</b>" +
+                "<div align='center'>Div center</div>" +
+                "<h1 align='left'>Heading 1 left.</h1>", useBuilderFormatting);
+
+            doc.Save(MyDir + "DocumentBuilder.InsertHtml Out.doc");
+            //ExEnd
+        }
     }
 }
