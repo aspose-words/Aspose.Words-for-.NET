@@ -53,6 +53,7 @@
     <Compile Include="Examples\BuildVersionInfo\ExBuildVersion.cs" />
     <Compile Include="Examples\Comment\ExComment.cs" />
     <Compile Include="Examples\ConvertUtil\ExUtilityClasses.cs" />
+    <Compile Include="Examples\DigitalSignature\ExDigitalSignatureUtil.cs" />
     <Compile Include="Examples\DocumentConverts\ExMossDoc2Pdf.cs" />
     <Compile Include="Examples\DocumentConverts\ExMossRtf2Docx.cs" />
     <Compile Include="Examples\Document\ExDocument.cs" />
@@ -106,7 +107,6 @@
     <Folder Include="Examples\ComHelper\" />
     <Folder Include="Examples\CompositeNode\" />
     <Folder Include="Examples\ControlChar\" />
-    <Folder Include="Examples\DigitalSignature\" />
     <Folder Include="Examples\EditableRange\" />
     <Folder Include="Examples\Exception\" />
     <Folder Include="Examples\File\" />
