@@ -47,5 +47,26 @@ namespace QA_Tests.Examples.Document
             Aspose.Words.DigitalSignatureUtil.Sign(doc.OriginalFileName, outputDocFileName, ch, "My comment", DateTime.Now);
             //ExEnd
         }
+
+        [Test]
+        public void LoadSignaturesEx()
+        {
+            //ExStart
+            //ExFor:LoadSignatures(stream)
+            //ExId:LoadSignaturesEx
+            //ExSummary:Shows how to use LoadSignatures.
+            System.IO.Stream docStream = new System.IO.FileStream(MyDir + "Document.doc", System.IO.FileMode.Open);
+            Aspose.Words.DigitalSignatureUtil.LoadSignatures(docStream);
+            //ExEnd
+
+            docStream.Close();
+
+            //ExStart
+            //ExFor:LoadSignatures(string)
+            //ExId:LoadSignaturesEx
+            //ExSummary:Shows how to use LoadSignatures.
+            Aspose.Words.DigitalSignatureUtil.LoadSignatures(MyDir + "Document.doc");
+            //ExEnd
+        }
     }
 }
