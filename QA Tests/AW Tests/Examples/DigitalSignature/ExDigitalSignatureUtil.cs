@@ -31,12 +31,12 @@ namespace QA_Tests.Examples.Document
         [Test]
         // We don't include a sample certificate with the examples
         // so this exception is expected instead since the file is not there.
-        [ExpectedException(typeof(System.IO.FileNotFoundException))]
-        public void SignEx()
+        [ExpectedException(typeof(System.IO.FileNotFoundException ))]
+        public void SignExStrings()
         {
             //ExStart
-            //ExFor:RemoveAllSignatures
-            //ExId:RemoveAllSignaturesEx
+            //ExFor:Sign(String, String, CertificateHolder, String, DateTime)
+            //ExId:SignExStrings
             //ExSummary:Shows how to use RemoveAllSignatures.
             Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
 
@@ -45,6 +45,26 @@ namespace QA_Tests.Examples.Document
             Aspose.Words.CertificateHolder ch = Aspose.Words.CertificateHolder.Create(MyDir + "MyPkcs12.pfx", "My password");
 
             Aspose.Words.DigitalSignatureUtil.Sign(doc.OriginalFileName, outputDocFileName, ch, "My comment", DateTime.Now);
+            //ExEnd
+        }
+
+        [Test]
+        // We don't include a sample certificate with the examples
+        // so this exception is expected instead since the file is not there.
+        [ExpectedException(typeof(System.IO.FileNotFoundException ))]
+        public void SignExStreams()
+        {
+            //ExStart
+            //ExFor:Sign(Stream, Stream, CertificateHolder, String, DateTime)
+            //ExId:SignExStreams
+            //ExSummary:Shows how to use RemoveAllSignatures.
+            System.IO.Stream docInStream = new System.IO.FileStream(MyDir + "Document.doc", System.IO.FileMode.Open);
+
+            System.IO.Stream docOutStream = new System.IO.FileStream(MyDir + "Document.Signed.doc", System.IO.FileMode.OpenOrCreate);
+
+            Aspose.Words.CertificateHolder ch = Aspose.Words.CertificateHolder.Create(MyDir + "MyPkcs12.pfx", "My password");
+
+            Aspose.Words.DigitalSignatureUtil.Sign(docInStream, docOutStream, ch, "My comment", DateTime.Now);
             //ExEnd
         }
 
