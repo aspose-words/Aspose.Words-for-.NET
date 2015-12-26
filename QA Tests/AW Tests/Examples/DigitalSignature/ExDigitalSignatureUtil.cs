@@ -9,7 +9,7 @@ using System;
 using NUnit.Framework;
 using QA_Tests.Tests;
 
-namespace QA_Tests.Examples.Document
+namespace QA_Tests.Examples.DigitalSignature
 {
     [TestFixture]
     public class ExDigitalSignatureUtil : QaTestsBase
@@ -31,7 +31,7 @@ namespace QA_Tests.Examples.Document
         [Test]
         // We don't include a sample certificate with the examples
         // so this exception is expected instead since the file is not there.
-        [ExpectedException(typeof(System.IO.FileNotFoundException ))]
+        //[ExpectedException(typeof(System.IO.FileNotFoundException ))]
         public void SignExStrings()
         {
             //ExStart
@@ -51,7 +51,7 @@ namespace QA_Tests.Examples.Document
         [Test]
         // We don't include a sample certificate with the examples
         // so this exception is expected instead since the file is not there.
-        [ExpectedException(typeof(System.IO.FileNotFoundException ))]
+        //[ExpectedException(typeof(System.IO.FileNotFoundException ))]
         public void SignExStreams()
         {
             //ExStart
