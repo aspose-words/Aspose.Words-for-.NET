@@ -12,17 +12,17 @@ using QA_Tests.Tests;
 namespace QA_Tests.Examples.DigitalSignature
 {
     [TestFixture]
-    public class ExDigitalSignatureCollection : QaTestsBase
+    public class ExDigitalSignature : QaTestsBase
     {
         [Test]
-        public void GetEnumeratorEx()
+        public void ToStringEx()
         {
             //ExStart
-            //ExFor:GetEnumerator
-            //ExId:GetEnumeratorEx
-            //ExSummary:Shows how to use GetEnumerator.
-            Aspose.Words.DigitalSignatureCollection dsc = new Aspose.Words.DigitalSignatureCollection();
-            var enumerator = dsc.GetEnumerator();
+            //ExFor:ToString
+            //ExId:ToStringEx
+            //ExSummary:Shows how to use ToString.
+            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.Signed.docx");
+            Console.WriteLine(doc.DigitalSignatures[0]);         
             //ExEnd
         }
     }
