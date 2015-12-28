@@ -58,5 +58,18 @@ namespace QA_Tests.Examples.Border
             builder.Writeln("Hello World!");
             //ExEnd
         }
+
+        [Test]
+        public void ClearFormattingEx()
+        {
+            //ExStart
+            //ExFor:ClearFormatting
+            //ExId:ClearFormattingEx
+            //ExSummary:Shows how to use ClearFormatting.
+            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.DocumentBuilder builder = new Aspose.Words.DocumentBuilder();
+            builder.Font.Border.ClearFormatting();
+            //ExEnd
+        }
     }
 }
