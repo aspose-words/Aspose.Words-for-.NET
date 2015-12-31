@@ -1,0 +1,28 @@
+﻿<h3>Aspose .NET Quote Generator for DNN Using Aspose.Words</h3>
+Aspose .NET Quote Generator for DNN module is an open source module from Aspose that enable users to generate Quotes in your DNN site without requiring any other software. It uses the powerful features of Aspose.Words for .NET to allow you to easily generate quotations.
+   <h3><strong>Module Features</strong></h3>
+<ul>
+<li>Generate quotations with MailMerged template</li>
+<li>Allow to edit quotation document title, reference #, generating date</li>
+<li>Allow to upload and use company logo image</li>
+<li>Allow to enter company name and complete address</li>
+<li>Allow to display company name OR logo image OR both</li>
+<li>Allow to enter customer/client name and complete address</li>
+<li>Allow to dynamically create products/items rows between 0-99</li>
+<li>Calculates total amount for each product/items</li>
+<li>Allow to apply VAT percent for each item between 0-20 with each decimal points</li>
+<li>Calculates VAT and total amount for each product</li>
+<li>Calculates grand amount for all product/items, including VAT applied</li>
+<li>Allow to enter quotation description/note details</li>
+<li>Allow to enter quotation T&amp;C (Terms &amp; Conditions)</li>
+<li>Mail Merge Template is already created and placed in template folder in the package and will be used to export the quotation in a pre-defined MailMerge template.</li>
+<li>Allow to export quotation to PDF (*.Pdf), MS Word 2003-2007 (*.Doc), Office Open XML WordprocessingML (*.Docx), ODF Text Document (*.Odt), Tiff Image/s (*.Tiff), JPEG Image (*.Jpeg), PNG Image (*.Png).</li>
+</ul>
+    Please check <a href="http://www.aspose.com/blogs/index.php">our blogs</a> for further updates.    
+    If you have any questions please feel free to contact us via <a href="mailto:marketplace@aspose.com">marketplace@aspose.com</a><br />
+    <a href=http://www.aspose.com>Aspose</a> - Your File Format APIs<br />
+<hr/>
+<div class="License">
+    <h3>About Aspose .NET Quote Generator for DNN using Aspose.Words</h3>
+    <p>Aspose .NET Quote Generator for DNN module is an open source module from Aspose that enable users to generate Quotes in your DNN site without requiring any other software. It uses the powerful features of Aspose.Words for .NET to allow you to easily generate quotations.</p>    
+</div>

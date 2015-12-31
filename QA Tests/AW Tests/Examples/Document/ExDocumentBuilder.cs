@@ -1705,5 +1705,87 @@ namespace QA_Tests.Examples.Document
             builder.Write("I'm a formatted paragraph with double border and nice shading.");
             //ExEnd
         }
+
+        [Test]
+        public void DeleteRowEx()
+        {
+            //ExStart
+            //ExFor:DeleteRow
+            //ExId:DeleteRowEx
+            //ExSummary:Shows how to apply DeleteRow to a table.
+            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "DocumentBuilder.DocWithTable.doc");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.DeleteRow(0, 0);
+            //ExEnd
+        }
+
+        [Test]
+        public void InsertDocumentEx()
+        {
+            //ExStart
+            //ExFor:InsertDocument
+            //ExId:InsertDocumentEx
+            //ExSummary:Shows how to use InsertDocument.
+            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Aspose.Words.Document docToInsert = new Aspose.Words.Document(MyDir + "DocumentBuilder.InsertedDoc.doc");
+
+            builder.InsertDocument(docToInsert, ImportFormatMode.KeepSourceFormatting);
+            //ExEnd
+        }
+
+        [Test]
+        public void StartEditableRangeEx()
+        {
+            //ExStart
+            //ExFor:StartEditableRange
+            //ExId:StartEditableRangeEx
+            //ExSummary:Shows how to use StartEditableRange.
+            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.StartEditableRange();
+            //ExEnd
+        }
+
+        [Test]
+        public void MoveToFieldEx()
+        {
+            //ExStart
+            //ExFor:MoveToField
+            //ExId:MoveToFieldEx
+            //ExSummary:Shows how to use MoveToField.
+            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Aspose.Words.Fields.Field field = builder.InsertField("PAGE");
+
+            builder.MoveToField(field, true);
+            //ExEnd
+        }
+
+        [Test]
+        public void InsertHtmlEx()
+        {
+            //ExStart
+            //ExFor:InsertHtml(string, boolean)
+            //ExId:InsertHtmlEx
+            //ExSummary:Inserts HTML into a document using DocumentBuilder.
+            Aspose.Words.Document doc = new Aspose.Words.Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            bool useBuilderFormatting = true;
+
+            builder.InsertHtml(
+                "<P align='right'>Paragraph right</P>" +
+                "<b>Implicit paragraph left</b>" +
+                "<div align='center'>Div center</div>" +
+                "<h1 align='left'>Heading 1 left.</h1>", useBuilderFormatting);
+
+            doc.Save(MyDir + "DocumentBuilder.InsertHtml Out.doc");
+            //ExEnd
+        }
     }
 }
