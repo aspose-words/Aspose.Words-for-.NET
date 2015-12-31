@@ -8,3 +8,4 @@ This section contains the following Platforms
 * [Visual Studio](Visual Studio)
 * [DNN (DotNetNuke)](DotNetNuke)
 * [Umbraco](Umbraco)
+* [MVC](MVC)
