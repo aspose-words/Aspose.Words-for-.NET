@@ -31,6 +31,9 @@ Public Class NestedMailMerge
         ' Open the template document.
         Dim doc As New Document(dataDir & "Invoice Template.doc")
 
+        ' Trim trailing and leading whitespaces mail merge values
+        doc.MailMerge.TrimWhitespaces = False
+
         ' Execute the nested mail merge with regions
         doc.MailMerge.ExecuteWithRegions(pizzaDs)
 

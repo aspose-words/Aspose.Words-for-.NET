@@ -26,6 +26,9 @@ Public Class MailMergeFormFields
         ' Setup mail merge event handler to do the custom work.
         doc.MailMerge.FieldMergingCallback = New HandleMergeField()
 
+        ' Trim trailing and leading whitespaces mail merge values
+        doc.MailMerge.TrimWhitespaces = False
+
         ' This is the data for mail merge.
         Dim fieldNames() As String = {"RecipientName", "SenderName", "FaxNumber", "PhoneNumber", "Subject", "Body", "Urgent", "ForReview", "PleaseComment"}
         Dim fieldValues() As Object = {"Josh", "Jenny", "123456789", "", "Hello", "<b>HTML Body Test message 1</b>", True, False, True}

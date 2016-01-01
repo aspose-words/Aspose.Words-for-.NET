@@ -35,6 +35,9 @@ namespace CSharp.Mail_Merge
             // Open the template document.
             Document doc = new Document(dataDir + "Invoice Template.doc");
 
+            // Trim trailing and leading whitespaces mail merge values
+            doc.MailMerge.TrimWhitespaces = false;
+
             // Execute the nested mail merge with regions
             doc.MailMerge.ExecuteWithRegions(pizzaDs);
 
