@@ -152,6 +152,7 @@
     <Compile Include="Quick-Start\SimpleMailMerge.vb" />
     <Compile Include="Quick-Start\UpdateFields.vb" />
     <Compile Include="Quick-Start\WorkingWithNodes.vb" />
+    <Compile Include="Rendering-Printing\ReadActiveXControlProperties.vb" />
     <Compile Include="Rendering-Printing\DocumentLayoutHelper.vb" />
     <Compile Include="Rendering-Printing\DocumentPreviewAndPrint.vb">
       <SubType>Form</SubType>

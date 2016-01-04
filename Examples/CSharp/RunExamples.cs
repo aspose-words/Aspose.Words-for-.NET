@@ -36,7 +36,7 @@ namespace CSharp
             // =====================================================
             // =====================================================
 
-            AppendDocuments.Run();
+            //AppendDocuments.Run();
             //ApplyLicense.Run();
             //Doc2Pdf.Run();
             //FindAndReplace.Run();
@@ -162,6 +162,7 @@ namespace CSharp
             //ImageColorFilters.Run();
             //RenderShape.Run();
             //SaveAsMultipageTiff.Run();
+            ReadActiveXControlProperties.Run();
 
             //// =====================================================
             //// =====================================================

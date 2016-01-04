@@ -144,6 +144,7 @@
     <Compile Include="Quick-Start\SimpleMailMerge.cs" />
     <Compile Include="Quick-Start\UpdateFields.cs" />
     <Compile Include="Quick-Start\WorkingWithNodes.cs" />
+    <Compile Include="Rendering-Printing\ReadActiveXControlProperties.cs" />
     <Compile Include="Rendering-Printing\DocumentLayoutHelper.cs" />
     <Compile Include="Rendering-Printing\DocumentPreviewAndPrint.cs">
       <SubType>Form</SubType>
@@ -227,6 +228,7 @@
     <None Include="Quick-Start\Data\Template.doc" />
     <None Include="Quick-Start\Data\TestFile.Destination.doc" />
     <None Include="Quick-Start\Data\TestFile.Source.doc" />
+    <None Include="Rendering-Printing\Data\ActiveXControl.docx" />
     <None Include="Rendering-Printing\Data\doc+2.doc" />
     <None Include="Rendering-Printing\Data\TestFile.docx" />
   </ItemGroup>
