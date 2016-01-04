@@ -28,28 +28,28 @@ namespace CSharp.Rendering_and_Printing
             // Load the documents which store the shapes we want to render.           
             Document doc = new Document(dataDir + "ActiveXControl.docx");
 
-            // Retrieve the target shape from the document. In our sample document this is the first shape.            
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            OleControl oleControl = shape.OleFormat.OleControl;
-
             string properties = "";
-            if (oleControl.IsForms2OleControl)
+            // Retrieve shapes from the document.         
+            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
             {
-                Forms2OleControl checkBox = (Forms2OleControl)oleControl;
-                properties = "\nCaption: " + checkBox.Caption;
-                properties = properties + "\nValue: " + checkBox.Value;
-                properties = properties + "\nEnabled: " + checkBox.Enabled;
-                properties = properties + "\nType: " + checkBox.Type;
-                if (checkBox.ChildNodes != null)
+                OleControl oleControl = shape.OleFormat.OleControl;               
+                if (oleControl.IsForms2OleControl)
                 {
-                    properties = properties + "\nChildNodes: " + checkBox.ChildNodes;
+                    Forms2OleControl checkBox = (Forms2OleControl)oleControl;
+                    properties = properties + "\nCaption: " + checkBox.Caption;
+                    properties = properties + "\nValue: " + checkBox.Value;
+                    properties = properties + "\nEnabled: " + checkBox.Enabled;
+                    properties = properties + "\nType: " + checkBox.Type;
+                    if (checkBox.ChildNodes != null)
+                    {
+                        properties = properties + "\nChildNodes: " + checkBox.ChildNodes;
+                    }
+
+                    properties = properties + "\n";
                 }
             }
-            Console.WriteLine("\nActiveX Control properties are " + properties);
-        }
-
-        
-
-       
+            properties = properties + "\nTotal ActiveX Controls found: " + doc.GetChildNodes(NodeType.Shape, true).Count.ToString();
+            Console.WriteLine("\n" + properties);
+        }      
     }
 }

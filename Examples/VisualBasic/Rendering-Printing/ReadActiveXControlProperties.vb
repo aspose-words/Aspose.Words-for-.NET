@@ -26,30 +26,26 @@ Public Class ReadActiveXControlProperties
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_RenderingAndPrinting()
 
-        ' Load the documents which store the shapes we want to render.
-        Dim doc As New Document(dataDir + "ActiveXControl.docx")
-
-        ' Retrieve the target shape from the document. In our sample document this is the first shape.
-        Dim shape As Shape = CType(doc.GetChild(NodeType.Shape, 0, True), Shape)
-
-        Dim oleControl As OleControl = shape.OleFormat.OleControl
+        ' Load the documents which store the shapes we want to render.           
+        Dim doc As New Document(dataDir & Convert.ToString("ActiveXControl.docx"))
 
         Dim properties As String = ""
-        If oleControl.IsForms2OleControl Then
-            Dim checkBox As Forms2OleControl = DirectCast(oleControl, Forms2OleControl)
-            properties = vbLf & "Caption: " + checkBox.Caption
-            properties = (properties & Convert.ToString(vbLf & "Value: ")) + checkBox.Value
-            properties = (properties & Convert.ToString(vbLf & "Enabled: ")) + checkBox.Enabled.ToString
-            properties = (properties & Convert.ToString(vbLf & "Type: ")) + checkBox.Type.ToString
-            If checkBox.ChildNodes IsNot Nothing Then
-                properties = properties + vbLf & "ChildNodes: " + checkBox.ChildNodes.ToString
+        ' Retrieve shapes from the document.         
+        For Each shape As Shape In doc.GetChildNodes(NodeType.Shape, True)
+            Dim oleControl As OleControl = shape.OleFormat.OleControl
+            If oleControl.IsForms2OleControl Then
+                Dim checkBox As Forms2OleControl = DirectCast(oleControl, Forms2OleControl)
+                properties = (properties & Convert.ToString(vbLf & "Caption: ")) + checkBox.Caption
+                properties = (properties & Convert.ToString(vbLf & "Value: ")) + checkBox.Value
+                properties = (properties & Convert.ToString(vbLf & "Enabled: ")) + checkBox.Enabled.ToString
+                properties = (properties & Convert.ToString(vbLf & "Type: ")) + checkBox.Type.ToString
+                If checkBox.ChildNodes IsNot Nothing Then
+                    properties = (properties & Convert.ToString(vbLf & "ChildNodes: ")) + checkBox.ChildNodes.ToString
+                End If
+                properties = properties & Convert.ToString(vbLf)
             End If
-
-
-        End If
-        Console.WriteLine(Convert.ToString(vbLf & "ActiveX Control properties are ") & properties)
-
+        Next
+        properties = (properties & Convert.ToString(vbLf & "Total ActiveX Controls found: ")) + doc.GetChildNodes(NodeType.Shape, True).Count.ToString()
+        Console.WriteLine(Convert.ToString(vbLf) & properties)
     End Sub
-
-   
 End Class
