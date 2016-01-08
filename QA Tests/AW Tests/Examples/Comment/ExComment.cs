@@ -25,5 +25,21 @@ namespace QA_Tests.Examples.Comment
             doc.AcceptAllRevisions();
             //ExEnd
         }
+
+        [Test]
+        public void SetTextEx()
+        {
+            //ExStart
+            //ExFor:SetText
+            //ExId:SetTextEx
+            //ExSummary:Shows how to use SetText.
+            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Aspose.Words.Comment comment = new Aspose.Words.Comment(doc, "John Doe", "J.D.", DateTime.Today);
+            builder.CurrentParagraph.AppendChild(comment);
+            comment.SetText("Comment text");
+            //ExEnd
+        }
     }
 }

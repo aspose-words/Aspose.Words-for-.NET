@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Examples\Bookmark\ExBookmarks.cs" />
     <Compile Include="Examples\Border\ExBorder.cs" />
+    <Compile Include="Examples\Border\ExBorderCollection.cs" />
     <Compile Include="Examples\BuildVersionInfo\ExBuildVersion.cs" />
     <Compile Include="Examples\Comment\ExComment.cs" />
     <Compile Include="Examples\ConvertUtil\ExUtilityClasses.cs" />

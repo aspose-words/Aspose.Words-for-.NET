@@ -67,8 +67,39 @@ namespace QA_Tests.Examples.Border
             //ExId:ClearFormattingEx
             //ExSummary:Shows how to use ClearFormatting.
             Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
-            Aspose.Words.DocumentBuilder builder = new Aspose.Words.DocumentBuilder();
+            Aspose.Words.DocumentBuilder builder = new Aspose.Words.DocumentBuilder(doc);
             builder.Font.Border.ClearFormatting();
+            //ExEnd
+        }
+
+        [Test]
+        public void EqualsEx()
+        {
+            //ExStart
+            //ExFor:Equals
+            //ExId:EqualsEx
+            //ExSummary:Shows how to use Equals.
+            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.DocumentBuilder builder = new Aspose.Words.DocumentBuilder(doc);
+            Aspose.Words.Border border1 = builder.Font.Border;
+            Aspose.Words.Border border2 = builder.Font.Border;
+
+            Console.WriteLine(border1.Equals(border2));
+            //ExEnd
+        }
+
+        [Test]
+        public void GetHashCodeEx()
+        {
+            //ExStart
+            //ExFor:GetHashCode
+            //ExId:GetHashCodeEx
+            //ExSummary:Shows how to use GetHashCode.
+            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.DocumentBuilder builder = new Aspose.Words.DocumentBuilder(doc);
+            Aspose.Words.Border border = builder.Font.Border;
+
+            int hash = border.GetHashCode();
             //ExEnd
         }
     }
