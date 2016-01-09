@@ -48,5 +48,28 @@ namespace QA_Tests.Examples.ConvertUtil
             pageSetup.FooterDistance = Aspose.Words.ConvertUtil.InchToPoint(0.2);
             //ExEnd
         }
+
+        [Test]
+        public void MillimeterToPointEx()
+        {
+            //ExStart
+            //ExFor:MillimeterToPoint
+            //ExId:MillimeterToPointEx
+            //ExSummary:Shows how to specify page properties in millimeters.
+            Aspose.Words.Document doc = new Aspose.Words.Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Aspose.Words.PageSetup pageSetup = builder.PageSetup;
+            pageSetup.TopMargin = Aspose.Words.ConvertUtil.MillimeterToPoint(25.0);
+            pageSetup.BottomMargin = Aspose.Words.ConvertUtil.MillimeterToPoint(25.0);
+            pageSetup.LeftMargin = Aspose.Words.ConvertUtil.MillimeterToPoint(37.5);
+            pageSetup.RightMargin = Aspose.Words.ConvertUtil.MillimeterToPoint(37.5);
+            pageSetup.HeaderDistance = Aspose.Words.ConvertUtil.MillimeterToPoint(5.0);
+            pageSetup.FooterDistance = Aspose.Words.ConvertUtil.MillimeterToPoint(5.0);
+
+            builder.Writeln("Hello world.");
+            builder.Document.Save(MyDir + "PageSetup.PageMargins Out.doc");
+            //ExEnd
+        }
     }
 }
