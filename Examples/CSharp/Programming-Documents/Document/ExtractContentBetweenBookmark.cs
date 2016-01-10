@@ -24,6 +24,9 @@ namespace CSharp.Programming_Documents.Working_With_Document
 
             Document doc = new Document(dataDir + "TestFile.doc");
 
+            Section section = doc.Sections[0];
+            section.PageSetup.LeftMargin = 70.85;
+
             // Retrieve the bookmark from the document.
             Aspose.Words.Bookmark bookmark = doc.Range.Bookmarks["Bookmark1"];
 

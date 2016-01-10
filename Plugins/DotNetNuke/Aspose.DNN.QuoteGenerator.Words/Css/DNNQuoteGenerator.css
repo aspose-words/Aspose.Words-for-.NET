@@ -1,0 +1,106 @@
+﻿.errors
+{
+    color: red !important;
+}
+div.aspsoeQuote
+{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.tblBack
+{
+    border: 0px solid #ddd;
+    background-color: #fff;
+    padding: 10px;
+}
+.tdBack
+{
+    border: 1px solid #ddd;
+    background-color: #F4F7F9;
+    padding: 10px;
+}
+.input
+{
+    width: 97%;
+    padding: 7px !important;
+    border: solid 1px #ccc;
+    -webkit-transition: box-shadow 0.3s, border 0.3s;
+    -moz-transition: box-shadow 0.3s, border 0.3s;
+    -o-transition: box-shadow 0.3s, border 0.3s;
+    transition: box-shadow 0.3s, border 0.3s;
+    background: #fff !important;
+    margin-bottom: 2px !important;
+}
+.input:focus, input.focus
+{
+    border: solid 1px #707070;
+    -webkit-box-shadow: 0 0 5px 1px #969696;
+    -moz-box-shadow: 0 0 5px 1px #969696;
+    box-shadow: 0 0 5px 1px #969696;
+    background: #E8F8F6 !important;
+}
+.buttonClass
+{
+    border: 0.1em #333336 solid;
+    border-radius: 0.2em;
+    text-decoration: none;
+    color: black;
+    padding: 0.5em 1em;
+    background-color: #f3f3f3;
+    font-weight: bold;
+}
+.buttonClass:hover
+{
+    background-color: green;
+    color: #fff;
+}
+
+.gridViewHeader
+{
+    text-decoration: none;
+    color: black;
+    background-color: #ddd;
+    height: 50px;
+}
+.gridViewHeader th
+{
+    padding: 0.5em;
+    vertical-align: middle;
+}
+.gridViewRow
+{
+    border: 0.1em #ddd solid;
+    border-radius: 0.2em;
+    text-decoration: none;
+    color: black;
+    padding: 0.5em 1em;
+    background-color: #f3f3f3;
+    vertical-align: middle;
+}
+
+.gridViewRow td
+{
+    vertical-align: middle;
+}
+
+.gridViewAlternateRow
+{
+    border: 0.1em #ddd solid;
+    text-decoration: none;
+    color: black;
+    padding: 0.5em 1em;
+    background-color: #f3f3f3;
+    vertical-align: middle;
+}
+.gridViewAlternateRow td
+{
+    vertical-align: middle;
+}
+.gridViewRow:hover
+{
+    background-color: #cececc;
+}
+.gridViewAlternateRow:hover
+{
+    background-color: #cececc;
+}

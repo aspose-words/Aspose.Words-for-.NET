@@ -35,6 +35,9 @@ namespace CSharp.Mail_Merge
             // Setup mail merge event handler to do the custom work.
             doc.MailMerge.FieldMergingCallback = new HandleMergeField();
 
+            // Trim trailing and leading whitespaces mail merge values
+            doc.MailMerge.TrimWhitespaces = false;
+
             // This is the data for mail merge.
             String[] fieldNames = new String[] {"RecipientName", "SenderName", "FaxNumber", "PhoneNumber",
                 "Subject", "Body", "Urgent", "ForReview", "PleaseComment"};

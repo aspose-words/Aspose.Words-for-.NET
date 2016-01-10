@@ -14,7 +14,7 @@ Module RunExamples
         '' Quick Start
         '' =====================================================
         '' =====================================================
-        AppendDocuments.Run()
+        'AppendDocuments.Run()
         'ApplyLicense.Run()
         'Doc2Pdf.Run()
         'FindAndReplace.Run()
@@ -134,6 +134,7 @@ Module RunExamples
         'ImageColorFilters.Run()
         'RenderShape.Run()
         'SaveAsMultipageTiff.Run()
+        ReadActiveXControlProperties.Run()
 
         '' =====================================================
         '' =====================================================

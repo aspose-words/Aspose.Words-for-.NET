@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>Aspose DotNetNuke Template</title>
+    <link rel="stylesheet" type="text/css" href="Documentation.css" />
+</head>
+<body>
+    <div>
+        <h1>AsposeDNNQuoteGenerator Module</h1>
+        <hr />
+        <h2>* Important *</h2>
+        <p>
+            When creating a project using this template, you should have named your project
+            simply "ModuleName", not "Aspose.comModuleName". If you didn&#39;t do this, the
+            easiest thing to do is close the solution, delete the folder from your DesktopModules
+            folder, then create a new project.
+        </p>
+        <p>
+            Due to limitations in the templating capabilities of Visual Studio, you will need
+            to make some minor changes, and double check a few things, before you package this module.
+        </p>
+        <ol>
+            <li>
+                <strong>Open up IIS Manager (start>run>INETMGR), go to your DNNDEV.ME website and make sure that DesktopModules is NOT a Virtual Directory/Application, if so, remove that.</strong>
+            </li>
+            <li>
+                <strong>If you change the TARGET framework for the project, remove the WEB.CONFIG file that Visual Studio will add to your project.</strong>
+            </li>
+            <li><strong>BEFORE</strong> checking the
+                module into your source control environment check the following.</li>
+            <li>Edit the Project properties by double-clicking on the Properties folder in Solution
+                Explorer</li>
+            <li>On the Web tab:
+                <ol>
+                    <li>Under 'Start Action', make sure to set your Start URL to the correct site (ex: http://dnndev.me/).</li>
+                    <li>Under 'Servers', make sure to "Use IIS Web Server" with a project url of http://dnndev.me/desktopmodules/AsposeDNNQuoteGenerator
+                        and an Override application root URL of http://dnndev.me/</li>
+                </ol>
+            </li>
+        </ol>
+
+
+        <h2>What is the use of Aspose .NET Products?</h2>
+
+        <a href="http://www.aspose.com">Aspose</a> are file format experts and provide APIs and components for various file formats including MS Office, OpenOffice, PDF and Image formats. These APIs are available on a number of development platforms including .NET frameworks – the .NET frameworks starting from version 2.0 are supported. If you are a .NET developer, you can use Aspose’s native .NET APIs in your .NET applications to process various file formats in just a few lines of codes. All the Aspose APIs don’t have any dependency over any other engine. For example, you don’t need to have MS Office installed on the server to process MS Office files.
+
+Below is a list of products we support for .NET developers:
+
+        <ul>
+            <li><a href="http://www.aspose.com/.net/excel-component.aspx">Aspose.Cells for .NET</a>
+                – Using these APIs, the .NET developers can perform simple and complex operations over various spreadsheet formats including MS Excel and OpenOffice spreadsheets. The APIs also provide conversion and rendering features for these file formats.<br /><br /></li>
+
+            <li><a href="http://www.aspose.com/.net/word-component.aspx">Aspose.Words for .NET</a>
+                – Using these APIs, the .NET developers can perform simple and complex operations over various word processing formats including MS Word and OpenOffice documents. The APIs also provide conversion and rendering features for these file formats.<br /><br /></li>
+
+            <li><a href="http://www.aspose.com/.net/powerpoint-component.aspx">Aspose.Slides for .NET</a>
+                – Using these APIs, the .NET developers can perform simple and complex operations over various presentation formats including MS PowerPoint and OpenOffice presentations. The APIs also provide conversion and rendering features for these file formats.<br /><br /></li>
+
+            <li><a href="http://www.aspose.com/.net/pdf-component.aspx">Aspose.Pdf for .NET</a>
+                – Using these APIs, the .NET developers can perform simple and complex operations over PDF files. The APIs also provide conversion and rendering features for these file formats.<br /><br /></li>
+
+            <li><a href="http://www.aspose.com/.net/barcode-component.aspx">Aspose.BarCode for .NET</a>
+                – Using these APIs, the .NET developers can generate and recognize a variety of barcode symbologies. Create barcode applications, or add barcodes to documents using these APIs.<br /><br /></li>
+
+            <li><a href="http://www.aspose.com/.net/email-component.aspx">Aspose.Email for .NET</a>
+                – Using these APIs, the .NET developers can perform simple and complex operations over various email formats including MS Outlook email formats. The APIs also provide conversion and rendering features for these file formats.<br /><br /></li>
+
+            <li><a href="http://www.aspose.com/.net/ocr-component.aspx">Aspose.OCR for .NET</a>
+                – Using these APIs, the .NET developers can perform OCR operations over images. The APIs hide all the complexities involved with OCR and developers only need to write few lines of codes to call public interfaces exposed by the API.<br /><br /></li>
+
+            <li><a href="http://www.aspose.com/.net/imaging-component.aspx">Aspose.Imaging for .NET</a>
+                – Using these APIs, the .NET developers can create, open, manipulate and save images of various formats.<br /><br /></li>
+
+            <li><a href="http://www.aspose.com/.net/project-management-component.aspx">Aspose.Tasks for .NET</a>
+                – Using these APIs, the .NET developers can create, read, manipulate, convert and save Microsoft Project files. The APIs also provide conversion and rendering features for MS Project file formats.<br /><br /></li>
+
+            <li><a href="http://www.aspose.com/.net/diagram-component.aspx">Aspose.Diagram for .NET</a>
+                – Using these APIs, the .NET developers can work with Microsoft Visio drawing files. The APIs enable developers to quickly create .NET applications for manipulating and converting Microsoft Visio drawing files.<br /><br /></li>
+        </ul>
+
+        <h2>DotNetNuke Module Development Tutorials
+        </h2>
+
+        <ul>
+            <li><a href="http://www.dnnsoftware.com/wiki/Page/Module-Development">Check out free module development tutorials</a>.
+            </li>
+        </ul>
+
+        <h2>Steps after your project is setup.</h2>
+        <ol>
+            <li>To Build and Package your Module you need to change to <b>Release</b> mode and then
+                simply choose Build from the Build menu. The MSBuild scripts will do the packaging
+                process for you. The packaging process creates an INSTALL and a SOURCE package in
+                the INSTALL folder within your desktopmodule/modulename folder. </li>
+            <li>Installing your module in your development DotNetNuke instance is easy.Take the
+               <strong>INSTALL</strong> ZIP file that is created in the INSTALL folder, upload that using the Host/Extensions
+                page, Installation Wizard. Using the INSTALL ZIP file will overwrite the files already in this folder, 
+                but that shouldn't cause any problems as long as you install a recent build.</li>
+            <li>After you've done a release for your module (typically deploying to an environment
+                outside of your development environment) you should change the Version number, you
+                need to do this in two places, the assemblyinfo file, and the .DNN manifest file.
+                Next time you build the module in release mode you will get a new package (using
+                the version number) created.</li>
+        </ol>
+        <p>
+            After you are finished reading this Documentation you can delete the Documentation directory
+            from your project.
+        </p>
+        <hr />
+        <br />
+    </div>
+</body>
+</html>
