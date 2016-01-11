@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using Aspose.Words;
 using NUnit.Framework;
 using QA_Tests.Tests;
@@ -66,7 +67,7 @@ namespace QA_Tests.Examples.Border
             //ExFor:ClearFormatting
             //ExId:ClearFormattingEx
             //ExSummary:Shows how to use ClearFormatting.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             Aspose.Words.DocumentBuilder builder = new Aspose.Words.DocumentBuilder(doc);
             builder.Font.Border.ClearFormatting();
             //ExEnd
@@ -79,7 +80,7 @@ namespace QA_Tests.Examples.Border
             //ExFor:Equals
             //ExId:EqualsEx
             //ExSummary:Shows how to use Equals.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             Aspose.Words.DocumentBuilder builder = new Aspose.Words.DocumentBuilder(doc);
             Aspose.Words.Border border1 = builder.Font.Border;
             Aspose.Words.Border border2 = builder.Font.Border;
@@ -95,7 +96,7 @@ namespace QA_Tests.Examples.Border
             //ExFor:GetHashCode
             //ExId:GetHashCodeEx
             //ExSummary:Shows how to use GetHashCode.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             Aspose.Words.DocumentBuilder builder = new Aspose.Words.DocumentBuilder(doc);
             Aspose.Words.Border border = builder.Font.Border;
 

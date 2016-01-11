@@ -25,7 +25,7 @@ namespace QA_Tests.Examples.Fields
             //ExFor:FormFieldCollection
             //ExId:FormFieldsGetFormFieldsCollection
             //ExSummary:Shows how to get a collection of form fields.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "FormFields.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "FormFields.doc");
             FormFieldCollection formFields = doc.Range.FormFields;
             //ExEnd
         }
@@ -37,7 +37,7 @@ namespace QA_Tests.Examples.Fields
             //ExFor:FormField
             //ExId:FormFieldsGetByName
             //ExSummary:Shows how to access form fields.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "FormFields.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "FormFields.doc");
             FormFieldCollection documentFormFields = doc.Range.FormFields;
 
             FormField formField1 = documentFormFields[3];
@@ -55,7 +55,7 @@ namespace QA_Tests.Examples.Fields
             //ExFor:FormField.Name
             //ExId:FormFieldsWorkWithProperties
             //ExSummary:Shows how to work with form field name, type, and result.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "FormFields.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "FormFields.doc");
             
             FormField formField = doc.Range.FormFields[3];
 

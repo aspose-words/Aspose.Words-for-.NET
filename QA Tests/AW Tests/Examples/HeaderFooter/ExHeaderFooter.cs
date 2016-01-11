@@ -34,10 +34,10 @@ namespace QA_Tests.Examples.HeaderFooter
             // Add a paragraph with text to the footer.
             footer.AppendParagraph("TEST FOOTER");
 
-            doc.Save(MyDir + "HeaderFooter.CreateFooter Out.doc");
+            doc.Save(ExDir + "HeaderFooter.CreateFooter Out.doc");
             //ExEnd
 
-            doc = new Aspose.Words.Document(MyDir + "HeaderFooter.CreateFooter Out.doc");
+            doc = new Aspose.Words.Document(ExDir + "HeaderFooter.CreateFooter Out.doc");
             Assert.True(doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].Range.Text.Contains("TEST FOOTER"));
         }
 
@@ -52,7 +52,7 @@ namespace QA_Tests.Examples.HeaderFooter
             //ExFor:HeaderFooterType
             //ExId:RemoveFooters
             //ExSummary:Deletes all footers from all sections, but leaves headers intact.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "HeaderFooter.RemoveFooters.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "HeaderFooter.RemoveFooters.doc");
 
             foreach (Aspose.Words.Section section in doc)
             {
@@ -74,7 +74,7 @@ namespace QA_Tests.Examples.HeaderFooter
                     footer.Remove();
             }
 
-            doc.Save(MyDir + "HeaderFooter.RemoveFooters Out.doc");
+            doc.Save(ExDir + "HeaderFooter.RemoveFooters Out.doc");
             //ExEnd
         }
 
@@ -85,16 +85,16 @@ namespace QA_Tests.Examples.HeaderFooter
             //ExFor:HtmlSaveOptions.ExportHeadersFootersMode
             //ExFor:ExportHeadersFootersMode
             //ExSummary:Demonstrates how to disable the export of headers and footers when saving to HTML based formats.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "HeaderFooter.RemoveFooters.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "HeaderFooter.RemoveFooters.doc");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html);
             saveOptions.ExportHeadersFootersMode = ExportHeadersFootersMode.None; // Disables exporting headers and footers.
 
-            doc.Save(MyDir + "HeaderFooter.DisableHeadersFooters Out.html", saveOptions);
+            doc.Save(ExDir + "HeaderFooter.DisableHeadersFooters Out.html", saveOptions);
             //ExEnd
 
             // Verify that the output document is correct.
-            doc = new Aspose.Words.Document(MyDir + "HeaderFooter.DisableHeadersFooters Out.html");
+            doc = new Aspose.Words.Document(ExDir + "HeaderFooter.DisableHeadersFooters Out.html");
             Assert.IsFalse(doc.Range.Text.Contains("DYNAMIC TEMPLATE"));
         }
 
@@ -109,17 +109,17 @@ namespace QA_Tests.Examples.HeaderFooter
             //ExFor:Range.Replace(String, String, Boolean, Boolean)
             //ExSummary:Shows how to replace text in the document footer.
             // Open the template document, containing obsolete copyright information in the footer.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "HeaderFooter.ReplaceText.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "HeaderFooter.ReplaceText.doc");
 
             HeaderFooterCollection headersFooters = doc.FirstSection.HeadersFooters;
             Aspose.Words.HeaderFooter footer = headersFooters[HeaderFooterType.FooterPrimary];
             footer.Range.Replace("(C) 2006 Aspose Pty Ltd.", "Copyright (C) 2011 by Aspose Pty Ltd.", false, false);
 
-            doc.Save(MyDir + "HeaderFooter.ReplaceText Out.doc");
+            doc.Save(ExDir + "HeaderFooter.ReplaceText Out.doc");
             //ExEnd
 
             // Verify that the appropriate changes were made to the output document.
-            doc = new Aspose.Words.Document(MyDir + "HeaderFooter.ReplaceText Out.doc");
+            doc = new Aspose.Words.Document(ExDir + "HeaderFooter.ReplaceText Out.doc");
             Assert.IsTrue(doc.Range.Text.Contains("Copyright (C) 2011 by Aspose Pty Ltd."));
         }
 
@@ -166,7 +166,7 @@ namespace QA_Tests.Examples.HeaderFooter
 
             // Insert absolutely positioned image into the top/left corner of the header.
             // Distance from the top/left edges of the page is set to 10 points.
-            string imageFileName = MyDir + "Aspose.Words.gif";
+            string imageFileName = ExDir + "Aspose.Words.gif";
             builder.InsertImage(imageFileName, RelativeHorizontalPosition.Page, 10, RelativeVerticalPosition.Page, 10, 50, 50, WrapType.Through);
 
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Right;
@@ -248,7 +248,7 @@ namespace QA_Tests.Examples.HeaderFooter
             row.LastCell.CellFormat.PreferredWidth = PreferredWidth.FromPercent(100 * 2 / 3);
 
             // Save the resulting document.
-            doc.Save(MyDir + "HeaderFooter.Primer Out.doc");
+            doc.Save(ExDir + "HeaderFooter.Primer Out.doc");
         }
 
         /// <summary>

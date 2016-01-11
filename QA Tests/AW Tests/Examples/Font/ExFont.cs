@@ -85,7 +85,7 @@ namespace QA_Tests.Examples.Font
             //ExFor:FontInfo.Name
             //ExFor:FontInfo.IsTrueType
             //ExSummary:Shows how to gather the details of what fonts are present in a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             FontInfoCollection fonts = doc.FontInfos;
             int fontIndex = 1;
@@ -359,7 +359,7 @@ namespace QA_Tests.Examples.Font
             // Insert some Arabic text.
             builder.Writeln("مرحبًا");
 
-            builder.Document.Save(MyDir + "Font.Bidi Out.doc");
+            builder.Document.Save(ExDir + "Font.Bidi Out.doc");
             //ExEnd
         }
 
@@ -384,7 +384,7 @@ namespace QA_Tests.Examples.Font
             // Insert some Chinese text.
             builder.Writeln("你好世界");
             
-            builder.Document.Save(MyDir + "Font.FarEast Out.doc");
+            builder.Document.Save(ExDir + "Font.FarEast Out.doc");
             //ExEnd
         }
 
@@ -405,7 +405,7 @@ namespace QA_Tests.Examples.Font
 
             builder.Writeln("Hello, Привет");
 
-            builder.Document.Save(MyDir + "Font.Names Out.doc");
+            builder.Document.Save(ExDir + "Font.Names Out.doc");
             //ExEnd
         }
 
@@ -416,7 +416,7 @@ namespace QA_Tests.Examples.Font
             //ExFor:Font.StyleIdentifier
             //ExFor:StyleIdentifier
             //ExSummary:Shows how to use style identifier to find text formatted with a specific character style and apply different character style.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Font.StyleIdentifier.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Font.StyleIdentifier.doc");
 
             // Select all run nodes in the document.
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
@@ -431,7 +431,7 @@ namespace QA_Tests.Examples.Font
                     run.Font.StyleIdentifier = StyleIdentifier.Strong;
             }
 
-            doc.Save(MyDir + "Font.StyleIdentifier Out.doc");
+            doc.Save(ExDir + "Font.StyleIdentifier Out.doc");
             //ExEnd
         }
 
@@ -441,7 +441,7 @@ namespace QA_Tests.Examples.Font
             //ExStart
             //ExFor:Font.StyleName
             //ExSummary:Shows how to use style name to find text formatted with a specific character style and apply different character style.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Font.StyleName.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Font.StyleName.doc");
 
             // Select all run nodes in the document.
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
@@ -456,7 +456,7 @@ namespace QA_Tests.Examples.Font
                     run.Font.StyleName = "Strong";
             }
 
-            doc.Save(MyDir + "Font.StyleName Out.doc");
+            doc.Save(ExDir + "Font.StyleName Out.doc");
             //ExEnd
         }
 
@@ -467,7 +467,7 @@ namespace QA_Tests.Examples.Font
             //ExFor:Font.Style
             //ExFor:Style.BuiltIn
             //ExSummary:Applies double underline to all runs in a document that are formatted with custom character styles.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Font.Style.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Font.Style.doc");
 
             // Select all run nodes in the document.
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
@@ -482,7 +482,7 @@ namespace QA_Tests.Examples.Font
                     run.Font.Underline = Underline.Double;
             }
 
-            doc.Save(MyDir + "Font.Style Out.doc");
+            doc.Save(ExDir + "Font.Style Out.doc");
             //ExEnd
         }
 
@@ -492,7 +492,7 @@ namespace QA_Tests.Examples.Font
             //ExStart
             //ExFor:Run
             //ExSummary:Gets all fonts used in a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Font.Names.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Font.Names.doc");
 
             // Select all runs in the document.
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
@@ -546,7 +546,7 @@ namespace QA_Tests.Examples.Font
         public void RemoveHiddenContentFromDocument()
         {
             // Open the document we want to remove hidden content from.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Font.Hidden.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Font.Hidden.doc");
 
             // Create an object that inherits from the DocumentVisitor class.
             RemoveHiddenContentVisitor hiddenContentRemover = new RemoveHiddenContentVisitor();
@@ -566,7 +566,7 @@ namespace QA_Tests.Examples.Font
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
             table.Accept(hiddenContentRemover);
 
-            doc.Save(MyDir + "Font.Hidden Out.doc");
+            doc.Save(ExDir + "Font.Hidden Out.doc");
 
             Assert.AreEqual(13, doc.GetChildNodes(NodeType.Paragraph, true).Count); //ExSkip
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count); //ExSkip

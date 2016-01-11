@@ -73,13 +73,13 @@ namespace QA_Tests.Examples.Document
             //ExStart
             //ExId:InsertDocumentAtBookmark
             //ExSummary:Invokes the InsertDocument method shown above to insert a document at a bookmark.
-            Aspose.Words.Document mainDoc = new Aspose.Words.Document(MyDir + "InsertDocument1.doc");
-            Aspose.Words.Document subDoc = new Aspose.Words.Document(MyDir + "InsertDocument2.doc");
+            Aspose.Words.Document mainDoc = new Aspose.Words.Document(ExDir + "InsertDocument1.doc");
+            Aspose.Words.Document subDoc = new Aspose.Words.Document(ExDir + "InsertDocument2.doc");
 
             Aspose.Words.Bookmark bookmark = mainDoc.Range.Bookmarks["insertionPlace"];
             InsertDocument(bookmark.BookmarkStart.ParentNode, subDoc);
 
-            mainDoc.Save(MyDir + "InsertDocumentAtBookmark Out.doc");
+            mainDoc.Save(ExDir + "InsertDocumentAtBookmark Out.doc");
             //ExEnd
         }
 
@@ -99,7 +99,7 @@ namespace QA_Tests.Examples.Document
         public void InsertDocumentAtMailMerge()
         {
             // Open the main document.
-            Aspose.Words.Document mainDoc = new Aspose.Words.Document(MyDir + "InsertDocument1.doc");
+            Aspose.Words.Document mainDoc = new Aspose.Words.Document(ExDir + "InsertDocument1.doc");
 
             // Add a handler to MergeField event
             mainDoc.MailMerge.FieldMergingCallback = new InsertDocumentAtMailMergeHandler();
@@ -109,9 +109,9 @@ namespace QA_Tests.Examples.Document
             // that should be inserted to this field.
             mainDoc.MailMerge.Execute(
                 new string[] { "Document_1" },
-                new string[] { MyDir + "InsertDocument2.doc" });
+                new string[] { ExDir + "InsertDocument2.doc" });
 
-            mainDoc.Save(MyDir + "InsertDocumentAtMailMerge Out.doc");
+            mainDoc.Save(ExDir + "InsertDocumentAtMailMerge Out.doc");
         }
 
         private class InsertDocumentAtMailMergeHandler : IFieldMergingCallback
@@ -212,16 +212,16 @@ namespace QA_Tests.Examples.Document
         //ExSummary:Shows how to insert content of one document into another during a customized find and replace operation.
         public void InsertDocumentAtReplace()
         {
-            Aspose.Words.Document mainDoc = new Aspose.Words.Document(MyDir + "InsertDocument1.doc");
+            Aspose.Words.Document mainDoc = new Aspose.Words.Document(ExDir + "InsertDocument1.doc");
             mainDoc.Range.Replace(new Regex("\\[MY_DOCUMENT\\]"), new InsertDocumentAtReplaceHandler(), false);
-            mainDoc.Save(MyDir + "InsertDocumentAtReplace Out.doc");
+            mainDoc.Save(ExDir + "InsertDocumentAtReplace Out.doc");
         }
 
         private class InsertDocumentAtReplaceHandler : IReplacingCallback
         {
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs e)
             {
-                Aspose.Words.Document subDoc = new Aspose.Words.Document(MyDir + "InsertDocument2.doc");
+                Aspose.Words.Document subDoc = new Aspose.Words.Document(ExDir + "InsertDocument2.doc");
 
                 // Insert a document after the paragraph, containing the match text.
                 Paragraph para = (Paragraph)e.MatchNode.ParentNode;

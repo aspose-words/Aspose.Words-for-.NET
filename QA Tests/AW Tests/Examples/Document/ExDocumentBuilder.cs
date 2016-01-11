@@ -83,7 +83,7 @@ namespace QA_Tests.Examples.Document
             builder.InsertBreak(BreakType.PageBreak);
             builder.Writeln("Page3");
 
-            doc.Save(MyDir + "DocumentBuilder.HeadersAndFooters Out.doc");
+            doc.Save(ExDir + "DocumentBuilder.HeadersAndFooters Out.doc");
             //ExEnd
         }
 
@@ -151,7 +151,7 @@ namespace QA_Tests.Examples.Document
             
             builder.Writeln("Hello World!");
 
-            doc.Save(MyDir + "DocumentBuilderAndSave Out.docx");
+            doc.Save(ExDir + "DocumentBuilderAndSave Out.docx");
             //ExEnd
         }
 
@@ -182,7 +182,7 @@ namespace QA_Tests.Examples.Document
 
             builder.Write(" for more information.");
 
-            doc.Save(MyDir + "DocumentBuilder.InsertHyperlink Out.doc");
+            doc.Save(ExDir + "DocumentBuilder.InsertHyperlink Out.doc");
             //ExEnd
         }
 
@@ -217,7 +217,7 @@ namespace QA_Tests.Examples.Document
 
             builder.Writeln(". We hope you enjoyed the example.");
 
-            doc.Save(MyDir + "DocumentBuilder.PushPopFont Out.doc");
+            doc.Save(ExDir + "DocumentBuilder.PushPopFont Out.doc");
             //ExEnd
         }
 
@@ -240,7 +240,7 @@ namespace QA_Tests.Examples.Document
             // The best place for the watermark image is in the header or footer so it is shown on every page.
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
 
-            Image image = Image.FromFile(MyDir + "Watermark.png");
+            Image image = Image.FromFile(ExDir + "Watermark.png");
 
             // Insert a floating picture.
             Shape shape = builder.InsertImage(image);
@@ -254,7 +254,7 @@ namespace QA_Tests.Examples.Document
             shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
             shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
 
-            doc.Save(MyDir + "DocumentBuilder.InsertWatermark Out.doc");
+            doc.Save(ExDir + "DocumentBuilder.InsertWatermark Out.doc");
             //ExEnd
         }
 
@@ -275,7 +275,7 @@ namespace QA_Tests.Examples.Document
                 "<div align='center'>Div center</div>" +
                 "<h1 align='left'>Heading 1 left.</h1>");
 
-            doc.Save(MyDir + "DocumentBuilder.InsertHtml Out.doc");
+            doc.Save(ExDir + "DocumentBuilder.InsertHtml Out.doc");
             //ExEnd
         }
 
@@ -334,7 +334,7 @@ namespace QA_Tests.Examples.Document
             builder.InsertCheckBox("", true, 0);
             builder.Writeln("My boots are always polished and nice-looking.");
 
-            builder.Document.Save(MyDir + "DocumentBuilder.CreateForm Out.doc");
+            builder.Document.Save(ExDir + "DocumentBuilder.CreateForm Out.doc");
             //ExEnd
         }
 
@@ -349,7 +349,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:DocumentBuilder.MoveToDocumentStart
             //ExFor:DocumentBuilder.MoveToDocumentEnd
             //ExSummary:Shows how to move between nodes and manipulate current ones.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "DocumentBuilder.WorkingWithNodes.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "DocumentBuilder.WorkingWithNodes.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Move to a bookmark and delete the parent paragraph.
@@ -368,7 +368,7 @@ namespace QA_Tests.Examples.Document
             builder.MoveToDocumentEnd();
             builder.Writeln("End of document.");
 
-            doc.Save(MyDir + "DocumentBuilder.WorkingWithNodes Out.doc");
+            doc.Save(ExDir + "DocumentBuilder.WorkingWithNodes Out.doc");
             //ExEnd
         }
 
@@ -380,7 +380,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:DocumentBuilder.Bold
             //ExFor:DocumentBuilder.Italic
             //ExSummary:Fills document merge fields with some data.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "DocumentBuilder.FillingDocument.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "DocumentBuilder.FillingDocument.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveToMergeField("TeamLeaderName");
@@ -395,7 +395,7 @@ namespace QA_Tests.Examples.Document
             builder.Italic = true;
             builder.Writeln("Vladimir Averkin");
 
-            doc.Save(MyDir + "DocumentBuilder.FillingDocument Out.doc");
+            doc.Save(ExDir + "DocumentBuilder.FillingDocument Out.doc");
             //ExEnd
         }
 
@@ -457,7 +457,7 @@ namespace QA_Tests.Examples.Document
             doc.UpdateFields();
             //ExEnd
 
-            doc.Save(MyDir + "DocumentBuilder.InsertToc Out.docx");
+            doc.Save(ExDir + "DocumentBuilder.InsertToc Out.docx");
         }
 
         [Test]
@@ -536,7 +536,7 @@ namespace QA_Tests.Examples.Document
 
             builder.EndTable();
 
-            builder.Document.Save(MyDir + "DocumentBuilder.InsertTable Out.doc");
+            builder.Document.Save(ExDir + "DocumentBuilder.InsertTable Out.doc");
             //ExEnd
         }
 
@@ -589,7 +589,7 @@ namespace QA_Tests.Examples.Document
             builder.Writeln("50");
             builder.EndRow();
 
-            doc.Save(MyDir + "DocumentBuilder.SetTableStyle Out.docx");
+            doc.Save(ExDir + "DocumentBuilder.SetTableStyle Out.docx");
             //ExEnd
 
             // Verify that the style was set by expanding to direct formatting.
@@ -637,7 +637,7 @@ namespace QA_Tests.Examples.Document
                 builder.EndRow();
             }
 
-            doc.Save(MyDir + "Table.HeadingRow Out.doc");
+            doc.Save(ExDir + "Table.HeadingRow Out.doc");
             //ExEnd
 
             Assert.True(table.FirstRow.RowFormat.HeadingFormat);
@@ -671,7 +671,7 @@ namespace QA_Tests.Examples.Document
             builder.InsertCell();
             builder.Writeln("Cell #3");
 
-            doc.Save(MyDir + "Table.PreferredWidth Out.doc");
+            doc.Save(ExDir + "Table.PreferredWidth Out.doc");
             //ExEnd
 
             // Verify the correct settings were applied.
@@ -715,7 +715,7 @@ namespace QA_Tests.Examples.Document
             builder.Writeln("Cell automatically sized. The size of this cell is calculated from the table preferred width.");
             builder.Writeln("In this case the cell will fill up the rest of the available space.");
 
-            doc.Save(MyDir + "Table.CellPreferredWidths Out.doc");
+            doc.Save(ExDir + "Table.CellPreferredWidths Out.doc");
             //ExEnd
             
             // Verify the correct settings were applied.
@@ -746,7 +746,7 @@ namespace QA_Tests.Examples.Document
                                "</tr>"                  +
                                "</table>");
 
-            doc.Save(MyDir + "DocumentBuilder.InsertTableFromHtml Out.doc");
+            doc.Save(ExDir + "DocumentBuilder.InsertTableFromHtml Out.doc");
             //ExEnd
 
             // Verify the table was constructed properly.
@@ -787,7 +787,7 @@ namespace QA_Tests.Examples.Document
 
             builder.EndTable();
 
-            doc.Save(MyDir + "DocumentBuilder.InsertNestedTable Out.doc");
+            doc.Save(ExDir + "DocumentBuilder.InsertNestedTable Out.doc");
             //ExEnd
 
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count);
@@ -832,7 +832,7 @@ namespace QA_Tests.Examples.Document
             builder.EndTable();
 
             // Save the document to disk.
-            doc.Save(MyDir + "DocumentBuilder.CreateSimpleTable Out.doc");
+            doc.Save(ExDir + "DocumentBuilder.CreateSimpleTable Out.doc");
             //ExEnd
 
             // Verify that the cell count of the table is four.
@@ -927,7 +927,7 @@ namespace QA_Tests.Examples.Document
             builder.EndRow();
             builder.EndTable();
 
-            doc.Save(MyDir + "DocumentBuilder.CreateFormattedTable Out.doc");
+            doc.Save(ExDir + "DocumentBuilder.CreateFormattedTable Out.doc");
             //ExEnd
 
             // Verify that the cell style is different compared to default.
@@ -989,7 +989,7 @@ namespace QA_Tests.Examples.Document
             builder.CellFormat.ClearFormatting();
             builder.Writeln("Cell #4");
 
-            doc.Save(MyDir + "Table.SetBordersAndShading Out.doc");
+            doc.Save(ExDir + "Table.SetBordersAndShading Out.doc");
             //ExEnd
 
             // Verify the table was created correctly.
@@ -1049,7 +1049,7 @@ namespace QA_Tests.Examples.Document
             // Clear hyperlink formatting.
             builder.Font.ClearFormatting();
 
-            doc.Save(MyDir + "DocumentBuilder.InsertHyperlinkToLocalBookmark Out.doc");
+            doc.Save(ExDir + "DocumentBuilder.InsertHyperlinkToLocalBookmark Out.doc");
             //ExEnd
         }
 
@@ -1071,7 +1071,7 @@ namespace QA_Tests.Examples.Document
             //ExStart
             //ExId:DocumentBuilderCursorPosition
             //ExSummary:Shows how to access the current node in a document builder.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "DocumentBuilder.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Aspose.Words.Node curNode = builder.CurrentNode;
@@ -1087,7 +1087,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:DocumentBuilder.MoveTo(Node)
             //ExId:DocumentBuilderMoveToNode
             //ExSummary:Shows how to move a cursor position to a specified node.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "DocumentBuilder.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveTo(doc.FirstSection.Body.LastParagraph);
@@ -1100,7 +1100,7 @@ namespace QA_Tests.Examples.Document
             //ExStart
             //ExId:DocumentBuilderMoveToDocumentStartEnd
             //ExSummary:Shows how to move a cursor position to the beginning or end of a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "DocumentBuilder.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveToDocumentEnd();
@@ -1117,7 +1117,7 @@ namespace QA_Tests.Examples.Document
             //ExStart
             //ExId:DocumentBuilderMoveToSection
             //ExSummary:Shows how to move a cursor position to the specified section.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "DocumentBuilder.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Parameters are 0-index. Moves to third section.
@@ -1133,7 +1133,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:DocumentBuilder.MoveToParagraph
             //ExId:DocumentBuilderMoveToParagraph
             //ExSummary:Shows how to move a cursor position to the specified paragraph.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "DocumentBuilder.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Parameters are 0-index. Moves to third paragraph.
@@ -1149,7 +1149,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:DocumentBuilder.MoveToCell
             //ExId:DocumentBuilderMoveToTableCell
             //ExSummary:Shows how to move a cursor position to the specified table cell.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "DocumentBuilder.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // All parameters are 0-index. Moves to the 2nd table, 3rd row, 5th cell.
@@ -1164,7 +1164,7 @@ namespace QA_Tests.Examples.Document
             //ExStart
             //ExId:DocumentBuilderMoveToBookmark
             //ExSummary:Shows how to move a cursor position to a bookmark.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "DocumentBuilder.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveToBookmark("CoolBookmark");
@@ -1179,7 +1179,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:DocumentBuilder.MoveToBookmark(String, Boolean, Boolean)
             //ExId:DocumentBuilderMoveToBookmarkEnd
             //ExSummary:Shows how to move a cursor position to just after the bookmark end.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "DocumentBuilder.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveToBookmark("CoolBookmark", false, true);
@@ -1193,7 +1193,7 @@ namespace QA_Tests.Examples.Document
             //ExStart
             //ExId:DocumentBuilderMoveToMergeField
             //ExSummary:Shows how to move the cursor to a position just beyond the specified merge field.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "DocumentBuilder.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveToMergeField("NiceMergeField");
@@ -1322,7 +1322,7 @@ namespace QA_Tests.Examples.Document
             Aspose.Words.Document doc = new Aspose.Words.Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertImage(MyDir + "Watermark.png");
+            builder.InsertImage(ExDir + "Watermark.png");
             //ExEnd
         }
 
@@ -1336,7 +1336,7 @@ namespace QA_Tests.Examples.Document
             Aspose.Words.Document doc = new Aspose.Words.Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertImage(MyDir + "Watermark.png", 
+            builder.InsertImage(ExDir + "Watermark.png", 
                 RelativeHorizontalPosition.Margin, 
                 100,
                 RelativeVerticalPosition.Margin, 
@@ -1357,7 +1357,7 @@ namespace QA_Tests.Examples.Document
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertImage("http://www.aspose.com/images/aspose-logo.gif");
 
-            doc.Save(MyDir + "DocumentBuilder.InsertImageFromUrl Out.doc");
+            doc.Save(ExDir + "DocumentBuilder.InsertImageFromUrl Out.doc");
             //ExEnd
 
             // Verify that the image was inserted into the document.
@@ -1377,7 +1377,7 @@ namespace QA_Tests.Examples.Document
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Pass a negative value to the width and height values to specify using the size of the source image.
-            builder.InsertImage(MyDir + "LogoSmall.png",
+            builder.InsertImage(ExDir + "LogoSmall.png",
                 RelativeHorizontalPosition.Margin,
                 200,
                 RelativeVerticalPosition.Margin,
@@ -1387,7 +1387,7 @@ namespace QA_Tests.Examples.Document
                 WrapType.Square);
             //ExEnd
 
-            doc.Save(MyDir + "DocumentBuilder.InsertImageOriginalSize Out.doc");
+            doc.Save(ExDir + "DocumentBuilder.InsertImageOriginalSize Out.doc");
         }
 
         [Test]
@@ -1713,7 +1713,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:DeleteRow
             //ExId:DeleteRowEx
             //ExSummary:Shows how to apply DeleteRow to a table.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "DocumentBuilder.DocWithTable.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "DocumentBuilder.DocWithTable.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.DeleteRow(0, 0);
@@ -1727,10 +1727,10 @@ namespace QA_Tests.Examples.Document
             //ExFor:InsertDocument
             //ExId:InsertDocumentEx
             //ExSummary:Shows how to use InsertDocument.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Aspose.Words.Document docToInsert = new Aspose.Words.Document(MyDir + "DocumentBuilder.InsertedDoc.doc");
+            Aspose.Words.Document docToInsert = new Aspose.Words.Document(ExDir + "DocumentBuilder.InsertedDoc.doc");
 
             builder.InsertDocument(docToInsert, ImportFormatMode.KeepSourceFormatting);
             //ExEnd
@@ -1743,7 +1743,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:StartEditableRange
             //ExId:StartEditableRangeEx
             //ExSummary:Shows how to use StartEditableRange.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.StartEditableRange();
@@ -1757,7 +1757,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:MoveToField
             //ExId:MoveToFieldEx
             //ExSummary:Shows how to use MoveToField.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Aspose.Words.Fields.Field field = builder.InsertField("PAGE");
@@ -1784,7 +1784,7 @@ namespace QA_Tests.Examples.Document
                 "<div align='center'>Div center</div>" +
                 "<h1 align='left'>Heading 1 left.</h1>", useBuilderFormatting);
 
-            doc.Save(MyDir + "DocumentBuilder.InsertHtml Out.doc");
+            doc.Save(ExDir + "DocumentBuilder.InsertHtml Out.doc");
             //ExEnd
         }
     }

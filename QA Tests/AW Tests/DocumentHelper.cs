@@ -1,4 +1,6 @@
-﻿using Aspose.Words;
+﻿using System.IO;
+using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Tables;
 
 namespace QA_Tests
@@ -51,35 +53,33 @@ namespace QA_Tests
             // Continued on page 2 of the document content
             builder.InsertBreak(BreakType.PageBreak);
 
-            // Creating TOC entries
-            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
+            //Insert TOC entries
+            InsertToc(doc);
 
-            builder.Writeln("Heading 1");
+            return doc;
+        }
 
-            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading2;
+        /// <summary>
+        /// Create new document with textbox shape and some query
+        /// </summary>
+        internal static Document CreateTemplateDocumentForReportingEngine(string templateText)
+        {
+            Document doc = new Document();
 
-            builder.Writeln("Heading 1.1");
-            builder.Writeln("Heading 1.2");
+            //ToDo: Maybe in future add shape(object) as parameter
+            // Create textbox shape.
+            Shape textbox = new Shape(doc, ShapeType.TextBox);
+            textbox.Width = 431.5;
+            textbox.Height = 346.35;
 
-            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading4;
+            Paragraph paragraph = new Paragraph(doc);
+            paragraph.AppendChild(new Run(doc, templateText));
 
-            builder.Writeln("Heading 1.1.1.1");
-            builder.Writeln("Heading 1.1.1.2");
+            // Insert paragraph into the textbox.
+            textbox.AppendChild(paragraph);
 
-            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
-
-            builder.Writeln("Heading 2.1");
-
-            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading5;
-
-            builder.Writeln("Heading 2.1.1.1.1");
-            builder.Writeln("Heading 2.1.1.1.2");
-            builder.Writeln("Heading 2.1.1.1.3");
-
-            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading9;
-
-            builder.Writeln("Heading 2.1.1.1.1.1.1.1.1");
-            builder.Write("Heading 2.1.1.1.1.1.1.1.2");
+            // Insert textbox into the document.
+            doc.FirstSection.Body.FirstParagraph.AppendChild(textbox);
 
             return doc;
         }
@@ -119,6 +119,44 @@ namespace QA_Tests
             builder.EndRow();
 
             builder.EndTable();
+        }
+
+        /// <summary>
+        /// Insert TOC entries in the document
+        /// </summary>
+        private static void InsertToc(Document doc)
+        {
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Creating TOC entries
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
+
+            builder.Writeln("Heading 1");
+
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading2;
+
+            builder.Writeln("Heading 1.1");
+            builder.Writeln("Heading 1.2");
+
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading4;
+
+            builder.Writeln("Heading 1.1.1.1");
+            builder.Writeln("Heading 1.1.1.2");
+
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
+
+            builder.Writeln("Heading 2.1");
+
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading5;
+
+            builder.Writeln("Heading 2.1.1.1.1");
+            builder.Writeln("Heading 2.1.1.1.2");
+            builder.Writeln("Heading 2.1.1.1.3");
+
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading9;
+
+            builder.Writeln("Heading 2.1.1.1.1.1.1.1.1");
+            builder.Write("Heading 2.1.1.1.1.1.1.1.2");
         }
 
         /// <summary>

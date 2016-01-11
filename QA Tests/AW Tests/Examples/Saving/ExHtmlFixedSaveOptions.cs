@@ -29,7 +29,7 @@ namespace QA_Tests.Examples.Saving
             };
 
             //Uses "HtmlFixedSaveOptions"
-            doc.Save(MyDir + "UseEncoding.html", htmlFixedSaveOptions);
+            doc.Save(ExDir + "UseEncoding.html", htmlFixedSaveOptions);
             //ExEnd
         }
     }

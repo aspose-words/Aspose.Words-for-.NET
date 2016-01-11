@@ -44,7 +44,7 @@ namespace QA_Tests.Examples.Document
         public void ToText()
         {
             // Open the document we want to convert.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Visitor.ToText.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Visitor.ToText.doc");
 
             // Create an object that inherits from the DocumentVisitor class.
             MyDocToTxtWriter myConverter = new MyDocToTxtWriter();

@@ -68,7 +68,7 @@ namespace QA_Tests.Examples.ConvertUtil
             pageSetup.FooterDistance = Aspose.Words.ConvertUtil.MillimeterToPoint(5.0);
 
             builder.Writeln("Hello world.");
-            builder.Document.Save(MyDir + "PageSetup.PageMargins Out.doc");
+            builder.Document.Save(ExDir + "PageSetup.PageMargins Out.doc");
             //ExEnd
         }
     }

@@ -139,7 +139,7 @@ namespace QA_Tests.Examples.Tables
             //ExStart
             //ExId:RemoveTableColumn
             //ExSummary:Shows how to remove a column from a table in a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.Document.doc");
             Table table = (Table)doc.GetChild(NodeType.Table, 1, true);
 
             // Get the third column from the table and remove it.
@@ -147,7 +147,7 @@ namespace QA_Tests.Examples.Tables
             column.Remove();
             //ExEnd
 
-            doc.Save(MyDir + "Table.RemoveColumn Out.doc");
+            doc.Save(ExDir + "Table.RemoveColumn Out.doc");
 
             Assert.AreEqual(16, table.GetChildNodes(NodeType.Cell, true).Count);
             Assert.AreEqual("Cell 3 contents", table.Rows[2].Cells[2].ToString(SaveFormat.Text).Trim());
@@ -157,7 +157,7 @@ namespace QA_Tests.Examples.Tables
         [Test]
         public void InsertNewColumnIntoTable()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.Document.doc");
             Table table = (Table)doc.GetChild(NodeType.Table, 1, true);
 
             //ExStart
@@ -175,7 +175,7 @@ namespace QA_Tests.Examples.Tables
                 cell.FirstParagraph.AppendChild(new Run(doc, "Column Text " + newColumn.IndexOf(cell)));
             //ExEnd
 
-            doc.Save(MyDir + "Table.InsertColumn Out.doc");
+            doc.Save(ExDir + "Table.InsertColumn Out.doc");
 
             Assert.AreEqual(24, table.GetChildNodes(NodeType.Cell, true).Count);
             Assert.AreEqual("Column Text 0", table.FirstRow.Cells[1].ToString(SaveFormat.Text).Trim());
@@ -185,7 +185,7 @@ namespace QA_Tests.Examples.Tables
         [Test]
         public void TableColumnToTxt()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.Document.doc");
             Table table = (Table)doc.GetChild(NodeType.Table, 1, true);
 
             //ExStart

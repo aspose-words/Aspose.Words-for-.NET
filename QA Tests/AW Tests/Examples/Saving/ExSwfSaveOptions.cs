@@ -18,7 +18,7 @@ namespace QA_Tests.Examples.Saving
         [Test]
         public void UseCustomToolTips()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             //ExStart
             //ExFor:SwfSaveOptions
@@ -63,7 +63,7 @@ namespace QA_Tests.Examples.Saving
             options.ToolTips[SwfViewerControlIdentifier.BottomPaneShowHideBottomPaneButton] = "Показать/Скрыть панель";
             //ExEnd
 
-            doc.Save(MyDir + "SwfSaveOptions.ToolTips Out.swf", options);
+            doc.Save(ExDir + "SwfSaveOptions.ToolTips Out.swf", options);
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace QA_Tests.Examples.Saving
             //ExFor:SwfTopPaneControlFlags
             //ExFor:SwfSaveOptions.ShowSearch
             //ExSummary:Shows how to choose which controls to display in the embedded document viewer.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             // Create an instance of SwfSaveOptions and set some buttons as hidden.
             SwfSaveOptions options = new SwfSaveOptions();
@@ -87,13 +87,13 @@ namespace QA_Tests.Examples.Saving
             options.ShowSearch = false;
             //ExEnd
 
-            doc.Save(MyDir + "SwfSaveOptions.HideControls Out.swf", options);
+            doc.Save(ExDir + "SwfSaveOptions.HideControls Out.swf", options);
         }
 
         [Test]
         public void SetLogo()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             //ExStart
             //ExFor:SwfSaveOptions.#ctor
@@ -105,7 +105,7 @@ namespace QA_Tests.Examples.Saving
             SwfSaveOptions options = new SwfSaveOptions();
 
             // Read the image into byte array.
-            byte[] logoBytes = File.ReadAllBytes(MyDir + "LogoSmall.png");
+            byte[] logoBytes = File.ReadAllBytes(ExDir + "LogoSmall.png");
 
             // Specify the logo image to use.
             options.LogoImageBytes = logoBytes;
@@ -114,7 +114,7 @@ namespace QA_Tests.Examples.Saving
             options.LogoLink = "http://www.aspose.com";
             //ExEnd
 
-            doc.Save(MyDir + "SwfSaveOptions.CustomLogo Out.swf", options);
+            doc.Save(ExDir + "SwfSaveOptions.CustomLogo Out.swf", options);
         }
 
     }

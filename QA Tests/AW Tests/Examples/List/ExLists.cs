@@ -79,7 +79,7 @@ namespace QA_Tests.Examples.List
             // End the bulleted list.
             builder.ListFormat.RemoveNumbers();
 
-            builder.Document.Save(MyDir + "Lists.ApplyDefaultBulletsAndNumbers Out.doc");
+            builder.Document.Save(ExDir + "Lists.ApplyDefaultBulletsAndNumbers Out.doc");
             //ExEnd
         }
 
@@ -125,7 +125,7 @@ namespace QA_Tests.Examples.List
             // This is a way to stop list formatting. 
             builder.ListFormat.List = null;
 
-            builder.Document.Save(MyDir + "Lists.SpecifyListLevel Out.doc");
+            builder.Document.Save(ExDir + "Lists.SpecifyListLevel Out.doc");
             //ExEnd
         }
 
@@ -170,7 +170,7 @@ namespace QA_Tests.Examples.List
 
             builder.ParagraphFormat.ClearFormatting();
 
-            builder.Document.Save(MyDir + "Lists.NestedLists Out.doc");
+            builder.Document.Save(ExDir + "Lists.NestedLists Out.doc");
             //ExEnd
         }
 
@@ -241,7 +241,7 @@ namespace QA_Tests.Examples.List
 
             builder.ListFormat.RemoveNumbers();
 
-            builder.Document.Save(MyDir + "Lists.CreateCustomList Out.doc");
+            builder.Document.Save(ExDir + "Lists.CreateCustomList Out.doc");
             //ExEnd
         }
 
@@ -287,7 +287,7 @@ namespace QA_Tests.Examples.List
             builder.Writeln("Item 2");
             builder.ListFormat.RemoveNumbers();
 
-            builder.Document.Save(MyDir + "Lists.RestartNumberingUsingListCopy Out.doc");
+            builder.Document.Save(ExDir + "Lists.RestartNumberingUsingListCopy Out.doc");
             //ExEnd
         }
 
@@ -362,7 +362,7 @@ namespace QA_Tests.Examples.List
             builder.Writeln("Item 2");
             builder.ListFormat.RemoveNumbers();
 
-            builder.Document.Save(MyDir + "Lists.CreateAndUseListStyle Out.doc");
+            builder.Document.Save(ExDir + "Lists.CreateAndUseListStyle Out.doc");
             //ExEnd
 
             // Verify properties of list 1
@@ -491,7 +491,7 @@ namespace QA_Tests.Examples.List
             list = doc.Lists.Add(ListTemplate.OutlineHeadingsChapter);
             AddOutlineHeadingParagraphs(builder, list, "Aspose.Words Outline 4");
 
-            builder.Document.Save(MyDir + "Lists.OutlineHeadingTemplates Out.doc");
+            builder.Document.Save(ExDir + "Lists.OutlineHeadingTemplates Out.doc");
         }
 
         private static void AddOutlineHeadingParagraphs(DocumentBuilder builder, Aspose.Words.Lists.List list, string title)
@@ -530,7 +530,7 @@ namespace QA_Tests.Examples.List
         public void PrintOutAllLists()
         {
             // You can use any of your documents to try this little program out.
-            Aspose.Words.Document srcDoc = new Aspose.Words.Document(MyDir + "Lists.PrintOutAllLists.doc");
+            Aspose.Words.Document srcDoc = new Aspose.Words.Document(ExDir + "Lists.PrintOutAllLists.doc");
 
             // This will be the sample document we product.
             Aspose.Words.Document dstDoc = new Aspose.Words.Document();
@@ -543,7 +543,7 @@ namespace QA_Tests.Examples.List
                 AddListSample(builder, dstList);
             }
 
-            dstDoc.Save(MyDir + "Lists.PrintOutAllLists Out.doc");
+            dstDoc.Save(ExDir + "Lists.PrintOutAllLists Out.doc");
         }
 
         private static void AddListSample(DocumentBuilder builder, Aspose.Words.Lists.List list)
@@ -670,7 +670,7 @@ namespace QA_Tests.Examples.List
 
             builder.ListFormat.RemoveNumbers();
 
-            builder.Document.Save(MyDir + "Lists.CreateListRestartAfterHigher Out.doc");
+            builder.Document.Save(ExDir + "Lists.CreateListRestartAfterHigher Out.doc");
             //ExEnd
         }
 
@@ -708,7 +708,7 @@ namespace QA_Tests.Examples.List
             builder.ParagraphFormat.Style = doc.Styles["Normal"];
             builder.Writeln("Hello World: Normal.");
 
-            builder.Document.Save(MyDir + "Lists.ParagraphStyleBulleted Out.doc");
+            builder.Document.Save(ExDir + "Lists.ParagraphStyleBulleted Out.doc");
             //ExEnd
         }
 
@@ -723,7 +723,7 @@ namespace QA_Tests.Examples.List
             //ExFor:ListLabel.LabelValue
             //ExFor:ListLabel.LabelString
             //ExSummary:Shows how to extract the label of each paragraph in a list as a value or a string.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Lists.PrintOutAllLists.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Lists.PrintOutAllLists.doc");
             doc.UpdateListLabels();
             int listParaCount = 1;
 
