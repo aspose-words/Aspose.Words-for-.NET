@@ -34,7 +34,7 @@ namespace QA_Tests.Examples.Fields
         public void RenameMergeFields()
         {
             // Specify your document name here.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "RenameMergeFields.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "RenameMergeFields.doc");
 
             // Select all field start nodes so we can find the merge fields.
             NodeCollection fieldStarts = doc.GetChildNodes(NodeType.FieldStart, true);
@@ -47,7 +47,7 @@ namespace QA_Tests.Examples.Fields
                 }
             }
 
-            doc.Save(MyDir + "RenameMergeFields Out.doc");
+            doc.Save(ExDir + "RenameMergeFields Out.doc");
         }
     }
 

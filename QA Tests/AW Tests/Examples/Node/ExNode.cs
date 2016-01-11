@@ -188,7 +188,7 @@ namespace QA_Tests.Examples.Node
         public void RecurseAllNodes()
         {
             // Open a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Node.RecurseAllNodes.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Node.RecurseAllNodes.doc");
 
             // Invoke the recursive function that will walk the tree.
             TraverseAllNodes(doc);
@@ -350,7 +350,7 @@ namespace QA_Tests.Examples.Node
             //ExFor:CompositeNode.SelectSingleNode
             //ExFor:CompositeNode.SelectNodes
             //ExSummary:Shows how to select certain nodes by using an XPath expression.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.Document.doc");
 
             // This expression will extract all paragraph nodes which are descendants of any table node in the document.
             // This will return any paragraphs which are in a table.
@@ -372,7 +372,7 @@ namespace QA_Tests.Examples.Node
             //ExFor:CompositeNode.GetChild
             //ExSummary:Shows how to test if a node is inside a field by using an XPath expression.
             // Let's pick a document we know has some fields in.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "MailMerge.MergeImage.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "MailMerge.MergeImage.doc");
 
             // Let's say we want to check if the Run below is inside a field.
             Run run = (Run)doc.GetChild(NodeType.Run, 5, true);
@@ -415,7 +415,7 @@ namespace QA_Tests.Examples.Node
             //ExStart
             //ExFor:CompositeNode.RemoveSmartTags
             //ExSummary:Removes all smart tags from descendant nodes of the composite node.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             // Remove smart tags from the first paragraph in the document.
             doc.FirstSection.Body.FirstParagraph.RemoveSmartTags();
@@ -428,7 +428,7 @@ namespace QA_Tests.Examples.Node
             //ExStart
             //ExFor:CompositeNode.IndexOf
             //ExSummary:Shows how to get the index of a given child node from its parent.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Rendering.doc");
 
             // Get the body of the first section in the document.
             Body body = doc.FirstSection.Body;
@@ -470,7 +470,7 @@ namespace QA_Tests.Examples.Node
             //ExFor:CommentRangeStart.NodeType
             //ExId:GetNodeTypeEnums
             //ExSummary:Shows how to retrieve the NodeType enumeration of nodes.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             // Let's pick a node that we can't be quite sure of what type it is.
             // In this case lets pick the first node of the first paragraph in the body of the document
@@ -494,7 +494,7 @@ namespace QA_Tests.Examples.Node
             //ExStart
             //ExFor:Node.ToString(SaveFormat)
             //ExSummary:Exports the content of a node to string in HTML format using default options.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             // Extract the last paragraph in the document to convert to HTML.
             Aspose.Words.Node node = doc.LastSection.Body.LastParagraph;
@@ -516,7 +516,7 @@ namespace QA_Tests.Examples.Node
             //ExStart
             //ExFor:Node.ToString(SaveOptions)
             //ExSummary:Exports the content of a node to string in HTML format using custom specified options.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             // Extract the last paragraph in the document to convert to HTML.
             Aspose.Words.Node node = doc.LastSection.Body.LastParagraph;

@@ -1,16 +1,15 @@
-﻿using System.IO;
-using System.Text;
+﻿using System.Text;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
 
-namespace QA_Tests.Tests.SaveOptions.Html
+namespace QA_Tests.Tests.SaveOptions
 {
     /// <summary>
     /// Tests that verify saving to htmlfixed using encoding parameter in "HtmlFixedSaveOptions"
     /// </summary>
     [TestFixture]
-    internal class HtmlFixedSaveOptionsEncoding : QaTestsBase
+    internal class QaHtmlFixedSaveOptions : QaTestsBase
     {
         //Note: Tests doesn't containt validation result, because it's may take a lot of time for assert result
         //For validation result, you can save the document to html file and check out with notepad++, that file encoding will be correctly displayed (Encoding tab in Notepad++)
@@ -29,10 +28,7 @@ namespace QA_Tests.Tests.SaveOptions.Html
                 ExportEmbeddedSvg = true
             };
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, htmlFixedSaveOptions);
-
-            dstStream.Dispose();
+            doc.Save(TestDir + "EncodingUsingSystemTextEncoding OUT.html", htmlFixedSaveOptions);
         }
 
         [Test]
@@ -50,10 +46,7 @@ namespace QA_Tests.Tests.SaveOptions.Html
                 ExportEmbeddedSvg = true
             };
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, htmlFixedSaveOptions);
-
-            dstStream.Dispose();
+            doc.Save(TestDir + "EncodingUsingNewEncoding OUT.html", htmlFixedSaveOptions);
         }
 
 
@@ -72,10 +65,7 @@ namespace QA_Tests.Tests.SaveOptions.Html
                 ExportEmbeddedSvg = true
             };
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, htmlFixedSaveOptions);
-
-            dstStream.Dispose();
+            doc.Save(TestDir + "EncodingUsingGetEncoding OUT.html", htmlFixedSaveOptions);
         }
     }
 }

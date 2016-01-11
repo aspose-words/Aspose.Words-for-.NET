@@ -24,7 +24,7 @@ namespace QA_Tests.Examples.Range
             //ExFor:Range.Delete
             //ExSummary:Shows how to delete a section from a Word document.
             // Open Word document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Range.DeleteSection.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Range.DeleteSection.doc");
 
             // The document contains two sections. Each section has a paragraph of text.
             Console.WriteLine(doc.GetText());
@@ -46,7 +46,7 @@ namespace QA_Tests.Examples.Range
             //ExFor:Range.Replace(String,String,Boolean,Boolean)
             //ExSummary:Simple find and replace operation.
             // Open the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Range.ReplaceSimple.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Range.ReplaceSimple.doc");
 
             // Check the document contains what we are about to test.
             Console.WriteLine(doc.FirstSection.Body.Paragraphs[0].GetText());
@@ -55,7 +55,7 @@ namespace QA_Tests.Examples.Range
             doc.Range.Replace("_CustomerName_", "James Bond", false, false);
 
             // Save the modified document.
-            doc.Save(MyDir + "Range.ReplaceSimple Out.doc");
+            doc.Save(ExDir + "Range.ReplaceSimple Out.doc");
             //ExEnd
 
             Assert.AreEqual("Hello James Bond,\r\x000c", doc.GetText());
@@ -81,12 +81,12 @@ namespace QA_Tests.Examples.Range
         public void ReplaceWithInsertHtml()
         {
             // Open the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Range.ReplaceWithInsertHtml.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Range.ReplaceWithInsertHtml.doc");
 
             doc.Range.Replace(new Regex(@"<CustomerName>"), new ReplaceWithHtmlEvaluator(), false);
 
             // Save the modified document.
-            doc.Save(MyDir + "Range.ReplaceWithInsertHtml Out.doc");
+            doc.Save(ExDir + "Range.ReplaceWithInsertHtml Out.doc");
 
             Assert.AreEqual("Hello James Bond,\r\x000c", doc.GetText());  //ExSkip
         }
@@ -118,7 +118,7 @@ namespace QA_Tests.Examples.Range
             //ExFor:Range.Text
             //ExId:RangesGetText
             //ExSummary:Shows how to get plain, unformatted text of a range.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             string text = doc.Range.Text;
             //ExEnd
         }
@@ -130,10 +130,10 @@ namespace QA_Tests.Examples.Range
             //ExFor:Range
             //ExId:RangesReplaceString
             //ExSummary:Shows how to replace all occurrences of word "sad" to "bad".
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             doc.Range.Replace("sad", "bad", false, true);
             //ExEnd
-            doc.Save(MyDir + "ReplaceWithString Out.doc");
+            doc.Save(ExDir + "ReplaceWithString Out.doc");
         }
 
         [Test]
@@ -143,10 +143,10 @@ namespace QA_Tests.Examples.Range
             //ExFor:Range.Replace(Regex, String)
             //ExId:RangesReplaceRegex
             //ExSummary:Shows how to replace all occurrences of words "sad" or "mad" to "bad".
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             doc.Range.Replace(new Regex("[s|m]ad"), "bad");
             //ExEnd
-            doc.Save(MyDir + "ReplaceWithRegex Out.doc");
+            doc.Save(ExDir + "ReplaceWithRegex Out.doc");
         }
 
         /// <summary>
@@ -165,9 +165,9 @@ namespace QA_Tests.Examples.Range
         //ExSummary:Shows how to replace with a custom evaluator.
         public void ReplaceWithEvaluator()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Range.ReplaceWithEvaluator.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Range.ReplaceWithEvaluator.doc");
             doc.Range.Replace(new Regex("[s|m]ad"), new MyReplaceEvaluator(), true);
-            doc.Save(MyDir + "Range.ReplaceWithEvaluator Out.doc");
+            doc.Save(ExDir + "Range.ReplaceWithEvaluator Out.doc");
         }
 
         private class MyReplaceEvaluator : IReplacingCallback
@@ -193,7 +193,7 @@ namespace QA_Tests.Examples.Range
             //ExStart
             //ExId:RangesDeleteText
             //ExSummary:Shows how to delete all characters of a range.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             doc.Sections[0].Range.Delete();
             //ExEnd
         }
@@ -204,7 +204,7 @@ namespace QA_Tests.Examples.Range
         [Test]
         public void ChangeTextToHyperlinks()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + @"Range.ChangeTextToHyperlinks.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + @"Range.ChangeTextToHyperlinks.doc");
 
             // Create regular expression for URL search
             Regex regexUrl = new Regex(@"(?<Protocol>\w+):\/\/(?<Domain>[\w.]+\/?)\S*(?x)");
@@ -213,7 +213,7 @@ namespace QA_Tests.Examples.Range
             doc.Range.Replace(regexUrl, new ChangeTextToHyperlinksEvaluator(doc), false);
 
             // Save updated document.
-            doc.Save(MyDir + @"Range.ChangeTextToHyperlinks Out.docx");
+            doc.Save(ExDir + @"Range.ChangeTextToHyperlinks Out.docx");
         }
 
         private class ChangeTextToHyperlinksEvaluator : IReplacingCallback

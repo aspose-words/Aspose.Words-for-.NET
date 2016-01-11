@@ -42,7 +42,7 @@ namespace QA_Tests.Examples.Saving
             pdfSaveOptions.OutlineOptions.CreateMissingOutlineLevels = true;
             pdfSaveOptions.SaveFormat = SaveFormat.Pdf;
 
-            doc.Save(MyDir + "CreateMissingOutlineLevels.pdf", pdfSaveOptions);
+            doc.Save(ExDir + "CreateMissingOutlineLevels.pdf", pdfSaveOptions);
             //ExEnd
         }
     }

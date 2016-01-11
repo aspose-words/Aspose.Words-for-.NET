@@ -34,7 +34,7 @@ namespace QA_Tests.Examples.Tables
             //ExFor:CellCollection
             //ExFor:NodeCollection.IndexOf(Node)
             //ExSummary:Shows how to iterate through all tables in the document and display the content from each cell.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.Document.doc");
 
             // Here we get all tables from the Document node. You can do this for any other composite node
             // which can contain block level nodes. For example you can retrieve tables from header or from a cell
@@ -92,7 +92,7 @@ namespace QA_Tests.Examples.Tables
         //ExSummary:Shows how to find out if a table contains another table or if the table itself is nested inside another table.
         public void CalcuateDepthOfNestedTables()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.NestedTables.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.NestedTables.doc");
             int tableIndex = 0;
 
             foreach (Table table in doc.GetChildNodes(NodeType.Table, true))
@@ -184,7 +184,7 @@ namespace QA_Tests.Examples.Tables
         public void ConvertTextboxToTable()
         {
             // Open the document
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Shape.Textbox.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Shape.Textbox.doc");
 
             // Convert all shape nodes which contain child nodes.
             // We convert the collection to an array as static "snapshot" because the original textboxes will be removed after conversion which will
@@ -197,7 +197,7 @@ namespace QA_Tests.Examples.Tables
                 }
             }
 
-            doc.Save(MyDir + "Table.ConvertTextboxToTable Out.html");
+            doc.Save(ExDir + "Table.ConvertTextboxToTable Out.html");
         }
 
         /// <summary>
@@ -322,7 +322,7 @@ namespace QA_Tests.Examples.Tables
             //ExStart
             //ExFor:Cell.EnsureMinimum
             //ExSummary:Shows how to ensure a cell node is valid.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.Document.doc");
 
             // Gets the first cell in the document.
             Cell cell = (Cell)doc.GetChild(NodeType.Cell, 0, true);
@@ -344,7 +344,7 @@ namespace QA_Tests.Examples.Tables
             //ExFor:Table.SetShading
             //ExId:TableBordersOutline
             //ExSummary:Shows how to apply a outline border to a table.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.EmptyTable.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.EmptyTable.doc");
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             // Align the table to the center of the page.
@@ -362,11 +362,11 @@ namespace QA_Tests.Examples.Tables
             // Fill the cells with a light green solid color.
             table.SetShading(TextureIndex.TextureSolid, Color.LightGreen, Color.Empty);
 
-            doc.Save(MyDir + "Table.SetOutlineBorders Out.doc");
+            doc.Save(ExDir + "Table.SetOutlineBorders Out.doc");
             //ExEnd
 
             // Verify the borders were set correctly.
-            doc = new Aspose.Words.Document(MyDir + "Table.SetOutlineBorders Out.doc");
+            doc = new Aspose.Words.Document(ExDir + "Table.SetOutlineBorders Out.doc");
             Assert.AreEqual(TableAlignment.Center, table.Alignment);
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Top.Color.ToArgb());
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Left.Color.ToArgb());
@@ -384,7 +384,7 @@ namespace QA_Tests.Examples.Tables
             //ExFor:Table.SetBorders
             //ExId:TableBordersAll
             //ExSummary:Shows how to build a table with all borders enabled (grid).
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.EmptyTable.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.EmptyTable.doc");
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             // Clear any existing borders from the table.
@@ -393,11 +393,11 @@ namespace QA_Tests.Examples.Tables
             // Set a green border around and inside the table.
             table.SetBorders(LineStyle.Single, 1.5, Color.Green);
 
-            doc.Save(MyDir + "Table.SetAllBorders Out.doc");
+            doc.Save(ExDir + "Table.SetAllBorders Out.doc");
             //ExEnd
 
             // Verify the borders were set correctly.
-            doc = new Aspose.Words.Document(MyDir + "Table.SetAllBorders Out.doc");
+            doc = new Aspose.Words.Document(ExDir + "Table.SetAllBorders Out.doc");
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Top.Color.ToArgb());
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Left.Color.ToArgb());
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Right.Color.ToArgb());
@@ -414,7 +414,7 @@ namespace QA_Tests.Examples.Tables
             //ExFor:Row.RowFormat
             //ExId:RowFormatProperties
             //ExSummary:Shows how to modify formatting of a table row.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.Document.doc");
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             // Retrieve the first row in the table.
@@ -426,9 +426,9 @@ namespace QA_Tests.Examples.Tables
             firstRow.RowFormat.AllowBreakAcrossPages = true;
             //ExEnd
 
-            doc.Save(MyDir + "Table.RowFormat Out.doc");
+            doc.Save(ExDir + "Table.RowFormat Out.doc");
 
-            doc = new Aspose.Words.Document(MyDir + "Table.RowFormat Out.doc");
+            doc = new Aspose.Words.Document(ExDir + "Table.RowFormat Out.doc");
             table = (Table)doc.GetChild(NodeType.Table, 0, true);
             Assert.AreEqual(LineStyle.None, table.FirstRow.RowFormat.Borders.LineStyle);
             Assert.AreEqual(HeightRule.Auto, table.FirstRow.RowFormat.HeightRule);
@@ -443,7 +443,7 @@ namespace QA_Tests.Examples.Tables
             //ExFor:Cell.CellFormat
             //ExId:CellFormatProperties
             //ExSummary:Shows how to modify formatting of a table cell.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.Document.doc");
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             // Retrieve the first cell in the table.
@@ -455,9 +455,9 @@ namespace QA_Tests.Examples.Tables
             firstCell.CellFormat.Shading.ForegroundPatternColor = Color.LightGreen;
             //ExEnd
 
-            doc.Save(MyDir + "Table.CellFormat Out.doc");
+            doc.Save(ExDir + "Table.CellFormat Out.doc");
 
-            doc = new Aspose.Words.Document(MyDir + "Table.CellFormat Out.doc");
+            doc = new Aspose.Words.Document(ExDir + "Table.CellFormat Out.doc");
             table = (Table)doc.GetChild(NodeType.Table, 0, true);
             Assert.AreEqual(30, table.FirstRow.FirstCell.CellFormat.Width);
             Assert.AreEqual(TextOrientation.Downward, table.FirstRow.FirstCell.CellFormat.Orientation);
@@ -471,7 +471,7 @@ namespace QA_Tests.Examples.Tables
             //ExFor:Table
             //ExFor:Table.ClearBorders
             //ExSummary:Shows how to remove all borders from a table.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.Document.doc");
 
             // Remove all borders from the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -479,7 +479,7 @@ namespace QA_Tests.Examples.Tables
             // Clear the borders all cells in the table.
             table.ClearBorders();
 
-            doc.Save(MyDir + "Table.ClearBorders Out.doc");
+            doc.Save(ExDir + "Table.ClearBorders Out.doc");
             //ExEnd
         }
 
@@ -491,7 +491,7 @@ namespace QA_Tests.Examples.Tables
             //ExFor:Cell
             //ExId:ReplaceTextTable
             //ExSummary:Shows how to replace all instances of string of text in a table and cell.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.SimpleTable.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.SimpleTable.doc");
 
             // Get the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -501,7 +501,7 @@ namespace QA_Tests.Examples.Tables
             // Replace any instances of our string in the last cell of the table only.
             table.LastRow.LastCell.Range.Replace("50", "20", true, true);
 
-            doc.Save(MyDir + "Table.ReplaceCellText Out.doc");
+            doc.Save(ExDir + "Table.ReplaceCellText Out.doc");
             //ExEnd
 
             Assert.AreEqual("20", table.LastRow.LastCell.ToString(SaveFormat.Text).Trim());
@@ -513,7 +513,7 @@ namespace QA_Tests.Examples.Tables
             //ExStart
             //ExId:PrintTableRange
             //ExSummary:Shows how to print the text range of a table.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.SimpleTable.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.SimpleTable.doc");
 
             // Get the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -548,7 +548,7 @@ namespace QA_Tests.Examples.Tables
             //ExStart
             //ExId:CloneTable
             //ExSummary:Shows how to make a clone of a table in the document and insert it after the original table.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.SimpleTable.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.SimpleTable.doc");
 
             // Retrieve the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -563,7 +563,7 @@ namespace QA_Tests.Examples.Tables
             // upon save. This has to do with document validation.
             table.ParentNode.InsertAfter(new Paragraph(doc), table);
 
-            doc.Save(MyDir + "Table.CloneTableAndInsert Out.doc");
+            doc.Save(ExDir + "Table.CloneTableAndInsert Out.doc");
             //ExEnd
 
             // Verify that the table was cloned and inserted properly.
@@ -583,7 +583,7 @@ namespace QA_Tests.Examples.Tables
         [Test]
         public void RowFormatDisableBreakAcrossPages()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.TableAcrossPage.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.TableAcrossPage.doc");
 
             // Retrieve the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -597,7 +597,7 @@ namespace QA_Tests.Examples.Tables
                 row.RowFormat.AllowBreakAcrossPages = false;
             //ExEnd
 
-            doc.Save(MyDir + "Table.DisableBreakAcrossPages Out.doc");
+            doc.Save(ExDir + "Table.DisableBreakAcrossPages Out.doc");
 
             Assert.False(table.FirstRow.RowFormat.AllowBreakAcrossPages);
             Assert.False(table.LastRow.RowFormat.AllowBreakAcrossPages);
@@ -622,7 +622,7 @@ namespace QA_Tests.Examples.Tables
         [Test]
         public void KeepTableTogether()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.TableAcrossPage.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.TableAcrossPage.doc");
 
             // Retrieve the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -644,7 +644,7 @@ namespace QA_Tests.Examples.Tables
                         para.ParagraphFormat.KeepWithNext = true;
             //ExEnd
 
-            doc.Save(MyDir + "Table.KeepTableTogether Out.doc");
+            doc.Save(ExDir + "Table.KeepTableTogether Out.doc");
 
             // Verify the correct paragraphs were set properly.
             foreach (Paragraph para in table.GetChildNodes(NodeType.Paragraph, true))
@@ -661,7 +661,7 @@ namespace QA_Tests.Examples.Tables
             //ExFor:Row
             //ExId:AddClonedRowToTable
             //ExSummary:Shows how to make a clone of the last row of a table and append it to the table.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.SimpleTable.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.SimpleTable.doc");
 
             // Retrieve the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -677,7 +677,7 @@ namespace QA_Tests.Examples.Tables
             // Add the row to the end of the table.
             table.AppendChild(clonedRow);
 
-            doc.Save(MyDir + "Table.AddCloneRowToTable Out.doc");
+            doc.Save(ExDir + "Table.AddCloneRowToTable Out.doc");
             //ExEnd
 
             // Verify that the row was cloned and appended properly.
@@ -790,7 +790,7 @@ namespace QA_Tests.Examples.Tables
         [Test]
         public void GetIndexOfTableElements()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.Document.doc");
 
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
             //ExStart
@@ -827,7 +827,7 @@ namespace QA_Tests.Examples.Tables
         [Test]
         public void GetPreferredWidthTypeAndValue()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.Document.doc");
 
             // Find the first table in the document
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -901,7 +901,7 @@ namespace QA_Tests.Examples.Tables
             row.LastCell.AppendChild(new Paragraph(doc));
             row.LastCell.FirstParagraph.AppendChild(new Run(doc, "Row 1, Cell 2 Text"));
 
-            doc.Save(MyDir + "Table.InsertTableUsingNodes Out.doc");
+            doc.Save(ExDir + "Table.InsertTableUsingNodes Out.doc");
             //ExEnd
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count);
@@ -934,7 +934,7 @@ namespace QA_Tests.Examples.Tables
             // Add this table to the first cell of the outer table.
             outerTable.FirstRow.FirstCell.AppendChild(innerTable);
 
-            doc.Save(MyDir + "Table.CreateNestedTable Out.doc");
+            doc.Save(ExDir + "Table.CreateNestedTable Out.doc");
 
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count); // ExSkip
             Assert.AreEqual(1, outerTable.FirstRow.FirstCell.Tables.Count); //ExSkip
@@ -981,7 +981,7 @@ namespace QA_Tests.Examples.Tables
         [Test] //ExSkip
         public void CheckCellsMerged()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.MergedCells.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.MergedCells.doc");
 
             // Retrieve the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -1018,7 +1018,7 @@ namespace QA_Tests.Examples.Tables
         public void MergeCellRange()
         {
             // Open the document
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.Document.doc");
 
             // Retrieve the first table in the body of the first section.
             Table table = doc.FirstSection.Body.Tables[0];
@@ -1035,7 +1035,7 @@ namespace QA_Tests.Examples.Tables
             //ExEnd
 
             // Save the document.
-            doc.Save(MyDir + "Table.MergeCellRange Out.doc");
+            doc.Save(ExDir + "Table.MergeCellRange Out.doc");
 
             // Verify the cells were merged
             int mergedCellsCount = 0;
@@ -1104,7 +1104,7 @@ namespace QA_Tests.Examples.Tables
             //ExId:CombineTables
             //ExSummary:Shows how to combine the rows from two tables into one.
             // Load the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.Document.doc");
 
             // Get the first and second table in the document.
             // The rows from the second table will be appended to the end of the first table.
@@ -1119,7 +1119,7 @@ namespace QA_Tests.Examples.Tables
             // Remove the empty table container.
             secondTable.Remove();
 
-            doc.Save(MyDir + "Table.CombineTables Out.doc");
+            doc.Save(ExDir + "Table.CombineTables Out.doc");
             //ExEnd
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count);
@@ -1134,7 +1134,7 @@ namespace QA_Tests.Examples.Tables
             //ExId:SplitTableAtRow
             //ExSummary:Shows how to split a table into two tables a specific row.
             // Load the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.SimpleTable.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.SimpleTable.doc");
 
             // Get the first table in the document.
             Table firstTable = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -1160,10 +1160,10 @@ namespace QA_Tests.Examples.Tables
             }
             while (currentRow != row);
 
-            doc.Save(MyDir + "Table.SplitTable Out.doc");
+            doc.Save(ExDir + "Table.SplitTable Out.doc");
             //ExEnd
 
-            doc = new Aspose.Words.Document(MyDir + "Table.SplitTable Out.doc");
+            doc = new Aspose.Words.Document(ExDir + "Table.SplitTable Out.doc");
             // Test we are adding the rows in the correct order and the 
             // selected row was also moved.
             Assert.AreEqual(row, table.FirstRow); 

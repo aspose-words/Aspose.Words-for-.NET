@@ -36,7 +36,7 @@ namespace QA_Tests.Examples.MailMerging
             //ExId:MailMergeArray
             //ExSummary:Performs a simple insertion of data into merge fields and sends the document to the browser inline.
             // Open an existing document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "MailMerge.ExecuteArray.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "MailMerge.ExecuteArray.doc");
 
             // Fill the fields in the document with user data.
             doc.MailMerge.Execute(
@@ -57,7 +57,7 @@ namespace QA_Tests.Examples.MailMerging
             //ExFor:MailMerge.Execute(DataTable)
             //ExFor:Document.MailMerge
             //ExSummary:Executes mail merge from an ADO.NET DataTable.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "MailMerge.ExecuteDataTable.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "MailMerge.ExecuteDataTable.doc");
 
             // This example creates a table, but you would normally load table from a database. 
             DataTable table = new DataTable("Test");
@@ -69,7 +69,7 @@ namespace QA_Tests.Examples.MailMerging
             // Field values from the table are inserted into the mail merge fields found in the document.
             doc.MailMerge.Execute(table);
 
-            doc.Save(MyDir + "MailMerge.ExecuteDataTable Out.doc");
+            doc.Save(ExDir + "MailMerge.ExecuteDataTable Out.doc");
             //ExEnd
         }
 
@@ -80,7 +80,7 @@ namespace QA_Tests.Examples.MailMerging
             //ExFor:MailMerge.Execute(IDataReader)
             //ExSummary:Executes mail merge from an ADO.NET DataReader.
             // Open the template document
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "MailingLabelsDemo.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "MailingLabelsDemo.doc");
 
             // Open the database connection.
             string connString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + 
@@ -100,7 +100,7 @@ namespace QA_Tests.Examples.MailMerging
             dataReader.Close();
             conn.Close();
 
-            doc.Save(MyDir + "MailMerge.ExecuteDataReader Out.doc");
+            doc.Save(ExDir + "MailMerge.ExecuteDataReader Out.doc");
             //ExEnd
         }
 
@@ -119,7 +119,7 @@ namespace QA_Tests.Examples.MailMerging
         public void ExecuteDataView()
         {
             // Open the document that we want to fill with data.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "MailMerge.ExecuteDataView.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "MailMerge.ExecuteDataView.doc");
 
             // Get the data from the database.
             DataTable orderTable = GetOrders();
@@ -131,7 +131,7 @@ namespace QA_Tests.Examples.MailMerging
             // Populate the document with the data.
             doc.MailMerge.Execute(orderView);
 
-            doc.Save(MyDir + "MailMerge.ExecuteDataView Out.doc");
+            doc.Save(ExDir + "MailMerge.ExecuteDataView Out.doc");
         }
 
         private static DataTable GetOrders()
@@ -167,7 +167,7 @@ namespace QA_Tests.Examples.MailMerging
             // Open the document. 
             // For a mail merge with repeatable regions, the document should have mail merge regions 
             // in the document designated with MERGEFIELD TableStart:MyTableName and TableEnd:MyTableName.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "MailMerge.ExecuteWithRegions.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "MailMerge.ExecuteWithRegions.doc");
 
             int orderId = 10444;
 
@@ -187,7 +187,7 @@ namespace QA_Tests.Examples.MailMerging
             // If a table is found, its content is merged into the mail merge region in the document.
             doc.MailMerge.ExecuteWithRegions(dataSet);
 
-            doc.Save(MyDir + "MailMerge.ExecuteWithRegionsDataSet Out.doc");
+            doc.Save(ExDir + "MailMerge.ExecuteWithRegionsDataSet Out.doc");
             //ExEnd
         }
 
@@ -209,7 +209,7 @@ namespace QA_Tests.Examples.MailMerging
         //ExSummary:Executes a mail merge with repeatable regions.
         public void ExecuteWithRegionsDataTable()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "MailMerge.ExecuteWithRegions.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "MailMerge.ExecuteWithRegions.doc");
 
             int orderId = 10444;
 
@@ -224,7 +224,7 @@ namespace QA_Tests.Examples.MailMerging
             orderDetailsView.Sort = "ExtendedPrice DESC";
             doc.MailMerge.ExecuteWithRegions(orderDetailsView);
 
-            doc.Save(MyDir + "MailMerge.ExecuteWithRegionsDataTable Out.doc");
+            doc.Save(ExDir + "MailMerge.ExecuteWithRegionsDataTable Out.doc");
         }
 
         private static DataTable GetTestOrder(int orderId)

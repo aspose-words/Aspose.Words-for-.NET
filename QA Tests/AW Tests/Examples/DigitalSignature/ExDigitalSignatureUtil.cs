@@ -21,9 +21,9 @@ namespace QA_Tests.Examples.DigitalSignature
             //ExFor:RemoveAllSignatures
             //ExId:RemoveAllSignaturesEx
             //ExSummary:Shows how to use RemoveAllSignatures.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
-            string outputDocFileName = MyDir + "Document.NoSignatures.doc";
+            string outputDocFileName = ExDir + "Document.NoSignatures.doc";
             Aspose.Words.DigitalSignatureUtil.RemoveAllSignatures(doc.OriginalFileName, outputDocFileName);            
             //ExEnd
         }
@@ -35,7 +35,7 @@ namespace QA_Tests.Examples.DigitalSignature
             //ExFor:LoadSignatures(stream)
             //ExId:LoadSignaturesEx
             //ExSummary:Shows how to use LoadSignatures.
-            System.IO.Stream docStream = new System.IO.FileStream(MyDir + "Document.doc", System.IO.FileMode.Open);
+            System.IO.Stream docStream = new System.IO.FileStream(ExDir + "Document.doc", System.IO.FileMode.Open);
             Aspose.Words.DigitalSignatureUtil.LoadSignatures(docStream);
             //ExEnd
 
@@ -45,7 +45,7 @@ namespace QA_Tests.Examples.DigitalSignature
             //ExFor:LoadSignatures(string)
             //ExId:LoadSignaturesEx
             //ExSummary:Shows how to use LoadSignatures.
-            Aspose.Words.DigitalSignatureUtil.LoadSignatures(MyDir + "Document.doc");
+            Aspose.Words.DigitalSignatureUtil.LoadSignatures(ExDir + "Document.doc");
             //ExEnd
         }
 
@@ -60,17 +60,17 @@ namespace QA_Tests.Examples.DigitalSignature
             //ExFor:Sign(Stream, Stream, CertificateHolder, String, DateTime)
             //ExId:SignEx
             //ExSummary:Shows how to use RemoveAllSignatures.
-            Aspose.Words.CertificateHolder ch = Aspose.Words.CertificateHolder.Create(MyDir + "MyPkcs12.pfx", "My password");
+            Aspose.Words.CertificateHolder ch = Aspose.Words.CertificateHolder.Create(ExDir + "MyPkcs12.pfx", "My password");
 
             //By String
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
-            string outputDocFileName = MyDir + "Document.Signed.doc";
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
+            string outputDocFileName = ExDir + "Document.Signed.doc";
 
             Aspose.Words.DigitalSignatureUtil.Sign(doc.OriginalFileName, outputDocFileName, ch, "My comment", DateTime.Now);
 
             //By Stream
-            System.IO.Stream docInStream = new System.IO.FileStream(MyDir + "Document.doc", System.IO.FileMode.Open);
-            System.IO.Stream docOutStream = new System.IO.FileStream(MyDir + "Document.Signed.doc", System.IO.FileMode.OpenOrCreate);
+            System.IO.Stream docInStream = new System.IO.FileStream(ExDir + "Document.doc", System.IO.FileMode.Open);
+            System.IO.Stream docOutStream = new System.IO.FileStream(ExDir + "Document.Signed.doc", System.IO.FileMode.OpenOrCreate);
 
             Aspose.Words.DigitalSignatureUtil.Sign(docInStream, docOutStream, ch, "My comment", DateTime.Now);
             //ExEnd

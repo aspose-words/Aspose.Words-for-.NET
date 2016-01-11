@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using Aspose.Words;
 using NUnit.Framework;
 using QA_Tests.Tests;
@@ -21,7 +22,7 @@ namespace QA_Tests.Examples.Comment
             //ExFor:Document.AcceptAllRevisions
             //ExId:AcceptAllRevisions
             //ExSummary:Shows how to accept all tracking changes in the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             doc.AcceptAllRevisions();
             //ExEnd
         }
@@ -33,7 +34,7 @@ namespace QA_Tests.Examples.Comment
             //ExFor:SetText
             //ExId:SetTextEx
             //ExSummary:Shows how to use SetText.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Aspose.Words.Comment comment = new Aspose.Words.Comment(doc, "John Doe", "J.D.", DateTime.Today);

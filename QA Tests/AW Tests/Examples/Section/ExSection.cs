@@ -38,7 +38,7 @@ namespace QA_Tests.Examples.Section
             // By default, all sections are protected, but we can selectively turn protection off.
             doc.Sections[0].ProtectedForForms = false;
 
-            builder.Document.Save(MyDir + "Section.Protect Out.doc");
+            builder.Document.Save(ExDir + "Section.Protect Out.doc");
             //ExEnd
         }
 
@@ -52,7 +52,7 @@ namespace QA_Tests.Examples.Section
             //ExFor:NodeCollection.RemoveAt(Int32)
             //ExSummary:Shows how to add/remove sections in a document.
             // Open the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Section.AddRemove.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Section.AddRemove.doc");
 
             // This shows what is in the document originally. The document has two sections.
             Console.WriteLine(doc.GetText());
@@ -153,7 +153,7 @@ namespace QA_Tests.Examples.Section
             Console.WriteLine("Hello World!\x000c", doc.GetText());
 
             // Save the document.
-            doc.Save(MyDir + "Section.CreateFromScratch Out.doc");
+            doc.Save(ExDir + "Section.CreateFromScratch Out.doc");
             //ExEnd
 
             Assert.AreEqual("Hello World!\x000c", doc.GetText());
@@ -183,7 +183,7 @@ namespace QA_Tests.Examples.Section
             //ExSummary:Clears main text from all sections from the document leaving the sections themselves.
 
             // Open a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Section.BodyEnsureMinimum.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Section.BodyEnsureMinimum.doc");
             
             // This shows what is in the document originally. The document has two sections.
             Console.WriteLine(doc.GetText());
@@ -219,7 +219,7 @@ namespace QA_Tests.Examples.Section
             //ExSummary:Shows how you can enumerate through children of a composite node and detect types of the children nodes.
 
             // Open a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Section.BodyNodeType.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Section.BodyNodeType.doc");
             
             // Get the first section in the document.
             Aspose.Words.Section section = doc.FirstSection;
@@ -269,7 +269,7 @@ namespace QA_Tests.Examples.Section
             //ExFor:SectionCollection.Item(Int32)
             //ExId:SectionsAccessByIndex
             //ExSummary:Shows how to access a section at the specified index.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             Aspose.Words.Section section = doc.Sections[0];
             //ExEnd
         }
@@ -281,7 +281,7 @@ namespace QA_Tests.Examples.Section
             //ExFor:NodeCollection.Add
             //ExId:SectionsAddSection
             //ExSummary:Shows how to add a section to the end of the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             Aspose.Words.Section sectionToAdd = new Aspose.Words.Section(doc); 
             doc.Sections.Add(sectionToAdd);
             //ExEnd
@@ -293,7 +293,7 @@ namespace QA_Tests.Examples.Section
             //ExStart
             //ExId:SectionsDeleteSection
             //ExSummary:Shows how to remove a section at the specified index.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             doc.Sections.RemoveAt(0);
             //ExEnd
         }
@@ -305,7 +305,7 @@ namespace QA_Tests.Examples.Section
             //ExFor:NodeCollection.Clear
             //ExId:SectionsDeleteAllSections
             //ExSummary:Shows how to remove all sections from a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             doc.Sections.Clear();
             //ExEnd
         }
@@ -318,7 +318,7 @@ namespace QA_Tests.Examples.Section
             //ExFor:Section.PrependContent
             //ExId:SectionsAppendSectionContent
             //ExSummary:Shows how to append content of an existing section. The number of sections in the document remains the same.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Section.AppendContent.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Section.AppendContent.doc");
             
             // This is the section that we will append and prepend to.
             Aspose.Words.Section section = doc.Sections[2];
@@ -340,7 +340,7 @@ namespace QA_Tests.Examples.Section
             //ExFor:Section.ClearContent
             //ExId:SectionsDeleteSectionContent
             //ExSummary:Shows how to delete main content of a section.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             Aspose.Words.Section section = doc.Sections[0];
             section.ClearContent();
             //ExEnd
@@ -353,7 +353,7 @@ namespace QA_Tests.Examples.Section
             //ExFor:Section.ClearHeadersFooters
             //ExId:SectionsDeleteHeaderFooter
             //ExSummary:Clears content of all headers and footers in a section.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             Aspose.Words.Section section = doc.Sections[0];
             section.ClearHeadersFooters();
             //ExEnd
@@ -365,7 +365,7 @@ namespace QA_Tests.Examples.Section
             //ExStart
             //ExFor:Section.DeleteHeaderFooterShapes
             //ExSummary:Removes all images and shapes from all headers footers in a section.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             Aspose.Words.Section section = doc.Sections[0];
             section.DeleteHeaderFooterShapes();
             //ExEnd
@@ -378,7 +378,7 @@ namespace QA_Tests.Examples.Section
             //ExStart
             //ExId:SectionsCloneSection
             //ExSummary:Shows how to create a duplicate of a particular section.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             Aspose.Words.Section cloneSection = doc.Sections[0].Clone();
             //ExEnd
         }
@@ -389,7 +389,7 @@ namespace QA_Tests.Examples.Section
             //ExStart
             //ExId:SectionsImportSection
             //ExSummary:Shows how to copy sections between documents.
-            Aspose.Words.Document srcDoc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document srcDoc = new Aspose.Words.Document(ExDir + "Document.doc");
             Aspose.Words.Document dstDoc = new Aspose.Words.Document();
 
             Aspose.Words.Section sourceSection = srcDoc.Sections[0];
@@ -419,14 +419,14 @@ namespace QA_Tests.Examples.Section
             //ExStart
             //ExId:ModifyPageSetupInAllSections
             //ExSummary:Shows how to set paper size for the whole document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Section.ModifyPageSetupInAllSections.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Section.ModifyPageSetupInAllSections.doc");
 
             // It is important to understand that a document can contain many sections and each
             // section has its own page setup. In this case we want to modify them all.
             foreach (Aspose.Words.Section section in doc)
                 section.PageSetup.PaperSize = PaperSize.Letter;
 
-            doc.Save(MyDir + "Section.ModifyPageSetupInAllSections Out.doc");
+            doc.Save(ExDir + "Section.ModifyPageSetupInAllSections Out.doc");
             //ExEnd
         }
     }

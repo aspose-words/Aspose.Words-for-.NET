@@ -54,11 +54,19 @@ namespace QA_Tests.Tests
         }
 
         /// <summary>
+        /// Gets the path to the documents used by the code tests. Ends with a back slash.
+        /// </summary>
+        internal static string TestDir
+        {
+            get { return gTestDir; }
+        }
+
+        /// <summary>
         /// Gets the path to the documents used by the code examples. Ends with a back slash.
         /// </summary>
-        internal static string MyDir
+        internal static string ExDir
         {
-            get { return gMyDir; }
+            get { return gExDir; }
         }
 
         /// <summary>
@@ -72,12 +80,14 @@ namespace QA_Tests.Tests
         static QaTestsBase()
         {
             gAssemblyDir = GetAssemblyDir(Assembly.GetExecutingAssembly());
-            gMyDir = new Uri(new Uri(gAssemblyDir), @"../../Data/").LocalPath;
-            gDatabaseDir = new Uri(new Uri(gAssemblyDir), @"../../Data/Database/").LocalPath;
+            gTestDir = new Uri(new Uri(gAssemblyDir), @"../../Data/Test/").LocalPath;
+            gExDir = new Uri(new Uri(gAssemblyDir), @"../../Data/Example/").LocalPath;
+            gDatabaseDir = new Uri(new Uri(gAssemblyDir), @"../../Data/Example/Database/").LocalPath;
         }
 
         private static readonly string gAssemblyDir;
-        private static readonly string gMyDir;
+        private static readonly string gTestDir;
+        private static readonly string gExDir;
         private static readonly string gDatabaseDir;
 
         /// <summary>

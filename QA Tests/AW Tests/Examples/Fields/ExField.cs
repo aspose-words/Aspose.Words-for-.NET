@@ -37,7 +37,7 @@ namespace QA_Tests.Examples.Fields
         [Test]
         public void GetFieldType()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.TableOfContents.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.TableOfContents.doc");
 
             //ExStart
             //ExFor:FieldType
@@ -56,7 +56,7 @@ namespace QA_Tests.Examples.Fields
             //ExFor:FieldChar.GetField
             //ExId:GetField
             //ExSummary:Demonstrates how to retrieve the field class from an existing FieldStart node in the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.TableOfContents.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.TableOfContents.doc");
 
             FieldStart fieldStart = (FieldStart)doc.GetChild(NodeType.FieldStart, 0, true);
 
@@ -78,7 +78,7 @@ namespace QA_Tests.Examples.Fields
             //ExStart
             //ExId:GetFieldFromFieldCollection
             //ExSummary:Demonstrates how to retrieve a field using the range of a node.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.TableOfContents.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.TableOfContents.doc");
 
             Field field = doc.Range.Fields[0];
 
@@ -127,7 +127,7 @@ namespace QA_Tests.Examples.Fields
             Thread.CurrentThread.CurrentCulture = currentCulture;
             //ExEnd
 
-            doc.Save(MyDir + "Field.ChangeLocale Out.doc");
+            doc.Save(ExDir + "Field.ChangeLocale Out.doc");
         }
 
         [Test]
@@ -138,14 +138,14 @@ namespace QA_Tests.Examples.Fields
             //ExId:RemoveTableOfContents
             //ExSummary:Demonstrates how to remove a specified TOC from a document.
             // Open a document which contains a TOC.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.TableOfContents.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.TableOfContents.doc");
 
             // Remove the first TOC from the document.
             Field tocField = doc.Range.Fields[0];
             tocField.Remove();
 
             // Save the output.
-            doc.Save(MyDir + "Document.TableOfContentsRemoveTOC Out.doc");
+            doc.Save(ExDir + "Document.TableOfContentsRemoveTOC Out.doc");
             //ExEnd
         }
 

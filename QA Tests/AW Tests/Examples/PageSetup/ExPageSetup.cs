@@ -41,7 +41,7 @@ namespace QA_Tests.Examples.PageSetup
             builder.PageSetup.ClearFormatting();
             builder.Writeln("Section 2, back to default Letter paper size, portrait orientation and top alignment.");
 
-            builder.Document.Save(MyDir + "PageSetup.ClearFormatting Out.doc");
+            builder.Document.Save(ExDir + "PageSetup.ClearFormatting Out.doc");
             //ExEnd
         }
 
@@ -75,7 +75,7 @@ namespace QA_Tests.Examples.PageSetup
             builder.InsertBreak(BreakType.PageBreak);
             builder.Writeln("Text page 3.");
 
-            builder.Document.Save(MyDir + "PageSetup.DifferentHeaders Out.doc");
+            builder.Document.Save(ExDir + "PageSetup.DifferentHeaders Out.doc");
             //ExEnd
         }
 
@@ -180,7 +180,7 @@ namespace QA_Tests.Examples.PageSetup
 
             builder.Writeln("Hello world.");
 
-            builder.Document.Save(MyDir + "PageSetup.PageMargins Out.doc");
+            builder.Document.Save(ExDir + "PageSetup.PageMargins Out.doc");
             //ExEnd
         }
 
@@ -205,7 +205,7 @@ namespace QA_Tests.Examples.PageSetup
             builder.InsertBreak(BreakType.ColumnBreak);
             builder.Writeln("Text in column 2.");
 
-            builder.Document.Save(MyDir + "PageSetup.ColumnsSameWidth Out.doc");
+            builder.Document.Save(ExDir + "PageSetup.ColumnsSameWidth Out.doc");
             //ExEnd
         }
 
@@ -245,7 +245,7 @@ namespace QA_Tests.Examples.PageSetup
             builder.InsertBreak(BreakType.ColumnBreak);
             builder.Writeln("Wide column 2.");
 
-            builder.Document.Save(MyDir + "PageSetup.ColumnsCustomWidth Out.doc");
+            builder.Document.Save(ExDir + "PageSetup.ColumnsCustomWidth Out.doc");
             //ExEnd
         }
 
@@ -268,7 +268,7 @@ namespace QA_Tests.Examples.PageSetup
             for (int i = 1; i <= 20; i++)
                 builder.Writeln(string.Format("Line {0}.", i));
 
-            builder.Document.Save(MyDir + "PageSetup.LineNumbers Out.doc");
+            builder.Document.Save(ExDir + "PageSetup.LineNumbers Out.doc");
             //ExEnd
         }
 
@@ -297,7 +297,7 @@ namespace QA_Tests.Examples.PageSetup
             border.Color = System.Drawing.Color.Blue;
             border.DistanceFromText = 0;
 
-            doc.Save(MyDir + "PageSetup.PageBorderTop Out.doc");
+            doc.Save(ExDir + "PageSetup.PageBorderTop Out.doc");
             //ExEnd
         }
 
@@ -322,7 +322,7 @@ namespace QA_Tests.Examples.PageSetup
             ps.Borders.DistanceFromText = 24;
             ps.Borders.Shadow = true;
 
-            doc.Save(MyDir + "PageSetup.PageBorders Out.doc");
+            doc.Save(ExDir + "PageSetup.PageBorders Out.doc");
             //ExEnd
         }
 
@@ -336,7 +336,7 @@ namespace QA_Tests.Examples.PageSetup
             //ExFor:DocumentBuilder.InsertField(string, string)
             //ExSummary:Shows how to control page numbering per section.
             // This document has two sections, but no page numbers yet.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "PageSetup.PageNumbering.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "PageSetup.PageNumbering.doc");
 
             // Use document builder to create a header with a page number field for the first section.
             // The page number will look like "Page V".
@@ -368,7 +368,7 @@ namespace QA_Tests.Examples.PageSetup
             section.PageSetup.RestartPageNumbering = true;
             section.PageSetup.PageNumberStyle = NumberStyle.Arabic;
 
-            doc.Save(MyDir + "PageSetup.PageNumbering Out.doc");
+            doc.Save(ExDir + "PageSetup.PageNumbering Out.doc");
             //ExEnd
         }
     }

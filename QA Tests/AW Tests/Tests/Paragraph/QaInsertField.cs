@@ -9,7 +9,7 @@ namespace QA_Tests.Tests
     /// Tests that verify inserting field into the paragraph
     /// </summary>
     [TestFixture]
-    class InsertField : QaTestsBase
+    class QaInsertField : QaTestsBase
     {
         [Test]
         public void InsertField_BeforeTextInParagraph()

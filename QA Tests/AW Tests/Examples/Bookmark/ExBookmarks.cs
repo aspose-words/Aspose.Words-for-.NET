@@ -24,7 +24,7 @@ namespace QA_Tests.Examples.Bookmark
             //ExFor:Range.Bookmarks
             //ExId:BookmarksGetNameSetText
             //ExSummary:Shows how to get or set bookmark name and text.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Bookmark.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Bookmark.doc");
 
             // Use the indexer of the Bookmarks collection to obtain the desired bookmark.
             Aspose.Words.Bookmark bookmark = doc.Range.Bookmarks["MyBookmark"];
@@ -48,7 +48,7 @@ namespace QA_Tests.Examples.Bookmark
             //ExStart
             //ExFor:Bookmark.Remove
             //ExSummary:Shows how to remove a particular bookmark from a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Bookmark.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Bookmark.doc");
 
             // Use the indexer of the Bookmarks collection to obtain the desired bookmark.
             Aspose.Words.Bookmark bookmark = doc.Range.Bookmarks["MyBookmark"];
@@ -67,7 +67,7 @@ namespace QA_Tests.Examples.Bookmark
             //ExStart
             //ExFor:BookmarkCollection.Clear
             //ExSummary:Shows how to remove all bookmarks from a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Bookmark.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Bookmark.doc");
             doc.Range.Bookmarks.Clear();
             //ExEnd
 
@@ -84,7 +84,7 @@ namespace QA_Tests.Examples.Bookmark
             //ExFor:BookmarkCollection.Item(String)
             //ExId:BookmarksAccess
             //ExSummary:Shows how to obtain bookmarks from a bookmark collection.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Bookmarks.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Bookmarks.doc");
 
             // By index.
             Aspose.Words.Bookmark bookmark1 = doc.Range.Bookmarks[0];
@@ -102,7 +102,7 @@ namespace QA_Tests.Examples.Bookmark
             //ExFor:BookmarkCollection.Remove(String)
             //ExFor:BookmarkCollection.RemoveAt
             //ExSummary:Demonstrates different methods of removing bookmarks from a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Bookmarks.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Bookmarks.doc");
             // Remove a particular bookmark from the document.
             Aspose.Words.Bookmark bookmark = doc.Range.Bookmarks[0];
             doc.Range.Bookmarks.Remove(bookmark);
@@ -138,7 +138,7 @@ namespace QA_Tests.Examples.Bookmark
             //ExStart
             //ExFor:BookmarkCollection.Count
             //ExSummary:Shows how to count the number of bookmarks in a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Bookmark.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Bookmark.doc");
 
             int count = doc.Range.Bookmarks.Count;
             //ExEnd
@@ -168,7 +168,7 @@ namespace QA_Tests.Examples.Bookmark
 
             p.AppendChild(new Run(doc, "Text after bookmark."));
 
-            doc.Save(MyDir + "Bookmarks.CreateBookmarkWithNodes.doc");
+            doc.Save(ExDir + "Bookmarks.CreateBookmarkWithNodes.doc");
 
             Assert.AreEqual(doc.Range.Bookmarks["My bookmark"].Text, "Text inside bookmark. ");
             //ExEnd

@@ -40,7 +40,7 @@ namespace QA_Tests.Examples.MailMerging
             customers.Add(new Customer("Paolo Accorti", "Via Monte Bianco 34, Torino"));
 
             // Open the template document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "MailMerge.CustomDataSource.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "MailMerge.CustomDataSource.doc");
 
             // To be able to mail merge from your own data source, it must be wrapped
             // into an object that implements the IMailMergeDataSource interface.
@@ -49,7 +49,7 @@ namespace QA_Tests.Examples.MailMerging
             // Now you can pass your data source into Aspose.Words.
             doc.MailMerge.Execute(customersDataSource);
 
-            doc.Save(MyDir + "MailMerge.CustomDataSource Out.doc");
+            doc.Save(ExDir + "MailMerge.CustomDataSource Out.doc");
         }
 
         /// <summary>
