@@ -89,6 +89,7 @@
     <Compile Include="Examples\Tables\ExCellFormat.cs" />
     <Compile Include="Examples\Tables\ExTable.cs" />
     <Compile Include="Examples\Tables\ExTableColumn.cs" />
+    <Compile Include="Examples\Warning\ExWarningInfoCollection.cs" />
     <Compile Include="Tests\Paragraph\InsertField.cs" />
     <Compile Include="Tests\QATestsBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -138,7 +139,6 @@
     <Folder Include="Examples\TextColumn\" />
     <Folder Include="Examples\Themes\" />
     <Folder Include="Examples\VariableCollection\" />
-    <Folder Include="Examples\Warning\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
