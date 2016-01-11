@@ -25,5 +25,17 @@ namespace QA_Tests.Examples.Warning
             var enumerator = wic.GetEnumerator();
             //ExEnd
         }
+
+        [Test]
+        public void ClearEx()
+        {
+            //ExStart
+            //ExFor:Clear
+            //ExId:ClearEx
+            //ExSummary:Shows how to use Clear.
+            Aspose.Words.WarningInfoCollection wic = new Aspose.Words.WarningInfoCollection();
+            wic.Clear();
+            //ExEnd
+        }
     }
 }
