@@ -172,5 +172,16 @@ namespace QA_Tests.Examples.Style
             Assert.IsNull(dstDoc.Styles["Heading 1_0"]);
             Assert.AreEqual(Color.Red.ToArgb(), newStyle.Font.Color.ToArgb());
         }
+
+        [Test]
+        public void RemoveEx()
+        {
+            //ExStart
+            //ExFor:Style.Remove
+            //ExSummary:Shows how to pick a style that is defined in the document and remove it.
+            Aspose.Words.Document doc = new Aspose.Words.Document();
+            doc.Styles["Normal"].Remove();
+            //ExEnd
+        }
     }
 }
