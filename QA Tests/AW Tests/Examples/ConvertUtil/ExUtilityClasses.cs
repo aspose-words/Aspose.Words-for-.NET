@@ -71,5 +71,22 @@ namespace QA_Tests.Examples.ConvertUtil
             builder.Document.Save(ExDir + "PageSetup.PageMargins Out.doc");
             //ExEnd
         }
+
+        [Test]
+        public void PointToInchEx()
+        {
+            //ExStart
+            //ExFor:ConvertUtil.PointToInch
+            //ExSummary:Shows how to use PointToInch.
+            Aspose.Words.Document doc = new Aspose.Words.Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Aspose.Words.PageSetup pageSetup = builder.PageSetup;
+            pageSetup.TopMargin = Aspose.Words.ConvertUtil.InchToPoint(2.0);
+
+            Console.WriteLine("The size of my top margin is {0} points, or {1} inches.",
+                pageSetup.TopMargin, Aspose.Words.ConvertUtil.PointToInch(pageSetup.TopMargin));
+            //ExEnd
+        }
     }
 }
