@@ -124,5 +124,28 @@ namespace QA_Tests.Examples.ConvertUtil
             builder.Document.Save(ExDir + "PageSetup.PageMargins.CustomResolution Out.doc");
             //ExEnd
         }
+
+        [Test]
+        public void PointToPixelEx()
+        {
+            //ExStart
+            //ExFor:ConvertUtil.PointToPixel(double)
+            //ExFor:ConvertUtil.PointToPixel(double, double)
+            //ExSummary:Shows how to use PointToPixel with default and custom resolution.
+            Aspose.Words.Document doc = new Aspose.Words.Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Aspose.Words.PageSetup pageSetup = builder.PageSetup;
+            pageSetup.TopMargin = Aspose.Words.ConvertUtil.PixelToPoint(2.0);
+
+            double myDpi = 192.0;
+
+            Console.WriteLine("The size of my top margin is {0} points, or {1} pixels with default resolution.",
+                pageSetup.TopMargin, Aspose.Words.ConvertUtil.PointToPixel(pageSetup.TopMargin));
+
+            Console.WriteLine("The size of my top margin is {0} points, or {1} pixels with custom resolution.",
+                pageSetup.TopMargin, Aspose.Words.ConvertUtil.PointToPixel(pageSetup.TopMargin, myDpi));
+            //ExEnd
+        }
     }
 }
