@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using Aspose.Words;
 using NUnit.Framework;
 using QA_Tests.Tests;
