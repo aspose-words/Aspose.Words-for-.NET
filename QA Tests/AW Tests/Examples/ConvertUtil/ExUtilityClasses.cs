@@ -88,5 +88,40 @@ namespace QA_Tests.Examples.ConvertUtil
                 pageSetup.TopMargin, Aspose.Words.ConvertUtil.PointToInch(pageSetup.TopMargin));
             //ExEnd
         }
+
+        [Test]
+        public void PixelToPointEx()
+        {
+            //ExStart
+            //ExFor:ConvertUtil.PixelToPoint(double)
+            //ExFor:ConvertUtil.PixelToPoint(double, double)
+            //ExSummary:Shows how to specify page properties in pixels with default and custom resolution.
+            Aspose.Words.Document doc = new Aspose.Words.Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Aspose.Words.PageSetup pageSetupNoDpi = builder.PageSetup;
+            pageSetupNoDpi.TopMargin = Aspose.Words.ConvertUtil.PixelToPoint(100.0);
+            pageSetupNoDpi.BottomMargin = Aspose.Words.ConvertUtil.PixelToPoint(100.0);
+            pageSetupNoDpi.LeftMargin = Aspose.Words.ConvertUtil.PixelToPoint(150.0);
+            pageSetupNoDpi.RightMargin = Aspose.Words.ConvertUtil.PixelToPoint(150.0);
+            pageSetupNoDpi.HeaderDistance = Aspose.Words.ConvertUtil.PixelToPoint(20.0);
+            pageSetupNoDpi.FooterDistance = Aspose.Words.ConvertUtil.PixelToPoint(20.0);
+
+            builder.Writeln("Hello world.");
+            builder.Document.Save(ExDir + "PageSetup.PageMargins.DefaultResolution Out.doc");
+
+            double myDpi = 150.0;
+
+            Aspose.Words.PageSetup pageSetupWithDpi = builder.PageSetup;
+            pageSetupWithDpi.TopMargin = Aspose.Words.ConvertUtil.PixelToPoint(100.0, myDpi);
+            pageSetupWithDpi.BottomMargin = Aspose.Words.ConvertUtil.PixelToPoint(100.0, myDpi);
+            pageSetupWithDpi.LeftMargin = Aspose.Words.ConvertUtil.PixelToPoint(150.0, myDpi);
+            pageSetupWithDpi.RightMargin = Aspose.Words.ConvertUtil.PixelToPoint(150.0, myDpi);
+            pageSetupWithDpi.HeaderDistance = Aspose.Words.ConvertUtil.PixelToPoint(20.0, myDpi);
+            pageSetupWithDpi.FooterDistance = Aspose.Words.ConvertUtil.PixelToPoint(20.0, myDpi);
+
+            builder.Document.Save(ExDir + "PageSetup.PageMargins.CustomResolution Out.doc");
+            //ExEnd
+        }
     }
 }
