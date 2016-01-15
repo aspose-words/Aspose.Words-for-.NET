@@ -9,3 +9,4 @@ This section contains the following Platforms
 * [DNN (DotNetNuke)](DotNetNuke)
 * [Umbraco](Umbraco)
 * [MVC](MVC)
+* [Aspose.Words for Outlook](Outlook)
