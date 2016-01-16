@@ -147,5 +147,24 @@ namespace QA_Tests.Examples.ConvertUtil
                 pageSetup.TopMargin, Aspose.Words.ConvertUtil.PointToPixel(pageSetup.TopMargin, myDpi));
             //ExEnd
         }
+
+        [Test]
+        public void PixelToNewDpiEx()
+        {
+            //ExStart
+            //ExFor:ConvertUtil.PixelToNewDpi
+            //ExSummary:Shows how to use PixelToNewDpi.
+            Aspose.Words.Document doc = new Aspose.Words.Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Aspose.Words.PageSetup pageSetup = builder.PageSetup;
+            pageSetup.TopMargin = 72;
+            double oldDpi = 92.0;
+            double newDpi = 192.0;
+
+            Console.WriteLine("{0} pixels at {1} dpi becomes {2} pixels at {3} dpi.",
+                pageSetup.TopMargin, oldDpi, Aspose.Words.ConvertUtil.PixelToNewDpi(pageSetup.TopMargin, oldDpi, newDpi), newDpi);
+            //ExEnd
+        }
     }
 }
