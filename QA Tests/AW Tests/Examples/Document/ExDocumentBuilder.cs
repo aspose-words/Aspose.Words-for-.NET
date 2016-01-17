@@ -1760,7 +1760,7 @@ namespace QA_Tests.Examples.Document
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Aspose.Words.Fields.Field field = builder.InsertField("PAGE");
+            Aspose.Words.Fields.Field field = builder.InsertField("MERGEFIELD field");
 
             builder.MoveToField(field, true);
             //ExEnd
@@ -1770,8 +1770,7 @@ namespace QA_Tests.Examples.Document
         public void InsertHtmlEx()
         {
             //ExStart
-            //ExFor:InsertHtml(string, boolean)
-            //ExId:InsertHtmlEx
+            //ExFor:DocumentBuilder.InsertHtml(string, boolean)
             //ExSummary:Inserts HTML into a document using DocumentBuilder.
             Aspose.Words.Document doc = new Aspose.Words.Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

@@ -1353,22 +1353,6 @@ namespace QA_Tests.Examples.Document
         }
 
         [Test]
-        public void HyphenationEx()
-        {
-            //ExStart
-            //ExFor:Hyphenation
-            //ExId:HyphenationEx
-            //ExSummary:Load a hyphenation dictionary of a language from a file.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
-            
-            Hyphenation.RegisterDictionary("en-US", ExDir + "hyph_en_US.dic");
-            Console.Write(Hyphenation.IsDictionaryRegistered("en-US"));
-
-            doc.Save(ExDir + "Document.HyphenationEx.doc");
-            //ExEnd
-        }
-
-        [Test]
         public void CompareEx()
         {
             //ExStart

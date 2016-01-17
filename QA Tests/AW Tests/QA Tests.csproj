@@ -71,6 +71,7 @@
     <Compile Include="Examples\Font\ExFont.cs" />
     <Compile Include="Examples\HeaderFooter\ExHeaderFooter.cs" />
     <Compile Include="Examples\Hyperlink\ExReplaceHyperlinks.cs" />
+    <Compile Include="Examples\Hyphenation\ExHyphenation.cs" />
     <Compile Include="Examples\Inline\ExInlineStory.cs" />
     <Compile Include="Examples\List\ExLists.cs" />
     <Compile Include="Examples\MailMerging\ExMailMerge.cs" />
@@ -119,7 +120,6 @@
     <Folder Include="Examples\File\" />
     <Folder Include="Examples\Fonts\" />
     <Folder Include="Examples\Footnote\" />
-    <Folder Include="Examples\Hyphenation\" />
     <Folder Include="Examples\InterruptionToken\" />
     <Folder Include="Examples\Layout\" />
     <Folder Include="Examples\License\" />

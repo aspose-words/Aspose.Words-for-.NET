@@ -14,17 +14,27 @@ namespace QA_Tests.Examples.DigitalSignature
     [TestFixture]
     public class ExDigitalSignatureUtil : QaTestsBase
     {
-        [Test]
         public void RemoveAllSignaturesEx()
         {
             //ExStart
-            //ExFor:RemoveAllSignatures
-            //ExId:RemoveAllSignaturesEx
+            //ExFor:DigitalSignatureUtil.RemoveAllSignatures(stream, stream)
+            //ExFor:DigitalSignatureUtil.RemoveAllSignatures(string, string)
             //ExSummary:Shows how to use RemoveAllSignatures.
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
-            string outputDocFileName = ExDir + "Document.NoSignatures.doc";
-            Aspose.Words.DigitalSignatureUtil.RemoveAllSignatures(doc.OriginalFileName, outputDocFileName);            
+            //By stream:
+            System.IO.Stream docStreamIn = new System.IO.FileStream(ExDir + "Document.doc", System.IO.FileMode.Open);
+            System.IO.Stream docStreamOut = new System.IO.FileStream(ExDir + "Document.NoSignatures.FromStream.doc", System.IO.FileMode.Create);
+
+            Aspose.Words.DigitalSignatureUtil.RemoveAllSignatures(docStreamIn, docStreamOut);
+
+            docStreamIn.Close();
+            docStreamOut.Close();
+
+            //By string:
+            string outFileName = ExDir + "Document.NoSignatures.FromString.doc";
+
+            Aspose.Words.DigitalSignatureUtil.RemoveAllSignatures(doc.OriginalFileName, outFileName);
             //ExEnd
         }
 
@@ -33,19 +43,17 @@ namespace QA_Tests.Examples.DigitalSignature
         {
             //ExStart
             //ExFor:LoadSignatures(stream)
-            //ExId:LoadSignaturesEx
+            //ExFor:LoadSignatures(string)
             //ExSummary:Shows how to use LoadSignatures.
             System.IO.Stream docStream = new System.IO.FileStream(ExDir + "Document.doc", System.IO.FileMode.Open);
-            Aspose.Words.DigitalSignatureUtil.LoadSignatures(docStream);
-            //ExEnd
+            Aspose.Words.DigitalSignatureCollection digitalSignatures = new Aspose.Words.DigitalSignatureCollection();
 
+            // By stream:
+            digitalSignatures = Aspose.Words.DigitalSignatureUtil.LoadSignatures(docStream);
             docStream.Close();
 
-            //ExStart
-            //ExFor:LoadSignatures(string)
-            //ExId:LoadSignaturesEx
-            //ExSummary:Shows how to use LoadSignatures.
-            Aspose.Words.DigitalSignatureUtil.LoadSignatures(ExDir + "Document.doc");
+            // By string:
+            digitalSignatures = Aspose.Words.DigitalSignatureUtil.LoadSignatures(ExDir + "Document.doc");
             //ExEnd
         }
 
