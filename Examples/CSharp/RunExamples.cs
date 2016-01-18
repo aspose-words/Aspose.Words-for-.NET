@@ -56,7 +56,7 @@ namespace CSharp
             //CheckFormat.Run();
             //SplitIntoHtmlPages.Run();
             //LoadTxt.Run();
-            //PageSplitter.Run();
+            PageSplitter.Run();
             //ImageToPdf.Run();
 
             //// =====================================================
@@ -162,7 +162,7 @@ namespace CSharp
             //ImageColorFilters.Run();
             //RenderShape.Run();
             //SaveAsMultipageTiff.Run();
-            ReadActiveXControlProperties.Run();
+            //ReadActiveXControlProperties.Run();
 
             //// =====================================================
             //// =====================================================
