@@ -59,6 +59,7 @@ namespace Aspose.Words_Metadata_Cleaner
                 try
                 {
                     Outlook.MailItem thisEmail = Item as Outlook.MailItem;
+                    bool flgPassword = false;
                     for (int i = thisEmail.Attachments.Count; i > 0; i--)
                     {
                         Outlook.Attachment attachment = thisEmail.Attachments[i];
@@ -99,31 +100,46 @@ namespace Aspose.Words_Metadata_Cleaner
                         // If word Attachment is found
                         if (WordAttachment)
                         {
-                            Aspose.Words.Document doc = new Words.Document(tempFileName);
+                            try
+                            {
+                                Aspose.Words.Document doc = new Words.Document(tempFileName);
 
-                            // Remove if there is any protection on the document
-                            ProtectionType protection = doc.ProtectionType;
-                            if (protection != ProtectionType.NoProtection)
-                                doc.Unprotect();
+                                // Remove if there is any protection on the document
+                                ProtectionType protection = doc.ProtectionType;
+                                if (protection != ProtectionType.NoProtection)
+                                    doc.Unprotect();
 
-                            // Remove all built-in and Custom Properties
-                            doc.CustomDocumentProperties.Clear();
-                            doc.BuiltInDocumentProperties.Clear();
+                                // Remove all built-in and Custom Properties
+                                doc.CustomDocumentProperties.Clear();
+                                doc.BuiltInDocumentProperties.Clear();
 
-                            // Password will be removed if the document is password protected.
-                            if (protection != ProtectionType.NoProtection)
-                                doc.Protect(protection);
+                                // Password will be removed if the document is password protected.
+                                if (protection != ProtectionType.NoProtection)
+                                    doc.Protect(protection);
 
-                            // Save the file back to temp location
-                            doc.Save(tempFileName);
+                                // Save the file back to temp location
+                                doc.Save(tempFileName);
 
-                            // Replace the original attachment
-                            thisEmail.Attachments.Remove(attachmentIndex);
-                            thisEmail.Attachments.Add(tempFileName, missing, attachmentIndex, missing);
+                                // Replace the original attachment
+                                thisEmail.Attachments.Remove(attachmentIndex);
+                                thisEmail.Attachments.Add(tempFileName, missing, attachmentIndex, missing);
+                            }
+                            catch (Words.IncorrectPasswordException ex)
+                            {
+                                flgPassword = true;
+                            }
+                            catch (Exception ex)
+                            {
+                                throw ex;
+                            }
                         }
                         // Delete file from temp folder
                         if (File.Exists(tempFileName))
                             File.Delete(tempFileName);
+                    }
+                    if (flgPassword)
+                    {
+                        MessageBox.Show("Password protected documents cannot be processed for Metadata cleaning");
                     }
                 }
                 catch (Exception ex)
