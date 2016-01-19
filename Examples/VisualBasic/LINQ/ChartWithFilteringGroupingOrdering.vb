@@ -10,9 +10,9 @@ Namespace LINQ
         Public Shared Sub Run()
             ' The path to the documents directory.
             Dim dataDir As String = RunExamples.GetDataDir_LINQ()
-
+            Dim fileName As String = "ChartWithFilteringGroupingOrdering.docx"
             ' Load the template document.
-            Dim doc As New Document(dataDir & Convert.ToString("ChartWithFilteringGroupingOrdering.docx"))
+            Dim doc As New Document(dataDir & fileName)
 
             ' Create a Reporting Engine.
             Dim engine As New ReportingEngine()
@@ -20,7 +20,7 @@ Namespace LINQ
             ' Execute the build report.
             engine.BuildReport(doc, Common.GetContracts(), "contracts")
 
-            dataDir = dataDir & Convert.ToString("ChartWithFilteringGroupingOrdering Out.docx")
+            dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
 
             ' Save the finished document to disk.
             doc.Save(dataDir)

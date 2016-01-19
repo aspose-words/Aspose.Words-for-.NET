@@ -11,8 +11,8 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
-
-            Document dstDoc = new Document(dataDir + "TestFile.Destination.doc");
+            string fileName = "TestFile.Destination.doc";
+            Document dstDoc = new Document(dataDir + fileName);
             Document srcDoc = new Document(dataDir + "TestFile.Source.doc");
             ImportFormatMode mode = ImportFormatMode.KeepSourceFormatting;
 
@@ -32,10 +32,11 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
                 dstDoc.AppendChild(dstSection);
             }
 
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the joined document
-            dstDoc.Save(dataDir + "TestFile.Append Manual Out.doc");
+            dstDoc.Save(dataDir);
 
-            Console.WriteLine("\nDocument appended successfully with manual append operation.\nFile saved at " + dataDir + "TestFile.Append Manual Out.pdf");
+            Console.WriteLine("\nDocument appended successfully with manual append operation.\nFile saved at " + dataDir);
         }
     }
 }

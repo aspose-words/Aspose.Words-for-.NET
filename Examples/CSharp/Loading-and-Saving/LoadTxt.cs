@@ -17,14 +17,15 @@ namespace CSharp.Loading_Saving
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
-
+            
             // The encoding of the text file is automatically detected.
             Document doc = new Document(dataDir + "LoadTxt.txt");
 
-            // Save as any Aspose.Words supported format, such as DOCX.
-            doc.Save(dataDir + "LoadTxt Out.docx");
+            // Save as any Aspose.Words supported format, such as DOCX.  
+            dataDir = dataDir + "LoadTxt_out_.docx";
+            doc.Save(dataDir);
 
-            Console.WriteLine("\nText document loaded successfully.\nFile saved at " + dataDir + "LoadTxt Out.docx");
+            Console.WriteLine("\nText document loaded successfully.\nFile saved at " + dataDir);
         }
     }
 }

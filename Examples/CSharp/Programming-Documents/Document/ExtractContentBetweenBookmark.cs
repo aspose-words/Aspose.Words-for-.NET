@@ -14,8 +14,8 @@ namespace CSharp.Programming_Documents.Working_With_Document
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
-
-            Document doc = new Document(dataDir + "TestFile.doc");
+            string fileName = "TestFile.doc";
+            Document doc = new Document(dataDir + fileName);
 
             Section section = doc.Sections[0];
             section.PageSetup.LeftMargin = 70.85;
@@ -30,14 +30,14 @@ namespace CSharp.Programming_Documents.Working_With_Document
             // Firstly extract the content between these nodes including the bookmark. 
             ArrayList extractedNodesInclusive = Common.ExtractContent(bookmarkStart, bookmarkEnd, true);
             Document dstDoc = Common.GenerateDocument(doc, extractedNodesInclusive);
-            dstDoc.Save(dataDir + "TestFile.BookmarkInclusive Out.doc");
+            dstDoc.Save(dataDir + "TestFile.BookmarkInclusive_out_.doc");
 
             // Secondly extract the content between these nodes this time without including the bookmark.
             ArrayList extractedNodesExclusive = Common.ExtractContent(bookmarkStart, bookmarkEnd, false);
             dstDoc = Common.GenerateDocument(doc, extractedNodesExclusive);
-            dstDoc.Save(dataDir + "TestFile.BookmarkExclusive Out.doc");
+            dstDoc.Save(dataDir + "TestFile.BookmarkExclusive_out_.doc");
 
-            Console.WriteLine("\nExtracted content between bookmarks successfully.\nFile saved at " + dataDir + "TestFile.BookmarkExclusive Out.doc");
+            Console.WriteLine("\nExtracted content between bookmarks successfully.\nFile saved at " + dataDir + "TestFile.BookmarkExclusive_out_.doc");
         }
     }
 }

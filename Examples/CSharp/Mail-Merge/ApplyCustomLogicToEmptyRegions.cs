@@ -18,8 +18,9 @@ namespace CSharp.Mail_Merge
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); ;
 
+            string fileName = "TestFile.doc";
             // Open the document.
-            Document doc = new Document(dataDir + "TestFile.doc");
+            Document doc = new Document(dataDir + fileName);
 
             // Create a data source which has some data missing.
             // This will result in some regions that are merged and some that remain after executing mail merge.
@@ -40,7 +41,7 @@ namespace CSharp.Mail_Merge
             ExecuteCustomLogicOnEmptyRegions(doc, new EmptyRegionsHandler());
 
             // Save the output document to disk.
-            doc.Save(dataDir + "TestFile.CustomLogicEmptyRegions1 Out.doc");
+            doc.Save(dataDir + "TestFile.CustomLogicEmptyRegions1_out_.doc");
             
             // Reload the original merged document.
             doc = mergedDoc.Clone();
@@ -48,7 +49,7 @@ namespace CSharp.Mail_Merge
             // Apply different logic to unused regions this time.
             ExecuteCustomLogicOnEmptyRegions(doc, new EmptyRegionsHandler_MergeTable());
 
-            doc.Save(dataDir + "TestFile.CustomLogicEmptyRegions2 Out.doc");
+            doc.Save(dataDir + "TestFile.CustomLogicEmptyRegions2_out_.doc");
 
             // Reload the original merged document.
             doc = mergedDoc.Clone();
@@ -58,9 +59,10 @@ namespace CSharp.Mail_Merge
             regions.Add("ContactDetails");
             ExecuteCustomLogicOnEmptyRegions(doc, new EmptyRegionsHandler(), regions);
             
-            doc.Save(dataDir + "TestFile.CustomLogicEmptyRegions3 Out.doc");
+            dataDir = dataDir + "TestFile.CustomLogicEmptyRegions3_out_.doc";
+            doc.Save(dataDir );
 
-            Console.WriteLine("\nMail merge performed successfully.\nFile saved at " + dataDir + "TestFile.CustomLogicEmptyRegions3 Out.doc");
+            Console.WriteLine("\nMail merge performed successfully.\nFile saved at " + dataDir);
         }
 
         /// <summary>

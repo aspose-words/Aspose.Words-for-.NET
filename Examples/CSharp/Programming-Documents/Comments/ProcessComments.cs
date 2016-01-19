@@ -12,9 +12,10 @@ namespace CSharp.Programming_Documents.Comments
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithComments();
+            string fileName = "TestFile.doc";
 
             // Open the document.
-            Document doc = new Document(dataDir + "TestFile.doc");
+            Document doc = new Document(dataDir + fileName);
 
             // Extract the information about the comments of all the authors.
             foreach (string comment in ExtractComments(doc))
@@ -32,10 +33,11 @@ namespace CSharp.Programming_Documents.Comments
             RemoveComments(doc);
             Console.WriteLine("All comments are removed!");
 
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the document.
-            doc.Save(dataDir + "Test File Out.doc");
+            doc.Save(dataDir);
 
-            Console.WriteLine("\nComments extracted and removed successfully.\nFile saved at " + dataDir + "Test File Out.doc");
+            Console.WriteLine("\nComments extracted and removed successfully.\nFile saved at " + dataDir);
         }
 
         static ArrayList ExtractComments(Document doc)

@@ -71,9 +71,9 @@ Public Class UpdateFields
 
         ' Call the method below to update the TOC.
         doc.UpdateFields()
+        dataDir = dataDir & "Document Field Update_out_.docx"
+        doc.Save(dataDir)
 
-        doc.Save(dataDir & "Document Field Update Out.docx")
-
-        Console.WriteLine(vbNewLine + "Fields updated successfully." + vbNewLine + "File saved at " + dataDir + "Document Field Update Out.docx")
+        Console.WriteLine(vbNewLine + "Fields updated successfully." + vbNewLine + "File saved at " + dataDir)
     End Sub
 End Class

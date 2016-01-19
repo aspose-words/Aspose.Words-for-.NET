@@ -13,8 +13,9 @@ Public Class PrependDocument
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
+        Dim fileName As String = "TestFile.Destination.doc"
 
-        Dim dstDoc As New Document(dataDir & "TestFile.Destination.doc")
+        Dim dstDoc As New Document(dataDir & fileName)
         Dim srcDoc As New Document(dataDir & "TestFile.Source.doc")
 
         ' Append the source document to the destination document. This causes the result to have line spacing problems.
@@ -24,10 +25,11 @@ Public Class PrependDocument
         ' This results in the same joined document but with no line spacing issues.
         DoPrepend(srcDoc, dstDoc, ImportFormatMode.KeepSourceFormatting)
 
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the document
-        dstDoc.Save(dataDir + "TestFile.Prepend.doc")
+        dstDoc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine & "Document prepended successfully." & vbNewLine & "File saved at " + dataDir + "TestFile.Prepend Out.docx")
+        Console.WriteLine(vbNewLine & "Document prepended successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     Public Shared Sub DoPrepend(dstDoc As Document, srcDoc As Document, mode As ImportFormatMode)

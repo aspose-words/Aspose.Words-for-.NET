@@ -63,8 +63,9 @@ namespace CSharp.Mail_Merge
             MyMailMergeDataSource orderItemsDataSource = new MyMailMergeDataSource(orderItems, "Items");
             MyMailMergeDataSource deliveryDataSource = new MyMailMergeDataSource(deliveryAddress);
 
+            string fileName = "TestFile.LINQ.doc";
             // Open the template document.
-            Document doc = new Document(dataDir + "TestFile.LINQ.doc");
+            Document doc = new Document(dataDir + fileName);
 
             // Fill the document with data from our data sources.
             // Using mail merge regions for populating the order items table is required
@@ -74,10 +75,11 @@ namespace CSharp.Mail_Merge
             // The standard mail merge without regions is used for the delivery address.
             doc.MailMerge.Execute(deliveryDataSource);
 
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the output document.
-            doc.Save(dataDir + "TestFile.LINQ Out.doc");
+            doc.Save(dataDir);
 
-            Console.WriteLine("\nMail merge performed successfully.\nFile saved at " + dataDir + "TestFile.LINQ Out.doc");
+            Console.WriteLine("\nMail merge performed successfully.\nFile saved at " + dataDir);
 #else
             throw new InvalidOperationException("This example requires the .NET Framework v3.5 or above to run." +
                                    " Make sure that the target framework of this project is set to 3.5 or above.");

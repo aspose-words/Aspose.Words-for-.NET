@@ -13,8 +13,9 @@ Public Class BaseDocument
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
+        Dim fileName As String = "TestFile.Destination.doc"
 
-        Dim dstDoc As New Document(dataDir & "TestFile.Destination.doc")
+        Dim dstDoc As New Document(dataDir & fileName)
         Dim srcDoc As New Document(dataDir & "TestFile.Source.doc")
 
         ' The destination document is not actually empty which often causes a blank page to appear before the appended document
@@ -23,8 +24,9 @@ Public Class BaseDocument
         dstDoc.RemoveAllChildren()
 
         dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting)
-        dstDoc.Save(dataDir & "TestFile.BaseDocument Out.doc")
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
+        dstDoc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine & "Document appended successfully with base document." & vbNewLine & "File saved at " + dataDir + "TestFile.BaseDocument Out.docx")
+        Console.WriteLine(vbNewLine & "Document appended successfully with base document." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

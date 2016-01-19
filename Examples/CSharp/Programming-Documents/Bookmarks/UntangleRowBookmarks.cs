@@ -13,9 +13,9 @@ namespace CSharp.Programming_Documents.Bookmarks
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithBookmarks();
-
+            string fileName = "TestDefect1352.doc";
             // Load a document.
-            Document doc = new Document(dataDir + "TestDefect1352.doc");
+            Document doc = new Document(dataDir + fileName);
 
             // This perform the custom task of putting the row bookmark ends into the same row with the bookmark starts.
             Untangle(doc);
@@ -27,10 +27,11 @@ namespace CSharp.Programming_Documents.Bookmarks
             if (doc.Range.Bookmarks["ROW1"].BookmarkEnd == null)
                 throw new Exception("Wrong, the end of the bookmark was deleted.");
 
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the finished document.
-            doc.Save(dataDir + "TestDefect1352 Out.doc");
+            doc.Save(dataDir);
 
-            Console.WriteLine("\nRow bookmark untangled successfully.\nFile saved at " + dataDir + "TestDefect1352 Out.doc");
+            Console.WriteLine("\nRow bookmark untangled successfully.\nFile saved at " + dataDir);
         }
 
         private static void Untangle(Document doc)

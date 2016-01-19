@@ -37,7 +37,7 @@ Public Class CompressImages
             Console.WriteLine("We expected to have only 1 image resampled in this test document!")
         End If
 
-        Dim dstFileName As String = srcFileName & ".Resampled Out.docx"
+        Dim dstFileName As String = srcFileName & ".Resampled_out_.docx"
         doc.Save(dstFileName)
         Console.WriteLine("Saving {0}. Size {1}.", dstFileName, GetFileSize(dstFileName))
 

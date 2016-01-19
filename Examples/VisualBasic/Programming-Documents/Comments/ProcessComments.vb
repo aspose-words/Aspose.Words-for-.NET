@@ -10,9 +10,10 @@ Public Class ProcessComments
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithComments()
+        Dim fileName As String = "TestFile.doc"
 
         ' Open the document.
-        Dim doc As New Document(dataDir & "TestFile.doc")
+        Dim doc As New Document(dataDir & fileName)
 
         For Each comment As String In ExtractComments(doc)
             Console.Write(comment)
@@ -31,10 +32,11 @@ Public Class ProcessComments
         RemoveComments(doc)
         Console.WriteLine("All comments are removed!")
 
+        dataDir = dataDir + RunExamples.GetOutputFilePath(fileName)
         ' Save the document.
-        doc.Save(dataDir & "Test File Out.doc")
+        doc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine & "Comments extracted and removed successfully." & vbNewLine & "File saved at " + dataDir + "Test File Out.doc")
+        Console.WriteLine(vbNewLine & "Comments extracted and removed successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     Private Shared Function ExtractComments(ByVal doc As Document) As ArrayList

@@ -13,15 +13,17 @@ namespace CSharp.Programming_Documents.Find_and_Replace
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_FindAndReplace();
+            string fileName = "Field.ReplaceTextWithFields.doc";
 
-            Document doc = new Document(dataDir + "Field.ReplaceTextWithFields.doc");
+            Document doc = new Document(dataDir + fileName);
 
             // Replace any "PlaceHolderX" instances in the document (where X is a number) with a merge field.
             doc.Range.Replace(new Regex(@"PlaceHolder(\d+)"), new ReplaceTextWithFieldHandler(FieldType.FieldMergeField), false);
 
-            doc.Save(dataDir + "Field.ReplaceTextWithFields Out.doc");
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
+            doc.Save(dataDir);
 
-            Console.WriteLine("\nText replaced with field successfully.\nFile saved at " + dataDir + "TestFile Out.doc");
+            Console.WriteLine("\nText replaced with field successfully.\nFile saved at " + dataDir);
         }
     }
 

@@ -38,10 +38,11 @@ Public Class RenderShape
         ' Define custom options which control how the image is rendered. Render the shape to the JPEG raster format.
         Dim imageOptions As New ImageSaveOptions(SaveFormat.Emf) With {.Scale = 1.5F}
 
+        dataDir = dataDir & "TestFile.RenderToDisk_out_.emf"
         ' Save the rendered image to disk.
-        r.Save(dataDir & "TestFile.RenderToDisk Out.emf", imageOptions)
+        r.Save(dataDir, imageOptions)
 
-        Console.WriteLine(vbNewLine & "Shape rendered to disk successfully." & vbNewLine & "File saved at " + dataDir + "TestFile.RenderToDisk Out.emf")
+        Console.WriteLine(vbNewLine & "Shape rendered to disk successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     Public Shared Sub RenderShapeToStream(ByVal dataDir As String, ByVal shape As Shape)
@@ -52,12 +53,13 @@ Public Class RenderShape
         ' Reduce the brightness a bit (default is 0.5f).
         Dim imageOptions As New ImageSaveOptions(SaveFormat.Jpeg) With {.ImageColorMode = ImageColorMode.Grayscale, .ImageBrightness = 0.45F}
 
-        Dim stream As New FileStream(dataDir & "TestFile.RenderToStream Out.jpg", FileMode.Create)
+        dataDir = dataDir & "TestFile.RenderToStream_out_.jpg"
+        Dim stream As New FileStream(dataDir, FileMode.Create)
 
         ' Save the rendered image to the stream using different options.
         r.Save(stream, imageOptions)
 
-        Console.WriteLine(vbNewLine & "Shape rendered to stream successfully." & vbNewLine & "File saved at " + dataDir + "TestFile.RenderToStream Out.jpg")
+        Console.WriteLine(vbNewLine & "Shape rendered to stream successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     
@@ -87,25 +89,27 @@ Public Class RenderShape
                 ' Render the shape onto the graphics object.
                 r.RenderToSize(gr, 0, 0, shapeSizeInPixels.Width, shapeSizeInPixels.Height)
             End Using
-
-            image.Save(dataDir & "TestFile.RenderToGraphics.png", ImageFormat.Png)
+            dataDir = dataDir & "TestFile.RenderToGraphics_out_.png"
+            image.Save(dataDir, ImageFormat.Png)
         End Using
 
-        Console.WriteLine(vbNewLine & "Shape rendered to graphics successfully." & vbNewLine & "File saved at " + dataDir + "TestFile.RenderToGraphics.png")
+        Console.WriteLine(vbNewLine & "Shape rendered to graphics successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     Public Shared Sub RenderCellToImage(ByVal dataDir As String, ByVal doc As Document)
         Dim cell As Cell = CType(doc.GetChild(NodeType.Cell, 2, True), Cell) ' The third cell in the first table.
-        RenderNode(cell, dataDir & "TestFile.RenderCell Out.png", Nothing)
+        dataDir = dataDir & "TestFile.RenderCell_out_.png"
+        RenderNode(cell, dataDir, Nothing)
 
-        Console.WriteLine(vbNewLine & "Cell rendered to image successfully." & vbNewLine & "File saved at " + dataDir + "TestFile.RenderCell Out.png")
+        Console.WriteLine(vbNewLine & "Cell rendered to image successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     Public Shared Sub RenderRowToImage(ByVal dataDir As String, ByVal doc As Document)
         Dim row As Row = CType(doc.GetChild(NodeType.Row, 0, True), Row) ' The first row in the first table.
-        RenderNode(row, dataDir & "TestFile.RenderRow Out.png", Nothing)
+        dataDir = dataDir & "TestFile.RenderRow_out_.png"
+        RenderNode(row, dataDir, Nothing)
 
-        Console.WriteLine(vbNewLine & "Row rendered to image successfully." & vbNewLine & "File saved at " + dataDir + "TestFile.RenderRow Out.png")
+        Console.WriteLine(vbNewLine & "Row rendered to image successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     Public Shared Sub RenderParagraphToImage(ByVal dataDir As String, ByVal doc As Document)
@@ -115,10 +119,10 @@ Public Class RenderShape
         ' Save the node with a light pink background.
         Dim options As New ImageSaveOptions(SaveFormat.Png)
         options.PaperColor = Color.LightPink
+        dataDir = dataDir & "TestFile.RenderParagraph_out_.png"
+        RenderNode(paragraph, dataDir, options)
 
-        RenderNode(paragraph, dataDir & "TestFile.RenderParagraph Out.png", options)
-
-        Console.WriteLine(vbNewLine & "Paragraph rendered to image successfully." & vbNewLine & "File saved at " + dataDir + "TestFile.RenderParagraph Out.png")
+        Console.WriteLine(vbNewLine & "Paragraph rendered to image successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     Public Shared Sub FindShapeSizes(ByVal shape As Shape)

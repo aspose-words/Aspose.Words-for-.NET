@@ -11,8 +11,9 @@ Namespace LINQ
             ' The path to the documents directory.
             Dim dataDir As String = RunExamples.GetDataDir_LINQ()
 
+            Dim fileName As String = "SingleRow.doc"
             ' Load the template document.
-            Dim doc As New Document(dataDir & Convert.ToString("SingleRow.doc"))
+            Dim doc As New Document(dataDir & fileName)
 
             ' Load the photo and read all bytes.
             Dim imgdata As Byte() = System.IO.File.ReadAllBytes(dataDir & Convert.ToString("photo.png"))
@@ -23,7 +24,7 @@ Namespace LINQ
             ' Execute the build report.
             engine.BuildReport(doc, Common.GetManager(), "manager")
 
-            dataDir = dataDir & Convert.ToString("SingleRow Out.doc")
+            dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
 
             ' Save the finished document to disk.
             doc.Save(dataDir)

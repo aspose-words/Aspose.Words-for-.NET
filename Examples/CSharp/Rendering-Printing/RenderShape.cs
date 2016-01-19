@@ -47,10 +47,11 @@ namespace CSharp.Rendering_and_Printing
                 Scale = 1.5f
             };
 
+            dataDir = dataDir + "TestFile.RenderToDisk_out_.emf";
             // Save the rendered image to disk.
-            r.Save(dataDir + "TestFile.RenderToDisk Out.emf", imageOptions);
+            r.Save(dataDir, imageOptions);
 
-            Console.WriteLine("\nShape rendered to disk successfully.\nFile saved at " + dataDir + "TestFile.RenderToDisk Out.emf");
+            Console.WriteLine("\nShape rendered to disk successfully.\nFile saved at " + dataDir);
         }
 
         public static void RenderShapeToStream(string dataDir, Shape shape)
@@ -66,13 +67,13 @@ namespace CSharp.Rendering_and_Printing
                 // Reduce the brightness a bit (default is 0.5f).
                 ImageBrightness = 0.45f
             };
-
-            FileStream stream = new FileStream(dataDir + "TestFile.RenderToStream Out.jpg", FileMode.Create);
+            dataDir = dataDir + "TestFile.RenderToStream_out_.jpg";
+            FileStream stream = new FileStream(dataDir, FileMode.Create);
 
             // Save the rendered image to the stream using different options.
             r.Save(stream, imageOptions);
 
-            Console.WriteLine("\nShape rendered to stream successfully.\nFile saved at " + dataDir + "TestFile.RenderToStream Out.jpg");
+            Console.WriteLine("\nShape rendered to stream successfully.\nFile saved at " + dataDir);
         }
 
         public static void RenderShapeToGraphics(string dataDir, Shape shape)
@@ -104,27 +105,30 @@ namespace CSharp.Rendering_and_Printing
                     // Render the shape onto the graphics object.
                     r.RenderToSize(gr, 0, 0, shapeSizeInPixels.Width, shapeSizeInPixels.Height);
                 }
+                dataDir = dataDir + "TestFile.RenderToGraphics_out_.png";
+                image.Save(dataDir, ImageFormat.Png);
 
-                image.Save(dataDir + "TestFile.RenderToGraphics.png", ImageFormat.Png);
-
-                Console.WriteLine("\nShape rendered to graphics successfully.\nFile saved at " + dataDir + "TestFile.RenderToGraphics.png");
+                Console.WriteLine("\nShape rendered to graphics successfully.\nFile saved at " + dataDir);
             }
         }
 
         public static void RenderCellToImage(string dataDir, Document doc)
         {
             Cell cell = (Cell)doc.GetChild(NodeType.Cell, 2, true); // The third cell in the first table.
-            RenderNode(cell, dataDir + "TestFile.RenderCell Out.png", null);
+            dataDir = dataDir + "TestFile.RenderCell_out_.png";
+            RenderNode(cell, dataDir, null);
 
-            Console.WriteLine("\nCell rendered to image successfully.\nFile saved at " + dataDir + "TestFile.RenderCell Out.png");
+            Console.WriteLine("\nCell rendered to image successfully.\nFile saved at " + dataDir);
         }
 
         public static void RenderRowToImage(string dataDir, Document doc)
         {
             Row row = (Row)doc.GetChild(NodeType.Row, 0, true); // The first row in the first table.
-            RenderNode(row, dataDir + "TestFile.RenderRow Out.png", null);
 
-            Console.WriteLine("\nRow rendered to image successfully.\nFile saved at " + dataDir + "TestFile.RenderRow Out.png");
+            dataDir = dataDir + "TestFile.RenderRow_out_.png";
+            RenderNode(row, dataDir, null);
+
+            Console.WriteLine("\nRow rendered to image successfully.\nFile saved at " + dataDir);
         }
 
         public static void RenderParagraphToImage(string dataDir, Document doc)
@@ -135,10 +139,10 @@ namespace CSharp.Rendering_and_Printing
             // Save the node with a light pink background.
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
             options.PaperColor = Color.LightPink;
+            dataDir = dataDir + "TestFile.RenderParagraph_out_.png";
+            RenderNode(paragraph, dataDir, options);
 
-            RenderNode(paragraph, dataDir + "TestFile.RenderParagraph Out.png", options);
-
-            Console.WriteLine("\nParagraph rendered to image successfully.\nFile saved at " + dataDir + "TestFile.RenderParagraph Out.png");
+            Console.WriteLine("\nParagraph rendered to image successfully.\nFile saved at " + dataDir);
         }
 
         public static void FindShapeSizes(Shape shape)

@@ -19,7 +19,7 @@ namespace CSharp.Rendering_and_Printing
             Document doc = new Document(dataDir + "TestFile Multipage TIFF.doc");
 
             // Save the document as multipage TIFF.
-            doc.Save(dataDir + "TestFile Multipage TIFF Out.tiff");
+            doc.Save(dataDir + "TestFile Multipage TIFF_out_.tiff");
             
             //Create an ImageSaveOptions object to pass to the Save method
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff);
@@ -27,10 +27,10 @@ namespace CSharp.Rendering_and_Printing
             options.PageCount = 2;
             options.TiffCompression = TiffCompression.Ccitt4;
             options.Resolution = 160;
+            dataDir = dataDir + "TestFileWithOptions_out_.tiff";
+            doc.Save(dataDir, options);
 
-            doc.Save(dataDir + "TestFileWithOptions Out.tiff", options);
-
-            Console.WriteLine("\nDocument saved as multi-page TIFF successfully.\nFile saved at " + dataDir + "TestFileWithOptions Out.tiff");
+            Console.WriteLine("\nDocument saved as multi-page TIFF successfully.\nFile saved at " + dataDir);
         }
     }
 }

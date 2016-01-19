@@ -15,8 +15,9 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
+            string fileName = "TestFile.DestinationList.doc";
 
-            Document dstDoc = new Document(dataDir + "TestFile.DestinationList.doc");
+            Document dstDoc = new Document(dataDir + fileName);
             Document srcDoc = new Document(dataDir + "TestFile.SourceList.doc");
 
             // Set the source document to continue straight after the end of the destination document.
@@ -59,10 +60,11 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
             // Append the source document to end of the destination document.
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles);
 
-            // Save the combined document to disk.
-            dstDoc.Save(dataDir + "TestFile.ListUseDestinationStyles Out.docx");
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
+            // Save the combined document to disk.            
+            dstDoc.Save(dataDir);
 
-            Console.WriteLine("\nDocument appended successfully without continuing any list numberings.\nFile saved at " + dataDir + "TestFile.ListUseDestinationStyles Out.docx");
+            Console.WriteLine("\nDocument appended successfully without continuing any list numberings.\nFile saved at " + dataDir);
         }
     }
 }

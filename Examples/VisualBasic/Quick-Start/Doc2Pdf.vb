@@ -11,9 +11,10 @@ Public Class Doc2Pdf
         ' Load the document from disk.
         Dim doc As New Document(dataDir & "Template.doc")
 
+        dataDir = dataDir & "Template_out_.pdf"
         ' Save the document in PDF format.
-        doc.Save(dataDir & "Doc2PdfSave Out.pdf")
+        doc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine + "Document converted to PDF successfully." + vbNewLine + "File saved at " + dataDir + "Doc2PdfSave Out.pdf")
+        Console.WriteLine(vbNewLine + "Document converted to PDF successfully." + vbNewLine + "File saved at " + dataDir)
     End Sub
 End Class

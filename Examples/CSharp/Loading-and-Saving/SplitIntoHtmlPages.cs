@@ -28,7 +28,7 @@ namespace CSharp.Loading_Saving
             string srcFileName = dataDir + "SOI 2007-2012-DeeM with footnote added.doc";
             string tocTemplate = dataDir + "TocTemplate.doc";
 
-            string outDir = Path.Combine(dataDir, "Out");
+            string outDir = Path.Combine(dataDir, "_out_");
             Directory.CreateDirectory(outDir);
 
             // This class does the job.

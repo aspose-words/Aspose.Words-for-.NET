@@ -9,9 +9,10 @@ Public Class UntangleRowBookmarks
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithBookmarks()
+        Dim fileName As String = "TestDefect1352.doc"
 
         ' Load a document.
-        Dim doc As New Document(dataDir & "TestDefect1352.doc")
+        Dim doc As New Document(dataDir & fileName)
 
         ' This perform the custom task of putting the row bookmark ends into the same row with the bookmark starts.
         UntangleRowBookmarks(doc)
@@ -24,10 +25,11 @@ Public Class UntangleRowBookmarks
             Throw New Exception("Wrong, the end of the bookmark was deleted.")
         End If
 
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the finished document.
-        doc.Save(dataDir & "TestDefect1352 Out.doc")
+        doc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine & "Row bookmark untangled successfully." & vbNewLine & "File saved at " + dataDir + "TestDefect1352 Out.doc")
+        Console.WriteLine(vbNewLine & "Row bookmark untangled successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     Private Shared Sub UntangleRowBookmarks(ByVal doc As Document)

@@ -134,7 +134,7 @@ Module RunExamples
         'ImageColorFilters.Run()
         'RenderShape.Run()
         'SaveAsMultipageTiff.Run()
-        ReadActiveXControlProperties.Run()
+        'ReadActiveXControlProperties.Run()
 
         '' =====================================================
         '' =====================================================
@@ -164,7 +164,7 @@ Module RunExamples
         'PieChart.Run()
         'ScatterChart.Run()
         'BubbleChart.Run()
-        'ChartWithFilteringGroupingOrdering.Run()
+        ChartWithFilteringGroupingOrdering.Run()
 
         ' Stop before exiting
         Console.WriteLine(vbNewLine + vbNewLine + "Program Finished. Press any key to exit....")
@@ -172,63 +172,81 @@ Module RunExamples
     End Sub
 
     Public Function GetDataDir_LINQ() As [String]
-        Return Path.GetFullPath("../../LINQ/Data/")
+        Return Path.GetFullPath(GetDataDir_Data() + "LINQ/")
     End Function
 
     Public Function GetDataDir_LoadingAndSaving() As [String]
-        Return Path.GetFullPath("../../Loading-and-Saving/Data/")
+        Return Path.GetFullPath(GetDataDir_Data() + "Loading-and-Saving/")
     End Function
 
     Public Function GetDataDir_JoiningAndAppending() As [String]
-        Return Path.GetFullPath("../../Programming-Documents/Joining-Appending/Data/")
+        Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Joining-Appending/")
     End Function
 
     Public Function GetDataDir_FindAndReplace() As [String]
-        Return Path.GetFullPath("../../Programming-Documents/Find-Replace/Data/")
+        Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Find-Replace/")
     End Function
 
     Public Function GetDataDir_WorkingWithBookmarks() As [String]
-        Return Path.GetFullPath("../../Programming-Documents/Bookmarks/Data/")
+        Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Bookmarks/")
     End Function
 
     Public Function GetDataDir_WorkingWithComments() As [String]
-        Return Path.GetFullPath("../../Programming-Documents/Comments/Data/")
+        Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Comments/")
     End Function
 
     Public Function GetDataDir_WorkingWithDocument() As [String]
-        Return Path.GetFullPath("../../Programming-Documents/Document/Data/")
+        Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Document/")
     End Function
 
     Public Function GetDataDir_WorkingWithFields() As [String]
-        Return Path.GetFullPath("../../Programming-Documents/Fields/Data/")
+        Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Fields/")
     End Function
 
     Public Function GetDataDir_WorkingWithImages() As [String]
-        Return Path.GetFullPath("../../Programming-Documents/Images/Data/")
+        Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Images/")
     End Function
 
     Public Function GetDataDir_WorkingWithStyles() As [String]
-        Return Path.GetFullPath("../../Programming-Documents/Styles/Data/")
+        Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Styles/")
     End Function
 
     Public Function GetDataDir_WorkingWithTables() As [String]
-        Return Path.GetFullPath("../../Programming-Documents/Tables/Data/")
+        Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Tables/")
     End Function
 
     Public Function GetDataDir_MailMergeAndReporting() As [String]
-        Return Path.GetFullPath("../../Mail-Merge/Data/")
+        Return Path.GetFullPath(GetDataDir_Data() + "Mail-Merge/")
     End Function
 
     Public Function GetDataDir_QuickStart() As [String]
-        Return Path.GetFullPath("../../Quick-Start/Data/")
+        Return Path.GetFullPath(GetDataDir_Data() + "Quick-Start/")
     End Function
 
     Public Function GetDataDir_RenderingAndPrinting() As [String]
-        Return Path.GetFullPath("../../Rendering-Printing/Data/")
+        Return Path.GetFullPath(GetDataDir_Data() + "Rendering-Printing/")
     End Function
 
     Public Function GetDataDir_ViewersAndVisualizers() As [String]
-        Return Path.GetFullPath("../../Viewers-Visualizers/Data/")
+        Return Path.GetFullPath(GetDataDir_Data() + "Viewers-Visualizers/")
+    End Function
+    Private Function GetDataDir_Data() As String
+        Dim parent = Directory.GetParent(Directory.GetCurrentDirectory()).Parent
+        Dim startDirectory As String = Nothing
+        If parent IsNot Nothing Then
+            Dim directoryInfo = parent.Parent
+            If directoryInfo IsNot Nothing Then
+                startDirectory = directoryInfo.FullName
+            End If
+        Else
+            startDirectory = parent.FullName
+        End If
+        Return Path.Combine(startDirectory, "Data\")
+    End Function
+    Public Function GetOutputFilePath(inputFilePath As [String]) As String
+        Dim extension As String = Path.GetExtension(inputFilePath)
+        Dim filename As String = Path.GetFileNameWithoutExtension(inputFilePath)
+        Return Convert.ToString(filename & Convert.ToString("_out_")) & extension
     End Function
 
 End Module

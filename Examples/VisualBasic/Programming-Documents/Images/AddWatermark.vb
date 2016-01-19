@@ -12,12 +12,15 @@ Public Class AddWatermark
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithImages()
+        Dim fileName As String = "TestFile.Watermark.doc"
 
-        Dim doc As New Document(dataDir & "TestFile.Watermark.doc")
+        Dim doc As New Document(dataDir & fileName)
         InsertWatermarkText(doc, "CONFIDENTIAL")
-        doc.Save(dataDir & "TestFile.Watermark Out.doc")
 
-        Console.WriteLine(vbNewLine & "Inserted images on each page of the document successfully." & vbNewLine & "File saved at " + dataDir + "TestFile.Watermark Out.doc")
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
+        doc.Save(dataDir)
+
+        Console.WriteLine(vbNewLine & "Inserted images on each page of the document successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     ''' <summary>

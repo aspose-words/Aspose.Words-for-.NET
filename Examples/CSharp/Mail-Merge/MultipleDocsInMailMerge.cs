@@ -43,7 +43,7 @@ namespace CSharp.Mail_Merge
                     dstDoc.MailMerge.Execute(row);
 
                     // Save the document.
-                    dstDoc.Save(string.Format(dataDir + "TestFile.Multiple Pages Out {0}.doc", counter++));
+                    dstDoc.Save(string.Format(dataDir + "TestFile.Multiple Pages_out_ {0}.doc", counter++));
                 }
             }
             catch (Exception ex)
@@ -56,7 +56,7 @@ namespace CSharp.Mail_Merge
                 conn.Close();
             }
 
-            Console.WriteLine("\nMail merge performed and created multiple pages successfully.\nFile saved at " + dataDir + "TestFile.Multiple Pages Out.doc");
+            Console.WriteLine("\nMail merge performed and created multiple pages successfully.\nFile saved at " + dataDir + "TestFile.Multiple Pages_out_.doc");
         }
     }
 }

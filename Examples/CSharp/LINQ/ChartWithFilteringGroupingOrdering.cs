@@ -13,9 +13,9 @@ namespace CSharp.LINQ
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LINQ(); 
-
+            string fileName = "ChartWithFilteringGroupingOrdering.docx";
             // Load the template document.
-            Document doc = new Document(dataDir + "ChartWithFilteringGroupingOrdering.docx");
+            Document doc = new Document(dataDir + fileName);
             
             // Create a Reporting Engine.
             ReportingEngine engine = new ReportingEngine();
@@ -23,7 +23,7 @@ namespace CSharp.LINQ
             // Execute the build report.
             engine.BuildReport(doc, Common.GetContracts(), "contracts");
 
-            dataDir = dataDir + "ChartWithFilteringGroupingOrdering Out.docx";
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
 
             // Save the finished document to disk.
             doc.Save(dataDir);

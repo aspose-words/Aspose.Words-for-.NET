@@ -19,9 +19,10 @@ Public Class LoadTxt
         ' The encoding of the text file is automatically detected.
         Dim doc As New Document(dataDir & Convert.ToString("LoadTxt.txt"))
 
+        dataDir = dataDir & "LoadTxt_out_.docx"
         ' Save as any Aspose.Words supported format, such as DOCX.
-        doc.Save(dataDir & Convert.ToString("LoadTxt Out.docx"))
+        doc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine + "Text document loaded successfully." + vbNewLine + "File saved at " + dataDir + "LoadTxt Out.docx")
+        Console.WriteLine(vbNewLine + "Text document loaded successfully." + vbNewLine + "File saved at " + dataDir)
     End Sub
 End Class

@@ -20,8 +20,8 @@ namespace CSharp.Programming_Documents.Working_with_Images
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithImages();
-
-            string srcFileName = dataDir + "Test.docx";
+            string fileName = "Test.docx";
+            string srcFileName = dataDir + fileName;
 
             Console.WriteLine("Loading {0}. Size {1}.", srcFileName, GetFileSize(srcFileName));
             Document doc = new Document(srcFileName);
@@ -42,7 +42,7 @@ namespace CSharp.Programming_Documents.Working_with_Images
             if (count != 1)
                 Console.WriteLine("We expected to have only 1 image resampled in this test document!");
 
-            string dstFileName = srcFileName + ".Resampled Out.docx";
+            string dstFileName = dataDir +  RunExamples.GetOutputFilePath(fileName);
             doc.Save(dstFileName);
             Console.WriteLine("Saving {0}. Size {1}.", dstFileName, GetFileSize(dstFileName));
 

@@ -16,11 +16,11 @@ namespace CSharp.Loading_Saving
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
-            ConvertImageToPdf(dataDir + "Test.jpg", dataDir + "TestJpg Out.pdf");
-            ConvertImageToPdf(dataDir + "Test.png", dataDir + "TestPng Out.pdf");
-            ConvertImageToPdf(dataDir + "Test.wmf", dataDir + "TestWmf Out.pdf");
-            ConvertImageToPdf(dataDir + "Test.tiff", dataDir + "TestTiff Out.pdf");
-            ConvertImageToPdf(dataDir + "Test.gif", dataDir + "TestGif Out.pdf");
+            ConvertImageToPdf(dataDir + "Test.jpg", dataDir + "TestJpg_out_.pdf");
+            ConvertImageToPdf(dataDir + "Test.png", dataDir + "TestPng_out_.pdf");
+            ConvertImageToPdf(dataDir + "Test.wmf", dataDir + "TestWmf_out_.pdf");
+            ConvertImageToPdf(dataDir + "Test.tiff", dataDir + "TestTif_out_.pdf");
+            ConvertImageToPdf(dataDir + "Test.gif", dataDir + "TestGif_out_.pdf");
 
             Console.WriteLine("\nConverted all images to PDF successfully.");
         }

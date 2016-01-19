@@ -15,9 +15,9 @@ Public Class ApplyCustomLogicToEmptyRegions
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_MailMergeAndReporting()
-
+        Dim fileName As String = "TestFile.doc"
         ' Open the document.
-        Dim doc As New Document(dataDir & "TestFile.doc")
+        Dim doc As New Document(dataDir & fileName)
 
         ' Create a data source which has some data missing.
         ' This will result in some regions that are merged and some that remain after executing mail merge.
@@ -38,7 +38,7 @@ Public Class ApplyCustomLogicToEmptyRegions
         ExecuteCustomLogicOnEmptyRegions(doc, New EmptyRegionsHandler())
 
         ' Save the output document to disk.
-        doc.Save(dataDir & "TestFile.CustomLogicEmptyRegions1 Out.doc")
+        doc.Save(dataDir & "TestFile.CustomLogicEmptyRegions1_out_.doc")
         
         ' Reload the original merged document.
         doc = mergedDoc.Clone()
@@ -46,7 +46,7 @@ Public Class ApplyCustomLogicToEmptyRegions
         ' Apply different logic to unused regions this time.
         ExecuteCustomLogicOnEmptyRegions(doc, New EmptyRegionsHandler_MergeTable())
 
-        doc.Save(dataDir & "TestFile.CustomLogicEmptyRegions2 Out.doc")
+        doc.Save(dataDir & "TestFile.CustomLogicEmptyRegions2_out_.doc")
 
         ' Reload the original merged document.
         doc = mergedDoc.Clone()
@@ -55,9 +55,9 @@ Public Class ApplyCustomLogicToEmptyRegions
         regions.Add("ContactDetails")
         ExecuteCustomLogicOnEmptyRegions(doc, New EmptyRegionsHandler(), regions)
         
-        doc.Save(dataDir & "TestFile.CustomLogicEmptyRegions3 Out.doc")
+        doc.Save(dataDir & "TestFile.CustomLogicEmptyRegions3_out_.doc")
 
-        Console.WriteLine(vbNewLine + "Mail merge performed successfully." + vbNewLine + "File saved at " + dataDir + "TestFile.CustomLogicEmptyRegions3 Out.doc")
+        Console.WriteLine(vbNewLine + "Mail merge performed successfully." + vbNewLine + "File saved at " + dataDir + "TestFile.CustomLogicEmptyRegions3_out_.doc")
     End Sub
 
     Private Shared Function CreateDataSourceFromDocumentRegions(ByVal doc As Document, ByVal regionsList As ArrayList) As DataSet

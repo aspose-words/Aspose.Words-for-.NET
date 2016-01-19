@@ -12,9 +12,9 @@ Public Class MailMergeFormFields
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_MailMergeAndReporting()
-
+        Dim fileName As String = "Template.doc"
         ' Load the template document.
-        Dim doc As New Document(dataDir & "Template.doc")
+        Dim doc As New Document(dataDir & fileName)
 
         ' Setup mail merge event handler to do the custom work.
         doc.MailMerge.FieldMergingCallback = New HandleMergeField()
@@ -29,10 +29,11 @@ Public Class MailMergeFormFields
         ' Execute the mail merge.
         doc.MailMerge.Execute(fieldNames, fieldValues)
 
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the finished document.
-        doc.Save(dataDir & "Template Out.doc")
+        doc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine + "Mail merge performed with form fields successfully." + vbNewLine + "File saved at " + dataDir + "Template Out.doc")
+        Console.WriteLine(vbNewLine + "Mail merge performed with form fields successfully." + vbNewLine + "File saved at " + dataDir)
     End Sub
 
     Private Class HandleMergeField

@@ -20,8 +20,9 @@ Public Class NestedMailMerge
         ' To see examples of how to set up relations manually check the corresponding documentation of this sample
         pizzaDs.ReadXml(dataDir & "CustomerData.xml")
 
+        Dim fileName As String = "Invoice Template.doc"
         ' Open the template document.
-        Dim doc As New Document(dataDir & "Invoice Template.doc")
+        Dim doc As New Document(dataDir & fileName)
 
         ' Trim trailing and leading whitespaces mail merge values
         doc.MailMerge.TrimWhitespaces = False
@@ -29,11 +30,12 @@ Public Class NestedMailMerge
         ' Execute the nested mail merge with regions
         doc.MailMerge.ExecuteWithRegions(pizzaDs)
 
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the output to file
-        doc.Save(dataDir & "Invoice Out.doc")
+        doc.Save(dataDir)
 
         Debug.Assert(doc.MailMerge.GetFieldNames().Length = 0, "There was a problem with mail merge")
 
-        Console.WriteLine(vbNewLine + "Mail merge performed with nested data successfully." + vbNewLine + "File saved at " + dataDir + "Invoice Out.doc")
+        Console.WriteLine(vbNewLine + "Mail merge performed with nested data successfully." + vbNewLine + "File saved at " + dataDir)
     End Sub
 End Class

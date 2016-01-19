@@ -25,14 +25,14 @@ namespace CSharp.Programming_Documents.Working_With_Document
             // Firstly extract the content between these nodes including the comment as well. 
             ArrayList extractedNodesInclusive = Common.ExtractContent(commentStart, commentEnd, true);
             Document dstDoc = Common.GenerateDocument(doc, extractedNodesInclusive);
-            dstDoc.Save(dataDir + "TestFile.CommentInclusive Out.doc");
+            dstDoc.Save(dataDir + "TestFile.CommentInclusive_out_.doc");
 
             // Secondly extract the content between these nodes without the comment.
             ArrayList extractedNodesExclusive = Common.ExtractContent(commentStart, commentEnd, false);
             dstDoc = Common.GenerateDocument(doc, extractedNodesExclusive);
-            dstDoc.Save(dataDir + "TestFile.CommentExclusive Out.doc");
+            dstDoc.Save(dataDir + "TestFile.CommentExclusive_out_.doc");
 
-            Console.WriteLine("\nExtracted content between the comment range successfully.\nFile saved at " + dataDir + "TestFile.CommentExclusive Out.doc");
+            Console.WriteLine("\nExtracted content between the comment range successfully.\nFile saved at " + dataDir + "TestFile.CommentExclusive_out_.doc");
         }
     }
 }

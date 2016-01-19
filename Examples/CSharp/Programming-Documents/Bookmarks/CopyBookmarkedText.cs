@@ -12,9 +12,10 @@ namespace CSharp.Programming_Documents.Bookmarks
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithBookmarks();
+            string fileName = "Template.doc"; 
 
             // Load the source document.
-            Document srcDoc = new Document(dataDir + "Template.doc");
+            Document srcDoc = new Document(dataDir + fileName);
 
             // This is the bookmark whose content we want to copy.
             Bookmark srcBookmark = srcDoc.Range.Bookmarks["ntf010145060"];
@@ -35,10 +36,11 @@ namespace CSharp.Programming_Documents.Bookmarks
             // Do it one more time for fun.
             AppendBookmarkedText(importer, srcBookmark, dstNode);
 
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the finished document.
-            dstDoc.Save(dataDir + "Template Out.doc");
+            dstDoc.Save(dataDir);
 
-            Console.WriteLine("\nBookmark copied successfully.\nFile saved at " + dataDir + "Template Out.doc");
+            Console.WriteLine("\nBookmark copied successfully.\nFile saved at " + dataDir);
         }
 
         /// <summary>

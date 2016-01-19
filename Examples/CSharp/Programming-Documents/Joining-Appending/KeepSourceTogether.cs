@@ -11,8 +11,9 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
+            string fileName = "TestFile.DestinationList.doc";
 
-            Document dstDoc = new Document(dataDir + "TestFile.Destination.doc");
+            Document dstDoc = new Document(dataDir + fileName);
             Document srcDoc = new Document(dataDir + "TestFile.Source.doc");
 
             // Set the source document to appear straight after the destination document's content.
@@ -25,9 +26,10 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
             }
 
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
-            dstDoc.Save(dataDir + "TestDcc.KeepSourceTogether Out.doc");
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
+            dstDoc.Save(dataDir);
 
-            Console.WriteLine("\nDocument appended successfully while keeping the content from splitting across two pages.\nFile saved at " + dataDir + "TestDcc.KeepSourceTogether Out.doc");
+            Console.WriteLine("\nDocument appended successfully while keeping the content from splitting across two pages.\nFile saved at " + dataDir);
         }
     }
 }

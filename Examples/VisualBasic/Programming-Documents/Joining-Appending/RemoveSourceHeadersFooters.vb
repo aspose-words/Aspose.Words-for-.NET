@@ -13,8 +13,8 @@ Public Class RemoveSourceHeadersFooters
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
-
-        Dim dstDoc As New Document(dataDir & "TestFile.Destination.doc")
+        Dim fileName As String = "TestFile.Destination.doc"
+        Dim dstDoc As New Document(dataDir & fileName)
         Dim srcDoc As New Document(dataDir & "TestFile.Source.doc")
 
         ' Remove the headers and footers from each of the sections in the source document.
@@ -27,9 +27,10 @@ Public Class RemoveSourceHeadersFooters
         ' document. This should set to false to avoid this behavior.
         srcDoc.FirstSection.HeadersFooters.LinkToPrevious(False)
 
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting)
-        dstDoc.Save(dataDir & "TestFile.RemoveSourceHeadersFooters Out.doc")
+        dstDoc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine & "Document appended successfully with removed source header footers." & vbNewLine & "File saved at " + dataDir + "TestFile.RemoveSourceHeadersFooters Out.docx")
+        Console.WriteLine(vbNewLine & "Document appended successfully with removed source header footers." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

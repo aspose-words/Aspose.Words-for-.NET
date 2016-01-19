@@ -12,8 +12,8 @@ namespace CSharp.Programming_Documents.Working_With_Document
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
-
-            Document doc = new Document(dataDir + "TestFile.doc");
+            string fileName = "TestFile.doc";
+            Document doc = new Document(dataDir + fileName);
 
             // Gather the nodes. The GetChild method uses 0-based index
             Paragraph startPara = (Paragraph)doc.FirstSection.GetChild(NodeType.Paragraph, 6, true);
@@ -23,9 +23,10 @@ namespace CSharp.Programming_Documents.Working_With_Document
 
             // Insert the content into a new separate document and save it to disk.
             Document dstDoc = Common.GenerateDocument(doc, extractedNodes);
-            dstDoc.Save(dataDir + "TestFile.Paragraphs Out.doc");
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
+            dstDoc.Save(dataDir);
 
-            Console.WriteLine("\nExtracted content betweenn the paragraphs successfully.\nFile saved at " + dataDir + "TestFile.Paragraphs Out.doc");
+            Console.WriteLine("\nExtracted content betweenn the paragraphs successfully.\nFile saved at " + dataDir);
         }
     }
 }

@@ -13,8 +13,9 @@ Public Class KeepSourceTogether
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
+        Dim fileName As String = "TestFile.Destination.doc"
 
-        Dim dstDoc As New Document(dataDir & "TestFile.Destination.doc")
+        Dim dstDoc As New Document(dataDir & fileName)
         Dim srcDoc As New Document(dataDir & "TestFile.Source.doc")
 
         ' Set the source document to appear straight after the destination document's content.
@@ -26,8 +27,9 @@ Public Class KeepSourceTogether
         Next para
 
         dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting)
-        dstDoc.Save(dataDir & "TestDcc.KeepSourceTogether Out.doc")
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
+        dstDoc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine & "Document appended successfully with keeping source together." & vbNewLine & "File saved at " + dataDir + "TestFile.KeepSourceTogether Out.docx")
+        Console.WriteLine(vbNewLine & "Document appended successfully with keeping source together." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

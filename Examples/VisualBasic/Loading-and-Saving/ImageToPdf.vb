@@ -17,11 +17,11 @@ Public Class ImageToPdf
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_LoadingAndSaving()
 
-        ConvertImageToPdf(dataDir & Convert.ToString("Test.jpg"), dataDir & Convert.ToString("TestJpg Out.pdf"))
-        ConvertImageToPdf(dataDir & Convert.ToString("Test.png"), dataDir & Convert.ToString("TestPng Out.pdf"))
-        ConvertImageToPdf(dataDir & Convert.ToString("Test.wmf"), dataDir & Convert.ToString("TestWmf Out.pdf"))
-        ConvertImageToPdf(dataDir & Convert.ToString("Test.tiff"), dataDir & Convert.ToString("TestTiff Out.pdf"))
-        ConvertImageToPdf(dataDir & Convert.ToString("Test.gif"), dataDir & Convert.ToString("TestGif Out.pdf"))
+        ConvertImageToPdf(dataDir & Convert.ToString("Test.jpg"), dataDir & Convert.ToString("TestJpg_out_.pdf"))
+        ConvertImageToPdf(dataDir & Convert.ToString("Test.png"), dataDir & Convert.ToString("TestPng_out_.pdf"))
+        ConvertImageToPdf(dataDir & Convert.ToString("Test.wmf"), dataDir & Convert.ToString("TestWmf_out_.pdf"))
+        ConvertImageToPdf(dataDir & Convert.ToString("Test.tiff"), dataDir & Convert.ToString("TestTiff_out_.pdf"))
+        ConvertImageToPdf(dataDir & Convert.ToString("Test.gif"), dataDir & Convert.ToString("TestGif_out_.pdf"))
 
         Console.WriteLine(vbLf & "Converted all images to PDF successfully.")
     End Sub

@@ -13,8 +13,9 @@ Public Class UpdatePageLayout
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
+        Dim fileName As String = "TestFile.Destination.doc"
 
-        Dim dstDoc As New Document(dataDir & "TestFile.Destination.doc")
+        Dim dstDoc As New Document(dataDir & fileName)
         Dim srcDoc As New Document(dataDir & "TestFile.Source.doc")
 
         ' If the destination document is rendered to PDF, image etc or UpdatePageLayout is called before the source document 
@@ -28,9 +29,11 @@ Public Class UpdatePageLayout
         ' If not called again the appended document will not appear in the output of the next rendering.
         dstDoc.UpdatePageLayout()
 
-        ' Save the joined document to PDF.
-        dstDoc.Save(dataDir & "TestFile.UpdatePageLayout Out.pdf")
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
 
-        Console.WriteLine(vbNewLine & "Document appended successfully with updated page layout." & vbNewLine & "File saved at " + dataDir + "TestFile.UpdatePageLayout Out.docx")
+        ' Save the joined document to PDF.
+        dstDoc.Save(dataDir)
+
+        Console.WriteLine(vbNewLine & "Document appended successfully with updated page layout." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

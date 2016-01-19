@@ -13,9 +13,9 @@ namespace CSharp.LINQ
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LINQ(); 
-
+            string fileName = "SingleRow.doc";
             // Load the template document.
-            Document doc = new Document(dataDir + "SingleRow.doc");
+            Document doc = new Document(dataDir + fileName);
 
             // Load the photo and read all bytes.
             byte[] imgdata = System.IO.File.ReadAllBytes(dataDir + "photo.png");
@@ -26,7 +26,7 @@ namespace CSharp.LINQ
             // Execute the build report.
             engine.BuildReport(doc, Common.GetManager(), "manager");
 
-            dataDir = dataDir + "SingleRow Out.doc";
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
 
             // Save the finished document to disk.
             doc.Save(dataDir);

@@ -168,89 +168,16 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Viewers-Visualizers\Document-Explorer\Preview.cs" />
+    <Compile Include="RunExamples.cs" />
     <Compile Include="Viewers-Visualizers\Document-Explorer\ViewerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RunExamples.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="LINQ\Data\BulletedList.doc" />
-    <None Include="LINQ\Data\CommonList.doc" />
-    <None Include="LINQ\Data\CommonMasterDetail.doc" />
-    <None Include="LINQ\Data\BubbleChart.docx" />
-    <None Include="LINQ\Data\ChartWithFilteringGroupingOrdering.docx" />
-    <None Include="LINQ\Data\ScatterChart.docx" />
-    <None Include="LINQ\Data\InTableWithFilteringGroupingSorting.doc" />
-    <None Include="LINQ\Data\InTableMasterDetail.doc" />
-    <None Include="LINQ\Data\InTableAlternateContent.doc" />
-    <None Include="LINQ\Data\InTableList.doc" />
-    <None Include="LINQ\Data\MulticoloredNumberedList.doc" />
-    <None Include="LINQ\Data\NumberedList.doc" />
-    <None Include="LINQ\Data\InParagraphList.doc" />
-    <None Include="LINQ\Data\PieChart.docx" />
-    <None Include="LINQ\Data\SingleRow.doc" />
-    <None Include="LINQ\Data\HelloWorld.doc" />
-    <None Include="Loading-and-Saving\Data\Split\Rendering.doc" />
-    <None Include="Loading-and-Saving\Data\Split\Sample Documentation.doc" />
-    <None Include="Loading-and-Saving\Data\SOI 2007-2012-DeeM with footnote added.doc" />
-    <None Include="Loading-and-Saving\Data\Test File %28doc%29.doc" />
-    <None Include="Loading-and-Saving\Data\Test File %28docm%29.docm" />
-    <None Include="Loading-and-Saving\Data\Test File %28docx%29.docx" />
-    <None Include="Loading-and-Saving\Data\Test File %28dot%29.dot" />
-    <None Include="Loading-and-Saving\Data\Test File %28dotx%29.dotx" />
-    <None Include="Loading-and-Saving\Data\Test File %28enc%29.doc" />
-    <None Include="Loading-and-Saving\Data\Test File %28enc%29.docx" />
-    <None Include="Loading-and-Saving\Data\Test File %28MHTML%29.mhtml" />
-    <None Include="Loading-and-Saving\Data\Test File %28odt%29.odt" />
-    <None Include="Loading-and-Saving\Data\Test File %28pre97%29.doc" />
-    <None Include="Loading-and-Saving\Data\Test File %28rtf%29.rtf" />
-    <None Include="Loading-and-Saving\Data\Test.wmf" />
-    <None Include="Loading-and-Saving\Data\TocTemplate.doc" />
-    <None Include="Mail-Merge\Data\Template.doc" />
-    <None Include="Mail-Merge\Data\TestFile.doc" />
     <None Include="packages.config" />
-    <None Include="Programming-Documents\Find-Replace\Data\Field.ReplaceTextWithFields.doc" />
-    <None Include="Programming-Documents\Find-Replace\Data\TestFile.doc" />
-    <None Include="Programming-Documents\Bookmarks\Data\Template.doc" />
-    <None Include="Programming-Documents\Bookmarks\Data\TestDefect1352.doc" />
-    <None Include="Programming-Documents\Comments\Data\TestFile.doc" />
-    <None Include="Programming-Documents\Document\Data\TestFile.doc" />
-    <None Include="Programming-Documents\Document\Data\TestFile.docx" />
-    <None Include="Programming-Documents\Fields\Data\Field.RemoveField.doc" />
-    <None Include="Programming-Documents\Fields\Data\TestFile.doc" />
-    <None Include="Programming-Documents\Images\Data\Test.docx" />
-    <None Include="Programming-Documents\Images\Data\TestFile.doc" />
-    <None Include="Programming-Documents\Styles\Data\TestFile.doc" />
-    <None Include="Programming-Documents\Tables\Data\TestFile.doc" />
-    <None Include="Quick-Start\Data\Document.doc" />
-    <None Include="Quick-Start\Data\MailMerge Template.doc" />
-    <None Include="Quick-Start\Data\ReplaceSimple.doc" />
-    <None Include="Quick-Start\Data\Template.doc" />
-    <None Include="Quick-Start\Data\TestFile.Destination.doc" />
-    <None Include="Quick-Start\Data\TestFile.Source.doc" />
-    <None Include="Rendering-Printing\Data\ActiveXControl.docx" />
-    <None Include="Rendering-Printing\Data\doc+2.doc" />
-    <None Include="Rendering-Printing\Data\TestFile.docx" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Programming-Documents\Joining-Appending\Data\" />
-    <Folder Include="Viewers-Visualizers\Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="LINQ\Data\photo.png" />
-    <Content Include="Loading-and-Saving\Data\LoadTxt.txt" />
-    <Content Include="Loading-and-Saving\Data\Test File %28HTML%29.html" />
-    <Content Include="Loading-and-Saving\Data\Test File %28JPG%29.jpg" />
-    <Content Include="Loading-and-Saving\Data\Test File %28WordML%29.xml" />
-    <Content Include="Loading-and-Saving\Data\Test File %28XML%29.xml" />
-    <Content Include="Loading-and-Saving\Data\Test.gif" />
-    <Content Include="Loading-and-Saving\Data\Test.jpg" />
-    <Content Include="Loading-and-Saving\Data\Test.png" />
-    <Content Include="Loading-and-Saving\Data\Test.tiff" />
-    <Content Include="Mail-Merge\Data\Customers.mdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Programming-Documents\Images\Data\Aspose Logo.png" />
     <Content Include="Viewers-Visualizers\Document-Explorer\App.ico" />
     <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Body.ICO" />
     <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\BookmarkEnd.ico" />
@@ -290,6 +217,9 @@
     <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\SpecialChar.ICO" />
     <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\StructuredDocumentTag.ico" />
     <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Table.ICO" />
+    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\ViewerForm.resx">
+      <DependentUpon>ViewerForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -307,9 +237,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\ViewerForm.resx">
-      <DependentUpon>ViewerForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

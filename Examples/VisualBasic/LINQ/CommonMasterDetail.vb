@@ -11,8 +11,9 @@ Namespace LINQ
             ' The path to the documents directory.
             Dim dataDir As String = RunExamples.GetDataDir_LINQ()
 
+            Dim fileName As String = "CommonMasterDetail.doc"
             ' Load the template document.
-            Dim doc As New Document(dataDir & Convert.ToString("CommonMasterDetail.doc"))
+            Dim doc As New Document(dataDir & fileName)
 
             ' Create a Reporting Engine.
             Dim engine As New ReportingEngine()
@@ -20,7 +21,7 @@ Namespace LINQ
             ' Execute the build report.
             engine.BuildReport(doc, Common.GetManagers(), "managers")
 
-            dataDir = dataDir & Convert.ToString("CommonMasterDetail Out.doc")
+            dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
 
             ' Save the finished document to disk.
             doc.Save(dataDir)

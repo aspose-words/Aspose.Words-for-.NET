@@ -12,9 +12,10 @@ namespace CSharp.Quick_Start
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_QuickStart();
+            string fileName = "Document.doc";
 
             // Open the stream. Read only access is enough for Aspose.Words to load a document.
-            Stream stream = File.OpenRead(dataDir + "Document.doc");
+            Stream stream = File.OpenRead(dataDir + fileName);
 
             // Load the entire document into memory.
             Document doc = new Document(stream);
@@ -33,9 +34,10 @@ namespace CSharp.Quick_Start
 
             // Save the document from stream, to disk. Normally you would do something with the stream directly,
             // for example writing the data to a database.
-            File.WriteAllBytes(dataDir + "Document Out.rtf", dstStream.ToArray());
+            dataDir = dataDir + "Document_out_.rtf";
+            File.WriteAllBytes(dataDir, dstStream.ToArray());
 
-            Console.WriteLine("\nStream of document saved successfully.\nFile saved at " + dataDir + "Document Out.rtf");
+            Console.WriteLine("\nStream of document saved successfully.\nFile saved at " + dataDir);
         }
     }
 }

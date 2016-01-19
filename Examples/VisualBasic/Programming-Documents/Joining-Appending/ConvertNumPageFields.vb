@@ -13,8 +13,9 @@ Public Class ConvertNumPageFields
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
+        Dim fileName As String = "TestFile.Destination.doc"
 
-        Dim dstDoc As New Document(dataDir & "TestFile.Destination.doc")
+        Dim dstDoc As New Document(dataDir & fileName)
         Dim srcDoc As New Document(dataDir & "TestFile.Source.doc")
 
         ' Restart the page numbering on the start of the source document.
@@ -31,9 +32,10 @@ Public Class ConvertNumPageFields
         ' This needs to be called in order to update the new fields with page numbers.
         dstDoc.UpdatePageLayout()
 
-        dstDoc.Save(dataDir & "TestFile.ConvertNumPageFields Out.doc")
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
+        dstDoc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine & "Document appended successfully with converted NUMPAGE fields." & vbNewLine & "File saved at " + dataDir + "TestFile.ConvertNumPageFields Out.docx")
+        Console.WriteLine(vbNewLine & "Document appended successfully with converted NUMPAGE fields." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     ''' <summary>

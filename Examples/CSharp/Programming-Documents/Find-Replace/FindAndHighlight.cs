@@ -15,17 +15,19 @@ namespace CSharp.Programming_Documents.Find_and_Replace
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_FindAndReplace();
+            string fileName = "TestFile.doc";
 
-            Document doc = new Document(dataDir + "TestFile.doc");
+            Document doc = new Document(dataDir + fileName);
 
             // We want the "your document" phrase to be highlighted.
             Regex regex = new Regex("your document", RegexOptions.IgnoreCase);
             doc.Range.Replace(regex, new ReplaceEvaluatorFindAndHighlight(), false);
 
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the output document.
-            doc.Save(dataDir + "TestFile Out.doc");
+            doc.Save(dataDir);
 
-            Console.WriteLine("\nText highlighted successfully.\nFile saved at " + dataDir + "TestFile Out.doc");
+            Console.WriteLine("\nText highlighted successfully.\nFile saved at " + dataDir);
         }
 
         private class ReplaceEvaluatorFindAndHighlight : IReplacingCallback

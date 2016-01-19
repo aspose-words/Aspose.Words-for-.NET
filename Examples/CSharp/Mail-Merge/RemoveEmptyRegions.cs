@@ -18,8 +18,9 @@ namespace CSharp.Mail_Merge
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); ;
 
+            string fileName = "TestFile Empty.doc";
             // Open the document.
-            Document doc = new Document(dataDir + "TestFile Empty.doc");
+            Document doc = new Document(dataDir + fileName);
 
             // Create a dummy data source containing no data.
             DataSet data = new DataSet();
@@ -31,12 +32,13 @@ namespace CSharp.Mail_Merge
             // automatically as they are unused.
             doc.MailMerge.ExecuteWithRegions(data);
 
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the output document to disk.
-            doc.Save(dataDir + "TestFile.RemoveEmptyRegions Out.doc");
+            doc.Save(dataDir);
 
             Debug.Assert(doc.MailMerge.GetFieldNames().Length == 0, "Error: There are still unused regions remaining in the document");
 
-            Console.WriteLine("\nMail merge performed with empty regions successfully.\nFile saved at " + dataDir + "TestFile.RemoveEmptyRegions Out.doc");
+            Console.WriteLine("\nMail merge performed with empty regions successfully.\nFile saved at " + dataDir);
         }
     }
 }
