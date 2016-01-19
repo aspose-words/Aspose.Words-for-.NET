@@ -90,6 +90,7 @@
     <Compile Include="Examples\Tables\ExCellFormat.cs" />
     <Compile Include="Examples\Tables\ExTable.cs" />
     <Compile Include="Examples\Tables\ExTableColumn.cs" />
+    <Compile Include="Examples\VariableCollection\ExVariableCollection.cs" />
     <Compile Include="Tests\DocumentBuilder\QaEditableRange.cs" />
     <Compile Include="Tests\Paragraph\QaInsertField.cs" />
     <Compile Include="Tests\QaTestsBase.cs" />
@@ -141,7 +142,6 @@
     <Folder Include="Examples\Tab\" />
     <Folder Include="Examples\TextColumn\" />
     <Folder Include="Examples\Themes\" />
-    <Folder Include="Examples\VariableCollection\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

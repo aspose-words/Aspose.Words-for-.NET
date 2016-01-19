@@ -59,13 +59,37 @@ namespace QA_Tests.Examples.VariableCollection
         {
             //ExStart
             //ExFor:VariableCollection.Contains
-            //ExSummary:Shows check if a collection of document variables contains a key.
+            //ExSummary:Shows how to check if a collection of document variables contains a key.
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             doc.Variables.Add("doc", "Word processing document");
            
             Console.WriteLine(doc.Variables.Contains("doc")); // True
             Console.WriteLine(doc.Variables.Contains("Word processing document")); // False
+            //ExEnd
+        }
+
+        [Test]
+        public void GetEnumeratorEx()
+        {
+            //ExStart
+            //ExFor:VariableCollection.GetEnumerator
+            //ExSummary:Shows how to obtain an enumerator from a collection of document variables and use it.
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
+
+            doc.Variables.Add("doc", "Word processing document");
+            doc.Variables.Add("docx", "Word processing document");
+            doc.Variables.Add("txt", "Plain text file");
+            doc.Variables.Add("bmp", "Image");
+            doc.Variables.Add("png", "Image");
+
+            var enumerator = doc.Variables.GetEnumerator();
+
+            while (enumerator.MoveNext())
+            {
+                DictionaryEntry de = (DictionaryEntry)enumerator.Current;
+                Console.WriteLine("Name: {0}, Value: {1}", de.Key, de.Value);
+            }
             //ExEnd
         }
     }
