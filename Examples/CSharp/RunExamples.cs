@@ -161,7 +161,7 @@ namespace CSharp
             //DocumentPreviewAndPrint.Run();
             //ImageColorFilters.Run();
             //RenderShape.Run();
-            SaveAsMultipageTiff.Run();
+            //SaveAsMultipageTiff.Run();
             //ReadActiveXControlProperties.Run();
 
             //// =====================================================
