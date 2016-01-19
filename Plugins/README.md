@@ -10,3 +10,4 @@ This section contains the following Platforms
 * [Umbraco](Umbraco)
 * [MVC](MVC)
 * [Aspose.Words for Outlook](Outlook)
+* [Sitefinity](Sitefinity)
