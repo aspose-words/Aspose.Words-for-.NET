@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inserting Form Fields", "Inserting Form Fields\Inserting Form Fields.csproj", "{C196FE6C-B9BB-471B-8C6C-0CA8E293429F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Joining Tables", "Joining Tables\Joining Tables.csproj", "{1A1AEBD9-7A89-4B4D-B86F-3CE3C3FC20B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Splitting Tables", "Splitting Tables\Splitting Tables.csproj", "{6668FAD5-8909-42E4-9F76-70F9CD90C034}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Convert a Document to MHTML and Email", "Convert a Document to MHTML and Email\Convert a Document to MHTML and Email.csproj", "{A3036F02-F13E-4BC2-B448-3ADE9794AF97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Detect the File Format", "Detect the File Format\Detect the File Format.csproj", "{C51115BF-F02B-497C-9F75-2AE9461840CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Convert a Document to a Byte Array", "Convert a Document to a Byte Array\Convert a Document to a Byte Array.csproj", "{B976D8DE-C244-45CA-BE23-4FD4F1B40A94}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C196FE6C-B9BB-471B-8C6C-0CA8E293429F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C196FE6C-B9BB-471B-8C6C-0CA8E293429F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C196FE6C-B9BB-471B-8C6C-0CA8E293429F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C196FE6C-B9BB-471B-8C6C-0CA8E293429F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A1AEBD9-7A89-4B4D-B86F-3CE3C3FC20B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A1AEBD9-7A89-4B4D-B86F-3CE3C3FC20B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A1AEBD9-7A89-4B4D-B86F-3CE3C3FC20B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A1AEBD9-7A89-4B4D-B86F-3CE3C3FC20B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6668FAD5-8909-42E4-9F76-70F9CD90C034}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6668FAD5-8909-42E4-9F76-70F9CD90C034}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6668FAD5-8909-42E4-9F76-70F9CD90C034}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6668FAD5-8909-42E4-9F76-70F9CD90C034}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3036F02-F13E-4BC2-B448-3ADE9794AF97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3036F02-F13E-4BC2-B448-3ADE9794AF97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3036F02-F13E-4BC2-B448-3ADE9794AF97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3036F02-F13E-4BC2-B448-3ADE9794AF97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C51115BF-F02B-497C-9F75-2AE9461840CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C51115BF-F02B-497C-9F75-2AE9461840CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C51115BF-F02B-497C-9F75-2AE9461840CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C51115BF-F02B-497C-9F75-2AE9461840CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B976D8DE-C244-45CA-BE23-4FD4F1B40A94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B976D8DE-C244-45CA-BE23-4FD4F1B40A94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B976D8DE-C244-45CA-BE23-4FD4F1B40A94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B976D8DE-C244-45CA-BE23-4FD4F1B40A94}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
