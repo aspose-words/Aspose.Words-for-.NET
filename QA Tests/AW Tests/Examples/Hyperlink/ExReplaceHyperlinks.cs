@@ -36,7 +36,7 @@ namespace QA_Tests.Examples.Hyperlink
         public void ReplaceHyperlinks()
         {
             // Specify your document name here.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "ReplaceHyperlinks.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "ReplaceHyperlinks.doc");
 
             // Hyperlinks in a Word documents are fields, select all field start nodes so we can find the hyperlinks.
             NodeList fieldStarts = doc.SelectNodes("//FieldStart");
@@ -58,7 +58,7 @@ namespace QA_Tests.Examples.Hyperlink
                 }
             }
 
-            doc.Save(MyDir + "ReplaceHyperlinks Out.doc");
+            doc.Save(ExDir + "ReplaceHyperlinks Out.doc");
         }
 
         private const string NewUrl = @"http://www.aspose.com";

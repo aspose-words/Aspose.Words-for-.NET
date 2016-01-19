@@ -23,7 +23,7 @@ namespace QA_Tests.Examples.Drawing
         [Test]
         public void DeleteAllShapes()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Shape.DeleteAllShapes.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Shape.DeleteAllShapes.doc");
             
             //ExStart
             //ExFor:Shape
@@ -40,7 +40,7 @@ namespace QA_Tests.Examples.Drawing
 
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).Count);
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.GroupShape, true).Count);
-            doc.Save(MyDir + "Shape.DeleteAllShapes Out.doc");
+            doc.Save(ExDir + "Shape.DeleteAllShapes Out.doc");
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace QA_Tests.Examples.Drawing
             //ExStart
             //ExFor:ShapeBase.IsInline
             //ExSummary:Shows how to test if a shape in the document is inline or floating.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Shape.DeleteAllShapes.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Shape.DeleteAllShapes.doc");
 
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
             {
@@ -94,7 +94,7 @@ namespace QA_Tests.Examples.Drawing
             lineB.RelativeVerticalPosition = RelativeVerticalPosition.Page;
             doc.FirstSection.Body.FirstParagraph.AppendChild(lineB);
 
-            doc.Save(MyDir + "Shape.LineFlipOrientation Out.doc");
+            doc.Save(ExDir + "Shape.LineFlipOrientation Out.doc");
             //ExEnd
         }
 
@@ -124,7 +124,7 @@ namespace QA_Tests.Examples.Drawing
             shape.Top = -100;
             builder.InsertNode(shape);
 
-            builder.Document.Save(MyDir + "Shape.Fill Out.doc");
+            builder.Document.Save(ExDir + "Shape.Fill Out.doc");
             //ExEnd
         }
 
@@ -138,7 +138,7 @@ namespace QA_Tests.Examples.Drawing
             //ExFor:CompositeNode.InsertAfter(Node, Node)
             //ExFor:NodeCollection.ToArray
             //ExSummary:Shows how to replace all textboxes with images.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Shape.ReplaceTextboxesWithImages.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Shape.ReplaceTextboxesWithImages.doc");
 
             // This gets a live collection of all shape nodes in the document.
             NodeCollection shapeCollection = doc.GetChildNodes(NodeType.Shape, true);
@@ -156,7 +156,7 @@ namespace QA_Tests.Examples.Drawing
                     Shape image = new Shape(doc, ShapeType.Image);
 
                     // Load the image into the new shape.
-                    image.ImageData.SetImage(MyDir + "Hammer.wmf");
+                    image.ImageData.SetImage(ExDir + "Hammer.wmf");
 
                     // Make new shape's position to match the old shape.
                     image.Left = shape.Left;
@@ -176,7 +176,7 @@ namespace QA_Tests.Examples.Drawing
                 }
             }
 
-            doc.Save(MyDir + "Shape.ReplaceTextboxesWithImages Out.doc");
+            doc.Save(ExDir + "Shape.ReplaceTextboxesWithImages Out.doc");
             //ExEnd
         }
 
@@ -224,7 +224,7 @@ namespace QA_Tests.Examples.Drawing
             doc.FirstSection.Body.FirstParagraph.AppendChild(textBox);
 
             // Save the output
-            doc.Save(MyDir + "Shape.CreateTextBox Out.doc");
+            doc.Save(ExDir + "Shape.CreateTextBox Out.doc");
             //ExEnd
         }
     }

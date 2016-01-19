@@ -77,7 +77,7 @@ namespace QA_Tests.Examples.Style
             //ExFor:TabStop.Leader
             //ExId:ChangeTOCTabStops
             //ExSummary:Shows how to modify the position of the right tab stop in TOC related paragraphs.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.TableOfContents.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.TableOfContents.doc");
 
             // Iterate through all paragraphs in the document
             foreach (Paragraph para in doc.GetChildNodes(NodeType.Paragraph, true))
@@ -95,14 +95,14 @@ namespace QA_Tests.Examples.Style
                 }
             }
 
-            doc.Save(MyDir + "Document.TableOfContentsTabStops Out.doc");
+            doc.Save(ExDir + "Document.TableOfContentsTabStops Out.doc");
             //ExEnd
         }
 
         [Test]
         public void CopyStyleSameDocument()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             //ExStart
             //ExFor:StyleCollection.AddCopy
@@ -171,6 +171,17 @@ namespace QA_Tests.Examples.Style
             Assert.AreEqual("Heading 1", newStyle.Name);
             Assert.IsNull(dstDoc.Styles["Heading 1_0"]);
             Assert.AreEqual(Color.Red.ToArgb(), newStyle.Font.Color.ToArgb());
+        }
+
+        [Test]
+        public void RemoveEx()
+        {
+            //ExStart
+            //ExFor:Style.Remove
+            //ExSummary:Shows how to pick a style that is defined in the document and remove it.
+            Aspose.Words.Document doc = new Aspose.Words.Document();
+            doc.Styles["Normal"].Remove();
+            //ExEnd
         }
     }
 }

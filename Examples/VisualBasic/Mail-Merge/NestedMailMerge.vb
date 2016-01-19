@@ -1,12 +1,4 @@
-﻿'////////////////////////////////////////////////////////////////////////
-' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
-'
-' This file is part of Aspose.Words. The source code in this file
-' is only intended as a supplement to the documentation, and is provided
-' "as is", without warranty of any kind, either expressed or implied.
-'////////////////////////////////////////////////////////////////////////
-
-Imports Microsoft.VisualBasic
+﻿Imports Microsoft.VisualBasic
 Imports System
 Imports System.Data
 Imports System.IO
@@ -30,6 +22,9 @@ Public Class NestedMailMerge
 
         ' Open the template document.
         Dim doc As New Document(dataDir & "Invoice Template.doc")
+
+        ' Trim trailing and leading whitespaces mail merge values
+        doc.MailMerge.TrimWhitespaces = False
 
         ' Execute the nested mail merge with regions
         doc.MailMerge.ExecuteWithRegions(pizzaDs)

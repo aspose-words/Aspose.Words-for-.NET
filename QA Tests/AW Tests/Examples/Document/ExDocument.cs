@@ -97,14 +97,14 @@ namespace QA_Tests.Examples.Document
             //ExId:OpenFromFile
             //ExSummary:Opens a document from a file.
             // Open a document. The file is opened read only and only for the duration of the constructor.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             //ExEnd
 
             //ExStart
             //ExFor:Document.Save(String)
             //ExId:SaveToFile
             //ExSummary:Saves a document to a file.
-            doc.Save(MyDir + "Document.OpenFromFile Out.doc");
+            doc.Save(ExDir + "Document.OpenFromFile Out.doc");
             //ExEnd
         }
 
@@ -114,8 +114,8 @@ namespace QA_Tests.Examples.Document
             //ExStart
             //ExId:OpenAndSaveToFile
             //ExSummary:Opens a document from a file and saves it to a different format
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
-            doc.Save(MyDir + "Document Out.html");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
+            doc.Save(ExDir + "Document Out.html");
             //ExEnd
         }
 
@@ -127,7 +127,7 @@ namespace QA_Tests.Examples.Document
             //ExId:OpenFromStream
             //ExSummary:Opens a document from a stream.
             // Open the stream. Read only access is enough for Aspose.Words to load a document.
-            Stream stream = File.OpenRead(MyDir + "Document.doc");
+            Stream stream = File.OpenRead(ExDir + "Document.doc");
 
             // Load the entire document into memory.
             Aspose.Words.Document doc = new Aspose.Words.Document(stream);
@@ -158,7 +158,7 @@ namespace QA_Tests.Examples.Document
             //    <p><img src="Aspose.Words.gif" width="80" height="60"></p>
             //    </body>
             //    </html>
-            string fileName = MyDir + "Document.OpenFromStreamWithBaseUri.html";
+            string fileName = ExDir + "Document.OpenFromStreamWithBaseUri.html";
 
             // Open the stream.
             Stream stream = File.OpenRead(fileName);
@@ -166,14 +166,14 @@ namespace QA_Tests.Examples.Document
             // Open the document. Note the Document constructor detects HTML format automatically.
             // Pass the URI of the base folder so any images with relative URIs in the HTML document can be found.
             LoadOptions loadOptions = new LoadOptions();
-            loadOptions.BaseUri = MyDir;
+            loadOptions.BaseUri = ExDir;
             Aspose.Words.Document doc = new Aspose.Words.Document(stream, loadOptions);
 
             // You can close the stream now, it is no longer needed because the document is in memory.
             stream.Close();
 
             // Save in the DOC format.
-            doc.Save(MyDir + "Document.OpenFromStreamWithBaseUri Out.doc");
+            doc.Save(ExDir + "Document.OpenFromStreamWithBaseUri Out.doc");
             //ExEnd
 
             // Lets make sure the image was imported successfully into a Shape node.
@@ -213,7 +213,7 @@ namespace QA_Tests.Examples.Document
             Aspose.Words.Document doc = new Aspose.Words.Document(byteStream);
 
             // Convert the document to any format supported by Aspose.Words.
-            doc.Save(MyDir + "Document.OpenFromWeb Out.docx");
+            doc.Save(ExDir + "Document.OpenFromWeb Out.docx");
             //ExEnd
         }
 
@@ -248,7 +248,7 @@ namespace QA_Tests.Examples.Document
 
             // Save the document to disk.
             // The extension of the filename can be changed to save the document into other formats. e.g PDF, DOCX, ODT, RTF.
-            doc.Save(MyDir + "Document.HtmlPageFromWebpage Out.doc");
+            doc.Save(ExDir + "Document.HtmlPageFromWebpage Out.doc");
             //ExEnd
         }
 
@@ -261,7 +261,7 @@ namespace QA_Tests.Examples.Document
             //ExSummary:Explicitly loads a document as HTML without automatic file format detection.
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.LoadFormat = Aspose.Words.LoadFormat.Html;
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.LoadFormat.html", loadOptions);
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.LoadFormat.html", loadOptions);
             //ExEnd
         }
 
@@ -274,7 +274,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:LoadOptions.#ctor(String)
             //ExId:OpenEncrypted
             //ExSummary:Loads a Microsoft Word document encrypted with a password.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.LoadEncrypted.doc", new LoadOptions("qwerty"));
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.LoadEncrypted.doc", new LoadOptions("qwerty"));
             //ExEnd
         }
 
@@ -284,7 +284,7 @@ namespace QA_Tests.Examples.Document
             //ExStart
             //ExFor:Document.#ctor(Stream,LoadOptions)
             //ExSummary:Loads a Microsoft Word document encrypted with a password from a stream.
-            Stream stream = File.OpenRead(MyDir + "Document.LoadEncrypted.doc");
+            Stream stream = File.OpenRead(ExDir + "Document.LoadEncrypted.doc");
             Aspose.Words.Document doc = new Aspose.Words.Document(stream, new LoadOptions("qwerty"));
             stream.Close();
             //ExEnd
@@ -297,9 +297,9 @@ namespace QA_Tests.Examples.Document
             //ExFor:Document.Save(String,SaveFormat)
             //ExFor:SaveFormat
             //ExSummary:Converts from DOC to HTML format.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
-            doc.Save(MyDir + "Document.ConvertToHtml Out.html", SaveFormat.Html);
+            doc.Save(ExDir + "Document.ConvertToHtml Out.html", SaveFormat.Html);
             //ExEnd
         }
 
@@ -309,9 +309,9 @@ namespace QA_Tests.Examples.Document
             //ExStart
             //ExFor:Document.Save(String)
             //ExSummary:Converts from DOC to MHTML format.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
-            doc.Save(MyDir + "Document.ConvertToMhtml Out.mht");
+            doc.Save(ExDir + "Document.ConvertToMhtml Out.mht");
             //ExEnd
         }
 
@@ -321,9 +321,9 @@ namespace QA_Tests.Examples.Document
             //ExStart
             //ExId:ExtractContentSaveAsText
             //ExSummary:Shows how to save a document in TXT format.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
-            doc.Save(MyDir + "Document.ConvertToTxt Out.txt");
+            doc.Save(ExDir + "Document.ConvertToTxt Out.txt");
             //ExEnd
         }
 
@@ -335,9 +335,9 @@ namespace QA_Tests.Examples.Document
             //ExFor:Document.Save(String)
             //ExId:Doc2PdfSave
             //ExSummary:Converts a whole document from DOC to PDF using default options.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
-            doc.Save(MyDir + "Document.Doc2PdfSave Out.pdf");
+            doc.Save(ExDir + "Document.Doc2PdfSave Out.pdf");
             //ExEnd
         }
 
@@ -348,7 +348,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:Document.Save(Stream,SaveFormat)
             //ExId:SaveToStream
             //ExSummary:Shows how to save a document to a stream.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
@@ -369,7 +369,7 @@ namespace QA_Tests.Examples.Document
             //ExStart
             //ExId:SaveToBrowser
             //ExSummary:Shows how to send a document to the client browser from an ASP.NET code.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             doc.Save(Response, "Report Out.doc", ContentDisposition.Inline, null);
             //ExEnd
@@ -383,10 +383,10 @@ namespace QA_Tests.Examples.Document
             //ExSummary:Converts a document to EPUB using default save options.
 
             // Open an existing document from disk.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.EpubConversion.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.EpubConversion.doc");
 
             // Save the document in EPUB format.
-            doc.Save(MyDir + "Document.EpubConversion Out.epub");
+            doc.Save(ExDir + "Document.EpubConversion Out.epub");
             //ExEnd
         }
 
@@ -403,7 +403,7 @@ namespace QA_Tests.Examples.Document
             //ExId:Doc2EpubSaveWithOptions
             //ExSummary:Converts a document to EPUB with save options specified.
             // Open an existing document from disk.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.EpubConversion.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.EpubConversion.doc");
 
             // Create a new instance of HtmlSaveOptions. This object allows us to set options that control
             // how the output document is saved.
@@ -425,7 +425,7 @@ namespace QA_Tests.Examples.Document
             saveOptions.SaveFormat = SaveFormat.Epub;
 
             // Export the document as an EPUB file.
-            doc.Save(MyDir + "Document.EpubConversion Out.epub", saveOptions);
+            doc.Save(ExDir + "Document.EpubConversion Out.epub", saveOptions);
             //ExEnd
         }
 
@@ -435,14 +435,14 @@ namespace QA_Tests.Examples.Document
             //ExStart
             //ExFor:SaveOptions.PrettyFormat
             //ExSummary:Shows how to pass an option to export HTML tags in a well spaced, human readable format.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             HtmlSaveOptions htmlOptions = new HtmlSaveOptions(SaveFormat.Html);
             // Enabling the PrettyFormat setting will export HTML in an indented format that is easy to read.
             // If this is setting is false (by default) then the HTML tags will be exported in condensed form with no indentation.
             htmlOptions.PrettyFormat = true;
 
-            doc.Save(MyDir + "Document.PrettyFormat Out.html", htmlOptions);
+            doc.Save(ExDir + "Document.PrettyFormat Out.html", htmlOptions);
             //ExEnd
         }
 
@@ -455,10 +455,10 @@ namespace QA_Tests.Examples.Document
             //ExFor:HtmlSaveOptions.ImagesFolder
             //ExId:SaveWithOptions
             //ExSummary:Shows how to set save options before saving a document to HTML.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Rendering.doc");
             
             // This is the directory we want the exported images to be saved to.
-            string imagesDir = Path.Combine(MyDir, "Images");
+            string imagesDir = Path.Combine(ExDir, "Images");
             
             // The folder specified needs to exist and should be empty.
             if (Directory.Exists(imagesDir))
@@ -471,11 +471,11 @@ namespace QA_Tests.Examples.Document
             options.ExportTextInputFormFieldAsText = true;
             options.ImagesFolder = imagesDir;
 
-            doc.Save(MyDir + "Document.SaveWithOptions Out.html", options);
+            doc.Save(ExDir + "Document.SaveWithOptions Out.html", options);
             //ExEnd
 
             // Verify the images were saved to the correct location.
-            Assert.IsTrue(File.Exists(MyDir + "Document.SaveWithOptions Out.html"));
+            Assert.IsTrue(File.Exists(ExDir + "Document.SaveWithOptions Out.html"));
             Assert.AreEqual(9, Directory.GetFiles(imagesDir).Length);
         }
 
@@ -500,7 +500,7 @@ namespace QA_Tests.Examples.Document
         //ExSummary:Shows how to define custom logic for handling font exporting when saving to HTML based formats.
         public void SaveHtmlExportFonts()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             // Set the option to export font resources.
             HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Mhtml);
@@ -508,7 +508,7 @@ namespace QA_Tests.Examples.Document
             // Create and pass the object which implements the handler methods.
             options.FontSavingCallback = new HandleFontSaving();
 
-            doc.Save(MyDir + "Document.SaveWithFontsExport Out.html", options);
+            doc.Save(ExDir + "Document.SaveWithFontsExport Out.html", options);
         }
 
         public class HandleFontSaving : IFontSavingCallback
@@ -541,13 +541,13 @@ namespace QA_Tests.Examples.Document
         //ExSummary:Shows how to define custom logic for controlling how images are saved when exporting to HTML based formats.
         public void SaveHtmlExportImages()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             // Create and pass the object which implements the handler methods.
             HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
             options.ImageSavingCallback = new HandleImageSaving();
 
-            doc.Save(MyDir + "Document.SaveWithCustomImagesExport Out.html", options);
+            doc.Save(ExDir + "Document.SaveWithCustomImagesExport Out.html", options);
         }
 
         public class HandleImageSaving : IImageSavingCallback
@@ -593,7 +593,7 @@ namespace QA_Tests.Examples.Document
             // Insert sample HTML content
             builder.InsertHtml("<p>Hello World</p>");
 
-            doc.Save(MyDir + "Document.FontChanger Out.doc");
+            doc.Save(ExDir + "Document.FontChanger Out.doc");
 
             // Check that the inserted content has the correct formatting
             Run run = (Run)doc.GetChild(NodeType.Run, 0, true);
@@ -643,7 +643,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:FileFormatInfo.HasDigitalSignature
             //ExId:DetectFileFormat
             //ExSummary:Shows how to use the FileFormatUtil class to detect the document format and other features of the document.
-            FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.doc");
+            FileFormatInfo info = FileFormatUtil.DetectFileFormat(ExDir + "Document.doc");
             Console.WriteLine("The document format is: " + FileFormatUtil.LoadFormatToExtension(info.LoadFormat));
             Console.WriteLine("Document is encrypted: " + info.IsEncrypted);
             Console.WriteLine("Document has a digital signature: " + info.HasDigitalSignature);
@@ -663,7 +663,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:FileFormatInfo.LoadFormat
             //ExSummary:Shows how to use the FileFormatUtil methods to detect the format of a document without any extension and save it with the correct file extension.
             // Load the document without a file extension into a stream and use the DetectFileFormat method to detect it's format. These are both times where you might need extract the file format as it's not visible
-            FileStream docStream = File.OpenRead(MyDir + "Document.FileWithoutExtension"); // The file format of this document is actually ".doc"
+            FileStream docStream = File.OpenRead(ExDir + "Document.FileWithoutExtension"); // The file format of this document is actually ".doc"
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(docStream);
 
             // Retrieve the LoadFormat of the document.
@@ -685,7 +685,7 @@ namespace QA_Tests.Examples.Document
             Aspose.Words.Document doc = new Aspose.Words.Document(docStream);
 
             // Save the document with the original file name, " Out" and the document's file extension.
-            doc.Save(MyDir + "Document.WithFileExtension Out" + FileFormatUtil.SaveFormatToExtension(saveFormat));
+            doc.Save(ExDir + "Document.WithFileExtension Out" + FileFormatUtil.SaveFormatToExtension(saveFormat));
             //ExEnd
 
             Assert.AreEqual(".doc", FileFormatUtil.SaveFormatToExtension(saveFormat));
@@ -715,16 +715,16 @@ namespace QA_Tests.Examples.Document
             //ExFor:Document.AppendDocument(Document, ImportFormatMode)
             //ExSummary:Shows how to append a document to the end of another document.
             // The document that the content will be appended to.
-            Aspose.Words.Document dstDoc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document dstDoc = new Aspose.Words.Document(ExDir + "Document.doc");
             // The document to append.
-            Aspose.Words.Document srcDoc = new Aspose.Words.Document(MyDir + "DocumentBuilder.doc");
+            Aspose.Words.Document srcDoc = new Aspose.Words.Document(ExDir + "DocumentBuilder.doc");
 
             // Append the source document to the destination document.
             // Pass format mode to retain the original formatting of the source document when importing it.
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
 
             // Save the document.
-            dstDoc.Save(MyDir + "Document.AppendDocument Out.doc");
+            dstDoc.Save(ExDir + "Document.AppendDocument Out.doc");
             //ExEnd
         }
 
@@ -771,7 +771,7 @@ namespace QA_Tests.Examples.Document
             //ExId:DetectDocumentSignatures
             //ExSummary:Shows how to check a document for digital signatures before loading it into a Document object.
             // The path to the document which is to be processed.
-            string filePath = MyDir + "Document.Signed.docx";
+            string filePath = ExDir + "Document.Signed.docx";
 
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(filePath);
             if (info.HasDigitalSignature)
@@ -791,7 +791,7 @@ namespace QA_Tests.Examples.Document
             //ExId:ValidateAllDocumentSignatures
             //ExSummary:Shows how to validate all signatures in a document.
             // Load the signed document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.Signed.docx");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.Signed.docx");
 
             if (doc.DigitalSignatures.IsValid)
                 Console.WriteLine("Signatures belonging to this document are valid");
@@ -816,9 +816,9 @@ namespace QA_Tests.Examples.Document
             //ExId:ValidateIndividualSignatures
             //ExSummary:Shows how to validate each signature in a document and display basic information about the signature.
             // Load the document which contains signature.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.Signed.docx");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.Signed.docx");
 
-            foreach (DigitalSignature signature in doc.DigitalSignatures)
+            foreach (Aspose.Words.DigitalSignature signature in doc.DigitalSignatures)
             {
                 Console.WriteLine("*** Signature Found ***");
                 Console.WriteLine("Is valid: " + signature.IsValid);
@@ -831,7 +831,7 @@ namespace QA_Tests.Examples.Document
             }
             //ExEnd
 
-            DigitalSignature digitalSig = doc.DigitalSignatures[0];
+            Aspose.Words.DigitalSignature digitalSig = doc.DigitalSignatures[0];
             Assert.True(digitalSig.IsValid);
             Assert.AreEqual("Test Sign", digitalSig.Comments);
             Assert.AreEqual("XmlDsig", digitalSig.SignatureType.ToString());
@@ -860,7 +860,7 @@ namespace QA_Tests.Examples.Document
             // Load the certificate from disk.
             // The other constructor overloads can be used to load certificates from different locations.
             X509Certificate2 cert = new X509Certificate2(
-                MyDir + "certificate.pfx", "feyb4lgcfbme");
+                ExDir + "certificate.pfx", "feyb4lgcfbme");
 
             // Pass the certificate and details to the save options class to sign with.
             PdfSaveOptions options = new PdfSaveOptions();
@@ -871,7 +871,7 @@ namespace QA_Tests.Examples.Document
                 DateTime.Now);
 
             // Save the document as PDF with the digital signature set.
-            doc.Save(MyDir + "Document.Signed Out.pdf", options);
+            doc.Save(ExDir + "Document.Signed Out.pdf", options);
             //ExEnd
         }
 
@@ -879,7 +879,7 @@ namespace QA_Tests.Examples.Document
         public void AppendAllDocumentsInFolder()
         {
             // Delete the file that was created by the previous run as I don't want to append it again.
-            File.Delete(MyDir + "Document.AppendDocumentsFromFolder Out.doc");
+            File.Delete(ExDir + "Document.AppendDocumentsFromFolder Out.doc");
 
             //ExStart
             //ExFor:Document.AppendDocument(Document, ImportFormatMode)
@@ -896,7 +896,7 @@ namespace QA_Tests.Examples.Document
 
             // Gather the files which will be appended to our template document.
             // In this case we add the optional parameter to include the search only for files with the ".doc" extension.
-            ArrayList files = new ArrayList(Directory.GetFiles(MyDir, "*.doc"));
+            ArrayList files = new ArrayList(Directory.GetFiles(ExDir, "*.doc"));
             // The list of files may come in any order, let's sort the files by name so the documents are enumerated alphabetically.
             files.Sort();
 
@@ -914,7 +914,7 @@ namespace QA_Tests.Examples.Document
             }
 
             // Save the combined document to disk.
-            baseDoc.Save(MyDir + "Document.AppendDocumentsFromFolder Out.doc");
+            baseDoc.Save(ExDir + "Document.AppendDocumentsFromFolder Out.doc");
             //ExEnd
         }
 
@@ -926,7 +926,7 @@ namespace QA_Tests.Examples.Document
             //ExSummary:Shows how to join runs in a document to reduce unneeded runs.
             // Let's load this particular document. It contains a lot of content that has been edited many times.
             // This means the document will most likely contain a large number of runs with duplicate formatting.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Rendering.doc");
 
             // This is for illustration purposes only, remember how many run nodes we had in the original document.
             int runsBefore = doc.GetChildNodes(NodeType.Run, true).Count;
@@ -941,7 +941,7 @@ namespace QA_Tests.Examples.Document
             Console.WriteLine("Number of runs before:{0}, after:{1}, joined:{2}", runsBefore, runsAfter, joinCount);
 
             // Save the optimized document to disk.
-            doc.Save(MyDir + "Document.JoinRunsWithSameFormatting Out.html");
+            doc.Save(ExDir + "Document.JoinRunsWithSameFormatting Out.html");
             //ExEnd
 
             // Verify that runs were joined in the document.
@@ -955,9 +955,9 @@ namespace QA_Tests.Examples.Document
             //ExStart
             //ExFor:Document.AttachedTemplate
             //ExSummary:Opens a document, makes sure it is no longer attached to a template and saves the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             doc.AttachedTemplate = "";
-            doc.Save(MyDir + "Document.DetachTemplate Out.doc");
+            doc.Save(ExDir + "Document.DetachTemplate Out.doc");
             //ExEnd
         }
 
@@ -986,7 +986,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:Document.Clone
             //ExId:CloneDocument
             //ExSummary:Shows how to deep clone a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             Aspose.Words.Document clone = doc.Clone();
             //ExEnd
         }
@@ -1033,21 +1033,21 @@ namespace QA_Tests.Examples.Document
         [Test]
         public void ControlListLabelsExportToHtml()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Lists.PrintOutAllLists.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Lists.PrintOutAllLists.doc");
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html);
 
             // This option uses <ul> and <ol> tags are used for list label representation if it doesn't cause formatting loss, 
             // otherwise HTML <p> tag is used. This is also the default value.
             saveOptions.ExportListLabels = ExportListLabels.Auto;
-            doc.Save(MyDir + "Document.ExportListLabels Auto Out.html", saveOptions);
+            doc.Save(ExDir + "Document.ExportListLabels Auto Out.html", saveOptions);
 
             // Using this option the <p> tag is used for any list label representation.
             saveOptions.ExportListLabels = ExportListLabels.AsInlineText;
-            doc.Save(MyDir + "Document.ExportListLabels InlineText Out.html", saveOptions);
+            doc.Save(ExDir + "Document.ExportListLabels InlineText Out.html", saveOptions);
 
             // The <ul> and <ol> tags are used for list label representation. Some formatting loss is possible.
             saveOptions.ExportListLabels = ExportListLabels.ByHtmlTags;
-            doc.Save(MyDir + "Document.ExportListLabels HtmlTags Out.html", saveOptions);
+            doc.Save(ExDir + "Document.ExportListLabels HtmlTags Out.html", saveOptions);
         }
 
         [Test]
@@ -1081,7 +1081,7 @@ namespace QA_Tests.Examples.Document
             //ExId:DocumentToFromByteArray
             //ExSummary:Shows how to convert a document object to an array of bytes and back into a document object again.
             // Load the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             // Create a new memory stream.
             MemoryStream outStream = new MemoryStream();
@@ -1129,7 +1129,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:Document.ProtectionType
             //ExId:GetProtectionType
             //ExSummary:Shows how to get protection type currently set in the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             ProtectionType protectionType = doc.ProtectionType;
             //ExEnd
         }
@@ -1156,7 +1156,7 @@ namespace QA_Tests.Examples.Document
             //ExStart
             //ExFor:Document.RemoveMacros
             //ExSummary:Shows how to remove all macros from a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             doc.RemoveMacros();
             //ExEnd
         }
@@ -1168,7 +1168,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:Document.UpdateTableLayout
             //ExId:UpdateTableLayout
             //ExSummary:Shows how to update the layout of tables in a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             // Normally this method is not necessary to call, as cell and table widths are maintained automatically.
             // This method may need to be called when exporting to PDF in rare cases when the table layout appears
@@ -1183,7 +1183,7 @@ namespace QA_Tests.Examples.Document
             //ExStart
             //ExFor:Document.PageCount
             //ExSummary:Shows how to invoke page layout and retrieve the number of pages in the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             // This invokes page layout which builds the document in memory so note that with large documents this
             // property can take time. After invoking this property, any rendering operation e.g rendering to PDF or image
@@ -1201,7 +1201,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:Document.UpdateFields
             //ExId:UpdateFieldsInDocument
             //ExSummary:Shows how to update all fields in a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             doc.UpdateFields();
             //ExEnd
         }
@@ -1215,7 +1215,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:BuiltInDocumentProperties.Words
             //ExFor:BuiltInDocumentProperties.Paragraphs
             //ExSummary:Shows how to update all list labels in a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             // Some work should be done here that changes the document's content.
 
@@ -1236,7 +1236,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:Document.ExpandTableStylesToDirectFormatting
             //ExId:TableStyleToDirectFormatting
             //ExSummary:Shows how to expand the formatting from styles onto the rows and cells of the table as direct formatting.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.TableStyle.docx");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Table.TableStyle.docx");
 
             // Get the first cell of the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -1256,7 +1256,7 @@ namespace QA_Tests.Examples.Document
             Console.WriteLine("Cell shading after style expansion: " + cellShadingAfter.ToString());
             //ExEnd
 
-            doc.Save(MyDir + "Table.ExpandTableStyleFormatting Out.docx");
+            doc.Save(ExDir + "Table.ExpandTableStyleFormatting Out.docx");
 
             Assert.AreEqual(Color.Empty, cellShadingBefore);
             Assert.AreNotEqual(Color.Empty, cellShadingAfter);
@@ -1269,7 +1269,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:Document.OriginalFileName
             //ExFor:Document.OriginalLoadFormat
             //ExSummary:Shows how to retrieve the details of the path, filename and LoadFormat of a document from when the document was first loaded into memory.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             // This property will return the full path and file name where the document was loaded from.
             string originalFilePath = doc.OriginalFileName;
@@ -1287,7 +1287,7 @@ namespace QA_Tests.Examples.Document
             //ExStart
             //ExFor:CompositeNode.RemoveSmartTags
             //ExSummary:Shows how to remove all smart tags from a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             doc.RemoveSmartTags();
             //ExEnd
         }
@@ -1303,10 +1303,10 @@ namespace QA_Tests.Examples.Document
             //ExFor:ViewType
             //ExId:SetZoom
             //ExSummary:The following code shows how to make sure the document is displayed at 50% zoom when opened in Microsoft Word.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             doc.ViewOptions.ViewType = ViewType.PageLayout;
             doc.ViewOptions.ZoomPercent = 50;
-            doc.Save(MyDir + "Document.SetZoom Out.doc");
+            doc.Save(ExDir + "Document.SetZoom Out.doc");
             //ExEnd
         }
 
@@ -1318,7 +1318,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:VariableCollection
             //ExId:GetDocumentVariables
             //ExSummary:Shows how to enumerate over document variables.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             foreach (DictionaryEntry entry in doc.Variables)
             {
@@ -1348,23 +1348,7 @@ namespace QA_Tests.Examples.Document
             doc.FootnoteOptions.NumberStyle = NumberStyle.Arabic;
             doc.FootnoteOptions.StartNumber = 1;
 
-            doc.Save(MyDir + "Document.FootnoteOptions.doc");
-            //ExEnd
-        }
-
-        [Test]
-        public void HyphenationEx()
-        {
-            //ExStart
-            //ExFor:Hyphenation
-            //ExId:HyphenationEx
-            //ExSummary:Load a hyphenation dictionary of a language from a file.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
-            
-            Hyphenation.RegisterDictionary("en-US", MyDir + "hyph_en_US.dic");
-            Console.Write(Hyphenation.IsDictionaryRegistered("en-US"));
-
-            doc.Save(MyDir + "Document.HyphenationEx.doc");
+            doc.Save(ExDir + "Document.FootnoteOptions.doc");
             //ExEnd
         }
 
@@ -1375,8 +1359,8 @@ namespace QA_Tests.Examples.Document
             //ExFor:Document.Compare
             //ExId:CompareEx
             //ExSummary:Shows how to apply the compare method to two documents and then use the results. 
-            Aspose.Words.Document doc1 = new Aspose.Words.Document(MyDir + "Document.Compare.1.doc");
-            Aspose.Words.Document doc2 = new Aspose.Words.Document(MyDir + "Document.Compare.2.doc");
+            Aspose.Words.Document doc1 = new Aspose.Words.Document(ExDir + "Document.Compare.1.doc");
+            Aspose.Words.Document doc2 = new Aspose.Words.Document(ExDir + "Document.Compare.2.doc");
 
             // Both documents should have no revisions or an exception will be thrown.
             if (doc1.Revisions.Count == 0 && doc2.Revisions.Count == 0)
@@ -1390,7 +1374,7 @@ namespace QA_Tests.Examples.Document
             doc1.Revisions.AcceptAll();
 
             // doc1, when saved, now resembles doc2.
-            doc1.Save(MyDir + "Document.CompareEx.doc");
+            doc1.Save(ExDir + "Document.CompareEx.doc");
             //ExEnd
         }
 
@@ -1401,7 +1385,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:Document.RemoveExternalSchemaReferences
             //ExId:RemoveExternalSchemaReferencesEx
             //ExSummary:Shows how to remove all external XML schema references from a document. 
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             doc.RemoveExternalSchemaReferences();
             //ExEnd
         }
@@ -1413,7 +1397,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:Document.RemoveUnusedResources
             //ExId:RemoveUnusedResourcesEx
             //ExSummary:Shows how to remove all unused styles and lists from a document. 
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             doc.RemoveUnusedResources();
             //ExEnd
         }
@@ -1438,7 +1422,7 @@ namespace QA_Tests.Examples.Document
 
             // The "Hello world!" text we added before doc.StartTrackRevisions() shows up as plain text in the output doc.
             // However, the "Hello again!" text we added after doc.StartTrackRevisions() is a revision in the output.
-            doc.Save(MyDir + "Document.StartTrackRevisions.doc");
+            doc.Save(ExDir + "Document.StartTrackRevisions.doc");
             //ExEnd
         }
 

@@ -14,17 +14,27 @@ namespace QA_Tests.Examples.DigitalSignature
     [TestFixture]
     public class ExDigitalSignatureUtil : QaTestsBase
     {
-        [Test]
         public void RemoveAllSignaturesEx()
         {
             //ExStart
-            //ExFor:RemoveAllSignatures
-            //ExId:RemoveAllSignaturesEx
+            //ExFor:DigitalSignatureUtil.RemoveAllSignatures(stream, stream)
+            //ExFor:DigitalSignatureUtil.RemoveAllSignatures(string, string)
             //ExSummary:Shows how to use RemoveAllSignatures.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
-            string outputDocFileName = MyDir + "Document.NoSignatures.doc";
-            Aspose.Words.DigitalSignatureUtil.RemoveAllSignatures(doc.OriginalFileName, outputDocFileName);            
+            //By stream:
+            System.IO.Stream docStreamIn = new System.IO.FileStream(ExDir + "Document.doc", System.IO.FileMode.Open);
+            System.IO.Stream docStreamOut = new System.IO.FileStream(ExDir + "Document.NoSignatures.FromStream.doc", System.IO.FileMode.Create);
+
+            Aspose.Words.DigitalSignatureUtil.RemoveAllSignatures(docStreamIn, docStreamOut);
+
+            docStreamIn.Close();
+            docStreamOut.Close();
+
+            //By string:
+            string outFileName = ExDir + "Document.NoSignatures.FromString.doc";
+
+            Aspose.Words.DigitalSignatureUtil.RemoveAllSignatures(doc.OriginalFileName, outFileName);
             //ExEnd
         }
 
@@ -33,19 +43,17 @@ namespace QA_Tests.Examples.DigitalSignature
         {
             //ExStart
             //ExFor:LoadSignatures(stream)
-            //ExId:LoadSignaturesEx
+            //ExFor:LoadSignatures(string)
             //ExSummary:Shows how to use LoadSignatures.
-            System.IO.Stream docStream = new System.IO.FileStream(MyDir + "Document.doc", System.IO.FileMode.Open);
-            Aspose.Words.DigitalSignatureUtil.LoadSignatures(docStream);
-            //ExEnd
+            System.IO.Stream docStream = new System.IO.FileStream(ExDir + "Document.doc", System.IO.FileMode.Open);
+            Aspose.Words.DigitalSignatureCollection digitalSignatures = new Aspose.Words.DigitalSignatureCollection();
 
+            // By stream:
+            digitalSignatures = Aspose.Words.DigitalSignatureUtil.LoadSignatures(docStream);
             docStream.Close();
 
-            //ExStart
-            //ExFor:LoadSignatures(string)
-            //ExId:LoadSignaturesEx
-            //ExSummary:Shows how to use LoadSignatures.
-            Aspose.Words.DigitalSignatureUtil.LoadSignatures(MyDir + "Document.doc");
+            // By string:
+            digitalSignatures = Aspose.Words.DigitalSignatureUtil.LoadSignatures(ExDir + "Document.doc");
             //ExEnd
         }
 
@@ -60,17 +68,17 @@ namespace QA_Tests.Examples.DigitalSignature
             //ExFor:Sign(Stream, Stream, CertificateHolder, String, DateTime)
             //ExId:SignEx
             //ExSummary:Shows how to use RemoveAllSignatures.
-            Aspose.Words.CertificateHolder ch = Aspose.Words.CertificateHolder.Create(MyDir + "MyPkcs12.pfx", "My password");
+            Aspose.Words.CertificateHolder ch = Aspose.Words.CertificateHolder.Create(ExDir + "MyPkcs12.pfx", "My password");
 
             //By String
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
-            string outputDocFileName = MyDir + "Document.Signed.doc";
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
+            string outputDocFileName = ExDir + "Document.Signed.doc";
 
             Aspose.Words.DigitalSignatureUtil.Sign(doc.OriginalFileName, outputDocFileName, ch, "My comment", DateTime.Now);
 
             //By Stream
-            System.IO.Stream docInStream = new System.IO.FileStream(MyDir + "Document.doc", System.IO.FileMode.Open);
-            System.IO.Stream docOutStream = new System.IO.FileStream(MyDir + "Document.Signed.doc", System.IO.FileMode.OpenOrCreate);
+            System.IO.Stream docInStream = new System.IO.FileStream(ExDir + "Document.doc", System.IO.FileMode.Open);
+            System.IO.Stream docOutStream = new System.IO.FileStream(ExDir + "Document.Signed.doc", System.IO.FileMode.OpenOrCreate);
 
             Aspose.Words.DigitalSignatureUtil.Sign(docInStream, docOutStream, ch, "My comment", DateTime.Now);
             //ExEnd

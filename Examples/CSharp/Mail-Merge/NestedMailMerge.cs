@@ -1,12 +1,4 @@
-﻿//////////////////////////////////////////////////////////////////////////
-// Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
-//
-// This file is part of Aspose.Words. The source code in this file
-// is only intended as a supplement to the documentation, and is provided
-// "as is", without warranty of any kind, either expressed or implied.
-//////////////////////////////////////////////////////////////////////////
-
-using Aspose.Words;
+﻿using Aspose.Words;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -34,6 +26,9 @@ namespace CSharp.Mail_Merge
 
             // Open the template document.
             Document doc = new Document(dataDir + "Invoice Template.doc");
+
+            // Trim trailing and leading whitespaces mail merge values
+            doc.MailMerge.TrimWhitespaces = false;
 
             // Execute the nested mail merge with regions
             doc.MailMerge.ExecuteWithRegions(pizzaDs);

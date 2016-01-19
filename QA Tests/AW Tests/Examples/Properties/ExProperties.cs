@@ -25,7 +25,7 @@ namespace QA_Tests.Examples.Properties
             //ExFor:CustomDocumentProperties
             //ExId:DocumentProperties
             //ExSummary:Enumerates through all built-in and custom properties in a document.
-            string fileName = MyDir + "Properties.doc";
+            string fileName = ExDir + "Properties.doc";
             Aspose.Words.Document doc = new Aspose.Words.Document(fileName);
 
             Console.WriteLine("1. Document name: {0}", fileName);
@@ -51,7 +51,7 @@ namespace QA_Tests.Examples.Properties
             //ExFor:DocumentProperty.Value
             //ExFor:DocumentProperty.Type
             //ExSummary:Enumerates through all built-in and custom properties in a document using indexed access.
-            string fileName = MyDir + "Properties.doc";
+            string fileName = ExDir + "Properties.doc";
             Aspose.Words.Document doc = new Aspose.Words.Document(fileName);
 
             Console.WriteLine("1. Document name: {0}", fileName);
@@ -79,7 +79,7 @@ namespace QA_Tests.Examples.Properties
             //ExFor:BuiltInDocumentProperties.Item(String)
             //ExFor:DocumentProperty.ToString
             //ExSummary:Retrieves a built-in document property by name.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Properties.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Properties.doc");
 
             DocumentProperty prop = doc.BuiltInDocumentProperties["Keywords"];
             Console.WriteLine(prop.ToString());
@@ -115,7 +115,7 @@ namespace QA_Tests.Examples.Properties
             //ExFor:BuiltInDocumentProperties.Version
             //ExFor:BuiltInDocumentProperties.Words
             //ExSummary:Retrieves information from the built-in document properties.
-            string fileName = MyDir + "Properties.doc";
+            string fileName = ExDir + "Properties.doc";
             Aspose.Words.Document doc = new Aspose.Words.Document(fileName);
 
             Console.WriteLine("Document name: {0}", fileName);
@@ -154,7 +154,7 @@ namespace QA_Tests.Examples.Properties
             //ExFor:CustomDocumentProperties.Add(String,DateTime)
             //ExFor:DocumentProperty.ToDateTime
             //ExSummary:Retrieves a custom document property by name.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Properties.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Properties.doc");
 
             DocumentProperty prop = doc.CustomDocumentProperties["Authorized Date"];
 
@@ -181,7 +181,7 @@ namespace QA_Tests.Examples.Properties
             //ExFor:CustomDocumentProperties.Add(String,Double)
             //ExId:AddCustomProperties
             //ExSummary:Checks if a custom property with a given name exists in a document and adds few more custom document properties.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Properties.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Properties.doc");
 
             CustomDocumentProperties props = doc.CustomDocumentProperties;
 
@@ -203,7 +203,7 @@ namespace QA_Tests.Examples.Properties
             //ExFor:DocumentPropertyCollection.Remove
             //ExId:RemoveCustomProperties
             //ExSummary:Removes a custom document property.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Properties.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Properties.doc");
 
             doc.CustomDocumentProperties.Remove("Authorized Date");
             //ExEnd
@@ -221,7 +221,7 @@ namespace QA_Tests.Examples.Properties
             //ExFor:DocumentProperty.ToDateTime
             //ExFor:PropertyType
             //ExSummary:Retrieves the types and values of the custom document properties.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Properties.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Properties.doc");
 
             foreach (DocumentProperty prop in doc.CustomDocumentProperties)
             {

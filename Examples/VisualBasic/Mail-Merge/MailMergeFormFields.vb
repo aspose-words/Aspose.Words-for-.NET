@@ -1,11 +1,4 @@
-﻿'////////////////////////////////////////////////////////////////////////
-' Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
-'
-' This file is part of Aspose.Words. The source code in this file
-' is only intended as a supplement to the documentation, and is provided
-' "as is", without warranty of any kind, either expressed or implied.
-'////////////////////////////////////////////////////////////////////////
-
+﻿
 Imports Microsoft.VisualBasic
 Imports System
 Imports System.IO
@@ -25,6 +18,9 @@ Public Class MailMergeFormFields
 
         ' Setup mail merge event handler to do the custom work.
         doc.MailMerge.FieldMergingCallback = New HandleMergeField()
+
+        ' Trim trailing and leading whitespaces mail merge values
+        doc.MailMerge.TrimWhitespaces = False
 
         ' This is the data for mail merge.
         Dim fieldNames() As String = {"RecipientName", "SenderName", "FaxNumber", "PhoneNumber", "Subject", "Body", "Urgent", "ForReview", "PleaseComment"}

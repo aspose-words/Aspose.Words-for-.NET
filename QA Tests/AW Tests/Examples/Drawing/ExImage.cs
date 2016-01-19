@@ -31,14 +31,14 @@ namespace QA_Tests.Examples.Drawing
             DocumentBuilder builder = new DocumentBuilder();
 
             builder.Write("Image from local file: ");
-            builder.InsertImage(MyDir + "Aspose.Words.gif");
+            builder.InsertImage(ExDir + "Aspose.Words.gif");
             builder.Writeln();
 
             builder.Write("Image from an internet url, automatically downloaded for you: ");
             builder.InsertImage("http://www.aspose.com/Images/aspose-logo.jpg");
             builder.Writeln();
 
-            builder.Document.Save(MyDir + "Image.CreateFromUrl Out.doc");
+            builder.Document.Save(ExDir + "Image.CreateFromUrl Out.doc");
             //ExEnd
         }
 
@@ -51,7 +51,7 @@ namespace QA_Tests.Examples.Drawing
             // This creates a builder and also an empty document inside the builder.
             DocumentBuilder builder = new DocumentBuilder();
 
-            Stream stream = File.OpenRead(MyDir + "Aspose.Words.gif");
+            Stream stream = File.OpenRead(ExDir + "Aspose.Words.gif");
             try
             {
                 builder.Write("Image from stream: ");
@@ -62,7 +62,7 @@ namespace QA_Tests.Examples.Drawing
                 stream.Close();
             }
 
-            builder.Document.Save(MyDir + "Image.CreateFromStream Out.doc");
+            builder.Document.Save(ExDir + "Image.CreateFromStream Out.doc");
             //ExEnd
         }
 
@@ -76,7 +76,7 @@ namespace QA_Tests.Examples.Drawing
             DocumentBuilder builder = new DocumentBuilder();
 
             // Insert a raster image.
-            System.Drawing.Image rasterImage = System.Drawing.Image.FromFile(MyDir + "Aspose.Words.gif");
+            System.Drawing.Image rasterImage = System.Drawing.Image.FromFile(ExDir + "Aspose.Words.gif");
             try
             {
                 builder.Write("Raster image: ");
@@ -89,7 +89,7 @@ namespace QA_Tests.Examples.Drawing
             }
 
             // Aspose.Words allows to insert a metafile too.
-            System.Drawing.Image metafile = System.Drawing.Image.FromFile(MyDir + "Hammer.wmf");
+            System.Drawing.Image metafile = System.Drawing.Image.FromFile(ExDir + "Hammer.wmf");
             try
             {
                 builder.Write("Metafile: ");
@@ -101,7 +101,7 @@ namespace QA_Tests.Examples.Drawing
                 metafile.Dispose();
             }
 
-            builder.Document.Save(MyDir + "Image.CreateFromImage Out.doc");
+            builder.Document.Save(ExDir + "Image.CreateFromImage Out.doc");
             //ExEnd
         }
 
@@ -128,7 +128,7 @@ namespace QA_Tests.Examples.Drawing
             DocumentBuilder builder = new DocumentBuilder();
 
             // By default, the image is inline.
-            Shape shape = builder.InsertImage(MyDir + "Aspose.Words.gif");
+            Shape shape = builder.InsertImage(ExDir + "Aspose.Words.gif");
 
             // Make the image float, put it behind text and center on the page.
             shape.WrapType = WrapType.None;
@@ -138,7 +138,7 @@ namespace QA_Tests.Examples.Drawing
             shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
             shape.VerticalAlignment = VerticalAlignment.Center;
 
-            builder.Document.Save(MyDir + "Image.CreateFloatingPageCenter Out.doc");
+            builder.Document.Save(ExDir + "Image.CreateFloatingPageCenter Out.doc");
             //ExEnd
         }
 
@@ -157,7 +157,7 @@ namespace QA_Tests.Examples.Drawing
             DocumentBuilder builder = new DocumentBuilder();
 
             // By default, the image is inline.
-            Shape shape = builder.InsertImage(MyDir + "Hammer.wmf");
+            Shape shape = builder.InsertImage(ExDir + "Hammer.wmf");
 
             // Make the image float, put it behind text and center on the page.
             shape.WrapType = WrapType.None;
@@ -172,7 +172,7 @@ namespace QA_Tests.Examples.Drawing
             shape.Width = builder.CurrentSection.PageSetup.PageWidth;
             shape.Height = 50;
 
-            builder.Document.Save(MyDir + "Image.CreateFloatingPositionSize Out.doc");
+            builder.Document.Save(ExDir + "Image.CreateFloatingPositionSize Out.doc");
             //ExEnd
         }
 
@@ -186,11 +186,11 @@ namespace QA_Tests.Examples.Drawing
             // This creates a builder and also an empty document inside the builder.
             DocumentBuilder builder = new DocumentBuilder();
 
-            Shape shape = builder.InsertImage(MyDir + "Hammer.wmf");
+            Shape shape = builder.InsertImage(ExDir + "Hammer.wmf");
             shape.HRef = "http://www.aspose.com/Community/Forums/75/ShowForum.aspx";
             shape.ScreenTip = "Aspose.Words Support Forums";
 
-            builder.Document.Save(MyDir + "Image.InsertImageWithHyperlink Out.doc");
+            builder.Document.Save(ExDir + "Image.InsertImageWithHyperlink Out.doc");
             //ExEnd
         }
 
@@ -204,13 +204,13 @@ namespace QA_Tests.Examples.Drawing
             Aspose.Words.Document doc = new Aspose.Words.Document();
 
             Shape shape = new Shape(doc, ShapeType.Image);
-            shape.ImageData.SetImage(MyDir + "Hammer.wmf");
+            shape.ImageData.SetImage(ExDir + "Hammer.wmf");
             shape.Width = 100;
             shape.Height = 100;
 
             doc.FirstSection.Body.FirstParagraph.AppendChild(shape);
 
-            doc.Save(MyDir + "Image.CreateImageDirectly Out.doc");
+            doc.Save(ExDir + "Image.CreateImageDirectly Out.doc");
             //ExEnd
         }
 
@@ -226,7 +226,7 @@ namespace QA_Tests.Examples.Drawing
             //ExSummary:Shows how to insert a linked image into a document. 
             DocumentBuilder builder = new DocumentBuilder();
 
-            string imageFileName = MyDir + "Hammer.wmf";
+            string imageFileName = ExDir + "Hammer.wmf";
 
             builder.Write("Image linked, not stored in the document: ");
 
@@ -258,14 +258,14 @@ namespace QA_Tests.Examples.Drawing
             builder.InsertNode(stored);
             builder.Writeln();
 
-            builder.Document.Save(MyDir + "Image.CreateLinkedImage Out.doc");
+            builder.Document.Save(ExDir + "Image.CreateLinkedImage Out.doc");
             //ExEnd
         }
 
         [Test]
         public void DeleteAllImages()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Image.SampleImages.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Image.SampleImages.doc");
             Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
             
             //ExStart
@@ -292,13 +292,13 @@ namespace QA_Tests.Examples.Drawing
             //ExEnd
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
-            doc.Save(MyDir + "Image.DeleteAllImages Out.doc");
+            doc.Save(ExDir + "Image.DeleteAllImages Out.doc");
         }
 
         [Test]
         public void DeleteAllImagesPreOrder()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Image.SampleImages.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Image.SampleImages.doc");
             Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
             
             //ExStart
@@ -323,7 +323,7 @@ namespace QA_Tests.Examples.Drawing
             //ExEnd
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
-            doc.Save(MyDir + "Image.DeleteAllImagesPreOrder Out.doc");
+            doc.Save(ExDir + "Image.DeleteAllImagesPreOrder Out.doc");
         }
 
         //ExStart
@@ -340,7 +340,7 @@ namespace QA_Tests.Examples.Drawing
         [Test] //ExSkip
         public void ExtractImagesToFiles()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Image.SampleImages.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Image.SampleImages.doc");
 
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
             int imageIndex = 0;			
@@ -350,7 +350,7 @@ namespace QA_Tests.Examples.Drawing
                 {
                     string imageFileName = string.Format(
                         "Image.ExportImages.{0} Out{1}", imageIndex, FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType));
-                    shape.ImageData.Save(MyDir + imageFileName);
+                    shape.ImageData.Save(ExDir + imageFileName);
                     imageIndex++;
                 }
             }
@@ -371,7 +371,7 @@ namespace QA_Tests.Examples.Drawing
             DocumentBuilder builder = new DocumentBuilder();
 
             // By default, the image is inserted at 100% scale.
-            Shape shape = builder.InsertImage(MyDir + "Aspose.Words.gif");
+            Shape shape = builder.InsertImage(ExDir + "Aspose.Words.gif");
 
             // It is easy to change the shape size. In this case, make it 50% relative to the current shape size.
             shape.Width = shape.Width * 0.5;
@@ -382,7 +382,7 @@ namespace QA_Tests.Examples.Drawing
             shape.Width = imageSize.WidthPoints * 1.1;
             shape.Height = imageSize.HeightPoints * 1.1;
 
-            builder.Document.Save(MyDir + "Image.ScaleImage Out.doc");
+            builder.Document.Save(ExDir + "Image.ScaleImage Out.doc");
             //ExEnd
         }
     }

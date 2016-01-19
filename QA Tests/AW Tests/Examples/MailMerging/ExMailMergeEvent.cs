@@ -46,13 +46,13 @@ namespace QA_Tests.Examples.MailMerging
         // The same approach can be used when merging HTML data from database.
         public void MailMergeInsertHtml()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "MailMerge.InsertHtml.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "MailMerge.InsertHtml.doc");
 
             // Add a handler for the MergeField event.
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldInsertHtml();
 
             // Load some Html from file.
-            StreamReader sr = File.OpenText(MyDir + "MailMerge.HtmlData.html");
+            StreamReader sr = File.OpenText(ExDir + "MailMerge.HtmlData.html");
             string htmltext = sr.ReadToEnd();
             sr.Close();
 
@@ -60,7 +60,7 @@ namespace QA_Tests.Examples.MailMerging
             doc.MailMerge.Execute(new string[] { "htmlField1" }, new string[] { htmltext });
 
             // Save resulting document with a new name.
-            doc.Save(MyDir + "MailMerge.InsertHtml Out.doc");
+            doc.Save(ExDir + "MailMerge.InsertHtml Out.doc");
         }
 
         private class HandleMergeFieldInsertHtml : IFieldMergingCallback
@@ -111,7 +111,7 @@ namespace QA_Tests.Examples.MailMerging
         // <<TableStart:StudentCourse>> <<CourseName>> <<TableEnd:StudentCourse>>.
         public void MailMergeInsertCheckBox()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "MailMerge.InsertCheckBox.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "MailMerge.InsertCheckBox.doc");
 
             // Add a handler for the MergeField event.
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldInsertCheckBox();
@@ -121,7 +121,7 @@ namespace QA_Tests.Examples.MailMerging
             doc.MailMerge.ExecuteWithRegions(dataTable);
 
             // Save resulting document with a new name.
-            doc.Save(MyDir + "MailMerge.InsertCheckBox Out.doc");
+            doc.Save(ExDir + "MailMerge.InsertCheckBox Out.doc");
         }
 
         private class HandleMergeFieldInsertCheckBox : IFieldMergingCallback
@@ -186,7 +186,7 @@ namespace QA_Tests.Examples.MailMerging
         //ExSummary:Demonstrates how to implement custom logic in the MergeField event to apply cell formatting.
         public void MailMergeAlternatingRows()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "MailMerge.AlternatingRows.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "MailMerge.AlternatingRows.doc");
 
             // Add a handler for the MergeField event.
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldAlternatingRows();
@@ -195,7 +195,7 @@ namespace QA_Tests.Examples.MailMerging
             DataTable dataTable = GetSuppliersDataTable();
             doc.MailMerge.ExecuteWithRegions(dataTable);
 
-            doc.Save(MyDir + "MailMerge.AlternatingRows Out.doc");
+            doc.Save(ExDir + "MailMerge.AlternatingRows Out.doc");
         }
 
         private class HandleMergeFieldAlternatingRows : IFieldMergingCallback
@@ -276,12 +276,12 @@ namespace QA_Tests.Examples.MailMerging
             //ExStart
             //ExFor:MailMerge.Execute(String[], Object[])
             //ExSummary:Demonstrates how to merge an image from a web address using an Image field.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "MailMerge.MergeImageSimple.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "MailMerge.MergeImageSimple.doc");
 
             // Pass a URL which points to the image to merge into the document.
             doc.MailMerge.Execute(new string[] { "Logo" }, new object[] { "http://www.aspose.com/images/aspose-logo.gif" });
 
-            doc.Save(MyDir + "MailMerge.MergeImageFromUrl Out.doc");
+            doc.Save(ExDir + "MailMerge.MergeImageFromUrl Out.doc");
             //ExEnd
 
             // Verify the image was merged into the document.
@@ -311,7 +311,7 @@ namespace QA_Tests.Examples.MailMerging
         //ExSummary:Shows how to insert images stored in a database BLOB field into a report.
         public void MailMergeImageFromBlob()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "MailMerge.MergeImage.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "MailMerge.MergeImage.doc");
 
             // Set up the event handler for image fields.
             doc.MailMerge.FieldMergingCallback = new HandleMergeImageFieldFromBlob();
@@ -331,7 +331,7 @@ namespace QA_Tests.Examples.MailMerging
             // Close the database.
             conn.Close();
 
-            doc.Save(MyDir + "MailMerge.MergeImage Out.doc");
+            doc.Save(ExDir + "MailMerge.MergeImage Out.doc");
         }
 
         private class HandleMergeImageFieldFromBlob : IFieldMergingCallback

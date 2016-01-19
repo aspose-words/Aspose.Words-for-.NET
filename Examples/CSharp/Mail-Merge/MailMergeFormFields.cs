@@ -1,12 +1,4 @@
-﻿//////////////////////////////////////////////////////////////////////////
-// Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
-//
-// This file is part of Aspose.Words. The source code in this file
-// is only intended as a supplement to the documentation, and is provided
-// "as is", without warranty of any kind, either expressed or implied.
-//////////////////////////////////////////////////////////////////////////
-
-using Aspose.Words;
+﻿using Aspose.Words;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using Aspose.Words.Tables;
@@ -34,6 +26,9 @@ namespace CSharp.Mail_Merge
 
             // Setup mail merge event handler to do the custom work.
             doc.MailMerge.FieldMergingCallback = new HandleMergeField();
+
+            // Trim trailing and leading whitespaces mail merge values
+            doc.MailMerge.TrimWhitespaces = false;
 
             // This is the data for mail merge.
             String[] fieldNames = new String[] {"RecipientName", "SenderName", "FaxNumber", "PhoneNumber",

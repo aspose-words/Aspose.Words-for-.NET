@@ -1,11 +1,4 @@
-﻿//////////////////////////////////////////////////////////////////////////
-// Copyright 2001-2014 Aspose Pty Ltd. All Rights Reserved.
-//
-// This file is part of Aspose.Words. The source code in this file
-// is only intended as a supplement to the documentation, and is provided
-// "as is", without warranty of any kind, either expressed or implied.
-//////////////////////////////////////////////////////////////////////////
-using System;
+﻿using System;
 using System.Collections;
 using System.IO;
 
@@ -23,6 +16,9 @@ namespace CSharp.Programming_Documents.Working_With_Document
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
 
             Document doc = new Document(dataDir + "TestFile.doc");
+
+            Section section = doc.Sections[0];
+            section.PageSetup.LeftMargin = 70.85;
 
             // Retrieve the bookmark from the document.
             Aspose.Words.Bookmark bookmark = doc.Range.Bookmarks["Bookmark1"];

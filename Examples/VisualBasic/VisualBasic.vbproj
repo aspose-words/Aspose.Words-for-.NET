@@ -47,8 +47,8 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words">
-      <HintPath>..\packages\Aspose.Words.15.10.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=15.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.15.12.0\lib\net40\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -152,6 +152,7 @@
     <Compile Include="Quick-Start\SimpleMailMerge.vb" />
     <Compile Include="Quick-Start\UpdateFields.vb" />
     <Compile Include="Quick-Start\WorkingWithNodes.vb" />
+    <Compile Include="Rendering-Printing\ReadActiveXControlProperties.vb" />
     <Compile Include="Rendering-Printing\DocumentLayoutHelper.vb" />
     <Compile Include="Rendering-Printing\DocumentPreviewAndPrint.vb">
       <SubType>Form</SubType>
