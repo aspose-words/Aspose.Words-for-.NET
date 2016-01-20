@@ -92,5 +92,24 @@ namespace QA_Tests.Examples.VariableCollection
             }
             //ExEnd
         }
+
+        [Test]
+        public void IndexOfKeyEx()
+        {
+            //ExStart
+            //ExFor:VariableCollection.IndexOfKey
+            //ExSummary:Shows how to get the index of a key.
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
+
+            doc.Variables.Add("doc", "Word processing document");
+            doc.Variables.Add("docx", "Word processing document");
+            doc.Variables.Add("txt", "Plain text file");
+            doc.Variables.Add("bmp", "Image");
+            doc.Variables.Add("png", "Image");
+
+            Console.WriteLine(doc.Variables.IndexOfKey("bmp")); // 0
+            Console.WriteLine(doc.Variables.IndexOfKey("txt")); // 4
+            //ExEnd
+        }
     }
 }
