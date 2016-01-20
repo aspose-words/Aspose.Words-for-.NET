@@ -111,5 +111,24 @@ namespace QA_Tests.Examples.VariableCollection
             Console.WriteLine(doc.Variables.IndexOfKey("txt")); // 4
             //ExEnd
         }
+
+        [Test]
+        public void RemoveEx()
+        {
+            //ExStart
+            //ExFor:VariableCollection.Remove
+            //ExSummary:Shows how to remove an element from a document's variable collection by key.
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
+
+            doc.Variables.Add("doc", "Word processing document");
+            doc.Variables.Add("docx", "Word processing document");
+            doc.Variables.Add("txt", "Plain text file");
+            doc.Variables.Add("bmp", "Image");
+            doc.Variables.Add("png", "Image");
+
+            doc.Variables.Remove("bmp");
+            Console.WriteLine(doc.Variables.Count); // 4
+            //ExEnd
+        }
     }
 }
