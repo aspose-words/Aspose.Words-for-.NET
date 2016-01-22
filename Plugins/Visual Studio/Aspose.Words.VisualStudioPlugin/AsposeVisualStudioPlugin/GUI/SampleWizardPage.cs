@@ -77,6 +77,11 @@ namespace AsposeVisualStudioPluginWords.GUI
 
             //rdbCSharp.Enabled = true;
             //rdbVisualBasic.Enabled = true;
+
+            AsposeComponent component;
+            AsposeComponents.list.TryGetValue(Constants.ASPOSE_COMPONENT, out component);
+            string repoPath = GitHelper.getLocalRepositoryPath(component);
+            PopulateTreeView(repoPath + "/Examples/" + (rdbCSharp.Checked ? "CSharp" : "VisualBasic"));
         }
 
         private void SetComponentsAPIs()
@@ -458,5 +463,105 @@ namespace AsposeVisualStudioPluginWords.GUI
             }
         }
 
+        private void PopulateTreeView(string dirPath)
+        {
+            treeView1.Nodes.Clear();
+
+            TreeNode rootNode;
+
+            DirectoryInfo info = new DirectoryInfo(@dirPath);
+            if (info.Exists)
+            {
+                rootNode = new TreeNode("Aspose.Words");
+                rootNode.Tag = info;
+                treeView1.Nodes.Add(rootNode);
+                GetDirectories(info.GetDirectories(), rootNode);
+                rootNode.ExpandAll();
+            }
+        }
+
+        private void GetDirectories(DirectoryInfo[] subDirs,
+   TreeNode nodeToAddTo)
+        {
+            TreeNode aNode;
+            DirectoryInfo[] subSubDirs;
+            foreach (DirectoryInfo subDir in subDirs)
+            {
+                if (!subDir.Name.ToLower().Equals("data") && !subDir.Name.ToLower().Equals("properties"))
+                {
+                    aNode = new TreeNode(AddSpacesToSentence(subDir.Name.Replace("-", "")), 0, 0);
+                    aNode.Tag = subDir;
+                    aNode.ImageKey = "folder";
+                    aNode.ImageIndex = 0;
+                    aNode.SelectedImageIndex = 0;
+                    subSubDirs = subDir.GetDirectories();
+
+                    if (subDir.GetFiles().Count() > 0)
+                    {
+                        GetFiles(subDir, aNode);
+                    }
+                    if (subSubDirs.Length != 0)
+                    {
+                        GetDirectories(subSubDirs, aNode);
+                    }
+                    aNode.ExpandAll();
+                    nodeToAddTo.Nodes.Add(aNode);
+                }
+            }
+            nodeToAddTo.ExpandAll();
+        }
+
+        private void GetFiles(DirectoryInfo subDirs,
+   TreeNode nodeToAddTo)
+        {
+            TreeNode aNode;
+            ListViewItem item = null;
+            foreach (FileInfo file in subDirs.GetFiles())
+            {
+                if (file.Name.Contains(".cs") || file.Name.Contains(".vb"))
+                {
+                    aNode = new TreeNode(AddSpacesToSentence(file.Name.Replace(".cs", "").Replace(".vb", "").Replace("-", "")), 0, 0);
+                    aNode.Tag = file;
+                    aNode.ImageKey = "File";
+                    aNode.ImageIndex = (rdbCSharp.Checked ? 1 : 2);
+                    aNode.SelectedImageIndex = (rdbCSharp.Checked ? 1 : 2);
+                    nodeToAddTo.Nodes.Add(aNode);
+                }
+            }
+            nodeToAddTo.ExpandAll();
+        }
+
+        private void rdbCSharp_CheckedChanged(object sender, EventArgs e)
+        {
+            AsposeComponent component;
+            AsposeComponents.list.TryGetValue(Constants.ASPOSE_COMPONENT, out component);
+            string repoPath = GitHelper.getLocalRepositoryPath(component);
+            PopulateTreeView(repoPath + "/Examples/" + (rdbCSharp.Checked ? "CSharp" : "VisualBasic"));
+
+        }
+
+        private void rdbVisualBasic_CheckedChanged(object sender, EventArgs e)
+        {
+            AsposeComponent component;
+            AsposeComponents.list.TryGetValue(Constants.ASPOSE_COMPONENT, out component);
+            string repoPath = GitHelper.getLocalRepositoryPath(component);
+            PopulateTreeView(repoPath + "/Examples/" + (rdbCSharp.Checked ? "CSharp" : "VisualBasic"));
+
+        }
+
+        string AddSpacesToSentence(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return "";
+            StringBuilder newText = new StringBuilder(text.Length * 2);
+            newText.Append(text[0]);
+            for (int i = 1; i < text.Length; i++)
+            {
+                if (char.IsUpper(text[i]) && text[i - 1] != ' ')
+                    newText.Append(' ');
+                newText.Append(text[i]);
+            }
+            return newText.ToString().Replace("L I N Q", "LINQ").Replace("X M L", "XML");
+        }
     }
 }
