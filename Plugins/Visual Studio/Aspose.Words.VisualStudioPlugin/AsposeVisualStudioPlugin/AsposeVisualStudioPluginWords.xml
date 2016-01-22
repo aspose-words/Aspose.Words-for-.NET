@@ -1,0 +1,306 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AsposeVisualStudioPluginForWords</name>
+    </assembly>
+    <members>
+        <member name="T:ExamplesData">
+            <remarks/>
+        </member>
+        <member name="P:ExamplesData.Folders">
+            <remarks/>
+        </member>
+        <member name="P:ExamplesData.Examples">
+            <remarks/>
+        </member>
+        <member name="T:Folder">
+            <remarks/>
+        </member>
+        <member name="P:Folder.Title">
+            <remarks/>
+        </member>
+        <member name="P:Folder.Description">
+            <remarks/>
+        </member>
+        <member name="P:Folder.FolderName">
+            <remarks/>
+        </member>
+        <member name="P:Folder.Order">
+            <remarks/>
+        </member>
+        <member name="P:Folder.Examples">
+            <remarks/>
+        </member>
+        <member name="P:Folder.Folders">
+            <remarks/>
+        </member>
+        <member name="T:Example">
+            <remarks/>
+        </member>
+        <member name="P:Example.Title">
+            <remarks/>
+        </member>
+        <member name="P:Example.Description">
+            <remarks/>
+        </member>
+        <member name="P:Example.FolderName">
+            <remarks/>
+        </member>
+        <member name="P:Example.Order">
+            <remarks/>
+        </member>
+        <member name="P:Example.DocLink">
+            <remarks/>
+        </member>
+        <member name="P:Example.InputFiles">
+            <remarks/>
+        </member>
+        <member name="P:Example.OutputFiles">
+            <remarks/>
+        </member>
+        <member name="P:Example.Type">
+            <remarks/>
+        </member>
+        <member name="T:DocLink">
+            <remarks/>
+        </member>
+        <member name="P:DocLink.DisplayName">
+            <remarks/>
+        </member>
+        <member name="P:DocLink.Url">
+            <remarks/>
+        </member>
+        <member name="T:InputFiles">
+            <remarks/>
+        </member>
+        <member name="P:InputFiles.DataFile">
+            <remarks/>
+        </member>
+        <member name="T:OutputFiles">
+            <remarks/>
+        </member>
+        <member name="P:OutputFiles.DataFile">
+            <remarks/>
+        </member>
+        <member name="T:Folders">
+            <remarks/>
+        </member>
+        <member name="P:Folders.Folder">
+            <remarks/>
+        </member>
+        <member name="T:Examples">
+            <remarks/>
+        </member>
+        <member name="P:Examples.Example">
+            <remarks/>
+        </member>
+        <member name="T:DataFile">
+            <remarks/>
+        </member>
+        <member name="P:DataFile.Path">
+            <remarks/>
+        </member>
+        <member name="F:AsposeVisualStudioPluginWords.GUI.SampleWizardPage.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.GUI.SampleWizardPage.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.GUI.SampleWizardPage.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:AsposeVisualStudioPluginWords.XML.DynamicObjectSerializer`1">
+            <summary>
+            Serialization/Deserialization of objects to/from XML
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.XML.DynamicObjectSerializer`1.Load(System.String)">
+            <summary>
+            Reads xml and loads object in document format.
+            </summary>
+            <param name="filePath"> Path of xml file </param>
+            <returns></returns>
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.XML.DynamicObjectSerializer`1.Load(System.String,System.Type[])">
+            <summary>
+            Loads an object from an XML file , supplying extra data types.
+            </summary>
+            <param name="filePath">File path to load.</param>
+            <param name="extraTypes">Extra data types .</param>
+            <returns>Object loaded from an XML file.</returns>
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.XML.DynamicObjectSerializer`1.Save(`0,System.String)">
+            <summary>
+            Saves an object to an XML file .
+            </summary>
+            <param name="serializableObject">Serializable object to be saved to file.</param>
+            <param name="path">Path of the file to save the object to.</param>
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.XML.DynamicObjectSerializer`1.Save(`0,System.String,System.Type[])">
+            <summary>
+            Saves an object to an XML file in .
+            </summary>
+            <param name="serializableObject">Serializable object to be saved to file.</param>
+            <param name="path">Path of the file to save the object to.</param>
+            <param name="extraTypes">Extra data types to enable serialization of custom types within the object.</param>
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.ZipUtilities.ExtractZipFile(System.String,System.String)">
+            <summary>
+            Unzip files
+            </summary>
+            <param name="zipFilePath"></param>
+            <param name="pathToExtract"></param>
+        </member>
+        <member name="F:AsposeVisualStudioPluginWords.GUI.ComponentWizardPage.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.GUI.ComponentWizardPage.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.GUI.ComponentWizardPage.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.GitHelper.CloneOrCheckOutRepo(AsposeVisualStudioPluginWords.Core.AsposeComponent)">
+            <summary>
+            
+            </summary>
+            <param name="component"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AsposeVisualStudioPluginWords.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:AsposeVisualStudioPluginWords.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:AsposeVisualStudioPluginWords.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:AsposeVisualStudioPluginWords.Properties.Resources.aspose">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:AsposeVisualStudioPluginWords.Properties.Resources.aspose_words">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:AsposeVisualStudioPluginWords.Properties.Resources.aspose1">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+            </summary>
+        </member>
+        <member name="P:AsposeVisualStudioPluginWords.Properties.Resources.bmplogo">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:AsposeVisualStudioPluginWords.Properties.Resources.long_banner">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:AsposeVisualStudioPluginWords.Properties.Resources.pnglogosmall">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponentsManager.downloadComponents">
+            
+            @return
+        </member>
+        <member name="T:AsposeVisualStudioPluginWords.Core.AsposeComponent">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.AsposeJavaComponent">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.get_name">
+            @return the _name
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.set_name(System.String)">
+            @param _name the _name to set
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.is_selected">
+            @return the _selected
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.set_selected(System.Boolean)">
+            @param _selected the _selected to set
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.is_downloaded">
+            @return the _downloaded
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.set_downloaded(System.Boolean)">
+            @param _downloaded the _downloaded to set
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.get_currentVersion">
+            @return the _currentVersion
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.set_currentVersion(System.String)">
+            @param _currentVersion the _currentVersion to set
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.get_downloadUrl">
+            @return the _downloadUrl
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.set_downloadUrl(System.String)">
+            @param _downloadUrl the _downloadUrl to set
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.get_latestVersion">
+            @return the _latestVersion
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.set_latestVersion(System.String)">
+            @param _latestVersion the _latestVersion to set
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.is_latestRelease">
+            @return the _latestRelease
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.set_latestRelease(System.Boolean)">
+            @param _latestRelease the _latestRelease to set
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.get_changeLog">
+            @return the _changeLog
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.set_changeLog(System.String)">
+            @param _changeLog the _changeLog to set
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.get_downloadFileName">
+            @return the _downloadFileName
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.set_downloadFileName(System.String)">
+            @param _downloadFileName the _downloadFileName to set
+        </member>
+        <member name="M:AsposeVisualStudioPluginWords.Core.AsposeComponent.set_remoteExamplesRepository(System.String)">
+            
+            @param _remoteExamplesRepository
+        </member>
+    </members>
+</doc>
