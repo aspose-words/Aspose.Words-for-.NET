@@ -34,7 +34,6 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.labelCommonUses = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.rdbVisualBasic = new System.Windows.Forms.RadioButton();
@@ -49,6 +48,7 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.treeView1 = new System.Windows.Forms.TreeView();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -60,6 +60,7 @@
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "folder-icon.png");
             this.imageList1.Images.SetKeyName(1, "page_white_csharp.ico");
+            this.imageList1.Images.SetKeyName(2, "vbs-file.ico");
             // 
             // timer1
             // 
@@ -71,34 +72,15 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.tableLayoutPanel1);
+            this.groupBox1.Controls.Add(this.treeView1);
             this.groupBox1.Controls.Add(this.labelCommonUses);
             this.groupBox1.Controls.Add(this.panel2);
             this.groupBox1.Location = new System.Drawing.Point(12, 155);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(560, 228);
+            this.groupBox1.Size = new System.Drawing.Size(560, 243);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Examples:";
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.BackgroundImage = global::AsposeVisualStudioPluginWords.Properties.Resources.aspose_words;
-            this.tableLayoutPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 584F));
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 58);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 228F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 228F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 228F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 228F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(554, 180);
-            this.tableLayoutPanel1.TabIndex = 6;
             // 
             // labelCommonUses
             // 
@@ -115,34 +97,36 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.Controls.Add(this.rdbVisualBasic);
             this.panel2.Controls.Add(this.rdbCSharp);
-            this.panel2.Location = new System.Drawing.Point(6, 19);
+            this.panel2.Location = new System.Drawing.Point(6, 15);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(538, 49);
+            this.panel2.Size = new System.Drawing.Size(538, 31);
             this.panel2.TabIndex = 3;
             // 
             // rdbVisualBasic
             // 
             this.rdbVisualBasic.AutoSize = true;
             this.rdbVisualBasic.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rdbVisualBasic.Location = new System.Drawing.Point(252, 15);
+            this.rdbVisualBasic.Location = new System.Drawing.Point(252, 6);
             this.rdbVisualBasic.Name = "rdbVisualBasic";
             this.rdbVisualBasic.Size = new System.Drawing.Size(161, 17);
             this.rdbVisualBasic.TabIndex = 2;
             this.rdbVisualBasic.Text = "Open VB.NET Examples";
             this.rdbVisualBasic.UseVisualStyleBackColor = true;
+            this.rdbVisualBasic.CheckedChanged += new System.EventHandler(this.rdbVisualBasic_CheckedChanged);
             // 
             // rdbCSharp
             // 
             this.rdbCSharp.AutoSize = true;
             this.rdbCSharp.Checked = true;
             this.rdbCSharp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rdbCSharp.Location = new System.Drawing.Point(16, 15);
+            this.rdbCSharp.Location = new System.Drawing.Point(16, 6);
             this.rdbCSharp.Name = "rdbCSharp";
             this.rdbCSharp.Size = new System.Drawing.Size(132, 17);
             this.rdbCSharp.TabIndex = 1;
             this.rdbCSharp.TabStop = true;
             this.rdbCSharp.Text = "Open C# Examples";
             this.rdbCSharp.UseVisualStyleBackColor = true;
+            this.rdbCSharp.CheckedChanged += new System.EventHandler(this.rdbCSharp_CheckedChanged);
             // 
             // textBoxLocation
             // 
@@ -253,6 +237,19 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(584, 76);
             this.tableLayoutPanel2.TabIndex = 20;
             // 
+            // treeView1
+            // 
+            this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeView1.ImageIndex = 0;
+            this.treeView1.ImageList = this.imageList1;
+            this.treeView1.Location = new System.Drawing.Point(6, 48);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.SelectedImageIndex = 0;
+            this.treeView1.Size = new System.Drawing.Size(548, 189);
+            this.treeView1.TabIndex = 5;
+            // 
             // SampleWizardPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -305,8 +302,8 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.RadioButton rdbVisualBasic;
         private System.Windows.Forms.Label labelCommonUses;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TreeView treeView1;
     }
 }
