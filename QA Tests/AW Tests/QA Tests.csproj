@@ -90,6 +90,7 @@
     <Compile Include="Examples\Tables\ExCellFormat.cs" />
     <Compile Include="Examples\Tables\ExTable.cs" />
     <Compile Include="Examples\Tables\ExTableColumn.cs" />
+    <Compile Include="Examples\Tab\ExTabStopCollection.cs" />
     <Compile Include="Examples\VariableCollection\ExVariableCollection.cs" />
     <Compile Include="Tests\DocumentBuilder\QaEditableRange.cs" />
     <Compile Include="Tests\Paragraph\QaInsertField.cs" />
@@ -139,7 +140,6 @@
     <Folder Include="Examples\Story\" />
     <Folder Include="Examples\SubDocument\" />
     <Folder Include="Examples\TableStyle\" />
-    <Folder Include="Examples\Tab\" />
     <Folder Include="Examples\TextColumn\" />
     <Folder Include="Examples\Themes\" />
   </ItemGroup>
