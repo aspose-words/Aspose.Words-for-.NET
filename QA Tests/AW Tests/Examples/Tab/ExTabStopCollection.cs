@@ -30,5 +30,26 @@ namespace QA_Tests.Examples.Tab
             doc.Save(ExDir + "Document.AllTabStopsRemoved Out.doc");
             //ExEnd
         }
+
+        [Test]
+        public void AddEx()
+        {
+            //ExStart
+            //ExFor:TabStopCollection.Add(TabStop)
+            //ExFor:TabStopCollection.Add(Double, TabAlignment, TabLeader)
+            //ExSummary:Shows how to create and add tabStop objects to a document.
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.TableOfContents.doc");
+            Aspose.Words.Paragraph paragraph = (Aspose.Words.Paragraph)doc.GetChild(Aspose.Words.NodeType.Paragraph, 0, true);
+
+            // Create a TabStop object and add it into the document
+            Aspose.Words.TabStop tabStop = new Aspose.Words.TabStop(84.99, Aspose.Words.TabAlignment.Left, Aspose.Words.TabLeader.Dashes);
+            paragraph.ParagraphFormat.TabStops.Add(tabStop);
+
+            // Add a TabStop without explicitly initializing  
+            paragraph.ParagraphFormat.TabStops.Add(169.98, Aspose.Words.TabAlignment.Left, Aspose.Words.TabLeader.Dashes);
+
+            doc.Save(ExDir + "Document.AddedTabStops Out.doc");
+            //ExEnd
+        }
     }
 }
