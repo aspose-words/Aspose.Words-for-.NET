@@ -38,7 +38,7 @@ namespace QA_Tests.Examples.Tab
             //ExFor:TabStopCollection.Add(TabStop)
             //ExFor:TabStopCollection.Add(Double, TabAlignment, TabLeader)
             //ExSummary:Shows how to create and add tabStop objects to a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.TableOfContents.doc");
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             Aspose.Words.Paragraph paragraph = (Aspose.Words.Paragraph)doc.GetChild(Aspose.Words.NodeType.Paragraph, 0, true);
 
             // Create a TabStop object and add it into the document
@@ -49,6 +49,27 @@ namespace QA_Tests.Examples.Tab
             paragraph.ParagraphFormat.TabStops.Add(169.98, Aspose.Words.TabAlignment.Left, Aspose.Words.TabLeader.Dashes);
 
             doc.Save(ExDir + "Document.AddedTabStops Out.doc");
+            //ExEnd
+        }
+
+        [Test]
+        public void RemoveByIndexEx()
+        {
+            //ExStart
+            //ExFor:TabStopCollection.RemoveByIndex
+            //ExSummary:Shows how to select a TabStop in a document by it's index and remove it.
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
+            Aspose.Words.Paragraph paragraph = (Aspose.Words.Paragraph)doc.GetChild(Aspose.Words.NodeType.Paragraph, 0, true);
+
+            paragraph.ParagraphFormat.TabStops.Add(84.99, Aspose.Words.TabAlignment.Left, Aspose.Words.TabLeader.Dashes);
+            paragraph.ParagraphFormat.TabStops.Add(169.98, Aspose.Words.TabAlignment.Left, Aspose.Words.TabLeader.Dashes);
+
+            // TabStop at 84.99 points is removed
+            paragraph.ParagraphFormat.TabStops.RemoveByIndex(0);
+
+            Console.WriteLine(paragraph.ParagraphFormat.TabStops.Count);
+
+            doc.Save(ExDir + "Document.RemovedTabStopsByIndex Out.doc");
             //ExEnd
         }
     }
