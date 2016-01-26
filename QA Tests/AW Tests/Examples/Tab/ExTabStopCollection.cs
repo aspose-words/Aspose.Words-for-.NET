@@ -67,8 +67,6 @@ namespace QA_Tests.Examples.Tab
             // TabStop at 84.99 points is removed
             paragraph.ParagraphFormat.TabStops.RemoveByIndex(0);
 
-            Console.WriteLine(paragraph.ParagraphFormat.TabStops.Count);
-
             doc.Save(ExDir + "Document.RemovedTabStopsByIndex Out.doc");
             //ExEnd
         }
