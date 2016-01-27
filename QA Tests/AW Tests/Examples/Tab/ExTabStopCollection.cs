@@ -70,5 +70,21 @@ namespace QA_Tests.Examples.Tab
             doc.Save(ExDir + "Document.RemovedTabStopsByIndex Out.doc");
             //ExEnd
         }
+
+        [Test]
+        public void GetPositionByIndexEx()
+        {
+            //ExStart
+            //ExFor:TabStopCollection.GetPositionByIndex
+            //ExSummary:Shows how to find a tab by it's index and get its position.
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
+            Aspose.Words.Paragraph paragraph = (Aspose.Words.Paragraph)doc.GetChild(Aspose.Words.NodeType.Paragraph, 0, true);
+
+            paragraph.ParagraphFormat.TabStops.Add(85, Aspose.Words.TabAlignment.Left, Aspose.Words.TabLeader.Dashes);
+            paragraph.ParagraphFormat.TabStops.Add(170, Aspose.Words.TabAlignment.Left, Aspose.Words.TabLeader.Dashes);
+
+            Console.WriteLine(paragraph.ParagraphFormat.TabStops.GetPositionByIndex(1)); // 170
+            //ExEnd
+        }
     }
 }
