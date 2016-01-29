@@ -1,0 +1,20 @@
+﻿<select id="AsposeWordsExportTypes" class="form-control">
+    <option value="">Select an Export Format</option>
+    <option value="pdf">Portable Document Format (*.pdf)</option>
+    <option value="docx">Word Document (*.docx)</option>
+    <option value="doc">Word 97-2003 Document (*.doc)</option>
+    <option value="dot">Word 97-2003 Document Template (*.dot)</option>
+    <option value="dotx">Word Document Template (*.dotx)</option>
+    <option value="docm">Word Open XML Macro - Enabled Document (*.docm)</option>
+    <option value="dotm">Word Open XML Macro - Enabled Template (*.dotm)</option>
+    <option value="odt">OpenDocument Format (*.odt)</option>
+    <option value="ott">Opent Office Document Format (*.ott)</option>
+    <option value="rtf">Rich Text Format (*.rtf)</option>
+    <option value="txt">Text (Tab delimited) (*.txt)</option>
+</select>
+<script type="text/javascript">
+    document.getElementById('AsposeWordsExportTypes').onchange = function () {
+        window.location.href = "AsposeExporter/" + this.value;
+    }
+    
+</script>
