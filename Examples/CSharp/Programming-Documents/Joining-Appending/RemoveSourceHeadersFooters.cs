@@ -11,8 +11,8 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
-
-            Document dstDoc = new Document(dataDir + "TestFile.Destination.doc");
+            string fileName = "TestFile.Destination.doc";
+            Document dstDoc = new Document(dataDir + fileName);
             Document srcDoc = new Document(dataDir + "TestFile.Source.doc");
 
             // Remove the headers and footers from each of the sections in the source document.
@@ -27,9 +27,10 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
             srcDoc.FirstSection.HeadersFooters.LinkToPrevious(false);
 
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
-            dstDoc.Save(dataDir + "TestFile.RemoveSourceHeadersFooters Out.doc");
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
+            dstDoc.Save(dataDir);
 
-            Console.WriteLine("\nDocument appended successfully with source header footers removed.\nFile saved at " + dataDir + "TestFile.RemoveSourceHeadersFooters Out.doc");
+            Console.WriteLine("\nDocument appended successfully with source header footers removed.\nFile saved at " + dataDir);
         }
     }
 }

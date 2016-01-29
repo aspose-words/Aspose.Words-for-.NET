@@ -32,9 +32,9 @@ Public Class InsertNestedFields
         ' Finally update the outer field to recalcaluate the final value. Doing this will automatically update
         ' the inner fields at the same time.
         field.Update()
+        dataDir = dataDir & "InsertNestedFields_out_.docx"
+        doc.Save(dataDir)
 
-        doc.Save(dataDir & "InsertNestedFields Out.docx")
-
-        Console.WriteLine(vbNewLine & "Inserted nested fields in the document successfully." & vbNewLine & "File saved at " + dataDir + "InsertNestedFields Out.doc")
+        Console.WriteLine(vbNewLine & "Inserted nested fields in the document successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

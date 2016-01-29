@@ -13,8 +13,8 @@ namespace CSharp.Programming_Documents.Working_With_Document
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
-
-            Document doc = new Document(dataDir + "TestFile.doc");
+            string fileName = "TestFile.doc";
+            Document doc = new Document(dataDir + fileName);
 
             // Gather a list of the paragraphs using the respective heading styles.
             ArrayList parasStyleHeading1 = Common.ParagraphsByStyleName(doc, "Heading 1");
@@ -29,9 +29,10 @@ namespace CSharp.Programming_Documents.Working_With_Document
 
             // Insert the content into a new separate document and save it to disk.
             Document dstDoc = Common.GenerateDocument(doc, extractedNodes);
-            dstDoc.Save(dataDir + "TestFile.Styles Out.doc");
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
+            dstDoc.Save(dataDir);
 
-            Console.WriteLine("\nExtracted content betweenn the paragraph styles successfully.\nFile saved at " + dataDir + "TestFile.Styles Out.doc");
+            Console.WriteLine("\nExtracted content betweenn the paragraph styles successfully.\nFile saved at " + dataDir);
         }
     }
 }

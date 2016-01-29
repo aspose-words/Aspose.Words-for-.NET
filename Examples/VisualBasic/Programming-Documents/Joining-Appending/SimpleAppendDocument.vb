@@ -13,14 +13,16 @@ Public Class SimpleAppendDocument
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
+        Dim fileName As String = "TestFile.Destination.doc"
 
-        Dim dstDoc As New Document(dataDir & "TestFile.Destination.doc")
+        Dim dstDoc As New Document(dataDir & fileName)
         Dim srcDoc As New Document(dataDir & "TestFile.Source.doc")
 
         dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting)
-        
-        dstDoc.Save(dataDir & "TestFile.SimpleAppendDocument Out.docx")
 
-        Console.WriteLine(vbNewLine & "Simple document append." & vbNewLine & "File saved at " + dataDir + "TestFile.SimpleAppendDocument Out.docx")
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
+        dstDoc.Save(dataDir)
+
+        Console.WriteLine(vbNewLine & "Simple document append." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

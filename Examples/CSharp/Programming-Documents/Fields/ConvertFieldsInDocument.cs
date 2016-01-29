@@ -15,16 +15,17 @@ namespace CSharp.Programming_Documents.Working_with_Fields
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
-
-            Document doc = new Document(dataDir + "TestFile.doc");
+            string fileName = "TestFile.doc";
+            Document doc = new Document(dataDir + fileName);
 
             // Pass the appropriate parameters to convert all IF fields encountered in the document (including headers and footers) to static text.
             FieldsHelper.ConvertFieldsToStaticText(doc, FieldType.FieldIf);
 
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the document with fields transformed to disk.
-            doc.Save(dataDir + "TestFileDocument Out.doc");
+            doc.Save(dataDir);
 
-            Console.WriteLine("\nConverted fields to static text in the document successfully.\nFile saved at " + dataDir + "TestFileDocument Out.doc");
+            Console.WriteLine("\nConverted fields to static text in the document successfully.\nFile saved at " + dataDir);
         }
     }
 }

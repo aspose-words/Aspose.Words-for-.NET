@@ -11,8 +11,9 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
+            string fileName = "TestFile.Destination.doc";
 
-            Document dstDoc = new Document(dataDir + "TestFile.Destination.doc");
+            Document dstDoc = new Document(dataDir + fileName);
             Document srcDoc = new Document(dataDir + "TestFile.Source.doc");
 
             // If the destination document is rendered to PDF, image etc or UpdatePageLayout is called before the source document 
@@ -26,10 +27,11 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
             // If not called again the appended document will not appear in the output of the next rendering.
             dstDoc.UpdatePageLayout();
 
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the joined document to PDF.
-            dstDoc.Save(dataDir + "TestFile.UpdatePageLayout Out.pdf");
+            dstDoc.Save(dataDir);
 
-            Console.WriteLine("\nDocument appended successfully with updated page layout after appending the document.\nFile saved at " + dataDir + "TestFile.UpdatePageLayout Out.pdf");
+            Console.WriteLine("\nDocument appended successfully with updated page layout after appending the document.\nFile saved at " + dataDir);
         }
     }
 }

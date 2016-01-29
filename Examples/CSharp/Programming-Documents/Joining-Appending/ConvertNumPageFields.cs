@@ -13,8 +13,9 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
+            string fileName = "TestFile.Destination.doc";
 
-            Document dstDoc = new Document(dataDir + "TestFile.Destination.doc");
+            Document dstDoc = new Document(dataDir + fileName);
             Document srcDoc = new Document(dataDir + "TestFile.Source.doc");
 
             // Restart the page numbering on the start of the source document.
@@ -31,9 +32,10 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
             // This needs to be called in order to update the new fields with page numbers.
             dstDoc.UpdatePageLayout();
 
-            dstDoc.Save(dataDir + "TestFile.ConvertNumPageFields Out.doc");
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
+            dstDoc.Save(dataDir);
 
-            Console.WriteLine("\nDocument appended successfully with conversion of NUMPAGE fields with PAGEREF fields.\nFile saved at " + dataDir + "TestFile.ConvertNumPageFields Out.doc");
+            Console.WriteLine("\nDocument appended successfully with conversion of NUMPAGE fields with PAGEREF fields.\nFile saved at " + dataDir);
         }
 
         public static void ConvertNumPageFieldsToPageRef(Document doc)

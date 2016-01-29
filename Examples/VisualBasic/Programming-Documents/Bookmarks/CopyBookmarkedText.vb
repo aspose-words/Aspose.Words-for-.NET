@@ -9,9 +9,10 @@ Public Class CopyBookmarkedText
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithBookmarks()
+        Dim fileName As String = "Template.doc"
 
         ' Load the source document.
-        Dim srcDoc As New Document(dataDir & "Template.doc")
+        Dim srcDoc As New Document(dataDir & fileName)
 
         ' This is the bookmark whose content we want to copy.
         Dim srcBookmark As Bookmark = srcDoc.Range.Bookmarks("ntf010145060")
@@ -32,10 +33,11 @@ Public Class CopyBookmarkedText
         ' Do it one more time for fun.
         AppendBookmarkedText(importer, srcBookmark, dstNode)
 
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the finished document.
-        dstDoc.Save(dataDir & "Template Out.doc")
+        dstDoc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine & "Bookmark copied successfully." & vbNewLine & "File saved at " + dataDir + "Template Out.doc")
+        Console.WriteLine(vbNewLine & "Bookmark copied successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     Private Shared Sub AppendBookmarkedText(ByVal importer As NodeImporter, ByVal srcBookmark As Bookmark, ByVal dstNode As CompositeNode)

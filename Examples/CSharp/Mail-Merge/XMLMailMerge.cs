@@ -22,16 +22,18 @@ namespace CSharp.Mail_Merge
             DataSet customersDs = new DataSet();
             customersDs.ReadXml(dataDir + "Customers.xml");
 
+            string fileName = "TestFile XML.doc";
             // Open a template document.
-            Document doc = new Document(dataDir + "TestFile XML.doc");
+            Document doc = new Document(dataDir + fileName);
 
             // Execute mail merge to fill the template with data from XML using DataTable.
             doc.MailMerge.Execute(customersDs.Tables["Customer"]);
 
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the output document.
-            doc.Save(dataDir + "TestFile XML Out.doc");
+            doc.Save(dataDir);
 
-            Console.WriteLine("\nMail merge performed with XML data successfully.\nFile saved at " + dataDir + "TestFile XML Out.doc");
+            Console.WriteLine("\nMail merge performed with XML data successfully.\nFile saved at " + dataDir);
         }
     }
 }

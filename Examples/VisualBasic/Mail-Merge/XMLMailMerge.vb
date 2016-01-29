@@ -15,15 +15,17 @@ Public Class XMLMailMerge
         Dim customersDs As New DataSet()
         customersDs.ReadXml(dataDir & "Customers.xml")
 
+        Dim fileName As String = "TestFile.doc"
         ' Open a template document.
-        Dim doc As New Document(dataDir & "TestFile.doc")
+        Dim doc As New Document(dataDir & fileName)
 
         ' Execute mail merge to fill the template with data from XML using DataTable.
         doc.MailMerge.Execute(customersDs.Tables("Customer"))
 
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the output document.
-        doc.Save(dataDir & "TestFile Out.doc")
+        doc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine + "Mail merge performed with XML data successfully." + vbNewLine + "File saved at " + dataDir + "TestFile XML Out.doc")
+        Console.WriteLine(vbNewLine + "Mail merge performed with XML data successfully." + vbNewLine + "File saved at " + dataDir)
     End Sub
 End Class

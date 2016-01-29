@@ -9,15 +9,18 @@ Public Class ReplaceTextWithField
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_FindAndReplace()
+        Dim fileName As String = "Field.ReplaceTextWithFields.doc"
 
-        Dim doc As New Document(dataDir & "Field.ReplaceTextWithFields.doc")
+        Dim doc As New Document(dataDir & fileName)
 
         ' Replace any "PlaceHolderX" instances in the document (where X is a number) with a merge field.
         doc.Range.Replace(New Regex("PlaceHolder(\d+)"), New ReplaceTextWithFieldHandler(FieldType.FieldMergeField), False)
 
-        doc.Save(dataDir & "Field.ReplaceTextWithFields Out.doc")
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
 
-        Console.WriteLine(vbNewLine & "Text replaced with field successfully." & vbNewLine & "File saved at " + dataDir + "Field.ReplaceTextWithFields Out.doc")
+        doc.Save(dataDir)
+
+        Console.WriteLine(vbNewLine & "Text replaced with field successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class
 

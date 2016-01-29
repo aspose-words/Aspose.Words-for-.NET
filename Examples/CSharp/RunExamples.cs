@@ -40,7 +40,7 @@ namespace CSharp
             //ApplyLicense.Run();
             //Doc2Pdf.Run();
             //FindAndReplace.Run();
-            //HelloWorld.Run();
+            //CSharp.Quick_Start.HelloWorld.Run();
             //LoadAndSaveToDisk.Run();
             //LoadAndSaveToStream.Run();
             //SimpleMailMerge.Run();
@@ -56,7 +56,7 @@ namespace CSharp
             //CheckFormat.Run();
             //SplitIntoHtmlPages.Run();
             //LoadTxt.Run();
-            PageSplitter.Run();
+            //PageSplitter.Run();
             //ImageToPdf.Run();
 
             //// =====================================================
@@ -193,7 +193,7 @@ namespace CSharp
             //PieChart.Run();
             //ScatterChart.Run();
             //BubbleChart.Run();
-            //ChartWithFilteringGroupingOrdering.Run();
+            ChartWithFilteringGroupingOrdering.Run();
          
             // Stop before exiting
             Console.WriteLine("\n\nProgram Finished. Press any key to exit....");
@@ -202,76 +202,100 @@ namespace CSharp
 
         public static String GetDataDir_LINQ()
         {
-            return Path.GetFullPath("../../LINQ/Data/");
+            return Path.GetFullPath(GetDataDir_Data() + "LINQ/");
         }
         public static String GetDataDir_LoadingAndSaving()
         {
-            return Path.GetFullPath("../../Loading-and-Saving/Data/");
+            return Path.GetFullPath(GetDataDir_Data() + "Loading-and-Saving/");
         }
 
         public static String GetDataDir_JoiningAndAppending()
         {
-            return Path.GetFullPath("../../Programming-Documents/Joining-Appending/Data/");
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Joining-Appending/");
         }
 
         public static String GetDataDir_FindAndReplace()
         {
-            return Path.GetFullPath("../../Programming-Documents/Find-Replace/Data/");
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Find-Replace/");
         }
 
         public static String GetDataDir_WorkingWithBookmarks()
         {
-            return Path.GetFullPath("../../Programming-Documents/Bookmarks/Data/");
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Bookmarks/");
         }
 
         public static String GetDataDir_WorkingWithComments()
         {
-            return Path.GetFullPath("../../Programming-Documents/Comments/Data/");
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Comments/");
         }
 
         public static String GetDataDir_WorkingWithDocument()
         {
-            return Path.GetFullPath("../../Programming-Documents/Document/Data/");
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Document/");
         }
 
         public static String GetDataDir_WorkingWithFields()
         {
-            return Path.GetFullPath("../../Programming-Documents/Fields/Data/");
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Fields/");
         }
 
         public static String GetDataDir_WorkingWithImages()
         {
-            return Path.GetFullPath("../../Programming-Documents/Images/Data/");
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Images/");
         }
 
         public static String GetDataDir_WorkingWithStyles()
         {
-            return Path.GetFullPath("../../Programming-Documents/Styles/Data/");
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Styles/");
         }
 
         public static String GetDataDir_WorkingWithTables()
         {
-            return Path.GetFullPath("../../Programming-Documents/Tables/Data/");
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Tables/");
         }
 
         public static String GetDataDir_MailMergeAndReporting()
         {
-            return Path.GetFullPath("../../Mail-Merge/Data/");
+            return Path.GetFullPath(GetDataDir_Data() + "Mail-Merge/");
         }
 
         public static String GetDataDir_QuickStart()
         {
-            return Path.GetFullPath("../../Quick-Start/Data/");
+            return Path.GetFullPath(GetDataDir_Data() + "Quick-Start/");
         }
 
         public static String GetDataDir_RenderingAndPrinting()
         {
-            return Path.GetFullPath("../../Rendering-Printing/Data/");
+            return Path.GetFullPath(GetDataDir_Data() + "Rendering-Printing/");
         }
 
         public static String GetDataDir_ViewersAndVisualizers()
         {
-            return Path.GetFullPath("../../Viewers-Visualizers/Data/");
+            return Path.GetFullPath(GetDataDir_Data() + "Viewers-Visualizers/");
+        }
+        private static string GetDataDir_Data()
+        {
+            var parent = Directory.GetParent(Directory.GetCurrentDirectory()).Parent;
+            string startDirectory = null;
+            if (parent != null)
+            {
+                var directoryInfo = parent.Parent;
+                if (directoryInfo != null)
+                {
+                    startDirectory = directoryInfo.FullName;
+                }
+            }
+            else
+            {
+                startDirectory = parent.FullName;
+            }
+            return Path.Combine(startDirectory, "Data\\");
+        }
+        public static string GetOutputFilePath(String inputFilePath)
+        {
+            string extension = Path.GetExtension(inputFilePath);
+            string filename = Path.GetFileNameWithoutExtension(inputFilePath);
+            return filename + "_out_" + extension;
         }
     }
 }

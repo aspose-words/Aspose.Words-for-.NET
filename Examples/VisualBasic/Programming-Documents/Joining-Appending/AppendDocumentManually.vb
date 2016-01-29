@@ -14,8 +14,9 @@ Public Class AppendDocumentManually
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
+        Dim fileName As String = "TestFile.Destination.doc"
 
-        Dim dstDoc As New Document(dataDir & "TestFile.Destination.doc")
+        Dim dstDoc As New Document(dataDir & fileName)
         Dim srcDoc As New Document(dataDir & "TestFile.Source.doc")
 
 
@@ -36,9 +37,10 @@ Public Class AppendDocumentManually
             dstDoc.AppendChild(dstSection)
         Next
 
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the joined document
-        dstDoc.Save(dataDir + "TestFile.Append Manual Out.doc")
+        dstDoc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine & "Document appended successfully with updated page layout." & vbNewLine & "File saved at " + dataDir + "TestFile.Append Manual Out.docx")
+        Console.WriteLine(vbNewLine & "Document appended successfully with updated page layout." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

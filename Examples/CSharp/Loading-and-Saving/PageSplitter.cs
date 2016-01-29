@@ -22,9 +22,10 @@ namespace CSharp.Loading_Saving
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving() + "Split";
 
+           
             SplitAllDocumentsToPages(dataDir);
 
-            Console.WriteLine("\nDocument split to pages successfully.\nFile saved at " + dataDir + "\\Out");
+            Console.WriteLine("\nDocument split to pages successfully.\nFile saved at " + dataDir + "\\_out_");
         }
 
         public static void SplitDocumentToPages(string docName)
@@ -32,7 +33,7 @@ namespace CSharp.Loading_Saving
             string folderName = Path.GetDirectoryName(docName);
             string fileName = Path.GetFileNameWithoutExtension(docName);
             string extensionName = Path.GetExtension(docName);
-            string outFolder = Path.Combine(folderName, "Out");
+            string outFolder = Path.Combine(folderName, "_out_");
 
             Console.WriteLine("Processing document: " + fileName + extensionName);
 

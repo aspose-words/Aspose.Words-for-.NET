@@ -27,7 +27,7 @@ namespace CSharp.Rendering_and_Printing
             SaveBlackWhiteTIFFwithRLE(doc, dataDir, true);
         }
 
-        
+
         private static void SaveColorTIFFwithLZW(Document doc, string dataDir, float brightness, float contrast)
         {
             // Select the TIFF format with 100 dpi.
@@ -46,7 +46,7 @@ namespace CSharp.Rendering_and_Printing
 
             Console.WriteLine("\nDocument converted to TIFF successfully with Colors.\nFile saved at " + dataDir + "Result Colors.tiff");
         }
-        
+
         private static void SaveGrayscaleTIFFwithLZW(Document doc, string dataDir, float brightness, float contrast)
         {
             // Select the TIFF format with 100 dpi.
@@ -68,7 +68,7 @@ namespace CSharp.Rendering_and_Printing
 
             Console.WriteLine("\nDocument converted to TIFF successfully with Gray scale.\nFile saved at " + dataDir + "Result Grayscale.tiff");
         }
-        
+
         private static void SaveBlackWhiteTIFFwithLZW(Document doc, string dataDir, bool highSensitivity)
         {
             // Select the TIFF format with 100 dpi.
@@ -96,7 +96,7 @@ namespace CSharp.Rendering_and_Printing
 
             Console.WriteLine("\nDocument converted to TIFF successfully with black and white.\nFile saved at " + dataDir + "Result black and white.tiff");
         }
-        
+
         private static void SaveBlackWhiteTIFFwithCITT4(Document doc, string dataDir, bool highSensitivity)
         {
             // Select the TIFF format with 100 dpi.
@@ -126,7 +126,7 @@ namespace CSharp.Rendering_and_Printing
 
             Console.WriteLine("\nDocument converted to TIFF successfully with black and white and Ccitt4 compression.\nFile saved at " + dataDir + "Result Ccitt4.tiff");
         }
-        
+
         private static void SaveBlackWhiteTIFFwithRLE(Document doc, string dataDir, bool highSensitivity)
         {
             // Select the TIFF format with 100 dpi.

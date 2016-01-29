@@ -13,8 +13,9 @@ Public Class DifferentPageSetup
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
+        Dim fileName As String = "TestFile.Destination.doc"
 
-        Dim dstDoc As New Document(dataDir & "TestFile.Destination.doc")
+        Dim dstDoc As New Document(dataDir & fileName)
         Dim srcDoc As New Document(dataDir & "TestFile.Source.doc")
 
         ' Set the source document to continue straight after the end of the destination document.
@@ -30,9 +31,10 @@ Public Class DifferentPageSetup
         srcDoc.FirstSection.PageSetup.PageHeight = dstDoc.LastSection.PageSetup.PageHeight
         srcDoc.FirstSection.PageSetup.Orientation = dstDoc.LastSection.PageSetup.Orientation
 
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting)
-        dstDoc.Save(dataDir & "TestFile.DifferentPageSetup Out.doc")
+        dstDoc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine & "Document appended successfully with different page setup." & vbNewLine & "File saved at " + dataDir + "TestFile.DifferentPageSetup Out.docx")
+        Console.WriteLine(vbNewLine & "Document appended successfully with different page setup." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

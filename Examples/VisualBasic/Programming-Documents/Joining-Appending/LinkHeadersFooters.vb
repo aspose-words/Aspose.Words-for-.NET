@@ -13,8 +13,9 @@ Public Class LinkHeadersFooters
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
+        Dim fileName As String = "TestFile.Destination.doc"
 
-        Dim dstDoc As New Document(dataDir & "TestFile.Destination.doc")
+        Dim dstDoc As New Document(dataDir & fileName)
         Dim srcDoc As New Document(dataDir & "TestFile.Source.doc")
 
         ' Set the appended document to appear on a new page.
@@ -24,9 +25,10 @@ Public Class LinkHeadersFooters
         ' This will override any headers or footers already found in the source document. 
         srcDoc.FirstSection.HeadersFooters.LinkToPrevious(True)
 
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting)
-        dstDoc.Save(dataDir & "TestFile.LinkHeadersFooters Out.doc")
+        dstDoc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine & "Document appended successfully with linked header footers." & vbNewLine & "File saved at " + dataDir + "TestFile.LinkHeadersFooters Out.docx")
+        Console.WriteLine(vbNewLine & "Document appended successfully with linked header footers." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

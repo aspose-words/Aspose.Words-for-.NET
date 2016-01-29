@@ -15,6 +15,6 @@ Public Class RemoveField
         ' Calling this method completely removes the field from the document.
         field.Remove()
 
-        Console.WriteLine(vbNewLine & "Field removed from the document successfully." & vbNewLine & "File saved at " + dataDir + "Field.RemoveField.doc")
+        Console.WriteLine(vbNewLine & "Removed field from the document successfully.")
     End Sub
 End Class

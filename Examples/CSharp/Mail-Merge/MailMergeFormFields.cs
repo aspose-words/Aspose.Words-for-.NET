@@ -20,9 +20,9 @@ namespace CSharp.Mail_Merge
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); ;
-
+            string fileName = "Template.doc";
             // Load the template document.
-            Document doc = new Document(dataDir + "Template.doc");
+            Document doc = new Document(dataDir + fileName);
 
             // Setup mail merge event handler to do the custom work.
             doc.MailMerge.FieldMergingCallback = new HandleMergeField();
@@ -39,10 +39,11 @@ namespace CSharp.Mail_Merge
             // Execute the mail merge.
             doc.MailMerge.Execute(fieldNames, fieldValues);
 
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the finished document.
-            doc.Save(dataDir + "Template Out.doc");
+            doc.Save(dataDir);
 
-            Console.WriteLine("\nMail merge performed with form fields successfully.\nFile saved at " + dataDir + "Template Out.doc");
+            Console.WriteLine("\nMail merge performed with form fields successfully.\nFile saved at " + dataDir);
         }
 
         private class HandleMergeField : IFieldMergingCallback

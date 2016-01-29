@@ -11,8 +11,9 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
+            string fileName = "TestFile.Destination.doc";
 
-            Document dstDoc = new Document(dataDir + "TestFile.Destination.doc");
+            Document dstDoc = new Document(dataDir + fileName);
             Document srcDoc = new Document(dataDir + "TestFile.Source.doc");
 
             // Set the appended document to start on a new page.
@@ -20,9 +21,10 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
 
             // Append the source document using the original styles found in the source document.
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
-            dstDoc.Save(dataDir + "TestFile.JoinNewPage Out.doc");
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
+            dstDoc.Save(dataDir);
 
-            Console.WriteLine("\nDocument appended successfully with new section start.\nFile saved at " + dataDir + "TestFile.JoinNewPage Out.doc");
+            Console.WriteLine("\nDocument appended successfully with new section start.\nFile saved at " + dataDir);
         }
     }
 }

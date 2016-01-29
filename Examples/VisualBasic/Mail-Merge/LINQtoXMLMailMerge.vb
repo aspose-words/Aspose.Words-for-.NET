@@ -44,8 +44,9 @@ Public Class LINQtoXMLMailMerge
         Dim orderItemsDataSource As New MyMailMergeDataSource(orderItems, "Items")
         Dim deliveryDataSource As New MyMailMergeDataSource(deliveryAddress)
 
+        Dim fileName As String = "TestFile.doc"
         ' Open the template document.
-        Dim doc As New Document(dataDir & "TestFile.doc")
+        Dim doc As New Document(dataDir & fileName)
 
         ' Fill the document with data from our data sources.
         ' Using mail merge regions for populating the order items table is required
@@ -55,10 +56,11 @@ Public Class LINQtoXMLMailMerge
         ' The standard mail merge without regions is used for the delivery address.
         doc.MailMerge.Execute(deliveryDataSource)
 
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the output document.
-        doc.Save(dataDir & "TestFile Out.doc")
+        doc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine & "Mail merge performed successfully." & vbNewLine & "File saved at " + dataDir + "TestFile.LINQ Out.doc")
+        Console.WriteLine(vbNewLine & "Mail merge performed successfully." & vbNewLine & "File saved at " + dataDir)
 #Else
             Throw New InvalidOperationException("This example requires the .NET Framework v3.5 or above to run." & " Make sure that the target framework of this project is set to 3.5 or above.")
 #End If

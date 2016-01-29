@@ -12,8 +12,9 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
+            string fileName = "TestFile.Destination.doc";
 
-            Document dstDoc = new Document(dataDir + "TestFile.Destination.doc");
+            Document dstDoc = new Document(dataDir + fileName);
             Document srcDoc = new Document(dataDir + "TestFile.Source.doc");
 
             // Append the source document to the destination document. This causes the result to have line spacing problems.
@@ -23,10 +24,11 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
             // This results in the same joined document but with no line spacing issues.
             DoPrepend(srcDoc, dstDoc, ImportFormatMode.KeepSourceFormatting);
 
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the document
-            dstDoc.Save(dataDir + "TestFile.Prepend.doc");
+            dstDoc.Save(dataDir);
 
-            Console.WriteLine("\nDocument prepended successfully.\nFile saved at " + dataDir + "TestFile.Prepend.doc");
+            Console.WriteLine("\nDocument prepended successfully.\nFile saved at " + dataDir);
         }
 
         public static void DoPrepend(Document dstDoc, Document srcDoc, ImportFormatMode mode)

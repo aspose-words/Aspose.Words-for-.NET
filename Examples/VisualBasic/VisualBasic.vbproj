@@ -220,22 +220,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="LINQ\Data\BubbleChart.docx" />
-    <None Include="LINQ\Data\BulletedList.doc" />
-    <None Include="LINQ\Data\ChartWithFilteringGroupingOrdering.docx" />
-    <None Include="LINQ\Data\CommonList.doc" />
-    <None Include="LINQ\Data\CommonMasterDetail.doc" />
-    <None Include="LINQ\Data\HelloWorld.doc" />
-    <None Include="LINQ\Data\InParagraphList.doc" />
-    <None Include="LINQ\Data\InTableAlternateContent.doc" />
-    <None Include="LINQ\Data\InTableList.doc" />
-    <None Include="LINQ\Data\InTableMasterDetail.doc" />
-    <None Include="LINQ\Data\InTableWithFilteringGroupingSorting.doc" />
-    <None Include="LINQ\Data\MulticoloredNumberedList.doc" />
-    <None Include="LINQ\Data\NumberedList.doc" />
-    <None Include="LINQ\Data\PieChart.docx" />
-    <None Include="LINQ\Data\ScatterChart.docx" />
-    <None Include="LINQ\Data\SingleRow.doc" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -246,111 +230,9 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <None Include="Programming-Documents\Comments\Data\Test File Out.doc" />
-    <None Include="Programming-Documents\Comments\Data\TestFile.doc" />
-    <None Include="Programming-Documents\Document\Data\TestFile Out.doc" />
-    <None Include="Programming-Documents\Document\Data\TestFile.BookmarkExclusive Out.doc" />
-    <None Include="Programming-Documents\Document\Data\TestFile.BookmarkInclusive Out.doc" />
-    <None Include="Programming-Documents\Document\Data\TestFile.CommentExclusive Out.doc" />
-    <None Include="Programming-Documents\Document\Data\TestFile.CommentInclusive Out.doc" />
-    <None Include="Programming-Documents\Document\Data\TestFile.doc" />
-    <None Include="Programming-Documents\Document\Data\TestFile.docx" />
-    <None Include="Programming-Documents\Document\Data\TestFile.DuplicatedContent Out.doc" />
-    <None Include="Programming-Documents\Document\Data\TestFile.Fields Out.doc" />
-    <None Include="Programming-Documents\Document\Data\TestFile.Paragraphs Out.doc" />
-    <None Include="Programming-Documents\Document\Data\TestFile.Styles Out.doc" />
-    <None Include="Programming-Documents\Fields\Data\Field.RemoveField.doc" />
-    <None Include="Programming-Documents\Fields\Data\InsertNestedFields Out.docx" />
-    <None Include="Programming-Documents\Fields\Data\TestFile.doc" />
-    <None Include="Programming-Documents\Fields\Data\TestFileBody Out.doc" />
-    <None Include="Programming-Documents\Fields\Data\TestFileDocument Out.doc" />
-    <None Include="Programming-Documents\Fields\Data\TestFileParagraph Out.doc" />
-    <None Include="Programming-Documents\Find-Replace\Data\Field.ReplaceTextWithFields Out.doc" />
-    <None Include="Programming-Documents\Find-Replace\Data\Field.ReplaceTextWithFields.doc" />
-    <None Include="Programming-Documents\Find-Replace\Data\TestFile Out.doc" />
-    <None Include="Programming-Documents\Find-Replace\Data\TestFile.doc" />
-    <None Include="Programming-Documents\Images\Data\Test.docx" />
-    <None Include="Programming-Documents\Images\Data\Test.docx.Resampled Out.docx" />
-    <None Include="Programming-Documents\Images\Data\TestFile Out.docx" />
-    <None Include="Programming-Documents\Images\Data\TestFile.doc" />
-    <None Include="Programming-Documents\Images\Data\TestFile.Watermark Out.doc" />
-    <None Include="Programming-Documents\Images\Data\TestFile.Watermark.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestDcc.KeepSourceTogether Out.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.Append Manual Out.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.Append Manual Out.pdf" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.BaseDocument Out.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.ConvertNumPageFields Out.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.Destination.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.DestinationList.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.DifferentPageSetup Out.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.JoinContinuous Out.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.JoinNewPage Out.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.KeepSourceFormatting Out.docx" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.LinkHeadersFooters Out.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.ListKeepSourceFormatting Out.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.ListUseDestinationStyles Out.docx" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.Prepend.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.RemoveSourceHeadersFooters Out.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.RestartPageNumbering Out.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.SimpleAppendDocument Out.docx" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.Source.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.SourceList.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.SourcePageSetup.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.UnlinkHeadersFooters Out.doc" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.UpdatePageLayout Out.pdf" />
-    <None Include="Programming-Documents\Joining-Appending\Data\TestFile.UseDestinationStyles Out.doc" />
-    <None Include="Programming-Documents\Styles\Data\TestFile.doc" />
-    <None Include="Programming-Documents\Tables\Data\TestFile.AutoFitToContents Out.doc" />
-    <None Include="Programming-Documents\Tables\Data\TestFile.AutoFitToWindow Out.doc" />
-    <None Include="Programming-Documents\Tables\Data\TestFile.doc" />
-    <None Include="Programming-Documents\Tables\Data\TestFile.FixedWidth Out.doc" />
-    <None Include="Quick-Start\Data\Doc2PdfSave Out.pdf" />
-    <None Include="Quick-Start\Data\Document Field Update Out.docx" />
-    <None Include="Quick-Start\Data\Document Out.docx" />
-    <None Include="Quick-Start\Data\Document Out.rtf" />
-    <None Include="Quick-Start\Data\Document.doc" />
-    <None Include="Quick-Start\Data\HelloWorld Out.docx" />
-    <None Include="Quick-Start\Data\MailMerge Result Out.docx" />
-    <None Include="Quick-Start\Data\MailMerge Template.doc" />
-    <None Include="Quick-Start\Data\ReplaceSimple Out.doc" />
-    <None Include="Quick-Start\Data\ReplaceSimple.doc" />
-    <None Include="Quick-Start\Data\Template.doc" />
-    <None Include="Quick-Start\Data\TestFile Out.docx" />
-    <None Include="Quick-Start\Data\TestFile.Destination.doc" />
-    <None Include="Quick-Start\Data\TestFile.Source.doc" />
-    <None Include="Rendering-Printing\Data\doc+2.doc" />
-    <None Include="Rendering-Printing\Data\TestFile Multipage TIFF.doc" />
-    <None Include="Rendering-Printing\Data\TestFile RenderShape.doc" />
-    <None Include="Rendering-Printing\Data\TestFile RenderShape.docx" />
-    <None Include="Rendering-Printing\Data\TestFile.Colors.docx" />
-    <None Include="Rendering-Printing\Data\TestFile.doc" />
-    <None Include="Rendering-Printing\Data\TestFile.docx" />
-    <None Include="Rendering-Printing\Data\TestFile.EnumerateLayout.docx" />
-    <None Include="Rendering-Printing\Data\TestFile.RenderToDisk Out.emf" />
-    <None Include="Viewers-Visualizers\Data\TestFile.Source.doc" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Loading-and-Saving\Data\" />
-    <Folder Include="Mail-Merge\Data\" />
-    <Folder Include="Programming-Documents\Bookmarks\Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="LINQ\Data\photo.png" />
-    <Content Include="Programming-Documents\Images\Data\Aspose Logo.png" />
-    <Content Include="Rendering-Printing\Data\result black and white.tiff" />
-    <Content Include="Rendering-Printing\Data\result Ccitt4.tiff" />
-    <Content Include="Rendering-Printing\Data\Result Colors.tiff" />
-    <Content Include="Rendering-Printing\Data\Result Grayscale.tiff" />
-    <Content Include="Rendering-Printing\Data\result Rle.tiff" />
-    <Content Include="Rendering-Printing\Data\TestFile Multipage TIFF Out.tiff" />
-    <Content Include="Rendering-Printing\Data\TestFile Page 1 Out.png" />
-    <Content Include="Rendering-Printing\Data\TestFile Page 2 Out.png" />
-    <Content Include="Rendering-Printing\Data\TestFile.RenderCell Out.png" />
-    <Content Include="Rendering-Printing\Data\TestFile.RenderParagraph Out.png" />
-    <Content Include="Rendering-Printing\Data\TestFile.RenderRow Out.png" />
-    <Content Include="Rendering-Printing\Data\TestFile.RenderToGraphics.png" />
-    <Content Include="Rendering-Printing\Data\TestFile.RenderToStream Out.jpg" />
-    <Content Include="Rendering-Printing\Data\TestFileWithOptions Out.tiff" />
     <Content Include="Viewers-Visualizers\Document-Explorer\App.ico" />
     <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Body.ico" />
     <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\BookmarkEnd.ico" />

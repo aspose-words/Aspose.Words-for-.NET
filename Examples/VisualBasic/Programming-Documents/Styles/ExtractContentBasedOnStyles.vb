@@ -10,9 +10,9 @@ Public Class ExtractContentBasedOnStyles
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithStyles()
-
+        Dim fileName As String = "TestFile.doc"
         ' Open the document.
-        Dim doc As New Document(dataDir & "TestFile.doc")
+        Dim doc As New Document(dataDir & fileName)
 
         ' Define style names as they are specified in the Word document.
         Const paraStyle As String = "Heading 1"

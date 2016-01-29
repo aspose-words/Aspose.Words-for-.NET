@@ -13,8 +13,8 @@ namespace CSharp.Programming_Documents.Working_With_Document
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
-
-            Document doc = new Document(dataDir + "TestFile.doc");
+            string fileName = "TestFile.doc";
+            Document doc = new Document(dataDir + fileName);
 
             // Retrieve a paragraph from the first section.
             Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 7, true);

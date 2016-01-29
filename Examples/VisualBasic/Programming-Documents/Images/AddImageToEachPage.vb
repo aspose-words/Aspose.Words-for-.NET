@@ -11,9 +11,9 @@ Public Class AddImageToEachPage
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithImages()
-
+        Dim fileName As String = "TestFile.doc"
         ' This a document that we want to add an image and custom text for each page without using the header or footer.
-        Dim doc As New Document(dataDir & "TestFile.doc")
+        Dim doc As New Document(dataDir & fileName)
 
         ' Create and attach collector before the document before page layout is built.
         Dim layoutCollector As New LayoutCollector(doc)
@@ -34,9 +34,10 @@ Public Class AddImageToEachPage
             Loop
         Next page
 
-        doc.Save(dataDir & "TestFile Out.docx")
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
+        doc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine & "Inserted images on each page of the document successfully." & vbNewLine & "File saved at " + dataDir + "Field.TestFile Out.doc")
+        Console.WriteLine(vbNewLine & "Inserted images on each page of the document successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     ''' <summary>

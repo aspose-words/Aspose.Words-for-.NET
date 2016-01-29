@@ -17,12 +17,13 @@ namespace CSharp.Programming_Documents.Working_with_Images
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithImages();
-
-            Document doc = new Document(dataDir + "TestFile.Watermark.doc");
+            string fileName = "TestFile.Watermark.doc";
+            Document doc = new Document(dataDir + fileName);
             InsertWatermarkText(doc, "CONFIDENTIAL");
-            doc.Save(dataDir + "TestFile.Watermark Out.doc");
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
+            doc.Save(dataDir);
 
-            Console.WriteLine("\nAdded watermark to the document successfully.\nFile saved at " + dataDir + "TestFile.Watermark Out.doc");
+            Console.WriteLine("\nAdded watermark to the document successfully.\nFile saved at " + dataDir);
         }
 
         /// <summary>

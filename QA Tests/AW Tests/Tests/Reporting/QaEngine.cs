@@ -150,7 +150,7 @@ public class ImageStream
         Image = stream;
     }
 
-    public Stream Image { get; }
+    public Stream Image { get; set; }
 }
 
 

@@ -13,8 +13,9 @@ Public Class ListUseDestinationStyles
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
+        Dim fileName As String = "TestFile.Destination.doc"
 
-        Dim dstDoc As New Document(dataDir & "TestFile.Destination.doc")
+        Dim dstDoc As New Document(dataDir & fileName)
         Dim srcDoc As New Document(dataDir & "TestFile.Source.doc")
 
         ' Set the source document to continue straight after the end of the destination document.
@@ -51,9 +52,10 @@ Public Class ListUseDestinationStyles
         ' Append the source document to end of the destination document.
         dstDoc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles)
 
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the combined document to disk.
-        dstDoc.Save(dataDir & "TestFile.ListUseDestinationStyles Out.docx")
+        dstDoc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine & "Document appended successfully with list using destination styles." & vbNewLine & "File saved at " + dataDir + "TestFile.ListUseDestinationStyles Out.docx")
+        Console.WriteLine(vbNewLine & "Document appended successfully with list using destination styles." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

@@ -37,7 +37,7 @@ Public Class MultipleDocsInMailMerge
                 dstDoc.MailMerge.Execute(row)
 
                 ' Save the document.
-                dstDoc.Save(String.Format(dataDir & "TestFile Out {0}.doc", counter))
+                dstDoc.Save(String.Format(dataDir & "TestFile.Multiple Pages_out_ {0}.doc", counter))
                 counter += 1
             Next row
         Catch ex As Exception
@@ -47,6 +47,6 @@ Public Class MultipleDocsInMailMerge
             conn.Close()
         End Try
 
-        Console.WriteLine(vbNewLine + "Mail merge performed and created multiple pages successfully." + vbNewLine + "File saved at " + dataDir + "TestFile.Multiple Pages Out.doc")
+        Console.WriteLine(vbNewLine + "Mail merge performed and created multiple pages successfully." + vbNewLine + "File saved at " + dataDir + "TestFile.Multiple Pages_out_.doc")
     End Sub
 End Class

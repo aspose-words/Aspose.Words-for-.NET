@@ -28,8 +28,9 @@ Public Class LoadAndSaveToStream
 
         ' Save the document from stream, to disk. Normally you would do something with the stream directly,
         ' for example writing the data to a database.
-        File.WriteAllBytes(dataDir & "Document Out.rtf", dstStream.ToArray())
+        dataDir = dataDir & "Document_out_.rtf"
+        File.WriteAllBytes(dataDir, dstStream.ToArray())
 
-        Console.WriteLine(vbNewLine + "Stream of document saved successfully." + vbNewLine + "File saved at " + dataDir + "Document Out.rtf")
+        Console.WriteLine(vbNewLine + "Stream of document saved successfully." + vbNewLine + "File saved at " + dataDir)
     End Sub
 End Class

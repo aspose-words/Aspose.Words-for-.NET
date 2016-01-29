@@ -11,8 +11,9 @@ Namespace LINQ
             ' The path to the documents directory.
             Dim dataDir As String = RunExamples.GetDataDir_LINQ()
 
+            Dim fileName As String = "HelloWorld.doc"
             ' Load the template document.
-            Dim doc As New Document(dataDir & Convert.ToString("HelloWorld.doc"))
+            Dim doc As New Document(dataDir & fileName)
 
             ' Create an instance of sender class to set it's properties.
             Dim sender As New Sender() With { _
@@ -26,7 +27,7 @@ Namespace LINQ
             ' Execute the build report.
             engine.BuildReport(doc, sender, "sender")
 
-            dataDir = dataDir & Convert.ToString("HelloWorld Out.doc")
+            dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
 
             ' Save the finished document to disk.
             doc.Save(dataDir)

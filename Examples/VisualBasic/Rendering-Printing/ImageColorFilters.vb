@@ -40,7 +40,7 @@ Public Class ImageColorFilters
 
         Console.WriteLine(vbNewLine & "Document converted to TIFF successfully with Colors." & vbNewLine & "File saved at " + dataDir + "Result Colors.tiff")
     End Sub
-    
+
     Private Shared Sub SaveGrayscaleTIFFwithLZW(ByVal doc As Document, ByVal dataDir As String, ByVal brightness As Single, ByVal contrast As Single)
         ' Select the TIFF format with 100 dpi.
         Dim imgOpttiff As New ImageSaveOptions(SaveFormat.Tiff)
@@ -61,7 +61,7 @@ Public Class ImageColorFilters
 
         Console.WriteLine(vbNewLine & "Document converted to TIFF successfully with Gray scale." & vbNewLine & "File saved at " + dataDir + "Result Grayscale.tiff")
     End Sub
-    
+
     Private Shared Sub SaveBlackWhiteTIFFwithLZW(ByVal doc As Document, ByVal dataDir As String, ByVal highSensitivity As Boolean)
         ' Select the TIFF format with 100 dpi.
         Dim imgOpttiff As New ImageSaveOptions(SaveFormat.Tiff)
@@ -85,7 +85,7 @@ Public Class ImageColorFilters
 
         Console.WriteLine(vbNewLine & "Document converted to TIFF successfully with black and white." & vbNewLine & "File saved at " + dataDir + "Result black and white.tiff")
     End Sub
-    
+
     Private Shared Sub SaveBlackWhiteTIFFwithCITT4(ByVal doc As Document, ByVal dataDir As String, ByVal highSensitivity As Boolean)
         ' Select the TIFF format with 100 dpi.
         Dim imgOpttiff As New ImageSaveOptions(SaveFormat.Tiff)
@@ -111,7 +111,7 @@ Public Class ImageColorFilters
 
         Console.WriteLine(vbNewLine & "Document converted to TIFF successfully with black and white and Ccitt4 compression." & vbNewLine & "File saved at " + dataDir + "Result Ccitt4.tiff")
     End Sub
-    
+
     Private Shared Sub SaveBlackWhiteTIFFwithRLE(ByVal doc As Document, ByVal dataDir As String, ByVal highSensitivity As Boolean)
         ' Select the TIFF format with 100 dpi.
         Dim imgOpttiff As New ImageSaveOptions(SaveFormat.Tiff)

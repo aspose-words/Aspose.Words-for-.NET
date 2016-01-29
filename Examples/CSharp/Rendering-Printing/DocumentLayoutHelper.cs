@@ -18,7 +18,8 @@ namespace CSharp.Rendering_and_Printing
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); ;
 
-            Document doc = new Document(dataDir + "TestFile.docx");
+            string fileName = "TestFile.docx";
+            Document doc = new Document(dataDir + fileName);
 
             // This sample introduces the RenderedDocument class and other related classes which provide an API wrapper for 
             // the LayoutEnumerator. This allows you to access the layout entities of a document using a DOM style API.

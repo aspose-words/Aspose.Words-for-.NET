@@ -16,8 +16,9 @@ namespace CSharp.Programming_Documents.Working_With_Document
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
 
+            string fileName = "TestFile.doc";
             // Open the document.
-            Document doc = new Document(dataDir + "TestFile.doc");
+            Document doc = new Document(dataDir + fileName);
 
             // Remove the page and section breaks from the document.
             // In Aspose.Words section breaks are represented as separate Section nodes in the document.
@@ -25,10 +26,11 @@ namespace CSharp.Programming_Documents.Working_With_Document
             RemovePageBreaks(doc);
             RemoveSectionBreaks(doc);
 
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the document.
-            doc.Save(dataDir + "TestFile Out.doc");
+            doc.Save(dataDir);
 
-            Console.WriteLine("\nRemoved breaks from the document successfully.\nFile saved at " + dataDir + "TestFile Out.doc");
+            Console.WriteLine("\nRemoved breaks from the document successfully.\nFile saved at " + dataDir);
         }
 
         private static void RemovePageBreaks(Document doc)

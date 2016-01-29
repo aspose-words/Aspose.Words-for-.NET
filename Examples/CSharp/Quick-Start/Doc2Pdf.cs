@@ -16,10 +16,12 @@ namespace CSharp.Quick_Start
             // Load the document from disk.
             Document doc = new Document(dataDir + "Template.doc");
 
-            // Save the document in PDF format.
-            doc.Save(dataDir + "Doc2PdfSave Out.pdf");
+            dataDir = dataDir + "Template_out_.pdf";
 
-            Console.WriteLine("\nDocument converted to PDF successfully.\nFile saved at " + dataDir + "Doc2PdfSave Out.pdf");
+            // Save the document in PDF format.
+            doc.Save(dataDir);
+
+            Console.WriteLine("\nDocument converted to PDF successfully.\nFile saved at " + dataDir);
         }
     }
 }

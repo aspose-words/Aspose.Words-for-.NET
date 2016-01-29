@@ -12,9 +12,10 @@ namespace CSharp.Quick_Start
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_QuickStart();
+            string fileName = "ReplaceSimple.doc";
 
             // Open the document.
-            Document doc = new Document(dataDir + "ReplaceSimple.doc");
+            Document doc = new Document(dataDir + fileName);
 
             // Check the text of the document
             Console.WriteLine("Original document text: " + doc.Range.Text);
@@ -25,10 +26,11 @@ namespace CSharp.Quick_Start
             // Check the replacement was made.
             Console.WriteLine("Document text after replace: " + doc.Range.Text);
 
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the modified document.
-            doc.Save(dataDir + "ReplaceSimple Out.doc");
+            doc.Save(dataDir);
 
-            Console.WriteLine("\nText found and replaced successfully.\nFile saved at " + dataDir + "ReplaceSimple Out.doc");
+            Console.WriteLine("\nText found and replaced successfully.\nFile saved at " + dataDir);
         }
     }
 }

@@ -19,8 +19,9 @@ Public Class HelloWorld
 
         ' Save the document in DOCX format. The format to save as is inferred from the extension of the file name.
         ' Aspose.Words supports saving any document in many more formats.
-        doc.Save(dataDir & "HelloWorld Out.docx")
+        dataDir = dataDir & "HelloWorld_out_.docx"
+        doc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine + "New document created successfully." + vbNewLine + "File saved at " + dataDir + "HelloWorld Out.docx")
+        Console.WriteLine(vbNewLine + "New document created successfully." + vbNewLine + "File saved at " + dataDir)
     End Sub
 End Class

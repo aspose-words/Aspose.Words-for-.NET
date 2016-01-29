@@ -9,9 +9,9 @@ Public Class RemoveBreaks
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithDocument()
-
+        Dim fileName As String = "TestFile.doc"
         ' Open the document.
-        Dim doc As New Document(dataDir & "TestFile.doc")
+        Dim doc As New Document(dataDir & fileName)
 
         ' Remove the page and section breaks from the document.
         ' In Aspose.Words section breaks are represented as separate Section nodes in the document.
@@ -19,10 +19,11 @@ Public Class RemoveBreaks
         RemovePageBreaks(doc)
         RemoveSectionBreaks(doc)
 
+        dataDir = dataDir + RunExamples.GetOutputFilePath(fileName)
         ' Save the document.
-        doc.Save(dataDir & "TestFile Out.doc")
+        doc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine & "Removed breaks from the document successfully." & vbNewLine & "File saved at " + dataDir + "TestFile Out.doc")
+        Console.WriteLine(vbNewLine & "Removed breaks from the document successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     Private Shared Sub RemovePageBreaks(ByVal doc As Document)

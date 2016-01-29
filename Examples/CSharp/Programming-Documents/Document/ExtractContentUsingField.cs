@@ -14,8 +14,8 @@ namespace CSharp.Programming_Documents.Working_With_Document
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
-
-            Document doc = new Document(dataDir + "TestFile.doc");
+            string fileName = "TestFile.doc";
+            Document doc = new Document(dataDir + fileName);
 
             // Use a document builder to retrieve the field start of a merge field.
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -33,9 +33,10 @@ namespace CSharp.Programming_Documents.Working_With_Document
 
             // Insert the content into a new separate document and save it to disk.
             Document dstDoc = Common.GenerateDocument(doc, extractedNodes);
-            dstDoc.Save(dataDir + "TestFile.Fields Out.doc");
+            dataDir = dataDir +  RunExamples.GetOutputFilePath(fileName);
+            dstDoc.Save(dataDir);
 
-            Console.WriteLine("\nExtracted content using the Field successfully.\nFile saved at " + dataDir + "TestFile.Fields Out.doc");
+            Console.WriteLine("\nExtracted content using the Field successfully.\nFile saved at " + dataDir);
         }
     }
 }

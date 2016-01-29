@@ -24,7 +24,7 @@ Public Class SplitIntoHtmlPages
         Dim srcFileName As String = dataDir & "SOI 2007-2012-DeeM with footnote added.doc"
         Dim tocTemplate As String = dataDir & "TocTemplate.doc"
 
-        Dim outDir As String = Path.Combine(dataDir, "Out")
+        Dim outDir As String = Path.Combine(dataDir, "_out_")
         Directory.CreateDirectory(outDir)
 
         ' This class does the job.

@@ -20,14 +20,14 @@ Public Class PageSplitter
 
         SplitAllDocumentsToPages(dataDir)
 
-        Console.WriteLine(vbNewLine + "Document split to pages successfully." + vbNewLine + "File saved at " + dataDir + "\\Out")
+        Console.WriteLine(vbNewLine + "Document split to pages successfully." + vbNewLine + "File saved at " + dataDir + "\\_out_")
     End Sub
 
     Public Shared Sub SplitDocumentToPages(ByVal docName As String)
         Dim folderName As String = Path.GetDirectoryName(docName)
         Dim fileName As String = Path.GetFileNameWithoutExtension(docName)
         Dim extensionName As String = Path.GetExtension(docName)
-        Dim outFolder As String = Path.Combine(folderName, "Out")
+        Dim outFolder As String = Path.Combine(folderName, "_out_")
 
         Console.WriteLine("Processing document: " & fileName & extensionName)
 

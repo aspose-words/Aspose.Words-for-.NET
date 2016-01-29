@@ -13,8 +13,9 @@ Public Class UnlinkHeadersFooters
     Public Shared Sub Run()
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
+        Dim fileName As String = "TestFile.Destination.doc"
 
-        Dim dstDoc As New Document(dataDir & "TestFile.Destination.doc")
+        Dim dstDoc As New Document(dataDir & fileName)
         Dim srcDoc As New Document(dataDir & "TestFile.Source.doc")
 
         ' Even a document with no headers or footers can still have the LinkToPrevious setting set to true.
@@ -22,9 +23,10 @@ Public Class UnlinkHeadersFooters
         ' from the destination document.
         srcDoc.FirstSection.HeadersFooters.LinkToPrevious(False)
 
+        dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting)
-        dstDoc.Save(dataDir & "TestFile.UnlinkHeadersFooters Out.doc")
+        dstDoc.Save(dataDir)
 
-        Console.WriteLine(vbNewLine & "Document appended successfully with un-linked header footers." & vbNewLine & "File saved at " + dataDir + "TestFile.UnlinkHeadersFooters Out.docx")
+        Console.WriteLine(vbNewLine & "Document appended successfully with un-linked header footers." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

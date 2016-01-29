@@ -16,15 +16,17 @@ namespace CSharp.Programming_Documents.Working_with_Fields
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
 
-            Document doc = new Document(dataDir + "TestFile.doc");
+            string fileName = "TestFile.doc";
+            Document doc = new Document(dataDir + fileName);
 
             // Pass the appropriate parameters to convert PAGE fields encountered to static text only in the body of the first section.
             FieldsHelper.ConvertFieldsToStaticText(doc.FirstSection.Body, FieldType.FieldPage);
 
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the document with fields transformed to disk.
-            doc.Save(dataDir + "TestFileBody Out.doc");
+            doc.Save(dataDir);
 
-            Console.WriteLine("\nConverted fields to static text in the document body successfully.\nFile saved at " + dataDir + "TestFileBody Out.doc");
+            Console.WriteLine("\nConverted fields to static text in the document body successfully.\nFile saved at " + dataDir);
         }
     }
 }

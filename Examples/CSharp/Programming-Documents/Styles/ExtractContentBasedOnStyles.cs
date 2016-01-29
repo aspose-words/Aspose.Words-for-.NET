@@ -21,9 +21,9 @@ namespace CSharp.Programming_Documents.Working_with_Styles
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithStyles();
-
+            string fileName = "TestFile.doc";
             // Open the document.
-            Document doc = new Document(dataDir + "TestFile.doc");
+            Document doc = new Document(dataDir + fileName);
 
             // Define style names as they are specified in the Word document.
             const string paraStyle = "Heading 1";

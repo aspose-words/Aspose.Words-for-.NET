@@ -18,31 +18,48 @@ namespace QA_Tests.Examples.Hyphenation
     public class ExHyphenation : QaTestsBase
     {
         [Test]
-        public void AllHyphenationEx()
+        public void RegisterDictionaryEx()
         {
             //ExStart
             //ExFor:Hyphenation.RegisterDictionary(string, stream)
             //ExFor:Hyphenation.RegisterDictionary(string, string)
-            //ExFor:Hyphenation.IsDictionaryRegistered(string)
-            //ExFor:Hyphenation.UnregisterDictionary(string)
             //ExSummary:Shows how to open and register a dictionary from a file.
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             // Register by string
             Aspose.Words.Hyphenation.RegisterDictionary("en-US", ExDir + @"hyph_en_US.dic");
 
-            // Confirm that en-US is registered
-            Console.WriteLine(Aspose.Words.Hyphenation.IsDictionaryRegistered("en-US"));
-
             // Register by stream
             Stream dictionaryStream = new FileStream(ExDir + @"hyph_de_CH.dic", FileMode.Open);
             Aspose.Words.Hyphenation.RegisterDictionary("de-CH", dictionaryStream);
+            //ExEnd
+        }
 
-            // Unregister
+        [Test]
+        public void IsDictionaryRegisteredEx()
+        {
+            //ExStart
+            //ExFor:Hyphenation.IsDictionaryRegistered(string)
+            //ExSummary:Shows how to open check if some dictionary is registered.
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
+            Aspose.Words.Hyphenation.RegisterDictionary("en-US", ExDir + @"hyph_en_US.dic");
+
+            Console.WriteLine(Aspose.Words.Hyphenation.IsDictionaryRegistered("en-US")); // True
+            //ExEnd
+        }
+
+        [Test]
+        public void UnregisterDictionaryEx()
+        {
+            //ExStart
+            //ExFor:Hyphenation.UnregisterDictionary(string)
+            //ExSummary:Shows how to un-register a dictionary
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
+            Aspose.Words.Hyphenation.RegisterDictionary("en-US", ExDir + @"hyph_en_US.dic");
+
             Aspose.Words.Hyphenation.UnregisterDictionary("en-US");
 
-            // Confirm that en-US is no longer registered
-            Console.WriteLine(Aspose.Words.Hyphenation.IsDictionaryRegistered("en-US"));
+            Console.WriteLine(Aspose.Words.Hyphenation.IsDictionaryRegistered("en-US")); // False
             //ExEnd
         }
     }

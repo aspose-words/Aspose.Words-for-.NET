@@ -6,6 +6,7 @@ generated/
 *.suo
 bin/
 * Out*
+*_out_*
 * out*
 *.ldb
 Thumbs.db

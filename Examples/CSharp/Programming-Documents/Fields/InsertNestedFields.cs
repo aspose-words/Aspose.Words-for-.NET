@@ -38,10 +38,10 @@ namespace CSharp.Programming_Documents.Working_with_Fields
             // Finally update the outer field to recalcaluate the final value. Doing this will automatically update
             // the inner fields at the same time.
             field.Update();
+            dataDir = dataDir + "InsertNestedFields_out_.docx";
+            doc.Save(dataDir);
 
-            doc.Save(dataDir + "InsertNestedFields Out.docx");
-
-            Console.WriteLine("\nInserted nested fields in the document successfully.\nFile saved at " + dataDir + "InsertNestedFields Out.docx");
+            Console.WriteLine("\nInserted nested fields in the document successfully.\nFile saved at " + dataDir);
         }
     }
 }

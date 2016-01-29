@@ -24,8 +24,9 @@ namespace CSharp.Mail_Merge
             // To see examples of how to set up relations manually check the corresponding documentation of this sample
             pizzaDs.ReadXml(dataDir + "CustomerData.xml");
 
+            string fileName = "Invoice Template.doc";
             // Open the template document.
-            Document doc = new Document(dataDir + "Invoice Template.doc");
+            Document doc = new Document(dataDir + fileName);
 
             // Trim trailing and leading whitespaces mail merge values
             doc.MailMerge.TrimWhitespaces = false;
@@ -33,12 +34,13 @@ namespace CSharp.Mail_Merge
             // Execute the nested mail merge with regions
             doc.MailMerge.ExecuteWithRegions(pizzaDs);
 
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the output to file
-            doc.Save(dataDir + "Invoice Out.doc");
+            doc.Save(dataDir);
 
             Debug.Assert(doc.MailMerge.GetFieldNames().Length == 0, "There was a problem with mail merge");
 
-            Console.WriteLine("\nMail merge performed with nested data successfully.\nFile saved at " + dataDir + "Invoice Out.doc");
+            Console.WriteLine("\nMail merge performed with nested data successfully.\nFile saved at " + dataDir);
         }
     }
 }

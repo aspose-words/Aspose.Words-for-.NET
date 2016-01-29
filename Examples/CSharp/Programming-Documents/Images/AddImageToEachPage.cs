@@ -16,9 +16,9 @@ namespace CSharp.Programming_Documents.Working_with_Images
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithImages();
-
+            string fileName = "TestFile.doc";
             // This a document that we want to add an image and custom text for each page without using the header or footer.
-            Document doc = new Document(dataDir + "TestFile.doc");
+            Document doc = new Document(dataDir + fileName);
 
             // Create and attach collector before the document before page layout is built.
             LayoutCollector layoutCollector = new LayoutCollector(doc);
@@ -45,9 +45,10 @@ namespace CSharp.Programming_Documents.Working_with_Images
             // Call UpdatePageLayout() method if file is to be saved as PDF or image format
             doc.UpdatePageLayout();
 
-            doc.Save(dataDir + "TestFile Out.docx");
+            dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
+            doc.Save(dataDir);
 
-            Console.WriteLine("\nInserted images on each page of the document successfully.\nFile saved at " + dataDir + "TestFile Out.docx");
+            Console.WriteLine("\nInserted images on each page of the document successfully.\nFile saved at " + dataDir);
         }
 
         /// <summary>
