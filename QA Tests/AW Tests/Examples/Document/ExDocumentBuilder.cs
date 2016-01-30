@@ -9,6 +9,7 @@ using System;
 using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Drawing;
+using Aspose.Words.Drawing.Charts;
 using Aspose.Words.Fields;
 using Aspose.Words.Tables;
 using NUnit.Framework;
@@ -148,7 +149,7 @@ namespace QA_Tests.Examples.Document
             //ExSummary:Shows how to create build a document using a document builder.
             Aspose.Words.Document doc = new Aspose.Words.Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             builder.Writeln("Hello World!");
 
             doc.Save(ExDir + "DocumentBuilderAndSave Out.docx");
@@ -452,7 +453,7 @@ namespace QA_Tests.Examples.Document
 
             builder.Writeln("Heading 3.2");
             builder.Writeln("Heading 3.3");
-            
+
             // Call the method below to update the TOC.
             doc.UpdateFields();
             //ExEnd
@@ -717,7 +718,7 @@ namespace QA_Tests.Examples.Document
 
             doc.Save(ExDir + "Table.CellPreferredWidths Out.doc");
             //ExEnd
-            
+
             // Verify the correct settings were applied.
             Assert.AreEqual(PreferredWidthType.Points, table.FirstRow.FirstCell.CellFormat.PreferredWidth.Type);
             Assert.AreEqual(PreferredWidthType.Percent, table.FirstRow.Cells[1].CellFormat.PreferredWidth.Type);
@@ -735,15 +736,15 @@ namespace QA_Tests.Examples.Document
 
             // Insert the table from HTML. Note that AutoFitSettings does not apply to tables
             // inserted from HTML.
-            builder.InsertHtml("<table>"                + 
-                               "<tr>"                   +
+            builder.InsertHtml("<table>" +
+                               "<tr>" +
                                "<td>Row 1, Cell 1</td>" +
                                "<td>Row 1, Cell 2</td>" +
-                               "</tr>"                  +
-                               "<tr>"                   + 
-                               "<td>Row 2, Cell 2</td>" + 
-                               "<td>Row 2, Cell 2</td>" + 
-                               "</tr>"                  +
+                               "</tr>" +
+                               "<tr>" +
+                               "<td>Row 2, Cell 2</td>" +
+                               "<td>Row 2, Cell 2</td>" +
+                               "</tr>" +
                                "</table>");
 
             doc.Save(ExDir + "DocumentBuilder.InsertTableFromHtml Out.doc");
@@ -961,7 +962,7 @@ namespace QA_Tests.Examples.Document
             // Set the cell shading for this cell.
             builder.CellFormat.Shading.BackgroundPatternColor = Color.Red;
             builder.Writeln("Cell #1");
-            
+
             builder.InsertCell();
             // Specify a different cell shading for the second cell.
             builder.CellFormat.Shading.BackgroundPatternColor = Color.Green;
@@ -998,7 +999,7 @@ namespace QA_Tests.Examples.Document
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.Cells[1].CellFormat.Shading.BackgroundPatternColor.ToArgb());
             Assert.AreEqual(Color.Empty.ToArgb(), table.LastRow.FirstCell.CellFormat.Shading.BackgroundPatternColor.ToArgb());
 
-            Assert.AreEqual(Color.Black.ToArgb(), table.FirstRow.FirstCell.CellFormat.Borders.Left.Color.ToArgb());Assert.AreEqual(Color.Black.ToArgb(), table.FirstRow.FirstCell.CellFormat.Borders.Left.Color.ToArgb());
+            Assert.AreEqual(Color.Black.ToArgb(), table.FirstRow.FirstCell.CellFormat.Borders.Left.Color.ToArgb()); Assert.AreEqual(Color.Black.ToArgb(), table.FirstRow.FirstCell.CellFormat.Borders.Left.Color.ToArgb());
             Assert.AreEqual(LineStyle.Single, table.FirstRow.FirstCell.CellFormat.Borders.Left.LineStyle);
             Assert.AreEqual(2.0, table.FirstRow.FirstCell.CellFormat.Borders.Left.LineWidth);
             Assert.AreEqual(4.0, table.LastRow.FirstCell.CellFormat.Borders.Left.LineWidth);
@@ -1020,7 +1021,7 @@ namespace QA_Tests.Examples.Document
 
             Assert.AreEqual(216.0, table.FirstRow.FirstCell.CellFormat.PreferredWidth.Value);
         }
-        
+
         [Test]
         public void InsertHyperlinkToLocalBookmark()
         {
@@ -1336,13 +1337,13 @@ namespace QA_Tests.Examples.Document
             Aspose.Words.Document doc = new Aspose.Words.Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertImage(ExDir + "Watermark.png", 
-                RelativeHorizontalPosition.Margin, 
+            builder.InsertImage(ExDir + "Watermark.png",
+                RelativeHorizontalPosition.Margin,
                 100,
-                RelativeVerticalPosition.Margin, 
-                100, 
-                200, 
-                100, 
+                RelativeVerticalPosition.Margin,
+                100,
+                200,
+                100,
                 WrapType.Square);
             //ExEnd
         }
@@ -1414,7 +1415,7 @@ namespace QA_Tests.Examples.Document
             //ExSummary:Shows how to insert a text input form field into a document.
             Aspose.Words.Document doc = new Aspose.Words.Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             builder.InsertTextInput("TextInput", TextFormFieldType.Regular, "", "Hello", 0);
             //ExEnd
         }
@@ -1710,12 +1711,12 @@ namespace QA_Tests.Examples.Document
         public void DeleteRowEx()
         {
             //ExStart
-            //ExFor:DeleteRow
-            //ExId:DeleteRowEx
+            //ExFor:DocumentBuilder.DeleteRow
             //ExSummary:Shows how to apply DeleteRow to a table.
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "DocumentBuilder.DocWithTable.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Delete the first row of the first table in the document.
             builder.DeleteRow(0, 0);
             //ExEnd
         }
@@ -1724,12 +1725,10 @@ namespace QA_Tests.Examples.Document
         public void InsertDocumentEx()
         {
             //ExStart
-            //ExFor:InsertDocument
-            //ExId:InsertDocumentEx
+            //ExFor:DocumentBuilder.InsertDocument
             //ExSummary:Shows how to use InsertDocument.
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
-
             Aspose.Words.Document docToInsert = new Aspose.Words.Document(ExDir + "DocumentBuilder.InsertedDoc.doc");
 
             builder.InsertDocument(docToInsert, ImportFormatMode.KeepSourceFormatting);
@@ -1737,30 +1736,56 @@ namespace QA_Tests.Examples.Document
         }
 
         [Test]
-        public void StartEditableRangeEx()
+        public void EditableRangeEx()
         {
             //ExStart
-            //ExFor:StartEditableRange
-            //ExId:StartEditableRangeEx
-            //ExSummary:Shows how to use StartEditableRange.
+            //ExFor:DocumentBuilder.StartEditableRange
+            //ExFor:DocumentBuilder.EndEditableRange()
+            //ExFor:DocumentBuilder.EndEditableRange(EditableRangeStart)
+            //ExSummary:Shows how to start and end an editable range.
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.StartEditableRange();
+            // Start an editable range.
+            EditableRangeStart edRange1Start = builder.StartEditableRange();
+
+            // An EditableRange object is created for the EditableRangeStart that we just made.
+            Aspose.Words.EditableRange editableRange1 = edRange1Start.EditableRange;
+
+            // Put something inside the editable range.
+            builder.Writeln("Paragraph inside first editable range");
+
+            // An editable range is well-formed if it has a start and an end. 
+            // Multiple editable ranges can be nested and overlapping. 
+            EditableRangeEnd edRange1End = builder.EndEditableRange();
+
+            // Both the start and end automatically belong to editableRange1.
+            Console.WriteLine(editableRange1.EditableRangeStart.Equals(edRange1Start)); // True
+            Console.WriteLine(editableRange1.EditableRangeEnd.Equals(edRange1End)); // True
+
+            // Explicitly state which EditableRangeStart a new EditableRangeEnd should be paired with.
+            EditableRangeStart edRange2Start = builder.StartEditableRange();
+            builder.Writeln("Paragraph inside second editable range");
+            Aspose.Words.EditableRange editableRange2 = edRange2Start.EditableRange;
+            EditableRangeEnd edRange2End = builder.EndEditableRange(edRange2Start);
+
+            // Both the start and end automatically belong to editableRange2.
+            Console.WriteLine(editableRange2.EditableRangeStart.Equals(edRange2Start)); // True
+            Console.WriteLine(editableRange2.EditableRangeEnd.Equals(edRange2End)); // True
             //ExEnd
         }
+
 
         [Test]
         public void MoveToFieldEx()
         {
             //ExStart
-            //ExFor:MoveToField
-            //ExId:MoveToFieldEx
-            //ExSummary:Shows how to use MoveToField.
+            //ExFor:DocumentBuilder.MoveToField
+            //ExSummary:Shows how to move DocumentBuilder's cursor to a field.
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Aspose.Words.Fields.Field field = builder.InsertField("MERGEFIELD field");
+            Field field = builder.InsertField("MERGEFIELD field");
 
             builder.MoveToField(field, true);
             //ExEnd
@@ -1770,7 +1795,7 @@ namespace QA_Tests.Examples.Document
         public void InsertHtmlEx()
         {
             //ExStart
-            //ExFor:DocumentBuilder.InsertHtml(string, boolean)
+            //ExFor:DocumentBuilder.InsertHtml(String, Boolean)
             //ExSummary:Inserts HTML into a document using DocumentBuilder.
             Aspose.Words.Document doc = new Aspose.Words.Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1784,6 +1809,93 @@ namespace QA_Tests.Examples.Document
                 "<h1 align='left'>Heading 1 left.</h1>", useBuilderFormatting);
 
             doc.Save(ExDir + "DocumentBuilder.InsertHtml Out.doc");
+            //ExEnd
+        }
+
+        [Test]
+        public void InsertOleObjectEx()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, Boolean, Image)
+            //ExSummary:Shows how to insert an OLE object into a document.
+            Aspose.Words.Document doc = new Aspose.Words.Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            Image representingImage = Image.FromFile(ExDir + "Aspose.Words.gif");
+            Shape oleObject = builder.InsertOleObject(ExDir + "Document.Spreadsheet.xlsx", false, false, representingImage);
+
+            // Double click on the image in the .doc to see the spreadsheet.
+            doc.Save(ExDir + @"Document.InsertedOleObject.doc");
+            //ExEnd
+        }
+
+        [Test]
+        public void InsertChartDoubleEx()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertChart(ChartType, Double, Double)
+            //ExSummary:Shows how to insert a chart into a document.
+            Aspose.Words.Document doc = new Aspose.Words.Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertChart(ChartType.Pie, Aspose.Words.ConvertUtil.PixelToPoint(300),
+                                Aspose.Words.ConvertUtil.PixelToPoint(300));
+
+            doc.Save(ExDir + @"Document.InsertedChartDouble.doc");
+            //ExEnd
+        }
+
+        [Test]
+        public void InsertChartRelativePositionEx()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertChart(ChartType, ChartType, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
+            //ExSummary:Shows how to insert a chart into a document.
+            Aspose.Words.Document doc = new Aspose.Words.Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertChart(ChartType.Pie, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 100,
+                                    200, 100, WrapType.Square);
+
+            doc.Save(ExDir + @"Document.InsertedChartRelativePosition.doc");
+            //ExEnd
+        }
+
+        [Test]
+        public void InsertCheckBoxEx()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertCheckBox(String, Boolean, Int32)
+            //ExFor:DocumentBuilder.InsertCheckBox(String, Boolean, Boolean, Int32)
+            //ExSummary:Shows how to insert a check box into a document.
+            Aspose.Words.Document doc = new Aspose.Words.Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a checkbox with no default value and let MS Word apply the default size.
+            builder.Writeln("Check box 1");
+            builder.InsertCheckBox("CheckBox1", false, 0);
+            builder.Writeln();
+
+            // Insert a checked checkbox with a specified value.
+            builder.Writeln("Check box 2");
+            builder.InsertCheckBox("CheckBox2", false, true, 50);
+
+            doc.Save(ExDir + @"Document.InsertedCheckBoxes.doc");
+            //ExEnd
+        }
+
+        [Test]
+        public void InsertFieldEx()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertField(FieldType, Boolean)
+            //ExSummary:Shows how to insert a field.
+            Aspose.Words.Document doc = new Aspose.Words.Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("This field was inserted/updated at ");
+            builder.InsertField(FieldType.FieldTime, true);
+
+            doc.Save(ExDir + @"Document.InsertedField.doc");
             //ExEnd
         }
     }

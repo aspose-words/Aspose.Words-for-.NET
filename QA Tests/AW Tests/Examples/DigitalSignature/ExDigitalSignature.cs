@@ -18,11 +18,10 @@ namespace QA_Tests.Examples.DigitalSignature
         public void ToStringEx()
         {
             //ExStart
-            //ExFor:ToString
-            //ExId:ToStringEx
+            //ExFor:DigitalSignature.ToString
             //ExSummary:Shows how to use ToString.
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.Signed.docx");
-            Console.WriteLine(doc.DigitalSignatures[0]);         
+            Console.WriteLine(doc.DigitalSignatures[0].ToString());
             //ExEnd
         }
     }

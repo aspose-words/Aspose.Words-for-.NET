@@ -64,43 +64,19 @@ namespace QA_Tests.Examples.Border
         public void ClearFormattingEx()
         {
             //ExStart
-            //ExFor:ClearFormatting
-            //ExId:ClearFormattingEx
+            //ExFor:Border.ClearFormatting
             //ExSummary:Shows how to use ClearFormatting.
-            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
-            Aspose.Words.DocumentBuilder builder = new Aspose.Words.DocumentBuilder(doc);
-            builder.Font.Border.ClearFormatting();
-            //ExEnd
-        }
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.Borders.doc");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            BorderCollection borders = builder.ParagraphFormat.Borders;
 
-        [Test]
-        public void EqualsEx()
-        {
-            //ExStart
-            //ExFor:Equals
-            //ExId:EqualsEx
-            //ExSummary:Shows how to use Equals.
-            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
-            Aspose.Words.DocumentBuilder builder = new Aspose.Words.DocumentBuilder(doc);
-            Aspose.Words.Border border1 = builder.Font.Border;
-            Aspose.Words.Border border2 = builder.Font.Border;
+            foreach (Aspose.Words.Border border in borders)
+            {
+                border.ClearFormatting();
+            }
 
-            Console.WriteLine(border1.Equals(border2));
-            //ExEnd
-        }
-
-        [Test]
-        public void GetHashCodeEx()
-        {
-            //ExStart
-            //ExFor:GetHashCode
-            //ExId:GetHashCodeEx
-            //ExSummary:Shows how to use GetHashCode.
-            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
-            Aspose.Words.DocumentBuilder builder = new Aspose.Words.DocumentBuilder(doc);
-            Aspose.Words.Border border = builder.Font.Border;
-
-            int hash = border.GetHashCode();
+            builder.CurrentParagraph.Runs[0].Text = "Paragraph with no border";
+            doc.Save(ExDir + "Document.NoBorder.doc");
             //ExEnd
         }
     }

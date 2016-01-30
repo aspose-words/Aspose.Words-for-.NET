@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using Aspose.Words;
 using NUnit.Framework;
 using QA_Tests.Tests;
 
@@ -18,13 +19,23 @@ namespace QA_Tests.Examples.Border
         public void GetEnumeratorEx()
         {
             //ExStart
-            //ExFor:GetEnumerator
-            //ExId:GetEnumeratorEx
+            //ExFor:BorderCollection.GetEnumerator
             //ExSummary:Shows how to use GetEnumerator.
-            Aspose.Words.DocumentBuilder builder = new Aspose.Words.DocumentBuilder();
-            Aspose.Words.BorderCollection borders = builder.ParagraphFormat.Borders;
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.Borders.doc");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            BorderCollection borders = builder.ParagraphFormat.Borders;
+
+            System.Random rnd = new System.Random();
 
             var enumerator = borders.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                // Do something.
+                Aspose.Words.Border b = (Aspose.Words.Border)enumerator.Current;
+                b.Color = System.Drawing.Color.FromArgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
+            }
+
+            doc.Save(ExDir + "Document.RandomColourBorder.doc");
             //ExEnd
         }
 
@@ -32,11 +43,11 @@ namespace QA_Tests.Examples.Border
         public void ClearFormattingEx()
         {
             //ExStart
-            //ExFor:ClearFormatting
-            //ExId:ClearFormattingEx
+            //ExFor:BorderCollection.ClearFormatting
             //ExSummary:Shows how to use ClearFormatting.
-            Aspose.Words.DocumentBuilder builder = new Aspose.Words.DocumentBuilder();
-            Aspose.Words.BorderCollection borders = builder.ParagraphFormat.Borders;
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.Borders.doc");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            BorderCollection borders = builder.ParagraphFormat.Borders;
 
             borders.ClearFormatting();
             //ExEnd

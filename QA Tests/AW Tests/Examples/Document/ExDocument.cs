@@ -18,6 +18,7 @@ using System.Web;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
+using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using Aspose.Words.Tables;
@@ -456,10 +457,10 @@ namespace QA_Tests.Examples.Document
             //ExId:SaveWithOptions
             //ExSummary:Shows how to set save options before saving a document to HTML.
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Rendering.doc");
-            
+
             // This is the directory we want the exported images to be saved to.
             string imagesDir = Path.Combine(ExDir, "Images");
-            
+
             // The folder specified needs to exist and should be empty.
             if (Directory.Exists(imagesDir))
                 Directory.Delete(imagesDir, true);
@@ -703,9 +704,9 @@ namespace QA_Tests.Examples.Document
             LoadFormat loadFormat = FileFormatUtil.SaveFormatToLoadFormat(saveFormat);
             Console.WriteLine("The converted LoadFormat is: " + FileFormatUtil.LoadFormatToExtension(loadFormat));
             //ExEnd
-            
+
             Assert.AreEqual(".html", FileFormatUtil.SaveFormatToExtension(saveFormat));
-            Assert.AreEqual(".html", FileFormatUtil.LoadFormatToExtension(loadFormat)) ;
+            Assert.AreEqual(".html", FileFormatUtil.LoadFormatToExtension(loadFormat));
         }
 
         [Test]
@@ -1117,8 +1118,14 @@ namespace QA_Tests.Examples.Document
             //ExStart
             //ExFor:Document.Unprotect
             //ExId:UnprotectDocument
-            //ExSummary:Shows how to unprotect any document. Note that the password is not required.
+            //ExSummary:Shows how to unprotect a document. Note that the password is not required.
             doc.Unprotect();
+            //ExEnd
+
+            //ExStart
+            //ExFor:Document.Unprotect(String)
+            //ExSummary:Shows how to unprotect a document using a password.
+            doc.Unprotect("password");
             //ExEnd
         }
 
@@ -1275,7 +1282,7 @@ namespace QA_Tests.Examples.Document
             string originalFilePath = doc.OriginalFileName;
             // Let's get just the file name from the full path.
             string originalFileName = Path.GetFileName(originalFilePath);
-            
+
             // This is the original LoadFormat of the document.
             LoadFormat loadFormat = doc.OriginalLoadFormat;
             //ExEnd
@@ -1336,15 +1343,14 @@ namespace QA_Tests.Examples.Document
         {
             //ExStart
             //ExFor:Document.FootnoteOptions
-            //ExId:FootnoteOptionsEx
-            //ExSummary:Shows how to edit a document's footnote options.
+            //ExSummary:Shows how to insert a footnote and apply footnote options.
             Aspose.Words.Document doc = new Aspose.Words.Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertFootnote(FootnoteType.Footnote, "My Footnote.");
 
             // Change your document's footnote options.
-            doc.FootnoteOptions.Location = FootnoteLocation.BeneathText;
+            doc.FootnoteOptions.Location = FootnoteLocation.BottomOfPage;
             doc.FootnoteOptions.NumberStyle = NumberStyle.Arabic;
             doc.FootnoteOptions.StartNumber = 1;
 
@@ -1357,17 +1363,16 @@ namespace QA_Tests.Examples.Document
         {
             //ExStart
             //ExFor:Document.Compare
-            //ExId:CompareEx
             //ExSummary:Shows how to apply the compare method to two documents and then use the results. 
             Aspose.Words.Document doc1 = new Aspose.Words.Document(ExDir + "Document.Compare.1.doc");
             Aspose.Words.Document doc2 = new Aspose.Words.Document(ExDir + "Document.Compare.2.doc");
 
-            // Both documents should have no revisions or an exception will be thrown.
+            // If either document has a revision, an exception will be thrown.
             if (doc1.Revisions.Count == 0 && doc2.Revisions.Count == 0)
                 doc1.Compare(doc2, "authorName", DateTime.Now);
 
-            // If doc1 and doc2 are different, doc1 now has some revisons after comparison, which can now be viewed and processed.
-            foreach (Aspose.Words.Revision r in doc1.Revisions)
+            // If doc1 and doc2 are different, doc1 now has some revisons after the comparison, which can now be viewed and processed.
+            foreach (Revision r in doc1.Revisions)
                 Console.WriteLine(r.RevisionType);
 
             // All the revisions in doc1 are differences between doc1 and doc2, so accepting them on doc1 transforms doc1 into doc2.
@@ -1383,7 +1388,6 @@ namespace QA_Tests.Examples.Document
         {
             //ExStart
             //ExFor:Document.RemoveExternalSchemaReferences
-            //ExId:RemoveExternalSchemaReferencesEx
             //ExSummary:Shows how to remove all external XML schema references from a document. 
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             doc.RemoveExternalSchemaReferences();
@@ -1395,7 +1399,6 @@ namespace QA_Tests.Examples.Document
         {
             //ExStart
             //ExFor:Document.RemoveUnusedResources
-            //ExId:RemoveUnusedResourcesEx
             //ExSummary:Shows how to remove all unused styles and lists from a document. 
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             doc.RemoveUnusedResources();
@@ -1406,35 +1409,55 @@ namespace QA_Tests.Examples.Document
         public void StartTrackRevisionsEx()
         {
             //ExStart
-            //ExFor:Document.StartTrackRevisions
-            //ExId:StartTrackRevisionsEx
+            //ExFor:Document.StartTrackRevisions(String)
+            //ExFor:Document.StartTrackRevisions(String, DateTime)
+            //ExFor:Document.StopTrackRevisions
             //ExSummary:Shows how StartTrackRevisions() affects document editing. 
             Aspose.Words.Document doc = new Aspose.Words.Document();
-            doc.FirstSection.Body.FirstParagraph.Runs.Add(new Run(doc, "Hello world!"));
 
+            // This text will appear as normal text in the document and no revisions will be counted.
+            doc.FirstSection.Body.FirstParagraph.Runs.Add(new Run(doc, "Hello world!"));
             Console.WriteLine(doc.Revisions.Count); // 0
 
-            doc.StartTrackRevisions("author", DateTime.Now);
+            doc.StartTrackRevisions("Author");
 
+            // This text will appear as a revision. 
+            // We did not specify a time while calling StartTrackRevisions(), so the date/time that's noted
+            // on the revision will be the real time when StartTrackRevisions() executes.
             doc.FirstSection.Body.AppendParagraph("Hello again!");
-
             Console.WriteLine(doc.Revisions.Count); // 2
 
-            // The "Hello world!" text we added before doc.StartTrackRevisions() shows up as plain text in the output doc.
-            // However, the "Hello again!" text we added after doc.StartTrackRevisions() is a revision in the output.
+            // Stopping the tracking of revisions makes this text appear as normal text. 
+            // Revisions are not counted when the document is changed.
+            doc.StopTrackRevisions();
+            doc.FirstSection.Body.AppendParagraph("Hello again!");
+            Console.WriteLine(doc.Revisions.Count); // 2
+
+            // Specifying some date/time will apply that date/time to all subsequent revisions until StopTrackRevisions() is called.
+            // Note that placing values such as DateTime.MinValue as an argument will create revisions that do not have a date/time at all.
+            doc.StartTrackRevisions("Author", new DateTime(1970, 1, 1));
+            doc.FirstSection.Body.AppendParagraph("Hello again!");
+            Console.WriteLine(doc.Revisions.Count); // 4
+
             doc.Save(ExDir + "Document.StartTrackRevisions.doc");
             //ExEnd
         }
 
         [Test]
-        public void StopTrackRevisionsEx()
+        public void AcceptAllRevisions()
         {
             //ExStart
-            //ExFor:Document.StopTrackRevisions
-            //ExId:StopTrackRevisionsEx
-            //ExSummary:Shows how to stop StartTrackRevisions(). 
-            Aspose.Words.Document doc = new Aspose.Words.Document();
-            doc.StopTrackRevisions();
+            //ExFor:Document.AcceptAllRevisions
+            //ExSummary:Shows how to accept all tracking changes in the document.
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
+
+            // Start tracking and make some revisions.
+            doc.StartTrackRevisions("Author");
+            doc.FirstSection.Body.AppendParagraph("Hello world!");
+
+            // Revisions will now show up as normal text in the output document.
+            doc.AcceptAllRevisions();
+            doc.Save(ExDir + "Document.AcceptedRevisions.doc");
             //ExEnd
         }
 
@@ -1442,8 +1465,8 @@ namespace QA_Tests.Examples.Document
         public void UpdateThumbnailEx()
         {
             //ExStart
-            //ExFor:Document.UpdateThumbnail
-            //ExId:UpdateThumbnailEx
+            //ExFor:Document.UpdateThumbnail()
+            //ExFor:Document.UpdateThumbnail(ThumbnailGeneratingOptions)
             //ExSummary:Shows how to update a document's thumbnail with and without ThumbnailGeneratingOptions.
             Aspose.Words.Document doc = new Aspose.Words.Document();
 
@@ -1451,8 +1474,7 @@ namespace QA_Tests.Examples.Document
             doc.UpdateThumbnail();
 
             // Review/change thumbnail options and then update document's thumbnail.
-            Aspose.Words.Rendering.ThumbnailGeneratingOptions tgo
-                = new Aspose.Words.Rendering.ThumbnailGeneratingOptions();
+            ThumbnailGeneratingOptions tgo = new ThumbnailGeneratingOptions();
 
             Console.WriteLine("Thumbnail size: {0}", tgo.ThumbnailSize);
             tgo.GenerateFromFirstPage = true;
