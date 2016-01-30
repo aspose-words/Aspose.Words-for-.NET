@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using Aspose.Words;
 using NUnit.Framework;
 using QA_Tests.Tests;
 
@@ -18,11 +19,17 @@ namespace QA_Tests.Examples.DigitalSignature
         public void GetEnumeratorEx()
         {
             //ExStart
-            //ExFor:GetEnumerator
-            //ExId:GetEnumeratorEx
+            //ExFor:DigitalSignatureCollection.GetEnumerator
             //ExSummary:Shows how to use GetEnumerator.
-            Aspose.Words.DigitalSignatureCollection dsc = new Aspose.Words.DigitalSignatureCollection();
-            var enumerator = dsc.GetEnumerator();
+            DigitalSignatureCollection digitalSignatures = DigitalSignatureUtil.LoadSignatures(ExDir + "Document.Signed.doc");
+
+            var enumerator = digitalSignatures.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                // Do something useful
+                Aspose.Words.DigitalSignature ds = (Aspose.Words.DigitalSignature)enumerator.Current;
+                Console.WriteLine(ds.ToString());
+            }
             //ExEnd
         }
     }

@@ -16,30 +16,17 @@ namespace QA_Tests.Examples.Comment
     public class ExComment : QaTestsBase
     {
         [Test]
-        public void AcceptAllRevisions()
-        {
-            //ExStart
-            //ExFor:Document.AcceptAllRevisions
-            //ExId:AcceptAllRevisions
-            //ExSummary:Shows how to accept all tracking changes in the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
-            doc.AcceptAllRevisions();
-            //ExEnd
-        }
-
-        [Test]
         public void SetTextEx()
         {
             //ExStart
-            //ExFor:SetText
-            //ExId:SetTextEx
+            //ExFor:Comment.SetText
             //ExSummary:Shows how to use SetText.
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Aspose.Words.Comment comment = new Aspose.Words.Comment(doc, "John Doe", "J.D.", DateTime.Today);
+            Aspose.Words.Comment comment = new Aspose.Words.Comment(doc, "John Doe", "J.D.", DateTime.Now);
             builder.CurrentParagraph.AppendChild(comment);
-            comment.SetText("Comment text");
+            comment.SetText("My comment.");
             //ExEnd
         }
     }
