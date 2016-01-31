@@ -25,17 +25,16 @@ namespace QA_Tests.Examples.Border
             DocumentBuilder builder = new DocumentBuilder(doc);
             BorderCollection borders = builder.ParagraphFormat.Borders;
 
-            System.Random rnd = new System.Random();
-
             var enumerator = borders.GetEnumerator();
             while (enumerator.MoveNext())
             {
-                // Do something.
+                // Do something useful.
                 Aspose.Words.Border b = (Aspose.Words.Border)enumerator.Current;
-                b.Color = System.Drawing.Color.FromArgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
+                b.Color = System.Drawing.Color.RoyalBlue;
+                b.LineStyle = LineStyle.Double;
             }
 
-            doc.Save(ExDir + "Document.RandomColourBorder.doc");
+            doc.Save(ExDir + "Document.ChangedColourBorder.doc");
             //ExEnd
         }
 
