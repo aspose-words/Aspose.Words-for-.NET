@@ -8,7 +8,6 @@
 using System;
 using System.Text;
 using Aspose.Words;
-using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Fields;
 using NUnit.Framework;
 using QA_Tests.Tests;
@@ -27,23 +26,26 @@ namespace QA_Tests.Examples.Document
             ToText();
         }
 
+        //ExStart
+        //ExFor:Document.Accept
+        //ExFor:Body.Accept
+        //ExFor:DocumentVisitor
+        //ExFor:DocumentVisitor.VisitAbsolutePositionTab
+        //ExFor:DocumentVisitor.VisitBookmarkStart 
+        //ExFor:DocumentVisitor.VisitBookmarkEnd
+        //ExFor:DocumentVisitor.VisitRun
+        //ExFor:DocumentVisitor.VisitFieldStart
+        //ExFor:DocumentVisitor.VisitFieldEnd
+        //ExFor:DocumentVisitor.VisitFieldSeparator
+        //ExFor:DocumentVisitor.VisitBodyStart
+        //ExFor:DocumentVisitor.VisitBodyEnd
+        //ExFor:DocumentVisitor.VisitParagraphEnd
+        //ExFor:DocumentVisitor.VisitHeaderFooterStart
+        //ExFor:VisitorAction
+        //ExId:ExtractContentDocToTxtConverter
+        //ExSummary:Shows how to use the Visitor pattern to add new operations to the Aspose.Words object model. In this case we create a simple document converter into a text format.
         public void ToText()
         {
-            //ExStart
-            //ExFor:Document.Accept
-            //ExFor:Body.Accept
-            //ExFor:DocumentVisitor
-            //ExFor:DocumentVisitor.VisitRun
-            //ExFor:DocumentVisitor.VisitFieldStart
-            //ExFor:DocumentVisitor.VisitFieldEnd
-            //ExFor:DocumentVisitor.VisitFieldSeparator
-            //ExFor:DocumentVisitor.VisitBodyStart
-            //ExFor:DocumentVisitor.VisitBodyEnd
-            //ExFor:DocumentVisitor.VisitParagraphEnd
-            //ExFor:DocumentVisitor.VisitHeaderFooterStart
-            //ExFor:VisitorAction
-            //ExId:ExtractContentDocToTxtConverter
-            //ExSummary:Shows how to use the Visitor pattern to add new operations to the Aspose.Words object model. In this case we create a simple document converter into a text format.
             // Open the document we want to convert.
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Visitor.ToText.doc");
 
@@ -61,130 +63,11 @@ namespace QA_Tests.Examples.Document
             // Once the visiting is complete, we can retrieve the result of the operation,
             // that in this example, has accumulated in the visitor.
             Console.WriteLine(myConverter.GetText());
-            //ExEnd
         }
 
-        [Test]
-        public void VisitBookmarkEndEx()
-        {
-            //ExStart
-            //ExFor:DocumentVisitor:VisitBookmarkEnd 
-            //ExSummary:Shows how to move a document visitor to the end of a bookmark.
-            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Bookmark.doc");
-
-            MyDocToTxtWriter myConverter = new MyDocToTxtWriter();
-            doc.Accept(myConverter);
-
-            myConverter.VisitBookmarkEnd(doc.Range.Bookmarks[0].BookmarkEnd);
-            //ExEnd
-        }
-
-        [Test]
-        public void VisitBookmarkStartEx()
-        {
-            //ExStart
-            //ExFor:DocumentVisitor:VisitBookmarkStart 
-            //ExSummary:Shows how to move a document visitor to the start of a bookmark.
-            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Bookmark.doc");
-
-            MyDocToTxtWriter myConverter = new MyDocToTxtWriter();
-            doc.Accept(myConverter);
-
-            myConverter.VisitBookmarkStart(doc.Range.Bookmarks[0].BookmarkStart);
-            Console.WriteLine(myConverter.GetText());
-            //ExEnd
-        }
-
-        [Test]
-        public void VisitDocumentEndEx()
-        {
-            //ExStart
-            //ExFor:DocumentVisitor:VisitDocumentEnd 
-            //ExSummary:Shows how to move a document visitor to the end of a bookmark.
-            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
-
-            MyDocToTxtWriter myConverter = new MyDocToTxtWriter();
-            doc.Accept(myConverter);
-
-            myConverter.VisitDocumentEnd(doc);
-            //ExEnd
-        }
-
-        [Test]
-        public void VisitDocumentStartEx()
-        {
-            //ExStart
-            //ExFor:DocumentVisitor:VisitDocumentStart 
-            //ExSummary:Shows how to move a document visitor to the start of a bookmark.
-            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
-
-            MyDocToTxtWriter myConverter = new MyDocToTxtWriter();
-            doc.Accept(myConverter);
-
-            myConverter.VisitDocumentStart(doc);
-            //ExEnd
-        }
-
-        [Test]
-        public void VisitEditableRangeEndEx()
-        {
-            //ExStart
-            //ExFor:DocumentVisitor:VisitEditableRangeEnd
-            //ExSummary:Shows how to move a document visitor to the end of an editable range.
-            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Create an editable range.
-            EditableRangeStart edRangeStart = builder.StartEditableRange();
-            Aspose.Words.EditableRange editableRange1 = edRangeStart.EditableRange;
-
-            MyDocToTxtWriter myConverter = new MyDocToTxtWriter();
-            doc.Accept(myConverter);
-
-            myConverter.VisitEditableRangeEnd(editableRange1.EditableRangeEnd);
-            //ExEnd
-        }
-
-        [Test]
-        public void VisitEditableRangeStartEx()
-        {
-            //ExStart
-            //ExFor:DocumentVisitor:VisitEditableRangeStart
-            //ExSummary:Shows how to move a document visitor to the end of an editable range.
-            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Create an editable range.
-            EditableRangeStart edRangeStart = builder.StartEditableRange();
-            Aspose.Words.EditableRange editableRange1 = edRangeStart.EditableRange;
-
-            MyDocToTxtWriter myConverter = new MyDocToTxtWriter();
-            doc.Accept(myConverter);
-
-            myConverter.VisitEditableRangeStart(editableRange1.EditableRangeStart);
-            //ExEnd
-        }
-
-
-
-        //ExStart
-        //ExFor:Document.Accept
-        //ExFor:Body.Accept
-        //ExFor:DocumentVisitor
-        //ExFor:DocumentVisitor:VisitBookmarkEnd 
-        //ExFor:DocumentVisitor:VisitBookmarkStart 
-        //ExFor:DocumentVisitor:VisitDocumentEnd 
-        //ExFor:DocumentVisitor:VisitDocumentStart 
-        //ExFor:DocumentVisitor.VisitRun
-        //ExFor:DocumentVisitor.VisitFieldStart
-        //ExFor:DocumentVisitor.VisitFieldEnd
-        //ExFor:DocumentVisitor.VisitFieldSeparator
-        //ExFor:DocumentVisitor.VisitBodyStart
-        //ExFor:DocumentVisitor.VisitBodyEnd
-        //ExFor:DocumentVisitor.VisitParagraphEnd
-        //ExFor:DocumentVisitor.VisitHeaderFooterStart
-        //ExFor:VisitorAction
-        //ExSummary:Simple implementation of saving a document in the plain text format. Implemented as a Visitor.
+        /// <summary>
+        /// Simple implementation of saving a document in the plain text format. Implemented as a Visitor.
+        /// </summary>
         public class MyDocToTxtWriter : DocumentVisitor
         {
             public MyDocToTxtWriter()
@@ -290,6 +173,32 @@ namespace QA_Tests.Examples.Document
                 return VisitorAction.SkipThisNode;
             }
 
+            /// <summary>
+            /// Called when an AbsolutePositionTab is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitAbsolutePositionTab(AbsolutePositionTab tab)
+            {
+                mBuilder.Append("\t");
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when a BookmarkStart is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitBookmarkStart(BookmarkStart bookmarkStart)
+            {
+                mBuilder.Append("[");
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when a BookmarkEnd is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitBookmarkEnd(BookmarkEnd bookmarkEnd)
+            {
+                mBuilder.Append("]");
+                return VisitorAction.Continue;
+            }
 
             /// <summary>
             /// Adds text to the current output. Honours the enabled/disabled output flag.
@@ -303,7 +212,6 @@ namespace QA_Tests.Examples.Document
             private readonly StringBuilder mBuilder;
             private bool mIsSkipText;
         }
-
         //ExEnd
     }
 }
