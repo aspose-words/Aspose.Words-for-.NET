@@ -125,6 +125,46 @@ namespace QA_Tests.Examples.Document
             //ExEnd
         }
 
+        [Test]
+        public void VisitEditableRangeEndEx()
+        {
+            //ExStart
+            //ExFor:DocumentVisitor:VisitEditableRangeEnd
+            //ExSummary:Shows how to move a document visitor to the end of an editable range.
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create an editable range.
+            EditableRangeStart edRangeStart = builder.StartEditableRange();
+            Aspose.Words.EditableRange editableRange1 = edRangeStart.EditableRange;
+
+            MyDocToTxtWriter myConverter = new MyDocToTxtWriter();
+            doc.Accept(myConverter);
+
+            myConverter.VisitEditableRangeEnd(editableRange1.EditableRangeEnd);
+            //ExEnd
+        }
+
+        [Test]
+        public void VisitEditableRangeStartEx()
+        {
+            //ExStart
+            //ExFor:DocumentVisitor:VisitEditableRangeStart
+            //ExSummary:Shows how to move a document visitor to the end of an editable range.
+            Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create an editable range.
+            EditableRangeStart edRangeStart = builder.StartEditableRange();
+            Aspose.Words.EditableRange editableRange1 = edRangeStart.EditableRange;
+
+            MyDocToTxtWriter myConverter = new MyDocToTxtWriter();
+            doc.Accept(myConverter);
+
+            myConverter.VisitEditableRangeStart(editableRange1.EditableRangeStart);
+            //ExEnd
+        }
+
 
 
         //ExStart
