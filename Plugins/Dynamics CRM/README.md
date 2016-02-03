@@ -8,3 +8,4 @@ This section contains the following Plugins
 * [Aspose.DuplicateDocument](Aspose.DuplicateDocument)
 * [Aspose .NET Quote Generator](Aspose .NET Quote Generator)
 * [Aspose .NET OneClick Word Document Generator](Aspose OneClick Word Document Generator)
+* [Aspose.Words Email Exporter](Aspose.Words Email Exporter)
