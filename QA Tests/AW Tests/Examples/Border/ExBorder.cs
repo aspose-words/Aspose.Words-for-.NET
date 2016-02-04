@@ -65,7 +65,7 @@ namespace QA_Tests.Examples.Border
         {
             //ExStart
             //ExFor:Border.ClearFormatting
-            //ExSummary:Shows how to use ClearFormatting.
+            //ExSummary:Shows how to remove borders from a paragraph one by one.
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.Borders.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
             BorderCollection borders = builder.ParagraphFormat.Borders;

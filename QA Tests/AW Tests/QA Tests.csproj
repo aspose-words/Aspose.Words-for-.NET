@@ -61,6 +61,7 @@
     <Compile Include="Examples\DocumentConverts\ExMossRtf2Docx.cs" />
     <Compile Include="Examples\Document\ExDocument.cs" />
     <Compile Include="Examples\Document\ExDocumentBuilder.cs" />
+    <Compile Include="Examples\Document\ExDocumentBuilderImages.cs" />
     <Compile Include="Examples\Document\ExEditableRange.cs" />
     <Compile Include="Examples\Document\ExInsertDocument.cs" />
     <Compile Include="Examples\Document\ExVisitor.cs" />

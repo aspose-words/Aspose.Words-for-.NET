@@ -20,7 +20,7 @@ namespace QA_Tests.Examples.Border
         {
             //ExStart
             //ExFor:BorderCollection.GetEnumerator
-            //ExSummary:Shows how to use GetEnumerator.
+            //ExSummary:Shows how to enumerate all borders in a collection.
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.Borders.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
             BorderCollection borders = builder.ParagraphFormat.Borders;
@@ -43,7 +43,7 @@ namespace QA_Tests.Examples.Border
         {
             //ExStart
             //ExFor:BorderCollection.ClearFormatting
-            //ExSummary:Shows how to use ClearFormatting.
+            //ExSummary:Shows how to remove all borders from a paragraph at once.
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.Borders.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
             BorderCollection borders = builder.ParagraphFormat.Borders;

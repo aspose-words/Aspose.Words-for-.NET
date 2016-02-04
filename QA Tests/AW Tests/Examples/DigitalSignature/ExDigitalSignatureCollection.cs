@@ -20,7 +20,7 @@ namespace QA_Tests.Examples.DigitalSignature
         {
             //ExStart
             //ExFor:DigitalSignatureCollection.GetEnumerator
-            //ExSummary:Shows how to use GetEnumerator.
+            //ExSummary:Shows how to load and enumerate all digital signatures of a document.
             DigitalSignatureCollection digitalSignatures = DigitalSignatureUtil.LoadSignatures(ExDir + "Document.Signed.doc");
 
             var enumerator = digitalSignatures.GetEnumerator();

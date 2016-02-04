@@ -266,7 +266,7 @@ namespace QA_Tests.Examples.Document
             //ExFor:DocumentBuilder
             //ExFor:DocumentBuilder.InsertHtml(string)
             //ExId:DocumentBuilderInsertHtml
-            //ExSummary:Inserts HTML into a document using DocumentBuilder.
+            //ExSummary:Inserts HTML into a document. The formatting specified in the HTML is applied.
             Aspose.Words.Document doc = new Aspose.Words.Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -279,6 +279,29 @@ namespace QA_Tests.Examples.Document
             doc.Save(ExDir + "DocumentBuilder.InsertHtml Out.doc");
             //ExEnd
         }
+
+        [Test]
+        public void InsertHtmlEx()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertHtml(String, Boolean)
+            //ExSummary:Inserts HTML into a document using. The current document formatting at the insertion position is applied to the inserted text. 
+            Aspose.Words.Document doc = new Aspose.Words.Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            bool useBuilderFormatting = true;
+
+            builder.InsertHtml(
+                "<P align='right'>Paragraph right</P>" +
+                "<b>Implicit paragraph left</b>" +
+                "<div align='center'>Div center</div>" +
+                "<h1 align='left'>Heading 1 left.</h1>", useBuilderFormatting);
+
+            doc.Save(ExDir + "DocumentBuilder.InsertHtml Out.doc");
+            //ExEnd
+        }
+
+
 
         [Test]
         public void InsertTextAndBookmark()
@@ -1792,27 +1815,6 @@ namespace QA_Tests.Examples.Document
         }
 
         [Test]
-        public void InsertHtmlEx()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertHtml(String, Boolean)
-            //ExSummary:Inserts HTML into a document using DocumentBuilder.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            bool useBuilderFormatting = true;
-
-            builder.InsertHtml(
-                "<P align='right'>Paragraph right</P>" +
-                "<b>Implicit paragraph left</b>" +
-                "<div align='center'>Div center</div>" +
-                "<h1 align='left'>Heading 1 left.</h1>", useBuilderFormatting);
-
-            doc.Save(ExDir + "DocumentBuilder.InsertHtml Out.doc");
-            //ExEnd
-        }
-
-        [Test]
         public void InsertOleObjectEx()
         {
             //ExStart
@@ -1849,7 +1851,7 @@ namespace QA_Tests.Examples.Document
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertChart(ChartType, ChartType, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Shows how to insert a chart into a document.
+            //ExSummary:Shows how to insert a chart into a document and specify all positioning options in the arguments.
             Aspose.Words.Document doc = new Aspose.Words.Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

@@ -117,6 +117,7 @@ namespace QA_Tests.Examples.Document
                 rasterImage.Dispose();
             }
             builder.Document.Save(ExDir + "Image.CreateFromImageWithStreamCustomSize Out.doc");
+            //ExEnd
         }
 
         [Test]
@@ -140,6 +141,7 @@ namespace QA_Tests.Examples.Document
             }
 
             builder.Document.Save(ExDir + "Image.CreateFromImageWithStreamRelativePosition Out.doc");
+            //ExEnd
         }
 
         [Test]
