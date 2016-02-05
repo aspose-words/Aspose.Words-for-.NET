@@ -70,7 +70,7 @@ namespace QA_Tests.Examples.Fields
             //ExStart
             //ExFor:DocumentBuilder.InsertTextInput
             //ExId:FormFieldsInsertAndRetrieve
-            //ExSummary:Shows how to insert FormFields, set options annd gather them back in for use 
+            //ExSummary:Shows how to insert form fields, set options and gather them back in for use 
             Aspose.Words.Document doc = new Aspose.Words.Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

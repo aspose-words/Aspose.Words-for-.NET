@@ -22,7 +22,7 @@ namespace QA_Tests.Examples.VariableCollection
         {
             //ExStart
             //ExFor:VariableCollection.Add
-            //ExSummary:Shows how to add DictionaryEntry instances to a document's VariableCollection.
+            //ExSummary:Shows how to create document variables and add them to a document's variable collection.
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 
             doc.Variables.Add("doc", "Word processing document");
