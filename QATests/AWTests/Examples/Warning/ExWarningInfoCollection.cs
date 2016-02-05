@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using Aspose.Words;
 using NUnit.Framework;
 using QA_Tests.Tests;
 
@@ -18,22 +19,18 @@ namespace QA_Tests.Examples.Warning
         public void GetEnumeratorEx()
         {
             //ExStart
-            //ExFor:GetEnumerator
-            //ExId:GetEnumeratorEx
-            //ExSummary:Shows how to use GetEnumerator.
-            Aspose.Words.WarningInfoCollection wic = new Aspose.Words.WarningInfoCollection();
-            var enumerator = wic.GetEnumerator();
-            //ExEnd
-        }
+            //ExFor:WarningInfoCollection.GetEnumerator
+            //ExFor:WarningInfoCollection.Clear
+            //ExSummary:Shows how to read and clear a collection of warnings.
+            WarningInfoCollection wic = new WarningInfoCollection();
 
-        [Test]
-        public void ClearEx()
-        {
-            //ExStart
-            //ExFor:Clear
-            //ExId:ClearEx
-            //ExSummary:Shows how to use Clear.
-            Aspose.Words.WarningInfoCollection wic = new Aspose.Words.WarningInfoCollection();
+            var enumerator = wic.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                WarningInfo wi = (WarningInfo)enumerator.Current;
+                Console.WriteLine(wi.Description);
+            }
+
             wic.Clear();
             //ExEnd
         }

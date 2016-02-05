@@ -54,8 +54,7 @@ namespace QA_Tests.Examples.ConvertUtil
         public void MillimeterToPointEx()
         {
             //ExStart
-            //ExFor:MillimeterToPoint
-            //ExId:MillimeterToPointEx
+            //ExFor:ConvertUtil.MillimeterToPoint
             //ExSummary:Shows how to specify page properties in millimeters.
             Aspose.Words.Document doc = new Aspose.Words.Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -78,7 +77,7 @@ namespace QA_Tests.Examples.ConvertUtil
         {
             //ExStart
             //ExFor:ConvertUtil.PointToInch
-            //ExSummary:Shows how to use PointToInch.
+            //ExSummary:Shows how to convert points to inches.
             Aspose.Words.Document doc = new Aspose.Words.Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -131,7 +130,7 @@ namespace QA_Tests.Examples.ConvertUtil
             //ExStart
             //ExFor:ConvertUtil.PointToPixel(double)
             //ExFor:ConvertUtil.PointToPixel(double, double)
-            //ExSummary:Shows how to use PointToPixel with default and custom resolution.
+            //ExSummary:Shows how to use convert points to pixels with default and custom resolution.
             Aspose.Words.Document doc = new Aspose.Words.Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -153,7 +152,7 @@ namespace QA_Tests.Examples.ConvertUtil
         {
             //ExStart
             //ExFor:ConvertUtil.PixelToNewDpi
-            //ExSummary:Shows how to use PixelToNewDpi.
+            //ExSummary:Shows how to check how an amount of pixels changes when the dpi is changed.
             Aspose.Words.Document doc = new Aspose.Words.Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

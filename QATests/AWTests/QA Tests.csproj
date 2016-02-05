@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3154C9A9-4E61-44ED-B087-FA6252D7C1E0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>QA_Tests</RootNamespace>
+    <AssemblyName>QA Tests</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.Words, Version=15.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.15.12.0\lib\net20\Aspose.Words.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Examples\Bookmark\ExBookmarks.cs" />
+    <Compile Include="Examples\Border\ExBorder.cs" />
+    <Compile Include="Examples\Border\ExBorderCollection.cs" />
+    <Compile Include="Examples\BuildVersionInfo\ExBuildVersion.cs" />
+    <Compile Include="Examples\Comment\ExComment.cs" />
+    <Compile Include="Examples\ConvertUtil\ExUtilityClasses.cs" />
+    <Compile Include="Examples\DigitalSignature\ExDigitalSignature.cs" />
+    <Compile Include="Examples\DigitalSignature\ExDigitalSignatureCollection.cs" />
+    <Compile Include="Examples\DigitalSignature\ExDigitalSignatureUtil.cs" />
+    <Compile Include="Examples\DocumentConverts\ExMossDoc2Pdf.cs" />
+    <Compile Include="Examples\DocumentConverts\ExMossRtf2Docx.cs" />
+    <Compile Include="Examples\Document\ExDocument.cs" />
+    <Compile Include="Examples\Document\ExDocumentBuilder.cs" />
+    <Compile Include="Examples\Document\ExDocumentBuilderImages.cs" />
+    <Compile Include="Examples\Document\ExInsertDocument.cs" />
+    <Compile Include="Examples\Document\ExVisitor.cs" />
+    <Compile Include="Examples\Drawing\ExImage.cs" />
+    <Compile Include="Examples\Drawing\ExShape.cs" />
+    <Compile Include="Examples\EditableRange\ExEditableRange.cs" />
+    <Compile Include="Examples\Fields\ExField.cs" />
+    <Compile Include="Examples\Fields\ExFormFields.cs" />
+    <Compile Include="Examples\Fields\ExRenameMergeFields.cs" />
+    <Compile Include="Examples\Font\ExFont.cs" />
+    <Compile Include="Examples\HeaderFooter\ExHeaderFooter.cs" />
+    <Compile Include="Examples\Hyperlink\ExReplaceHyperlinks.cs" />
+    <Compile Include="Examples\Hyphenation\ExHyphenation.cs" />
+    <Compile Include="Examples\Inline\ExInlineStory.cs" />
+    <Compile Include="Examples\List\ExLists.cs" />
+    <Compile Include="Examples\MailMerging\ExMailMerge.cs" />
+    <Compile Include="Examples\MailMerging\ExMailMergeCustom.cs" />
+    <Compile Include="Examples\MailMerging\ExMailMergeEvent.cs" />
+    <Compile Include="Examples\MailMerging\ExNestedMailMergeCustom.cs" />
+    <Compile Include="Examples\Node\ExNode.cs" />
+    <Compile Include="Examples\PageSetup\ExPageSetup.cs" />
+    <Compile Include="Examples\Paragraph\ExParagraph.cs" />
+    <Compile Include="Examples\Properties\ExProperties.cs" />
+    <Compile Include="Examples\Range\ExRange.cs" />
+    <Compile Include="Examples\Rendering\ExRendering.cs" />
+    <Compile Include="Examples\Saving\ExSwfSaveOptions.cs" />
+    <Compile Include="Examples\Section\ExSection.cs" />
+    <Compile Include="Examples\Style\ExStyles.cs" />
+    <Compile Include="Examples\Tables\ExCellFormat.cs" />
+    <Compile Include="Examples\Tables\ExTable.cs" />
+    <Compile Include="Examples\Tables\ExTableColumn.cs" />
+    <Compile Include="Examples\Tab\ExTabStopCollection.cs" />
+    <Compile Include="Examples\VariableCollection\ExVariableCollection.cs" />
+    <Compile Include="Tests\DocumentBuilder\QaEditableRange.cs" />
+    <Compile Include="Tests\Paragraph\QaInsertField.cs" />
+    <Compile Include="Tests\QaTestsBase.cs" />
+    <Compile Include="Examples\Warning\ExWarningInfoCollection.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DocumentHelper.cs" />
+    <Compile Include="Examples\Saving\ExHtmlFixedSaveOptions.cs" />
+    <Compile Include="Tests\Reporting\QaEngine.cs" />
+    <Compile Include="Tests\SaveOptions\QaHtmlFixedSaveOptions.cs" />
+    <Compile Include="Examples\Saving\ExPdfSaveOptions.cs" />
+    <Compile Include="Tests\SaveOptions\QaPdfSaveOptions.cs" />
+    <Compile Include="Tests\Sdt\QaStructuredDocumentTag.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Examples\AbsolutePositionTab\" />
+    <Folder Include="Examples\Body\" />
+    <Folder Include="Examples\BuildingBlocks\" />
+    <Folder Include="Examples\CertificateHolder\" />
+    <Folder Include="Examples\Charts\" />
+    <Folder Include="Examples\ComHelper\" />
+    <Folder Include="Examples\CompositeNode\" />
+    <Folder Include="Examples\ControlChar\" />
+    <Folder Include="Examples\Exception\" />
+    <Folder Include="Examples\File\" />
+    <Folder Include="Examples\Fonts\" />
+    <Folder Include="Examples\Footnote\" />
+    <Folder Include="Examples\InterruptionToken\" />
+    <Folder Include="Examples\Layout\" />
+    <Folder Include="Examples\License\" />
+    <Folder Include="Examples\ListFormat\" />
+    <Folder Include="Examples\Loading\" />
+    <Folder Include="Examples\LoadOptions\" />
+    <Folder Include="Examples\Marcup\" />
+    <Folder Include="Examples\Math\" />
+    <Folder Include="Examples\ReplacingArgs\" />
+    <Folder Include="Examples\Reporting\" />
+    <Folder Include="Examples\Revision\" />
+    <Folder Include="Examples\Run\" />
+    <Folder Include="Examples\Settings\" />
+    <Folder Include="Examples\Shading\" />
+    <Folder Include="Examples\SpecialChar\" />
+    <Folder Include="Examples\Story\" />
+    <Folder Include="Examples\SubDocument\" />
+    <Folder Include="Examples\TableStyle\" />
+    <Folder Include="Examples\TextColumn\" />
+    <Folder Include="Examples\Themes\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

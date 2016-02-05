@@ -21,8 +21,8 @@ namespace QA_Tests.Examples.Hyphenation
         public void RegisterDictionaryEx()
         {
             //ExStart
-            //ExFor:Hyphenation.RegisterDictionary(string, stream)
-            //ExFor:Hyphenation.RegisterDictionary(string, string)
+            //ExFor:Hyphenation.RegisterDictionary(String, Stream)
+            //ExFor:Hyphenation.RegisterDictionary(String, String)
             //ExSummary:Shows how to open and register a dictionary from a file.
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
 

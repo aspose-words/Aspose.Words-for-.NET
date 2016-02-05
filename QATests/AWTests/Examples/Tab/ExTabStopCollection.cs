@@ -64,7 +64,7 @@ namespace QA_Tests.Examples.Tab
         {
             //ExStart
             //ExFor:TabStopCollection.RemoveByIndex
-            //ExSummary:Shows how to select a tab stop in a document by it's index and remove it.
+            //ExSummary:Shows how to select a tab stop in a document by its index and remove it.
             Aspose.Words.Document doc = new Aspose.Words.Document(ExDir + "Document.doc");
             Aspose.Words.Paragraph paragraph = (Aspose.Words.Paragraph)doc.GetChild(Aspose.Words.NodeType.Paragraph, 0, true);
 
