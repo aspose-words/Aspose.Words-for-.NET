@@ -1,0 +1,1 @@
+This Gist contains code snippets for sample code of Aspose.Words
