@@ -16,11 +16,8 @@ Module RunExamples
         '' =====================================================
         'AppendDocuments.Run()
         'ApplyLicense.Run()
-        'Doc2Pdf.Run()
         'FindAndReplace.Run()
-        'HelloWorld.Run()
-        'LoadAndSaveToDisk.Run()
-        'LoadAndSaveToStream.Run()
+        'HelloWorld.Run()       
         'SimpleMailMerge.Run()
         'UpdateFields.Run()
         'WorkingWithNodes.Run()
@@ -31,11 +28,22 @@ Module RunExamples
         '' =====================================================
         '' =====================================================
 
+        'OpenEncryptedDocument.Run()
+        'LoadAndSaveToDisk.Run()
+        'LoadAndSaveToStream.Run()
+        'CreateDocument.Run()
         'CheckFormat.Run()
         'SplitIntoHtmlPages.Run()
         'LoadTxt.Run()
         'PageSplitter.Run()
         'ImageToPdf.Run()
+        'SpecifySaveOption.Run()
+        'AccessAndVerifySignature.Run()
+        'Doc2Pdf.Run()
+        'DigitallySignedPdf.Run()
+        'ConvertDocumentToByte.Run()
+        'ConvertDocumentToEPUB.Run()
+        'ConvertDocumentToHtmlWithRoundtrip.Run()
 
         '' =====================================================
         '' =====================================================
@@ -83,6 +91,8 @@ Module RunExamples
         'ExtractContent.Run()
         'PageNumbersOfNodes.Run()
         'RemoveBreaks.Run()
+        'CloningDocument.Run();
+        'ProtectDocument.Run();
 
         '' Fields
         '' =====================================================
@@ -164,7 +174,7 @@ Module RunExamples
         'PieChart.Run()
         'ScatterChart.Run()
         'BubbleChart.Run()
-        ChartWithFilteringGroupingOrdering.Run()
+        'ChartWithFilteringGroupingOrdering.Run()
 
         ' Stop before exiting
         Console.WriteLine(vbNewLine + vbNewLine + "Program Finished. Press any key to exit....")

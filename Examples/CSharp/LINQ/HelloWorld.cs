@@ -11,6 +11,7 @@ namespace CSharp.LINQ
     {
         public static void Run()
         {
+            //ExStart:HelloWorld
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LINQ();
 
@@ -31,7 +32,7 @@ namespace CSharp.LINQ
 
             // Save the finished document to disk.
             doc.Save(dataDir);
-
+            //ExEnd:HelloWorld
             Console.WriteLine("\nTemplate document is populated with the data about the sender.\nFile saved at " + dataDir);
 
         }

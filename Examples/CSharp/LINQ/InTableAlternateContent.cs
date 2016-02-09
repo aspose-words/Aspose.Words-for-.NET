@@ -11,6 +11,7 @@ namespace CSharp.LINQ
     {
         public static void Run()
         {
+            //ExStart:InTableAlternateContent
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LINQ(); 
             string fileName = "InTableAlternateContent.doc";
@@ -27,7 +28,7 @@ namespace CSharp.LINQ
 
             // Save the finished document to disk.
             doc.Save(dataDir);
-
+            //ExEnd:InTableAlternateContent
             Console.WriteLine("\nIn-Table list with alternate content template document is populated with the data about clients and contract price.\nFile saved at " + dataDir);
 
         }

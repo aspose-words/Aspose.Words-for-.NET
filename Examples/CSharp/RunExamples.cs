@@ -37,12 +37,9 @@ namespace CSharp
             // =====================================================
 
             //AppendDocuments.Run();
-            //ApplyLicense.Run();
-            //Doc2Pdf.Run();
+            //ApplyLicense.Run();           
             //FindAndReplace.Run();
-            //CSharp.Quick_Start.HelloWorld.Run();
-            //LoadAndSaveToDisk.Run();
-            //LoadAndSaveToStream.Run();
+            //CSharp.Quick_Start.HelloWorld.Run();            
             //SimpleMailMerge.Run();
             //UpdateFields.Run();
             //WorkingWithNodes.Run();
@@ -53,11 +50,24 @@ namespace CSharp
             //// =====================================================
             //// =====================================================
 
+            //OpenEncryptedDocument.Run();
+            //LoadAndSaveToDisk.Run();
+            //LoadAndSaveToStream.Run();
+            //CreateDocument.Run();
             //CheckFormat.Run();
             //SplitIntoHtmlPages.Run();
             //LoadTxt.Run();
             //PageSplitter.Run();
             //ImageToPdf.Run();
+            //SpecifySaveOption.Run();
+            //AccessAndVerifySignature.Run();
+            //Doc2Pdf.Run();
+            //DigitallySignedPdf.Run();
+            //ConvertDocumentToByte.Run();
+            //ConvertDocumentToEPUB.Run();
+            //ConvertDocumentToHtmlWithRoundtrip.Run();
+            
+            
 
             //// =====================================================
             //// =====================================================
@@ -111,6 +121,8 @@ namespace CSharp
             //ExtractContentBetweenCommentRange.Run();
             //PageNumbersOfNodes.Run();
             //RemoveBreaks.Run();
+            //CloningDocument.Run();
+            //ProtectDocument.Run();
 
             //// Fields
             //// =====================================================
@@ -193,7 +205,7 @@ namespace CSharp
             //PieChart.Run();
             //ScatterChart.Run();
             //BubbleChart.Run();
-            ChartWithFilteringGroupingOrdering.Run();
+            //ChartWithFilteringGroupingOrdering.Run();
          
             // Stop before exiting
             Console.WriteLine("\n\nProgram Finished. Press any key to exit....");

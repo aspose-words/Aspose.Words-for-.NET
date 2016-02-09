@@ -8,6 +8,7 @@ Imports Aspose.Words.Reporting
 Namespace LINQ
     Public Class CommonList
         Public Shared Sub Run()
+            ' ExStart:CommonList
             ' The path to the documents directory.
             Dim dataDir As String = RunExamples.GetDataDir_LINQ()
 
@@ -25,7 +26,7 @@ Namespace LINQ
 
             ' Save the finished document to disk.
             doc.Save(dataDir)
-
+            ' ExEnd:CommonList
             Console.WriteLine(Convert.ToString(vbLf & "Common list template document is populated with the data about managers." & vbLf & "File saved at ") & dataDir)
 
         End Sub

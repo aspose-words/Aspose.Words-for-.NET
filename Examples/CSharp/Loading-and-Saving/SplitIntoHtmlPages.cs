@@ -21,7 +21,7 @@ namespace CSharp.Loading_Saving
             // Aspose.Words.License license = new Aspose.Words.License();
             // license.SetLicense(@"Aspose.Words.lic");
 
-
+            
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
@@ -34,11 +34,12 @@ namespace CSharp.Loading_Saving
             // This class does the job.
             Worker w = new Worker();
             w.Execute(srcFileName, tocTemplate, outDir);
+           
 
             Console.WriteLine("\nDocument split into HTML pages successfully.\nFile saved at " + outDir);
         }
     }
-
+   
     internal class Worker
     {
         /// <summary>
@@ -229,7 +230,7 @@ namespace CSharp.Loading_Saving
         private string mTocTemplate;
         private string mDstDir;
     }
-
+  
     internal class Topic
     {
         internal Topic(string title, string fileName)

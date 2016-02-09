@@ -14,6 +14,7 @@ Imports Aspose.Words.Drawing
 Public Class ImageToPdf
 
     Public Shared Sub Run()
+        ' ExStart:ImageToPdf
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_LoadingAndSaving()
 
@@ -22,6 +23,7 @@ Public Class ImageToPdf
         ConvertImageToPdf(dataDir & Convert.ToString("Test.wmf"), dataDir & Convert.ToString("TestWmf_out_.pdf"))
         ConvertImageToPdf(dataDir & Convert.ToString("Test.tiff"), dataDir & Convert.ToString("TestTiff_out_.pdf"))
         ConvertImageToPdf(dataDir & Convert.ToString("Test.gif"), dataDir & Convert.ToString("TestGif_out_.pdf"))
+        ' ExEnd:ImageToPdf
 
         Console.WriteLine(vbLf & "Converted all images to PDF successfully.")
     End Sub
@@ -33,6 +35,7 @@ Public Class ImageToPdf
     ''' <param name="outputFileName">Output PDF file name.</param>
     Public Shared Sub ConvertImageToPdf(inputFileName As String, outputFileName As String)
         Console.WriteLine((Convert.ToString("Converting ") & inputFileName) + " to PDF ....")
+        ' ExStart:ConvertImageToPdf
         ' Create Aspose.Words.Document and DocumentBuilder. 
         ' The builder makes it simple to add content to the document.
         Dim doc As New Document()
@@ -71,6 +74,7 @@ Public Class ImageToPdf
 
         ' Save the document to PDF.
         doc.Save(outputFileName)
+        ' ExEnd:ConvertImageToPdf
     End Sub
 
 End Class

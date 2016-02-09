@@ -13,6 +13,7 @@ namespace CSharp.Loading_Saving
     {
         public static void Run()
         {
+            //ExStart:ImageToPdf
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
@@ -21,7 +22,7 @@ namespace CSharp.Loading_Saving
             ConvertImageToPdf(dataDir + "Test.wmf", dataDir + "TestWmf_out_.pdf");
             ConvertImageToPdf(dataDir + "Test.tiff", dataDir + "TestTif_out_.pdf");
             ConvertImageToPdf(dataDir + "Test.gif", dataDir + "TestGif_out_.pdf");
-
+            //ExEnd:ImageToPdf
             Console.WriteLine("\nConverted all images to PDF successfully.");
         }
 
@@ -30,9 +31,11 @@ namespace CSharp.Loading_Saving
         /// </summary>
         /// <param name="inputFileName">File name of input image file.</param>
         /// <param name="outputFileName">Output PDF file name.</param>
+        
         public static void ConvertImageToPdf(string inputFileName, string outputFileName)
         {
             Console.WriteLine("Converting " + inputFileName + " to PDF ....");
+            //ExStart:ConvertImageToPdf
             // Create Aspose.Words.Document and DocumentBuilder. 
             // The builder makes it simple to add content to the document.
             Document doc = new Document();
@@ -79,6 +82,8 @@ namespace CSharp.Loading_Saving
 
             // Save the document to PDF.
             doc.Save(outputFileName);
+            //ExEnd:ConvertImageToPdf
+
         }
     }
 }

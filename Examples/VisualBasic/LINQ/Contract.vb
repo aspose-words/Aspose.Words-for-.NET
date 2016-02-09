@@ -3,6 +3,7 @@ Imports System.Collections.Generic
 Imports System.Text
 
 Namespace LINQ
+    ' ExStart:Contract
     Public Class Contract
         Public Property Manager() As Manager
             Get
@@ -41,5 +42,6 @@ Namespace LINQ
         End Property
         Private m_Date As DateTime
     End Class
+    ' ExEnd:Contract
 End Namespace
 

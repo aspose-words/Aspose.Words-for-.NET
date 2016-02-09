@@ -12,6 +12,7 @@ namespace CSharp.Loading_Saving
     {
         public static void Run()
         {
+            //ExStart:CheckFormatCompatibility
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
@@ -30,6 +31,7 @@ namespace CSharp.Loading_Saving
             if (Directory.Exists(pre97Dir) == false)
                 Directory.CreateDirectory(pre97Dir);
 
+            
             string[] fileList = Directory.GetFiles(dataDir);
             // Loop through all found files.
             foreach (string fileName in fileList)
@@ -37,10 +39,10 @@ namespace CSharp.Loading_Saving
                 // Extract and display the file name without the path.
                 string nameOnly = Path.GetFileName(fileName);
                 Console.Write(nameOnly);
-
+                //ExStart:DetectFileFormat
                 // Check the file format and move the file to the appropriate folder.
                 FileFormatInfo info = FileFormatUtil.DetectFileFormat(fileName);
-
+                
                 // Display the document type.
                 switch (info.LoadFormat)
                 {
@@ -91,6 +93,7 @@ namespace CSharp.Loading_Saving
                         Console.WriteLine("\tUnknown format.");
                         break;
                 }
+                //ExEnd:DetectFileFormat
 
                 // Now copy the document into the appropriate folder.
                 if (info.IsEncrypted)
@@ -114,7 +117,7 @@ namespace CSharp.Loading_Saving
                     }
                 }
             }
-
+            //ExEnd:CheckFormatCompatibility
             Console.WriteLine("\nChecked the format of all documents successfully.");
         }
     }

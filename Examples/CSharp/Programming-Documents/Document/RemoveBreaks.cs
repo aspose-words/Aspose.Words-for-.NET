@@ -13,12 +13,15 @@ namespace CSharp.Programming_Documents.Working_With_Document
     {
         public static void Run()
         {
+            //ExStart:OpenFromFile
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
 
             string fileName = "TestFile.doc";
+            
             // Open the document.
             Document doc = new Document(dataDir + fileName);
+            //ExEnd:OpenFromFile
 
             // Remove the page and section breaks from the document.
             // In Aspose.Words section breaks are represented as separate Section nodes in the document.

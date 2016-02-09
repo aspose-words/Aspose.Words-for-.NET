@@ -11,6 +11,7 @@ namespace CSharp.LINQ
     {
         public static void Run()
         {
+            //ExStart:ScatterChart
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LINQ(); 
             string fileName = "ScatterChart.docx";
@@ -27,7 +28,7 @@ namespace CSharp.LINQ
 
             // Save the finished document to disk.
             doc.Save(dataDir);
-
+            //ExEnd:ScatterChart
             Console.WriteLine("\nScatter chart template document is populated with the data about contracts.\nFile saved at " + dataDir);
 
         }

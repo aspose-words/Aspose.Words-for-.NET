@@ -8,6 +8,7 @@ Imports Aspose.Words.Reporting
 Namespace LINQ
     Public Class InTableMasterDetail
         Public Shared Sub Run()
+            ' ExStart:InTableMasterDetail
             ' The path to the documents directory.
             Dim dataDir As String = RunExamples.GetDataDir_LINQ()
 
@@ -25,7 +26,7 @@ Namespace LINQ
 
             ' Save the finished document to disk.
             doc.Save(dataDir)
-
+            ' ExEnd:InTableMasterDetail
             Console.WriteLine(Convert.ToString(vbLf & "In-Table master detail template document is populated with the data about managers and it's contracts." & vbLf & "File saved at ") & dataDir)
 
         End Sub

@@ -3,7 +3,9 @@ Imports System.Collections.Generic
 Imports System.Text
 
 Namespace LINQ
+    ' ExStart:Sender
     Public Class Sender
+
         Public Property Name() As [String]
             Get
                 Return m_Name
@@ -23,4 +25,5 @@ Namespace LINQ
         End Property
         Private m_Message As [String]
     End Class
+    ' ExEnd:Sender
 End Namespace

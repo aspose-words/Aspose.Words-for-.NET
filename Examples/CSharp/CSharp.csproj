@@ -41,6 +41,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -71,6 +72,14 @@
     <Compile Include="LINQ\HelloWorld.cs" />
     <Compile Include="LINQ\Sender.cs" />
     <Compile Include="Loading-and-Saving\CheckFormat.cs" />
+    <Compile Include="Loading-and-Saving\AccessAndVerifySignature.cs" />
+    <Compile Include="Loading-and-Saving\ConvertDocumentToByte.cs" />
+    <Compile Include="Loading-and-Saving\ConvertDocumentToEPUB.cs" />
+    <Compile Include="Loading-and-Saving\ConvertDocumentToHtmlWithRoundtrip.cs" />
+    <Compile Include="Loading-and-Saving\DigitallySignedPdf.cs" />
+    <Compile Include="Loading-and-Saving\SpecifySaveOption.cs" />
+    <Compile Include="Loading-and-Saving\OpenEncryptedDocument.cs" />
+    <Compile Include="Loading-and-Saving\CreateDocument.cs" />
     <Compile Include="Loading-and-Saving\ImageToPdf.cs" />
     <Compile Include="Loading-and-Saving\LoadTxt.cs" />
     <Compile Include="Loading-and-Saving\PageSplitter.cs" />
@@ -82,6 +91,8 @@
     <Compile Include="Mail-Merge\NestedMailMerge.cs" />
     <Compile Include="Mail-Merge\RemoveEmptyRegions.cs" />
     <Compile Include="Mail-Merge\XMLMailMerge.cs" />
+    <Compile Include="Programming-Documents\Document\CloningDocument.cs" />
+    <Compile Include="Programming-Documents\Document\ProtectDocument.cs" />
     <Compile Include="Programming-Documents\Find-Replace\FindAndHighlight.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceTextWithField.cs" />
     <Compile Include="Programming-Documents\Joining-Appending\AppendDocumentManually.cs" />
@@ -136,11 +147,11 @@
     </Compile>
     <Compile Include="Quick-Start\AppendDocuments.cs" />
     <Compile Include="Quick-Start\ApplyLicense.cs" />
-    <Compile Include="Quick-Start\Doc2Pdf.cs" />
+    <Compile Include="Loading-and-Saving\Doc2Pdf.cs" />
     <Compile Include="Quick-Start\FindAndReplace.cs" />
     <Compile Include="Quick-Start\HelloWorld.cs" />
-    <Compile Include="Quick-Start\LoadAndSaveToDisk.cs" />
-    <Compile Include="Quick-Start\LoadAndSaveToStream.cs" />
+    <Compile Include="Loading-and-Saving\LoadAndSaveToDisk.cs" />
+    <Compile Include="Loading-and-Saving\LoadAndSaveToStream.cs" />
     <Compile Include="Quick-Start\SimpleMailMerge.cs" />
     <Compile Include="Quick-Start\UpdateFields.cs" />
     <Compile Include="Quick-Start\WorkingWithNodes.cs" />
@@ -228,6 +239,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\ExceptionDialog.resx">
       <DependentUpon>ExceptionDialog.cs</DependentUpon>

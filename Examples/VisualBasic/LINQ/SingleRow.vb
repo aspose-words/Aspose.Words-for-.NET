@@ -8,6 +8,7 @@ Imports Aspose.Words.Reporting
 Namespace LINQ
     Public Class SingleRow
         Public Shared Sub Run()
+            ' ExStart:SingleRow
             ' The path to the documents directory.
             Dim dataDir As String = RunExamples.GetDataDir_LINQ()
 
@@ -28,7 +29,7 @@ Namespace LINQ
 
             ' Save the finished document to disk.
             doc.Save(dataDir)
-
+            ' ExEnd:SingleRow
             Console.WriteLine(Convert.ToString(vbLf & "Single row template document is populated with the data about manager." & vbLf & "File saved at ") & dataDir)
 
         End Sub

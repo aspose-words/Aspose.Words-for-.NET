@@ -3,6 +3,7 @@ Imports System.Collections.Generic
 Imports System.Text
 
 Namespace LINQ
+    ' ExStart:Manager
     Public Class Manager
         Public Property Name() As [String]
             Get
@@ -41,4 +42,5 @@ Namespace LINQ
         End Property
         Private m_Contracts As IEnumerable(Of Contract)
     End Class
+    ' ExEnd:Manager
 End Namespace

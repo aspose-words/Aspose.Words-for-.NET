@@ -1,15 +1,15 @@
 ﻿
 using System.IO;
-
 using Aspose.Words;
 using System;
 
-namespace CSharp.Quick_Start
+namespace CSharp.Loading_Saving
 {
     class Doc2Pdf
     {
         public static void Run()
         {
+            //ExStart:Doc2Pdf
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_QuickStart();
 
@@ -20,7 +20,7 @@ namespace CSharp.Quick_Start
 
             // Save the document in PDF format.
             doc.Save(dataDir);
-
+            //ExEnd:Doc2Pdf
             Console.WriteLine("\nDocument converted to PDF successfully.\nFile saved at " + dataDir);
         }
     }

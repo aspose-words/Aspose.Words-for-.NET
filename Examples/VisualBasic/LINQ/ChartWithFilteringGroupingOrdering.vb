@@ -8,6 +8,7 @@ Imports Aspose.Words.Reporting
 Namespace LINQ
     Public Class ChartWithFilteringGroupingOrdering
         Public Shared Sub Run()
+            ' ExStart:ChartWithFilteringGroupingOrdering
             ' The path to the documents directory.
             Dim dataDir As String = RunExamples.GetDataDir_LINQ()
             Dim fileName As String = "ChartWithFilteringGroupingOrdering.docx"
@@ -24,6 +25,7 @@ Namespace LINQ
 
             ' Save the finished document to disk.
             doc.Save(dataDir)
+            ' ExEnd:ChartWithFilteringGroupingOrdering
 
             Console.WriteLine(Convert.ToString(vbLf & "Chart with filtering, grouping and ordering template document is populated with the data about contracts." & vbLf & "File saved at ") & dataDir)
 

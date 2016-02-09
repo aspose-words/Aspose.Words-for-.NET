@@ -3,6 +3,7 @@ Imports System.Collections.Generic
 Imports System.Text
 
 Namespace LINQ
+    ' ExStart:Client
     Public Class Client
         Public Property Name() As [String]
             Get
@@ -14,4 +15,5 @@ Namespace LINQ
         End Property
         Private m_Name As [String]
     End Class
+    ' ExEnd:Client
 End Namespace

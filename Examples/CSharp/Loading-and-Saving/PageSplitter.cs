@@ -19,17 +19,20 @@ namespace CSharp.Loading_Saving
     {
         public static void Run()
         {
+            
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving() + "Split";
 
            
             SplitAllDocumentsToPages(dataDir);
+           
 
             Console.WriteLine("\nDocument split to pages successfully.\nFile saved at " + dataDir + "\\_out_");
         }
 
         public static void SplitDocumentToPages(string docName)
         {
+           
             string folderName = Path.GetDirectoryName(docName);
             string fileName = Path.GetFileNameWithoutExtension(docName);
             string extensionName = Path.GetExtension(docName);
@@ -57,16 +60,19 @@ namespace CSharp.Loading_Saving
 
             // Detach the collector from the document.
             layoutCollector.Document = null;
+            
         }
 
         public static void SplitAllDocumentsToPages(string folderName)
         {
+           
             string[] fileNames = Directory.GetFiles(folderName, "*.doc?", SearchOption.TopDirectoryOnly);
 
             foreach (string fileName in fileNames)
             {
                 SplitDocumentToPages(fileName);
             }
+            
         }
     }
 
@@ -102,12 +108,14 @@ namespace CSharp.Loading_Saving
         /// <param name="endIndex">1-based index of the end page.</param>
         public Document GetDocumentOfPageRange(int startIndex, int endIndex)
         {
+            
             Document result = (Document)Document.Clone(false);
 
             foreach (Section section in mPageNumberFinder.RetrieveAllNodesOnPages(startIndex, endIndex, NodeType.Section))
                 result.AppendChild(result.ImportNode(section, true));
 
             return result;
+           
         }
 
         /// <summary>

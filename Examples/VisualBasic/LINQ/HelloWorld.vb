@@ -8,6 +8,7 @@ Imports Aspose.Words.Reporting
 Namespace LINQ
     Public Class HelloWorld
         Public Shared Sub Run()
+            ' ExStart:HelloWorld
             ' The path to the documents directory.
             Dim dataDir As String = RunExamples.GetDataDir_LINQ()
 
@@ -31,7 +32,7 @@ Namespace LINQ
 
             ' Save the finished document to disk.
             doc.Save(dataDir)
-
+            ' ExEnd:HelloWorld
             Console.WriteLine(Convert.ToString(vbLf & "Template document is populated with the data about the sender." & vbLf & "File saved at ") & dataDir)
 
         End Sub

@@ -15,6 +15,7 @@ namespace CSharp.Loading_Saving
     {
         public static void Run()
         {
+            //ExStart:LoadTxt
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
             
@@ -24,7 +25,7 @@ namespace CSharp.Loading_Saving
             // Save as any Aspose.Words supported format, such as DOCX.  
             dataDir = dataDir + "LoadTxt_out_.docx";
             doc.Save(dataDir);
-
+            //ExEnd:LoadTxt
             Console.WriteLine("\nText document loaded successfully.\nFile saved at " + dataDir);
         }
     }

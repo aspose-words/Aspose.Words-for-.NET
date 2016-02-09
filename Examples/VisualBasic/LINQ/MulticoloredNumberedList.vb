@@ -8,6 +8,7 @@ Imports Aspose.Words.Reporting
 Namespace LINQ
     Public Class MulticoloredNumberedList
         Public Shared Sub Run()
+            ' ExStart:MulticoloredNumberedList
             ' The path to the documents directory.
             Dim dataDir As String = RunExamples.GetDataDir_LINQ()
 
@@ -25,6 +26,7 @@ Namespace LINQ
 
             ' Save the finished document to disk.
             doc.Save(dataDir)
+            ' ExEnd:MulticoloredNumberedList
 
             Console.WriteLine(Convert.ToString(vbLf & "Multicolored numbered list template document is populated with the data about clients." & vbLf & "File saved at ") & dataDir)
 

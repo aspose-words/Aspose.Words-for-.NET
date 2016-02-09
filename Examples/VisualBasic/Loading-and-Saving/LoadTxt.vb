@@ -12,7 +12,7 @@ Imports System.Text
 
 Public Class LoadTxt
     Public Shared Sub Run()
-
+        ' ExStart:LoadTxt
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_LoadingAndSaving()
 
@@ -22,6 +22,7 @@ Public Class LoadTxt
         dataDir = dataDir & "LoadTxt_out_.docx"
         ' Save as any Aspose.Words supported format, such as DOCX.
         doc.Save(dataDir)
+        ' ExEnd:LoadTxt
 
         Console.WriteLine(vbNewLine + "Text document loaded successfully." + vbNewLine + "File saved at " + dataDir)
     End Sub

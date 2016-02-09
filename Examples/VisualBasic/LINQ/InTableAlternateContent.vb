@@ -8,6 +8,7 @@ Imports Aspose.Words.Reporting
 Namespace LINQ
     Public Class InTableAlternateContent
         Public Shared Sub Run()
+            ' ExStart:InTableAlternateContent
             ' The path to the documents directory.
             Dim dataDir As String = RunExamples.GetDataDir_LINQ()
 
@@ -25,7 +26,7 @@ Namespace LINQ
 
             ' Save the finished document to disk.
             doc.Save(dataDir)
-
+            ' ExEnd:InTableAlternateContent
             Console.WriteLine(Convert.ToString(vbLf & "In-Table list with alternate content template document is populated with the data about clients and contract price." & vbLf & "File saved at ") & dataDir)
 
         End Sub

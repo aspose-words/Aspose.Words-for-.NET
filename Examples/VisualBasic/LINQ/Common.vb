@@ -10,15 +10,18 @@ Namespace LINQ
         ''' Return first manager from Managers which is an enumeration of instances of the Manager class. 
         ''' </summary>
         Public Shared Function GetManager() As Manager
+            ' ExStart:GetManager
             Dim managers As IEnumerator(Of Manager) = GetManagers().GetEnumerator()
             managers.MoveNext()
             Return managers.Current
+            ' ExEnd:GetManager
         End Function
 
         ''' <summary>
         ''' Return an enumeration of instances of the Client class. 
         ''' </summary>
         Public Shared Function GetClients() As IEnumerable(Of Client)
+            ' ExStart:GetClients
             Dim returnCollection As New List(Of Client)()
             For Each manager As Manager In GetManagers()
                 For Each contract As Contract In manager.Contracts
@@ -26,12 +29,14 @@ Namespace LINQ
                 Next
             Next
             Return returnCollection
+            ' ExEnd:GetClients
         End Function
 
         ''' <summary>
         '''  Return an enumeration of instances of the Manager class.
         ''' </summary>
         Public Shared Function GetManagers() As IEnumerable(Of Manager)
+            ' ExStart:GetManagers
             Dim returnCollection As New List(Of Manager)()
             Dim manager As New Manager() With { _
                 .Name = "John Smith", _
@@ -124,24 +129,28 @@ Namespace LINQ
             returnCollection.Add(manager)
 
             Return returnCollection
+            ' ExEnd:GetManagers
         End Function
 
         ''' <summary>
         ''' Return an array of photo bytes. 
         ''' </summary>
         Private Shared Function Photo() As Byte()
+            ' ExStart:Photo
             ' The path to the documents directory.
             Dim dataDir As String = RunExamples.GetDataDir_LINQ()
 
             ' Load the photo and read all bytes.
             Dim imgdata As Byte() = System.IO.File.ReadAllBytes(dataDir & Convert.ToString("photo.png"))
             Return imgdata
+            ' ExEnd:Photo
         End Function
 
         ''' <summary>
         '''  Return an enumeration of instances of the Contract class.
         ''' </summary>
         Public Shared Function GetContracts() As IEnumerable(Of Contract)
+            ' ExStart:GetContracts
             Dim returnCollection As New List(Of Contract)()
             For Each manager As Manager In GetManagers()
                 For Each contract As Contract In manager.Contracts
@@ -150,6 +159,7 @@ Namespace LINQ
                 Next
             Next
             Return returnCollection
+            ' ExEnd:GetContracts
         End Function
 
 

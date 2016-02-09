@@ -5,6 +5,9 @@ Imports Aspose.Words
 
 Public Class LoadAndSaveToStream
     Public Shared Sub Run()
+
+        ' ExStart:LoadAndSaveToStream 
+        ' ExStart:OpeningFromStream 
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_QuickStart()
 
@@ -16,6 +19,7 @@ Public Class LoadAndSaveToStream
 
         ' You can close the stream now, it is no longer needed because the document is in memory.
         stream.Close()
+        ' ExEnd:OpeningFromStream 
 
         ' ... do something with the document
 
@@ -25,6 +29,7 @@ Public Class LoadAndSaveToStream
 
         ' Rewind the stream position back to zero so it is ready for the next reader.
         dstStream.Position = 0
+        ' ExEnd:LoadAndSaveToStream 
 
         ' Save the document from stream, to disk. Normally you would do something with the stream directly,
         ' for example writing the data to a database.

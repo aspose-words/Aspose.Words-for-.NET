@@ -11,6 +11,7 @@ namespace CSharp.LINQ
     {
         public static void Run()
         {
+            //ExStart:CommonMasterDetail
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LINQ(); 
             string fileName = "CommonMasterDetail.doc";
@@ -27,7 +28,7 @@ namespace CSharp.LINQ
 
             // Save the finished document to disk.
             doc.Save(dataDir);
-
+            //ExEnd:CommonMasterDetail
             Console.WriteLine("\nCommon master detail template document is populated with the data about managers and it's contracts.\nFile saved at " + dataDir);
 
         }

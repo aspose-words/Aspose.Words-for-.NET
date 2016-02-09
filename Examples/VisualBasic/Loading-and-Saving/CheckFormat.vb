@@ -10,6 +10,7 @@ Imports Aspose.Words
 
 Public Class CheckFormat
     Public Shared Sub Run()
+        ' ExStart:CheckFormat
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_LoadingAndSaving()
         Dim supportedDir As String = dataDir & "OutSupported"
@@ -33,7 +34,7 @@ Public Class CheckFormat
         End If
 
         Dim fileList() As String = Directory.GetFiles(dataDir)
-        
+
         For Each fileName As String In fileList
             ' Extract and display the file name without the path.
             Dim nameOnly As String = Path.GetFileName(fileName)
@@ -91,7 +92,7 @@ Public Class CheckFormat
                 End Select
             End If
         Next fileName
-
+        ' ExEnd:CheckFormat
         Console.WriteLine(vbNewLine + "Checked the format of all documents successfully.")
     End Sub
 End Class

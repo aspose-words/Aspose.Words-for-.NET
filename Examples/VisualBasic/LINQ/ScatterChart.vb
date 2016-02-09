@@ -8,6 +8,7 @@ Imports Aspose.Words.Reporting
 Namespace LINQ
     Public Class ScatterChart
         Public Shared Sub Run()
+            ' ExStart:ScatterChart
             ' The path to the documents directory.
             Dim dataDir As String = RunExamples.GetDataDir_LINQ()
 
@@ -25,7 +26,7 @@ Namespace LINQ
 
             ' Save the finished document to disk.
             doc.Save(dataDir)
-
+            ' ExEnd:ScatterChart
             Console.WriteLine(Convert.ToString(vbLf & "Scatter chart template document is populated with the data about contracts." & vbLf & "File saved at ") & dataDir)
 
         End Sub

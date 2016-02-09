@@ -11,6 +11,7 @@ namespace CSharp.LINQ
     {
         public static void Run()
         {
+            //ExStart:ChartWithFilteringGroupingOrdering
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LINQ(); 
             string fileName = "ChartWithFilteringGroupingOrdering.docx";
@@ -27,6 +28,7 @@ namespace CSharp.LINQ
 
             // Save the finished document to disk.
             doc.Save(dataDir);
+            //ExEnd:ChartWithFilteringGroupingOrdering
 
             Console.WriteLine("\nChart with filtering, grouping and ordering template document is populated with the data about contracts.\nFile saved at " + dataDir);
 
