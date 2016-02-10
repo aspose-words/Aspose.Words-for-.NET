@@ -17,6 +17,7 @@ if (Directory.Exists(encryptedDir) == false)
 if (Directory.Exists(pre97Dir) == false)
     Directory.CreateDirectory(pre97Dir);
 
+            
 string[] fileList = Directory.GetFiles(dataDir);
 // Loop through all found files.
 foreach (string fileName in fileList)
@@ -24,10 +25,9 @@ foreach (string fileName in fileList)
     // Extract and display the file name without the path.
     string nameOnly = Path.GetFileName(fileName);
     Console.Write(nameOnly);
-
     // Check the file format and move the file to the appropriate folder.
     FileFormatInfo info = FileFormatUtil.DetectFileFormat(fileName);
-
+    
     // Display the document type.
     switch (info.LoadFormat)
     {
