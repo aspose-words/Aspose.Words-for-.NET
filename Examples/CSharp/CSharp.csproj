@@ -92,6 +92,9 @@
     <Compile Include="Mail-Merge\RemoveEmptyRegions.cs" />
     <Compile Include="Mail-Merge\XMLMailMerge.cs" />
     <Compile Include="Programming-Documents\Document\CloningDocument.cs" />
+    <Compile Include="Programming-Documents\Document\AccessStyles.cs" />
+    <Compile Include="Programming-Documents\Document\SetViewOption.cs" />
+    <Compile Include="Programming-Documents\Document\GetVariables.cs" />
     <Compile Include="Programming-Documents\Document\ProtectDocument.cs" />
     <Compile Include="Programming-Documents\Find-Replace\FindAndHighlight.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceTextWithField.cs" />
@@ -139,6 +142,10 @@
     <Compile Include="Programming-Documents\Tables\AutoFitTableToContents.cs" />
     <Compile Include="Programming-Documents\Tables\AutoFitTableToFixedColumnWidths.cs" />
     <Compile Include="Programming-Documents\Tables\AutoFitTableToWindow.cs" />
+    <Compile Include="Programming-Documents\Tables\CloneTable.cs" />
+    <Compile Include="Programming-Documents\Tables\InsertTableFromHtml.cs" />
+    <Compile Include="Programming-Documents\Tables\InsertTableDirectly.cs" />
+    <Compile Include="Programming-Documents\Tables\InsertTableUsingDocumentBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

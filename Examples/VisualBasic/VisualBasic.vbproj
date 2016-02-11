@@ -115,11 +115,14 @@
     <Compile Include="Programming-Documents\Bookmarks\CopyBookmarkedText.vb" />
     <Compile Include="Programming-Documents\Bookmarks\UntangleRowBookmarks.vb" />
     <Compile Include="Programming-Documents\Comments\ProcessComments.vb" />
+    <Compile Include="Programming-Documents\Document\AccessStyles.vb" />
     <Compile Include="Programming-Documents\Document\CloningDocument.vb" />
     <Compile Include="Programming-Documents\Document\ExtractContent.vb" />
+    <Compile Include="Programming-Documents\Document\GetVariables.vb" />
     <Compile Include="Programming-Documents\Document\PageNumbersOfNodes.vb" />
     <Compile Include="Programming-Documents\Document\ProtectDocument.vb" />
     <Compile Include="Programming-Documents\Document\RemoveBreaks.vb" />
+    <Compile Include="Programming-Documents\Document\SetViewOption.vb" />
     <Compile Include="Programming-Documents\Fields\ConvertFieldsInBody.vb" />
     <Compile Include="Programming-Documents\Fields\ConvertFieldsInDocument.vb" />
     <Compile Include="Programming-Documents\Fields\ConvertFieldsInParagraph.vb" />
@@ -152,6 +155,10 @@
     <Compile Include="Programming-Documents\Tables\AutoFitTableToContents.vb" />
     <Compile Include="Programming-Documents\Tables\AutoFitTableToFixedColumnWidths.vb" />
     <Compile Include="Programming-Documents\Tables\AutoFitTableToWindow.vb" />
+    <Compile Include="Programming-Documents\Tables\CloneTable.vb" />
+    <Compile Include="Programming-Documents\Tables\InsertTableDirectly.vb" />
+    <Compile Include="Programming-Documents\Tables\InsertTableFromHtml.vb" />
+    <Compile Include="Programming-Documents\Tables\InsertTableUsingDocumentBuilder.vb" />
     <Compile Include="Quick-Start\AppendDocuments.vb" />
     <Compile Include="Quick-Start\ApplyLicense.vb" />
     <Compile Include="Loading-and-Saving\Doc2Pdf.vb" />

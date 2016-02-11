@@ -14,7 +14,7 @@ Module RunExamples
         '' Quick Start
         '' =====================================================
         '' =====================================================
-        'AppendDocuments.Run()
+        AppendDocuments.Run()
         'ApplyLicense.Run()
         'FindAndReplace.Run()
         'HelloWorld.Run()       
@@ -93,6 +93,9 @@ Module RunExamples
         'RemoveBreaks.Run()
         'CloningDocument.Run();
         'ProtectDocument.Run();
+        'AccessStyles.Run()
+        'GetVariables.Run()
+        'SetViewOption.Run()
 
         '' Fields
         '' =====================================================
@@ -117,6 +120,10 @@ Module RunExamples
         'AutoFitTableToWindow.Run()
         'AutoFitTableToContents.Run()
         'AutoFitTableToFixedColumnWidths.Run()
+        'InsertTableUsingDocumentBuilder.Run()
+        'InsertTableFromHtml.Run()
+        'InsertTableDirectly.Run()
+        'CloneTable.Run()
 
         '' =====================================================
         '' =====================================================

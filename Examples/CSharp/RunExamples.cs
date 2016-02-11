@@ -123,6 +123,9 @@ namespace CSharp
             //RemoveBreaks.Run();
             //CloningDocument.Run();
             //ProtectDocument.Run();
+            //AccessStyles.Run();
+            //GetVariables.Run();
+            //SetViewOption.Run();
 
             //// Fields
             //// =====================================================
@@ -147,6 +150,10 @@ namespace CSharp
             //AutoFitTableToWindow.Run();
             //AutoFitTableToContents.Run();
             //AutoFitTableToFixedColumnWidths.Run();
+            //InsertTableUsingDocumentBuilder.Run();
+            //InsertTableDirectly.Run();
+            //CloneTable.Run();
+            InsertTableFromHtml.Run();
 
             //// =====================================================
             //// =====================================================
