@@ -151,7 +151,15 @@
     <Compile Include="Programming-Documents\Joining-Appending\UnlinkHeadersFooters.vb" />
     <Compile Include="Programming-Documents\Joining-Appending\UpdatePageLayout.vb" />
     <Compile Include="Programming-Documents\Joining-Appending\UseDestinationStyles.vb" />
+    <Compile Include="Programming-Documents\Sections\AddDeleteSection.vb" />
+    <Compile Include="Programming-Documents\Sections\AppendSectionContent.vb" />
+    <Compile Include="Programming-Documents\Sections\CloneSection.vb" />
+    <Compile Include="Programming-Documents\Sections\CopySection.vb" />
+    <Compile Include="Programming-Documents\Sections\DeleteHeaderFooterContent.vb" />
+    <Compile Include="Programming-Documents\Sections\DeleteSectionContent.vb" />
+    <Compile Include="Programming-Documents\Sections\SectionsAccessByIndex.vb" />
     <Compile Include="Programming-Documents\Styles\ExtractContentBasedOnStyles.vb" />
+    <Compile Include="Programming-Documents\Tables\ApplyFormatting.vb" />
     <Compile Include="Programming-Documents\Tables\AutoFitTableToContents.vb" />
     <Compile Include="Programming-Documents\Tables\AutoFitTableToFixedColumnWidths.vb" />
     <Compile Include="Programming-Documents\Tables\AutoFitTableToWindow.vb" />

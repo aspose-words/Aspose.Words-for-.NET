@@ -124,6 +124,17 @@ Module RunExamples
         'InsertTableFromHtml.Run()
         'InsertTableDirectly.Run()
         'CloneTable.Run()
+        'ApplyFormatting.Run()
+
+        '' Sections
+        '' =====================================================
+        'SectionsAccessByIndex.Run()
+        'AddDeleteSection.Run()
+        'AppendSectionContent.Run()
+        'DeleteSectionContent.Run()
+        'DeleteHeaderFooterContent.Run()
+        'CloneSection.Run()
+        'CopySection.Run()
 
         '' =====================================================
         '' =====================================================
@@ -230,6 +241,9 @@ Module RunExamples
 
     Public Function GetDataDir_WorkingWithTables() As [String]
         Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Tables/")
+    End Function
+    Public Function GetDataDir_WorkingWithSections() As [String]
+        Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Sections/")
     End Function
 
     Public Function GetDataDir_MailMergeAndReporting() As [String]

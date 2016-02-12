@@ -18,7 +18,9 @@ namespace CSharp.Programming_Documents.Working_with_Tables
             CloneCompleteTable(dataDir);
             CloneLastRow(dataDir);                       
         }
-
+        /// <summary>
+        /// Shows how to clone complete table.
+        /// </summary
         public static void CloneCompleteTable(string dataDir)
         {
             //ExStart:CloneCompleteTable
@@ -43,6 +45,9 @@ namespace CSharp.Programming_Documents.Working_with_Tables
             //ExEnd:CloneCompleteTable
             Console.WriteLine("\nTable cloned successfully.\nFile saved at " + dataDir);
         }
+        /// <summary>
+        /// Shows how to clone last row of table.
+        /// </summary
         public static void CloneLastRow(string dataDir)
         {
             //ExStart:CloneLastRow

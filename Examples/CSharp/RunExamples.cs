@@ -9,6 +9,7 @@ using CSharp.Programming_Documents.Working_with_Fields;
 using CSharp.Programming_Documents.Working_with_Images;
 using CSharp.Programming_Documents.Working_with_Styles;
 using CSharp.Programming_Documents.Working_with_Tables;
+using CSharp.Programming_Documents.Working_with_Sections;
 using CSharp.Quick_Start;
 using CSharp.Rendering_and_Printing;
 using CSharp.LINQ;
@@ -153,7 +154,19 @@ namespace CSharp
             //InsertTableUsingDocumentBuilder.Run();
             //InsertTableDirectly.Run();
             //CloneTable.Run();
-            InsertTableFromHtml.Run();
+            //InsertTableFromHtml.Run();
+            ApplyFormatting.Run();
+
+            //// Sections
+            //// =====================================================
+            //SectionsAccessByIndex.Run();
+            //AddDeleteSection.Run();
+            //AppendSectionContent.Run();
+            //DeleteSectionContent.Run();
+            //DeleteHeaderFooterContent.Run();
+            //CloneSection.Run();
+            //CopySection.Run();
+            
 
             //// =====================================================
             //// =====================================================
@@ -272,7 +285,10 @@ namespace CSharp
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Tables/");
         }
-
+        public static String GetDataDir_WorkingWithSections()
+        {
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Sections/");
+        }
         public static String GetDataDir_MailMergeAndReporting()
         {
             return Path.GetFullPath(GetDataDir_Data() + "Mail-Merge/");
