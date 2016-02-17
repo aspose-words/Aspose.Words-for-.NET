@@ -27,7 +27,6 @@ For Each fileName As String In fileList
     ' Extract and display the file name without the path.
     Dim nameOnly As String = Path.GetFileName(fileName)
     Console.Write(nameOnly)
-
     ' Check the file format and move the file to the appropriate folder.
     Dim info As FileFormatInfo = FileFormatUtil.DetectFileFormat(fileName)
 
@@ -64,7 +63,6 @@ For Each fileName As String In fileList
         Case Else
             Console.WriteLine(Constants.vbTab & "Unknown format.")
     End Select
-
     ' Now copy the document into the appropriate folder.
     If info.IsEncrypted Then
         Console.WriteLine(Constants.vbTab & "An encrypted document.")
