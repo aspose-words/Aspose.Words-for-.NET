@@ -67,6 +67,7 @@ namespace CSharp
             //ConvertDocumentToByte.Run();
             //ConvertDocumentToEPUB.Run();
             //ConvertDocumentToHtmlWithRoundtrip.Run();
+           
             
             
 
@@ -155,7 +156,12 @@ namespace CSharp
             //InsertTableDirectly.Run();
             //CloneTable.Run();
             //InsertTableFromHtml.Run();
-            ApplyFormatting.Run();
+            //ApplyFormatting.Run();
+            //SpecifyHeightAndWidth.Run();
+            //ApplyStyle.Run();
+            //ExtractText.Run();
+            //FindingIndex.Run();
+            AddRemoveColumn.Run();
 
             //// Sections
             //// =====================================================

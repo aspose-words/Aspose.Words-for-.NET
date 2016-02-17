@@ -21,19 +21,20 @@ namespace CSharp.Programming_Documents.Working_With_Document
         /// Shows how to protect document
         /// </summary>
         /// <param name="inputFileName">input file name with complete path.</param>        
-        public static void Protect(string inputFileName)
+        private static void Protect(string inputFileName)
         {
             //ExStart:ProtectDocument
             Document doc = new Document(inputFileName);
             doc.Protect(ProtectionType.AllowOnlyFormFields, "password");
-            Console.WriteLine("\nDocument protected successfully.");
             //ExEnd:ProtectDocument
+            Console.WriteLine("\nDocument protected successfully.");
+          
         }
         /// <summary>
         /// Shows how to unprotect document
         /// </summary>
         /// <param name="inputFileName">input file name with complete path.</param>        
-        public static void UnProtect(string inputFileName)
+        private static void UnProtect(string inputFileName)
         {
             //ExStart:UnProtectDocument
             Document doc = new Document(inputFileName);
@@ -45,7 +46,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
         /// Shows how to get protection type
         /// </summary>
         /// <param name="inputFileName">input file name with complete path.</param>        
-        public static void GetProtectionType(string inputFileName)
+        private static void GetProtectionType(string inputFileName)
         {
             //ExStart:GetProtectionType
             Document doc = new Document(inputFileName);

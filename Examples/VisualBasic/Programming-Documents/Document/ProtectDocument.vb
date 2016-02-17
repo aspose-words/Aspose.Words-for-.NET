@@ -18,8 +18,9 @@ Public Class ProtectDocument
         ' ExStart:ProtectDocument
         Dim doc As New Document(inputFileName)
         doc.Protect(ProtectionType.AllowOnlyFormFields, "password")
-        Console.WriteLine(vbLf & "Document protected successfully.")
         ' ExEnd:ProtectDocument
+        Console.WriteLine(vbLf & "Document protected successfully.")
+
     End Sub
     ''' <summary>
     ''' Shows how to unprotect document

@@ -12,13 +12,13 @@ namespace CSharp.Programming_Documents.Working_with_Sections
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithSections() + "Section.AddRemove.doc";
             AddSection(dataDir);
-            //DeleteSection(dataDir);
-            //DeleteAllSections(dataDir);
+            DeleteSection(dataDir);
+            DeleteAllSections(dataDir);
         }
         /// <summary>
         /// Shows how to add a section to the end of the document.
-        /// </summary
-        public static void AddSection(string dataDir)
+        /// </summary>
+        private static void AddSection(string dataDir)
         {
             //ExStart:AddSection
             Document doc = new Document(dataDir);
@@ -29,8 +29,8 @@ namespace CSharp.Programming_Documents.Working_with_Sections
         }
         /// <summary>
         /// Shows how to remove a section at the specified index.
-        /// </summary
-        public static void DeleteSection(string dataDir)
+        /// </summary>
+        private static void DeleteSection(string dataDir)
         {
             //ExStart:DeleteSection
             Document doc = new Document(dataDir);
@@ -40,8 +40,8 @@ namespace CSharp.Programming_Documents.Working_with_Sections
         }
         /// <summary>
         /// Shows how to remove all sections from a document.
-        /// </summary
-        public static void DeleteAllSections(string dataDir)
+        /// </summary>
+        private static void DeleteAllSections(string dataDir)
         {
             //ExStart:DeleteAllSections
             Document doc = new Document(dataDir);

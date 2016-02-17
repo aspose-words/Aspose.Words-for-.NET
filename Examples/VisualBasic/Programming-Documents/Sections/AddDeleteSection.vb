@@ -9,7 +9,7 @@ Public Class AddDeleteSection
         'DeleteSection(dataDir);
         'DeleteAllSections(dataDir);
     End Sub
-    Public Shared Sub AddSection(dataDir As String)
+    Private Shared Sub AddSection(dataDir As String)
         ' ExStart:AddSection
         Dim doc As New Document(dataDir)
         Dim sectionToAdd As New Section(doc)
@@ -17,14 +17,14 @@ Public Class AddDeleteSection
         ' ExEnd:AddSection
         Console.WriteLine(vbLf & "Section added successfully to the end of the document.")
     End Sub
-    Public Shared Sub DeleteSection(dataDir As String)
+    Private Shared Sub DeleteSection(dataDir As String)
         ' ExStart:DeleteSection
         Dim doc As New Document(dataDir)
         doc.Sections.RemoveAt(0)
         ' ExEnd:DeleteSection
         Console.WriteLine(vbLf & "Section deleted successfully at 0 index.")
     End Sub
-    Public Shared Sub DeleteAllSections(dataDir As String)
+    Private Shared Sub DeleteAllSections(dataDir As String)
         ' ExStart:DeleteAllSections
         Dim doc As New Document(dataDir)
         doc.Sections.Clear()

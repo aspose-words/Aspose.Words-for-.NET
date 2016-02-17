@@ -18,13 +18,14 @@ namespace CSharp.Programming_Documents.Working_with_Tables
             ApplyOutlineBorder(dataDir);
             BuildTableWithBordersEnabled(dataDir);
             ModifyRowFormatting(dataDir);
+            ApplyRowFormatting(dataDir);
             ModifyCellFormatting(dataDir);
             FormatTableAndCellWithDifferentBorders(dataDir);
         }
         /// <summary>
         /// Shows how to apply outline border to a table.
-        /// </summary
-        public static void ApplyOutlineBorder(string dataDir)
+        /// </summary>
+        private static void ApplyOutlineBorder(string dataDir)
         {
             //ExStart:ApplyOutlineBorder
             Document doc = new Document(dataDir + "Table.EmptyTable.doc");
@@ -51,8 +52,8 @@ namespace CSharp.Programming_Documents.Working_with_Tables
         }
         /// <summary>
         /// Shows how to build a table with all borders enabled (grid).
-        /// </summary
-        public static void BuildTableWithBordersEnabled(string dataDir)
+        /// </summary>
+        private static void BuildTableWithBordersEnabled(string dataDir)
         {
             //ExStart:BuildTableWithBordersEnabled
             Document doc = new Document(dataDir + "Table.EmptyTable.doc");
@@ -71,8 +72,8 @@ namespace CSharp.Programming_Documents.Working_with_Tables
         }
         /// <summary>
         /// Shows how to modify formatting of a table row.
-        /// </summary
-        public static void ModifyRowFormatting(string dataDir)
+        /// </summary>
+        private static void ModifyRowFormatting(string dataDir)
         {
             //ExStart:ModifyRowFormatting
             Document doc = new Document(dataDir + "Table.Document.doc");
@@ -88,9 +89,43 @@ namespace CSharp.Programming_Documents.Working_with_Tables
             Console.WriteLine("\nSome row level properties modified successfully.");
         }
         /// <summary>
+        /// Shows how to create a table that contains a single cell and apply row formatting.
+        /// </summary>
+        private static void ApplyRowFormatting(string dataDir)
+        {
+            //ExStart:ApplyRowFormatting
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Table table = builder.StartTable();
+            builder.InsertCell();
+
+            // Set the row formatting
+            RowFormat rowFormat = builder.RowFormat;
+            rowFormat.Height = 100;
+            rowFormat.HeightRule = HeightRule.Exactly;
+            // These formatting properties are set on the table and are applied to all rows in the table.
+            table.LeftPadding = 30;
+            table.RightPadding = 30;
+            table.TopPadding = 30;
+            table.BottomPadding = 30;
+
+            builder.Writeln("I'm a wonderful formatted row.");
+
+            builder.EndRow();
+            builder.EndTable();
+
+            dataDir = dataDir + "Table.ApplyRowFormatting_out_.doc";
+
+            // Save the document to disk.
+            doc.Save(dataDir);
+            //ExEnd:ApplyRowFormatting
+            Console.WriteLine("\nRow formatting applied successfully.\nFile saved at " + dataDir);
+        }
+        /// <summary>
         /// Shows how to modify formatting of a table cell.
-        /// </summary
-        public static void ModifyCellFormatting(string dataDir)
+        /// </summary>
+        private static void ModifyCellFormatting(string dataDir)
         {
             //ExStart:ModifyCellFormatting
             Document doc = new Document(dataDir + "Table.Document.doc"); 
@@ -107,8 +142,8 @@ namespace CSharp.Programming_Documents.Working_with_Tables
         }
         /// <summary>
         /// Shows how to format table and cell with different borders and shadings.
-        /// </summary
-        public static void FormatTableAndCellWithDifferentBorders(string dataDir)
+        /// </summary>
+        private static void FormatTableAndCellWithDifferentBorders(string dataDir)
         {
             //ExStart:FormatTableAndCellWithDifferentBorders
             Document doc = new Document();

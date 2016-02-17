@@ -9,10 +9,44 @@ Public Class ApplyFormatting
         ApplyOutlineBorder(dataDir)
         BuildTableWithBordersEnabled(dataDir)
         ModifyRowFormatting(dataDir)
+        ApplyRowFormatting(dataDir)
         ModifyCellFormatting(dataDir)
         FormatTableAndCellWithDifferentBorders(dataDir)
     End Sub
-    Public Shared Sub ApplyOutlineBorder(dataDir As String)
+    ''' <summary>
+    ''' Shows how to create a table that contains a single cell and apply row formatting.
+    ''' </summary>
+    Private Shared Sub ApplyRowFormatting(dataDir As String)
+        'ExStart:ApplyRowFormatting
+        Dim doc As New Document()
+        Dim builder As New DocumentBuilder(doc)
+
+        Dim table As Table = builder.StartTable()
+        builder.InsertCell()
+
+        ' Set the row formatting
+        Dim rowFormat As RowFormat = builder.RowFormat
+        rowFormat.Height = 100
+        rowFormat.HeightRule = HeightRule.Exactly
+        ' These formatting properties are set on the table and are applied to all rows in the table.
+        table.LeftPadding = 30
+        table.RightPadding = 30
+        table.TopPadding = 30
+        table.BottomPadding = 30
+
+        builder.Writeln("I'm a wonderful formatted row.")
+
+        builder.EndRow()
+        builder.EndTable()
+
+        dataDir = dataDir & Convert.ToString("Table.ApplyRowFormatting_out_.doc")
+
+        ' Save the document to disk.
+        doc.Save(dataDir)
+        'ExEnd:ApplyRowFormatting
+        Console.WriteLine(Convert.ToString(vbLf & "Row formatting applied successfully." & vbLf & "File saved at ") & dataDir)
+    End Sub
+    Private Shared Sub ApplyOutlineBorder(dataDir As String)
         ' ExStart:ApplyOutlineBorder
         Dim doc As New Document(dataDir & Convert.ToString("Table.EmptyTable.doc"))
 
@@ -36,7 +70,7 @@ Public Class ApplyFormatting
         ' ExEnd:ApplyOutlineBorder
         Console.WriteLine(Convert.ToString(vbLf & "Outline border applied successfully to a table." & vbLf & "File saved at ") & dataDir)
     End Sub
-    Public Shared Sub BuildTableWithBordersEnabled(dataDir As String)
+    Private Shared Sub BuildTableWithBordersEnabled(dataDir As String)
         ' ExStart:BuildTableWithBordersEnabled
         Dim doc As New Document(dataDir & Convert.ToString("Table.EmptyTable.doc"))
 
@@ -52,7 +86,7 @@ Public Class ApplyFormatting
         ' ExEnd:BuildTableWithBordersEnabled
         Console.WriteLine(Convert.ToString(vbLf & "Table build successfully with all borders enabled." & vbLf & "File saved at ") & dataDir)
     End Sub
-    Public Shared Sub ModifyRowFormatting(dataDir As String)
+    Private Shared Sub ModifyRowFormatting(dataDir As String)
         ' ExStart:ModifyRowFormatting
         Dim doc As New Document(dataDir & Convert.ToString("Table.Document.doc"))
         Dim table As Table = DirectCast(doc.GetChild(NodeType.Table, 0, True), Table)
@@ -66,7 +100,7 @@ Public Class ApplyFormatting
         ' ExEnd:ModifyRowFormatting
         Console.WriteLine(vbLf & "Some row level properties modified successfully.")
     End Sub
-    Public Shared Sub ModifyCellFormatting(dataDir As String)
+    Private Shared Sub ModifyCellFormatting(dataDir As String)
         ' ExStart:ModifyCellFormatting
         Dim doc As New Document(dataDir & Convert.ToString("Table.Document.doc"))
         Dim table As Table = DirectCast(doc.GetChild(NodeType.Table, 0, True), Table)
@@ -81,7 +115,7 @@ Public Class ApplyFormatting
         ' ExEnd:ModifyCellFormatting
         Console.WriteLine(vbLf & "Some cell level properties modified successfully.")
     End Sub
-    Public Shared Sub FormatTableAndCellWithDifferentBorders(dataDir As String)
+    Private Shared Sub FormatTableAndCellWithDifferentBorders(dataDir As String)
         ' ExStart:FormatTableAndCellWithDifferentBorders
         Dim doc As New Document()
         Dim builder As New DocumentBuilder(doc)

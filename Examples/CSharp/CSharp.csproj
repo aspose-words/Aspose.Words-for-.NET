@@ -151,6 +151,11 @@
     <Compile Include="Programming-Documents\Tables\AutoFitTableToWindow.cs" />
     <Compile Include="Programming-Documents\Tables\CloneTable.cs" />
     <Compile Include="Programming-Documents\Tables\ApplyFormatting.cs" />
+    <Compile Include="Programming-Documents\Tables\ApplyStyle.cs" />
+    <Compile Include="Programming-Documents\Tables\AddRemoveColumn.cs" />
+    <Compile Include="Programming-Documents\Tables\FindingIndex.cs" />
+    <Compile Include="Programming-Documents\Tables\ExtractOrReplaceText.cs" />
+    <Compile Include="Programming-Documents\Tables\SpecifyHeightAndWidth.cs" />
     <Compile Include="Programming-Documents\Tables\InsertTableFromHtml.cs" />
     <Compile Include="Programming-Documents\Tables\InsertTableDirectly.cs" />
     <Compile Include="Programming-Documents\Tables\InsertTableUsingDocumentBuilder.cs" />

@@ -14,7 +14,7 @@ Public Class InsertTableUsingDocumentBuilder
         FormattedTable(dataDir)
         NestedTable(dataDir)
     End Sub
-    Public Shared Sub SimpleTable(dataDir As String)
+    Private Shared Sub SimpleTable(dataDir As String)
         ' ExStart:SimpleTable
         Dim doc As New Document()
         Dim builder As New DocumentBuilder(doc)
@@ -46,7 +46,7 @@ Public Class InsertTableUsingDocumentBuilder
         ' ExEnd:SimpleTable
         Console.WriteLine(Convert.ToString(vbLf & "Simple table created successfully." & vbLf & "File saved at ") & dataDir)
     End Sub
-    Public Shared Sub FormattedTable(dataDir As String)
+    Private Shared Sub FormattedTable(dataDir As String)
         ' ExStart:FormattedTable
         Dim doc As New Document()
         Dim builder As New DocumentBuilder(doc)
@@ -124,7 +124,7 @@ Public Class InsertTableUsingDocumentBuilder
         ' ExEnd:FormattedTable
         Console.WriteLine(Convert.ToString(vbLf & "Formatted table created successfully." & vbLf & "File saved at ") & dataDir)
     End Sub
-    Public Shared Sub NestedTable(dataDir As String)
+    Private Shared Sub NestedTable(dataDir As String)
         ' ExStart:NestedTable
         Dim doc As New Document()
         Dim builder As New DocumentBuilder(doc)

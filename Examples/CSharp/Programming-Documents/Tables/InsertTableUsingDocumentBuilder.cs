@@ -20,7 +20,7 @@ namespace CSharp.Programming_Documents.Working_with_Tables
             FormattedTable(dataDir);
             NestedTable(dataDir);
         }
-        public static void SimpleTable(string dataDir)
+        private static void SimpleTable(string dataDir)
         {
             //ExStart:SimpleTable
             Document doc = new Document();
@@ -53,7 +53,7 @@ namespace CSharp.Programming_Documents.Working_with_Tables
             //ExEnd:SimpleTable
             Console.WriteLine("\nSimple table created successfully.\nFile saved at " + dataDir);
         }
-        public static void FormattedTable(string dataDir)
+        private static void FormattedTable(string dataDir)
         {
             //ExStart:FormattedTable
             Document doc = new Document();
@@ -132,7 +132,7 @@ namespace CSharp.Programming_Documents.Working_with_Tables
             //ExEnd:FormattedTable
             Console.WriteLine("\nFormatted table created successfully.\nFile saved at " + dataDir);
         }
-        public static void NestedTable(string dataDir)
+        private static void NestedTable(string dataDir)
         {
             //ExStart:NestedTable
             Document doc = new Document();

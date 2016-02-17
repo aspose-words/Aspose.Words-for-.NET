@@ -14,7 +14,7 @@ Module RunExamples
         '' Quick Start
         '' =====================================================
         '' =====================================================
-        AppendDocuments.Run()
+        'AppendDocuments.Run()
         'ApplyLicense.Run()
         'FindAndReplace.Run()
         'HelloWorld.Run()       
@@ -125,6 +125,11 @@ Module RunExamples
         'InsertTableDirectly.Run()
         'CloneTable.Run()
         'ApplyFormatting.Run()
+        'SpecifyHeightAndWidth.Run()
+        'ApplyStyle.Run()
+        'ExtractText.Run()
+        'FindingIndex.Run()
+        'AddRemoveColumn.Run()
 
         '' Sections
         '' =====================================================

@@ -13,7 +13,7 @@ Public Class CloneTable
         CloneLastRow(dataDir)
     End Sub
 
-    Public Shared Sub CloneCompleteTable(dataDir As String)
+    Private Shared Sub CloneCompleteTable(dataDir As String)
         ' ExStart:CloneCompleteTable
         Dim doc As New Document(dataDir & Convert.ToString("Table.SimpleTable.doc"))
 
@@ -36,7 +36,7 @@ Public Class CloneTable
         ' ExEnd:CloneCompleteTable
         Console.WriteLine(Convert.ToString(vbLf & "Table cloned successfully." & vbLf & "File saved at ") & dataDir)
     End Sub
-    Public Shared Sub CloneLastRow(dataDir As String)
+    Private Shared Sub CloneLastRow(dataDir As String)
         ' ExStart:CloneLastRow
         Dim doc As New Document(dataDir & Convert.ToString("Table.SimpleTable.doc"))
 

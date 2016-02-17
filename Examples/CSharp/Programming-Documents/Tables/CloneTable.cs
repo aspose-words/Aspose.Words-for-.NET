@@ -20,8 +20,8 @@ namespace CSharp.Programming_Documents.Working_with_Tables
         }
         /// <summary>
         /// Shows how to clone complete table.
-        /// </summary
-        public static void CloneCompleteTable(string dataDir)
+        /// </summary>
+        private static void CloneCompleteTable(string dataDir)
         {
             //ExStart:CloneCompleteTable
             Document doc = new Document(dataDir + "Table.SimpleTable.doc");
@@ -47,8 +47,8 @@ namespace CSharp.Programming_Documents.Working_with_Tables
         }
         /// <summary>
         /// Shows how to clone last row of table.
-        /// </summary
-        public static void CloneLastRow(string dataDir)
+        /// </summary>
+        private static void CloneLastRow(string dataDir)
         {
             //ExStart:CloneLastRow
             Document doc = new Document(dataDir + "Table.SimpleTable.doc");
