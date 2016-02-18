@@ -1,11 +1,11 @@
 ﻿Imports Microsoft.VisualBasic
 Imports System.IO
-
 Imports Aspose.Words
 Imports Aspose.Words.Fields
 
 Public Class InsertNestedFields
     Public Shared Sub Run()
+        ' ExStart:InsertNestedFields
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithFields()
 
@@ -34,7 +34,7 @@ Public Class InsertNestedFields
         field.Update()
         dataDir = dataDir & "InsertNestedFields_out_.docx"
         doc.Save(dataDir)
-
+        ' ExEnd:InsertNestedFields
         Console.WriteLine(vbNewLine & "Inserted nested fields in the document successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

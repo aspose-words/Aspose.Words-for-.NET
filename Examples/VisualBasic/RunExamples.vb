@@ -81,6 +81,10 @@ Module RunExamples
         '' =====================================================
         'CopyBookmarkedText.Run()
         'UntangleRowBookmarks.Run()
+        'BookmarkTable.Run()
+        'BookmarkNameAndText.Run()
+        'AccessBookmarks.Run()
+        'CreateBookmark.Run()
 
         '' Comments
         '' =====================================================
@@ -104,6 +108,9 @@ Module RunExamples
         'ConvertFieldsInDocument.Run()
         'ConvertFieldsInBody.Run()
         'ConvertFieldsInParagraph.Run()
+        'ChangeLocale.Run()
+        'UpdateDocFields.Run()
+        'InsertField.Run()
 
         '' Images
         '' =====================================================
@@ -130,6 +137,8 @@ Module RunExamples
         'ExtractText.Run()
         'FindingIndex.Run()
         'AddRemoveColumn.Run()
+        'RepeatRowsOnSubsequentPages.Run()
+        'JoiningAndSplittingTable.Run()     
 
         '' Sections
         '' =====================================================

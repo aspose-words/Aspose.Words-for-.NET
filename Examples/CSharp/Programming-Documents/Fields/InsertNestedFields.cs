@@ -13,6 +13,7 @@ namespace CSharp.Programming_Documents.Working_with_Fields
     {
         public static void Run()
         {
+            //ExStart:InsertNestedFields
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
 
@@ -40,7 +41,7 @@ namespace CSharp.Programming_Documents.Working_with_Fields
             field.Update();
             dataDir = dataDir + "InsertNestedFields_out_.docx";
             doc.Save(dataDir);
-
+            //ExEnd:InsertNestedFields
             Console.WriteLine("\nInserted nested fields in the document successfully.\nFile saved at " + dataDir);
         }
     }

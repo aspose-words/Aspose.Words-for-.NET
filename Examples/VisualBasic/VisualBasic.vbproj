@@ -112,7 +112,11 @@
     <Compile Include="Mail-Merge\NestedMailMerge.vb" />
     <Compile Include="Mail-Merge\RemoveEmptyRegions.vb" />
     <Compile Include="Mail-Merge\XMLMailMerge.vb" />
+    <Compile Include="Programming-Documents\Bookmarks\AccessBookmarks.vb" />
+    <Compile Include="Programming-Documents\Bookmarks\BookmarkNameAndText.vb" />
+    <Compile Include="Programming-Documents\Bookmarks\BookmarkTable.vb" />
     <Compile Include="Programming-Documents\Bookmarks\CopyBookmarkedText.vb" />
+    <Compile Include="Programming-Documents\Bookmarks\CreateBookmark.vb" />
     <Compile Include="Programming-Documents\Bookmarks\UntangleRowBookmarks.vb" />
     <Compile Include="Programming-Documents\Comments\ProcessComments.vb" />
     <Compile Include="Programming-Documents\Document\AccessStyles.vb" />
@@ -123,11 +127,14 @@
     <Compile Include="Programming-Documents\Document\ProtectDocument.vb" />
     <Compile Include="Programming-Documents\Document\RemoveBreaks.vb" />
     <Compile Include="Programming-Documents\Document\SetViewOption.vb" />
+    <Compile Include="Programming-Documents\Fields\ChangeLocale.vb" />
     <Compile Include="Programming-Documents\Fields\ConvertFieldsInBody.vb" />
     <Compile Include="Programming-Documents\Fields\ConvertFieldsInDocument.vb" />
     <Compile Include="Programming-Documents\Fields\ConvertFieldsInParagraph.vb" />
+    <Compile Include="Programming-Documents\Fields\InsertField.vb" />
     <Compile Include="Programming-Documents\Fields\InsertNestedFields.vb" />
     <Compile Include="Programming-Documents\Fields\RemoveField.vb" />
+    <Compile Include="Programming-Documents\Fields\UpdateDocFields.vb" />
     <Compile Include="Programming-Documents\Find-Replace\FindAndHighlight.vb" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceTextWithField.vb" />
     <Compile Include="Programming-Documents\Images\AddImageToEachPage.vb" />
@@ -171,6 +178,8 @@
     <Compile Include="Programming-Documents\Tables\InsertTableDirectly.vb" />
     <Compile Include="Programming-Documents\Tables\InsertTableFromHtml.vb" />
     <Compile Include="Programming-Documents\Tables\InsertTableUsingDocumentBuilder.vb" />
+    <Compile Include="Programming-Documents\Tables\JoiningAndSplittingTable.vb" />
+    <Compile Include="Programming-Documents\Tables\RepeatRowsOnSubsequentPages.vb" />
     <Compile Include="Programming-Documents\Tables\SpecifyHeightAndWidth.vb" />
     <Compile Include="Quick-Start\AppendDocuments.vb" />
     <Compile Include="Quick-Start\ApplyLicense.vb" />

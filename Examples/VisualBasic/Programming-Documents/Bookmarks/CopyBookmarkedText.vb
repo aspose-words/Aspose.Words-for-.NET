@@ -2,7 +2,6 @@
 Imports System
 Imports System.IO
 Imports System.Reflection
-
 Imports Aspose.Words
 
 Public Class CopyBookmarkedText

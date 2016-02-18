@@ -91,8 +91,16 @@
     <Compile Include="Mail-Merge\NestedMailMerge.cs" />
     <Compile Include="Mail-Merge\RemoveEmptyRegions.cs" />
     <Compile Include="Mail-Merge\XMLMailMerge.cs" />
+    <Compile Include="Programming-Documents\Bookmarks\BookmarkTable.cs" />
+    <Compile Include="Programming-Documents\Bookmarks\BookmarkNameAndText.cs" />
+    <Compile Include="Programming-Documents\Bookmarks\AccessBookmarks.cs" />
+    <Compile Include="Programming-Documents\Bookmarks\CreateBookmark.cs" />
     <Compile Include="Programming-Documents\Document\CloningDocument.cs" />
     <Compile Include="Programming-Documents\Document\AccessStyles.cs" />
+    <Compile Include="Programming-Documents\Fields\ChangeLocale.cs" />
+    <Compile Include="Programming-Documents\Fields\InsertField.cs" />
+    <Compile Include="Programming-Documents\Fields\UpdateDocFields.cs" />
+    <Compile Include="Programming-Documents\Tables\JoiningAndSplittingTable.cs" />
     <Compile Include="Programming-Documents\Document\SetViewOption.cs" />
     <Compile Include="Programming-Documents\Document\GetVariables.cs" />
     <Compile Include="Programming-Documents\Document\ProtectDocument.cs" />
@@ -153,6 +161,7 @@
     <Compile Include="Programming-Documents\Tables\ApplyFormatting.cs" />
     <Compile Include="Programming-Documents\Tables\ApplyStyle.cs" />
     <Compile Include="Programming-Documents\Tables\AddRemoveColumn.cs" />
+    <Compile Include="Programming-Documents\Tables\RepeatRowsOnSubsequentPages.cs" />
     <Compile Include="Programming-Documents\Tables\FindingIndex.cs" />
     <Compile Include="Programming-Documents\Tables\ExtractOrReplaceText.cs" />
     <Compile Include="Programming-Documents\Tables\SpecifyHeightAndWidth.cs" />

@@ -67,9 +67,6 @@ namespace CSharp
             //ConvertDocumentToByte.Run();
             //ConvertDocumentToEPUB.Run();
             //ConvertDocumentToHtmlWithRoundtrip.Run();
-           
-            
-            
 
             //// =====================================================
             //// =====================================================
@@ -107,6 +104,10 @@ namespace CSharp
             //// =====================================================
             //CopyBookmarkedText.Run();
             //UntangleRowBookmarks.Run();
+            //BookmarkTable.Run();
+            //BookmarkNameAndText.Run();
+            //AccessBookmarks.Run();
+            //CreateBookmark.Run();
 
             //// Comments
             //// =====================================================
@@ -136,6 +137,9 @@ namespace CSharp
             //ConvertFieldsInDocument.Run();
             //ConvertFieldsInBody.Run();
             //ConvertFieldsInParagraph.Run();
+            //ChangeLocale.Run();
+            //UpdateDocFields.Run();
+            //InsertField.Run();
 
             //// Images
             //// =====================================================
@@ -161,7 +165,9 @@ namespace CSharp
             //ApplyStyle.Run();
             //ExtractText.Run();
             //FindingIndex.Run();
-            AddRemoveColumn.Run();
+            //AddRemoveColumn.Run();
+            //RepeatRowsOnSubsequentPages.Run();
+            //JoiningAndSplittingTable.Run();            
 
             //// Sections
             //// =====================================================
