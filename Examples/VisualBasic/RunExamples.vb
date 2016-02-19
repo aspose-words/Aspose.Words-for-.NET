@@ -111,6 +111,11 @@ Module RunExamples
         'ChangeLocale.Run()
         'UpdateDocFields.Run()
         'InsertField.Run()
+        'InsertMergeFieldUsingDOM.Run();
+        'InsertMailMergeAddressBlockFieldUsingDOM.Run()
+        'InsertAdvanceFieldWithOutDocumentBuilder.Run()
+        'InsertASKFieldWithOutDocumentBuilder.Run()
+        InsertAuthorField.Run()
 
         '' Images
         '' =====================================================

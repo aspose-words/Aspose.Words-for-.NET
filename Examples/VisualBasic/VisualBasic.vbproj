@@ -131,7 +131,12 @@
     <Compile Include="Programming-Documents\Fields\ConvertFieldsInBody.vb" />
     <Compile Include="Programming-Documents\Fields\ConvertFieldsInDocument.vb" />
     <Compile Include="Programming-Documents\Fields\ConvertFieldsInParagraph.vb" />
+    <Compile Include="Programming-Documents\Fields\InsertAdvanceFieldWithOutDocumentBuilder.vb" />
+    <Compile Include="Programming-Documents\Fields\InsertASKFieldWithOutDocumentBuilder.vb" />
+    <Compile Include="Programming-Documents\Fields\InsertAuthorField.vb" />
     <Compile Include="Programming-Documents\Fields\InsertField.vb" />
+    <Compile Include="Programming-Documents\Fields\InsertMailMergeAddressBlockFieldUsingDOM.vb" />
+    <Compile Include="Programming-Documents\Fields\InsertMergeFieldUsingDOM.vb" />
     <Compile Include="Programming-Documents\Fields\InsertNestedFields.vb" />
     <Compile Include="Programming-Documents\Fields\RemoveField.vb" />
     <Compile Include="Programming-Documents\Fields\UpdateDocFields.vb" />

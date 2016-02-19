@@ -98,6 +98,11 @@
     <Compile Include="Programming-Documents\Document\CloningDocument.cs" />
     <Compile Include="Programming-Documents\Document\AccessStyles.cs" />
     <Compile Include="Programming-Documents\Fields\ChangeLocale.cs" />
+    <Compile Include="Programming-Documents\Fields\InsertAuthorField.cs" />
+    <Compile Include="Programming-Documents\Fields\InsertASKFieldWithOutDocumentBuilder.cs" />
+    <Compile Include="Programming-Documents\Fields\InsertAdvanceFieldWithOutDocumentBuilder.cs" />
+    <Compile Include="Programming-Documents\Fields\InsertMailMergeAddressBlockFieldUsingDOM.cs" />
+    <Compile Include="Programming-Documents\Fields\InsertMergeFieldUsingDOM.cs" />
     <Compile Include="Programming-Documents\Fields\InsertField.cs" />
     <Compile Include="Programming-Documents\Fields\UpdateDocFields.cs" />
     <Compile Include="Programming-Documents\Tables\JoiningAndSplittingTable.cs" />
