@@ -1,0 +1,16 @@
+﻿<Window x:Class="Aspose.Words_Metadata_Cleaner.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Aspose.Words Metadata Cleaner" Height="600" Width="600" Icon="aspose-logo-50.png">
+    <Grid>
+        <Label Content="Choose Files (You can select Multiple Files):" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button Content="Browse Here" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="250,5,0,0" Click="Browse_Click"/>
+        <Button Content="Apply License" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="500,5,0,0" Name="BTN_ApplyLicense" Click="ApplyLicense_Click"/>
+        <Label Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="500,25,0,0" Name="LBL_License"/>
+        <Label Content="Selected Files:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,25,0,0"/>
+        <TextBlock ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Margin="0,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="500" Width="500" Name="TXT_FileNames" />
+        <Button Name="BTN_Clean" Content="Clean" IsEnabled="False" HorizontalAlignment="left" VerticalAlignment="Top" Width="75" Margin="502,50,0,0" Click="Clean_Click" />
+        <Label Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="502,70,0,0" Name="LBL_Status"/>
+        
+    </Grid>
+</Window>
