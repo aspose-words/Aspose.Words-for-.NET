@@ -12,6 +12,7 @@ Imports Aspose.Words
 
 Public Class AppendDocumentManually
     Public Shared Sub Run()
+        ' ExStart:AppendDocumentManually
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
         Dim fileName As String = "TestFile.Destination.doc"
@@ -40,7 +41,7 @@ Public Class AppendDocumentManually
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the joined document
         dstDoc.Save(dataDir)
-
+        ' ExEnd:AppendDocumentManually
         Console.WriteLine(vbNewLine & "Document appended successfully with updated page layout." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

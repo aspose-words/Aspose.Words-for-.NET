@@ -131,6 +131,10 @@
     <Compile Include="Programming-Documents\Fields\ConvertFieldsInBody.vb" />
     <Compile Include="Programming-Documents\Fields\ConvertFieldsInDocument.vb" />
     <Compile Include="Programming-Documents\Fields\ConvertFieldsInParagraph.vb" />
+    <Compile Include="Programming-Documents\Fields\FormFieldsWorkWithProperties.vb" />
+    <Compile Include="Programming-Documents\Fields\FormFieldsGetFormFieldsCollection.vb" />
+    <Compile Include="Programming-Documents\Fields\FormFieldsGetByName.vb" />
+    <Compile Include="Programming-Documents\Fields\InsertFormFields.vb" />
     <Compile Include="Programming-Documents\Fields\InsertAdvanceFieldWithOutDocumentBuilder.vb" />
     <Compile Include="Programming-Documents\Fields\InsertASKFieldWithOutDocumentBuilder.vb" />
     <Compile Include="Programming-Documents\Fields\InsertAuthorField.vb" />
@@ -163,6 +167,8 @@
     <Compile Include="Programming-Documents\Joining-Appending\UnlinkHeadersFooters.vb" />
     <Compile Include="Programming-Documents\Joining-Appending\UpdatePageLayout.vb" />
     <Compile Include="Programming-Documents\Joining-Appending\UseDestinationStyles.vb" />
+    <Compile Include="Programming-Documents\Ranges\RangesGetText.vb" />
+    <Compile Include="Programming-Documents\Ranges\RangesDeleteText.vb" />
     <Compile Include="Programming-Documents\Sections\AddDeleteSection.vb" />
     <Compile Include="Programming-Documents\Sections\AppendSectionContent.vb" />
     <Compile Include="Programming-Documents\Sections\CloneSection.vb" />

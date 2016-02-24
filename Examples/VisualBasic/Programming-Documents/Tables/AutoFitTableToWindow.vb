@@ -8,6 +8,7 @@ Imports Aspose.Words.Tables
 
 Public Class AutoFitTableToWindow
     Public Shared Sub Run()
+        ' ExStart:AutoFitTableToPageWidth
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithTables()
         Dim fileName As String = "TestFile.doc"
@@ -26,7 +27,7 @@ Public Class AutoFitTableToWindow
 
         Debug.Assert(doc.FirstSection.Body.Tables(0).PreferredWidth.Type = PreferredWidthType.Percent, "PreferredWidth type is not percent")
         Debug.Assert(doc.FirstSection.Body.Tables(0).PreferredWidth.Value = 100, "PreferredWidth value is different than 100")
-
+        ' ExEnd:AutoFitTableToPageWidth
         Console.WriteLine(vbNewLine & "Auto fit tables to window successfully." + vbNewLine + "File saved at " + dataDir)
     End Sub
 End Class

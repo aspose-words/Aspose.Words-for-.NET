@@ -11,6 +11,7 @@ using System.Drawing;
 
 namespace CSharp.Programming_Documents.Working_with_Images
 {
+    //ExStart:AddWatermark
     class AddWatermark
     {
         public static void Run()
@@ -85,4 +86,5 @@ namespace CSharp.Programming_Documents.Working_with_Images
             header.AppendChild(watermarkPara.Clone(true));
         }
     }
+    //ExEnd:AddWatermark
 }

@@ -11,6 +11,7 @@ Imports Aspose.Words
 
 Public Class JoinNewPage
     Public Shared Sub Run()
+        ' ExStart:JoinNewPage
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
         Dim fileName As String = "TestFile.Destination.doc"
@@ -25,7 +26,7 @@ Public Class JoinNewPage
         ' Append the source document using the original styles found in the source document.
         dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting)
         dstDoc.Save(dataDir)
-
+        ' ExEnd:JoinNewPage
         Console.WriteLine(vbNewLine & "Document appended successfully with join new page option." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

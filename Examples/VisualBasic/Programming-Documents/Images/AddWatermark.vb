@@ -7,7 +7,7 @@ Imports System.Reflection
 Imports Aspose.Words
 Imports Aspose.Words.Drawing
 Imports Aspose.Words.Fields
-
+' ExStart:AddWatermark
 Public Class AddWatermark
     Public Shared Sub Run()
         ' The path to the documents directory.
@@ -78,3 +78,4 @@ Public Class AddWatermark
         header.AppendChild(watermarkPara.Clone(True))
     End Sub
 End Class
+' ExEnd:AddWatermark

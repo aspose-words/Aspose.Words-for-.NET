@@ -9,6 +9,7 @@ Imports Aspose.Words.Tables
 
 Public Class AutoFitTableToFixedColumnWidths
     Public Shared Sub Run()
+        ' ExStart:AutoFitTableToFixedColumnWidths
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithTables()
         Dim fileName As String = "TestFile.doc"
@@ -28,7 +29,7 @@ Public Class AutoFitTableToFixedColumnWidths
         Debug.Assert(doc.FirstSection.Body.Tables(0).PreferredWidth.Type = PreferredWidthType.Auto, "PreferredWidth type is not auto")
         Debug.Assert(doc.FirstSection.Body.Tables(0).PreferredWidth.Value = 0, "PreferredWidth value is not 0")
         Debug.Assert(doc.FirstSection.Body.Tables(0).FirstRow.FirstCell.CellFormat.Width = 69.2, "Cell width is not correct.")
-
+        ' ExEnd:AutoFitTableToFixedColumnWidths
         Console.WriteLine(vbNewLine & "Auto fit tables to fixed width successfully." + vbNewLine + "File saved at " + dataDir)
     End Sub
 End Class

@@ -115,7 +115,11 @@ Module RunExamples
         'InsertMailMergeAddressBlockFieldUsingDOM.Run()
         'InsertAdvanceFieldWithOutDocumentBuilder.Run()
         'InsertASKFieldWithOutDocumentBuilder.Run()
-        InsertAuthorField.Run()
+        'InsertAuthorField.Run()
+        'InsertFormFields.Run()
+        'FormFieldsGetFormFieldsCollection.Run()
+        'FormFieldsGetByName.Run()
+        'FormFieldsWorkWithProperties.Run()
 
         '' Images
         '' =====================================================
@@ -126,6 +130,11 @@ Module RunExamples
         '' Styles
         '' =====================================================
         'ExtractContentBasedOnStyles.Run()
+
+        '' Ranges
+        '' =====================================================
+        'RangesGetText.Run()
+        'RangesDeleteText.Run()
 
         '' Tables
         '' =====================================================
@@ -248,6 +257,9 @@ Module RunExamples
 
     Public Function GetDataDir_WorkingWithFields() As [String]
         Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Fields/")
+    End Function
+    Public Function GetDataDir_WorkingWithRanges() As [String]
+        Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Ranges/")
     End Function
 
     Public Function GetDataDir_WorkingWithImages() As [String]

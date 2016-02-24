@@ -6,6 +6,7 @@ using CSharp.Programming_Documents.Bookmarks;
 using CSharp.Programming_Documents.Comments;
 using CSharp.Programming_Documents.Working_With_Document;
 using CSharp.Programming_Documents.Working_with_Fields;
+using CSharp.Programming_Documents.Working_with_Ranges;
 using CSharp.Programming_Documents.Working_with_Images;
 using CSharp.Programming_Documents.Working_with_Styles;
 using CSharp.Programming_Documents.Working_with_Tables;
@@ -144,13 +145,23 @@ namespace CSharp
             //InsertMailMergeAddressBlockFieldUsingDOM.Run();
             //InsertAdvanceFieldWithOutDocumentBuilder.Run();
             //InsertASKFieldWithOutDocumentBuilder.Run();
-            InsertAuthorField.Run();
-
+            //InsertAuthorField.Run();
+            //InsertFormFields.Run();
+            //FormFieldsGetFormFieldsCollection.Run();
+            //FormFieldsGetByName.Run();
+            //FormFieldsWorkWithProperties.Run();
+            
             //// Images
             //// =====================================================
             //AddImageToEachPage.Run();
             //AddWatermark.Run();
             //CompressImages.Run();
+
+            //// Ranges
+            //// =====================================================
+            //RangesGetText.Run();
+            //RangesDeleteText.Run();
+            
 
             //// Styles
             //// =====================================================
@@ -286,6 +297,10 @@ namespace CSharp
         public static String GetDataDir_WorkingWithFields()
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Fields/");
+        }
+        public static String GetDataDir_WorkingWithRanges()
+        {
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Ranges/");
         }
 
         public static String GetDataDir_WorkingWithImages()

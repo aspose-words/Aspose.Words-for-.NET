@@ -13,6 +13,7 @@ namespace CSharp.Programming_Documents.Working_with_Tables
     {
         public static void Run()
         {
+            //ExStart:AutoFitTableToContents
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithTables();
 
@@ -31,7 +32,7 @@ namespace CSharp.Programming_Documents.Working_with_Tables
             Debug.Assert(doc.FirstSection.Body.Tables[0].PreferredWidth.Type == PreferredWidthType.Auto, "PreferredWidth type is not auto");
             Debug.Assert(doc.FirstSection.Body.Tables[0].FirstRow.FirstCell.CellFormat.PreferredWidth.Type == PreferredWidthType.Auto, "PrefferedWidth on cell is not auto");
             Debug.Assert(doc.FirstSection.Body.Tables[0].FirstRow.FirstCell.CellFormat.PreferredWidth.Value == 0, "PreferredWidth value is not 0");
-
+            //ExEnd:AutoFitTableToContents
             Console.WriteLine("\nAuto fit tables to contents successfully.\nFile saved at " + dataDir);
         }
     }
