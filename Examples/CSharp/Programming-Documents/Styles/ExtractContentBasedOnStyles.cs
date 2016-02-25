@@ -19,6 +19,7 @@ namespace CSharp.Programming_Documents.Working_with_Styles
     {
         public static void Run()
         {
+            //ExStart:ExtractContentBasedOnStyles
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithStyles();
             string fileName = "TestFile.doc";
@@ -42,10 +43,10 @@ namespace CSharp.Programming_Documents.Working_with_Styles
             Console.WriteLine(string.Format("\nRuns with \"{0}\" styles ({1}):", runStyle, runs.Count));
             foreach (Run run in runs)
                 Console.WriteLine(run.Range.Text);
-
+            //ExEnd:ExtractContentBasedOnStyles
             Console.WriteLine("\nExtracted contents based on styles successfully.");
         }
-
+        //ExStart:ParagraphsByStyleName
         public static ArrayList ParagraphsByStyleName(Document doc, string styleName)
         {
             // Create an array to collect paragraphs of the specified style.
@@ -60,7 +61,8 @@ namespace CSharp.Programming_Documents.Working_with_Styles
             }
             return paragraphsWithStyle;
         }
-        
+        //ExEnd:ParagraphsByStyleName
+        //ExStart:RunsByStyleName
         public static ArrayList RunsByStyleName(Document doc, string styleName)
         {
             // Create an array to collect runs of the specified style.
@@ -75,5 +77,6 @@ namespace CSharp.Programming_Documents.Working_with_Styles
             }
             return runsWithStyle;
         }
+        //ExEnd:RunsByStyleName
     }
 }

@@ -97,7 +97,10 @@
     <Compile Include="Programming-Documents\Bookmarks\CreateBookmark.cs" />
     <Compile Include="Programming-Documents\Document\CloningDocument.cs" />
     <Compile Include="Programming-Documents\Document\AccessStyles.cs" />
+    <Compile Include="Programming-Documents\Document\ExtractContentUsingDocumentVisitor.cs" />
+    <Compile Include="Programming-Documents\Document\CreateHeaderFooterUsingDocBuilder.cs" />
     <Compile Include="Programming-Documents\Fields\ChangeLocale.cs" />
+    <Compile Include="Programming-Documents\Fields\RenameMergeFields.cs" />
     <Compile Include="Programming-Documents\Fields\FormFieldsWorkWithProperties.cs" />
     <Compile Include="Programming-Documents\Fields\FormFieldsGetByName.cs" />
     <Compile Include="Programming-Documents\Fields\FormFieldsGetFormFieldsCollection.cs" />
@@ -109,6 +112,9 @@
     <Compile Include="Programming-Documents\Fields\InsertMergeFieldUsingDOM.cs" />
     <Compile Include="Programming-Documents\Fields\InsertField.cs" />
     <Compile Include="Programming-Documents\Fields\UpdateDocFields.cs" />
+    <Compile Include="Programming-Documents\Hyperlink\ReplaceHyperlinks.cs" />
+    <Compile Include="Programming-Documents\Images\InsertBarcodeImage.cs" />
+    <Compile Include="Programming-Documents\Images\ExtractImagesToFiles.cs" />
     <Compile Include="Programming-Documents\Ranges\RangesDeleteText.cs" />
     <Compile Include="Programming-Documents\Ranges\RangesGetText.cs" />
     <Compile Include="Programming-Documents\Tables\JoiningAndSplittingTable.cs" />

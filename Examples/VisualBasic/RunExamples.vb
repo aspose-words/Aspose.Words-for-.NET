@@ -100,6 +100,8 @@ Module RunExamples
         'AccessStyles.Run()
         'GetVariables.Run()
         'SetViewOption.Run()
+        'CreateHeaderFooterUsingDocBuilder.Run()
+        'ExtractContentUsingDocumentVisitor.Run()
 
         '' Fields
         '' =====================================================
@@ -120,16 +122,23 @@ Module RunExamples
         'FormFieldsGetFormFieldsCollection.Run()
         'FormFieldsGetByName.Run()
         'FormFieldsWorkWithProperties.Run()
+        RenameMergeFields.Run()
 
         '' Images
         '' =====================================================
         'AddImageToEachPage.Run()
         'AddWatermark.Run()
         'CompressImages.Run()
+        'ExtractImagesToFiles.Run()
+        'InsertBarcodeImage.Run()
 
         '' Styles
         '' =====================================================
         'ExtractContentBasedOnStyles.Run()
+
+        '' Hyperlink
+        '' =====================================================
+        'ReplaceHyperlinks.Run()
 
         '' Ranges
         '' =====================================================
@@ -238,7 +247,9 @@ Module RunExamples
     Public Function GetDataDir_JoiningAndAppending() As [String]
         Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Joining-Appending/")
     End Function
-
+    Public Function GetDataDir_WorkingWithHyperlink() As [String]
+        Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Hyperlink/")
+    End Function
     Public Function GetDataDir_FindAndReplace() As [String]
         Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Find-Replace/")
     End Function

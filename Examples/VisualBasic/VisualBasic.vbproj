@@ -121,7 +121,9 @@
     <Compile Include="Programming-Documents\Comments\ProcessComments.vb" />
     <Compile Include="Programming-Documents\Document\AccessStyles.vb" />
     <Compile Include="Programming-Documents\Document\CloningDocument.vb" />
+    <Compile Include="Programming-Documents\Document\CreateHeaderFooterUsingDocBuilder.vb" />
     <Compile Include="Programming-Documents\Document\ExtractContent.vb" />
+    <Compile Include="Programming-Documents\Document\ExtractContentUsingDocumentVisitor.vb" />
     <Compile Include="Programming-Documents\Document\GetVariables.vb" />
     <Compile Include="Programming-Documents\Document\PageNumbersOfNodes.vb" />
     <Compile Include="Programming-Documents\Document\ProtectDocument.vb" />
@@ -143,12 +145,16 @@
     <Compile Include="Programming-Documents\Fields\InsertMergeFieldUsingDOM.vb" />
     <Compile Include="Programming-Documents\Fields\InsertNestedFields.vb" />
     <Compile Include="Programming-Documents\Fields\RemoveField.vb" />
+    <Compile Include="Programming-Documents\Fields\RenameMergeFields.vb" />
     <Compile Include="Programming-Documents\Fields\UpdateDocFields.vb" />
     <Compile Include="Programming-Documents\Find-Replace\FindAndHighlight.vb" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceTextWithField.vb" />
+    <Compile Include="Programming-Documents\Hyperlink\ReplaceHyperlinks.vb" />
     <Compile Include="Programming-Documents\Images\AddImageToEachPage.vb" />
     <Compile Include="Programming-Documents\Images\AddWatermark.vb" />
     <Compile Include="Programming-Documents\Images\CompressImages.vb" />
+    <Compile Include="Programming-Documents\Images\ExtractImagesToFiles.vb" />
+    <Compile Include="Programming-Documents\Images\InsertBarcodeImage.vb" />
     <Compile Include="Programming-Documents\Joining-Appending\AppendDocumentManually.vb" />
     <Compile Include="Programming-Documents\Joining-Appending\BaseDocument.vb" />
     <Compile Include="Programming-Documents\Joining-Appending\ConvertNumPageFields.vb" />
@@ -211,7 +217,6 @@
     <Compile Include="Rendering-Printing\ImageColorFilters.vb" />
     <Compile Include="Rendering-Printing\RenderShape.vb" />
     <Compile Include="Rendering-Printing\SaveAsMultipageTiff.vb" />
-    <Compile Include="RunExamples.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -227,6 +232,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="RunExamples.vb" />
     <Compile Include="Viewers-Visualizers\Document-Explorer\AboutForm.vb">
       <SubType>Form</SubType>
     </Compile>

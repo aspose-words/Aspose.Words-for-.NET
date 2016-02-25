@@ -7,6 +7,7 @@ using CSharp.Programming_Documents.Comments;
 using CSharp.Programming_Documents.Working_With_Document;
 using CSharp.Programming_Documents.Working_with_Fields;
 using CSharp.Programming_Documents.Working_with_Ranges;
+using CSharp.Programming_Documents.Working_with_Hyperlink;
 using CSharp.Programming_Documents.Working_with_Images;
 using CSharp.Programming_Documents.Working_with_Styles;
 using CSharp.Programming_Documents.Working_with_Tables;
@@ -130,6 +131,8 @@ namespace CSharp
             //AccessStyles.Run();
             //GetVariables.Run();
             //SetViewOption.Run();
+            //CreateHeaderFooterUsingDocBuilder.Run();
+            //ExtractContentUsingDocumentVisitor.Run();
 
             //// Fields
             //// =====================================================
@@ -150,17 +153,24 @@ namespace CSharp
             //FormFieldsGetFormFieldsCollection.Run();
             //FormFieldsGetByName.Run();
             //FormFieldsWorkWithProperties.Run();
+            //RenameMergeFields.Run();
             
             //// Images
             //// =====================================================
             //AddImageToEachPage.Run();
             //AddWatermark.Run();
             //CompressImages.Run();
+            //ExtractImagesToFiles.Run();
+            InsertBarcodeImage.Run();
 
             //// Ranges
             //// =====================================================
             //RangesGetText.Run();
             //RangesDeleteText.Run();
+
+            //// Hyperlink
+            //// =====================================================
+            //ReplaceHyperlinks.Run();
             
 
             //// Styles
@@ -298,11 +308,14 @@ namespace CSharp
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Fields/");
         }
+        public static String GetDataDir_WorkingWithHyperlink()
+        {
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Hyperlink/");
+        }
         public static String GetDataDir_WorkingWithRanges()
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Ranges/");
         }
-
         public static String GetDataDir_WorkingWithImages()
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Images/");
