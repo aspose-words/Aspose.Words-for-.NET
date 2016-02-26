@@ -11,6 +11,7 @@ Imports System.Diagnostics
 
 Public Class ConvertFieldsInParagraph
     Public Shared Sub Run()
+        ' ExStart:ConvertFieldsInParagraph
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithFields()
         Dim fileName As String = "TestFile.doc"
@@ -23,7 +24,7 @@ Public Class ConvertFieldsInParagraph
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the document with fields transformed to disk.
         doc.Save(dataDir)
-
+        ' ExEnd:ConvertFieldsInParagraph
         Console.WriteLine(vbNewLine & "Converted fields to static text in the paragraph successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

@@ -13,6 +13,7 @@ namespace CSharp.Programming_Documents.Working_with_Fields
     {
         public static void Run()
         {
+            //ExStart:ConvertFieldsInParagraph
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
             string fileName = "TestFile.doc";
@@ -25,7 +26,7 @@ namespace CSharp.Programming_Documents.Working_with_Fields
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the document with fields transformed to disk.
             doc.Save(dataDir);
-
+            //ExEnd:ConvertFieldsInParagraph
             Console.WriteLine("\nConverted fields to static text in the paragraph successfully.\nFile saved at " + dataDir);
         }
     }

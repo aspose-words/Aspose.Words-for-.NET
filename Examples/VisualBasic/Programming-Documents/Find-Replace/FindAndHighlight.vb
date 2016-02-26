@@ -10,6 +10,7 @@ Imports Aspose.Words
 
 Public Class FindAndHighlight
     Public Shared Sub Run()
+        ' ExStart:FindAndHighlight
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_FindAndReplace()
         Dim fileName As String = "TestFile.doc"
@@ -23,10 +24,10 @@ Public Class FindAndHighlight
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the output document.
         doc.Save(dataDir)
-
+        ' ExEnd:FindAndHighlight
         Console.WriteLine(vbNewLine & "Text highlighted successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
-
+    ' ExStart:ReplaceEvaluatorFindAndHighlight
     Private Class ReplaceEvaluatorFindAndHighlight
         Implements IReplacingCallback
         ''' <summary>
@@ -74,7 +75,8 @@ Public Class FindAndHighlight
             Return ReplaceAction.Skip
         End Function
     End Class
-
+    ' ExEnd:ReplaceEvaluatorFindAndHighlight
+    ' ExStart:SplitRun
     ''' <summary>
     ''' Splits text of the specified run into two runs.
     ''' Inserts the new run just after the specified run.
@@ -86,4 +88,5 @@ Public Class FindAndHighlight
         run.ParentNode.InsertAfter(afterRun, run)
         Return afterRun
     End Function
+    ' ExEnd:SplitRun
 End Class

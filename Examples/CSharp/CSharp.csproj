@@ -95,8 +95,13 @@
     <Compile Include="Programming-Documents\Bookmarks\BookmarkNameAndText.cs" />
     <Compile Include="Programming-Documents\Bookmarks\AccessBookmarks.cs" />
     <Compile Include="Programming-Documents\Bookmarks\CreateBookmark.cs" />
+    <Compile Include="Programming-Documents\Comments\AddComments.cs" />
+    <Compile Include="Programming-Documents\Comments\AnchorComment.cs" />
+    <Compile Include="Programming-Documents\ConvertUtil\UtilityClasses.cs" />
     <Compile Include="Programming-Documents\Document\CloningDocument.cs" />
     <Compile Include="Programming-Documents\Document\AccessStyles.cs" />
+    <Compile Include="Programming-Documents\Document\AddGroupShapeToDocument.cs" />
+    <Compile Include="Programming-Documents\Document\RemoveFooters.cs" />
     <Compile Include="Programming-Documents\Document\ExtractContentUsingDocumentVisitor.cs" />
     <Compile Include="Programming-Documents\Document\CreateHeaderFooterUsingDocBuilder.cs" />
     <Compile Include="Programming-Documents\Fields\ChangeLocale.cs" />

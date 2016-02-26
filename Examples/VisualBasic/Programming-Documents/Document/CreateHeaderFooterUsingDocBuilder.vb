@@ -128,7 +128,7 @@ Public Class CreateHeaderFooterUsingDocBuilder
 
         Console.WriteLine(Convert.ToString(vbLf & "Header and footer created successfully using document builder." & vbLf & "File saved at ") & dataDir)
     End Sub
-    ' ExEnd:CopyHeadersFootersFromPreviousSection
+    ' ExStart:CopyHeadersFootersFromPreviousSection
     ''' <summary>
     ''' Clones and copies headers/footers form the previous section to the specified section.
     ''' </summary>

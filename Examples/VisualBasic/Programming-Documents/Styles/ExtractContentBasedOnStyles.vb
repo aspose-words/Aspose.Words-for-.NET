@@ -8,6 +8,7 @@ Imports Aspose.Words
 
 Public Class ExtractContentBasedOnStyles
     Public Shared Sub Run()
+        ' ExStart:ExtractContentBasedOnStyles
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithStyles()
         Dim fileName As String = "TestFile.doc"
@@ -33,10 +34,10 @@ Public Class ExtractContentBasedOnStyles
         For Each run As Run In runs
             Console.WriteLine(run.Range.Text)
         Next run
-
+        ' ExEnd:ExtractContentBasedOnStyles
         Console.WriteLine(vbNewLine & "Extracted contents based on styles successfully.")
     End Sub
-
+    ' ExStart:ParagraphsByStyleName
     Public Shared Function ParagraphsByStyleName(ByVal doc As Document, ByVal styleName As String) As ArrayList
         ' Create an array to collect paragraphs of the specified style.
         Dim paragraphsWithStyle As New ArrayList()
@@ -50,7 +51,8 @@ Public Class ExtractContentBasedOnStyles
         Next paragraph
         Return paragraphsWithStyle
     End Function
-
+    ' ExEnd:ParagraphsByStyleName
+    ' ExStart:RunsByStyleName
     Public Shared Function RunsByStyleName(ByVal doc As Document, ByVal styleName As String) As ArrayList
         ' Create an array to collect runs of the specified style.
         Dim runsWithStyle As New ArrayList()
@@ -64,4 +66,5 @@ Public Class ExtractContentBasedOnStyles
         Next run
         Return runsWithStyle
     End Function
+    ' ExEnd:RunsByStyleName
 End Class

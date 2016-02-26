@@ -10,6 +10,7 @@ using System.Diagnostics;
 
 namespace CSharp.Programming_Documents.Working_with_Fields
 {
+    //ExStart:FieldsHelper
     public class FieldsHelper : DocumentVisitor
     {
         /// <summary>
@@ -130,4 +131,5 @@ namespace CSharp.Programming_Documents.Working_with_Fields
         private ArrayList mNodesToSkip = new ArrayList();
         private FieldType mTargetFieldType;
     }
+    //ExEnd:FieldsHelper
 }

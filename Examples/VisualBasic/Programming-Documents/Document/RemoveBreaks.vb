@@ -7,6 +7,7 @@ Imports Aspose.Words
 
 Public Class RemoveBreaks
     Public Shared Sub Run()
+        ' ExStart:RemoveBreaks
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithDocument()
         Dim fileName As String = "TestFile.doc"
@@ -22,10 +23,10 @@ Public Class RemoveBreaks
         dataDir = dataDir + RunExamples.GetOutputFilePath(fileName)
         ' Save the document.
         doc.Save(dataDir)
-
+        ' ExEnd:RemoveBreaks
         Console.WriteLine(vbNewLine & "Removed breaks from the document successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
-
+    ' ExStart:RemovePageBreaks
     Private Shared Sub RemovePageBreaks(ByVal doc As Document)
         ' Retrieve all paragraphs in the document.
         Dim paragraphs As NodeCollection = doc.GetChildNodes(NodeType.Paragraph, True)
@@ -47,7 +48,8 @@ Public Class RemoveBreaks
         Next para
 
     End Sub
-
+    ' ExEnd:RemovePageBreaks
+    ' ExStart:RemoveSectionBreaks
     Private Shared Sub RemoveSectionBreaks(ByVal doc As Document)
         ' Loop through all sections starting from the section that precedes the last one 
         ' and moving to the first section.
@@ -58,4 +60,5 @@ Public Class RemoveBreaks
             doc.Sections(i).Remove()
         Next i
     End Sub
+    ' ExEnd:RemoveSectionBreaks
 End Class

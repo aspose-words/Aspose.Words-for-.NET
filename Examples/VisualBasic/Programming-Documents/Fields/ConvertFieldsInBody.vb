@@ -11,6 +11,7 @@ Imports System.Diagnostics
 
 Public Class ConvertFieldsInBody
     Public Shared Sub Run()
+        ' ExStart:ConvertFieldsInBody
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithFields()
         Dim fileName As String = "TestFile.doc"
@@ -22,11 +23,11 @@ Public Class ConvertFieldsInBody
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the document with fields transformed to disk.
         doc.Save(dataDir)
-
+        ' ExEnd:ConvertFieldsInBody
         Console.WriteLine(vbNewLine & "Converted fields to static text in the document body successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class
-
+' ExStart:FieldsHelper
 Public Class FieldsHelper
     Inherits DocumentVisitor
     ''' <summary>
@@ -134,3 +135,4 @@ Public Class FieldsHelper
     Private mNodesToSkip As New ArrayList()
     Private mTargetFieldType As FieldType
 End Class
+' ExEnd:FieldsHelper

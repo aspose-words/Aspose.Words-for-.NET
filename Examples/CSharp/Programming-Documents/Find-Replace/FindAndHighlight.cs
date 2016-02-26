@@ -13,6 +13,7 @@ namespace CSharp.Programming_Documents.Find_and_Replace
     {
         public static void Run()
         {
+            //ExStart:FindAndHighlight
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_FindAndReplace();
             string fileName = "TestFile.doc";
@@ -26,10 +27,10 @@ namespace CSharp.Programming_Documents.Find_and_Replace
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the output document.
             doc.Save(dataDir);
-
+            //ExEnd:FindAndHighlight
             Console.WriteLine("\nText highlighted successfully.\nFile saved at " + dataDir);
         }
-
+        //ExStart:ReplaceEvaluatorFindAndHighlight
         private class ReplaceEvaluatorFindAndHighlight : IReplacingCallback
         {
             /// <summary>
@@ -83,7 +84,8 @@ namespace CSharp.Programming_Documents.Find_and_Replace
                 return ReplaceAction.Skip;
             }
         }
-
+        //ExEnd:ReplaceEvaluatorFindAndHighlight
+        //ExStart:SplitRun
         /// <summary>
         /// Splits text of the specified run into two runs.
         /// Inserts the new run just after the specified run.
@@ -96,5 +98,6 @@ namespace CSharp.Programming_Documents.Find_and_Replace
             run.ParentNode.InsertAfter(afterRun, run);
             return afterRun;
         }
+        //ExEnd:SplitRun
     }
 }

@@ -13,7 +13,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
     {
         public static void Run()
         {
-            //ExStart:OpenFromFile
+            //ExStart:RemoveBreaks
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
 
@@ -32,10 +32,10 @@ namespace CSharp.Programming_Documents.Working_With_Document
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the document.
             doc.Save(dataDir);
-
+            //ExEnd:RemoveBreaks
             Console.WriteLine("\nRemoved breaks from the document successfully.\nFile saved at " + dataDir);
         }
-
+        //ExStart:RemovePageBreaks
         private static void RemovePageBreaks(Document doc)
         {
             // Retrieve all paragraphs in the document.
@@ -58,7 +58,8 @@ namespace CSharp.Programming_Documents.Working_With_Document
             }
 
         }
-        
+        //ExEnd:RemovePageBreaks
+        //ExStart:RemoveSectionBreaks
         private static void RemoveSectionBreaks(Document doc)
         {
             // Loop through all sections starting from the section that precedes the last one 
@@ -71,5 +72,6 @@ namespace CSharp.Programming_Documents.Working_With_Document
                 doc.Sections[i].Remove();
             }
         }
+        //ExEnd:RemoveSectionBreaks
     }
 }

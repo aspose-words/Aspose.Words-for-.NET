@@ -132,7 +132,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
 
             Console.WriteLine("\nHeader and footer created successfully using document builder.\nFile saved at " + dataDir);
         }
-        //ExEnd:CopyHeadersFootersFromPreviousSection
+        //ExStart:CopyHeadersFootersFromPreviousSection
         /// <summary>
         /// Clones and copies headers/footers form the previous section to the specified section.
         /// </summary>

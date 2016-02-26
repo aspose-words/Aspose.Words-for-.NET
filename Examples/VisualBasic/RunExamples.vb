@@ -89,6 +89,12 @@ Module RunExamples
         '' Comments
         '' =====================================================
         'ProcessComments.Run()
+        'AddComments.Run()
+        'AnchorComment.Run()
+
+        '' ConvertUtil
+        '' =====================================================
+        'UtilityClasses.Run()
 
         '' Document
         '' =====================================================
@@ -102,6 +108,8 @@ Module RunExamples
         'SetViewOption.Run()
         'CreateHeaderFooterUsingDocBuilder.Run()
         'ExtractContentUsingDocumentVisitor.Run()
+        'RemoveFooters.Run()
+        'AddGroupShapeToDocument.Run()
 
         '' Fields
         '' =====================================================
@@ -122,7 +130,7 @@ Module RunExamples
         'FormFieldsGetFormFieldsCollection.Run()
         'FormFieldsGetByName.Run()
         'FormFieldsWorkWithProperties.Run()
-        RenameMergeFields.Run()
+        'RenameMergeFields.Run()
 
         '' Images
         '' =====================================================
@@ -243,7 +251,9 @@ Module RunExamples
     Public Function GetDataDir_LoadingAndSaving() As [String]
         Return Path.GetFullPath(GetDataDir_Data() + "Loading-and-Saving/")
     End Function
-
+    Public Function GetDataDir_ConvertUtil() As [String]
+        Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/ConvertUtil/")
+    End Function
     Public Function GetDataDir_JoiningAndAppending() As [String]
         Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Joining-Appending/")
     End Function

@@ -12,6 +12,7 @@ using CSharp.Programming_Documents.Working_with_Images;
 using CSharp.Programming_Documents.Working_with_Styles;
 using CSharp.Programming_Documents.Working_with_Tables;
 using CSharp.Programming_Documents.Working_with_Sections;
+using CSharp.Programming_Documents.Working_with_ConvertUtil;
 using CSharp.Quick_Start;
 using CSharp.Rendering_and_Printing;
 using CSharp.LINQ;
@@ -114,6 +115,12 @@ namespace CSharp
             //// Comments
             //// =====================================================
             //ProcessComments.Run();
+            //AddComments.Run();
+            //AnchorComment.Run();
+
+            //// ConvertUtil
+            //// =====================================================
+            UtilityClasses.Run();
 
             //// Document
             //// =====================================================
@@ -133,6 +140,8 @@ namespace CSharp
             //SetViewOption.Run();
             //CreateHeaderFooterUsingDocBuilder.Run();
             //ExtractContentUsingDocumentVisitor.Run();
+            //RemoveFooters.Run();
+            //AddGroupShapeToDocument.Run();
 
             //// Fields
             //// =====================================================
@@ -161,7 +170,7 @@ namespace CSharp
             //AddWatermark.Run();
             //CompressImages.Run();
             //ExtractImagesToFiles.Run();
-            InsertBarcodeImage.Run();
+            //InsertBarcodeImage.Run();
 
             //// Ranges
             //// =====================================================
@@ -288,7 +297,10 @@ namespace CSharp
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Find-Replace/");
         }
-
+        public static String GetDataDir_ConvertUtil()
+        {
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/ConvertUtil/");
+        }
         public static String GetDataDir_WorkingWithBookmarks()
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Bookmarks/");
