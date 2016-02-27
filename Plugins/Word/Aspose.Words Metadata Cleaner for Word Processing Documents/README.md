@@ -1,0 +1,1 @@
+# Aspose.Words Metadata Cleaner for Word Processing Documents
