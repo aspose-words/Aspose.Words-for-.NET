@@ -11,3 +11,4 @@ This section contains the following Platforms
 * [MVC](MVC)
 * [Aspose.Words for Outlook](Outlook)
 * [Sitefinity](Sitefinity)
+* [Aspose.Words for Word](Word)
