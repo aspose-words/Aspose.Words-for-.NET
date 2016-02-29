@@ -96,6 +96,15 @@ Module RunExamples
         '' =====================================================
         'UtilityClasses.Run()
 
+        '' Charts
+        '' =====================================================
+        'CreateColumnChart.Run()
+        'InsertScatterChart.Run()
+        'InsertAreaChart.Run()
+        'InsertBubbleChart.Run()
+        'CreateChartUsingShape.Run()
+        'WorkWithChartDataLabel.Run()
+
         '' Document
         '' =====================================================
         'ExtractContent.Run()
@@ -259,6 +268,9 @@ Module RunExamples
     End Function
     Public Function GetDataDir_WorkingWithHyperlink() As [String]
         Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Hyperlink/")
+    End Function
+    Public Function GetDataDir_WorkingWithCharts() As [String]
+        Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Charts/")
     End Function
     Public Function GetDataDir_FindAndReplace() As [String]
         Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Find-Replace/")

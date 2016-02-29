@@ -95,6 +95,12 @@
     <Compile Include="Programming-Documents\Bookmarks\BookmarkNameAndText.cs" />
     <Compile Include="Programming-Documents\Bookmarks\AccessBookmarks.cs" />
     <Compile Include="Programming-Documents\Bookmarks\CreateBookmark.cs" />
+    <Compile Include="Programming-Documents\Charts\WorkWithChartDataLabel.cs" />
+    <Compile Include="Programming-Documents\Charts\CreateChartUsingShape.cs" />
+    <Compile Include="Programming-Documents\Charts\InsertBubbleChart.cs" />
+    <Compile Include="Programming-Documents\Charts\InsertAreaChart.cs" />
+    <Compile Include="Programming-Documents\Charts\InsertScatterChart.cs" />
+    <Compile Include="Programming-Documents\Charts\CreateColumnChart.cs" />
     <Compile Include="Programming-Documents\Comments\AddComments.cs" />
     <Compile Include="Programming-Documents\Comments\AnchorComment.cs" />
     <Compile Include="Programming-Documents\ConvertUtil\UtilityClasses.cs" />

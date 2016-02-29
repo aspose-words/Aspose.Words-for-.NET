@@ -118,6 +118,12 @@
     <Compile Include="Programming-Documents\Bookmarks\CopyBookmarkedText.vb" />
     <Compile Include="Programming-Documents\Bookmarks\CreateBookmark.vb" />
     <Compile Include="Programming-Documents\Bookmarks\UntangleRowBookmarks.vb" />
+    <Compile Include="Programming-Documents\Charts\CreateChartUsingShape.vb" />
+    <Compile Include="Programming-Documents\Charts\CreateColumnChart.vb" />
+    <Compile Include="Programming-Documents\Charts\InsertAreaChart.vb" />
+    <Compile Include="Programming-Documents\Charts\InsertBubbleChart.vb" />
+    <Compile Include="Programming-Documents\Charts\InsertScatterChart.vb" />
+    <Compile Include="Programming-Documents\Charts\WorkWithChartDataLabel.vb" />
     <Compile Include="Programming-Documents\Comments\AddComments.vb" />
     <Compile Include="Programming-Documents\Comments\AnchorComment.vb" />
     <Compile Include="Programming-Documents\Comments\ProcessComments.vb" />

@@ -13,6 +13,7 @@ using CSharp.Programming_Documents.Working_with_Styles;
 using CSharp.Programming_Documents.Working_with_Tables;
 using CSharp.Programming_Documents.Working_with_Sections;
 using CSharp.Programming_Documents.Working_with_ConvertUtil;
+using CSharp.Programming_Documents.Working_with_Charts;
 using CSharp.Quick_Start;
 using CSharp.Rendering_and_Printing;
 using CSharp.LINQ;
@@ -120,7 +121,7 @@ namespace CSharp
 
             //// ConvertUtil
             //// =====================================================
-            UtilityClasses.Run();
+            //UtilityClasses.Run();
 
             //// Document
             //// =====================================================
@@ -176,6 +177,15 @@ namespace CSharp
             //// =====================================================
             //RangesGetText.Run();
             //RangesDeleteText.Run();
+
+            //// Charts
+            //// =====================================================
+            //CreateColumnChart.Run();
+            //InsertScatterChart.Run();
+            //InsertAreaChart.Run();
+            //InsertBubbleChart.Run();
+            //CreateChartUsingShape.Run();
+            //WorkWithChartDataLabel.Run();
 
             //// Hyperlink
             //// =====================================================
@@ -323,6 +333,10 @@ namespace CSharp
         public static String GetDataDir_WorkingWithHyperlink()
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Hyperlink/");
+        }
+        public static String GetDataDir_WorkingWithCharts()
+        {
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Charts/");
         }
         public static String GetDataDir_WorkingWithRanges()
         {
