@@ -96,6 +96,10 @@ Module RunExamples
         '' =====================================================
         'UtilityClasses.Run()
 
+        '' Theme
+        '' =====================================================
+        'ManipulateThemeProperties.Run()
+
         '' Charts
         '' =====================================================
         'CreateColumnChart.Run()
@@ -104,6 +108,8 @@ Module RunExamples
         'InsertBubbleChart.Run()
         'CreateChartUsingShape.Run()
         'WorkWithChartDataLabel.Run()
+        'WorkWithSingleChartDataPoint.Run()
+        'WorkWithSingleChartSeries.Run()
 
         '' Document
         '' =====================================================
@@ -119,6 +125,7 @@ Module RunExamples
         'ExtractContentUsingDocumentVisitor.Run()
         'RemoveFooters.Run()
         'AddGroupShapeToDocument.Run()
+        'CompareDocument.Run()
 
         '' Fields
         '' =====================================================
@@ -217,6 +224,8 @@ Module RunExamples
         'RenderShape.Run()
         'SaveAsMultipageTiff.Run()
         'ReadActiveXControlProperties.Run()
+        'SetTrueTypeFontsFolder.Run()
+        'SetFontsFoldersMultipleFolders.Run()
 
         '' =====================================================
         '' =====================================================
@@ -316,6 +325,9 @@ Module RunExamples
 
     Public Function GetDataDir_QuickStart() As [String]
         Return Path.GetFullPath(GetDataDir_Data() + "Quick-Start/")
+    End Function
+    Public Function GetDataDir_WorkingWithTheme() As [String]
+        Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Theme/")
     End Function
 
     Public Function GetDataDir_RenderingAndPrinting() As [String]

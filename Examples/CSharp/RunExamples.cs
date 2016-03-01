@@ -14,6 +14,7 @@ using CSharp.Programming_Documents.Working_with_Tables;
 using CSharp.Programming_Documents.Working_with_Sections;
 using CSharp.Programming_Documents.Working_with_ConvertUtil;
 using CSharp.Programming_Documents.Working_with_Charts;
+using CSharp.Programming_Documents.Working_with_Theme;
 using CSharp.Quick_Start;
 using CSharp.Rendering_and_Printing;
 using CSharp.LINQ;
@@ -143,6 +144,7 @@ namespace CSharp
             //ExtractContentUsingDocumentVisitor.Run();
             //RemoveFooters.Run();
             //AddGroupShapeToDocument.Run();
+            //CompareDocument.Run();
 
             //// Fields
             //// =====================================================
@@ -186,6 +188,12 @@ namespace CSharp
             //InsertBubbleChart.Run();
             //CreateChartUsingShape.Run();
             //WorkWithChartDataLabel.Run();
+            //WorkWithSingleChartDataPoint.Run();
+            //WorkWithSingleChartSeries.Run();
+
+            //// Theme
+            //// =====================================================
+            //ManipulateThemeProperties.Run();
 
             //// Hyperlink
             //// =====================================================
@@ -252,6 +260,8 @@ namespace CSharp
             //RenderShape.Run();
             //SaveAsMultipageTiff.Run();
             //ReadActiveXControlProperties.Run();
+            //SetTrueTypeFontsFolder.Run();
+            SetFontsFoldersMultipleFolders.Run();
 
             //// =====================================================
             //// =====================================================
@@ -325,7 +335,6 @@ namespace CSharp
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Document/");
         }
-
         public static String GetDataDir_WorkingWithFields()
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Fields/");
@@ -337,6 +346,10 @@ namespace CSharp
         public static String GetDataDir_WorkingWithCharts()
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Charts/");
+        }
+        public static String GetDataDir_WorkingWithTheme()
+        {
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Theme/");
         }
         public static String GetDataDir_WorkingWithRanges()
         {

@@ -124,6 +124,8 @@
     <Compile Include="Programming-Documents\Charts\InsertBubbleChart.vb" />
     <Compile Include="Programming-Documents\Charts\InsertScatterChart.vb" />
     <Compile Include="Programming-Documents\Charts\WorkWithChartDataLabel.vb" />
+    <Compile Include="Programming-Documents\Charts\WorkWithSingleChartDataPoint.vb" />
+    <Compile Include="Programming-Documents\Charts\WorkWithSingleChartSeries.vb" />
     <Compile Include="Programming-Documents\Comments\AddComments.vb" />
     <Compile Include="Programming-Documents\Comments\AnchorComment.vb" />
     <Compile Include="Programming-Documents\Comments\ProcessComments.vb" />
@@ -131,6 +133,7 @@
     <Compile Include="Programming-Documents\Document\AccessStyles.vb" />
     <Compile Include="Programming-Documents\Document\AddGroupShapeToDocument.vb" />
     <Compile Include="Programming-Documents\Document\CloningDocument.vb" />
+    <Compile Include="Programming-Documents\Document\CompareDocument.vb" />
     <Compile Include="Programming-Documents\Document\CreateHeaderFooterUsingDocBuilder.vb" />
     <Compile Include="Programming-Documents\Document\ExtractContent.vb" />
     <Compile Include="Programming-Documents\Document\ExtractContentUsingDocumentVisitor.vb" />
@@ -209,6 +212,7 @@
     <Compile Include="Programming-Documents\Tables\JoiningAndSplittingTable.vb" />
     <Compile Include="Programming-Documents\Tables\RepeatRowsOnSubsequentPages.vb" />
     <Compile Include="Programming-Documents\Tables\SpecifyHeightAndWidth.vb" />
+    <Compile Include="Programming-Documents\Theme\ManipulateThemeProperties.vb" />
     <Compile Include="Quick-Start\AppendDocuments.vb" />
     <Compile Include="Quick-Start\ApplyLicense.vb" />
     <Compile Include="Loading-and-Saving\Doc2Pdf.vb" />
@@ -243,6 +247,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Rendering-Printing\SetFontsFoldersMultipleFolders.vb" />
+    <Compile Include="Rendering-Printing\SetTrueTypeFontsFolder.vb" />
     <Compile Include="RunExamples.vb" />
     <Compile Include="Viewers-Visualizers\Document-Explorer\AboutForm.vb">
       <SubType>Form</SubType>
