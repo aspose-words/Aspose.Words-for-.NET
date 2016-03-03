@@ -261,7 +261,12 @@ namespace CSharp
             //SaveAsMultipageTiff.Run();
             //ReadActiveXControlProperties.Run();
             //SetTrueTypeFontsFolder.Run();
-            SetFontsFoldersMultipleFolders.Run();
+            //SetFontsFoldersMultipleFolders.Run();
+            //SetFontsFoldersSystemAndCustomFolder.Run();
+            //SpecifyDefaultFontWhenRendering.Run();
+            //ReceiveNotificationsOfFont.Run();
+            //EmbeddedFontsInPDF.Run();
+            //EmbeddingWindowsStandardFonts.Run();
 
             //// =====================================================
             //// =====================================================

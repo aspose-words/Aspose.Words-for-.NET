@@ -30,9 +30,11 @@ Public Class RenderShape
         RenderRowToImage(dataDir, doc)
         RenderParagraphToImage(dataDir, doc)
         FindShapeSizes(shape)
+        RenderShapeImage(dataDir, shape)
     End Sub
 
     Public Shared Sub RenderShapeToDisk(ByVal dataDir As String, ByVal shape As Shape)
+        ' ExStart:RenderShapeToDisk
         Dim r As ShapeRenderer = shape.GetShapeRenderer()
 
         ' Define custom options which control how the image is rendered. Render the shape to the JPEG raster format.
@@ -41,11 +43,12 @@ Public Class RenderShape
         dataDir = dataDir & "TestFile.RenderToDisk_out_.emf"
         ' Save the rendered image to disk.
         r.Save(dataDir, imageOptions)
-
+        ' ExEnd:RenderShapeToDisk
         Console.WriteLine(vbNewLine & "Shape rendered to disk successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     Public Shared Sub RenderShapeToStream(ByVal dataDir As String, ByVal shape As Shape)
+        ' ExStart:RenderShapeToStream
         Dim r As New ShapeRenderer(shape)
 
         ' Define custom options which control how the image is rendered. Render the shape to the vector format EMF.
@@ -58,12 +61,13 @@ Public Class RenderShape
 
         ' Save the rendered image to the stream using different options.
         r.Save(stream, imageOptions)
-
+        ' ExEnd:RenderShapeToStream
         Console.WriteLine(vbNewLine & "Shape rendered to stream successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     
     Public Shared Sub RenderShapeToGraphics(ByVal dataDir As String, ByVal shape As Shape)
+        ' ExStart:RenderShapeToGraphics
         Dim r As ShapeRenderer = shape.GetShapeRenderer()
 
         ' Find the size that the shape will be rendered to at the specified scale and resolution.
@@ -91,28 +95,31 @@ Public Class RenderShape
             End Using
             dataDir = dataDir & "TestFile.RenderToGraphics_out_.png"
             image.Save(dataDir, ImageFormat.Png)
+            Console.WriteLine(vbNewLine & "Shape rendered to graphics successfully." & vbNewLine & "File saved at " + dataDir)
         End Using
-
-        Console.WriteLine(vbNewLine & "Shape rendered to graphics successfully." & vbNewLine & "File saved at " + dataDir)
+        ' ExEnd:RenderShapeToGraphics
     End Sub
 
     Public Shared Sub RenderCellToImage(ByVal dataDir As String, ByVal doc As Document)
+        ' ExStart:RenderCellToImage
         Dim cell As Cell = CType(doc.GetChild(NodeType.Cell, 2, True), Cell) ' The third cell in the first table.
         dataDir = dataDir & "TestFile.RenderCell_out_.png"
         RenderNode(cell, dataDir, Nothing)
-
+        ' ExEnd:RenderCellToImage
         Console.WriteLine(vbNewLine & "Cell rendered to image successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     Public Shared Sub RenderRowToImage(ByVal dataDir As String, ByVal doc As Document)
+        ' ExStart:RenderRowToImage
         Dim row As Row = CType(doc.GetChild(NodeType.Row, 0, True), Row) ' The first row in the first table.
         dataDir = dataDir & "TestFile.RenderRow_out_.png"
         RenderNode(row, dataDir, Nothing)
-
+        ' ExEnd:RenderRowToImage
         Console.WriteLine(vbNewLine & "Row rendered to image successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     Public Shared Sub RenderParagraphToImage(ByVal dataDir As String, ByVal doc As Document)
+        ' ExStart:RenderParagraphToImage
         Dim shape As Shape = CType(doc.GetChild(NodeType.Shape, 0, True), Shape)
         Dim paragraph As Paragraph = CType(shape.LastParagraph, Paragraph)
 
@@ -121,12 +128,12 @@ Public Class RenderShape
         options.PaperColor = Color.LightPink
         dataDir = dataDir & "TestFile.RenderParagraph_out_.png"
         RenderNode(paragraph, dataDir, options)
-
+        ' ExEnd:RenderParagraphToImage
         Console.WriteLine(vbNewLine & "Paragraph rendered to image successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
 
     Public Shared Sub FindShapeSizes(ByVal shape As Shape)
-        
+        ' ExStart:FindShapeSizes
         Dim shapeSizeInDocument As SizeF = shape.GetShapeRenderer().SizeInPoints
         Dim width As Single = shapeSizeInDocument.Width ' The width of the shape.
         Dim height As Single = shapeSizeInDocument.Height ' The height of the shape.
@@ -138,6 +145,15 @@ Public Class RenderShape
                 ' Render shape onto the graphics object using the RenderToScale or RenderToSize methods of ShapeRenderer class.
             End Using
         End Using
+        ' ExEnd:FindShapeSizes
+    End Sub
+    Public Shared Sub RenderShapeImage(dataDir As String, shape As Shape)
+        ' ExStart:RenderShapeImage
+        dataDir = dataDir & Convert.ToString("TestFile.RenderShape_out_.jpg")
+        ' Save the Shape image to disk in JPEG format and using default options.
+        shape.GetShapeRenderer().Save(dataDir, Nothing)
+        ' ExEnd:RenderShapeImage
+        Console.WriteLine(Convert.ToString(vbLf & "Shape image rendered successfully." & vbLf & "File saved at ") & dataDir)
     End Sub
 
     ''' <summary>

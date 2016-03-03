@@ -37,7 +37,7 @@ namespace CSharp.Rendering_and_Printing
             // Open the document.
             Document doc = new Document(dataDir + "TestFile.doc");
 
-            //ExStart
+            //ExStart:PrintDialog
             //ExId:DocumentPreviewAndPrint_PrintDialog_Creation
             //ExSummary:Creates the print dialog.
             PrintDialog printDlg = new PrintDialog();
@@ -47,24 +47,24 @@ namespace CSharp.Rendering_and_Printing
             printDlg.PrinterSettings.MaximumPage = doc.PageCount;
             printDlg.PrinterSettings.FromPage = 1;
             printDlg.PrinterSettings.ToPage = doc.PageCount;
-            //ExEnd
+            //ExEnd:PrintDialog
 
-            //ExStart
+            //ExStart:ShowDialog
             //ExId:DocumentPreviewAndPrint_PrintDialog_Check_Result
             //ExSummary:Check if the user accepted the print settings and proceed to preview the document.
             if (!printDlg.ShowDialog().Equals(DialogResult.OK))
                 return;
-            //ExEnd
+            //ExEnd:ShowDialog
 
-            //ExStart
+            //ExStart:AsposeWordsPrintDocument
             //ExId:DocumentPreviewAndPrint_AsposeWordsPrintDocument_Creation
             //ExSummary:Creates a special Aspose.Words implementation of the .NET PrintDocument class.
             // Pass the printer settings from the dialog to the print document.
             AsposeWordsPrintDocument awPrintDoc = new AsposeWordsPrintDocument(doc);
             awPrintDoc.PrinterSettings = printDlg.PrinterSettings;
-            //ExEnd
+            //ExEnd:AsposeWordsPrintDocument
 
-            //ExStart
+            //ExStart:ActivePrintPreviewDialog
             //ExId:DocumentPreviewAndPrint_ActivePrintPreviewDialog_Creation
             //ExSummary:Creates an overridden version of the .NET Print Preview dialog to preview the document.
             ActivePrintPreviewDialog previewDlg = new ActivePrintPreviewDialog();
@@ -79,7 +79,7 @@ namespace CSharp.Rendering_and_Printing
             previewDlg.WindowState = FormWindowState.Maximized;
             // Show the appropriately configured Print Preview dialog.
             previewDlg.ShowDialog();
-            //ExEnd
+            //ExEnd:ActivePrintPreviewDialog
         }
     }
 }

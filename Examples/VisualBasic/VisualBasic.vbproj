@@ -223,6 +223,8 @@
     <Compile Include="Quick-Start\SimpleMailMerge.vb" />
     <Compile Include="Quick-Start\UpdateFields.vb" />
     <Compile Include="Quick-Start\WorkingWithNodes.vb" />
+    <Compile Include="Rendering-Printing\EmbeddedFontsInPDF.vb" />
+    <Compile Include="Rendering-Printing\EmbeddingWindowsStandardFonts.vb" />
     <Compile Include="Rendering-Printing\ReadActiveXControlProperties.vb" />
     <Compile Include="Rendering-Printing\DocumentLayoutHelper.vb" />
     <Compile Include="Rendering-Printing\DocumentPreviewAndPrint.vb">
@@ -230,6 +232,7 @@
     </Compile>
     <Compile Include="Rendering-Printing\EnumerateLayoutElements.vb" />
     <Compile Include="Rendering-Printing\ImageColorFilters.vb" />
+    <Compile Include="Rendering-Printing\ReceiveNotificationsOfFont.vb" />
     <Compile Include="Rendering-Printing\RenderShape.vb" />
     <Compile Include="Rendering-Printing\SaveAsMultipageTiff.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -248,7 +251,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Rendering-Printing\SetFontsFoldersMultipleFolders.vb" />
+    <Compile Include="Rendering-Printing\SetFontsFoldersSystemAndCustomFolder.vb" />
     <Compile Include="Rendering-Printing\SetTrueTypeFontsFolder.vb" />
+    <Compile Include="Rendering-Printing\SpecifyDefaultFontWhenRendering.vb" />
     <Compile Include="RunExamples.vb" />
     <Compile Include="Viewers-Visualizers\Document-Explorer\AboutForm.vb">
       <SubType>Form</SubType>

@@ -35,10 +35,11 @@ namespace CSharp.Rendering_and_Printing
             RenderRowToImage(dataDir, doc);
             RenderParagraphToImage(dataDir, doc);
             FindShapeSizes(shape);
+            RenderShapeImage(dataDir, shape);
         }
-
         public static void RenderShapeToDisk(string dataDir, Shape shape)
         {
+            //ExStart:RenderShapeToDisk
             ShapeRenderer r = shape.GetShapeRenderer();
 
             // Define custom options which control how the image is rendered. Render the shape to the JPEG raster format.
@@ -50,12 +51,12 @@ namespace CSharp.Rendering_and_Printing
             dataDir = dataDir + "TestFile.RenderToDisk_out_.emf";
             // Save the rendered image to disk.
             r.Save(dataDir, imageOptions);
-
+            //ExEnd:RenderShapeToDisk
             Console.WriteLine("\nShape rendered to disk successfully.\nFile saved at " + dataDir);
         }
-
         public static void RenderShapeToStream(string dataDir, Shape shape)
         {
+            //ExStart:RenderShapeToStream
             ShapeRenderer r = new ShapeRenderer(shape);
 
             // Define custom options which control how the image is rendered. Render the shape to the vector format EMF.
@@ -72,12 +73,13 @@ namespace CSharp.Rendering_and_Printing
 
             // Save the rendered image to the stream using different options.
             r.Save(stream, imageOptions);
-
+            //ExEnd:RenderShapeToStream
             Console.WriteLine("\nShape rendered to stream successfully.\nFile saved at " + dataDir);
         }
 
         public static void RenderShapeToGraphics(string dataDir, Shape shape)
         {
+            //ExStart:RenderShapeToGraphics
             ShapeRenderer r = shape.GetShapeRenderer();
 
             // Find the size that the shape will be rendered to at the specified scale and resolution.
@@ -107,32 +109,35 @@ namespace CSharp.Rendering_and_Printing
                 }
                 dataDir = dataDir + "TestFile.RenderToGraphics_out_.png";
                 image.Save(dataDir, ImageFormat.Png);
-
                 Console.WriteLine("\nShape rendered to graphics successfully.\nFile saved at " + dataDir);
             }
+            //ExEnd:RenderShapeToGraphics
+           
         }
-
         public static void RenderCellToImage(string dataDir, Document doc)
         {
+            //ExStart:RenderCellToImage
             Cell cell = (Cell)doc.GetChild(NodeType.Cell, 2, true); // The third cell in the first table.
             dataDir = dataDir + "TestFile.RenderCell_out_.png";
             RenderNode(cell, dataDir, null);
-
+            //ExEnd:RenderCellToImage
             Console.WriteLine("\nCell rendered to image successfully.\nFile saved at " + dataDir);
         }
 
         public static void RenderRowToImage(string dataDir, Document doc)
         {
+            //ExStart:RenderRowToImage
             Row row = (Row)doc.GetChild(NodeType.Row, 0, true); // The first row in the first table.
 
             dataDir = dataDir + "TestFile.RenderRow_out_.png";
             RenderNode(row, dataDir, null);
-
+            //ExEnd:RenderRowToImage
             Console.WriteLine("\nRow rendered to image successfully.\nFile saved at " + dataDir);
         }
 
         public static void RenderParagraphToImage(string dataDir, Document doc)
         {
+            //ExStart:RenderParagraphToImage
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             Paragraph paragraph = (Paragraph)shape.LastParagraph;
 
@@ -141,12 +146,12 @@ namespace CSharp.Rendering_and_Printing
             options.PaperColor = Color.LightPink;
             dataDir = dataDir + "TestFile.RenderParagraph_out_.png";
             RenderNode(paragraph, dataDir, options);
-
+            //ExEnd:RenderParagraphToImage
             Console.WriteLine("\nParagraph rendered to image successfully.\nFile saved at " + dataDir);
         }
-
         public static void FindShapeSizes(Shape shape)
         {
+            //ExStart:FindShapeSizes
             SizeF shapeSizeInDocument = shape.GetShapeRenderer().SizeInPoints;
             float width = shapeSizeInDocument.Width; // The width of the shape.
             float height = shapeSizeInDocument.Height; // The height of the shape.
@@ -160,8 +165,17 @@ namespace CSharp.Rendering_and_Printing
                     // Render shape onto the graphics object using the RenderToScale or RenderToSize methods of ShapeRenderer class.
                 }
             }
+            //ExEnd:FindShapeSizes
         }
-
+        public static void RenderShapeImage(string dataDir, Shape shape)
+        {
+            //ExStart:RenderShapeImage
+            dataDir = dataDir + "TestFile.RenderShape_out_.jpg";
+            // Save the Shape image to disk in JPEG format and using default options.
+            shape.GetShapeRenderer().Save(dataDir, null);
+            //ExEnd:RenderShapeImage
+            Console.WriteLine("\nShape image rendered successfully.\nFile saved at " + dataDir);
+        }
         /// <summary>
         /// Renders any node in a document to the path specified using the image save options.
         /// </summary>

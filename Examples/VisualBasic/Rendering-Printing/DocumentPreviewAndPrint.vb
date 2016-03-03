@@ -26,7 +26,7 @@ Public Class DocumentPreviewAndPrint
 
         ' Open the document.
         Dim doc As New Document(dataDir & "TestFile.doc")
-
+        ' ExStart:PrintDialog
         Dim printDlg As New PrintDialog()
         ' Initialize the print dialog with the number of pages in the document.
         printDlg.AllowSomePages = True
@@ -34,15 +34,18 @@ Public Class DocumentPreviewAndPrint
         printDlg.PrinterSettings.MaximumPage = doc.PageCount
         printDlg.PrinterSettings.FromPage = 1
         printDlg.PrinterSettings.ToPage = doc.PageCount
-        
+        ' ExEnd:PrintDialog
+        ' ExStart:ShowDialog
         If (Not printDlg.ShowDialog().Equals(DialogResult.OK)) Then
             Return
         End If
-        
+        ' ExEnd:ShowDialog
+        ' ExStart:AsposeWordsPrintDocument
         ' Pass the printer settings from the dialog to the print document.
         Dim awPrintDoc As New AsposeWordsPrintDocument(doc)
         awPrintDoc.PrinterSettings = printDlg.PrinterSettings
-        
+        ' ExEnd:AsposeWordsPrintDocument
+        ' ExStart:ActivePrintPreviewDialog
         Dim previewDlg As New ActivePrintPreviewDialog()
 
         ' Pass the Aspose.Words print document to the Print Preview dialog.
@@ -55,5 +58,6 @@ Public Class DocumentPreviewAndPrint
         previewDlg.WindowState = FormWindowState.Maximized
         ' Show the appropriately configured Print Preview dialog.
         previewDlg.ShowDialog()
+        ' ExEnd:ActivePrintPreviewDialog
     End Sub
 End Class

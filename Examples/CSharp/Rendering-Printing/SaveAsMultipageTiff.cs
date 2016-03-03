@@ -12,6 +12,7 @@ namespace CSharp.Rendering_and_Printing
     {
         public static void Run()
         {
+            // ExStart:SaveAsMultipageTiff
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); ;
 
@@ -29,7 +30,7 @@ namespace CSharp.Rendering_and_Printing
             options.Resolution = 160;
             dataDir = dataDir + "TestFileWithOptions_out_.tiff";
             doc.Save(dataDir, options);
-
+            // ExEnd:SaveAsMultipageTiff
             Console.WriteLine("\nDocument saved as multi-page TIFF successfully.\nFile saved at " + dataDir);
         }
     }
