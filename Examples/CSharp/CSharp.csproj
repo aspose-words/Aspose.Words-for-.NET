@@ -85,6 +85,7 @@
     <Compile Include="Loading-and-Saving\PageSplitter.cs" />
     <Compile Include="Loading-and-Saving\SplitIntoHtmlPages.cs" />
     <Compile Include="Mail-Merge\ApplyCustomLogicToEmptyRegions.cs" />
+    <Compile Include="Mail-Merge\ExecuteArray.cs" />
     <Compile Include="Mail-Merge\LINQtoXMLMailMerge.cs" />
     <Compile Include="Mail-Merge\MailMergeFormFields.cs" />
     <Compile Include="Mail-Merge\MultipleDocsInMailMerge.cs" />
@@ -216,6 +217,9 @@
     <Compile Include="Quick-Start\SimpleMailMerge.cs" />
     <Compile Include="Quick-Start\UpdateFields.cs" />
     <Compile Include="Quick-Start\WorkingWithNodes.cs" />
+    <Compile Include="Rendering-Printing\PrintProgressDialog.cs" />
+    <Compile Include="Rendering-Printing\LoadHyphenationDictionaryForLanguage.cs" />
+    <Compile Include="Rendering-Printing\HyphenateWordsOfLanguages.cs" />
     <Compile Include="Rendering-Printing\EmbeddingWindowsStandardFonts.cs" />
     <Compile Include="Rendering-Printing\EmbeddedFontsInPDF.cs" />
     <Compile Include="Rendering-Printing\ReceiveNotificationsOfFont .cs" />

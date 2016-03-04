@@ -16,7 +16,7 @@ namespace CSharp.Rendering_and_Printing
         public static void Run()
         {
             // The path to the documents directory.
-            string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); ;
+            string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); 
 
             string fileName = "TestFile.docx";
             Document doc = new Document(dataDir + fileName);

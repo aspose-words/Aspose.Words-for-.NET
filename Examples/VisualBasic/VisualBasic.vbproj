@@ -54,6 +54,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -106,6 +107,7 @@
     <Compile Include="Loading-and-Saving\PageSplitter.vb" />
     <Compile Include="Loading-and-Saving\SplitIntoHtmlPages.vb" />
     <Compile Include="Mail-Merge\ApplyCustomLogicToEmptyRegions.vb" />
+    <Compile Include="Mail-Merge\ExecuteArray.vb" />
     <Compile Include="Mail-Merge\LINQtoXMLMailMerge.vb" />
     <Compile Include="Mail-Merge\MailMergeFormFields.vb" />
     <Compile Include="Mail-Merge\MultipleDocsInMailMerge.vb" />
@@ -225,6 +227,9 @@
     <Compile Include="Quick-Start\WorkingWithNodes.vb" />
     <Compile Include="Rendering-Printing\EmbeddedFontsInPDF.vb" />
     <Compile Include="Rendering-Printing\EmbeddingWindowsStandardFonts.vb" />
+    <Compile Include="Rendering-Printing\HyphenateWordsOfLanguages.vb" />
+    <Compile Include="Rendering-Printing\LoadHyphenationDictionaryForLanguage.vb" />
+    <Compile Include="Rendering-Printing\PrintProgressDialog.vb" />
     <Compile Include="Rendering-Printing\ReadActiveXControlProperties.vb" />
     <Compile Include="Rendering-Printing\DocumentLayoutHelper.vb" />
     <Compile Include="Rendering-Printing\DocumentPreviewAndPrint.vb">

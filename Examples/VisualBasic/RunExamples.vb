@@ -210,6 +210,7 @@ Module RunExamples
         'NestedMailMerge.Run()
         'RemoveEmptyRegions.Run()
         'XMLMailMerge.Run()
+        'ExecuteArray.Run()
 
         '' =====================================================
         '' =====================================================
@@ -231,6 +232,9 @@ Module RunExamples
         'ReceiveNotificationsOfFont.Run()
         'EmbeddedFontsInPDF.Run()
         'EmbeddingWindowsStandardFonts.Run()
+        'HyphenateWordsOfLanguages.Run()
+        'LoadHyphenationDictionaryForLanguage.Run()
+        'PrintProgressDialog.Run()
 
         '' =====================================================
         '' =====================================================

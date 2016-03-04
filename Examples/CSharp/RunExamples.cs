@@ -245,7 +245,8 @@ namespace CSharp
             //MultipleDocsInMailMerge.Run();
             //NestedMailMerge.Run();
             //RemoveEmptyRegions.Run();
-            //XMLMailMerge.Run();            
+            //XMLMailMerge.Run();           
+            //ExecuteArray.Run();
 
             //// =====================================================
             //// =====================================================
@@ -267,6 +268,9 @@ namespace CSharp
             //ReceiveNotificationsOfFont.Run();
             //EmbeddedFontsInPDF.Run();
             //EmbeddingWindowsStandardFonts.Run();
+            //HyphenateWordsOfLanguages.Run();
+            //LoadHyphenationDictionaryForLanguage.Run();
+            //PrintProgressDialog.Run();
 
             //// =====================================================
             //// =====================================================

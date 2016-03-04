@@ -12,7 +12,7 @@ namespace CSharp.Rendering_and_Printing
         {
             //ExStart:ReceiveNotificationsOfFont 
             // The path to the documents directory.
-            string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); ;
+            string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); 
 
             Document doc = new Document(dataDir + "Rendering.doc");
             // We can choose the default font to use in the case of any missing fonts.
