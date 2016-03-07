@@ -211,6 +211,10 @@ Module RunExamples
         'RemoveEmptyRegions.Run()
         'XMLMailMerge.Run()
         'ExecuteArray.Run()
+        'MailMergeAlternatingRows.Run()
+        'MailMergeImageFromBlob.Run()
+        'ProduceMultipleDocuments.Run()
+        MailMergeUsingMustacheSyntax.Run()
 
         '' =====================================================
         '' =====================================================
@@ -274,7 +278,9 @@ Module RunExamples
     Public Function GetDataDir_LINQ() As [String]
         Return Path.GetFullPath(GetDataDir_Data() + "LINQ/")
     End Function
-
+    Public Function GetDataDir_Database() As [String]
+        Return Path.GetFullPath(GetDataDir_Data() + "Database/")
+    End Function
     Public Function GetDataDir_LoadingAndSaving() As [String]
         Return Path.GetFullPath(GetDataDir_Data() + "Loading-and-Saving/")
     End Function

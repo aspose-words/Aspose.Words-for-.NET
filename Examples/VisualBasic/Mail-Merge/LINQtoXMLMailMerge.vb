@@ -34,16 +34,17 @@ Public Class LINQtoXMLMailMerge
 
         Dim orderItems = From order In orderXml.Descendants("Item") _
         Select New With {Key .PartNumber = CStr(order.Attribute("PartNumber")), Key .ProductName = CStr(order.Element("ProductName")), Key .Quantity = CStr(order.Element("Quantity")), Key .USPrice = CStr(order.Element("USPrice")), Key .Comment = CStr(order.Element("Comment")), Key .ShipDate = CStr(order.Element("ShipDate"))}
-        
+        ' ExStart:LINQToXMLQueryForDeliveryAddress
         ' Query the delivery (shipping) address using LINQ.
         Dim deliveryAddress = From delivery In orderXml.Elements("Address") _
         Where (CStr(delivery.Attribute("Type")) = "Shipping") _
         '                        Select New With {Key .Name = CStr(delivery.Element("Name")), Key .Country = CStr(delivery.Element("Country")), Key .Zip = CStr(delivery.Element("Zip")), Key .State = CStr(delivery.Element("State")), Key .City = CStr(delivery.Element("City")), Key .Street = CStr(delivery.Element("Street"))}
+        ' ExEnd:LINQToXMLQueryForDeliveryAddress
         
         ' Create custom Aspose.Words mail merge data sources based on the LINQ queries.
         Dim orderItemsDataSource As New MyMailMergeDataSource(orderItems, "Items")
         Dim deliveryDataSource As New MyMailMergeDataSource(deliveryAddress)
-
+        ' ExStart:LINQToXMLMailMerge
         Dim fileName As String = "TestFile.doc"
         ' Open the template document.
         Dim doc As New Document(dataDir & fileName)
@@ -59,13 +60,13 @@ Public Class LINQtoXMLMailMerge
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the output document.
         doc.Save(dataDir)
-
+        ' ExEnd:LINQToXMLMailMerge
         Console.WriteLine(vbNewLine & "Mail merge performed successfully." & vbNewLine & "File saved at " + dataDir)
 #Else
             Throw New InvalidOperationException("This example requires the .NET Framework v3.5 or above to run." & " Make sure that the target framework of this project is set to 3.5 or above.")
 #End If
     End Sub
-
+    ' ExStart:MyMailMergeDataSource
     Public Class MyMailMergeDataSource
         Implements IMailMergeDataSource
         
@@ -111,4 +112,5 @@ Public Class LINQtoXMLMailMerge
         Private ReadOnly mEnumerator As IEnumerator
         Private ReadOnly mTableName As String
     End Class
+    ' ExEnd:MyMailMergeDataSource
 End Class

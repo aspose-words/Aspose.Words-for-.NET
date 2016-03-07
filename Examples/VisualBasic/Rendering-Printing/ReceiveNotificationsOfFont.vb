@@ -44,7 +44,7 @@ Public Class ReceiveNotificationsOfFont
         dataDir = dataDir & Convert.ToString("Rendering.FontsNotificationUpdatePageLayout_out_.pdf")
         ' Even though the document was rendered previously, any save warnings are notified to the user during document save.
         doc.Save(dataDir)
-        ' ExStart:ReceiveWarningNotification  
+        ' ExEnd:ReceiveWarningNotification  
     End Sub
     ' ExStart:HandleDocumentWarnings
     Public Class HandleDocumentWarnings

@@ -10,6 +10,7 @@ Imports Aspose.Words.MailMerging
 
 Public Class MailMergeFormFields
     Public Shared Sub Run()
+        ' ExStart:MailMergeFormFields
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_MailMergeAndReporting()
         Dim fileName As String = "Template.doc"
@@ -32,10 +33,10 @@ Public Class MailMergeFormFields
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the finished document.
         doc.Save(dataDir)
-
+        ' ExEnd:MailMergeFormFields
         Console.WriteLine(vbNewLine + "Mail merge performed with form fields successfully." + vbNewLine + "File saved at " + dataDir)
     End Sub
-
+    ' ExStart:HandleMergeField
     Private Class HandleMergeField
         Implements IFieldMergingCallback
         ''' <summary>
@@ -82,4 +83,5 @@ Public Class MailMergeFormFields
 
         Private mBuilder As DocumentBuilder
     End Class
+    ' ExEnd:HandleMergeField
 End Class

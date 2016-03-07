@@ -8,6 +8,7 @@ Imports Aspose.Words
 
 Public Class XMLMailMerge
     Public Shared Sub Run()
+        ' ExStart:XMLMailMerge
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_MailMergeAndReporting()
 
@@ -25,7 +26,7 @@ Public Class XMLMailMerge
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the output document.
         doc.Save(dataDir)
-
+        ' ExEnd:XMLMailMerge
         Console.WriteLine(vbNewLine + "Mail merge performed with XML data successfully." + vbNewLine + "File saved at " + dataDir)
     End Sub
 End Class

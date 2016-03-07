@@ -107,11 +107,15 @@
     <Compile Include="Loading-and-Saving\PageSplitter.vb" />
     <Compile Include="Loading-and-Saving\SplitIntoHtmlPages.vb" />
     <Compile Include="Mail-Merge\ApplyCustomLogicToEmptyRegions.vb" />
+    <Compile Include="Mail-Merge\MailMergeUsingMustacheSyntax.vb" />
+    <Compile Include="Mail-Merge\MailMergeImageFromBlob.vb" />
+    <Compile Include="Mail-Merge\MailMergeAlternatingRows.vb" />
     <Compile Include="Mail-Merge\ExecuteArray.vb" />
     <Compile Include="Mail-Merge\LINQtoXMLMailMerge.vb" />
     <Compile Include="Mail-Merge\MailMergeFormFields.vb" />
     <Compile Include="Mail-Merge\MultipleDocsInMailMerge.vb" />
     <Compile Include="Mail-Merge\NestedMailMerge.vb" />
+    <Compile Include="Mail-Merge\ProduceMultipleDocuments.vb" />
     <Compile Include="Mail-Merge\RemoveEmptyRegions.vb" />
     <Compile Include="Mail-Merge\XMLMailMerge.vb" />
     <Compile Include="Programming-Documents\Bookmarks\AccessBookmarks.vb" />

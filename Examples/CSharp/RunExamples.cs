@@ -247,6 +247,10 @@ namespace CSharp
             //RemoveEmptyRegions.Run();
             //XMLMailMerge.Run();           
             //ExecuteArray.Run();
+            //MailMergeAlternatingRows.Run();
+            //MailMergeImageFromBlob.Run();
+            //ProduceMultipleDocuments.Run();
+            MailMergeUsingMustacheSyntax.Run();
 
             //// =====================================================
             //// =====================================================
@@ -311,6 +315,10 @@ namespace CSharp
         public static String GetDataDir_LINQ()
         {
             return Path.GetFullPath(GetDataDir_Data() + "LINQ/");
+        }
+        public static String GetDataDir_Database()
+        {
+            return Path.GetFullPath(GetDataDir_Data() + "Database/");
         }
         public static String GetDataDir_LoadingAndSaving()
         {

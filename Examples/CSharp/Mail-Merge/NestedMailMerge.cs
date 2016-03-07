@@ -14,8 +14,9 @@ namespace CSharp.Mail_Merge
     {
         public static void Run()
         {
+            //ExStart:NestedMailMerge
             // The path to the documents directory.
-            string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); ;
+            string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); 
             
             // Create the Dataset and read the XML.
             DataSet pizzaDs = new DataSet();
@@ -37,7 +38,7 @@ namespace CSharp.Mail_Merge
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the output to file
             doc.Save(dataDir);
-
+            //ExEnd:NestedMailMerge
             Debug.Assert(doc.MailMerge.GetFieldNames().Length == 0, "There was a problem with mail merge");
 
             Console.WriteLine("\nMail merge performed with nested data successfully.\nFile saved at " + dataDir);

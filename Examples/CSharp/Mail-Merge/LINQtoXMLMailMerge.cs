@@ -19,7 +19,7 @@ namespace CSharp.Mail_Merge
         {
 #if !NET20
             // The path to the documents directory.
-            string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); ;
+            string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); 
 
             // Load the XML document.
             XElement orderXml = XElement.Load(dataDir + "PurchaseOrder.xml");
@@ -45,7 +45,7 @@ namespace CSharp.Mail_Merge
                 Comment = (string)order.Element("Comment"),
                 ShipDate = (string)order.Element("ShipDate")
             };
-            
+            //ExStart:LINQToXMLQueryForDeliveryAddress
             var deliveryAddress =
             from delivery in orderXml.Elements("Address")
             where ((string)delivery.Attribute("Type") == "Shipping")
@@ -58,11 +58,11 @@ namespace CSharp.Mail_Merge
                 City = (string)delivery.Element("City"),
                 Street = (string)delivery.Element("Street")
             };
-            
+            //ExEnd:LINQToXMLQueryForDeliveryAddress
             // Create custom Aspose.Words mail merge data sources based on the LINQ queries.
             MyMailMergeDataSource orderItemsDataSource = new MyMailMergeDataSource(orderItems, "Items");
             MyMailMergeDataSource deliveryDataSource = new MyMailMergeDataSource(deliveryAddress);
-
+            //ExStart:LINQToXMLMailMerge
             string fileName = "TestFile.LINQ.doc";
             // Open the template document.
             Document doc = new Document(dataDir + fileName);
@@ -78,7 +78,7 @@ namespace CSharp.Mail_Merge
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the output document.
             doc.Save(dataDir);
-
+            //ExEnd:LINQToXMLMailMerge
             Console.WriteLine("\nMail merge performed successfully.\nFile saved at " + dataDir);
 #else
             throw new InvalidOperationException("This example requires the .NET Framework v3.5 or above to run." +
@@ -94,6 +94,7 @@ namespace CSharp.Mail_Merge
         /// interface that accepts a LINQ query (in fact any IEnumerable object).
         /// Aspose.Words calls this class during the mail merge to retrieve the data.
         /// </summary>
+        //ExStart:MyMailMergeDataSource 
         public class MyMailMergeDataSource : IMailMergeDataSource
         {
             /// <summary>
@@ -167,5 +168,6 @@ namespace CSharp.Mail_Merge
             private readonly IEnumerator mEnumerator;
             private readonly string mTableName;
         }
+        //ExEnd:MyMailMergeDataSource 
     }
 }

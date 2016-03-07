@@ -1,0 +1,28 @@
+<Vendors xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="VendorsSchema.xsd">
+<Vendor>
+<Name>Toyota</Name>
+<Product>
+<Name>Corolla GLI</Name>
+<Description>GLI Description</Description>
+<Price>18</Price>  
+</Product>
+<Product>
+  <Name>Corolla XLI</Name>
+  <Description>XLI Description</Description>
+  <Price>16</Price>  
+</Product>
+</Vendor>
+<Vendor>
+<Name>Honda</Name>
+<Product>
+  <Name>City</Name>
+  <Description>City Description</Description>
+  <Price>15</Price>  
+</Product>
+<Product>
+  <Name>Civic</Name>
+  <Description>Civic Description</Description>
+  <Price>18</Price>  
+</Product>
+</Vendor>
+</Vendors>

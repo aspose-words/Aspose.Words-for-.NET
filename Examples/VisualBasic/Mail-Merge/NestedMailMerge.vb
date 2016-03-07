@@ -10,6 +10,7 @@ Imports System.Collections
 
 Public Class NestedMailMerge
     Public Shared Sub Run()
+        ' ExStart:NestedMailMerge
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_MailMergeAndReporting()
 
@@ -33,6 +34,7 @@ Public Class NestedMailMerge
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the output to file
         doc.Save(dataDir)
+        ' ExEnd:NestedMailMerge
 
         Debug.Assert(doc.MailMerge.GetFieldNames().Length = 0, "There was a problem with mail merge")
 

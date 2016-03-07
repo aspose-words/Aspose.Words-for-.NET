@@ -85,6 +85,10 @@
     <Compile Include="Loading-and-Saving\PageSplitter.cs" />
     <Compile Include="Loading-and-Saving\SplitIntoHtmlPages.cs" />
     <Compile Include="Mail-Merge\ApplyCustomLogicToEmptyRegions.cs" />
+    <Compile Include="Mail-Merge\MailMergeUsingMustacheSyntax.cs" />
+    <Compile Include="Mail-Merge\ProduceMultipleDocuments.cs" />
+    <Compile Include="Mail-Merge\MailMergeImageFromBlob.cs" />
+    <Compile Include="Mail-Merge\MailMergeAlternatingRows.cs" />
     <Compile Include="Mail-Merge\ExecuteArray.cs" />
     <Compile Include="Mail-Merge\LINQtoXMLMailMerge.cs" />
     <Compile Include="Mail-Merge\MailMergeFormFields.cs" />

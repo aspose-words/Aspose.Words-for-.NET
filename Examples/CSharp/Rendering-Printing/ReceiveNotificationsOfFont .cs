@@ -48,7 +48,7 @@ namespace CSharp.Rendering_and_Printing
             dataDir = dataDir + "Rendering.FontsNotificationUpdatePageLayout_out_.pdf";
             // Even though the document was rendered previously, any save warnings are notified to the user during document save.
             doc.Save(dataDir);
-            //ExStart:ReceiveWarningNotification  
+            //ExEnd:ReceiveWarningNotification  
         }
         //ExStart:HandleDocumentWarnings
         public class HandleDocumentWarnings : IWarningCallback

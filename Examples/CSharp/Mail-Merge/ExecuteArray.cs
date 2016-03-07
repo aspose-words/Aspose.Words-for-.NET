@@ -19,7 +19,7 @@ namespace CSharp.Mail_Merge
             //ExStart:ExecuteArray
             HttpResponse Response = null;
             // The path to the documents directory.
-            string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); ;
+            string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); 
             // Open an existing document.
             Document doc = new Document(dataDir + "MailMerge.ExecuteArray.doc");
 

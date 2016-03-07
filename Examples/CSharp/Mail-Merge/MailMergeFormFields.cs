@@ -18,8 +18,9 @@ namespace CSharp.Mail_Merge
     {
         public static void Run()
         {
+            //ExStart:MailMergeFormFields
             // The path to the documents directory.
-            string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); ;
+            string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); 
             string fileName = "Template.doc";
             // Load the template document.
             Document doc = new Document(dataDir + fileName);
@@ -42,10 +43,10 @@ namespace CSharp.Mail_Merge
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the finished document.
             doc.Save(dataDir);
-
+            //ExEnd:MailMergeFormFields
             Console.WriteLine("\nMail merge performed with form fields successfully.\nFile saved at " + dataDir);
         }
-
+        //ExStart:HandleMergeField
         private class HandleMergeField : IFieldMergingCallback
         {
             /// <summary>
@@ -96,5 +97,6 @@ namespace CSharp.Mail_Merge
 
             private DocumentBuilder mBuilder;
         }
+        //ExEnd:HandleMergeField
     }
 }

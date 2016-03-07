@@ -15,8 +15,9 @@ namespace CSharp.Mail_Merge
     {
         public static void Run()
         {
+            //ExStart:XMLMailMerge 
             // The path to the documents directory.
-            string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); ;
+            string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); 
 
             // Create the Dataset and read the XML.
             DataSet customersDs = new DataSet();
@@ -32,7 +33,7 @@ namespace CSharp.Mail_Merge
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the output document.
             doc.Save(dataDir);
-
+            //ExEnd:XMLMailMerge 
             Console.WriteLine("\nMail merge performed with XML data successfully.\nFile saved at " + dataDir);
         }
     }
