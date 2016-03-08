@@ -7,7 +7,7 @@ Imports Aspose.Words.Layout
 Imports Aspose.Words.Rendering
 Public Class HyphenateWordsOfLanguages
     Public Shared Sub Run()
-        ' ExStart:HyphenateWordsOfLanguages
+        ' ExStart:HyphenateWordsOfLanguage
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_RenderingAndPrinting()
 
@@ -18,7 +18,7 @@ Public Class HyphenateWordsOfLanguages
 
         dataDir = dataDir & Convert.ToString("HyphenateWordsOfLanguages_out_.pdf")
         doc.Save(dataDir)
-        ' ExEnd:HyphenateWordsOfLanguages
+        ' ExEnd:HyphenateWordsOfLanguage
         Console.WriteLine(Convert.ToString(vbLf & "Words of special languages hyphenate successfully." & vbLf & "File saved at ") & dataDir)
     End Sub
 End Class

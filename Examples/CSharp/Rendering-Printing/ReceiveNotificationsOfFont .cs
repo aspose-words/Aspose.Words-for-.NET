@@ -10,7 +10,7 @@ namespace CSharp.Rendering_and_Printing
     {
         public static void Run()
         {
-            //ExStart:ReceiveNotificationsOfFont 
+            //ExStart:ReceiveNotificationsOfFonts 
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); 
 
@@ -29,7 +29,7 @@ namespace CSharp.Rendering_and_Printing
             string path = dataDir + "Rendering.MissingFontNotification_out_.pdf";
             // Pass the save options along with the save path to the save method.
             doc.Save(path);
-            //ExEnd:ReceiveNotificationsOfFont 
+            //ExEnd:ReceiveNotificationsOfFonts 
             Console.WriteLine("\nReceive notifications of font substitutions by using IWarningCallback processed.\nFile saved at " + path);
 
             ReceiveWarningNotification(doc, dataDir);

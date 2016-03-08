@@ -7,7 +7,7 @@ Imports Aspose.Words.Layout
 Imports Aspose.Words.Rendering
 Public Class LoadHyphenationDictionaryForLanguage
     Public Shared Sub Run()
-        ' ExStart:LoadHyphenationDictionaryForLanguage
+        ' ExStart:LoadHyphenationDictionaryForLan
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_RenderingAndPrinting()
 
@@ -18,7 +18,7 @@ Public Class LoadHyphenationDictionaryForLanguage
 
         dataDir = dataDir & Convert.ToString("LoadHyphenationDictionaryForLanguage_out_.pdf")
         doc.Save(dataDir)
-        ' ExEnd:LoadHyphenationDictionaryForLanguage
+        ' ExEnd:LoadHyphenationDictionaryForLan
         Console.WriteLine(Convert.ToString(vbLf & "Hyphenation dictionary for special language loaded successfully." & vbLf & "File saved at ") & dataDir)
     End Sub
 End Class

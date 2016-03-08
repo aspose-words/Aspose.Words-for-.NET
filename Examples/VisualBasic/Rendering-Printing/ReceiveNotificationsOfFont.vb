@@ -5,7 +5,7 @@ Imports Aspose.Words
 Imports Aspose.Words.Saving
 Public Class ReceiveNotificationsOfFont
     Public Shared Sub Run()
-        ' ExStart:ReceiveNotificationsOfFont 
+        ' ExStart:ReceiveNotificationsOfFonts 
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_RenderingAndPrinting()
 
@@ -26,7 +26,7 @@ Public Class ReceiveNotificationsOfFont
         Dim path As String = dataDir & Convert.ToString("Rendering.MissingFontNotification_out_.pdf")
         ' Pass the save options along with the save path to the save method.
         doc.Save(path)
-        ' ExEnd:ReceiveNotificationsOfFont 
+        ' ExEnd:ReceiveNotificationsOfFonts 
         Console.WriteLine(Convert.ToString(vbLf & "Receive notifications of font substitutions by using IWarningCallback processed." & vbLf & "File saved at ") & path)
 
         ReceiveWarningNotification(doc, dataDir)
