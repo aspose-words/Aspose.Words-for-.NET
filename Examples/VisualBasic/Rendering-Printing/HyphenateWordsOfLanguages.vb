@@ -18,7 +18,7 @@ Public Class HyphenateWordsOfLanguages
 
         dataDir = dataDir & Convert.ToString("HyphenateWordsOfLanguages_out_.pdf")
         doc.Save(dataDir)
-        'ExEnd:HyphenateWordsOfLanguages
+        ' ExEnd:HyphenateWordsOfLanguages
         Console.WriteLine(Convert.ToString(vbLf & "Words of special languages hyphenate successfully." & vbLf & "File saved at ") & dataDir)
     End Sub
 End Class
