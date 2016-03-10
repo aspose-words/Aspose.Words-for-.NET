@@ -2,7 +2,7 @@
 using Aspose.Words.Markup;
 using NUnit.Framework;
 
-namespace QaTests.Tests.Sdt
+namespace QaTests.Tests
 {
     /// <summary>
     /// Tests that verify work with structured document tags in the document 

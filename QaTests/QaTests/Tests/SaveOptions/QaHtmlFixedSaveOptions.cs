@@ -3,7 +3,7 @@ using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
 
-namespace QaTests.Tests.SaveOptions
+namespace QaTests.Tests
 {
     /// <summary>
     /// Tests that verify saving to htmlfixed using encoding parameter in "HtmlFixedSaveOptions"
@@ -28,7 +28,7 @@ namespace QaTests.Tests.SaveOptions
                 ExportEmbeddedSvg = true
             };
 
-            doc.Save(MyDir + "EncodingUsingSystemTextEncoding OUT.html", htmlFixedSaveOptions);
+            doc.Save(MyDir + "EncodingUsingSystemTextEncoding.html", htmlFixedSaveOptions);
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace QaTests.Tests.SaveOptions
                 ExportEmbeddedSvg = true
             };
 
-            doc.Save(MyDir + "EncodingUsingNewEncoding OUT.html", htmlFixedSaveOptions);
+            doc.Save(MyDir + "EncodingUsingNewEncoding.html", htmlFixedSaveOptions);
         }
 
 
@@ -65,7 +65,7 @@ namespace QaTests.Tests.SaveOptions
                 ExportEmbeddedSvg = true
             };
 
-            doc.Save(MyDir + "EncodingUsingGetEncoding OUT.html", htmlFixedSaveOptions);
+            doc.Save(MyDir + "EncodingUsingGetEncoding.html", htmlFixedSaveOptions);
         }
     }
 }

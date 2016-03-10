@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using NUnit.Framework;
+using Aspose.Words;
 
 namespace QaTests.Tests
 {
@@ -16,6 +17,12 @@ namespace QaTests.Tests
             SetUnlimitedLicense();
         }
 
+        [TestFixtureTearDown]
+        public void TearDown()
+        {
+            DeleteTempFiles();
+        }
+
         internal static void SetUnlimitedLicense()
         {
             if (File.Exists(TestLicenseFileName))
@@ -24,14 +31,21 @@ namespace QaTests.Tests
                 // You don't have to specify full path as shown here. You can specify just the 
                 // file name if you copy the license file into the same folder as your application
                 // binaries or you add the license to your project as an embedded resource.
-                Aspose.Words.License license = new Aspose.Words.License();
+                License license = new License();
                 license.SetLicense(TestLicenseFileName);
             }
         }
 
+        internal static void DeleteTempFiles()
+        {
+            foreach (string file in Directory.GetFiles(MyDir))
+                if (file.Contains("_OUT"))
+                    File.Delete(file);
+        }
+
         internal static void RemoveLicense()
         {
-            Aspose.Words.License license = new Aspose.Words.License();
+            License license = new License();
             license.SetLicense("");
         }
 

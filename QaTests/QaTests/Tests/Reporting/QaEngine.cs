@@ -6,7 +6,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Reporting;
 using NUnit.Framework;
 
-namespace QaTests.Tests.Reporting
+namespace QaTests.Tests
 {
     /// <summary>
     /// Tests that verify ReportingEngine functions
@@ -21,9 +21,9 @@ namespace QaTests.Tests.Reporting
         {
             Document doc = DocumentHelper.CreateTemplateDocumentForReportingEngine("<<image [src.Image] -fitHeight>>");
 
-            ImageStream imageStream = new ImageStream(new FileStream(_image, FileMode.Open, FileAccess.Read));
+            ImageStream imageStream = new ImageStream(new FileStream(this._image, FileMode.Open, FileAccess.Read));
 
-            BuildReport(doc, imageStream, "src");
+            BuildReport(doc, imageStream, "src", ReportBuildOptions.None);
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
@@ -50,9 +50,9 @@ namespace QaTests.Tests.Reporting
         {
             Document doc = DocumentHelper.CreateTemplateDocumentForReportingEngine("<<image [src.Image] -fitWidth>>");
 
-            ImageStream imageStream = new ImageStream(new FileStream(_image, FileMode.Open, FileAccess.Read));
+            ImageStream imageStream = new ImageStream(new FileStream(this._image, FileMode.Open, FileAccess.Read));
 
-            BuildReport(doc, imageStream, "src");
+            BuildReport(doc, imageStream, "src", ReportBuildOptions.None);
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
@@ -79,9 +79,9 @@ namespace QaTests.Tests.Reporting
         {
             Document doc = DocumentHelper.CreateTemplateDocumentForReportingEngine("<<image [src.Image] -fitSize>>");
 
-            ImageStream imageStream = new ImageStream(new FileStream(_image, FileMode.Open, FileAccess.Read));
+            ImageStream imageStream = new ImageStream(new FileStream(this._image, FileMode.Open, FileAccess.Read));
 
-            BuildReport(doc, imageStream, "src");
+            BuildReport(doc, imageStream, "src", ReportBuildOptions.None);
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
@@ -104,40 +104,39 @@ namespace QaTests.Tests.Reporting
         }
 
         [Test]
-        [ExpectedException(typeof (InvalidOperationException))]
-        public void WithoutAllowMissingDataFields()
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void WithoutMissingMembers()
         {
-            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder();
 
-            DocumentHelper.InsertNewRun(doc, "<<if [value == “true”] >>ok<<else>>Cancel<</if>>");
+            //Add templete to the document for reporting engine
+            DocumentHelper.InsertBuilderText(builder, new[] { "<<[missingObject.First().id]>>", "<<foreach [in missingObject]>><<[id]>><</foreach>>" });
 
-            DataSet dataSet = new DataSet();
-            dataSet.ReadXml(MyDir + "DataSet.xml", XmlReadMode.InferSchema);
-
-            BuildReport(doc, dataSet, "Bad");
+            //Assert that build report failed without "ReportBuildOptions.AllowMissingMembers"
+            BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.None);
         }
-        /// <summary>
-        /// Assert that the exception from previous test is not repeated with AllowMissingMembers parameter
-        /// </summary>
+
         [Test]
-        public void WithAllowMissingDataFields()
+        public void WithMissingMembers()
         {
-            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder();
 
-            DocumentHelper.InsertNewRun(doc, "<<if [value == “true”] >>ok<<else>>Cancel<</if>>");
+            //Add templete to the document for reporting engine
+            DocumentHelper.InsertBuilderText(builder, new[] { "<<[missingObject.First().id]>>", "<<foreach [in missingObject]>><<[id]>><</foreach>>" });
 
-            DataSet dataSet = new DataSet();
-            dataSet.ReadXml(MyDir + "DataSet.xml", XmlReadMode.InferSchema);
+            BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.AllowMissingMembers);
 
-            ReportingEngine engine = new ReportingEngine();
-            engine.Options = ReportBuildOptions.AllowMissingMembers;
-
-            engine.BuildReport(doc, dataSet, "Bad");
+            //Assert that build report success with "ReportBuildOptions.AllowMissingMembers"
+            Assert.AreEqual(
+            ControlChar.ParagraphBreak + ControlChar.ParagraphBreak + ControlChar.SectionBreak,
+            builder.Document.GetText());
         }
 
-        private static void BuildReport(Document document, object dataSource, string dataSourceName)
+        private static void BuildReport(Document document, object dataSource, string dataSourceName, ReportBuildOptions reportBuildOptions)
         {
             ReportingEngine engine = new ReportingEngine();
+            engine.Options = reportBuildOptions;
+
             engine.BuildReport(document, dataSource, dataSourceName);
         }
     }
@@ -147,7 +146,7 @@ public class ImageStream
 {
     public ImageStream(Stream stream)
     {
-        Image = stream;
+        this.Image = stream;
     }
 
     public Stream Image { get; set; }

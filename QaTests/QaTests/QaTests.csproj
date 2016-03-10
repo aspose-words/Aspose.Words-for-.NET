@@ -32,8 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words, Version=15.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.15.12.0\lib\net20\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Pdf, Version=11.3.0.0, Culture=neutral, PublicKeyToken=6947866647e416ec, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Pdf.11.3.0\lib\net2.0\Aspose.Pdf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Aspose.Words, Version=16.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.16.1.0\lib\net20\Aspose.Words.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -48,7 +52,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tests\DocumentBuilder\QABookmarks.cs" />
+    <Compile Include="Tests\DocumentBuilder\QaDocumentBuilder.cs" />
     <Compile Include="Tests\DocumentBuilder\QaEditableRange.cs" />
+    <Compile Include="Tests\Document\QaDocument.cs" />
+    <Compile Include="Tests\List\QaList.cs" />
     <Compile Include="Tests\Paragraph\QaInsertField.cs" />
     <Compile Include="Tests\QaTestsBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
