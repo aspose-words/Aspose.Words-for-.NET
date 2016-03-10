@@ -38,7 +38,7 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="body" runat="server">
-    <umbraco:umbracopanel id="UmbracoPanel" text="Aspose Member Export to Word 1.0" runat="server">
+    <umbraco:UmbracoPanel ID="UmbracoPanel" Text="Aspose Member Export to Word 1.0" runat="server">
         <asp:PlaceHolder ID="MemberExportPlaceHolder" runat="server">
             <div class="umb-pane ng-scope">
                 <asp:Label ID="ErrorLabel" ForeColor="Red" Visible="false" runat="server"></asp:Label>
@@ -47,7 +47,7 @@
                 </p>
                 <umbraco:Pane ID="ExportTypePane" runat="server">
                     <umbraco:PropertyPanel ID="ExportTypePropertyPanel" Text="Export Output Format" runat="server">
-                        <asp:DropDownList ID="ExportTypeDropDown" runat="server">
+                        <asp:DropDownList ID="ExportTypeDropDown" runat="server" Width="50%">
                             <asp:ListItem Text="PDF Adobe Portable Document (*.Pdf)" Value="Pdf">
                             </asp:ListItem>
                             <asp:ListItem Text="Mircrosoft Word 97 - 2007 (*.Doc)" Selected="True" Value="Doc">
@@ -63,29 +63,29 @@
                             <asp:ListItem Text="PNG Image (*.Png)" Value="Png">
                             </asp:ListItem>
                         </asp:DropDownList>
+                        <br />
+                        &nbsp;<br />
+                        <asp:GridView ID="UmbracoMembersGridView" EmptyDataText="There are no members." Width="100%"
+                            EmptyDataRowStyle-CssClass="emptyClass" GridLines="None" BorderWidth="0" AutoGenerateColumns="False"
+                            HeaderStyle-CssClass="" EnableViewState="true" CssClass="table table-striped exportToWordGridView"
+                            DataKeyNames="Email" ClientIDMode="Static" runat="server">
+                            <Columns>
+                                <asp:TemplateField HeaderStyle-CssClass="rgHeader" HeaderStyle-Width="35px">
+                                    <HeaderTemplate>
+                                        <asp:CheckBox ID="SelectAllCheckBox" CssClass="selectAllCheckBox" runat="server" />
+                                    </HeaderTemplate>
+                                    <ItemTemplate>
+                                        <asp:CheckBox ID="SelectedCheckBox" CssClass="selectableCheckBox" runat="server" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:BoundField DataField="Text" HeaderStyle-CssClass="rgHeader" HeaderText="Name" />
+                                <asp:BoundField DataField="LoginName" HeaderStyle-CssClass="rgHeader" HeaderText="LoginName" />
+                                <asp:BoundField DataField="Email" HeaderStyle-CssClass="rgHeader" HeaderText="Email" />
+                                <asp:BoundField DataField="CreateDateTime" HeaderStyle-CssClass="rgHeader" HeaderText="CreateDateTime" />
+                            </Columns>
+                        </asp:GridView>
                     </umbraco:PropertyPanel>
                 </umbraco:Pane>
-                
-                <asp:GridView ID="UmbracoMembersGridView" EmptyDataText="There are no members." Width="100%"
-                    EmptyDataRowStyle-CssClass="emptyClass" GridLines="None" BorderWidth="0" AutoGenerateColumns="False"
-                    HeaderStyle-CssClass="" EnableViewState="true" CssClass="table table-striped exportToWordGridView"
-                    DataKeyNames="Email" ClientIDMode="Static" runat="server">
-                    <Columns>
-                        <asp:TemplateField HeaderStyle-CssClass="rgHeader" HeaderStyle-Width="35px">
-                            <HeaderTemplate>
-                                <asp:CheckBox ID="SelectAllCheckBox" CssClass="selectAllCheckBox" runat="server" />
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                <asp:CheckBox ID="SelectedCheckBox" CssClass="selectableCheckBox" runat="server" />
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:BoundField DataField="Text" HeaderStyle-CssClass="rgHeader" HeaderText="Name" />
-                        <asp:BoundField DataField="LoginName" HeaderStyle-CssClass="rgHeader" HeaderText="LoginName" />
-                        <asp:BoundField DataField="Email" HeaderStyle-CssClass="rgHeader" HeaderText="Email" />
-                        <asp:BoundField DataField="CreateDateTime" HeaderStyle-CssClass="rgHeader" HeaderText="CreateDateTime" />
-                    </Columns>
-                </asp:GridView>
-            </div>
         </asp:PlaceHolder>
         <asp:PlaceHolder ID="SavePlaceHolder" runat="server">
             <umbraco:Pane ID="ExportPane" runat="server">
@@ -93,5 +93,6 @@
                     CssClass="btn btn-success" />
             </umbraco:Pane>
         </asp:PlaceHolder>
-    </umbraco:umbracopanel>
+        </div>
+    </umbraco:UmbracoPanel>
 </asp:Content>
