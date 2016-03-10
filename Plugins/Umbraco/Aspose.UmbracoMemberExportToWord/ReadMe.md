@@ -4,16 +4,18 @@
 <h2>Features</h2>
 <p>This initial version of the Add-on have the following features:</p>
 <ul>
-<li>Export members to Microsoft Word Documents (.xls, .xlsx and .xlsb)</li>
-<li>Export members to Tab delimited text document (*.txt)</li>
-<li>Export members to CSV (Comma delimited) (*.csv)</li>
-<li>Export members to OpenDocument Spreadsheet (*.ods)</li>
-<li>Option to select desired output format before exporting</li>
-<li>Option to export all or selected members to selected output document format.</li>
-<li>Works with all .NET versions starting from .NET 4.0.</li>
-<li>Exported document is automatically sent to browser for downloading</li>
-<li>If selected a copy of the exported document is saved in App_Data folder on the server for later use.</li>
-<li>Compatible with a wide range of Umbraco versions 7.x+.</li>
+            <li>Export members to Microsoft Word Documents (.doc, .docx, dot, dotx, docm, and dotm)</li>
+            <li>Export members to Portable Document Format (*.pdf)</li>
+            <li>Export members to OpenDocument Format (*.odt)</li>
+            <li>Export members to Tiff  Image/s (*.Tiff)</li>
+            <li>Export members to JPEG Image (*.Jpeg)</li>
+            <li>Export members to PNG Image (*.Png)</li>
+            <li>Option to select desired output format before exporting</li>
+            <li>Option to export all or selected members to selected output document format.</li>
+            <li>Works with all .NET versions starting from .NET 4.0.</li>
+            <li>Exported document is automatically sent to browser for downloading</li>
+            <li>If selected a copy of the exported document is saved in App_Data folder on the server for later use.</li>
+            <li>Compatible with a wide range of Umbraco versions 7.x+</li>
 </ul>
 <p><a href="http://www.aspose.com/docs/display/wordsnet/Umbraco+Export+Members+to+Word"><img style="display: block; margin-left: auto; margin-right: auto;" title="Umbraco Member Export To Word" src="http://www.aspose.com/blogs/wp-content/uploads/2016/03/UmbracoMemberExportToWordS.png" alt="Umbraco Member Export To Word" width="600" height="330" /></a></p>
 <h2>Download, Installation and Usage</h2>
