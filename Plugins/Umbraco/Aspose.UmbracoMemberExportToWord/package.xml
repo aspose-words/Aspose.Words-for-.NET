@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<umbPackage>
+  <files>
+    <file>
+      <guid>Aspose.UmbracoMemberExportToWord.dll</guid>
+      <orgPath>/bin</orgPath>
+      <orgName>Aspose.UmbracoMemberExportToWord.dll</orgName>
+    </file>
+    <file>
+      <guid>Aspose.Words.dll</guid>
+      <orgPath>/bin</orgPath>
+      <orgName>Aspose.Words.dll</orgName>
+    </file>
+    <file>
+      <guid>ExportToWord.aspx</guid>
+      <orgPath>/umbraco/plugins/AsposeMemberExportToWord</orgPath>
+      <orgName>ExportToWord.aspx</orgName>
+    </file>
+    <file>
+      <guid>aspose.ico</guid>
+      <orgPath>/umbraco/plugins/AsposeMemberExportToWord/Images</orgPath>
+      <orgName>aspose.ico</orgName>
+    </file>
+  </files>
+  <info>
+    <package>
+      <name>AsposeMemberExportToWord</name>
+      <version>1.0</version>
+      <license url="https://asposewordsumbraco.codeplex.com/license">Aspose Member Export to Word license agreement</license>
+      <url>https://asposewordsumbraco.codeplex.com/wikipage?title=Umbraco%20Export%20Members%20to%20Word</url>
+      <requirements>
+        <major>4</major>
+        <minor>5</minor>
+        <patch>0</patch>
+      </requirements>
+    </package>
+    <author>
+      <name>Aspose Pty Ltd</name>
+      <website>http://www.aspose.com/</website>
+    </author>
+    <readme>
+      <![CDATA[ Export Members to Word is an Add-on for Umbraco which allows you to export members from your Umbraco CMS to an Word and OpenDocument and image formats using Aspose.Words. A new node titled Export Members To Word appears under Members tree in Umbraco backend after installation where you can simply select members to export and output format to get members in selected output document format. <br><br
+        
+        <p>This initial version of the Add-on have the following features:</p>
+        <ul>
+            <li>Export members to Microsoft Word Documents (.doc, .docx, dot, dotx, docm, and dotm)</li>
+            <li>Export members to Portable Document Format (*.pdf)</li>
+            <li>Export members to OpenDocument Format (*.odt)</li>
+            <li>Export members to Tiff  Image/s (*.Tiff)</li>
+            <li>Export members to JPEG Image (*.Jpeg)</li>
+            <li>Export members to PNG Image (*.Png)</li>
+            <li>Option to select desired output format before exporting</li>
+            <li>Option to export all or selected members to selected output document format.</li>
+            <li>Works with all .NET versions starting from .NET 4.0.</li>
+            <li>Exported document is automatically sent to browser for downloading</li>
+            <li>If selected a copy of the exported document is saved in App_Data folder on the server for later use.</li>
+            <li>Compatible with a wide range of Umbraco versions 7.x+</li>
+        </ul>
+      
+      ]]>
+    </readme>
+  </info>
+  <DocumentTypes />
+  <Templates />
+  <Stylesheets />
+  <Macros />
+  <DictionaryItems />
+  <Languages />
+  <DataTypes />
+  <Actions>
+    <Action runat="install" alias="addApplicationTree" silent="false" initialize="true" sortOrder="100" applicationAlias="member" treeAlias="asposememberexporttoword" treeTitle="Export Members To Word" iconOpened="folder_o.gif" iconClosed="folder.gif" assemblyName="Aspose.UmbracoMemberExportToWord" treeHandlerType="Library.MemberExportToWordTree" action="" />
+  </Actions>
+</umbPackage>
