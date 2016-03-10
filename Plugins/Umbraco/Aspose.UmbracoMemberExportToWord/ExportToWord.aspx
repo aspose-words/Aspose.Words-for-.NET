@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="True" MasterPageFile="~/umbraco/masterpages/umbracoPage.Master"
+<%@ Page Language="C#" AutoEventWireup="True" MasterPageFile="~/umbraco/masterpages/umbracoPage.Master"
     CodeBehind="ExportToWord.aspx.cs" Inherits="Aspose.UmbracoMemberExportToWord.AsposeMemberExport" %>
 
 <%@ Register Assembly="controls" Namespace="umbraco.uicontrols" TagPrefix="umbraco" %>
@@ -63,6 +63,7 @@
                             <asp:ListItem Text="PNG Image (*.Png)" Value="Png">
                             </asp:ListItem>
                         </asp:DropDownList>
+                    </umbraco:PropertyPanel>
                         <br />
                         &nbsp;<br />
                         <asp:GridView ID="UmbracoMembersGridView" EmptyDataText="There are no members." Width="100%"
@@ -84,7 +85,6 @@
                                 <asp:BoundField DataField="CreateDateTime" HeaderStyle-CssClass="rgHeader" HeaderText="CreateDateTime" />
                             </Columns>
                         </asp:GridView>
-                    </umbraco:PropertyPanel>
                 </umbraco:Pane>
         </asp:PlaceHolder>
         <asp:PlaceHolder ID="SavePlaceHolder" runat="server">
