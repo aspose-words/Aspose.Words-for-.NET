@@ -6,6 +6,7 @@ Imports Aspose.Words.Fields
 
 Public Class RemoveField
     Public Shared Sub Run()
+        ' ExStart:RemoveField
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithFields()
 
@@ -14,7 +15,7 @@ Public Class RemoveField
         Dim field As Field = doc.Range.Fields(0)
         ' Calling this method completely removes the field from the document.
         field.Remove()
-
+        ' ExEnd:RemoveField
         Console.WriteLine(vbNewLine & "Removed field from the document successfully.")
     End Sub
 End Class

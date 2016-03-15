@@ -44,6 +44,7 @@ Module RunExamples
         'ConvertDocumentToByte.Run()
         'ConvertDocumentToEPUB.Run()
         'ConvertDocumentToHtmlWithRoundtrip.Run()
+        'DetectDocumentSignatures.Run()
 
         '' =====================================================
         '' =====================================================
@@ -100,6 +101,10 @@ Module RunExamples
         '' =====================================================
         'ManipulateThemeProperties.Run()
 
+        '' Node
+        '' =====================================================
+        'ExNode.Run()
+
         '' Charts
         '' =====================================================
         'CreateColumnChart.Run()
@@ -126,6 +131,8 @@ Module RunExamples
         'RemoveFooters.Run()
         'AddGroupShapeToDocument.Run()
         'CompareDocument.Run()
+        'DocProperties.Run()
+        'AcceptAllRevisions.Run()
 
         '' Fields
         '' =====================================================
@@ -147,6 +154,8 @@ Module RunExamples
         'FormFieldsGetByName.Run()
         'FormFieldsWorkWithProperties.Run()
         'RenameMergeFields.Run()
+        'ChangeFieldUpdateCultureSource.Run()
+        'GetFieldNames.Run()
 
         '' Images
         '' =====================================================
@@ -185,7 +194,9 @@ Module RunExamples
         'FindingIndex.Run()
         'AddRemoveColumn.Run()
         'RepeatRowsOnSubsequentPages.Run()
-        'JoiningAndSplittingTable.Run()     
+        'JoiningAndSplittingTable.Run() 
+        'MergedCells.Run()
+        'KeepTablesAndRowsBreaking.Run()
 
         '' Sections
         '' =====================================================
@@ -214,7 +225,7 @@ Module RunExamples
         'MailMergeAlternatingRows.Run()
         'MailMergeImageFromBlob.Run()
         'ProduceMultipleDocuments.Run()
-        MailMergeUsingMustacheSyntax.Run()
+        'MailMergeUsingMustacheSyntax.Run()
 
         '' =====================================================
         '' =====================================================
@@ -280,6 +291,9 @@ Module RunExamples
     End Function
     Public Function GetDataDir_Database() As [String]
         Return Path.GetFullPath(GetDataDir_Data() + "Database/")
+    End Function
+    Public Function GetDataDir_WorkingWithNode() As [String]
+        Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Node/")
     End Function
     Public Function GetDataDir_LoadingAndSaving() As [String]
         Return Path.GetFullPath(GetDataDir_Data() + "Loading-and-Saving/")

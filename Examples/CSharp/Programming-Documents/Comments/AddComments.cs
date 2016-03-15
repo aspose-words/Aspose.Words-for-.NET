@@ -13,10 +13,11 @@ namespace CSharp.Programming_Documents.Comments
             //ExStart:AddComments
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithComments();
+            //ExStart:CreateSimpleDocumentUsingDocumentBuilder
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Write("Some text is added.");
-
+            //ExEnd:CreateSimpleDocumentUsingDocumentBuilder
             Comment comment = new Comment(doc, "Awais Hafeez", "AH", DateTime.Today);
             builder.CurrentParagraph.AppendChild(comment);
             comment.Paragraphs.Add(new Paragraph(doc));

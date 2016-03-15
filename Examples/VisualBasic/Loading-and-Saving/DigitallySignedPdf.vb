@@ -1,7 +1,9 @@
 ﻿Imports System.IO
 Imports Aspose.Words
 Imports System
+' ExStart:X509Certificates
 Imports System.Security.Cryptography.X509Certificates
+' ExEnd:X509Certificates
 Imports Aspose.Words.Saving
 Public Class DigitallySignedPdf
     Public Shared Sub Run()

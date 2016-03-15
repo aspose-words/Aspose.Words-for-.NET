@@ -14,7 +14,7 @@ namespace CSharp.Loading_Saving
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
             // Load the document from disk.
-            Document doc = new Document(dataDir + "Test File (doc).doc");
+            Document doc = new Document(dataDir + "Document.EpubConversion.doc");
 
             // Create a new instance of HtmlSaveOptions. This object allows us to set options that control
             // how the output document is saved.
@@ -37,10 +37,22 @@ namespace CSharp.Loading_Saving
 
             // Export the document as an EPUB file.
             doc.Save(dataDir + "Document.EpubConversion_out_.epub", saveOptions);
-
             //ExEnd:ConvertDocumentToEPUB
-
+            ConvertDocumentToEPUBUsingDefaultSaveOption();
             Console.WriteLine("\nDocument converted to EPUB successfully.");
         }
+        //ExStart:ConvertDocumentToEPUBUsingDefaultSaveOption
+        public static void ConvertDocumentToEPUBUsingDefaultSaveOption()
+        {
+            // The path to the documents directory.
+            string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
+
+            // Load the document from disk.
+            Document doc = new Document(dataDir + "Document.EpubConversion.doc");
+            // Save the document in EPUB format.
+            doc.Save(dataDir + "Document.EpubConversionUsingDefaultSaveOption_out_.epub");
+        }
+        //ExEnd:ConvertDocumentToEPUBUsingDefaultSaveOption
+            
     }
 }

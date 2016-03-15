@@ -33,7 +33,9 @@ Public Class CheckFormat
             Directory.CreateDirectory(pre97Dir)
         End If
 
+        ' ExStart:GetListOfFilesInFolder
         Dim fileList() As String = Directory.GetFiles(dataDir)
+        ' ExEnd:GetListOfFilesInFolder
 
         For Each fileName As String In fileList
             ' Extract and display the file name without the path.

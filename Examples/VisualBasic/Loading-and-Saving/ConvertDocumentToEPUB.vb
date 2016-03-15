@@ -10,7 +10,7 @@ Public Class ConvertDocumentToEPUB
         Dim dataDir As String = RunExamples.GetDataDir_LoadingAndSaving()
 
         ' Load the document from disk.
-        Dim doc As New Document(dataDir & Convert.ToString("Test File (doc).doc"))
+        Dim doc As New Document(dataDir & Convert.ToString("Document.EpubConversion.doc"))
 
         ' Create a new instance of HtmlSaveOptions. This object allows us to set options that control
         ' how the output document is saved.
@@ -34,7 +34,18 @@ Public Class ConvertDocumentToEPUB
         doc.Save(dataDir & Convert.ToString("Document.EpubConversion_out_.epub"), saveOptions)
 
         ' ExEnd:ConvertDocumentToEPUB
-
+        ConvertDocumentToEPUBUsingDefaultSaveOption()
         Console.WriteLine(vbLf & "Document converted to EPUB successfully.")
     End Sub
+    ' ExStart:ConvertDocumentToEPUBUsingDefaultSaveOption
+    Public Shared Sub ConvertDocumentToEPUBUsingDefaultSaveOption()
+        ' The path to the documents directory.
+        Dim dataDir As String = RunExamples.GetDataDir_LoadingAndSaving()
+        ' Load the document from disk.
+        Dim doc As New Document(dataDir & Convert.ToString("Document.EpubConversion.doc"))
+        ' Save the document in EPUB format.
+        doc.Save(dataDir & Convert.ToString("Document.EpubConversionUsingDefaultSaveOption_out_.epub"))
+    End Sub
+    ' ExEnd:ConvertDocumentToEPUBUsingDefaultSaveOption
+
 End Class

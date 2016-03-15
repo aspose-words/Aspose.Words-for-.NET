@@ -249,7 +249,7 @@ Public Class ExtractContent
         ' Return the nodes between the node markers.
         Return nodes
     End Function
-    
+
     Private Shared Sub VerifyParameterNodes(ByVal startNode As Node, ByVal endNode As Node)
         ' The order in which these checks are done is important.
         If startNode Is Nothing Then
@@ -379,7 +379,7 @@ Public Class ExtractContent
         End If
 
     End Sub
-    
+
     Public Shared Function GenerateDocument(ByVal srcDoc As Document, ByVal nodes As ArrayList) As Document
         ' Create a blank document.
         Dim dstDoc As New Document()

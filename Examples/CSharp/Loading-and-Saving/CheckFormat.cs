@@ -31,8 +31,9 @@ namespace CSharp.Loading_Saving
             if (Directory.Exists(pre97Dir) == false)
                 Directory.CreateDirectory(pre97Dir);
 
-            
+            //ExStart:GetListOfFilesInFolder
             string[] fileList = Directory.GetFiles(dataDir);
+            //ExEnd:GetListOfFilesInFolder
             // Loop through all found files.
             foreach (string fileName in fileList)
             {

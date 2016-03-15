@@ -76,6 +76,10 @@
     <Compile Include="Loading-and-Saving\ConvertDocumentToByte.cs" />
     <Compile Include="Loading-and-Saving\ConvertDocumentToEPUB.cs" />
     <Compile Include="Loading-and-Saving\ConvertDocumentToHtmlWithRoundtrip.cs" />
+    <Compile Include="Loading-and-Saving\ImageLoadingWithCredentialsHandler.cs" />
+    <Compile Include="Loading-and-Saving\LoadAndSaveDocToDatabase.cs" />
+    <Compile Include="Loading-and-Saving\DetectDocumentSignatures.cs" />
+    <Compile Include="Loading-and-Saving\SendToClientBrowser.cs" />
     <Compile Include="Loading-and-Saving\DigitallySignedPdf.cs" />
     <Compile Include="Loading-and-Saving\SpecifySaveOption.cs" />
     <Compile Include="Loading-and-Saving\OpenEncryptedDocument.cs" />
@@ -115,10 +119,14 @@
     <Compile Include="Programming-Documents\Document\AccessStyles.cs" />
     <Compile Include="Programming-Documents\Document\AddGroupShapeToDocument.cs" />
     <Compile Include="Programming-Documents\Document\CompareDocument.cs" />
+    <Compile Include="Programming-Documents\Document\AcceptAllRevisions.cs" />
+    <Compile Include="Programming-Documents\Document\DocProperties.cs" />
     <Compile Include="Programming-Documents\Document\RemoveFooters.cs" />
     <Compile Include="Programming-Documents\Document\ExtractContentUsingDocumentVisitor.cs" />
     <Compile Include="Programming-Documents\Document\CreateHeaderFooterUsingDocBuilder.cs" />
+    <Compile Include="Programming-Documents\Fields\ChangeFieldUpdateCultureSource.cs" />
     <Compile Include="Programming-Documents\Fields\ChangeLocale.cs" />
+    <Compile Include="Programming-Documents\Fields\GetFieldNames.cs" />
     <Compile Include="Programming-Documents\Fields\RenameMergeFields.cs" />
     <Compile Include="Programming-Documents\Fields\FormFieldsWorkWithProperties.cs" />
     <Compile Include="Programming-Documents\Fields\FormFieldsGetByName.cs" />
@@ -134,8 +142,11 @@
     <Compile Include="Programming-Documents\Hyperlink\ReplaceHyperlinks.cs" />
     <Compile Include="Programming-Documents\Images\InsertBarcodeImage.cs" />
     <Compile Include="Programming-Documents\Images\ExtractImagesToFiles.cs" />
+    <Compile Include="Programming-Documents\Node\ExNode.cs" />
     <Compile Include="Programming-Documents\Ranges\RangesDeleteText.cs" />
     <Compile Include="Programming-Documents\Ranges\RangesGetText.cs" />
+    <Compile Include="Programming-Documents\Tables\KeepTablesAndRowsBreaking.cs" />
+    <Compile Include="Programming-Documents\Tables\MergedCells.cs" />
     <Compile Include="Programming-Documents\Tables\JoiningAndSplittingTable.cs" />
     <Compile Include="Programming-Documents\Document\SetViewOption.cs" />
     <Compile Include="Programming-Documents\Document\GetVariables.cs" />

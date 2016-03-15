@@ -98,7 +98,11 @@
     <Compile Include="Loading-and-Saving\ConvertDocumentToByte.vb" />
     <Compile Include="Loading-and-Saving\ConvertDocumentToEPUB.vb" />
     <Compile Include="Loading-and-Saving\ConvertDocumentToHtmlWithRoundtrip.vb" />
+    <Compile Include="Loading-and-Saving\DetectDocumentSignatures.vb" />
     <Compile Include="Loading-and-Saving\DigitallySignedPdf.vb" />
+    <Compile Include="Loading-and-Saving\ImageLoadingWithCredentialsHandler.vb" />
+    <Compile Include="Loading-and-Saving\LoadAndSaveDocToDatabase.vb" />
+    <Compile Include="Loading-and-Saving\SendToClientBrowser.vb" />
     <Compile Include="Loading-and-Saving\SpecifySaveOption.vb" />
     <Compile Include="Loading-and-Saving\OpenEncryptedDocument.vb" />
     <Compile Include="Loading-and-Saving\CreateDocument.vb" />
@@ -136,11 +140,13 @@
     <Compile Include="Programming-Documents\Comments\AnchorComment.vb" />
     <Compile Include="Programming-Documents\Comments\ProcessComments.vb" />
     <Compile Include="Programming-Documents\ConvertUtil\UtilityClasses.vb" />
+    <Compile Include="Programming-Documents\Document\AcceptAllRevisions.vb" />
     <Compile Include="Programming-Documents\Document\AccessStyles.vb" />
     <Compile Include="Programming-Documents\Document\AddGroupShapeToDocument.vb" />
     <Compile Include="Programming-Documents\Document\CloningDocument.vb" />
     <Compile Include="Programming-Documents\Document\CompareDocument.vb" />
     <Compile Include="Programming-Documents\Document\CreateHeaderFooterUsingDocBuilder.vb" />
+    <Compile Include="Programming-Documents\Document\DocProperties.vb" />
     <Compile Include="Programming-Documents\Document\ExtractContent.vb" />
     <Compile Include="Programming-Documents\Document\ExtractContentUsingDocumentVisitor.vb" />
     <Compile Include="Programming-Documents\Document\GetVariables.vb" />
@@ -149,6 +155,7 @@
     <Compile Include="Programming-Documents\Document\RemoveBreaks.vb" />
     <Compile Include="Programming-Documents\Document\RemoveFooters.vb" />
     <Compile Include="Programming-Documents\Document\SetViewOption.vb" />
+    <Compile Include="Programming-Documents\Fields\ChangeFieldUpdateCultureSource.vb" />
     <Compile Include="Programming-Documents\Fields\ChangeLocale.vb" />
     <Compile Include="Programming-Documents\Fields\ConvertFieldsInBody.vb" />
     <Compile Include="Programming-Documents\Fields\ConvertFieldsInDocument.vb" />
@@ -156,6 +163,7 @@
     <Compile Include="Programming-Documents\Fields\FormFieldsWorkWithProperties.vb" />
     <Compile Include="Programming-Documents\Fields\FormFieldsGetFormFieldsCollection.vb" />
     <Compile Include="Programming-Documents\Fields\FormFieldsGetByName.vb" />
+    <Compile Include="Programming-Documents\Fields\GetFieldNames.vb" />
     <Compile Include="Programming-Documents\Fields\InsertFormFields.vb" />
     <Compile Include="Programming-Documents\Fields\InsertAdvanceFieldWithOutDocumentBuilder.vb" />
     <Compile Include="Programming-Documents\Fields\InsertASKFieldWithOutDocumentBuilder.vb" />
@@ -193,6 +201,7 @@
     <Compile Include="Programming-Documents\Joining-Appending\UnlinkHeadersFooters.vb" />
     <Compile Include="Programming-Documents\Joining-Appending\UpdatePageLayout.vb" />
     <Compile Include="Programming-Documents\Joining-Appending\UseDestinationStyles.vb" />
+    <Compile Include="Programming-Documents\Node\ExNode.vb" />
     <Compile Include="Programming-Documents\Ranges\RangesGetText.vb" />
     <Compile Include="Programming-Documents\Ranges\RangesDeleteText.vb" />
     <Compile Include="Programming-Documents\Sections\AddDeleteSection.vb" />
@@ -216,6 +225,8 @@
     <Compile Include="Programming-Documents\Tables\InsertTableFromHtml.vb" />
     <Compile Include="Programming-Documents\Tables\InsertTableUsingDocumentBuilder.vb" />
     <Compile Include="Programming-Documents\Tables\JoiningAndSplittingTable.vb" />
+    <Compile Include="Programming-Documents\Tables\KeepTablesAndRowsBreaking.vb" />
+    <Compile Include="Programming-Documents\Tables\MergedCells.vb" />
     <Compile Include="Programming-Documents\Tables\RepeatRowsOnSubsequentPages.vb" />
     <Compile Include="Programming-Documents\Tables\SpecifyHeightAndWidth.vb" />
     <Compile Include="Programming-Documents\Theme\ManipulateThemeProperties.vb" />

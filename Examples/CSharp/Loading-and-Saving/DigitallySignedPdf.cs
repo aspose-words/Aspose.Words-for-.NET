@@ -2,7 +2,9 @@
 using System.IO;
 using Aspose.Words;
 using System;
+//ExStart:X509Certificates
 using System.Security.Cryptography.X509Certificates;
+//ExEnd:X509Certificates
 using Aspose.Words.Saving;
 
 namespace CSharp.Loading_Saving

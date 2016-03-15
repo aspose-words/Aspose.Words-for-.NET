@@ -9,10 +9,11 @@ Public Class AddComments
         ' ExStart:AddComments
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithComments()
+        ' ExStart:CreateSimpleDocumentUsingDocumentBuilder
         Dim doc As New Document()
         Dim builder As New DocumentBuilder(doc)
         builder.Write("Some text is added.")
-
+        ' ExEnd:CreateSimpleDocumentUsingDocumentBuilder
         Dim comment As New Comment(doc, "Awais Hafeez", "AH", DateTime.Today)
         builder.CurrentParagraph.AppendChild(comment)
         comment.Paragraphs.Add(New Paragraph(doc))

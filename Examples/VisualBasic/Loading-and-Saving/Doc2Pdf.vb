@@ -1,6 +1,5 @@
 ﻿Imports Microsoft.VisualBasic
 Imports System.IO
-
 Imports Aspose.Words
 
 Public Class Doc2Pdf
