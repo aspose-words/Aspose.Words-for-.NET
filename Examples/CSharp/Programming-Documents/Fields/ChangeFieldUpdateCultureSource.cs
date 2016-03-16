@@ -18,7 +18,8 @@ namespace CSharp.Programming_Documents.Working_with_Fields
             //ExStart:ChangeFieldUpdateCultureSource
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
-            // We will test this functionality creating a document with two fields with date formatting            
+            // We will test this functionality creating a document with two fields with date formatting
+            //ExStart:DocumentBuilderInsertField
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -27,6 +28,7 @@ namespace CSharp.Programming_Documents.Working_with_Fields
             builder.InsertField("MERGEFIELD Date1 \\@ \"dddd, d MMMM yyyy\"");
             builder.Write(" - ");
             builder.InsertField("MERGEFIELD Date2 \\@ \"dddd, d MMMM yyyy\"");
+            //ExEnd:DocumentBuilderInsertField
             // Shows how to specify where the culture used for date formatting during field update and mail merge is chosen from.
             // Set the culture used during field update to the culture used by the field.            
             doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode;

@@ -147,6 +147,14 @@
     <Compile Include="Programming-Documents\Document\CompareDocument.vb" />
     <Compile Include="Programming-Documents\Document\CreateHeaderFooterUsingDocBuilder.vb" />
     <Compile Include="Programming-Documents\Document\DocProperties.vb" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderBuildTable.vb" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderInsertBookmark.vb" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderInsertBreak.vb" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderInsertElements.vb" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderInsertImage.vb" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderInsertParagraph.vb" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderMovingCursor.vb" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderSetFormatting.vb" />
     <Compile Include="Programming-Documents\Document\ExtractContent.vb" />
     <Compile Include="Programming-Documents\Document\ExtractContentUsingDocumentVisitor.vb" />
     <Compile Include="Programming-Documents\Document\GetVariables.vb" />
@@ -155,6 +163,7 @@
     <Compile Include="Programming-Documents\Document\RemoveBreaks.vb" />
     <Compile Include="Programming-Documents\Document\RemoveFooters.vb" />
     <Compile Include="Programming-Documents\Document\SetViewOption.vb" />
+    <Compile Include="Programming-Documents\Document\WriteAndFont.vb" />
     <Compile Include="Programming-Documents\Fields\ChangeFieldUpdateCultureSource.vb" />
     <Compile Include="Programming-Documents\Fields\ChangeLocale.vb" />
     <Compile Include="Programming-Documents\Fields\ConvertFieldsInBody.vb" />
@@ -177,6 +186,9 @@
     <Compile Include="Programming-Documents\Fields\UpdateDocFields.vb" />
     <Compile Include="Programming-Documents\Find-Replace\FindAndHighlight.vb" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceTextWithField.vb" />
+    <Compile Include="Programming-Documents\Find-Replace\ReplaceWithEvaluator.vb" />
+    <Compile Include="Programming-Documents\Find-Replace\ReplaceWithRegex.vb" />
+    <Compile Include="Programming-Documents\Find-Replace\ReplaceWithString.vb" />
     <Compile Include="Programming-Documents\Hyperlink\ReplaceHyperlinks.vb" />
     <Compile Include="Programming-Documents\Images\AddImageToEachPage.vb" />
     <Compile Include="Programming-Documents\Images\AddWatermark.vb" />

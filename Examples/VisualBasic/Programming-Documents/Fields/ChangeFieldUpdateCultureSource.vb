@@ -12,7 +12,8 @@ Public Class ChangeFieldUpdateCultureSource
         ' ExStart:ChangeFieldUpdateCultureSource
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithFields()
-        ' We will test this functionality creating a document with two fields with date formatting            
+        ' We will test this functionality creating a document with two fields with date formatting  
+        ' ExStart:DocumentBuilderInsertField
         Dim doc As New Document()
         Dim builder As New DocumentBuilder(doc)
 
@@ -21,6 +22,7 @@ Public Class ChangeFieldUpdateCultureSource
         builder.InsertField("MERGEFIELD Date1 \@ ""dddd, d MMMM yyyy""")
         builder.Write(" - ")
         builder.InsertField("MERGEFIELD Date2 \@ ""dddd, d MMMM yyyy""")
+        ' ExEnd:DocumentBuilderInsertField
         ' Shows how to specify where the culture used for date formatting during field update and mail merge is chosen from.
         ' Set the culture used during field update to the culture used by the field.            
         doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode

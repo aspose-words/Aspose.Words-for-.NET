@@ -120,6 +120,15 @@
     <Compile Include="Programming-Documents\Document\AddGroupShapeToDocument.cs" />
     <Compile Include="Programming-Documents\Document\CompareDocument.cs" />
     <Compile Include="Programming-Documents\Document\AcceptAllRevisions.cs" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderMovingCursor.cs" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderSetFormatting.cs" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderInsertElements.cs" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderInsertBookmark.cs" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderInsertImage.cs" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderBuildTable.cs" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderInsertBreak.cs" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderInsertParagraph.cs" />
+    <Compile Include="Programming-Documents\Document\WriteAndFont.cs" />
     <Compile Include="Programming-Documents\Document\DocProperties.cs" />
     <Compile Include="Programming-Documents\Document\RemoveFooters.cs" />
     <Compile Include="Programming-Documents\Document\ExtractContentUsingDocumentVisitor.cs" />
@@ -139,6 +148,9 @@
     <Compile Include="Programming-Documents\Fields\InsertMergeFieldUsingDOM.cs" />
     <Compile Include="Programming-Documents\Fields\InsertField.cs" />
     <Compile Include="Programming-Documents\Fields\UpdateDocFields.cs" />
+    <Compile Include="Programming-Documents\Find-Replace\ReplaceWithEvaluator.cs" />
+    <Compile Include="Programming-Documents\Find-Replace\ReplaceWithRegex.cs" />
+    <Compile Include="Programming-Documents\Find-Replace\ReplaceWithString.cs" />
     <Compile Include="Programming-Documents\Hyperlink\ReplaceHyperlinks.cs" />
     <Compile Include="Programming-Documents\Images\InsertBarcodeImage.cs" />
     <Compile Include="Programming-Documents\Images\ExtractImagesToFiles.cs" />

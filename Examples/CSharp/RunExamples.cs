@@ -106,6 +106,9 @@ namespace CSharp
             //// =====================================================
             //FindAndHighlight.Run();
             //ReplaceTextWithField.Run();
+            //ReplaceWithString.Run();
+            //ReplaceWithRegex.Run();
+            ReplaceWithEvaluator.Run();
 
             //// Bookmarks
             //// =====================================================
@@ -149,6 +152,15 @@ namespace CSharp
             //CompareDocument.Run();
             //DocProperties.Run();
             //AcceptAllRevisions.Run();
+            //WriteAndFont.Run();
+            //DocumentBuilderInsertParagraph.Run();
+            //DocumentBuilderBuildTable.Run();
+            //DocumentBuilderInsertBreak.Run();
+            //DocumentBuilderInsertImage.Run();
+            //DocumentBuilderInsertBookmark.Run();
+            //DocumentBuilderInsertElements.Run();
+            //DocumentBuilderSetFormatting.Run();
+            //DocumentBuilderMovingCursor.Run();
 
             //// Fields
             //// =====================================================
