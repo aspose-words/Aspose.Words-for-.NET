@@ -13,6 +13,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
     {
         public static void Run()
         {
+            //ExStart:ListUseDestinationStyles
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
             string fileName = "TestFile.DestinationList.doc";
@@ -63,7 +64,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the combined document to disk.            
             dstDoc.Save(dataDir);
-
+            //ExEnd:ListUseDestinationStyles
             Console.WriteLine("\nDocument appended successfully without continuing any list numberings.\nFile saved at " + dataDir);
         }
     }

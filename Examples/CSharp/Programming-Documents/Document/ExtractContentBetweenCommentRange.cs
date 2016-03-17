@@ -12,6 +12,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
     {
         public static void Run()
         {
+            //ExStart:ExtractContentBetweenCommentRange
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
 
@@ -31,7 +32,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
             ArrayList extractedNodesExclusive = Common.ExtractContent(commentStart, commentEnd, false);
             dstDoc = Common.GenerateDocument(doc, extractedNodesExclusive);
             dstDoc.Save(dataDir + "TestFile.CommentExclusive_out_.doc");
-
+            //ExEnd:ExtractContentBetweenCommentRange
             Console.WriteLine("\nExtracted content between the comment range successfully.\nFile saved at " + dataDir + "TestFile.CommentExclusive_out_.doc");
         }
     }

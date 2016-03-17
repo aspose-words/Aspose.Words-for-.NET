@@ -15,6 +15,9 @@ namespace CSharp.Rendering_and_Printing
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); 
 
             Document doc = new Document(dataDir + "Rendering.doc");
+
+            FontSettings FontSettings = new FontSettings();          
+
             // We can choose the default font to use in the case of any missing fonts.
             FontSettings.DefaultFontName = "Arial";
             // For testing we will set Aspose.Words to look for fonts only in a folder which doesn't exist. Since Aspose.Words won't

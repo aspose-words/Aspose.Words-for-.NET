@@ -9,6 +9,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
     {
         public static void Run()
         {
+            //ExStart:UpdatePageLayout
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
             string fileName = "TestFile.Destination.doc";
@@ -30,7 +31,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the joined document to PDF.
             dstDoc.Save(dataDir);
-
+            //ExEnd:UpdatePageLayout
             Console.WriteLine("\nDocument appended successfully with updated page layout after appending the document.\nFile saved at " + dataDir);
         }
     }

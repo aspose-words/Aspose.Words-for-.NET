@@ -35,8 +35,8 @@
     <StartupObject>CSharp.RunExamples</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words, Version=15.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.15.12.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words">
+      <HintPath>..\packages\Aspose.Words.16.2.0\lib\net40\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -76,6 +76,7 @@
     <Compile Include="Loading-and-Saving\ConvertDocumentToByte.cs" />
     <Compile Include="Loading-and-Saving\ConvertDocumentToEPUB.cs" />
     <Compile Include="Loading-and-Saving\ConvertDocumentToHtmlWithRoundtrip.cs" />
+    <Compile Include="Loading-and-Saving\SaveAsTxt.cs" />
     <Compile Include="Loading-and-Saving\ImageLoadingWithCredentialsHandler.cs" />
     <Compile Include="Loading-and-Saving\LoadAndSaveDocToDatabase.cs" />
     <Compile Include="Loading-and-Saving\DetectDocumentSignatures.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="Programming-Documents\Document\AddGroupShapeToDocument.cs" />
     <Compile Include="Programming-Documents\Document\CompareDocument.cs" />
     <Compile Include="Programming-Documents\Document\AcceptAllRevisions.cs" />
+    <Compile Include="Programming-Documents\Document\ExtractTextOnly.cs" />
     <Compile Include="Programming-Documents\Document\DocumentBuilderMovingCursor.cs" />
     <Compile Include="Programming-Documents\Document\DocumentBuilderSetFormatting.cs" />
     <Compile Include="Programming-Documents\Document\DocumentBuilderInsertElements.cs" />
@@ -128,6 +130,7 @@
     <Compile Include="Programming-Documents\Document\DocumentBuilderBuildTable.cs" />
     <Compile Include="Programming-Documents\Document\DocumentBuilderInsertBreak.cs" />
     <Compile Include="Programming-Documents\Document\DocumentBuilderInsertParagraph.cs" />
+    <Compile Include="Programming-Documents\Document\InsertDoc.cs" />
     <Compile Include="Programming-Documents\Document\WriteAndFont.cs" />
     <Compile Include="Programming-Documents\Document\DocProperties.cs" />
     <Compile Include="Programming-Documents\Document\RemoveFooters.cs" />

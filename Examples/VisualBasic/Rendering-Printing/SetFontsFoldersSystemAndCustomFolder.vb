@@ -8,6 +8,7 @@ Public Class SetFontsFoldersSystemAndCustomFolder
         ' ExStart:SetFontsFoldersSystemAndCustomFolder
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_RenderingAndPrinting()
+        Dim FontSettings As New FontSettings()
 
         Dim doc As New Document(dataDir & Convert.ToString("Rendering.doc"))
 

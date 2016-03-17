@@ -11,6 +11,7 @@ Imports Aspose.Words
 
 Public Class LinkHeadersFooters
     Public Shared Sub Run()
+        ' ExStart:LinkHeadersFooters
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
         Dim fileName As String = "TestFile.Destination.doc"
@@ -28,7 +29,7 @@ Public Class LinkHeadersFooters
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting)
         dstDoc.Save(dataDir)
-
+        ' ExEnd:LinkHeadersFooters
         Console.WriteLine(vbNewLine & "Document appended successfully with linked header footers." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

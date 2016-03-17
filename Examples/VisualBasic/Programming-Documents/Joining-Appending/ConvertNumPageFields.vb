@@ -11,6 +11,7 @@ Imports Aspose.Words
 
 Public Class ConvertNumPageFields
     Public Shared Sub Run()
+        ' ExStart:ConvertNumPageFields
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
         Dim fileName As String = "TestFile.Destination.doc"
@@ -34,10 +35,10 @@ Public Class ConvertNumPageFields
 
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         dstDoc.Save(dataDir)
-
+        ' ExEnd:ConvertNumPageFields
         Console.WriteLine(vbNewLine & "Document appended successfully with converted NUMPAGE fields." & vbNewLine & "File saved at " + dataDir)
     End Sub
-
+    ' ExStart:ConvertNumPageFieldsToPageRef
     ''' <summary>
     ''' Replaces all NUMPAGES fields in the document with PAGEREF fields. The replacement field displays the total number
     ''' of pages in the sub document instead of the total pages in the document.
@@ -126,7 +127,8 @@ Public Class ConvertNumPageFields
             Next fieldStart
         Next section
     End Sub
-
+    ' ExEnd:ConvertNumPageFieldsToPageRef
+    ' ExStart:GetRemoveField
     ''' <summary>
     ''' Removes the Field from the document
     ''' </summary>
@@ -163,4 +165,5 @@ Public Class ConvertNumPageFields
         Loop
         Return builder.ToString()
     End Function
+    ' ExEnd:GetRemoveField
 End Class

@@ -45,6 +45,7 @@ Module RunExamples
         'ConvertDocumentToEPUB.Run()
         'ConvertDocumentToHtmlWithRoundtrip.Run()
         'DetectDocumentSignatures.Run()
+        'SaveAsTxt.Run()
 
         '' =====================================================
         '' =====================================================
@@ -79,7 +80,7 @@ Module RunExamples
         'ReplaceTextWithField.Run()
         'ReplaceWithString.Run()
         'ReplaceWithRegex.Run()
-        ReplaceWithEvaluator.Run()
+        'ReplaceWithEvaluator.Run()
 
         '' Bookmarks
         '' =====================================================
@@ -145,6 +146,9 @@ Module RunExamples
         'DocumentBuilderInsertElements.Run()
         'DocumentBuilderSetFormatting.Run()
         'DocumentBuilderMovingCursor.Run()
+        'ExtractTextOnly.Run()
+        InsertDoc.Run()
+
 
         '' Fields
         '' =====================================================

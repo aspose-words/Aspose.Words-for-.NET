@@ -74,6 +74,7 @@ namespace CSharp
             //ConvertDocumentToEPUB.Run();
             //ConvertDocumentToHtmlWithRoundtrip.Run();
             //DetectDocumentSignatures.Run();
+            //SaveAsTxt.Run();
 
             //// =====================================================
             //// =====================================================
@@ -108,7 +109,7 @@ namespace CSharp
             //ReplaceTextWithField.Run();
             //ReplaceWithString.Run();
             //ReplaceWithRegex.Run();
-            ReplaceWithEvaluator.Run();
+            //ReplaceWithEvaluator.Run();
 
             //// Bookmarks
             //// =====================================================
@@ -161,6 +162,8 @@ namespace CSharp
             //DocumentBuilderInsertElements.Run();
             //DocumentBuilderSetFormatting.Run();
             //DocumentBuilderMovingCursor.Run();
+            //ExtractTextOnly.Run();
+            InsertDoc.Run();
 
             //// Fields
             //// =====================================================

@@ -11,6 +11,7 @@ Imports Aspose.Words
 
 Public Class KeepSourceFormatting
     Public Shared Sub Run()
+        ' ExStart:KeepSourceFormatting
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
         Dim fileName As String = "TestFile.Destination.doc"
@@ -24,7 +25,7 @@ Public Class KeepSourceFormatting
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the joined document to disk.
         dstDoc.Save(dataDir)
-
+        ' ExEnd:KeepSourceFormatting
         Console.WriteLine(vbNewLine & "Document appended successfully with keep source formatting option." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

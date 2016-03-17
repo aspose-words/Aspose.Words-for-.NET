@@ -9,6 +9,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
     {
         public static void Run()
         {
+            //ExStart:DifferentPageSetup
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
             string fileName = "TestFile.Destination.doc";
@@ -32,7 +33,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             dstDoc.Save(dataDir);
-
+            //ExEnd:DifferentPageSetup
             Console.WriteLine("\nDocument appended successfully with different page setup.\nFile saved at " + dataDir);
         }
     }

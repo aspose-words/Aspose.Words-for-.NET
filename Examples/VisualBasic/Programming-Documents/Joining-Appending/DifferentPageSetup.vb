@@ -11,6 +11,7 @@ Imports Aspose.Words
 
 Public Class DifferentPageSetup
     Public Shared Sub Run()
+        ' ExStart:DifferentPageSetup
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
         Dim fileName As String = "TestFile.Destination.doc"
@@ -34,7 +35,7 @@ Public Class DifferentPageSetup
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting)
         dstDoc.Save(dataDir)
-
+        ' ExEnd:DifferentPageSetup
         Console.WriteLine(vbNewLine & "Document appended successfully with different page setup." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

@@ -11,6 +11,7 @@ Imports Aspose.Words
 
 Public Class ListUseDestinationStyles
     Public Shared Sub Run()
+        ' ExStart:ListUseDestinationStyles
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
         Dim fileName As String = "TestFile.Destination.doc"
@@ -55,7 +56,7 @@ Public Class ListUseDestinationStyles
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the combined document to disk.
         dstDoc.Save(dataDir)
-
+        ' ExEnd:ListUseDestinationStyles
         Console.WriteLine(vbNewLine & "Document appended successfully with list using destination styles." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

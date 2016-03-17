@@ -11,6 +11,7 @@ Imports Aspose.Words
 
 Public Class KeepSourceTogether
     Public Shared Sub Run()
+        ' ExStart:KeepSourceTogether
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
         Dim fileName As String = "TestFile.Destination.doc"
@@ -29,7 +30,7 @@ Public Class KeepSourceTogether
         dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting)
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         dstDoc.Save(dataDir)
-
+        ' ExEnd:KeepSourceTogether
         Console.WriteLine(vbNewLine & "Document appended successfully with keeping source together." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

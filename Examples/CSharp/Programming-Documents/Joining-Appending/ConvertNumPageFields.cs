@@ -11,6 +11,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
     {
         public static void Run()
         {
+            //ExStart:ConvertNumPageFields
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
             string fileName = "TestFile.Destination.doc";
@@ -34,10 +35,10 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
 
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             dstDoc.Save(dataDir);
-
+            //ExEnd:ConvertNumPageFields
             Console.WriteLine("\nDocument appended successfully with conversion of NUMPAGE fields with PAGEREF fields.\nFile saved at " + dataDir);
         }
-
+        //ExStart:ConvertNumPageFieldsToPageRef
         public static void ConvertNumPageFieldsToPageRef(Document doc)
         {
             // This is the prefix for each bookmark which signals where page numbering restarts.
@@ -127,7 +128,8 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
                 }
             }
         }
-
+        //ExEnd:ConvertNumPageFieldsToPageRef
+        //ExStart:GetRemoveField
         private static void RemoveField(FieldStart fieldStart)
         {
             Node currentNode = fieldStart;
@@ -142,7 +144,6 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
                 currentNode = nextNode;
             }
         }
-
         private static string GetFieldCode(FieldStart fieldStart)
         {
             StringBuilder builder = new StringBuilder();
@@ -156,5 +157,6 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
             }
             return builder.ToString();
         }
+        //ExEnd:GetRemoveField
     }
 }

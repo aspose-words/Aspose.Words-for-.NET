@@ -17,6 +17,7 @@ namespace CSharp.Rendering_and_Printing
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); 
 
             Document doc = new Document(dataDir + "Rendering.doc");
+            FontSettings FontSettings = new FontSettings();
 
             // Retrieve the array of environment-dependent font sources that are searched by default. For example this will contain a "Windows\Fonts\" source on a Windows machines.
             // We add this array to a new ArrayList to make adding or removing font entries much easier.
@@ -30,7 +31,7 @@ namespace CSharp.Rendering_and_Printing
 
             // Convert the Arraylist of source back into a primitive array of FontSource objects.
             FontSourceBase[] updatedFontSources = (FontSourceBase[])fontSources.ToArray(typeof(FontSourceBase));
-
+            
             // Apply the new set of font sources to use.
             FontSettings.SetFontsSources(updatedFontSources);
             dataDir = dataDir + "Rendering.SetFontsFolders_out_.pdf";

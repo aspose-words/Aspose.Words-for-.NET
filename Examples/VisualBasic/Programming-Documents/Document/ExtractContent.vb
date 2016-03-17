@@ -29,6 +29,7 @@ Public Class ExtractContent
     End Sub
 
     Public Shared Sub ExtractContentBetweenParagraphs()
+        ' ExStart:ExtractContentBetweenParagraphs
         ' Load in the document
         Dim doc As New Document(dataDir & "TestFile.doc")
 
@@ -42,11 +43,12 @@ Public Class ExtractContent
         Dim dstDoc As Document = GenerateDocument(doc, extractedNodes)
 
         dstDoc.Save(dataDir & "TestFile.Paragraphs_out_.doc")
-
+        ' ExEnd:ExtractContentBetweenParagraphs
         Console.WriteLine(vbNewLine & "Extracted content betweenn the paragraphs successfully." & vbNewLine & "File saved at " + dataDir + "TestFile.Paragraphs_out_.doc")
     End Sub
 
     Public Shared Sub ExtractContentBetweenBlockLevelNodes()
+        ' ExStart:ExtractContentBetweenBlockLevelNodes
         Dim doc As New Document(dataDir & "TestFile.doc")
 
         Dim startPara As Paragraph = CType(doc.LastSection.GetChild(NodeType.Paragraph, 2, True), Paragraph)
@@ -67,11 +69,12 @@ Public Class ExtractContent
 
         ' Save the generated document to disk.
         doc.Save(dataDir & "TestFile.DuplicatedContent_out_.doc")
-
+        ' ExEnd:ExtractContentBetweenBlockLevelNodes
         Console.WriteLine(vbNewLine & "Extracted content betweenn the block level nodes successfully." & vbNewLine & "File saved at " + dataDir + "TestFile.DuplicatedContent_out_.doc")
     End Sub
 
     Public Shared Sub ExtractContentBetweenParagraphStyles()
+        ' ExStart:ExtractContentBetweenParagraphStyles
         ' Load in the document
         Dim doc As New Document(dataDir & "TestFile.doc")
 
@@ -90,11 +93,12 @@ Public Class ExtractContent
         Dim dstDoc As Document = GenerateDocument(doc, extractedNodes)
 
         dstDoc.Save(dataDir & "TestFile.Styles_out_.doc")
-
+        ' ExEnd:ExtractContentBetweenParagraphStyles
         Console.WriteLine(vbNewLine & "Extracted content betweenn the paragraph styles successfully." & vbNewLine & "File saved at " + dataDir + "TestFile.Styles_out_.doc")
     End Sub
 
     Public Shared Sub ExtractContentBetweenRuns()
+        ' ExStart:ExtractContentBetweenRuns
         ' Load in the document
         Dim doc As New Document(dataDir & "TestFile.doc")
 
@@ -112,10 +116,11 @@ Public Class ExtractContent
         Dim node As Node = CType(extractedNodes(0), Node)
         ' Print the text of this node to the console.
         Console.WriteLine(node.ToString(SaveFormat.Text))
-
+        ' ExEnd:ExtractContentBetweenRuns
     End Sub
 
     Public Shared Sub ExtractContentUsingField()
+        ' ExStart:ExtractContentUsingField
         Dim doc As New Document(dataDir & "TestFile.doc")
 
         ' Use a document builder to retrieve the field start of a merge field.
@@ -135,11 +140,12 @@ Public Class ExtractContent
         ' Insert the content into a new separate document and save it to disk.
         Dim dstDoc As Document = GenerateDocument(doc, extractedNodes)
         dstDoc.Save(dataDir & "TestFile.Fields_out_.pdf")
-
+        ' ExEnd:ExtractContentUsingField
         Console.WriteLine(vbNewLine & "Extracted content using the field successfully." & vbNewLine & "File saved at " + dataDir + "TestFile.Fields_out_.pdf")
     End Sub
 
     Public Shared Sub ExtractContentBetweenBookmark()
+        ' ExStart:ExtractContentBetweenBookmark
         Dim doc As New Document(dataDir & "TestFile.doc")
 
         ' Retrieve the bookmark from the document.
@@ -158,11 +164,12 @@ Public Class ExtractContent
         Dim extractedNodesExclusive As ArrayList = ExtractContent(bookmarkStart, bookmarkEnd, False)
         dstDoc = GenerateDocument(doc, extractedNodesExclusive)
         dstDoc.Save(dataDir & "TestFile.BookmarkExclusive_out_.doc")
-
+        ' ExEnd:ExtractContentBetweenBookmark
         Console.WriteLine(vbNewLine & "Extracted content between bookmarks successfully." & vbNewLine & "File saved at " + dataDir + "TestFile.BookmarkExclusive_out_.doc")
     End Sub
 
     Public Shared Sub ExtractContentBetweenCommentRange()
+        ' ExStart:ExtractContentBetweenCommentRange
         Dim doc As New Document(dataDir & "TestFile.doc")
 
         ' This is a quick way of getting both comment nodes.
@@ -180,10 +187,10 @@ Public Class ExtractContent
         dstDoc = GenerateDocument(doc, extractedNodesExclusive)
         dataDir = dataDir & "TestFile.CommentExclusive_out_.doc"
         dstDoc.Save(dataDir)
-
+        ' ExEnd:ExtractContentBetweenCommentRange
         Console.WriteLine(vbNewLine & "Extracted content between comment range successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
-
+    ' ExStart:CommonExtractContent
     Public Shared Function ExtractContent(ByVal startNode As Node, ByVal endNode As Node, ByVal isInclusive As Boolean) As ArrayList
         ' First check that the nodes passed to this method are valid for use.
         VerifyParameterNodes(startNode, endNode)
@@ -249,7 +256,8 @@ Public Class ExtractContent
         ' Return the nodes between the node markers.
         Return nodes
     End Function
-
+    ' ExEnd:CommonExtractContent
+    ' ExStart:CommonExtractContentHelperMethods
     Private Shared Sub VerifyParameterNodes(ByVal startNode As Node, ByVal endNode As Node)
         ' The order in which these checks are done is important.
         If startNode Is Nothing Then
@@ -379,7 +387,8 @@ Public Class ExtractContent
         End If
 
     End Sub
-
+    ' ExEnd:CommonExtractContentHelperMethods
+    ' ExStart:CommonGenerateDocument
     Public Shared Function GenerateDocument(ByVal srcDoc As Document, ByVal nodes As ArrayList) As Document
         ' Create a blank document.
         Dim dstDoc As New Document()
@@ -397,7 +406,7 @@ Public Class ExtractContent
         ' Return the generated document.
         Return dstDoc
     End Function
-    
+    ' ExEnd:CommonGenerateDocument
     Public Shared Function ParagraphsByStyleName(ByVal doc As Document, ByVal styleName As String) As ArrayList
         ' Create an array to collect paragraphs of the specified style.
         Dim paragraphsWithStyle As New ArrayList()

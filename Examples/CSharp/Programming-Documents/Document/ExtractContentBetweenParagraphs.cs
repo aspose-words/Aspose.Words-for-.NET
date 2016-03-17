@@ -10,6 +10,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
     {
         public static void Run()
         {
+            //ExStart:ExtractContentBetweenParagraphs
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             string fileName = "TestFile.doc";
@@ -25,7 +26,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
             Document dstDoc = Common.GenerateDocument(doc, extractedNodes);
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             dstDoc.Save(dataDir);
-
+            //ExEnd:ExtractContentBetweenParagraphs
             Console.WriteLine("\nExtracted content betweenn the paragraphs successfully.\nFile saved at " + dataDir);
         }
     }

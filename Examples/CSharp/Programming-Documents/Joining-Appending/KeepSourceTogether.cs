@@ -9,6 +9,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
     {
         public static void Run()
         {
+            //ExStart:KeepSourceTogether
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
             string fileName = "TestFile.DestinationList.doc";
@@ -28,7 +29,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             dstDoc.Save(dataDir);
-
+            //ExEnd:KeepSourceTogether
             Console.WriteLine("\nDocument appended successfully while keeping the content from splitting across two pages.\nFile saved at " + dataDir);
         }
     }

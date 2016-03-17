@@ -12,6 +12,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
     {
         public static void Run()
         {
+            //ExStart:ExtractContentBetweenBookmark
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             string fileName = "TestFile.doc";
@@ -36,7 +37,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
             ArrayList extractedNodesExclusive = Common.ExtractContent(bookmarkStart, bookmarkEnd, false);
             dstDoc = Common.GenerateDocument(doc, extractedNodesExclusive);
             dstDoc.Save(dataDir + "TestFile.BookmarkExclusive_out_.doc");
-
+            //ExEnd:ExtractContentBetweenBookmark
             Console.WriteLine("\nExtracted content between bookmarks successfully.\nFile saved at " + dataDir + "TestFile.BookmarkExclusive_out_.doc");
         }
     }

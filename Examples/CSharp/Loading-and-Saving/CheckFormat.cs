@@ -86,7 +86,7 @@ namespace CSharp.Loading_Saving
                     case LoadFormat.Ott:
                         Console.WriteLine("\tOpenDocument Text Template.");
                         break;
-                    case LoadFormat.DocPreWord97:
+                    case LoadFormat.DocPreWord60:
                         Console.WriteLine("\tMS Word 6 or Word 95 format.");
                         break;
                     case LoadFormat.Unknown:
@@ -106,7 +106,7 @@ namespace CSharp.Loading_Saving
                 {
                     switch (info.LoadFormat)
                     {
-                        case LoadFormat.DocPreWord97:
+                        case LoadFormat.DocPreWord60:
                             File.Copy(fileName, Path.Combine(pre97Dir, nameOnly), true);
                             break;
                         case LoadFormat.Unknown:

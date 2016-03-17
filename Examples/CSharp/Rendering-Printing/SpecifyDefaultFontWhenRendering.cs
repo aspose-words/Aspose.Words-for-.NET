@@ -18,6 +18,8 @@ namespace CSharp.Rendering_and_Printing
 
             Document doc = new Document(dataDir + "Rendering.doc");
 
+            FontSettings FontSettings = new FontSettings();
+
             // If the default font defined here cannot be found during rendering then the closest font on the machine is used instead.
             FontSettings.DefaultFontName = "Arial Unicode MS";
 

@@ -11,6 +11,7 @@ Imports Aspose.Words
 
 Public Class UpdatePageLayout
     Public Shared Sub Run()
+        ' ExStart:UpdatePageLayout
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
         Dim fileName As String = "TestFile.Destination.doc"
@@ -33,7 +34,7 @@ Public Class UpdatePageLayout
 
         ' Save the joined document to PDF.
         dstDoc.Save(dataDir)
-
+        ' ExEnd:UpdatePageLayout
         Console.WriteLine(vbNewLine & "Document appended successfully with updated page layout." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

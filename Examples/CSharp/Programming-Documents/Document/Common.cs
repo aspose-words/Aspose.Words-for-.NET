@@ -8,6 +8,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
 {
     class Common
     {
+        //ExStart:CommonExtractContent
         public static ArrayList ExtractContent(Node startNode, Node endNode, bool isInclusive)
         {
             // First check that the nodes passed to this method are valid for use.
@@ -79,7 +80,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
             // Return the nodes between the node markers.
             return nodes;
         }
-
+        //ExEnd:CommonExtractContent
         public static ArrayList ParagraphsByStyleName(Document doc, string styleName)
         {
             // Create an array to collect paragraphs of the specified style.
@@ -94,7 +95,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
             }
             return paragraphsWithStyle;
         }
-
+        //ExStart:CommonGenerateDocument
         public static Document GenerateDocument(Document srcDoc, ArrayList nodes)
         {
             // Create a blank document.
@@ -114,13 +115,43 @@ namespace CSharp.Programming_Documents.Working_With_Document
             // Return the generated document.
             return dstDoc;
         }
+        //ExEnd:CommonGenerateDocument  
+        //ExStart:CommonExtractContentHelperMethods
+        private static void VerifyParameterNodes(Node startNode, Node endNode)
+        {
+            // The order in which these checks are done is important.
+            if (startNode == null)
+                throw new ArgumentException("Start node cannot be null");
+            if (endNode == null)
+                throw new ArgumentException("End node cannot be null");
 
+            if (!startNode.Document.Equals(endNode.Document))
+                throw new ArgumentException("Start node and end node must belong to the same document");
+
+            if (startNode.GetAncestor(NodeType.Body) == null || endNode.GetAncestor(NodeType.Body) == null)
+                throw new ArgumentException("Start node and end node must be a child or descendant of a body");
+
+            // Check the end node is after the start node in the DOM tree
+            // First check if they are in different sections, then if they're not check their position in the body of the same section they are in.
+            Section startSection = (Section)startNode.GetAncestor(NodeType.Section);
+            Section endSection = (Section)endNode.GetAncestor(NodeType.Section);
+
+            int startIndex = startSection.ParentNode.IndexOf(startSection);
+            int endIndex = endSection.ParentNode.IndexOf(endSection);
+
+            if (startIndex == endIndex)
+            {
+                if (startSection.Body.IndexOf(startNode) > endSection.Body.IndexOf(endNode))
+                    throw new ArgumentException("The end node must be after the start node in the body");
+            }
+            else if (startIndex > endIndex)
+                throw new ArgumentException("The section of end node must be after the section start node");
+        }
         private static bool IsInline(Node node)
         {
             // Test if the node is desendant of a Paragraph or Table node and also is not a paragraph or a table a paragraph inside a comment class which is decesant of a pararaph is possible.
             return ((node.GetAncestor(NodeType.Paragraph) != null || node.GetAncestor(NodeType.Table) != null) && !(node.NodeType == NodeType.Paragraph || node.NodeType == NodeType.Table));
         }
-
         private static void ProcessMarker(CompositeNode cloneNode, ArrayList nodes, Node node, bool isInclusive, bool isStartMarker, bool isEndMarker)
         {
             // If we are dealing with a block level node just see if it should be included and add it to the list.
@@ -209,36 +240,6 @@ namespace CSharp.Programming_Documents.Working_With_Document
             }
 
         }
-
-        private static void VerifyParameterNodes(Node startNode, Node endNode)
-        {
-            // The order in which these checks are done is important.
-            if (startNode == null)
-                throw new ArgumentException("Start node cannot be null");
-            if (endNode == null)
-                throw new ArgumentException("End node cannot be null");
-
-            if (!startNode.Document.Equals(endNode.Document))
-                throw new ArgumentException("Start node and end node must belong to the same document");
-
-            if (startNode.GetAncestor(NodeType.Body) == null || endNode.GetAncestor(NodeType.Body) == null)
-                throw new ArgumentException("Start node and end node must be a child or descendant of a body");
-
-            // Check the end node is after the start node in the DOM tree
-            // First check if they are in different sections, then if they're not check their position in the body of the same section they are in.
-            Section startSection = (Section)startNode.GetAncestor(NodeType.Section);
-            Section endSection = (Section)endNode.GetAncestor(NodeType.Section);
-
-            int startIndex = startSection.ParentNode.IndexOf(startSection);
-            int endIndex = endSection.ParentNode.IndexOf(endSection);
-
-            if (startIndex == endIndex)
-            {
-                if (startSection.Body.IndexOf(startNode) > endSection.Body.IndexOf(endNode))
-                    throw new ArgumentException("The end node must be after the start node in the body");
-            }
-            else if (startIndex > endIndex)
-                throw new ArgumentException("The section of end node must be after the section start node");
-        }
+        //ExEnd:CommonExtractContentHelperMethods
     }
 }

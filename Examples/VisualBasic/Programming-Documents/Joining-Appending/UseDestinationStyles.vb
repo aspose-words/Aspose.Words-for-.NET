@@ -12,6 +12,7 @@ Imports Aspose.Words
 
 Public Class UseDestinationStyles
     Public Shared Sub Run()
+        ' ExStart:UseDestinationStyles
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
         Dim fileName As String = "TestFile.Destination.doc"
@@ -25,7 +26,7 @@ Public Class UseDestinationStyles
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the joined document to disk.
         dstDoc.Save(dataDir)
-
+        ' ExEnd:UseDestinationStyles
         Console.WriteLine(vbNewLine & "Document appended successfully with use destination styles option." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

@@ -11,6 +11,7 @@ Imports Aspose.Words
 
 Public Class UnlinkHeadersFooters
     Public Shared Sub Run()
+        ' ExStart:UnlinkHeadersFooters
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
         Dim fileName As String = "TestFile.Destination.doc"
@@ -26,7 +27,7 @@ Public Class UnlinkHeadersFooters
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting)
         dstDoc.Save(dataDir)
-
+        ' ExEnd:UnlinkHeadersFooters
         Console.WriteLine(vbNewLine & "Document appended successfully with un-linked header footers." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class
