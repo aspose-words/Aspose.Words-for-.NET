@@ -122,7 +122,7 @@ Module RunExamples
 
         '' Document
         '' =====================================================
-        'ExtractContent.Run()
+        ExtractContent.Run()
         'PageNumbersOfNodes.Run()
         'RemoveBreaks.Run()
         'CloningDocument.Run();
@@ -147,8 +147,15 @@ Module RunExamples
         'DocumentBuilderSetFormatting.Run()
         'DocumentBuilderMovingCursor.Run()
         'ExtractTextOnly.Run()
-        InsertDoc.Run()
-
+        'InsertDoc.Run()
+        'DocumentBuilderInsertTOC.Run()
+        'DocumentBuilderInsertTCField.Run()
+        'DocumentBuilderInsertTCFieldsAtText.Run()
+        'RemoveTOCFromDocument.Run()
+        'CheckBoxTypeContentControl.Run()
+        'RichTextBoxContentControl.Run()
+        'ComboBoxContentControl.Run()
+        'UpdateContentControls.Run()
 
         '' Fields
         '' =====================================================
@@ -184,6 +191,8 @@ Module RunExamples
         '' Styles
         '' =====================================================
         'ExtractContentBasedOnStyles.Run()
+        'ChangeStyleOfTOCLevel.Run()
+        'ChangeTOCTabStops.Run()
 
         '' Hyperlink
         '' =====================================================

@@ -132,7 +132,7 @@ namespace CSharp
 
             //// Document
             //// =====================================================
-            //ExtractContentBetweenParagraphs.Run();
+            ExtractContentBetweenParagraphs.Run();
             //ExtractContentBetweenBlockLevelNodes.Run();
             //ExtractContentBetweenParagraphStyles.Run();
             //ExtractContentBetweenRuns.Run();
@@ -163,7 +163,15 @@ namespace CSharp
             //DocumentBuilderSetFormatting.Run();
             //DocumentBuilderMovingCursor.Run();
             //ExtractTextOnly.Run();
-            InsertDoc.Run();
+            //InsertDoc.Run();
+            //DocumentBuilderInsertTOC.Run();
+            //DocumentBuilderInsertTCField.Run();
+            //DocumentBuilderInsertTCFieldsAtText.Run();
+            //RemoveTOCFromDocument.Run();
+            //CheckBoxTypeContentControl.Run();
+            //RichTextBoxContentControl.Run();
+            //ComboBoxContentControl.Run();
+            //UpdateContentControls.Run();
 
             //// Fields
             //// =====================================================
@@ -227,6 +235,9 @@ namespace CSharp
             //// Styles
             //// =====================================================
             //ExtractContentBasedOnStyles.Run();
+            //ChangeStyleOfTOCLevel.Run();
+            //ChangeTOCTabStops.Run();
+
 
             //// Tables
             //// =====================================================

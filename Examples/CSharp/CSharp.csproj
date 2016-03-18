@@ -121,6 +121,14 @@
     <Compile Include="Programming-Documents\Document\AddGroupShapeToDocument.cs" />
     <Compile Include="Programming-Documents\Document\CompareDocument.cs" />
     <Compile Include="Programming-Documents\Document\AcceptAllRevisions.cs" />
+    <Compile Include="Programming-Documents\Document\CheckBoxTypeContentControl.cs" />
+    <Compile Include="Programming-Documents\Document\ComboBoxContentControl.cs" />
+    <Compile Include="Programming-Documents\Document\UpdateContentControls.cs" />
+    <Compile Include="Programming-Documents\Document\RichTextBoxContentControl.cs" />
+    <Compile Include="Programming-Documents\Document\RemoveTOCFromDocument.cs" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderInsertTCFieldsAtText.cs" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderInsertTCField.cs" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderInsertTOC.cs" />
     <Compile Include="Programming-Documents\Document\ExtractTextOnly.cs" />
     <Compile Include="Programming-Documents\Document\DocumentBuilderMovingCursor.cs" />
     <Compile Include="Programming-Documents\Document\DocumentBuilderSetFormatting.cs" />
@@ -160,6 +168,8 @@
     <Compile Include="Programming-Documents\Node\ExNode.cs" />
     <Compile Include="Programming-Documents\Ranges\RangesDeleteText.cs" />
     <Compile Include="Programming-Documents\Ranges\RangesGetText.cs" />
+    <Compile Include="Programming-Documents\Styles\ChangeStyleOfTOCLevel.cs" />
+    <Compile Include="Programming-Documents\Styles\ChangeTOCTabStops.cs" />
     <Compile Include="Programming-Documents\Tables\KeepTablesAndRowsBreaking.cs" />
     <Compile Include="Programming-Documents\Tables\MergedCells.cs" />
     <Compile Include="Programming-Documents\Tables\JoiningAndSplittingTable.cs" />

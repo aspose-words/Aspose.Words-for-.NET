@@ -13,12 +13,11 @@ namespace CSharp.Programming_Documents.Working_With_Document
     {
         public static void Run()
         {
-            //ExStart:RemoveBreaks
+            
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
-
-            string fileName = "TestFile.doc";
-            
+            //ExStart:OpenFromFile
+            string fileName = "TestFile.doc";            
             // Open the document.
             Document doc = new Document(dataDir + fileName);
             //ExEnd:OpenFromFile
@@ -32,7 +31,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the document.
             doc.Save(dataDir);
-            //ExEnd:RemoveBreaks
+        
             Console.WriteLine("\nRemoved breaks from the document successfully.\nFile saved at " + dataDir);
         }
         //ExStart:RemovePageBreaks

@@ -140,6 +140,8 @@ namespace CSharp.Programming_Documents.Working_With_Document
 
             builder.Writeln("Heading 3.2");
             builder.Writeln("Heading 3.3");
+
+            doc.UpdateFields();
             dataDir = dataDir + "DocumentBuilderInsertTableOfContents_out_.doc";
             doc.Save(dataDir);
             //ExEnd:DocumentBuilderInsertTableOfContents
