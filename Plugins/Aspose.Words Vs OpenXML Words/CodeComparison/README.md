@@ -15,4 +15,10 @@ This section contains the following Examples
 * [OpenReadOnlyAccess](OpenReadOnlyAccess)
 * [RemoveHeaderFooter](RemoveHeaderFooter)
 * [Retrieve comments from a word processing document](Retrieve comments from a word processing document)
+* [Extract Image from Word Document](Extract Image from Word Document)
+* [Get and Set Bookmark Text](Get and Set Bookmark Text)
+* [Remove Hidden Text from Document](Remove Hidden Text from Document)
+* [Remove Page and Section Breaks](Remove Page and Section Breaks)
+* [Remove Section Breaks from Document](Remove Section Breaks from Document)
+* [Search  Replace Text in Document Part](Search  Replace Text in Document Part)
 
