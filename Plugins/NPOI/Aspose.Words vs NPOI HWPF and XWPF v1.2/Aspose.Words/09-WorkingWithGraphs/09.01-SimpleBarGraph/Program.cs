@@ -9,10 +9,8 @@ namespace Simple_Bar_Graph
         // Simple bar graph 
         static void Main(string[] args)
         {
-            
-           //file location
-            string fileDir = "../../data/SimpleBarGraph.doc";
-            Document doc = new Document();
+			//createing new document
+			Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Write text on the document 
@@ -21,10 +19,8 @@ namespace Simple_Bar_Graph
             //select the chart type (here chartType is bar) 
             Shape shape1 = builder.InsertChart(ChartType.Bar, 432, 252);
 
-            // save the document in the given path
-            doc.Save("SimpleBarGraph.doc");
-
-
+            // save the document 
+            doc.Save("SimpleBarGraph.doc");		
         }
     }
 }
