@@ -15,6 +15,7 @@ namespace CSharp.Mail_Merge
     {
         public static void Run()
         {
+            //ExStart:ApplyCustomLogicToEmptyRegions
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); 
 
@@ -50,21 +51,21 @@ namespace CSharp.Mail_Merge
             ExecuteCustomLogicOnEmptyRegions(doc, new EmptyRegionsHandler_MergeTable());
 
             doc.Save(dataDir + "TestFile.CustomLogicEmptyRegions2_out_.doc");
-
+            //ExEnd:ApplyCustomLogicToEmptyRegions
             // Reload the original merged document.
             doc = mergedDoc.Clone();
-
+            //ExStart:ContactDetails 
             // Only handle the ContactDetails region in our handler.
             ArrayList regions = new ArrayList();
             regions.Add("ContactDetails");
             ExecuteCustomLogicOnEmptyRegions(doc, new EmptyRegionsHandler(), regions);
-            
+            //ExEnd:ContactDetails 
             dataDir = dataDir + "TestFile.CustomLogicEmptyRegions3_out_.doc";
             doc.Save(dataDir );
 
             Console.WriteLine("\nMail merge performed successfully.\nFile saved at " + dataDir);
         }
-
+        //ExStart:CreateDataSourceFromDocumentRegions
         /// <summary>
         /// Returns a DataSet object containing a DataTable for the unmerged regions in the specified document.
         /// If regionsList is null all regions found within the document are included. If an ArrayList instance is present
@@ -104,6 +105,8 @@ namespace CSharp.Mail_Merge
 
             return dataSet;
         }
+        //ExEnd:CreateDataSourceFromDocumentRegions
+        //ExStart:ExecuteCustomLogicOnEmptyRegions
         /// <summary>
         /// Applies logic defined in the passed handler class to all unused regions in the document. This allows to manually control
         /// how unused regions are handled in the document.
@@ -136,7 +139,8 @@ namespace CSharp.Mail_Merge
             // to be called for each field in the unmerged regions.
             doc.MailMerge.ExecuteWithRegions(CreateDataSourceFromDocumentRegions(doc, regionsList));
         }
-        
+        //ExEnd:ExecuteCustomLogicOnEmptyRegions
+        //ExStart:EmptyRegionsHandler 
         public class EmptyRegionsHandler : IFieldMergingCallback
         {
             /// <summary>
@@ -189,7 +193,7 @@ namespace CSharp.Mail_Merge
                 // Do Nothing
             }
         }
-        //ExEnd
+        //ExEnd:EmptyRegionsHandler 
 
         public class EmptyRegionsHandler_MergeTable : IFieldMergingCallback
         {
@@ -198,6 +202,7 @@ namespace CSharp.Mail_Merge
             /// </summary>
             public void FieldMerging(FieldMergingArgs args)
             {
+                 //ExStart:RemoveExtraParagraphs
                 // Store the parent paragraph of the current field for easy access.
                 Paragraph parentParagraph = args.Field.Start.ParentParagraph;
 
@@ -224,7 +229,8 @@ namespace CSharp.Mail_Merge
                             parentParagraph.Remove();
                     }
                 }
-                
+                //ExEnd:RemoveExtraParagraphs
+                //ExStart:MergeAllCells
                 // Replace the unused region in the table with a "no records" message and merge all cells into one.
                 if (args.TableName == "Suppliers")
                 {
@@ -246,6 +252,7 @@ namespace CSharp.Mail_Merge
                             cell.CellFormat.HorizontalMerge = CellMerge.Previous; // Otherwise the merge is continued using "CellMerge.Previous".
                     }
                 }
+                //ExEnd:MergeAllCells
             }
 
             public void ImageFieldMerging(ImageFieldMergingArgs args)
@@ -293,6 +300,20 @@ namespace CSharp.Mail_Merge
             data.Relations.Add(storeDetails.Columns["ID"], contactDetails.Columns["ID"]);
 
             return data;
+        }
+        private static DataTable orderTable = null;
+        private static DataTable itemTable = null;
+        private static void  DisableForeignKeyConstraints(DataSet dataSet)
+        {           
+            //ExStart:DisableForeignKeyConstraints
+            dataSet.Relations.Add(new DataRelation("OrderToItem", orderTable.Columns["Order_Id"], itemTable.Columns["Order_Id"], false));
+            //ExEnd:DisableForeignKeyConstraints
+        }
+        private static void CreateDataRelation(DataSet dataSet)
+        {
+            //ExStart:CreateDataRelation
+            dataSet.Relations.Add(new DataRelation("OrderToItem", orderTable.Columns["Order_Id"], itemTable.Columns["Order_Id"]));
+            //ExEnd:CreateDataRelation
         }
     }
 }

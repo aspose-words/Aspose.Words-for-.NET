@@ -5,7 +5,9 @@ Imports System.IO
 Imports Aspose.Words
 Imports System.Web
 Imports System.Drawing
+' ExStart:MailMergingNamespace
 Imports Aspose.Words.MailMerging
+' ExEnd:MailMergingNamespace
 Public Class MailMergeAlternatingRows
     Public Shared Sub Run()
         ' ExStart:MailMergeAlternatingRows           
@@ -67,8 +69,6 @@ Public Class MailMergeAlternatingRows
         Private mBuilder As DocumentBuilder
         Private mRowIdx As Integer
     End Class
-    ' ExEnd:HandleMergeFieldAlternatingRows
-    ' ExStart:IsOdd
     ''' <summary>
     ''' Returns true if the value is odd; false if the value is even.
     ''' </summary>
@@ -76,8 +76,6 @@ Public Class MailMergeAlternatingRows
         ' The code is a bit complex, but otherwise automatic conversion to VB does not work.
         Return ((value / 2) * 2).Equals(value)
     End Function
-    ' ExEnd:IsOdd
-    ' ExStart:GetSuppliersDataTable
     ''' <summary>
     ''' Create DataTable and fill it with data.
     ''' In real life this DataTable should be filled from a database.
@@ -94,6 +92,6 @@ Public Class MailMergeAlternatingRows
         Next
         Return dataTable
     End Function
-    ' ExEnd:GetSuppliersDataTable
+    ' ExEnd:HandleMergeFieldAlternatingRows
 
 End Class

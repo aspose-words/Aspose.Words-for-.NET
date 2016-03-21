@@ -31,9 +31,10 @@ Public Class LINQtoXMLMailMerge
         ' To pass the actual values stored in the XML element or attribute to Aspose.Words, 
         ' we need to cast them to string. This is to prevent the XML tags being inserted into the final document when
         ' the XElement or XAttribute objects are passed to Aspose.Words.
-
+        ' ExStart:LINQtoXMLMailMergeorderItems
         Dim orderItems = From order In orderXml.Descendants("Item") _
         Select New With {Key .PartNumber = CStr(order.Attribute("PartNumber")), Key .ProductName = CStr(order.Element("ProductName")), Key .Quantity = CStr(order.Element("Quantity")), Key .USPrice = CStr(order.Element("USPrice")), Key .Comment = CStr(order.Element("Comment")), Key .ShipDate = CStr(order.Element("ShipDate"))}
+        ' ExEnd:LINQtoXMLMailMergeorderItems
         ' ExStart:LINQToXMLQueryForDeliveryAddress
         ' Query the delivery (shipping) address using LINQ.
         Dim deliveryAddress = From delivery In orderXml.Elements("Address") _
@@ -69,16 +70,19 @@ Public Class LINQtoXMLMailMerge
     ' ExStart:MyMailMergeDataSource
     Public Class MyMailMergeDataSource
         Implements IMailMergeDataSource
-        
+        ' ExEnd:MyMailMergeDataSource
+        ' ExStart:MyMailMergeDataSourceConstructor 
         Public Sub New(ByVal data As IEnumerable)
             mEnumerator = data.GetEnumerator()
         End Sub
-        
+        ' ExEnd:MyMailMergeDataSourceConstructor 
+        ' ExStart:MyMailMergeDataSourceConstructorWithDataTable
         Public Sub New(ByVal data As IEnumerable, ByVal tableName As String)
             mEnumerator = data.GetEnumerator()
             mTableName = tableName
         End Sub
-
+        ' ExEnd:MyMailMergeDataSourceConstructorWithDataTable
+        ' ExStart:MyMailMergeDataSourceGetValue
         Public Function GetValue(ByVal fieldName As String, <System.Runtime.InteropServices.Out()> ByRef fieldValue As Object) As Boolean Implements IMailMergeDataSource.GetValue
             ' Use reflection to get the property by name from the current object.
             Dim obj As Object = mEnumerator.Current
@@ -94,17 +98,19 @@ Public Class LINQtoXMLMailMerge
             fieldValue = Nothing
             Return False
         End Function
-        
+        ' ExStart:MyMailMergeDataSourceGetValue
+        ' ExStart:MyMailMergeDataSourceMoveNext
         Public Function MoveNext() As Boolean Implements IMailMergeDataSource.MoveNext
             Return mEnumerator.MoveNext()
         End Function
-        
+        ' ExEnd:MyMailMergeDataSourceMoveNext
+        ' ExStart:MyMailMergeDataSourceTableName
         Public ReadOnly Property TableName() As String Implements IMailMergeDataSource.TableName
             Get
                 Return mTableName
             End Get
         End Property
-        
+        ' ExEnd:MyMailMergeDataSourceTableName
         Public Function GetChildDataSource(ByVal tableName As String) As IMailMergeDataSource Implements IMailMergeDataSource.GetChildDataSource
             Return Nothing
         End Function
@@ -112,5 +118,5 @@ Public Class LINQtoXMLMailMerge
         Private ReadOnly mEnumerator As IEnumerator
         Private ReadOnly mTableName As String
     End Class
-    ' ExEnd:MyMailMergeDataSource
+
 End Class

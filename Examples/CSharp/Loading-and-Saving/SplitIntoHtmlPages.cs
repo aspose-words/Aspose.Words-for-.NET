@@ -305,4 +305,5 @@ namespace CSharp.Loading_Saving
         private readonly ArrayList mTopics;
         private int mIndex;
     }
+    
 }

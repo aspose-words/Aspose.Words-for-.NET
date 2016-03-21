@@ -13,6 +13,7 @@ Imports Aspose.Words.MailMerging
 
 Public Class ApplyCustomLogicToEmptyRegions
     Public Shared Sub Run()
+        ' ExStart:ApplyCustomLogicToEmptyRegions
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_MailMergeAndReporting()
         Dim fileName As String = "TestFile.doc"
@@ -39,7 +40,7 @@ Public Class ApplyCustomLogicToEmptyRegions
 
         ' Save the output document to disk.
         doc.Save(dataDir & "TestFile.CustomLogicEmptyRegions1_out_.doc")
-        
+        ' ExEnd:ApplyCustomLogicToEmptyRegions
         ' Reload the original merged document.
         doc = mergedDoc.Clone()
 
@@ -50,16 +51,16 @@ Public Class ApplyCustomLogicToEmptyRegions
 
         ' Reload the original merged document.
         doc = mergedDoc.Clone()
-
+        ' ExStart:ContactDetails
         Dim regions As New ArrayList()
         regions.Add("ContactDetails")
         ExecuteCustomLogicOnEmptyRegions(doc, New EmptyRegionsHandler(), regions)
-        
+        ' ExEnd:ContactDetails
         doc.Save(dataDir & "TestFile.CustomLogicEmptyRegions3_out_.doc")
 
         Console.WriteLine(vbNewLine + "Mail merge performed successfully." + vbNewLine + "File saved at " + dataDir + "TestFile.CustomLogicEmptyRegions3_out_.doc")
     End Sub
-
+    ' ExStart:CreateDataSourceFromDocumentRegions
     Private Shared Function CreateDataSourceFromDocumentRegions(ByVal doc As Document, ByVal regionsList As ArrayList) As DataSet
         Const tableStartMarker As String = "TableStart:"
         Dim dataSet As New DataSet()
@@ -87,7 +88,8 @@ Public Class ApplyCustomLogicToEmptyRegions
 
         Return dataSet
     End Function
-
+    ' ExEnd:CreateDataSourceFromDocumentRegions
+    ' ExStart:ExecuteCustomLogicOnEmptyRegions
     Public Shared Sub ExecuteCustomLogicOnEmptyRegions(ByVal doc As Document, ByVal handler As IFieldMergingCallback)
         ExecuteCustomLogicOnEmptyRegions(doc, handler, Nothing) ' Pass null to handle all regions found in the document.
     End Sub
@@ -105,7 +107,8 @@ Public Class ApplyCustomLogicToEmptyRegions
         ' to be called for each field in the unmerged regions.
         doc.MailMerge.ExecuteWithRegions(CreateDataSourceFromDocumentRegions(doc, regionsList))
     End Sub
-
+    ' ExEnd:ExecuteCustomLogicOnEmptyRegions
+    ' ExStart:EmptyRegionsHandler
     Public Class EmptyRegionsHandler
         Implements IFieldMergingCallback
         ''' <summary>
@@ -153,13 +156,14 @@ Public Class ApplyCustomLogicToEmptyRegions
             ' Do Nothing
         End Sub
     End Class
-
+    ' ExEnd:EmptyRegionsHandler
     Public Class EmptyRegionsHandler_MergeTable
         Implements IFieldMergingCallback
         ''' <summary>
         ''' Called for each field belonging to an unmerged region in the document.
         ''' </summary>
         Public Sub FieldMerging(ByVal args As FieldMergingArgs) Implements IFieldMergingCallback.FieldMerging
+            ' ExStart:RemoveExtraParagraphs
             ' Store the parent paragraph of the current field for easy access.
             Dim parentParagraph As Paragraph = args.Field.Start.ParentParagraph
 
@@ -183,7 +187,8 @@ Public Class ApplyCustomLogicToEmptyRegions
                     End If
                 End If
             End If
-            
+            ' ExEnd:RemoveExtraParagraphs
+            ' ExStart:MergeAllCells
             ' Replace the unused region in the table with a "no records" message and merge all cells into one.
             If args.TableName = "Suppliers" Then
                 If CStr(args.FieldValue) Is "FirstField" Then
@@ -203,7 +208,7 @@ Public Class ApplyCustomLogicToEmptyRegions
                     End If
                 End If
             End If
-            'ExEnd
+            ' ExEnd:MergeAllCells
         End Sub
 
         Public Sub ImageFieldMerging(ByVal args As ImageFieldMergingArgs) Implements IFieldMergingCallback.ImageFieldMerging
@@ -248,4 +253,16 @@ Public Class ApplyCustomLogicToEmptyRegions
 
         Return data
     End Function
+    Private Shared orderTable As DataTable = Nothing
+    Private Shared itemTable As DataTable = Nothing
+    Private Shared Sub DisableForeignKeyConstraints(dataSet As DataSet)
+        ' ExStart:DisableForeignKeyConstraints
+        dataSet.Relations.Add(New DataRelation("OrderToItem", orderTable.Columns("Order_Id"), itemTable.Columns("Order_Id"), False))
+        ' ExEnd:DisableForeignKeyConstraints
+    End Sub
+    Private Shared Sub CreateDataRelation(dataSet As DataSet)
+        ' ExStart:CreateDataRelation
+        dataSet.Relations.Add(New DataRelation("OrderToItem", orderTable.Columns("Order_Id"), itemTable.Columns("Order_Id")))
+        ' ExEnd:CreateDataRelation
+    End Sub
 End Class

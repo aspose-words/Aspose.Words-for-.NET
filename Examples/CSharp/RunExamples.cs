@@ -46,8 +46,7 @@ namespace CSharp
             //AppendDocuments.Run();
             //ApplyLicense.Run();           
             //FindAndReplace.Run();
-            //CSharp.Quick_Start.HelloWorld.Run();            
-            //SimpleMailMerge.Run();
+            //CSharp.Quick_Start.HelloWorld.Run();           
             //UpdateFields.Run();
             //WorkingWithNodes.Run();
 
@@ -132,7 +131,7 @@ namespace CSharp
 
             //// Document
             //// =====================================================
-            ExtractContentBetweenParagraphs.Run();
+            //ExtractContentBetweenParagraphs.Run();
             //ExtractContentBetweenBlockLevelNodes.Run();
             //ExtractContentBetweenParagraphStyles.Run();
             //ExtractContentBetweenRuns.Run();
@@ -278,6 +277,7 @@ namespace CSharp
 
             //ApplyCustomLogicToEmptyRegions.Run();
             //LINQtoXMLMailMerge.Run();
+            //SimpleMailMerge.Run();
             //MailMergeFormFields.Run();
             //MultipleDocsInMailMerge.Run();
             //NestedMailMerge.Run();
@@ -288,6 +288,8 @@ namespace CSharp
             //MailMergeImageFromBlob.Run();
             //ProduceMultipleDocuments.Run();
             //MailMergeUsingMustacheSyntax.Run();
+            //ExecuteWithRegionsDataTable.Run();
+            NestedMailMergeCustom.Run();            
 
             //// =====================================================
             //// =====================================================

@@ -17,8 +17,7 @@ Module RunExamples
         'AppendDocuments.Run()
         'ApplyLicense.Run()
         'FindAndReplace.Run()
-        'HelloWorld.Run()       
-        'SimpleMailMerge.Run()
+        'HelloWorld.Run()
         'UpdateFields.Run()
         'WorkingWithNodes.Run()
 
@@ -122,7 +121,7 @@ Module RunExamples
 
         '' Document
         '' =====================================================
-        ExtractContent.Run()
+        'ExtractContent.Run()
         'PageNumbersOfNodes.Run()
         'RemoveBreaks.Run()
         'CloningDocument.Run();
@@ -241,6 +240,7 @@ Module RunExamples
 
         'ApplyCustomLogicToEmptyRegions.Run()
         'LINQtoXMLMailMerge.Run()
+        'SimpleMailMerge.Run()
         'MailMergeFormFields.Run()
         'MultipleDocsInMailMerge.Run()
         'NestedMailMerge.Run()
@@ -251,6 +251,8 @@ Module RunExamples
         'MailMergeImageFromBlob.Run()
         'ProduceMultipleDocuments.Run()
         'MailMergeUsingMustacheSyntax.Run()
+        'ExecuteWithRegionsDataTable.Run()
+        NestedMailMergeCustom.Run()
 
         '' =====================================================
         '' =====================================================

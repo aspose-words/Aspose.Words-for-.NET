@@ -1,5 +1,7 @@
 ﻿using Aspose.Words;
+//ExStart:MailMergingNamespace
 using Aspose.Words.MailMerging;
+//ExEnd:MailMergingNamespace
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -75,9 +77,7 @@ namespace CSharp.Mail_Merge
 
             private DocumentBuilder mBuilder;
             private int mRowIdx;
-        }
-        //ExEnd:HandleMergeFieldAlternatingRows
-        //ExStart:IsOdd
+        }     
         /// <summary>
         /// Returns true if the value is odd; false if the value is even.
         /// </summary>
@@ -85,9 +85,7 @@ namespace CSharp.Mail_Merge
         {
             // The code is a bit complex, but otherwise automatic conversion to VB does not work.
             return ((value / 2) * 2).Equals(value);
-        }
-        //ExEnd:IsOdd
-        //ExStart:GetSuppliersDataTable
+        }      
         /// <summary>
         /// Create DataTable and fill it with data.
         /// In real life this DataTable should be filled from a database.
@@ -106,6 +104,6 @@ namespace CSharp.Mail_Merge
             }
             return dataTable;
         }
-        //ExEnd:GetSuppliersDataTable
+        //ExEnd:HandleMergeFieldAlternatingRows
     }
 }

@@ -33,7 +33,7 @@ namespace CSharp.Mail_Merge
             // To pass the actual values stored in the XML element or attribute to Aspose.Words, 
             // we need to cast them to string. This is to prevent the XML tags being inserted into the final document when
             // the XElement or XAttribute objects are passed to Aspose.Words.
-
+            //ExStart:LINQtoXMLMailMergeorderItems
             var orderItems =
             from order in orderXml.Descendants("Item")
             select new
@@ -45,6 +45,7 @@ namespace CSharp.Mail_Merge
                 Comment = (string)order.Element("Comment"),
                 ShipDate = (string)order.Element("ShipDate")
             };
+            //ExEnd:LINQtoXMLMailMergeorderItems
             //ExStart:LINQToXMLQueryForDeliveryAddress
             var deliveryAddress =
             from delivery in orderXml.Elements("Address")
@@ -96,28 +97,31 @@ namespace CSharp.Mail_Merge
         /// </summary>
         //ExStart:MyMailMergeDataSource 
         public class MyMailMergeDataSource : IMailMergeDataSource
+        //ExEnd:MyMailMergeDataSource 
         {
             /// <summary>
             /// Creates a new instance of a custom mail merge data source.
             /// </summary>
             /// <param name="data">Data returned from a LINQ query.</param>
+            //ExStart:MyMailMergeDataSourceConstructor 
             public MyMailMergeDataSource(IEnumerable data)
             {
                 mEnumerator = data.GetEnumerator();
             }
-            
+            //ExEnd:MyMailMergeDataSourceConstructor 
             /// <summary>
             /// Creates a new instance of a custom mail merge data source, for mail merge with regions.
             /// </summary>
             /// <param name="data">Data returned from a LINQ query.</param>
             /// <param name="tableName">Name of the data source is only used when you perform mail merge with regions. 
-            /// If you prefer to use the simple mail merge then use constructor with one parameter.</param>
+            /// If you prefer to use the simple mail merge then use constructor with one parameter.</param>          
+            //ExStart:MyMailMergeDataSourceConstructorWithDataTable
             public MyMailMergeDataSource(IEnumerable data, string tableName)
             {
                 mEnumerator = data.GetEnumerator();
                 mTableName = tableName;
             }
-            
+            //ExEnd:MyMailMergeDataSourceConstructorWithDataTable
             /// <summary>
             /// Aspose.Words calls this method to get a value for every data field.
             /// 
@@ -126,6 +130,7 @@ namespace CSharp.Mail_Merge
             /// name in the document matches the name of a public property on the object
             /// in the collection and uses reflection to get the value of the property.
             /// </summary>
+            //ExStart:MyMailMergeDataSourceGetValue
             public bool GetValue(string fieldName, out object fieldValue)
             {
                 // Use reflection to get the property by name from the current object.
@@ -143,31 +148,33 @@ namespace CSharp.Mail_Merge
                 fieldValue = null;
                 return false;
             }
-            
+            //ExEnd:MyMailMergeDataSourceGetValue
             /// <summary>
             /// Moves to the next record in the collection.
-            /// </summary>
+            /// </summary>            
+            //ExStart:MyMailMergeDataSourceMoveNext
             public bool MoveNext()
             {
                 return mEnumerator.MoveNext();
             }
-            
+            //ExEnd:MyMailMergeDataSourceMoveNext
             /// <summary>
             /// The name of the data source. Used by Aspose.Words only when executing mail merge with repeatable regions.
             /// </summary>
+            //ExStart:MyMailMergeDataSourceTableName
             public string TableName
             {
                 get { return mTableName; }
             }
-            
+            //ExEnd:MyMailMergeDataSourceTableName
             public IMailMergeDataSource GetChildDataSource(string tableName)
             {
                 return null;
-            }
-
+            }           
             private readonly IEnumerator mEnumerator;
             private readonly string mTableName;
         }
-        //ExEnd:MyMailMergeDataSource 
+        
+        
     }
 }
