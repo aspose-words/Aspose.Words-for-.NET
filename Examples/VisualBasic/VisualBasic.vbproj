@@ -271,6 +271,10 @@
     <Compile Include="Rendering-Printing\EmbeddingWindowsStandardFonts.vb" />
     <Compile Include="Rendering-Printing\HyphenateWordsOfLanguages.vb" />
     <Compile Include="Rendering-Printing\LoadHyphenationDictionaryForLanguage.vb" />
+    <Compile Include="Rendering-Printing\PrintDocViaXpsPrint.vb" />
+    <Compile Include="Rendering-Printing\PrintMultiplePagesOnOneSheet.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Rendering-Printing\PrintProgressDialog.vb" />
     <Compile Include="Rendering-Printing\ReadActiveXControlProperties.vb" />
     <Compile Include="Rendering-Printing\DocumentLayoutHelper.vb" />

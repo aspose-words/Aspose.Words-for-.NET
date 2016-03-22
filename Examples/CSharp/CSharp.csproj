@@ -259,6 +259,10 @@
     <Compile Include="Loading-and-Saving\LoadAndSaveToStream.cs" />
     <Compile Include="Quick-Start\UpdateFields.cs" />
     <Compile Include="Quick-Start\WorkingWithNodes.cs" />
+    <Compile Include="Rendering-Printing\PrintMultiplePagesOnOneSheet.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Rendering-Printing\PrintDocViaXpsPrint.cs" />
     <Compile Include="Rendering-Printing\PrintProgressDialog.cs" />
     <Compile Include="Rendering-Printing\LoadHyphenationDictionaryForLanguage.cs" />
     <Compile Include="Rendering-Printing\HyphenateWordsOfLanguages.cs" />
