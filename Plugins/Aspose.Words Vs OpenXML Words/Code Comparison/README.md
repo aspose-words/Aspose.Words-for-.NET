@@ -20,5 +20,5 @@ This section contains the following Examples
 * [Remove Hidden Text from Document](Remove Hidden Text from Document)
 * [Remove Page Breaks from Document](Remove Page Breaks from Document)
 * [Remove Section Breaks from Document](Remove Section Breaks from Document)
-* [Search  Replace Text in Document Part](Search  Replace Text in Document Part)
+* [Search and Replace Text in Document Part](Search and Replace Text in Document Part)
 
