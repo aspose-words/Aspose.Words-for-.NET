@@ -18,7 +18,7 @@ This section contains the following Examples
 * [Extract Image from Word Document](Extract Image from Word Document)
 * [Get and Set Bookmark Text](Get and Set Bookmark Text)
 * [Remove Hidden Text from Document](Remove Hidden Text from Document)
-* [Remove Page and Section Breaks](Remove Page and Section Breaks)
+* [Remove Page Breaks from Document](Remove Page Breaks from Document)
 * [Remove Section Breaks from Document](Remove Section Breaks from Document)
 * [Search  Replace Text in Document Part](Search  Replace Text in Document Part)
 
