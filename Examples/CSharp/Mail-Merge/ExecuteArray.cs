@@ -8,16 +8,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Web;
-
 namespace CSharp.Mail_Merge
 {
     class ExecuteArray
     {
         public static void Run()
         {
-            //ExStart:ExecuteArray
-            HttpResponse Response = null;
+            //ExStart:ExecuteArray           
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); 
             // Open an existing document.
@@ -33,7 +30,7 @@ namespace CSharp.Mail_Merge
 
             dataDir = dataDir + "MailMerge.ExecuteArray_out_.doc";
             // Send the document in Word format to the client browser with an option to save to disk or open inside the current browser.
-            doc.Save(Response, dataDir, ContentDisposition.Inline, null);
+            doc.Save(dataDir);
             //ExEnd:ExecuteArray
             Console.WriteLine("\nSimple Mail merge performed with array data successfully.\nFile saved at " + dataDir);
         }
