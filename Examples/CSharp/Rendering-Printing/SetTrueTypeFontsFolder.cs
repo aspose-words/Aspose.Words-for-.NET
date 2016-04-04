@@ -22,7 +22,6 @@ namespace CSharp.Rendering_and_Printing
             // fonts when rendering or embedding fonts. To add an extra font source while keeping system font sources then use both FontSettings.GetFontSources and
             // FontSettings.SetFontSources instead.
             FontSettings.SetFontsFolder(@"C:\MyFonts\", false);
-            //FontSettings.DefaultInstance.SetFontsFolder(@"C:\MyFonts\", false);
             dataDir = dataDir + "Rendering.SetFontsFolder_out_.pdf";
             doc.Save(dataDir);
             //ExEnd:SetTrueTypeFontsFolder
