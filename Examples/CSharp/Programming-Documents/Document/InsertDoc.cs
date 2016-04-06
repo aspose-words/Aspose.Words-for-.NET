@@ -158,7 +158,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
             }
         }
         //ExEnd:InsertDocumentWithSectionFormatting
-        //ExStart:InsertDocumentWithSectionFormatting
+        //ExStart:InsertDocumentAtMailMergeHandler
         private class InsertDocumentAtMailMergeHandler : IFieldMergingCallback
         {
             /// <summary>
@@ -194,7 +194,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
                 // Do nothing.
             }
         }
-        //ExEnd:InsertDocumentWithSectionFormatting
+        //ExEnd:InsertDocumentAtMailMergeHandler
         //ExStart:InsertDocumentAtMailMergeBlobHandler
         private class InsertDocumentAtMailMergeBlobHandler : IFieldMergingCallback
         {

@@ -143,7 +143,7 @@ Class InsertDoc
         Next
     End Sub
     ' ExEnd:InsertDocumentWithSectionFormatting
-    ' ExStart:InsertDocumentWithSectionFormatting
+    ' ExStart:InsertDocumentAtMailMergeHandler
     Private Class InsertDocumentAtMailMergeHandler
         Implements IFieldMergingCallback
         ''' <summary>
@@ -177,7 +177,7 @@ Class InsertDoc
             ' Do nothing.
         End Sub
     End Class
-    ' ExEnd:InsertDocumentWithSectionFormatting
+    ' ExEnd:InsertDocumentAtMailMergeHandler
     ' ExStart:InsertDocumentAtMailMergeBlobHandler
     Private Class InsertDocumentAtMailMergeBlobHandler
         Implements IFieldMergingCallback
