@@ -68,7 +68,7 @@ namespace _01._07_CheckFormatCompatibility
                     case LoadFormat.Ott:
                         Console.WriteLine("\tOpenDocument Text Template.");
                         break;
-                    case LoadFormat.DocPreWord97:
+                    case LoadFormat.DocPreWord60:
                         Console.WriteLine("\tMS Word 6 or Word 95 format.");
                         break;
                     case LoadFormat.Unknown:
