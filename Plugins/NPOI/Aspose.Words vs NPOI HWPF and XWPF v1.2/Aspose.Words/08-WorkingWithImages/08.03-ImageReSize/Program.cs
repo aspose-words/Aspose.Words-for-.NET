@@ -6,7 +6,7 @@ namespace Image_ReSize
     class Program
     {
         static void Main(string[] args)
-        {
+        {			
 			Document doc = new Document();
 			DocumentBuilder builder = new DocumentBuilder(doc);
 			builder.Write("Image Before ReSize");
