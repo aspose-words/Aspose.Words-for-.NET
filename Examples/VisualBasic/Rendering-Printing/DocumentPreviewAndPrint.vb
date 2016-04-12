@@ -6,7 +6,7 @@ Imports System.Windows.Forms
 
 Imports Aspose.Words
 Imports Aspose.Words.Rendering
-' ExStart:ActivePrintPreviewDialog
+' ExStart:ActivePrintPreviewDialogClass
 Friend Class ActivePrintPreviewDialog
     Inherits PrintPreviewDialog
     ''' <summary>
@@ -18,7 +18,7 @@ Friend Class ActivePrintPreviewDialog
     End Sub
 
 End Class
-' ExEnd:ActivePrintPreviewDialog
+' ExEnd:ActivePrintPreviewDialogClass
 
 Public Class DocumentPreviewAndPrint
     Public Shared Sub Run()

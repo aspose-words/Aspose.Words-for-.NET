@@ -9,9 +9,10 @@ namespace CSharp.Programming_Documents.Working_With_Document
 {
     class RemoveTOCFromDocument
     {
+        //ExStart:RemoveTOCFromDocument
         public static void Run()
         {
-            //ExStart:RemoveTOCFromDocument
+            
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithStyles();
 
@@ -24,7 +25,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
             dataDir = dataDir + "Document.TableOfContentsRemoveToc_out_.doc";
             // Save the output.
             doc.Save(dataDir);
-            //ExEnd:RemoveTOCFromDocument
+            
             Console.WriteLine("\nSpecified TOC from a document removed successfully.\nFile saved at " + dataDir);
         }
         /// <summary>
@@ -79,6 +80,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
                 node.Remove();
             }
         }
+        //ExEnd:RemoveTOCFromDocument
     }
 
 

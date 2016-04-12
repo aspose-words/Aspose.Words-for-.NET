@@ -17,10 +17,10 @@ Class RemoveTOCFromDocument
         dataDir = dataDir & Convert.ToString("Document.TableOfContentsRemoveToc_out_.doc")
         ' Save the output.
         doc.Save(dataDir)
-        ' ExEnd:RemoveTOCFromDocument
+
         Console.WriteLine(Convert.ToString(vbLf & "Specified TOC from a document removed successfully." & vbLf & "File saved at ") & dataDir)
     End Sub
-    ' ExStart:RemoveTableOfContents
+
     ''' <summary>
     ''' Removes the specified table of contents field from the document.
     ''' </summary>
@@ -69,6 +69,7 @@ Class RemoveTOCFromDocument
             node.Remove()
         Next
     End Sub
-    ' ExEnd:RemoveTableOfContents
+    ' ExEnd:RemoveTOCFromDocument
+
 End Class
 
