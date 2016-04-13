@@ -10,6 +10,17 @@ namespace _01._08_WorkingwithDigitalSignatures
     {
         static void Main(string[] args)
         {
+            // Check for license and apply if exists
+            string licenseFile = AppDomain.CurrentDomain.BaseDirectory + "Aspose.Words.lic";
+            if (File.Exists(licenseFile))
+            {
+                // Apply Aspose.Words API License
+                Aspose.Words.License license = new Aspose.Words.License();
+                // Place license file in Bin/Debug/ Folder
+                license.SetLicense("Aspose.Words.lic");
+            }
+
+
             // The path to the document which is to be processed.
 
             string filePath = "../../data/document.doc";
