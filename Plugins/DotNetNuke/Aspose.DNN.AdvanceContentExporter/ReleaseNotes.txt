@@ -1,0 +1,31 @@
+﻿<h3>Aspose Content Export</h3>
+<p class="Contributor">
+	
+	Advance DNN Contents Exporter Module using Aspose.Words for .NET allow users to export online content into MS Word, PDF, Open Document and image formats like Jpeg, Png, Tiff and send output file to browser for Open/Download to local system.
+	<br />
+	This version of the module demonstrates the use of few powerful features of Aspose.Words for .NET API. Please check <a href="http://www.aspose.com/blogs/index.php">our blogs</a> for further updates.
+	
+	If you have any questions please feel free to contact us via <a href="mailto:marketplace@aspose.com">marketplace@aspose.com</a><br />
+	<a href=http://www.aspose.com>Aspose</a> - Your File Format APIs<br />
+</p>
+<hr/>
+<div class="License">
+	<h3>About the Advance DNN Contents Exporter Module using Aspose.Words for .NET</h3>
+	<p>Advance DNN Contents Exporter Module using Aspose.Words for .NET allow users to export online content into MS Word, PDF, Open Document and image formats like Jpeg, Png, Tiff and send output file to browser for Open/Download to local system.
+	<br />
+	This version of the module provides a number of great features, including:
+
+	<ul>
+		<li>Allow Full page export</li>
+		<li>Option to select DNN Pane before exporting the content allows you to export only relevant area instead of exporting the whole page.</li>
+		<li>Option to select Output formats provided by Aspose.Words for .NET API.</li>
+		<li>Custom Css classes for Buttons and Dropdown to give the module look and feel of your skin via module settings.</li>
+		<li>Option to preselect selection area via module settings.</li>
+		<li>Option to hide selection Dropdown via module settings
+		<li>Get an offline copy of your favorite online content for editing, sharing and printing in the popular DOC, DOCX, ODT, PDF, JPEG, PNG and TIFF formats.</li>
+		<li>The generated output file can be Open/Download from browser.</li>
+		<li>For Images output format if generated images are more than one it allows to download as a Zip.</li>
+		<li>A copy of the exported file is also saved in PortalSettings.HomeDirectory\AsposeExport folder for later use.</li>
+	</ul>
+</p>	
+</div>
