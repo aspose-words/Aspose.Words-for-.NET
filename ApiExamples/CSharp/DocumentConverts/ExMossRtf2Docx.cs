@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -7,7 +7,7 @@
 
 using Aspose.Words;
 
-namespace ApiExamples.DocumentConverts
+namespace ApiExamples
 {
     public class ExMossRtf2Docx
     {
@@ -17,7 +17,7 @@ namespace ApiExamples.DocumentConverts
         public static void ConvertRtfToDocx(string inFileName, string outFileName)
         {
             // Load an RTF file into Aspose.Words.
-            Aspose.Words.Document doc = new Aspose.Words.Document(inFileName);
+            Document doc = new Document(inFileName);
 
             // Save the document in the OOXML format.
             doc.Save(outFileName, SaveFormat.Docx);

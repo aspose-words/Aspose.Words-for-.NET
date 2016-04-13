@@ -1,15 +1,20 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System.Drawing;
+using System.Drawing.Printing;
+
 using Aspose.Words;
+
 using NUnit.Framework;
 
+using PaperSize = Aspose.Words.PaperSize;
 
-namespace ApiExamples.PageSetup
+namespace ApiExamples
 {
     [TestFixture]
     public class ExPageSetup : ApiExampleBase
@@ -41,7 +46,7 @@ namespace ApiExamples.PageSetup
             builder.PageSetup.ClearFormatting();
             builder.Writeln("Section 2, back to default Letter paper size, portrait orientation and top alignment.");
 
-            builder.Document.Save(MyDir + "PageSetup.ClearFormatting Out.doc");
+            builder.Document.Save(MyDir + @"\Artifacts\PageSetup.ClearFormatting.doc");
             //ExEnd
         }
 
@@ -54,7 +59,7 @@ namespace ApiExamples.PageSetup
             //ExSummary:Creates headers and footers different for first, even and odd pages using DocumentBuilder.
             DocumentBuilder builder = new DocumentBuilder();
 
-            Aspose.Words.PageSetup ps = builder.PageSetup;
+            PageSetup ps = builder.PageSetup;
             ps.DifferentFirstPageHeaderFooter = true;
             ps.OddAndEvenPagesHeaderFooter = true;
 
@@ -75,7 +80,7 @@ namespace ApiExamples.PageSetup
             builder.InsertBreak(BreakType.PageBreak);
             builder.Writeln("Text page 3.");
 
-            builder.Document.Save(MyDir + "PageSetup.DifferentHeaders Out.doc");
+            builder.Document.Save(MyDir + @"\Artifacts\PageSetup.DifferentHeaders.doc");
             //ExEnd
         }
 
@@ -87,7 +92,7 @@ namespace ApiExamples.PageSetup
             //ExFor:PageSetup.SectionStart
             //ExFor:Document.Sections
             //ExSummary:Specifies how the section starts, from a new page, on the same page or other.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             doc.Sections[0].PageSetup.SectionStart = Aspose.Words.SectionStart.Continuous;
             //ExEnd
         }
@@ -99,16 +104,16 @@ namespace ApiExamples.PageSetup
             //ExFor:PageSetup.FirstPageTray
             //ExFor:PageSetup.OtherPagesTray
             //ExSummary:Changes all sections in a document to use the default paper tray of the selected printer.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // Find the printer that will be used for printing this document. In this case it is the default printer.
             // You can define a specific printer using PrinterName.
-            System.Drawing.Printing.PrinterSettings settings = new System.Drawing.Printing.PrinterSettings();
+            PrinterSettings settings = new PrinterSettings();
 
             // The paper tray value stored in documents is completely printer specific. This means 
             // The code below resets all page tray values to use the current printers default tray.
             // You can enumerate PrinterSettings.PaperSources to find the other valid paper tray values of the selected printer.
-            foreach (Aspose.Words.Section section in doc.Sections)
+            foreach (Section section in doc.Sections)
             {
                 section.PageSetup.FirstPageTray = settings.DefaultPageSettings.PaperSource.RawKind;
                 section.PageSetup.OtherPagesTray = settings.DefaultPageSettings.PaperSource.RawKind;
@@ -116,17 +121,17 @@ namespace ApiExamples.PageSetup
             //ExEnd
         }
 
-        [Test]
+        [Test, Explicit]
         public void PaperTrayForDifferentPaperType()
         {
             //ExStart
             //ExFor:PageSetup.FirstPageTray
             //ExFor:PageSetup.OtherPagesTray
             //ExSummary:Shows how to set up printing using different printer trays for different paper sizes.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // Choose the default printer to be used for printing this document.
-            System.Drawing.Printing.PrinterSettings settings = new System.Drawing.Printing.PrinterSettings();
+            PrinterSettings settings = new PrinterSettings();
 
             // This is the tray we will use for A4 paper size. This is the first tray in the paper sources collection.
             int printerTrayForA4 = settings.PaperSources[0].RawKind;
@@ -134,14 +139,14 @@ namespace ApiExamples.PageSetup
             int printerTrayForLetter = settings.PaperSources[1].RawKind;
 
             // Set the page tray used for each section based off the paper size used in the section.
-            foreach (Aspose.Words.Section section in doc.Sections)
+            foreach (Section section in doc.Sections)
             {
-                if(section.PageSetup.PaperSize == PaperSize.Letter)
+                if (section.PageSetup.PaperSize == PaperSize.Letter)
                 {
                     section.PageSetup.FirstPageTray = printerTrayForLetter;
                     section.PageSetup.OtherPagesTray = printerTrayForLetter;
                 }
-                else if(section.PageSetup.PaperSize == PaperSize.A4)
+                else if (section.PageSetup.PaperSize == PaperSize.A4)
                 {
                     section.PageSetup.FirstPageTray = printerTrayForA4;
                     section.PageSetup.OtherPagesTray = printerTrayForA4;
@@ -168,19 +173,19 @@ namespace ApiExamples.PageSetup
             //ExSummary:Specifies paper size, orientation, margins and other settings for a section.
             DocumentBuilder builder = new DocumentBuilder();
 
-            Aspose.Words.PageSetup ps = builder.PageSetup;
+            PageSetup ps = builder.PageSetup;
             ps.PaperSize = PaperSize.Legal;
             ps.Orientation = Orientation.Landscape;
-            ps.TopMargin = Aspose.Words.ConvertUtil.InchToPoint(1.0);
-            ps.BottomMargin = Aspose.Words.ConvertUtil.InchToPoint(1.0);
-            ps.LeftMargin = Aspose.Words.ConvertUtil.InchToPoint(1.5);
-            ps.RightMargin = Aspose.Words.ConvertUtil.InchToPoint(1.5);
-            ps.HeaderDistance = Aspose.Words.ConvertUtil.InchToPoint(0.2);
-            ps.FooterDistance = Aspose.Words.ConvertUtil.InchToPoint(0.2);
+            ps.TopMargin = ConvertUtil.InchToPoint(1.0);
+            ps.BottomMargin = ConvertUtil.InchToPoint(1.0);
+            ps.LeftMargin = ConvertUtil.InchToPoint(1.5);
+            ps.RightMargin = ConvertUtil.InchToPoint(1.5);
+            ps.HeaderDistance = ConvertUtil.InchToPoint(0.2);
+            ps.FooterDistance = ConvertUtil.InchToPoint(0.2);
 
             builder.Writeln("Hello world.");
 
-            builder.Document.Save(MyDir + "PageSetup.PageMargins Out.doc");
+            builder.Document.Save(MyDir + @"\Artifacts\PageSetup.PageMargins.doc");
             //ExEnd
         }
 
@@ -205,7 +210,7 @@ namespace ApiExamples.PageSetup
             builder.InsertBreak(BreakType.ColumnBreak);
             builder.Writeln("Text in column 2.");
 
-            builder.Document.Save(MyDir + "PageSetup.ColumnsSameWidth Out.doc");
+            builder.Document.Save(MyDir + @"\Artifacts\PageSetup.ColumnsSameWidth.doc");
             //ExEnd
         }
 
@@ -237,7 +242,7 @@ namespace ApiExamples.PageSetup
 
             // Set the second column to take the rest of the space available on the page.
             TextColumn c2 = columns[1];
-            Aspose.Words.PageSetup ps = builder.PageSetup;
+            PageSetup ps = builder.PageSetup;
             double contentWidth = ps.PageWidth - ps.LeftMargin - ps.RightMargin;
             c2.Width = contentWidth - c1.Width - c1.SpaceAfter;
 
@@ -245,7 +250,7 @@ namespace ApiExamples.PageSetup
             builder.InsertBreak(BreakType.ColumnBreak);
             builder.Writeln("Wide column 2.");
 
-            builder.Document.Save(MyDir + "PageSetup.ColumnsCustomWidth Out.doc");
+            builder.Document.Save(MyDir + @"\Artifacts\PageSetup.ColumnsCustomWidth.doc");
             //ExEnd
         }
 
@@ -260,7 +265,7 @@ namespace ApiExamples.PageSetup
             //ExSummary:Turns on Microsoft Word line numbering for a section.
             DocumentBuilder builder = new DocumentBuilder();
 
-            Aspose.Words.PageSetup ps = builder.PageSetup;
+            PageSetup ps = builder.PageSetup;
             ps.LineStartingNumber = 1;
             ps.LineNumberCountBy = 5;
             ps.LineNumberRestartMode = LineNumberRestartMode.RestartPage;
@@ -268,7 +273,7 @@ namespace ApiExamples.PageSetup
             for (int i = 1; i <= 20; i++)
                 builder.Writeln(string.Format("Line {0}.", i));
 
-            builder.Document.Save(MyDir + "PageSetup.LineNumbers Out.doc");
+            builder.Document.Save(MyDir + @"\Artifacts\PageSetup.LineNumbers.doc");
             //ExEnd
         }
 
@@ -284,20 +289,20 @@ namespace ApiExamples.PageSetup
             //ExFor:PageBorderAppliesTo
             //ExFor:Border.DistanceFromText
             //ExSummary:Creates a page border that looks like a wide blue band at the top of the first page only.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
-            Aspose.Words.PageSetup ps = doc.Sections[0].PageSetup;
+            PageSetup ps = doc.Sections[0].PageSetup;
             ps.BorderAlwaysInFront = false;
             ps.BorderDistanceFrom = PageBorderDistanceFrom.PageEdge;
             ps.BorderAppliesTo = PageBorderAppliesTo.FirstPage;
 
-            Aspose.Words.Border border = ps.Borders[BorderType.Top];
+            Border border = ps.Borders[BorderType.Top];
             border.LineStyle = LineStyle.Single;
             border.LineWidth = 30;
-            border.Color = System.Drawing.Color.Blue;
+            border.Color = Color.Blue;
             border.DistanceFromText = 0;
 
-            doc.Save(MyDir + "PageSetup.PageBorderTop Out.doc");
+            doc.Save(MyDir + @"\Artifacts\PageSetup.PageBorderTop.doc");
             //ExEnd
         }
 
@@ -313,16 +318,16 @@ namespace ApiExamples.PageSetup
             //ExFor:BorderCollection.DistanceFromText
             //ExFor:BorderCollection.Shadow
             //ExSummary:Creates a fancy looking green wavy page border with a shadow.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
-            Aspose.Words.PageSetup ps = doc.Sections[0].PageSetup;
+            Document doc = new Document();
+            PageSetup ps = doc.Sections[0].PageSetup;
 
             ps.Borders.LineStyle = LineStyle.DoubleWave;
             ps.Borders.LineWidth = 2;
-            ps.Borders.Color = System.Drawing.Color.Green;
+            ps.Borders.Color = Color.Green;
             ps.Borders.DistanceFromText = 24;
             ps.Borders.Shadow = true;
 
-            doc.Save(MyDir + "PageSetup.PageBorders Out.doc");
+            doc.Save(MyDir + @"\Artifacts\PageSetup.PageBorders.doc");
             //ExEnd
         }
 
@@ -336,7 +341,7 @@ namespace ApiExamples.PageSetup
             //ExFor:DocumentBuilder.InsertField(string, string)
             //ExSummary:Shows how to control page numbering per section.
             // This document has two sections, but no page numbers yet.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "PageSetup.PageNumbering.doc");
+            Document doc = new Document(MyDir + "PageSetup.PageNumbering.doc");
 
             // Use document builder to create a header with a page number field for the first section.
             // The page number will look like "Page V".
@@ -347,7 +352,7 @@ namespace ApiExamples.PageSetup
             builder.InsertField("PAGE", "");
 
             // Set first section page numbering.
-            Aspose.Words.Section section = doc.Sections[0];
+            Section section = doc.Sections[0];
             section.PageSetup.RestartPageNumbering = true;
             section.PageSetup.PageStartingNumber = 5;
             section.PageSetup.PageNumberStyle = NumberStyle.UppercaseRoman;
@@ -368,7 +373,7 @@ namespace ApiExamples.PageSetup
             section.PageSetup.RestartPageNumbering = true;
             section.PageSetup.PageNumberStyle = NumberStyle.Arabic;
 
-            doc.Save(MyDir + "PageSetup.PageNumbering Out.doc");
+            doc.Save(MyDir + @"\Artifacts\PageSetup.PageNumbering.doc");
             //ExEnd
         }
     }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -6,13 +6,14 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+
 using Aspose.Words;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
+
 using NUnit.Framework;
 
-
-namespace ApiExamples.Node
+namespace ApiExamples
 {
     [TestFixture]
     public class ExNode : ApiExampleBase
@@ -24,7 +25,7 @@ namespace ApiExamples.Node
             //ExFor:NodeType
             //ExId:UseNodeType
             //ExSummary:The following example shows how to use the NodeType enumeration.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // Returns NodeType.Document
             NodeType type = doc.NodeType;
@@ -39,16 +40,16 @@ namespace ApiExamples.Node
             //ExFor:Node.Clone
             //ExSummary:Shows how to clone composite nodes with and without their child nodes.
             // Create a new empty document.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // Add some text to the first paragraph
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
             para.AppendChild(new Run(doc, "Some text"));
 
             // Clone the paragraph and the child nodes.
-            Aspose.Words.Node cloneWithChildren = para.Clone(true);
+            Node cloneWithChildren = para.Clone(true);
             // Only clone the paragraph and no child nodes.
-            Aspose.Words.Node cloneWithoutChildren = para.Clone(false);
+            Node cloneWithoutChildren = para.Clone(false);
             //ExEnd
 
             Assert.IsTrue(((CompositeNode)cloneWithChildren).HasChildNodes);
@@ -63,10 +64,10 @@ namespace ApiExamples.Node
             //ExId:AccessParentNode
             //ExSummary:Shows how to access the parent node.
             // Create a new empty document. It has one section.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // The section is the first child node of the document.
-            Aspose.Words.Node section = doc.FirstChild;
+            Node section = doc.FirstChild;
 
             // The section's parent node is the document.
             Console.WriteLine("Section parent is the document: " + (doc == section.ParentNode));
@@ -84,7 +85,7 @@ namespace ApiExamples.Node
             //ExId:CreatingNodeRequiresDocument
             //ExSummary:Shows that when you create any node, it requires a document that will own the node.
             // Open a file from disk.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // Creating a new node of any type requires a document passed into the constructor.
             Paragraph para = new Paragraph(doc);
@@ -113,7 +114,7 @@ namespace ApiExamples.Node
         [Test]
         public void EnumerateChildNodes()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             //ExStart
             //ExFor:Node
             //ExFor:CompositeNode
@@ -128,7 +129,7 @@ namespace ApiExamples.Node
             //ExId:ChildNodesForEach
             //ExSummary:Shows how to enumerate immediate children of a CompositeNode using the enumerator provided by the ChildNodes collection.
             NodeCollection children = paragraph.ChildNodes;
-            foreach (Aspose.Words.Node child in children)
+            foreach (Node child in children)
             {
                 // Paragraph may contain children of various types such as runs, shapes and so on.
                 if (child.NodeType.Equals(NodeType.Run))
@@ -144,7 +145,7 @@ namespace ApiExamples.Node
         [Test]
         public void IndexChildNodes()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             Paragraph paragraph = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
 
             //ExStart
@@ -155,7 +156,7 @@ namespace ApiExamples.Node
             NodeCollection children = paragraph.ChildNodes;
             for (int i = 0; i < children.Count; i++)
             {
-                Aspose.Words.Node child = children[i];
+                Node child = children[i];
 
                 // Paragraph may contain children of various types such as runs, shapes and so on.
                 if (child.NodeType.Equals(NodeType.Run))
@@ -174,7 +175,7 @@ namespace ApiExamples.Node
         [Test]
         public void RecurseAllNodesCaller()
         {
-            RecurseAllNodes();
+            this.RecurseAllNodes();
         }
         
         //ExStart
@@ -188,10 +189,10 @@ namespace ApiExamples.Node
         public void RecurseAllNodes()
         {
             // Open a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Node.RecurseAllNodes.doc");
+            Document doc = new Document(MyDir + "Node.RecurseAllNodes.doc");
 
             // Invoke the recursive function that will walk the tree.
-            TraverseAllNodes(doc);
+            this.TraverseAllNodes(doc);
         }
 
         /// <summary>
@@ -201,14 +202,14 @@ namespace ApiExamples.Node
         public void TraverseAllNodes(CompositeNode parentNode)
         {
             // This is the most efficient way to loop through immediate children of a node.
-            for (Aspose.Words.Node childNode = parentNode.FirstChild; childNode != null; childNode = childNode.NextSibling)
+            for (Node childNode = parentNode.FirstChild; childNode != null; childNode = childNode.NextSibling)
             {
                 // Do some useful work.
-                Console.WriteLine(Aspose.Words.Node.NodeTypeToString(childNode.NodeType));
+                Console.WriteLine(Node.NodeTypeToString(childNode.NodeType));
 
                 // Recurse into the node if it is a composite node.
                 if (childNode.IsComposite)
-                    TraverseAllNodes((CompositeNode)childNode);
+                    this.TraverseAllNodes((CompositeNode)childNode);
             }
         }
         //ExEnd
@@ -217,7 +218,7 @@ namespace ApiExamples.Node
         [Test]
         public void RemoveNodes()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             //ExStart
             //ExFor:Node
@@ -225,18 +226,18 @@ namespace ApiExamples.Node
             //ExFor:Node.Remove
             //ExSummary:Shows how to remove all nodes of a specific type from a composite node. In this example we remove tables from a section body.
             // Get the section that we want to work on.
-            Aspose.Words.Section section = doc.Sections[0];
+            Section section = doc.Sections[0];
             Body body = section.Body;
 
             // Select the first child node in the body.
-            Aspose.Words.Node curNode = body.FirstChild;
+            Node curNode = body.FirstChild;
 
             while (curNode != null)
             {
                 // Save the pointer to the next sibling node because if the current 
                 // node is removed from the parent in the next step, we will have 
                 // no way of finding the next node to continue the loop.
-                Aspose.Words.Node nextNode = curNode.NextSibling;
+                Node nextNode = curNode.NextSibling;
 
                 // A section body can contain Paragraph and Table nodes.
                 // If the node is a Table, remove it from the parent.
@@ -252,7 +253,7 @@ namespace ApiExamples.Node
         [Test]
         public void EnumNextSibling()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             //ExStart
             //ExFor:CompositeNode.FirstChild
@@ -261,14 +262,14 @@ namespace ApiExamples.Node
             //ExFor:Node.NodeType
             //ExSummary:Shows how to enumerate immediate child nodes of a composite node using NextSibling. In this example we enumerate all paragraphs of a section body.
             // Get the section that we want to work on.
-            Aspose.Words.Section section = doc.Sections[0];
+            Section section = doc.Sections[0];
             Body body = section.Body;
 
             // Loop starting from the first child until we reach null.
-            for (Aspose.Words.Node node = body.FirstChild; node != null; node = node.NextSibling)
+            for (Node node = body.FirstChild; node != null; node = node.NextSibling)
             {
                 // Output the types of the nodes that we come across.
-                Console.WriteLine(Aspose.Words.Node.NodeTypeToString(node.NodeType));
+                Console.WriteLine(Node.NodeTypeToString(node.NodeType));
             }
             //ExEnd
         }
@@ -276,7 +277,7 @@ namespace ApiExamples.Node
         [Test]
         public void TypedAccess()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             //ExStart
             //ExFor:Story.Tables
@@ -286,7 +287,7 @@ namespace ApiExamples.Node
             //ExId:TypedPropertiesAccess
             //ExSummary:Demonstrates how to use typed properties to access nodes of the document tree.
             // Quick typed access to the first child Section node of the Document.
-            Aspose.Words.Section section = doc.FirstSection;
+            Section section = doc.FirstSection;
 
             // Quick typed access to the Body child node of the Section.
             Body body = section.Body;
@@ -310,7 +311,7 @@ namespace ApiExamples.Node
         [Test]
         public void UpdateFieldsInRange()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             //ExStart
             //ExFor:Range.UpdateFields
@@ -322,7 +323,7 @@ namespace ApiExamples.Node
         [Test]
         public void RemoveChild()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             //ExStart
             //ExFor:CompositeNode.LastChild
@@ -331,12 +332,12 @@ namespace ApiExamples.Node
             //ExSummary:Demonstrates use of methods of Node and CompositeNode to remove a section before the last section in the document.
             // Document is a CompositeNode and LastChild returns the last child node in the Document node.
             // Since the Document can contain only Section nodes, the last child is the last section.
-            Aspose.Words.Node lastSection = doc.LastChild;
+            Node lastSection = doc.LastChild;
             
             // Each node knows its next and previous sibling nodes.
             // Previous sibling of a section is a section before the specified section.
             // If the node is the first child, PreviousSibling will return null.
-            Aspose.Words.Node sectionBeforeLast = lastSection.PreviousSibling;
+            Node sectionBeforeLast = lastSection.PreviousSibling;
 
             if (sectionBeforeLast != null)
                 doc.RemoveChild(sectionBeforeLast);
@@ -350,7 +351,7 @@ namespace ApiExamples.Node
             //ExFor:CompositeNode.SelectSingleNode
             //ExFor:CompositeNode.SelectNodes
             //ExSummary:Shows how to select certain nodes by using an XPath expression.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Table.Document.doc");
 
             // This expression will extract all paragraph nodes which are descendants of any table node in the document.
             // This will return any paragraphs which are in a table.
@@ -360,7 +361,7 @@ namespace ApiExamples.Node
             nodeList = doc.SelectNodes("//Body/Paragraph");
 
             // Use SelectSingleNode to select the first result of the same expression as above.
-            Aspose.Words.Node node = doc.SelectSingleNode("//Body/Paragraph");
+            Node node = doc.SelectSingleNode("//Body/Paragraph");
             //ExEnd
         }
 
@@ -372,7 +373,7 @@ namespace ApiExamples.Node
             //ExFor:CompositeNode.GetChild
             //ExSummary:Shows how to test if a node is inside a field by using an XPath expression.
             // Let's pick a document we know has some fields in.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "MailMerge.MergeImage.doc");
+            Document doc = new Document(MyDir + "MailMerge.MergeImage.doc");
 
             // Let's say we want to check if the Run below is inside a field.
             Run run = (Run)doc.GetChild(NodeType.Run, 5, true);
@@ -383,7 +384,7 @@ namespace ApiExamples.Node
             NodeList resultList = doc.SelectNodes("//FieldStart/following-sibling::node()[following-sibling::FieldEnd]");
 
             // Check if the specified run is one of the nodes that are inside the field.
-            foreach (Aspose.Words.Node node in resultList)
+            foreach (Node node in resultList)
             {
                 if (node == run)
                 {
@@ -400,11 +401,11 @@ namespace ApiExamples.Node
             //ExStart
             //ExId:CreateAndAddParagraphNode
             //ExSummary:Creates and adds a paragraph node.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             Paragraph para = new Paragraph(doc);
 
-            Aspose.Words.Section section = doc.LastSection;
+            Section section = doc.LastSection;
             section.Body.AppendChild(para);
             //ExEnd
         }
@@ -415,7 +416,7 @@ namespace ApiExamples.Node
             //ExStart
             //ExFor:CompositeNode.RemoveSmartTags
             //ExSummary:Removes all smart tags from descendant nodes of the composite node.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             // Remove smart tags from the first paragraph in the document.
             doc.FirstSection.Body.FirstParagraph.RemoveSmartTags();
@@ -428,7 +429,7 @@ namespace ApiExamples.Node
             //ExStart
             //ExFor:CompositeNode.IndexOf
             //ExSummary:Shows how to get the index of a given child node from its parent.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // Get the body of the first section in the document.
             Body body = doc.FirstSection.Body;
@@ -470,12 +471,12 @@ namespace ApiExamples.Node
             //ExFor:CommentRangeStart.NodeType
             //ExId:GetNodeTypeEnums
             //ExSummary:Shows how to retrieve the NodeType enumeration of nodes.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             // Let's pick a node that we can't be quite sure of what type it is.
             // In this case lets pick the first node of the first paragraph in the body of the document
-            Aspose.Words.Node node = doc.FirstSection.Body.FirstParagraph.FirstChild;
-            Console.WriteLine("NodeType of first child: " + Aspose.Words.Node.NodeTypeToString(node.NodeType));
+            Node node = doc.FirstSection.Body.FirstParagraph.FirstChild;
+            Console.WriteLine("NodeType of first child: " + Node.NodeTypeToString(node.NodeType));
 
             // This time let's pick a node that we know the type of. Create a new paragraph and a table node.
             Paragraph para = new Paragraph(doc);
@@ -483,8 +484,8 @@ namespace ApiExamples.Node
 
             // Access to NodeType for typed nodes will always return their specific NodeType. 
             // i.e A paragraph node will always return NodeType.Paragraph, a table node will always return NodeType.Table.
-            Console.WriteLine("NodeType of Paragraph: " + Aspose.Words.Node.NodeTypeToString(para.NodeType));
-            Console.WriteLine("NodeType of Table: " + Aspose.Words.Node.NodeTypeToString(table.NodeType));
+            Console.WriteLine("NodeType of Paragraph: " + Node.NodeTypeToString(para.NodeType));
+            Console.WriteLine("NodeType of Table: " + Node.NodeTypeToString(table.NodeType));
             //ExEnd
         }
 
@@ -494,10 +495,10 @@ namespace ApiExamples.Node
             //ExStart
             //ExFor:Node.ToString(SaveFormat)
             //ExSummary:Exports the content of a node to string in HTML format using default options.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             // Extract the last paragraph in the document to convert to HTML.
-            Aspose.Words.Node node = doc.LastSection.Body.LastParagraph;
+            Node node = doc.LastSection.Body.LastParagraph;
 
             // When ToString is called using the SaveFormat overload then conversion is executed using default save options. 
             // When saving to HTML using default options the following settings are set:
@@ -507,7 +508,7 @@ namespace ApiExamples.Node
             string nodeAsHtml = node.ToString(SaveFormat.Html);
             //ExEnd
 
-            Assert.AreEqual("<p style=\"margin:0pt\"><span style=\"font-family:'Times New Roman'; font-size:12pt\">Hello World!</span></p>", nodeAsHtml);
+            Assert.AreEqual("<p style=\"margin-top:0pt; margin-bottom:0pt; font-size:12pt\"><span style=\"font-family:'Times New Roman'\">Hello World!</span></p>", nodeAsHtml);
         }
 
         [Test]
@@ -516,10 +517,10 @@ namespace ApiExamples.Node
             //ExStart
             //ExFor:Node.ToString(SaveOptions)
             //ExSummary:Exports the content of a node to string in HTML format using custom specified options.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             // Extract the last paragraph in the document to convert to HTML.
-            Aspose.Words.Node node = doc.LastSection.Body.LastParagraph;
+            Node node = doc.LastSection.Body.LastParagraph;
 
             // Create an instance of HtmlSaveOptions and set a few options.
             HtmlSaveOptions saveOptions = new HtmlSaveOptions();
@@ -531,13 +532,13 @@ namespace ApiExamples.Node
             string nodeAsHtml = node.ToString(saveOptions);
             //ExEnd
 
-            Assert.AreEqual("<p style=\"margin:0pt\"><span style=\"font-family:'Times New Roman'\">Hello World!</span></p>", nodeAsHtml);
+            Assert.AreEqual("<p style=\"margin-top:0pt; margin-bottom:0pt\"><span style=\"font-family:'Times New Roman'\">Hello World!</span></p>", nodeAsHtml);
         }
 
         [Test]
         public void TypedNodeCollectionToArray()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             //ExStart
             //ExFor:ParagraphCollection.ToArray

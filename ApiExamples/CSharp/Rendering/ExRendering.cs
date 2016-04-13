@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -12,14 +12,17 @@ using System.Drawing.Printing;
 using System.Drawing.Text;
 using System.IO;
 using System.Windows.Forms;
+
 using Aspose.Words;
 using Aspose.Words.Fonts;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
+
 using NUnit.Framework;
 
+using Orientation = Aspose.Words.Orientation;
 
-namespace ApiExamples.Rendering
+namespace ApiExamples
 {
     [TestFixture]
     public class ExRendering : ApiExampleBase
@@ -30,9 +33,9 @@ namespace ApiExamples.Rendering
             //ExStart
             //ExFor:Document.Save(String)
             //ExSummary:Converts a whole document to PDF using default options.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
-            doc.Save(MyDir + "Rendering.SaveToPdfDefault Out.pdf");
+            doc.Save(MyDir + @"\Artifacts\Rendering.SaveToPdfDefault.pdf");
             //ExEnd
         }
 
@@ -45,13 +48,13 @@ namespace ApiExamples.Rendering
             //ExFor:PdfSaveOptions.HeadingsOutlineLevels
             //ExFor:PdfSaveOptions.ExpandedOutlineLevels
             //ExSummary:Converts a whole document to PDF with three levels in the document outline.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             PdfSaveOptions options = new PdfSaveOptions();
-            options.HeadingsOutlineLevels = 3;
-            options.ExpandedOutlineLevels = 1;
-            
-            doc.Save(MyDir + "Rendering.SaveToPdfWithOutline Out.pdf", options);
+            options.OutlineOptions.HeadingsOutlineLevels = 3;
+            options.OutlineOptions.ExpandedOutlineLevels = 1;
+
+            doc.Save(MyDir + @"\Artifacts\Rendering.SaveToPdfWithOutline.pdf", options);
             //ExEnd
         }
 
@@ -63,9 +66,9 @@ namespace ApiExamples.Rendering
             //ExFor:PdfSaveOptions.PageCount
             //ExFor:Document.Save(Stream, SaveOptions)
             //ExSummary:Converts just one page (third page in this example) of the document to PDF.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
-            using (Stream stream = File.Create(MyDir + "Rendering.SaveToPdfStreamOnePage Out.pdf"))
+            using (Stream stream = File.Create(MyDir + @"\Artifacts\Rendering.SaveToPdfStreamOnePage.pdf"))
             {
                 PdfSaveOptions options = new PdfSaveOptions();
                 options.PageIndex = 2;
@@ -83,12 +86,12 @@ namespace ApiExamples.Rendering
             //ExFor:PdfSaveOptions.TextCompression
             //ExFor:PdfTextCompression
             //ExSummary:Saves a document to PDF without compression.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             PdfSaveOptions options = new PdfSaveOptions();
             options.TextCompression = PdfTextCompression.None;
 
-            doc.Save(MyDir + "Rendering.SaveToPdfNoCompression Out.pdf", options);
+            doc.Save(MyDir + @"\Artifacts\Rendering.SaveToPdfNoCompression.pdf", options);
             //ExEnd
         }
 
@@ -103,10 +106,10 @@ namespace ApiExamples.Rendering
             //ExId:SaveToPdf_NewAPI
             //ExSummary:Shows how to save a document to the PDF format using the Save method and the PdfSaveOptions class.
             // Open the document
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // Option 1: Save document to file in the PDF format with default options
-            doc.Save(MyDir + "Rendering.PdfDefaultOptions Out.pdf");
+            doc.Save(MyDir + @"\Artifacts\Rendering.PdfDefaultOptions.pdf");
 
             // Option 2: Save the document to stream in the PDF format with default options
             MemoryStream stream = new MemoryStream();
@@ -120,7 +123,7 @@ namespace ApiExamples.Rendering
             pdfOptions.PageIndex = 0;
             pdfOptions.PageCount = 1;
             pdfOptions.PreserveFormFields = true;
-            doc.Save(MyDir + "Rendering.PdfCustomOptions Out.pdf", pdfOptions);
+            doc.Save(MyDir + @"\Artifacts\Rendering.PdfCustomOptions.pdf", pdfOptions);
             //ExEnd
         }
 
@@ -136,9 +139,9 @@ namespace ApiExamples.Rendering
             //ExId:SaveToXps_NewAPI
             //ExSummary:Shows how to save a document to the Xps format using the Save method and the XpsSaveOptions class.
             // Open the document
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
             // Save document to file in the Xps format with default options
-            doc.Save(MyDir + "Rendering.XpsDefaultOptions Out.xps");
+            doc.Save(MyDir + @"\Artifacts\Rendering.XpsDefaultOptions.xps");
 
             // Save document to stream in the Xps format with default options
             MemoryStream docStream = new MemoryStream();
@@ -151,7 +154,7 @@ namespace ApiExamples.Rendering
             XpsSaveOptions xpsOptions = new XpsSaveOptions();
             xpsOptions.PageIndex = 0;
             xpsOptions.PageCount = 1;
-            doc.Save(MyDir + "Rendering.XpsCustomOptions Out.xps", xpsOptions);
+            doc.Save(MyDir + @"\Artifacts\Rendering.XpsCustomOptions.xps", xpsOptions);
             //ExEnd
         }
 
@@ -166,9 +169,9 @@ namespace ApiExamples.Rendering
             //ExId:SaveToImage_NewAPI
             //ExSummary:Shows how to save a document to the Jpeg format using the Save method and the ImageSaveOptions class.
             // Open the document
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
             // Save as a Jpeg image file with default options
-            doc.Save(MyDir + "Rendering.JpegDefaultOptions Out.jpg");
+            doc.Save(MyDir + @"\Artifacts\Rendering.JpegDefaultOptions.jpg");
 
             // Save document to stream as a Jpeg with default options
             MemoryStream docStream = new MemoryStream();
@@ -184,7 +187,7 @@ namespace ApiExamples.Rendering
             imageOptions.PageIndex = 2;
             imageOptions.PageCount = 1;
             imageOptions.JpegQuality = 80;
-            doc.Save(MyDir + "Rendering.JpegCustomOptions Out.jpg", imageOptions);
+            doc.Save(MyDir + @"\Artifacts\Rendering.JpegCustomOptions.jpg", imageOptions);
             //ExEnd
         }
 
@@ -194,9 +197,9 @@ namespace ApiExamples.Rendering
             //ExStart
             //ExFor:Document.Save(String)
             //ExSummary:Converts a whole document into a multipage TIFF file using default options.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
-            doc.Save(MyDir + "Rendering.SaveToTiffDefault Out.tiff");
+            doc.Save(MyDir + @"\Artifacts\Rendering.SaveToTiffDefault.tiff");
             //ExEnd
         }
 
@@ -210,14 +213,14 @@ namespace ApiExamples.Rendering
             //ExFor:ImageSaveOptions.PageCount
             //ExFor:Document.Save(String, SaveOptions)
             //ExSummary:Converts a page of a Word document into a TIFF image and uses the CCITT compression.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff);
             options.TiffCompression = TiffCompression.Ccitt3;
             options.PageIndex = 0;
             options.PageCount = 1;
 
-            doc.Save(MyDir + "Rendering.SaveToTiffCompression Out.tiff", options);
+            doc.Save(MyDir + @"\Artifacts\Rendering.SaveToTiffCompression.tiff", options);
             //ExEnd
         }
 
@@ -228,13 +231,13 @@ namespace ApiExamples.Rendering
             //ExFor:ImageSaveOptions
             //ExFor:ImageSaveOptions.Resolution
             //ExSummary:Renders a page of a Word document into a PNG image at a specific resolution.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
             options.Resolution = 300;
             options.PageCount = 1;
 
-            doc.Save(MyDir + "Rendering.SaveToImageResolution Out.png", options);
+            doc.Save(MyDir + @"\Artifacts\Rendering.SaveToImageResolution.png", options);
             //ExEnd
         }
 
@@ -244,7 +247,7 @@ namespace ApiExamples.Rendering
             //ExStart
             //ExFor:Document.Save(String, SaveOptions)
             //ExSummary:Converts every page of a DOC file into a separate scalable EMF file.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Emf);
             options.PageCount = 1;
@@ -252,7 +255,7 @@ namespace ApiExamples.Rendering
             for (int i = 0; i < doc.PageCount; i++)
             {
                 options.PageIndex = i;
-                doc.Save(MyDir + "Rendering.SaveToEmf." + i.ToString() + " Out.emf", options);
+                doc.Save(MyDir + @"\Artifacts\Rendering.SaveToEmf." + i.ToString()+ ".emf", options);
             }
             //ExEnd
         }
@@ -264,17 +267,17 @@ namespace ApiExamples.Rendering
             //ExFor:ImageSaveOptions
             //ExFor:ImageSaveOptions.JpegQuality
             //ExSummary:Converts a page of a Word document into JPEG images of different qualities.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
 
             // Try worst quality.
             options.JpegQuality = 0;
-            doc.Save(MyDir + "Rendering.SaveToImageJpegQuality0 Out.jpeg", options);
+            doc.Save(MyDir + @"\Artifacts\Rendering.SaveToImageJpegQuality0.jpeg", options);
 
             // Try best quality.
             options.JpegQuality = 100;
-            doc.Save(MyDir + "Rendering.SaveToImageJpegQuality100 Out.jpeg", options);
+            doc.Save(MyDir + @"\Artifacts\Rendering.SaveToImageJpegQuality100.jpeg", options);
             //ExEnd
         }
 
@@ -285,15 +288,15 @@ namespace ApiExamples.Rendering
             //ExFor:ImageSaveOptions
             //ExFor:ImageSaveOptions.PaperColor
             //ExSummary:Renders a page of a Word document into an image with transparent or coloured background.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             ImageSaveOptions imgOptions = new ImageSaveOptions(SaveFormat.Png);
 
             imgOptions.PaperColor = Color.Transparent;
-            doc.Save(MyDir + "Rendering.SaveToImagePaperColorTransparent Out.png", imgOptions);
+            doc.Save(MyDir + @"\Artifacts\Rendering.SaveToImagePaperColorTransparent.png", imgOptions);
 
             imgOptions.PaperColor = Color.LightCoral;
-            doc.Save(MyDir + "Rendering.SaveToImagePaperColorCoral Out.png", imgOptions);
+            doc.Save(MyDir + @"\Artifacts\Rendering.SaveToImagePaperColorCoral.png", imgOptions);
             //ExEnd
         }
 
@@ -303,7 +306,7 @@ namespace ApiExamples.Rendering
             //ExStart
             //ExFor:Document.Save(Stream, SaveFormat)
             //ExSummary:Saves a document page as a BMP image into a stream.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             MemoryStream stream = new MemoryStream();
             doc.Save(stream, SaveFormat.Bmp);
@@ -324,22 +327,22 @@ namespace ApiExamples.Rendering
             //ExFor:SectionCollection.Item(Int32)
             //ExFor:Document.UpdatePageLayout
             //ExSummary:Shows when to request page layout of the document to be recalculated.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // Saving a document to PDF or to image or printing for the first time will automatically
             // layout document pages and this information will be cached inside the document.
-            doc.Save(MyDir + "Rendering.UpdatePageLayout1 Out.pdf");
+            doc.Save(MyDir + @"\Artifacts\Rendering.UpdatePageLayout1.pdf");
 
             // Modify the document in any way.
             doc.Styles["Normal"].Font.Size = 6;
-            doc.Sections[0].PageSetup.Orientation = Aspose.Words.Orientation.Landscape;
+            doc.Sections[0].PageSetup.Orientation = Orientation.Landscape;
 
             // In the current version of Aspose.Words, modifying the document does not automatically rebuild 
             // the cached page layout. If you want to save to PDF or render a modified document again,
             // you need to manually request page layout to be updated.
             doc.UpdatePageLayout();
 
-            doc.Save(MyDir + "Rendering.UpdatePageLayout2 Out.pdf");
+            doc.Save(MyDir + @"\Artifacts\Rendering.UpdatePageLayout2.pdf");
             //ExEnd
         }
 
@@ -350,12 +353,12 @@ namespace ApiExamples.Rendering
             //ExFor:Document.UpdateFields
             //ExId:UpdateFieldsBeforeRendering
             //ExSummary:Shows how to update all fields before rendering a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // This updates all fields in the document.
             doc.UpdateFields();
 
-            doc.Save(MyDir + "Rendering.UpdateFields Out.pdf");
+            doc.Save(MyDir + @"\Artifacts\Rendering.UpdateFields.pdf");
             //ExEnd
         }
 
@@ -365,7 +368,7 @@ namespace ApiExamples.Rendering
             //ExStart
             //ExFor:Document.Print
             //ExSummary:Prints the whole document to the default printer.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             doc.Print();
             //ExEnd
@@ -377,7 +380,7 @@ namespace ApiExamples.Rendering
             //ExStart
             //ExFor:Document.Print(String)
             //ExSummary:Prints the whole document to a specified printer.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             doc.Print("KONICA MINOLTA magicolor 2400W");
             //ExEnd
@@ -389,7 +392,7 @@ namespace ApiExamples.Rendering
             //ExStart
             //ExFor:Document.Print(PrinterSettings)
             //ExSummary:Prints a range of pages.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             PrinterSettings printerSettings = new PrinterSettings();
             // Page numbers in the .NET printing framework are 1-based.
@@ -406,7 +409,7 @@ namespace ApiExamples.Rendering
             //ExStart
             //ExFor:Document.Print(PrinterSettings, String)
             //ExSummary:Prints a range of pages along with the name of the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             PrinterSettings printerSettings = new PrinterSettings();
             // Page numbers in the .NET printing framework are 1-based.
@@ -423,7 +426,7 @@ namespace ApiExamples.Rendering
             //ExStart
             //ExFor:AsposeWordsPrintDocument
             //ExSummary:Shows the Print dialog that allows selecting the printer and page range to print with. Then brings up the print preview from which you can preview the document and choose to print or close.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             PrintPreviewDialog previewDlg = new PrintPreviewDialog();
             // Show non-modal first is a hack for the print preview form to show on top.
@@ -465,7 +468,7 @@ namespace ApiExamples.Rendering
             //ExFor:PageInfo
             //ExFor:PageInfo.GetSizeInPixels
             //ExSummary:Renders a page of a Word document into a bitmap using a specified zoom factor.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             PageInfo pageInfo = doc.GetPageInfo(0);
 
@@ -493,7 +496,7 @@ namespace ApiExamples.Rendering
                     doc.RenderToScale(0, gr, 0, 0, MyScale);
                 }
 
-                img.Save(MyDir + "Rendering.RenderToScale Out.png");
+                img.Save(MyDir + @"\Artifacts\Rendering.RenderToScale.png");
             }
             //ExEnd
         }
@@ -504,7 +507,7 @@ namespace ApiExamples.Rendering
             //ExStart
             //ExFor:Document.RenderToSize
             //ExSummary:Render to a bitmap at a specified location and size.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             using (Bitmap bmp = new Bitmap(700, 700))
             {
@@ -551,7 +554,7 @@ namespace ApiExamples.Rendering
                     doc.RenderToSize(1, gr, 90, 10, 50, 100);
 
 
-                    bmp.Save(MyDir + "Rendering.RenderToSize Out.png");
+                    bmp.Save(MyDir + @"\Artifacts\Rendering.RenderToSize.png");
                 }
             }
             //ExEnd
@@ -565,7 +568,7 @@ namespace ApiExamples.Rendering
             //ExSummary:Renders individual pages to graphics to create one image with thumbnails of all pages.
 
             // The user opens or builds a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // This defines the number of columns to display the thumbnails in.
             const int thumbColumns = 2;
@@ -614,7 +617,7 @@ namespace ApiExamples.Rendering
                         gr.DrawRectangle(Pens.Black, thumbLeft, thumbTop, size.Width, size.Height);
                     }
 
-                    img.Save(MyDir + "Rendering.Thumbnails Out.png");
+                    img.Save(MyDir + @"\Artifacts\Rendering.Thumbnails.png");
                 }
             }
             //ExEnd
@@ -627,7 +630,7 @@ namespace ApiExamples.Rendering
         [Test, Explicit] //ExSkip
         public void CustomPrint()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // Create an instance of our own PrintDocument.
             MyPrintDocument printDoc = new MyPrintDocument(doc);
@@ -647,9 +650,9 @@ namespace ApiExamples.Rendering
         /// </summary>
         public class MyPrintDocument : PrintDocument
         {
-            public MyPrintDocument(Aspose.Words.Document document)
+            public MyPrintDocument(Document document)
             {
-                mDocument = document;
+                this.mDocument = document;
             }
 
             /// <summary>
@@ -660,15 +663,15 @@ namespace ApiExamples.Rendering
                 base.OnBeginPrint(e);
 
                 // Initialize the range of pages to be printed according to the user selection.
-                switch (PrinterSettings.PrintRange)
+                switch (this.PrinterSettings.PrintRange)
                 {
                     case System.Drawing.Printing.PrintRange.AllPages:
-                        mCurrentPage = 1;
-                        mPageTo = mDocument.PageCount;
+                        this.mCurrentPage = 1;
+                        this.mPageTo = this.mDocument.PageCount;
                         break;
                     case System.Drawing.Printing.PrintRange.SomePages:
-                        mCurrentPage = PrinterSettings.FromPage;
-                        mPageTo = PrinterSettings.ToPage;
+                        this.mCurrentPage = this.PrinterSettings.FromPage;
+                        this.mPageTo = this.PrinterSettings.ToPage;
                         break;
                     default:
                         throw new InvalidOperationException("Unsupported print range.");
@@ -685,8 +688,8 @@ namespace ApiExamples.Rendering
                 // A single Word document can have multiple sections that specify pages with different sizes, 
                 // orientation and paper trays. This code is called by the .NET printing framework before 
                 // each page is printed and we get a chance to specify how the page is to be printed.
-                PageInfo pageInfo = mDocument.GetPageInfo(mCurrentPage - 1);
-                e.PageSettings.PaperSize = pageInfo.GetDotNetPaperSize(PrinterSettings.PaperSizes);
+                PageInfo pageInfo = this.mDocument.GetPageInfo(this.mCurrentPage - 1);
+                e.PageSettings.PaperSize = pageInfo.GetDotNetPaperSize(this.PrinterSettings.PaperSizes);
                 // MS Word stores the paper source (printer tray) for each section as a printer-specfic value.
                 // To obtain the correct tray value you will need to use the RawKindValue returned
                 // by .NET for your printer.
@@ -713,14 +716,14 @@ namespace ApiExamples.Rendering
 //                float hardOffsetX = e.PageSettings.HardMarginX;
 //                float hardOffsetY = e.PageSettings.HardMarginY;
 
-                int pageIndex = mCurrentPage - 1;
-                mDocument.RenderToScale(mCurrentPage, e.Graphics, -hardOffsetX, -hardOffsetY, 1.0f);
+                int pageIndex = this.mCurrentPage - 1;
+                this.mDocument.RenderToScale(this.mCurrentPage, e.Graphics, -hardOffsetX, -hardOffsetY, 1.0f);
 
-                mCurrentPage++;
-                e.HasMorePages = (mCurrentPage <= mPageTo);
+                this.mCurrentPage++;
+                e.HasMorePages = (this.mCurrentPage <= this.mPageTo);
             }
 
-            private readonly Aspose.Words.Document mDocument;
+            private readonly Document mDocument;
             private int mCurrentPage;
             private int mPageTo;
         }
@@ -737,7 +740,7 @@ namespace ApiExamples.Rendering
             //ExFor:PageInfo.WidthInPoints
             //ExFor:PageInfo.HeightInPoints
             //ExSummary:Retrieves page size and orientation information for every page in a Word document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
             
             Console.WriteLine("Document \"{0}\" contains {1} pages.", doc.OriginalFileName, doc.PageCount);
 
@@ -767,14 +770,14 @@ namespace ApiExamples.Rendering
             //ExFor:FontSettings.SetFontsFolder(String, Boolean)
             //ExId:SetFontsFolderCustomFolder
             //ExSummary:Demonstrates how to set the folder Aspose.Words uses to look for TrueType fonts during rendering or embedding of fonts.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // Note that this setting will override any default font sources that are being searched by default. Now only these folders will be searched for 
             // fonts when rendering or embedding fonts. To add an extra font source while keeping system font sources then use both FontSettings.GetFontSources and 
             // FontSettings.SetFontSources instead.
             FontSettings.DefaultInstance.SetFontsFolder(@"C:\MyFonts\", false);
 
-            doc.Save(MyDir + "Rendering.SetFontsFolder Out.pdf");
+            doc.Save(MyDir + @"\Artifacts\Rendering.SetFontsFolder.pdf");
             //ExEnd
 
             // Restore the original sources used to search for fonts.
@@ -792,14 +795,14 @@ namespace ApiExamples.Rendering
             //ExFor:FontSettings.SetFontsFolders(String[], Boolean)
             //ExId:SetFontsFoldersMultipleFolders
             //ExSummary:Demonstrates how to set Aspose.Words to look in multiple folders for TrueType fonts when rendering or embedding fonts.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // Note that this setting will override any default font sources that are being searched by default. Now only these folders will be searched for 
             // fonts when rendering or embedding fonts. To add an extra font source while keeping system font sources then use both FontSettings.GetFontSources and 
             // FontSettings.SetFontSources instead.
             FontSettings.DefaultInstance.SetFontsFolders(new string[] {@"C:\MyFonts\", @"D:\Misc\Fonts\"}, true);
 
-            doc.Save(MyDir + "Rendering.SetFontsFolders Out.pdf");
+            doc.Save(MyDir + @"\Artifacts\Rendering.SetFontsFolders.pdf");
             //ExEnd
 
             // Restore the original sources used to search for fonts.
@@ -818,7 +821,7 @@ namespace ApiExamples.Rendering
             //ExFor:FontSettings.SetFontsSources()
             //ExId:SetFontsFoldersSystemAndCustomFolder
             //ExSummary:Demonstrates how to set Aspose.Words to look for TrueType fonts in system folders as well as a custom defined folder when scanning for fonts.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // Retrieve the array of environment-dependent font sources that are searched by default. For example this will contain a "Windows\Fonts\" source on a Windows machines.
             // We add this array to a new ArrayList to make adding or removing font entries much easier.
@@ -836,7 +839,7 @@ namespace ApiExamples.Rendering
             // Apply the new set of font sources to use.
             FontSettings.DefaultInstance.SetFontsSources(updatedFontSources);
 
-            doc.Save(MyDir + "Rendering.SetFontsFolders Out.pdf");
+            doc.Save(MyDir + @"\Artifacts\Rendering.SetFontsFolders.pdf");
             //ExEnd
 
             // Verify that font sources are set correctly.
@@ -852,6 +855,84 @@ namespace ApiExamples.Rendering
         }
 
         [Test]
+        public void SetSpecifyFontFolder()
+        {
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.SetFontsFolder(MyDir + @"MyFonts\", false);
+            
+            // Using load options
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.FontSettings = fontSettings;
+            Document doc = new Document(MyDir + "Rendering.doc", loadOptions);
+
+            FolderFontSource folderSource = ((FolderFontSource)doc.FontSettings.GetFontsSources()[0]);
+            Assert.AreEqual(MyDir + @"MyFonts\", folderSource.FolderPath);
+            Assert.False(folderSource.ScanSubfolders);
+        }
+
+        [Test]
+        public void SetSpecifyFontFolders()
+        {
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.SetFontsFolders(new string[] { MyDir + @"MyFonts\", @"C:\Windows\Fonts\" }, true);
+
+            // Using load options
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.FontSettings = fontSettings;
+            Document doc = new Document(MyDir + "Rendering.doc", loadOptions);
+
+            FolderFontSource folderSource = ((FolderFontSource)doc.FontSettings.GetFontsSources()[0]);
+            Assert.AreEqual(MyDir + @"MyFonts\", folderSource.FolderPath);
+            Assert.True(folderSource.ScanSubfolders);
+
+            folderSource = ((FolderFontSource)doc.FontSettings.GetFontsSources()[1]);
+            Assert.AreEqual(@"C:\Windows\Fonts\", folderSource.FolderPath);
+            Assert.True(folderSource.ScanSubfolders);
+        }
+
+        [Test]
+        public void AddFontSubstitutes()
+        {
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.SetFontSubstitutes("Slab", new string[] { "Times New Roman", "Arial" });
+            fontSettings.AddFontSubstitutes("Arvo", new string[] { "Open Sans", "Arial" });
+            
+            Document doc = new Document(MyDir + "Rendering.doc");
+            doc.FontSettings = fontSettings;
+            
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            string[] alternativeFonts = doc.FontSettings.GetFontSubstitutes("Slab");
+            Assert.AreEqual(new string[] { "Times New Roman", "Arial" }, alternativeFonts);
+
+            alternativeFonts = doc.FontSettings.GetFontSubstitutes("Arvo");
+            Assert.AreEqual(new string[] { "Open Sans", "Arial" }, alternativeFonts);
+        }
+
+        [Test]
+        public void SetFontSubstitutes()
+        {
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.SetFontSubstitutes("Times New Roman", new string[] { "Slab", "Arvo" });
+            
+            Document doc = new Document(MyDir + "Rendering.doc");
+            doc.FontSettings = fontSettings;
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            //Check that font source are default
+            FontSourceBase[] fontSource = doc.FontSettings.GetFontsSources();
+            Assert.AreEqual("SystemFonts", fontSource[0].Type.ToString());
+
+            Assert.AreEqual("Times New Roman", doc.FontSettings.DefaultFontName);
+
+            string[] alternativeFonts = doc.FontSettings.GetFontSubstitutes("Times New Roman");
+            Assert.AreEqual(new string[] { "Slab", "Arvo" }, alternativeFonts);
+        }
+
+        [Test]
         public void SaveToPdfWithJpegImageCompression()
         {
             //ExStart
@@ -860,7 +941,7 @@ namespace ApiExamples.Rendering
             //ExFor:PdfImageCompression
             //ExId:SaveToPdfJpegImageCompression
             //ExSummary:Demonstrates how to save images to PDF using JPEG encoding to decrease file size.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             PdfSaveOptions options = new PdfSaveOptions();
 
@@ -868,7 +949,7 @@ namespace ApiExamples.Rendering
             options.ImageCompression = PdfImageCompression.Jpeg;
             options.JpegQuality = 50;
 
-            doc.Save(MyDir + "Rendering.JpegImageCompression Out.pdf", options);
+            doc.Save(MyDir + @"\Artifacts\Rendering.JpegImageCompression.pdf", options);
             //ExEnd
         }
 
@@ -879,14 +960,14 @@ namespace ApiExamples.Rendering
             //ExFor:FontSettings.DefaultFontName
             //ExId:SetDefaultFontName
             //ExSummary:Demonstrates how to specify what font to substitute for a missing font during rendering.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // If the default font defined here cannot be found during rendering then the closest font on the machine is used instead.
             FontSettings.DefaultInstance.DefaultFontName = "Arial Unicode MS";
 
             // Now the set default font is used in place of any missing fonts during any rendering calls.
-            doc.Save(MyDir + "Rendering.SetDefaultFont Out.pdf");
-            doc.Save(MyDir + "Rendering.SetDefaultFont Out.xps");
+            doc.Save(MyDir + @"\Artifacts\Rendering.SetDefaultFont.pdf");
+            doc.Save(MyDir + @"\Artifacts\Rendering.SetDefaultFont.xps");
             //ExEnd
         }
 
@@ -902,7 +983,11 @@ namespace ApiExamples.Rendering
             //ExId:FontSubstitutionNotification
             //ExSummary:Demonstrates how to recieve notifications of font substitutions by using IWarningCallback.
             // Load the document to render.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
+
+            // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
+            HandleDocumentWarnings callback = new HandleDocumentWarnings();
+            doc.WarningCallback = callback;
 
             // We can choose the default font to use in the case of any missing fonts.
             FontSettings.DefaultInstance.DefaultFontName = "Arial";
@@ -912,16 +997,8 @@ namespace ApiExamples.Rendering
             // font specified under FontSettings.DefaultFontName. We can pick up on this subsuition using our callback.
             FontSettings.DefaultInstance.SetFontsFolder(string.Empty, false);
 
-            // Create a new class implementing IWarningCallback which collect any warnings produced during document save.
-            HandleDocumentWarnings callback = new HandleDocumentWarnings();
-
-            // We assign the callback to the appropriate save options class. In this case, we are going to save to PDF
-            // so we create a PdfSaveOptions class and assign the callback there.
-            PdfSaveOptions saveOptions = new PdfSaveOptions();
-            saveOptions.WarningCallback = callback;
-
             // Pass the save options along with the save path to the save method.
-            doc.Save(MyDir + "Rendering.MissingFontNotification Out.pdf", saveOptions);
+            doc.Save(MyDir + @"\Artifacts\Rendering.MissingFontNotification.pdf");
             //ExEnd
             
             Assert.Greater(callback.mFontWarnings.Count, 0);
@@ -950,7 +1027,7 @@ namespace ApiExamples.Rendering
                 if (info.WarningType == WarningType.FontSubstitution)
                 {
                     Console.WriteLine("Font substitution: " + info.Description);
-                    mFontWarnings.Warning(info); //ExSkip
+                    this.mFontWarnings.Warning(info); //ExSkip
                 }
             }
 
@@ -965,7 +1042,11 @@ namespace ApiExamples.Rendering
             FontSourceBase[] origFontSources = FontSettings.DefaultInstance.GetFontsSources();
 
             // Load the document to render.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
+
+            // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
+            HandleDocumentWarnings callback = new HandleDocumentWarnings();
+            doc.WarningCallback = callback;
 
             // We can choose the default font to use in the case of any missing fonts.
             FontSettings.DefaultInstance.DefaultFontName = "Arial";
@@ -982,13 +1063,8 @@ namespace ApiExamples.Rendering
             // are stored until the document save and then sent to the appropriate WarningCallback.
             doc.UpdatePageLayout();
 
-            // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
-            HandleDocumentWarnings callback = new HandleDocumentWarnings();
-            PdfSaveOptions saveOptions = new PdfSaveOptions();
-            saveOptions.WarningCallback = callback;
-
             // Even though the document was rendered previously, any save warnings are notified to the user during document save.
-            doc.Save(MyDir + "Rendering.FontsNotificationUpdatePageLayout Out.pdf", saveOptions);
+            doc.Save(MyDir + @"\Artifacts\Rendering.FontsNotificationUpdatePageLayout.pdf");
             //ExEnd
 
             Assert.Greater(callback.mFontWarnings.Count, 0);
@@ -1008,7 +1084,7 @@ namespace ApiExamples.Rendering
             //ExId:EmbedFullFonts
             //ExSummary:Demonstrates how to set Aspose.Words to embed full fonts in the output PDF document.
             // Load the document to render.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // Aspose.Words embeds full fonts by default when EmbedFullFonts is set to true. The property below can be changed
             // each time a document is rendered.
@@ -1016,7 +1092,7 @@ namespace ApiExamples.Rendering
             options.EmbedFullFonts = true;
 
             // The output PDF will be embedded with all fonts found in the document.
-            doc.Save(MyDir + "Rendering.EmbedFullFonts Out.pdf");
+            doc.Save(MyDir + @"\Artifacts\Rendering.EmbedFullFonts.pdf");
             //ExEnd
         }
 
@@ -1028,7 +1104,7 @@ namespace ApiExamples.Rendering
             //ExId:Subset
             //ExSummary:Demonstrates how to set Aspose.Words to subset fonts in the output PDF.
             // Load the document to render.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // To subset fonts in the output PDF document, simply create new PdfSaveOptions and set EmbedFullFonts to false.
             PdfSaveOptions options = new PdfSaveOptions();
@@ -1036,7 +1112,7 @@ namespace ApiExamples.Rendering
 
             // The output PDF will contain subsets of the fonts in the document. Only the glyphs used
             // in the document are included in the PDF fonts.
-            doc.Save(MyDir + "Rendering.SubsetFonts Out.pdf");
+            doc.Save(MyDir + @"\Artifacts\Rendering.SubsetFonts.pdf");
             //ExEnd
         }
 
@@ -1048,14 +1124,14 @@ namespace ApiExamples.Rendering
             //ExId:EmbedStandardWindowsFonts
             //ExSummary:Shows how to set Aspose.Words to skip embedding Arial and Times New Roman fonts into a PDF document.
             // Load the document to render.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // To disable embedding standard windows font use the PdfSaveOptions and set the EmbedStandardWindowsFonts property to false.
             PdfSaveOptions options = new PdfSaveOptions();
-            options.EmbedStandardWindowsFonts = false;
+            options.FontEmbeddingMode = PdfFontEmbeddingMode.EmbedNone;
 
             // The output PDF will be saved without embedding standard windows fonts.
-            doc.Save(MyDir + "Rendering.DisableEmbedWindowsFonts Out.pdf");
+            doc.Save(MyDir + @"\Artifacts\Rendering.DisableEmbedWindowsFonts.pdf");
             //ExEnd
         }
 
@@ -1067,14 +1143,14 @@ namespace ApiExamples.Rendering
             //ExId:DisableUseOfCoreFonts
             //ExSummary:Shows how to set Aspose.Words to avoid embedding core fonts and let the reader subsuite PDF Type 1 fonts instead.
             // Load the document to render.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // To disable embedding of core fonts and subsuite PDF type 1 fonts set UseCoreFonts to true.
             PdfSaveOptions options = new PdfSaveOptions();
             options.UseCoreFonts = true;
 
             // The output PDF will not be embedded with core fonts such as Arial, Times New Roman etc.
-            doc.Save(MyDir + "Rendering.DisableEmbedWindowsFonts Out.pdf");
+            doc.Save(MyDir + @"\Artifacts\Rendering.DisableEmbedWindowsFonts.pdf");
             //ExEnd
         }
 
@@ -1089,7 +1165,7 @@ namespace ApiExamples.Rendering
             //ExFor:PdfPermissions
             //ExFor:PdfEncryptionDetails
             //ExSummary:Demonstrates how to set permissions on a PDF document generated by Aspose.Words.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
             
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             
@@ -1104,14 +1180,14 @@ namespace ApiExamples.Rendering
             saveOptions.EncryptionDetails = encryptionDetails;
 
             // Render the document to PDF format with the specified permissions.
-            doc.Save(MyDir + "Rendering.SpecifyPermissions Out.pdf", saveOptions);
+            doc.Save(MyDir + @"\Artifacts\Rendering.SpecifyPermissions.pdf", saveOptions);
             //ExEnd
         }
 
         [Test]
         public void SetPdfNumeralFormat()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.NumeralFormat.doc");
+            Document doc = new Document(MyDir + "Rendering.NumeralFormat.doc");
             //ExStart
             //ExFor:PdfSaveOptions.NumeralFormat
             //ExSummary:Demonstrates how to set the numeral format used when saving to PDF.
@@ -1119,7 +1195,7 @@ namespace ApiExamples.Rendering
             options.NumeralFormat = NumeralFormat.Context;
             //ExEnd
 
-            doc.Save(MyDir + "Rendering.NumeralFormat Out.pdf", options);
+            doc.Save(MyDir + @"\Artifacts\Rendering.NumeralFormat.pdf", options);
         }
     }
 }

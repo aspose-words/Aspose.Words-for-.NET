@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -8,12 +8,13 @@
 using System;
 using System.Collections;
 using System.Text;
+
 using Aspose.Words;
 using Aspose.Words.Tables;
+
 using NUnit.Framework;
 
-
-namespace ApiExamples.Tables
+namespace ApiExamples
 {
     [TestFixture]
     public class ExTableColumn : ApiExampleBase
@@ -31,8 +32,8 @@ namespace ApiExamples.Tables
                 if (table == null)
                     throw new ArgumentException("table");
 
-                mTable = table;
-                mColumnIndex = columnIndex;
+                this.mTable = table;
+                this.mColumnIndex = columnIndex;
             }
 
             /// <summary>
@@ -50,7 +51,7 @@ namespace ApiExamples.Tables
             {
                 get
                 {
-                    return (Cell[])GetColumnCells().ToArray(typeof(Cell));
+                    return (Cell[])this.GetColumnCells().ToArray(typeof(Cell));
                 }
             }
 
@@ -59,7 +60,7 @@ namespace ApiExamples.Tables
             /// </summary>
             public int IndexOf(Cell cell)
             {
-                return GetColumnCells().IndexOf(cell);
+                return this.GetColumnCells().IndexOf(cell);
             }
 
             /// <summary>
@@ -67,7 +68,7 @@ namespace ApiExamples.Tables
             /// </summary>
             public Column InsertColumnBefore()
             {
-                Cell[] columnCells = Cells;
+                Cell[] columnCells = this.Cells;
 
                 if (columnCells.Length == 0)
                     throw new ArgumentException("Column must not be empty");
@@ -77,14 +78,14 @@ namespace ApiExamples.Tables
                     cell.ParentRow.InsertBefore(cell.Clone(false), cell);
 
                 // This is the new column.
-                Column column = new Column(columnCells[0].ParentRow.ParentTable, mColumnIndex);
+                Column column = new Column(columnCells[0].ParentRow.ParentTable, this.mColumnIndex);
 
                 // We want to make sure that the cells are all valid to work with (have at least one paragraph).
                 foreach (Cell cell in column.Cells)
                     cell.EnsureMinimum();
 
                 // Increase the index which this column represents since there is now one extra column infront.
-                mColumnIndex++;
+                this.mColumnIndex++;
 
                 return column;
             }
@@ -94,7 +95,7 @@ namespace ApiExamples.Tables
             /// </summary>
             public void Remove()
             {
-                foreach (Cell cell in Cells)
+                foreach (Cell cell in this.Cells)
                     cell.Remove();
             }
 
@@ -105,7 +106,7 @@ namespace ApiExamples.Tables
             {
                 StringBuilder builder = new StringBuilder();
 
-                foreach (Cell cell in Cells)
+                foreach (Cell cell in this.Cells)
                     builder.Append(cell.ToString(SaveFormat.Text));
 
                 return builder.ToString();
@@ -118,9 +119,9 @@ namespace ApiExamples.Tables
             {
                 ArrayList columnCells = new ArrayList();
 
-                foreach (Row row in mTable.Rows)
+                foreach (Row row in this.mTable.Rows)
                 {
-                    Cell cell = row.Cells[mColumnIndex];
+                    Cell cell = row.Cells[this.mColumnIndex];
                     if (cell != null)
                         columnCells.Add(cell);
                 }
@@ -139,7 +140,7 @@ namespace ApiExamples.Tables
             //ExStart
             //ExId:RemoveTableColumn
             //ExSummary:Shows how to remove a column from a table in a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Table.Document.doc");
             Table table = (Table)doc.GetChild(NodeType.Table, 1, true);
 
             // Get the third column from the table and remove it.
@@ -147,7 +148,7 @@ namespace ApiExamples.Tables
             column.Remove();
             //ExEnd
 
-            doc.Save(MyDir + "Table.RemoveColumn Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Table.RemoveColumn.doc");
 
             Assert.AreEqual(16, table.GetChildNodes(NodeType.Cell, true).Count);
             Assert.AreEqual("Cell 3 contents", table.Rows[2].Cells[2].ToString(SaveFormat.Text).Trim());
@@ -157,7 +158,7 @@ namespace ApiExamples.Tables
         [Test]
         public void InsertNewColumnIntoTable()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Table.Document.doc");
             Table table = (Table)doc.GetChild(NodeType.Table, 1, true);
 
             //ExStart
@@ -175,7 +176,7 @@ namespace ApiExamples.Tables
                 cell.FirstParagraph.AppendChild(new Run(doc, "Column Text " + newColumn.IndexOf(cell)));
             //ExEnd
 
-            doc.Save(MyDir + "Table.InsertColumn Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Table.InsertColumn.doc");
 
             Assert.AreEqual(24, table.GetChildNodes(NodeType.Cell, true).Count);
             Assert.AreEqual("Column Text 0", table.FirstRow.Cells[1].ToString(SaveFormat.Text).Trim());
@@ -185,7 +186,7 @@ namespace ApiExamples.Tables
         [Test]
         public void TableColumnToTxt()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Table.Document.doc");
             Table table = (Table)doc.GetChild(NodeType.Table, 1, true);
 
             //ExStart

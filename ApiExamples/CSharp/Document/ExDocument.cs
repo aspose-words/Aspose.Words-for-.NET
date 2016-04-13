@@ -1,9 +1,17 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
+
+#if !JAVA
+//ExStart
+//ExId:ImportForDigitalSignatures
+//ExSummary:The import required to use the X509Certificate2 class.
+
+//ExEnd
+#endif
 
 using System;
 using System.Collections;
@@ -11,29 +19,26 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Web;
+
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
+using Aspose.Words.Properties;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using Aspose.Words.Tables;
+
 using NUnit.Framework;
 
-#if !JAVA
-//ExStart
-//ExId:ImportForDigitalSignatures
-//ExSummary:The import required to use the X509Certificate2 class.
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Cryptography;
-//ExEnd
-#endif
+using Font = Aspose.Words.Font;
 
-namespace ApiExamples.Document
+namespace ApiExamples
 {
     [TestFixture]
     public class ExDocument : ApiExampleBase
@@ -51,7 +56,7 @@ namespace ApiExamples.Document
             //ExFor:License.SetLicense(String)
             //ExId:LicenseFromFileNoPath
             //ExSummary:In this example Aspose.Words will attempt to find the license file in the embedded resources or in the assembly folders.
-            Aspose.Words.License license = new Aspose.Words.License();
+            License license = new License();
             license.SetLicense("Aspose.Words.lic");
             //ExEnd
 
@@ -70,7 +75,7 @@ namespace ApiExamples.Document
                 //ExFor:License.SetLicense(Stream)
                 //ExId:LicenseFromStream
                 //ExSummary:Initializes a license from a stream.
-                Aspose.Words.License license = new Aspose.Words.License();
+                License license = new License();
                 license.SetLicense(myStream);
                 //ExEnd
             }
@@ -86,7 +91,7 @@ namespace ApiExamples.Document
             //ExStart
             //ExId:DocumentCtor
             //ExSummary:Shows how to create a blank document. Note the blank document contains one section and one paragraph.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             //ExEnd
         }
 
@@ -98,14 +103,14 @@ namespace ApiExamples.Document
             //ExId:OpenFromFile
             //ExSummary:Opens a document from a file.
             // Open a document. The file is opened read only and only for the duration of the constructor.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
             //ExEnd
 
             //ExStart
             //ExFor:Document.Save(String)
             //ExId:SaveToFile
             //ExSummary:Saves a document to a file.
-            doc.Save(MyDir + "Document.OpenFromFile Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Document.OpenFromFile.doc");
             //ExEnd
         }
 
@@ -115,8 +120,8 @@ namespace ApiExamples.Document
             //ExStart
             //ExId:OpenAndSaveToFile
             //ExSummary:Opens a document from a file and saves it to a different format
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
-            doc.Save(MyDir + "Document Out.html");
+            Document doc = new Document(MyDir + "Document.doc");
+            doc.Save(MyDir + @"\Artifacts\Document.html");
             //ExEnd
         }
 
@@ -131,7 +136,7 @@ namespace ApiExamples.Document
             Stream stream = File.OpenRead(MyDir + "Document.doc");
 
             // Load the entire document into memory.
-            Aspose.Words.Document doc = new Aspose.Words.Document(stream);
+            Document doc = new Document(stream);
 
             // You can close the stream now, it is no longer needed because the document is in memory.
             stream.Close();
@@ -168,13 +173,13 @@ namespace ApiExamples.Document
             // Pass the URI of the base folder so any images with relative URIs in the HTML document can be found.
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.BaseUri = MyDir;
-            Aspose.Words.Document doc = new Aspose.Words.Document(stream, loadOptions);
+            Document doc = new Document(stream, loadOptions);
 
             // You can close the stream now, it is no longer needed because the document is in memory.
             stream.Close();
 
             // Save in the DOC format.
-            doc.Save(MyDir + "Document.OpenFromStreamWithBaseUri Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Document.OpenFromStreamWithBaseUri.doc");
             //ExEnd
 
             // Lets make sure the image was imported successfully into a Shape node.
@@ -184,8 +189,8 @@ namespace ApiExamples.Document
             // Verify some properties of the image.
             Assert.IsTrue(shape.IsImage);
             Assert.IsNotNull(shape.ImageData.ImageBytes);
-            Assert.AreEqual(80.0, Aspose.Words.ConvertUtil.PointToPixel(shape.Width));
-            Assert.AreEqual(60.0, Aspose.Words.ConvertUtil.PointToPixel(shape.Height));
+            Assert.AreEqual(80.0, ConvertUtil.PointToPixel(shape.Width));
+            Assert.AreEqual(60.0, ConvertUtil.PointToPixel(shape.Height));
         }
 
         [Test]
@@ -193,7 +198,7 @@ namespace ApiExamples.Document
         {
             //ExStart
             //ExFor:Document.#ctor(Stream)
-            //ExSummary://ExSummary:Retrieves a document from a URL and saves it to disk in a different format.
+            //ExSummary:Retrieves a document from a URL and saves it to disk in a different format.
             // This is the URL address pointing to where to find the document.
             string url = "http://www.aspose.com/demos/.net-components/aspose.words/csharp/general/Common/Documents/DinnerInvitationDemo.doc";
 
@@ -211,10 +216,10 @@ namespace ApiExamples.Document
             // Load this memory stream into a new Aspose.Words Document.
             // The file format of the passed data is inferred from the content of the bytes itself. 
             // You can load any document format supported by Aspose.Words in the same way.
-            Aspose.Words.Document doc = new Aspose.Words.Document(byteStream);
+            Document doc = new Document(byteStream);
 
             // Convert the document to any format supported by Aspose.Words.
-            doc.Save(MyDir + "Document.OpenFromWeb Out.docx");
+            doc.Save(MyDir + @"\Artifacts\Document.OpenFromWeb.docx");
             //ExEnd
         }
 
@@ -245,11 +250,11 @@ namespace ApiExamples.Document
             LoadOptions options = new LoadOptions(Aspose.Words.LoadFormat.Html, "", url);
 
             // Load the HTML document from stream and pass the LoadOptions object.
-            Aspose.Words.Document doc = new Aspose.Words.Document(stream, options);
+            Document doc = new Document(stream, options);
 
             // Save the document to disk.
             // The extension of the filename can be changed to save the document into other formats. e.g PDF, DOCX, ODT, RTF.
-            doc.Save(MyDir + "Document.HtmlPageFromWebpage Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Document.HtmlPageFromWebpage.doc");
             //ExEnd
         }
 
@@ -262,7 +267,20 @@ namespace ApiExamples.Document
             //ExSummary:Explicitly loads a document as HTML without automatic file format detection.
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.LoadFormat = Aspose.Words.LoadFormat.Html;
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.LoadFormat.html", loadOptions);
+            Document doc = new Document(MyDir + "Document.LoadFormat.html", loadOptions);
+            //ExEnd
+        }
+
+        [Test]
+        public void LoadFormatForOldDocuments()
+        {
+            //ExStart
+            //ExFor:LoadFormat.DocPreWord60
+            //ExSummary: Shows how to open older binary DOC format for Word6.0/Word95 documents
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.LoadFormat = Aspose.Words.LoadFormat.DocPreWord60;
+
+            Document doc = new Document(MyDir + "Document.PreWord60.doc", loadOptions);
             //ExEnd
         }
 
@@ -275,7 +293,7 @@ namespace ApiExamples.Document
             //ExFor:LoadOptions.#ctor(String)
             //ExId:OpenEncrypted
             //ExSummary:Loads a Microsoft Word document encrypted with a password.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.LoadEncrypted.doc", new LoadOptions("qwerty"));
+            Document doc = new Document(MyDir + "Document.LoadEncrypted.doc", new LoadOptions("qwerty"));
             //ExEnd
         }
 
@@ -286,7 +304,7 @@ namespace ApiExamples.Document
             //ExFor:Document.#ctor(Stream,LoadOptions)
             //ExSummary:Loads a Microsoft Word document encrypted with a password from a stream.
             Stream stream = File.OpenRead(MyDir + "Document.LoadEncrypted.doc");
-            Aspose.Words.Document doc = new Aspose.Words.Document(stream, new LoadOptions("qwerty"));
+            Document doc = new Document(stream, new LoadOptions("qwerty"));
             stream.Close();
             //ExEnd
         }
@@ -298,9 +316,9 @@ namespace ApiExamples.Document
             //ExFor:Document.Save(String,SaveFormat)
             //ExFor:SaveFormat
             //ExSummary:Converts from DOC to HTML format.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
-            doc.Save(MyDir + "Document.ConvertToHtml Out.html", SaveFormat.Html);
+            doc.Save(MyDir + @"\Artifacts\Document.ConvertToHtml.html", SaveFormat.Html);
             //ExEnd
         }
 
@@ -310,9 +328,9 @@ namespace ApiExamples.Document
             //ExStart
             //ExFor:Document.Save(String)
             //ExSummary:Converts from DOC to MHTML format.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
-            doc.Save(MyDir + "Document.ConvertToMhtml Out.mht");
+            doc.Save(MyDir + @"\Artifacts\Document.ConvertToMhtml.mht");
             //ExEnd
         }
 
@@ -322,9 +340,9 @@ namespace ApiExamples.Document
             //ExStart
             //ExId:ExtractContentSaveAsText
             //ExSummary:Shows how to save a document in TXT format.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
-            doc.Save(MyDir + "Document.ConvertToTxt Out.txt");
+            doc.Save(MyDir + @"\Artifacts\Document.ConvertToTxt.txt");
             //ExEnd
         }
 
@@ -336,9 +354,9 @@ namespace ApiExamples.Document
             //ExFor:Document.Save(String)
             //ExId:Doc2PdfSave
             //ExSummary:Converts a whole document from DOC to PDF using default options.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
-            doc.Save(MyDir + "Document.Doc2PdfSave Out.pdf");
+            doc.Save(MyDir + @"\Artifacts\Document.Doc2PdfSave.pdf");
             //ExEnd
         }
 
@@ -349,7 +367,7 @@ namespace ApiExamples.Document
             //ExFor:Document.Save(Stream,SaveFormat)
             //ExId:SaveToStream
             //ExSummary:Shows how to save a document to a stream.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
@@ -370,9 +388,9 @@ namespace ApiExamples.Document
             //ExStart
             //ExId:SaveToBrowser
             //ExSummary:Shows how to send a document to the client browser from an ASP.NET code.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
-            doc.Save(Response, "Report Out.doc", ContentDisposition.Inline, null);
+            doc.Save(Response, @"\Artifacts\Report.doc", ContentDisposition.Inline, null);
             //ExEnd
         }
 
@@ -384,10 +402,10 @@ namespace ApiExamples.Document
             //ExSummary:Converts a document to EPUB using default save options.
 
             // Open an existing document from disk.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.EpubConversion.doc");
+            Document doc = new Document(MyDir + "Document.EpubConversion.doc");
 
             // Save the document in EPUB format.
-            doc.Save(MyDir + "Document.EpubConversion Out.epub");
+            doc.Save(MyDir + @"\Artifacts\Document.EpubConversion.epub");
             //ExEnd
         }
 
@@ -404,7 +422,7 @@ namespace ApiExamples.Document
             //ExId:Doc2EpubSaveWithOptions
             //ExSummary:Converts a document to EPUB with save options specified.
             // Open an existing document from disk.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.EpubConversion.doc");
+            Document doc = new Document(MyDir + "Document.EpubConversion.doc");
 
             // Create a new instance of HtmlSaveOptions. This object allows us to set options that control
             // how the output document is saved.
@@ -412,7 +430,7 @@ namespace ApiExamples.Document
                 new HtmlSaveOptions();
 
             // Specify the desired encoding.
-            saveOptions.Encoding = System.Text.Encoding.UTF8;
+            saveOptions.Encoding = Encoding.UTF8;
 
             // Specify at what elements to split the internal HTML at. This creates a new HTML within the EPUB 
             // which allows you to limit the size of each HTML part. This is useful for readers which cannot read 
@@ -426,7 +444,7 @@ namespace ApiExamples.Document
             saveOptions.SaveFormat = SaveFormat.Epub;
 
             // Export the document as an EPUB file.
-            doc.Save(MyDir + "Document.EpubConversion Out.epub", saveOptions);
+            doc.Save(MyDir + @"\Artifacts\Document.EpubConversion.epub", saveOptions);
             //ExEnd
         }
 
@@ -436,14 +454,14 @@ namespace ApiExamples.Document
             //ExStart
             //ExFor:SaveOptions.PrettyFormat
             //ExSummary:Shows how to pass an option to export HTML tags in a well spaced, human readable format.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             HtmlSaveOptions htmlOptions = new HtmlSaveOptions(SaveFormat.Html);
             // Enabling the PrettyFormat setting will export HTML in an indented format that is easy to read.
             // If this is setting is false (by default) then the HTML tags will be exported in condensed form with no indentation.
             htmlOptions.PrettyFormat = true;
 
-            doc.Save(MyDir + "Document.PrettyFormat Out.html", htmlOptions);
+            doc.Save(MyDir + @"\Artifacts\Document.PrettyFormat.html", htmlOptions);
             //ExEnd
         }
 
@@ -456,7 +474,7 @@ namespace ApiExamples.Document
             //ExFor:HtmlSaveOptions.ImagesFolder
             //ExId:SaveWithOptions
             //ExSummary:Shows how to set save options before saving a document to HTML.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // This is the directory we want the exported images to be saved to.
             string imagesDir = Path.Combine(MyDir, "Images");
@@ -472,11 +490,11 @@ namespace ApiExamples.Document
             options.ExportTextInputFormFieldAsText = true;
             options.ImagesFolder = imagesDir;
 
-            doc.Save(MyDir + "Document.SaveWithOptions Out.html", options);
+            doc.Save(MyDir + @"\Artifacts\Document.SaveWithOptions.html", options);
             //ExEnd
 
             // Verify the images were saved to the correct location.
-            Assert.IsTrue(File.Exists(MyDir + "Document.SaveWithOptions Out.html"));
+            Assert.IsTrue(File.Exists(MyDir + @"\Artifacts\Document.SaveWithOptions.html"));
             Assert.AreEqual(9, Directory.GetFiles(imagesDir).Length);
         }
 
@@ -486,7 +504,7 @@ namespace ApiExamples.Document
         [Test]
         public void SaveHtmlExportFontsCaller()
         {
-            SaveHtmlExportFonts();
+            this.SaveHtmlExportFonts();
         }
 
         //ExStart
@@ -501,7 +519,7 @@ namespace ApiExamples.Document
         //ExSummary:Shows how to define custom logic for handling font exporting when saving to HTML based formats.
         public void SaveHtmlExportFonts()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             // Set the option to export font resources.
             HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Mhtml);
@@ -509,7 +527,7 @@ namespace ApiExamples.Document
             // Create and pass the object which implements the handler methods.
             options.FontSavingCallback = new HandleFontSaving();
 
-            doc.Save(MyDir + "Document.SaveWithFontsExport Out.html", options);
+            doc.Save(MyDir + @"\Artifacts\Document.SaveWithFontsExport.html", options);
         }
 
         public class HandleFontSaving : IFontSavingCallback
@@ -528,7 +546,7 @@ namespace ApiExamples.Document
         [Test]
         public void SaveHtmlExportImagesCaller()
         {
-            SaveHtmlExportImages();
+            this.SaveHtmlExportImages();
         }
 
         //ExStart
@@ -542,13 +560,13 @@ namespace ApiExamples.Document
         //ExSummary:Shows how to define custom logic for controlling how images are saved when exporting to HTML based formats.
         public void SaveHtmlExportImages()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             // Create and pass the object which implements the handler methods.
             HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
             options.ImageSavingCallback = new HandleImageSaving();
 
-            doc.Save(MyDir + "Document.SaveWithCustomImagesExport Out.html", options);
+            doc.Save(MyDir + @"\Artifacts\Document.SaveWithCustomImagesExport.html", options);
         }
 
         public class HandleImageSaving : IImageSavingCallback
@@ -568,7 +586,7 @@ namespace ApiExamples.Document
         [Test]
         public void TestNodeChangingInDocumentCaller()
         {
-            TestNodeChangingInDocument();
+            this.TestNodeChangingInDocument();
         }
 
         //ExStart
@@ -585,16 +603,16 @@ namespace ApiExamples.Document
         public void TestNodeChangingInDocument()
         {
             // Create a blank document object
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Set up and pass the object which implements the handler methods.
-            doc.NodeChangingCallback = new HandleNodeChanging_FontChanger();
+            doc.NodeChangingCallback = new HandleNodeChangingFontChanger();
 
             // Insert sample HTML content
             builder.InsertHtml("<p>Hello World</p>");
 
-            doc.Save(MyDir + "Document.FontChanger Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Document.FontChanger.doc");
 
             // Check that the inserted content has the correct formatting
             Run run = (Run)doc.GetChild(NodeType.Run, 0, true);
@@ -602,7 +620,7 @@ namespace ApiExamples.Document
             Assert.AreEqual("Arial", run.Font.Name);
         }
 
-        public class HandleNodeChanging_FontChanger : INodeChangingCallback
+        public class HandleNodeChangingFontChanger : INodeChangingCallback
         {
             // Implement the NodeInserted handler to set default font settings for every Run node inserted into the Document
             void INodeChangingCallback.NodeInserted(NodeChangingArgs args)
@@ -610,7 +628,7 @@ namespace ApiExamples.Document
                 // Change the font of inserted text contained in the Run nodes.
                 if (args.Node.NodeType == NodeType.Run)
                 {
-                    Aspose.Words.Font font = ((Run)args.Node).Font;
+                    Font font = ((Run)args.Node).Font;
                     font.Size = 24;
                     font.Name = "Arial";
                 }
@@ -683,10 +701,10 @@ namespace ApiExamples.Document
             saveFormat = FileFormatUtil.LoadFormatToSaveFormat(loadFormat);
 
             // Load a document from the stream.
-            Aspose.Words.Document doc = new Aspose.Words.Document(docStream);
+            Document doc = new Document(docStream);
 
             // Save the document with the original file name, " Out" and the document's file extension.
-            doc.Save(MyDir + "Document.WithFileExtension Out" + FileFormatUtil.SaveFormatToExtension(saveFormat));
+            doc.Save(MyDir + @"\Artifacts\Document.WithFileExtension" + FileFormatUtil.SaveFormatToExtension(saveFormat));
             //ExEnd
 
             Assert.AreEqual(".doc", FileFormatUtil.SaveFormatToExtension(saveFormat));
@@ -716,30 +734,30 @@ namespace ApiExamples.Document
             //ExFor:Document.AppendDocument(Document, ImportFormatMode)
             //ExSummary:Shows how to append a document to the end of another document.
             // The document that the content will be appended to.
-            Aspose.Words.Document dstDoc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document dstDoc = new Document(MyDir + "Document.doc");
             // The document to append.
-            Aspose.Words.Document srcDoc = new Aspose.Words.Document(MyDir + "DocumentBuilder.doc");
+            Document srcDoc = new Document(MyDir + "DocumentBuilder.doc");
 
             // Append the source document to the destination document.
             // Pass format mode to retain the original formatting of the source document when importing it.
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
 
             // Save the document.
-            dstDoc.Save(MyDir + "Document.AppendDocument Out.doc");
+            dstDoc.Save(MyDir + @"\Artifacts\Document.AppendDocument.doc");
             //ExEnd
         }
 
         [Test]
         // Using this file path keeps the example making sense when compared with automation so we expect
         // the file not to be found.
-        [ExpectedException(typeof(System.IO.FileNotFoundException))]
+        [ExpectedException(typeof(FileNotFoundException))]
         public void AppendDocumentFromAutomation()
         {
             //ExStart
             //ExId:AppendDocumentFromAutomation
             //ExSummary:Shows how to join multiple documents together.
             // The document that the other documents will be appended to.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             // We should call this method to clear this document of any existing content.
             doc.RemoveAllChildren();
 
@@ -747,7 +765,7 @@ namespace ApiExamples.Document
             for (int i = 1; i <= recordCount; i++)
             {
                 // Open the document to join.
-                Aspose.Words.Document srcDoc = new Aspose.Words.Document(@"C:\DetailsList.doc");
+                Document srcDoc = new Document(@"C:\DetailsList.doc");
 
                 // Append the source document at the end of the destination document.
                 doc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles);
@@ -777,7 +795,7 @@ namespace ApiExamples.Document
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(filePath);
             if (info.HasDigitalSignature)
             {
-                Console.WriteLine(string.Format("Document {0} has digital signatures, they will be lost if you open/save this document with Aspose.Words.", Path.GetFileName(filePath)));
+                Console.WriteLine("Document {0} has digital signatures, they will be lost if you open/save this document with Aspose.Words.", Path.GetFileName(filePath));
             }
             //ExEnd
         }
@@ -792,7 +810,7 @@ namespace ApiExamples.Document
             //ExId:ValidateAllDocumentSignatures
             //ExSummary:Shows how to validate all signatures in a document.
             // Load the signed document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.Signed.docx");
+            Document doc = new Document(MyDir + "Document.Signed.docx");
 
             if (doc.DigitalSignatures.IsValid)
                 Console.WriteLine("Signatures belonging to this document are valid");
@@ -817,34 +835,34 @@ namespace ApiExamples.Document
             //ExId:ValidateIndividualSignatures
             //ExSummary:Shows how to validate each signature in a document and display basic information about the signature.
             // Load the document which contains signature.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.Signed.docx");
+            Document doc = new Document(MyDir + "Document.Signed.docx");
 
-            foreach (Aspose.Words.DigitalSignature signature in doc.DigitalSignatures)
+            foreach (DigitalSignature signature in doc.DigitalSignatures)
             {
                 Console.WriteLine("*** Signature Found ***");
                 Console.WriteLine("Is valid: " + signature.IsValid);
                 Console.WriteLine("Reason for signing: " + signature.Comments); // This property is available in MS Word documents only.
                 Console.WriteLine("Signature type: " + signature.SignatureType.ToString());
                 Console.WriteLine("Time of signing: " + signature.SignTime);
-                Console.WriteLine("Subject name: " + signature.Certificate.SubjectName.ToString());
-                Console.WriteLine("Issuer name: " + signature.Certificate.IssuerName.Name);
+                Console.WriteLine("Subject name: " + signature.CertificateHolder.Certificate.SubjectName.ToString());
+                Console.WriteLine("Issuer name: " + signature.CertificateHolder.Certificate.IssuerName.Name);
                 Console.WriteLine();
             }
             //ExEnd
 
-            Aspose.Words.DigitalSignature digitalSig = doc.DigitalSignatures[0];
+            DigitalSignature digitalSig = doc.DigitalSignatures[0];
             Assert.True(digitalSig.IsValid);
             Assert.AreEqual("Test Sign", digitalSig.Comments);
             Assert.AreEqual("XmlDsig", digitalSig.SignatureType.ToString());
-            Assert.True(digitalSig.Certificate.Subject.Contains("Aspose Pty Ltd"));
-            Assert.True(digitalSig.Certificate.IssuerName.Name.Contains("VeriSign"));
+            Assert.True(digitalSig.CertificateHolder.Certificate.Subject.Contains("Aspose Pty Ltd"));
+            Assert.True(digitalSig.CertificateHolder.Certificate.IssuerName.Name != null && digitalSig.CertificateHolder.Certificate.IssuerName.Name.Contains("VeriSign"));
         }
 
         [Test]
         // We don't include a sample certificate with the examples
         // so this exception is expected instead since the file is not there.
-        [ExpectedException(typeof(System.Security.Cryptography.CryptographicException))]
-        public void SignPDFDocument()
+        [ExpectedException(typeof(CryptographicException))]
+        public void SignPdfDocument()
         {
             //ExStart
             //ExFor:PdfSaveOptions
@@ -854,7 +872,7 @@ namespace ApiExamples.Document
             //ExId:SignPDFDocument
             //ExSummary:Shows how to sign a generated PDF document using Aspose.Words.
             // Create a simple document from scratch.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Test Signed PDF.");
 
@@ -876,17 +894,34 @@ namespace ApiExamples.Document
             //ExEnd
         }
 
+        //This is for obfuscation bug WORDSNET-13036
+        [Test]
+        [ExpectedException(typeof(TypeInitializationException))]
+        public void SignDocument()
+        {
+            CertificateHolder ch = CertificateHolder.Create(MyDir + "certificate.pfx", "123456");
+
+            //By String
+            Document doc = new Document(MyDir + "TestRepeatingSection.doc");
+            string outputDocFileName = MyDir + @"\Artifacts\TestRepeatingSection.Signed.doc";
+
+            DigitalSignatureUtil.Sign(doc.OriginalFileName, outputDocFileName, ch, "My comment", DateTime.Now);
+        }
+
         [Test]
         public void AppendAllDocumentsInFolder()
         {
+            string path = MyDir + @"\Artifacts\Document.AppendDocumentsFromFolder.doc";
+
             // Delete the file that was created by the previous run as I don't want to append it again.
-            File.Delete(MyDir + "Document.AppendDocumentsFromFolder Out.doc");
+            if (File.Exists(path))
+                File.Delete(path);
 
             //ExStart
             //ExFor:Document.AppendDocument(Document, ImportFormatMode)
             //ExSummary:Shows how to use the AppendDocument method to combine all the documents in a folder to the end of a template document.
             // Lets start with a simple template and append all the documents in a folder to this document.
-            Aspose.Words.Document baseDoc = new Aspose.Words.Document();
+            Document baseDoc = new Document();
 
             // Add some content to the template.
             DocumentBuilder builder = new DocumentBuilder(baseDoc);
@@ -910,12 +945,12 @@ namespace ApiExamples.Document
                 if (info.IsEncrypted)
                     continue;
 
-                Aspose.Words.Document subDoc = new Aspose.Words.Document(fileName);
+                Document subDoc = new Document(fileName);
                 baseDoc.AppendDocument(subDoc, ImportFormatMode.UseDestinationStyles);
             }
 
             // Save the combined document to disk.
-            baseDoc.Save(MyDir + "Document.AppendDocumentsFromFolder Out.doc");
+            baseDoc.Save(path);
             //ExEnd
         }
 
@@ -927,7 +962,7 @@ namespace ApiExamples.Document
             //ExSummary:Shows how to join runs in a document to reduce unneeded runs.
             // Let's load this particular document. It contains a lot of content that has been edited many times.
             // This means the document will most likely contain a large number of runs with duplicate formatting.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // This is for illustration purposes only, remember how many run nodes we had in the original document.
             int runsBefore = doc.GetChildNodes(NodeType.Run, true).Count;
@@ -942,7 +977,7 @@ namespace ApiExamples.Document
             Console.WriteLine("Number of runs before:{0}, after:{1}, joined:{2}", runsBefore, runsAfter, joinCount);
 
             // Save the optimized document to disk.
-            doc.Save(MyDir + "Document.JoinRunsWithSameFormatting Out.html");
+            doc.Save(MyDir + @"\Artifacts\Document.JoinRunsWithSameFormatting.html");
             //ExEnd
 
             // Verify that runs were joined in the document.
@@ -956,9 +991,9 @@ namespace ApiExamples.Document
             //ExStart
             //ExFor:Document.AttachedTemplate
             //ExSummary:Opens a document, makes sure it is no longer attached to a template and saves the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
             doc.AttachedTemplate = "";
-            doc.Save(MyDir + "Document.DetachTemplate Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Document.DetachTemplate.doc");
             //ExEnd
         }
 
@@ -987,8 +1022,8 @@ namespace ApiExamples.Document
             //ExFor:Document.Clone
             //ExId:CloneDocument
             //ExSummary:Shows how to deep clone a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
-            Aspose.Words.Document clone = doc.Clone();
+            Document doc = new Document(MyDir + "Document.doc");
+            Document clone = doc.Clone();
             //ExEnd
         }
 
@@ -997,7 +1032,7 @@ namespace ApiExamples.Document
         {
             // We will test this functionality creating a document with two fields with date formatting
             // field where the set language is different than the current culture, e.g German.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert content with German locale.
@@ -1034,21 +1069,21 @@ namespace ApiExamples.Document
         [Test]
         public void ControlListLabelsExportToHtml()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Lists.PrintOutAllLists.doc");
+            Document doc = new Document(MyDir + "Lists.PrintOutAllLists.doc");
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html);
 
             // This option uses <ul> and <ol> tags are used for list label representation if it doesn't cause formatting loss, 
             // otherwise HTML <p> tag is used. This is also the default value.
             saveOptions.ExportListLabels = ExportListLabels.Auto;
-            doc.Save(MyDir + "Document.ExportListLabels Auto Out.html", saveOptions);
+            doc.Save(MyDir + @"\Artifacts\Document.ExportListLabels Auto.html", saveOptions);
 
             // Using this option the <p> tag is used for any list label representation.
             saveOptions.ExportListLabels = ExportListLabels.AsInlineText;
-            doc.Save(MyDir + "Document.ExportListLabels InlineText Out.html", saveOptions);
+            doc.Save(MyDir + @"\Artifacts\Document.ExportListLabels InlineText.html", saveOptions);
 
             // The <ul> and <ol> tags are used for list label representation. Some formatting loss is possible.
             saveOptions.ExportListLabels = ExportListLabels.ByHtmlTags;
-            doc.Save(MyDir + "Document.ExportListLabels HtmlTags Out.html", saveOptions);
+            doc.Save(MyDir + @"\Artifacts\Document.ExportListLabels HtmlTags.html", saveOptions);
         }
 
         [Test]
@@ -1059,7 +1094,7 @@ namespace ApiExamples.Document
             //ExFor:Node.ToString(SaveFormat)
             //ExId:NodeTxtExportDifferences
             //ExSummary:Shows the difference between calling the GetText and ToString methods on a node.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // Enter a dummy field into the document.
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1082,7 +1117,7 @@ namespace ApiExamples.Document
             //ExId:DocumentToFromByteArray
             //ExSummary:Shows how to convert a document object to an array of bytes and back into a document object again.
             // Load the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             // Create a new memory stream.
             MemoryStream outStream = new MemoryStream();
@@ -1098,7 +1133,7 @@ namespace ApiExamples.Document
             MemoryStream inStream = new MemoryStream(docBytes);
 
             // Load the stream into a new document object.
-            Aspose.Words.Document loadDoc = new Aspose.Words.Document(inStream);
+            Document loadDoc = new Document(inStream);
             //ExEnd
 
             Assert.AreEqual(doc.GetText(), loadDoc.GetText());
@@ -1111,7 +1146,7 @@ namespace ApiExamples.Document
             //ExFor:Document.Protect(ProtectionType,String)
             //ExId:ProtectDocument
             //ExSummary:Shows how to protect a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             doc.Protect(ProtectionType.AllowOnlyFormFields, "password");
             //ExEnd
 
@@ -1136,7 +1171,7 @@ namespace ApiExamples.Document
             //ExFor:Document.ProtectionType
             //ExId:GetProtectionType
             //ExSummary:Shows how to get protection type currently set in the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
             ProtectionType protectionType = doc.ProtectionType;
             //ExEnd
         }
@@ -1148,7 +1183,7 @@ namespace ApiExamples.Document
             //ExFor:Document.EnsureMinimum
             //ExSummary:Shows how to ensure the Document is valid (has the minimum nodes required to be valid).
             // Create a blank document then remove all nodes from it, the result will be a completely empty document.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             doc.RemoveAllChildren();
 
             // Ensure that the document is valid. Since the document has no nodes this method will create an empty section
@@ -1163,7 +1198,7 @@ namespace ApiExamples.Document
             //ExStart
             //ExFor:Document.RemoveMacros
             //ExSummary:Shows how to remove all macros from a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
             doc.RemoveMacros();
             //ExEnd
         }
@@ -1175,7 +1210,7 @@ namespace ApiExamples.Document
             //ExFor:Document.UpdateTableLayout
             //ExId:UpdateTableLayout
             //ExSummary:Shows how to update the layout of tables in a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             // Normally this method is not necessary to call, as cell and table widths are maintained automatically.
             // This method may need to be called when exporting to PDF in rare cases when the table layout appears
@@ -1190,7 +1225,7 @@ namespace ApiExamples.Document
             //ExStart
             //ExFor:Document.PageCount
             //ExSummary:Shows how to invoke page layout and retrieve the number of pages in the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             // This invokes page layout which builds the document in memory so note that with large documents this
             // property can take time. After invoking this property, any rendering operation e.g rendering to PDF or image
@@ -1208,7 +1243,7 @@ namespace ApiExamples.Document
             //ExFor:Document.UpdateFields
             //ExId:UpdateFieldsInDocument
             //ExSummary:Shows how to update all fields in a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
             doc.UpdateFields();
             //ExEnd
         }
@@ -1222,7 +1257,7 @@ namespace ApiExamples.Document
             //ExFor:BuiltInDocumentProperties.Words
             //ExFor:BuiltInDocumentProperties.Paragraphs
             //ExSummary:Shows how to update all list labels in a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             // Some work should be done here that changes the document's content.
 
@@ -1236,14 +1271,14 @@ namespace ApiExamples.Document
             //ExEnd
         }
 
-        [Test]
+        [Test, Explicit]
         public void TableStyleToDirectFormatting()
         {
             //ExStart
             //ExFor:Document.ExpandTableStylesToDirectFormatting
             //ExId:TableStyleToDirectFormatting
             //ExSummary:Shows how to expand the formatting from styles onto the rows and cells of the table as direct formatting.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.TableStyle.docx");
+            Document doc = new Document(MyDir + "Table.TableStyle.docx");
 
             // Get the first cell of the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -1251,19 +1286,19 @@ namespace ApiExamples.Document
 
             // First print the color of the cell shading. This should be empty as the current shading
             // is stored in the table style.
-            Color cellShadingBefore = firstCell.CellFormat.Shading.BackgroundPatternColor;
-            Console.WriteLine("Cell shading before style expansion: " + cellShadingBefore.ToString());
+            double cellShadingBefore = table.FirstRow.RowFormat.Height;
+            Console.WriteLine("Cell shading before style expansion: " + cellShadingBefore);
 
             // Expand table style formatting to direct formatting.
             doc.ExpandTableStylesToDirectFormatting();
 
             // Now print the cell shading after expanding table styles. A blue background pattern color
             // should have been applied from the table style.
-            Color cellShadingAfter = firstCell.CellFormat.Shading.BackgroundPatternColor;
-            Console.WriteLine("Cell shading after style expansion: " + cellShadingAfter.ToString());
+            double cellShadingAfter = table.FirstRow.RowFormat.Height;
+            Console.WriteLine("Cell shading after style expansion: " + cellShadingAfter);
             //ExEnd
 
-            doc.Save(MyDir + "Table.ExpandTableStyleFormatting Out.docx");
+            doc.Save(MyDir + @"\Artifacts\Table.ExpandTableStyleFormatting.docx");
 
             Assert.AreEqual(Color.Empty, cellShadingBefore);
             Assert.AreNotEqual(Color.Empty, cellShadingAfter);
@@ -1276,7 +1311,7 @@ namespace ApiExamples.Document
             //ExFor:Document.OriginalFileName
             //ExFor:Document.OriginalLoadFormat
             //ExSummary:Shows how to retrieve the details of the path, filename and LoadFormat of a document from when the document was first loaded into memory.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             // This property will return the full path and file name where the document was loaded from.
             string originalFilePath = doc.OriginalFileName;
@@ -1294,7 +1329,7 @@ namespace ApiExamples.Document
             //ExStart
             //ExFor:CompositeNode.RemoveSmartTags
             //ExSummary:Shows how to remove all smart tags from a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
             doc.RemoveSmartTags();
             //ExEnd
         }
@@ -1310,10 +1345,10 @@ namespace ApiExamples.Document
             //ExFor:ViewType
             //ExId:SetZoom
             //ExSummary:The following code shows how to make sure the document is displayed at 50% zoom when opened in Microsoft Word.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
             doc.ViewOptions.ViewType = ViewType.PageLayout;
             doc.ViewOptions.ZoomPercent = 50;
-            doc.Save(MyDir + "Document.SetZoom Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Document.SetZoom.doc");
             //ExEnd
         }
 
@@ -1325,7 +1360,7 @@ namespace ApiExamples.Document
             //ExFor:VariableCollection
             //ExId:GetDocumentVariables
             //ExSummary:Shows how to enumerate over document variables.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             foreach (DictionaryEntry entry in doc.Variables)
             {
@@ -1344,7 +1379,7 @@ namespace ApiExamples.Document
             //ExStart
             //ExFor:Document.FootnoteOptions
             //ExSummary:Shows how to insert a footnote and apply footnote options.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertFootnote(FootnoteType.Footnote, "My Footnote.");
@@ -1354,7 +1389,7 @@ namespace ApiExamples.Document
             doc.FootnoteOptions.NumberStyle = NumberStyle.Arabic;
             doc.FootnoteOptions.StartNumber = 1;
 
-            doc.Save(MyDir + "Document.FootnoteOptions.doc");
+            doc.Save(MyDir + @"\Artifacts\Document.FootnoteOptions.doc");
             //ExEnd
         }
 
@@ -1364,8 +1399,8 @@ namespace ApiExamples.Document
             //ExStart
             //ExFor:Document.Compare
             //ExSummary:Shows how to apply the compare method to two documents and then use the results. 
-            Aspose.Words.Document doc1 = new Aspose.Words.Document(MyDir + "Document.Compare.1.doc");
-            Aspose.Words.Document doc2 = new Aspose.Words.Document(MyDir + "Document.Compare.2.doc");
+            Document doc1 = new Document(MyDir + "Document.Compare.1.doc");
+            Document doc2 = new Document(MyDir + "Document.Compare.2.doc");
 
             // If either document has a revision, an exception will be thrown.
             if (doc1.Revisions.Count == 0 && doc2.Revisions.Count == 0)
@@ -1379,7 +1414,7 @@ namespace ApiExamples.Document
             doc1.Revisions.AcceptAll();
 
             // doc1, when saved, now resembles doc2.
-            doc1.Save(MyDir + "Document.CompareEx.doc");
+            doc1.Save(MyDir + @"\Artifacts\Document.CompareEx.doc");
             //ExEnd
         }
 
@@ -1389,7 +1424,7 @@ namespace ApiExamples.Document
             //ExStart
             //ExFor:Document.RemoveExternalSchemaReferences
             //ExSummary:Shows how to remove all external XML schema references from a document. 
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
             doc.RemoveExternalSchemaReferences();
             //ExEnd
         }
@@ -1400,7 +1435,7 @@ namespace ApiExamples.Document
             //ExStart
             //ExFor:Document.RemoveUnusedResources
             //ExSummary:Shows how to remove all unused styles and lists from a document. 
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
             doc.RemoveUnusedResources();
             //ExEnd
         }
@@ -1413,7 +1448,7 @@ namespace ApiExamples.Document
             //ExFor:Document.StartTrackRevisions(String, DateTime)
             //ExFor:Document.StopTrackRevisions
             //ExSummary:Shows how tracking revisions affects document editing. 
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // This text will appear as normal text in the document and no revisions will be counted.
             doc.FirstSection.Body.FirstParagraph.Runs.Add(new Run(doc, "Hello world!"));
@@ -1439,7 +1474,7 @@ namespace ApiExamples.Document
             doc.FirstSection.Body.AppendParagraph("Hello again!");
             Console.WriteLine(doc.Revisions.Count); // 4
 
-            doc.Save(MyDir + "Document.StartTrackRevisions.doc");
+            doc.Save(MyDir + @"\Artifacts\Document.StartTrackRevisions.doc");
             //ExEnd
         }
 
@@ -1449,7 +1484,7 @@ namespace ApiExamples.Document
             //ExStart
             //ExFor:Document.AcceptAllRevisions
             //ExSummary:Shows how to accept all tracking changes in the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             // Start tracking and make some revisions.
             doc.StartTrackRevisions("Author");
@@ -1457,7 +1492,7 @@ namespace ApiExamples.Document
 
             // Revisions will now show up as normal text in the output document.
             doc.AcceptAllRevisions();
-            doc.Save(MyDir + "Document.AcceptedRevisions.doc");
+            doc.Save(MyDir + @"\Artifacts\Document.AcceptedRevisions.doc");
             //ExEnd
         }
 
@@ -1468,7 +1503,7 @@ namespace ApiExamples.Document
             //ExFor:Document.UpdateThumbnail()
             //ExFor:Document.UpdateThumbnail(ThumbnailGeneratingOptions)
             //ExSummary:Shows how to update a document's thumbnail.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // Update document's thumbnail the default way. 
             doc.UpdateThumbnail();
@@ -1480,6 +1515,141 @@ namespace ApiExamples.Document
             tgo.GenerateFromFirstPage = true;
 
             doc.UpdateThumbnail(tgo);
+            //ExEnd
+        }
+
+        //For assert this test you need to open "HyphenationOptions OUT.docx" and check that hyphen are added in the end of the first line
+        [Test]
+        public void HyphenationOptions()
+        {
+            Document doc = new Document();
+
+            DocumentHelper.InsertNewRun(doc, "poqwjopiqewhpefobiewfbiowefob ewpj weiweohiewobew ipo efoiewfihpewfpojpief pijewfoihewfihoewfphiewfpioihewfoihweoihewfpj", 0);
+
+            doc.HyphenationOptions.AutoHyphenation = true;
+            doc.HyphenationOptions.ConsecutiveHyphenLimit = 2;
+            doc.HyphenationOptions.HyphenationZone = 720; // 0.5 inch
+            doc.HyphenationOptions.HyphenateCaps = true;
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            Assert.AreEqual(true, doc.HyphenationOptions.AutoHyphenation);
+            Assert.AreEqual(2, doc.HyphenationOptions.ConsecutiveHyphenLimit);
+            Assert.AreEqual(720, doc.HyphenationOptions.HyphenationZone);
+            Assert.AreEqual(true, doc.HyphenationOptions.HyphenateCaps);
+
+            doc.Save(MyDir + "HyphenationOptions.docx");
+        }
+
+        [Test]
+        public void HyphenationOptionsDefaultValues()
+        {
+            Document doc = new Document();
+            
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            Assert.AreEqual(false, doc.HyphenationOptions.AutoHyphenation);
+            Assert.AreEqual(0, doc.HyphenationOptions.ConsecutiveHyphenLimit);
+            Assert.AreEqual(360, doc.HyphenationOptions.HyphenationZone); // 0.25 inch
+            Assert.AreEqual(true, doc.HyphenationOptions.HyphenateCaps);
+        }
+
+        [Test]
+        [TestCase(0, 0, ExpectedException = typeof(ArgumentOutOfRangeException))]
+        [TestCase(-1, 360, ExpectedException = typeof(ArgumentOutOfRangeException))]
+        public void HyphenationOptionsExceptions(int consecutiveHyphenLimit, int hyphenationZone)
+        {
+            Document doc = new Document();
+
+            doc.HyphenationOptions.ConsecutiveHyphenLimit = consecutiveHyphenLimit;
+            doc.HyphenationOptions.HyphenationZone = hyphenationZone;
+        }
+
+        [Test]
+        public void ExtractPlainTextFromDocument()
+        {
+            //ExStart
+            //ExFor:Document.ExtractText(string)
+            //ExFor:Document.ExtractText(string, LoadOptions)
+            //ExFor:PlaintextDocument.Text
+            //ExFor:PlaintextDocument.BuiltInDocumentProperties
+            //ExFor:PlaintextDocument.CustomDocumentProperties
+            //ExSummary:Shows how to extract plain text from the document and get it properties
+            PlaintextDocument plaintext = Document.ExtractText(MyDir + "Bookmark.doc");
+            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text);
+
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.AllowTrailingWhitespaceForListItems = false;
+
+            plaintext = Document.ExtractText(MyDir + "Bookmark.doc", loadOptions);
+            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text);
+
+            BuiltInDocumentProperties builtInDocumentProperties = plaintext.BuiltInDocumentProperties;
+            Assert.AreEqual("Aspose", builtInDocumentProperties.Company);
+
+            CustomDocumentProperties customDocumentProperties = plaintext.CustomDocumentProperties;
+            Assert.IsEmpty(customDocumentProperties);
+            //ExEnd
+        }
+
+        [Test]
+        public void ExtractPlainTextFromStream()
+        {
+            //ExStart
+            //ExFor:Document.ExtractText(Stream)
+            //ExFor:Document.ExtractText(Stream, LoadOptions)
+            //ExSummary:
+            Stream docStream = new FileStream(MyDir + "Bookmark.doc", FileMode.Open);
+
+            PlaintextDocument plaintext = Document.ExtractText(docStream);
+            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text);
+
+            docStream.Close();
+
+            docStream = new FileStream(MyDir + "Bookmark.doc", FileMode.Open);
+
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.AllowTrailingWhitespaceForListItems = false;
+
+            plaintext = Document.ExtractText(docStream, loadOptions);
+            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text);
+
+            docStream.Close();
+            //ExEnd
+        }
+
+        [Test]
+        public void GetShapeAltTextTitle()
+        {
+            //ExStart
+            //ExFor:Shape.Title
+            //ExSummary:Shows how to get or set alt text title for shape object
+            Document doc = new Document();
+
+            // Create textbox shape.
+            Shape shape = new Shape(doc, ShapeType.Cube);
+            shape.Width = 431.5;
+            shape.Height = 346.35;
+            shape.Title = "Alt Text Title";
+
+            Paragraph paragraph = new Paragraph(doc);
+            paragraph.AppendChild(new Run(doc, "Test"));
+
+            // Insert paragraph into the textbox.
+            shape.AppendChild(paragraph);
+
+            // Insert textbox into the document.
+            doc.FirstSection.Body.FirstParagraph.AppendChild(shape);
+            
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            Node[] shapes = doc.GetChildNodes(NodeType.Shape, true).ToArray();
+            shape = (Shape)shapes[0];
+
+            Assert.AreEqual("Alt Text Title", shape.Title);
             //ExEnd
         }
     }

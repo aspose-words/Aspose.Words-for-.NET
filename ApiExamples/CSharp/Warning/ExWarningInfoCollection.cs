@@ -6,11 +6,12 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+
 using Aspose.Words;
+
 using NUnit.Framework;
 
-
-namespace ApiExamples.Warning
+namespace ApiExamples
 {
     [TestFixture]
     public class ExWarningInfoCollection : ApiExampleBase

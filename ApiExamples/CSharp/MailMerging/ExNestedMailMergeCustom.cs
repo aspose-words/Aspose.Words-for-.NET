@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -6,11 +6,13 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System.Collections;
+
+using Aspose.Words;
 using Aspose.Words.MailMerging;
+
 using NUnit.Framework;
 
-
-namespace ApiExamples.MailMerging
+namespace ApiExamples
 {
     [TestFixture]
     public class ExNestedMailMergeCustom : ApiExampleBase
@@ -21,7 +23,7 @@ namespace ApiExamples.MailMerging
         [Test]
         public void MailMergeCustomDataSourceCaller()
         {
-            MailMergeCustomDataSource();
+            this.MailMergeCustomDataSource();
         }
 
         public void MailMergeCustomDataSource()
@@ -37,7 +39,7 @@ namespace ApiExamples.MailMerging
             customers[1].Orders.Add(new Order("Rugby World Cup Guide", 1));
 
             // Open the template document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "NestedMailMerge.CustomDataSource.doc");
+            Document doc = new Document(MyDir + "NestedMailMerge.CustomDataSource.doc");
 
             // To be able to mail merge from your own data source, it must be wrapped
             // into an object that implements the IMailMergeDataSource interface.
@@ -46,7 +48,7 @@ namespace ApiExamples.MailMerging
             // Now you can pass your data source into Aspose.Words.
             doc.MailMerge.ExecuteWithRegions(customersDataSource);
 
-            doc.Save(MyDir + "NestedMailMerge.CustomDataSource Out.doc");
+            doc.Save(MyDir + @"\Artifacts\NestedMailMerge.CustomDataSource.doc");
         }
 
         /// <summary>
@@ -56,27 +58,27 @@ namespace ApiExamples.MailMerging
         {
             public Customer(string aFullName, string anAddress)
             {
-                mFullName = aFullName;
-                mAddress = anAddress;
-                mOrders = new OrderList();
+                this.mFullName = aFullName;
+                this.mAddress = anAddress;
+                this.mOrders = new OrderList();
             }
 
             public string FullName
             {
-                get { return mFullName; }
-                set { mFullName = value; }
+                get { return this.mFullName; }
+                set { this.mFullName = value; }
             }
 
             public string Address
             {
-                get { return mAddress; }
-                set { mAddress = value; }
+                get { return this.mAddress; }
+                set { this.mAddress = value; }
             }
 
             public OrderList Orders
             {
-                get { return mOrders; }
-                set { mOrders = value; }
+                get { return this.mOrders; }
+                set { this.mOrders = value; }
             }
 
             private string mFullName;
@@ -103,20 +105,20 @@ namespace ApiExamples.MailMerging
         {
             public Order(string oName, int oQuantity)
             {
-                mName = oName;
-                mQuantity = oQuantity;
+                this.mName = oName;
+                this.mQuantity = oQuantity;
             }
 
             public string Name
             {
-                get { return mName; }
-                set { mName = value; }
+                get { return this.mName; }
+                set { this.mName = value; }
             }
 
             public int Quantity
             {
-                get { return mQuantity; }
-                set { mQuantity = value; }
+                get { return this.mQuantity; }
+                set { this.mQuantity = value; }
             }
 
             private string mName;
@@ -143,10 +145,10 @@ namespace ApiExamples.MailMerging
         {
             public CustomerMailMergeDataSource(CustomerList customers)
             {
-                mCustomers = customers;
+                this.mCustomers = customers;
 
                 // When the data source is initialized, it must be positioned before the first record.
-                mRecordIndex= -1;
+                this.mRecordIndex= -1;
             }
 
             /// <summary>
@@ -165,13 +167,13 @@ namespace ApiExamples.MailMerging
                 switch (fieldName)
                 {
                     case "FullName":
-                        fieldValue = mCustomers[mRecordIndex].FullName;
+                        fieldValue = this.mCustomers[this.mRecordIndex].FullName;
                         return true;
                     case "Address":
-                        fieldValue = mCustomers[mRecordIndex].Address;
+                        fieldValue = this.mCustomers[this.mRecordIndex].Address;
                         return true;
                     case "Order":
-                        fieldValue = mCustomers[mRecordIndex].Orders;
+                        fieldValue = this.mCustomers[this.mRecordIndex].Orders;
                         return true;
                     default:
                         // A field with this name was not found, 
@@ -187,10 +189,10 @@ namespace ApiExamples.MailMerging
             /// </summary>
             public bool MoveNext()
             {
-                if (!IsEof)
-                    mRecordIndex++;
+                if (!this.IsEof)
+                    this.mRecordIndex++;
 
-                return (!IsEof);
+                return (!this.IsEof);
             }
 
             //ExStart
@@ -202,7 +204,7 @@ namespace ApiExamples.MailMerging
                 {
                     // Get the child collection to merge it with the region provided with tableName variable.
                     case "Order":
-                        return new OrderMailMergeDataSource(mCustomers[mRecordIndex].Orders);
+                        return new OrderMailMergeDataSource(this.mCustomers[this.mRecordIndex].Orders);
                     default:
                         return null;
                 }
@@ -211,7 +213,7 @@ namespace ApiExamples.MailMerging
 
             private bool IsEof
             {
-                get { return (mRecordIndex >= mCustomers.Count); }
+                get { return (this.mRecordIndex >= this.mCustomers.Count); }
             }
 
             private readonly CustomerList mCustomers;
@@ -222,10 +224,10 @@ namespace ApiExamples.MailMerging
         {
             public OrderMailMergeDataSource(OrderList orders)
             {
-                mOrders = orders;
+                this.mOrders = orders;
 
                 // When the data source is initialized, it must be positioned before the first record.
-                mRecordIndex = -1;
+                this.mRecordIndex = -1;
             }
 
             /// <summary>
@@ -244,10 +246,10 @@ namespace ApiExamples.MailMerging
                 switch (fieldName)
                 {
                     case "Name":
-                        fieldValue = mOrders[mRecordIndex].Name;
+                        fieldValue = this.mOrders[this.mRecordIndex].Name;
                         return true;
                     case "Quantity":
-                        fieldValue = mOrders[mRecordIndex].Quantity;
+                        fieldValue = this.mOrders[this.mRecordIndex].Quantity;
                         return true;
                     default:
                         // A field with this name was not found, 
@@ -262,10 +264,10 @@ namespace ApiExamples.MailMerging
             /// </summary>
             public bool MoveNext()
             {
-                if (!IsEof)
-                    mRecordIndex++;
+                if (!this.IsEof)
+                    this.mRecordIndex++;
 
-                return (!IsEof);
+                return (!this.IsEof);
             }
 
             // Return null because we haven't any child elements for this sort of object.
@@ -276,7 +278,7 @@ namespace ApiExamples.MailMerging
 
             private bool IsEof
             {
-                get { return (mRecordIndex >= mOrders.Count); }
+                get { return (this.mRecordIndex >= this.mOrders.Count); }
             }
 
             private readonly OrderList mOrders;

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -7,10 +7,10 @@
 
 using Aspose.Words;
 using Aspose.Words.Tables;
+
 using NUnit.Framework;
 
-
-namespace ApiExamples.Tables
+namespace ApiExamples
 {
     [TestFixture]
     public class ExCellFormat : ApiExampleBase
@@ -25,7 +25,7 @@ namespace ApiExamples.Tables
             //ExFor:CellFormat.VerticalMerge
             //ExId:VerticalMerge
             //ExSummary:Creates a table with two columns with cells merged vertically in the first column.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
             builder.InsertCell();
@@ -57,7 +57,7 @@ namespace ApiExamples.Tables
             //ExFor:CellFormat.HorizontalMerge
             //ExId:HorizontalMerge
             //ExSummary:Creates a table with two rows with cells in the first row horizontally merged.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
             builder.InsertCell();

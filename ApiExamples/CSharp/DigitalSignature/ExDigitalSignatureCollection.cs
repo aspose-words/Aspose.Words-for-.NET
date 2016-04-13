@@ -9,8 +9,7 @@ using System;
 using Aspose.Words;
 using NUnit.Framework;
 
-
-namespace ApiExamples.DigitalSignature
+namespace ApiExamples
 {
     [TestFixture]
     public class ExDigitalSignatureCollection : ApiExampleBase
@@ -27,7 +26,7 @@ namespace ApiExamples.DigitalSignature
             while (enumerator.MoveNext())
             {
                 // Do something useful
-                Aspose.Words.DigitalSignature ds = (Aspose.Words.DigitalSignature)enumerator.Current;
+                DigitalSignature ds = (DigitalSignature)enumerator.Current;
                 Console.WriteLine(ds.ToString());
             }
             //ExEnd

@@ -6,10 +6,10 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using Aspose.Words;
 using NUnit.Framework;
 
-
-namespace ApiExamples.DigitalSignature
+namespace ApiExamples
 {
     [TestFixture]
     public class ExDigitalSignature : ApiExampleBase
@@ -20,7 +20,7 @@ namespace ApiExamples.DigitalSignature
             //ExStart
             //ExFor:DigitalSignature.ToString
             //ExSummary:Shows how to get the string representation of a signature from a signed document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.Signed.docx");
+            Document doc = new Document(MyDir + "Document.Signed.docx");
             Console.WriteLine(doc.DigitalSignatures[0].ToString());
             //ExEnd
         }

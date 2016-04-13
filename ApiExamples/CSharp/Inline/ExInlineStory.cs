@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -6,11 +6,12 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+
 using Aspose.Words;
+
 using NUnit.Framework;
 
-
-namespace ApiExamples.Inline
+namespace ApiExamples
 {
     [TestFixture]
     public class ExInlineStory : ApiExampleBase
@@ -26,7 +27,7 @@ namespace ApiExamples.Inline
             //ExFor:FootnoteType
             //ExFor:Footnote.#ctor
             //ExSummary:Shows how to add a footnote to a paragraph in the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Write("Some text is added.");
 
@@ -49,11 +50,11 @@ namespace ApiExamples.Inline
             //ExFor:InlineStory.FirstParagraph
             //ExFor:Comment.#ctor(DocumentBase, String, String, DateTime)
             //ExSummary:Shows how to add a comment to a paragraph in the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Write("Some text is added.");
 
-            Aspose.Words.Comment comment = new Aspose.Words.Comment(doc, "Amy Lee", "AL", DateTime.Today);
+            Comment comment = new Comment(doc, "Amy Lee", "AL", DateTime.Today);
             builder.CurrentParagraph.AppendChild(comment);
             comment.Paragraphs.Add(new Paragraph(doc));
             comment.FirstParagraph.Runs.Add(new Run(doc, "Comment text."));

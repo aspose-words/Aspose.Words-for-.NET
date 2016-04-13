@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ApiExamples</RootNamespace>
     <AssemblyName>ApiExamples</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,8 +32,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words, Version=16.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>packages\Aspose.Words.16.1.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.BarCode, Version=7.7.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.BarCode.7.7.0\lib\net4.5\Aspose.BarCode.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Aspose.Pdf, Version=11.4.0.0, Culture=neutral, PublicKeyToken=6947866647e416ec, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.Pdf.11.4.0\lib\net40-client\Aspose.Pdf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Aspose.Words, Version=16.2.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.Words.16.2.0\lib\net40\Aspose.Words.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -64,6 +73,7 @@
     <Compile Include="DigitalSignature\ExDigitalSignatureUtil.cs" />
     <Compile Include="DocumentConverts\ExMossDoc2Pdf.cs" />
     <Compile Include="DocumentConverts\ExMossRtf2Docx.cs" />
+    <Compile Include="DocumentHelper.cs" />
     <Compile Include="Document\ExDocument.cs" />
     <Compile Include="Document\ExDocumentBuilder.cs" />
     <Compile Include="Document\ExDocumentBuilderImages.cs" />
@@ -72,6 +82,7 @@
     <Compile Include="Drawing\ExImage.cs" />
     <Compile Include="Drawing\ExShape.cs" />
     <Compile Include="EditableRange\ExEditableRange.cs" />
+    <Compile Include="Fields\CustomBarcodeGenerator.cs" />
     <Compile Include="Fields\ExField.cs" />
     <Compile Include="Fields\ExFormFields.cs" />
     <Compile Include="Fields\ExRenameMergeFields.cs" />
@@ -85,19 +96,21 @@
     <Compile Include="MailMerging\ExMailMergeCustom.cs" />
     <Compile Include="MailMerging\ExMailMergeEvent.cs" />
     <Compile Include="MailMerging\ExNestedMailMergeCustom.cs" />
+    <Compile Include="Markup\ExStructuredDocumentTag.cs" />
     <Compile Include="Node\ExNode.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="PageSetup\ExPageSetup.cs" />
     <Compile Include="Paragraph\ExParagraph.cs" />
     <Compile Include="Document\ExProperties.cs" />
     <Compile Include="ApiExampleBase.cs" />
     <Compile Include="Range\ExRange.cs" />
     <Compile Include="Rendering\ExRendering.cs" />
+    <Compile Include="ReportingEngine\ExReportingEngine.cs" />
+    <Compile Include="Saving\ExImageSaveOptions.cs" />
+    <Compile Include="Saving\ExHtmlSaveOptions.cs" />
     <Compile Include="Saving\ExHtmlFixedSaveOptions.cs" />
     <Compile Include="Saving\ExPdfSaveOptions.cs" />
     <Compile Include="Saving\ExSwfSaveOptions.cs" />
+    <Compile Include="Saving\ExSavingCallback.cs" />
     <Compile Include="Section\ExSection.cs" />
     <Compile Include="Style\ExStyles.cs" />
     <Compile Include="Tables\ExCellFormat.cs" />
@@ -108,11 +121,9 @@
     <Compile Include="Warning\ExWarningInfoCollection.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="obj\Debug\TempPE\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

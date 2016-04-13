@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -6,13 +6,15 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System.Collections;
+using System.Drawing;
 using System.IO;
+
 using Aspose.Words;
 using Aspose.Words.Drawing;
+
 using NUnit.Framework;
 
-
-namespace ApiExamples.Drawing
+namespace ApiExamples
 {
     /// <summary>
     /// Mostly scenarios that deal with image shapes.
@@ -38,7 +40,7 @@ namespace ApiExamples.Drawing
             builder.InsertImage("http://www.aspose.com/Images/aspose-logo.jpg");
             builder.Writeln();
 
-            builder.Document.Save(MyDir + "Image.CreateFromUrl Out.doc");
+            builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromUrl.doc");
             //ExEnd
         }
 
@@ -62,7 +64,7 @@ namespace ApiExamples.Drawing
                 stream.Close();
             }
 
-            builder.Document.Save(MyDir + "Image.CreateFromStream Out.doc");
+            builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromStream.doc");
             //ExEnd
         }
 
@@ -76,7 +78,7 @@ namespace ApiExamples.Drawing
             DocumentBuilder builder = new DocumentBuilder();
 
             // Insert a raster image.
-            System.Drawing.Image rasterImage = System.Drawing.Image.FromFile(MyDir + "Aspose.Words.gif");
+            Image rasterImage = Image.FromFile(MyDir + "Aspose.Words.gif");
             try
             {
                 builder.Write("Raster image: ");
@@ -89,7 +91,7 @@ namespace ApiExamples.Drawing
             }
 
             // Aspose.Words allows to insert a metafile too.
-            System.Drawing.Image metafile = System.Drawing.Image.FromFile(MyDir + "Hammer.wmf");
+            Image metafile = Image.FromFile(MyDir + "Hammer.wmf");
             try
             {
                 builder.Write("Metafile: ");
@@ -101,7 +103,7 @@ namespace ApiExamples.Drawing
                 metafile.Dispose();
             }
 
-            builder.Document.Save(MyDir + "Image.CreateFromImage Out.doc");
+            builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromImage.doc");
             //ExEnd
         }
 
@@ -138,7 +140,7 @@ namespace ApiExamples.Drawing
             shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
             shape.VerticalAlignment = VerticalAlignment.Center;
 
-            builder.Document.Save(MyDir + "Image.CreateFloatingPageCenter Out.doc");
+            builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFloatingPageCenter.doc");
             //ExEnd
         }
 
@@ -172,7 +174,7 @@ namespace ApiExamples.Drawing
             shape.Width = builder.CurrentSection.PageSetup.PageWidth;
             shape.Height = 50;
 
-            builder.Document.Save(MyDir + "Image.CreateFloatingPositionSize Out.doc");
+            builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFloatingPositionSize.doc");
             //ExEnd
         }
 
@@ -190,7 +192,7 @@ namespace ApiExamples.Drawing
             shape.HRef = "http://www.aspose.com/Community/Forums/75/ShowForum.aspx";
             shape.ScreenTip = "Aspose.Words Support Forums";
 
-            builder.Document.Save(MyDir + "Image.InsertImageWithHyperlink Out.doc");
+            builder.Document.Save(MyDir + @"\Artifacts\Image.InsertImageWithHyperlink.doc");
             //ExEnd
         }
 
@@ -201,7 +203,7 @@ namespace ApiExamples.Drawing
             //ExFor:Shape.#ctor(DocumentBase,ShapeType)
             //ExFor:ShapeType
             //ExSummary:Shows how to create and add an image to a document without using document builder.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             Shape shape = new Shape(doc, ShapeType.Image);
             shape.ImageData.SetImage(MyDir + "Hammer.wmf");
@@ -210,7 +212,7 @@ namespace ApiExamples.Drawing
 
             doc.FirstSection.Body.FirstParagraph.AppendChild(shape);
 
-            doc.Save(MyDir + "Image.CreateImageDirectly Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Image.CreateImageDirectly.doc");
             //ExEnd
         }
 
@@ -258,14 +260,14 @@ namespace ApiExamples.Drawing
             builder.InsertNode(stored);
             builder.Writeln();
 
-            builder.Document.Save(MyDir + "Image.CreateLinkedImage Out.doc");
+            builder.Document.Save(MyDir + @"\Artifacts\Image.CreateLinkedImage.doc");
             //ExEnd
         }
 
         [Test]
         public void DeleteAllImages()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Image.SampleImages.doc");
+            Document doc = new Document(MyDir + "Image.SampleImages.doc");
             Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
             
             //ExStart
@@ -292,22 +294,22 @@ namespace ApiExamples.Drawing
             //ExEnd
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
-            doc.Save(MyDir + "Image.DeleteAllImages Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Image.DeleteAllImages.doc");
         }
 
         [Test]
         public void DeleteAllImagesPreOrder()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Image.SampleImages.doc");
+            Document doc = new Document(MyDir + "Image.SampleImages.doc");
             Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
             
             //ExStart
             //ExFor:Node.NextPreOrder
             //ExSummary:Shows how to delete all images from a document using pre-order tree traversal.
-            Aspose.Words.Node curNode = doc;
+            Node curNode = doc;
             while (curNode != null)
             {
-                Aspose.Words.Node nextNode = curNode.NextPreOrder(doc);
+                Node nextNode = curNode.NextPreOrder(doc);
 
                 if (curNode.NodeType.Equals(NodeType.Shape))
                 {
@@ -323,7 +325,7 @@ namespace ApiExamples.Drawing
             //ExEnd
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
-            doc.Save(MyDir + "Image.DeleteAllImagesPreOrder Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Image.DeleteAllImagesPreOrder.doc");
         }
 
         //ExStart
@@ -340,7 +342,7 @@ namespace ApiExamples.Drawing
         [Test] //ExSkip
         public void ExtractImagesToFiles()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Image.SampleImages.doc");
+            Document doc = new Document(MyDir + "Image.SampleImages.doc");
 
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
             int imageIndex = 0;			
@@ -349,7 +351,7 @@ namespace ApiExamples.Drawing
                 if (shape.HasImage)
                 {
                     string imageFileName = string.Format(
-                        "Image.ExportImages.{0} Out{1}", imageIndex, FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType));
+                        @"\Artifacts\Image.ExportImages.{0} Out{1}", imageIndex, FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType));
                     shape.ImageData.Save(MyDir + imageFileName);
                     imageIndex++;
                 }
@@ -382,7 +384,7 @@ namespace ApiExamples.Drawing
             shape.Width = imageSize.WidthPoints * 1.1;
             shape.Height = imageSize.HeightPoints * 1.1;
 
-            builder.Document.Save(MyDir + "Image.ScaleImage Out.doc");
+            builder.Document.Save(MyDir + @"\Artifacts\Image.ScaleImage.doc");
             //ExEnd
         }
     }

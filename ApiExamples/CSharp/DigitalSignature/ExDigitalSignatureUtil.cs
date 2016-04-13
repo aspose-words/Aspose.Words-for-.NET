@@ -6,11 +6,11 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.IO;
 using Aspose.Words;
 using NUnit.Framework;
 
-
-namespace ApiExamples.DigitalSignature
+namespace ApiExamples
 {
     [TestFixture]
     public class ExDigitalSignatureUtil : ApiExampleBase
@@ -23,8 +23,8 @@ namespace ApiExamples.DigitalSignature
             //ExFor:DigitalSignatureUtil.RemoveAllSignatures(String, String)
             //ExSummary:Shows how to remove every signature from a document.
             //By stream:
-            System.IO.Stream docStreamIn = new System.IO.FileStream(MyDir + "Document.Signed.doc", System.IO.FileMode.Open);
-            System.IO.Stream docStreamOut = new System.IO.FileStream(MyDir + "Document.NoSignatures.FromStream.doc", System.IO.FileMode.Create);
+            Stream docStreamIn = new FileStream(MyDir + "Document.Signed.doc", FileMode.Open);
+            Stream docStreamOut = new FileStream(MyDir + "Document.NoSignatures.FromStream.doc", FileMode.Create);
 
             DigitalSignatureUtil.RemoveAllSignatures(docStreamIn, docStreamOut);
 
@@ -32,7 +32,7 @@ namespace ApiExamples.DigitalSignature
             docStreamOut.Close();
 
             //By string:
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.Signed.doc");
+            Document doc = new Document(MyDir + "Document.Signed.doc");
             string outFileName = MyDir + "Document.NoSignatures.FromString.doc";
 
             DigitalSignatureUtil.RemoveAllSignatures(doc.OriginalFileName, outFileName);
@@ -46,7 +46,7 @@ namespace ApiExamples.DigitalSignature
             //ExFor:DigitalSignatureUtil.LoadSignatures(Stream)
             //ExFor:DigitalSignatureUtil.LoadSignatures(String)
             //ExSummary:Shows how to load signatures from a document by stream and by string.
-            System.IO.Stream docStream = new System.IO.FileStream(MyDir + "Document.Signed.doc", System.IO.FileMode.Open);
+            Stream docStream = new FileStream(MyDir + "Document.Signed.doc", FileMode.Open);
 
             // By stream:
             DigitalSignatureCollection digitalSignatures = DigitalSignatureUtil.LoadSignatures(docStream);
@@ -60,7 +60,7 @@ namespace ApiExamples.DigitalSignature
         [Test]
         // We don't include a sample certificate with the examples
         // so this exception is expected instead since the file is not there.
-        [ExpectedException(typeof(System.IO.FileNotFoundException))]
+        [ExpectedException(typeof(FileNotFoundException))]
         public void SignEx()
         {
             //ExStart
@@ -70,14 +70,14 @@ namespace ApiExamples.DigitalSignature
             CertificateHolder ch = CertificateHolder.Create(MyDir + "MyPkcs12.pfx", "My password");
 
             //By String
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
             string outputDocFileName = MyDir + "Document.Signed.doc";
 
             DigitalSignatureUtil.Sign(doc.OriginalFileName, outputDocFileName, ch, "My comment", DateTime.Now);
 
             //By Stream
-            System.IO.Stream docInStream = new System.IO.FileStream(MyDir + "Document.doc", System.IO.FileMode.Open);
-            System.IO.Stream docOutStream = new System.IO.FileStream(MyDir + "Document.Signed.doc", System.IO.FileMode.OpenOrCreate);
+            Stream docInStream = new FileStream(MyDir + "Document.doc", FileMode.Open);
+            Stream docOutStream = new FileStream(MyDir + "Document.Signed.doc", FileMode.OpenOrCreate);
 
             DigitalSignatureUtil.Sign(docInStream, docOutStream, ch, "My comment", DateTime.Now);
             //ExEnd

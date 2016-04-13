@@ -7,12 +7,12 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+
+using Aspose.Words;
+
 using NUnit.Framework;
 
-
-namespace ApiExamples.VariableCollection
+namespace ApiExamples
 {
     [TestFixture]
     public class ExVariableCollection : ApiExampleBase
@@ -23,7 +23,7 @@ namespace ApiExamples.VariableCollection
             //ExStart
             //ExFor:VariableCollection.Add
             //ExSummary:Shows how to create document variables and add them to a document's variable collection.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             doc.Variables.Add("doc", "Word processing document");
             doc.Variables.Add("docx", "Word processing document");
@@ -41,7 +41,7 @@ namespace ApiExamples.VariableCollection
             //ExStart
             //ExFor:VariableCollection.Clear
             //ExSummary:Shows how to clear all document variables from a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             doc.Variables.Add("doc", "Word processing document");
             doc.Variables.Add("docx", "Word processing document");
@@ -60,7 +60,7 @@ namespace ApiExamples.VariableCollection
             //ExStart
             //ExFor:VariableCollection.Contains
             //ExSummary:Shows how to check if a collection of document variables contains a key.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             doc.Variables.Add("doc", "Word processing document");
            
@@ -75,7 +75,7 @@ namespace ApiExamples.VariableCollection
             //ExStart
             //ExFor:VariableCollection.GetEnumerator
             //ExSummary:Shows how to obtain an enumerator from a collection of document variables and use it.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             doc.Variables.Add("doc", "Word processing document");
             doc.Variables.Add("docx", "Word processing document");
@@ -99,7 +99,7 @@ namespace ApiExamples.VariableCollection
             //ExStart
             //ExFor:VariableCollection.IndexOfKey
             //ExSummary:Shows how to get the index of a key.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             doc.Variables.Add("doc", "Word processing document");
             doc.Variables.Add("docx", "Word processing document");
@@ -118,7 +118,7 @@ namespace ApiExamples.VariableCollection
             //ExStart
             //ExFor:VariableCollection.Remove
             //ExSummary:Shows how to remove an element from a document's variable collection by key.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             doc.Variables.Add("doc", "Word processing document");
             doc.Variables.Add("docx", "Word processing document");
@@ -137,7 +137,7 @@ namespace ApiExamples.VariableCollection
             //ExStart
             //ExFor:VariableCollection.RemoveAt
             //ExSummary:Shows how to remove an element from a document's variable collection by index.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             doc.Variables.Add("doc", "Word processing document");
             doc.Variables.Add("docx", "Word processing document");

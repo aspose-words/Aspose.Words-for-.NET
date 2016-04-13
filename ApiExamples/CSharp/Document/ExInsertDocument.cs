@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -8,12 +8,13 @@
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
+
 using Aspose.Words;
 using Aspose.Words.MailMerging;
+
 using NUnit.Framework;
 
-
-namespace ApiExamples.Document
+namespace ApiExamples
 {
     [TestFixture]
     public class ExInsertDocument : ApiExampleBase
@@ -29,7 +30,7 @@ namespace ApiExamples.Document
         /// <param name="insertAfterNode">Node in the destination document after which the content 
         /// should be inserted. This node should be a block level node (paragraph or table).</param>
         /// <param name="srcDoc">The document to insert.</param>
-        static void InsertDocument(Aspose.Words.Node insertAfterNode, Aspose.Words.Document srcDoc)
+        static void InsertDocument(Node insertAfterNode, Document srcDoc)
         {
             // Make sure that the node is either a paragraph or table.
             if ((!insertAfterNode.NodeType.Equals(NodeType.Paragraph)) &
@@ -43,10 +44,10 @@ namespace ApiExamples.Document
             NodeImporter importer = new NodeImporter(srcDoc, insertAfterNode.Document, ImportFormatMode.KeepSourceFormatting);
 
             // Loop through all sections in the source document.
-            foreach (Aspose.Words.Section srcSection in srcDoc.Sections)
+            foreach (Section srcSection in srcDoc.Sections)
             {
                 // Loop through all block level nodes (paragraphs and tables) in the body of the section.
-                foreach (Aspose.Words.Node srcNode in srcSection.Body)
+                foreach (Node srcNode in srcSection.Body)
                 {
                     // Let's skip the node if it is a last empty paragraph in a section.
                     if (srcNode.NodeType.Equals(NodeType.Paragraph))
@@ -57,7 +58,7 @@ namespace ApiExamples.Document
                     }
 
                     // This creates a clone of the node, suitable for insertion into the destination document.
-                    Aspose.Words.Node newNode = importer.ImportNode(srcNode, true);
+                    Node newNode = importer.ImportNode(srcNode, true);
 
                     // Insert new node after the reference node.
                     dstStory.InsertAfter(newNode, insertAfterNode);
@@ -73,13 +74,13 @@ namespace ApiExamples.Document
             //ExStart
             //ExId:InsertDocumentAtBookmark
             //ExSummary:Invokes the InsertDocument method shown above to insert a document at a bookmark.
-            Aspose.Words.Document mainDoc = new Aspose.Words.Document(MyDir + "InsertDocument1.doc");
-            Aspose.Words.Document subDoc = new Aspose.Words.Document(MyDir + "InsertDocument2.doc");
+            Document mainDoc = new Document(MyDir + "InsertDocument1.doc");
+            Document subDoc = new Document(MyDir + "InsertDocument2.doc");
 
-            Aspose.Words.Bookmark bookmark = mainDoc.Range.Bookmarks["insertionPlace"];
+            Bookmark bookmark = mainDoc.Range.Bookmarks["insertionPlace"];
             InsertDocument(bookmark.BookmarkStart.ParentNode, subDoc);
 
-            mainDoc.Save(MyDir + "InsertDocumentAtBookmark Out.doc");
+            mainDoc.Save(MyDir + @"\Artifacts\InsertDocumentAtBookmark.doc");
             //ExEnd
         }
 
@@ -89,7 +90,7 @@ namespace ApiExamples.Document
         [Test]
         public void InsertDocumentAtMailMergeCaller()
         {
-            InsertDocumentAtMailMerge();
+            this.InsertDocumentAtMailMerge();
         }
 
         //ExStart
@@ -99,7 +100,7 @@ namespace ApiExamples.Document
         public void InsertDocumentAtMailMerge()
         {
             // Open the main document.
-            Aspose.Words.Document mainDoc = new Aspose.Words.Document(MyDir + "InsertDocument1.doc");
+            Document mainDoc = new Document(MyDir + "InsertDocument1.doc");
 
             // Add a handler to MergeField event
             mainDoc.MailMerge.FieldMergingCallback = new InsertDocumentAtMailMergeHandler();
@@ -111,7 +112,7 @@ namespace ApiExamples.Document
                 new string[] { "Document_1" },
                 new string[] { MyDir + "InsertDocument2.doc" });
 
-            mainDoc.Save(MyDir + "InsertDocumentAtMailMerge Out.doc");
+            mainDoc.Save(MyDir + @"\Artifacts\InsertDocumentAtMailMerge.doc");
         }
 
         private class InsertDocumentAtMailMergeHandler : IFieldMergingCallback
@@ -130,7 +131,7 @@ namespace ApiExamples.Document
                     builder.MoveToMergeField(e.DocumentFieldName);
 
                     // The name of the document to load and insert is stored in the field value.
-                    Aspose.Words.Document subDoc = new Aspose.Words.Document((string)e.FieldValue);
+                    Document subDoc = new Document((string)e.FieldValue);
 
                     // Insert the document.
                     InsertDocument(builder.CurrentParagraph, subDoc);
@@ -171,7 +172,7 @@ namespace ApiExamples.Document
 
                     // Load the document from the blob field.
                     MemoryStream stream = new MemoryStream((byte[])e.FieldValue);
-                    Aspose.Words.Document subDoc = new Aspose.Words.Document(stream);
+                    Document subDoc = new Document(stream);
 
                     // Insert the document.
                     InsertDocument(builder.CurrentParagraph, subDoc);
@@ -198,7 +199,7 @@ namespace ApiExamples.Document
         [Test]
         public void InsertDocumentAtReplaceCaller()
         {
-            InsertDocumentAtReplace();
+            this.InsertDocumentAtReplace();
         }
         
         //ExStart
@@ -212,16 +213,16 @@ namespace ApiExamples.Document
         //ExSummary:Shows how to insert content of one document into another during a customized find and replace operation.
         public void InsertDocumentAtReplace()
         {
-            Aspose.Words.Document mainDoc = new Aspose.Words.Document(MyDir + "InsertDocument1.doc");
+            Document mainDoc = new Document(MyDir + "InsertDocument1.doc");
             mainDoc.Range.Replace(new Regex("\\[MY_DOCUMENT\\]"), new InsertDocumentAtReplaceHandler(), false);
-            mainDoc.Save(MyDir + "InsertDocumentAtReplace Out.doc");
+            mainDoc.Save(MyDir + @"\Artifacts\InsertDocumentAtReplace.doc");
         }
 
         private class InsertDocumentAtReplaceHandler : IReplacingCallback
         {
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs e)
             {
-                Aspose.Words.Document subDoc = new Aspose.Words.Document(MyDir + "InsertDocument2.doc");
+                Document subDoc = new Document(MyDir + "InsertDocument2.doc");
 
                 // Insert a document after the paragraph, containing the match text.
                 Paragraph para = (Paragraph)e.MatchNode.ParentNode;

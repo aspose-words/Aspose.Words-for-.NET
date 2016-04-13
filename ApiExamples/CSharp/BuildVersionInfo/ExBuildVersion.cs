@@ -1,8 +1,8 @@
 ﻿using System;
+using Aspose.Words;
 using NUnit.Framework;
 
-
-namespace ApiExamples.BuildVersionInfo
+namespace ApiExamples
 {
     [TestFixture]
     public class ExBuildVersion : ApiExampleBase
@@ -13,7 +13,7 @@ namespace ApiExamples.BuildVersionInfo
             //ExStart
             //ExFor:BuildVersionInfo
             //ExSummary:Shows how to use BuildVersionInfo to obtain information about this product.
-            Console.WriteLine("I am currently using {0}, version number {1}.", Aspose.Words.BuildVersionInfo.Product, Aspose.Words.BuildVersionInfo.Version);
+            Console.WriteLine("I am currently using {0}, version number {1}.", BuildVersionInfo.Product, BuildVersionInfo.Version);
             //ExEnd
         }
     }

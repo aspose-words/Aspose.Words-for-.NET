@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -8,15 +8,19 @@
 using System;
 using System.Collections;
 using System.Drawing;
+using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Fonts;
+using Aspose.Words.Saving;
 using Aspose.Words.Tables;
+
 using NUnit.Framework;
 
+using Font = Aspose.Words.Font;
 
-namespace ApiExamples.Font
+namespace ApiExamples
 {
     [TestFixture]
     public class ExFont : ApiExampleBase
@@ -35,13 +39,13 @@ namespace ApiExamples.Font
             //ExFor:Story.FirstParagraph
             //ExSummary:Shows how to add a formatted run of text to a document using the object model.
             // Create an empty document. It contains one empty paragraph.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // Create a new run of text.
             Run run = new Run(doc, "Hello");
 
             // Specify character formatting for the run of text.
-            Aspose.Words.Font f = run.Font;
+            Font f = run.Font;
             f.Name = "Courier New";
             f.Size = 36;
             f.HighlightColor = Color.Yellow;
@@ -60,7 +64,7 @@ namespace ApiExamples.Font
             //ExFor:Font.SmallCaps
             //ExSummary:Shows how to use all capitals and small capitals character formatting properties.
             // Create an empty document. It contains one empty paragraph.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // Get the paragraph from the document, we will be adding runs of text to it.
             Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
@@ -85,7 +89,7 @@ namespace ApiExamples.Font
             //ExFor:FontInfo.Name
             //ExFor:FontInfo.IsTrueType
             //ExSummary:Shows how to gather the details of what fonts are present in a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             FontInfoCollection fonts = doc.FontInfos;
             int fontIndex = 1;
@@ -112,7 +116,7 @@ namespace ApiExamples.Font
             //ExFor:Font.DoubleStrikeThrough
             //ExSummary:Shows how to use strike-through character formatting properties.
             // Create an empty document. It contains one empty paragraph.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // Get the paragraph from the document, we will be adding runs of text to it.
             Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
@@ -136,7 +140,7 @@ namespace ApiExamples.Font
             //ExFor:Font.Superscript
             //ExSummary:Shows how to use subscript, superscript and baseline text position properties.
             // Create an empty document. It contains one empty paragraph.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // Get the paragraph from the document, we will be adding runs of text to it.
             Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
@@ -170,7 +174,7 @@ namespace ApiExamples.Font
             //ExFor:Font.Spacing
             //ExSummary:Shows how to use character scaling and spacing properties.
             // Create an empty document. It contains one empty paragraph.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // Get the paragraph from the document, we will be adding runs of text to it.
             Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
@@ -195,7 +199,7 @@ namespace ApiExamples.Font
         [Test]
         public void EmbossItalic()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             //ExStart
             //ExFor:Font.Emboss
             //ExFor:Font.Italic
@@ -209,7 +213,7 @@ namespace ApiExamples.Font
         [Test]
         public void Engrave()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             //ExStart
             //ExFor:Font.Engrave
             //ExSummary:Shows how to create a run of text formatted as engraved.
@@ -221,7 +225,7 @@ namespace ApiExamples.Font
         [Test]
         public void Shadow()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             //ExStart
             //ExFor:Font.Shadow
             //ExSummary:Shows how to create a run of text formatted with a shadow.
@@ -233,7 +237,7 @@ namespace ApiExamples.Font
         [Test]
         public void Outline()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             //ExStart
             //ExFor:Font.Outline
             //ExSummary:Shows how to create a run of text formatted as outline.
@@ -245,7 +249,7 @@ namespace ApiExamples.Font
         [Test]
         public void Hidden()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             //ExStart
             //ExFor:Font.Hidden
             //ExSummary:Shows how to create a hidden run of text.
@@ -257,7 +261,7 @@ namespace ApiExamples.Font
         [Test]
         public void Kerning()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             //ExStart
             //ExFor:Font.Kerning
             //ExSummary:Shows how to specify the font size at which kerning starts.
@@ -269,7 +273,7 @@ namespace ApiExamples.Font
         [Test]
         public void NoProofing()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             //ExStart
             //ExFor:Font.NoProofing
             //ExSummary:Shows how to specify that the run of text is not to be spell checked by Microsoft Word.
@@ -281,7 +285,7 @@ namespace ApiExamples.Font
         [Test]
         public void LocaleId()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             //ExStart
             //ExFor:Font.LocaleId
@@ -298,7 +302,7 @@ namespace ApiExamples.Font
         [Test]
         public void Underlines()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             //ExStart
             //ExFor:Font.Underline
             //ExFor:Font.UnderlineColor
@@ -359,7 +363,7 @@ namespace ApiExamples.Font
             // Insert some Arabic text.
             builder.Writeln("مرحبًا");
 
-            builder.Document.Save(MyDir + "Font.Bidi Out.doc");
+            builder.Document.Save(MyDir + @"\Artifacts\Font.Bidi.doc");
             //ExEnd
         }
 
@@ -383,8 +387,8 @@ namespace ApiExamples.Font
 
             // Insert some Chinese text.
             builder.Writeln("你好世界");
-            
-            builder.Document.Save(MyDir + "Font.FarEast Out.doc");
+
+            builder.Document.Save(MyDir + @"\Artifacts\Font.FarEast.doc");
             //ExEnd
         }
 
@@ -405,7 +409,7 @@ namespace ApiExamples.Font
 
             builder.Writeln("Hello, Привет");
 
-            builder.Document.Save(MyDir + "Font.Names Out.doc");
+            builder.Document.Save(MyDir + @"\Artifacts\Font.Names.doc");
             //ExEnd
         }
 
@@ -416,7 +420,7 @@ namespace ApiExamples.Font
             //ExFor:Font.StyleIdentifier
             //ExFor:StyleIdentifier
             //ExSummary:Shows how to use style identifier to find text formatted with a specific character style and apply different character style.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Font.StyleIdentifier.doc");
+            Document doc = new Document(MyDir + "Font.StyleIdentifier.doc");
 
             // Select all run nodes in the document.
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
@@ -431,7 +435,7 @@ namespace ApiExamples.Font
                     run.Font.StyleIdentifier = StyleIdentifier.Strong;
             }
 
-            doc.Save(MyDir + "Font.StyleIdentifier Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Font.StyleIdentifier.doc");
             //ExEnd
         }
 
@@ -441,7 +445,7 @@ namespace ApiExamples.Font
             //ExStart
             //ExFor:Font.StyleName
             //ExSummary:Shows how to use style name to find text formatted with a specific character style and apply different character style.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Font.StyleName.doc");
+            Document doc = new Document(MyDir + "Font.StyleName.doc");
 
             // Select all run nodes in the document.
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
@@ -456,7 +460,7 @@ namespace ApiExamples.Font
                     run.Font.StyleName = "Strong";
             }
 
-            doc.Save(MyDir + "Font.StyleName Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Font.StyleName.doc");
             //ExEnd
         }
 
@@ -467,7 +471,7 @@ namespace ApiExamples.Font
             //ExFor:Font.Style
             //ExFor:Style.BuiltIn
             //ExSummary:Applies double underline to all runs in a document that are formatted with custom character styles.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Font.Style.doc");
+            Document doc = new Document(MyDir + "Font.Style.doc");
 
             // Select all run nodes in the document.
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
@@ -475,14 +479,14 @@ namespace ApiExamples.Font
             // Loop through every run node.
             foreach (Run run in runs)
             {
-                Aspose.Words.Style charStyle = run.Font.Style;
+                Style charStyle = run.Font.Style;
 
                 // If the style of the run is not a built-in character style, apply double underline.
                 if (!charStyle.BuiltIn)
                     run.Font.Underline = Underline.Double;
             }
 
-            doc.Save(MyDir + "Font.Style Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Font.Style.doc");
             //ExEnd
         }
 
@@ -492,7 +496,7 @@ namespace ApiExamples.Font
             //ExStart
             //ExFor:Run
             //ExSummary:Gets all fonts used in a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Font.Names.doc");
+            Document doc = new Document(MyDir + "Font.Names.doc");
 
             // Select all runs in the document.
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
@@ -516,13 +520,87 @@ namespace ApiExamples.Font
 
         }
 
+        [Test]
+        public void FontSubstitutionPerFirstAvailableFont()
+        {
+            // Store the font sources currently used so we can restore them later. 
+            FontSourceBase[] origFontSources = FontSettings.DefaultInstance.GetFontsSources();
+
+            //ExStart
+            //ExFor:IWarningCallback
+            //ExFor:SaveOptions.WarningCallback
+            //ExId:FontSubstitutionNotification
+            //ExSummary:Demonstrates how to recieve notifications of font substitutions by using IWarningCallback.
+            // Load the document to render.
+            Document doc = new Document(MyDir + "Document.doc");
+
+            // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
+            ExRendering.HandleDocumentWarnings callback = new ExRendering.HandleDocumentWarnings();
+            doc.WarningCallback = callback;
+
+            // We can choose the default font to use in the case of any missing fonts.
+            FontSettings.DefaultInstance.DefaultFontName = "Arial";
+
+            // For testing we will set Aspose.Words to look for fonts only in a folder which doesn't exist. Since Aspose.Words won't
+            // find any fonts in the specified directory, then during rendering the fonts in the document will be subsuited with the default 
+            // font specified under FontSettings.DefaultFontName. We can pick up on this subsuition using our callback.
+            FontSettings.DefaultInstance.SetFontsFolder(string.Empty, false);
+
+            // Pass the save options along with the save path to the save method.
+            doc.Save(MyDir + @"\Artifacts\Rendering.MissingFontNotification.pdf");
+            //ExEnd
+
+            Assert.Greater(callback.mFontWarnings.Count, 0);
+            Assert.True(callback.mFontWarnings[0].WarningType == WarningType.FontSubstitution);
+            Assert.True(callback.mFontWarnings[0].Description.Equals("Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font."));
+
+            // Restore default fonts. 
+            FontSettings.DefaultInstance.SetFontsSources(origFontSources);
+        }
+
+        [Test]
+        public void FontSubstitutionWarnings()
+        {
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
+            ExRendering.HandleDocumentWarnings callback = new ExRendering.HandleDocumentWarnings();
+            doc.WarningCallback = callback;
+
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.DefaultFontName = "Arial";
+            fontSettings.SetFontSubstitutes("Arial", new string[] { "Arvo", "Slab" });
+            fontSettings.SetFontsFolder(MyDir + @"MyFonts\", false);
+
+            doc.FontSettings = fontSettings;
+
+            doc.Save(MyDir + @"\Artifacts\Rendering.MissingFontNotification.pdf");
+            
+            Assert.True(callback.mFontWarnings[0].Description.Equals("Font substitutes: 'Arial' replaced with 'Arvo'."));
+            Assert.True(callback.mFontWarnings[1].Description.Equals("Font 'Times New Roman' has not been found. Using 'Arvo' font instead. Reason: default font setting."));
+        }
+
+        [Test]
+        public void FontSubstitutionWarningsClosestMatch()
+        {
+            Document doc = new Document(MyDir + "DisapearingBulletPoints.doc");
+
+            // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
+            ExRendering.HandleDocumentWarnings callback = new ExRendering.HandleDocumentWarnings();
+            doc.WarningCallback = callback;
+
+            doc.Save(MyDir + @"\Artifacts\DisapearingBulletPoints.pdf");
+
+            Assert.True(callback.mFontWarnings[0].Description.Equals("Font 'SymbolPS' has not been found. Using 'Wingdings' font instead. Reason: closest match according to font info from the document."));
+        }
+
         /// <summary>
         /// This calls the below method to resolve skipping of [Test] in VB.NET.
         /// </summary>
         [Test]
         public void RemoveHiddenContentCaller()
         {
-            RemoveHiddenContentFromDocument();
+            this.RemoveHiddenContentFromDocument();
         }
 
         //ExStart
@@ -546,7 +624,7 @@ namespace ApiExamples.Font
         public void RemoveHiddenContentFromDocument()
         {
             // Open the document we want to remove hidden content from.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Font.Hidden.doc");
+            Document doc = new Document(MyDir + "Font.Hidden.doc");
 
             // Create an object that inherits from the DocumentVisitor class.
             RemoveHiddenContentVisitor hiddenContentRemover = new RemoveHiddenContentVisitor();
@@ -566,7 +644,7 @@ namespace ApiExamples.Font
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
             table.Accept(hiddenContentRemover);
 
-            doc.Save(MyDir + "Font.Hidden Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Font.Hidden.doc");
 
             Assert.AreEqual(13, doc.GetChildNodes(NodeType.Paragraph, true).Count); //ExSkip
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count); //ExSkip
@@ -583,7 +661,7 @@ namespace ApiExamples.Font
             public override VisitorAction VisitFieldStart(FieldStart fieldStart)
             {
                 // If this node is hidden, then remove it.
-                if (isHidden(fieldStart))
+                if (this.isHidden(fieldStart))
                     fieldStart.Remove();
 
                 return VisitorAction.Continue;
@@ -594,7 +672,7 @@ namespace ApiExamples.Font
             /// </summary>
             public override VisitorAction VisitFieldEnd(FieldEnd fieldEnd)
             {
-                if (isHidden(fieldEnd))
+                if (this.isHidden(fieldEnd))
                     fieldEnd.Remove();            
 
                 return VisitorAction.Continue;
@@ -605,7 +683,7 @@ namespace ApiExamples.Font
             /// </summary>
             public override VisitorAction VisitFieldSeparator(FieldSeparator fieldSeparator)
             {
-                if (isHidden(fieldSeparator))
+                if (this.isHidden(fieldSeparator))
                     fieldSeparator.Remove();
 
                 return VisitorAction.Continue;
@@ -616,7 +694,7 @@ namespace ApiExamples.Font
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (isHidden(run))
+                if (this.isHidden(run))
                     run.Remove();            
 
                 return VisitorAction.Continue;
@@ -627,7 +705,7 @@ namespace ApiExamples.Font
             /// </summary>
             public override VisitorAction VisitParagraphStart(Paragraph paragraph)
             {
-                if (isHidden(paragraph))
+                if (this.isHidden(paragraph))
                     paragraph.Remove();
 
                 return VisitorAction.Continue;
@@ -638,7 +716,7 @@ namespace ApiExamples.Font
             /// </summary>
             public override VisitorAction VisitFormField(FormField field)
             {
-                if (isHidden(field))
+                if (this.isHidden(field))
                     field.Remove();
 
                 return VisitorAction.Continue;
@@ -649,7 +727,7 @@ namespace ApiExamples.Font
             /// </summary>
             public override VisitorAction VisitGroupShapeStart(GroupShape groupShape)
             {
-                if (isHidden(groupShape))
+                if (this.isHidden(groupShape))
                     groupShape.Remove();
 
                 return VisitorAction.Continue;
@@ -660,7 +738,7 @@ namespace ApiExamples.Font
             /// </summary>
             public override VisitorAction VisitShapeStart(Shape shape)
             {
-                if (isHidden(shape))
+                if (this.isHidden(shape))
                     shape.Remove();
 
                 return VisitorAction.Continue;
@@ -669,9 +747,9 @@ namespace ApiExamples.Font
             /// <summary>
             /// Called when a Comment is encountered in the document.
             /// </summary>
-            public override VisitorAction VisitCommentStart(Aspose.Words.Comment comment)
+            public override VisitorAction VisitCommentStart(Comment comment)
             {
-                if (isHidden(comment))
+                if (this.isHidden(comment))
                     comment.Remove();
 
                 return VisitorAction.Continue;
@@ -682,7 +760,7 @@ namespace ApiExamples.Font
             /// </summary>
             public override VisitorAction VisitFootnoteStart(Footnote footnote)
             {
-                if (isHidden(footnote))
+                if (this.isHidden(footnote))
                     footnote.Remove();
 
                 return VisitorAction.Continue;
@@ -734,7 +812,7 @@ namespace ApiExamples.Font
             /// </summary>
             public override VisitorAction VisitSpecialChar(SpecialChar character)
             {
-                if (isHidden(character))
+                if (this.isHidden(character))
                     character.Remove();
 
                 return VisitorAction.Continue;
@@ -743,12 +821,12 @@ namespace ApiExamples.Font
             /// <summary>
             /// Returns true if the node passed is set as hidden, returns false if it is visible.
             /// </summary>
-            private bool isHidden(Aspose.Words.Node node)
+            private bool isHidden(Node node)
             {
-                if (node is Aspose.Words.Inline)
+                if (node is Inline)
                 {
                     // If the node is Inline then cast it to retrieve the Font property which contains the hidden property
-                    Aspose.Words.Inline currentNode = (Aspose.Words.Inline)node;
+                    Inline currentNode = (Inline)node;
                     return currentNode.Font.Hidden;
                 }
                 else if (node.NodeType == NodeType.Paragraph)

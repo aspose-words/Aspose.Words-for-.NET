@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -7,11 +7,13 @@
 
 using System;
 using System.Drawing;
+using System.IO;
+
 using Aspose.Words;
+
 using NUnit.Framework;
 
-
-namespace ApiExamples.Style
+namespace ApiExamples
 {
     [TestFixture]
     public class ExStyles : ApiExampleBase
@@ -24,10 +26,10 @@ namespace ApiExamples.Style
             //ExFor:Style.Name
             //ExId:GetStyles
             //ExSummary:Shows how to get access to the collection of styles defined in the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             StyleCollection styles = doc.Styles;
 
-            foreach (Aspose.Words.Style style in styles)
+            foreach (Style style in styles)
                 Console.WriteLine(style.Name);
             //ExEnd
         }
@@ -39,8 +41,8 @@ namespace ApiExamples.Style
             //ExFor:Style.Font
             //ExFor:Style
             //ExSummary:Shows how to change the font formatting of all styles in a document.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
-            foreach (Aspose.Words.Style style in doc.Styles)
+            Document doc = new Document();
+            foreach (Style style in doc.Styles)
             {
                 if (style.Font != null)
                 {
@@ -55,7 +57,7 @@ namespace ApiExamples.Style
         [Test]
         public void ChangeStyleOfTOCLevel()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             //ExStart
             //ExId:ChangeTOCStyle
             //ExSummary:Changes a formatting property used in the first level TOC style.
@@ -77,7 +79,7 @@ namespace ApiExamples.Style
             //ExFor:TabStop.Leader
             //ExId:ChangeTOCTabStops
             //ExSummary:Shows how to modify the position of the right tab stop in TOC related paragraphs.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.TableOfContents.doc");
+            Document doc = new Document(MyDir + "Document.TableOfContents.doc");
 
             // Iterate through all paragraphs in the document
             foreach (Paragraph para in doc.GetChildNodes(NodeType.Paragraph, true))
@@ -95,21 +97,21 @@ namespace ApiExamples.Style
                 }
             }
 
-            doc.Save(MyDir + "Document.TableOfContentsTabStops Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Document.TableOfContentsTabStops.doc");
             //ExEnd
         }
 
         [Test]
         public void CopyStyleSameDocument()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             //ExStart
             //ExFor:StyleCollection.AddCopy
             //ExFor:Style.Name
             //ExSummary:Demonstrates how to copy a style within the same document.
             // The AddCopy method creates a copy of the specified style and automatically generates a new name for the style, such as "Heading 1_0".
-            Aspose.Words.Style newStyle = doc.Styles.AddCopy(doc.Styles["Heading 1"]);
+            Style newStyle = doc.Styles.AddCopy(doc.Styles["Heading 1"]);
 
             // You can change the new style name if required as the Style.Name property is read-write.
             newStyle.Name = "My Heading 1";
@@ -123,20 +125,20 @@ namespace ApiExamples.Style
         [Test]
         public void CopyStyleDifferentDocument()
         {
-            Aspose.Words.Document dstDoc = new Aspose.Words.Document();
-            Aspose.Words.Document srcDoc = new Aspose.Words.Document();
+            Document dstDoc = new Document();
+            Document srcDoc = new Document();
 
             //ExStart
             //ExFor:StyleCollection.AddCopy
             //ExSummary:Demonstrates how to copy style from one document into a different document.
             // This is the style in the source document to copy to the destination document.
-            Aspose.Words.Style srcStyle = srcDoc.Styles[StyleIdentifier.Heading1];
+            Style srcStyle = srcDoc.Styles[StyleIdentifier.Heading1];
 
             // Change the font of the heading style to red.
             srcStyle.Font.Color = Color.Red;
 
             // The AddCopy method can be used to copy a style from a different document.
-            Aspose.Words.Style newStyle = dstDoc.Styles.AddCopy(srcStyle);
+            Style newStyle = dstDoc.Styles.AddCopy(srcStyle);
             //ExEnd
 
             Assert.NotNull(newStyle);
@@ -147,21 +149,21 @@ namespace ApiExamples.Style
         [Test]
         public void OverwriteStyleDifferentDocument()
         {         
-            Aspose.Words.Document dstDoc = new Aspose.Words.Document();
-            Aspose.Words.Document srcDoc = new Aspose.Words.Document();
+            Document dstDoc = new Document();
+            Document srcDoc = new Document();
 
             //ExStart
             //ExFor:StyleCollection.AddCopy
             //ExId:OverwriteStyleDifferentDocument   
             //ExSummary:Demonstrates how to copy a style from one document to another and overide an existing style in the destination document.
             // This is the style in the source document to copy to the destination document.
-            Aspose.Words.Style srcStyle = srcDoc.Styles[StyleIdentifier.Heading1];
+            Style srcStyle = srcDoc.Styles[StyleIdentifier.Heading1];
 
             // Change the font of the heading style to red.
             srcStyle.Font.Color = Color.Red;
 
             // The AddCopy method can be used to copy a style to a different document.
-            Aspose.Words.Style newStyle = dstDoc.Styles.AddCopy(srcStyle);
+            Style newStyle = dstDoc.Styles.AddCopy(srcStyle);
 
             // The name of the new style can be changed to the name of any existing style. Doing this will override the existing style.
             newStyle.Name = "Heading 1";
@@ -174,12 +176,33 @@ namespace ApiExamples.Style
         }
 
         [Test]
+        public void DefaultStyles()
+        {
+            Document doc = new Document();
+
+            //Add document-wide defaults parameters
+            doc.Styles.DefaultFont.Name = "PMingLiU";
+            doc.Styles.DefaultFont.Bold = true;
+
+            doc.Styles.DefaultParagraphFormat.SpaceAfter = 20;
+            doc.Styles.DefaultParagraphFormat.Alignment = ParagraphAlignment.Right;
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Rtf);
+
+            Assert.IsTrue(doc.Styles.DefaultFont.Bold);
+            Assert.AreEqual("PMingLiU", doc.Styles.DefaultFont.Name);
+            Assert.AreEqual(20, doc.Styles.DefaultParagraphFormat.SpaceAfter);
+            Assert.AreEqual(ParagraphAlignment.Right, doc.Styles.DefaultParagraphFormat.Alignment);
+        }
+
+        [Test]
         public void RemoveEx()
         {
             //ExStart
             //ExFor:Style.Remove
             //ExSummary:Shows how to pick a style that is defined in the document and remove it.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             doc.Styles["Normal"].Remove();
             //ExEnd
         }

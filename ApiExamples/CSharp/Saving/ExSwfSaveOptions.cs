@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -6,11 +6,13 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System.IO;
+
+using Aspose.Words;
 using Aspose.Words.Saving;
+
 using NUnit.Framework;
 
-
-namespace ApiExamples.Saving
+namespace ApiExamples
 {
     [TestFixture]
     public class ExSwfSaveOptions : ApiExampleBase
@@ -18,7 +20,7 @@ namespace ApiExamples.Saving
         [Test]
         public void UseCustomToolTips()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             //ExStart
             //ExFor:SwfSaveOptions
@@ -63,7 +65,7 @@ namespace ApiExamples.Saving
             options.ToolTips[SwfViewerControlIdentifier.BottomPaneShowHideBottomPaneButton] = "Показать/Скрыть панель";
             //ExEnd
 
-            doc.Save(MyDir + "SwfSaveOptions.ToolTips Out.swf", options);
+            doc.Save(MyDir + @"\Artifacts\SwfSaveOptions.ToolTips.swf", options);
         }
 
         [Test]
@@ -74,7 +76,7 @@ namespace ApiExamples.Saving
             //ExFor:SwfTopPaneControlFlags
             //ExFor:SwfSaveOptions.ShowSearch
             //ExSummary:Shows how to choose which controls to display in the embedded document viewer.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             // Create an instance of SwfSaveOptions and set some buttons as hidden.
             SwfSaveOptions options = new SwfSaveOptions();
@@ -87,13 +89,13 @@ namespace ApiExamples.Saving
             options.ShowSearch = false;
             //ExEnd
 
-            doc.Save(MyDir + "SwfSaveOptions.HideControls Out.swf", options);
+            doc.Save(MyDir + @"\Artifacts\SwfSaveOptions.HideControls.swf", options);
         }
 
         [Test]
         public void SetLogo()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             //ExStart
             //ExFor:SwfSaveOptions.#ctor
@@ -114,7 +116,7 @@ namespace ApiExamples.Saving
             options.LogoLink = "http://www.aspose.com";
             //ExEnd
 
-            doc.Save(MyDir + "SwfSaveOptions.CustomLogo Out.swf", options);
+            doc.Save(MyDir + @"\Artifacts\SwfSaveOptions.CustomLogo.swf", options);
         }
 
     }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -6,11 +6,13 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System.Collections;
+
+using Aspose.Words;
 using Aspose.Words.MailMerging;
+
 using NUnit.Framework;
 
-
-namespace ApiExamples.MailMerging
+namespace ApiExamples
 {
     [TestFixture]
     public class ExMailMergeCustom : ApiExampleBase
@@ -21,7 +23,7 @@ namespace ApiExamples.MailMerging
         [Test]
         public void MailMergeCustomDataSourceCaller()
         {
-            MailMergeCustomDataSource();
+            this.MailMergeCustomDataSource();
         }
 
         //ExStart
@@ -40,7 +42,7 @@ namespace ApiExamples.MailMerging
             customers.Add(new Customer("Paolo Accorti", "Via Monte Bianco 34, Torino"));
 
             // Open the template document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "MailMerge.CustomDataSource.doc");
+            Document doc = new Document(MyDir + "MailMerge.CustomDataSource.doc");
 
             // To be able to mail merge from your own data source, it must be wrapped
             // into an object that implements the IMailMergeDataSource interface.
@@ -49,7 +51,7 @@ namespace ApiExamples.MailMerging
             // Now you can pass your data source into Aspose.Words.
             doc.MailMerge.Execute(customersDataSource);
 
-            doc.Save(MyDir + "MailMerge.CustomDataSource Out.doc");
+            doc.Save(MyDir + @"\Artifacts\MailMerge.CustomDataSource.doc");
         }
 
         /// <summary>
@@ -59,20 +61,20 @@ namespace ApiExamples.MailMerging
         {
             public Customer(string aFullName, string anAddress)
             {
-                mFullName = aFullName;
-                mAddress = anAddress;
+                this.mFullName = aFullName;
+                this.mAddress = anAddress;
             }
 
             public string FullName
             {
-                get { return mFullName; }
-                set { mFullName = value; }
+                get { return this.mFullName; }
+                set { this.mFullName = value; }
             }
 
             public string Address
             {
-                get { return mAddress; }
-                set { mAddress = value; }
+                get { return this.mAddress; }
+                set { this.mAddress = value; }
             }
 
             private string mFullName;
@@ -99,10 +101,10 @@ namespace ApiExamples.MailMerging
         {
             public CustomerMailMergeDataSource(CustomerList customers)
             {
-                mCustomers = customers;
+                this.mCustomers = customers;
 
                 // When the data source is initialized, it must be positioned before the first record.
-                mRecordIndex= -1;
+                this.mRecordIndex= -1;
             }
 
             /// <summary>
@@ -121,10 +123,10 @@ namespace ApiExamples.MailMerging
                 switch (fieldName)
                 {
                     case "FullName":
-                        fieldValue = mCustomers[mRecordIndex].FullName;
+                        fieldValue = this.mCustomers[this.mRecordIndex].FullName;
                         return true;
                     case "Address":
-                        fieldValue = mCustomers[mRecordIndex].Address;
+                        fieldValue = this.mCustomers[this.mRecordIndex].Address;
                         return true;
                     default:
                         // A field with this name was not found, 
@@ -139,10 +141,10 @@ namespace ApiExamples.MailMerging
             /// </summary>
             public bool MoveNext()
             {
-                if (!IsEof)
-                    mRecordIndex++;
+                if (!this.IsEof)
+                    this.mRecordIndex++;
 
-                return (!IsEof);
+                return (!this.IsEof);
             }
 
             public IMailMergeDataSource GetChildDataSource(string tableName)
@@ -152,7 +154,7 @@ namespace ApiExamples.MailMerging
 
             private bool IsEof
             {
-                get { return (mRecordIndex >= mCustomers.Count); }
+                get { return (this.mRecordIndex >= this.mCustomers.Count); }
             }
 
             private readonly CustomerList mCustomers;

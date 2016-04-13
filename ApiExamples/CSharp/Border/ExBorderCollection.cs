@@ -5,12 +5,11 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System;
+using System.Drawing;
 using Aspose.Words;
 using NUnit.Framework;
 
-
-namespace ApiExamples.Border
+namespace ApiExamples
 {
     [TestFixture]
     public class ExBorderCollection : ApiExampleBase
@@ -21,7 +20,7 @@ namespace ApiExamples.Border
             //ExStart
             //ExFor:BorderCollection.GetEnumerator
             //ExSummary:Shows how to enumerate all borders in a collection.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.Borders.doc");
+            Document doc = new Document(MyDir + "Document.Borders.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
             BorderCollection borders = builder.ParagraphFormat.Borders;
 
@@ -29,12 +28,12 @@ namespace ApiExamples.Border
             while (enumerator.MoveNext())
             {
                 // Do something useful.
-                Aspose.Words.Border b = (Aspose.Words.Border)enumerator.Current;
-                b.Color = System.Drawing.Color.RoyalBlue;
+                Border b = (Border)enumerator.Current;
+                b.Color = Color.RoyalBlue;
                 b.LineStyle = LineStyle.Double;
             }
 
-            doc.Save(MyDir + "Document.ChangedColourBorder.doc");
+            doc.Save(MyDir + @"\Artifacts\Document.ChangedColourBorder.doc");
             //ExEnd
         }
 
@@ -44,7 +43,7 @@ namespace ApiExamples.Border
             //ExStart
             //ExFor:BorderCollection.ClearFormatting
             //ExSummary:Shows how to remove all borders from a paragraph at once.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.Borders.doc");
+            Document doc = new Document(MyDir + "Document.Borders.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
             BorderCollection borders = builder.ParagraphFormat.Borders;
 

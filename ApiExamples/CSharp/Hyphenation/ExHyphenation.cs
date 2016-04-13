@@ -7,12 +7,12 @@
 
 using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Text;
+
+using Aspose.Words;
+
 using NUnit.Framework;
 
-
-namespace ApiExamples.Hyphenation
+namespace ApiExamples
 {
     [TestFixture]
     public class ExHyphenation : ApiExampleBase
@@ -24,14 +24,14 @@ namespace ApiExamples.Hyphenation
             //ExFor:Hyphenation.RegisterDictionary(String, Stream)
             //ExFor:Hyphenation.RegisterDictionary(String, String)
             //ExSummary:Shows how to open and register a dictionary from a file.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
 
             // Register by string
-            Aspose.Words.Hyphenation.RegisterDictionary("en-US", MyDir + @"hyph_en_US.dic");
+            Hyphenation.RegisterDictionary("en-US", MyDir + "hyph_en_US.dic");
 
             // Register by stream
-            Stream dictionaryStream = new FileStream(MyDir + @"hyph_de_CH.dic", FileMode.Open);
-            Aspose.Words.Hyphenation.RegisterDictionary("de-CH", dictionaryStream);
+            Stream dictionaryStream = new FileStream(MyDir + "hyph_de_CH.dic", FileMode.Open);
+            Hyphenation.RegisterDictionary("de-CH", dictionaryStream);
             //ExEnd
         }
 
@@ -41,10 +41,10 @@ namespace ApiExamples.Hyphenation
             //ExStart
             //ExFor:Hyphenation.IsDictionaryRegistered(string)
             //ExSummary:Shows how to open check if some dictionary is registered.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
-            Aspose.Words.Hyphenation.RegisterDictionary("en-US", MyDir + @"hyph_en_US.dic");
+            Document doc = new Document(MyDir + "Document.doc");
+            Hyphenation.RegisterDictionary("en-US", MyDir + "hyph_en_US.dic");
 
-            Console.WriteLine(Aspose.Words.Hyphenation.IsDictionaryRegistered("en-US")); // True
+            Console.WriteLine(Hyphenation.IsDictionaryRegistered("en-US")); // True
             //ExEnd
         }
 
@@ -54,12 +54,12 @@ namespace ApiExamples.Hyphenation
             //ExStart
             //ExFor:Hyphenation.UnregisterDictionary(string)
             //ExSummary:Shows how to un-register a dictionary
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
-            Aspose.Words.Hyphenation.RegisterDictionary("en-US", MyDir + @"hyph_en_US.dic");
+            Document doc = new Document(MyDir + "Document.doc");
+            Hyphenation.RegisterDictionary("en-US", MyDir + "hyph_en_US.dic");
 
-            Aspose.Words.Hyphenation.UnregisterDictionary("en-US");
+            Hyphenation.UnregisterDictionary("en-US");
 
-            Console.WriteLine(Aspose.Words.Hyphenation.IsDictionaryRegistered("en-US")); // False
+            Console.WriteLine(Hyphenation.IsDictionaryRegistered("en-US")); // False
             //ExEnd
         }
     }

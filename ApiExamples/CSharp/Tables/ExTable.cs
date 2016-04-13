@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -7,13 +7,14 @@
 
 using System;
 using System.Drawing;
+
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Tables;
+
 using NUnit.Framework;
 
-
-namespace ApiExamples.Tables
+namespace ApiExamples
 {
     /// <summary>
     /// Examples using tables in documents.
@@ -34,7 +35,7 @@ namespace ApiExamples.Tables
             //ExFor:CellCollection
             //ExFor:NodeCollection.IndexOf(Node)
             //ExSummary:Shows how to iterate through all tables in the document and display the content from each cell.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Table.Document.doc");
 
             // Here we get all tables from the Document node. You can do this for any other composite node
             // which can contain block level nodes. For example you can retrieve tables from header or from a cell
@@ -80,7 +81,7 @@ namespace ApiExamples.Tables
         [Test]
         public void CalcuateDepthOfNestedTablesCaller()
         {
-            CalcuateDepthOfNestedTables();
+            this.CalcuateDepthOfNestedTables();
         }
 
         //ExStart
@@ -92,7 +93,7 @@ namespace ApiExamples.Tables
         //ExSummary:Shows how to find out if a table contains another table or if the table itself is nested inside another table.
         public void CalcuateDepthOfNestedTables()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.NestedTables.doc");
+            Document doc = new Document(MyDir + "Table.NestedTables.doc");
             int tableIndex = 0;
 
             foreach (Table table in doc.GetChildNodes(NodeType.Table, true))
@@ -127,7 +128,7 @@ namespace ApiExamples.Tables
 
             NodeType type = table.NodeType;
             // The parent of the table will be a Cell, instead attempt to find a grandparent that is of type Table
-            Aspose.Words.Node parent = table.GetAncestor(type);
+            Node parent = table.GetAncestor(type);
 
             while (parent != null)
             {
@@ -175,7 +176,7 @@ namespace ApiExamples.Tables
         [Test]
         public void ConvertTextboxToTableCaller()
         {
-            ConvertTextboxToTable();
+            this.ConvertTextboxToTable();
         }
 
         //ExStart
@@ -184,7 +185,7 @@ namespace ApiExamples.Tables
         public void ConvertTextboxToTable()
         {
             // Open the document
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Shape.Textbox.doc");
+            Document doc = new Document(MyDir + "Shape.Textbox.doc");
 
             // Convert all shape nodes which contain child nodes.
             // We convert the collection to an array as static "snapshot" because the original textboxes will be removed after conversion which will
@@ -197,7 +198,7 @@ namespace ApiExamples.Tables
                 }
             }
 
-            doc.Save(MyDir + "Table.ConvertTextboxToTable Out.html");
+            doc.Save(MyDir + @"\Artifacts\Table.ConvertTextboxToTable.html");
         }
 
         /// <summary>
@@ -211,8 +212,8 @@ namespace ApiExamples.Tables
             if (textBox.StoryType != StoryType.Textbox)
                 throw new ArgumentException("Can only convert a shape of type textbox");
 
-            Aspose.Words.Document doc = (Aspose.Words.Document)textBox.Document;
-            Aspose.Words.Section section = (Aspose.Words.Section)textBox.GetAncestor(NodeType.Section);
+            Document doc = (Document)textBox.Document;
+            Section section = (Section)textBox.GetAncestor(NodeType.Section);
 
             // Create a table to replace the textbox and transfer the same content and formatting.
             Table table = new Table(doc);
@@ -223,7 +224,7 @@ namespace ApiExamples.Tables
 
             // A shape is inline level (within a paragraph) where a table can only be block level so insert the table
             // after the paragraph which contains the shape.
-            Aspose.Words.Node shapeParent = textBox.ParentNode;
+            Node shapeParent = textBox.ParentNode;
             shapeParent.ParentNode.InsertAfter(table, shapeParent);
 
             // If the textbox is not inline then try to match the shape's left position using the table's left indent.
@@ -268,7 +269,7 @@ namespace ApiExamples.Tables
             firstCell.RemoveAllChildren();
 
             // Append all content from the textbox to the new table
-            foreach (Aspose.Words.Node node in textBox.GetChildNodes(NodeType.Any, false).ToArray())
+            foreach (Node node in textBox.GetChildNodes(NodeType.Any, false).ToArray())
             {
                 table.FirstRow.FirstCell.AppendChild(node);
             }
@@ -284,7 +285,7 @@ namespace ApiExamples.Tables
             //ExStart
             //ExFor:Table.EnsureMinimum
             //ExSummary:Shows how to ensure a table node is valid.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // Create a new table and add it to the document.
             Table table = new Table(doc);
@@ -301,7 +302,7 @@ namespace ApiExamples.Tables
             //ExStart
             //ExFor:Row.EnsureMinimum
             //ExSummary:Shows how to ensure a row node is valid.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // Create a new table and add it to the document.
             Table table = new Table(doc);
@@ -322,7 +323,7 @@ namespace ApiExamples.Tables
             //ExStart
             //ExFor:Cell.EnsureMinimum
             //ExSummary:Shows how to ensure a cell node is valid.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Table.Document.doc");
 
             // Gets the first cell in the document.
             Cell cell = (Cell)doc.GetChild(NodeType.Cell, 0, true);
@@ -344,7 +345,7 @@ namespace ApiExamples.Tables
             //ExFor:Table.SetShading
             //ExId:TableBordersOutline
             //ExSummary:Shows how to apply a outline border to a table.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.EmptyTable.doc");
+            Document doc = new Document(MyDir + "Table.EmptyTable.doc");
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             // Align the table to the center of the page.
@@ -362,11 +363,11 @@ namespace ApiExamples.Tables
             // Fill the cells with a light green solid color.
             table.SetShading(TextureIndex.TextureSolid, Color.LightGreen, Color.Empty);
 
-            doc.Save(MyDir + "Table.SetOutlineBorders Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Table.SetOutlineBorders.doc");
             //ExEnd
 
             // Verify the borders were set correctly.
-            doc = new Aspose.Words.Document(MyDir + "Table.SetOutlineBorders Out.doc");
+            doc = new Document(MyDir + @"\Artifacts\Table.SetOutlineBorders.doc");
             Assert.AreEqual(TableAlignment.Center, table.Alignment);
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Top.Color.ToArgb());
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Left.Color.ToArgb());
@@ -384,7 +385,7 @@ namespace ApiExamples.Tables
             //ExFor:Table.SetBorders
             //ExId:TableBordersAll
             //ExSummary:Shows how to build a table with all borders enabled (grid).
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.EmptyTable.doc");
+            Document doc = new Document(MyDir + "Table.EmptyTable.doc");
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             // Clear any existing borders from the table.
@@ -393,11 +394,11 @@ namespace ApiExamples.Tables
             // Set a green border around and inside the table.
             table.SetBorders(LineStyle.Single, 1.5, Color.Green);
 
-            doc.Save(MyDir + "Table.SetAllBorders Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Table.SetAllBorders.doc");
             //ExEnd
 
             // Verify the borders were set correctly.
-            doc = new Aspose.Words.Document(MyDir + "Table.SetAllBorders Out.doc");
+            doc = new Document(MyDir + @"\Artifacts\Table.SetAllBorders.doc");
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Top.Color.ToArgb());
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Left.Color.ToArgb());
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Right.Color.ToArgb());
@@ -414,7 +415,7 @@ namespace ApiExamples.Tables
             //ExFor:Row.RowFormat
             //ExId:RowFormatProperties
             //ExSummary:Shows how to modify formatting of a table row.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Table.Document.doc");
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             // Retrieve the first row in the table.
@@ -426,9 +427,9 @@ namespace ApiExamples.Tables
             firstRow.RowFormat.AllowBreakAcrossPages = true;
             //ExEnd
 
-            doc.Save(MyDir + "Table.RowFormat Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Table.RowFormat.doc");
 
-            doc = new Aspose.Words.Document(MyDir + "Table.RowFormat Out.doc");
+            doc = new Document(MyDir + @"\Artifacts\Table.RowFormat.doc");
             table = (Table)doc.GetChild(NodeType.Table, 0, true);
             Assert.AreEqual(LineStyle.None, table.FirstRow.RowFormat.Borders.LineStyle);
             Assert.AreEqual(HeightRule.Auto, table.FirstRow.RowFormat.HeightRule);
@@ -443,7 +444,7 @@ namespace ApiExamples.Tables
             //ExFor:Cell.CellFormat
             //ExId:CellFormatProperties
             //ExSummary:Shows how to modify formatting of a table cell.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Table.Document.doc");
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             // Retrieve the first cell in the table.
@@ -455,9 +456,9 @@ namespace ApiExamples.Tables
             firstCell.CellFormat.Shading.ForegroundPatternColor = Color.LightGreen;
             //ExEnd
 
-            doc.Save(MyDir + "Table.CellFormat Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Table.CellFormat.doc");
 
-            doc = new Aspose.Words.Document(MyDir + "Table.CellFormat Out.doc");
+            doc = new Document(MyDir + @"\Artifacts\Table.CellFormat.doc");
             table = (Table)doc.GetChild(NodeType.Table, 0, true);
             Assert.AreEqual(30, table.FirstRow.FirstCell.CellFormat.Width);
             Assert.AreEqual(TextOrientation.Downward, table.FirstRow.FirstCell.CellFormat.Orientation);
@@ -471,7 +472,7 @@ namespace ApiExamples.Tables
             //ExFor:Table
             //ExFor:Table.ClearBorders
             //ExSummary:Shows how to remove all borders from a table.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Table.Document.doc");
 
             // Remove all borders from the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -479,7 +480,7 @@ namespace ApiExamples.Tables
             // Clear the borders all cells in the table.
             table.ClearBorders();
 
-            doc.Save(MyDir + "Table.ClearBorders Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Table.ClearBorders.doc");
             //ExEnd
         }
 
@@ -491,7 +492,7 @@ namespace ApiExamples.Tables
             //ExFor:Cell
             //ExId:ReplaceTextTable
             //ExSummary:Shows how to replace all instances of string of text in a table and cell.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.SimpleTable.doc");
+            Document doc = new Document(MyDir + "Table.SimpleTable.doc");
 
             // Get the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -501,7 +502,7 @@ namespace ApiExamples.Tables
             // Replace any instances of our string in the last cell of the table only.
             table.LastRow.LastCell.Range.Replace("50", "20", true, true);
 
-            doc.Save(MyDir + "Table.ReplaceCellText Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Table.ReplaceCellText.doc");
             //ExEnd
 
             Assert.AreEqual("20", table.LastRow.LastCell.ToString(SaveFormat.Text).Trim());
@@ -513,7 +514,7 @@ namespace ApiExamples.Tables
             //ExStart
             //ExId:PrintTableRange
             //ExSummary:Shows how to print the text range of a table.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.SimpleTable.doc");
+            Document doc = new Document(MyDir + "Table.SimpleTable.doc");
 
             // Get the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -548,7 +549,7 @@ namespace ApiExamples.Tables
             //ExStart
             //ExId:CloneTable
             //ExSummary:Shows how to make a clone of a table in the document and insert it after the original table.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.SimpleTable.doc");
+            Document doc = new Document(MyDir + "Table.SimpleTable.doc");
 
             // Retrieve the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -563,7 +564,7 @@ namespace ApiExamples.Tables
             // upon save. This has to do with document validation.
             table.ParentNode.InsertAfter(new Paragraph(doc), table);
 
-            doc.Save(MyDir + "Table.CloneTableAndInsert Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Table.CloneTableAndInsert.doc");
             //ExEnd
 
             // Verify that the table was cloned and inserted properly.
@@ -583,7 +584,7 @@ namespace ApiExamples.Tables
         [Test]
         public void RowFormatDisableBreakAcrossPages()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.TableAcrossPage.doc");
+            Document doc = new Document(MyDir + "Table.TableAcrossPage.doc");
 
             // Retrieve the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -597,7 +598,7 @@ namespace ApiExamples.Tables
                 row.RowFormat.AllowBreakAcrossPages = false;
             //ExEnd
 
-            doc.Save(MyDir + "Table.DisableBreakAcrossPages Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Table.DisableBreakAcrossPages.doc");
 
             Assert.False(table.FirstRow.RowFormat.AllowBreakAcrossPages);
             Assert.False(table.LastRow.RowFormat.AllowBreakAcrossPages);
@@ -606,7 +607,7 @@ namespace ApiExamples.Tables
         [Test]
         public void AllowAutoFitOnTable()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             Table table = new Table(doc);
             table.EnsureMinimum();
@@ -622,7 +623,7 @@ namespace ApiExamples.Tables
         [Test]
         public void KeepTableTogether()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.TableAcrossPage.doc");
+            Document doc = new Document(MyDir + "Table.TableAcrossPage.doc");
 
             // Retrieve the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -644,7 +645,7 @@ namespace ApiExamples.Tables
                         para.ParagraphFormat.KeepWithNext = true;
             //ExEnd
 
-            doc.Save(MyDir + "Table.KeepTableTogether Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Table.KeepTableTogether.doc");
 
             // Verify the correct paragraphs were set properly.
             foreach (Paragraph para in table.GetChildNodes(NodeType.Paragraph, true))
@@ -661,7 +662,7 @@ namespace ApiExamples.Tables
             //ExFor:Row
             //ExId:AddClonedRowToTable
             //ExSummary:Shows how to make a clone of the last row of a table and append it to the table.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.SimpleTable.doc");
+            Document doc = new Document(MyDir + "Table.SimpleTable.doc");
 
             // Retrieve the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -677,7 +678,7 @@ namespace ApiExamples.Tables
             // Add the row to the end of the table.
             table.AppendChild(clonedRow);
 
-            doc.Save(MyDir + "Table.AddCloneRowToTable Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Table.AddCloneRowToTable.doc");
             //ExEnd
 
             // Verify that the row was cloned and appended properly.
@@ -687,12 +688,12 @@ namespace ApiExamples.Tables
         }
 
         [Test]
-        public void FixDefaultTableWidthsInAW105()
+        public void FixDefaultTableWidthsInAw105()
         {
             //ExStart
             //ExId:FixTablesDefaultFixedColumnWidth
             //ExSummary:Shows how to revert the default behaviour of table sizing to use column widths.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Keep a reference to the table being built.
@@ -717,7 +718,7 @@ namespace ApiExamples.Tables
             //ExStart
             //ExId:FixTablesDefaultBorders
             //ExSummary:Shows how to revert the default borders on tables back to no border lines.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Keep a reference to the table being built.
@@ -737,7 +738,7 @@ namespace ApiExamples.Tables
             //ExStart
             //ExId:FixTableFormattingException
             //ExSummary:Shows how to avoid encountering an exception when applying table formatting.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Keep a reference to the table being built.
@@ -758,7 +759,7 @@ namespace ApiExamples.Tables
             //ExStart
             //ExId:FixRowFormattingNotApplied
             //ExSummary:Shows how to fix row formatting not being applied to some rows.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.StartTable();
@@ -790,7 +791,7 @@ namespace ApiExamples.Tables
         [Test]
         public void GetIndexOfTableElements()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Table.Document.doc");
 
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
             //ExStart
@@ -827,7 +828,7 @@ namespace ApiExamples.Tables
         [Test]
         public void GetPreferredWidthTypeAndValue()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Table.Document.doc");
 
             // Find the first table in the document
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -861,7 +862,7 @@ namespace ApiExamples.Tables
             //ExFor:Cell.FirstParagraph
             //ExId:InsertTableUsingNodeConstructors
             //ExSummary:Shows how to insert a table using the constructors of nodes.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // We start by creating the table object. Note how we must pass the document object
             // to the constructor of each node. This is because every node we create must belong
@@ -901,7 +902,7 @@ namespace ApiExamples.Tables
             row.LastCell.AppendChild(new Paragraph(doc));
             row.LastCell.FirstParagraph.AppendChild(new Run(doc, "Row 1, Cell 2 Text"));
 
-            doc.Save(MyDir + "Table.InsertTableUsingNodes Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Table.InsertTableUsingNodes.doc");
             //ExEnd
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count);
@@ -922,19 +923,19 @@ namespace ApiExamples.Tables
         [Test] //ExSkip
         public void NestedTablesUsingNodeConstructors()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // Create the outer table with three rows and four columns.
-            Table outerTable = CreateTable(doc, 3, 4, "Outer Table");
+            Table outerTable = this.CreateTable(doc, 3, 4, "Outer Table");
             // Add it to the document body.
             doc.FirstSection.Body.AppendChild(outerTable);
 
             // Create another table with two rows and two columns.
-            Table innerTable = CreateTable(doc, 2, 2, "Inner Table");
+            Table innerTable = this.CreateTable(doc, 2, 2, "Inner Table");
             // Add this table to the first cell of the outer table.
             outerTable.FirstRow.FirstCell.AppendChild(innerTable);
 
-            doc.Save(MyDir + "Table.CreateNestedTable Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Table.CreateNestedTable.doc");
 
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count); // ExSkip
             Assert.AreEqual(1, outerTable.FirstRow.FirstCell.Tables.Count); //ExSkip
@@ -945,7 +946,7 @@ namespace ApiExamples.Tables
         /// <summary>
         /// Creates a new table in the document with the given dimensions and text in each cell.
         /// </summary>
-        private Table CreateTable(Aspose.Words.Document doc, int rowCount, int cellCount, string cellText)
+        private Table CreateTable(Document doc, int rowCount, int cellCount, string cellText)
         {
             Table table = new Table(doc);
 
@@ -981,7 +982,7 @@ namespace ApiExamples.Tables
         [Test] //ExSkip
         public void CheckCellsMerged()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.MergedCells.doc");
+            Document doc = new Document(MyDir + "Table.MergedCells.doc");
 
             // Retrieve the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -990,11 +991,11 @@ namespace ApiExamples.Tables
             {
                 foreach (Cell cell in row.Cells)
                 {
-                    Console.WriteLine(PrintCellMergeType(cell));
+                    Console.WriteLine(this.PrintCellMergeType(cell));
                 }
             }
 
-            Assert.AreEqual("The cell at R1, C1 is horizontally merged.", PrintCellMergeType(table.FirstRow.FirstCell)); //ExSkip
+            Assert.AreEqual("The cell at R1, C1 is horizontally merged.", this.PrintCellMergeType(table.FirstRow.FirstCell)); //ExSkip
         }
 
         public string PrintCellMergeType(Cell cell)
@@ -1018,7 +1019,7 @@ namespace ApiExamples.Tables
         public void MergeCellRange()
         {
             // Open the document
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Table.Document.doc");
 
             // Retrieve the first table in the body of the first section.
             Table table = doc.FirstSection.Body.Tables[0];
@@ -1035,7 +1036,7 @@ namespace ApiExamples.Tables
             //ExEnd
 
             // Save the document.
-            doc.Save(MyDir + "Table.MergeCellRange Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Table.MergeCellRange.doc");
 
             // Verify the cells were merged
             int mergedCellsCount = 0;
@@ -1104,7 +1105,7 @@ namespace ApiExamples.Tables
             //ExId:CombineTables
             //ExSummary:Shows how to combine the rows from two tables into one.
             // Load the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Table.Document.doc");
 
             // Get the first and second table in the document.
             // The rows from the second table will be appended to the end of the first table.
@@ -1119,7 +1120,7 @@ namespace ApiExamples.Tables
             // Remove the empty table container.
             secondTable.Remove();
 
-            doc.Save(MyDir + "Table.CombineTables Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Table.CombineTables.doc");
             //ExEnd
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count);
@@ -1134,7 +1135,7 @@ namespace ApiExamples.Tables
             //ExId:SplitTableAtRow
             //ExSummary:Shows how to split a table into two tables a specific row.
             // Load the document.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Table.SimpleTable.doc");
+            Document doc = new Document(MyDir + "Table.SimpleTable.doc");
 
             // Get the first table in the document.
             Table firstTable = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -1160,10 +1161,10 @@ namespace ApiExamples.Tables
             }
             while (currentRow != row);
 
-            doc.Save(MyDir + "Table.SplitTable Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Table.SplitTable.doc");
             //ExEnd
 
-            doc = new Aspose.Words.Document(MyDir + "Table.SplitTable Out.doc");
+            doc = new Document(MyDir + @"\Artifacts\Table.SplitTable.doc");
             // Test we are adding the rows in the correct order and the 
             // selected row was also moved.
             Assert.AreEqual(row, table.FirstRow); 

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -9,8 +9,7 @@ using System;
 using Aspose.Words;
 using NUnit.Framework;
 
-
-namespace ApiExamples.Comment
+namespace ApiExamples
 {
     [TestFixture]
     public class ExComment : ApiExampleBase
@@ -21,10 +20,10 @@ namespace ApiExamples.Comment
             //ExStart
             //ExFor:Comment.SetText
             //ExSummary:Shows how to add a comment to a document and set it's text.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Aspose.Words.Comment comment = new Aspose.Words.Comment(doc, "John Doe", "J.D.", DateTime.Now);
+            Comment comment = new Comment(doc, "John Doe", "J.D.", DateTime.Now);
             builder.CurrentParagraph.AppendChild(comment);
             comment.SetText("My comment.");
             //ExEnd

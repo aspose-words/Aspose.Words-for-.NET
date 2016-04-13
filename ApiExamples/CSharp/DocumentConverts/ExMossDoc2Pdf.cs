@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -11,9 +11,11 @@
 
 using System;
 using System.IO;
+
+using Aspose.Words;
 using Aspose.Words.Saving;
 
-namespace ApiExamples.DocumentConverts
+namespace ApiExamples
 {
     /// <summary>
     /// DOC2PDF document converter for SharePoint.
@@ -102,7 +104,7 @@ namespace ApiExamples.DocumentConverts
         {
             // You can load not only DOC here, but any format supported by
             // Aspose.Words: DOC, DOCX, RTF, WordML, HTML, MHTML, ODT etc.
-            Aspose.Words.Document doc = new Aspose.Words.Document(inFileName);
+            Document doc = new Document(inFileName);
 
             doc.Save(outFileName, new PdfSaveOptions());
         }

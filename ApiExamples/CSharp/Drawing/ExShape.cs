@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2014 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -9,10 +9,11 @@ using System;
 using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Drawing;
+using Aspose.Words.Drawing.Ole;
+
 using NUnit.Framework;
 
-
-namespace ApiExamples.Drawing
+namespace ApiExamples
 {
     /// <summary>
     /// Examples using shapes in documents.
@@ -23,7 +24,7 @@ namespace ApiExamples.Drawing
         [Test]
         public void DeleteAllShapes()
         {
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Shape.DeleteAllShapes.doc");
+            Document doc = new Document(MyDir + "Shape.DeleteAllShapes.doc");
             
             //ExStart
             //ExFor:Shape
@@ -40,7 +41,7 @@ namespace ApiExamples.Drawing
 
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).Count);
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.GroupShape, true).Count);
-            doc.Save(MyDir + "Shape.DeleteAllShapes Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Shape.DeleteAllShapes.doc");
         }
 
         [Test]
@@ -49,7 +50,7 @@ namespace ApiExamples.Drawing
             //ExStart
             //ExFor:ShapeBase.IsInline
             //ExSummary:Shows how to test if a shape in the document is inline or floating.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Shape.DeleteAllShapes.doc");
+            Document doc = new Document(MyDir + "Shape.DeleteAllShapes.doc");
 
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
             {
@@ -73,7 +74,7 @@ namespace ApiExamples.Drawing
             //ExFor:ShapeBase.FlipOrientation
             //ExFor:FlipOrientation
             //ExSummary:Creates two line shapes. One line goes from top left to bottom right. Another line goes from bottom left to top right.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // The lines will cross the whole page.
             float pageWidth = (float)doc.FirstSection.PageSetup.PageWidth;
@@ -94,7 +95,7 @@ namespace ApiExamples.Drawing
             lineB.RelativeVerticalPosition = RelativeVerticalPosition.Page;
             doc.FirstSection.Body.FirstParagraph.AppendChild(lineB);
 
-            doc.Save(MyDir + "Shape.LineFlipOrientation Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Shape.LineFlipOrientation.doc");
             //ExEnd
         }
 
@@ -124,7 +125,7 @@ namespace ApiExamples.Drawing
             shape.Top = -100;
             builder.InsertNode(shape);
 
-            builder.Document.Save(MyDir + "Shape.Fill Out.doc");
+            builder.Document.Save(MyDir + @"\Artifacts\Shape.Fill.doc");
             //ExEnd
         }
 
@@ -138,14 +139,14 @@ namespace ApiExamples.Drawing
             //ExFor:CompositeNode.InsertAfter(Node, Node)
             //ExFor:NodeCollection.ToArray
             //ExSummary:Shows how to replace all textboxes with images.
-            Aspose.Words.Document doc = new Aspose.Words.Document(MyDir + "Shape.ReplaceTextboxesWithImages.doc");
+            Document doc = new Document(MyDir + "Shape.ReplaceTextboxesWithImages.doc");
 
             // This gets a live collection of all shape nodes in the document.
             NodeCollection shapeCollection = doc.GetChildNodes(NodeType.Shape, true);
 
             // Since we will be adding/removing nodes, it is better to copy all collection
             // into a fixed size array, otherwise iterator will be invalidated.
-            Aspose.Words.Node[] shapes = shapeCollection.ToArray();
+            Node[] shapes = shapeCollection.ToArray();
 
             foreach (Shape shape in shapes)
             {
@@ -176,7 +177,7 @@ namespace ApiExamples.Drawing
                 }
             }
 
-            doc.Save(MyDir + "Shape.ReplaceTextboxesWithImages Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Shape.ReplaceTextboxesWithImages.doc");
             //ExEnd
         }
 
@@ -191,7 +192,7 @@ namespace ApiExamples.Drawing
             //ExFor:ShapeBase.WrapType
             //ExSummary:Creates a textbox with some text and different formatting options in a new document.
             // Create a blank document.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Document();
 
             // Create a new shape of type TextBox
             Shape textBox = new Shape(doc, ShapeType.TextBox);
@@ -224,8 +225,63 @@ namespace ApiExamples.Drawing
             doc.FirstSection.Body.FirstParagraph.AppendChild(textBox);
 
             // Save the output
-            doc.Save(MyDir + "Shape.CreateTextBox Out.doc");
+            doc.Save(MyDir + @"\Artifacts\Shape.CreateTextBox.doc");
             //ExEnd
+        }
+
+        [Test]
+        public void GetActiveXControlProperties()
+        {
+            //ExStart
+            //ExFor:OleControl
+            //ExFor:Forms2OleControlCollection.Caption
+            //ExFor:Forms2OleControlCollection.Value
+            //ExFor:Forms2OleControlCollection.Enabled
+            //ExFor:Forms2OleControlCollection.Type
+            //ExFor:Forms2OleControlCollection.ChildNodes
+            //ExSummary: Shows how to get ActiveX control and properties from the document
+            Document doc = new Document(MyDir + "Shape.ActiveXObject.docx");
+            
+            //Get ActiveX control from the document 
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            OleControl oleControl = shape.OleFormat.OleControl;
+
+            //Get ActiveX control properties
+            if (oleControl.IsForms2OleControl)
+            {
+                Forms2OleControl checkBox = (Forms2OleControl)oleControl;
+                Assert.AreEqual("Первый", checkBox.Caption);
+                Assert.AreEqual("0", checkBox.Value);
+                Assert.AreEqual(true, checkBox.Enabled);
+                Assert.AreEqual(Forms2OleControlType.CheckBox, checkBox.Type);
+                Assert.AreEqual(null, checkBox.ChildNodes);
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void SuggestedFileName()
+        {
+            //ExStart
+            //ExFor:OleFormat.SuggestedFileName
+            //ExSummary:Shows how to get suggested file name from the object
+            Document doc = new Document(MyDir + "Shape.SuggestedFileName.rtf");
+            
+            //Gets the file name suggested for the current embedded object if you want to save it into a file
+            Shape oleShape = (Shape)doc.FirstSection.Body.GetChild(NodeType.Shape, 0, true);
+            string suggestedFileName = oleShape.OleFormat.SuggestedFileName;
+            //ExEnd
+
+            Assert.AreEqual("CSV.csv", suggestedFileName);
+        }
+
+        [Test]
+        public void ObjectDidNotHaveSuggestedFileName()
+        {
+            Document doc = new Document(MyDir + "Shape.ActiveXObject.docx");
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Assert.IsEmpty(shape.OleFormat.SuggestedFileName);
         }
     }
 }
