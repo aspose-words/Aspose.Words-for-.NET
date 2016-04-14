@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="AsposeDotNetNukeContentExport" type="Module" version="1.0.3">
+    <package name="AsposeDotNetNukeContentExport" type="Module" version="2.0.0">
       <friendlyName>Aspose .NET Advance DNN Content Exporter</friendlyName>
       <description>Advance DNN Contents Exporter Module using Aspose.Words for .NET allow users to export online content into MS Word, PDF, Open Document and image formats like Jpeg, Png, Tiff and send output file to browser for Open/Download to local system.</description>
       <iconFile>Images/aspose_logo.gif</iconFile>
