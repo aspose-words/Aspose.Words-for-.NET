@@ -5,10 +5,10 @@
 <p>This is updated version of the module and enriched with the following new features to make content export process effective, simple and easy to use:</p>
 <ul>
 <li>Option to select Output formats provided by Aspose.Words for .NET API.</li>
-<li>Custom Css classes for Buttons and Dropdown to give the module look and feel of your skin via module settings.</li>
+<li>Custom CSS classes for Buttons and Dropdown to give the module look and feel of your skin via module settings.</li>
 <li>Get an offline copy of your favorite online contents for editing, sharing and printing in the popular DOC, DOCX, ODT, PDF, JPEG, PNG and TIFF formats.</li>
 <li>The generated output file can be Open/Download from browser.</li>
-<li>For Images output format if generated images are more than one it allows to download as a Zip.</li>
+<li>In case the export contains more than one image, it automatically converts the exported images to a single ZIP file</li>
 </ul>
 <p style="text-align: center;"><a href="http://www.aspose.com/docs/display/wordsnet/DNN+Content+Exporter+Module"><img title="Aspose .NET Advance DNN Content Exporter Module" src="http://www.aspose.com/blogs/wp-content/uploads/2016/04/AdvanceContentExport21.png" alt="Aspose .NET Advance DNN Content Exporter Module" /></a></p>
 <h2>Existing Features</h2>
