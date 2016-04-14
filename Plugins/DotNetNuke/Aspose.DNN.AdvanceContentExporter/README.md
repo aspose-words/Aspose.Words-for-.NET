@@ -8,7 +8,7 @@
 <li>Custom CSS classes for Buttons and Dropdown to give the module look and feel of your skin via module settings.</li>
 <li>Get an offline copy of your favorite online contents for editing, sharing and printing in the popular DOC, DOCX, ODT, PDF, JPEG, PNG and TIFF formats.</li>
 <li>The generated output file can be Open/Download from browser.</li>
-<li>In case the export contains more than one image, it automatically converts the exported images to a single ZIP file</li>
+<li>In case the export contains more than one image, it automatically converts the exported images to a single ZIP file.</li>
 </ul>
 <p style="text-align: center;"><a href="http://www.aspose.com/docs/display/wordsnet/DNN+Content+Exporter+Module"><img title="Aspose .NET Advance DNN Content Exporter Module" src="http://www.aspose.com/blogs/wp-content/uploads/2016/04/AdvanceContentExport21.png" alt="Aspose .NET Advance DNN Content Exporter Module" /></a></p>
 <h2>Existing Features</h2>
@@ -16,7 +16,7 @@
 <li>Allow Full Page Contents Export</li>
 <li>Option to select DNN Pane before exporting the content allows you to export only relevant area instead of exporting the whole page.</li>
 <li>Export Contents to Word and PDF file formats.</li>
-<li>Custom Css classes for Buttons and Dropdown to give the module look and feel of your skin via module settings.</li>
+<li>Custom CSS classes for Buttons and Dropdown to give the module look and feel of your skin via module settings.</li>
 <li>Option to hide selection Dropdown via module settings</li>
 <li>The generated output file can be Open/Download from browser.</li>
 <li>A copy of the exported file is also saved in PortalSettings.HomeDirectory\AsposeExport folder for later use.</li>
