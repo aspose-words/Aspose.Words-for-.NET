@@ -239,7 +239,7 @@ namespace CSharp.Rendering_and_Printing
             renderer.Save(stream, imageOptions);
             shape.Remove();
 
-            Rectangle crop = renderer.GetOpaqueRectangleInPixels(imageOptions.Scale, imageOptions.Resolution);
+            Rectangle crop = renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.Resolution);
 
             // Load the image into a new bitmap.
             using (Bitmap renderedImage = new Bitmap(stream))
