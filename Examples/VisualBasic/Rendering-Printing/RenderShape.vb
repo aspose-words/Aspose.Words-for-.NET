@@ -218,7 +218,7 @@ Public Class RenderShape
         renderer.Save(stream, imageOptions)
         shape.Remove()
 
-        Dim crop As Rectangle = renderer.GetOpaqueRectangleInPixels(imageOptions.Scale, imageOptions.Resolution)
+        Dim crop As Rectangle = renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.Resolution)
 
         ' Load the image into a new bitmap.
         Using renderedImage As Bitmap = New Bitmap(stream)

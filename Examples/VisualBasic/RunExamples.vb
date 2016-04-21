@@ -7,7 +7,7 @@ Module RunExamples
     Sub Main()
         Console.WriteLine("Open RunExamples.vb. In Main() method, Un-comment the example that you want to run")
         Console.WriteLine("=====================================================")
-
+        ReplaceHyperlinks.Run()
 
         '' =====================================================
         '' =====================================================
