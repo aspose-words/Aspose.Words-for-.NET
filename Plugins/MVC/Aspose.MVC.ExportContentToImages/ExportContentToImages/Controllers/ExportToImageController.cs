@@ -54,20 +54,20 @@ namespace ExportContentToImages.Controllers
                     Directory.CreateDirectory(Server.MapPath("~/Images/" + "Zip"));
                 }
 
-                ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Bmp);
+                ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
 
                 if (Format.Contains("png"))
                 {
                      options = new ImageSaveOptions(SaveFormat.Png);
                     options.PageCount = 1;
                 }
-                else if (Format.Contains("jpg"))
+                else if (Format.Contains("JPEG"))
                 {
                      options = new ImageSaveOptions(SaveFormat.Jpeg);
                     options.PageCount = 1;
                     
                 }
-                else if (Format.Contains("tiff"))
+                else if (Format.Contains("TIFF"))
                 {
                      options = new ImageSaveOptions(SaveFormat.Tiff);
                     options.PageCount = 1;
@@ -80,10 +80,26 @@ namespace ExportContentToImages.Controllers
                 }
 
 
+                // Check for Images folder 
+                string path = Server.MapPath("~/Images");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
 
                 // Convert the html , get page count and save PNG's in Images folder
                 for (int i = 0; i < doc.PageCount; i++)
                 {
+                    if (Format.Contains("TIFF"))
+                    {
+                        options.PageCount = doc.PageCount;
+                        fileName = i + "_" + System.Guid.NewGuid().ToString() + "." + Format;
+                        doc.Save(Server.MapPath("~/Images/Zip/") + fileName, options);
+                        break;
+                    }
+                    else
+                    {
                         options.PageIndex = i;
                         if (doc.PageCount > 1)
                         {
@@ -91,16 +107,18 @@ namespace ExportContentToImages.Controllers
                             doc.Save(Server.MapPath("~/Images/Zip/") + fileName, options);
                         }
                         else
-                        {       // webpage count is 1 
+                        {
+                            // webpage count is 1 
                             fileName = i + "_" + System.Guid.NewGuid().ToString() + "." + Format;
                             doc.Save(Server.MapPath("~/Images/Zip/") + fileName, options);
                         }
+                    }
                 }
 
                 /* if webpage count is more then one download images as a Zip but if image type if TIFF                
                   dont download as a zip because Tiff already have all content in one Image 
                  */
-                if (doc.PageCount > 1 && !Format.Contains("TIF"))
+                if (doc.PageCount > 1 && !Format.Contains("TIFF"))
                 {
                     try
                     {
@@ -145,7 +163,7 @@ namespace ExportContentToImages.Controllers
 
         public void jpg()
         {
-            Index("jpg");
+            Index("jpeg");
         }
 
         public void png()
