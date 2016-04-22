@@ -61,7 +61,7 @@ namespace ExportContentToImages.Controllers
                      options = new ImageSaveOptions(SaveFormat.Png);
                     options.PageCount = 1;
                 }
-                else if (Format.Contains("jpg"))
+                else if (Format.Contains("JPEG"))
                 {
                      options = new ImageSaveOptions(SaveFormat.Jpeg);
                     options.PageCount = 1;
@@ -79,6 +79,13 @@ namespace ExportContentToImages.Controllers
                     options.PageCount = 1;
                 }
 
+
+                // Check for Images folder 
+                string path = Server.MapPath("~/Images");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
 
 
                 // Convert the html , get page count and save PNG's in Images folder
@@ -156,7 +163,7 @@ namespace ExportContentToImages.Controllers
 
         public void jpg()
         {
-            Index("jpg");
+            Index("jpeg");
         }
 
         public void png()
