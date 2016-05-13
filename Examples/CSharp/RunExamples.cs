@@ -299,7 +299,7 @@ namespace CSharp
 
             //DocumentLayoutHelper.Run();
             //EnumerateLayoutElements.Run();
-            //DocumentPreviewAndPrint.Run();
+            DocumentPreviewAndPrint.Run();
             //ImageColorFilters.Run();
             //RenderShape.Run();
             //SaveAsMultipageTiff.Run();
