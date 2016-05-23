@@ -39,8 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words">
-      <HintPath>C:\Program Files (x86)\Aspose\Aspose.Words for .NET\bin\net3.5_ClientProfile\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=16.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Aspose.Words.16.4.0\lib\net40\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Crm.Sdk.Proxy">
       <HintPath>..\..\..\..\..\CRM SDK\CRM 2015 SDK\Bin\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
@@ -68,6 +69,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
