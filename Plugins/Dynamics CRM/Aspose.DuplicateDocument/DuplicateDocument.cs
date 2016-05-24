@@ -33,7 +33,6 @@ namespace Aspose.DuplicateDocument
 
         protected override void Execute(CodeActivityContext executionContext)
         {
-            // Get Values from the Input Parameters
             bool Logging = EnableLogging.Get(executionContext);
             string LicenseFilePath = LicenseFile.Get(executionContext);
             string LogFilePath = LogFile.Get(executionContext);
@@ -43,14 +42,12 @@ namespace Aspose.DuplicateDocument
             if (Logging)
                 Log("Execution Started", LogFilePath);
 
-            // Creating CRM service from Context
             IWorkflowContext context = executionContext.GetExtension<IWorkflowContext>();
             IOrganizationServiceFactory serviceFactory = executionContext.GetExtension<IOrganizationServiceFactory>();
             IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
 
             try
             {
-                // Applying Licence for Aspose (If Exist)
                 if (Logging)
                     Log("Enable Licensing", LogFilePath);
                 if (LicenseFilePath != "" && File.Exists(LicenseFilePath))
@@ -74,14 +71,13 @@ namespace Aspose.DuplicateDocument
                 DocumentBuilder ResultWriter = new DocumentBuilder(Result);
                 if (Logging)
                     Log("Working under all attachments under this record", LogFilePath);
-                // Retrieve All attachments under this Record
                 QueryExpression RetrieveNoteQuery = new QueryExpression("annotation");
                 RetrieveNoteQuery.ColumnSet = new ColumnSet(new string[] { "filename", "subject", "documentbody" });
                 RetrieveNoteQuery.Criteria.AddCondition(new ConditionExpression("objectid", ConditionOperator.Equal, ThisRecordId));
                 if (Logging)
                     Log("Executing Query to retrieve All Notes within this record", LogFilePath);
                 EntityCollection Notes = service.RetrieveMultiple(RetrieveNoteQuery);
-                // Loop through All Notes
+
                 foreach (Entity Note in Notes.Entities)
                 {
                     try
@@ -92,7 +88,6 @@ namespace Aspose.DuplicateDocument
                             if (Note.Contains("filename"))
                                 FileName = Note["filename"].ToString();
 
-                            // Read Attachment in Aspose
                             byte[] DocumentBody = Convert.FromBase64String(Note["documentbody"].ToString());
                             MemoryStream fileStream = new MemoryStream(DocumentBody);
                             Document doc = new Document(fileStream);
@@ -100,7 +95,6 @@ namespace Aspose.DuplicateDocument
                             ResultWriter.Writeln("Comparing Document: " + FileName);
                             ResultWriter.StartTable();
 
-                            // Comparing document with other attachments
                             foreach (Entity OtherNote in Notes.Entities)
                             {
                                 if (OtherNote.Id != Note.Id)
@@ -110,7 +104,6 @@ namespace Aspose.DuplicateDocument
                                         string OtherFileName = "";
                                         if (OtherNote.Contains("filename"))
                                             OtherFileName = OtherNote["filename"].ToString();
-                                        // Reading attachment in Aspose
                                         byte[] OtherDocumentBody = Convert.FromBase64String(OtherNote["documentbody"].ToString());
                                         MemoryStream fileStream2 = new MemoryStream(OtherDocumentBody);
                                         Document doc2 = new Document(fileStream);
@@ -118,11 +111,9 @@ namespace Aspose.DuplicateDocument
                                         ResultWriter.InsertCell();
                                         ResultWriter.Write(OtherFileName);
 
-                                        // Compare documents
                                         doc.Compare(doc2, "a", DateTime.Now);
                                         if (doc.Revisions.Count == 0)
                                         {
-                                            // If documents are same
                                             ResultWriter.InsertCell();
                                             ResultWriter.Write("Duplicate Documents");
                                         }
@@ -139,7 +130,6 @@ namespace Aspose.DuplicateDocument
                     }
                 }
 
-                // Writing the result in Attachment
                 MemoryStream UpdateDoc = new MemoryStream();
                 if (Logging)
                     Log("Saving Document", LogFilePath);
@@ -181,16 +171,15 @@ namespace Aspose.DuplicateDocument
                 string RecordType = context.PrimaryEntityName;
                 Document Result = new Document();
                 DocumentBuilder ResultWriter = new DocumentBuilder(Result);
+
                 if (Logging)
-                    Log("Working under all attachments under this record", LogFilePath);
-                // Retrieve All attachments under this Record
+                    Log("Working under all attachments under this Entity", LogFilePath);
                 QueryExpression RetrieveNoteQuery = new QueryExpression("annotation");
-                RetrieveNoteQuery.ColumnSet = new ColumnSet(new string[] { "filename", "subject", "documentbody" });
-                RetrieveNoteQuery.Criteria.AddCondition(new ConditionExpression("objectid", ConditionOperator.Equal, ThisRecordId));
+                RetrieveNoteQuery.ColumnSet = new ColumnSet(new string[] { "filename", "subject", "documentbody", "objectid" });
                 if (Logging)
-                    Log("Executing Query to retrieve All Notes within this record", LogFilePath);
+                    Log("Executing Query to retrieve All Notes within this Entity", LogFilePath);
                 EntityCollection Notes = service.RetrieveMultiple(RetrieveNoteQuery);
-                // Loop through All Notes
+
                 foreach (Entity Note in Notes.Entities)
                 {
                     if (Note.Contains("objectid") && ((EntityReference)Note["objectid"]).LogicalName == RecordType)
@@ -203,7 +192,6 @@ namespace Aspose.DuplicateDocument
                                 if (Note.Contains("filename"))
                                     FileName = Note["filename"].ToString();
 
-                                // Read Attachment in Aspose
                                 byte[] DocumentBody = Convert.FromBase64String(Note["documentbody"].ToString());
                                 MemoryStream fileStream = new MemoryStream(DocumentBody);
                                 Document doc = new Document(fileStream);
@@ -211,7 +199,6 @@ namespace Aspose.DuplicateDocument
                                 ResultWriter.Writeln("Comparing Document: " + FileName);
                                 ResultWriter.StartTable();
 
-                                // Comparing document with other attachments
                                 foreach (Entity OtherNote in Notes.Entities)
                                 {
                                     if (OtherNote.Id != Note.Id)
@@ -221,7 +208,6 @@ namespace Aspose.DuplicateDocument
                                             string OtherFileName = "";
                                             if (OtherNote.Contains("filename"))
                                                 OtherFileName = OtherNote["filename"].ToString();
-                                            // Reading attachment in Aspose
                                             byte[] OtherDocumentBody = Convert.FromBase64String(OtherNote["documentbody"].ToString());
                                             MemoryStream fileStream2 = new MemoryStream(OtherDocumentBody);
                                             Document doc2 = new Document(fileStream);
@@ -229,11 +215,9 @@ namespace Aspose.DuplicateDocument
                                             ResultWriter.InsertCell();
                                             ResultWriter.Write(OtherFileName);
 
-                                            // Compare documents
                                             doc.Compare(doc2, "a", DateTime.Now);
                                             if (doc.Revisions.Count == 0)
                                             {
-                                                // If documents are same
                                                 ResultWriter.InsertCell();
                                                 ResultWriter.Write("Duplicate Documents");
                                             }
@@ -250,8 +234,6 @@ namespace Aspose.DuplicateDocument
                         }
                     }
                 }
-
-                // Writing the result in Attachment
                 MemoryStream UpdateDoc = new MemoryStream();
                 if (Logging)
                     Log("Saving Document", LogFilePath);
@@ -300,7 +282,7 @@ namespace Aspose.DuplicateDocument
                 if (Logging)
                     Log("Executing Query to retrieve All Notes within this Entity", LogFilePath);
                 EntityCollection Notes = service.RetrieveMultiple(RetrieveNoteQuery);
-                // Loop through All Notes
+
                 foreach (Entity Note in Notes.Entities)
                 {
                     try
@@ -311,7 +293,6 @@ namespace Aspose.DuplicateDocument
                             if (Note.Contains("filename"))
                                 FileName = Note["filename"].ToString();
 
-                            // Read Attachment in Aspose
                             byte[] DocumentBody = Convert.FromBase64String(Note["documentbody"].ToString());
                             MemoryStream fileStream = new MemoryStream(DocumentBody);
                             Document doc = new Document(fileStream);
@@ -319,7 +300,6 @@ namespace Aspose.DuplicateDocument
                             ResultWriter.Writeln("Comparing Document: " + FileName);
                             ResultWriter.StartTable();
 
-                            // Comparing document with other attachments
                             foreach (Entity OtherNote in Notes.Entities)
                             {
                                 if (OtherNote.Id != Note.Id)
@@ -329,7 +309,6 @@ namespace Aspose.DuplicateDocument
                                         string OtherFileName = "";
                                         if (OtherNote.Contains("filename"))
                                             OtherFileName = OtherNote["filename"].ToString();
-                                        // Reading attachment in Aspose
                                         byte[] OtherDocumentBody = Convert.FromBase64String(OtherNote["documentbody"].ToString());
                                         MemoryStream fileStream2 = new MemoryStream(OtherDocumentBody);
                                         Document doc2 = new Document(fileStream);
@@ -337,11 +316,9 @@ namespace Aspose.DuplicateDocument
                                         ResultWriter.InsertCell();
                                         ResultWriter.Write(OtherFileName);
 
-                                        // Compare documents
                                         doc.Compare(doc2, "a", DateTime.Now);
                                         if (doc.Revisions.Count == 0)
                                         {
-                                            // If documents are same
                                             ResultWriter.InsertCell();
                                             ResultWriter.Write("Duplicate Documents");
                                         }
@@ -356,9 +333,8 @@ namespace Aspose.DuplicateDocument
                     {
                         Log("Error while applying license: " + ex.Message, LogFilePath);
                     }
-                }
 
-                // Writing the result in Attachment
+                }
                 MemoryStream UpdateDoc = new MemoryStream();
                 if (Logging)
                     Log("Saving Document", LogFilePath);
