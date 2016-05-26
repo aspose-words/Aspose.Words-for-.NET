@@ -9,12 +9,13 @@
     <RootNamespace>
     </RootNamespace>
     <AssemblyName>ApiExamples</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Binary</OptionCompare>
     <OptionStrict>Off</OptionStrict>
     <OptionInfer>On</OptionInfer>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,8 +36,16 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words, Version=16.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>packages\Aspose.Words.16.1.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.BarCode, Version=7.7.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.BarCode.7.7.0\lib\net4.5\Aspose.BarCode.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Aspose.Pdf, Version=11.4.0.0, Culture=neutral, PublicKeyToken=6947866647e416ec, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.Pdf.11.4.0\lib\net40-client\Aspose.Pdf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Aspose.Words, Version=16.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.Words.16.4.0\lib\net40\Aspose.Words.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -57,69 +66,74 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bookmark\ExBookmarks.vb" />
-    <Compile Include="Border\ExBorder.vb" />
-    <Compile Include="Border\ExBorderCollection.vb" />
-    <Compile Include="BuildVersionInfo\ExBuildVersion.vb" />
-    <Compile Include="Comment\ExComment.vb" />
-    <Compile Include="ConvertUtil\ExUtilityClasses.vb" />
-    <Compile Include="DigitalSignature\ExDigitalSignature.vb" />
-    <Compile Include="DigitalSignature\ExDigitalSignatureCollection.vb" />
-    <Compile Include="DigitalSignature\ExDigitalSignatureUtil.vb" />
-    <Compile Include="DocumentConverts\ExMossDoc2Pdf.vb" />
-    <Compile Include="DocumentConverts\ExMossRtf2Docx.vb" />
-    <Compile Include="Document\ExDocument.vb" />
-    <Compile Include="Document\ExDocumentBuilder.vb" />
-    <Compile Include="Document\ExDocumentBuilderImages.vb" />
-    <Compile Include="Document\ExInsertDocument.vb" />
-    <Compile Include="Document\ExVisitor.vb" />
-    <Compile Include="Drawing\ExImage.vb" />
-    <Compile Include="Drawing\ExShape.vb" />
-    <Compile Include="EditableRange\ExEditableRange.vb" />
-    <Compile Include="Fields\ExField.vb" />
-    <Compile Include="Fields\ExFormFields.vb" />
-    <Compile Include="Fields\ExRenameMergeFields.vb" />
-    <Compile Include="Font\ExFont.vb" />
-    <Compile Include="HeaderFooter\ExHeaderFooter.vb" />
-    <Compile Include="Hyperlink\ExReplaceHyperlinks.vb" />
-    <Compile Include="Hyphenation\ExHyphenation.vb" />
-    <Compile Include="Inline\ExInlineStory.vb" />
-    <Compile Include="List\ExLists.vb" />
-    <Compile Include="MailMerging\ExMailMerge.vb" />
-    <Compile Include="MailMerging\ExMailMergeCustom.vb" />
-    <Compile Include="MailMerging\ExMailMergeEvent.vb" />
-    <Compile Include="MailMerging\ExNestedMailMergeCustom.vb" />
-    <Compile Include="Node\ExNode.vb" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.vb" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.vb" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.vb" />
-    <Compile Include="PageSetup\ExPageSetup.vb" />
-    <Compile Include="Paragraph\ExParagraph.vb" />
-    <Compile Include="Document\ExProperties.vb" />
+    <Compile Include="ExBookmarks.vb" />
+    <Compile Include="ExBorder.vb" />
+    <Compile Include="ExBorderCollection.vb" />
+    <Compile Include="ExBuildVersion.vb" />
+    <Compile Include="ExComment.vb" />
+    <Compile Include="ExUtilityClasses.vb" />
+    <Compile Include="ExDigitalSignature.vb" />
+    <Compile Include="ExDigitalSignatureCollection.vb" />
+    <Compile Include="ExDigitalSignatureUtil.vb" />
+    <Compile Include="ExMossDoc2Pdf.vb" />
+    <Compile Include="ExMossRtf2Docx.vb" />
+    <Compile Include="DocumentHelper.vb" />
+    <Compile Include="ExDocument.vb" />
+    <Compile Include="ExDocumentBuilder.vb" />
+    <Compile Include="ExDocumentBuilderImages.vb" />
+    <Compile Include="ExInsertDocument.vb" />
+    <Compile Include="ExVisitor.vb" />
+    <Compile Include="ExImage.vb" />
+    <Compile Include="ExShape.vb" />
+    <Compile Include="ExEditableRange.vb" />
+    <Compile Include="CustomBarcodeGenerator.vb" />
+    <Compile Include="ExField.vb" />
+    <Compile Include="ExFormFields.vb" />
+    <Compile Include="ExRenameMergeFields.vb" />
+    <Compile Include="ExFont.vb" />
+    <Compile Include="ExHeaderFooter.vb" />
+    <Compile Include="ExReplaceHyperlinks.vb" />
+    <Compile Include="ExHyphenation.vb" />
+    <Compile Include="ExInlineStory.vb" />
+    <Compile Include="ExLists.vb" />
+    <Compile Include="ExMailMerge.vb" />
+    <Compile Include="ExMailMergeCustom.vb" />
+    <Compile Include="ExMailMergeEvent.vb" />
+    <Compile Include="ExNestedMailMergeCustom.vb" />
+    <Compile Include="ExStructuredDocumentTag.vb" />
+    <Compile Include="ExNode.vb" />
+    <Compile Include="ExPageSetup.vb" />
+    <Compile Include="ExParagraph.vb" />
+    <Compile Include="ExProperties.vb" />
     <Compile Include="ApiExampleBase.vb" />
-    <Compile Include="Range\ExRange.vb" />
-    <Compile Include="Rendering\ExRendering.vb">
+    <Compile Include="ExRange.vb" />
+    <Compile Include="ExRendering.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Saving\ExHtmlFixedSaveOptions.vb" />
-    <Compile Include="Saving\ExPdfSaveOptions.vb" />
-    <Compile Include="Saving\ExSwfSaveOptions.vb" />
-    <Compile Include="Section\ExSection.vb" />
-    <Compile Include="Style\ExStyles.vb" />
-    <Compile Include="Tables\ExCellFormat.vb" />
-    <Compile Include="Tables\ExTable.vb" />
-    <Compile Include="Tables\ExTableColumn.vb" />
-    <Compile Include="Tab\ExTabStopCollection.vb" />
-    <Compile Include="VariableCollection\ExVariableCollection.vb" />
-    <Compile Include="Warning\ExWarningInfoCollection.vb" />
+    <Compile Include="ExReportingEngine.vb" />
+    <Compile Include="ExImageSaveOptions.vb" />
+    <Compile Include="ExHtmlSaveOptions.vb" />
+    <Compile Include="ExHtmlFixedSaveOptions.vb" />
+    <Compile Include="ExPdfSaveOptions.vb" />
+    <Compile Include="ExSwfSaveOptions.vb" />
+    <Compile Include="ExSavingCallback.vb" />
+    <Compile Include="ExSection.vb" />
+    <Compile Include="ExStyles.vb" />
+    <Compile Include="ExCellFormat.vb" />
+    <Compile Include="ExTable.vb" />
+    <Compile Include="ExTableColumn.vb" />
+    <Compile Include="ExTabStopCollection.vb" />
+    <Compile Include="ExVariableCollection.vb" />
+    <Compile Include="ExWarningInfoCollection.vb" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="My Project\" />
-    <Folder Include="obj\Debug\TempPE\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
