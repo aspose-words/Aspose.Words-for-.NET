@@ -6,7 +6,7 @@ This repository contains [Examples](Examples), [Plugins](Plugins) and [Showcase]
 
 <p align="center">
 
-  <a title="Download complete Aspose.Words for .NET source code" href="https://github.com/asposewords/Aspose_Words_NET/archive/master.zip">
+  <a title="Download complete Aspose.Words for .NET source code" href="https://github.com/aspose-words/Aspose.Words-for-.NET/archive/master.zip">
 	<img src="https://raw.github.com/AsposeExamples/java-examples-dashboard/master/images/downloadZip-Button-Large.png" />
   </a>
 </p>
