@@ -1,24 +1,24 @@
-﻿using CSharp.Loading_Saving;
-using CSharp.Mail_Merge;
-using CSharp.Programming_Documents.Find_and_Replace;
-using CSharp.Programming_Documents.Joining_and_Appending;
-using CSharp.Programming_Documents.Bookmarks;
-using CSharp.Programming_Documents.Comments;
-using CSharp.Programming_Documents.Working_With_Document;
-using CSharp.Programming_Documents.Working_with_Fields;
-using CSharp.Programming_Documents.Working_with_Ranges;
-using CSharp.Programming_Documents.Working_with_Hyperlink;
-using CSharp.Programming_Documents.Working_with_Images;
-using CSharp.Programming_Documents.Working_with_Styles;
-using CSharp.Programming_Documents.Working_with_Tables;
-using CSharp.Programming_Documents.Working_with_Sections;
-using CSharp.Programming_Documents.Working_with_ConvertUtil;
-using CSharp.Programming_Documents.Working_with_Charts;
-using CSharp.Programming_Documents.Working_with_Theme;
-using CSharp.Programming_Documents.Working_with_Node;
-using CSharp.Quick_Start;
-using CSharp.Rendering_and_Printing;
-using CSharp.LINQ;
+﻿using Aspose.Words.Examples.CSharp.Loading_Saving;
+using Aspose.Words.Examples.CSharp.Mail_Merge;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appending;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Bookmarks;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Comments;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Ranges;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Hyperlink;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Images;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Styles;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Sections;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_ConvertUtil;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Theme;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Node;
+using Aspose.Words.Examples.CSharp.Quick_Start;
+using Aspose.Words.Examples.CSharp.Rendering_and_Printing;
+using Aspose.Words.Examples.CSharp.LINQ;
 using DocumentExplorerExample;
 using System;
 using System.Collections.Generic;
@@ -26,16 +26,16 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace CSharp
+namespace Aspose.Words.Examples.CSharp
 {
     class RunExamples
     {
         [STAThread]
         public static void Main()
         {
-            Console.WriteLine("Open RunExamples.cs. In Main() method, Un-comment the example that you want to run");
+            Console.WriteLine("Open RunExamples.cs. \nIn Main() method uncomment the example that you want to run.");
             Console.WriteLine("=====================================================");
-            // Un-comment the one you want to try out
+            // Uncomment the one you want to try out
 
             // =====================================================
             // =====================================================
@@ -46,7 +46,7 @@ namespace CSharp
             //AppendDocuments.Run();
             //ApplyLicense.Run();           
             //FindAndReplace.Run();
-            //CSharp.Quick_Start.HelloWorld.Run();           
+            //Aspose.Words.Examples.CSharp.Quick_Start.HelloWorld.Run();           
             //UpdateFields.Run();
             //WorkingWithNodes.Run();
 
@@ -299,7 +299,7 @@ namespace CSharp
 
             //DocumentLayoutHelper.Run();
             //EnumerateLayoutElements.Run();
-            DocumentPreviewAndPrint.Run();
+            //DocumentPreviewAndPrint.Run();
             //ImageColorFilters.Run();
             //RenderShape.Run();
             //SaveAsMultipageTiff.Run();
@@ -329,7 +329,7 @@ namespace CSharp
             //// =====================================================
             //// =====================================================
 
-            //CSharp.LINQ.HelloWorld.Run();
+            //Aspose.Words.Examples.CSharp.LINQ.HelloWorld.Run();
             //SingleRow.Run();
             //InParagraphList.Run();
             //BulletedList.Run();
@@ -344,7 +344,7 @@ namespace CSharp
             //PieChart.Run();
             //ScatterChart.Run();
             //BubbleChart.Run();
-            //ChartWithFilteringGroupingOrdering.Run();
+            ChartWithFilteringGroupingOrdering.Run();
          
             // Stop before exiting
             Console.WriteLine("\n\nProgram Finished. Press any key to exit....");

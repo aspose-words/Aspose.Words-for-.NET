@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Aspose.Words.Rendering;
 using Aspose.Words;
 using System.Windows.Forms;
-namespace CSharp.Rendering_and_Printing
+namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
 {
     class PrintMultiplePagesOnOneSheet
     {
@@ -136,14 +136,14 @@ namespace CSharp.Rendering_and_Printing
                 HundredthsInchToPoint(mPaperSize.Height) / thumbCount.Height);
 
             // Select the number of the last page to be printed on this sheet of paper.
-            int pageTo = Math.Min(mCurrentPage + mPagesPerSheet - 1, mPageTo);
+            int pageTo = System.Math.Min(mCurrentPage + mPagesPerSheet - 1, mPageTo);
 
             // Loop through the selected pages from the stored current page to calculated last page.
             for (int pageIndex = mCurrentPage; pageIndex <= pageTo; pageIndex++)
             {
                 // Calculate the column and row indices.
                 int columnIdx;
-                int rowIdx = Math.DivRem(pageIndex - mCurrentPage, thumbCount.Width, out columnIdx);
+                int rowIdx = System.Math.DivRem(pageIndex - mCurrentPage, thumbCount.Width, out columnIdx);
 
                 // Define the thumbnail location in world coordinates (points in this case).
                 float thumbLeft = columnIdx * thumbSize.Width;

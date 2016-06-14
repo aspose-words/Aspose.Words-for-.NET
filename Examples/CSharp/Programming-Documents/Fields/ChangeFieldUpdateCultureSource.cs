@@ -9,7 +9,7 @@ using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using Aspose.Words.Tables;
 
-namespace CSharp.Programming_Documents.Working_with_Fields
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 {
     class ChangeFieldUpdateCultureSource
     {

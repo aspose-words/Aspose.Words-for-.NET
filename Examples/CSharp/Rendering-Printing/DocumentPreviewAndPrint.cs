@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using Aspose.Words;
 using Aspose.Words.Rendering;
 
-namespace CSharp.Rendering_and_Printing
+namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
 {
     //ExStart:ActivePrintPreviewDialogClass 
     class ActivePrintPreviewDialog : PrintPreviewDialog

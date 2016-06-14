@@ -4,7 +4,7 @@ using System.IO;
 using Aspose.Words;
 using System.Collections;
 
-namespace CSharp.Programming_Documents.Joining_and_Appending
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appending
 {
     class PrependDocument
     {

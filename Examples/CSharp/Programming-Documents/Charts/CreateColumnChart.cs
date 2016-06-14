@@ -5,7 +5,7 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
 
-namespace CSharp.Programming_Documents.Working_with_Charts
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
 {
     class CreateColumnChart
     {

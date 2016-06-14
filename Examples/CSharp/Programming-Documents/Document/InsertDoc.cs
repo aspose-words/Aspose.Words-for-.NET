@@ -3,7 +3,7 @@ using Aspose.Words;
 using System;
 using Aspose.Words.MailMerging;
 using System.Text.RegularExpressions;
-namespace CSharp.Programming_Documents.Working_With_Document
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class InsertDoc
     {
@@ -175,7 +175,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
                     builder.MoveToMergeField(e.DocumentFieldName);
 
                     // The name of the document to load and insert is stored in the field value.
-                    Aspose.Words.Document subDoc = new Aspose.Words.Document((string)e.FieldValue);
+                    Document subDoc = new Document((string)e.FieldValue);
 
                     // Insert the document.
                     InsertDocument(builder.CurrentParagraph, subDoc);

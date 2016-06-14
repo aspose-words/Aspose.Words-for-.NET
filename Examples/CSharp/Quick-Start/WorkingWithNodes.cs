@@ -4,7 +4,7 @@ using System.IO;
 
 using Aspose.Words;
 
-namespace CSharp.Quick_Start
+namespace Aspose.Words.Examples.CSharp.Quick_Start
 {
     class WorkingWithNodes
     {

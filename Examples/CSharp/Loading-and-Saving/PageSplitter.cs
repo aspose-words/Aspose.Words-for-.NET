@@ -13,7 +13,7 @@ using Aspose.Words.Fields;
 using Aspose.Words.Markup;
 using Aspose.Words.Lists;
 
-namespace CSharp.Loading_Saving
+namespace Aspose.Words.Examples.CSharp.Loading_Saving
 {
     class PageSplitter
     {

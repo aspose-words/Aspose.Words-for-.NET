@@ -1,6 +1,6 @@
 ﻿using System;
 using Aspose.Words;
-namespace CSharp.Programming_Documents.Working_with_ConvertUtil
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_ConvertUtil
 {
     class UtilityClasses
     {        

@@ -9,7 +9,7 @@ using Aspose.Words.MailMerging;
 using Aspose.Words.Saving;
 using System.Text;
 
-namespace CSharp.Loading_Saving
+namespace Aspose.Words.Examples.CSharp.Loading_Saving
 {
     class LoadTxt
     {

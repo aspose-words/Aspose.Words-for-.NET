@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Aspose.Words;
 
-namespace CSharp.Programming_Documents.Working_with_Sections
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Sections
 {
     class DeleteHeaderFooterContent
     {

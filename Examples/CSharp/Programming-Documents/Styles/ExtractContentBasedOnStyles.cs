@@ -13,7 +13,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
 
-namespace CSharp.Programming_Documents.Working_with_Styles
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Styles
 {
     class ExtractContentBasedOnStyles
     {

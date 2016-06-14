@@ -4,7 +4,7 @@ using System.IO;
 using Aspose.Words;
 using System;
 
-namespace CSharp.Loading_Saving
+namespace Aspose.Words.Examples.CSharp.Loading_Saving
 {
     class LoadAndSaveToStream
     {

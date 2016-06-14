@@ -6,7 +6,7 @@ using Aspose.Words.Drawing.Charts;
 using Aspose.Words.Fields;
 using Aspose.Words.Tables;
 
-namespace CSharp.Programming_Documents.Working_With_Document
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class DocumentBuilderMovingCursor
     {
@@ -31,7 +31,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
         {
             //ExStart:DocumentBuilderCursorPosition
             // Shows how to access the current node in a document builder.
-            Document doc = new Aspose.Words.Document(dataDir + "DocumentBuilder.doc");
+            Document doc = new Document(dataDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Node curNode = builder.CurrentNode;

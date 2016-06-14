@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.Fields;
 
-namespace CSharp.Programming_Documents.Working_with_Fields
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 {
     class RenameMergeFields
     {
@@ -99,7 +99,7 @@ namespace CSharp.Programming_Documents.Working_with_Fields
             /// </summary>
             private static void RemoveSameParent(Node startNode, Node endNode)
             {
-                if ((endNode != null) && ((Aspose.Words.Node)startNode.ParentNode != (Aspose.Words.Node)endNode.ParentNode))
+                if ((endNode != null) && ((Node)startNode.ParentNode != (Node)endNode.ParentNode))
                     throw new ArgumentException("Start and end nodes are expected to have the same parent.");
 
                 Node curChild = startNode;

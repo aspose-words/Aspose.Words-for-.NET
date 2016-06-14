@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Collections;
 using Aspose.Words.MailMerging;
-namespace CSharp.Mail_Merge
+namespace Aspose.Words.Examples.CSharp.Mail_Merge
 {
     class NestedMailMergeCustom
     {

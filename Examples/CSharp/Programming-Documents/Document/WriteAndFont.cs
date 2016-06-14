@@ -2,7 +2,7 @@
 using Aspose.Words;
 using System;
 using System.Drawing;
-namespace CSharp.Programming_Documents.Working_With_Document
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class WriteAndFont
     {
@@ -16,7 +16,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Specify font formatting before adding text.
-            Aspose.Words.Font font = builder.Font;
+            Font font = builder.Font;
             font.Size = 16;
             font.Bold = true;
             font.Color = Color.Blue;

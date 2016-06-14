@@ -2,7 +2,7 @@
 using Aspose.Words;
 using Aspose.Words.Loading;
 using System.Net;
-namespace CSharp.Loading_and_Saving
+namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
 {
     //ExStart:ImageLoadingWithCredentialsHandler
     public class ImageLoadingWithCredentialsHandler : IResourceLoadingCallback

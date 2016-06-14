@@ -13,7 +13,7 @@ using System.Text;
 using System.Web;
 using System.Drawing;
 
-namespace CSharp.Mail_Merge
+namespace Aspose.Words.Examples.CSharp.Mail_Merge
 {
     class MailMergeAlternatingRows
     {

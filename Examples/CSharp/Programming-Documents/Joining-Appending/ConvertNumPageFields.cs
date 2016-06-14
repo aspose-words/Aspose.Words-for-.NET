@@ -5,7 +5,7 @@ using Aspose.Words;
 using Aspose.Words.Fields;
 using System.Text;
 
-namespace CSharp.Programming_Documents.Joining_and_Appending
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appending
 {
     class ConvertNumPageFields
     {

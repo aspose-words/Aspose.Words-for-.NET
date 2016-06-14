@@ -4,7 +4,7 @@ using System.Reflection;
 using Aspose.Words.Fonts;
 using Aspose.Words;
 using Aspose.Words.Saving;
-namespace CSharp.Rendering_and_Printing
+namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
 {
     class EmbeddedFontsInPDF
     {

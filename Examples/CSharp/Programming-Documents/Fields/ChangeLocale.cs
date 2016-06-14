@@ -5,7 +5,7 @@ using Aspose.Words;
 using System.Threading;
 using System.Globalization;
 
-namespace CSharp.Programming_Documents.Working_with_Fields
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 {
     class ChangeLocale
     {

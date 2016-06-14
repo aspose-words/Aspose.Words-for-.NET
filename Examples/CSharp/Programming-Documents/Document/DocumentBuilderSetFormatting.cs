@@ -6,7 +6,7 @@ using Aspose.Words.Drawing.Charts;
 using Aspose.Words.Fields;
 using Aspose.Words.Tables;
 
-namespace CSharp.Programming_Documents.Working_With_Document
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class DocumentBuilderSetFormatting
     {
@@ -30,7 +30,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Set font formatting properties
-            Aspose.Words.Font font = builder.Font;
+            Font font = builder.Font;
             font.Bold = true;
             font.Color = System.Drawing.Color.DarkBlue;
             font.Italic = true;

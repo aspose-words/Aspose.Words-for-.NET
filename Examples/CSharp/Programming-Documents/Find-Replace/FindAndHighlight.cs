@@ -7,7 +7,7 @@ using System.Reflection;
 
 using Aspose.Words;
 
-namespace CSharp.Programming_Documents.Find_and_Replace
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
 {
     class FindAndHighlight
     {

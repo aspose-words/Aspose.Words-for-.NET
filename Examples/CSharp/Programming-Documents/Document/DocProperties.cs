@@ -3,7 +3,7 @@ using System.IO;
 using Aspose.Words;
 using System;
 using Aspose.Words.Properties;
-namespace CSharp.Programming_Documents.Working_With_Document
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class DocProperties
     {
@@ -52,7 +52,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
         public static void CustomRemove(string dataDir)
         {
             //ExStart:CustomRemove            
-            Aspose.Words.Document doc = new Aspose.Words.Document(dataDir + "Properties.doc");
+            Document doc = new Document(dataDir + "Properties.doc");
             doc.CustomDocumentProperties.Remove("Authorized Date");
             //ExEnd:CustomRemove
         }

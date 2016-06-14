@@ -4,7 +4,7 @@ using Aspose.Words;
 using System;
 using Aspose.Words.Tables;
 
-namespace CSharp.Programming_Documents.Working_with_Tables
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
 {
     class JoiningAndSplittingTable
     {

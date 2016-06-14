@@ -4,7 +4,7 @@ using System;
 using System.Drawing;
 using Aspose.Words.Tables;
 using System.Text.RegularExpressions;
-namespace CSharp.Programming_Documents.Working_With_Document
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class DocumentBuilderInsertTCFieldsAtText
     {
@@ -47,7 +47,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
         ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)
         {
             // Create a builder to insert the field.
-            DocumentBuilder builder = new DocumentBuilder((Aspose.Words.Document)args.MatchNode.Document);
+            DocumentBuilder builder = new DocumentBuilder((Document)args.MatchNode.Document);
             // Move to the first node of the match.
             builder.MoveTo(args.MatchNode);
 

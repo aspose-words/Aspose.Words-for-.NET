@@ -3,7 +3,7 @@ using System.IO;
 using Aspose.Words;
 using Aspose.Words.Themes;
 using System.Drawing;
-namespace CSharp.Programming_Documents.Working_with_Theme
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Theme
 {
     class ManipulateThemeProperties
     {

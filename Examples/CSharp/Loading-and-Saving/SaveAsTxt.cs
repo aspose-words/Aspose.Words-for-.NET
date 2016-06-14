@@ -3,7 +3,7 @@ using System.Collections;
 using System.IO;
 using Aspose.Words;
 using System.Text;
-namespace CSharp.Loading_Saving
+namespace Aspose.Words.Examples.CSharp.Loading_Saving
 {
     class SaveAsTxt
     {

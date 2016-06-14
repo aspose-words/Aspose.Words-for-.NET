@@ -2,9 +2,10 @@
 using Aspose.Words;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
+using AWords = Aspose.Words;
 
 
-namespace CSharp.Programming_Documents.Working_with_Node
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Node
 {
     class ExNode
     {
@@ -41,7 +42,7 @@ namespace CSharp.Programming_Documents.Working_with_Node
             // Create a new empty document. It has one section.
             Document doc = new Document();
             // The section is the first child node of the document.
-            Aspose.Words.Node section = doc.FirstChild;
+            Node section = doc.FirstChild;
             // The section's parent node is the document.
             Console.WriteLine("Section parent is the document: " + (doc == section.ParentNode));
             //ExEnd:GetParentNode           
@@ -79,7 +80,7 @@ namespace CSharp.Programming_Documents.Working_with_Node
             Paragraph paragraph = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
             
             NodeCollection children = paragraph.ChildNodes;
-            foreach (Aspose.Words.Node child in children)
+            foreach (Node child in children)
             {
                 // Paragraph may contain children of various types such as runs, shapes and so on.
                 if (child.NodeType.Equals(NodeType.Run))
@@ -99,7 +100,7 @@ namespace CSharp.Programming_Documents.Working_with_Node
             NodeCollection children = paragraph.ChildNodes;
             for (int i = 0; i < children.Count; i++)
             {
-                Aspose.Words.Node child = children[i];
+                Node child = children[i];
 
                 // Paragraph may contain children of various types such as runs, shapes and so on.
                 if (child.NodeType.Equals(NodeType.Run))
@@ -130,10 +131,10 @@ namespace CSharp.Programming_Documents.Working_with_Node
         public static void TraverseAllNodes(CompositeNode parentNode)
         {
             // This is the most efficient way to loop through immediate children of a node.
-            for (Aspose.Words.Node childNode = parentNode.FirstChild; childNode != null; childNode = childNode.NextSibling)
+            for (Node childNode = parentNode.FirstChild; childNode != null; childNode = childNode.NextSibling)
             {
                 // Do some useful work.
-                Console.WriteLine(Aspose.Words.Node.NodeTypeToString(childNode.NodeType));
+                Console.WriteLine(Node.NodeTypeToString(childNode.NodeType));
 
                 // Recurse into the node if it is a composite node.
                 if (childNode.IsComposite)
@@ -168,7 +169,7 @@ namespace CSharp.Programming_Documents.Working_with_Node
             //ExStart:CreateAndAddParagraphNode
             Document doc = new Document();
             Paragraph para = new Paragraph(doc);
-            Aspose.Words.Section section = doc.LastSection;
+            AWords.Section section = doc.LastSection;
             section.Body.AppendChild(para);
             //ExEnd:CreateAndAddParagraphNode
         }

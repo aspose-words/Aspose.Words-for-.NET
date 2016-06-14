@@ -7,7 +7,7 @@ using Aspose.Words.Fields;
 using Aspose.Words.Layout;
 using System.Text.RegularExpressions;
 using System.Text;
-namespace CSharp.Programming_Documents.Working_with_Hyperlink
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Hyperlink
 {
     class ReplaceHyperlinks
     {        

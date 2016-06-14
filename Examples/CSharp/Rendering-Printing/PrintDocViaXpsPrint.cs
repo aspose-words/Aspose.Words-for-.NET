@@ -10,7 +10,7 @@ using System.Drawing.Imaging;
 using Aspose.Words.Tables;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-namespace CSharp.Rendering_and_Printing
+namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
 {
     class PrintDocViaXpsPrint
     {
@@ -53,7 +53,7 @@ namespace CSharp.Rendering_and_Printing
         /// <param name="jobName">Job name. Can be null.</param>
         /// <param name="isWait">True to wait for the job to complete. False to return immediately after submitting the job.</param>
         /// <exception cref="Exception">Thrown if any error occurs.</exception>
-        public static void Print(Aspose.Words.Document document, string printerName, string jobName, bool isWait)
+        public static void Print(Document document, string printerName, string jobName, bool isWait)
         {
             Console.WriteLine("Print");
             if (document == null)
@@ -61,7 +61,7 @@ namespace CSharp.Rendering_and_Printing
 
             // Use Aspose.Words to convert the document to XPS and store in a memory stream.
             MemoryStream stream = new MemoryStream();
-            document.Save(stream, Aspose.Words.SaveFormat.Xps);
+            document.Save(stream, SaveFormat.Xps);
 
             stream.Position = 0;
             Console.WriteLine("Saved as Xps");

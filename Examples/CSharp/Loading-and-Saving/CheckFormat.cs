@@ -6,7 +6,7 @@ using Aspose.Words;
 using Aspose.Words.Tables;
 using System.Diagnostics;
 
-namespace CSharp.Loading_Saving
+namespace Aspose.Words.Examples.CSharp.Loading_Saving
 {
     class CheckFormat
     {

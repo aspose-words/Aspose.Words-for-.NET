@@ -4,7 +4,7 @@ using System.IO;
 
 using Aspose.Words;
 
-namespace CSharp.Programming_Documents.Comments
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Comments
 {
     class AnchorComment
     {

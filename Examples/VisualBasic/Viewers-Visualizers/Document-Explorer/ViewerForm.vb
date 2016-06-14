@@ -149,7 +149,7 @@ Namespace DocumentExplorerExample
 				mDocument.RenderToScale(pageIndex, gfx, 0, 0, scale)
 			End Using
 
-			docPagePictureBox.Width = Math.Max(img.Width + 100, SystemInformation.WorkingArea.Width - SystemInformation.VerticalScrollBarWidth)
+            docPagePictureBox.Width = System.Math.Max(img.Width + 100, SystemInformation.WorkingArea.Width - SystemInformation.VerticalScrollBarWidth)
 			docPagePictureBox.Height = img.Height + 100
 			docPagePictureBox.Image = img
 

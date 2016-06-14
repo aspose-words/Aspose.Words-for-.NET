@@ -7,7 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 //ExEnd:X509Certificates
 using Aspose.Words.Saving;
 
-namespace CSharp.Loading_Saving
+namespace Aspose.Words.Examples.CSharp.Loading_Saving
 {
     class DigitallySignedPdf
     {

@@ -12,7 +12,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
 
-namespace CSharp.Programming_Documents.Working_with_Images
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Images
 {
     class CompressImages
     {

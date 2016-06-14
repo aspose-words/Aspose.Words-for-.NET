@@ -4,7 +4,7 @@ using System.Reflection;
 using Aspose.Words.Tables;
 using Aspose.Words;
 
-namespace CSharp.Programming_Documents.Bookmarks
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Bookmarks
 {
     class AccessBookmarks
     {

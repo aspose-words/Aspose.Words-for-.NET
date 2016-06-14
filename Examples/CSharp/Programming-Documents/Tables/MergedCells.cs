@@ -9,7 +9,7 @@ using Aspose.Words.Tables;
 using System.Diagnostics;
 using Aspose.Words.Saving;
 
-namespace CSharp.Programming_Documents.Working_with_Tables
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
 {
     class MergedCells
     {
@@ -168,8 +168,8 @@ namespace CSharp.Programming_Documents.Working_with_Tables
             Point startCellPos = new Point(startCell.ParentRow.IndexOf(startCell), parentTable.IndexOf(startCell.ParentRow));
             Point endCellPos = new Point(endCell.ParentRow.IndexOf(endCell), parentTable.IndexOf(endCell.ParentRow));
             // Create the range of cells to be merged based off these indices. Inverse each index if the end cell if before the start cell. 
-            Rectangle mergeRange = new Rectangle(Math.Min(startCellPos.X, endCellPos.X), Math.Min(startCellPos.Y, endCellPos.Y),
-                Math.Abs(endCellPos.X - startCellPos.X) + 1, Math.Abs(endCellPos.Y - startCellPos.Y) + 1);
+            Rectangle mergeRange = new Rectangle( System.Math.Min(startCellPos.X, endCellPos.X), System.Math.Min(startCellPos.Y, endCellPos.Y),
+                System.Math.Abs(endCellPos.X - startCellPos.X) + 1, System.Math.Abs(endCellPos.Y - startCellPos.Y) + 1);
 
             foreach (Row row in parentTable.Rows)
             {
@@ -308,7 +308,7 @@ namespace CSharp.Programming_Documents.Working_with_Tables
                 }
             }
 
-            public override VisitorAction VisitCellStart(Aspose.Words.Tables.Cell cell)
+            public override VisitorAction VisitCellStart(Tables.Cell cell)
             {
                 // Determone index of current table
                 int tabIdx = mWordTables.IndexOf(cell.ParentRow.ParentTable);

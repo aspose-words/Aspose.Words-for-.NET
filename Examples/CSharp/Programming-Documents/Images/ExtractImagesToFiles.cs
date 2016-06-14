@@ -7,7 +7,7 @@ using Aspose.Words.Fields;
 using Aspose.Words.Layout;
 using Aspose.Words.Drawing;
 
-namespace CSharp.Programming_Documents.Working_with_Images
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Images
 {
     class ExtractImagesToFiles
     {

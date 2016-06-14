@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using Aspose.Words.Drawing;
 
-namespace CSharp.Loading_Saving
+namespace Aspose.Words.Examples.CSharp.Loading_Saving
 {
     class ImageToPdf
     {
@@ -36,7 +36,7 @@ namespace CSharp.Loading_Saving
         {
             Console.WriteLine("Converting " + inputFileName + " to PDF ....");
             //ExStart:ConvertImageToPdf
-            // Create Aspose.Words.Document and DocumentBuilder. 
+            // Create Document and DocumentBuilder. 
             // The builder makes it simple to add content to the document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

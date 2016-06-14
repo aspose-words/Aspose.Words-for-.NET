@@ -6,7 +6,7 @@ using System.Data.OleDb;
 using System.Linq;
 using System.Text;
 
-namespace CSharp.Mail_Merge
+namespace Aspose.Words.Examples.CSharp.Mail_Merge
 {
     class MultipleDocsInMailMerge
     {

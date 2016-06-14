@@ -8,7 +8,7 @@ using Aspose.Words.Fields;
 using Aspose.Words.Layout;
 using System.Diagnostics;
 
-namespace CSharp.Programming_Documents.Working_with_Fields
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 {
     //ExStart:FieldsHelper
     public class FieldsHelper : DocumentVisitor

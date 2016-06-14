@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace CSharp.Mail_Merge
+namespace Aspose.Words.Examples.CSharp.Mail_Merge
 {
     class ProduceMultipleDocuments
     {

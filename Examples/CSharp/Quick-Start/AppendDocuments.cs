@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CSharp.Quick_Start
+namespace Aspose.Words.Examples.CSharp.Quick_Start
 {
     class AppendDocuments
     {

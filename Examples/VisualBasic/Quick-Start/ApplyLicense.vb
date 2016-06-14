@@ -1,7 +1,6 @@
 ﻿Imports Microsoft.VisualBasic
 Imports System
 Imports System.IO
-
 Imports Aspose.Words
 
 Public Class ApplyLicense

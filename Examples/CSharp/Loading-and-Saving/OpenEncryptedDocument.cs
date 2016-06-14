@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Aspose.Words;
 using System.IO;
 
-namespace CSharp.Loading_Saving
+namespace Aspose.Words.Examples.CSharp.Loading_Saving
 {
     class OpenEncryptedDocument
     {

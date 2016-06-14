@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Aspose.Words;
 
-namespace CSharp.Loading_Saving
+namespace Aspose.Words.Examples.CSharp.Loading_Saving
 {
     class CreateDocument
     {

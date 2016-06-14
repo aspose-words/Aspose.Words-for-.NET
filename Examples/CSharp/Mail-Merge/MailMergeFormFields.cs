@@ -12,7 +12,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 
-namespace CSharp.Mail_Merge
+namespace Aspose.Words.Examples.CSharp.Mail_Merge
 {
     class MailMergeFormFields
     {

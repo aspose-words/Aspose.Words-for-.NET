@@ -6,7 +6,7 @@ using Aspose.Words;
 using Aspose.Words.Tables;
 using Aspose.Words.Fields;
 
-namespace CSharp.Programming_Documents.Working_With_Document
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class ExtractContentBetweenBookmark
     {
@@ -22,7 +22,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
             section.PageSetup.LeftMargin = 70.85;
 
             // Retrieve the bookmark from the document.
-            Aspose.Words.Bookmark bookmark = doc.Range.Bookmarks["Bookmark1"];
+            Bookmark bookmark = doc.Range.Bookmarks["Bookmark1"];
 
             // We use the BookmarkStart and BookmarkEnd nodes as markers.
             BookmarkStart bookmarkStart = bookmark.BookmarkStart;

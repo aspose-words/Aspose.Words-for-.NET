@@ -7,7 +7,7 @@ using System.Text;
 using System.Collections;
 using Aspose.Words.Lists;
 
-namespace CSharp.Programming_Documents.Joining_and_Appending
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appending
 {
     class ListUseDestinationStyles
     {

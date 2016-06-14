@@ -5,7 +5,7 @@ using System.Reflection;
 using Aspose.Words;
 using Aspose.Words.Tables;
 
-namespace CSharp.Programming_Documents.Bookmarks
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Bookmarks
 {
     class UntangleRowBookmarks
     {

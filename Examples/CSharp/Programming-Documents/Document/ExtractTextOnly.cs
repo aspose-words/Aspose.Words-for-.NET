@@ -6,7 +6,7 @@ using Aspose.Words;
 using Aspose.Words.Tables;
 using Aspose.Words.Fields;
 
-namespace CSharp.Programming_Documents.Working_With_Document
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class ExtractTextOnly
     {

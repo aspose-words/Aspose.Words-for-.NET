@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
-namespace CSharp.Rendering_and_Printing
+namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
 {
     class DocumentLayoutHelper
     {
@@ -69,7 +69,7 @@ namespace CSharp.Rendering_and_Printing
     public class RenderedDocument : LayoutEntity
     {
         /// <summary>
-        /// Creates a new instance from the supplied Aspose.Words.Document class.
+        /// Creates a new instance from the supplied Document class.
         /// </summary>
         /// <param name="document">A document whose page layout model to enumerate.</param>
         /// <remarks><para>If page layout model of the document hasn't been built the enumerator calls <see cref="Document.UpdatePageLayout"/> to build it.</para>

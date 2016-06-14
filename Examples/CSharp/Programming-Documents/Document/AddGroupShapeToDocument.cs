@@ -3,7 +3,7 @@ using System.IO;
 using Aspose.Words;
 using System;
 using Aspose.Words.Drawing;
-namespace CSharp.Programming_Documents.Working_With_Document
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class AddGroupShapeToDocument
     {
@@ -17,12 +17,12 @@ namespace CSharp.Programming_Documents.Working_With_Document
             doc.EnsureMinimum();
             GroupShape gs = new GroupShape(doc);
 
-            Shape shape = new Shape(doc, Aspose.Words.Drawing.ShapeType.AccentBorderCallout1);
+            Shape shape = new Shape(doc, Drawing.ShapeType.AccentBorderCallout1);
             shape.Width = 100;
             shape.Height = 100;
             gs.AppendChild(shape);
 
-            Shape shape1 = new Shape(doc, Aspose.Words.Drawing.ShapeType.ActionButtonBeginning);
+            Shape shape1 = new Shape(doc, Drawing.ShapeType.ActionButtonBeginning);
             shape1.Left = 100;
             shape1.Width = 100;
             shape1.Height = 200;

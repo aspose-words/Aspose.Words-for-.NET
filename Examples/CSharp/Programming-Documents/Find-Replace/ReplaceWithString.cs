@@ -5,7 +5,7 @@ using Aspose.Words;
 using Aspose.Words.Fields;
 using System;
 
-namespace CSharp.Programming_Documents.Find_and_Replace
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
 {
     class ReplaceWithString
     {

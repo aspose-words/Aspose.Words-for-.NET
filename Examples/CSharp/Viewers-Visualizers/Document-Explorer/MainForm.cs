@@ -4,7 +4,7 @@ using System.IO;
 using System.Windows.Forms;
 using Aspose.Words;
 using Aspose.Words.Saving;
-using CSharp;
+using Aspose.Words.Examples.CSharp;
 
 namespace DocumentExplorerExample
 {

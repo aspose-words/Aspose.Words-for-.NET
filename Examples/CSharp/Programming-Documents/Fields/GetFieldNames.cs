@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
 
-namespace CSharp.Programming_Documents.Working_with_Fields
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 {
     class GetFieldNames
     {
