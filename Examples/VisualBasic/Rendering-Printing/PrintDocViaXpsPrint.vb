@@ -91,6 +91,9 @@ Public Class XpsPrintHelper
         '            {
         Dim job As IXpsPrintJob
         Dim jobStream As IXpsPrintJobStream
+        job = Nothing
+        jobStream = Nothing
+
         Console.WriteLine("StartJob")
         StartJob(printerName, jobName, completionEvent, job, jobStream)
         Console.WriteLine("Done StartJob")
@@ -202,16 +205,6 @@ Public Class XpsPrintHelper
     End Function
 End Class
 
-''' <summary>
-''' This interface definition is HACKED.
-''' 
-''' It appears that the IID for IXpsPrintJobStream specified in XpsPrint.h as 
-''' MIDL_INTERFACE("7a77dc5f-45d6-4dff-9307-d8cb846347ca") is not correct and the RCW cannot return it.
-''' But the returned object returns the parent ISequentialStream inteface successfully.
-''' 
-''' So the hack is that we obtain the ISequentialStream interface but work with it as 
-''' with the IXpsPrintJobStream interface. 
-''' </summary>
 ' This is IID of ISequenatialSteam.
 <Guid("0C733A30-2A1C-11CE-ADE5-00AA0044773D")> _
 <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _

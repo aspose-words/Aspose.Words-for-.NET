@@ -165,7 +165,7 @@ Friend Class Worker
         Dim saveOptions As New HtmlSaveOptions()
         saveOptions.PrettyFormat = True
         ' This is to allow headings to appear to the left of main text.
-        saveOptions.AllowNegativeLeftIndent = True
+        saveOptions.AllowNegativeIndent = True
         saveOptions.ExportHeadersFootersMode = ExportHeadersFootersMode.None
 
         dummyDoc.Save(topic.FileName, saveOptions)

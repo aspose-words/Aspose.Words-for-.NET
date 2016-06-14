@@ -738,12 +738,7 @@ End Class
 ''' </summary>
 Public Class RenderedDocument
     Inherits LayoutEntity
-    ''' <summary>
-    ''' Creates a new instance from the supplied Aspose.Words.Document class.
-    ''' </summary>
-    ''' <param name="document">A document whose page layout model to enumerate.</param>
-    ''' <remarks><para>If page layout model of the document hasn't been built the enumerator calls <see cref="Document.UpdatePageLayout"/> to build it.</para>
-    ''' <para>Whenever document is updated and new page layout model is created, a new RenderedDocument instance must be used to access the changes.</para></remarks>
+    
     Public Sub New(ByVal doc As Document)
         mLayoutCollector = New LayoutCollector(doc)
         mEnumerator = New LayoutEnumerator(doc)

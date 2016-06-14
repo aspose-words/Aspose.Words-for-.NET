@@ -68,7 +68,7 @@ namespace CSharp.Loading_Saving
         /// </summary>
         private ArrayList SelectTopicStarts()
         {
-            NodeCollection paras = mDoc.GetChildNodes(NodeType.Paragraph, true, false);
+            NodeCollection paras = mDoc.GetChildNodes(NodeType.Paragraph, true);
             ArrayList topicStartParas = new ArrayList();
 
             foreach (Paragraph para in paras)
@@ -178,7 +178,7 @@ namespace CSharp.Loading_Saving
             HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.PrettyFormat = true;
             // This is to allow headings to appear to the left of main text.
-            saveOptions.AllowNegativeLeftIndent = true;
+            saveOptions.AllowNegativeIndent = true;
             saveOptions.ExportHeadersFootersMode = ExportHeadersFootersMode.None;
 
             dummyDoc.Save(topic.FileName, saveOptions);

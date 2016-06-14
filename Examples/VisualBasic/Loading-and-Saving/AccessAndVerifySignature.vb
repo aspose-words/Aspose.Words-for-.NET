@@ -15,8 +15,8 @@ Public Class AccessAndVerifySignature
             Console.WriteLine("Reason for signing: " + signature.Comments)
             ' This property is available in MS Word documents only.
             Console.WriteLine("Time of signing: " + signature.SignTime)
-            Console.WriteLine("Subject name: " + signature.Certificate.SubjectName.Name)
-            Console.WriteLine("Issuer name: " + signature.Certificate.IssuerName.Name)
+            Console.WriteLine("Subject name: " + signature.CertificateHolder.Certificate.SubjectName.Name)
+            Console.WriteLine("Issuer name: " + signature.CertificateHolder.Certificate.IssuerName.Name)
             Console.WriteLine()
         Next
         ' ExEnd:AccessAndVerifySignature

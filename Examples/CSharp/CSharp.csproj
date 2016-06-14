@@ -35,8 +35,7 @@
     <StartupObject>CSharp.RunExamples</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words, Version=16.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Aspose.Words">
       <HintPath>..\packages\Aspose.Words.16.4.0\lib\net40\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -305,7 +304,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Viewers-Visualizers\Document-Explorer\App.ico" />
     <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\Icons\Body.ICO" />

@@ -503,8 +503,8 @@ Namespace DocumentExplorerExample
 
             ' This operation can take some time so we set the Cursor to WaitCursor.
             Application.DoEvents()
-            Dim cursor As Cursor = Me.Cursor.Current
-            Me.Cursor.Current = Cursors.WaitCursor
+            Dim cursor As Cursor = Me.Cursor
+            Me.Cursor = Cursors.WaitCursor
 
             ' Load document is put in a try-catch block to handle situations when it fails for some reason.
             Try
@@ -543,7 +543,7 @@ Namespace DocumentExplorerExample
             End Try
 
             ' Restore cursor.
-            Me.Cursor.Current = cursor
+            Me.Cursor = cursor
         End Sub
 
         ''' <summary>
@@ -561,8 +561,8 @@ Namespace DocumentExplorerExample
 
             ' This operation can take some time so we set the Cursor to WaitCursor.
             Application.DoEvents()
-            Dim cursor As Cursor = Me.Cursor.Current
-            Me.Cursor.Current = Cursors.WaitCursor
+            Dim cursor As Cursor = Me.Cursor
+            Me.Cursor = Cursors.WaitCursor
 
             ' This operation is put in try-catch block to handle situations when operation fails for some reason.
             Try
@@ -576,7 +576,7 @@ Namespace DocumentExplorerExample
             End Try
 
             ' Restore cursor.
-            Me.Cursor.Current = cursor
+            Me.Cursor = cursor
         End Sub
 
         Private Sub RenderDocument()
@@ -655,8 +655,8 @@ Namespace DocumentExplorerExample
         Private Sub ExpandAll()
             ' This operation can take some time so we set the Cursor to WaitCursor.
             Application.DoEvents()
-            Dim cursor As Cursor = Me.Cursor.Current
-            Me.Cursor.Current = Cursors.WaitCursor
+            Dim cursor As Cursor = Me.Cursor
+            Me.Cursor = Cursors.WaitCursor
 
             If Tree.SelectedNode IsNot Nothing Then
                 Tree.BeginUpdate()
@@ -666,7 +666,7 @@ Namespace DocumentExplorerExample
             End If
 
             ' Restore cursor.
-            Me.Cursor.Current = cursor
+            Me.Cursor = cursor
         End Sub
 
         ''' <summary>
@@ -675,8 +675,8 @@ Namespace DocumentExplorerExample
         Private Sub CollapseAll()
             ' This operation can take some time so we set the Cursor to WaitCursor.
             Application.DoEvents()
-            Dim cursor As Cursor = Me.Cursor.Current
-            Me.Cursor.Current = Cursors.WaitCursor
+            Dim cursor As Cursor = Me.Cursor
+            Me.Cursor = Cursors.WaitCursor
 
             If Tree.SelectedNode IsNot Nothing Then
                 Tree.BeginUpdate()
@@ -686,7 +686,7 @@ Namespace DocumentExplorerExample
             End If
 
             ' Restore cursor.
-            Me.Cursor.Current = cursor
+            Me.Cursor = cursor
         End Sub
 
         ''' <summary>
@@ -705,8 +705,8 @@ Namespace DocumentExplorerExample
         Private Sub Tree_AfterSelect(ByVal sender As Object, ByVal e As TreeViewEventArgs) Handles Tree.AfterSelect
             ' This operation can take some time so we set the Cursor to WaitCursor.
             Application.DoEvents()
-            Dim cursor As Cursor = Me.Cursor.Current
-            Me.Cursor.Current = Cursors.WaitCursor
+            Dim cursor As Cursor = Me.Cursor
+            Me.Cursor = Cursors.WaitCursor
 
             Dim selectedItem As Item = CType(e.Node.Tag, Item)
 
@@ -718,7 +718,7 @@ Namespace DocumentExplorerExample
             Text1.Text = selectedItem.Text
 
             ' Restore cursor.
-            Me.Cursor.Current = cursor
+            Me.Cursor = cursor
         End Sub
 
         ''' <summary>
