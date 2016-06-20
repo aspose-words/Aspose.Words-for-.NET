@@ -902,7 +902,7 @@ namespace ApiExamples
             CertificateHolder ch = CertificateHolder.Create(MyDir + "certificate.pfx", "123456");
 
             //By String
-            Document doc = new Document(MyDir + "TestRepeatingSection.doc");
+            Document doc = new Document(MyDir + "TestRepeatingSection.docx");
             string outputDocFileName = MyDir + @"\Artifacts\TestRepeatingSection.Signed.doc";
 
             DigitalSignatureUtil.Sign(doc.OriginalFileName, outputDocFileName, ch, "My comment", DateTime.Now);

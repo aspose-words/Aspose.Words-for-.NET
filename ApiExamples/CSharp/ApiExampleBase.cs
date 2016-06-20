@@ -28,16 +28,26 @@ namespace ApiExamples
             SetUnlimitedLicense();
             
             if (!Directory.Exists(dirPath))
+                //Create new empty directory
                 Directory.CreateDirectory(dirPath);
         }
 
         [TestFixtureTearDown]
         public void TearDown()
         {
-            //Delete all files from dir
+            //Get all subdirs from the main dir and then delete all files from them
+            foreach (string directory in Directory.GetDirectories(dirPath))
+            {
+                //Delete all files from subdir
+                Array.ForEach(Directory.GetFiles(directory), File.Delete);
+            }
+
+            //Delete all subdirs from the main dir
+            Array.ForEach(Directory.GetDirectories(dirPath), Directory.Delete);
+
+            //Delete all files from the main dir
             Array.ForEach(Directory.GetFiles(dirPath), File.Delete);
-            
-            //Delete empty folder
+
             Directory.Delete(dirPath);
         }
 
@@ -108,6 +118,6 @@ namespace ApiExamples
         /// <summary>
         /// This is where the test license is on my development machine.
         /// </summary>
-        internal const string TestLicenseFileName = @"X:\awuex\Licenses\Aspose.Total.lic";
+        internal const string TestLicenseFileName = @"X:\awnet\TestData\Licenses\Aspose.Total.lic";
     }
 }
