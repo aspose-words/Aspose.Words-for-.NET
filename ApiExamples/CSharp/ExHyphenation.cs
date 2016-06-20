@@ -27,10 +27,10 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.doc");
 
             // Register by string
-            Hyphenation.RegisterDictionary("en-US", MyDir + @"\Artifacts\hyph_en_US.dic");
+            Hyphenation.RegisterDictionary("en-US", MyDir + "hyph_en_US.dic");
 
             // Register by stream
-            Stream dictionaryStream = new FileStream(MyDir + @"\Artifacts\hyph_de_CH.dic", FileMode.Open);
+            Stream dictionaryStream = new FileStream(MyDir + "hyph_de_CH.dic", FileMode.Open);
             Hyphenation.RegisterDictionary("de-CH", dictionaryStream);
             //ExEnd
         }
@@ -42,7 +42,7 @@ namespace ApiExamples
             //ExFor:Hyphenation.IsDictionaryRegistered(string)
             //ExSummary:Shows how to open check if some dictionary is registered.
             Document doc = new Document(MyDir + "Document.doc");
-            Hyphenation.RegisterDictionary("en-US", MyDir + @"\Artifacts\hyph_en_US.dic");
+            Hyphenation.RegisterDictionary("en-US", MyDir + "hyph_en_US.dic");
 
             Console.WriteLine(Hyphenation.IsDictionaryRegistered("en-US")); // True
             //ExEnd
@@ -55,7 +55,7 @@ namespace ApiExamples
             //ExFor:Hyphenation.UnregisterDictionary(string)
             //ExSummary:Shows how to un-register a dictionary
             Document doc = new Document(MyDir + "Document.doc");
-            Hyphenation.RegisterDictionary("en-US", MyDir + @"\Artifacts\hyph_en_US.dic");
+            Hyphenation.RegisterDictionary("en-US", MyDir + "hyph_en_US.dic");
 
             Hyphenation.UnregisterDictionary("en-US");
 
