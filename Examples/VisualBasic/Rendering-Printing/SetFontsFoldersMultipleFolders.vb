@@ -14,6 +14,8 @@ Public Class SetFontsFoldersMultipleFolders
         ' fonts when rendering or embedding fonts. To add an extra font source while keeping system font sources then use both FontSettings.GetFontSources and
         ' FontSettings.SetFontSources instead.
         FontSettings.SetFontsFolders(New String() {"C:\MyFonts\", "D:\Misc\Fonts\"}, True)
+        ' Set font settings
+        doc.FontSettings = FontSettings
         dataDir = dataDir & Convert.ToString("Rendering.SetFontsFolders_out_.pdf")
         doc.Save(dataDir)
         ' ExEnd:SetFontsFoldersMultipleFolders           

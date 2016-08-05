@@ -15,6 +15,8 @@ Public Class SetTrueTypeFontsFolder
         ' fonts when rendering or embedding fonts. To add an extra font source while keeping system font sources then use both FontSettings.GetFontSources and
         ' FontSettings.SetFontSources instead.
         FontSettings.SetFontsFolder("C:\MyFonts\", False)
+        ' Set font settings
+        doc.FontSettings = FontSettings
         dataDir = dataDir & Convert.ToString("Rendering.SetFontsFolder_out_.pdf")
         doc.Save(dataDir)
         ' ExEnd:SetTrueTypeFontsFolder

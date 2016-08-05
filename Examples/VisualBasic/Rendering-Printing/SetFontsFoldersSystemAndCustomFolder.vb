@@ -27,6 +27,8 @@ Public Class SetFontsFoldersSystemAndCustomFolder
 
         ' Apply the new set of font sources to use.
         FontSettings.SetFontsSources(updatedFontSources)
+        ' Set font settings
+        doc.FontSettings = FontSettings
         dataDir = dataDir & Convert.ToString("Rendering.SetFontsFolders_out_.pdf")
         doc.Save(dataDir)
         ' ExEnd:SetFontsFoldersSystemAndCustomFolder 

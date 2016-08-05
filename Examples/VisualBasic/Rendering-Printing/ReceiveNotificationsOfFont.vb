@@ -23,6 +23,8 @@ Public Class ReceiveNotificationsOfFont
         Dim callback As New HandleDocumentWarnings()
 
         doc.WarningCallback = callback
+        ' Set font settings
+        doc.FontSettings = FontSettings
         Dim path As String = dataDir & Convert.ToString("Rendering.MissingFontNotification_out_.pdf")
         ' Pass the save options along with the save path to the save method.
         doc.Save(path)

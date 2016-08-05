@@ -29,6 +29,8 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             HandleDocumentWarnings callback = new HandleDocumentWarnings();
 
             doc.WarningCallback = callback;
+            // Set font settings
+            doc.FontSettings = FontSettings;
             string path = dataDir + "Rendering.MissingFontNotification_out_.pdf";
             // Pass the save options along with the save path to the save method.
             doc.Save(path);
