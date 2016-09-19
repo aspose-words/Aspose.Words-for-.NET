@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System.Text;
+using System;
 
 using Aspose.Words;
 using Aspose.Words.Saving;
@@ -126,6 +127,58 @@ namespace ApiExamples
             {
                 doc.Save(MyDir + "WithoutExportFormFiels.html", htmlFixedSaveOptions);
             }
+        }
+
+        [Test]
+        [TestCase("aw")]
+        [TestCase("")]
+        public void CssPrefix(string cssprefix)
+        {
+            Document doc = new Document(MyDir + "Bookmark.doc");
+
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions();
+            saveOptions.CssClassNamesPrefix = cssprefix;
+
+            doc.Save(MyDir + @"\Artifacts\cssPrefix_Out.html", saveOptions);
+
+            DocumentHelper.FindTextInFile(MyDir + @"\Artifacts\cssPrefix_Out\styles.css", "div");
+        }
+
+        [Test]
+        [TestCase(HtmlFixedPageHorizontalAlignment.Center)]
+        [TestCase(HtmlFixedPageHorizontalAlignment.Left)]
+        [TestCase(HtmlFixedPageHorizontalAlignment.Right)]
+        public void HorizontalAlignment(HtmlFixedPageHorizontalAlignment horizontalAlignment)
+        {
+            Document doc = new Document(MyDir + "Bookmark.doc");
+
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions();
+            saveOptions.PageHorizontalAlignment = horizontalAlignment;
+
+            doc.Save(MyDir + @"\Artifacts\HtmlFixedPageHorizontalAlignment.html", saveOptions);
+        }
+
+        [Test]
+        public void PageMarginsException()
+        {
+            Document doc = new Document(MyDir + "Bookmark.doc");
+
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions();
+            Assert.That(() => saveOptions.PageMargins = -1, Throws.TypeOf<ArgumentException>());
+
+            doc.Save(MyDir + @"\Artifacts\HtmlFixedPageMargins.html", saveOptions);
+        }
+
+        [TestCase(0)]
+        [TestCase(10)]
+        public void PageMargins(int margin)
+        {
+            Document doc = new Document(MyDir + "Bookmark.doc");
+
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions();
+            saveOptions.PageMargins = margin;
+
+            doc.Save(MyDir + @"\Artifacts\HtmlFixedPageMargins.html", saveOptions);
         }
     }
 }

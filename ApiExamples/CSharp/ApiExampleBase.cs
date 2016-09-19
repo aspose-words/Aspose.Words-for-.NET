@@ -22,33 +22,21 @@ namespace ApiExamples
     {
         private readonly string dirPath = MyDir + @"\Artifacts\";
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             SetUnlimitedLicense();
-            
+
             if (!Directory.Exists(dirPath))
                 //Create new empty directory
                 Directory.CreateDirectory(dirPath);
         }
-
-        [TestFixtureTearDown]
+        
+        [OneTimeTearDown]
         public void TearDown()
         {
-            //Get all subdirs from the main dir and then delete all files from them
-            foreach (string directory in Directory.GetDirectories(dirPath))
-            {
-                //Delete all files from subdir
-                Array.ForEach(Directory.GetFiles(directory), File.Delete);
-            }
-
-            //Delete all subdirs from the main dir
-            Array.ForEach(Directory.GetDirectories(dirPath), Directory.Delete);
-
-            //Delete all files from the main dir
-            Array.ForEach(Directory.GetFiles(dirPath), File.Delete);
-
-            Directory.Delete(dirPath);
+            //Delete all dirs and files from directory
+            Directory.Delete(dirPath, true);
         }
 
         internal static void SetUnlimitedLicense()

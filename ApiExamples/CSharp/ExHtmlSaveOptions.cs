@@ -6,9 +6,11 @@
 //////////////////////////////////////////////////////////////////////////
 
 using Aspose.Words;
-using Aspose.Words.Saving;
 
 using NUnit.Framework;
+
+using System;
+using System.IO;
 
 namespace ApiExamples
 {
@@ -24,7 +26,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "HtmlSaveOptions.ExportPageMargins.docx");
 
-            HtmlSaveOptions htmlSaveOptions = new HtmlSaveOptions
+            Aspose.Words.Saving.HtmlSaveOptions htmlSaveOptions = new Aspose.Words.Saving.HtmlSaveOptions
             {
                 SaveFormat = saveFormat, 
                 ExportPageMargins = true
@@ -42,6 +44,79 @@ namespace ApiExamples
                     doc.Save(MyDir + "ExportPageMargins.Epub", htmlSaveOptions); //There is draw images bug with epub. Need write to NSezganov
                     break;
             }
+        }
+
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ExportUrlForLinkedImage(bool export)
+        {
+            Document doc = new Document(MyDir + "ExportUrlForLinkedImage.docx");
+
+            Aspose.Words.Saving.HtmlSaveOptions saveOptions = new Aspose.Words.Saving.HtmlSaveOptions();
+            saveOptions.ExportOriginalUrlForLinkedImages = export;
+
+            doc.Save(MyDir + @"\Artifacts\ExportUrlForLinkedImage.html", saveOptions);
+
+            String[] dirFiles = Directory.GetFiles(MyDir + @"\Artifacts\", "ExportUrlForLinkedImage.001.png", SearchOption.AllDirectories);
+
+            if (dirFiles.Length == 0)
+            {
+                DocumentHelper.FindTextInFile(MyDir + @"\Artifacts\ExportUrlForLinkedImage.html", "<img src=\"http://www.aspose.com/images/aspose-logo.gif\"");
+            }
+            else
+            {
+                DocumentHelper.FindTextInFile(MyDir + @"\Artifacts\ExportUrlForLinkedImage.html", "<img src=\"ExportUrlForLinkedImage.001.png\"");
+            }
+        }
+
+        [Ignore("Need to rework, for best gold asserts")]
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ExportRoundtripInformation(bool valueHtml)
+        {
+            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportPageMargins.docx");
+
+            Aspose.Words.Saving.HtmlSaveOptions saveOptions = new Aspose.Words.Saving.HtmlSaveOptions();
+            saveOptions.ExportRoundtripInformation = valueHtml;
+
+            doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.RoundtripInformation.html");
+
+            if (valueHtml)
+            {
+                this.CompareFiles(
+                    MyDir + @"\Golds\HtmlSaveOptions.WithRoundtripInformation.html",
+                    MyDir + @"\Artifacts\HtmlSaveOptions.RoundtripInformation.html");
+            }
+            else
+            {
+                this.CompareFiles(
+                    MyDir + @"\Golds\HtmlSaveOptions.WithoutRoundtripInformation.html",
+                    MyDir + @"\Artifacts\HtmlSaveOptions.RoundtripInformation.html");
+            }
+        }
+
+        [Test]
+        public void RoundtripInformationDefaulValue()
+        {
+            //Assert that default value is true for HTML and false for MHTML and EPUB.
+            Aspose.Words.Saving.HtmlSaveOptions saveOptions = new Aspose.Words.Saving.HtmlSaveOptions(SaveFormat.Html);
+            Assert.AreEqual(true, saveOptions.ExportRoundtripInformation);
+
+            saveOptions = new Aspose.Words.Saving.HtmlSaveOptions(SaveFormat.Mhtml);
+            Assert.AreEqual(false, saveOptions.ExportRoundtripInformation);
+
+            saveOptions = new Aspose.Words.Saving.HtmlSaveOptions(SaveFormat.Epub);
+            Assert.AreEqual(false, saveOptions.ExportRoundtripInformation);
+        }
+
+        private void CompareFiles(string firstPath, string secondPath)
+        {
+            String[] linesA = File.ReadAllLines(firstPath);
+            String[] linesB = File.ReadAllLines(secondPath);
+
+            Assert.AreEqual(linesA, linesB);
         }
     }
 }

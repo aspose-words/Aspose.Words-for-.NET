@@ -13,8 +13,6 @@ using Aspose.Words.Lists;
 
 using NUnit.Framework;
 
-using List = Aspose.Words.Lists.List;
-
 namespace ApiExamples
 {
     [TestFixture]
@@ -144,19 +142,19 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Create an outline list for the headings.
-            List outlineList = doc.Lists.Add(ListTemplate.OutlineNumbers);
+            Aspose.Words.Lists.List outlineList = doc.Lists.Add(ListTemplate.OutlineNumbers);
             builder.ListFormat.List = outlineList;
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
             builder.Writeln("This is my Chapter 1");
 
             // Create a numbered list.
-            List numberedList = doc.Lists.Add(ListTemplate.NumberDefault);
+            Aspose.Words.Lists.List numberedList = doc.Lists.Add(ListTemplate.NumberDefault);
             builder.ListFormat.List = numberedList;
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Normal;
             builder.Writeln("Numebered list item 1.");
 
             // Create a bulleted list.
-            List bulletedList = doc.Lists.Add(ListTemplate.BulletDefault);
+            Aspose.Words.Lists.List bulletedList = doc.Lists.Add(ListTemplate.BulletDefault);
             builder.ListFormat.List = bulletedList;
             builder.ParagraphFormat.LeftIndent = 72;
             builder.Writeln("Bulleted list item 1.");
@@ -204,7 +202,7 @@ namespace ApiExamples
             Document doc = new Document();
 
             // Create a list based on one of the Microsoft Word list templates.
-            List list = doc.Lists.Add(ListTemplate.NumberDefault);
+            Aspose.Words.Lists.List list = doc.Lists.Add(ListTemplate.NumberDefault);
 
             // Completely customize one list level.
             ListLevel level1 = list.ListLevels[0];
@@ -266,7 +264,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Create a list based on a template.
-            List list1 = doc.Lists.Add(ListTemplate.NumberArabicParenthesis);
+            Aspose.Words.Lists.List list1 = doc.Lists.Add(ListTemplate.NumberArabicParenthesis);
             // Modify the formatting of the list.
             list1.ListLevels[0].Font.Color = Color.Red;
             list1.ListLevels[0].Alignment = ListLevelAlignment.Right;
@@ -280,7 +278,7 @@ namespace ApiExamples
 
             // Now I want to reuse the first list, but need to restart numbering.
             // This should be done by creating a copy of the original list formatting.
-            List list2 = doc.Lists.AddCopy(list1);
+            Aspose.Words.Lists.List list2 = doc.Lists.AddCopy(list1);
 
             // We can modify the new list in any way. Including setting new start number.
             list2.ListLevels[0].StartAt = 10;
@@ -320,7 +318,7 @@ namespace ApiExamples
 
             // This list defines the formatting of the list style.
             // Note this list can not be used directly to apply formatting to paragraphs (see below).
-            List list1 = listStyle.List;
+            Aspose.Words.Lists.List list1 = listStyle.List;
 
             // Check some basic rules about the list that defines a list style.
             Console.WriteLine("IsListStyleDefinition: " + list1.IsListStyleDefinition);
@@ -344,7 +342,7 @@ namespace ApiExamples
             builder.Writeln("Using list style first time:");
 
             // This creates a list based on the list style.
-            List list2 = doc.Lists.Add(listStyle);
+            Aspose.Words.Lists.List list2 = doc.Lists.Add(listStyle);
 
             // Check some basic rules about the list that references a list style.
             Console.WriteLine("IsListStyleDefinition: " + list2.IsListStyleDefinition);
@@ -361,7 +359,7 @@ namespace ApiExamples
             builder.Writeln("Using list style second time:");
 
             // Create and apply another list based on the list style.
-            List list3 = doc.Lists.Add(listStyle);
+            Aspose.Words.Lists.List list3 = doc.Lists.Add(listStyle);
             builder.ListFormat.List = list3;
             builder.Writeln("Item 1");
             builder.Writeln("Item 2");
@@ -435,7 +433,7 @@ namespace ApiExamples
             //ExFor:ListCollection.Item(Int32)
             //ExSummary:Applies list formatting of an existing list to a collection of paragraphs.
             Body body = doc.FirstSection.Body;
-            List list = doc.Lists[0];
+            Aspose.Words.Lists.List list = doc.Lists[0];
             foreach (Paragraph paragraph in body.Paragraphs)
             {
                 paragraph.ListFormat.List = list;
@@ -454,7 +452,7 @@ namespace ApiExamples
             //ExFor:ListFormat.ListLevelNumber
             //ExFor:ListCollection.Add(ListTemplate)
             //ExSummary:Creates new list formatting and applies it to a collection of paragraphs.
-            List list = doc.Lists.Add(ListTemplate.NumberUppercaseLetterDot);
+            Aspose.Words.Lists.List list = doc.Lists.Add(ListTemplate.NumberUppercaseLetterDot);
 
             Body body = doc.FirstSection.Body;
             foreach (Paragraph paragraph in body.Paragraphs)
@@ -482,7 +480,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            List list = doc.Lists.Add(ListTemplate.OutlineHeadingsArticleSection);
+            Aspose.Words.Lists.List list = doc.Lists.Add(ListTemplate.OutlineHeadingsArticleSection);
             AddOutlineHeadingParagraphs(builder, list, "Aspose.Words Outline 1");
 
             list = doc.Lists.Add(ListTemplate.OutlineHeadingsLegal);
@@ -499,7 +497,7 @@ namespace ApiExamples
             builder.Document.Save(MyDir + @"\Artifacts\Lists.OutlineHeadingTemplates.doc");
         }
 
-        private static void AddOutlineHeadingParagraphs(DocumentBuilder builder, List list, string title)
+        private static void AddOutlineHeadingParagraphs(DocumentBuilder builder, Aspose.Words.Lists.List list, string title)
         {
             builder.ParagraphFormat.ClearFormatting();
             builder.Writeln(title);
@@ -541,17 +539,17 @@ namespace ApiExamples
             Document dstDoc = new Document();
             DocumentBuilder builder = new DocumentBuilder(dstDoc);
 
-            foreach (List srcList in srcDoc.Lists)
+            foreach (Aspose.Words.Lists.List srcList in srcDoc.Lists)
             {
                 // This copies the list formatting from the source into the destination document.
-                List dstList = dstDoc.Lists.AddCopy(srcList);
+                Aspose.Words.Lists.List dstList = dstDoc.Lists.AddCopy(srcList);
                 AddListSample(builder, dstList);
             }
 
             dstDoc.Save(MyDir + @"\Artifacts\Lists.PrintOutAllLists.doc");
         }
 
-        private static void AddListSample(DocumentBuilder builder, List list)
+        private static void AddListSample(DocumentBuilder builder, Aspose.Words.Lists.List list)
         {
             builder.Writeln("Sample formatting of list with ListId:" + list.ListId);
             builder.ListFormat.List = list;
@@ -583,7 +581,7 @@ namespace ApiExamples
             Console.WriteLine("ListCollection document is doc: " + (doc == lists.Document));
             Console.WriteLine("Starting list count: " + lists.Count);
 
-            List list = lists.Add(ListTemplate.BulletDefault);
+            Aspose.Words.Lists.List list = lists.Add(ListTemplate.BulletDefault);
             Console.WriteLine("List document is doc: " + (list.Document == doc));
             Console.WriteLine("List count after adding list: " + lists.Count);
             Console.WriteLine("Is the first document list: " + (lists[0] == list));
@@ -635,7 +633,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            List list = doc.Lists.Add(ListTemplate.NumberDefault);
+            Aspose.Words.Lists.List list = doc.Lists.Add(ListTemplate.NumberDefault);
 
             // Level 1 labels will be "Appendix A", continuous and linked to the Heading 1 paragraph style.
             list.ListLevels[0].NumberFormat = "Appendix \x0000";
@@ -770,7 +768,7 @@ namespace ApiExamples
             Document doc = new Document();
 
             // Create a list with template
-            List list = doc.Lists.Add(ListTemplate.BulletCircle);
+            Aspose.Words.Lists.List list = doc.Lists.Add(ListTemplate.BulletCircle);
 
             // Create picture bullet for the current list level
             list.ListLevels[0].CreatePictureBullet();

@@ -20,8 +20,6 @@ using Aspose.Words.Saving;
 
 using NUnit.Framework;
 
-using Orientation = Aspose.Words.Orientation;
-
 namespace ApiExamples
 {
     [TestFixture]
@@ -335,7 +333,7 @@ namespace ApiExamples
 
             // Modify the document in any way.
             doc.Styles["Normal"].Font.Size = 6;
-            doc.Sections[0].PageSetup.Orientation = Orientation.Landscape;
+            doc.Sections[0].PageSetup.Orientation = Aspose.Words.Orientation.Landscape;
 
             // In the current version of Aspose.Words, modifying the document does not automatically rebuild 
             // the cached page layout. If you want to save to PDF or render a modified document again,

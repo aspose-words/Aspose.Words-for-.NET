@@ -5,6 +5,11 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+//ExStart
+//ExId:UsingReportingNamespace
+//ExSummary:Include the following statement in your code if you are using mail merge functionality.
+//ExEnd
+
 using System;
 using System.Data;
 using System.Data.OleDb;
@@ -24,7 +29,6 @@ namespace ApiExamples
     public class ExMailMerge : ApiExampleBase
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]	//Thrown because HttpResponse is null in the test.
         public void ExecuteArray()
         {
             HttpResponse Response = null;
@@ -44,7 +48,7 @@ namespace ApiExamples
                 new object[] {"James Bond", "MI5 Headquarters", "Milbank", "", "London"});
 
             // Send the document in Word format to the client browser with an option to save to disk or open inside the current browser.
-            doc.Save(Response, @"\Artifacts\MailMerge.ExecuteArray.doc", ContentDisposition.Inline, null);
+            Assert.That(() => doc.Save(Response, @"\Artifacts\MailMerge.ExecuteArray.doc", ContentDisposition.Inline, null), Throws.TypeOf<ArgumentNullException>()); //Thrown because HttpResponse is null in the test.
             //ExEnd
         }
 
@@ -415,6 +419,7 @@ namespace ApiExamples
             //ExFor:MailMergeRegionInfo.Fields
             //ExFor:MailMergeRegionInfo.StartField
             //ExFor:MailMergeRegionInfo.EndField
+            //ExFor:MailMergeRegionInfo.Level
             //ExSummary:Shows how to get MailMergeRegionInfo and work with it
             Document doc = new Document(MyDir+ "MailMerge.TestRegionsHierarchy.doc");
 
@@ -426,12 +431,16 @@ namespace ApiExamples
             Assert.AreEqual(2, topRegions.Count);
             Assert.AreEqual(((MailMergeRegionInfo)topRegions[0]).Name, "Region1");
             Assert.AreEqual(((MailMergeRegionInfo)topRegions[1]).Name, "Region2");
+            Assert.AreEqual(1, ((MailMergeRegionInfo)topRegions[0]).Level);
+            Assert.AreEqual(1, ((MailMergeRegionInfo)topRegions[1]).Level);
 
             //Get nested region in first top region
             ArrayList nestedRegions = ((MailMergeRegionInfo)topRegions[0]).Regions;
             Assert.AreEqual(2, nestedRegions.Count);
             Assert.AreEqual(((MailMergeRegionInfo)nestedRegions[0]).Name, "NestedRegion1");
             Assert.AreEqual(((MailMergeRegionInfo)nestedRegions[1]).Name, "NestedRegion2");
+            Assert.AreEqual(2, ((MailMergeRegionInfo)nestedRegions[0]).Level);
+            Assert.AreEqual(2, ((MailMergeRegionInfo)nestedRegions[1]).Level);
 
             //Get field list in first top region
             ArrayList fieldList = ((MailMergeRegionInfo)topRegions[0]).Fields;
@@ -459,6 +468,22 @@ namespace ApiExamples
                 new object[0]);
 
             Assert.AreEqual(1, mailMergeCallbackStub.TagsReplacedCounter);
+        }
+
+        [Test]
+        [TestCase("Region1")]
+        [TestCase("NestedRegion1")]
+        public void GetRegionsByName(string regionName)
+        {
+            Document doc = new Document(MyDir + "MailMerge.RegionsByName.doc");
+
+            ArrayList regions = doc.MailMerge.GetRegionsByName(regionName);
+            Assert.AreEqual(2, regions.Count);
+
+            foreach (MailMergeRegionInfo region in regions)
+            {
+                Assert.AreEqual(regionName, region.Name);
+            }
         }
 
         private class MailMergeCallbackStub : IMailMergeCallback

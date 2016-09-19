@@ -10,6 +10,8 @@ using Aspose.Words.Markup;
 
 using NUnit.Framework;
 
+using System.IO;
+
 namespace ApiExamples
 {
     /// <summary>
@@ -31,6 +33,27 @@ namespace ApiExamples
             //Assert that the node have sdttype - RichText 
             sdt = (StructuredDocumentTag)sdts[1];
             Assert.AreNotEqual(SdtType.RepeatingSection, sdt.SdtType);
+        }
+
+        [Test]
+        public void CheckBox()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            StructuredDocumentTag sdtCheckBox = new StructuredDocumentTag(doc, SdtType.Checkbox, MarkupLevel.Inline);
+            sdtCheckBox.Checked = true;
+
+            //Insert content control into the document
+            builder.InsertNode(sdtCheckBox);
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            NodeCollection sdts = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
+            
+            StructuredDocumentTag sdt = (StructuredDocumentTag)sdts[0];
+            Assert.AreEqual(true, sdt.Checked);
         }
     }
 }

@@ -12,8 +12,6 @@ using Aspose.Words;
 
 using NUnit.Framework;
 
-using PaperSize = Aspose.Words.PaperSize;
-
 namespace ApiExamples
 {
     [TestFixture]
@@ -141,12 +139,12 @@ namespace ApiExamples
             // Set the page tray used for each section based off the paper size used in the section.
             foreach (Section section in doc.Sections)
             {
-                if (section.PageSetup.PaperSize == PaperSize.Letter)
+                if (section.PageSetup.PaperSize == Aspose.Words.PaperSize.Letter)
                 {
                     section.PageSetup.FirstPageTray = printerTrayForLetter;
                     section.PageSetup.OtherPagesTray = printerTrayForLetter;
                 }
-                else if (section.PageSetup.PaperSize == PaperSize.A4)
+                else if (section.PageSetup.PaperSize == Aspose.Words.PaperSize.A4)
                 {
                     section.PageSetup.FirstPageTray = printerTrayForA4;
                     section.PageSetup.OtherPagesTray = printerTrayForA4;
@@ -174,7 +172,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             PageSetup ps = builder.PageSetup;
-            ps.PaperSize = PaperSize.Legal;
+            ps.PaperSize = Aspose.Words.PaperSize.Legal;
             ps.Orientation = Orientation.Landscape;
             ps.TopMargin = ConvertUtil.InchToPoint(1.0);
             ps.BottomMargin = ConvertUtil.InchToPoint(1.0);

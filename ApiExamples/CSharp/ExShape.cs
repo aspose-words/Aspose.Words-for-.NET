@@ -15,7 +15,7 @@ using Aspose.Words.Drawing.Ole;
 using Aspose.Words.Math;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
-
+using Aspose.Words.Settings;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -309,6 +309,9 @@ namespace ApiExamples
 
             Assert.AreEqual(250, renderer.GetBoundsInPixels(imageOptions.Scale, imageOptions.Resolution).Width);
             Assert.AreEqual(52, renderer.GetBoundsInPixels(imageOptions.Scale, imageOptions.Resolution).Height);
+
+            Assert.AreEqual((float)187.849991, renderer.OpaqueBoundsInPoints.Width);
+            Assert.AreEqual((float)39.25, renderer.OpaqueBoundsInPoints.Height);
         }
 
         //For assert result of the test you need to open "Document.OfficeMath Out.svg" and check that OfficeMath node is there
@@ -316,7 +319,8 @@ namespace ApiExamples
         public void SaveShapeObjectAsImage()
         {
             //ExStart
-            //ExFor:Shows how to convert specific object into image
+            //ExFor:OfficeMath.GetMathRenderer.Save
+            //ExSummary:Shows how to convert specific object into image
             Document doc = new Document(MyDir + "Document.OfficeMath.docx");
 
             //Get OfficeMath node from the document and render this as image (you can also do the same with the Shape node)
@@ -331,7 +335,8 @@ namespace ApiExamples
         public void AspectRatioLocked(bool isLocked)
         {
             //ExStart
-            //ExFor:Shows how to set "AspectRatioLocked" for the shape object
+            //ExFor:Shape.AspectRatioLocked
+            //ExSummary:Shows how to set "AspectRatioLocked" for the shape object
             Document doc = new Document(MyDir + "Shape.ActiveXObject.docx");
 
             //Get shape object from the document and set AspectRatioLocked(it is possible to get/set AspectRatioLocked for child shapes (mimic MS Word behavior), but AspectRatioLocked has effect only for top level shapes!)
@@ -344,6 +349,89 @@ namespace ApiExamples
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             Assert.AreEqual(isLocked, shape.AspectRatioLocked);
+        }
+
+        [Test]
+        public void MarkupLunguageByDefault()
+        {
+            //ExStart
+            //ExFor:Shape.MarkupLanguage
+            //ExStart:Shows how get markup language for shape object in document
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape image = builder.InsertImage(MyDir + @"dotnet-logo.png");
+
+            // Loop through all single shapes inside document.
+            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
+            {
+                Assert.AreEqual(ShapeMarkupLanguage.Dml, shape.MarkupLanguage);
+
+                Console.WriteLine("Shape: " + shape.MarkupLanguage);
+                Console.WriteLine("ShapeSize: " + shape.SizeInPoints);
+            }
+            //ExEnd
+        }
+
+        [Test]
+        [TestCase(MsWordVersion.Word2003, ShapeMarkupLanguage.Vml)]
+        [TestCase(MsWordVersion.Word2010, ShapeMarkupLanguage.Dml)]
+        public void MarkupLunguageForDifferentMsWordVersions(MsWordVersion msWordVersion, ShapeMarkupLanguage shapeMarkupLanguage)
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            doc.CompatibilityOptions.OptimizeFor(msWordVersion);
+            
+            Shape image = builder.InsertImage(MyDir + @"dotnet-logo.png");
+
+            // Loop through all single shapes inside document.
+            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
+            {
+                Assert.AreEqual(shapeMarkupLanguage, shape.MarkupLanguage);
+            }
+        }
+
+        [Test]
+        public void ChangeStrokeProperties()
+        {
+            //ExStart
+            //ExFor:Stroke
+            //ExSummary:Shows how change stroke properties
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create a new shape of type Rectangle
+            Shape rectangle = new Shape(doc, ShapeType.Rectangle);
+
+            //Change stroke properties
+            Stroke stroke = rectangle.Stroke;
+            stroke.On = true;
+            stroke.Weight = 5;
+            stroke.Color = Color.Red;
+            stroke.DashStyle = DashStyle.ShortDashDotDot;
+            stroke.JoinStyle = JoinStyle.Miter;
+            stroke.EndCap = EndCap.Square;
+            stroke.LineStyle = ShapeLineStyle.Triple;
+
+            //Insert shape object
+            builder.InsertNode(rectangle);
+            //ExEnd
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            rectangle = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Stroke strokeAfter = rectangle.Stroke;
+
+            Assert.AreEqual(true, strokeAfter.On);
+            Assert.AreEqual(5, strokeAfter.Weight);
+            Assert.AreEqual(Color.Red.ToArgb(), strokeAfter.Color.ToArgb());
+            Assert.AreEqual(DashStyle.ShortDashDotDot, strokeAfter.DashStyle);
+            Assert.AreEqual(JoinStyle.Miter, strokeAfter.JoinStyle);
+            Assert.AreEqual(EndCap.Square, strokeAfter.EndCap);
+            Assert.AreEqual(ShapeLineStyle.Triple, strokeAfter.LineStyle);
         }
     }
 }

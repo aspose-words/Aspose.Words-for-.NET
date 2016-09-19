@@ -10,7 +10,7 @@ using System.Drawing;
 using System.Text.RegularExpressions;
 
 using Aspose.Words;
-
+using Aspose.Words.Replacing;
 using NUnit.Framework;
 
 namespace ApiExamples

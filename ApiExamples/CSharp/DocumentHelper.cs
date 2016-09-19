@@ -9,6 +9,11 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Tables;
 
+using System;
+using System.IO;
+
+using NUnit.Framework;
+
 namespace ApiExamples
 {
     /// <summary>
@@ -68,6 +73,29 @@ namespace ApiExamples
             InsertToc(builder);
 
             return doc;
+        }
+
+        internal static void FindTextInFile(string path, string expression)
+        {
+            using (var sr = new StreamReader(path))
+            {
+                while (!sr.EndOfStream)
+                {
+                    var line = sr.ReadLine();
+
+                    if (String.IsNullOrEmpty(line)) continue;
+
+                    if (line.Contains(expression))
+                    {
+                        Console.WriteLine(line);
+                        Assert.Pass();
+                    }
+                    else
+                    {
+                        Assert.Fail();
+                    }
+                }
+            }
         }
 
         /// <summary>

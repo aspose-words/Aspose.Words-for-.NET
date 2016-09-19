@@ -58,16 +58,13 @@ namespace ApiExamples
         }
 
         [Test]
-        // We don't include a sample certificate with the examples
-        // so this exception is expected instead since the file is not there.
-        [ExpectedException(typeof(FileNotFoundException))]
         public void SignEx()
         {
             //ExStart
             //ExFor:DigitalSignatureUtil.Sign(String, String, CertificateHolder, String, DateTime)
             //ExFor:DigitalSignatureUtil.Sign(Stream, Stream, CertificateHolder, String, DateTime)
             //ExSummary:Shows how to sign documents.
-            CertificateHolder ch = CertificateHolder.Create(MyDir + "MyPkcs12.pfx", "My password");
+            CertificateHolder ch = CertificateHolder.Create(MyDir + "certificate.pfx", "123456");
 
             //By String
             Document doc = new Document(MyDir + "Document.doc");

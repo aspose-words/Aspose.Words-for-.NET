@@ -145,6 +145,33 @@ namespace ApiExamples
         }
 
         [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        public void GetFieldCode(bool nestedFields)
+        {
+            Document doc = new Document(MyDir + "Field.FieldCode.docx");
+
+            foreach (Field field in doc.Range.Fields)
+            {
+                if (field.Type == FieldType.FieldIf)
+                {
+                    FieldIf fif = (FieldIf)field;
+
+                    Assert.AreEqual(" IF  MERGEFIELD Q223  > 0 \" (and additionally London Weighting of   MERGEFIELD  Q223 \\f £  per hour) \" \"\" ", fif.GetFieldCode());
+
+                    if (nestedFields)
+                    {
+                        Assert.AreEqual(" IF  MERGEFIELD Q223  > 0 \" (and additionally London Weighting of   MERGEFIELD  Q223 \\f £  per hour) \" \"\" ", fif.GetFieldCode(true));
+                    }
+                    else
+                    {
+                        Assert.AreEqual(" IF  > 0 \" (and additionally London Weighting of   per hour) \" \"\" ", fif.GetFieldCode(false));
+                    }
+                }
+            }
+        }
+        
+        [Test]
         public void DocumentBuilderAndSave()
         {
             //ExStart
@@ -304,7 +331,20 @@ namespace ApiExamples
             //ExEnd
         }
 
+        //For assert this test you need to open "MathML.docx" and "MathML.pdf" and check, that mathml code are render as "a 1 + b 1"
+        [Test]
+        public void InsertMathMl()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
+            const string MathMl = "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mn>1</mn></mrow></msub></mrow></math>";
+
+            builder.InsertHtml(MathMl);
+
+            doc.Save(MyDir + "MathML.docx");
+            doc.Save(MyDir + "MathML.pdf");
+        }
 
         [Test]
         public void InsertTextAndBookmark()
@@ -360,9 +400,8 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Ignore]
+        [Ignore("Bug \"trimmed name if you enter more than 20 characters\"")]
         [Test]
-        // Bug "trimmed name if you enter more than 20 characters"
         public void InsertCheckBox()
         {
             //ExStart
@@ -403,7 +442,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertCheckBox_EmptyName()
+        public void InsertCheckBoxEmptyName()
         {
             Document doc = new Document();
 
@@ -1796,15 +1835,41 @@ namespace ApiExamples
             //ExFor:Footnote
             //ExFor:FootnoteType
             //ExFor:DocumentBuilder.InsertFootnote(FootnoteType,string)
+            //ExFor:DocumentBuilder.InsertFootnote(FootnoteType,string,string)
             //ExSummary:Shows how to add a footnote to a paragraph in the document using DocumentBuilder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Write("Some text");
 
             builder.InsertFootnote(FootnoteType.Footnote, "Footnote text.");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote text.", "242");
             //ExEnd
 
             Assert.AreEqual("Footnote text.", doc.GetChildNodes(NodeType.Footnote, true)[0].ToString(SaveFormat.Text).Trim());
+        }
+
+        [Test]
+        public void AddFootnoteWithCustomMarks()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Some text");
+
+            Footnote foot = new Footnote(doc, FootnoteType.Footnote);
+            foot.ReferenceMark = "242";
+
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote text.", foot.ReferenceMark);
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            doc = new Document(dstStream);
+            foot = (Footnote)doc.GetChildNodes(NodeType.Footnote, true)[0];
+            
+            Assert.IsFalse(foot.IsAuto);
+            Assert.AreEqual("242", foot.ReferenceMark);
+            Assert.AreEqual("242 Footnote text.\r", foot.GetText());
         }
 
         [Test]
@@ -1871,6 +1936,7 @@ namespace ApiExamples
             //ExEnd
         }
 
+        //ToDo: There is some unclear behavior
         [Test]
         public void InsertDocumentEx()
         {
@@ -1924,14 +1990,13 @@ namespace ApiExamples
             //Shape oleObjectProgId = builder.InsertOleObject("http://www.aspose.com", "htmlfile", true, false, null);
         }
 
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = "Empty path name is not legal.")]
         [Test]
         public void InsertOleObjectException()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertOleObject("", "checkbox", false, true, null);
+            Assert.That(() => builder.InsertOleObject("", "checkbox", false, true, null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -1948,6 +2013,54 @@ namespace ApiExamples
 
             doc.Save(MyDir + @"\Artifacts\Document.InsertedChartDouble.doc");
             //ExEnd
+        }
+
+        [Test]
+        public void DataArraysWrongSize()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Add chart with default data.
+            Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
+            Chart chart = shape.Chart;
+
+            ChartSeriesCollection seriesColl = chart.Series;
+            seriesColl.Clear();
+
+            // Create category names array, second category will be null.
+            string[] categories = new string[] { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
+
+            // Adding new series with empty (double.NaN) values.
+            seriesColl.Add("AW Series 1", categories, new double[] { 1, 2, double.NaN, 4, 5, 6 });
+            seriesColl.Add("AW Series 2", categories, new double[] { 2, 3, double.NaN, 5, 6, 7 });
+            Assert.That(() => seriesColl.Add("AW Series 3", categories, new double[] { double.NaN, 4, 5, double.NaN, double.NaN }), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => seriesColl.Add("AW Series 4", categories, new double[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN }), Throws.TypeOf<ArgumentException>());
+        }
+        
+        [Test]
+        public void EmptyValuesInChartData()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            // Add chart with default data.
+            Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
+            Chart chart = shape.Chart;
+
+            ChartSeriesCollection seriesColl = chart.Series;
+            seriesColl.Clear();
+
+            // Create category names array, second category will be null.
+            string[] categories = new string[] { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
+
+            // Adding new series with empty (double.NaN) values.
+            seriesColl.Add("AW Series 1", categories, new double[] { 1, 2, double.NaN, 4, 5, 6 });
+            seriesColl.Add("AW Series 2", categories, new double[] { 2, 3, double.NaN, 5, 6, 7 });
+            seriesColl.Add("AW Series 3", categories, new double[] { double.NaN, 4, 5, double.NaN, 7, 8 });
+            seriesColl.Add("AW Series 4", categories, new double[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, 9 });
+
+            doc.Save(MyDir + @"\Artifacts\EmptyValuesInChartData.docx");
         }
 
         [Test]

@@ -7,6 +7,8 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System.IO;
+
 using Aspose.Words;
 using Aspose.Words.Fields;
 
@@ -14,8 +16,6 @@ using NUnit.Framework;
 
 namespace ApiExamples
 {
-    using System.IO;
-
     [TestFixture]
     public class ExFormFields : ApiExampleBase
     {

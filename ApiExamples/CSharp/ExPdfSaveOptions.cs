@@ -9,7 +9,6 @@ using Aspose.Words;
 using Aspose.Words.Saving;
 using Aspose.Pdf.Facades;
 using Aspose.Pdf.Text;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -151,6 +150,25 @@ namespace ApiExamples
             optionsA1a.ImageCompression = PdfImageCompression.Jpeg;
 
             doc.Save(MyDir + "SaveOptions.PdfImageComppression PDF_A_1_A Out.pdf", optionsA1a);
+            //ExEnd
+        }
+
+        [Test]
+        public void ColorRendering()
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.ColorMode
+            //ExSummary:Shows how change image color with save options property
+            
+            //Open document with color image
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            //Set grayscale mode for document
+            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
+            pdfSaveOptions.ColorMode = ColorMode.Grayscale;
+
+            //Assert that color image in document was grey
+            doc.Save(MyDir + @"\Artifacts\ColorMode.PdfGrayscaleMode.pdf", pdfSaveOptions);
             //ExEnd
         }
     }

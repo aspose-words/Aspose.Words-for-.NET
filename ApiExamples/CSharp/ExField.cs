@@ -12,10 +12,10 @@ using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Aspose.BarCodeRecognition;
+using Aspose.BarCode.BarCodeRecognition;
 using Aspose.Words;
 using Aspose.Words.Fields;
-
+using Aspose.Words.Replacing;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -237,7 +237,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [ExpectedException(typeof (ArgumentException), ExpectedMessage = "Cannot add a node before/after itself.")]
         public void InsertFieldWithFieldBuilderException()
         {
             Document doc = new Document();
@@ -251,12 +250,8 @@ namespace ApiExamples
             argumentBuilder.AddText("Text argument builder");
 
             FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldIncludeText);
-            fieldBuilder.AddArgument(argumentBuilder)
-                .AddArgument("=")
-                .AddArgument("BestField")
-                .AddArgument(10)
-                .AddArgument(20.0)
-                .BuildAndInsert(run);
+
+            Assert.That(() => fieldBuilder.AddArgument(argumentBuilder).AddArgument("=").AddArgument("BestField").AddArgument(10).AddArgument(20.0).BuildAndInsert(run), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -270,7 +265,7 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\BarCode.pdf");
 
             BarCodeReader barCode = BarCodeReaderPdf(MyDir + @"\Artifacts\BarCode.pdf");
-            Assert.AreEqual("QR", barCode.GetReadType().ToString());
+            Assert.AreEqual("QR", barCode.GetCodeType().ToString());
         }
 
         private BarCodeReader BarCodeReaderPdf(string filename)
@@ -296,10 +291,10 @@ namespace ApiExamples
             imageStream.Position = 0;
 
             //recognize the barcode from the image stream above
-            BarCodeReader barcodeReader = new BarCodeReader(imageStream, BarCodeReadType.QR);
+            BarCodeReader barcodeReader = new BarCodeReader(imageStream, DecodeType.QR);
             while (barcodeReader.Read())
             {
-                Console.WriteLine("Codetext found: " + barcodeReader.GetCodeText() + ", Symbology: " + barcodeReader.GetReadType());
+                Console.WriteLine("Codetext found: " + barcodeReader.GetCodeText() + ", Symbology: " + barcodeReader.GetCodeType());
             }
 
             //close the reader
@@ -308,7 +303,7 @@ namespace ApiExamples
             return barcodeReader;
         }
 
-        //For assert result of the test you need to open "UpdateFieldIgnoringMergeFormat Out.docx" and check that image are added correct and without truncated inside frame
+        //For assert result of the test you need to open document and check that image are added correct and without truncated inside frame
         [Test]
         public void UpdateFieldIgnoringMergeFormat()
         {
@@ -326,14 +321,114 @@ namespace ApiExamples
                 {
                     FieldIncludePicture includePicture = (FieldIncludePicture)field;
 
-                    includePicture.SourceFullName = MyDir + @"\Images\dotnet-logo.png";
+                    includePicture.SourceFullName = MyDir + "dotnet-logo.png";
                     includePicture.Update(true);
                 }
             }
             
             doc.UpdateFields();
-            doc.Save(MyDir + "UpdateFieldIgnoringMergeFormat Out.docx");
+            doc.Save(MyDir + @"\Artifacts\UpdateFieldIgnoringMergeFormat.docx");
             //ExEnd
+        }
+
+        [Test]
+        public void FieldFormat()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Field field = builder.InsertField("MERGEFIELD Date");
+
+            FieldFormat format = field.Format;
+
+            format.DateTimeFormat = "dddd, MMMM dd, yyyy";
+            format.NumericFormat = "0.#";
+            format.GeneralFormats.Add(GeneralFormat.CharFormat);
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            field = doc.Range.Fields[0];
+            format = field.Format;
+
+            Assert.AreEqual("0.#", format.NumericFormat);
+            Assert.AreEqual("dddd, MMMM dd, yyyy", format.DateTimeFormat);
+            Assert.AreEqual(GeneralFormat.CharFormat, format.GeneralFormats[0]);
+        }
+
+        [Test]
+        public void UpdatePageNumbersInToc()
+        {
+            Document doc = new Document(MyDir + "Field.UpdateTocPages.docx");
+
+            Node startNode = DocumentHelper.GetParagraph(doc, 2);
+            Node endNode = null;
+
+            NodeCollection paragraphCollection = doc.GetChildNodes(NodeType.Paragraph, true);
+
+            foreach (Paragraph para in paragraphCollection)
+            {
+                // Check all runs in the paragraph for the first page breaks.
+                foreach (Run run in para.Runs)
+                {
+                    if (run.Text.Contains(ControlChar.PageBreak))
+                    {
+                        endNode = run;
+                        break;
+                    }
+                }
+            }
+            
+            if (startNode != null && endNode != null)
+            {
+                RemoveSequence(startNode, endNode);
+
+                startNode.Remove();
+                endNode.Remove();
+            }
+
+            NodeCollection fStart = doc.GetChildNodes(NodeType.FieldStart, true);
+
+            foreach (FieldStart field in fStart)
+            {
+                FieldType fType = field.FieldType;
+                if (fType == FieldType.FieldTOC)
+                {
+                    Paragraph para = (Paragraph)field.GetAncestor(NodeType.Paragraph);
+                    para.Range.UpdateFields();
+                    break;
+                }
+            }
+
+            doc.Save(MyDir + "Field.UpdateTocPages Out.docx");
+        }
+
+        private void RemoveSequence(Node start, Node end)
+        {
+            Node curNode = start.NextPreOrder(start.Document);
+            while (curNode != null && !curNode.Equals(end))
+            {
+                //Move to next node
+                Node nextNode = curNode.NextPreOrder(start.Document);
+
+                //Check whether current contains end node
+                if (curNode.IsComposite)
+                {
+                    CompositeNode curComposite = (CompositeNode)curNode;
+                    if (!curComposite.GetChildNodes(NodeType.Any, true).Contains(end) &&
+                        !curComposite.GetChildNodes(NodeType.Any, true).Contains(start))
+                    {
+                        nextNode = curNode.NextSibling;
+                        curNode.Remove();
+                    }
+                }
+                else
+                {
+                    curNode.Remove();
+                }
+
+                curNode = nextNode;
+            }
         }
     }
 }

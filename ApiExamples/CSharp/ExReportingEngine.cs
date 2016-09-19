@@ -108,7 +108,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void WithoutMissingMembers()
         {
             DocumentBuilder builder = new DocumentBuilder();
@@ -117,7 +116,7 @@ namespace ApiExamples
             DocumentHelper.InsertBuilderText(builder, new[] { "<<[missingObject.First().id]>>", "<<foreach [in missingObject]>><<[id]>><</foreach>>" });
 
             //Assert that build report failed without "ReportBuildOptions.AllowMissingMembers"
-            BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.None);
+            Assert.That(() => BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.None), Throws.TypeOf<InvalidOperationException>());
         }
 
         [Test]
@@ -141,6 +140,12 @@ namespace ApiExamples
             ReportingEngine engine = new ReportingEngine();
             engine.Options = reportBuildOptions;
 
+            engine.BuildReport(document, dataSource, dataSourceName);
+        }
+
+        private static void BuildReport(Document document, object[] dataSource, string[] dataSourceName)
+        {
+            ReportingEngine engine = new ReportingEngine();
             engine.BuildReport(document, dataSource, dataSourceName);
         }
     }

@@ -78,7 +78,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = "EndEditableRange can not be called before StartEditableRange.")]
         public void IncorrectStructureException()
         {
             Document doc = new Document();
@@ -86,7 +85,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             //Is not valid structure for the current document
-            builder.EndEditableRange();
+            Assert.That(() => builder.EndEditableRange(), Throws.TypeOf<InvalidOperationException>());
 
             builder.StartEditableRange();
         }
