@@ -46,9 +46,9 @@ namespace Aspose.Words.Examples.CSharp
             // =====================================================
 
             //AppendDocuments.Run();
-            //ApplyLicense.Run();           
+            //ApplyLicense.Run();
             //FindAndReplace.Run();
-            //QucikStart.HelloWorld.Run();           
+            //QucikStart.HelloWorld.Run();
             //UpdateFields.Run();
             //WorkingWithNodes.Run();
 
@@ -256,7 +256,7 @@ namespace Aspose.Words.Examples.CSharp
             //FindingIndex.Run();
             //AddRemoveColumn.Run();
             //RepeatRowsOnSubsequentPages.Run();
-            //JoiningAndSplittingTable.Run();    
+            //JoiningAndSplittingTable.Run();
             //MergedCells.Run();
             //KeepTablesAndRowsBreaking.Run();
 
@@ -284,7 +284,7 @@ namespace Aspose.Words.Examples.CSharp
             //MultipleDocsInMailMerge.Run();
             //NestedMailMerge.Run();
             //RemoveEmptyRegions.Run();
-            //XMLMailMerge.Run();           
+            //XMLMailMerge.Run();
             //ExecuteArray.Run();
             //MailMergeAlternatingRows.Run();
             //MailMergeImageFromBlob.Run();
