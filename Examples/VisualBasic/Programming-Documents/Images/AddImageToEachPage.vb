@@ -34,6 +34,9 @@ Public Class AddImageToEachPage
             Loop
         Next page
 
+        ' Call UpdatePageLayout() method if file is to be saved as PDF or image format
+        doc.UpdatePageLayout()
+
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         doc.Save(dataDir)
 
