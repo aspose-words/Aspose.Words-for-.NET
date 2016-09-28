@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports Aspose.Words
 Imports Aspose.Words.MailMerging
+Imports Aspose.Words.Replacing
 Imports System.Text.RegularExpressions
 
 Class InsertDoc
@@ -15,7 +16,9 @@ Class InsertDoc
     Public Shared Sub InsertDocumentAtReplace(dataDir As String)
         ' ExStart:InsertDocumentAtReplace
         Dim mainDoc As New Document(dataDir & Convert.ToString("InsertDocument1.doc"))
-        mainDoc.Range.Replace(New Regex("\[MY_DOCUMENT\]"), New InsertDocumentAtReplaceHandler(), False)
+        Dim options As New FindReplaceOptions()
+        options.ReplacingCallback = New InsertDocumentAtReplaceHandler()
+        mainDoc.Range.Replace(New Regex("\[MY_DOCUMENT\]"), "", options)
         dataDir = dataDir & Convert.ToString("InsertDocumentAtReplace_out_.doc")
         mainDoc.Save(dataDir)
         ' ExEnd:InsertDocumentAtReplace

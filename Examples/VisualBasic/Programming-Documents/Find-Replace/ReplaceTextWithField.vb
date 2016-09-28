@@ -4,6 +4,7 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 Imports Aspose.Words
 Imports Aspose.Words.Fields
+Imports Aspose.Words.Replacing
 
 Public Class ReplaceTextWithField
     Public Shared Sub Run()
@@ -12,9 +13,11 @@ Public Class ReplaceTextWithField
         Dim fileName As String = "Field.ReplaceTextWithFields.doc"
 
         Dim doc As New Document(dataDir & fileName)
+        Dim options As New FindReplaceOptions()
+        options.ReplacingCallback = New ReplaceTextWithFieldHandler(FieldType.FieldMergeField)
 
         ' Replace any "PlaceHolderX" instances in the document (where X is a number) with a merge field.
-        doc.Range.Replace(New Regex("PlaceHolder(\d+)"), New ReplaceTextWithFieldHandler(FieldType.FieldMergeField), False)
+        doc.Range.Replace(New Regex("PlaceHolder(\d+)"), "", options)
 
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
 

@@ -4,6 +4,7 @@ Imports System.Drawing
 Imports System.IO
 Imports System.Reflection
 Imports Aspose.Words
+Imports Aspose.Words.Replacing
 
 Class ReplaceWithEvaluator
     Public Shared Sub Run()
@@ -11,7 +12,10 @@ Class ReplaceWithEvaluator
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_FindAndReplace()
         Dim doc As New Document(dataDir & Convert.ToString("Range.ReplaceWithEvaluator.doc"))
-        doc.Range.Replace(New Regex("[s|m]ad"), New MyReplaceEvaluator(), True)
+        Dim options As New FindReplaceOptions()
+        options.ReplacingCallback = New MyReplaceEvaluator()
+
+        doc.Range.Replace(New Regex("[s|m]ad"), "", options)
 
         dataDir = dataDir & Convert.ToString("Range.ReplaceWithEvaluator_out_.doc")
         doc.Save(dataDir)

@@ -2,6 +2,7 @@
 Imports Aspose.Words
 Imports System.Drawing
 Imports Aspose.Words.Tables
+Imports Aspose.Words.Replacing
 Imports System.Text.RegularExpressions
 
 Class DocumentBuilderInsertTCFieldsAtText
@@ -9,8 +10,11 @@ Class DocumentBuilderInsertTCFieldsAtText
         ' ExStart:DocumentBuilderInsertTCFieldsAtText
         Dim doc As New Document()
 
+        Dim options As New FindReplaceOptions()
+        options.ReplacingCallback = New InsertTCFieldHandler("Chapter 1", "\l 1")
+
         ' Insert a TC field which displays "Chapter 1" just before the text "The Beginning" in the document.
-        doc.Range.Replace(New Regex("The Beginning"), New InsertTCFieldHandler("Chapter 1", "\l 1"), False)
+        doc.Range.Replace(New Regex("The Beginning"), "", options)
         ' ExEnd:DocumentBuilderInsertTCFieldsAtText
 
     End Sub

@@ -4,8 +4,8 @@ using System.Collections;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
-
 using Aspose.Words;
+using Aspose.Words.Replacing;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
 {
@@ -20,9 +20,12 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
 
             Document doc = new Document(dataDir + fileName);
 
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.ReplacingCallback = new ReplaceEvaluatorFindAndHighlight();
+
             // We want the "your document" phrase to be highlighted.
             Regex regex = new Regex("your document", RegexOptions.IgnoreCase);
-            doc.Range.Replace(regex, new ReplaceEvaluatorFindAndHighlight(), false);
+            doc.Range.Replace(regex, "", options);
 
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the output document.

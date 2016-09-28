@@ -125,8 +125,8 @@ Module RunExamples
         'ExtractContent.Run()
         'PageNumbersOfNodes.Run()
         'RemoveBreaks.Run()
-        'CloningDocument.Run();
-        'ProtectDocument.Run();
+        'CloningDocument.Run()
+        'ProtectDocument.Run()
         'AccessStyles.Run()
         'GetVariables.Run()
         'SetViewOption.Run()
@@ -167,7 +167,7 @@ Module RunExamples
         'ChangeLocale.Run()
         'UpdateDocFields.Run()
         'InsertField.Run()
-        'InsertMergeFieldUsingDOM.Run();
+        'InsertMergeFieldUsingDOM.Run()
         'InsertMailMergeAddressBlockFieldUsingDOM.Run()
         'InsertAdvanceFieldWithOutDocumentBuilder.Run()
         'InsertASKFieldWithOutDocumentBuilder.Run()
@@ -253,7 +253,7 @@ Module RunExamples
         'ProduceMultipleDocuments.Run()
         'MailMergeUsingMustacheSyntax.Run()
         'ExecuteWithRegionsDataTable.Run()
-        NestedMailMergeCustom.Run()
+        'NestedMailMergeCustom.Run()
 
         '' =====================================================
         '' =====================================================
@@ -278,14 +278,6 @@ Module RunExamples
         'HyphenateWordsOfLanguages.Run()
         'LoadHyphenationDictionaryForLanguage.Run()
         'PrintProgressDialog.Run()
-
-        '' =====================================================
-        '' =====================================================
-        '' Viewers and Visualizers
-        '' =====================================================
-        '' =====================================================
-
-        'MainForm.Run()
 
         '' =====================================================
         '' =====================================================

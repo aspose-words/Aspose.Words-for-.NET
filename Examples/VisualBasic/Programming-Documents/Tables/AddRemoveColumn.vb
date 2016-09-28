@@ -42,7 +42,7 @@ Public Class AddRemoveColumn
 
         ' Add some text to each of the column cells.
         For Each cell As Cell In newColumn.Cells
-            cell.FirstParagraph.AppendChild(New Run(doc, "Column Text " + newColumn.IndexOf(cell)))
+            cell.FirstParagraph.AppendChild(New Run(doc, "Column Text " + newColumn.IndexOf(cell).ToString()))
         Next
         'ExEnd:InsertBlankColumn
         Console.WriteLine(vbLf & "Column added successfully.")

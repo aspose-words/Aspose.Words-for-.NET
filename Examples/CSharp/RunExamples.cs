@@ -25,6 +25,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using LINQ = Aspose.Words.Examples.CSharp.LINQ;
+using QucikStart = Aspose.Words.Examples.CSharp.Quick_Start;
 
 namespace Aspose.Words.Examples.CSharp
 {
@@ -46,7 +48,7 @@ namespace Aspose.Words.Examples.CSharp
             //AppendDocuments.Run();
             //ApplyLicense.Run();           
             //FindAndReplace.Run();
-            //Aspose.Words.Examples.CSharp.Quick_Start.HelloWorld.Run();           
+            //QucikStart.HelloWorld.Run();           
             //UpdateFields.Run();
             //WorkingWithNodes.Run();
 
@@ -313,15 +315,7 @@ namespace Aspose.Words.Examples.CSharp
             //EmbeddingWindowsStandardFonts.Run();
             //HyphenateWordsOfLanguages.Run();
             //LoadHyphenationDictionaryForLanguage.Run();
-            //PrintProgressDialog.Run();            
-
-            //// =====================================================
-            //// =====================================================
-            //// Viewers and Visualizers
-            //// =====================================================
-            //// =====================================================
-
-            //MainForm.Run();
+            //PrintProgressDialog.Run();         
 
             //// =====================================================
             //// =====================================================
@@ -329,7 +323,7 @@ namespace Aspose.Words.Examples.CSharp
             //// =====================================================
             //// =====================================================
 
-            //Aspose.Words.Examples.CSharp.LINQ.HelloWorld.Run();
+            //LINQ.HelloWorld.Run();
             //SingleRow.Run();
             //InParagraphList.Run();
             //BulletedList.Run();
@@ -344,7 +338,7 @@ namespace Aspose.Words.Examples.CSharp
             //PieChart.Run();
             //ScatterChart.Run();
             //BubbleChart.Run();
-            ChartWithFilteringGroupingOrdering.Run();
+            //ChartWithFilteringGroupingOrdering.Run();
          
             // Stop before exiting
             Console.WriteLine("\n\nProgram Finished. Press any key to exit....");

@@ -1,7 +1,7 @@
 ﻿Imports Microsoft.VisualBasic
 Imports System
 Imports System.IO
-
+Imports Aspose.Words.Replacing
 Imports Aspose.Words
 
 Public Class FindAndReplace
@@ -16,7 +16,7 @@ Public Class FindAndReplace
         Console.WriteLine("Original document text: " & doc.Range.Text)
 
         ' Replace the text in the document.
-        doc.Range.Replace("_CustomerName_", "James Bond", False, False)
+        doc.Range.Replace("_CustomerName_", "James Bond", New FindReplaceOptions(FindReplaceDirection.Forward))
 
         ' Check the replacement was made.
         Console.WriteLine("Document text after replace: " & doc.Range.Text)

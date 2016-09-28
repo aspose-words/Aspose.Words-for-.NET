@@ -2,6 +2,7 @@
 Imports System.Drawing
 Imports Aspose.Words
 Imports Aspose.Words.Tables
+Imports Aspose.Words.Replacing
 Public Class ExtractText
     Public Shared Sub Run()
 
@@ -44,9 +45,9 @@ Public Class ExtractText
         Dim table As Table = DirectCast(doc.GetChild(NodeType.Table, 0, True), Table)
 
         ' Replace any instances of our string in the entire table.
-        table.Range.Replace("Carrots", "Eggs", True, True)
+        table.Range.Replace("Carrots", "Eggs", New FindReplaceOptions(FindReplaceDirection.Forward))
         ' Replace any instances of our string in the last cell of the table only.
-        table.LastRow.LastCell.Range.Replace("50", "20", True, True)
+        table.LastRow.LastCell.Range.Replace("50", "20", New FindReplaceOptions(FindReplaceDirection.Forward))
 
         dataDir = RunExamples.GetDataDir_WorkingWithTables() + "Table.ReplaceCellText_out_.doc"
         doc.Save(dataDir)

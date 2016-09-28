@@ -5,7 +5,7 @@ Imports System.Collections
 Imports System.Drawing
 Imports System.IO
 Imports System.Reflection
-
+Imports Aspose.Words.Replacing
 Imports Aspose.Words
 
 Public Class FindAndHighlight
@@ -16,10 +16,12 @@ Public Class FindAndHighlight
         Dim fileName As String = "TestFile.doc"
 
         Dim doc As New Document(dataDir & fileName)
+        Dim options As New FindReplaceOptions()
+        options.ReplacingCallback = New ReplaceEvaluatorFindAndHighlight()
 
         ' We want the "your document" phrase to be highlighted.
         Dim regex As New Regex("your document", RegexOptions.IgnoreCase)
-        doc.Range.Replace(regex, New ReplaceEvaluatorFindAndHighlight(), False)
+        doc.Range.Replace(regex, "", options)
 
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the output document.

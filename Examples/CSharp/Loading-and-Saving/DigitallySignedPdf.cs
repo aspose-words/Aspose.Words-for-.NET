@@ -34,9 +34,8 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
       
             
             dataDir = dataDir + "Document.Signed_out_.pdf";
-            // Save the document as PDF with the digital signature set.
-            doc.Save(dataDir, options);
-
+            // Save the document as PDF.
+            doc.Save(dataDir);
             //ExEnd:DigitallySignedPdf
             Console.WriteLine("\nDigitally signed PDF file created successfully.\nFile saved at " + dataDir);
         }

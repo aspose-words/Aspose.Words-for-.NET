@@ -8,6 +8,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Aspose.Words.Replacing;
 
 namespace Aspose.Words.Examples.CSharp.Mail_Merge
 {
@@ -215,8 +216,9 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
                     // different logic for other fields. The rest of the fields in the region will have a null FieldValue.
                     if ((string)args.FieldValue == "FirstField")
                     {
+                        FindReplaceOptions options = new FindReplaceOptions();
                         // Remove the "Name:" tag from the start of the paragraph
-                        parentParagraph.Range.Replace("Name:", string.Empty, false, false);
+                        parentParagraph.Range.Replace("Name:", string.Empty, options);
                         // Set the text of the first field to display a message stating that there are no records.
                         args.Text = "No records to display";
                     }

@@ -9,6 +9,7 @@ Imports System.Collections
 Imports Aspose.Words
 Imports Aspose.Words.Reporting
 Imports Aspose.Words.Tables
+Imports Aspose.Words.Replacing
 Imports Aspose.Words.MailMerging
 
 Public Class ApplyCustomLogicToEmptyRegions
@@ -175,7 +176,7 @@ Public Class ApplyCustomLogicToEmptyRegions
                 ' different logic for other fields. The rest of the fields in the region will have a null FieldValue.
                 If CStr(args.FieldValue) Is "FirstField" Then
                     ' Remove the "Name:" tag from the start of the paragraph
-                    parentParagraph.Range.Replace("Name:", String.Empty, False, False)
+                    parentParagraph.Range.Replace("Name:", String.Empty, New FindReplaceOptions(FindReplaceDirection.Forward))
                     ' Set the text of the first field to display a message stating that there are no records.
                     args.Text = "No records to display"
                 Else

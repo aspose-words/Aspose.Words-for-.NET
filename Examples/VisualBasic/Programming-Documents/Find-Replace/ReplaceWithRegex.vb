@@ -3,6 +3,7 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 Imports Aspose.Words
 Imports Aspose.Words.Fields
+Imports Aspose.Words.Replacing
 Class ReplaceWithRegex
     Public Shared Sub Run()
         ' ExStart:ReplaceWithRegex
@@ -10,7 +11,7 @@ Class ReplaceWithRegex
         Dim dataDir As String = RunExamples.GetDataDir_FindAndReplace()
 
         Dim doc As New Document(dataDir & Convert.ToString("Document.doc"))
-        doc.Range.Replace(New Regex("[s|m]ad"), "bad")
+        doc.Range.Replace(New Regex("[s|m]ad"), "bad", New FindReplaceOptions(FindReplaceDirection.Forward))
 
         dataDir = dataDir & Convert.ToString("ReplaceWithRegex_out_.doc")
         doc.Save(dataDir)

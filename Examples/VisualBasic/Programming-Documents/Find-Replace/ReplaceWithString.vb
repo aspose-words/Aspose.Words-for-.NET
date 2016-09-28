@@ -3,6 +3,7 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 Imports Aspose.Words
 Imports Aspose.Words.Fields
+Imports Aspose.Words.Replacing
 
 Class ReplaceWithString
     Public Shared Sub Run()
@@ -12,7 +13,7 @@ Class ReplaceWithString
         Dim fileName As String = "Document.doc"
 
         Dim doc As New Document(dataDir & fileName)
-        doc.Range.Replace("sad", "bad", False, True)
+        doc.Range.Replace("sad", "bad", New FindReplaceOptions(FindReplaceDirection.Forward))
 
         dataDir = dataDir & Convert.ToString("ReplaceWithString_out_.doc")
         doc.Save(dataDir)

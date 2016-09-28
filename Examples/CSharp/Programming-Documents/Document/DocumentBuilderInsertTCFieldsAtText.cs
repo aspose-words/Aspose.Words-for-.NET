@@ -4,6 +4,8 @@ using System;
 using System.Drawing;
 using Aspose.Words.Tables;
 using System.Text.RegularExpressions;
+using Aspose.Words.Replacing;
+
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class DocumentBuilderInsertTCFieldsAtText
@@ -13,8 +15,14 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             //ExStart:DocumentBuilderInsertTCFieldsAtText
             Document doc = new Document();
 
+            FindReplaceOptions options = new FindReplaceOptions();
+
+            // Highlight newly inserted content.
+            options.ApplyFont.HighlightColor = Color.DarkOrange;
+            options.ReplacingCallback =  new InsertTCFieldHandler("Chapter 1", "\\l 1");
+
             // Insert a TC field which displays "Chapter 1" just before the text "The Beginning" in the document.
-            doc.Range.Replace(new Regex("The Beginning"), new InsertTCFieldHandler("Chapter 1", "\\l 1"), false);
+            doc.Range.Replace(new Regex("The Beginning"), "", options);
             //ExEnd:DocumentBuilderInsertTCFieldsAtText
           
         }     

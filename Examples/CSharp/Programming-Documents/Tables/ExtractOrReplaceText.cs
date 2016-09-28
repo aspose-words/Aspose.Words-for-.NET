@@ -3,6 +3,8 @@ using System.IO;
 using Aspose.Words;
 using System;
 using Aspose.Words.Tables;
+using Aspose.Words.Replacing;
+
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class ExtractText
@@ -51,9 +53,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             // Replace any instances of our string in the entire table.
-            table.Range.Replace("Carrots", "Eggs", true, true);
+            table.Range.Replace("Carrots", "Eggs", new FindReplaceOptions(FindReplaceDirection.Forward));
             // Replace any instances of our string in the last cell of the table only.
-            table.LastRow.LastCell.Range.Replace("50", "20", true, true);
+            table.LastRow.LastCell.Range.Replace("50", "20", new FindReplaceOptions(FindReplaceDirection.Forward));
 
             dataDir = RunExamples.GetDataDir_WorkingWithTables() + "Table.ReplaceCellText_out_.doc";
             doc.Save(dataDir); 
