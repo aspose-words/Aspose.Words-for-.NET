@@ -24,7 +24,7 @@ Public Class AutoFitTableToFixedColumnWidths
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the document to disk.
         doc.Save(dataDir)
-        'ExEnd
+        ' ExEnd
 
         Debug.Assert(doc.FirstSection.Body.Tables(0).PreferredWidth.Type = PreferredWidthType.Auto, "PreferredWidth type is not auto")
         Debug.Assert(doc.FirstSection.Body.Tables(0).PreferredWidth.Value = 0, "PreferredWidth value is not 0")

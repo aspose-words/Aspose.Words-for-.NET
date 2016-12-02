@@ -27,7 +27,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             SplitAllDocumentsToPages(dataDir);
            
 
-            Console.WriteLine("\nDocument split to pages successfully.\nFile saved at " + dataDir + "\\_out_");
+            Console.WriteLine("\nDocument split to pages successfully.\nFile saved at " + dataDir + "\\_out");
         }
 
         public static void SplitDocumentToPages(string docName)
@@ -36,7 +36,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             string folderName = Path.GetDirectoryName(docName);
             string fileName = Path.GetFileNameWithoutExtension(docName);
             string extensionName = Path.GetExtension(docName);
-            string outFolder = Path.Combine(folderName, "_out_");
+            string outFolder = Path.Combine(folderName, "_out");
 
             Console.WriteLine("Processing document: " + fileName + extensionName);
 
@@ -83,7 +83,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
     {
         /// <summary>
         /// Initializes new instance of this class. This method splits the document into sections so that each page 
-        /// begins and ends at a section boundary. It is recommended not to modify the document afterwards.
+        /// Begins and ends at a section boundary. It is recommended not to modify the document afterwards.
         /// </summary>
         /// <param name="collector">A collector instance which has layout model records for the document.</param>
         public DocumentPageSplitter(LayoutCollector collector)
@@ -206,7 +206,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
 
         /// <summary>
         /// Splits nodes which appear over two or more pages into separate nodes so that they still appear in the same way
-        /// but no longer appear across a page.
+        /// But no longer appear across a page.
         /// </summary>
         public void SplitNodesAcrossPages()
         {
@@ -292,7 +292,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
                 ListLevel currentLevel = paragraph.ListFormat.ListLevel;
 
                 // Since we have encountered a list item we need to check if this will reset
-                // any subsequent list levels and if so then update the numbering of the level.
+                // Any subsequent list levels and if so then update the numbering of the level.
                 int currentListLevelNumber = paragraph.ListFormat.ListLevelNumber;
                 for (int i = currentListLevelNumber + 1; i < paraList.ListLevels.Count; i++)
                 {
@@ -306,7 +306,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
                 }
 
                 // A list which was used on a previous page is present on a different page, the list
-                // needs to be copied so list numbering is retained when extracting individual pages.
+                // Needs to be copied so list numbering is retained when extracting individual pages.
                 if (ContainsListLevelAndPageChanged(paragraph))
                 {
                     List copyList = paragraph.Document.Lists.AddCopy(paraList);
@@ -370,7 +370,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             Section previousSection = (Section)section.PreviousSibling;
 
             // If there is a previous section attempt to copy any linked header footers otherwise they will not appear in an 
-            // extracted document if the previous section is missing.
+            // Extracted document if the previous section is missing.
             if (previousSection != null)
             {
                 if (!section.PageSetup.RestartPageNumbering)
@@ -413,7 +413,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
         public override VisitorAction VisitDocumentEnd(Document doc)
         {
             // All sections have separate headers and footers now, update the fields in all headers and footers
-            // to the correct values. This allows each page to maintain the correct field results even when
+            // To the correct values. This allows each page to maintain the correct field results even when
             // PAGE or IF fields are used.
             doc.UpdateFields();
 
@@ -485,7 +485,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
                 foreach (Paragraph clonePara in SplitComposite(paragraph))
                 {
                     // Remove list numbering from the cloned paragraph but leave the indent the same 
-                    // as the paragraph is supposed to be part of the item before.
+                    // As the paragraph is supposed to be part of the item before.
                     if (paragraph.IsListItem)
                     {
                         double textPosition = clonePara.ListFormat.ListLevel.TextPosition;
@@ -584,7 +584,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
                 int pageNum = mPageNumberFinder.GetPage(childNode);
 
                 // If the page of the child node has changed then this is the split position. Add
-                // this to the list.
+                // This to the list.
                 if (pageNum > startingPage)
                 {
                     splitList.Add(childNode);

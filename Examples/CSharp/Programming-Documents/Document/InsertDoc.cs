@@ -20,34 +20,34 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
         }
         public static void InsertDocumentAtReplace(string dataDir)
         {
-            //ExStart:InsertDocumentAtReplace
+            // ExStart:InsertDocumentAtReplace
             Document mainDoc = new Document(dataDir + "InsertDocument1.doc");
 
             FindReplaceOptions options = new FindReplaceOptions();
             options.ReplacingCallback = new InsertDocumentAtReplaceHandler();
 
             mainDoc.Range.Replace(new Regex("\\[MY_DOCUMENT\\]"),"" , options);
-            dataDir = dataDir + "InsertDocumentAtReplace_out_.doc";
+            dataDir = dataDir + "InsertDocumentAtReplace_out.doc";
             mainDoc.Save(dataDir);
-            //ExEnd:InsertDocumentAtReplace
+            // ExEnd:InsertDocumentAtReplace
             Console.WriteLine("\nDocument inserted successfully at a replace.\nFile saved at " + dataDir);
         }
         public static void InsertDocumentAtBookmark(string dataDir)
         {
-            //ExStart:InsertDocumentAtBookmark         
+            // ExStart:InsertDocumentAtBookmark         
             Document mainDoc = new Document(dataDir + "InsertDocument1.doc");
             Document subDoc = new Document(dataDir + "InsertDocument2.doc");
 
             Bookmark bookmark = mainDoc.Range.Bookmarks["insertionPlace"];
             InsertDocument(bookmark.BookmarkStart.ParentNode, subDoc);
-            dataDir = dataDir + "InsertDocumentAtBookmark_out_.doc";
+            dataDir = dataDir + "InsertDocumentAtBookmark_out.doc";
             mainDoc.Save(dataDir);
-            //ExEnd:InsertDocumentAtBookmark
+            // ExEnd:InsertDocumentAtBookmark
             Console.WriteLine("\nDocument inserted successfully at a bookmark.\nFile saved at " + dataDir);
         }
         public static void InsertDocumentAtMailMerge(string dataDir)
         {
-            //ExStart:InsertDocumentAtMailMerge   
+            // ExStart:InsertDocumentAtMailMerge   
             // Open the main document.
             Document mainDoc = new Document(dataDir + "InsertDocument1.doc");
 
@@ -56,22 +56,22 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 
             // The main document has a merge field in it called "Document_1".
             // The corresponding data for this field contains fully qualified path to the document
-            // that should be inserted to this field.
+            // That should be inserted to this field.
             mainDoc.MailMerge.Execute(
                 new string[] { "Document_1" },
                 new string[] { dataDir + "InsertDocument2.doc" });
-            dataDir = dataDir + "InsertDocumentAtMailMerge_out_.doc";
+            dataDir = dataDir + "InsertDocumentAtMailMerge_out.doc";
             mainDoc.Save(dataDir);
-            //ExEnd:InsertDocumentAtMailMerge 
+            // ExEnd:InsertDocumentAtMailMerge 
             Console.WriteLine("\nDocument inserted successfully at mail merge.\nFile saved at " + dataDir);
         }
-        //ExStart:InsertDocument
+        // ExStart:InsertDocument
         /// <summary>
         /// Inserts content of the external document after the specified node.
         /// Section breaks and section formatting of the inserted document are ignored.
         /// </summary>
         /// <param name="insertAfterNode">Node in the destination document after which the content
-        /// should be inserted. This node should be a block level node (paragraph or table).</param>
+        /// Should be inserted. This node should be a block level node (paragraph or table).</param>
         /// <param name="srcDoc">The document to insert.</param>
         static void InsertDocument(Node insertAfterNode, Document srcDoc)
         {
@@ -109,13 +109,13 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
                 }
             }
         }
-        //ExEnd:InsertDocument
-        //ExStart:InsertDocumentWithSectionFormatting
+        // ExEnd:InsertDocument
+        // ExStart:InsertDocumentWithSectionFormatting
         /// <summary>
         /// Inserts content of the external document after the specified node.
         /// </summary>
         /// <param name="insertAfterNode">Node in the destination document after which the content
-        /// should be inserted. This node should be a block level node (paragraph or table).</param>
+        /// Should be inserted. This node should be a block level node (paragraph or table).</param>
         /// <param name="srcDoc">The document to insert.</param>
         static void InsertDocumentWithSectionFormatting(Node insertAfterNode, Document srcDoc)
         {
@@ -141,7 +141,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             insertAfterNode.Document.InsertAfter(cloneSection, currentSection);
 
             // Append all nodes after the marker node to the new section. This will split the content at the section level at
-            // the marker so the sections from the other document can be inserted directly.
+            // The marker so the sections from the other document can be inserted directly.
             Node currentNode = insertAfterNode.NextSibling;
             while (currentNode != null)
             {
@@ -163,8 +163,8 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
                 currentSection = (Section)newNode;
             }
         }
-        //ExEnd:InsertDocumentWithSectionFormatting
-        //ExStart:InsertDocumentAtMailMergeHandler
+        // ExEnd:InsertDocumentWithSectionFormatting
+        // ExStart:InsertDocumentAtMailMergeHandler
         private class InsertDocumentAtMailMergeHandler : IFieldMergingCallback
         {
             /// <summary>
@@ -200,8 +200,8 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
                 // Do nothing.
             }
         }
-        //ExEnd:InsertDocumentAtMailMergeHandler
-        //ExStart:InsertDocumentAtMailMergeBlobHandler
+        // ExEnd:InsertDocumentAtMailMergeHandler
+        // ExStart:InsertDocumentAtMailMergeBlobHandler
         private class InsertDocumentAtMailMergeBlobHandler : IFieldMergingCallback
         {
             /// <summary>
@@ -238,8 +238,8 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
                 // Do nothing.
             }
         }
-        //ExEnd:InsertDocumentAtMailMergeBlobHandler
-        //ExStart:InsertDocumentAtReplaceHandler
+        // ExEnd:InsertDocumentAtMailMergeBlobHandler
+        // ExStart:InsertDocumentAtReplaceHandler
         private class InsertDocumentAtReplaceHandler : IReplacingCallback
         {
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs e)
@@ -256,7 +256,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
                 return ReplaceAction.Skip;
             }
         }
-        //ExEnd:InsertDocumentAtReplaceHandler
+        // ExEnd:InsertDocumentAtReplaceHandler
 
     }
 

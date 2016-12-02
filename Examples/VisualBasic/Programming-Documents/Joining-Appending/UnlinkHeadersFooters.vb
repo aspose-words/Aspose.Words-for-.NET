@@ -21,7 +21,7 @@ Public Class UnlinkHeadersFooters
 
         ' Even a document with no headers or footers can still have the LinkToPrevious setting set to true.
         ' Unlink the headers and footers in the source document to stop this from continuing the headers and footers
-        ' from the destination document.
+        ' From the destination document.
         srcDoc.FirstSection.HeadersFooters.LinkToPrevious(False)
 
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)

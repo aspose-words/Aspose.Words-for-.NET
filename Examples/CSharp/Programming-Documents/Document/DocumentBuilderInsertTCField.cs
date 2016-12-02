@@ -10,7 +10,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:DocumentBuilderInsertTCField
+            // ExStart:DocumentBuilderInsertTCField
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             // Initialize document.
@@ -22,9 +22,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // Insert a TC field at the current document builder position.
             builder.InsertField("TC \"Entry Text\" \\f t");
 
-            dataDir = dataDir + "DocumentBuilderInsertTCField_out_.doc";
+            dataDir = dataDir + "DocumentBuilderInsertTCField_out.doc";
             doc.Save(dataDir);
-            //ExEnd:DocumentBuilderInsertTCField
+            // ExEnd:DocumentBuilderInsertTCField
             Console.WriteLine("\nTC field inserted successfully into a document.\nFile saved at " + dataDir);
         }     
     }

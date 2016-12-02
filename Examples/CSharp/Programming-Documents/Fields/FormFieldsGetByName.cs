@@ -9,7 +9,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
     {
         public static void Run()
         {
-            //ExStart:FormFieldsGetByName
+            // ExStart:FormFieldsGetByName
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
 
@@ -18,7 +18,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 
             FormField formField1 = documentFormFields[3];
             FormField formField2 = documentFormFields["Text2"];
-            //ExEnd:FormFieldsGetByName
+            // ExEnd:FormFieldsGetByName
             Console.WriteLine("\n" + formField2.Name + " field have following text " + formField2.GetText() + ".");
         }
     }

@@ -10,7 +10,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:DocumentBuilderInsertTOC
+            // ExStart:DocumentBuilderInsertTOC
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             // Initialize document.
@@ -22,12 +22,12 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 
             // The newly inserted table of contents will be initially empty.
             // It needs to be populated by updating the fields in the document.
-            //ExStart:UpdateFields
+            // ExStart:UpdateFields
             doc.UpdateFields();
-            //ExEnd:UpdateFields
-            dataDir = dataDir + "DocumentBuilderInsertTOC_out_.doc";
+            // ExEnd:UpdateFields
+            dataDir = dataDir + "DocumentBuilderInsertTOC_out.doc";
             doc.Save(dataDir);
-            //ExEnd:DocumentBuilderInsertTOC
+            // ExEnd:DocumentBuilderInsertTOC
             Console.WriteLine("\nTable of contents field inserted successfully into a document.\nFile saved at " + dataDir);
         }     
     }

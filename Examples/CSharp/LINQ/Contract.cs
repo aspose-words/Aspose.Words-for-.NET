@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Aspose.Words.Examples.CSharp.LINQ
 {
-    //ExStart:Contract
+    // ExStart:Contract
     public class Contract
     {
         public Manager Manager { get; set; }
@@ -12,5 +12,5 @@ namespace Aspose.Words.Examples.CSharp.LINQ
         public float Price { get; set; }
         public DateTime Date { get; set; }   
     }
-    //ExEnd:Contract 
+    // ExEnd:Contract 
 }

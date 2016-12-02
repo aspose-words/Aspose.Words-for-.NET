@@ -31,7 +31,7 @@ Public Class AddGroupShapeToDocument
         builder.InsertNode(gs)
 
 
-        dataDir = dataDir & Convert.ToString("groupshape-doc_out_.doc")
+        dataDir = dataDir & Convert.ToString("groupshape-doc_out.doc")
 
         ' Save the document to disk.
         doc.Save(dataDir)

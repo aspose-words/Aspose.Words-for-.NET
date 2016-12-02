@@ -16,7 +16,7 @@ Class ComboBoxContentControl
         sdt.ListItems.Add(New SdtListItem("Item 2", "2"))
         doc.FirstSection.Body.AppendChild(sdt)
 
-        dataDir = dataDir & Convert.ToString("ComboBoxContentControl_out_.docx")
+        dataDir = dataDir & Convert.ToString("ComboBoxContentControl_out.docx")
         doc.Save(dataDir)
         ' ExEnd:ComboBoxContentControl
         Console.WriteLine(Convert.ToString(vbLf & "Combo box type content control created successfully." & vbLf & "File saved at ") & dataDir)

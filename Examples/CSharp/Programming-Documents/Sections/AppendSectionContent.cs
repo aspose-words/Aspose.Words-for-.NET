@@ -8,7 +8,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Sectio
     {
         public static void Run()
         {
-            //ExStart:AppendSectionContent
+            // ExStart:AppendSectionContent
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithSections();
             Document doc = new Document(dataDir + "Section.AppendContent.doc");
@@ -22,7 +22,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Sectio
             // This copies content of the 2nd section and inserts it at the end of the specified section.
             Section sectionToAppend = doc.Sections[1];
             section.AppendContent(sectionToAppend);
-            //ExEnd:AppendSectionContent
+            // ExEnd:AppendSectionContent
             Console.WriteLine("\nSection content appended successfully.");
         }
     }

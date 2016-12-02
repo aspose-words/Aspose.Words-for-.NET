@@ -20,7 +20,7 @@ Class WriteAndFont
         font.Underline = Underline.Dash
 
         builder.Write("Sample text.")
-        dataDir = dataDir & Convert.ToString("WriteAndFont_out_.doc")
+        dataDir = dataDir & Convert.ToString("WriteAndFont_out.doc")
         doc.Save(dataDir)
         ' ExEnd:WriteAndFont
         Console.WriteLine(Convert.ToString(vbLf & "Formatted text using DocumentBuilder inserted successfully." & vbLf & "File saved at ") & dataDir)

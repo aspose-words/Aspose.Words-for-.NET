@@ -9,7 +9,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appendi
     {
         public static void Run()
         {
-            //ExStart:RestartPageNumbering
+            // ExStart:RestartPageNumbering
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
             string fileName = "TestFile.Destination.doc";
@@ -25,7 +25,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appendi
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             dstDoc.Save(dataDir);
-            //ExEnd:RestartPageNumbering
+            // ExEnd:RestartPageNumbering
             Console.WriteLine("\nDocument appended successfully with restart page numbering.\nFile saved at " + dataDir);
         }
     }

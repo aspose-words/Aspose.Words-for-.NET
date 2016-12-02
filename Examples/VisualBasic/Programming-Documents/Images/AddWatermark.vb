@@ -57,7 +57,7 @@ Public Class AddWatermark
         ' Insert the watermark into all headers of each document section.
         For Each sect As Section In doc.Sections
             ' There could be up to three different headers in each section, since we want
-            ' the watermark to appear on all pages, insert into all headers.
+            ' The watermark to appear on all pages, insert into all headers.
             InsertWatermarkIntoHeader(watermarkPara, sect, HeaderFooterType.HeaderPrimary)
             InsertWatermarkIntoHeader(watermarkPara, sect, HeaderFooterType.HeaderFirst)
             InsertWatermarkIntoHeader(watermarkPara, sect, HeaderFooterType.HeaderEven)

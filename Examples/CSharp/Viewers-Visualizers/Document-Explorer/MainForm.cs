@@ -112,7 +112,7 @@ namespace DocumentExplorerExample
             this.StatusBar.TabIndex = 0;
             this.StatusBar.Text = "statusBar1";
             // 
-            // toolBar1
+            // ToolBar1
             // 
             this.toolBar1.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
             this.toolBar1.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[] {
@@ -137,78 +137,78 @@ namespace DocumentExplorerExample
             this.toolBar1.TabIndex = 1;
             this.toolBar1.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.toolBar1_ButtonClick);
             // 
-            // toolOpenDocument
+            // ToolOpenDocument
             // 
             this.toolOpenDocument.ImageIndex = 0;
             this.toolOpenDocument.ToolTipText = "Open Document";
             // 
-            // toolSaveDocument
+            // ToolSaveDocument
             // 
             this.toolSaveDocument.Enabled = false;
             this.toolSaveDocument.ImageIndex = 1;
             this.toolSaveDocument.ToolTipText = "Save Document As...";
             // 
-            // toolSeparator1
+            // ToolSeparator1
             // 
             this.toolSeparator1.Style = System.Windows.Forms.ToolBarButtonStyle.Separator;
             // 
-            // toolRenderDocument
+            // ToolRenderDocument
             // 
             this.toolRenderDocument.Enabled = false;
             this.toolRenderDocument.ImageIndex = 7;
             this.toolRenderDocument.ToolTipText = "Render Document";
             // 
-            // toolPreviewButton
+            // ToolPreviewButton
             // 
             this.toolPreviewButton.Enabled = false;
             this.toolPreviewButton.ImageIndex = 8;
             this.toolPreviewButton.ToolTipText = "Print Preview";
             // 
-            // toolBarButton1
+            // ToolBarButton1
             // 
             this.toolBarButton1.Style = System.Windows.Forms.ToolBarButtonStyle.Separator;
             // 
-            // toolExpandAll
+            // ToolExpandAll
             // 
             this.toolExpandAll.Enabled = false;
             this.toolExpandAll.ImageIndex = 2;
             this.toolExpandAll.ToolTipText = "Expand All";
             // 
-            // toolCollapseAll
+            // ToolCollapseAll
             // 
             this.toolCollapseAll.Enabled = false;
             this.toolCollapseAll.ImageIndex = 3;
             this.toolCollapseAll.ToolTipText = "Collapse All";
             // 
-            // toolSeparator2
+            // ToolSeparator2
             // 
             this.toolSeparator2.Style = System.Windows.Forms.ToolBarButtonStyle.Separator;
             // 
-            // toolRemove
+            // ToolRemove
             // 
             this.toolRemove.Enabled = false;
             this.toolRemove.ImageIndex = 4;
             this.toolRemove.ToolTipText = "Remove Node";
             // 
-            // toolViewInWord
+            // ToolViewInWord
             // 
             this.toolViewInWord.ImageIndex = 4;
             this.toolViewInWord.ToolTipText = "View in MS Word";
             this.toolViewInWord.Visible = false;
             // 
-            // toolViewInPdf
+            // ToolViewInPdf
             // 
             this.toolViewInPdf.ImageIndex = 5;
             this.toolViewInPdf.ToolTipText = "View in Acrobat";
             this.toolViewInPdf.Visible = false;
             // 
-            // imageList1
+            // ImageList1
             // 
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // panel1
+            // Panel1
             // 
             this.panel1.Controls.Add(this.Tree);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
@@ -232,7 +232,7 @@ namespace DocumentExplorerExample
             this.Tree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.Tree_AfterSelect);
             this.Tree.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.Tree_BeforeExpand);
             // 
-            // splitter1
+            // Splitter1
             // 
             this.splitter1.Location = new System.Drawing.Point(324, 28);
             this.splitter1.Name = "splitter1";
@@ -240,7 +240,7 @@ namespace DocumentExplorerExample
             this.splitter1.TabIndex = 3;
             this.splitter1.TabStop = false;
             // 
-            // panel2
+            // Panel2
             // 
             this.panel2.Controls.Add(this.Text1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -264,7 +264,7 @@ namespace DocumentExplorerExample
             this.Text1.TabIndex = 1;
             this.Text1.Text = "";
             // 
-            // mainMenu1
+            // MainMenu1
             // 
             this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
                                                                                       this.menuFile,
@@ -272,7 +272,7 @@ namespace DocumentExplorerExample
                                                                                       this.menuView,
                                                                                       this.menuHelp});
             // 
-            // menuFile
+            // MenuFile
             // 
             this.menuFile.Index = 0;
             this.menuFile.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
@@ -285,64 +285,64 @@ namespace DocumentExplorerExample
                                                                                      this.menuExit});
             this.menuFile.Text = "&File";
             // 
-            // menuOpen
+            // MenuOpen
             // 
             this.menuOpen.Index = 0;
             this.menuOpen.Text = "&Open";
             this.menuOpen.Click += new System.EventHandler(this.menuOpen_Click);
             // 
-            // menuSaveAs
+            // MenuSaveAs
             // 
             this.menuSaveAs.Enabled = false;
             this.menuSaveAs.Index = 1;
             this.menuSaveAs.Text = "Save &As...";
             this.menuSaveAs.Click += new System.EventHandler(this.menuSaveAs_Click);
             // 
-            // menuBar1
+            // MenuBar1
             // 
             this.menuBar1.Index = 2;
             this.menuBar1.Text = "-";
             // 
-            // menuRender
+            // MenuRender
             // 
             this.menuRender.Enabled = false;
             this.menuRender.Index = 3;
             this.menuRender.Text = "&Render...";
             this.menuRender.Click += new System.EventHandler(this.menuRender_Click);
             // 
-            // menuPreview
+            // MenuPreview
             // 
             this.menuPreview.Enabled = false;
             this.menuPreview.Index = 4;
             this.menuPreview.Text = "&Print Preview...";
             this.menuPreview.Click += new System.EventHandler(this.menuPreview_Click);
             // 
-            // menuItem1
+            // MenuItem1
             // 
             this.menuItem1.Index = 5;
             this.menuItem1.Text = "-";
             // 
-            // menuExit
+            // MenuExit
             // 
             this.menuExit.Index = 6;
             this.menuExit.Text = "E&xit";
             this.menuExit.Click += new System.EventHandler(this.menuExit_Click);
             // 
-            // menuEdit
+            // MenuEdit
             // 
             this.menuEdit.Index = 1;
             this.menuEdit.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
                                                                                      this.menuRemoveNode});
             this.menuEdit.Text = "Edit";
             // 
-            // menuRemoveNode
+            // MenuRemoveNode
             // 
             this.menuRemoveNode.Enabled = false;
             this.menuRemoveNode.Index = 0;
             this.menuRemoveNode.Text = "Remove Node";
             this.menuRemoveNode.Click += new System.EventHandler(this.menuRemoveNode_Click);
             // 
-            // menuView
+            // MenuView
             // 
             this.menuView.Index = 2;
             this.menuView.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
@@ -350,28 +350,28 @@ namespace DocumentExplorerExample
                                                                                      this.menuCollapseAll});
             this.menuView.Text = "&View";
             // 
-            // menuExpandAll
+            // MenuExpandAll
             // 
             this.menuExpandAll.Enabled = false;
             this.menuExpandAll.Index = 0;
             this.menuExpandAll.Text = "&Expand All";
             this.menuExpandAll.Click += new System.EventHandler(this.menuExpandAll_Click);
             // 
-            // menuCollapseAll
+            // MenuCollapseAll
             // 
             this.menuCollapseAll.Enabled = false;
             this.menuCollapseAll.Index = 1;
             this.menuCollapseAll.Text = "&Collapse All";
             this.menuCollapseAll.Click += new System.EventHandler(this.menuCollapseAll_Click);
             // 
-            // menuHelp
+            // MenuHelp
             // 
             this.menuHelp.Index = 3;
             this.menuHelp.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
                                                                                      this.menuAbout});
             this.menuHelp.Text = "&Help";
             // 
-            // menuAbout
+            // MenuAbout
             // 
             this.menuAbout.Index = 0;
             this.menuAbout.Text = "&About";
@@ -433,7 +433,7 @@ namespace DocumentExplorerExample
         /// <summary>
         /// Search for Aspose.Words license in the application directory.
         /// The File.Exists check is only needed in this demo so it will work
-        /// both when the license file is missing and when it is present.
+        /// Both when the license file is missing and when it is present.
         /// In your real application you just need to call SetLicense.
         /// </summary>
         private static void FindAndApplyLicense()
@@ -807,7 +807,7 @@ namespace DocumentExplorerExample
 
         /// <summary>
         /// Informs Item class, which provides GUI representation of a document node,
-        /// that the corresponding TreeNode was selected.
+        /// That the corresponding TreeNode was selected.
         /// </summary>
         private void Tree_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -831,7 +831,7 @@ namespace DocumentExplorerExample
 
         /// <summary>
         /// Informs Item class, which provides GUI representation of a document node,
-        /// that the corresponding TreeNode is about being expanded.
+        /// That the corresponding TreeNode is about being expanded.
         /// </summary>
         private void Tree_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {

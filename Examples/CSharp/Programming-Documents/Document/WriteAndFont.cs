@@ -8,7 +8,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:WriteAndFont
+            // ExStart:WriteAndFont
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             // Initialize document.
@@ -24,9 +24,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             font.Underline = Underline.Dash;
 
             builder.Write("Sample text.");           
-            dataDir = dataDir + "WriteAndFont_out_.doc";
+            dataDir = dataDir + "WriteAndFont_out.doc";
             doc.Save(dataDir);
-            //ExEnd:WriteAndFont
+            // ExEnd:WriteAndFont
             Console.WriteLine("\nFormatted text using DocumentBuilder inserted successfully.\nFile saved at " + dataDir);
         }        
     }

@@ -9,7 +9,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:CloningDocument
+            // ExStart:CloningDocument
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
 
@@ -18,11 +18,11 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 
             Document clone = doc.Clone();
 
-            dataDir = dataDir + "TestFile_clone_out_.doc";
+            dataDir = dataDir + "TestFile_clone_out.doc";
 
             // Save the document to disk.
             clone.Save(dataDir);
-            //ExEnd:CloningDocument
+            // ExEnd:CloningDocument
             Console.WriteLine("\nDocument cloned successfully.\nFile saved at " + dataDir);
         }
     }

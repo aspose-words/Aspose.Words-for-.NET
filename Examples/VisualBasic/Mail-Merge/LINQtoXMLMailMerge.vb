@@ -23,14 +23,14 @@ Public Class LINQtoXMLMailMerge
         Dim orderXml As XElement = XElement.Load(dataDir & "PurchaseOrder.xml")
 
         ' Query the purchase order xml file using LINQ to extract the order items 
-        ' into an object of an anonymous type. 
+        ' Into an object of an anonymous type. 
         '
         ' Make sure you give the properties of the anonymous type the same names as 
-        ' the MERGEFIELD fields in the document.
+        ' The MERGEFIELD fields in the document.
         '
         ' To pass the actual values stored in the XML element or attribute to Aspose.Words, 
-        ' we need to cast them to string. This is to prevent the XML tags being inserted into the final document when
-        ' the XElement or XAttribute objects are passed to Aspose.Words.
+        ' We need to cast them to string. This is to prevent the XML tags being inserted into the final document when
+        ' The XElement or XAttribute objects are passed to Aspose.Words.
         ' ExStart:LINQtoXMLMailMergeorderItems
         Dim orderItems = From order In orderXml.Descendants("Item") _
         Select New With {Key .PartNumber = CStr(order.Attribute("PartNumber")), Key .ProductName = CStr(order.Element("ProductName")), Key .Quantity = CStr(order.Element("Quantity")), Key .USPrice = CStr(order.Element("USPrice")), Key .Comment = CStr(order.Element("Comment")), Key .ShipDate = CStr(order.Element("ShipDate"))}
@@ -52,7 +52,7 @@ Public Class LINQtoXMLMailMerge
 
         ' Fill the document with data from our data sources.
         ' Using mail merge regions for populating the order items table is required
-        ' because it allows the region to be repeated in the document for each order item.
+        ' Because it allows the region to be repeated in the document for each order item.
         doc.MailMerge.ExecuteWithRegions(orderItemsDataSource)
 
         ' The standard mail merge without regions is used for the delivery address.

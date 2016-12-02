@@ -36,7 +36,7 @@ Public Class CompressImages
             Console.WriteLine("We expected to have only 1 image resampled in this test document!")
         End If
 
-        Dim dstFileName As String = srcFileName & ".Resampled_out_.docx"
+        Dim dstFileName As String = srcFileName & ".Resampled_out.docx"
         doc.Save(dstFileName)
         Console.WriteLine("Saving {0}. Size {1}.", dstFileName, GetFileSize(dstFileName))
 
@@ -60,7 +60,7 @@ End Class
 Public Class Resampler
     ''' <summary>
     ''' Resamples all images in the document that are greater than the specified PPI (pixels per inch) to the specified PPI
-    ''' and converts them to JPEG with the specified quality setting.
+    ''' And converts them to JPEG with the specified quality setting.
     ''' </summary>
     ''' <param name="doc">The document to process.</param>
     ''' <param name="desiredPpi">Desired pixels per inch. 220 high quality. 150 screen quality. 96 email quality.</param>
@@ -95,18 +95,18 @@ Public Class Resampler
     ''' Resamples one VML or DrawingML image
     ''' </summary>
     Private Shared Function ResampleCore(ByVal imageData As ImageData, ByVal shapeSizeInPoints As SizeF, ByVal ppi As Integer, ByVal jpegQuality As Integer) As Boolean
-        ' The are actually several shape types that can have an image (picture, ole object, ole control), let's skip other shapes.
+        ' The are actually several shape types that can have an image (picture, ole object, ole control), let' S skip other shapes.
         If imageData Is Nothing Then
             Return False
         End If
 
-        ' An image can be stored in the shape or linked from somewhere else. Let's skip images that do not store bytes in the shape.
+        ' An image can be stored in the shape or linked from somewhere else. Let' S skip images that do not store bytes in the shape.
         Dim originalBytes() As Byte = imageData.ImageBytes
         If originalBytes Is Nothing Then
             Return False
         End If
 
-        ' Ignore metafiles, they are vector drawings and we don't want to resample them.
+        ' Ignore metafiles, they are vector drawings and we don' T want to resample them.
         Dim imageType As ImageType = imageData.ImageType
         If imageType.Equals(imageType.Wmf) OrElse imageType.Equals(imageType.Emf) Then
             Return False
@@ -123,7 +123,7 @@ Public Class Resampler
 
             Console.Write("Image PpiX:{0}, PpiY:{1}. ", CInt(Fix(currentPpiX)), CInt(Fix(currentPpiY)))
 
-            ' Let's resample only if the current PPI is higher than the requested PPI (e.g. we have extra data we can get rid of).
+            ' Let' S resample only if the current PPI is higher than the requested PPI (e.g. we have extra data we can get rid of).
             If (currentPpiX <= ppi) OrElse (currentPpiY <= ppi) Then
                 Console.WriteLine("Skipping.")
                 Return False

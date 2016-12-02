@@ -10,7 +10,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Bookmarks
     {
         public static void Run()
         {
-            //ExStart:BookmarkTable
+            // ExStart:BookmarkTable
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithBookmarks();
             
@@ -48,9 +48,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Bookmarks
             // End of bookmark
             builder.EndBookmark("MyBookmark");
 
-            dataDir = dataDir + "Bookmark.Table_out_.doc";
+            dataDir = dataDir + "Bookmark.Table_out.doc";
             doc.Save(dataDir);
-            //ExEnd:BookmarkTable
+            // ExEnd:BookmarkTable
             Console.WriteLine("\nTable bookmarked successfully.\nFile saved at " + dataDir);
         }
         

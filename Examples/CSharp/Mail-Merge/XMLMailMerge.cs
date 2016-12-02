@@ -15,7 +15,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
     {
         public static void Run()
         {
-            //ExStart:XMLMailMerge 
+            // ExStart:XMLMailMerge 
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); 
 
@@ -33,7 +33,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the output document.
             doc.Save(dataDir);
-            //ExEnd:XMLMailMerge 
+            // ExEnd:XMLMailMerge 
             Console.WriteLine("\nMail merge performed with XML data successfully.\nFile saved at " + dataDir);
         }
     }

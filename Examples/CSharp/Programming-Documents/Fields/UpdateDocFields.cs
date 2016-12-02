@@ -12,7 +12,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
     {
         public static void Run()
         {
-            //ExStart:UpdateDocFields
+            // ExStart:UpdateDocFields
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
 
@@ -20,9 +20,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 
             // This updates all fields in the document.
             doc.UpdateFields();
-            dataDir = dataDir + "Rendering.UpdateFields_out_.pdf";
+            dataDir = dataDir + "Rendering.UpdateFields_out.pdf";
             doc.Save(dataDir);
-            //ExEnd:UpdateDocFields
+            // ExEnd:UpdateDocFields
             Console.WriteLine("\nDocument fields updated successfully.\nFile saved at " + dataDir);
         }
     }

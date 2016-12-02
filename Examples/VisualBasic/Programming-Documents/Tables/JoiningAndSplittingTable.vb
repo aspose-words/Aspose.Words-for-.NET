@@ -30,7 +30,7 @@ Public Class JoiningAndSplittingTable
 
         ' Remove the empty table container.
         secondTable.Remove()
-        dataDir = dataDir & Convert.ToString("Table.CombineTables_out_.doc")
+        dataDir = dataDir & Convert.ToString("Table.CombineTables_out.doc")
         ' Save the finished document.
         doc.Save(dataDir)
         ' ExEnd:CombineRows
@@ -67,7 +67,7 @@ Public Class JoiningAndSplittingTable
             table.PrependChild(currentRow)
         Loop While currentRow IsNot row
 
-        dataDir = dataDir & Convert.ToString("Table.SplitTable_out_.doc")
+        dataDir = dataDir & Convert.ToString("Table.SplitTable_out.doc")
         ' Save the finished document.
         doc.Save(dataDir)
         ' ExEnd:SplitTable

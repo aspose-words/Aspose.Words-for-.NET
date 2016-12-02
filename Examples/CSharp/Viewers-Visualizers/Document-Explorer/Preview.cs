@@ -42,12 +42,12 @@ namespace DocumentExplorerExample
             Cursor.Current = cursor;
 
             // Interesting, but PrintDialog will not show and will always return cancel
-            // if you run this application in 64-bit mode.
+            // If you run this application in 64-bit mode.
 	        if (!printDlg.ShowDialog().Equals(DialogResult.OK))
                 return;
 
             // Create the Aspose.Words' implementation of the .NET print document 
-            // and pass the printer settings from the dialog to the print document.
+            // And pass the printer settings from the dialog to the print document.
             AsposeWordsPrintDocument awPrintDoc = new AsposeWordsPrintDocument(document);
             awPrintDoc.PrinterSettings = printDlg.PrinterSettings;
 

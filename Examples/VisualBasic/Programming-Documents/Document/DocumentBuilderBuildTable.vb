@@ -46,7 +46,7 @@ Class DocumentBuilderBuildTable
         builder.EndRow()
 
         builder.EndTable()
-        dataDir = dataDir & Convert.ToString("DocumentBuilderBuildTable_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderBuildTable_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderBuildTable
         Console.WriteLine(Convert.ToString(vbLf & "Table build successfully using DocumentBuilder." & vbLf & "File saved at ") & dataDir)

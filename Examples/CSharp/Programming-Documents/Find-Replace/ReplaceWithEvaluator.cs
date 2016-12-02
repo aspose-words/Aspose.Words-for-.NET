@@ -12,7 +12,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
     {
         public static void Run()
         {
-            //ExStart:ReplaceWithEvaluator
+            // ExStart:ReplaceWithEvaluator
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_FindAndReplace();
             Document doc = new Document(dataDir + "Range.ReplaceWithEvaluator.doc");
@@ -22,12 +22,12 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
 
             doc.Range.Replace(new Regex("[s|m]ad"), "", options);
 
-            dataDir = dataDir + "Range.ReplaceWithEvaluator_out_.doc";
+            dataDir = dataDir + "Range.ReplaceWithEvaluator_out.doc";
             doc.Save(dataDir);
-            //ExEnd:ReplaceWithEvaluator
+            // ExEnd:ReplaceWithEvaluator
             Console.WriteLine("\nText replaced successfully with evaluator.\nFile saved at " + dataDir);
         }
-        //ExStart:MyReplaceEvaluator
+        // ExStart:MyReplaceEvaluator
         private class MyReplaceEvaluator : IReplacingCallback
         {
             /// <summary>
@@ -43,6 +43,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
 
             private int mMatchNumber;
         }
-        //ExEnd:MyReplaceEvaluator        
+        // ExEnd:MyReplaceEvaluator        
     }
 }

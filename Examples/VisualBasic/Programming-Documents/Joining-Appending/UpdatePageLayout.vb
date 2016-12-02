@@ -20,7 +20,7 @@ Public Class UpdatePageLayout
         Dim srcDoc As New Document(dataDir & "TestFile.Source.doc")
 
         ' If the destination document is rendered to PDF, image etc or UpdatePageLayout is called before the source document 
-        ' is appended then any changes made after will not be reflected in the rendered output.
+        ' Is appended then any changes made after will not be reflected in the rendered output.
         dstDoc.UpdatePageLayout()
 
         ' Join the documents.

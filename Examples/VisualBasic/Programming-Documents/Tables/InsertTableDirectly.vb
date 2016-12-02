@@ -13,18 +13,18 @@ Public Class InsertTableDirectly
 
         Dim doc As New Document()
         ' We start by creating the table object. Note how we must pass the document object
-        ' to the constructor of each node. This is because every node we create must belong
-        ' to some document.
+        ' To the constructor of each node. This is because every node we create must belong
+        ' To some document.
         Dim table As New Table(doc)
         ' Add the table to the document.
         doc.FirstSection.Body.AppendChild(table)
 
         ' Here we could call EnsureMinimum to create the rows and cells for us. This method is used
-        ' to ensure that the specified node is valid, in this case a valid table should have at least one
-        ' row and one cell, therefore this method creates them for us.
+        ' To ensure that the specified node is valid, in this case a valid table should have at least one
+        ' Row and one cell, therefore this method creates them for us.
 
         ' Instead we will handle creating the row and table ourselves. This would be the best way to do this
-        ' if we were creating a table inside an algorthim for example.
+        ' If we were creating a table inside an algorthim for example.
         Dim row As New Row(doc)
         row.RowFormat.AllowBreakAcrossPages = True
         table.AppendChild(row)
@@ -49,7 +49,7 @@ Public Class InsertTableDirectly
         row.AppendChild(cell.Clone(False))
         row.LastCell.AppendChild(New Paragraph(doc))
         row.LastCell.FirstParagraph.AppendChild(New Run(doc, "Row 1, Cell 2 Text"))
-        dataDir = dataDir & Convert.ToString("Table.InsertTableUsingNodes_out_.doc")
+        dataDir = dataDir & Convert.ToString("Table.InsertTableUsingNodes_out.doc")
         ' Save the document to disk.
         doc.Save(dataDir)
         ' ExEnd:InsertTableDirectly

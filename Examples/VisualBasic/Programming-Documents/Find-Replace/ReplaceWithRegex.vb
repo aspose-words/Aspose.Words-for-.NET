@@ -13,7 +13,7 @@ Class ReplaceWithRegex
         Dim doc As New Document(dataDir & Convert.ToString("Document.doc"))
         doc.Range.Replace(New Regex("[s|m]ad"), "bad", New FindReplaceOptions(FindReplaceDirection.Forward))
 
-        dataDir = dataDir & Convert.ToString("ReplaceWithRegex_out_.doc")
+        dataDir = dataDir & Convert.ToString("ReplaceWithRegex_out.doc")
         doc.Save(dataDir)
         ' ExEnd:ReplaceWithRegex
         Console.WriteLine(Convert.ToString(vbLf & "Text replaced with regex successfully." & vbLf & "File saved at ") & dataDir)

@@ -17,7 +17,7 @@ Class DocumentBuilderInsertImage
         Dim builder As New DocumentBuilder(doc)
 
         builder.InsertImage(dataDir & Convert.ToString("Watermark.png"))
-        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertInlineImage_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertInlineImage_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderInsertInlineImage
         Console.WriteLine(Convert.ToString(vbLf & "Inline image using DocumentBuilder inserted successfully." & vbLf & "File saved at ") & dataDir)
@@ -29,7 +29,7 @@ Class DocumentBuilderInsertImage
 
         builder.InsertImage(dataDir & Convert.ToString("Watermark.png"), RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 100, 200, _
             100, WrapType.Square)
-        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertFloatingImage_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertFloatingImage_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderInsertFloatingImage
         Console.WriteLine(Convert.ToString(vbLf & "Inline image using DocumentBuilder inserted successfully." & vbLf & "File saved at ") & dataDir)

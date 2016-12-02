@@ -37,7 +37,7 @@ Public Class XpsPrintHelper
     End Sub
 
     ' ExStart:XpsPrint_PrintDocument       
-    'ExSummary:Convert an Aspose.Words document into an XPS stream and print.
+    ' ExSummary:Convert an Aspose.Words document into an XPS stream and print.
     ''' <summary>
     ''' Sends an Aspose.Words document to a printer using the XpsPrint API.
     ''' </summary>
@@ -63,7 +63,7 @@ Public Class XpsPrintHelper
     End Sub
     ' ExEnd:XpsPrint_PrintDocument
     ' ExStart:XpsPrint_PrintStream        
-    'ExSummary:Prints an XPS document using the XpsPrint API.
+    ' ExSummary:Prints an XPS document using the XpsPrint API.
     ''' <summary>
     ''' Sends a stream that contains a document in the XPS format to a printer using the XpsPrint API.
     ''' Has no dependency on Aspose.Words, can be used in any project.
@@ -193,7 +193,7 @@ Public Class XpsPrintHelper
     Private Shared Function StartXpsPrintJob(<MarshalAs(UnmanagedType.LPWStr)> printerName As [String], <MarshalAs(UnmanagedType.LPWStr)> jobName As [String], <MarshalAs(UnmanagedType.LPWStr)> outputFileName As [String], progressEvent As IntPtr, completionEvent As IntPtr, <MarshalAs(UnmanagedType.LPArray)> printablePagesOn As Byte(), _
             printablePagesOnCount As UInt32, ByRef xpsPrintJob As IXpsPrintJob, ByRef documentStream As IXpsPrintJobStream, printTicketStream As IntPtr) As Integer
     End Function
-    ' This is actually "out IXpsPrintJobStream", but we don't use it and just want to pass null, hence IntPtr.
+    ' This is actually "out IXpsPrintJobStream", but we don' T use it and just want to pass null, hence IntPtr.
     <DllImport("Kernel32.dll", SetLastError:=True)> _
     Private Shared Function CreateEvent(lpEventAttributes As IntPtr, bManualReset As Boolean, bInitialState As Boolean, lpName As String) As IntPtr
     End Function

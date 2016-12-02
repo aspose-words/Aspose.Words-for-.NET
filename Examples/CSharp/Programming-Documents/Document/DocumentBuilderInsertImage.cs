@@ -20,19 +20,19 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
         }
         public static void InsertInlineImage(string dataDir)
         {
-            //ExStart:DocumentBuilderInsertInlineImage
+            // ExStart:DocumentBuilderInsertInlineImage
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertImage(dataDir + "Watermark.png");
-            dataDir = dataDir + "DocumentBuilderInsertInlineImage_out_.doc";
+            dataDir = dataDir + "DocumentBuilderInsertInlineImage_out.doc";
             doc.Save(dataDir);
-            //ExEnd:DocumentBuilderInsertInlineImage
+            // ExEnd:DocumentBuilderInsertInlineImage
             Console.WriteLine("\nInline image using DocumentBuilder inserted successfully.\nFile saved at " + dataDir);
         }
         public static void InsertFloatingImage(string dataDir)
         {
-            //ExStart:DocumentBuilderInsertFloatingImage
+            // ExStart:DocumentBuilderInsertFloatingImage
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -44,9 +44,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
                 200,
                 100,
                 WrapType.Square);
-            dataDir = dataDir + "DocumentBuilderInsertFloatingImage_out_.doc";
+            dataDir = dataDir + "DocumentBuilderInsertFloatingImage_out.doc";
             doc.Save(dataDir);
-            //ExEnd:DocumentBuilderInsertFloatingImage
+            // ExEnd:DocumentBuilderInsertFloatingImage
             Console.WriteLine("\nInline image using DocumentBuilder inserted successfully.\nFile saved at " + dataDir);
         }
     }

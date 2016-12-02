@@ -2,9 +2,9 @@
 using System.IO;
 using Aspose.Words;
 using System;
-//ExStart:X509Certificates
+// ExStart:X509Certificates
 using System.Security.Cryptography.X509Certificates;
-//ExEnd:X509Certificates
+// ExEnd:X509Certificates
 using Aspose.Words.Saving;
 
 namespace Aspose.Words.Examples.CSharp.Loading_Saving
@@ -13,7 +13,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
     {
         public static void Run()
         {
-            //ExStart:DigitallySignedPdf
+            // ExStart:DigitallySignedPdf
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
@@ -33,10 +33,10 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             options.DigitalSignatureDetails = new PdfDigitalSignatureDetails();
       
             
-            dataDir = dataDir + "Document.Signed_out_.pdf";
+            dataDir = dataDir + "Document.Signed_out.pdf";
             // Save the document as PDF.
             doc.Save(dataDir);
-            //ExEnd:DigitallySignedPdf
+            // ExEnd:DigitallySignedPdf
             Console.WriteLine("\nDigitally signed PDF file created successfully.\nFile saved at " + dataDir);
         }
     }

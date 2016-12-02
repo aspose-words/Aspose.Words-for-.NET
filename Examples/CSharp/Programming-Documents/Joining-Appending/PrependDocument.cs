@@ -47,7 +47,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appendi
 
                 // Now the new section node can be prepended to the destination document.
                 // Note how PrependChild is used instead of AppendChild. This is the only line changed compared 
-                // to the original method.
+                // To the original method.
                 dstDoc.PrependChild(dstSection);
             }
         }

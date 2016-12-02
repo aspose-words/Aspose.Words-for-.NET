@@ -12,7 +12,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:ExtractContentBetweenBookmark
+            // ExStart:ExtractContentBetweenBookmark
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             string fileName = "TestFile.doc";
@@ -31,14 +31,14 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // Firstly extract the content between these nodes including the bookmark. 
             ArrayList extractedNodesInclusive = Common.ExtractContent(bookmarkStart, bookmarkEnd, true);
             Document dstDoc = Common.GenerateDocument(doc, extractedNodesInclusive);
-            dstDoc.Save(dataDir + "TestFile.BookmarkInclusive_out_.doc");
+            dstDoc.Save(dataDir + "TestFile.BookmarkInclusive_out.doc");
 
             // Secondly extract the content between these nodes this time without including the bookmark.
             ArrayList extractedNodesExclusive = Common.ExtractContent(bookmarkStart, bookmarkEnd, false);
             dstDoc = Common.GenerateDocument(doc, extractedNodesExclusive);
-            dstDoc.Save(dataDir + "TestFile.BookmarkExclusive_out_.doc");
-            //ExEnd:ExtractContentBetweenBookmark
-            Console.WriteLine("\nExtracted content between bookmarks successfully.\nFile saved at " + dataDir + "TestFile.BookmarkExclusive_out_.doc");
+            dstDoc.Save(dataDir + "TestFile.BookmarkExclusive_out.doc");
+            // ExEnd:ExtractContentBetweenBookmark
+            Console.WriteLine("\nExtracted content between bookmarks successfully.\nFile saved at " + dataDir + "TestFile.BookmarkExclusive_out.doc");
         }
     }
 }

@@ -16,7 +16,7 @@ Public Class DocumentLayoutHelper
         Dim doc As New Document(dataDir & "TestFile.docx")
 
         ' This sample introduces the RenderedDocument class and other related classes which provide an API wrapper for 
-        ' the LayoutEnumerator. This allows you to access the layout entities of a document using a DOM style API.
+        ' The LayoutEnumerator. This allows you to access the layout entities of a document using a DOM style API.
 
         ' Create a new RenderedDocument class from a Document object.
         Dim layoutDoc As New RenderedDocument(doc)
@@ -41,7 +41,7 @@ Public Class DocumentLayoutHelper
         Next page
 
         ' This method provides a reverse lookup of layout entities for any given node (with the exception of runs and nodes in the
-        ' header and footer).
+        ' Header and footer).
         Console.WriteLine()
         Console.WriteLine("The lines of the second paragraph:")
         For Each paragraphLine As RenderedLine In layoutDoc.GetLayoutEntitiesOfNode(doc.FirstSection.Body.Paragraphs(1))
@@ -390,7 +390,7 @@ Public Class RenderedSpan
     ''' Gets kind of the span. This cannot be null.
     ''' </summary>
     ''' <remarks>This is a more specific type of the current entity, e.g. bookmark span has Span type and
-    ''' may have either a BOOKMARKSTART or BOOKMARKEND kind.</remarks>
+    ''' May have either a BOOKMARKSTART or BOOKMARKEND kind.</remarks>
     Public ReadOnly Property Kind() As String
         Get
             Return mKind
@@ -734,7 +734,7 @@ End Class
 
 ''' <summary>
 ''' Provides an API wrapper for the LayoutEnumerator class to access the page layout entities of a document presented in
-''' a object model like design.
+''' A object model like design.
 ''' </summary>
 Public Class RenderedDocument
     Inherits LayoutEntity

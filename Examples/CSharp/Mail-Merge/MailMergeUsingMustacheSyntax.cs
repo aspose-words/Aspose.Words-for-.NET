@@ -16,7 +16,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
     {
         public static void Run()
         {
-            //ExStart:MailMergeUsingMustacheSyntax
+            // ExStart:MailMergeUsingMustacheSyntax
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); 
             DataSet ds = new DataSet();
@@ -30,10 +30,10 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
 
             // Execute mail merge to fill the template with data from XML using DataSet.
             doc.MailMerge.ExecuteWithRegions(ds);
-            dataDir = dataDir + "MailMergeUsingMustacheSyntax_out_.docx";
+            dataDir = dataDir + "MailMergeUsingMustacheSyntax_out.docx";
             // Save the output document.
             doc.Save(dataDir);
-            //ExEnd:MailMergeUsingMustacheSyntax
+            // ExEnd:MailMergeUsingMustacheSyntax
             Console.WriteLine("\nMail merge performed with mustache syntax successfully.\nFile saved at " + dataDir);
         }
     }

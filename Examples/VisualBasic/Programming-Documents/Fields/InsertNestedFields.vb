@@ -30,9 +30,9 @@ Public Class InsertNestedFields
         builder.Write(" ""See Next Page"" ""Last Page"" ")
 
         ' Finally update the outer field to recalcaluate the final value. Doing this will automatically update
-        ' the inner fields at the same time.
+        ' The inner fields at the same time.
         field.Update()
-        dataDir = dataDir & "InsertNestedFields_out_.docx"
+        dataDir = dataDir & "InsertNestedFields_out.docx"
         doc.Save(dataDir)
         ' ExEnd:InsertNestedFields
         Console.WriteLine(vbNewLine & "Inserted nested fields in the document successfully." & vbNewLine & "File saved at " + dataDir)

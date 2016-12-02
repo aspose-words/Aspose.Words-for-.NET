@@ -15,27 +15,27 @@ Public Class AddRemoveColumn
 
     End Sub
     Private Shared Sub RemoveColumn(doc As Document)
-        'ExStart:RemoveColumn
+        ' ExStart:RemoveColumn
         ' Get the second table in the document.
         Dim table As Table = DirectCast(doc.GetChild(NodeType.Table, 1, True), Table)
 
         ' Get the third column from the table and remove it.
         Dim column__1 As Column = Column.FromIndex(table, 2)
         column__1.Remove()
-        'ExEnd:RemoveColumn
+        ' ExEnd:RemoveColumn
         Console.WriteLine(vbLf & "Third column removed successfully.")
     End Sub
     Private Shared Sub InsertBlankColumn(doc As Document)
-        'ExStart:InsertBlankColumn
+        ' ExStart:InsertBlankColumn
         ' Get the first table in the document.
         Dim table As Table = DirectCast(doc.GetChild(NodeType.Table, 0, True), Table)
 
-        'ExStart:GetPlainText
+        ' ExStart:GetPlainText
         ' Get the second column in the table.
         Dim column__1 As Column = Column.FromIndex(table, 0)
         ' Print the plain text of the column to the screen.
         Console.WriteLine(column__1.ToTxt())
-        'ExEnd:GetPlainText
+        ' ExEnd:GetPlainText
         ' Create a new column to the left of this column.
         ' This is the same as using the "Insert Column Before" command in Microsoft Word.
         Dim newColumn As Column = column__1.InsertColumnBefore()
@@ -44,10 +44,10 @@ Public Class AddRemoveColumn
         For Each cell As Cell In newColumn.Cells
             cell.FirstParagraph.AppendChild(New Run(doc, "Column Text " + newColumn.IndexOf(cell).ToString()))
         Next
-        'ExEnd:InsertBlankColumn
+        ' ExEnd:InsertBlankColumn
         Console.WriteLine(vbLf & "Column added successfully.")
     End Sub
-    'ExStart:ColumnClass
+    ' ExStart:ColumnClass
     ''' <summary>
     ''' Represents a facade object for a column of a table in a Microsoft Word document.
     ''' </summary>
@@ -154,5 +154,5 @@ Public Class AddRemoveColumn
         Private mColumnIndex As Integer
         Private mTable As Table
     End Class
-    'ExEnd:ColumnClass
+    ' ExEnd:ColumnClass
 End Class

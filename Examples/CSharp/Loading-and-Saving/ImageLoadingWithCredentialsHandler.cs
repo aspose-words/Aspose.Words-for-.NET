@@ -4,7 +4,7 @@ using Aspose.Words.Loading;
 using System.Net;
 namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
 {
-    //ExStart:ImageLoadingWithCredentialsHandler
+    // ExStart:ImageLoadingWithCredentialsHandler
     public class ImageLoadingWithCredentialsHandler : IResourceLoadingCallback
     {
         public ImageLoadingWithCredentialsHandler()
@@ -37,5 +37,5 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
 
         private WebClient mWebClient;
     }
-    //ExEnd:ImageLoadingWithCredentialsHandler
+    // ExEnd:ImageLoadingWithCredentialsHandler
 }

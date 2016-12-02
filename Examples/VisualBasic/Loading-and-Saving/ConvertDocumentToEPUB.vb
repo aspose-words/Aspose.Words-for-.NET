@@ -13,14 +13,14 @@ Public Class ConvertDocumentToEPUB
         Dim doc As New Document(dataDir & Convert.ToString("Document.EpubConversion.doc"))
 
         ' Create a new instance of HtmlSaveOptions. This object allows us to set options that control
-        ' how the output document is saved.
+        ' How the output document is saved.
         Dim saveOptions As New HtmlSaveOptions()
 
         ' Specify the desired encoding.
         saveOptions.Encoding = System.Text.Encoding.UTF8
 
         ' Specify at what elements to split the internal HTML at. This creates a new HTML within the EPUB 
-        ' which allows you to limit the size of each HTML part. This is useful for readers which cannot read 
+        ' Which allows you to limit the size of each HTML part. This is useful for readers which cannot read 
         ' HTML files greater than a certain size e.g 300kb.
         saveOptions.DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph
 
@@ -31,7 +31,7 @@ Public Class ConvertDocumentToEPUB
         saveOptions.SaveFormat = SaveFormat.Epub
 
         ' Export the document as an EPUB file.
-        doc.Save(dataDir & Convert.ToString("Document.EpubConversion_out_.epub"), saveOptions)
+        doc.Save(dataDir & Convert.ToString("Document.EpubConversion_out.epub"), saveOptions)
 
         ' ExEnd:ConvertDocumentToEPUB
         ConvertDocumentToEPUBUsingDefaultSaveOption()
@@ -44,7 +44,7 @@ Public Class ConvertDocumentToEPUB
         ' Load the document from disk.
         Dim doc As New Document(dataDir & Convert.ToString("Document.EpubConversion.doc"))
         ' Save the document in EPUB format.
-        doc.Save(dataDir & Convert.ToString("Document.EpubConversionUsingDefaultSaveOption_out_.epub"))
+        doc.Save(dataDir & Convert.ToString("Document.EpubConversionUsingDefaultSaveOption_out.epub"))
     End Sub
     ' ExEnd:ConvertDocumentToEPUBUsingDefaultSaveOption
 

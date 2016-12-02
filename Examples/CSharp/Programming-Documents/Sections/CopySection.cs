@@ -8,7 +8,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Sectio
     {
         public static void Run()
         {
-            //ExStart:CopySection
+            // ExStart:CopySection
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithSections();
 
@@ -18,9 +18,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Sectio
             Section sourceSection = srcDoc.Sections[0];
             Section newSection = (Section)dstDoc.ImportNode(sourceSection, true);
             dstDoc.Sections.Add(newSection);
-            dataDir = dataDir + "Document.Copy_out_.doc";
+            dataDir = dataDir + "Document.Copy_out.doc";
             dstDoc.Save(dataDir);
-            //ExEnd:CopySection
+            // ExEnd:CopySection
             Console.WriteLine("\nSection copied successfully.\nFile saved at " + dataDir);
         }        
     }

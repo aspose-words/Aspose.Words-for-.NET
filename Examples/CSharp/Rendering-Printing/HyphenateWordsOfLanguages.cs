@@ -17,7 +17,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
     {
         public static void Run()
         {
-            //ExStart:HyphenateWordsOfLanguages
+            // ExStart:HyphenateWordsOfLanguages
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); 
 
@@ -26,9 +26,9 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             Hyphenation.RegisterDictionary("en-US", dataDir + @"hyph_en_US.dic");
             Hyphenation.RegisterDictionary("de-CH", dataDir + @"hyph_de_CH.dic");
 
-            dataDir = dataDir + "HyphenateWordsOfLanguages_out_.pdf";
+            dataDir = dataDir + "HyphenateWordsOfLanguages_out.pdf";
             doc.Save(dataDir);
-            //ExEnd:HyphenateWordsOfLanguages
+            // ExEnd:HyphenateWordsOfLanguages
             Console.WriteLine("\nWords of special languages hyphenate successfully.\nFile saved at " + dataDir);
             
         }

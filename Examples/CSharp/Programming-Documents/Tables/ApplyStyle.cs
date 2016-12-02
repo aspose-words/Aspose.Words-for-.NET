@@ -23,7 +23,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
         /// </summary>
         private static void BuildTableWithStyle(string dataDir)
         {
-            //ExStart:BuildTableWithStyle
+            // ExStart:BuildTableWithStyle
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -62,11 +62,11 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             builder.Writeln("50");
             builder.EndRow();
 
-            dataDir = dataDir + "DocumentBuilder.SetTableStyle_out_.docx";
+            dataDir = dataDir + "DocumentBuilder.SetTableStyle_out.docx";
            
             // Save the document to disk.
             doc.Save(dataDir);
-            //ExEnd:BuildTableWithStyle
+            // ExEnd:BuildTableWithStyle
             Console.WriteLine("\nTable created successfully with table style.\nFile saved at " + dataDir);
         }
         /// <summary>
@@ -74,7 +74,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
         /// </summary>
         private static void ExpandFormattingOnCellsAndRowFromStyle(string dataDir)
         {
-            //ExStart:ExpandFormattingOnCellsAndRowFromStyle
+            // ExStart:ExpandFormattingOnCellsAndRowFromStyle
             Document doc = new Document(dataDir + "Table.TableStyle.docx");
 
             // Get the first cell of the first table in the document.
@@ -82,7 +82,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             Cell firstCell = table.FirstRow.FirstCell;
 
             // First print the color of the cell shading. This should be empty as the current shading
-            // is stored in the table style.
+            // Is stored in the table style.
             Color cellShadingBefore = firstCell.CellFormat.Shading.BackgroundPatternColor;
             Console.WriteLine("Cell shading before style expansion: " + cellShadingBefore.ToString());
 
@@ -90,10 +90,10 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             doc.ExpandTableStylesToDirectFormatting();
 
             // Now print the cell shading after expanding table styles. A blue background pattern color
-            // should have been applied from the table style.
+            // Should have been applied from the table style.
             Color cellShadingAfter = firstCell.CellFormat.Shading.BackgroundPatternColor;
             Console.WriteLine("Cell shading after style expansion: " + cellShadingAfter.ToString());
-            //ExEnd:ExpandFormattingOnCellsAndRowFromStyle
+            // ExEnd:ExpandFormattingOnCellsAndRowFromStyle
             
         }
     }

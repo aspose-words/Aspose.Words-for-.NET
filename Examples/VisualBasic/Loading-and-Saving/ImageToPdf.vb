@@ -18,11 +18,11 @@ Public Class ImageToPdf
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_LoadingAndSaving()
 
-        ConvertImageToPdf(dataDir & Convert.ToString("Test.jpg"), dataDir & Convert.ToString("TestJpg_out_.pdf"))
-        ConvertImageToPdf(dataDir & Convert.ToString("Test.png"), dataDir & Convert.ToString("TestPng_out_.pdf"))
-        ConvertImageToPdf(dataDir & Convert.ToString("Test.wmf"), dataDir & Convert.ToString("TestWmf_out_.pdf"))
-        ConvertImageToPdf(dataDir & Convert.ToString("Test.tiff"), dataDir & Convert.ToString("TestTiff_out_.pdf"))
-        ConvertImageToPdf(dataDir & Convert.ToString("Test.gif"), dataDir & Convert.ToString("TestGif_out_.pdf"))
+        ConvertImageToPdf(dataDir & Convert.ToString("Test.jpg"), dataDir & Convert.ToString("TestJpg_out.pdf"))
+        ConvertImageToPdf(dataDir & Convert.ToString("Test.png"), dataDir & Convert.ToString("TestPng_out.pdf"))
+        ConvertImageToPdf(dataDir & Convert.ToString("Test.wmf"), dataDir & Convert.ToString("TestWmf_out.pdf"))
+        ConvertImageToPdf(dataDir & Convert.ToString("Test.tiff"), dataDir & Convert.ToString("TestTiff_out.pdf"))
+        ConvertImageToPdf(dataDir & Convert.ToString("Test.gif"), dataDir & Convert.ToString("TestGif_out.pdf"))
         ' ExEnd:ImageToPdf
 
         Console.WriteLine(vbLf & "Converted all images to PDF successfully.")
@@ -44,7 +44,7 @@ Public Class ImageToPdf
         ' Read the image from file, ensure it is disposed.
         Using image__1 As Image = Image.FromFile(inputFileName)
             ' Find which dimension the frames in this image represent. For example 
-            ' the frames of a BMP or TIFF are "page dimension" whereas frames of a GIF image are "time dimension". 
+            ' The frames of a BMP or TIFF are "page dimension" whereas frames of a GIF image are "time dimension". 
             Dim dimension As New FrameDimension(image__1.FrameDimensionsList(0))
 
             ' Get the number of frames in the image.

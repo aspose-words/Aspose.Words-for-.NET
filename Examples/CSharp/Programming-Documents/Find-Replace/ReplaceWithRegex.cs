@@ -12,7 +12,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
     {
         public static void Run()
         {
-            //ExStart:ReplaceWithRegex
+            // ExStart:ReplaceWithRegex
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_FindAndReplace();
 
@@ -22,9 +22,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
 
             doc.Range.Replace(new Regex("[s|m]ad"), "bad", options);
 
-            dataDir = dataDir + "ReplaceWithRegex_out_.doc";
+            dataDir = dataDir + "ReplaceWithRegex_out.doc";
             doc.Save(dataDir);
-            //ExEnd:ReplaceWithRegex
+            // ExEnd:ReplaceWithRegex
             Console.WriteLine("\nText replaced with regex successfully.\nFile saved at " + dataDir);
         }
     }    

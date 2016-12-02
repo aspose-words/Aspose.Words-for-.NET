@@ -17,7 +17,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
     {
         public static void Run()
         {
-            //ExStart:LoadHyphenationDictionaryForLanguage
+            // ExStart:LoadHyphenationDictionaryForLanguage
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); 
 
@@ -26,9 +26,9 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             Stream stream = File.OpenRead(dataDir + @"hyph_de_CH.dic");
             Hyphenation.RegisterDictionary("de-CH", stream);
 
-            dataDir = dataDir + "LoadHyphenationDictionaryForLanguage_out_.pdf";
+            dataDir = dataDir + "LoadHyphenationDictionaryForLanguage_out.pdf";
             doc.Save(dataDir);
-            //ExEnd:LoadHyphenationDictionaryForLanguage
+            // ExEnd:LoadHyphenationDictionaryForLanguage
             Console.WriteLine("\nHyphenation dictionary for special language loaded successfully.\nFile saved at " + dataDir);           
         }
         

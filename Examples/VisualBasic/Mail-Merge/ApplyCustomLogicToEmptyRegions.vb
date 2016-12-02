@@ -33,14 +33,14 @@ Public Class ApplyCustomLogicToEmptyRegions
         doc.MailMerge.ExecuteWithRegions(data)
 
         ' The regions which contained data now would of been merged. Any regions which had no data and were
-        ' not merged will still remain in the document.
-        Dim mergedDoc As Document = doc.Clone() 'ExSkip
+        ' Not merged will still remain in the document.
+        Dim mergedDoc As Document = doc.Clone() ' ExSkip
         ' Apply logic to each unused region left in the document using the logic set out in the handler.
         ' The handler class must implement the IFieldMergingCallback interface.
         ExecuteCustomLogicOnEmptyRegions(doc, New EmptyRegionsHandler())
 
         ' Save the output document to disk.
-        doc.Save(dataDir & "TestFile.CustomLogicEmptyRegions1_out_.doc")
+        doc.Save(dataDir & "TestFile.CustomLogicEmptyRegions1_out.doc")
         ' ExEnd:ApplyCustomLogicToEmptyRegions
         ' Reload the original merged document.
         doc = mergedDoc.Clone()
@@ -48,7 +48,7 @@ Public Class ApplyCustomLogicToEmptyRegions
         ' Apply different logic to unused regions this time.
         ExecuteCustomLogicOnEmptyRegions(doc, New EmptyRegionsHandler_MergeTable())
 
-        doc.Save(dataDir & "TestFile.CustomLogicEmptyRegions2_out_.doc")
+        doc.Save(dataDir & "TestFile.CustomLogicEmptyRegions2_out.doc")
 
         ' Reload the original merged document.
         doc = mergedDoc.Clone()
@@ -57,9 +57,9 @@ Public Class ApplyCustomLogicToEmptyRegions
         regions.Add("ContactDetails")
         ExecuteCustomLogicOnEmptyRegions(doc, New EmptyRegionsHandler(), regions)
         ' ExEnd:ContactDetails
-        doc.Save(dataDir & "TestFile.CustomLogicEmptyRegions3_out_.doc")
+        doc.Save(dataDir & "TestFile.CustomLogicEmptyRegions3_out.doc")
 
-        Console.WriteLine(vbNewLine + "Mail merge performed successfully." + vbNewLine + "File saved at " + dataDir + "TestFile.CustomLogicEmptyRegions3_out_.doc")
+        Console.WriteLine(vbNewLine + "Mail merge performed successfully." + vbNewLine + "File saved at " + dataDir + "TestFile.CustomLogicEmptyRegions3_out.doc")
     End Sub
     ' ExStart:CreateDataSourceFromDocumentRegions
     Private Shared Function CreateDataSourceFromDocumentRegions(ByVal doc As Document, ByVal regionsList As ArrayList) As DataSet
@@ -71,7 +71,7 @@ Public Class ApplyCustomLogicToEmptyRegions
             If fieldName.Contains(tableStartMarker) Then
                 tableName = fieldName.Substring(tableStartMarker.Length)
             ElseIf tableName IsNot Nothing Then
-                ' Only add the table name as a new DataTable if it doesn't already exists in the DataSet.
+                ' Only add the table name as a new DataTable if it doesn' T already exists in the DataSet.
                 If dataSet.Tables(tableName) Is Nothing Then
                     Dim table As New DataTable(tableName)
                     table.Columns.Add(fieldName)
@@ -97,15 +97,15 @@ Public Class ApplyCustomLogicToEmptyRegions
 
     Public Shared Sub ExecuteCustomLogicOnEmptyRegions(ByVal doc As Document, ByVal handler As IFieldMergingCallback, ByVal regionsList As ArrayList)
         ' Certain regions can be skipped from applying logic to by not adding the table name inside the CreateEmptyDataSource method.
-        ' Enable this cleanup option so any regions which are not handled by the user's logic are removed automatically.
+        ' Enable this cleanup option so any regions which are not handled by the user' S logic are removed automatically.
         doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveUnusedRegions
 
-        ' Set the user's handler which is called for each unmerged region.
+        ' Set the user' S handler which is called for each unmerged region.
         doc.MailMerge.FieldMergingCallback = handler
 
         ' Execute mail merge using the dummy dataset. The dummy data source contains the table names of 
-        ' each unmerged region in the document (excluding ones that the user may have specified to be skipped). This will allow the handler 
-        ' to be called for each field in the unmerged regions.
+        ' Each unmerged region in the document (excluding ones that the user may have specified to be skipped). This will allow the handler 
+        ' To be called for each field in the unmerged regions.
         doc.MailMerge.ExecuteWithRegions(CreateDataSourceFromDocumentRegions(doc, regionsList))
     End Sub
     ' ExEnd:ExecuteCustomLogicOnEmptyRegions
@@ -127,7 +127,7 @@ Public Class ApplyCustomLogicToEmptyRegions
             End If
 
             ' Remove the entire table of the Suppliers region. Also check if the previous paragraph
-            ' before the table is a heading paragraph and if so remove that too.
+            ' Before the table is a heading paragraph and if so remove that too.
             If args.TableName = "Suppliers" Then
                 Dim table As Table = CType(args.Field.Start.GetAncestor(NodeType.Table), Table)
 
@@ -172,8 +172,8 @@ Public Class ApplyCustomLogicToEmptyRegions
             ' The region is removed and replaced with a single line of text stating that there are no records.
             If args.TableName = "ContactDetails" Then
                 ' Called for the first field encountered in a region. This can be used to execute logic on the first field
-                ' in the region without needing to hard code the field name. Often the base logic is applied to the first field and 
-                ' different logic for other fields. The rest of the fields in the region will have a null FieldValue.
+                ' In the region without needing to hard code the field name. Often the base logic is applied to the first field and 
+                ' Different logic for other fields. The rest of the fields in the region will have a null FieldValue.
                 If CStr(args.FieldValue) Is "FirstField" Then
                     ' Remove the "Name:" tag from the start of the paragraph
                     parentParagraph.Range.Replace("Name:", String.Empty, New FindReplaceOptions(FindReplaceDirection.Forward))
@@ -181,8 +181,8 @@ Public Class ApplyCustomLogicToEmptyRegions
                     args.Text = "No records to display"
                 Else
                     ' We have already inserted our message in the paragraph belonging to the first field. The other paragraphs in the region
-                    ' will still remain so we want to remove these. A check is added to ensure that the paragraph has not already been removed.
-                    ' which may happen if more than one field is included in a paragraph.
+                    ' Will still remain so we want to remove these. A check is added to ensure that the paragraph has not already been removed.
+                    ' Which may happen if more than one field is included in a paragraph.
                     If parentParagraph.ParentNode IsNot Nothing Then
                         parentParagraph.Remove()
                     End If
@@ -194,7 +194,7 @@ Public Class ApplyCustomLogicToEmptyRegions
             If args.TableName = "Suppliers" Then
                 If CStr(args.FieldValue) Is "FirstField" Then
                     ' We will use the first paragraph to display our message. Make it centered within the table. The other fields in other cells 
-                    ' within the table will be merged and won't be displayed so we don't need to do anything else with them.
+                    ' Within the table will be merged and won' T be displayed so we don' T need to do anything else with them.
                     parentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Center
                     args.Text = "No records to display"
                 End If

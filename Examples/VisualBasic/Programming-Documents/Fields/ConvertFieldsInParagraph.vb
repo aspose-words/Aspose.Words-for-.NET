@@ -18,7 +18,7 @@ Public Class ConvertFieldsInParagraph
         Dim doc As New Document(dataDir & fileName)
 
         ' Pass the appropriate parameters to convert all IF fields to static text that are encountered only in the last 
-        ' paragraph of the document.
+        ' Paragraph of the document.
         FieldsHelper.ConvertFieldsToStaticText(doc.FirstSection.Body.LastParagraph, FieldType.FieldIf)
 
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)

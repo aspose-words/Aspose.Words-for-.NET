@@ -14,7 +14,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
     {
         public static void Run()
         {
-            //ExStart:ExecuteWithRegionsDataTable
+            // ExStart:ExecuteWithRegionsDataTable
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting();
             string fileName = "MailMerge.ExecuteWithRegions.doc";
@@ -35,11 +35,11 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
 
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             doc.Save(dataDir);
-            //ExEnd:ExecuteWithRegionsDataTable
+            // ExEnd:ExecuteWithRegionsDataTable
 
             Console.WriteLine("\nMail merge executed successfully with repeatable regions.\nFile saved at " + dataDir);
         }
-        //ExStart:ExecuteWithRegionsDataTableMethods
+        // ExStart:ExecuteWithRegionsDataTableMethods
         private static DataTable GetTestOrder(int orderId)
         {
             DataTable table = ExecuteDataTable(string.Format(
@@ -56,7 +56,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
         }
         /// <summary>
         /// Utility function that creates a connection, command, 
-        /// executes the command and return the result in a DataTable.
+        /// Executes the command and return the result in a DataTable.
         /// </summary>
         private static DataTable ExecuteDataTable(string commandText)
         {
@@ -77,6 +77,6 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
 
             return table;
         }
-        //ExEnd:ExecuteWithRegionsDataTableMethods
+        // ExEnd:ExecuteWithRegionsDataTableMethods
     }
 }

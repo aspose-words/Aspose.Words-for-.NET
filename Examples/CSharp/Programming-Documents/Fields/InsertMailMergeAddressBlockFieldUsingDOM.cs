@@ -13,7 +13,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
     {
         public static void Run()
         {
-            //ExStart:InsertMailMergeAddressBlockFieldUsingDOM
+            // ExStart:InsertMailMergeAddressBlockFieldUsingDOM
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
             Document doc = new Document(dataDir + "in.doc");
@@ -49,10 +49,10 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
             // Finally update this merge field
             field.Update();
 
-            dataDir = dataDir + "InsertMailMergeAddressBlockFieldUsingDOM_out_.doc";
+            dataDir = dataDir + "InsertMailMergeAddressBlockFieldUsingDOM_out.doc";
             doc.Save(dataDir);
 
-            //ExEnd:InsertMailMergeAddressBlockFieldUsingDOM
+            // ExEnd:InsertMailMergeAddressBlockFieldUsingDOM
             Console.WriteLine("\nMail Merge address block field using DOM inserted successfully.\nFile saved at " + dataDir);
         }
     }

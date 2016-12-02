@@ -22,7 +22,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
         }
         private static void SimpleTable(string dataDir)
         {
-            //ExStart:SimpleTable
+            // ExStart:SimpleTable
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             // We call this method to start building the table.
@@ -47,15 +47,15 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             // Signal that we have finished building the table.
             builder.EndTable();
 
-            dataDir = dataDir + "DocumentBuilder.CreateSimpleTable_out_.doc";
+            dataDir = dataDir + "DocumentBuilder.CreateSimpleTable_out.doc";
             // Save the document to disk.
             doc.Save(dataDir);
-            //ExEnd:SimpleTable
+            // ExEnd:SimpleTable
             Console.WriteLine("\nSimple table created successfully.\nFile saved at " + dataDir);
         }
         private static void FormattedTable(string dataDir)
         {
-            //ExStart:FormattedTable
+            // ExStart:FormattedTable
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -64,7 +64,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             builder.InsertCell();
 
             // Set the left indent for the table. Table wide formatting must be applied after 
-            // at least one row is present in the table.
+            // At least one row is present in the table.
             table.LeftIndent = 20.0;
 
             // Set height and define the height rule for the header row.
@@ -126,15 +126,15 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             builder.EndRow();
             builder.EndTable();
 
-            dataDir = dataDir + "DocumentBuilder.CreateFormattedTable_out_.doc";
+            dataDir = dataDir + "DocumentBuilder.CreateFormattedTable_out.doc";
             // Save the document to disk.
             doc.Save(dataDir);
-            //ExEnd:FormattedTable
+            // ExEnd:FormattedTable
             Console.WriteLine("\nFormatted table created successfully.\nFile saved at " + dataDir);
         }
         private static void NestedTable(string dataDir)
         {
-            //ExStart:NestedTable
+            // ExStart:NestedTable
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -159,10 +159,10 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             builder.Writeln("Inner Table Cell 2");
             builder.EndTable();
 
-            dataDir = dataDir + "DocumentBuilder.InsertNestedTable_out_.doc";
+            dataDir = dataDir + "DocumentBuilder.InsertNestedTable_out.doc";
             // Save the document to disk.
             doc.Save(dataDir);
-            //ExEnd:NestedTable
+            // ExEnd:NestedTable
             Console.WriteLine("\nNested table created successfully.\nFile saved at " + dataDir);
         }
     }

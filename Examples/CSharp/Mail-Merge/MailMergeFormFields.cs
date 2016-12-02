@@ -18,7 +18,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
     {
         public static void Run()
         {
-            //ExStart:MailMergeFormFields
+            // ExStart:MailMergeFormFields
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); 
             string fileName = "Template.doc";
@@ -43,10 +43,10 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the finished document.
             doc.Save(dataDir);
-            //ExEnd:MailMergeFormFields
+            // ExEnd:MailMergeFormFields
             Console.WriteLine("\nMail merge performed with form fields successfully.\nFile saved at " + dataDir);
         }
-        //ExStart:HandleMergeField
+        // ExStart:HandleMergeField
         private class HandleMergeField : IFieldMergingCallback
         {
             /// <summary>
@@ -97,6 +97,6 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
 
             private DocumentBuilder mBuilder;
         }
-        //ExEnd:HandleMergeField
+        // ExEnd:HandleMergeField
     }
 }

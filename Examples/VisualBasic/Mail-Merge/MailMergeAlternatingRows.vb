@@ -23,7 +23,7 @@ Public Class MailMergeAlternatingRows
         ' Execute mail merge with regions.
         Dim dataTable As DataTable = GetSuppliersDataTable()
         doc.MailMerge.ExecuteWithRegions(dataTable)
-        dataDir = dataDir & Convert.ToString("MailMerge.AlternatingRows_out_.doc")
+        dataDir = dataDir & Convert.ToString("MailMerge.AlternatingRows_out.doc")
         doc.Save(dataDir)
         ' ExEnd:MailMergeAlternatingRows
         Console.WriteLine(Convert.ToString(vbLf & "Mail merge alternative rows performed successfully." & vbLf & "File saved at ") & dataDir)
@@ -34,7 +34,7 @@ Public Class MailMergeAlternatingRows
         ''' <summary>
         ''' Called for every merge field encountered in the document.
         ''' We can either return some data to the mail merge engine or do something
-        ''' else with the document. In this case we modify cell formatting.
+        ''' Else with the document. In this case we modify cell formatting.
         ''' </summary>
         Private Sub IFieldMergingCallback_FieldMerging(ByVal e As FieldMergingArgs) Implements IFieldMergingCallback.FieldMerging
             If mBuilder Is Nothing Then
@@ -52,7 +52,7 @@ Public Class MailMergeAlternatingRows
                 End If
 
                 ' There is no way to set cell properties for the whole row at the moment,
-                ' so we have to iterate over all cells in the row.
+                ' So we have to iterate over all cells in the row.
                 For colIdx As Integer = 0 To 3
                     mBuilder.MoveToCell(0, mRowIdx, colIdx, 0)
                     mBuilder.CellFormat.Shading.BackgroundPatternColor = rowColor

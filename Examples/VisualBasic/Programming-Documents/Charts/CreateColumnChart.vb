@@ -42,7 +42,7 @@ Public Class CreateColumnChart
         seriesColl.Add("AW Series 4", categories, New Double() {7, 8})
         seriesColl.Add("AW Series 5", categories, New Double() {9, 10})
 
-        dataDir = dataDir & Convert.ToString("TestInsertSimpleChartColumn_out_.doc")
+        dataDir = dataDir & Convert.ToString("TestInsertSimpleChartColumn_out.doc")
         doc.Save(dataDir)
         ' ExEnd:InsertSimpleColumnChart
         Console.WriteLine(Convert.ToString(vbLf & "Simple column chart created successfully." & vbLf & "File saved at ") & dataDir)
@@ -63,7 +63,7 @@ Public Class CreateColumnChart
         ' Use this overload to add series to any type of Bar, Column, Line and Surface charts.
         chart.Series.Add("AW Series 1", New String() {"AW Category 1", "AW Category 2"}, New Double() {1, 2})
 
-        dataDir = dataDir & Convert.ToString("TestInsertChartColumn_out_.doc")
+        dataDir = dataDir & Convert.ToString("TestInsertChartColumn_out.doc")
         doc.Save(dataDir)
         ' ExEnd:InsertColumnChart
         Console.WriteLine(Convert.ToString(vbLf & "Column chart created successfully." & vbLf & "File saved at ") & dataDir)

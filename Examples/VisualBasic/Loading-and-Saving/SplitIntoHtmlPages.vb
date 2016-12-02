@@ -13,9 +13,9 @@ Public Class SplitIntoHtmlPages
 
         ' You need to have a valid license for Aspose.Words.
         ' The best way is to embed the license as a resource into the project
-        ' and specify only file name without path in the following call.
+        ' And specify only file name without path in the following call.
         ' Aspose.Words.License license = new Aspose.Words.License();
-        ' license.SetLicense(@"Aspose.Words.lic");
+        ' License.SetLicense(@"Aspose.Words.lic");
 
 
         ' The path to the documents directory.
@@ -24,7 +24,7 @@ Public Class SplitIntoHtmlPages
         Dim srcFileName As String = dataDir & "SOI 2007-2012-DeeM with footnote added.doc"
         Dim tocTemplate As String = dataDir & "TocTemplate.doc"
 
-        Dim outDir As String = Path.Combine(dataDir, "_out_")
+        Dim outDir As String = Path.Combine(dataDir, "_out")
         Directory.CreateDirectory(outDir)
 
         ' This class does the job.
@@ -42,8 +42,8 @@ Friend Class Worker
     ''' </summary>
     ''' <param name="srcFileName">The MS Word file to convert.</param>
     ''' <param name="tocTemplate">An MS Word file that is used as a template to build
-    ''' a table of contents. This file needs to have a mail merge region called "TOC" defined
-    ''' and one mail merge field called "TocEntry".</param>
+    ''' A table of contents. This file needs to have a mail merge region called "TOC" defined
+    ''' And one mail merge field called "TocEntry".</param>
     ''' <param name="dstDir">The output directory where to write HTML files. Must exist.</param>
     Friend Sub Execute(srcFileName As String, tocTemplate As String, dstDir As String)
         mDoc = New Document(srcFileName)
@@ -58,7 +58,7 @@ Friend Class Worker
 
     ''' <summary>
     ''' Selects heading paragraphs that must become topic starts.
-    ''' We can't modify them in this loop, we have to remember them in an array first.
+    ''' We can' T modify them in this loop, we have to remember them in an array first.
     ''' </summary>
     Private Function SelectTopicStarts() As ArrayList
         Dim paras As NodeCollection = mDoc.GetChildNodes(NodeType.Paragraph, True)
@@ -88,7 +88,7 @@ Friend Class Worker
                 builder.InsertBreak(BreakType.SectionBreakNewPage)
 
                 ' This is the paragraph that was inserted at the end of the now old section.
-                ' We don't really need the extra paragraph, we just needed the section.
+                ' We don' T really need the extra paragraph, we just needed the section.
                 section.Body.LastParagraph.Remove()
             End If
         Next
@@ -96,7 +96,7 @@ Friend Class Worker
 
     ''' <summary>
     ''' Splits the current document into one topic per section and saves each topic
-    ''' as an HTML file. Returns a collection of Topic objects.
+    ''' As an HTML file. Returns a collection of Topic objects.
     ''' </summary>
     Private Function SaveHtmlTopics() As ArrayList
         Dim topics As New ArrayList()
@@ -130,7 +130,7 @@ Friend Class Worker
 
     ''' <summary>
     ''' Leaves alphanumeric characters, replaces white space with underscore
-    ''' and removes all other characters from a string.
+    ''' And removes all other characters from a string.
     ''' </summary>
     Private Shared Function MakeTopicFileName(paraText As String) As String
         Dim b As New StringBuilder()
@@ -200,7 +200,7 @@ Friend Class Worker
             mBuilder.InsertHyperlink(topic.Title, topic.FileName, False)
 
             ' Signal to the mail merge engine that it does not need to insert text into the field
-            ' as we've done it already.
+            ' As we' Ve done it already.
             e.Text = ""
         End Sub
 

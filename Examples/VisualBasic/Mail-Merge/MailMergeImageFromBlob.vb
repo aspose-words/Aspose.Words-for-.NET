@@ -31,7 +31,7 @@ Public Class MailMergeImageFromBlob
 
         ' Close the database.
         conn.Close()
-        dataDir = dataDir & Convert.ToString("MailMerge.MergeImage_out_.doc")
+        dataDir = dataDir & Convert.ToString("MailMerge.MergeImage_out.doc")
         doc.Save(dataDir)
         ' ExEnd:MailMergeImageFromBlob
         Console.WriteLine(Convert.ToString(vbLf & "Mail merge image from blob performed successfully." & vbLf & "File saved at ") & dataDir)

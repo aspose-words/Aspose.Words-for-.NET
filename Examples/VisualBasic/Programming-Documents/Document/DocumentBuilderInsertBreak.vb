@@ -19,7 +19,7 @@ Class DocumentBuilderInsertBreak
         builder.InsertBreak(BreakType.PageBreak)
 
         builder.Writeln("This is page 3.")
-        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertBreak_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertBreak_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderInsertBreak
         Console.WriteLine(Convert.ToString(vbLf & "Page breaks inserted into a document using DocumentBuilder." & vbLf & "File saved at ") & dataDir)

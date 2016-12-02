@@ -26,7 +26,7 @@ Public Class CreateChartUsingShape
         ' Determines how legend shall be shown for this chart.
         chart.Legend.Position = LegendPosition.Left
         chart.Legend.Overlay = True
-        dataDir = dataDir & Convert.ToString("SimpleLineChart_out_.docx")
+        dataDir = dataDir & Convert.ToString("SimpleLineChart_out.docx")
         doc.Save(dataDir)
         ' ExEnd:CreateChartUsingShape
         Console.WriteLine(Convert.ToString(vbLf & "Simple line chart created successfully." & vbLf & "File saved at ") & dataDir)

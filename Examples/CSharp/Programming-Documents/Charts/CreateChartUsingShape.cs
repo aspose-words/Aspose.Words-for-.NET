@@ -9,7 +9,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
     {
         public static void Run()
         {
-            //ExStart:CreateChartUsingShape
+            // ExStart:CreateChartUsingShape
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithCharts();
             Document doc = new Document();
@@ -32,9 +32,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
             // Determines how legend shall be shown for this chart.
             chart.Legend.Position = LegendPosition.Left;
             chart.Legend.Overlay = true;
-            dataDir = dataDir + @"SimpleLineChart_out_.docx";
+            dataDir = dataDir + @"SimpleLineChart_out.docx";
             doc.Save(dataDir);
-            //ExEnd:CreateChartUsingShape
+            // ExEnd:CreateChartUsingShape
             Console.WriteLine("\nSimple line chart created successfully.\nFile saved at " + dataDir);
         }
         

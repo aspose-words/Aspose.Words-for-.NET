@@ -12,16 +12,16 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
     {
         public static void Run()
         {
-            //ExStart:InsertField
+            // ExStart:InsertField
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertField(@"MERGEFIELD MyFieldName \* MERGEFORMAT");
-            dataDir = dataDir + "InsertField_out_.docx";
+            dataDir = dataDir + "InsertField_out.docx";
             doc.Save(dataDir);
-            //ExEnd:InsertField
+            // ExEnd:InsertField
             Console.WriteLine("\nInserted field in the document successfully.\nFile saved at " + dataDir);
         }
     }

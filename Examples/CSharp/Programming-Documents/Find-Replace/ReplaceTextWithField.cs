@@ -71,7 +71,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
             Node currentNode = args.MatchNode;
 
             // The first (and may be the only) run can contain text before the match, 
-            // in this case it is necessary to split the run.
+            // In this case it is necessary to split the run.
             if (args.MatchOffset > 0)
                 currentNode = SplitRun((Run)currentNode, args.MatchOffset);
 

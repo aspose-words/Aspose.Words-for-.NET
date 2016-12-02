@@ -11,7 +11,7 @@ using System.Drawing;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Images
 {
-    //ExStart:AddWatermark
+    // ExStart:AddWatermark
     class AddWatermark
     {
         public static void Run()
@@ -64,7 +64,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Images
             foreach (Section sect in doc.Sections)
             {
                 // There could be up to three different headers in each section, since we want
-                // the watermark to appear on all pages, insert into all headers.
+                // The watermark to appear on all pages, insert into all headers.
                 InsertWatermarkIntoHeader(watermarkPara, sect, HeaderFooterType.HeaderPrimary);
                 InsertWatermarkIntoHeader(watermarkPara, sect, HeaderFooterType.HeaderFirst);
                 InsertWatermarkIntoHeader(watermarkPara, sect, HeaderFooterType.HeaderEven);
@@ -86,5 +86,5 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Images
             header.AppendChild(watermarkPara.Clone(true));
         }
     }
-    //ExEnd:AddWatermark
+    // ExEnd:AddWatermark
 }

@@ -9,7 +9,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appendi
     {
         public static void Run()
         {
-            //ExStart:AppendDocumentManually
+            // ExStart:AppendDocumentManually
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
             string fileName = "TestFile.Destination.doc";
@@ -22,11 +22,11 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appendi
             foreach (Section srcSection in srcDoc)
             {
                 // Because we are copying a section from one document to another, 
-                // it is required to import the Section node into the destination document.
+                // It is required to import the Section node into the destination document.
                 // This adjusts any document-specific references to styles, lists, etc.
                 //
                 // Importing a node creates a copy of the original node, but the copy
-                // is ready to be inserted into the destination document.
+                // Is ready to be inserted into the destination document.
                 Node dstSection = dstDoc.ImportNode(srcSection, true, mode);
 
                 // Now the new section node can be appended to the destination document.
@@ -36,7 +36,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appendi
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the joined document
             dstDoc.Save(dataDir);
-            //ExEnd:AppendDocumentManually
+            // ExEnd:AppendDocumentManually
             Console.WriteLine("\nDocument appended successfully with manual append operation.\nFile saved at " + dataDir);
         }
     }

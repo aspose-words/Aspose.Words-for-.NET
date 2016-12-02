@@ -9,7 +9,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
     {
         public static void Run()
         {
-            //ExStart:ConvertDocumentToEPUB
+            // ExStart:ConvertDocumentToEPUB
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
@@ -17,7 +17,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             Document doc = new Document(dataDir + "Document.EpubConversion.doc");
 
             // Create a new instance of HtmlSaveOptions. This object allows us to set options that control
-            // how the output document is saved.
+            // How the output document is saved.
             HtmlSaveOptions saveOptions =
                 new HtmlSaveOptions();
 
@@ -36,12 +36,12 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             saveOptions.SaveFormat = SaveFormat.Epub;
 
             // Export the document as an EPUB file.
-            doc.Save(dataDir + "Document.EpubConversion_out_.epub", saveOptions);
-            //ExEnd:ConvertDocumentToEPUB
+            doc.Save(dataDir + "Document.EpubConversion_out.epub", saveOptions);
+            // ExEnd:ConvertDocumentToEPUB
             ConvertDocumentToEPUBUsingDefaultSaveOption();
             Console.WriteLine("\nDocument converted to EPUB successfully.");
         }
-        //ExStart:ConvertDocumentToEPUBUsingDefaultSaveOption
+        // ExStart:ConvertDocumentToEPUBUsingDefaultSaveOption
         public static void ConvertDocumentToEPUBUsingDefaultSaveOption()
         {
             // The path to the documents directory.
@@ -50,9 +50,9 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             // Load the document from disk.
             Document doc = new Document(dataDir + "Document.EpubConversion.doc");
             // Save the document in EPUB format.
-            doc.Save(dataDir + "Document.EpubConversionUsingDefaultSaveOption_out_.epub");
+            doc.Save(dataDir + "Document.EpubConversionUsingDefaultSaveOption_out.epub");
         }
-        //ExEnd:ConvertDocumentToEPUBUsingDefaultSaveOption
+        // ExEnd:ConvertDocumentToEPUBUsingDefaultSaveOption
             
     }
 }

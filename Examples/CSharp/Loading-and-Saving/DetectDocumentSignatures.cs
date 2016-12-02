@@ -9,7 +9,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
     {
         public static void Run()
         {
-            //ExStart:DetectDocumentSignatures
+            // ExStart:DetectDocumentSignatures
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
@@ -21,7 +21,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             {
                 Console.WriteLine(string.Format("Document {0} has digital signatures, they will be lost if you open/save this document with Aspose.Words.", Path.GetFileName(filePath)));
             }
-            //ExEnd:DetectDocumentSignatures            
+            // ExEnd:DetectDocumentSignatures            
         }
     }
 }

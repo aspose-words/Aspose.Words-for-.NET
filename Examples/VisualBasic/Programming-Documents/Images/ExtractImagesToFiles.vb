@@ -16,7 +16,7 @@ Public Class ExtractImagesToFiles
         Dim imageIndex As Integer = 0
         For Each shape As Shape In shapes
             If shape.HasImage Then
-                Dim imageFileName As String = String.Format("Image.ExportImages.{0}_out_{1}", imageIndex, FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType))
+                Dim imageFileName As String = String.Format("Image.ExportImages.{0}_out{1}", imageIndex, FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType))
                 shape.ImageData.Save(dataDir & imageFileName)
                 imageIndex += 1
             End If

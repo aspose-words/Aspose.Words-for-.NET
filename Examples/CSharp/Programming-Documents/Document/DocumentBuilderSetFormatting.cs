@@ -25,7 +25,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
         }
         public static void SetFontFormatting(string dataDir)
         {
-            //ExStart:DocumentBuilderSetFontFormatting
+            // ExStart:DocumentBuilderSetFontFormatting
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -41,14 +41,14 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 
             // Output formatted text
             builder.Writeln("I'm a very nice formatted string.");
-            dataDir = dataDir + "DocumentBuilderSetFontFormatting_out_.doc";
+            dataDir = dataDir + "DocumentBuilderSetFontFormatting_out.doc";
             doc.Save(dataDir);
-            //ExEnd:DocumentBuilderSetFontFormatting
+            // ExEnd:DocumentBuilderSetFontFormatting
             Console.WriteLine("\nFont formatting using DocumentBuilder set successfully.\nFile saved at " + dataDir);
         }
         public static void SetParagraphFormatting(string dataDir)
         {
-            //ExStart:DocumentBuilderSetParagraphFormatting
+            // ExStart:DocumentBuilderSetParagraphFormatting
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -63,14 +63,14 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             builder.Writeln("I'm a very nice formatted paragraph. I'm intended to demonstrate how the left and right indents affect word wrapping.");
             builder.Writeln("I'm another nice formatted paragraph. I'm intended to demonstrate how the space after paragraph looks like.");
 
-            dataDir = dataDir + "DocumentBuilderSetParagraphFormatting_out_.doc";
+            dataDir = dataDir + "DocumentBuilderSetParagraphFormatting_out.doc";
             doc.Save(dataDir);
-            //ExEnd:DocumentBuilderSetParagraphFormatting
+            // ExEnd:DocumentBuilderSetParagraphFormatting
             Console.WriteLine("\nParagraph formatting using DocumentBuilder set successfully.\nFile saved at " + dataDir);
         }
         public static void SetTableCellFormatting(string dataDir)
         {
-            //ExStart:DocumentBuilderSetTableCellFormatting
+            // ExStart:DocumentBuilderSetTableCellFormatting
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -90,14 +90,14 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             builder.EndRow();
             builder.EndTable();
 
-            dataDir = dataDir + "DocumentBuilderSetTableCellFormatting_out_.doc";
+            dataDir = dataDir + "DocumentBuilderSetTableCellFormatting_out.doc";
             doc.Save(dataDir);
-            //ExEnd:DocumentBuilderSetTableCellFormatting
+            // ExEnd:DocumentBuilderSetTableCellFormatting
             Console.WriteLine("\nTable cell formatting using DocumentBuilder set successfully.\nFile saved at " + dataDir);
         }
         public static void SetTableRowFormatting(string dataDir)
         {
-            //ExStart:DocumentBuilderSetTableRowFormatting
+            // ExStart:DocumentBuilderSetTableRowFormatting
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -119,14 +119,14 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             builder.EndRow();
             builder.EndTable();
 
-            dataDir = dataDir + "DocumentBuilderSetTableRowFormatting_out_.doc";
+            dataDir = dataDir + "DocumentBuilderSetTableRowFormatting_out.doc";
             doc.Save(dataDir);
-            //ExEnd:DocumentBuilderSetTableRowFormatting
+            // ExEnd:DocumentBuilderSetTableRowFormatting
             Console.WriteLine("\nTable row formatting using DocumentBuilder set successfully.\nFile saved at " + dataDir);
         }
         public static void SetMultilevelListFormatting(string dataDir)
         {
-            //ExStart:DocumentBuilderSetMultilevelListFormatting
+            // ExStart:DocumentBuilderSetMultilevelListFormatting
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -154,14 +154,14 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             builder.Writeln("Item 3");
 
             builder.ListFormat.RemoveNumbers();
-            dataDir = dataDir + "DocumentBuilderSetMultilevelListFormatting_out_.doc";
+            dataDir = dataDir + "DocumentBuilderSetMultilevelListFormatting_out.doc";
             doc.Save(dataDir);
-            //ExEnd:DocumentBuilderSetMultilevelListFormatting
+            // ExEnd:DocumentBuilderSetMultilevelListFormatting
             Console.WriteLine("\nMultilevel list formatting using DocumentBuilder set successfully.\nFile saved at " + dataDir);
         }
         public static void SetPageSetupAndSectionFormatting(string dataDir)
         {
-            //ExStart:DocumentBuilderSetPageSetupAndSectionFormatting
+            // ExStart:DocumentBuilderSetPageSetupAndSectionFormatting
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -170,14 +170,14 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             builder.PageSetup.LeftMargin = 50;
             builder.PageSetup.PaperSize = PaperSize.Paper10x14;
 
-            dataDir = dataDir + "DocumentBuilderSetPageSetupAndSectionFormatting_out_.doc";
+            dataDir = dataDir + "DocumentBuilderSetPageSetupAndSectionFormatting_out.doc";
             doc.Save(dataDir);
-            //ExEnd:DocumentBuilderSetPageSetupAndSectionFormatting
+            // ExEnd:DocumentBuilderSetPageSetupAndSectionFormatting
             Console.WriteLine("\nPage setup and section formatting using DocumentBuilder set successfully.\nFile saved at " + dataDir);
         }
         public static void ApplyParagraphStyle(string dataDir)
         {
-            //ExStart:DocumentBuilderApplyParagraphStyle
+            // ExStart:DocumentBuilderApplyParagraphStyle
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -185,14 +185,14 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Title;
 
             builder.Write("Hello");
-            dataDir = dataDir + "DocumentBuilderApplyParagraphStyle_out_.doc";
+            dataDir = dataDir + "DocumentBuilderApplyParagraphStyle_out.doc";
             doc.Save(dataDir);
-            //ExEnd:DocumentBuilderApplyParagraphStyle
+            // ExEnd:DocumentBuilderApplyParagraphStyle
             Console.WriteLine("\nParagraph style using DocumentBuilder applied successfully.\nFile saved at " + dataDir);
         }
         public static void ApplyBordersAndShadingToParagraph(string dataDir)
         {
-            //ExStart:DocumentBuilderApplyBordersAndShadingToParagraph
+            // ExStart:DocumentBuilderApplyBordersAndShadingToParagraph
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -211,9 +211,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             shading.ForegroundPatternColor = System.Drawing.Color.LightSalmon;
 
             builder.Write("I'm a formatted paragraph with double border and nice shading.");
-            dataDir = dataDir + "DocumentBuilderApplyBordersAndShadingToParagraph_out_.doc";
+            dataDir = dataDir + "DocumentBuilderApplyBordersAndShadingToParagraph_out.doc";
             doc.Save(dataDir);
-            //ExEnd:DocumentBuilderApplyBordersAndShadingToParagraph
+            // ExEnd:DocumentBuilderApplyBordersAndShadingToParagraph
             Console.WriteLine("\nBorders and shading using DocumentBuilder applied successfully to paragraph.\nFile saved at " + dataDir);
         }
         

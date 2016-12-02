@@ -29,7 +29,7 @@ Public Class SetFontsFoldersSystemAndCustomFolder
         FontSettings.SetFontsSources(updatedFontSources)
         ' Set font settings
         doc.FontSettings = FontSettings
-        dataDir = dataDir & Convert.ToString("Rendering.SetFontsFolders_out_.pdf")
+        dataDir = dataDir & Convert.ToString("Rendering.SetFontsFolders_out.pdf")
         doc.Save(dataDir)
         ' ExEnd:SetFontsFoldersSystemAndCustomFolder 
         Console.WriteLine(Convert.ToString(vbLf & "Fonts system and coustom folder is setup." & vbLf & "File saved at ") & dataDir)

@@ -17,7 +17,7 @@ Class DocumentBuilderInsertTCField
         ' Insert a TC field at the current document builder position.
         builder.InsertField("TC ""Entry Text"" \f t")
 
-        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertTCField_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertTCField_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderInsertTCField
         Console.WriteLine(Convert.ToString(vbLf & "TC field inserted successfully into a document." & vbLf & "File saved at ") & dataDir)

@@ -151,7 +151,7 @@ Namespace DocumentExplorerExample
         ''' Returns a resource stream from the executing assembly or throws if the resource cannot be found.
         ''' </summary>
         ''' <param name="resourceName">The name of the resource without the name of the assembly.</param>
-        ''' <returns>The stream. Don't forget to close it when finished.</returns>
+        ''' <returns>The stream. Don' T forget to close it when finished.</returns>
         Friend Shared Function FetchResourceStream(resourceName As String) As Stream
             Dim asm As Assembly = Assembly.GetExecutingAssembly()
             Dim fullName As String = String.Format("{0}Example.{1}", asm.GetName().Name, resourceName)

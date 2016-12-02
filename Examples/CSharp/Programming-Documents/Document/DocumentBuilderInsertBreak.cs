@@ -10,7 +10,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:DocumentBuilderInsertBreak
+            // ExStart:DocumentBuilderInsertBreak
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             // Initialize document.
@@ -24,9 +24,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             builder.InsertBreak(BreakType.PageBreak);
 
             builder.Writeln("This is page 3.");
-            dataDir = dataDir + "DocumentBuilderInsertBreak_out_.doc";
+            dataDir = dataDir + "DocumentBuilderInsertBreak_out.doc";
             doc.Save(dataDir);
-            //ExEnd:DocumentBuilderInsertBreak
+            // ExEnd:DocumentBuilderInsertBreak
             Console.WriteLine("\nPage breaks inserted into a document using DocumentBuilder.\nFile saved at " + dataDir);
         }     
     }

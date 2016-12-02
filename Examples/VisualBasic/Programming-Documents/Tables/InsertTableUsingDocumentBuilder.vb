@@ -40,7 +40,7 @@ Public Class InsertTableUsingDocumentBuilder
         ' Signal that we have finished building the table.
         builder.EndTable()
 
-        dataDir = dataDir & Convert.ToString("DocumentBuilder.CreateSimpleTable_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilder.CreateSimpleTable_out.doc")
         ' Save the document to disk.
         doc.Save(dataDir)
         ' ExEnd:SimpleTable
@@ -56,7 +56,7 @@ Public Class InsertTableUsingDocumentBuilder
         builder.InsertCell()
 
         ' Set the left indent for the table. Table wide formatting must be applied after 
-        ' at least one row is present in the table.
+        ' At least one row is present in the table.
         table.LeftIndent = 20.0
 
         ' Set height and define the height rule for the header row.
@@ -73,7 +73,7 @@ Public Class InsertTableUsingDocumentBuilder
         builder.CellFormat.Width = 100.0
         builder.Write("Header Row," & vbLf & " Cell 1")
 
-        ' We don't need to specify the width of this cell because it's inherited from the previous cell.
+        ' We don' T need to specify the width of this cell because it' S inherited from the previous cell.
         builder.InsertCell()
         builder.Write("Header Row," & vbLf & " Cell 2")
 
@@ -118,7 +118,7 @@ Public Class InsertTableUsingDocumentBuilder
         builder.EndRow()
         builder.EndTable()
 
-        dataDir = dataDir & Convert.ToString("DocumentBuilder.CreateFormattedTable_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilder.CreateFormattedTable_out.doc")
         ' Save the document to disk.
         doc.Save(dataDir)
         ' ExEnd:FormattedTable
@@ -150,7 +150,7 @@ Public Class InsertTableUsingDocumentBuilder
         builder.Writeln("Inner Table Cell 2")
         builder.EndTable()
 
-        dataDir = dataDir & Convert.ToString("DocumentBuilder.InsertNestedTable_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilder.InsertNestedTable_out.doc")
         ' Save the document to disk.
         doc.Save(dataDir)
         ' ExEnd:NestedTable

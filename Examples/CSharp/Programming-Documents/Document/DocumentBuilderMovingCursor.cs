@@ -29,28 +29,28 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
         }
         public static void CursorPosition(string dataDir)
         {
-            //ExStart:DocumentBuilderCursorPosition
+            // ExStart:DocumentBuilderCursorPosition
             // Shows how to access the current node in a document builder.
             Document doc = new Document(dataDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Node curNode = builder.CurrentNode;
             Paragraph curParagraph = builder.CurrentParagraph;
-            //ExEnd:DocumentBuilderCursorPosition
+            // ExEnd:DocumentBuilderCursorPosition
             Console.WriteLine("\nCursor move to paragraph: " + curParagraph.GetText());
         }
         public static void MoveToNode(string dataDir)
         {
-            //ExStart:DocumentBuilderMoveToNode
+            // ExStart:DocumentBuilderMoveToNode
             Document doc = new Document(dataDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.MoveTo(doc.FirstSection.Body.LastParagraph);
-            //ExEnd:DocumentBuilderMoveToNode   
+            // ExEnd:DocumentBuilderMoveToNode   
             Console.WriteLine("\nCursor move to required node.");
         }
         public static void MoveToDocumentStartEnd(string dataDir)
         {
-            //ExStart:DocumentBuilderMoveToDocumentStartEnd
+            // ExStart:DocumentBuilderMoveToDocumentStartEnd
             Document doc = new Document(dataDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -59,22 +59,22 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 
             builder.MoveToDocumentStart();
             Console.WriteLine("\nThis is the beginning of the document.");
-            //ExEnd:DocumentBuilderMoveToDocumentStartEnd            
+            // ExEnd:DocumentBuilderMoveToDocumentStartEnd            
         }
         public static void MoveToSection(string dataDir)
         {
-            //ExStart:DocumentBuilderMoveToSection
+            // ExStart:DocumentBuilderMoveToSection
             Document doc = new Document(dataDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Parameters are 0-index. Moves to third section.
             builder.MoveToSection(2);
             builder.Writeln("This is the 3rd section.");
-            //ExEnd:DocumentBuilderMoveToSection               
+            // ExEnd:DocumentBuilderMoveToSection               
         }
         public static void HeadersAndFooters(string dataDir)
         {
-            //ExStart:DocumentBuilderHeadersAndFooters
+            // ExStart:DocumentBuilderHeadersAndFooters
             // Create a blank document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -99,62 +99,62 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             builder.InsertBreak(BreakType.PageBreak);
             builder.Writeln("Page3");
 
-            dataDir = dataDir + "DocumentBuilder.HeadersAndFooters_out_.doc";
+            dataDir = dataDir + "DocumentBuilder.HeadersAndFooters_out.doc";
             doc.Save(dataDir);
-            //ExEnd:DocumentBuilderHeadersAndFooters   
+            // ExEnd:DocumentBuilderHeadersAndFooters   
             Console.WriteLine("\nHeaders and footers created successfully using DocumentBuilder.\nFile saved at " + dataDir);
         }
         public static void MoveToParagraph(string dataDir)
         {
-            //ExStart:DocumentBuilderMoveToParagraph
+            // ExStart:DocumentBuilderMoveToParagraph
             Document doc = new Document(dataDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Parameters are 0-index. Moves to third paragraph.
             builder.MoveToParagraph(2, 0);
             builder.Writeln("This is the 3rd paragraph.");
-            //ExEnd:DocumentBuilderMoveToParagraph               
+            // ExEnd:DocumentBuilderMoveToParagraph               
         }
         public static void MoveToTableCell(string dataDir)
         {
-            //ExStart:DocumentBuilderMoveToTableCell
+            // ExStart:DocumentBuilderMoveToTableCell
             Document doc = new Document(dataDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // All parameters are 0-index. Moves to the 2nd table, 3rd row, 5th cell.
             builder.MoveToCell(1, 2, 4, 0);
             builder.Writeln("Hello World!");
-            //ExEnd:DocumentBuilderMoveToTableCell               
+            // ExEnd:DocumentBuilderMoveToTableCell               
         }
         public static void MoveToBookmark(string dataDir)
         {
-            //ExStart:DocumentBuilderMoveToBookmark
+            // ExStart:DocumentBuilderMoveToBookmark
             Document doc = new Document(dataDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveToBookmark("CoolBookmark");
             builder.Writeln("This is a very cool bookmark.");
-            //ExEnd:DocumentBuilderMoveToBookmark               
+            // ExEnd:DocumentBuilderMoveToBookmark               
         }
         public static void MoveToBookmarkEnd(string dataDir)
         {
-            //ExStart:DocumentBuilderMoveToBookmarkEnd
+            // ExStart:DocumentBuilderMoveToBookmarkEnd
             Document doc = new Document(dataDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveToBookmark("CoolBookmark", false, true);
             builder.Writeln("This is a very cool bookmark.");
-            //ExEnd:DocumentBuilderMoveToBookmarkEnd              
+            // ExEnd:DocumentBuilderMoveToBookmarkEnd              
         }
         public static void MoveToMergeField(string dataDir)
         {
-            //ExStart:DocumentBuilderMoveToMergeField
+            // ExStart:DocumentBuilderMoveToMergeField
             Document doc = new Document(dataDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveToMergeField("NiceMergeField");
             builder.Writeln("This is a very nice merge field.");
-            //ExEnd:DocumentBuilderMoveToMergeField              
+            // ExEnd:DocumentBuilderMoveToMergeField              
         }     
     }
 }

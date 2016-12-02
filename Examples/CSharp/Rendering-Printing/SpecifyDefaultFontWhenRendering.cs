@@ -12,7 +12,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
     {
         public static void Run()
         {
-            //ExStart:SpecifyDefaultFontWhenRendering
+            // ExStart:SpecifyDefaultFontWhenRendering
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); 
 
@@ -24,10 +24,10 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             FontSettings.DefaultFontName = "Arial Unicode MS";
             // Set font settings
             doc.FontSettings = FontSettings;
-            dataDir = dataDir + "Rendering.SetDefaultFont_out_.pdf";
+            dataDir = dataDir + "Rendering.SetDefaultFont_out.pdf";
             // Now the set default font is used in place of any missing fonts during any rendering calls.
             doc.Save(dataDir);            
-            //ExEnd:SpecifyDefaultFontWhenRendering 
+            // ExEnd:SpecifyDefaultFontWhenRendering 
             Console.WriteLine("\nDefault font is setup during rendering.\nFile saved at " + dataDir);
         }
     }

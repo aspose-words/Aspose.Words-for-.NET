@@ -20,7 +20,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Theme
         /// </summary>             
         private static void GetThemeProperties(string dataDir)
         {
-            //ExStart:GetThemeProperties
+            // ExStart:GetThemeProperties
             Document doc = new Document(dataDir);
             Theme theme = doc.Theme;
             // Major (Headings) font for Latin characters.
@@ -29,21 +29,21 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Theme
             Console.WriteLine(theme.MinorFonts.EastAsian);
             // Color for theme color Accent 1.
             Console.WriteLine(theme.Colors.Accent1);
-            //ExEnd:GetThemeProperties 
+            // ExEnd:GetThemeProperties 
         }
         /// <summary>
         ///  Shows how to set theme properties.
         /// </summary>             
         private static void SetThemeProperties(string dataDir)
         {
-            //ExStart:SetThemeProperties
+            // ExStart:SetThemeProperties
             Document doc = new Document(dataDir);
             Theme theme = doc.Theme;
             // Set Times New Roman font as Body theme font for Latin Character.
             theme.MinorFonts.Latin = "Times New Roman";
             // Set Color.Gold for theme color Hyperlink.
             theme.Colors.Hyperlink = Color.Gold;            
-            //ExEnd:SetThemeProperties 
+            // ExEnd:SetThemeProperties 
         }
     }
 }

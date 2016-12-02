@@ -7,7 +7,7 @@ using Aspose.Words.Fields;
 namespace DocumentExplorerExample
 {
 	// Classes inherited from the Item class provide specialized representation of particular 
-	// document nodes by overriding virtual methods and properties of the base class.
+	// Document nodes by overriding virtual methods and properties of the base class.
 
 	public class DocumentItem : Item
 	{

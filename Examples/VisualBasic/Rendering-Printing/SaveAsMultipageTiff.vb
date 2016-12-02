@@ -17,17 +17,17 @@ Public Class SaveAsMultipageTiff
 
         ' ExStart:SaveAsTIFF
         ' Save the document as multipage TIFF.
-        doc.Save(dataDir & "TestFile Multipage TIFF_out_.tiff")
+        doc.Save(dataDir & "TestFile Multipage TIFF_out.tiff")
         ' ExEnd:SaveAsTIFF
         ' ExStart:SaveAsTIFFUsingImageSaveOptions
-        'Create an ImageSaveOptions object to pass to the Save method
+        ' Create an ImageSaveOptions object to pass to the Save method
         Dim options As New ImageSaveOptions(SaveFormat.Tiff)
         options.PageIndex = 0
         options.PageCount = 2
         options.TiffCompression = TiffCompression.Ccitt4
         options.Resolution = 160
 
-        doc.Save(dataDir & "TestFileWithOptions_out_.tiff", options)
+        doc.Save(dataDir & "TestFileWithOptions_out.tiff", options)
         ' ExEnd:SaveAsTIFFUsingImageSaveOptions
         ' ExEnd:SaveAsMultipageTiff
         Console.WriteLine(vbNewLine & "Document saved as multi-page TIFF successfully." & vbNewLine & "File saved at " + dataDir + "TestFileWithOptions Out.tiff")

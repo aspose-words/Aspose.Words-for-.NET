@@ -16,7 +16,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
     {
         public static void Run()
         {
-            //ExStart:ApplyCustomLogicToEmptyRegions
+            // ExStart:ApplyCustomLogicToEmptyRegions
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); 
 
@@ -36,14 +36,14 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
             doc.MailMerge.ExecuteWithRegions(data);
 
             // The regions which contained data now would of been merged. Any regions which had no data and were
-            // not merged will still remain in the document.
-            Document mergedDoc = doc.Clone(); //ExSkip
+            // Not merged will still remain in the document.
+            Document mergedDoc = doc.Clone(); // ExSkip
             // Apply logic to each unused region left in the document using the logic set out in the handler.
             // The handler class must implement the IFieldMergingCallback interface.
             ExecuteCustomLogicOnEmptyRegions(doc, new EmptyRegionsHandler());
 
             // Save the output document to disk.
-            doc.Save(dataDir + "TestFile.CustomLogicEmptyRegions1_out_.doc");
+            doc.Save(dataDir + "TestFile.CustomLogicEmptyRegions1_out.doc");
             
             // Reload the original merged document.
             doc = mergedDoc.Clone();
@@ -51,26 +51,26 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
             // Apply different logic to unused regions this time.
             ExecuteCustomLogicOnEmptyRegions(doc, new EmptyRegionsHandler_MergeTable());
 
-            doc.Save(dataDir + "TestFile.CustomLogicEmptyRegions2_out_.doc");
-            //ExEnd:ApplyCustomLogicToEmptyRegions
+            doc.Save(dataDir + "TestFile.CustomLogicEmptyRegions2_out.doc");
+            // ExEnd:ApplyCustomLogicToEmptyRegions
             // Reload the original merged document.
             doc = mergedDoc.Clone();
-            //ExStart:ContactDetails 
+            // ExStart:ContactDetails 
             // Only handle the ContactDetails region in our handler.
             ArrayList regions = new ArrayList();
             regions.Add("ContactDetails");
             ExecuteCustomLogicOnEmptyRegions(doc, new EmptyRegionsHandler(), regions);
-            //ExEnd:ContactDetails 
-            dataDir = dataDir + "TestFile.CustomLogicEmptyRegions3_out_.doc";
+            // ExEnd:ContactDetails 
+            dataDir = dataDir + "TestFile.CustomLogicEmptyRegions3_out.doc";
             doc.Save(dataDir );
 
             Console.WriteLine("\nMail merge performed successfully.\nFile saved at " + dataDir);
         }
-        //ExStart:CreateDataSourceFromDocumentRegions
+        // ExStart:CreateDataSourceFromDocumentRegions
         /// <summary>
         /// Returns a DataSet object containing a DataTable for the unmerged regions in the specified document.
         /// If regionsList is null all regions found within the document are included. If an ArrayList instance is present
-        /// the only the regions specified in the list that are found in the document are added.
+        /// The only the regions specified in the list that are found in the document are added.
         /// </summary>
         private static DataSet CreateDataSourceFromDocumentRegions(Document doc, ArrayList regionsList)
         {
@@ -106,11 +106,11 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
 
             return dataSet;
         }
-        //ExEnd:CreateDataSourceFromDocumentRegions
-        //ExStart:ExecuteCustomLogicOnEmptyRegions
+        // ExEnd:CreateDataSourceFromDocumentRegions
+        // ExStart:ExecuteCustomLogicOnEmptyRegions
         /// <summary>
         /// Applies logic defined in the passed handler class to all unused regions in the document. This allows to manually control
-        /// how unused regions are handled in the document.
+        /// How unused regions are handled in the document.
         /// </summary>
         /// <param name="doc">The document containing unused regions</param>
         /// <param name="handler">The handler which implements the IFieldMergingCallback interface and defines the logic to be applied to each unmerged region.</param>
@@ -121,7 +121,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
 
         /// <summary>
         /// Applies logic defined in the passed handler class to specific unused regions in the document as defined in regionsList. This allows to manually control
-        /// how unused regions are handled in the document.
+        /// How unused regions are handled in the document.
         /// </summary>
         /// <param name="doc">The document containing unused regions</param>
         /// <param name="handler">The handler which implements the IFieldMergingCallback interface and defines the logic to be applied to each unmerged region.</param>
@@ -136,12 +136,12 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
             doc.MailMerge.FieldMergingCallback = handler;
 
             // Execute mail merge using the dummy dataset. The dummy data source contains the table names of 
-            // each unmerged region in the document (excluding ones that the user may have specified to be skipped). This will allow the handler 
-            // to be called for each field in the unmerged regions.
+            // Each unmerged region in the document (excluding ones that the user may have specified to be skipped). This will allow the handler 
+            // To be called for each field in the unmerged regions.
             doc.MailMerge.ExecuteWithRegions(CreateDataSourceFromDocumentRegions(doc, regionsList));
         }
-        //ExEnd:ExecuteCustomLogicOnEmptyRegions
-        //ExStart:EmptyRegionsHandler 
+        // ExEnd:ExecuteCustomLogicOnEmptyRegions
+        // ExStart:EmptyRegionsHandler 
         public class EmptyRegionsHandler : IFieldMergingCallback
         {
             /// <summary>
@@ -160,7 +160,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
                 }
 
                 // Remove the entire table of the Suppliers region. Also check if the previous paragraph
-                // before the table is a heading paragraph and if so remove that too.
+                // Before the table is a heading paragraph and if so remove that too.
                 if (args.TableName == "Suppliers")
                 {
                     Table table = (Table)args.Field.Start.GetAncestor(NodeType.Table);
@@ -194,7 +194,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
                 // Do Nothing
             }
         }
-        //ExEnd:EmptyRegionsHandler 
+        // ExEnd:EmptyRegionsHandler 
 
         public class EmptyRegionsHandler_MergeTable : IFieldMergingCallback
         {
@@ -203,7 +203,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
             /// </summary>
             public void FieldMerging(FieldMergingArgs args)
             {
-                 //ExStart:RemoveExtraParagraphs
+                 // ExStart:RemoveExtraParagraphs
                 // Store the parent paragraph of the current field for easy access.
                 Paragraph parentParagraph = args.Field.Start.ParentParagraph;
 
@@ -212,8 +212,8 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
                 if (args.TableName == "ContactDetails")
                 {
                     // Called for the first field encountered in a region. This can be used to execute logic on the first field
-                    // in the region without needing to hard code the field name. Often the base logic is applied to the first field and 
-                    // different logic for other fields. The rest of the fields in the region will have a null FieldValue.
+                    // In the region without needing to hard code the field name. Often the base logic is applied to the first field and 
+                    // Different logic for other fields. The rest of the fields in the region will have a null FieldValue.
                     if ((string)args.FieldValue == "FirstField")
                     {
                         FindReplaceOptions options = new FindReplaceOptions();
@@ -231,8 +231,8 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
                             parentParagraph.Remove();
                     }
                 }
-                //ExEnd:RemoveExtraParagraphs
-                //ExStart:MergeAllCells
+                // ExEnd:RemoveExtraParagraphs
+                // ExStart:MergeAllCells
                 // Replace the unused region in the table with a "no records" message and merge all cells into one.
                 if (args.TableName == "Suppliers")
                 {
@@ -254,7 +254,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
                             cell.CellFormat.HorizontalMerge = CellMerge.Previous; // Otherwise the merge is continued using "CellMerge.Previous".
                     }
                 }
-                //ExEnd:MergeAllCells
+                // ExEnd:MergeAllCells
             }
 
             public void ImageFieldMerging(ImageFieldMergingArgs args)
@@ -307,15 +307,15 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
         private static DataTable itemTable = null;
         private static void  DisableForeignKeyConstraints(DataSet dataSet)
         {           
-            //ExStart:DisableForeignKeyConstraints
+            // ExStart:DisableForeignKeyConstraints
             dataSet.Relations.Add(new DataRelation("OrderToItem", orderTable.Columns["Order_Id"], itemTable.Columns["Order_Id"], false));
-            //ExEnd:DisableForeignKeyConstraints
+            // ExEnd:DisableForeignKeyConstraints
         }
         private static void CreateDataRelation(DataSet dataSet)
         {
-            //ExStart:CreateDataRelation
+            // ExStart:CreateDataRelation
             dataSet.Relations.Add(new DataRelation("OrderToItem", orderTable.Columns["Order_Id"], itemTable.Columns["Order_Id"]));
-            //ExEnd:CreateDataRelation
+            // ExEnd:CreateDataRelation
         }
     }
 }

@@ -15,7 +15,7 @@ Class ReplaceWithString
         Dim doc As New Document(dataDir & fileName)
         doc.Range.Replace("sad", "bad", New FindReplaceOptions(FindReplaceDirection.Forward))
 
-        dataDir = dataDir & Convert.ToString("ReplaceWithString_out_.doc")
+        dataDir = dataDir & Convert.ToString("ReplaceWithString_out.doc")
         doc.Save(dataDir)
         ' ExEnd:ReplaceWithString
         Console.WriteLine(Convert.ToString(vbLf & "Text replaced with string successfully." & vbLf & "File saved at ") & dataDir)

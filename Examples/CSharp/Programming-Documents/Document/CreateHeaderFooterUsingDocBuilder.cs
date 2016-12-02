@@ -9,7 +9,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:CreateHeaderFooterUsingDocBuilder
+            // ExStart:CreateHeaderFooterUsingDocBuilder
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
 
@@ -21,7 +21,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 
             // Specify if we want headers/footers of the first page to be different from other pages.
             // You can also use PageSetup.OddAndEvenPagesHeaderFooter property to specify
-            // different headers/footers for odd and even pages.
+            // Different headers/footers for odd and even pages.
             pageSetup.DifferentFirstPageHeaderFooter = true;
 
             // --- Create header for the first page. ---
@@ -53,7 +53,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
 
             // We use table with two cells to make one part of the text on the line (with page numbering)
-            // to be aligned left, and the other part of the text (with copyright) to be aligned right.
+            // To be aligned left, and the other part of the text (with copyright) to be aligned right.
             builder.StartTable();
 
             // Clear table borders.
@@ -102,18 +102,18 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 
             // This section does not need different first page header/footer.
             // We need only one title page in the document and the header/footer for this page
-            // has already been defined in the previous section
+            // Has already been defined in the previous section
             pageSetup.DifferentFirstPageHeaderFooter = false;
 
             // This section displays headers/footers from the previous section by default.
             // Call currentSection.HeadersFooters.LinkToPrevious(false) to cancel this.
             // Page width is different for the new section and therefore we need to set 
-            // a different cell widths for a footer table.
+            // A different cell widths for a footer table.
             currentSection.HeadersFooters.LinkToPrevious(false);
 
             // If we want to use the already existing header/footer set for this section 
-            // but with some minor modifications then it may be expedient to copy headers/footers
-            // from the previous section and apply the necessary modifications where we want them.
+            // But with some minor modifications then it may be expedient to copy headers/footers
+            // From the previous section and apply the necessary modifications where we want them.
             CopyHeadersFootersFromPreviousSection(currentSection);
 
             // Find the footer that we want to change.
@@ -125,14 +125,14 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 
             
 
-            dataDir = dataDir + "HeaderFooter.Primer_out_.doc";
+            dataDir = dataDir + "HeaderFooter.Primer_out.doc";
             // Save the resulting document.
             doc.Save(dataDir);
-            //ExEnd:CreateHeaderFooterUsingDocBuilder
+            // ExEnd:CreateHeaderFooterUsingDocBuilder
 
             Console.WriteLine("\nHeader and footer created successfully using document builder.\nFile saved at " + dataDir);
         }
-        //ExStart:CopyHeadersFootersFromPreviousSection
+        // ExStart:CopyHeadersFootersFromPreviousSection
         /// <summary>
         /// Clones and copies headers/footers form the previous section to the specified section.
         /// </summary>
@@ -148,6 +148,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             foreach (HeaderFooter headerFooter in previousSection.HeadersFooters)
                 section.HeadersFooters.Add(headerFooter.Clone(true));
         }
-        //ExEnd:CopyHeadersFootersFromPreviousSection
+        // ExEnd:CopyHeadersFootersFromPreviousSection
     }
 }

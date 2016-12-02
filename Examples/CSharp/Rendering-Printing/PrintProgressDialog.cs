@@ -15,7 +15,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
     {
         public static void Run()
         {
-            //ExStart:PrintProgressDialog
+            // ExStart:PrintProgressDialog
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); 
             // Load the documents which store the shapes we want to render.
@@ -31,7 +31,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             prntDoc.PrinterSettings = settings;
             prntDoc.PrintController = standardPrintController;
             prntDoc.Print();            
-            //ExEnd:PrintProgressDialog
+            // ExEnd:PrintProgressDialog
         }
         
     }

@@ -11,7 +11,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:RichTextBoxContentControl
+            // ExStart:RichTextBoxContentControl
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             Document doc = new Document();
@@ -25,9 +25,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             sdtRichText.ChildNodes.Add(para);
             doc.FirstSection.Body.AppendChild(sdtRichText);
 
-            dataDir = dataDir + "RichTextBoxContentControl_out_.docx";
+            dataDir = dataDir + "RichTextBoxContentControl_out.docx";
             doc.Save(dataDir);
-            //ExEnd:RichTextBoxContentControl
+            // ExEnd:RichTextBoxContentControl
             Console.WriteLine("\nRich text box type content control created successfully.\nFile saved at " + dataDir);
         }        
     }

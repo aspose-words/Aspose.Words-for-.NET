@@ -180,7 +180,7 @@ namespace DocumentExplorerExample
 		#region Windows Form Designer generated code
 		/// <summary>
 		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
+		/// The contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
@@ -217,13 +217,13 @@ namespace DocumentExplorerExample
             this.mainPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // mainMenu
+            // MainMenu
             // 
             this.mainMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
                                                                                      this.fileMenuItem,
                                                                                      this.viewMenuItem});
             // 
-            // fileMenuItem
+            // FileMenuItem
             // 
             this.fileMenuItem.Index = 0;
             this.fileMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
@@ -233,32 +233,32 @@ namespace DocumentExplorerExample
                                                                                          this.fileExitMenuItem});
             this.fileMenuItem.Text = "&File";
             // 
-            // fileOpenMenuItem
+            // FileOpenMenuItem
             // 
             this.fileOpenMenuItem.Index = 0;
             this.fileOpenMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlO;
             this.fileOpenMenuItem.Text = "&Open...";
             this.fileOpenMenuItem.Click += new System.EventHandler(this.fileOpenMenuItem_Click);
             // 
-            // filePrintMenuItem
+            // FilePrintMenuItem
             // 
             this.filePrintMenuItem.Index = 1;
             this.filePrintMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlP;
             this.filePrintMenuItem.Text = "&Print Preview";
             this.filePrintMenuItem.Click += new System.EventHandler(this.filePrintMenuItem_Click);
             // 
-            // separator1MenuItem
+            // Separator1MenuItem
             // 
             this.separator1MenuItem.Index = 2;
             this.separator1MenuItem.Text = "-";
             // 
-            // fileExitMenuItem
+            // FileExitMenuItem
             // 
             this.fileExitMenuItem.Index = 3;
             this.fileExitMenuItem.Text = "&Exit";
             this.fileExitMenuItem.Click += new System.EventHandler(this.fileExitMenuItem_Click);
             // 
-            // viewMenuItem
+            // ViewMenuItem
             // 
             this.viewMenuItem.Index = 1;
             this.viewMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
@@ -271,47 +271,47 @@ namespace DocumentExplorerExample
                                                                                          this.navigationGoToPageMenuItem});
             this.viewMenuItem.Text = "&View";
             // 
-            // navigationPreviousPageMenuItem
+            // NavigationPreviousPageMenuItem
             // 
             this.navigationPreviousPageMenuItem.Index = 0;
             this.navigationPreviousPageMenuItem.Text = "P&revious Page";
             this.navigationPreviousPageMenuItem.Click += new System.EventHandler(this.navigationPreviousPageMenuItem_Click);
             // 
-            // navigationNextPageMenuItem
+            // NavigationNextPageMenuItem
             // 
             this.navigationNextPageMenuItem.Index = 1;
             this.navigationNextPageMenuItem.Text = "&Next Page";
             this.navigationNextPageMenuItem.Click += new System.EventHandler(this.navigationNextPageMenuItem_Click);
             // 
-            // separator2
+            // Separator2
             // 
             this.separator2.Index = 2;
             this.separator2.Text = "-";
             // 
-            // navigationFirstPageMenuItem
+            // NavigationFirstPageMenuItem
             // 
             this.navigationFirstPageMenuItem.Index = 3;
             this.navigationFirstPageMenuItem.Text = "&First Page";
             this.navigationFirstPageMenuItem.Click += new System.EventHandler(this.navigationFirstPageMenuItem_Click);
             // 
-            // navigationLastPageMenuItem
+            // NavigationLastPageMenuItem
             // 
             this.navigationLastPageMenuItem.Index = 4;
             this.navigationLastPageMenuItem.Text = "&Last Page";
             this.navigationLastPageMenuItem.Click += new System.EventHandler(this.lastPageMenuItem_Click);
             // 
-            // separator3
+            // Separator3
             // 
             this.separator3.Index = 5;
             this.separator3.Text = "-";
             // 
-            // navigationGoToPageMenuItem
+            // NavigationGoToPageMenuItem
             // 
             this.navigationGoToPageMenuItem.Index = 6;
             this.navigationGoToPageMenuItem.Text = "&Go to Page...";
             this.navigationGoToPageMenuItem.Click += new System.EventHandler(this.navigationGoToPageMenuItem_Click);
             // 
-            // toolBar
+            // ToolBar
             // 
             this.toolBar.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
             this.toolBar.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[] {
@@ -333,64 +333,64 @@ namespace DocumentExplorerExample
             this.toolBar.TabIndex = 0;
             this.toolBar.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.toolBar_ButtonClick);
             // 
-            // fileOpenButton
+            // FileOpenButton
             // 
             this.fileOpenButton.ImageIndex = 0;
             this.fileOpenButton.ToolTipText = "Open a document";
             // 
-            // filePrintButton
+            // FilePrintButton
             // 
             this.filePrintButton.ImageIndex = 8;
             this.filePrintButton.ToolTipText = "Print preview";
             // 
-            // separator1
+            // Separator1
             // 
             this.separator1.Style = System.Windows.Forms.ToolBarButtonStyle.Separator;
             // 
-            // navigationFirstPageButton
+            // NavigationFirstPageButton
             // 
             this.navigationFirstPageButton.ImageIndex = 2;
             this.navigationFirstPageButton.ToolTipText = "Move to first page";
             // 
-            // navigationPreviousPageButton
+            // NavigationPreviousPageButton
             // 
             this.navigationPreviousPageButton.ImageIndex = 3;
             this.navigationPreviousPageButton.ToolTipText = "Move to previous page";
             // 
-            // navigationNextPageButton
+            // NavigationNextPageButton
             // 
             this.navigationNextPageButton.ImageIndex = 4;
             this.navigationNextPageButton.ToolTipText = "Move to next page";
             // 
-            // navigationLastPageButton
+            // NavigationLastPageButton
             // 
             this.navigationLastPageButton.ImageIndex = 5;
             this.navigationLastPageButton.ToolTipText = "Move to last page";
             // 
-            // navigationGoToPageButton
+            // NavigationGoToPageButton
             // 
             this.navigationGoToPageButton.ImageIndex = 6;
             this.navigationGoToPageButton.ToolTipText = "Go to specified page";
             // 
-            // toolBarImages
+            // ToolBarImages
             // 
             this.toolBarImages.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
             this.toolBarImages.ImageSize = new System.Drawing.Size(16, 16);
             this.toolBarImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("toolBarImages.ImageStream")));
             this.toolBarImages.TransparentColor = System.Drawing.Color.Silver;
             // 
-            // statusBar
+            // StatusBar
             // 
             this.statusBar.Location = new System.Drawing.Point(0, 459);
             this.statusBar.Name = "statusBar";
             this.statusBar.Size = new System.Drawing.Size(712, 22);
             this.statusBar.TabIndex = 3;
             // 
-            // openFileDialog
+            // OpenFileDialog
             // 
             this.openFileDialog.Filter = "Microsoft Word Documents|*.doc|All files|*.*";
             // 
-            // mainPanel
+            // MainPanel
             // 
             this.mainPanel.AutoScroll = true;
             this.mainPanel.BackColor = System.Drawing.Color.FromArgb(((System.Byte)(144)), ((System.Byte)(153)), ((System.Byte)(174)));
@@ -402,7 +402,7 @@ namespace DocumentExplorerExample
             this.mainPanel.Size = new System.Drawing.Size(712, 431);
             this.mainPanel.TabIndex = 4;
             // 
-            // docPagePictureBox
+            // DocPagePictureBox
             // 
             this.docPagePictureBox.BackColor = System.Drawing.Color.FromArgb(((System.Byte)(144)), ((System.Byte)(153)), ((System.Byte)(174)));
             this.docPagePictureBox.Location = new System.Drawing.Point(0, 0);

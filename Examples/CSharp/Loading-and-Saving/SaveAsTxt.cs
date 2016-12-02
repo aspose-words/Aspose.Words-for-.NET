@@ -9,14 +9,14 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
     {
         public static void Run()
         {
-            //ExStart:SaveAsTxt
+            // ExStart:SaveAsTxt
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
             Document doc = new Document(dataDir + "Document.doc");
-            dataDir = dataDir + "Document.ConvertToTxt_out_.txt";
+            dataDir = dataDir + "Document.ConvertToTxt_out.txt";
             doc.Save(dataDir);
-            //ExEnd:SaveAsTxt
+            // ExEnd:SaveAsTxt
             Console.WriteLine("\nDocument saved as TXT.\nFile saved at " + dataDir);
         }
     }

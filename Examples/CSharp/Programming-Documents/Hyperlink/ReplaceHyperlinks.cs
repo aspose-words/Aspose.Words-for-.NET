@@ -13,7 +13,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Hyperl
     {        
         public static void Run()
         {
-            //ExStart:ReplaceHyperlinks
+            // ExStart:ReplaceHyperlinks
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithHyperlink();
             string NewUrl = @"http://www.aspose.com";
@@ -36,9 +36,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Hyperl
                 }
             }
 
-            dataDir = dataDir + "ReplaceHyperlinks_out_.doc";
+            dataDir = dataDir + "ReplaceHyperlinks_out.doc";
             doc.Save(dataDir);
-            //ExEnd:ReplaceHyperlinks
+            // ExEnd:ReplaceHyperlinks
             Console.WriteLine("\nHyperlinks replaced successfully.\nFile saved at " + dataDir);
         }
     }

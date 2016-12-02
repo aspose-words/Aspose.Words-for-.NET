@@ -21,7 +21,7 @@ Namespace DocumentExplorerExample
 			Me.buttonOk = New System.Windows.Forms.Button()
 			Me.SuspendLayout()
 			' 
-			' text1
+			' Text1
 			' 
 			Me.text1.Anchor = (CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles))
 			Me.text1.AutoSize = False
@@ -35,7 +35,7 @@ Namespace DocumentExplorerExample
 			Me.text1.Text = ""
 			Me.text1.WordWrap = False
 			' 
-			' buttonOk
+			' ButtonOk
 			' 
 			Me.buttonOk.Anchor = (CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles))
 			Me.buttonOk.DialogResult = System.Windows.Forms.DialogResult.OK

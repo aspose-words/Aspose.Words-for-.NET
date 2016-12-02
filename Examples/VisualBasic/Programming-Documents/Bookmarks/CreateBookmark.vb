@@ -27,7 +27,7 @@ Public Class CreateBookmark
         options.OutlineOptions.BookmarksOutlineLevels.Add("My Bookmark", 1)
         options.OutlineOptions.BookmarksOutlineLevels.Add("Nested Bookmark", 2)
 
-        dataDir = dataDir & Convert.ToString("Create.Bookmark_out_.pdf")
+        dataDir = dataDir & Convert.ToString("Create.Bookmark_out.pdf")
         doc.Save(dataDir, options)
         ' ExEnd:CreateBookmark
         Console.WriteLine(Convert.ToString(vbLf & "Bookmark created successfully." & vbLf & "File saved at ") & dataDir)

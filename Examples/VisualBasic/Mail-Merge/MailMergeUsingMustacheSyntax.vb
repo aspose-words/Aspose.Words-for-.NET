@@ -20,7 +20,7 @@ Public Class MailMergeUsingMustacheSyntax
 
         ' Execute mail merge to fill the template with data from XML using DataSet.
         doc.MailMerge.ExecuteWithRegions(ds)
-        dataDir = dataDir & Convert.ToString("MailMergeUsingMustacheSyntax_out_.docx")
+        dataDir = dataDir & Convert.ToString("MailMergeUsingMustacheSyntax_out.docx")
         ' Save the output document.
         doc.Save(dataDir)
         ' ExEnd:MailMergeUsingMustacheSyntax

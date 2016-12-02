@@ -9,13 +9,13 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appendi
     {
         public static void Run()
         {
-            //ExStart:BaseDocument
+            // ExStart:BaseDocument
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
             string fileName = "TestFile.Source.doc";
-            //ExStart
-            //ExId:AppendDocument_BaseDocument
-            //ExSummary:Shows how to remove all content from a document before using it as a base to append documents to.
+            // ExStart
+            // ExId:AppendDocument_BaseDocument
+            // ExSummary:Shows how to remove all content from a document before using it as a base to append documents to.
             // Use a blank document as the destination document.
             Document dstDoc = new Document();
             Document srcDoc = new Document(dataDir + fileName);
@@ -28,7 +28,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appendi
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             dstDoc.Save(dataDir);
-            //ExEnd:BaseDocument
+            // ExEnd:BaseDocument
             Console.WriteLine("\nDocument appended successfully with all content removed from the destination document.\nFile saved at " + dataDir);
         }
     }

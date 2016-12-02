@@ -11,7 +11,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
     {
         public static void Run()
         {
-            //ExStart:WorkWithSingleChartDataPoint
+            // ExStart:WorkWithSingleChartDataPoint
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithCharts();
             Document doc = new Document();
@@ -45,9 +45,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
             dataPoint12.InvertIfNegative = true;
             dataPoint12.Marker.Symbol = MarkerSymbol.Star;
             dataPoint12.Marker.Size = 20;
-            dataDir = dataDir + @"SingleChartDataPoint_out_.docx";
+            dataDir = dataDir + @"SingleChartDataPoint_out.docx";
             doc.Save(dataDir);
-            //ExEnd:WorkWithSingleChartDataPoint
+            // ExEnd:WorkWithSingleChartDataPoint
             Console.WriteLine("\nSingle line chart created successfully.\nFile saved at " + dataDir);
         }        
     }

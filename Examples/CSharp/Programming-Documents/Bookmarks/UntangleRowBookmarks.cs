@@ -43,8 +43,8 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Bookmarks
                 Row row2 = (Row)bookmark.BookmarkEnd.GetAncestor(typeof(Row));
 
                 // If both rows are found okay and the bookmark start and end are contained
-                // in adjacent rows, then just move the bookmark end node to the end
-                // of the last paragraph in the last cell of the top row.
+                // In adjacent rows, then just move the bookmark end node to the end
+                // Of the last paragraph in the last cell of the top row.
                 if ((row1 != null) && (row2 != null) && (row1.NextSibling == row2))
                     row1.LastCell.LastParagraph.AppendChild(bookmark.BookmarkEnd);
             }

@@ -11,7 +11,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:ExtractContentBetweenRuns
+            // ExStart:ExtractContentBetweenRuns
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             string fileName = "TestFile.doc";
@@ -31,7 +31,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             Node node = (Node)extractedNodes[0];
             // Print the text of this node to the console.
             Console.WriteLine(node.ToString(SaveFormat.Text));
-            //ExEnd:ExtractContentBetweenRuns
+            // ExEnd:ExtractContentBetweenRuns
             Console.WriteLine("\nExtracted content betweenn the runs successfully.");
         }
     }

@@ -25,7 +25,7 @@ Class DocumentBuilderInsertElements
         Dim builder As New DocumentBuilder(doc)
 
         builder.InsertTextInput("TextInput", TextFormFieldType.Regular, "", "Hello", 0)
-        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertTextInputFormField_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertTextInputFormField_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderInsertTextInputFormField
         Console.WriteLine(Convert.ToString(vbLf & "Text input form field using DocumentBuilder inserted successfully into a document." & vbLf & "File saved at ") & dataDir)
@@ -36,7 +36,7 @@ Class DocumentBuilderInsertElements
         Dim builder As New DocumentBuilder(doc)
 
         builder.InsertCheckBox("CheckBox", True, True, 0)
-        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertCheckBoxFormField_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertCheckBoxFormField_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderInsertCheckBoxFormField
         Console.WriteLine(Convert.ToString(vbLf & "Checkbox form field using DocumentBuilder inserted successfully into a document." & vbLf & "File saved at ") & dataDir)
@@ -48,7 +48,7 @@ Class DocumentBuilderInsertElements
 
         Dim items As String() = {"One", "Two", "Three"}
         builder.InsertComboBox("DropDown", items, 0)
-        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertComboBoxFormField_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertComboBoxFormField_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderInsertComboBoxFormField
         Console.WriteLine(Convert.ToString(vbLf & "Combobox form field using DocumentBuilder inserted successfully into a document." & vbLf & "File saved at ") & dataDir)
@@ -58,8 +58,8 @@ Class DocumentBuilderInsertElements
         Dim doc As New Document()
         Dim builder As New DocumentBuilder(doc)
 
-        builder.InsertHtml("<P align='right'>Paragraph right</P>" + "<b>Implicit paragraph left</b>" + "<div align='center'>Div center</div>" + "<h1 align='left'>Heading 1 left.</h1>")
-        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertHtml_out_.doc")
+        builder.InsertHtml("<P align=' Right'>Paragraph right</P>" + "<b>Implicit paragraph left</b>" + "<div align=' Center'>Div center</div>" + "<h1 align=' Left'>Heading 1 left.</h1>")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertHtml_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderInsertHtml
         Console.WriteLine(Convert.ToString(vbLf & "HTML using DocumentBuilder inserted successfully into a document." & vbLf & "File saved at ") & dataDir)
@@ -81,7 +81,7 @@ Class DocumentBuilderInsertElements
         builder.Font.ClearFormatting()
 
         builder.Write(" for more information.")
-        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertHyperlink_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertHyperlink_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderInsertHyperlink
         Console.WriteLine(Convert.ToString(vbLf & "Hyperlink using DocumentBuilder inserted successfully into a document." & vbLf & "File saved at ") & dataDir)
@@ -128,7 +128,7 @@ Class DocumentBuilderInsertElements
         builder.Writeln("Heading 3.3")
         doc.UpdateFields()
 
-        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertTableOfContents_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertTableOfContents_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderInsertTableOfContents
         Console.WriteLine(Convert.ToString(vbLf & "Table of contents using DocumentBuilder inserted successfully into a document." & vbLf & "File saved at ") & dataDir)
@@ -138,7 +138,7 @@ Class DocumentBuilderInsertElements
         Dim doc As New Aspose.Words.Document()
         Dim builder As New DocumentBuilder(doc)
         builder.InsertOleObject("http://www.aspose.com", "htmlfile", True, True, Nothing)
-        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertOleObject_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertOleObject_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderInsertOleObject
         Console.WriteLine(Convert.ToString(vbLf & "OleObject using DocumentBuilder inserted successfully into a document." & vbLf & "File saved at ") & dataDir)

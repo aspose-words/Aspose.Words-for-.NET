@@ -33,14 +33,14 @@ Class DocumentBuilderSetFormatting
         font.Underline = Underline.[Double]
 
         ' Output formatted text
-        builder.Writeln("I'm a very nice formatted string.")
-        dataDir = dataDir & Convert.ToString("DocumentBuilderSetFontFormatting_out_.doc")
+        builder.Writeln("I' M a very nice formatted string.")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderSetFontFormatting_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderSetFontFormatting
         Console.WriteLine(Convert.ToString(vbLf & "Font formatting using DocumentBuilder set successfully." & vbLf & "File saved at ") & dataDir)
     End Sub
     Public Shared Sub SetParagraphFormatting(dataDir As String)
-        'ExStart:DocumentBuilderSetParagraphFormatting
+        ' ExStart:DocumentBuilderSetParagraphFormatting
         Dim doc As New Document()
         Dim builder As New DocumentBuilder(doc)
 
@@ -52,12 +52,12 @@ Class DocumentBuilderSetFormatting
         paragraphFormat.SpaceAfter = 25
 
         ' Output text
-        builder.Writeln("I'm a very nice formatted paragraph. I'm intended to demonstrate how the left and right indents affect word wrapping.")
-        builder.Writeln("I'm another nice formatted paragraph. I'm intended to demonstrate how the space after paragraph looks like.")
+        builder.Writeln("I' M a very nice formatted paragraph. I' M intended to demonstrate how the left and right indents affect word wrapping.")
+        builder.Writeln("I' M another nice formatted paragraph. I' M intended to demonstrate how the space after paragraph looks like.")
 
-        dataDir = dataDir & Convert.ToString("DocumentBuilderSetParagraphFormatting_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderSetParagraphFormatting_out.doc")
         doc.Save(dataDir)
-        'ExEnd:DocumentBuilderSetParagraphFormatting
+        ' ExEnd:DocumentBuilderSetParagraphFormatting
         Console.WriteLine(Convert.ToString(vbLf & "Paragraph formatting using DocumentBuilder set successfully." & vbLf & "File saved at ") & dataDir)
     End Sub
     Public Shared Sub SetTableCellFormatting(dataDir As String)
@@ -76,12 +76,12 @@ Class DocumentBuilderSetFormatting
         cellFormat.TopPadding = 30
         cellFormat.BottomPadding = 30
 
-        builder.Writeln("I'm a wonderful formatted cell.")
+        builder.Writeln("I' M a wonderful formatted cell.")
 
         builder.EndRow()
         builder.EndTable()
 
-        dataDir = dataDir & Convert.ToString("DocumentBuilderSetTableCellFormatting_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderSetTableCellFormatting_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderSetTableCellFormatting
         Console.WriteLine(Convert.ToString(vbLf & "Table cell formatting using DocumentBuilder set successfully." & vbLf & "File saved at ") & dataDir)
@@ -104,12 +104,12 @@ Class DocumentBuilderSetFormatting
         table.TopPadding = 30
         table.BottomPadding = 30
 
-        builder.Writeln("I'm a wonderful formatted row.")
+        builder.Writeln("I' M a wonderful formatted row.")
 
         builder.EndRow()
         builder.EndTable()
 
-        dataDir = dataDir & Convert.ToString("DocumentBuilderSetTableRowFormatting_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderSetTableRowFormatting_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderSetTableRowFormatting
         Console.WriteLine(Convert.ToString(vbLf & "Table row formatting using DocumentBuilder set successfully." & vbLf & "File saved at ") & dataDir)
@@ -143,7 +143,7 @@ Class DocumentBuilderSetFormatting
         builder.Writeln("Item 3")
 
         builder.ListFormat.RemoveNumbers()
-        dataDir = dataDir & Convert.ToString("DocumentBuilderSetMultilevelListFormatting_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderSetMultilevelListFormatting_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderSetMultilevelListFormatting
         Console.WriteLine(Convert.ToString(vbLf & "Multilevel list formatting using DocumentBuilder set successfully." & vbLf & "File saved at ") & dataDir)
@@ -158,7 +158,7 @@ Class DocumentBuilderSetFormatting
         builder.PageSetup.LeftMargin = 50
         builder.PageSetup.PaperSize = PaperSize.Paper10x14
 
-        dataDir = dataDir & Convert.ToString("DocumentBuilderSetPageSetupAndSectionFormatting_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderSetPageSetupAndSectionFormatting_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderSetPageSetupAndSectionFormatting
         Console.WriteLine(Convert.ToString(vbLf & "Page setup and section formatting using DocumentBuilder set successfully." & vbLf & "File saved at ") & dataDir)
@@ -172,7 +172,7 @@ Class DocumentBuilderSetFormatting
         builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Title
 
         builder.Write("Hello")
-        dataDir = dataDir & Convert.ToString("DocumentBuilderApplyParagraphStyle_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderApplyParagraphStyle_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderApplyParagraphStyle
         Console.WriteLine(Convert.ToString(vbLf & "Paragraph style using DocumentBuilder applied successfully." & vbLf & "File saved at ") & dataDir)
@@ -196,8 +196,8 @@ Class DocumentBuilderSetFormatting
         shading.BackgroundPatternColor = System.Drawing.Color.LightCoral
         shading.ForegroundPatternColor = System.Drawing.Color.LightSalmon
 
-        builder.Write("I'm a formatted paragraph with double border and nice shading.")
-        dataDir = dataDir & Convert.ToString("DocumentBuilderApplyBordersAndShadingToParagraph_out_.doc")
+        builder.Write("I' M a formatted paragraph with double border and nice shading.")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderApplyBordersAndShadingToParagraph_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderApplyBordersAndShadingToParagraph
         Console.WriteLine(Convert.ToString(vbLf & "Borders and shading using DocumentBuilder applied successfully to paragraph." & vbLf & "File saved at ") & dataDir)

@@ -39,7 +39,7 @@ Public Class InsertAdvanceFieldWithOutDocumentBuilder
         ' Finally update this Advance field
         field.Update()
 
-        dataDir = dataDir & Convert.ToString("InsertAdvanceFieldWithOutDocumentBuilder_out_.doc")
+        dataDir = dataDir & Convert.ToString("InsertAdvanceFieldWithOutDocumentBuilder_out.doc")
         doc.Save(dataDir)
 
         ' ExEnd:InsertAdvanceFieldWithOutDocumentBuilder

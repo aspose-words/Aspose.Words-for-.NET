@@ -88,7 +88,7 @@ Class DocumentBuilderMovingCursor
         builder.InsertBreak(BreakType.PageBreak)
         builder.Writeln("Page3")
 
-        dataDir = dataDir & Convert.ToString("DocumentBuilder.HeadersAndFooters_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilder.HeadersAndFooters_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderHeadersAndFooters   
         Console.WriteLine(Convert.ToString(vbLf & "Headers and footers created successfully using DocumentBuilder." & vbLf & "File saved at ") & dataDir)

@@ -10,7 +10,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:DocumentBuilderBuildTable
+            // ExStart:DocumentBuilderBuildTable
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             // Initialize document.
@@ -51,9 +51,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             builder.EndRow();
 
             builder.EndTable();
-            dataDir = dataDir + "DocumentBuilderBuildTable_out_.doc";
+            dataDir = dataDir + "DocumentBuilderBuildTable_out.doc";
             doc.Save(dataDir);
-            //ExEnd:DocumentBuilderBuildTable
+            // ExEnd:DocumentBuilderBuildTable
             Console.WriteLine("\nTable build successfully using DocumentBuilder.\nFile saved at " + dataDir);
         }     
     }

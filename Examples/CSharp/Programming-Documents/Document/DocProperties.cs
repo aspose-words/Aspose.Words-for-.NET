@@ -20,7 +20,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
         }
         public static void EnumerateProperties(string dataDir)
         {
-            //ExStart:EnumerateProperties            
+            // ExStart:EnumerateProperties            
             string fileName = dataDir + "Properties.doc";
             Document doc = new Document(fileName);
             Console.WriteLine("1. Document name: {0}", fileName);
@@ -32,11 +32,11 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             Console.WriteLine("3. Custom Properties");
             foreach (DocumentProperty prop in doc.CustomDocumentProperties)
                 Console.WriteLine("{0} : {1}", prop.Name, prop.Value);
-            //ExEnd:EnumerateProperties
+            // ExEnd:EnumerateProperties
         }
         public static void CustomAdd(string dataDir)
         {
-            //ExStart:CustomAdd            
+            // ExStart:CustomAdd            
             Document doc = new Document(dataDir + "Properties.doc");
             CustomDocumentProperties props = doc.CustomDocumentProperties;
             if (props["Authorized"] == null)
@@ -47,14 +47,14 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
                 props.Add("Authorized Revision", doc.BuiltInDocumentProperties.RevisionNumber);
                 props.Add("Authorized Amount", 123.45);
             }
-            //ExEnd:CustomAdd
+            // ExEnd:CustomAdd
         }
         public static void CustomRemove(string dataDir)
         {
-            //ExStart:CustomRemove            
+            // ExStart:CustomRemove            
             Document doc = new Document(dataDir + "Properties.doc");
             doc.CustomDocumentProperties.Remove("Authorized Date");
-            //ExEnd:CustomRemove
+            // ExEnd:CustomRemove
         }
     }
 }

@@ -27,9 +27,9 @@ Public Class CloneTable
         table.ParentNode.InsertAfter(tableClone, table)
 
         ' Insert an empty paragraph between the two tables or else they will be combined into one
-        ' upon save. This has to do with document validation.
+        ' Upon save. This has to do with document validation.
         table.ParentNode.InsertAfter(New Paragraph(doc), table)
-        dataDir = dataDir & Convert.ToString("Table.CloneTableAndInsert_out_.doc")
+        dataDir = dataDir & Convert.ToString("Table.CloneTableAndInsert_out.doc")
 
         ' Save the document to disk.
         doc.Save(dataDir)
@@ -46,8 +46,8 @@ Public Class CloneTable
         ' Clone the last row in the table.
         Dim clonedRow As Row = DirectCast(table.LastRow.Clone(True), Row)
 
-        ' Remove all content from the cloned row's cells. This makes the row ready for
-        ' new content to be inserted into.
+        ' Remove all content from the cloned row' S cells. This makes the row ready for
+        ' New content to be inserted into.
         For Each cell As Cell In clonedRow.Cells
             cell.RemoveAllChildren()
         Next
@@ -55,7 +55,7 @@ Public Class CloneTable
         ' Add the row to the end of the table.
         table.AppendChild(clonedRow)
 
-        dataDir = dataDir & Convert.ToString("Table.AddCloneRowToTable_out_.doc")
+        dataDir = dataDir & Convert.ToString("Table.AddCloneRowToTable_out.doc")
         ' Save the document to disk.
         doc.Save(dataDir)
         ' ExEnd:CloneLastRow

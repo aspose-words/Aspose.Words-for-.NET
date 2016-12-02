@@ -12,7 +12,7 @@ Public Class UpdateDocFields
 
         ' This updates all fields in the document.
         doc.UpdateFields()
-        dataDir = dataDir & Convert.ToString("Rendering.UpdateFields_out_.pdf")
+        dataDir = dataDir & Convert.ToString("Rendering.UpdateFields_out.pdf")
         doc.Save(dataDir)
         ' ExEnd:UpdateDocFields
         Console.WriteLine(Convert.ToString(vbLf & "Fields updated successfully." & vbLf & "File saved at ") & dataDir)

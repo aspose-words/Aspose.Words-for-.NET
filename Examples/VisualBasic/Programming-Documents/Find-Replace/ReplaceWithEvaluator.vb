@@ -17,7 +17,7 @@ Class ReplaceWithEvaluator
 
         doc.Range.Replace(New Regex("[s|m]ad"), "", options)
 
-        dataDir = dataDir & Convert.ToString("Range.ReplaceWithEvaluator_out_.doc")
+        dataDir = dataDir & Convert.ToString("Range.ReplaceWithEvaluator_out.doc")
         doc.Save(dataDir)
         ' ExEnd:ReplaceWithEvaluator
         Console.WriteLine(Convert.ToString(vbLf & "Text replaced successfully with evaluator." & vbLf & "File saved at ") & dataDir)

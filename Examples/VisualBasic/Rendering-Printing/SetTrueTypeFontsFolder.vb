@@ -12,12 +12,12 @@ Public Class SetTrueTypeFontsFolder
         Dim doc As New Document(dataDir & Convert.ToString("Rendering.doc"))
 
         ' Note that this setting will override any default font sources that are being searched by default. Now only these folders will be searched for
-        ' fonts when rendering or embedding fonts. To add an extra font source while keeping system font sources then use both FontSettings.GetFontSources and
+        ' Fonts when rendering or embedding fonts. To add an extra font source while keeping system font sources then use both FontSettings.GetFontSources and
         ' FontSettings.SetFontSources instead.
         FontSettings.SetFontsFolder("C:\MyFonts\", False)
         ' Set font settings
         doc.FontSettings = FontSettings
-        dataDir = dataDir & Convert.ToString("Rendering.SetFontsFolder_out_.pdf")
+        dataDir = dataDir & Convert.ToString("Rendering.SetFontsFolder_out.pdf")
         doc.Save(dataDir)
         ' ExEnd:SetTrueTypeFontsFolder
         Console.WriteLine(Convert.ToString(vbLf & "True type fonts folder setup successfully." & vbLf & "File saved at ") & dataDir)

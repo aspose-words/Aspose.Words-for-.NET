@@ -27,7 +27,7 @@ Class NestedMailMergeCustom
         Dim doc As New Document(dataDir & fileName)
 
         ' To be able to mail merge from your own data source, it must be wrapped
-        ' into an object that implements the IMailMergeDataSource interface.
+        ' Into an object that implements the IMailMergeDataSource interface.
         Dim customersDataSource As New CustomerMailMergeDataSource(customers)
 
         ' Now you can pass your data source into Aspose.Words.
@@ -145,7 +145,7 @@ Class NestedMailMergeCustom
 
     ''' <summary>
     ''' A custom mail merge data source that you implement to allow Aspose.Words 
-    ''' to mail merge data from your Customer objects into Microsoft Word documents.
+    ''' To mail merge data from your Customer objects into Microsoft Word documents.
     ''' </summary>
     Public Class CustomerMailMergeDataSource
         Implements IMailMergeDataSource
@@ -181,7 +181,7 @@ Class NestedMailMergeCustom
                     Return True
                 Case Else
                     ' A field with this name was not found, 
-                    ' return false to the Aspose.Words mail merge engine.
+                    ' Return false to the Aspose.Words mail merge engine.
                     fieldValue = Nothing
                     Return False
             End Select
@@ -252,7 +252,7 @@ Class NestedMailMergeCustom
                     Return True
                 Case Else
                     ' A field with this name was not found, 
-                    ' return false to the Aspose.Words mail merge engine.
+                    ' Return false to the Aspose.Words mail merge engine.
                     fieldValue = Nothing
                     Return False
             End Select
@@ -269,7 +269,7 @@ Class NestedMailMergeCustom
             Return ((Not IsEof))
         End Function
 
-        ' Return null because we haven't any child elements for this sort of object.
+        ' Return null because we haven' T any child elements for this sort of object.
         Public Function GetChildDataSource(ByVal tableName As String) As IMailMergeDataSource Implements IMailMergeDataSource.GetChildDataSource
             Return Nothing
         End Function

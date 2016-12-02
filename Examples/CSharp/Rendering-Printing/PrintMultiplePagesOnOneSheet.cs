@@ -16,12 +16,12 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
     {
         public static void Run()
         {
-            //ExStart:PrintMultiplePagesOnOneSheet
+            // ExStart:PrintMultiplePagesOnOneSheet
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting();
             // Open the document.
             Document doc = new Document(dataDir + "TestFile.doc");
-            //ExStart:PrintDialogSettings
+            // ExStart:PrintDialogSettings
             PrintDialog printDlg = new PrintDialog();
             // Initialize the Print Dialog with the number of pages in the document.
             printDlg.AllowSomePages = true;
@@ -29,17 +29,17 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             printDlg.PrinterSettings.MaximumPage = doc.PageCount;
             printDlg.PrinterSettings.FromPage = 1;
             printDlg.PrinterSettings.ToPage = doc.PageCount;
-            //ExEnd:PrintDialogSettings
+            // ExEnd:PrintDialogSettings
             // Check if user accepted the print settings and proceed to preview.
-            //ExStart:CheckPrintSettings
+            // ExStart:CheckPrintSettings
             if (!printDlg.ShowDialog().Equals(DialogResult.OK))
                 return;
-            //ExEnd:CheckPrintSettings
+            // ExEnd:CheckPrintSettings
 
             // Pass the printer settings from the dialog to the print document.
             MultipagePrintDocument awPrintDoc = new MultipagePrintDocument(doc, 4, true);
             awPrintDoc.PrinterSettings = printDlg.PrinterSettings;
-            //ExStart:ActivePrintPreviewDialog
+            // ExStart:ActivePrintPreviewDialog
             // Create and configure the the ActivePrintPreviewDialog class.
             ActivePrintPreviewDialog previewDlg = new ActivePrintPreviewDialog();
             previewDlg.Document = awPrintDoc;
@@ -50,28 +50,28 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             previewDlg.WindowState = FormWindowState.Maximized;
             // Show appropriately configured Print Preview dialog.
             previewDlg.ShowDialog();
-            //ExEnd:ActivePrintPreviewDialog
-            //ExEnd:PrintMultiplePagesOnOneSheet
+            // ExEnd:ActivePrintPreviewDialog
+            // ExEnd:PrintMultiplePagesOnOneSheet
         }
         
     }
-    //ExStart:MultipagePrintDocument
+    // ExStart:MultipagePrintDocument
     class MultipagePrintDocument : PrintDocument
-    //ExEnd:MultipagePrintDocument
+    // ExEnd:MultipagePrintDocument
     {
         // The data and state fields of the custom PrintDocument class.
-        //ExStart:DataAndStaticFields        
+        // ExStart:DataAndStaticFields        
         private readonly Document mDocument;
         private readonly int mPagesPerSheet;
         private readonly bool mPrintPageBorders;
         private Size mPaperSize;
         private int mCurrentPage;
         private int mPageTo;
-        //ExEnd:DataAndStaticFields
+        // ExEnd:DataAndStaticFields
         /// <summary>
         /// The constructor of the custom PrintDocument class.
         /// </summary> 
-        //ExStart:MultipagePrintDocumentConstructor 
+        // ExStart:MultipagePrintDocumentConstructor 
         public MultipagePrintDocument(Document document, int pagesPerSheet, bool printPageBorders)
         {
             if (document == null)
@@ -81,11 +81,11 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             mPagesPerSheet = pagesPerSheet;
             mPrintPageBorders = printPageBorders;
         }
-        //ExEnd:MultipagePrintDocumentConstructor
+        // ExEnd:MultipagePrintDocumentConstructor
         /// <summary>
         /// The overridden method OnBeginPrint, which is called before the first page of the document prints.
         /// </summary>
-        //ExStart:OnBeginPrint
+        // ExStart:OnBeginPrint
         protected override void OnBeginPrint(PrintEventArgs e)
         {
             base.OnBeginPrint(e);
@@ -113,11 +113,11 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
                                       PrinterSettings.DefaultPageSettings.PaperSize.Height);
 
         }
-        //ExEnd:OnBeginPrint
+        // ExEnd:OnBeginPrint
         /// <summary>
         /// Generates the printed page from the specified number of the document pages.
         /// </summary>
-        //ExStart:OnPrintPage
+        // ExStart:OnPrintPage
         protected override void OnPrintPage(PrintPageEventArgs e)
         {
             base.OnPrintPage(e);
@@ -169,20 +169,20 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             mCurrentPage = mCurrentPage + mPagesPerSheet;
             e.HasMorePages = (mCurrentPage <= mPageTo);
         }
-        //ExEnd:OnPrintPage
+        // ExEnd:OnPrintPage
         /// <summary>
         /// Converts hundredths of inches to points.
         /// </summary>
-        //ExStart:HundredthsInchToPoint
+        // ExStart:HundredthsInchToPoint
         private static float HundredthsInchToPoint(float value)
         {
             return (float)ConvertUtil.InchToPoint(value / 100);
         }
-        //ExEnd:HundredthsInchToPoint
+        // ExEnd:HundredthsInchToPoint
         /// <summary>
         /// Defines the number of columns and rows depending on the pagesPerSheet number and the page orientation.
         /// </summary>
-        //ExStart:GetThumbCount
+        // ExStart:GetThumbCount
         private Size GetThumbCount(int pagesPerSheet)
         {
             Size size;
@@ -202,6 +202,6 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
                 return new Size(size.Height, size.Width);
             return size;
         }
-        //ExEnd:GetThumbCount
+        // ExEnd:GetThumbCount
     }
 }

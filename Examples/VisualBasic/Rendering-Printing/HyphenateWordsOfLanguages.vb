@@ -16,7 +16,7 @@ Public Class HyphenateWordsOfLanguages
         Hyphenation.RegisterDictionary("en-US", dataDir & Convert.ToString("hyph_en_US.dic"))
         Hyphenation.RegisterDictionary("de-CH", dataDir & Convert.ToString("hyph_de_CH.dic"))
 
-        dataDir = dataDir & Convert.ToString("HyphenateWordsOfLanguages_out_.pdf")
+        dataDir = dataDir & Convert.ToString("HyphenateWordsOfLanguages_out.pdf")
         doc.Save(dataDir)
         ' ExEnd:HyphenateWordsOfLanguage
         Console.WriteLine(Convert.ToString(vbLf & "Words of special languages hyphenate successfully." & vbLf & "File saved at ") & dataDir)

@@ -18,7 +18,7 @@ Class RichTextBoxContentControl
         sdtRichText.ChildNodes.Add(para)
         doc.FirstSection.Body.AppendChild(sdtRichText)
 
-        dataDir = dataDir & Convert.ToString("RichTextBoxContentControl_out_.docx")
+        dataDir = dataDir & Convert.ToString("RichTextBoxContentControl_out.docx")
         doc.Save(dataDir)
         ' ExEnd:RichTextBoxContentControl
         Console.WriteLine(Convert.ToString(vbLf & "Rich text box type content control created successfully." & vbLf & "File saved at ") & dataDir)

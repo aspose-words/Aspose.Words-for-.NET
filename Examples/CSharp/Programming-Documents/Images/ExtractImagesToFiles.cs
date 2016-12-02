@@ -13,7 +13,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Images
     {
         public static void Run()
         {
-            //ExStart:ExtractImagesToFiles
+            // ExStart:ExtractImagesToFiles
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithImages();
             Document doc = new Document(dataDir + "Image.SampleImages.doc");
@@ -25,12 +25,12 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Images
                 if (shape.HasImage)
                 {
                     string imageFileName = string.Format(
-                        "Image.ExportImages.{0}_out_{1}", imageIndex, FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType));
+                        "Image.ExportImages.{0}_out{1}", imageIndex, FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType));
                     shape.ImageData.Save(dataDir + imageFileName);
                     imageIndex++;
                 }
             }
-            //ExEnd:ExtractImagesToFiles
+            // ExEnd:ExtractImagesToFiles
             Console.WriteLine("\nAll images extracted from document.");
         }
     }

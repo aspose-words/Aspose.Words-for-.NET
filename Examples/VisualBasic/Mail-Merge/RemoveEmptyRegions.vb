@@ -24,14 +24,14 @@ Public Class RemoveEmptyRegions
         ' ExStart:MailMergeCleanupOptions
         ' Set the appropriate mail merge clean up options to remove any unused regions from the document.
         doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveUnusedRegions
-        ' doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveContainingFields
-        ' doc.MailMerge.CleanupOptions = doc.MailMerge.CleanupOptions Or MailMergeCleanupOptions.RemoveStaticFields
-        ' doc.MailMerge.CleanupOptions = doc.MailMerge.CleanupOptions Or MailMergeCleanupOptions.RemoveEmptyParagraphs
-        ' doc.MailMerge.CleanupOptions = doc.MailMerge.CleanupOptions Or MailMergeCleanupOptions.RemoveUnusedFields
+        ' Doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveContainingFields
+        ' Doc.MailMerge.CleanupOptions = doc.MailMerge.CleanupOptions Or MailMergeCleanupOptions.RemoveStaticFields
+        ' Doc.MailMerge.CleanupOptions = doc.MailMerge.CleanupOptions Or MailMergeCleanupOptions.RemoveEmptyParagraphs
+        ' Doc.MailMerge.CleanupOptions = doc.MailMerge.CleanupOptions Or MailMergeCleanupOptions.RemoveUnusedFields
         ' ExEnd:MailMergeCleanupOptions
 
         ' Execute mail merge which will have no effect as there is no data. However the regions found in the document will be removed
-        ' automatically as they are unused.
+        ' Automatically as they are unused.
         doc.MailMerge.ExecuteWithRegions(data)
 
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)

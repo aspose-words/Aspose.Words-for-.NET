@@ -11,7 +11,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
     {
         public static void Run()
         {
-            //ExStart:InsertAreaChart
+            // ExStart:InsertAreaChart
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithCharts();
             Document doc = new Document();
@@ -28,9 +28,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
     new DateTime(2002, 07, 01),
     new DateTime(2002, 08, 01),
     new DateTime(2002, 09, 01)}, new double[] { 32, 32, 28, 12, 15 });
-            dataDir = dataDir + @"TestInsertAreaChart_out_.docx";
+            dataDir = dataDir + @"TestInsertAreaChart_out.docx";
             doc.Save(dataDir);
-            //ExEnd:InsertAreaChart
+            // ExEnd:InsertAreaChart
             Console.WriteLine("\nScatter chart created successfully.\nFile saved at " + dataDir);
         }        
     }

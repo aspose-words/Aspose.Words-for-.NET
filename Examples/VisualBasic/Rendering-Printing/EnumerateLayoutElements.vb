@@ -108,7 +108,7 @@ Friend Class OutlineLayoutEntitiesRenderer
     Private Shared Sub AddBoundingBoxToElementsOnPage(ByVal it As LayoutEnumerator, ByVal g As Graphics)
         Do
             ' This time instead of MoveFirstChild and MoveNext, we use MoveLastChild and MovePrevious to enumerate from last to first.
-            ' Enumeration is done backward so the lines of child entities are drawn first and don't overlap the lines of the parent.
+            ' Enumeration is done backward so the lines of child entities are drawn first and don' T overlap the lines of the parent.
             If it.MoveLastChild() Then
                 AddBoundingBoxToElementsOnPage(it, g)
                 it.MoveParent()

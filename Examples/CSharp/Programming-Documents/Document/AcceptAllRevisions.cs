@@ -9,7 +9,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:AcceptAllRevisions
+            // ExStart:AcceptAllRevisions
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             Document doc = new Document(dataDir + "Document.doc");
@@ -21,9 +21,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // Revisions will now show up as normal text in the output document.
             doc.AcceptAllRevisions();
 
-            dataDir = dataDir + "Document.AcceptedRevisions_out_.doc";
+            dataDir = dataDir + "Document.AcceptedRevisions_out.doc";
             doc.Save(dataDir);
-            //ExEnd:AcceptAllRevisions
+            // ExEnd:AcceptAllRevisions
             Console.WriteLine("\nAll revisions accepted.\nFile saved at " + dataDir);
         }        
     }

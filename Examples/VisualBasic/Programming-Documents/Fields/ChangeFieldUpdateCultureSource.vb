@@ -27,7 +27,7 @@ Public Class ChangeFieldUpdateCultureSource
         ' Set the culture used during field update to the culture used by the field.            
         doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode
         doc.MailMerge.Execute(New String() {"Date2"}, New Object() {New DateTime(2011, 1, 1)})
-        dataDir = dataDir & Convert.ToString("Field.ChangeFieldUpdateCultureSource_out_.doc")
+        dataDir = dataDir & Convert.ToString("Field.ChangeFieldUpdateCultureSource_out.doc")
         doc.Save(dataDir)
         ' ExEnd:ChangeFieldUpdateCultureSource
 

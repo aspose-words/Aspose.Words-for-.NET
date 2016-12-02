@@ -8,7 +8,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
     {
         public static void Run()
         {
-            //ExStart:CreateDocument            
+            // ExStart:CreateDocument            
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
@@ -19,11 +19,11 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello World!");  
         
-            dataDir  = dataDir + "CreateDocument_out_.docx";
+            dataDir  = dataDir + "CreateDocument_out.docx";
             // Save the document to disk.
             doc.Save(dataDir);
            
-            //ExEnd:CreateDocument
+            // ExEnd:CreateDocument
 
             Console.WriteLine("\nDocument created successfully.\nFile saved at " + dataDir);
 

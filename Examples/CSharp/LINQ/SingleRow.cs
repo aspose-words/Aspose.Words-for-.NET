@@ -11,7 +11,7 @@ namespace Aspose.Words.Examples.CSharp.LINQ
     {
         public static void Run()
         {
-            //ExStart:SingleRow
+            // ExStart:SingleRow
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LINQ(); 
             string fileName = "SingleRow.doc";
@@ -31,7 +31,7 @@ namespace Aspose.Words.Examples.CSharp.LINQ
 
             // Save the finished document to disk.
             doc.Save(dataDir);
-            //ExEnd:SingleRow
+            // ExEnd:SingleRow
             Console.WriteLine("\nSingle row template document is populated with the data about manager.\nFile saved at " + dataDir);
 
         }

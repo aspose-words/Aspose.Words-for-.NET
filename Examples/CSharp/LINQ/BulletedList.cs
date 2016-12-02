@@ -11,7 +11,7 @@ namespace Aspose.Words.Examples.CSharp.LINQ
     {
         public static void Run()
         {
-            //ExStart:BulletedList 
+            // ExStart:BulletedList 
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LINQ();
             string fileName = "BulletedList.doc";
@@ -28,7 +28,7 @@ namespace Aspose.Words.Examples.CSharp.LINQ
 
             // Save the finished document to disk.
             doc.Save(dataDir);
-            //ExEnd:BulletedList
+            // ExEnd:BulletedList
  
             Console.WriteLine("\nBulleted list template document is populated with the data about clients.\nFile saved at " + dataDir);
 

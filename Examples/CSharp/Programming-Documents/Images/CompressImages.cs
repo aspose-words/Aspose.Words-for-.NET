@@ -66,7 +66,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Images
     {
         /// <summary>
         /// Resamples all images in the document that are greater than the specified PPI (pixels per inch) to the specified PPI
-        /// and converts them to JPEG with the specified quality setting.
+        /// And converts them to JPEG with the specified quality setting.
         /// </summary>
         /// <param name="doc">The document to process.</param>
         /// <param name="desiredPpi">Desired pixels per inch. 220 high quality. 150 screen quality. 96 email quality.</param>

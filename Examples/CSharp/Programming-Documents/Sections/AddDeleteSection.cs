@@ -20,11 +20,11 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Sectio
         /// </summary>
         private static void AddSection(string dataDir)
         {
-            //ExStart:AddSection
+            // ExStart:AddSection
             Document doc = new Document(dataDir);
             Section sectionToAdd = new Section(doc);
             doc.Sections.Add(sectionToAdd);
-            //ExEnd:AddSection
+            // ExEnd:AddSection
             Console.WriteLine("\nSection added successfully to the end of the document.");
         }
         /// <summary>
@@ -32,10 +32,10 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Sectio
         /// </summary>
         private static void DeleteSection(string dataDir)
         {
-            //ExStart:DeleteSection
+            // ExStart:DeleteSection
             Document doc = new Document(dataDir);
             doc.Sections.RemoveAt(0);
-            //ExEnd:DeleteSection
+            // ExEnd:DeleteSection
             Console.WriteLine("\nSection deleted successfully at 0 index.");
         }
         /// <summary>
@@ -43,10 +43,10 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Sectio
         /// </summary>
         private static void DeleteAllSections(string dataDir)
         {
-            //ExStart:DeleteAllSections
+            // ExStart:DeleteAllSections
             Document doc = new Document(dataDir);
             doc.Sections.Clear();
-            //ExEnd:DeleteAllSections
+            // ExEnd:DeleteAllSections
             Console.WriteLine("\nAll sections deleted successfully form the document.");
         }
     }

@@ -24,8 +24,8 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Images
             LayoutCollector layoutCollector = new LayoutCollector(doc);
 
             // Images in a document are added to paragraphs, so to add an image to every page we need to find at any paragraph 
-            // belonging to each page.
-            IEnumerator enumerator = doc.SelectNodes("//Body/Paragraph").GetEnumerator();
+            // Belonging to each page.
+            IEnumerator enumerator = doc.SelectNodes("// Body/Paragraph").GetEnumerator();
 
             // Loop through each document page.
             for (int page = 1; page <= doc.PageCount; page++)

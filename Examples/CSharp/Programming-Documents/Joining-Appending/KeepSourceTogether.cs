@@ -9,7 +9,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appendi
     {
         public static void Run()
         {
-            //ExStart:KeepSourceTogether
+            // ExStart:KeepSourceTogether
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
             string fileName = "TestFile.DestinationList.doc";
@@ -29,7 +29,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appendi
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             dstDoc.Save(dataDir);
-            //ExEnd:KeepSourceTogether
+            // ExEnd:KeepSourceTogether
             Console.WriteLine("\nDocument appended successfully while keeping the content from splitting across two pages.\nFile saved at " + dataDir);
         }
     }

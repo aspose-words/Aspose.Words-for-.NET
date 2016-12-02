@@ -11,7 +11,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:ExtractContentBetweenBlockLevelNodes
+            // ExStart:ExtractContentBetweenBlockLevelNodes
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             string fileName = "TestFile.doc";
@@ -36,7 +36,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the generated document to disk.
             doc.Save(dataDir);
-            //ExEnd:ExtractContentBetweenBlockLevelNodes
+            // ExEnd:ExtractContentBetweenBlockLevelNodes
             Console.WriteLine("\nExtracted content betweenn the block level nodes successfully.\nFile saved at " + dataDir);
         }
     }

@@ -27,7 +27,7 @@ Public Class ConvertNumPageFields
         dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting)
 
         ' After joining the documents the NUMPAGE fields will now display the total number of pages which 
-        ' is undesired behavior. Call this method to fix them by replacing them with PAGEREF fields.
+        ' Is undesired behavior. Call this method to fix them by replacing them with PAGEREF fields.
         ConvertNumPageFieldsToPageRef(dstDoc)
 
         ' This needs to be called in order to update the new fields with page numbers.
@@ -41,7 +41,7 @@ Public Class ConvertNumPageFields
     ' ExStart:ConvertNumPageFieldsToPageRef
     ''' <summary>
     ''' Replaces all NUMPAGES fields in the document with PAGEREF fields. The replacement field displays the total number
-    ''' of pages in the sub document instead of the total pages in the document.
+    ''' Of pages in the sub document instead of the total pages in the document.
     ''' </summary>
     ''' <param name="doc">The combined document to process</param>
     Public Shared Sub ConvertNumPageFieldsToPageRef(ByVal doc As Document)
@@ -56,16 +56,16 @@ Public Class ConvertNumPageFields
         ' Create a new DocumentBuilder which is used to insert the bookmarks and replacement fields.
         Dim builder As New DocumentBuilder(doc)
         ' Defines the number of page restarts that have been encountered and therefore the number of "sub" documents
-        ' found within this document.
+        ' Found within this document.
         Dim subDocumentCount As Integer = 0
 
         ' Iterate through all sections in the document.
         For Each section As Section In doc.Sections
-            ' This section has it's page numbering restarted so we will treat this as the start of a sub document.
+            ' This section has it' S page numbering restarted so we will treat this as the start of a sub document.
             ' Any PAGENUM fields in this inner document must be converted to special PAGEREF fields to correct numbering.
             If section.PageSetup.RestartPageNumbering Then
-                ' Don't do anything if this is the first section in the document. This part of the code will insert the bookmark marking
-                ' the end of the previous sub document so therefore it is not applicable for first section in the document.
+                ' Don' T do anything if this is the first section in the document. This part of the code will insert the bookmark marking
+                ' The end of the previous sub document so therefore it is not applicable for first section in the document.
                 If (Not section.Equals(doc.FirstSection)) Then
                     ' Get the previous section and the last node within the body of that section.
                     Dim prevSection As Section = CType(section.PreviousSibling, Section)
@@ -85,7 +85,7 @@ Public Class ConvertNumPageFields
             ' The last section simply needs the ending bookmark to signal that it is the end of the current sub document.
             If section.Equals(doc.LastSection) Then
                 ' Insert the bookmark at the end of the body of the last section.
-                ' Don't increase the count this time as we are just marking the end of the document.
+                ' Don' T increase the count this time as we are just marking the end of the document.
                 Dim lastNode As Node = doc.LastSection.Body.LastChild
                 builder.MoveTo(lastNode)
                 builder.StartBookmark(bookmarkPrefix & subDocumentCount)
@@ -94,18 +94,18 @@ Public Class ConvertNumPageFields
 
             ' Iterate through each NUMPAGES field in the section and replace the field with a PAGEREF field referring to the bookmark of the current subdocument
             ' This bookmark is positioned at the end of the sub document but does not exist yet. It is inserted when a section with restart page numbering or the last 
-            ' section is encountered.
+            ' Section is encountered.
             Dim nodes() As Node = section.GetChildNodes(NodeType.FieldStart, True).ToArray()
             For Each fieldStart As FieldStart In nodes
                 If fieldStart.FieldType = FieldType.FieldNumPages Then
                     ' Get the field code.
                     Dim fieldCode As String = GetFieldCode(fieldStart)
                     ' Since the NUMPAGES field does not take any additional parameters we can assume the remaining part of the field
-                    ' code after the fieldname are the switches. We will use these to help recreate the NUMPAGES field as a PAGEREF field.
+                    ' Code after the fieldname are the switches. We will use these to help recreate the NUMPAGES field as a PAGEREF field.
                     Dim fieldSwitches As String = fieldCode.Replace(numPagesFieldName, "").Trim()
 
                     ' Inserting the new field directly at the FieldStart node of the original field will cause the new field to
-                    ' not pick up the formatting of the original field. To counter this insert the field just before the original field
+                    ' Not pick up the formatting of the original field. To counter this insert the field just before the original field
                     Dim previousNode As Node = fieldStart.PreviousSibling
 
                     ' If a previous run cannot be found then we are forced to use the FieldStart node.

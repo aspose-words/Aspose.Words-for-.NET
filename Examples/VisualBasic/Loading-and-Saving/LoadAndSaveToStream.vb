@@ -32,8 +32,8 @@ Public Class LoadAndSaveToStream
         ' ExEnd:LoadAndSaveToStream 
 
         ' Save the document from stream, to disk. Normally you would do something with the stream directly,
-        ' for example writing the data to a database.
-        dataDir = dataDir & "Document_out_.rtf"
+        ' For example writing the data to a database.
+        dataDir = dataDir & "Document_out.rtf"
         File.WriteAllBytes(dataDir, dstStream.ToArray())
 
         Console.WriteLine(vbNewLine + "Stream of document saved successfully." + vbNewLine + "File saved at " + dataDir)

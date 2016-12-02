@@ -12,7 +12,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:DocumentBuilderInsertTCFieldsAtText
+            // ExStart:DocumentBuilderInsertTCFieldsAtText
             Document doc = new Document();
 
             FindReplaceOptions options = new FindReplaceOptions();
@@ -23,11 +23,11 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 
             // Insert a TC field which displays "Chapter 1" just before the text "The Beginning" in the document.
             doc.Range.Replace(new Regex("The Beginning"), "", options);
-            //ExEnd:DocumentBuilderInsertTCFieldsAtText
+            // ExEnd:DocumentBuilderInsertTCFieldsAtText
           
         }     
     }
-    //ExStart:InsertTCFieldHandler
+    // ExStart:InsertTCFieldHandler
     public class InsertTCFieldHandler : IReplacingCallback
     {
         // Store the text and switches to be used for the TC fields.
@@ -60,7 +60,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             builder.MoveTo(args.MatchNode);
 
             // If the user specified text to be used in the field as display text then use that, otherwise use the 
-            // match string as the display text.
+            // Match string as the display text.
             string insertText;
 
             if (!string.IsNullOrEmpty(mFieldText))
@@ -75,5 +75,5 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             return ReplaceAction.Skip;
         }
     }
-    //ExEnd:InsertTCFieldHandler
+    // ExEnd:InsertTCFieldHandler
 }

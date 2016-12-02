@@ -13,7 +13,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
     {
         public static void Run()
         {
-            //ExStart:FindAndHighlight
+            // ExStart:FindAndHighlight
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_FindAndReplace();
             string fileName = "TestFile.doc";
@@ -30,10 +30,10 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the output document.
             doc.Save(dataDir);
-            //ExEnd:FindAndHighlight
+            // ExEnd:FindAndHighlight
             Console.WriteLine("\nText highlighted successfully.\nFile saved at " + dataDir);
         }
-        //ExStart:ReplaceEvaluatorFindAndHighlight
+        // ExStart:ReplaceEvaluatorFindAndHighlight
         private class ReplaceEvaluatorFindAndHighlight : IReplacingCallback
         {
             /// <summary>
@@ -46,7 +46,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
                 Node currentNode = e.MatchNode;
 
                 // The first (and may be the only) run can contain text before the match, 
-                // in this case it is necessary to split the run.
+                // In this case it is necessary to split the run.
                 if (e.MatchOffset > 0)
                     currentNode = SplitRun((Run)currentNode, e.MatchOffset);
 
@@ -87,8 +87,8 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
                 return ReplaceAction.Skip;
             }
         }
-        //ExEnd:ReplaceEvaluatorFindAndHighlight
-        //ExStart:SplitRun
+        // ExEnd:ReplaceEvaluatorFindAndHighlight
+        // ExStart:SplitRun
         /// <summary>
         /// Splits text of the specified run into two runs.
         /// Inserts the new run just after the specified run.
@@ -101,6 +101,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
             run.ParentNode.InsertAfter(afterRun, run);
             return afterRun;
         }
-        //ExEnd:SplitRun
+        // ExEnd:SplitRun
     }
 }

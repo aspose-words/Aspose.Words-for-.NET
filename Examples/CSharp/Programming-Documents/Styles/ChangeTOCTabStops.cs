@@ -10,7 +10,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Styles
     {
         public static void Run()
         {
-            //ExStart:ChangeTOCTabStops
+            // ExStart:ChangeTOCTabStops
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithStyles();
 
@@ -36,7 +36,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Styles
 
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             doc.Save(dataDir);            
-            //ExEnd:ChangeTOCTabStops 
+            // ExEnd:ChangeTOCTabStops 
             Console.WriteLine("\nPosition of the right tab stop in TOC related paragraphs modified successfully.\nFile saved at " + dataDir);
         }        
     }

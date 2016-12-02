@@ -13,7 +13,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
     {
         public static void Run()
         {
-            //ExStart:RepeatRowsOnSubsequentPages
+            // ExStart:RepeatRowsOnSubsequentPages
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithTables();
 
@@ -45,10 +45,10 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
                 builder.EndRow();
             }
 
-            dataDir = dataDir + "Table.HeadingRow_out_.doc";
+            dataDir = dataDir + "Table.HeadingRow_out.doc";
             // Save the document to disk.
             doc.Save(dataDir);
-            //ExEnd:RepeatRowsOnSubsequentPages
+            // ExEnd:RepeatRowsOnSubsequentPages
             Console.WriteLine("\nTable build successfully which include heading rows that repeat on subsequent pages..\nFile saved at " + dataDir);
         }
         

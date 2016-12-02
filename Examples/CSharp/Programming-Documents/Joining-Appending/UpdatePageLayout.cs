@@ -9,7 +9,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appendi
     {
         public static void Run()
         {
-            //ExStart:UpdatePageLayout
+            // ExStart:UpdatePageLayout
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
             string fileName = "TestFile.Destination.doc";
@@ -18,7 +18,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appendi
             Document srcDoc = new Document(dataDir + "TestFile.Source.doc");
 
             // If the destination document is rendered to PDF, image etc or UpdatePageLayout is called before the source document 
-            // is appended then any changes made after will not be reflected in the rendered output.
+            // Is appended then any changes made after will not be reflected in the rendered output.
             dstDoc.UpdatePageLayout();
 
             // Join the documents.
@@ -31,7 +31,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appendi
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the joined document to PDF.
             dstDoc.Save(dataDir);
-            //ExEnd:UpdatePageLayout
+            // ExEnd:UpdatePageLayout
             Console.WriteLine("\nDocument appended successfully with updated page layout after appending the document.\nFile saved at " + dataDir);
         }
     }

@@ -43,7 +43,7 @@ Public Class BookmarkTable
         ' End of bookmark
         builder.EndBookmark("MyBookmark")
 
-        dataDir = dataDir & Convert.ToString("Bookmark.Table_out_.doc")
+        dataDir = dataDir & Convert.ToString("Bookmark.Table_out.doc")
         doc.Save(dataDir)
         ' ExEnd:BookmarkTable
         Console.WriteLine(Convert.ToString(vbLf & "Table bookmarked successfully." & vbLf & "File saved at ") & dataDir)

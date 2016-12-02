@@ -29,7 +29,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
         }
         public static void CheckCellsMerged(string dataDir)
         {
-            //ExStart:CheckCellsMerged 
+            // ExStart:CheckCellsMerged 
             Document doc = new Document(dataDir + "Table.MergedCells.doc");
 
             // Retrieve the first table in the document.
@@ -42,9 +42,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
                     Console.WriteLine(PrintCellMergeType(cell));
                 }
             }
-            //ExEnd:CheckCellsMerged 
+            // ExEnd:CheckCellsMerged 
         }
-        //ExStart:PrintCellMergeType 
+        // ExStart:PrintCellMergeType 
         public static string PrintCellMergeType(Cell cell)
         {
             bool isHorizontallyMerged = cell.CellFormat.HorizontalMerge != CellMerge.None;
@@ -60,10 +60,10 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             else
                 return string.Format("The cell at {0} is not merged", cellLocation);
         }
-        //ExEnd:PrintCellMergeType
+        // ExEnd:PrintCellMergeType
         public static void VerticalMerge( string dataDir)
         {
-            //ExStart:VerticalMerge           
+            // ExStart:VerticalMerge           
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -85,16 +85,16 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             builder.Write("Text in another cell");
             builder.EndRow();
             builder.EndTable();
-            dataDir = dataDir + "Table.VerticalMerge_out_.doc";
+            dataDir = dataDir + "Table.VerticalMerge_out.doc";
 
             // Save the document to disk.
             doc.Save(dataDir);
-            //ExEnd:VerticalMerge
+            // ExEnd:VerticalMerge
             Console.WriteLine("\nTable created successfully with two columns with cells merged vertically in the first column.\nFile saved at " + dataDir);
         }
         public static void HorizontalMerge(string dataDir)
         {
-            //ExStart:HorizontalMerge         
+            // ExStart:HorizontalMerge         
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -115,17 +115,17 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             builder.Write("Text in another cell.");
             builder.EndRow();
             builder.EndTable();
-            dataDir = dataDir + "Table.HorizontalMerge_out_.doc";
+            dataDir = dataDir + "Table.HorizontalMerge_out.doc";
 
             // Save the document to disk.
             doc.Save(dataDir);
-            //ExEnd:HorizontalMerge
+            // ExEnd:HorizontalMerge
             Console.WriteLine("\nTable created successfully with cells in the first row horizontally merged.\nFile saved at " + dataDir);
             
         }
         public static void MergeCellRange(string dataDir)
         {
-            //ExStart:MergeCellRange
+            // ExStart:MergeCellRange
             // Open the document
             Document doc = new Document(dataDir + "Table.Document.doc");
 
@@ -138,28 +138,28 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
 
             // Merge all the cells between the two specified cells into one.
             MergeCells(cellStartRange, cellEndRange);            
-            dataDir = dataDir + "Table.MergeCellRange_out_.doc";
+            dataDir = dataDir + "Table.MergeCellRange_out.doc";
             // Save the document.
             doc.Save(dataDir);
-            //ExEnd:MergeCellRange
+            // ExEnd:MergeCellRange
             Console.WriteLine("\nCells merged successfully.\nFile saved at " + dataDir);
             
         }
         public static void PrintHorizontalAndVerticalMerged(string dataDir)
         {
-            //ExStart:PrintHorizontalAndVerticalMerged
+            // ExStart:PrintHorizontalAndVerticalMerged
             Document doc = new Document(dataDir + "Table.MergedCells.doc");
 
-            //Create visitor
+            // Create visitor
             SpanVisitor visitor = new SpanVisitor(doc);
 
-            //Accept visitor
+            // Accept visitor
             doc.Accept(visitor);
-            //ExEnd:PrintHorizontalAndVerticalMerged
+            // ExEnd:PrintHorizontalAndVerticalMerged
             Console.WriteLine("\nHorizontal and vertical merged of a cell prints successfully.");
            
         }
-        //ExStart:MergeCells
+        // ExStart:MergeCells
         internal static void MergeCells(Cell startCell, Cell endCell)
         {
             Table parentTable = startCell.ParentRow.ParentTable;
@@ -193,8 +193,8 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
                 }
             }
         }
-        //ExEnd:MergeCells
-        //ExStart:HorizontalAndVerticalMergeHelperClasses
+        // ExEnd:MergeCells
+        // ExStart:HorizontalAndVerticalMergeHelperClasses
         /// <summary>
         /// Helper class that contains collection of rowinfo for each row
         /// </summary>
@@ -273,7 +273,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
                 xmlDoc.Load(htmlStream);
 
                 // Get collection of tables in the HTML document
-                XmlNodeList tables = xmlDoc.DocumentElement.SelectNodes("//table");
+                XmlNodeList tables = xmlDoc.DocumentElement.SelectNodes("// Table");
 
                 foreach (XmlNode table in tables)
                 {
@@ -337,7 +337,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             private List<TableInfo> mTables = new List<TableInfo>();
             private NodeCollection mWordTables = null;
         }
-        //ExEnd:HorizontalAndVerticalMergeHelperClasses
+        // ExEnd:HorizontalAndVerticalMergeHelperClasses
  
     }
 }

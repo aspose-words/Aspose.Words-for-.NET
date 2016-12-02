@@ -12,7 +12,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:ExtractTextOnly
+            // ExStart:ExtractTextOnly
             Document doc = new Document();
 
             // Enter a dummy field into the document.
@@ -23,10 +23,10 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             Console.WriteLine("GetText() Result: " + doc.GetText());
 
             // ToString will export the node to the specified format. When converted to text it will not retrieve fields code 
-            // or special characters, but will still contain some natural formatting characters such as paragraph markers etc. 
+            // Or special characters, but will still contain some natural formatting characters such as paragraph markers etc. 
             // This is the same as "viewing" the document as if it was opened in a text editor.
             Console.WriteLine("ToString() Result: " + doc.ToString(SaveFormat.Text));
-            //ExEnd:ExtractTextOnly            
+            // ExEnd:ExtractTextOnly            
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
     {
         public static void Run()
         {
-            //ExStart:AccessAndVerifySignature            
+            // ExStart:AccessAndVerifySignature            
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
@@ -24,7 +24,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
                 Console.WriteLine("Issuer name: " + signature.CertificateHolder.Certificate.IssuerName.Name);
                 Console.WriteLine();
             }
-            //ExEnd:AccessAndVerifySignature
+            // ExEnd:AccessAndVerifySignature
         }
     }
 }

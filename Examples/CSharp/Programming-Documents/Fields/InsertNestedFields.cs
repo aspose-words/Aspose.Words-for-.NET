@@ -13,7 +13,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
     {
         public static void Run()
         {
-            //ExStart:InsertNestedFields
+            // ExStart:InsertNestedFields
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
 
@@ -37,11 +37,11 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
             builder.Write(" \"See Next Page\" \"Last Page\" ");
 
             // Finally update the outer field to recalcaluate the final value. Doing this will automatically update
-            // the inner fields at the same time.
+            // The inner fields at the same time.
             field.Update();
-            dataDir = dataDir + "InsertNestedFields_out_.docx";
+            dataDir = dataDir + "InsertNestedFields_out.docx";
             doc.Save(dataDir);
-            //ExEnd:InsertNestedFields
+            // ExEnd:InsertNestedFields
             Console.WriteLine("\nInserted nested fields in the document successfully.\nFile saved at " + dataDir);
         }
     }

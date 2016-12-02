@@ -19,7 +19,7 @@ Public Class KeepSourceTogether
         Dim dstDoc As New Document(dataDir & fileName)
         Dim srcDoc As New Document(dataDir & "TestFile.Source.doc")
 
-        ' Set the source document to appear straight after the destination document's content.
+        ' Set the source document to appear straight after the destination document' S content.
         srcDoc.FirstSection.PageSetup.SectionStart = SectionStart.Continuous
 
         ' Iterate through all sections in the source document.

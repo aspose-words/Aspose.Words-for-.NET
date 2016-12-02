@@ -15,7 +15,7 @@ Public Class AcceptAllRevisions
         ' Revisions will now show up as normal text in the output document.
         doc.AcceptAllRevisions()
 
-        dataDir = dataDir & Convert.ToString("Document.AcceptedRevisions_out_.doc")
+        dataDir = dataDir & Convert.ToString("Document.AcceptedRevisions_out.doc")
         doc.Save(dataDir)
         ' ExEnd:AcceptAllRevisions
         Console.WriteLine(Convert.ToString(vbLf & "All revisions accepted." & vbLf & "File saved at ") & dataDir)

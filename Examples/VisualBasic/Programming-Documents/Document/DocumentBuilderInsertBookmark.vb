@@ -15,7 +15,7 @@ Class DocumentBuilderInsertBookmark
         builder.Writeln("This is just a fine bookmark.")
         builder.EndBookmark("FineBookmark")
 
-        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertBookmark_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertBookmark_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderInsertBookmark
         Console.WriteLine(Convert.ToString(vbLf & "Bookmark using DocumentBuilder inserted successfully." & vbLf & "File saved at ") & dataDir)

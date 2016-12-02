@@ -12,7 +12,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:ExtractContentUsingField
+            // ExStart:ExtractContentUsingField
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             string fileName = "TestFile.doc";
@@ -36,7 +36,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             Document dstDoc = Common.GenerateDocument(doc, extractedNodes);
             dataDir = dataDir +  RunExamples.GetOutputFilePath(fileName);
             dstDoc.Save(dataDir);
-            //ExEnd:ExtractContentUsingField
+            // ExEnd:ExtractContentUsingField
             Console.WriteLine("\nExtracted content using the Field successfully.\nFile saved at " + dataDir);
         }
     }

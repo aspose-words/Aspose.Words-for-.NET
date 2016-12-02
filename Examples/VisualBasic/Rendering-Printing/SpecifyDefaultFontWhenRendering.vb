@@ -15,7 +15,7 @@ Public Class SpecifyDefaultFontWhenRendering
         FontSettings.DefaultFontName = "Arial Unicode MS"
         ' Set font settings
         doc.FontSettings = FontSettings
-        dataDir = dataDir & Convert.ToString("Rendering.SetDefaultFont_out_.pdf")
+        dataDir = dataDir & Convert.ToString("Rendering.SetDefaultFont_out.pdf")
         ' Now the set default font is used in place of any missing fonts during any rendering calls.
         doc.Save(dataDir)
         ' ExEnd:SpecifyDefaultFontWhenRendering 

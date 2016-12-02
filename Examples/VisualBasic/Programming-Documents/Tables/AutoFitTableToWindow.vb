@@ -23,7 +23,7 @@ Public Class AutoFitTableToWindow
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the document to disk.
         doc.Save(dataDir)
-        'ExEnd
+        ' ExEnd
 
         Debug.Assert(doc.FirstSection.Body.Tables(0).PreferredWidth.Type = PreferredWidthType.Percent, "PreferredWidth type is not percent")
         Debug.Assert(doc.FirstSection.Body.Tables(0).PreferredWidth.Value = 100, "PreferredWidth value is different than 100")

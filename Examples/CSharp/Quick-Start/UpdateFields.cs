@@ -76,7 +76,7 @@ namespace Aspose.Words.Examples.CSharp.Quick_Start
             // Call the method below to update the TOC.
             doc.UpdateFields();
 
-            dataDir = dataDir + "Document Field Update_out_.docx";
+            dataDir = dataDir + "Document Field Update_out.docx";
             doc.Save(dataDir);
 
             Console.WriteLine("\nFields updated successfully.\nFile saved at " + dataDir);

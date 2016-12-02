@@ -12,7 +12,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
     {
         public static void Run()
         {
-            //ExStart:SetFontsFoldersSystemAndCustomFolder
+            // ExStart:SetFontsFoldersSystemAndCustomFolder
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); 
 
@@ -36,9 +36,9 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             FontSettings.SetFontsSources(updatedFontSources);
             // Set font settings
             doc.FontSettings = FontSettings;
-            dataDir = dataDir + "Rendering.SetFontsFolders_out_.pdf";
+            dataDir = dataDir + "Rendering.SetFontsFolders_out.pdf";
             doc.Save(dataDir);
-            //ExEnd:SetFontsFoldersSystemAndCustomFolder 
+            // ExEnd:SetFontsFoldersSystemAndCustomFolder 
             Console.WriteLine("\nFonts system and coustom folder is setup.\nFile saved at " + dataDir);
                      
         }

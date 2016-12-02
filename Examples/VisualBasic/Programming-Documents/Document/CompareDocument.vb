@@ -11,7 +11,7 @@ Public Class CompareDocument
         ' ExStart:NormalComparison
         Dim docA As New Document(dataDir & Convert.ToString("TestFile.doc"))
         Dim docB As New Document(dataDir & Convert.ToString("TestFile - Copy.doc"))
-        ' docA now contains changes as revisions. 
+        ' DocA now contains changes as revisions. 
         docA.Compare(docB, "user", DateTime.Now)
         ' ExEnd:NormalComparison                     
     End Sub
@@ -19,7 +19,7 @@ Public Class CompareDocument
         ' ExStart:CompareForEqual
         Dim docA As New Document(dataDir & Convert.ToString("TestFile.doc"))
         Dim docB As New Document(dataDir & Convert.ToString("TestFile - Copy.doc"))
-        ' docA now contains changes as revisions. 
+        ' DocA now contains changes as revisions. 
         docA.Compare(docB, "user", DateTime.Now)
         If docA.Revisions.Count = 0 Then
             Console.WriteLine("Documents are equal")

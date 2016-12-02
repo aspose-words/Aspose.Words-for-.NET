@@ -19,7 +19,7 @@ Class InsertDoc
         Dim options As New FindReplaceOptions()
         options.ReplacingCallback = New InsertDocumentAtReplaceHandler()
         mainDoc.Range.Replace(New Regex("\[MY_DOCUMENT\]"), "", options)
-        dataDir = dataDir & Convert.ToString("InsertDocumentAtReplace_out_.doc")
+        dataDir = dataDir & Convert.ToString("InsertDocumentAtReplace_out.doc")
         mainDoc.Save(dataDir)
         ' ExEnd:InsertDocumentAtReplace
         Console.WriteLine(Convert.ToString(vbLf & "Document inserted successfully at a replace." & vbLf & "File saved at ") & dataDir)
@@ -31,7 +31,7 @@ Class InsertDoc
 
         Dim bookmark As Bookmark = mainDoc.Range.Bookmarks("insertionPlace")
         InsertDocument(bookmark.BookmarkStart.ParentNode, subDoc)
-        dataDir = dataDir & Convert.ToString("InsertDocumentAtBookmark_out_.doc")
+        dataDir = dataDir & Convert.ToString("InsertDocumentAtBookmark_out.doc")
         mainDoc.Save(dataDir)
         ' ExEnd:InsertDocumentAtBookmark
         Console.WriteLine(Convert.ToString(vbLf & "Document inserted successfully at a bookmark." & vbLf & "File saved at ") & dataDir)
@@ -46,9 +46,9 @@ Class InsertDoc
 
         ' The main document has a merge field in it called "Document_1".
         ' The corresponding data for this field contains fully qualified path to the document
-        ' that should be inserted to this field.
+        ' That should be inserted to this field.
         mainDoc.MailMerge.Execute(New String() {"Document_1"}, New String() {dataDir & Convert.ToString("InsertDocument2.doc")})
-        dataDir = dataDir & Convert.ToString("InsertDocumentAtMailMerge_out_.doc")
+        dataDir = dataDir & Convert.ToString("InsertDocumentAtMailMerge_out.doc")
         mainDoc.Save(dataDir)
         ' ExEnd:InsertDocumentAtMailMerge 
         Console.WriteLine(Convert.ToString(vbLf & "Document inserted successfully at mail merge." & vbLf & "File saved at ") & dataDir)
@@ -59,7 +59,7 @@ Class InsertDoc
     ''' Section breaks and section formatting of the inserted document are ignored.
     ''' </summary>
     ''' <param name="insertAfterNode">Node in the destination document after which the content
-    ''' should be inserted. This node should be a block level node (paragraph or table).</param>
+    ''' Should be inserted. This node should be a block level node (paragraph or table).</param>
     ''' <param name="srcDoc">The document to insert.</param>
     Private Shared Sub InsertDocument(insertAfterNode As Node, srcDoc As Document)
         ' Make sure that the node is either a paragraph or table.
@@ -77,7 +77,7 @@ Class InsertDoc
         For Each srcSection As Section In srcDoc.Sections
             ' Loop through all block level nodes (paragraphs and tables) in the body of the section.
             For Each srcNode As Node In srcSection.Body
-                ' Let's skip the node if it is a last empty paragraph in a section.
+                ' Let' S skip the node if it is a last empty paragraph in a section.
                 If srcNode.NodeType.Equals(NodeType.Paragraph) Then
                     Dim para As Paragraph = DirectCast(srcNode, Paragraph)
                     If para.IsEndOfSection AndAlso Not para.HasChildNodes Then
@@ -100,7 +100,7 @@ Class InsertDoc
     ''' Inserts content of the external document after the specified node.
     ''' </summary>
     ''' <param name="insertAfterNode">Node in the destination document after which the content
-    ''' should be inserted. This node should be a block level node (paragraph or table).</param>
+    ''' Should be inserted. This node should be a block level node (paragraph or table).</param>
     ''' <param name="srcDoc">The document to insert.</param>
     Private Shared Sub InsertDocumentWithSectionFormatting(insertAfterNode As Node, srcDoc As Document)
         ' Make sure that the node is either a pargraph or table.
@@ -114,7 +114,7 @@ Class InsertDoc
         ' The section of the node which the insert marker node belongs to
         Dim currentSection As Section = DirectCast(insertAfterNode.GetAncestor(NodeType.Section), Section)
 
-        ' Don't clone the content inside the section, we just want the properties of the section retained.
+        ' Don' T clone the content inside the section, we just want the properties of the section retained.
         Dim cloneSection As Section = DirectCast(currentSection.Clone(False), Section)
 
         ' However make sure the clone section has a body, but no empty first paragraph.
@@ -125,7 +125,7 @@ Class InsertDoc
         insertAfterNode.Document.InsertAfter(cloneSection, currentSection)
 
         ' Append all nodes after the marker node to the new section. This will split the content at the section level at
-        ' the marker so the sections from the other document can be inserted directly.
+        ' The marker so the sections from the other document can be inserted directly.
         Dim currentNode As Node = insertAfterNode.NextSibling
         While currentNode IsNot Nothing
             Dim nextNode As Node = currentNode.NextSibling

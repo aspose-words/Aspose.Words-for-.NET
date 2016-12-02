@@ -39,7 +39,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         }
         public static void RenderShapeToDisk(string dataDir, Shape shape)
         {
-            //ExStart:RenderShapeToDisk
+            // ExStart:RenderShapeToDisk
             ShapeRenderer r = shape.GetShapeRenderer();
 
             // Define custom options which control how the image is rendered. Render the shape to the JPEG raster format.
@@ -48,15 +48,15 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
                 Scale = 1.5f
             };
 
-            dataDir = dataDir + "TestFile.RenderToDisk_out_.emf";
+            dataDir = dataDir + "TestFile.RenderToDisk_out.emf";
             // Save the rendered image to disk.
             r.Save(dataDir, imageOptions);
-            //ExEnd:RenderShapeToDisk
+            // ExEnd:RenderShapeToDisk
             Console.WriteLine("\nShape rendered to disk successfully.\nFile saved at " + dataDir);
         }
         public static void RenderShapeToStream(string dataDir, Shape shape)
         {
-            //ExStart:RenderShapeToStream
+            // ExStart:RenderShapeToStream
             ShapeRenderer r = new ShapeRenderer(shape);
 
             // Define custom options which control how the image is rendered. Render the shape to the vector format EMF.
@@ -68,31 +68,31 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
                 // Reduce the brightness a bit (default is 0.5f).
                 ImageBrightness = 0.45f
             };
-            dataDir = dataDir + "TestFile.RenderToStream_out_.jpg";
+            dataDir = dataDir + "TestFile.RenderToStream_out.jpg";
             FileStream stream = new FileStream(dataDir, FileMode.Create);
 
             // Save the rendered image to the stream using different options.
             r.Save(stream, imageOptions);
-            //ExEnd:RenderShapeToStream
+            // ExEnd:RenderShapeToStream
             Console.WriteLine("\nShape rendered to stream successfully.\nFile saved at " + dataDir);
         }
 
         public static void RenderShapeToGraphics(string dataDir, Shape shape)
         {
-            //ExStart:RenderShapeToGraphics
+            // ExStart:RenderShapeToGraphics
             ShapeRenderer r = shape.GetShapeRenderer();
 
             // Find the size that the shape will be rendered to at the specified scale and resolution.
             Size shapeSizeInPixels = r.GetSizeInPixels(1.0f, 96.0f);
 
             // Rotating the shape may result in clipping as the image canvas is too small. Find the longest side
-            // and make sure that the graphics canvas is large enough to compensate for this.
+            // And make sure that the graphics canvas is large enough to compensate for this.
             int maxSide = System.Math.Max(shapeSizeInPixels.Width, shapeSizeInPixels.Height);
 
             using (Bitmap image = new Bitmap((int)(maxSide * 1.25), (int)(maxSide * 1.25)))
             {
                 // Rendering to a graphics object means we can specify settings and transformations to be applied to 
-                // the shape that is rendered. In our case we will rotate the rendered shape.
+                // The shape that is rendered. In our case we will rotate the rendered shape.
                 using (Graphics gr = Graphics.FromImage(image))
                 {
                     // Clear the shape with the background color of the document.
@@ -107,51 +107,51 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
                     // Render the shape onto the graphics object.
                     r.RenderToSize(gr, 0, 0, shapeSizeInPixels.Width, shapeSizeInPixels.Height);
                 }
-                dataDir = dataDir + "TestFile.RenderToGraphics_out_.png";
+                dataDir = dataDir + "TestFile.RenderToGraphics_out.png";
                 image.Save(dataDir, ImageFormat.Png);
                 Console.WriteLine("\nShape rendered to graphics successfully.\nFile saved at " + dataDir);
             }
-            //ExEnd:RenderShapeToGraphics
+            // ExEnd:RenderShapeToGraphics
            
         }
         public static void RenderCellToImage(string dataDir, Document doc)
         {
-            //ExStart:RenderCellToImage
+            // ExStart:RenderCellToImage
             Cell cell = (Cell)doc.GetChild(NodeType.Cell, 2, true); // The third cell in the first table.
-            dataDir = dataDir + "TestFile.RenderCell_out_.png";
+            dataDir = dataDir + "TestFile.RenderCell_out.png";
             RenderNode(cell, dataDir, null);
-            //ExEnd:RenderCellToImage
+            // ExEnd:RenderCellToImage
             Console.WriteLine("\nCell rendered to image successfully.\nFile saved at " + dataDir);
         }
 
         public static void RenderRowToImage(string dataDir, Document doc)
         {
-            //ExStart:RenderRowToImage
+            // ExStart:RenderRowToImage
             Row row = (Row)doc.GetChild(NodeType.Row, 0, true); // The first row in the first table.
 
-            dataDir = dataDir + "TestFile.RenderRow_out_.png";
+            dataDir = dataDir + "TestFile.RenderRow_out.png";
             RenderNode(row, dataDir, null);
-            //ExEnd:RenderRowToImage
+            // ExEnd:RenderRowToImage
             Console.WriteLine("\nRow rendered to image successfully.\nFile saved at " + dataDir);
         }
 
         public static void RenderParagraphToImage(string dataDir, Document doc)
         {
-            //ExStart:RenderParagraphToImage
+            // ExStart:RenderParagraphToImage
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             Paragraph paragraph = (Paragraph)shape.LastParagraph;
 
             // Save the node with a light pink background.
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
             options.PaperColor = Color.LightPink;
-            dataDir = dataDir + "TestFile.RenderParagraph_out_.png";
+            dataDir = dataDir + "TestFile.RenderParagraph_out.png";
             RenderNode(paragraph, dataDir, options);
-            //ExEnd:RenderParagraphToImage
+            // ExEnd:RenderParagraphToImage
             Console.WriteLine("\nParagraph rendered to image successfully.\nFile saved at " + dataDir);
         }
         public static void FindShapeSizes(Shape shape)
         {
-            //ExStart:FindShapeSizes
+            // ExStart:FindShapeSizes
             SizeF shapeSizeInDocument = shape.GetShapeRenderer().SizeInPoints;
             float width = shapeSizeInDocument.Width; // The width of the shape.
             float height = shapeSizeInDocument.Height; // The height of the shape.
@@ -165,15 +165,15 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
                     // Render shape onto the graphics object using the RenderToScale or RenderToSize methods of ShapeRenderer class.
                 }
             }
-            //ExEnd:FindShapeSizes
+            // ExEnd:FindShapeSizes
         }
         public static void RenderShapeImage(string dataDir, Shape shape)
         {
-            //ExStart:RenderShapeImage
-            dataDir = dataDir + "TestFile.RenderShape_out_.jpg";
+            // ExStart:RenderShapeImage
+            dataDir = dataDir + "TestFile.RenderShape_out.jpg";
             // Save the Shape image to disk in JPEG format and using default options.
             shape.GetShapeRenderer().Save(dataDir, null);
-            //ExEnd:RenderShapeImage
+            // ExEnd:RenderShapeImage
             Console.WriteLine("\nShape image rendered successfully.\nFile saved at " + dataDir);
         }
         /// <summary>
@@ -186,7 +186,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         {
             // This code is taken from public API samples of AW.
             // Previously to find opaque bounds of the shape the function
-            // that checks every pixel of the rendered image was used.
+            // That checks every pixel of the rendered image was used.
             // For now opaque bounds is got using ShapeRenderer.GetOpaqueRectangleInPixels method.
 
             // If no image options are supplied, create default options.
@@ -199,12 +199,12 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             imageOptions.PaperColor = Color.Transparent;
 
             // There a bug which affects the cache of a cloned node. To avoid this we instead clone the entire document including all nodes,
-            // find the matching node in the cloned document and render that instead.
+            // Find the matching node in the cloned document and render that instead.
             Document doc = (Document)node.Document.Clone(true);
             node = doc.GetChild(NodeType.Any, node.Document.GetChildNodes(NodeType.Any, true).IndexOf(node), true);
 
             // Create a temporary shape to store the target node in. This shape will be rendered to retrieve
-            // the rendered content of the node.
+            // The rendered content of the node.
             Shape shape = new Shape(doc, ShapeType.TextBox);
             Section parentSection = (Section)node.GetAncestor(NodeType.Section);
 

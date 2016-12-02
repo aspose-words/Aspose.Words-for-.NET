@@ -20,7 +20,7 @@ Public Class ExecuteArray
         ' Fill the fields in the document with user data.
         doc.MailMerge.Execute(New String() {"FullName", "Company", "Address", "Address2", "City"}, New Object() {"James Bond", "MI5 Headquarters", "Milbank", "", "London"})
 
-        dataDir = dataDir & Convert.ToString("MailMerge.ExecuteArray_out_.doc")
+        dataDir = dataDir & Convert.ToString("MailMerge.ExecuteArray_out.doc")
         ' Send the document in Word format to the client browser with an option to save to disk or open inside the current browser.
         doc.Save(dataDir)
         ' ExEnd:ExecuteArray

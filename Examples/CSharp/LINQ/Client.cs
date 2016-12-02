@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Aspose.Words.Examples.CSharp.LINQ
 {
-    //ExStart:Client
+    // ExStart:Client
     public class Client
     {
         public String Name { get; set; }               
     }
-    //ExEnd:Client
+    // ExEnd:Client
 }

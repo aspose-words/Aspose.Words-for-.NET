@@ -16,11 +16,11 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
-            //ExStart:OpenFromFile
+            // ExStart:OpenFromFile
             string fileName = "TestFile.doc";            
             // Open the document.
             Document doc = new Document(dataDir + fileName);
-            //ExEnd:OpenFromFile
+            // ExEnd:OpenFromFile
 
             // Remove the page and section breaks from the document.
             // In Aspose.Words section breaks are represented as separate Section nodes in the document.
@@ -34,7 +34,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
         
             Console.WriteLine("\nRemoved breaks from the document successfully.\nFile saved at " + dataDir);
         }
-        //ExStart:RemovePageBreaks
+        // ExStart:RemovePageBreaks
         private static void RemovePageBreaks(Document doc)
         {
             // Retrieve all paragraphs in the document.
@@ -57,12 +57,12 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             }
 
         }
-        //ExEnd:RemovePageBreaks
-        //ExStart:RemoveSectionBreaks
+        // ExEnd:RemovePageBreaks
+        // ExStart:RemoveSectionBreaks
         private static void RemoveSectionBreaks(Document doc)
         {
             // Loop through all sections starting from the section that precedes the last one 
-            // and moving to the first section.
+            // And moving to the first section.
             for (int i = doc.Sections.Count - 2; i >= 0; i--)
             {
                 // Copy the content of the current section to the beginning of the last section.
@@ -71,6 +71,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
                 doc.Sections[i].Remove();
             }
         }
-        //ExEnd:RemoveSectionBreaks
+        // ExEnd:RemoveSectionBreaks
     }
 }

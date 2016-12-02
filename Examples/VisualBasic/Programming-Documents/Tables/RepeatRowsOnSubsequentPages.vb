@@ -36,7 +36,7 @@ Public Class RepeatRowsOnSubsequentPages
             builder.EndRow()
         Next
 
-        dataDir = dataDir & Convert.ToString("Table.HeadingRow_out_.doc")
+        dataDir = dataDir & Convert.ToString("Table.HeadingRow_out.doc")
         ' Save the document to disk.
         doc.Save(dataDir)
         ' ExEnd:RepeatRowsOnSubsequentPages

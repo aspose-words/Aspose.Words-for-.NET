@@ -45,12 +45,12 @@ namespace Aspose.Words.Examples.CSharp
             // =====================================================
             // =====================================================
 
-            //AppendDocuments.Run();
-            //ApplyLicense.Run();
-            //FindAndReplace.Run();
-            //QucikStart.HelloWorld.Run();
-            //UpdateFields.Run();
-            //WorkingWithNodes.Run();
+            // AppendDocuments.Run();
+            // ApplyLicense.Run();
+            // FindAndReplace.Run();
+            // QucikStart.HelloWorld.Run();
+            // UpdateFields.Run();
+            // WorkingWithNodes.Run();
 
             //// =====================================================
             //// =====================================================
@@ -58,24 +58,24 @@ namespace Aspose.Words.Examples.CSharp
             //// =====================================================
             //// =====================================================
 
-            //OpenEncryptedDocument.Run();
-            //LoadAndSaveToDisk.Run();
-            //LoadAndSaveToStream.Run();
-            //CreateDocument.Run();
-            //CheckFormat.Run();
-            //SplitIntoHtmlPages.Run();
-            //LoadTxt.Run();
-            //PageSplitter.Run();
-            //ImageToPdf.Run();
-            //SpecifySaveOption.Run();
-            //AccessAndVerifySignature.Run();
-            //Doc2Pdf.Run();
-            //DigitallySignedPdf.Run();
-            //ConvertDocumentToByte.Run();
-            //ConvertDocumentToEPUB.Run();
-            //ConvertDocumentToHtmlWithRoundtrip.Run();
-            //DetectDocumentSignatures.Run();
-            //SaveAsTxt.Run();
+            // OpenEncryptedDocument.Run();
+            // LoadAndSaveToDisk.Run();
+            // LoadAndSaveToStream.Run();
+            // CreateDocument.Run();
+            // CheckFormat.Run();
+            // SplitIntoHtmlPages.Run();
+            // LoadTxt.Run();
+            // PageSplitter.Run();
+            // ImageToPdf.Run();
+            // SpecifySaveOption.Run();
+            // AccessAndVerifySignature.Run();
+            // Doc2Pdf.Run();
+            // DigitallySignedPdf.Run();
+            // ConvertDocumentToByte.Run();
+            // ConvertDocumentToEPUB.Run();
+            // ConvertDocumentToHtmlWithRoundtrip.Run();
+            // DetectDocumentSignatures.Run();
+            // SaveAsTxt.Run();
 
             //// =====================================================
             //// =====================================================
@@ -85,190 +85,190 @@ namespace Aspose.Words.Examples.CSharp
 
             //// Joining and Appending
             //// =====================================================
-            //SimpleAppendDocument.Run();
-            //KeepSourceFormatting.Run();
-            //UseDestinationStyles.Run();
-            //JoinContinuous.Run();
-            //JoinNewPage.Run();
-            //RestartPageNumbering.Run();
-            //LinkHeadersFooters.Run();
-            //UnlinkHeadersFooters.Run();
-            //RemoveSourceHeadersFooters.Run();
-            //DifferentPageSetup.Run();
-            //ConvertNumPageFields.Run();
-            //ListUseDestinationStyles.Run();
-            //ListKeepSourceFormatting.Run();
-            //KeepSourceTogether.Run();
-            //BaseDocument.Run();
-            //UpdatePageLayout.Run();
-            //AppendDocumentManually.Run();
-            //PrependDocument.Run();            
+            // SimpleAppendDocument.Run();
+            // KeepSourceFormatting.Run();
+            // UseDestinationStyles.Run();
+            // JoinContinuous.Run();
+            // JoinNewPage.Run();
+            // RestartPageNumbering.Run();
+            // LinkHeadersFooters.Run();
+            // UnlinkHeadersFooters.Run();
+            // RemoveSourceHeadersFooters.Run();
+            // DifferentPageSetup.Run();
+            // ConvertNumPageFields.Run();
+            // ListUseDestinationStyles.Run();
+            // ListKeepSourceFormatting.Run();
+            // KeepSourceTogether.Run();
+            // BaseDocument.Run();
+            // UpdatePageLayout.Run();
+            // AppendDocumentManually.Run();
+            // PrependDocument.Run();            
 
             //// Find and Replace
             //// =====================================================
-            //FindAndHighlight.Run();
-            //ReplaceTextWithField.Run();
-            //ReplaceWithString.Run();
-            //ReplaceWithRegex.Run();
-            //ReplaceWithEvaluator.Run();
+            // FindAndHighlight.Run();
+            // ReplaceTextWithField.Run();
+            // ReplaceWithString.Run();
+            // ReplaceWithRegex.Run();
+            // ReplaceWithEvaluator.Run();
 
             //// Bookmarks
             //// =====================================================
-            //CopyBookmarkedText.Run();
-            //UntangleRowBookmarks.Run();
-            //BookmarkTable.Run();
-            //BookmarkNameAndText.Run();
-            //AccessBookmarks.Run();
-            //CreateBookmark.Run();
+            // CopyBookmarkedText.Run();
+            // UntangleRowBookmarks.Run();
+            // BookmarkTable.Run();
+            // BookmarkNameAndText.Run();
+            // AccessBookmarks.Run();
+            // CreateBookmark.Run();
 
             //// Comments
             //// =====================================================
-            //ProcessComments.Run();
-            //AddComments.Run();
-            //AnchorComment.Run();
+            // ProcessComments.Run();
+            // AddComments.Run();
+            // AnchorComment.Run();
 
             //// ConvertUtil
             //// =====================================================
-            //UtilityClasses.Run();
+            // UtilityClasses.Run();
 
             //// Document
             //// =====================================================
-            //ExtractContentBetweenParagraphs.Run();
-            //ExtractContentBetweenBlockLevelNodes.Run();
-            //ExtractContentBetweenParagraphStyles.Run();
-            //ExtractContentBetweenRuns.Run();
-            //ExtractContentUsingField.Run();
-            //ExtractContentBetweenBookmark.Run();
-            //ExtractContentBetweenCommentRange.Run();
-            //PageNumbersOfNodes.Run();
-            //RemoveBreaks.Run();
-            //CloningDocument.Run();
-            //ProtectDocument.Run();
-            //AccessStyles.Run();
-            //GetVariables.Run();
-            //SetViewOption.Run();
-            //CreateHeaderFooterUsingDocBuilder.Run();
-            //ExtractContentUsingDocumentVisitor.Run();
-            //RemoveFooters.Run();
-            //AddGroupShapeToDocument.Run();
-            //CompareDocument.Run();
-            //DocProperties.Run();
-            //AcceptAllRevisions.Run();
-            //WriteAndFont.Run();
-            //DocumentBuilderInsertParagraph.Run();
-            //DocumentBuilderBuildTable.Run();
-            //DocumentBuilderInsertBreak.Run();
-            //DocumentBuilderInsertImage.Run();
-            //DocumentBuilderInsertBookmark.Run();
-            //DocumentBuilderInsertElements.Run();
-            //DocumentBuilderSetFormatting.Run();
-            //DocumentBuilderMovingCursor.Run();
-            //ExtractTextOnly.Run();
-            //InsertDoc.Run();
-            //DocumentBuilderInsertTOC.Run();
-            //DocumentBuilderInsertTCField.Run();
-            //DocumentBuilderInsertTCFieldsAtText.Run();
-            //RemoveTOCFromDocument.Run();
-            //CheckBoxTypeContentControl.Run();
-            //RichTextBoxContentControl.Run();
-            //ComboBoxContentControl.Run();
-            //UpdateContentControls.Run();
+            // ExtractContentBetweenParagraphs.Run();
+            // ExtractContentBetweenBlockLevelNodes.Run();
+            // ExtractContentBetweenParagraphStyles.Run();
+            // ExtractContentBetweenRuns.Run();
+            // ExtractContentUsingField.Run();
+            // ExtractContentBetweenBookmark.Run();
+            // ExtractContentBetweenCommentRange.Run();
+            // PageNumbersOfNodes.Run();
+            // RemoveBreaks.Run();
+            // CloningDocument.Run();
+            // ProtectDocument.Run();
+            // AccessStyles.Run();
+            // GetVariables.Run();
+            // SetViewOption.Run();
+            // CreateHeaderFooterUsingDocBuilder.Run();
+            // ExtractContentUsingDocumentVisitor.Run();
+            // RemoveFooters.Run();
+            // AddGroupShapeToDocument.Run();
+            // CompareDocument.Run();
+            // DocProperties.Run();
+            // AcceptAllRevisions.Run();
+            // WriteAndFont.Run();
+            // DocumentBuilderInsertParagraph.Run();
+            // DocumentBuilderBuildTable.Run();
+            // DocumentBuilderInsertBreak.Run();
+            // DocumentBuilderInsertImage.Run();
+            // DocumentBuilderInsertBookmark.Run();
+            // DocumentBuilderInsertElements.Run();
+            // DocumentBuilderSetFormatting.Run();
+            // DocumentBuilderMovingCursor.Run();
+            // ExtractTextOnly.Run();
+            // InsertDoc.Run();
+            // DocumentBuilderInsertTOC.Run();
+            // DocumentBuilderInsertTCField.Run();
+            // DocumentBuilderInsertTCFieldsAtText.Run();
+            // RemoveTOCFromDocument.Run();
+            // CheckBoxTypeContentControl.Run();
+            // RichTextBoxContentControl.Run();
+            // ComboBoxContentControl.Run();
+            // UpdateContentControls.Run();
 
             //// Fields
             //// =====================================================
-            //InsertNestedFields.Run();
-            //RemoveField.Run();
-            //ConvertFieldsInDocument.Run();
-            //ConvertFieldsInBody.Run();
-            //ConvertFieldsInParagraph.Run();
-            //ChangeLocale.Run();
-            //UpdateDocFields.Run();
-            //InsertField.Run();
-            //InsertMergeFieldUsingDOM.Run();
-            //InsertMailMergeAddressBlockFieldUsingDOM.Run();
-            //InsertAdvanceFieldWithOutDocumentBuilder.Run();
-            //InsertASKFieldWithOutDocumentBuilder.Run();
-            //InsertAuthorField.Run();
-            //InsertFormFields.Run();
-            //FormFieldsGetFormFieldsCollection.Run();
-            //FormFieldsGetByName.Run();
-            //FormFieldsWorkWithProperties.Run();
-            //RenameMergeFields.Run();
-            //ChangeFieldUpdateCultureSource.Run();
-            //GetFieldNames.Run();
+            // InsertNestedFields.Run();
+            // RemoveField.Run();
+            // ConvertFieldsInDocument.Run();
+            // ConvertFieldsInBody.Run();
+            // ConvertFieldsInParagraph.Run();
+            // ChangeLocale.Run();
+            // UpdateDocFields.Run();
+            // InsertField.Run();
+            // InsertMergeFieldUsingDOM.Run();
+            // InsertMailMergeAddressBlockFieldUsingDOM.Run();
+            // InsertAdvanceFieldWithOutDocumentBuilder.Run();
+            // InsertASKFieldWithOutDocumentBuilder.Run();
+            // InsertAuthorField.Run();
+            // InsertFormFields.Run();
+            // FormFieldsGetFormFieldsCollection.Run();
+            // FormFieldsGetByName.Run();
+            // FormFieldsWorkWithProperties.Run();
+            // RenameMergeFields.Run();
+            // ChangeFieldUpdateCultureSource.Run();
+            // GetFieldNames.Run();
             
             //// Images
             //// =====================================================
-            //AddImageToEachPage.Run();
-            //AddWatermark.Run();
-            //CompressImages.Run();
-            //ExtractImagesToFiles.Run();
-            //InsertBarcodeImage.Run();
+            // AddImageToEachPage.Run();
+            // AddWatermark.Run();
+            // CompressImages.Run();
+            // ExtractImagesToFiles.Run();
+            // InsertBarcodeImage.Run();
 
             //// Ranges
             //// =====================================================
-            //RangesGetText.Run();
-            //RangesDeleteText.Run();
+            // RangesGetText.Run();
+            // RangesDeleteText.Run();
 
             //// Charts
             //// =====================================================
-            //CreateColumnChart.Run();
-            //InsertScatterChart.Run();
-            //InsertAreaChart.Run();
-            //InsertBubbleChart.Run();
-            //CreateChartUsingShape.Run();
-            //WorkWithChartDataLabel.Run();
-            //WorkWithSingleChartDataPoint.Run();
-            //WorkWithSingleChartSeries.Run();
+            // CreateColumnChart.Run();
+            // InsertScatterChart.Run();
+            // InsertAreaChart.Run();
+            // InsertBubbleChart.Run();
+            // CreateChartUsingShape.Run();
+            // WorkWithChartDataLabel.Run();
+            // WorkWithSingleChartDataPoint.Run();
+            // WorkWithSingleChartSeries.Run();
 
             //// Theme
             //// =====================================================
-            //ManipulateThemeProperties.Run();
+            // ManipulateThemeProperties.Run();
 
             //// Node
             //// =====================================================
-            //ExNode.Run();
+            // ExNode.Run();
 
             //// Hyperlink
             //// =====================================================
-            //ReplaceHyperlinks.Run();            
+            // ReplaceHyperlinks.Run();            
 
             //// Styles
             //// =====================================================
-            //ExtractContentBasedOnStyles.Run();
-            //ChangeStyleOfTOCLevel.Run();
-            //ChangeTOCTabStops.Run();
+            // ExtractContentBasedOnStyles.Run();
+            // ChangeStyleOfTOCLevel.Run();
+            // ChangeTOCTabStops.Run();
 
 
             //// Tables
             //// =====================================================
-            //AutoFitTableToWindow.Run();
-            //AutoFitTableToContents.Run();
-            //AutoFitTableToFixedColumnWidths.Run();
-            //InsertTableUsingDocumentBuilder.Run();
-            //InsertTableDirectly.Run();
-            //CloneTable.Run();
-            //InsertTableFromHtml.Run();
-            //ApplyFormatting.Run();
-            //SpecifyHeightAndWidth.Run();
-            //ApplyStyle.Run();
-            //ExtractText.Run();
-            //FindingIndex.Run();
-            //AddRemoveColumn.Run();
-            //RepeatRowsOnSubsequentPages.Run();
-            //JoiningAndSplittingTable.Run();
-            //MergedCells.Run();
-            //KeepTablesAndRowsBreaking.Run();
+            // AutoFitTableToWindow.Run();
+            // AutoFitTableToContents.Run();
+            // AutoFitTableToFixedColumnWidths.Run();
+            // InsertTableUsingDocumentBuilder.Run();
+            // InsertTableDirectly.Run();
+            // CloneTable.Run();
+            // InsertTableFromHtml.Run();
+            // ApplyFormatting.Run();
+            // SpecifyHeightAndWidth.Run();
+            // ApplyStyle.Run();
+            // ExtractText.Run();
+            // FindingIndex.Run();
+            // AddRemoveColumn.Run();
+            // RepeatRowsOnSubsequentPages.Run();
+            // JoiningAndSplittingTable.Run();
+            // MergedCells.Run();
+            // KeepTablesAndRowsBreaking.Run();
 
             //// Sections
             //// =====================================================
-            //SectionsAccessByIndex.Run();
-            //AddDeleteSection.Run();
-            //AppendSectionContent.Run();
-            //DeleteSectionContent.Run();
-            //DeleteHeaderFooterContent.Run();
-            //CloneSection.Run();
-            //CopySection.Run();
+            // SectionsAccessByIndex.Run();
+            // AddDeleteSection.Run();
+            // AppendSectionContent.Run();
+            // DeleteSectionContent.Run();
+            // DeleteHeaderFooterContent.Run();
+            // CloneSection.Run();
+            // CopySection.Run();
             
 
             //// =====================================================
@@ -277,21 +277,21 @@ namespace Aspose.Words.Examples.CSharp
             //// =====================================================
             //// =====================================================
 
-            //ApplyCustomLogicToEmptyRegions.Run();
-            //LINQtoXMLMailMerge.Run();
-            //SimpleMailMerge.Run();
-            //MailMergeFormFields.Run();
-            //MultipleDocsInMailMerge.Run();
-            //NestedMailMerge.Run();
-            //RemoveEmptyRegions.Run();
-            //XMLMailMerge.Run();
-            //ExecuteArray.Run();
-            //MailMergeAlternatingRows.Run();
-            //MailMergeImageFromBlob.Run();
-            //ProduceMultipleDocuments.Run();
-            //MailMergeUsingMustacheSyntax.Run();
-            //ExecuteWithRegionsDataTable.Run();
-            //NestedMailMergeCustom.Run();            
+            // ApplyCustomLogicToEmptyRegions.Run();
+            // LINQtoXMLMailMerge.Run();
+            // SimpleMailMerge.Run();
+            // MailMergeFormFields.Run();
+            // MultipleDocsInMailMerge.Run();
+            // NestedMailMerge.Run();
+            // RemoveEmptyRegions.Run();
+            // XMLMailMerge.Run();
+            // ExecuteArray.Run();
+            // MailMergeAlternatingRows.Run();
+            // MailMergeImageFromBlob.Run();
+            // ProduceMultipleDocuments.Run();
+            // MailMergeUsingMustacheSyntax.Run();
+            // ExecuteWithRegionsDataTable.Run();
+            // NestedMailMergeCustom.Run();            
 
             //// =====================================================
             //// =====================================================
@@ -299,23 +299,23 @@ namespace Aspose.Words.Examples.CSharp
             //// =====================================================
             //// =====================================================
 
-            //DocumentLayoutHelper.Run();
-            //EnumerateLayoutElements.Run();
-            //DocumentPreviewAndPrint.Run();
-            //ImageColorFilters.Run();
-            //RenderShape.Run();
-            //SaveAsMultipageTiff.Run();
-            //ReadActiveXControlProperties.Run();
-            //SetTrueTypeFontsFolder.Run();
-            //SetFontsFoldersMultipleFolders.Run();
-            //SetFontsFoldersSystemAndCustomFolder.Run();
-            //SpecifyDefaultFontWhenRendering.Run();
-            //ReceiveNotificationsOfFont.Run();
-            //EmbeddedFontsInPDF.Run();
-            //EmbeddingWindowsStandardFonts.Run();
-            //HyphenateWordsOfLanguages.Run();
-            //LoadHyphenationDictionaryForLanguage.Run();
-            //PrintProgressDialog.Run();         
+            // DocumentLayoutHelper.Run();
+            // EnumerateLayoutElements.Run();
+            // DocumentPreviewAndPrint.Run();
+            // ImageColorFilters.Run();
+            // RenderShape.Run();
+            // SaveAsMultipageTiff.Run();
+            // ReadActiveXControlProperties.Run();
+            // SetTrueTypeFontsFolder.Run();
+            // SetFontsFoldersMultipleFolders.Run();
+            // SetFontsFoldersSystemAndCustomFolder.Run();
+            // SpecifyDefaultFontWhenRendering.Run();
+            // ReceiveNotificationsOfFont.Run();
+            // EmbeddedFontsInPDF.Run();
+            // EmbeddingWindowsStandardFonts.Run();
+            // HyphenateWordsOfLanguages.Run();
+            // LoadHyphenationDictionaryForLanguage.Run();
+            // PrintProgressDialog.Run();         
 
             //// =====================================================
             //// =====================================================
@@ -323,22 +323,22 @@ namespace Aspose.Words.Examples.CSharp
             //// =====================================================
             //// =====================================================
 
-            //LINQ.HelloWorld.Run();
-            //SingleRow.Run();
-            //InParagraphList.Run();
-            //BulletedList.Run();
-            //NumberedList.Run();
-            //MulticoloredNumberedList.Run();
-            //CommonList.Run();
-            //InTableList.Run();
-            //InTableAlternateContent.Run();
-            //CommonMasterDetail.Run();
-            //InTableMasterDetail.Run();
-            //InTableWithFilteringGroupingSorting.Run();
-            //PieChart.Run();
-            //ScatterChart.Run();
-            //BubbleChart.Run();
-            //ChartWithFilteringGroupingOrdering.Run();
+            // LINQ.HelloWorld.Run();
+            // SingleRow.Run();
+            // InParagraphList.Run();
+            // BulletedList.Run();
+            // NumberedList.Run();
+            // MulticoloredNumberedList.Run();
+            // CommonList.Run();
+            // InTableList.Run();
+            // InTableAlternateContent.Run();
+            // CommonMasterDetail.Run();
+            // InTableMasterDetail.Run();
+            // InTableWithFilteringGroupingSorting.Run();
+            // PieChart.Run();
+            // ScatterChart.Run();
+            // BubbleChart.Run();
+            // ChartWithFilteringGroupingOrdering.Run();
          
             // Stop before exiting
             Console.WriteLine("\n\nProgram Finished. Press any key to exit....");
@@ -468,7 +468,7 @@ namespace Aspose.Words.Examples.CSharp
         {
             string extension = Path.GetExtension(inputFilePath);
             string filename = Path.GetFileNameWithoutExtension(inputFilePath);
-            return filename + "_out_" + extension;
+            return filename + "_out" + extension;
         }
     }
 }

@@ -38,17 +38,17 @@ Namespace DocumentExplorerExample
 			Cursor.Current = cursor
 
 			' Interesting, but PrintDialog will not show and will always return cancel
-			' if you run this application in 64-bit mode.
+			' If you run this application in 64-bit mode.
 			If (Not printDlg.ShowDialog().Equals(DialogResult.OK)) Then
 				Return
 			End If
 
-			' Create the Aspose.Words' implementation of the .NET print document 
-			' and pass the printer settings from the dialog to the print document.
+			' Create the Aspose.Words' Implementation of the .NET print document 
+			' And pass the printer settings from the dialog to the print document.
 			Dim awPrintDoc As New AsposeWordsPrintDocument(document)
 			awPrintDoc.PrinterSettings = printDlg.PrinterSettings
 
-			' Pass the Aspose.Words' print document to the .NET Print Preview dialog.
+			' Pass the Aspose.Words' Print document to the .NET Print Preview dialog.
 			previewDlg.Document = awPrintDoc
 
 			previewDlg.ShowDialog()

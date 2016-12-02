@@ -8,7 +8,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 {
     class Common
     {
-        //ExStart:CommonExtractContent
+        // ExStart:CommonExtractContent
         public static ArrayList ExtractContent(Node startNode, Node endNode, bool isInclusive)
         {
             // First check that the nodes passed to this method are valid for use.
@@ -80,7 +80,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // Return the nodes between the node markers.
             return nodes;
         }
-        //ExEnd:CommonExtractContent
+        // ExEnd:CommonExtractContent
         public static ArrayList ParagraphsByStyleName(Document doc, string styleName)
         {
             // Create an array to collect paragraphs of the specified style.
@@ -95,7 +95,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             }
             return paragraphsWithStyle;
         }
-        //ExStart:CommonGenerateDocument
+        // ExStart:CommonGenerateDocument
         public static Document GenerateDocument(Document srcDoc, ArrayList nodes)
         {
             // Create a blank document.
@@ -115,8 +115,8 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // Return the generated document.
             return dstDoc;
         }
-        //ExEnd:CommonGenerateDocument  
-        //ExStart:CommonExtractContentHelperMethods
+        // ExEnd:CommonGenerateDocument  
+        // ExStart:CommonExtractContentHelperMethods
         private static void VerifyParameterNodes(Node startNode, Node endNode)
         {
             // The order in which these checks are done is important.
@@ -181,7 +181,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             }
 
             // If either marker is part of a comment then to include the comment itself we need to move the pointer forward to the Comment
-            // node found after the CommentRangeEnd node.
+            // Node found after the CommentRangeEnd node.
             if (node.NodeType == NodeType.CommentRangeEnd)
             {
                 while (node.NextSibling != null && node.NodeType != NodeType.Comment)
@@ -191,7 +191,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 
             // Find the corresponding node in our cloned node by index and return it.
             // If the start and end node are the same some child nodes might already have been removed. Subtract the
-            // difference to get the right index.
+            // Difference to get the right index.
             int indexDiff = node.ParentNode.ChildNodes.Count - cloneNode.ChildNodes.Count;
 
             // Child node count identical.
@@ -240,6 +240,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             }
 
         }
-        //ExEnd:CommonExtractContentHelperMethods
+        // ExEnd:CommonExtractContentHelperMethods
     }
 }

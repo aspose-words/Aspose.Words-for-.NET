@@ -74,7 +74,7 @@ Public Class MergedCells
         builder.Write("Text in another cell")
         builder.EndRow()
         builder.EndTable()
-        dataDir = dataDir & Convert.ToString("Table.VerticalMerge_out_.doc")
+        dataDir = dataDir & Convert.ToString("Table.VerticalMerge_out.doc")
 
         ' Save the document to disk.
         doc.Save(dataDir)
@@ -103,7 +103,7 @@ Public Class MergedCells
         builder.Write("Text in another cell.")
         builder.EndRow()
         builder.EndTable()
-        dataDir = dataDir & Convert.ToString("Table.HorizontalMerge_out_.doc")
+        dataDir = dataDir & Convert.ToString("Table.HorizontalMerge_out.doc")
 
         ' Save the document to disk.
         doc.Save(dataDir)
@@ -125,7 +125,7 @@ Public Class MergedCells
 
         ' Merge all the cells between the two specified cells into one.
         MergeCells(cellStartRange, cellEndRange)
-        dataDir = dataDir & Convert.ToString("Table.MergeCellRange_out_.doc")
+        dataDir = dataDir & Convert.ToString("Table.MergeCellRange_out.doc")
         ' Save the document.
         doc.Save(dataDir)
         ' ExEnd:MergeCellRange
@@ -137,10 +137,10 @@ Public Class MergedCells
         ' ExStart:PrintHorizontalAndVerticalMerged
         Dim doc As New Document(dataDir & Convert.ToString("Table.MergedCells.doc"))
 
-        'Create visitor
+        ' Create visitor
         Dim visitor As New SpanVisitor(doc)
 
-        'Accept visitor
+        ' Accept visitor
         doc.Accept(visitor)
         ' ExEnd:PrintHorizontalAndVerticalMerged
         Console.WriteLine(vbLf & "Horizontal and vertical merged of a cell prints successfully.")
@@ -238,7 +238,7 @@ Public Class MergedCells
         ''' </summary>
         ''' <param name="doc">Is document which we should parse</param>
         Public Sub New(doc As Document)
-            ' get collection of tables from the document
+            ' Get collection of tables from the document
             mWordTables = doc.GetChildNodes(NodeType.Table, True)
 
             ' Convert document to HTML

@@ -13,7 +13,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
     {
         public static void Run()
         {
-            //ExStart:InsertAuthorField
+            // ExStart:InsertAuthorField
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
             Document doc = new Document(dataDir + "in.doc");
@@ -32,9 +32,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
             // Finally update this AUTHOR field
             field.Update();
 
-            dataDir = dataDir + "InsertAuthorField_out_.doc";
+            dataDir = dataDir + "InsertAuthorField_out.doc";
             doc.Save(dataDir);
-            //ExEnd:InsertAuthorField
+            // ExEnd:InsertAuthorField
             Console.WriteLine("\nAuthor field without document builder inserted successfully.\nFile saved at " + dataDir);
         }
     }

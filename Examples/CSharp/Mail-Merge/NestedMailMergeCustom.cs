@@ -10,7 +10,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
     {
         public static void Run()
         {
-            //ExStart:NestedMailMergeCustom
+            // ExStart:NestedMailMergeCustom
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting();
             string fileName = "NestedMailMerge.CustomDataSource.doc";
@@ -28,7 +28,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
             Document doc = new Document(dataDir + fileName);
 
             // To be able to mail merge from your own data source, it must be wrapped
-            // into an object that implements the IMailMergeDataSource interface.
+            // Into an object that implements the IMailMergeDataSource interface.
             CustomerMailMergeDataSource customersDataSource = new CustomerMailMergeDataSource(customers);
 
             // Now you can pass your data source into Aspose.Words.
@@ -36,7 +36,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
 
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             doc.Save(dataDir);
-            //ExEnd:NestedMailMergeCustom
+            // ExEnd:NestedMailMergeCustom
 
             Console.WriteLine("\nMail merge performed with nested custom data successfully.\nFile saved at " + dataDir);
         }
@@ -129,7 +129,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
 
         /// <summary>
         /// A custom mail merge data source that you implement to allow Aspose.Words 
-        /// to mail merge data from your Customer objects into Microsoft Word documents.
+        /// To mail merge data from your Customer objects into Microsoft Word documents.
         /// </summary>
         public class CustomerMailMergeDataSource : IMailMergeDataSource
         {
@@ -167,7 +167,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
                         return true;
                     default:
                         // A field with this name was not found, 
-                        // return false to the Aspose.Words mail merge engine.
+                        // Return false to the Aspose.Words mail merge engine.
                         fieldValue = null;
                         return false;
                 }
@@ -185,7 +185,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
                 return (!IsEof);
             }
 
-            //ExStart:GetChildDataSourceExample           
+            // ExStart:GetChildDataSourceExample           
             public IMailMergeDataSource GetChildDataSource(string tableName)
             {
                 switch (tableName)
@@ -197,7 +197,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
                         return null;
                 }
             }
-            //ExEnd:GetChildDataSourceExample
+            // ExEnd:GetChildDataSourceExample
 
             private bool IsEof
             {
@@ -241,7 +241,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
                         return true;
                     default:
                         // A field with this name was not found, 
-                        // return false to the Aspose.Words mail merge engine.
+                        // Return false to the Aspose.Words mail merge engine.
                         fieldValue = null;
                         return false;
                 }

@@ -15,14 +15,14 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             string fileName = "TestFile.doc";
             // Open the document.
             Document doc = new Document(dataDir + fileName);
-            //ExStart:OpenDatabaseConnection 
+            // ExStart:OpenDatabaseConnection 
             string dbName = "";
             // Open a database connection.
             string connString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + RunExamples.GetDataDir_Database() + dbName;
             OleDbConnection mConnection = new OleDbConnection(connString);
             mConnection.Open();
-            //ExEnd:OpenDatabaseConnection
-            //ExStart:OpenRetrieveAndDelete 
+            // ExEnd:OpenDatabaseConnection
+            // ExStart:OpenRetrieveAndDelete 
             // Store the document to the database.
             StoreToDatabase(doc, mConnection);
             // Read the document from the database and store the file to disk.
@@ -37,10 +37,10 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
 
             // Close the connection to the database.
             mConnection.Close();
-            //ExEnd:OpenRetrieveAndDelete 
+            // ExEnd:OpenRetrieveAndDelete 
             
         }
-        //ExStart:StoreToDatabase 
+        // ExStart:StoreToDatabase 
         public static void StoreToDatabase(Document doc, OleDbConnection mConnection)
         {
             // Save the document to a MemoryStream object.
@@ -60,8 +60,8 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             // Write the document to the database.
             command.ExecuteNonQuery(); 
         }
-        //ExEnd:StoreToDatabase
-        //ExStart:ReadFromDatabase 
+        // ExEnd:StoreToDatabase
+        // ExStart:ReadFromDatabase 
         public static Document ReadFromDatabase(string fileName, OleDbConnection mConnection)
         {
             // Create the SQL command.
@@ -92,8 +92,8 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             // Return the retrieved document.
             return doc;
         }
-        //ExEnd:ReadFromDatabase
-        //ExStart:DeleteFromDatabase 
+        // ExEnd:ReadFromDatabase
+        // ExStart:DeleteFromDatabase 
         public static void DeleteFromDatabase(string fileName, OleDbConnection mConnection)
         {
             // Create the SQL command.
@@ -104,6 +104,6 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             command.ExecuteNonQuery();
 
         }
-        //ExEnd:DeleteFromDatabase
+        // ExEnd:DeleteFromDatabase
     }
 }

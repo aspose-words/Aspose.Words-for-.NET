@@ -46,7 +46,7 @@ Class ExecuteWithRegionsDataTable
     End Function
     ''' <summary>
     ''' Utility function that creates a connection, command, 
-    ''' executes the command and return the result in a DataTable.
+    ''' Executes the command and return the result in a DataTable.
     ''' </summary>
     Private Shared Function ExecuteDataTable(commandText As String) As DataTable
         ' Open the database connection.

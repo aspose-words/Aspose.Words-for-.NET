@@ -10,8 +10,8 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
     {
         public static void Run()
         {
-            //ExStart:LoadAndSaveToStream 
-            //ExStart:OpeningFromStream 
+            // ExStart:LoadAndSaveToStream 
+            // ExStart:OpeningFromStream 
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_QuickStart();
             string fileName = "Document.doc";
@@ -24,7 +24,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
 
             // You can close the stream now, it is no longer needed because the document is in memory.
             stream.Close();
-            //ExEnd:OpeningFromStream 
+            // ExEnd:OpeningFromStream 
 
             // ... do something with the document
 
@@ -34,10 +34,10 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
 
             // Rewind the stream position back to zero so it is ready for the next reader.
             dstStream.Position = 0;
-            //ExEnd:LoadAndSaveToStream 
+            // ExEnd:LoadAndSaveToStream 
             // Save the document from stream, to disk. Normally you would do something with the stream directly,
-            // for example writing the data to a database.
-            dataDir = dataDir + "Document_out_.rtf";
+            // For example writing the data to a database.
+            dataDir = dataDir + "Document_out.rtf";
             File.WriteAllBytes(dataDir, dstStream.ToArray());
 
             Console.WriteLine("\nStream of document saved successfully.\nFile saved at " + dataDir);

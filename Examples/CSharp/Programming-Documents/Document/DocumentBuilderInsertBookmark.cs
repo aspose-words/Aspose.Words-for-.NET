@@ -10,7 +10,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:DocumentBuilderInsertBookmark
+            // ExStart:DocumentBuilderInsertBookmark
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             // Initialize document.
@@ -21,9 +21,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             builder.Writeln("This is just a fine bookmark.");
             builder.EndBookmark("FineBookmark");
 
-            dataDir = dataDir + "DocumentBuilderInsertBookmark_out_.doc";
+            dataDir = dataDir + "DocumentBuilderInsertBookmark_out.doc";
             doc.Save(dataDir);
-            //ExEnd:DocumentBuilderInsertBookmark
+            // ExEnd:DocumentBuilderInsertBookmark
             Console.WriteLine("\nBookmark using DocumentBuilder inserted successfully.\nFile saved at " + dataDir);
         }     
     }

@@ -13,12 +13,12 @@ namespace Aspose.Words.Examples.CSharp.LINQ
         /// </summary>        
         public static Manager GetManager()
         {
-            //ExStart:GetManager
+            // ExStart:GetManager
             IEnumerator<Manager> managers = GetManagers().GetEnumerator();
             managers.MoveNext();
 
             return managers.Current;
-            //ExEnd:GetManager
+            // ExEnd:GetManager
         }
         
         /// <summary>
@@ -26,13 +26,13 @@ namespace Aspose.Words.Examples.CSharp.LINQ
         /// </summary>        
         public static IEnumerable<Client> GetClients()
         {
-            //ExStart:GetClients
+            // ExStart:GetClients
             foreach (Manager manager in GetManagers())
             {
                 foreach (Contract contract in manager.Contracts)
                     yield return contract.Client;
             }
-            //ExEnd:GetClients
+            // ExEnd:GetClients
         }        
         /// <summary>
         ///  Return an enumeration of instances of the Manager class.
@@ -40,7 +40,7 @@ namespace Aspose.Words.Examples.CSharp.LINQ
         
         public static IEnumerable<Manager> GetManagers()
         {
-            //ExStart:GetManagers
+            // ExStart:GetManagers
             Manager manager = new Manager { Name = "John Smith", Age = 36, Photo = Photo() };
             manager.Contracts = new Contract[]
             {
@@ -67,7 +67,7 @@ namespace Aspose.Words.Examples.CSharp.LINQ
                 new Contract { Client = new Client { Name = "J Ent." }, Manager = manager, Price = 100000, Date = new DateTime(2015, 8, 1) } 
             };
             yield return manager;
-            //ExEnd:GetManagers
+            // ExEnd:GetManagers
         }
         
         /// <summary>
@@ -76,14 +76,14 @@ namespace Aspose.Words.Examples.CSharp.LINQ
       
         private static byte[] Photo()
         {
-            //ExStart:Photo
+            // ExStart:Photo
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LINQ();
 
             // Load the photo and read all bytes.
             byte[] imgdata = System.IO.File.ReadAllBytes(dataDir + "photo.png");
             return imgdata;
-            //ExEnd:Photo
+            // ExEnd:Photo
         }
         
         /// <summary>
@@ -91,13 +91,13 @@ namespace Aspose.Words.Examples.CSharp.LINQ
         /// </summary        
         public static IEnumerable<Contract> GetContracts()
         {
-            //ExStart:GetContracts
+            // ExStart:GetContracts
             foreach (Manager manager in GetManagers())
             {
                 foreach (Contract contract in manager.Contracts)
                     yield return contract;
             }
-            //ExEnd:GetContracts
+            // ExEnd:GetContracts
         }
 
     }

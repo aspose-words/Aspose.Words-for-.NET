@@ -9,7 +9,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:RemoveFooters
+            // ExStart:RemoveFooters
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
 
@@ -34,11 +34,11 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
                 if (footer != null)
                     footer.Remove();
             }
-            dataDir = dataDir + "HeaderFooter.RemoveFooters_out_.doc";
+            dataDir = dataDir + "HeaderFooter.RemoveFooters_out.doc";
 
             // Save the document.
             doc.Save(dataDir);
-            //ExEnd:RemoveFooters
+            // ExEnd:RemoveFooters
             Console.WriteLine("\nAll footers from all sections deleted successfully.\nFile saved at " + dataDir);
         }
     }

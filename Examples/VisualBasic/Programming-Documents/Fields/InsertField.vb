@@ -11,7 +11,7 @@ Public Class InsertField
         Dim doc As New Document()
         Dim builder As New DocumentBuilder(doc)
         builder.InsertField("MERGEFIELD MyFieldName \* MERGEFORMAT")
-        dataDir = dataDir & Convert.ToString("InsertField_out_.docx")
+        dataDir = dataDir & Convert.ToString("InsertField_out.docx")
         doc.Save(dataDir)
         ' ExEnd:InsertField
         Console.WriteLine(Convert.ToString(vbLf & "Inserted field in the document successfully." & vbLf & "File saved at ") & dataDir)

@@ -17,7 +17,7 @@ Public Class UntangleRowBookmarks
         ' This perform the custom task of putting the row bookmark ends into the same row with the bookmark starts.
         UntangleRowBookmarks(doc)
 
-        ' Now we can easily delete rows by a bookmark without damaging any other row's bookmarks.
+        ' Now we can easily delete rows by a bookmark without damaging any other row' S bookmarks.
         DeleteRowByBookmark(doc, "ROW2")
 
         ' This is just to check that the other bookmark was not damaged.
@@ -39,8 +39,8 @@ Public Class UntangleRowBookmarks
             Dim row2 As Row = CType(bookmark.BookmarkEnd.GetAncestor(GetType(Row)), Row)
 
             ' If both rows are found okay and the bookmark start and end are contained
-            ' in adjacent rows, then just move the bookmark end node to the end
-            ' of the last paragraph in the last cell of the top row.
+            ' In adjacent rows, then just move the bookmark end node to the end
+            ' Of the last paragraph in the last cell of the top row.
             If (row1 IsNot Nothing) AndAlso (row2 IsNot Nothing) AndAlso (row1.NextSibling Is row2) Then
                 row1.LastCell.LastParagraph.AppendChild(bookmark.BookmarkEnd)
             End If

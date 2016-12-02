@@ -23,7 +23,7 @@ Public Class InsertAuthorField
         ' Finally update this AUTHOR field
         field.Update()
 
-        dataDir = dataDir & Convert.ToString("InsertAuthorField_out_.doc")
+        dataDir = dataDir & Convert.ToString("InsertAuthorField_out.doc")
         doc.Save(dataDir)
         ' ExEnd:InsertAuthorField
         Console.WriteLine(Convert.ToString(vbLf & "Author field without document builder inserted successfully." & vbLf & "File saved at ") & dataDir)

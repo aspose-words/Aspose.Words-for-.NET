@@ -10,7 +10,7 @@ Class SaveAsTxt
         Dim dataDir As String = RunExamples.GetDataDir_LoadingAndSaving()
 
         Dim doc As New Document(dataDir & Convert.ToString("Document.doc"))
-        dataDir = dataDir & Convert.ToString("Document.ConvertToTxt_out_.txt")
+        dataDir = dataDir & Convert.ToString("Document.ConvertToTxt_out.txt")
         doc.Save(dataDir)
         ' ExEnd:SaveAsTxt
         Console.WriteLine(Convert.ToString(vbLf & "Document saved as TXT." & vbLf & "File saved at ") & dataDir)

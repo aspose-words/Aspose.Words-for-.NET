@@ -10,7 +10,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Comments
     {
         public static void Run()
         {
-            //ExStart:ProcessComments
+            // ExStart:ProcessComments
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithComments();
             string fileName = "TestFile.doc";
@@ -37,10 +37,10 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Comments
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the document.
             doc.Save(dataDir);
-            //ExEnd:ProcessComments
+            // ExEnd:ProcessComments
             Console.WriteLine("\nComments extracted and removed successfully.\nFile saved at " + dataDir);
         }
-        //ExStart:ExtractComments
+        // ExStart:ExtractComments
         static ArrayList ExtractComments(Document doc)
         {
             ArrayList collectedComments = new ArrayList();
@@ -53,8 +53,8 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Comments
             }
             return collectedComments;
         }
-        //ExEnd:ExtractComments
-        //ExStart:ExtractCommentsByAuthor
+        // ExEnd:ExtractComments
+        // ExStart:ExtractCommentsByAuthor
         static ArrayList ExtractComments(Document doc, string authorName)
         {
             ArrayList collectedComments = new ArrayList();
@@ -68,8 +68,8 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Comments
             }
             return collectedComments;
         }
-        //ExEnd:ExtractCommentsByAuthor
-        //ExStart:RemoveComments
+        // ExEnd:ExtractCommentsByAuthor
+        // ExStart:RemoveComments
         static void RemoveComments(Document doc)
         {
             // Collect all comments in the document
@@ -77,8 +77,8 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Comments
             // Remove all comments.
             comments.Clear();
         }
-        //ExEnd:RemoveComments
-        //ExStart:RemoveCommentsByAuthor
+        // ExEnd:RemoveComments
+        // ExStart:RemoveCommentsByAuthor
         static void RemoveComments(Document doc, string authorName)
         {
             // Collect all comments in the document
@@ -91,6 +91,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Comments
                     comment.Remove();
             }
         }
-        //ExEnd:RemoveCommentsByAuthor
+        // ExEnd:RemoveCommentsByAuthor
     }
 }

@@ -162,7 +162,7 @@ Namespace DocumentExplorerExample
 		#Region "Windows Form Designer generated code"
 		''' <summary>
 		''' Required method for Designer support - do not modify
-		''' the contents of this method with the code editor.
+		''' The contents of this method with the code editor.
 		''' </summary>
 		Private Sub InitializeComponent()
 			Me.components = New System.ComponentModel.Container()
@@ -198,88 +198,88 @@ Namespace DocumentExplorerExample
 			Me.mainPanel.SuspendLayout()
 			Me.SuspendLayout()
 			' 
-			' mainMenu
+			' MainMenu
 			' 
 			Me.mainMenu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() { Me.fileMenuItem, Me.viewMenuItem})
 			' 
-			' fileMenuItem
+			' FileMenuItem
 			' 
 			Me.fileMenuItem.Index = 0
 			Me.fileMenuItem.MenuItems.AddRange(New System.Windows.Forms.MenuItem() { Me.fileOpenMenuItem, Me.filePrintMenuItem, Me.separator1MenuItem, Me.fileExitMenuItem})
 			Me.fileMenuItem.Text = "&File"
 			' 
-			' fileOpenMenuItem
+			' FileOpenMenuItem
 			' 
 			Me.fileOpenMenuItem.Index = 0
 			Me.fileOpenMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlO
 			Me.fileOpenMenuItem.Text = "&Open..."
 '			Me.fileOpenMenuItem.Click += New System.EventHandler(Me.fileOpenMenuItem_Click);
 			' 
-			' filePrintMenuItem
+			' FilePrintMenuItem
 			' 
 			Me.filePrintMenuItem.Index = 1
 			Me.filePrintMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlP
 			Me.filePrintMenuItem.Text = "&Print Preview"
 '			Me.filePrintMenuItem.Click += New System.EventHandler(Me.filePrintMenuItem_Click);
 			' 
-			' separator1MenuItem
+			' Separator1MenuItem
 			' 
 			Me.separator1MenuItem.Index = 2
 			Me.separator1MenuItem.Text = "-"
 			' 
-			' fileExitMenuItem
+			' FileExitMenuItem
 			' 
 			Me.fileExitMenuItem.Index = 3
 			Me.fileExitMenuItem.Text = "&Exit"
 '			Me.fileExitMenuItem.Click += New System.EventHandler(Me.fileExitMenuItem_Click);
 			' 
-			' viewMenuItem
+			' ViewMenuItem
 			' 
 			Me.viewMenuItem.Index = 1
 			Me.viewMenuItem.MenuItems.AddRange(New System.Windows.Forms.MenuItem() { Me.navigationPreviousPageMenuItem, Me.navigationNextPageMenuItem, Me.separator2, Me.navigationFirstPageMenuItem, Me.navigationLastPageMenuItem, Me.separator3, Me.navigationGoToPageMenuItem})
 			Me.viewMenuItem.Text = "&View"
 			' 
-			' navigationPreviousPageMenuItem
+			' NavigationPreviousPageMenuItem
 			' 
 			Me.navigationPreviousPageMenuItem.Index = 0
 			Me.navigationPreviousPageMenuItem.Text = "P&revious Page"
 '			Me.navigationPreviousPageMenuItem.Click += New System.EventHandler(Me.navigationPreviousPageMenuItem_Click);
 			' 
-			' navigationNextPageMenuItem
+			' NavigationNextPageMenuItem
 			' 
 			Me.navigationNextPageMenuItem.Index = 1
 			Me.navigationNextPageMenuItem.Text = "&Next Page"
 '			Me.navigationNextPageMenuItem.Click += New System.EventHandler(Me.navigationNextPageMenuItem_Click);
 			' 
-			' separator2
+			' Separator2
 			' 
 			Me.separator2.Index = 2
 			Me.separator2.Text = "-"
 			' 
-			' navigationFirstPageMenuItem
+			' NavigationFirstPageMenuItem
 			' 
 			Me.navigationFirstPageMenuItem.Index = 3
 			Me.navigationFirstPageMenuItem.Text = "&First Page"
 '			Me.navigationFirstPageMenuItem.Click += New System.EventHandler(Me.navigationFirstPageMenuItem_Click);
 			' 
-			' navigationLastPageMenuItem
+			' NavigationLastPageMenuItem
 			' 
 			Me.navigationLastPageMenuItem.Index = 4
 			Me.navigationLastPageMenuItem.Text = "&Last Page"
 '			Me.navigationLastPageMenuItem.Click += New System.EventHandler(Me.lastPageMenuItem_Click);
 			' 
-			' separator3
+			' Separator3
 			' 
 			Me.separator3.Index = 5
 			Me.separator3.Text = "-"
 			' 
-			' navigationGoToPageMenuItem
+			' NavigationGoToPageMenuItem
 			' 
 			Me.navigationGoToPageMenuItem.Index = 6
 			Me.navigationGoToPageMenuItem.Text = "&Go to Page..."
 '			Me.navigationGoToPageMenuItem.Click += New System.EventHandler(Me.navigationGoToPageMenuItem_Click);
 			' 
-			' toolBar
+			' ToolBar
 			' 
 			Me.toolBar.Appearance = System.Windows.Forms.ToolBarAppearance.Flat
 			Me.toolBar.Buttons.AddRange(New System.Windows.Forms.ToolBarButton() { Me.fileOpenButton, Me.filePrintButton, Me.separator1, Me.navigationFirstPageButton, Me.navigationPreviousPageButton, Me.navigationNextPageButton, Me.navigationLastPageButton, Me.navigationGoToPageButton})
@@ -293,64 +293,64 @@ Namespace DocumentExplorerExample
 			Me.toolBar.TabIndex = 0
 '			Me.toolBar.ButtonClick += New System.Windows.Forms.ToolBarButtonClickEventHandler(Me.toolBar_ButtonClick);
 			' 
-			' fileOpenButton
+			' FileOpenButton
 			' 
 			Me.fileOpenButton.ImageIndex = 0
 			Me.fileOpenButton.ToolTipText = "Open a document"
 			' 
-			' filePrintButton
+			' FilePrintButton
 			' 
 			Me.filePrintButton.ImageIndex = 8
 			Me.filePrintButton.ToolTipText = "Print preview"
 			' 
-			' separator1
+			' Separator1
 			' 
 			Me.separator1.Style = System.Windows.Forms.ToolBarButtonStyle.Separator
 			' 
-			' navigationFirstPageButton
+			' NavigationFirstPageButton
 			' 
 			Me.navigationFirstPageButton.ImageIndex = 2
 			Me.navigationFirstPageButton.ToolTipText = "Move to first page"
 			' 
-			' navigationPreviousPageButton
+			' NavigationPreviousPageButton
 			' 
 			Me.navigationPreviousPageButton.ImageIndex = 3
 			Me.navigationPreviousPageButton.ToolTipText = "Move to previous page"
 			' 
-			' navigationNextPageButton
+			' NavigationNextPageButton
 			' 
 			Me.navigationNextPageButton.ImageIndex = 4
 			Me.navigationNextPageButton.ToolTipText = "Move to next page"
 			' 
-			' navigationLastPageButton
+			' NavigationLastPageButton
 			' 
 			Me.navigationLastPageButton.ImageIndex = 5
 			Me.navigationLastPageButton.ToolTipText = "Move to last page"
 			' 
-			' navigationGoToPageButton
+			' NavigationGoToPageButton
 			' 
 			Me.navigationGoToPageButton.ImageIndex = 6
 			Me.navigationGoToPageButton.ToolTipText = "Go to specified page"
 			' 
-			' toolBarImages
+			' ToolBarImages
 			' 
 			Me.toolBarImages.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit
 			Me.toolBarImages.ImageSize = New System.Drawing.Size(16, 16)
 			Me.toolBarImages.ImageStream = (CType(resources.GetObject("toolBarImages.ImageStream"), System.Windows.Forms.ImageListStreamer))
 			Me.toolBarImages.TransparentColor = System.Drawing.Color.Silver
 			' 
-			' statusBar
+			' StatusBar
 			' 
 			Me.statusBar.Location = New System.Drawing.Point(0, 459)
 			Me.statusBar.Name = "statusBar"
 			Me.statusBar.Size = New System.Drawing.Size(712, 22)
 			Me.statusBar.TabIndex = 3
 			' 
-			' openFileDialog
+			' OpenFileDialog
 			' 
 			Me.openFileDialog.Filter = "Microsoft Word Documents|*.doc|All files|*.*"
 			' 
-			' mainPanel
+			' MainPanel
 			' 
 			Me.mainPanel.AutoScroll = True
 			Me.mainPanel.BackColor = System.Drawing.Color.FromArgb((CByte(144)), (CByte(153)), (CByte(174)))
@@ -362,7 +362,7 @@ Namespace DocumentExplorerExample
 			Me.mainPanel.Size = New System.Drawing.Size(712, 431)
 			Me.mainPanel.TabIndex = 4
 			' 
-			' docPagePictureBox
+			' DocPagePictureBox
 			' 
 			Me.docPagePictureBox.BackColor = System.Drawing.Color.FromArgb((CByte(144)), (CByte(153)), (CByte(174)))
 			Me.docPagePictureBox.Location = New System.Drawing.Point(0, 0)

@@ -24,7 +24,7 @@ Public Class DigitallySignedPdf
         Dim options As New PdfSaveOptions()
         options.DigitalSignatureDetails = New PdfDigitalSignatureDetails()
 
-        dataDir = dataDir & Convert.ToString("Document.Signed_out_.pdf")
+        dataDir = dataDir & Convert.ToString("Document.Signed_out.pdf")
         ' Save the document as PDF.
         doc.Save(dataDir)
 

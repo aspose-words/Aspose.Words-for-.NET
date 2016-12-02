@@ -31,7 +31,7 @@ Public Class InsertBarcodeImage
             InsertBarcodeIntoFooter(builder, cloneSection, i, HeaderFooterType.FooterPrimary)
         Next
 
-        dataDir = dataDir & Convert.ToString("Document_out_.docx")
+        dataDir = dataDir & Convert.ToString("Document_out.docx")
         ' Save the document as a PDF to disk. You can also save this directly to a stream.
         doc.Save(dataDir)
         ' ExEnd:InsertBarcodeImage

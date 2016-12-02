@@ -4,7 +4,7 @@ Imports System.IO
 
 Public Class SpecifySaveOption
     Public Shared Sub Run()
-        'ExStart:SpecifySaveOption            
+        ' ExStart:SpecifySaveOption            
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_LoadingAndSaving()
 
@@ -27,10 +27,10 @@ Public Class SpecifySaveOption
         options.ExportTextInputFormFieldAsText = True
         options.ImagesFolder = imagesDir
 
-        dataDir = dataDir & Convert.ToString("Document.SaveWithOptions_out_.html")
+        dataDir = dataDir & Convert.ToString("Document.SaveWithOptions_out.html")
         doc.Save(dataDir, options)
 
-        'ExEnd:SpecifySaveOption
+        ' ExEnd:SpecifySaveOption
 
         Console.WriteLine(Convert.ToString(vbLf & "Save option specified successfully." & vbLf & "File saved at ") & dataDir)
 

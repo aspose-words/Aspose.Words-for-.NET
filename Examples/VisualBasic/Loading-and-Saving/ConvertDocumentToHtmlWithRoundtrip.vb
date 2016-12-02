@@ -13,12 +13,12 @@ Public Class ConvertDocumentToHtmlWithRoundtrip
 
         Dim options As New HtmlSaveOptions()
 
-        'HtmlSaveOptions.ExportRoundtripInformation property specifies
-        'whether to write the roundtrip information when saving to HTML, MHTML or EPUB.
-        'Default value is true for HTML and false for MHTML and EPUB.
+        ' HtmlSaveOptions.ExportRoundtripInformation property specifies
+        ' Whether to write the roundtrip information when saving to HTML, MHTML or EPUB.
+        ' Default value is true for HTML and false for MHTML and EPUB.
         options.ExportRoundtripInformation = True
 
-        doc.Save(dataDir & Convert.ToString("ExportRoundtripInformation_out_.html"), options)
+        doc.Save(dataDir & Convert.ToString("ExportRoundtripInformation_out.html"), options)
         ' ExEnd:ConvertDocumentToHtmlWithRoundtrip
 
         Console.WriteLine(vbLf & "Document converted to html with roundtrip informations successfully.")

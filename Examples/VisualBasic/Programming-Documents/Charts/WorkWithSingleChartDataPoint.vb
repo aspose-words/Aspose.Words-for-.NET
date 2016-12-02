@@ -37,7 +37,7 @@ Public Class WorkWithSingleChartDataPoint
         dataPoint12.InvertIfNegative = True
         dataPoint12.Marker.Symbol = MarkerSymbol.Star
         dataPoint12.Marker.Size = 20
-        dataDir = dataDir & Convert.ToString("SingleChartDataPoint_out_.docx")
+        dataDir = dataDir & Convert.ToString("SingleChartDataPoint_out.docx")
         doc.Save(dataDir)
         ' ExEnd:WorkWithSingleChartDataPoint
         Console.WriteLine(Convert.ToString(vbLf & "Single line chart created successfully." & vbLf & "File saved at ") & dataDir)

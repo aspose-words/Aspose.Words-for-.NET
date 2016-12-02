@@ -19,7 +19,7 @@ Public Class AddComments
         comment.Paragraphs.Add(New Paragraph(doc))
         comment.FirstParagraph.Runs.Add(New Run(doc, "Comment text."))
 
-        dataDir = dataDir & Convert.ToString("Comments_out_.doc")
+        dataDir = dataDir & Convert.ToString("Comments_out.doc")
         ' Save the document.
         doc.Save(dataDir)
         ' ExEnd:AddComments

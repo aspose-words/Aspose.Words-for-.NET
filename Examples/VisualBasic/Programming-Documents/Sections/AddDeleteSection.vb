@@ -6,8 +6,8 @@ Public Class AddDeleteSection
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithSections() + "Section.AddRemove.doc"
         AddSection(dataDir)
-        'DeleteSection(dataDir);
-        'DeleteAllSections(dataDir);
+        ' DeleteSection(dataDir);
+        ' DeleteAllSections(dataDir);
     End Sub
     Private Shared Sub AddSection(dataDir As String)
         ' ExStart:AddSection

@@ -19,7 +19,7 @@ Class DocumentBuilderInsertTOC
         ' ExStart:UpdateFields
         doc.UpdateFields()
         ' ExEnd:UpdateFields
-        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertTOC_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertTOC_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderInsertTOC
         Console.WriteLine(Convert.ToString(vbLf & "Table of contents field inserted successfully into a document." & vbLf & "File saved at ") & dataDir)

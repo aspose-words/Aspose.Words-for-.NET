@@ -49,7 +49,7 @@ Public Class InsertTCFieldHandler
         builder.MoveTo(args.MatchNode)
 
         ' If the user specified text to be used in the field as display text then use that, otherwise use the 
-        ' match string as the display text.
+        ' Match string as the display text.
         Dim insertText As String
 
         If Not String.IsNullOrEmpty(mFieldText) Then

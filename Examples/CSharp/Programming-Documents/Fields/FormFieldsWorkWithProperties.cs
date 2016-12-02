@@ -9,7 +9,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
     {
         public static void Run()
         {
-            //ExStart:FormFieldsWorkWithProperties
+            // ExStart:FormFieldsWorkWithProperties
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
 
@@ -18,7 +18,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 
             if (formField.Type.Equals(FieldType.FieldFormTextInput))
                 formField.Result = "My name is " + formField.Name;
-            //ExEnd:FormFieldsWorkWithProperties            
+            // ExEnd:FormFieldsWorkWithProperties            
         }
     }
 }

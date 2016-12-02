@@ -41,7 +41,7 @@ Public Class FindAndHighlight
             Dim currentNode As Node = e.MatchNode
 
             ' The first (and may be the only) run can contain text before the match, 
-            ' in this case it is necessary to split the run.
+            ' In this case it is necessary to split the run.
             If e.MatchOffset > 0 Then
                 currentNode = SplitRun(CType(currentNode, Run), e.MatchOffset)
             End If

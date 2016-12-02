@@ -10,7 +10,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:ExtractContentBetweenParagraphs
+            // ExStart:ExtractContentBetweenParagraphs
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             string fileName = "TestFile.doc";
@@ -26,7 +26,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             Document dstDoc = Common.GenerateDocument(doc, extractedNodes);
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             dstDoc.Save(dataDir);
-            //ExEnd:ExtractContentBetweenParagraphs
+            // ExEnd:ExtractContentBetweenParagraphs
             Console.WriteLine("\nExtracted content betweenn the paragraphs successfully.\nFile saved at " + dataDir);
         }
     }

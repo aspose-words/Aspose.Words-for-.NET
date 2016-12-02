@@ -8,7 +8,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:DocumentBuilderInsertParagraph
+            // ExStart:DocumentBuilderInsertParagraph
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             // Initialize document.
@@ -30,9 +30,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             paragraphFormat.KeepTogether = true;
 
             builder.Writeln("A whole paragraph.");
-            dataDir = dataDir + "DocumentBuilderInsertParagraph_out_.doc";
+            dataDir = dataDir + "DocumentBuilderInsertParagraph_out.doc";
             doc.Save(dataDir);
-            //ExEnd:DocumentBuilderInsertParagraph
+            // ExEnd:DocumentBuilderInsertParagraph
             Console.WriteLine("\nParagraph inserted successfully into the document using DocumentBuilder.\nFile saved at " + dataDir);
         }        
     }

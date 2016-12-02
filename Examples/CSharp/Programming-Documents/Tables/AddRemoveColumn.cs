@@ -21,28 +21,28 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
         }
         private static void RemoveColumn(Document doc)
         {
-            //ExStart:RemoveColumn
+            // ExStart:RemoveColumn
             // Get the second table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 1, true);
 
             // Get the third column from the table and remove it.
             Column column = Column.FromIndex(table, 2);
             column.Remove();
-            //ExEnd:RemoveColumn
+            // ExEnd:RemoveColumn
             Console.WriteLine("\nThird column removed successfully.");
         }
         private static void InsertBlankColumn(Document doc)
         {
-            //ExStart:InsertBlankColumn
+            // ExStart:InsertBlankColumn
             // Get the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
-            //ExStart:GetPlainText
+            // ExStart:GetPlainText
             // Get the second column in the table.
             Column column = Column.FromIndex(table, 0);
             // Print the plain text of the column to the screen.
             Console.WriteLine(column.ToTxt());
-            //ExEnd:GetPlainText
+            // ExEnd:GetPlainText
             // Create a new column to the left of this column.
             // This is the same as using the "Insert Column Before" command in Microsoft Word.
             Column newColumn = column.InsertColumnBefore();
@@ -50,10 +50,10 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // Add some text to each of the column cells.
             foreach (Cell cell in newColumn.Cells)
                 cell.FirstParagraph.AppendChild(new Run(doc, "Column Text " + newColumn.IndexOf(cell)));
-            //ExEnd:InsertBlankColumn
+            // ExEnd:InsertBlankColumn
             Console.WriteLine("\nColumn added successfully." );  
         }
-        //ExStart:ColumnClass
+        // ExStart:ColumnClass
         /// <summary>
         /// Represents a facade object for a column of a table in a Microsoft Word document.
         /// </summary>
@@ -164,6 +164,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             private int mColumnIndex;
             private Table mTable;
         }
-        //ExEnd:ColumnClass
+        // ExEnd:ColumnClass
     }
 }

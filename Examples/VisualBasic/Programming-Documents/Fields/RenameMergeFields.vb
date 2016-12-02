@@ -21,7 +21,7 @@ Public Class RenameMergeFields
             End If
         Next
 
-        dataDir = dataDir & Convert.ToString("RenameMergeFields_out_.doc")
+        dataDir = dataDir & Convert.ToString("RenameMergeFields_out.doc")
         doc.Save(dataDir)
         ' ExEnd:RenameMergeFields
         Console.WriteLine(Convert.ToString(vbLf & "Merge fields rename successfully." & vbLf & "File saved at ") & dataDir)
@@ -59,7 +59,7 @@ Public Class RenameMergeFields
             End Get
             Set(value As String)
                 ' Merge field name is stored in the field result which is a Run
-                ' node between field separator and field end.
+                ' Node between field separator and field end.
                 Dim fieldResult As Run = DirectCast(mFieldSeparator.NextSibling, Run)
                 fieldResult.Text = String.Format("«{0}»", value)
 

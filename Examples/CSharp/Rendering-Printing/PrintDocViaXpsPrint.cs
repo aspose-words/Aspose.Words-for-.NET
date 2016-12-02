@@ -16,7 +16,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
     {
         public static void Run()
         {
-            //ExStart:PrintDocViaXpsPrint
+            // ExStart:PrintDocViaXpsPrint
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting();
             // Open a sample document in Aspose.Words.
@@ -27,7 +27,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
 
             // Print the document.
             XpsPrintHelper.Print(document, printerName, "My Test Job", true);
-            //ExEnd:PrintDocViaXpsPrint
+            // ExEnd:PrintDocViaXpsPrint
         }
         
     }
@@ -43,8 +43,8 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         {
         }
 
-        //ExStart:XpsPrint_PrintDocument       
-        //ExSummary:Convert an Aspose.Words document into an XPS stream and print.
+        // ExStart:XpsPrint_PrintDocument       
+        // ExSummary:Convert an Aspose.Words document into an XPS stream and print.
         /// <summary>
         /// Sends an Aspose.Words document to a printer using the XpsPrint API.
         /// </summary>
@@ -68,9 +68,9 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             Print(stream, printerName, jobName, isWait);
             Console.WriteLine("After Print");
         }
-        //ExEnd:XpsPrint_PrintDocument
-        //ExStart:XpsPrint_PrintStream        
-        //ExSummary:Prints an XPS document using the XpsPrint API.
+        // ExEnd:XpsPrint_PrintDocument
+        // ExStart:XpsPrint_PrintStream        
+        // ExSummary:Prints an XPS document using the XpsPrint API.
         /// <summary>
         /// Sends a stream that contains a document in the XPS format to a printer using the XpsPrint API.
         /// Has no dependency on Aspose.Words, can be used in any project.
@@ -121,7 +121,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
                 CloseHandle(completionEvent);
             Console.WriteLine("Close Handle");
         }
-        //ExEnd:XpsPrint_PrintStream
+        // ExEnd:XpsPrint_PrintStream
 
         private static void StartJob(string printerName, string jobName, IntPtr completionEvent, out IXpsPrintJob job, out IXpsPrintJobStream jobStream)
         {

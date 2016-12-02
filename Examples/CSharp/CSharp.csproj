@@ -350,6 +350,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
@@ -357,6 +358,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\ExceptionDialog.resx">
       <DependentUpon>ExceptionDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Viewers-Visualizers\Document-Explorer\GoToPageForm.resx">
       <DependentUpon>GoToPageForm.cs</DependentUpon>

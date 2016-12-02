@@ -38,7 +38,7 @@ Public Class WorkWithSingleChartSeries
         series1.Marker.Symbol = MarkerSymbol.Star
         series1.Marker.Size = 10
         ' ExEnd:ChartDataPoint 
-        dataDir = dataDir & Convert.ToString("SingleChartSeries_out_.docx")
+        dataDir = dataDir & Convert.ToString("SingleChartSeries_out.docx")
         doc.Save(dataDir)
 
         Console.WriteLine(Convert.ToString(vbLf & "Chart created successfully." & vbLf & "File saved at ") & dataDir)

@@ -13,7 +13,7 @@ Public Class ExtractText
 
     End Sub
     Private Shared Sub ExtractPrintText(dataDir As String)
-        'ExStart:ExtractText
+        ' ExStart:ExtractText
         Dim doc As New Document(dataDir)
 
         ' Get the first table in the document.
@@ -25,9 +25,9 @@ Public Class ExtractText
         ' Print the plain text range of the table to the screen.
         Console.WriteLine("Contents of the table: ")
         Console.WriteLine(table.Range.Text)
-        'ExEnd:ExtractText   
+        ' ExEnd:ExtractText   
 
-        'ExStart:PrintTextRangeOFRowAndTable
+        ' ExStart:PrintTextRangeOFRowAndTable
         ' Print the contents of the second row to the screen.
         Console.WriteLine(vbLf & "Contents of the row: ")
         Console.WriteLine(table.Rows(1).Range.Text)
@@ -35,10 +35,10 @@ Public Class ExtractText
         ' Print the contents of the last cell in the table to the screen.
         Console.WriteLine(vbLf & "Contents of the cell: ")
         Console.WriteLine(table.LastRow.LastCell.Range.Text)
-        'ExEnd:PrintTextRangeOFRowAndTable
+        ' ExEnd:PrintTextRangeOFRowAndTable
     End Sub
     Private Shared Sub ReplaceText(dataDir As String)
-        'ExStart:ReplaceText
+        ' ExStart:ReplaceText
         Dim doc As New Document(dataDir)
 
         ' Get the first table in the document.
@@ -49,9 +49,9 @@ Public Class ExtractText
         ' Replace any instances of our string in the last cell of the table only.
         table.LastRow.LastCell.Range.Replace("50", "20", New FindReplaceOptions(FindReplaceDirection.Forward))
 
-        dataDir = RunExamples.GetDataDir_WorkingWithTables() + "Table.ReplaceCellText_out_.doc"
+        dataDir = RunExamples.GetDataDir_WorkingWithTables() + "Table.ReplaceCellText_out.doc"
         doc.Save(dataDir)
-        'ExEnd:ReplaceText    
+        ' ExEnd:ReplaceText    
         Console.WriteLine(Convert.ToString(vbLf & "Text replaced successfully." & vbLf & "File saved at ") & dataDir)
     End Sub
 End Class

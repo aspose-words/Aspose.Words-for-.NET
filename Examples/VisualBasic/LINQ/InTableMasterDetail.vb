@@ -27,7 +27,7 @@ Namespace LINQ
             ' Save the finished document to disk.
             doc.Save(dataDir)
             ' ExEnd:InTableMasterDetail
-            Console.WriteLine(Convert.ToString(vbLf & "In-Table master detail template document is populated with the data about managers and it's contracts." & vbLf & "File saved at ") & dataDir)
+            Console.WriteLine(Convert.ToString(vbLf & "In-Table master detail template document is populated with the data about managers and it' S contracts." & vbLf & "File saved at ") & dataDir)
 
         End Sub
     End Class

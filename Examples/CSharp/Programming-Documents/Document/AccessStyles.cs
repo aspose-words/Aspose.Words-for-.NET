@@ -9,7 +9,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:AccessStyles
+            // ExStart:AccessStyles
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             // Load the template document.
@@ -29,7 +29,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
                     styleName = styleName + ", " + style.Name;
                 }
             }
-            //ExEnd:AccessStyles
+            // ExEnd:AccessStyles
             Console.WriteLine("\nDocument have following styles " + styleName);
         }        
     }

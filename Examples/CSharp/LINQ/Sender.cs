@@ -4,12 +4,12 @@ using System.Text;
 
 namespace Aspose.Words.Examples.CSharp.LINQ
 {
-    //ExStart:Sender
+    // ExStart:Sender
     public class Sender
     {
         public String Name { get; set; }
         public String Message { get; set; }
     }
-    //ExEnd:Sender
+    // ExEnd:Sender
     
 }

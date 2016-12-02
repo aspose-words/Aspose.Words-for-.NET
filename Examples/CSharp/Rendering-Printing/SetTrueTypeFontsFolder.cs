@@ -10,7 +10,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
     {
         public static void Run()
         {
-            //ExStart:SetTrueTypeFontsFolder
+            // ExStart:SetTrueTypeFontsFolder
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); 
 
@@ -19,14 +19,14 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             FontSettings FontSettings = new FontSettings();
 
             // Note that this setting will override any default font sources that are being searched by default. Now only these folders will be searched for
-            // fonts when rendering or embedding fonts. To add an extra font source while keeping system font sources then use both FontSettings.GetFontSources and
+            // Fonts when rendering or embedding fonts. To add an extra font source while keeping system font sources then use both FontSettings.GetFontSources and
             // FontSettings.SetFontSources instead.
             FontSettings.SetFontsFolder(@"C:MyFonts\", false);
             // Set font settings
             doc.FontSettings = FontSettings;
-            dataDir = dataDir + "Rendering.SetFontsFolder_out_.pdf";
+            dataDir = dataDir + "Rendering.SetFontsFolder_out.pdf";
             doc.Save(dataDir);
-            //ExEnd:SetTrueTypeFontsFolder
+            // ExEnd:SetTrueTypeFontsFolder
             Console.WriteLine("\nTrue type fonts folder setup successfully.\nFile saved at " + dataDir);
         }
     }

@@ -109,7 +109,7 @@ Namespace DocumentExplorerExample
             Me.StatusBar.TabIndex = 0
             Me.StatusBar.Text = "statusBar1"
             ' 
-            ' toolBar1
+            ' ToolBar1
             ' 
             Me.toolBar1.Appearance = System.Windows.Forms.ToolBarAppearance.Flat
             Me.toolBar1.Buttons.AddRange(New System.Windows.Forms.ToolBarButton() {Me.toolOpenDocument, Me.toolSaveDocument, Me.toolSeparator1, Me.toolRenderDocument, Me.toolPreviewButton, Me.toolBarButton1, Me.toolExpandAll, Me.toolCollapseAll, Me.toolSeparator2, Me.toolRemove, Me.toolViewInWord, Me.toolViewInPdf})
@@ -122,78 +122,78 @@ Namespace DocumentExplorerExample
             Me.toolBar1.TabIndex = 1
             '			Me.toolBar1.ButtonClick += New System.Windows.Forms.ToolBarButtonClickEventHandler(Me.toolBar1_ButtonClick);
             ' 
-            ' toolOpenDocument
+            ' ToolOpenDocument
             ' 
             Me.toolOpenDocument.ImageIndex = 0
             Me.toolOpenDocument.ToolTipText = "Open Document"
             ' 
-            ' toolSaveDocument
+            ' ToolSaveDocument
             ' 
             Me.toolSaveDocument.Enabled = False
             Me.toolSaveDocument.ImageIndex = 1
             Me.toolSaveDocument.ToolTipText = "Save Document As..."
             ' 
-            ' toolSeparator1
+            ' ToolSeparator1
             ' 
             Me.toolSeparator1.Style = System.Windows.Forms.ToolBarButtonStyle.Separator
             ' 
-            ' toolRenderDocument
+            ' ToolRenderDocument
             ' 
             Me.toolRenderDocument.Enabled = False
             Me.toolRenderDocument.ImageIndex = 7
             Me.toolRenderDocument.ToolTipText = "Render Document"
             ' 
-            ' toolPreviewButton
+            ' ToolPreviewButton
             ' 
             Me.toolPreviewButton.Enabled = False
             Me.toolPreviewButton.ImageIndex = 8
             Me.toolPreviewButton.ToolTipText = "Print Preview"
             ' 
-            ' toolBarButton1
+            ' ToolBarButton1
             ' 
             Me.toolBarButton1.Style = System.Windows.Forms.ToolBarButtonStyle.Separator
             ' 
-            ' toolExpandAll
+            ' ToolExpandAll
             ' 
             Me.toolExpandAll.Enabled = False
             Me.toolExpandAll.ImageIndex = 2
             Me.toolExpandAll.ToolTipText = "Expand All"
             ' 
-            ' toolCollapseAll
+            ' ToolCollapseAll
             ' 
             Me.toolCollapseAll.Enabled = False
             Me.toolCollapseAll.ImageIndex = 3
             Me.toolCollapseAll.ToolTipText = "Collapse All"
             ' 
-            ' toolSeparator2
+            ' ToolSeparator2
             ' 
             Me.toolSeparator2.Style = System.Windows.Forms.ToolBarButtonStyle.Separator
             ' 
-            ' toolRemove
+            ' ToolRemove
             ' 
             Me.toolRemove.Enabled = False
             Me.toolRemove.ImageIndex = 4
             Me.toolRemove.ToolTipText = "Remove Node"
             ' 
-            ' toolViewInWord
+            ' ToolViewInWord
             ' 
             Me.toolViewInWord.ImageIndex = 4
             Me.toolViewInWord.ToolTipText = "View in MS Word"
             Me.toolViewInWord.Visible = False
             ' 
-            ' toolViewInPdf
+            ' ToolViewInPdf
             ' 
             Me.toolViewInPdf.ImageIndex = 5
             Me.toolViewInPdf.ToolTipText = "View in Acrobat"
             Me.toolViewInPdf.Visible = False
             ' 
-            ' imageList1
+            ' ImageList1
             ' 
             Me.imageList1.ImageSize = New System.Drawing.Size(16, 16)
             Me.imageList1.ImageStream = (CType(resources.GetObject("imageList1.ImageStream"), System.Windows.Forms.ImageListStreamer))
             Me.imageList1.TransparentColor = System.Drawing.Color.Transparent
             ' 
-            ' panel1
+            ' Panel1
             ' 
             Me.panel1.Controls.Add(Me.Tree)
             Me.panel1.Dock = System.Windows.Forms.DockStyle.Left
@@ -217,7 +217,7 @@ Namespace DocumentExplorerExample
             '			Me.Tree.AfterSelect += New System.Windows.Forms.TreeViewEventHandler(Me.Tree_AfterSelect);
             '			Me.Tree.BeforeExpand += New System.Windows.Forms.TreeViewCancelEventHandler(Me.Tree_BeforeExpand);
             ' 
-            ' splitter1
+            ' Splitter1
             ' 
             Me.splitter1.Location = New System.Drawing.Point(324, 28)
             Me.splitter1.Name = "splitter1"
@@ -225,7 +225,7 @@ Namespace DocumentExplorerExample
             Me.splitter1.TabIndex = 3
             Me.splitter1.TabStop = False
             ' 
-            ' panel2
+            ' Panel2
             ' 
             Me.panel2.Controls.Add(Me.Text1)
             Me.panel2.Dock = System.Windows.Forms.DockStyle.Fill
@@ -249,99 +249,99 @@ Namespace DocumentExplorerExample
             Me.Text1.TabIndex = 1
             Me.Text1.Text = ""
             ' 
-            ' mainMenu1
+            ' MainMenu1
             ' 
             Me.mainMenu1.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.menuFile, Me.menuEdit, Me.menuView, Me.menuHelp})
             ' 
-            ' menuFile
+            ' MenuFile
             ' 
             Me.menuFile.Index = 0
             Me.menuFile.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.menuOpen, Me.menuSaveAs, Me.menuBar1, Me.menuRender, Me.menuPreview, Me.menuItem1, Me.menuExit})
             Me.menuFile.Text = "&File"
             ' 
-            ' menuOpen
+            ' MenuOpen
             ' 
             Me.menuOpen.Index = 0
             Me.menuOpen.Text = "&Open"
             '			Me.menuOpen.Click += New System.EventHandler(Me.menuOpen_Click);
             ' 
-            ' menuSaveAs
+            ' MenuSaveAs
             ' 
             Me.menuSaveAs.Enabled = False
             Me.menuSaveAs.Index = 1
             Me.menuSaveAs.Text = "Save &As..."
             '			Me.menuSaveAs.Click += New System.EventHandler(Me.menuSaveAs_Click);
             ' 
-            ' menuBar1
+            ' MenuBar1
             ' 
             Me.menuBar1.Index = 2
             Me.menuBar1.Text = "-"
             ' 
-            ' menuRender
+            ' MenuRender
             ' 
             Me.menuRender.Enabled = False
             Me.menuRender.Index = 3
             Me.menuRender.Text = "&Render..."
             '			Me.menuRender.Click += New System.EventHandler(Me.menuRender_Click);
             ' 
-            ' menuPreview
+            ' MenuPreview
             ' 
             Me.menuPreview.Enabled = False
             Me.menuPreview.Index = 4
             Me.menuPreview.Text = "&Print Preview..."
             '			Me.menuPreview.Click += New System.EventHandler(Me.menuPreview_Click);
             ' 
-            ' menuItem1
+            ' MenuItem1
             ' 
             Me.menuItem1.Index = 5
             Me.menuItem1.Text = "-"
             ' 
-            ' menuExit
+            ' MenuExit
             ' 
             Me.menuExit.Index = 6
             Me.menuExit.Text = "E&xit"
             '			Me.menuExit.Click += New System.EventHandler(Me.menuExit_Click);
             ' 
-            ' menuEdit
+            ' MenuEdit
             ' 
             Me.menuEdit.Index = 1
             Me.menuEdit.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.menuRemoveNode})
             Me.menuEdit.Text = "Edit"
             ' 
-            ' menuRemoveNode
+            ' MenuRemoveNode
             ' 
             Me.menuRemoveNode.Enabled = False
             Me.menuRemoveNode.Index = 0
             Me.menuRemoveNode.Text = "Remove Node"
             '			Me.menuRemoveNode.Click += New System.EventHandler(Me.menuRemoveNode_Click);
             ' 
-            ' menuView
+            ' MenuView
             ' 
             Me.menuView.Index = 2
             Me.menuView.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.menuExpandAll, Me.menuCollapseAll})
             Me.menuView.Text = "&View"
             ' 
-            ' menuExpandAll
+            ' MenuExpandAll
             ' 
             Me.menuExpandAll.Enabled = False
             Me.menuExpandAll.Index = 0
             Me.menuExpandAll.Text = "&Expand All"
             '			Me.menuExpandAll.Click += New System.EventHandler(Me.menuExpandAll_Click);
             ' 
-            ' menuCollapseAll
+            ' MenuCollapseAll
             ' 
             Me.menuCollapseAll.Enabled = False
             Me.menuCollapseAll.Index = 1
             Me.menuCollapseAll.Text = "&Collapse All"
             '			Me.menuCollapseAll.Click += New System.EventHandler(Me.menuCollapseAll_Click);
             ' 
-            ' menuHelp
+            ' MenuHelp
             ' 
             Me.menuHelp.Index = 3
             Me.menuHelp.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.menuAbout})
             Me.menuHelp.Text = "&Help"
             ' 
-            ' menuAbout
+            ' MenuAbout
             ' 
             Me.menuAbout.Index = 0
             Me.menuAbout.Text = "&About"
@@ -398,7 +398,7 @@ Namespace DocumentExplorerExample
         ''' <summary>
         ''' Search for Aspose.Words license in the application directory.
         ''' The File.Exists check is only needed in this demo so it will work
-        ''' both when the license file is missing and when it is present.
+        ''' Both when the license file is missing and when it is present.
         ''' In your real application you just need to call SetLicense.
         ''' </summary>
         Private Shared Sub FindAndApplyLicense()
@@ -425,7 +425,7 @@ Namespace DocumentExplorerExample
 
         ''' <summary>
         ''' This code activates Aspose.Words license.
-        ''' If you don't specify a license, Aspose.Words will work in evaluation mode.
+        ''' If you don' T specify a license, Aspose.Words will work in evaluation mode.
         ''' </summary>
         Private Shared Sub LicenseAsposeWords(ByVal licenseFile As String)
             Dim licenseWords As New Aspose.Words.License()
@@ -702,7 +702,7 @@ Namespace DocumentExplorerExample
 
         ''' <summary>
         ''' Informs Item class, which provides GUI representation of a document node,
-        ''' that the corresponding TreeNode was selected.
+        ''' That the corresponding TreeNode was selected.
         ''' </summary>
         Private Sub Tree_AfterSelect(ByVal sender As Object, ByVal e As TreeViewEventArgs) Handles Tree.AfterSelect
             ' This operation can take some time so we set the Cursor to WaitCursor.
@@ -712,7 +712,7 @@ Namespace DocumentExplorerExample
 
             Dim selectedItem As Item = CType(e.Node.Tag, Item)
 
-            ' Set 'Remove Node' menu and tool button visibility.
+            ' Set ' Remove Node' Menu and tool button visibility.
             menuRemoveNode.Enabled = selectedItem.IsRemovable
             toolBar1.Buttons(9).Enabled = selectedItem.IsRemovable
 
@@ -725,7 +725,7 @@ Namespace DocumentExplorerExample
 
         ''' <summary>
         ''' Informs Item class, which provides GUI representation of a document node,
-        ''' that the corresponding TreeNode is about being expanded.
+        ''' That the corresponding TreeNode is about being expanded.
         ''' </summary>
         Private Sub Tree_BeforeExpand(ByVal sender As Object, ByVal e As TreeViewCancelEventArgs) Handles Tree.BeforeExpand
             CType(e.Node.Tag, Item).OnExpand()

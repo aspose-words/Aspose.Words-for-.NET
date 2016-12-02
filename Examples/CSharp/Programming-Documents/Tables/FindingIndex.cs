@@ -14,24 +14,24 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             string dataDir = RunExamples.GetDataDir_WorkingWithTables() + "Table.SimpleTable.doc";
             Document doc = new Document(dataDir);
 
-            //ExStart:RetrieveTableIndex
+            // ExStart:RetrieveTableIndex
             // Get the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             NodeCollection allTables = doc.GetChildNodes(NodeType.Table, true);
             int tableIndex = allTables.IndexOf(table);            
-            //ExEnd:RetrieveTableIndex
+            // ExEnd:RetrieveTableIndex
             Console.WriteLine("\nTable index is " + tableIndex.ToString());
 
-            //ExStart:RetrieveRowIndex
+            // ExStart:RetrieveRowIndex
             int rowIndex = table.IndexOf((Row)table.LastRow);
-            //ExEnd:RetrieveRowIndex
+            // ExEnd:RetrieveRowIndex
             Console.WriteLine("\nRow index is " + rowIndex.ToString());
 
             Row row = (Row)table.LastRow;
-            //ExStart:RetrieveCellIndex
+            // ExStart:RetrieveCellIndex
             int cellIndex = row.IndexOf(row.Cells[4]);
-            //ExEnd:RetrieveCellIndex
+            // ExEnd:RetrieveCellIndex
             Console.WriteLine("\nCell index is " + cellIndex.ToString());
         
         }        

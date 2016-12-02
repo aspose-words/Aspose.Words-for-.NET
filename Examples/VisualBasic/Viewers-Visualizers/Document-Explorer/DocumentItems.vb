@@ -6,7 +6,7 @@ Imports Aspose.Words.Fields
 
 Namespace DocumentExplorerExample
 	' Classes inherited from the Item class provide specialized representation of particular 
-	' document nodes by overriding virtual methods and properties of the base class.
+	' Document nodes by overriding virtual methods and properties of the base class.
 
 	Public Class DocumentItem
 		Inherits Item

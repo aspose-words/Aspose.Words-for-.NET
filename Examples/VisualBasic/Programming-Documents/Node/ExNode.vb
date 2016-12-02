@@ -34,7 +34,7 @@ Public Class ExNode
         Dim doc As New Document()
         ' The section is the first child node of the document.
         Dim section As Aspose.Words.Node = doc.FirstChild
-        ' The section's parent node is the document.
+        ' The section' S parent node is the document.
         Console.WriteLine("Section parent is the document: " & (doc Is section.ParentNode))
         ' ExEnd:GetParentNode           
     End Sub
@@ -50,10 +50,10 @@ Public Class ExNode
         Console.WriteLine("Paragraph has no parent node: " & (para.ParentNode Is Nothing))
 
         ' But the paragraph node knows its document.
-        Console.WriteLine("Both nodes' documents are the same: " & (para.Document Is doc))
+        Console.WriteLine("Both nodes' Documents are the same: " & (para.Document Is doc))
 
         ' The fact that a node always belongs to a document allows us to access and modify 
-        ' properties that reference the document-wide data such as styles or lists.
+        ' Properties that reference the document-wide data such as styles or lists.
         para.ParagraphFormat.StyleName = "Heading 1"
 
         ' Now add the paragraph to the main text of the first section.
@@ -109,7 +109,7 @@ Public Class ExNode
 
     ''' <summary>
     ''' A simple function that will walk through all children of a specified node recursively 
-    ''' and print the type of each node to the screen.
+    ''' And print the type of each node to the screen.
     ''' </summary>
     Public Shared Sub TraverseAllNodes(parentNode As CompositeNode)
         ' This is the most efficient way to loop through immediate children of a node.

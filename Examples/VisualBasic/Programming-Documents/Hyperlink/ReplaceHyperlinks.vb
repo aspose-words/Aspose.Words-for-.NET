@@ -30,7 +30,7 @@ Public Class ReplaceHyperlinks
                 hyperlink.Result = NewName
             End If
         Next
-        dataDir = dataDir & Convert.ToString("ReplaceHyperlinks_out_.doc")
+        dataDir = dataDir & Convert.ToString("ReplaceHyperlinks_out.doc")
         doc.Save(dataDir)
         ' ExEnd:ReplaceHyperlinks
         Console.WriteLine(Convert.ToString(vbLf & "Hyperlinks replaced successfully." & vbLf & "File saved at ") & dataDir)

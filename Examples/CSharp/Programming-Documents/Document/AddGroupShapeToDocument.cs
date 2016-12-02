@@ -9,7 +9,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:AddGroupShapeToDocument
+            // ExStart:AddGroupShapeToDocument
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
 
@@ -37,11 +37,11 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             builder.InsertNode(gs);
 
 
-            dataDir = dataDir + "groupshape-doc_out_.doc";
+            dataDir = dataDir + "groupshape-doc_out.doc";
 
             // Save the document to disk.
             doc.Save(dataDir);
-            //ExEnd:AddGroupShapeToDocument
+            // ExEnd:AddGroupShapeToDocument
             Console.WriteLine("\nGroup shape added successfully.\nFile saved at " + dataDir);
         }
     }

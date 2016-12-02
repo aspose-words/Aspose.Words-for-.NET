@@ -11,7 +11,7 @@ namespace Aspose.Words.Examples.CSharp.LINQ
     {
         public static void Run()
         {
-            //ExStart:InTableWithFilteringGroupingSorting
+            // ExStart:InTableWithFilteringGroupingSorting
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LINQ(); 
             string fileName = "InTableWithFilteringGroupingSorting.doc";
@@ -28,7 +28,7 @@ namespace Aspose.Words.Examples.CSharp.LINQ
 
             // Save the finished document to disk.
             doc.Save(dataDir);
-            //ExEnd:InTableWithFilteringGroupingSorting
+            // ExEnd:InTableWithFilteringGroupingSorting
 
             Console.WriteLine("\nIn-Table filtering, grouping and sorting template document is populated with the data about managers.\nFile saved at " + dataDir);
 

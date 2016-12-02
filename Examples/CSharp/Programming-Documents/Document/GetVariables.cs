@@ -10,7 +10,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:GetVariables
+            // ExStart:GetVariables
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             // Load the template document.
@@ -30,7 +30,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
                     variables = variables + "Name: " + name + "," + "Value: {1}" + value;
                 }
             }
-            //ExEnd:GetVariables
+            // ExEnd:GetVariables
             Console.WriteLine("\nDocument have following variables " + variables);
         }
         

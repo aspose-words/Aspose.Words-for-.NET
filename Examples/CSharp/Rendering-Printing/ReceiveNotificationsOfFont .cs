@@ -10,7 +10,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
     {
         public static void Run()
         {
-            //ExStart:ReceiveNotificationsOfFonts 
+            // ExStart:ReceiveNotificationsOfFonts 
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); 
 
@@ -21,8 +21,8 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             // We can choose the default font to use in the case of any missing fonts.
             FontSettings.DefaultFontName = "Arial";
             // For testing we will set Aspose.Words to look for fonts only in a folder which doesn't exist. Since Aspose.Words won't
-            // find any fonts in the specified directory, then during rendering the fonts in the document will be subsuited with the default
-            // font specified under FontSettings.DefaultFontName. We can pick up on this subsuition using our callback.
+            // Find any fonts in the specified directory, then during rendering the fonts in the document will be subsuited with the default
+            // Font specified under FontSettings.DefaultFontName. We can pick up on this subsuition using our callback.
             FontSettings.SetFontsFolder(string.Empty, false);
 
             // Create a new class implementing IWarningCallback which collect any warnings produced during document save.
@@ -31,37 +31,37 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             doc.WarningCallback = callback;
             // Set font settings
             doc.FontSettings = FontSettings;
-            string path = dataDir + "Rendering.MissingFontNotification_out_.pdf";
+            string path = dataDir + "Rendering.MissingFontNotification_out.pdf";
             // Pass the save options along with the save path to the save method.
             doc.Save(path);
-            //ExEnd:ReceiveNotificationsOfFonts 
+            // ExEnd:ReceiveNotificationsOfFonts 
             Console.WriteLine("\nReceive notifications of font substitutions by using IWarningCallback processed.\nFile saved at " + path);
 
             ReceiveWarningNotification(doc, dataDir);
         }
         private static void ReceiveWarningNotification(Document doc, string dataDir)
         {
-            //ExStart:ReceiveWarningNotification 
+            // ExStart:ReceiveWarningNotification 
             // When you call UpdatePageLayout the document is rendered in memory. Any warnings that occured during rendering
-            // are stored until the document save and then sent to the appropriate WarningCallback.
+            // Are stored until the document save and then sent to the appropriate WarningCallback.
             doc.UpdatePageLayout();
 
             // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
             HandleDocumentWarnings callback = new HandleDocumentWarnings();
 
             doc.WarningCallback = callback;
-            dataDir = dataDir + "Rendering.FontsNotificationUpdatePageLayout_out_.pdf";
+            dataDir = dataDir + "Rendering.FontsNotificationUpdatePageLayout_out.pdf";
             // Even though the document was rendered previously, any save warnings are notified to the user during document save.
             doc.Save(dataDir);
-            //ExEnd:ReceiveWarningNotification  
+            // ExEnd:ReceiveWarningNotification  
         }
-        //ExStart:HandleDocumentWarnings
+        // ExStart:HandleDocumentWarnings
         public class HandleDocumentWarnings : IWarningCallback
         {
             /// <summary>
             /// Our callback only needs to implement the "Warning" method. This method is called whenever there is a
-            /// potential issue during document procssing. The callback can be set to listen for warnings generated during document
-            /// load and/or document save.
+            /// Potential issue during document procssing. The callback can be set to listen for warnings generated during document
+            /// Load and/or document save.
             /// </summary>
             public void Warning(WarningInfo info)
             {
@@ -72,6 +72,6 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
                 }
             }
         }
-        //ExEnd:HandleDocumentWarnings
+        // ExEnd:HandleDocumentWarnings
     }
 }

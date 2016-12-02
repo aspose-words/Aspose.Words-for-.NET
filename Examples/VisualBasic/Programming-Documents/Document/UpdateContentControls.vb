@@ -9,31 +9,31 @@ Class UpdateContentControls
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithDocument()
         SetCurrentStateOfCheckBox(dataDir)
-        'Shows how to modify content controls of type plain text box, drop down list and picture.
+        ' Shows how to modify content controls of type plain text box, drop down list and picture.
         ModifyContentControls(dataDir)
     End Sub
     Public Shared Sub SetCurrentStateOfCheckBox(dataDir As String)
         ' ExStart:SetCurrentStateOfCheckBox
-        'Open an existing document
+        ' Open an existing document
         Dim doc As New Document(dataDir & Convert.ToString("CheckBoxTypeContentControl.docx"))
 
         Dim builder As New DocumentBuilder(doc)
-        'Get the first content control from the document
+        ' Get the first content control from the document
         Dim SdtCheckBox As StructuredDocumentTag = DirectCast(doc.GetChild(NodeType.StructuredDocumentTag, 0, True), StructuredDocumentTag)
 
-        'StructuredDocumentTag.Checked property gets/sets current state of the Checkbox SDT
+        ' StructuredDocumentTag.Checked property gets/sets current state of the Checkbox SDT
         If SdtCheckBox.SdtType = SdtType.Checkbox Then
             SdtCheckBox.Checked = True
         End If
 
-        dataDir = dataDir & Convert.ToString("SetCurrentStateOfCheckBox_out_.docx")
+        dataDir = dataDir & Convert.ToString("SetCurrentStateOfCheckBox_out.docx")
         doc.Save(dataDir)
         ' ExEnd:SetCurrentStateOfCheckBox
         Console.WriteLine(Convert.ToString(vbLf & "Current state fo checkbox setup successfully." & vbLf & "File saved at ") & dataDir)
     End Sub
     Public Shared Sub ModifyContentControls(dataDir As String)
         ' ExStart:ModifyContentControls
-        'Open an existing document
+        ' Open an existing document
         Dim doc As New Document(dataDir & Convert.ToString("CheckBoxTypeContentControl.docx"))
 
         For Each sdt As StructuredDocumentTag In doc.GetChildNodes(NodeType.StructuredDocumentTag, True)
@@ -54,7 +54,7 @@ Class UpdateContentControls
         Next
 
 
-        dataDir = dataDir & Convert.ToString("ModifyContentControls_out_.docx")
+        dataDir = dataDir & Convert.ToString("ModifyContentControls_out.docx")
         doc.Save(dataDir)
         ' ExEnd:ModifyContentControls
         Console.WriteLine(Convert.ToString(vbLf & "Plain text box, drop down list and picture content modified successfully." & vbLf & "File saved at ") & dataDir)

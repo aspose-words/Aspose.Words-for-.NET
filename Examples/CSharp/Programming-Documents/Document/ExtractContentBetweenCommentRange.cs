@@ -12,7 +12,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:ExtractContentBetweenCommentRange
+            // ExStart:ExtractContentBetweenCommentRange
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
 
@@ -26,14 +26,14 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // Firstly extract the content between these nodes including the comment as well. 
             ArrayList extractedNodesInclusive = Common.ExtractContent(commentStart, commentEnd, true);
             Document dstDoc = Common.GenerateDocument(doc, extractedNodesInclusive);
-            dstDoc.Save(dataDir + "TestFile.CommentInclusive_out_.doc");
+            dstDoc.Save(dataDir + "TestFile.CommentInclusive_out.doc");
 
             // Secondly extract the content between these nodes without the comment.
             ArrayList extractedNodesExclusive = Common.ExtractContent(commentStart, commentEnd, false);
             dstDoc = Common.GenerateDocument(doc, extractedNodesExclusive);
-            dstDoc.Save(dataDir + "TestFile.CommentExclusive_out_.doc");
-            //ExEnd:ExtractContentBetweenCommentRange
-            Console.WriteLine("\nExtracted content between the comment range successfully.\nFile saved at " + dataDir + "TestFile.CommentExclusive_out_.doc");
+            dstDoc.Save(dataDir + "TestFile.CommentExclusive_out.doc");
+            // ExEnd:ExtractContentBetweenCommentRange
+            Console.WriteLine("\nExtracted content between the comment range successfully.\nFile saved at " + dataDir + "TestFile.CommentExclusive_out.doc");
         }
     }
 }

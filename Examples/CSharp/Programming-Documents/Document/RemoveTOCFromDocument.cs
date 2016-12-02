@@ -9,7 +9,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 {
     class RemoveTOCFromDocument
     {
-        //ExStart:RemoveTOCFromDocument
+        // ExStart:RemoveTOCFromDocument
         public static void Run()
         {
             
@@ -22,7 +22,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // Remove the first table of contents from the document.
             RemoveTableOfContents(doc, 0);
 
-            dataDir = dataDir + "Document.TableOfContentsRemoveToc_out_.doc";
+            dataDir = dataDir + "Document.TableOfContentsRemoveToc_out.doc";
             // Save the output.
             doc.Save(dataDir);
             
@@ -38,7 +38,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // Store the FieldStart nodes of TOC fields in the document for quick access.
             ArrayList fieldStarts = new ArrayList();
             // This is a list to store the nodes found inside the specified TOC. They will be removed
-            // at the end of this method.
+            // At the end of this method.
             ArrayList nodeList = new ArrayList();
 
             foreach (FieldStart start in doc.GetChildNodes(NodeType.FieldStart, true))
@@ -65,7 +65,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
                 currentNode = currentNode.NextPreOrder(doc);
 
                 // Once we encounter a FieldEnd node of type FieldTOC then we know we are at the end
-                // of the current TOC and we can stop here.
+                // Of the current TOC and we can stop here.
                 if (currentNode.NodeType == NodeType.FieldEnd)
                 {
                     FieldEnd fieldEnd = (FieldEnd)currentNode;
@@ -80,7 +80,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
                 node.Remove();
             }
         }
-        //ExEnd:RemoveTOCFromDocument
+        // ExEnd:RemoveTOCFromDocument
     }
 
 

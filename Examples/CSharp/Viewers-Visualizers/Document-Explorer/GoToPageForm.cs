@@ -50,7 +50,7 @@ namespace DocumentExplorerExample
 		#region Windows Form Designer generated code
 		/// <summary>
 		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
+		/// The contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
@@ -60,14 +60,14 @@ namespace DocumentExplorerExample
 			this.cancelBtn = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
-			// promptLabel
+			// PromptLabel
 			// 
 			this.promptLabel.Location = new System.Drawing.Point(16, 16);
 			this.promptLabel.Name = "promptLabel";
 			this.promptLabel.Size = new System.Drawing.Size(192, 23);
 			this.promptLabel.TabIndex = 0;
 			// 
-			// pageNumberTextBox
+			// PageNumberTextBox
 			// 
 			this.pageNumberTextBox.Location = new System.Drawing.Point(16, 40);
 			this.pageNumberTextBox.MaxLength = 5;
@@ -77,7 +77,7 @@ namespace DocumentExplorerExample
 			this.pageNumberTextBox.Text = "";
 			this.pageNumberTextBox.TextChanged += new System.EventHandler(this.pageNumberTextBox_TextChanged);
 			// 
-			// okBtn
+			// OkBtn
 			// 
 			this.okBtn.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.okBtn.Enabled = false;
@@ -87,7 +87,7 @@ namespace DocumentExplorerExample
 			this.okBtn.Text = "OK";
 			this.okBtn.Click += new System.EventHandler(this.okButton_Click);
 			// 
-			// cancelBtn
+			// CancelBtn
 			// 
 			this.cancelBtn.CausesValidation = false;
 			this.cancelBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;

@@ -11,7 +11,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            //ExStart:ComboBoxContentControl
+            // ExStart:ComboBoxContentControl
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             Document doc = new Document();
@@ -22,9 +22,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             sdt.ListItems.Add(new SdtListItem("Item 2", "2"));
             doc.FirstSection.Body.AppendChild(sdt);
 
-            dataDir = dataDir + "ComboBoxContentControl_out_.docx";
+            dataDir = dataDir + "ComboBoxContentControl_out.docx";
             doc.Save(dataDir);
-            //ExEnd:ComboBoxContentControl
+            // ExEnd:ComboBoxContentControl
             Console.WriteLine("\nCombo box type content control created successfully.\nFile saved at " + dataDir);
         }        
     }

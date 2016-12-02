@@ -26,7 +26,7 @@ Class DocumentBuilderInsertParagraph
         paragraphFormat.KeepTogether = True
 
         builder.Writeln("A whole paragraph.")
-        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertParagraph_out_.doc")
+        dataDir = dataDir & Convert.ToString("DocumentBuilderInsertParagraph_out.doc")
         doc.Save(dataDir)
         ' ExEnd:DocumentBuilderInsertParagraph
         Console.WriteLine(Convert.ToString(vbLf & "Paragraph inserted successfully into the document using DocumentBuilder." & vbLf & "File saved at ") & dataDir)
