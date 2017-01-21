@@ -166,7 +166,7 @@ namespace CSharp
             //FormFieldsGetByName.Run();
             //FormFieldsWorkWithProperties.Run();
             //RenameMergeFields.Run();
-            
+
             //// Images
             //// =====================================================
             //AddImageToEachPage.Run();
@@ -198,7 +198,7 @@ namespace CSharp
             //// Hyperlink
             //// =====================================================
             //ReplaceHyperlinks.Run();
-            
+
 
             //// Styles
             //// =====================================================
@@ -231,7 +231,7 @@ namespace CSharp
             //DeleteHeaderFooterContent.Run();
             //CloneSection.Run();
             //CopySection.Run();
-            
+
 
             //// =====================================================
             //// =====================================================
@@ -306,7 +306,7 @@ namespace CSharp
             //ScatterChart.Run();
             //BubbleChart.Run();
             //ChartWithFilteringGroupingOrdering.Run();
-         
+
             // Stop before exiting
             Console.WriteLine("\n\nProgram Finished. Press any key to exit....");
             Console.ReadKey();
@@ -341,6 +341,11 @@ namespace CSharp
         public static String GetDataDir_WorkingWithBookmarks()
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Bookmarks/");
+        }
+
+        public static String GetDataDir_WorkingWithOnlineVideo()
+        {
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Video/");
         }
 
         public static String GetDataDir_WorkingWithComments()
