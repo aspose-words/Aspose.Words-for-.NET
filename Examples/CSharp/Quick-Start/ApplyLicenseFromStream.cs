@@ -15,7 +15,7 @@ namespace CSharp.Quick_Start
 
             try
             {
-                // Initializes a license from a stream
+                // Initializes a license from a stream 
                 MemoryStream stream = new MemoryStream(File.ReadAllBytes(@"Aspose.Words.lic"));
                 license.SetLicense(stream);
                 Console.WriteLine("License set successfully.");

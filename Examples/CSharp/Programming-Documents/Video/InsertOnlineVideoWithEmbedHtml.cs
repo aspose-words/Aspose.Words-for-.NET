@@ -12,7 +12,7 @@ namespace CSharp.Programming_Documents.Video
         public static void Run()
         {
             //ExStart:InsertOnlineVideoWithEmbedHtml
-            // The path to the documents directory.
+            //The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithOnlineVideo();
 
             Document doc = new Document();

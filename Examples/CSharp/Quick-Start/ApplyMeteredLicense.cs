@@ -18,7 +18,7 @@ namespace CSharp.Quick_Start
                 // Access the setMeteredKey property and pass public and private keys as parameters
                 metered.SetMeteredKey("*****", "*****");
 
-                // The path to the documents directory.
+                // The path to the documents directory. 
                 string dataDir = RunExamples.GetDataDir_QuickStart();
 
                 // Load the document from disk.
