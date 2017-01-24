@@ -1,4 +1,4 @@
-using Aspose.Words.Examples.CSharp.Loading_Saving;
+﻿using Aspose.Words.Examples.CSharp.Loading_Saving;
 using Aspose.Words.Examples.CSharp.Mail_Merge;
 using Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace;
 using Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appending;
@@ -39,14 +39,6 @@ namespace Aspose.Words.Examples.CSharp
             Console.WriteLine("=====================================================");
             // Uncomment the one you want to try out
 
-            // =====================================================
-            // =====================================================
-            // Viewers-Visualizers
-            // =====================================================
-            // =====================================================
-            
-            //DocumentExplorerExample.MainForm.Run();
-            
             // =====================================================
             // =====================================================
             // Quick Start
