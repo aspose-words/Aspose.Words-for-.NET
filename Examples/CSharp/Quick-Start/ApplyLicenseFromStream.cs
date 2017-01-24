@@ -12,7 +12,6 @@ namespace CSharp.Quick_Start
         {
             //ExStart:ApplyLicenseFromStream
             Aspose.Words.License license = new Aspose.Words.License();
-
             try
             {
                 // Initializes a license from a stream 

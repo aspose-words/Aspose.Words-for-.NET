@@ -376,6 +376,11 @@ namespace Aspose.Words.Examples.CSharp
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Bookmarks/");
         }
 
+        public static String GetDataDir_WorkingWithOnlineVideo()
+        {
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Video/");
+        }
+
         public static String GetDataDir_WorkingWithComments()
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Comments/");
