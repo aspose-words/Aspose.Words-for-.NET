@@ -4,13 +4,13 @@ using Aspose.Words;
 using System;
 using System.Collections;
 
-namespace CSharp.Programming_Documents.Working_With_Document
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class GetVariables
     {
         public static void Run()
         {
-            //ExStart:GetVariables
+            // ExStart:GetVariables
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             // Load the template document.
@@ -30,7 +30,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
                     variables = variables + "Name: " + name + "," + "Value: {1}" + value;
                 }
             }
-            //ExEnd:GetVariables
+            // ExEnd:GetVariables
             Console.WriteLine("\nDocument have following variables " + variables);
         }
         

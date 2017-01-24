@@ -4,7 +4,7 @@ using Aspose.Words;
 using System;
 using Aspose.Words.Tables;
 
-namespace CSharp.Programming_Documents.Working_with_Tables
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
 {
     class JoiningAndSplittingTable
     {
@@ -21,7 +21,7 @@ namespace CSharp.Programming_Documents.Working_with_Tables
         /// </summary>        
         private static void CombineRows(string dataDir, string fileName)
         {
-            //ExStart:CombineRows
+            // ExStart:CombineRows
             // Load the document.
             Document doc = new Document(dataDir + fileName);
 
@@ -37,10 +37,10 @@ namespace CSharp.Programming_Documents.Working_with_Tables
 
             // Remove the empty table container.
             secondTable.Remove();
-            dataDir = dataDir + "Table.CombineTables_out_.doc";
+            dataDir = dataDir + "Table.CombineTables_out.doc";
             // Save the finished document.
             doc.Save(dataDir);
-            //ExEnd:CombineRows
+            // ExEnd:CombineRows
             Console.WriteLine("\nRows combine successfully from two tables into one.\nFile saved at " + dataDir);
           
         }
@@ -49,7 +49,7 @@ namespace CSharp.Programming_Documents.Working_with_Tables
         /// </summary>              
         private static void SplitTable(string dataDir, string fileName)
         {
-            //ExStart:SplitTable
+            // ExStart:SplitTable
             // Load the document.
             Document doc = new Document(dataDir + fileName);
 
@@ -77,10 +77,10 @@ namespace CSharp.Programming_Documents.Working_with_Tables
             }
             while (currentRow != row);
 
-            dataDir = dataDir + "Table.SplitTable_out_.doc";
+            dataDir = dataDir + "Table.SplitTable_out.doc";
             // Save the finished document.
             doc.Save(dataDir);
-            //ExEnd:SplitTable
+            // ExEnd:SplitTable
             Console.WriteLine("\nTable splitted successfully into two tables.\nFile saved at " + dataDir);
         }       
     }

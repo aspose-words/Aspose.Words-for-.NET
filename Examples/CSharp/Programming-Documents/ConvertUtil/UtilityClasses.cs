@@ -1,6 +1,6 @@
 ﻿using System;
 using Aspose.Words;
-namespace CSharp.Programming_Documents.Working_with_ConvertUtil
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_ConvertUtil
 {
     class UtilityClasses
     {        
@@ -14,7 +14,7 @@ namespace CSharp.Programming_Documents.Working_with_ConvertUtil
 
         private static void ConvertBetweenMeasurementUnits()
         {
-            //ExStart:ConvertBetweenMeasurementUnits
+            // ExStart:ConvertBetweenMeasurementUnits
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -25,17 +25,17 @@ namespace CSharp.Programming_Documents.Working_with_ConvertUtil
             pageSetup.RightMargin = ConvertUtil.InchToPoint(1.5);
             pageSetup.HeaderDistance = ConvertUtil.InchToPoint(0.2);
             pageSetup.FooterDistance = ConvertUtil.InchToPoint(0.2);
-            //ExEnd:ConvertBetweenMeasurementUnits
+            // ExEnd:ConvertBetweenMeasurementUnits
             Console.WriteLine("\nPage properties specified in inches.");
           
         }
         private static void UseControlCharacters()
         {
-            //ExStart:UseControlCharacters
+            // ExStart:UseControlCharacters
             string text = "test\r";
             // Replace "\r" control character with "\r\n"
             text = text.Replace(ControlChar.Cr, ControlChar.CrLf);
-            //ExEnd:UseControlCharacters
+            // ExEnd:UseControlCharacters
             Console.WriteLine("\nControl characters used successfully.");
           
         }

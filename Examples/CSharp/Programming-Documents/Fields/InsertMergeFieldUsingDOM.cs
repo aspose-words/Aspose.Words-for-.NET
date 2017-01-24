@@ -7,13 +7,13 @@ using Aspose.Words.Tables;
 using Aspose.Words.Fields;
 using Aspose.Words.Layout;
 
-namespace CSharp.Programming_Documents.Working_with_Fields
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 {
     class InsertMergeFieldUsingDOM
     {
         public static void Run()
         {
-            //ExStart:InsertMergeFieldUsingDOM
+            // ExStart:InsertMergeFieldUsingDOM
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
             Document doc = new Document(dataDir + "in.doc");
@@ -49,10 +49,10 @@ namespace CSharp.Programming_Documents.Working_with_Fields
             // Finally update this merge field
             field.Update();
 
-            dataDir = dataDir + "InsertMergeFieldUsingDOM_out_.doc";
+            dataDir = dataDir + "InsertMergeFieldUsingDOM_out.doc";
             doc.Save(dataDir);
             
-            //ExEnd:InsertMergeFieldUsingDOM
+            // ExEnd:InsertMergeFieldUsingDOM
             Console.WriteLine("\nMerge field using DOM inserted successfully.\nFile saved at " + dataDir);
         }
     }

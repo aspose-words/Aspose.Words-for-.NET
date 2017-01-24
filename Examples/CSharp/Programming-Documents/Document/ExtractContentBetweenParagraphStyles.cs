@@ -5,12 +5,13 @@ using System.IO;
 using Aspose.Words;
 using Aspose.Words.Tables;
 
-namespace CSharp.Programming_Documents.Working_With_Document
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class ExtractContentBetweenParagraphStyles
     {
         public static void Run()
         {
+            // ExStart:ExtractContentBetweenParagraphStyles
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             string fileName = "TestFile.doc";
@@ -31,7 +32,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
             Document dstDoc = Common.GenerateDocument(doc, extractedNodes);
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             dstDoc.Save(dataDir);
-
+            // ExEnd:ExtractContentBetweenParagraphStyles
             Console.WriteLine("\nExtracted content betweenn the paragraph styles successfully.\nFile saved at " + dataDir);
         }
     }

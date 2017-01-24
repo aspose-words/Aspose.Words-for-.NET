@@ -36,7 +36,7 @@ Public Class ProduceMultipleDocuments
             dstDoc.MailMerge.Execute(row)
 
             ' Save the document.
-            dstDoc.Save(String.Format(dataDir & Convert.ToString("TestFile_out_{0}.doc"), System.Math.Max(System.Threading.Interlocked.Increment(counter), counter - 1)))
+            dstDoc.Save(String.Format(dataDir & Convert.ToString("TestFile_out{0}.doc"), System.Math.Max(System.Threading.Interlocked.Increment(counter), counter - 1)))
         Next
         ' ExEnd:ProduceMultipleDocuments
         Console.WriteLine(Convert.ToString(vbLf & "Produce multiple documents performed successfully." & vbLf & "File saved at ") & dataDir)

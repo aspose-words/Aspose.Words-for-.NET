@@ -6,12 +6,13 @@ using Aspose.Words;
 using Aspose.Words.Tables;
 using Aspose.Words.Fields;
 
-namespace CSharp.Programming_Documents.Working_With_Document
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class ExtractContentUsingField
     {
         public static void Run()
         {
+            // ExStart:ExtractContentUsingField
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             string fileName = "TestFile.doc";
@@ -35,7 +36,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
             Document dstDoc = Common.GenerateDocument(doc, extractedNodes);
             dataDir = dataDir +  RunExamples.GetOutputFilePath(fileName);
             dstDoc.Save(dataDir);
-
+            // ExEnd:ExtractContentUsingField
             Console.WriteLine("\nExtracted content using the Field successfully.\nFile saved at " + dataDir);
         }
     }

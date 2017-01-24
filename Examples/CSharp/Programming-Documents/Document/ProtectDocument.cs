@@ -3,7 +3,7 @@ using System.IO;
 using Aspose.Words;
 using System;
 
-namespace CSharp.Programming_Documents.Working_With_Document
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class ProtectDocument
     {
@@ -23,10 +23,10 @@ namespace CSharp.Programming_Documents.Working_With_Document
         /// <param name="inputFileName">input file name with complete path.</param>        
         private static void Protect(string inputFileName)
         {
-            //ExStart:ProtectDocument
+            // ExStart:ProtectDocument
             Document doc = new Document(inputFileName);
             doc.Protect(ProtectionType.AllowOnlyFormFields, "password");
-            //ExEnd:ProtectDocument
+            // ExEnd:ProtectDocument
             Console.WriteLine("\nDocument protected successfully.");
           
         }
@@ -36,10 +36,10 @@ namespace CSharp.Programming_Documents.Working_With_Document
         /// <param name="inputFileName">input file name with complete path.</param>        
         private static void UnProtect(string inputFileName)
         {
-            //ExStart:UnProtectDocument
+            // ExStart:UnProtectDocument
             Document doc = new Document(inputFileName);
             doc.Unprotect();
-            //ExEnd:UnProtectDocument
+            // ExEnd:UnProtectDocument
             Console.WriteLine("\nDocument unprotected successfully.");
         }
         /// <summary>
@@ -48,10 +48,10 @@ namespace CSharp.Programming_Documents.Working_With_Document
         /// <param name="inputFileName">input file name with complete path.</param>        
         private static void GetProtectionType(string inputFileName)
         {
-            //ExStart:GetProtectionType
+            // ExStart:GetProtectionType
             Document doc = new Document(inputFileName);
             ProtectionType protectionType = doc.ProtectionType;
-            //ExEnd:GetProtectionType
+            // ExEnd:GetProtectionType
             Console.WriteLine("\nDocument protection type is " + protectionType.ToString());
         }
     }

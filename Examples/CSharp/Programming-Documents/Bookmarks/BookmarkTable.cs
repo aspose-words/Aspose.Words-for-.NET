@@ -4,13 +4,13 @@ using System.Reflection;
 using Aspose.Words.Tables;
 using Aspose.Words;
 
-namespace CSharp.Programming_Documents.Bookmarks
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Bookmarks
 {
     class BookmarkTable
     {
         public static void Run()
         {
-            //ExStart:BookmarkTable
+            // ExStart:BookmarkTable
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithBookmarks();
             
@@ -48,9 +48,9 @@ namespace CSharp.Programming_Documents.Bookmarks
             // End of bookmark
             builder.EndBookmark("MyBookmark");
 
-            dataDir = dataDir + "Bookmark.Table_out_.doc";
+            dataDir = dataDir + "Bookmark.Table_out.doc";
             doc.Save(dataDir);
-            //ExEnd:BookmarkTable
+            // ExEnd:BookmarkTable
             Console.WriteLine("\nTable bookmarked successfully.\nFile saved at " + dataDir);
         }
         

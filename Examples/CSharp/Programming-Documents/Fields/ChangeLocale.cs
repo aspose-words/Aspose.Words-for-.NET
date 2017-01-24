@@ -5,13 +5,13 @@ using Aspose.Words;
 using System.Threading;
 using System.Globalization;
 
-namespace CSharp.Programming_Documents.Working_with_Fields
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 {
     class ChangeLocale
     {
         public static void Run()
         {
-            //ExStart:ChangeLocale
+            // ExStart:ChangeLocale
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
 
@@ -30,8 +30,8 @@ namespace CSharp.Programming_Documents.Working_with_Fields
 
             // Restore the original culture.
             Thread.CurrentThread.CurrentCulture = currentCulture;
-            doc.Save(dataDir + "Field.ChangeLocale_out_.doc");
-            //ExEnd:ChangeLocale
+            doc.Save(dataDir + "Field.ChangeLocale_out.doc");
+            // ExEnd:ChangeLocale
 
             Console.WriteLine("\nCulture changed successfully used in formatting fields during update.\nFile saved at " + dataDir);
         }

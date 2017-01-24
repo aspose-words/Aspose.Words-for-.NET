@@ -24,7 +24,7 @@ Public Class ChangeLocale
 
         ' Restore the original culture.
         Thread.CurrentThread.CurrentCulture = currentCulture
-        doc.Save(dataDir & Convert.ToString("Field.ChangeLocale_out_.doc"))
+        doc.Save(dataDir & Convert.ToString("Field.ChangeLocale_out.doc"))
         ' ExEnd:ChangeLocale
 
         Console.WriteLine(Convert.ToString(vbLf & "Culture changed successfully used in formatting fields during update." & vbLf & "File saved at ") & dataDir)

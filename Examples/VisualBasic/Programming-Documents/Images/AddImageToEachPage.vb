@@ -19,7 +19,7 @@ Public Class AddImageToEachPage
         Dim layoutCollector As New LayoutCollector(doc)
 
         ' Images in a document are added to paragraphs, so to add an image to every page we need to find at any paragraph 
-        ' belonging to each page.
+        ' Belonging to each page.
         Dim enumerator As IEnumerator = doc.SelectNodes("//Body/Paragraph").GetEnumerator()
 
         ' Loop through each document page.
@@ -33,6 +33,9 @@ Public Class AddImageToEachPage
                 End If
             Loop
         Next page
+
+        ' Call UpdatePageLayout() method if file is to be saved as PDF or image format
+        doc.UpdatePageLayout()
 
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         doc.Save(dataDir)

@@ -11,6 +11,7 @@ Imports Aspose.Words
 
 Public Class ListUseDestinationStyles
     Public Shared Sub Run()
+        ' ExStart:ListUseDestinationStyles
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
         Dim fileName As String = "TestFile.Destination.doc"
@@ -30,11 +31,11 @@ Public Class ListUseDestinationStyles
                 Dim listId As Integer = para.ListFormat.List.ListId
 
                 ' Check if the destination document contains a list with this ID already. If it does then this may
-                ' cause the two lists to run together. Create a copy of the list in the source document instead.
+                ' Cause the two lists to run together. Create a copy of the list in the source document instead.
                 If dstDoc.Lists.GetListByListId(listId) IsNot Nothing Then
                     Dim currentList As List
                     ' A newly copied list already exists for this ID, retrieve the stored list and use it on 
-                    ' the current paragraph.
+                    ' The current paragraph.
                     If newLists.Contains(listId) Then
                         currentList = CType(newLists(listId), List)
                     Else
@@ -55,7 +56,7 @@ Public Class ListUseDestinationStyles
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         ' Save the combined document to disk.
         dstDoc.Save(dataDir)
-
+        ' ExEnd:ListUseDestinationStyles
         Console.WriteLine(vbNewLine & "Document appended successfully with list using destination styles." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

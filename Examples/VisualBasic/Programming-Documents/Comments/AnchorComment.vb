@@ -36,7 +36,7 @@ Public Class AnchorComment
         run3.ParentNode.InsertAfter(commentRangeEnd, run3)
         commentRangeEnd.ParentNode.InsertAfter(comment, commentRangeEnd)
 
-        dataDir = dataDir & Convert.ToString("Anchor.Comment_out_.doc")
+        dataDir = dataDir & Convert.ToString("Anchor.Comment_out.doc")
         ' Save the document.
         doc.Save(dataDir)
         ' ExEnd:AnchorComment

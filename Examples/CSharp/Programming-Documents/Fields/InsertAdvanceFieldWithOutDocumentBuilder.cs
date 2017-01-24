@@ -7,13 +7,13 @@ using Aspose.Words.Tables;
 using Aspose.Words.Fields;
 using Aspose.Words.Layout;
 
-namespace CSharp.Programming_Documents.Working_with_Fields
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 {
     class InsertAdvanceFieldWithOutDocumentBuilder
     {
         public static void Run()
         {
-            //ExStart:InsertAdvanceFieldWithOutDocumentBuilder
+            // ExStart:InsertAdvanceFieldWithOutDocumentBuilder
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
             Document doc = new Document(dataDir + "in.doc");
@@ -48,10 +48,10 @@ namespace CSharp.Programming_Documents.Working_with_Fields
             // Finally update this Advance field
             field.Update();
 
-            dataDir = dataDir + "InsertAdvanceFieldWithOutDocumentBuilder_out_.doc";
+            dataDir = dataDir + "InsertAdvanceFieldWithOutDocumentBuilder_out.doc";
             doc.Save(dataDir);
 
-            //ExEnd:InsertAdvanceFieldWithOutDocumentBuilder
+            // ExEnd:InsertAdvanceFieldWithOutDocumentBuilder
             Console.WriteLine("\nAdvance field without using document builder inserted successfully.\nFile saved at " + dataDir);
         }
     }

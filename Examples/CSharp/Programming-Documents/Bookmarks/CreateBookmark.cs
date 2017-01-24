@@ -4,13 +4,13 @@ using System.Reflection;
 using Aspose.Words.Saving;
 using Aspose.Words;
 
-namespace CSharp.Programming_Documents.Bookmarks
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Bookmarks
 {
     class CreateBookmark
     {
         public static void Run()
         {
-            //ExStart:CreateBookmark
+            // ExStart:CreateBookmark
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithBookmarks();
 
@@ -32,9 +32,9 @@ namespace CSharp.Programming_Documents.Bookmarks
             options.OutlineOptions.BookmarksOutlineLevels.Add("My Bookmark", 1);
             options.OutlineOptions.BookmarksOutlineLevels.Add("Nested Bookmark", 2);
 
-            dataDir = dataDir + "Create.Bookmark_out_.pdf";
+            dataDir = dataDir + "Create.Bookmark_out.pdf";
             doc.Save(dataDir, options);
-            //ExEnd:CreateBookmark
+            // ExEnd:CreateBookmark
             Console.WriteLine("\nBookmark created successfully.\nFile saved at " + dataDir);
         }
         

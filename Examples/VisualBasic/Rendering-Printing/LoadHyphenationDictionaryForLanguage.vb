@@ -16,7 +16,7 @@ Public Class LoadHyphenationDictionaryForLanguage
         Dim stream As Stream = File.OpenRead(dataDir & Convert.ToString("hyph_de_CH.dic"))
         Hyphenation.RegisterDictionary("de-CH", stream)
 
-        dataDir = dataDir & Convert.ToString("LoadHyphenationDictionaryForLanguage_out_.pdf")
+        dataDir = dataDir & Convert.ToString("LoadHyphenationDictionaryForLanguage_out.pdf")
         doc.Save(dataDir)
         ' ExEnd:LoadHyphenationDictionaryForLan
         Console.WriteLine(Convert.ToString(vbLf & "Hyphenation dictionary for special language loaded successfully." & vbLf & "File saved at ") & dataDir)

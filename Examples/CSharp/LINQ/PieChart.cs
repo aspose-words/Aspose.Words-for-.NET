@@ -5,13 +5,13 @@ using System.Text;
 using Aspose.Words;
 using Aspose.Words.Reporting;
 
-namespace CSharp.LINQ
+namespace Aspose.Words.Examples.CSharp.LINQ
 {
     class PieChart
     {
         public static void Run()
         {
-            //ExStart:PieChart
+            // ExStart:PieChart
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LINQ(); 
             string fileName = "PieChart.docx";
@@ -28,7 +28,7 @@ namespace CSharp.LINQ
 
             // Save the finished document to disk.
             doc.Save(dataDir);
-            //ExEnd:PieChart
+            // ExEnd:PieChart
             Console.WriteLine("\nPie chart template document is populated with the data about managers.\nFile saved at " + dataDir);
 
         }

@@ -3,13 +3,13 @@ using System.IO;
 using Aspose.Words;
 using System;
 
-namespace CSharp.Programming_Documents.Working_With_Document
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class AccessStyles
     {
         public static void Run()
         {
-            //ExStart:AccessStyles
+            // ExStart:AccessStyles
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             // Load the template document.
@@ -29,7 +29,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
                     styleName = styleName + ", " + style.Name;
                 }
             }
-            //ExEnd:AccessStyles
+            // ExEnd:AccessStyles
             Console.WriteLine("\nDocument have following styles " + styleName);
         }        
     }

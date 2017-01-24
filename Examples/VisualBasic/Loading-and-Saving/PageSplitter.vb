@@ -20,14 +20,14 @@ Public Class PageSplitter
 
         SplitAllDocumentsToPages(dataDir)
 
-        Console.WriteLine(vbNewLine + "Document split to pages successfully." + vbNewLine + "File saved at " + dataDir + "\\_out_")
+        Console.WriteLine(vbNewLine + "Document split to pages successfully." + vbNewLine + "File saved at " + dataDir + "\\_out")
     End Sub
 
     Public Shared Sub SplitDocumentToPages(ByVal docName As String)
         Dim folderName As String = Path.GetDirectoryName(docName)
         Dim fileName As String = Path.GetFileNameWithoutExtension(docName)
         Dim extensionName As String = Path.GetExtension(docName)
-        Dim outFolder As String = Path.Combine(folderName, "_out_")
+        Dim outFolder As String = Path.Combine(folderName, "_out")
 
         Console.WriteLine("Processing document: " & fileName & extensionName)
 
@@ -68,7 +68,7 @@ End Class
 Public Class DocumentPageSplitter
     ''' <summary>
     ''' Initializes new instance of this class. This method splits the document into sections so that each page 
-    ''' begins and ends at a section boundary. It is recommended not to modify the document afterwards.
+    ''' Begins and ends at a section boundary. It is recommended not to modify the document afterwards.
     ''' </summary>
     ''' <param name="collector">A collector instance which has layout model records for the document.</param>
     Public Sub New(ByVal collector As LayoutCollector)
@@ -186,7 +186,7 @@ Public Class PageNumberFinder
 
     ''' <summary>
     ''' Splits nodes which appear over two or more pages into separate nodes so that they still appear in the same way
-    ''' but no longer appear across a page.
+    ''' But no longer appear across a page.
     ''' </summary>
     Public Sub SplitNodesAcrossPages()
         ' Visit any composites which are possibly split across pages and split them into separate nodes.
@@ -269,7 +269,7 @@ Public Class SectionSplitter
             Dim currentLevel As ListLevel = paragraph.ListFormat.ListLevel
 
             ' Since we have encountered a list item we need to check if this will reset
-            ' any subsequent list levels and if so then update the numbering of the level.
+            ' Any subsequent list levels and if so then update the numbering of the level.
             Dim currentListLevelNumber As Integer = paragraph.ListFormat.ListLevelNumber
             For i As Integer = currentListLevelNumber + 1 To paraList.ListLevels.Count - 1
                 Dim paraLevel As ListLevel = paraList.ListLevels(i)
@@ -281,7 +281,7 @@ Public Class SectionSplitter
             Next i
 
             ' A list which was used on a previous page is present on a different page, the list
-            ' needs to be copied so list numbering is retained when extracting individual pages.
+            ' Needs to be copied so list numbering is retained when extracting individual pages.
             If ContainsListLevelAndPageChanged(paragraph) Then
                 Dim copyList As List = paragraph.Document.Lists.AddCopy(paraList)
                 mListLevelToListNumberLookup(currentLevel) = paragraph.ListLabel.LabelValue
@@ -342,7 +342,7 @@ Public Class SectionSplitter
         Dim previousSection As Section = CType(section.PreviousSibling, Section)
 
         ' If there is a previous section attempt to copy any linked header footers otherwise they will not appear in an 
-        ' extracted document if the previous section is missing.
+        ' Extracted document if the previous section is missing.
         If previousSection IsNot Nothing Then
             If (Not section.PageSetup.RestartPageNumbering) Then
                 section.PageSetup.RestartPageNumbering = True
@@ -377,7 +377,7 @@ Public Class SectionSplitter
 
     Public Overrides Function VisitDocumentEnd(ByVal doc As Document) As VisitorAction
         ' All sections have separate headers and footers now, update the fields in all headers and footers
-        ' to the correct values. This allows each page to maintain the correct field results even when
+        ' To the correct values. This allows each page to maintain the correct field results even when
         ' PAGE or IF fields are used.
         doc.UpdateFields()
 
@@ -443,7 +443,7 @@ Public Class SectionSplitter
         If IsCompositeAcrossPage(paragraph) Then
             For Each clonePara As Paragraph In SplitComposite(paragraph)
                 ' Remove list numbering from the cloned paragraph but leave the indent the same 
-                ' as the paragraph is supposed to be part of the item before.
+                ' As the paragraph is supposed to be part of the item before.
                 If paragraph.IsListItem Then
                     Dim textPosition As Double = clonePara.ListFormat.ListLevel.TextPosition
                     clonePara.ListFormat.RemoveNumbers()
@@ -534,7 +534,7 @@ Public Class SectionSplitter
             Dim pageNum As Integer = mPageNumberFinder.GetPage(childNode)
 
             ' If the page of the child node has changed then this is the split position. Add
-            ' this to the list.
+            ' This to the list.
             If pageNum > startingPage Then
                 splitList.Add(childNode)
                 startingPage = pageNum

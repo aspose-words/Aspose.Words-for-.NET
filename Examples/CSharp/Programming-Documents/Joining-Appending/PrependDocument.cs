@@ -4,7 +4,7 @@ using System.IO;
 using Aspose.Words;
 using System.Collections;
 
-namespace CSharp.Programming_Documents.Joining_and_Appending
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appending
 {
     class PrependDocument
     {
@@ -47,7 +47,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
 
                 // Now the new section node can be prepended to the destination document.
                 // Note how PrependChild is used instead of AppendChild. This is the only line changed compared 
-                // to the original method.
+                // To the original method.
                 dstDoc.PrependChild(dstSection);
             }
         }

@@ -5,7 +5,7 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
 
-namespace CSharp.Programming_Documents.Working_with_Charts
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
 {
     class CreateColumnChart
     {
@@ -21,7 +21,7 @@ namespace CSharp.Programming_Documents.Working_with_Charts
         /// </summary>             
         private static void InsertSimpleColumnChart(string dataDir)
         {
-            //ExStart:InsertSimpleColumnChart
+            // ExStart:InsertSimpleColumnChart
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -31,12 +31,12 @@ namespace CSharp.Programming_Documents.Working_with_Charts
             // Chart property of Shape contains all chart related options.
             Chart chart = shape.Chart;
 
-            //ExStart:ChartSeriesCollection 
+            // ExStart:ChartSeriesCollection 
             // Get chart series collection.
             ChartSeriesCollection seriesColl = chart.Series;
             // Check series count.
             Console.WriteLine(seriesColl.Count);
-            //ExEnd:ChartSeriesCollection 
+            // ExEnd:ChartSeriesCollection 
 
             // Delete default generated series.
             seriesColl.Clear();
@@ -51,9 +51,9 @@ namespace CSharp.Programming_Documents.Working_with_Charts
             seriesColl.Add("AW Series 4", categories, new double[] { 7, 8 });
             seriesColl.Add("AW Series 5", categories, new double[] { 9, 10 });
 
-            dataDir = dataDir + @"TestInsertSimpleChartColumn_out_.doc";
+            dataDir = dataDir + @"TestInsertSimpleChartColumn_out.doc";
             doc.Save(dataDir);
-            //ExEnd:InsertSimpleColumnChart
+            // ExEnd:InsertSimpleColumnChart
             Console.WriteLine("\nSimple column chart created successfully.\nFile saved at " + dataDir);
             
         }
@@ -62,7 +62,7 @@ namespace CSharp.Programming_Documents.Working_with_Charts
         /// </summary>             
         private static void InsertColumnChart(string dataDir)
         {
-            //ExStart:InsertColumnChart
+            // ExStart:InsertColumnChart
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -73,9 +73,9 @@ namespace CSharp.Programming_Documents.Working_with_Charts
             // Use this overload to add series to any type of Bar, Column, Line and Surface charts.
             chart.Series.Add("AW Series 1", new string[] { "AW Category 1", "AW Category 2" }, new double[] { 1, 2 });
 
-            dataDir = dataDir + @"TestInsertChartColumn_out_.doc";
+            dataDir = dataDir + @"TestInsertChartColumn_out.doc";
             doc.Save(dataDir);
-            //ExEnd:InsertColumnChart
+            // ExEnd:InsertColumnChart
             Console.WriteLine("\nColumn chart created successfully.\nFile saved at " + dataDir);
 
         }

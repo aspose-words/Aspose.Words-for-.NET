@@ -7,13 +7,14 @@ Imports Aspose.Words
 
 Public Class RemoveBreaks
     Public Shared Sub Run()
-        ' ExStart:RemoveBreaks
+
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithDocument()
+        ' ExStart:OpenFromFile
         Dim fileName As String = "TestFile.doc"
         ' Open the document.
         Dim doc As New Document(dataDir & fileName)
-
+        ' ExEnd:OpenFromFile
         ' Remove the page and section breaks from the document.
         ' In Aspose.Words section breaks are represented as separate Section nodes in the document.
         ' To remove these separate sections the sections are combined.
@@ -23,7 +24,7 @@ Public Class RemoveBreaks
         dataDir = dataDir + RunExamples.GetOutputFilePath(fileName)
         ' Save the document.
         doc.Save(dataDir)
-        ' ExEnd:RemoveBreaks
+
         Console.WriteLine(vbNewLine & "Removed breaks from the document successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
     ' ExStart:RemovePageBreaks
@@ -52,7 +53,7 @@ Public Class RemoveBreaks
     ' ExStart:RemoveSectionBreaks
     Private Shared Sub RemoveSectionBreaks(ByVal doc As Document)
         ' Loop through all sections starting from the section that precedes the last one 
-        ' and moving to the first section.
+        ' And moving to the first section.
         For i As Integer = doc.Sections.Count - 2 To 0 Step -1
             ' Copy the content of the current section to the beginning of the last section.
             doc.LastSection.PrependContent(doc.Sections(i))

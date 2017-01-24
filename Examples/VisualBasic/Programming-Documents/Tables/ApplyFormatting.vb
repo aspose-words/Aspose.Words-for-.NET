@@ -17,7 +17,7 @@ Public Class ApplyFormatting
     ''' Shows how to create a table that contains a single cell and apply row formatting.
     ''' </summary>
     Private Shared Sub ApplyRowFormatting(dataDir As String)
-        'ExStart:ApplyRowFormatting
+        ' ExStart:ApplyRowFormatting
         Dim doc As New Document()
         Dim builder As New DocumentBuilder(doc)
 
@@ -34,16 +34,16 @@ Public Class ApplyFormatting
         table.TopPadding = 30
         table.BottomPadding = 30
 
-        builder.Writeln("I'm a wonderful formatted row.")
+        builder.Writeln("I' M a wonderful formatted row.")
 
         builder.EndRow()
         builder.EndTable()
 
-        dataDir = dataDir & Convert.ToString("Table.ApplyRowFormatting_out_.doc")
+        dataDir = dataDir & Convert.ToString("Table.ApplyRowFormatting_out.doc")
 
         ' Save the document to disk.
         doc.Save(dataDir)
-        'ExEnd:ApplyRowFormatting
+        ' ExEnd:ApplyRowFormatting
         Console.WriteLine(Convert.ToString(vbLf & "Row formatting applied successfully." & vbLf & "File saved at ") & dataDir)
     End Sub
     Private Shared Sub ApplyOutlineBorder(dataDir As String)
@@ -64,7 +64,7 @@ Public Class ApplyFormatting
 
         ' Fill the cells with a light green solid color.
         table.SetShading(TextureIndex.TextureSolid, Color.LightGreen, Color.Empty)
-        dataDir = dataDir & Convert.ToString("Table.SetOutlineBorders_out_.doc")
+        dataDir = dataDir & Convert.ToString("Table.SetOutlineBorders_out.doc")
         ' Save the document to disk.
         doc.Save(dataDir)
         ' ExEnd:ApplyOutlineBorder
@@ -80,7 +80,7 @@ Public Class ApplyFormatting
         ' Set a green border around and inside the table.
         table.SetBorders(LineStyle.[Single], 1.5, Color.Green)
 
-        dataDir = dataDir & Convert.ToString("Table.SetAllBorders_out_.doc")
+        dataDir = dataDir & Convert.ToString("Table.SetAllBorders_out.doc")
         ' Save the document to disk.
         doc.Save(dataDir)
         ' ExEnd:BuildTableWithBordersEnabled
@@ -109,7 +109,7 @@ Public Class ApplyFormatting
         Dim firstCell As Cell = table.FirstRow.FirstCell
         ' Modify some cell level properties.
         firstCell.CellFormat.Width = 30
-        ' in points
+        ' In points
         firstCell.CellFormat.Orientation = TextOrientation.Downward
         firstCell.CellFormat.Shading.ForegroundPatternColor = Color.LightGreen
         ' ExEnd:ModifyCellFormatting
@@ -144,7 +144,7 @@ Public Class ApplyFormatting
         builder.InsertCell()
 
         ' Create larger borders for the first cell of this row. This will be different.
-        ' compared to the borders set for the table.
+        ' Compared to the borders set for the table.
         builder.CellFormat.Borders.Left.LineWidth = 4.0
         builder.CellFormat.Borders.Right.LineWidth = 4.0
         builder.CellFormat.Borders.Top.LineWidth = 4.0
@@ -156,7 +156,7 @@ Public Class ApplyFormatting
         builder.CellFormat.ClearFormatting()
         builder.Writeln("Cell #4")
         ' Save finished document.
-        doc.Save(dataDir & Convert.ToString("Table.SetBordersAndShading_out_.doc"))
+        doc.Save(dataDir & Convert.ToString("Table.SetBordersAndShading_out.doc"))
         ' ExEnd:FormatTableAndCellWithDifferentBorders
         Console.WriteLine(Convert.ToString(vbLf & "format table and cell with different borders and shadings successfully." & vbLf & "File saved at ") & dataDir)
     End Sub

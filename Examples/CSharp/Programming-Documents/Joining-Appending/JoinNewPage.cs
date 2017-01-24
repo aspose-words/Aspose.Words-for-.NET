@@ -3,13 +3,13 @@ using System.IO;
 
 using Aspose.Words;
 
-namespace CSharp.Programming_Documents.Joining_and_Appending
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appending
 {
     class JoinNewPage
     {
         public static void Run()
         {
-            //ExStart:JoinNewPage
+            // ExStart:JoinNewPage
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
             string fileName = "TestFile.Destination.doc";
@@ -24,7 +24,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             dstDoc.Save(dataDir);
-            //ExEnd:JoinNewPage
+            // ExEnd:JoinNewPage
             Console.WriteLine("\nDocument appended successfully with new section start.\nFile saved at " + dataDir);
         }
     }

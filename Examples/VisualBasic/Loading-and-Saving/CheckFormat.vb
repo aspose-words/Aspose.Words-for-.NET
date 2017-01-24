@@ -33,7 +33,9 @@ Public Class CheckFormat
             Directory.CreateDirectory(pre97Dir)
         End If
 
+        ' ExStart:GetListOfFilesInFolder
         Dim fileList() As String = Directory.GetFiles(dataDir)
+        ' ExEnd:GetListOfFilesInFolder
 
         For Each fileName As String In fileList
             ' Extract and display the file name without the path.
@@ -71,7 +73,7 @@ Public Class CheckFormat
                     Console.WriteLine(Constants.vbTab & "OpenDocument Text.")
                 Case LoadFormat.Ott
                     Console.WriteLine(Constants.vbTab & "OpenDocument Text Template.")
-                Case LoadFormat.DocPreWord97
+                Case LoadFormat.DocPreWord60
                     Console.WriteLine(Constants.vbTab & "MS Word 6 or Word 95 format.")
                 Case Else
                     Console.WriteLine(Constants.vbTab & "Unknown format.")
@@ -83,7 +85,7 @@ Public Class CheckFormat
                 File.Copy(fileName, Path.Combine(encryptedDir, nameOnly), True)
             Else
                 Select Case info.LoadFormat
-                    Case LoadFormat.DocPreWord97
+                    Case LoadFormat.DocPreWord60
                         File.Copy(fileName, Path.Combine(pre97Dir, nameOnly), True)
                     Case LoadFormat.Unknown
                         File.Copy(fileName, Path.Combine(unknownDir, nameOnly), True)

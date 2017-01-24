@@ -5,13 +5,13 @@ using System.Text;
 using Aspose.Words;
 using Aspose.Words.Reporting;
 
-namespace CSharp.LINQ
+namespace Aspose.Words.Examples.CSharp.LINQ
 {
     class ScatterChart
     {
         public static void Run()
         {
-            //ExStart:ScatterChart
+            // ExStart:ScatterChart
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LINQ(); 
             string fileName = "ScatterChart.docx";
@@ -28,7 +28,7 @@ namespace CSharp.LINQ
 
             // Save the finished document to disk.
             doc.Save(dataDir);
-            //ExEnd:ScatterChart
+            // ExEnd:ScatterChart
             Console.WriteLine("\nScatter chart template document is populated with the data about contracts.\nFile saved at " + dataDir);
 
         }

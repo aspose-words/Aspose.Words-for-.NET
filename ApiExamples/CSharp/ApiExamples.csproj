@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ApiExamples</RootNamespace>
     <AssemblyName>ApiExamples</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,12 +32,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words, Version=16.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>packages\Aspose.Words.16.1.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.BarCode, Version=8.2.1.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.BarCode.8.2.1\lib\net4.5\Aspose.BarCode.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    <Reference Include="Aspose.Pdf, Version=12.0.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.Pdf.12.0.0\lib\net40-client\Aspose.Pdf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Aspose.Words, Version=16.8.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.Words.16.8.0\lib\net40\Aspose.Words.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -53,67 +62,74 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bookmark\ExBookmarks.cs" />
-    <Compile Include="Border\ExBorder.cs" />
-    <Compile Include="Border\ExBorderCollection.cs" />
-    <Compile Include="BuildVersionInfo\ExBuildVersion.cs" />
-    <Compile Include="Comment\ExComment.cs" />
-    <Compile Include="ConvertUtil\ExUtilityClasses.cs" />
-    <Compile Include="DigitalSignature\ExDigitalSignature.cs" />
-    <Compile Include="DigitalSignature\ExDigitalSignatureCollection.cs" />
-    <Compile Include="DigitalSignature\ExDigitalSignatureUtil.cs" />
-    <Compile Include="DocumentConverts\ExMossDoc2Pdf.cs" />
-    <Compile Include="DocumentConverts\ExMossRtf2Docx.cs" />
-    <Compile Include="Document\ExDocument.cs" />
-    <Compile Include="Document\ExDocumentBuilder.cs" />
-    <Compile Include="Document\ExDocumentBuilderImages.cs" />
-    <Compile Include="Document\ExInsertDocument.cs" />
-    <Compile Include="Document\ExVisitor.cs" />
-    <Compile Include="Drawing\ExImage.cs" />
-    <Compile Include="Drawing\ExShape.cs" />
-    <Compile Include="EditableRange\ExEditableRange.cs" />
-    <Compile Include="Fields\ExField.cs" />
-    <Compile Include="Fields\ExFormFields.cs" />
-    <Compile Include="Fields\ExRenameMergeFields.cs" />
-    <Compile Include="Font\ExFont.cs" />
-    <Compile Include="HeaderFooter\ExHeaderFooter.cs" />
-    <Compile Include="Hyperlink\ExReplaceHyperlinks.cs" />
-    <Compile Include="Hyphenation\ExHyphenation.cs" />
-    <Compile Include="Inline\ExInlineStory.cs" />
-    <Compile Include="List\ExLists.cs" />
-    <Compile Include="MailMerging\ExMailMerge.cs" />
-    <Compile Include="MailMerging\ExMailMergeCustom.cs" />
-    <Compile Include="MailMerging\ExMailMergeEvent.cs" />
-    <Compile Include="MailMerging\ExNestedMailMergeCustom.cs" />
-    <Compile Include="Node\ExNode.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
-    <Compile Include="PageSetup\ExPageSetup.cs" />
-    <Compile Include="Paragraph\ExParagraph.cs" />
-    <Compile Include="Document\ExProperties.cs" />
+    <Compile Include="ExBookmarks.cs" />
+    <Compile Include="ExBorder.cs" />
+    <Compile Include="ExBorderCollection.cs" />
+    <Compile Include="ExBuildVersion.cs" />
+    <Compile Include="ExComment.cs" />
+    <Compile Include="ExOoxmlSaveOptions.cs" />
+    <Compile Include="ExXpsSaveOptions.cs" />
+    <Compile Include="ExUtilityClasses.cs" />
+    <Compile Include="ExDigitalSignature.cs" />
+    <Compile Include="ExDigitalSignatureCollection.cs" />
+    <Compile Include="ExDigitalSignatureUtil.cs" />
+    <Compile Include="ExMossDoc2Pdf.cs" />
+    <Compile Include="ExMossRtf2Docx.cs" />
+    <Compile Include="DocumentHelper.cs" />
+    <Compile Include="ExDocument.cs" />
+    <Compile Include="ExDocumentBuilder.cs" />
+    <Compile Include="ExDocumentBuilderImages.cs" />
+    <Compile Include="ExInsertDocument.cs" />
+    <Compile Include="ExVisitor.cs" />
+    <Compile Include="ExImage.cs" />
+    <Compile Include="ExShape.cs" />
+    <Compile Include="ExEditableRange.cs" />
+    <Compile Include="CustomBarcodeGenerator.cs" />
+    <Compile Include="ExField.cs" />
+    <Compile Include="ExFormFields.cs" />
+    <Compile Include="ExRenameMergeFields.cs" />
+    <Compile Include="ExFont.cs" />
+    <Compile Include="ExHeaderFooter.cs" />
+    <Compile Include="ExReplaceHyperlinks.cs" />
+    <Compile Include="ExHyphenation.cs" />
+    <Compile Include="ExInlineStory.cs" />
+    <Compile Include="ExLists.cs" />
+    <Compile Include="ExMailMerge.cs" />
+    <Compile Include="ExMailMergeCustom.cs" />
+    <Compile Include="ExMailMergeEvent.cs" />
+    <Compile Include="ExNestedMailMergeCustom.cs" />
+    <Compile Include="ExStructuredDocumentTag.cs" />
+    <Compile Include="ExNode.cs" />
+    <Compile Include="ExPageSetup.cs" />
+    <Compile Include="ExParagraph.cs" />
+    <Compile Include="ExProperties.cs" />
     <Compile Include="ApiExampleBase.cs" />
-    <Compile Include="Range\ExRange.cs" />
-    <Compile Include="Rendering\ExRendering.cs" />
-    <Compile Include="Saving\ExHtmlFixedSaveOptions.cs" />
-    <Compile Include="Saving\ExPdfSaveOptions.cs" />
-    <Compile Include="Saving\ExSwfSaveOptions.cs" />
-    <Compile Include="Section\ExSection.cs" />
-    <Compile Include="Style\ExStyles.cs" />
-    <Compile Include="Tables\ExCellFormat.cs" />
-    <Compile Include="Tables\ExTable.cs" />
-    <Compile Include="Tables\ExTableColumn.cs" />
-    <Compile Include="Tab\ExTabStopCollection.cs" />
-    <Compile Include="VariableCollection\ExVariableCollection.cs" />
-    <Compile Include="Warning\ExWarningInfoCollection.cs" />
+    <Compile Include="ExRange.cs" />
+    <Compile Include="ExRendering.cs" />
+    <Compile Include="ExReportingEngine.cs" />
+    <Compile Include="ExImageSaveOptions.cs" />
+    <Compile Include="ExHtmlSaveOptions.cs" />
+    <Compile Include="ExHtmlFixedSaveOptions.cs" />
+    <Compile Include="ExPdfSaveOptions.cs" />
+    <Compile Include="ExSwfSaveOptions.cs" />
+    <Compile Include="ExSavingCallback.cs" />
+    <Compile Include="ExSection.cs" />
+    <Compile Include="ExStyles.cs" />
+    <Compile Include="ExCellFormat.cs" />
+    <Compile Include="ExTable.cs" />
+    <Compile Include="ExTableColumn.cs" />
+    <Compile Include="ExTabStopCollection.cs" />
+    <Compile Include="ExVariableCollection.cs" />
+    <Compile Include="ExWarningInfoCollection.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="obj\Debug\TempPE\" />
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

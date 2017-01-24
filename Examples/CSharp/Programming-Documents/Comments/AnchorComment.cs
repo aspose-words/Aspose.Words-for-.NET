@@ -4,13 +4,13 @@ using System.IO;
 
 using Aspose.Words;
 
-namespace CSharp.Programming_Documents.Comments
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Comments
 {
     class AnchorComment
     {
         public static void Run()
         {
-            //ExStart:AnchorComment
+            // ExStart:AnchorComment
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithComments();
             Document doc = new Document();
@@ -40,10 +40,10 @@ namespace CSharp.Programming_Documents.Comments
             run3.ParentNode.InsertAfter(commentRangeEnd, run3);
             commentRangeEnd.ParentNode.InsertAfter(comment, commentRangeEnd);
            
-            dataDir = dataDir + "Anchor.Comment_out_.doc";
+            dataDir = dataDir + "Anchor.Comment_out.doc";
             // Save the document.
             doc.Save(dataDir);
-            //ExEnd:AnchorComment
+            // ExEnd:AnchorComment
             Console.WriteLine("\nComment anchored successfully.\nFile saved at " + dataDir);
         }        
     }

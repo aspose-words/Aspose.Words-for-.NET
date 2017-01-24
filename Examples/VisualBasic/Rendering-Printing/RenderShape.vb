@@ -40,7 +40,7 @@ Public Class RenderShape
         ' Define custom options which control how the image is rendered. Render the shape to the JPEG raster format.
         Dim imageOptions As New ImageSaveOptions(SaveFormat.Emf) With {.Scale = 1.5F}
 
-        dataDir = dataDir & "TestFile.RenderToDisk_out_.emf"
+        dataDir = dataDir & "TestFile.RenderToDisk_out.emf"
         ' Save the rendered image to disk.
         r.Save(dataDir, imageOptions)
         ' ExEnd:RenderShapeToDisk
@@ -56,7 +56,7 @@ Public Class RenderShape
         ' Reduce the brightness a bit (default is 0.5f).
         Dim imageOptions As New ImageSaveOptions(SaveFormat.Jpeg) With {.ImageColorMode = ImageColorMode.Grayscale, .ImageBrightness = 0.45F}
 
-        dataDir = dataDir & "TestFile.RenderToStream_out_.jpg"
+        dataDir = dataDir & "TestFile.RenderToStream_out.jpg"
         Dim stream As New FileStream(dataDir, FileMode.Create)
 
         ' Save the rendered image to the stream using different options.
@@ -74,12 +74,12 @@ Public Class RenderShape
         Dim shapeSizeInPixels As Size = r.GetSizeInPixels(1.0F, 96.0F)
 
         ' Rotating the shape may result in clipping as the image canvas is too small. Find the longest side
-        ' and make sure that the graphics canvas is large enough to compensate for this.
-        Dim maxSide As Integer = Math.Max(shapeSizeInPixels.Width, shapeSizeInPixels.Height)
+        ' And make sure that the graphics canvas is large enough to compensate for this.
+        Dim maxSide As Integer = System.Math.Max(shapeSizeInPixels.Width, shapeSizeInPixels.Height)
 
         Using image As New Bitmap(CInt(Fix(maxSide * 1.25)), CInt(Fix(maxSide * 1.25)))
             ' Rendering to a graphics object means we can specify settings and transformations to be applied to 
-            ' the shape that is rendered. In our case we will rotate the rendered shape.
+            ' The shape that is rendered. In our case we will rotate the rendered shape.
             Using gr As Graphics = Graphics.FromImage(image)
                 ' Clear the shape with the background color of the document.
                 gr.Clear(Color.White)
@@ -93,7 +93,7 @@ Public Class RenderShape
                 ' Render the shape onto the graphics object.
                 r.RenderToSize(gr, 0, 0, shapeSizeInPixels.Width, shapeSizeInPixels.Height)
             End Using
-            dataDir = dataDir & "TestFile.RenderToGraphics_out_.png"
+            dataDir = dataDir & "TestFile.RenderToGraphics_out.png"
             image.Save(dataDir, ImageFormat.Png)
             Console.WriteLine(vbNewLine & "Shape rendered to graphics successfully." & vbNewLine & "File saved at " + dataDir)
         End Using
@@ -103,7 +103,7 @@ Public Class RenderShape
     Public Shared Sub RenderCellToImage(ByVal dataDir As String, ByVal doc As Document)
         ' ExStart:RenderCellToImage
         Dim cell As Cell = CType(doc.GetChild(NodeType.Cell, 2, True), Cell) ' The third cell in the first table.
-        dataDir = dataDir & "TestFile.RenderCell_out_.png"
+        dataDir = dataDir & "TestFile.RenderCell_out.png"
         RenderNode(cell, dataDir, Nothing)
         ' ExEnd:RenderCellToImage
         Console.WriteLine(vbNewLine & "Cell rendered to image successfully." & vbNewLine & "File saved at " + dataDir)
@@ -112,7 +112,7 @@ Public Class RenderShape
     Public Shared Sub RenderRowToImage(ByVal dataDir As String, ByVal doc As Document)
         ' ExStart:RenderRowToImage
         Dim row As Row = CType(doc.GetChild(NodeType.Row, 0, True), Row) ' The first row in the first table.
-        dataDir = dataDir & "TestFile.RenderRow_out_.png"
+        dataDir = dataDir & "TestFile.RenderRow_out.png"
         RenderNode(row, dataDir, Nothing)
         ' ExEnd:RenderRowToImage
         Console.WriteLine(vbNewLine & "Row rendered to image successfully." & vbNewLine & "File saved at " + dataDir)
@@ -126,7 +126,7 @@ Public Class RenderShape
         ' Save the node with a light pink background.
         Dim options As New ImageSaveOptions(SaveFormat.Png)
         options.PaperColor = Color.LightPink
-        dataDir = dataDir & "TestFile.RenderParagraph_out_.png"
+        dataDir = dataDir & "TestFile.RenderParagraph_out.png"
         RenderNode(paragraph, dataDir, options)
         ' ExEnd:RenderParagraphToImage
         Console.WriteLine(vbNewLine & "Paragraph rendered to image successfully." & vbNewLine & "File saved at " + dataDir)
@@ -149,7 +149,7 @@ Public Class RenderShape
     End Sub
     Public Shared Sub RenderShapeImage(dataDir As String, shape As Shape)
         ' ExStart:RenderShapeImage
-        dataDir = dataDir & Convert.ToString("TestFile.RenderShape_out_.jpg")
+        dataDir = dataDir & Convert.ToString("TestFile.RenderShape_out.jpg")
         ' Save the Shape image to disk in JPEG format and using default options.
         shape.GetShapeRenderer().Save(dataDir, Nothing)
         ' ExEnd:RenderShapeImage
@@ -165,7 +165,7 @@ Public Class RenderShape
     Public Shared Sub RenderNode(ByVal node As Node, ByVal filePath As String, ByVal imageOptions As ImageSaveOptions)
         ' This code is taken from public API samples of AW.
         ' Previously to find opaque bounds of the shape the function
-        ' that checks every pixel of the rendered image was used.
+        ' That checks every pixel of the rendered image was used.
         ' For now opaque bounds is got using ShapeRenderer.GetOpaqueRectangleInPixels method.
 
         ' If no image options are supplied, create default options.
@@ -179,12 +179,12 @@ Public Class RenderShape
         imageOptions.PaperColor = Color.Transparent
 
         ' There a bug which affects the cache of a cloned node. To avoid this we instead clone the entire document including all nodes,
-        ' find the matching node in the cloned document and render that instead.
+        ' Find the matching node in the cloned document and render that instead.
         Dim doc As Document = CType(node.Document.Clone(True), Document)
         node = doc.GetChild(NodeType.Any, node.Document.GetChildNodes(NodeType.Any, True).IndexOf(node), True)
 
         ' Create a temporary shape to store the target node in. This shape will be rendered to retrieve
-        ' the rendered content of the node.
+        ' The rendered content of the node.
         Dim shape As Shape = New Shape(doc, ShapeType.TextBox)
         Dim parentSection As Section = CType(node.GetAncestor(NodeType.Section), Section)
 
@@ -193,7 +193,7 @@ Public Class RenderShape
         shape.Height = parentSection.PageSetup.PageHeight
         shape.FillColor = Color.Transparent ' We must make the shape and paper color transparent.
 
-        ' Don't draw a surronding line on the shape.
+        ' Don' T draw a surronding line on the shape.
         shape.Stroked = False
 
         ' Move up through the DOM until we find node which is suitable to insert into a Shape (a node with a parent can contain paragraph, tables the same as a shape).
@@ -218,7 +218,7 @@ Public Class RenderShape
         renderer.Save(stream, imageOptions)
         shape.Remove()
 
-        Dim crop As Rectangle = renderer.GetOpaqueRectangleInPixels(imageOptions.Scale, imageOptions.Resolution)
+        Dim crop As Rectangle = renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.Resolution)
 
         ' Load the image into a new bitmap.
         Using renderedImage As Bitmap = New Bitmap(stream)
@@ -249,10 +249,10 @@ Public Class RenderShape
 
                 ' For each pixel that is not transparent calculate the bounding box around it.
                 If pixelColor.ToArgb() <> Color.Empty.ToArgb() Then
-                    min.X = Math.Min(x, min.X)
-                    min.Y = Math.Min(y, min.Y)
-                    max.X = Math.Max(x, max.X)
-                    max.Y = Math.Max(y, max.Y)
+                    min.X = System.Math.Min(x, min.X)
+                    min.Y = System.Math.Min(y, min.Y)
+                    max.X = System.Math.Max(x, max.X)
+                    max.Y = System.Math.Max(y, max.Y)
                 End If
             Next y
         Next x

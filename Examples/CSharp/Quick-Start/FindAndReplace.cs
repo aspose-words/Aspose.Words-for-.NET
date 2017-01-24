@@ -1,10 +1,10 @@
 ﻿
 using System;
 using System.IO;
-
+using Aspose.Words.Replacing;
 using Aspose.Words;
 
-namespace CSharp.Quick_Start
+namespace Aspose.Words.Examples.CSharp.Quick_Start
 {
     class FindAndReplace
     {
@@ -21,7 +21,7 @@ namespace CSharp.Quick_Start
             Console.WriteLine("Original document text: " + doc.Range.Text);
 
             // Replace the text in the document.
-            doc.Range.Replace("_CustomerName_", "James Bond", false, false);
+            doc.Range.Replace("_CustomerName_", "James Bond", new FindReplaceOptions(FindReplaceDirection.Forward));
 
             // Check the replacement was made.
             Console.WriteLine("Document text after replace: " + doc.Range.Text);

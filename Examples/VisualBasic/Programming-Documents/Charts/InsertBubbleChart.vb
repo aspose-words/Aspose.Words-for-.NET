@@ -15,7 +15,7 @@ Public Class InsertBubbleChart
 
         ' Use this overload to add series to any type of Bubble charts.
         chart.Series.Add("AW Series 1", New Double() {0.7, 1.8, 2.6}, New Double() {2.7, 3.2, 0.8}, New Double() {10, 4, 8})
-        dataDir = dataDir & Convert.ToString("TestInsertBubbleChart_out_.docx")
+        dataDir = dataDir & Convert.ToString("TestInsertBubbleChart_out.docx")
         doc.Save(dataDir)
         ' ExEnd:InsertBubbleChart
         Console.WriteLine(Convert.ToString(vbLf & "Bubble chart created successfully." & vbLf & "File saved at ") & dataDir)

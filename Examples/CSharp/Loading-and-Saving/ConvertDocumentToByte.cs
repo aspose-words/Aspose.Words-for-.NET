@@ -3,13 +3,13 @@ using System.IO;
 using Aspose.Words;
 using System;
 
-namespace CSharp.Loading_Saving
+namespace Aspose.Words.Examples.CSharp.Loading_Saving
 {
     class ConvertDocumentToByte
     {
         public static void Run()
         {
-            //ExStart:ConvertDocumentToByte
+            // ExStart:ConvertDocumentToByte
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
@@ -31,7 +31,7 @@ namespace CSharp.Loading_Saving
 
             // Load the stream into a new document object.
             Document loadDoc = new Document(inStream);
-            //ExEnd:ConvertDocumentToByte
+            // ExEnd:ConvertDocumentToByte
 
             Console.WriteLine("\nDocument converted to byte array successfully.");
         }

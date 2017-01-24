@@ -154,7 +154,7 @@ Namespace LINQ
             Dim returnCollection As New List(Of Contract)()
             For Each manager As Manager In GetManagers()
                 For Each contract As Contract In manager.Contracts
-                    'yield Return contract
+                    ' Yield Return contract
                     returnCollection.Add(contract)
                 Next
             Next

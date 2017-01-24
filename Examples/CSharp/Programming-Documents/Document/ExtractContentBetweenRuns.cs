@@ -5,12 +5,13 @@ using System.IO;
 using Aspose.Words;
 using Aspose.Words.Tables;
 
-namespace CSharp.Programming_Documents.Working_With_Document
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class ExtractContentBetweenRuns
     {
         public static void Run()
         {
+            // ExStart:ExtractContentBetweenRuns
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             string fileName = "TestFile.doc";
@@ -30,7 +31,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
             Node node = (Node)extractedNodes[0];
             // Print the text of this node to the console.
             Console.WriteLine(node.ToString(SaveFormat.Text));
-
+            // ExEnd:ExtractContentBetweenRuns
             Console.WriteLine("\nExtracted content betweenn the runs successfully.");
         }
     }

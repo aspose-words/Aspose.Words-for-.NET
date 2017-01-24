@@ -16,7 +16,7 @@ Namespace LINQ
             ' Load the template document.
             Dim doc As New Document(dataDir & fileName)
 
-            ' Create an instance of sender class to set it's properties.
+            ' Create an instance of sender class to set it' S properties.
             Dim sender As New Sender() With { _
                 .Name = "LINQ Reporting Engine", _
                 .Message = "Hello World" _

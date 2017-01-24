@@ -7,6 +7,7 @@ Imports Aspose.Words
 
 Public Class ProcessComments
     Public Shared Sub Run()
+        ' ExStart:ProcessComments
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithComments()
         Dim fileName As String = "TestFile.doc"
@@ -34,10 +35,10 @@ Public Class ProcessComments
         dataDir = dataDir + RunExamples.GetOutputFilePath(fileName)
         ' Save the document.
         doc.Save(dataDir)
-
+        ' ExEnd:ProcessComments
         Console.WriteLine(vbNewLine & "Comments extracted and removed successfully." & vbNewLine & "File saved at " + dataDir)
     End Sub
-
+    ' ExStart:ExtractComments
     Private Shared Function ExtractComments(ByVal doc As Document) As ArrayList
         Dim collectedComments As New ArrayList()
         ' Collect all comments in the document
@@ -48,7 +49,8 @@ Public Class ProcessComments
         Next comment
         Return collectedComments
     End Function
-
+    ' ExEnd:ExtractComments
+    ' ExStart:ExtractCommentsByAuthor
     Private Shared Function ExtractComments(ByVal doc As Document, ByVal authorName As String) As ArrayList
         Dim collectedComments As New ArrayList()
         ' Collect all comments in the document
@@ -61,14 +63,16 @@ Public Class ProcessComments
         Next comment
         Return collectedComments
     End Function
-
+    ' ExEnd:ExtractCommentsByAuthor
+    ' ExStart:RemoveComments
     Private Shared Sub RemoveComments(ByVal doc As Document)
         ' Collect all comments in the document
         Dim comments As NodeCollection = doc.GetChildNodes(NodeType.Comment, True)
         ' Remove all comments.
         comments.Clear()
     End Sub
-
+    ' ExEnd:RemoveComments
+    ' ExStart:RemoveCommentsByAuthor
     Private Shared Sub RemoveComments(ByVal doc As Document, ByVal authorName As String)
         ' Collect all comments in the document
         Dim comments As NodeCollection = doc.GetChildNodes(NodeType.Comment, True)
@@ -80,4 +84,5 @@ Public Class ProcessComments
             End If
         Next i
     End Sub
+    ' ExEnd:RemoveCommentsByAuthor
 End Class

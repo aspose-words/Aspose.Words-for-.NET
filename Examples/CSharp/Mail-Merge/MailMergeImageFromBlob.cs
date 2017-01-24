@@ -10,13 +10,13 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace CSharp.Mail_Merge
+namespace Aspose.Words.Examples.CSharp.Mail_Merge
 {
     class MailMergeImageFromBlob
     {
         public static void Run()
         {
-            //ExStart:MailMergeImageFromBlob            
+            // ExStart:MailMergeImageFromBlob            
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); 
             Document doc = new Document(dataDir + "MailMerge.MergeImage.doc");
@@ -38,12 +38,12 @@ namespace CSharp.Mail_Merge
 
             // Close the database.
             conn.Close();
-            dataDir = dataDir + "MailMerge.MergeImage_out_.doc";
+            dataDir = dataDir + "MailMerge.MergeImage_out.doc";
             doc.Save(dataDir);
-            //ExEnd:MailMergeImageFromBlob
+            // ExEnd:MailMergeImageFromBlob
             Console.WriteLine("\nMail merge image from blob performed successfully.\nFile saved at " + dataDir);
         }
-        //ExStart:HandleMergeImageFieldFromBlob 
+        // ExStart:HandleMergeImageFieldFromBlob 
         public class HandleMergeImageFieldFromBlob : IFieldMergingCallback
         {
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
@@ -63,6 +63,6 @@ namespace CSharp.Mail_Merge
                 e.ImageStream = imageStream;
             }
         }
-        //ExEnd:HandleMergeImageFieldFromBlob
+        // ExEnd:HandleMergeImageFieldFromBlob
     }
 }

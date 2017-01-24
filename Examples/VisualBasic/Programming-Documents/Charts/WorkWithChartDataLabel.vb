@@ -24,8 +24,8 @@ Public Class WorkWithChartDataLabel
         chartDataLabel00.ShowLegendKey = True
 
         ' By default, when you add data labels to the data points in a pie chart, leader lines are displayed for data labels that are
-        ' positioned far outside the end of data points. Leader lines create a visual connection between a data label and its 
-        ' corresponding data point.
+        ' Positioned far outside the end of data points. Leader lines create a visual connection between a data label and its 
+        ' Corresponding data point.
         chartDataLabel00.ShowLeaderLines = True
 
         chartDataLabel00.ShowCategoryName = False
@@ -34,7 +34,7 @@ Public Class WorkWithChartDataLabel
         chartDataLabel00.ShowValue = True
         chartDataLabel00.Separator = "/"
         chartDataLabel01.ShowValue = True
-        dataDir = dataDir & Convert.ToString("SimpleBarChart_out_.docx")
+        dataDir = dataDir & Convert.ToString("SimpleBarChart_out.docx")
         doc.Save(dataDir)
         ' ExEnd:WorkWithChartDataLabel
         Console.WriteLine(Convert.ToString(vbLf & "Simple bar chart created successfully." & vbLf & "File saved at ") & dataDir)

@@ -8,9 +8,9 @@ using Aspose.Words.Fields;
 using Aspose.Words.Layout;
 using System.Diagnostics;
 
-namespace CSharp.Programming_Documents.Working_with_Fields
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 {
-    //ExStart:FieldsHelper
+    // ExStart:FieldsHelper
     public class FieldsHelper : DocumentVisitor
     {
         /// <summary>
@@ -20,13 +20,13 @@ namespace CSharp.Programming_Documents.Working_with_Fields
         /// <param name="targetFieldType">The FieldType of the field to convert to static text.</param>
         public static void ConvertFieldsToStaticText(CompositeNode compositeNode, FieldType targetFieldType)
         {
-            string originalNodeText = compositeNode.ToString(SaveFormat.Text); //ExSkip
+            string originalNodeText = compositeNode.ToString(SaveFormat.Text); // ExSkip
             FieldsHelper helper = new FieldsHelper(targetFieldType);
             compositeNode.Accept(helper);
 
-            Debug.Assert(originalNodeText.Equals(compositeNode.ToString(SaveFormat.Text)), "Error: Text of the node converted differs from the original"); //ExSkip
-            foreach (Node node in compositeNode.GetChildNodes(NodeType.Any, true)) //ExSkip
-                Debug.Assert(!(node is FieldChar && ((FieldChar)node).FieldType.Equals(targetFieldType)), "Error: A field node that should be removed still remains."); //ExSkip         
+            Debug.Assert(originalNodeText.Equals(compositeNode.ToString(SaveFormat.Text)), "Error: Text of the node converted differs from the original"); // ExSkip
+            foreach (Node node in compositeNode.GetChildNodes(NodeType.Any, true)) // ExSkip
+                Debug.Assert(!(node is FieldChar && ((FieldChar)node).FieldType.Equals(targetFieldType)), "Error: A field node that should be removed still remains."); // ExSkip         
         }
 
         private FieldsHelper(FieldType targetFieldType)
@@ -91,7 +91,7 @@ namespace CSharp.Programming_Documents.Working_with_Fields
             if (mFieldDepth > 0)
             {
                 // The field code that is being converted continues onto another paragraph. We 
-                // need to copy the remaining content from this paragraph onto the next paragraph.
+                // Need to copy the remaining content from this paragraph onto the next paragraph.
                 Node nextParagraph = paragraph.NextSibling;
 
                 // Skip ahead to the next available paragraph.
@@ -131,5 +131,5 @@ namespace CSharp.Programming_Documents.Working_with_Fields
         private ArrayList mNodesToSkip = new ArrayList();
         private FieldType mTargetFieldType;
     }
-    //ExEnd:FieldsHelper
+    // ExEnd:FieldsHelper
 }

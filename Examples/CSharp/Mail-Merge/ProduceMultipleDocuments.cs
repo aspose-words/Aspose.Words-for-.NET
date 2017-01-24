@@ -10,13 +10,13 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace CSharp.Mail_Merge
+namespace Aspose.Words.Examples.CSharp.Mail_Merge
 {
     class ProduceMultipleDocuments
     {
         public static void Run()
         {
-            //ExStart:ProduceMultipleDocuments            
+            // ExStart:ProduceMultipleDocuments            
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting();
             // Open the database connection.
@@ -43,9 +43,9 @@ namespace CSharp.Mail_Merge
                 dstDoc.MailMerge.Execute(row);
 
                 // Save the document.
-                dstDoc.Save(string.Format(dataDir + "TestFile_out_{0}.doc", counter++));
+                dstDoc.Save(string.Format(dataDir + "TestFile_out{0}.doc", counter++));
             }
-            //ExEnd:ProduceMultipleDocuments
+            // ExEnd:ProduceMultipleDocuments
             Console.WriteLine("\nProduce multiple documents performed successfully.\nFile saved at " + dataDir);            
         }
     }

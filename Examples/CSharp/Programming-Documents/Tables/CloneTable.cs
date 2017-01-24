@@ -7,7 +7,7 @@ using Aspose.Words;
 using Aspose.Words.Tables;
 using System.Diagnostics;
 
-namespace CSharp.Programming_Documents.Working_with_Tables
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
 {
     class CloneTable
     {
@@ -23,7 +23,7 @@ namespace CSharp.Programming_Documents.Working_with_Tables
         /// </summary>
         private static void CloneCompleteTable(string dataDir)
         {
-            //ExStart:CloneCompleteTable
+            // ExStart:CloneCompleteTable
             Document doc = new Document(dataDir + "Table.SimpleTable.doc");
 
             // Retrieve the first table in the document.
@@ -36,13 +36,13 @@ namespace CSharp.Programming_Documents.Working_with_Tables
             table.ParentNode.InsertAfter(tableClone, table);
 
             // Insert an empty paragraph between the two tables or else they will be combined into one
-            // upon save. This has to do with document validation.
+            // Upon save. This has to do with document validation.
             table.ParentNode.InsertAfter(new Paragraph(doc), table);
-            dataDir = dataDir + "Table.CloneTableAndInsert_out_.doc";
+            dataDir = dataDir + "Table.CloneTableAndInsert_out.doc";
            
             // Save the document to disk.
             doc.Save(dataDir);
-            //ExEnd:CloneCompleteTable
+            // ExEnd:CloneCompleteTable
             Console.WriteLine("\nTable cloned successfully.\nFile saved at " + dataDir);
         }
         /// <summary>
@@ -50,7 +50,7 @@ namespace CSharp.Programming_Documents.Working_with_Tables
         /// </summary>
         private static void CloneLastRow(string dataDir)
         {
-            //ExStart:CloneLastRow
+            // ExStart:CloneLastRow
             Document doc = new Document(dataDir + "Table.SimpleTable.doc");
 
             // Retrieve the first table in the document.
@@ -60,17 +60,17 @@ namespace CSharp.Programming_Documents.Working_with_Tables
             Row clonedRow = (Row)table.LastRow.Clone(true);
 
             // Remove all content from the cloned row's cells. This makes the row ready for
-            // new content to be inserted into.
+            // New content to be inserted into.
             foreach (Cell cell in clonedRow.Cells)
                 cell.RemoveAllChildren();
 
             // Add the row to the end of the table.
             table.AppendChild(clonedRow);
 
-            dataDir = dataDir + "Table.AddCloneRowToTable_out_.doc";
+            dataDir = dataDir + "Table.AddCloneRowToTable_out.doc";
             // Save the document to disk.
             doc.Save(dataDir);
-            //ExEnd:CloneLastRow
+            // ExEnd:CloneLastRow
             Console.WriteLine("\nTable last row cloned successfully.\nFile saved at " + dataDir);
         }
     }

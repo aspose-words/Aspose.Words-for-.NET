@@ -11,12 +11,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Aspose.AutoMerge</RootNamespace>
     <AssemblyName>Aspose.AutoMerge</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -26,6 +27,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,6 +36,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -42,19 +45,18 @@
     <AssemblyOriginatorKeyFile>Aspose.AutoMerge.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="aspose.words, Version=14.11.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Windows\assembly\GAC_MSIL\Aspose.Words\14.11.0.0__716fcc553a201e56\aspose.words.dll</HintPath>
+    <Reference Include="Aspose.Words">
+      <HintPath>packages\Aspose.Words.16.4.0\lib\net40\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Crm.Sdk.Proxy">
-      <HintPath>..\..\Dlls\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\CRM SDK\CRM 2015 SDK\Bin\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Xrm.Sdk">
-      <HintPath>..\..\Dlls\Microsoft.Xrm.Sdk.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\CRM SDK\CRM 2015 SDK\Bin\Microsoft.Xrm.Sdk.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xrm.Sdk.Workflow">
-      <HintPath>..\..\Dlls\Microsoft.Xrm.Sdk.Workflow.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\CRM SDK\CRM 2015 SDK\Bin\Microsoft.Xrm.Sdk.Workflow.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
@@ -75,13 +77,12 @@
     <Compile Include="DeleteTempDocument.cs" />
     <Compile Include="GenerateCopyOfDocument.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProtectDocument.cs" />
     <Compile Include="SaveToCloudStorage.cs" />
     <Compile Include="SendEmail.cs" />
-    <Compile Include="UnProtectDocument.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Aspose.AutoMerge.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,12 +7,13 @@ using System.Text;
 using System.Collections;
 using Aspose.Words.Lists;
 
-namespace CSharp.Programming_Documents.Joining_and_Appending
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appending
 {
     class ListUseDestinationStyles
     {
         public static void Run()
         {
+            // ExStart:ListUseDestinationStyles
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
             string fileName = "TestFile.DestinationList.doc";
@@ -34,12 +35,12 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
                     int listId = para.ListFormat.List.ListId;
 
                     // Check if the destination document contains a list with this ID already. If it does then this may
-                    // cause the two lists to run together. Create a copy of the list in the source document instead.
+                    // Cause the two lists to run together. Create a copy of the list in the source document instead.
                     if (dstDoc.Lists.GetListByListId(listId) != null)
                     {
                         List currentList;
                         // A newly copied list already exists for this ID, retrieve the stored list and use it on 
-                        // the current paragraph.
+                        // The current paragraph.
                         if (newLists.Contains(listId))
                         {
                             currentList = (List)newLists[listId];
@@ -63,7 +64,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the combined document to disk.            
             dstDoc.Save(dataDir);
-
+            // ExEnd:ListUseDestinationStyles
             Console.WriteLine("\nDocument appended successfully without continuing any list numberings.\nFile saved at " + dataDir);
         }
     }

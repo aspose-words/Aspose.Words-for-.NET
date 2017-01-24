@@ -40,7 +40,7 @@ Public Class InsertMergeFieldUsingDOM
         ' Finally update this merge field
         field.Update()
 
-        dataDir = dataDir & Convert.ToString("InsertMergeFieldUsingDOM_out_.doc")
+        dataDir = dataDir & Convert.ToString("InsertMergeFieldUsingDOM_out.doc")
         doc.Save(dataDir)
         ' ExEnd:InsertMergeFieldUsingDOM
         Console.WriteLine(Convert.ToString(vbLf & "Merge field using DOM inserted successfully." & vbLf & "File saved at ") & dataDir)

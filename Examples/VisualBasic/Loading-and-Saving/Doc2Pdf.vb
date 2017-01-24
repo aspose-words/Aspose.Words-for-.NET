@@ -1,6 +1,5 @@
 ﻿Imports Microsoft.VisualBasic
 Imports System.IO
-
 Imports Aspose.Words
 
 Public Class Doc2Pdf
@@ -12,7 +11,7 @@ Public Class Doc2Pdf
         ' Load the document from disk.
         Dim doc As New Document(dataDir & "Template.doc")
 
-        dataDir = dataDir & "Template_out_.pdf"
+        dataDir = dataDir & "Template_out.pdf"
         ' Save the document in PDF format.
         doc.Save(dataDir)
         ' ExEnd:Doc2Pdf

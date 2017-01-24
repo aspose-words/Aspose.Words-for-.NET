@@ -7,13 +7,13 @@ using Aspose.Words.Tables;
 using Aspose.Words.Fields;
 using Aspose.Words.Layout;
 
-namespace CSharp.Programming_Documents.Working_with_Fields
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 {
     class ConvertFieldsInDocument
     {
         public static void Run()
         {
-            //ExStart:ConvertFieldsInDocument
+            // ExStart:ConvertFieldsInDocument
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
             string fileName = "TestFile.doc";
@@ -25,7 +25,7 @@ namespace CSharp.Programming_Documents.Working_with_Fields
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the document with fields transformed to disk.
             doc.Save(dataDir);
-            //ExEnd:ConvertFieldsInDocument
+            // ExEnd:ConvertFieldsInDocument
             Console.WriteLine("\nConverted fields to static text in the document successfully.\nFile saved at " + dataDir);
         }
     }

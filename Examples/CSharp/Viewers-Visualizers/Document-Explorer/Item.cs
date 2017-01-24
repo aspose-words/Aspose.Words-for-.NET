@@ -155,7 +155,7 @@ namespace DocumentExplorerExample
         /// <returns>Icon object or null if icon was not found in the resources.</returns>
         private static Icon LoadIcon(string anIconName)
         {
-            string resourceName = "CSharp.Viewers_Visualizers.Document_Explorer.Icons." + anIconName + ".ico";
+            string resourceName = "Aspose.Words.Examples.CSharp.Viewers_Visualizers.Document_Explorer.Icons." + anIconName + ".ico";
             Stream iconStream = FetchResourceStream(resourceName);
 
             if (iconStream != null)

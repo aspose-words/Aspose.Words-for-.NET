@@ -22,7 +22,7 @@ namespace DocumentExplorerExample
 			this.buttonOk = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
-			// text1
+			// Text1
 			// 
 			this.text1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 				| System.Windows.Forms.AnchorStyles.Left) 
@@ -38,7 +38,7 @@ namespace DocumentExplorerExample
 			this.text1.Text = "";
 			this.text1.WordWrap = false;
 			// 
-			// buttonOk
+			// ButtonOk
 			// 
 			this.buttonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.buttonOk.DialogResult = System.Windows.Forms.DialogResult.OK;

@@ -9,24 +9,24 @@ Public Class FindingIndex
         Dim dataDir As String = RunExamples.GetDataDir_WorkingWithTables() + "Table.SimpleTable.doc"
         Dim doc As New Document(dataDir)
 
-        'ExStart:RetrieveTableIndex
+        ' ExStart:RetrieveTableIndex
         ' Get the first table in the document.
         Dim table As Table = DirectCast(doc.GetChild(NodeType.Table, 0, True), Table)
 
         Dim allTables As NodeCollection = doc.GetChildNodes(NodeType.Table, True)
         Dim tableIndex As Integer = allTables.IndexOf(table)
-        'ExEnd:RetrieveTableIndex
+        ' ExEnd:RetrieveTableIndex
         Console.WriteLine(vbLf & "Table index is " + tableIndex.ToString())
 
-        'ExStart:RetrieveRowIndex
+        ' ExStart:RetrieveRowIndex
         Dim rowIndex As Integer = table.IndexOf(DirectCast(table.LastRow, Row))
-        'ExEnd:RetrieveRowIndex
+        ' ExEnd:RetrieveRowIndex
         Console.WriteLine(vbLf & "Row index is " + rowIndex.ToString())
 
         Dim row As Row = DirectCast(table.LastRow, Row)
-        'ExStart:RetrieveCellIndex
+        ' ExStart:RetrieveCellIndex
         Dim cellIndex As Integer = row.IndexOf(row.Cells(4))
-        'ExEnd:RetrieveCellIndex
+        ' ExEnd:RetrieveCellIndex
         Console.WriteLine(vbLf & "Cell index is " + cellIndex.ToString())
 
     End Sub

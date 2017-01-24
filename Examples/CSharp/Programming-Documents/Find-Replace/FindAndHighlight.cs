@@ -4,33 +4,36 @@ using System.Collections;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
-
 using Aspose.Words;
+using Aspose.Words.Replacing;
 
-namespace CSharp.Programming_Documents.Find_and_Replace
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
 {
     class FindAndHighlight
     {
         public static void Run()
         {
-            //ExStart:FindAndHighlight
+            // ExStart:FindAndHighlight
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_FindAndReplace();
             string fileName = "TestFile.doc";
 
             Document doc = new Document(dataDir + fileName);
 
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.ReplacingCallback = new ReplaceEvaluatorFindAndHighlight();
+
             // We want the "your document" phrase to be highlighted.
             Regex regex = new Regex("your document", RegexOptions.IgnoreCase);
-            doc.Range.Replace(regex, new ReplaceEvaluatorFindAndHighlight(), false);
+            doc.Range.Replace(regex, "", options);
 
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the output document.
             doc.Save(dataDir);
-            //ExEnd:FindAndHighlight
+            // ExEnd:FindAndHighlight
             Console.WriteLine("\nText highlighted successfully.\nFile saved at " + dataDir);
         }
-        //ExStart:ReplaceEvaluatorFindAndHighlight
+        // ExStart:ReplaceEvaluatorFindAndHighlight
         private class ReplaceEvaluatorFindAndHighlight : IReplacingCallback
         {
             /// <summary>
@@ -43,7 +46,7 @@ namespace CSharp.Programming_Documents.Find_and_Replace
                 Node currentNode = e.MatchNode;
 
                 // The first (and may be the only) run can contain text before the match, 
-                // in this case it is necessary to split the run.
+                // In this case it is necessary to split the run.
                 if (e.MatchOffset > 0)
                     currentNode = SplitRun((Run)currentNode, e.MatchOffset);
 
@@ -84,8 +87,8 @@ namespace CSharp.Programming_Documents.Find_and_Replace
                 return ReplaceAction.Skip;
             }
         }
-        //ExEnd:ReplaceEvaluatorFindAndHighlight
-        //ExStart:SplitRun
+        // ExEnd:ReplaceEvaluatorFindAndHighlight
+        // ExStart:SplitRun
         /// <summary>
         /// Splits text of the specified run into two runs.
         /// Inserts the new run just after the specified run.
@@ -98,6 +101,6 @@ namespace CSharp.Programming_Documents.Find_and_Replace
             run.ParentNode.InsertAfter(afterRun, run);
             return afterRun;
         }
-        //ExEnd:SplitRun
+        // ExEnd:SplitRun
     }
 }

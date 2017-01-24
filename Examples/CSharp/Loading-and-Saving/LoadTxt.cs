@@ -9,13 +9,13 @@ using Aspose.Words.MailMerging;
 using Aspose.Words.Saving;
 using System.Text;
 
-namespace CSharp.Loading_Saving
+namespace Aspose.Words.Examples.CSharp.Loading_Saving
 {
     class LoadTxt
     {
         public static void Run()
         {
-            //ExStart:LoadTxt
+            // ExStart:LoadTxt
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
             
@@ -23,9 +23,9 @@ namespace CSharp.Loading_Saving
             Document doc = new Document(dataDir + "LoadTxt.txt");
 
             // Save as any Aspose.Words supported format, such as DOCX.  
-            dataDir = dataDir + "LoadTxt_out_.docx";
+            dataDir = dataDir + "LoadTxt_out.docx";
             doc.Save(dataDir);
-            //ExEnd:LoadTxt
+            // ExEnd:LoadTxt
             Console.WriteLine("\nText document loaded successfully.\nFile saved at " + dataDir);
         }
     }

@@ -12,7 +12,7 @@ Public Class SetViewOption
         doc.ViewOptions.ViewType = ViewType.PageLayout
         doc.ViewOptions.ZoomPercent = 50
 
-        dataDir = dataDir & Convert.ToString("TestFile.SetZoom_out_.doc")
+        dataDir = dataDir & Convert.ToString("TestFile.SetZoom_out.doc")
         ' Save the finished document.
         doc.Save(dataDir)
         ' ExEnd:SetViewOption

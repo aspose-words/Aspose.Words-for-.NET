@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CSharp.LINQ
+namespace Aspose.Words.Examples.CSharp.LINQ
 {
-    //ExStart:Contract
+    // ExStart:Contract
     public class Contract
     {
         public Manager Manager { get; set; }
@@ -12,5 +12,5 @@ namespace CSharp.LINQ
         public float Price { get; set; }
         public DateTime Date { get; set; }   
     }
-    //ExEnd:Contract 
+    // ExEnd:Contract 
 }

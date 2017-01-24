@@ -2,13 +2,12 @@
 using System;
 using System.IO;
 using System.Drawing;
-
 using Aspose.Words;
 using Aspose.Words.Layout;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 
-namespace CSharp.Rendering_and_Printing
+namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
 {
     class ImageColorFilters
     {
@@ -25,6 +24,7 @@ namespace CSharp.Rendering_and_Printing
             SaveBlackWhiteTIFFwithLZW(doc, dataDir, true);
             SaveBlackWhiteTIFFwithCITT4(doc, dataDir, true);
             SaveBlackWhiteTIFFwithRLE(doc, dataDir, true);
+           
         }
 
 

@@ -11,6 +11,7 @@ Imports Aspose.Words
 
 Public Class ListKeepSourceFormatting
     Public Shared Sub Run()
+        ' ExStart:ListKeepSourceFormatting
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
         Dim fileName As String = "TestFile.Destination.doc"
@@ -25,7 +26,7 @@ Public Class ListKeepSourceFormatting
 
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         dstDoc.Save(dataDir)
-
+        ' ExEnd:ListKeepSourceFormatting
         Console.WriteLine(vbNewLine & "Document appended successfully with lists keeping source formatting." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

@@ -12,7 +12,7 @@ Public Class CopySection
         Dim sourceSection As Section = srcDoc.Sections(0)
         Dim newSection As Section = DirectCast(dstDoc.ImportNode(sourceSection, True), Section)
         dstDoc.Sections.Add(newSection)
-        dataDir = dataDir & Convert.ToString("Document.Copy_out_.doc")
+        dataDir = dataDir & Convert.ToString("Document.Copy_out.doc")
         dstDoc.Save(dataDir)
         ' ExEnd:CopySection
         Console.WriteLine(Convert.ToString(vbLf & "Section copied successfully." & vbLf & "File saved at ") & dataDir)

@@ -7,13 +7,13 @@ using Aspose.Words.Tables;
 using Aspose.Words.Fields;
 using Aspose.Words.Layout;
 
-namespace CSharp.Programming_Documents.Working_with_Fields
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 {
     class InsertASKFieldWithOutDocumentBuilder
     {
         public static void Run()
         {
-            //ExStart:InsertASKFieldWithOutDocumentBuilder
+            // ExStart:InsertASKFieldWithOutDocumentBuilder
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
             Document doc = new Document(dataDir + "in.doc");
@@ -41,10 +41,10 @@ namespace CSharp.Programming_Documents.Working_with_Fields
             // Finally update this Ask field
             field.Update();
 
-            dataDir = dataDir + "InsertASKFieldWithOutDocumentBuilder_out_.doc";
+            dataDir = dataDir + "InsertASKFieldWithOutDocumentBuilder_out.doc";
             doc.Save(dataDir);
 
-            //ExEnd:InsertASKFieldWithOutDocumentBuilder
+            // ExEnd:InsertASKFieldWithOutDocumentBuilder
             Console.WriteLine("\nASK field without using document builder inserted successfully.\nFile saved at " + dataDir);
         }
     }

@@ -40,7 +40,7 @@ Public Class InsertMailMergeAddressBlockFieldUsingDOM
         ' Finally update this merge field
         field.Update()
 
-        dataDir = dataDir & Convert.ToString("InsertMailMergeAddressBlockFieldUsingDOM_out_.doc")
+        dataDir = dataDir & Convert.ToString("InsertMailMergeAddressBlockFieldUsingDOM_out.doc")
         doc.Save(dataDir)
 
         ' ExEnd:InsertMailMergeAddressBlockFieldUsingDOM

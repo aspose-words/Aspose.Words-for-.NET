@@ -9,7 +9,7 @@ using Aspose.Words.MailMerging;
 using Aspose.Words.Saving;
 using System.Text;
 
-namespace CSharp.Loading_Saving
+namespace Aspose.Words.Examples.CSharp.Loading_Saving
 {
     class SplitIntoHtmlPages
     {
@@ -17,9 +17,9 @@ namespace CSharp.Loading_Saving
         {
             // You need to have a valid license for Aspose.Words.
             // The best way is to embed the license as a resource into the project
-            // and specify only file name without path in the following call.
+            // And specify only file name without path in the following call.
             // Aspose.Words.License license = new Aspose.Words.License();
-            // license.SetLicense(@"Aspose.Words.lic");
+            // License.SetLicense(@"Aspose.Words.lic");
 
             
             // The path to the documents directory.
@@ -28,7 +28,7 @@ namespace CSharp.Loading_Saving
             string srcFileName = dataDir + "SOI 2007-2012-DeeM with footnote added.doc";
             string tocTemplate = dataDir + "TocTemplate.doc";
 
-            string outDir = Path.Combine(dataDir, "_out_");
+            string outDir = Path.Combine(dataDir, "_out");
             Directory.CreateDirectory(outDir);
 
             // This class does the job.
@@ -47,8 +47,8 @@ namespace CSharp.Loading_Saving
         /// </summary>
         /// <param name="srcFileName">The MS Word file to convert.</param>
         /// <param name="tocTemplate">An MS Word file that is used as a template to build
-        /// a table of contents. This file needs to have a mail merge region called "TOC" defined
-        /// and one mail merge field called "TocEntry".</param>
+        /// A table of contents. This file needs to have a mail merge region called "TOC" defined
+        /// And one mail merge field called "TocEntry".</param>
         /// <param name="dstDir">The output directory where to write HTML files. Must exist.</param>
         internal void Execute(string srcFileName, string tocTemplate, string dstDir)
         {
@@ -68,7 +68,7 @@ namespace CSharp.Loading_Saving
         /// </summary>
         private ArrayList SelectTopicStarts()
         {
-            NodeCollection paras = mDoc.GetChildNodes(NodeType.Paragraph, true, false);
+            NodeCollection paras = mDoc.GetChildNodes(NodeType.Paragraph, true);
             ArrayList topicStartParas = new ArrayList();
 
             foreach (Paragraph para in paras)
@@ -106,7 +106,7 @@ namespace CSharp.Loading_Saving
 
         /// <summary>
         /// Splits the current document into one topic per section and saves each topic
-        /// as an HTML file. Returns a collection of Topic objects.
+        /// As an HTML file. Returns a collection of Topic objects.
         /// </summary>
         private ArrayList SaveHtmlTopics()
         {
@@ -140,7 +140,7 @@ namespace CSharp.Loading_Saving
 
         /// <summary>
         /// Leaves alphanumeric characters, replaces white space with underscore
-        /// and removes all other characters from a string.
+        /// And removes all other characters from a string.
         /// </summary>
         private static string MakeTopicFileName(string paraText)
         {
@@ -178,7 +178,7 @@ namespace CSharp.Loading_Saving
             HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.PrettyFormat = true;
             // This is to allow headings to appear to the left of main text.
-            saveOptions.AllowNegativeLeftIndent = true;
+            saveOptions.AllowNegativeIndent = true;
             saveOptions.ExportHeadersFootersMode = ExportHeadersFootersMode.None;
 
             dummyDoc.Save(topic.FileName, saveOptions);
@@ -214,7 +214,7 @@ namespace CSharp.Loading_Saving
                 mBuilder.InsertHyperlink(topic.Title, topic.FileName, false);
 
                 // Signal to the mail merge engine that it does not need to insert text into the field
-                // as we've done it already.
+                // As we've done it already.
                 e.Text = "";
             }
 
@@ -305,4 +305,5 @@ namespace CSharp.Loading_Saving
         private readonly ArrayList mTopics;
         private int mIndex;
     }
+    
 }

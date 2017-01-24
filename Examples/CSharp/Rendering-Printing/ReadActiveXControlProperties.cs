@@ -10,7 +10,7 @@ using Aspose.Words.Drawing;
 using System.Drawing.Imaging;
 using Aspose.Words.Tables;
 using Aspose.Words.Drawing.Ole;
-namespace CSharp.Rendering_and_Printing
+namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
 {
     class ReadActiveXControlProperties
     {

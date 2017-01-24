@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NPOI_HWPF_and_XWPF
 {
@@ -12,7 +9,9 @@ namespace NPOI_HWPF_and_XWPF
     {
         static void Main(string[] args)
         {
-            XWPFDocument wordDocument = new XWPFDocument(new FileStream("data/Working with Headers.doc", FileMode.Open));
+            string filePath = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())) + @"\data\" + "Working with Headers.doc";
+            // NPOI library doest not have ablitity to read word document. 
+            XWPFDocument wordDocument = new XWPFDocument(new FileStream(filePath, FileMode.Open));
             IList<XWPFHeader> headers = wordDocument.HeaderList;
             foreach (XWPFHeader header in headers)
             {

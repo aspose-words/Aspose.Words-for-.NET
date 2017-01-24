@@ -9,13 +9,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace CSharp.Mail_Merge
+namespace Aspose.Words.Examples.CSharp.Mail_Merge
 {
     class XMLMailMerge
     {
         public static void Run()
         {
-            //ExStart:XMLMailMerge 
+            // ExStart:XMLMailMerge 
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); 
 
@@ -33,7 +33,7 @@ namespace CSharp.Mail_Merge
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             // Save the output document.
             doc.Save(dataDir);
-            //ExEnd:XMLMailMerge 
+            // ExEnd:XMLMailMerge 
             Console.WriteLine("\nMail merge performed with XML data successfully.\nFile saved at " + dataDir);
         }
     }

@@ -3,13 +3,13 @@ using System.Collections;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.Fields;
-namespace CSharp.Programming_Documents.Working_with_Fields
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 {
     class InsertFormFields
     {
         public static void Run()
         {
-            //ExStart:InsertFormFields
+            // ExStart:InsertFormFields
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
 
@@ -18,7 +18,7 @@ namespace CSharp.Programming_Documents.Working_with_Fields
 
             string[] items = { "One", "Two", "Three" };
             builder.InsertComboBox("DropDown", items, 0);            
-            //ExEnd:InsertFormFields
+            // ExEnd:InsertFormFields
             Console.WriteLine("\nForm fields inserted successfully.");
         }
     }

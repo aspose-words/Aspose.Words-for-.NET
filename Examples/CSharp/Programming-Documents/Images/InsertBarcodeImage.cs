@@ -7,13 +7,13 @@ using Aspose.Words.Fields;
 using Aspose.Words.Layout;
 using Aspose.Words.Drawing;
 
-namespace CSharp.Programming_Documents.Working_with_Images
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Images
 {
     class InsertBarcodeImage
     {
         public static void Run()
         {
-            //ExStart:InsertBarcodeImage
+            // ExStart:InsertBarcodeImage
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithImages();
             // Create a blank documenet.
@@ -36,13 +36,13 @@ namespace CSharp.Programming_Documents.Working_with_Images
                 InsertBarcodeIntoFooter(builder, cloneSection, i, HeaderFooterType.FooterPrimary);
             }
 
-            dataDir  = dataDir + "Document_out_.docx";
+            dataDir  = dataDir + "Document_out.docx";
             // Save the document as a PDF to disk. You can also save this directly to a stream.
             doc.Save(dataDir);
-            //ExEnd:InsertBarcodeImage
+            // ExEnd:InsertBarcodeImage
             Console.WriteLine("\nBarcode image on each page of document inserted successfully.\nFile saved at " + dataDir);
         }
-        //ExStart:InsertBarcodeIntoFooter
+        // ExStart:InsertBarcodeIntoFooter
         private static void InsertBarcodeIntoFooter(DocumentBuilder builder, Section section, int pageId, HeaderFooterType footerType)
         {
             // Move to the footer type in the specific section.
@@ -66,7 +66,7 @@ namespace CSharp.Programming_Documents.Working_with_Images
             builder.Write(" of ");
             builder.InsertField("NUMPAGES");
         }
-        //ExEnd:InsertBarcodeIntoFooter
+        // ExEnd:InsertBarcodeIntoFooter
 
     }
 }

@@ -4,7 +4,7 @@ using System.Reflection;
 
 using Aspose.Words;
 
-namespace CSharp.Programming_Documents.Bookmarks
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Bookmarks
 {
     class CopyBookmarkedText
     {
@@ -66,14 +66,14 @@ namespace CSharp.Programming_Documents.Bookmarks
                 throw new InvalidOperationException("Start and end paragraphs have different parents, cannot handle this scenario yet.");
 
             // We want to copy all paragraphs from the start paragraph up to (and including) the end paragraph,
-            // therefore the node at which we stop is one after the end paragraph.
+            // Therefore the node at which we stop is one after the end paragraph.
             Node endNode = endPara.NextSibling;
 
             // This is the loop to go through all paragraph-level nodes in the bookmark.
             for (Node curNode = startPara; curNode != endNode; curNode = curNode.NextSibling)
             {
                 // This creates a copy of the current node and imports it (makes it valid) in the context
-                // of the destination document. Importing means adjusting styles and list identifiers correctly.
+                // Of the destination document. Importing means adjusting styles and list identifiers correctly.
                 Node newNode = importer.ImportNode(curNode, true);
 
                 // Now we simply append the new node to the destination.

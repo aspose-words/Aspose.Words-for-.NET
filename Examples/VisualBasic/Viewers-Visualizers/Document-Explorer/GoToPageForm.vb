@@ -47,7 +47,7 @@ Namespace DocumentExplorerExample
 		#Region "Windows Form Designer generated code"
 		''' <summary>
 		''' Required method for Designer support - do not modify
-		''' the contents of this method with the code editor.
+		''' The contents of this method with the code editor.
 		''' </summary>
 		Private Sub InitializeComponent()
 			Me.promptLabel = New System.Windows.Forms.Label()
@@ -56,14 +56,14 @@ Namespace DocumentExplorerExample
 			Me.cancelBtn = New System.Windows.Forms.Button()
 			Me.SuspendLayout()
 			' 
-			' promptLabel
+			' PromptLabel
 			' 
 			Me.promptLabel.Location = New System.Drawing.Point(16, 16)
 			Me.promptLabel.Name = "promptLabel"
 			Me.promptLabel.Size = New System.Drawing.Size(192, 23)
 			Me.promptLabel.TabIndex = 0
 			' 
-			' pageNumberTextBox
+			' PageNumberTextBox
 			' 
 			Me.pageNumberTextBox.Location = New System.Drawing.Point(16, 40)
 			Me.pageNumberTextBox.MaxLength = 5
@@ -73,7 +73,7 @@ Namespace DocumentExplorerExample
 			Me.pageNumberTextBox.Text = ""
 '			Me.pageNumberTextBox.TextChanged += New System.EventHandler(Me.pageNumberTextBox_TextChanged);
 			' 
-			' okBtn
+			' OkBtn
 			' 
 			Me.okBtn.DialogResult = System.Windows.Forms.DialogResult.OK
 			Me.okBtn.Enabled = False
@@ -83,7 +83,7 @@ Namespace DocumentExplorerExample
 			Me.okBtn.Text = "OK"
 '			Me.okBtn.Click += New System.EventHandler(Me.okButton_Click);
 			' 
-			' cancelBtn
+			' CancelBtn
 			' 
 			Me.cancelBtn.CausesValidation = False
 			Me.cancelBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel

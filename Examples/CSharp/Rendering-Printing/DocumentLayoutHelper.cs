@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
-namespace CSharp.Rendering_and_Printing
+namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
 {
     class DocumentLayoutHelper
     {
@@ -22,7 +22,7 @@ namespace CSharp.Rendering_and_Printing
             Document doc = new Document(dataDir + fileName);
 
             // This sample introduces the RenderedDocument class and other related classes which provide an API wrapper for 
-            // the LayoutEnumerator. This allows you to access the layout entities of a document using a DOM style API.
+            // The LayoutEnumerator. This allows you to access the layout entities of a document using a DOM style API.
 
             // Create a new RenderedDocument class from a Document object.
             RenderedDocument layoutDoc = new RenderedDocument(doc);
@@ -48,7 +48,7 @@ namespace CSharp.Rendering_and_Printing
             }
 
             // This method provides a reverse lookup of layout entities for any given node (with the exception of runs and nodes in the
-            // header and footer).
+            // Header and footer).
             Console.WriteLine();
             Console.WriteLine("The lines of the second paragraph:");
             foreach (RenderedLine paragraphLine in layoutDoc.GetLayoutEntitiesOfNode(doc.FirstSection.Body.Paragraphs[1]))
@@ -64,12 +64,12 @@ namespace CSharp.Rendering_and_Printing
 
     /// <summary>
     /// Provides an API wrapper for the LayoutEnumerator class to access the page layout entities of a document presented in
-    /// a object model like design.
+    /// A object model like design.
     /// </summary>
     public class RenderedDocument : LayoutEntity
     {
         /// <summary>
-        /// Creates a new instance from the supplied Aspose.Words.Document class.
+        /// Creates a new instance from the supplied Document class.
         /// </summary>
         /// <param name="document">A document whose page layout model to enumerate.</param>
         /// <remarks><para>If page layout model of the document hasn't been built the enumerator calls <see cref="Document.UpdatePageLayout"/> to build it.</para>
@@ -567,7 +567,7 @@ namespace CSharp.Rendering_and_Printing
         /// Gets kind of the span. This cannot be null.
         /// </summary>
         /// <remarks>This is a more specific type of the current entity, e.g. bookmark span has Span type and
-        /// may have either a BOOKMARKSTART or BOOKMARKEND kind.</remarks>
+        /// May have either a BOOKMARKSTART or BOOKMARKEND kind.</remarks>
         public string Kind
         {
             get

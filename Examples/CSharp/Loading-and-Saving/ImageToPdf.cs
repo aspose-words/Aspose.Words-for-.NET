@@ -7,22 +7,22 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using Aspose.Words.Drawing;
 
-namespace CSharp.Loading_Saving
+namespace Aspose.Words.Examples.CSharp.Loading_Saving
 {
     class ImageToPdf
     {
         public static void Run()
         {
-            //ExStart:ImageToPdf
+            // ExStart:ImageToPdf
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
-            ConvertImageToPdf(dataDir + "Test.jpg", dataDir + "TestJpg_out_.pdf");
-            ConvertImageToPdf(dataDir + "Test.png", dataDir + "TestPng_out_.pdf");
-            ConvertImageToPdf(dataDir + "Test.wmf", dataDir + "TestWmf_out_.pdf");
-            ConvertImageToPdf(dataDir + "Test.tiff", dataDir + "TestTif_out_.pdf");
-            ConvertImageToPdf(dataDir + "Test.gif", dataDir + "TestGif_out_.pdf");
-            //ExEnd:ImageToPdf
+            ConvertImageToPdf(dataDir + "Test.jpg", dataDir + "TestJpg_out.pdf");
+            ConvertImageToPdf(dataDir + "Test.png", dataDir + "TestPng_out.pdf");
+            ConvertImageToPdf(dataDir + "Test.wmf", dataDir + "TestWmf_out.pdf");
+            ConvertImageToPdf(dataDir + "Test.tiff", dataDir + "TestTif_out.pdf");
+            ConvertImageToPdf(dataDir + "Test.gif", dataDir + "TestGif_out.pdf");
+            // ExEnd:ImageToPdf
             Console.WriteLine("\nConverted all images to PDF successfully.");
         }
 
@@ -35,8 +35,8 @@ namespace CSharp.Loading_Saving
         public static void ConvertImageToPdf(string inputFileName, string outputFileName)
         {
             Console.WriteLine("Converting " + inputFileName + " to PDF ....");
-            //ExStart:ConvertImageToPdf
-            // Create Aspose.Words.Document and DocumentBuilder. 
+            // ExStart:ConvertImageToPdf
+            // Create Document and DocumentBuilder. 
             // The builder makes it simple to add content to the document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -45,7 +45,7 @@ namespace CSharp.Loading_Saving
             using (Image image = Image.FromFile(inputFileName))
             {
                 // Find which dimension the frames in this image represent. For example 
-                // the frames of a BMP or TIFF are "page dimension" whereas frames of a GIF image are "time dimension". 
+                // The frames of a BMP or TIFF are "page dimension" whereas frames of a GIF image are "time dimension". 
                 FrameDimension dimension = new FrameDimension(image.FrameDimensionsList[0]);
 
                 // Get the number of frames in the image.
@@ -82,7 +82,7 @@ namespace CSharp.Loading_Saving
 
             // Save the document to PDF.
             doc.Save(outputFileName);
-            //ExEnd:ConvertImageToPdf
+            // ExEnd:ConvertImageToPdf
 
         }
     }

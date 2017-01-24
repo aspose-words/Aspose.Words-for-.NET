@@ -17,14 +17,14 @@ Public Class ExtractContentUsingDocumentVisitor
 
         ' This is the well known Visitor pattern. Get the model to accept a visitor.
         ' The model will iterate through itself by calling the corresponding methods
-        ' on the visitor object (this is called visiting).
+        ' On the visitor object (this is called visiting).
         ' 
         ' Note that every node in the object model has the Accept method so the visiting
-        ' can be executed not only for the whole document, but for any node in the document.
+        ' Can be executed not only for the whole document, but for any node in the document.
         doc.Accept(myConverter)
 
         ' Once the visiting is complete, we can retrieve the result of the operation,
-        ' that in this example, has accumulated in the visitor.
+        ' That in this example, has accumulated in the visitor.
         Console.WriteLine(myConverter.GetText())
         ' ExEnd:ExtractContentUsingDocumentVisitor
     End Sub
@@ -61,11 +61,11 @@ Public Class ExtractContentUsingDocumentVisitor
         ''' </summary>
         Public Overrides Function VisitFieldStart(fieldStart As FieldStart) As VisitorAction
             ' In Microsoft Word, a field code (such as "MERGEFIELD FieldName") follows
-            ' after a field start character. We want to skip field codes and output field 
-            ' result only, therefore we use a flag to suspend the output while inside a field code.
+            ' After a field start character. We want to skip field codes and output field 
+            ' Result only, therefore we use a flag to suspend the output while inside a field code.
             '
             ' Note this is a very simplistic implementation and will not work very well
-            ' if you have nested fields in a document. 
+            ' If you have nested fields in a document. 
             mIsSkipText = True
 
             Return VisitorAction.[Continue]
@@ -76,7 +76,7 @@ Public Class ExtractContentUsingDocumentVisitor
         ''' </summary>
         Public Overrides Function VisitFieldSeparator(fieldSeparator As FieldSeparator) As VisitorAction
             ' Once reached a field separator node, we enable the output because we are
-            ' now entering the field result nodes.
+            ' Now entering the field result nodes.
             mIsSkipText = False
 
             Return VisitorAction.[Continue]
@@ -87,7 +87,7 @@ Public Class ExtractContentUsingDocumentVisitor
         ''' </summary>
         Public Overrides Function VisitFieldEnd(fieldEnd As FieldEnd) As VisitorAction
             ' Make sure we enable the output when reached a field end because some fields
-            ' do not have field separator and do not have field result.
+            ' Do not have field separator and do not have field result.
             mIsSkipText = False
 
             Return VisitorAction.[Continue]
@@ -121,9 +121,9 @@ Public Class ExtractContentUsingDocumentVisitor
         ''' </summary>
         Public Overrides Function VisitHeaderFooterStart(headerFooter As HeaderFooter) As VisitorAction
             ' Returning this value from a visitor method causes visiting of this
-            ' node to stop and move on to visiting the next sibling node.
+            ' Node to stop and move on to visiting the next sibling node.
             ' The net effect in this example is that the text of headers and footers
-            ' is not included in the resulting output.
+            ' Is not included in the resulting output.
             Return VisitorAction.SkipThisNode
         End Function
 

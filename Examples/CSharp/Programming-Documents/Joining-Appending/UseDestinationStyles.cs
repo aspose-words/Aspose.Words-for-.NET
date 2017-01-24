@@ -3,12 +3,13 @@ using System.IO;
 
 using Aspose.Words;
 
-namespace CSharp.Programming_Documents.Joining_and_Appending
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appending
 {
     class UseDestinationStyles
     {
         public static void Run()
         {
+            // ExStart:UseDestinationStyles
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
             string fileName = "TestFile.Destination.doc";
@@ -23,7 +24,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
             // Save the joined document to disk.
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             dstDoc.Save(dataDir);
-
+            // ExEnd:UseDestinationStyles
             Console.WriteLine("\nDocument appended successfully with use destination styles option.\nFile saved at " + dataDir);
         }
     }

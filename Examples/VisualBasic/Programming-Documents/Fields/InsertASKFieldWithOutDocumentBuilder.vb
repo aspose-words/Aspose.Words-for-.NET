@@ -32,7 +32,7 @@ Public Class InsertASKFieldWithOutDocumentBuilder
         ' Finally update this Ask field
         field.Update()
 
-        dataDir = dataDir & Convert.ToString("InsertASKFieldWithOutDocumentBuilder_out_.doc")
+        dataDir = dataDir & Convert.ToString("InsertASKFieldWithOutDocumentBuilder_out.doc")
         doc.Save(dataDir)
 
         ' ExEnd:InsertASKFieldWithOutDocumentBuilder

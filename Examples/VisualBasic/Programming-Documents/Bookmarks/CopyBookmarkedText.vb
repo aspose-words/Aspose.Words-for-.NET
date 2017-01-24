@@ -19,7 +19,7 @@ Public Class CopyBookmarkedText
         ' We will be adding to this document.
         Dim dstDoc As New Document()
 
-        ' Let's say we will be appending to the end of the body of the last section.
+        ' Let' S say we will be appending to the end of the body of the last section.
         Dim dstNode As CompositeNode = dstDoc.LastSection.Body
 
         ' It is a good idea to use this import context object because multiple nodes are being imported.
@@ -56,14 +56,14 @@ Public Class CopyBookmarkedText
         End If
 
         ' We want to copy all paragraphs from the start paragraph up to (and including) the end paragraph,
-        ' therefore the node at which we stop is one after the end paragraph.
+        ' Therefore the node at which we stop is one after the end paragraph.
         Dim endNode As Node = endPara.NextSibling
 
         ' This is the loop to go through all paragraph-level nodes in the bookmark.
         Dim curNode As Node = startPara
         Do While curNode IsNot endNode
             ' This creates a copy of the current node and imports it (makes it valid) in the context
-            ' of the destination document. Importing means adjusting styles and list identifiers correctly.
+            ' Of the destination document. Importing means adjusting styles and list identifiers correctly.
             Dim newNode As Node = importer.ImportNode(curNode, True)
 
             ' Now we simply append the new node to the destination.

@@ -11,6 +11,7 @@ Imports Aspose.Words
 
 Public Class BaseDocument
     Public Shared Sub Run()
+        ' ExStart:BaseDocument
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
         Dim fileName As String = "TestFile.Destination.doc"
@@ -26,7 +27,7 @@ Public Class BaseDocument
         dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting)
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         dstDoc.Save(dataDir)
-
+        ' ExEnd:BaseDocument
         Console.WriteLine(vbNewLine & "Document appended successfully with base document." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

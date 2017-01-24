@@ -5,13 +5,13 @@ using System;
 using System.Text;
 using Aspose.Words.Fields;
 
-namespace CSharp.Programming_Documents.Working_With_Document
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class ExtractContentUsingDocumentVisitor
     {
         public static void Run()
         {
-            //ExStart:ExtractContentUsingDocumentVisitor
+            // ExStart:ExtractContentUsingDocumentVisitor
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
 
@@ -23,18 +23,18 @@ namespace CSharp.Programming_Documents.Working_With_Document
 
             // This is the well known Visitor pattern. Get the model to accept a visitor.
             // The model will iterate through itself by calling the corresponding methods
-            // on the visitor object (this is called visiting).
+            // On the visitor object (this is called visiting).
             // 
             // Note that every node in the object model has the Accept method so the visiting
-            // can be executed not only for the whole document, but for any node in the document.
+            // Can be executed not only for the whole document, but for any node in the document.
             doc.Accept(myConverter);
 
             // Once the visiting is complete, we can retrieve the result of the operation,
-            // that in this example, has accumulated in the visitor.
+            // That in this example, has accumulated in the visitor.
             Console.WriteLine(myConverter.GetText());
-            //ExEnd:ExtractContentUsingDocumentVisitor
+            // ExEnd:ExtractContentUsingDocumentVisitor
         }
-        //ExStart:MyDocToTxtWriter
+        // ExStart:MyDocToTxtWriter
         /// <summary>
         /// Simple implementation of saving a document in the plain text format. Implemented as a Visitor.
         /// </summary>
@@ -71,11 +71,11 @@ namespace CSharp.Programming_Documents.Working_With_Document
             public override VisitorAction VisitFieldStart(FieldStart fieldStart)
             {
                 // In Microsoft Word, a field code (such as "MERGEFIELD FieldName") follows
-                // after a field start character. We want to skip field codes and output field 
-                // result only, therefore we use a flag to suspend the output while inside a field code.
+                // After a field start character. We want to skip field codes and output field 
+                // Result only, therefore we use a flag to suspend the output while inside a field code.
                 //
                 // Note this is a very simplistic implementation and will not work very well
-                // if you have nested fields in a document. 
+                // If you have nested fields in a document. 
                 mIsSkipText = true;
 
                 return VisitorAction.Continue;
@@ -87,7 +87,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
             public override VisitorAction VisitFieldSeparator(FieldSeparator fieldSeparator)
             {
                 // Once reached a field separator node, we enable the output because we are
-                // now entering the field result nodes.
+                // Now entering the field result nodes.
                 mIsSkipText = false;
 
                 return VisitorAction.Continue;
@@ -99,7 +99,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
             public override VisitorAction VisitFieldEnd(FieldEnd fieldEnd)
             {
                 // Make sure we enable the output when reached a field end because some fields
-                // do not have field separator and do not have field result.
+                // Do not have field separator and do not have field result.
                 mIsSkipText = false;
 
                 return VisitorAction.Continue;
@@ -137,9 +137,9 @@ namespace CSharp.Programming_Documents.Working_With_Document
             public override VisitorAction VisitHeaderFooterStart(HeaderFooter headerFooter)
             {
                 // Returning this value from a visitor method causes visiting of this
-                // node to stop and move on to visiting the next sibling node.
+                // Node to stop and move on to visiting the next sibling node.
                 // The net effect in this example is that the text of headers and footers
-                // is not included in the resulting output.
+                // Is not included in the resulting output.
                 return VisitorAction.SkipThisNode;
             }
 
@@ -156,6 +156,6 @@ namespace CSharp.Programming_Documents.Working_With_Document
             private readonly StringBuilder mBuilder;
             private bool mIsSkipText;
         }
-        //ExEnd:MyDocToTxtWriter
+        // ExEnd:MyDocToTxtWriter
     }
 }

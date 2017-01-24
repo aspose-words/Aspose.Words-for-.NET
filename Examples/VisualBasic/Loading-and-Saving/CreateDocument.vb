@@ -15,7 +15,7 @@ Public Class CreateDocument
         Dim builder As New DocumentBuilder(doc)
         builder.Writeln("Hello World!")
 
-        dataDir = dataDir & Convert.ToString("CreateDocument_out_.docx")
+        dataDir = dataDir & Convert.ToString("CreateDocument_out.docx")
         ' Save the document to disk.
         doc.Save(dataDir)
 

@@ -8,6 +8,7 @@ Public Class SetFontsFoldersSystemAndCustomFolder
         ' ExStart:SetFontsFoldersSystemAndCustomFolder
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_RenderingAndPrinting()
+        Dim FontSettings As New FontSettings()
 
         Dim doc As New Document(dataDir & Convert.ToString("Rendering.doc"))
 
@@ -26,7 +27,9 @@ Public Class SetFontsFoldersSystemAndCustomFolder
 
         ' Apply the new set of font sources to use.
         FontSettings.SetFontsSources(updatedFontSources)
-        dataDir = dataDir & Convert.ToString("Rendering.SetFontsFolders_out_.pdf")
+        ' Set font settings
+        doc.FontSettings = FontSettings
+        dataDir = dataDir & Convert.ToString("Rendering.SetFontsFolders_out.pdf")
         doc.Save(dataDir)
         ' ExEnd:SetFontsFoldersSystemAndCustomFolder 
         Console.WriteLine(Convert.ToString(vbLf & "Fonts system and coustom folder is setup." & vbLf & "File saved at ") & dataDir)

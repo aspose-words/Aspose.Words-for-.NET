@@ -5,12 +5,13 @@ using Aspose.Words;
 using Aspose.Words.Fields;
 using System.Text;
 
-namespace CSharp.Programming_Documents.Joining_and_Appending
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appending
 {
     class ConvertNumPageFields
     {
         public static void Run()
         {
+            // ExStart:ConvertNumPageFields
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
             string fileName = "TestFile.Destination.doc";
@@ -26,7 +27,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
 
             // After joining the documents the NUMPAGE fields will now display the total number of pages which 
-            // is undesired behavior. Call this method to fix them by replacing them with PAGEREF fields.
+            // Is undesired behavior. Call this method to fix them by replacing them with PAGEREF fields.
             ConvertNumPageFieldsToPageRef(dstDoc);
 
             // This needs to be called in order to update the new fields with page numbers.
@@ -34,10 +35,10 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
 
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             dstDoc.Save(dataDir);
-
+            // ExEnd:ConvertNumPageFields
             Console.WriteLine("\nDocument appended successfully with conversion of NUMPAGE fields with PAGEREF fields.\nFile saved at " + dataDir);
         }
-
+        // ExStart:ConvertNumPageFieldsToPageRef
         public static void ConvertNumPageFieldsToPageRef(Document doc)
         {
             // This is the prefix for each bookmark which signals where page numbering restarts.
@@ -51,7 +52,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
             // Create a new DocumentBuilder which is used to insert the bookmarks and replacement fields.
             DocumentBuilder builder = new DocumentBuilder(doc);
             // Defines the number of page restarts that have been encountered and therefore the number of "sub" documents
-            // found within this document.
+            // Found within this document.
             int subDocumentCount = 0;
 
             // Iterate through all sections in the document.
@@ -62,7 +63,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
                 if (section.PageSetup.RestartPageNumbering)
                 {
                     // Don't do anything if this is the first section in the document. This part of the code will insert the bookmark marking
-                    // the end of the previous sub document so therefore it is not applicable for first section in the document.
+                    // The end of the previous sub document so therefore it is not applicable for first section in the document.
                     if (!section.Equals(doc.FirstSection))
                     {
                         // Get the previous section and the last node within the body of that section.
@@ -93,7 +94,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
 
                 // Iterate through each NUMPAGES field in the section and replace the field with a PAGEREF field referring to the bookmark of the current subdocument
                 // This bookmark is positioned at the end of the sub document but does not exist yet. It is inserted when a section with restart page numbering or the last 
-                // section is encountered.
+                // Section is encountered.
                 Node[] nodes = section.GetChildNodes(NodeType.FieldStart, true).ToArray();
                 foreach (FieldStart fieldStart in nodes)
                 {
@@ -102,11 +103,11 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
                         // Get the field code.
                         string fieldCode = GetFieldCode(fieldStart);
                         // Since the NUMPAGES field does not take any additional parameters we can assume the remaining part of the field
-                        // code after the fieldname are the switches. We will use these to help recreate the NUMPAGES field as a PAGEREF field.
+                        // Code after the fieldname are the switches. We will use these to help recreate the NUMPAGES field as a PAGEREF field.
                         string fieldSwitches = fieldCode.Replace(numPagesFieldName, "").Trim();
 
                         // Inserting the new field directly at the FieldStart node of the original field will cause the new field to
-                        // not pick up the formatting of the original field. To counter this insert the field just before the original field
+                        // Not pick up the formatting of the original field. To counter this insert the field just before the original field
                         Node previousNode = fieldStart.PreviousSibling;
 
                         // If a previous run cannot be found then we are forced to use the FieldStart node.
@@ -127,7 +128,8 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
                 }
             }
         }
-
+        // ExEnd:ConvertNumPageFieldsToPageRef
+        // ExStart:GetRemoveField
         private static void RemoveField(FieldStart fieldStart)
         {
             Node currentNode = fieldStart;
@@ -142,7 +144,6 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
                 currentNode = nextNode;
             }
         }
-
         private static string GetFieldCode(FieldStart fieldStart)
         {
             StringBuilder builder = new StringBuilder();
@@ -156,5 +157,6 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
             }
             return builder.ToString();
         }
+        // ExEnd:GetRemoveField
     }
 }

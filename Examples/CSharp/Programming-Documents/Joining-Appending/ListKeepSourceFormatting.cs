@@ -3,12 +3,13 @@ using System.IO;
 
 using Aspose.Words;
 
-namespace CSharp.Programming_Documents.Joining_and_Appending
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Joining_and_Appending
 {
     class ListKeepSourceFormatting
     {
         public static void Run()
         {
+            // ExStart:ListKeepSourceFormatting
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_JoiningAndAppending();
             string fileName = "TestFile.DestinationList.doc";
@@ -21,7 +22,7 @@ namespace CSharp.Programming_Documents.Joining_and_Appending
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             dstDoc.Save(dataDir);
-
+            // ExEnd:ListKeepSourceFormatting
             Console.WriteLine("\nDocument appended successfully with lists retaining source formatting.\nFile saved at " + dataDir);
         }
     }

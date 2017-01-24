@@ -3,13 +3,13 @@ using System.IO;
 using Aspose.Words;
 using System;
 
-namespace CSharp.Programming_Documents.Working_With_Document
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class CloningDocument
     {
         public static void Run()
         {
-            //ExStart:CloningDocument
+            // ExStart:CloningDocument
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
 
@@ -18,11 +18,11 @@ namespace CSharp.Programming_Documents.Working_With_Document
 
             Document clone = doc.Clone();
 
-            dataDir = dataDir + "TestFile_clone_out_.doc";
+            dataDir = dataDir + "TestFile_clone_out.doc";
 
             // Save the document to disk.
             clone.Save(dataDir);
-            //ExEnd:CloningDocument
+            // ExEnd:CloningDocument
             Console.WriteLine("\nDocument cloned successfully.\nFile saved at " + dataDir);
         }
     }

@@ -4,13 +4,13 @@ using System.Reflection;
 using Aspose.Words.Tables;
 using Aspose.Words;
 
-namespace CSharp.Programming_Documents.Bookmarks
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Bookmarks
 {
     class AccessBookmarks
     {
         public static void Run()
         {
-            //ExStart:AccessBookmarks
+            // ExStart:AccessBookmarks
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithBookmarks();
 
@@ -21,7 +21,7 @@ namespace CSharp.Programming_Documents.Bookmarks
            
             // By name.
             Bookmark bookmark2 = doc.Range.Bookmarks["Bookmark2"];
-            //ExEnd:AccessBookmarks
+            // ExEnd:AccessBookmarks
             Console.WriteLine("\nBookmark by name is " + bookmark1.Name + " and bookmark by index is " + bookmark2.Name);
         }
         

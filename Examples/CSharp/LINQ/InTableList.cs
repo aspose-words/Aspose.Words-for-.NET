@@ -5,13 +5,13 @@ using System.Text;
 using Aspose.Words;
 using Aspose.Words.Reporting;
 
-namespace CSharp.LINQ
+namespace Aspose.Words.Examples.CSharp.LINQ
 {
     class InTableList
     {
         public static void Run()
         {
-            //ExStart:InTableList
+            // ExStart:InTableList
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LINQ(); 
             string fileName = "InTableList.doc";
@@ -28,7 +28,7 @@ namespace CSharp.LINQ
 
             // Save the finished document to disk.
             doc.Save(dataDir);
-            //ExEnd:InTableList
+            // ExEnd:InTableList
             Console.WriteLine("\nIn-Table list template document is populated with the data about managers.\nFile saved at " + dataDir);
 
         }

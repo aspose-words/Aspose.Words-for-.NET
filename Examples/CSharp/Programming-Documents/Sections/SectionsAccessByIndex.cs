@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using Aspose.Words;
 
-namespace CSharp.Programming_Documents.Working_with_Sections
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Sections
 {
     class SectionsAccessByIndex
     {
         public static void Run()
         {
-            //ExStart:SectionsAccessByIndex
+            // ExStart:SectionsAccessByIndex
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithSections();
             Document doc = new Document(dataDir + "Document.doc");
@@ -20,7 +20,7 @@ namespace CSharp.Programming_Documents.Working_with_Sections
             section.PageSetup.HeaderDistance = 35.4; // 1.25 cm
             section.PageSetup.FooterDistance = 35.4; // 1.25 cm
             section.PageSetup.TextColumns.Spacing = 35.4; // 1.25 cm
-            //ExEnd:SectionsAccessByIndex
+            // ExEnd:SectionsAccessByIndex
             Console.WriteLine("\nSection at 0 index have text " + "'" + section.GetText() + "'");
         }
     }

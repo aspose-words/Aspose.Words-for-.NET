@@ -5,13 +5,13 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
 
-namespace CSharp.Programming_Documents.Working_with_Charts
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
 {
     class WorkWithChartDataLabel
     {
         public static void Run()
         {
-            //ExStart:WorkWithChartDataLabel
+            // ExStart:WorkWithChartDataLabel
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithCharts();
             Document doc = new Document();
@@ -32,8 +32,8 @@ namespace CSharp.Programming_Documents.Working_with_Charts
             chartDataLabel00.ShowLegendKey = true;
 
             // By default, when you add data labels to the data points in a pie chart, leader lines are displayed for data labels that are
-            // positioned far outside the end of data points. Leader lines create a visual connection between a data label and its 
-            // corresponding data point.
+            // Positioned far outside the end of data points. Leader lines create a visual connection between a data label and its 
+            // Corresponding data point.
             chartDataLabel00.ShowLeaderLines = true;
 
             chartDataLabel00.ShowCategoryName = false;
@@ -42,9 +42,9 @@ namespace CSharp.Programming_Documents.Working_with_Charts
             chartDataLabel00.ShowValue = true;
             chartDataLabel00.Separator = "/";
             chartDataLabel01.ShowValue = true;
-            dataDir = dataDir + @"SimpleBarChart_out_.docx";
+            dataDir = dataDir + @"SimpleBarChart_out.docx";
             doc.Save(dataDir);
-            //ExEnd:WorkWithChartDataLabel
+            // ExEnd:WorkWithChartDataLabel
             Console.WriteLine("\nSimple bar chart created successfully.\nFile saved at " + dataDir);
         }        
     }

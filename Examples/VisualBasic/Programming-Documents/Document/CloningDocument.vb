@@ -12,7 +12,7 @@ Public Class CloningDocument
 
         Dim clone As Document = doc.Clone()
 
-        dataDir = dataDir & Convert.ToString("TestFile_clone_out_.doc")
+        dataDir = dataDir & Convert.ToString("TestFile_clone_out.doc")
 
         ' Save the document to disk.
         clone.Save(dataDir)

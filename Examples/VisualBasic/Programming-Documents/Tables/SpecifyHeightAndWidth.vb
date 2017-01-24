@@ -14,7 +14,7 @@ Public Class SpecifyHeightAndWidth
     ''' Shows how to set a table to auto fit to 50% of the page width.
     ''' </summary>
     Private Shared Sub AutoFitToPageWidth(dataDir As String)
-        'ExStart:AutoFitToPageWidth
+        ' ExStart:AutoFitToPageWidth
         Dim doc As New Document()
         Dim builder As New DocumentBuilder(doc)
 
@@ -32,18 +32,18 @@ Public Class SpecifyHeightAndWidth
         builder.InsertCell()
         builder.Writeln("Cell #3")
 
-        dataDir = dataDir & Convert.ToString("Table.PreferredWidth_out_.doc")
+        dataDir = dataDir & Convert.ToString("Table.PreferredWidth_out.doc")
 
         ' Save the document to disk.
         doc.Save(dataDir)
-        'ExEnd:AutoFitToPageWidth
+        ' ExEnd:AutoFitToPageWidth
         Console.WriteLine(Convert.ToString(vbLf & "Table autofit successfully to 50% of the page width." & vbLf & "File saved at ") & dataDir)
     End Sub
     ''' <summary>
     ''' Shows how to set the different preferred width settings.
     ''' </summary>
     Private Shared Sub SetPreferredWidthSettings(dataDir As String)
-        'ExStart:SetPreferredWidthSettings
+        ' ExStart:SetPreferredWidthSettings
         Dim doc As New Document()
         Dim builder As New DocumentBuilder(doc)
 
@@ -69,30 +69,30 @@ Public Class SpecifyHeightAndWidth
         builder.Writeln("Cell automatically sized. The size of this cell is calculated from the table preferred width.")
         builder.Writeln("In this case the cell will fill up the rest of the available space.")
 
-        dataDir = dataDir & Convert.ToString("Table.CellPreferredWidths_out_.doc")
+        dataDir = dataDir & Convert.ToString("Table.CellPreferredWidths_out.doc")
         ' Save the document to disk.
         doc.Save(dataDir)
-        'ExEnd:SetPreferredWidthSettings
+        ' ExEnd:SetPreferredWidthSettings
         Console.WriteLine(Convert.ToString(vbLf & "Different preferred width settings set successfully." & vbLf & "File saved at ") & dataDir)
     End Sub
     ''' <summary>
     ''' Shows how to retrieves the preferred width type of a table cell.
     ''' </summary>
     Private Shared Sub RetrievePreferredWidthType(dataDir As String)
-        'ExStart:RetrievePreferredWidthType
+        ' ExStart:RetrievePreferredWidthType
         Dim doc As New Document(dataDir & Convert.ToString("Table.SimpleTable.doc"))
 
         ' Retrieve the first table in the document.
         Dim table As Table = DirectCast(doc.GetChild(NodeType.Table, 0, True), Table)
-        'ExStart:AllowAutoFit
+        ' ExStart:AllowAutoFit
         table.AllowAutoFit = True
-        'ExEnd:AllowAutoFit
+        ' ExEnd:AllowAutoFit
 
         Dim firstCell As Cell = table.FirstRow.FirstCell
         Dim type As PreferredWidthType = firstCell.CellFormat.PreferredWidth.Type
         Dim value As Double = firstCell.CellFormat.PreferredWidth.Value
 
-        'ExEnd:RetrievePreferredWidthType
+        ' ExEnd:RetrievePreferredWidthType
         Console.WriteLine(vbLf & "Table preferred width type value is " + value.ToString())
     End Sub
 End Class

@@ -4,8 +4,9 @@ using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.Fields;
 using System;
+using Aspose.Words.Replacing;
 
-namespace CSharp.Programming_Documents.Find_and_Replace
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
 {
     class ReplaceTextWithField
     {
@@ -17,8 +18,11 @@ namespace CSharp.Programming_Documents.Find_and_Replace
 
             Document doc = new Document(dataDir + fileName);
 
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.ReplacingCallback = new ReplaceTextWithFieldHandler(FieldType.FieldMergeField);
+
             // Replace any "PlaceHolderX" instances in the document (where X is a number) with a merge field.
-            doc.Range.Replace(new Regex(@"PlaceHolder(\d+)"), new ReplaceTextWithFieldHandler(FieldType.FieldMergeField), false);
+            doc.Range.Replace(new Regex(@"PlaceHolder(\d+)"), "", options);
 
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             doc.Save(dataDir);
@@ -67,7 +71,7 @@ namespace CSharp.Programming_Documents.Find_and_Replace
             Node currentNode = args.MatchNode;
 
             // The first (and may be the only) run can contain text before the match, 
-            // in this case it is necessary to split the run.
+            // In this case it is necessary to split the run.
             if (args.MatchOffset > 0)
                 currentNode = SplitRun((Run)currentNode, args.MatchOffset);
 

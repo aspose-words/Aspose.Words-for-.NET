@@ -1,26 +1,26 @@
 ﻿Imports System.IO
-Imports DocumentExplorerExample
-Imports LINQ
+Imports Aspose.Words.Examples.VisualBasic.DocumentExplorerExample
+Imports Aspose.Words.Examples.VisualBasic.LINQ
 
 Module RunExamples
 
     Sub Main()
-        Console.WriteLine("Open RunExamples.vb. In Main() method, Un-comment the example that you want to run")
+        Console.WriteLine("Open RunExamples.vb. " & vbLf & "In Main() method uncomment the example that you want to run.")
         Console.WriteLine("=====================================================")
 
+        ' Uncomment the one you want to try out
 
         '' =====================================================
         '' =====================================================
         '' Quick Start
         '' =====================================================
         '' =====================================================
-        'AppendDocuments.Run()
-        'ApplyLicense.Run()
-        'FindAndReplace.Run()
-        'HelloWorld.Run()       
-        'SimpleMailMerge.Run()
-        'UpdateFields.Run()
-        'WorkingWithNodes.Run()
+        ' AppendDocuments.Run()
+        ' ApplyLicense.Run()
+        ' FindAndReplace.Run()
+        ' HelloWorld.Run()
+        ' UpdateFields.Run()
+        ' WorkingWithNodes.Run()
 
         '' =====================================================
         '' =====================================================
@@ -28,22 +28,24 @@ Module RunExamples
         '' =====================================================
         '' =====================================================
 
-        'OpenEncryptedDocument.Run()
-        'LoadAndSaveToDisk.Run()
-        'LoadAndSaveToStream.Run()
-        'CreateDocument.Run()
-        'CheckFormat.Run()
-        'SplitIntoHtmlPages.Run()
-        'LoadTxt.Run()
-        'PageSplitter.Run()
-        'ImageToPdf.Run()
-        'SpecifySaveOption.Run()
-        'AccessAndVerifySignature.Run()
-        'Doc2Pdf.Run()
-        'DigitallySignedPdf.Run()
-        'ConvertDocumentToByte.Run()
-        'ConvertDocumentToEPUB.Run()
-        'ConvertDocumentToHtmlWithRoundtrip.Run()
+        ' OpenEncryptedDocument.Run()
+        ' LoadAndSaveToDisk.Run()
+        ' LoadAndSaveToStream.Run()
+        ' CreateDocument.Run()
+        ' CheckFormat.Run()
+        ' SplitIntoHtmlPages.Run()
+        ' LoadTxt.Run()
+        ' PageSplitter.Run()
+        ' ImageToPdf.Run()
+        ' SpecifySaveOption.Run()
+        ' AccessAndVerifySignature.Run()
+        ' Doc2Pdf.Run()
+        ' DigitallySignedPdf.Run()
+        ' ConvertDocumentToByte.Run()
+        ' ConvertDocumentToEPUB.Run()
+        ' ConvertDocumentToHtmlWithRoundtrip.Run()
+        ' DetectDocumentSignatures.Run()
+        ' SaveAsTxt.Run()
 
         '' =====================================================
         '' =====================================================
@@ -53,149 +55,183 @@ Module RunExamples
 
         '' Joining and Appending
         '' =====================================================
-        'SimpleAppendDocument.Run()
-        'KeepSourceFormatting.Run()
-        'UseDestinationStyles.Run()
-        'JoinContinuous.Run()
-        'JoinNewPage.Run()
-        'RestartPageNumbering.Run()
-        'LinkHeadersFooters.Run()
-        'UnlinkHeadersFooters.Run()
-        'RemoveSourceHeadersFooters.Run()
-        'DifferentPageSetup.Run()
-        'ConvertNumPageFields.Run()
-        'ListUseDestinationStyles.Run()
-        'ListKeepSourceFormatting.Run()
-        'KeepSourceTogether.Run()
-        'BaseDocument.Run()
-        'UpdatePageLayout.Run()
-        'AppendDocumentManually.Run()
-        'PrependDocument.Run()
+        ' SimpleAppendDocument.Run()
+        ' KeepSourceFormatting.Run()
+        ' UseDestinationStyles.Run()
+        ' JoinContinuous.Run()
+        ' JoinNewPage.Run()
+        ' RestartPageNumbering.Run()
+        ' LinkHeadersFooters.Run()
+        ' UnlinkHeadersFooters.Run()
+        ' RemoveSourceHeadersFooters.Run()
+        ' DifferentPageSetup.Run()
+        ' ConvertNumPageFields.Run()
+        ' ListUseDestinationStyles.Run()
+        ' ListKeepSourceFormatting.Run()
+        ' KeepSourceTogether.Run()
+        ' BaseDocument.Run()
+        ' UpdatePageLayout.Run()
+        ' AppendDocumentManually.Run()
+        ' PrependDocument.Run()
 
         '' Find and Replace
         '' =====================================================
-        'FindAndHighlight.Run()
-        'ReplaceTextWithField.Run()
+        ' FindAndHighlight.Run()
+        ' ReplaceTextWithField.Run()
+        ' ReplaceWithString.Run()
+        ' ReplaceWithRegex.Run()
+        ' ReplaceWithEvaluator.Run()
 
         '' Bookmarks
         '' =====================================================
-        'CopyBookmarkedText.Run()
-        'UntangleRowBookmarks.Run()
-        'BookmarkTable.Run()
-        'BookmarkNameAndText.Run()
-        'AccessBookmarks.Run()
-        'CreateBookmark.Run()
+        ' CopyBookmarkedText.Run()
+        ' UntangleRowBookmarks.Run()
+        ' BookmarkTable.Run()
+        ' BookmarkNameAndText.Run()
+        ' AccessBookmarks.Run()
+        ' CreateBookmark.Run()
 
         '' Comments
         '' =====================================================
-        'ProcessComments.Run()
-        'AddComments.Run()
-        'AnchorComment.Run()
+        ' ProcessComments.Run()
+        ' AddComments.Run()
+        ' AnchorComment.Run()
 
         '' ConvertUtil
         '' =====================================================
-        'UtilityClasses.Run()
+        ' UtilityClasses.Run()
 
         '' Theme
         '' =====================================================
-        'ManipulateThemeProperties.Run()
+        ' ManipulateThemeProperties.Run()
+
+        '' Node
+        '' =====================================================
+        ' ExNode.Run()
 
         '' Charts
         '' =====================================================
-        'CreateColumnChart.Run()
-        'InsertScatterChart.Run()
-        'InsertAreaChart.Run()
-        'InsertBubbleChart.Run()
-        'CreateChartUsingShape.Run()
-        'WorkWithChartDataLabel.Run()
-        'WorkWithSingleChartDataPoint.Run()
-        'WorkWithSingleChartSeries.Run()
+        ' CreateColumnChart.Run()
+        ' InsertScatterChart.Run()
+        ' InsertAreaChart.Run()
+        ' InsertBubbleChart.Run()
+        ' CreateChartUsingShape.Run()
+        ' WorkWithChartDataLabel.Run()
+        ' WorkWithSingleChartDataPoint.Run()
+        ' WorkWithSingleChartSeries.Run()
 
         '' Document
         '' =====================================================
-        'ExtractContent.Run()
-        'PageNumbersOfNodes.Run()
-        'RemoveBreaks.Run()
-        'CloningDocument.Run();
-        'ProtectDocument.Run();
-        'AccessStyles.Run()
-        'GetVariables.Run()
-        'SetViewOption.Run()
-        'CreateHeaderFooterUsingDocBuilder.Run()
-        'ExtractContentUsingDocumentVisitor.Run()
-        'RemoveFooters.Run()
-        'AddGroupShapeToDocument.Run()
-        'CompareDocument.Run()
+        ' ExtractContent.Run()
+        ' PageNumbersOfNodes.Run()
+        ' RemoveBreaks.Run()
+        ' CloningDocument.Run()
+        ' ProtectDocument.Run()
+        ' AccessStyles.Run()
+        ' GetVariables.Run()
+        ' SetViewOption.Run()
+        ' CreateHeaderFooterUsingDocBuilder.Run()
+        ' ExtractContentUsingDocumentVisitor.Run()
+        ' RemoveFooters.Run()
+        ' AddGroupShapeToDocument.Run()
+        ' CompareDocument.Run()
+        ' DocProperties.Run()
+        ' AcceptAllRevisions.Run()
+        ' WriteAndFont.Run()
+        ' DocumentBuilderInsertParagraph.Run()
+        ' DocumentBuilderBuildTable.Run()
+        ' DocumentBuilderInsertBreak.Run()
+        ' DocumentBuilderInsertImage.Run()
+        ' DocumentBuilderInsertBookmark.Run()
+        ' DocumentBuilderInsertElements.Run()
+        ' DocumentBuilderSetFormatting.Run()
+        ' DocumentBuilderMovingCursor.Run()
+        ' ExtractTextOnly.Run()
+        ' InsertDoc.Run()
+        ' DocumentBuilderInsertTOC.Run()
+        ' DocumentBuilderInsertTCField.Run()
+        ' DocumentBuilderInsertTCFieldsAtText.Run()
+        ' RemoveTOCFromDocument.Run()
+        ' CheckBoxTypeContentControl.Run()
+        ' RichTextBoxContentControl.Run()
+        ' ComboBoxContentControl.Run()
+        ' UpdateContentControls.Run()
 
         '' Fields
         '' =====================================================
-        'InsertNestedFields.Run()
-        'RemoveField.Run()
-        'ConvertFieldsInDocument.Run()
-        'ConvertFieldsInBody.Run()
-        'ConvertFieldsInParagraph.Run()
-        'ChangeLocale.Run()
-        'UpdateDocFields.Run()
-        'InsertField.Run()
-        'InsertMergeFieldUsingDOM.Run();
-        'InsertMailMergeAddressBlockFieldUsingDOM.Run()
-        'InsertAdvanceFieldWithOutDocumentBuilder.Run()
-        'InsertASKFieldWithOutDocumentBuilder.Run()
-        'InsertAuthorField.Run()
-        'InsertFormFields.Run()
-        'FormFieldsGetFormFieldsCollection.Run()
-        'FormFieldsGetByName.Run()
-        'FormFieldsWorkWithProperties.Run()
-        'RenameMergeFields.Run()
+        ' InsertNestedFields.Run()
+        ' RemoveField.Run()
+        ' ConvertFieldsInDocument.Run()
+        ' ConvertFieldsInBody.Run()
+        ' ConvertFieldsInParagraph.Run()
+        ' ChangeLocale.Run()
+        ' UpdateDocFields.Run()
+        ' InsertField.Run()
+        ' InsertMergeFieldUsingDOM.Run()
+        ' InsertMailMergeAddressBlockFieldUsingDOM.Run()
+        ' InsertAdvanceFieldWithOutDocumentBuilder.Run()
+        ' InsertASKFieldWithOutDocumentBuilder.Run()
+        ' InsertAuthorField.Run()
+        ' InsertFormFields.Run()
+        ' FormFieldsGetFormFieldsCollection.Run()
+        ' FormFieldsGetByName.Run()
+        ' FormFieldsWorkWithProperties.Run()
+        ' RenameMergeFields.Run()
+        ' ChangeFieldUpdateCultureSource.Run()
+        ' GetFieldNames.Run()
 
         '' Images
         '' =====================================================
-        'AddImageToEachPage.Run()
-        'AddWatermark.Run()
-        'CompressImages.Run()
-        'ExtractImagesToFiles.Run()
-        'InsertBarcodeImage.Run()
+        ' AddImageToEachPage.Run()
+        ' AddWatermark.Run()
+        ' CompressImages.Run()
+        ' ExtractImagesToFiles.Run()
+        ' InsertBarcodeImage.Run()
 
         '' Styles
         '' =====================================================
-        'ExtractContentBasedOnStyles.Run()
+        ' ExtractContentBasedOnStyles.Run()
+        ' ChangeStyleOfTOCLevel.Run()
+        ' ChangeTOCTabStops.Run()
 
         '' Hyperlink
         '' =====================================================
-        'ReplaceHyperlinks.Run()
+        ' ReplaceHyperlinks.Run()
 
         '' Ranges
         '' =====================================================
-        'RangesGetText.Run()
-        'RangesDeleteText.Run()
+        ' RangesGetText.Run()
+        ' RangesDeleteText.Run()
 
         '' Tables
         '' =====================================================
-        'AutoFitTableToWindow.Run()
-        'AutoFitTableToContents.Run()
-        'AutoFitTableToFixedColumnWidths.Run()
-        'InsertTableUsingDocumentBuilder.Run()
-        'InsertTableFromHtml.Run()
-        'InsertTableDirectly.Run()
-        'CloneTable.Run()
-        'ApplyFormatting.Run()
-        'SpecifyHeightAndWidth.Run()
-        'ApplyStyle.Run()
-        'ExtractText.Run()
-        'FindingIndex.Run()
-        'AddRemoveColumn.Run()
-        'RepeatRowsOnSubsequentPages.Run()
-        'JoiningAndSplittingTable.Run()     
+        ' AutoFitTableToWindow.Run()
+        ' AutoFitTableToContents.Run()
+        ' AutoFitTableToFixedColumnWidths.Run()
+        ' InsertTableUsingDocumentBuilder.Run()
+        ' InsertTableFromHtml.Run()
+        ' InsertTableDirectly.Run()
+        ' CloneTable.Run()
+        ' ApplyFormatting.Run()
+        ' SpecifyHeightAndWidth.Run()
+        ' ApplyStyle.Run()
+        ' ExtractText.Run()
+        ' FindingIndex.Run()
+        ' AddRemoveColumn.Run()
+        ' RepeatRowsOnSubsequentPages.Run()
+        ' JoiningAndSplittingTable.Run() 
+        ' MergedCells.Run()
+        ' KeepTablesAndRowsBreaking.Run()
 
         '' Sections
         '' =====================================================
-        'SectionsAccessByIndex.Run()
-        'AddDeleteSection.Run()
-        'AppendSectionContent.Run()
-        'DeleteSectionContent.Run()
-        'DeleteHeaderFooterContent.Run()
-        'CloneSection.Run()
-        'CopySection.Run()
+        ' SectionsAccessByIndex.Run()
+        ' AddDeleteSection.Run()
+        ' AppendSectionContent.Run()
+        ' DeleteSectionContent.Run()
+        ' DeleteHeaderFooterContent.Run()
+        ' CloneSection.Run()
+        ' CopySection.Run()
 
         '' =====================================================
         '' =====================================================
@@ -203,18 +239,21 @@ Module RunExamples
         '' =====================================================
         '' =====================================================
 
-        'ApplyCustomLogicToEmptyRegions.Run()
-        'LINQtoXMLMailMerge.Run()
-        'MailMergeFormFields.Run()
-        'MultipleDocsInMailMerge.Run()
-        'NestedMailMerge.Run()
-        'RemoveEmptyRegions.Run()
-        'XMLMailMerge.Run()
-        'ExecuteArray.Run()
-        'MailMergeAlternatingRows.Run()
-        'MailMergeImageFromBlob.Run()
-        'ProduceMultipleDocuments.Run()
-        MailMergeUsingMustacheSyntax.Run()
+        ' ApplyCustomLogicToEmptyRegions.Run()
+        ' LINQtoXMLMailMerge.Run()
+        ' SimpleMailMerge.Run()
+        ' MailMergeFormFields.Run()
+        ' MultipleDocsInMailMerge.Run()
+        ' NestedMailMerge.Run()
+        ' RemoveEmptyRegions.Run()
+        ' XMLMailMerge.Run()
+        ' ExecuteArray.Run()
+        ' MailMergeAlternatingRows.Run()
+        ' MailMergeImageFromBlob.Run()
+        ' ProduceMultipleDocuments.Run()
+        ' MailMergeUsingMustacheSyntax.Run()
+        ' ExecuteWithRegionsDataTable.Run()
+        ' NestedMailMergeCustom.Run()
 
         '' =====================================================
         '' =====================================================
@@ -222,53 +261,45 @@ Module RunExamples
         '' =====================================================
         '' =====================================================
 
-        'DocumentLayoutHelper.Run()
-        'EnumerateLayoutElements.Run()
-        'DocumentPreviewAndPrint.Run()
-        'ImageColorFilters.Run()
-        'RenderShape.Run()
-        'SaveAsMultipageTiff.Run()
-        'ReadActiveXControlProperties.Run()
-        'SetTrueTypeFontsFolder.Run()
-        'SetFontsFoldersMultipleFolders.Run()
-        'SetFontsFoldersSystemAndCustomFolder.Run()
-        'SpecifyDefaultFontWhenRendering.Run()
-        'ReceiveNotificationsOfFont.Run()
-        'EmbeddedFontsInPDF.Run()
-        'EmbeddingWindowsStandardFonts.Run()
-        'HyphenateWordsOfLanguages.Run()
-        'LoadHyphenationDictionaryForLanguage.Run()
-        'PrintProgressDialog.Run()
-
-        '' =====================================================
-        '' =====================================================
-        '' Viewers and Visualizers
-        '' =====================================================
-        '' =====================================================
-
-        'MainForm.Run()
+        ' DocumentLayoutHelper.Run()
+        ' EnumerateLayoutElements.Run()
+        ' DocumentPreviewAndPrint.Run()
+        ' ImageColorFilters.Run()
+        ' RenderShape.Run()
+        ' SaveAsMultipageTiff.Run()
+        ' ReadActiveXControlProperties.Run()
+        ' SetTrueTypeFontsFolder.Run()
+        ' SetFontsFoldersMultipleFolders.Run()
+        ' SetFontsFoldersSystemAndCustomFolder.Run()
+        ' SpecifyDefaultFontWhenRendering.Run()
+        ' ReceiveNotificationsOfFont.Run()
+        ' EmbeddedFontsInPDF.Run()
+        ' EmbeddingWindowsStandardFonts.Run()
+        ' HyphenateWordsOfLanguages.Run()
+        ' LoadHyphenationDictionaryForLanguage.Run()
+        ' PrintProgressDialog.Run()
 
         '' =====================================================
         '' =====================================================
         '' LINQ
         '' =====================================================
         '' =====================================================
-        'LINQ.HelloWorld.Run()
-        'SingleRow.Run()
-        'InParagraphList.Run()
-        'BulletedList.Run()
-        'NumberedList.Run()
-        'MulticoloredNumberedList.Run()
-        'CommonList.Run()
-        'InTableList.Run()
-        'InTableAlternateContent.Run()
-        'CommonMasterDetail.Run()
-        'InTableMasterDetail.Run()
-        'InTableWithFilteringGroupingSorting.Run()
-        'PieChart.Run()
-        'ScatterChart.Run()
-        'BubbleChart.Run()
-        'ChartWithFilteringGroupingOrdering.Run()
+        ' LINQ.HelloWorld.Run()
+        ' SingleRow.Run()
+        ' InParagraphList.Run()
+        ' BulletedList.Run()
+        ' NumberedList.Run()
+        ' MulticoloredNumberedList.Run()
+        ' CommonList.Run()
+        ' InTableList.Run()
+        ' InTableAlternateContent.Run()
+        ' CommonMasterDetail.Run()
+        ' InTableMasterDetail.Run()
+        ' InTableWithFilteringGroupingSorting.Run()
+        ' PieChart.Run()
+        ' ScatterChart.Run()
+        ' BubbleChart.Run()
+        ' ChartWithFilteringGroupingOrdering.Run()
 
         ' Stop before exiting
         Console.WriteLine(vbNewLine + vbNewLine + "Program Finished. Press any key to exit....")
@@ -280,6 +311,9 @@ Module RunExamples
     End Function
     Public Function GetDataDir_Database() As [String]
         Return Path.GetFullPath(GetDataDir_Data() + "Database/")
+    End Function
+    Public Function GetDataDir_WorkingWithNode() As [String]
+        Return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Node/")
     End Function
     Public Function GetDataDir_LoadingAndSaving() As [String]
         Return Path.GetFullPath(GetDataDir_Data() + "Loading-and-Saving/")
@@ -368,7 +402,7 @@ Module RunExamples
     Public Function GetOutputFilePath(inputFilePath As [String]) As String
         Dim extension As String = Path.GetExtension(inputFilePath)
         Dim filename As String = Path.GetFileNameWithoutExtension(inputFilePath)
-        Return Convert.ToString(filename & Convert.ToString("_out_")) & extension
+        Return Convert.ToString(filename & Convert.ToString("_out")) & extension
     End Function
 
 End Module

@@ -7,20 +7,20 @@ using Aspose.Words;
 using Aspose.Words.Tables;
 using System.Diagnostics;
 
-namespace CSharp.Programming_Documents.Working_with_Tables
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
 {
     class InsertTableFromHtml
     {
         public static void Run()
         {
-            //ExStart:InsertTableFromHtml
+            // ExStart:InsertTableFromHtml
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithTables();
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert the table from HTML. Note that AutoFitSettings does not apply to tables
-            // inserted from HTML.
+            // Inserted from HTML.
             builder.InsertHtml("<table>" +
                                "<tr>" +
                                "<td>Row 1, Cell 1</td>" +
@@ -32,10 +32,10 @@ namespace CSharp.Programming_Documents.Working_with_Tables
                                "</tr>" +
                                "</table>");
 
-            dataDir = dataDir + "DocumentBuilder.InsertTableFromHtml_out_.doc";
+            dataDir = dataDir + "DocumentBuilder.InsertTableFromHtml_out.doc";
             // Save the document to disk.
             doc.Save(dataDir);
-            //ExEnd:InsertTableFromHtml
+            // ExEnd:InsertTableFromHtml
 
             Console.WriteLine("\nTable inserted successfully from html.\nFile saved at " + dataDir);
         }

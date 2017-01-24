@@ -1,0 +1,48 @@
+﻿
+
+<style>
+    .setDiv {
+        display: flex;
+    }
+</style>
+<div class="setDiv">
+    <select id="AsposeContentExportImagesTypes" class="form-control">
+        <option value="">Select an Export Format</option>
+        <option value="JPEG">JPEG Image format (*.jpeg)</option>
+        <option value="PNG">PNG Image format (*.png)</option>
+        <option value="BMP">BMP Image format (*.bmp)</option>
+        <option value="TIFF">TIFF Image format (*.tiff)</option>
+    </select>
+    <div class="Padding">
+        <a class="btn btn-primary" onclick=" redirect(); ">Export To Image</a>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var result = "";
+
+    document.getElementById('AsposeContentExportImagesTypes').onchange = function ()
+    {
+        result = this.value;
+    }
+
+
+
+    function redirect() {
+
+        
+        if (result != '') {
+            window.location.href = '@Url.Action("Index", "ExportToImage")/' + '?format=' + result;
+        } else {
+            alert("Please Select Export Format");
+        }
+    }
+
+
+    
+</script>
+
+
+
+
+ 

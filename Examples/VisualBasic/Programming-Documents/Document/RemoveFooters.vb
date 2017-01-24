@@ -28,7 +28,7 @@ Public Class RemoveFooters
                 footer.Remove()
             End If
         Next
-        dataDir = dataDir & Convert.ToString("HeaderFooter.RemoveFooters_out_.doc")
+        dataDir = dataDir & Convert.ToString("HeaderFooter.RemoveFooters_out.doc")
 
         ' Save the document.
         doc.Save(dataDir)

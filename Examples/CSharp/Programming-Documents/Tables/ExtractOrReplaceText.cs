@@ -3,7 +3,9 @@ using System.IO;
 using Aspose.Words;
 using System;
 using Aspose.Words.Tables;
-namespace CSharp.Programming_Documents.Working_With_Document
+using Aspose.Words.Replacing;
+
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
     class ExtractText
     {
@@ -18,7 +20,7 @@ namespace CSharp.Programming_Documents.Working_With_Document
         }
         private static void ExtractPrintText(string dataDir)
         {
-            //ExStart:ExtractText
+            // ExStart:ExtractText
             Document doc = new Document(dataDir);
 
             // Get the first table in the document.
@@ -30,9 +32,9 @@ namespace CSharp.Programming_Documents.Working_With_Document
             // Print the plain text range of the table to the screen.
             Console.WriteLine("Contents of the table: ");
             Console.WriteLine(table.Range.Text);
-            //ExEnd:ExtractText   
+            // ExEnd:ExtractText   
 
-            //ExStart:PrintTextRangeOFRowAndTable
+            // ExStart:PrintTextRangeOFRowAndTable
             // Print the contents of the second row to the screen.
             Console.WriteLine("\nContents of the row: ");
             Console.WriteLine(table.Rows[1].Range.Text);
@@ -40,24 +42,24 @@ namespace CSharp.Programming_Documents.Working_With_Document
             // Print the contents of the last cell in the table to the screen.
             Console.WriteLine("\nContents of the cell: ");
             Console.WriteLine(table.LastRow.LastCell.Range.Text);
-            //ExEnd:PrintTextRangeOFRowAndTable
+            // ExEnd:PrintTextRangeOFRowAndTable
         }
         private static void ReplaceText(string dataDir)
         {
-            //ExStart:ReplaceText
+            // ExStart:ReplaceText
             Document doc = new Document(dataDir);
 
             // Get the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             // Replace any instances of our string in the entire table.
-            table.Range.Replace("Carrots", "Eggs", true, true);
+            table.Range.Replace("Carrots", "Eggs", new FindReplaceOptions(FindReplaceDirection.Forward));
             // Replace any instances of our string in the last cell of the table only.
-            table.LastRow.LastCell.Range.Replace("50", "20", true, true);
+            table.LastRow.LastCell.Range.Replace("50", "20", new FindReplaceOptions(FindReplaceDirection.Forward));
 
-            dataDir = RunExamples.GetDataDir_WorkingWithTables() + "Table.ReplaceCellText_out_.doc";
+            dataDir = RunExamples.GetDataDir_WorkingWithTables() + "Table.ReplaceCellText_out.doc";
             doc.Save(dataDir); 
-            //ExEnd:ReplaceText    
+            // ExEnd:ReplaceText    
             Console.WriteLine("\nText replaced successfully.\nFile saved at " + dataDir);
         }
     }

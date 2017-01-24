@@ -1,5 +1,7 @@
 ﻿using Aspose.Words;
+// ExStart:MailMergingNamespace
 using Aspose.Words.MailMerging;
+// ExEnd:MailMergingNamespace
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,13 +13,13 @@ using System.Text;
 using System.Web;
 using System.Drawing;
 
-namespace CSharp.Mail_Merge
+namespace Aspose.Words.Examples.CSharp.Mail_Merge
 {
     class MailMergeAlternatingRows
     {
         public static void Run()
         {
-            //ExStart:MailMergeAlternatingRows           
+            // ExStart:MailMergeAlternatingRows           
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); 
             Document doc = new Document(dataDir + "MailMerge.AlternatingRows.doc");
@@ -28,18 +30,18 @@ namespace CSharp.Mail_Merge
             // Execute mail merge with regions.
             DataTable dataTable = GetSuppliersDataTable();
             doc.MailMerge.ExecuteWithRegions(dataTable);
-            dataDir = dataDir + "MailMerge.AlternatingRows_out_.doc";
+            dataDir = dataDir + "MailMerge.AlternatingRows_out.doc";
             doc.Save(dataDir);
-            //ExEnd:MailMergeAlternatingRows
+            // ExEnd:MailMergeAlternatingRows
             Console.WriteLine("\nMail merge alternative rows performed successfully.\nFile saved at " + dataDir);
         }
-        //ExStart:HandleMergeFieldAlternatingRows
+        // ExStart:HandleMergeFieldAlternatingRows
         private class HandleMergeFieldAlternatingRows : IFieldMergingCallback
         {
             /// <summary>
             /// Called for every merge field encountered in the document.
             /// We can either return some data to the mail merge engine or do something
-            /// else with the document. In this case we modify cell formatting.
+            /// Else with the document. In this case we modify cell formatting.
             /// </summary>
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
             {
@@ -57,7 +59,7 @@ namespace CSharp.Mail_Merge
                         rowColor = Color.FromArgb(242, 242, 242);
 
                     // There is no way to set cell properties for the whole row at the moment,
-                    // so we have to iterate over all cells in the row.
+                    // So we have to iterate over all cells in the row.
                     for (int colIdx = 0; colIdx < 4; colIdx++)
                     {
                         mBuilder.MoveToCell(0, mRowIdx, colIdx, 0);
@@ -75,9 +77,7 @@ namespace CSharp.Mail_Merge
 
             private DocumentBuilder mBuilder;
             private int mRowIdx;
-        }
-        //ExEnd:HandleMergeFieldAlternatingRows
-        //ExStart:IsOdd
+        }     
         /// <summary>
         /// Returns true if the value is odd; false if the value is even.
         /// </summary>
@@ -85,9 +85,7 @@ namespace CSharp.Mail_Merge
         {
             // The code is a bit complex, but otherwise automatic conversion to VB does not work.
             return ((value / 2) * 2).Equals(value);
-        }
-        //ExEnd:IsOdd
-        //ExStart:GetSuppliersDataTable
+        }      
         /// <summary>
         /// Create DataTable and fill it with data.
         /// In real life this DataTable should be filled from a database.
@@ -106,6 +104,6 @@ namespace CSharp.Mail_Merge
             }
             return dataTable;
         }
-        //ExEnd:GetSuppliersDataTable
+        // ExEnd:HandleMergeFieldAlternatingRows
     }
 }

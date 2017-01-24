@@ -13,7 +13,7 @@ Public Class ApplyStyle
     ''' Shows how to build a new table with a table style applied.
     ''' </summary>
     Private Shared Sub BuildTableWithStyle(dataDir As String)
-        'ExStart:BuildTableWithStyle
+        ' ExStart:BuildTableWithStyle
         Dim doc As New Document()
         Dim builder As New DocumentBuilder(doc)
 
@@ -52,18 +52,18 @@ Public Class ApplyStyle
         builder.Writeln("50")
         builder.EndRow()
 
-        dataDir = dataDir & Convert.ToString("DocumentBuilder.SetTableStyle_out_.docx")
+        dataDir = dataDir & Convert.ToString("DocumentBuilder.SetTableStyle_out.docx")
 
         ' Save the document to disk.
         doc.Save(dataDir)
-        'ExEnd:BuildTableWithStyle
+        ' ExEnd:BuildTableWithStyle
         Console.WriteLine(Convert.ToString(vbLf & "Table created successfully with table style." & vbLf & "File saved at ") & dataDir)
     End Sub
     ''' <summary>
     ''' Shows how to expand the formatting from styles onto the rows and cells of the table as direct formatting.
     ''' </summary>
     Private Shared Sub ExpandFormattingOnCellsAndRowFromStyle(dataDir As String)
-        'ExStart:ExpandFormattingOnCellsAndRowFromStyle
+        ' ExStart:ExpandFormattingOnCellsAndRowFromStyle
         Dim doc As New Document(dataDir & Convert.ToString("Table.TableStyle.docx"))
 
         ' Get the first cell of the first table in the document.
@@ -71,7 +71,7 @@ Public Class ApplyStyle
         Dim firstCell As Cell = table.FirstRow.FirstCell
 
         ' First print the color of the cell shading. This should be empty as the current shading
-        ' is stored in the table style.
+        ' Is stored in the table style.
         Dim cellShadingBefore As Color = firstCell.CellFormat.Shading.BackgroundPatternColor
         Console.WriteLine("Cell shading before style expansion: " + cellShadingBefore.ToString())
 
@@ -79,10 +79,10 @@ Public Class ApplyStyle
         doc.ExpandTableStylesToDirectFormatting()
 
         ' Now print the cell shading after expanding table styles. A blue background pattern color
-        ' should have been applied from the table style.
+        ' Should have been applied from the table style.
         Dim cellShadingAfter As Color = firstCell.CellFormat.Shading.BackgroundPatternColor
         Console.WriteLine("Cell shading after style expansion: " + cellShadingAfter.ToString())
-        'ExEnd:ExpandFormattingOnCellsAndRowFromStyle
+        ' ExEnd:ExpandFormattingOnCellsAndRowFromStyle
 
     End Sub
 End Class

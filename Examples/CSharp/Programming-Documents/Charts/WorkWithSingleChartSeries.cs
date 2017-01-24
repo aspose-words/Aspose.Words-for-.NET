@@ -5,7 +5,7 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
 
-namespace CSharp.Programming_Documents.Working_with_Charts
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
 {
     class WorkWithSingleChartSeries
     {
@@ -18,7 +18,7 @@ namespace CSharp.Programming_Documents.Working_with_Charts
 
             Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
             Chart chart = shape.Chart;
-            //ExStart:WorkWithSingleChartSeries
+            // ExStart:WorkWithSingleChartSeries
             // Get first series.
             ChartSeries series0 = shape.Chart.Series[0];
 
@@ -34,8 +34,8 @@ namespace CSharp.Programming_Documents.Working_with_Charts
             // You can also specify whether the line connecting the points on the chart shall be smoothed using Catmull-Rom splines.
             series0.Smooth = true;
             series1.Smooth = true;
-            //ExEnd:WorkWithSingleChartSeries
-            //ExStart:ChartDataPoint 
+            // ExEnd:WorkWithSingleChartSeries
+            // ExStart:ChartDataPoint 
             // Specifies whether by default the parent element shall inverts its colors if the value is negative.
             series0.InvertIfNegative = true;
 
@@ -45,8 +45,8 @@ namespace CSharp.Programming_Documents.Working_with_Charts
 
             series1.Marker.Symbol = MarkerSymbol.Star;
             series1.Marker.Size = 10;
-            //ExEnd:ChartDataPoint 
-            dataDir = dataDir + @"SingleChartSeries_out_.docx";
+            // ExEnd:ChartDataPoint 
+            dataDir = dataDir + @"SingleChartSeries_out.docx";
             doc.Save(dataDir);
             
             Console.WriteLine("\nChart created successfully.\nFile saved at " + dataDir);

@@ -36,13 +36,13 @@ Public Class FieldsHelper
     ''' <param name="compositeNode">The node in which all descendants of the specified FieldType will be converted to static text.</param>
     ''' <param name="targetFieldType">The FieldType of the field to convert to static text.</param>
     Public Shared Sub ConvertFieldsToStaticText(ByVal compositeNode As CompositeNode, ByVal targetFieldType As FieldType)
-        Dim originalNodeText As String = compositeNode.ToString(SaveFormat.Text) 'ExSkip
+        Dim originalNodeText As String = compositeNode.ToString(SaveFormat.Text) ' ExSkip
         Dim helper As New FieldsHelper(targetFieldType)
         compositeNode.Accept(helper)
 
-        Debug.Assert(originalNodeText.Equals(compositeNode.ToString(SaveFormat.Text)), "Error: Text of the node converted differs from the original") 'ExSkip
-        For Each node As Node In compositeNode.GetChildNodes(NodeType.Any, True) 'ExSkip
-            Debug.Assert(Not (TypeOf node Is FieldChar AndAlso (CType(node, FieldChar)).FieldType.Equals(targetFieldType)), "Error: A field node that should be removed still remains.") 'ExSkip
+        Debug.Assert(originalNodeText.Equals(compositeNode.ToString(SaveFormat.Text)), "Error: Text of the node converted differs from the original") ' ExSkip
+        For Each node As Node In compositeNode.GetChildNodes(NodeType.Any, True) ' ExSkip
+            Debug.Assert(Not (TypeOf node Is FieldChar AndAlso (CType(node, FieldChar)).FieldType.Equals(targetFieldType)), "Error: A field node that should be removed still remains.") ' ExSkip
         Next node
     End Sub
 
@@ -56,7 +56,7 @@ Public Class FieldsHelper
             mFieldDepth += 1
             fieldStart.Remove()
         Else
-            ' This removes the field start if it's inside a field that is being converted.
+            ' This removes the field start if it' S inside a field that is being converted.
             CheckDepthAndRemoveNode(fieldStart)
         End If
 
@@ -69,7 +69,7 @@ Public Class FieldsHelper
             mFieldDepth -= 1
             fieldSeparator.Remove()
         Else
-            ' This removes the field separator if it's inside a field that is being converted.
+            ' This removes the field separator if it' S inside a field that is being converted.
             CheckDepthAndRemoveNode(fieldSeparator)
         End If
 
@@ -80,7 +80,7 @@ Public Class FieldsHelper
         If fieldEnd.FieldType.Equals(mTargetFieldType) Then
             fieldEnd.Remove()
         Else
-            CheckDepthAndRemoveNode(fieldEnd) ' This removes the field end if it's inside a field that is being converted.
+            CheckDepthAndRemoveNode(fieldEnd) ' This removes the field end if it' S inside a field that is being converted.
         End If
 
         Return VisitorAction.Continue
@@ -96,7 +96,7 @@ Public Class FieldsHelper
     Public Overrides Function VisitParagraphEnd(ByVal paragraph As Paragraph) As VisitorAction
         If mFieldDepth > 0 Then
             ' The field code that is being converted continues onto another paragraph. We 
-            ' need to copy the remaining content from this paragraph onto the next paragraph.
+            ' Need to copy the remaining content from this paragraph onto the next paragraph.
             Dim nextParagraph As Node = paragraph.NextSibling
 
             ' Skip ahead to the next available paragraph.

@@ -46,7 +46,7 @@ Public Class PrependDocument
 
             ' Now the new section node can be prepended to the destination document.
             ' Note how PrependChild is used instead of AppendChild. This is the only line changed compared 
-            ' to the original method.
+            ' To the original method.
             dstDoc.PrependChild(dstSection)
         Next
     End Sub

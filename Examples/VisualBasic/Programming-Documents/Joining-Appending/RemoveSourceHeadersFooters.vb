@@ -11,6 +11,7 @@ Imports Aspose.Words
 
 Public Class RemoveSourceHeadersFooters
     Public Shared Sub Run()
+        ' ExStart:RemoveSourceHeadersFooters
         ' The path to the documents directory.
         Dim dataDir As String = RunExamples.GetDataDir_JoiningAndAppending()
         Dim fileName As String = "TestFile.Destination.doc"
@@ -23,14 +24,14 @@ Public Class RemoveSourceHeadersFooters
         Next section
 
         ' Even after the headers and footers are cleared from the source document, the "LinkToPrevious" setting 
-        ' for HeadersFooters can still be set. This will cause the headers and footers to continue from the destination 
-        ' document. This should set to false to avoid this behavior.
+        ' For HeadersFooters can still be set. This will cause the headers and footers to continue from the destination 
+        ' Document. This should set to false to avoid this behavior.
         srcDoc.FirstSection.HeadersFooters.LinkToPrevious(False)
 
         dataDir = dataDir & RunExamples.GetOutputFilePath(fileName)
         dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting)
         dstDoc.Save(dataDir)
-
+        ' ExEnd:RemoveSourceHeadersFooters
         Console.WriteLine(vbNewLine & "Document appended successfully with removed source header footers." & vbNewLine & "File saved at " + dataDir)
     End Sub
 End Class

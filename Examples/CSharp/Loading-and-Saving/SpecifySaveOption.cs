@@ -4,13 +4,13 @@ using Aspose.Words;
 using System.IO;
 using Aspose.Words.Saving;
 
-namespace CSharp.Loading_Saving
+namespace Aspose.Words.Examples.CSharp.Loading_Saving
 {
     class SpecifySaveOption
     {
         public static void Run()
         {
-            //ExStart:SpecifySaveOption            
+            // ExStart:SpecifySaveOption            
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
@@ -32,10 +32,10 @@ namespace CSharp.Loading_Saving
             options.ExportTextInputFormFieldAsText = true;
             options.ImagesFolder = imagesDir;
 
-            dataDir = dataDir + "Document.SaveWithOptions_out_.html";
+            dataDir = dataDir + "Document.SaveWithOptions_out.html";
             doc.Save(dataDir, options);
 
-            //ExEnd:SpecifySaveOption
+            // ExEnd:SpecifySaveOption
 
             Console.WriteLine("\nSave option specified successfully.\nFile saved at " + dataDir);
 

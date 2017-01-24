@@ -5,7 +5,9 @@ Imports System.IO
 Imports Aspose.Words
 Imports System.Web
 Imports System.Drawing
+' ExStart:MailMergingNamespace
 Imports Aspose.Words.MailMerging
+' ExEnd:MailMergingNamespace
 Public Class MailMergeAlternatingRows
     Public Shared Sub Run()
         ' ExStart:MailMergeAlternatingRows           
@@ -21,7 +23,7 @@ Public Class MailMergeAlternatingRows
         ' Execute mail merge with regions.
         Dim dataTable As DataTable = GetSuppliersDataTable()
         doc.MailMerge.ExecuteWithRegions(dataTable)
-        dataDir = dataDir & Convert.ToString("MailMerge.AlternatingRows_out_.doc")
+        dataDir = dataDir & Convert.ToString("MailMerge.AlternatingRows_out.doc")
         doc.Save(dataDir)
         ' ExEnd:MailMergeAlternatingRows
         Console.WriteLine(Convert.ToString(vbLf & "Mail merge alternative rows performed successfully." & vbLf & "File saved at ") & dataDir)
@@ -32,7 +34,7 @@ Public Class MailMergeAlternatingRows
         ''' <summary>
         ''' Called for every merge field encountered in the document.
         ''' We can either return some data to the mail merge engine or do something
-        ''' else with the document. In this case we modify cell formatting.
+        ''' Else with the document. In this case we modify cell formatting.
         ''' </summary>
         Private Sub IFieldMergingCallback_FieldMerging(ByVal e As FieldMergingArgs) Implements IFieldMergingCallback.FieldMerging
             If mBuilder Is Nothing Then
@@ -50,7 +52,7 @@ Public Class MailMergeAlternatingRows
                 End If
 
                 ' There is no way to set cell properties for the whole row at the moment,
-                ' so we have to iterate over all cells in the row.
+                ' So we have to iterate over all cells in the row.
                 For colIdx As Integer = 0 To 3
                     mBuilder.MoveToCell(0, mRowIdx, colIdx, 0)
                     mBuilder.CellFormat.Shading.BackgroundPatternColor = rowColor
@@ -67,8 +69,6 @@ Public Class MailMergeAlternatingRows
         Private mBuilder As DocumentBuilder
         Private mRowIdx As Integer
     End Class
-    ' ExEnd:HandleMergeFieldAlternatingRows
-    ' ExStart:IsOdd
     ''' <summary>
     ''' Returns true if the value is odd; false if the value is even.
     ''' </summary>
@@ -76,8 +76,6 @@ Public Class MailMergeAlternatingRows
         ' The code is a bit complex, but otherwise automatic conversion to VB does not work.
         Return ((value / 2) * 2).Equals(value)
     End Function
-    ' ExEnd:IsOdd
-    ' ExStart:GetSuppliersDataTable
     ''' <summary>
     ''' Create DataTable and fill it with data.
     ''' In real life this DataTable should be filled from a database.
@@ -94,6 +92,6 @@ Public Class MailMergeAlternatingRows
         Next
         Return dataTable
     End Function
-    ' ExEnd:GetSuppliersDataTable
+    ' ExEnd:HandleMergeFieldAlternatingRows
 
 End Class

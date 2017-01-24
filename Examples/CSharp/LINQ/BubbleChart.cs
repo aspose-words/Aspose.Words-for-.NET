@@ -5,13 +5,13 @@ using System.Text;
 using Aspose.Words;
 using Aspose.Words.Reporting;
 
-namespace CSharp.LINQ
+namespace Aspose.Words.Examples.CSharp.LINQ
 {
     class BubbleChart
     {
         public static void Run()
         {
-            //ExStart:BubbleChart
+            // ExStart:BubbleChart
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LINQ(); 
 
@@ -29,7 +29,7 @@ namespace CSharp.LINQ
 
             // Save the finished document to disk.
             doc.Save(dataDir);
-            //ExEnd:BubbleChart
+            // ExEnd:BubbleChart
 
             Console.WriteLine("\nBubble chart template document is populated with the data about contracts.\nFile saved at " + dataDir);
 

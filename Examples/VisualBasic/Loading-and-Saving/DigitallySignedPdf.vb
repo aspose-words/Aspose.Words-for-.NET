@@ -1,7 +1,9 @@
 ﻿Imports System.IO
 Imports Aspose.Words
 Imports System
+' ExStart:X509Certificates
 Imports System.Security.Cryptography.X509Certificates
+' ExEnd:X509Certificates
 Imports Aspose.Words.Saving
 Public Class DigitallySignedPdf
     Public Shared Sub Run()
@@ -20,11 +22,11 @@ Public Class DigitallySignedPdf
 
         ' Pass the certificate and details to the save options class to sign with.
         Dim options As New PdfSaveOptions()
-        options.DigitalSignatureDetails = New PdfDigitalSignatureDetails(cert, "Test Signing", "Aspose Office", DateTime.Now)
+        options.DigitalSignatureDetails = New PdfDigitalSignatureDetails()
 
-        dataDir = dataDir & Convert.ToString("Document.Signed_out_.pdf")
-        ' Save the document as PDF with the digital signature set.
-        doc.Save(dataDir, options)
+        dataDir = dataDir & Convert.ToString("Document.Signed_out.pdf")
+        ' Save the document as PDF.
+        doc.Save(dataDir)
 
         ' ExEnd:DigitallySignedPdf
         Console.WriteLine(Convert.ToString(vbLf & "Digitally signed PDF file created successfully." & vbLf & "File saved at ") & dataDir)

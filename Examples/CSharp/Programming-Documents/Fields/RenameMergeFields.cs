@@ -4,13 +4,13 @@ using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.Fields;
 
-namespace CSharp.Programming_Documents.Working_with_Fields
+namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 {
     class RenameMergeFields
     {
         public static void Run()
         {
-            //ExStart:RenameMergeFields
+            // ExStart:RenameMergeFields
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
 
@@ -28,12 +28,12 @@ namespace CSharp.Programming_Documents.Working_with_Fields
                 }
             }
 
-            dataDir = dataDir + "RenameMergeFields_out_.doc";
+            dataDir = dataDir + "RenameMergeFields_out.doc";
             doc.Save(dataDir);
-            //ExEnd:RenameMergeFields
+            // ExEnd:RenameMergeFields
             Console.WriteLine("\nMerge fields rename successfully.\nFile saved at " + dataDir);
         }
-        //ExStart:MergeField
+        // ExStart:MergeField
         /// <summary>
         /// Represents a facade object for a merge field in a Microsoft Word document.
         /// </summary>
@@ -68,7 +68,7 @@ namespace CSharp.Programming_Documents.Working_with_Fields
                 set
                 {
                     // Merge field name is stored in the field result which is a Run
-                    // node between field separator and field end.
+                    // Node between field separator and field end.
                     Run fieldResult = (Run)mFieldSeparator.NextSibling;
                     fieldResult.Text = string.Format("«{0}»", value);
 
@@ -99,7 +99,7 @@ namespace CSharp.Programming_Documents.Working_with_Fields
             /// </summary>
             private static void RemoveSameParent(Node startNode, Node endNode)
             {
-                if ((endNode != null) && ((Aspose.Words.Node)startNode.ParentNode != (Aspose.Words.Node)endNode.ParentNode))
+                if ((endNode != null) && ((Node)startNode.ParentNode != (Node)endNode.ParentNode))
                     throw new ArgumentException("Start and end nodes are expected to have the same parent.");
 
                 Node curChild = startNode;
@@ -117,6 +117,6 @@ namespace CSharp.Programming_Documents.Working_with_Fields
 
             private static readonly Regex gRegex = new Regex(@"\s*(?<start>MERGEFIELD\s|)(\s|)(?<name>\S+)\s+");
         }
-        //ExEnd:MergeField
+        // ExEnd:MergeField
     }
 }

@@ -25,7 +25,7 @@ Namespace DocumentExplorerExample
 			Me.button1 = New System.Windows.Forms.Button()
 			Me.SuspendLayout()
 			' 
-			' pictureBox1
+			' PictureBox1
 			' 
 			Me.pictureBox1.BackColor = System.Drawing.Color.Transparent
 			Me.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -37,7 +37,7 @@ Namespace DocumentExplorerExample
 			Me.pictureBox1.TabIndex = 0
 			Me.pictureBox1.TabStop = False
 			' 
-			' label1
+			' Label1
 			' 
 			Me.label1.Font = New System.Drawing.Font("Times New Roman", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, (CByte(204)))
 			Me.label1.ForeColor = System.Drawing.Color.Black
@@ -48,7 +48,7 @@ Namespace DocumentExplorerExample
 			Me.label1.Text = "Document Explorer Demo for Aspose.Words "
 			Me.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 			' 
-			' label2
+			' Label2
 			' 
 			Me.label2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
 			Me.label2.Font = New System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, (CByte(204)))
@@ -60,7 +60,7 @@ Namespace DocumentExplorerExample
 			Me.label2.Text = "Copyright © 2002-2010 Aspose Pty Ltd. All Rights Reserved. "
 			Me.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 			' 
-			' textBox1
+			' TextBox1
 			' 
 			Me.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
 			Me.textBox1.Location = New System.Drawing.Point(144, 40)
@@ -72,7 +72,7 @@ Namespace DocumentExplorerExample
 			Me.textBox1.TabStop = False
 			Me.textBox1.Text = resources.GetString("textBox1.Text")
 			' 
-			' button1
+			' Button1
 			' 
 			Me.button1.DialogResult = System.Windows.Forms.DialogResult.OK
 			Me.button1.ForeColor = System.Drawing.SystemColors.ControlText
