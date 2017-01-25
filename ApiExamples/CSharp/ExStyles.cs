@@ -8,9 +8,7 @@
 using System;
 using System.Drawing;
 using System.IO;
-
 using Aspose.Words;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -148,7 +146,7 @@ namespace ApiExamples
 
         [Test]
         public void OverwriteStyleDifferentDocument()
-        {         
+        {
             Document dstDoc = new Document();
             Document srcDoc = new Document();
 

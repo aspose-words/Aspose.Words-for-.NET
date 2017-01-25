@@ -5,10 +5,8 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-
 using NUnit.Framework;
 using System.IO;
-
 using Aspose.Words;
 using Aspose.Pdf.Facades;
 using Aspose.Words.Saving;
@@ -92,7 +90,7 @@ namespace ApiExamples
 
             // By index.
             Aspose.Words.Bookmark bookmark1 = doc.Range.Bookmarks[0];
-            
+
             // By name.
             Aspose.Words.Bookmark bookmark2 = doc.Range.Bookmarks["Bookmark2"];
             //ExEnd

@@ -6,7 +6,6 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System.IO;
-
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Saving;
@@ -29,8 +28,8 @@ namespace ApiExamples
 
             //Set Word2003 version for document, for inserting image as vml shape
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2003);
-            
-            Shape image = builder.InsertImage(MyDir + @"dotnet-logo.png");
+
+            Shape image = builder.InsertImage(MyDir + @"\Images\dotnet-logo.png");
 
             // Loop through all single shapes inside document.
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))

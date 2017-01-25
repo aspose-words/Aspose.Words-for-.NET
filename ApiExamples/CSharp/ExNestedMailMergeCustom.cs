@@ -6,10 +6,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System.Collections;
-
 using Aspose.Words;
 using Aspose.Words.MailMerging;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -148,7 +146,7 @@ namespace ApiExamples
                 this.mCustomers = customers;
 
                 // When the data source is initialized, it must be positioned before the first record.
-                this.mRecordIndex= -1;
+                this.mRecordIndex = -1;
             }
 
             /// <summary>
@@ -182,7 +180,6 @@ namespace ApiExamples
                         return false;
                 }
             }
-
 
             /// <summary>
             /// A standard implementation for moving to a next record in a collection.

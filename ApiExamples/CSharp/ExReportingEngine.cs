@@ -18,7 +18,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExReportingEngine : ApiExampleBase
     {
-        private readonly string _image = MyDir + "Test_636_852.gif";
+        private readonly string _image = MyDir + @"\Images\Test_636_852.gif";
 
         [Test]
         public void StretchImagefitHeight()
@@ -130,9 +130,7 @@ namespace ApiExamples
             BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.AllowMissingMembers);
 
             //Assert that build report success with "ReportBuildOptions.AllowMissingMembers"
-            Assert.AreEqual(
-            ControlChar.ParagraphBreak + ControlChar.ParagraphBreak + ControlChar.SectionBreak,
-            builder.Document.GetText());
+            Assert.AreEqual(ControlChar.ParagraphBreak + ControlChar.ParagraphBreak + ControlChar.SectionBreak, builder.Document.GetText());
         }
 
         private static void BuildReport(Document document, object dataSource, string dataSourceName, ReportBuildOptions reportBuildOptions)

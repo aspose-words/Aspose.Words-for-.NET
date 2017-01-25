@@ -12,10 +12,8 @@
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
-
 using Aspose.Words;
 using Aspose.Words.Fields;
-
 using NUnit.Framework;
 
 //ExSkip
@@ -83,10 +81,7 @@ namespace ApiExamples
         /// </summary>
         internal string Name
         {
-            get
-            {
-                return GetTextSameParent(this.mFieldSeparator.NextSibling, this.mFieldEnd).Trim('«', '»');
-            }
+            get { return GetTextSameParent(this.mFieldSeparator.NextSibling, this.mFieldEnd).Trim('«', '»'); }
             set
             {
                 // Merge field name is stored in the field result which is a Run 
@@ -167,4 +162,5 @@ namespace ApiExamples
         private static readonly Regex gRegex = new Regex(@"\s*(?<start>MERGEFIELD\s|)(\s|)(?<name>\S+)\s+");
     }
 }
+
 //ExEnd

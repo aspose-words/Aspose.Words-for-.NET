@@ -45,7 +45,7 @@ namespace ApiExamples
             //ExFor:FieldChar
             //ExFor:FieldChar.FieldType
             //ExSummary:Shows how to find the type of field that is represented by a node which is derived from FieldChar.
-            FieldChar fieldStart = (FieldChar) doc.GetChild(NodeType.FieldStart, 0, true);
+            FieldChar fieldStart = (FieldChar)doc.GetChild(NodeType.FieldStart, 0, true);
             FieldType type = fieldStart.FieldType;
             //ExEnd
         }
@@ -59,7 +59,7 @@ namespace ApiExamples
             //ExSummary:Demonstrates how to retrieve the field class from an existing FieldStart node in the document.
             Document doc = new Document(MyDir + "Document.TableOfContents.doc");
 
-            FieldStart fieldStart = (FieldStart) doc.GetChild(NodeType.FieldStart, 0, true);
+            FieldStart fieldStart = (FieldStart)doc.GetChild(NodeType.FieldStart, 0, true);
 
             // Retrieve the facade object which represents the field in the document.
             Field field = fieldStart.GetField();
@@ -122,7 +122,7 @@ namespace ApiExamples
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
 
             // Execute mail merge.
-            doc.MailMerge.Execute(new string[] {"Date"}, new object[] {DateTime.Now});
+            doc.MailMerge.Execute(new string[] { "Date" }, new object[] { DateTime.Now });
 
             // Restore the original culture.
             Thread.CurrentThread.CurrentCulture = currentCulture;
@@ -158,8 +158,11 @@ namespace ApiExamples
         {
             Document doc = new Document();
 
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.ReplacingCallback = new InsertTcFieldHandler("Chapter 1", "\\l 1");
+
             // Insert a TC field which displays "Chapter 1" just before the text "The Beginning" in the document.
-            doc.Range.Replace(new Regex("The Beginning"), new InsertTcFieldHandler("Chapter 1", "\\l 1"), false);
+            doc.Range.Replace(new Regex("The Beginning"), "", options);
         }
 
         public class InsertTcFieldHandler : IReplacingCallback
@@ -188,7 +191,7 @@ namespace ApiExamples
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)
             {
                 // Create a builder to insert the field.
-                DocumentBuilder builder = new DocumentBuilder((Document) args.MatchNode.Document);
+                DocumentBuilder builder = new DocumentBuilder((Document)args.MatchNode.Document);
                 // Move to the first node of the match.
                 builder.MoveTo(args.MatchNode);
 
@@ -211,7 +214,7 @@ namespace ApiExamples
 
         //ExEnd
 
-        //Bug: there is no isAfter parameter at BuildAndInsert (exception), need more info from dev
+        //Bug: there is no isAfter parameter at BuildAndInsert(exception), need more info from dev
         [Test]
         public void InsertFieldWithFieldBuilder()
         {
@@ -225,13 +228,7 @@ namespace ApiExamples
             argumentBuilder.AddText("BestField");
 
             FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldIf);
-            fieldBuilder.AddArgument(argumentBuilder)
-                .AddArgument("=")
-                .AddArgument("BestField")
-                .AddArgument(10)
-                .AddArgument(20.0)
-                .AddSwitch("12", "13")
-                .BuildAndInsert(run);
+            fieldBuilder.AddArgument(argumentBuilder).AddArgument("=").AddArgument("BestField").AddArgument(10).AddArgument(20.0).AddSwitch("12", "13").BuildAndInsert(run);
 
             doc.UpdateFields();
         }
@@ -257,14 +254,14 @@ namespace ApiExamples
         [Test]
         public void BarCodeWord2Pdf()
         {
-            Document doc = new Document(MyDir + "BarCode.docx");
+            Document doc = new Document(MyDir + "Field.BarCode.docx");
 
             // Set custom barcode generator
             doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
 
-            doc.Save(MyDir + @"\Artifacts\BarCode.pdf");
+            doc.Save(MyDir + @"\Artifacts\Field.BarCode.pdf");
 
-            BarCodeReader barCode = BarCodeReaderPdf(MyDir + @"\Artifacts\BarCode.pdf");
+            BarCodeReader barCode = BarCodeReaderPdf(MyDir + @"\Artifacts\Field.BarCode.pdf");
             Assert.AreEqual("QR", barCode.GetCodeType().ToString());
         }
 
@@ -314,18 +311,18 @@ namespace ApiExamples
             loadOptions.PreserveIncludePictureField = true;
 
             Document doc = new Document(MyDir + "UpdateFieldIgnoringMergeFormat.docx", loadOptions);
-            
+
             foreach (Field field in doc.Range.Fields)
             {
                 if (field.Type.Equals(FieldType.FieldIncludePicture))
                 {
                     FieldIncludePicture includePicture = (FieldIncludePicture)field;
 
-                    includePicture.SourceFullName = MyDir + "dotnet-logo.png";
+                    includePicture.SourceFullName = MyDir + @"\Images\dotnet-logo.png";
                     includePicture.Update(true);
                 }
             }
-            
+
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\UpdateFieldIgnoringMergeFormat.docx");
             //ExEnd
@@ -378,7 +375,7 @@ namespace ApiExamples
                     }
                 }
             }
-            
+
             if (startNode != null && endNode != null)
             {
                 RemoveSequence(startNode, endNode);
@@ -415,8 +412,7 @@ namespace ApiExamples
                 if (curNode.IsComposite)
                 {
                     CompositeNode curComposite = (CompositeNode)curNode;
-                    if (!curComposite.GetChildNodes(NodeType.Any, true).Contains(end) &&
-                        !curComposite.GetChildNodes(NodeType.Any, true).Contains(start))
+                    if (!curComposite.GetChildNodes(NodeType.Any, true).Contains(end) && !curComposite.GetChildNodes(NodeType.Any, true).Contains(start))
                     {
                         nextNode = curNode.NextSibling;
                         curNode.Remove();

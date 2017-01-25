@@ -6,10 +6,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-
 using Aspose.Words;
 using Aspose.Words.Properties;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -64,7 +62,7 @@ namespace ApiExamples
                 DocumentProperty prop = doc.BuiltInDocumentProperties[i];
                 Console.WriteLine("{0}({1}) : {2}", prop.Name, prop.Type, prop.Value);
             }
-            
+
             Console.WriteLine("3. Custom Properties");
             for (int i = 0; i < doc.CustomDocumentProperties.Count; i++)
             {
@@ -167,7 +165,7 @@ namespace ApiExamples
             else
             {
                 Console.WriteLine("The document is not authorized. Authorizing...");
-                doc.CustomDocumentProperties.Add("AuthorizedDate", DateTime.Now);				
+                doc.CustomDocumentProperties.Add("AuthorizedDate", DateTime.Now);
             }
             //ExEnd
         }

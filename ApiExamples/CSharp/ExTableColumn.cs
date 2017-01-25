@@ -8,10 +8,8 @@
 using System;
 using System.Collections;
 using System.Text;
-
 using Aspose.Words;
 using Aspose.Words.Tables;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -49,10 +47,7 @@ namespace ApiExamples
             /// </summary>
             public Cell[] Cells
             {
-                get
-                {
-                    return (Cell[])this.GetColumnCells().ToArray(typeof(Cell));
-                }
+                get { return (Cell[])this.GetColumnCells().ToArray(typeof(Cell)); }
             }
 
             /// <summary>

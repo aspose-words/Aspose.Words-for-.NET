@@ -12,12 +12,10 @@ using System.Drawing.Printing;
 using System.Drawing.Text;
 using System.IO;
 using System.Windows.Forms;
-
 using Aspose.Words;
 using Aspose.Words.Fonts;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -253,7 +251,7 @@ namespace ApiExamples
             for (int i = 0; i < doc.PageCount; i++)
             {
                 options.PageIndex = i;
-                doc.Save(MyDir + @"\Artifacts\Rendering.SaveToEmf." + i.ToString()+ ".emf", options);
+                doc.Save(MyDir + @"\Artifacts\Rendering.SaveToEmf." + i.ToString() + ".emf", options);
             }
             //ExEnd
         }
@@ -313,7 +311,7 @@ namespace ApiExamples
             stream.Position = 0;
 
             // Read the stream back into an image.
-            Image image = Image.FromStream(stream); 
+            Image image = Image.FromStream(stream);
             //ExEnd
         }
 
@@ -532,7 +530,6 @@ namespace ApiExamples
                     // This is the calculated scale factor to fit 297mm into 3".
                     Console.WriteLine("The image was rendered at {0:P0} zoom.", returnedScale);
 
-
                     // One more example, this time in millimiters.
                     gr.PageUnit = GraphicsUnit.Millimeter;
 
@@ -550,7 +547,6 @@ namespace ApiExamples
 
                     // User specifies (in world coordinates) where on the Graphics to render and what size.
                     doc.RenderToSize(1, gr, 90, 10, 50, 100);
-
 
                     bmp.Save(MyDir + @"\Artifacts\Rendering.RenderToSize.png");
                 }
@@ -636,7 +632,7 @@ namespace ApiExamples
             printDoc.PrinterSettings.PrintRange = System.Drawing.Printing.PrintRange.SomePages;
             printDoc.PrinterSettings.FromPage = 1;
             printDoc.PrinterSettings.ToPage = 1;
-            
+
             // Print our document.
             printDoc.Print();
         }
@@ -711,8 +707,8 @@ namespace ApiExamples
                 float hardOffsetY = 20;
 
                 // This is in .NET 2.0 only. Uncomment when needed.
-//                float hardOffsetX = e.PageSettings.HardMarginX;
-//                float hardOffsetY = e.PageSettings.HardMarginY;
+                //                float hardOffsetX = e.PageSettings.HardMarginX;
+                //                float hardOffsetY = e.PageSettings.HardMarginY;
 
                 int pageIndex = this.mCurrentPage - 1;
                 this.mDocument.RenderToScale(this.mCurrentPage, e.Graphics, -hardOffsetX, -hardOffsetY, 1.0f);
@@ -739,20 +735,13 @@ namespace ApiExamples
             //ExFor:PageInfo.HeightInPoints
             //ExSummary:Retrieves page size and orientation information for every page in a Word document.
             Document doc = new Document(MyDir + "Rendering.doc");
-            
+
             Console.WriteLine("Document \"{0}\" contains {1} pages.", doc.OriginalFileName, doc.PageCount);
 
             for (int i = 0; i < doc.PageCount; i++)
             {
                 PageInfo pageInfo = doc.GetPageInfo(i);
-                Console.WriteLine(
-                    "Page {0}. PaperSize:{1} ({2:F0}x{3:F0}pt), Orientation:{4}, PaperTray:{5}", 
-                    i + 1,
-                    pageInfo.PaperSize,
-                    pageInfo.WidthInPoints,
-                    pageInfo.HeightInPoints,
-                    pageInfo.Landscape ? "Landscape" : "Portrait",
-                    pageInfo.PaperTray);
+                Console.WriteLine("Page {0}. PaperSize:{1} ({2:F0}x{3:F0}pt), Orientation:{4}, PaperTray:{5}", i + 1, pageInfo.PaperSize, pageInfo.WidthInPoints, pageInfo.HeightInPoints, pageInfo.Landscape ? "Landscape" : "Portrait", pageInfo.PaperTray);
             }
             //ExEnd
         }
@@ -798,7 +787,7 @@ namespace ApiExamples
             // Note that this setting will override any default font sources that are being searched by default. Now only these folders will be searched for 
             // fonts when rendering or embedding fonts. To add an extra font source while keeping system font sources then use both FontSettings.GetFontSources and 
             // FontSettings.SetFontSources instead.
-            FontSettings.DefaultInstance.SetFontsFolders(new string[] {@"C:\MyFonts\", @"D:\Misc\Fonts\"}, true);
+            FontSettings.DefaultInstance.SetFontsFolders(new string[] { @"C:\MyFonts\", @"D:\Misc\Fonts\" }, true);
 
             doc.Save(MyDir + @"\Artifacts\Rendering.SetFontsFolders.pdf");
             //ExEnd
@@ -857,7 +846,7 @@ namespace ApiExamples
         {
             FontSettings fontSettings = new FontSettings();
             fontSettings.SetFontsFolder(MyDir + @"MyFonts\", false);
-            
+
             // Using load options
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.FontSettings = fontSettings;
@@ -873,7 +862,7 @@ namespace ApiExamples
         {
             FontSettings fontSettings = new FontSettings();
             fontSettings.SetFontSubstitutes("Times New Roman", new string[] { "Slab", "Arvo" });
-            
+
             Document doc = new Document(MyDir + "Rendering.doc");
             doc.FontSettings = fontSettings;
 
@@ -916,10 +905,10 @@ namespace ApiExamples
             FontSettings fontSettings = new FontSettings();
             fontSettings.SetFontSubstitutes("Slab", new string[] { "Times New Roman", "Arial" });
             fontSettings.AddFontSubstitutes("Arvo", new string[] { "Open Sans", "Arial" });
-            
+
             Document doc = new Document(MyDir + "Rendering.doc");
             doc.FontSettings = fontSettings;
-            
+
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
@@ -977,7 +966,7 @@ namespace ApiExamples
             // Pass the save options along with the save path to the save method.
             doc.Save(MyDir + @"\Artifacts\Rendering.MissingFontNotification.pdf");
             //ExEnd
-            
+
             Assert.Greater(callback.mFontWarnings.Count, 0);
             Assert.True(callback.mFontWarnings[0].WarningType == WarningType.FontSubstitution);
             Assert.True(callback.mFontWarnings[0].Description.Contains("has not been found"));
@@ -1143,9 +1132,9 @@ namespace ApiExamples
             //ExFor:PdfEncryptionDetails
             //ExSummary:Demonstrates how to set permissions on a PDF document generated by Aspose.Words.
             Document doc = new Document(MyDir + "Rendering.doc");
-            
+
             PdfSaveOptions saveOptions = new PdfSaveOptions();
-            
+
             // Create encryption details and set owner password.
             PdfEncryptionDetails encryptionDetails = new PdfEncryptionDetails(string.Empty, "password", PdfEncryptionAlgorithm.RC4_128);
 

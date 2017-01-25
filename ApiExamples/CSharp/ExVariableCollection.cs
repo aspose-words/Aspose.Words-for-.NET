@@ -7,9 +7,7 @@
 
 using System;
 using System.Collections;
-
 using Aspose.Words;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -17,7 +15,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExVariableCollection : ApiExampleBase
     {
-        [Test] 
+        [Test]
         public void AddEx()
         {
             //ExStart
@@ -63,7 +61,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.doc");
 
             doc.Variables.Add("doc", "Word processing document");
-           
+
             Console.WriteLine(doc.Variables.Contains("doc")); // True
             Console.WriteLine(doc.Variables.Contains("Word processing document")); // False
             //ExEnd

@@ -7,11 +7,10 @@
 
 using System;
 using System.Drawing;
-
 using Aspose.Words;
 using Aspose.Words.Drawing;
+using Aspose.Words.Replacing;
 using Aspose.Words.Tables;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -262,7 +261,6 @@ namespace ApiExamples
                     // Most other options are left by default.
                     horizontalAlignment = TableAlignment.Left;
                     break;
-
             }
 
             table.Alignment = horizontalAlignment;
@@ -488,7 +486,7 @@ namespace ApiExamples
         public void ReplaceTextInTable()
         {
             //ExStart
-            //ExFor:Range.Replace(String, String, Boolean, Boolean)
+            //ExFor:Range.Replace(String, String, FindReplaceOptions)
             //ExFor:Cell
             //ExId:ReplaceTextTable
             //ExSummary:Shows how to replace all instances of string of text in a table and cell.
@@ -497,10 +495,14 @@ namespace ApiExamples
             // Get the first table in the document.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.MatchCase = true;
+            options.FindWholeWordsOnly = true;
+
             // Replace any instances of our string in the entire table.
-            table.Range.Replace("Carrots", "Eggs", true, true);
+            table.Range.Replace("Carrots", "Eggs", options);
             // Replace any instances of our string in the last cell of the table only.
-            table.LastRow.LastCell.Range.Replace("50", "20", true, true);
+            table.LastRow.LastCell.Range.Replace("50", "20", options);
 
             doc.Save(MyDir + @"\Artifacts\Table.ReplaceCellText.doc");
             //ExEnd
@@ -556,7 +558,7 @@ namespace ApiExamples
 
             // Create a clone of the table.
             Table tableClone = (Table)table.Clone(true);
-            
+
             // Insert the cloned table into the document after the original
             table.ParentNode.InsertAfter(tableClone, table);
 
@@ -594,7 +596,7 @@ namespace ApiExamples
             //ExId:RowFormatAllowBreaks
             //ExSummary:Shows how to disable rows breaking across pages for every row in a table.
             // Disable breaking across pages for all rows in the table.
-            foreach(Row row in table)
+            foreach (Row row in table)
                 row.RowFormat.AllowBreakAcrossPages = false;
             //ExEnd
 
@@ -706,7 +708,7 @@ namespace ApiExamples
             builder.InsertCell();
             // This will cause the table to be structured using column widths as in previous verisons
             // instead of fitted to the page width like in the newer versions.
-            table.AutoFit(AutoFitBehavior.FixedColumnWidths); 
+            table.AutoFit(AutoFitBehavior.FixedColumnWidths);
 
             // Continue with building your table as usual...
             //ExEnd
@@ -723,7 +725,7 @@ namespace ApiExamples
 
             // Keep a reference to the table being built.
             Table table = builder.StartTable();
-  
+
             builder.InsertCell();
             // Clear all borders to match the defaults used in previous versions.
             table.ClearBorders();
@@ -888,7 +890,7 @@ namespace ApiExamples
             Cell cell = new Cell(doc);
             cell.CellFormat.Shading.BackgroundPatternColor = Color.LightBlue;
             cell.CellFormat.Width = 80;
-            
+
             // Add a paragraph to the cell as well as a new run with some text.
             cell.AppendChild(new Paragraph(doc));
             cell.FirstParagraph.AppendChild(new Run(doc, "Row 1, Cell 1 Text"));
@@ -1040,8 +1042,8 @@ namespace ApiExamples
 
             // Verify the cells were merged
             int mergedCellsCount = 0;
-            foreach(Cell cell in table.GetChildNodes(NodeType.Cell, true))
-                if(cell.CellFormat.HorizontalMerge != CellMerge.None || cell.CellFormat.HorizontalMerge != CellMerge.None)
+            foreach (Cell cell in table.GetChildNodes(NodeType.Cell, true))
+                if (cell.CellFormat.HorizontalMerge != CellMerge.None || cell.CellFormat.HorizontalMerge != CellMerge.None)
                     mergedCellsCount++;
 
             Assert.AreEqual(4, mergedCellsCount);
@@ -1065,8 +1067,7 @@ namespace ApiExamples
             Point startCellPos = new Point(startCell.ParentRow.IndexOf(startCell), parentTable.IndexOf(startCell.ParentRow));
             Point endCellPos = new Point(endCell.ParentRow.IndexOf(endCell), parentTable.IndexOf(endCell.ParentRow));
             // Create the range of cells to be merged based off these indices. Inverse each index if the end cell if before the start cell. 
-            Rectangle mergeRange = new Rectangle(Math.Min(startCellPos.X, endCellPos.X), Math.Min(startCellPos.Y, endCellPos.Y), 
-                Math.Abs(endCellPos.X - startCellPos.X) + 1, Math.Abs(endCellPos.Y - startCellPos.Y) + 1);
+            Rectangle mergeRange = new Rectangle(Math.Min(startCellPos.X, endCellPos.X), Math.Min(startCellPos.Y, endCellPos.Y), Math.Abs(endCellPos.X - startCellPos.X) + 1, Math.Abs(endCellPos.Y - startCellPos.Y) + 1);
 
             foreach (Row row in parentTable.Rows)
             {
@@ -1158,8 +1159,7 @@ namespace ApiExamples
             {
                 currentRow = firstTable.LastRow;
                 table.PrependChild(currentRow);
-            }
-            while (currentRow != row);
+            } while (currentRow != row);
 
             doc.Save(MyDir + @"\Artifacts\Table.SplitTable.doc");
             //ExEnd
@@ -1167,7 +1167,7 @@ namespace ApiExamples
             doc = new Document(MyDir + @"\Artifacts\Table.SplitTable.doc");
             // Test we are adding the rows in the correct order and the 
             // selected row was also moved.
-            Assert.AreEqual(row, table.FirstRow); 
+            Assert.AreEqual(row, table.FirstRow);
 
             Assert.AreEqual(2, firstTable.Rows.Count);
             Assert.AreEqual(2, table.Rows.Count);

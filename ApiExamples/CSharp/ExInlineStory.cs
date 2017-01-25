@@ -6,9 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-
 using Aspose.Words;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -63,5 +61,4 @@ namespace ApiExamples
             Assert.AreEqual("Comment text.\r", (doc.GetChildNodes(NodeType.Comment, true)[0]).GetText());
         }
     }
-
 }

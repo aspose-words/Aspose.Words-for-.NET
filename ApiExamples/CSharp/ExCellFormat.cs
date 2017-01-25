@@ -7,7 +7,6 @@
 
 using Aspose.Words;
 using Aspose.Words.Tables;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -27,20 +26,20 @@ namespace ApiExamples
             //ExSummary:Creates a table with two columns with cells merged vertically in the first column.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             builder.InsertCell();
             builder.CellFormat.VerticalMerge = CellMerge.First;
             builder.Write("Text in merged cells.");
-            
+
             builder.InsertCell();
             builder.CellFormat.VerticalMerge = CellMerge.None;
             builder.Write("Text in one cell");
             builder.EndRow();
-            
+
             builder.InsertCell();
             // This cell is vertically merged to the cell above and should be empty.
             builder.CellFormat.VerticalMerge = CellMerge.Previous;
-            
+
             builder.InsertCell();
             builder.CellFormat.VerticalMerge = CellMerge.None;
             builder.Write("Text in another cell");
@@ -59,20 +58,20 @@ namespace ApiExamples
             //ExSummary:Creates a table with two rows with cells in the first row horizontally merged.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             builder.InsertCell();
             builder.CellFormat.HorizontalMerge = CellMerge.First;
             builder.Write("Text in merged cells.");
-            
+
             builder.InsertCell();
             // This cell is merged to the previous and should be empty.
             builder.CellFormat.HorizontalMerge = CellMerge.Previous;
             builder.EndRow();
-            
+
             builder.InsertCell();
             builder.CellFormat.HorizontalMerge = CellMerge.None;
             builder.Write("Text in one cell.");
-            
+
             builder.InsertCell();
             builder.Write("Text in another cell.");
             builder.EndRow();

@@ -7,7 +7,6 @@
 
 using Aspose.Words;
 using Aspose.Words.Saving;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -25,6 +24,23 @@ namespace ApiExamples
 
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Emf);
             saveOptions.UseGdiEmfRenderer = false;
+            //ExEnd
+        }
+
+        //ToDo: Need to check gold test
+        [Test]
+        public void SaveIntoGif()
+        {
+            //ExStart
+            //ExFor:ImageSaveOptions.UseGdiEmfRenderer
+            //ExSummary:Shows how to save specific document page as gif.
+            Document doc = new Document(MyDir + "SaveOptions.MyraidPro.docx");
+
+            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Gif);
+            //Define which page will save
+            saveOptions.PageIndex = 0;
+
+            doc.Save(MyDir + @"\Artifacts\SaveOptions.MyraidPro Out.gif", saveOptions);
             //ExEnd
         }
     }

@@ -7,9 +7,7 @@
 
 using System.Drawing;
 using System.Drawing.Printing;
-
 using Aspose.Words;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -354,7 +352,6 @@ namespace ApiExamples
             section.PageSetup.RestartPageNumbering = true;
             section.PageSetup.PageStartingNumber = 5;
             section.PageSetup.PageNumberStyle = NumberStyle.UppercaseRoman;
-
 
             // Create a header for the section section. 
             // The page number will look like " - 10 - ".

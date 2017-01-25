@@ -6,11 +6,9 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-
 using Aspose.Words;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -55,10 +53,10 @@ namespace ApiExamples
             Assert.IsTrue(((CompositeNode)cloneWithChildren).HasChildNodes);
             Assert.IsFalse(((CompositeNode)cloneWithoutChildren).HasChildNodes);
         }
-        
+
         [Test]
-	    public void GetParentNode()
-	    {
+        public void GetParentNode()
+        {
             //ExStart
             //ExFor:Node.ParentNode
             //ExId:AccessParentNode
@@ -92,7 +90,7 @@ namespace ApiExamples
 
             // The new paragraph node does not yet have a parent.
             Console.WriteLine("Paragraph has no parent node: " + (para.ParentNode == null));
-           
+
             // But the paragraph node knows its document.
             Console.WriteLine("Both nodes' documents are the same: " + (para.Document == doc));
 
@@ -177,7 +175,7 @@ namespace ApiExamples
         {
             this.RecurseAllNodes();
         }
-        
+
         //ExStart
         //ExFor:Node.NextSibling
         //ExFor:CompositeNode.FirstChild
@@ -213,7 +211,6 @@ namespace ApiExamples
             }
         }
         //ExEnd
-
 
         [Test]
         public void RemoveNodes()
@@ -333,7 +330,7 @@ namespace ApiExamples
             // Document is a CompositeNode and LastChild returns the last child node in the Document node.
             // Since the Document can contain only Section nodes, the last child is the last section.
             Node lastSection = doc.LastChild;
-            
+
             // Each node knows its next and previous sibling nodes.
             // Previous sibling of a section is a section before the specified section.
             // If the node is the first child, PreviousSibling will return null.
@@ -547,7 +544,7 @@ namespace ApiExamples
             Paragraph[] paras = doc.FirstSection.Body.Paragraphs.ToArray();
             //ExEnd
 
-            Assert.Greater(paras.Length,  0);
+            Assert.Greater(paras.Length, 0);
         }
 
         [Test]

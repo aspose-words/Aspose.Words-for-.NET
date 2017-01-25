@@ -40,8 +40,8 @@
       <HintPath>packages\Aspose.Pdf.12.0.0\lib\net40-client\Aspose.Pdf.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Aspose.Words, Version=16.8.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>packages\Aspose.Words.16.8.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=17.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.Words.17.1.0\lib\net40\Aspose.Words.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
@@ -67,6 +67,8 @@
     <Compile Include="ExBorderCollection.cs" />
     <Compile Include="ExBuildVersion.cs" />
     <Compile Include="ExComment.cs" />
+    <Compile Include="ExFixedPageSaveOptions.cs" />
+    <Compile Include="ExHtmlLoadOptions.cs" />
     <Compile Include="ExOoxmlSaveOptions.cs" />
     <Compile Include="ExXpsSaveOptions.cs" />
     <Compile Include="ExUtilityClasses.cs" />

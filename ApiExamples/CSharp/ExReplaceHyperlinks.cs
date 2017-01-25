@@ -14,10 +14,8 @@
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
-
 using Aspose.Words;
 using Aspose.Words.Fields;
-
 using NUnit.Framework;
 
 //ExSkip
@@ -66,7 +64,6 @@ namespace ApiExamples
         private const string NewName = "Aspose - The .NET & Java Component Publisher";
     }
 
-
     /// <summary>
     /// This "facade" class makes it easier to work with a hyperlink field in a Word document. 
     /// 
@@ -91,14 +88,14 @@ namespace ApiExamples
                 throw new ArgumentNullException("fieldStart");
             if (!fieldStart.FieldType.Equals(FieldType.FieldHyperlink))
                 throw new ArgumentException("Field start type must be FieldHyperlink.");
-            
+
             this.mFieldStart = fieldStart;
 
             // Find the field separator node.
             this.mFieldSeparator = FindNextSibling(this.mFieldStart, NodeType.FieldSeparator);
             if (this.mFieldSeparator == null)
                 throw new InvalidOperationException("Cannot find field separator.");
-            
+
             // Find the field end node. Normally field end will always be found, but in the example document 
             // there happens to be a paragraph break included in the hyperlink and this puts the field end 
             // in the next paragraph. It will be much more complicated to handle fields which span several 
@@ -107,9 +104,9 @@ namespace ApiExamples
 
             // Field code looks something like [ HYPERLINK "http:\\www.myurl.com" ], but it can consist of several runs.
             string fieldCode = GetTextSameParent(this.mFieldStart.NextSibling, this.mFieldSeparator);
-            Match match = gRegex.Match(fieldCode.Trim());		
-            this.mIsLocal = (match.Groups[1].Length > 0);	//The link is local if \l is present in the field code.
-            this.mTarget = match.Groups[2].Value;			
+            Match match = gRegex.Match(fieldCode.Trim());
+            this.mIsLocal = (match.Groups[1].Length > 0); //The link is local if \l is present in the field code.
+            this.mTarget = match.Groups[2].Value;
         }
 
         /// <summary>
@@ -117,15 +114,12 @@ namespace ApiExamples
         /// </summary>
         internal string Name
         {
-            get
-            {
-                return GetTextSameParent(this.mFieldSeparator, this.mFieldEnd);
-            }
+            get { return GetTextSameParent(this.mFieldSeparator, this.mFieldEnd); }
             set
             {
                 // Hyperlink display name is stored in the field result which is a Run 
                 // node between field separator and field end.
-                Run fieldResult = (Run)this.mFieldSeparator.NextSibling; 
+                Run fieldResult = (Run)this.mFieldSeparator.NextSibling;
                 fieldResult.Text = value;
 
                 // But sometimes the field result can consist of more than one run, delete these runs.
@@ -140,7 +134,7 @@ namespace ApiExamples
         {
             get
             {
-                string dummy = null;  // This is needed to fool the C# to VB.NET converter.
+                string dummy = null; // This is needed to fool the C# to VB.NET converter.
                 return this.mTarget;
             }
             set
@@ -155,10 +149,7 @@ namespace ApiExamples
         /// </summary>
         internal bool IsLocal
         {
-            get
-            {
-                return this.mIsLocal;
-            }
+            get { return this.mIsLocal; }
             set
             {
                 this.mIsLocal = value;
@@ -231,15 +222,15 @@ namespace ApiExamples
         /// <summary>
         /// RK I am notoriously bad at regexes. It seems I don't understand their way of thinking.
         /// </summary>
-        private static readonly Regex gRegex = new Regex(
-            "\\S+" +			// one or more non spaces HYPERLINK or other word in other languages
-            "\\s+" +			// one or more spaces
-            "(?:\"\"\\s+)?" +	// non capturing optional "" and one or more spaces, found in one of the customers files.
-            "(\\\\l\\s+)?" +	// optional \l flag followed by one or more spaces
-            "\"" +				// one apostrophe	
-            "([^\"]+)" +		// one or more chars except apostrophe (hyperlink target)
-            "\""				// one closing apostrophe
-            );			
+        private static readonly Regex gRegex = new Regex("\\S+" + // one or more non spaces HYPERLINK or other word in other languages
+                                                         "\\s+" + // one or more spaces
+                                                         "(?:\"\"\\s+)?" + // non capturing optional "" and one or more spaces, found in one of the customers files.
+                                                         "(\\\\l\\s+)?" + // optional \l flag followed by one or more spaces
+                                                         "\"" + // one apostrophe	
+                                                         "([^\"]+)" + // one or more chars except apostrophe (hyperlink target)
+                                                         "\"" // one closing apostrophe
+        );
     }
 }
+
 //ExEnd

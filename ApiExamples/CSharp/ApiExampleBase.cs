@@ -8,9 +8,7 @@
 using System;
 using System.IO;
 using System.Reflection;
-
 using Aspose.Words;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -31,7 +29,7 @@ namespace ApiExamples
                 //Create new empty directory
                 Directory.CreateDirectory(dirPath);
         }
-        
+
         [OneTimeTearDown]
         public void TearDown()
         {
@@ -52,7 +50,7 @@ namespace ApiExamples
             }
         }
 
-       internal static void RemoveLicense()
+        internal static void RemoveLicense()
         {
             License license = new License();
             license.SetLicense("");

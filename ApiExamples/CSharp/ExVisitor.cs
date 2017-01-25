@@ -7,10 +7,8 @@
 
 using System;
 using System.Text;
-
 using Aspose.Words;
 using Aspose.Words.Fields;
-
 using NUnit.Framework;
 
 namespace ApiExamples

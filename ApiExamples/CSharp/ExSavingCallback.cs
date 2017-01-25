@@ -1,5 +1,4 @@
 ﻿using System.IO;
-
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
@@ -45,13 +44,13 @@ namespace ApiExamples
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions { PageIndex = 0, PageCount = doc.PageCount };
             htmlFixedSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
 
-            doc.Save(MyDir + @"\Artifacts\out.html", htmlFixedSaveOptions);
+            doc.Save(MyDir + @"\Artifacts\Rendering.html", htmlFixedSaveOptions);
 
-            string[] filePaths = Directory.GetFiles(MyDir, "Page_*.html");
+            string[] filePaths = Directory.GetFiles(MyDir + @"\Artifacts\", "Page_*.html");
 
             for (int i = 0; i < doc.PageCount; i++)
             {
-                string file = string.Format(MyDir + "Page_{0}.html", i);
+                string file = string.Format(MyDir + @"\Artifacts\Page_{0}.html", i);
                 Assert.AreEqual(file, filePaths[i]);
             }
         }
@@ -65,7 +64,7 @@ namespace ApiExamples
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions { PageIndex = 0, PageCount = doc.PageCount };
             htmlFixedSaveOptions.PageSavingCallback = new CustomPageStreamPageSavingCallback();
 
-            doc.Save(MyDir + @"\Artifacts\out.html", htmlFixedSaveOptions);
+            doc.Save(MyDir + @"\Artifacts\Rendering.html", htmlFixedSaveOptions);
 
             docStream.Close();
         }
@@ -78,7 +77,7 @@ namespace ApiExamples
             public void PageSaving(PageSavingArgs args)
             {
                 // Specify name of the output file for the current page.
-                args.PageFileName = string.Format(MyDir + "Page_{0}.html", args.PageIndex);
+                args.PageFileName = string.Format(MyDir + @"\Artifacts\Page_{0}.html", args.PageIndex);
             }
         }
 

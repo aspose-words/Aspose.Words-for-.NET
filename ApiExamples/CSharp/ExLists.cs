@@ -7,10 +7,8 @@
 
 using System;
 using System.Drawing;
-
 using Aspose.Words;
 using Aspose.Words.Lists;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -18,7 +16,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExLists : ApiExampleBase
     {
-        private readonly string _image = MyDir + "Test_636_852.gif";
+        private readonly string _image = MyDir + @"\Images\Test_636_852.gif";
 
         [Test]
         public void ApplyDefaultBulletsAndNumbers()
@@ -112,7 +110,6 @@ namespace ApiExamples
                 builder.ListFormat.ListLevelNumber = i;
                 builder.Writeln("Level " + i);
             }
-
 
             // Create a bulleted list based on one of the Microsoft Word list templates
             // and apply it to the current paragraph in the document builder.
@@ -223,7 +220,7 @@ namespace ApiExamples
             level2.Font.Name = "Wingdings";
             level2.Font.Color = Color.Blue;
             level2.Font.Size = 24;
-            level2.NumberFormat = "\xf0af";	// A bullet that looks like some sort of a star.
+            level2.NumberFormat = "\xf0af"; // A bullet that looks like some sort of a star.
             level2.TrailingCharacter = ListTrailingCharacter.Space;
             level2.NumberPosition = 144;
 
@@ -335,7 +332,6 @@ namespace ApiExamples
                 level.Font.Bold = true;
             }
 
-
             // Add some text to our document and use the list style.
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -354,7 +350,6 @@ namespace ApiExamples
             builder.Writeln("Item 1");
             builder.Writeln("Item 2");
             builder.ListFormat.RemoveNumbers();
-
 
             builder.Writeln("Using list style second time:");
 
@@ -471,7 +466,7 @@ namespace ApiExamples
         {
             this.OutlineHeadingTemplates();
         }
-        
+
         //ExStart
         //ExFor:ListTemplate
         //ExSummary:Creates a sample document that exercises all outline headings list templates.
@@ -524,7 +519,7 @@ namespace ApiExamples
         {
             this.PrintOutAllLists();
         }
-        
+
         //ExStart
         //ExFor:ListCollection
         //ExFor:ListCollection.AddCopy(List)
@@ -657,7 +652,6 @@ namespace ApiExamples
             foreach (ListLevel level in list.ListLevels)
                 level.Font.Bold = true;
 
-
             // Apply list formatting to the current paragraph.
             builder.ListFormat.List = list;
 
@@ -753,7 +747,6 @@ namespace ApiExamples
 
                     listParaCount++;
                 }
-
             }
             //ExEnd
         }
@@ -777,10 +770,10 @@ namespace ApiExamples
             list.ListLevels[0].ImageData.SetImage(this._image);
 
             Assert.IsTrue(list.ListLevels[0].ImageData.HasImage);
-            
+
             // Delete picture bullet
             list.ListLevels[0].DeletePictureBullet();
-            
+
             Assert.IsNull(list.ListLevels[0].ImageData);
             //ExEnd
         }

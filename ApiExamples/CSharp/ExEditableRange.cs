@@ -7,9 +7,7 @@
 
 using System;
 using System.IO;
-
 using Aspose.Words;
-
 using NUnit.Framework;
 
 namespace ApiExamples

@@ -5,22 +5,15 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-//ExStart
-//ExId:UsingReportingNamespace
-//ExSummary:Include the following statement in your code if you are using mail merge functionality.
-//ExEnd
-
 using System;
 using System.Data;
 using System.Data.OleDb;
 using System.Diagnostics;
 using System.Web;
 using System.Collections;
-
 using Aspose.Words.Fields;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -43,9 +36,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "MailMerge.ExecuteArray.doc");
 
             // Fill the fields in the document with user data.
-            doc.MailMerge.Execute(
-                new string[] {"FullName", "Company", "Address", "Address2", "City"},
-                new object[] {"James Bond", "MI5 Headquarters", "Milbank", "", "London"});
+            doc.MailMerge.Execute(new string[] { "FullName", "Company", "Address", "Address2", "City" }, new object[] { "James Bond", "MI5 Headquarters", "Milbank", "", "London" });
 
             // Send the document in Word format to the client browser with an option to save to disk or open inside the current browser.
             Assert.That(() => doc.Save(Response, @"\Artifacts\MailMerge.ExecuteArray.doc", ContentDisposition.Inline, null), Throws.TypeOf<ArgumentNullException>()); //Thrown because HttpResponse is null in the test.
@@ -67,8 +58,8 @@ namespace ApiExamples
             DataTable table = new DataTable("Test");
             table.Columns.Add("CustomerName");
             table.Columns.Add("Address");
-            table.Rows.Add(new object[] {"Thomas Hardy", "120 Hanover Sq., London"});
-            table.Rows.Add(new object[] {"Paolo Accorti", "Via Monte Bianco 34, Torino"});
+            table.Rows.Add(new object[] { "Thomas Hardy", "120 Hanover Sq., London" });
+            table.Rows.Add(new object[] { "Paolo Accorti", "Via Monte Bianco 34, Torino" });
 
             // Field values from the table are inserted into the mail merge fields found in the document.
             doc.MailMerge.Execute(table);
@@ -84,7 +75,7 @@ namespace ApiExamples
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             builder.InsertField("MERGEFIELD field", null);
 
             doc.MailMerge.TrimWhitespaces = option;
@@ -103,8 +94,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "MailingLabelsDemo.doc");
 
             // Open the database connection.
-            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + 
-                DatabaseDir + "Northwind.mdb";
+            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.mdb";
             OleDbConnection conn = new OleDbConnection(connString);
             try
             {
@@ -114,11 +104,9 @@ namespace ApiExamples
             {
                 Debug.WriteLine(ex);
             }
-            
 
             // Open the data reader.
-            OleDbCommand cmd = new OleDbCommand(
-                "SELECT TOP 50 * FROM Customers ORDER BY Country, CompanyName", conn);
+            OleDbCommand cmd = new OleDbCommand("SELECT TOP 50 * FROM Customers ORDER BY Country, CompanyName", conn);
             OleDbDataReader dataReader = cmd.ExecuteReader();
 
             // Perform the mail merge
@@ -140,7 +128,7 @@ namespace ApiExamples
         {
             this.ExecuteDataView();
         }
-        
+
         //ExStart
         //ExFor:MailMerge.Execute(DataView)
         //ExSummary:Executes mail merge from an ADO.NET DataView.
@@ -151,11 +139,11 @@ namespace ApiExamples
 
             // Get the data from the database.
             DataTable orderTable = GetOrders();
-            
+
             // Create a customized view of the data.
             DataView orderView = new DataView(orderTable);
             orderView.RowFilter = "OrderId = 10444";
-            
+
             // Populate the document with the data.
             doc.MailMerge.Execute(orderView);
 
@@ -165,8 +153,7 @@ namespace ApiExamples
         private static DataTable GetOrders()
         {
             // Open a database connection.
-            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + 
-                DatabaseDir + "Northwind.mdb";
+            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.mdb";
             OleDbConnection conn = new OleDbConnection(connString);
             conn.Open();
 
@@ -184,7 +171,6 @@ namespace ApiExamples
             return table;
         }
         //ExEnd
-
 
         [Test]
         public void ExecuteWithRegionsDataSet()
@@ -219,7 +205,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-
         /// <summary>
         /// This calls the below method to resolve skipping of [Test] in VB.NET.
         /// </summary>
@@ -228,7 +213,7 @@ namespace ApiExamples
         {
             this.ExecuteWithRegionsDataTable();
         }
-        
+
         //ExStart
         //ExFor:Document.MailMerge
         //ExFor:MailMerge.ExecuteWithRegions(DataTable)
@@ -257,16 +242,14 @@ namespace ApiExamples
 
         private static DataTable GetTestOrder(int orderId)
         {
-            DataTable table = ExecuteDataTable(string.Format(
-                "SELECT * FROM AsposeWordOrders WHERE OrderId = {0}", orderId));
+            DataTable table = ExecuteDataTable(string.Format("SELECT * FROM AsposeWordOrders WHERE OrderId = {0}", orderId));
             table.TableName = "Orders";
             return table;
         }
 
         private static DataTable GetTestOrderDetails(int orderId)
         {
-            DataTable table = ExecuteDataTable(string.Format(
-                "SELECT * FROM AsposeWordOrderDetails WHERE OrderId = {0} ORDER BY ProductID", orderId));
+            DataTable table = ExecuteDataTable(string.Format("SELECT * FROM AsposeWordOrderDetails WHERE OrderId = {0} ORDER BY ProductID", orderId));
             table.TableName = "OrderDetails";
             return table;
         }
@@ -278,8 +261,7 @@ namespace ApiExamples
         private static DataTable ExecuteDataTable(string commandText)
         {
             // Open the database connection.
-            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + 
-                DatabaseDir + "Northwind.mdb";
+            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.mdb";
             OleDbConnection conn = new OleDbConnection(connString);
             conn.Open();
 
@@ -421,7 +403,7 @@ namespace ApiExamples
             //ExFor:MailMergeRegionInfo.EndField
             //ExFor:MailMergeRegionInfo.Level
             //ExSummary:Shows how to get MailMergeRegionInfo and work with it
-            Document doc = new Document(MyDir+ "MailMerge.TestRegionsHierarchy.doc");
+            Document doc = new Document(MyDir + "MailMerge.TestRegionsHierarchy.doc");
 
             //Returns a full hierarchy of regions (with fields) available in the document.
             MailMergeRegionInfo regionInfo = doc.MailMerge.GetRegionsHierarchy();
@@ -459,13 +441,11 @@ namespace ApiExamples
         {
             Document document = new Document();
             document.MailMerge.UseNonMergeFields = true;
-           
+
             MailMergeCallbackStub mailMergeCallbackStub = new MailMergeCallbackStub();
             document.MailMerge.MailMergeCallback = mailMergeCallbackStub;
 
-            document.MailMerge.Execute(
-                new string[0],
-                new object[0]);
+            document.MailMerge.Execute(new string[0], new object[0]);
 
             Assert.AreEqual(1, mailMergeCallbackStub.TagsReplacedCounter);
         }

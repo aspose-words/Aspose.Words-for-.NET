@@ -24,7 +24,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Web;
-
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
@@ -34,7 +33,6 @@ using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using Aspose.Words.Tables;
 using Aspose.Words.Themes;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -426,8 +424,7 @@ namespace ApiExamples
 
             // Create a new instance of HtmlSaveOptions. This object allows us to set options that control
             // how the output document is saved.
-            HtmlSaveOptions saveOptions =
-                new HtmlSaveOptions();
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
 
             // Specify the desired encoding.
             saveOptions.Encoding = Encoding.UTF8;
@@ -477,7 +474,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Rendering.doc");
 
             // This is the directory we want the exported images to be saved to.
-            string imagesDir = Path.Combine(MyDir, "Images");
+            string imagesDir = Path.Combine(MyDir, "SaveHtmlWithOptions");
 
             // The folder specified needs to exist and should be empty.
             if (Directory.Exists(imagesDir))
@@ -496,6 +493,8 @@ namespace ApiExamples
             // Verify the images were saved to the correct location.
             Assert.IsTrue(File.Exists(MyDir + @"\Artifacts\Document.SaveWithOptions.html"));
             Assert.AreEqual(9, Directory.GetFiles(imagesDir).Length);
+
+            Directory.Delete(imagesDir, true);
         }
 
         /// <summary>
@@ -764,7 +763,7 @@ namespace ApiExamples
             for (int i = 1; i <= recordCount; i++)
             {
                 Document srcDoc = new Document();
-                
+
                 // Open the document to join.
                 Assert.That(() => srcDoc == new Document(@"C:\DetailsList.doc"), Throws.TypeOf<FileNotFoundException>());
 
@@ -836,7 +835,7 @@ namespace ApiExamples
             //ExId:ValidateIndividualSignatures
             //ExSummary:Shows how to validate each signature in a document and display basic information about the signature.
             // Load the document which contains signature.
-            Document doc = new Document(MyDir + "Document.Signed.docx");
+            Document doc = new Document(MyDir + "Document.DigitalSignature.docx");
 
             foreach (DigitalSignature signature in doc.DigitalSignatures)
             {
@@ -883,7 +882,7 @@ namespace ApiExamples
             options.DigitalSignatureDetails = new PdfDigitalSignatureDetails(ch, "Test Signing", "Aspose Office", DateTime.Now);
 
             // Save the document as PDF with the digital signature set.
-            doc.Save(MyDir + "Document.Signed Out.pdf", options);
+            doc.Save(MyDir + @"\Artifacts\Document.Signed.pdf", options);
             //ExEnd
         }
 
@@ -1427,10 +1426,9 @@ namespace ApiExamples
         {
             Document doc1 = new Document(MyDir + "Document.Compare.1.doc");
             Document docWithRevision = new Document(MyDir + "Document.Compare.Revisions.doc");
-            
+
             if (docWithRevision.Revisions.Count > 0)
-                Assert.That(() => docWithRevision.Compare(doc1, "authorName", DateTime.Now),
-                Throws.TypeOf<InvalidOperationException>());
+                Assert.That(() => docWithRevision.Compare(doc1, "authorName", DateTime.Now), Throws.TypeOf<InvalidOperationException>());
         }
 
         [Test]
@@ -1549,6 +1547,7 @@ namespace ApiExamples
             //ExEnd
         }
 
+        //ToDo: add gold assert
         //For assert this test you need to open "HyphenationOptions OUT.docx" and check that hyphen are added in the end of the first line
         [Test]
         public void HyphenationOptions()
@@ -1570,14 +1569,14 @@ namespace ApiExamples
             Assert.AreEqual(720, doc.HyphenationOptions.HyphenationZone);
             Assert.AreEqual(true, doc.HyphenationOptions.HyphenateCaps);
 
-            doc.Save(MyDir + "HyphenationOptions.docx");
+            doc.Save(MyDir + @"\Artifacts\HyphenationOptions.docx");
         }
 
         [Test]
         public void HyphenationOptionsDefaultValues()
         {
             Document doc = new Document();
-            
+
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
@@ -1676,7 +1675,7 @@ namespace ApiExamples
 
             // Insert textbox into the document.
             doc.FirstSection.Body.FirstParagraph.AppendChild(shape);
-            
+
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 

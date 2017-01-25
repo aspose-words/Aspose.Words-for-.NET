@@ -65,7 +65,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Border.ClearFormatting
             //ExSummary:Shows how to remove borders from a paragraph one by one.
-            Document doc = new Document(MyDir + "Document.Borders.doc");
+            Document doc = new Document(MyDir + "Border.Borders.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
             BorderCollection borders = builder.ParagraphFormat.Borders;
 
@@ -75,7 +75,7 @@ namespace ApiExamples
             }
 
             builder.CurrentParagraph.Runs[0].Text = "Paragraph with no border";
-            doc.Save(MyDir + @"\Artifacts\Document.NoBorder.doc");
+            doc.Save(MyDir + @"\Artifacts\Border.NoBorder.doc");
             //ExEnd
         }
     }

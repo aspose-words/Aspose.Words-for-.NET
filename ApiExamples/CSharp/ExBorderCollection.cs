@@ -20,7 +20,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:BorderCollection.GetEnumerator
             //ExSummary:Shows how to enumerate all borders in a collection.
-            Document doc = new Document(MyDir + "Document.Borders.doc");
+            Document doc = new Document(MyDir + "Border.Borders.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
             BorderCollection borders = builder.ParagraphFormat.Borders;
 
@@ -33,7 +33,7 @@ namespace ApiExamples
                 b.LineStyle = LineStyle.Double;
             }
 
-            doc.Save(MyDir + @"\Artifacts\Document.ChangedColourBorder.doc");
+            doc.Save(MyDir + @"\Artifacts\Border.ChangedColourBorder.doc");
             //ExEnd
         }
 
@@ -43,7 +43,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:BorderCollection.ClearFormatting
             //ExSummary:Shows how to remove all borders from a paragraph at once.
-            Document doc = new Document(MyDir + "Document.Borders.doc");
+            Document doc = new Document(MyDir + "Border.Borders.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
             BorderCollection borders = builder.ParagraphFormat.Borders;
 

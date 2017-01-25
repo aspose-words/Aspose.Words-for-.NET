@@ -8,10 +8,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System.IO;
-
 using Aspose.Words;
 using Aspose.Words.Fields;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -58,7 +56,7 @@ namespace ApiExamples
             //ExId:FormFieldsWorkWithProperties
             //ExSummary:Shows how to work with form field name, type, and result.
             Document doc = new Document(MyDir + "FormFields.doc");
-            
+
             FormField formField = doc.Range.FormFields[3];
 
             if (formField.Type.Equals(FieldType.FieldFormTextInput))
@@ -95,7 +93,7 @@ namespace ApiExamples
             //ExEnd
 
             FormField formFieldAfter = doc.Range.FormFields[3];
-            
+
             Assert.IsNull(formFieldAfter);
         }
 

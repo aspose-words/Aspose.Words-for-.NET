@@ -116,6 +116,7 @@ namespace ApiExamples
             Assert.AreEqual("Page 1 of 2", textFragmentAbsorber.TextFragments[1].Text);
         }
 
+        //ToDo: Add gold asserts
         //For assert this test you need to open "SaveOptions.PdfImageComppression PDF_A_1_B Out.pdf" and "SaveOptions.PdfImageComppression PDF_A_1_A Out.pdf" and check that header image in this documents are equal header image in the "SaveOptions.PdfImageComppression Out.pdf" 
         [Test]
         public void ImageCompression()
@@ -134,14 +135,14 @@ namespace ApiExamples
             options.ImageCompression = PdfImageCompression.Jpeg;
             options.PreserveFormFields = true;
 
-            doc.Save(MyDir + "SaveOptions.PdfImageComppression Out.pdf", options);
+            doc.Save(MyDir + @"\Artifacts\SaveOptions.PdfImageComppression Out.pdf", options);
 
             PdfSaveOptions optionsA1b = new PdfSaveOptions();
             optionsA1b.Compliance = PdfCompliance.PdfA1b;
             optionsA1b.ImageCompression = PdfImageCompression.Jpeg;
-            optionsA1b.JpegQuality = 100;  // Use JPEG compression at 50% quality to reduce file size.
+            optionsA1b.JpegQuality = 100; // Use JPEG compression at 50% quality to reduce file size.
 
-            doc.Save(MyDir + "SaveOptions.PdfImageComppression PDF_A_1_B Out.pdf", optionsA1b);
+            doc.Save(MyDir + @"\Artifacts\SaveOptions.PdfImageComppression PDF_A_1_B Out.pdf", optionsA1b);
             //ExEnd
 
             PdfSaveOptions optionsA1a = new PdfSaveOptions();
@@ -149,7 +150,7 @@ namespace ApiExamples
             optionsA1a.ExportDocumentStructure = true;
             optionsA1a.ImageCompression = PdfImageCompression.Jpeg;
 
-            doc.Save(MyDir + "SaveOptions.PdfImageComppression PDF_A_1_A Out.pdf", optionsA1a);
+            doc.Save(MyDir + @"\Artifacts\SaveOptions.PdfImageComppression PDF_A_1_A Out.pdf", optionsA1a);
             //ExEnd
         }
 
@@ -159,7 +160,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfSaveOptions.ColorMode
             //ExSummary:Shows how change image color with save options property
-            
+
             //Open document with color image
             Document doc = new Document(MyDir + "Rendering.doc");
 

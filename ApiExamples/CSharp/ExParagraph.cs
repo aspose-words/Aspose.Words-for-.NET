@@ -1,8 +1,6 @@
 ﻿using System;
-
 using Aspose.Words;
 using Aspose.Words.Fields;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -50,7 +48,7 @@ namespace ApiExamples
             Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
 
             InsertFieldUsingFieldCode(doc, " AUTHOR ", null, false, 1);
-            
+
             Assert.AreEqual("\u0013 AUTHOR \u0014Test Author\u0015Hello World!\r", DocumentHelper.GetParagraphText(doc, 1));
         }
 
@@ -165,7 +163,7 @@ namespace ApiExamples
             Document doc = DocumentHelper.CreateDocumentWithoutDummyText();
 
             InsertFieldUsingFieldType(doc, FieldType.FieldAuthor, true, null, false, 0);
-            
+
             Assert.AreEqual("\u0013 AUTHOR \u0014Test Author\u0015\r", DocumentHelper.GetParagraphText(doc, 0));
         }
 

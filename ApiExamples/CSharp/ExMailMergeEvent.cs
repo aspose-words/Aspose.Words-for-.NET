@@ -9,11 +9,9 @@ using System.Data;
 using System.Data.OleDb;
 using System.Drawing;
 using System.IO;
-
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.MailMerging;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -90,7 +88,6 @@ namespace ApiExamples
             }
         }
         //ExEnd
-
 
         /// <summary>
         /// This calls the below method to resolve skipping of [Test] in VB.NET.
@@ -298,7 +295,7 @@ namespace ApiExamples
         {
             this.MailMergeImageFromBlob();
         }
-        
+
         //ExStart
         //ExFor:MailMerge.FieldMergingCallback
         //ExFor:MailMerge.ExecuteWithRegions(IDataReader,string)

@@ -7,9 +7,7 @@
 
 using Aspose.Words;
 using Aspose.Words.Markup;
-
 using NUnit.Framework;
-
 using System.IO;
 
 namespace ApiExamples
@@ -40,7 +38,7 @@ namespace ApiExamples
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             StructuredDocumentTag sdtCheckBox = new StructuredDocumentTag(doc, SdtType.Checkbox, MarkupLevel.Inline);
             sdtCheckBox.Checked = true;
 
@@ -51,7 +49,7 @@ namespace ApiExamples
             doc.Save(dstStream, SaveFormat.Docx);
 
             NodeCollection sdts = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
-            
+
             StructuredDocumentTag sdt = (StructuredDocumentTag)sdts[0];
             Assert.AreEqual(true, sdt.Checked);
         }

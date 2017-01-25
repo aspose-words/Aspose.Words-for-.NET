@@ -10,9 +10,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Threading;
-
 using Aspose.Words;
-
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -71,7 +69,7 @@ namespace ApiExamples
             doc.Sections.Add(newSection);
 
             // Check what the document contains after we changed it.
-            Console.WriteLine(doc.GetText());         
+            Console.WriteLine(doc.GetText());
             //ExEnd
 
             Assert.AreEqual("Hello2\x000cHello2\x000c", doc.GetText());
@@ -125,12 +123,10 @@ namespace ApiExamples
             section.PageSetup.SectionStart = SectionStart.NewPage;
             section.PageSetup.PaperSize = PaperSize.Letter;
 
-
             // The section that we created is empty, lets populate it. The section needs at least the Body node.
             Body body = new Body(doc);
             section.AppendChild(body);
 
-            
             // The body needs to have at least one paragraph.
             // Note that the paragraph has not yet been added to the document, 
             // but we have to specify the parent document.
@@ -143,7 +139,6 @@ namespace ApiExamples
             para.ParagraphFormat.StyleName = "Heading 1";
             para.ParagraphFormat.Alignment = ParagraphAlignment.Center;
 
-
             // So far we have one empty paragraph in the document.
             // The document is valid and can be saved, but lets add some text before saving.
             // Create a new run of text and add it to our paragraph.
@@ -151,7 +146,6 @@ namespace ApiExamples
             run.Text = "Hello World!";
             run.Font.Color = Color.Red;
             para.AppendChild(run);
-
 
             // As a matter of interest, you can retrieve text of the whole document and
             // see that \x000c is automatically appended. \x000c is the end of section character.
@@ -189,7 +183,7 @@ namespace ApiExamples
 
             // Open a document.
             Document doc = new Document(MyDir + "Section.BodyEnsureMinimum.doc");
-            
+
             // This shows what is in the document originally. The document has two sections.
             Console.WriteLine(doc.GetText());
 
@@ -201,7 +195,7 @@ namespace ApiExamples
 
                 // This clears all nodes from the body.
                 body.RemoveAllChildren();
-            
+
                 // Technically speaking, for the main story of a section to be valid, it needs to have
                 // at least one empty paragraph. That's what the EnsureMinimum method does.
                 body.EnsureMinimum();
@@ -225,7 +219,7 @@ namespace ApiExamples
 
             // Open a document.
             Document doc = new Document(MyDir + "Section.BodyNodeType.doc");
-            
+
             // Get the first section in the document.
             Section section = doc.FirstSection;
 
@@ -287,7 +281,7 @@ namespace ApiExamples
             //ExId:SectionsAddSection
             //ExSummary:Shows how to add a section to the end of the document.
             Document doc = new Document(MyDir + "Document.doc");
-            Section sectionToAdd = new Section(doc); 
+            Section sectionToAdd = new Section(doc);
             doc.Sections.Add(sectionToAdd);
             //ExEnd
         }
@@ -324,7 +318,7 @@ namespace ApiExamples
             //ExId:SectionsAppendSectionContent
             //ExSummary:Shows how to append content of an existing section. The number of sections in the document remains the same.
             Document doc = new Document(MyDir + "Section.AppendContent.doc");
-            
+
             // This is the section that we will append and prepend to.
             Section section = doc.Sections[2];
 
@@ -375,7 +369,6 @@ namespace ApiExamples
             section.DeleteHeaderFooterShapes();
             //ExEnd
         }
-
 
         [Test]
         public void SectionsCloneSection()
@@ -439,17 +432,17 @@ namespace ApiExamples
         public void CultureInfoPageSetupDefaults()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-us");
-            
+
             Document docEn = new Document();
 
             //Assert that page defaults comply current culture info
             Section sectionEn = docEn.Sections[0];
-            Assert.AreEqual(72.0, sectionEn.PageSetup.LeftMargin);          // 2.54 cm         
-            Assert.AreEqual(72.0, sectionEn.PageSetup.RightMargin);         // 2.54 cm
-            Assert.AreEqual(72.0, sectionEn.PageSetup.TopMargin);           // 2.54 cm
-            Assert.AreEqual(72.0, sectionEn.PageSetup.BottomMargin);        // 2.54 cm
-            Assert.AreEqual(36.0, sectionEn.PageSetup.HeaderDistance);      // 1.27 cm
-            Assert.AreEqual(36.0, sectionEn.PageSetup.FooterDistance);      // 1.27 cm
+            Assert.AreEqual(72.0, sectionEn.PageSetup.LeftMargin); // 2.54 cm         
+            Assert.AreEqual(72.0, sectionEn.PageSetup.RightMargin); // 2.54 cm
+            Assert.AreEqual(72.0, sectionEn.PageSetup.TopMargin); // 2.54 cm
+            Assert.AreEqual(72.0, sectionEn.PageSetup.BottomMargin); // 2.54 cm
+            Assert.AreEqual(36.0, sectionEn.PageSetup.HeaderDistance); // 1.27 cm
+            Assert.AreEqual(36.0, sectionEn.PageSetup.FooterDistance); // 1.27 cm
             Assert.AreEqual(36.0, sectionEn.PageSetup.TextColumns.Spacing); // 1.27 cm
 
             //Change culture and assert that the page defaults are changed
@@ -458,33 +451,33 @@ namespace ApiExamples
             Document docDe = new Document();
 
             Section sectionDe = docDe.Sections[0];
-            Assert.AreEqual(70.85, sectionDe.PageSetup.LeftMargin);          // 2.5 cm         
-            Assert.AreEqual(70.85, sectionDe.PageSetup.RightMargin);         // 2.5 cm
-            Assert.AreEqual(70.85, sectionDe.PageSetup.TopMargin);           // 2.5 cm
-            Assert.AreEqual(56.7, sectionDe.PageSetup.BottomMargin);        // 2 cm
-            Assert.AreEqual(35.4, sectionDe.PageSetup.HeaderDistance);      // 1.25 cm
-            Assert.AreEqual(35.4, sectionDe.PageSetup.FooterDistance);      // 1.25 cm
+            Assert.AreEqual(70.85, sectionDe.PageSetup.LeftMargin); // 2.5 cm         
+            Assert.AreEqual(70.85, sectionDe.PageSetup.RightMargin); // 2.5 cm
+            Assert.AreEqual(70.85, sectionDe.PageSetup.TopMargin); // 2.5 cm
+            Assert.AreEqual(56.7, sectionDe.PageSetup.BottomMargin); // 2 cm
+            Assert.AreEqual(35.4, sectionDe.PageSetup.HeaderDistance); // 1.25 cm
+            Assert.AreEqual(35.4, sectionDe.PageSetup.FooterDistance); // 1.25 cm
             Assert.AreEqual(35.4, sectionDe.PageSetup.TextColumns.Spacing); // 1.25 cm
 
             //Change page defaults
-            sectionDe.PageSetup.LeftMargin = 90;            // 3.17 cm
-            sectionDe.PageSetup.RightMargin = 90;           // 3.17 cm
-            sectionDe.PageSetup.TopMargin = 72;             // 2.54 cm
-            sectionDe.PageSetup.BottomMargin = 72;          // 2.54 cm
-            sectionDe.PageSetup.HeaderDistance = 35.4;      // 1.25 cm
-            sectionDe.PageSetup.FooterDistance = 35.4;      // 1.25 cm
+            sectionDe.PageSetup.LeftMargin = 90; // 3.17 cm
+            sectionDe.PageSetup.RightMargin = 90; // 3.17 cm
+            sectionDe.PageSetup.TopMargin = 72; // 2.54 cm
+            sectionDe.PageSetup.BottomMargin = 72; // 2.54 cm
+            sectionDe.PageSetup.HeaderDistance = 35.4; // 1.25 cm
+            sectionDe.PageSetup.FooterDistance = 35.4; // 1.25 cm
             sectionDe.PageSetup.TextColumns.Spacing = 35.4; // 1.25 cm
 
             MemoryStream dstStream = new MemoryStream();
             docDe.Save(dstStream, SaveFormat.Docx);
 
             Section sectionDeAfter = docDe.Sections[0];
-            Assert.AreEqual(90.0, sectionDeAfter.PageSetup.LeftMargin);          // 3.17 cm         
-            Assert.AreEqual(90.0, sectionDeAfter.PageSetup.RightMargin);         // 3.17 cm
-            Assert.AreEqual(72.0, sectionDeAfter.PageSetup.TopMargin);           // 2.54 cm
-            Assert.AreEqual(72.0, sectionDeAfter.PageSetup.BottomMargin);        // 2.54 cm
-            Assert.AreEqual(35.4, sectionDeAfter.PageSetup.HeaderDistance);      // 1.25 cm
-            Assert.AreEqual(35.4, sectionDeAfter.PageSetup.FooterDistance);      // 1.25 cm
+            Assert.AreEqual(90.0, sectionDeAfter.PageSetup.LeftMargin); // 3.17 cm         
+            Assert.AreEqual(90.0, sectionDeAfter.PageSetup.RightMargin); // 3.17 cm
+            Assert.AreEqual(72.0, sectionDeAfter.PageSetup.TopMargin); // 2.54 cm
+            Assert.AreEqual(72.0, sectionDeAfter.PageSetup.BottomMargin); // 2.54 cm
+            Assert.AreEqual(35.4, sectionDeAfter.PageSetup.HeaderDistance); // 1.25 cm
+            Assert.AreEqual(35.4, sectionDeAfter.PageSetup.FooterDistance); // 1.25 cm
             Assert.AreEqual(35.4, sectionDeAfter.PageSetup.TextColumns.Spacing); // 1.25 cm
         }
     }

@@ -20,7 +20,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:DigitalSignature.ToString
             //ExSummary:Shows how to get the string representation of a signature from a signed document.
-            Document doc = new Document(MyDir + "Document.Signed.docx");
+            Document doc = new Document(MyDir + "Document.DigitalSignature.docx");
             Console.WriteLine(doc.DigitalSignatures[0].ToString());
             //ExEnd
         }

@@ -8,10 +8,8 @@
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Tables;
-
 using System;
 using System.IO;
-
 using NUnit.Framework;
 
 namespace ApiExamples

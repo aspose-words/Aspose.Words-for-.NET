@@ -9,7 +9,7 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
-
+using Aspose.Words.Replacing;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -106,14 +106,19 @@ namespace ApiExamples
             //ExFor:Section.HeadersFooters
             //ExFor:HeaderFooterCollection.Item(HeaderFooterType)
             //ExFor:HeaderFooter
-            //ExFor:Range.Replace(String, String, Boolean, Boolean)
+            //ExFor:Range.Replace(String, String, FindReplaceOptions)
             //ExSummary:Shows how to replace text in the document footer.
             // Open the template document, containing obsolete copyright information in the footer.
             Document doc = new Document(MyDir + "HeaderFooter.ReplaceText.doc");
 
             HeaderFooterCollection headersFooters = doc.FirstSection.HeadersFooters;
             HeaderFooter footer = headersFooters[HeaderFooterType.FooterPrimary];
-            footer.Range.Replace("(C) 2006 Aspose Pty Ltd.", "Copyright (C) 2011 by Aspose Pty Ltd.", false, false);
+
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.MatchCase = false;
+            options.FindWholeWordsOnly = false;
+
+            footer.Range.Replace("(C) 2006 Aspose Pty Ltd.", "Copyright (C) 2011 by Aspose Pty Ltd.", options);
 
             doc.Save(MyDir + @"\Artifacts\HeaderFooter.ReplaceText.doc");
             //ExEnd
@@ -166,7 +171,7 @@ namespace ApiExamples
 
             // Insert absolutely positioned image into the top/left corner of the header.
             // Distance from the top/left edges of the page is set to 10 points.
-            string imageFileName = MyDir + "Aspose.Words.gif";
+            string imageFileName = MyDir + @"\Images\Aspose.Words.gif";
             builder.InsertImage(imageFileName, RelativeHorizontalPosition.Page, 10, RelativeVerticalPosition.Page, 10, 50, 50, WrapType.Through);
 
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Right;

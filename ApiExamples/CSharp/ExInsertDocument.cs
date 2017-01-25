@@ -8,7 +8,6 @@
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
-
 using Aspose.Words;
 using Aspose.Words.MailMerging;
 using Aspose.Words.Replacing;
@@ -33,8 +32,7 @@ namespace ApiExamples
         static void InsertDocument(Node insertAfterNode, Document srcDoc)
         {
             // Make sure that the node is either a paragraph or table.
-            if ((!insertAfterNode.NodeType.Equals(NodeType.Paragraph)) &
-              (!insertAfterNode.NodeType.Equals(NodeType.Table)))
+            if ((!insertAfterNode.NodeType.Equals(NodeType.Paragraph)) & (!insertAfterNode.NodeType.Equals(NodeType.Table)))
                 throw new ArgumentException("The destination node should be either a paragraph or table.");
 
             // We will be inserting into the parent of the destination paragraph.
@@ -108,9 +106,7 @@ namespace ApiExamples
             // The main document has a merge field in it called "Document_1".
             // The corresponding data for this field contains fully qualified path to the document
             // that should be inserted to this field.
-            mainDoc.MailMerge.Execute(
-                new string[] { "Document_1" },
-                new string[] { MyDir + "InsertDocument2.doc" });
+            mainDoc.MailMerge.Execute(new string[] { "Document_1" }, new string[] { MyDir + "InsertDocument2.doc" });
 
             mainDoc.Save(MyDir + @"\Artifacts\InsertDocumentAtMailMerge.doc");
         }
@@ -201,9 +197,9 @@ namespace ApiExamples
         {
             this.InsertDocumentAtReplace();
         }
-        
+
         //ExStart
-        //ExFor:Range.Replace(Regex,IReplacingCallback,Boolean)
+        //ExFor:Range.Replace(Regex,String,FindReplaceOptions)
         //ExFor:IReplacingCallback
         //ExFor:ReplaceAction
         //ExFor:IReplacingCallback.Replacing
@@ -214,7 +210,12 @@ namespace ApiExamples
         public void InsertDocumentAtReplace()
         {
             Document mainDoc = new Document(MyDir + "InsertDocument1.doc");
-            mainDoc.Range.Replace(new Regex("\\[MY_DOCUMENT\\]"), new InsertDocumentAtReplaceHandler(), false);
+
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.Direction = FindReplaceDirection.Backward;
+            options.ReplacingCallback = new InsertDocumentAtReplaceHandler();
+
+            mainDoc.Range.Replace(new Regex("\\[MY_DOCUMENT\\]"), "", options);
             mainDoc.Save(MyDir + @"\Artifacts\InsertDocumentAtReplace.doc");
         }
 
