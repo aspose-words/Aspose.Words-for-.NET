@@ -35,9 +35,9 @@
     <StartupObject>Aspose.Words.Examples.CSharp.RunExamples</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words, Version=16.11.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.16.11.0\lib\net40\Aspose.Words.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Aspose.Words, Version=17.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Aspose\Aspose.Words for .NET\bin\net2.0\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -244,6 +244,8 @@
     <Compile Include="Programming-Documents\Tables\InsertTableDirectly.cs" />
     <Compile Include="Programming-Documents\Tables\InsertTableUsingDocumentBuilder.cs" />
     <Compile Include="Programming-Documents\Theme\ManipulateThemeProperties.cs" />
+    <Compile Include="Programming-Documents\Video\InsertOnlineVideo.cs" />
+    <Compile Include="Programming-Documents\Video\InsertOnlineVideoWithEmbedHtml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -253,6 +255,9 @@
     <Compile Include="Quick-Start\AppendDocuments.cs" />
     <Compile Include="Quick-Start\ApplyLicense.cs" />
     <Compile Include="Loading-and-Saving\Doc2Pdf.cs" />
+    <Compile Include="Quick-Start\ApplyLicenseFromFile.cs" />
+    <Compile Include="Quick-Start\ApplyLicenseFromStream.cs" />
+    <Compile Include="Quick-Start\ApplyMeteredLicense.cs" />
     <Compile Include="Quick-Start\FindAndReplace.cs" />
     <Compile Include="Quick-Start\HelloWorld.cs" />
     <Compile Include="Loading-and-Saving\LoadAndSaveToDisk.cs" />
