@@ -405,6 +405,10 @@ namespace Aspose.Words.Examples.CSharp
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Charts/");
         }
+        public static String GetDataDir_WorkingWithOnlineVideo()
+        {
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Video/");
+        }
         public static String GetDataDir_WorkingWithNode()
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Node/");
