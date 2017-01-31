@@ -155,7 +155,8 @@ Module RunExamples
         ' CheckBoxTypeContentControl.Run()
         ' RichTextBoxContentControl.Run()
         ' ComboBoxContentControl.Run()
-        ' UpdateContentControls.Run()
+        'UpdateContentControls.Run()
+        'GenerateACustomBarCodeImage.Run()
 
         '' Fields
         '' =====================================================

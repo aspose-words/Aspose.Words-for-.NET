@@ -46,6 +46,10 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Aspose.BarCode, Version=16.12.1.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.BarCode.16.12.1\lib\net4.0\Aspose.BarCode.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Aspose.Words, Version=16.11.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
       <HintPath>..\packages\Aspose.Words.16.11.0\lib\net40\Aspose.Words.dll</HintPath>
       <Private>True</Private>
@@ -143,6 +147,7 @@
     <Compile Include="Programming-Documents\Comments\AnchorComment.vb" />
     <Compile Include="Programming-Documents\Comments\ProcessComments.vb" />
     <Compile Include="Programming-Documents\ConvertUtil\UtilityClasses.vb" />
+    <Compile Include="Programming-Documents\Document\GenerateACustomBarCodeImage.vb" />
     <Compile Include="Programming-Documents\Document\AcceptAllRevisions.vb" />
     <Compile Include="Programming-Documents\Document\AccessStyles.vb" />
     <Compile Include="Programming-Documents\Document\AddGroupShapeToDocument.vb" />
@@ -271,9 +276,7 @@
     <Compile Include="Rendering-Printing\HyphenateWordsOfLanguages.vb" />
     <Compile Include="Rendering-Printing\LoadHyphenationDictionaryForLanguage.vb" />
     <Compile Include="Rendering-Printing\PrintDocViaXpsPrint.vb" />
-    <Compile Include="Rendering-Printing\PrintMultiplePagesOnOneSheet.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Rendering-Printing\PrintMultiplePagesOnOneSheet.vb" />
     <Compile Include="Rendering-Printing\PrintProgressDialog.vb" />
     <Compile Include="Rendering-Printing\ReadActiveXControlProperties.vb" />
     <Compile Include="Rendering-Printing\DocumentLayoutHelper.vb" />

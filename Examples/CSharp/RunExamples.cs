@@ -44,9 +44,9 @@ namespace Aspose.Words.Examples.CSharp
             // Viewers-Visualizers
             // =====================================================
             // =====================================================
-            
+
             //DocumentExplorerExample.MainForm.Run();
-            
+
             // =====================================================
             // =====================================================
             // Quick Start
@@ -141,6 +141,7 @@ namespace Aspose.Words.Examples.CSharp
 
             //// Document
             //// =====================================================
+
             // ExtractContentBetweenParagraphs.Run();
             // ExtractContentBetweenBlockLevelNodes.Run();
             // ExtractContentBetweenParagraphStyles.Run();
@@ -181,6 +182,7 @@ namespace Aspose.Words.Examples.CSharp
             // RichTextBoxContentControl.Run();
             // ComboBoxContentControl.Run();
             // UpdateContentControls.Run();
+            // GenerateACustomBarCodeImage.Run();
 
             //// Fields
             //// =====================================================
@@ -204,7 +206,7 @@ namespace Aspose.Words.Examples.CSharp
             // RenameMergeFields.Run();
             // ChangeFieldUpdateCultureSource.Run();
             // GetFieldNames.Run();
-            
+
             //// Images
             //// =====================================================
             // AddImageToEachPage.Run();
@@ -277,7 +279,7 @@ namespace Aspose.Words.Examples.CSharp
             // DeleteHeaderFooterContent.Run();
             // CloneSection.Run();
             // CopySection.Run();
-            
+
 
             //// =====================================================
             //// =====================================================
@@ -347,7 +349,7 @@ namespace Aspose.Words.Examples.CSharp
             // ScatterChart.Run();
             // BubbleChart.Run();
             // ChartWithFilteringGroupingOrdering.Run();
-         
+
             // Stop before exiting
             Console.WriteLine("\n\nProgram Finished. Press any key to exit....");
             Console.ReadKey();
