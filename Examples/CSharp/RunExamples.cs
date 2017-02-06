@@ -78,7 +78,10 @@ namespace Aspose.Words.Examples.CSharp
             // SpecifySaveOption.Run();
             // AccessAndVerifySignature.Run();
             // Doc2Pdf.Run();
+            // ExportFontsAsBase64.Run();
+            // ExportResourcesUsingHtmlSaveOptions.Run();
             // DigitallySignedPdf.Run();
+            // DigitallySignedPdfUsingCertificateHolder.Run();
             // ConvertDocumentToByte.Run();
             // ConvertDocumentToEPUB.Run();
             // ConvertDocumentToHtmlWithRoundtrip.Run();
@@ -211,6 +214,7 @@ namespace Aspose.Words.Examples.CSharp
             //// =====================================================
             // AddImageToEachPage.Run();
             // AddWatermark.Run();
+            // RemoveWatermark.Run();
             // CompressImages.Run();
             // ExtractImagesToFiles.Run();
             // InsertBarcodeImage.Run();
