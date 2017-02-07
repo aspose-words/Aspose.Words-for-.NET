@@ -39,8 +39,8 @@
       <HintPath>..\packages\Aspose.BarCode.16.12.1\lib\net4.0\Aspose.BarCode.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Aspose.Words, Version=16.11.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.16.11.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=17.2.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.17.2.0\lib\net40\Aspose.Words.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -80,12 +80,15 @@
     <Compile Include="Loading-and-Saving\ConvertDocumentToByte.cs" />
     <Compile Include="Loading-and-Saving\ConvertDocumentToEPUB.cs" />
     <Compile Include="Loading-and-Saving\ConvertDocumentToHtmlWithRoundtrip.cs" />
+    <Compile Include="Loading-and-Saving\DigitallySignedPdfUsingCertificateHolder.cs" />
+    <Compile Include="Loading-and-Saving\ExportResourcesUsingHtmlSaveOptions.cs" />
     <Compile Include="Loading-and-Saving\SaveAsTxt.cs" />
     <Compile Include="Loading-and-Saving\ImageLoadingWithCredentialsHandler.cs" />
     <Compile Include="Loading-and-Saving\LoadAndSaveDocToDatabase.cs" />
     <Compile Include="Loading-and-Saving\DetectDocumentSignatures.cs" />
     <Compile Include="Loading-and-Saving\SendToClientBrowser.cs" />
     <Compile Include="Loading-and-Saving\DigitallySignedPdf.cs" />
+    <Compile Include="Loading-and-Saving\ExportFontsAsBase64.cs" />
     <Compile Include="Loading-and-Saving\SpecifySaveOption.cs" />
     <Compile Include="Loading-and-Saving\OpenEncryptedDocument.cs" />
     <Compile Include="Loading-and-Saving\CreateDocument.cs" />
@@ -171,6 +174,7 @@
     <Compile Include="Programming-Documents\Find-Replace\ReplaceWithRegex.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceWithString.cs" />
     <Compile Include="Programming-Documents\Hyperlink\ReplaceHyperlinks.cs" />
+    <Compile Include="Programming-Documents\Images\RemoveWatermark.cs" />
     <Compile Include="Programming-Documents\Images\InsertBarcodeImage.cs" />
     <Compile Include="Programming-Documents\Images\ExtractImagesToFiles.cs" />
     <Compile Include="Programming-Documents\Node\ExNode.cs" />

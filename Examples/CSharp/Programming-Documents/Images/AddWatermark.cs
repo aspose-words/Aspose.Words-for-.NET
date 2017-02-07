@@ -37,7 +37,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Images
             // Create a watermark shape. This will be a WordArt shape. 
             // You are free to try other shape types as watermarks.
             Shape watermark = new Shape(doc, ShapeType.TextPlainText);
-
+            watermark.Name= "WaterMark";
             // Set up the text of the watermark.
             watermark.TextPath.Text = watermarkText;
             watermark.TextPath.FontFamily = "Arial";
