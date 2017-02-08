@@ -12,8 +12,6 @@ using NUnit.Framework;
 
 namespace ApiExamples
 {
-    using System.Drawing;
-
     [TestFixture]
     public class ExDigitalSignatureUtil : ApiExampleBase
     {

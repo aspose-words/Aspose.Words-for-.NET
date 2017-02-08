@@ -123,6 +123,19 @@
     <Compile Include="ExTabStopCollection.cs" />
     <Compile Include="ExVariableCollection.cs" />
     <Compile Include="ExWarningInfoCollection.cs" />
+    <Compile Include="TestData\NumericDataSourceWithMethod.cs" />
+    <Compile Include="TestData\DocumentDataSource.cs" />
+    <Compile Include="TestData\DataTables.cs">
+      <DependentUpon>DataTables.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="TestData\DataTables.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataTables.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="TestData\NumericDataSource.cs" />
+    <Compile Include="TestData\ImageDataSource.cs" />
+    <Compile Include="TestData\SimpleDataSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
@@ -132,6 +145,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="TestData\DataTables.xsc">
+      <DependentUpon>DataTables.xsd</DependentUpon>
+    </None>
+    <None Include="TestData\DataTables.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataTables.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="TestData\DataTables.xss">
+      <DependentUpon>DataTables.xsd</DependentUpon>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

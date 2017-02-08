@@ -19,8 +19,6 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Net;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Web;
@@ -197,7 +195,7 @@ namespace ApiExamples
             //ExFor:Document.#ctor(Stream)
             //ExSummary:Retrieves a document from a URL and saves it to disk in a different format.
             // This is the URL address pointing to where to find the document.
-            string url = "http://www.aspose.com/demos/.net-components/aspose.words/csharp/general/Common/Documents/DinnerInvitationDemo.doc";
+            string url = "https://www.google.ru/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwjt_ZaU79XRAhUiJpoKHYPhAg4QFggaMAA&url=http%3A%2F%2Fdownload.microsoft.com%2Fdownload%2Ff%2F7%2F3%2Ff7395ee6-5642-4ab9-a881-786d0350e88d%2Fskills_development_white_paper_2009.doc&usg=AFQjCNHgXtYDBC_VAqdgqHNdaIQDzyXNpA&sig2=NqLNmbht9qC028yevlBvEg&bvm=bv.144224172,d.bGs";
 
             // The easiest way to load our document from the internet is make use of the 
             // System.Net.WebClient class. Create an instance of it and pass the URL
