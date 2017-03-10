@@ -196,6 +196,9 @@ namespace Aspose.Words.Examples.CSharp
             // ConvertFieldsInParagraph.Run();
             // ChangeLocale.Run();
             // UpdateDocFields.Run();
+            // SpecifylocaleAtFieldlevel.Run();
+            // UseOfficeMathProperties.Run();
+
             // InsertField.Run();
             // InsertMergeFieldUsingDOM.Run();
             // InsertMailMergeAddressBlockFieldUsingDOM.Run();
@@ -306,6 +309,7 @@ namespace Aspose.Words.Examples.CSharp
             // MailMergeUsingMustacheSyntax.Run();
             // ExecuteWithRegionsDataTable.Run();
             // NestedMailMergeCustom.Run();            
+            // RemoveRowsFromTable.Run();
 
             //// =====================================================
             //// =====================================================

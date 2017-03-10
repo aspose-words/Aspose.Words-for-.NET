@@ -39,8 +39,8 @@
       <HintPath>..\packages\Aspose.BarCode.16.12.1\lib\net4.0\Aspose.BarCode.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Aspose.Words, Version=17.2.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.17.2.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=17.3.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.17.3.0\lib\net40\Aspose.Words.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -97,6 +97,7 @@
     <Compile Include="Loading-and-Saving\PageSplitter.cs" />
     <Compile Include="Loading-and-Saving\SplitIntoHtmlPages.cs" />
     <Compile Include="Mail-Merge\ApplyCustomLogicToEmptyRegions.cs" />
+    <Compile Include="Mail-Merge\ExecuteArray.cs" />
     <Compile Include="Mail-Merge\SimpleMailMerge.cs" />
     <Compile Include="Mail-Merge\NestedMailMergeCustom.cs" />
     <Compile Include="Mail-Merge\ExecuteWithRegionsDataTable.cs" />
@@ -104,7 +105,7 @@
     <Compile Include="Mail-Merge\ProduceMultipleDocuments.cs" />
     <Compile Include="Mail-Merge\MailMergeImageFromBlob.cs" />
     <Compile Include="Mail-Merge\MailMergeAlternatingRows.cs" />
-    <Compile Include="Mail-Merge\ExecuteArray.cs" />
+    <Compile Include="Mail-Merge\RemoveRowsFromTable.cs" />
     <Compile Include="Mail-Merge\LINQtoXMLMailMerge.cs" />
     <Compile Include="Mail-Merge\MailMergeFormFields.cs" />
     <Compile Include="Mail-Merge\MultipleDocsInMailMerge.cs" />
@@ -169,7 +170,9 @@
     <Compile Include="Programming-Documents\Fields\InsertMailMergeAddressBlockFieldUsingDOM.cs" />
     <Compile Include="Programming-Documents\Fields\InsertMergeFieldUsingDOM.cs" />
     <Compile Include="Programming-Documents\Fields\InsertField.cs" />
+    <Compile Include="Programming-Documents\Fields\UseOfficeMathProperties.cs" />
     <Compile Include="Programming-Documents\Fields\UpdateDocFields.cs" />
+    <Compile Include="Programming-Documents\Fields\SpecifylocaleAtFieldlevel.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceWithEvaluator.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceWithRegex.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceWithString.cs" />
