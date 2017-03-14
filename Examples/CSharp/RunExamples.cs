@@ -357,6 +357,7 @@ namespace Aspose.Words.Examples.CSharp
             // ScatterChart.Run();
             // BubbleChart.Run();
             // ChartWithFilteringGroupingOrdering.Run();
+            ConditionalBlocks.Run();
 
             // Stop before exiting
             Console.WriteLine("\n\nProgram Finished. Press any key to exit....");
