@@ -30,4 +30,4 @@ git clone git@github.com:asposemarketplace/Aspose_Words_NET_for_PHP.git
 composer install
 ```
 
-Read more about composer on http://www.getcomposer.com
+Read more about composer on http://www.getcomposer.org
