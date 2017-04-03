@@ -16,4 +16,4 @@ This simplest solution allows developers to add “Export to Word” feature to 
 e.g <a href="@Url.Action("Index","ExportToWord")">Export To Word</a>
 
 
-Please download the latest version of Words for .NET from http://www.aspose.com/community/files/default.aspx
+Please download the latest version of Words for .NET from https://downloads.aspose.com/
