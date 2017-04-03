@@ -25,7 +25,7 @@
 <p>Please check the links below to find instructions on downloading, installing, configuring and using Export Members To Word Add-on.</p>
 <ul>
 <li><a href="https://docs.aspose.com//display/wordsnet/DNN+Content+Exporter+Module#DNNContentExporterModule-Downloading">Downloading and Installing </a></li>
-<li><a href="http://www.aspose.com/docs/display/wordsnet/DNN+Content+Exporter+Module#DNNContentExporterModule-VideoDemo">Using and Video Demo</a></li>
+<li><a href="https://docs.aspose.com//display/wordsnet/DNN+Content+Exporter+Module#DNNContentExporterModule-VideoDemo">Using and Video Demo</a></li>
 </ul>
 <h2>Start a Free Trial Today</h2>
 <p>Start a free trial today &ndash; all you need is to <a href="https://idsrv.asposeptyltd.com/identity/signup?clientId=prod.community.aspose&redirectUrl=https://www.aspose.com/community/login.aspx"> sign up</a> with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.</p>
