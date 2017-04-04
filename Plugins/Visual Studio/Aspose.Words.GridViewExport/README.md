@@ -1,6 +1,6 @@
 <div>
 <h3>Aspose .NET Export GridView To Word Control for Visual Studio</h3>
-<p>Aspose Export GridView To Word Control is an ASP.NET server control which allows exporting contents of GridView into Word Processing document using <a href="http://www.aspose.com/word-component-suite.aspx" rel="nofollow">Aspose.Words</a>. It adds <strong>Export to Word</strong> button on top of the GridView control. Clicking the button dynamically exports the content of the GridView control to a Word Processing document and then automatically downloads the exported file to the disk location selected by the user in just couple of seconds.</p>
+<p>Aspose Export GridView To Word Control is an ASP.NET server control which allows exporting contents of GridView into Word Processing document using <a href="https://www.aspose.com/products/words/net" rel="nofollow">Aspose.Words</a>. It adds <strong>Export to Word</strong> button on top of the GridView control. Clicking the button dynamically exports the content of the GridView control to a Word Processing document and then automatically downloads the exported file to the disk location selected by the user in just couple of seconds.</p>
 <div>
 <p style="text-align: center;"><a title="Free Download - Aspose .NET Export GridView To Word Control" href="http://asposevs.codeplex.com/releases/view/615878"><img title="Free Download - Aspose .NET Export GridView To Word Control" src="http://cdn.aspose.com/Images/marketplace/free-download-icon-aspose-mp.png" alt="free download icon aspose mp Aspose .NET Export GridView To Word Control for Visual Studio" /></a><a title="Video Demo - Aspose .NET Export GridView To Word Control" href="https://www.youtube.com/watch?v=IGNmXtZC3N4"><img title="Video Demo - Aspose .NET Export GridView To Word Control" src="http://cdn.aspose.com/Images/marketplace/video-demo-icon-aspose-mp.png" alt="video demo icon aspose mp Aspose .NET Export GridView To Word Control for Visual Studio" /></a><a title="Source Code - Aspose .NET Export GridView To Word Control" href="http://asposevs.codeplex.com/SourceControl/latest"><img title="Source Code - Aspose .NET Export GridView To Word Control" src="http://cdn.aspose.com/Images/marketplace/open-source-icon-aspose-mp.png" alt="open source icon aspose mp Aspose .NET Export GridView To Word Control for Visual Studio" /></a></p>
 <p>This initial version of the control provides the following features:</p>
@@ -19,8 +19,9 @@
 <h3>Download, Installation and Usage</h3>
 <p>Please check the links below to find instructions on downloading, installing, configuring and using Export GridView To Word Control.</p>
 <ul>
-<li><a href="http://www.aspose.com/docs/display/wordsnet/8.2.1+Downloading+and+Installing">Downloading and Installing </a></li>
-<li><a href="http://www.aspose.com/docs/display/wordsnet/8.2.2+Using+and+Video+Demo">Using and Video Demo</a></li>
+<li><a href="https://docs.aspose.com/display/wordsnet/Visual+Studio+Export+GridView+To+Word+Control#VisualStudioExportGridViewToWordControl-Downloading">Downloading </a></li>
+<li><a href="https://docs.aspose.com/display/wordsnet/Visual+Studio+Export+GridView+To+Word+Control#VisualStudioExportGridViewToWordControl-Installing">Installing </a></li>
+<li><a href="https://docs.aspose.com/display/wordsnet/Visual+Studio+Export+GridView+To+Word+Control#VisualStudioExportGridViewToWordControl-Using">Using and Video Demo</a></li>
 </ul>
 </div>
 <h3>Customer Feedback</h3>
