@@ -18,8 +18,9 @@ This add on will work with all versions of Microsoft Dynamics CRM 2013 and 2015.
 
 Please check the links below to find instructions on downloading, installing, configuring and using these development templates.
 
-*   [Downloading and Installing](https://docs.aspose.com//display/wordsnet/5.4.2.1+Downloading,Installing+or+Uninstalling)
-*   [Using and Video Demo](https://docs.aspose.com//display/wordsnet/5.4.2.2+Using+and+Video+Demo)
+*   [Downloading](https://docs.aspose.com/display/wordsnet/Duplicate+Detection+for+Dynamics+CRM#DuplicateDetectionforDynamicsCRM-Downloading)
+*   [Installing or Uninstalling](https://docs.aspose.com/display/wordsnet/Duplicate+Detection+for+Dynamics+CRM#DuplicateDetectionforDynamicsCRM-InstallingorUninstalling)
+*   [Using and Video Demo](https://docs.aspose.com/display/wordsnet/Duplicate+Detection+for+Dynamics+CRM#DuplicateDetectionforDynamicsCRM-Using)
 
 ## Start a Free Trial Today
 
