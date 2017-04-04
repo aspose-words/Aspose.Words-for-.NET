@@ -4,17 +4,17 @@
 <h2>What&rsquo;s New</h2>
 <p>This initial release of the project have the following comparison examples</p>
 <ul>
-<li id="pc_205619242"><a href="https://docs.aspose.com/display/wordsnet/9.2.1.1+Create+Empty+Document" target="_parent">Create Empty Document</a> </li>
-<li id="pc_205619249"><a href="https://docs.aspose.com/display/wordsnet/9.2.1.2+Format+Text+in+Document" target="_parent">Format Text in Document</a> </li>
-<li id="pc_205619259"><a href="https://docs.aspose.com/display/wordsnet/9.2.1.3+Add+bullets+or+numbers+to+a+list" target="_parent">Add bullets or numbers to a list</a> </li>
-<li id="pc_205619235"><a href="https://docs.aspose.com/display/wordsnet/9.2.2.1+Insert+Image" target="_parent">Insert Image</a> </li>
-<li id="pc_205619230"><a href="https://docs.aspose.com/display/wordsnet/9.2.3.1+Create+Tables" target="_parent">Create Tables</a> </li>
+<li id="pc_205619242"><a href="https://docs.aspose.com/display/wordsnet/Create+Empty+Document+in+NPOI" target="_parent">Create Empty Document</a> </li>
+<li id="pc_205619249"><a href="https://docs.aspose.com/display/wordsnet/Format+Text+in+Document+in+NPOI" target="_parent">Format Text in Document</a> </li>
+<li id="pc_205619259"><a href="https://docs.aspose.com/display/wordsnet/Add+bullets+or+numbers+to+a+list+in+NPOI" target="_parent">Add bullets or numbers to a list</a> </li>
+<li id="pc_205619235"><a href="https://docs.aspose.com/display/wordsnet/Insert+Image+in+NPOI" target="_parent">Insert Image</a> </li>
+<li id="pc_205619230"><a href="https://docs.aspose.com/display/wordsnet/Create+Tables+in+NPOI" target="_parent">Create Tables</a> </li>
 </ul>
 <h2>Download Latest Examples</h2>
 <p>Please check the links below to find detailed instructions on downloading, configuring and exploring these examples</p>
 <ul>
-<li><a href="https://docs.aspose.com/display/wordsnet/9.1.3+Downloading+and+Installing">Downloading and Installing</a> </li>
-<li><a href="https://docs.aspose.com/display/wordsnet/9.1.4+Support,+Extend+and+Contribute">Support, Extend and Contribute</a> </li>
+<li><a href="https://docs.aspose.com/display/wordsnet/Aspose.Words+.NET+for+NPOI#Aspose.Words.NETforNPOI-DownloadingandInstalling">Downloading and Installing</a> </li>
+<li><a href="https://docs.aspose.com/display/wordsnet/Aspose.Words+.NET+for+NPOI#Aspose.Words.NETforNPOI-Support%2CExtendandContribute">Support, Extend and Contribute</a> </li>
 </ul>
 <p>There is much more yet to come and many more examples with documentation are available at <a href="https://docs.aspose.com/display/wordsnet/Home">Aspose Docs</a>. Keep visiting us.</p>
 <h2>Start a Free Trial Today</h2>
