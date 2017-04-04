@@ -27,11 +27,9 @@ Please check the links below to find instructions on downloading, installing, co
 
 Please check [this video](https://youtu.be/HATaDzOMgo4) to see it in action.
 
-<iframe allowfullscreen="" frameborder="0" height="315" mce_src="https://www.youtube.com/embed/HATaDzOMgo4?rel=0" src="https://www.youtube.com/embed/HATaDzOMgo4?rel=0" width="560"></iframe>
-
 ## Start a Free Trial Today
 
-Start a free trial today – all you need is to [sign up](http://www.aspose.com/community/user/createuser.aspx) with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.
+Start a free trial today – all you need is to [sign up](https://idsrv.asposeptyltd.com/identity/signup?clientId=prod.community.aspose) with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.
 
 ## Customer Feedback
 
