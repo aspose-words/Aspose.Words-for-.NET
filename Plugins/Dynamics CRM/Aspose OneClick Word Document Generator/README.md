@@ -19,8 +19,9 @@ The release of this add-on supports the following features:
 
 Please check the links below to find instructions on downloading, installing, configuring and using these development templates.
 
-*   [Downloading, Installing and Uninstalling](https://docs.aspose.com//display/wordsnet/5.6.2.1+Downloading,+Installing+and+Uninstalling)
-*   [Using and Video Demo](https://docs.aspose.com//display/wordsnet/5.6.2.2+Using+and+Video+Demo)
+*   [Downloading](https://docs.aspose.com/display/wordsnet/OneClick+Word+Document+Generator+for+Dynamics+CRM#OneClickWordDocumentGeneratorforDynamicsCRM-Downloading)
+*   [Installing and Uninstalling](https://docs.aspose.com/display/wordsnet/OneClick+Word+Document+Generator+for+Dynamics+CRM#OneClickWordDocumentGeneratorforDynamicsCRM-InstallingorUninstalling)
+*   [Using and Video Demo](https://docs.aspose.com/display/wordsnet/OneClick+Word+Document+Generator+for+Dynamics+CRM#OneClickWordDocumentGeneratorforDynamicsCRM-Using)
 
 ## Video
 
@@ -36,11 +37,11 @@ Your feedback is very important to us. Please feel free to provide feedback and 
 
 ## Other CRM Plugins by Aspose
 
-*   [Aspose .NET Document Generator](https://docs.aspose.com//display/wordsnet/5.1+Aspose+.NET+Document+Generator)
-*   [Aspose .NET Document Merger](https://docs.aspose.com//display/wordsnet/5.3+Aspose+.NET+Document+Merger)
-*   [Aspose .NET AutoMerge](https://docs.aspose.com//display/wordsnet/5.2+Aspose+.NET+AutoMerge)
-*   [Aspose .NET Update Import Tool](https://docs.aspose.com//display/cellsnet/4.1+Aspose+.NET+Update+Import+Tool)
-*   [Aspose .NET ImageAttach](https://docs.aspose.com//display/imagingnet/1.1+Aspose+.NET+ImageAttach)
-*   [Aspose .NET DuplicateDetection](https://docs.aspose.com//display/wordsnet/5.4+Aspose+.NET+Duplicate+Detection)
-*   [Aspose .NET Quote Generator](https://docs.aspose.com//display/wordsnet/5.5+Aspose+.NET+Quote+Generator)
-*   [Aspose .NET Barcode Generator](https://docs.aspose.com//display/barcodenet/1.1+Aspose+.NET+BarCode+Generator)
+*   [Aspose .NET Document Generator](https://docs.aspose.com/display/wordsnet/Document+Generator+for+Dynamics+CRM)
+*   [Aspose .NET Document Merger](https://docs.aspose.com/display/wordsnet/Document+Merger+for+Dynamics+CRM)
+*   [Aspose .NET AutoMerge](https://docs.aspose.com/display/wordsnet/AutoMerge+for+Dynamics+CRM)
+*   [Aspose .NET Update Import Tool](https://docs.aspose.com/display/cellsnet/Update+Import+Tool+for+Dynamics+CRM)
+*   [Aspose .NET ImageAttach](https://docs.aspose.com/display/imagingnet/ImageAttach+for+Dynamics+CRM)
+*   [Aspose .NET DuplicateDetection](https://docs.aspose.com/display/wordsnet/Duplicate+Detection+for+Dynamics+CRM)
+*   [Aspose .NET Quote Generator](https://docs.aspose.com/display/wordsnet/Quote+Generator+for+Dynamics+CRM)
+*   [Aspose .NET Barcode Generator](https://docs.aspose.com/display/barcodenet/BarCode+Generator+for+Dynamics+CRM)
