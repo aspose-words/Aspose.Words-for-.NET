@@ -24,15 +24,9 @@ Please check the links below to find instructions on downloading, installing, co
 *   [Downloading, Installing and Uninstalling](https://docs.aspose.com//display/wordsnet/5.5.2.1+Downloading,+Installing+and+Uninstalling)
 *   [Using and Video Demo](https://docs.aspose.com//display/wordsnet/5.5.2.2+Using+and+Video+Demo)
 
-## Video
-
-Please check [this video](http://youtu.be/IhKncjbV-Y8) to see it in action.
-
-<iframe width="560" height="315" src="//www.youtube.com/embed/IhKncjbV-Y8?rel=0" frameborder="0" allowfullscreen=""></iframe>
-
 ## Start a Free Trial Today
 
-Start a free trial today – all you need is to [sign up](http://www.aspose.com/community/user/createuser.aspx) with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.
+Start a free trial today – all you need is to [sign up](https://idsrv.asposeptyltd.com/identity/signup?clientId=prod.community.aspose) with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.
 
 ## Customer Feedback
 
