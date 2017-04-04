@@ -21,8 +21,9 @@ The release of this add-0n supports the following features.
 
 Please check the links below to find instructions on downloading, installing, configuring and using these development templates.
 
-*   [Downloading, Installing and Uninstalling](https://docs.aspose.com//display/wordsnet/5.5.2.1+Downloading,+Installing+and+Uninstalling)
-*   [Using and Video Demo](https://docs.aspose.com//display/wordsnet/5.5.2.2+Using+and+Video+Demo)
+*   [Downloading,](https://docs.aspose.com/display/wordsnet/Quote+Generator+for+Dynamics+CRM#QuoteGeneratorforDynamicsCRM-Downloading)
+*   [Installing and Uninstalling](https://docs.aspose.com/display/wordsnet/Quote+Generator+for+Dynamics+CRM#QuoteGeneratorforDynamicsCRM-InstallingorUninstalling)
+*   [Using and Video Demo](https://docs.aspose.com/display/wordsnet/Quote+Generator+for+Dynamics+CRM#QuoteGeneratorforDynamicsCRM-Using)
 
 ## Start a Free Trial Today
 
