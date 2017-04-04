@@ -14,7 +14,7 @@
 <li>Exported document is automatically sent to the browser for downloading.</li>
 <li>The generated image can then be opened using any image viewing application such as windows photo viewer etc.</li>
 </ul>
-<p><a href="https://docs.aspose.com//display/wordsnet/Aspose+Export+to+Image+for+ASP.NET+MVC"><img style="width: 514px; display: block; margin-left: auto; margin-right: auto;" title="Export Web page contents to an image for ASP.NET MVC" src="http://www.aspose.com/blogs/wp-content/uploads/2016/04/New-Export-Image.png" alt="Export Web page contents to an image for ASP.NET MVC" width="514" height="150" /></a></p>
+<p><a href="https://docs.aspose.com//display/wordsnet/Aspose+Export+to+Image+for+ASP.NET+MVC">Export Web page contents to an image for ASP.NET MVC</a></p>
 <h2>Download, Installation and Usage</h2>
 <p>Please check the links below to find instructions on downloading, installing, configuring and using the module.</p>
 <ul>
@@ -24,7 +24,7 @@
 <h2>Customer Feedback</h2>
 <p>Your feedback is very important to us. Please feel free to provide feedback and raise feature requirements. We are keen to implement customer-driven features since we are a 100% customer driven company.</p>
 <h2>Start a Free Trial Today</h2>
-<p>Start a free trial today &ndash; all you need is to <a href="http://www.aspose.com/community/user/createuser.aspx"> sign up</a> with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.</p>
+<p>Start a free trial today &ndash; all you need is to <a href="https://idsrv.asposeptyltd.com/identity/signup?clientId=prod.community.aspose"> sign up</a> with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.</p>
 <h2>Related Links</h2>
 <ul>
 <li><a href="https://blog.aspose.com/2016/02/03/export-any-page-to-a-pdf-or-any-word-processing-document-in-asp.net-mvc-using-aspose.words-for-.net/">Export any page to a PDF in ASP.NET MVC</a></li>
