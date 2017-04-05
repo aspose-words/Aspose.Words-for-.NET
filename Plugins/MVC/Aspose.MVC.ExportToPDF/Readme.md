@@ -17,4 +17,4 @@ This simplest solution allows developers to add “Export to PDF” and Export t
 e.g @{ Html.RenderPartial("~/Views/Shared/AsposeWordsExportTypes.cshtml"); }
 
 
-Please download the latest version of Words for .NET from http://www.aspose.com/community/files/default.aspx
+Please download the latest version of Words for .NET from https://downloads.aspose.com/

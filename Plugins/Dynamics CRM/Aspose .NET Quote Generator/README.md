@@ -1,8 +1,8 @@
 # Generate Quotation using Template in HTML and Attach to Quote using Aspose .NET Quote Generator for Dynamics CRM 2013/2015
 
-[![aspose Words for net e1378287014402 Generate Quotation using Template in HTML and Attach to Quote using Aspose .NET Quote Generator for Dynamics CRM 2013/2015](http://www.aspose.com/blogs/wp-content/uploads/2013/09/aspose-Words-for-net-e1378287014402.png "Aspose.Words or .NET logo")](http://www.aspose.com/word-component-suite.aspx)Aspose .NET Quote Generator is open source add-on used to generate and export quotation from CRM. You can design quotation template in CRM and and generate quote as you want. Template provides rich text editing option and you can also insert CRM fields in it. This add-on can also resolve option set and look-up fields. In addition it can provide functionality to edit the original quote before attaching with quote under notes. Aspose .NET Quote Generator can be used with CRM on-premises and CRM Online.
+[![aspose Words for net e1378287014402 Generate Quotation using Template in HTML and Attach to Quote using Aspose .NET Quote Generator for Dynamics CRM 2013/2015](http://www.aspose.com/blogs/wp-content/uploads/2013/09/aspose-Words-for-net-e1378287014402.png "Aspose.Words or .NET logo")](https://www.aspose.com/products/words/net)Aspose .NET Quote Generator is open source add-on used to generate and export quotation from CRM. You can design quotation template in CRM and and generate quote as you want. Template provides rich text editing option and you can also insert CRM fields in it. This add-on can also resolve option set and look-up fields. In addition it can provide functionality to edit the original quote before attaching with quote under notes. Aspose .NET Quote Generator can be used with CRM on-premises and CRM Online.
 
-[![free download icon aspose mp Generate Quotation using Template in HTML and Attach to Quote using Aspose .NET Quote Generator for Dynamics CRM 2013/2015](http://cdn.aspose.com/Images/marketplace/free-download-icon-aspose-mp.png "Free Download - Aspose .NET Quote Generator")](https://asposenetcrm.codeplex.com/releases/view/617516 "Free Download - Aspose .NET Quote Generator") [![video demo icon aspose mp Generate Quotation using Template in HTML and Attach to Quote using Aspose .NET Quote Generator for Dynamics CRM 2013/2015](http://cdn.aspose.com/Images/marketplace/video-demo-icon-aspose-mp.png "Generate Quotation using Template in HTML and Attach to Quote using Aspose .NET Quote Generator for Dynamics CRM 2013/2015")](http://youtu.be/IhKncjbV-Y8 "Video Demo - Aspose .NET Quote Generator") [![open source icon aspose mp Generate Quotation using Template in HTML and Attach to Quote using Aspose .NET Quote Generator for Dynamics CRM 2013/2015](http://cdn.aspose.com/Images/marketplace/open-source-icon-aspose-mp.png "Source Code - Aspose .NET Quote Generator")](https://asposenetcrm.codeplex.com/SourceControl/latest#Aspose .NET Quote Generator/ "Source Code - Aspose .NET Quote Generator")
+[![free download icon aspose mp Generate Quotation using Template in HTML and Attach to Quote using Aspose .NET Quote Generator for Dynamics CRM 2013/2015](http://cdn.aspose.com/Images/marketplace/free-download-icon-aspose-mp.png "Free Download - Aspose .NET Quote Generator")](https://asposenetcrm.codeplex.com/releases/view/617516 "Free Download - Aspose .NET Quote Generator") [![open source icon aspose mp Generate Quotation using Template in HTML and Attach to Quote using Aspose .NET Quote Generator for Dynamics CRM 2013/2015](http://cdn.aspose.com/Images/marketplace/open-source-icon-aspose-mp.png "Source Code - Aspose .NET Quote Generator")](https://asposenetcrm.codeplex.com/SourceControl/latest#Aspose%20.NET%20Quote%20Generator/ "Source Code - Aspose .NET Quote Generator")
 
 ## Features in this Release
 
@@ -21,18 +21,13 @@ The release of this add-0n supports the following features.
 
 Please check the links below to find instructions on downloading, installing, configuring and using these development templates.
 
-*   [Downloading, Installing and Uninstalling](http://www.aspose.com/docs/display/wordsnet/5.5.2.1+Downloading%2C+Installing+and+Uninstalling)
-*   [Using and Video Demo](http://www.aspose.com/docs/display/wordsnet/5.5.2.2+Using+and+Video+Demo)
-
-## Video
-
-Please check [this video](http://youtu.be/IhKncjbV-Y8) to see it in action.
-
-<iframe width="560" height="315" src="//www.youtube.com/embed/IhKncjbV-Y8?rel=0" frameborder="0" allowfullscreen=""></iframe>
+*   [Downloading,](https://docs.aspose.com/display/wordsnet/Quote+Generator+for+Dynamics+CRM#QuoteGeneratorforDynamicsCRM-Downloading)
+*   [Installing and Uninstalling](https://docs.aspose.com/display/wordsnet/Quote+Generator+for+Dynamics+CRM#QuoteGeneratorforDynamicsCRM-InstallingorUninstalling)
+*   [Using and Video Demo](https://docs.aspose.com/display/wordsnet/Quote+Generator+for+Dynamics+CRM#QuoteGeneratorforDynamicsCRM-Using)
 
 ## Start a Free Trial Today
 
-Start a free trial today – all you need is to [sign up](http://www.aspose.com/community/user/createuser.aspx) with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.
+Start a free trial today â€“ all you need is toÂ [sign up](https://idsrv.asposeptyltd.com/identity/signup?clientId=prod.community.aspose) with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.
 
 ## Customer Feedback
 

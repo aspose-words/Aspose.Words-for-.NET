@@ -1,11 +1,11 @@
 ## Aspose.Words Features missing in VSTO Word
 
 This section contains the following Examples
-* [Conversion between different Office Word formats](Conversion between different Office Word formats)
-* [Conversion to Open Office Document](Conversion to Open Office Document)
-* [Convert a Document to a Byte Array](Convert a Document to a Byte Array)
-* [Convert a Document to MHTML and Email](Convert a Document to MHTML and Email)
-* [Detect the File Format](Detect the File Format)
-* [Inserting Form Fields](Inserting Form Fields)
-* [Joining Tables](Joining Tables)
-* [Splitting Tables](Splitting Tables)
+* [Conversion from Docx to Doc format](https://docs.aspose.com/display/wordsnet/Conversion+from+Docx+to+Doc+format)
+* [Insert Form Fields](https://docs.aspose.com/display/wordsnet/Insert+Form+Fields)
+* [Join Tables](https://docs.aspose.com/display/wordsnet/Join+Tables)
+* [Split Tables](https://docs.aspose.com/display/wordsnet/Split+Tables)
+* [Convert document to MHTML Email](https://docs.aspose.com/display/wordsnet/Convert+document+to+MHTML+Email)
+* [Detecting File Format](https://docs.aspose.com/display/wordsnet/Detecting+File+Format)
+* [Converting a Document to Byte Array](https://docs.aspose.com/display/wordsnet/Converting+a+Document+to+Byte+Array)
+* [Conversion between different Open Office Word formats](https://docs.aspose.com/display/wordsnet/Conversion+between+different+Open+Office+Word+formats)

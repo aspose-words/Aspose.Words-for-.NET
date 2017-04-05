@@ -9,13 +9,13 @@ Please feel free to contact us if you wish to install this module on an older ve
 ** Download, Installation and Usage **
 You can download the Aspose .NET Quote Generator for DNN module from one of the following locations:
 
-    Downloading and Installing (http://www.aspose.com/docs/display/wordsnet/DNN+Quote+Generator+Module#DNNQuoteGeneratorModule-Downloading)
-    Using and Video Demo (http://www.aspose.com/docs/display/wordsnet/DNN+Quote+Generator+Module#DNNQuoteGeneratorModule-Using)
+    Downloading and Installing (https://docs.aspose.com//display/wordsnet/DNN+Quote+Generator+Module#DNNQuoteGeneratorModule-Downloading)
+    Using and Video Demo (https://docs.aspose.com//display/wordsnet/DNN+Quote+Generator+Module#DNNQuoteGeneratorModule-Using)
 
 ** Start a Free Trial Today **
 
 Start a free trial today – all you need is to sign up (http://www.aspose.com/community/getting-started.aspx) with the Aspose
-Once you have signed up, you are ready to try the powerful file processing features offered by Aspose.Net (http://www.aspose.com/.net/total-component.aspx)
+Once you have signed up, you are ready to try the powerful file processing features offered by Aspose.Net (https://www.aspose.com/products/total/net)
 
 
-Please feel free to contact us (www.Aspose.com)
+Please feel free to contact us (www.aspose.com)

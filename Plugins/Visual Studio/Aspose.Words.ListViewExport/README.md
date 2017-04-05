@@ -1,5 +1,5 @@
 <h1>Aspose .NET Export ListView To Word Control for Visual Studio</h1>
-<p>Aspose Export ListView To Word Control is an ASP.NET server control which allows exporting contents of ListView into Word Processing document using <a href="http://www.aspose.com/word-component-suite.aspx" rel="nofollow">Aspose.Words</a>. It adds <strong>Export to Word</strong> button on top of the ListView control. Clicking the button dynamically exports the content of the ListView control to a Word Processing document and then automatically downloads the exported file to the disk location selected by the user in just couple of seconds.</p>
+<p>Aspose Export ListView To Word Control is an ASP.NET server control which allows exporting contents of ListView into Word Processing document using <a href="https://www.aspose.com/products/words/net" rel="nofollow">Aspose.Words</a>. It adds <strong>Export to Word</strong> button on top of the ListView control. Clicking the button dynamically exports the content of the ListView control to a Word Processing document and then automatically downloads the exported file to the disk location selected by the user in just couple of seconds.</p>
 <div>
 <p>This initial version of the control provides the following features:</p>
 <ul>
@@ -18,7 +18,8 @@
 <h2>Download, Installation and Usage</h2>
 <p>Please check the links below to find instructions on downloading, installing, configuring and using Export ListView To Word Control.</p>
 <ul>
-<li><a href="http://www.aspose.com/docs/display/wordsnet/8.3.2.1+Downloading+and+Installing">Downloading and Installing</a></li>
-<li><a href="http://www.aspose.com/docs/display/wordsnet/8.3.2.2+Using+and+Video+Demo">Using And Video Demo</a></li>
+<li><a href="https://docs.aspose.com/display/wordsnet/Visual+Studio+Export+ListView+To+Word+Control#VisualStudioExportListViewToWordControl-Downloading">Downloading</a></li>
+<li><a href="https://docs.aspose.com/display/wordsnet/Visual+Studio+Export+ListView+To+Word+Control#VisualStudioExportListViewToWordControl-Installing">Installing</a></li>
+<li><a href="https://docs.aspose.com/display/wordsnet/Visual+Studio+Export+ListView+To+Word+Control#VisualStudioExportListViewToWordControl-Using">Using And Video Demo</a></li>
 </ul>
 </div>

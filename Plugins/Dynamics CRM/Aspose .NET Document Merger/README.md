@@ -1,8 +1,8 @@
 ## Aspose .NET Document Merger for Dynamics CRM 2011
 
-[![aspose Words for net e1378287014402 Aspose .NET Document Merger for Dynamics CRM 2011](http://www.aspose.com/blogs/wp-content/uploads/2013/09/aspose-Words-for-net-e1378287014402.png "Aspose.Words for .NET logo")](http://www.aspose.com/.net/word-component.aspx)The Aspose .NET Document Merger is an open source software development kit to be used with Microsoft Dynamics CRM. We have added a new addon for Dynamics CRM 2011, which is capable of merging documents into one. Easily merge documents into CRM, then replace them with the original documents or create a new one in CRM contact Entity.
+[![aspose Words for net e1378287014402 Aspose .NET Document Merger for Dynamics CRM 2011](http://www.aspose.com/blogs/wp-content/uploads/2013/09/aspose-Words-for-net-e1378287014402.png "Aspose.Words for .NET logo")](https://www.aspose.com/products/words/net)The Aspose .NET Document Merger is an open source software development kit to be used with Microsoft Dynamics CRM. We have added a new addon for Dynamics CRM 2011, which is capable of merging documents into one. Easily merge documents into CRM, then replace them with the original documents or create a new one in CRM contact Entity.
 
-[![free download icon aspose mp Aspose .NET Document Merger for Dynamics CRM 2011](http://cdn.aspose.com/Images/marketplace/free-download-icon-aspose-mp.png "Free Download - Aspose .NET Document Merger")](https://asposenetcrm.codeplex.com/releases/view/574403 "Free Download - Aspose .NET Document Merger")[![open source icon aspose mp Aspose .NET Document Merger for Dynamics CRM 2011](http://cdn.aspose.com/Images/marketplace/open-source-icon-aspose-mp.png "Source Code - Aspose .NET Document Merger")](https://asposenetcrm.codeplex.com/SourceControl/latest#Aspose .NET Document Merger/ "Source Code - Aspose .NET Document Merger")
+[![free download icon aspose mp Aspose .NET Document Merger for Dynamics CRM 2011](http://cdn.aspose.com/Images/marketplace/free-download-icon-aspose-mp.png "Free Download - Aspose .NET Document Merger")](https://asposenetcrm.codeplex.com/releases/view/574403 "Free Download - Aspose .NET Document Merger")[![open source icon aspose mp Aspose .NET Document Merger for Dynamics CRM 2011](http://cdn.aspose.com/Images/marketplace/open-source-icon-aspose-mp.png "Source Code - Aspose .NET Document Merger")](https://asposenetcrm.codeplex.com/SourceControl/latest#Aspose%20.NET%20Document%20Merger/ "Source Code - Aspose .NET Document Merger")
 
 ## Features in this Release
 
@@ -34,7 +34,7 @@ The addon is provided in the form of a solution. You can download the latest sol
 
 ## Using Aspose .NET Document Merger
 
-*   Open any contact record and click on ìDocument Mergerî from the top ribbon.  
+*   Open any contact record and click on ‚ÄúDocument Merger‚Äù from the top ribbon.  
     [![HowToUse1 300x159 Aspose .NET Document Merger for Dynamics CRM 2011](http://www.aspose.com/blogs/wp-content/uploads/2014/12/HowToUse1-300x159.png "HowToUse1")](http://www.aspose.com/blogs/wp-content/uploads/2014/12/HowToUse1.png)
 *   Select the First and Second document to merge and select the output option:  
     [![HowToUse2 300x257 Aspose .NET Document Merger for Dynamics CRM 2011](http://www.aspose.com/blogs/wp-content/uploads/2014/12/HowToUse2-300x257.png "HowToUse2")](http://www.aspose.com/blogs/wp-content/uploads/2014/12/HowToUse2.png)
@@ -42,7 +42,7 @@ The addon is provided in the form of a solution. You can download the latest sol
 
 ## Start a Free Trial Today
 
-Start a free trial today ñ all you need is to [sign up](http://www.aspose.com/community/user/createuser.aspx) with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.
+Start a free trial today ‚Äì all you need is to [sign up](https://idsrv.asposeptyltd.com/identity/signup?clientId=prod.community.aspose) with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.
 
 ## Customer Feedback
 
