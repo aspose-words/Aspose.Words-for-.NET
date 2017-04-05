@@ -12,7 +12,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_Printing
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting();
-
+            // ExStart:SetHorizontalAndVerticalImageResolution
             // Load the documents 
             Document doc = new Document(dataDir + "TestFile.doc");
 
@@ -23,6 +23,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_Printing
             options.PageCount = 1;
 
             doc.Save(dataDir + "Rendering.SaveToImageResolution Out.png", options);
+            // ExEnd:SetHorizontalAndVerticalImageResolution
         }
     }
 }
