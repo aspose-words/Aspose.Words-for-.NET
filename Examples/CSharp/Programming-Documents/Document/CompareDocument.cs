@@ -2,6 +2,7 @@
 using System.IO;
 using Aspose.Words;
 using System;
+using Aspose.Words.Comparison;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
@@ -35,6 +36,24 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             else
                 Console.WriteLine("Documents are not equal");
             // ExEnd:CompareForEqual                     
-        }  
+        }
+
+        private static void CompareDocumentWithCompareOptions(string dataDir)
+        {
+            // ExStart:CompareDocumentWithCompareOptions
+            Document docA = new Document(dataDir + "TestFile.doc");
+            Document docB = new Document(dataDir + "TestFile - Copy.doc");
+
+            CompareOptions options = new CompareOptions();
+            options.IgnoreFormatting = true;
+            options.IgnoreHeadersAndFooters = true;
+            // DocA now contains changes as revisions. 
+            docA.Compare(docB, "user", DateTime.Now, options);
+            if (docA.Revisions.Count == 0)
+                Console.WriteLine("Documents are equal");
+            else
+                Console.WriteLine("Documents are not equal");
+            // ExEnd:CompareDocumentWithCompareOptions                     
+        }
     }
 }
