@@ -239,13 +239,13 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             renderer.Save(stream, imageOptions);
             shape.Remove();
 
-            Rectangle crop = renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.Resolution);
+            Rectangle crop = renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.HorizontalResolution, imageOptions.VerticalResolution);
 
             // Load the image into a new bitmap.
             using (Bitmap renderedImage = new Bitmap(stream))
             {
                 Bitmap croppedImage = new Bitmap(crop.Width, crop.Height);
-                croppedImage.SetResolution(imageOptions.Resolution, imageOptions.Resolution);
+                croppedImage.SetResolution(imageOptions.HorizontalResolution, imageOptions.VerticalResolution);
 
                 // Create the final image with the proper background color.
                 using (Graphics g = Graphics.FromImage(croppedImage))
