@@ -1,4 +1,3 @@
-
 Temp/
 obj/
 classes/
@@ -6,9 +5,10 @@ generated/
 *.suo
 bin/
 * Out*
-*_out*
-*_out_*
 * out*
+* _out*
+* _out_*
+* _Out_*
 *.ldb
 Thumbs.db
 _ReSharper*/
