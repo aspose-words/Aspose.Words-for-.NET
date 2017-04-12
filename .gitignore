@@ -26,5 +26,7 @@ packages/
 Plugins/Aspose_Words_NET_for_PHP/.idea/*
 Plugins/Aspose_Words_NET_for_PHP/vendor/*
 Plugins/Aspose_Words_NET_for_PHP/composer.lock
+Plugins/Visual Studio/Aspose.Words.GridViewExport/Resources/
+Plugins/DotNetNuke/Aspose.DNN.ExportUsersAndRolesToWord/Aspose/
 *.gitattributes
 
