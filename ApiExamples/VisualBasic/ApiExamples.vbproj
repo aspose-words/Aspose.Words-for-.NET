@@ -9,7 +9,7 @@
     <RootNamespace>
     </RootNamespace>
     <AssemblyName>ApiExamples</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Binary</OptionCompare>
     <OptionStrict>Off</OptionStrict>
@@ -107,9 +107,7 @@
     <Compile Include="ExProperties.vb" />
     <Compile Include="ApiExampleBase.vb" />
     <Compile Include="ExRange.vb" />
-    <Compile Include="ExRendering.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="ExRendering.vb" />
     <Compile Include="ExReportingEngine.vb" />
     <Compile Include="ExImageSaveOptions.vb" />
     <Compile Include="ExHtmlSaveOptions.vb" />
