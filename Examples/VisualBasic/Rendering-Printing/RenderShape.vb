@@ -218,12 +218,12 @@ Public Class RenderShape
         renderer.Save(stream, imageOptions)
         shape.Remove()
 
-        Dim crop As Rectangle = renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.Resolution)
+        Dim crop As Rectangle = renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.HorizontalResolution, imageOptions.VerticalResolution)
 
         ' Load the image into a new bitmap.
         Using renderedImage As Bitmap = New Bitmap(stream)
             Dim croppedImage As Bitmap = New Bitmap(crop.Width, crop.Height)
-            croppedImage.SetResolution(imageOptions.Resolution, imageOptions.Resolution)
+            croppedImage.SetResolution(imageOptions.HorizontalResolution, imageOptions.VerticalResolution)
 
             ' Create the final image with the proper background color.
             Using g As Graphics = Graphics.FromImage(croppedImage)
