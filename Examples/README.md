@@ -1,6 +1,6 @@
 Aspose.Words for .NET Examples
 
-This repository contains C# and VB.NET Example Projects for [Aspose.Words for .NET](https://www.aspose.com/products/words/net) which will help you learn Aspose.Words for .NET and write your own applications.
+This repository contains C#, VB.NET and Xamarin Example Projects for [Aspose.Words for .NET](https://www.aspose.com/products/words/net) which will help you learn Aspose.Words for .NET and write your own applications.
 
 
 <p align="center">
