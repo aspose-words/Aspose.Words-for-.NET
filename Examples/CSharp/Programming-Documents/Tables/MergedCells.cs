@@ -308,7 +308,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
                 }
             }
 
-            public override VisitorAction VisitCellStart(Tables.Cell cell)
+            public override VisitorAction VisitCellStart(Cell cell)
             {
                 // Determone index of current table
                 int tabIdx = mWordTables.IndexOf(cell.ParentRow.ParentTable);

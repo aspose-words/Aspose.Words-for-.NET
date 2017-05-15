@@ -259,7 +259,8 @@ namespace Aspose.Words.Examples.CSharp
 
             //// Tables
             //// =====================================================
-            // AutoFitTableToWindow.Run();
+            //AutoFitTableToWindow.Run();
+            //BuildTableFromDataTable.Run();
             // AutoFitTableToContents.Run();
             // AutoFitTableToFixedColumnWidths.Run();
             // InsertTableUsingDocumentBuilder.Run();
@@ -357,7 +358,7 @@ namespace Aspose.Words.Examples.CSharp
             // ScatterChart.Run();
             // BubbleChart.Run();
             // ChartWithFilteringGroupingOrdering.Run();
-            ConditionalBlocks.Run();
+            //ConditionalBlocks.Run();
 
             // Stop before exiting
             Console.WriteLine("\n\nProgram Finished. Press any key to exit....");
