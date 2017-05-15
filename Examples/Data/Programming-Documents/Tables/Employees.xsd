@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:od="urn:schemas-microsoft-com:officedata">
+<xsd:element name="dataroot">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element ref="Employees" minOccurs="0" maxOccurs="unbounded"/>
+</xsd:sequence>
+<xsd:attribute name="generated" type="xsd:dateTime"/>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="Employees">
+<xsd:annotation>
+<xsd:appinfo>
+<od:index index-name="LastName" index-key="LastName " primary="no" unique="no" clustered="no" order="asc"/>
+<od:index index-name="PostalCode" index-key="PostalCode " primary="no" unique="no" clustered="no" order="asc"/>
+<od:index index-name="PrimaryKey" index-key="EmployeeID " primary="yes" unique="yes" clustered="no" order="asc"/>
+<od:tableProperty name="FilterOn" type="1" value="0"/>
+<od:tableProperty name="Description" type="10" value="Employees&apos; names, titles, and personal information."/>
+<od:tableProperty name="OrderOn" type="1" value="0"/>
+<od:tableProperty name="OrderByOn" type="1" value="0"/>
+<od:tableProperty name="Orientation" type="2" value="0"/>
+<od:tableProperty name="NameMap" type="11" value="CswOVQAAAADlESy5w4PSEZeNAKoAYNX5AAAAAG3Qv+wMmOJAAAAAAAAAAABFAG0A
+cABsAG8AeQBlAGUAcwAAAAAAAADmESy5w4PSEZeNAKoAYNX5BwAAAOURLLnDg9IR
+l40AqgBg1flFAG0AcABsAG8AeQBlAGUASQBEAAAAAAAAAOcRLLnDg9IRl40AqgBg
+1fkHAAAA5REsucOD0hGXjQCqAGDV+UwAYQBzAHQATgBhAG0AZQAAAAAAAADoESy5
+w4PSEZeNAKoAYNX5BwAAAOURLLnDg9IRl40AqgBg1flGAGkAcgBzAHQATgBhAG0A
+ZQAAAAAAAADpESy5w4PSEZeNAKoAYNX5BwAAAOURLLnDg9IRl40AqgBg1flUAGkA
+dABsAGUAAAAAAAAA6hEsucOD0hGXjQCqAGDV+QcAAADlESy5w4PSEZeNAKoAYNX5
+VABpAHQAbABlAE8AZgBDAG8AdQByAHQAZQBzAHkAAAAAAAAA6xEsucOD0hGXjQCq
+AGDV+QcAAADlESy5w4PSEZeNAKoAYNX5QgBpAHIAdABoAEQAYQB0AGUAAAAAAAAA
+7BEsucOD0hGXjQCqAGDV+QcAAADlESy5w4PSEZeNAKoAYNX5SABpAHIAZQBEAGEA
+dABlAAAAAAAAAO0RLLnDg9IRl40AqgBg1fkHAAAA5REsucOD0hGXjQCqAGDV+UEA
+ZABkAHIAZQBzAHMAAAAAAAAA7hEsucOD0hGXjQCqAGDV+QcAAADlESy5w4PSEZeN
+AKoAYNX5QwBpAHQAeQAAAAAAAADvESy5w4PSEZeNAKoAYNX5BwAAAOURLLnDg9IR
+l40AqgBg1flSAGUAZwBpAG8AbgAAAAAAAADwESy5w4PSEZeNAKoAYNX5BwAAAOUR
+LLnDg9IRl40AqgBg1flQAG8AcwB0AGEAbABDAG8AZABlAAAAAAAAAPERLLnDg9IR
+l40AqgBg1fkHAAAA5REsucOD0hGXjQCqAGDV+UMAbwB1AG4AdAByAHkAAAAAAAAA
+8hEsucOD0hGXjQCqAGDV+QcAAADlESy5w4PSEZeNAKoAYNX5SABvAG0AZQBQAGgA
+bwBuAGUAAAAAAAAA8xEsucOD0hGXjQCqAGDV+QcAAADlESy5w4PSEZeNAKoAYNX5
+RQB4AHQAZQBuAHMAaQBvAG4AAAAAAAAA9BEsucOD0hGXjQCqAGDV+QcAAADlESy5
+w4PSEZeNAKoAYNX5UABoAG8AdABvAAAAAAAAAPURLLnDg9IRl40AqgBg1fkHAAAA
+5REsucOD0hGXjQCqAGDV+U4AbwB0AGUAcwAAAAAAAAD2ESy5w4PSEZeNAKoAYNX5
+BwAAAOURLLnDg9IRl40AqgBg1flSAGUAcABvAHIAdABzAFQAbwAAAAAAAADLsemz
+cugSSq7rLtoGlxZGBwAAAOURLLnDg9IRl40AqgBg1flQAGgAbwB0AG8AQgBMAE8A
+QgAAAA==
+"/>
+<od:tableProperty name="GUID" type="9" value="5REsucOD0hGXjQCqAGDV+Q==
+"/>
+<od:tableProperty name="DefaultView" type="2" value="2"/>
+</xsd:appinfo>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element name="EmployeeID" minOccurs="1" od:jetType="autonumber" od:sqlSType="int" od:autoUnique="yes" od:nonNullable="yes" type="xsd:int">
+<xsd:annotation>
+<xsd:appinfo>
+<od:fieldProperty name="Description" type="10" value="Number automatically assigned to new employee."/>
+<od:fieldProperty name="ColumnOrder" type="3" value="0"/>
+<od:fieldProperty name="ColumnHidden" type="1" value="0"/>
+<od:fieldProperty name="ColumnWidth" type="3" value="1350"/>
+<od:fieldProperty name="Caption" type="12" value="Employee ID"/>
+<od:fieldProperty name="FilterLookup" type="2" value="1"/>
+<od:fieldProperty name="GUID" type="9" value="5hEsucOD0hGXjQCqAGDV+Q==
+"/>
+</xsd:appinfo>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="LastName" minOccurs="1" od:jetType="text" od:sqlSType="nvarchar" od:nonNullable="yes">
+<xsd:annotation>
+<xsd:appinfo>
+<od:fieldProperty name="Required" type="1" value="1"/>
+<od:fieldProperty name="AllowZeroLength" type="1" value="0"/>
+<od:fieldProperty name="ColumnOrder" type="3" value="0"/>
+<od:fieldProperty name="ColumnHidden" type="1" value="0"/>
+<od:fieldProperty name="ColumnWidth" type="3" value="1155"/>
+<od:fieldProperty name="Caption" type="12" value="Last Name"/>
+<od:fieldProperty name="DisplayControl" type="3" value="109"/>
+<od:fieldProperty name="FilterLookup" type="2" value="1"/>
+<od:fieldProperty name="UnicodeCompression" type="1" value="1"/>
+<od:fieldProperty name="GUID" type="9" value="5xEsucOD0hGXjQCqAGDV+Q==
+"/>
+<od:fieldProperty name="IMEMode" type="2" value="0"/>
+<od:fieldProperty name="IMESentenceMode" type="2" value="3"/>
+</xsd:appinfo>
+</xsd:annotation>
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="20"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:element>
+<xsd:element name="FirstName" minOccurs="1" od:jetType="text" od:sqlSType="nvarchar" od:nonNullable="yes">
+<xsd:annotation>
+<xsd:appinfo>
+<od:fieldProperty name="Required" type="1" value="1"/>
+<od:fieldProperty name="AllowZeroLength" type="1" value="0"/>
+<od:fieldProperty name="ColumnOrder" type="3" value="0"/>
+<od:fieldProperty name="ColumnHidden" type="1" value="0"/>
+<od:fieldProperty name="ColumnWidth" type="3" value="1170"/>
+<od:fieldProperty name="Caption" type="12" value="First Name"/>
+<od:fieldProperty name="DisplayControl" type="3" value="109"/>
+<od:fieldProperty name="FilterLookup" type="2" value="1"/>
+<od:fieldProperty name="UnicodeCompression" type="1" value="1"/>
+<od:fieldProperty name="GUID" type="9" value="6BEsucOD0hGXjQCqAGDV+Q==
+"/>
+<od:fieldProperty name="IMEMode" type="2" value="0"/>
+<od:fieldProperty name="IMESentenceMode" type="2" value="3"/>
+</xsd:appinfo>
+</xsd:annotation>
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="10"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:element>
+<xsd:element name="Title" minOccurs="0" od:jetType="text" od:sqlSType="nvarchar">
+<xsd:annotation>
+<xsd:appinfo>
+<od:fieldProperty name="Description" type="10" value="Employee&apos;s title."/>
+<od:fieldProperty name="Required" type="1" value="0"/>
+<od:fieldProperty name="AllowZeroLength" type="1" value="0"/>
+<od:fieldProperty name="ColumnOrder" type="3" value="0"/>
+<od:fieldProperty name="ColumnHidden" type="1" value="0"/>
+<od:fieldProperty name="ColumnWidth" type="3" value="2265"/>
+<od:fieldProperty name="DisplayControl" type="3" value="109"/>
+<od:fieldProperty name="FilterLookup" type="2" value="1"/>
+<od:fieldProperty name="UnicodeCompression" type="1" value="1"/>
+<od:fieldProperty name="GUID" type="9" value="6REsucOD0hGXjQCqAGDV+Q==
+"/>
+<od:fieldProperty name="IMEMode" type="2" value="0"/>
+<od:fieldProperty name="IMESentenceMode" type="2" value="3"/>
+</xsd:appinfo>
+</xsd:annotation>
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="30"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:element>
+<xsd:element name="TitleOfCourtesy" minOccurs="0" od:jetType="text" od:sqlSType="nvarchar">
+<xsd:annotation>
+<xsd:appinfo>
+<od:fieldProperty name="ColumnWidth" type="3" value="840"/>
+<od:fieldProperty name="ColumnOrder" type="3" value="0"/>
+<od:fieldProperty name="ColumnHidden" type="1" value="0"/>
+<od:fieldProperty name="Description" type="10" value="Title used in salutations."/>
+<od:fieldProperty name="Caption" type="12" value="Title Of Courtesy"/>
+<od:fieldProperty name="Required" type="1" value="0"/>
+<od:fieldProperty name="AllowZeroLength" type="1" value="0"/>
+<od:fieldProperty name="DisplayControl" type="3" value="111"/>
+<od:fieldProperty name="RowSourceType" type="10" value="Value List"/>
+<od:fieldProperty name="RowSource" type="12" value="Dr.;Mr.;Miss;Mrs.;Ms."/>
+<od:fieldProperty name="BoundColumn" type="3" value="1"/>
+<od:fieldProperty name="ColumnCount" type="3" value="1"/>
+<od:fieldProperty name="ColumnHeads" type="1" value="0"/>
+<od:fieldProperty name="ListRows" type="3" value="8"/>
+<od:fieldProperty name="ListWidth" type="10" value="0twip"/>
+<od:fieldProperty name="LimitToList" type="1" value="0"/>
+<od:fieldProperty name="FilterLookup" type="2" value="1"/>
+<od:fieldProperty name="UnicodeCompression" type="1" value="1"/>
+<od:fieldProperty name="GUID" type="9" value="6hEsucOD0hGXjQCqAGDV+Q==
+"/>
+<od:fieldProperty name="IMEMode" type="2" value="0"/>
+<od:fieldProperty name="IMESentenceMode" type="2" value="3"/>
+</xsd:appinfo>
+</xsd:annotation>
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="25"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:element>
+<xsd:element name="BirthDate" minOccurs="0" od:jetType="datetime" od:sqlSType="datetime" type="xsd:dateTime">
+<xsd:annotation>
+<xsd:appinfo>
+<od:fieldProperty name="Format" type="10" value="dd-mmm-yyyy"/>
+<od:fieldProperty name="Required" type="1" value="0"/>
+<od:fieldProperty name="ColumnOrder" type="3" value="0"/>
+<od:fieldProperty name="ColumnHidden" type="1" value="0"/>
+<od:fieldProperty name="ColumnWidth" type="3" value="1275"/>
+<od:fieldProperty name="Caption" type="12" value="Birth Date"/>
+<od:fieldProperty name="FilterLookup" type="2" value="1"/>
+<od:fieldProperty name="ValidationRule" type="12" value="&lt;Date()"/>
+<od:fieldProperty name="ValidationText" type="10" value="Birth date can&apos;t be in the future."/>
+<od:fieldProperty name="GUID" type="9" value="6xEsucOD0hGXjQCqAGDV+Q==
+"/>
+<od:fieldProperty name="IMEMode" type="2" value="0"/>
+<od:fieldProperty name="IMESentenceMode" type="2" value="3"/>
+</xsd:appinfo>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="HireDate" minOccurs="0" od:jetType="datetime" od:sqlSType="datetime" type="xsd:dateTime">
+<xsd:annotation>
+<xsd:appinfo>
+<od:fieldProperty name="Format" type="10" value="dd-mmm-yyyy"/>
+<od:fieldProperty name="Required" type="1" value="0"/>
+<od:fieldProperty name="ColumnOrder" type="3" value="0"/>
+<od:fieldProperty name="ColumnHidden" type="1" value="0"/>
+<od:fieldProperty name="ColumnWidth" type="3" value="1275"/>
+<od:fieldProperty name="Caption" type="12" value="Hire Date"/>
+<od:fieldProperty name="FilterLookup" type="2" value="1"/>
+<od:fieldProperty name="GUID" type="9" value="7BEsucOD0hGXjQCqAGDV+Q==
+"/>
+<od:fieldProperty name="IMEMode" type="2" value="0"/>
+<od:fieldProperty name="IMESentenceMode" type="2" value="3"/>
+</xsd:appinfo>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="Address" minOccurs="0" od:jetType="text" od:sqlSType="nvarchar">
+<xsd:annotation>
+<xsd:appinfo>
+<od:fieldProperty name="Description" type="10" value="Street or post-office box."/>
+<od:fieldProperty name="Required" type="1" value="0"/>
+<od:fieldProperty name="AllowZeroLength" type="1" value="0"/>
+<od:fieldProperty name="ColumnOrder" type="3" value="0"/>
+<od:fieldProperty name="ColumnHidden" type="1" value="0"/>
+<od:fieldProperty name="ColumnWidth" type="3" value="2220"/>
+<od:fieldProperty name="DisplayControl" type="3" value="109"/>
+<od:fieldProperty name="FilterLookup" type="2" value="1"/>
+<od:fieldProperty name="UnicodeCompression" type="1" value="1"/>
+<od:fieldProperty name="GUID" type="9" value="7REsucOD0hGXjQCqAGDV+Q==
+"/>
+<od:fieldProperty name="IMEMode" type="2" value="0"/>
+<od:fieldProperty name="IMESentenceMode" type="2" value="3"/>
+</xsd:appinfo>
+</xsd:annotation>
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="60"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:element>
+<xsd:element name="City" minOccurs="0" od:jetType="text" od:sqlSType="nvarchar">
+<xsd:annotation>
+<xsd:appinfo>
+<od:fieldProperty name="Required" type="1" value="0"/>
+<od:fieldProperty name="AllowZeroLength" type="1" value="0"/>
+<od:fieldProperty name="ColumnOrder" type="3" value="0"/>
+<od:fieldProperty name="ColumnHidden" type="1" value="0"/>
+<od:fieldProperty name="ColumnWidth" type="3" value="1215"/>
+<od:fieldProperty name="DisplayControl" type="3" value="109"/>
+<od:fieldProperty name="FilterLookup" type="2" value="1"/>
+<od:fieldProperty name="UnicodeCompression" type="1" value="1"/>
+<od:fieldProperty name="GUID" type="9" value="7hEsucOD0hGXjQCqAGDV+Q==
+"/>
+<od:fieldProperty name="IMEMode" type="2" value="0"/>
+<od:fieldProperty name="IMESentenceMode" type="2" value="3"/>
+</xsd:appinfo>
+</xsd:annotation>
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="15"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:element>
+<xsd:element name="Region" minOccurs="0" od:jetType="text" od:sqlSType="nvarchar">
+<xsd:annotation>
+<xsd:appinfo>
+<od:fieldProperty name="Description" type="10" value="State or province."/>
+<od:fieldProperty name="Required" type="1" value="0"/>
+<od:fieldProperty name="AllowZeroLength" type="1" value="0"/>
+<od:fieldProperty name="ColumnOrder" type="3" value="0"/>
+<od:fieldProperty name="ColumnHidden" type="1" value="0"/>
+<od:fieldProperty name="ColumnWidth" type="3" value="945"/>
+<od:fieldProperty name="DisplayControl" type="3" value="109"/>
+<od:fieldProperty name="FilterLookup" type="2" value="1"/>
+<od:fieldProperty name="UnicodeCompression" type="1" value="1"/>
+<od:fieldProperty name="GUID" type="9" value="7xEsucOD0hGXjQCqAGDV+Q==
+"/>
+<od:fieldProperty name="IMEMode" type="2" value="0"/>
+<od:fieldProperty name="IMESentenceMode" type="2" value="3"/>
+</xsd:appinfo>
+</xsd:annotation>
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="15"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:element>
+<xsd:element name="PostalCode" minOccurs="0" od:jetType="text" od:sqlSType="nvarchar">
+<xsd:annotation>
+<xsd:appinfo>
+<od:fieldProperty name="Required" type="1" value="0"/>
+<od:fieldProperty name="AllowZeroLength" type="1" value="0"/>
+<od:fieldProperty name="ColumnOrder" type="3" value="0"/>
+<od:fieldProperty name="ColumnHidden" type="1" value="0"/>
+<od:fieldProperty name="ColumnWidth" type="3" value="1290"/>
+<od:fieldProperty name="Caption" type="12" value="Postal Code"/>
+<od:fieldProperty name="DisplayControl" type="3" value="109"/>
+<od:fieldProperty name="FilterLookup" type="2" value="1"/>
+<od:fieldProperty name="UnicodeCompression" type="1" value="1"/>
+<od:fieldProperty name="GUID" type="9" value="8BEsucOD0hGXjQCqAGDV+Q==
+"/>
+<od:fieldProperty name="IMEMode" type="2" value="0"/>
+<od:fieldProperty name="IMESentenceMode" type="2" value="3"/>
+</xsd:appinfo>
+</xsd:annotation>
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="10"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:element>
+<xsd:element name="Country" minOccurs="0" od:jetType="text" od:sqlSType="nvarchar">
+<xsd:annotation>
+<xsd:appinfo>
+<od:fieldProperty name="Required" type="1" value="0"/>
+<od:fieldProperty name="AllowZeroLength" type="1" value="0"/>
+<od:fieldProperty name="ColumnOrder" type="3" value="0"/>
+<od:fieldProperty name="ColumnHidden" type="1" value="0"/>
+<od:fieldProperty name="ColumnWidth" type="3" value="885"/>
+<od:fieldProperty name="DisplayControl" type="3" value="109"/>
+<od:fieldProperty name="FilterLookup" type="2" value="1"/>
+<od:fieldProperty name="UnicodeCompression" type="1" value="1"/>
+<od:fieldProperty name="GUID" type="9" value="8REsucOD0hGXjQCqAGDV+Q==
+"/>
+<od:fieldProperty name="IMEMode" type="2" value="0"/>
+<od:fieldProperty name="IMESentenceMode" type="2" value="3"/>
+</xsd:appinfo>
+</xsd:annotation>
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="15"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:element>
+<xsd:element name="HomePhone" minOccurs="0" od:jetType="text" od:sqlSType="nvarchar">
+<xsd:annotation>
+<xsd:appinfo>
+<od:fieldProperty name="Description" type="10" value="Phone number includes country code or area code."/>
+<od:fieldProperty name="Required" type="1" value="0"/>
+<od:fieldProperty name="AllowZeroLength" type="1" value="0"/>
+<od:fieldProperty name="ColumnOrder" type="3" value="0"/>
+<od:fieldProperty name="ColumnHidden" type="1" value="0"/>
+<od:fieldProperty name="ColumnWidth" type="3" value="1440"/>
+<od:fieldProperty name="Caption" type="12" value="Home Phone"/>
+<od:fieldProperty name="DisplayControl" type="3" value="109"/>
+<od:fieldProperty name="FilterLookup" type="2" value="1"/>
+<od:fieldProperty name="UnicodeCompression" type="1" value="1"/>
+<od:fieldProperty name="GUID" type="9" value="8hEsucOD0hGXjQCqAGDV+Q==
+"/>
+<od:fieldProperty name="IMEMode" type="2" value="0"/>
+<od:fieldProperty name="IMESentenceMode" type="2" value="3"/>
+</xsd:appinfo>
+</xsd:annotation>
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="24"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:element>
+<xsd:element name="Extension" minOccurs="0" od:jetType="text" od:sqlSType="nvarchar">
+<xsd:annotation>
+<xsd:appinfo>
+<od:fieldProperty name="Description" type="10" value="Internal telephone extension number."/>
+<od:fieldProperty name="Required" type="1" value="0"/>
+<od:fieldProperty name="AllowZeroLength" type="1" value="0"/>
+<od:fieldProperty name="ColumnOrder" type="3" value="0"/>
+<od:fieldProperty name="ColumnHidden" type="1" value="0"/>
+<od:fieldProperty name="ColumnWidth" type="3" value="1080"/>
+<od:fieldProperty name="DisplayControl" type="3" value="109"/>
+<od:fieldProperty name="FilterLookup" type="2" value="1"/>
+<od:fieldProperty name="UnicodeCompression" type="1" value="1"/>
+<od:fieldProperty name="GUID" type="9" value="8xEsucOD0hGXjQCqAGDV+Q==
+"/>
+<od:fieldProperty name="IMEMode" type="2" value="0"/>
+<od:fieldProperty name="IMESentenceMode" type="2" value="3"/>
+</xsd:appinfo>
+</xsd:annotation>
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="4"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:element>
+<xsd:element name="Photo" minOccurs="0" od:jetType="oleobject" od:sqlSType="image">
+<xsd:annotation>
+<xsd:appinfo>
+<od:fieldProperty name="Description" type="10" value="Picture of employee."/>
+<od:fieldProperty name="Required" type="1" value="0"/>
+<od:fieldProperty name="ColumnOrder" type="3" value="0"/>
+<od:fieldProperty name="ColumnHidden" type="1" value="0"/>
+<od:fieldProperty name="ColumnWidth" type="3" value="1815"/>
+<od:fieldProperty name="FilterLookup" type="2" value="1"/>
+<od:fieldProperty name="GUID" type="9" value="9BEsucOD0hGXjQCqAGDV+Q==
+"/>
+</xsd:appinfo>
+</xsd:annotation>
+<xsd:simpleType>
+<xsd:restriction base="xsd:base64Binary">
+<xsd:maxLength value="1476395008"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:element>
+<xsd:element name="Notes" minOccurs="0" od:jetType="memo" od:sqlSType="ntext">
+<xsd:annotation>
+<xsd:appinfo>
+<od:fieldProperty name="Description" type="10" value="General information about employee&apos;s background."/>
+<od:fieldProperty name="Required" type="1" value="0"/>
+<od:fieldProperty name="AllowZeroLength" type="1" value="0"/>
+<od:fieldProperty name="ColumnWidth" type="3" value="4350"/>
+<od:fieldProperty name="ColumnOrder" type="3" value="0"/>
+<od:fieldProperty name="ColumnHidden" type="1" value="0"/>
+<od:fieldProperty name="FilterLookup" type="2" value="1"/>
+<od:fieldProperty name="UnicodeCompression" type="1" value="1"/>
+<od:fieldProperty name="GUID" type="9" value="9REsucOD0hGXjQCqAGDV+Q==
+"/>
+<od:fieldProperty name="IMEMode" type="2" value="0"/>
+<od:fieldProperty name="IMESentenceMode" type="2" value="3"/>
+</xsd:appinfo>
+</xsd:annotation>
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="536870910"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:element>
+<xsd:element name="ReportsTo" minOccurs="0" od:jetType="longinteger" od:sqlSType="int" type="xsd:int">
+<xsd:annotation>
+<xsd:appinfo>
+<od:fieldProperty name="ColumnWidth" type="3" value="2190"/>
+<od:fieldProperty name="ColumnOrder" type="3" value="0"/>
+<od:fieldProperty name="ColumnHidden" type="1" value="0"/>
+<od:fieldProperty name="Description" type="10" value="Employee&apos;s supervisor."/>
+<od:fieldProperty name="DecimalPlaces" type="2" value="255"/>
+<od:fieldProperty name="Caption" type="12" value="Reports To"/>
+<od:fieldProperty name="Required" type="1" value="0"/>
+<od:fieldProperty name="DisplayControl" type="3" value="111"/>
+<od:fieldProperty name="RowSourceType" type="10" value="Table/Query"/>
+<od:fieldProperty name="RowSource" type="12" value="SELECT Employees.EmployeeID, [LastName] &amp; &quot;, &quot; &amp; [FirstName] AS Name FROM Employees ORDER BY Employees.LastName, Employees.FirstName; "/>
+<od:fieldProperty name="BoundColumn" type="3" value="1"/>
+<od:fieldProperty name="ColumnCount" type="3" value="2"/>
+<od:fieldProperty name="ColumnHeads" type="1" value="0"/>
+<od:fieldProperty name="ColumnWidths" type="10" value="0"/>
+<od:fieldProperty name="ListRows" type="3" value="8"/>
+<od:fieldProperty name="ListWidth" type="10" value="0twip"/>
+<od:fieldProperty name="LimitToList" type="1" value="1"/>
+<od:fieldProperty name="GUID" type="9" value="9hEsucOD0hGXjQCqAGDV+Q==
+"/>
+</xsd:appinfo>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="PhotoBLOB" minOccurs="0" od:jetType="oleobject" od:sqlSType="image">
+<xsd:annotation>
+<xsd:appinfo>
+<od:fieldProperty name="ColumnWidth" type="3" value="-1"/>
+<od:fieldProperty name="ColumnOrder" type="3" value="0"/>
+<od:fieldProperty name="ColumnHidden" type="1" value="0"/>
+<od:fieldProperty name="Description" type="10" value="Cannot use Photo field in Aspose.Word demo because it contains an OLE object but we need just an image hence this field."/>
+<od:fieldProperty name="Required" type="1" value="0"/>
+<od:fieldProperty name="GUID" type="9" value="zQs4XYL4eEq3HrPwlUGPfA==
+"/>
+</xsd:appinfo>
+</xsd:annotation>
+<xsd:simpleType>
+<xsd:restriction base="xsd:base64Binary">
+<xsd:maxLength value="1476395008"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:element>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:schema>
