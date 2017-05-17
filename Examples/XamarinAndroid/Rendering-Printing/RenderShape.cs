@@ -25,10 +25,9 @@ namespace XamarinAndroid.Rendering_Printing
             return RenderShapeToGraphics(Path.GetDirectoryName(fileName), shape);
         }
 
-
+		// ExStart:RenderShapeToGraphics
         public static string RenderShapeToGraphics(string dataDir, Shape shape)
         {
-            // ExStart:RenderShapeToGraphics
             ShapeRenderer r = shape.GetShapeRenderer();
 
             // Find the size that the shape will be rendered to at the specified scale and resolution.
@@ -66,8 +65,8 @@ namespace XamarinAndroid.Rendering_Printing
                 }
             }
 
-            return "\nShape rendered to graphics successfully.\nFile saved at " + dataDir;
-            // ExEnd:RenderShapeToGraphics
+            return "\nShape rendered to graphics successfully.\nFile saved at " + dataDir;            
         }
+		// ExEnd:RenderShapeToGraphics
     }
 }
