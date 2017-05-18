@@ -21,6 +21,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             ApplyRowFormatting(dataDir);
             ModifyCellFormatting(dataDir);
             FormatTableAndCellWithDifferentBorders(dataDir);
+            SetCellPadding(dataDir);
         }
         /// <summary>
         /// Shows how to apply outline border to a table.
