@@ -46,9 +46,9 @@
       <HintPath>..\packages\Aspose.Email.17.5.0\lib\net40\Aspose.Email.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Aspose.Words, Version=17.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.17.4.0\lib\net40\Aspose.Words.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Aspose.Words, Version=17.5.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Aspose.Words.17.5.0\lib\net20\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -168,6 +168,8 @@
     <Compile Include="Programming-Documents\Fields\ChangeFieldUpdateCultureSource.cs" />
     <Compile Include="Programming-Documents\Fields\ChangeLocale.cs" />
     <Compile Include="Programming-Documents\Fields\GetFieldNames.cs" />
+    <Compile Include="Programming-Documents\Fields\InsertIncludeFieldWithoutDocumentBuilder.cs" />
+    <Compile Include="Programming-Documents\Fields\InsertTOAFieldWithoutDocumentBuilder.cs" />
     <Compile Include="Programming-Documents\Fields\RenameMergeFields.cs" />
     <Compile Include="Programming-Documents\Fields\FormFieldsWorkWithProperties.cs" />
     <Compile Include="Programming-Documents\Fields\FormFieldsGetByName.cs" />
@@ -192,6 +194,7 @@
     <Compile Include="Programming-Documents\Node\ExNode.cs" />
     <Compile Include="Programming-Documents\Ranges\RangesDeleteText.cs" />
     <Compile Include="Programming-Documents\Ranges\RangesGetText.cs" />
+    <Compile Include="Programming-Documents\StructuredDocumentTag\BindSDTtoCustomXmlPart.cs" />
     <Compile Include="Programming-Documents\Styles\ChangeStyleOfTOCLevel.cs" />
     <Compile Include="Programming-Documents\Styles\ChangeTOCTabStops.cs" />
     <Compile Include="Programming-Documents\Tables\BuildTableFromDataTable.cs" />
@@ -391,6 +394,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

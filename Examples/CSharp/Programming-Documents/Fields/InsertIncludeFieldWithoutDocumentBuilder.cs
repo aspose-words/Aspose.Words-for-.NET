@@ -15,6 +15,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
             Document doc = new Document(dataDir + "in.doc");
+            // Get paragraph you want to append this INCLUDETEXT field to
             Paragraph para = (Paragraph)doc.GetChildNodes(NodeType.Paragraph, true)[1];
 
             // We want to insert an INCLUDETEXT field like this:
@@ -34,6 +35,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
             doc.Save(dataDir);
 
             // ExEnd:InsertIncludeFieldWithoutDocumentBuilder
+            Console.WriteLine("\nInclude field without using document builder inserted successfully.\nFile saved at " + dataDir);
         }
     }
 }
