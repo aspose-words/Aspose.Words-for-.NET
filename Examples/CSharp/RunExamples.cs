@@ -27,6 +27,7 @@ using System.Linq;
 using System.Text;
 using LINQ = Aspose.Words.Examples.CSharp.LINQ;
 using QucikStart = Aspose.Words.Examples.CSharp.Quick_Start;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_StructuredDocumentTag;
 
 namespace Aspose.Words.Examples.CSharp
 {
@@ -212,6 +213,8 @@ namespace Aspose.Words.Examples.CSharp
             // RenameMergeFields.Run();
             // ChangeFieldUpdateCultureSource.Run();
             // GetFieldNames.Run();
+            //InsertTOAFieldWithoutDocumentBuilder.Run();
+            //InsertIncludeFieldWithoutDocumentBuilder.Run();
 
             //// Images
             //// =====================================================
@@ -288,6 +291,9 @@ namespace Aspose.Words.Examples.CSharp
             // CloneSection.Run();
             // CopySection.Run();
 
+            //// StructuredDocumentTag 
+            //// =====================================================
+            //BindSDTtoCustomXmlPart.Run();
 
             //// =====================================================
             //// =====================================================
@@ -432,6 +438,11 @@ namespace Aspose.Words.Examples.CSharp
         public static String GetDataDir_WorkingWithRanges()
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Ranges/");
+        }
+
+        public static String GetDataDir_WorkingWithStructuredDocumentTag()
+        {
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/StructuredDocumentTag/");
         }
         public static String GetDataDir_WorkingWithImages()
         {

@@ -122,6 +122,34 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             // ExEnd:ApplyRowFormatting
             Console.WriteLine("\nRow formatting applied successfully.\nFile saved at " + dataDir);
         }
+
+        /// <summary>
+        /// Shows how to modify formatting of a table cell.
+        /// </summary>
+        private static void SetCellPadding(string dataDir)
+        {
+            // ExStart:SetCellPadding
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.StartTable();
+            builder.InsertCell();
+
+            //Sets the amount of space (in points) to add to the left/top/right/bottom of the contents of cell. 
+            builder.CellFormat.SetPaddings(30, 50, 30, 50);
+            builder.Writeln("I'm a wonderful formatted cell.");
+
+            builder.EndRow();
+            builder.EndTable();
+
+            dataDir = dataDir + "Table.SetCellPadding_out.doc";
+
+            // Save the document to disk.
+            doc.Save(dataDir);
+            // ExEnd:SetCellPadding
+            Console.WriteLine("\nCell padding is set successfully.");
+        }
+
         /// <summary>
         /// Shows how to modify formatting of a table cell.
         /// </summary>
