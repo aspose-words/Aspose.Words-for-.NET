@@ -19,12 +19,12 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
             Paragraph para = (Paragraph)doc.GetChildNodes(NodeType.Paragraph, true)[1];
 
             // We want to insert an INCLUDETEXT field like this:
-            // { INCLUDETEXT  "c:\\temp\\input.txt" }
+            // { INCLUDETEXT  "file path" }
 
             // Create instance of FieldAsk class and lets build the above field code
             FieldInclude fieldinclude = (FieldInclude)para.AppendField(FieldType.FieldInclude, false);
             fieldinclude.BookmarkName = "bookmark";
-            fieldinclude.SourceFullName = @"c:\temp\input.docx";
+            fieldinclude.SourceFullName = dataDir + @"IncludeText.docx";
 
             doc.FirstSection.Body.AppendChild(para);
 
