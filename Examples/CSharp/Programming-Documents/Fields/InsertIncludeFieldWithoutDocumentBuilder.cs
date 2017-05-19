@@ -28,7 +28,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 
             doc.FirstSection.Body.AppendChild(para);
 
-            // Finally update this TOA field
+            // Finally update this Include field
             fieldinclude.Update();
 
             dataDir = dataDir + "InsertIncludeFieldWithoutDocumentBuilder_out.doc";
