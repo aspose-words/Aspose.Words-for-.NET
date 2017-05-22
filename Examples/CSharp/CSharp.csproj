@@ -38,8 +38,8 @@
     <StartupObject>Aspose.Words.Examples.CSharp.RunExamples</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.BarCode, Version=17.3.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.BarCode.17.3.0.1\lib\net4.0\Aspose.BarCode.dll</HintPath>
+    <Reference Include="Aspose.BarCode, Version=17.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.BarCode.17.4.0\lib\net4.5\Aspose.BarCode.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Aspose.Email, Version=17.5.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
@@ -47,8 +47,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Aspose.Words, Version=17.5.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Aspose.Words.17.5.0\lib\net20\Aspose.Words.dll</HintPath>
+      <HintPath>..\packages\Aspose.Words.17.5\lib\net40\Aspose.Words.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

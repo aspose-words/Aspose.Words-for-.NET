@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 {
-    class InsertIncludeFieldWithoutDocumentBuilder
+    class InsertFieldIncludeTextWithoutDocumentBuilder
     {
         public static void Run()
         {
-            // ExStart:InsertIncludeFieldWithoutDocumentBuilder
+            // ExStart:InsertFieldIncludeTextWithoutDocumentBuilder
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithFields();
             Document doc = new Document(dataDir + "in.doc");
@@ -22,20 +22,20 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
             // { INCLUDETEXT  "file path" }
 
             // Create instance of FieldAsk class and lets build the above field code
-            FieldInclude fieldinclude = (FieldInclude)para.AppendField(FieldType.FieldInclude, false);
-            fieldinclude.BookmarkName = "bookmark";
-            fieldinclude.SourceFullName = dataDir + @"IncludeText.docx";
+            FieldIncludeText fieldIncludeText = (FieldIncludeText)para.AppendField(FieldType.FieldIncludeText, false);
+            fieldIncludeText.BookmarkName = "bookmark";
+            fieldIncludeText.SourceFullName = dataDir + @"IncludeText.docx";
 
             doc.FirstSection.Body.AppendChild(para);
 
-            // Finally update this Include field
-            fieldinclude.Update();
+            // Finally update this IncludeText field
+            fieldIncludeText.Update();
 
             dataDir = dataDir + "InsertIncludeFieldWithoutDocumentBuilder_out.doc";
             doc.Save(dataDir);
 
-            // ExEnd:InsertIncludeFieldWithoutDocumentBuilder
-            Console.WriteLine("\nInclude field without using document builder inserted successfully.\nFile saved at " + dataDir);
+            // ExEnd:InsertFieldIncludeTextWithoutDocumentBuilder
+            Console.WriteLine("\nIncludeText field without using document builder inserted successfully.\nFile saved at " + dataDir);
         }
     }
 }
