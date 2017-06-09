@@ -23,6 +23,26 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             ApplyParagraphStyle(dataDir);
             ApplyBordersAndShadingToParagraph(dataDir);
         }
+
+        public static void SetSpacebetweenAsianandLatintext(string dataDir)
+        {
+            // ExStart:DocumentBuilderSetSpacebetweenAsianandLatintext
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set paragraph formatting properties
+            ParagraphFormat paragraphFormat = builder.ParagraphFormat;
+            paragraphFormat.AddSpaceBetweenFarEastAndAlpha = true;
+            paragraphFormat.AddSpaceBetweenFarEastAndDigit = true;
+
+            builder.Writeln("Automatically adjust space between Asian and Latin text");
+            builder.Writeln("Automatically adjust space between Asian text and numbers");
+
+            dataDir = dataDir + "DocumentBuilderSetSpacebetweenAsianandLatintext.doc";
+            doc.Save(dataDir);
+            // ExEnd:DocumentBuilderSetSpacebetweenAsianandLatintext
+            Console.WriteLine("\nParagraphFormat properties AddSpaceBetweenFarEastAndAlpha and AddSpaceBetweenFarEastAndDigit set successfully.\nFile saved at " + dataDir);
+        }
         public static void SetFontFormatting(string dataDir)
         {
             // ExStart:DocumentBuilderSetFontFormatting
