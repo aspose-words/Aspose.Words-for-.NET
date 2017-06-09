@@ -91,6 +91,7 @@
     <Compile Include="Loading-and-Saving\ConvertDocumentToMhtmlAndEmail.cs" />
     <Compile Include="Loading-and-Saving\DigitallySignedPdfUsingCertificateHolder.cs" />
     <Compile Include="Loading-and-Saving\ExportResourcesUsingHtmlSaveOptions.cs" />
+    <Compile Include="Loading-and-Saving\LoadAndSaveHtmlFormFieldasContentControlinDOCX.cs" />
     <Compile Include="Loading-and-Saving\SaveAsTxt.cs" />
     <Compile Include="Loading-and-Saving\ImageLoadingWithCredentialsHandler.cs" />
     <Compile Include="Loading-and-Saving\LoadAndSaveDocToDatabase.cs" />
