@@ -2,7 +2,6 @@
 using System.IO;
 using Aspose.Words;
 using System;
-using Aspose.Words.Comparison;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
@@ -15,6 +14,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             NormalComparison(dataDir);
             CompareForEqual(dataDir);
         }             
+
         private static void NormalComparison(string dataDir)
         {
             // ExStart:NormalComparison
