@@ -411,6 +411,12 @@ namespace Aspose.Words.Examples.CSharp
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Document/");
         }
+
+        public static String GetDataDir_WorkingWithShapes()
+        {
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Shapes/");
+        }
+        
         public static String GetDataDir_WorkingWithFields()
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Fields/");

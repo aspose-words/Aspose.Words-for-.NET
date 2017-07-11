@@ -46,8 +46,8 @@
       <HintPath>..\packages\Aspose.Email.17.5.0\lib\net40\Aspose.Email.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Aspose.Words, Version=17.6.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.17.6\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=17.7.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.17.7\lib\net40\Aspose.Words.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -89,6 +89,7 @@
     <Compile Include="Loading-and-Saving\ConvertDocumentToEPUB.cs" />
     <Compile Include="Loading-and-Saving\ConvertDocumentToHtmlWithRoundtrip.cs" />
     <Compile Include="Loading-and-Saving\ConvertDocumentToMhtmlAndEmail.cs" />
+    <Compile Include="Loading-and-Saving\ConvertDocumentToPCL.cs" />
     <Compile Include="Loading-and-Saving\DigitallySignedPdfUsingCertificateHolder.cs" />
     <Compile Include="Loading-and-Saving\ExportResourcesUsingHtmlSaveOptions.cs" />
     <Compile Include="Loading-and-Saving\LoadAndSaveHtmlFormFieldasContentControlinDOCX.cs" />
