@@ -22,6 +22,6 @@ Directory | Description
 + **Product Home:** [Aspose.Words for .NET](https://www.aspose.com/products/words/net)
 + **Download:** [Download Aspose.Words for .NET](https://downloads.aspose.com/words/net)
 + **Documentation:** [Aspose.Words for .NET Documentation](https://docs.aspose.com//display/wordsnet/Home)
-+ **Free Support Forum:** [Aspose.Words for .NET Free Support Forum](https://forum.aspose.com/)
++ **Free Support Forum:** [Aspose.Words for .NET Free Support Forum](https://forum.aspose.com/c/words)
 + **Paid Support Helpdesk:** [Aspose.Words for .NET Paid Support Helpdesk](https://helpdesk.aspose.com/)
 + **Blog:** [Aspose.Words for .NET Blog](https://blog.aspose.com/category/aspose-products/aspose-words-product-family/)
