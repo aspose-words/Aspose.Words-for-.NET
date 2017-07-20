@@ -606,7 +606,7 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Rendering.MissingFontNotification.pdf");
 
             Assert.True(callback.mFontWarnings[0].Description.Equals("Font substitutes: 'Arial' replaced with 'Arvo'."));
-            Assert.True(callback.mFontWarnings[1].Description.Equals("Font 'Times New Roman' has not been found. Using 'Arvo' font instead. Reason: default font setting."));
+            Assert.True(callback.mFontWarnings[1].Description.Equals("Font 'Times New Roman' has not been found. Using 'Noticia Text' font instead. Reason: closest match according to font info from the document."));
         }
 
         [Test]

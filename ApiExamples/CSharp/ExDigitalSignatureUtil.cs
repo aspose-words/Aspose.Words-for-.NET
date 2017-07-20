@@ -84,6 +84,7 @@ namespace ApiExamples
         }
 
         [Test]
+        [ExpectedException(typeof(IncorrectPasswordException), ExpectedMessage = "The document password is incorrect.")]
         public void IncorrectPasswordForDecrypring()
         {
             CertificateHolder ch = CertificateHolder.Create(MyDir + "certificate.pfx", "123456");
@@ -93,7 +94,7 @@ namespace ApiExamples
             string outputDocFileName = MyDir + @"\Artifacts\Document.Encrypted.docx";
 
             // Digitally sign encrypted with "docPassword" document in the specified path.
-            Assert.That(() => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputDocFileName, ch, "Comment", DateTime.Now, "docPassword1"), Throws.TypeOf<IncorrectPasswordException>(), "The document password is incorrect.");
+            DigitalSignatureUtil.Sign(doc.OriginalFileName, outputDocFileName, ch, "Comment", DateTime.Now, "docPassword1");
         }
 
         [Test]

@@ -2,10 +2,6 @@
 
 namespace ApiExamples.TestData
 {
-}
-
-namespace ApiExamples.TestData
-{
     internal static class DataTables
     {
         internal static DataSet AddClientsTestData()

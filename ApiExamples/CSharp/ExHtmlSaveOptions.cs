@@ -186,5 +186,87 @@ namespace ApiExamples
             saveOptions = new HtmlSaveOptions(SaveFormat.Epub);
             Assert.AreEqual(false, saveOptions.ExportRoundtripInformation);
         }
+
+        [Test]
+        [TestCase(HtmlVersion.Html5)]
+        [TestCase(HtmlVersion.Xhtml)]
+        public void Html5Support(HtmlVersion htmlVersion)
+        {
+            Document doc = new Document(MyDir + "Document.doc");
+
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.HtmlVersion = htmlVersion;
+
+            
+        }
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ExportFonts(bool exportAsBase64)
+        {
+            Document doc = new Document(MyDir + "Document.doc");
+            
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.ExportFontResources = true;
+            saveOptions.ExportFontsAsBase64 = exportAsBase64;
+
+            switch (exportAsBase64)
+            {
+                case false:
+
+                    doc.Save(MyDir + @"\Artifacts\DocumentExportFonts Out 1.html", saveOptions);
+                    Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\", "DocumentExportFonts Out 1.times.ttf", SearchOption.AllDirectories)); //Verify that the font has been added to the folder
+                    break;
+
+                case true:
+
+                    doc.Save(MyDir + @"\Artifacts\DocumentExportFonts Out 2.html", saveOptions);
+                    Assert.IsEmpty(Directory.GetFiles(MyDir + @"\Artifacts\", "DocumentExportFonts Out 2.times.ttf", SearchOption.AllDirectories)); //Verify that the font is not added to the folder
+                    break;
+            }
+        }
+
+        [Test]
+        public void ResourceFolderPriority()
+        {
+            Document doc = new Document(MyDir + "HtmlSaveOptions.ResourceFolder.docx");
+
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.CssStyleSheetType = CssStyleSheetType.External;
+            saveOptions.ExportFontResources = true;
+            saveOptions.ResourceFolder = MyDir + @"\Artifacts\Resources";
+            saveOptions.ResourceFolderAlias = "http://example.com/resources";
+
+            doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.ResourceFolder Out.html", saveOptions);
+
+            Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Resources", "HtmlSaveOptions.ResourceFolder Out.001.jpeg", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Resources", "HtmlSaveOptions.ResourceFolder Out.002.png", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Resources", "HtmlSaveOptions.ResourceFolder Out.calibri.ttf", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Resources", "HtmlSaveOptions.ResourceFolder Out.css", SearchOption.AllDirectories));
+
+        }
+
+        [Test]
+        public void ResourceFolderLowPriority()
+        {
+            Document doc = new Document(MyDir + "HtmlSaveOptions.ResourceFolder.docx");
+
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.CssStyleSheetType = CssStyleSheetType.External;
+            saveOptions.ExportFontResources = true;
+            saveOptions.FontsFolder = MyDir + @"\Artifacts\Fonts";
+            saveOptions.ImagesFolder = MyDir + @"\Artifacts\Images";
+            saveOptions.ResourceFolder = MyDir + @"\Artifacts\Resources";
+            saveOptions.ResourceFolderAlias = "http://example.com/resources";
+
+            doc.Save(MyDir + "HtmlSaveOptions.ResourceFolder Out.html", saveOptions);
+
+            Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Images", "HtmlSaveOptions.ResourceFolder Out.001.jpeg", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Images", "HtmlSaveOptions.ResourceFolder Out.002.png", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Fonts", "HtmlSaveOptions.ResourceFolder Out.calibri.ttf", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Resources", "HtmlSaveOptions.ResourceFolder Out.css", SearchOption.AllDirectories));
+
+        }
     }
 }

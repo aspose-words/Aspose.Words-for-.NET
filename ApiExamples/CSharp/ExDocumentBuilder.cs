@@ -21,6 +21,8 @@ namespace ApiExamples
     [TestFixture]
     public class ExDocumentBuilder : ApiExampleBase
     {
+        private readonly string _image = MyDir + @"\Images\Test_636_852.gif";
+
         [Test]
         public void WriteAndFont()
         {
@@ -2073,6 +2075,44 @@ namespace ApiExamples
 
             doc.Save(MyDir + @"\Artifacts\Document.InsertedField.doc");
             //ExEnd
+        }
+
+        //Todo: Add gold asserts
+        [Test]
+        public void InsertVideoWithUrl()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Pass direct url from youtu.be.
+            string url = "https://youtu.be/t_1LYZ102RA";
+
+            double width = 360;
+            double height = 270;
+
+            builder.InsertOnlineVideo(url, width, height);
+        }
+
+        [Test]
+        public void InsertVideoWithHtmlCode()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Shape width/height.
+            double width = 360;
+            double height = 270;
+
+            // Poster frame image.
+            byte[] imageBytes = File.ReadAllBytes(this._image);
+
+            // Visible url
+            string vimeoVideoUrl = @"https://vimeo.com/52477838";
+
+            // Embed Html code.
+            string vimeoEmbedCode = "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
+
+            builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, width, height);
         }
     }
 }

@@ -303,11 +303,11 @@ namespace ApiExamples
             shape.Remove();
 
             //Check that the opaque bounds and bounds have default values
-            Assert.AreEqual(250, renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.Resolution).Width);
-            Assert.AreEqual(52, renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.Resolution).Height);
+            Assert.AreEqual(250, renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.HorizontalResolution).Width);
+            Assert.AreEqual(52, renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.HorizontalResolution).Height);
 
-            Assert.AreEqual(250, renderer.GetBoundsInPixels(imageOptions.Scale, imageOptions.Resolution).Width);
-            Assert.AreEqual(52, renderer.GetBoundsInPixels(imageOptions.Scale, imageOptions.Resolution).Height);
+            Assert.AreEqual(250, renderer.GetBoundsInPixels(imageOptions.Scale, imageOptions.VerticalResolution).Width);
+            Assert.AreEqual(52, renderer.GetBoundsInPixels(imageOptions.Scale, imageOptions.VerticalResolution).Height);
 
             Assert.AreEqual((float)187.849991, renderer.OpaqueBoundsInPoints.Width);
             Assert.AreEqual((float)39.25, renderer.OpaqueBoundsInPoints.Height);

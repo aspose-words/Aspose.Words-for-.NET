@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ApiExamples</RootNamespace>
     <AssemblyName>ApiExamples</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Aspose.BarCode, Version=8.2.1.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
@@ -40,12 +42,12 @@
       <HintPath>packages\Aspose.Pdf.12.0.0\lib\net40-client\Aspose.Pdf.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Aspose.Words, Version=17.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>packages\Aspose.Words.17.1.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=17.7.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.Words.17.7\lib\net40\Aspose.Words.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -70,6 +72,7 @@
     <Compile Include="ExFixedPageSaveOptions.cs" />
     <Compile Include="ExHtmlLoadOptions.cs" />
     <Compile Include="ExOoxmlSaveOptions.cs" />
+    <Compile Include="ExTxtSaveOptions.cs" />
     <Compile Include="ExXpsSaveOptions.cs" />
     <Compile Include="ExUtilityClasses.cs" />
     <Compile Include="ExDigitalSignature.cs" />

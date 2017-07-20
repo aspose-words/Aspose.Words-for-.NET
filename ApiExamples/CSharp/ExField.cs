@@ -74,6 +74,71 @@ namespace ApiExamples
         }
 
         [Test]
+        public void CreateRevNumFieldWithFieldBuilder()
+        {
+            Document doc = new Document();
+            Run run = DocumentHelper.InsertNewRun(doc, " Hello World!", 0);
+
+            FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldRevisionNum);
+            fieldBuilder.BuildAndInsert(run);
+
+            doc.UpdateFields();
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+            
+            FieldRevNum revNum = (FieldRevNum)doc.Range.Fields[0];
+            Assert.NotNull(revNum);
+        }
+
+        [Test]
+        public void CreateRevNumFieldByDocumentBuilder()
+        {
+            Document doc = new Document();
+            DocumentBuilder b = new DocumentBuilder(doc);
+            b.InsertField("REVNUM MERGEFORMAT");
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            FieldRevNum revNum = (FieldRevNum)doc.Range.Fields[0];
+            Assert.NotNull(revNum);
+        }
+
+        [Test]
+        public void CreateInfoFieldWithFieldBuilder()
+        {
+            Document doc = new Document();
+
+            Run run = DocumentHelper.InsertNewRun(doc, " Hello World!", 0);
+
+            FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldInfo);
+            fieldBuilder.BuildAndInsert(run);
+
+            doc.UpdateFields();
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            FieldInfo info = (FieldInfo)doc.Range.Fields[0];
+            Assert.NotNull(info);
+        }
+
+        [Test]
+        public void CreateInfoFieldByDocumentBuilder()
+        {
+            Document doc = new Document();
+            DocumentBuilder b = new DocumentBuilder(doc);
+            b.InsertField("INFO MERGEFORMAT");
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            FieldInfo info = (FieldInfo)doc.Range.Fields[0];
+            Assert.NotNull(info);
+        }
+
+        [Test]
         public void GetFieldFromFieldCollection()
         {
             //ExStart
@@ -351,6 +416,41 @@ namespace ApiExamples
             Assert.AreEqual("0.#", format.NumericFormat);
             Assert.AreEqual("dddd, MMMM dd, yyyy", format.DateTimeFormat);
             Assert.AreEqual(GeneralFormat.CharFormat, format.GeneralFormats[0]);
+        }
+
+        [Test]
+        public void UnlinkAllFieldsInDocument()
+        {
+            Document doc = new Document(MyDir + "UnlinkFields.docx");
+
+            doc.UnlinkFields();
+
+            string paraWithFields = DocumentHelper.GetParagraphText(doc, 0);
+            Assert.AreEqual("Fields.Docx   Элементы указателя не найдены.     1.\r", paraWithFields);
+        }
+
+        [Test]
+        public void UnlinkAllFieldsInRange()
+        {
+            Document doc = new Document(MyDir + "UnlinkFields.docx");
+
+            Section newSection = (Section)doc.Sections[0].Clone(true);
+            doc.Sections.Add(newSection);
+
+            doc.Sections[1].Range.UnlinkFields();
+
+            string secWithFields = DocumentHelper.GetSectionText(doc, 1);
+            Assert.AreEqual(secWithFields, "Fields.Docx   Элементы указателя не найдены.     3.\rОшибка! Не указана последовательность.    Fields.Docx   Элементы указателя не найдены.     4.\r\r\r\r\r\f");
+        }
+
+        [Test]
+        public void UnlinkSingleField()
+        {
+            Document doc = new Document(MyDir + "UnlinkFields.docx");
+            doc.Range.Fields[1].Unlink();
+
+            string paraWithFields = DocumentHelper.GetParagraphText(doc, 0);
+            Assert.AreEqual(paraWithFields, "\u0013 FILENAME  \\* Caps  \\* MERGEFORMAT \u0014Fields.Docx\u0015   Элементы указателя не найдены.     \u0013 LISTNUM  LegalDefault \u0015\r");
         }
 
         [Test]

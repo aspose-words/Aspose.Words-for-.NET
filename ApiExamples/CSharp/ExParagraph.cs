@@ -1,6 +1,7 @@
 ﻿using System;
 using Aspose.Words;
 using Aspose.Words.Fields;
+using Aspose.Words.Drawing;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -181,6 +182,24 @@ namespace ApiExamples
 
             Paragraph secondParagraph = DocumentHelper.GetParagraph(doc, 1);
             Assert.IsFalse(secondParagraph.IsFormatRevision);
+        }
+
+        [Test]
+        public void GetFrameProperties()
+        {
+            Document doc = new Document(MyDir + "Paragraph.Frame.docx");
+
+            Paragraph frame = DocumentHelper.GetParagraph(doc, 0);
+            Assert.True(frame.FrameFormat.IsFrame);
+
+            Assert.AreEqual(233.3, frame.FrameFormat.Width);
+            Assert.AreEqual(138.8, frame.FrameFormat.Height);
+            Assert.AreEqual(21.05, frame.FrameFormat.HorizontalPosition);
+            Assert.AreEqual(RelativeHorizontalPosition.Page, frame.FrameFormat.RelativeHorizontalPosition);
+            Assert.AreEqual(9, frame.FrameFormat.HorizontalDistanceFromText);
+            Assert.AreEqual(-17.65, frame.FrameFormat.VerticalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Paragraph, frame.FrameFormat.RelativeVerticalPosition);
+            Assert.AreEqual(0, frame.FrameFormat.VerticalDistanceFromText);
         }
 
         /// <summary>

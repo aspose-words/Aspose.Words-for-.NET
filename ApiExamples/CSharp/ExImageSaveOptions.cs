@@ -5,6 +5,8 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
@@ -41,6 +43,26 @@ namespace ApiExamples
             saveOptions.PageIndex = 0;
 
             doc.Save(MyDir + @"\Artifacts\SaveOptions.MyraidPro Out.gif", saveOptions);
+            //ExEnd
+        }
+
+        [Test]
+        public void QualityOptions()
+        {
+            //ExStart
+            //ExFor:ImageSaveOptions.GraphicsQualityOptions
+            //ExFor:GraphicsQualityOptions
+            //ExSummary:Shows how to use rendering hints
+            Document doc = new Document(MyDir + "SaveOptions.MyraidPro.docx");
+
+            GraphicsQualityOptions qualityOptions = new GraphicsQualityOptions();
+            qualityOptions.SmoothingMode = SmoothingMode.AntiAlias;
+            qualityOptions.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+
+            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Jpeg);
+            saveOptions.GraphicsQualityOptions = qualityOptions;
+
+            doc.Save(MyDir + @"\Artifacts\SaveOptions.QualityOptions Out.jpeg", saveOptions);
             //ExEnd
         }
     }
