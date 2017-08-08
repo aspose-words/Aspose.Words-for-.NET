@@ -22,7 +22,30 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             ModifyCellFormatting(dataDir);
             FormatTableAndCellWithDifferentBorders(dataDir);
             SetCellPadding(dataDir);
+
+            //Get DistanceLeft, DistanceRight, DistanceTop, and DistanceBottom properties
+            GetDistancebetweenTableSurroundingText(dataDir);
         }
+
+        /// <summary>
+        /// Shows how to apply outline border to a table.
+        /// </summary>
+        private static void GetDistancebetweenTableSurroundingText(string dataDir)
+        {
+            // ExStart:GetDistancebetweenTableSurroundingText
+            Document doc = new Document(dataDir + "Table.EmptyTable.doc");
+
+            Console.WriteLine("\nGet distance between table left, right, bottom, top and the surrounding text.");
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Console.WriteLine(table.DistanceTop);
+            Console.WriteLine(table.DistanceBottom);
+            Console.WriteLine(table.DistanceRight);
+            Console.WriteLine(table.DistanceLeft);
+
+            // ExEnd:GetDistancebetweenTableSurroundingText
+        }
+
         /// <summary>
         /// Shows how to apply outline border to a table.
         /// </summary>

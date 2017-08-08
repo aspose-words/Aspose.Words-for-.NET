@@ -28,6 +28,7 @@ using System.Text;
 using LINQ = Aspose.Words.Examples.CSharp.LINQ;
 using QucikStart = Aspose.Words.Examples.CSharp.Quick_Start;
 using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_StructuredDocumentTag;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Signature;
 
 namespace Aspose.Words.Examples.CSharp
 {
@@ -146,6 +147,7 @@ namespace Aspose.Words.Examples.CSharp
             //// Document
             //// =====================================================
 
+            // SigningSignatureLine.Run();
             // ExtractContentBetweenParagraphs.Run();
             // ExtractContentBetweenBlockLevelNodes.Run();
             // ExtractContentBetweenParagraphStyles.Run();
@@ -463,6 +465,11 @@ namespace Aspose.Words.Examples.CSharp
         public static String GetDataDir_WorkingWithTables()
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Tables/");
+        }
+
+        public static String GetDataDir_WorkingWithSignature()
+        {
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Signature/");
         }
         public static String GetDataDir_WorkingWithSections()
         {

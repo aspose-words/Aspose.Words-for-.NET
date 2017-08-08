@@ -29,6 +29,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Comments
             // Extract the information about the comments of the "ks" author.
             foreach (string comment in ExtractComments(doc, "ks"))
                 Console.Write(comment);
+            
+            //Read the comment's reply and resolve them.
+            CommentResolvedandReplies(doc);
 
             // Remove all comments.
             RemoveComments(doc);
@@ -92,5 +95,23 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Comments
             }
         }
         // ExEnd:RemoveCommentsByAuthor
+
+        // ExStart:CommentResolvedandReplies
+        static void CommentResolvedandReplies(Document doc)
+        {
+            NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
+            Comment parentComment = (Comment)comments[0];
+
+            foreach (Comment childComment in parentComment.Replies)
+            {
+                // Get comment parent and status.
+                Console.WriteLine(childComment.Ancestor.Id);
+                Console.WriteLine(childComment.Done);
+
+                // And update comment Done mark.
+                childComment.Done = true;
+            }
+        }
+        // ExEnd:CommentResolvedandReplies
     }
 }
