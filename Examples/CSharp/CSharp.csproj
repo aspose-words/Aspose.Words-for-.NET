@@ -127,6 +127,7 @@
     <Compile Include="Programming-Documents\Bookmarks\BookmarkNameAndText.cs" />
     <Compile Include="Programming-Documents\Bookmarks\AccessBookmarks.cs" />
     <Compile Include="Programming-Documents\Bookmarks\CreateBookmark.cs" />
+    <Compile Include="Programming-Documents\Charts\ChartNumberFormat.cs" />
     <Compile Include="Programming-Documents\Charts\WorkWithSingleChartSeries.cs" />
     <Compile Include="Programming-Documents\Charts\WorkWithSingleChartDataPoint.cs" />
     <Compile Include="Programming-Documents\Charts\WorkWithChartDataLabel.cs" />
