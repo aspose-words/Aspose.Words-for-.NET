@@ -29,6 +29,8 @@ using LINQ = Aspose.Words.Examples.CSharp.LINQ;
 using QucikStart = Aspose.Words.Examples.CSharp.Quick_Start;
 using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_StructuredDocumentTag;
 using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Signature;
+using Aspose.Words.Examples.CSharp.Loading_and_Saving;
+using Aspose.Words.Examples.CSharp.Rendering_Printing;
 
 namespace Aspose.Words.Examples.CSharp
 {
@@ -68,6 +70,7 @@ namespace Aspose.Words.Examples.CSharp
             //// =====================================================
             //// =====================================================
 
+            //Save_Options.Run();
             // OpenEncryptedDocument.Run();
             // LoadAndSaveToDisk.Run();
             // LoadAndSaveToStream.Run();
@@ -189,6 +192,7 @@ namespace Aspose.Words.Examples.CSharp
             // ComboBoxContentControl.Run();
             // UpdateContentControls.Run();
             // GenerateACustomBarCodeImage.Run();
+            // WorkingWithSaveOptions.Run();
 
             //// Fields
             //// =====================================================
@@ -296,6 +300,7 @@ namespace Aspose.Words.Examples.CSharp
             //// StructuredDocumentTag 
             //// =====================================================
             //BindSDTtoCustomXmlPart.Run();
+            //ClearContentsControl.Run();
 
             //// =====================================================
             //// =====================================================
@@ -343,6 +348,7 @@ namespace Aspose.Words.Examples.CSharp
             // HyphenateWordsOfLanguages.Run();
             // LoadHyphenationDictionaryForLanguage.Run();
             // PrintProgressDialog.Run();         
+            // Print_CachePrinterSettings.Run();
 
             //// =====================================================
             //// =====================================================
@@ -391,6 +397,11 @@ namespace Aspose.Words.Examples.CSharp
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Joining-Appending/");
         }
 
+        public static String GetDataDir_WorkingWithList()
+        {
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Lists/");
+        }
+        
         public static String GetDataDir_FindAndReplace()
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Find-Replace/");
