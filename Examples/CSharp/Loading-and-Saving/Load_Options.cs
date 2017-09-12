@@ -8,12 +8,12 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
 {
     class Load_Options
     {
+        public static void Run()
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_QuickStart();
 
             LoadOptionsUpdateDirtyFields(dataDir);
-
         }
 
         public static void LoadOptionsUpdateDirtyFields(string dataDir)
