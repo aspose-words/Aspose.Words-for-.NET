@@ -1,38 +1,27 @@
-﻿using System;
-using System.Collections;
-using System.IO;
-
-using Aspose.Words;
-using Aspose.Words.Tables;
-using System.Diagnostics;
-using Aspose.Words.MailMerging;
-using Aspose.Words.Saving;
-using System.Text;
-using Aspose.Words.Layout;
-using Aspose.Words.Fields;
+﻿using Aspose.Words.Layout;
 using Aspose.Words.Markup;
-using Aspose.Words.Lists;
+using Aspose.Words.Tables;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Aspose.Words.Examples.CSharp.Loading_Saving
 {
     class PageSplitter
     {
         public static void Run()
-        {
-            
+        {           
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving() + "Split";
-
            
-            SplitAllDocumentsToPages(dataDir);
-           
+            SplitAllDocumentsToPages(dataDir);           
 
             Console.WriteLine("\nDocument split to pages successfully.\nFile saved at " + dataDir + "\\_out");
         }
 
         public static void SplitDocumentToPages(string docName)
-        {
-           
+        {           
             string folderName = Path.GetDirectoryName(docName);
             string fileName = Path.GetFileNameWithoutExtension(docName);
             string extensionName = Path.GetExtension(docName);
@@ -41,26 +30,16 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             Console.WriteLine("Processing document: " + fileName + extensionName);
 
             Document doc = new Document(docName);
-
-            // Create and attach collector to the document before page layout is built.
-            LayoutCollector layoutCollector = new LayoutCollector(doc);
-
-            // This will build layout model and collect necessary information.
-            doc.UpdatePageLayout();
-
+        
             // Split nodes in the document into separate pages.
-            DocumentPageSplitter splitter = new DocumentPageSplitter(layoutCollector);
+            DocumentPageSplitter splitter = new DocumentPageSplitter(doc);
 
             // Save each page to the disk as a separate document.
             for (int page = 1; page <= doc.PageCount; page++)
             {
                 Document pageDoc = splitter.GetDocumentOfPage(page);
                 pageDoc.Save(Path.Combine(outFolder, string.Format("{0} - page{1} Out{2}", fileName, page, extensionName)));
-            }
-
-            // Detach the collector from the document.
-            layoutCollector.Document = null;
-            
+            }           
         }
 
         public static void SplitAllDocumentsToPages(string folderName)
@@ -79,43 +58,19 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
     /// <summary>
     /// Splits a document into multiple documents, one per page.
     /// </summary>
-    public class DocumentPageSplitter
+    internal class DocumentPageSplitter
     {
-        /// <summary>
-        /// Initializes new instance of this class. This method splits the document into sections so that each page 
-        /// Begins and ends at a section boundary. It is recommended not to modify the document afterwards.
-        /// </summary>
-        /// <param name="collector">A collector instance which has layout model records for the document.</param>
-        public DocumentPageSplitter(LayoutCollector collector)
-        {
-            mPageNumberFinder = new PageNumberFinder(collector);
-            mPageNumberFinder.SplitNodesAcrossPages();
-        }
+        private readonly PageNumberFinder pageNumberFinder;
 
         /// <summary>
-        /// Gets the document of a page.
+        /// Initializes a new instance of the <see cref="DocumentPageSplitter"/> class.
+        /// This method splits the document into sections so that each page begins and ends at a section boundary.
+        /// It is recommended not to modify the document afterwards.
         /// </summary>
-        /// <param name="pageIndex">1-based index of a page.</param>
-        public Document GetDocumentOfPage(int pageIndex)
+        /// <param name="source">source document</param>
+        public DocumentPageSplitter(Document source)
         {
-            return GetDocumentOfPageRange(pageIndex, pageIndex);
-        }
-
-        /// <summary>
-        /// Gets the document of a page range.
-        /// </summary>
-        /// <param name="startIndex">1-based index of the start page.</param>
-        /// <param name="endIndex">1-based index of the end page.</param>
-        public Document GetDocumentOfPageRange(int startIndex, int endIndex)
-        {
-            
-            Document result = (Document)Document.Clone(false);
-
-            foreach (Section section in mPageNumberFinder.RetrieveAllNodesOnPages(startIndex, endIndex, NodeType.Section))
-                result.AppendChild(result.ImportNode(section, true));
-
-            return result;
-           
+            this.pageNumberFinder = PageNumberFinderFactory.Create(source);
         }
 
         /// <summary>
@@ -123,10 +78,45 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
         /// </summary>
         private Document Document
         {
-            get { return mPageNumberFinder.Document; }
+            get { return this.pageNumberFinder.Document; }
         }
 
-        private PageNumberFinder mPageNumberFinder;
+        /// <summary>
+        /// Gets the document of a page.
+        /// </summary>
+        /// <param name="pageIndex">
+        /// 1-based index of a page.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Document"/>.
+        /// </returns>
+        public Document GetDocumentOfPage(int pageIndex)
+        {
+            return this.GetDocumentOfPageRange(pageIndex, pageIndex);
+        }
+
+        /// <summary>
+        /// Gets the document of a page range.
+        /// </summary>
+        /// <param name="startIndex">
+        /// 1-based index of the start page.
+        /// </param>
+        /// <param name="endIndex">
+        /// 1-based index of the end page.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Document"/>.
+        /// </returns>
+        public Document GetDocumentOfPageRange(int startIndex, int endIndex)
+        {
+            Document result = (Document)this.Document.Clone(false);
+            foreach (var section in this.pageNumberFinder.RetrieveAllNodesOnPages(startIndex, endIndex, NodeType.Section))
+            {
+                result.AppendChild(result.ImportNode(section, true));
+            }
+
+            return result;
+        }
     }
 
     /// <summary>
@@ -134,70 +124,122 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
     /// </summary>
     public class PageNumberFinder
     {
+        // Maps node to a start/end page numbers. This is used to override baseline page numbers provided by collector when document is split.
+        private readonly IDictionary<Node, int> nodeStartPageLookup = new Dictionary<Node, int>();
+        private readonly IDictionary<Node, int> nodeEndPageLookup = new Dictionary<Node, int>();
+        private readonly LayoutCollector collector;
+
+        // Maps page number to a list of nodes found on that page.
+        private IDictionary<int, IList<Node>> reversePageLookup;
+
         /// <summary>
-        /// Initializes new instance of this class.
+        /// Initializes a new instance of the <see cref="PageNumberFinder"/> class.
         /// </summary>
         /// <param name="collector">A collector instance which has layout model records for the document.</param>
         public PageNumberFinder(LayoutCollector collector)
         {
-            mCollector = collector;
+            this.collector = collector;
+        }
+
+        /// <summary>
+        /// Gets the document this instance works with.
+        /// </summary>
+        public Document Document
+        {
+            get { return this.collector.Document; }
         }
 
         /// <summary>
         /// Retrieves 1-based index of a page that the node begins on.
         /// </summary>
+        /// <param name="node">
+        /// The node.
+        /// </param>
+        /// <returns>
+        /// Page index.
+        /// </returns>
         public int GetPage(Node node)
         {
-            if (mNodeStartPageLookup.ContainsKey(node))
-                return (int)mNodeStartPageLookup[node];
-
-            return mCollector.GetStartPageIndex(node);
+            return this.nodeStartPageLookup.ContainsKey(node)
+                       ? this.nodeStartPageLookup[node]
+                       : this.collector.GetStartPageIndex(node);
         }
 
         /// <summary>
         /// Retrieves 1-based index of a page that the node ends on.
         /// </summary>
+        /// <param name="node">
+        /// The node.
+        /// </param>
+        /// <returns>
+        /// Page index.
+        /// </returns>
         public int GetPageEnd(Node node)
         {
-            if (mNodeEndPageLookup.ContainsKey(node))
-                return (int)mNodeEndPageLookup[node];
-
-            return mCollector.GetEndPageIndex(node);
+            return this.nodeEndPageLookup.ContainsKey(node)
+                       ? this.nodeEndPageLookup[node]
+                       : this.collector.GetEndPageIndex(node);
         }
 
         /// <summary>
         /// Returns how many pages the specified node spans over. Returns 1 if the node is contained within one page.
         /// </summary>
+        /// <param name="node">
+        /// The node.
+        /// </param>
+        /// <returns>
+        /// Page index.
+        /// </returns>
         public int PageSpan(Node node)
         {
-            return GetPageEnd(node) - GetPage(node) + 1;
+            return this.GetPageEnd(node) - this.GetPage(node) + 1;
         }
 
         /// <summary>
         /// Returns a list of nodes that are contained anywhere on the specified page or pages which match the specified node type.
         /// </summary>
-        public ArrayList RetrieveAllNodesOnPages(int startPage, int endPage, NodeType nodeType)
+        /// <param name="startPage">
+        /// The start Page.
+        /// </param>
+        /// <param name="endPage">
+        /// The end Page.
+        /// </param>
+        /// <param name="nodeType">
+        /// The node Type.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IList"/>.
+        /// </returns>
+        public IList<Node> RetrieveAllNodesOnPages(int startPage, int endPage, NodeType nodeType)
         {
-            if (startPage < 1 || startPage > Document.PageCount)
-                throw new ArgumentOutOfRangeException("startPage");
+            if (startPage < 1 || startPage > this.Document.PageCount)
+            {
+                throw new InvalidOperationException("'startPage' is out of range");
+            }
 
-            if (endPage < 1 || endPage > Document.PageCount || endPage < startPage)
-                throw new ArgumentOutOfRangeException("endPage");
+            if (endPage < 1 || endPage > this.Document.PageCount || endPage < startPage)
+            {
+                throw new InvalidOperationException("'endPage' is out of range");
+            }
 
-            CheckPageListsPopulated();
-
-            ArrayList pageNodes = new ArrayList();
-
+            this.CheckPageListsPopulated();
+            IList<Node> pageNodes = new List<Node>();
             for (int page = startPage; page <= endPage; page++)
             {
                 // Some pages can be empty.
-                if (!mReversePageLookup.ContainsKey(page))
-                    continue;
-
-                foreach (Node node in (ArrayList)mReversePageLookup[page])
+                if (!this.reversePageLookup.ContainsKey(page))
                 {
-                    if (node.ParentNode != null && (nodeType == NodeType.Any || node.NodeType == nodeType) && !pageNodes.Contains(node))
+                    continue;
+                }
+
+                foreach (Node node in this.reversePageLookup[page])
+                {
+                    if (node.ParentNode != null
+                        && (nodeType == NodeType.Any || node.NodeType == nodeType)
+                        && !pageNodes.Contains(node))
+                    {
                         pageNodes.Add(node);
+                    }
                 }
             }
 
@@ -206,58 +248,46 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
 
         /// <summary>
         /// Splits nodes which appear over two or more pages into separate nodes so that they still appear in the same way
-        /// But no longer appear across a page.
+        /// but no longer appear across a page.
         /// </summary>
         public void SplitNodesAcrossPages()
         {
-            // Visit any composites which are possibly split across pages and split them into separate nodes.
-            Document.Accept(new SectionSplitter(this));
-        }
+            foreach (Paragraph paragraph in this.Document.GetChildNodes(NodeType.Paragraph, true))
+            {
+                if (this.GetPage(paragraph) != this.GetPageEnd(paragraph))
+                {
+                    this.SplitRunsByWords(paragraph);
+                }
+            }
 
-        /// <summary>
-        /// Gets the document this instance works with.
-        /// </summary>
-        public Document Document
-        {
-            get { return mCollector.Document; }
+            this.ClearCollector();
+
+            // Visit any composites which are possibly split across pages and split them into separate nodes.
+            this.Document.Accept(new SectionSplitter(this));
         }
 
         /// <summary>
         /// This is called by <see cref="SectionSplitter"/> to update page numbers of split nodes.
         /// </summary>
+        /// <param name="node">
+        /// The node.
+        /// </param>
+        /// <param name="startPage">
+        /// The start Page.
+        /// </param>
+        /// <param name="endPage">
+        /// The end Page.
+        /// </param>
         internal void AddPageNumbersForNode(Node node, int startPage, int endPage)
         {
             if (startPage > 0)
-                mNodeStartPageLookup[node] = startPage;
+            {
+                this.nodeStartPageLookup[node] = startPage;
+            }
 
             if (endPage > 0)
-                mNodeEndPageLookup[node] = endPage;
-        }
-
-        private void CheckPageListsPopulated()
-        {
-            if (mReversePageLookup != null)
-                return;
-
-            mReversePageLookup = new Hashtable();
-
-            // Add each node to a list which represent the nodes found on each page.
-            foreach (Node node in Document.GetChildNodes(NodeType.Any, true))
             {
-                // Headers/Footers follow sections. They are not split by themselves.
-                if (IsHeaderFooterType(node))
-                    continue;
-
-                int startPage = GetPage(node);
-                int endPage = GetPageEnd(node);
-
-                for (int page = startPage; page <= endPage; page++)
-                {
-                    if (!mReversePageLookup.ContainsKey(page))
-                        mReversePageLookup.Add(page, new ArrayList());
-
-                    ((ArrayList)mReversePageLookup[page]).Add(node);
-                }
+                this.nodeEndPageLookup[node] = endPage;
             }
         }
 
@@ -266,234 +296,224 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             return node.NodeType == NodeType.HeaderFooter || node.GetAncestor(NodeType.HeaderFooter) != null;
         }
 
-        // Maps node to a start/end page numbers. This is used to override baseline page numbers provided by collector when document is split.
-        private Hashtable mNodeStartPageLookup = new Hashtable();
-        private Hashtable mNodeEndPageLookup = new Hashtable();
-        // Maps page number to a list of nodes found on that page.
-        private Hashtable mReversePageLookup;
-        private LayoutCollector mCollector;
+        private void CheckPageListsPopulated()
+        {
+            if (this.reversePageLookup != null)
+            {
+                return;
+            }
+
+            this.reversePageLookup = new Dictionary<int, IList<Node>>();
+
+            // Add each node to a list which represent the nodes found on each page.
+            foreach (Node node in this.Document.GetChildNodes(NodeType.Any, true))
+            {
+                // Headers/Footers follow sections. They are not split by themselves.
+                if (IsHeaderFooterType(node))
+                {
+                    continue;
+                }
+
+                int startPage = this.GetPage(node);
+                int endPage = this.GetPageEnd(node);
+                for (int page = startPage; page <= endPage; page++)
+                {
+                    if (!this.reversePageLookup.ContainsKey(page))
+                    {
+                        this.reversePageLookup.Add(page, new List<Node>());
+                    }
+
+                    this.reversePageLookup[page].Add(node);
+                }
+            }
+        }
+
+        private void SplitRunsByWords(Paragraph paragraph)
+        {
+            foreach (Run run in paragraph.Runs)
+            {
+                if (this.GetPage(run) == this.GetPageEnd(run))
+                {
+                    continue;
+                }
+
+                this.SplitRunByWords(run);
+            }
+        }
+
+        private void SplitRunByWords(Run run)
+        {
+            var words = run.Text.Split(' ').Reverse();
+
+            foreach (var word in words)
+            {
+                var pos = run.Text.Length - word.Length - 1;
+                if (pos > 1)
+                {
+                    SplitRun(run, run.Text.Length - word.Length - 1);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Splits text of the specified run into two runs.
+        /// Inserts the new run just after the specified run.
+        /// </summary>
+        private static Run SplitRun(Run run, int position)
+        {
+            Run afterRun = (Run)run.Clone(true);
+            afterRun.Text = run.Text.Substring(position);
+            run.Text = run.Text.Substring(0, position);
+            run.ParentNode.InsertAfter(afterRun, run);
+            return afterRun;
+        }
+
+        private void ClearCollector()
+        {
+            this.collector.Clear();
+            this.Document.UpdatePageLayout();
+
+            this.nodeStartPageLookup.Clear();
+            this.nodeEndPageLookup.Clear();
+        }
+    }
+
+    internal static class PageNumberFinderFactory
+    {
+        public static PageNumberFinder Create(Document document)
+        {
+            LayoutCollector layoutCollector = new LayoutCollector(document);
+            document.UpdatePageLayout();
+            PageNumberFinder pageNumberFinder = new PageNumberFinder(layoutCollector);
+            pageNumberFinder.SplitNodesAcrossPages();
+            return pageNumberFinder;
+        }
     }
 
     /// <summary>
     /// Splits a document into multiple sections so that each page begins and ends at a section boundary.
     /// </summary>
-    public class SectionSplitter : DocumentVisitor
+    internal class SectionSplitter : DocumentVisitor
     {
+        private readonly PageNumberFinder pageNumberFinder;
+
         public SectionSplitter(PageNumberFinder pageNumberFinder)
         {
-            mPageNumberFinder = pageNumberFinder;
+            this.pageNumberFinder = pageNumberFinder;
         }
 
         public override VisitorAction VisitParagraphStart(Paragraph paragraph)
         {
-            if (paragraph.IsListItem)
-            {
-                List paraList = paragraph.ListFormat.List;
-                ListLevel currentLevel = paragraph.ListFormat.ListLevel;
+            return this.ContinueIfCompositeAcrossPageElseSkip(paragraph);
+        }
 
-                // Since we have encountered a list item we need to check if this will reset
-                // Any subsequent list levels and if so then update the numbering of the level.
-                int currentListLevelNumber = paragraph.ListFormat.ListLevelNumber;
-                for (int i = currentListLevelNumber + 1; i < paraList.ListLevels.Count; i++)
-                {
-                    ListLevel paraLevel = paraList.ListLevels[i];
+        public override VisitorAction VisitTableStart(Table table)
+        {
+            return this.ContinueIfCompositeAcrossPageElseSkip(table);
+        }
 
-                    if (paraLevel.RestartAfterLevel >= currentListLevelNumber)
-                    {
-                        // This list level needs to be reset after the current list number.
-                        mListLevelToListNumberLookup[paraLevel] = paraLevel.StartAt;
-                    }
-                }
+        public override VisitorAction VisitRowStart(Row row)
+        {
+            return this.ContinueIfCompositeAcrossPageElseSkip(row);
+        }
 
-                // A list which was used on a previous page is present on a different page, the list
-                // Needs to be copied so list numbering is retained when extracting individual pages.
-                if (ContainsListLevelAndPageChanged(paragraph))
-                {
-                    List copyList = paragraph.Document.Lists.AddCopy(paraList);
-                    mListLevelToListNumberLookup[currentLevel] = paragraph.ListLabel.LabelValue;
+        public override VisitorAction VisitCellStart(Cell cell)
+        {
+            return this.ContinueIfCompositeAcrossPageElseSkip(cell);
+        }
 
-                    // Set the numbering of each list level to start at the numbering of the level on the previous page.
-                    for (int i = 0; i < paraList.ListLevels.Count; i++)
-                    {
-                        ListLevel paraLevel = paraList.ListLevels[i];
+        public override VisitorAction VisitStructuredDocumentTagStart(StructuredDocumentTag sdt)
+        {
+            return this.ContinueIfCompositeAcrossPageElseSkip(sdt);
+        }
 
-                        if (mListLevelToListNumberLookup.ContainsKey(paraLevel))
-                            copyList.ListLevels[i].StartAt = (int)mListLevelToListNumberLookup[paraLevel];
-                    }
-
-                    mListToReplacementListLookup[paraList] = copyList;
-                }
-
-                if (mListToReplacementListLookup.ContainsKey(paraList))
-                {
-                    // This paragraph belongs to a list from a previous page. Apply the replacement list.
-                    paragraph.ListFormat.List = (List)mListToReplacementListLookup[paraList];
-                    // This is a trick to get the spacing of the list level to set correctly.
-                    paragraph.ListFormat.ListLevelNumber += 0;
-                }
-
-                mListLevelToPageLookup[currentLevel] = mPageNumberFinder.GetPage(paragraph);
-                mListLevelToListNumberLookup[currentLevel] = paragraph.ListLabel.LabelValue;
-            }
-
-            Section prevSection = (Section)paragraph.ParentSection.PreviousSibling;
-            Paragraph prevBodyPara = paragraph.PreviousSibling as Paragraph;
-
-            Paragraph prevSectionPara = prevSection != null && paragraph == paragraph.ParentSection.Body.FirstChild ? prevSection.Body.LastParagraph : null;
-            Paragraph prevParagraph = prevBodyPara != null ? prevBodyPara : prevSectionPara;
-
-            if (paragraph.IsEndOfSection && !paragraph.HasChildNodes)
-                paragraph.Remove();
-
-            // Paragraphs across pages can merge or remove spacing depending upon the previous paragraph.
-            if (prevParagraph != null)
-            {
-                if (mPageNumberFinder.GetPage(paragraph) != mPageNumberFinder.GetPageEnd(prevParagraph))
-                {
-                    if (paragraph.IsListItem && prevParagraph.IsListItem && !prevParagraph.IsEndOfSection)
-                        prevParagraph.ParagraphFormat.SpaceAfter = 0;
-                    else if (prevParagraph.ParagraphFormat.StyleName == paragraph.ParagraphFormat.StyleName && paragraph.ParagraphFormat.NoSpaceBetweenParagraphsOfSameStyle)
-                        paragraph.ParagraphFormat.SpaceBefore = 0;
-                    else if (paragraph.ParagraphFormat.PageBreakBefore || (prevParagraph.IsEndOfSection && prevSection.PageSetup.SectionStart != SectionStart.NewColumn))
-                        paragraph.ParagraphFormat.SpaceBefore = System.Math.Max(paragraph.ParagraphFormat.SpaceBefore - prevParagraph.ParagraphFormat.SpaceAfter, 0);
-                    else
-                        paragraph.ParagraphFormat.SpaceBefore = 0;
-                }
-            }
-
-            return VisitorAction.Continue;
+        public override VisitorAction VisitSmartTagStart(SmartTag smartTag)
+        {
+            return this.ContinueIfCompositeAcrossPageElseSkip(smartTag);
         }
 
         public override VisitorAction VisitSectionStart(Section section)
         {
-            mSectionCount++;
             Section previousSection = (Section)section.PreviousSibling;
 
             // If there is a previous section attempt to copy any linked header footers otherwise they will not appear in an 
-            // Extracted document if the previous section is missing.
+            // extracted document if the previous section is missing.
             if (previousSection != null)
             {
+                HeaderFooterCollection previousHeaderFooters = previousSection.HeadersFooters;
                 if (!section.PageSetup.RestartPageNumbering)
                 {
                     section.PageSetup.RestartPageNumbering = true;
-                    section.PageSetup.PageStartingNumber = previousSection.PageSetup.PageStartingNumber + mPageNumberFinder.PageSpan(previousSection);
+                    section.PageSetup.PageStartingNumber = previousSection.PageSetup.PageStartingNumber + this.pageNumberFinder.PageSpan(previousSection);
                 }
 
-                foreach (HeaderFooter previousHeaderFooter in previousSection.HeadersFooters)
+                foreach (HeaderFooter previousHeaderFooter in previousHeaderFooters)
                 {
                     if (section.HeadersFooters[previousHeaderFooter.HeaderFooterType] == null)
                     {
-                        HeaderFooter newHeaderFooter = (HeaderFooter)previousSection.HeadersFooters[previousHeaderFooter.HeaderFooterType].Clone(true);
+                        HeaderFooter newHeaderFooter = (HeaderFooter)previousHeaderFooters[previousHeaderFooter.HeaderFooterType].Clone(true);
                         section.HeadersFooters.Add(newHeaderFooter);
                     }
                 }
             }
 
-            // Manually set the result of these fields before sections are split.
-            foreach (HeaderFooter headerFooter in section.HeadersFooters)
-            {
-                foreach (Field field in headerFooter.Range.Fields)
-                {
-                    if (field.Type == FieldType.FieldSection || field.Type == FieldType.FieldSectionPages)
-                    {
-                        field.Result = (field.Type == FieldType.FieldSection) ? mSectionCount.ToString() :
-                            mPageNumberFinder.PageSpan(section).ToString();
-                        field.IsLocked = true;
-                    }
-                }
-            }
-
-            // All fields in the body should stay the same, this also improves field update time.
-            foreach (Field field in section.Body.Range.Fields)
-                field.IsLocked = true;
-
-            return VisitorAction.Continue;
-        }
-
-        public override VisitorAction VisitDocumentEnd(Document doc)
-        {
-            // All sections have separate headers and footers now, update the fields in all headers and footers
-            // To the correct values. This allows each page to maintain the correct field results even when
-            // PAGE or IF fields are used.
-            doc.UpdateFields();
-
-            foreach (HeaderFooter headerFooter in doc.GetChildNodes(NodeType.HeaderFooter, true))
-            {
-                foreach (Field field in headerFooter.Range.Fields)
-                    field.IsLocked = true;
-            }
-
-            return VisitorAction.Continue;
+            return this.ContinueIfCompositeAcrossPageElseSkip(section);
         }
 
         public override VisitorAction VisitSmartTagEnd(SmartTag smartTag)
         {
-            if (IsCompositeAcrossPage(smartTag))
-                SplitComposite(smartTag);
-
+            this.SplitComposite(smartTag);
             return VisitorAction.Continue;
         }
 
         public override VisitorAction VisitStructuredDocumentTagEnd(StructuredDocumentTag sdt)
         {
-            if (IsCompositeAcrossPage(sdt))
-                SplitComposite(sdt);
-
+            this.SplitComposite(sdt);
             return VisitorAction.Continue;
         }
 
         public override VisitorAction VisitCellEnd(Cell cell)
         {
-            if (IsCompositeAcrossPage(cell))
-                SplitComposite(cell);
-
+            this.SplitComposite(cell);
             return VisitorAction.Continue;
         }
 
         public override VisitorAction VisitRowEnd(Row row)
         {
-            if (IsCompositeAcrossPage(row))
-                SplitComposite(row);
-
+            this.SplitComposite(row);
             return VisitorAction.Continue;
         }
 
         public override VisitorAction VisitTableEnd(Table table)
         {
-            if (IsCompositeAcrossPage(table))
-            {
-                // Copy any header rows to other pages.
-                Stack stack = new Stack(table.Rows.ToArray());
-
-                foreach (Table cloneTable in SplitComposite(table))
-                {
-                    foreach (Row row in stack)
-                    {
-                        if (row.RowFormat.HeadingFormat)
-                            cloneTable.PrependChild(row.Clone(true));
-                    }
-                }
-            }
-
+            this.SplitComposite(table);
             return VisitorAction.Continue;
         }
 
         public override VisitorAction VisitParagraphEnd(Paragraph paragraph)
         {
-            if (IsCompositeAcrossPage(paragraph))
+            // If paragraph contains only section break, add fake run into 
+            if (paragraph.IsEndOfSection && paragraph.ChildNodes.Count == 1 && paragraph.ChildNodes[0].GetText() == "\f")
             {
-                foreach (Paragraph clonePara in SplitComposite(paragraph))
-                {
-                    // Remove list numbering from the cloned paragraph but leave the indent the same 
-                    // As the paragraph is supposed to be part of the item before.
-                    if (paragraph.IsListItem)
-                    {
-                        double textPosition = clonePara.ListFormat.ListLevel.TextPosition;
-                        clonePara.ListFormat.RemoveNumbers();
-                        clonePara.ParagraphFormat.LeftIndent = textPosition;
-                    }
+                var run = new Run(paragraph.Document);
+                paragraph.AppendChild(run);
+                var currentEndPageNum = this.pageNumberFinder.GetPageEnd(paragraph);
+                this.pageNumberFinder.AddPageNumbersForNode(run, currentEndPageNum, currentEndPageNum);
+            }
 
-                    // Reset spacing of split paragraphs as additional spacing is removed.
+            foreach (Paragraph clonePara in SplitComposite(paragraph))
+            {
+                // Remove list numbering from the cloned paragraph but leave the indent the same 
+                // as the paragraph is supposed to be part of the item before.
+                if (paragraph.IsListItem)
+                {
+                    Double textPosition = clonePara.ListFormat.ListLevel.TextPosition;
+                    clonePara.ListFormat.RemoveNumbers();
+                    clonePara.ParagraphFormat.LeftIndent = textPosition;
+                }
+                // Reset spacing of split paragraphs in tables as additional spacing may cause them to look different.
+                if (paragraph.IsInCell)
+                {
                     clonePara.ParagraphFormat.SpaceBefore = 0;
                     paragraph.ParagraphFormat.SpaceAfter = 0;
                 }
@@ -504,121 +524,93 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
 
         public override VisitorAction VisitSectionEnd(Section section)
         {
-            if (IsCompositeAcrossPage(section))
+            foreach (Section cloneSection in this.SplitComposite(section))
             {
-                // If a TOC field spans across more than one page then the hyperlink formatting may show through.
-                // Remove direct formatting to avoid this.
-                foreach (FieldStart start in section.GetChildNodes(NodeType.FieldStart, true))
-                {
-                    if (start.FieldType == FieldType.FieldTOC)
-                    {
-                        Field field = start.GetField();
-                        Node node = field.Separator;
+                cloneSection.PageSetup.SectionStart = SectionStart.NewPage;
+                cloneSection.PageSetup.RestartPageNumbering = true;
+                cloneSection.PageSetup.PageStartingNumber = section.PageSetup.PageStartingNumber + (section.Document.IndexOf(cloneSection) - section.Document.IndexOf(section));
+                cloneSection.PageSetup.DifferentFirstPageHeaderFooter = false;
 
-                        while ((node = node.NextPreOrder(section)) != field.End)
-                            if (node.NodeType == NodeType.Run)
-                                ((Run)node).Font.ClearFormatting();
-                    }
-                }
-
-                foreach (Section cloneSection in SplitComposite(section))
-                {
-                    cloneSection.PageSetup.SectionStart = SectionStart.NewPage;
-                    cloneSection.PageSetup.RestartPageNumbering = true;
-                    cloneSection.PageSetup.PageStartingNumber = section.PageSetup.PageStartingNumber + (section.Document.IndexOf(cloneSection) - section.Document.IndexOf(section));
-                    cloneSection.PageSetup.DifferentFirstPageHeaderFooter = false;
-
-                    RemovePageBreaksFromParagraph(cloneSection.Body.LastParagraph);
-                }
-
-                RemovePageBreaksFromParagraph(section.Body.LastParagraph);
-
-                // Add new page numbering for the body of the section as well.
-                mPageNumberFinder.AddPageNumbersForNode(section.Body, mPageNumberFinder.GetPage(section), mPageNumberFinder.GetPageEnd(section));
+                // corrects page break on end of the section
+                SplitPageBreakCorrector.ProcessSection(cloneSection);
             }
 
+            // corrects page break on end of the section
+            SplitPageBreakCorrector.ProcessSection(section);
+
+            // Add new page numbering for the body of the section as well.
+            this.pageNumberFinder.AddPageNumbersForNode(section.Body, this.pageNumberFinder.GetPage(section), this.pageNumberFinder.GetPageEnd(section));
             return VisitorAction.Continue;
         }
 
-        private bool IsCompositeAcrossPage(CompositeNode composite)
+        private VisitorAction ContinueIfCompositeAcrossPageElseSkip(CompositeNode composite)
         {
-            return mPageNumberFinder.PageSpan(composite) > 1;
+            return (this.pageNumberFinder.PageSpan(composite) > 1) ? VisitorAction.Continue : VisitorAction.SkipThisNode;
         }
 
-        private bool ContainsListLevelAndPageChanged(Paragraph para)
+        private List<Node> SplitComposite(CompositeNode composite)
         {
-            return mListLevelToPageLookup.ContainsKey(para.ListFormat.ListLevel) && (int)mListLevelToPageLookup[para.ListFormat.ListLevel] != mPageNumberFinder.GetPage(para);
-        }
-
-        private void RemovePageBreaksFromParagraph(Paragraph para)
-        {
-            if (para != null)
+            List<Node> splitNodes = new List<Node>();
+            foreach (Node splitNode in this.FindChildSplitPositions(composite))
             {
-                foreach (Run run in para.Runs)
-                    run.Text = run.Text.Replace(ControlChar.PageBreak, string.Empty);
+                splitNodes.Add(this.SplitCompositeAtNode(composite, splitNode));
             }
-        }
-
-        private ArrayList SplitComposite(CompositeNode composite)
-        {
-            ArrayList splitNodes = new ArrayList();
-            foreach (Node splitNode in FindChildSplitPositions(composite))
-                splitNodes.Add(SplitCompositeAtNode(composite, splitNode));
 
             return splitNodes;
         }
 
-        private ArrayList FindChildSplitPositions(CompositeNode node)
+        private IEnumerable<Node> FindChildSplitPositions(CompositeNode node)
         {
             // A node may span across multiple pages so a list of split positions is returned.
             // The split node is the first node on the next page.
-            ArrayList splitList = new ArrayList();
-
-            int startingPage = mPageNumberFinder.GetPage(node);
-
-            Node[] childNodes = node.NodeType == NodeType.Section ?
-                ((Section)node).Body.ChildNodes.ToArray() : node.ChildNodes.ToArray();
-
+            var splitList = new List<Node>();
+            int startingPage = this.pageNumberFinder.GetPage(node);
+            Node[] childNodes = node.NodeType == NodeType.Section
+                                    ? ((Section)node).Body.ChildNodes.ToArray()
+                                    : node.ChildNodes.ToArray();
             foreach (Node childNode in childNodes)
             {
-                int pageNum = mPageNumberFinder.GetPage(childNode);
+                int pageNum = this.pageNumberFinder.GetPage(childNode);
+
+                if (childNode is Run)
+                {
+                    pageNum = this.pageNumberFinder.GetPageEnd(childNode);
+                }
 
                 // If the page of the child node has changed then this is the split position. Add
-                // This to the list.
+                // this to the list.
                 if (pageNum > startingPage)
                 {
                     splitList.Add(childNode);
                     startingPage = pageNum;
                 }
 
-                if (mPageNumberFinder.PageSpan(childNode) > 1)
-                    mPageNumberFinder.AddPageNumbersForNode(childNode, pageNum, pageNum);
+                if (this.pageNumberFinder.PageSpan(childNode) > 1)
+                {
+                    this.pageNumberFinder.AddPageNumbersForNode(childNode, pageNum, pageNum);
+                }
             }
 
             // Split composites backward so the cloned nodes are inserted in the right order.
             splitList.Reverse();
-
             return splitList;
         }
 
         private CompositeNode SplitCompositeAtNode(CompositeNode baseNode, Node targetNode)
         {
             CompositeNode cloneNode = (CompositeNode)baseNode.Clone(false);
-
             Node node = targetNode;
-            int currentPageNum = mPageNumberFinder.GetPage(baseNode);
+            int currentPageNum = this.pageNumberFinder.GetPage(baseNode);
 
             // Move all nodes found on the next page into the copied node. Handle row nodes separately.
             if (baseNode.NodeType != NodeType.Row)
             {
                 CompositeNode composite = cloneNode;
-
                 if (baseNode.NodeType == NodeType.Section)
                 {
                     cloneNode = (CompositeNode)baseNode.Clone(true);
                     Section section = (Section)cloneNode;
                     section.Body.RemoveAllChildren();
-
                     composite = section.Body;
                 }
 
@@ -632,13 +624,11 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             else
             {
                 // If we are dealing with a row then we need to add in dummy cells for the cloned row.
-                int targetPageNum = mPageNumberFinder.GetPage(targetNode);
+                int targetPageNum = this.pageNumberFinder.GetPage(targetNode);
                 Node[] childNodes = baseNode.ChildNodes.ToArray();
-
                 foreach (Node childNode in childNodes)
                 {
-                    int pageNum = mPageNumberFinder.GetPage(childNode);
-
+                    int pageNum = this.pageNumberFinder.GetPage(childNode);
                     if (pageNum == targetPageNum)
                     {
                         cloneNode.LastChild.Remove();
@@ -648,7 +638,9 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
                     {
                         cloneNode.AppendChild(childNode.Clone(false));
                         if (cloneNode.LastChild.NodeType != NodeType.Cell)
+                        {
                             ((CompositeNode)cloneNode.LastChild).AppendChild(((CompositeNode)childNode).FirstChild.Clone(false));
+                        }
                     }
                 }
             }
@@ -658,20 +650,92 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
 
             // Update the new page numbers of the base node and the clone node including its descendents.
             // This will only be a single page as the cloned composite is split to be on one page.
-            int currentEndPageNum = mPageNumberFinder.GetPageEnd(baseNode);
-            mPageNumberFinder.AddPageNumbersForNode(baseNode, currentPageNum, currentEndPageNum - 1);
-            mPageNumberFinder.AddPageNumbersForNode(cloneNode, currentEndPageNum, currentEndPageNum);
-
+            int currentEndPageNum = this.pageNumberFinder.GetPageEnd(baseNode);
+            this.pageNumberFinder.AddPageNumbersForNode(baseNode, currentPageNum, currentEndPageNum - 1);
+            this.pageNumberFinder.AddPageNumbersForNode(cloneNode, currentEndPageNum, currentEndPageNum);
             foreach (Node childNode in cloneNode.GetChildNodes(NodeType.Any, true))
-                mPageNumberFinder.AddPageNumbersForNode(childNode, currentEndPageNum, currentEndPageNum);
+            {
+                this.pageNumberFinder.AddPageNumbersForNode(childNode, currentEndPageNum, currentEndPageNum);
+            }
 
             return cloneNode;
         }
+    }
 
-        private Hashtable mListLevelToListNumberLookup = new Hashtable();
-        private Hashtable mListToReplacementListLookup = new Hashtable();
-        private Hashtable mListLevelToPageLookup = new Hashtable();
-        private PageNumberFinder mPageNumberFinder;
-        private int mSectionCount;
+    internal class SplitPageBreakCorrector
+    {
+        private const string PageBreakStr = "\f";
+        private const char PageBreak = '\f';
+
+        public static void ProcessSection(Section section)
+        {
+            if (section.ChildNodes.Count == 0)
+            {
+                return;
+            }
+
+            var lastBody = section.ChildNodes.OfType<Body>().LastOrDefault();
+            if (lastBody == null)
+            {
+                return;
+            }
+
+            var run = lastBody.GetChildNodes(NodeType.Run, true).OfType<Run>().FirstOrDefault(p => p.Text.EndsWith(PageBreakStr));
+
+            if (run != null)
+            {
+                RemovePageBreak(run);
+            }
+
+            return;
+
+            Paragraph lastParagraph = lastBody.ChildNodes.OfType<Paragraph>().LastOrDefault();
+            if (lastParagraph == null || lastParagraph.ChildNodes.Count == 0)
+            {
+                return;
+            }
+
+            ProcessLastParagraph(lastParagraph);
+        }
+
+        public static void RemovePageBreakFromParagraph(Paragraph paragraph)
+        {
+            Run run = (Run)paragraph.FirstChild;
+            if (run.Text.Equals(PageBreakStr))
+            {
+                paragraph.RemoveChild(run);
+            }
+        }
+
+        private static void ProcessLastParagraph(Paragraph paragraph)
+        {
+            Node lastNode = paragraph.ChildNodes[paragraph.ChildNodes.Count - 1];
+            if (lastNode.NodeType != NodeType.Run)
+            {
+                return;
+            }
+
+            Run run = (Run)lastNode;
+            RemovePageBreak(run);
+        }
+
+        private static void RemovePageBreak(Run run)
+        {
+            var paragraph = run.ParentParagraph;
+            if (run.Text.Equals(PageBreakStr))
+            {
+                paragraph.RemoveChild(run);
+            }
+            else if (run.Text.EndsWith(PageBreakStr))
+            {
+                run.Text = run.Text.TrimEnd(PageBreak);
+            }
+
+            if (paragraph.ChildNodes.Count == 0)
+            {
+                CompositeNode parent = paragraph.ParentNode;
+                parent.RemoveChild(paragraph);
+            }
+        }
     }
 }
