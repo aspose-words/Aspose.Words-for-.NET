@@ -166,7 +166,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             opt.ImageColorMode = ImageColorMode.BlackAndWhite;
             opt.PixelFormat = ImagePixelFormat.Format1bppIndexed;
 
-            dataDir = dataDir + "Format1bppIndexed_Out.doc";
+            dataDir = dataDir + "Format1bppIndexed_Out.Png";
             doc.Save(dataDir, opt);
             // ExEnd:SaveImageToOnebitPerPixel   
             Console.WriteLine("\nDocument converted to PNG successfully with 1 bit per pixel.\nFile saved at " + dataDir);
