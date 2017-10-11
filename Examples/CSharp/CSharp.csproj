@@ -47,8 +47,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Aspose.Words, Version=17.10.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Aspose.Words.dll</HintPath>
+      <HintPath>..\packages\Aspose.Words.17.10\lib\net40\Aspose.Words.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
