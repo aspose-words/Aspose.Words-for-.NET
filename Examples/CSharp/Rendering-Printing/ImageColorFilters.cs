@@ -156,5 +156,20 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
 
             Console.WriteLine("\nDocument converted to TIFF successfully with black and white and Rle compression.\nFile saved at " + dataDir + "Result Rle.tiff");
         }
+
+        private static void SaveImageToOnebitPerPixel(Document doc, string dataDir)
+        {
+            // ExStart:SaveImageToOnebitPerPixel
+
+            ImageSaveOptions opt = new ImageSaveOptions(SaveFormat.Png);
+            opt.PageIndex = 1;
+            opt.ImageColorMode = ImageColorMode.BlackAndWhite;
+            opt.PixelFormat = ImagePixelFormat.Format1bppIndexed;
+
+            dataDir = dataDir + "Format1bppIndexed_Out.doc";
+            doc.Save(dataDir, opt);
+            // ExEnd:SaveImageToOnebitPerPixel   
+            Console.WriteLine("\nDocument converted to PNG successfully with 1 bit per pixel.\nFile saved at " + dataDir);
+        }
     }
 }

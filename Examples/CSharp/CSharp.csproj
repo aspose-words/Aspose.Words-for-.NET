@@ -46,9 +46,9 @@
       <HintPath>..\packages\Aspose.Email.17.5.0\lib\net40\Aspose.Email.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Aspose.Words, Version=17.9.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.17.9\lib\net40\Aspose.Words.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Aspose.Words, Version=17.10.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -98,6 +98,7 @@
     <Compile Include="Loading-and-Saving\ImageLoadingWithCredentialsHandler.cs" />
     <Compile Include="Loading-and-Saving\LoadAndSaveDocToDatabase.cs" />
     <Compile Include="Loading-and-Saving\DetectDocumentSignatures.cs" />
+    <Compile Include="Loading-and-Saving\SaveOptionsHtmlFixed.cs" />
     <Compile Include="Loading-and-Saving\SendToClientBrowser.cs" />
     <Compile Include="Loading-and-Saving\DigitallySignedPdf.cs" />
     <Compile Include="Loading-and-Saving\ExportFontsAsBase64.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Programming-Documents\Charts\CreateColumnChart.cs" />
     <Compile Include="Programming-Documents\Comments\AddComments.cs" />
     <Compile Include="Programming-Documents\Comments\AnchorComment.cs" />
+    <Compile Include="Programming-Documents\Comments\CommentReply.cs" />
     <Compile Include="Programming-Documents\ConvertUtil\UtilityClasses.cs" />
     <Compile Include="Programming-Documents\Document\CleansUnusedStylesandLists.cs" />
     <Compile Include="Programming-Documents\Document\DocumentPageSetup.cs" />
@@ -166,6 +168,7 @@
     <Compile Include="Programming-Documents\Document\DocumentBuilderInsertBreak.cs" />
     <Compile Include="Programming-Documents\Document\DocumentBuilderInsertParagraph.cs" />
     <Compile Include="Programming-Documents\Document\InsertDoc.cs" />
+    <Compile Include="Programming-Documents\Document\WorkingWithFootnote.cs" />
     <Compile Include="Programming-Documents\Document\WorkingWithSaveOptions.cs" />
     <Compile Include="Programming-Documents\Document\WriteAndFont.cs" />
     <Compile Include="Programming-Documents\Document\DocProperties.cs" />
@@ -279,6 +282,7 @@
     <Compile Include="Programming-Documents\Tables\InsertTableFromHtml.cs" />
     <Compile Include="Programming-Documents\Tables\InsertTableDirectly.cs" />
     <Compile Include="Programming-Documents\Tables\InsertTableUsingDocumentBuilder.cs" />
+    <Compile Include="Programming-Documents\Tables\TablePosition.cs" />
     <Compile Include="Programming-Documents\Theme\ManipulateThemeProperties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

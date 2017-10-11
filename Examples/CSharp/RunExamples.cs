@@ -93,6 +93,8 @@ namespace Aspose.Words.Examples.CSharp
             // DetectDocumentSignatures.Run();
             // SaveAsTxt.Run();
 
+            //SaveOptionsHtmlFixed.Run();
+
             //// =====================================================
             //// =====================================================
             //// Programming with Documents
@@ -142,6 +144,7 @@ namespace Aspose.Words.Examples.CSharp
             // ProcessComments.Run();
             // AddComments.Run();
             // AnchorComment.Run();
+            // CommentReply.Run();
 
             //// ConvertUtil
             //// =====================================================
@@ -286,7 +289,7 @@ namespace Aspose.Words.Examples.CSharp
             // JoiningAndSplittingTable.Run();
             // MergedCells.Run();
             // KeepTablesAndRowsBreaking.Run();
-
+            // TablePosition.Run();
             //// Sections
             //// =====================================================
             // SectionsAccessByIndex.Run();
@@ -301,6 +304,10 @@ namespace Aspose.Words.Examples.CSharp
             //// =====================================================
             //BindSDTtoCustomXmlPart.Run();
             //ClearContentsControl.Run();
+
+            //// EndNote and Footnote 
+            //// =====================================================
+            // WorkingWithFootnote.Run();
 
             //// =====================================================
             //// =====================================================
