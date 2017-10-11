@@ -34,9 +34,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             Console.WriteLine("\nFootnote number of columns set successfully.\nFile saved at " + dataDir);
         }
 
-        private static void SetFootnoteOptions(string dataDir)
+        private static void SetFootnoteAndEndNotePosition(string dataDir)
         {
-            // ExStart:SetFootnoteOptions
+            // ExStart:SetFootnoteAndEndNotePosition
             Document doc = new Document(dataDir + "TestFile.docx");
 
             //Set footnote and endnode position.
@@ -46,7 +46,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 
             // Save the document to disk.
             doc.Save(dataDir);
-            // ExEnd:SetFootnoteOptions      
+            // ExEnd:SetFootnoteAndEndNotePosition      
             Console.WriteLine("\nFootnote number of columns set successfully.\nFile saved at " + dataDir);
         }
         private static void SetEndnoteOptions(string dataDir)
