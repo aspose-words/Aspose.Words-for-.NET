@@ -13,10 +13,8 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             SetFootNoteColumns(dataDir);
-            SetFootnoteOptions(dataDir);
+            SetFootnoteAndEndNotePosition(dataDir);
             SetEndnoteOptions(dataDir);
-
-
         }
 
         private static void SetFootNoteColumns(string dataDir)
