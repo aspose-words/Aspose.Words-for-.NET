@@ -291,7 +291,7 @@ namespace Aspose.Words.Examples.CSharp
             // JoiningAndSplittingTable.Run();
             // MergedCells.Run();
             // KeepTablesAndRowsBreaking.Run();
-             TablePosition.Run();
+            // TablePosition.Run();
             //// Sections
             //// =====================================================
             // SectionsAccessByIndex.Run();
