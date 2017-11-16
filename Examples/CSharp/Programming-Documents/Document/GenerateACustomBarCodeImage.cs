@@ -7,7 +7,7 @@ using Aspose.BarCode;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
-   
+
     class GenerateACustomBarCodeImage
     {
         public static void Run()
@@ -15,7 +15,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // ExStart:GenerateACustomBarCodeImage
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
-            Document doc = new Document(dataDir + @"Document.doc");
+            Document doc = new Document(dataDir + @"GenerateACustomBarCodeImage.docx");
 
             // Set custom barcode generator
             doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
@@ -27,43 +27,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     // ExStart:GenerateACustomBarCodeImage_IBarcodeGenerator
     public class CustomBarcodeGenerator : IBarcodeGenerator
     {
-        /// <summary>
-        /// Converts barcode type from Word to Aspose.BarCode.
-        /// </summary>
-        /// <param name="inputCode"></param>
-        /// <returns></returns>
-        private static Symbology ConvertBarcodeType(string inputCode)
-        {
-            if (inputCode == null)
-                return (Symbology)int.MinValue;
-
-            string type = inputCode.ToUpper();
-
-            switch (type)
-            {
-                case "QR":
-                    return Symbology.QR;
-                case "CODE128":
-                    return Symbology.Code128;
-                case "CODE39":
-                    return Symbology.Code39Standard;
-                case "EAN8":
-                    return Symbology.EAN8;
-                case "EAN13":
-                    return Symbology.EAN13;
-                case "UPCA":
-                    return Symbology.UPCA;
-                case "UPCE":
-                    return Symbology.UPCE;
-                case "ITF14":
-                    return Symbology.ITF14;
-                case "CASE":
-                    break;
-            }
-
-            return (Symbology)int.MinValue;
-        }
-
         /// <summary>
         /// Converts barcode image height from Word units to Aspose.BarCode units.
         /// </summary>
@@ -137,13 +100,46 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 
             BarCodeBuilder builder = new BarCodeBuilder();
 
-            builder.SymbologyType = ConvertBarcodeType(parameters.BarcodeType);
-            if (builder.SymbologyType == (Symbology)int.MinValue)
+            string type = parameters.BarcodeType.ToUpper();
+
+            switch (type)
+            {
+                case "QR":
+                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.QR;
+                    break;
+                case "CODE128":
+                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.Code128;
+                    break;
+                case "CODE39":
+                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.Code39Standard;
+                    break;
+                case "EAN8":
+                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.EAN8;
+                    break;
+                case "EAN13":
+                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.EAN13;
+                    break;
+                case "UPCA":
+                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.UPCA;
+                    break;
+                case "UPCE":
+                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.UPCE;
+                    break;
+                case "ITF14":
+                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.ITF14;
+                    break;
+                case "CASE":
+                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.None;
+                    break;
+            }
+
+            //builder.EncodeType = ConvertBarcodeType(parameters.BarcodeType);
+            if (builder.EncodeType == Aspose.BarCode.Generation.EncodeTypes.None)
                 return null;
 
             builder.CodeText = parameters.BarcodeValue;
 
-            if (builder.SymbologyType == Symbology.QR)
+            if (builder.EncodeType == Aspose.BarCode.Generation.EncodeTypes.QR)
                 builder.Display2DText = parameters.BarcodeValue;
 
             if (parameters.ForegroundColor != null)
@@ -168,7 +164,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             const float scale = 0.4f; // Empiric scaling factor for converting Word barcode to Aspose.BarCode
             float xdim = 1.0f;
 
-            if (builder.SymbologyType == Symbology.QR)
+            if (builder.EncodeType == Aspose.BarCode.Generation.EncodeTypes.QR)
             {
                 builder.AutoSize = false;
                 builder.ImageWidth *= scale;
@@ -181,7 +177,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             {
                 float scalingFactor = ConvertScalingFactor(parameters.ScalingFactor);
                 builder.ImageHeight *= scalingFactor;
-                if (builder.SymbologyType == Symbology.QR)
+                if (builder.EncodeType == Aspose.BarCode.Generation.EncodeTypes.QR)
                 {
                     builder.ImageWidth = builder.ImageHeight;
                     builder.xDimension = builder.yDimension = xdim * scalingFactor;
@@ -192,10 +188,10 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             return builder.BarCodeImage;
         }
 
-        Image IBarcodeGenerator.GetBarcodeImage(BarcodeParameters parameters)
-        {
-            throw new NotImplementedException();
-        }
+        //Image IBarcodeGenerator.GetBarcodeImage(BarcodeParameters parameters)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public Image GetOldBarcodeImage(BarcodeParameters parameters)
         {
