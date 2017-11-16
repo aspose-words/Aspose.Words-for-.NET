@@ -5,6 +5,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
 using Aspose.Words.Fields;
 using Aspose.Words.Tables;
+using System.IO;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
@@ -22,6 +23,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             InsertHyperlink(dataDir);
             InsertTableOfContents(dataDir);
             InsertOleObject(dataDir);
+            InsertOleObjectwithOlePackage(dataDir);
         }
         public static void InsertTextInputFormField(string dataDir)
         {
@@ -158,6 +160,26 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // ExEnd:DocumentBuilderInsertOleObject
             Console.WriteLine("\nOleObject using DocumentBuilder inserted successfully into a document.\nFile saved at " + dataDir);
         }
-        
+
+
+        public static void InsertOleObjectwithOlePackage(string dataDir)
+        {
+            // ExStart:InsertOleObjectwithOlePackage
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            byte[] bs = File.ReadAllBytes(dataDir + @"input.zip");
+            using (Stream stream = new MemoryStream(bs))
+            {
+                Shape shape = builder.InsertOleObject(stream, "Package", true, null);
+                OlePackage olePackage = shape.OleFormat.OlePackage;
+                olePackage.FileName = "filename.zip";
+                olePackage.DisplayName = "displayname.zip";
+                dataDir = dataDir + "DocumentBuilderInsertOleObjectOlePackage_out.doc";
+                doc.Save(dataDir);
+            }
+            
+            // ExEnd:InsertOleObjectwithOlePackage
+            Console.WriteLine("\nOleObject using DocumentBuilder inserted successfully into a document.\nFile saved at " + dataDir);
+        }
     }
 }

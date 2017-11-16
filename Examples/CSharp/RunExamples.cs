@@ -196,6 +196,8 @@ namespace Aspose.Words.Examples.CSharp
             // UpdateContentControls.Run();
             // GenerateACustomBarCodeImage.Run();
             // WorkingWithSaveOptions.Run();
+            // SetCompatibilityOptions.Run();
+
 
             //// Fields
             //// =====================================================
@@ -289,7 +291,7 @@ namespace Aspose.Words.Examples.CSharp
             // JoiningAndSplittingTable.Run();
             // MergedCells.Run();
             // KeepTablesAndRowsBreaking.Run();
-            // TablePosition.Run();
+             TablePosition.Run();
             //// Sections
             //// =====================================================
             // SectionsAccessByIndex.Run();
@@ -380,6 +382,7 @@ namespace Aspose.Words.Examples.CSharp
             // BubbleChart.Run();
             // ChartWithFilteringGroupingOrdering.Run();
             //ConditionalBlocks.Run();
+            //SettingBackgroundColor.Run();
 
             // Stop before exiting
             Console.WriteLine("\n\nProgram Finished. Press any key to exit....");

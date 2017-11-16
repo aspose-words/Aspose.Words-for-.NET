@@ -46,8 +46,8 @@
       <HintPath>..\packages\Aspose.Email.17.5.0\lib\net40\Aspose.Email.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Aspose.Words, Version=17.10.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.17.10\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=17.11.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.17.11\lib\net40\Aspose.Words.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -79,6 +79,7 @@
     <Compile Include="LINQ\MulticoloredNumberedList.cs" />
     <Compile Include="LINQ\NumberedList.cs" />
     <Compile Include="LINQ\InParagraphList.cs" />
+    <Compile Include="LINQ\SettingBackgroundColor.cs" />
     <Compile Include="LINQ\SingleRow.cs" />
     <Compile Include="LINQ\Manager.cs" />
     <Compile Include="LINQ\HelloWorld.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="Programming-Documents\Document\AcceptAllRevisions.cs" />
     <Compile Include="Programming-Documents\Document\CheckBoxTypeContentControl.cs" />
     <Compile Include="Programming-Documents\Document\ComboBoxContentControl.cs" />
+    <Compile Include="Programming-Documents\Document\SetCompatibilityOptions.cs" />
     <Compile Include="Programming-Documents\Document\UpdateContentControls.cs" />
     <Compile Include="Programming-Documents\Document\RichTextBoxContentControl.cs" />
     <Compile Include="Programming-Documents\Document\RemoveTOCFromDocument.cs" />
