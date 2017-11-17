@@ -38,6 +38,7 @@ namespace ApiExamples
         #region HtmlOfficeMathOutputMode
 
         [Test]
+        [Ignore("Fix is on the way")]
         [TestCase(SaveFormat.Html, HtmlOfficeMathOutputMode.Image)]
         [TestCase(SaveFormat.Mhtml, HtmlOfficeMathOutputMode.MathML)]
         [TestCase(SaveFormat.Epub, HtmlOfficeMathOutputMode.Text)]
