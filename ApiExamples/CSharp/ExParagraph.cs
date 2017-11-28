@@ -13,7 +13,9 @@ namespace ApiExamples
         public void InsertField()
         {
             //ExStart
-            //ExFor:Paragraph.InsertField
+            //ExFor:Paragraph.InsertField(string, Node, bool)
+            //ExFor:Paragraph.InsertField(FieldType, bool, Node, bool)
+            //ExFor:Paragraph.InsertField(string, string, Node, bool)
             //ExSummary:Shows how to insert field using several methods: "field code", "field code and field value", "field code and field value after a run of text"
             Document doc = new Document();
 

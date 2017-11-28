@@ -238,11 +238,11 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OleControl
-            //ExFor:Forms2OleControlCollection.Caption
-            //ExFor:Forms2OleControlCollection.Value
-            //ExFor:Forms2OleControlCollection.Enabled
-            //ExFor:Forms2OleControlCollection.Type
-            //ExFor:Forms2OleControlCollection.ChildNodes
+            //ExFor:Forms2OleControl.Caption
+            //ExFor:Forms2OleControl.Value
+            //ExFor:Forms2OleControl.Enabled
+            //ExFor:Forms2OleControl.Type
+            //ExFor:Forms2OleControl.ChildNodes
             //ExSummary: Shows how to get ActiveX control and properties from the document
             Document doc = new Document(MyDir + "Shape.ActiveXObject.docx");
 
@@ -318,7 +318,8 @@ namespace ApiExamples
         public void SaveShapeObjectAsImage()
         {
             //ExStart
-            //ExFor:OfficeMath.GetMathRenderer.Save
+            //ExFor:OfficeMath.GetMathRenderer
+            //ExFor:NodeRendererBase.Save(string, ImageSaveOptions)
             //ExSummary:Shows how to convert specific object into image
             Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
 
@@ -334,7 +335,7 @@ namespace ApiExamples
         public void AspectRatioLocked(bool isLocked)
         {
             //ExStart
-            //ExFor:Shape.AspectRatioLocked
+            //ExFor:ShapeBase.AspectRatioLocked
             //ExSummary:Shows how to set "AspectRatioLocked" for the shape object
             Document doc = new Document(MyDir + "Shape.ActiveXObject.docx");
 
@@ -354,8 +355,8 @@ namespace ApiExamples
         public void MarkupLunguageByDefault()
         {
             //ExStart
-            //ExFor:Shape.MarkupLanguage
-            //ExStart:Shows how get markup language for shape object in document
+            //ExFor:ShapeBase.MarkupLanguage
+            //ExSummary:Shows how get markup language for shape object in document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

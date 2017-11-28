@@ -271,7 +271,7 @@ namespace ApiExamples
         public void LoadFormatForOldDocuments()
         {
             //ExStart
-            //ExFor:LoadFormat.DocPreWord60
+            //ExFor:LoadFormat
             //ExSummary: Shows how to open older binary DOC format for Word6.0/Word95 documents
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.LoadFormat = Aspose.Words.LoadFormat.DocPreWord60;
@@ -1398,7 +1398,7 @@ namespace ApiExamples
         public void CompareEx()
         {
             //ExStart
-            //ExFor:Document.Compare
+            //ExFor:Document.Compare(Document, String, DateTime)
             //ExSummary:Shows how to apply the compare method to two documents and then use the results. 
             Document doc1 = new Document(MyDir + "Document.Compare.1.doc");
             Document doc2 = new Document(MyDir + "Document.Compare.2.doc");
@@ -1588,7 +1588,7 @@ namespace ApiExamples
         public void HyphenationOptionsExceptions()
         {
             Document doc = new Document();
-
+            
             doc.HyphenationOptions.ConsecutiveHyphenLimit = 0;
             Assert.That(() => doc.HyphenationOptions.HyphenationZone = 0, Throws.TypeOf<ArgumentOutOfRangeException>());
 
@@ -1600,62 +1600,49 @@ namespace ApiExamples
         [Test]
         public void ExtractPlainTextFromDocument()
         {
-            //ExStart
-            //ExFor:Document.ExtractText(string)
-            //ExFor:Document.ExtractText(string, LoadOptions)
-            //ExFor:PlaintextDocument.Text
-            //ExFor:PlaintextDocument.BuiltInDocumentProperties
-            //ExFor:PlaintextDocument.CustomDocumentProperties
-            //ExSummary:Shows how to extract plain text from the document and get it properties
-            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmark.docx");
-            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); //in .doc there is other result "This is a bookmarked text.\r\r\r\r\r\r\r\f""
-
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.AllowTrailingWhitespaceForListItems = false;
+            
+            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmark.docx", loadOptions);
+            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); 
 
             plaintext = new PlainTextDocument(MyDir + "Bookmark.doc", loadOptions);
-            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text);
+            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); //in .doc there is other result "This is a bookmarked text.\r\r\r\r\r\r\r\f""
 
             BuiltInDocumentProperties builtInDocumentProperties = plaintext.BuiltInDocumentProperties;
             Assert.AreEqual("Aspose", builtInDocumentProperties.Company);
 
             CustomDocumentProperties customDocumentProperties = plaintext.CustomDocumentProperties;
             Assert.IsEmpty(customDocumentProperties);
-            //ExEnd
         }
 
         [Ignore("Bug with .doc files")]
         [Test]
         public void ExtractPlainTextFromStream()
         {
-            //ExStart
-            //ExFor:Document.ExtractText(Stream)
-            //ExFor:Document.ExtractText(Stream, LoadOptions)
-            //ExSummary:
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.AllowTrailingWhitespaceForListItems = false;
+
             Stream docStream = new FileStream(MyDir + "Bookmark.doc", FileMode.Open);
 
-            PlainTextDocument plaintext = new PlainTextDocument(docStream);
+            PlainTextDocument plaintext = new PlainTextDocument(docStream, loadOptions);
             Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text);
 
             docStream.Close();
 
             docStream = new FileStream(MyDir + "Bookmark.doc", FileMode.Open);
-
-            LoadOptions loadOptions = new LoadOptions();
-            loadOptions.AllowTrailingWhitespaceForListItems = false;
-
+            
             plaintext = new PlainTextDocument(docStream, loadOptions);
             Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text);
 
             docStream.Close();
-            //ExEnd
         }
 
         [Test]
         public void GetShapeAltTextTitle()
         {
             //ExStart
-            //ExFor:Shape.Title
+            //ExFor:ShapeBase.Title
             //ExSummary:Shows how to get or set alt text title for shape object
             Document doc = new Document();
 

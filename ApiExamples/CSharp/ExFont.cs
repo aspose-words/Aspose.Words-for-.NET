@@ -15,6 +15,7 @@ using Aspose.Words.Fonts;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 using System.IO;
+using Font = Aspose.Words.Font;
 
 namespace ApiExamples
 {
@@ -41,7 +42,7 @@ namespace ApiExamples
             Run run = new Run(doc, "Hello");
 
             // Specify character formatting for the run of text.
-            Aspose.Words.Font f = run.Font;
+            Font f = run.Font;
             f.Name = "Courier New";
             f.Size = 36;
             f.HighlightColor = Color.Yellow;
@@ -549,14 +550,13 @@ namespace ApiExamples
         }
 
         [Test]
-        public void FontSubstitutionPerFirstAvailableFont()
+        public void RecieveFontSubstitutionNotification()
         {
             // Store the font sources currently used so we can restore them later. 
             FontSourceBase[] origFontSources = FontSettings.DefaultInstance.GetFontsSources();
 
             //ExStart
             //ExFor:IWarningCallback
-            //ExFor:DocumentBase.WarningCallback
             //ExFor:SaveOptions.WarningCallback
             //ExId:FontSubstitutionNotification
             //ExSummary:Demonstrates how to recieve notifications of font substitutions by using IWarningCallback.
@@ -564,7 +564,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.doc");
 
             // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
-            ExRendering.HandleDocumentWarnings callback = new ExRendering.HandleDocumentWarnings();
+            HandleDocumentWarnings callback = new HandleDocumentWarnings();
             doc.WarningCallback = callback;
 
             // We can choose the default font to use in the case of any missing fonts.
@@ -572,8 +572,8 @@ namespace ApiExamples
 
             // For testing we will set Aspose.Words to look for fonts only in a folder which doesn't exist. Since Aspose.Words won't
             // find any fonts in the specified directory, then during rendering the fonts in the document will be subsuited with the default 
-            // font specified under FontSettings.DefaultFontName. We can pick up on this subsuition using our callback.
-            FontSettings.DefaultInstance.SetFontsFolder(string.Empty, false);
+            // font specified under FontSettings.DefaultFontName. We can pick up on this substitution using our callback.
+            FontSettings.DefaultInstance.SetFontsFolder(String.Empty, false);
 
             // Pass the save options along with the save path to the save method.
             doc.Save(MyDir + @"\Artifacts\Rendering.MissingFontNotification.pdf");
@@ -587,13 +587,39 @@ namespace ApiExamples
             FontSettings.DefaultInstance.SetFontsSources(origFontSources);
         }
 
+        //ExStart
+        //ExFor:IWarningCallback
+        //ExFor:SaveOptions.WarningCallback
+        //ExId:FontSubstitutionWarningCallback
+        //ExSummary:Demonstrates how to implement the IWarningCallback to be notified of any font substitution during document save.
+        public class HandleDocumentWarnings : IWarningCallback
+        {
+            /// <summary>
+            /// Our callback only needs to implement the "Warning" method. This method is called whenever there is a
+            /// potential issue during document procssing. The callback can be set to listen for warnings generated during document
+            /// load and/or document save.
+            /// </summary>
+            public void Warning(WarningInfo info)
+            {
+                // We are only interested in fonts being substituted.
+                if (info.WarningType == WarningType.FontSubstitution)
+                {
+                    Console.WriteLine("Font substitution: " + info.Description);
+                    mFontWarnings.Warning(info); //ExSkip
+                }
+            }
+
+            public WarningInfoCollection mFontWarnings = new WarningInfoCollection(); //ExSkip
+        }
+        //ExEnd
+
         [Test]
         public void FontSubstitutionWarnings()
         {
             Document doc = new Document(MyDir + "Rendering.doc");
 
             // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
-            ExRendering.HandleDocumentWarnings callback = new ExRendering.HandleDocumentWarnings();
+            HandleDocumentWarnings callback = new HandleDocumentWarnings();
             doc.WarningCallback = callback;
 
             FontSettings fontSettings = new FontSettings();
@@ -615,7 +641,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Font.DisapearingBulletPoints.doc");
 
             // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
-            ExRendering.HandleDocumentWarnings callback = new ExRendering.HandleDocumentWarnings();
+            HandleDocumentWarnings callback = new HandleDocumentWarnings();
             doc.WarningCallback = callback;
 
             doc.Save(MyDir + @"\Artifacts\Font.DisapearingBulletPoints.pdf");
@@ -629,7 +655,7 @@ namespace ApiExamples
         [Test]
         public void RemoveHiddenContentCaller()
         {
-            this.RemoveHiddenContentFromDocument();
+            RemoveHiddenContentFromDocument();
         }
 
         [Test]
@@ -711,7 +737,7 @@ namespace ApiExamples
             public override VisitorAction VisitFieldStart(FieldStart fieldStart)
             {
                 // If this node is hidden, then remove it.
-                if (this.isHidden(fieldStart))
+                if (isHidden(fieldStart))
                     fieldStart.Remove();
 
                 return VisitorAction.Continue;
@@ -722,7 +748,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitFieldEnd(FieldEnd fieldEnd)
             {
-                if (this.isHidden(fieldEnd))
+                if (isHidden(fieldEnd))
                     fieldEnd.Remove();
 
                 return VisitorAction.Continue;
@@ -733,7 +759,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitFieldSeparator(FieldSeparator fieldSeparator)
             {
-                if (this.isHidden(fieldSeparator))
+                if (isHidden(fieldSeparator))
                     fieldSeparator.Remove();
 
                 return VisitorAction.Continue;
@@ -744,7 +770,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (this.isHidden(run))
+                if (isHidden(run))
                     run.Remove();
 
                 return VisitorAction.Continue;
@@ -755,7 +781,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitParagraphStart(Paragraph paragraph)
             {
-                if (this.isHidden(paragraph))
+                if (isHidden(paragraph))
                     paragraph.Remove();
 
                 return VisitorAction.Continue;
@@ -766,7 +792,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitFormField(FormField field)
             {
-                if (this.isHidden(field))
+                if (isHidden(field))
                     field.Remove();
 
                 return VisitorAction.Continue;
@@ -777,7 +803,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitGroupShapeStart(GroupShape groupShape)
             {
-                if (this.isHidden(groupShape))
+                if (isHidden(groupShape))
                     groupShape.Remove();
 
                 return VisitorAction.Continue;
@@ -788,7 +814,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitShapeStart(Shape shape)
             {
-                if (this.isHidden(shape))
+                if (isHidden(shape))
                     shape.Remove();
 
                 return VisitorAction.Continue;
@@ -799,7 +825,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitCommentStart(Comment comment)
             {
-                if (this.isHidden(comment))
+                if (isHidden(comment))
                     comment.Remove();
 
                 return VisitorAction.Continue;
@@ -810,7 +836,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitFootnoteStart(Footnote footnote)
             {
-                if (this.isHidden(footnote))
+                if (isHidden(footnote))
                     footnote.Remove();
 
                 return VisitorAction.Continue;
@@ -862,7 +888,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitSpecialChar(SpecialChar character)
             {
-                if (this.isHidden(character))
+                if (isHidden(character))
                     character.Remove();
 
                 return VisitorAction.Continue;

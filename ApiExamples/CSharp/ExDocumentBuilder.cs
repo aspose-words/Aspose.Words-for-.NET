@@ -385,21 +385,21 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Ignore("Bug \"trimmed name if you enter more than 20 characters\"")]
+        [Ignore("WORDSNET-16190")]
         [Test]
         public void InsertCheckBox()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertCheckBox(string, bool, bool, int)
             //ExFor:DocumentBuilder.InsertCheckBox(string, bool, int)
+            //ExSummary:Shows how to insert checkboxes to the document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            builder.InsertCheckBox(String.Empty, false, false, 0);
 
-            //Insert checkboxes
-            //With Default value
-            builder.InsertCheckBox("CheckBox_DefaultAndCheckedValue", false, true, 0);
+            builder.InsertCheckBox("CheckBox_DefaultAndCheckedValue", true, true, 50);
 
-            //Without Default value
             builder.InsertCheckBox("CheckBox_OnlyCheckedValue", true, 100);
             //ExEnd
 
@@ -410,20 +410,28 @@ namespace ApiExamples
             FormFieldCollection formFields = doc.Range.FormFields;
 
             //Check that is the right checkbox
-            Assert.AreEqual("CheckBox_DefaultAndCheckedValue", formFields[0].Name);
+            Assert.AreEqual(String.Empty, formFields[0].Name);
 
             //Assert that parameters sets correctly
-            Assert.AreEqual(true, formFields[0].Checked);
+            Assert.AreEqual(false, formFields[0].Checked);
             Assert.AreEqual(false, formFields[0].Default);
             Assert.AreEqual(10, formFields[0].CheckBoxSize);
 
             //Check that is the right checkbox
-            Assert.AreEqual("CheckBox_OnlyCheckedValue", formFields[1].Name);
+            Assert.AreEqual("CheckBox_DefaultAndCheckedValue", formFields[1].Name);
 
             //Assert that parameters sets correctly
-            Assert.AreEqual(false, formFields[1].Checked);
-            Assert.AreEqual(false, formFields[1].Default);
-            Assert.AreEqual(100, formFields[1].CheckBoxSize);
+            Assert.AreEqual(true, formFields[1].Checked);
+            Assert.AreEqual(true, formFields[1].Default);
+            Assert.AreEqual(50, formFields[1].CheckBoxSize);
+
+            //Check that is the right checkbox
+            Assert.AreEqual("CheckBox_OnlyCheckedValue", formFields[2].Name);
+
+            //Assert that parameters sets correctly
+            Assert.AreEqual(true, formFields[2].Checked);
+            Assert.AreEqual(true, formFields[2].Default);
+            Assert.AreEqual(100, formFields[2].CheckBoxSize);
         }
 
         [Test]
@@ -1521,20 +1529,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentBuilderInsertCheckBoxFormField()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertCheckBox
-            //ExId:DocumentBuilderInsertCheckBoxFormField
-            //ExSummary:Shows how to insert a checkbox form field into a document.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.InsertCheckBox("CheckBox", true, 0);
-            //ExEnd
-        }
-
-        [Test]
         public void DocumentBuilderInsertComboBoxFormField()
         {
             //ExStart
@@ -1573,7 +1567,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:SignatureLine
             //ExFor:SignatureLineOptions
-            //ExFor:DocumentBuilder.InsertSignatureLine(SignatureLineOptions)
             //ExFor:DocumentBuilder.InsertSignatureLine(SignatureLineOptions)
             //ExSummary:Shows how to insert signature line and get signature line properties
             Document doc = new Document();
@@ -2035,29 +2028,6 @@ namespace ApiExamples
             builder.InsertChart(ChartType.Pie, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
 
             doc.Save(MyDir + @"\Artifacts\Document.InsertedChartRelativePosition.doc");
-            //ExEnd
-        }
-
-        [Test]
-        public void InsertCheckBoxEx()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertCheckBox(String, Boolean, Int32)
-            //ExFor:DocumentBuilder.InsertCheckBox(String, Boolean, Boolean, Int32)
-            //ExSummary:Shows how to insert a check box into a document.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Insert a checkbox with no default value and let MS Word apply the default size.
-            builder.Writeln("Check box 1");
-            builder.InsertCheckBox("CheckBox1", false, 0);
-            builder.Writeln();
-
-            // Insert a checked checkbox with a specified value.
-            builder.Writeln("Check box 2");
-            builder.InsertCheckBox("CheckBox2", false, true, 50);
-
-            doc.Save(MyDir + @"\Artifacts\Document.InsertedCheckBoxes.doc");
             //ExEnd
         }
 

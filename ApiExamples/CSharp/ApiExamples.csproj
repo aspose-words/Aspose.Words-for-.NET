@@ -75,7 +75,6 @@
     <Compile Include="ExTxtSaveOptions.cs" />
     <Compile Include="ExXpsSaveOptions.cs" />
     <Compile Include="ExUtilityClasses.cs" />
-    <Compile Include="ExDigitalSignature.cs" />
     <Compile Include="ExDigitalSignatureCollection.cs" />
     <Compile Include="ExDigitalSignatureUtil.cs" />
     <Compile Include="ExMossDoc2Pdf.cs" />

@@ -20,7 +20,7 @@ namespace ApiExamples
         public void CreateMissingOutlineLevels()
         {
             //ExStart
-            //ExFor:Saving.PdfSaveOptions.OutlineOptions.CreateMissingOutlineLevels
+            //ExFor:OutlineOptions.CreateMissingOutlineLevels
             //ExSummary:Shows how to create missing outline levels saving the document in pdf
             Document doc = new Document();
 
@@ -151,14 +151,13 @@ namespace ApiExamples
             optionsA1a.ImageCompression = PdfImageCompression.Jpeg;
 
             doc.Save(MyDir + @"\Artifacts\SaveOptions.PdfImageComppression PDF_A_1_A Out.pdf", optionsA1a);
-            //ExEnd
         }
 
         [Test]
         public void ColorRendering()
         {
             //ExStart
-            //ExFor:PdfSaveOptions.ColorMode
+            //ExFor:SaveOptions.ColorMode
             //ExSummary:Shows how change image color with save options property
 
             //Open document with color image

@@ -58,8 +58,8 @@ namespace ApiExamples
         public void SaveToPdfStreamOnePage()
         {
             //ExStart
-            //ExFor:PdfSaveOptions.PageIndex
-            //ExFor:PdfSaveOptions.PageCount
+            //ExFor:FixedPageSaveOptions.PageIndex
+            //ExFor:FixedPageSaveOptions.PageCount
             //ExFor:Document.Save(Stream, SaveOptions)
             //ExSummary:Converts just one page (third page in this example) of the document to PDF.
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -462,7 +462,7 @@ namespace ApiExamples
             //ExFor:Document.RenderToScale
             //ExFor:Document.GetPageInfo
             //ExFor:PageInfo
-            //ExFor:PageInfo.GetSizeInPixels
+            //ExFor:PageInfo.GetSizeInPixels(Single, Single)
             //ExSummary:Renders a page of a Word document into a bitmap using a specified zoom factor.
             Document doc = new Document(MyDir + "Rendering.doc");
 
@@ -938,70 +938,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void RecieveFontSubstitutionNotification()
-        {
-            // Store the font sources currently used so we can restore them later. 
-            FontSourceBase[] origFontSources = FontSettings.DefaultInstance.GetFontsSources();
-
-            //ExStart
-            //ExFor:IWarningCallback
-            //ExFor:SaveOptions.WarningCallback
-            //ExId:FontSubstitutionNotification
-            //ExSummary:Demonstrates how to recieve notifications of font substitutions by using IWarningCallback.
-            // Load the document to render.
-            Document doc = new Document(MyDir + "Document.doc");
-
-            // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
-            HandleDocumentWarnings callback = new HandleDocumentWarnings();
-            doc.WarningCallback = callback;
-
-            // We can choose the default font to use in the case of any missing fonts.
-            FontSettings.DefaultInstance.DefaultFontName = "Arial";
-
-            // For testing we will set Aspose.Words to look for fonts only in a folder which doesn't exist. Since Aspose.Words won't
-            // find any fonts in the specified directory, then during rendering the fonts in the document will be subsuited with the default 
-            // font specified under FontSettings.DefaultFontName. We can pick up on this subsuition using our callback.
-            FontSettings.DefaultInstance.SetFontsFolder(string.Empty, false);
-
-            // Pass the save options along with the save path to the save method.
-            doc.Save(MyDir + @"\Artifacts\Rendering.MissingFontNotification.pdf");
-            //ExEnd
-
-            Assert.Greater(callback.mFontWarnings.Count, 0);
-            Assert.True(callback.mFontWarnings[0].WarningType == WarningType.FontSubstitution);
-            Assert.True(callback.mFontWarnings[0].Description.Contains("has not been found"));
-
-            // Restore default fonts. 
-            FontSettings.DefaultInstance.SetFontsSources(origFontSources);
-        }
-
-        //ExStart
-        //ExFor:IWarningCallback
-        //ExFor:SaveOptions.WarningCallback
-        //ExId:FontSubstitutionWarningCallback
-        //ExSummary:Demonstrates how to implement the IWarningCallback to be notified of any font substitution during document save.
-        public class HandleDocumentWarnings : IWarningCallback
-        {
-            /// <summary>
-            /// Our callback only needs to implement the "Warning" method. This method is called whenever there is a
-            /// potential issue during document procssing. The callback can be set to listen for warnings generated during document
-            /// load and/or document save.
-            /// </summary>
-            public void Warning(WarningInfo info)
-            {
-                // We are only interested in fonts being substituted.
-                if (info.WarningType == WarningType.FontSubstitution)
-                {
-                    Console.WriteLine("Font substitution: " + info.Description);
-                    this.mFontWarnings.Warning(info); //ExSkip
-                }
-            }
-
-            public WarningInfoCollection mFontWarnings = new WarningInfoCollection(); //ExSkip
-        }
-        //ExEnd
-
-        [Test]
         public void RecieveFontSubstitutionUpdatePageLayout()
         {
             // Store the font sources currently used so we can restore them later. 
@@ -1011,7 +947,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.doc");
 
             // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
-            HandleDocumentWarnings callback = new HandleDocumentWarnings();
+            ExFont.HandleDocumentWarnings callback = new ExFont.HandleDocumentWarnings();
             doc.WarningCallback = callback;
 
             // We can choose the default font to use in the case of any missing fonts.
@@ -1155,7 +1091,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Rendering.NumeralFormat.doc");
             //ExStart
-            //ExFor:PdfSaveOptions.NumeralFormat
+            //ExFor:FixedPageSaveOptions.NumeralFormat
             //ExSummary:Demonstrates how to set the numeral format used when saving to PDF.
             PdfSaveOptions options = new PdfSaveOptions();
             options.NumeralFormat = NumeralFormat.Context;
