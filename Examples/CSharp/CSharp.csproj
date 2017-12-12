@@ -189,6 +189,7 @@
     <Compile Include="Programming-Documents\Document\CreateHeaderFooterUsingDocBuilder.cs" />
     <Compile Include="Programming-Documents\Fields\ChangeFieldUpdateCultureSource.cs" />
     <Compile Include="Programming-Documents\Fields\ChangeLocale.cs" />
+    <Compile Include="Programming-Documents\Fields\EvaluateIFCondition.cs" />
     <Compile Include="Programming-Documents\Fields\GetFieldNames.cs" />
     <Compile Include="Programming-Documents\Fields\InsertIncludeFieldWithoutDocumentBuilder.cs" />
     <Compile Include="Programming-Documents\Fields\InsertTOAFieldWithoutDocumentBuilder.cs" />

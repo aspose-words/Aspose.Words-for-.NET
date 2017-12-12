@@ -334,7 +334,7 @@ namespace Aspose.Words.Examples.CSharp
             // NestedMailMergeCustom.Run();            
             // RemoveRowsFromTable.Run();
 
-            HandleMailMergeSwitches.Run();
+            // HandleMailMergeSwitches.Run();
 
             //// =====================================================
             //// =====================================================
