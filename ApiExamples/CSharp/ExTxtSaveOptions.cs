@@ -17,12 +17,16 @@ namespace ApiExamples
         [Test]
         public void PageBreaks()
         {
+            //ExStart
+            //ExFor:TxtSaveOptions.ForcePageBreaks
+            //ExSummary:Shows how to specify whether the page breaks should be preserved during export.
             Document doc = new Document(MyDir + "SaveOptions.PageBreaks.docx");
 
             TxtSaveOptions saveOptions = new TxtSaveOptions();
             saveOptions.ForcePageBreaks = false;
-            doc.Save(MyDir + @"\Artifacts\SaveOptions.PageBreaks False Out.txt", saveOptions);
 
+            doc.Save(MyDir + @"\Artifacts\SaveOptions.PageBreaks False Out.txt", saveOptions);
+            //ExEnd
             Document docFalse = new Document(MyDir + @"\Artifacts\SaveOptions.PageBreaks False Out.txt");
             Assert.AreEqual("Some text before page break\r\rJidqwjidqwojidqwojidqwojidqwojidqwoji\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\rQwdqwdqwdqwdqwdqwdqwd\rQwdqwdqwdqwdqwdqwdqw\r\r\r\r\rqwdqwdqwdqwdqwdqwdqwqwd\r\f", docFalse.GetText());
 

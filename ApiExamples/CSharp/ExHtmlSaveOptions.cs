@@ -17,16 +17,16 @@ namespace ApiExamples
     {
         #region PageMargins
 
-        //For assert this test you need to open html docs and they shouldn't have negative left margins //ToDo: Need to add gold assert tests
+        //For assert this test you need to open HTML docs and they shouldn't have negative left margins
         [Test]
         [TestCase(SaveFormat.Html)]
         [TestCase(SaveFormat.Mhtml)]
         [TestCase(SaveFormat.Epub)]
         public void ExportPageMargins(SaveFormat saveFormat)
         {
-            var doc = new Document(MyDir + "HtmlSaveOptions.ExportPageMargins.docx");
+            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportPageMargins.docx");
 
-            var saveOptions = new HtmlSaveOptions();
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.SaveFormat = saveFormat;
             saveOptions.ExportPageMargins = true;
 
@@ -38,15 +38,14 @@ namespace ApiExamples
         #region HtmlOfficeMathOutputMode
 
         [Test]
-        [Ignore("Fix is on the way")]
         [TestCase(SaveFormat.Html, HtmlOfficeMathOutputMode.Image)]
         [TestCase(SaveFormat.Mhtml, HtmlOfficeMathOutputMode.MathML)]
         [TestCase(SaveFormat.Epub, HtmlOfficeMathOutputMode.Text)]
         public void ExportOfficeMath(SaveFormat saveFormat, HtmlOfficeMathOutputMode outputMode)
         {
-            var doc = new Document(MyDir + "OfficeMath.docx");
+            Document doc = new Document(MyDir + "OfficeMath.docx");
 
-            var saveOptions = new HtmlSaveOptions();
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.OfficeMathOutputMode = outputMode;
 
             Save(doc, @"\Artifacts\HtmlSaveOptions.ExportToHtmlUsingImage." + saveFormat.ToString().ToLower(), saveFormat, saveOptions);
@@ -54,7 +53,7 @@ namespace ApiExamples
             switch (saveFormat)
             {
                 case SaveFormat.Html:
-                    DocumentHelper.FindTextInFile(MyDir + @"\Artifacts\HtmlSaveOptions.ExportToHtmlUsingImage." + saveFormat.ToString().ToLower(), "<img src=\"HtmlSaveOptions.ExportToHtmlUsingImage.001.png\" width=\"49\" height=\"22\" alt=\"\" style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />");
+                    DocumentHelper.FindTextInFile(MyDir + @"\Artifacts\HtmlSaveOptions.ExportToHtmlUsingImage." + saveFormat.ToString().ToLower(), "<img src=\"HtmlSaveOptions.ExportToHtmlUsingImage.001.png\" width=\"49\" height=\"19\" alt=\"\" style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />");
                     return;
 
                 case SaveFormat.Mhtml:
@@ -79,9 +78,9 @@ namespace ApiExamples
         {
             string[] dirFiles;
 
-            var doc = new Document(MyDir + "HtmlSaveOptions.ExportTextBoxAsSvg.docx");
+            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportTextBoxAsSvg.docx");
 
-            var saveOptions = new HtmlSaveOptions();
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.ExportTextBoxAsSvg = textBoxAsSvg;
 
             Save(doc, @"\Artifacts\HtmlSaveOptions.ExportTextBoxAsSvg." + saveFormat.ToString().ToLower(), saveFormat, saveOptions);
@@ -128,11 +127,10 @@ namespace ApiExamples
                     return inputDoc;
                 case SaveFormat.Epub:
                     inputDoc.Save(MyDir + outputDocPath, saveOptions);
-                    //There is draw images bug with epub. Need write to NSezganov
                     return inputDoc;
             }
 
-            return null;
+            return inputDoc;
         }
 
         [Test]
@@ -140,9 +138,9 @@ namespace ApiExamples
         [TestCase(false)]
         public void ExportUrlForLinkedImage(bool export)
         {
-            var doc = new Document(MyDir + "HtmlSaveOptions.ExportUrlForLinkedImage.docx");
+            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportUrlForLinkedImage.docx");
 
-            var saveOptions = new HtmlSaveOptions();
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.ExportOriginalUrlForLinkedImages = export;
 
             doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.ExportUrlForLinkedImage.html", saveOptions);
@@ -161,9 +159,9 @@ namespace ApiExamples
         [TestCase(false)]
         public void ExportRoundtripInformation(bool valueHtml)
         {
-            var doc = new Document(MyDir + "HtmlSaveOptions.ExportPageMargins.docx");
+            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportPageMargins.docx");
 
-            var saveOptions = new HtmlSaveOptions();
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.ExportRoundtripInformation = valueHtml;
 
             doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.RoundtripInformation.html");
@@ -178,7 +176,7 @@ namespace ApiExamples
         public void RoundtripInformationDefaulValue()
         {
             //Assert that default value is true for HTML and false for MHTML and EPUB.
-            var saveOptions = new HtmlSaveOptions(SaveFormat.Html);
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html);
             Assert.AreEqual(true, saveOptions.ExportRoundtripInformation);
 
             saveOptions = new HtmlSaveOptions(SaveFormat.Mhtml);

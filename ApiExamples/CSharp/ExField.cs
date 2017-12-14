@@ -76,6 +76,10 @@ namespace ApiExamples
         [Test]
         public void CreateRevNumFieldWithFieldBuilder()
         {
+            //ExStart
+            //ExFor:FieldBuilder(FieldType)
+            //ExFor:FieldBuilder.BuildAndInsert(Run)
+            //ExSummary:Builds and inserts a field into the document before the specified inline node
             Document doc = new Document();
             Run run = DocumentHelper.InsertNewRun(doc, " Hello World!", 0);
 
@@ -83,7 +87,7 @@ namespace ApiExamples
             fieldBuilder.BuildAndInsert(run);
 
             doc.UpdateFields();
-
+            //ExEnd
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
             
@@ -91,12 +95,14 @@ namespace ApiExamples
             Assert.NotNull(revNum);
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void CreateRevNumFieldByDocumentBuilder()
         {
             Document doc = new Document();
-            DocumentBuilder b = new DocumentBuilder(doc);
-            b.InsertField("REVNUM MERGEFORMAT");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertField("REVNUM MERGEFORMAT");
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
@@ -105,11 +111,11 @@ namespace ApiExamples
             Assert.NotNull(revNum);
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void CreateInfoFieldWithFieldBuilder()
         {
             Document doc = new Document();
-
             Run run = DocumentHelper.InsertNewRun(doc, " Hello World!", 0);
 
             FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldInfo);
@@ -124,12 +130,14 @@ namespace ApiExamples
             Assert.NotNull(info);
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
-        public void CreateInfoFieldByDocumentBuilder()
+        public void CreateInfoFieldWithDocumentBuilder()
         {
             Document doc = new Document();
-            DocumentBuilder b = new DocumentBuilder(doc);
-            b.InsertField("INFO MERGEFORMAT");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertField("INFO MERGEFORMAT");
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
@@ -175,8 +183,9 @@ namespace ApiExamples
         {
             // Create a blank document.
             Document doc = new Document();
-            DocumentBuilder b = new DocumentBuilder(doc);
-            b.InsertField("MERGEFIELD Date");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertField("MERGEFIELD Date");
 
             //ExStart
             //ExId:ChangeCurrentCulture
@@ -187,7 +196,7 @@ namespace ApiExamples
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
 
             // Execute mail merge.
-            doc.MailMerge.Execute(new string[] { "Date" }, new object[] { DateTime.Now });
+            doc.MailMerge.Execute(new String[] { "Date" }, new object[] { DateTime.Now });
 
             // Restore the original culture.
             Thread.CurrentThread.CurrentCulture = currentCulture;
@@ -233,21 +242,21 @@ namespace ApiExamples
         public class InsertTcFieldHandler : IReplacingCallback
         {
             // Store the text and switches to be used for the TC fields.
-            private string mFieldText;
-            private string mFieldSwitches;
+            private String mFieldText;
+            private String mFieldSwitches;
 
             /// <summary>
-            /// The switches to use for each TC field. Can be an empty string or null.
+            /// The switches to use for each TC field. Can be an empty String or null.
             /// </summary>
-            public InsertTcFieldHandler(string switches) : this(string.Empty, switches)
+            public InsertTcFieldHandler(String switches) : this(String.Empty, switches)
             {
                 this.mFieldSwitches = switches;
             }
 
             /// <summary>
-            /// The display text and switches to use for each TC field. Display name can be an empty string or null.
+            /// The display text and switches to use for each TC field. Display name can be an empty String or null.
             /// </summary>
-            public InsertTcFieldHandler(string text, string switches)
+            public InsertTcFieldHandler(String text, String switches)
             {
                 this.mFieldText = text;
                 this.mFieldSwitches = switches;
@@ -261,32 +270,42 @@ namespace ApiExamples
                 builder.MoveTo(args.MatchNode);
 
                 // If the user specified text to be used in the field as display text then use that, otherwise use the 
-                // match string as the display text.
-                string insertText;
+                // match String as the display text.
+                String insertText;
 
-                if (!string.IsNullOrEmpty(this.mFieldText))
+                if (!String.IsNullOrEmpty(this.mFieldText))
                     insertText = this.mFieldText;
                 else
                     insertText = args.Match.Value;
 
-                // Insert the TC field before this node using the specified string as the display text and user defined switches.
-                builder.InsertField(string.Format("TC \"{0}\" {1}", insertText, this.mFieldSwitches));
+                // Insert the TC field before this node using the specified String as the display text and user defined switches.
+                builder.InsertField(String.Format("TC \"{0}\" {1}", insertText, this.mFieldSwitches));
 
                 // We have done what we want so skip replacement.
                 return ReplaceAction.Skip;
             }
         }
-
         //ExEnd
 
-        //Bug: there is no isAfter parameter at BuildAndInsert(exception), need more info from dev
         [Test]
         public void InsertFieldWithFieldBuilder()
         {
+            //ExStart
+            //ExFor:FieldArgumentBuilder
+            //ExFor:FieldArgumentBuilder.AddField(FieldBuilder)
+            //ExFor:FieldArgumentBuilder.AddText(String)
+            //ExFor:FieldBuilder.AddArgument(FieldArgumentBuilder)
+            //ExFor:FieldBuilder.AddArgument(String)
+            //ExFor:FieldBuilder.AddArgument(Int32)
+            //ExFor:FieldBuilder.AddArgument(Double)
+            //ExFor:FieldBuilder.AddSwitch(String, String)
+            //ExSummary:Inserts a field into a document using field builder constructor
             Document doc = new Document();
 
-            //Add some text into the paragraph
-            Run run = DocumentHelper.InsertNewRun(doc, " Hello World!", 0);
+            //Add text into the paragraph
+            Paragraph para = doc.FirstSection.Body.Paragraphs[0];
+            Run run = new Run(doc) { Text = " Hello World!" };
+            para.AppendChild(run);
 
             FieldArgumentBuilder argumentBuilder = new FieldArgumentBuilder();
             argumentBuilder.AddField(new FieldBuilder(FieldType.FieldMergeField));
@@ -296,8 +315,10 @@ namespace ApiExamples
             fieldBuilder.AddArgument(argumentBuilder).AddArgument("=").AddArgument("BestField").AddArgument(10).AddArgument(20.0).AddSwitch("12", "13").BuildAndInsert(run);
 
             doc.UpdateFields();
+            //ExEnd
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void InsertFieldWithFieldBuilderException()
         {
@@ -330,11 +351,10 @@ namespace ApiExamples
             Assert.AreEqual("QR", barCode.GetCodeType().ToString());
         }
 
-        private BarCodeReader BarCodeReaderPdf(string filename)
+        private BarCodeReader BarCodeReaderPdf(String filename)
         {
             //Set license for Aspose.BarCode
             Aspose.BarCode.License licenceBarCode = new Aspose.BarCode.License();
-
             licenceBarCode.SetLicense(@"X:\awnet\TestData\Licenses\Aspose.Total.lic");
 
             //bind the pdf document
@@ -370,12 +390,12 @@ namespace ApiExamples
         public void UpdateFieldIgnoringMergeFormat()
         {
             //ExStart
-            //ExFor:Field.Update(bool)
+            //ExFor:Field.Update(Bool)
             //ExSummary:Shows a way to update a field ignoring the MERGEFORMAT switch
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.PreserveIncludePictureField = true;
 
-            Document doc = new Document(MyDir + "UpdateFieldIgnoringMergeFormat.docx", loadOptions);
+            Document doc = new Document(MyDir + "Field.UpdateFieldIgnoringMergeFormat.docx", loadOptions);
 
             foreach (Field field in doc.Range.Fields)
             {
@@ -389,13 +409,22 @@ namespace ApiExamples
             }
 
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\UpdateFieldIgnoringMergeFormat.docx");
+            doc.Save(MyDir + @"\Artifacts\Field.UpdateFieldIgnoringMergeFormat.docx");
             //ExEnd
         }
 
         [Test]
         public void FieldFormat()
         {
+            //ExStart
+            //ExFor:Field.Format
+            //ExFor:FieldFormat
+            //ExFor:FieldFormat.DateTimeFormat
+            //ExFor:FieldFormat.NumericFormat
+            //ExFor:FieldFormat.GeneralFormats
+            //ExFor:GeneralFormat
+            //ExFor:GeneralFormatCollection.Add(GeneralFormat)
+            //ExSummary:Shows how to formatting fields
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -406,6 +435,7 @@ namespace ApiExamples
             format.DateTimeFormat = "dddd, MMMM dd, yyyy";
             format.NumericFormat = "0.#";
             format.GeneralFormats.Add(GeneralFormat.CharFormat);
+            //ExEnd
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
@@ -421,35 +451,48 @@ namespace ApiExamples
         [Test]
         public void UnlinkAllFieldsInDocument()
         {
-            Document doc = new Document(MyDir + "UnlinkFields.docx");
+            //ExStart
+            //ExFor:Document.UnlinkFields
+            //ExSummary:Shows how to unlink all fields in the document
+            Document doc = new Document(MyDir + "Field.UnlinkFields.docx");
 
             doc.UnlinkFields();
+            //ExEnd
 
-            string paraWithFields = DocumentHelper.GetParagraphText(doc, 0);
+            String paraWithFields = DocumentHelper.GetParagraphText(doc, 0);
             Assert.AreEqual("Fields.Docx   Элементы указателя не найдены.     1.\r", paraWithFields);
         }
 
         [Test]
         public void UnlinkAllFieldsInRange()
         {
-            Document doc = new Document(MyDir + "UnlinkFields.docx");
+            //ExStart
+            //ExFor:Range.UnlinkFields
+            //ExSummary:Shows how to unlink all fields in range
+            Document doc = new Document(MyDir + "Field.UnlinkFields.docx");
 
             Section newSection = (Section)doc.Sections[0].Clone(true);
             doc.Sections.Add(newSection);
 
             doc.Sections[1].Range.UnlinkFields();
+            //ExEnd
 
-            string secWithFields = DocumentHelper.GetSectionText(doc, 1);
+            String secWithFields = DocumentHelper.GetSectionText(doc, 1);
             Assert.AreEqual(secWithFields, "Fields.Docx   Элементы указателя не найдены.     3.\rОшибка! Не указана последовательность.    Fields.Docx   Элементы указателя не найдены.     4.\r\r\r\r\r\f");
         }
 
         [Test]
         public void UnlinkSingleField()
         {
-            Document doc = new Document(MyDir + "UnlinkFields.docx");
-            doc.Range.Fields[1].Unlink();
+            //ExStart
+            //ExFor:Field.Unlink
+            //ExSummary:Shows how to unlink specific field
+            Document doc = new Document(MyDir + "Field.UnlinkFields.docx");
 
-            string paraWithFields = DocumentHelper.GetParagraphText(doc, 0);
+            doc.Range.Fields[1].Unlink();
+            //ExEnd
+
+            String paraWithFields = DocumentHelper.GetParagraphText(doc, 0);
             Assert.AreEqual(paraWithFields, "\u0013 FILENAME  \\* Caps  \\* MERGEFORMAT \u0014Fields.Docx\u0015   Элементы указателя не найдены.     \u0013 LISTNUM  LegalDefault \u0015\r");
         }
 
@@ -497,7 +540,7 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(MyDir + "Field.UpdateTocPages Out.docx");
+            doc.Save(MyDir + @"\Artifacts\Field.UpdateTocPages.docx");
         }
 
         private void RemoveSequence(Node start, Node end)

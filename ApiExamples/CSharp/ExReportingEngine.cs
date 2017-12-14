@@ -20,8 +20,8 @@ namespace ApiExamples
     [TestFixture]
     public class ExReportingEngine : ApiExampleBase
     {
-        private readonly string _image = MyDir + @"\Images\Test_636_852.gif";
-        private readonly string _doc = MyDir + "ReportingEngine.TestDataTable.docx";
+        private readonly String _image = ImageDir + "Test_636_852.gif";
+        private readonly String _doc = MyDir + "ReportingEngine.TestDataTable.docx";
 
         [Test]
         public void SimpleCase()
@@ -56,7 +56,7 @@ namespace ApiExamples
         {
             Document doc = DocumentHelper.CreateSimpleDocument("<<[s.Value1]:alphabetic>> : <<[s.Value2]:roman:lower>>, <<[s.Value3]:ordinal>>, <<[s.Value1]:ordinalText:upper>>" + ", <<[s.Value2]:cardinal>>, <<[s.Value3]:hex>>, <<[s.Value3]:arabicDash>>, <<[s.Date]:\"MMMM\":lower>>");
 
-            NumericDataSource sender = new NumericDataSource(1, 2.2, 200, DateTime.Parse("10.09.2016 10:00:00"));
+            NumericDataSource sender = new NumericDataSource(1, 2.2, 200, DateTime.Parse("09.10.2016 10:00:00"));
             BuildReport(doc, sender, "s");
 
             MemoryStream dstStream = new MemoryStream();
@@ -428,7 +428,7 @@ namespace ApiExamples
             Assert.AreEqual(ControlChar.ParagraphBreak + ControlChar.ParagraphBreak + ControlChar.SectionBreak, builder.Document.GetText());
         }
 
-        private static void BuildReport(Document document, object dataSource, string dataSourceName, ReportBuildOptions reportBuildOptions)
+        private static void BuildReport(Document document, object dataSource, String dataSourceName, ReportBuildOptions reportBuildOptions)
         {
             ReportingEngine engine = new ReportingEngine();
             engine.Options = reportBuildOptions;
@@ -436,13 +436,13 @@ namespace ApiExamples
             engine.BuildReport(document, dataSource, dataSourceName);
         }
 
-        private static void BuildReport(Document document, object[] dataSource, string[] dataSourceName)
+        private static void BuildReport(Document document, object[] dataSource, String[] dataSourceName)
         {
             ReportingEngine engine = new ReportingEngine();
             engine.BuildReport(document, dataSource, dataSourceName);
         }
 
-        private static void BuildReport(Document document, object dataSource, string dataSourceName)
+        private static void BuildReport(Document document, object dataSource, String dataSourceName)
         {
             ReportingEngine engine = new ReportingEngine();
             engine.BuildReport(document, dataSource, dataSourceName);

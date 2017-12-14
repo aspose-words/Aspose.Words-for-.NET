@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System.Collections;
 using System.Drawing;
 using Aspose.Words;
 using NUnit.Framework;
@@ -15,16 +16,17 @@ namespace ApiExamples
     public class ExBorderCollection : ApiExampleBase
     {
         [Test]
-        public void GetEnumeratorEx()
+        public void GetBordersEnumerator()
         {
             //ExStart
             //ExFor:BorderCollection.GetEnumerator
             //ExSummary:Shows how to enumerate all borders in a collection.
             Document doc = new Document(MyDir + "Border.Borders.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             BorderCollection borders = builder.ParagraphFormat.Borders;
 
-            var enumerator = borders.GetEnumerator();
+            IEnumerator enumerator = borders.GetEnumerator();
             while (enumerator.MoveNext())
             {
                 // Do something useful.
@@ -38,7 +40,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ClearFormattingEx()
+        public void RemoveAllBorders()
         {
             //ExStart
             //ExFor:BorderCollection.ClearFormatting

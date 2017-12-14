@@ -133,19 +133,19 @@ namespace ApiExamples
             //ExFor:Document.Save(Stream, SaveFormat)
             //ExFor:Document.Save(String, SaveOptions)
             //ExId:SaveToXps_NewAPI
-            //ExSummary:Shows how to save a document to the Xps format using the Save method and the XpsSaveOptions class.
+            //ExSummary:Shows how to save a document to the XPS format using the Save method and the XpsSaveOptions class.
             // Open the document
             Document doc = new Document(MyDir + "Rendering.doc");
-            // Save document to file in the Xps format with default options
+            // Save document to file in the XPS format with default options
             doc.Save(MyDir + @"\Artifacts\Rendering.XpsDefaultOptions.xps");
 
-            // Save document to stream in the Xps format with default options
+            // Save document to stream in the XPS format with default options
             MemoryStream docStream = new MemoryStream();
             doc.Save(docStream, SaveFormat.Xps);
             // Rewind the stream position back to the beginning, ready for use
             docStream.Seek(0, SeekOrigin.Begin);
 
-            // Save document to file in the Xps format with specified options
+            // Save document to file in the XPS format with specified options
             // Render the first page only
             XpsSaveOptions xpsOptions = new XpsSaveOptions();
             xpsOptions.PageIndex = 0;
@@ -163,20 +163,20 @@ namespace ApiExamples
             //ExFor:Document.Save(Stream, SaveFormat)
             //ExFor:Document.Save(String, SaveOptions)
             //ExId:SaveToImage_NewAPI
-            //ExSummary:Shows how to save a document to the Jpeg format using the Save method and the ImageSaveOptions class.
+            //ExSummary:Shows how to save a document to the JPEG format using the Save method and the ImageSaveOptions class.
             // Open the document
             Document doc = new Document(MyDir + "Rendering.doc");
-            // Save as a Jpeg image file with default options
+            // Save as a JPEG image file with default options
             doc.Save(MyDir + @"\Artifacts\Rendering.JpegDefaultOptions.jpg");
 
-            // Save document to stream as a Jpeg with default options
+            // Save document to stream as a JPEG with default options
             MemoryStream docStream = new MemoryStream();
             doc.Save(docStream, SaveFormat.Jpeg);
             // Rewind the stream position back to the beginning, ready for use
             docStream.Seek(0, SeekOrigin.Begin);
 
-            // Save document to a Jpeg image with specified options.
-            // Render the third page only and set the jpeg quality to 80%
+            // Save document to a JPEG image with specified options.
+            // Render the third page only and set the JPEG quality to 80%
             // In this case we need to pass the desired SaveFormat to the ImageSaveOptions constructor 
             // to signal what type of image to save as.
             ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Jpeg);
@@ -283,7 +283,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:ImageSaveOptions
             //ExFor:ImageSaveOptions.PaperColor
-            //ExSummary:Renders a page of a Word document into an image with transparent or coloured background.
+            //ExSummary:Renders a page of a Word document into an image with transparent or colored background.
             Document doc = new Document(MyDir + "Rendering.doc");
 
             ImageSaveOptions imgOptions = new ImageSaveOptions(SaveFormat.Png);
@@ -358,7 +358,8 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test, Explicit]
+        [Ignore("Run only when the printer driver is installed")]
+        [Test]
         public void Print()
         {
             //ExStart
@@ -370,7 +371,8 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test, Explicit]
+        [Ignore("Run only when the printer driver is installed")]
+        [Test]
         public void PrintToNamedPrinter()
         {
             //ExStart
@@ -382,7 +384,8 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test, Explicit]
+        [Ignore("Run only when the printer driver is installed")]
+        [Test]
         public void PrintRange()
         {
             //ExStart
@@ -399,7 +402,8 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test, Explicit]
+        [Ignore("Run only when the printer driver is installed")]
+        [Test]
         public void PrintRangeWithDocumentName()
         {
             //ExStart
@@ -416,7 +420,8 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test, Explicit]
+        [Ignore("Run only when the printer driver is installed")]
+        [Test]
         public void PreviewAndPrint()
         {
             //ExStart
@@ -469,16 +474,16 @@ namespace ApiExamples
             PageInfo pageInfo = doc.GetPageInfo(0);
 
             // Let's say we want the image at 50% zoom.
-            const float MyScale = 0.50f;
+            const float myScale = 0.50f;
 
             // Let's say we want the image at this resolution.
-            const float MyResolution = 200.0f;
+            const float myResolution = 200.0f;
 
-            Size pageSize = pageInfo.GetSizeInPixels(MyScale, MyResolution);
+            Size pageSize = pageInfo.GetSizeInPixels(myScale, myResolution);
 
             using (Bitmap img = new Bitmap(pageSize.Width, pageSize.Height))
             {
-                img.SetResolution(MyResolution, MyResolution);
+                img.SetResolution(myResolution, myResolution);
 
                 using (Graphics gr = Graphics.FromImage(img))
                 {
@@ -489,7 +494,7 @@ namespace ApiExamples
                     gr.FillRectangle(Brushes.White, 0, 0, pageSize.Width, pageSize.Height);
 
                     // Render the page using the zoom.
-                    doc.RenderToScale(0, gr, 0, 0, MyScale);
+                    doc.RenderToScale(0, gr, 0, 0, myScale);
                 }
 
                 img.Save(MyDir + @"\Artifacts\Rendering.RenderToScale.png");
@@ -511,7 +516,7 @@ namespace ApiExamples
                 using (Graphics gr = Graphics.FromImage(bmp))
                 {
                     // The user can specify any options on the Graphics object including
-                    // transform, antialiasing, page units, etc.
+                    // transform, anti-aliasing, page units, etc.
                     gr.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
                     // Let's say we want to fit the page into a 3" x 3" square on the screen so use inches as units.
@@ -530,7 +535,7 @@ namespace ApiExamples
                     // This is the calculated scale factor to fit 297mm into 3".
                     Console.WriteLine("The image was rendered at {0:P0} zoom.", returnedScale);
 
-                    // One more example, this time in millimiters.
+                    // One more example, this time in millimeters.
                     gr.PageUnit = GraphicsUnit.Millimeter;
 
                     gr.ResetTransform();
@@ -555,7 +560,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void createThumbnails()
+        public void CreateThumbnails()
         {
             //ExStart
             //ExFor:Document.RenderToScale
@@ -617,13 +622,15 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:PageInfo.GetDotNetPaperSize
-        //ExFor:PageInfo.Landscape
-        //ExSummary:Shows how to implement your own .NET PrintDocument to completely customize printing of Aspose.Words documents.
-        [Test, Explicit] //ExSkip
+
+        [Ignore("Run only when the printer driver is installed")]
+        [Test]
         public void CustomPrint()
         {
+            //ExStart
+            //ExFor:PageInfo.GetDotNetPaperSize
+            //ExFor:PageInfo.Landscape
+            //ExSummary:Shows how to implement your own .NET PrintDocument to completely customize printing of Aspose.Words documents.
             Document doc = new Document(MyDir + "Rendering.doc");
 
             // Create an instance of our own PrintDocument.
@@ -723,7 +730,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        [Test, Explicit]
+        [Test]
         public void WritePageInfo()
         {
             //ExStart
@@ -787,7 +794,7 @@ namespace ApiExamples
             // Note that this setting will override any default font sources that are being searched by default. Now only these folders will be searched for 
             // fonts when rendering or embedding fonts. To add an extra font source while keeping system font sources then use both FontSettings.GetFontSources and 
             // FontSettings.SetFontSources instead.
-            FontSettings.DefaultInstance.SetFontsFolders(new string[] { @"C:\MyFonts\", @"D:\Misc\Fonts\" }, true);
+            FontSettings.DefaultInstance.SetFontsFolders(new String[] { @"C:\MyFonts\", @"D:\Misc\Fonts\" }, true);
 
             doc.Save(MyDir + @"\Artifacts\Rendering.SetFontsFolders.pdf");
             //ExEnd
@@ -820,7 +827,7 @@ namespace ApiExamples
             // Add the custom folder which contains our fonts to the list of existing font sources.
             fontSources.Add(folderFontSource);
 
-            // Convert the Arraylist of source back into a primitive array of FontSource objects.
+            // Convert the ArrayList of source back into a primitive array of FontSource objects.
             FontSourceBase[] updatedFontSources = (FontSourceBase[])fontSources.ToArray(typeof(FontSourceBase));
 
             // Apply the new set of font sources to use.
@@ -841,6 +848,7 @@ namespace ApiExamples
             FontSettings.DefaultInstance.SetFontsSources(origFontSources);
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void SetSpecifyFontFolder()
         {
@@ -850,9 +858,11 @@ namespace ApiExamples
             // Using load options
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.FontSettings = fontSettings;
+
             Document doc = new Document(MyDir + "Rendering.doc", loadOptions);
 
             FolderFontSource folderSource = ((FolderFontSource)doc.FontSettings.GetFontsSources()[0]);
+
             Assert.AreEqual(MyDir + @"MyFonts\", folderSource.FolderPath);
             Assert.False(folderSource.ScanSubfolders);
         }
@@ -860,9 +870,12 @@ namespace ApiExamples
         [Test]
         public void SetFontSubstitutes()
         {
+            //ExStart
+            //ExFor:FontSettings.SetFontSubstitutes(String, String[])
+            //ExSummary:Shows how to define alternative fonts if original does not exist
             FontSettings fontSettings = new FontSettings();
-            fontSettings.SetFontSubstitutes("Times New Roman", new string[] { "Slab", "Arvo" });
-
+            fontSettings.SetFontSubstitutes("Times New Roman", new String[] { "Slab", "Arvo" });
+            //ExEnd
             Document doc = new Document(MyDir + "Rendering.doc");
             doc.FontSettings = fontSettings;
 
@@ -875,15 +888,16 @@ namespace ApiExamples
 
             Assert.AreEqual("Times New Roman", doc.FontSettings.DefaultFontName);
 
-            string[] alternativeFonts = doc.FontSettings.GetFontSubstitutes("Times New Roman");
-            Assert.AreEqual(new string[] { "Slab", "Arvo" }, alternativeFonts);
+            String[] alternativeFonts = doc.FontSettings.GetFontSubstitutes("Times New Roman");
+            Assert.AreEqual(new String[] { "Slab", "Arvo" }, alternativeFonts);
         }
-
+        
+        //This is just a test, no need adding example tags.
         [Test]
         public void SetSpecifyFontFolders()
         {
             FontSettings fontSettings = new FontSettings();
-            fontSettings.SetFontsFolders(new string[] { MyDir + @"MyFonts\", @"C:\Windows\Fonts\" }, true);
+            fontSettings.SetFontsFolders(new String[] { MyDir + @"MyFonts\", @"C:\Windows\Fonts\" }, true);
 
             // Using load options
             LoadOptions loadOptions = new LoadOptions();
@@ -899,12 +913,13 @@ namespace ApiExamples
             Assert.True(folderSource.ScanSubfolders);
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void AddFontSubstitutes()
         {
             FontSettings fontSettings = new FontSettings();
-            fontSettings.SetFontSubstitutes("Slab", new string[] { "Times New Roman", "Arial" });
-            fontSettings.AddFontSubstitutes("Arvo", new string[] { "Open Sans", "Arial" });
+            fontSettings.SetFontSubstitutes("Slab", new String[] { "Times New Roman", "Arial" });
+            fontSettings.AddFontSubstitutes("Arvo", new String[] { "Open Sans", "Arial" });
 
             Document doc = new Document(MyDir + "Rendering.doc");
             doc.FontSettings = fontSettings;
@@ -912,11 +927,11 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            string[] alternativeFonts = doc.FontSettings.GetFontSubstitutes("Slab");
-            Assert.AreEqual(new string[] { "Times New Roman", "Arial" }, alternativeFonts);
+            String[] alternativeFonts = doc.FontSettings.GetFontSubstitutes("Slab");
+            Assert.AreEqual(new String[] { "Times New Roman", "Arial" }, alternativeFonts);
 
             alternativeFonts = doc.FontSettings.GetFontSubstitutes("Arvo");
-            Assert.AreEqual(new string[] { "Open Sans", "Arial" }, alternativeFonts);
+            Assert.AreEqual(new String[] { "Open Sans", "Arial" }, alternativeFonts);
         }
 
         [Test]
@@ -954,14 +969,14 @@ namespace ApiExamples
             FontSettings.DefaultInstance.DefaultFontName = "Arial";
 
             // For testing we will set Aspose.Words to look for fonts only in a folder which doesn't exist. Since Aspose.Words won't
-            // find any fonts in the specified directory, then during rendering the fonts in the document will be subsuited with the default 
-            // font specified under FontSettings.DefaultFontName. We can pick up on this subsuition using our callback.
-            FontSettings.DefaultInstance.SetFontsFolder(string.Empty, false);
+            // find any fonts in the specified directory, then during rendering the fonts in the document will be substituted with the default 
+            // font specified under FontSettings.DefaultFontName. We can pick up on this substitution using our callback.
+            FontSettings.DefaultInstance.SetFontsFolder(String.Empty, false);
 
             //ExStart
             //ExId:FontSubstitutionUpdatePageLayout
-            //ExSummary:Demonstrates how IWarningCallback will still recieve warning notifcations even if UpdatePageLayout is called before document save.
-            // When you call UpdatePageLayout the document is rendered in memory. Any warnings that occured during rendering
+            //ExSummary:Demonstrates how IWarningCallback will still receive warning notifications even if UpdatePageLayout is called before document save.
+            // When you call UpdatePageLayout the document is rendered in memory. Any warnings that occurred during rendering
             // are stored until the document save and then sent to the appropriate WarningCallback.
             doc.UpdatePageLayout();
 
@@ -1043,11 +1058,11 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfSaveOptions.UseCoreFonts
             //ExId:DisableUseOfCoreFonts
-            //ExSummary:Shows how to set Aspose.Words to avoid embedding core fonts and let the reader subsuite PDF Type 1 fonts instead.
+            //ExSummary:Shows how to set Aspose.Words to avoid embedding core fonts and let the reader substitute PDF Type 1 fonts instead.
             // Load the document to render.
             Document doc = new Document(MyDir + "Rendering.doc");
 
-            // To disable embedding of core fonts and subsuite PDF type 1 fonts set UseCoreFonts to true.
+            // To disable embedding of core fonts and substitute PDF type 1 fonts set UseCoreFonts to true.
             PdfSaveOptions options = new PdfSaveOptions();
             options.UseCoreFonts = true;
 
@@ -1072,7 +1087,7 @@ namespace ApiExamples
             PdfSaveOptions saveOptions = new PdfSaveOptions();
 
             // Create encryption details and set owner password.
-            PdfEncryptionDetails encryptionDetails = new PdfEncryptionDetails(string.Empty, "password", PdfEncryptionAlgorithm.RC4_128);
+            PdfEncryptionDetails encryptionDetails = new PdfEncryptionDetails(String.Empty, "password", PdfEncryptionAlgorithm.RC4_128);
 
             // Start by disallowing all permissions.
             encryptionDetails.Permissions = PdfPermissions.DisallowAll;

@@ -94,7 +94,7 @@ namespace ApiExamples
         }
 
         [Test]
-        [Ignore("Fix is on the way")]
+        [Ignore("Run only when the printer driver is installed")]
         public void DefaultPaperTray()
         {
             //ExStart
@@ -118,7 +118,8 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test, Explicit]
+        [Test]
+        [Ignore("Run only when the printer driver is installed")]
         public void PaperTrayForDifferentPaperType()
         {
             //ExStart
@@ -335,7 +336,7 @@ namespace ApiExamples
             //ExFor:PageSetup.RestartPageNumbering
             //ExFor:PageSetup.PageStartingNumber
             //ExFor:PageSetup.PageNumberStyle
-            //ExFor:DocumentBuilder.InsertField(string, string)
+            //ExFor:DocumentBuilder.InsertField(String, String)
             //ExSummary:Shows how to control page numbering per section.
             // This document has two sections, but no page numbers yet.
             Document doc = new Document(MyDir + "PageSetup.PageNumbering.doc");
@@ -354,7 +355,7 @@ namespace ApiExamples
             section.PageSetup.PageStartingNumber = 5;
             section.PageSetup.PageNumberStyle = NumberStyle.UppercaseRoman;
 
-            // Create a header for the section section. 
+            // Create a header for the section. 
             // The page number will look like " - 10 - ".
             builder.MoveToSection(1);
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);

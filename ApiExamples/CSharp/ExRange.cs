@@ -24,6 +24,9 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Range.Replace(String, String, FindReplaceOptions)
+            //ExFor:FindReplaceOptions
+            //ExFor:FindReplaceOptions.MatchCase
+            //ExFor:FindReplaceOptions.FindWholeWordsOnly
             //ExSummary:Simple find and replace operation.
             // Open the document.
             Document doc = new Document();
@@ -39,15 +42,16 @@ namespace ApiExamples
             options.FindWholeWordsOnly = false;
 
             // Replace the text in the document.
-            doc.Range.Replace("_CustomerName_", "James Bond", options); //instead of obsolete method doc.Range.Replace("_CustomerName_", "James Bond", false, false);
+            doc.Range.Replace("_CustomerName_", "James Bond", options);
 
             // Save the modified document.
-            doc.Save(MyDir + @"\Artifacts\Range.ReplaceSimple.doc");
+            doc.Save(MyDir + @"\Artifacts\Range.ReplaceSimple.docx");
             //ExEnd
 
             Assert.AreEqual("Hello James Bond,\r\x000c", doc.GetText());
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void ReplaceWithString()
         {
@@ -63,41 +67,38 @@ namespace ApiExamples
 
             doc.Range.Replace("sad", "bad", options);
 
-            doc.Save(MyDir + @"\Artifacts\ReplaceWithString.doc");
+            doc.Save(MyDir + @"\Artifacts\ReplaceWithString.docx");
         }
 
         [Test]
         public void ReplaceWithRegex()
         {
             //ExStart
-            //ExFor:Range.Replace(Regex, String)
+            //ExFor:Range.Replace(Regex, String, FindReplaceOptions)
             //ExSummary:Shows how to replace all occurrences of words "sad" or "mad" to "bad".
             Document doc = new Document(MyDir + "Document.doc");
-            doc.Range.Replace(new Regex("[s|m]ad"), "bad"); //this method is obsolete, but still continues to work
+
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.MatchCase = false;
+            options.FindWholeWordsOnly = false;
+
+            doc.Range.Replace(new Regex("[s|m]ad"), "bad", options);
             //ExEnd
 
-            doc.Save(MyDir + @"\Artifacts\ReplaceWithRegex.doc");
+            doc.Save(MyDir + @"\Artifacts\ReplaceWithRegex.docx");
         }
 
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
         [Test]
-        public void ReplaceWithInsertHtmlCaller()
-        {
-            this.ReplaceWithInsertHtml();
-        }
-
-        //ExStart
-        //ExFor:Range.Replace(Regex, string, FindReplaceOptions)
-        //ExFor:ReplacingArgs.Replacement
-        //ExFor:IReplacingCallback
-        //ExFor:IReplacingCallback.Replacing
-        //ExFor:ReplacingArgs
-        //ExFor:DocumentBuilder.InsertHtml(string)
-        //ExSummary:Replaces text specified with regular expression with HTML.
         public void ReplaceWithInsertHtml()
         {
+            //ExStart
+            //ExFor:Range.Replace(Regex, String, FindReplaceOptions)
+            //ExFor:ReplacingArgs.Replacement
+            //ExFor:IReplacingCallback
+            //ExFor:IReplacingCallback.Replacing
+            //ExFor:ReplacingArgs
+            //ExFor:DocumentBuilder.InsertHtml(String)
+            //ExSummary:Replaces text specified with regular expression with HTML.
             // Open the document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -107,7 +108,7 @@ namespace ApiExamples
             FindReplaceOptions options = new FindReplaceOptions();
             options.ReplacingCallback = new ReplaceWithHtmlEvaluator(options);
 
-            doc.Range.Replace(new Regex(@" <CustomerName>,"), String.Empty, options); //instead of obsolete method doc.Range.Replace(new Regex(@"<CustomerName>"), new ReplaceWithHtmlEvaluator(), false)
+            doc.Range.Replace(new Regex(@" <CustomerName>,"), String.Empty, options);
 
             // Save the modified document.
             doc.Save(MyDir + @"\Artifacts\Range.ReplaceWithInsertHtml.doc");
@@ -169,7 +170,7 @@ namespace ApiExamples
                 int number = Convert.ToInt32(args.Match.Value);
 
                 // And write it as HEX.
-                args.Replacement = string.Format("0x{0:X}", number);
+                args.Replacement = String.Format("0x{0:X}", number);
 
                 return ReplaceAction.Replace;
             }
@@ -183,7 +184,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Node.Range
             //ExFor:Range.Delete
-            //ExSummary:Shows how to delete a section from a Word document.
+            //ExSummary:Shows how to delete all characters of a range.
             // Open Word document.
             Document doc = new Document(MyDir + "Range.DeleteSection.doc");
 
@@ -209,18 +210,7 @@ namespace ApiExamples
             //ExId:RangesGetText
             //ExSummary:Shows how to get plain, unformatted text of a range.
             Document doc = new Document(MyDir + "Document.doc");
-            string text = doc.Range.Text;
-            //ExEnd
-        }
-
-        [Test]
-        public void RangesDeleteText()
-        {
-            //ExStart
-            //ExId:RangesDeleteText
-            //ExSummary:Shows how to delete all characters of a range.
-            Document doc = new Document(MyDir + "Document.doc");
-            doc.Sections[0].Range.Delete();
+            String text = doc.Range.Text;
             //ExEnd
         }
     }

@@ -134,6 +134,33 @@ namespace ApiExamples
         }
 
         [Test]
+        public void GetShapeAltTextTitle()
+        {
+            //ExStart
+            //ExFor:ShapeBase.Title
+            //ExSummary:Shows how to get or set title of shape object.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create test shape.
+            Shape shape = new Shape(doc, ShapeType.Cube);
+            shape.Width = 431.5;
+            shape.Height = 346.35;
+            shape.Title = "Alt Text Title";
+
+            builder.InsertNode(shape);
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Console.WriteLine("Shape text: " + shape.Title);
+            //ExEnd
+
+            Assert.AreEqual("Alt Text Title", shape.Title);
+        }
+
+        [Test]
         public void ReplaceTextboxesWithImages()
         {
             //ExStart
@@ -273,7 +300,7 @@ namespace ApiExamples
 
             //Gets the file name suggested for the current embedded object if you want to save it into a file
             Shape oleShape = (Shape)doc.FirstSection.Body.GetChild(NodeType.Shape, 0, true);
-            string suggestedFileName = oleShape.OleFormat.SuggestedFileName;
+            String suggestedFileName = oleShape.OleFormat.SuggestedFileName;
             //ExEnd
 
             Assert.AreEqual("CSV.csv", suggestedFileName);
@@ -319,7 +346,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OfficeMath.GetMathRenderer
-            //ExFor:NodeRendererBase.Save(string, ImageSaveOptions)
+            //ExFor:NodeRendererBase.Save(String, ImageSaveOptions)
             //ExSummary:Shows how to convert specific object into image
             Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
 
@@ -360,7 +387,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Shape image = builder.InsertImage(MyDir + @"\Images\dotnet-logo.png");
+            Shape image = builder.InsertImage(ImageDir + "dotnet-logo.png");
 
             // Loop through all single shapes inside document.
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
@@ -383,7 +410,7 @@ namespace ApiExamples
 
             doc.CompatibilityOptions.OptimizeFor(msWordVersion);
 
-            Shape image = builder.InsertImage(MyDir + @"\Images\dotnet-logo.png");
+            Shape image = builder.InsertImage(ImageDir + "dotnet-logo.png");
 
             // Loop through all single shapes inside document.
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))

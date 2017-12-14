@@ -15,7 +15,7 @@ namespace ApiExamples
     public class ExDigitalSignatureCollection : ApiExampleBase
     {
         [Test]
-        public void GetEnumeratorEx()
+        public void GetEnumerator()
         {
             //ExStart
             //ExFor:DigitalSignatureCollection.GetEnumerator

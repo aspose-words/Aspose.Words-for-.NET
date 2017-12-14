@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
@@ -22,24 +23,27 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OoxmlCompliance
-            //ExSummary:Shows conversion vml shapes to dml using Iso29500_2008_Strict option
+            //ExSummary:Shows conversion VML shapes to DML using Iso29500_2008_Strict
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            //Set Word2003 version for document, for inserting image as vml shape
+            //Set Word2003 version for document, for inserting image as VML shape
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2003);
 
-            Shape image = builder.InsertImage(MyDir + @"\Images\dotnet-logo.png");
+            builder.InsertImage(ImageDir + "dotnet-logo.png");
 
             // Loop through all single shapes inside document.
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
             {
-                Assert.AreEqual(ShapeMarkupLanguage.Vml, shape.MarkupLanguage);
+                Console.WriteLine(shape.MarkupLanguage);
+                Assert.AreEqual(ShapeMarkupLanguage.Vml, shape.MarkupLanguage);//ExSkip
             }
 
+            //Iso29500_2008 does not allow VML shapes, so you need to use OoxmlCompliance.Iso29500_2008_Strict for converting VML to DML shapes
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
-            saveOptions.Compliance = OoxmlCompliance.Iso29500_2008_Strict; //Iso29500_2008 does not allow vml shapes, so you need to use OoxmlCompliance.Iso29500_2008_Strict for converting vml to dml shapes
+            saveOptions.Compliance = OoxmlCompliance.Iso29500_2008_Strict; 
             saveOptions.SaveFormat = SaveFormat.Docx;
+            //ExEnd
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, saveOptions);
@@ -49,7 +53,6 @@ namespace ApiExamples
             {
                 Assert.AreEqual(ShapeMarkupLanguage.Dml, shape.MarkupLanguage);
             }
-            //ExEnd
         }
     }
 }

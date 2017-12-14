@@ -19,43 +19,35 @@ namespace ApiExamples
     [TestFixture]
     public class ExMailMergeEvent : ApiExampleBase
     {
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
         [Test]
-        public void MailMergeInsertHtmlCaller()
-        {
-            this.MailMergeInsertHtml();
-        }
-
-        //ExStart
-        //ExFor:DocumentBuilder.InsertHtml(string)
-        //ExFor:MailMerge.FieldMergingCallback
-        //ExFor:IFieldMergingCallback
-        //ExFor:FieldMergingArgs
-        //ExFor:FieldMergingArgsBase.DocumentFieldName
-        //ExFor:FieldMergingArgsBase.Document
-        //ExFor:FieldMergingArgsBase.FieldValue
-        //ExFor:IFieldMergingCallback.FieldMerging
-        //ExFor:FieldMergingArgs.Text
-        //ExSummary:Shows how to mail merge HTML data into a document.
-        // File 'MailMerge.InsertHtml.doc' has merge field named 'htmlField1' in it.
-        // File 'MailMerge.HtmlData.html' contains some valid Html data.
-        // The same approach can be used when merging HTML data from database.
         public void MailMergeInsertHtml()
         {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertHtml(String)
+            //ExFor:MailMerge.FieldMergingCallback
+            //ExFor:IFieldMergingCallback
+            //ExFor:FieldMergingArgs
+            //ExFor:FieldMergingArgsBase.DocumentFieldName
+            //ExFor:FieldMergingArgsBase.Document
+            //ExFor:FieldMergingArgsBase.FieldValue
+            //ExFor:IFieldMergingCallback.FieldMerging
+            //ExFor:FieldMergingArgs.Text
+            //ExSummary:Shows how to mail merge HTML data into a document.
+            // File 'MailMerge.InsertHtml.doc' has merge field named 'htmlField1' in it.
+            // File 'MailMerge.HtmlData.html' contains some valid HTML data.
+            // The same approach can be used when merging HTML data from database.
             Document doc = new Document(MyDir + "MailMerge.InsertHtml.doc");
 
             // Add a handler for the MergeField event.
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldInsertHtml();
 
-            // Load some Html from file.
+            // Load some HTML from file.
             StreamReader sr = File.OpenText(MyDir + "MailMerge.HtmlData.html");
             string htmltext = sr.ReadToEnd();
             sr.Close();
 
             // Execute mail merge.
-            doc.MailMerge.Execute(new string[] { "htmlField1" }, new string[] { htmltext });
+            doc.MailMerge.Execute(new string[] { "htmlField1" }, new object[] { htmltext });
 
             // Save resulting document with a new name.
             doc.Save(MyDir + @"\Artifacts\MailMerge.InsertHtml.doc");
@@ -89,24 +81,16 @@ namespace ApiExamples
         }
         //ExEnd
 
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
         [Test]
-        public void MailMergeInsertCheckBoxCaller()
-        {
-            this.MailMergeInsertCheckBox();
-        }
-
-        //ExStart
-        //ExFor:DocumentBuilder.MoveToMergeField(string)
-        //ExFor:FieldMergingArgsBase.FieldName
-        //ExSummary:Shows how to insert checkbox form fields into a document during mail merge.
-        // File 'MailMerge.InsertCheckBox.doc' is a template
-        // containing the table with the following fields in it:
-        // <<TableStart:StudentCourse>> <<CourseName>> <<TableEnd:StudentCourse>>.
         public void MailMergeInsertCheckBox()
         {
+            //ExStart
+            //ExFor:DocumentBuilder.MoveToMergeField(String)
+            //ExFor:FieldMergingArgsBase.FieldName
+            //ExSummary:Shows how to insert checkbox form fields into a document during mail merge.
+            // File 'MailMerge.InsertCheckBox.doc' is a template
+            // containing the table with the following fields in it:
+            // <<TableStart:StudentCourse>> <<CourseName>> <<TableEnd:StudentCourse>>.
             Document doc = new Document(MyDir + "MailMerge.InsertCheckBox.doc");
 
             // Add a handler for the MergeField event.
@@ -168,20 +152,12 @@ namespace ApiExamples
         }
         //ExEnd
 
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
         [Test]
-        public void MailMergeAlternatingRowsCaller()
-        {
-            this.MailMergeAlternatingRows();
-        }
-
-        //ExStart
-        //ExId:MailMergeAlternatingRows
-        //ExSummary:Demonstrates how to implement custom logic in the MergeField event to apply cell formatting.
         public void MailMergeAlternatingRows()
         {
+            //ExStart
+            //ExId:MailMergeAlternatingRows
+            //ExSummary:Demonstrates how to implement custom logic in the MergeField event to apply cell formatting.
             Document doc = new Document(MyDir + "MailMerge.AlternatingRows.doc");
 
             // Add a handler for the MergeField event.
@@ -286,27 +262,19 @@ namespace ApiExamples
             Assert.IsTrue(logoImage.HasImage);
         }
 
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
         [Test]
-        public void MailMergeImageFromBlobCaller()
-        {
-            this.MailMergeImageFromBlob();
-        }
-
-        //ExStart
-        //ExFor:MailMerge.FieldMergingCallback
-        //ExFor:MailMerge.ExecuteWithRegions(IDataReader,string)
-        //ExFor:IFieldMergingCallback
-        //ExFor:ImageFieldMergingArgs
-        //ExFor:IFieldMergingCallback.FieldMerging
-        //ExFor:IFieldMergingCallback.ImageFieldMerging
-        //ExFor:ImageFieldMergingArgs.ImageStream
-        //ExId:MailMergeImageFromBlob
-        //ExSummary:Shows how to insert images stored in a database BLOB field into a report.
         public void MailMergeImageFromBlob()
         {
+            //ExStart
+            //ExFor:MailMerge.FieldMergingCallback
+            //ExFor:MailMerge.ExecuteWithRegions(IDataReader,String)
+            //ExFor:IFieldMergingCallback
+            //ExFor:ImageFieldMergingArgs
+            //ExFor:IFieldMergingCallback.FieldMerging
+            //ExFor:IFieldMergingCallback.ImageFieldMerging
+            //ExFor:ImageFieldMergingArgs.ImageStream
+            //ExId:MailMergeImageFromBlob
+            //ExSummary:Shows how to insert images stored in a database BLOB field into a report.
             Document doc = new Document(MyDir + "MailMerge.MergeImage.doc");
 
             // Set up the event handler for image fields.

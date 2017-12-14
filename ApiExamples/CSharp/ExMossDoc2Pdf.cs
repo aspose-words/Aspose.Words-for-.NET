@@ -26,7 +26,7 @@ namespace ApiExamples
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             // Although SharePoint passes "-log <filename>" to us and we are
             // supposed to log there, for the sake of simplicity, we will use 
@@ -68,12 +68,12 @@ namespace ApiExamples
             }
         }
 
-        private static void ParseCommandLine(string[] args)
+        private static void ParseCommandLine(String[] args)
         {
             int i = 0;
             while (i < args.Length)
             {
-                string s = args[i];
+                String s = args[i];
                 switch (s.ToLower())
                 {
                     case "-in":
@@ -99,7 +99,7 @@ namespace ApiExamples
             }
         }
 
-        private static void ConvertDoc2Pdf(string inFileName, string outFileName)
+        private static void ConvertDoc2Pdf(String inFileName, String outFileName)
         {
             // You can load not only DOC here, but any format supported by
             // Aspose.Words: DOC, DOCX, RTF, WordML, HTML, MHTML, ODT etc.
@@ -108,10 +108,9 @@ namespace ApiExamples
             doc.Save(outFileName, new PdfSaveOptions());
         }
 
-        private static string gInFileName;
-        private static string gOutFileName;
+        private static String gInFileName;
+        private static String gOutFileName;
         private static StreamWriter gLog;
     }
 }
-
 //ExEnd

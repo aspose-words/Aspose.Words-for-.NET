@@ -27,7 +27,7 @@ namespace ApiExamples
             //ExFor:Font
             //ExFor:DocumentBuilder.Font
             //ExFor:DocumentBuilder.Write
-            //ExSummary:Inserts a string surrounded by a border into a document.
+            //ExSummary:Inserts a String surrounded by a border into a document.
             DocumentBuilder builder = new DocumentBuilder();
 
             builder.Font.Border.Color = Color.Green;
@@ -45,8 +45,7 @@ namespace ApiExamples
             //ExFor:BorderCollection
             //ExFor:Border
             //ExFor:BorderType
-            //ExFor:DocumentBuilder.ParagraphFormat
-            //ExFor:DocumentBuilder.Writeln(String)
+            //ExFor:ParagraphFormat.Borders
             //ExSummary:Inserts a paragraph with a top border.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -60,13 +59,14 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ClearFormattingEx()
+        public void ClearFormatting()
         {
             //ExStart
             //ExFor:Border.ClearFormatting
             //ExSummary:Shows how to remove borders from a paragraph one by one.
             Document doc = new Document(MyDir + "Border.Borders.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             BorderCollection borders = builder.ParagraphFormat.Borders;
 
             foreach (Border border in borders)
@@ -75,6 +75,7 @@ namespace ApiExamples
             }
 
             builder.CurrentParagraph.Runs[0].Text = "Paragraph with no border";
+
             doc.Save(MyDir + @"\Artifacts\Border.NoBorder.doc");
             //ExEnd
         }

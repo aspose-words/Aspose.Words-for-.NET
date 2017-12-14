@@ -53,7 +53,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ChangeStyleOfTOCLevel()
+        public void ChangeStyleOfTocLevel()
         {
             Document doc = new Document();
             //ExStart
@@ -65,7 +65,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ChangeTOCTabStops()
+        public void ChangeTocsTabStops()
         {
             //ExStart
             //ExFor:TabStop
@@ -153,7 +153,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:StyleCollection.AddCopy
             //ExId:OverwriteStyleDifferentDocument   
-            //ExSummary:Demonstrates how to copy a style from one document to another and overide an existing style in the destination document.
+            //ExSummary:Demonstrates how to copy a style from one document to another and override an existing style in the destination document.
             // This is the style in the source document to copy to the destination document.
             Style srcStyle = srcDoc.Styles[StyleIdentifier.Heading1];
 

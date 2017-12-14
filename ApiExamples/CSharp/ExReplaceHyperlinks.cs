@@ -18,8 +18,6 @@ using Aspose.Words;
 using Aspose.Words.Fields;
 using NUnit.Framework;
 
-//ExSkip
-
 namespace ApiExamples
 {
     /// <summary>
@@ -60,8 +58,8 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\ReplaceHyperlinks.doc");
         }
 
-        private const string NewUrl = @"http://www.aspose.com";
-        private const string NewName = "Aspose - The .NET & Java Component Publisher";
+        private const String NewUrl = @"http://www.aspose.com";
+        private const String NewName = "Aspose - The .NET & Java Component Publisher";
     }
 
     /// <summary>
@@ -74,7 +72,7 @@ namespace ApiExamples
     /// 
     /// [FieldStart][Run - field code][FieldSeparator][Run - field result][FieldEnd]
     /// 
-    /// The field code contains a string in one of these formats:
+    /// The field code contains a String in one of these formats:
     /// HYPERLINK "url"
     /// HYPERLINK \l "bookmark name"
     /// 
@@ -103,7 +101,7 @@ namespace ApiExamples
             this.mFieldEnd = FindNextSibling(this.mFieldSeparator, NodeType.FieldEnd);
 
             // Field code looks something like [ HYPERLINK "http:\\www.myurl.com" ], but it can consist of several runs.
-            string fieldCode = GetTextSameParent(this.mFieldStart.NextSibling, this.mFieldSeparator);
+            String fieldCode = GetTextSameParent(this.mFieldStart.NextSibling, this.mFieldSeparator);
             Match match = gRegex.Match(fieldCode.Trim());
             this.mIsLocal = (match.Groups[1].Length > 0); //The link is local if \l is present in the field code.
             this.mTarget = match.Groups[2].Value;
@@ -112,7 +110,7 @@ namespace ApiExamples
         /// <summary>
         /// Gets or sets the display name of the hyperlink.
         /// </summary>
-        internal string Name
+        internal String Name
         {
             get { return GetTextSameParent(this.mFieldSeparator, this.mFieldEnd); }
             set
@@ -130,11 +128,11 @@ namespace ApiExamples
         /// <summary>
         /// Gets or sets the target url or bookmark name of the hyperlink.
         /// </summary>
-        internal string Target
+        internal String Target
         {
             get
             {
-                string dummy = null; // This is needed to fool the C# to VB.NET converter.
+                String dummy = null; // This is needed to fool the C# to VB.NET converter.
                 return this.mTarget;
             }
             set
@@ -145,7 +143,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// True if the hyperlink's target is a bookmark inside the document. False if the hyperlink is a url.
+        /// True if the hyperlinks target is a bookmark inside the document. False if the hyperlink is a url.
         /// </summary>
         internal bool IsLocal
         {
@@ -161,7 +159,7 @@ namespace ApiExamples
         {
             // Field code is stored in a Run node between field start and field separator.
             Run fieldCode = (Run)this.mFieldStart.NextSibling;
-            fieldCode.Text = string.Format("HYPERLINK {0}\"{1}\"", ((this.mIsLocal) ? "\\l " : ""), this.mTarget);
+            fieldCode.Text = String.Format("HYPERLINK {0}\"{1}\"", ((this.mIsLocal) ? "\\l " : ""), this.mTarget);
 
             // But sometimes the field code can consist of more than one run, delete these runs.
             RemoveSameParent(fieldCode.NextSibling, this.mFieldSeparator);
@@ -183,7 +181,7 @@ namespace ApiExamples
         /// <summary>
         /// Retrieves text from start up to but not including the end node.
         /// </summary>
-        private static string GetTextSameParent(Node startNode, Node endNode)
+        private static String GetTextSameParent(Node startNode, Node endNode)
         {
             if ((endNode != null) && (startNode.ParentNode != endNode.ParentNode))
                 throw new ArgumentException("Start and end nodes are expected to have the same parent.");
@@ -217,7 +215,7 @@ namespace ApiExamples
         private readonly Node mFieldSeparator;
         private readonly Node mFieldEnd;
         private bool mIsLocal;
-        private string mTarget;
+        private String mTarget;
 
         /// <summary>
         /// RK I am notoriously bad at regexes. It seems I don't understand their way of thinking.

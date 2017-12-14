@@ -59,7 +59,7 @@ namespace ApiExamples
                     {
                         int cellIndex = row.Cells.IndexOf(cell);
                         // Get the plain text content of this cell.
-                        string cellText = cell.ToString(SaveFormat.Text).Trim();
+                        String cellText = cell.ToString(SaveFormat.Text).Trim();
                         // Print the content of the cell.
                         Console.WriteLine("\t\tContents of Cell:{0} = \"{1}\"", cellIndex, cellText);
                     }
@@ -74,24 +74,16 @@ namespace ApiExamples
             Assert.Greater(tables.Count, 0);
         }
 
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
         [Test]
-        public void CalcuateDepthOfNestedTablesCaller()
-        {
-            this.CalcuateDepthOfNestedTables();
-        }
-
-        //ExStart
-        //ExFor:Node.GetAncestor(NodeType)
-        //ExFor:Table.NodeType
-        //ExFor:Cell.Tables
-        //ExFor:TableCollection
-        //ExFor:NodeCollection.Count
-        //ExSummary:Shows how to find out if a table contains another table or if the table itself is nested inside another table.
         public void CalcuateDepthOfNestedTables()
         {
+            //ExStart
+            //ExFor:Node.GetAncestor(NodeType)
+            //ExFor:Table.NodeType
+            //ExFor:Cell.Tables
+            //ExFor:TableCollection
+            //ExFor:NodeCollection.Count
+            //ExSummary:Shows how to find out if a table contains another table or if the table itself is nested inside another table.
             Document doc = new Document(MyDir + "Table.NestedTables.doc");
             int tableIndex = 0;
 
@@ -169,20 +161,12 @@ namespace ApiExamples
         }
         //ExEnd
 
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
         [Test]
-        public void ConvertTextboxToTableCaller()
-        {
-            this.ConvertTextboxToTable();
-        }
-
-        //ExStart
-        //ExId:TextboxToTable
-        //ExSummary:Shows how to convert a textbox to a table and retain almost identical formatting. This is useful for HTML export.
         public void ConvertTextboxToTable()
         {
+            //ExStart
+            //ExId:TextboxToTable
+            //ExSummary:Shows how to convert a textbox to a table and retain almost identical formatting. This is useful for HTML export.
             // Open the document
             Document doc = new Document(MyDir + "Shape.Textbox.doc");
 
@@ -489,7 +473,7 @@ namespace ApiExamples
             //ExFor:Range.Replace(String, String, FindReplaceOptions)
             //ExFor:Cell
             //ExId:ReplaceTextTable
-            //ExSummary:Shows how to replace all instances of string of text in a table and cell.
+            //ExSummary:Shows how to replace all instances of String of text in a table and cell.
             Document doc = new Document(MyDir + "Table.SimpleTable.doc");
 
             // Get the first table in the document.
@@ -499,9 +483,9 @@ namespace ApiExamples
             options.MatchCase = true;
             options.FindWholeWordsOnly = true;
 
-            // Replace any instances of our string in the entire table.
+            // Replace any instances of our String in the entire table.
             table.Range.Replace("Carrots", "Eggs", options);
-            // Replace any instances of our string in the last cell of the table only.
+            // Replace any instances of our String in the last cell of the table only.
             table.LastRow.LastCell.Range.Replace("50", "20", options);
 
             doc.Save(MyDir + @"\Artifacts\Table.ReplaceCellText.doc");
@@ -685,7 +669,7 @@ namespace ApiExamples
 
             // Verify that the row was cloned and appended properly.
             Assert.AreEqual(5, table.Rows.Count);
-            Assert.AreEqual(string.Empty, table.LastRow.ToString(SaveFormat.Text).Trim());
+            Assert.AreEqual(String.Empty, table.LastRow.ToString(SaveFormat.Text).Trim());
             Assert.AreEqual(2, table.LastRow.Cells.Count);
         }
 
@@ -694,7 +678,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExId:FixTablesDefaultFixedColumnWidth
-            //ExSummary:Shows how to revert the default behaviour of table sizing to use column widths.
+            //ExSummary:Shows how to revert the default behavior of table sizing to use column widths.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -706,7 +690,7 @@ namespace ApiExamples
             builder.CellFormat.Shading.BackgroundPatternColor = Color.Red;
 
             builder.InsertCell();
-            // This will cause the table to be structured using column widths as in previous verisons
+            // This will cause the table to be structured using column widths as in previous versions
             // instead of fitted to the page width like in the newer versions.
             table.AutoFit(AutoFitBehavior.FixedColumnWidths);
 
@@ -878,7 +862,7 @@ namespace ApiExamples
             // row and one cell, therefore this method creates them for us.
 
             // Instead we will handle creating the row and table ourselves. This would be the best way to do this
-            // if we were creating a table inside an algorthim for example.
+            // if we were creating a table inside an algorithm for example.
             Row row = new Row(doc);
             row.RowFormat.AllowBreakAcrossPages = true;
             table.AppendChild(row);
@@ -948,7 +932,7 @@ namespace ApiExamples
         /// <summary>
         /// Creates a new table in the document with the given dimensions and text in each cell.
         /// </summary>
-        private Table CreateTable(Document doc, int rowCount, int cellCount, string cellText)
+        private Table CreateTable(Document doc, int rowCount, int cellCount, String cellText)
         {
             Table table = new Table(doc);
 
@@ -1000,20 +984,20 @@ namespace ApiExamples
             Assert.AreEqual("The cell at R1, C1 is horizontally merged.", this.PrintCellMergeType(table.FirstRow.FirstCell)); //ExSkip
         }
 
-        public string PrintCellMergeType(Cell cell)
+        public String PrintCellMergeType(Cell cell)
         {
             bool isHorizontallyMerged = cell.CellFormat.HorizontalMerge != CellMerge.None;
             bool isVerticallyMerged = cell.CellFormat.VerticalMerge != CellMerge.None;
-            string cellLocation = string.Format("R{0}, C{1}", cell.ParentRow.ParentTable.IndexOf(cell.ParentRow) + 1, cell.ParentRow.IndexOf(cell) + 1);
+            String cellLocation = String.Format("R{0}, C{1}", cell.ParentRow.ParentTable.IndexOf(cell.ParentRow) + 1, cell.ParentRow.IndexOf(cell) + 1);
 
             if (isHorizontallyMerged && isVerticallyMerged)
-                return string.Format("The cell at {0} is both horizontally and vertically merged", cellLocation);
+                return String.Format("The cell at {0} is both horizontally and vertically merged", cellLocation);
             else if (isHorizontallyMerged)
-                return string.Format("The cell at {0} is horizontally merged.", cellLocation);
+                return String.Format("The cell at {0} is horizontally merged.", cellLocation);
             else if (isVerticallyMerged)
-                return string.Format("The cell at {0} is vertically merged", cellLocation);
+                return String.Format("The cell at {0} is vertically merged", cellLocation);
             else
-                return string.Format("The cell at {0} is not merged", cellLocation);
+                return String.Format("The cell at {0} is not merged", cellLocation);
         }
         //ExEnd
 
@@ -1029,7 +1013,7 @@ namespace ApiExamples
             //ExStart
             //ExId:MergeCellRange
             //ExSummary:Merges the range of cells between the two specified cells.
-            // We want to merge the range of cells found inbetween these two cells.
+            // We want to merge the range of cells found in between these two cells.
             Cell cellStartRange = table.Rows[2].Cells[2];
             Cell cellEndRange = table.Rows[3].Cells[3];
 

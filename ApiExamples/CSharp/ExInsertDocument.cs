@@ -82,21 +82,13 @@ namespace ApiExamples
             //ExEnd
         }
 
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
         [Test]
-        public void InsertDocumentAtMailMergeCaller()
-        {
-            this.InsertDocumentAtMailMerge();
-        }
-
-        //ExStart
-        //ExFor:CompositeNode.HasChildNodes
-        //ExId:InsertDocumentAtMailMerge
-        //ExSummary:Demonstrates how to use the InsertDocument method to insert a document into a merge field during mail merge.
         public void InsertDocumentAtMailMerge()
         {
+            //ExStart
+            //ExFor:CompositeNode.HasChildNodes
+            //ExId:InsertDocumentAtMailMerge
+            //ExSummary:Demonstrates how to use the InsertDocument method to insert a document into a merge field during mail merge.
             // Open the main document.
             Document mainDoc = new Document(MyDir + "InsertDocument1.doc");
 
@@ -106,7 +98,7 @@ namespace ApiExamples
             // The main document has a merge field in it called "Document_1".
             // The corresponding data for this field contains fully qualified path to the document
             // that should be inserted to this field.
-            mainDoc.MailMerge.Execute(new string[] { "Document_1" }, new string[] { MyDir + "InsertDocument2.doc" });
+            mainDoc.MailMerge.Execute(new String[] { "Document_1" }, new object[] { MyDir + "InsertDocument2.doc" });
 
             mainDoc.Save(MyDir + @"\Artifacts\InsertDocumentAtMailMerge.doc");
         }
@@ -127,7 +119,7 @@ namespace ApiExamples
                     builder.MoveToMergeField(e.DocumentFieldName);
 
                     // The name of the document to load and insert is stored in the field value.
-                    Document subDoc = new Document((string)e.FieldValue);
+                    Document subDoc = new Document((String)e.FieldValue);
 
                     // Insert the document.
                     InsertDocument(builder.CurrentParagraph, subDoc);
@@ -189,26 +181,18 @@ namespace ApiExamples
         }
         //ExEnd
 
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
         [Test]
-        public void InsertDocumentAtReplaceCaller()
-        {
-            this.InsertDocumentAtReplace();
-        }
-
-        //ExStart
-        //ExFor:Range.Replace(Regex,String,FindReplaceOptions)
-        //ExFor:IReplacingCallback
-        //ExFor:ReplaceAction
-        //ExFor:IReplacingCallback.Replacing
-        //ExFor:ReplacingArgs
-        //ExFor:ReplacingArgs.MatchNode
-        //ExId:InsertDocumentAtReplace
-        //ExSummary:Shows how to insert content of one document into another during a customized find and replace operation.
         public void InsertDocumentAtReplace()
         {
+            //ExStart
+            //ExFor:Range.Replace(Regex, String, FindReplaceOptions)
+            //ExFor:IReplacingCallback
+            //ExFor:ReplaceAction
+            //ExFor:IReplacingCallback.Replacing
+            //ExFor:ReplacingArgs
+            //ExFor:ReplacingArgs.MatchNode
+            //ExId:InsertDocumentAtReplace
+            //ExSummary:Shows how to insert content of one document into another during a customized find and replace operation.
             Document mainDoc = new Document(MyDir + "InsertDocument1.doc");
 
             FindReplaceOptions options = new FindReplaceOptions();

@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.IO;
 using Aspose.Words;
 using NUnit.Framework;
 
@@ -15,7 +16,7 @@ namespace ApiExamples
     public class ExComment : ApiExampleBase
     {
         [Test]
-        public void SetTextEx()
+        public void SetCommentText()
         {
             //ExStart
             //ExFor:Comment.SetText
@@ -27,6 +28,13 @@ namespace ApiExamples
             builder.CurrentParagraph.AppendChild(comment);
             comment.SetText("My comment.");
             //ExEnd
+
+            MemoryStream stream = new MemoryStream();
+            doc.Save(stream, SaveFormat.Docx);
+
+            comment = (Comment)doc.GetChild(NodeType.Comment, 0, true);
+            Assert.AreEqual("John Doe", comment.Author);
+            Assert.AreEqual("J.D.", comment.Initial);
         }
     }
 }

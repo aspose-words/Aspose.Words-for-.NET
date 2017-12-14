@@ -16,7 +16,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExLists : ApiExampleBase
     {
-        private readonly string _image = MyDir + @"\Images\Test_636_852.gif";
+        private readonly String _image = ImageDir + "Test_636_852.gif";
 
         [Test]
         public void ApplyDefaultBulletsAndNumbers()
@@ -29,7 +29,6 @@ namespace ApiExamples
             //ExFor:ListFormat.ListOutdent
             //ExFor:ListFormat.RemoveNumbers
             //ExSummary:Shows how to apply default bulleted or numbered list formatting to paragraphs when using DocumentBuilder.
-
             DocumentBuilder builder = new DocumentBuilder();
 
             builder.Writeln("Aspose.Words allows:");
@@ -148,7 +147,7 @@ namespace ApiExamples
             Aspose.Words.Lists.List numberedList = doc.Lists.Add(ListTemplate.NumberDefault);
             builder.ListFormat.List = numberedList;
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Normal;
-            builder.Writeln("Numebered list item 1.");
+            builder.Writeln("Numbered list item 1.");
 
             // Create a bulleted list.
             Aspose.Words.Lists.List bulletedList = doc.Lists.Add(ListTemplate.BulletDefault);
@@ -391,7 +390,7 @@ namespace ApiExamples
             {
                 if (para.ListFormat.IsListItem)
                 {
-                    Console.WriteLine(string.Format("*** A paragraph belongs to list {0}", para.ListFormat.List.ListId));
+                    Console.WriteLine(String.Format("*** A paragraph belongs to list {0}", para.ListFormat.List.ListId));
                     Console.WriteLine(para.GetText());
                 }
             }
@@ -492,7 +491,7 @@ namespace ApiExamples
             builder.Document.Save(MyDir + @"\Artifacts\Lists.OutlineHeadingTemplates.doc");
         }
 
-        private static void AddOutlineHeadingParagraphs(DocumentBuilder builder, Aspose.Words.Lists.List list, string title)
+        private static void AddOutlineHeadingParagraphs(DocumentBuilder builder, Aspose.Words.Lists.List list, String title)
         {
             builder.ParagraphFormat.ClearFormatting();
             builder.Writeln(title);
@@ -502,7 +501,7 @@ namespace ApiExamples
                 builder.ListFormat.List = list;
                 builder.ListFormat.ListLevelNumber = i;
 
-                string styleName = "Heading " + (i + 1).ToString();
+                String styleName = "Heading " + (i + 1).ToString();
                 builder.ParagraphFormat.StyleName = styleName;
                 builder.Writeln(styleName);
             }
@@ -511,22 +510,14 @@ namespace ApiExamples
         }
         //ExEnd
 
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
         [Test]
-        public void PrintOutAllListsCaller()
-        {
-            this.PrintOutAllLists();
-        }
-
-        //ExStart
-        //ExFor:ListCollection
-        //ExFor:ListCollection.AddCopy(List)
-        //ExFor:ListCollection.GetEnumerator
-        //ExSummary:Enumerates through all lists defined in one document and creates a sample of those lists in another document.
         public void PrintOutAllLists()
         {
+            //ExStart
+            //ExFor:ListCollection
+            //ExFor:ListCollection.AddCopy(List)
+            //ExFor:ListCollection.GetEnumerator
+            //ExSummary:Enumerates through all lists defined in one document and creates a sample of those lists in another document.
             // You can use any of your documents to try this little program out.
             Document srcDoc = new Document(MyDir + "Lists.PrintOutAllLists.doc");
 
@@ -719,7 +710,7 @@ namespace ApiExamples
             //ExFor:Paragraph.ListLabel
             //ExFor:ListLabel.LabelValue
             //ExFor:ListLabel.LabelString
-            //ExSummary:Shows how to extract the label of each paragraph in a list as a value or a string.
+            //ExSummary:Shows how to extract the label of each paragraph in a list as a value or a String.
             Document doc = new Document(MyDir + "Lists.PrintOutAllLists.doc");
             doc.UpdateListLabels();
             int listParaCount = 1;
@@ -734,7 +725,7 @@ namespace ApiExamples
 
                     // This is the text we get when actually getting when we output this node to text format. 
                     // The list labels are not included in this text output. Trim any paragraph formatting characters.
-                    string paragraphText = paragraph.ToString(SaveFormat.Text).Trim();
+                    String paragraphText = paragraph.ToString(SaveFormat.Text).Trim();
                     Console.WriteLine("Exported Text: " + paragraphText);
 
                     ListLabel label = paragraph.ListLabel;
@@ -755,9 +746,9 @@ namespace ApiExamples
         public void CreatePictureBullet()
         {
             //ExStart
-            //ExFor: ListLevel.CreatePictureBullet
-            //ExFor: ListLevel.DeletePictureBullet
-            //ExSummary: Shows how to creating and deleting picture bullet with custom image
+            //ExFor:ListLevel.CreatePictureBullet
+            //ExFor:ListLevel.DeletePictureBullet
+            //ExSummary:Shows how to creating and deleting picture bullet with custom image
             Document doc = new Document();
 
             // Create a list with template

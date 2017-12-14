@@ -39,6 +39,10 @@ namespace ApiExamples
         [Test]
         public void PageFileNameSavingCallback()
         {
+            //ExStart
+            //ExFor:IPageSavingCallback
+            //ExFor:HtmlFixedSaveOptions.PageSavingCallback
+            //ExSummary:Shows how separate pages are saved when a document is exported to fixed page format.
             Document doc = new Document(MyDir + "Rendering.doc");
 
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions { PageIndex = 0, PageCount = doc.PageCount };
@@ -51,22 +55,8 @@ namespace ApiExamples
             for (int i = 0; i < doc.PageCount; i++)
             {
                 string file = string.Format(MyDir + @"\Artifacts\Page_{0}.html", i);
-                Assert.AreEqual(file, filePaths[i]);
+                Assert.AreEqual(file, filePaths[i]);//ExSkip
             }
-        }
-
-        [Test]
-        public void PageStreamSavingCallback()
-        {
-            Stream docStream = new FileStream(MyDir + "Rendering.doc", FileMode.Open);
-            Document doc = new Document(docStream);
-
-            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions { PageIndex = 0, PageCount = doc.PageCount };
-            htmlFixedSaveOptions.PageSavingCallback = new CustomPageStreamPageSavingCallback();
-
-            doc.Save(MyDir + @"\Artifacts\Rendering.html", htmlFixedSaveOptions);
-
-            docStream.Close();
         }
 
         /// <summary>
@@ -80,18 +70,6 @@ namespace ApiExamples
                 args.PageFileName = string.Format(MyDir + @"\Artifacts\Page_{0}.html", args.PageIndex);
             }
         }
-
-        /// <summary>
-        /// Custom PageStream is specified.
-        /// </summary>
-        private class CustomPageStreamPageSavingCallback : IPageSavingCallback
-        {
-            public void PageSaving(PageSavingArgs args)
-            {
-                // Specify memory stream for the current page.
-                args.PageStream = new MemoryStream();
-                args.KeepPageStreamOpen = true;
-            }
-        }
+        //ExEnd
     }
 }

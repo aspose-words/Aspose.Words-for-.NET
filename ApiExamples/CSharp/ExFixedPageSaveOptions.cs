@@ -27,6 +27,7 @@ namespace ApiExamples
                 yield return new TestCaseData(new XamlFixedSaveOptions());
                 yield return new TestCaseData(new XpsSaveOptions());
                 yield return new TestCaseData(new SwfSaveOptions());
+                yield return new TestCaseData(new SvgSaveOptions());
             }
         }
 
@@ -42,12 +43,13 @@ namespace ApiExamples
                 yield return new TestCaseData(new XamlFixedSaveOptions(), 100, NumeralFormat.ArabicIndic, int.MaxValue, 1, EmfPlusDualRenderingMode.Emf, false, MetafileRenderingMode.Vector, false, true);
                 yield return new TestCaseData(new XpsSaveOptions(), 100, NumeralFormat.ArabicIndic, int.MaxValue, 1, EmfPlusDualRenderingMode.Emf, false, MetafileRenderingMode.Vector, false, true);
                 yield return new TestCaseData(new SwfSaveOptions(), 100, NumeralFormat.ArabicIndic, int.MaxValue, 1, EmfPlusDualRenderingMode.Emf, false, MetafileRenderingMode.Vector, false, true);
+                yield return new TestCaseData(new SvgSaveOptions(), 100, NumeralFormat.ArabicIndic, int.MaxValue, 1, EmfPlusDualRenderingMode.Emf, false, MetafileRenderingMode.Vector, false, true);
             }
         }
 
         [Test]
-        [Ignore("Bug?")]
-        [TestCaseSource("FixedPageSaveOptionsDefaultValuesData")]
+        [Ignore("WORDSNET-16233")]
+        [TestCaseSource(nameof(FixedPageSaveOptionsDefaultValuesData))]
         public void FixedPageSaveOptionsDefaultValues(FixedPageSaveOptions objectSaveOptions)
         {
             FixedPageSaveOptions saveOptions = objectSaveOptions;
@@ -60,11 +62,11 @@ namespace ApiExamples
             Assert.AreEqual(true, saveOptions.MetafileRenderingOptions.EmulateRasterOperations);
             Assert.AreEqual(objectSaveOptions.GetType().Name == "ImageSaveOptions" ? MetafileRenderingMode.Bitmap : MetafileRenderingMode.VectorWithFallback, saveOptions.MetafileRenderingOptions.RenderingMode);
             Assert.AreEqual(true, saveOptions.MetafileRenderingOptions.UseEmfEmbeddedToWmf);
-            Assert.AreEqual(false, saveOptions.OptimizeOutput); //bug?
+            Assert.AreEqual(false, saveOptions.OptimizeOutput);
         }
 
         [Test]
-        [TestCaseSource("FixedPageSaveOptionsData")]
+        [TestCaseSource(nameof(FixedPageSaveOptionsData))]
         public void SaveInFixedFormat(FixedPageSaveOptions objectSaveOptions, int jpegQuality, NumeralFormat numeralFormat, int pageCount, int pageIndex, EmfPlusDualRenderingMode emfPlusDualRenderingMode, bool emulateRasterOperations, MetafileRenderingMode metafileRendering, bool useEmfEmbeddedToWmf, bool optimizeOutput)
         {
             FixedPageSaveOptions saveOptions = objectSaveOptions;

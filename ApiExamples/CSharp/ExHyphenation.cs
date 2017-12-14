@@ -24,7 +24,7 @@ namespace ApiExamples
             //ExSummary:Shows how to open and register a dictionary from a file.
             Document doc = new Document(MyDir + "Document.doc");
 
-            // Register by string
+            // Register by String
             Hyphenation.RegisterDictionary("en-US", MyDir + "hyph_en_US.dic");
 
             // Register by stream
@@ -37,7 +37,7 @@ namespace ApiExamples
         public void IsDictionaryRegisteredEx()
         {
             //ExStart
-            //ExFor:Hyphenation.IsDictionaryRegistered(string)
+            //ExFor:Hyphenation.IsDictionaryRegistered(String)
             //ExSummary:Shows how to open check if some dictionary is registered.
             Document doc = new Document(MyDir + "Document.doc");
             Hyphenation.RegisterDictionary("en-US", MyDir + "hyph_en_US.dic");
@@ -50,7 +50,7 @@ namespace ApiExamples
         public void UnregisterDictionaryEx()
         {
             //ExStart
-            //ExFor:Hyphenation.UnregisterDictionary(string)
+            //ExFor:Hyphenation.UnregisterDictionary(String)
             //ExSummary:Shows how to un-register a dictionary
             Document doc = new Document(MyDir + "Document.doc");
             Hyphenation.RegisterDictionary("en-US", MyDir + "hyph_en_US.dic");

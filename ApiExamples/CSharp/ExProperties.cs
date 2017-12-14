@@ -25,18 +25,17 @@ namespace ApiExamples
             //ExFor:CustomDocumentProperties
             //ExId:DocumentProperties
             //ExSummary:Enumerates through all built-in and custom properties in a document.
-            string fileName = MyDir + "Properties.doc";
-            Document doc = new Document(fileName);
+            Document doc = new Document(MyDir + "Properties.doc");
 
-            Console.WriteLine("1. Document name: {0}", fileName);
+            Console.WriteLine("1. Document name: {0}", doc.OriginalFileName);
 
             Console.WriteLine("2. Built-in Properties");
-            foreach (DocumentProperty prop in doc.BuiltInDocumentProperties)
-                Console.WriteLine("{0} : {1}", prop.Name, prop.Value);
+            foreach (DocumentProperty docProperty in doc.BuiltInDocumentProperties)
+                Console.WriteLine("{0} : {1}", docProperty.Name, docProperty.Value);
 
             Console.WriteLine("3. Custom Properties");
-            foreach (DocumentProperty prop in doc.CustomDocumentProperties)
-                Console.WriteLine("{0} : {1}", prop.Name, prop.Value);
+            foreach (DocumentProperty docProperty in doc.CustomDocumentProperties)
+                Console.WriteLine("{0} : {1}", docProperty.Name, docProperty.Value);
             //ExEnd
         }
 
@@ -51,23 +50,22 @@ namespace ApiExamples
             //ExFor:DocumentProperty.Value
             //ExFor:DocumentProperty.Type
             //ExSummary:Enumerates through all built-in and custom properties in a document using indexed access.
-            string fileName = MyDir + "Properties.doc";
-            Document doc = new Document(fileName);
+            Document doc = new Document(MyDir + "Properties.doc");
 
-            Console.WriteLine("1. Document name: {0}", fileName);
+            Console.WriteLine("1. Document name: {0}", doc.OriginalFileName);
 
             Console.WriteLine("2. Built-in Properties");
             for (int i = 0; i < doc.BuiltInDocumentProperties.Count; i++)
             {
-                DocumentProperty prop = doc.BuiltInDocumentProperties[i];
-                Console.WriteLine("{0}({1}) : {2}", prop.Name, prop.Type, prop.Value);
+                DocumentProperty docProperty = doc.BuiltInDocumentProperties[i];
+                Console.WriteLine("{0}({1}) : {2}", docProperty.Name, docProperty.Type, docProperty.Value);
             }
 
             Console.WriteLine("3. Custom Properties");
             for (int i = 0; i < doc.CustomDocumentProperties.Count; i++)
             {
-                DocumentProperty prop = doc.CustomDocumentProperties[i];
-                Console.WriteLine("{0}({1}) : {2}", prop.Name, prop.Type, prop.Value);
+                DocumentProperty docProperty = doc.CustomDocumentProperties[i];
+                Console.WriteLine("{0}({1}) : {2}", docProperty.Name, docProperty.Type, docProperty.Value);
             }
             //ExEnd
         }
@@ -81,8 +79,8 @@ namespace ApiExamples
             //ExSummary:Retrieves a built-in document property by name.
             Document doc = new Document(MyDir + "Properties.doc");
 
-            DocumentProperty prop = doc.BuiltInDocumentProperties["Keywords"];
-            Console.WriteLine(prop.ToString());
+            DocumentProperty docProperty = doc.BuiltInDocumentProperties["Keywords"];
+            Console.WriteLine(docProperty.ToString());
             //ExEnd
         }
 
@@ -115,7 +113,7 @@ namespace ApiExamples
             //ExFor:BuiltInDocumentProperties.Version
             //ExFor:BuiltInDocumentProperties.Words
             //ExSummary:Retrieves information from the built-in document properties.
-            string fileName = MyDir + "Properties.doc";
+            String fileName = MyDir + "Properties.doc";
             Document doc = new Document(fileName);
 
             Console.WriteLine("Document name: {0}", fileName);
@@ -156,11 +154,11 @@ namespace ApiExamples
             //ExSummary:Retrieves a custom document property by name.
             Document doc = new Document(MyDir + "Properties.doc");
 
-            DocumentProperty prop = doc.CustomDocumentProperties["Authorized Date"];
+            DocumentProperty docProperty = doc.CustomDocumentProperties["Authorized Date"];
 
-            if (prop != null)
+            if (docProperty != null)
             {
-                Console.WriteLine(prop.ToDateTime());
+                Console.WriteLine(docProperty.ToDateTime());
             }
             else
             {
@@ -183,15 +181,15 @@ namespace ApiExamples
             //ExSummary:Checks if a custom property with a given name exists in a document and adds few more custom document properties.
             Document doc = new Document(MyDir + "Properties.doc");
 
-            CustomDocumentProperties props = doc.CustomDocumentProperties;
+            CustomDocumentProperties docProperties = doc.CustomDocumentProperties;
 
-            if (props["Authorized"] == null)
+            if (docProperties["Authorized"] == null)
             {
-                props.Add("Authorized", true);
-                props.Add("Authorized By", "John Smith");
-                props.Add("Authorized Date", DateTime.Today);
-                props.Add("Authorized Revision", doc.BuiltInDocumentProperties.RevisionNumber);
-                props.Add("Authorized Amount", 123.45);
+                docProperties.Add("Authorized", true);
+                docProperties.Add("Authorized By", "John Smith");
+                docProperties.Add("Authorized Date", DateTime.Today);
+                docProperties.Add("Authorized Revision", doc.BuiltInDocumentProperties.RevisionNumber);
+                docProperties.Add("Authorized Amount", 123.45);
             }
             //ExEnd
         }
@@ -223,30 +221,30 @@ namespace ApiExamples
             //ExSummary:Retrieves the types and values of the custom document properties.
             Document doc = new Document(MyDir + "Properties.doc");
 
-            foreach (DocumentProperty prop in doc.CustomDocumentProperties)
+            foreach (DocumentProperty docProperty in doc.CustomDocumentProperties)
             {
-                Console.WriteLine(prop.Name);
-                switch (prop.Type)
+                Console.WriteLine(docProperty.Name);
+                switch (docProperty.Type)
                 {
                     case PropertyType.String:
-                        Console.WriteLine("It's a string value.");
-                        Console.WriteLine(prop.ToString());
+                        Console.WriteLine("It's a String value.");
+                        Console.WriteLine(docProperty.ToString());
                         break;
                     case PropertyType.Boolean:
                         Console.WriteLine("It's a boolean value.");
-                        Console.WriteLine(prop.ToBool());
+                        Console.WriteLine(docProperty.ToBool());
                         break;
                     case PropertyType.Number:
                         Console.WriteLine("It's an integer value.");
-                        Console.WriteLine(prop.ToInt());
+                        Console.WriteLine(docProperty.ToInt());
                         break;
                     case PropertyType.DateTime:
                         Console.WriteLine("It's a date time value.");
-                        Console.WriteLine(prop.ToDateTime());
+                        Console.WriteLine(docProperty.ToDateTime());
                         break;
                     case PropertyType.Double:
                         Console.WriteLine("It's a double value.");
-                        Console.WriteLine(prop.ToDouble());
+                        Console.WriteLine(docProperty.ToDouble());
                         break;
                     case PropertyType.Other:
                         Console.WriteLine("Other value.");

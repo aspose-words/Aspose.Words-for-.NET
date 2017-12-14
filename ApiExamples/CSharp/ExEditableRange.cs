@@ -40,7 +40,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.StartEditableRange
-            //ExFor:DocumentBuilder.EndEditableRange()
+            //ExFor:DocumentBuilder.EndEditableRange
             //ExFor:DocumentBuilder.EndEditableRange(EditableRangeStart)
             //ExSummary:Shows how to start and end an editable range.
             Document doc = new Document(MyDir + "Document.doc");
@@ -75,6 +75,7 @@ namespace ApiExamples
             //ExEnd
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void IncorrectStructureException()
         {
@@ -92,11 +93,10 @@ namespace ApiExamples
         public void IncorrectStructureDoNotAdded()
         {
             Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
-
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             //ExStart
-            //ExFor: EditableRange.EditorGroup
+            //ExFor:EditableRange.EditorGroup
             //ExSummary:Shows how to add editing group for editableranges
             //Add EditableRangeStart
             EditableRangeStart startRange1 = builder.StartEditableRange();
@@ -104,14 +104,14 @@ namespace ApiExamples
             builder.Writeln("EditableRange_1_1");
             builder.Writeln("EditableRange_1_2");
 
-            //Sets the editor for editable range region
+            // Sets the editor for editable range region
             startRange1.EditableRange.EditorGroup = EditorType.Everyone;
             //ExEnd
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            //Assert that it's not valid structure and editable ranges aren't added to the current document
+            // Assert that it's not valid structure and editable ranges aren't added to the current document
             NodeCollection startNodes = doc.GetChildNodes(NodeType.EditableRangeStart, true);
             Assert.AreEqual(0, startNodes.Count);
 

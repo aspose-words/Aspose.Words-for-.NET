@@ -13,7 +13,6 @@ using NUnit.Framework;
 
 namespace ApiExamples
 {
-    //ToDo: Need to add golds
     [TestFixture]
     internal class ExHtmlFixedSaveOptions : ApiExampleBase
     {
@@ -21,106 +20,123 @@ namespace ApiExamples
         public void UseEncoding()
         {
             //ExStart
-            //ExFor:Saving.HtmlFixedSaveOptions.Encoding
-            //ExSummary:Shows how to use "Encoding" parameter with "HtmlFixedSaveOptions"
+            //ExFor:HtmlFixedSaveOptions.Encoding
+            //ExSummary:Shows how to set encoding for exporting to HTML.
             Document doc = new Document();
 
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello World!");
 
-            //Create "HtmlFixedSaveOptions" with "Encoding" parameter
-            //You can also set "Encoding" using System.Text.Encoding, like "Encoding.ASCII", or "Encoding.GetEncoding()"
-            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions { Encoding = new ASCIIEncoding(), SaveFormat = SaveFormat.HtmlFixed, };
+            // Encoding the document
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
+            htmlFixedSaveOptions.Encoding = new ASCIIEncoding();
 
-            //Uses "HtmlFixedSaveOptions"
             doc.Save(MyDir + @"\Artifacts\UseEncoding.html", htmlFixedSaveOptions);
             //ExEnd
         }
 
-        //Note: Tests doesn't containt validation result, because it's may take a lot of time for assert result
-        //For validation result, you can save the document to html file and check out with notepad++, that file encoding will be correctly displayed (Encoding tab in Notepad++)
+        //Note: Test doesn't contain validation result, because it's may take a lot of time for assert result
+        //For validation result, you can save the document to HTML file and check out with notepad++, that file encoding will be correctly displayed (Encoding tab in Notepad++)
         [Test]
-        public void EncodingUsingSystemTextEncoding()
+        public void ExportEmbeddedObjects()
         {
+            //ExStart
+            //ExFor:HtmlFixedSaveOptions.ExportEmbeddedCss
+            //ExFor:HtmlFixedSaveOptions.ExportEmbeddedFonts
+            //ExFor:HtmlFixedSaveOptions.ExportEmbeddedImages
+            //ExFor:HtmlFixedSaveOptions.ExportEmbeddedSvg
+            //ExSummary:Shows how to export embedded objects into HTML file.
             Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
 
-            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions { Encoding = Encoding.ASCII, SaveFormat = SaveFormat.HtmlFixed, ExportEmbeddedCss = true, ExportEmbeddedFonts = true, ExportEmbeddedImages = true, ExportEmbeddedSvg = true };
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
+            htmlFixedSaveOptions.Encoding = Encoding.ASCII;
+            htmlFixedSaveOptions.ExportEmbeddedCss = true;
+            htmlFixedSaveOptions.ExportEmbeddedFonts = true;
+            htmlFixedSaveOptions.ExportEmbeddedImages = true;
+            htmlFixedSaveOptions.ExportEmbeddedSvg = true;
 
-            doc.Save(MyDir + @"\Artifacts\EncodingUsingSystemTextEncoding.html", htmlFixedSaveOptions);
+            doc.Save(MyDir + @"\Artifacts\ExportEmbeddedObjects.html", htmlFixedSaveOptions);
+            //ExEnd
         }
 
+        //Note: Test doesn't contain validation result, because it's may take a lot of time for assert result
+        //For validation result, you can save the document to HTML file and check out with notepad++, that file encoding will be correctly displayed (Encoding tab in Notepad++)
         [Test]
         public void EncodingUsingNewEncoding()
         {
             Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
 
-            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions { Encoding = new UTF32Encoding(), SaveFormat = SaveFormat.HtmlFixed, ExportEmbeddedCss = true, ExportEmbeddedFonts = true, ExportEmbeddedImages = true, ExportEmbeddedSvg = true };
-
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
+            htmlFixedSaveOptions.Encoding = new UTF32Encoding();
+            
             doc.Save(MyDir + @"\Artifacts\EncodingUsingNewEncoding.html", htmlFixedSaveOptions);
         }
 
+        //Note: Test doesn't contain validation result, because it's may take a lot of time for assert result
+        //For validation result, you can save the document to HTML file and check out with notepad++, that file encoding will be correctly displayed (Encoding tab in Notepad++)
         [Test]
         public void EncodingUsingGetEncoding()
         {
             Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
 
-            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions { Encoding = Encoding.GetEncoding("utf-16"), SaveFormat = SaveFormat.HtmlFixed, ExportEmbeddedCss = true, ExportEmbeddedFonts = true, ExportEmbeddedImages = true, ExportEmbeddedSvg = true };
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
+            htmlFixedSaveOptions.Encoding = Encoding.GetEncoding("utf-16");
 
             doc.Save(MyDir + @"\Artifacts\EncodingUsingGetEncoding.html", htmlFixedSaveOptions);
         }
 
         [Test]
-        [TestCase(true)]
-        [TestCase(false)]
-        public void ExportFormFields(bool exportFormFields)
+        public void ExportFormFields()
         {
+            //ExStart
+            //ExFor:HtmlFixedSaveOptions.ExportFormFields
+            //ExSummary:Show how to exporting form fields from a document into HTML file.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertCheckBox("CheckBox", false, 15);
 
-            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions { SaveFormat = SaveFormat.HtmlFixed, ExportEmbeddedCss = true, ExportEmbeddedFonts = true, ExportEmbeddedImages = true, ExportEmbeddedSvg = true, ExportFormFields = exportFormFields };
-
-            //For assert test result you need to open documents and check that checkbox are clickable in "ExportFormFiels.html" file and are not clickable in "WithoutExportFormFiels.html" file
-            if (exportFormFields == true)
-            {
-                doc.Save(MyDir + @"\Artifacts\ExportFormFiels.html", htmlFixedSaveOptions);
-            }
-            else
-            {
-                doc.Save(MyDir + @"\Artifacts\WithoutExportFormFiels.html", htmlFixedSaveOptions);
-            }
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
+            htmlFixedSaveOptions.ExportFormFields = true;
+            
+            doc.Save(MyDir + @"\Artifacts\ExportFormFiels.html", htmlFixedSaveOptions);
+            //ExEnd
         }
 
         [Test]
-        [TestCase("aw")]
-        [TestCase("")]
-        public void CssPrefix(string cssprefix)
+        public void CssPrefix()
         {
+            //ExStart
+            //ExFor:HtmlFixedSaveOptions.CssClassNamesPrefix
+            //ExSummary:Shows how to add prefix to all class names in css file.
             Document doc = new Document(MyDir + "Bookmark.doc");
 
-            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions();
-            saveOptions.CssClassNamesPrefix = cssprefix;
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
+            htmlFixedSaveOptions.CssClassNamesPrefix = "test";
 
-            doc.Save(MyDir + @"\Artifacts\cssPrefix_Out.html", saveOptions);
+            doc.Save(MyDir + @"\Artifacts\cssPrefix_Out.html", htmlFixedSaveOptions);
+            //ExEnd
 
-            DocumentHelper.FindTextInFile(MyDir + @"\Artifacts\cssPrefix_Out\styles.css", "div");
+            DocumentHelper.FindTextInFile(MyDir + @"\Artifacts\cssPrefix_Out\styles.css", "test");
         }
 
         [Test]
-        [TestCase(HtmlFixedPageHorizontalAlignment.Center)]
-        [TestCase(HtmlFixedPageHorizontalAlignment.Left)]
-        [TestCase(HtmlFixedPageHorizontalAlignment.Right)]
-        public void HorizontalAlignment(HtmlFixedPageHorizontalAlignment horizontalAlignment)
+        public void HorizontalAlignment()
         {
+            //ExStart
+            //ExFor:HtmlFixedSaveOptions.PageHorizontalAlignment
+            //ExFor:HtmlFixedPageHorizontalAlignment
+            //ExSummary:Shows how to set the horizontal alignment of pages in HTML file.
             Document doc = new Document(MyDir + "Bookmark.doc");
 
-            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions();
-            saveOptions.PageHorizontalAlignment = horizontalAlignment;
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
+            htmlFixedSaveOptions.PageHorizontalAlignment = HtmlFixedPageHorizontalAlignment.Left;
 
-            doc.Save(MyDir + @"\Artifacts\HtmlFixedPageHorizontalAlignment.html", saveOptions);
+            doc.Save(MyDir + @"\Artifacts\HtmlFixedPageHorizontalAlignment.html", htmlFixedSaveOptions);
+            //ExEnd
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void PageMarginsException()
         {
@@ -132,16 +148,19 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\HtmlFixedPageMargins.html", saveOptions);
         }
 
-        [TestCase(0)]
-        [TestCase(10)]
-        public void PageMargins(int margin)
+        [Test]
+        public void PageMargins()
         {
+            //ExStart
+            //ExFor:HtmlFixedSaveOptions.PageMargins
+            //ExSummary:Shows how to set the margins around pages in HTML file.
             Document doc = new Document(MyDir + "Bookmark.doc");
 
             HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions();
-            saveOptions.PageMargins = margin;
+            saveOptions.PageMargins = 10;
 
             doc.Save(MyDir + @"\Artifacts\HtmlFixedPageMargins.html", saveOptions);
+            //ExEnd
         }
     }
 }

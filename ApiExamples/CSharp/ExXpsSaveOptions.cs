@@ -14,16 +14,19 @@ namespace ApiExamples
     [TestFixture]
     public class ExXpsSaveOptions : ApiExampleBase
     {
-        //ToDo: See dev changes
         [Test]
         public void OptimizeOutput()
         {
+            //ExStart
+            //ExFor:FixedPageSaveOptions.OptimizeOutput
+            //ExSummary:Shows how to optimize document objects while saving.
             Document doc = new Document(MyDir + "XPSOutputOptimize.docx");
 
             XpsSaveOptions saveOptions = new XpsSaveOptions();
             saveOptions.OptimizeOutput = true;
 
-            doc.Save(MyDir + @"\Artifacts\XPSOutputOptimize.docx");
+            doc.Save(MyDir + @"\Artifacts\XPSOutputOptimize.xps");
+            //ExEnd
         }
     }
 }

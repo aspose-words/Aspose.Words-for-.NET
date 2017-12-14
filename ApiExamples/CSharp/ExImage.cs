@@ -24,8 +24,7 @@ namespace ApiExamples
         public void CreateFromUrl()
         {
             //ExStart
-            //ExFor:DocumentBuilder.InsertImage(string)
-            //ExFor:DocumentBuilder.Writeln
+            //ExFor:DocumentBuilder.InsertImage(String)
             //ExSummary:Shows how to inserts an image from a URL. The image is inserted inline and at 100% scale.
             // This creates a builder and also an empty document inside the builder.
             DocumentBuilder builder = new DocumentBuilder();
@@ -34,7 +33,7 @@ namespace ApiExamples
             builder.InsertImage(MyDir + @"\Images\Aspose.Words.gif");
             builder.Writeln();
 
-            builder.Write("Image from an internet url, automatically downloaded for you: ");
+            builder.Write("Image from an Internet url, automatically downloaded for you: ");
             builder.InsertImage("http://www.aspose.com/Images/aspose-logo.jpg");
             builder.Writeln();
 
@@ -109,7 +108,7 @@ namespace ApiExamples
         public void CreateFloatingPageCenter()
         {
             //ExStart
-            //ExFor:DocumentBuilder.InsertImage(string)
+            //ExFor:DocumentBuilder.InsertImage(String)
             //ExFor:Shape
             //ExFor:ShapeBase
             //ExFor:ShapeBase.WrapType
@@ -221,7 +220,7 @@ namespace ApiExamples
             //ExFor:Shape.ImageData
             //ExFor:ImageData
             //ExFor:ImageData.SourceFullName
-            //ExFor:ImageData.SetImage(string)
+            //ExFor:ImageData.SetImage(String)
             //ExFor:DocumentBuilder.InsertNode
             //ExSummary:Shows how to insert a linked image into a document. 
             DocumentBuilder builder = new DocumentBuilder();
@@ -331,7 +330,7 @@ namespace ApiExamples
         //ExFor:ImageData
         //ExFor:FileFormatUtil.ImageTypeToExtension(Aspose.Words.Drawing.ImageType)
         //ExFor:ImageData.ImageType
-        //ExFor:ImageData.Save(string)
+        //ExFor:ImageData.Save(String)
         //ExFor:CompositeNode.GetChildNodes(NodeType, bool)
         //ExId:ExtractImagesToFiles
         //ExSummary:Shows how to extract images from a document and save them as files.

@@ -27,7 +27,7 @@ namespace ApiExamples
             HttpResponse Response = null;
 
             //ExStart
-            //ExFor:MailMerge.Execute(String[],Object[])
+            //ExFor:MailMerge.Execute(String[], Object[])
             //ExFor:ContentDisposition
             //ExFor:Document.Save(HttpResponse,String,ContentDisposition,SaveOptions)
             //ExId:MailMergeArray
@@ -36,7 +36,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "MailMerge.ExecuteArray.doc");
 
             // Fill the fields in the document with user data.
-            doc.MailMerge.Execute(new string[] { "FullName", "Company", "Address", "Address2", "City" }, new object[] { "James Bond", "MI5 Headquarters", "Milbank", "", "London" });
+            doc.MailMerge.Execute(new String[] { "FullName", "Company", "Address", "Address2", "City" }, new object[] { "James Bond", "MI5 Headquarters", "Milbank", "", "London" });
 
             // Send the document in Word format to the client browser with an option to save to disk or open inside the current browser.
             Assert.That(() => doc.Save(Response, @"\Artifacts\MailMerge.ExecuteArray.doc", ContentDisposition.Inline, null), Throws.TypeOf<ArgumentNullException>()); //Thrown because HttpResponse is null in the test.
@@ -69,19 +69,21 @@ namespace ApiExamples
         }
 
         [Test]
-        [TestCase(true, "first line\rsecond line\rthird line\f")]
-        [TestCase(false, " first line\rsecond line\rthird line \f")]
-        public void TrimWhiteSpaces(bool option, string expectedText)
+        public void TrimWhiteSpaces()
         {
+            //ExStart
+            //ExFor:MailMerge.TrimWhitespaces
+            //ExSummary:Shows how to trimmed whitespaces from mail merge values.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertField("MERGEFIELD field", null);
 
-            doc.MailMerge.TrimWhitespaces = option;
+            doc.MailMerge.TrimWhitespaces = true;
             doc.MailMerge.Execute(new[] { "field" }, new object[] { " first line\rsecond line\rthird line " });
 
-            Assert.AreEqual(expectedText, doc.GetText());
+            Assert.AreEqual("first line\rsecond line\rthird line\f", doc.GetText());
+            //ExEnd
         }
 
         [Test]
@@ -94,7 +96,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "MailingLabelsDemo.doc");
 
             // Open the database connection.
-            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.mdb";
+            String connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.mdb";
             OleDbConnection conn = new OleDbConnection(connString);
             try
             {
@@ -120,20 +122,12 @@ namespace ApiExamples
             //ExEnd
         }
 
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
         [Test]
-        public void ExecuteDataViewCaller()
-        {
-            this.ExecuteDataView();
-        }
-
-        //ExStart
-        //ExFor:MailMerge.Execute(DataView)
-        //ExSummary:Executes mail merge from an ADO.NET DataView.
         public void ExecuteDataView()
         {
+            //ExStart
+            //ExFor:MailMerge.Execute(DataView)
+            //ExSummary:Executes mail merge from an ADO.NET DataView.
             // Open the document that we want to fill with data.
             Document doc = new Document(MyDir + "MailMerge.ExecuteDataView.doc");
 
@@ -153,7 +147,7 @@ namespace ApiExamples
         private static DataTable GetOrders()
         {
             // Open a database connection.
-            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.mdb";
+            String connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.mdb";
             OleDbConnection conn = new OleDbConnection(connString);
             conn.Open();
 
@@ -205,23 +199,15 @@ namespace ApiExamples
             //ExEnd
         }
 
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
         [Test]
-        public void ExecuteWithRegionsDataTableCaller()
-        {
-            this.ExecuteWithRegionsDataTable();
-        }
-
-        //ExStart
-        //ExFor:Document.MailMerge
-        //ExFor:MailMerge.ExecuteWithRegions(DataTable)
-        //ExFor:MailMerge.ExecuteWithRegions(DataView)
-        //ExId:MailMergeRegions
-        //ExSummary:Executes a mail merge with repeatable regions.
         public void ExecuteWithRegionsDataTable()
         {
+            //ExStart
+            //ExFor:Document.MailMerge
+            //ExFor:MailMerge.ExecuteWithRegions(DataTable)
+            //ExFor:MailMerge.ExecuteWithRegions(DataView)
+            //ExId:MailMergeRegions
+            //ExSummary:Executes a mail merge with repeatable regions.
             Document doc = new Document(MyDir + "MailMerge.ExecuteWithRegions.doc");
 
             int orderId = 10444;
@@ -242,14 +228,14 @@ namespace ApiExamples
 
         private static DataTable GetTestOrder(int orderId)
         {
-            DataTable table = ExecuteDataTable(string.Format("SELECT * FROM AsposeWordOrders WHERE OrderId = {0}", orderId));
+            DataTable table = ExecuteDataTable(String.Format("SELECT * FROM AsposeWordOrders WHERE OrderId = {0}", orderId));
             table.TableName = "Orders";
             return table;
         }
 
         private static DataTable GetTestOrderDetails(int orderId)
         {
-            DataTable table = ExecuteDataTable(string.Format("SELECT * FROM AsposeWordOrderDetails WHERE OrderId = {0} ORDER BY ProductID", orderId));
+            DataTable table = ExecuteDataTable(String.Format("SELECT * FROM AsposeWordOrderDetails WHERE OrderId = {0} ORDER BY ProductID", orderId));
             table.TableName = "OrderDetails";
             return table;
         }
@@ -258,10 +244,10 @@ namespace ApiExamples
         /// Utility function that creates a connection, command, 
         /// executes the command and return the result in a DataTable.
         /// </summary>
-        private static DataTable ExecuteDataTable(string commandText)
+        private static DataTable ExecuteDataTable(String commandText)
         {
             // Open the database connection.
-            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.mdb";
+            String connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.mdb";
             OleDbConnection conn = new OleDbConnection(connString);
             conn.Open();
 
@@ -300,7 +286,7 @@ namespace ApiExamples
             //ExFor:MailMerge.GetFieldNames
             //ExId:MailMergeGetFieldNames
             //ExSummary:Shows how to get names of all merge fields in a document.
-            string[] fieldNames = doc.MailMerge.GetFieldNames();
+            String[] fieldNames = doc.MailMerge.GetFieldNames();
             //ExEnd
         }
 
@@ -355,22 +341,23 @@ namespace ApiExamples
             //ExEnd
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void GetFieldNames()
         {
             Document doc = new Document(MyDir + "MailMerge.GetFieldNames.docx");
 
-            string[] addressFieldsExpect = { "Company", "First Name", "Middle Name", "Last Name", "Suffix", "Address 1", "City", "State", "Country or Region", "Postal Code" };
+            String[] addressFieldsExpect = { "Company", "First Name", "Middle Name", "Last Name", "Suffix", "Address 1", "City", "State", "Country or Region", "Postal Code" };
 
             FieldAddressBlock addressBlockField = (FieldAddressBlock)doc.Range.Fields[0]; 
-            string[] addressBlockFieldNames = addressBlockField.GetFieldNames();                     
+            String[] addressBlockFieldNames = addressBlockField.GetFieldNames();                     
                                                                                          
             Assert.AreEqual(addressFieldsExpect, addressBlockFieldNames);
 
-            string[] greetingFieldsExpect = { "Courtesy Title", "Last Name" };
+            String[] greetingFieldsExpect = { "Courtesy Title", "Last Name" };
 
             FieldGreetingLine greetingLineField = (FieldGreetingLine)doc.Range.Fields[1];
-            string[] greetingLineFieldNames = greetingLineField.GetFieldNames();
+            String[] greetingLineFieldNames = greetingLineField.GetFieldNames();
 
             Assert.AreEqual(greetingFieldsExpect, greetingLineFieldNames);
         }                                                                                
@@ -386,10 +373,11 @@ namespace ApiExamples
             //ExEnd
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         [TestCase(true, "{{ testfield1 }}value 1{{ testfield3 }}\f")]
         [TestCase(false, "\u0013MERGEFIELD \"testfield1\"\u0014«testfield1»\u0015value 1\u0013MERGEFIELD \"testfield3\"\u0014«testfield3»\u0015\f")]
-        public void MustasheTemplateSyntax(bool restoreTags, string sectionText)
+        public void MustasheTemplateSyntax(bool restoreTags, String sectionText)
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -402,11 +390,11 @@ namespace ApiExamples
 
             DataTable table = new DataTable("Test");
             table.Columns.Add("testfield2");
-            table.Rows.Add(new object[] { "value 1" });
+            table.Rows.Add("value 1");
 
             doc.MailMerge.Execute(table);
 
-            string paraText = DocumentHelper.GetParagraphText(doc, 0);
+            String paraText = DocumentHelper.GetParagraphText(doc, 0);
 
             Assert.AreEqual(sectionText, paraText);
         }
@@ -459,31 +447,18 @@ namespace ApiExamples
         [Test]
         public void TestTagsReplacedEventShouldRisedWithUseNonMergeFieldsOption()
         {
+            //ExStart
+            //ExFor:IMailMergeCallback
+            //ExSummary:Shows how to define custom logic for handling events during mail merge.
             Document document = new Document();
             document.MailMerge.UseNonMergeFields = true;
 
             MailMergeCallbackStub mailMergeCallbackStub = new MailMergeCallbackStub();
             document.MailMerge.MailMergeCallback = mailMergeCallbackStub;
 
-            document.MailMerge.Execute(new string[0], new object[0]);
+            document.MailMerge.Execute(new String[0], new object[0]);
 
             Assert.AreEqual(1, mailMergeCallbackStub.TagsReplacedCounter);
-        }
-
-        [Test]
-        [TestCase("Region1")]
-        [TestCase("NestedRegion1")]
-        public void GetRegionsByName(string regionName)
-        {
-            Document doc = new Document(MyDir + "MailMerge.RegionsByName.doc");
-
-            ArrayList regions = doc.MailMerge.GetRegionsByName(regionName);
-            Assert.AreEqual(2, regions.Count);
-
-            foreach (MailMergeRegionInfo region in regions)
-            {
-                Assert.AreEqual(regionName, region.Name);
-            }
         }
 
         private class MailMergeCallbackStub : IMailMergeCallback
@@ -500,5 +475,6 @@ namespace ApiExamples
 
             private int mTagsReplacedCounter;
         }
+        //ExEnd
     }
 }

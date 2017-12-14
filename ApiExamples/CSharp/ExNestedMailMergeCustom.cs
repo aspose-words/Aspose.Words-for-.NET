@@ -15,15 +15,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExNestedMailMergeCustom : ApiExampleBase
     {
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
         [Test]
-        public void MailMergeCustomDataSourceCaller()
-        {
-            this.MailMergeCustomDataSource();
-        }
-
         public void MailMergeCustomDataSource()
         {
             // Create some data that we will use in the mail merge.

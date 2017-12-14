@@ -17,7 +17,7 @@ namespace ApiExamples
         [Test]
         public void UtilityClassesUseControlCharacters()
         {
-            string text = "test\r";
+            String text = "test\r";
             //ExStart
             //ExFor:ControlChar
             //ExFor:ControlChar.Cr

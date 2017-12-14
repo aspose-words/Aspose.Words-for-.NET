@@ -21,7 +21,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExDocumentBuilder : ApiExampleBase
     {
-        private readonly string _image = MyDir + @"\Images\Test_636_852.gif";
+        private readonly String _image = ImageDir + "Test_636_852.gif";
 
         [Test]
         public void WriteAndFont()
@@ -95,7 +95,7 @@ namespace ApiExamples
         public void InsertMergeField()
         {
             //ExStart
-            //ExFor:DocumentBuilder.InsertField(string)
+            //ExFor:DocumentBuilder.InsertField(String)
             //ExId:DocumentBuilderInsertField
             //ExSummary:Inserts a merge field into a document using DocumentBuilder.
             Document doc = new Document();
@@ -105,10 +105,10 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertField()
+        public void InsertFieldFieldCode()
         {
             //ExStart
-            //ExFor:DocumentBuilder.InsertField(string)
+            //ExFor:DocumentBuilder.InsertField(String)
             //ExFor:Field
             //ExFor:Field.Update
             //ExFor:Field.Result
@@ -116,7 +116,7 @@ namespace ApiExamples
             //ExFor:Field.Type
             //ExFor:Field.Remove
             //ExFor:FieldType
-            //ExSummary:Inserts a field into a document using DocumentBuilder.
+            //ExSummary:Inserts a field into a document using DocumentBuilder and FieldCode.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -149,26 +149,34 @@ namespace ApiExamples
         [TestCase(false)]
         public void GetFieldCode(bool nestedFields)
         {
+            //ExStart
+            //ExFor:Field.GetFieldCode
+            //ExFor:Field.GetFieldCode(bool)
+            //ExSummary:Shows how to get text between field start and field separator (or field end if there is no separator)
             Document doc = new Document(MyDir + "Field.FieldCode.docx");
 
             foreach (Field field in doc.Range.Fields)
             {
                 if (field.Type == FieldType.FieldIf)
                 {
-                    FieldIf fif = (FieldIf)field;
+                    FieldIf fieldIf = (FieldIf)field;
 
-                    Assert.AreEqual(" IF  MERGEFIELD Q223  > 0 \" (and additionally London Weighting of   MERGEFIELD  Q223 \\f £  per hour) \" \"\" ", fif.GetFieldCode());
+                    string fieldCode = fieldIf.GetFieldCode();
+                    Assert.AreEqual(" IF  MERGEFIELD Q223  > 0 \" (and additionally London Weighting of   MERGEFIELD  Q223 \\f £  per hour) \" \"\" ", fieldCode);//ExSkip
 
                     if (nestedFields)
                     {
-                        Assert.AreEqual(" IF  MERGEFIELD Q223  > 0 \" (and additionally London Weighting of   MERGEFIELD  Q223 \\f £  per hour) \" \"\" ", fif.GetFieldCode(true));
+                        fieldCode = fieldIf.GetFieldCode(true);
+                        Assert.AreEqual(" IF  MERGEFIELD Q223  > 0 \" (and additionally London Weighting of   MERGEFIELD  Q223 \\f £  per hour) \" \"\" ", fieldCode);//ExSkip
                     }
                     else
                     {
-                        Assert.AreEqual(" IF  > 0 \" (and additionally London Weighting of   per hour) \" \"\" ", fif.GetFieldCode(false));
+                        fieldCode = fieldIf.GetFieldCode(false);
+                        Assert.AreEqual(" IF  > 0 \" (and additionally London Weighting of   per hour) \" \"\" ", fieldCode);//ExSkip
                     }
                 }
             }
+            //ExEnd
         }
 
         [Test]
@@ -271,7 +279,7 @@ namespace ApiExamples
             // The best place for the watermark image is in the header or footer so it is shown on every page.
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
 
-            Image image = Image.FromFile(MyDir + @"\Images\Watermark.png");
+            Image image = Image.FromFile(ImageDir + "Watermark.png");
 
             // Insert a floating picture.
             Shape shape = builder.InsertImage(image);
@@ -294,7 +302,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder
-            //ExFor:DocumentBuilder.InsertHtml(string)
+            //ExFor:DocumentBuilder.InsertHtml(String)
             //ExId:DocumentBuilderInsertHtml
             //ExSummary:Inserts HTML into a document. The formatting specified in the HTML is applied.
             Document doc = new Document();
@@ -328,12 +336,16 @@ namespace ApiExamples
         [Test]
         public void InsertMathMl()
         {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertHtml(String)
+            //ExSummary:Inserts MathMl into a document using.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            const string MathMl = "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mn>1</mn></mrow></msub></mrow></math>";
+            const String mathMl = "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mn>1</mn></mrow></msub></mrow></math>";
 
-            builder.InsertHtml(MathMl);
+            builder.InsertHtml(mathMl);
+            //ExEnd
 
             doc.Save(MyDir + @"\Artifacts\MathML.docx");
             doc.Save(MyDir + @"\Artifacts\MathML.pdf");
@@ -372,7 +384,7 @@ namespace ApiExamples
             builder.Writeln("");
             builder.Writeln("");
 
-            string[] items = new string[] { "-- Select your favorite footwear --", "Sneakers", "Oxfords", "Flip-flops", "Other", "I prefer to be barefoot" };
+            String[] items = new String[] { "-- Select your favorite footwear --", "Sneakers", "Oxfords", "Flip-flops", "Other", "I prefer to be barefoot" };
 
             // Insert a combo box to select a footwear type.
             builder.InsertComboBox("", items, 0);
@@ -390,8 +402,8 @@ namespace ApiExamples
         public void InsertCheckBox()
         {
             //ExStart
-            //ExFor:DocumentBuilder.InsertCheckBox(string, bool, bool, int)
-            //ExFor:DocumentBuilder.InsertCheckBox(string, bool, int)
+            //ExFor:DocumentBuilder.InsertCheckBox(String, bool, bool, int)
+            //ExFor:DocumentBuilder.InsertCheckBox(String, bool, int)
             //ExSummary:Shows how to insert checkboxes to the document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -434,6 +446,7 @@ namespace ApiExamples
             Assert.AreEqual(100, formFields[2].CheckBoxSize);
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void InsertCheckBoxEmptyName()
         {
@@ -441,9 +454,9 @@ namespace ApiExamples
 
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            //Assert that empty string name working correctly
+            //Assert that empty String name working correctly
             builder.InsertCheckBox("", true, false, 1);
-            builder.InsertCheckBox(string.Empty, false, 1);
+            builder.InsertCheckBox(String.Empty, false, 1);
         }
 
         [Test]
@@ -488,7 +501,7 @@ namespace ApiExamples
         public void FillingDocument()
         {
             //ExStart
-            //ExFor:DocumentBuilder.MoveToMergeField(string)
+            //ExFor:DocumentBuilder.MoveToMergeField(String)
             //ExFor:DocumentBuilder.Bold
             //ExFor:DocumentBuilder.Italic
             //ExSummary:Fills document merge fields with some data.
@@ -841,7 +854,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExId:InsertTableFromHtml
-            //ExSummary:Shows how to insert a table in a document from a string containing HTML tags.
+            //ExSummary:Shows how to insert a table in a document from a String containing HTML tags.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1398,6 +1411,7 @@ namespace ApiExamples
             //ExEnd
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void TableCellVerticalRotatedFarEastTextOrientation()
         {
@@ -1445,7 +1459,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertImage(MyDir + @"\Images\Watermark.png");
+            builder.InsertImage(ImageDir + "Watermark.png");
             //ExEnd
         }
 
@@ -1459,7 +1473,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertImage(MyDir + @"\Images\Watermark.png", RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
+            builder.InsertImage(ImageDir + "Watermark.png", RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
             //ExEnd
         }
 
@@ -1493,7 +1507,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Pass a negative value to the width and height values to specify using the size of the source image.
-            builder.InsertImage(MyDir + @"\Images\LogoSmall.png", RelativeHorizontalPosition.Margin, 200, RelativeVerticalPosition.Margin, 100, -1, -1, WrapType.Square);
+            builder.InsertImage(ImageDir + "LogoSmall.png", RelativeHorizontalPosition.Margin, 200, RelativeVerticalPosition.Margin, 100, -1, -1, WrapType.Square);
             //ExEnd
 
             doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertImageOriginalSize.doc");
@@ -1538,7 +1552,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            string[] items = { "One", "Two", "Three" };
+            String[] items = { "One", "Two", "Three" };
             builder.InsertComboBox("DropDown", items, 0);
             //ExEnd
         }
@@ -1607,7 +1621,6 @@ namespace ApiExamples
             Assert.AreEqual(RelativeVerticalPosition.Page, shape.RelativeVerticalPosition);
             Assert.AreEqual(3.0, shape.Top);
             Assert.AreEqual(WrapType.Inline, shape.WrapType);
-            //Bug: If wraptype are not inline shape break his position (builder.InsertSignatureLine(options, RelativeHorizontalPosition.RightMargin, 2.0, RelativeVerticalPosition.Page, 3.0, WrapType.Inline);)
         }
 
         [Test]
@@ -1630,7 +1643,7 @@ namespace ApiExamples
             font.Underline = Underline.Double;
 
             // Output formatted text
-            builder.Writeln("I'm a very nice formatted string.");
+            builder.Writeln("I'm a very nice formatted String.");
             //ExEnd
         }
 
@@ -1788,8 +1801,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:Footnote
             //ExFor:FootnoteType
-            //ExFor:DocumentBuilder.InsertFootnote(FootnoteType,string)
-            //ExFor:DocumentBuilder.InsertFootnote(FootnoteType,string,string)
+            //ExFor:DocumentBuilder.InsertFootnote(FootnoteType,String)
+            //ExFor:DocumentBuilder.InsertFootnote(FootnoteType,String,String)
             //ExSummary:Shows how to add a footnote to a paragraph in the document using DocumentBuilder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1800,30 +1813,7 @@ namespace ApiExamples
             //ExEnd
 
             Assert.AreEqual("Footnote text.", doc.GetChildNodes(NodeType.Footnote, true)[0].ToString(SaveFormat.Text).Trim());
-        }
-
-        [Test]
-        public void AddFootnoteWithCustomMarks()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.Write("Some text");
-
-            Footnote foot = new Footnote(doc, FootnoteType.Footnote);
-            foot.ReferenceMark = "242";
-
-            builder.InsertFootnote(FootnoteType.Footnote, "Footnote text.", foot.ReferenceMark);
-
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
-            doc = new Document(dstStream);
-            foot = (Footnote)doc.GetChildNodes(NodeType.Footnote, true)[0];
-
-            Assert.IsFalse(foot.IsAuto);
-            Assert.AreEqual("242", foot.ReferenceMark);
-            Assert.AreEqual("242 Footnote text.\r", foot.GetText());
+            Assert.AreEqual("242 Footnote text.", doc.GetChildNodes(NodeType.Footnote, true)[1].ToString(SaveFormat.Text).Trim());
         }
 
         [Test]
@@ -1877,7 +1867,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DeleteRowEx()
+        public void DeleteRow()
         {
             //ExStart
             //ExFor:DocumentBuilder.DeleteRow
@@ -1890,19 +1880,22 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ToDo: There is some unclear behavior
         [Test]
-        public void InsertDocumentEx()
+        public void InsertDocument()
         {
             //ExStart
-            //ExFor:DocumentBuilder.InsertDocument
-            //ExSummary:Shows how to insert a document into another document.
-            Document doc = new Document(MyDir + "Document.doc");
+            //ExFor:DocumentBuilder.InsertDocument(Document, ImportFormatMode)
+            //ExSummary:Shows how to insert a document content into another document.
+            Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
-            Document docToInsert = new Document(MyDir + "DocumentBuilder.InsertedDoc.doc");
+
+            Document docToInsert = new Document(MyDir + "DocumentBuilder.InsertedDoc.docx");
 
             builder.InsertDocument(docToInsert, ImportFormatMode.KeepSourceFormatting);
             //ExEnd
+            builder.Document.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertDocument.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\DocumentBuilder.InsertDocument.docx", MyDir + @"\Golds\DocumentBuilder.InsertDocument Gold.docx"));
         }
 
         [Test]
@@ -1921,7 +1914,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertOleObjectEx()
+        public void InsertOleObject()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, Boolean, Image)
@@ -1930,7 +1923,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Image representingImage = Image.FromFile(MyDir + @"\Images\Aspose.Words.gif");
+            Image representingImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
 
             Shape oleObject = builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage);
             Shape oleObjectProgId = builder.InsertOleObject("http://www.aspose.com", "htmlfile", true, true, null);
@@ -1939,11 +1932,9 @@ namespace ApiExamples
             // Double click on the icon in the .doc to see the html.
             doc.Save(MyDir + @"\Artifacts\Document.InsertedOleObject.doc");
             //ExEnd
-
-            //ToDo: There is some bug, need more info for this (breaking html link)
-            //Shape oleObjectProgId = builder.InsertOleObject("http://www.aspose.com", "htmlfile", true, false, null);
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void InsertOleObjectException()
         {
@@ -1968,6 +1959,7 @@ namespace ApiExamples
             //ExEnd
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void DataArraysWrongSize()
         {
@@ -1982,7 +1974,7 @@ namespace ApiExamples
             seriesColl.Clear();
 
             // Create category names array, second category will be null.
-            string[] categories = new string[] { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
+            String[] categories = new String[] { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
 
             // Adding new series with empty (double.NaN) values.
             seriesColl.Add("AW Series 1", categories, new double[] { 1, 2, double.NaN, 4, 5, 6 });
@@ -1991,6 +1983,7 @@ namespace ApiExamples
             Assert.That(() => seriesColl.Add("AW Series 4", categories, new double[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN }), Throws.TypeOf<ArgumentException>());
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void EmptyValuesInChartData()
         {
@@ -2005,7 +1998,7 @@ namespace ApiExamples
             seriesColl.Clear();
 
             // Create category names array, second category will be null.
-            string[] categories = new string[] { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
+            String[] categories = new String[] { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
 
             // Adding new series with empty (double.NaN) values.
             seriesColl.Add("AW Series 1", categories, new double[] { 1, 2, double.NaN, 4, 5, 6 });
@@ -2017,7 +2010,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertChartRelativePositionEx()
+        public void InsertChartRelativePosition()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertChart(ChartType, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
@@ -2032,11 +2025,11 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertFieldEx()
+        public void InsertFieldFieldType()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertField(FieldType, Boolean)
-            //ExSummary:Shows how to insert a field.
+            //ExSummary:Shows how to insert a field into a document using FieldType
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -2047,25 +2040,31 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //Todo: Add gold asserts
         [Test]
         public void InsertVideoWithUrl()
         {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertOnlineVideo(String, Double, Double)
+            //ExSummary:Show how to insert online video into a document using video url
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Pass direct url from youtu.be.
-            string url = "https://youtu.be/t_1LYZ102RA";
+            String url = "https://youtu.be/t_1LYZ102RA";
 
             double width = 360;
             double height = 270;
 
             builder.InsertOnlineVideo(url, width, height);
+            //ExEnd
         }
 
         [Test]
         public void InsertVideoWithHtmlCode()
         {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], Double, Double)
+            //ExSummary:Show how to insert online video into a document using html code
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -2077,12 +2076,13 @@ namespace ApiExamples
             byte[] imageBytes = File.ReadAllBytes(this._image);
 
             // Visible url
-            string vimeoVideoUrl = @"https://vimeo.com/52477838";
+            String vimeoVideoUrl = @"https://vimeo.com/52477838";
 
             // Embed Html code.
-            string vimeoEmbedCode = "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
+            String vimeoEmbedCode = "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
 
             builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, width, height);
+            //ExEnd
         }
     }
 }

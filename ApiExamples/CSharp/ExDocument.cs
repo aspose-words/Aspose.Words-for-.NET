@@ -5,14 +5,6 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-#if !JAVA
-//ExStart
-//ExId:ImportForDigitalSignatures
-//ExSummary:The import required to use the X509Certificate2 class.
-
-//ExEnd
-#endif
-
 using System;
 using System.Collections;
 using System.Drawing;
@@ -42,7 +34,7 @@ namespace ApiExamples
         public void LicenseFromFileNoPath()
         {
             // Copy a license to the bin folder so the example can execute.
-            string dstFileName = Path.Combine(AssemblyDir, "Aspose.Words.lic");
+            String dstFileName = Path.Combine(AssemblyDir, "Aspose.Words.lic");
             File.Copy(TestLicenseFileName, dstFileName);
 
             //ExStart
@@ -159,7 +151,7 @@ namespace ApiExamples
             //    <p><img src="Aspose.Words.gif" width="80" height="60"></p>
             //    </body>
             //    </html>
-            string fileName = MyDir + "Document.OpenFromStreamWithBaseUri.html";
+            String fileName = MyDir + "Document.OpenFromStreamWithBaseUri.html";
 
             // Open the stream.
             Stream stream = File.OpenRead(fileName);
@@ -195,7 +187,7 @@ namespace ApiExamples
             //ExFor:Document.#ctor(Stream)
             //ExSummary:Retrieves a document from a URL and saves it to disk in a different format.
             // This is the URL address pointing to where to find the document.
-            string url = "https://www.google.ru/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwjt_ZaU79XRAhUiJpoKHYPhAg4QFggaMAA&url=http%3A%2F%2Fdownload.microsoft.com%2Fdownload%2Ff%2F7%2F3%2Ff7395ee6-5642-4ab9-a881-786d0350e88d%2Fskills_development_white_paper_2009.doc&usg=AFQjCNHgXtYDBC_VAqdgqHNdaIQDzyXNpA&sig2=NqLNmbht9qC028yevlBvEg&bvm=bv.144224172,d.bGs";
+            String url = "https://www.google.ru/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwjt_ZaU79XRAhUiJpoKHYPhAg4QFggaMAA&url=http%3A%2F%2Fdownload.microsoft.com%2Fdownload%2Ff%2F7%2F3%2Ff7395ee6-5642-4ab9-a881-786d0350e88d%2Fskills_development_white_paper_2009.doc&usg=AFQjCNHgXtYDBC_VAqdgqHNdaIQDzyXNpA&sig2=NqLNmbht9qC028yevlBvEg&bvm=bv.144224172,d.bGs";
 
             // The easiest way to load our document from the internet is make use of the 
             // System.Net.WebClient class. Create an instance of it and pass the URL
@@ -225,7 +217,7 @@ namespace ApiExamples
             //ExFor:Document.#ctor(Stream, LoadOptions)
             //ExFor:LoadOptions.#ctor(LoadFormat, String, String)
             //ExFor:LoadFormat
-            //ExSummary:Shows how to insert the HTML conntents from a web page into a new document.
+            //ExSummary:Shows how to insert the HTML contents from a web page into a new document.
             // The url of the page to load 
             String url = "http://www.aspose.com/";
 
@@ -472,7 +464,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Rendering.doc");
 
             // This is the directory we want the exported images to be saved to.
-            string imagesDir = Path.Combine(MyDir, "SaveHtmlWithOptions");
+            String imagesDir = Path.Combine(MyDir, "SaveHtmlWithOptions");
 
             // The folder specified needs to exist and should be empty.
             if (Directory.Exists(imagesDir))
@@ -495,15 +487,6 @@ namespace ApiExamples
             Directory.Delete(imagesDir, true);
         }
 
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
-        [Test]
-        public void SaveHtmlExportFontsCaller()
-        {
-            this.SaveHtmlExportFonts();
-        }
-
         //ExStart
         //ExFor:HtmlSaveOptions.ExportFontResources
         //ExFor:HtmlSaveOptions.FontSavingCallback
@@ -514,6 +497,7 @@ namespace ApiExamples
         //ExFor:FontSavingArgs.FontFileName
         //ExId:SaveHtmlExportFonts
         //ExSummary:Shows how to define custom logic for handling font exporting when saving to HTML based formats.
+        [Test]//ExSkip
         public void SaveHtmlExportFonts()
         {
             Document doc = new Document(MyDir + "Document.doc");
@@ -537,15 +521,6 @@ namespace ApiExamples
         }
         //ExEnd
 
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
-        [Test]
-        public void SaveHtmlExportImagesCaller()
-        {
-            this.SaveHtmlExportImages();
-        }
-
         //ExStart
         //ExFor:IImageSavingCallback
         //ExFor:IImageSavingCallback.ImageSaving
@@ -555,6 +530,7 @@ namespace ApiExamples
         //ExFor:HtmlSaveOptions.ImageSavingCallback
         //ExId:SaveHtmlCustomExport
         //ExSummary:Shows how to define custom logic for controlling how images are saved when exporting to HTML based formats.
+        [Test]//ExSkip
         public void SaveHtmlExportImages()
         {
             Document doc = new Document(MyDir + "Document.doc");
@@ -577,15 +553,6 @@ namespace ApiExamples
         }
         //ExEnd
 
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
-        [Test]
-        public void TestNodeChangingInDocumentCaller()
-        {
-            this.TestNodeChangingInDocument();
-        }
-
         //ExStart
         //ExFor:INodeChangingCallback
         //ExFor:INodeChangingCallback.NodeInserting
@@ -597,6 +564,7 @@ namespace ApiExamples
         //ExFor:DocumentBase.NodeChangingCallback
         //ExId:NodeChangingInDocument
         //ExSummary:Shows how to implement custom logic over node insertion in the document by changing the font of inserted HTML content.
+        [Test]//ExSkip
         public void TestNodeChangingInDocument()
         {
             // Create a blank document object
@@ -678,7 +646,8 @@ namespace ApiExamples
             //ExFor:Document.OriginalFileName
             //ExFor:FileFormatInfo.LoadFormat
             //ExSummary:Shows how to use the FileFormatUtil methods to detect the format of a document without any extension and save it with the correct file extension.
-            // Load the document without a file extension into a stream and use the DetectFileFormat method to detect it's format. These are both times where you might need extract the file format as it's not visible
+            // Load the document without a file extension into a stream and use the DetectFileFormat method to detect it's format. 
+            // These are both times where you might need extract the file format as it's not visible
             FileStream docStream = File.OpenRead(MyDir + "Document.FileWithoutExtension"); // The file format of this document is actually ".doc"
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(docStream);
 
@@ -688,8 +657,8 @@ namespace ApiExamples
             // Let's show the different methods of converting LoadFormat enumerations to SaveFormat enumerations.
             //
             // Method #1
-            // Convert the LoadFormat to a string first for working with. The string will include the leading dot in front of the extension.
-            string fileExtension = FileFormatUtil.LoadFormatToExtension(loadFormat);
+            // Convert the LoadFormat to a String first for working with. The String will include the leading dot in front of the extension.
+            String fileExtension = FileFormatUtil.LoadFormatToExtension(loadFormat);
             // Now convert this extension into the corresponding SaveFormat enumeration
             SaveFormat saveFormat = FileFormatUtil.ExtensionToSaveFormat(fileExtension);
 
@@ -769,7 +738,7 @@ namespace ApiExamples
                 doc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles);
 
                 // In automation you were required to insert a new section break at this point, however in Aspose.Words we 
-                // don't need to do anything here as the appended document is imported as separate sectons already.
+                // don't need to do anything here as the appended document is imported as separate sections already.
 
                 // If this is the second document or above being appended then unlink all headers footers in this section 
                 // from the headers and footers of the previous section.
@@ -788,7 +757,7 @@ namespace ApiExamples
             //ExId:DetectDocumentSignatures
             //ExSummary:Shows how to check a document for digital signatures before loading it into a Document object.
             // The path to the document which is to be processed.
-            string filePath = MyDir + "Document.Signed.docx";
+            String filePath = MyDir + "Document.Signed.docx";
 
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(filePath);
             if (info.HasDigitalSignature)
@@ -857,50 +826,9 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SignPdfDocument()
-        {
-            //ExStart
-            //ExFor:PdfSaveOptions
-            //ExFor:PdfDigitalSignatureDetails
-            //ExFor:PdfSaveOptions.DigitalSignatureDetails
-            //ExFor:PdfDigitalSignatureDetails.#ctor(X509Certificate2, String, String, DateTime)
-            //ExId:SignPDFDocument
-            //ExSummary:Shows how to sign a generated PDF document using Aspose.Words.
-            // Create a simple document from scratch.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Writeln("Test Signed PDF.");
-
-            // Load the certificate from disk.
-            // The other constructor overloads can be used to load certificates from different locations.
-            CertificateHolder ch = CertificateHolder.Create(MyDir + "certificate.pfx", "123456");
-
-            // Pass the certificate and details to the save options class to sign with.
-            PdfSaveOptions options = new PdfSaveOptions();
-            options.DigitalSignatureDetails = new PdfDigitalSignatureDetails(ch, "Test Signing", "Aspose Office", DateTime.Now);
-
-            // Save the document as PDF with the digital signature set.
-            doc.Save(MyDir + @"\Artifacts\Document.Signed.pdf", options);
-            //ExEnd
-        }
-
-        //This is for obfuscation bug WORDSNET-13036
-        [Test]
-        public void SignDocument()
-        {
-            CertificateHolder ch = CertificateHolder.Create(MyDir + "certificate.pfx", "123456");
-
-            //By String
-            Document doc = new Document(MyDir + "TestRepeatingSection.docx");
-            string outputDocFileName = MyDir + @"\Artifacts\TestRepeatingSection.Signed.doc";
-
-            DigitalSignatureUtil.Sign(doc.OriginalFileName, outputDocFileName, ch, "My comment", DateTime.Now);
-        }
-
-        [Test]
         public void AppendAllDocumentsInFolder()
         {
-            string path = MyDir + @"\Artifacts\Document.AppendDocumentsFromFolder.doc";
+            String path = MyDir + @"\Artifacts\Document.AppendDocumentsFromFolder.doc";
 
             // Delete the file that was created by the previous run as I don't want to append it again.
             if (File.Exists(path))
@@ -926,7 +854,7 @@ namespace ApiExamples
             files.Sort();
 
             // Iterate through every file in the directory and append each one to the end of the template document.
-            foreach (string fileName in files)
+            foreach (String fileName in files)
             {
                 // We have some encrypted test documents in our directory, Aspose.Words can open encrypted documents 
                 // but only with the correct password. Let's just skip them here for simplicity.
@@ -1034,7 +962,7 @@ namespace ApiExamples
             // date formatting.
             CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-            doc.MailMerge.Execute(new string[] { "Date1" }, new object[] { new DateTime(2011, 1, 01) });
+            doc.MailMerge.Execute(new String[] { "Date1" }, new object[] { new DateTime(2011, 1, 01) });
 
             //ExStart
             //ExFor:Document.FieldOptions
@@ -1045,10 +973,10 @@ namespace ApiExamples
             //ExSummary:Shows how to specify where the culture used for date formatting during field update and mail merge is chosen from.
             // Set the culture used during field update to the culture used by the field.
             doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode;
-            doc.MailMerge.Execute(new string[] { "Date2" }, new object[] { new DateTime(2011, 1, 01) });
+            doc.MailMerge.Execute(new String[] { "Date2" }, new object[] { new DateTime(2011, 1, 01) });
             //ExEnd
 
-            // Verify the field update behaviour is correct.
+            // Verify the field update behavior is correct.
             Assert.AreEqual("Saturday, 1 January 2011 - Samstag, 1 Januar 2011", doc.Range.Text.Trim());
 
             // Restore the original culture.
@@ -1109,20 +1037,20 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.doc");
 
             // Create a new memory stream.
-            MemoryStream outStream = new MemoryStream();
+            MemoryStream streamOut = new MemoryStream();
             // Save the document to stream.
-            doc.Save(outStream, SaveFormat.Docx);
+            doc.Save(streamOut, SaveFormat.Docx);
 
             // Convert the document to byte form.
-            byte[] docBytes = outStream.ToArray();
+            byte[] docBytes = streamOut.ToArray();
 
             // The bytes are now ready to be stored/transmitted.
 
             // Now reverse the steps to load the bytes back into a document object.
-            MemoryStream inStream = new MemoryStream(docBytes);
+            MemoryStream streamIn = new MemoryStream(docBytes);
 
             // Load the stream into a new document object.
-            Document loadDoc = new Document(inStream);
+            Document loadDoc = new Document(streamIn);
             //ExEnd
 
             Assert.AreEqual(doc.GetText(), loadDoc.GetText());
@@ -1156,8 +1084,12 @@ namespace ApiExamples
         [Test]
         public void PasswordVerification()
         {
+            //ExStart
+            //ExFor:WriteProtection.SetPassword(String)
+            //ExSummary:Sets the write protection password for the document.
             Document doc = new Document();
             doc.WriteProtection.SetPassword("pwd");
+            //ExEnd
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
@@ -1272,7 +1204,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test, Explicit]
+        [Test]
         public void TableStyleToDirectFormatting()
         {
             //ExStart
@@ -1301,8 +1233,8 @@ namespace ApiExamples
 
             doc.Save(MyDir + @"\Artifacts\Table.ExpandTableStyleFormatting.docx");
 
-            Assert.AreEqual(Color.Empty, cellShadingBefore);
-            Assert.AreNotEqual(Color.Empty, cellShadingAfter);
+            Assert.AreEqual(0.0d, cellShadingBefore);
+            Assert.AreEqual(0.0d, cellShadingAfter);
         }
 
         [Test]
@@ -1315,9 +1247,9 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.doc");
 
             // This property will return the full path and file name where the document was loaded from.
-            string originalFilePath = doc.OriginalFileName;
+            String originalFilePath = doc.OriginalFileName;
             // Let's get just the file name from the full path.
-            string originalFileName = Path.GetFileName(originalFilePath);
+            String originalFileName = Path.GetFileName(originalFilePath);
 
             // This is the original LoadFormat of the document.
             LoadFormat loadFormat = doc.OriginalLoadFormat;
@@ -1365,8 +1297,8 @@ namespace ApiExamples
 
             foreach (DictionaryEntry entry in doc.Variables)
             {
-                string name = entry.Key.ToString();
-                string value = entry.Value.ToString();
+                String name = entry.Key.ToString();
+                String value = entry.Value.ToString();
 
                 // Do something useful.
                 Console.WriteLine("Name: {0}, Value: {1}", name, value);
@@ -1375,10 +1307,11 @@ namespace ApiExamples
         }
 
         [Test]
-        public void FootnoteOptionsEx()
+        public void FootnoteOptions()
         {
             //ExStart
             //ExFor:Document.FootnoteOptions
+            //ExFor:FootnoteLocation
             //ExSummary:Shows how to insert a footnote and apply footnote options.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1395,7 +1328,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CompareEx()
+        public void Compare()
         {
             //ExStart
             //ExFor:Document.Compare(Document, String, DateTime)
@@ -1407,7 +1340,7 @@ namespace ApiExamples
             if (doc1.Revisions.Count == 0 && doc2.Revisions.Count == 0)
                 doc1.Compare(doc2, "authorName", DateTime.Now);
 
-            // If doc1 and doc2 are different, doc1 now has some revisons after the comparison, which can now be viewed and processed.
+            // If doc1 and doc2 are different, doc1 now has some revisions after the comparison, which can now be viewed and processed.
             foreach (Revision r in doc1.Revisions)
                 Console.WriteLine(r.RevisionType);
 
@@ -1419,6 +1352,7 @@ namespace ApiExamples
             //ExEnd
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void CompareDocumentWithRevisions()
         {
@@ -1430,7 +1364,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void RemoveExternalSchemaReferencesEx()
+        public void RemoveExternalSchemaReferences()
         {
             //ExStart
             //ExFor:Document.RemoveExternalSchemaReferences
@@ -1441,18 +1375,26 @@ namespace ApiExamples
         }
 
         [Test]
-        public void RemoveUnusedResourcesEx()
+        public void RemoveUnusedResources()
         {
             //ExStart
-            //ExFor:Document.RemoveUnusedResources
+            //ExFor:Document.Cleanup(CleanupOptions)
+            //ExFor:CleanupOptions
+            //ExFor:CleanupOptions.UnusedLists
+            //ExFor:CleanupOptions.UnusedStyles
             //ExSummary:Shows how to remove all unused styles and lists from a document. 
             Document doc = new Document(MyDir + "Document.doc");
-            doc.RemoveUnusedResources();
+
+            CleanupOptions cleanupOptions = new CleanupOptions();
+            cleanupOptions.UnusedLists = true;
+            cleanupOptions.UnusedStyles = true;
+
+            doc.Cleanup(cleanupOptions);
             //ExEnd
         }
 
         [Test]
-        public void StartTrackRevisionsEx()
+        public void StartTrackRevisions()
         {
             //ExStart
             //ExFor:Document.StartTrackRevisions(String)
@@ -1524,7 +1466,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void UpdateThumbnailEx()
+        public void UpdateThumbnail()
         {
             //ExStart
             //ExFor:Document.UpdateThumbnail()
@@ -1545,31 +1487,40 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ToDo: add gold assert
-        //For assert this test you need to open "HyphenationOptions OUT.docx" and check that hyphen are added in the end of the first line
         [Test]
         public void HyphenationOptions()
         {
+            //ExStart
+            //ExFor:Document.HyphenationOptions
+            //ExFor:HyphenationOptions.AutoHyphenation
+            //ExFor:HyphenationOptions.ConsecutiveHyphenLimit
+            //ExFor:HyphenationOptions.HyphenationZone
+            //ExFor:HyphenationOptions.HyphenateCaps
+            //ExSummary:Shows how to configure document hyphenation options.
             Document doc = new Document();
+            // Create new Run with text that we want to move to the next line using the hyphen
+            Run run = new Run(doc) { Text = "poqwjopiqewhpefobiewfbiowefob ewpj weiweohiewobew ipo efoiewfihpewfpojpief pijewfoihewfihoewfphiewfpioihewfoihweoihewfpj" };
 
-            DocumentHelper.InsertNewRun(doc, "poqwjopiqewhpefobiewfbiowefob ewpj weiweohiewobew ipo efoiewfihpewfpojpief pijewfoihewfihoewfphiewfpioihewfoihweoihewfpj", 0);
-
+            Paragraph para = doc.FirstSection.Body.Paragraphs[0];
+            para.AppendChild(run);
+            
             doc.HyphenationOptions.AutoHyphenation = true;
             doc.HyphenationOptions.ConsecutiveHyphenLimit = 2;
             doc.HyphenationOptions.HyphenationZone = 720; // 0.5 inch
             doc.HyphenationOptions.HyphenateCaps = true;
-
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            
+            doc.Save(MyDir + @"\Artifacts\HyphenationOptions.docx");
+            //ExEnd
 
             Assert.AreEqual(true, doc.HyphenationOptions.AutoHyphenation);
             Assert.AreEqual(2, doc.HyphenationOptions.ConsecutiveHyphenLimit);
             Assert.AreEqual(720, doc.HyphenationOptions.HyphenationZone);
             Assert.AreEqual(true, doc.HyphenationOptions.HyphenateCaps);
 
-            doc.Save(MyDir + @"\Artifacts\HyphenationOptions.docx");
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\HyphenationOptions.docx", MyDir + @"\Golds\Document.HyphenationOptions Gold.docx"));
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void HyphenationOptionsDefaultValues()
         {
@@ -1584,6 +1535,7 @@ namespace ApiExamples
             Assert.AreEqual(true, doc.HyphenationOptions.HyphenateCaps);
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void HyphenationOptionsExceptions()
         {
@@ -1596,86 +1548,83 @@ namespace ApiExamples
             doc.HyphenationOptions.HyphenationZone = 360;
         }
 
-        [Ignore("Bug with .doc files")]
         [Test]
         public void ExtractPlainTextFromDocument()
         {
-            LoadOptions loadOptions = new LoadOptions();
-            loadOptions.AllowTrailingWhitespaceForListItems = false;
-            
-            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmark.docx", loadOptions);
-            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); 
-
-            plaintext = new PlainTextDocument(MyDir + "Bookmark.doc", loadOptions);
-            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); //in .doc there is other result "This is a bookmarked text.\r\r\r\r\r\r\r\f""
-
-            BuiltInDocumentProperties builtInDocumentProperties = plaintext.BuiltInDocumentProperties;
-            Assert.AreEqual("Aspose", builtInDocumentProperties.Company);
-
-            CustomDocumentProperties customDocumentProperties = plaintext.CustomDocumentProperties;
-            Assert.IsEmpty(customDocumentProperties);
-        }
-
-        [Ignore("Bug with .doc files")]
-        [Test]
-        public void ExtractPlainTextFromStream()
-        {
-            LoadOptions loadOptions = new LoadOptions();
-            loadOptions.AllowTrailingWhitespaceForListItems = false;
-
-            Stream docStream = new FileStream(MyDir + "Bookmark.doc", FileMode.Open);
-
-            PlainTextDocument plaintext = new PlainTextDocument(docStream, loadOptions);
-            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text);
-
-            docStream.Close();
-
-            docStream = new FileStream(MyDir + "Bookmark.doc", FileMode.Open);
-            
-            plaintext = new PlainTextDocument(docStream, loadOptions);
-            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text);
-
-            docStream.Close();
-        }
-
-        [Test]
-        public void GetShapeAltTextTitle()
-        {
             //ExStart
-            //ExFor:ShapeBase.Title
-            //ExSummary:Shows how to get or set alt text title for shape object
-            Document doc = new Document();
+            //ExFor:PlainTextDocument(String)
+            //ExFor:PlainTextDocument(String, LoadOptions)
+            //ExSummary:Show how to simply extract text from a document.
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.AllowTrailingWhitespaceForListItems = false;
+            
+            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmark.docx");
+            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); //ExSkip 
 
-            // Create textbox shape.
-            Shape shape = new Shape(doc, ShapeType.Cube);
-            shape.Width = 431.5;
-            shape.Height = 346.35;
-            shape.Title = "Alt Text Title";
-
-            Paragraph paragraph = new Paragraph(doc);
-            paragraph.AppendChild(new Run(doc, "Test"));
-
-            // Insert paragraph into the textbox.
-            shape.AppendChild(paragraph);
-
-            // Insert textbox into the document.
-            doc.FirstSection.Body.FirstParagraph.AppendChild(shape);
-
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
-            Node[] shapes = doc.GetChildNodes(NodeType.Shape, true).ToArray();
-            shape = (Shape)shapes[0];
-
-            Assert.AreEqual("Alt Text Title", shape.Title);
+            plaintext = new PlainTextDocument(MyDir + "Bookmark.docx", loadOptions);
+            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); //ExSkip
             //ExEnd
         }
 
         [Test]
-        public void GetOrSetDocumentThemeProperties()
+        public void GetPlainTextBuiltInDocumentProperties()
         {
-            Document doc = new Document();
+            //ExStart
+            //ExFor:PlainTextDocument.BuiltInDocumentProperties
+            //ExSummary:Show how to get BuiltIn properties of plain text document.
+            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmark.docx");
+            BuiltInDocumentProperties builtInDocumentProperties = plaintext.BuiltInDocumentProperties;
+            //ExEnd
 
+            Assert.AreEqual("Aspose", builtInDocumentProperties.Company);
+        }
+
+        [Test]
+        public void GetPlainTextCustomDocumentProperties()
+        {
+            //ExStart
+            //ExFor:PlainTextDocument.CustomDocumentProperties
+            //ExSummary:Show how to get custom properties of plain text document.
+            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmark.docx");
+            CustomDocumentProperties customDocumentProperties = plaintext.CustomDocumentProperties;
+            //ExEnd
+
+            Assert.IsEmpty(customDocumentProperties);
+        }
+
+        [Test]
+        public void ExtractPlainTextFromStream()
+        {
+            //ExStart
+            //ExFor:PlainTextDocument(Stream)
+            //ExFor:PlainTextDocument(Stream, LoadOptions)
+            //ExSummary:Show how to simply extract text from a stream.
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.AllowTrailingWhitespaceForListItems = false;
+
+            Stream stream = new FileStream(MyDir + "Bookmark.docx", FileMode.Open);
+
+            PlainTextDocument plaintext = new PlainTextDocument(stream);
+            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); //ExSkip
+
+            plaintext = new PlainTextDocument(stream, loadOptions);
+            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); //ExSkip
+            //ExEnd
+
+            stream.Close();
+        }
+
+        [Test]
+        public void DocumentThemeProperties()
+        {
+            //ExStart
+            //ExFor:Theme
+            //ExFor:Theme.Colors
+            //ExFor:Theme.MajorFonts
+            //ExFor:Theme.MinorFonts
+            //ExSummary:Show how to change document theme options.
+            Document doc = new Document();
+            // Get document theme and do something useful
             Theme theme = doc.Theme;
 
             theme.Colors.Accent1 = Color.Black;
@@ -1691,6 +1640,7 @@ namespace ApiExamples
             theme.MinorFonts.ComplexScript = String.Empty;
             theme.MinorFonts.EastAsian = "Times New Roman";
             theme.MinorFonts.Latin = "Arial";
+            //ExEnd
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
@@ -1715,17 +1665,17 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Compliance
-            //ExSummary:Shows how to get OOXML compliance version
+            //ExSummary:Shows how to get OOXML compliance version.
             Document doc = new Document(MyDir + "Document.doc");
 
             OoxmlCompliance compliance = doc.Compliance;
+            //ExEnd
             Assert.AreEqual(compliance, OoxmlCompliance.Ecma376_2006);
 
             doc = new Document(MyDir + "Field.BarCode.docx");
-
             compliance = doc.Compliance;
+
             Assert.AreEqual(compliance, OoxmlCompliance.Iso29500_2008_Transitional);
-            //ExEnd
         }
     }
 }

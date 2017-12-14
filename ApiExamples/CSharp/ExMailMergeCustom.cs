@@ -15,25 +15,17 @@ namespace ApiExamples
     [TestFixture]
     public class ExMailMergeCustom : ApiExampleBase
     {
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
         [Test]
-        public void MailMergeCustomDataSourceCaller()
-        {
-            this.MailMergeCustomDataSource();
-        }
-
-        //ExStart
-        //ExFor:IMailMergeDataSource
-        //ExFor:IMailMergeDataSource.TableName
-        //ExFor:IMailMergeDataSource.MoveNext
-        //ExFor:IMailMergeDataSource.GetValue
-        //ExFor:IMailMergeDataSource.GetChildDataSource
-        //ExFor:MailMerge.Execute(IMailMergeDataSource)
-        //ExSummary:Performs mail merge from a custom data source.
         public void MailMergeCustomDataSource()
         {
+            //ExStart
+            //ExFor:IMailMergeDataSource
+            //ExFor:IMailMergeDataSource.TableName
+            //ExFor:IMailMergeDataSource.MoveNext
+            //ExFor:IMailMergeDataSource.GetValue
+            //ExFor:IMailMergeDataSource.GetChildDataSource
+            //ExFor:MailMerge.Execute(IMailMergeDataSource)
+            //ExSummary:Performs mail merge from a custom data source.
             // Create some data that we will use in the mail merge.
             CustomerList customers = new CustomerList();
             customers.Add(new Customer("Thomas Hardy", "120 Hanover Sq., London"));

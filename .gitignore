@@ -29,4 +29,4 @@ Plugins/Aspose_Words_NET_for_PHP/composer.lock
 Plugins/Visual Studio/Aspose.Words.GridViewExport/Resources/
 Plugins/DotNetNuke/Aspose.DNN.ExportUsersAndRolesToWord/Aspose/
 *.gitattributes
-
+.vs

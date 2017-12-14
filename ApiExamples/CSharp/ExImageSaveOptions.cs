@@ -35,7 +35,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ImageSaveOptions.UseGdiEmfRenderer
-            //ExSummary:Shows how to save specific document page as gif.
+            //ExSummary:Shows how to save specific document page as image file.
             Document doc = new Document(MyDir + "SaveOptions.MyraidPro.docx");
 
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Gif);
@@ -50,9 +50,12 @@ namespace ApiExamples
         public void QualityOptions()
         {
             //ExStart
-            //ExFor:ImageSaveOptions.GraphicsQualityOptions
             //ExFor:GraphicsQualityOptions
-            //ExSummary:Shows how to use rendering hints
+            //ExFor:GraphicsQualityOptions.SmoothingMode
+            //ExFor:GraphicsQualityOptions.TextRenderingHint
+            //ExFor:SmoothingMode
+            //ExFor:TextRenderingHint
+            //ExSummary:Shows how to set render quality options. 
             Document doc = new Document(MyDir + "SaveOptions.MyraidPro.docx");
 
             GraphicsQualityOptions qualityOptions = new GraphicsQualityOptions();

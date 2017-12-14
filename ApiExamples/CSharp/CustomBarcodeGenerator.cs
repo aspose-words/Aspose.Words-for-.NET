@@ -14,12 +14,12 @@ namespace ApiExamples
         /// <summary>
         /// Converts barcode type from Word to Aspose.BarCode.
         /// </summary>
-        private static Symbology ConvertBarcodeType(string inputCode)
+        private static Symbology ConvertBarcodeType(String inputCode)
         {
             if (inputCode == null)
                 return (Symbology)int.MinValue;
 
-            string type = inputCode.ToUpper();
+            String type = inputCode.ToUpper();
             Symbology outputCode = (Symbology)int.MinValue;
 
             switch (type)
@@ -60,7 +60,7 @@ namespace ApiExamples
         /// </summary>
         /// <param name="heightInTwipsString"></param>
         /// <returns></returns>
-        private static float ConvertSymbolHeight(string heightInTwipsString)
+        private static float ConvertSymbolHeight(String heightInTwipsString)
         {
             // Input value is in 1/1440 inches (twips)
             int heightInTwips = TryParseInt(heightInTwipsString);
@@ -76,7 +76,7 @@ namespace ApiExamples
         /// </summary>
         /// <param name="inputColor"></param>
         /// <returns></returns>
-        private static Color ConvertColor(string inputColor)
+        private static Color ConvertColor(String inputColor)
         {
             // Input should be from "0x000000" to "0xFFFFFF"
             int color = TryParseHex(inputColor.Replace("0x", ""));
@@ -91,7 +91,7 @@ namespace ApiExamples
         /// </summary>
         /// <param name="scalingFactor"></param>
         /// <returns></returns>
-        private static float ConvertScalingFactor(string scalingFactor)
+        private static float ConvertScalingFactor(String scalingFactor)
         {
             bool isParsed = false;
             int percents = TryParseInt(scalingFactor);
@@ -203,7 +203,7 @@ namespace ApiExamples
         /// Allows leading sign.
         /// Allows leading and trailing spaces.
         /// </summary>
-        public static int TryParseInt(string s)
+        public static int TryParseInt(String s)
         {
             double temp;
             return (Double.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out temp)) ? CastDoubleToInt(temp) : int.MinValue;
@@ -219,10 +219,10 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Try parses a hex string into an integer value.
+        /// Try parses a hex String into an integer value.
         /// on error return int.MinValue
         /// </summary>
-        public static int TryParseHex(string s)
+        public static int TryParseHex(String s)
         {
             int result;
             return int.TryParse(s, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out result) ? result : int.MinValue;

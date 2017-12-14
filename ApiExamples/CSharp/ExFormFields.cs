@@ -97,8 +97,9 @@ namespace ApiExamples
             Assert.IsNull(formFieldAfter);
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
-        public void DeleteFormFieldAssociatedWithTheFormField()
+        public void DeleteFormFieldAssociatedWithBookmark()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

@@ -15,7 +15,6 @@ using Aspose.Words.Fonts;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 using System.IO;
-using Font = Aspose.Words.Font;
 
 namespace ApiExamples
 {
@@ -42,7 +41,7 @@ namespace ApiExamples
             Run run = new Run(doc, "Hello");
 
             // Specify character formatting for the run of text.
-            Font f = run.Font;
+            Aspose.Words.Font f = run.Font;
             f.Name = "Courier New";
             f.Size = 36;
             f.HighlightColor = Color.Yellow;
@@ -79,7 +78,7 @@ namespace ApiExamples
         [Test]
         public void GetDocumentFonts()
         {
-            //ExStart:
+            //ExStart
             //ExFor:FontInfoCollection
             //ExFor:DocumentBase.FontInfos
             //ExFor:FontInfo
@@ -105,26 +104,44 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Ignore("Bug with defaul value")]
+        [Ignore("WORDSNET-16234")]
         [Test]
         public void DefaulValuesEmbeddedFontsParametrs()
         {
             Document doc = new Document();
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
             Assert.IsFalse(doc.FontInfos.EmbedTrueTypeFonts);
-            Assert.IsFalse(doc.FontInfos.EmbedSystemFonts); //Bug: ? this default value is true, not false
+            Assert.IsFalse(doc.FontInfos.EmbedSystemFonts);
             Assert.IsFalse(doc.FontInfos.SaveSubsetFonts);
         }
 
-        //ToDo: Add gold test asserts
         [Test]
-        [TestCase(true, false, false, Description = "Save document with embedded TrueType fonts. System fonts are not included. Saves full versions of embedding fonts.")]
-        [TestCase(true, true, false, Description = "Save document with embedded TrueType fonts. System fonts are included. Saves full versions of embedding fonts.")]
-        [TestCase(true, true, true, Description = "Save document with embedded TrueType fonts. System fonts are included. Saves subset of embedding fonts.")]
-        [TestCase(true, false, true, Description = "Save document with embedded TrueType fonts. System fonts are not included. Saves subset of embedding fonts.")]
+        public void FontInfoCollection()
+        {
+            //ExStart
+            //ExFor:FontInfoCollection
+            //ExFor:DocumentBase.FontInfos
+            //ExFor:FontInfoCollection.EmbedTrueTypeFonts
+            //ExFor:FontInfoCollection.EmbedSystemFonts
+            //ExFor:FontInfoCollection.SaveSubsetFonts
+            //ExSummary:Shows how to save a document with embedded TrueType fonts
+            Document doc = new Document(MyDir + "Document.docx");
+
+            FontInfoCollection fontInfos = doc.FontInfos;
+            fontInfos.EmbedTrueTypeFonts = true;
+            fontInfos.EmbedSystemFonts = false;
+            fontInfos.SaveSubsetFonts = false;
+
+            doc.Save(MyDir + @"/Artifacts/Document.docx");
+            //ExEnd
+        }
+        
+        //This is just a test, no need adding example tags.
+        [Test]
+        [TestCase(true, false, false, Description = "Save a document with embedded TrueType fonts. System fonts are not included. Saves full versions of embedding fonts.")]
+        [TestCase(true, true, false, Description = "Save a document with embedded TrueType fonts. System fonts are included. Saves full versions of embedding fonts.")]
+        [TestCase(true, true, true, Description = "Save a document with embedded TrueType fonts. System fonts are included. Saves subset of embedding fonts.")]
+        [TestCase(true, false, true, Description = "Save a document with embedded TrueType fonts. System fonts are not included. Saves subset of embedding fonts.")]
         [TestCase(false, false, false, Description = "Remove embedded fonts from the saved document.")]
         public void WorkWithEmbeddedFonts(bool embedTrueTypeFonts, bool embedSystemFonts, bool saveSubsetFonts)
         {
@@ -135,7 +152,7 @@ namespace ApiExamples
             fontInfos.EmbedSystemFonts = embedSystemFonts;
             fontInfos.SaveSubsetFonts = saveSubsetFonts;
 
-            doc.Save(MyDir + @"/Artifacts/Document.doc");
+            doc.Save(MyDir + @"/Artifacts/Document.docx");
         }
 
         [Test]
@@ -219,7 +236,7 @@ namespace ApiExamples
             run.Font.Spacing = 1;
             para.AppendChild(run);
 
-            // Add a run of text with with space between characters reduced by 1pt.
+            // Add a run of text with space between characters reduced by 1pt.
             run = new Run(doc, "Condensed by 1pt");
             run.Font.Spacing = -1;
             para.AppendChild(run);
@@ -559,7 +576,7 @@ namespace ApiExamples
             //ExFor:IWarningCallback
             //ExFor:SaveOptions.WarningCallback
             //ExId:FontSubstitutionNotification
-            //ExSummary:Demonstrates how to recieve notifications of font substitutions by using IWarningCallback.
+            //ExSummary:Demonstrates how to receive notifications of font substitutions by using IWarningCallback.
             // Load the document to render.
             Document doc = new Document(MyDir + "Document.doc");
 
@@ -571,7 +588,7 @@ namespace ApiExamples
             FontSettings.DefaultInstance.DefaultFontName = "Arial";
 
             // For testing we will set Aspose.Words to look for fonts only in a folder which doesn't exist. Since Aspose.Words won't
-            // find any fonts in the specified directory, then during rendering the fonts in the document will be subsuited with the default 
+            // find any fonts in the specified directory, then during rendering the fonts in the document will be substituted with the default 
             // font specified under FontSettings.DefaultFontName. We can pick up on this substitution using our callback.
             FontSettings.DefaultInstance.SetFontsFolder(String.Empty, false);
 
@@ -596,7 +613,7 @@ namespace ApiExamples
         {
             /// <summary>
             /// Our callback only needs to implement the "Warning" method. This method is called whenever there is a
-            /// potential issue during document procssing. The callback can be set to listen for warnings generated during document
+            /// potential issue during document processing. The callback can be set to listen for warnings generated during document
             /// load and/or document save.
             /// </summary>
             public void Warning(WarningInfo info)
@@ -613,6 +630,7 @@ namespace ApiExamples
         }
         //ExEnd
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void FontSubstitutionWarnings()
         {
@@ -624,7 +642,7 @@ namespace ApiExamples
 
             FontSettings fontSettings = new FontSettings();
             fontSettings.DefaultFontName = "Arial";
-            fontSettings.SetFontSubstitutes("Arial", new string[] { "Arvo", "Slab" });
+            fontSettings.SetFontSubstitutes("Arial", new String[] { "Arvo", "Slab" });
             fontSettings.SetFontsFolder(MyDir + @"MyFonts\", false);
 
             doc.FontSettings = fontSettings;
@@ -635,6 +653,7 @@ namespace ApiExamples
             Assert.True(callback.mFontWarnings[1].Description.Equals("Font 'Times New Roman' has not been found. Using 'Noticia Text' font instead. Reason: closest match according to font info from the document."));
         }
 
+        //This is just a test, no need adding example tags.
         [Test]
         public void FontSubstitutionWarningsClosestMatch()
         {
@@ -647,15 +666,6 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Font.DisapearingBulletPoints.pdf");
 
             Assert.True(callback.mFontWarnings[0].Description.Equals("Font 'SymbolPS' has not been found. Using 'Wingdings' font instead. Reason: closest match according to font info from the document."));
-        }
-
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
-        [Test]
-        public void RemoveHiddenContentCaller()
-        {
-            RemoveHiddenContentFromDocument();
         }
 
         [Test]
@@ -679,26 +689,28 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExStart
-        //ExFor:Font.Hidden
-        //ExFor:Paragraph.Accept
-        //ExFor:DocumentVisitor.VisitParagraphStart(Aspose.Words.Paragraph)
-        //ExFor:DocumentVisitor.VisitFormField(Aspose.Words.Fields.FormField)
-        //ExFor:DocumentVisitor.VisitTableEnd(Aspose.Words.Tables.Table)
-        //ExFor:DocumentVisitor.VisitCellEnd(Aspose.Words.Tables.Cell)
-        //ExFor:DocumentVisitor.VisitRowEnd(Aspose.Words.Tables.Row)
-        //ExFor:DocumentVisitor.VisitSpecialChar(Aspose.Words.SpecialChar)
-        //ExFor:DocumentVisitor.VisitGroupShapeStart(Aspose.Words.Drawing.GroupShape)
-        //ExFor:DocumentVisitor.VisitShapeStart(Aspose.Words.Drawing.Shape)
-        //ExFor:DocumentVisitor.VisitCommentStart(Aspose.Words.Comment)
-        //ExFor:DocumentVisitor.VisitFootnoteStart(Aspose.Words.Footnote)
-        //ExFor:SpecialChar
-        //ExFor:Node.Accept
-        //ExFor:Paragraph.ParagraphBreakFont
-        //ExFor:Table.Accept
-        //ExSummary:Implements the Visitor Pattern to remove all content formatted as hidden from the document.
+        
+        [Test]
         public void RemoveHiddenContentFromDocument()
         {
+            //ExStart
+            //ExFor:Font.Hidden
+            //ExFor:Paragraph.Accept
+            //ExFor:DocumentVisitor.VisitParagraphStart(Aspose.Words.Paragraph)
+            //ExFor:DocumentVisitor.VisitFormField(Aspose.Words.Fields.FormField)
+            //ExFor:DocumentVisitor.VisitTableEnd(Aspose.Words.Tables.Table)
+            //ExFor:DocumentVisitor.VisitCellEnd(Aspose.Words.Tables.Cell)
+            //ExFor:DocumentVisitor.VisitRowEnd(Aspose.Words.Tables.Row)
+            //ExFor:DocumentVisitor.VisitSpecialChar(Aspose.Words.SpecialChar)
+            //ExFor:DocumentVisitor.VisitGroupShapeStart(Aspose.Words.Drawing.GroupShape)
+            //ExFor:DocumentVisitor.VisitShapeStart(Aspose.Words.Drawing.Shape)
+            //ExFor:DocumentVisitor.VisitCommentStart(Aspose.Words.Comment)
+            //ExFor:DocumentVisitor.VisitFootnoteStart(Aspose.Words.Footnote)
+            //ExFor:SpecialChar
+            //ExFor:Node.Accept
+            //ExFor:Paragraph.ParagraphBreakFont
+            //ExFor:Table.Accept
+            //ExSummary:Implements the Visitor Pattern to remove all content formatted as hidden from the document.
             // Open the document we want to remove hidden content from.
             Document doc = new Document(MyDir + "Font.Hidden.doc");
 
@@ -852,7 +864,7 @@ namespace ApiExamples
                 // hidden and thus removed by previous visits as well. This will result in the container being empty
                 // so if this is the case we know to remove the table node.
                 //
-                // Note that a table which is not hidden but simply has no content will not be affected by this algorthim,
+                // Note that a table which is not hidden but simply has no content will not be affected by this algorithm,
                 // as technically they are not completely empty (for example a properly formed Cell will have at least 
                 // an empty paragraph in it)
                 if (!table.HasChildNodes)

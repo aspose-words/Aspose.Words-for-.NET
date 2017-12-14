@@ -24,11 +24,11 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "TestRepeatingSection.docx");
             NodeCollection sdts = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
 
-            //Assert that the node have sdttype - RepeatingSection and it's not detected as RichText
+            //Assert that the node have SDTType - RepeatingSection and it's not detected as RichText
             StructuredDocumentTag sdt = (StructuredDocumentTag)sdts[0];
             Assert.AreEqual(SdtType.RepeatingSection, sdt.SdtType);
 
-            //Assert that the node have sdttype - RichText 
+            //Assert that the node have SDTType - RichText 
             sdt = (StructuredDocumentTag)sdts[1];
             Assert.AreNotEqual(SdtType.RepeatingSection, sdt.SdtType);
         }

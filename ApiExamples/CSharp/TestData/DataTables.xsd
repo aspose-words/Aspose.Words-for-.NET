@@ -32,11 +32,11 @@
             <xs:sequence>
               <xs:element name="Id" msprop:Generator_ColumnVarNameInTable="columnId"
                           msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn"
-                          msprop:Generator_UserColumnName="Id" type="xs:string" />
+                          msprop:Generator_UserColumnName="Id" type="xs:String" />
               <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName"
                           msprop:Generator_ColumnPropNameInRow="Name"
                           msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name"
-                          type="xs:string" minOccurs="0" />
+                          type="xs:String" minOccurs="0" />
               <xs:element name="Age" msprop:Generator_ColumnVarNameInTable="columnAge"
                           msprop:Generator_ColumnPropNameInRow="Age" msprop:Generator_ColumnPropNameInTable="AgeColumn"
                           msprop:Generator_UserColumnName="Age" type="xs:int" minOccurs="0" />
@@ -67,15 +67,15 @@
                     <xs:element name="Id" msprop:Generator_ColumnVarNameInTable="columnId"
                                 msprop:Generator_ColumnPropNameInRow="Id"
                                 msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id"
-                                type="xs:string" />
+                                type="xs:String" />
                     <xs:element name="ClientId" msprop:Generator_ColumnVarNameInTable="columnClientId"
                                 msprop:Generator_ColumnPropNameInRow="ClientId"
                                 msprop:Generator_ColumnPropNameInTable="ClientIdColumn"
-                                msprop:Generator_UserColumnName="ClientId" type="xs:string" minOccurs="0" />
+                                msprop:Generator_UserColumnName="ClientId" type="xs:String" minOccurs="0" />
                     <xs:element name="ManagerId" msprop:Generator_ColumnVarNameInTable="columnManagerId"
                                 msprop:Generator_ColumnPropNameInRow="ManagerId"
                                 msprop:Generator_ColumnPropNameInTable="ManagerIdColumn"
-                                msprop:Generator_UserColumnName="ManagerId" type="xs:string" minOccurs="0" />
+                                msprop:Generator_UserColumnName="ManagerId" type="xs:String" minOccurs="0" />
                     <xs:element name="Price" msprop:nullValue="_throw" msprop:Generator_ColumnPropNameInRow="Price"
                                 msprop:Generator_ColumnVarNameInTable="columnPrice"
                                 msprop:Generator_ColumnPropNameInTable="PriceColumn"
@@ -98,11 +98,11 @@
             <xs:sequence>
               <xs:element name="Id" msprop:Generator_ColumnVarNameInTable="columnId"
                           msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn"
-                          msprop:Generator_UserColumnName="Id" type="xs:string" />
+                          msprop:Generator_UserColumnName="Id" type="xs:String" />
               <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName"
                           msprop:Generator_ColumnPropNameInRow="Name"
                           msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name"
-                          type="xs:string" minOccurs="0" />
+                          type="xs:String" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

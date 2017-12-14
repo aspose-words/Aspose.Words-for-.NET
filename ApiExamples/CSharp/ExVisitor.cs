@@ -16,35 +16,27 @@ namespace ApiExamples
     [TestFixture]
     public class ExVisitor : ApiExampleBase
     {
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
         [Test]
-        public void ToTextCaller()
-        {
-            this.ToText();
-        }
-
-        //ExStart
-        //ExFor:Document.Accept
-        //ExFor:Body.Accept
-        //ExFor:DocumentVisitor
-        //ExFor:DocumentVisitor.VisitAbsolutePositionTab
-        //ExFor:DocumentVisitor.VisitBookmarkStart 
-        //ExFor:DocumentVisitor.VisitBookmarkEnd
-        //ExFor:DocumentVisitor.VisitRun
-        //ExFor:DocumentVisitor.VisitFieldStart
-        //ExFor:DocumentVisitor.VisitFieldEnd
-        //ExFor:DocumentVisitor.VisitFieldSeparator
-        //ExFor:DocumentVisitor.VisitBodyStart
-        //ExFor:DocumentVisitor.VisitBodyEnd
-        //ExFor:DocumentVisitor.VisitParagraphEnd
-        //ExFor:DocumentVisitor.VisitHeaderFooterStart
-        //ExFor:VisitorAction
-        //ExId:ExtractContentDocToTxtConverter
-        //ExSummary:Shows how to use the Visitor pattern to add new operations to the Aspose.Words object model. In this case we create a simple document converter into a text format.
         public void ToText()
         {
+            //ExStart
+            //ExFor:Document.Accept
+            //ExFor:Body.Accept
+            //ExFor:DocumentVisitor
+            //ExFor:DocumentVisitor.VisitAbsolutePositionTab
+            //ExFor:DocumentVisitor.VisitBookmarkStart 
+            //ExFor:DocumentVisitor.VisitBookmarkEnd
+            //ExFor:DocumentVisitor.VisitRun
+            //ExFor:DocumentVisitor.VisitFieldStart
+            //ExFor:DocumentVisitor.VisitFieldEnd
+            //ExFor:DocumentVisitor.VisitFieldSeparator
+            //ExFor:DocumentVisitor.VisitBodyStart
+            //ExFor:DocumentVisitor.VisitBodyEnd
+            //ExFor:DocumentVisitor.VisitParagraphEnd
+            //ExFor:DocumentVisitor.VisitHeaderFooterStart
+            //ExFor:VisitorAction
+            //ExId:ExtractContentDocToTxtConverter
+            //ExSummary:Shows how to use the Visitor pattern to add new operations to the Aspose.Words object model. In this case we create a simple document converter into a text format.
             // Open the document we want to convert.
             Document doc = new Document(MyDir + "Visitor.ToText.doc");
 
@@ -78,7 +70,7 @@ namespace ApiExamples
             /// <summary>
             /// Gets the plain text of the document that was accumulated by the visitor.
             /// </summary>
-            public string GetText()
+            public String GetText()
             {
                 return this.mBuilder.ToString();
             }
@@ -202,7 +194,7 @@ namespace ApiExamples
             /// <summary>
             /// Adds text to the current output. Honours the enabled/disabled output flag.
             /// </summary>
-            private void AppendText(string text)
+            private void AppendText(String text)
             {
                 if (!this.mIsSkipText)
                     this.mBuilder.Append(text);

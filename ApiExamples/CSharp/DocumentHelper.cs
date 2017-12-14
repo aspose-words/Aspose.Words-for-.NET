@@ -73,7 +73,7 @@ namespace ApiExamples
             return doc;
         }
 
-        internal static void FindTextInFile(string path, string expression)
+        internal static void FindTextInFile(String path, String expression)
         {
             using (var sr = new StreamReader(path))
             {
@@ -99,7 +99,7 @@ namespace ApiExamples
         /// <summary>
         /// Create new document template for reporting engine
         /// </summary>
-        internal static Document CreateSimpleDocument(string templateText)
+        internal static Document CreateSimpleDocument(String templateText)
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -112,7 +112,7 @@ namespace ApiExamples
         /// <summary>
         /// Create new document with textbox shape and some query
         /// </summary>
-        internal static Document CreateTemplateDocumentWithDrawObjects(string templateText, ShapeType shapeType)
+        internal static Document CreateTemplateDocumentWithDrawObjects(String templateText, ShapeType shapeType)
         {
             Document doc = new Document();
 
@@ -200,7 +200,7 @@ namespace ApiExamples
         /// <param name="filePathDoc1">Frist document path</param>
         /// <param name="filePathDoc2">Second document path</param>
         /// <returns>Result of compare document</returns>
-        internal static bool CompareDocs(string filePathDoc1, string filePathDoc2)
+        internal static bool CompareDocs(String filePathDoc1, String filePathDoc2)
         {
             Document doc1 = new Document(filePathDoc1);
             Document doc2 = new Document(filePathDoc2);
@@ -219,7 +219,7 @@ namespace ApiExamples
         /// <param name="doc">Current document</param>
         /// <param name="text">Custom text</param>
         /// <param name="paraIndex">Paragraph index</param>
-        internal static Run InsertNewRun(Document doc, string text, int paraIndex)
+        internal static Run InsertNewRun(Document doc, String text, int paraIndex)
         {
             Paragraph para = GetParagraph(doc, paraIndex);
 
@@ -235,9 +235,9 @@ namespace ApiExamples
         /// </summary>
         /// <param name="builder">Current document builder</param>
         /// <param name="textStrings">Custom text</param>
-        internal static void InsertBuilderText(DocumentBuilder builder, string[] textStrings)
+        internal static void InsertBuilderText(DocumentBuilder builder, String[] textStrings)
         {
-            foreach (string textString in textStrings)
+            foreach (String textString in textStrings)
             {
                 builder.Writeln(textString);
             }
@@ -252,7 +252,7 @@ namespace ApiExamples
         /// <param name="paraIndex">
         /// Paragraph number from collection
         /// </param>
-        internal static string GetSectionText(Document doc, int secIndex)
+        internal static String GetSectionText(Document doc, int secIndex)
         {
             return doc.Sections[secIndex].GetText();
         }
@@ -268,7 +268,7 @@ namespace ApiExamples
         /// </param>
         /// <param name="doc">Current document</param>
         /// <param name="paraIndex">Paragraph number from collection</param>
-        internal static string GetParagraphText(Document doc, int paraIndex)
+        internal static String GetParagraphText(Document doc, int paraIndex)
         {
             return doc.FirstSection.Body.Paragraphs[paraIndex].GetText();
         }

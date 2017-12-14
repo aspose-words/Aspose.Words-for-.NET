@@ -115,6 +115,20 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\SwfSaveOptions.CustomLogo.swf", options);
         }
 
+        public void SetRenderingMode()
+        {
+            //ExStart
+            //ExFor:MetafileRenderingMode
+            //ExFor:MetafileRenderingOptions.RenderingMode
+            //ExSummary:Defines how metafile images should be rendered
+            Document doc = new Document();
+
+            SwfSaveOptions saveOptions = new SwfSaveOptions();
+            saveOptions.MetafileRenderingOptions.RenderingMode = MetafileRenderingMode.VectorWithFallback;
+            //ExEnd
+        }
+
+        //This is just a test, no need adding example tags.
         [Test]
         [TestCase(MetafileRenderingMode.Bitmap)]
         [TestCase(MetafileRenderingMode.Vector)]

@@ -37,7 +37,6 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\HeaderFooter.CreateFooter.doc");
             //ExEnd
 
-            doc = new Document(MyDir + @"\Artifacts\HeaderFooter.CreateFooter.doc");
             Assert.True(doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].Range.Text.Contains("TEST FOOTER"));
         }
 
@@ -128,20 +127,12 @@ namespace ApiExamples
             Assert.IsTrue(doc.Range.Text.Contains("Copyright (C) 2011 by Aspose Pty Ltd."));
         }
 
-        /// <summary>
-        /// This calls the below method to resolve skipping of [Test] in VB.NET.
-        /// </summary>
         [Test]
-        public void HeaderFooterPrimerCaller()
-        {
-            this.Primer();
-        }
-
-        //ExStart
-        //ExId:HeaderFooterPrimer
-        //ExSummary:Maybe a bit complicated example, but demonstrates many things that can be done with headers/footers.
         public void Primer()
         {
+            //ExStart
+            //ExId:HeaderFooterPrimer
+            //ExSummary:Maybe a bit complicated example, but demonstrates many things that can be done with headers/footers.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -171,7 +162,7 @@ namespace ApiExamples
 
             // Insert absolutely positioned image into the top/left corner of the header.
             // Distance from the top/left edges of the page is set to 10 points.
-            string imageFileName = MyDir + @"\Images\Aspose.Words.gif";
+            string imageFileName = ImageDir + "Aspose.Words.gif";
             builder.InsertImage(imageFileName, RelativeHorizontalPosition.Page, 10, RelativeVerticalPosition.Page, 10, 50, 50, WrapType.Through);
 
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Right;
