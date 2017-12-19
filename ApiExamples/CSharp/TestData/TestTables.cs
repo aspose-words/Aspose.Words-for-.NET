@@ -1,12 +1,9 @@
-﻿using System;
-
-namespace ApiExamples.TestData
+﻿namespace ApiExamples.TestData
 {
-    internal static class DataTables
+    partial class DataSet
     {
-        internal static DataSet AddClientsTestData()
+        internal static DataSet AddTestData()
         {
-            Random rnd = new Random();
             DataSet ds = new DataSet();
 
             int age = 30;
@@ -29,8 +26,8 @@ namespace ApiExamples.TestData
 
             for (int i = 1; i <= 3; i++)
             {
-               ds.Managers.Rows.Add(i, "Name " + i, age);
-               age = age + 1;
+                ds.Managers.Rows.Add(i, "Name " + i, age);
+                age = age + 1;
             }
 
             return ds;

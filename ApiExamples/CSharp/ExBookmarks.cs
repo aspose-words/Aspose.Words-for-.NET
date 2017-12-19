@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -105,6 +105,7 @@ namespace ApiExamples
             //ExFor:BookmarkCollection.RemoveAt
             //ExSummary:Demonstrates different methods of removing bookmarks from a document.
             Document doc = new Document(MyDir + "Bookmarks.doc");
+
             // Remove a particular bookmark from the document.
             Aspose.Words.Bookmark bookmark = doc.Range.Bookmarks[0];
             doc.Range.Bookmarks.Remove(bookmark);
@@ -180,7 +181,7 @@ namespace ApiExamples
         public void ReplaceBookmarkUnderscoresWithWhitespaces()
         {
             //ExStart
-            //ExFor:Bookmark.Name.Replace(String, String)
+            //ExFor:Bookmark.Name
             //ExSummary:Shows how to replace elements in bookmark name
             Document doc = new Document(MyDir + "Bookmarks.Replace.docx");
 

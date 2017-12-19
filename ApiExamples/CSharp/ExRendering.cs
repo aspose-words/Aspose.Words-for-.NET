@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -446,8 +446,10 @@ namespace ApiExamples
 
             // Create the Aspose.Words' implementation of the .NET print document 
             // and pass the printer settings from the dialog to the print document.
+            // Use 'CachePrinterSettings' to reduce time of first call of Print() method.
             AsposeWordsPrintDocument awPrintDoc = new AsposeWordsPrintDocument(doc);
             awPrintDoc.PrinterSettings = printDlg.PrinterSettings;
+            awPrintDoc.CachePrinterSettings();
 
             // Hide and invalidate preview is a hack for print preview to show on top.
             previewDlg.Hide();
@@ -892,7 +894,6 @@ namespace ApiExamples
             Assert.AreEqual(new String[] { "Slab", "Arvo" }, alternativeFonts);
         }
         
-        //This is just a test, no need adding example tags.
         [Test]
         public void SetSpecifyFontFolders()
         {
@@ -913,7 +914,6 @@ namespace ApiExamples
             Assert.True(folderSource.ScanSubfolders);
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void AddFontSubstitutes()
         {

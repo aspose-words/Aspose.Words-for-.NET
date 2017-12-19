@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections;
 using System.Drawing;
 using System.IO;
 using Aspose.Words;
@@ -133,7 +134,7 @@ namespace ApiExamples
             // When field codes are not showing.
             Console.WriteLine("FieldResult: {0}", dateField.Result);
 
-            // Display the field code which defines the behaviour of the field. This can been seen in Microsoft Word by pressing ALT+F9.
+            // Display the field code which defines the behavior of the field. This can been seen in Microsoft Word by pressing ALT+F9.
             Console.WriteLine("FieldCode: {0}", dateField.GetFieldCode());
 
             // The field type defines what type of field in the Document this is. In this case the type is "FieldDate" 
@@ -145,9 +146,29 @@ namespace ApiExamples
         }
 
         [Test]
+        public void FieldLocale()
+        {
+            //ExStart
+            //ExFor:Field.LocaleId
+            //ExSummary: Get or sets locale for fields
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Field field = builder.InsertField(@"DATE \* MERGEFORMAT");
+            field.LocaleId = 2064;
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            Field newField = doc.Range.Fields[0];
+            Assert.AreEqual(2064, newField.LocaleId);
+            //ExEnd
+        }
+
+        [Test]
         [TestCase(true)]
         [TestCase(false)]
-        public void GetFieldCode(bool nestedFields)
+        public void GetFieldCode(bool containsNestedFields)
         {
             //ExStart
             //ExFor:Field.GetFieldCode
@@ -164,7 +185,7 @@ namespace ApiExamples
                     string fieldCode = fieldIf.GetFieldCode();
                     Assert.AreEqual(" IF  MERGEFIELD Q223  > 0 \" (and additionally London Weighting of   MERGEFIELD  Q223 \\f £  per hour) \" \"\" ", fieldCode);//ExSkip
 
-                    if (nestedFields)
+                    if (containsNestedFields)
                     {
                         fieldCode = fieldIf.GetFieldCode(true);
                         Assert.AreEqual(" IF  MERGEFIELD Q223  > 0 \" (and additionally London Weighting of   MERGEFIELD  Q223 \\f £  per hour) \" \"\" ", fieldCode);//ExSkip
@@ -289,7 +310,7 @@ namespace ApiExamples
             shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
             shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
 
-            // Calculate image left and top position so it appears in the centre of the page.
+            // Calculate image left and top position so it appears in the center of the page.
             shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
             shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
 
@@ -331,8 +352,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ToDo: Add gold asserts
-        //For assert this test you need to open "MathML.docx" and "MathML.pdf" and check, that mathml code are render as "a 1 + b 1"
         [Test]
         public void InsertMathMl()
         {
@@ -347,8 +366,11 @@ namespace ApiExamples
             builder.InsertHtml(mathMl);
             //ExEnd
 
-            doc.Save(MyDir + @"\Artifacts\MathML.docx");
-            doc.Save(MyDir + @"\Artifacts\MathML.pdf");
+            doc.Save(MyDir + @"\Artifacts\MathML Out.docx");
+            doc.Save(MyDir + @"\Artifacts\MathML Out.pdf");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Golds\MathML Gold.docx", MyDir + @"\Artifacts\MathML Out.docx"));
+            DocumentHelper.ComparePdf(MyDir + @"\Golds\MathML Gold.pdf", MyDir + @"\Artifacts\MathML Out.pdf");
         }
 
         [Test]
@@ -397,21 +419,19 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Ignore("WORDSNET-16190")]
         [Test]
+        [Ignore("WORDSNET-16190")]
         public void InsertCheckBox()
         {
             //ExStart
-            //ExFor:DocumentBuilder.InsertCheckBox(String, bool, bool, int)
+            //ExFor:DocumentBuilder.InsertCheckBox(string, bool, bool, int)
             //ExFor:DocumentBuilder.InsertCheckBox(String, bool, int)
             //ExSummary:Shows how to insert checkboxes to the document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
             builder.InsertCheckBox(String.Empty, false, false, 0);
-
             builder.InsertCheckBox("CheckBox_DefaultAndCheckedValue", true, true, 50);
-
             builder.InsertCheckBox("CheckBox_OnlyCheckedValue", true, 100);
             //ExEnd
 
@@ -446,7 +466,6 @@ namespace ApiExamples
             Assert.AreEqual(100, formFields[2].CheckBoxSize);
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void InsertCheckBoxEmptyName()
         {
@@ -480,7 +499,7 @@ namespace ApiExamples
             FindReplaceOptions options = new FindReplaceOptions();
             options.MatchCase = false;
             options.FindWholeWordsOnly = true;
-
+            
             // Move to a particular paragraph's run and replace all occurrences of "bad" with "good" within this run.
             builder.MoveTo(doc.LastSection.Body.Paragraphs[0].Runs[0]);
             builder.CurrentNode.Range.Replace("bad", "good", options);
@@ -538,16 +557,12 @@ namespace ApiExamples
             //ExSummary:Demonstrates how to insert a Table of contents (TOC) into a document using heading styles as entries.
             // Use a blank document
             Document doc = new Document();
-
             // Create a document builder to insert content with into document.
             DocumentBuilder builder = new DocumentBuilder(doc);
-
             // Insert a table of contents at the beginning of the document.
             builder.InsertTableOfContents("\\o \"1-3\" \\h \\z \\u");
-
             // Start the actual document content on the second page.
             builder.InsertBreak(BreakType.PageBreak);
-
             // Build a document with complex structure by applying different heading styles thus creating TOC entries.
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
 
@@ -621,7 +636,7 @@ namespace ApiExamples
             builder.CellFormat.Width = 300;
             builder.CellFormat.VerticalAlignment = CellVerticalAlignment.Center;
             builder.CellFormat.Shading.BackgroundPatternColor = Color.GreenYellow;
-
+            
             builder.RowFormat.HeightRule = HeightRule.Exactly;
             builder.RowFormat.Height = 50;
             builder.RowFormat.Borders.LineStyle = LineStyle.Engrave3D;
@@ -1326,6 +1341,8 @@ namespace ApiExamples
             //ExFor:ParagraphFormat.FirstLineIndent
             //ExFor:ParagraphFormat.Alignment
             //ExFor:ParagraphFormat.KeepTogether
+            //ExFor:ParagraphFormat.AddSpaceBetweenFarEastAndAlpha
+            //ExFor:ParagraphFormat.AddSpaceBetweenFarEastAndDigit
             //ExId:DocumentBuilderInsertParagraph
             //ExSummary:Shows how to insert a paragraph into the document.
             Document doc = new Document();
@@ -1343,6 +1360,8 @@ namespace ApiExamples
             ParagraphFormat paragraphFormat = builder.ParagraphFormat;
             paragraphFormat.FirstLineIndent = 8;
             paragraphFormat.Alignment = ParagraphAlignment.Justify;
+            paragraphFormat.AddSpaceBetweenFarEastAndAlpha = true;
+            paragraphFormat.AddSpaceBetweenFarEastAndDigit = true;
             paragraphFormat.KeepTogether = true;
 
             builder.Writeln("A whole paragraph.");
@@ -1411,7 +1430,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void TableCellVerticalRotatedFarEastTextOrientation()
         {
@@ -1576,13 +1594,55 @@ namespace ApiExamples
         }
 
         [Test]
+        public void CreateAndSignSignatureLineUsingProviderId()
+        {
+            //ExStart
+            //ExFor:SignatureLine.ProviderId
+            //ExFor:SignatureLineOptions.ShowDate
+            //ExFor:SignatureLineOptions.Email
+            //ExFor:SignatureLineOptions.DefaultInstructions
+            //ExFor:SignatureLineOptions.Instructions
+            //ExFor:SignatureLineOptions.AllowComments
+            //ExFor:DocumentBuilder.InsertSignatureLine(SignatureLineOptions)
+            //ExFor:SignOptions.ProviderId
+            //ExSummary:Shows how to sign document with personal certificate and specific signatire line.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            SignatureLineOptions signatureLineOptions = new SignatureLineOptions();
+            signatureLineOptions.Signer = "vderyushev";
+            signatureLineOptions.SignerTitle = "QA";
+            signatureLineOptions.Email = "vderyushev@aspose.com";
+            signatureLineOptions.ShowDate = true;
+            signatureLineOptions.DefaultInstructions = false;
+            signatureLineOptions.Instructions = "You need more info about signature line";
+            signatureLineOptions.AllowComments = true;
+
+            SignatureLine signatureLine = builder.InsertSignatureLine(signatureLineOptions).SignatureLine;
+            signatureLine.ProviderId = Guid.Parse("CF5A7BB4-8F3C-4756-9DF6-BEF7F13259A2");
+            
+            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.SignatureLineProviderId In.docx");
+
+            SignOptions signOptions = new SignOptions();
+            signOptions.SignatureLineId = signatureLine.Id;
+            signOptions.ProviderId = signatureLine.ProviderId;
+            signOptions.Comments = "Document was signed by vderyushev";
+            signOptions.SignTime = DateTime.Now;
+            
+            CertificateHolder certHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+
+            DigitalSignatureUtil.Sign(MyDir + @"\Artifacts\DocumentBuilder.SignatureLineProviderId In.docx", MyDir + @"\Artifacts\DocumentBuilder.SignatureLineProviderId Out.docx", certHolder, signOptions);
+            //ExEnd
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\DocumentBuilder.SignatureLineProviderId Out.docx", MyDir + @"\Golds\DocumentBuilder.SignatureLineProviderId Gold.docx"));
+        }
+
+        [Test]
         public void InsertSignatureLineCurrentPozition()
         {
             //ExStart
-            //ExFor:SignatureLine
-            //ExFor:SignatureLineOptions
-            //ExFor:DocumentBuilder.InsertSignatureLine(SignatureLineOptions)
-            //ExSummary:Shows how to insert signature line and get signature line properties
+            //ExFor:DocumentBuilder.InsertSignatureLine(SignatureLineOptions, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, WrapType)
+            //ExSummary:Shows how to insert signature line at the specified position.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1595,13 +1655,14 @@ namespace ApiExamples
             options.Instructions = "You need more info about signature line";
             options.AllowComments = true;
 
-            builder.InsertSignatureLine(options);
             builder.InsertSignatureLine(options, RelativeHorizontalPosition.RightMargin, 2.0, RelativeVerticalPosition.Page, 3.0, WrapType.Inline);
+            //ExEnd
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
             SignatureLine signatureLine = shape.SignatureLine;
 
             Assert.AreEqual("John Doe", signatureLine.Signer);
@@ -1613,14 +1674,6 @@ namespace ApiExamples
             Assert.AreEqual(true, signatureLine.AllowComments);
             Assert.AreEqual(false, signatureLine.IsSigned);
             Assert.AreEqual(false, signatureLine.IsValid);
-            //ExEnd
-
-            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
-            Assert.AreEqual(RelativeHorizontalPosition.RightMargin, shape.RelativeHorizontalPosition);
-            Assert.AreEqual(2.0, shape.Left);
-            Assert.AreEqual(RelativeVerticalPosition.Page, shape.RelativeVerticalPosition);
-            Assert.AreEqual(3.0, shape.Top);
-            Assert.AreEqual(WrapType.Inline, shape.WrapType);
         }
 
         [Test]
@@ -1799,21 +1852,31 @@ namespace ApiExamples
         public void InsertFootnote()
         {
             //ExStart
-            //ExFor:Footnote
             //ExFor:FootnoteType
             //ExFor:DocumentBuilder.InsertFootnote(FootnoteType,String)
             //ExFor:DocumentBuilder.InsertFootnote(FootnoteType,String,String)
             //ExSummary:Shows how to add a footnote to a paragraph in the document using DocumentBuilder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Write("Some text");
 
-            builder.InsertFootnote(FootnoteType.Footnote, "Footnote text.");
-            builder.InsertFootnote(FootnoteType.Footnote, "Footnote text.", "242");
+            for (int i = 0; i <= 100; i++)
+            {
+                builder.Write("Some text " + i);
+
+                builder.InsertFootnote(FootnoteType.Footnote, "Footnote text " + i);
+                builder.InsertFootnote(FootnoteType.Footnote, "Footnote text " + i, "242");
+            }
             //ExEnd
 
-            Assert.AreEqual("Footnote text.", doc.GetChildNodes(NodeType.Footnote, true)[0].ToString(SaveFormat.Text).Trim());
-            Assert.AreEqual("242 Footnote text.", doc.GetChildNodes(NodeType.Footnote, true)[1].ToString(SaveFormat.Text).Trim());
+            Assert.AreEqual("Footnote text 0", doc.GetChildNodes(NodeType.Footnote, true)[0].ToString(SaveFormat.Text).Trim());
+
+            doc.FootnoteOptions.NumberStyle = NumberStyle.Arabic;
+            doc.FootnoteOptions.StartNumber = 1;
+            doc.FootnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
+
+            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertFootnote.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\DocumentBuilder.InsertFootnote.docx", MyDir + @"\Golds\DocumentBuilder.InsertFootnote Gold.docx"));
         }
 
         [Test]
@@ -1926,15 +1989,12 @@ namespace ApiExamples
             Image representingImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
 
             Shape oleObject = builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage);
-            Shape oleObjectProgId = builder.InsertOleObject("http://www.aspose.com", "htmlfile", true, true, null);
-
-            // Double click on the image in the .doc to see the spreadsheet.
-            // Double click on the icon in the .doc to see the html.
-            doc.Save(MyDir + @"\Artifacts\Document.InsertedOleObject.doc");
+            Shape oleObjectWithProgId = builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false, representingImage);
+            
+            doc.Save(MyDir + @"\Artifacts\Document.InsertedOleObject.docx");
             //ExEnd
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void InsertOleObjectException()
         {
@@ -1945,7 +2005,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertChartDoubleEx()
+        public void InsertChartDouble()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertChart(ChartType, Double, Double)
@@ -1959,62 +2019,12 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //This is just a test, no need adding example tags.
-        [Test]
-        public void DataArraysWrongSize()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Add chart with default data.
-            Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
-            Chart chart = shape.Chart;
-
-            ChartSeriesCollection seriesColl = chart.Series;
-            seriesColl.Clear();
-
-            // Create category names array, second category will be null.
-            String[] categories = new String[] { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
-
-            // Adding new series with empty (double.NaN) values.
-            seriesColl.Add("AW Series 1", categories, new double[] { 1, 2, double.NaN, 4, 5, 6 });
-            seriesColl.Add("AW Series 2", categories, new double[] { 2, 3, double.NaN, 5, 6, 7 });
-            Assert.That(() => seriesColl.Add("AW Series 3", categories, new double[] { double.NaN, 4, 5, double.NaN, double.NaN }), Throws.TypeOf<ArgumentException>());
-            Assert.That(() => seriesColl.Add("AW Series 4", categories, new double[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN }), Throws.TypeOf<ArgumentException>());
-        }
-
-        //This is just a test, no need adding example tags.
-        [Test]
-        public void EmptyValuesInChartData()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Add chart with default data.
-            Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
-            Chart chart = shape.Chart;
-
-            ChartSeriesCollection seriesColl = chart.Series;
-            seriesColl.Clear();
-
-            // Create category names array, second category will be null.
-            String[] categories = new String[] { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
-
-            // Adding new series with empty (double.NaN) values.
-            seriesColl.Add("AW Series 1", categories, new double[] { 1, 2, double.NaN, 4, 5, 6 });
-            seriesColl.Add("AW Series 2", categories, new double[] { 2, 3, double.NaN, 5, 6, 7 });
-            seriesColl.Add("AW Series 3", categories, new double[] { double.NaN, 4, 5, double.NaN, 7, 8 });
-            seriesColl.Add("AW Series 4", categories, new double[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, 9 });
-
-            doc.Save(MyDir + @"\Artifacts\EmptyValuesInChartData.docx");
-        }
-
         [Test]
         public void InsertChartRelativePosition()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertChart(ChartType, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Shows how to insert a chart into a document and specify all positioning options in the arguments.
+            //ExSummary:Shows how to insert a chart into a document and specify position and size.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -2040,6 +2050,66 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [Test]
+        public void InsertCustomFormattingField()
+        {
+            //ExStart
+            //ExFor:IFieldResultFormatter
+            //ExFor:FieldOptions.ResultFormatter
+            //ExSummary:Shows how to control how the field result is formatted.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            Field field = builder.InsertField("=-1234567.89 \\# \"### ### ###.000\"", null);
+            doc.FieldOptions.ResultFormatter = new FieldResultFormatter("[{0}]", null);
+
+            field.Update();
+            
+            Assert.AreEqual("[-1234567.89]", field.Result);//ExSkip
+        }
+
+        private class FieldResultFormatter : IFieldResultFormatter
+        {
+            public FieldResultFormatter(string numberFormat, string dateFormat)
+            {
+                mNumberFormat = numberFormat;
+                mDateFormat = dateFormat;
+            }
+
+            public string FormatNumeric(double value, string format)
+            {
+                mNumberFormatInvocations.Add(new object[] { value, format });
+
+                return string.IsNullOrEmpty(mNumberFormat) ? null : string.Format(mNumberFormat, value);
+            }
+
+            public string FormatDateTime(DateTime value, string format, CalendarType calendarType)
+            {
+                mDateFormatInvocations.Add(new object[] { value, format, calendarType });
+
+                return string.IsNullOrEmpty(mDateFormat) ? null : string.Format(mDateFormat, value);
+            }
+
+            public string Format(string value, GeneralFormat format)
+            {
+                throw new NotImplementedException();
+            }
+
+            public string Format(double value, GeneralFormat format)
+            {
+                throw new NotImplementedException();
+            }
+
+            private readonly string mNumberFormat;
+            private readonly string mDateFormat;
+
+            private readonly ArrayList mNumberFormatInvocations = new ArrayList();
+            private readonly ArrayList mDateFormatInvocations = new ArrayList();
+            private IFieldResultFormatter fieldResultFormatterImplementation;
+        }
+        //ExEnd
+
+        //Todo: Add gold asserts
         [Test]
         public void InsertVideoWithUrl()
         {

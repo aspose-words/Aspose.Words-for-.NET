@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -402,7 +402,7 @@ namespace ApiExamples
 
             // Retrieve the first row in the table.
             Row firstRow = table.FirstRow;
-
+            
             // Modify some row level properties.
             firstRow.RowFormat.Borders.LineStyle = LineStyle.None;
             firstRow.RowFormat.HeightRule = HeightRule.Auto;
@@ -445,6 +445,20 @@ namespace ApiExamples
             Assert.AreEqual(30, table.FirstRow.FirstCell.CellFormat.Width);
             Assert.AreEqual(TextOrientation.Downward, table.FirstRow.FirstCell.CellFormat.Orientation);
             Assert.AreEqual(Color.LightGreen.ToArgb(), table.FirstRow.FirstCell.CellFormat.Shading.ForegroundPatternColor.ToArgb());
+            
+        }
+
+        [Test]
+        public void GetDistance()
+        {
+            Document doc = new Document(MyDir + "Table.Distance.docx");
+
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Assert.AreEqual(11.35d, table.DistanceTop);
+            Assert.AreEqual(26.35d, table.DistanceBottom);
+            Assert.AreEqual(9.05d, table.DistanceLeft);
+            Assert.AreEqual(22.7d, table.DistanceRight);
         }
 
         [Test]
@@ -1156,6 +1170,55 @@ namespace ApiExamples
             Assert.AreEqual(2, firstTable.Rows.Count);
             Assert.AreEqual(2, table.Rows.Count);
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count);
+        }
+
+        [Test]
+        public void CheckDefaultValuesForFloatingTableProperties()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Table table = DocumentHelper.InsertTable(builder);
+
+            if (table.TextWrapping == TextWrapping.Around)
+            {
+                Assert.AreEqual(HorizontalAlignment.Default, table.RelativeHorizontalAlignment);
+                Assert.AreEqual(VerticalAlignment.Default, table.RelativeVerticalAlignment);
+                Assert.AreEqual(RelativeHorizontalPosition.Column, table.HorizontalAnchor);
+                Assert.AreEqual(RelativeVerticalPosition.Margin, table.VerticalAnchor);
+                Assert.AreEqual(0, table.AbsoluteHorizontalDistance);
+                Assert.AreEqual(0, table.AbsoluteVerticalDistance);
+                Assert.AreEqual(true, table.AllowOverlap);
+            }
+        }
+
+        [Test]
+        public void FloatingTableProperties()
+        {
+            //ExStart
+            //ExFor:Table.RelativeHorizontalAlignment
+            //ExFor:Table.RelativeVerticalAlignment
+            //ExFor:Table.HorizontalAnchor
+            //ExFor:Table.VerticalAnchor
+            //ExFor:Table.AbsoluteHorizontalDistance
+            //ExFor:Table.AbsoluteVerticalDistance
+            //ExFor:Table.AllowOverlap
+            //ExSummary:Shows how get properties for floating tables
+            Document doc = new Document(MyDir + "Table.Distance.docx");
+
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            if (table.TextWrapping == TextWrapping.Around)
+            {
+                Assert.AreEqual(HorizontalAlignment.Default, table.RelativeHorizontalAlignment);
+                Assert.AreEqual(VerticalAlignment.Default, table.RelativeVerticalAlignment);
+                Assert.AreEqual(RelativeHorizontalPosition.Margin, table.HorizontalAnchor);
+                Assert.AreEqual(RelativeVerticalPosition.Paragraph, table.VerticalAnchor);
+                Assert.AreEqual(0, table.AbsoluteHorizontalDistance);
+                Assert.AreEqual(4.8, table.AbsoluteVerticalDistance);
+                Assert.AreEqual(true, table.AllowOverlap);
+            }
+            //ExEnd
         }
     }
 }

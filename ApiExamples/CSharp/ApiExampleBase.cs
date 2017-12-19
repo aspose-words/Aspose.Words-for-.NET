@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -83,7 +83,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Gets the path to the iamges used by the code examples. Ends with a back slash.
+        /// Gets the path to the images used by the code examples. Ends with a back slash.
         /// </summary>
         internal static String ImageDir
         {

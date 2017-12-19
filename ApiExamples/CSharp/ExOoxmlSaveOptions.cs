@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
+using Aspose.Words.Lists;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
@@ -23,7 +24,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OoxmlCompliance
-            //ExSummary:Shows conversion VML shapes to DML using Iso29500_2008_Strict
+            //ExFor:OoxmlSaveOptions.Compliance
+            //ExSummary:Shows conversion VML shapes to DML using ISO/IEC 29500:2008 Strict compliance level
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -53,6 +55,65 @@ namespace ApiExamples
             {
                 Assert.AreEqual(ShapeMarkupLanguage.Dml, shape.MarkupLanguage);
             }
+        }
+
+        [Test]
+        public void RestartingDocumentList()
+        {
+            //ExStart
+            //ExFor:List.IsRestartAtEachSection
+            //ExSummary:Shows how to specify that the list has to be restarted at each section.
+            Document doc = new Document();
+
+            doc.Lists.Add(ListTemplate.NumberDefault);
+
+            Aspose.Words.Lists.List list = doc.Lists[0];
+
+            // Set true to specify that the list has to be restarted at each section.
+            list.IsRestartAtEachSection = true;
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.ListFormat.List = list;
+
+            for (int i = 1; i <= 45; i++)
+            {
+                builder.Write($"List Item {i}\n");
+
+                // Insert section break.
+                if (i == 15 || i == 30)
+                    builder.InsertBreak(BreakType.SectionBreakNewPage);
+            }
+
+            // IsRestartAtEachSection will be written only if compliance is higher then OoxmlComplianceCore.Ecma376
+            OoxmlSaveOptions options = new OoxmlSaveOptions();
+            options.Compliance = OoxmlCompliance.Iso29500_2008_Transitional;
+
+            doc.Save(MyDir + @"\Artifacts\RestartingDocumentList.docx", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void UpdatingLastSavedTimeDocument()
+        {
+            //ExStart
+            //ExFor:SaveOptions.UpdateLastSavedTimeProperty
+            //ExSummary:Shows how to update a document time property when you want to save it
+            Document doc = new Document(MyDir + "Document.doc");
+
+            //Get last saved time
+            DateTime documentTimeBeforeSave = doc.BuiltInDocumentProperties.LastSavedTime;
+
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
+            saveOptions.UpdateLastSavedTimeProperty = true;
+            //ExEnd
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, saveOptions);
+
+            DateTime documentTimeAfterSave = doc.BuiltInDocumentProperties.LastSavedTime;
+
+            Assert.AreNotEqual(documentTimeBeforeSave, documentTimeAfterSave);
         }
     }
 }

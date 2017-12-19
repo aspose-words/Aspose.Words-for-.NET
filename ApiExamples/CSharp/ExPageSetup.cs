@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -52,12 +52,18 @@ namespace ApiExamples
             //ExStart
             //ExFor:PageSetup.DifferentFirstPageHeaderFooter
             //ExFor:PageSetup.OddAndEvenPagesHeaderFooter
+            //ExFor:PageSetup.LayoutMode
+            //ExFor:PageSetup.CharactersPerLine
+            //ExFor:PageSetup.LinesPerPage
             //ExSummary:Creates headers and footers different for first, even and odd pages using DocumentBuilder.
             DocumentBuilder builder = new DocumentBuilder();
 
             PageSetup ps = builder.PageSetup;
             ps.DifferentFirstPageHeaderFooter = true;
             ps.OddAndEvenPagesHeaderFooter = true;
+            ps.LayoutMode = SectionLayoutMode.LineGrid;
+            ps.CharactersPerLine = 1;
+            ps.LinesPerPage = 1;
 
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderFirst);
             builder.Writeln("First page header.");
@@ -371,6 +377,41 @@ namespace ApiExamples
             section.PageSetup.PageNumberStyle = NumberStyle.Arabic;
 
             doc.Save(MyDir + @"\Artifacts\PageSetup.PageNumbering.doc");
+            //ExEnd
+        }
+
+        [Test]
+        public void FootnoteOptions()
+        {
+            //ExStart
+            //ExFor:PageSetup.FootnoteOptions
+            //ExSummary: Shows how to set footnote options for current section
+            Document doc = new Document();
+
+            PageSetup pageSetup = doc.Sections[0].PageSetup;
+
+            pageSetup.FootnoteOptions.Position = FootnotePosition.BottomOfPage;
+            pageSetup.FootnoteOptions.NumberStyle = NumberStyle.Bullet;
+            pageSetup.FootnoteOptions.StartNumber = 1;
+            pageSetup.FootnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
+            pageSetup.FootnoteOptions.Columns = 0;
+            //ExEnd
+        }
+
+        [Test]
+        public void EndnoteOptions()
+        {
+            //ExStart
+            //ExFor:PageSetup.EndnoteOptions
+            //ExSummary: Shows how to set endnote options for current section
+            Document doc = new Document();
+
+            PageSetup pageSetup = doc.Sections[0].PageSetup;
+
+            pageSetup.EndnoteOptions.Position = EndnotePosition.EndOfSection;
+            pageSetup.EndnoteOptions.NumberStyle = NumberStyle.Bullet;
+            pageSetup.EndnoteOptions.StartNumber = 1;
+            pageSetup.EndnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
             //ExEnd
         }
     }

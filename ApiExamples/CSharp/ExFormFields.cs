@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //////////////////////////////////////////////////////////////////////////
 // Copyright 2001-2013 Aspose Pty Ltd. All Rights Reserved.
 //
@@ -97,7 +97,6 @@ namespace ApiExamples
             Assert.IsNull(formFieldAfter);
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void DeleteFormFieldAssociatedWithBookmark()
         {

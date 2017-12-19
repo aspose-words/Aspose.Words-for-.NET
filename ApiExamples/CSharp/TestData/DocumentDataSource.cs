@@ -26,11 +26,8 @@ namespace ApiExamples.TestData
         }
 
         public Document Document { get; set; }
-
         public Stream DocumentByStream { get; set; }
-
         public byte[] DocumentByByte { get; set; }
-
         public string DocumentByUri { get; set; }
     }
 }

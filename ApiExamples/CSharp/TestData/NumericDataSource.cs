@@ -13,11 +13,8 @@ namespace ApiExamples.TestData
         }
 
         public int Value1 { get; set; }
-
         public double Value2 { get; set; }
-
         public int Value3 { get; set; }
-
         public DateTime Date { get; set; }
     }
 }

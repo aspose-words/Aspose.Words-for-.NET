@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -8,7 +8,6 @@
 using System;
 using System.IO;
 using Aspose.Words;
-using Aspose.Words.Saving;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -23,13 +22,13 @@ namespace ApiExamples
             //ExFor:DigitalSignatureUtil.RemoveAllSignatures(Stream, Stream)
             //ExFor:DigitalSignatureUtil.RemoveAllSignatures(String, String)
             //ExSummary:Shows how to remove every signature from a document.
-            //By String:
+            // By string:
             Document doc = new Document(MyDir + "Document.DigitalSignature.docx");
-            string outFileName = MyDir + @"\Artifacts\Document.NoSignatures.FromString.doc";
+            string outFileName = MyDir + @"\Artifacts\Document.NoSignatures.FromString.docx";
 
             DigitalSignatureUtil.RemoveAllSignatures(doc.OriginalFileName, outFileName);
 
-            //By stream:
+            // By stream:
             Stream streamIn = new FileStream(MyDir + "Document.DigitalSignature.docx", FileMode.Open);
             Stream streamOut = new FileStream(MyDir + @"\Artifacts\Document.NoSignatures.FromStream.doc", FileMode.Create);
 
@@ -47,7 +46,7 @@ namespace ApiExamples
             //ExFor:DigitalSignatureUtil.LoadSignatures(Stream)
             //ExFor:DigitalSignatureUtil.LoadSignatures(String)
             //ExSummary:Shows how to load all existing signatures from a document.
-            // By String:
+            // By string:
             DigitalSignatureCollection digitalSignatures = DigitalSignatureUtil.LoadSignatures(MyDir + "Document.DigitalSignature.docx");
 
             // By stream:
@@ -63,22 +62,18 @@ namespace ApiExamples
         public void SignDocument()
         {
             //ExStart
-            //ExFor:DigitalSignatureUtil.Sign(String, String, CertificateHolder, String, DateTime)
-            //ExFor:DigitalSignatureUtil.Sign(Stream, Stream, CertificateHolder, String, DateTime)
-            //ExSummary:Shows how to sign documents with personal certificate.
-            CertificateHolder ch = CertificateHolder.Create(MyDir + "certificate.pfx", "123456");
+            //ExFor:DigitalSignatureUtil.Sign(Stream, Stream, CertificateHolder, SignOptions)
+            //ExFor:SignOptions.Comments
+            //ExFor:SignOptions.SignTime
+            //ExSummary:Shows how to sign documents using certificate holder and sign options.
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
-            //By String
-            Document doc = new Document(MyDir + "Document.DigitalSignature.docx");
-            string outputFileName = MyDir + @"\Artifacts\Document.DigitalSignature.docx";
+            SignOptions signOptions = new SignOptions { Comments = "My comment", SignTime = DateTime.Now };
 
-            DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, ch, "My comment", DateTime.Now);
-
-            //By Stream
             Stream streamIn = new FileStream(MyDir + "Document.DigitalSignature.docx", FileMode.Open);
             Stream streamOut = new FileStream(MyDir + @"\Artifacts\Document.DigitalSignature.docx", FileMode.OpenOrCreate);
 
-            DigitalSignatureUtil.Sign(streamIn, streamOut, ch, "My comment", DateTime.Now);
+            DigitalSignatureUtil.Sign(streamIn, streamOut, certificateHolder, signOptions);
             //ExEnd
 
             streamIn.Dispose();
@@ -86,73 +81,51 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SignPdfDocument()
+        [Description("WORDSNET-13036")]
+        public void SignDocumentObfuscationBug()
         {
-            //ExStart
-            //ExFor:PdfSaveOptions
-            //ExFor:PdfDigitalSignatureDetails
-            //ExFor:PdfSaveOptions.DigitalSignatureDetails
-            //ExFor:PdfDigitalSignatureDetails.#ctor(X509Certificate2, String, String, DateTime)
-            //ExId:SignPDFDocument
-            //ExSummary:Shows how to sign a generated PDF document using Aspose.Words.
-            // Create a simple document from scratch.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Writeln("Test Signed PDF.");
-
-            // Load the certificate from disk.
-            // The other constructor overloads can be used to load certificates from different locations.
-            CertificateHolder ch = CertificateHolder.Create(MyDir + "certificate.pfx", "123456");
-
-            // Pass the certificate and details to the save options class to sign with.
-            PdfSaveOptions options = new PdfSaveOptions();
-            options.DigitalSignatureDetails = new PdfDigitalSignatureDetails(ch, "Test Signing", "Aspose Office", DateTime.Now);
-
-            // Save the document as PDF with the digital signature set.
-            doc.Save(MyDir + @"\Artifacts\Document.Signed.pdf", options);
-            //ExEnd
-        }
-
-        //This is for obfuscation bug WORDSNET-13036
-        [Test]
-        public void SignDocumentTestForBug()
-        {
-            CertificateHolder ch = CertificateHolder.Create(MyDir + "certificate.pfx", "123456");
+            CertificateHolder ch = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
             Document doc = new Document(MyDir + "TestRepeatingSection.docx");
             String outputFileName = MyDir + @"\Artifacts\TestRepeatingSection.Signed.doc";
 
-            DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, ch, "My comment", DateTime.Now);
+            SignOptions signOptions = new SignOptions { Comments = "Comment", SignTime = DateTime.Now };
+
+            DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, ch, signOptions);
         }
 
         [Test]
-        [ExpectedException(typeof(IncorrectPasswordException), ExpectedMessage = "The document password is incorrect.")]
         public void IncorrectPasswordForDecrypring()
         {
-            CertificateHolder ch = CertificateHolder.Create(MyDir + "certificate.pfx", "123456");
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
             Document doc = new Document(MyDir + "Document.Encrypted.docx", new LoadOptions("docPassword"));
             string outputFileName = MyDir + @"\Artifacts\Document.Encrypted.docx";
 
+            SignOptions signOptions = new SignOptions { Comments = "Comment", SignTime = DateTime.Now, DecryptionPassword = "docPassword1" };
+
             // Digitally sign encrypted with "docPassword" document in the specified path.
-            DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, ch, "Comment", DateTime.Now, "docPassword1");
+            Assert.That(() => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, certificateHolder, signOptions),
+                Throws.TypeOf<IncorrectPasswordException>(), "The document password is incorrect.");
         }
 
         [Test]
         public void SingDocumentWithPasswordDecrypring()
         {
             //ExStart
-            //ExFor:DigitalSignatureUtil.Sign(String, String, CertificateHolder, String, DateTime, String)
-            //ExSummary:Shows how to sign encrypted documents.
-            // Create certificate holder from a file.
-            Document doc = new Document(MyDir + "Document.Encrypted.docx", new LoadOptions("docPassword"));
-
+            //ExFor:SignOptions.DecryptionPassword
+            //ExSummary:Shows how to sign encrypted document file.
             string outputFileName = MyDir + @"\Artifacts\Document.Encrypted.docx";
 
-            CertificateHolder ch = CertificateHolder.Create(MyDir + "certificate.pfx", "123456");
+            Document doc = new Document(MyDir + "Document.Encrypted.docx", new LoadOptions("docPassword"));
+
+            // Create certificate holder from a file.
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+
+            SignOptions signOptions = new SignOptions { Comments = "Comment", SignTime = DateTime.Now, DecryptionPassword = "docPassword" };
 
             // Digitally sign encrypted with "docPassword" document in the specified path.
-            DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, ch, "Comment", DateTime.Now, "docPassword");
+            DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, certificateHolder, signOptions);
             //ExEnd
 
             // Open encrypted document from a file.
@@ -167,39 +140,12 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SingStreamDocumentWithPasswordDecrypring()
-        {
-            //ExStart
-            //ExFor:DigitalSignatureUtil.Sign(Stream, Stream, CertificateHolder, String, DateTime, String)
-            //ExSummary:Shows how to sign encrypted documents
-            // Create certificate holder from a file.
-            CertificateHolder ch = CertificateHolder.Create(MyDir + "certificate.pfx", "123456");
-
-            Stream streamIn = new FileStream(MyDir + "Document.Encrypted.docx", FileMode.Open);
-            Stream streamOut = new FileStream(MyDir + @"\Artifacts\Document.Encrypted.docx", FileMode.OpenOrCreate);
-
-            // Digitally sign encrypted with "docPassword" document in the specified path.
-            DigitalSignatureUtil.Sign(streamIn, streamOut, ch, "Comment", DateTime.Now, "docPassword");
-            //ExEnd
-
-            // Open encrypted document from a file.
-            Document signedDoc = new Document(streamOut, new LoadOptions("docPassword"));
-
-            // Check that encrypted document was successfully signed.
-            DigitalSignatureCollection signatures = signedDoc.DigitalSignatures;
-            if (signatures.IsValid && (signatures.Count > 0))
-            {
-                streamIn.Dispose();
-                streamOut.Dispose();
-
-                Assert.Pass(); //The document was signed successfully
-            }
-        }
-
-        [Test]
         public void NoArgumentsForSing()
         {
-            Assert.That(() => DigitalSignatureUtil.Sign(String.Empty, String.Empty, null, String.Empty, DateTime.Now, String.Empty), Throws.TypeOf<ArgumentException>());
+            SignOptions signOptions = new SignOptions { Comments = String.Empty, SignTime = DateTime.Now, DecryptionPassword = String.Empty };
+
+            Assert.That(() => DigitalSignatureUtil.Sign(String.Empty, String.Empty, null, signOptions),
+                Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -208,8 +154,10 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.DigitalSignature.docx");
             string outputFileName = MyDir + @"\Artifacts\Document.DigitalSignature.docx";
 
-            // Digitally sign encrypted with "docPassword" document in the specified path.
-            Assert.That(() => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, null, "Comment", DateTime.Now, "docPassword"), Throws.TypeOf<NullReferenceException>());
+            SignOptions signOptions = new SignOptions { Comments = "Comment", SignTime = DateTime.Now, DecryptionPassword = "docPassword" };
+
+            Assert.That(() => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, null, signOptions),
+                Throws.TypeOf<ArgumentNullException>());
         }
     }
 }

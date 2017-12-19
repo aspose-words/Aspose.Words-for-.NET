@@ -12,58 +12,16 @@ namespace ApiExamples
     public class CustomBarcodeGenerator : IBarcodeGenerator
     {
         /// <summary>
-        /// Converts barcode type from Word to Aspose.BarCode.
-        /// </summary>
-        private static Symbology ConvertBarcodeType(String inputCode)
-        {
-            if (inputCode == null)
-                return (Symbology)int.MinValue;
-
-            String type = inputCode.ToUpper();
-            Symbology outputCode = (Symbology)int.MinValue;
-
-            switch (type)
-            {
-                case "QR":
-                    outputCode = Symbology.QR;
-                    break;
-                case "CODE128":
-                    outputCode = Symbology.Code128;
-                    break;
-                case "CODE39":
-                    outputCode = Symbology.Code39Standard;
-                    break;
-                case "EAN8":
-                    outputCode = Symbology.EAN8;
-                    break;
-                case "EAN13":
-                    outputCode = Symbology.EAN13;
-                    break;
-                case "UPCA":
-                    outputCode = Symbology.UPCA;
-                    break;
-                case "UPCE":
-                    outputCode = Symbology.UPCE;
-                    break;
-                case "ITF14":
-                    outputCode = Symbology.ITF14;
-                    break;
-                case "CASE":
-                    break;
-            }
-
-            return outputCode;
-        }
-
-        /// <summary>
         /// Converts barcode image height from Word units to Aspose.BarCode units.
         /// </summary>
         /// <param name="heightInTwipsString"></param>
         /// <returns></returns>
-        private static float ConvertSymbolHeight(String heightInTwipsString)
+        private static float ConvertSymbolHeight(string heightInTwipsString)
         {
             // Input value is in 1/1440 inches (twips)
-            int heightInTwips = TryParseInt(heightInTwipsString);
+            int heightInTwips = int.MinValue;
+            int.TryParse(heightInTwipsString, out heightInTwips);
+
             if (heightInTwips == int.MinValue)
                 throw new Exception("Error! Incorrect height - " + heightInTwipsString + ".");
 
@@ -76,14 +34,19 @@ namespace ApiExamples
         /// </summary>
         /// <param name="inputColor"></param>
         /// <returns></returns>
-        private static Color ConvertColor(String inputColor)
+        private static Color ConvertColor(string inputColor)
         {
             // Input should be from "0x000000" to "0xFFFFFF"
-            int color = TryParseHex(inputColor.Replace("0x", ""));
+            int color = int.MinValue;
+            int.TryParse(inputColor.Replace("0x", ""), out color);
+
             if (color == int.MinValue)
                 throw new Exception("Error! Incorrect color - " + inputColor + ".");
 
             return Color.FromArgb(color >> 16, (color & 0xFF00) >> 8, color & 0xFF);
+
+            // Backword conversion -
+            //return string.Format("0x{0,6:X6}", mControl.ForeColor.ToArgb() & 0xFFFFFF);
         }
 
         /// <summary>
@@ -91,10 +54,11 @@ namespace ApiExamples
         /// </summary>
         /// <param name="scalingFactor"></param>
         /// <returns></returns>
-        private static float ConvertScalingFactor(String scalingFactor)
+        private static float ConvertScalingFactor(string scalingFactor)
         {
             bool isParsed = false;
-            int percents = TryParseInt(scalingFactor);
+            int percents = int.MinValue;
+            int.TryParse(scalingFactor, out percents);
 
             if (percents != int.MinValue)
             {
@@ -109,7 +73,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Implementation of the GetBarcodeImage() method for IBarCodeGenerator interface.
+        /// Implementation of the GetBarCodeImage() method for IBarCodeGenerator interface.
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns></returns>
@@ -120,13 +84,46 @@ namespace ApiExamples
 
             BarCodeBuilder builder = new BarCodeBuilder();
 
-            builder.SymbologyType = ConvertBarcodeType(parameters.BarcodeType);
-            if (builder.SymbologyType == (Symbology)int.MinValue)
+            string type = parameters.BarcodeType.ToUpper();
+
+            switch (type)
+            {
+                case "QR":
+                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.QR;
+                    break;
+                case "CODE128":
+                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.Code128;
+                    break;
+                case "CODE39":
+                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.Code39Standard;
+                    break;
+                case "EAN8":
+                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.EAN8;
+                    break;
+                case "EAN13":
+                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.EAN13;
+                    break;
+                case "UPCA":
+                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.UPCA;
+                    break;
+                case "UPCE":
+                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.UPCE;
+                    break;
+                case "ITF14":
+                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.ITF14;
+                    break;
+                case "CASE":
+                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.None;
+                    break;
+            }
+
+            //builder.EncodeType = ConvertBarcodeType(parameters.BarcodeType);
+            if (builder.EncodeType == Aspose.BarCode.Generation.EncodeTypes.None)
                 return null;
 
             builder.CodeText = parameters.BarcodeValue;
 
-            if (builder.SymbologyType == Symbology.QR)
+            if (builder.EncodeType == Aspose.BarCode.Generation.EncodeTypes.QR)
                 builder.Display2DText = parameters.BarcodeValue;
 
             if (parameters.ForegroundColor != null)
@@ -151,30 +148,27 @@ namespace ApiExamples
             const float scale = 0.4f; // Empiric scaling factor for converting Word barcode to Aspose.BarCode
             float xdim = 1.0f;
 
-            if (builder.SymbologyType == Symbology.QR)
+            if (builder.EncodeType == Aspose.BarCode.Generation.EncodeTypes.QR)
             {
                 builder.AutoSize = false;
                 builder.ImageWidth *= scale;
                 builder.ImageHeight = builder.ImageWidth;
                 xdim = builder.ImageHeight / 25;
-                builder.yDimension = xdim;
-                builder.xDimension = xdim;
+                builder.xDimension = builder.yDimension = xdim;
             }
 
             if (parameters.ScalingFactor != null)
             {
                 float scalingFactor = ConvertScalingFactor(parameters.ScalingFactor);
                 builder.ImageHeight *= scalingFactor;
-                if (builder.SymbologyType == Symbology.QR)
+                if (builder.EncodeType == Aspose.BarCode.Generation.EncodeTypes.QR)
                 {
                     builder.ImageWidth = builder.ImageHeight;
-                    builder.yDimension = xdim * scalingFactor;
-                    builder.xDimension = builder.yDimension;
+                    builder.xDimension = builder.yDimension = xdim * scalingFactor;
                 }
 
                 builder.AutoSize = false;
             }
-
             return builder.BarCodeImage;
         }
 
@@ -191,7 +185,7 @@ namespace ApiExamples
             BarCodeBuilder builder = new BarCodeBuilder();
 
             // Hardcode type for old-fashioned Barcode
-            builder.SymbologyType = Symbology.Postnet;
+            builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.Postnet;
             builder.CodeText = parameters.PostalAddress;
 
             return builder.BarCodeImage;
@@ -206,7 +200,7 @@ namespace ApiExamples
         public static int TryParseInt(String s)
         {
             double temp;
-            return (Double.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out temp)) ? CastDoubleToInt(temp) : int.MinValue;
+            return Double.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out temp) ? CastDoubleToInt(temp) : int.MinValue;
         }
 
         /// <summary>

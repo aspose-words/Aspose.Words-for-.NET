@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //////////////////////////////////////////////////////////////////////////
 // Copyright 2001-2013 Aspose Pty Ltd. All Rights Reserved.
 //
@@ -77,8 +77,8 @@ namespace ApiExamples
         public void CreateRevNumFieldWithFieldBuilder()
         {
             //ExStart
-            //ExFor:FieldBuilder(FieldType)
-            //ExFor:FieldBuilder.BuildAndInsert(Run)
+            //ExFor:FieldBuilder.#ctor(FieldType)
+            //ExFor:FieldBuilder.BuildAndInsert(Inline)
             //ExSummary:Builds and inserts a field into the document before the specified inline node
             Document doc = new Document();
             Run run = DocumentHelper.InsertNewRun(doc, " Hello World!", 0);
@@ -95,7 +95,6 @@ namespace ApiExamples
             Assert.NotNull(revNum);
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void CreateRevNumFieldByDocumentBuilder()
         {
@@ -111,7 +110,6 @@ namespace ApiExamples
             Assert.NotNull(revNum);
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void CreateInfoFieldWithFieldBuilder()
         {
@@ -130,7 +128,6 @@ namespace ApiExamples
             Assert.NotNull(info);
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void CreateInfoFieldWithDocumentBuilder()
         {
@@ -227,7 +224,7 @@ namespace ApiExamples
         [Test]
         //ExStart
         //ExId:TCFieldsRangeReplace
-        //ExSummary:Shows how to find and insert a TC field at text in a document. 
+        //ExSummary:Shows how to find and insert a TC field at text in a document.
         public void InsertTcFieldsAtText()
         {
             Document doc = new Document();
@@ -239,7 +236,7 @@ namespace ApiExamples
             doc.Range.Replace(new Regex("The Beginning"), "", options);
         }
 
-        public class InsertTcFieldHandler : IReplacingCallback
+        private class InsertTcFieldHandler : IReplacingCallback
         {
             // Store the text and switches to be used for the TC fields.
             private String mFieldText;
@@ -288,6 +285,30 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
+        [Ignore("WORDSNET-16037")]
+        public void InsertAndUpdateDirtyField()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Field fieldToc = builder.InsertTableOfContents("\\o \"1-3\" \\h \\z \\u");
+            fieldToc.IsDirty = true;
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+            //Assert that field model is correct
+            Assert.IsTrue(doc.Range.Fields[0].IsDirty); 
+
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.UpdateDirtyFields = false;
+
+            doc = new Document(dstStream);
+            Field tocField = doc.Range.Fields[0];
+            //Assert that isDirty saves 
+            Assert.IsTrue(tocField.IsDirty); 
+        }
+
+        [Test]
         public void InsertFieldWithFieldBuilder()
         {
             //ExStart
@@ -318,7 +339,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void InsertFieldWithFieldBuilderException()
         {
@@ -390,7 +410,7 @@ namespace ApiExamples
         public void UpdateFieldIgnoringMergeFormat()
         {
             //ExStart
-            //ExFor:Field.Update(Bool)
+            //ExFor:Field.Update(bool)
             //ExSummary:Shows a way to update a field ignoring the MERGEFORMAT switch
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.PreserveIncludePictureField = true;
@@ -429,7 +449,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Field field = builder.InsertField("MERGEFIELD Date");
-
+            
             FieldFormat format = field.Format;
 
             format.DateTimeFormat = "dddd, MMMM dd, yyyy";

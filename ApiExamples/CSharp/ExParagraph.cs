@@ -13,39 +13,38 @@ namespace ApiExamples
         public void InsertField()
         {
             //ExStart
-            //ExFor:Paragraph.InsertField(String, Node, Bool)
-            //ExFor:Paragraph.InsertField(FieldType, Bool, Node, Bool)
-            //ExFor:Paragraph.InsertField(String, String, Node, Bool)
+            //ExFor:Paragraph.InsertField(string, Node, bool)
+            //ExFor:Paragraph.InsertField(FieldType, bool, Node, bool)
+            //ExFor:Paragraph.InsertField(string, string, Node, bool)
             //ExSummary:Shows how to insert field using several methods: "field code", "field code and field value", "field code and field value after a run of text"
             Document doc = new Document();
 
-            //Get the first paragraph of the document
+            // Get the first paragraph of the document
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
 
-            //Inserting field using field code
-            //Note: All methods support inserting field after some node. Just set "true" in the "isAfter" parameter
+            // Inserting field using field code
+            // Note: All methods support inserting field after some node. Just set "true" in the "isAfter" parameter
             para.InsertField(" AUTHOR ", null, false);
 
-            //Using field type
-            //Note:
-            //1. For inserting field using field type, you can choose, update field before or after you open the document ("updateField" parameter)
-            //2. For other methods it's works automatically
+            // Using field type
+            // Note:
+            // 1. For inserting field using field type, you can choose, update field before or after you open the document ("updateField" parameter)
+            // 2. For other methods it's works automatically
             para.InsertField(FieldType.FieldAuthor, false, null, true);
 
-            //Using field code and field value
+            // Using field code and field value
             para.InsertField(" AUTHOR ", "Test Field Value", null, false);
 
-            //Add a run of text
+            // Add a run of text
             Run run = new Run(doc) { Text = " Hello World!" };
             para.AppendChild(run);
 
-            //Using field code and field value before a run of text
-            //Note: For inserting field before/after a run of text you can use all methods above, just add ref on your text ("refNode" parameter)
+            // Using field code and field value before a run of text
+            // Note: For inserting field before/after a run of text you can use all methods above, just add ref on your text ("refNode" parameter)
             para.InsertField(" AUTHOR ", "Test Field Value", run, false);
             //ExEnd
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void InsertFieldBeforeTextInParagraph()
         {
@@ -56,7 +55,6 @@ namespace ApiExamples
             Assert.AreEqual("\u0013 AUTHOR \u0014Test Author\u0015Hello World!\r", DocumentHelper.GetParagraphText(doc, 1));
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void InsertFieldAfterTextInParagraph()
         {
@@ -69,7 +67,6 @@ namespace ApiExamples
             Assert.AreEqual(String.Format("Hello World!\u0013 DATE \u0014{0}\u0015\r", date), DocumentHelper.GetParagraphText(doc, 1));
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void InsertFieldBeforeTextInParagraphWithoutUpdateField()
         {
@@ -80,7 +77,6 @@ namespace ApiExamples
             Assert.AreEqual("\u0013 AUTHOR \u0014\u0015Hello World!\r", DocumentHelper.GetParagraphText(doc, 1));
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void InsertFieldAfterTextInParagraphWithoutUpdateField()
         {
@@ -91,7 +87,6 @@ namespace ApiExamples
             Assert.AreEqual("Hello World!\u0013 AUTHOR \u0014\u0015\r", DocumentHelper.GetParagraphText(doc, 1));
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void InsertFieldWithoutSeparator()
         {
@@ -102,7 +97,6 @@ namespace ApiExamples
             Assert.AreEqual("\u0013 LISTNUM \u0015Hello World!\r", DocumentHelper.GetParagraphText(doc, 1));
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void InsertFieldBeforeParagraphWithoutDocumentAuthor()
         {
@@ -114,7 +108,6 @@ namespace ApiExamples
             Assert.AreEqual("\u0013 AUTHOR \u0014\u0015Hello World!\r", DocumentHelper.GetParagraphText(doc, 1));
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void InsertFieldAfterParagraphWithoutChangingDocumentAuthor()
         {
@@ -125,7 +118,6 @@ namespace ApiExamples
             Assert.AreEqual("Hello World!\u0013 AUTHOR \u0014\u0015\r", DocumentHelper.GetParagraphText(doc, 1));
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void InsertFieldBeforeRunText()
         {
@@ -139,13 +131,12 @@ namespace ApiExamples
             Assert.AreEqual("Hello World!\u0013 AUTHOR \u0014Test Field Value\u0015 Hello World!\r", DocumentHelper.GetParagraphText(doc, 1));
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void InsertFieldAfterRunText()
         {
             Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
 
-            //Add some text into the paragraph
+            // Add some text into the paragraph
             Run run = DocumentHelper.InsertNewRun(doc, " Hello World!", 1);
 
             InsertFieldUsingFieldCodeFieldString(doc, " AUTHOR ", "", run, true, 1);
@@ -153,10 +144,8 @@ namespace ApiExamples
             Assert.AreEqual("Hello World! Hello World!\u0013 AUTHOR \u0014\u0015\r", DocumentHelper.GetParagraphText(doc, 1));
         }
 
-        /// <summary>
-        /// Test for WORDSNET-12396
-        /// </summary>
         [Test]
+        [Description("WORDSNET-12396")]
         public void InsertFieldEmptyParagraphWithoutUpdateField()
         {
             Document doc = DocumentHelper.CreateDocumentWithoutDummyText();
@@ -166,10 +155,8 @@ namespace ApiExamples
             Assert.AreEqual("\u0013 AUTHOR \u0014\u0015\f", DocumentHelper.GetParagraphText(doc, 1));
         }
 
-        /// <summary>
-        /// Test for WORDSNET-12397
-        /// </summary>
         [Test]
+        [Description("WORDSNET-12397")]
         public void InsertFieldEmptyParagraphWithUpdateField()
         {
             Document doc = DocumentHelper.CreateDocumentWithoutDummyText();
