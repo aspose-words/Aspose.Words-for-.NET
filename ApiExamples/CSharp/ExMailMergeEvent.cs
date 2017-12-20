@@ -11,6 +11,7 @@ using System.Drawing;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
+using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
 
@@ -27,11 +28,13 @@ namespace ApiExamples
             //ExFor:MailMerge.FieldMergingCallback
             //ExFor:IFieldMergingCallback
             //ExFor:FieldMergingArgs
+            //ExFor:FieldMergingArgs.Field
             //ExFor:FieldMergingArgsBase.DocumentFieldName
             //ExFor:FieldMergingArgsBase.Document
             //ExFor:FieldMergingArgsBase.FieldValue
             //ExFor:IFieldMergingCallback.FieldMerging
             //ExFor:FieldMergingArgs.Text
+            //ExFor:FieldMergeField.TextBefore
             //ExSummary:Shows how to mail merge HTML data into a document.
             // File 'MailMerge.InsertHtml.doc' has merge field named 'htmlField1' in it.
             // File 'MailMerge.HtmlData.html' contains some valid HTML data.
@@ -63,14 +66,20 @@ namespace ApiExamples
                 // All merge fields that expect HTML data should be marked with some prefix, e.g. 'html'.
                 if (e.DocumentFieldName.StartsWith("html"))
                 {
-                    // Insert the text for this merge field as HTML data, using DocumentBuilder.
-                    DocumentBuilder builder = new DocumentBuilder(e.Document);
-                    builder.MoveToMergeField(e.DocumentFieldName);
-                    builder.InsertHtml((string)e.FieldValue);
+                    if (e.Field.GetFieldCode().Contains("\\b"))
+                    {
+                        FieldMergeField field = e.Field;
 
-                    // The HTML text itself should not be inserted.
-                    // We have already inserted it as an HTML.
-                    e.Text = "";
+                        // Insert the text for this merge field as HTML data, using DocumentBuilder.
+                        DocumentBuilder builder = new DocumentBuilder(e.Document);
+                        builder.MoveToMergeField(e.DocumentFieldName);
+                        builder.Write(field.TextBefore);
+                        builder.InsertHtml((string)e.FieldValue);
+
+                        // The HTML text itself should not be inserted.
+                        // We have already inserted it as an HTML.
+                        e.Text = "";
+                    }
                 }
             }
 

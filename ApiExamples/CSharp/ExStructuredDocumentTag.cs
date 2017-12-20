@@ -10,6 +10,7 @@ using Aspose.Words;
 using Aspose.Words.Markup;
 using NUnit.Framework;
 using System.IO;
+using Aspose.Words.BuildingBlocks;
 
 namespace ApiExamples
 {
@@ -111,6 +112,51 @@ namespace ApiExamples
 
             Assert.AreEqual("Enter any content that you want to repeat, including other content controls. You can also insert this control around table rows in order to repeat parts of a table.\r", sdts[0].GetText());
             Assert.AreEqual("Click here to enter text.\f", sdts[2].GetText());
+        }
+
+        [Test]
+        public void AccessToBuildingBlockPropertiesFromDocPartObjSdt()
+        {
+            Document doc = new Document(MyDir + "StructuredDocumentTag.BuildingBlocks.docx");
+
+            StructuredDocumentTag docPartObjSdt = (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
+
+            Assert.AreEqual(SdtType.DocPartObj, docPartObjSdt.SdtType);
+            Assert.AreEqual("Table of Contents", docPartObjSdt.BuildingBlockGallery);
+        }
+
+        [Test]
+        public void AccessToBuildingBlockPropertiesFromPlainTextSdt()
+        {
+            Document doc = new Document(MyDir + "StructuredDocumentTag.BuildingBlocks.docx");
+
+            StructuredDocumentTag plainTextSdt = (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 1, true);
+
+            Assert.AreEqual(SdtType.PlainText, plainTextSdt.SdtType);
+            Assert.That(() => plainTextSdt.BuildingBlockGallery, Throws.TypeOf<InvalidOperationException>(), "BuildingBlockType is only accessible for BuildingBlockGallery SDT type.");
+        }
+
+        [Test]
+        public void AccessToBuildingBlockPropertiesFromBuildingBlockGallerySdtType()
+        {
+            Document doc = new Document();
+
+            StructuredDocumentTag buildingBlockSdt = new StructuredDocumentTag(doc, SdtType.BuildingBlockGallery, MarkupLevel.Block)
+            {
+                BuildingBlockCategory = "Built-in",
+                BuildingBlockGallery = "Table of Contents"
+            };
+            
+            doc.FirstSection.Body.AppendChild(buildingBlockSdt);
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            buildingBlockSdt = (StructuredDocumentTag)doc.FirstSection.Body.GetChild(NodeType.StructuredDocumentTag, 0, true);
+
+            Assert.AreEqual(SdtType.BuildingBlockGallery, buildingBlockSdt.SdtType);
+            Assert.AreEqual("Table of Contents", buildingBlockSdt.BuildingBlockGallery);
+            Assert.AreEqual("Built-in", buildingBlockSdt.BuildingBlockCategory);
         }
     }
 }
