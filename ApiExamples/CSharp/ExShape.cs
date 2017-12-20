@@ -352,7 +352,7 @@ namespace ApiExamples
         public void ResolutionDefaultValues()
         {
             ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Jpeg);
-            
+
             Assert.AreEqual(96, imageOptions.HorizontalResolution);
             Assert.AreEqual(96, imageOptions.VerticalResolution);
         }
@@ -380,7 +380,7 @@ namespace ApiExamples
 
             OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
             officeMath.DisplayType = OfficeMathDisplayType.Display;
-            
+
             Assert.That(() => officeMath.Justification = OfficeMathJustification.Inline, Throws.TypeOf<ArgumentException>());
         }
 
@@ -420,7 +420,7 @@ namespace ApiExamples
 
             OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
             officeMath.DisplayType = OfficeMathDisplayType.Display;
-            
+
             Assert.Throws<ArgumentException>(() => officeMath.Justification = OfficeMathJustification.Inline);
         }
 
@@ -610,7 +610,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertOleObject("http://www.aspose.com", "htmlfile", true, false, null);
-            
+
             doc.Save(MyDir + @"\Artifacts\Document.InsertedOleObject.docx");
         }
 
@@ -629,14 +629,14 @@ namespace ApiExamples
 
             byte[] zipFileBytes = File.ReadAllBytes(DatabaseDir + "cat001.zip");
 
-            using (Stream stream = new MemoryStream(zipFileBytes))
+            using (MemoryStream stream = new MemoryStream(zipFileBytes))
             {
                 Shape shape = builder.InsertOleObject(stream, "Package", true, null);
 
                 OlePackage setOlePackage = shape.OleFormat.OlePackage;
                 setOlePackage.FileName = "Cat FileName.zip";
                 setOlePackage.DisplayName = "Cat DisplayName.zip";
-                
+
                 doc.Save(MyDir + @"\Artifacts\Shape.InsertOlePackage.docx");
             }
             //ExEnd
@@ -678,7 +678,7 @@ namespace ApiExamples
             chart.Series.Clear();
 
             // Add new series
-            ChartSeries series0 = chart.Series.Add("AW Series 0", new string[] { "AW0", "AW1", "AW2" }, new double[] { 2.5, 1.5, 3.5 });
+            ChartSeries series0 = chart.Series.Add("AW Series 0", new[] { "AW0", "AW1", "AW2" }, new[] { 2.5, 1.5, 3.5 });
 
             // Add DataLabel to the first point of the first series.
             ChartDataLabel chartDataLabel0 = series0.DataLabels.Add(0);
@@ -722,14 +722,14 @@ namespace ApiExamples
             seriesColl.Clear();
 
             // Create category names array, second category will be null.
-            String[] categories = new String[] { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
+            string[] categories = { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
 
             // Adding new series with empty (double.NaN) values.
             seriesColl.Add("AW Series 1", categories, new double[] { 1, 2, double.NaN, 4, 5, 6 });
             seriesColl.Add("AW Series 2", categories, new double[] { 2, 3, double.NaN, 5, 6, 7 });
 
-            Assert.That(() => seriesColl.Add("AW Series 3", categories, new double[] { double.NaN, 4, 5, double.NaN, double.NaN }), Throws.TypeOf<ArgumentException>());
-            Assert.That(() => seriesColl.Add("AW Series 4", categories, new double[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN }), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => seriesColl.Add("AW Series 3", categories, new[] { double.NaN, 4, 5, double.NaN, double.NaN }), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => seriesColl.Add("AW Series 4", categories, new[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN }), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -746,15 +746,55 @@ namespace ApiExamples
             seriesColl.Clear();
 
             // Create category names array, second category will be null.
-            String[] categories = new String[] { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
+            string[] categories = { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
 
             // Adding new series with empty (double.NaN) values.
-            seriesColl.Add("AW Series 1", categories, new double[] { 1, 2, double.NaN, 4, 5, 6 });
-            seriesColl.Add("AW Series 2", categories, new double[] { 2, 3, double.NaN, 5, 6, 7 });
-            seriesColl.Add("AW Series 3", categories, new double[] { double.NaN, 4, 5, double.NaN, 7, 8 });
-            seriesColl.Add("AW Series 4", categories, new double[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, 9 });
+            seriesColl.Add("AW Series 1", categories, new[] { 1, 2, double.NaN, 4, 5, 6 });
+            seriesColl.Add("AW Series 2", categories, new[] { 2, 3, double.NaN, 5, 6, 7 });
+            seriesColl.Add("AW Series 3", categories, new[] { double.NaN, 4, 5, double.NaN, 7, 8 });
+            seriesColl.Add("AW Series 4", categories, new[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, 9 });
 
             doc.Save(MyDir + @"\Artifacts\EmptyValuesInChartData.docx");
+        }
+
+        [Test]
+        public void ChartAxisProperties()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+
+            // Fill data.
+            chart.Series.Add("AW Series 1", new[] { "First", "Second", "Third", "Fourth", "Fifth" }, new double[] { 640, 320, 280, 120, 150 });
+
+            ChartAxis xAxis = chart.AxisX;
+            ChartAxis yAxis = chart.AxisY;
+
+            // Change the X axis to be category instead of date, so all the points will be put with equal interval on the X axis.
+            xAxis.CategoryType = AxisCategoryType.Automatic;
+
+            // Define X axis properties.
+            xAxis.Crosses = AxisCrosses.Automatic;
+            xAxis.ReverseOrder = true;
+            xAxis.MajorTickMark = AxisTickMark.Cross;
+            xAxis.MinorTickMark = AxisTickMark.Outside;
+            xAxis.TickLabelOffset = 200;
+
+            // Define Y axis properties.
+            yAxis.TickLabelPosition = AxisTickLabelPosition.High;
+            yAxis.MajorUnit = 100;
+            yAxis.MinorUnit = 50;
+            yAxis.DisplayUnit.Unit = AxisBuiltInUnit.Hundreds;
+            yAxis.Scaling.Minimum = 100;
+            yAxis.Scaling.Maximum = 700;
+
+            doc.Save(MyDir + "123.docx");
         }
     }
 }
