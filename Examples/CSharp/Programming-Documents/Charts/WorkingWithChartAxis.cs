@@ -16,6 +16,10 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
             string dataDir = RunExamples.GetDataDir_WorkingWithCharts();
 
             DefineXYAxisProperties(dataDir);
+            SetDateTimeValuesToAxis(dataDir);
+            SetNumberFormatForAxis(dataDir);
+            SetboundsOfAxis(dataDir);
+            SetIntervalUnitBetweenLabelsOnAxis(dataDir);
         }
 
         public static void DefineXYAxisProperties(String dataDir)

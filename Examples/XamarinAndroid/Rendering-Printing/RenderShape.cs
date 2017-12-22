@@ -1,6 +1,7 @@
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Rendering;
+using SkiaSharp;
 using System.Drawing;
 using System.IO;
 
@@ -37,20 +38,18 @@ namespace XamarinAndroid.Rendering_Printing
             // And make sure that the graphics canvas is large enough to compensate for this.
             int maxSide = System.Math.Max(shapeSizeInPixels.Width, shapeSizeInPixels.Height);
 
-            using (Android.Graphics.Bitmap bitmap = Android.Graphics.Bitmap.CreateBitmap((int)(maxSide * 1.25), 
-                                                    (int)(maxSide * 1.25), 
-                                                    Android.Graphics.Bitmap.Config.Argb8888))
+            using (SkiaSharp.SKBitmap bitmap = new SkiaSharp.SKBitmap((int)(maxSide * 1.25), (int)(maxSide * 1.25)))
             {
                 // Rendering to a graphics object means we can specify settings and transformations to be applied to 
                 // The shape that is rendered. In our case we will rotate the rendered shape.
-                using (Android.Graphics.Canvas gr = new Android.Graphics.Canvas(bitmap))
+                using (SkiaSharp.SKCanvas gr = new SkiaSharp.SKCanvas(bitmap))
                 {
                     // Clear the shape with the background color of the document.
-                    gr.DrawColor(new Android.Graphics.Color(shape.Document.PageColor.ToArgb()));
+                    gr.DrawColor(new SkiaSharp.SKColor(shape.Document.PageColor.R, shape.Document.PageColor.G, shape.Document.PageColor.B, shape.Document.PageColor.A));
                     // Center the rotation using translation method below
                     gr.Translate((float)bitmap.Width / 8, (float)bitmap.Height / 2);
                     // Rotate the image by 45 degrees.
-                    gr.Rotate(45);
+                    gr.RotateDegrees(45);
                     // Undo the translation.
                     gr.Translate(-(float)bitmap.Width / 8, -(float)bitmap.Height / 2);
 
@@ -61,7 +60,8 @@ namespace XamarinAndroid.Rendering_Printing
                 // Save output to file.
                 using (System.IO.FileStream fs = System.IO.File.Create(dataDir + "/RenderToSize_Out.png"))
                 {
-                    bitmap.Compress(Android.Graphics.Bitmap.CompressFormat.Png, 100, fs);
+                    SKData d = SKImage.FromBitmap(bitmap).Encode(SKEncodedImageFormat.Png, 100);
+                    d.SaveTo(fs);
                 }
             }
 

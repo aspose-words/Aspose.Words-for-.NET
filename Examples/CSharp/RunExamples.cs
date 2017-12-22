@@ -251,6 +251,7 @@ namespace Aspose.Words.Examples.CSharp
             // WorkWithChartDataLabel.Run();
             // WorkWithSingleChartDataPoint.Run();
             // WorkWithSingleChartSeries.Run();
+            //WorkingWithChartAxis.Run();
 
             //// Theme
             //// =====================================================
