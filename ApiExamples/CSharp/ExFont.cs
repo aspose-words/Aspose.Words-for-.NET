@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -135,8 +135,7 @@ namespace ApiExamples
             doc.Save(MyDir + @"/Artifacts/Document.docx");
             //ExEnd
         }
-        
-        //This is just a test, no need adding example tags.
+
         [Test]
         [TestCase(true, false, false, Description = "Save a document with embedded TrueType fonts. System fonts are not included. Saves full versions of embedding fonts.")]
         [TestCase(true, true, false, Description = "Save a document with embedded TrueType fonts. System fonts are included. Saves full versions of embedding fonts.")]
@@ -630,7 +629,6 @@ namespace ApiExamples
         }
         //ExEnd
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void FontSubstitutionWarnings()
         {
@@ -653,7 +651,6 @@ namespace ApiExamples
             Assert.True(callback.mFontWarnings[1].Description.Equals("Font 'Times New Roman' has not been found. Using 'Noticia Text' font instead. Reason: closest match according to font info from the document."));
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void FontSubstitutionWarningsClosestMatch()
         {
@@ -689,7 +686,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        
         [Test]
         public void RemoveHiddenContentFromDocument()
         {

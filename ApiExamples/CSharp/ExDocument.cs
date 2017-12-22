@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -826,6 +826,34 @@ namespace ApiExamples
         }
 
         [Test]
+        public void SignPdfDocument()
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions
+            //ExFor:PdfDigitalSignatureDetails
+            //ExFor:PdfSaveOptions.DigitalSignatureDetails
+            //ExFor:PdfDigitalSignatureDetails.#ctor(CertificateHolder, String, String, DateTime)
+            //ExId:SignPDFDocument
+            //ExSummary:Shows how to sign a generated PDF document using Aspose.Words.
+            // Create a simple document from scratch.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Test Signed PDF.");
+
+            // Load the certificate from disk.
+            // The other constructor overloads can be used to load certificates from different locations.
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+
+            // Pass the certificate and details to the save options class to sign with.
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.DigitalSignatureDetails = new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", DateTime.Now);
+
+            // Save the document as PDF with the digital signature set.
+            doc.Save(MyDir + @"\Artifacts\Document.Signed.pdf", options);
+            //ExEnd
+        }
+
+        [Test]
         public void AppendAllDocumentsInFolder()
         {
             String path = MyDir + @"\Artifacts\Document.AppendDocumentsFromFolder.doc";
@@ -909,6 +937,7 @@ namespace ApiExamples
             //ExFor:Document.AttachedTemplate
             //ExSummary:Opens a document, makes sure it is no longer attached to a template and saves the document.
             Document doc = new Document(MyDir + "Document.doc");
+
             doc.AttachedTemplate = "";
             doc.Save(MyDir + @"\Artifacts\Document.DetachTemplate.doc");
             //ExEnd
@@ -984,27 +1013,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ControlListLabelsExportToHtml()
-        {
-            Document doc = new Document(MyDir + "Lists.PrintOutAllLists.doc");
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html);
-
-            // This option uses <ul> and <ol> tags are used for list label representation if it doesn't cause formatting loss, 
-            // otherwise HTML <p> tag is used. This is also the default value.
-            saveOptions.ExportListLabels = ExportListLabels.Auto;
-            doc.Save(MyDir + @"\Artifacts\Document.ExportListLabels Auto.html", saveOptions);
-
-            // Using this option the <p> tag is used for any list label representation.
-            saveOptions.ExportListLabels = ExportListLabels.AsInlineText;
-            doc.Save(MyDir + @"\Artifacts\Document.ExportListLabels InlineText.html", saveOptions);
-
-            // The <ul> and <ol> tags are used for list label representation. Some formatting loss is possible.
-            saveOptions.ExportListLabels = ExportListLabels.ByHtmlTags;
-            doc.Save(MyDir + @"\Artifacts\Document.ExportListLabels HtmlTags.html", saveOptions);
-        }
-
-        [Test]
-        public void DocumentGetText_ToString()
+        public void DocumentGetTextToString()
         {
             //ExStart
             //ExFor:CompositeNode.GetText
@@ -1307,28 +1316,121 @@ namespace ApiExamples
         }
 
         [Test]
-        public void FootnoteOptions()
+        [Ignore("WORDSNET-16099")]
+        public void SetFootnoteNumberOfColumns()
+        {
+            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+
+            Assert.AreEqual(0, doc.FootnoteOptions.Columns);
+
+            // Lets change number of columns for footnotes on page. If columns value is 0 than footnotes area is formatted with a number of columns based on
+            // the number of columns on the displayed page
+            doc.FootnoteOptions.Columns = 2;
+            doc.Save(MyDir + @"\Artifacts\Document.FootnoteOptions.docx");
+
+            //Assert that number of columns gets correct
+            doc = new Document(MyDir + @"\Artifacts\Document.FootnoteOptions.docx");
+            Assert.AreEqual(2, doc.FirstSection.PageSetup.FootnoteOptions.Columns);
+        }
+
+        [Test]
+        public void SetFootnotePosition()
         {
             //ExStart
-            //ExFor:Document.FootnoteOptions
-            //ExFor:FootnoteLocation
-            //ExSummary:Shows how to insert a footnote and apply footnote options.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
+            //ExFor:FootnoteOptions.Position
+            //ExSummary:Shows how to define footnote position in the document.
+            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
 
-            builder.InsertFootnote(FootnoteType.Footnote, "My Footnote.");
-
-            // Change your document's footnote options.
-            doc.FootnoteOptions.Location = FootnoteLocation.BottomOfPage;
-            doc.FootnoteOptions.NumberStyle = NumberStyle.Arabic;
-            doc.FootnoteOptions.StartNumber = 1;
-
-            doc.Save(MyDir + @"\Artifacts\Document.FootnoteOptions.doc");
+            doc.FootnoteOptions.Position = FootnotePosition.BeneathText;
             //ExEnd
         }
 
         [Test]
-        public void Compare()
+        public void SetFootnoteNumberFormat()
+        {
+            //ExStart
+            //ExFor:FootnoteOptions.NumberStyle
+            //ExSummary:Shows how to define numbering format for footnotes in the document.
+            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+
+            doc.FootnoteOptions.NumberStyle = NumberStyle.Arabic1;
+            //ExEnd
+        }
+
+        [Test]
+        public void SetFootnoteRestartNumbering()
+        {
+            //ExStart
+            //ExFor:FootnoteOptions.RestartRule
+            //ExSummary:Shows how to define when automatic numbering for footnotes restarts in the document.
+            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+
+            doc.FootnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
+            //ExEnd
+        }
+
+        [Test]
+        public void SetFootnoteStartingNumber()
+        {
+            //ExStart
+            //ExFor:FootnoteOptions.StartNumber
+            //ExSummary:Shows how to define the starting number or character for the first automatically numbered footnotes.
+            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+
+            doc.FootnoteOptions.StartNumber = 1;
+            //ExEnd
+        }
+
+        [Test]
+        public void SetEndnotePosition()
+        {
+            //ExStart
+            //ExFor:EndnoteOptions.Position
+            //ExSummary:Shows how to define endnote position in the document.
+            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+
+            doc.EndnoteOptions.Position = EndnotePosition.EndOfSection;
+            //ExEnd
+        }
+
+        [Test]
+        public void SetEndnoteNumberFormat()
+        {
+            //ExStart
+            //ExFor:EndnoteOptions.NumberStyle
+            //ExSummary:Shows how to define numbering format for endnotes in the document.
+            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+
+            doc.EndnoteOptions.NumberStyle = NumberStyle.Arabic1;
+            //ExEnd
+        }
+
+        [Test]
+        public void SetEndnoteRestartNumbering()
+        {
+            //ExStart
+            //ExFor:EndnoteOptions.RestartRule
+            //ExSummary:Shows how to define when automatic numbering for endnotes restarts in the document.
+            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+
+            doc.EndnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
+            //ExEnd
+        }
+
+        [Test]
+        public void SetEndnoteStartingNumber()
+        {
+            //ExStart
+            //ExFor:EndnoteOptions.StartNumber
+            //ExSummary:Shows how to define the starting number or character for the first automatically numbered endnotes.
+            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+
+            doc.EndnoteOptions.StartNumber = 1;
+            //ExEnd
+        }
+
+        [Test]
+        public void CompareDocuments()
         {
             //ExStart
             //ExFor:Document.Compare(Document, String, DateTime)
@@ -1348,11 +1450,51 @@ namespace ApiExamples
             doc1.Revisions.AcceptAll();
 
             // doc1, when saved, now resembles doc2.
-            doc1.Save(MyDir + @"\Artifacts\Document.CompareEx.doc");
+            doc1.Save(MyDir + @"\Artifacts\Document.Compare.doc");
             //ExEnd
         }
 
-        //This is just a test, no need adding example tags.
+        [Test]
+        public void CompareDocumentsWithCompareOptions()
+        {
+            //ExStart
+            //ExFor:CompareOptions.IgnoreFormatting
+            //ExFor:CompareOptions.Target
+            //ExSummary: Shows how to specify which document shall be used as a target during comparison
+            Document doc1 = new Document(MyDir + "Document.CompareOptions.1.docx");
+            Document doc2 = new Document(MyDir + "Document.CompareOptions.2.docx");
+
+            //ComparisonTargetType with IgnoreFormatting setting determines which document has to be used as formatting source for ranges of equal text.
+            Aspose.Words.CompareOptions compareOptions = new Aspose.Words.CompareOptions();
+            compareOptions.IgnoreFormatting = true;
+            compareOptions.Target = ComparisonTargetType.New;
+
+            doc1.Compare(doc2, "vderyushev", DateTime.Now, compareOptions);
+
+            doc1.Save(MyDir + @"\Artifacts\Document.CompareOptions.docx");
+            //ExEnd
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\Document.CompareOptions.docx", MyDir + @"\Golds\Document.CompareOptions Gold.docx"));
+        }
+
+        [Test]
+        [Description("Result of this test is normal behavior MS Word. The bullet is missing for the 3rd list item")]
+        public void UseCurrentDocumentFormattingWhenCompareDocuments()
+        {
+            Document doc1 = new Document(MyDir + "Document.CompareOptions.1.docx");
+            Document doc2 = new Document(MyDir + "Document.CompareOptions.2.docx");
+
+            Aspose.Words.CompareOptions compareOptions = new Aspose.Words.CompareOptions();
+            compareOptions.IgnoreFormatting = true;
+            compareOptions.Target = ComparisonTargetType.Current;
+
+            doc1.Compare(doc2, "vderyushev", DateTime.Now, compareOptions);
+
+            doc1.Save(MyDir + @"\Artifacts\Document.UseCurrentDocumentFormatting.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\Document.UseCurrentDocumentFormatting.docx", MyDir + @"\Golds\Document.UseCurrentDocumentFormatting Gold.docx"));
+        }
+
         [Test]
         public void CompareDocumentWithRevisions()
         {
@@ -1503,12 +1645,12 @@ namespace ApiExamples
 
             Paragraph para = doc.FirstSection.Body.Paragraphs[0];
             para.AppendChild(run);
-            
+
             doc.HyphenationOptions.AutoHyphenation = true;
             doc.HyphenationOptions.ConsecutiveHyphenLimit = 2;
             doc.HyphenationOptions.HyphenationZone = 720; // 0.5 inch
             doc.HyphenationOptions.HyphenateCaps = true;
-            
+
             doc.Save(MyDir + @"\Artifacts\HyphenationOptions.docx");
             //ExEnd
 
@@ -1520,7 +1662,6 @@ namespace ApiExamples
             Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\HyphenationOptions.docx", MyDir + @"\Golds\Document.HyphenationOptions Gold.docx"));
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void HyphenationOptionsDefaultValues()
         {
@@ -1535,12 +1676,11 @@ namespace ApiExamples
             Assert.AreEqual(true, doc.HyphenationOptions.HyphenateCaps);
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void HyphenationOptionsExceptions()
         {
             Document doc = new Document();
-            
+
             doc.HyphenationOptions.ConsecutiveHyphenLimit = 0;
             Assert.That(() => doc.HyphenationOptions.HyphenationZone = 0, Throws.TypeOf<ArgumentOutOfRangeException>());
 
@@ -1552,12 +1692,12 @@ namespace ApiExamples
         public void ExtractPlainTextFromDocument()
         {
             //ExStart
-            //ExFor:PlainTextDocument(String)
-            //ExFor:PlainTextDocument(String, LoadOptions)
+            //ExFor:PlainTextDocument.#ctor(String)
+            //ExFor:PlainTextDocument.#ctor(String, LoadOptions)
             //ExSummary:Show how to simply extract text from a document.
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.AllowTrailingWhitespaceForListItems = false;
-            
+
             PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmark.docx");
             Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); //ExSkip 
 
@@ -1596,8 +1736,8 @@ namespace ApiExamples
         public void ExtractPlainTextFromStream()
         {
             //ExStart
-            //ExFor:PlainTextDocument(Stream)
-            //ExFor:PlainTextDocument(Stream, LoadOptions)
+            //ExFor:PlainTextDocument.#ctor(Stream)
+            //ExFor:PlainTextDocument.#ctor(Stream, LoadOptions)
             //ExSummary:Show how to simply extract text from a stream.
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.AllowTrailingWhitespaceForListItems = false;

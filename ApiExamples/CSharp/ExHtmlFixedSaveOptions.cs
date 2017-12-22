@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -7,6 +7,7 @@
 
 using System.Text;
 using System;
+using System.IO;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
@@ -68,7 +69,7 @@ namespace ApiExamples
 
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
             htmlFixedSaveOptions.Encoding = new UTF32Encoding();
-            
+
             doc.Save(MyDir + @"\Artifacts\EncodingUsingNewEncoding.html", htmlFixedSaveOptions);
         }
 
@@ -136,7 +137,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void PageMarginsException()
         {
@@ -162,5 +162,46 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\HtmlFixedPageMargins.html", saveOptions);
             //ExEnd
         }
+
+        [Test]
+        public void UsingMachineFonts()
+        {
+            //ExStart
+            //ExFor:HtmlFixedSaveOptions.UseTargetMachineFonts
+            //ExSummary: Shows how used target machine fonts to display the document
+            Document doc = new Document(MyDir + "Font.DisapearingBulletPoints.doc");
+
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions();
+            saveOptions.UseTargetMachineFonts = true;
+            saveOptions.FontFormat = ExportFontFormat.Ttf;
+            saveOptions.ExportEmbeddedFonts = false;
+            saveOptions.ResourceSavingCallback = new ResourceSavingCallback();
+
+            doc.Save(MyDir + @"\Artifacts\UseMachineFonts Out.html", saveOptions);
+        }
+
+        private class ResourceSavingCallback : IResourceSavingCallback
+        {
+            /// <summary>
+            /// Called when Aspose.Words saves an external resource to fixed page HTML or SVG.
+            /// </summary>
+            public void ResourceSaving(ResourceSavingArgs args)
+            {
+                args.ResourceStream = new MemoryStream();
+                args.KeepResourceStreamOpen = true;
+
+                string extension = Path.GetExtension(args.ResourceFileName);
+                switch (extension)
+                {
+                    case ".ttf":
+                    case ".woff":
+                    {
+                        Assert.Fail("'ResourceSavingCallback' is not fired for fonts when 'UseTargetMachineFonts' is true");
+                        break;
+                    }
+                }
+            }
+        }
+        //ExEnd
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -9,7 +9,11 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Tables;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.parser;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -17,7 +21,7 @@ namespace ApiExamples
     /// <summary>
     /// Functions for operations with document and content
     /// </summary>
-    internal static class DocumentHelper
+    internal class DocumentHelper : ApiExampleBase
     {
         /// <summary>
         /// Create new document without run in the paragraph
@@ -134,9 +138,69 @@ namespace ApiExamples
         }
 
         /// <summary>
+        /// Compare word documents
+        /// </summary>
+        /// <param name="filePathDoc1">First document path</param>
+        /// <param name="filePathDoc2">Second document path</param>
+        /// <returns>Result of compare document</returns>
+        internal static bool CompareDocs(string filePathDoc1, string filePathDoc2)
+        {
+            Document doc1 = new Document(filePathDoc1);
+            Document doc2 = new Document(filePathDoc2);
+
+            if (doc1.GetText() == doc2.GetText())
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Insert run into the current document
+        /// </summary>
+        /// <param name="doc">Current document</param>
+        /// <param name="text">Custom text</param>
+        /// <param name="paraIndex">Paragraph index</param>
+        internal static Run InsertNewRun(Document doc, string text, int paraIndex)
+        {
+            Paragraph para = GetParagraph(doc, paraIndex);
+
+            Run run = new Run(doc) { Text = text };
+
+            para.AppendChild(run);
+
+            return run;
+        }
+
+        /// <summary>
+        /// Insert text into the current document
+        /// </summary>
+        /// <param name="builder">Current document builder</param>
+        /// <param name="textStrings">Custom text</param>
+        internal static void InsertBuilderText(DocumentBuilder builder, string[] textStrings)
+        {
+            foreach (string textString in textStrings)
+            {
+                builder.Writeln(textString);
+            }
+        }
+
+        /// <summary>
+        /// Get paragraph text of the current document
+        /// </summary>
+        /// <param name="doc">Current document</param>
+        /// <param name="paraIndex">Paragraph number from collection</param>
+        internal static string GetParagraphText(Document doc, int paraIndex)
+        {
+            return doc.FirstSection.Body.Paragraphs[paraIndex].GetText();
+        }
+
+        /// <summary>
         /// Insert new table in the document
         /// </summary>
-        private static void InsertTable(DocumentBuilder builder)
+        /// <param name="builder">Current document builder</param>
+        internal static Table InsertTable(DocumentBuilder builder)
         {
             //Start creating a new table
             Table table = builder.StartTable();
@@ -165,12 +229,17 @@ namespace ApiExamples
             builder.EndRow();
 
             builder.EndTable();
+
+            return table;
         }
 
         /// <summary>
         /// Insert TOC entries in the document
         /// </summary>
-        private static void InsertToc(DocumentBuilder builder)
+        /// <param name="builder">
+        /// The builder.
+        /// </param>
+        internal static void InsertToc(DocumentBuilder builder)
         {
             // Creating TOC entries
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
@@ -195,84 +264,15 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Compare word documents
-        /// </summary>
-        /// <param name="filePathDoc1">Frist document path</param>
-        /// <param name="filePathDoc2">Second document path</param>
-        /// <returns>Result of compare document</returns>
-        internal static bool CompareDocs(String filePathDoc1, String filePathDoc2)
-        {
-            Document doc1 = new Document(filePathDoc1);
-            Document doc2 = new Document(filePathDoc2);
-
-            if (doc1.GetText() == doc2.GetText())
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Insert run into the current document
+        /// Get section text of the current document
         /// </summary>
         /// <param name="doc">Current document</param>
-        /// <param name="text">Custom text</param>
-        /// <param name="paraIndex">Paragraph index</param>
-        internal static Run InsertNewRun(Document doc, String text, int paraIndex)
-        {
-            Paragraph para = GetParagraph(doc, paraIndex);
-
-            Run run = new Run(doc) { Text = text };
-
-            para.AppendChild(run);
-
-            return run;
-        }
-
-        /// <summary>
-        /// Insert text into the current document
-        /// </summary>
-        /// <param name="builder">Current document builder</param>
-        /// <param name="textStrings">Custom text</param>
-        internal static void InsertBuilderText(DocumentBuilder builder, String[] textStrings)
-        {
-            foreach (String textString in textStrings)
-            {
-                builder.Writeln(textString);
-            }
-        }
-
-        /// <summary>
-        /// Get paragraph text of the current document
-        /// </summary>
-        /// <param name="doc">
-        /// Current document
-        /// </param>
-        /// <param name="paraIndex">
-        /// Paragraph number from collection
-        /// </param>
+        /// <param name="secIndex">Section number from collection</param>
         internal static String GetSectionText(Document doc, int secIndex)
         {
             return doc.Sections[secIndex].GetText();
         }
 
-        /// <summary>
-        /// Get paragraph text of the current document
-        /// </summary>
-        /// <param name="doc">
-        /// Current document
-        /// </param>
-        /// <param name="paraIndex">
-        /// Paragraph number from collection
-        /// </param>
-        /// <param name="doc">Current document</param>
-        /// <param name="paraIndex">Paragraph number from collection</param>
-        internal static String GetParagraphText(Document doc, int paraIndex)
-        {
-            return doc.FirstSection.Body.Paragraphs[paraIndex].GetText();
-        }
-        
         /// <summary>
         /// Get paragraph of the current document
         /// </summary>
@@ -282,5 +282,103 @@ namespace ApiExamples
         {
             return doc.FirstSection.Body.Paragraphs[paraIndex];
         }
+
+        /// <summary>
+        /// comparing two PDF documents.
+        /// </summary>
+        /// <param name="firstPdf">
+        /// The first PDF document.
+        /// </param>
+        /// <param name="secondPdf">
+        /// The second PDF document.
+        /// </param>
+        internal static void ComparePdf(string firstPdf, string secondPdf)
+        {
+            if (File.Exists(firstPdf) && File.Exists(secondPdf))
+            {
+                PdfReader reader = new PdfReader(firstPdf);
+                for (int page = 1; page <= reader.NumberOfPages; page++)
+                {
+                    ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
+                    mFirstFile += PdfTextExtractor.GetTextFromPage(reader, page, strategy);
+                }
+
+                PdfReader reader1 = new PdfReader(secondPdf);
+                for (int page = 1; page <= reader1.NumberOfPages; page++)
+                {
+                    ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
+                    mSecondFile += PdfTextExtractor.GetTextFromPage(reader1, page, strategy);
+                }
+
+                reader.Dispose();
+                reader1.Dispose();
+            }
+            else
+            {
+                Console.WriteLine("Files does not exist.");
+            }
+
+            List<string> file1Diff;
+            List<string> file2Diff;
+
+            IEnumerable<string> file1 = mFirstFile.Trim().Split('\r', '\n');
+            IEnumerable<string> file2 = mSecondFile.Trim().Split('\r', '\n');
+            file1Diff = file1.ToList();
+            file2Diff = file2.ToList();
+
+            if (file2.Count() > file1.Count())
+            {
+                Console.WriteLine("File 1 has less number of lines than File 2.");
+                for (int i = 0; i < file1Diff.Count; i++)
+                {
+                    if (!file1Diff[i].Equals(file2Diff[i]))
+                    {
+                        Console.WriteLine("File 1 content: " + file1Diff[i] + "\r\n" + "File 2 content: " + file2Diff[i]);
+                    }
+                }
+
+                for (int i = file1Diff.Count; i < file2Diff.Count; i++)
+                {
+                    Console.WriteLine("File 2 extra content: " + file2Diff[i]);
+                }
+
+                Assert.Fail();
+            }
+            else if (file2.Count() < file1.Count())
+            {
+                Console.WriteLine("File 2 has less number of lines than File 1.");
+
+                for (int i = 0; i < file2Diff.Count; i++)
+                {
+                    if (!file1Diff[i].Equals(file2Diff[i]))
+                    {
+                        Console.WriteLine("File 1 content: " + file1Diff[i] + "\r\n" + "File 2 content: " + file2Diff[i]);
+                    }
+                }
+
+                for (int i = file2Diff.Count; i < file1Diff.Count; i++)
+                {
+                    Console.WriteLine("File 1 extra content: " + file1Diff[i]);
+                }
+
+                Assert.Fail();
+            }
+            else
+            {
+                Console.WriteLine("File 1 and File 2, both are having same number of lines.");
+
+                for (int i = 0; i < file1Diff.Count; i++)
+                {
+                    if (!file1Diff[i].Equals(file2Diff[i]))
+                    {
+                        Console.WriteLine("File 1 content: " + file1Diff[i] + "\r\n" + "File 2 Content: " + file2Diff[i]);
+                    }
+                }
+
+                Assert.Pass();
+            }
+        }
+
+        private static string mFirstFile, mSecondFile;
     }
 }

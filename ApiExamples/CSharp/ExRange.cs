@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -51,7 +51,6 @@ namespace ApiExamples
             Assert.AreEqual("Hello James Bond,\r\x000c", doc.GetText());
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         public void ReplaceWithString()
         {

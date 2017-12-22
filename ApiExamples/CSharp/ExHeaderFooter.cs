@@ -1,10 +1,12 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System.Text;
+using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Saving;
@@ -116,7 +118,7 @@ namespace ApiExamples
             FindReplaceOptions options = new FindReplaceOptions();
             options.MatchCase = false;
             options.FindWholeWordsOnly = false;
-
+            
             footer.Range.Replace("(C) 2006 Aspose Pty Ltd.", "Copyright (C) 2011 by Aspose Pty Ltd.", options);
 
             doc.Save(MyDir + @"\Artifacts\HeaderFooter.ReplaceText.doc");
@@ -126,6 +128,62 @@ namespace ApiExamples
             doc = new Document(MyDir + @"\Artifacts\HeaderFooter.ReplaceText.doc");
             Assert.IsTrue(doc.Range.Text.Contains("Copyright (C) 2011 by Aspose Pty Ltd."));
         }
+
+        [Test]
+        public void HeaderFooterOrder()
+        {
+            //ExStart
+            //ExFor:IReplacingCallback
+            //ExFor:Range.Replace(String, String, FindReplaceOptions)
+            //ExSummary: Show changes for headers and footers order
+            Document doc = new Document(MyDir + "HeaderFooter.HeaderFooterOrder.docx");
+
+            //Assert that we use special header and footer for the first page
+            //The order for this: first header\footer, even header\footer, primary header\footer
+            Section firstPageSection = doc.FirstSection;
+            Assert.AreEqual(true, firstPageSection.PageSetup.DifferentFirstPageHeaderFooter);
+
+            FindReplaceOptions options = new FindReplaceOptions();
+            ReplaceLog logger = new ReplaceLog();
+            options.ReplacingCallback = logger;
+
+            doc.Range.Replace(new Regex("(header|footer)"), "", options);
+
+            Assert.AreEqual("First header\r\nFirst footer\r\nSecond header\r\nSecond footer\r\nThird header\r\n" +
+                            "Third footer\r\n", logger.Text);
+
+            //Prepare our string builder for assert results without "DifferentFirstPageHeaderFooter"
+            logger.ClearText();
+            
+            //Remove special first page
+            //The order for this: primary header, default header, primary footer, default footer, even header\footer
+            firstPageSection.PageSetup.DifferentFirstPageHeaderFooter = false;
+
+            doc.Range.Replace(new Regex("(header|footer)"), "", options);
+            Assert.AreEqual("Third header\r\nFirst header\r\nThird footer\r\nFirst footer\r\nSecond header\r\nSecond footer\r\n", logger.Text);
+        }
+
+        private class ReplaceLog : IReplacingCallback
+        {
+            public ReplaceAction Replacing(ReplacingArgs e)
+            {
+                _textBuilder.AppendLine(e.MatchNode.GetText());
+                return ReplaceAction.Skip;
+            }
+
+            internal void ClearText()
+            {
+                _textBuilder.Clear();
+            }
+
+            internal string Text
+            {
+                get { return _textBuilder.ToString(); }
+            }
+
+            private readonly StringBuilder _textBuilder = new StringBuilder();
+        }
+        //ExEnd
 
         [Test]
         public void Primer()

@@ -26,11 +26,8 @@ namespace ApiExamples.TestData
         }
 
         public Stream Stream { get; set; }
-
         public Image Image { get; set; }
-
         public byte[] Bytes { get; set; }
-
         public string Uri { get; set; }
     }
 }

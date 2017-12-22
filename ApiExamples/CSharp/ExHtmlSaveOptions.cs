@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -134,6 +134,27 @@ namespace ApiExamples
         }
 
         [Test]
+        public void ControlListLabelsExportToHtml()
+        {
+            Document doc = new Document(MyDir + "Lists.PrintOutAllLists.doc");
+
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html);
+
+            // This option uses <ul> and <ol> tags are used for list label representation if it doesn't cause formatting loss, 
+            // otherwise HTML <p> tag is used. This is also the default value.
+            saveOptions.ExportListLabels = ExportListLabels.Auto;
+            doc.Save(MyDir + @"\Artifacts\Document.ExportListLabels Auto.html", saveOptions);
+
+            // Using this option the <p> tag is used for any list label representation.
+            saveOptions.ExportListLabels = ExportListLabels.AsInlineText;
+            doc.Save(MyDir + @"\Artifacts\Document.ExportListLabels InlineText.html", saveOptions);
+
+            // The <ul> and <ol> tags are used for list label representation. Some formatting loss is possible.
+            saveOptions.ExportListLabels = ExportListLabels.ByHtmlTags;
+            doc.Save(MyDir + @"\Artifacts\Document.ExportListLabels HtmlTags.html", saveOptions);
+        }
+
+        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void ExportUrlForLinkedImage(bool export)
@@ -145,7 +166,7 @@ namespace ApiExamples
 
             doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.ExportUrlForLinkedImage.html", saveOptions);
 
-            var dirFiles = Directory.GetFiles(MyDir + @"\Artifacts\", "HtmlSaveOptions.ExportUrlForLinkedImage.001.png", SearchOption.AllDirectories);
+            string[] dirFiles = Directory.GetFiles(MyDir + @"\Artifacts\", "HtmlSaveOptions.ExportUrlForLinkedImage.001.png", SearchOption.AllDirectories);
 
             if (dirFiles.Length == 0)
                 DocumentHelper.FindTextInFile(MyDir + @"\Artifacts\HtmlSaveOptions.ExportUrlForLinkedImage.html", "<img src=\"http://www.aspose.com/images/aspose-logo.gif\"");
@@ -187,6 +208,43 @@ namespace ApiExamples
         }
 
         [Test]
+        public void ConfigForSavingExternalResources()
+        {
+            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportPageMargins.docx");
+
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.CssStyleSheetType = CssStyleSheetType.External;
+            saveOptions.ExportFontResources = true;
+            saveOptions.ResourceFolder = "Resources";
+            saveOptions.ResourceFolderAlias = "https://www.aspose.com/";
+
+            doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.ExportPageMargins Out.html", saveOptions);
+
+            string[] imageFiles = Directory.GetFiles(MyDir + @"\Artifacts\Resources\", "*.png", SearchOption.AllDirectories);
+            Assert.AreEqual(3, imageFiles.Length);
+
+            string[] fontFiles = Directory.GetFiles(MyDir + @"\Artifacts\Resources\", "*.ttf", SearchOption.AllDirectories);
+            Assert.AreEqual(1, fontFiles.Length);
+
+            string[] cssFiles = Directory.GetFiles(MyDir + @"\Artifacts\Resources\", "*.css", SearchOption.AllDirectories);
+            Assert.AreEqual(1, cssFiles.Length);
+
+            DocumentHelper.FindTextInFile(MyDir + @"\Artifacts\HtmlSaveOptions.ExportPageMargins Out.html", "<link href=\"https://www.aspose.com/HtmlSaveOptions.ExportPageMargins Out.css\"");
+        }
+
+        [Test]
+        public void ConvertFontsAsBase64()
+        {
+            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportPageMargins.docx");
+
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.CssStyleSheetType = CssStyleSheetType.External;
+            saveOptions.ResourceFolder = "Resources";
+            saveOptions.ExportFontResources = true;
+            saveOptions.ExportFontsAsBase64 = true;
+            
+            doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.ExportPageMargins Out.html", saveOptions);
+}
         [TestCase(HtmlVersion.Html5)]
         [TestCase(HtmlVersion.Xhtml)]
         public void Html5Support(HtmlVersion htmlVersion)
@@ -195,8 +253,6 @@ namespace ApiExamples
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.HtmlVersion = htmlVersion;
-
-            
         }
 
         [Test]
@@ -259,13 +315,12 @@ namespace ApiExamples
             saveOptions.ResourceFolder = MyDir + @"\Artifacts\Resources";
             saveOptions.ResourceFolderAlias = "http://example.com/resources";
 
-            doc.Save(MyDir + "HtmlSaveOptions.ResourceFolder Out.html", saveOptions);
+            doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.ResourceFolder Out.html", saveOptions);
 
             Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Images", "HtmlSaveOptions.ResourceFolder Out.001.jpeg", SearchOption.AllDirectories));
             Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Images", "HtmlSaveOptions.ResourceFolder Out.002.png", SearchOption.AllDirectories));
             Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Fonts", "HtmlSaveOptions.ResourceFolder Out.calibri.ttf", SearchOption.AllDirectories));
             Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Resources", "HtmlSaveOptions.ResourceFolder Out.css", SearchOption.AllDirectories));
-
         }
     }
 }

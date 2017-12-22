@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -128,7 +128,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //This is just a test, no need adding example tags.
         [Test]
         [TestCase(MetafileRenderingMode.Bitmap)]
         [TestCase(MetafileRenderingMode.Vector)]

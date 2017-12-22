@@ -11,21 +11,17 @@
             Logical = logical;
         }
 
-        public int? Value1 { get; set; }
-
-        public double Value2 { get; set; }
-
-        public int Value3 { get; set; }
-
-        public int? Value4 { get; set; }
-
-        public bool Logical { get; set; }
-
         public int Sum(int value1, int value2)
         {
             int result = value1 + value2;
 
             return result;
         }
+
+        public int? Value1 { get; set; }
+        public double Value2 { get; set; }
+        public int Value3 { get; set; }
+        public int? Value4 { get; set; }
+        public bool Logical { get; set; }
     }
 }

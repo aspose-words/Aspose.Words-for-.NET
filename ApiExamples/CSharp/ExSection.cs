@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -216,7 +216,6 @@ namespace ApiExamples
             //ExFor:HeaderFooter.NodeType
             //ExFor:Document.FirstSection
             //ExSummary:Shows how you can enumerate through children of a composite node and detect types of the children nodes.
-
             // Open a document.
             Document doc = new Document(MyDir + "Section.BodyNodeType.doc");
 

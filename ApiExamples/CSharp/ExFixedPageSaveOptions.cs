@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -48,7 +48,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Ignore("WORDSNET-16233")]
         [TestCaseSource(nameof(FixedPageSaveOptionsDefaultValuesData))]
         public void FixedPageSaveOptionsDefaultValues(FixedPageSaveOptions objectSaveOptions)
         {
@@ -62,7 +61,7 @@ namespace ApiExamples
             Assert.AreEqual(true, saveOptions.MetafileRenderingOptions.EmulateRasterOperations);
             Assert.AreEqual(objectSaveOptions.GetType().Name == "ImageSaveOptions" ? MetafileRenderingMode.Bitmap : MetafileRenderingMode.VectorWithFallback, saveOptions.MetafileRenderingOptions.RenderingMode);
             Assert.AreEqual(true, saveOptions.MetafileRenderingOptions.UseEmfEmbeddedToWmf);
-            Assert.AreEqual(false, saveOptions.OptimizeOutput);
+            Assert.AreEqual(objectSaveOptions.GetType().Name == "HtmlFixedSaveOptions", saveOptions.OptimizeOutput);
         }
 
         [Test]

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using ApiExamples.TestData;
@@ -13,7 +14,6 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Reporting;
 using NUnit.Framework;
-using DataSet = ApiExamples.TestData.DataSet;
 
 namespace ApiExamples
 {
@@ -70,12 +70,25 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "ReportingEngine.TestDataTable.docx");
 
-            DataSet ds = DataTables.AddClientsTestData();
+            DataSet ds = DataSet.AddTestData();
             BuildReport(doc, ds, "ds");
 
-            doc.Save(MyDir + @"\Artifacts\ReportingEngine.TestDataTable Out.docx");
+            doc.Save(MyDir + @"\Artifacts\ReportingEngine.TestDataTable.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.TestDataTable Out.docx", MyDir + @"\Golds\ReportingEngine.TestDataTable Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.TestDataTable.docx", MyDir + @"\Golds\ReportingEngine.TestDataTable Gold.docx"));
+        }
+
+        [Test]
+        public void ProgressiveTotal()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.Total.docx");
+
+            DataSet ds = DataSet.AddTestData();
+            BuildReport(doc, ds, "ds");
+
+            doc.Save(MyDir + @"\Artifacts\ReportingEngine.Total.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.Total.docx", MyDir + @"\Golds\ReportingEngine.Total Gold.docx"));
         }
 
         [Test]
@@ -83,43 +96,73 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "ReportingEngine.TestNestedDataTable.docx");
 
-            DataSet ds = DataTables.AddClientsTestData();
+            DataSet ds = DataSet.AddTestData();
             BuildReport(doc, ds, "ds");
 
-            doc.Save(MyDir + @"\Artifacts\ReportingEngine.TestNestedDataTable Out.docx");
+            doc.Save(MyDir + @"\Artifacts\ReportingEngine.TestNestedDataTable.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.TestNestedDataTable Out.docx", MyDir + @"\Golds\ReportingEngine.TestNestedDataTable Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.TestNestedDataTable.docx", MyDir + @"\Golds\ReportingEngine.TestNestedDataTable Gold.docx"));
         }
 
         [Test]
         public void ChartTest()
         {
             Document doc = new Document(MyDir + "ReportingEngine.TestChart.docx");
-            DataSet ds = DataTables.AddClientsTestData();
+            DataSet ds = DataSet.AddTestData();
 
             BuildReport(doc, ds.Managers, "managers");
-            doc.Save(MyDir + @"\Artifacts\ReportingEngine.TestChart Out.docx");
+            doc.Save(MyDir + @"\Artifacts\ReportingEngine.TestChart.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.TestChart Out.docx", MyDir + @"\Golds\ReportingEngine.TestChart Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.TestChart.docx", MyDir + @"\Golds\ReportingEngine.TestChart Gold.docx"));
         }
 
         [Test]
         public void BubbleChartTest()
         {
             Document doc = new Document(MyDir + "ReportingEngine.TestBubbleChart.docx");
-            DataSet ds = DataTables.AddClientsTestData();
+            DataSet ds = DataSet.AddTestData();
 
             BuildReport(doc, ds.Managers, "managers");
-            doc.Save(MyDir + @"\Artifacts\ReportingEngine.TestBubbleChart Out.docx");
+            doc.Save(MyDir + @"\Artifacts\ReportingEngine.TestBubbleChart.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.TestBubbleChart Out.docx", MyDir + @"\Golds\ReportingEngine.TestBubbleChart Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.TestBubbleChart.docx", MyDir + @"\Golds\ReportingEngine.TestBubbleChart Gold.docx"));
+        }
+
+        [Test]
+        public void ConditionalExpressionForLeaveChartSeries()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.TestRemoveChartSeries.docx");
+
+            DataSet ds = DataSet.AddTestData();
+
+            int condition = 3;
+
+            BuildReport(doc, new object[] { ds.Managers, condition }, new[] { "managers", "condition" });
+            doc.Save(MyDir + @"\Artifacts\ReportingEngine.TestLeaveChartSeries.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.TestLeaveChartSeries.docx", MyDir + @"\Golds\ReportingEngine.TestLeaveChartSeries Gold.docx"));
+        }
+
+        [Test]
+        public void ConditionalExpressionForRemoveChartSeries()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.TestRemoveChartSeries.docx");
+
+            DataSet ds = DataSet.AddTestData();
+
+            int condition = 2;
+            
+            BuildReport(doc, new object[] { ds.Managers, condition }, new[] { "managers", "condition" });
+            doc.Save(MyDir + @"\Artifacts\ReportingEngine.TestRemoveChartSeries.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.TestRemoveChartSeries.docx", MyDir + @"\Golds\ReportingEngine.TestRemoveChartSeries Gold.docx"));
         }
 
         [Test]
         public void IndexOf()
         {
             Document doc = new Document(MyDir + "ReportingEngine.TestIndexOf.docx");
-            DataSet ds = DataTables.AddClientsTestData();
+            DataSet ds = DataSet.AddTestData();
 
             BuildReport(doc, ds, "ds");
 
@@ -133,7 +176,7 @@ namespace ApiExamples
         public void IfElse()
         {
             Document doc = new Document(MyDir + "ReportingEngine.IfElse.docx");
-            DataSet ds = DataTables.AddClientsTestData();
+            DataSet ds = DataSet.AddTestData();
 
             BuildReport(doc, ds.Managers, "m");
 
@@ -161,12 +204,12 @@ namespace ApiExamples
         public void ExtensionMethods()
         {
             Document doc = new Document(MyDir + "ReportingEngine.ExtensionMethods.docx");
-            DataSet ds = DataTables.AddClientsTestData();
+            DataSet ds = DataSet.AddTestData();
 
             BuildReport(doc, ds, "ds");
-            doc.Save(MyDir + @"\Artifacts\ReportingEngine.ExtensionMethods Out.docx");
+            doc.Save(MyDir + @"\Artifacts\ReportingEngine.ExtensionMethods.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.ExtensionMethods Out.docx", MyDir + @"\Golds\ReportingEngine.ExtensionMethods Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.ExtensionMethods.docx", MyDir + @"\Golds\ReportingEngine.ExtensionMethods Gold.docx"));
         }
 
         [Test]
@@ -179,105 +222,105 @@ namespace ApiExamples
             report.KnownTypes.Add(typeof(NumericDataSourceWithMethod));
             report.BuildReport(doc, testData, "ds");
 
-            doc.Save(MyDir + @"\Artifacts\ReportingEngine.Operators Out.docx");
+            doc.Save(MyDir + @"\Artifacts\ReportingEngine.Operators.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.Operators Out.docx", MyDir + @"\Golds\ReportingEngine.Operators Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.Operators.docx", MyDir + @"\Golds\ReportingEngine.Operators Gold.docx"));
         }
 
         [Test]
         public void ContextualObjectMemberAccess()
         {
             Document doc = new Document(MyDir + "ReportingEngine.ContextualObjectMemberAccess.docx");
-            DataSet ds = DataTables.AddClientsTestData();
+            DataSet ds = DataSet.AddTestData();
 
             BuildReport(doc, ds, "ds");
-            doc.Save(MyDir + @"\Artifacts\ReportingEngine.ContextualObjectMemberAccess Out.docx");
+            doc.Save(MyDir + @"\Artifacts\ReportingEngine.ContextualObjectMemberAccess.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.ContextualObjectMemberAccess Out.docx", MyDir + @"\Golds\ReportingEngine.ContextualObjectMemberAccess Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.ContextualObjectMemberAccess.docx", MyDir + @"\Golds\ReportingEngine.ContextualObjectMemberAccess Gold.docx"));
         }
 
         [Test]
         public void InsertDocumentDinamically()
         {
-            //By stream
+            // By stream
             Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.DocumentByStream]>>");
 
             DocumentDataSource docStream = new DocumentDataSource(new FileStream(this._doc, FileMode.Open, FileAccess.Read));
 
             BuildReport(template, docStream, "src", ReportBuildOptions.None);
-            template.Save(MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamically Out.docx");
+            template.Save(MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamically Out.docx", MyDir + @"\Golds\ReportingEngine.InsertDocumentDinamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by stream");
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamically.docx", MyDir + @"\Golds\ReportingEngine.InsertDocumentDinamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by stream");
 
-            //By doc
+            // By doc
             template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document]>>");
 
             DocumentDataSource docByDoc = new DocumentDataSource(new Document(MyDir + "ReportingEngine.TestDataTable.docx"));
 
             BuildReport(template, docByDoc, "src", ReportBuildOptions.None);
-            template.Save(MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamically Out.docx");
+            template.Save(MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamically Out.docx", MyDir + @"\Golds\ReportingEngine.InsertDocumentDinamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by document");
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamically.docx", MyDir + @"\Golds\ReportingEngine.InsertDocumentDinamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by document");
 
-            //By uri
+            // By uri
             template = DocumentHelper.CreateSimpleDocument("<<doc [src.DocumentByUri]>>");
 
             DocumentDataSource docByUri = new DocumentDataSource("http://www.sample-videos.com/doc/Sample-doc-file-100kb.doc");
 
             BuildReport(template, docByUri, "src", ReportBuildOptions.None);
-            template.Save(MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamically Out.docx");
+            template.Save(MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamically Out.docx", MyDir + @"\Golds\ReportingEngine.InsertDocumentDinamically(uri) Gold.docx"), "Fail inserting document by uri");
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamically.docx", MyDir + @"\Golds\ReportingEngine.InsertDocumentDinamically(uri) Gold.docx"), "Fail inserting document by uri");
 
-            //By byte
+            // By byte
             template = DocumentHelper.CreateSimpleDocument("<<doc [src.DocumentByByte]>>");
 
             DocumentDataSource docByByte = new DocumentDataSource(File.ReadAllBytes(MyDir + "ReportingEngine.TestDataTable.docx"));
 
             BuildReport(template, docByByte, "src", ReportBuildOptions.None);
-            template.Save(MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamically Out.docx");
+            template.Save(MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamically Out.docx", MyDir + @"\Golds\ReportingEngine.InsertDocumentDinamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamically.docx", MyDir + @"\Golds\ReportingEngine.InsertDocumentDinamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
         }
 
         [Test]
         public void InsertImageDinamically()
         {
-            //By stream
+            // By stream
             Document template = DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Stream]>>", ShapeType.TextBox);
             ImageDataSource docByStream = new ImageDataSource(new FileStream(this._image, FileMode.Open, FileAccess.Read));
 
             BuildReport(template, docByStream, "src", ReportBuildOptions.None);
-            template.Save(MyDir + @"\Artifacts\ReportingEngine.InsertImageDinamically Out.docx");
+            template.Save(MyDir + @"\Artifacts\ReportingEngine.InsertImageDinamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.InsertImageDinamically Out.docx", MyDir + @"\Golds\ReportingEngine.InsertImageDinamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.InsertImageDinamically.docx", MyDir + @"\Golds\ReportingEngine.InsertImageDinamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
 
-            //By image
+            // By image
             template = DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Image]>>", ShapeType.TextBox);
             ImageDataSource docByImg = new ImageDataSource(Image.FromFile(this._image, true));
 
             BuildReport(template, docByImg, "src", ReportBuildOptions.None);
-            template.Save(MyDir + @"\Artifacts\ReportingEngine.InsertImageDinamically Out.docx");
+            template.Save(MyDir + @"\Artifacts\ReportingEngine.InsertImageDinamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.InsertImageDinamically Out.docx", MyDir + @"\Golds\ReportingEngine.InsertImageDinamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.InsertImageDinamically.docx", MyDir + @"\Golds\ReportingEngine.InsertImageDinamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
 
-            //By Uri
+            // By Uri
             template = DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Uri]>>", ShapeType.TextBox);
             ImageDataSource docByUri = new ImageDataSource("http://joomla-aspose.dynabic.com/templates/aspose/App_Themes/V3/images/customers/americanexpress.png");
 
             BuildReport(template, docByUri, "src", ReportBuildOptions.None);
-            template.Save(MyDir + @"\Artifacts\ReportingEngine.InsertImageDinamically Out.docx");
+            template.Save(MyDir + @"\Artifacts\ReportingEngine.InsertImageDinamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.InsertImageDinamically Out.docx", MyDir + @"\Golds\ReportingEngine.InsertImageDinamically(uri) Gold.docx"), "Fail inserting document by bytes");
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.InsertImageDinamically.docx", MyDir + @"\Golds\ReportingEngine.InsertImageDinamically(uri) Gold.docx"), "Fail inserting document by bytes");
 
-            //By bytes
+            // By bytes
             template = DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Bytes]>>", ShapeType.TextBox);
             ImageDataSource docByBytes = new ImageDataSource(File.ReadAllBytes(this._image));
 
             BuildReport(template, docByBytes, "src", ReportBuildOptions.None);
-            template.Save(MyDir + @"\Artifacts\ReportingEngine.InsertImageDinamically Out.docx");
+            template.Save(MyDir + @"\Artifacts\ReportingEngine.InsertImageDinamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.InsertImageDinamically Out.docx", MyDir + @"\Golds\ReportingEngine.InsertImageDinamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.InsertImageDinamically.docx", MyDir + @"\Golds\ReportingEngine.InsertImageDinamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
         }
 
         [Test]
@@ -309,26 +352,27 @@ namespace ApiExamples
             engine.KnownTypes.Add(typeof(DateTime));
             engine.BuildReport(doc, "");
 
-            doc.Save(MyDir + @"\Artifacts\ReportingEngine.KnownTypes Out.docx");
+            doc.Save(MyDir + @"\Artifacts\ReportingEngine.KnownTypes.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.KnownTypes Out.docx", MyDir + @"\Golds\ReportingEngine.KnownTypes Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.KnownTypes.docx", MyDir + @"\Golds\ReportingEngine.KnownTypes Gold.docx"));
         }
 
 
         [Test]
+        [Ignore("WORDSNET-16258")]
         public void StretchImagefitHeight()
         {
             Document doc = DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Stream] -fitHeight>>", ShapeType.TextBox);
 
             ImageDataSource imageStream = new ImageDataSource(new FileStream(this._image, FileMode.Open, FileAccess.Read));
-
             BuildReport(doc, imageStream, "src", ReportBuildOptions.None);
+
+            doc.Save(MyDir + "123.docx");
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
             doc = new Document(dstStream);
-
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
             foreach (Shape shape in shapes)
@@ -336,7 +380,7 @@ namespace ApiExamples
                 // Assert that the image is really insert in textbox 
                 Assert.IsTrue(shape.ImageData.HasImage);
 
-                //Assert that width is keeped and height is changed
+                // Assert that width is keeped and height is changed
                 Assert.AreNotEqual(346.35, shape.Height);
                 Assert.AreEqual(431.5, shape.Width);
             }
@@ -345,19 +389,18 @@ namespace ApiExamples
         }
 
         [Test]
+        [Ignore("WORDSNET-16258")]
         public void StretchImagefitWidth()
         {
             Document doc = DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Stream] -fitWidth>>", ShapeType.TextBox);
 
             ImageDataSource imageStream = new ImageDataSource(new FileStream(this._image, FileMode.Open, FileAccess.Read));
-
             BuildReport(doc, imageStream, "src", ReportBuildOptions.None);
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
             doc = new Document(dstStream);
-
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
             foreach (Shape shape in shapes)
@@ -365,7 +408,7 @@ namespace ApiExamples
                 // Assert that the image is really insert in textbox and 
                 Assert.IsTrue(shape.ImageData.HasImage);
 
-                //Assert that height is keeped and width is changed
+                // Assert that height is keeped and width is changed
                 Assert.AreNotEqual(431.5, shape.Width);
                 Assert.AreEqual(346.35, shape.Height);
             }
@@ -374,19 +417,18 @@ namespace ApiExamples
         }
 
         [Test]
+        [Ignore("WORDSNET-16258")]
         public void StretchImagefitSize()
         {
             Document doc = DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Stream] -fitSize>>", ShapeType.TextBox);
 
             ImageDataSource imageStream = new ImageDataSource(new FileStream(this._image, FileMode.Open, FileAccess.Read));
-
             BuildReport(doc, imageStream, "src", ReportBuildOptions.None);
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
             doc = new Document(dstStream);
-
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
             foreach (Shape shape in shapes)
@@ -394,9 +436,37 @@ namespace ApiExamples
                 // Assert that the image is really insert in textbox 
                 Assert.IsTrue(shape.ImageData.HasImage);
 
-                //Assert that height is changed and width is changed
+                // Assert that height is changed and width is changed
                 Assert.AreNotEqual(346.35, shape.Height);
                 Assert.AreNotEqual(431.5, shape.Width);
+            }
+
+            dstStream.Dispose();
+        }
+
+        [Test]
+        [Ignore("WORDSNET-16258")]
+        public void StretchImagefitSizeLim()
+        {
+            Document doc = DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Stream] -fitSizeLim>>", ShapeType.TextBox);
+
+            ImageDataSource imageStream = new ImageDataSource(new FileStream(this._image, FileMode.Open, FileAccess.Read));
+            BuildReport(doc, imageStream, "src", ReportBuildOptions.None);
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            doc = new Document(dstStream);
+            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
+
+            foreach (Shape shape in shapes)
+            {
+                // Assert that the image is really insert in textbox 
+                Assert.IsTrue(shape.ImageData.HasImage);
+
+                // Assert that textbox size are equal image size
+                Assert.AreEqual(346.35, shape.Height);
+                Assert.AreEqual(258.54, shape.Width);
             }
 
             dstStream.Dispose();
@@ -428,7 +498,24 @@ namespace ApiExamples
             Assert.AreEqual(ControlChar.ParagraphBreak + ControlChar.ParagraphBreak + ControlChar.SectionBreak, builder.Document.GetText());
         }
 
-        private static void BuildReport(Document document, object dataSource, String dataSourceName, ReportBuildOptions reportBuildOptions)
+        [Test]
+        public void SetBackgroundColor()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.BackColor.docx");
+
+            List<Colors> colors = new List<Colors>();
+            colors.Add(new Colors { ColorCode = Color.Black, ColorName = "Black", Description = "Black color" });
+            colors.Add(new Colors { ColorCode = Color.FromArgb(255, 0, 0), ColorName = "Red", Description = "Red color" });
+            colors.Add(new Colors { ColorCode = Color.Empty, ColorName = "Empty", Description = "Empty color" });
+
+            BuildReport(doc, colors, "Colors");
+            
+            doc.Save(MyDir + @"\Artifacts\ReportingEngine.BackColor.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.BackColor.docx", MyDir + @"\Golds\ReportingEngine.BackColor Gold.docx"));
+        }
+
+        private static void BuildReport(Document document, object dataSource, string dataSourceName, ReportBuildOptions reportBuildOptions)
         {
             ReportingEngine engine = new ReportingEngine();
             engine.Options = reportBuildOptions;

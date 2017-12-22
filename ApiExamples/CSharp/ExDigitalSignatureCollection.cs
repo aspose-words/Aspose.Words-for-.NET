@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -27,7 +27,9 @@ namespace ApiExamples
             {
                 // Do something useful
                 DigitalSignature ds = (DigitalSignature)enumerator.Current;
-                Console.WriteLine(ds.ToString());
+
+                if (ds != null)
+                    Console.WriteLine(ds.ToString());
             }
             //ExEnd
         }

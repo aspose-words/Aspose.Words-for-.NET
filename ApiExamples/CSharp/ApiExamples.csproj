@@ -34,21 +34,23 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.BarCode, Version=8.2.1.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>packages\Aspose.BarCode.8.2.1\lib\net4.5\Aspose.BarCode.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Aspose.BarCode, Version=17.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.BarCode.17.12.0\lib\net4.5\Aspose.BarCode.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Pdf, Version=12.0.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>packages\Aspose.Pdf.12.0.0\lib\net40-client\Aspose.Pdf.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Aspose.Pdf, Version=17.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.Pdf.17.12.0\lib\net40-client\Aspose.Pdf.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Words, Version=17.7.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>packages\Aspose.Words.17.7\lib\net40\Aspose.Words.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Aspose.Words, Version=17.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.Words.17.12.0\lib\net40\Aspose.Words.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="itextsharp, Version=5.5.12.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>packages\iTextSharp.5.5.12\lib\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp.pdfa, Version=5.5.12.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>packages\itextsharp.pdfa.5.5.12\lib\itextsharp.pdfa.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -71,7 +73,10 @@
     <Compile Include="ExComment.cs" />
     <Compile Include="ExFixedPageSaveOptions.cs" />
     <Compile Include="ExHtmlLoadOptions.cs" />
+    <Compile Include="ExOdtSaveOptions.cs" />
     <Compile Include="ExOoxmlSaveOptions.cs" />
+    <Compile Include="ExPclSaveOptions.cs" />
+    <Compile Include="ExSignDocumentCustom.cs" />
     <Compile Include="ExTxtSaveOptions.cs" />
     <Compile Include="ExXpsSaveOptions.cs" />
     <Compile Include="ExUtilityClasses.cs" />
@@ -125,15 +130,17 @@
     <Compile Include="ExTabStopCollection.cs" />
     <Compile Include="ExVariableCollection.cs" />
     <Compile Include="ExWarningInfoCollection.cs" />
+    <Compile Include="TestData\SignPerson.cs" />
+    <Compile Include="TestData\Colors.cs" />
     <Compile Include="TestData\NumericDataSourceWithMethod.cs" />
     <Compile Include="TestData\DocumentDataSource.cs" />
-    <Compile Include="TestData\DataTables.cs">
-      <DependentUpon>DataTables.xsd</DependentUpon>
+    <Compile Include="TestData\TestTables.cs">
+      <DependentUpon>TestTables.xsd</DependentUpon>
     </Compile>
-    <Compile Include="TestData\DataTables.Designer.cs">
+    <Compile Include="TestData\TestTables.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DataTables.xsd</DependentUpon>
+      <DependentUpon>TestTables.xsd</DependentUpon>
     </Compile>
     <Compile Include="TestData\NumericDataSource.cs" />
     <Compile Include="TestData\ImageDataSource.cs" />
@@ -147,16 +154,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="TestData\DataTables.xsc">
-      <DependentUpon>DataTables.xsd</DependentUpon>
+    <None Include="TestData\TestTables.xsc">
+      <DependentUpon>TestTables.xsd</DependentUpon>
     </None>
-    <None Include="TestData\DataTables.xsd">
+    <None Include="TestData\TestTables.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataTables.Designer.cs</LastGenOutput>
+      <LastGenOutput>TestTables.Designer.cs</LastGenOutput>
     </None>
-    <None Include="TestData\DataTables.xss">
-      <DependentUpon>DataTables.xsd</DependentUpon>
+    <None Include="TestData\TestTables.xss">
+      <DependentUpon>TestTables.xsd</DependentUpon>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

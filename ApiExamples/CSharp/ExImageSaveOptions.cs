@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2016 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -29,7 +29,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ToDo: Need to check gold test
         [Test]
         public void SaveIntoGif()
         {
@@ -53,8 +52,6 @@ namespace ApiExamples
             //ExFor:GraphicsQualityOptions
             //ExFor:GraphicsQualityOptions.SmoothingMode
             //ExFor:GraphicsQualityOptions.TextRenderingHint
-            //ExFor:SmoothingMode
-            //ExFor:TextRenderingHint
             //ExSummary:Shows how to set render quality options. 
             Document doc = new Document(MyDir + "SaveOptions.MyraidPro.docx");
 
@@ -66,6 +63,23 @@ namespace ApiExamples
             saveOptions.GraphicsQualityOptions = qualityOptions;
 
             doc.Save(MyDir + @"\Artifacts\SaveOptions.QualityOptions Out.jpeg", saveOptions);
+            //ExEnd
+        }
+
+        [Test]
+        public void ConverImageColorsToBlackAndWhite()
+        {
+            //ExStart
+            //ExFor:ImageSaveOptions.ImageColorMode
+            //ExFor:ImageSaveOptions.PixelFormat
+            //ExSummary:Show how to convert document images to black and white with 1 bit per pixel
+            Document doc = new Document(MyDir + "ImageSaveOptions.BlackAndWhite.docx");
+
+            ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
+            imageSaveOptions.ImageColorMode = ImageColorMode.BlackAndWhite;
+            imageSaveOptions.PixelFormat = ImagePixelFormat.Format1bppIndexed;
+            
+            doc.Save(MyDir + @"\Artifacts\ImageSaveOptions.BlackAndWhite Out.png", imageSaveOptions);
             //ExEnd
         }
     }

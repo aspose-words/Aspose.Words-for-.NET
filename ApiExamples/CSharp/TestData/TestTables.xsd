@@ -1,42 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
-<xs:schema id="DataSet" targetNamespace="http://tempuri.org/DataSet.xsd" xmlns:mstns="http://tempuri.org/DataSet.xsd"
-           xmlns="http://tempuri.org/DataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop"
-           attributeFormDefault="qualified" elementFormDefault="qualified">
+<xs:schema id="DataSet" targetNamespace="http://tempuri.org/DataSet.xsd" xmlns:mstns="http://tempuri.org/DataSet.xsd" xmlns="http://tempuri.org/DataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
   <xs:annotation>
     <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
-      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter"
-                  Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema"
-                  xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
         <Connections />
         <Tables />
         <Sources />
       </DataSource>
     </xs:appinfo>
   </xs:annotation>
-  <xs:element name="DataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true"
-              msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet"
-              msprop:Generator_UserDSName="DataSet">
+  <xs:element name="DataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet" msprop:Generator_UserDSName="DataSet">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="Managers" msprop:Generator_TableClassName="ManagersDataTable"
-                    msprop:Generator_TableVarName="tableManagers" msprop:Generator_TablePropName="Managers"
-                    msprop:Generator_RowDeletingName="ManagersRowDeleting"
-                    msprop:Generator_RowChangingName="ManagersRowChanging"
-                    msprop:Generator_RowEvHandlerName="ManagersRowChangeEventHandler"
-                    msprop:Generator_RowDeletedName="ManagersRowDeleted" msprop:Generator_UserTableName="Managers"
-                    msprop:Generator_RowChangedName="ManagersRowChanged"
-                    msprop:Generator_RowEvArgName="ManagersRowChangeEvent" msprop:Generator_RowClassName="ManagersRow">
+        <xs:element name="Managers" msprop:Generator_TableClassName="ManagersDataTable" msprop:Generator_TableVarName="tableManagers" msprop:Generator_RowChangedName="ManagersRowChanged" msprop:Generator_TablePropName="Managers" msprop:Generator_RowDeletingName="ManagersRowDeleting" msprop:Generator_RowChangingName="ManagersRowChanging" msprop:Generator_RowEvHandlerName="ManagersRowChangeEventHandler" msprop:Generator_RowDeletedName="ManagersRowDeleted" msprop:Generator_RowClassName="ManagersRow" msprop:Generator_UserTableName="Managers" msprop:Generator_RowEvArgName="ManagersRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="Id" msprop:Generator_ColumnVarNameInTable="columnId"
                           msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn"
-                          msprop:Generator_UserColumnName="Id" type="xs:String" />
+                          msprop:Generator_UserColumnName="Id" type="xs:string" />
               <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName"
                           msprop:Generator_ColumnPropNameInRow="Name"
                           msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name"
-                          type="xs:String" minOccurs="0" />
+                          type="xs:string" minOccurs="0" />
               <xs:element name="Age" msprop:Generator_ColumnVarNameInTable="columnAge"
                           msprop:Generator_ColumnPropNameInRow="Age" msprop:Generator_ColumnPropNameInTable="AgeColumn"
                           msprop:Generator_UserColumnName="Age" type="xs:int" minOccurs="0" />
@@ -52,14 +37,7 @@
                           msprop:Generator_RowClassName="ContractsRow" minOccurs="0" maxOccurs="unbounded">
                 <xs:annotation>
                   <xs:appinfo>
-                    <msdata:Relationship name="Managers_Contracts" msdata:parent="Managers" msdata:child="Contracts"
-                                         msdata:parentkey="Id" msdata:childkey="ManagerId"
-                                         msprop:Generator_UserChildTable="Contracts"
-                                         msprop:Generator_ChildPropName="GetContractsRows"
-                                         msprop:Generator_UserRelationName="Managers_Contracts"
-                                         msprop:Generator_ParentPropName="ManagersRow"
-                                         msprop:Generator_RelationVarName="relationManagers_Contracts"
-                                         msprop:Generator_UserParentTable="Managers" />
+                    <msdata:Relationship name="Managers_Contracts" msdata:parent="Managers" msdata:child="Contracts" msdata:parentkey="Id" msdata:childkey="ManagerId" msprop:Generator_UserChildTable="Contracts" msprop:Generator_ChildPropName="GetContractsRows" msprop:Generator_UserRelationName="Managers_Contracts" msprop:Generator_RelationVarName="relationManagers_Contracts" msprop:Generator_UserParentTable="Managers" msprop:Generator_ParentPropName="ManagersRow" />
                   </xs:appinfo>
                 </xs:annotation>
                 <xs:complexType>
@@ -67,15 +45,15 @@
                     <xs:element name="Id" msprop:Generator_ColumnVarNameInTable="columnId"
                                 msprop:Generator_ColumnPropNameInRow="Id"
                                 msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id"
-                                type="xs:String" />
+                                type="xs:string" />
                     <xs:element name="ClientId" msprop:Generator_ColumnVarNameInTable="columnClientId"
                                 msprop:Generator_ColumnPropNameInRow="ClientId"
                                 msprop:Generator_ColumnPropNameInTable="ClientIdColumn"
-                                msprop:Generator_UserColumnName="ClientId" type="xs:String" minOccurs="0" />
+                                msprop:Generator_UserColumnName="ClientId" type="xs:string" minOccurs="0" />
                     <xs:element name="ManagerId" msprop:Generator_ColumnVarNameInTable="columnManagerId"
                                 msprop:Generator_ColumnPropNameInRow="ManagerId"
                                 msprop:Generator_ColumnPropNameInTable="ManagerIdColumn"
-                                msprop:Generator_UserColumnName="ManagerId" type="xs:String" minOccurs="0" />
+                                msprop:Generator_UserColumnName="ManagerId" type="xs:string" minOccurs="0" />
                     <xs:element name="Price" msprop:nullValue="_throw" msprop:Generator_ColumnPropNameInRow="Price"
                                 msprop:Generator_ColumnVarNameInTable="columnPrice"
                                 msprop:Generator_ColumnPropNameInTable="PriceColumn"
@@ -86,23 +64,16 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="Clients" msprop:Generator_TableClassName="ClientsDataTable"
-                    msprop:Generator_TableVarName="tableClients" msprop:Generator_TablePropName="Clients"
-                    msprop:Generator_RowDeletingName="ClientsRowDeleting"
-                    msprop:Generator_RowChangingName="ClientsRowChanging"
-                    msprop:Generator_RowEvHandlerName="ClientsRowChangeEventHandler"
-                    msprop:Generator_RowDeletedName="ClientsRowDeleted" msprop:Generator_UserTableName="Clients"
-                    msprop:Generator_RowChangedName="ClientsRowChanged"
-                    msprop:Generator_RowEvArgName="ClientsRowChangeEvent" msprop:Generator_RowClassName="ClientsRow">
+        <xs:element name="Clients" msprop:Generator_TableClassName="ClientsDataTable" msprop:Generator_TableVarName="tableClients" msprop:Generator_RowChangedName="ClientsRowChanged" msprop:Generator_TablePropName="Clients" msprop:Generator_RowDeletingName="ClientsRowDeleting" msprop:Generator_RowChangingName="ClientsRowChanging" msprop:Generator_RowEvHandlerName="ClientsRowChangeEventHandler" msprop:Generator_RowDeletedName="ClientsRowDeleted" msprop:Generator_RowClassName="ClientsRow" msprop:Generator_UserTableName="Clients" msprop:Generator_RowEvArgName="ClientsRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="Id" msprop:Generator_ColumnVarNameInTable="columnId"
                           msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn"
-                          msprop:Generator_UserColumnName="Id" type="xs:String" />
+                          msprop:Generator_UserColumnName="Id" type="xs:string" />
               <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName"
                           msprop:Generator_ColumnPropNameInRow="Name"
                           msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name"
-                          type="xs:String" minOccurs="0" />
+                          type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -123,13 +94,7 @@
   </xs:element>
   <xs:annotation>
     <xs:appinfo>
-      <msdata:Relationship name="Clients_Contracts" msdata:parent="Clients" msdata:child="Contracts"
-                           msdata:parentkey="Id" msdata:childkey="ClientId" msprop:Generator_UserChildTable="Contracts"
-                           msprop:Generator_ChildPropName="GetContractsRows"
-                           msprop:Generator_UserRelationName="Clients_Contracts"
-                           msprop:Generator_ParentPropName="ClientsRow"
-                           msprop:Generator_RelationVarName="relationClients_Contracts"
-                           msprop:Generator_UserParentTable="Clients" />
+      <msdata:Relationship name="Clients_Contracts" msdata:parent="Clients" msdata:child="Contracts" msdata:parentkey="Id" msdata:childkey="ClientId" msprop:Generator_UserChildTable="Contracts" msprop:Generator_ChildPropName="GetContractsRows" msprop:Generator_UserRelationName="Clients_Contracts" msprop:Generator_RelationVarName="relationClients_Contracts" msprop:Generator_UserParentTable="Clients" msprop:Generator_ParentPropName="ClientsRow" />
     </xs:appinfo>
   </xs:annotation>
 </xs:schema>
