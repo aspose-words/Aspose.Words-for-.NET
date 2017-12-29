@@ -48,8 +48,8 @@
       <HintPath>..\packages\Aspose.Email.17.11\lib\net40\Aspose.Email.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Aspose.Words, Version=17.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.17.12.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=18.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.18.1.0\lib\net40\Aspose.Words.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SkiaSharp, Version=1.59.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
@@ -207,6 +207,7 @@
     <Compile Include="Programming-Documents\Fields\UseOfficeMathProperties.cs" />
     <Compile Include="Programming-Documents\Fields\UpdateDocFields.cs" />
     <Compile Include="Programming-Documents\Fields\SpecifylocaleAtFieldlevel.cs" />
+    <Compile Include="Programming-Documents\Find-Replace\ReplaceHtmlTextWithMeta-Characters.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceWithEvaluator.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceWithRegex.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceWithString.cs" />

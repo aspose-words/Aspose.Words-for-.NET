@@ -129,6 +129,7 @@ namespace Aspose.Words.Examples.CSharp
             // ReplaceWithString.Run();
             // ReplaceWithRegex.Run();
             // ReplaceWithEvaluator.Run();
+            // ReplaceHtmlTextWithMeta_Characters.Run();
 
             //// Bookmarks
             //// =====================================================

@@ -40,7 +40,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
             {
                 if (e.Field.GetFieldCode().Contains("\\b"))
                 {
-                    FieldMergeField field = (FieldMergeField)e.Field;
+                    FieldMergeField field = e.Field;
 
                     DocumentBuilder builder = new DocumentBuilder(e.Document);
                     builder.MoveToMergeField(e.DocumentFieldName, true, false);
