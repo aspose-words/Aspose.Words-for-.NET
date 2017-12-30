@@ -307,6 +307,9 @@
     <Compile Include="Quick-Start\AppendDocuments.cs" />
     <Compile Include="Quick-Start\ApplyLicense.cs" />
     <Compile Include="Loading-and-Saving\Doc2Pdf.cs" />
+    <Compile Include="Quick-Start\ApplyLicenseFromFile.cs" />
+    <Compile Include="Quick-Start\ApplyLicenseFromStream.cs" />
+    <Compile Include="Quick-Start\ApplyMeteredLicense.cs" />
     <Compile Include="Quick-Start\FindAndReplace.cs" />
     <Compile Include="Quick-Start\HelloWorld.cs" />
     <Compile Include="Loading-and-Saving\LoadAndSaveToDisk.cs" />
