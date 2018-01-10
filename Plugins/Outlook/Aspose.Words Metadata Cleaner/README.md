@@ -1,8 +1,8 @@
 # Automatically clean metadata from all word processing document attachments before sending an email from Microsoft Outlook using Aspose.Words Metadata Cleaner for Outlook
 
-[![aspose Words for net e1378287014402 ](http://www.aspose.com/blogs/wp-content/uploads/2013/09/aspose-Words-for-net-e1378287014402.png "Aspose.Words or .NET logo")](https://www.aspose.com/products/words/net)Aspose.Words Metadata Cleaner is a metadata removal tool which protects organizations from accidental information and metadata leaks. Unintentional leaks have the potential to embarrass or negatively impact a company’s financial well-being. Aspose.Words Metadata Cleaner integrates tightly with Outlook to ensure all hidden metadata is removed from documents sent from an organization. It works in the background before sending an email, Verify all word attachments in the email and clean all Built-in and Custom properties from these attachments.
+[![aspose Words for net e1378287014402 ](https://www.aspose.com/blogs/wp-content/uploads/2013/09/aspose-Words-for-net-e1378287014402.png "Aspose.Words or .NET logo")](https://products.aspose.com/words/net)Aspose.Words Metadata Cleaner is a metadata removal tool which protects organizations from accidental information and metadata leaks. Unintentional leaks have the potential to embarrass or negatively impact a company’s financial well-being. Aspose.Words Metadata Cleaner integrates tightly with Outlook to ensure all hidden metadata is removed from documents sent from an organization. It works in the background before sending an email, Verify all word attachments in the email and clean all Built-in and Custom properties from these attachments.
 
-[![Free Download](http://cdn.aspose.com/Images/marketplace/free-download-icon-aspose-mp.png "Free Download")](https://asposewordsoutlook.codeplex.com/releases/view/619420 "Free Download") [![Video Demo](http://cdn.aspose.com/Images/marketplace/video-demo-icon-aspose-mp.png)](https://youtu.be/nLnQmgwCIE4 "Video Demo") [![Open Source](http://cdn.aspose.com/Images/marketplace/open-source-icon-aspose-mp.png "Source Code")](https://asposewordsoutlook.codeplex.com/SourceControl/latest#Aspose.Words%20Metadata%20Cleaner/ "Source Code")
+[![Free Download](https://cdn.aspose.com/Images/marketplace/free-download-icon-aspose-mp.png "Free Download")](https://asposewordsoutlook.codeplex.com/releases/view/619420 "Free Download") [![Video Demo](https://cdn.aspose.com/Images/marketplace/video-demo-icon-aspose-mp.png)](https://youtu.be/nLnQmgwCIE4 "Video Demo") [![Open Source](https://cdn.aspose.com/Images/marketplace/open-source-icon-aspose-mp.png "Source Code")](https://asposewordsoutlook.codeplex.com/SourceControl/latest#Aspose.Words%20Metadata%20Cleaner/ "Source Code")
 
 ## Features in this Release
 
@@ -31,7 +31,7 @@ Please check [this video](https://youtu.be/nLnQmgwCIE4) to see it in action.
 
 ## Start a Free Trial Today
 
-Start a free trial today – all you need is to [sign up](https://idsrv.asposeptyltd.com/identity/signup?clientId=prod.community.aspose) with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.
+Start a free trial today – all you need is to [sign up](https://id.dynabic.com/signup?clientId=prod.discourse.aspose&redirectUrl=https://forum.aspose.com/session/sso) with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.
 
 ## Customer Feedback
 
