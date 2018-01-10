@@ -1,8 +1,8 @@
 # Export Emails with embeded images directly from Dynamics CRM using Aspose.Words for .NET
 
-[![aspose Words for net e1378287014402 ](http://www.aspose.com/blogs/wp-content/uploads/2013/09/aspose-Words-for-net-e1378287014402.png "Aspose.Words or .NET logo")](https://www.aspose.com/products/words/net)The Aspose.Words Email Exporter is an open source add-on for Dynamics CRM. It is capable of exporting email body (in HTML) to a word document. It also provides feature to retrieve embedded images inside the emails tracked from Outlook. You can download the generated file instantly and you can choose to attach the generated file with the same email under notes. In addition, it allows you to save the document in multiple formats like DOC, DOCX, BMP, HTML, JPEG, PDF, PNG, RTF and TXT. Aspose.Words Email Exporter can be used with all versions of CRM 2013 on-premises, CRM 2015 on-premises and CRM Online.
+[![aspose Words for net e1378287014402 ](https://www.aspose.com/blogs/wp-content/uploads/2013/09/aspose-Words-for-net-e1378287014402.png "Aspose.Words or .NET logo")](https://www.aspose.com/products/words/net)The Aspose.Words Email Exporter is an open source add-on for Dynamics CRM. It is capable of exporting email body (in HTML) to a word document. It also provides feature to retrieve embedded images inside the emails tracked from Outlook. You can download the generated file instantly and you can choose to attach the generated file with the same email under notes. In addition, it allows you to save the document in multiple formats like DOC, DOCX, BMP, HTML, JPEG, PDF, PNG, RTF and TXT. Aspose.Words Email Exporter can be used with all versions of CRM 2013 on-premises, CRM 2015 on-premises and CRM Online.
 
-[![Free Download](http://cdn.aspose.com/Images/marketplace/free-download-icon-aspose-mp.png "Free Download")](http://goo.gl/Xun3VM "Free Download") [![Video Demo](http://cdn.aspose.com/Images/marketplace/video-demo-icon-aspose-mp.png)](https://youtu.be/HATaDzOMgo4 "Video Demo") [![Open Source](http://cdn.aspose.com/Images/marketplace/open-source-icon-aspose-mp.png "Source Code")](http://goo.gl/j1QEfy "Source Code")
+[![Free Download](https://cdn.aspose.com/Images/marketplace/free-download-icon-aspose-mp.png "Free Download")](https://goo.gl/Xun3VM "Free Download") [![Video Demo](https://cdn.aspose.com/Images/marketplace/video-demo-icon-aspose-mp.png)](https://youtu.be/HATaDzOMgo4 "Video Demo") [![Open Source](https://cdn.aspose.com/Images/marketplace/open-source-icon-aspose-mp.png "Source Code")](https://goo.gl/j1QEfy "Source Code")
 
 ## Features in this Release
 
@@ -29,7 +29,7 @@ Please check [this video](https://youtu.be/HATaDzOMgo4) to see it in action.
 
 ## Start a Free Trial Today
 
-Start a free trial today – all you need is to [sign up](https://idsrv.asposeptyltd.com/identity/signup?clientId=prod.community.aspose) with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.
+Start a free trial today – all you need is to [sign up](https://id.dynabic.com/signup?clientId=prod.discourse.aspose&redirectUrl=https://forum.aspose.com/session/sso) with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.
 
 ## Customer Feedback
 
