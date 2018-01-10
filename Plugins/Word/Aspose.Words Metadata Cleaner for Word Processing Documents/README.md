@@ -1,8 +1,8 @@
 # Clean Metadata from all Word Documents and OpenOffice Documents using Aspose.Words Metadata Cleaner for Word
 
-[![aspose Words for net e1378287014402 ](http://www.aspose.com/blogs/wp-content/uploads/2013/09/aspose-Words-for-net-e1378287014402.png "Aspose.Words or .NET logo")](https://www.aspose.com/products/words/net)Aspose.Words Metadata Cleaner is a metadata removal tool which protects organizations from accidental information and metadata leaks. Unintentional leaks have the potential to embarrass or negatively impact a company’s financial well-being. Aspose.Words Metadata Cleaner that will allow you to select the document and clean it. It will allow you to clean all Built-in and Custom properties from these files. You can select multiple files and clean them simultaneously in one click. Extract it on your machine and run it directly without installing.
+[![aspose Words for net e1378287014402 ](https://www.aspose.com/blogs/wp-content/uploads/2013/09/aspose-Words-for-net-e1378287014402.png "Aspose.Words or .NET logo")](https://products.aspose.com/words/net)Aspose.Words Metadata Cleaner is a metadata removal tool which protects organizations from accidental information and metadata leaks. Unintentional leaks have the potential to embarrass or negatively impact a company’s financial well-being. Aspose.Words Metadata Cleaner that will allow you to select the document and clean it. It will allow you to clean all Built-in and Custom properties from these files. You can select multiple files and clean them simultaneously in one click. Extract it on your machine and run it directly without installing.
 
-[![Free Download](http://cdn.aspose.com/Images/marketplace/free-download-icon-aspose-mp.png "Free Download")](https://asposewordsoffice.codeplex.com/releases/view/620032 "Free Download") [![Video Demo](http://cdn.aspose.com/Images/marketplace/video-demo-icon-aspose-mp.png)](https://youtu.be/eK0i8RKmCDM "Video Demo") [![Open Source](http://cdn.aspose.com/Images/marketplace/open-source-icon-aspose-mp.png "Source Code")](https://asposewordsoffice.codeplex.com/SourceControl/latest#Aspose.Words%20Metadata%20Cleaner%20for%20Word%20Processing%20Documents/ "Source Code")
+[![Free Download](https://cdn.aspose.com/Images/marketplace/free-download-icon-aspose-mp.png "Free Download")](https://asposewordsoffice.codeplex.com/releases/view/620032 "Free Download") [![Video Demo](https://cdn.aspose.com/Images/marketplace/video-demo-icon-aspose-mp.png)](https://youtu.be/eK0i8RKmCDM "Video Demo") [![Open Source](https://cdn.aspose.com/Images/marketplace/open-source-icon-aspose-mp.png "Source Code")](https://asposewordsoffice.codeplex.com/SourceControl/latest#Aspose.Words%20Metadata%20Cleaner%20for%20Word%20Processing%20Documents/ "Source Code")
 
 ## Features in this Release
 
@@ -17,7 +17,7 @@ The release of this add-on supports the following features:
 *   Supports all word processing and Open Office documents (doc, docx, dot, docm, dotx, dotm, rtf, odt, ott).
 *   No Installation is required to run this tool.
 
-[![Aspose.Words Metadata Cleaner](http://www.aspose.com/blogs/wp-content/uploads/2016/02/Screenshot-300x226.png "Aspose.Words Metadata Cleaner")](http://www.aspose.com/blogs/wp-content/uploads/2016/02/Screenshot.png)
+[![Aspose.Words Metadata Cleaner](https://www.aspose.com/blogs/wp-content/uploads/2016/02/Screenshot-300x226.png "Aspose.Words Metadata Cleaner")](https://www.aspose.com/blogs/wp-content/uploads/2016/02/Screenshot.png)
 
 ## Download, Installation and Usage
 
@@ -34,7 +34,7 @@ Please check [this video](https://youtu.be/eK0i8RKmCDM) to see it in action.
 
 ## Start a Free Trial Today
 
-Start a free trial today – all you need is to [sign up](https://idsrv.asposeptyltd.com/identity/signup?clientId=prod.community.aspose) with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.
+Start a free trial today – all you need is to [sign up](https://id.dynabic.com/signup?clientId=prod.discourse.aspose&redirectUrl=https://forum.aspose.com/session/sso) with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.
 
 ## Customer Feedback
 
