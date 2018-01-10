@@ -1,5 +1,5 @@
 <h1>Aspose .NET Export ListView To Word Control for Visual Studio</h1>
-<p>Aspose Export ListView To Word Control is an ASP.NET server control which allows exporting contents of ListView into Word Processing document using <a href="https://www.aspose.com/products/words/net" rel="nofollow">Aspose.Words</a>. It adds <strong>Export to Word</strong> button on top of the ListView control. Clicking the button dynamically exports the content of the ListView control to a Word Processing document and then automatically downloads the exported file to the disk location selected by the user in just couple of seconds.</p>
+<p>Aspose Export ListView To Word Control is an ASP.NET server control which allows exporting contents of ListView into Word Processing document using <a href="https://products.aspose.com/words/net" rel="nofollow">Aspose.Words</a>. It adds <strong>Export to Word</strong> button on top of the ListView control. Clicking the button dynamically exports the content of the ListView control to a Word Processing document and then automatically downloads the exported file to the disk location selected by the user in just couple of seconds.</p>
 <div>
 <p>This initial version of the control provides the following features:</p>
 <ul>
