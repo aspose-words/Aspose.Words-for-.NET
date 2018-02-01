@@ -54,6 +54,8 @@ namespace ApiExamples
 
             // Save resulting document with a new name.
             doc.Save(MyDir + @"\Artifacts\MailMerge.InsertHtml.doc");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\MailMerge.InsertHtml.doc", MyDir + @"\Golds\MailMerge.InsertHtml Gold.doc"));
         }
 
         private class HandleMergeFieldInsertHtml : IFieldMergingCallback
