@@ -359,15 +359,12 @@ namespace ApiExamples
 
 
         [Test]
-        [Ignore("WORDSNET-16258")]
         public void StretchImagefitHeight()
         {
             Document doc = DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Stream] -fitHeight>>", ShapeType.TextBox);
 
             ImageDataSource imageStream = new ImageDataSource(new FileStream(this._image, FileMode.Open, FileAccess.Read));
             BuildReport(doc, imageStream, "src", ReportBuildOptions.None);
-
-            doc.Save(MyDir + "123.docx");
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
@@ -378,7 +375,7 @@ namespace ApiExamples
             foreach (Shape shape in shapes)
             {
                 // Assert that the image is really insert in textbox 
-                Assert.IsTrue(shape.ImageData.HasImage);
+                Assert.IsNotNull(shape.Fill.ImageBytes);
 
                 // Assert that width is keeped and height is changed
                 Assert.AreNotEqual(346.35, shape.Height);
@@ -389,7 +386,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Ignore("WORDSNET-16258")]
         public void StretchImagefitWidth()
         {
             Document doc = DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Stream] -fitWidth>>", ShapeType.TextBox);
@@ -406,7 +402,7 @@ namespace ApiExamples
             foreach (Shape shape in shapes)
             {
                 // Assert that the image is really insert in textbox and 
-                Assert.IsTrue(shape.ImageData.HasImage);
+                Assert.IsNotNull(shape.Fill.ImageBytes);
 
                 // Assert that height is keeped and width is changed
                 Assert.AreNotEqual(431.5, shape.Width);
@@ -417,7 +413,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Ignore("WORDSNET-16258")]
         public void StretchImagefitSize()
         {
             Document doc = DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Stream] -fitSize>>", ShapeType.TextBox);
@@ -434,7 +429,7 @@ namespace ApiExamples
             foreach (Shape shape in shapes)
             {
                 // Assert that the image is really insert in textbox 
-                Assert.IsTrue(shape.ImageData.HasImage);
+                Assert.IsNotNull(shape.Fill.ImageBytes);
 
                 // Assert that height is changed and width is changed
                 Assert.AreNotEqual(346.35, shape.Height);
@@ -445,7 +440,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Ignore("WORDSNET-16258")]
         public void StretchImagefitSizeLim()
         {
             Document doc = DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Stream] -fitSizeLim>>", ShapeType.TextBox);
@@ -462,7 +456,7 @@ namespace ApiExamples
             foreach (Shape shape in shapes)
             {
                 // Assert that the image is really insert in textbox 
-                Assert.IsTrue(shape.ImageData.HasImage);
+                Assert.IsNotNull(shape.Fill.ImageBytes);
 
                 // Assert that textbox size are equal image size
                 Assert.AreEqual(346.35, shape.Height);
