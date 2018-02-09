@@ -31,7 +31,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Styles
             builder.ParagraphFormat.StyleName = paraStyle.Name;
             builder.Write("This is text with some other formatting ");
              
-            dataDir = dataDir + "BindSDTtoCustomXmlPart_out.doc";
+            dataDir = dataDir + "InsertStyleSeparator_out.doc";
 
             // Save the document to disk.
             doc.Save(dataDir);

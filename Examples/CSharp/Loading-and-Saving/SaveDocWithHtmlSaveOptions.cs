@@ -28,5 +28,26 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             // ExEnd:SaveHtmlWithMetafileFormat
             Console.WriteLine("\nDocument saved with Metafile format.\nFile saved at " + dataDir);
         }
+
+        public static void ImportExportSVGinHTML(string dataDir)
+        {
+            // ExStart:ImportExportSVGinHTML
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("Here is an SVG image: ");
+            builder.InsertHtml(
+                @"<svg height='210' width='500'>
+                <polygon points='100,10 40,198 190,78 10,78 160,198' 
+                    style='fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;' />
+            </svg> ");
+
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.MetafileFormat = HtmlMetafileFormat.Svg;
+
+            dataDir = dataDir + "ExportSVGinHTML_out.html";
+            doc.Save(dataDir, options);
+            // ExEnd:ImportExportSVGinHTML
+            Console.WriteLine("\nDocument saved with SVG Metafile format.\nFile saved at " + dataDir);
+        }
     }
 }

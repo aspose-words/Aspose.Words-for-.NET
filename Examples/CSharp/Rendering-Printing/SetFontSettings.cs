@@ -29,8 +29,6 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
 
             // Set font settings
             doc.FontSettings = fontSettings;
-            // Set font settings
-            doc.FontSettings = fontSettings;
             dataDir = dataDir + "Rendering.DisableFontSubstitution_out.pdf";
             doc.Save(dataDir);
             // ExEnd:EnableDisableFontSubstitution           
