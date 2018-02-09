@@ -13,7 +13,8 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
-            SaveHtmlWithMetafileFormat(dataDir); 
+            SaveHtmlWithMetafileFormat(dataDir);
+            ImportExportSVGinHTML(dataDir);
         }
 
         public static void SaveHtmlWithMetafileFormat(string dataDir)

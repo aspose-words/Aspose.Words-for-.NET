@@ -37,7 +37,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Styles
             doc.Save(dataDir);
             // ExEnd:ParagraphInsertStyleSeparator 
             
-            Console.WriteLine("\nApplied different paragraph styles to two different parts of a text line successfully.");
+            Console.WriteLine("\nApplied different paragraph styles to two different parts of a text line successfully.\nFile saved at " + dataDir);
         }
     }
 }

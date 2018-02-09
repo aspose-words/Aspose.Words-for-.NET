@@ -94,6 +94,7 @@ namespace Aspose.Words.Examples.CSharp
             // SaveAsTxt.Run();
 
             //SaveOptionsHtmlFixed.Run();
+            //SaveDocWithHtmlSaveOptions.Run();
 
             //// =====================================================
             //// =====================================================
@@ -271,7 +272,7 @@ namespace Aspose.Words.Examples.CSharp
             // ExtractContentBasedOnStyles.Run();
             // ChangeStyleOfTOCLevel.Run();
             // ChangeTOCTabStops.Run();
-
+            // InsertStyleSeparator.Run();
 
             //// Tables
             //// =====================================================
@@ -362,6 +363,7 @@ namespace Aspose.Words.Examples.CSharp
             // LoadHyphenationDictionaryForLanguage.Run();
             // PrintProgressDialog.Run();         
             // Print_CachePrinterSettings.Run();
+            // SetFontSettings.Run();
 
             //// =====================================================
             //// =====================================================

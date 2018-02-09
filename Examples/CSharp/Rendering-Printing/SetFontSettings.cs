@@ -31,7 +31,8 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             doc.FontSettings = fontSettings;
             dataDir = dataDir + "Rendering.DisableFontSubstitution_out.pdf";
             doc.Save(dataDir);
-            // ExEnd:EnableDisableFontSubstitution           
+            // ExEnd:EnableDisableFontSubstitution      
+            Console.WriteLine("\nDocument is rendered to PDF with disabled font substitution.\nFile saved at " + dataDir);
         }
     }
 }
