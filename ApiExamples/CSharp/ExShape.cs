@@ -757,6 +757,30 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\EmptyValuesInChartData.docx");
         }
 
+        /// <summary>
+        /// TestCases.Work with charts.
+        /// </summary>
+        /// 
+        /// 1. Insert basic types of charts: Column, Line, Pie, Bar, Area, Surface
+        /// 
+        /// Asserts:
+        /// a. How correct inserts charts
+        /// b. What MS Word versions are supporting this charts
+        /// c. Correct or incorrect source data in charts
+        /// 
+        /// 2. Create charts with existing Excel data??
+        /// 
+        /// 3. Modifying charts 
+        /// 
+        /// Asserts:
+        /// a. Change charts types
+        /// b. Switch source data
+        /// c. Change chart styles
+        /// d. Change categoty type (Word 2016+)
+        /// 
+        /// 4. How correctly drawn charts after conversions
+        /// 
+        /// 5. Check some new ms word 2016 chart types (https://blogs.office.com/en-us/2015/07/02/introducing-new-and-modern-chart-types-now-available-in-office-2016-preview/)
         [Test]
         public void ChartAxisProperties()
         {
