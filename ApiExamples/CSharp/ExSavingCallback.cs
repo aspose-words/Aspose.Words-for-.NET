@@ -26,9 +26,6 @@ namespace ApiExamples
             SvgSaveOptions svgSaveOptions = new SvgSaveOptions();
             svgSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
 
-            SwfSaveOptions swfSaveOptions = new SwfSaveOptions();
-            swfSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
-
             XamlFixedSaveOptions xamlFixedSaveOptions = new XamlFixedSaveOptions();
             xamlFixedSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
 

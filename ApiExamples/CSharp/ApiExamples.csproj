@@ -40,8 +40,9 @@
     <Reference Include="Aspose.Pdf, Version=17.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
       <HintPath>packages\Aspose.Pdf.17.12.0\lib\net40-client\Aspose.Pdf.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Words, Version=17.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>packages\Aspose.Words.17.12.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=18.2.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.Words.18.2.0\lib\net40\Aspose.Words.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="itextsharp, Version=5.5.12.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>packages\iTextSharp.5.5.12\lib\itextsharp.dll</HintPath>
@@ -120,7 +121,6 @@
     <Compile Include="ExHtmlSaveOptions.cs" />
     <Compile Include="ExHtmlFixedSaveOptions.cs" />
     <Compile Include="ExPdfSaveOptions.cs" />
-    <Compile Include="ExSwfSaveOptions.cs" />
     <Compile Include="ExSavingCallback.cs" />
     <Compile Include="ExSection.cs" />
     <Compile Include="ExStyles.cs" />

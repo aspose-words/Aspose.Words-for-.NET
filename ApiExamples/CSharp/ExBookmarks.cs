@@ -204,12 +204,12 @@ namespace ApiExamples
             //ExStart
             //ExFor:OutlineOptions.BookmarksOutlineLevels
             //ExFor:BookmarksOutlineLevelCollection.Add(String, Int32)
-            //ExSummary:Shows how adding bookmarks outlines with whitespaces(pdf, xps, swf)
+            //ExSummary:Shows how adding bookmarks outlines with whitespaces(pdf, xps)
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             //Add bookmarks with whitespaces. MS Word formats (like doc, docx) does not support bookmarks with whitespaces by default 
-            //and all whitespaces in the bookmarks were replaced with underscores. If you need to use bookmarks in PDF, XPS or SWF outlines, you can use them with whitespaces.
+            //and all whitespaces in the bookmarks were replaced with underscores. If you need to use bookmarks in PDF or XPS outlines, you can use them with whitespaces.
             builder.StartBookmark("My Bookmark");
             builder.Writeln("Text inside a bookmark.");
 
@@ -220,7 +220,7 @@ namespace ApiExamples
             builder.Writeln("Text after Nested Bookmark.");
             builder.EndBookmark("My Bookmark");
 
-            //Specify bookmarks outline level. If you are using xps or swf format, just use XpsSaveOptions and SwfSaveOptions.
+            //Specify bookmarks outline level. If you are using xps format, just use XpsSaveOptions.
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
             pdfSaveOptions.OutlineOptions.BookmarksOutlineLevels.Add("My Bookmark", 1);
             pdfSaveOptions.OutlineOptions.BookmarksOutlineLevels.Add("Nested Bookmark", 2);
