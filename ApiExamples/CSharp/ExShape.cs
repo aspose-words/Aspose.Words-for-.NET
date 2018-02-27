@@ -782,6 +782,198 @@ namespace ApiExamples
         /// 
         /// 5. Check some new ms word 2016 chart types (https://blogs.office.com/en-us/2015/07/02/introducing-new-and-modern-chart-types-now-available-in-office-2016-preview/)
         [Test]
+        public void ChartDefaultValues()
+        {
+            
+        }
+
+        [Test]
+        public void ColumnChart()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+
+            chart.Series.Add("AW Test Series", new[] { "First", "Second", "Third", "Fourth", "Fifth" }, new double[] { 640, 320, 280, 120, 150 });
+
+            ChartAxis xAxis = chart.AxisX;
+            ChartAxis yAxis = chart.AxisY;
+
+            xAxis.CategoryType = AxisCategoryType.Category;
+            xAxis.Crosses = AxisCrosses.Minimum;
+            xAxis.ReverseOrder = true;
+            xAxis.MajorTickMark = AxisTickMark.Inside;
+            xAxis.MinorTickMark = AxisTickMark.Cross;
+            xAxis.MajorUnit = 10;
+            xAxis.MinorUnit = 15;
+            xAxis.TickLabelOffset = 50;
+            xAxis.TickLabelPosition = AxisTickLabelPosition.High;
+            xAxis.TickLabelSpacingIsAuto = true;
+            xAxis.TickMarkSpacing = 1;
+
+            yAxis.CategoryType = AxisCategoryType.Automatic;
+            yAxis.Crosses = AxisCrosses.Maximum;
+            yAxis.ReverseOrder = false;
+            yAxis.MajorTickMark = AxisTickMark.Inside;
+            yAxis.MinorTickMark = AxisTickMark.Cross;
+            yAxis.MajorUnit = 100;
+            yAxis.MinorUnit = 20;
+            yAxis.TickLabelPosition = AxisTickLabelPosition.NextToAxis;
+            
+            doc.Save(MyDir + "123.docx");
+        }
+
+        [Test]
+        public void ColumnChartConversion()
+        {
+
+        }
+
+        [Test]
+        public void LineChart()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+        }
+
+        [Test]
+        public void LineChartConversion()
+        {
+
+        }
+
+        [Test]
+        public void PieChart()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Pie, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+        }
+
+        [Test]
+        public void PieChartConversion()
+        {
+
+        }
+
+        [Test]
+        public void BarChart()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Bar, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+        }
+
+        [Test]
+        public void BarChartConversion()
+        {
+
+        }
+
+        [Test]
+        public void AreaChart()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Area, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+        }
+
+        [Test]
+        public void AreaChartConversion()
+        {
+
+        }
+
+        [Test]
+        public void SurfaceChart()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Surface, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+        }
+
+        [Test]
+        public void SurfaceChartConversion()
+        {
+
+        }
+
+        [Test]
+        public void BubbleChart()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Bubble, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+        }
+
+        [Test]
+        public void BubbleChartConversion()
+        {
+            
+        }
+
+        [Test]
+        public void IncorrectData()
+        {
+            
+        }
+
+        [Test]
+        public void ChartWithExcelData()
+        {
+            
+        }
+
+        [Test]
+        public void ModifyingChart()
+        {
+            
+        }
+
+        [Test]
         public void ChartAxisProperties()
         {
             Document doc = new Document();
