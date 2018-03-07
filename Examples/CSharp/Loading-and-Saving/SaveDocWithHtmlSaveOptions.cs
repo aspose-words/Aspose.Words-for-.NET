@@ -15,6 +15,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
             SaveHtmlWithMetafileFormat(dataDir);
             ImportExportSVGinHTML(dataDir);
+            SetCssClassNamePrefix(dataDir);
         }
 
         public static void SaveHtmlWithMetafileFormat(string dataDir)
@@ -49,6 +50,20 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             doc.Save(dataDir, options);
             // ExEnd:ImportExportSVGinHTML
             Console.WriteLine("\nDocument saved with SVG Metafile format.\nFile saved at " + dataDir);
+        }
+
+        public static void SetCssClassNamePrefix(string dataDir)
+        {
+            // ExStart:SetCssClassNamePrefix
+            Document doc = new Document();
+
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.CssClassNamePrefix = "pfx_";
+
+            dataDir = dataDir + "CssClassNamePrefix_out.html";
+            doc.Save(dataDir, saveOptions);
+            // ExEnd:SetCssClassNamePrefix
+            Console.WriteLine("\nDocument saved with CSS prefix pfx_.\nFile saved at " + dataDir);
         }
     }
 }
