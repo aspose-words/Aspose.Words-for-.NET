@@ -55,9 +55,10 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
         public static void SetCssClassNamePrefix(string dataDir)
         {
             // ExStart:SetCssClassNamePrefix
-            Document doc = new Document();
+            Document doc = new Document(dataDir + "Document.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.CssStyleSheetType = CssStyleSheetType.External;
             saveOptions.CssClassNamePrefix = "pfx_";
 
             dataDir = dataDir + "CssClassNamePrefix_out.html";
