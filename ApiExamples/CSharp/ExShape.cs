@@ -784,7 +784,41 @@ namespace ApiExamples
         [Test]
         public void ChartDefaultValues()
         {
-            
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            builder.InsertChart(ChartType.Column, 432, 252);
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            Shape shapeNode = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Chart chart = shapeNode.Chart;
+
+            Assert.AreEqual(ChartAxisType.Category, chart.AxisX.Type);
+            Assert.AreEqual(AxisCategoryType.Automatic, chart.AxisX.CategoryType);
+            Assert.AreEqual(AxisCrosses.Automatic, chart.AxisX.Crosses);
+            //Assert.AreEqual(0.0, chart.AxisX.CrossesAt); //only if crosses.custom
+            Assert.AreEqual(false, chart.AxisX.ReverseOrder);
+            Assert.AreEqual(AxisTickMark.Inside, chart.AxisX.MajorTickMark);
+            Assert.AreEqual(AxisTickMark.Inside, chart.AxisX.MinorTickMark);
+            Assert.AreEqual(AxisTickLabelPosition.High, chart.AxisX.TickLabelPosition);
+            Assert.AreEqual(0, chart.AxisX.MajorUnit);
+            Assert.AreEqual(true, chart.AxisX.MajorUnitIsAuto);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisX.MajorUnitScale);
+            Assert.AreEqual(0, chart.AxisX.MinorUnit);
+            Assert.AreEqual(true, chart.AxisX.MinorUnitIsAuto);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisX.MinorUnitScale);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisX.BaseTimeUnit);
+            Assert.AreEqual(NumeralFormat.System, chart.AxisX.NumberFormat);
+            Assert.AreEqual(0, chart.AxisX.TickLabelOffset);
+            Assert.AreEqual(0, chart.AxisX.DisplayUnit);
+            Assert.AreEqual(true, chart.AxisX.AxisBetweenCategories);
+            Assert.AreEqual(AxisScaleType.Logarithmic, chart.AxisX.Scaling);
+            Assert.AreEqual(0, chart.AxisX.TickLabelSpacing);
+            Assert.AreEqual(true, chart.AxisX.TickLabelSpacingIsAuto);
+            Assert.AreEqual(0, chart.AxisX.TickMarkSpacing);
         }
 
         [Test]
