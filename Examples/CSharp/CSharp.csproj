@@ -14,6 +14,7 @@
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,8 +49,8 @@
       <HintPath>..\packages\Aspose.Email.17.11\lib\net40\Aspose.Email.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Aspose.Words, Version=17.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.17.12.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=18.3.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.18.3.0\lib\net40\Aspose.Words.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SkiaSharp, Version=1.59.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
@@ -107,6 +108,7 @@
     <Compile Include="Loading-and-Saving\ImageLoadingWithCredentialsHandler.cs" />
     <Compile Include="Loading-and-Saving\LoadAndSaveDocToDatabase.cs" />
     <Compile Include="Loading-and-Saving\DetectDocumentSignatures.cs" />
+    <Compile Include="Loading-and-Saving\SaveDocWithHtmlSaveOptions.cs" />
     <Compile Include="Loading-and-Saving\SaveOptionsHtmlFixed.cs" />
     <Compile Include="Loading-and-Saving\SendToClientBrowser.cs" />
     <Compile Include="Loading-and-Saving\DigitallySignedPdf.cs" />
@@ -207,6 +209,7 @@
     <Compile Include="Programming-Documents\Fields\UseOfficeMathProperties.cs" />
     <Compile Include="Programming-Documents\Fields\UpdateDocFields.cs" />
     <Compile Include="Programming-Documents\Fields\SpecifylocaleAtFieldlevel.cs" />
+    <Compile Include="Programming-Documents\Find-Replace\ReplaceHtmlTextWithMeta-Characters.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceWithEvaluator.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceWithRegex.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceWithString.cs" />
@@ -224,6 +227,7 @@
     <Compile Include="Programming-Documents\StructuredDocumentTag\ClearContentsControl.cs" />
     <Compile Include="Programming-Documents\Styles\ChangeStyleOfTOCLevel.cs" />
     <Compile Include="Programming-Documents\Styles\ChangeTOCTabStops.cs" />
+    <Compile Include="Programming-Documents\Styles\InsertStyleSeparator.cs" />
     <Compile Include="Programming-Documents\Tables\BuildTableFromDataTable.cs" />
     <Compile Include="Programming-Documents\Tables\KeepTablesAndRowsBreaking.cs" />
     <Compile Include="Programming-Documents\Tables\MergedCells.cs" />
@@ -306,6 +310,9 @@
     <Compile Include="Quick-Start\AppendDocuments.cs" />
     <Compile Include="Quick-Start\ApplyLicense.cs" />
     <Compile Include="Loading-and-Saving\Doc2Pdf.cs" />
+    <Compile Include="Quick-Start\ApplyLicenseFromFile.cs" />
+    <Compile Include="Quick-Start\ApplyLicenseFromStream.cs" />
+    <Compile Include="Quick-Start\ApplyMeteredLicense.cs" />
     <Compile Include="Quick-Start\FindAndReplace.cs" />
     <Compile Include="Quick-Start\HelloWorld.cs" />
     <Compile Include="Loading-and-Saving\LoadAndSaveToDisk.cs" />
@@ -321,6 +328,8 @@
     <Compile Include="Rendering-Printing\EmbeddedFontsInPDF.cs" />
     <Compile Include="Rendering-Printing\Print_CachePrinterSettings.cs" />
     <Compile Include="Rendering-Printing\ReceiveNotificationsOfFont .cs" />
+    <Compile Include="Rendering-Printing\SetFontSettings.cs" />
+    <Compile Include="Rendering-Printing\SetPdfSaveOptions.cs" />
     <Compile Include="Rendering-Printing\SpecifyDefaultFontWhenRendering.cs" />
     <Compile Include="Rendering-Printing\SetFontsFoldersSystemAndCustomFolder.cs" />
     <Compile Include="Rendering-Printing\SetFontsFoldersMultipleFolders.cs" />

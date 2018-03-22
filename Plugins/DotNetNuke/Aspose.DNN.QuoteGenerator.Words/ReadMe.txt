@@ -14,8 +14,8 @@ You can download the Aspose .NET Quote Generator for DNN module from one of the 
 
 ** Start a Free Trial Today **
 
-Start a free trial today – all you need is to sign up (http://www.aspose.com/community/getting-started.aspx) with the Aspose
-Once you have signed up, you are ready to try the powerful file processing features offered by Aspose.Net (https://www.aspose.com/products/total/net)
+Start a free trial today – all you need is to sign up (https://id.dynabic.com/signup?clientId=prod.discourse.aspose&redirectUrl=https://forum.aspose.com/session/sso) with the Aspose
+Once you have signed up, you are ready to try the powerful file processing features offered by Aspose.Net (https://products.aspose.com/total)
 
 
-Please feel free to contact us (www.aspose.com)
+Please feel free to contact us (https://www.aspose.com/)

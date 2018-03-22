@@ -13,7 +13,7 @@ namespace DocumentExplorerExample
     /// 
     /// DocumentExplorer allows to open documents using Aspose.Words.
     /// Once a document is opened, you can explore its object model in the tree.
-    /// You can also save the document into DOC, DOCX, ODF, EPUB, PDF, SWF, RTF, WordML,
+    /// You can also save the document into DOC, DOCX, ODF, EPUB, PDF, RTF, WordML,
     /// HTML, MHTML and plain text formats.
     /// </summary>
     public class MainForm : Form
@@ -729,7 +729,6 @@ namespace DocumentExplorerExample
                     "FlatOPC XML Document (*.fopc)|*.fopc|" +
                     "Plain Text (*.txt)|*.txt|" +
                     "IDPF EPUB Document (*.epub)|*.epub|" +
-                    "Macromedia Flash File (*.swf)|*.swf|" +
                     "XAML Fixed Document (*.xaml)|*.xaml";
 
                 dlg.FileName = Path.GetFileNameWithoutExtension(mDocument.OriginalFileName);

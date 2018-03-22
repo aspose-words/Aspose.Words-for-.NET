@@ -243,7 +243,7 @@ namespace ApiExamples
             
             doc.Save(MyDir + "PdfSaveOptions.HandleRasterWarnings Out.pdf", saveOptions);
 
-            Assert.AreEqual(2, callback.mWarnings.Count);
+            Assert.AreEqual(1, callback.mWarnings.Count);
             Assert.True(callback.mWarnings[0].Description.Contains("R2_XORPEN"));
         }
 

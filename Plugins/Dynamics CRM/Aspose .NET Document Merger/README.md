@@ -1,8 +1,8 @@
 ## Aspose .NET Document Merger for Dynamics CRM 2011
 
-[![aspose Words for net e1378287014402 Aspose .NET Document Merger for Dynamics CRM 2011](http://www.aspose.com/blogs/wp-content/uploads/2013/09/aspose-Words-for-net-e1378287014402.png "Aspose.Words for .NET logo")](https://www.aspose.com/products/words/net)The Aspose .NET Document Merger is an open source software development kit to be used with Microsoft Dynamics CRM. We have added a new addon for Dynamics CRM 2011, which is capable of merging documents into one. Easily merge documents into CRM, then replace them with the original documents or create a new one in CRM contact Entity.
+[![aspose Words for net e1378287014402 Aspose .NET Document Merger for Dynamics CRM 2011](https://www.aspose.com/blogs/wp-content/uploads/2013/09/aspose-Words-for-net-e1378287014402.png "Aspose.Words for .NET logo")](https://products.aspose.com/words/net)The Aspose .NET Document Merger is an open source software development kit to be used with Microsoft Dynamics CRM. We have added a new addon for Dynamics CRM 2011, which is capable of merging documents into one. Easily merge documents into CRM, then replace them with the original documents or create a new one in CRM contact Entity.
 
-[![free download icon aspose mp Aspose .NET Document Merger for Dynamics CRM 2011](http://cdn.aspose.com/Images/marketplace/free-download-icon-aspose-mp.png "Free Download - Aspose .NET Document Merger")](https://asposenetcrm.codeplex.com/releases/view/574403 "Free Download - Aspose .NET Document Merger")[![open source icon aspose mp Aspose .NET Document Merger for Dynamics CRM 2011](http://cdn.aspose.com/Images/marketplace/open-source-icon-aspose-mp.png "Source Code - Aspose .NET Document Merger")](https://asposenetcrm.codeplex.com/SourceControl/latest#Aspose%20.NET%20Document%20Merger/ "Source Code - Aspose .NET Document Merger")
+[![free download icon aspose mp Aspose .NET Document Merger for Dynamics CRM 2011](https://cdn.aspose.com/Images/marketplace/free-download-icon-aspose-mp.png "Free Download - Aspose .NET Document Merger")](https://asposenetcrm.codeplex.com/releases/view/574403 "Free Download - Aspose .NET Document Merger")[![open source icon aspose mp Aspose .NET Document Merger for Dynamics CRM 2011](https://cdn.aspose.com/Images/marketplace/open-source-icon-aspose-mp.png "Source Code - Aspose .NET Document Merger")](https://asposenetcrm.codeplex.com/SourceControl/latest#Aspose%20.NET%20Document%20Merger/ "Source Code - Aspose .NET Document Merger")
 
 ## Features in this Release
 
@@ -35,14 +35,14 @@ The addon is provided in the form of a solution. You can download the latest sol
 ## Using Aspose .NET Document Merger
 
 *   Open any contact record and click on “Document Merger” from the top ribbon.  
-    [![HowToUse1 300x159 Aspose .NET Document Merger for Dynamics CRM 2011](http://www.aspose.com/blogs/wp-content/uploads/2014/12/HowToUse1-300x159.png "HowToUse1")](http://www.aspose.com/blogs/wp-content/uploads/2014/12/HowToUse1.png)
+    [![HowToUse1 300x159 Aspose .NET Document Merger for Dynamics CRM 2011](https://www.aspose.com/blogs/wp-content/uploads/2014/12/HowToUse1-300x159.png "HowToUse1")](https://www.aspose.com/blogs/wp-content/uploads/2014/12/HowToUse1.png)
 *   Select the First and Second document to merge and select the output option:  
-    [![HowToUse2 300x257 Aspose .NET Document Merger for Dynamics CRM 2011](http://www.aspose.com/blogs/wp-content/uploads/2014/12/HowToUse2-300x257.png "HowToUse2")](http://www.aspose.com/blogs/wp-content/uploads/2014/12/HowToUse2.png)
+    [![HowToUse2 300x257 Aspose .NET Document Merger for Dynamics CRM 2011](https://www.aspose.com/blogs/wp-content/uploads/2014/12/HowToUse2-300x257.png "HowToUse2")](https://www.aspose.com/blogs/wp-content/uploads/2014/12/HowToUse2.png)
 *   Merged document will be attached to same contact record, based on the output selected.
 
 ## Start a Free Trial Today
 
-Start a free trial today – all you need is to [sign up](https://idsrv.asposeptyltd.com/identity/signup?clientId=prod.community.aspose) with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.
+Start a free trial today – all you need is to [sign up](https://id.dynabic.com/signup?clientId=prod.discourse.aspose&redirectUrl=https://forum.aspose.com/session/sso) with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.
 
 ## Customer Feedback
 

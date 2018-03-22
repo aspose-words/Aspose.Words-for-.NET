@@ -1,8 +1,8 @@
 ## Aspose .NET Document Generator for Dynamics CRM 2011
 
-[![aspose Words for net e1378287014402 Aspose .NET Document Generator for Dynamics CRM 2011](http://www.aspose.com/blogs/wp-content/uploads/2013/09/aspose-Words-for-net-e1378287014402.png "Aspose.Words for .NET logo")](https://www.aspose.com/products/words/net)The Aspose for .NET Document Generator is an open source software development kit to be used with Microsoft Dynamics CRM. We have added a new add on for Dynamics CRM 2011, which is capable of generating document using a template. Easily create a template in Microsoft Word and upload it into CRM, then generate as many documents as you want using the template by retrieving details from the contact entity.
+[![aspose Words for net e1378287014402 Aspose .NET Document Generator for Dynamics CRM 2011](https://www.aspose.com/blogs/wp-content/uploads/2013/09/aspose-Words-for-net-e1378287014402.png "Aspose.Words for .NET logo")](https://products.aspose.com/words/net)The Aspose for .NET Document Generator is an open source software development kit to be used with Microsoft Dynamics CRM. We have added a new add on for Dynamics CRM 2011, which is capable of generating document using a template. Easily create a template in Microsoft Word and upload it into CRM, then generate as many documents as you want using the template by retrieving details from the contact entity.
 
-[![free download icon aspose mp Aspose .NET Document Generator for Dynamics CRM 2011](http://cdn.aspose.com/Images/marketplace/free-download-icon-aspose-mp.png "Free Download - Aspose .NET Document Generator")](https://asposenetcrm.codeplex.com/releases/view/574402 "Free Download - Aspose .NET Document Generator")[![open source icon aspose mp Aspose .NET Document Generator for Dynamics CRM 2011](http://cdn.aspose.com/Images/marketplace/open-source-icon-aspose-mp.png "Source Code - Aspose .NET Document Generator")](https://asposenetcrm.codeplex.com/SourceControl/latest#Aspose%20.NET%20Document%20Generator/ "Source Code - Aspose .NET Document Generator")
+[![free download icon aspose mp Aspose .NET Document Generator for Dynamics CRM 2011](https://cdn.aspose.com/Images/marketplace/free-download-icon-aspose-mp.png "Free Download - Aspose .NET Document Generator")](https://asposenetcrm.codeplex.com/releases/view/574402 "Free Download - Aspose .NET Document Generator")[![open source icon aspose mp Aspose .NET Document Generator for Dynamics CRM 2011](https://cdn.aspose.com/Images/marketplace/open-source-icon-aspose-mp.png "Source Code - Aspose .NET Document Generator")](https://asposenetcrm.codeplex.com/SourceControl/latest#Aspose%20.NET%20Document%20Generator/ "Source Code - Aspose .NET Document Generator")
 
 ## Features in this Release
 
@@ -79,7 +79,7 @@ Please make sure that the title of the Attachment contains the extension and nam
 
 ## Start a Free Trial Today
 
-Start a free trial today – all you need is to [sign up](https://idsrv.asposeptyltd.com/identity/signup?clientId=prod.community.aspose) with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.
+Start a free trial today – all you need is to [sign up](https://id.dynabic.com/signup?clientId=prod.discourse.aspose&redirectUrl=https://forum.aspose.com/session/sso) with Aspose. Once you have signed up, you are ready to try powerful file processing features offered by Aspose file format APIs.
 
 ## Customer Feedback
 

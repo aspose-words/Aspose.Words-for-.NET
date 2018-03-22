@@ -16,6 +16,11 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
             string dataDir = RunExamples.GetDataDir_WorkingWithCharts();
 
             DefineXYAxisProperties(dataDir);
+            SetDateTimeValuesToAxis(dataDir);
+            SetNumberFormatForAxis(dataDir);
+            SetboundsOfAxis(dataDir);
+            SetIntervalUnitBetweenLabelsOnAxis(dataDir);
+            HideChartAxis(dataDir);
         }
 
         public static void DefineXYAxisProperties(String dataDir)
@@ -179,6 +184,33 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
             doc.Save(dataDir);
             // ExEnd:SetIntervalUnitBetweenLabelsOnAxis
             Console.WriteLine("\nSet interval unit between labels on an axis successfully.\nFile saved at " + dataDir);
+        }
+
+        public static void HideChartAxis(String dataDir)
+        {
+            // ExStart:HideChartAxis
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+
+            // Fill data.
+            chart.Series.Add("AW Series 1",
+                new string[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" },
+                new double[] { 1.2, 0.3, 2.1, 2.9, 4.2 });
+
+            // Hide the Y axis.
+            chart.AxisY.Hidden = true;
+
+            dataDir = dataDir + @"HideChartAxis_out.docx";
+            doc.Save(dataDir);
+            // ExEnd:HideChartAxis
+            Console.WriteLine("\nY Axis of chart has hidden successfully.\nFile saved at " + dataDir);
         }
     }
 }

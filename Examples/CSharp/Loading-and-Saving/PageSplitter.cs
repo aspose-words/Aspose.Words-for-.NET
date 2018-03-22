@@ -688,14 +688,6 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             }
 
             return;
-
-            Paragraph lastParagraph = lastBody.ChildNodes.OfType<Paragraph>().LastOrDefault();
-            if (lastParagraph == null || lastParagraph.ChildNodes.Count == 0)
-            {
-                return;
-            }
-
-            ProcessLastParagraph(lastParagraph);
         }
 
         public static void RemovePageBreakFromParagraph(Paragraph paragraph)

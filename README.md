@@ -1,9 +1,7 @@
 Aspose.Words for .NET
 [Aspose.Words for .NET](https://products.aspose.com/words/net) is an advanced Word document processing API that enables you to perform a wide range of document processing tasks directly within your .NET applications. Aspose.Words for .NET supports DOC, OOXML, RTF, HTML, OpenDocument, PDF, XPS, EPUB and other formats. With Aspose.Words you can view, generate, modify, convert, render and print documents without using Microsoft Word.
 
-This repository contains [Examples](Examples), [Plugins](Plugins) and [Showcases](Showcases) for [Aspose.Words for .NET](https://products.aspose.com/words/net), [Aspose.Words for Android via Xamarin](https://products.aspose.com/words/android-xamarin), [Aspose.Words for iOS via Xamarin](https://products.aspose.com/words/ios-xamarin) and [Aspose.Words for Mac via Xamarin](https://products.aspose.com/words/mac-xamarin) to help you learn and write your own applications.
-
-Note: Aspose.Words for Android via Xamarin, Aspose.Words for iOS via Xamarin and Aspose.Words for Mac via Xamarin APIs are ported from Aspose.Words for .NET. So, you can use the same examples for all Xamarin APIs.
+This repository contains [Examples](Examples), [Plugins](Plugins) and [Showcases](Showcases) for [Aspose.Words for .NET](https://products.aspose.com/words/net) to help you learn and write your own applications.
 
 <p align="center">
 

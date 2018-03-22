@@ -54,15 +54,15 @@ namespace ApiExamples
         [Test]
         public void NumberFormat()
         {
-            Document doc = DocumentHelper.CreateSimpleDocument("<<[s.Value1]:alphabetic>> : <<[s.Value2]:roman:lower>>, <<[s.Value3]:ordinal>>, <<[s.Value1]:ordinalText:upper>>" + ", <<[s.Value2]:cardinal>>, <<[s.Value3]:hex>>, <<[s.Value3]:arabicDash>>, <<[s.Date]:\"MMMM\":lower>>");
+            Document doc = DocumentHelper.CreateSimpleDocument("<<[s.Value1]:alphabetic>> : <<[s.Value2]:roman:lower>>, <<[s.Value3]:ordinal>>, <<[s.Value1]:ordinalText:upper>>" + ", <<[s.Value2]:cardinal>>, <<[s.Value3]:hex>>, <<[s.Value3]:arabicDash>>");
 
-            NumericDataSource sender = new NumericDataSource(1, 2.2, 200, DateTime.Parse("09.10.2016 10:00:00"));
+            NumericDataSource sender = new NumericDataSource(1, 2.2, 200, DateTime.Parse("10.09.2016 10:00:00"));
             BuildReport(doc, sender, "s");
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            Assert.AreEqual("A : ii, 200th, FIRST, Two, C8, - 200 -, september\f", doc.GetText());
+            Assert.AreEqual("A : ii, 200th, FIRST, Two, C8, - 200 -\f", doc.GetText());
         }
 
         [Test]

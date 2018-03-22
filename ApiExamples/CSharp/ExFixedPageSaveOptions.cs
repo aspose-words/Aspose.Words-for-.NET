@@ -26,7 +26,6 @@ namespace ApiExamples
                 yield return new TestCaseData(new SvgSaveOptions());
                 yield return new TestCaseData(new XamlFixedSaveOptions());
                 yield return new TestCaseData(new XpsSaveOptions());
-                yield return new TestCaseData(new SwfSaveOptions());
                 yield return new TestCaseData(new SvgSaveOptions());
             }
         }
@@ -42,7 +41,6 @@ namespace ApiExamples
                 yield return new TestCaseData(new SvgSaveOptions(), 100, NumeralFormat.ArabicIndic, int.MaxValue, 1, EmfPlusDualRenderingMode.Emf, false, MetafileRenderingMode.Vector, false, true);
                 yield return new TestCaseData(new XamlFixedSaveOptions(), 100, NumeralFormat.ArabicIndic, int.MaxValue, 1, EmfPlusDualRenderingMode.Emf, false, MetafileRenderingMode.Vector, false, true);
                 yield return new TestCaseData(new XpsSaveOptions(), 100, NumeralFormat.ArabicIndic, int.MaxValue, 1, EmfPlusDualRenderingMode.Emf, false, MetafileRenderingMode.Vector, false, true);
-                yield return new TestCaseData(new SwfSaveOptions(), 100, NumeralFormat.ArabicIndic, int.MaxValue, 1, EmfPlusDualRenderingMode.Emf, false, MetafileRenderingMode.Vector, false, true);
                 yield return new TestCaseData(new SvgSaveOptions(), 100, NumeralFormat.ArabicIndic, int.MaxValue, 1, EmfPlusDualRenderingMode.Emf, false, MetafileRenderingMode.Vector, false, true);
             }
         }

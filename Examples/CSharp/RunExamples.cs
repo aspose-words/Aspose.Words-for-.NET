@@ -94,6 +94,7 @@ namespace Aspose.Words.Examples.CSharp
             // SaveAsTxt.Run();
 
             //SaveOptionsHtmlFixed.Run();
+            //SaveDocWithHtmlSaveOptions.Run();
 
             //// =====================================================
             //// =====================================================
@@ -129,6 +130,7 @@ namespace Aspose.Words.Examples.CSharp
             // ReplaceWithString.Run();
             // ReplaceWithRegex.Run();
             // ReplaceWithEvaluator.Run();
+            // ReplaceHtmlTextWithMeta_Characters.Run();
 
             //// Bookmarks
             //// =====================================================
@@ -251,6 +253,7 @@ namespace Aspose.Words.Examples.CSharp
             // WorkWithChartDataLabel.Run();
             // WorkWithSingleChartDataPoint.Run();
             // WorkWithSingleChartSeries.Run();
+            //WorkingWithChartAxis.Run();
 
             //// Theme
             //// =====================================================
@@ -269,7 +272,7 @@ namespace Aspose.Words.Examples.CSharp
             // ExtractContentBasedOnStyles.Run();
             // ChangeStyleOfTOCLevel.Run();
             // ChangeTOCTabStops.Run();
-
+            // InsertStyleSeparator.Run();
 
             //// Tables
             //// =====================================================
@@ -360,6 +363,7 @@ namespace Aspose.Words.Examples.CSharp
             // LoadHyphenationDictionaryForLanguage.Run();
             // PrintProgressDialog.Run();         
             // Print_CachePrinterSettings.Run();
+            // SetFontSettings.Run();
 
             //// =====================================================
             //// =====================================================
