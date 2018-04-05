@@ -157,6 +157,8 @@ namespace ApiExamples
             //ExFor:BookmarkStart.#ctor
             //ExFor:BookmarkEnd
             //ExFor:BookmarkEnd.#ctor
+            //ExFor:Bookmark.BookmarkStart
+            //ExFor:Bookmark.BookmarkEnd
             //ExSummary:Shows how to create a bookmark by inserting bookmark start and end nodes.
             Document doc = new Document();
 
