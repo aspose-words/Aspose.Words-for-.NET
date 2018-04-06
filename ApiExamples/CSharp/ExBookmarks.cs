@@ -5,11 +5,13 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using NUnit.Framework;
-using System.IO;
-using Aspose.Words;
+using System;
+using System.Collections.Generic;
 using Aspose.Pdf.Facades;
+using NUnit.Framework;
+using Aspose.Words;
 using Aspose.Words.Saving;
+using Bookmark = Aspose.Words.Bookmark;
 
 namespace ApiExamples
 {
@@ -242,6 +244,45 @@ namespace ApiExamples
             //Assert that all the bookmarks title are with whitespaces
             Assert.AreEqual("My Bookmark", bookmarks[0].Title);
             Assert.AreEqual("Nested Bookmark", bookmarks[1].Title);
+        }
+
+        [Test]
+        public void GetBookmarkEnumerator()
+        {
+            //ExStart
+            //ExFor:BookmarkCollection.GetEnumerator()
+            //ExSummary:Shows how to use get the enumerator from a BookmarkCollection and use it to iterate over the collection.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Populate document with bookmarks.
+            for (int i = 1; i <= 5; i++)
+            {
+                builder.StartBookmark(String.Format("Bookmark {0}", i));
+                builder.Write(String.Format("Bookmark {0} text", i));
+                builder.EndBookmark(String.Format("Bookmark {0}", i));
+            }
+
+            // Get the enumerator from the document's BookmarkCollection and iterate over the 5 bookmarks.
+            IEnumerator<Bookmark> e = doc.Range.Bookmarks.GetEnumerator();
+            while (e.MoveNext())
+            {
+                Bookmark currentBookmark = e.Current;
+                Console.WriteLine(currentBookmark.Text);
+            }
+            //ExEnd
+
+            int bookmarkCount = 0;
+
+            e = doc.Range.Bookmarks.GetEnumerator();
+            while (e.MoveNext())
+            {
+                Bookmark currentBookmark = e.Current;
+                Assert.AreEqual(String.Format("Bookmark {0} text", bookmarkCount + 1), currentBookmark.Text);
+                bookmarkCount++;
+            }
+
+            Assert.AreEqual(5, bookmarkCount);
         }
     }
 }
