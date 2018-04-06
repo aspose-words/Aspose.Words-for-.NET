@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using NUnit.Framework;
 using Aspose.Words;
-using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
-using Aspose.Words.Tables;
 
 namespace ApiExamples
 {
@@ -17,31 +10,32 @@ namespace ApiExamples
         [Test]
         //ExStart
         //ExFor:ExAbsolutePositionTab
-        //ExFor:ExAbsolutePositionTab.Accept
-        //ExId:AbsolutePositionTabVisitor
+        //ExFor:ExAbsolutePositionTab.Accept(DocumentVisitor)
         //ExSummary:Shows how to use AbsolutePositionTab.
         public void DocumentToTxt()
         {         
-            // This document is two sentences with an absolute position tab between them.
+            // This document contains two sentences separated by an absolute position tab.
             Document doc = new Document(MyDir + "AbsolutePositionTab.docx");
 
-            // An AbsolutePositionTab is a child node of a paragraph.
+            // An AbsolutePositionTab is a child node of a paragraph. 
+            // It gets picked up when looking for nodes of the SpecialChar type.
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
-
-            // AbsolutePositionTabs get picked up when looking for SpecialChars.
             AbsolutePositionTab absPositionTab = (AbsolutePositionTab)para.GetChild(NodeType.SpecialChar, 0, true);
 
             // This implementation of the DocumentVisitor pattern converts the document to plain text.
             MyDocToTxtWriter myDocToTxtWriter = new MyDocToTxtWriter();
 
             // We can run the DocumentVisitor over the whole paragraph.
-            // Our DocumentVisitor changes AbsolutePositionTabs into '/t' characters.
             para.Accept(myDocToTxtWriter);
 
+            // Tab character is placed where the AbsolutePositionTab was.
+            Assert.AreEqual("Before AbsolutePositionTab\tAfter AbsolutePositionTab\r\n", myDocToTxtWriter.GetText());
+
             // An AbsolutePositionTab can accept a DocumentVisitor by itself too.
+            myDocToTxtWriter = new MyDocToTxtWriter();
             absPositionTab.Accept(myDocToTxtWriter);
 
-            Console.WriteLine(myDocToTxtWriter.GetText());
+            Assert.AreEqual("\t", myDocToTxtWriter.GetText());
         }
 
         /// <summary>
