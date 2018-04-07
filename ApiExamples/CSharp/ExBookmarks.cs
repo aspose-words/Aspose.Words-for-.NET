@@ -247,42 +247,88 @@ namespace ApiExamples
         }
 
         [Test]
-        public void GetBookmarkEnumerator()
+        //ExStart
+        //ExFor:Aspose.Words.Bookmark.BookmarkEnd
+        //ExFor:Aspose.Words.Bookmark.BookmarkStart
+        //ExFor:Aspose.Words.BookmarkCollection.GetEnumerator
+        //ExFor:Aspose.Words.BookmarkEnd.Accept(DocumentVisitor)
+        //ExFor:Aspose.Words.BookmarkEnd.Name
+        //ExFor:Aspose.Words.BookmarkStart.Accept(DocumentVisitor)
+        //ExFor:Aspose.Words.BookmarkStart.Bookmark
+        //ExFor:Aspose.Words.BookmarkStart.GetText
+        //ExFor:Aspose.Words.BookmarkStart.Name
+        //ExSummary:Shows how to use various bookmark elements.
+        public void CreateUpdateAndPrintBookmarks()
         {
-            //ExStart
-            //ExFor:BookmarkCollection.GetEnumerator()
-            //ExSummary:Shows how to use get the enumerator from a BookmarkCollection and use it to iterate over the collection.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Populate document with bookmarks.
-            for (int i = 1; i <= 5; i++)
+            for (int i = 1; i < 6; i++)
             {
-                builder.StartBookmark(String.Format("Bookmark {0}", i));
-                builder.Write(String.Format("Bookmark {0} text", i));
-                builder.EndBookmark(String.Format("Bookmark {0}", i));
+                string bookmarkName = String.Format("Bookmark {0}", i);
+
+                builder.StartBookmark(bookmarkName);
+                builder.Write(String.Format("Content of {0}.", bookmarkName));
+                builder.EndBookmark(bookmarkName);
             }
 
+            // Look at initial values of our bookmarks.
+            PrintAllBookmarkInfo(doc);
+
+            // Get the enumerator from the document's BookmarkCollection to iterate over the 5 bookmarks.
+            IEnumerator<Bookmark> e = doc.Range.Bookmarks.GetEnumerator();
+            while (e.MoveNext())
+            {
+                Bookmark currentBookmark = e.Current;
+
+                // Update the names and content of each bookmark.
+                currentBookmark.Name = "Updated " + currentBookmark.Name;
+                currentBookmark.Text = "Updated " + currentBookmark.Text;
+            }
+
+            // Look at updated values of our bookmarks.
+            PrintAllBookmarkInfo(doc);
+        }
+
+        /// <summary>
+        /// Use an iterator and a visitor to print info of every bookmark of a document to the console.
+        /// </summary>
+        private static void PrintAllBookmarkInfo(Document doc)
+        {
             // Get the enumerator from the document's BookmarkCollection and iterate over the 5 bookmarks.
             IEnumerator<Bookmark> e = doc.Range.Bookmarks.GetEnumerator();
             while (e.MoveNext())
             {
                 Bookmark currentBookmark = e.Current;
-                Console.WriteLine(currentBookmark.Text);
+
+                // Create a DocumentVisitor, accept it and let it print info on our bookmarks.
+                BookmarkInfoPrinter bookmarkVisitor = new BookmarkInfoPrinter();
+                currentBookmark.BookmarkStart.Accept(bookmarkVisitor);
+                currentBookmark.BookmarkEnd.Accept(bookmarkVisitor);
+
+                // Prints a blank line.
+                Console.WriteLine(currentBookmark.BookmarkStart.GetText());
             }
-            //ExEnd
-
-            int bookmarkCount = 0;
-
-            e = doc.Range.Bookmarks.GetEnumerator();
-            while (e.MoveNext())
-            {
-                Bookmark currentBookmark = e.Current;
-                Assert.AreEqual(String.Format("Bookmark {0} text", bookmarkCount + 1), currentBookmark.Text);
-                bookmarkCount++;
-            }
-
-            Assert.AreEqual(5, bookmarkCount);
         }
+
+        /// <summary>
+        /// Visitor that prints bookmark information to the console.
+        /// </summary>
+        public class BookmarkInfoPrinter : DocumentVisitor
+        {
+            public override VisitorAction VisitBookmarkStart(BookmarkStart bookmarkStart)
+            {
+                Console.WriteLine(String.Format("BookmarkStart name: \"{0}\", Content: \"{1}\"", bookmarkStart.Name, bookmarkStart.Bookmark.Text));
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitBookmarkEnd(BookmarkEnd bookmarkEnd)
+            {
+                Console.WriteLine(String.Format("BookmarkEnd name: \"{0}\"", bookmarkEnd.Name));
+                return VisitorAction.Continue;
+            }
+        }
+        //ExEnd
     }
 }
