@@ -15,6 +15,8 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             string dataDir = RunExamples.GetDataDir_QuickStart();
 
             LoadOptionsUpdateDirtyFields(dataDir);
+            LoadAndSaveEncryptedODT(dataDir);
+            VerifyODTdocument(dataDir);
         }
 
         public static void LoadOptionsUpdateDirtyFields(string dataDir)
@@ -47,10 +49,9 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
         public static void VerifyODTdocument(string dataDir)
         {
             // ExStart:VerifyODTdocument  
-            FileFormatInfo info = FileFormatUtil.DetectFileFormat(dataDir + @"encryped.odt");
+            FileFormatInfo info = FileFormatUtil.DetectFileFormat(dataDir + @"encrypted.odt");
             Console.WriteLine(info.IsEncrypted);
             // ExEnd:VerifyODTdocument 
-            Console.WriteLine("\nUpdate the fields with the dirty attribute successfully.\nFile saved at " + dataDir);
         }
     }
 }
