@@ -7,6 +7,7 @@
 
 using System.Drawing;
 using Aspose.Words;
+using Aspose.Words.Tables;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -77,6 +78,118 @@ namespace ApiExamples
             builder.CurrentParagraph.Runs[0].Text = "Paragraph with no border";
 
             doc.Save(MyDir + @"\Artifacts\Border.NoBorder.doc");
+            //ExEnd
+        }
+
+        [Test]
+        public void Borders()
+        {
+            //ExFor:Aspose.Words.Border.Equals(System.Object)
+            //ExFor:Aspose.Words.Border.GetHashCode
+            //ExFor:Aspose.Words.Border.IsVisible
+            //ExFor:Aspose.Words.BorderCollection.Count
+            //ExFor:Aspose.Words.BorderCollection.Equals(Aspose.Words.BorderCollection)
+            //ExFor:Aspose.Words.BorderCollection.Item(System.Int32)
+            //ExSummary:Shows the equality of BorderCollections as well counting, visibility of their elements.
+            //ExStart
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.CurrentParagraph.AppendChild(new Run(doc, "Paragraph 1."));
+
+            Paragraph firstParagraph = doc.FirstSection.Body.FirstParagraph;
+            BorderCollection firstParaBorders = firstParagraph.ParagraphFormat.Borders;
+
+            // Borders are invisible by default
+            foreach (Border border in firstParaBorders)
+            {
+                Assert.IsFalse(border.IsVisible);
+            }
+
+            // Changes to these borders in this paragraph will apply to subsequent paragraphs.
+            firstParaBorders[BorderType.Left].LineStyle = LineStyle.Double;
+            firstParaBorders[BorderType.Right].LineStyle = LineStyle.Double;
+            firstParaBorders[BorderType.Top].LineStyle = LineStyle.Double;
+            firstParaBorders[BorderType.Bottom].LineStyle = LineStyle.Double;
+
+            builder.InsertParagraph();
+            builder.CurrentParagraph.AppendChild(new Run(doc, "Paragraph 2."));
+
+            Paragraph secondParagraph = builder.CurrentParagraph;
+            BorderCollection secondParaBorders = secondParagraph.ParagraphFormat.Borders;
+
+            // Two paragraphs have two different BorderCollections but share the elements from the first are given to the second.anthony cumia windows vista 
+            for (int i = 0; i < firstParaBorders.Count; i++)
+            {
+                Assert.AreEqual(firstParaBorders[i].LineStyle, secondParaBorders[i].LineStyle);
+                Assert.AreEqual(firstParaBorders[i].LineWidth, secondParaBorders[i].LineWidth);
+                Assert.AreEqual(firstParaBorders[i].Color, secondParaBorders[i].Color);
+                Assert.AreEqual(firstParaBorders[i].GetHashCode(), secondParaBorders[i].GetHashCode());
+            }
+
+            Assert.IsFalse(firstParaBorders.Equals(secondParaBorders));
+
+            // If one CorderCollection element is changed in a subsequent paragraph, the rest must be changed too.
+            secondParaBorders[BorderType.Left].LineStyle = LineStyle.DotDash;
+            secondParaBorders[BorderType.Right].LineStyle = LineStyle.DotDash;
+            secondParaBorders[BorderType.Top].LineStyle = LineStyle.DotDash;
+            secondParaBorders[BorderType.Bottom].LineStyle = LineStyle.DotDash;
+            secondParaBorders[BorderType.Vertical].LineStyle = LineStyle.DotDash;
+            secondParaBorders[BorderType.Horizontal].LineStyle = LineStyle.DotDash;
+
+            // Now the BorderCollections both have their own elements.
+            for (int i = 0; i < firstParaBorders.Count; i++)
+            {
+                Assert.AreNotEqual(firstParaBorders[i].LineStyle, secondParaBorders[i].LineStyle);
+                Assert.AreNotEqual(firstParaBorders[i].GetHashCode(), secondParaBorders[i].GetHashCode());
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void BordersVerticalAndHorizontal()
+        {
+            //ExFor:Aspose.Words.BorderCollection.Horizontal
+            //ExFor:Aspose.Words.BorderCollection.Vertical
+            //ExSummary:Shows the difference between the Horizontal and Vertical properties of BorderCollection.
+            //ExStart
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // A BorderCollection is one of a Paragraph's formatting properties.
+            Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
+            BorderCollection paragraphBorders = paragraph.ParagraphFormat.Borders;
+
+            // Note that this will apply to all subsequent paragraphs, not just the first.
+            paragraphBorders.Horizontal.Color = Color.Red;
+            paragraphBorders.Horizontal.LineStyle = LineStyle.DashSmallGap;
+            paragraphBorders.Horizontal.LineWidth = 3;
+
+            // Horizontal borders only appear under a paragraph if there's another paragraph under it. 
+            builder.CurrentParagraph.AppendChild(new Run(doc, "Paragraph above horizontal border."));
+            builder.InsertParagraph();
+            builder.CurrentParagraph.AppendChild(new Run(doc, "Paragraph below horizontal border."));
+
+            // Vertical borders are ones between cells in a table.
+            Table table = new Table(doc);
+            doc.FirstSection.Body.AppendChild(table);
+
+            // The row formatting property also has a BorderCollection. 
+            Row row = new Row(doc);
+            table.AppendChild(row);
+            BorderCollection rowBorders = row.RowFormat.Borders;
+
+            rowBorders.Vertical.Color = Color.Blue;
+            rowBorders.Vertical.LineStyle = LineStyle.Dot;
+            rowBorders.Vertical.LineWidth = 2;
+
+            Cell cell = new Cell(doc);
+            cell.AppendChild(new Paragraph(doc));
+            cell.FirstParagraph.AppendChild(new Run(doc, "Vertical border to the right."));
+
+            row.AppendChild(cell);
+            row.AppendChild(new Cell(doc));
+            row.LastCell.AppendChild(new Paragraph(doc));
+            row.LastCell.FirstParagraph.AppendChild(new Run(doc, "Vertical border to the left."));
             //ExEnd
         }
     }

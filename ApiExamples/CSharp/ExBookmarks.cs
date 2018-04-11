@@ -282,7 +282,7 @@ namespace ApiExamples
             {
                 Bookmark currentBookmark = e.Current;
 
-                // Update the names and content of each bookmark.
+                // Update the name and content of each bookmark.
                 currentBookmark.Name = "Updated " + currentBookmark.Name;
                 currentBookmark.Text = "Updated " + currentBookmark.Text;
             }
