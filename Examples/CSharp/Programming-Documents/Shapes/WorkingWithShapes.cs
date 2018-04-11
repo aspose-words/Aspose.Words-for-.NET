@@ -49,7 +49,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
             Shape watermark = new Shape(doc, ShapeType.TextPlainText);
             watermark.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
             watermark.RelativeVerticalPosition = RelativeVerticalPosition.Page;
-            watermark.IsLayoutInCell = false; // Display the shape outside of table cell if it will be placed into a cell.
+            watermark.IsLayoutInCell = true; // Display the shape outside of table cell if it will be placed into a cell.
 
             watermark.Width = 300;
             watermark.Height = 70;

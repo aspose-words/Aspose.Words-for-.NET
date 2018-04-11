@@ -29,7 +29,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
 
             //Load the Word document
             Document doc = new Document(dataDir + @"input.docx", lo);
-
+             
             //Save the document into DOCX
             doc.Save(dataDir + "output.docx", SaveFormat.Docx);
             // ExEnd:LoadOptionsUpdateDirtyFields 
