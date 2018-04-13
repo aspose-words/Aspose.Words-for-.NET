@@ -11,7 +11,6 @@ using Aspose.Pdf.Facades;
 using NUnit.Framework;
 using Aspose.Words;
 using Aspose.Words.Saving;
-using Bookmark = Aspose.Words.Bookmark;
 
 namespace ApiExamples
 {
@@ -257,7 +256,7 @@ namespace ApiExamples
         //ExFor:Aspose.Words.BookmarkStart.Bookmark
         //ExFor:Aspose.Words.BookmarkStart.GetText
         //ExFor:Aspose.Words.BookmarkStart.Name
-        //ExSummary:Shows how to use various bookmark elements.
+        //ExSummary:Shows how to use various bookmark features.
         public void CreateUpdateAndPrintBookmarks()
         {
             Document doc = new Document();
@@ -266,21 +265,21 @@ namespace ApiExamples
             // Populate document with bookmarks.
             for (int i = 1; i < 6; i++)
             {
-                string bookmarkName = String.Format("Bookmark {0}", i);
+                string bookmarkName = "Bookmark " + i;
 
                 builder.StartBookmark(bookmarkName);
-                builder.Write(String.Format("Content of {0}.", bookmarkName));
+                builder.Write("Text content of " + bookmarkName);
                 builder.EndBookmark(bookmarkName);
             }
 
             // Look at initial values of our bookmarks.
             PrintAllBookmarkInfo(doc);
 
-            // Get the enumerator from the document's BookmarkCollection to iterate over the 5 bookmarks.
-            IEnumerator<Bookmark> e = doc.Range.Bookmarks.GetEnumerator();
+            // Get the enumerator from the document's BookmarkCollection to iterate over the bookmarks.
+            IEnumerator<Aspose.Words.Bookmark> e = doc.Range.Bookmarks.GetEnumerator();
             while (e.MoveNext())
             {
-                Bookmark currentBookmark = e.Current;
+                Aspose.Words.Bookmark currentBookmark = e.Current;
 
                 // Update the name and content of each bookmark.
                 currentBookmark.Name = "Updated " + currentBookmark.Name;
@@ -292,18 +291,20 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Use an iterator and a visitor to print info of every bookmark of a document to the console.
+        /// Use an iterator and a visitor to print info of every bookmark from within a document.
         /// </summary>
         private static void PrintAllBookmarkInfo(Document doc)
         {
-            // Get the enumerator from the document's BookmarkCollection and iterate over the 5 bookmarks.
-            IEnumerator<Bookmark> e = doc.Range.Bookmarks.GetEnumerator();
+            // Create a DocumentVisitor.
+            BookmarkInfoPrinter bookmarkVisitor = new BookmarkInfoPrinter();
+
+            // Get the enumerator from the document's BookmarkCollection and iterate over the bookmarks.
+            IEnumerator<Aspose.Words.Bookmark> e = doc.Range.Bookmarks.GetEnumerator();
             while (e.MoveNext())
             {
-                Bookmark currentBookmark = e.Current;
+                Aspose.Words.Bookmark currentBookmark = e.Current;
 
-                // Create a DocumentVisitor, accept it and let it print info on our bookmarks.
-                BookmarkInfoPrinter bookmarkVisitor = new BookmarkInfoPrinter();
+                // Accept our DocumentVisitor it to print information about our bookmarks.
                 currentBookmark.BookmarkStart.Accept(bookmarkVisitor);
                 currentBookmark.BookmarkEnd.Accept(bookmarkVisitor);
 

@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Tables;
@@ -155,41 +156,59 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            //  Paragraph:
             // A BorderCollection is one of a Paragraph's formatting properties.
             Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
             BorderCollection paragraphBorders = paragraph.ParagraphFormat.Borders;
 
-            // Note that this will apply to all subsequent paragraphs, not just the first.
+            // paragraphBorders belongs to the first paragraph, but these changes will apply to subsequently created paragraphs.
             paragraphBorders.Horizontal.Color = Color.Red;
             paragraphBorders.Horizontal.LineStyle = LineStyle.DashSmallGap;
             paragraphBorders.Horizontal.LineWidth = 3;
 
-            // Horizontal borders only appear under a paragraph if there's another paragraph under it. 
+            // Horizontal borders only appear under a paragraph if there's another paragraph under it.
+            // Right now the first paragraph has no borders.
             builder.CurrentParagraph.AppendChild(new Run(doc, "Paragraph above horizontal border."));
+
+            // Now the first paragraph will have a red dashed line border under it.
+            // This new second paragraph can have a border too, but only if we add another paragraph underneath it.
             builder.InsertParagraph();
             builder.CurrentParagraph.AppendChild(new Run(doc, "Paragraph below horizontal border."));
 
-            // Vertical borders are ones between cells in a table.
+            //  Table:
+            // A table makes use of both vertical and horizontal properties of BorderCollection.
+            // Both these properties can only affect the inner borders of a table.
             Table table = new Table(doc);
             doc.FirstSection.Body.AppendChild(table);
 
-            // The row formatting property also has a BorderCollection. 
-            Row row = new Row(doc);
-            table.AppendChild(row);
-            BorderCollection rowBorders = row.RowFormat.Borders;
+            for (int i = 0; i < 3; i++)
+            {
+                Row row = new Row(doc);
+                BorderCollection rowBorders = row.RowFormat.Borders;
 
-            rowBorders.Vertical.Color = Color.Blue;
-            rowBorders.Vertical.LineStyle = LineStyle.Dot;
-            rowBorders.Vertical.LineWidth = 2;
+                // Vertical borders are ones between rows in a table.
+                rowBorders.Horizontal.Color = Color.Red;
+                rowBorders.Horizontal.LineStyle = LineStyle.Dot;
+                rowBorders.Horizontal.LineWidth = 2;
 
-            Cell cell = new Cell(doc);
-            cell.AppendChild(new Paragraph(doc));
-            cell.FirstParagraph.AppendChild(new Run(doc, "Vertical border to the right."));
+                // Vertical borders are ones between cells in a table.
+                rowBorders.Vertical.Color = Color.Blue;
+                rowBorders.Vertical.LineStyle = LineStyle.Dot;
+                rowBorders.Vertical.LineWidth = 2;
 
-            row.AppendChild(cell);
-            row.AppendChild(new Cell(doc));
-            row.LastCell.AppendChild(new Paragraph(doc));
-            row.LastCell.FirstParagraph.AppendChild(new Run(doc, "Vertical border to the left."));
+                // A blue dotted vertical border will appear between cells.
+                // A red dotted border will appear between rows. 
+                row.AppendChild(new Cell(doc));
+                row.LastCell.AppendChild(new Paragraph(doc));
+                row.LastCell.FirstParagraph.AppendChild(new Run(doc, "Vertical border to the right."));
+
+                row.AppendChild(new Cell(doc));
+                row.LastCell.AppendChild(new Paragraph(doc));
+                row.LastCell.FirstParagraph.AppendChild(new Run(doc, "Vertical border to the left."));
+                table.AppendChild(row);
+            }
+
+            doc.Save(MyDir + @"\Artifacts\Border.HorizontalAndVerticalBorders.doc");
             //ExEnd
         }
     }
