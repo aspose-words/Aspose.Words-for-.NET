@@ -31,6 +31,7 @@ using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Structured
 using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Signature;
 using Aspose.Words.Examples.CSharp.Loading_and_Saving;
 using Aspose.Words.Examples.CSharp.Rendering_Printing;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes;
 
 namespace Aspose.Words.Examples.CSharp
 {
@@ -63,6 +64,7 @@ namespace Aspose.Words.Examples.CSharp
             // QucikStart.HelloWorld.Run();
             // UpdateFields.Run();
             // WorkingWithNodes.Run();
+            // Load_Options.Run();
 
             //// =====================================================
             //// =====================================================
@@ -140,6 +142,10 @@ namespace Aspose.Words.Examples.CSharp
             // BookmarkNameAndText.Run();
             // AccessBookmarks.Run();
             // CreateBookmark.Run();
+
+            //// Shapes
+            //// =====================================================
+            // WorkingWithShapes.Run();
 
             //// Comments
             //// =====================================================
