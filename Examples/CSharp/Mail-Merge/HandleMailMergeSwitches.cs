@@ -54,7 +54,6 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
 
         void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs args)
         {
-            Console.WriteLine(args.TableName);
         }
     }
     // ExEnd:HandleMailMergeSwitches
