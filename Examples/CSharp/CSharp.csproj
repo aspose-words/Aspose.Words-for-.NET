@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="LINQ\Common.cs" />
     <Compile Include="LINQ\Contract.cs" />
     <Compile Include="LINQ\Client.cs" />
