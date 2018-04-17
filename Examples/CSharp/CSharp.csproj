@@ -209,6 +209,7 @@
     <Compile Include="Programming-Documents\Fields\UseOfficeMathProperties.cs" />
     <Compile Include="Programming-Documents\Fields\UpdateDocFields.cs" />
     <Compile Include="Programming-Documents\Fields\SpecifylocaleAtFieldlevel.cs" />
+    <Compile Include="Programming-Documents\Find-Replace\FindReplaceUsingMetaCharacters.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceHtmlTextWithMeta-Characters.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceWithEvaluator.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceWithRegex.cs" />
