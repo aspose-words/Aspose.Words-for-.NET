@@ -43,17 +43,18 @@ namespace ApiExamples
             block.Name = "Custom Block 1";
 
             Assert.AreEqual("00000000-0000-0000-0000-000000000000", block.Guid.ToString());
-            Assert.AreEqual(BuildingBlockType.None, block.Type);
             Assert.AreEqual("(Empty Category)", block.Category);
+            Assert.AreEqual(BuildingBlockType.None, block.Type);
             Assert.AreEqual(BuildingBlockGallery.All, block.Gallery);
+            Assert.AreEqual(BuildingBlockBehavior.Content, block.Behavior);
 
             glossaryDoc.AppendChild(block);
             Assert.AreEqual(1, glossaryDoc.Count);
 
             // If we want to use our building block as an AutoText quick part, we need to give it some text and change some properties.
-            // All the necessary preparation will be in a custom document visitor that we will accept. 
+            // All the necessary preparation will be done in a custom document visitor that we will accept. 
             BuildingBlockVisitor visitor = new BuildingBlockVisitor(glossaryDoc);
-            glossaryDoc.BuildingBlocks[0].Accept(visitor);
+            block.Accept(visitor);
             
             Console.WriteLine(visitor.GetText());
 
@@ -61,7 +62,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Simple implementation of adding text to a building block and prepares it for being inserted in the text. Implemented as a Visitor.
+        /// Simple implementation of adding text to a building block and preparing it for usage in the document. Implemented as a Visitor.
         /// </summary>
         public class BuildingBlockVisitor : DocumentVisitor
         {
@@ -95,7 +96,7 @@ namespace ApiExamples
 
                 // This run is what will be visible in the document.
                 Run run = new Run(mGlossaryDoc, "Text inside " + block.Name);
-                paragraph.AppendChild(run);
+                block.FirstSection.Body.FirstParagraph.AppendChild(run);
 
                 return VisitorAction.Continue;
             }
@@ -106,8 +107,8 @@ namespace ApiExamples
                 return VisitorAction.Continue;
             }
 
-            private StringBuilder mBuilder;
-            private GlossaryDocument mGlossaryDoc;
+            private readonly StringBuilder mBuilder;
+            private readonly GlossaryDocument mGlossaryDoc;
         }
         //ExEnd
 
@@ -123,10 +124,9 @@ namespace ApiExamples
         //ExFor:Aspose.Words.BuildingBlocks.BuildingBlockCollection.Item(System.Int32)
         //ExFor:Aspose.Words.BuildingBlocks.BuildingBlockCollection.ToArray
         //ExFor:Aspose.Words.BuildingBlocks.BuildingBlockGallery
-        //ExSummary: Shows how to use GlossaryDocument and BuildingBlockCollection.
+        //ExSummary:Shows how to use GlossaryDocument and BuildingBlockCollection.
         public void GlossaryDocument()
         {
-
             Document doc = new Document();
             GlossaryDocument glossaryDoc = new GlossaryDocument();
             doc.GlossaryDocument = glossaryDoc;
@@ -143,13 +143,13 @@ namespace ApiExamples
             Assert.AreEqual("Block 3", glossaryDoc.BuildingBlocks.ToArray()[2].Name);
             Assert.AreEqual("Block 5", glossaryDoc.LastBuildingBlock.Name);
 
-            // Get a block by gallery, category and name. Here you can see what the default gallery and category are.
+            // Get a block by gallery, category and name.
             BuildingBlock block4 = glossaryDoc.GetBuildingBlock(BuildingBlockGallery.All, "(Empty Category)", "Block 4");
 
-            // All GUIDs are the same by default. To be able to uniquely identify them by GUID, these must be changed.
+            // All GUIDs are the same by default. To be able to uniquely identify blocks by GUID, these must be changed.
             Assert.AreEqual("00000000-0000-0000-0000-000000000000", block4.Guid.ToString());
 
-            // We can do that with the help of a custom visitor. 
+            // We will do that using a custom visitor. 
             GlossaryDocVisitor visitor = new GlossaryDocVisitor();
             glossaryDoc.Accept(visitor);
 
@@ -206,8 +206,8 @@ namespace ApiExamples
                 return VisitorAction.Continue;
             }
 
-            private Dictionary<System.Guid, BuildingBlock> mBlocks;
-            private StringBuilder mBuilder;
+            private readonly Dictionary<System.Guid, BuildingBlock> mBlocks;
+            private readonly StringBuilder mBuilder;
         }
         //ExEnd
     }
