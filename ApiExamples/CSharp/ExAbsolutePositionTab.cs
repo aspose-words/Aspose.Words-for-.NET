@@ -74,7 +74,7 @@ namespace ApiExamples
             /// </summary>
             private void AppendText(string text)
             {
-                    mBuilder.Append(text);
+                mBuilder.Append(text);
             }
 
             /// <summary>
