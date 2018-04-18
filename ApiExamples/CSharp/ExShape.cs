@@ -352,7 +352,7 @@ namespace ApiExamples
         public void ResolutionDefaultValues()
         {
             ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Jpeg);
-            
+
             Assert.AreEqual(96, imageOptions.HorizontalResolution);
             Assert.AreEqual(96, imageOptions.VerticalResolution);
         }
@@ -380,7 +380,7 @@ namespace ApiExamples
 
             OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
             officeMath.DisplayType = OfficeMathDisplayType.Display;
-            
+
             Assert.That(() => officeMath.Justification = OfficeMathJustification.Inline, Throws.TypeOf<ArgumentException>());
         }
 
@@ -420,7 +420,7 @@ namespace ApiExamples
 
             OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
             officeMath.DisplayType = OfficeMathDisplayType.Display;
-            
+
             Assert.Throws<ArgumentException>(() => officeMath.Justification = OfficeMathJustification.Inline);
         }
 
@@ -610,7 +610,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertOleObject("http://www.aspose.com", "htmlfile", true, false, null);
-            
+
             doc.Save(MyDir + @"\Artifacts\Document.InsertedOleObject.docx");
         }
 
@@ -629,14 +629,14 @@ namespace ApiExamples
 
             byte[] zipFileBytes = File.ReadAllBytes(DatabaseDir + "cat001.zip");
 
-            using (Stream stream = new MemoryStream(zipFileBytes))
+            using (MemoryStream stream = new MemoryStream(zipFileBytes))
             {
                 Shape shape = builder.InsertOleObject(stream, "Package", true, null);
 
                 OlePackage setOlePackage = shape.OleFormat.OlePackage;
                 setOlePackage.FileName = "Cat FileName.zip";
                 setOlePackage.DisplayName = "Cat DisplayName.zip";
-                
+
                 doc.Save(MyDir + @"\Artifacts\Shape.InsertOlePackage.docx");
             }
             //ExEnd
@@ -678,7 +678,7 @@ namespace ApiExamples
             chart.Series.Clear();
 
             // Add new series
-            ChartSeries series0 = chart.Series.Add("AW Series 0", new string[] { "AW0", "AW1", "AW2" }, new double[] { 2.5, 1.5, 3.5 });
+            ChartSeries series0 = chart.Series.Add("AW Series 0", new[] { "AW0", "AW1", "AW2" }, new[] { 2.5, 1.5, 3.5 });
 
             // Add DataLabel to the first point of the first series.
             ChartDataLabel chartDataLabel0 = series0.DataLabels.Add(0);
@@ -722,14 +722,14 @@ namespace ApiExamples
             seriesColl.Clear();
 
             // Create category names array, second category will be null.
-            String[] categories = new String[] { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
+            string[] categories = { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
 
             // Adding new series with empty (double.NaN) values.
             seriesColl.Add("AW Series 1", categories, new double[] { 1, 2, double.NaN, 4, 5, 6 });
             seriesColl.Add("AW Series 2", categories, new double[] { 2, 3, double.NaN, 5, 6, 7 });
 
-            Assert.That(() => seriesColl.Add("AW Series 3", categories, new double[] { double.NaN, 4, 5, double.NaN, double.NaN }), Throws.TypeOf<ArgumentException>());
-            Assert.That(() => seriesColl.Add("AW Series 4", categories, new double[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN }), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => seriesColl.Add("AW Series 3", categories, new[] { double.NaN, 4, 5, double.NaN, double.NaN }), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => seriesColl.Add("AW Series 4", categories, new[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN }), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -746,15 +746,314 @@ namespace ApiExamples
             seriesColl.Clear();
 
             // Create category names array, second category will be null.
-            String[] categories = new String[] { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
+            string[] categories = { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
 
             // Adding new series with empty (double.NaN) values.
-            seriesColl.Add("AW Series 1", categories, new double[] { 1, 2, double.NaN, 4, 5, 6 });
-            seriesColl.Add("AW Series 2", categories, new double[] { 2, 3, double.NaN, 5, 6, 7 });
-            seriesColl.Add("AW Series 3", categories, new double[] { double.NaN, 4, 5, double.NaN, 7, 8 });
-            seriesColl.Add("AW Series 4", categories, new double[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, 9 });
+            seriesColl.Add("AW Series 1", categories, new[] { 1, 2, double.NaN, 4, 5, 6 });
+            seriesColl.Add("AW Series 2", categories, new[] { 2, 3, double.NaN, 5, 6, 7 });
+            seriesColl.Add("AW Series 3", categories, new[] { double.NaN, 4, 5, double.NaN, 7, 8 });
+            seriesColl.Add("AW Series 4", categories, new[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, 9 });
 
             doc.Save(MyDir + @"\Artifacts\EmptyValuesInChartData.docx");
+        }
+
+        [Test]
+        public void ChartDefaultValues()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            builder.InsertChart(ChartType.Column3D, 432, 252);
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            Shape shapeNode = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Chart chart = shapeNode.Chart;
+            
+            // Assert X axis
+            Assert.AreEqual(ChartAxisType.Category, chart.AxisX.Type);
+            Assert.AreEqual(AxisCategoryType.Automatic, chart.AxisX.CategoryType);
+            Assert.AreEqual(AxisCrosses.Automatic, chart.AxisX.Crosses);
+            Assert.AreEqual(false, chart.AxisX.ReverseOrder);
+            Assert.AreEqual(AxisTickMark.None, chart.AxisX.MajorTickMark);
+            Assert.AreEqual(AxisTickMark.None, chart.AxisX.MinorTickMark);
+            Assert.AreEqual(AxisTickLabelPosition.NextToAxis, chart.AxisX.TickLabelPosition);
+            Assert.AreEqual(1, chart.AxisX.MajorUnit);
+            Assert.AreEqual(true, chart.AxisX.MajorUnitIsAuto);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisX.MajorUnitScale);
+            Assert.AreEqual(0.5, chart.AxisX.MinorUnit);
+            Assert.AreEqual(true, chart.AxisX.MinorUnitIsAuto);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisX.MinorUnitScale);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisX.BaseTimeUnit);
+            Assert.AreEqual("General", chart.AxisX.NumberFormat.FormatCode);
+            Assert.AreEqual(100, chart.AxisX.TickLabelOffset);
+            Assert.AreEqual(AxisBuiltInUnit.None, chart.AxisX.DisplayUnit.Unit);
+            Assert.AreEqual(true, chart.AxisX.AxisBetweenCategories);
+            Assert.AreEqual(AxisScaleType.Linear, chart.AxisX.Scaling.Type);
+            Assert.AreEqual(1, chart.AxisX.TickLabelSpacing);
+            Assert.AreEqual(true, chart.AxisX.TickLabelSpacingIsAuto);
+            Assert.AreEqual(1, chart.AxisX.TickMarkSpacing);
+
+            // Assert Y axis
+            Assert.AreEqual(ChartAxisType.Value, chart.AxisY.Type);
+            Assert.AreEqual(AxisCategoryType.Category, chart.AxisY.CategoryType);
+            Assert.AreEqual(AxisCrosses.Automatic, chart.AxisY.Crosses);
+            Assert.AreEqual(false, chart.AxisY.ReverseOrder);
+            Assert.AreEqual(AxisTickMark.None, chart.AxisY.MajorTickMark);
+            Assert.AreEqual(AxisTickMark.None, chart.AxisY.MinorTickMark);
+            Assert.AreEqual(AxisTickLabelPosition.NextToAxis, chart.AxisY.TickLabelPosition);
+            Assert.AreEqual(1, chart.AxisY.MajorUnit);
+            Assert.AreEqual(true, chart.AxisY.MajorUnitIsAuto);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisY.MajorUnitScale);
+            Assert.AreEqual(0.5, chart.AxisY.MinorUnit);
+            Assert.AreEqual(true, chart.AxisY.MinorUnitIsAuto);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisY.MinorUnitScale);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisY.BaseTimeUnit);
+            Assert.AreEqual("General", chart.AxisY.NumberFormat.FormatCode);
+            Assert.AreEqual(100, chart.AxisY.TickLabelOffset);
+            Assert.AreEqual(AxisBuiltInUnit.None, chart.AxisY.DisplayUnit.Unit);
+            Assert.AreEqual(true, chart.AxisY.AxisBetweenCategories);
+            Assert.AreEqual(AxisScaleType.Linear, chart.AxisY.Scaling.Type);
+            Assert.AreEqual(1, chart.AxisY.TickLabelSpacing);
+            Assert.AreEqual(true, chart.AxisY.TickLabelSpacingIsAuto);
+            Assert.AreEqual(1, chart.AxisY.TickMarkSpacing);
+
+            // Assert Z axis
+            Assert.AreEqual(ChartAxisType.Series, chart.AxisZ.Type);
+            Assert.AreEqual(AxisCategoryType.Category, chart.AxisZ.CategoryType);
+            Assert.AreEqual(AxisCrosses.Automatic, chart.AxisZ.Crosses);
+            Assert.AreEqual(false, chart.AxisZ.ReverseOrder);
+            Assert.AreEqual(AxisTickMark.None, chart.AxisZ.MajorTickMark);
+            Assert.AreEqual(AxisTickMark.None, chart.AxisZ.MinorTickMark);
+            Assert.AreEqual(AxisTickLabelPosition.NextToAxis, chart.AxisZ.TickLabelPosition);
+            Assert.AreEqual(1, chart.AxisZ.MajorUnit);
+            Assert.AreEqual(true, chart.AxisZ.MajorUnitIsAuto);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisZ.MajorUnitScale);
+            Assert.AreEqual(0.5, chart.AxisZ.MinorUnit);
+            Assert.AreEqual(true, chart.AxisZ.MinorUnitIsAuto);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisZ.MinorUnitScale);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisZ.BaseTimeUnit);
+            Assert.AreEqual(string.Empty, chart.AxisZ.NumberFormat.FormatCode);
+            Assert.AreEqual(100, chart.AxisZ.TickLabelOffset);
+            Assert.AreEqual(AxisBuiltInUnit.None, chart.AxisZ.DisplayUnit.Unit);
+            Assert.AreEqual(true, chart.AxisZ.AxisBetweenCategories);
+            Assert.AreEqual(AxisScaleType.Linear, chart.AxisZ.Scaling.Type);
+            Assert.AreEqual(1, chart.AxisZ.TickLabelSpacing);
+            Assert.AreEqual(true, chart.AxisZ.TickLabelSpacingIsAuto);
+            Assert.AreEqual(1, chart.AxisZ.TickMarkSpacing);
+        }
+
+        [Test]
+        public void InsertChartUsingAxisProperties()
+        {
+            //ExStart
+            //ExFor:ChartAxis
+            //ExFor:ChartAxis.CategoryType
+            //ExFor:ChartAxis.Crosses
+            //ExFor:ChartAxis.ReverseOrder
+            //ExFor:ChartAxis.MajorTickMark
+            //ExFor:ChartAxis.MinorTickMark
+            //ExFor:ChartAxis.MajorUnit
+            //ExFor:ChartAxis.MinorUnit
+            //ExFor:ChartAxis.TickLabelOffset
+            //ExFor:ChartAxis.TickLabelPosition
+            //ExFor:ChartAxis.TickLabelSpacingIsAuto
+            //ExFor:ChartAxis.TickMarkSpacing
+            //ExSummary:Shows how to insert chart using the axis options for detailed configuration.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+
+            chart.Series.Add("Aspose Test Series", 
+                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note"}, 
+                new double[] { 640, 320, 280, 120, 150 });
+
+            // Get chart axises
+            ChartAxis xAxis = chart.AxisX;
+            ChartAxis yAxis = chart.AxisY;
+
+            // Set X-axis options
+            xAxis.CategoryType = AxisCategoryType.Category;
+            xAxis.Crosses = AxisCrosses.Minimum;
+            xAxis.ReverseOrder = false;
+            xAxis.MajorTickMark = AxisTickMark.Inside;
+            xAxis.MinorTickMark = AxisTickMark.Cross;
+            xAxis.MajorUnit = 10;
+            xAxis.MinorUnit = 15;
+            xAxis.TickLabelOffset = 50;
+            xAxis.TickLabelPosition = AxisTickLabelPosition.Low;
+            xAxis.TickLabelSpacingIsAuto = false;
+            xAxis.TickMarkSpacing = 1;
+
+            // Set Y-axis options
+            yAxis.CategoryType = AxisCategoryType.Automatic;
+            yAxis.Crosses = AxisCrosses.Maximum;
+            yAxis.ReverseOrder = true;
+            yAxis.MajorTickMark = AxisTickMark.Inside;
+            yAxis.MinorTickMark = AxisTickMark.Cross;
+            yAxis.MajorUnit = 100;
+            yAxis.MinorUnit = 20;
+            yAxis.TickLabelPosition = AxisTickLabelPosition.NextToAxis;
+            //ExEnd
+            
+            doc.Save(MyDir + @"\Artifacts\Shape.InsertChartUsingAxisProperties Out.docx");
+            doc.Save(MyDir + @"\Artifacts\Shape.InsertChartUsingAxisProperties Out.pdf");
+        }
+
+        [Test]
+        public void InsertChartWithDateTimeValues()
+        {
+            //ExStart
+            //ExFor:ChartAxis.Scaling
+            //ExFor:AxisScaling.Minimum
+            //ExFor:AxisScaling.Maximum
+            //ExSummary: Shows how to insert chart with date/time values
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+
+            // Fill data.
+            chart.Series.Add("Aspose Test Series",
+                new DateTime[] { new DateTime(2017, 11, 06), new DateTime(2017, 11, 09), new DateTime(2017, 11, 15),
+                    new DateTime(2017, 11, 21), new DateTime(2017, 11, 25), new DateTime(2017, 11, 29) },
+                new double[] { 1.2, 0.3, 2.1, 2.9, 4.2, 5.3 });
+
+            // Set X axis bounds.
+            ChartAxis xAxis = chart.AxisX;
+            xAxis.Scaling.Minimum = new DateTime(2017, 11, 05).ToOADate();
+            xAxis.Scaling.Maximum = new DateTime(2017, 12, 03).ToOADate();
+
+            // Set major units to a week and minor units to a day.
+            xAxis.MajorUnit = 7;
+            xAxis.MinorUnit = 1;
+            xAxis.MajorTickMark = AxisTickMark.Cross;
+            xAxis.MinorTickMark = AxisTickMark.Outside;
+            //ExEnd
+
+            doc.Save(MyDir + @"\Artifacts\Shape.InsertChartWithDateTimeValues Out.docx");
+            doc.Save(MyDir + @"\Artifacts\Shape.InsertChartWithDateTimeValues Out.pdf");
+        }
+
+        [Test]
+        public void SetNumberFormatToChartAxis()
+        {
+            //ExStart
+            //ExFor:ChartAxis.NumberFormat
+            //ExFor:NumberFormat.FormatCode
+            //ExSummary:Shows how to set formatting for chart values.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+
+            chart.Series.Add("Aspose Test Series",
+                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
+
+            // Set number format.
+            chart.AxisY.NumberFormat.FormatCode = "#,##0";
+            //ExEnd
+
+            doc.Save(MyDir + @"\Artifacts\Shape.SetNumberFormatToChartAxis Out.docx");
+            doc.Save(MyDir + @"\Artifacts\Shape.SetNumberFormatToChartAxis Out.pdf");
+        }
+
+        // Note: Tests below used for verification conversion docx to pdf and the correct display.
+        // For now, the results check manually.
+        [Test]
+        [TestCase(ChartType.Column)]
+        [TestCase(ChartType.Line)]
+        [TestCase(ChartType.Pie)]
+        [TestCase(ChartType.Bar)]
+        [TestCase(ChartType.Area)]
+        public void TestDisplayChartsWithConversion(ChartType chartType)
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(chartType, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+
+            chart.Series.Add("Aspose Test Series",
+                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
+
+            doc.Save(MyDir + @"\Artifacts\Shape.TestDisplayChartsWithConversion Out.docx");
+            doc.Save(MyDir + @"\Artifacts\Shape.TestDisplayChartsWithConversion Out.pdf");
+        }
+        
+        [Test]
+        public void Surface3DChart()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Surface3D, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+
+            chart.Series.Add("Aspose Test Series 1",
+                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
+
+            chart.Series.Add("Aspose Test Series 2",
+                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new double[] { 900000, 50000, 1100000, 400000, 2500000 });
+
+            chart.Series.Add("Aspose Test Series 3",
+                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new double[] { 500000, 820000, 1500000, 400000, 100000 });
+
+            doc.Save(MyDir + @"\Artifacts\SurfaceChart Out.docx");
+            doc.Save(MyDir + @"\Artifacts\SurfaceChart Out.pdf");
+        }
+        
+        [Test]
+        public void BubbleChart()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Bubble, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+
+            chart.Series.Add("Aspose Test Series",
+                new double[] { 2900000, 350000, 1100000, 400000, 400000 },
+                new double[] { 1900000, 850000, 2100000, 600000, 1500000 },
+                new double[] { 900000, 450000, 2500000, 800000, 500000 });
+
+            doc.Save(MyDir + @"\Artifacts\BubbleChart Out.docx");
+            doc.Save(MyDir + @"\Artifacts\BubbleChart Out.pdf");
         }
     }
 }
