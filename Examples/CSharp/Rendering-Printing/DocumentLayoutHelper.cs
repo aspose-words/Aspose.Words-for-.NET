@@ -415,7 +415,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
     /// <summary>
     /// Represents a generic collection of layout entity types.
     /// </summary>
-    public class LayoutCollection<T> : IEnumerable<T> where T : LayoutEntity
+    public sealed class LayoutCollection<T> : IEnumerable<T> where T : LayoutEntity
     {
         /// <summary>
         /// Reserved for internal use.

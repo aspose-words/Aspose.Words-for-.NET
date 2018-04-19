@@ -32,7 +32,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
     }
 
     // ExStart:HandleMailMergeSwitches
-    public class MailMergeSwitches : IFieldMergingCallback
+    public sealed class MailMergeSwitches : IFieldMergingCallback
     {
         void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
         {
@@ -54,7 +54,6 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
 
         void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs args)
         {
-
         }
     }
     // ExEnd:HandleMailMergeSwitches

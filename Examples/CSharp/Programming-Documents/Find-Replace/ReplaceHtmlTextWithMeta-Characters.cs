@@ -42,7 +42,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
     }
 
     // ExStart:ReplaceHtmlFindAndInsertHtml
-    public class FindAndInsertHtml : IReplacingCallback
+    public sealed class FindAndInsertHtml : IReplacingCallback
     {
         ReplaceAction IReplacingCallback.Replacing(ReplacingArgs e)
         {
