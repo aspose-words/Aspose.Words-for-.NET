@@ -586,5 +586,21 @@ namespace ApiExamples
             }
             //ExEnd
         }
+
+        [Test]
+        public void CompositeNodeMisc()
+        {
+            //ExFor:Aspose.Words.CompositeNode.Count
+            //ExFor:Aspose.Words.CompositeNode.CreateNavigator
+            //ExFor:Aspose.Words.CompositeNode.GetChildNodes(Aspose.Words.NodeType[],System.Boolean)
+            //ExFor:Aspose.Words.CompositeNode.InsertAfter(Aspose.Words.Node,Aspose.Words.Node,Aspose.Words.Node)
+            //ExFor:Aspose.Words.CompositeNode.InsertBefore(Aspose.Words.Node,Aspose.Words.Node)
+            //ExFor:Aspose.Words.CompositeNode.InsertBefore(Aspose.Words.Node,Aspose.Words.Node,Aspose.Words.Node)
+            //ExFor:Aspose.Words.CompositeNode.PrependChild(Aspose.Words.Node)
+            //ExSummary:Shows various child node functions of CompositeNode.
+            //ExStart
+
+            //ExEnd
+        }
     }
 }
