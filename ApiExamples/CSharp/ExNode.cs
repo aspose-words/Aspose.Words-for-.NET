@@ -6,7 +6,9 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Xml.XPath;
 using Aspose.Words;
+using Aspose.Words.Fields;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using NUnit.Framework;
@@ -590,17 +592,77 @@ namespace ApiExamples
         [Test]
         public void CompositeNodeMisc()
         {
-            //ExFor:Aspose.Words.CompositeNode.Count
-            //ExFor:Aspose.Words.CompositeNode.CreateNavigator
-            //ExFor:Aspose.Words.CompositeNode.GetChildNodes(Aspose.Words.NodeType[],System.Boolean)
-            //ExFor:Aspose.Words.CompositeNode.InsertAfter(Aspose.Words.Node,Aspose.Words.Node,Aspose.Words.Node)
-            //ExFor:Aspose.Words.CompositeNode.InsertBefore(Aspose.Words.Node,Aspose.Words.Node)
-            //ExFor:Aspose.Words.CompositeNode.InsertBefore(Aspose.Words.Node,Aspose.Words.Node,Aspose.Words.Node)
-            //ExFor:Aspose.Words.CompositeNode.PrependChild(Aspose.Words.Node)
+            //ExFor:CompositeNode.Count
+            //ExFor:CompositeNode.GetChildNodes(NodeType[], Boolean)
+            //ExFor:CompositeNode.InsertAfter(Node, Node, Node)
+            //ExFor:CompositeNode.InsertBefore(Node, Node)
+            //ExFor:CompositeNode.InsertBefore(Node, Node, Node)
+            //ExFor:CompositeNode.PrependChild(Node) 
             //ExSummary:Shows various child node functions of CompositeNode.
             //ExStart
+            Document doc = new Document();
 
+            // This empty document already has a paragraph.
+            Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
+
+            // A paragraph is a composite node because it can contain runs, which are another type of node.
+            Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
+            Run paragraphText = new Run(doc, "Initial text. ");
+            paragraph.AppendChild(paragraphText);
+
+            // We will place these 3 children in numeric order into the main text of our paragraph.
+            Run run1 = new Run(doc, "Run 1. ");
+            Run run2 = new Run(doc, "Run 2. ");
+            Run run3 = new Run(doc, "Run 3. ");
+
+            // Insert run2 before initial paragraph text. This will be at the start of the paragraph.
+            paragraph.InsertBefore(run2, paragraphText);
+
+            // Insert run3 after initial paragraph text. This will be at the end of the paragraph.
+            paragraph.InsertAfter(run3, paragraphText);
+
+            // Insert run1 before every other child node. run2 was the start of the paragraph, now it will be run1.
+            paragraph.PrependChild(run1);
+
+            Assert.AreEqual("Run 1. Run 2. Initial text. Run 3. " + (char)12, paragraph.GetText());
+            Assert.AreEqual(4, paragraph.GetChildNodes(NodeType.Any, true).Count);
             //ExEnd
+        }
+
+        [Test]
+        public void NodeXPathNavigator()
+        {
+            //ExFor:Aspose.Words.CompositeNode.CreateNavigator
+            // Create a blank document.
+            Document doc = new Document();
+
+            // A document has a paragraph by default so we can make a navigator straight away.
+            XPathNavigator navigator = doc.FirstSection.Body.FirstParagraph.CreateNavigator();
+
+            // That paragraph is the default position for the navigator. Since the paragraph is the only node, there is nowhere to navigate.
+            Assert.AreEqual("Paragraph", navigator.Name);
+            Assert.AreEqual(false, navigator.HasChildren);
+
+            // Populate our document's first paragraph with a variety of nodes.
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.CurrentParagraph.AppendChild(new Run(doc, "Date created: "));
+            builder.CurrentParagraph.AppendField(FieldType.FieldDate, true);
+            builder.CurrentParagraph.AppendChild(new Run(doc, " Footnoted text. "));
+            Footnote footnote = new Footnote(doc, FootnoteType.Footnote);
+            builder.CurrentParagraph.AppendChild(footnote);
+            footnote.Paragraphs.Add(new Paragraph(doc));
+            footnote.FirstParagraph.Runs.Add(new Run(doc, "Footnote for text."));
+
+            Assert.AreEqual(true, navigator.HasChildren);
+            Assert.AreEqual(false, navigator.CanEdit);
+            Assert.AreEqual(8, navigator.SelectChildren(XPathNodeType.All).Count);
+
+            // Navigate to and print all children of our paragraph, starting from its first child.
+            navigator.MoveToFirstChild();
+
+            do {
+                Console.WriteLine("{0}: {1}", navigator.Name, navigator.Value);
+            } while (navigator.MoveToNext());
         }
     }
 }
