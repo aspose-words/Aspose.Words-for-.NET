@@ -1460,6 +1460,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:CompareOptions.IgnoreFormatting
             //ExFor:CompareOptions.Target
+            //ExFor:Document.Compare(Document, String, DateTime, CompareOptions)
             //ExSummary: Shows how to specify which document shall be used as a target during comparison
             Document doc1 = new Document(MyDir + "Document.CompareOptions.1.docx");
             Document doc2 = new Document(MyDir + "Document.CompareOptions.2.docx");
@@ -1816,6 +1817,30 @@ namespace ApiExamples
             compliance = doc.Compliance;
 
             Assert.AreEqual(compliance, OoxmlCompliance.Iso29500_2008_Transitional);
+        }
+
+        [Test]
+        public void SaveWithOptions()
+        {
+            //ExStart
+            //ExFor:Document.Save(Stream, String, Saving.SaveOptions)
+            //ExSummary:Improve the quality of a rendered document with SaveOptions.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Size = 60;
+
+            builder.Writeln("Some text.");
+
+            SaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
+
+            options.UseAntiAliasing = false;
+            doc.Save(@"SaveOptions low quality.jpg", options);
+
+            options.UseAntiAliasing = true;
+            options.UseHighQualityRendering = true;
+            doc.Save(@"SaveOptions high quality.jpg", options);
+            //ExEnd
         }
     }
 }
