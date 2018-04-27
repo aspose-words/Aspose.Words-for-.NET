@@ -256,7 +256,7 @@ namespace ApiExamples
         //ExFor:BookmarkStart.Name
         //ExFor:BookmarkEnd.Name
         //ExSummary:Shows how add bookmarks and update their contents.
-        [Test] //ExSkip
+        [Test]
         public void CreateUpdateAndPrintBookmarks()
         {
             Document doc = new Document();
@@ -277,9 +277,9 @@ namespace ApiExamples
             // Look at initial values of our bookmarks
             PrintAllBookmarkInfo(doc);
 
-            Assert.AreEqual("Bookmark 1", bookmarks[0].Name);
-            Assert.AreEqual("Text content of Bookmark 2", bookmarks[1].Text);
-            Assert.AreEqual(3, bookmarks.Count);
+            Assert.AreEqual("Bookmark 1", bookmarks[0].Name); //ExSkip
+            Assert.AreEqual("Text content of Bookmark 2", bookmarks[1].Text); //ExSkip
+            Assert.AreEqual(3, bookmarks.Count); //ExSkip
 
             // Update some values
             bookmarks[0].Name = "Updated name of " + bookmarks[0].Name;
@@ -289,9 +289,9 @@ namespace ApiExamples
             // Look at updated values of our bookmarks
             PrintAllBookmarkInfo(doc);
 
-            Assert.AreEqual("Updated name of Bookmark 1", bookmarks[0].Name);
-            Assert.AreEqual("Updated text content of Bookmark 2", bookmarks[1].Text);
-            Assert.AreEqual(2, bookmarks.Count);
+            Assert.AreEqual("Updated name of Bookmark 1", bookmarks[0].Name); //ExSkip
+            Assert.AreEqual("Updated text content of Bookmark 2", bookmarks[1].Text); //ExSkip
+            Assert.AreEqual(2, bookmarks.Count); //ExSkip
         }
 
         /// <summary>

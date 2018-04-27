@@ -83,10 +83,10 @@ namespace ApiExamples
         }
 
         [Test]
-        public void Borders() // INSP: Please add a more informational name
+        public void EqualityCountingAndVisibility()
         {
-            //ExStart // INSP: You should use ExStart before ExFor tag
-            //ExFor:Border.Equals(System.Object) // INSP: I can't see where you use this method. If you don't use, please add it or create new example.
+            //ExStart
+            //ExFor:Border.Equals(System.Object)
             //ExFor:Border.GetHashCode
             //ExFor:Border.IsVisible
             //ExFor:BorderCollection.Count
@@ -100,54 +100,48 @@ namespace ApiExamples
             Paragraph firstParagraph = doc.FirstSection.Body.FirstParagraph;
             BorderCollection firstParaBorders = firstParagraph.ParagraphFormat.Borders;
 
-            // Borders are invisible by default
-            foreach (Border border in firstParaBorders)
-            {
-                Assert.IsFalse(border.IsVisible);
-            }
-
-            // Changes to these borders in this paragraph will apply to subsequent paragraphs
-            firstParaBorders[BorderType.Left].LineStyle = LineStyle.Double;
-            firstParaBorders[BorderType.Right].LineStyle = LineStyle.Double;
-            firstParaBorders[BorderType.Top].LineStyle = LineStyle.Double;
-            firstParaBorders[BorderType.Bottom].LineStyle = LineStyle.Double;
-
             builder.InsertParagraph();
             builder.CurrentParagraph.AppendChild(new Run(doc, "Paragraph 2."));
 
             Paragraph secondParagraph = builder.CurrentParagraph;
             BorderCollection secondParaBorders = secondParagraph.ParagraphFormat.Borders;
 
-            // Two paragraphs have two different BorderCollections, but share the elements from the first are given to the second
+            // Two paragraphs have two different BorderCollections, but share the elements that are in from the first paragraph
             for (int i = 0; i < firstParaBorders.Count; i++)
             {
-                // INSP: We need to use the same code in example, don't need to add more and more functions. If you work only with LineStyle, so let's validate only LineStyle results.
-                Assert.AreEqual(firstParaBorders[i].LineStyle, secondParaBorders[i].LineStyle);
+                Assert.IsTrue(firstParaBorders[i].Equals(secondParaBorders[i]));
                 Assert.AreEqual(firstParaBorders[i].GetHashCode(), secondParaBorders[i].GetHashCode());
+
+                // Borders are invisible by default
+                Assert.IsFalse(firstParaBorders[i].IsVisible);
             }
-            // INSP: We need to add more information about this line. Without information it seems unnecessary check.
+
+            // We see that the elements in both collections are equal, while the collections themselves are not.
             Assert.IsFalse(firstParaBorders.Equals(secondParaBorders));
 
-            // If one BorderCollection element is changed in a subsequent paragraph, the rest must be changed too
+            // Each border in the second paragraph collection becomes no longer the same as its counterpart from the first paragraph collection
+            // There are always 6 elements in a border collection, and changing all of them will make the second collection completely different from the first
             secondParaBorders[BorderType.Left].LineStyle = LineStyle.DotDash;
             secondParaBorders[BorderType.Right].LineStyle = LineStyle.DotDash;
             secondParaBorders[BorderType.Top].LineStyle = LineStyle.DotDash;
             secondParaBorders[BorderType.Bottom].LineStyle = LineStyle.DotDash;
-            // INSP: If you use i < firstParaBorders.Count below, why we need to change secondParaBorders[BorderType.Vertical] and secondParaBorders[BorderType.Horizontal] ?
             secondParaBorders[BorderType.Vertical].LineStyle = LineStyle.DotDash;
             secondParaBorders[BorderType.Horizontal].LineStyle = LineStyle.DotDash;
 
             // Now the BorderCollections both have their own elements
             for (int i = 0; i < firstParaBorders.Count; i++)
             {
-                Assert.AreNotEqual(firstParaBorders[i].LineStyle, secondParaBorders[i].LineStyle);
+                Assert.IsFalse(firstParaBorders[i].Equals(secondParaBorders[i]));
                 Assert.AreNotEqual(firstParaBorders[i].GetHashCode(), secondParaBorders[i].GetHashCode());
+
+                // Changing the line style made the borders visible
+                Assert.IsTrue(secondParaBorders[i].IsVisible);
             }
             //ExEnd
         }
 
         [Test]
-        public void BordersVerticalAndHorizontal()
+        public void VerticalAndHorizontalBorders()
         {
             //ExStart
             //ExFor:BorderCollection.Horizontal
