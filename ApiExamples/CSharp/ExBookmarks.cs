@@ -255,16 +255,15 @@ namespace ApiExamples
         //ExFor:BookmarkStart.GetText
         //ExFor:BookmarkStart.Name
         //ExFor:BookmarkEnd.Name
-        //ExSummary:Shows how to use various bookmark features. // INSP: Please add more information about what this example does.
+        //ExSummary:Shows how add bookmarks and update their contents.
         [Test] //ExSkip
         public void CreateUpdateAndPrintBookmarks()
         {
-            // INSP: I removed all Aspose.Words. addings. We create examples for AW features, so i think we need to add some addings when we use features not from AW. 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add some bookmarks to the document
-            for (int i = 1; i < 6; i++)
+            // Add some bookmarks to the document.
+            for (int i = 1; i < 4; i++)
             {
                 string bookmarkName = "Bookmark " + i;
 
@@ -273,52 +272,56 @@ namespace ApiExamples
                 builder.EndBookmark(bookmarkName);
             }
 
-            // Look at initial values of our bookmarks
+            BookmarkCollection bookmarks = doc.Range.Bookmarks;
+
+            // Look at initial values of our bookmarks.
             PrintAllBookmarkInfo(doc);
 
-            // INSP: I think we need to use enumerator one time for our example, otherwise, code looks too ugly 
-            // or we need to add a separate method for bookmarks enumeration.
-            foreach (Bookmark bookmark in doc.Range.Bookmarks)
-            {
-                // Update the name and content of each bookmark
-                bookmark.Name = "Updated " + bookmark.Name;
-                bookmark.Text = "Updated " + bookmark.Text;
-            }
+            Assert.AreEqual("Bookmark 1", bookmarks[0].Name);
+            Assert.AreEqual("Text content of Bookmark 2", bookmarks[1].Text);
+            Assert.AreEqual(3, bookmarks.Count);
 
-            // INSP: Also please add some asserts, we need to validate that bookmarks names changes. Maybe it will be in your PrintAllBookmarkInfo method.
-            
-            // Look at updated values of our bookmarks
+            // Update some values.
+            bookmarks[0].Name = "Updated name of " + bookmarks[0].Name;
+            bookmarks[1].Text = "Updated text content of " + bookmarks[1].Name;
+            bookmarks[2].Remove();
+
+            // Look at updated values of our bookmarks.
             PrintAllBookmarkInfo(doc);
+
+            Assert.AreEqual("Updated name of Bookmark 1", bookmarks[0].Name);
+            Assert.AreEqual("Updated text content of Bookmark 2", bookmarks[1].Text);
+            Assert.AreEqual(2, bookmarks.Count);
         }
 
         /// <summary>
-        /// Use an iterator and a visitor to print info of every bookmark from within a document
+        /// Use an iterator and a visitor to print info of every bookmark from within a document.
         /// </summary>
         private static void PrintAllBookmarkInfo(Document doc)
         {
-            // Create a DocumentVisitor
+            // Create a DocumentVisitor.
             BookmarkInfoPrinter bookmarkVisitor = new BookmarkInfoPrinter();
             
-            // Get all bookmarks from the document
+            // Get all bookmarks from the document.
             BookmarkCollection bookmarks = doc.Range.Bookmarks;
             
-            // Get the enumerator from the document's BookmarkCollection and iterate over the bookmarks
+            // Get the enumerator from the document's BookmarkCollection and iterate over the bookmarks.
             IEnumerator enumerator = bookmarks.GetEnumerator();
             while (enumerator.MoveNext())
             {
                 Bookmark currentBookmark = (Bookmark)enumerator.Current;
 
-                // Accept our DocumentVisitor it to print information about our bookmarks
+                // Accept our DocumentVisitor it to print information about our bookmarks.
                 currentBookmark.BookmarkStart.Accept(bookmarkVisitor);
                 currentBookmark.BookmarkEnd.Accept(bookmarkVisitor);
 
                 // Prints a blank line.
-                Console.WriteLine(string.Empty);
+                Console.WriteLine(currentBookmark.BookmarkStart.GetText());
             }
         }
 
         /// <summary>
-        /// Visitor that prints bookmark information to the console
+        /// Visitor that prints bookmark information to the console.
         /// </summary>
         public class BookmarkInfoPrinter : DocumentVisitor
         {
