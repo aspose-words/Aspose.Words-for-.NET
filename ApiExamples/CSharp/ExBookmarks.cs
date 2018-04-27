@@ -6,11 +6,13 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Aspose.Pdf.Facades;
 using NUnit.Framework;
 using Aspose.Words;
 using Aspose.Words.Saving;
+using Bookmark = Aspose.Words.Bookmark;
 
 namespace ApiExamples
 {
@@ -30,7 +32,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Bookmark.doc");
 
             // Use the indexer of the Bookmarks collection to obtain the desired bookmark.
-            Aspose.Words.Bookmark bookmark = doc.Range.Bookmarks["MyBookmark"];
+            Bookmark bookmark = doc.Range.Bookmarks["MyBookmark"];
 
             // Get the name and text of the bookmark.
             string name = bookmark.Name;
@@ -54,7 +56,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Bookmark.doc");
 
             // Use the indexer of the Bookmarks collection to obtain the desired bookmark.
-            Aspose.Words.Bookmark bookmark = doc.Range.Bookmarks["MyBookmark"];
+            Bookmark bookmark = doc.Range.Bookmarks["MyBookmark"];
 
             // Remove the bookmark. The bookmarked text is not deleted.
             bookmark.Remove();
@@ -90,10 +92,10 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Bookmarks.doc");
 
             // By index.
-            Aspose.Words.Bookmark bookmark1 = doc.Range.Bookmarks[0];
+            Bookmark bookmark1 = doc.Range.Bookmarks[0];
 
             // By name.
-            Aspose.Words.Bookmark bookmark2 = doc.Range.Bookmarks["Bookmark2"];
+            Bookmark bookmark2 = doc.Range.Bookmarks["Bookmark2"];
             //ExEnd
         }
 
@@ -108,7 +110,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Bookmarks.doc");
 
             // Remove a particular bookmark from the document.
-            Aspose.Words.Bookmark bookmark = doc.Range.Bookmarks[0];
+            Bookmark bookmark = doc.Range.Bookmarks[0];
             doc.Range.Bookmarks.Remove(bookmark);
 
             // Remove a bookmark by specified name.
@@ -158,8 +160,6 @@ namespace ApiExamples
             //ExFor:BookmarkStart.#ctor
             //ExFor:BookmarkEnd
             //ExFor:BookmarkEnd.#ctor
-            //ExFor:Bookmark.BookmarkStart
-            //ExFor:Bookmark.BookmarkEnd
             //ExSummary:Shows how to create a bookmark by inserting bookmark start and end nodes.
             Document doc = new Document();
 
@@ -192,7 +192,7 @@ namespace ApiExamples
 
             //MS Word document does not support bookmark names with whitespaces by default. 
             //If you have document which contains bookmark names with underscores, you can simply replace them to whitespaces.
-            foreach (Aspose.Words.Bookmark bookmark in doc.Range.Bookmarks)
+            foreach (Bookmark bookmark in doc.Range.Bookmarks)
             {
                 bookmark.Name = bookmark.Name.Replace("_", " ");
             }
@@ -245,24 +245,25 @@ namespace ApiExamples
             Assert.AreEqual("Nested Bookmark", bookmarks[1].Title);
         }
 
-        [Test]
         //ExStart
-        //ExFor:Aspose.Words.Bookmark.BookmarkEnd
-        //ExFor:Aspose.Words.Bookmark.BookmarkStart
-        //ExFor:Aspose.Words.BookmarkCollection.GetEnumerator
-        //ExFor:Aspose.Words.BookmarkEnd.Accept(DocumentVisitor)
-        //ExFor:Aspose.Words.BookmarkEnd.Name
-        //ExFor:Aspose.Words.BookmarkStart.Accept(DocumentVisitor)
-        //ExFor:Aspose.Words.BookmarkStart.Bookmark
-        //ExFor:Aspose.Words.BookmarkStart.GetText
-        //ExFor:Aspose.Words.BookmarkStart.Name
-        //ExSummary:Shows how to use various bookmark features.
+        //ExFor:Bookmark.BookmarkStart
+        //ExFor:Bookmark.BookmarkEnd
+        //ExFor:BookmarkCollection.GetEnumerator
+        //ExFor:BookmarkStart.Accept(DocumentVisitor)
+        //ExFor:BookmarkEnd.Accept(DocumentVisitor)
+        //ExFor:BookmarkStart.Bookmark
+        //ExFor:BookmarkStart.GetText
+        //ExFor:BookmarkStart.Name
+        //ExFor:BookmarkEnd.Name
+        //ExSummary:Shows how to use various bookmark features. // INSP: Please add more information about what this example does.
+        [Test] //ExSkip
         public void CreateUpdateAndPrintBookmarks()
         {
+            // INSP: I removed all Aspose.Words. addings. We create examples for AW features, so i think we need to add some addings when we use features not from AW. 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Populate document with bookmarks.
+            // Add some bookmarks to the document
             for (int i = 1; i < 6; i++)
             {
                 string bookmarkName = "Bookmark " + i;
@@ -272,61 +273,64 @@ namespace ApiExamples
                 builder.EndBookmark(bookmarkName);
             }
 
-            // Look at initial values of our bookmarks.
+            // Look at initial values of our bookmarks
             PrintAllBookmarkInfo(doc);
 
-            // Get the enumerator from the document's BookmarkCollection to iterate over the bookmarks.
-            IEnumerator<Aspose.Words.Bookmark> e = doc.Range.Bookmarks.GetEnumerator();
-            while (e.MoveNext())
+            // INSP: I think we need to use enumerator one time for our example, otherwise, code looks too ugly 
+            // or we need to add a separate method for bookmarks enumeration.
+            foreach (Bookmark bookmark in doc.Range.Bookmarks)
             {
-                Aspose.Words.Bookmark currentBookmark = e.Current;
-
-                // Update the name and content of each bookmark.
-                currentBookmark.Name = "Updated " + currentBookmark.Name;
-                currentBookmark.Text = "Updated " + currentBookmark.Text;
+                // Update the name and content of each bookmark
+                bookmark.Name = "Updated " + bookmark.Name;
+                bookmark.Text = "Updated " + bookmark.Text;
             }
 
-            // Look at updated values of our bookmarks.
+            // INSP: Also please add some asserts, we need to validate that bookmarks names changes. Maybe it will be in your PrintAllBookmarkInfo method.
+            
+            // Look at updated values of our bookmarks
             PrintAllBookmarkInfo(doc);
         }
 
         /// <summary>
-        /// Use an iterator and a visitor to print info of every bookmark from within a document.
+        /// Use an iterator and a visitor to print info of every bookmark from within a document
         /// </summary>
         private static void PrintAllBookmarkInfo(Document doc)
         {
-            // Create a DocumentVisitor.
+            // Create a DocumentVisitor
             BookmarkInfoPrinter bookmarkVisitor = new BookmarkInfoPrinter();
-
-            // Get the enumerator from the document's BookmarkCollection and iterate over the bookmarks.
-            IEnumerator<Aspose.Words.Bookmark> e = doc.Range.Bookmarks.GetEnumerator();
-            while (e.MoveNext())
+            
+            // Get all bookmarks from the document
+            BookmarkCollection bookmarks = doc.Range.Bookmarks;
+            
+            // Get the enumerator from the document's BookmarkCollection and iterate over the bookmarks
+            IEnumerator enumerator = bookmarks.GetEnumerator();
+            while (enumerator.MoveNext())
             {
-                Aspose.Words.Bookmark currentBookmark = e.Current;
+                Bookmark currentBookmark = (Bookmark)enumerator.Current;
 
-                // Accept our DocumentVisitor it to print information about our bookmarks.
+                // Accept our DocumentVisitor it to print information about our bookmarks
                 currentBookmark.BookmarkStart.Accept(bookmarkVisitor);
                 currentBookmark.BookmarkEnd.Accept(bookmarkVisitor);
 
                 // Prints a blank line.
-                Console.WriteLine(currentBookmark.BookmarkStart.GetText());
+                Console.WriteLine(string.Empty);
             }
         }
 
         /// <summary>
-        /// Visitor that prints bookmark information to the console.
+        /// Visitor that prints bookmark information to the console
         /// </summary>
         public class BookmarkInfoPrinter : DocumentVisitor
         {
             public override VisitorAction VisitBookmarkStart(BookmarkStart bookmarkStart)
             {
-                Console.WriteLine(String.Format("BookmarkStart name: \"{0}\", Content: \"{1}\"", bookmarkStart.Name, bookmarkStart.Bookmark.Text));
+                Console.WriteLine("BookmarkStart name: \"{0}\", Content: \"{1}\"", bookmarkStart.Name, bookmarkStart.Bookmark.Text);
                 return VisitorAction.Continue;
             }
 
             public override VisitorAction VisitBookmarkEnd(BookmarkEnd bookmarkEnd)
             {
-                Console.WriteLine(String.Format("BookmarkEnd name: \"{0}\"", bookmarkEnd.Name));
+                Console.WriteLine("BookmarkEnd name: \"{0}\"", bookmarkEnd.Name);
                 return VisitorAction.Continue;
             }
         }
