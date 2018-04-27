@@ -5,6 +5,7 @@ using System.Net;
 namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
 {
     // ExStart:ImageLoadingWithCredentialsHandler
+    
     public class ImageLoadingWithCredentialsHandler : IResourceLoadingCallback
     {
         public ImageLoadingWithCredentialsHandler()
