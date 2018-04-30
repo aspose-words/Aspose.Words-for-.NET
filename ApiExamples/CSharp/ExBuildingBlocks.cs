@@ -10,37 +10,37 @@ namespace ApiExamples
     [TestFixture]
     public class ExBuildingBlocks : ApiExampleBase
     {
-        [Test]
         //ExStart
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlock
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlock.#ctor(Aspose.Words.BuildingBlocks.GlossaryDocument) 
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlock.Accept(Aspose.Words.DocumentVisitor)
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlock.Behavior
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlock.Category
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlock.Description
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlock.FirstSection
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlock.Gallery
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlock.Guid
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlock.LastSection
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlock.Name
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlock.Sections
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlock.Type
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlockBehavior
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlockType
-        //ExFor:Aspose.Words.BuildingBlocks.NamespaceDoc
+        //ExFor:BuildingBlocks.BuildingBlock
+        //ExFor:BuildingBlocks.BuildingBlock.#ctor(BuildingBlocks.GlossaryDocument) 
+        //ExFor:BuildingBlocks.BuildingBlock.Accept(DocumentVisitor)
+        //ExFor:BuildingBlocks.BuildingBlock.Behavior
+        //ExFor:BuildingBlocks.BuildingBlock.Category
+        //ExFor:BuildingBlocks.BuildingBlock.Description
+        //ExFor:BuildingBlocks.BuildingBlock.FirstSection
+        //ExFor:BuildingBlocks.BuildingBlock.Gallery
+        //ExFor:BuildingBlocks.BuildingBlock.Guid
+        //ExFor:BuildingBlocks.BuildingBlock.LastSection
+        //ExFor:BuildingBlocks.BuildingBlock.Name
+        //ExFor:BuildingBlocks.BuildingBlock.Sections
+        //ExFor:BuildingBlocks.BuildingBlock.Type
+        //ExFor:BuildingBlocks.BuildingBlockBehavior
+        //ExFor:BuildingBlocks.BuildingBlockType
+        //ExFor:BuildingBlocks.NamespaceDoc
         //ExSummary:Shows how to add a custom building block to a document.
-        public void BuildingBlocks()
+        [Test] //ExSkip
+        public void BuildingBlockFields()
         {
             Document doc = new Document();
 
-            // BuildingBlocks live inside the glossary document.
-            // If you're making a document from scratch, the glossary document must also be manually created.
+            // BuildingBlocks live inside the glossary document
+            // If you're making a document from scratch, the glossary document must also be manually created
             GlossaryDocument glossaryDoc = new GlossaryDocument();
             doc.GlossaryDocument = glossaryDoc;
 
-            // Create a building block and name it.
+            // Create a building block and name it
             BuildingBlock block = new BuildingBlock(glossaryDoc);
-            block.Name = "Custom Block 1";
+            block.Name = "Custom Block";
 
             Assert.AreEqual("00000000-0000-0000-0000-000000000000", block.Guid.ToString());
             Assert.AreEqual("(Empty Category)", block.Category);
@@ -51,8 +51,8 @@ namespace ApiExamples
             glossaryDoc.AppendChild(block);
             Assert.AreEqual(1, glossaryDoc.Count);
 
-            // If we want to use our building block as an AutoText quick part, we need to give it some text and change some properties.
-            // All the necessary preparation will be done in a custom document visitor that we will accept. 
+            // If we want to use our building block as an AutoText quick part, we need to give it some text and change some properties
+            // All the necessary preparation will be done in a custom document visitor that we will accept
             BuildingBlockVisitor visitor = new BuildingBlockVisitor(glossaryDoc);
             block.Accept(visitor);
             
@@ -84,7 +84,7 @@ namespace ApiExamples
                 block.Description = "Using this block in the Quick Parts section of word will place its contents at the cursor.";
                 block.Gallery = BuildingBlockGallery.QuickParts;
 
-                // Add content for the block for it to have an effect when used in the document.
+                // Add content for the block for it to have an effect when used in the document
                 Section section = new Section(mGlossaryDoc);
                 block.AppendChild(section);
 
@@ -94,7 +94,7 @@ namespace ApiExamples
                 Paragraph paragraph = new Paragraph(mGlossaryDoc);
                 body.AppendChild(paragraph);
 
-                // This run is what will be visible in the document.
+                // This run is what will be visible in the document
                 Run run = new Run(mGlossaryDoc, "Text inside " + block.Name);
                 block.FirstSection.Body.FirstParagraph.AppendChild(run);
 
@@ -114,16 +114,16 @@ namespace ApiExamples
 
         [Test]
         //ExStart
-        //ExFor:Aspose.Words.BuildingBlocks.GlossaryDocument
-        //ExFor:Aspose.Words.BuildingBlocks.GlossaryDocument.Accept(Aspose.Words.DocumentVisitor)
-        //ExFor:Aspose.Words.BuildingBlocks.GlossaryDocument.BuildingBlocks
-        //ExFor:Aspose.Words.BuildingBlocks.GlossaryDocument.FirstBuildingBlock
-        //ExFor:Aspose.Words.BuildingBlocks.GlossaryDocument.GetBuildingBlock(Aspose.Words.BuildingBlocks.BuildingBlockGallery,System.String,System.String)
-        //ExFor:Aspose.Words.BuildingBlocks.GlossaryDocument.LastBuildingBlock
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlockCollection
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlockCollection.Item(System.Int32)
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlockCollection.ToArray
-        //ExFor:Aspose.Words.BuildingBlocks.BuildingBlockGallery
+        //ExFor:BuildingBlocks.GlossaryDocument
+        //ExFor:BuildingBlocks.GlossaryDocument.Accept(DocumentVisitor)
+        //ExFor:BuildingBlocks.GlossaryDocument.BuildingBlocks
+        //ExFor:BuildingBlocks.GlossaryDocument.FirstBuildingBlock
+        //ExFor:BuildingBlocks.GlossaryDocument.GetBuildingBlock(BuildingBlocks.BuildingBlockGallery,System.String,System.String)
+        //ExFor:BuildingBlocks.GlossaryDocument.LastBuildingBlock
+        //ExFor:BuildingBlocks.BuildingBlockCollection
+        //ExFor:BuildingBlocks.BuildingBlockCollection.Item(System.Int32)
+        //ExFor:BuildingBlocks.BuildingBlockCollection.ToArray
+        //ExFor:BuildingBlocks.BuildingBlockGallery
         //ExSummary:Shows how to use GlossaryDocument and BuildingBlockCollection.
         public void GlossaryDocument()
         {
@@ -143,13 +143,14 @@ namespace ApiExamples
             Assert.AreEqual("Block 3", glossaryDoc.BuildingBlocks.ToArray()[2].Name);
             Assert.AreEqual("Block 5", glossaryDoc.LastBuildingBlock.Name);
 
-            // Get a block by gallery, category and name.
+            // Get a block by gallery, category and name
             BuildingBlock block4 = glossaryDoc.GetBuildingBlock(BuildingBlockGallery.All, "(Empty Category)", "Block 4");
 
-            // All GUIDs are the same by default. To be able to uniquely identify blocks by GUID, these must be changed.
+            // All GUIDs are the same by default
             Assert.AreEqual("00000000-0000-0000-0000-000000000000", block4.Guid.ToString());
 
-            // We will do that using a custom visitor. 
+            // To be able to uniquely identify blocks by GUID, each GUID must be unique
+            // We will do that using a custom visitor
             GlossaryDocVisitor visitor = new GlossaryDocVisitor();
             glossaryDoc.Accept(visitor);
 
@@ -167,7 +168,7 @@ namespace ApiExamples
         {
             public GlossaryDocVisitor()
             {
-                mBlocks = new Dictionary<Guid, BuildingBlock>();
+                mBlocksByGuid = new Dictionary<Guid, BuildingBlock>();
                 mBuilder = new StringBuilder();
             }
 
@@ -178,13 +179,13 @@ namespace ApiExamples
 
             public Dictionary<Guid, BuildingBlock> GetDictionary()
             {
-                return mBlocks;
+                return mBlocksByGuid;
             }
 
             public override VisitorAction VisitBuildingBlockStart(BuildingBlock block)
             {
                 block.Guid = System.Guid.NewGuid();
-                mBlocks.Add(block.Guid, block);
+                mBlocksByGuid.Add(block.Guid, block);
                 return VisitorAction.Continue;
             }
 
@@ -202,11 +203,11 @@ namespace ApiExamples
 
             public override VisitorAction VisitGlossaryDocumentEnd(GlossaryDocument glossary)
             {
-                mBuilder.Append("Reached end of glossary!\r\nBuildingBlocks found: " + mBlocks.Count);
+                mBuilder.Append("Reached end of glossary!\r\nBuildingBlocks found: " + mBlocksByGuid.Count);
                 return VisitorAction.Continue;
             }
 
-            private readonly Dictionary<System.Guid, BuildingBlock> mBlocks;
+            private readonly Dictionary<System.Guid, BuildingBlock> mBlocksByGuid;
             private readonly StringBuilder mBuilder;
         }
         //ExEnd
