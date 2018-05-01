@@ -6,9 +6,9 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Text;
 using System.Xml.XPath;
 using Aspose.Words;
-using Aspose.Words.Fields;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using NUnit.Framework;
@@ -590,79 +590,135 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CompositeNodeMisc()
+        public void CompositeNodeChildren()
         {
+            //ExStart
             //ExFor:CompositeNode.Count
             //ExFor:CompositeNode.GetChildNodes(NodeType[], Boolean)
             //ExFor:CompositeNode.InsertAfter(Node, Node, Node)
             //ExFor:CompositeNode.InsertBefore(Node, Node)
             //ExFor:CompositeNode.InsertBefore(Node, Node, Node)
             //ExFor:CompositeNode.PrependChild(Node) 
-            //ExSummary:Shows various child node functions of CompositeNode.
-            //ExStart
+            //ExSummary:Shows how to add, update and delete child nodes from within a CompositeNode.
             Document doc = new Document();
 
-            // This empty document already has a paragraph.
+            // An empty document has one paragraph by default
             Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
 
-            // A paragraph is a composite node because it can contain runs, which are another type of node.
+            // A paragraph is a composite node because it can contain runs, which are another type of node
             Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
             Run paragraphText = new Run(doc, "Initial text. ");
             paragraph.AppendChild(paragraphText);
 
-            // We will place these 3 children in numeric order into the main text of our paragraph.
+            // We will place these 3 children into the main text of our paragraph
             Run run1 = new Run(doc, "Run 1. ");
             Run run2 = new Run(doc, "Run 2. ");
             Run run3 = new Run(doc, "Run 3. ");
 
-            // Insert run2 before initial paragraph text. This will be at the start of the paragraph.
+            // We initialized them but not in our paragraph yet
+            Assert.AreEqual("Initial text. " + (char)12, paragraph.GetText());
+
+            // Insert run2 before initial paragraph text. This will be at the start of the paragraph
             paragraph.InsertBefore(run2, paragraphText);
 
-            // Insert run3 after initial paragraph text. This will be at the end of the paragraph.
+            // Insert run3 after initial paragraph text. This will be at the end of the paragraph
             paragraph.InsertAfter(run3, paragraphText);
 
-            // Insert run1 before every other child node. run2 was the start of the paragraph, now it will be run1.
+            // Insert run1 before every other child node. run2 was the start of the paragraph, now it will be run1
             paragraph.PrependChild(run1);
 
             Assert.AreEqual("Run 1. Run 2. Initial text. Run 3. " + (char)12, paragraph.GetText());
             Assert.AreEqual(4, paragraph.GetChildNodes(NodeType.Any, true).Count);
+
+            // Access the child node collection and update/delete children
+            ((Run)paragraph.GetChildNodes(NodeType.Run, true)[1]).Text = "Updated run 2. ";
+            paragraph.GetChildNodes(NodeType.Run, true).Remove(paragraphText);
+
+            Assert.AreEqual("Run 1. Updated run 2. Run 3. " + (char)12, paragraph.GetText());
+            Assert.AreEqual(3, paragraph.GetChildNodes(NodeType.Any, true).Count);
             //ExEnd
         }
 
-        [Test]
+        //ExStart
+        //ExFor:Aspose.Words.CompositeNode.CreateNavigator
+        //ExSummary:Shows how to create an XPathNavigator and use it to traverse and read nodes.
+        [Test] //ExSkip
         public void NodeXPathNavigator()
         {
-            //ExFor:Aspose.Words.CompositeNode.CreateNavigator
-            // Create a blank document.
+
+            // Create a blank document
             Document doc = new Document();
 
-            // A document has a paragraph by default so we can make a navigator straight away.
-            XPathNavigator navigator = doc.FirstSection.Body.FirstParagraph.CreateNavigator();
+            // A document is a composite node so we can make a navigator straight away
+            System.Xml.XPath.XPathNavigator navigator = doc.CreateNavigator();
 
-            // That paragraph is the default position for the navigator. Since the paragraph is the only node, there is nowhere to navigate.
-            Assert.AreEqual("Paragraph", navigator.Name);
-            Assert.AreEqual(false, navigator.HasChildren);
+            // Our root is the document node with 1 child, which is the first section
+            Assert.AreEqual("Document", navigator.Name);
+            Assert.AreEqual(false, navigator.MoveToNext());
+            Assert.AreEqual(1, navigator.SelectChildren(XPathNodeType.All).Count);
 
-            // Populate our document's first paragraph with a variety of nodes.
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.CurrentParagraph.AppendChild(new Run(doc, "Date created: "));
-            builder.CurrentParagraph.AppendField(FieldType.FieldDate, true);
-            builder.CurrentParagraph.AppendChild(new Run(doc, " Footnoted text. "));
-            Footnote footnote = new Footnote(doc, FootnoteType.Footnote);
-            builder.CurrentParagraph.AppendChild(footnote);
-            footnote.Paragraphs.Add(new Paragraph(doc));
-            footnote.FirstParagraph.Runs.Add(new Run(doc, "Footnote for text."));
-
-            Assert.AreEqual(true, navigator.HasChildren);
-            Assert.AreEqual(false, navigator.CanEdit);
-            Assert.AreEqual(8, navigator.SelectChildren(XPathNodeType.All).Count);
-
-            // Navigate to and print all children of our paragraph, starting from its first child.
+            // Beyond the first section we have one body and one paragraph, with no other siblings and children
             navigator.MoveToFirstChild();
+            Assert.AreEqual("Section", navigator.Name);
+            Assert.AreEqual(false, navigator.MoveToNext());
+            Assert.AreEqual(1, navigator.SelectChildren(XPathNodeType.All).Count);
 
-            do {
-                Console.WriteLine("{0}: {1}", navigator.Name, navigator.Value);
+            navigator.MoveToFirstChild();
+            Assert.AreEqual("Body", navigator.Name);
+            Assert.AreEqual(false, navigator.MoveToNext());
+            Assert.AreEqual(1, navigator.SelectChildren(XPathNodeType.All).Count);
+
+            // This is a dead end
+            navigator.MoveToFirstChild();
+            Assert.AreEqual("Paragraph", navigator.Name);
+            Assert.AreEqual(false, navigator.MoveToNext());
+            Assert.AreEqual(0, navigator.SelectChildren(XPathNodeType.All).Count);
+
+            // We can return to the root and make some space
+            navigator.MoveToRoot();
+            Assert.AreEqual("Document", navigator.Name);
+
+            // Insert a new section and some paragraphs and runs for the navigator to traverse
+            DocumentBuilder docBuilder = new DocumentBuilder(doc);
+            docBuilder.Write("Section 1, Paragraph 1. ");
+            docBuilder.InsertParagraph();
+            docBuilder.Write("Section 1, Paragraph 2. ");
+            doc.AppendChild(new Section(doc));
+            docBuilder.MoveToSection(1);
+            docBuilder.Write("Section 2, Paragraph 1. ");
+
+            // Use our navigator to print a map of the nodes in the document to the console
+            StringBuilder stringBuilder = new StringBuilder();
+            PrintDocumentMap(navigator, stringBuilder, 0);
+            Console.Write(stringBuilder.ToString());
+        }
+
+        /// <summary>
+        /// This will traverse all children of a composite node and record the structure in the style of a directory tree as a printable string.
+        /// Amount of space indentation indicates depth relative to initial node. Only runs will have their values printed.
+        /// </summary>
+        private void PrintDocumentMap(XPathNavigator navigator, StringBuilder stringBuilder, int depth)
+        {
+            do
+            {
+                stringBuilder.Append(' ', depth);
+                stringBuilder.Append(navigator.Name + ": ");
+
+                if (navigator.Name == "Run")
+                {
+                    stringBuilder.Append(navigator.Value);
+                }
+
+                stringBuilder.Append('\n');
+
+                if (navigator.HasChildren)
+                {
+                    navigator.MoveToFirstChild();
+                    PrintDocumentMap(navigator, stringBuilder, depth + 1);
+                    navigator.MoveToParent();
+                }
             } while (navigator.MoveToNext());
         }
+        //ExEnd
     }
 }
