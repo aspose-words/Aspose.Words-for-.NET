@@ -344,7 +344,7 @@ namespace ApiExamples
             Assert.AreEqual(250, renderer.GetBoundsInPixels(imageOptions.Scale, imageOptions.VerticalResolution).Width);
             Assert.AreEqual(52, renderer.GetBoundsInPixels(imageOptions.Scale, imageOptions.VerticalResolution).Height);
 
-            Assert.AreEqual((float)187.849991, renderer.OpaqueBoundsInPoints.Width);
+            Assert.AreEqual((float)187.850006, renderer.OpaqueBoundsInPoints.Width);
             Assert.AreEqual((float)39.25, renderer.OpaqueBoundsInPoints.Height);
         }
 
