@@ -1,5 +1,6 @@
 ﻿using Aspose.Words;
 using NUnit.Framework;
+using ControlChar = Aspose.Words.ControlChar;
 
 namespace ApiExamples
 {
@@ -7,7 +8,7 @@ namespace ApiExamples
     public class ExControlChar : ApiExampleBase
     {
         [Test]
-        public void ControlChar()
+        public void InsertControlChars()
         {
             //ExStart
             //ExFor:ControlChar.Cell
@@ -36,42 +37,49 @@ namespace ApiExamples
             //ExFor:ControlChar.SpaceChar
             //ExSummary:Shows how to use various control characters.
             Document doc = new Document();
-            DocumentBuilder db = new DocumentBuilder(doc);
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a space.
-            db.Writeln("Before space." + Aspose.Words.ControlChar.SpaceChar + "After space.");
+            // Add a regular space
+            builder.Write("Before space." + ControlChar.SpaceChar + "After space.");
 
-            // Add a space.
-            db.Writeln("Before space." + Aspose.Words.ControlChar.NonBreakingSpace + "After space.");
+            // Add a NBSP, or non-breaking space
+            // Unlike the regular space, this space can't have an automatic line break at its position 
+            builder.Write("Before space." + ControlChar.NonBreakingSpace + "After space.");
 
-            // Add a tab character.
-            db.Writeln("Before tab." + Aspose.Words.ControlChar.Tab + "After tab.");
+            // Add a tab character
+            builder.Write("Before tab." + ControlChar.Tab + "After tab.");
 
-            // These are all a new line. A new paragraph is also started following each character.
-            db.Writeln("Before line break." + Aspose.Words.ControlChar.LineBreak + "After line break.");
-            db.Writeln("Before line feed." + Aspose.Words.ControlChar.LineFeed + "After line feed.");
-            db.Writeln("Before lf." + Aspose.Words.ControlChar.Lf + "After lf.");
+            // Add a line break
+            builder.Write("Before line break." + ControlChar.LineBreak + "After line break.");
 
-            // Add a paragraph break, also adding a new paragraph.
-            db.Writeln("Before paragraph break." + Aspose.Words.ControlChar.ParagraphBreak + "After paragraph break.");
+            // This adds a new line and starts a new paragraph
+            // Same value as ControlChar.Lf
+            Assert.AreEqual(1, doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count);
+            builder.Write("Before line feed." + ControlChar.LineFeed + "After line feed.");
+            Assert.AreEqual(2, doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count);
 
-            // Add a section break. Note that this does not make a new section.
+            // Add a paragraph break, also adding a new paragraph
+            builder.Write("Before paragraph break." + ControlChar.ParagraphBreak + "After paragraph break.");
+            Assert.AreEqual(3, doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count);
+
+            // Add a section break. Note that this does not make a new section or paragraph
             Assert.AreEqual(1, doc.Sections.Count);
-            db.Writeln("Before section break." + Aspose.Words.ControlChar.SectionBreak + "After section break.");
+            builder.Write("Before section break." + ControlChar.SectionBreak + "After section break.");
             Assert.AreEqual(1, doc.Sections.Count);
 
-            // Add a page break. Same value as a section break.
-            db.Writeln("Before page break." + Aspose.Words.ControlChar.PageBreak + "After page break.");
+            // A page break is the same value as a section break
+            builder.Write("Before page break." + ControlChar.PageBreak + "After page break.");
 
-            // so if we want a second section for this document, we have to make it manually.
+            // We can add a new section like this
             doc.AppendChild(new Section(doc));
-            db.MoveToSection(1);
+            builder.MoveToSection(1);
 
-            // If you have a section with more than one column, you can force subsequent text onto the next column with a control character.
-            db.CurrentSection.PageSetup.TextColumns.SetCount(2);
-            db.Writeln("Text at end of column 1." + Aspose.Words.ControlChar.ColumnBreak + "Text at beginning of column 2.");
+            // If you have a section with more than one column, you can use a column break to make following text start on a new column
+            builder.CurrentSection.PageSetup.TextColumns.SetCount(2);
+            builder.Write("Text at end of column 1." + ControlChar.ColumnBreak + "Text at beginning of column 2.");
 
-            doc.Save(MyDir + @"\Artifacts\ControlChar.doc");
+            // Save document to see the characters we added
+            doc.Save(MyDir + @"\Artifacts\ControlChar.docx");
             //ExEnd
         }
     }
