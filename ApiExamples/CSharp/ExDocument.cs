@@ -1842,5 +1842,72 @@ namespace ApiExamples
             doc.Save(@"SaveOptions high quality.jpg", options);
             //ExEnd
         }
+
+        [Test]
+        public void WordCountUpdate()
+        {
+            //ExStart
+            //ExFor:Document.UpdateWordCount(System.Boolean)
+            //ExSummary:
+            // Create an empty document
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("This is the frst line.");
+            builder.Writeln("This is the second line.");
+            builder.Writeln("These three lines contain eighteen words in total.");
+
+            // The fields that keep track of how many lines and words a document has are not automatically updated
+            // An empty document has one paragraph by default, which contains one empty line
+            Assert.AreEqual(0, doc.BuiltInDocumentProperties.Words);
+            Assert.AreEqual(1, doc.BuiltInDocumentProperties.Lines);
+
+            // To update them we have to use this method
+            // The default constructor updates just the word count
+            doc.UpdateWordCount();
+
+            Assert.AreEqual(18, doc.BuiltInDocumentProperties.Words);
+            Assert.AreEqual(1, doc.BuiltInDocumentProperties.Lines);
+
+            // If we want to update the line count as well, we have to use this overload
+            doc.UpdateWordCount(true);
+
+            Assert.AreEqual(18, doc.BuiltInDocumentProperties.Words);
+            Assert.AreEqual(3, doc.BuiltInDocumentProperties.Lines);
+            //ExEnd
+        }
+
+        [Test]
+        public void DocumentMisc()
+        {
+            //ExStart
+            //ExFor:Document.#ctor(System.Boolean)
+            //ExFor:Document.AutomaticallyUpdateSyles
+            //ExFor:Document.Cleanup
+            //ExFor:Document.CompatibilityOptions
+            //ExFor:Document.CustomXmlParts
+            //ExFor:Document.EndnoteOptions
+            //ExFor:Document.FontSettings
+            //ExFor:Document.FootnoteOptions
+            //ExFor:Document.GlossaryDocument
+            //ExFor:Document.HasMacros
+            //ExFor:Document.HasRevisions
+            //ExFor:Document.InvalidateFieldTypes
+            //ExFor:Document.LastSection
+            //ExFor:Document.LayoutOptions
+            //ExFor:Document.MailMergeSettings
+            //ExFor:Document.NormalizeFieldTypes
+            //ExFor:Document.PackageCustomParts
+            //ExFor:Document.RemoveUnusedResources
+            //ExFor:Document.Revisions
+            //ExFor:Document.ShadeFormData
+            //ExFor:Document.Theme
+            //ExFor:Document.TrackRevisions
+            //ExFor:Document.VersionsCount
+            //ExFor:Document.WriteProtection
+            //ExSummary:Shows how to use various features of Document.
+
+            //ExEnd
+        }
     }
 }
