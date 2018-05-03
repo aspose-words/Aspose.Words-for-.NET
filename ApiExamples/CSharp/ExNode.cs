@@ -645,7 +645,6 @@ namespace ApiExamples
         [Test] //ExSkip
         public void NodeXPathNavigator()
         {
-
             // Create a blank document
             Document doc = new Document();
 
@@ -657,28 +656,8 @@ namespace ApiExamples
             Assert.AreEqual(false, navigator.MoveToNext());
             Assert.AreEqual(1, navigator.SelectChildren(XPathNodeType.All).Count);
 
-            // Beyond the first section we have one body and one paragraph, with no other siblings and children
-            navigator.MoveToFirstChild();
-            Assert.AreEqual("Section", navigator.Name);
-            Assert.AreEqual(false, navigator.MoveToNext());
-            Assert.AreEqual(1, navigator.SelectChildren(XPathNodeType.All).Count);
-
-            navigator.MoveToFirstChild();
-            Assert.AreEqual("Body", navigator.Name);
-            Assert.AreEqual(false, navigator.MoveToNext());
-            Assert.AreEqual(1, navigator.SelectChildren(XPathNodeType.All).Count);
-
-            // This is a dead end
-            navigator.MoveToFirstChild();
-            Assert.AreEqual("Paragraph", navigator.Name);
-            Assert.AreEqual(false, navigator.MoveToNext());
-            Assert.AreEqual(0, navigator.SelectChildren(XPathNodeType.All).Count);
-
-            // We can return to the root and make some space
-            navigator.MoveToRoot();
-            Assert.AreEqual("Document", navigator.Name);
-
-            // Insert a new section and some paragraphs and runs for the navigator to traverse
+            // The document tree has the document, first section, body and first paragraph as nodes, with each being an only child of the previous
+            // We can add a few more to give the tree some branches for the navigator to traverse
             DocumentBuilder docBuilder = new DocumentBuilder(doc);
             docBuilder.Write("Section 1, Paragraph 1. ");
             docBuilder.InsertParagraph();
@@ -687,17 +666,17 @@ namespace ApiExamples
             docBuilder.MoveToSection(1);
             docBuilder.Write("Section 2, Paragraph 1. ");
 
-            // Use our navigator to print a map of the nodes in the document to the console
+            // Use our navigator to print a map of all the nodes in the document to the console
             StringBuilder stringBuilder = new StringBuilder();
-            PrintDocumentMap(navigator, stringBuilder, 0);
+            MapDocument(navigator, stringBuilder, 0);
             Console.Write(stringBuilder.ToString());
         }
 
         /// <summary>
-        /// This will traverse all children of a composite node and record the structure in the style of a directory tree as a printable string.
+        /// This will traverse all children of a composite node and map the structure in the style of a directory tree.
         /// Amount of space indentation indicates depth relative to initial node. Only runs will have their values printed.
         /// </summary>
-        private void PrintDocumentMap(XPathNavigator navigator, StringBuilder stringBuilder, int depth)
+        private void MapDocument(XPathNavigator navigator, StringBuilder stringBuilder, int depth)
         {
             do
             {
@@ -714,7 +693,7 @@ namespace ApiExamples
                 if (navigator.HasChildren)
                 {
                     navigator.MoveToFirstChild();
-                    PrintDocumentMap(navigator, stringBuilder, depth + 1);
+                    MapDocument(navigator, stringBuilder, depth + 1);
                     navigator.MoveToParent();
                 }
             } while (navigator.MoveToNext());
