@@ -17,6 +17,7 @@ using System.Web;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
+using Aspose.Words.Lists;
 using Aspose.Words.Properties;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
@@ -24,6 +25,7 @@ using Aspose.Words.Settings;
 using Aspose.Words.Tables;
 using Aspose.Words.Themes;
 using NUnit.Framework;
+using List = Aspose.Words.Lists.List;
 
 namespace ApiExamples
 {
@@ -1848,7 +1850,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.UpdateWordCount(System.Boolean)
-            //ExSummary:
+            //ExSummary:Shows how to keep track of the word count.
             // Create an empty document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1878,12 +1880,55 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentMisc()
+        public void CleanUp()
         {
             //ExStart
+            //ExFor:Document.Cleanup
+            //ExSummary:Shows how to remove unused styles and lists from a document.
+            // Create a new document
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Brand new documents have 4 styles and 0 lists by default
+            Assert.AreEqual(4, doc.Styles.Count);
+            Assert.AreEqual(0, doc.Lists.Count);
+
+            // We will add one style and one list and mark them as "used" by applying them to the builder 
+            builder.ParagraphFormat.Style = doc.Styles.Add(StyleType.Paragraph, "My Used Style");
+            builder.ListFormat.List = doc.Lists.Add(ListTemplate.BulletDiamonds);
+
+            // These items were added to their respective collections
+            Assert.AreEqual(5, doc.Styles.Count);
+            Assert.AreEqual(1, doc.Lists.Count);
+
+            // doc.Cleanup() removes all unused styles and lists
+            doc.Cleanup();
+
+            // It currently has no effect becase the 2 items we added plus the original 4 styles are all used
+            Assert.AreEqual(5, doc.Styles.Count);
+            Assert.AreEqual(1, doc.Lists.Count);
+
+            // These two items will be added but will not associated with any part of the document
+            doc.Styles.Add(StyleType.Paragraph, "My Unused Style");
+            doc.Lists.Add(ListTemplate.NumberArabicDot);
+
+            // They also get stored in the document and are ready to be used
+            Assert.AreEqual(6, doc.Styles.Count);
+            Assert.AreEqual(2, doc.Lists.Count);
+
+            doc.Cleanup();
+
+            // Since we didn't apply them anywhere, the two unused items are removed by doc.Cleanup()
+            Assert.AreEqual(5, doc.Styles.Count);
+            Assert.AreEqual(1, doc.Lists.Count);
+            //ExEnd
+        }
+
+        [Test]
+        public void DocumentMisc()
+        {
             //ExFor:Document.#ctor(System.Boolean)
             //ExFor:Document.AutomaticallyUpdateSyles
-            //ExFor:Document.Cleanup
             //ExFor:Document.CompatibilityOptions
             //ExFor:Document.CustomXmlParts
             //ExFor:Document.EndnoteOptions
@@ -1906,8 +1951,6 @@ namespace ApiExamples
             //ExFor:Document.VersionsCount
             //ExFor:Document.WriteProtection
             //ExSummary:Shows how to use various features of Document.
-
-            //ExEnd
         }
     }
 }
