@@ -49,8 +49,8 @@
       <HintPath>..\packages\Aspose.Email.17.11\lib\net40\Aspose.Email.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Aspose.Words, Version=18.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.18.4.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=18.5.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.18.5.0\lib\net40\Aspose.Words.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SkiaSharp, Version=1.59.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
@@ -227,6 +227,7 @@
     <Compile Include="Programming-Documents\Signature\SigningSignatureLine.cs" />
     <Compile Include="Programming-Documents\StructuredDocumentTag\BindSDTtoCustomXmlPart.cs" />
     <Compile Include="Programming-Documents\StructuredDocumentTag\ClearContentsControl.cs" />
+    <Compile Include="Programming-Documents\StructuredDocumentTag\SetContentControlColor.cs" />
     <Compile Include="Programming-Documents\Styles\ChangeStyleOfTOCLevel.cs" />
     <Compile Include="Programming-Documents\Styles\ChangeTOCTabStops.cs" />
     <Compile Include="Programming-Documents\Styles\InsertStyleSeparator.cs" />
