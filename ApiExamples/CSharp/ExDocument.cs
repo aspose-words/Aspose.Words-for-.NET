@@ -1925,6 +1925,67 @@ namespace ApiExamples
         }
 
         [Test]
+        public void HasRevisions()
+        {
+            //ExStart
+            //ExFor:Document.HasRevisions
+            //ExSummary:Shows how to check if a document has revisions.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // A blank document comes with no revisions
+            Assert.IsFalse(doc.HasRevisions);
+
+            builder.Writeln("This does not count as a revision.");
+
+            Assert.IsFalse(doc.HasRevisions);
+            
+            // As we can see, merely adding content does not count as a revision
+            // For our edits to count as revisions, we need to declare an author and start tracking them
+            doc.StartTrackRevisions("John Doe", DateTime.Now);
+
+            builder.Writeln("This is a revision.");
+
+            // The above text is now tracked as a revision and will show up accordingly in our output file
+            Assert.IsTrue(doc.HasRevisions);
+            Assert.AreEqual("John Doe", doc.Revisions[0].Author);
+
+            // This takes us back to not counting changes as revisions
+            doc.StopTrackRevisions();
+
+            builder.Writeln("This does not count as a revision.");
+
+            doc.Save(MyDir + @"\Artifacts\Revisions.docx");
+
+            // We can get rid of all the changes we made that counted as revisions
+            doc.Revisions.RejectAll();
+            Assert.IsFalse(doc.HasRevisions);
+
+            doc.Save(MyDir + @"\Artifacts\RevisionsRejected.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void HasMacros()
+        {
+            //ExStart
+            //ExFor:Document.HasMacros
+            //ExSummary:Shows how to check if a document has macros.
+            Document doc = new Document();
+
+            // A blank document has no macros by default
+            Assert.IsFalse(doc.HasMacros);
+
+            // We can't programmatically add macros but we can open a file that has them
+            Document docWithMacros = new Document(MyDir + "Document.HasMacros.docm");
+            Assert.IsTrue(docWithMacros.HasMacros);
+
+            // We can also remove them
+            docWithMacros.RemoveMacros();
+            Assert.IsFalse(docWithMacros.HasMacros);
+            //ExEnd
+        }
+
         public void DocumentMisc()
         {
             //ExFor:Document.#ctor(System.Boolean)
@@ -1935,8 +1996,6 @@ namespace ApiExamples
             //ExFor:Document.FontSettings
             //ExFor:Document.FootnoteOptions
             //ExFor:Document.GlossaryDocument
-            //ExFor:Document.HasMacros
-            //ExFor:Document.HasRevisions
             //ExFor:Document.InvalidateFieldTypes
             //ExFor:Document.LastSection
             //ExFor:Document.LayoutOptions
@@ -1950,7 +2009,6 @@ namespace ApiExamples
             //ExFor:Document.TrackRevisions
             //ExFor:Document.VersionsCount
             //ExFor:Document.WriteProtection
-            //ExSummary:Shows how to use various features of Document.
         }
     }
 }
