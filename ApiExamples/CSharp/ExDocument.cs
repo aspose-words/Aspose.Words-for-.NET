@@ -18,8 +18,10 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Lists;
+using Aspose.Words.Markup;
 using Aspose.Words.Properties;
 using Aspose.Words.Rendering;
+using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using Aspose.Words.Tables;
@@ -1880,7 +1882,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CleanUp()
+        public void CleanUpStyles()
         {
             //ExStart
             //ExFor:Document.Cleanup
@@ -1925,10 +1927,12 @@ namespace ApiExamples
         }
 
         [Test]
-        public void HasRevisions()
+        public void Revisions()
         {
             //ExStart
             //ExFor:Document.HasRevisions
+            //ExFor:Document.TrackRevisions
+            //ExFor:Document.Revisions
             //ExSummary:Shows how to check if a document has revisions.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1938,9 +1942,9 @@ namespace ApiExamples
 
             builder.Writeln("This does not count as a revision.");
 
+            // Just adding text does not count as a revision
             Assert.IsFalse(doc.HasRevisions);
-            
-            // As we can see, merely adding content does not count as a revision
+
             // For our edits to count as revisions, we need to declare an author and start tracking them
             doc.StartTrackRevisions("John Doe", DateTime.Now);
 
@@ -1949,6 +1953,9 @@ namespace ApiExamples
             // The above text is now tracked as a revision and will show up accordingly in our output file
             Assert.IsTrue(doc.HasRevisions);
             Assert.AreEqual("John Doe", doc.Revisions[0].Author);
+
+            // Document.TrackRevisions corresponds to Microsoft Word tracking changes, not the ones we programmatically make here 
+            Assert.IsFalse(doc.TrackRevisions);
 
             // This takes us back to not counting changes as revisions
             doc.StopTrackRevisions();
@@ -1961,7 +1968,14 @@ namespace ApiExamples
             doc.Revisions.RejectAll();
             Assert.IsFalse(doc.HasRevisions);
 
+            // The second line that our builder wrote will not appear at all in the output
             doc.Save(MyDir + @"\Artifacts\RevisionsRejected.docx");
+
+            // Alternatively, we can track revisions from Microsoft Word like this
+            // This is the same as turning on "Track Changes" in Word
+            doc.TrackRevisions = true;
+
+            doc.Save(MyDir + @"\Artifacts\RevisionsTrackedFromMSWord.docx");
             //ExEnd
         }
 
@@ -1970,7 +1984,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.HasMacros
-            //ExSummary:Shows how to check if a document has macros.
+            //ExSummary:Shows how to check if a document contains macros.
             Document doc = new Document();
 
             // A blank document has no macros by default
@@ -1986,29 +2000,128 @@ namespace ApiExamples
             //ExEnd
         }
 
-        public void DocumentMisc()
+        [Test]
+        public void AutoUpdateStyles()
         {
-            //ExFor:Document.#ctor(System.Boolean)
+            //ExStart
             //ExFor:Document.AutomaticallyUpdateSyles
-            //ExFor:Document.CompatibilityOptions
-            //ExFor:Document.CustomXmlParts
-            //ExFor:Document.EndnoteOptions
-            //ExFor:Document.FontSettings
-            //ExFor:Document.FootnoteOptions
-            //ExFor:Document.GlossaryDocument
-            //ExFor:Document.InvalidateFieldTypes
-            //ExFor:Document.LastSection
-            //ExFor:Document.LayoutOptions
-            //ExFor:Document.MailMergeSettings
-            //ExFor:Document.NormalizeFieldTypes
-            //ExFor:Document.PackageCustomParts
-            //ExFor:Document.RemoveUnusedResources
-            //ExFor:Document.Revisions
-            //ExFor:Document.ShadeFormData
-            //ExFor:Document.Theme
-            //ExFor:Document.TrackRevisions
-            //ExFor:Document.VersionsCount
-            //ExFor:Document.WriteProtection
+            //ExSummary:Shows how to update a document's styles based on its template.
+            Document doc = new Document();
+
+            // Empty Microsoft Word documents by default come with an attached template called "Normal.dotm"
+            // There is no default template for Aspose Words documents
+            Assert.AreEqual(String.Empty, doc.AttachedTemplate);
+
+            // For AutomaticallyUpdateStyles to have any effect, we need a document with a template
+            // We can make a document with word and open it
+            // Or we can attach a template from our file system, as below
+            doc.AttachedTemplate = MyDir + "Document.BusinessBrochureTemplate.dotx";
+
+            Assert.IsTrue(doc.AttachedTemplate.EndsWith("Document.BusinessBrochureTemplate.dotx"));
+
+            // Any changes to the styes in this template will be propagated to those styles in the document
+            doc.AutomaticallyUpdateSyles = true;
+
+            doc.Save(MyDir + @"\Artifacts\TemplateStylesUpdating.docx");
+            //ExEnd
         }
+
+        [Test]
+        public void CompatibilityOptions()
+        {
+            //ExStart
+            //ExFor:Document.CompatibilityOptions
+            //ExSummary:Shows how to optimise our document for different word versions.
+            Document doc = new Document();
+            CompatibilityOptions co = doc.CompatibilityOptions;
+
+            // Here are some default values
+            Assert.AreEqual(true, co.GrowAutofit);
+            Assert.AreEqual(false, co.DoNotBreakWrappedTables);
+            Assert.AreEqual(false, co.DoNotUseEastAsianBreakRules);
+            Assert.AreEqual(false, co.SelectFldWithFirstOrLastChar);
+            Assert.AreEqual(false, co.UseWord97LineBreakRules);
+            Assert.AreEqual(true, co.UseWord2002TableStyleRules);
+            Assert.AreEqual(false, co.UseWord2010TableStyleRules);
+
+            // This example covers only a small portion of all the compatibility attributes 
+            // To see the entire list, in any of the output files go into File > Options > Advanced > Compatibility for...
+            doc.Save(MyDir + @"\Artifacts\DefaultCompatibility.docx");
+
+            // We can hand pick any value and change it to create a custom compatibility
+            // We can also change a bunch of values at once to suit a defined compatibility scheme with the OptimizeFor method
+            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2010);
+
+            Assert.AreEqual(false, co.GrowAutofit);
+            Assert.AreEqual(false, co.GrowAutofit);
+            Assert.AreEqual(false, co.DoNotBreakWrappedTables);
+            Assert.AreEqual(false, co.DoNotUseEastAsianBreakRules);
+            Assert.AreEqual(false, co.SelectFldWithFirstOrLastChar);
+            Assert.AreEqual(false, co.UseWord97LineBreakRules);
+            Assert.AreEqual(false, co.UseWord2002TableStyleRules);
+            Assert.AreEqual(true, co.UseWord2010TableStyleRules);
+
+            doc.Save(MyDir + @"\Artifacts\Optimised for Word 2010.docx");
+
+            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
+
+            Assert.AreEqual(true, co.GrowAutofit);
+            Assert.AreEqual(true, co.DoNotBreakWrappedTables);
+            Assert.AreEqual(true, co.DoNotUseEastAsianBreakRules);
+            Assert.AreEqual(true, co.SelectFldWithFirstOrLastChar);
+            Assert.AreEqual(false, co.UseWord97LineBreakRules);
+            Assert.AreEqual(true, co.UseWord2002TableStyleRules);
+            Assert.AreEqual(false, co.UseWord2010TableStyleRules);
+
+            doc.Save(MyDir + @"\Artifacts\Optimised for Word 2000.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void Sections()
+        {
+            //ExStart
+            //ExFor:Document.LastSection
+            //ExSummary:Shows how to edit the last section of a document.
+            // Open the template document, containing obsolete copyright information in the footer
+            Document doc = new Document(MyDir + "HeaderFooter.ReplaceText.doc");
+
+            // We have a document with 2 sections, this way FirstSection and LastSection are not the same
+            Assert.AreEqual(2, doc.Sections.Count);
+
+            string newCopyrightInformation = String.Format("Copyright (C) {0} by Aspose Pty Ltd.", DateTime.Now.Year);
+            FindReplaceOptions findReplaceOptions = new FindReplaceOptions { MatchCase = false, FindWholeWordsOnly = false };
+
+            // Access the first and the last sections
+            HeaderFooter firstSectionFooter = doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary];
+            firstSectionFooter.Range.Replace("(C) 2006 Aspose Pty Ltd.", newCopyrightInformation, findReplaceOptions);
+
+            HeaderFooter lastSectionFooter = doc.LastSection.HeadersFooters[HeaderFooterType.FooterPrimary];
+            lastSectionFooter.Range.Replace("(C) 2006 Aspose Pty Ltd.", newCopyrightInformation, findReplaceOptions);
+
+            // Sections are also accessible via an array
+            Assert.AreEqual(doc.FirstSection, doc.Sections[0]);
+            Assert.AreEqual(doc.LastSection, doc.Sections[1]);
+
+            doc.Save(MyDir + @"\Artifacts\HeaderFooter.ReplaceText Out.doc");
+            //ExEnd
+        }
+
+        //ExFor:Document.#ctor(System.Boolean)
+        //ExFor:Document.CustomXmlParts
+        //ExFor:Document.EndnoteOptions
+        //ExFor:Document.FontSettings
+        //ExFor:Document.FootnoteOptions
+        //ExFor:Document.GlossaryDocument
+        //ExFor:Document.InvalidateFieldTypes
+        //ExFor:Document.LayoutOptions
+        //ExFor:Document.MailMergeSettings
+        //ExFor:Document.NormalizeFieldTypes
+        //ExFor:Document.PackageCustomParts
+        //ExFor:Document.RemoveUnusedResources
+        //ExFor:Document.ShadeFormData
+        //ExFor:Document.Theme
+        //ExFor:Document.VersionsCount
+        //ExFor:Document.WriteProtection
     }
 }
