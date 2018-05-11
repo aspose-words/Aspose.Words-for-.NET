@@ -316,6 +316,7 @@ namespace Aspose.Words.Examples.CSharp
             //// =====================================================
             //BindSDTtoCustomXmlPart.Run();
             //ClearContentsControl.Run();
+            //SetContentControlColor.Run();
 
             //// EndNote and Footnote 
             //// =====================================================
