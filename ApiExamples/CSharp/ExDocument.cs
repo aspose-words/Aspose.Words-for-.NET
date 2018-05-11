@@ -1526,6 +1526,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Cleanup(CleanupOptions)
+            //ExFor:Document.RemoveUnusedResources
             //ExFor:CleanupOptions
             //ExFor:CleanupOptions.UnusedLists
             //ExFor:CleanupOptions.UnusedStyles
@@ -2107,6 +2108,52 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [Test]
+        public void DocTheme()
+        {
+            //ExStart
+            //ExFor:Document.Theme
+            //ExSummary:Shows what we can do with the Themes property of Document.
+            Document doc = new Document();
+
+            // When creating a blank document, Aspose Words creates a default theme object
+            Theme theme = doc.Theme;
+
+            // These colour properties correspond to the 10 colour columns that you see 
+            // in the "Theme colors" section in the colour selector menu when changing font or shading colour
+            // We can view and edit the leading colour for each column, and the five different tints that
+            // make up the rest of the column will be derived automatically from each leading colour
+            // Aspose Words sets the defaults to what they are in the Microsoft Word default theme
+            Assert.AreEqual(Color.FromArgb(255, 255, 255, 255), theme.Colors.Light1);
+            Assert.AreEqual(Color.FromArgb(255, 0, 0, 0), theme.Colors.Dark1);
+            Assert.AreEqual(Color.FromArgb(255, 238, 236, 225), theme.Colors.Light2);
+            Assert.AreEqual(Color.FromArgb(255, 31, 73, 125), theme.Colors.Dark2);
+            Assert.AreEqual(Color.FromArgb(255, 79, 129, 189), theme.Colors.Accent1);
+            Assert.AreEqual(Color.FromArgb(255, 192, 80, 77), theme.Colors.Accent2);
+            Assert.AreEqual(Color.FromArgb(255, 155, 187, 89), theme.Colors.Accent3);
+            Assert.AreEqual(Color.FromArgb(255, 128, 100, 162), theme.Colors.Accent4);
+            Assert.AreEqual(Color.FromArgb(255, 75, 172, 198), theme.Colors.Accent5);
+            Assert.AreEqual(Color.FromArgb(255, 247, 150, 70), theme.Colors.Accent6);
+
+            // Hyperlink colours
+            Assert.AreEqual(Color.FromArgb(255, 0, 0, 255), theme.Colors.Hyperlink);
+            Assert.AreEqual(Color.FromArgb(255, 128, 0, 128), theme.Colors.FollowedHyperlink);
+
+            // These appear at the very top of the font selector in the "Theme Fonts" section
+            Assert.AreEqual("Cambria", theme.MajorFonts.Latin);
+            Assert.AreEqual("Calibri", theme.MinorFonts.Latin);
+
+            // Change some values to make a custom theme
+            theme.MinorFonts.Latin = "Bodoni MT";
+            theme.MajorFonts.Latin = "Tahoma";
+            theme.Colors.Accent1 = Color.Cyan;
+            theme.Colors.Accent2 = Color.Yellow;
+
+            // Save the document to see the changes
+            doc.Save(MyDir + @"\Artifacts\Document.Theme.docx");
+            //ExEnd
+        }
+
         //ExFor:Document.#ctor(System.Boolean)
         //ExFor:Document.CustomXmlParts
         //ExFor:Document.EndnoteOptions
@@ -2118,9 +2165,7 @@ namespace ApiExamples
         //ExFor:Document.MailMergeSettings
         //ExFor:Document.NormalizeFieldTypes
         //ExFor:Document.PackageCustomParts
-        //ExFor:Document.RemoveUnusedResources
         //ExFor:Document.ShadeFormData
-        //ExFor:Document.Theme
         //ExFor:Document.VersionsCount
         //ExFor:Document.WriteProtection
     }
