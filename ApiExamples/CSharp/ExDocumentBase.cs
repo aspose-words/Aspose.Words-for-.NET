@@ -1,4 +1,7 @@
-﻿using Aspose.Words;
+﻿using System;
+using System.Drawing.Text;
+using System.Text;
+using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
 using Aspose.Words.Loading;
@@ -10,7 +13,7 @@ namespace ApiExamples
     public class ExDocumentBase : ApiExampleBase
     {
         [Test]
-        public void DocBaseConstructor()
+        public void Constructor()
         {
             //ExStart
             //ExFor:DocumentBase
@@ -37,7 +40,76 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocBaseBackgroundShape()
+        public void ImportNode()
+        {
+            //ExStart
+            //ExFor:DocumentBase.ImportNode(Node,System.Boolean)
+            //ExSummary:Shows various ways of importing nodes.
+            Document src = new Document();
+            Document dst = new Document();
+
+            // Add text to both documents
+            src.FirstSection.Body.FirstParagraph.AppendChild(new Run(src, "Source document first paragraph text."));
+            dst.FirstSection.Body.FirstParagraph.AppendChild(new Run(dst, "Destination document first paragraph text."));
+
+            // If we want to add the section from doc2 to doc1, we can't just append them like this:
+            //dst.AppendChild(src.FirstSection);
+
+            // Uncommenting that line throws an exception because doc2's first section belongs to doc2,
+            // but each node in a document must belong to the document
+            Assert.AreNotEqual(dst, src.FirstSection.Document);
+
+            // We can create a new node that belongs to the destination document
+            Section importedSection = (Section)dst.ImportNode(src.FirstSection, true);
+
+            // It has the same content but it is not the same node nor do they have the same owner
+            Assert.AreNotEqual(importedSection, src.FirstSection);
+            Assert.AreNotEqual(importedSection.Document, src.FirstSection.Document);
+            Assert.AreEqual(importedSection.Body.FirstParagraph.GetText(), src.FirstSection.Body.FirstParagraph.GetText());
+
+            // Now it is ready to be placed in the document
+            dst.AppendChild(importedSection);
+
+            // Our document does indeed contain both the original and imported section
+            Assert.AreEqual("Destination document first paragraph text.\r\nSource document first paragraph text.\r\n", dst.ToString(SaveFormat.Text));
+            //ExEnd
+        }
+
+        [Test]
+        public void ImportNodeCustom()
+        {
+            //ExStart
+            //ExFor:DocumentBase.ImportNode(Node,System.Boolean,ImportFormatMode)
+            //ExFor:DocumentBase.ImportNode(Node,System.Boolean,ImportFormatMode,INodeCloningListener)
+            //ExFor:DocumentBase.ImportNode(Node,System.Boolean,INodeCloningListener)
+            //ExSummary:Shows various ways of importing nodes.
+            // Create two documents with two styles that aren't the same but have the same name
+            Document src = new Document();
+            Style srcStyle = src.Styles.Add(StyleType.Character, "My style");
+            var srcBuilder = new DocumentBuilder(src);
+            srcBuilder.Font.Style = srcStyle;
+            srcBuilder.Writeln("Source document text.");
+
+            Document dst = new Document();
+            Style dstStyle = dst.Styles.Add(StyleType.Character, "My style");
+            var dstBuilder = new DocumentBuilder(dst);
+            dstBuilder.Font.Style = dstStyle;
+            dstStyle.Font.Bold = true;
+            srcBuilder.Writeln("Destination document text.");
+
+            dst.ImportNode(src.FirstSection, true, ImportFormatMode.UseDestinationStyles);
+
+            Assert.IsNull(dst.Styles["My style_0"]);
+
+            dst.ImportNode(src.FirstSection, true, ImportFormatMode.KeepDifferentStyles);
+
+            Assert.IsNotNull(dst.Styles["My style_0"]);
+            //ExEnd
+        }
+
+
+        [Test]
+        public void BackgroundShape()
         {
             //ExStart
             //ExFor:DocumentBase.BackgroundShape
@@ -59,25 +131,25 @@ namespace ApiExamples
             shapeRectangle.ImageData.SetImage(MyDir + @"\Images\Watermark.png");
             Assert.IsTrue(doc.BackgroundShape.HasImage);
 
-            // In this example the image is a photo with a white background
+            // This image is a photo with a white background
             // To make it suitable as a watermark, we will need to do some image processing
-            // The default values for these variables are 0.5, so we are lowering the contrast and increasing the brightness
+            // The default values for these variables are 0.5, so here we are lowering the contrast and increasing the brightness
             shapeRectangle.ImageData.Contrast = 0.2;
             shapeRectangle.ImageData.Brightness = 0.7;
+
 
             // Microsoft Word does not support images in background shapes, so even though we set the background as an image,
             // the output will show a light blue background like before
             // However, we can see our watermark in an output pdf
             doc.Save("DocumentBase.BackgroundShapeWatermark.pdf");
             //ExEnd
-
         }
 
         //ExStart
         //ExFor:DocumentBase.ResourceLoadingCallback
         //ExSummary:Shows how to process inserted resources differently.
         [Test] //ExSkip
-        public void DocResourceLoadingCallback()
+        public void ResourceLoadingCallback()
         {
             Document doc = new Document();
 
@@ -142,12 +214,5 @@ namespace ApiExamples
             }
         }
         //ExEnd
-
-        //ExFor:DocumentBase.ImportNode(Node,System.Boolean)
-        //ExFor:DocumentBase.ImportNode(Node,System.Boolean,ImportFormatMode)
-        //ExFor:DocumentBase.ImportNode(Node,System.Boolean,ImportFormatMode,INodeCloningListener)
-        //ExFor:DocumentBase.ImportNode(Node,System.Boolean,INodeCloningListener)
-        //ExFor:DocumentBase.WarningCallback
     }
-
 }
