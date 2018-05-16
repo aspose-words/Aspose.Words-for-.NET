@@ -21,6 +21,7 @@ using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Fonts;
+using Aspose.Words.Layout;
 using Aspose.Words.Lists;
 using Aspose.Words.Markup;
 using Aspose.Words.Properties;
@@ -2275,7 +2276,37 @@ namespace ApiExamples
             Assert.AreEqual(FieldType.FieldPage, field.End.FieldType);
             //ExEnd
         }
-        //ExFor:Document.LayoutOptions
+
+        [Test]
+        public void DocLayoutOptions()
+        {
+            //ExStart
+            //ExFor:Document.LayoutOptions
+            //ExSummary:Shows how to set a document's layout options.
+            Document doc = new Document();
+
+            Assert.IsFalse(doc.LayoutOptions.IsShowHiddenText);
+            Assert.IsFalse(doc.LayoutOptions.IsShowParagraphMarks);
+            
+            // The appearance of revisions can be controlled from the layout options property
+            doc.StartTrackRevisions("John Doe", DateTime.Now);
+            doc.LayoutOptions.RevisionOptions.InsertedTextColor = RevisionColor.BrightGreen;
+            doc.LayoutOptions.RevisionOptions.ShowRevisionBars = false;
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("This is a revision. Normally the text is red with a bar to the left, but we made some changes to the revision options.");
+
+            doc.StopTrackRevisions();
+
+            // Layout options can be used to show hidden text too
+            builder.Writeln("This text is not hidden.");
+            builder.Font.Hidden = true;
+            builder.Writeln("This text is hidden. It will only show up in the output if we allow it to via doc.LayoutOptions.");
+
+            doc.LayoutOptions.IsShowHiddenText = true;
+
+            doc.Save("LayoutOptions.pdf");
+        }
         //ExFor:Document.MailMergeSettings
         //ExFor:Document.PackageCustomParts
         //ExFor:Document.ShadeFormData
