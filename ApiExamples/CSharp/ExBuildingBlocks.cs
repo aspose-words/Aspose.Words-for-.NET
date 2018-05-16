@@ -11,6 +11,7 @@ namespace ApiExamples
     public class ExBuildingBlocks : ApiExampleBase
     {
         //ExStart
+        //ExFor:Document.GlossaryDocument
         //ExFor:BuildingBlocks.BuildingBlock
         //ExFor:BuildingBlocks.BuildingBlock.#ctor(BuildingBlocks.GlossaryDocument) 
         //ExFor:BuildingBlocks.BuildingBlock.Accept(DocumentVisitor)
