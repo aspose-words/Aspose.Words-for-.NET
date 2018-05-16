@@ -10,13 +10,17 @@ using System.Collections;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading;
 using System.Web;
 using Aspose.Words;
+using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
+using Aspose.Words.Fonts;
 using Aspose.Words.Lists;
 using Aspose.Words.Markup;
 using Aspose.Words.Properties;
@@ -27,7 +31,6 @@ using Aspose.Words.Settings;
 using Aspose.Words.Tables;
 using Aspose.Words.Themes;
 using NUnit.Framework;
-using List = Aspose.Words.Lists.List;
 
 namespace ApiExamples
 {
@@ -81,6 +84,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExId:DocumentCtor
+            //ExFor:Document.#ctor(System.Boolean)
             //ExSummary:Shows how to create a blank document. Note the blank document contains one section and one paragraph.
             Document doc = new Document();
             //ExEnd
@@ -2149,21 +2153,130 @@ namespace ApiExamples
             theme.Colors.Accent1 = Color.Cyan;
             theme.Colors.Accent2 = Color.Yellow;
 
-            // Save the document to see the changes
+            // Save the document to use our theme
             doc.Save(MyDir + @"\Artifacts\Document.Theme.docx");
             //ExEnd
         }
 
-        //ExFor:Document.#ctor(System.Boolean)
-        //ExFor:Document.CustomXmlParts
-        //ExFor:Document.EndnoteOptions
-        //ExFor:Document.FontSettings
-        //ExFor:Document.FootnoteOptions
-        //ExFor:Document.GlossaryDocument
-        //ExFor:Document.InvalidateFieldTypes
+        [Test]
+        public void AddCustomXmlPart()
+        {
+            //ExStart
+            //ExFor:Document.CustomXmlParts
+            //ExSummary:Shows how to create a custom xml part and add it to a document.
+            Document doc = new Document();
+            Assert.AreEqual(0, doc.CustomXmlParts.Count);
+
+            CustomXmlPart myXmlPart = new CustomXmlPart();
+
+            string xmlString = 
+                "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" +
+                "<employees xmlns=\"http://schemas.microsoft.com/vsto/samples\">" +
+                    "<employee>" +
+                        "<name>John Doe</name>" +
+                        "<hireDate>2018-05-11</hireDate>" +
+                        "<title>Manager</title>" +
+                    "</employee>" +
+                "</employees>";
+
+            myXmlPart.Data = Encoding.ASCII.GetBytes(xmlString);
+            myXmlPart.Id = System.Guid.NewGuid().ToString();
+
+            doc.CustomXmlParts.Add(myXmlPart);
+
+            doc.Save(MyDir + @"\Artifacts\Document.CustomXmlParts.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void SetFontSettings()
+        {
+            //ExStart
+            //ExFor:Document.FontSettings
+            //ExSummary:Shows how to use a document's font settings. 
+            Document doc = new Document();
+
+            Assert.IsNull(doc.FontSettings);
+
+            doc.FontSettings = new FontSettings();
+
+            Assert.AreEqual("Times New Roman", doc.FontSettings.DefaultFontName);
+            Assert.AreEqual(true, doc.FontSettings.EnableFontSubstitution);
+
+            // Now that we've enabled font substitutions, we can choose a common substitute for an obscure font we might run into
+            doc.FontSettings.AddFontSubstitutes("Rocketfuel", "Arial");
+            //ExEnd
+            Assert.AreEqual("Arial", doc.FontSettings.GetFontSubstitutes("Rocketfuel")[0]);
+        }
+
+        [Test]
+        public void SetFootnoteOptions()
+        {
+            //ExStart
+            //ExFor:Document.FootnoteOptions
+            //ExSummary:Shows how access a document's footnote options and see some of its default values.
+            Document doc = new Document();
+
+            Assert.AreEqual(1, doc.FootnoteOptions.StartNumber);
+            Assert.AreEqual(FootnotePosition.BottomOfPage, doc.FootnoteOptions.Position);
+            Assert.AreEqual(NumberStyle.Arabic, doc.FootnoteOptions.NumberStyle);
+            Assert.AreEqual(FootnoteNumberingRule.Default, doc.FootnoteOptions.RestartRule);
+            //ExEnd
+        }
+
+        [Test]
+        public void SetEndnoteOptions()
+        {
+            //ExStart
+            //ExFor:Document.EndnoteOptions
+            //ExSummary:Shows how access a document's endnote options and see some of its default values.
+            Document doc = new Document();
+
+            Assert.AreEqual(1, doc.EndnoteOptions.StartNumber);
+            Assert.AreEqual(EndnotePosition.EndOfDocument, doc.EndnoteOptions.Position);
+            Assert.AreEqual(NumberStyle.LowercaseRoman, doc.EndnoteOptions.NumberStyle);
+            Assert.AreEqual(FootnoteNumberingRule.Default, doc.EndnoteOptions.RestartRule);
+            //ExEnd
+        }
+
+        [Test]
+        public void SetInvalidateFieldTypes()
+        {
+            //ExStart
+            //ExFor:Document.InvalidateFieldTypes
+            //ExFor:Document.NormalizeFieldTypes
+            //ExSummary:Shows how to get the field type and code to match.
+            Document doc = new Document();
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertField("DATE", null);
+
+            Assert.AreEqual(1, doc.Range.Fields.Count);
+
+            // Manually change the field code like thia
+            Run run = (Run)doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Run, true)[0];
+            Assert.AreEqual("DATE", run.Text);
+            run.Text = "PAGE";
+
+            Field field = doc.Range.Fields[0];
+
+            // The field code and field type do not match
+            Assert.AreEqual(FieldType.FieldDate, field.Type);
+            Assert.AreEqual(FieldType.FieldDate, field.Start.FieldType);
+            Assert.AreEqual(FieldType.FieldDate, field.Separator.FieldType);
+            Assert.AreEqual(FieldType.FieldDate, field.End.FieldType);
+
+            // After running this method they will match
+            doc.NormalizeFieldTypes();
+
+            Assert.AreEqual(FieldType.FieldPage, field.Type);
+            Assert.AreEqual(FieldType.FieldPage, field.Start.FieldType);
+            Assert.AreEqual(FieldType.FieldPage, field.Separator.FieldType);
+            Assert.AreEqual(FieldType.FieldPage, field.End.FieldType);
+            //ExEnd
+        }
         //ExFor:Document.LayoutOptions
         //ExFor:Document.MailMergeSettings
-        //ExFor:Document.NormalizeFieldTypes
         //ExFor:Document.PackageCustomParts
         //ExFor:Document.ShadeFormData
         //ExFor:Document.VersionsCount
