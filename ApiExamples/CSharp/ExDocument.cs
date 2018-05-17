@@ -2305,10 +2305,76 @@ namespace ApiExamples
 
             doc.LayoutOptions.IsShowHiddenText = true;
 
-            doc.Save("LayoutOptions.pdf");
+            doc.Save(MyDir + @"\Artifacts\Document.LayoutOptions.pdf");
         }
-        //ExFor:Document.MailMergeSettings
-        //ExFor:Document.PackageCustomParts
+
+        [Test]
+        public void DocMailMergeSettings()
+        {
+            //ExStart
+            //ExFor:Document.MailMergeSettings
+            //ExSummary:Shows how to execute a mail merge with MailMergeSettings.
+            // We'll create a simple document that will act as a destination for mail merge data
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("Dear ");
+            builder.InsertField("MERGEFIELD FirstName", "<FirstName>");
+            builder.Write(" ");
+            builder.InsertField("MERGEFIELD LastName", "<LastName>");
+            builder.Writeln(": ");
+            builder.InsertField("MERGEFIELD Message", "<Message>");
+
+            // Also we'll need a data source, in this case it will be an ASCII text file
+            // We can use any character we want as a delimiter, in this case we'll choose '|'
+            // The delimiter character is selected in the ODSO settings of mail merge settings
+            string[] lines = { "FirstName|LastName|Message",
+                "John|Doe|Hello! This message was created with Aspose Words mail merge." };
+            System.IO.File.WriteAllLines(MyDir + @"\Artifacts\Document.Lines.txt", lines);
+
+            // Set the data source, query and other things
+            MailMergeSettings mailMergeSettings = doc.MailMergeSettings;
+            mailMergeSettings.MainDocumentType = MailMergeMainDocumentType.MailingLabels;
+            mailMergeSettings.DataType = MailMergeDataType.Native;
+            mailMergeSettings.DataSource = "Lines.txt";
+            mailMergeSettings.Query = "SELECT * FROM " + doc.MailMergeSettings.DataSource;
+            mailMergeSettings.LinkToQuery = true;
+            mailMergeSettings.ViewMergedData = true;
+            
+            // Office Data Source Object settings
+            Odso odso = mailMergeSettings.Odso;
+            odso.DataSourceType = OdsoDataSourceType.Text;
+            odso.ColumnDelimiter = '|';
+            odso.DataSource = "Lines.txt";
+            odso.FirstRowContainsColumnNames = true;
+
+            // The mail merge will be performed when this document is opened 
+            doc.Save(MyDir + @"\Artifacts\Document.MailMergeSettings.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void DocPackageCustomParts()
+        {
+            //ExStart
+            //ExFor:Document.PackageCustomParts
+            //ExSummary:Shows how to access a document's PackageCustomParts property and add an external part.
+            Document doc = new Document();
+            Assert.AreEqual(0, doc.PackageCustomParts.Count);
+
+            // Create an external custom part
+            CustomPart externalPart = new CustomPart();
+            externalPart.Name = "http://www.aspose.com/Images/aspose-logo.jpg";
+            externalPart.IsExternal = true;
+
+            // Not applicable to external parts
+            Assert.AreEqual("", externalPart.ContentType);
+            Assert.AreEqual(0, externalPart.Data.Length);
+
+            doc.PackageCustomParts.Add(externalPart);
+
+            doc.Save(MyDir + @"\Artifacts\Document.ExternalCustomPart.docx");
+            //ExEnd
+        }
         //ExFor:Document.ShadeFormData
         //ExFor:Document.VersionsCount
         //ExFor:Document.WriteProtection
