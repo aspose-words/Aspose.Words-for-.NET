@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Aspose.Words.Examples.CSharp</RootNamespace>
     <AssemblyName>Aspose.Words.Examples.CSharp</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
@@ -222,9 +222,7 @@
     <Compile Include="Programming-Documents\Ranges\RangesGetText.cs" />
     <Compile Include="Programming-Documents\Shapes\WorkingWithShapes.cs" />
     <Compile Include="Programming-Documents\Signature\SigningSignatureLine.cs" />
-    <Compile Include="Programming-Documents\StructuredDocumentTag\BindSDTtoCustomXmlPart.cs" />
-    <Compile Include="Programming-Documents\StructuredDocumentTag\ClearContentsControl.cs" />
-    <Compile Include="Programming-Documents\StructuredDocumentTag\SetContentControlColor.cs" />
+    <Compile Include="Programming-Documents\StructuredDocumentTag\WorkingWithSDT.cs" />
     <Compile Include="Programming-Documents\Styles\ChangeStyleOfTOCLevel.cs" />
     <Compile Include="Programming-Documents\Styles\ChangeTOCTabStops.cs" />
     <Compile Include="Programming-Documents\Styles\InsertStyleSeparator.cs" />
