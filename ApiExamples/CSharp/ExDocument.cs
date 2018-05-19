@@ -2375,8 +2375,94 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Document.ExternalCustomPart.docx");
             //ExEnd
         }
-        //ExFor:Document.ShadeFormData
-        //ExFor:Document.VersionsCount
-        //ExFor:Document.WriteProtection
+
+        [Test]
+        public void DocShadeFormData()
+        {
+            //ExStart
+            //ExFor:Document.ShadeFormData
+            //ExSummary:Shows how to apply gray shading to bookmarks.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // By default, bookmarked text is highlighted gray
+            Assert.IsTrue(doc.ShadeFormData);
+
+            builder.Write("Text before bookmark. ");
+
+            builder.InsertTextInput("My bookmark", TextFormFieldType.Regular, "", 
+                "If gray shading is turned on, this is the text that will have a gray background.", 0);
+
+            // Our bookmarked text will appear gray here
+            doc.Save("ShadeFormDataTrue.docx");
+
+            // In this file, shading will be turned off and the bookmarked text will blend in with the other text
+            doc.ShadeFormData = false;
+            doc.Save("ShadeFormDataFalse.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void DocVersionsCount()
+        {
+            //ExStart
+            //ExFor:Document.VersionsCount
+            //ExSummary:Shows how to count how many previous versions a document has.
+            Document doc = new Document();
+
+            // No versions are in the document by default
+            // We also can't add any since they are not supported
+            Assert.AreEqual(0, doc.VersionsCount);
+
+            // Let's open a document with versions
+            doc = new Document(MyDir + "Versions.doc");
+
+            // We can use this property to see how many there are
+            Assert.AreEqual(4, doc.VersionsCount);
+
+            doc.Save(MyDir + @"\Artifacts\Document.versions.doc");      
+            doc = new Document(MyDir + @"\Artifacts\Document.versions.doc");
+
+            // If we save and open the document, the versions are lost
+            Assert.AreEqual(0, doc.VersionsCount);
+            //ExEnd
+        }
+
+        [Test]
+        public void DocWriteProtection()
+        {
+            //ExStart
+            //ExFor:Document.WriteProtection
+            //ExSummary:Shows how to protect a document with a password.
+            Document doc = new Document();
+            Assert.IsFalse(doc.WriteProtection.IsWriteProtected);
+            Assert.IsFalse(doc.WriteProtection.ReadOnlyRecommended);
+
+            // Enter a password that's 15 or less characters long
+            doc.WriteProtection.SetPassword("docpassword123");
+            Assert.IsTrue(doc.WriteProtection.IsWriteProtected);
+
+            Assert.IsFalse(doc.WriteProtection.ValidatePassword("wrongpassword"));
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("We can still edit the document at this stage.");
+
+            // Save the document
+            // To get into it and edit it from Microsoft Word, we will need out password
+            doc.Save(MyDir + @"\Artifacts\Document.WriteProtection.docx");
+
+            // Re-open our document
+            Document docProtected = new Document(MyDir + @"\Artifacts\Document.WriteProtection.docx");
+            DocumentBuilder docProtectedBuilder = new DocumentBuilder(docProtected);
+            docProtectedBuilder.MoveToDocumentEnd();
+
+            // We don't need the password to do this
+            docProtectedBuilder.Writeln("Writing text in a protected document.");
+            Assert.IsTrue(doc.WriteProtection.IsWriteProtected);
+
+            // We will need it to open the document with Microsoft Word
+            docProtected.Save(MyDir + @"\Artifacts\Document.WriteProtectionEditedAfter.docx");
+            //ExEnd
+        }
     }
 }
