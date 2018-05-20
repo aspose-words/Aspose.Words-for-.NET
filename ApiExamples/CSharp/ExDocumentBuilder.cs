@@ -58,6 +58,7 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.MoveToHeaderFooter
             //ExFor:DocumentBuilder.MoveToSection
             //ExFor:DocumentBuilder.InsertBreak
+            //ExFor:DocumentBuilder.Writeln
             //ExFor:HeaderFooterType
             //ExFor:PageSetup.DifferentFirstPageHeaderFooter
             //ExFor:PageSetup.OddAndEvenPagesHeaderFooter
@@ -2154,5 +2155,86 @@ namespace ApiExamples
             builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, width, height);
             //ExEnd
         }
+
+        [Test]
+        public void InsertUnderline()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.Underline
+            //ExSummary:Shows how to set and edit a document builder's underline.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set a new style for our underline
+            builder.Underline = Underline.Dash;
+
+            // Same object as DocumentBuilder.Font.Underline
+            Assert.AreEqual(builder.Underline, builder.Font.Underline);
+            Assert.AreEqual(Underline.Dash, builder.Font.Underline);
+
+            // These properties will be applied to the underline as well
+            builder.Font.Color = Color.Blue;
+            builder.Font.Size = 32;
+
+            builder.Writeln("Underlined text.");
+
+            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.Underline.docx");         
+            //ExEnd
+        }
+
+        [Test]
+        public void AddTextToCurrentStory()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.CurrentStory
+            //ExSummary:Shows how to work with a document builder's current story.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // The body of the current section is the same object as the current story
+            Assert.AreEqual(builder.CurrentStory, doc.FirstSection.Body);
+            Assert.AreEqual(builder.CurrentStory, builder.CurrentParagraph.ParentNode);
+
+            Assert.AreEqual(StoryType.MainText, builder.CurrentStory.StoryType);
+
+            builder.CurrentStory.AppendParagraph("Text added to current Story.");
+
+            // A story can contain tables too
+            Table table = builder.StartTable();
+
+            builder.InsertCell();
+            builder.Write("This is row 1 cell 1");
+
+            builder.InsertCell();
+            builder.Write("This is row 1 cell 2");
+
+            builder.EndRow();
+
+            builder.InsertCell();
+            builder.Writeln("This is row 2 cell 1");
+
+            builder.InsertCell();
+            builder.Writeln("This is row 2 cell 2");
+
+            builder.EndRow();
+            builder.EndTable();
+
+            // The table we just made is automatically placed in the story
+            Assert.IsTrue(builder.CurrentStory.Tables.Contains(table));
+
+            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.CurrentStory.docx");
+            //ExEnd
+        }
+
+        //TODO
+        //ExFor:DocumentBuilder.InsertHtml(System.String,HtmlInsertionOptions)
+        //ExFor:DocumentBuilder.InsertOleObject(System.IO.Stream,System.String,System.Boolean,System.Drawing.Image)
+        //ExFor:DocumentBuilder.InsertOnlineVideo(System.String,Drawing.RelativeHorizontalPosition,System.Double,Drawing.RelativeVerticalPosition,System.Double,System.Double,System.Double,Drawing.WrapType)
+        //ExFor:DocumentBuilder.InsertOnlineVideo(System.String,System.String,System.Byte[],Drawing.RelativeHorizontalPosition,System.Double,Drawing.RelativeVerticalPosition,System.Double,System.Double,System.Double,Drawing.WrapType)
+        //ExFor:DocumentBuilder.InsertStyleSeparator
+        //ExFor:DocumentBuilder.IsAtEndOfParagraph
+        //ExFor:DocumentBuilder.IsAtStartOfParagraph
+        //ExFor:DocumentBuilder.MoveTo(Paragraph,Node)
+        //ExFor:DocumentBuilder.MoveToMergeField(System.String,System.Boolean,System.Boolean)
     }
 }
