@@ -1845,11 +1845,11 @@ namespace ApiExamples
             SaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
 
             options.UseAntiAliasing = false;
-            doc.Save(@"SaveOptions low quality.jpg", options);
+            doc.Save(MyDir + @"\Artifacts\Document.SaveOptionsLowQuality.jpg", options);
 
             options.UseAntiAliasing = true;
             options.UseHighQualityRendering = true;
-            doc.Save(@"SaveOptions high quality.jpg", options);
+            doc.Save(MyDir + @"\Artifacts\Document.SaveOptionsHighQuality.jpg", options);
             //ExEnd
         }
 
@@ -2394,11 +2394,11 @@ namespace ApiExamples
                 "If gray shading is turned on, this is the text that will have a gray background.", 0);
 
             // Our bookmarked text will appear gray here
-            doc.Save("ShadeFormDataTrue.docx");
+            doc.Save(MyDir + @"\Artifacts\Document.ShadeFormDataTrue.docx");
 
             // In this file, shading will be turned off and the bookmarked text will blend in with the other text
             doc.ShadeFormData = false;
-            doc.Save("ShadeFormDataFalse.docx");
+            doc.Save(MyDir + @"\Artifacts\Document.ShadeFormDataFalse.docx");
             //ExEnd
         }
 
