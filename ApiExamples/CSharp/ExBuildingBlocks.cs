@@ -21,13 +21,13 @@ namespace ApiExamples
         //ExFor:BuildingBlocks.BuildingBlock.FirstSection
         //ExFor:BuildingBlocks.BuildingBlock.Gallery
         //ExFor:BuildingBlocks.BuildingBlock.Guid
-        //ExFor:BuildingBlocks.BuildingBlock.LastSection
+        //ExFor:BuildingBlocks.BuildingBlock.LastSection // INSP: Don't see code for this
         //ExFor:BuildingBlocks.BuildingBlock.Name
         //ExFor:BuildingBlocks.BuildingBlock.Sections
         //ExFor:BuildingBlocks.BuildingBlock.Type
         //ExFor:BuildingBlocks.BuildingBlockBehavior
         //ExFor:BuildingBlocks.BuildingBlockType
-        //ExFor:BuildingBlocks.NamespaceDoc
+        //ExFor:BuildingBlocks.NamespaceDoc // INSP: Don't see code for this 
         //ExSummary:Shows how to add a custom building block to a document.
         [Test] //ExSkip
         public void BuildingBlockFields()
@@ -42,7 +42,8 @@ namespace ApiExamples
             // Create a building block and name it
             BuildingBlock block = new BuildingBlock(glossaryDoc);
             block.Name = "Custom Block";
-
+            
+            // INSP: We need to add a few asserts after changes this properties, I think we need to remove asserts at this place
             Assert.AreEqual("00000000-0000-0000-0000-000000000000", block.Guid.ToString());
             Assert.AreEqual("(Empty Category)", block.Category);
             Assert.AreEqual(BuildingBlockType.None, block.Type);
@@ -57,9 +58,9 @@ namespace ApiExamples
             BuildingBlockVisitor visitor = new BuildingBlockVisitor(glossaryDoc);
             block.Accept(visitor);
             
-            Console.WriteLine(visitor.GetText());
+            Console.WriteLine(visitor.GetText()); // INSP: Also we need to check finish results, e.g. text inside building block 
 
-            doc.Save(MyDir + @"\Artifacts\BuildingBlocks.dotx");
+            doc.Save(MyDir + @"\Artifacts\BuildingBlocks.dotx"); // INSP: Try to add created custom block to document. There is a usefull case for users.
         }
 
         /// <summary>
@@ -80,12 +81,13 @@ namespace ApiExamples
 
             public override VisitorAction VisitBuildingBlockStart(BuildingBlock block)
             {
+                // Change values by default of created BuildingBlock
                 block.Behavior = BuildingBlockBehavior.Paragraph;
                 block.Category = "My custom building blocks";
                 block.Description = "Using this block in the Quick Parts section of word will place its contents at the cursor.";
                 block.Gallery = BuildingBlockGallery.QuickParts;
 
-                // Add content for the block for it to have an effect when used in the document
+                // Add content for the BuildingBlock to have an effect when used in the document
                 Section section = new Section(mGlossaryDoc);
                 block.AppendChild(section);
 
@@ -95,7 +97,7 @@ namespace ApiExamples
                 Paragraph paragraph = new Paragraph(mGlossaryDoc);
                 body.AppendChild(paragraph);
 
-                // This run is what will be visible in the document
+                // Add text that will be visible in the document
                 Run run = new Run(mGlossaryDoc, "Text inside " + block.Name);
                 block.FirstSection.Body.FirstParagraph.AppendChild(run);
 
@@ -113,7 +115,6 @@ namespace ApiExamples
         }
         //ExEnd
 
-        [Test]
         //ExStart
         //ExFor:BuildingBlocks.GlossaryDocument
         //ExFor:BuildingBlocks.GlossaryDocument.Accept(DocumentVisitor)
@@ -126,12 +127,12 @@ namespace ApiExamples
         //ExFor:BuildingBlocks.BuildingBlockCollection.ToArray
         //ExFor:BuildingBlocks.BuildingBlockGallery
         //ExSummary:Shows how to use GlossaryDocument and BuildingBlockCollection.
+        [Test] //ExSkip
         public void GlossaryDocument()
         {
             Document doc = new Document();
-            GlossaryDocument glossaryDoc = new GlossaryDocument();
-            doc.GlossaryDocument = glossaryDoc;
 
+            GlossaryDocument glossaryDoc = new GlossaryDocument();
             glossaryDoc.AppendChild(new BuildingBlock(glossaryDoc) { Name = "Block 1" });
             glossaryDoc.AppendChild(new BuildingBlock(glossaryDoc) { Name = "Block 2" });
             glossaryDoc.AppendChild(new BuildingBlock(glossaryDoc) { Name = "Block 3" });
@@ -139,6 +140,10 @@ namespace ApiExamples
             glossaryDoc.AppendChild(new BuildingBlock(glossaryDoc) { Name = "Block 5" });
 
             Assert.AreEqual(5, glossaryDoc.BuildingBlocks.Count);
+
+            doc.GlossaryDocument = glossaryDoc;
+            
+            // There is a different ways how to get created building blocks
             Assert.AreEqual("Block 1", glossaryDoc.FirstBuildingBlock.Name);
             Assert.AreEqual("Block 2", glossaryDoc.BuildingBlocks[1].Name);
             Assert.AreEqual("Block 3", glossaryDoc.BuildingBlocks.ToArray()[2].Name);
@@ -159,7 +164,8 @@ namespace ApiExamples
 
             Console.WriteLine(visitor.GetText());
 
-            doc.Save(MyDir + @"\Artifacts\GlossaryDocument.dotx");
+            // INSP: There is no data in the document, what do we need with the document? Maybe not to save the document and try to create asserts?
+            doc.Save(MyDir + @"\Artifacts\GlossaryDocument.dotx"); 
         }
 
         /// <summary>
@@ -185,7 +191,7 @@ namespace ApiExamples
 
             public override VisitorAction VisitBuildingBlockStart(BuildingBlock block)
             {
-                block.Guid = System.Guid.NewGuid();
+                block.Guid = Guid.NewGuid();
                 mBlocksByGuid.Add(block.Guid, block);
                 return VisitorAction.Continue;
             }
@@ -208,7 +214,7 @@ namespace ApiExamples
                 return VisitorAction.Continue;
             }
 
-            private readonly Dictionary<System.Guid, BuildingBlock> mBlocksByGuid;
+            private readonly Dictionary<Guid, BuildingBlock> mBlocksByGuid;
             private readonly StringBuilder mBuilder;
         }
         //ExEnd
