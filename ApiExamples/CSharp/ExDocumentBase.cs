@@ -1,7 +1,4 @@
-﻿using System;
-using System.Drawing.Text;
-using System.Text;
-using Aspose.Words;
+﻿using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
 using Aspose.Words.Loading;
@@ -13,11 +10,11 @@ namespace ApiExamples
     public class ExDocumentBase : ApiExampleBase
     {
         [Test]
-        public void Constructor()
+        public void Constructor() // INSP: Please add comments that explain users what DocumentBase is.
         {
             //ExStart
             //ExFor:DocumentBase
-            //ExSummary:Shows how to initialize the subclasses of DocumentBase.
+            //ExSummary:Shows how to initialize the subclasses of DocumentBase. 
             Document doc = new Document();
 
             GlossaryDocument glossaryDoc = new GlossaryDocument();
@@ -35,7 +32,7 @@ namespace ApiExamples
 
             doc.PageColor = System.Drawing.Color.LightGray;
 
-            doc.Save("DocumentBase.LightGrayPageColor.docx");
+            doc.Save("DocumentBase.LightGrayPageColor.docx"); // INSP: Add correct path
             //ExEnd
         }
 
@@ -44,7 +41,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBase.ImportNode(Node,System.Boolean)
-            //ExSummary:Shows various ways of importing nodes.
+            //ExSummary:Shows various ways of importing nodes. // INSP: In this example one way of importing, fix summary
             Document src = new Document();
             Document dst = new Document();
 
@@ -53,7 +50,7 @@ namespace ApiExamples
             dst.FirstSection.Body.FirstParagraph.AppendChild(new Run(dst, "Destination document first paragraph text."));
 
             // If we want to add the section from doc2 to doc1, we can't just append them like this:
-            //dst.AppendChild(src.FirstSection);
+            // dst.AppendChild(src.FirstSection);
 
             // Uncommenting that line throws an exception because doc2's first section belongs to doc2,
             // but each node in a document must belong to the document
@@ -86,15 +83,15 @@ namespace ApiExamples
             // Create two documents with two styles that aren't the same but have the same name
             Document src = new Document();
             Style srcStyle = src.Styles.Add(StyleType.Character, "My style");
-            var srcBuilder = new DocumentBuilder(src);
+            DocumentBuilder srcBuilder = new DocumentBuilder(src); // INSP: Don't use var in examples
             srcBuilder.Font.Style = srcStyle;
             srcBuilder.Writeln("Source document text.");
 
             Document dst = new Document();
             Style dstStyle = dst.Styles.Add(StyleType.Character, "My style");
-            var dstBuilder = new DocumentBuilder(dst);
-            dstBuilder.Font.Style = dstStyle;
             dstStyle.Font.Bold = true;
+            DocumentBuilder dstBuilder = new DocumentBuilder(dst);
+            dstBuilder.Font.Style = dstStyle;
             srcBuilder.Writeln("Destination document text.");
 
             dst.ImportNode(src.FirstSection, true, ImportFormatMode.UseDestinationStyles);
@@ -136,12 +133,11 @@ namespace ApiExamples
             // The default values for these variables are 0.5, so here we are lowering the contrast and increasing the brightness
             shapeRectangle.ImageData.Contrast = 0.2;
             shapeRectangle.ImageData.Brightness = 0.7;
-
-
+            
             // Microsoft Word does not support images in background shapes, so even though we set the background as an image,
             // the output will show a light blue background like before
             // However, we can see our watermark in an output pdf
-            doc.Save("DocumentBase.BackgroundShapeWatermark.pdf");
+            doc.Save("DocumentBase.BackgroundShapeWatermark.pdf"); // INSP: Add correct path
             //ExEnd
         }
 
