@@ -324,13 +324,16 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder
+            //ExFor:DocumentBuilder.InsertHtml(System.String,HtmlInsertionOptions)
             //ExFor:DocumentBuilder.InsertHtml(String)
             //ExId:DocumentBuilderInsertHtml
             //ExSummary:Inserts HTML into a document. The formatting specified in the HTML is applied.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertHtml("<P align='right'>Paragraph right</P>" + "<b>Implicit paragraph left</b>" + "<div align='center'>Div center</div>" + "<h1 align='left'>Heading 1 left.</h1>");
+            string html = "<P align='right'>Paragraph right</P>" + "<b>Implicit paragraph left</b>" + "<div align='center'>Div center</div>" + "<h1 align='left'>Heading 1 left.</h1>";
+
+            builder.InsertHtml(html);
 
             doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertHtml.doc");
             //ExEnd
@@ -2135,6 +2138,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], Double, Double)
+            //ExFor:DocumentBuilder.InsertOnlineVideo(System.String,Drawing.RelativeHorizontalPosition,System.Double,Drawing.RelativeVerticalPosition,System.Double,System.Double,System.Double,Drawing.WrapType)
+            //ExFor:DocumentBuilder.InsertOnlineVideo(System.String,System.String,System.Byte[],Drawing.RelativeHorizontalPosition,System.Double,Drawing.RelativeVerticalPosition,System.Double,System.Double,System.Double,Drawing.WrapType)
             //ExSummary:Show how to insert online video into a document using html code
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2152,7 +2157,14 @@ namespace ApiExamples
             // Embed Html code.
             String vimeoEmbedCode = "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
 
+            builder.Writeln("With just width and height");
             builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, width, height);
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("With horizontal/vertical positions");
+
+            builder.InsertOnlineVideo(vimeoVideoUrl, RelativeHorizontalPosition.LeftMargin, 0, RelativeVerticalPosition.TopMargin, 0, width, height, WrapType.Square);
+
+            doc.Save("Videos.docx");
             //ExEnd
         }
 
@@ -2204,7 +2216,6 @@ namespace ApiExamples
 
             builder.InsertCell();
             builder.Write("This is row 1 cell 1");
-
             builder.InsertCell();
             builder.Write("This is row 1 cell 2");
 
@@ -2212,7 +2223,6 @@ namespace ApiExamples
 
             builder.InsertCell();
             builder.Writeln("This is row 2 cell 1");
-
             builder.InsertCell();
             builder.Writeln("This is row 2 cell 2");
 
@@ -2226,11 +2236,45 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [Test]
+        public void BuilderInsertOleObject()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertOleObject(System.IO.Stream,System.String,System.Boolean,System.Drawing.Image)
+            //ExSummary:Shows how to use document builder to embed Ole objects in a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Let's take a spreadsheet from our system and insert it into the document
+            System.IO.Stream spreadsheetStream = File.Open(MyDir + "DocumentBuilder.InsertOleObject.xlsx", FileMode.Open);
+
+            // The spreadsheet can be activated by double clicking the panel that you'll see in the document immediately under the text we will add
+            // We did not set the area to double click as an icon nor did we change its appearance so it looks like a simple panel
+            builder.Writeln("Spreadsheet Ole object:");
+            builder.InsertOleObject(spreadsheetStream, "MyOleObject.xlsx", false, null);
+
+            // A powerpoint presentation is another type of object we can embed in our document
+            // This time we'll also exercise some control over how it looks 
+            System.IO.Stream powerpointStream = File.Open(MyDir + "DocumentBuilder.InsertOleObject.pptx", FileMode.Open);
+
+            // If we insert the Ole object as an icon, we are still provided with a default icon
+            // If that is not suitable, we can make the icon to look like any image
+            System.Net.WebClient webClient = new System.Net.WebClient();
+            byte[] imgBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
+            System.IO.MemoryStream stream = new System.IO.MemoryStream(imgBytes);
+            System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
+
+            // If we double click the image, the powerpoint presentation will open
+            builder.InsertParagraph();
+            builder.Writeln("Powerpoint Ole object:");
+            builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, image);
+
+            doc.Save("Ole.docx");
+            //ExEnd
+        }
+
+
         //TODO
-        //ExFor:DocumentBuilder.InsertHtml(System.String,HtmlInsertionOptions)
-        //ExFor:DocumentBuilder.InsertOleObject(System.IO.Stream,System.String,System.Boolean,System.Drawing.Image)
-        //ExFor:DocumentBuilder.InsertOnlineVideo(System.String,Drawing.RelativeHorizontalPosition,System.Double,Drawing.RelativeVerticalPosition,System.Double,System.Double,System.Double,Drawing.WrapType)
-        //ExFor:DocumentBuilder.InsertOnlineVideo(System.String,System.String,System.Byte[],Drawing.RelativeHorizontalPosition,System.Double,Drawing.RelativeVerticalPosition,System.Double,System.Double,System.Double,Drawing.WrapType)
         //ExFor:DocumentBuilder.InsertStyleSeparator
         //ExFor:DocumentBuilder.IsAtEndOfParagraph
         //ExFor:DocumentBuilder.IsAtStartOfParagraph
