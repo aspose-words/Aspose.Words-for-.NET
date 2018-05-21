@@ -1,6 +1,5 @@
 ﻿using Aspose.Words;
 using NUnit.Framework;
-using ControlChar = Aspose.Words.ControlChar;
 
 namespace ApiExamples
 {
@@ -35,7 +34,7 @@ namespace ApiExamples
             //ExFor:ControlChar.ParagraphBreakChar
             //ExFor:ControlChar.SectionBreakChar
             //ExFor:ControlChar.SpaceChar
-            //ExSummary:Shows how to use various control characters.
+            //ExSummary:Shows how to use various control characters. // INSP: There is not all ControlChars in example. Please add info about it, write that you added most used maybe.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
