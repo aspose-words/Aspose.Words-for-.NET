@@ -2160,7 +2160,9 @@ namespace ApiExamples
         }
 
         [Test]
-        public void AddCustomXmlPart()
+        // INSP: The similar case using in ExStructuredDocumentTag.CreatingCustomXml, just add //ExFor:Document.CustomXmlParts there
+        // Please see all examples that you added, smth is already exists
+        public void AddCustomXmlPart() 
         {
             //ExStart
             //ExFor:Document.CustomXmlParts
@@ -2215,7 +2217,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.FootnoteOptions
-            //ExSummary:Shows how access a document's footnote options and see some of its default values.
+            //ExSummary:Shows how to access a document's footnote options and see some of its default values.
             Document doc = new Document();
 
             Assert.AreEqual(1, doc.FootnoteOptions.StartNumber);
@@ -2335,7 +2337,7 @@ namespace ApiExamples
             MailMergeSettings mailMergeSettings = doc.MailMergeSettings;
             mailMergeSettings.MainDocumentType = MailMergeMainDocumentType.MailingLabels;
             mailMergeSettings.DataType = MailMergeDataType.Native;
-            mailMergeSettings.DataSource = "Lines.txt";
+            mailMergeSettings.DataSource = "Lines.txt"; // INSP: Fix path to the txt file, document corrupted
             mailMergeSettings.Query = "SELECT * FROM " + doc.MailMergeSettings.DataSource;
             mailMergeSettings.LinkToQuery = true;
             mailMergeSettings.ViewMergedData = true;
@@ -2344,7 +2346,7 @@ namespace ApiExamples
             Odso odso = mailMergeSettings.Odso;
             odso.DataSourceType = OdsoDataSourceType.Text;
             odso.ColumnDelimiter = '|';
-            odso.DataSource = "Lines.txt";
+            odso.DataSource = "Lines.txt"; // INSP: Fix path to the txt file, document corrupted
             odso.FirstRowContainsColumnNames = true;
 
             // The mail merge will be performed when this document is opened 
