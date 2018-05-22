@@ -8,7 +8,11 @@
 using System;
 using System.Text;
 using Aspose.Words;
+using Aspose.Words.BuildingBlocks;
+using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
+using Aspose.Words.Markup;
+using Aspose.Words.Math;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -16,27 +20,54 @@ namespace ApiExamples
     [TestFixture]
     public class ExVisitor : ApiExampleBase
     {
-        [Test]
+        //ExStart
+        //ExFor:Document.Accept
+        //ExFor:Body.Accept
+        //ExFor:DocumentVisitor
+        //ExFor:DocumentVisitor.VisitAbsolutePositionTab
+        //ExFor:DocumentVisitor.VisitBookmarkStart 
+        //ExFor:DocumentVisitor.VisitBookmarkEnd
+        //ExFor:DocumentVisitor.VisitRun
+        //ExFor:DocumentVisitor.VisitFieldStart
+        //ExFor:DocumentVisitor.VisitFieldEnd
+        //ExFor:DocumentVisitor.VisitFieldSeparator
+        //ExFor:DocumentVisitor.VisitBodyStart
+        //ExFor:DocumentVisitor.VisitBodyEnd
+        //ExFor:DocumentVisitor.VisitParagraphEnd
+        //ExFor:DocumentVisitor.VisitHeaderFooterStart
+        //ExFor:DocumentVisitor.VisitBuildingBlockEnd(BuildingBlocks.BuildingBlock)
+        //ExFor:DocumentVisitor.VisitBuildingBlockStart(BuildingBlocks.BuildingBlock)
+        //ExFor:DocumentVisitor.VisitCellStart(Tables.Cell)
+        //ExFor:DocumentVisitor.VisitCommentEnd(Comment)
+        //ExFor:DocumentVisitor.VisitCommentRangeEnd(CommentRangeEnd)
+        //ExFor:DocumentVisitor.VisitCommentRangeStart(CommentRangeStart)
+        //ExFor:DocumentVisitor.VisitDocumentEnd(Document)
+        //ExFor:DocumentVisitor.VisitDocumentStart(Document)
+        //ExFor:DocumentVisitor.VisitEditableRangeEnd(EditableRangeEnd)
+        //ExFor:DocumentVisitor.VisitEditableRangeStart(EditableRangeStart)
+        //ExFor:DocumentVisitor.VisitFootnoteEnd(Footnote)
+        //ExFor:DocumentVisitor.VisitGlossaryDocumentEnd(BuildingBlocks.GlossaryDocument)
+        //ExFor:DocumentVisitor.VisitGlossaryDocumentStart(BuildingBlocks.GlossaryDocument)
+        //ExFor:DocumentVisitor.VisitGroupShapeEnd(Drawing.GroupShape)
+        //ExFor:DocumentVisitor.VisitHeaderFooterEnd(HeaderFooter)
+        //ExFor:DocumentVisitor.VisitOfficeMathEnd(Math.OfficeMath)
+        //ExFor:DocumentVisitor.VisitOfficeMathStart(Math.OfficeMath)
+        //ExFor:DocumentVisitor.VisitRowStart(Tables.Row)
+        //ExFor:DocumentVisitor.VisitSectionEnd(Section)
+        //ExFor:DocumentVisitor.VisitSectionStart(Section)
+        //ExFor:DocumentVisitor.VisitShapeEnd(Drawing.Shape)
+        //ExFor:DocumentVisitor.VisitSmartTagEnd(Markup.SmartTag)
+        //ExFor:DocumentVisitor.VisitSmartTagStart(Markup.SmartTag)
+        //ExFor:DocumentVisitor.VisitStructuredDocumentTagEnd(Markup.StructuredDocumentTag)
+        //ExFor:DocumentVisitor.VisitStructuredDocumentTagStart(Markup.StructuredDocumentTag)
+        //ExFor:DocumentVisitor.VisitSubDocument(SubDocument)
+        //ExFor:DocumentVisitor.VisitTableStart(Tables.Table)
+        //ExFor:VisitorAction
+        //ExId:ExtractContentDocToTxtConverter
+        //ExSummary:Shows how to use the Visitor pattern to add new operations to the Aspose.Words object model. In this case we create a simple document converter into a text format.
+        [Test] //ExSkip
         public void ToText()
         {
-            //ExStart
-            //ExFor:Document.Accept
-            //ExFor:Body.Accept
-            //ExFor:DocumentVisitor
-            //ExFor:DocumentVisitor.VisitAbsolutePositionTab
-            //ExFor:DocumentVisitor.VisitBookmarkStart 
-            //ExFor:DocumentVisitor.VisitBookmarkEnd
-            //ExFor:DocumentVisitor.VisitRun
-            //ExFor:DocumentVisitor.VisitFieldStart
-            //ExFor:DocumentVisitor.VisitFieldEnd
-            //ExFor:DocumentVisitor.VisitFieldSeparator
-            //ExFor:DocumentVisitor.VisitBodyStart
-            //ExFor:DocumentVisitor.VisitBodyEnd
-            //ExFor:DocumentVisitor.VisitParagraphEnd
-            //ExFor:DocumentVisitor.VisitHeaderFooterStart
-            //ExFor:VisitorAction
-            //ExId:ExtractContentDocToTxtConverter
-            //ExSummary:Shows how to use the Visitor pattern to add new operations to the Aspose.Words object model. In this case we create a simple document converter into a text format.
             // Open the document we want to convert.
             Document doc = new Document(MyDir + "Visitor.ToText.doc");
 
@@ -178,7 +209,8 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitBookmarkStart(BookmarkStart bookmarkStart)
             {
-                this.mBuilder.Append("[");
+                this.mIsSkipText = false;
+
                 return VisitorAction.Continue;
             }
 
@@ -187,7 +219,149 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitBookmarkEnd(BookmarkEnd bookmarkEnd)
             {
-                this.mBuilder.Append("]");
+                this.mIsSkipText = false;
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when a BuildingBlock is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitBuildingBlockStart(BuildingBlock buildingBlock)
+            {
+                this.mIsSkipText = false;
+                this.mBuilder.Append(buildingBlock.GetText());
+
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitBuildingBlockEnd(BuildingBlock buildingBlock)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitCellStart(Aspose.Words.Tables.Cell cell)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitCommentRangeStart(CommentRangeStart commentRangeStart)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitCommentRangeEnd(CommentRangeEnd commentRangeEnd)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitCommentEnd(Comment comment)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitDocumentStart(Document document)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitDocumentEnd(Document document)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitEditableRangeStart(EditableRangeStart editableRangeStart)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitEditableRangeEnd(EditableRangeEnd editableRangeEnd)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitFootnoteEnd(Footnote footnote)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitGlossaryDocumentStart(GlossaryDocument glossaryDocument)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitGlossaryDocumentEnd(GlossaryDocument glossaryDocument)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitGroupShapeEnd(GroupShape groupShape)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitHeaderFooterEnd(HeaderFooter headerFooter)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitOfficeMathStart(OfficeMath officeMath)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitOfficeMathEnd(OfficeMath officeMath)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitRowStart(Aspose.Words.Tables.Row row)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitSectionStart(Section section)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitSectionEnd(Section section)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitShapeEnd(Shape shape)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitSmartTagStart(SmartTag smartTag)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitSmartTagEnd(SmartTag smartTag)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitStructuredDocumentTagStart(StructuredDocumentTag smartTag)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitStructuredDocumentTagEnd(StructuredDocumentTag smartTag)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitSubDocument(SubDocument subDocument)
+            {
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitTableStart(Aspose.Words.Tables.Table table)
+            {
                 return VisitorAction.Continue;
             }
 
@@ -205,4 +379,7 @@ namespace ApiExamples
         }
         //ExEnd
     }
+
+    //TODO
+
 }
