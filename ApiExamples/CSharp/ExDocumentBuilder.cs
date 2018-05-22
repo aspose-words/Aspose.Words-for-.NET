@@ -98,11 +98,23 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertField(String)
+            //ExFor:DocumentBuilder.MoveToMergeField(String, Boolean, Boolean)
             //ExId:DocumentBuilderInsertField
-            //ExSummary:Inserts a merge field into a document using DocumentBuilder.
+            //ExSummary:Shows how to insert merge fields and move between them.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.InsertField(@"MERGEFIELD MyFieldName \* MERGEFORMAT");
+            builder.InsertField(@"MERGEFIELD MyMergeField1 \* MERGEFORMAT");
+            builder.InsertField(@"MERGEFIELD MyMergeField2 \* MERGEFORMAT");
+
+            Assert.AreEqual(2, doc.Range.Fields.Count);
+
+            // The second merge field starts immediately after the end of the first
+            // We'll move the builder's cursor to the end of the first so we can split them by text
+            builder.MoveToMergeField("MyMergeField1", true, false);
+
+            builder.Write(" Text between our two merge fields. ");
+
+            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.MergeFields.docx");
             //ExEnd			
         }
 
@@ -492,6 +504,9 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.CurrentNode
             //ExFor:DocumentBuilder.MoveToDocumentStart
             //ExFor:DocumentBuilder.MoveToDocumentEnd
+            //ExFor:DocumentBuilder.IsAtEndOfParagraph
+            //ExFor:DocumentBuilder.IsAtStartOfParagraph
+            //ExFor:DocumentBuilder.MoveTo(Paragraph,Node)
             //ExSummary:Shows how to move between nodes and manipulate current ones.
             Document doc = new Document(MyDir + "DocumentBuilder.WorkingWithNodes.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -506,11 +521,25 @@ namespace ApiExamples
             
             // Move to a particular paragraph's run and replace all occurrences of "bad" with "good" within this run.
             builder.MoveTo(doc.LastSection.Body.Paragraphs[0].Runs[0]);
+            Assert.IsTrue(builder.IsAtStartOfParagraph);
+            Assert.IsFalse(builder.IsAtEndOfParagraph);
             builder.CurrentNode.Range.Replace("bad", "good", options);
 
             // Mark the beginning of the document.
             builder.MoveToDocumentStart();
             builder.Writeln("Start of document.");
+
+            // builder.WriteLn puts an end to its current paragraph after writing the text and starts a new one
+            Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
+            Assert.IsTrue(builder.IsAtStartOfParagraph);
+            Assert.IsTrue(builder.IsAtEndOfParagraph);
+
+            // builder.Write doesn't end the paragraph
+            builder.Write("Second paragraph.");
+
+            Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
+            Assert.IsFalse(builder.IsAtStartOfParagraph);
+            Assert.IsTrue(builder.IsAtEndOfParagraph);
 
             // Mark the ending of the document.
             builder.MoveToDocumentEnd();
@@ -2138,33 +2167,43 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], Double, Double)
-            //ExFor:DocumentBuilder.InsertOnlineVideo(System.String,Drawing.RelativeHorizontalPosition,System.Double,Drawing.RelativeVerticalPosition,System.Double,System.Double,System.Double,Drawing.WrapType)
-            //ExFor:DocumentBuilder.InsertOnlineVideo(System.String,System.String,System.Byte[],Drawing.RelativeHorizontalPosition,System.Double,Drawing.RelativeVerticalPosition,System.Double,System.Double,System.Double,Drawing.WrapType)
+            //ExFor:DocumentBuilder.InsertOnlineVideo(String, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
+            //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
             //ExSummary:Show how to insert online video into a document using html code
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Shape width/height.
-            double width = 360;
-            double height = 270;
-
-            // Poster frame image.
-            byte[] imageBytes = File.ReadAllBytes(this._image);
-
             // Visible url
-            String vimeoVideoUrl = @"https://vimeo.com/52477838";
+            string vimeoVideoUrl = @"https://vimeo.com/52477838";
 
-            // Embed Html code.
-            String vimeoEmbedCode = "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
+            // Embed Html code
+            string vimeoEmbedCode = "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
 
-            builder.Writeln("With just width and height");
-            builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, width, height);
+            // This video will have an automatically generated thumbnail, and we are setting the size according to its 16:9 aspect ratio
+            builder.Writeln("Video with an automatically generated thumbnail at the top left corner of the page:");
+            builder.InsertOnlineVideo(vimeoVideoUrl, RelativeHorizontalPosition.LeftMargin, 0, RelativeVerticalPosition.TopMargin, 0, 320, 180, WrapType.Square);
             builder.InsertBreak(BreakType.PageBreak);
-            builder.Writeln("With horizontal/vertical positions");
 
-            builder.InsertOnlineVideo(vimeoVideoUrl, RelativeHorizontalPosition.LeftMargin, 0, RelativeVerticalPosition.TopMargin, 0, width, height, WrapType.Square);
+            // We can get an image to use as a custom thumbnail
+            System.Net.WebClient webClient = new System.Net.WebClient();
+            byte[] imageBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
+            System.IO.MemoryStream stream = new System.IO.MemoryStream(imageBytes);
+            System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
 
-            doc.Save("Videos.docx");
+            // This puts the video where we are with our document builder, with a custom thumbnail and size depending on the size of the image
+            builder.Writeln("Custom thumbnail at document builder's cursor:");
+            builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, image.Width, image.Height);
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // We can put the video at the bottom right edge of the page too, but we'll have to take the page margins into account 
+            double left = builder.PageSetup.RightMargin - image.Width;
+            double top = builder.PageSetup.BottomMargin - image.Height;
+
+            // Here we use a custom thumbnail and relative positioning to put it and the bottom right of tha page
+            builder.Writeln("Bottom right of page with custom thumbnail:");
+            builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, RelativeHorizontalPosition.RightMargin, left, RelativeVerticalPosition.BottomMargin, top, image.Width, image.Height, WrapType.Square);
+
+            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertOnlineVideo.docx");
             //ExEnd
         }
 
@@ -2269,16 +2308,35 @@ namespace ApiExamples
             builder.Writeln("Powerpoint Ole object:");
             builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, image);
 
-            doc.Save("Ole.docx");
+            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertOleObject.docx");
             //ExEnd
         }
 
+        [Test]
+        public void BuilderInsertStyleSeparator()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertStyleSeparator
+            //ExSummary:Shows how to use and separate multiple styles in a paragraph
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-        //TODO
-        //ExFor:DocumentBuilder.InsertStyleSeparator
-        //ExFor:DocumentBuilder.IsAtEndOfParagraph
-        //ExFor:DocumentBuilder.IsAtStartOfParagraph
-        //ExFor:DocumentBuilder.MoveTo(Paragraph,Node)
-        //ExFor:DocumentBuilder.MoveToMergeField(System.String,System.Boolean,System.Boolean)
+            builder.Write("This text is in the default style. ");
+
+            builder.InsertStyleSeparator();
+             
+            // Create a custom style
+            Style myStyle = builder.Document.Styles.Add(StyleType.Paragraph, "MyStyle");
+            myStyle.Font.Size = 14;
+            myStyle.Font.Name = "Courier New";
+            myStyle.Font.Color = System.Drawing.Color.Blue;
+
+            // Append text with custom style
+            builder.ParagraphFormat.StyleName = myStyle.Name;
+            builder.Write("This is text in the same paragraph but with my custom style.");
+
+            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.StyleSeparator.docx");
+            //ExEnd
+        }
     }
 }
