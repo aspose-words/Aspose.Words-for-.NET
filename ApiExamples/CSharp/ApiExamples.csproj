@@ -73,6 +73,7 @@
     <Compile Include="ExBorderCollection.cs" />
     <Compile Include="ExBuildVersion.cs" />
     <Compile Include="ExComment.cs" />
+    <Compile Include="ExDrawing.cs" />
     <Compile Include="ExFixedPageSaveOptions.cs" />
     <Compile Include="ExHtmlLoadOptions.cs" />
     <Compile Include="ExOdtSaveOptions.cs" />
