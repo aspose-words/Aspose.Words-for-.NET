@@ -1,4 +1,6 @@
-﻿using Aspose.Words;
+﻿using System;
+using System.Web.UI;
+using Aspose.Words;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -34,7 +36,7 @@ namespace ApiExamples
             //ExFor:ControlChar.ParagraphBreakChar
             //ExFor:ControlChar.SectionBreakChar
             //ExFor:ControlChar.SpaceChar
-            //ExSummary:Shows how to use various control characters. // INSP: There is not all ControlChars in example. Please add info about it, write that you added most used maybe.
+            //ExSummary:Shows how to use various control characters.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -57,6 +59,9 @@ namespace ApiExamples
             builder.Write("Before line feed." + ControlChar.LineFeed + "After line feed.");
             Assert.AreEqual(2, doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count);
 
+            // The line feed character has two versions
+            Assert.AreEqual(ControlChar.LineFeed, ControlChar.Lf);
+
             // Add a paragraph break, also adding a new paragraph
             builder.Write("Before paragraph break." + ControlChar.ParagraphBreak + "After paragraph break.");
             Assert.AreEqual(3, doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count);
@@ -78,7 +83,18 @@ namespace ApiExamples
             builder.Write("Text at end of column 1." + ControlChar.ColumnBreak + "Text at beginning of column 2.");
 
             // Save document to see the characters we added
-            doc.Save(MyDir + @"\Artifacts\ControlChar.docx");
+            doc.Save(MyDir + @"\Artifacts\ControlChar.Misc.docx");
+
+            // There are char and string counterparts for most characters
+            Assert.AreEqual(Convert.ToChar(ControlChar.Cell), ControlChar.CellChar);
+            Assert.AreEqual(Convert.ToChar(ControlChar.NonBreakingSpace), ControlChar.NonBreakingSpaceChar);
+            Assert.AreEqual(Convert.ToChar(ControlChar.Tab), ControlChar.TabChar);
+            Assert.AreEqual(Convert.ToChar(ControlChar.LineBreak), ControlChar.LineBreakChar);
+            Assert.AreEqual(Convert.ToChar(ControlChar.LineFeed), ControlChar.LineFeedChar);
+            Assert.AreEqual(Convert.ToChar(ControlChar.ParagraphBreak), ControlChar.ParagraphBreakChar);
+            Assert.AreEqual(Convert.ToChar(ControlChar.SectionBreak), ControlChar.SectionBreakChar);
+            Assert.AreEqual(Convert.ToChar(ControlChar.PageBreak), ControlChar.SectionBreakChar);
+            Assert.AreEqual(Convert.ToChar(ControlChar.ColumnBreak), ControlChar.ColumnBreakChar);
             //ExEnd
         }
     }
