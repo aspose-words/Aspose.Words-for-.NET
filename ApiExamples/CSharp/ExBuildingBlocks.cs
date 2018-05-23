@@ -21,13 +21,12 @@ namespace ApiExamples
         //ExFor:BuildingBlocks.BuildingBlock.FirstSection
         //ExFor:BuildingBlocks.BuildingBlock.Gallery
         //ExFor:BuildingBlocks.BuildingBlock.Guid
-        //ExFor:BuildingBlocks.BuildingBlock.LastSection // INSP: Don't see code for this
+        //ExFor:BuildingBlocks.BuildingBlock.LastSection
         //ExFor:BuildingBlocks.BuildingBlock.Name
         //ExFor:BuildingBlocks.BuildingBlock.Sections
         //ExFor:BuildingBlocks.BuildingBlock.Type
         //ExFor:BuildingBlocks.BuildingBlockBehavior
         //ExFor:BuildingBlocks.BuildingBlockType
-        //ExFor:BuildingBlocks.NamespaceDoc // INSP: Don't see code for this 
         //ExSummary:Shows how to add a custom building block to a document.
         [Test] //ExSkip
         public void BuildingBlockFields()
@@ -42,25 +41,43 @@ namespace ApiExamples
             // Create a building block and name it
             BuildingBlock block = new BuildingBlock(glossaryDoc);
             block.Name = "Custom Block";
-            
-            // INSP: We need to add a few asserts after changes this properties, I think we need to remove asserts at this place
+
+            // Put in in the document's glossary document
+            glossaryDoc.AppendChild(block);
+            Assert.AreEqual(1, glossaryDoc.Count);
+
+            // All GUIDs are this value by default
             Assert.AreEqual("00000000-0000-0000-0000-000000000000", block.Guid.ToString());
+
+            // In Microsoft Word, we can use these attributes to find blocks in Insert > Quick Parts > Building Blocks Organizer  
             Assert.AreEqual("(Empty Category)", block.Category);
             Assert.AreEqual(BuildingBlockType.None, block.Type);
             Assert.AreEqual(BuildingBlockGallery.All, block.Gallery);
             Assert.AreEqual(BuildingBlockBehavior.Content, block.Behavior);
-
-            glossaryDoc.AppendChild(block);
-            Assert.AreEqual(1, glossaryDoc.Count);
 
             // If we want to use our building block as an AutoText quick part, we need to give it some text and change some properties
             // All the necessary preparation will be done in a custom document visitor that we will accept
             BuildingBlockVisitor visitor = new BuildingBlockVisitor(glossaryDoc);
             block.Accept(visitor);
             
-            Console.WriteLine(visitor.GetText()); // INSP: Also we need to check finish results, e.g. text inside building block 
+            // We can find the block we made in the glossary document like this
+            BuildingBlock customBlock = glossaryDoc.GetBuildingBlock(BuildingBlockGallery.QuickParts, "My custom building blocks", "Custom Block");
 
-            doc.Save(MyDir + @"\Artifacts\BuildingBlocks.dotx"); // INSP: Try to add created custom block to document. There is a usefull case for users.
+            // Our block contains one section which now contains our text
+            Assert.AreEqual("Text inside " + customBlock.Name + '\f', customBlock.FirstSection.Body.FirstParagraph.GetText());
+            Assert.AreEqual(customBlock.FirstSection, customBlock.LastSection);
+
+            Assert.AreNotEqual("00000000-0000-0000-0000-000000000000", customBlock.Guid.ToString());
+            Assert.AreEqual("My custom building blocks", customBlock.Category);
+            Assert.AreEqual(BuildingBlockType.None, customBlock.Type);
+            Assert.AreEqual(BuildingBlockGallery.QuickParts, customBlock.Gallery);
+            Assert.AreEqual(BuildingBlockBehavior.Paragraph, customBlock.Behavior);
+
+            // Then we can insert it into the document as a new section
+            doc.AppendChild(doc.ImportNode(customBlock.FirstSection, true));
+
+            // Or we can find it in Microsoft Word's Building Blocks Organizer and place it manually
+            doc.Save(MyDir + @"\Artifacts\BuildingBlocks.BuildingBlock.dotx");
         }
 
         /// <summary>
@@ -86,6 +103,8 @@ namespace ApiExamples
                 block.Category = "My custom building blocks";
                 block.Description = "Using this block in the Quick Parts section of word will place its contents at the cursor.";
                 block.Gallery = BuildingBlockGallery.QuickParts;
+
+                block.Guid = System.Guid.NewGuid();
 
                 // Add content for the BuildingBlock to have an effect when used in the document
                 Section section = new Section(mGlossaryDoc);
@@ -164,8 +183,8 @@ namespace ApiExamples
 
             Console.WriteLine(visitor.GetText());
 
-            // INSP: There is no data in the document, what do we need with the document? Maybe not to save the document and try to create asserts?
-            doc.Save(MyDir + @"\Artifacts\GlossaryDocument.dotx"); 
+            // We can find our new blocks in Microsoft Word via Insert > Quick Parts > Building Blocks Organizer...
+            doc.Save(MyDir + @"\Artifacts\BuildingBlocks.GlossaryDocument.dotx"); 
         }
 
         /// <summary>
