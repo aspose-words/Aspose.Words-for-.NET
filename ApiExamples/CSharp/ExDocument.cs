@@ -10,14 +10,11 @@ using System.Collections;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Security.AccessControl;
 using System.Text;
 using System.Threading;
 using System.Web;
 using Aspose.Words;
-using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Fonts;
@@ -2160,74 +2157,6 @@ namespace ApiExamples
         }
 
         [Test]
-        // INSP: The similar case using in ExStructuredDocumentTag.CreatingCustomXml, just add //ExFor:Document.CustomXmlParts there
-        // Please see all examples that you added, smth is already exists
-        public void AddCustomXmlPart() 
-        {
-            //ExStart
-            //ExFor:Document.CustomXmlParts
-            //ExSummary:Shows how to create a custom xml part and add it to a document.
-            Document doc = new Document();
-            Assert.AreEqual(0, doc.CustomXmlParts.Count);
-
-            CustomXmlPart myXmlPart = new CustomXmlPart();
-
-            string xmlString = 
-                "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" +
-                "<employees xmlns=\"http://schemas.microsoft.com/vsto/samples\">" +
-                    "<employee>" +
-                        "<name>John Doe</name>" +
-                        "<hireDate>2018-05-11</hireDate>" +
-                        "<title>Manager</title>" +
-                    "</employee>" +
-                "</employees>";
-
-            myXmlPart.Data = Encoding.ASCII.GetBytes(xmlString);
-            myXmlPart.Id = System.Guid.NewGuid().ToString();
-
-            doc.CustomXmlParts.Add(myXmlPart);
-
-            doc.Save(MyDir + @"\Artifacts\Document.CustomXmlParts.docx");
-            //ExEnd
-        }
-
-        [Test]
-        public void SetFontSettings()
-        {
-            //ExStart
-            //ExFor:Document.FontSettings
-            //ExSummary:Shows how to use a document's font settings. 
-            Document doc = new Document();
-
-            Assert.IsNull(doc.FontSettings);
-
-            doc.FontSettings = new FontSettings();
-
-            Assert.AreEqual("Times New Roman", doc.FontSettings.DefaultFontName);
-            Assert.AreEqual(true, doc.FontSettings.EnableFontSubstitution);
-
-            // Now that we've enabled font substitutions, we can choose a common substitute for an obscure font we might run into
-            doc.FontSettings.AddFontSubstitutes("Rocketfuel", "Arial");
-            //ExEnd
-            Assert.AreEqual("Arial", doc.FontSettings.GetFontSubstitutes("Rocketfuel")[0]);
-        }
-
-        [Test]
-        public void SetFootnoteOptions()
-        {
-            //ExStart
-            //ExFor:Document.FootnoteOptions
-            //ExSummary:Shows how to access a document's footnote options and see some of its default values.
-            Document doc = new Document();
-
-            Assert.AreEqual(1, doc.FootnoteOptions.StartNumber);
-            Assert.AreEqual(FootnotePosition.BottomOfPage, doc.FootnoteOptions.Position);
-            Assert.AreEqual(NumberStyle.Arabic, doc.FootnoteOptions.NumberStyle);
-            Assert.AreEqual(FootnoteNumberingRule.Default, doc.FootnoteOptions.RestartRule);
-            //ExEnd
-        }
-
-        [Test]
         public void SetEndnoteOptions()
         {
             //ExStart
@@ -2337,7 +2266,7 @@ namespace ApiExamples
             MailMergeSettings mailMergeSettings = doc.MailMergeSettings;
             mailMergeSettings.MainDocumentType = MailMergeMainDocumentType.MailingLabels;
             mailMergeSettings.DataType = MailMergeDataType.Native;
-            mailMergeSettings.DataSource = "Lines.txt"; // INSP: Fix path to the txt file, document corrupted
+            mailMergeSettings.DataSource = MyDir + @"\Artifacts\Lines.txt";
             mailMergeSettings.Query = "SELECT * FROM " + doc.MailMergeSettings.DataSource;
             mailMergeSettings.LinkToQuery = true;
             mailMergeSettings.ViewMergedData = true;
@@ -2346,7 +2275,7 @@ namespace ApiExamples
             Odso odso = mailMergeSettings.Odso;
             odso.DataSourceType = OdsoDataSourceType.Text;
             odso.ColumnDelimiter = '|';
-            odso.DataSource = "Lines.txt"; // INSP: Fix path to the txt file, document corrupted
+            odso.DataSource = MyDir + @"\Artifacts\Lines.txt";
             odso.FirstRowContainsColumnNames = true;
 
             // The mail merge will be performed when this document is opened 
@@ -2374,7 +2303,7 @@ namespace ApiExamples
 
             doc.PackageCustomParts.Add(externalPart);
 
-            doc.Save(MyDir + @"\Artifacts\Document.ExternalCustomPart.docx");
+            doc.Save(MyDir + @"\Artifacts\Document.PackageCustomParts.docx");
             //ExEnd
         }
 
@@ -2450,7 +2379,8 @@ namespace ApiExamples
             builder.Writeln("We can still edit the document at this stage.");
 
             // Save the document
-            // To get into it and edit it from Microsoft Word, we will need out password
+            // Without the password, we can only read this document in Microsoft Word
+            // With the password, we can read and write
             doc.Save(MyDir + @"\Artifacts\Document.WriteProtection.docx");
 
             // Re-open our document
@@ -2458,11 +2388,11 @@ namespace ApiExamples
             DocumentBuilder docProtectedBuilder = new DocumentBuilder(docProtected);
             docProtectedBuilder.MoveToDocumentEnd();
 
-            // We don't need the password to do this
+            // We can programmatically edit this document without using our password
+            Assert.IsTrue(docProtected.WriteProtection.IsWriteProtected);
             docProtectedBuilder.Writeln("Writing text in a protected document.");
-            Assert.IsTrue(doc.WriteProtection.IsWriteProtected);
 
-            // We will need it to open the document with Microsoft Word
+            // We will still need the password if we want to open this one with Word
             docProtected.Save(MyDir + @"\Artifacts\Document.WriteProtectionEditedAfter.docx");
             //ExEnd
         }
