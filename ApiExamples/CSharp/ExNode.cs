@@ -595,9 +595,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:CompositeNode.Count
             //ExFor:CompositeNode.GetChildNodes(NodeType[], Boolean)
-            //ExFor:CompositeNode.InsertAfter(Node, Node, Node) // INSP: Strange, there is no way to implement method with 3 parameters. Please remove one parameter.
+            //ExFor:CompositeNode.InsertAfter(Node, Node)
             //ExFor:CompositeNode.InsertBefore(Node, Node)
-            //ExFor:CompositeNode.InsertBefore(Node, Node, Node) // INSP: The same as in InsertAfter
             //ExFor:CompositeNode.PrependChild(Node) 
             //ExSummary:Shows how to add, update and delete child nodes from within a CompositeNode.
             Document doc = new Document();
