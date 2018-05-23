@@ -10,11 +10,12 @@ namespace ApiExamples
     public class ExDocumentBase : ApiExampleBase
     {
         [Test]
-        public void Constructor() // INSP: Please add comments that explain users what DocumentBase is.
+        public void Constructor()
         {
             //ExStart
             //ExFor:DocumentBase
             //ExSummary:Shows how to initialize the subclasses of DocumentBase. 
+            // DocumentBase is the abstract base class for the Document and GlossaryDocument classes
             Document doc = new Document();
 
             GlossaryDocument glossaryDoc = new GlossaryDocument();
@@ -32,7 +33,7 @@ namespace ApiExamples
 
             doc.PageColor = System.Drawing.Color.LightGray;
 
-            doc.Save("DocumentBase.LightGrayPageColor.docx"); // INSP: Add correct path
+            doc.Save(MyDir + @"\Artifacts\DocumentBase.SetPageColor.docx");
             //ExEnd
         }
 
@@ -40,8 +41,8 @@ namespace ApiExamples
         public void ImportNode()
         {
             //ExStart
-            //ExFor:DocumentBase.ImportNode(Node,System.Boolean)
-            //ExSummary:Shows various ways of importing nodes. // INSP: In this example one way of importing, fix summary
+            //ExFor:DocumentBase.ImportNode(Node, Boolean)
+            //ExSummary:Shows why we need to import nodes and how to do it.
             Document src = new Document();
             Document dst = new Document();
 
@@ -83,7 +84,7 @@ namespace ApiExamples
             // Create two documents with two styles that aren't the same but have the same name
             Document src = new Document();
             Style srcStyle = src.Styles.Add(StyleType.Character, "My style");
-            DocumentBuilder srcBuilder = new DocumentBuilder(src); // INSP: Don't use var in examples
+            DocumentBuilder srcBuilder = new DocumentBuilder(src); 
             srcBuilder.Font.Style = srcStyle;
             srcBuilder.Writeln("Source document text.");
 
@@ -137,7 +138,7 @@ namespace ApiExamples
             // Microsoft Word does not support images in background shapes, so even though we set the background as an image,
             // the output will show a light blue background like before
             // However, we can see our watermark in an output pdf
-            doc.Save("DocumentBase.BackgroundShapeWatermark.pdf"); // INSP: Add correct path
+            doc.Save(MyDir + @"\Artifacts\DocumentBase.BackgroundShapeWatermark.pdf");
             //ExEnd
         }
 
