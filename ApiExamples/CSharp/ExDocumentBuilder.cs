@@ -1853,6 +1853,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FootnoteType
+            //ExFor:Document.FootnoteOptions
             //ExFor:DocumentBuilder.InsertFootnote(FootnoteType,String)
             //ExFor:DocumentBuilder.InsertFootnote(FootnoteType,String,String)
             //ExSummary:Shows how to add a footnote to a paragraph in the document using DocumentBuilder.

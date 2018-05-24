@@ -873,6 +873,7 @@ namespace ApiExamples
         public void SetFontSubstitutes()
         {
             //ExStart
+            //ExFor:Document.FontSettings
             //ExFor:FontSettings.SetFontSubstitutes(String, String[])
             //ExSummary:Shows how to define alternative fonts if original does not exist
             FontSettings fontSettings = new FontSettings();
