@@ -42,7 +42,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBase.ImportNode(Node, Boolean)
-            //ExSummary:Shows why we need to import nodes and how to do it.
+            //ExSummary:Shows how to import node from source document to destination document.
             Document src = new Document();
             Document dst = new Document();
 
@@ -77,10 +77,8 @@ namespace ApiExamples
         public void ImportNodeCustom()
         {
             //ExStart
-            //ExFor:DocumentBase.ImportNode(Node,System.Boolean,ImportFormatMode)
-            //ExFor:DocumentBase.ImportNode(Node,System.Boolean,ImportFormatMode,INodeCloningListener)
-            //ExFor:DocumentBase.ImportNode(Node,System.Boolean,INodeCloningListener)
-            //ExSummary:Shows various ways of importing nodes.
+            //ExFor:DocumentBase.ImportNode(Node, System.Boolean, ImportFormatMode)
+            //ExSummary:Shows how to import node from source document to destination document with specific options.
             // Create two documents with two styles that aren't the same but have the same name
             Document src = new Document();
             Style srcStyle = src.Styles.Add(StyleType.Character, "My style");
