@@ -40,8 +40,8 @@
     <Reference Include="Aspose.Pdf, Version=17.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
       <HintPath>packages\Aspose.Pdf.17.12.0\lib\net40-client\Aspose.Pdf.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Words, Version=18.2.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>packages\Aspose.Words.18.2.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=18.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.Words.18.4.0\lib\net40\Aspose.Words.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="itextsharp, Version=5.5.12.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
@@ -67,12 +67,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExAbsolutePositionTab.cs" />
     <Compile Include="ExBookmarks.cs" />
     <Compile Include="ExBorder.cs" />
     <Compile Include="ExBorderCollection.cs" />
+    <Compile Include="ExBuildingBlocks.cs" />
     <Compile Include="ExBuildVersion.cs" />
     <Compile Include="ExComment.cs" />
     <Compile Include="ExDocumentBase.cs" />
+    <Compile Include="ExControlChar.cs" />
     <Compile Include="ExFixedPageSaveOptions.cs" />
     <Compile Include="ExHtmlLoadOptions.cs" />
     <Compile Include="ExOdtSaveOptions.cs" />

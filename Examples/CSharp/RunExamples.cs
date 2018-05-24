@@ -314,9 +314,8 @@ namespace Aspose.Words.Examples.CSharp
 
             //// StructuredDocumentTag 
             //// =====================================================
-            //BindSDTtoCustomXmlPart.Run();
-            //ClearContentsControl.Run();
-
+            // WorkingWithSDT.Run();
+              
             //// EndNote and Footnote 
             //// =====================================================
             // WorkingWithFootnote.Run();
