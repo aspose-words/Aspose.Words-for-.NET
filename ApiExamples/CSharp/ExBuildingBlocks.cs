@@ -104,7 +104,7 @@ namespace ApiExamples
                 block.Description = "Using this block in the Quick Parts section of word will place its contents at the cursor.";
                 block.Gallery = BuildingBlockGallery.QuickParts;
 
-                block.Guid = System.Guid.NewGuid();
+                block.Guid = Guid.NewGuid();
 
                 // Add content for the BuildingBlock to have an effect when used in the document
                 Section section = new Section(mGlossaryDoc);
