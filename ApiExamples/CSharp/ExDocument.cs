@@ -2192,7 +2192,8 @@ namespace ApiExamples
 
             Field field = doc.Range.Fields[0];
 
-            // The field code and field type do not match
+            // INSP: I don't see where is you check that field code and field type do not match. There is a similar assert before and after "doc.NormalizeFieldTypes();"
+            // The field code and field type do not match 
             Assert.AreEqual(FieldType.FieldDate, field.Type);
             Assert.AreEqual(FieldType.FieldDate, field.Start.FieldType);
             Assert.AreEqual(FieldType.FieldDate, field.Separator.FieldType);
@@ -2260,13 +2261,13 @@ namespace ApiExamples
             // The delimiter character is selected in the ODSO settings of mail merge settings
             string[] lines = { "FirstName|LastName|Message",
                 "John|Doe|Hello! This message was created with Aspose Words mail merge." };
-            System.IO.File.WriteAllLines(MyDir + @"\Artifacts\Document.Lines.txt", lines);
+            File.WriteAllLines(MyDir + @"\Artifacts\Document.Lines.txt", lines);
 
             // Set the data source, query and other things
             MailMergeSettings mailMergeSettings = doc.MailMergeSettings;
             mailMergeSettings.MainDocumentType = MailMergeMainDocumentType.MailingLabels;
             mailMergeSettings.DataType = MailMergeDataType.Native;
-            mailMergeSettings.DataSource = MyDir + @"\Artifacts\Lines.txt";
+            mailMergeSettings.DataSource = MyDir + @"\Artifacts\Lines.txt"; // INSP: Please be more attentive. You save txt to "MyDir + @"\Artifacts\Document.Lines.txt"", not to "MyDir + @"\Artifacts\Lines.txt""
             mailMergeSettings.Query = "SELECT * FROM " + doc.MailMergeSettings.DataSource;
             mailMergeSettings.LinkToQuery = true;
             mailMergeSettings.ViewMergedData = true;
@@ -2275,7 +2276,7 @@ namespace ApiExamples
             Odso odso = mailMergeSettings.Odso;
             odso.DataSourceType = OdsoDataSourceType.Text;
             odso.ColumnDelimiter = '|';
-            odso.DataSource = MyDir + @"\Artifacts\Lines.txt";
+            odso.DataSource = MyDir + @"\Artifacts\Lines.txt"; // INSP: Please be more attentive. You save txt to "MyDir + @"\Artifacts\Document.Lines.txt"", not to "MyDir + @"\Artifacts\Lines.txt""
             odso.FirstRowContainsColumnNames = true;
 
             // The mail merge will be performed when this document is opened 
@@ -2303,6 +2304,7 @@ namespace ApiExamples
 
             doc.PackageCustomParts.Add(externalPart);
 
+            // INSP: Please add a way where users can check final result.
             doc.Save(MyDir + @"\Artifacts\Document.PackageCustomParts.docx");
             //ExEnd
         }
@@ -2351,8 +2353,8 @@ namespace ApiExamples
             // We can use this property to see how many there are
             Assert.AreEqual(4, doc.VersionsCount);
 
-            doc.Save(MyDir + @"\Artifacts\Document.versions.doc");      
-            doc = new Document(MyDir + @"\Artifacts\Document.versions.doc");
+            doc.Save(MyDir + @"\Artifacts\Document.Versions.docx");      
+            doc = new Document(MyDir + @"\Artifacts\Document.Versions.docx");
 
             // If we save and open the document, the versions are lost
             Assert.AreEqual(0, doc.VersionsCount);
