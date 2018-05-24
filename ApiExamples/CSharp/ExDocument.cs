@@ -2177,31 +2177,35 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.InvalidateFieldTypes
             //ExFor:Document.NormalizeFieldTypes
-            //ExSummary:Shows how to get the field type and code to match.
+            //ExSummary:Shows how to get the keep a field's type up to date with its field code.
             Document doc = new Document();
-
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.InsertField("DATE", null);
 
+            // We'll add a date field
+            Field field = builder.InsertField("DATE", null);
+
+            // The FieldDate field type corresponds to the "DATE" field so our field's type property gets automatically set to it
+            Assert.AreEqual(FieldType.FieldDate, field.Type);
             Assert.AreEqual(1, doc.Range.Fields.Count);
 
-            // Manually change the field code like thia
-            Run run = (Run)doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Run, true)[0];
-            Assert.AreEqual("DATE", run.Text);
-            run.Text = "PAGE";
+            // We can manually access the content of the field we added and change it
+            Run fieldText = (Run)doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Run, true)[0];
+            Assert.AreEqual("DATE", fieldText.Text);
+            fieldText.Text = "PAGE";
+            
+            // We changed the text to "PAGE" but the field's type property did not update accoridngly
+            Assert.AreEqual("PAGE", fieldText.GetText());
+            Assert.AreNotEqual(FieldType.FieldPage, field.Type);
 
-            Field field = doc.Range.Fields[0];
-
-            // INSP: I don't see where is you check that field code and field type do not match. There is a similar assert before and after "doc.NormalizeFieldTypes();"
-            // The field code and field type do not match 
+            // The type of the field as well as its components is still "FieldDate"
             Assert.AreEqual(FieldType.FieldDate, field.Type);
             Assert.AreEqual(FieldType.FieldDate, field.Start.FieldType);
             Assert.AreEqual(FieldType.FieldDate, field.Separator.FieldType);
             Assert.AreEqual(FieldType.FieldDate, field.End.FieldType);
 
-            // After running this method they will match
             doc.NormalizeFieldTypes();
 
+            // After running this method the type changes everywhere to "FieldPage", which matches the text "PAGE"
             Assert.AreEqual(FieldType.FieldPage, field.Type);
             Assert.AreEqual(FieldType.FieldPage, field.Start.FieldType);
             Assert.AreEqual(FieldType.FieldPage, field.Separator.FieldType);
@@ -2267,7 +2271,7 @@ namespace ApiExamples
             MailMergeSettings mailMergeSettings = doc.MailMergeSettings;
             mailMergeSettings.MainDocumentType = MailMergeMainDocumentType.MailingLabels;
             mailMergeSettings.DataType = MailMergeDataType.Native;
-            mailMergeSettings.DataSource = MyDir + @"\Artifacts\Lines.txt"; // INSP: Please be more attentive. You save txt to "MyDir + @"\Artifacts\Document.Lines.txt"", not to "MyDir + @"\Artifacts\Lines.txt""
+            mailMergeSettings.DataSource = MyDir + @"\Artifacts\Document.Lines.txt";
             mailMergeSettings.Query = "SELECT * FROM " + doc.MailMergeSettings.DataSource;
             mailMergeSettings.LinkToQuery = true;
             mailMergeSettings.ViewMergedData = true;
@@ -2276,7 +2280,7 @@ namespace ApiExamples
             Odso odso = mailMergeSettings.Odso;
             odso.DataSourceType = OdsoDataSourceType.Text;
             odso.ColumnDelimiter = '|';
-            odso.DataSource = MyDir + @"\Artifacts\Lines.txt"; // INSP: Please be more attentive. You save txt to "MyDir + @"\Artifacts\Document.Lines.txt"", not to "MyDir + @"\Artifacts\Lines.txt""
+            odso.DataSource = MyDir + @"\Artifacts\Document.Lines.txt";
             odso.FirstRowContainsColumnNames = true;
 
             // The mail merge will be performed when this document is opened 
@@ -2289,23 +2293,28 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.PackageCustomParts
-            //ExSummary:Shows how to access a document's PackageCustomParts property and add an external part.
-            Document doc = new Document();
-            Assert.AreEqual(0, doc.PackageCustomParts.Count);
+            //ExSummary:Shows how to open a document with custom parts and access them.
+            Document doc = new Document(MyDir + "Document.PackageCustomParts.docx");
 
-            // Create an external custom part
-            CustomPart externalPart = new CustomPart();
-            externalPart.Name = "http://www.aspose.com/Images/aspose-logo.jpg";
-            externalPart.IsExternal = true;
+            Assert.AreEqual(2, doc.PackageCustomParts.Count);
 
-            // Not applicable to external parts
-            Assert.AreEqual("", externalPart.ContentType);
-            Assert.AreEqual(0, externalPart.Data.Length);
+            // CustomParts are arbitrary content OOXML parts
+            // Not to be confused with Custom XML data which is represented by CustomXmlParts
+            // This part is internal, meaning it is contained inside the OOXML package
+            CustomPart part = doc.PackageCustomParts[0];
+            Assert.AreEqual("/payload/payload_on_package.test", part.Name);
+            Assert.AreEqual("mytest/somedata", part.ContentType);
+            Assert.AreEqual("http://mytest.payload.internal", part.RelationshipType);
+            Assert.AreEqual(false, part.IsExternal);
+            Assert.AreEqual(18, part.Data.Length);
 
-            doc.PackageCustomParts.Add(externalPart);
-
-            // INSP: Please add a way where users can check final result.
-            doc.Save(MyDir + @"\Artifacts\Document.PackageCustomParts.docx");
+            // This part is external and its content is sourced from outside the document
+            part = doc.PackageCustomParts[1];
+            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", part.Name);
+            Assert.AreEqual("", part.ContentType);
+            Assert.AreEqual("http://mytest.payload.external", part.RelationshipType);
+            Assert.AreEqual(true, part.IsExternal);
+            Assert.AreEqual(0, part.Data.Length);
             //ExEnd
         }
 
