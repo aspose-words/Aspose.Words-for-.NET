@@ -336,7 +336,10 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder
-            //ExFor:DocumentBuilder.InsertHtml(System.String,HtmlInsertionOptions)
+            // INSP: There is no example for this exfor and I see that InsertHtml not use "HtmlInsertionOptions", but use bool parameter.
+            // If you see that some parameter don't exists, you don't need to add exfor tag. Just write about it in issue comments. Or you can replace this exfor with correct.
+            // So please delete this one.
+            //ExFor:DocumentBuilder.InsertHtml(String, HtmlInsertionOptions) 
             //ExFor:DocumentBuilder.InsertHtml(String)
             //ExId:DocumentBuilderInsertHtml
             //ExSummary:Inserts HTML into a document. The formatting specified in the HTML is applied.
@@ -352,7 +355,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertHtmlEx()
+        public void InsertHtmlWithCurrentDocumentFormatting()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertHtml(String, Boolean)
@@ -506,7 +509,7 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.MoveToDocumentEnd
             //ExFor:DocumentBuilder.IsAtEndOfParagraph
             //ExFor:DocumentBuilder.IsAtStartOfParagraph
-            //ExFor:DocumentBuilder.MoveTo(Paragraph,Node)
+            //ExFor:DocumentBuilder.MoveTo(Paragraph,Node) // INSP: There is another one that doesn't exist here. Please delete. Perhaps this is an outdated method.
             //ExSummary:Shows how to move between nodes and manipulate current ones.
             Document doc = new Document(MyDir + "DocumentBuilder.WorkingWithNodes.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -524,7 +527,7 @@ namespace ApiExamples
             Assert.IsTrue(builder.IsAtStartOfParagraph);
             Assert.IsFalse(builder.IsAtEndOfParagraph);
             builder.CurrentNode.Range.Replace("bad", "good", options);
-
+            
             // Mark the beginning of the document.
             builder.MoveToDocumentStart();
             builder.Writeln("Start of document.");
@@ -540,7 +543,7 @@ namespace ApiExamples
             Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
             Assert.IsFalse(builder.IsAtStartOfParagraph);
             Assert.IsTrue(builder.IsAtEndOfParagraph);
-
+            
             // Mark the ending of the document.
             builder.MoveToDocumentEnd();
             builder.Writeln("End of document.");
@@ -2187,21 +2190,24 @@ namespace ApiExamples
             // We can get an image to use as a custom thumbnail
             System.Net.WebClient webClient = new System.Net.WebClient();
             byte[] imageBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
-            System.IO.MemoryStream stream = new System.IO.MemoryStream(imageBytes);
-            System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
 
-            // This puts the video where we are with our document builder, with a custom thumbnail and size depending on the size of the image
-            builder.Writeln("Custom thumbnail at document builder's cursor:");
-            builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, image.Width, image.Height);
-            builder.InsertBreak(BreakType.PageBreak);
+            using (MemoryStream stream = new MemoryStream(imageBytes)) // INSP: You need to add using for MemoryStream.
+            {
+                Image image = Image.FromStream(stream);
 
-            // We can put the video at the bottom right edge of the page too, but we'll have to take the page margins into account 
-            double left = builder.PageSetup.RightMargin - image.Width;
-            double top = builder.PageSetup.BottomMargin - image.Height;
+                // This puts the video where we are with our document builder, with a custom thumbnail and size depending on the size of the image
+                builder.Writeln("Custom thumbnail at document builder's cursor:");
+                builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, image.Width, image.Height);
+                builder.InsertBreak(BreakType.PageBreak);
+                
+                // We can put the video at the bottom right edge of the page too, but we'll have to take the page margins into account 
+                double left = builder.PageSetup.RightMargin - image.Width;
+                double top = builder.PageSetup.BottomMargin - image.Height;
 
-            // Here we use a custom thumbnail and relative positioning to put it and the bottom right of tha page
-            builder.Writeln("Bottom right of page with custom thumbnail:");
-            builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, RelativeHorizontalPosition.RightMargin, left, RelativeVerticalPosition.BottomMargin, top, image.Width, image.Height, WrapType.Square);
+                // Here we use a custom thumbnail and relative positioning to put it and the bottom right of tha page
+                builder.Writeln("Bottom right of page with custom thumbnail:");
+                builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, RelativeHorizontalPosition.RightMargin, left, RelativeVerticalPosition.BottomMargin, top, image.Width, image.Height, WrapType.Square);
+            }
 
             doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertOnlineVideo.docx");
             //ExEnd
@@ -2279,12 +2285,13 @@ namespace ApiExamples
         public void BuilderInsertOleObject()
         {
             //ExStart
-            //ExFor:DocumentBuilder.InsertOleObject(System.IO.Stream,System.String,System.Boolean,System.Drawing.Image)
+            //ExFor:DocumentBuilder.InsertOleObject(Stream, String, Boolean, Image)
             //ExSummary:Shows how to use document builder to embed Ole objects in a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Let's take a spreadsheet from our system and insert it into the document
+            // INSP: You need to close streams that you created at the end of example, otherwise other examples don't have access to this documents.
             System.IO.Stream spreadsheetStream = File.Open(MyDir + "DocumentBuilder.InsertOleObject.xlsx", FileMode.Open);
 
             // The spreadsheet can be activated by double clicking the panel that you'll see in the document immediately under the text we will add
@@ -2294,19 +2301,23 @@ namespace ApiExamples
 
             // A powerpoint presentation is another type of object we can embed in our document
             // This time we'll also exercise some control over how it looks 
+            // INSP: You need to close streams that you created, otherwise other examples don't have access to this documents.
             System.IO.Stream powerpointStream = File.Open(MyDir + "DocumentBuilder.InsertOleObject.pptx", FileMode.Open);
 
             // If we insert the Ole object as an icon, we are still provided with a default icon
             // If that is not suitable, we can make the icon to look like any image
             System.Net.WebClient webClient = new System.Net.WebClient();
             byte[] imgBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
-            System.IO.MemoryStream stream = new System.IO.MemoryStream(imgBytes);
-            System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
 
-            // If we double click the image, the powerpoint presentation will open
-            builder.InsertParagraph();
-            builder.Writeln("Powerpoint Ole object:");
-            builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, image);
+            using (MemoryStream stream = new MemoryStream(imgBytes)) // INSP: You need to add using for MemoryStream.
+            {
+                Image image = Image.FromStream(stream);
+
+                // If we double click the image, the powerpoint presentation will open
+                builder.InsertParagraph();
+                builder.Writeln("Powerpoint Ole object:");
+                builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, image);
+            }
 
             doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertOleObject.docx");
             //ExEnd
