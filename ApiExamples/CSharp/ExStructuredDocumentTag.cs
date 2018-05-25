@@ -72,6 +72,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:CustomXmlPart
             //ExFor:CustomXmlPartCollection.Add(String, String)
+            //ExFor:Document.CustomXmlParts
             //ExFor:XmlMapping.SetMapping(CustomXmlPart, String, String)
             //ExSummary:Shows how to create structured document tag with a custom XML data.
             Document doc = new Document();

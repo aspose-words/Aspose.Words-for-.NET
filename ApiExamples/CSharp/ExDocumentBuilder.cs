@@ -58,6 +58,7 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.MoveToHeaderFooter
             //ExFor:DocumentBuilder.MoveToSection
             //ExFor:DocumentBuilder.InsertBreak
+            //ExFor:DocumentBuilder.Writeln
             //ExFor:HeaderFooterType
             //ExFor:PageSetup.DifferentFirstPageHeaderFooter
             //ExFor:PageSetup.OddAndEvenPagesHeaderFooter
@@ -97,11 +98,23 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertField(String)
+            //ExFor:DocumentBuilder.MoveToMergeField(String, Boolean, Boolean)
             //ExId:DocumentBuilderInsertField
-            //ExSummary:Inserts a merge field into a document using DocumentBuilder.
+            //ExSummary:Shows how to insert merge fields and move between them.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.InsertField(@"MERGEFIELD MyFieldName \* MERGEFORMAT");
+            builder.InsertField(@"MERGEFIELD MyMergeField1 \* MERGEFORMAT");
+            builder.InsertField(@"MERGEFIELD MyMergeField2 \* MERGEFORMAT");
+
+            Assert.AreEqual(2, doc.Range.Fields.Count);
+
+            // The second merge field starts immediately after the end of the first
+            // We'll move the builder's cursor to the end of the first so we can split them by text
+            builder.MoveToMergeField("MyMergeField1", true, false);
+
+            builder.Write(" Text between our two merge fields. ");
+
+            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.MergeFields.docx");
             //ExEnd			
         }
 
@@ -329,14 +342,16 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertHtml("<P align='right'>Paragraph right</P>" + "<b>Implicit paragraph left</b>" + "<div align='center'>Div center</div>" + "<h1 align='left'>Heading 1 left.</h1>");
+            string html = "<P align='right'>Paragraph right</P>" + "<b>Implicit paragraph left</b>" + "<div align='center'>Div center</div>" + "<h1 align='left'>Heading 1 left.</h1>";
+
+            builder.InsertHtml(html);
 
             doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertHtml.doc");
             //ExEnd
         }
 
         [Test]
-        public void InsertHtmlEx()
+        public void InsertHtmlWithCurrentDocumentFormatting()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertHtml(String, Boolean)
@@ -488,6 +503,8 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.CurrentNode
             //ExFor:DocumentBuilder.MoveToDocumentStart
             //ExFor:DocumentBuilder.MoveToDocumentEnd
+            //ExFor:DocumentBuilder.IsAtEndOfParagraph
+            //ExFor:DocumentBuilder.IsAtStartOfParagraph
             //ExSummary:Shows how to move between nodes and manipulate current ones.
             Document doc = new Document(MyDir + "DocumentBuilder.WorkingWithNodes.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -502,12 +519,26 @@ namespace ApiExamples
             
             // Move to a particular paragraph's run and replace all occurrences of "bad" with "good" within this run.
             builder.MoveTo(doc.LastSection.Body.Paragraphs[0].Runs[0]);
+            Assert.IsTrue(builder.IsAtStartOfParagraph);
+            Assert.IsFalse(builder.IsAtEndOfParagraph);
             builder.CurrentNode.Range.Replace("bad", "good", options);
-
+            
             // Mark the beginning of the document.
             builder.MoveToDocumentStart();
             builder.Writeln("Start of document.");
 
+            // builder.WriteLn puts an end to its current paragraph after writing the text and starts a new one
+            Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
+            Assert.IsTrue(builder.IsAtStartOfParagraph);
+            Assert.IsTrue(builder.IsAtEndOfParagraph);
+
+            // builder.Write doesn't end the paragraph
+            builder.Write("Second paragraph.");
+
+            Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
+            Assert.IsFalse(builder.IsAtStartOfParagraph);
+            Assert.IsTrue(builder.IsAtEndOfParagraph);
+            
             // Mark the ending of the document.
             builder.MoveToDocumentEnd();
             builder.Writeln("End of document.");
@@ -1853,6 +1884,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FootnoteType
+            //ExFor:Document.FootnoteOptions
             //ExFor:DocumentBuilder.InsertFootnote(FootnoteType,String)
             //ExFor:DocumentBuilder.InsertFootnote(FootnoteType,String,String)
             //ExSummary:Shows how to add a footnote to a paragraph in the document using DocumentBuilder.
@@ -2134,24 +2166,184 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], Double, Double)
+            //ExFor:DocumentBuilder.InsertOnlineVideo(String, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
+            //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
             //ExSummary:Show how to insert online video into a document using html code
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Shape width/height.
-            double width = 360;
-            double height = 270;
-
-            // Poster frame image.
-            byte[] imageBytes = File.ReadAllBytes(this._image);
-
             // Visible url
-            String vimeoVideoUrl = @"https://vimeo.com/52477838";
+            string vimeoVideoUrl = @"https://vimeo.com/52477838";
 
-            // Embed Html code.
-            String vimeoEmbedCode = "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
+            // Embed Html code
+            string vimeoEmbedCode = "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
 
-            builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, width, height);
+            // This video will have an automatically generated thumbnail, and we are setting the size according to its 16:9 aspect ratio
+            builder.Writeln("Video with an automatically generated thumbnail at the top left corner of the page:");
+            builder.InsertOnlineVideo(vimeoVideoUrl, RelativeHorizontalPosition.LeftMargin, 0, RelativeVerticalPosition.TopMargin, 0, 320, 180, WrapType.Square);
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // We can get an image to use as a custom thumbnail
+            System.Net.WebClient webClient = new System.Net.WebClient();
+            byte[] imageBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
+
+            using (MemoryStream stream = new MemoryStream(imageBytes))
+            {
+                Image image = Image.FromStream(stream);
+
+                // This puts the video where we are with our document builder, with a custom thumbnail and size depending on the size of the image
+                builder.Writeln("Custom thumbnail at document builder's cursor:");
+                builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, image.Width, image.Height);
+                builder.InsertBreak(BreakType.PageBreak);
+                
+                // We can put the video at the bottom right edge of the page too, but we'll have to take the page margins into account 
+                double left = builder.PageSetup.RightMargin - image.Width;
+                double top = builder.PageSetup.BottomMargin - image.Height;
+
+                // Here we use a custom thumbnail and relative positioning to put it and the bottom right of tha page
+                builder.Writeln("Bottom right of page with custom thumbnail:");
+                builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, RelativeHorizontalPosition.RightMargin, left, RelativeVerticalPosition.BottomMargin, top, image.Width, image.Height, WrapType.Square);
+            }
+
+            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertOnlineVideo.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void InsertUnderline()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.Underline
+            //ExSummary:Shows how to set and edit a document builder's underline.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set a new style for our underline
+            builder.Underline = Underline.Dash;
+
+            // Same object as DocumentBuilder.Font.Underline
+            Assert.AreEqual(builder.Underline, builder.Font.Underline);
+            Assert.AreEqual(Underline.Dash, builder.Font.Underline);
+
+            // These properties will be applied to the underline as well
+            builder.Font.Color = Color.Blue;
+            builder.Font.Size = 32;
+
+            builder.Writeln("Underlined text.");
+
+            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.Underline.docx");         
+            //ExEnd
+        }
+
+        [Test]
+        public void AddTextToCurrentStory()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.CurrentStory
+            //ExSummary:Shows how to work with a document builder's current story.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // The body of the current section is the same object as the current story
+            Assert.AreEqual(builder.CurrentStory, doc.FirstSection.Body);
+            Assert.AreEqual(builder.CurrentStory, builder.CurrentParagraph.ParentNode);
+
+            Assert.AreEqual(StoryType.MainText, builder.CurrentStory.StoryType);
+
+            builder.CurrentStory.AppendParagraph("Text added to current Story.");
+
+            // A story can contain tables too
+            Table table = builder.StartTable();
+
+            builder.InsertCell();
+            builder.Write("This is row 1 cell 1");
+            builder.InsertCell();
+            builder.Write("This is row 1 cell 2");
+
+            builder.EndRow();
+
+            builder.InsertCell();
+            builder.Writeln("This is row 2 cell 1");
+            builder.InsertCell();
+            builder.Writeln("This is row 2 cell 2");
+
+            builder.EndRow();
+            builder.EndTable();
+
+            // The table we just made is automatically placed in the story
+            Assert.IsTrue(builder.CurrentStory.Tables.Contains(table));
+
+            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.CurrentStory.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void BuilderInsertOleObject()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertOleObject(Stream, String, Boolean, Image)
+            //ExSummary:Shows how to use document builder to embed Ole objects in a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Let's take a spreadsheet from our system and insert it into the document
+            System.IO.Stream spreadsheetStream = File.Open(MyDir + "DocumentBuilder.InsertOleObject.xlsx", FileMode.Open);
+
+            // The spreadsheet can be activated by double clicking the panel that you'll see in the document immediately under the text we will add
+            // We did not set the area to double click as an icon nor did we change its appearance so it looks like a simple panel
+            builder.Writeln("Spreadsheet Ole object:");
+            builder.InsertOleObject(spreadsheetStream, "MyOleObject.xlsx", false, null);
+
+            // A powerpoint presentation is another type of object we can embed in our document
+            // This time we'll also exercise some control over how it looks 
+            System.IO.Stream powerpointStream = File.Open(MyDir + "DocumentBuilder.InsertOleObject.pptx", FileMode.Open);
+
+            // If we insert the Ole object as an icon, we are still provided with a default icon
+            // If that is not suitable, we can make the icon to look like any image
+            System.Net.WebClient webClient = new System.Net.WebClient();
+            byte[] imgBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
+
+            using (MemoryStream stream = new MemoryStream(imgBytes))
+            {
+                Image image = Image.FromStream(stream);
+
+                // If we double click the image, the powerpoint presentation will open
+                builder.InsertParagraph();
+                builder.Writeln("Powerpoint Ole object:");
+                builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, image);
+            }
+
+            powerpointStream.Close();
+            spreadsheetStream.Close();
+
+            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertOleObject.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void BuilderInsertStyleSeparator()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertStyleSeparator
+            //ExSummary:Shows how to use and separate multiple styles in a paragraph
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("This text is in the default style. ");
+
+            builder.InsertStyleSeparator();
+             
+            // Create a custom style
+            Style myStyle = builder.Document.Styles.Add(StyleType.Paragraph, "MyStyle");
+            myStyle.Font.Size = 14;
+            myStyle.Font.Name = "Courier New";
+            myStyle.Font.Color = System.Drawing.Color.Blue;
+
+            // Append text with custom style
+            builder.ParagraphFormat.StyleName = myStyle.Name;
+            builder.Write("This is text in the same paragraph but with my custom style.");
+
+            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.StyleSeparator.docx");
             //ExEnd
         }
     }

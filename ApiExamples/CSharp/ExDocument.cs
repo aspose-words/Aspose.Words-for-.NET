@@ -17,8 +17,13 @@ using System.Web;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
+using Aspose.Words.Fonts;
+using Aspose.Words.Layout;
+using Aspose.Words.Lists;
+using Aspose.Words.Markup;
 using Aspose.Words.Properties;
 using Aspose.Words.Rendering;
+using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using Aspose.Words.Tables;
@@ -77,6 +82,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExId:DocumentCtor
+            //ExFor:Document.#ctor(System.Boolean)
             //ExSummary:Shows how to create a blank document. Note the blank document contains one section and one paragraph.
             Document doc = new Document();
             //ExEnd
@@ -1460,6 +1466,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:CompareOptions.IgnoreFormatting
             //ExFor:CompareOptions.Target
+            //ExFor:Document.Compare(Document, String, DateTime, CompareOptions)
             //ExSummary: Shows how to specify which document shall be used as a target during comparison
             Document doc1 = new Document(MyDir + "Document.CompareOptions.1.docx");
             Document doc2 = new Document(MyDir + "Document.CompareOptions.2.docx");
@@ -1521,6 +1528,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Cleanup(CleanupOptions)
+            //ExFor:Document.RemoveUnusedResources
             //ExFor:CleanupOptions
             //ExFor:CleanupOptions.UnusedLists
             //ExFor:CleanupOptions.UnusedStyles
@@ -1816,6 +1824,588 @@ namespace ApiExamples
             compliance = doc.Compliance;
 
             Assert.AreEqual(compliance, OoxmlCompliance.Iso29500_2008_Transitional);
+        }
+
+        [Test]
+        public void SaveWithOptions()
+        {
+            //ExStart
+            //ExFor:Document.Save(Stream, String, Saving.SaveOptions)
+            //ExSummary:Improve the quality of a rendered document with SaveOptions.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Size = 60;
+
+            builder.Writeln("Some text.");
+
+            SaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
+
+            options.UseAntiAliasing = false;
+            doc.Save(MyDir + @"\Artifacts\Document.SaveOptionsLowQuality.jpg", options);
+
+            options.UseAntiAliasing = true;
+            options.UseHighQualityRendering = true;
+            doc.Save(MyDir + @"\Artifacts\Document.SaveOptionsHighQuality.jpg", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void WordCountUpdate()
+        {
+            //ExStart
+            //ExFor:Document.UpdateWordCount(System.Boolean)
+            //ExSummary:Shows how to keep track of the word count.
+            // Create an empty document
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("This is the frst line.");
+            builder.Writeln("This is the second line.");
+            builder.Writeln("These three lines contain eighteen words in total.");
+
+            // The fields that keep track of how many lines and words a document has are not automatically updated
+            // An empty document has one paragraph by default, which contains one empty line
+            Assert.AreEqual(0, doc.BuiltInDocumentProperties.Words);
+            Assert.AreEqual(1, doc.BuiltInDocumentProperties.Lines);
+
+            // To update them we have to use this method
+            // The default constructor updates just the word count
+            doc.UpdateWordCount();
+
+            Assert.AreEqual(18, doc.BuiltInDocumentProperties.Words);
+            Assert.AreEqual(1, doc.BuiltInDocumentProperties.Lines);
+
+            // If we want to update the line count as well, we have to use this overload
+            doc.UpdateWordCount(true);
+
+            Assert.AreEqual(18, doc.BuiltInDocumentProperties.Words);
+            Assert.AreEqual(3, doc.BuiltInDocumentProperties.Lines);
+            //ExEnd
+        }
+
+        [Test]
+        public void CleanUpStyles()
+        {
+            //ExStart
+            //ExFor:Document.Cleanup
+            //ExSummary:Shows how to remove unused styles and lists from a document.
+            // Create a new document
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Brand new documents have 4 styles and 0 lists by default
+            Assert.AreEqual(4, doc.Styles.Count);
+            Assert.AreEqual(0, doc.Lists.Count);
+
+            // We will add one style and one list and mark them as "used" by applying them to the builder 
+            builder.ParagraphFormat.Style = doc.Styles.Add(StyleType.Paragraph, "My Used Style");
+            builder.ListFormat.List = doc.Lists.Add(ListTemplate.BulletDiamonds);
+
+            // These items were added to their respective collections
+            Assert.AreEqual(5, doc.Styles.Count);
+            Assert.AreEqual(1, doc.Lists.Count);
+
+            // doc.Cleanup() removes all unused styles and lists
+            doc.Cleanup();
+
+            // It currently has no effect becase the 2 items we added plus the original 4 styles are all used
+            Assert.AreEqual(5, doc.Styles.Count);
+            Assert.AreEqual(1, doc.Lists.Count);
+
+            // These two items will be added but will not associated with any part of the document
+            doc.Styles.Add(StyleType.Paragraph, "My Unused Style");
+            doc.Lists.Add(ListTemplate.NumberArabicDot);
+
+            // They also get stored in the document and are ready to be used
+            Assert.AreEqual(6, doc.Styles.Count);
+            Assert.AreEqual(2, doc.Lists.Count);
+
+            doc.Cleanup();
+
+            // Since we didn't apply them anywhere, the two unused items are removed by doc.Cleanup()
+            Assert.AreEqual(5, doc.Styles.Count);
+            Assert.AreEqual(1, doc.Lists.Count);
+            //ExEnd
+        }
+
+        [Test]
+        public void Revisions()
+        {
+            //ExStart
+            //ExFor:Document.HasRevisions
+            //ExFor:Document.TrackRevisions
+            //ExFor:Document.Revisions
+            //ExSummary:Shows how to check if a document has revisions.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // A blank document comes with no revisions
+            Assert.IsFalse(doc.HasRevisions);
+
+            builder.Writeln("This does not count as a revision.");
+
+            // Just adding text does not count as a revision
+            Assert.IsFalse(doc.HasRevisions);
+
+            // For our edits to count as revisions, we need to declare an author and start tracking them
+            doc.StartTrackRevisions("John Doe", DateTime.Now);
+
+            builder.Writeln("This is a revision.");
+
+            // The above text is now tracked as a revision and will show up accordingly in our output file
+            Assert.IsTrue(doc.HasRevisions);
+            Assert.AreEqual("John Doe", doc.Revisions[0].Author);
+
+            // Document.TrackRevisions corresponds to Microsoft Word tracking changes, not the ones we programmatically make here 
+            Assert.IsFalse(doc.TrackRevisions);
+
+            // This takes us back to not counting changes as revisions
+            doc.StopTrackRevisions();
+
+            builder.Writeln("This does not count as a revision.");
+
+            doc.Save(MyDir + @"\Artifacts\Revisions.docx");
+
+            // We can get rid of all the changes we made that counted as revisions
+            doc.Revisions.RejectAll();
+            Assert.IsFalse(doc.HasRevisions);
+
+            // The second line that our builder wrote will not appear at all in the output
+            doc.Save(MyDir + @"\Artifacts\RevisionsRejected.docx");
+
+            // Alternatively, we can track revisions from Microsoft Word like this
+            // This is the same as turning on "Track Changes" in Word
+            doc.TrackRevisions = true;
+
+            doc.Save(MyDir + @"\Artifacts\RevisionsTrackedFromMSWord.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void HasMacros()
+        {
+            //ExStart
+            //ExFor:Document.HasMacros
+            //ExSummary:Shows how to check if a document contains macros.
+            Document doc = new Document();
+
+            // A blank document has no macros by default
+            Assert.IsFalse(doc.HasMacros);
+
+            // We can't programmatically add macros but we can open a file that has them
+            Document docWithMacros = new Document(MyDir + "Document.HasMacros.docm");
+            Assert.IsTrue(docWithMacros.HasMacros);
+
+            // We can also remove them
+            docWithMacros.RemoveMacros();
+            Assert.IsFalse(docWithMacros.HasMacros);
+            //ExEnd
+        }
+
+        [Test]
+        public void AutoUpdateStyles()
+        {
+            //ExStart
+            //ExFor:Document.AutomaticallyUpdateSyles
+            //ExSummary:Shows how to update a document's styles based on its template.
+            Document doc = new Document();
+
+            // Empty Microsoft Word documents by default come with an attached template called "Normal.dotm"
+            // There is no default template for Aspose Words documents
+            Assert.AreEqual(String.Empty, doc.AttachedTemplate);
+
+            // For AutomaticallyUpdateStyles to have any effect, we need a document with a template
+            // We can make a document with word and open it
+            // Or we can attach a template from our file system, as below
+            doc.AttachedTemplate = MyDir + "Document.BusinessBrochureTemplate.dotx";
+
+            Assert.IsTrue(doc.AttachedTemplate.EndsWith("Document.BusinessBrochureTemplate.dotx"));
+
+            // Any changes to the styes in this template will be propagated to those styles in the document
+            doc.AutomaticallyUpdateSyles = true;
+
+            doc.Save(MyDir + @"\Artifacts\TemplateStylesUpdating.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void CompatibilityOptions()
+        {
+            //ExStart
+            //ExFor:Document.CompatibilityOptions
+            //ExSummary:Shows how to optimise our document for different word versions.
+            Document doc = new Document();
+            CompatibilityOptions co = doc.CompatibilityOptions;
+
+            // Here are some default values
+            Assert.AreEqual(true, co.GrowAutofit);
+            Assert.AreEqual(false, co.DoNotBreakWrappedTables);
+            Assert.AreEqual(false, co.DoNotUseEastAsianBreakRules);
+            Assert.AreEqual(false, co.SelectFldWithFirstOrLastChar);
+            Assert.AreEqual(false, co.UseWord97LineBreakRules);
+            Assert.AreEqual(true, co.UseWord2002TableStyleRules);
+            Assert.AreEqual(false, co.UseWord2010TableStyleRules);
+
+            // This example covers only a small portion of all the compatibility attributes 
+            // To see the entire list, in any of the output files go into File > Options > Advanced > Compatibility for...
+            doc.Save(MyDir + @"\Artifacts\DefaultCompatibility.docx");
+
+            // We can hand pick any value and change it to create a custom compatibility
+            // We can also change a bunch of values at once to suit a defined compatibility scheme with the OptimizeFor method
+            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2010);
+
+            Assert.AreEqual(false, co.GrowAutofit);
+            Assert.AreEqual(false, co.GrowAutofit);
+            Assert.AreEqual(false, co.DoNotBreakWrappedTables);
+            Assert.AreEqual(false, co.DoNotUseEastAsianBreakRules);
+            Assert.AreEqual(false, co.SelectFldWithFirstOrLastChar);
+            Assert.AreEqual(false, co.UseWord97LineBreakRules);
+            Assert.AreEqual(false, co.UseWord2002TableStyleRules);
+            Assert.AreEqual(true, co.UseWord2010TableStyleRules);
+
+            doc.Save(MyDir + @"\Artifacts\Optimised for Word 2010.docx");
+
+            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
+
+            Assert.AreEqual(true, co.GrowAutofit);
+            Assert.AreEqual(true, co.DoNotBreakWrappedTables);
+            Assert.AreEqual(true, co.DoNotUseEastAsianBreakRules);
+            Assert.AreEqual(true, co.SelectFldWithFirstOrLastChar);
+            Assert.AreEqual(false, co.UseWord97LineBreakRules);
+            Assert.AreEqual(true, co.UseWord2002TableStyleRules);
+            Assert.AreEqual(false, co.UseWord2010TableStyleRules);
+
+            doc.Save(MyDir + @"\Artifacts\Optimised for Word 2000.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void Sections()
+        {
+            //ExStart
+            //ExFor:Document.LastSection
+            //ExSummary:Shows how to edit the last section of a document.
+            // Open the template document, containing obsolete copyright information in the footer
+            Document doc = new Document(MyDir + "HeaderFooter.ReplaceText.doc");
+
+            // We have a document with 2 sections, this way FirstSection and LastSection are not the same
+            Assert.AreEqual(2, doc.Sections.Count);
+
+            string newCopyrightInformation = String.Format("Copyright (C) {0} by Aspose Pty Ltd.", DateTime.Now.Year);
+            FindReplaceOptions findReplaceOptions = new FindReplaceOptions { MatchCase = false, FindWholeWordsOnly = false };
+
+            // Access the first and the last sections
+            HeaderFooter firstSectionFooter = doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary];
+            firstSectionFooter.Range.Replace("(C) 2006 Aspose Pty Ltd.", newCopyrightInformation, findReplaceOptions);
+
+            HeaderFooter lastSectionFooter = doc.LastSection.HeadersFooters[HeaderFooterType.FooterPrimary];
+            lastSectionFooter.Range.Replace("(C) 2006 Aspose Pty Ltd.", newCopyrightInformation, findReplaceOptions);
+
+            // Sections are also accessible via an array
+            Assert.AreEqual(doc.FirstSection, doc.Sections[0]);
+            Assert.AreEqual(doc.LastSection, doc.Sections[1]);
+
+            doc.Save(MyDir + @"\Artifacts\HeaderFooter.ReplaceText Out.doc");
+            //ExEnd
+        }
+
+        [Test]
+        public void DocTheme()
+        {
+            //ExStart
+            //ExFor:Document.Theme
+            //ExSummary:Shows what we can do with the Themes property of Document.
+            Document doc = new Document();
+
+            // When creating a blank document, Aspose Words creates a default theme object
+            Theme theme = doc.Theme;
+
+            // These colour properties correspond to the 10 colour columns that you see 
+            // in the "Theme colors" section in the colour selector menu when changing font or shading colour
+            // We can view and edit the leading colour for each column, and the five different tints that
+            // make up the rest of the column will be derived automatically from each leading colour
+            // Aspose Words sets the defaults to what they are in the Microsoft Word default theme
+            Assert.AreEqual(Color.FromArgb(255, 255, 255, 255), theme.Colors.Light1);
+            Assert.AreEqual(Color.FromArgb(255, 0, 0, 0), theme.Colors.Dark1);
+            Assert.AreEqual(Color.FromArgb(255, 238, 236, 225), theme.Colors.Light2);
+            Assert.AreEqual(Color.FromArgb(255, 31, 73, 125), theme.Colors.Dark2);
+            Assert.AreEqual(Color.FromArgb(255, 79, 129, 189), theme.Colors.Accent1);
+            Assert.AreEqual(Color.FromArgb(255, 192, 80, 77), theme.Colors.Accent2);
+            Assert.AreEqual(Color.FromArgb(255, 155, 187, 89), theme.Colors.Accent3);
+            Assert.AreEqual(Color.FromArgb(255, 128, 100, 162), theme.Colors.Accent4);
+            Assert.AreEqual(Color.FromArgb(255, 75, 172, 198), theme.Colors.Accent5);
+            Assert.AreEqual(Color.FromArgb(255, 247, 150, 70), theme.Colors.Accent6);
+
+            // Hyperlink colours
+            Assert.AreEqual(Color.FromArgb(255, 0, 0, 255), theme.Colors.Hyperlink);
+            Assert.AreEqual(Color.FromArgb(255, 128, 0, 128), theme.Colors.FollowedHyperlink);
+
+            // These appear at the very top of the font selector in the "Theme Fonts" section
+            Assert.AreEqual("Cambria", theme.MajorFonts.Latin);
+            Assert.AreEqual("Calibri", theme.MinorFonts.Latin);
+
+            // Change some values to make a custom theme
+            theme.MinorFonts.Latin = "Bodoni MT";
+            theme.MajorFonts.Latin = "Tahoma";
+            theme.Colors.Accent1 = Color.Cyan;
+            theme.Colors.Accent2 = Color.Yellow;
+
+            // Save the document to use our theme
+            doc.Save(MyDir + @"\Artifacts\Document.Theme.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void SetEndnoteOptions()
+        {
+            //ExStart
+            //ExFor:Document.EndnoteOptions
+            //ExSummary:Shows how access a document's endnote options and see some of its default values.
+            Document doc = new Document();
+
+            Assert.AreEqual(1, doc.EndnoteOptions.StartNumber);
+            Assert.AreEqual(EndnotePosition.EndOfDocument, doc.EndnoteOptions.Position);
+            Assert.AreEqual(NumberStyle.LowercaseRoman, doc.EndnoteOptions.NumberStyle);
+            Assert.AreEqual(FootnoteNumberingRule.Default, doc.EndnoteOptions.RestartRule);
+            //ExEnd
+        }
+
+        [Test]
+        public void SetInvalidateFieldTypes()
+        {
+            //ExStart
+            //ExFor:Document.InvalidateFieldTypes
+            //ExFor:Document.NormalizeFieldTypes
+            //ExSummary:Shows how to get the keep a field's type up to date with its field code.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // We'll add a date field
+            Field field = builder.InsertField("DATE", null);
+
+            // The FieldDate field type corresponds to the "DATE" field so our field's type property gets automatically set to it
+            Assert.AreEqual(FieldType.FieldDate, field.Type);
+            Assert.AreEqual(1, doc.Range.Fields.Count);
+
+            // We can manually access the content of the field we added and change it
+            Run fieldText = (Run)doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Run, true)[0];
+            Assert.AreEqual("DATE", fieldText.Text);
+            fieldText.Text = "PAGE";
+            
+            // We changed the text to "PAGE" but the field's type property did not update accoridngly
+            Assert.AreEqual("PAGE", fieldText.GetText());
+            Assert.AreNotEqual(FieldType.FieldPage, field.Type);
+
+            // The type of the field as well as its components is still "FieldDate"
+            Assert.AreEqual(FieldType.FieldDate, field.Type);
+            Assert.AreEqual(FieldType.FieldDate, field.Start.FieldType);
+            Assert.AreEqual(FieldType.FieldDate, field.Separator.FieldType);
+            Assert.AreEqual(FieldType.FieldDate, field.End.FieldType);
+
+            doc.NormalizeFieldTypes();
+
+            // After running this method the type changes everywhere to "FieldPage", which matches the text "PAGE"
+            Assert.AreEqual(FieldType.FieldPage, field.Type);
+            Assert.AreEqual(FieldType.FieldPage, field.Start.FieldType);
+            Assert.AreEqual(FieldType.FieldPage, field.Separator.FieldType);
+            Assert.AreEqual(FieldType.FieldPage, field.End.FieldType);
+            //ExEnd
+        }
+
+        [Test]
+        public void DocLayoutOptions()
+        {
+            //ExStart
+            //ExFor:Document.LayoutOptions
+            //ExSummary:Shows how to set a document's layout options.
+            Document doc = new Document();
+
+            Assert.IsFalse(doc.LayoutOptions.IsShowHiddenText);
+            Assert.IsFalse(doc.LayoutOptions.IsShowParagraphMarks);
+            
+            // The appearance of revisions can be controlled from the layout options property
+            doc.StartTrackRevisions("John Doe", DateTime.Now);
+            doc.LayoutOptions.RevisionOptions.InsertedTextColor = RevisionColor.BrightGreen;
+            doc.LayoutOptions.RevisionOptions.ShowRevisionBars = false;
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("This is a revision. Normally the text is red with a bar to the left, but we made some changes to the revision options.");
+
+            doc.StopTrackRevisions();
+
+            // Layout options can be used to show hidden text too
+            builder.Writeln("This text is not hidden.");
+            builder.Font.Hidden = true;
+            builder.Writeln("This text is hidden. It will only show up in the output if we allow it to via doc.LayoutOptions.");
+
+            doc.LayoutOptions.IsShowHiddenText = true;
+
+            doc.Save(MyDir + @"\Artifacts\Document.LayoutOptions.pdf");
+        }
+
+        [Test]
+        public void DocMailMergeSettings()
+        {
+            //ExStart
+            //ExFor:Document.MailMergeSettings
+            //ExSummary:Shows how to execute a mail merge with MailMergeSettings.
+            // We'll create a simple document that will act as a destination for mail merge data
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("Dear ");
+            builder.InsertField("MERGEFIELD FirstName", "<FirstName>");
+            builder.Write(" ");
+            builder.InsertField("MERGEFIELD LastName", "<LastName>");
+            builder.Writeln(": ");
+            builder.InsertField("MERGEFIELD Message", "<Message>");
+
+            // Also we'll need a data source, in this case it will be an ASCII text file
+            // We can use any character we want as a delimiter, in this case we'll choose '|'
+            // The delimiter character is selected in the ODSO settings of mail merge settings
+            string[] lines = { "FirstName|LastName|Message",
+                "John|Doe|Hello! This message was created with Aspose Words mail merge." };
+            File.WriteAllLines(MyDir + @"\Artifacts\Document.Lines.txt", lines);
+
+            // Set the data source, query and other things
+            MailMergeSettings mailMergeSettings = doc.MailMergeSettings;
+            mailMergeSettings.MainDocumentType = MailMergeMainDocumentType.MailingLabels;
+            mailMergeSettings.DataType = MailMergeDataType.Native;
+            mailMergeSettings.DataSource = MyDir + @"\Artifacts\Document.Lines.txt";
+            mailMergeSettings.Query = "SELECT * FROM " + doc.MailMergeSettings.DataSource;
+            mailMergeSettings.LinkToQuery = true;
+            mailMergeSettings.ViewMergedData = true;
+            
+            // Office Data Source Object settings
+            Odso odso = mailMergeSettings.Odso;
+            odso.DataSourceType = OdsoDataSourceType.Text;
+            odso.ColumnDelimiter = '|';
+            odso.DataSource = MyDir + @"\Artifacts\Document.Lines.txt";
+            odso.FirstRowContainsColumnNames = true;
+
+            // The mail merge will be performed when this document is opened 
+            doc.Save(MyDir + @"\Artifacts\Document.MailMergeSettings.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void DocPackageCustomParts()
+        {
+            //ExStart
+            //ExFor:Document.PackageCustomParts
+            //ExSummary:Shows how to open a document with custom parts and access them.
+            Document doc = new Document(MyDir + "Document.PackageCustomParts.docx");
+
+            Assert.AreEqual(2, doc.PackageCustomParts.Count);
+
+            // CustomParts are arbitrary content OOXML parts
+            // Not to be confused with Custom XML data which is represented by CustomXmlParts
+            // This part is internal, meaning it is contained inside the OOXML package
+            CustomPart part = doc.PackageCustomParts[0];
+            Assert.AreEqual("/payload/payload_on_package.test", part.Name);
+            Assert.AreEqual("mytest/somedata", part.ContentType);
+            Assert.AreEqual("http://mytest.payload.internal", part.RelationshipType);
+            Assert.AreEqual(false, part.IsExternal);
+            Assert.AreEqual(18, part.Data.Length);
+
+            // This part is external and its content is sourced from outside the document
+            part = doc.PackageCustomParts[1];
+            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", part.Name);
+            Assert.AreEqual("", part.ContentType);
+            Assert.AreEqual("http://mytest.payload.external", part.RelationshipType);
+            Assert.AreEqual(true, part.IsExternal);
+            Assert.AreEqual(0, part.Data.Length);
+            //ExEnd
+        }
+
+        [Test]
+        public void DocShadeFormData()
+        {
+            //ExStart
+            //ExFor:Document.ShadeFormData
+            //ExSummary:Shows how to apply gray shading to bookmarks.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // By default, bookmarked text is highlighted gray
+            Assert.IsTrue(doc.ShadeFormData);
+
+            builder.Write("Text before bookmark. ");
+
+            builder.InsertTextInput("My bookmark", TextFormFieldType.Regular, "", 
+                "If gray shading is turned on, this is the text that will have a gray background.", 0);
+
+            // Our bookmarked text will appear gray here
+            doc.Save(MyDir + @"\Artifacts\Document.ShadeFormDataTrue.docx");
+
+            // In this file, shading will be turned off and the bookmarked text will blend in with the other text
+            doc.ShadeFormData = false;
+            doc.Save(MyDir + @"\Artifacts\Document.ShadeFormDataFalse.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void DocVersionsCount()
+        {
+            //ExStart
+            //ExFor:Document.VersionsCount
+            //ExSummary:Shows how to count how many previous versions a document has.
+            Document doc = new Document();
+
+            // No versions are in the document by default
+            // We also can't add any since they are not supported
+            Assert.AreEqual(0, doc.VersionsCount);
+
+            // Let's open a document with versions
+            doc = new Document(MyDir + "Versions.doc");
+
+            // We can use this property to see how many there are
+            Assert.AreEqual(4, doc.VersionsCount);
+
+            doc.Save(MyDir + @"\Artifacts\Document.Versions.docx");      
+            doc = new Document(MyDir + @"\Artifacts\Document.Versions.docx");
+
+            // If we save and open the document, the versions are lost
+            Assert.AreEqual(0, doc.VersionsCount);
+            //ExEnd
+        }
+
+        [Test]
+        public void DocWriteProtection()
+        {
+            //ExStart
+            //ExFor:Document.WriteProtection
+            //ExSummary:Shows how to protect a document with a password.
+            Document doc = new Document();
+            Assert.IsFalse(doc.WriteProtection.IsWriteProtected);
+            Assert.IsFalse(doc.WriteProtection.ReadOnlyRecommended);
+
+            // Enter a password that's 15 or less characters long
+            doc.WriteProtection.SetPassword("docpassword123");
+            Assert.IsTrue(doc.WriteProtection.IsWriteProtected);
+
+            Assert.IsFalse(doc.WriteProtection.ValidatePassword("wrongpassword"));
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("We can still edit the document at this stage.");
+
+            // Save the document
+            // Without the password, we can only read this document in Microsoft Word
+            // With the password, we can read and write
+            doc.Save(MyDir + @"\Artifacts\Document.WriteProtection.docx");
+
+            // Re-open our document
+            Document docProtected = new Document(MyDir + @"\Artifacts\Document.WriteProtection.docx");
+            DocumentBuilder docProtectedBuilder = new DocumentBuilder(docProtected);
+            docProtectedBuilder.MoveToDocumentEnd();
+
+            // We can programmatically edit this document without using our password
+            Assert.IsTrue(docProtected.WriteProtection.IsWriteProtected);
+            docProtectedBuilder.Writeln("Writing text in a protected document.");
+
+            // We will still need the password if we want to open this one with Word
+            docProtected.Save(MyDir + @"\Artifacts\Document.WriteProtectionEditedAfter.docx");
+            //ExEnd
         }
     }
 }
