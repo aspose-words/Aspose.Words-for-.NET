@@ -12,7 +12,7 @@ namespace ApiExamples
     public class ExDrawing : ApiExampleBase
     {
         [Test]
-        public void Arrow()
+        public void DrawingVariousShapes()
         {
             //ExStart
             //ExFor:Drawing.ArrowLength
@@ -28,6 +28,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Draw a dotted horizontal red line with an arrow on the left end and a diamond on the other
             Shape arrow = new Shape(doc, ShapeType.Line);
             arrow.Width = 200;
             arrow.Stroke.Color = Color.Red;
@@ -41,6 +42,7 @@ namespace ApiExamples
 
             builder.InsertNode(arrow);
 
+            // Draw a thick black diagonal line with rounded ends
             Shape line = new Shape(doc, ShapeType.Line);
             line.Top = 40;
             line.Width = 200;
@@ -50,6 +52,7 @@ namespace ApiExamples
 
             builder.InsertNode(line);
 
+            // Draw an arrow with a green fill
             Shape filledInArrow = new Shape(doc, ShapeType.Arrow);
             filledInArrow.Width = 200;
             filledInArrow.Height = 40;
@@ -59,6 +62,7 @@ namespace ApiExamples
 
             builder.InsertNode(filledInArrow);
 
+            // Draw an arrow filled in with the Aspose logo and flip its orientation
             Shape filledInArrowImg = new Shape(doc, ShapeType.Arrow);
             filledInArrowImg.Width = 200;
             filledInArrowImg.Height = 40;
@@ -67,19 +71,21 @@ namespace ApiExamples
 
             System.Net.WebClient webClient = new System.Net.WebClient();
             byte[] imageBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
-            System.IO.MemoryStream stream = new System.IO.MemoryStream(imageBytes); // INSP: You need to add using.
-            System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
 
-            // When we flipped the orientation of our arrow, the image content was flipped too
-            // If we want it to be displayed the right side up, we have to reverse the arrow flip on the image
-            image.RotateFlip(RotateFlipType.RotateNoneFlipXY);
+            using (System.IO.MemoryStream stream = new System.IO.MemoryStream(imageBytes))
+            {
+                System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
+                // When we flipped the orientation of our arrow, the image content was flipped too
+                // If we want it to be displayed the right side up, we have to reverse the arrow flip on the image
+                image.RotateFlip(RotateFlipType.RotateNoneFlipXY);
 
-            filledInArrowImg.ImageData.SetImage(image);
-            builder.InsertNode(filledInArrowImg);
+                filledInArrowImg.ImageData.SetImage(image);
+                builder.InsertNode(filledInArrowImg);
 
-            filledInArrowImg.Stroke.JoinStyle = JoinStyle.Round;
+                filledInArrowImg.Stroke.JoinStyle = JoinStyle.Round;
+            }
 
-            doc.Save(MyDir + @"Drawing.VariousShapes.docx"); // INSP: You need to save out document to Artifact folder
+            doc.Save(MyDir + @"\Artifacts\Drawing.VariousShapes.docx");
             //ExEnd
         }
 
@@ -178,12 +184,15 @@ namespace ApiExamples
 
             System.Net.WebClient webClient = new System.Net.WebClient();
             byte[] imageBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
-            System.IO.MemoryStream stream = new System.IO.MemoryStream(imageBytes); // INSP: You need to add using.
-            System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
 
-            // The image started off as an animated .gif but it gets converted to a .png since there cannot be animated images in documents
-            Shape imgShape = builder.InsertImage(image);
-            Assert.AreEqual(ImageType.Png, imgShape.ImageData.ImageType);
+            using (System.IO.MemoryStream stream = new System.IO.MemoryStream(imageBytes))
+            {
+                System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
+
+                // The image started off as an animated .gif but it gets converted to a .png since there cannot be animated images in documents
+                Shape imgShape = builder.InsertImage(image);
+                Assert.AreEqual(ImageType.Png, imgShape.ImageData.ImageType);
+            }
             //ExEnd
         }
 
@@ -210,11 +219,8 @@ namespace ApiExamples
             builder.Write("This text is flipped 90 degrees to the left.");
 
             textbox.TextBox.LayoutFlow = LayoutFlow.BottomToTop;
-            doc.Save(MyDir + @"Drawing.TextBox.docx");
+            doc.Save(MyDir + @"\Artifacts\Drawing.TextBox.docx");
             //ExEnd
         }
     }
-
-    //TODO
-    //ExFor:Drawing.NamespaceDoc // INSP: Will you add this example in the future?
 }
