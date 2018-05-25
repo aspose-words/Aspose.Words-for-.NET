@@ -336,10 +336,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder
-            // INSP: There is no example for this exfor and I see that InsertHtml not use "HtmlInsertionOptions", but use bool parameter.
-            // If you see that some parameter don't exists, you don't need to add exfor tag. Just write about it in issue comments. Or you can replace this exfor with correct.
-            // So please delete this one.
-            //ExFor:DocumentBuilder.InsertHtml(String, HtmlInsertionOptions) 
             //ExFor:DocumentBuilder.InsertHtml(String)
             //ExId:DocumentBuilderInsertHtml
             //ExSummary:Inserts HTML into a document. The formatting specified in the HTML is applied.
@@ -509,7 +505,6 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.MoveToDocumentEnd
             //ExFor:DocumentBuilder.IsAtEndOfParagraph
             //ExFor:DocumentBuilder.IsAtStartOfParagraph
-            //ExFor:DocumentBuilder.MoveTo(Paragraph,Node) // INSP: There is another one that doesn't exist here. Please delete. Perhaps this is an outdated method.
             //ExSummary:Shows how to move between nodes and manipulate current ones.
             Document doc = new Document(MyDir + "DocumentBuilder.WorkingWithNodes.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2191,7 +2186,7 @@ namespace ApiExamples
             System.Net.WebClient webClient = new System.Net.WebClient();
             byte[] imageBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
 
-            using (MemoryStream stream = new MemoryStream(imageBytes)) // INSP: You need to add using for MemoryStream.
+            using (MemoryStream stream = new MemoryStream(imageBytes))
             {
                 Image image = Image.FromStream(stream);
 
@@ -2291,7 +2286,6 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Let's take a spreadsheet from our system and insert it into the document
-            // INSP: You need to close streams that you created at the end of example, otherwise other examples don't have access to this documents.
             System.IO.Stream spreadsheetStream = File.Open(MyDir + "DocumentBuilder.InsertOleObject.xlsx", FileMode.Open);
 
             // The spreadsheet can be activated by double clicking the panel that you'll see in the document immediately under the text we will add
@@ -2301,7 +2295,6 @@ namespace ApiExamples
 
             // A powerpoint presentation is another type of object we can embed in our document
             // This time we'll also exercise some control over how it looks 
-            // INSP: You need to close streams that you created, otherwise other examples don't have access to this documents.
             System.IO.Stream powerpointStream = File.Open(MyDir + "DocumentBuilder.InsertOleObject.pptx", FileMode.Open);
 
             // If we insert the Ole object as an icon, we are still provided with a default icon
@@ -2309,7 +2302,7 @@ namespace ApiExamples
             System.Net.WebClient webClient = new System.Net.WebClient();
             byte[] imgBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
 
-            using (MemoryStream stream = new MemoryStream(imgBytes)) // INSP: You need to add using for MemoryStream.
+            using (MemoryStream stream = new MemoryStream(imgBytes))
             {
                 Image image = Image.FromStream(stream);
 
@@ -2318,6 +2311,9 @@ namespace ApiExamples
                 builder.Writeln("Powerpoint Ole object:");
                 builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, image);
             }
+
+            powerpointStream.Close();
+            spreadsheetStream.Close();
 
             doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertOleObject.docx");
             //ExEnd
