@@ -67,7 +67,7 @@ namespace ApiExamples
 
             System.Net.WebClient webClient = new System.Net.WebClient();
             byte[] imageBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
-            System.IO.MemoryStream stream = new System.IO.MemoryStream(imageBytes);
+            System.IO.MemoryStream stream = new System.IO.MemoryStream(imageBytes); // INSP: You need to add using.
             System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
 
             // When we flipped the orientation of our arrow, the image content was flipped too
@@ -79,7 +79,7 @@ namespace ApiExamples
 
             filledInArrowImg.Stroke.JoinStyle = JoinStyle.Round;
 
-            doc.Save(MyDir + @"Drawing.VariousShapes.docx");
+            doc.Save(MyDir + @"Drawing.VariousShapes.docx"); // INSP: You need to save out document to Artifact folder
             //ExEnd
         }
 
@@ -178,7 +178,7 @@ namespace ApiExamples
 
             System.Net.WebClient webClient = new System.Net.WebClient();
             byte[] imageBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
-            System.IO.MemoryStream stream = new System.IO.MemoryStream(imageBytes);
+            System.IO.MemoryStream stream = new System.IO.MemoryStream(imageBytes); // INSP: You need to add using.
             System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
 
             // The image started off as an animated .gif but it gets converted to a .png since there cannot be animated images in documents
@@ -216,5 +216,5 @@ namespace ApiExamples
     }
 
     //TODO
-    //ExFor:Drawing.NamespaceDoc
+    //ExFor:Drawing.NamespaceDoc // INSP: Will you add this example in the future?
 }
