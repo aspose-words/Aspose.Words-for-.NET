@@ -17,7 +17,7 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Reporting;
 using NUnit.Framework;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -329,7 +329,7 @@ namespace ApiExamples
         public void InsertImageDinamically()
         {
             Aspose.Words.Document template = DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Image]>>", ShapeType.TextBox);
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || __MOBILE__
             ImageTestClass image = new ImageTestBuilder().WithImage(SKBitmap.Decode(mImage)).Build();
 #else
             ImageTestClass image = new ImageTestBuilder().WithImage(Image.FromFile(this.mImage, true)).Build();

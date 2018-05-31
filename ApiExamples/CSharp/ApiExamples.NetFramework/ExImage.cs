@@ -10,10 +10,10 @@ using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
-#if !NETSTANDARD2_0
+#if !(NETSTANDARD2_0 || __MOBILE__)
 using System.Drawing;
 #endif
 
@@ -78,7 +78,7 @@ namespace ApiExamples
             //ExSummary:Shows how to insert a .NET Image object into a document. The image is inserted inline and at 100% scale.
             // This creates a builder and also an empty document inside the builder.
             DocumentBuilder builder = new DocumentBuilder();
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || __MOBILE__
             // Insert a raster image.
             // SKBitmap doesn't allow to insert a metafiles.
             using (SKBitmap rasterImage = SKBitmap.Decode(MyDir + "Images/Aspose.Words.gif"))

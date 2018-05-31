@@ -8,7 +8,7 @@
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
-#if !NETSTANDARD2_0
+#if !(NETSTANDARD2_0 || __MOBILE__)
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 #endif
@@ -47,7 +47,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if !NETSTANDARD2_0
+#if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
         public void QualityOptions()
         {

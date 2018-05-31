@@ -356,7 +356,7 @@ namespace ApiExamples
 
             Assert.That(() => fieldBuilder.AddArgument(argumentBuilder).AddArgument("=").AddArgument("BestField").AddArgument(10).AddArgument(20.0).BuildAndInsert(run), Throws.TypeOf<ArgumentException>());
         }
-#if !NETSTANDARD2_0
+#if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
         public void BarCodeWord2Pdf()
         {

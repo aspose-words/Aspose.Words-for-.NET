@@ -17,7 +17,7 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -495,7 +495,7 @@ namespace ApiExamples
 
             // The best place for the watermark image is in the header or footer so it is shown on every page.
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || __MOBILE__
             using (SKManagedStream stream = new SKManagedStream(File.OpenRead(ImageDir + "Watermark.png")))
             {
                 using (SKBitmap bitmap = SKBitmap.Decode(stream))

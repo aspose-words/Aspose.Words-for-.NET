@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Globalization;
 using Aspose.BarCode;
 using Aspose.Words.Fields;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -80,7 +80,7 @@ namespace ApiExamples
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns></returns>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || __MOBILE__
         public SKBitmap GetBarcodeImage(BarcodeParameters parameters)
 #else
         public Image GetBarcodeImage(BarcodeParameters parameters)
@@ -177,7 +177,7 @@ namespace ApiExamples
                 builder.AutoSize = false;
             }
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || __MOBILE__
             builder.BarCodeImage.Save(ApiExampleBase.MyDir + @"\Artifacts\GetBarcodeImage.png");
 
             return SkiaSharp.SKBitmap.Decode(ApiExampleBase.MyDir + @"\Artifacts\OldBarcodeImage.png");
@@ -191,7 +191,7 @@ namespace ApiExamples
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns></returns>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || __MOBILE__
         public SKBitmap GetOldBarcodeImage(BarcodeParameters parameters)
 #else
         public Image GetOldBarcodeImage(BarcodeParameters parameters)
@@ -205,7 +205,7 @@ namespace ApiExamples
             // Hardcode type for old-fashioned Barcode
             builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.Postnet;
             builder.CodeText = parameters.PostalAddress;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || __MOBILE__
             builder.BarCodeImage.Save(ApiExampleBase.MyDir + @"\Artifacts\OldBarcodeImage.png");
 
             return SkiaSharp.SKBitmap.Decode(ApiExampleBase.MyDir + @"\Artifacts\OldBarcodeImage.png");

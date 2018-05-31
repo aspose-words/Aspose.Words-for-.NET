@@ -33,6 +33,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExDocument : ApiExampleBase
     {
+#if !__MOBILE__
         [Test]
         public void LicenseFromFileNoPath()
         {
@@ -54,6 +55,7 @@ namespace ApiExamples
             license.SetLicense("");
             File.Delete(dstFileName);
         }
+#endif
 
         [Test]
         public void LicenseFromStream()

@@ -140,7 +140,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if !NETSTANDARD2_0
+#if !(NETSTANDARD2_0 || __MOBILE__)
         //ExStart
         //ExFor:DocumentBase.ResourceLoadingCallback
         //ExSummary:Shows how to process inserted resources differently.

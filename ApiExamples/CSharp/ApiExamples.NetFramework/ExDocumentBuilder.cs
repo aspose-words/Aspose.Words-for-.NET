@@ -16,7 +16,7 @@ using Aspose.Words.Fields;
 using Aspose.Words.Replacing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -315,7 +315,7 @@ namespace ApiExamples
 
             // The best place for the watermark image is in the header or footer so it is shown on every page.
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || __MOBILE__
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Watermark.png"))
             {
                 // Insert a floating picture.
@@ -403,7 +403,7 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\MathML Out.pdf");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Golds\MathML Gold.docx", MyDir + @"\Artifacts\MathML Out.docx"));
-#if !NETSTANDARD2_0
+#if !(NETSTANDARD2_0 || __MOBILE__)
             DocumentHelper.ComparePdf(MyDir + @"\Golds\MathML Gold.pdf", MyDir + @"\Artifacts\MathML Out.pdf");
 #endif
         }
@@ -2038,7 +2038,7 @@ namespace ApiExamples
             //ExSummary:Shows how to insert an OLE object into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || __MOBILE__
             using (SKBitmap representingImage = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
             {
                 Shape oleObject = builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage);
@@ -2188,6 +2188,7 @@ namespace ApiExamples
             //ExEnd
         }
 
+#if !__MOBILE__
         [Test]
         public void InsertVideoWithHtmlCode()
         {
@@ -2235,6 +2236,7 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertOnlineVideo.docx");
             //ExEnd
         }
+#endif
 
         [Test]
         public void InsertUnderline()
@@ -2330,7 +2332,7 @@ namespace ApiExamples
             System.Net.WebClient webClient = new System.Net.WebClient();
             byte[] imgBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || __MOBILE__
             SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(imgBytes);
 
             builder.InsertParagraph();

@@ -11,7 +11,7 @@ using Aspose.Words.Tables;
 using System;
 using System.IO;
 using NUnit.Framework;
-#if !NETSTANDARD2_0
+#if !(NETSTANDARD2_0 || __MOBILE__)
 using System.Collections.Generic;
 using System.Linq;
 using iTextSharp.text.pdf;
@@ -285,7 +285,7 @@ namespace ApiExamples
             return doc.FirstSection.Body.Paragraphs[paraIndex];
         }
 
-#if !NETSTANDARD2_0
+#if !(NETSTANDARD2_0 || __MOBILE__)
         /// <summary>
         /// comparing two PDF documents.
         /// </summary>

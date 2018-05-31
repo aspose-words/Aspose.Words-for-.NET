@@ -12,7 +12,7 @@ using ApiExamples.TestData.TestClasses;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if !NETSTANDARD2_0
+#if !(NETSTANDARD2_0 || __MOBILE__)
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -50,7 +50,7 @@ namespace ApiExamples
 
             // Get sign person object by name of the person who must sign a document.
             // This an example, in real use case you would return an object from a database.
-            SignPersonTestClass signPersonInfo = (from c in mSignPersonList where c.Name == signPersonName select c).FirstOrDefault();
+            SignPersonTestClass signPersonInfo = (from c in gSignPersonList where c.Name == signPersonName select c).FirstOrDefault();
 
             if (signPersonInfo != null)
             {
@@ -97,7 +97,7 @@ namespace ApiExamples
             DigitalSignatureUtil.Sign(dstDocumentPath, dstDocumentPath, certificateHolder, signOptions);
         }
 
-#if !NETSTANDARD2_0
+#if !(NETSTANDARD2_0 || __MOBILE__)
         /// <summary>
         /// Converting image file to bytes array
         /// </summary>
@@ -116,14 +116,14 @@ namespace ApiExamples
         /// </summary>
         private static void CreateSignPersonData()
         {
-            mSignPersonList = new List<SignPersonTestClass>
+            gSignPersonList = new List<SignPersonTestClass>
             {
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || __MOBILE__
                 new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer", SkiaSharp.SKBitmap.Decode(ImageDir + "LogoSmall.png").Bytes),
 #else
                 new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer", ImageToByteArray(Image.FromFile(ImageDir + "LogoSmall.png"))),
 #endif
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || __MOBILE__
                 new SignPersonTestClass(Guid.NewGuid(), "Stephen Morse", "Head of Compliance", SkiaSharp.SKBitmap.Decode(ImageDir + "LogoSmall.png").Bytes)
 #else
                 new SignPersonTestClass(Guid.NewGuid(), "Stephen Morse", "Head of Compliance", ImageToByteArray(Image.FromFile(ImageDir + "LogoSmall.png")))
@@ -131,7 +131,7 @@ namespace ApiExamples
             };
         }
 
-        private static List<SignPersonTestClass> mSignPersonList;
+        private static List<SignPersonTestClass> gSignPersonList;
         //ExEnd
     }
 }

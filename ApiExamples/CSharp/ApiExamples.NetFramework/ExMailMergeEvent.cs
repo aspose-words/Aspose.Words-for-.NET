@@ -276,7 +276,7 @@ namespace ApiExamples
             Assert.IsNotNull(logoImage);
             Assert.IsTrue(logoImage.HasImage);
         }
-#if !NETSTANDARD2_0
+#if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
         public void MailMergeImageFromBlob()
         {

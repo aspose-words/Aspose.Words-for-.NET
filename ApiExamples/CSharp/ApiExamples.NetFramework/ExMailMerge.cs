@@ -13,10 +13,10 @@ using Aspose.Words.Fields;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || __MOBILE__
 using lcpi.data.oledb;
 #endif
-#if !NETSTANDARD2_0
+#if !(NETSTANDARD2_0 || __MOBILE__)
 using System.Data.OleDb;
 using System.Web;
 #endif
@@ -26,7 +26,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExMailMerge : ApiExampleBase
     {
-#if !NETSTANDARD2_0
+#if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
         public void ExecuteArray()
         {

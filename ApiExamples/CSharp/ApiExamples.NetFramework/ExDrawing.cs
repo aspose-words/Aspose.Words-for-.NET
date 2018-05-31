@@ -11,7 +11,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExDrawing : ApiExampleBase
     {
-#if !NETSTANDARD2_0
+#if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
         public void DrawingVariousShapes()
         {
@@ -135,47 +135,47 @@ namespace ApiExamples
         {
             public ShapeInfoPrinter()
             {
-                _mBuilder = new StringBuilder();
+                mBuilder = new StringBuilder();
             }
 
             public string GetText()
             {
-                return _mBuilder.ToString();
+                return mBuilder.ToString();
             }
 
             public override VisitorAction VisitGroupShapeStart(GroupShape groupShape)
             {
-                _mBuilder.AppendLine("Shape group started:");
+                mBuilder.AppendLine("Shape group started:");
                 return VisitorAction.Continue;
             }
 
             public override VisitorAction VisitGroupShapeEnd(GroupShape groupShape)
             {
-                _mBuilder.AppendLine("End of shape group");
+                mBuilder.AppendLine("End of shape group");
                 return VisitorAction.Continue;
             }
 
             public override VisitorAction VisitShapeStart(Shape shape)
             {
-                _mBuilder.AppendLine("\tShape - " + shape.ShapeType + ":");
-                _mBuilder.AppendLine("\t\tWidth: " + shape.Width);
-                _mBuilder.AppendLine("\t\tHeight: " + shape.Height);
-                _mBuilder.AppendLine("\t\tStroke color: " + shape.Stroke.Color);
-                _mBuilder.AppendLine("\t\tFill color: " + shape.Fill.Color);
+                mBuilder.AppendLine("\tShape - " + shape.ShapeType + ":");
+                mBuilder.AppendLine("\t\tWidth: " + shape.Width);
+                mBuilder.AppendLine("\t\tHeight: " + shape.Height);
+                mBuilder.AppendLine("\t\tStroke color: " + shape.Stroke.Color);
+                mBuilder.AppendLine("\t\tFill color: " + shape.Fill.Color);
                 return VisitorAction.Continue;
             }
 
             public override VisitorAction VisitShapeEnd(Shape shape)
             {
-                _mBuilder.AppendLine("\tEnd of shape");
+                mBuilder.AppendLine("\tEnd of shape");
                 return VisitorAction.Continue;
             }
 
-            private readonly StringBuilder _mBuilder;
+            private readonly StringBuilder mBuilder;
         }
         //ExEnd
 
-#if !NETSTANDARD2_0
+#if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
         public void TypeOfImage()
         {
