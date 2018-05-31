@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{68C83549-677D-4986-9B23-24D8DB11ED52}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ApiExamples</RootNamespace>
+    <AssemblyName>ApiExamples</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.BarCode, Version=17.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.BarCode.17.12.0\lib\net4.5\Aspose.BarCode.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Pdf, Version=17.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.Pdf.17.12.0\lib\net40-client\Aspose.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Words, Version=18.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.Words.18.4.0\lib\net40\Aspose.Words.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.12.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>packages\iTextSharp.5.5.12\lib\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp.pdfa, Version=5.5.12.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>packages\itextsharp.pdfa.5.5.12\lib\itextsharp.pdfa.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ExAbsolutePositionTab.cs" />
+    <Compile Include="ExBookmarks.cs" />
+    <Compile Include="ExBorder.cs" />
+    <Compile Include="ExBorderCollection.cs" />
+    <Compile Include="ExBuildingBlocks.cs" />
+    <Compile Include="ExBuildVersion.cs" />
+    <Compile Include="ExComment.cs" />
+    <Compile Include="ExDrawing.cs" />
+    <Compile Include="ExDocumentBase.cs" />
+    <Compile Include="ExControlChar.cs" />
+    <Compile Include="ExHtmlLoadOptions.cs" />
+    <Compile Include="ExOdtSaveOptions.cs" />
+    <Compile Include="ExOoxmlSaveOptions.cs" />
+    <Compile Include="ExPclSaveOptions.cs" />
+    <Compile Include="ExSignDocumentCustom.cs" />
+    <Compile Include="ExTxtSaveOptions.cs" />
+    <Compile Include="ExXpsSaveOptions.cs" />
+    <Compile Include="ExUtilityClasses.cs" />
+    <Compile Include="ExDigitalSignatureCollection.cs" />
+    <Compile Include="ExDigitalSignatureUtil.cs" />
+    <Compile Include="ExMossDoc2Pdf.cs" />
+    <Compile Include="ExMossRtf2Docx.cs" />
+    <Compile Include="DocumentHelper.cs" />
+    <Compile Include="ExDocument.cs" />
+    <Compile Include="ExDocumentBuilder.cs" />
+    <Compile Include="ExDocumentBuilderImages.cs" />
+    <Compile Include="ExInsertDocument.cs" />
+    <Compile Include="ExVisitor.cs" />
+    <Compile Include="ExImage.cs" />
+    <Compile Include="ExShape.cs" />
+    <Compile Include="ExEditableRange.cs" />
+    <Compile Include="CustomBarcodeGenerator.cs" />
+    <Compile Include="ExField.cs" />
+    <Compile Include="ExFormFields.cs" />
+    <Compile Include="ExRenameMergeFields.cs" />
+    <Compile Include="ExFont.cs" />
+    <Compile Include="ExHeaderFooter.cs" />
+    <Compile Include="ExReplaceHyperlinks.cs" />
+    <Compile Include="ExHyphenation.cs" />
+    <Compile Include="ExInlineStory.cs" />
+    <Compile Include="ExLists.cs" />
+    <Compile Include="ExMailMerge.cs" />
+    <Compile Include="ExMailMergeCustom.cs" />
+    <Compile Include="ExMailMergeEvent.cs" />
+    <Compile Include="ExNestedMailMergeCustom.cs" />
+    <Compile Include="ExStructuredDocumentTag.cs" />
+    <Compile Include="ExNode.cs" />
+    <Compile Include="ExPageSetup.cs" />
+    <Compile Include="ExParagraph.cs" />
+    <Compile Include="ExProperties.cs" />
+    <Compile Include="ApiExampleBase.cs" />
+    <Compile Include="ExRange.cs" />
+    <Compile Include="ExRendering.cs" />
+    <Compile Include="ExReportingEngine.cs" />
+    <Compile Include="ExImageSaveOptions.cs" />
+    <Compile Include="ExHtmlSaveOptions.cs" />
+    <Compile Include="ExHtmlFixedSaveOptions.cs" />
+    <Compile Include="ExPdfSaveOptions.cs" />
+    <Compile Include="ExSavingCallback.cs" />
+    <Compile Include="ExSection.cs" />
+    <Compile Include="ExStyles.cs" />
+    <Compile Include="ExCellFormat.cs" />
+    <Compile Include="ExTable.cs" />
+    <Compile Include="ExTableColumn.cs" />
+    <Compile Include="ExTabStopCollection.cs" />
+    <Compile Include="ExVariableCollection.cs" />
+    <Compile Include="ExWarningInfoCollection.cs" />
+    <Compile Include="TestData\Common.cs" />
+    <Compile Include="TestData\TestBuilders\ColorItemTestBuilder.cs" />
+    <Compile Include="TestData\TestBuilders\DocumentTestBuilder.cs" />
+    <Compile Include="TestData\TestBuilders\ImageTestBuilder.cs" />
+    <Compile Include="TestData\TestBuilders\NumericTestBuilder.cs" />
+    <Compile Include="TestData\TestClasses\ClientTestClass.cs" />
+    <Compile Include="TestData\TestClasses\ColorItemTestClass.cs" />
+    <Compile Include="TestData\TestClasses\ContractTestClass.cs" />
+    <Compile Include="TestData\TestClasses\DocumentTestClass.cs" />
+    <Compile Include="TestData\TestClasses\ImageTestClass.cs" />
+    <Compile Include="TestData\TestClasses\ManagerTestClass.cs" />
+    <Compile Include="TestData\TestClasses\MessageTestClass.cs" />
+    <Compile Include="TestData\TestClasses\NumericTestClass.cs" />
+    <Compile Include="TestData\TestClasses\SignPersonTestClass.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
