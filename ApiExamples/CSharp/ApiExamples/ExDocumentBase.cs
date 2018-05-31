@@ -121,7 +121,7 @@ namespace ApiExamples
             // This rectangle covers the entire page in the output document
             // We can also do this by setting doc.PageColor
             shapeRectangle.FillColor = System.Drawing.Color.LightBlue;
-            doc.Save("DocumentBase.BackgroundShapeFlatColour.docx");
+            doc.Save(MyDir + @"\Artifacts\DocumentBase.BackgroundShapeFlatColor.docx");
 
             // Setting the image will override the flat background colour with the image
             shapeRectangle.ImageData.SetImage(MyDir + @"\Images\Watermark.png");
