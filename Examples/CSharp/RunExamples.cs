@@ -93,7 +93,7 @@ namespace Aspose.Words.Examples.CSharp
             // ConvertDocumentToEPUB.Run();
             // ConvertDocumentToHtmlWithRoundtrip.Run();
             // DetectDocumentSignatures.Run();
-            // SaveAsTxt.Run();
+            WorkingwithTxt.Run();
 
             //SaveOptionsHtmlFixed.Run();
             //SaveDocWithHtmlSaveOptions.Run();
@@ -183,7 +183,7 @@ namespace Aspose.Words.Examples.CSharp
             // AddGroupShapeToDocument.Run();
             // CompareDocument.Run();
             // DocProperties.Run();
-            // AcceptAllRevisions.Run();
+            // WorkingWithRevisions.Run();
             // WriteAndFont.Run();
             // DocumentBuilderInsertParagraph.Run();
             // DocumentBuilderBuildTable.Run();
@@ -206,7 +206,7 @@ namespace Aspose.Words.Examples.CSharp
             // GenerateACustomBarCodeImage.Run();
             // WorkingWithSaveOptions.Run();
             // SetCompatibilityOptions.Run();
-
+            // Setuplanguagepreferences.Run();
 
             //// Fields
             //// =====================================================
@@ -292,6 +292,7 @@ namespace Aspose.Words.Examples.CSharp
             // CloneTable.Run();
             // InsertTableFromHtml.Run();
             // ApplyFormatting.Run();
+
             // SpecifyHeightAndWidth.Run();
             // ApplyStyle.Run();
             // ExtractText.Run();
@@ -315,7 +316,7 @@ namespace Aspose.Words.Examples.CSharp
             //// StructuredDocumentTag 
             //// =====================================================
             // WorkingWithSDT.Run();
-              
+
             //// EndNote and Footnote 
             //// =====================================================
             // WorkingWithFootnote.Run();

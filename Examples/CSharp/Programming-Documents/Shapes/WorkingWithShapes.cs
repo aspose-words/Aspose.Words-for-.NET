@@ -1,4 +1,5 @@
 ﻿using Aspose.Words.Drawing;
+using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using System;
 using System.Collections.Generic;
@@ -16,16 +17,42 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithShapes();
             SetShapeLayoutInCell(dataDir);
-            SetAspectRatioLocked();
+            SetAspectRatioLocked(dataDir);
+            InsertShapeUsingDocumentBuilder(dataDir);
 
         }
 
-        public static void SetAspectRatioLocked()
+        public static void InsertShapeUsingDocumentBuilder(string dataDir)
+        {
+            // ExStart:InsertShapeUsingDocumentBuilder
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            //Free-floating shape insertion.
+            Shape shape = builder.InsertShape(ShapeType.TextBox, RelativeHorizontalPosition.Page, 100, RelativeVerticalPosition.Page, 100, 50, 50, WrapType.None);
+            shape.Rotation = 30.0;
+
+            builder.Writeln();
+
+            //Inline shape insertion.
+            shape = builder.InsertShape(ShapeType.TextBox, 50, 50);
+            shape.Rotation = 30.0;
+
+            OoxmlSaveOptions so = new OoxmlSaveOptions(SaveFormat.Docx);
+            // "Strict" or "Transitional" compliance allows to save shape as DML.
+            so.Compliance = OoxmlCompliance.Iso29500_2008_Transitional;
+             
+            dataDir = dataDir + "Shape_InsertShapeUsingDocumentBuilder_out.doc";
+
+            // Save the document to disk.
+            doc.Save(dataDir);
+            // ExEnd:InsertShapeUsingDocumentBuilder
+            Console.WriteLine("\nInsert Shape successfully using DocumentBuilder.\nFile saved at " + dataDir);
+        }
+
+        public static void SetAspectRatioLocked(string dataDir)
         {
             // ExStart:SetAspectRatioLocked
-            // The path to the documents directory.
-            string dataDir = RunExamples.GetDataDir_WorkingWithShapes();
-
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             var shape = builder.InsertImage(dataDir + "Test.png");

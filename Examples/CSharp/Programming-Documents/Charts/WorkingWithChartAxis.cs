@@ -23,6 +23,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
             HideChartAxis(dataDir);
         }
 
+
         public static void DefineXYAxisProperties(String dataDir)
         {
             // ExStart:DefineXYAxisProperties
