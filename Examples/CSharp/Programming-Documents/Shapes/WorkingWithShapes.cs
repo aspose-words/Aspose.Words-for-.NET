@@ -41,11 +41,11 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
             OoxmlSaveOptions so = new OoxmlSaveOptions(SaveFormat.Docx);
             // "Strict" or "Transitional" compliance allows to save shape as DML.
             so.Compliance = OoxmlCompliance.Iso29500_2008_Transitional;
-             
-            dataDir = dataDir + "Shape_InsertShapeUsingDocumentBuilder_out.doc";
+
+            dataDir = dataDir + "Shape_InsertShapeUsingDocumentBuilder_out.docx";
 
             // Save the document to disk.
-            doc.Save(dataDir);
+            doc.Save(dataDir, so);
             // ExEnd:InsertShapeUsingDocumentBuilder
             Console.WriteLine("\nInsert Shape successfully using DocumentBuilder.\nFile saved at " + dataDir);
         }
@@ -98,7 +98,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
             builder.MoveTo(run);
             builder.InsertNode(watermark);
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2010);
-             
+
             dataDir = dataDir + "Shape_IsLayoutInCell_out.docx";
 
             // Save the document to disk.

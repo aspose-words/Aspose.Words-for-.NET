@@ -93,7 +93,7 @@ namespace Aspose.Words.Examples.CSharp
             // ConvertDocumentToEPUB.Run();
             // ConvertDocumentToHtmlWithRoundtrip.Run();
             // DetectDocumentSignatures.Run();
-            WorkingwithTxt.Run();
+            // WorkingwithTxt.Run();
 
             //SaveOptionsHtmlFixed.Run();
             //SaveDocWithHtmlSaveOptions.Run();

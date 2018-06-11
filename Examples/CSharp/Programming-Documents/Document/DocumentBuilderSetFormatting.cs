@@ -55,7 +55,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             format.WordWrap = true;
             format.HangingPunctuation = false;
 
-            dataDir = dataDir + "SetAsianTypographyLinebreakGroupProp_out.doc";
+            dataDir = dataDir + "SetAsianTypographyLinebreakGroupProp_out.docx";
             doc.Save(dataDir);
             // ExEnd:SetAsianTypographyLinebreakGroupProp
             Console.WriteLine("\nParagraphFormat properties for Asian Typography line break group are set successfully.\nFile saved at " + dataDir);

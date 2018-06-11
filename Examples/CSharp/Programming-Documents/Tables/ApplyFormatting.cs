@@ -6,6 +6,7 @@ using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Tables;
 using System.Diagnostics;
+using Aspose.Words.Saving;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
 {
@@ -254,10 +255,15 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             table.Title = "Test title";
             table.Description = "Test description";
 
-            dataDir = dataDir + "Table.SetTableTitleandDescription_out.doc";
+            OoxmlSaveOptions options = new OoxmlSaveOptions();
+            options.Compliance = OoxmlCompliance.Iso29500_2008_Strict;
+
+            doc.CompatibilityOptions.OptimizeFor(Settings.MsWordVersion.Word2016);
+
+            dataDir = dataDir + "Table.SetTableTitleandDescription_out.docx";
 
             // Save the document to disk.
-            doc.Save(dataDir);
+            doc.Save(dataDir, options);
 
             // ExEnd:SetTableTitleandDescription
             Console.WriteLine("\nTable's title and description is set successfully.");
