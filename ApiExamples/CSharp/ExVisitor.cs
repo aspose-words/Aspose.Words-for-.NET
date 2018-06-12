@@ -122,8 +122,10 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitDocumentStart(Document document)
             {
+                int childNodeCount = document.GetChildNodes(NodeType.Any, true).Count;
+
                 // A Document node is at the root of every document, so if we let a document accept a visitor, this will be the first visitor action to be carried out
-                this.IndentAndAppendLine("[Document start] Child nodes: " + document.GetChildNodes(NodeType.Any, true).Count);
+                this.IndentAndAppendLine("[Document start] Child nodes: " + childNodeCount);
                 mDocTraversalDepth++;
 
                 // Let the visitor continue visiting other nodes
@@ -147,7 +149,11 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitSectionStart(Section section)
             {
-                this.IndentAndAppendLine("[Section start]");
+                // Get the index of our section within the document
+                NodeCollection docSections = section.Document.GetChildNodes(NodeType.Section, false);
+                int sectionIndex = docSections.IndexOf(section);
+
+                this.IndentAndAppendLine("[Section start] Section index: " + sectionIndex);
                 mDocTraversalDepth++;
 
                 return VisitorAction.Continue;
@@ -169,7 +175,8 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitBodyStart(Body body)
             {
-                this.IndentAndAppendLine("[Body start]");
+                int paragraphCount = body.Paragraphs.Count;
+                this.IndentAndAppendLine("[Body start] Paragraphs: " + paragraphCount);
                 mDocTraversalDepth++;
 
                 return VisitorAction.Continue;
@@ -213,21 +220,22 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                // A Run is not a composite node so it has no children
+                // A Run is not a composite node; it has no children
                 // Our visitor will not be going any deeper, so we'll just print the contents of the run on the same line
                 this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
 
                 return VisitorAction.Continue;
-                // We can expect every document to have Document, Section, Body, Paragraph and Run nodes
-                // All other visitor actions are optional, depending on the document's node variety
             }
+
+            // We can expect every document to have Document, Section, Body, Paragraph and Run nodes, and we are handling all of those above
+            // All other visitor actions below are optional, depending on the variety of nodes in the document
 
             /// <summary>
             /// Called when a FieldStart node is encountered in the document.
             /// </summary>
             public override VisitorAction VisitFieldStart(FieldStart fieldStart)
             {
-                this.IndentAndAppendLine("[Field start]");
+                this.IndentAndAppendLine("[Field start] FieldType: " + fieldStart.FieldType);
                 mDocTraversalDepth++;
 
                 return VisitorAction.Continue;
@@ -259,9 +267,10 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitHeaderFooterStart(HeaderFooter headerFooter)
             {
-                this.IndentAndAppendLine("[HeaderFooter start]");
+                this.IndentAndAppendLine("[HeaderFooter start] HeaderFooterType: " + headerFooter.HeaderFooterType);
                 mDocTraversalDepth++;
 
+                // Next, the visitor will traverse the nodes in the header/footer
                 return VisitorAction.Continue;
             }
 
@@ -281,7 +290,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitAbsolutePositionTab(AbsolutePositionTab tab)
             {
-                // If we encounter an AbsolutePositionTab character, we can simply sibstitute it with a tab 
+                // If we encounter an AbsolutePositionTab character, in our text output we can simply sibstitute it with a tab 
                 this.mBuilder.Append("\t");
                 return VisitorAction.Continue;
             }
@@ -334,10 +343,19 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitTableStart(Table table)
             {
-                // We could take our table and traverse every cell but it would be more elegant to let the visitor do it for us
-                this.IndentAndAppendLine("[Table start]");
+                int rows = 0;
+                int columns = 0;
+
+                if (table.Rows.Count > 0)
+                {
+                    rows = table.Rows.Count;
+                    columns = table.FirstRow.Count;
+                }
+
+                this.IndentAndAppendLine("[Table start] Size: " + rows + "x" + columns);
                 mDocTraversalDepth++;
 
+                // The visitor will now go through every row and cell
                 return VisitorAction.Continue;
             }
 
@@ -405,6 +423,7 @@ namespace ApiExamples
             {
                 this.IndentAndAppendLine("[Comment range start]");
                 mDocTraversalDepth++;
+
                 return VisitorAction.Continue;
             }
 
@@ -415,6 +434,7 @@ namespace ApiExamples
             {
                 mDocTraversalDepth--;
                 this.IndentAndAppendLine("[Comment range end]");
+
                 return VisitorAction.Continue;
             }
 
@@ -425,6 +445,7 @@ namespace ApiExamples
             {
                 this.IndentAndAppendLine(String.Format("[Comment start] {0}, {1}", comment.Author, comment.DateTime));
                 mDocTraversalDepth++;
+
                 return VisitorAction.Continue;
             }
 
@@ -435,6 +456,7 @@ namespace ApiExamples
             {
                 mDocTraversalDepth--;
                 this.IndentAndAppendLine("[Comment end]");
+
                 return VisitorAction.Continue;
             }
 
@@ -445,6 +467,7 @@ namespace ApiExamples
             {
                 this.IndentAndAppendLine("[EditableRange start]");
                 mDocTraversalDepth++;
+
                 return VisitorAction.Continue;
             }
 
@@ -455,6 +478,7 @@ namespace ApiExamples
             {
                 mDocTraversalDepth--;
                 this.IndentAndAppendLine("[EditableRange end]");
+
                 return VisitorAction.Continue;
             }
 
@@ -462,9 +486,10 @@ namespace ApiExamples
             /// Called when a Footnote node is encountered in the document.
             /// </summary>
             public override VisitorAction VisitFootnoteStart(Footnote footnote)
-            {
-                this.IndentAndAppendLine("[Footnote start]");
+            {   
+                this.IndentAndAppendLine("[Footnote start] Type: " + footnote.FootnoteType);
                 mDocTraversalDepth++;
+
                 return VisitorAction.Continue;
             }
 
@@ -475,6 +500,7 @@ namespace ApiExamples
             {
                 mDocTraversalDepth--;
                 this.IndentAndAppendLine("[Footnote end]");
+
                 return VisitorAction.Continue;
             }
 
@@ -483,8 +509,9 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitGlossaryDocumentStart(GlossaryDocument glossaryDocument)
             {
-                this.IndentAndAppendLine("[GlossaryDocument start]");
+                this.IndentAndAppendLine("[GlossaryDocument start] Building block count: " + glossaryDocument.BuildingBlocks.Count);
                 mDocTraversalDepth++;
+
                 return VisitorAction.Continue;
             }
 
@@ -495,6 +522,7 @@ namespace ApiExamples
             {
                 mDocTraversalDepth--;
                 this.IndentAndAppendLine("[GlossaryDocument end]");
+
                 return VisitorAction.Continue;
             }
 
@@ -503,8 +531,11 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitGroupShapeStart(GroupShape groupShape)
             {
-                this.IndentAndAppendLine("[GroupShape start]");
+                int innerShapeCount = groupShape.GetChildNodes(NodeType.Shape, true).Count;
+
+                this.IndentAndAppendLine("[GroupShape start] Inner shapes: " + innerShapeCount);
                 mDocTraversalDepth++;
+
                 return VisitorAction.Continue;
             }
 
@@ -515,6 +546,7 @@ namespace ApiExamples
             {
                 mDocTraversalDepth--;
                 this.IndentAndAppendLine("[GroupShape end]");
+
                 return VisitorAction.Continue;
             }
 
@@ -523,8 +555,9 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitOfficeMathStart(OfficeMath officeMath)
             {
-                this.IndentAndAppendLine("[OfficeMath start]");
+                this.IndentAndAppendLine("[OfficeMath start] Math object type: " + officeMath.MathObjectType);
                 mDocTraversalDepth++;
+
                 return VisitorAction.Continue;
             }
 
@@ -535,6 +568,7 @@ namespace ApiExamples
             {
                 mDocTraversalDepth--;
                 this.IndentAndAppendLine("[OfficeMath end]");
+
                 return VisitorAction.Continue;
             }
 
@@ -545,6 +579,7 @@ namespace ApiExamples
             {
                 this.IndentAndAppendLine("[Shape start] Type: " + shape.ShapeType + ", Fill color: " + shape.FillColor);
                 mDocTraversalDepth++;
+
                 return VisitorAction.Continue;
             }
 
@@ -555,6 +590,7 @@ namespace ApiExamples
             {
                 mDocTraversalDepth--;
                 this.IndentAndAppendLine("[Shape end]");
+
                 return VisitorAction.Continue;
             }
 
@@ -565,6 +601,7 @@ namespace ApiExamples
             {
                 this.IndentAndAppendLine("[SmartTag start] Name: " + smartTag.Element);
                 mDocTraversalDepth++;
+
                 return VisitorAction.Continue;
             }
 
@@ -575,6 +612,7 @@ namespace ApiExamples
             {
                 mDocTraversalDepth--;
                 this.IndentAndAppendLine("[SmartTag end]");
+
                 return VisitorAction.Continue;
             }
 
@@ -585,6 +623,7 @@ namespace ApiExamples
             {
                 this.IndentAndAppendLine("[StructuredDocumentTag start] Title: " + structuredDocumentTag.Title);
                 mDocTraversalDepth++;
+
                 return VisitorAction.Continue;
             }
 
@@ -595,6 +634,7 @@ namespace ApiExamples
             {
                 mDocTraversalDepth--;
                 this.IndentAndAppendLine("[StructuredDocumentTag end]");
+
                 return VisitorAction.Continue;
             }
 
