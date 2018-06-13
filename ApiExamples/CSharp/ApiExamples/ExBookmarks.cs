@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Aspose.Pdf.Facades;
 using NUnit.Framework;
 using Aspose.Words;
@@ -247,7 +248,6 @@ namespace ApiExamples
         //ExStart
         //ExFor:Bookmark.BookmarkStart
         //ExFor:Bookmark.BookmarkEnd
-        //ExFor:BookmarkCollection.GetEnumerator
         //ExFor:BookmarkStart.Accept(DocumentVisitor)
         //ExFor:BookmarkEnd.Accept(DocumentVisitor)
         //ExFor:BookmarkStart.Bookmark
@@ -274,7 +274,7 @@ namespace ApiExamples
             BookmarkCollection bookmarks = doc.Range.Bookmarks;
 
             // Look at initial values of our bookmarks
-            PrintAllBookmarkInfo(doc);
+            PrintAllBookmarkInfo(bookmarks);
 
             Assert.AreEqual("Bookmark 1", bookmarks[0].Name); //ExSkip
             Assert.AreEqual("Text content of Bookmark 2", bookmarks[1].Text); //ExSkip
@@ -285,8 +285,10 @@ namespace ApiExamples
             bookmarks[1].Text = "Updated text content of " + bookmarks[1].Name;
             bookmarks[2].Remove();
 
+            bookmarks = doc.Range.Bookmarks;
+
             // Look at updated values of our bookmarks
-            PrintAllBookmarkInfo(doc);
+            PrintAllBookmarkInfo(bookmarks);
 
             Assert.AreEqual("Updated name of Bookmark 1", bookmarks[0].Name); //ExSkip
             Assert.AreEqual("Updated text content of Bookmark 2", bookmarks[1].Text); //ExSkip
@@ -296,26 +298,28 @@ namespace ApiExamples
         /// <summary>
         /// Use an iterator and a visitor to print info of every bookmark from within a document.
         /// </summary>
-        private static void PrintAllBookmarkInfo(Document doc)
+        private static void PrintAllBookmarkInfo(BookmarkCollection bookmarks)
         {
             // Create a DocumentVisitor
             BookmarkInfoPrinter bookmarkVisitor = new BookmarkInfoPrinter();
             
-            // Get all bookmarks from the document
-            BookmarkCollection bookmarks = doc.Range.Bookmarks;
-            
             // Get the enumerator from the document's BookmarkCollection and iterate over the bookmarks
-            IEnumerator enumerator = bookmarks.GetEnumerator();
-            while (enumerator.MoveNext())
+            using (IEnumerator<Bookmark> enumerator = bookmarks.GetEnumerator())
             {
-                Bookmark currentBookmark = (Bookmark)enumerator.Current;
+                while (enumerator.MoveNext())
+                {
+                    Bookmark currentBookmark = enumerator.Current;
 
-                // Accept our DocumentVisitor it to print information about our bookmarks
-                currentBookmark.BookmarkStart.Accept(bookmarkVisitor);
-                currentBookmark.BookmarkEnd.Accept(bookmarkVisitor);
+                    // Accept our DocumentVisitor it to print information about our bookmarks
+                    if (currentBookmark != null)
+                    {
+                        currentBookmark.BookmarkStart.Accept(bookmarkVisitor);
+                        currentBookmark.BookmarkEnd.Accept(bookmarkVisitor);
 
-                // Prints a blank line
-                Console.WriteLine(currentBookmark.BookmarkStart.GetText());
+                        // Prints a blank line
+                        Console.WriteLine(currentBookmark.BookmarkStart.GetText());
+                    }
+                }
             }
         }
 

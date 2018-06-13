@@ -7,8 +7,8 @@ namespace ApiExamples
     internal class ExAbsolutePositionTab : ApiExampleBase
     {
         //ExStart
-        //ExFor:ExAbsolutePositionTab
-        //ExFor:ExAbsolutePositionTab.Accept(DocumentVisitor)
+        //ExFor:AbsolutePositionTab
+        //ExFor:AbsolutePositionTab.Accept(DocumentVisitor)
         //ExSummary:Shows how to use AbsolutePositionTab.
         [Test] //ExSkip
         public void DocumentToTxt()

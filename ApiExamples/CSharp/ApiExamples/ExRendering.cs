@@ -46,8 +46,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.Save(String, SaveOptions)
             //ExFor:PdfSaveOptions
-            //ExFor:PdfSaveOptions.HeadingsOutlineLevels
-            //ExFor:PdfSaveOptions.ExpandedOutlineLevels
+            //ExFor:OutlineOptions.HeadingsOutlineLevels
+            //ExFor:OutlineOptions.ExpandedOutlineLevels
             //ExSummary:Converts a whole document to PDF with three levels in the document outline.
             Document doc = new Document(MyDir + "Rendering.doc");
 
@@ -1171,7 +1171,7 @@ namespace ApiExamples
         public void DisableEmbeddingStandardWindowsFonts()
         {
             //ExStart
-            //ExFor:PdfSaveOptions.EmbedStandardWindowsFonts
+            //ExFor:PdfSaveOptions.FontEmbeddingMode
             //ExId:EmbedStandardWindowsFonts
             //ExSummary:Shows how to set Aspose.Words to skip embedding Arial and Times New Roman fonts into a PDF document.
             // Load the document to render.

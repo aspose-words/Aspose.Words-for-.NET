@@ -27,7 +27,7 @@ namespace ApiExamples
             //ExFor:MailMerge.FieldMergingCallback
             //ExFor:IFieldMergingCallback
             //ExFor:FieldMergingArgs
-            //ExFor:FieldMergingArgs.Field
+            //ExFor:FieldMergingArgsBase.Field
             //ExFor:FieldMergingArgsBase.DocumentFieldName
             //ExFor:FieldMergingArgsBase.Document
             //ExFor:FieldMergingArgsBase.FieldValue
