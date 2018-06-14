@@ -26,85 +26,43 @@ namespace ApiExamples
         //ExStart
         //ExFor:Document.Accept
         //ExFor:Body.Accept
-        //ExFor:DocumentVisitor
-        //ExFor:DocumentVisitor.VisitAbsolutePositionTab
-        //ExFor:DocumentVisitor.VisitBookmarkStart 
-        //ExFor:DocumentVisitor.VisitBookmarkEnd
         //ExFor:DocumentVisitor.VisitRun
-        //ExFor:DocumentVisitor.VisitFieldStart
-        //ExFor:DocumentVisitor.VisitFieldEnd
-        //ExFor:DocumentVisitor.VisitFieldSeparator
+        //ExFor:DocumentVisitor.VisitAbsolutePositionTab
+        //ExFor:DocumentVisitor.VisitDocumentEnd(Document)
+        //ExFor:DocumentVisitor.VisitDocumentStart(Document)
+        //ExFor:DocumentVisitor.VisitSectionEnd(Section)
+        //ExFor:DocumentVisitor.VisitSectionStart(Section)
         //ExFor:DocumentVisitor.VisitBodyStart
         //ExFor:DocumentVisitor.VisitBodyEnd
         //ExFor:DocumentVisitor.VisitParagraphStart
         //ExFor:DocumentVisitor.VisitParagraphEnd
-        //ExFor:DocumentVisitor.VisitHeaderFooterStart
-        //ExFor:DocumentVisitor.VisitHeaderFooterEnd
-        //ExFor:DocumentVisitor.VisitBuildingBlockEnd(BuildingBlocks.BuildingBlock)
-        //ExFor:DocumentVisitor.VisitBuildingBlockStart(BuildingBlocks.BuildingBlock)
-        //ExFor:DocumentVisitor.VisitCellStart(Tables.Cell)
-        //ExFor:DocumentVisitor.VisitCellEnd(Tables.Cell)
-        //ExFor:DocumentVisitor.VisitCommentStart(Comment)
-        //ExFor:DocumentVisitor.VisitCommentEnd(Comment)
-        //ExFor:DocumentVisitor.VisitCommentRangeEnd(CommentRangeEnd)
-        //ExFor:DocumentVisitor.VisitCommentRangeStart(CommentRangeStart)
-        //ExFor:DocumentVisitor.VisitDocumentEnd(Document)
-        //ExFor:DocumentVisitor.VisitDocumentStart(Document)
-        //ExFor:DocumentVisitor.VisitEditableRangeEnd(EditableRangeEnd)
-        //ExFor:DocumentVisitor.VisitEditableRangeStart(EditableRangeStart)
-        //ExFor:DocumentVisitor.VisitFootnoteEnd(Footnote)
-        //ExFor:DocumentVisitor.VisitFootnoteStart(Footnote)
-        //ExFor:DocumentVisitor.VisitGlossaryDocumentEnd(BuildingBlocks.GlossaryDocument)
-        //ExFor:DocumentVisitor.VisitGlossaryDocumentStart(BuildingBlocks.GlossaryDocument)
-        //ExFor:DocumentVisitor.VisitGroupShapeEnd(Drawing.GroupShape)
-        //ExFor:DocumentVisitor.VisitGroupShapeStart(Drawing.GroupShape)
-        //ExFor:DocumentVisitor.VisitHeaderFooterEnd(HeaderFooter)
-        //ExFor:DocumentVisitor.VisitOfficeMathEnd(Math.OfficeMath)
-        //ExFor:DocumentVisitor.VisitOfficeMathStart(Math.OfficeMath)
-        //ExFor:DocumentVisitor.VisitRowEnd(Tables.Row)
-        //ExFor:DocumentVisitor.VisitRowStart(Tables.Row)
-        //ExFor:DocumentVisitor.VisitSectionEnd(Section)
-        //ExFor:DocumentVisitor.VisitSectionStart(Section)
-        //ExFor:DocumentVisitor.VisitShapeEnd(Drawing.Shape)
-        //ExFor:DocumentVisitor.VisitShapeStart(Drawing.Shape)
-        //ExFor:DocumentVisitor.VisitSmartTagEnd(Markup.SmartTag)
-        //ExFor:DocumentVisitor.VisitSmartTagStart(Markup.SmartTag)
-        //ExFor:DocumentVisitor.VisitStructuredDocumentTagEnd(Markup.StructuredDocumentTag)
-        //ExFor:DocumentVisitor.VisitStructuredDocumentTagStart(Markup.StructuredDocumentTag)
         //ExFor:DocumentVisitor.VisitSubDocument(SubDocument)
-        //ExFor:DocumentVisitor.VisitTableEnd(Tables.Table)
-        //ExFor:DocumentVisitor.VisitTableStart(Tables.Table)
-        //ExFor:VisitorAction
-        //ExId:ExtractContentDocToTxtConverter
-        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are using a visitor that prints a directory tree-style map of a document.
+        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are going through the basic nodes of a document and printing their contents.
         [Test] //ExSkip
-        public void ToText()
+        public void DocStructureToText()
         {
-            // Open the document we want to map.
-            Document doc = new Document(MyDir + "Visitor.MapDocument.doc");
+            // Open the document that has nodes we want to print the info of
+            Document doc = new Document(MyDir + "Visitor.Destination.doc");
 
-            // Create an object that inherits from the DocumentVisitor class.
-            DocToNodeTree converter = new DocToNodeTree();
+            // Create an object that inherits from the DocumentVisitor class
+            DocStructurePrinter visitor = new DocStructurePrinter();
 
-            // This is the well known Visitor pattern. Get the model to accept a visitor.
-            // The model will iterate through itself by calling the corresponding methods
-            // on the visitor object (this is called visiting).
-            // 
-            // Note that every node in the object model has the Accept method so the visiting
-            // can be executed not only for the whole document, but for any node in the document.
-            doc.Accept(converter);
+            // Accepring a visitor lets it start traversing the nodes in the document, 
+            // starting with the node that accepted it to then recursively visit every child
+            // This particular visitor will
+            doc.Accept(visitor);
 
             // Once the visiting is complete, we can retrieve the result of the operation,
-            // that in this example, has accumulated in the visitor.
-            Console.WriteLine(converter.GetText());
+            // that in this example, has accumulated in the visitor
+            Console.WriteLine(visitor.GetText());
         }
 
         /// <summary>
-        /// This Visitor implementation traverses a document and maps it's nodes in the style of a vertical directory tree diagram. 
+        /// This Visitor implementation prints information about sections, bodies, paragraphs and runs encountered in the document.
         /// </summary>
-        public class DocToNodeTree : DocumentVisitor
+        public class DocStructurePrinter : DocumentVisitor
         {
-            public DocToNodeTree()
+            public DocStructurePrinter()
             {
                 this.mBuilder = new StringBuilder();
             }
@@ -220,67 +178,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                // A Run is not a composite node; it has no children
-                // Our visitor will not be going any deeper, so we'll just print the contents of the run on the same line
                 this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
-
-                return VisitorAction.Continue;
-            }
-
-            // We can expect every document to have Document, Section, Body, Paragraph and Run nodes, and we are handling all of those above
-            // All other visitor actions below are optional, depending on the variety of nodes in the document
-
-            /// <summary>
-            /// Called when a FieldStart node is encountered in the document.
-            /// </summary>
-            public override VisitorAction VisitFieldStart(FieldStart fieldStart)
-            {
-                this.IndentAndAppendLine("[Field start] FieldType: " + fieldStart.FieldType);
-                mDocTraversalDepth++;
-
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Called when a FieldEnd node is encountered in the document.
-            /// </summary>
-            public override VisitorAction VisitFieldEnd(FieldEnd fieldEnd)
-            {
-                mDocTraversalDepth--;
-                this.IndentAndAppendLine("[Field end]");
-
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Called when a FieldSeparator node is encountered in the document.
-            /// </summary>
-            public override VisitorAction VisitFieldSeparator(FieldSeparator fieldSeparator)
-            {
-                this.IndentAndAppendLine("[FieldSeparator]");
-
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Called when a HeaderFooter node is encountered in the document.
-            /// </summary>
-            public override VisitorAction VisitHeaderFooterStart(HeaderFooter headerFooter)
-            {
-                this.IndentAndAppendLine("[HeaderFooter start] HeaderFooterType: " + headerFooter.HeaderFooterType);
-                mDocTraversalDepth++;
-
-                // Next, the visitor will traverse the nodes in the header/footer
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Called when the visiting of a HeaderFooter node is ended.
-            /// </summary>
-            public override VisitorAction VisitHeaderFooterEnd(HeaderFooter headerFooter)
-            {
-                mDocTraversalDepth--;
-                this.IndentAndAppendLine("[HeaderFooter end]");
 
                 return VisitorAction.Continue;
             }
@@ -296,44 +194,211 @@ namespace ApiExamples
             }
 
             /// <summary>
-            /// Called when a BookmarkStart node is encountered in the document.
+            /// Called when a SubDocument node is encountered in the document.
             /// </summary>
-            public override VisitorAction VisitBookmarkStart(BookmarkStart bookmarkStart)
+            public override VisitorAction VisitSubDocument(SubDocument subDocument)
             {
-                this.IndentAndAppendLine("[Bookmark start] Name: \"" + bookmarkStart.Bookmark.Name + "\"");
+                this.IndentAndAppendLine("[SubDocument]");
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
+            /// </summary>
+            /// <param name="text"></param>
+            private void IndentAndAppendLine(String text)
+            {
+                for (int i = 0; i < mDocTraversalDepth; i++)
+                {
+                    mBuilder.Append("|  ");
+                }
+                mBuilder.AppendLine(text);
+            }
+
+            private int mDocTraversalDepth;
+            private readonly StringBuilder mBuilder;
+        }
+        //ExEnd 
+
+        //ExStart
+        //ExFor:DocumentVisitor.VisitShapeEnd(Shape)
+        //ExFor:DocumentVisitor.VisitShapeStart(Shape)
+        //ExFor:DocumentVisitor.VisitGroupShapeEnd(GroupShape)
+        //ExFor:DocumentVisitor.VisitGroupShapeStart(GroupShape)
+        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are using a visitor that prints a directory tree-style map of the shapes inside a document.
+        [Test] //ExSkip
+        public void ShapesToText()
+        {
+            // Open the document that has shapes we want to print the info of
+            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+
+            // Create an object that inherits from the DocumentVisitor class
+            ShapeInfoPrinter visitor = new ShapeInfoPrinter();
+
+            // Accepring a visitor lets it start traversing the nodes in the document, 
+            // starting with the node that accepted it to then recursively visit every child
+            // This particular visitor will go through every node but only acts when it finds node types for which it has corresponding overriding methods
+            doc.Accept(visitor);
+
+            // Once the visiting is complete, we can retrieve the result of the operation,
+            // that in this example, has accumulated in the visitor
+            Console.WriteLine(visitor.GetText());
+        }
+
+        /// <summary>
+        /// This Visitor implementation prints information about shapes encountered in the document.
+        /// </summary>
+        public class ShapeInfoPrinter : DocumentVisitor
+        {
+            public ShapeInfoPrinter()
+            {
+                this.mBuilder = new StringBuilder();
+                this.mVisitorIsInsideShape = false;
+            }
+
+            /// <summary>
+            /// Gets the plain text of the document that was accumulated by the visitor.
+            /// </summary>
+            public String GetText()
+            {
+                return this.mBuilder.ToString();
+            }
+
+            /// <summary>
+            /// Called when a Run node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitRun(Run run)
+            {
+                // We will only print runs if they are children of shape nodes, as they are in a text box for example
+                if (mVisitorIsInsideShape) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when a Shape node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitShapeStart(Shape shape)
+            {
+                this.IndentAndAppendLine("[Shape start] Type: " + shape.ShapeType + ", Fill color: " + shape.FillColor);
+                mDocTraversalDepth++;
+
+                mVisitorIsInsideShape = true;
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when the visiting of a Shape node is ended.
+            /// </summary>
+            public override VisitorAction VisitShapeEnd(Shape shape)
+            {
+                mDocTraversalDepth--;
+                this.IndentAndAppendLine("[Shape end]");
+
+                mVisitorIsInsideShape = false;
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when a GroupShape node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitGroupShapeStart(GroupShape groupShape)
+            {
+                int innerShapeCount = groupShape.GetChildNodes(NodeType.Shape, true).Count;
+
+                this.IndentAndAppendLine("[GroupShape start] Inner shapes: " + innerShapeCount);
                 mDocTraversalDepth++;
 
                 return VisitorAction.Continue;
             }
 
             /// <summary>
-            /// Called when a BookmarkEnd node is encountered in the document.
+            /// Called when the visiting of a GroupShape node is ended.
             /// </summary>
-            public override VisitorAction VisitBookmarkEnd(BookmarkEnd bookmarkEnd)
+            public override VisitorAction VisitGroupShapeEnd(GroupShape groupShape)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[Bookmark end]");
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Called when a BuildingBlock node is encountered in the document.
-            /// </summary>
-            public override VisitorAction VisitBuildingBlockStart(BuildingBlock buildingBlock)
-            {
-                this.IndentAndAppendLine("[Building block] Name: " + buildingBlock.Name + "GUID: " + buildingBlock.Guid);
-                mDocTraversalDepth++;
+                this.IndentAndAppendLine("[GroupShape end]");
 
                 return VisitorAction.Continue;
             }
 
             /// <summary>
-            /// Called when the visiting of a BuildingBlock node is ended in the document.
+            /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
             /// </summary>
-            public override VisitorAction VisitBuildingBlockEnd(BuildingBlock buildingBlock)
+            /// <param name="text"></param>
+            private void IndentAndAppendLine(String text)
             {
-                mDocTraversalDepth--;
-                this.IndentAndAppendLine("[BuildingBlock end]");
+                for (int i = 0; i < mDocTraversalDepth; i++)
+                {
+                    mBuilder.Append("|  ");
+                }
+                mBuilder.AppendLine(text);
+            }
+
+            private bool mVisitorIsInsideShape;
+            private int mDocTraversalDepth;
+            private readonly StringBuilder mBuilder;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:DocumentVisitor.VisitTableEnd(Tables.Table)
+        //ExFor:DocumentVisitor.VisitTableStart(Tables.Table)
+        //ExFor:DocumentVisitor.VisitRowEnd(Tables.Row)
+        //ExFor:DocumentVisitor.VisitRowStart(Tables.Row)
+        //ExFor:DocumentVisitor.VisitCellStart(Tables.Cell)
+        //ExFor:DocumentVisitor.VisitCellEnd(Tables.Cell)
+        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are printing the contents of every table in a document.
+        [Test] //ExSkip
+        public void TableToText()
+        {
+            // Open the document that has tables we want to print the info of
+            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+
+            // Create an object that inherits from the DocumentVisitor class
+            TableInfoPrinter visitor = new TableInfoPrinter();
+
+            // Accepring a visitor lets it start traversing the nodes in the document, 
+            // starting with the node that accepted it to then recursively visit every child
+            // This particular visitor will go through each table and print basic information and contents of all cells.
+            doc.Accept(visitor);
+
+            // Once the visiting is complete, we can retrieve the result of the operation,
+            // that in this example, has accumulated in the visitor
+            Console.WriteLine(visitor.GetText());
+        }
+
+        /// <summary>
+        /// This Visitor implementation prints information about and contends of tables encountered in the document.
+        /// </summary>
+        public class TableInfoPrinter : DocumentVisitor
+        {
+            public TableInfoPrinter()
+            {
+                this.mBuilder = new StringBuilder();
+                mVisitorIsInsideTable = false;
+            }
+
+            /// <summary>
+            /// Gets the plain text of the document that was accumulated by the visitor.
+            /// </summary>
+            public String GetText()
+            {
+                return this.mBuilder.ToString();
+            }
+
+            /// <summary>
+            /// Called when a Run node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitRun(Run run)
+            {
+                // We want to print the contents of runs, but only if they consist of text from cells
+                // So we are only interested in runs that are children of table nodes
+                if (mVisitorIsInsideTable) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -354,8 +419,8 @@ namespace ApiExamples
 
                 this.IndentAndAppendLine("[Table start] Size: " + rows + "x" + columns);
                 mDocTraversalDepth++;
+                mVisitorIsInsideTable = true;
 
-                // The visitor will now go through every row and cell
                 return VisitorAction.Continue;
             }
 
@@ -366,6 +431,7 @@ namespace ApiExamples
             {
                 mDocTraversalDepth--;
                 this.IndentAndAppendLine("[Table end]");
+                mVisitorIsInsideTable = false;
 
                 return VisitorAction.Continue;
             }
@@ -416,13 +482,88 @@ namespace ApiExamples
                 return VisitorAction.Continue;
             }
 
+
+            /// <summary>
+            /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
+            /// </summary>
+            /// <param name="text"></param>
+            private void IndentAndAppendLine(String text)
+            {
+                for (int i = 0; i < mDocTraversalDepth; i++)
+                {
+                    mBuilder.Append("|  ");
+                }
+                mBuilder.AppendLine(text);
+            }
+
+            private bool mVisitorIsInsideTable;
+            private int mDocTraversalDepth;
+            private readonly StringBuilder mBuilder;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:DocumentVisitor.VisitCommentStart(Comment)
+        //ExFor:DocumentVisitor.VisitCommentEnd(Comment)
+        //ExFor:DocumentVisitor.VisitCommentRangeEnd(CommentRangeEnd)
+        //ExFor:DocumentVisitor.VisitCommentRangeStart(CommentRangeStart)
+        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are printing information about all comments/comment ranges.
+        [Test] //ExSkip
+        public void CommentsToText()
+        {
+            // Open the document that has comments/comment ranges we want to print the info of
+            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+
+            // Create an object that inherits from the DocumentVisitor class
+            CommentInfoPrinter visitor = new CommentInfoPrinter();
+
+            // Accepring a visitor lets it start traversing the nodes in the document, 
+            // starting with the node that accepted it to then recursively visit every child
+            // This particular visitor will go through the document and print information about every comment range/comment it encounters.
+            doc.Accept(visitor);
+
+            // Once the visiting is complete, we can retrieve the result of the operation,
+            // that in this example, has accumulated in the visitor
+            Console.WriteLine(visitor.GetText());
+        }
+
+        /// <summary>
+        /// This Visitor implementation prints information about ... encountered in the document.
+        /// </summary>
+        public class CommentInfoPrinter : DocumentVisitor
+        {
+            public CommentInfoPrinter()
+            {
+                this.mBuilder = new StringBuilder();
+                this.mVisitorIsInsideComment = false;
+            }
+
+            /// <summary>
+            /// Gets the plain text of the document that was accumulated by the visitor.
+            /// </summary>
+            public String GetText()
+            {
+                return this.mBuilder.ToString();
+            }
+
+            /// <summary>
+            /// Called when a Run node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitRun(Run run)
+            {
+                if (mVisitorIsInsideComment) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+
+                return VisitorAction.Continue;
+            }
+
             /// <summary>
             /// Called when a CommentRangeStart node is encountered in the document.
             /// </summary>
             public override VisitorAction VisitCommentRangeStart(CommentRangeStart commentRangeStart)
             {
-                this.IndentAndAppendLine("[Comment range start]");
+                this.IndentAndAppendLine("[Comment range start] ID: " + commentRangeStart.Id);
                 mDocTraversalDepth++;
+                mVisitorIsInsideComment = true;
 
                 return VisitorAction.Continue;
             }
@@ -434,6 +575,7 @@ namespace ApiExamples
             {
                 mDocTraversalDepth--;
                 this.IndentAndAppendLine("[Comment range end]");
+                mVisitorIsInsideComment = false;
 
                 return VisitorAction.Continue;
             }
@@ -443,8 +585,10 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitCommentStart(Comment comment)
             {
-                this.IndentAndAppendLine(String.Format("[Comment start] {0}, {1}", comment.Author, comment.DateTime));
+                
+                this.IndentAndAppendLine(String.Format("[Comment start] For comment range ID {0}, By {1} on {2}", comment.Id, comment.Author, comment.DateTime));
                 mDocTraversalDepth++;
+                mVisitorIsInsideComment = true;
 
                 return VisitorAction.Continue;
             }
@@ -456,50 +600,282 @@ namespace ApiExamples
             {
                 mDocTraversalDepth--;
                 this.IndentAndAppendLine("[Comment end]");
+                mVisitorIsInsideComment = false;
 
                 return VisitorAction.Continue;
             }
 
             /// <summary>
-            /// Called when an EditableRange node is encountered in the document.
+            /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
             /// </summary>
-            public override VisitorAction VisitEditableRangeStart(EditableRangeStart editableRangeStart)
+            /// <param name="text"></param>
+            private void IndentAndAppendLine(String text)
             {
-                this.IndentAndAppendLine("[EditableRange start]");
-                mDocTraversalDepth++;
+                for (int i = 0; i < mDocTraversalDepth; i++)
+                {
+                    mBuilder.Append("|  ");
+                }
+                mBuilder.AppendLine(text);
+            }
+
+            private bool mVisitorIsInsideComment;
+            private int mDocTraversalDepth;
+            private readonly StringBuilder mBuilder;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:DocumentVisitor.VisitFieldStart
+        //ExFor:DocumentVisitor.VisitFieldEnd
+        //ExFor:DocumentVisitor.VisitFieldSeparator
+        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are visiting all fields and printing their contents.
+        [Test] //ExSkip
+        public void FieldToText()
+        {
+            // Open the document that has fields that we want to print the info of
+            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+
+            // Create an object that inherits from the DocumentVisitor class
+            FieldInfoPrinter visitor = new FieldInfoPrinter();
+
+            // Accepring a visitor lets it start traversing the nodes in the document, 
+            // starting with the node that accepted it to then recursively visit every child
+            // This particular visitor will print all the runs and field separators from within a field
+            doc.Accept(visitor);
+
+            // Once the visiting is complete, we can retrieve the result of the operation,
+            // that in this example, has accumulated in the visitor
+            Console.WriteLine(visitor.GetText());
+        }
+
+        /// <summary>
+        /// This Visitor implementation prints information about ... encountered in the document.
+        /// </summary>
+        public class FieldInfoPrinter : DocumentVisitor
+        {
+            public FieldInfoPrinter()
+            {
+                this.mBuilder = new StringBuilder();
+                this.mVisitorIsInsideField = false;
+            }
+
+            /// <summary>
+            /// Gets the plain text of the document that was accumulated by the visitor.
+            /// </summary>
+            public String GetText()
+            {
+                return this.mBuilder.ToString();
+            }
+
+            /// <summary>
+            /// Called when a Run node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitRun(Run run)
+            {
+                if (mVisitorIsInsideField) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
 
                 return VisitorAction.Continue;
             }
 
             /// <summary>
-            /// Called when the visiting of a EditableRange node is ended.
+            /// Called when a FieldStart node is encountered in the document.
             /// </summary>
-            public override VisitorAction VisitEditableRangeEnd(EditableRangeEnd editableRangeEnd)
+            public override VisitorAction VisitFieldStart(FieldStart fieldStart)
+            {
+                this.IndentAndAppendLine("[Field start] FieldType: " + fieldStart.FieldType);
+                mDocTraversalDepth++;
+                this.mVisitorIsInsideField = true;
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when a FieldEnd node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitFieldEnd(FieldEnd fieldEnd)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[EditableRange end]");
+                this.IndentAndAppendLine("[Field end]");
+                this.mVisitorIsInsideField = false;
 
                 return VisitorAction.Continue;
             }
 
             /// <summary>
-            /// Called when a Footnote node is encountered in the document.
+            /// Called when a FieldSeparator node is encountered in the document.
             /// </summary>
-            public override VisitorAction VisitFootnoteStart(Footnote footnote)
-            {   
-                this.IndentAndAppendLine("[Footnote start] Type: " + footnote.FootnoteType);
+            public override VisitorAction VisitFieldSeparator(FieldSeparator fieldSeparator)
+            {
+                this.IndentAndAppendLine("[FieldSeparator]");
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
+            /// </summary>
+            /// <param name="text"></param>
+            private void IndentAndAppendLine(String text)
+            {
+                for (int i = 0; i < mDocTraversalDepth; i++)
+                {
+                    mBuilder.Append("|  ");
+                }
+                mBuilder.AppendLine(text);
+            }
+
+            private bool mVisitorIsInsideField;
+            private int mDocTraversalDepth;
+            private readonly StringBuilder mBuilder;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:DocumentVisitor.VisitHeaderFooterStart
+        //ExFor:DocumentVisitor.VisitHeaderFooterEnd
+        //ExFor:DocumentVisitor.VisitHeaderFooterEnd(HeaderFooter)
+        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are picking header/footer nodes and printing their contents.
+        [Test] //ExSkip
+        public void HeaderFooterToText()
+        {
+            // Open the document that has headers and/or footers we want to print the info of
+            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+
+            // Create an object that inherits from the DocumentVisitor class
+            HeaderFooterInfoPrinter visitor = new HeaderFooterInfoPrinter();
+
+            // Accepring a visitor lets it start traversing the nodes in the document, 
+            // starting with the node that accepted it to then recursively visit every child
+            // This particular visitor will visit all HeaderFooter nodes and print their type and contents to the console
+            doc.Accept(visitor);
+
+            // Once the visiting is complete, we can retrieve the result of the operation,
+            // that in this example, has accumulated in the visitor
+            Console.WriteLine(visitor.GetText());
+        }
+
+        /// <summary>
+        /// This Visitor implementation prints information about HeaderFooter nodes encountered in the document.
+        /// </summary>
+        public class HeaderFooterInfoPrinter : DocumentVisitor
+        {
+            public HeaderFooterInfoPrinter()
+            {
+                this.mBuilder = new StringBuilder();
+                this.mVisitorIsInsideHeaderFooter = false;
+            }
+
+            /// <summary>
+            /// Gets the plain text of the document that was accumulated by the visitor.
+            /// </summary>
+            public String GetText()
+            {
+                return this.mBuilder.ToString();
+            }
+
+            /// <summary>
+            /// Called when a Run node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitRun(Run run)
+            {
+                if (mVisitorIsInsideHeaderFooter) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when a HeaderFooter node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitHeaderFooterStart(HeaderFooter headerFooter)
+            {
+                this.IndentAndAppendLine("[HeaderFooter start] HeaderFooterType: " + headerFooter.HeaderFooterType);
                 mDocTraversalDepth++;
+                this.mVisitorIsInsideHeaderFooter = true;
 
                 return VisitorAction.Continue;
             }
 
             /// <summary>
-            /// Called when the visiting of a Footnote node is ended.
+            /// Called when the visiting of a HeaderFooter node is ended.
             /// </summary>
-            public override VisitorAction VisitFootnoteEnd(Footnote footnote)
+            public override VisitorAction VisitHeaderFooterEnd(HeaderFooter headerFooter)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[Footnote end]");
+                this.IndentAndAppendLine("[HeaderFooter end]");
+                this.mVisitorIsInsideHeaderFooter = false;
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
+            /// </summary>
+            /// <param name="text"></param>
+            private void IndentAndAppendLine(String text)
+            {
+                for (int i = 0; i < mDocTraversalDepth; i++)
+                {
+                    mBuilder.Append("|  ");
+                }
+                mBuilder.AppendLine(text);
+            }
+
+            private bool mVisitorIsInsideHeaderFooter;
+            private int mDocTraversalDepth;
+            private readonly StringBuilder mBuilder;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:DocumentVisitor.VisitBuildingBlockEnd(BuildingBlocks.BuildingBlock)
+        //ExFor:DocumentVisitor.VisitBuildingBlockStart(BuildingBlocks.BuildingBlock)
+        //ExFor:DocumentVisitor.VisitGlossaryDocumentEnd(BuildingBlocks.GlossaryDocument)
+        //ExFor:DocumentVisitor.VisitGlossaryDocumentStart(BuildingBlocks.GlossaryDocument)
+        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are printing the contents of a glossary document.
+        [Test] //ExSkip
+        public void GlossaryDocumentToText()
+        {
+            // Open the document that has a glossary document and building blocks we want to print the info of
+            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+
+            // Create an object that inherits from the DocumentVisitor class
+            GlossaryDocumentInfoPrinter visitor = new GlossaryDocumentInfoPrinter();
+
+            // Accepring a visitor lets it start traversing the nodes in the document, 
+            // starting with the node that accepted it to then recursively visit every child
+            // This particular visitor will print the contents of all the building blocks from within a document's glossary document
+            doc.Accept(visitor);
+
+            // Once the visiting is complete, we can retrieve the result of the operation,
+            // that in this example, has accumulated in the visitor
+            Console.WriteLine(visitor.GetText());
+        }
+
+        /// <summary>
+        /// This Visitor implementation prints information about the glossary document and building blocks encountered in the document.
+        /// </summary>
+        public class GlossaryDocumentInfoPrinter : DocumentVisitor
+        {
+            public GlossaryDocumentInfoPrinter()
+            {
+                this.mBuilder = new StringBuilder();
+                this.mVisitorIsInsideGlossaryDocument = false;
+            }
+
+            /// <summary>
+            /// Gets the plain text of the document that was accumulated by the visitor.
+            /// </summary>
+            public String GetText()
+            {
+                return this.mBuilder.ToString();
+            }
+
+            /// <summary>
+            /// Called when a Run node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitRun(Run run)
+            {
+                if (mVisitorIsInsideGlossaryDocument) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -511,6 +887,7 @@ namespace ApiExamples
             {
                 this.IndentAndAppendLine("[GlossaryDocument start] Building block count: " + glossaryDocument.BuildingBlocks.Count);
                 mDocTraversalDepth++;
+                this.mVisitorIsInsideGlossaryDocument = true;
 
                 return VisitorAction.Continue;
             }
@@ -522,30 +899,386 @@ namespace ApiExamples
             {
                 mDocTraversalDepth--;
                 this.IndentAndAppendLine("[GlossaryDocument end]");
+                this.mVisitorIsInsideGlossaryDocument = false;
 
                 return VisitorAction.Continue;
             }
 
             /// <summary>
-            /// Called when a GroupShape node is encountered in the document.
+            /// Called when a BuildingBlock node is encountered in the document.
             /// </summary>
-            public override VisitorAction VisitGroupShapeStart(GroupShape groupShape)
+            public override VisitorAction VisitBuildingBlockStart(BuildingBlock buildingBlock)
             {
-                int innerShapeCount = groupShape.GetChildNodes(NodeType.Shape, true).Count;
-
-                this.IndentAndAppendLine("[GroupShape start] Inner shapes: " + innerShapeCount);
+                this.IndentAndAppendLine("[Building block] Name: " + buildingBlock.Name + "GUID: " + buildingBlock.Guid);
                 mDocTraversalDepth++;
 
                 return VisitorAction.Continue;
             }
 
             /// <summary>
-            /// Called when the visiting of a GroupShape node is ended.
+            /// Called when the visiting of a BuildingBlock node is ended in the document.
             /// </summary>
-            public override VisitorAction VisitGroupShapeEnd(GroupShape groupShape)
+            public override VisitorAction VisitBuildingBlockEnd(BuildingBlock buildingBlock)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[GroupShape end]");
+                this.IndentAndAppendLine("[BuildingBlock end]");
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
+            /// </summary>
+            /// <param name="text"></param>
+            private void IndentAndAppendLine(String text)
+            {
+                for (int i = 0; i < mDocTraversalDepth; i++)
+                {
+                    mBuilder.Append("|  ");
+                }
+                mBuilder.AppendLine(text);
+            }
+
+            private bool mVisitorIsInsideGlossaryDocument;
+            private int mDocTraversalDepth;
+            private readonly StringBuilder mBuilder;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:DocumentVisitor.VisitBookmarkStart 
+        //ExFor:DocumentVisitor.VisitBookmarkEnd
+        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are printing the info and contents of bookmarks.
+        [Test] //ExSkip
+        public void BookmarkToText()
+        {
+            // Open the document that has bookmarks we want to print the info of
+            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+
+            // Create an object that inherits from the DocumentVisitor class
+            BookmarkInfoPrinter visitor = new BookmarkInfoPrinter();
+
+            // Accepring a visitor lets it start traversing the nodes in the document, 
+            // starting with the node that accepted it to then recursively visit every child
+            // This particular visitor will print the names and contents of all bookmarks from within document.
+            doc.Accept(visitor);
+
+            // Once the visiting is complete, we can retrieve the result of the operation,
+            // that in this example, has accumulated in the visitor
+            Console.WriteLine(visitor.GetText());
+        }
+
+        /// <summary>
+        /// This Visitor implementation prints information about ... encountered in the document.
+        /// </summary>
+        public class BookmarkInfoPrinter : DocumentVisitor
+        {
+            public BookmarkInfoPrinter()
+            {
+                this.mBuilder = new StringBuilder();
+                this.mVisitorIsInsideBookmark = false;
+            }
+
+            /// <summary>
+            /// Gets the plain text of the document that was accumulated by the visitor.
+            /// </summary>
+            public String GetText()
+            {
+                return this.mBuilder.ToString();
+            }
+
+            /// <summary>
+            /// Called when a BookmarkStart node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitBookmarkStart(BookmarkStart bookmarkStart)
+            {
+                this.IndentAndAppendLine("[Bookmark start] Name: \"" + bookmarkStart.Bookmark.Name + "\"");
+                mDocTraversalDepth++;
+                this.mVisitorIsInsideBookmark = true;
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when a BookmarkEnd node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitBookmarkEnd(BookmarkEnd bookmarkEnd)
+            {
+                mDocTraversalDepth--;
+                this.IndentAndAppendLine("[Bookmark end]");
+                this.mVisitorIsInsideBookmark = false;
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when a Run node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitRun(Run run)
+            {
+                if (mVisitorIsInsideBookmark) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
+            /// </summary>
+            /// <param name="text"></param>
+            private void IndentAndAppendLine(String text)
+            {
+                for (int i = 0; i < mDocTraversalDepth; i++)
+                {
+                    mBuilder.Append("|  ");
+                }
+                mBuilder.AppendLine(text);
+            }
+
+            private bool mVisitorIsInsideBookmark;
+            private int mDocTraversalDepth;
+            private readonly StringBuilder mBuilder;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:DocumentVisitor.VisitEditableRangeEnd(EditableRangeEnd)
+        //ExFor:DocumentVisitor.VisitEditableRangeStart(EditableRangeStart)
+        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are printing the contents of an editable range.
+        [Test] //ExSkip
+        public void EditableRangeToText()
+        {
+            // Open the document that has editable ranges we want to print the info of
+            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+
+            // Create an object that inherits from the DocumentVisitor class
+            EditableRangeInfoPrinter visitor = new EditableRangeInfoPrinter();
+
+            // Accepring a visitor lets it start traversing the nodes in the document, 
+            // starting with the node that accepted it to then recursively visit every child
+            // This particular visitor will print all the runs that are inside an editable range.
+            doc.Accept(visitor);
+
+            // Once the visiting is complete, we can retrieve the result of the operation,
+            // that in this example, has accumulated in the visitor
+            Console.WriteLine(visitor.GetText());
+        }
+
+        /// <summary>
+        /// This Visitor implementation prints information about editable ranges encountered in the document.
+        /// </summary>
+        public class EditableRangeInfoPrinter : DocumentVisitor
+        {
+            public EditableRangeInfoPrinter()
+            {
+                this.mBuilder = new StringBuilder();
+                this.mVisitorIsInsideEditableRange = false;
+            }
+
+            /// <summary>
+            /// Gets the plain text of the document that was accumulated by the visitor.
+            /// </summary>
+            public String GetText()
+            {
+                return this.mBuilder.ToString();
+            }
+
+            /// <summary>
+            /// Called when a Run node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitRun(Run run)
+            {
+                // We want to print the contents of runs, but only if they are inside shapes, as they would be in the case of text boxes
+                if (mVisitorIsInsideEditableRange) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when an EditableRange node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitEditableRangeStart(EditableRangeStart editableRangeStart)
+            {
+                this.IndentAndAppendLine("[EditableRange start] ID: " + editableRangeStart.Id);
+                mDocTraversalDepth++;
+                this.mVisitorIsInsideEditableRange = true;
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when the visiting of a EditableRange node is ended.
+            /// </summary>
+            public override VisitorAction VisitEditableRangeEnd(EditableRangeEnd editableRangeEnd)
+            {
+                mDocTraversalDepth--;
+                this.IndentAndAppendLine("[EditableRange end]");
+                this.mVisitorIsInsideEditableRange = false;
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
+            /// </summary>
+            /// <param name="text"></param>
+            private void IndentAndAppendLine(String text)
+            {
+                for (int i = 0; i < mDocTraversalDepth; i++)
+                {
+                    mBuilder.Append("|  ");
+                }
+                mBuilder.AppendLine(text);
+            }
+
+            private bool mVisitorIsInsideEditableRange;
+            private int mDocTraversalDepth;
+            private readonly StringBuilder mBuilder;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:DocumentVisitor.VisitFootnoteEnd(Footnote)
+        //ExFor:DocumentVisitor.VisitFootnoteStart(Footnote)
+        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are printing the contents of footnotes from within a document.
+        [Test] //ExSkip
+        public void FootnoteToText()
+        {
+            // Open the document that has footnotes we want to print the info of
+            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+
+            // Create an object that inherits from the DocumentVisitor class
+            FootnoteInfoPrinter visitor = new FootnoteInfoPrinter();
+
+            // Accepring a visitor lets it start traversing the nodes in the document, 
+            // starting with the node that accepted it to then recursively visit every child
+            // This particular visitor will print information about and contents of footnotes encountered while traversing the document
+            doc.Accept(visitor);
+
+            // Once the visiting is complete, we can retrieve the result of the operation,
+            // that in this example, has accumulated in the visitor
+            Console.WriteLine(visitor.GetText());
+        }
+
+        /// <summary>
+        /// This Visitor implementation prints information about footnotes encountered in the document.
+        /// </summary>
+        public class FootnoteInfoPrinter : DocumentVisitor
+        {
+            public FootnoteInfoPrinter()
+            {
+                this.mBuilder = new StringBuilder();
+                this.mVisitorIsInsideFootnote = false;
+            }
+
+            /// <summary>
+            /// Gets the plain text of the document that was accumulated by the visitor.
+            /// </summary>
+            public String GetText()
+            {
+                return this.mBuilder.ToString();
+            }
+
+            /// <summary>
+            /// Called when a Footnote node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitFootnoteStart(Footnote footnote)
+            {
+                this.IndentAndAppendLine("[Footnote start] Type: " + footnote.FootnoteType);
+                mDocTraversalDepth++;
+                this.mVisitorIsInsideFootnote = true;
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when the visiting of a Footnote node is ended.
+            /// </summary>
+            public override VisitorAction VisitFootnoteEnd(Footnote footnote)
+            {
+                mDocTraversalDepth--;
+                this.IndentAndAppendLine("[Footnote end]");
+                this.mVisitorIsInsideFootnote = false;
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when a Run node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitRun(Run run)
+            {
+                if (mVisitorIsInsideFootnote) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
+            /// </summary>
+            /// <param name="text"></param>
+            private void IndentAndAppendLine(String text)
+            {
+                for (int i = 0; i < mDocTraversalDepth; i++)
+                {
+                    mBuilder.Append("|  ");
+                }
+                mBuilder.AppendLine(text);
+            }
+
+            private bool mVisitorIsInsideFootnote;
+            private int mDocTraversalDepth;
+            private readonly StringBuilder mBuilder;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:DocumentVisitor.VisitOfficeMathEnd(Math.OfficeMath)
+        //ExFor:DocumentVisitor.VisitOfficeMathStart(Math.OfficeMath)
+        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are looking at office math objects.
+        [Test] //ExSkip
+        public void OfficeMathToText()
+        {
+            // Open the document that has office math objects we want to print the info of
+            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+
+            // Create an object that inherits from the DocumentVisitor class
+            OfficeMathInfoPrinter visitor = new OfficeMathInfoPrinter();
+
+            // Accepring a visitor lets it start traversing the nodes in the document, 
+            // starting with the node that accepted it to then recursively visit every child
+            // This particular visitor will print info and contents of all OfficeMath objects
+            doc.Accept(visitor);
+
+            // Once the visiting is complete, we can retrieve the result of the operation,
+            // that in this example, has accumulated in the visitor
+            Console.WriteLine(visitor.GetText());
+        }
+
+        /// <summary>
+        /// This Visitor implementation prints information about office math objects encountered in the document.
+        /// </summary>
+        public class OfficeMathInfoPrinter : DocumentVisitor
+        {
+            public OfficeMathInfoPrinter()
+            {
+                this.mBuilder = new StringBuilder();
+                this.mVisitorIsInsideOfficeMath = false;
+            }
+
+            /// <summary>
+            /// Gets the plain text of the document that was accumulated by the visitor.
+            /// </summary>
+            public String GetText()
+            {
+                return this.mBuilder.ToString();
+            }
+
+            /// <summary>
+            /// Called when a Run node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitRun(Run run)
+            {
+                if (mVisitorIsInsideOfficeMath) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -557,6 +1290,7 @@ namespace ApiExamples
             {
                 this.IndentAndAppendLine("[OfficeMath start] Math object type: " + officeMath.MathObjectType);
                 mDocTraversalDepth++;
+                this.mVisitorIsInsideOfficeMath = true;
 
                 return VisitorAction.Continue;
             }
@@ -568,28 +1302,78 @@ namespace ApiExamples
             {
                 mDocTraversalDepth--;
                 this.IndentAndAppendLine("[OfficeMath end]");
+                this.mVisitorIsInsideOfficeMath = false;
 
                 return VisitorAction.Continue;
             }
 
             /// <summary>
-            /// Called when a Shape node is encountered in the document.
+            /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
             /// </summary>
-            public override VisitorAction VisitShapeStart(Shape shape)
+            /// <param name="text"></param>
+            private void IndentAndAppendLine(String text)
             {
-                this.IndentAndAppendLine("[Shape start] Type: " + shape.ShapeType + ", Fill color: " + shape.FillColor);
-                mDocTraversalDepth++;
+                for (int i = 0; i < mDocTraversalDepth; i++)
+                {
+                    mBuilder.Append("|  ");
+                }
+                mBuilder.AppendLine(text);
+            }
 
-                return VisitorAction.Continue;
+            private bool mVisitorIsInsideOfficeMath;
+            private int mDocTraversalDepth;
+            private readonly StringBuilder mBuilder;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:DocumentVisitor.VisitSmartTagEnd(Markup.SmartTag)
+        //ExFor:DocumentVisitor.VisitSmartTagStart(Markup.SmartTag)
+        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are printing the contents of smart tags.
+        [Test] //ExSkip
+        public void SmartTagToText()
+        {
+            // Open the document that has smart tags we want to print the info of
+            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+
+            // Create an object that inherits from the DocumentVisitor class
+            SmartTagInfoPrinter visitor = new SmartTagInfoPrinter();
+
+            // Accepring a visitor lets it start traversing the nodes in the document, 
+            // starting with the node that accepted it to then recursively visit every child
+            // This particular visitor will print information and contents of smart tags
+            doc.Accept(visitor);
+
+            // Once the visiting is complete, we can retrieve the result of the operation,
+            // that in this example, has accumulated in the visitor
+            Console.WriteLine(visitor.GetText());
+        }
+
+        /// <summary>
+        /// This Visitor implementation prints information about smart tags encountered in the document.
+        /// </summary>
+        public class SmartTagInfoPrinter : DocumentVisitor
+        {
+            public SmartTagInfoPrinter()
+            {
+                this.mBuilder = new StringBuilder();
+                this.mVisitorIsInsideSmartTag = false;
             }
 
             /// <summary>
-            /// Called when the visiting of a Shape node is ended.
+            /// Gets the plain text of the document that was accumulated by the visitor.
             /// </summary>
-            public override VisitorAction VisitShapeEnd(Shape shape)
+            public String GetText()
             {
-                mDocTraversalDepth--;
-                this.IndentAndAppendLine("[Shape end]");
+                return this.mBuilder.ToString();
+            }
+
+            /// <summary>
+            /// Called when a Run node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitRun(Run run)
+            {
+                if (mVisitorIsInsideSmartTag) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -601,6 +1385,7 @@ namespace ApiExamples
             {
                 this.IndentAndAppendLine("[SmartTag start] Name: " + smartTag.Element);
                 mDocTraversalDepth++;
+                mVisitorIsInsideSmartTag = true;
 
                 return VisitorAction.Continue;
             }
@@ -612,6 +1397,78 @@ namespace ApiExamples
             {
                 mDocTraversalDepth--;
                 this.IndentAndAppendLine("[SmartTag end]");
+                mVisitorIsInsideSmartTag = false;
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
+            /// </summary>
+            /// <param name="text"></param>
+            private void IndentAndAppendLine(String text)
+            {
+                for (int i = 0; i < mDocTraversalDepth; i++)
+                {
+                    mBuilder.Append("|  ");
+                }
+                mBuilder.AppendLine(text);
+            }
+
+            private bool mVisitorIsInsideSmartTag;
+            private int mDocTraversalDepth;
+            private readonly StringBuilder mBuilder;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:DocumentVisitor.VisitStructuredDocumentTagEnd(Markup.StructuredDocumentTag)
+        //ExFor:DocumentVisitor.VisitStructuredDocumentTagStart(Markup.StructuredDocumentTag)
+        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are printing the contents of structured document tags.
+        [Test] //ExSkip
+        public void StructuredDocumentTagToText()
+        {
+            // Open the document that has structured document tags we want to print the info of
+            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+
+            // Create an object that inherits from the DocumentVisitor class
+            StructuredDocumentTagInfoPrinter visitor = new StructuredDocumentTagInfoPrinter();
+
+            // Accepring a visitor lets it start traversing the nodes in the document, 
+            // starting with the node that accepted it to then recursively visit every child
+            // This particular visitor will visit all structured document tags and print their contents
+            doc.Accept(visitor);
+
+            // Once the visiting is complete, we can retrieve the result of the operation,
+            // that in this example, has accumulated in the visitor
+            Console.WriteLine(visitor.GetText());
+        }
+
+        /// <summary>
+        /// This Visitor implementation prints information about structured document tags encountered in the document.
+        /// </summary>
+        public class StructuredDocumentTagInfoPrinter : DocumentVisitor
+        {
+            public StructuredDocumentTagInfoPrinter()
+            {
+                this.mBuilder = new StringBuilder();
+                this.mVisitorIsInsideStructuredDocumentTag = false;
+            }
+
+            /// <summary>
+            /// Gets the plain text of the document that was accumulated by the visitor.
+            /// </summary>
+            public String GetText()
+            {
+                return this.mBuilder.ToString();
+            }
+
+            /// <summary>
+            /// Called when a Run node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitRun(Run run)
+            {
+                if (mVisitorIsInsideStructuredDocumentTag) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -639,14 +1496,6 @@ namespace ApiExamples
             }
 
             /// <summary>
-            /// Called when a SubDocument node is encountered in the document.
-            /// </summary>
-            public override VisitorAction VisitSubDocument(SubDocument subDocument)
-            {
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
             /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
             /// </summary>
             /// <param name="text"></param>
@@ -659,9 +1508,10 @@ namespace ApiExamples
                 mBuilder.AppendLine(text);
             }
 
-            private readonly StringBuilder mBuilder;
+            private bool mVisitorIsInsideStructuredDocumentTag;
             private int mDocTraversalDepth;
+            private readonly StringBuilder mBuilder;
         }
         //ExEnd
-    }
+    }   
 }
