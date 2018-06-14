@@ -26,8 +26,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
 
         public static void DefineXYAxisProperties(String dataDir)
         {
-            // ExStart:DefineXYAxisProperties
-
+            //ExStart:DefineXYAxisProperties
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -62,12 +61,12 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
             yAxis.MajorUnit = 100;
             yAxis.MinorUnit = 50;
             yAxis.DisplayUnit.Unit = AxisBuiltInUnit.Hundreds;
-            yAxis.Scaling.Minimum = new AxisBound(100); 
-            yAxis.Scaling.Maximum = new AxisBound(700); 
+            yAxis.Scaling.Minimum = new AxisBound(100);
+            yAxis.Scaling.Maximum = new AxisBound(700);
 
             dataDir = dataDir + @"SetAxisProperties_out.docx";
             doc.Save(dataDir);
-            // ExEnd:DefineXYAxisProperties
+            //ExEnd:DefineXYAxisProperties
             Console.WriteLine("\nProperties of X and Y axis are set successfully.\nFile saved at " + dataDir);
         }
 
