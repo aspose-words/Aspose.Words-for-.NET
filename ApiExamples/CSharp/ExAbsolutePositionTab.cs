@@ -8,8 +8,9 @@ namespace ApiExamples
     {
         [Test]
         //ExStart
-        //ExFor:ExAbsolutePositionTab
-        //ExFor:ExAbsolutePositionTab.Accept(DocumentVisitor)
+        //ExFor:AbsolutePositionTab
+        //ExFor:AbsolutePositionTab.Accept(DocumentVisitor)
+        //ExFor:DocumentVisitor.VisitAbsolutePositionTab
         //ExSummary:Shows how to use AbsolutePositionTab.
         public void DocumentToTxt()
         {         

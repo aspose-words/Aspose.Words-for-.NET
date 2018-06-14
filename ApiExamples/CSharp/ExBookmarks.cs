@@ -255,6 +255,8 @@ namespace ApiExamples
         //ExFor:BookmarkStart.GetText
         //ExFor:BookmarkStart.Name
         //ExFor:BookmarkEnd.Name
+        //ExFor:DocumentVisitor.VisitBookmarkStart 
+        //ExFor:DocumentVisitor.VisitBookmarkEnd
         //ExSummary:Shows how add bookmarks and update their contents.
         [Test] //ExSkip
         public void CreateUpdateAndPrintBookmarks()

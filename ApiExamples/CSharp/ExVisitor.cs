@@ -27,7 +27,6 @@ namespace ApiExamples
         //ExFor:Document.Accept
         //ExFor:Body.Accept
         //ExFor:DocumentVisitor.VisitRun
-        //ExFor:DocumentVisitor.VisitAbsolutePositionTab
         //ExFor:DocumentVisitor.VisitDocumentEnd(Document)
         //ExFor:DocumentVisitor.VisitDocumentStart(Document)
         //ExFor:DocumentVisitor.VisitSectionEnd(Section)
@@ -180,16 +179,6 @@ namespace ApiExamples
             {
                 this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
 
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Called when an AbsolutePositionTab is encountered in the document.
-            /// </summary>
-            public override VisitorAction VisitAbsolutePositionTab(AbsolutePositionTab tab)
-            {
-                // If we encounter an AbsolutePositionTab character, in our text output we can simply sibstitute it with a tab 
-                this.mBuilder.Append("\t");
                 return VisitorAction.Continue;
             }
 
@@ -940,101 +929,6 @@ namespace ApiExamples
             }
 
             private bool mVisitorIsInsideGlossaryDocument;
-            private int mDocTraversalDepth;
-            private readonly StringBuilder mBuilder;
-        }
-        //ExEnd
-
-        //ExStart
-        //ExFor:DocumentVisitor.VisitBookmarkStart 
-        //ExFor:DocumentVisitor.VisitBookmarkEnd
-        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are printing the info and contents of bookmarks.
-        [Test] //ExSkip
-        public void BookmarkToText()
-        {
-            // Open the document that has bookmarks we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.doc");
-
-            // Create an object that inherits from the DocumentVisitor class
-            BookmarkInfoPrinter visitor = new BookmarkInfoPrinter();
-
-            // Accepring a visitor lets it start traversing the nodes in the document, 
-            // starting with the node that accepted it to then recursively visit every child
-            // This particular visitor will print the names and contents of all bookmarks from within document.
-            doc.Accept(visitor);
-
-            // Once the visiting is complete, we can retrieve the result of the operation,
-            // that in this example, has accumulated in the visitor
-            Console.WriteLine(visitor.GetText());
-        }
-
-        /// <summary>
-        /// This Visitor implementation prints information about ... encountered in the document.
-        /// </summary>
-        public class BookmarkInfoPrinter : DocumentVisitor
-        {
-            public BookmarkInfoPrinter()
-            {
-                this.mBuilder = new StringBuilder();
-                this.mVisitorIsInsideBookmark = false;
-            }
-
-            /// <summary>
-            /// Gets the plain text of the document that was accumulated by the visitor.
-            /// </summary>
-            public String GetText()
-            {
-                return this.mBuilder.ToString();
-            }
-
-            /// <summary>
-            /// Called when a BookmarkStart node is encountered in the document.
-            /// </summary>
-            public override VisitorAction VisitBookmarkStart(BookmarkStart bookmarkStart)
-            {
-                this.IndentAndAppendLine("[Bookmark start] Name: \"" + bookmarkStart.Bookmark.Name + "\"");
-                mDocTraversalDepth++;
-                this.mVisitorIsInsideBookmark = true;
-
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Called when a BookmarkEnd node is encountered in the document.
-            /// </summary>
-            public override VisitorAction VisitBookmarkEnd(BookmarkEnd bookmarkEnd)
-            {
-                mDocTraversalDepth--;
-                this.IndentAndAppendLine("[Bookmark end]");
-                this.mVisitorIsInsideBookmark = false;
-
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Called when a Run node is encountered in the document.
-            /// </summary>
-            public override VisitorAction VisitRun(Run run)
-            {
-                if (mVisitorIsInsideBookmark) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
-
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
-            /// </summary>
-            /// <param name="text"></param>
-            private void IndentAndAppendLine(String text)
-            {
-                for (int i = 0; i < mDocTraversalDepth; i++)
-                {
-                    mBuilder.Append("|  ");
-                }
-                mBuilder.AppendLine(text);
-            }
-
-            private bool mVisitorIsInsideBookmark;
             private int mDocTraversalDepth;
             private readonly StringBuilder mBuilder;
         }
