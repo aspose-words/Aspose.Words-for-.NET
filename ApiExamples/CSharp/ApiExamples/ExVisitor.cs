@@ -8,7 +8,6 @@
 using System;
 using System.Text;
 using Aspose.Words;
-using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Markup;
@@ -517,7 +516,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// This Visitor implementation prints information about ... encountered in the document.
+        /// This Visitor implementation prints information about and contents of comments and comment ranges encountered in the document.
         /// </summary>
         public class CommentInfoPrinter : DocumentVisitor
         {
@@ -638,7 +637,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// This Visitor implementation prints information about ... encountered in the document.
+        /// This Visitor implementation prints information about fields encountered in the document.
         /// </summary>
         public class FieldInfoPrinter : DocumentVisitor
         {
@@ -810,125 +809,6 @@ namespace ApiExamples
             }
 
             private bool mVisitorIsInsideHeaderFooter;
-            private int mDocTraversalDepth;
-            private readonly StringBuilder mBuilder;
-        }
-        //ExEnd
-
-        //ExStart
-        //ExFor:DocumentVisitor.VisitBuildingBlockEnd(BuildingBlocks.BuildingBlock)
-        //ExFor:DocumentVisitor.VisitBuildingBlockStart(BuildingBlocks.BuildingBlock)
-        //ExFor:DocumentVisitor.VisitGlossaryDocumentEnd(BuildingBlocks.GlossaryDocument)
-        //ExFor:DocumentVisitor.VisitGlossaryDocumentStart(BuildingBlocks.GlossaryDocument)
-        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are printing the contents of a glossary document.
-        [Test] //ExSkip
-        public void GlossaryDocumentToText()
-        {
-            // Open the document that has a glossary document and building blocks we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.doc");
-
-            // Create an object that inherits from the DocumentVisitor class
-            GlossaryDocumentInfoPrinter visitor = new GlossaryDocumentInfoPrinter();
-
-            // Accepring a visitor lets it start traversing the nodes in the document, 
-            // starting with the node that accepted it to then recursively visit every child
-            // This particular visitor will print the contents of all the building blocks from within a document's glossary document
-            doc.Accept(visitor);
-
-            // Once the visiting is complete, we can retrieve the result of the operation,
-            // that in this example, has accumulated in the visitor
-            Console.WriteLine(visitor.GetText());
-        }
-
-        /// <summary>
-        /// This Visitor implementation prints information about the glossary document and building blocks encountered in the document.
-        /// </summary>
-        public class GlossaryDocumentInfoPrinter : DocumentVisitor
-        {
-            public GlossaryDocumentInfoPrinter()
-            {
-                this.mBuilder = new StringBuilder();
-                this.mVisitorIsInsideGlossaryDocument = false;
-            }
-
-            /// <summary>
-            /// Gets the plain text of the document that was accumulated by the visitor.
-            /// </summary>
-            public String GetText()
-            {
-                return this.mBuilder.ToString();
-            }
-
-            /// <summary>
-            /// Called when a Run node is encountered in the document.
-            /// </summary>
-            public override VisitorAction VisitRun(Run run)
-            {
-                if (mVisitorIsInsideGlossaryDocument) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
-
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Called when a GlossaryDocument node is encountered in the document.
-            /// </summary>
-            public override VisitorAction VisitGlossaryDocumentStart(GlossaryDocument glossaryDocument)
-            {
-                this.IndentAndAppendLine("[GlossaryDocument start] Building block count: " + glossaryDocument.BuildingBlocks.Count);
-                mDocTraversalDepth++;
-                this.mVisitorIsInsideGlossaryDocument = true;
-
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Called when the visiting of a GlossaryDocument node is ended.
-            /// </summary>
-            public override VisitorAction VisitGlossaryDocumentEnd(GlossaryDocument glossaryDocument)
-            {
-                mDocTraversalDepth--;
-                this.IndentAndAppendLine("[GlossaryDocument end]");
-                this.mVisitorIsInsideGlossaryDocument = false;
-
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Called when a BuildingBlock node is encountered in the document.
-            /// </summary>
-            public override VisitorAction VisitBuildingBlockStart(BuildingBlock buildingBlock)
-            {
-                this.IndentAndAppendLine("[Building block] Name: " + buildingBlock.Name + "GUID: " + buildingBlock.Guid);
-                mDocTraversalDepth++;
-
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Called when the visiting of a BuildingBlock node is ended in the document.
-            /// </summary>
-            public override VisitorAction VisitBuildingBlockEnd(BuildingBlock buildingBlock)
-            {
-                mDocTraversalDepth--;
-                this.IndentAndAppendLine("[BuildingBlock end]");
-
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
-            /// </summary>
-            /// <param name="text"></param>
-            private void IndentAndAppendLine(String text)
-            {
-                for (int i = 0; i < mDocTraversalDepth; i++)
-                {
-                    mBuilder.Append("|  ");
-                }
-                mBuilder.AppendLine(text);
-            }
-
-            private bool mVisitorIsInsideGlossaryDocument;
             private int mDocTraversalDepth;
             private readonly StringBuilder mBuilder;
         }
