@@ -20,8 +20,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
 
         public static void FormatNumberofDataLabel(String dataDir)
         {
-            // ExStart:FormatNumberofDataLabel
-
+            //ExStart:FormatNumberofDataLabel
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -61,7 +60,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
 
             dataDir = dataDir + @"NumberFormat_DataLabel_out.docx";
             doc.Save(dataDir);
-            // ExEnd:FormatNumberofDataLabel
+            //ExEnd:FormatNumberofDataLabel
             Console.WriteLine("\nSimple line chart created with formatted data lablel successfully.\nFile saved at " + dataDir);
         }
     }

@@ -22,6 +22,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             SetPageSetupAndSectionFormatting(dataDir);
             ApplyParagraphStyle(dataDir);
             ApplyBordersAndShadingToParagraph(dataDir);
+            SetAsianTypographyLinebreakGroupProp(dataDir);
         }
 
         public static void SetSpacebetweenAsianandLatintext(string dataDir)
@@ -43,6 +44,23 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // ExEnd:DocumentBuilderSetSpacebetweenAsianandLatintext
             Console.WriteLine("\nParagraphFormat properties AddSpaceBetweenFarEastAndAlpha and AddSpaceBetweenFarEastAndDigit set successfully.\nFile saved at " + dataDir);
         }
+
+        public static void SetAsianTypographyLinebreakGroupProp(string dataDir)
+        {
+            // ExStart:SetAsianTypographyLinebreakGroupProp
+            Document doc = new Document(dataDir + "Input.docx");
+
+            ParagraphFormat format = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat;
+            format.FarEastLineBreakControl = false;
+            format.WordWrap = true;
+            format.HangingPunctuation = false;
+
+            dataDir = dataDir + "SetAsianTypographyLinebreakGroupProp_out.docx";
+            doc.Save(dataDir);
+            // ExEnd:SetAsianTypographyLinebreakGroupProp
+            Console.WriteLine("\nParagraphFormat properties for Asian Typography line break group are set successfully.\nFile saved at " + dataDir);
+        }
+
         public static void SetFontFormatting(string dataDir)
         {
             // ExStart:DocumentBuilderSetFontFormatting

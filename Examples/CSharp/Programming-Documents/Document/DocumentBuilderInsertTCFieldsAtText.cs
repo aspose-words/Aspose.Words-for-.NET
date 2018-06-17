@@ -27,7 +27,8 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
           
         }     
     }
-    // ExStart:InsertTCFieldHandler
+
+    //ExStart:InsertTCFieldHandler
     public sealed class InsertTCFieldHandler : IReplacingCallback
     {
         // Store the text and switches to be used for the TC fields.
@@ -75,5 +76,5 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             return ReplaceAction.Skip;
         }
     }
-    // ExEnd:InsertTCFieldHandler
+    //ExEnd:InsertTCFieldHandler
 }
