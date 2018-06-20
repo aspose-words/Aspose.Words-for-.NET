@@ -6,6 +6,7 @@ using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Tables;
 using System.Diagnostics;
+using Aspose.Words.Saving;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
 {
@@ -25,6 +26,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
 
             //Get DistanceLeft, DistanceRight, DistanceTop, and DistanceBottom properties
             GetDistancebetweenTableSurroundingText(dataDir);
+            SetTableTitleandDescription(dataDir);
         }
 
         /// <summary>
@@ -240,6 +242,31 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             doc.Save(dataDir + "Table.SetBordersAndShading_out.doc");
             // ExEnd:FormatTableAndCellWithDifferentBorders
             Console.WriteLine("\nformat table and cell with different borders and shadings successfully.\nFile saved at " + dataDir);
+        }
+
+        /// <summary>
+        /// Shows how to set title and description of table.
+        /// </summary>
+        private static void SetTableTitleandDescription(string dataDir)
+        {
+            // ExStart:SetTableTitleandDescription
+            Document doc = new Document(dataDir + "Table.Document.doc");
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table.Title = "Test title";
+            table.Description = "Test description";
+
+            OoxmlSaveOptions options = new OoxmlSaveOptions();
+            options.Compliance = OoxmlCompliance.Iso29500_2008_Strict;
+
+            doc.CompatibilityOptions.OptimizeFor(Settings.MsWordVersion.Word2016);
+
+            dataDir = dataDir + "Table.SetTableTitleandDescription_out.docx";
+
+            // Save the document to disk.
+            doc.Save(dataDir, options);
+
+            // ExEnd:SetTableTitleandDescription
+            Console.WriteLine("\nTable's title and description is set successfully.");
         }
     }
 }

@@ -23,10 +23,10 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
             HideChartAxis(dataDir);
         }
 
+
         public static void DefineXYAxisProperties(String dataDir)
         {
-            // ExStart:DefineXYAxisProperties
-
+            //ExStart:DefineXYAxisProperties
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -61,12 +61,12 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
             yAxis.MajorUnit = 100;
             yAxis.MinorUnit = 50;
             yAxis.DisplayUnit.Unit = AxisBuiltInUnit.Hundreds;
-            yAxis.Scaling.Minimum = 100;
-            yAxis.Scaling.Maximum = 700;
+            yAxis.Scaling.Minimum = new AxisBound(100);
+            yAxis.Scaling.Maximum = new AxisBound(700);
 
             dataDir = dataDir + @"SetAxisProperties_out.docx";
             doc.Save(dataDir);
-            // ExEnd:DefineXYAxisProperties
+            //ExEnd:DefineXYAxisProperties
             Console.WriteLine("\nProperties of X and Y axis are set successfully.\nFile saved at " + dataDir);
         }
 
@@ -91,8 +91,8 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
 
             // Set X axis bounds.
             ChartAxis xAxis = chart.AxisX;
-            xAxis.Scaling.Minimum = (new DateTime(2017, 11, 05)).ToOADate();
-            xAxis.Scaling.Maximum = (new DateTime(2017, 12, 03)).ToOADate();
+            xAxis.Scaling.Minimum = new AxisBound((new DateTime(2017, 11, 05)).ToOADate());
+            xAxis.Scaling.Maximum = new AxisBound((new DateTime(2017, 12, 03)).ToOADate());
 
             // Set major units to a week and minor units to a day.
             xAxis.MajorUnit = 7;
@@ -151,8 +151,8 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
                 new string[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" },
                 new double[] { 1.2, 0.3, 2.1, 2.9, 4.2 });
 
-            chart.AxisY.Scaling.Minimum = 0;
-            chart.AxisY.Scaling.Maximum = 6;
+            chart.AxisY.Scaling.Minimum = new AxisBound(0);
+            chart.AxisY.Scaling.Maximum = new AxisBound(6);
 
             dataDir = dataDir + @"SetboundsOfAxis_out.docx";
             doc.Save(dataDir);
