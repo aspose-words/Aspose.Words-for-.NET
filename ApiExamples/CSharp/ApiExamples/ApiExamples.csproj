@@ -128,7 +128,7 @@
     <Compile Include="ExTxtSaveOptions.cs" />
     <Compile Include="ExUtilityClasses.cs" />
     <Compile Include="ExVariableCollection.cs" />
-    <Compile Include="ExVisitor.cs" />
+    <Compile Include="ExDocumentVisitor.cs" />
     <Compile Include="ExWarningInfoCollection.cs" />
     <Compile Include="ExXpsSaveOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
