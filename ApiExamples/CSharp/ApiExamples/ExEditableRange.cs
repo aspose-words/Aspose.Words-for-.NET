@@ -62,20 +62,20 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Start an editable range.
+            // Start an editable range
             EditableRangeStart edRange1Start = builder.StartEditableRange();
 
-            // An EditableRange object is created for the EditableRangeStart that we just made.
+            // An EditableRange object is created for the EditableRangeStart that we just made
             EditableRange editableRange1 = edRange1Start.EditableRange;
 
-            // Put something inside the editable range.
+            // Put something inside the editable range
             builder.Writeln("Paragraph inside first editable range");
 
-            // An editable range is well-formed if it has a start and an end. 
-            // Multiple editable ranges can be nested and overlapping. 
+            // An editable range is well-formed if it has a start and an end
+            // Multiple editable ranges can be nested and overlapping 
             EditableRangeEnd edRange1End = builder.EndEditableRange();
 
-            // Explicitly state which EditableRangeStart a new EditableRangeEnd should be paired with.
+            // Explicitly state which EditableRangeStart a new EditableRangeEnd should be paired with
             EditableRangeStart edRange2Start = builder.StartEditableRange();
             builder.Writeln("Paragraph inside second editable range");
             EditableRange editableRange2 = edRange2Start.EditableRange;
@@ -89,7 +89,7 @@ namespace ApiExamples
             Assert.AreEqual(0, editableRange1.Id);
             Assert.AreEqual(1, editableRange2.Id);
 
-            // Editable range starts and ends automatically belong to their range
+            // Editable range starts and ends always belong to a range
             Assert.AreEqual(edRange1Start, editableRange1.EditableRangeStart);
             Assert.AreEqual(edRange1End, editableRange1.EditableRangeEnd);
 
@@ -100,15 +100,14 @@ namespace ApiExamples
             Assert.AreEqual(editableRange2.Id, edRange2End.EditableRangeStart.EditableRange.Id);
 
             // If the editable range was found in a document, it will probably have something in the single user property
-            // But if we make one, the property is blank by default
+            // But if we make one programmatically, the property is null by default
             Assert.AreEqual(null, editableRange1.SingleUser);
 
             // We have to set it ourselves if we want the ranges to belong to somebody
             editableRange1.SingleUser = "john.doe@myoffice.com";
             editableRange2.SingleUser = "jane.doe@myoffice.com";
 
-            // Initialize a custom visitor for editable ranges
-            // It will read the attributes and contents of an editable range that it is accepted by 
+            // Initialize a custom visitor for editable ranges that will print their contents 
             EditableRangeInfoPrinter editableRangeReader = new EditableRangeInfoPrinter();
 
             // Both the start and end of an editable range can accept visitors, but not the editable range itself
@@ -123,7 +122,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Visitor implementation that collects attribute values/text contents of editable ranges it encounters and records it in the form of a string to be printed to the console.
+        /// Visitor implementation that prints attributes and contents of ranges.
         /// </summary>
         public class EditableRangeInfoPrinter : DocumentVisitor
         {
@@ -155,7 +154,7 @@ namespace ApiExamples
 
                 mInsideEditableRange = true;
 
-                // Let the visitor continue visiting other nodes.
+                // Let the visitor continue visiting other nodes
                 return VisitorAction.Continue;
             }
 
@@ -168,7 +167,7 @@ namespace ApiExamples
 
                 mInsideEditableRange = false;
 
-                // Let the visitor continue visiting other nodes.
+                // Let the visitor continue visiting other nodes
                 return VisitorAction.Continue;
             }
 
@@ -179,7 +178,7 @@ namespace ApiExamples
             {
                 if (mInsideEditableRange) mBuilder.AppendLine("\t\"" + run.Text + "\"");
 
-                // Let the visitor continue visiting other nodes.
+                // Let the visitor continue visiting other nodes
                 return VisitorAction.Continue;
             }
 
