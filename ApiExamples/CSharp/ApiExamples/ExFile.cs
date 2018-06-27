@@ -11,7 +11,7 @@ namespace ApiExamples
         public void CatchFileCorruptedException()
         {
             //ExStart
-            //ExFor:Aspose.Words.FileCorruptedException
+            //ExFor:FileCorruptedException
             //ExSummary:Shows how to catch a FileCorrputedException
             try
             {
@@ -28,17 +28,20 @@ namespace ApiExamples
         public void DetectEncoding()
         {
             //ExStart
-            //ExFor:Aspose.Words.FileFormatInfo.Encoding
-            //ExFor:Aspose.Words.FileFormatUtil
+            //ExFor:FileFormatInfo.Encoding
+            //ExFor:FileFormatUtil
             //ExSummary:Shows how to detect encoding in an html file.
+            // This will not work on a non-html file
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.doc");
             Assert.AreEqual(LoadFormat.Doc, info.LoadFormat);
             Assert.IsNull(info.Encoding);
 
+            // This time the property will not be null
             info = FileFormatUtil.DetectFileFormat(MyDir + "Document.LoadFormat.html");
             Assert.AreEqual(LoadFormat.Html, info.LoadFormat);
             Assert.IsNotNull(info.Encoding);
 
+            // It now has some more useful information
             Assert.AreEqual("iso-8859-1", info.Encoding.BodyName);
             Assert.AreEqual("Western European (Windows)", info.Encoding.EncodingName);
             //ExEnd
@@ -48,10 +51,10 @@ namespace ApiExamples
         public void FileFormatToString()
         {
             //ExStart
-            //ExFor:Aspose.Words.FileFormatUtil.ContentTypeToLoadFormat(String)
-            //ExFor:Aspose.Words.FileFormatUtil.ContentTypeToSaveFormat(String)
+            //ExFor:FileFormatUtil.ContentTypeToLoadFormat(String)
+            //ExFor:FileFormatUtil.ContentTypeToSaveFormat(String)
             //ExSummary:Shows how to find the corresponding Aspose load/save format from an IANA content type string.
-            // Trying to convert a simple filetype name into a SaveFormat will not work like this
+            // Trying to search for a SaveFormat with a simple string will not work
             try
             {
                 Assert.AreEqual(SaveFormat.Jpeg, FileFormatUtil.ContentTypeToSaveFormat("jpeg"));
@@ -61,10 +64,10 @@ namespace ApiExamples
                 Console.WriteLine(e.Message);
             }
 
-            // The convertion methods are only for official IANA types, which are all listed here:
+            // The convertion methods only accept official IANA type names, which are all listed here:
             //      https://www.iana.org/assignments/media-types/media-types.xhtml
-            // Note that if a corresponding SaveFormat or LoadFormat for a type from that list does not exist in the Aspose formats enum,
-            // it will raise an exception just like in the code above 
+            // Note that if a corresponding SaveFormat or LoadFormat for a type from that list does not exist in the Aspose enums,
+            // converting will raise an exception just like in the code above 
 
             // File types that can be saved to but not opened as documents will not have corresponding load formats
             // Attempting to convert them to load formats will raise an exception
