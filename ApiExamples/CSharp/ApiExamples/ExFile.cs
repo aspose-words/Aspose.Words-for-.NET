@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace ApiExamples
 {
     [TestFixture]
-    internal class ExFile : ApiExampleBase
+    internal class ExFile : ApiExampleBase //INSP: We have a lot of FileFormatInfo and FileFormatUtil examples in other classes. Move them to this class.
     {
         [Test]
         public void CatchFileCorruptedException()
