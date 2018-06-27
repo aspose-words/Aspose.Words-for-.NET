@@ -337,36 +337,6 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Image.DeleteAllImagesPreOrder.doc");
         }
 
-        //ExStart
-        //ExFor:Shape
-        //ExFor:Shape.ImageData
-        //ExFor:Shape.HasImage
-        //ExFor:ImageData
-        //ExFor:FileFormatUtil.ImageTypeToExtension(Aspose.Words.Drawing.ImageType)
-        //ExFor:ImageData.ImageType
-        //ExFor:ImageData.Save(String)
-        //ExFor:CompositeNode.GetChildNodes(NodeType, bool)
-        //ExId:ExtractImagesToFiles
-        //ExSummary:Shows how to extract images from a document and save them as files.
-        [Test] //ExSkip
-        public void ExtractImagesToFiles()
-        {
-            Document doc = new Document(MyDir + "Image.SampleImages.doc");
-
-            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
-            int imageIndex = 0;
-            foreach (Shape shape in shapes)
-            {
-                if (shape.HasImage)
-                {
-                    string imageFileName = string.Format(@"\Artifacts\Image.ExportImages.{0} Out{1}", imageIndex, FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType));
-                    shape.ImageData.Save(MyDir + imageFileName);
-                    imageIndex++;
-                }
-            }
-        }
-        //ExEnd
-
         [Test]
         public void ScaleImage()
         {

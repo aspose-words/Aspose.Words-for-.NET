@@ -1,11 +1,13 @@
 ﻿using System;
+using System.IO;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using NUnit.Framework;
 
 namespace ApiExamples
 {
     [TestFixture]
-    internal class ExFile : ApiExampleBase //INSP: We have a lot of FileFormatInfo and FileFormatUtil examples in other classes. Move them to this class.
+    internal class ExFile : ApiExampleBase
     {
         [Test]
         public void CatchFileCorruptedException()
@@ -101,5 +103,131 @@ namespace ApiExamples
             Assert.AreEqual(SaveFormat.Mhtml, FileFormatUtil.ContentTypeToSaveFormat("multipart/related"));
             //ExEnd
         }
+
+        [Test]
+        public void DetectFileFormat()
+        {
+            //ExStart
+            //ExFor:FileFormatUtil.DetectFileFormat(String)
+            //ExFor:FileFormatInfo
+            //ExFor:FileFormatInfo.LoadFormat
+            //ExFor:FileFormatInfo.IsEncrypted
+            //ExFor:FileFormatInfo.HasDigitalSignature
+            //ExId:DetectFileFormat
+            //ExSummary:Shows how to use the FileFormatUtil class to detect the document format and other features of the document.
+            FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.doc");
+            Console.WriteLine("The document format is: " + FileFormatUtil.LoadFormatToExtension(info.LoadFormat));
+            Console.WriteLine("Document is encrypted: " + info.IsEncrypted);
+            Console.WriteLine("Document has a digital signature: " + info.HasDigitalSignature);
+            //ExEnd
+        }
+
+        [Test]
+        public void DetectFileFormat_EnumConversions()
+        {
+            //ExStart
+            //ExFor:FileFormatUtil.DetectFileFormat(Stream)
+            //ExFor:FileFormatUtil.LoadFormatToExtension(LoadFormat)
+            //ExFor:FileFormatUtil.ExtensionToSaveFormat(String)
+            //ExFor:FileFormatUtil.SaveFormatToExtension(SaveFormat)
+            //ExFor:FileFormatUtil.LoadFormatToSaveFormat(LoadFormat)
+            //ExFor:Document.OriginalFileName
+            //ExFor:FileFormatInfo.LoadFormat
+            //ExSummary:Shows how to use the FileFormatUtil methods to detect the format of a document without any extension and save it with the correct file extension.
+            // Load the document without a file extension into a stream and use the DetectFileFormat method to detect it's format. 
+            // These are both times where you might need extract the file format as it's not visible
+            FileStream docStream = File.OpenRead(MyDir + "Document.FileWithoutExtension"); // The file format of this document is actually ".doc"
+            FileFormatInfo info = FileFormatUtil.DetectFileFormat(docStream);
+
+            // Retrieve the LoadFormat of the document.
+            LoadFormat loadFormat = info.LoadFormat;
+
+            // Let's show the different methods of converting LoadFormat enumerations to SaveFormat enumerations.
+            //
+            // Method #1
+            // Convert the LoadFormat to a String first for working with. The String will include the leading dot in front of the extension.
+            String fileExtension = FileFormatUtil.LoadFormatToExtension(loadFormat);
+            // Now convert this extension into the corresponding SaveFormat enumeration
+            SaveFormat saveFormat = FileFormatUtil.ExtensionToSaveFormat(fileExtension);
+
+            // Method #2
+            // Convert the LoadFormat enumeration directly to the SaveFormat enumeration.
+            saveFormat = FileFormatUtil.LoadFormatToSaveFormat(loadFormat);
+
+            // Load a document from the stream.
+            Document doc = new Document(docStream);
+
+            // Save the document with the original file name, " Out" and the document's file extension.
+            doc.Save(MyDir + @"\Artifacts\Document.WithFileExtension" + FileFormatUtil.SaveFormatToExtension(saveFormat));
+            //ExEnd
+
+            Assert.AreEqual(".doc", FileFormatUtil.SaveFormatToExtension(saveFormat));
+        }
+
+        [Test]
+        public void DetectFileFormat_SaveFormatToLoadFormat()
+        {
+            //ExStart
+            //ExFor:FileFormatUtil.SaveFormatToLoadFormat(SaveFormat)
+            //ExSummary:Shows how to use the FileFormatUtil class and to convert a SaveFormat enumeration into the corresponding LoadFormat enumeration.
+            // Define the SaveFormat enumeration to convert.
+            SaveFormat saveFormat = SaveFormat.Html;
+            // Convert the SaveFormat enumeration to LoadFormat enumeration.
+            LoadFormat loadFormat = FileFormatUtil.SaveFormatToLoadFormat(saveFormat);
+            Console.WriteLine("The converted LoadFormat is: " + FileFormatUtil.LoadFormatToExtension(loadFormat));
+            //ExEnd
+
+            Assert.AreEqual(".html", FileFormatUtil.SaveFormatToExtension(saveFormat));
+            Assert.AreEqual(".html", FileFormatUtil.LoadFormatToExtension(loadFormat));
+        }
+
+        [Test]
+        public void DetectDocumentSignatures()
+        {
+            //ExStart
+            //ExFor:FileFormatUtil.DetectFileFormat(String)
+            //ExFor:FileFormatInfo.HasDigitalSignature
+            //ExId:DetectDocumentSignatures
+            //ExSummary:Shows how to check a document for digital signatures before loading it into a Document object.
+            // The path to the document which is to be processed.
+            String filePath = MyDir + "Document.Signed.docx";
+
+            FileFormatInfo info = FileFormatUtil.DetectFileFormat(filePath);
+            if (info.HasDigitalSignature)
+            {
+                Console.WriteLine("Document {0} has digital signatures, they will be lost if you open/save this document with Aspose.Words.", Path.GetFileName(filePath));
+            }
+            //ExEnd
+        }
+
+        //ExStart
+        //ExFor:Shape
+        //ExFor:Shape.ImageData
+        //ExFor:Shape.HasImage
+        //ExFor:ImageData
+        //ExFor:FileFormatUtil.ImageTypeToExtension(Aspose.Words.Drawing.ImageType)
+        //ExFor:ImageData.ImageType
+        //ExFor:ImageData.Save(String)
+        //ExFor:CompositeNode.GetChildNodes(NodeType, bool)
+        //ExId:ExtractImagesToFiles
+        //ExSummary:Shows how to extract images from a document and save them as files.
+        [Test] //ExSkip
+        public void ExtractImagesToFiles()
+        {
+            Document doc = new Document(MyDir + "Image.SampleImages.doc");
+
+            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
+            int imageIndex = 0;
+            foreach (Shape shape in shapes)
+            {
+                if (shape.HasImage)
+                {
+                    string imageFileName = string.Format(@"\Artifacts\Image.ExportImages.{0} Out{1}", imageIndex, FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType));
+                    shape.ImageData.Save(MyDir + imageFileName);
+                    imageIndex++;
+                }
+            }
+        }
+        //ExEnd
     }
 }
