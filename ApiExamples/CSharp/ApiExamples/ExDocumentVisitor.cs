@@ -12,6 +12,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Markup;
 using Aspose.Words.Math;
+using Aspose.Words.Replacing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 
@@ -32,13 +33,12 @@ namespace ApiExamples
         //ExFor:DocumentVisitor.VisitParagraphStart(Paragraph)
         //ExFor:DocumentVisitor.VisitParagraphEnd(Paragraph)
         //ExFor:DocumentVisitor.VisitSubDocument(SubDocument)
-        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document.
-        // In this case we are going through the basic nodes of a document and printing their contents. //INSP: I don't think that we need to write a long summary. You can add more information about cases after ExSummary.
+        //ExSummary:Traverse a document with a visitor that prints all structure nodes that it encounters.
         [Test] //ExSkip
         public void DocStructureToText()
         {
             // Open the document that has nodes we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.docx");
+            Document doc = new Document(MyDir + "DocumentVisitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             DocStructurePrinter visitor = new DocStructurePrinter();
@@ -204,130 +204,6 @@ namespace ApiExamples
             private int mDocTraversalDepth;
             private readonly StringBuilder mBuilder;
         }
-        //ExEnd 
-
-        //ExStart
-        //ExFor:DocumentVisitor.VisitShapeEnd(Shape)
-        //ExFor:DocumentVisitor.VisitShapeStart(Shape)
-        //ExFor:DocumentVisitor.VisitGroupShapeEnd(GroupShape)
-        //ExFor:DocumentVisitor.VisitGroupShapeStart(GroupShape)
-        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document.
-        // In this case we are using a visitor that prints a directory tree-style map of all shapes inside a document. //INSP: Same as above
-        [Test] //ExSkip
-        public void ShapesToText() //INSP: We also have GroupOfShapes method in ExDrawing. Can we remove one of this or combine?
-        {
-            // Open the document that has shapes we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.docx");
-
-            // Create an object that inherits from the DocumentVisitor class
-            ShapeInfoPrinter visitor = new ShapeInfoPrinter();
-
-            // Accepting a visitor lets it start traversing the nodes in the document, 
-            // starting with the node that accepted it to then recursively visit every child
-            doc.Accept(visitor);
-
-            // Once the visiting is complete, we can retrieve the result of the operation,
-            // that in this example, has accumulated in the visitor
-            Console.WriteLine(visitor.GetText());
-        }
-
-        /// <summary>
-        /// This Visitor implementation prints information about shapes encountered in the document.
-        /// </summary>
-        public class ShapeInfoPrinter : DocumentVisitor
-        {
-            public ShapeInfoPrinter()
-            {
-                this.mBuilder = new StringBuilder();
-                this.mVisitorIsInsideShape = false;
-            }
-
-            /// <summary>
-            /// Gets the plain text of the document that was accumulated by the visitor.
-            /// </summary>
-            public String GetText()
-            {
-                return this.mBuilder.ToString();
-            }
-
-            /// <summary>
-            /// Called when a Run node is encountered in the document.
-            /// </summary>
-            public override VisitorAction VisitRun(Run run)
-            {
-                // We will only print runs if they are children of shape nodes, as they are in a text box for example
-                if (mVisitorIsInsideShape) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
-
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Called when a Shape node is encountered in the document.
-            /// </summary>
-            public override VisitorAction VisitShapeStart(Shape shape)
-            {
-                this.IndentAndAppendLine("[Shape start] Type: " + shape.ShapeType + ", Fill color: " + shape.FillColor);
-                mDocTraversalDepth++;
-
-                mVisitorIsInsideShape = true;
-
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Called when the visiting of a Shape node is ended.
-            /// </summary>
-            public override VisitorAction VisitShapeEnd(Shape shape)
-            {
-                mDocTraversalDepth--;
-                this.IndentAndAppendLine("[Shape end]");
-
-                mVisitorIsInsideShape = false;
-
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Called when a GroupShape node is encountered in the document.
-            /// </summary>
-            public override VisitorAction VisitGroupShapeStart(GroupShape groupShape)
-            {
-                int innerShapeCount = groupShape.GetChildNodes(NodeType.Shape, true).Count;
-
-                this.IndentAndAppendLine("[GroupShape start] Inner shapes: " + innerShapeCount);
-                mDocTraversalDepth++;
-
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Called when the visiting of a GroupShape node is ended.
-            /// </summary>
-            public override VisitorAction VisitGroupShapeEnd(GroupShape groupShape)
-            {
-                mDocTraversalDepth--;
-                this.IndentAndAppendLine("[GroupShape end]");
-
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
-            /// </summary>
-            /// <param name="text"></param>
-            private void IndentAndAppendLine(String text)
-            {
-                for (int i = 0; i < mDocTraversalDepth; i++)
-                {
-                    mBuilder.Append("|  ");
-                }
-                mBuilder.AppendLine(text);
-            }
-
-            private bool mVisitorIsInsideShape;
-            private int mDocTraversalDepth;
-            private readonly StringBuilder mBuilder;
-        }
         //ExEnd
 
         //ExStart
@@ -337,13 +213,12 @@ namespace ApiExamples
         //ExFor:DocumentVisitor.VisitRowStart(Tables.Row)
         //ExFor:DocumentVisitor.VisitCellStart(Tables.Cell)
         //ExFor:DocumentVisitor.VisitCellEnd(Tables.Cell)
-        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document.
-        // In this case we are printing the contents of every table in a document. //INSP: Same as above
+        //ExSummary:Traverse a document with a visitor that prints all tables that it encounters.
         [Test] //ExSkip
         public void TableToText()
         {
             // Open the document that has tables we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.docx");
+            Document doc = new Document(MyDir + "DocumentVisitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             TableInfoPrinter visitor = new TableInfoPrinter();
@@ -492,13 +367,12 @@ namespace ApiExamples
         //ExFor:DocumentVisitor.VisitCommentEnd(Comment)
         //ExFor:DocumentVisitor.VisitCommentRangeEnd(CommentRangeEnd)
         //ExFor:DocumentVisitor.VisitCommentRangeStart(CommentRangeStart)
-        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document.
-        // In this case we are printing information about all comments/comment ranges. //INSP: Same as above
+        //ExSummary:Traverse a document with a visitor that prints all comment nodes that it encounters.
         [Test] //ExSkip
         public void CommentsToText()
         {
             // Open the document that has comments/comment ranges we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.docx");
+            Document doc = new Document(MyDir + "DocumentVisitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             CommentInfoPrinter visitor = new CommentInfoPrinter();
@@ -613,13 +487,12 @@ namespace ApiExamples
         //ExFor:DocumentVisitor.VisitFieldStart
         //ExFor:DocumentVisitor.VisitFieldEnd
         //ExFor:DocumentVisitor.VisitFieldSeparator
-        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document.
-        // In this case we are visiting all fields and printing their contents. //INSP: Same as above
+        //ExSummary:Traverse a document with a visitor that prints all fields that it encounters.
         [Test] //ExSkip
         public void FieldToText()
         {
             // Open the document that has fields that we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.docx");
+            Document doc = new Document(MyDir + "DocumentVisitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             FieldInfoPrinter visitor = new FieldInfoPrinter();
@@ -718,12 +591,12 @@ namespace ApiExamples
         //ExStart
         //ExFor:DocumentVisitor.VisitHeaderFooterStart(HeaderFooter)
         //ExFor:DocumentVisitor.VisitHeaderFooterEnd(HeaderFooter)
-        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are picking header/footer nodes and printing their contents.
+        //ExSummary:Traverse a document with a visitor that prints all header/footer nodes that it encounters.
         [Test] //ExSkip
         public void HeaderFooterToText()
         {
             // Open the document that has headers and/or footers we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.docx");
+            Document doc = new Document(MyDir + "DocumentVisitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             HeaderFooterInfoPrinter visitor = new HeaderFooterInfoPrinter();
@@ -812,13 +685,12 @@ namespace ApiExamples
         //ExStart
         //ExFor:DocumentVisitor.VisitEditableRangeEnd(EditableRangeEnd)
         //ExFor:DocumentVisitor.VisitEditableRangeStart(EditableRangeStart)
-        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document.
-        // In this case we are printing the contents of an editable range. //INSP: Same as above
+        //ExSummary:Traverse a document with a visitor that prints all editable ranges that it encounters.
         [Test] //ExSkip
         public void EditableRangeToText()
         {
             // Open the document that has editable ranges we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.docx"); //INSP: Can we add editable ranges to the document? For now the result is empty.
+            Document doc = new Document(MyDir + "DocumentVisitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             EditableRangeInfoPrinter visitor = new EditableRangeInfoPrinter();
@@ -826,6 +698,9 @@ namespace ApiExamples
             // Accepting a visitor lets it start traversing the nodes in the document, 
             // starting with the node that accepted it to then recursively visit every child
             doc.Accept(visitor);
+
+            Paragraph p = new Paragraph(doc);
+            p.AppendChild(new Run(doc, "Paragraph with editable range text."));
 
             // Once the visiting is complete, we can retrieve the result of the operation,
             // that in this example, has accumulated in the visitor
@@ -867,7 +742,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitEditableRangeStart(EditableRangeStart editableRangeStart)
             {
-                this.IndentAndAppendLine("[EditableRange start] ID: " + editableRangeStart.Id);
+                this.IndentAndAppendLine("[EditableRange start] ID: " + editableRangeStart.Id + " Owner: " + editableRangeStart.EditableRange.SingleUser);
                 mDocTraversalDepth++;
                 this.mVisitorIsInsideEditableRange = true;
 
@@ -908,13 +783,12 @@ namespace ApiExamples
         //ExStart
         //ExFor:DocumentVisitor.VisitFootnoteEnd(Footnote)
         //ExFor:DocumentVisitor.VisitFootnoteStart(Footnote)
-        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document.
-        // In this case we are printing the contents of footnotes from within a document. //INSP: Same as above
+        //ExSummary:Traverse a document with a visitor that prints all footnotes that it encounters.
         [Test] //ExSkip
         public void FootnoteToText()
         {
             // Open the document that has footnotes we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.docx");
+            Document doc = new Document(MyDir + "DocumentVisitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             FootnoteInfoPrinter visitor = new FootnoteInfoPrinter();
@@ -1003,13 +877,12 @@ namespace ApiExamples
         //ExStart
         //ExFor:DocumentVisitor.VisitOfficeMathEnd(Math.OfficeMath)
         //ExFor:DocumentVisitor.VisitOfficeMathStart(Math.OfficeMath)
-        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document.
-        // In this case we are looking at office math objects. //INSP: Same as above
+        //ExSummary:Traverse a document with a visitor that prints all offise math nodes that it encounters.
         [Test] //ExSkip
         public void OfficeMathToText()
         {
             // Open the document that has office math objects we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.docx");
+            Document doc = new Document(MyDir + "DocumentVisitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             OfficeMathInfoPrinter visitor = new OfficeMathInfoPrinter();
@@ -1098,13 +971,12 @@ namespace ApiExamples
         //ExStart
         //ExFor:DocumentVisitor.VisitSmartTagEnd(Markup.SmartTag)
         //ExFor:DocumentVisitor.VisitSmartTagStart(Markup.SmartTag)
-        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document.
-        // In this case we are printing the contents of smart tags. //INSP: Same as above
+        //ExSummary:Traverse a document with a visitor that prints all smart tag nodes that it encounters.
         [Test] //ExSkip
         public void SmartTagToText()
         {
             // Open the document that has smart tags we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.docx"); //INSP: There is no smarttags in Word 2016, but can we add them to the document?
+            Document doc = new Document(MyDir + "DocumentVisitor.SmartTag.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             SmartTagInfoPrinter visitor = new SmartTagInfoPrinter();
@@ -1193,12 +1065,12 @@ namespace ApiExamples
         //ExStart
         //ExFor:DocumentVisitor.VisitStructuredDocumentTagEnd(Markup.StructuredDocumentTag)
         //ExFor:DocumentVisitor.VisitStructuredDocumentTagStart(Markup.StructuredDocumentTag)
-        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are printing the contents of structured document tags.
+        //ExSummary:Traverse a document with a visitor that prints all structured document tag nodes that it encounters.
         [Test] //ExSkip
         public void StructuredDocumentTagToText()
         {
             // Open the document that has structured document tags we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.docx"); //INSP: Can we add StructuredDocumentTag to the document?
+            Document doc = new Document(MyDir + "DocumentVisitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             StructuredDocumentTagInfoPrinter visitor = new StructuredDocumentTagInfoPrinter();
