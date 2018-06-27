@@ -85,6 +85,7 @@
     <Compile Include="ExDrawing.cs" />
     <Compile Include="ExEditableRange.cs" />
     <Compile Include="ExField.cs" />
+    <Compile Include="ExFile.cs" />
     <Compile Include="ExFont.cs" />
     <Compile Include="ExFormFields.cs" />
     <Compile Include="ExHeaderFooter.cs" />
