@@ -819,8 +819,8 @@ namespace ApiExamples
             yAxis.MajorUnit = 100;
             yAxis.MinorUnit = 50;
             yAxis.DisplayUnit.Unit = AxisBuiltInUnit.Hundreds;
-            yAxis.Scaling.Minimum = 100;
-            yAxis.Scaling.Maximum = 700;
+            yAxis.Scaling.Minimum = new AxisBound(100);
+            yAxis.Scaling.Maximum = new AxisBound(700);
 
             doc.Save(MyDir + @"\Artifacts\ChartAxisProperties.docx");
         }

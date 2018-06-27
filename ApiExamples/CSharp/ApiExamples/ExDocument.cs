@@ -2063,7 +2063,6 @@ namespace ApiExamples
         public void SetInvalidateFieldTypes()
         {
             //ExStart
-            //ExFor:Document.InvalidateFieldTypes
             //ExFor:Document.NormalizeFieldTypes
             //ExSummary:Shows how to get the keep a field's type up to date with its field code.
             Document doc = new Document();
