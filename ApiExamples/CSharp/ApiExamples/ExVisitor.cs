@@ -40,14 +40,13 @@ namespace ApiExamples
         public void DocStructureToText()
         {
             // Open the document that has nodes we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+            Document doc = new Document(MyDir + "Visitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             DocStructurePrinter visitor = new DocStructurePrinter();
 
             // Accepring a visitor lets it start traversing the nodes in the document, 
             // starting with the node that accepted it to then recursively visit every child
-            // This particular visitor will
             doc.Accept(visitor);
 
             // Once the visiting is complete, we can retrieve the result of the operation,
@@ -214,19 +213,18 @@ namespace ApiExamples
         //ExFor:DocumentVisitor.VisitShapeStart(Shape)
         //ExFor:DocumentVisitor.VisitGroupShapeEnd(GroupShape)
         //ExFor:DocumentVisitor.VisitGroupShapeStart(GroupShape)
-        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are using a visitor that prints a directory tree-style map of the shapes inside a document.
+        //ExSummary:Shows how to use a visitor to traverse and interact with nodes in a document. In this case we are using a visitor that prints a directory tree-style map of all shapes inside a document.
         [Test] //ExSkip
         public void ShapesToText()
         {
             // Open the document that has shapes we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+            Document doc = new Document(MyDir + "Visitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             ShapeInfoPrinter visitor = new ShapeInfoPrinter();
 
             // Accepring a visitor lets it start traversing the nodes in the document, 
             // starting with the node that accepted it to then recursively visit every child
-            // This particular visitor will go through every node but only acts when it finds node types for which it has corresponding overriding methods
             doc.Accept(visitor);
 
             // Once the visiting is complete, we can retrieve the result of the operation,
@@ -345,14 +343,13 @@ namespace ApiExamples
         public void TableToText()
         {
             // Open the document that has tables we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+            Document doc = new Document(MyDir + "Visitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             TableInfoPrinter visitor = new TableInfoPrinter();
 
             // Accepring a visitor lets it start traversing the nodes in the document, 
             // starting with the node that accepted it to then recursively visit every child
-            // This particular visitor will go through each table and print basic information and contents of all cells.
             doc.Accept(visitor);
 
             // Once the visiting is complete, we can retrieve the result of the operation,
@@ -361,7 +358,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// This Visitor implementation prints information about and contends of tables encountered in the document.
+        /// This Visitor implementation prints information about and contents of all tables encountered in the document.
         /// </summary>
         public class TableInfoPrinter : DocumentVisitor
         {
@@ -500,14 +497,13 @@ namespace ApiExamples
         public void CommentsToText()
         {
             // Open the document that has comments/comment ranges we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+            Document doc = new Document(MyDir + "Visitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             CommentInfoPrinter visitor = new CommentInfoPrinter();
 
             // Accepring a visitor lets it start traversing the nodes in the document, 
             // starting with the node that accepted it to then recursively visit every child
-            // This particular visitor will go through the document and print information about every comment range/comment it encounters.
             doc.Accept(visitor);
 
             // Once the visiting is complete, we can retrieve the result of the operation,
@@ -621,14 +617,13 @@ namespace ApiExamples
         public void FieldToText()
         {
             // Open the document that has fields that we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+            Document doc = new Document(MyDir + "Visitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             FieldInfoPrinter visitor = new FieldInfoPrinter();
 
             // Accepring a visitor lets it start traversing the nodes in the document, 
             // starting with the node that accepted it to then recursively visit every child
-            // This particular visitor will print all the runs and field separators from within a field
             doc.Accept(visitor);
 
             // Once the visiting is complete, we can retrieve the result of the operation,
@@ -727,14 +722,13 @@ namespace ApiExamples
         public void HeaderFooterToText()
         {
             // Open the document that has headers and/or footers we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+            Document doc = new Document(MyDir + "Visitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             HeaderFooterInfoPrinter visitor = new HeaderFooterInfoPrinter();
 
             // Accepring a visitor lets it start traversing the nodes in the document, 
             // starting with the node that accepted it to then recursively visit every child
-            // This particular visitor will visit all HeaderFooter nodes and print their type and contents to the console
             doc.Accept(visitor);
 
             // Once the visiting is complete, we can retrieve the result of the operation,
@@ -822,14 +816,13 @@ namespace ApiExamples
         public void EditableRangeToText()
         {
             // Open the document that has editable ranges we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+            Document doc = new Document(MyDir + "Visitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             EditableRangeInfoPrinter visitor = new EditableRangeInfoPrinter();
 
             // Accepring a visitor lets it start traversing the nodes in the document, 
             // starting with the node that accepted it to then recursively visit every child
-            // This particular visitor will print all the runs that are inside an editable range.
             doc.Accept(visitor);
 
             // Once the visiting is complete, we can retrieve the result of the operation,
@@ -918,14 +911,13 @@ namespace ApiExamples
         public void FootnoteToText()
         {
             // Open the document that has footnotes we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+            Document doc = new Document(MyDir + "Visitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             FootnoteInfoPrinter visitor = new FootnoteInfoPrinter();
 
             // Accepring a visitor lets it start traversing the nodes in the document, 
             // starting with the node that accepted it to then recursively visit every child
-            // This particular visitor will print information about and contents of footnotes encountered while traversing the document
             doc.Accept(visitor);
 
             // Once the visiting is complete, we can retrieve the result of the operation,
@@ -1013,14 +1005,13 @@ namespace ApiExamples
         public void OfficeMathToText()
         {
             // Open the document that has office math objects we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+            Document doc = new Document(MyDir + "Visitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             OfficeMathInfoPrinter visitor = new OfficeMathInfoPrinter();
 
             // Accepring a visitor lets it start traversing the nodes in the document, 
             // starting with the node that accepted it to then recursively visit every child
-            // This particular visitor will print info and contents of all OfficeMath objects
             doc.Accept(visitor);
 
             // Once the visiting is complete, we can retrieve the result of the operation,
@@ -1108,14 +1099,13 @@ namespace ApiExamples
         public void SmartTagToText()
         {
             // Open the document that has smart tags we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+            Document doc = new Document(MyDir + "Visitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             SmartTagInfoPrinter visitor = new SmartTagInfoPrinter();
 
             // Accepring a visitor lets it start traversing the nodes in the document, 
             // starting with the node that accepted it to then recursively visit every child
-            // This particular visitor will print information and contents of smart tags
             doc.Accept(visitor);
 
             // Once the visiting is complete, we can retrieve the result of the operation,
@@ -1203,14 +1193,13 @@ namespace ApiExamples
         public void StructuredDocumentTagToText()
         {
             // Open the document that has structured document tags we want to print the info of
-            Document doc = new Document(MyDir + "Visitor.Destination.doc");
+            Document doc = new Document(MyDir + "Visitor.Destination.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             StructuredDocumentTagInfoPrinter visitor = new StructuredDocumentTagInfoPrinter();
 
             // Accepring a visitor lets it start traversing the nodes in the document, 
             // starting with the node that accepted it to then recursively visit every child
-            // This particular visitor will visit all structured document tags and print their contents
             doc.Accept(visitor);
 
             // Once the visiting is complete, we can retrieve the result of the operation,
