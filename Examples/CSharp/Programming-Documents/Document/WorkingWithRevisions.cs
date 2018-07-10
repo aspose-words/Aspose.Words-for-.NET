@@ -13,6 +13,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             AcceptRevisions(dataDir);
             GetRevisionTypes(dataDir);
+            GetRevisionGroups(dataDir);
         }
 
         private static void AcceptRevisions(string dataDir)
@@ -47,6 +48,20 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
                     Console.WriteLine("The paragraph {0} has been moved (inserted).", i);
             }
             // ExEnd:GetRevisionTypes
+        }
+
+
+        private static void GetRevisionGroups(string dataDir)
+        {
+            // ExStart:GetRevisionGroups
+            Document doc = new Document(dataDir + "Revisions.docx");
+
+            foreach (RevisionGroup group in doc.Revisions.Groups)
+            {
+                Console.WriteLine("{0}, {1}:", group.Author, group.RevisionType);
+                Console.WriteLine(group.Text);
+            }
+            // ExEnd:GetRevisionGroups
         }
     }
 }

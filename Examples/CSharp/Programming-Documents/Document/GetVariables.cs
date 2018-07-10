@@ -3,6 +3,7 @@ using System.IO;
 using Aspose.Words;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
@@ -16,7 +17,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // Load the template document.
             Document doc = new Document(dataDir + "TestFile.doc");
             string variables = "";
-            foreach (DictionaryEntry entry in doc.Variables)
+            foreach (KeyValuePair<string, string> entry in doc.Variables)
             {
                 string name = entry.Key.ToString();
                 string value = entry.Value.ToString();

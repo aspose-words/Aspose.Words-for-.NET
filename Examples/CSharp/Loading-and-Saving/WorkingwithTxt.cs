@@ -16,6 +16,8 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
 
             SaveAsTxt(dataDir);
             AddBidiMarks(dataDir);
+            DetectNumberingWithWhitespaces(dataDir);
+            HandleSpacesOptions(dataDir);
         }
 
         public static void SaveAsTxt(string dataDir)
@@ -39,6 +41,35 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             doc.Save(dataDir, saveOptions);
             //ExEnd:AddBidiMarks
             Console.WriteLine("\nAdd bi-directional marks set successfully.\nFile saved at " + dataDir);
+        }
+         
+        public static void DetectNumberingWithWhitespaces(string dataDir)
+        {
+            //ExStart:DetectNumberingWithWhitespaces
+            TxtLoadOptions loadOptions = new TxtLoadOptions();
+            loadOptions.DetectNumberingWithWhitespaces = false;
+
+            Document doc = new Document(dataDir + "LoadTxt.txt", loadOptions);
+
+            dataDir = dataDir + "DetectNumberingWithWhitespaces_out.docx";
+            doc.Save(dataDir);
+            //ExEnd:DetectNumberingWithWhitespaces
+            Console.WriteLine("\nDetect number with whitespaces successfully.\nFile saved at " + dataDir);
+        }
+
+        public static void HandleSpacesOptions(string dataDir)
+        {
+            //ExStart:HandleSpacesOptions
+            TxtLoadOptions loadOptions = new TxtLoadOptions();
+             
+            loadOptions.LeadingSpacesOptions = TxtLeadingSpacesOptions.Trim;
+            loadOptions.TrailingSpacesOptions = TxtTrailingSpacesOptions.Trim;
+            Document doc = new Document(dataDir + "LoadTxt.txt", loadOptions);
+
+            dataDir = dataDir + "HandleSpacesOptions_out.docx";
+            doc.Save(dataDir);
+            //ExEnd:HandleSpacesOptions
+            Console.WriteLine("\nTrim leading and trailing spaces while importing text document.\nFile saved at " + dataDir);
         }
     }
 }
