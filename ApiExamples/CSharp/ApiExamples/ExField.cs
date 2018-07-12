@@ -55,6 +55,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldChar.GetField
+            //ExFor:Field.IsLocked
             //ExId:GetField
             //ExSummary:Demonstrates how to retrieve the field class from an existing FieldStart node in the document.
             Document doc = new Document(MyDir + "Document.TableOfContents.doc");
@@ -215,7 +216,7 @@ namespace ApiExamples
             // Remove the first TOC from the document.
             Field tocField = doc.Range.Fields[0];
             tocField.Remove();
-
+            
             // Save the output.
             doc.Save(MyDir + @"\Artifacts\Document.TableOfContentsRemoveTOC.doc");
             //ExEnd
@@ -288,11 +289,15 @@ namespace ApiExamples
         [Ignore("WORDSNET-16037")]
         public void InsertAndUpdateDirtyField()
         {
+            //ExStart
+            //ExFor:Field.IsDirty
+            //ExSummary:Shows how to use special property for updating field result
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Field fieldToc = builder.InsertTableOfContents("\\o \"1-3\" \\h \\z \\u");
             fieldToc.IsDirty = true;
+            //ExEnd
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
@@ -312,9 +317,10 @@ namespace ApiExamples
         public void InsertFieldWithFieldBuilder()
         {
             //ExStart
-            //ExFor:FieldArgumentBuilder
+            //ExFor:FieldArgumentBuilder.#ctor
             //ExFor:FieldArgumentBuilder.AddField(FieldBuilder)
             //ExFor:FieldArgumentBuilder.AddText(String)
+            //ExFor:FieldBuilder.#ctor
             //ExFor:FieldBuilder.AddArgument(FieldArgumentBuilder)
             //ExFor:FieldBuilder.AddArgument(String)
             //ExFor:FieldBuilder.AddArgument(Int32)
@@ -329,12 +335,12 @@ namespace ApiExamples
             para.AppendChild(run);
 
             FieldArgumentBuilder argumentBuilder = new FieldArgumentBuilder();
-            argumentBuilder.AddField(new FieldBuilder(FieldType.FieldMergeField));
+                        argumentBuilder.AddField(new FieldBuilder(FieldType.FieldMergeField));
             argumentBuilder.AddText("BestField");
 
             FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldIf);
             fieldBuilder.AddArgument(argumentBuilder).AddArgument("=").AddArgument("BestField").AddArgument(10).AddArgument(20.0).AddSwitch("12", "13").BuildAndInsert(run);
-
+            
             doc.UpdateFields();
             //ExEnd
         }
