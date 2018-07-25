@@ -8,6 +8,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -594,6 +595,64 @@ namespace ApiExamples
 
                 curNode = nextNode;
             }
+        }
+
+        [Test]
+        public void DropDownItemCollectionEx()
+        {
+            //ExStart
+            //ExFor:Fields.DropDownItemCollection
+            //ExFor:Fields.DropDownItemCollection.Add(System.String)
+            //ExFor:Fields.DropDownItemCollection.Clear
+            //ExFor:Fields.DropDownItemCollection.Contains(System.String)
+            //ExFor:Fields.DropDownItemCollection.Count
+            //ExFor:Fields.DropDownItemCollection.GetEnumerator
+            //ExFor:Fields.DropDownItemCollection.IndexOf(System.String)
+            //ExFor:Fields.DropDownItemCollection.Insert(System.Int32, System.String)
+            //ExFor:Fields.DropDownItemCollection.Item(System.Int32)
+            //ExFor:Fields.DropDownItemCollection.Remove(System.String)
+            //ExFor:Fields.DropDownItemCollection.RemoveAt(System.Int32)
+            //ExSummary:Shows how to insert a combo box field and access and manipulate its item collection.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to create and populate a combo box
+            string[] items = { "One", "Two", "Three" };
+            FormField comboBoxField = builder.InsertComboBox("DropDown", items, 0);
+
+            // Get the list of drop down strings
+            DropDownItemCollection dropDownItems = comboBoxField.DropDownItems;
+
+            Assert.AreEqual(3, dropDownItems.Count);
+            Assert.AreEqual("One", dropDownItems[0]);
+            Assert.AreEqual(1, dropDownItems.IndexOf("Two"));
+            Assert.IsTrue(dropDownItems.Contains("Three"));
+
+            // Two ways of adding items
+            dropDownItems.Add("Four");
+            dropDownItems.Insert(3, "Three and a half");
+            Assert.AreEqual(5, dropDownItems.Count);
+
+            // Iterate over the collection and print every element
+            IEnumerator dropDownCollectionEnumerator = dropDownItems.GetEnumerator();
+            while (dropDownCollectionEnumerator.MoveNext())
+            {
+                string currentItem = (string)dropDownCollectionEnumerator.Current;
+                Console.WriteLine(currentItem);
+            }
+
+            // We can remove elements in the same way we added them
+            dropDownItems.Remove("Four");
+            dropDownItems.RemoveAt(3);
+            Assert.IsFalse(dropDownItems.Contains("Three and a half"));
+            Assert.IsFalse(dropDownItems.Contains("Four"));
+
+            doc.Save(MyDir + "Fields.DropDownItems.docx");
+
+            // Empty out the collection
+            dropDownItems.Clear();
+            Assert.AreEqual(0, dropDownItems.Count);
+            //ExEnd
         }
     }
 }
