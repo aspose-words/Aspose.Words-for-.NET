@@ -168,19 +168,24 @@ namespace ApiExamples
         [Test]
         public void GetFieldNames()
         {
+            //ExStart
+            //ExFor:FieldAddressBlock.#ctor
+            //ExFor:FieldAddressBlock.GetFieldNames
+            //ExSummary:Shows how to get mail merge field names used by the field
             Document doc = new Document(MyDir + "MailMerge.GetFieldNames.docx");
 
-            String[] addressFieldsExpect = { "Company", "First Name", "Middle Name", "Last Name", "Suffix", "Address 1", "City", "State", "Country or Region", "Postal Code" };
+            string[] addressFieldsExpect = { "Company", "First Name", "Middle Name", "Last Name", "Suffix", "Address 1", "City", "State", "Country or Region", "Postal Code" };
 
             FieldAddressBlock addressBlockField = (FieldAddressBlock)doc.Range.Fields[0]; 
-            String[] addressBlockFieldNames = addressBlockField.GetFieldNames();                     
+            string[] addressBlockFieldNames = addressBlockField.GetFieldNames();
+            //ExEnd
                                                                                          
             Assert.AreEqual(addressFieldsExpect, addressBlockFieldNames);
 
-            String[] greetingFieldsExpect = { "Courtesy Title", "Last Name" };
+            string[] greetingFieldsExpect = { "Courtesy Title", "Last Name" };
 
             FieldGreetingLine greetingLineField = (FieldGreetingLine)doc.Range.Fields[1];
-            String[] greetingLineFieldNames = greetingLineField.GetFieldNames();
+            string[] greetingLineFieldNames = greetingLineField.GetFieldNames();
 
             Assert.AreEqual(greetingFieldsExpect, greetingLineFieldNames);
         }                                                                                

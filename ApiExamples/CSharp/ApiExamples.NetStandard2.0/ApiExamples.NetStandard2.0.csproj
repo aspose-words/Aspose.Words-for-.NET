@@ -28,6 +28,7 @@
     <Compile Include="..\ApiExamples\ExDocumentBase.cs" Link="ExDocumentBase.cs" />
     <Compile Include="..\ApiExamples\ExDocumentBuilder.cs" Link="ExDocumentBuilder.cs" />
     <Compile Include="..\ApiExamples\ExDocumentBuilderImages.cs" Link="ExDocumentBuilderImages.cs" />
+    <Compile Include="..\ApiExamples\ExDocumentVisitor.cs" Link="ExDocumentVisitor.cs" />
     <Compile Include="..\ApiExamples\ExDrawing.cs" Link="ExDrawing.cs" />
     <Compile Include="..\ApiExamples\ExEditableRange.cs" Link="ExEditableRange.cs" />
     <Compile Include="..\ApiExamples\ExField.cs" Link="ExField.cs" />
@@ -74,7 +75,6 @@
     <Compile Include="..\ApiExamples\ExTxtSaveOptions.cs" Link="ExTxtSaveOptions.cs" />
     <Compile Include="..\ApiExamples\ExUtilityClasses.cs" Link="ExUtilityClasses.cs" />
     <Compile Include="..\ApiExamples\ExVariableCollection.cs" Link="ExVariableCollection.cs" />
-    <Compile Include="..\ApiExamples\ExVisitor.cs" Link="ExVisitor.cs" />
     <Compile Include="..\ApiExamples\ExWarningInfoCollection.cs" Link="ExWarningInfoCollection.cs" />
     <Compile Include="..\ApiExamples\ExXpsSaveOptions.cs" Link="ExXpsSaveOptions.cs" />
     <Compile Include="..\ApiExamples\TestData\Common.cs" Link="TestData\Common.cs" />
@@ -96,7 +96,7 @@
   <ItemGroup>
     <PackageReference Include="Aspose.BarCode" Version="18.5.0" />
     <PackageReference Include="Aspose.PDF" Version="18.5.0" />
-    <PackageReference Include="Aspose.Words" Version="18.5.0" />
+    <PackageReference Include="Aspose.Words" Version="18.6.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
     <PackageReference Include="NUnit" Version="3.10.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />

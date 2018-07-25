@@ -16,7 +16,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // Checks if a custom property with a given name exists in a document and adds few more custom document properties.
             CustomAdd(dataDir);
             // Removes a custom document property.
-            CustomRemove(dataDir);            
+            CustomRemove(dataDir);
+
+            RemovePersonalInformation(dataDir);
         }
         public static void EnumerateProperties(string dataDir)
         {
@@ -55,6 +57,18 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             Document doc = new Document(dataDir + "Properties.doc");
             doc.CustomDocumentProperties.Remove("Authorized Date");
             // ExEnd:CustomRemove
+        }
+         
+        public static void RemovePersonalInformation(string dataDir)
+        {
+            // ExStart:RemovePersonalInformation            
+            Document doc = new Document(dataDir + "Properties.doc");
+            doc.RemovePersonalInformation = true;
+
+            dataDir = dataDir + "RemovePersonalInformation_out.docx";
+            doc.Save(dataDir);
+            // ExEnd:RemovePersonalInformation
+            Console.WriteLine("\nPersonal information has removed from document successfully.\nFile saved at " + dataDir);
         }
     }
 }

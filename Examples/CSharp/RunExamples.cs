@@ -371,6 +371,8 @@ namespace Aspose.Words.Examples.CSharp
             // PrintProgressDialog.Run();         
             // Print_CachePrinterSettings.Run();
             // SetFontSettings.Run();
+            // WorkingWithPdfSaveOptions.Run();
+            // WorkingWithFontSources.Run();
 
             //// =====================================================
             //// =====================================================

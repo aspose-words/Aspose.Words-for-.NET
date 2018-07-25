@@ -10,6 +10,7 @@ using System.Collections;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -771,7 +772,7 @@ namespace ApiExamples
 
             // Gather the files which will be appended to our template document.
             // In this case we add the optional parameter to include the search only for files with the ".doc" extension.
-            ArrayList files = new ArrayList(Directory.GetFiles(MyDir, "*.doc"));
+            ArrayList files = new ArrayList(Directory.GetFiles(MyDir, "*.doc").Where(file => file.EndsWith(".doc", StringComparison.CurrentCultureIgnoreCase)).ToArray());
             // The list of files may come in any order, let's sort the files by name so the documents are enumerated alphabetically.
             files.Sort();
 
@@ -2063,7 +2064,6 @@ namespace ApiExamples
         public void SetInvalidateFieldTypes()
         {
             //ExStart
-            //ExFor:Document.InvalidateFieldTypes
             //ExFor:Document.NormalizeFieldTypes
             //ExSummary:Shows how to get the keep a field's type up to date with its field code.
             Document doc = new Document();

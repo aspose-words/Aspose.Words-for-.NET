@@ -48,6 +48,13 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             CompareOptions options = new CompareOptions();
             options.IgnoreFormatting = true;
             options.IgnoreHeadersAndFooters = true;
+            options.IgnoreCaseChanges = true;
+            options.IgnoreTables = true;
+            options.IgnoreFields = true;
+            options.IgnoreComments = true;
+            options.IgnoreTextboxes = true;
+            options.IgnoreFootnotes = true;
+
             // DocA now contains changes as revisions. 
             docA.Compare(docB, "user", DateTime.Now, options);
             if (docA.Revisions.Count == 0)
