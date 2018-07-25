@@ -595,5 +595,37 @@ namespace ApiExamples
                 curNode = nextNode;
             }
         }
+
+        [Test]
+        public void FieldAddressBlockEx() {
+            //ExFor:Fields.FieldAddressBlock.ExcludedCountryOrRegionName
+            //ExFor:Fields.FieldAddressBlock.FormatAddressOnCountryOrRegion
+            //ExFor:Fields.FieldAddressBlock.IncludeCountryOrRegionName
+            //ExFor:Fields.FieldAddressBlock.LanguageId
+            //ExFor:Fields.FieldAddressBlock.NameAndAddressFormat
+            //ExSummary:Shows how to build a field address block.
+            Document doc = new Document();
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a field address block
+            FieldAddressBlock field = (FieldAddressBlock)builder.InsertField(FieldType.FieldAddressBlock, true);
+
+            Assert.AreEqual(FieldType.FieldAddressBlock, field.Type);
+            Assert.AreEqual(" ADDRESSBLOCK ", field.GetFieldCode());
+
+            Assert.AreEqual(null, field.IncludeCountryOrRegionName);
+            Assert.AreEqual(false, field.FormatAddressOnCountryOrRegion);
+            Assert.AreEqual(null, field.ExcludedCountryOrRegionName);
+            Assert.AreEqual(null, field.NameAndAddressFormat);
+            Assert.AreEqual(null, field.LanguageId);
+
+            field.IncludeCountryOrRegionName = "1";
+            field.FormatAddressOnCountryOrRegion = true;
+            field.ExcludedCountryOrRegionName = "ExcludedRegion";
+            field.NameAndAddressFormat = "NameAndAddressFormat";
+            field.LanguageId = "LanguageID";
+            Assert.AreEqual(" ADDRESSBLOCK  \\c 1 \\d \\e ExcludedRegion \\f NameAndAddressFormat \\l LanguageID", field.GetFieldCode());
+        }
     }
 }
