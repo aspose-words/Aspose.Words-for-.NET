@@ -92,6 +92,10 @@ namespace ApiExamples
 #endif
 
         //ExStart
+        //ExFor:DocumentVisitor.VisitShapeEnd(Shape)
+        //ExFor:DocumentVisitor.VisitShapeStart(Shape)
+        //ExFor:DocumentVisitor.VisitGroupShapeEnd(GroupShape)
+        //ExFor:DocumentVisitor.VisitGroupShapeStart(GroupShape)
         //ExFor:Drawing.GroupShape
         //ExFor:Drawing.GroupShape.#ctor(DocumentBase)
         //ExFor:Drawing.GroupShape.#ctor(DocumentBase,Drawing.ShapeMarkupLanguage)

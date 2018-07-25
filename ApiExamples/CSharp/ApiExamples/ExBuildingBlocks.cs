@@ -145,6 +145,10 @@ namespace ApiExamples
         //ExFor:BuildingBlocks.BuildingBlockCollection.Item(System.Int32)
         //ExFor:BuildingBlocks.BuildingBlockCollection.ToArray
         //ExFor:BuildingBlocks.BuildingBlockGallery
+        //ExFor:DocumentVisitor.VisitBuildingBlockEnd(BuildingBlock)
+        //ExFor:DocumentVisitor.VisitBuildingBlockStart(BuildingBlock)
+        //ExFor:DocumentVisitor.VisitGlossaryDocumentEnd(GlossaryDocument)
+        //ExFor:DocumentVisitor.VisitGlossaryDocumentStart(GlossaryDocument)
         //ExSummary:Shows how to use GlossaryDocument and BuildingBlockCollection.
         [Test] //ExSkip
         public void GlossaryDocument()
@@ -208,6 +212,19 @@ namespace ApiExamples
                 return mBlocksByGuid;
             }
 
+            public override VisitorAction VisitGlossaryDocumentStart(GlossaryDocument glossary)
+            {
+                mBuilder.AppendLine("Glossary documnent found!");
+                return VisitorAction.Continue;
+            }
+
+            public override VisitorAction VisitGlossaryDocumentEnd(GlossaryDocument glossary)
+            {
+                mBuilder.AppendLine("Reached end of glossary!");
+                mBuilder.AppendLine("BuildingBlocks found: " + mBlocksByGuid.Count);
+                return VisitorAction.Continue;
+            }
+
             public override VisitorAction VisitBuildingBlockStart(BuildingBlock block)
             {
                 block.Guid = Guid.NewGuid();
@@ -217,19 +234,12 @@ namespace ApiExamples
 
             public override VisitorAction VisitBuildingBlockEnd(BuildingBlock block)
             {
-                mBuilder.Append("\tVisited " + block.Name + "\r\n");
-                return VisitorAction.Continue;
-            }
+                mBuilder.AppendLine("\tVisited block \"" + block.Name + "\"");
+                mBuilder.AppendLine("\t Type: " + block.Type);
+                mBuilder.AppendLine("\t Gallery: " + block.Gallery);
+                mBuilder.AppendLine("\t Behavior: " + block.Behavior);
+                mBuilder.AppendLine("\t Description: " + block.Description);
 
-            public override VisitorAction VisitGlossaryDocumentStart(GlossaryDocument glossary)
-            {
-                mBuilder.Append("Glossary processing started...\r\n");
-                return VisitorAction.Continue;
-            }
-
-            public override VisitorAction VisitGlossaryDocumentEnd(GlossaryDocument glossary)
-            {
-                mBuilder.Append("Reached end of glossary!\r\nBuildingBlocks found: " + mBlocksByGuid.Count);
                 return VisitorAction.Continue;
             }
 

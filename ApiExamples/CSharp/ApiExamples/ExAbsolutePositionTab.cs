@@ -9,6 +9,7 @@ namespace ApiExamples
         //ExStart
         //ExFor:AbsolutePositionTab
         //ExFor:AbsolutePositionTab.Accept(DocumentVisitor)
+        //ExFor:DocumentVisitor.VisitAbsolutePositionTab
         //ExSummary:Shows how to use AbsolutePositionTab.
         [Test] //ExSkip
         public void DocumentToTxt()
