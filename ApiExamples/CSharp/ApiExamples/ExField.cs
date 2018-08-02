@@ -595,5 +595,39 @@ namespace ApiExamples
                 curNode = nextNode;
             }
         }
+
+        [Test]
+        public void FieldAskEx()
+        {
+            //ExStart
+            //ExFor:Fields.FieldAsk
+            //ExFor:Fields.FieldAsk.BookmarkName
+            //ExFor:Fields.FieldAsk.DefaultResponse
+            //ExFor:Fields.FieldAsk.PromptOnceOnMailMerge
+            //ExFor:Fields.FieldAsk.PromptText
+            //ExSummary:Shows how to create an ASK field and set its properties.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // We can use a document builder to create our field
+            FieldAsk fieldAsk =  (FieldAsk)builder.InsertField(FieldType.FieldAsk, true);
+
+            // The initial state of our ask field is empty
+            Assert.AreEqual(" ASK ", fieldAsk.GetFieldCode());
+            Assert.AreEqual(null, fieldAsk.BookmarkName);
+            Assert.AreEqual(null, fieldAsk.PromptText);
+            Assert.AreEqual(null, fieldAsk.DefaultResponse);
+            Assert.AreEqual(false, fieldAsk.PromptOnceOnMailMerge);
+
+            // Add functionality to our field
+            fieldAsk.BookmarkName = "MyAskField";
+            fieldAsk.PromptText = "Please provide a response for this ASK field";
+            fieldAsk.DefaultResponse = "This is the default response.";
+            fieldAsk.PromptOnceOnMailMerge = true;
+
+            // The attributes we changed are now incorporated into the field code
+            Assert.AreEqual(" ASK  MyAskField \"Please provide a response for this ASK field\" \\d \"This is the default response.\" \\o", fieldAsk.GetFieldCode());
+            //ExEnd
+        }
     }
 }
