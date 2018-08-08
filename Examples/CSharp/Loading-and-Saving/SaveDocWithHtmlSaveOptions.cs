@@ -16,6 +16,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             SaveHtmlWithMetafileFormat(dataDir);
             ImportExportSVGinHTML(dataDir);
             SetCssClassNamePrefix(dataDir);
+            SetExportCidUrlsForMhtmlResources(dataDir);
         }
 
         public static void SaveHtmlWithMetafileFormat(string dataDir)
@@ -65,6 +66,21 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             doc.Save(dataDir, saveOptions);
             // ExEnd:SetCssClassNamePrefix
             Console.WriteLine("\nDocument saved with CSS prefix pfx_.\nFile saved at " + dataDir);
+        }
+
+        public static void SetExportCidUrlsForMhtmlResources(string dataDir)
+        {
+            // ExStart:SetExportCidUrlsForMhtmlResources
+            var doc = new Aspose.Words.Document(dataDir + "CidUrls.docx");
+
+            Aspose.Words.Saving.HtmlSaveOptions saveOptions = new Aspose.Words.Saving.HtmlSaveOptions(SaveFormat.Mhtml);
+            saveOptions.PrettyFormat = true;
+            saveOptions.ExportCidUrlsForMhtmlResources = true;
+              
+            dataDir = dataDir + "SetExportCidUrlsForMhtmlResources_out.mhtml";
+            doc.Save(dataDir, saveOptions);
+            // ExEnd:SetExportCidUrlsForMhtmlResources
+            Console.WriteLine("\nDocument has saved with Content - Id URL scheme.\nFile saved at " + dataDir);
         }
     }
 }
