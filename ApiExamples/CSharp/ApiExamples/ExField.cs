@@ -598,21 +598,21 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DropDownItemCollectionEx()
+        public void DropDownItemCollection()
         {
             //ExStart
             //ExFor:Fields.DropDownItemCollection
-            //ExFor:Fields.DropDownItemCollection.Add(System.String)
+            //ExFor:Fields.DropDownItemCollection.Add(String)
             //ExFor:Fields.DropDownItemCollection.Clear
-            //ExFor:Fields.DropDownItemCollection.Contains(System.String)
+            //ExFor:Fields.DropDownItemCollection.Contains(String)
             //ExFor:Fields.DropDownItemCollection.Count
             //ExFor:Fields.DropDownItemCollection.GetEnumerator
-            //ExFor:Fields.DropDownItemCollection.IndexOf(System.String)
-            //ExFor:Fields.DropDownItemCollection.Insert(System.Int32, System.String)
-            //ExFor:Fields.DropDownItemCollection.Item(System.Int32)
-            //ExFor:Fields.DropDownItemCollection.Remove(System.String)
-            //ExFor:Fields.DropDownItemCollection.RemoveAt(System.Int32)
-            //ExSummary:Shows how to insert a combo box field and access and manipulate its item collection.
+            //ExFor:Fields.DropDownItemCollection.IndexOf(String)
+            //ExFor:Fields.DropDownItemCollection.Insert(Int32, String)
+            //ExFor:Fields.DropDownItemCollection.Item(Int32)
+            //ExFor:Fields.DropDownItemCollection.Remove(String)
+            //ExFor:Fields.DropDownItemCollection.RemoveAt(Int32)
+            //ExSummary:Shows how to insert a combo box field and manipulate its item collection.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -622,7 +622,7 @@ namespace ApiExamples
 
             // Get the list of drop down strings
             DropDownItemCollection dropDownItems = comboBoxField.DropDownItems;
-
+            
             Assert.AreEqual(3, dropDownItems.Count);
             Assert.AreEqual("One", dropDownItems[0]);
             Assert.AreEqual(1, dropDownItems.IndexOf("Two"));
@@ -634,7 +634,7 @@ namespace ApiExamples
             Assert.AreEqual(5, dropDownItems.Count);
 
             // Iterate over the collection and print every element
-            IEnumerator dropDownCollectionEnumerator = dropDownItems.GetEnumerator();
+            IEnumerator dropDownCollectionEnumerator = dropDownItems.GetEnumerator(); 
             while (dropDownCollectionEnumerator.MoveNext())
             {
                 string currentItem = (string)dropDownCollectionEnumerator.Current;
@@ -647,7 +647,7 @@ namespace ApiExamples
             Assert.IsFalse(dropDownItems.Contains("Three and a half"));
             Assert.IsFalse(dropDownItems.Contains("Four"));
 
-            doc.Save(MyDir + "Fields.DropDownItems.docx");
+            doc.Save(MyDir + "Fields.DropDownItems.docx"); // INSP: Add file to artifact folder
 
             // Empty out the collection
             dropDownItems.Clear();
