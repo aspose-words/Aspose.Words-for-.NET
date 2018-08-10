@@ -614,7 +614,7 @@ namespace ApiExamples
 
             // The initial state of our ask field is empty
             Assert.AreEqual(" ASK ", fieldAsk.GetFieldCode());
-            Assert.AreEqual(null, fieldAsk.BookmarkName);
+            Assert.AreEqual(null, fieldAsk.BookmarkName); // INSP: Move this asserts down
             Assert.AreEqual(null, fieldAsk.PromptText);
             Assert.AreEqual(null, fieldAsk.DefaultResponse);
             Assert.AreEqual(false, fieldAsk.PromptOnceOnMailMerge);
