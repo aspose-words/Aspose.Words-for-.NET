@@ -597,7 +597,9 @@ namespace ApiExamples
         }
 
         [Test]
-        public void FieldAddressBlockEx() { // INSP: Check your style preferences
+        public void FieldAddressBlockEx()
+        {
+            //ExStart
             //ExFor:Fields.FieldAddressBlock.ExcludedCountryOrRegionName
             //ExFor:Fields.FieldAddressBlock.FormatAddressOnCountryOrRegion
             //ExFor:Fields.FieldAddressBlock.IncludeCountryOrRegionName
@@ -610,25 +612,30 @@ namespace ApiExamples
             // Use a document builder to insert a field address block
             FieldAddressBlock field = (FieldAddressBlock)builder.InsertField(FieldType.FieldAddressBlock, true);
 
-            Assert.AreEqual(FieldType.FieldAddressBlock, field.Type);
+            // Initially our field is an empty address block field with null attributes
             Assert.AreEqual(" ADDRESSBLOCK ", field.GetFieldCode());
 
-            // INSP: We don't need default values cheking at this place. Add checks after you set the values, we will need to check how they are set.
-            Assert.AreEqual(null, field.IncludeCountryOrRegionName);
-            Assert.AreEqual(false, field.FormatAddressOnCountryOrRegion);
-            Assert.AreEqual(null, field.ExcludedCountryOrRegionName);
-            Assert.AreEqual(null, field.NameAndAddressFormat);
-            Assert.AreEqual(null, field.LanguageId);
-
-            // INSP: There we need to use real data, that user may added
-            // For example field.LanguageId uses ids from https://docs.microsoft.com/en-us/deployoffice/office2016/language-identifiers-and-optionstate-id-values-in-office-2016
-            // We need to add all available info.
-            field.IncludeCountryOrRegionName = "1";
+            // Setting this to "2" will cause all countries/regions to be included, unless it is the one specified in the ExcludedCountryOrRegionName attribute
+            field.IncludeCountryOrRegionName = "2";
             field.FormatAddressOnCountryOrRegion = true;
-            field.ExcludedCountryOrRegionName = "ExcludedRegion";
-            field.NameAndAddressFormat = "NameAndAddressFormat";
-            field.LanguageId = "LanguageID"; 
-            Assert.AreEqual(" ADDRESSBLOCK  \\c 1 \\d \\e ExcludedRegion \\f NameAndAddressFormat \\l LanguageID", field.GetFieldCode());
+            field.ExcludedCountryOrRegionName = "United States";
+
+            // Specify our own name and address format
+            field.NameAndAddressFormat = "<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>";
+
+            // By default, the language ID will be set to that of the first character of the document
+            // In this case we will specify it to be English
+            field.LanguageId = "1033";
+
+            // Our field code has changed according to the attribute values that we set
+            Assert.AreEqual(" ADDRESSBLOCK  \\c 2 \\d \\e \"United States\" \\f \"<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>\" \\l 1033", field.GetFieldCode());
+            //ExEnd
+
+            Assert.AreEqual("2", field.IncludeCountryOrRegionName);
+            Assert.AreEqual(true, field.FormatAddressOnCountryOrRegion);
+            Assert.AreEqual("United States", field.ExcludedCountryOrRegionName);
+            Assert.AreEqual("<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>", field.NameAndAddressFormat);
+            Assert.AreEqual("1033", field.LanguageId);
         }
     }
 }
