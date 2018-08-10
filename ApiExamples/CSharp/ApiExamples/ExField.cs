@@ -650,7 +650,7 @@ namespace ApiExamples
 
             builder.Write("This text is in a custom position.");
 
-            doc.Save(MyDir + "Field.Advance.docx"); // INSP: Save the document to artifact folder
+            doc.Save(MyDir + "Field.Advance.docx");
             //ExEnd
         }
     }
