@@ -612,7 +612,7 @@ namespace ApiExamples
             //ExFor:Fields.DropDownItemCollection.Item(Int32)
             //ExFor:Fields.DropDownItemCollection.Remove(String)
             //ExFor:Fields.DropDownItemCollection.RemoveAt(Int32)
-            //ExSummary:Shows how to insert a combo box field and manipulate its item collection.
+            //ExSummary:Shows how to insert a combo box field and manipulate the elements in its item collection.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -620,7 +620,7 @@ namespace ApiExamples
             string[] items = { "One", "Two", "Three" };
             FormField comboBoxField = builder.InsertComboBox("DropDown", items, 0);
 
-            // Get the list of drop down strings
+            // Get the list of drop down items
             DropDownItemCollection dropDownItems = comboBoxField.DropDownItems;
             
             Assert.AreEqual(3, dropDownItems.Count);
@@ -628,7 +628,7 @@ namespace ApiExamples
             Assert.AreEqual(1, dropDownItems.IndexOf("Two"));
             Assert.IsTrue(dropDownItems.Contains("Three"));
 
-            // Two ways of adding items
+            // We can add an item to the end of the collection or insert it at a desired index
             dropDownItems.Add("Four");
             dropDownItems.Insert(3, "Three and a half");
             Assert.AreEqual(5, dropDownItems.Count);
@@ -647,9 +647,9 @@ namespace ApiExamples
             Assert.IsFalse(dropDownItems.Contains("Three and a half"));
             Assert.IsFalse(dropDownItems.Contains("Four"));
 
-            doc.Save(MyDir + "Fields.DropDownItems.docx"); // INSP: Add file to artifact folder
+            doc.Save(MyDir + "Fields.DropDownItems.docx");
 
-            // Empty out the collection
+            // Empty the collection
             dropDownItems.Clear();
             Assert.AreEqual(0, dropDownItems.Count);
             //ExEnd
