@@ -610,14 +610,10 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // We can use a document builder to create our field
-            FieldAsk fieldAsk =  (FieldAsk)builder.InsertField(FieldType.FieldAsk, true);
+            FieldAsk fieldAsk = (FieldAsk)builder.InsertField(FieldType.FieldAsk, true);
 
             // The initial state of our ask field is empty
             Assert.AreEqual(" ASK ", fieldAsk.GetFieldCode());
-            Assert.AreEqual(null, fieldAsk.BookmarkName); // INSP: Move this asserts down
-            Assert.AreEqual(null, fieldAsk.PromptText);
-            Assert.AreEqual(null, fieldAsk.DefaultResponse);
-            Assert.AreEqual(false, fieldAsk.PromptOnceOnMailMerge);
 
             // Add functionality to our field
             fieldAsk.BookmarkName = "MyAskField";
@@ -628,6 +624,11 @@ namespace ApiExamples
             // The attributes we changed are now incorporated into the field code
             Assert.AreEqual(" ASK  MyAskField \"Please provide a response for this ASK field\" \\d \"This is the default response.\" \\o", fieldAsk.GetFieldCode());
             //ExEnd
+
+            Assert.AreEqual("MyAskField", fieldAsk.BookmarkName);
+            Assert.AreEqual("Please provide a response for this ASK field", fieldAsk.PromptText);
+            Assert.AreEqual("This is the default response.", fieldAsk.DefaultResponse);
+            Assert.AreEqual(true, fieldAsk.PromptOnceOnMailMerge);
         }
     }
 }
