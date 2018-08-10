@@ -621,14 +621,6 @@ namespace ApiExamples
             Assert.AreEqual(FieldType.FieldAdvance, field.Type);
             Assert.AreEqual(" ADVANCE ", field.GetFieldCode());
 
-            Assert.IsNotNull(field);
-            Assert.IsNull(field.DownOffset);
-            Assert.IsNull(field.LeftOffset);
-            Assert.IsNull(field.RightOffset);
-            Assert.IsNull(field.UpOffset);
-            Assert.IsNull(field.HorizontalPosition);
-            Assert.IsNull(field.VerticalPosition);
-
             // The second text that the builder added will now be moved
             field.RightOffset = "5";
             field.UpOffset = "5";
@@ -658,7 +650,7 @@ namespace ApiExamples
 
             builder.Write("This text is in a custom position.");
 
-            doc.Save(MyDir + "Field.Advance.docx");
+            doc.Save(MyDir + "Field.Advance.docx"); // INSP: Save the document to artifact folder
             //ExEnd
         }
     }
