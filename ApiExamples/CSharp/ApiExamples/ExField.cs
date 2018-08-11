@@ -647,11 +647,103 @@ namespace ApiExamples
             Assert.IsFalse(dropDownItems.Contains("Three and a half"));
             Assert.IsFalse(dropDownItems.Contains("Four"));
 
-            doc.Save(MyDir + "Fields.DropDownItems.docx");
+            doc.Save(MyDir + @"\Artifacts\Fields.DropDownItems.docx");
 
             // Empty the collection
             dropDownItems.Clear();
             Assert.AreEqual(0, dropDownItems.Count);
+        }
+        
+        [Test]
+        public void FieldAsk()
+        {
+            //ExStart
+            //ExFor:Fields.FieldAsk
+            //ExFor:Fields.FieldAsk.BookmarkName
+            //ExFor:Fields.FieldAsk.DefaultResponse
+            //ExFor:Fields.FieldAsk.PromptOnceOnMailMerge
+            //ExFor:Fields.FieldAsk.PromptText
+            //ExSummary:Shows how to create an ASK field and set its properties.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // We can use a document builder to create our field
+            FieldAsk fieldAsk = (FieldAsk)builder.InsertField(FieldType.FieldAsk, true);
+
+            // The initial state of our ask field is empty
+            Assert.AreEqual(" ASK ", fieldAsk.GetFieldCode());
+
+            // Add functionality to our field
+            fieldAsk.BookmarkName = "MyAskField";
+            fieldAsk.PromptText = "Please provide a response for this ASK field";
+            fieldAsk.DefaultResponse = "This is the default response.";
+            fieldAsk.PromptOnceOnMailMerge = true;
+
+            // The attributes we changed are now incorporated into the field code
+            Assert.AreEqual(" ASK  MyAskField \"Please provide a response for this ASK field\" \\d \"This is the default response.\" \\o", fieldAsk.GetFieldCode());
+            //ExEnd
+
+            Assert.AreEqual("MyAskField", fieldAsk.BookmarkName);
+            Assert.AreEqual("Please provide a response for this ASK field", fieldAsk.PromptText);
+            Assert.AreEqual("This is the default response.", fieldAsk.DefaultResponse);
+            Assert.AreEqual(true, fieldAsk.PromptOnceOnMailMerge);
+        }
+
+        [Test]
+        public void FieldAdvance()
+        {
+            //ExStart
+            //ExFor:Fields.FieldAdvance
+            //ExFor:Fields.FieldAdvance.DownOffset
+            //ExFor:Fields.FieldAdvance.HorizontalPosition
+            //ExFor:Fields.FieldAdvance.LeftOffset
+            //ExFor:Fields.FieldAdvance.RightOffset
+            //ExFor:Fields.FieldAdvance.UpOffset
+            //ExFor:Fields.FieldAdvance.VerticalPosition
+            //ExSummary:Shows how to insert an advance field and edit its properties. 
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("This text is in its normal place.");
+
+            // Create an advance field using document builder
+            FieldAdvance field = (FieldAdvance)builder.InsertField(FieldType.FieldAdvance, true);
+
+            builder.Write("This text is moved up and to the right.");
+
+            Assert.AreEqual(FieldType.FieldAdvance, field.Type);
+            Assert.AreEqual(" ADVANCE ", field.GetFieldCode());
+
+            // The second text that the builder added will now be moved
+            field.RightOffset = "5";
+            field.UpOffset = "5";
+
+            Assert.AreEqual(" ADVANCE  \\r 5 \\u 5", field.GetFieldCode());
+
+            // If we want to move text in the other direction, and try do that by using negative values for the above field members, we will get an error in our document
+            // Instead, we need to specify a positive value for the opposite respective field directional variable
+            field = (FieldAdvance)builder.InsertField(FieldType.FieldAdvance, true);
+            field.DownOffset = "5";
+            field.LeftOffset = "100";
+
+            Assert.AreEqual(" ADVANCE  \\d 5 \\l 100", field.GetFieldCode());
+
+            // We are still on one paragraph
+            Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
+
+            // Since we're setting horizontal and vertical positions next, we need to end the paragraph so the previous line does not get moved with the next one
+            builder.Writeln("This text is moved down and to the left, overlapping the previous text.");
+
+            // This time we can also use negative values 
+            field = (FieldAdvance)builder.InsertField(FieldType.FieldAdvance, true);
+            field.HorizontalPosition = "-100";
+            field.VerticalPosition = "200";
+
+            Assert.AreEqual(" ADVANCE  \\x -100 \\y 200", field.GetFieldCode());
+
+            builder.Write("This text is in a custom position.");
+
+            doc.Save(MyDir + @"\Artifacts\Field.Advance.docx");
             //ExEnd
         }
     }
