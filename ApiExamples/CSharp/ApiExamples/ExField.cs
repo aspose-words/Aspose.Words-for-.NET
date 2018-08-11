@@ -595,5 +595,63 @@ namespace ApiExamples
                 curNode = nextNode;
             }
         }
+
+        [Test]
+        public void FieldAdvanceEx()
+        {
+            //ExStart
+            //ExFor:Fields.FieldAdvance
+            //ExFor:Fields.FieldAdvance.DownOffset
+            //ExFor:Fields.FieldAdvance.HorizontalPosition
+            //ExFor:Fields.FieldAdvance.LeftOffset
+            //ExFor:Fields.FieldAdvance.RightOffset
+            //ExFor:Fields.FieldAdvance.UpOffset
+            //ExFor:Fields.FieldAdvance.VerticalPosition
+            //ExSummary:Shows how to insert an advance field and edit its properties. 
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("This text is in its normal place.");
+
+            // Create an advance field using document builder
+            FieldAdvance field = (FieldAdvance)builder.InsertField(FieldType.FieldAdvance, true);
+
+            builder.Write("This text is moved up and to the right.");
+
+            Assert.AreEqual(FieldType.FieldAdvance, field.Type);
+            Assert.AreEqual(" ADVANCE ", field.GetFieldCode());
+
+            // The second text that the builder added will now be moved
+            field.RightOffset = "5";
+            field.UpOffset = "5";
+
+            Assert.AreEqual(" ADVANCE  \\r 5 \\u 5", field.GetFieldCode());
+
+            // If we want to move text in the other direction, and try do that by using negative values for the above field members, we will get an error in our document
+            // Instead, we need to specify a positive value for the opposite respective field directional variable
+            field = (FieldAdvance)builder.InsertField(FieldType.FieldAdvance, true);
+            field.DownOffset = "5";
+            field.LeftOffset = "100";
+
+            Assert.AreEqual(" ADVANCE  \\d 5 \\l 100", field.GetFieldCode());
+
+            // We are still on one paragraph
+            Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
+
+            // Since we're setting horizontal and vertical positions next, we need to end the paragraph so the previous line does not get moved with the next one
+            builder.Writeln("This text is moved down and to the left, overlapping the previous text.");
+
+            // This time we can also use negative values 
+            field = (FieldAdvance)builder.InsertField(FieldType.FieldAdvance, true);
+            field.HorizontalPosition = "-100";
+            field.VerticalPosition = "200";
+
+            Assert.AreEqual(" ADVANCE  \\x -100 \\y 200", field.GetFieldCode());
+
+            builder.Write("This text is in a custom position.");
+
+            doc.Save(MyDir + "Field.Advance.docx");
+            //ExEnd
+        }
     }
 }
