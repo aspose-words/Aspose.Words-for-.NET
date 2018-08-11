@@ -8,6 +8,7 @@
 using System;
 using System.Data;
 using System.Collections;
+using System.Collections.Generic;
 using Aspose.Words.Fields;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
@@ -244,29 +245,29 @@ namespace ApiExamples
             MailMergeRegionInfo regionInfo = doc.MailMerge.GetRegionsHierarchy();
 
             //Get top regions in the document
-            ArrayList topRegions = regionInfo.Regions;
+            IList<MailMergeRegionInfo> topRegions = regionInfo.Regions;
             Assert.AreEqual(2, topRegions.Count);
-            Assert.AreEqual(((MailMergeRegionInfo)topRegions[0]).Name, "Region1");
-            Assert.AreEqual(((MailMergeRegionInfo)topRegions[1]).Name, "Region2");
-            Assert.AreEqual(1, ((MailMergeRegionInfo)topRegions[0]).Level);
-            Assert.AreEqual(1, ((MailMergeRegionInfo)topRegions[1]).Level);
+            Assert.AreEqual(topRegions[0].Name, "Region1");
+            Assert.AreEqual(topRegions[1].Name, "Region2");
+            Assert.AreEqual(1, topRegions[0].Level);
+            Assert.AreEqual(1, topRegions[1].Level);
 
             //Get nested region in first top region
-            ArrayList nestedRegions = ((MailMergeRegionInfo)topRegions[0]).Regions;
+            IList<MailMergeRegionInfo> nestedRegions = topRegions[0].Regions;
             Assert.AreEqual(2, nestedRegions.Count);
-            Assert.AreEqual(((MailMergeRegionInfo)nestedRegions[0]).Name, "NestedRegion1");
-            Assert.AreEqual(((MailMergeRegionInfo)nestedRegions[1]).Name, "NestedRegion2");
-            Assert.AreEqual(2, ((MailMergeRegionInfo)nestedRegions[0]).Level);
-            Assert.AreEqual(2, ((MailMergeRegionInfo)nestedRegions[1]).Level);
+            Assert.AreEqual(nestedRegions[0].Name, "NestedRegion1");
+            Assert.AreEqual(nestedRegions[1].Name, "NestedRegion2");
+            Assert.AreEqual(2, nestedRegions[0].Level);
+            Assert.AreEqual(2, nestedRegions[1].Level);
 
             //Get field list in first top region
-            ArrayList fieldList = ((MailMergeRegionInfo)topRegions[0]).Fields;
+            IList<Field> fieldList = topRegions[0].Fields;
             Assert.AreEqual(4, fieldList.Count);
 
-            FieldMergeField startFieldMergeField = ((MailMergeRegionInfo)nestedRegions[0]).StartField;
+            FieldMergeField startFieldMergeField = nestedRegions[0].StartField;
             Assert.AreEqual("TableStart:NestedRegion1", startFieldMergeField.FieldName);
 
-            FieldMergeField endFieldMergeField = ((MailMergeRegionInfo)nestedRegions[0]).EndField;
+            FieldMergeField endFieldMergeField = nestedRegions[0].EndField;
             Assert.AreEqual("TableEnd:NestedRegion1", endFieldMergeField.FieldName);
             //ExEnd
         }
@@ -311,7 +312,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "MailMerge.RegionsByName.doc");
 
-            ArrayList regions = doc.MailMerge.GetRegionsByName(regionName);
+            IList<MailMergeRegionInfo> regions = doc.MailMerge.GetRegionsByName(regionName);
             Assert.AreEqual(2, regions.Count);
 
             foreach (MailMergeRegionInfo region in regions)
@@ -352,7 +353,7 @@ namespace ApiExamples
             {
                 DataRow datarow = dataTable.NewRow();
                 dataTable.Rows.Add(datarow);
-                datarow[0] = "Course " + i.ToString();
+                datarow[0] = "Course " + i;
             }
 
             return dataTable;

@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Aspose.Words;
 using NUnit.Framework;
 
@@ -68,7 +69,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void GetEnumeratorEx()
+        public void GetEnumerator()
         {
             //ExStart
             //ExFor:VariableCollection.GetEnumerator
@@ -81,12 +82,13 @@ namespace ApiExamples
             doc.Variables.Add("bmp", "Image");
             doc.Variables.Add("png", "Image");
 
-            var enumerator = doc.Variables.GetEnumerator();
-
-            while (enumerator.MoveNext())
+            using (IEnumerator<KeyValuePair<string, string>> enumerator = doc.Variables.GetEnumerator())
             {
-                DictionaryEntry de = (DictionaryEntry)enumerator.Current;
-                Console.WriteLine("Name: {0}, Value: {1}", de.Key, de.Value);
+                while (enumerator.MoveNext())
+                {
+                    KeyValuePair<string, string> de = enumerator.Current;
+                    Console.WriteLine("Name: {0}, Value: {1}", de.Key, de.Value);
+                }  
             }
             //ExEnd
         }

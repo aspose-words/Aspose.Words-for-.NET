@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -634,13 +635,15 @@ namespace ApiExamples
             Assert.AreEqual(5, dropDownItems.Count);
 
             // Iterate over the collection and print every element
-            IEnumerator dropDownCollectionEnumerator = dropDownItems.GetEnumerator(); 
-            while (dropDownCollectionEnumerator.MoveNext())
+            using (IEnumerator<string> dropDownCollectionEnumerator = dropDownItems.GetEnumerator())
             {
-                string currentItem = (string)dropDownCollectionEnumerator.Current;
-                Console.WriteLine(currentItem);
+                while (dropDownCollectionEnumerator.MoveNext())
+                {
+                    string currentItem = (string)dropDownCollectionEnumerator.Current;
+                    Console.WriteLine(currentItem);
+                } 
             }
-
+            
             // We can remove elements in the same way we added them
             dropDownItems.Remove("Four");
             dropDownItems.RemoveAt(3);
