@@ -595,5 +595,47 @@ namespace ApiExamples
                 curNode = nextNode;
             }
         }
+
+        [Test]
+        public void FieldAddressBlockEx()
+        {
+            //ExStart
+            //ExFor:Fields.FieldAddressBlock.ExcludedCountryOrRegionName
+            //ExFor:Fields.FieldAddressBlock.FormatAddressOnCountryOrRegion
+            //ExFor:Fields.FieldAddressBlock.IncludeCountryOrRegionName
+            //ExFor:Fields.FieldAddressBlock.LanguageId
+            //ExFor:Fields.FieldAddressBlock.NameAndAddressFormat
+            //ExSummary:Shows how to build a field address block.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a field address block
+            FieldAddressBlock field = (FieldAddressBlock)builder.InsertField(FieldType.FieldAddressBlock, true);
+
+            // Initially our field is an empty address block field with null attributes
+            Assert.AreEqual(" ADDRESSBLOCK ", field.GetFieldCode());
+
+            // Setting this to "2" will cause all countries/regions to be included, unless it is the one specified in the ExcludedCountryOrRegionName attribute
+            field.IncludeCountryOrRegionName = "2";
+            field.FormatAddressOnCountryOrRegion = true;
+            field.ExcludedCountryOrRegionName = "United States";
+
+            // Specify our own name and address format
+            field.NameAndAddressFormat = "<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>";
+
+            // By default, the language ID will be set to that of the first character of the document
+            // In this case we will specify it to be English
+            field.LanguageId = "1033";
+
+            // Our field code has changed according to the attribute values that we set
+            Assert.AreEqual(" ADDRESSBLOCK  \\c 2 \\d \\e \"United States\" \\f \"<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>\" \\l 1033", field.GetFieldCode());
+            //ExEnd
+
+            Assert.AreEqual("2", field.IncludeCountryOrRegionName);
+            Assert.AreEqual(true, field.FormatAddressOnCountryOrRegion);
+            Assert.AreEqual("United States", field.ExcludedCountryOrRegionName);
+            Assert.AreEqual("<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>", field.NameAndAddressFormat);
+            Assert.AreEqual("1033", field.LanguageId);
+        }
     }
 }
