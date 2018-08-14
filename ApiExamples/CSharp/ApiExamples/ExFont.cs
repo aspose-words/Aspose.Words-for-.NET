@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Drawing;
@@ -967,121 +968,125 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void GetFontInfoFromFiles()
+        public void BlankDocumentFonts()
+        {
+            //ExStart
+            //ExFor:Fonts.FontInfoCollection.Contains(String)
+            //ExFor:Fonts.FontInfoCollection.Count
+            //ExSummary:Shows info about the fonts that are present in the blank document.
+            // Create a new document
+            Document doc = new Document();
+            // A blank document comes with 3 fonts
+            Assert.AreEqual(3, doc.FontInfos.Count);
+            Assert.AreEqual(true, doc.FontInfos.Contains("Times New Roman"));
+            Assert.AreEqual(true, doc.FontInfos.Contains("Symbol"));
+            Assert.AreEqual(true, doc.FontInfos.Contains("Arial"));
+            //ExEnd
+        }
+
+        [Test]
+        public void ExtractEmbeddedFont()
         {
             //ExStart
             //ExFor:Fonts.EmbeddedFontFormat
             //ExFor:Fonts.EmbeddedFontStyle
+            //ExFor:Fonts.FontInfo.GetEmbeddedFont(EmbeddedFontFormat,EmbeddedFontStyle)
+            //ExFor:Fonts.FontInfoCollection.Item(Int32)
+            //ExFor:Fonts.FontInfoCollection.Item(String)
+            //ExSummary:Shows how to extract embedded font from a document.
+            Document doc = new Document(MyDir + "Font.Embedded.docx");
+            // Let's get the font we are interested in
+            FontInfo mittelschriftInfo = doc.FontInfos[2];
+            // We can now extract this embedded font
+            byte[] embeddedFontBytes = mittelschriftInfo.GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular);
+            Assert.IsNotNull(embeddedFontBytes);
+            // Then we can save the font to our directory
+            File.WriteAllBytes(MyDir + @"\Artifacts\Alte DIN 1451 Mittelschrift.ttf", embeddedFontBytes); // INSP: All out files must be saved in the "Artifacts" directory
+            
+            // If we want to extract a font from a .doc as opposed to a .docx, we need to make sure to set the appropriate embedded font format
+            doc = new Document(MyDir + "Font.Embedded.doc");
+
+            Assert.IsNull(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular));
+            Assert.IsNotNull(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.EmbeddedOpenType, EmbeddedFontStyle.Regular));
+            //ExEnd
+        }
+
+        [Test]
+        public void GetFontInfoFromFile() // INSP: We don't always need one big example. In this example three different cases which can be in different methods. For users it's more comfortable. 
+        {
+            //ExStart
             //ExFor:Fonts.FontFamily
             //ExFor:Fonts.FontPitch
             //ExFor:Fonts.FontInfo.AltName
             //ExFor:Fonts.FontInfo.Charset
             //ExFor:Fonts.FontInfo.Family
-            //ExFor:Fonts.FontInfo.GetEmbeddedFont(Fonts.EmbeddedFontFormat,Fonts.EmbeddedFontStyle)
             //ExFor:Fonts.FontInfo.Panose
             //ExFor:Fonts.FontInfo.Pitch
-            //ExFor:Fonts.FontInfoCollection.Contains(System.String)
-            //ExFor:Fonts.FontInfoCollection.Count
             //ExFor:Fonts.FontInfoCollection.GetEnumerator
-            //ExFor:Fonts.FontInfoCollection.Item(System.Int32)
-            //ExFor:Fonts.FontInfoCollection.Item(System.String)
             //ExSummary:Shows how to get information about each font in a document.
-            // Create a new document
-            Document doc = new Document();
-
-            // A blank document comes with 3 fonts
-            FontInfoCollection fontInfos = doc.FontInfos;
-            Assert.AreEqual(3, fontInfos.Count);
-            Assert.AreEqual(false, fontInfos.Contains("Calibri"));
-            Assert.AreEqual(true, fontInfos.Contains("Times New Roman"));
-            Assert.AreEqual(true, fontInfos.Contains("Symbol"));
-            Assert.AreEqual(true, fontInfos.Contains("Arial"));
-
-            // For custom embedded fonts, we can open a document that already has them
-            doc = new Document(MyDir + "Font.Embedded.docx");
-            fontInfos = doc.FontInfos;
-            Assert.AreEqual(4, fontInfos.Count);
-            Assert.IsNotNull(fontInfos["Calibri Light"]);
-            Assert.IsNull(fontInfos["Non-existant font"]);
-
+            Document doc = new Document(MyDir + "Font.Embedded.docx");
+            
             // We can iterate over all the fonts with an enumerator
-            IEnumerator fontCollectionEnumerator = fontInfos.GetEnumerator();
-            FontInfo fontInfo;
-
+            IEnumerator fontCollectionEnumerator = doc.FontInfos.GetEnumerator();
             // Print detailed information about each font to the console
             while (fontCollectionEnumerator.MoveNext())
             {
-                fontInfo = (FontInfo)fontCollectionEnumerator.Current;
-                Console.WriteLine("Font name: " + fontInfo.Name);
-                Console.WriteLine("\t- Family: " + fontInfo.Family);
-                Console.WriteLine("\t- " + (fontInfo.IsTrueType ? "Is TrueType" : "Is not TrueType"));
-                Console.WriteLine("\t- Pitch: " + fontInfo.Pitch);
-                Console.WriteLine("\t- Charset: " + fontInfo.Charset);
-                Console.WriteLine("\t- Panose:");
-                Console.WriteLine("\t\tFamily Kind: " + fontInfo.Panose[0]);
-                Console.WriteLine("\t\tSerif Style: " + fontInfo.Panose[1]);
-                Console.WriteLine("\t\tWeight: " + fontInfo.Panose[2]);
-                Console.WriteLine("\t\tProportion: " + fontInfo.Panose[3]);
-                Console.WriteLine("\t\tContrast: " + fontInfo.Panose[4]);
-                Console.WriteLine("\t\tStroke Variation: " + fontInfo.Panose[5]);
-                Console.WriteLine("\t\tArm Style: " + fontInfo.Panose[6]);
-                Console.WriteLine("\t\tLetterform: " + fontInfo.Panose[7]);
-                Console.WriteLine("\t\tMidline: " + fontInfo.Panose[8]);
-                Console.WriteLine("\t\tX-Height: " + fontInfo.Panose[9]);
-
-                // Alt names are usually blank
-                Assert.IsEmpty(fontInfo.AltName);
+                FontInfo fontInfo = (FontInfo)fontCollectionEnumerator.Current;
+                if (fontInfo != null)
+                {
+                    Console.WriteLine("Font name: " + fontInfo.Name);
+                    Console.WriteLine("Alt name: " + fontInfo.AltName); // Alt name are usually blank
+                    Console.WriteLine("\t- Family: " + fontInfo.Family);
+                    Console.WriteLine("\t- " + (fontInfo.IsTrueType ? "Is TrueType" : "Is not TrueType"));
+                    Console.WriteLine("\t- Pitch: " + fontInfo.Pitch);
+                    Console.WriteLine("\t- Charset: " + fontInfo.Charset);
+                    Console.WriteLine("\t- Panose:");
+                    Console.WriteLine("\t\tFamily Kind: " + fontInfo.Panose[0]);
+                    Console.WriteLine("\t\tSerif Style: " + fontInfo.Panose[1]);
+                    Console.WriteLine("\t\tWeight: " + fontInfo.Panose[2]);
+                    Console.WriteLine("\t\tProportion: " + fontInfo.Panose[3]);
+                    Console.WriteLine("\t\tContrast: " + fontInfo.Panose[4]);
+                    Console.WriteLine("\t\tStroke Variation: " + fontInfo.Panose[5]);
+                    Console.WriteLine("\t\tArm Style: " + fontInfo.Panose[6]);
+                    Console.WriteLine("\t\tLetterform: " + fontInfo.Panose[7]);
+                    Console.WriteLine("\t\tMidline: " + fontInfo.Panose[8]);
+                    Console.WriteLine("\t\tX-Height: " + fontInfo.Panose[9]);
+                }
             }
-
-            // Confirm the index of our embedded font that was just printed to the console
-            Assert.AreEqual("Alte DIN 1451 Mittelschrift", fontInfos[2].Name);
-            FontInfo mittelschriftInfo = fontInfos[2];
-
-            // We can now extract the embedded font
-            byte[] embeddedFontBytes = mittelschriftInfo.GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular);
-            Assert.IsNotNull(embeddedFontBytes);
-
-            // Then we can save the font to our directory
-            System.IO.File.WriteAllBytes(MyDir + "Alte DIN 1451 Mittelschrift.ttf", embeddedFontBytes);
-
-            // If we want to extract a font from a .doc as opposed to a .docx, we need to make sure to set the appropriare embedded font format
-            doc = new Document(MyDir + "Font.Embedded.doc");
-            fontInfos = doc.FontInfos;
-            Assert.IsNull(fontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular));
-            Assert.IsNotNull(fontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.EmbeddedOpenType, EmbeddedFontStyle.Regular));
+            //ExEnd
         }
 
         [Test]
-        public void FontSources()
+        public void FontSources() // INSP: Please check that this example is not possible to simplify
         {
             //ExStart
             //ExFor:Fonts.FileFontSource
-            //ExFor:Fonts.FileFontSource.#ctor(System.String)
-            //ExFor:Fonts.FileFontSource.#ctor(System.String,System.Int32)
+            //ExFor:Fonts.FileFontSource.#ctor(String)
+            //ExFor:Fonts.FileFontSource.#ctor(String, Int32)
             //ExFor:Fonts.FileFontSource.FilePath
             //ExFor:Fonts.FileFontSource.Type
             //ExFor:Fonts.FolderFontSource
-            //ExFor:Fonts.FolderFontSource.#ctor(System.String,System.Boolean)
-            //ExFor:Fonts.FolderFontSource.#ctor(System.String,System.Boolean,System.Int32)
+            //ExFor:Fonts.FolderFontSource.#ctor(String, Boolean)
+            //ExFor:Fonts.FolderFontSource.#ctor(String, Boolean, Int32)
             //ExFor:Fonts.FolderFontSource.FolderPath
             //ExFor:Fonts.FolderFontSource.ScanSubfolders
             //ExFor:Fonts.FolderFontSource.Type
-            //ExFor:Fonts.FontSettings.AddFontSubstitutes(System.String,System.String[])
+            //ExFor:Fonts.FontSettings.AddFontSubstitutes(String, String[])
             //ExFor:Fonts.FontSettings.EnableFontSubstitution
-            //ExFor:Fonts.FontSettings.GetFontSubstitutes(System.String)
+            //ExFor:Fonts.FontSettings.GetFontSubstitutes(String)
             //ExFor:Fonts.FontSettings.ResetFontSources
             //ExFor:Fonts.FontSourceBase
             //ExFor:Fonts.FontSourceBase.Priority
             //ExFor:Fonts.FontSourceBase.Type
             //ExFor:Fonts.FontSourceType
             //ExFor:Fonts.MemoryFontSource
-            //ExFor:Fonts.MemoryFontSource.#ctor(System.Byte[])
-            //ExFor:Fonts.MemoryFontSource.#ctor(System.Byte[],System.Int32)
+            //ExFor:Fonts.MemoryFontSource.#ctor(Byte[])
+            //ExFor:Fonts.MemoryFontSource.#ctor(Byte[], Int32)
             //ExFor:Fonts.MemoryFontSource.FontData
             //ExFor:Fonts.MemoryFontSource.Type
             //ExFor:Fonts.SystemFontSource
             //ExFor:Fonts.SystemFontSource.#ctor
-            //ExFor:Fonts.SystemFontSource.#ctor(System.Int32)
+            //ExFor:Fonts.SystemFontSource.#ctor(Int32)
             //ExFor:Fonts.SystemFontSource.GetSystemFontFolders
             //ExFor:Fonts.SystemFontSource.Type
             //ExSummary:Shows how to work with different kinds of font sources.
@@ -1093,18 +1098,18 @@ namespace ApiExamples
             FontSettings settings = new FontSettings();
 
             // Add different kinds of font sources to the settings object
-            FontSourceBase[] fontSources = new FontSourceBase[] {
+            FontSourceBase[] fontSources = {
                 new SystemFontSource(0),
-                new FileFontSource(MyDir + @"Alte DIN 1451 Mittelschrift.ttf", 1),
-                new FolderFontSource(MyDir + @"MyFonts", false),
-                new MemoryFontSource(System.IO.File.ReadAllBytes(MyDir + @"Alte DIN 1451 Mittelschrift.ttf"), 2),
+                new FileFontSource(MyDir + "Alte DIN 1451 Mittelschrift.ttf", 1),
+                new FolderFontSource(MyDir + "MyFonts", false),
+                new MemoryFontSource(File.ReadAllBytes(MyDir + "Alte DIN 1451 Mittelschrift.ttf"), 2),
             };
 
             settings.SetFontsSources(fontSources);
-            Assert.AreEqual(4, settings.GetFontsSources().Count());
+            Assert.AreEqual(4, settings.GetFontsSources().Length);
 
             // This is the source folder for system fonts
-            SystemFontSource systemFontSource = (SystemFontSource) settings.GetFontsSources()[0];
+            SystemFontSource systemFontSource = (SystemFontSource)settings.GetFontsSources()[0];
 
             Assert.AreEqual(FontSourceType.SystemFonts, systemFontSource.Type);
             Assert.AreEqual(0, systemFontSource.Priority);
@@ -1133,7 +1138,7 @@ namespace ApiExamples
             // Resetting that object like this leaves a system fonts source behind
             settings.ResetFontSources();
 
-            Assert.AreEqual(1, settings.GetFontsSources().Count());
+            Assert.AreEqual(1, settings.GetFontsSources().Length);
             Assert.AreEqual(FontSourceType.SystemFonts, settings.GetFontsSources()[0].Type);
             Assert.AreEqual(0, settings.GetFontsSources()[0].Priority);
             //ExEnd
