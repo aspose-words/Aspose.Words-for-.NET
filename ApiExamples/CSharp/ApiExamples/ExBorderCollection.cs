@@ -5,7 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using Aspose.Words;
 using NUnit.Framework;
@@ -26,13 +26,15 @@ namespace ApiExamples
 
             BorderCollection borders = builder.ParagraphFormat.Borders;
 
-            IEnumerator enumerator = borders.GetEnumerator();
-            while (enumerator.MoveNext())
+            using (IEnumerator<Border> enumerator = borders.GetEnumerator())
             {
-                // Do something useful.
-                Border b = (Border)enumerator.Current;
-                b.Color = Color.RoyalBlue;
-                b.LineStyle = LineStyle.Double;
+                while (enumerator.MoveNext())
+                {
+                    // Do something useful.
+                    Border b = enumerator.Current;
+                    b.Color = Color.RoyalBlue;
+                    b.LineStyle = LineStyle.Double;
+                }
             }
 
             doc.Save(MyDir + @"\Artifacts\Border.ChangedColourBorder.doc");                                                    

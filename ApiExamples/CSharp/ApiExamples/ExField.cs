@@ -8,6 +8,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -45,7 +47,7 @@ namespace ApiExamples
             //ExFor:FieldChar
             //ExFor:FieldChar.FieldType
             //ExSummary:Shows how to find the type of field that is represented by a node which is derived from FieldChar.
-            FieldChar fieldStart = (FieldChar)doc.GetChild(NodeType.FieldStart, 0, true);
+            FieldChar fieldStart = (FieldChar) doc.GetChild(NodeType.FieldStart, 0, true);
             FieldType type = fieldStart.FieldType;
             //ExEnd
         }
@@ -60,7 +62,7 @@ namespace ApiExamples
             //ExSummary:Demonstrates how to retrieve the field class from an existing FieldStart node in the document.
             Document doc = new Document(MyDir + "Document.TableOfContents.doc");
 
-            FieldStart fieldStart = (FieldStart)doc.GetChild(NodeType.FieldStart, 0, true);
+            FieldStart fieldStart = (FieldStart) doc.GetChild(NodeType.FieldStart, 0, true);
 
             // Retrieve the facade object which represents the field in the document.
             Field field = fieldStart.GetField();
@@ -91,8 +93,8 @@ namespace ApiExamples
             //ExEnd
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
-            
-            FieldRevNum revNum = (FieldRevNum)doc.Range.Fields[0];
+
+            FieldRevNum revNum = (FieldRevNum) doc.Range.Fields[0];
             Assert.NotNull(revNum);
         }
 
@@ -107,7 +109,7 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            FieldRevNum revNum = (FieldRevNum)doc.Range.Fields[0];
+            FieldRevNum revNum = (FieldRevNum) doc.Range.Fields[0];
             Assert.NotNull(revNum);
         }
 
@@ -125,7 +127,7 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            FieldInfo info = (FieldInfo)doc.Range.Fields[0];
+            FieldInfo info = (FieldInfo) doc.Range.Fields[0];
             Assert.NotNull(info);
         }
 
@@ -140,7 +142,7 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            FieldInfo info = (FieldInfo)doc.Range.Fields[0];
+            FieldInfo info = (FieldInfo) doc.Range.Fields[0];
             Assert.NotNull(info);
         }
 
@@ -194,7 +196,7 @@ namespace ApiExamples
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
 
             // Execute mail merge.
-            doc.MailMerge.Execute(new String[] { "Date" }, new object[] { DateTime.Now });
+            doc.MailMerge.Execute(new String[] {"Date"}, new object[] {DateTime.Now});
 
             // Restore the original culture.
             Thread.CurrentThread.CurrentCulture = currentCulture;
@@ -216,7 +218,7 @@ namespace ApiExamples
             // Remove the first TOC from the document.
             Field tocField = doc.Range.Fields[0];
             tocField.Remove();
-            
+
             // Save the output.
             doc.Save(MyDir + @"\Artifacts\Document.TableOfContentsRemoveTOC.doc");
             //ExEnd
@@ -263,7 +265,7 @@ namespace ApiExamples
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)
             {
                 // Create a builder to insert the field.
-                DocumentBuilder builder = new DocumentBuilder((Document)args.MatchNode.Document);
+                DocumentBuilder builder = new DocumentBuilder((Document) args.MatchNode.Document);
                 // Move to the first node of the match.
                 builder.MoveTo(args.MatchNode);
 
@@ -302,7 +304,7 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
             //Assert that field model is correct
-            Assert.IsTrue(doc.Range.Fields[0].IsDirty); 
+            Assert.IsTrue(doc.Range.Fields[0].IsDirty);
 
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.UpdateDirtyFields = false;
@@ -310,7 +312,7 @@ namespace ApiExamples
             doc = new Document(dstStream);
             Field tocField = doc.Range.Fields[0];
             //Assert that isDirty saves 
-            Assert.IsTrue(tocField.IsDirty); 
+            Assert.IsTrue(tocField.IsDirty);
         }
 
         [Test]
@@ -331,16 +333,17 @@ namespace ApiExamples
 
             //Add text into the paragraph
             Paragraph para = doc.FirstSection.Body.Paragraphs[0];
-            Run run = new Run(doc) { Text = " Hello World!" };
+            Run run = new Run(doc) {Text = " Hello World!"};
             para.AppendChild(run);
 
             FieldArgumentBuilder argumentBuilder = new FieldArgumentBuilder();
-                        argumentBuilder.AddField(new FieldBuilder(FieldType.FieldMergeField));
+            argumentBuilder.AddField(new FieldBuilder(FieldType.FieldMergeField));
             argumentBuilder.AddText("BestField");
 
             FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldIf);
-            fieldBuilder.AddArgument(argumentBuilder).AddArgument("=").AddArgument("BestField").AddArgument(10).AddArgument(20.0).AddSwitch("12", "13").BuildAndInsert(run);
-            
+            fieldBuilder.AddArgument(argumentBuilder).AddArgument("=").AddArgument("BestField").AddArgument(10)
+                .AddArgument(20.0).AddSwitch("12", "13").BuildAndInsert(run);
+
             doc.UpdateFields();
             //ExEnd
         }
@@ -360,7 +363,9 @@ namespace ApiExamples
 
             FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldIncludeText);
 
-            Assert.That(() => fieldBuilder.AddArgument(argumentBuilder).AddArgument("=").AddArgument("BestField").AddArgument(10).AddArgument(20.0).BuildAndInsert(run), Throws.TypeOf<ArgumentException>());
+            Assert.That(
+                () => fieldBuilder.AddArgument(argumentBuilder).AddArgument("=").AddArgument("BestField")
+                    .AddArgument(10).AddArgument(20.0).BuildAndInsert(run), Throws.TypeOf<ArgumentException>());
         }
 #if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
@@ -402,7 +407,8 @@ namespace ApiExamples
             BarCodeReader barcodeReader = new BarCodeReader(imageStream, DecodeType.QR);
             while (barcodeReader.Read())
             {
-                Console.WriteLine("Codetext found: " + barcodeReader.GetCodeText() + ", Symbology: " + barcodeReader.GetCodeType());
+                Console.WriteLine("Codetext found: " + barcodeReader.GetCodeText() + ", Symbology: " +
+                                  barcodeReader.GetCodeType());
             }
 
             //close the reader
@@ -427,7 +433,7 @@ namespace ApiExamples
             {
                 if (field.Type.Equals(FieldType.FieldIncludePicture))
                 {
-                    FieldIncludePicture includePicture = (FieldIncludePicture)field;
+                    FieldIncludePicture includePicture = (FieldIncludePicture) field;
 
                     includePicture.SourceFullName = MyDir + @"\Images\dotnet-logo.png";
                     includePicture.Update(true);
@@ -455,7 +461,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Field field = builder.InsertField("MERGEFIELD Date");
-            
+
             FieldFormat format = field.Format;
 
             format.DateTimeFormat = "dddd, MMMM dd, yyyy";
@@ -497,14 +503,15 @@ namespace ApiExamples
             //ExSummary:Shows how to unlink all fields in range
             Document doc = new Document(MyDir + "Field.UnlinkFields.docx");
 
-            Section newSection = (Section)doc.Sections[0].Clone(true);
+            Section newSection = (Section) doc.Sections[0].Clone(true);
             doc.Sections.Add(newSection);
 
             doc.Sections[1].Range.UnlinkFields();
             //ExEnd
 
             String secWithFields = DocumentHelper.GetSectionText(doc, 1);
-            Assert.AreEqual(secWithFields, "Fields.Docx   Элементы указателя не найдены.     3.\rОшибка! Не указана последовательность.    Fields.Docx   Элементы указателя не найдены.     4.\r\r\r\r\r\f");
+            Assert.AreEqual(secWithFields,
+                "Fields.Docx   Элементы указателя не найдены.     3.\rОшибка! Не указана последовательность.    Fields.Docx   Элементы указателя не найдены.     4.\r\r\r\r\r\f");
         }
 
         [Test]
@@ -519,7 +526,8 @@ namespace ApiExamples
             //ExEnd
 
             String paraWithFields = DocumentHelper.GetParagraphText(doc, 0);
-            Assert.AreEqual(paraWithFields, "\u0013 FILENAME  \\* Caps  \\* MERGEFORMAT \u0014Fields.Docx\u0015   Элементы указателя не найдены.     \u0013 LISTNUM  LegalDefault \u0015\r");
+            Assert.AreEqual(paraWithFields,
+                "\u0013 FILENAME  \\* Caps  \\* MERGEFORMAT \u0014Fields.Docx\u0015   Элементы указателя не найдены.     \u0013 LISTNUM  LegalDefault \u0015\r");
         }
 
         [Test]
@@ -560,7 +568,7 @@ namespace ApiExamples
                 FieldType fType = field.FieldType;
                 if (fType == FieldType.FieldTOC)
                 {
-                    Paragraph para = (Paragraph)field.GetAncestor(NodeType.Paragraph);
+                    Paragraph para = (Paragraph) field.GetAncestor(NodeType.Paragraph);
                     para.Range.UpdateFields();
                     break;
                 }
@@ -580,8 +588,9 @@ namespace ApiExamples
                 //Check whether current contains end node
                 if (curNode.IsComposite)
                 {
-                    CompositeNode curComposite = (CompositeNode)curNode;
-                    if (!curComposite.GetChildNodes(NodeType.Any, true).Contains(end) && !curComposite.GetChildNodes(NodeType.Any, true).Contains(start))
+                    CompositeNode curComposite = (CompositeNode) curNode;
+                    if (!curComposite.GetChildNodes(NodeType.Any, true).Contains(end) &&
+                        !curComposite.GetChildNodes(NodeType.Any, true).Contains(start))
                     {
                         nextNode = curNode.NextSibling;
                         curNode.Remove();
@@ -594,6 +603,198 @@ namespace ApiExamples
 
                 curNode = nextNode;
             }
+        }
+
+        [Test]
+        public void DropDownItemCollection()
+        {
+            //ExStart
+            //ExFor:Fields.DropDownItemCollection
+            //ExFor:Fields.DropDownItemCollection.Add(String)
+            //ExFor:Fields.DropDownItemCollection.Clear
+            //ExFor:Fields.DropDownItemCollection.Contains(String)
+            //ExFor:Fields.DropDownItemCollection.Count
+            //ExFor:Fields.DropDownItemCollection.GetEnumerator
+            //ExFor:Fields.DropDownItemCollection.IndexOf(String)
+            //ExFor:Fields.DropDownItemCollection.Insert(Int32, String)
+            //ExFor:Fields.DropDownItemCollection.Item(Int32)
+            //ExFor:Fields.DropDownItemCollection.Remove(String)
+            //ExFor:Fields.DropDownItemCollection.RemoveAt(Int32)
+            //ExSummary:Shows how to insert a combo box field and manipulate the elements in its item collection.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to create and populate a combo box
+            string[] items = {"One", "Two", "Three"};
+            FormField comboBoxField = builder.InsertComboBox("DropDown", items, 0);
+
+            // Get the list of drop down items
+            DropDownItemCollection dropDownItems = comboBoxField.DropDownItems;
+
+            Assert.AreEqual(3, dropDownItems.Count);
+            Assert.AreEqual("One", dropDownItems[0]);
+            Assert.AreEqual(1, dropDownItems.IndexOf("Two"));
+            Assert.IsTrue(dropDownItems.Contains("Three"));
+
+            // We can add an item to the end of the collection or insert it at a desired index
+            dropDownItems.Add("Four");
+            dropDownItems.Insert(3, "Three and a half");
+            Assert.AreEqual(5, dropDownItems.Count);
+
+            // Iterate over the collection and print every element
+            using (IEnumerator<string> dropDownCollectionEnumerator = dropDownItems.GetEnumerator())
+            {
+                while (dropDownCollectionEnumerator.MoveNext())
+                {
+                    string currentItem = (string) dropDownCollectionEnumerator.Current;
+                    Console.WriteLine(currentItem);
+                }
+            }
+
+            // We can remove elements in the same way we added them
+            dropDownItems.Remove("Four");
+            dropDownItems.RemoveAt(3);
+            Assert.IsFalse(dropDownItems.Contains("Three and a half"));
+            Assert.IsFalse(dropDownItems.Contains("Four"));
+
+            doc.Save(MyDir + @"\Artifacts\Fields.DropDownItems.docx");
+
+            // Empty the collection
+            dropDownItems.Clear();
+            Assert.AreEqual(0, dropDownItems.Count);
+        }
+
+        [Test]
+        public void FieldAsk()
+        {
+            //ExStart
+            //ExFor:Fields.FieldAsk
+            //ExFor:Fields.FieldAsk.BookmarkName
+            //ExFor:Fields.FieldAsk.DefaultResponse
+            //ExFor:Fields.FieldAsk.PromptOnceOnMailMerge
+            //ExFor:Fields.FieldAsk.PromptText
+            //ExSummary:Shows how to create an ASK field and set its properties.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // We can use a document builder to create our field
+            FieldAsk fieldAsk = (FieldAsk) builder.InsertField(FieldType.FieldAsk, true);
+
+            // The initial state of our ask field is empty
+            Assert.AreEqual(" ASK ", fieldAsk.GetFieldCode());
+
+            // Add functionality to our field
+            fieldAsk.BookmarkName = "MyAskField";
+            fieldAsk.PromptText = "Please provide a response for this ASK field";
+            fieldAsk.DefaultResponse = "This is the default response.";
+            fieldAsk.PromptOnceOnMailMerge = true;
+
+            // The attributes we changed are now incorporated into the field code
+            Assert.AreEqual(
+                " ASK  MyAskField \"Please provide a response for this ASK field\" \\d \"This is the default response.\" \\o",
+                fieldAsk.GetFieldCode());
+            //ExEnd
+
+            Assert.AreEqual("MyAskField", fieldAsk.BookmarkName);
+            Assert.AreEqual("Please provide a response for this ASK field", fieldAsk.PromptText);
+            Assert.AreEqual("This is the default response.", fieldAsk.DefaultResponse);
+            Assert.AreEqual(true, fieldAsk.PromptOnceOnMailMerge);
+        }
+
+        [Test]
+        public void FieldAdvance()
+        {
+            //ExStart
+            //ExFor:Fields.FieldAdvance
+            //ExFor:Fields.FieldAdvance.DownOffset
+            //ExFor:Fields.FieldAdvance.HorizontalPosition
+            //ExFor:Fields.FieldAdvance.LeftOffset
+            //ExFor:Fields.FieldAdvance.RightOffset
+            //ExFor:Fields.FieldAdvance.UpOffset
+            //ExFor:Fields.FieldAdvance.VerticalPosition
+            //ExSummary:Shows how to insert an advance field and edit its properties. 
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("This text is in its normal place.");
+
+            // Create an advance field using document builder
+            FieldAdvance field = (FieldAdvance) builder.InsertField(FieldType.FieldAdvance, true);
+
+            builder.Write("This text is moved up and to the right.");
+
+            Assert.AreEqual(FieldType.FieldAdvance, field.Type);
+            Assert.AreEqual(" ADVANCE ", field.GetFieldCode());
+
+            // The second text that the builder added will now be moved
+            field.RightOffset = "5";
+            field.UpOffset = "5";
+
+            Assert.AreEqual(" ADVANCE  \\r 5 \\u 5", field.GetFieldCode());
+
+            // If we want to move text in the other direction, and try do that by using negative values for the above field members, we will get an error in our document
+            // Instead, we need to specify a positive value for the opposite respective field directional variable
+            field = (FieldAdvance) builder.InsertField(FieldType.FieldAdvance, true);
+            field.DownOffset = "5";
+            field.LeftOffset = "100";
+
+            Assert.AreEqual(" ADVANCE  \\d 5 \\l 100", field.GetFieldCode());
+
+            // We are still on one paragraph
+            Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
+
+            // Since we're setting horizontal and vertical positions next, we need to end the paragraph so the previous line does not get moved with the next one
+            builder.Writeln("This text is moved down and to the left, overlapping the previous text.");
+
+            // This time we can also use negative values 
+            field = (FieldAdvance) builder.InsertField(FieldType.FieldAdvance, true);
+            field.HorizontalPosition = "-100";
+            field.VerticalPosition = "200";
+
+            Assert.AreEqual(" ADVANCE  \\x -100 \\y 200", field.GetFieldCode());
+
+            builder.Write("This text is in a custom position.");
+
+            doc.Save(MyDir + @"\Artifacts\Field.Advance.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldAddressBlock()
+        {
+            //ExStart
+            //ExFor:Fields.FieldAddressBlock.ExcludedCountryOrRegionName
+            //ExFor:Fields.FieldAddressBlock.FormatAddressOnCountryOrRegion
+            //ExFor:Fields.FieldAddressBlock.IncludeCountryOrRegionName
+            //ExFor:Fields.FieldAddressBlock.LanguageId
+            //ExFor:Fields.FieldAddressBlock.NameAndAddressFormat
+            //ExSummary:Shows how to build a field address block.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            // Use a document builder to insert a field address block
+            FieldAddressBlock field = (FieldAddressBlock) builder.InsertField(FieldType.FieldAddressBlock, true);
+            // Initially our field is an empty address block field with null attributes
+            Assert.AreEqual(" ADDRESSBLOCK ", field.GetFieldCode());
+            // Setting this to "2" will cause all countries/regions to be included, unless it is the one specified in the ExcludedCountryOrRegionName attribute
+            field.IncludeCountryOrRegionName = "2";
+            field.FormatAddressOnCountryOrRegion = true;
+            field.ExcludedCountryOrRegionName = "United States";
+            // Specify our own name and address format
+            field.NameAndAddressFormat = "<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>";
+            // By default, the language ID will be set to that of the first character of the document
+            // In this case we will specify it to be English
+            field.LanguageId = "1033";
+            // Our field code has changed according to the attribute values that we set
+            Assert.AreEqual(
+                " ADDRESSBLOCK  \\c 2 \\d \\e \"United States\" \\f \"<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>\" \\l 1033",
+                field.GetFieldCode());
+            //ExEnd
+            Assert.AreEqual("2", field.IncludeCountryOrRegionName);
+            Assert.AreEqual(true, field.FormatAddressOnCountryOrRegion);
+            Assert.AreEqual("United States", field.ExcludedCountryOrRegionName);
+            Assert.AreEqual("<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>",
+                field.NameAndAddressFormat);
+            Assert.AreEqual("1033", field.LanguageId);
         }
     }
 }

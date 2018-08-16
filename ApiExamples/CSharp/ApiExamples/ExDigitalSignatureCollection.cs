@@ -6,7 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using Aspose.Words;
 using NUnit.Framework;
 
@@ -23,14 +23,16 @@ namespace ApiExamples
             //ExSummary:Shows how to load and enumerate all digital signatures of a document.
             DigitalSignatureCollection digitalSignatures = DigitalSignatureUtil.LoadSignatures(MyDir + "Document.DigitalSignature.docx");
 
-            IEnumerator enumerator = digitalSignatures.GetEnumerator();
-            while (enumerator.MoveNext())
+            using (IEnumerator<DigitalSignature> enumerator = digitalSignatures.GetEnumerator())
             {
-                // Do something useful
-                DigitalSignature ds = (DigitalSignature)enumerator.Current;
+                while (enumerator.MoveNext())
+                {
+                    // Do something useful
+                    DigitalSignature ds = enumerator.Current;
 
-                if (ds != null)
-                    Console.WriteLine(ds.ToString());
+                    if (ds != null)
+                        Console.WriteLine(ds.ToString());
+                } 
             }
             //ExEnd
         }
