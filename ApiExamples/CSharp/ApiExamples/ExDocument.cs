@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -1199,10 +1200,10 @@ namespace ApiExamples
             //ExSummary:Shows how to enumerate over document variables.
             Document doc = new Document(MyDir + "Document.doc");
 
-            foreach (DictionaryEntry entry in doc.Variables)
+            foreach (KeyValuePair<string, string> entry in doc.Variables)
             {
-                String name = entry.Key.ToString();
-                String value = entry.Value.ToString();
+                String name = entry.Key;
+                String value = entry.Value;
 
                 // Do something useful.
                 Console.WriteLine("Name: {0}, Value: {1}", name, value);
@@ -1479,7 +1480,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "ShowRevisionBalloons.docx");
 
             //Set option true, if you need render tracking changes in balloons in pdf document
-            doc.LayoutOptions.RevisionOptions.ShowRevisionBalloons = true;
+            doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.Format;
 
             //Check that revisions are in balloons 
             doc.Save(MyDir + @"\Artifacts\ShowRevisionBalloons.pdf");
@@ -1592,8 +1593,8 @@ namespace ApiExamples
             //ExFor:PlainTextDocument.#ctor(String)
             //ExFor:PlainTextDocument.#ctor(String, LoadOptions)
             //ExSummary:Show how to simply extract text from a document.
-            LoadOptions loadOptions = new LoadOptions();
-            loadOptions.AllowTrailingWhitespaceForListItems = false;
+            TxtLoadOptions loadOptions = new TxtLoadOptions();
+            loadOptions.DetectNumberingWithWhitespaces = false;
 
             PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmark.docx");
             Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); //ExSkip 
@@ -1636,8 +1637,8 @@ namespace ApiExamples
             //ExFor:PlainTextDocument.#ctor(Stream)
             //ExFor:PlainTextDocument.#ctor(Stream, LoadOptions)
             //ExSummary:Show how to simply extract text from a stream.
-            LoadOptions loadOptions = new LoadOptions();
-            loadOptions.AllowTrailingWhitespaceForListItems = false;
+            TxtLoadOptions loadOptions = new TxtLoadOptions();
+            loadOptions.DetectNumberingWithWhitespaces = false;
 
             Stream stream = new FileStream(MyDir + "Bookmark.docx", FileMode.Open);
 
@@ -2109,8 +2110,8 @@ namespace ApiExamples
             //ExSummary:Shows how to set a document's layout options.
             Document doc = new Document();
 
-            Assert.IsFalse(doc.LayoutOptions.IsShowHiddenText);
-            Assert.IsFalse(doc.LayoutOptions.IsShowParagraphMarks);
+            Assert.IsFalse(doc.LayoutOptions.ShowHiddenText);
+            Assert.IsFalse(doc.LayoutOptions.ShowParagraphMarks);
             
             // The appearance of revisions can be controlled from the layout options property
             doc.StartTrackRevisions("John Doe", DateTime.Now);
@@ -2127,7 +2128,7 @@ namespace ApiExamples
             builder.Font.Hidden = true;
             builder.Writeln("This text is hidden. It will only show up in the output if we allow it to via doc.LayoutOptions.");
 
-            doc.LayoutOptions.IsShowHiddenText = true;
+            doc.LayoutOptions.ShowHiddenText = true;
 
             doc.Save(MyDir + @"\Artifacts\Document.LayoutOptions.pdf");
             //ExEnd
