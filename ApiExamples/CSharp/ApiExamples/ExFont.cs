@@ -10,6 +10,7 @@ using System.Collections;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
@@ -1001,7 +1002,7 @@ namespace ApiExamples
             byte[] embeddedFontBytes = mittelschriftInfo.GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular);
             Assert.IsNotNull(embeddedFontBytes);
             // Then we can save the font to our directory
-            File.WriteAllBytes(MyDir + @"\Artifacts\Alte DIN 1451 Mittelschrift.ttf", embeddedFontBytes); // INSP: All out files must be saved in the "Artifacts" directory
+            File.WriteAllBytes(MyDir + @"\Artifacts\Alte DIN 1451 Mittelschrift.ttf", embeddedFontBytes);
             
             // If we want to extract a font from a .doc as opposed to a .docx, we need to make sure to set the appropriate embedded font format
             doc = new Document(MyDir + "Font.Embedded.doc");
@@ -1012,7 +1013,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void GetFontInfoFromFile() // INSP: We don't always need one big example. In this example three different cases which can be in different methods. For users it's more comfortable. 
+        public void GetFontInfoFromFile() 
         {
             //ExStart
             //ExFor:Fonts.FontFamily
@@ -1035,7 +1036,7 @@ namespace ApiExamples
                 if (fontInfo != null)
                 {
                     Console.WriteLine("Font name: " + fontInfo.Name);
-                    Console.WriteLine("Alt name: " + fontInfo.AltName); // Alt name are usually blank
+                    Console.WriteLine("Alt name: " + fontInfo.AltName); // Alt names are usually blank
                     Console.WriteLine("\t- Family: " + fontInfo.Family);
                     Console.WriteLine("\t- " + (fontInfo.IsTrueType ? "Is TrueType" : "Is not TrueType"));
                     Console.WriteLine("\t- Pitch: " + fontInfo.Pitch);
@@ -1054,10 +1055,13 @@ namespace ApiExamples
                 }
             }
             //ExEnd
+
+            Assert.AreEqual(new int[] { 2, 15, 5, 2, 2, 2, 4, 3, 2, 4 }, doc.FontInfos["Calibri"].Panose);
+            Assert.AreEqual(new int[] { 2, 2, 6, 3, 5, 4, 5, 2, 3, 4 }, doc.FontInfos["Times New Roman"].Panose);
         }
 
         [Test]
-        public void FontSources() // INSP: Please check that this example is not possible to simplify
+        public void FontSourceFile()
         {
             //ExStart
             //ExFor:Fonts.FileFontSource
@@ -1065,82 +1069,130 @@ namespace ApiExamples
             //ExFor:Fonts.FileFontSource.#ctor(String, Int32)
             //ExFor:Fonts.FileFontSource.FilePath
             //ExFor:Fonts.FileFontSource.Type
+            //ExFor:Fonts.FontSourceBase
+            //ExFor:Fonts.FontSourceBase.Priority
+            //ExFor:Fonts.FontSourceBase.Type
+            //ExFor:Fonts.FontSourceType
+            //ExSummary:Shows how to create a file font source.
+            Document doc = new Document();
+
+            // Create a font settings object for our document
+            doc.FontSettings = new FontSettings();
+
+            // Create a font source from a file in our system
+            FileFontSource fileFontSource = new FileFontSource(MyDir + "Alte DIN 1451 Mittelschrift.ttf", 0);
+
+            // Import the font source into our document
+            doc.FontSettings.SetFontsSources(new FontSourceBase[] { fileFontSource });
+
+            Assert.AreEqual(MyDir + "Alte DIN 1451 Mittelschrift.ttf", fileFontSource.FilePath);
+            Assert.AreEqual(FontSourceType.FontFile, fileFontSource.Type);
+            Assert.AreEqual(0, fileFontSource.Priority);
+            //ExEnd
+        }
+
+        [Test]
+        public void FontSourceFolder()
+        {
+            //ExStart
             //ExFor:Fonts.FolderFontSource
             //ExFor:Fonts.FolderFontSource.#ctor(String, Boolean)
             //ExFor:Fonts.FolderFontSource.#ctor(String, Boolean, Int32)
             //ExFor:Fonts.FolderFontSource.FolderPath
             //ExFor:Fonts.FolderFontSource.ScanSubfolders
             //ExFor:Fonts.FolderFontSource.Type
-            //ExFor:Fonts.FontSettings.AddFontSubstitutes(String, String[])
-            //ExFor:Fonts.FontSettings.EnableFontSubstitution
-            //ExFor:Fonts.FontSettings.GetFontSubstitutes(String)
-            //ExFor:Fonts.FontSettings.ResetFontSources
-            //ExFor:Fonts.FontSourceBase
-            //ExFor:Fonts.FontSourceBase.Priority
-            //ExFor:Fonts.FontSourceBase.Type
-            //ExFor:Fonts.FontSourceType
+            //ExSummary:Shows how to create a folder font source.
+            Document doc = new Document();
+
+            // Create a font settings object for our document
+            doc.FontSettings = new FontSettings();
+
+            // Create a font source from a folder that contains font files
+            FolderFontSource folderFontSource = new FolderFontSource(MyDir + "MyFonts", false);
+
+            // Add that source to our document
+            doc.FontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
+
+            Assert.AreEqual(MyDir + "MyFonts", folderFontSource.FolderPath);
+            Assert.AreEqual(false, folderFontSource.ScanSubfolders);
+            Assert.AreEqual(FontSourceType.FontsFolder, folderFontSource.Type);
+            //ExEnd
+        }
+
+        [Test]
+        public void FontSourceMemory()
+        {
+            //ExStart
             //ExFor:Fonts.MemoryFontSource
             //ExFor:Fonts.MemoryFontSource.#ctor(Byte[])
             //ExFor:Fonts.MemoryFontSource.#ctor(Byte[], Int32)
             //ExFor:Fonts.MemoryFontSource.FontData
             //ExFor:Fonts.MemoryFontSource.Type
+            //ExSummary:Shows how to create a memory font source.
+            Document doc = new Document();
+
+            // Create a font settings object for our document
+            doc.FontSettings = new FontSettings();
+
+            // Import a font file, putting its contents into a byte array
+            byte[] fontBytes = File.ReadAllBytes(MyDir + "Alte DIN 1451 Mittelschrift.ttf");
+
+            // Create a memory font source from our array
+            MemoryFontSource memoryFontSource = new MemoryFontSource(fontBytes, 0);
+
+            // Add that font source to our document
+            doc.FontSettings.SetFontsSources(new FontSourceBase[] { memoryFontSource });
+
+            Assert.AreEqual(52208, memoryFontSource.FontData.Length);
+            Assert.AreEqual(FontSourceType.MemoryFont, memoryFontSource.Type);
+            //ExEnd
+        }
+
+        [Test]
+        public void FontSourceSystem()
+        {
+            //ExStart
+            //ExFor:Fonts.FontSettings.AddFontSubstitutes(String, String[])
+            //ExFor:Fonts.FontSettings.EnableFontSubstitution
+            //ExFor:Fonts.FontSettings.GetFontSubstitutes(String)
+            //ExFor:Fonts.FontSettings.ResetFontSources
             //ExFor:Fonts.SystemFontSource
             //ExFor:Fonts.SystemFontSource.#ctor
             //ExFor:Fonts.SystemFontSource.#ctor(Int32)
             //ExFor:Fonts.SystemFontSource.GetSystemFontFolders
             //ExFor:Fonts.SystemFontSource.Type
-            //ExSummary:Shows how to work with different kinds of font sources.
+            //ExSummary:Shows how to access a document's system font source and set font substitutes.
             Document doc = new Document();
 
-            Assert.IsNull(doc.FontSettings);
-
             // Create a font settings object for our document
-            FontSettings settings = new FontSettings();
+            doc.FontSettings = new FontSettings();
 
-            // Add different kinds of font sources to the settings object
-            FontSourceBase[] fontSources = {
-                new SystemFontSource(0),
-                new FileFontSource(MyDir + "Alte DIN 1451 Mittelschrift.ttf", 1),
-                new FolderFontSource(MyDir + "MyFonts", false),
-                new MemoryFontSource(File.ReadAllBytes(MyDir + "Alte DIN 1451 Mittelschrift.ttf"), 2),
-            };
+            // By default we always start with a system font source
+            Assert.AreEqual(1, doc.FontSettings.GetFontsSources().Length);
 
-            settings.SetFontsSources(fontSources);
-            Assert.AreEqual(4, settings.GetFontsSources().Length);
-
-            // This is the source folder for system fonts
-            SystemFontSource systemFontSource = (SystemFontSource)settings.GetFontsSources()[0];
-
+            SystemFontSource systemFontSource = (SystemFontSource)doc.FontSettings.GetFontsSources()[0];
             Assert.AreEqual(FontSourceType.SystemFonts, systemFontSource.Type);
             Assert.AreEqual(0, systemFontSource.Priority);
             Assert.AreEqual(new[] { @"C:\WINDOWS\Fonts" }, SystemFontSource.GetSystemFontFolders());
 
-            // This font source points to a font file
-            FileFontSource fileFontSource = (FileFontSource)settings.GetFontsSources()[1];
+            // Set a font that exists in the windows fonts directory as a substitute for one that doesn't
+            doc.FontSettings.EnableFontSubstitution = true;
+            doc.FontSettings.AddFontSubstitutes("Kreon-Regular", new string[] { "Calibri" });
 
-            Assert.AreEqual(MyDir + "Alte DIN 1451 Mittelschrift.ttf", fileFontSource.FilePath);
-            Assert.AreEqual(FontSourceType.FontFile, fileFontSource.Type);
-            
-            // This font source gets all fonts from a folder, and may also go into sub folders
-            FolderFontSource folderFontSource = (FolderFontSource)settings.GetFontsSources()[2];
+            Assert.AreEqual(1, doc.FontSettings.GetFontSubstitutes("Kreon-Regular").Length);
+            Assert.Contains("Calibri", doc.FontSettings.GetFontSubstitutes("Kreon-Regular"));
 
-            Assert.AreEqual(MyDir + "MyFonts", folderFontSource.FolderPath);
-            Assert.AreEqual(false, folderFontSource.ScanSubfolders);
-            Assert.AreEqual(FontSourceType.FontsFolder, folderFontSource.Type);
+            // Alternatively, we could add a folder font source in which the corresponding folder contains the font
+            FolderFontSource folderFontSource = new FolderFontSource(MyDir + "MyFonts", false);
+            doc.FontSettings.SetFontsSources(new FontSourceBase[] { systemFontSource, folderFontSource });
+            Assert.AreEqual(2, doc.FontSettings.GetFontsSources().Length);
 
-            // This font source uses an object that's been defined programmatically
-            MemoryFontSource memoryFontSource = (MemoryFontSource)settings.GetFontsSources()[3];
+            // Resetting the font sources still leaves us with the system font source as well as our substitutes
+            doc.FontSettings.ResetFontSources();
 
-            Assert.AreEqual(52208, memoryFontSource.FontData.Length);
-            Assert.AreEqual(FontSourceType.MemoryFont, memoryFontSource.Type);
-
-            // Our new file started off with a null font settings and sources object
-            // Resetting that object like this leaves a system fonts source behind
-            settings.ResetFontSources();
-
-            Assert.AreEqual(1, settings.GetFontsSources().Length);
-            Assert.AreEqual(FontSourceType.SystemFonts, settings.GetFontsSources()[0].Type);
-            Assert.AreEqual(0, settings.GetFontsSources()[0].Priority);
+            Assert.AreEqual(1, doc.FontSettings.GetFontsSources().Length);
+            Assert.AreEqual(FontSourceType.SystemFonts, doc.FontSettings.GetFontsSources()[0].Type);
+            Assert.AreEqual(1, doc.FontSettings.GetFontSubstitutes("Kreon-Regular").Length);
             //ExEnd
         }
     }
