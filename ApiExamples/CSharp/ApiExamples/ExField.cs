@@ -16,9 +16,11 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using Aspose.BarCode.BarCodeRecognition;
 using Aspose.Words;
+using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Fields;
 using Aspose.Words.Replacing;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace ApiExamples
 {
@@ -795,6 +797,44 @@ namespace ApiExamples
             Assert.AreEqual("<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>",
                 field.NameAndAddressFormat);
             Assert.AreEqual("1033", field.LanguageId);
+        }
+
+        [Test]
+        public void FieldAutoText()
+        {
+            //ExStart
+            //ExFor:Fields.FieldAutoText
+            //ExFor:FieldAutoText.EntryName
+            //ExSummary:Shows how to insert an auto text field and reference an auto text building block with it. 
+            Document doc = new Document();
+
+            // Create a glossary document and add an AutoText building block
+            doc.GlossaryDocument = new GlossaryDocument();
+            BuildingBlock buildingBlock = new BuildingBlock(doc.GlossaryDocument);
+            buildingBlock.Name = "MyBlock";
+            buildingBlock.Gallery = BuildingBlockGallery.AutoText;
+            buildingBlock.Category = "General";
+            buildingBlock.Description = "MyBlock description";
+            buildingBlock.Behavior = BuildingBlockBehavior.Paragraph;
+            doc.GlossaryDocument.AppendChild(buildingBlock);
+
+            // Create a source and add it as text content to our building block
+            Document buildingBlockSource = new Document();
+            DocumentBuilder buildingBlockSourceBuilder = new DocumentBuilder(doc);
+            buildingBlockSourceBuilder.Writeln("Hello World!");
+
+            Node buildingBlockContent = doc.GlossaryDocument.ImportNode(buildingBlockSource.FirstSection, true);
+            buildingBlock.AppendChild(buildingBlockContent);
+
+            // Create an advance field using document builder
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            FieldAutoText field = (FieldAutoText)builder.InsertField(FieldType.FieldAutoText, true);
+
+            // Refer to our building block by name
+            field.EntryName = "MyBlock";
+
+            // The text content of our building block will be visible in the output
+            doc.Save(MyDir + @"\Artifacts\Field.AutoText.dotx");
         }
     }
 }
