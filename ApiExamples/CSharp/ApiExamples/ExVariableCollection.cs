@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -88,8 +88,9 @@ namespace ApiExamples
                 {
                     KeyValuePair<string, string> de = enumerator.Current;
                     Console.WriteLine("Name: {0}, Value: {1}", de.Key, de.Value);
-                }  
+                }
             }
+
             //ExEnd
         }
 

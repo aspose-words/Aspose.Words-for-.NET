@@ -13,33 +13,33 @@ namespace ApiExamples.TestData.TestBuilders
 
         public DocumentTestBuilder()
         {
-            this.mDocument = new Document();
-            this.mDocumentStream = Stream.Null;
-            this.mDocumentBytes = new byte[0];
-            this.mDocumentUri = string.Empty;
+            mDocument = new Document();
+            mDocumentStream = Stream.Null;
+            mDocumentBytes = new byte[0];
+            mDocumentUri = string.Empty;
         }
 
         public DocumentTestBuilder WithDocument(Document doc)
         {
-            this.mDocument = doc;
+            mDocument = doc;
             return this;
         }
 
         public DocumentTestBuilder WithDocumentStream(Stream stream)
         {
-            this.mDocumentStream = stream;
+            mDocumentStream = stream;
             return this;
         }
 
         public DocumentTestBuilder WithDocumentBytes(byte[] docBytes)
         {
-            this.mDocumentBytes = docBytes;
+            mDocumentBytes = docBytes;
             return this;
         }
 
         public DocumentTestBuilder WithDocumentUri(string docUri)
         {
-            this.mDocumentUri = docUri;
+            mDocumentUri = docUri;
             return this;
         }
 

@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Globalization;
 using Aspose.BarCode;
 using Aspose.Words.Fields;
+
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
@@ -22,14 +23,13 @@ namespace ApiExamples
         private static float ConvertSymbolHeight(string heightInTwipsString)
         {
             // Input value is in 1/1440 inches (twips)
-            int heightInTwips = int.MinValue;
-            int.TryParse(heightInTwipsString, out heightInTwips);
+            int.TryParse(heightInTwipsString, out int heightInTwips);
 
             if (heightInTwips == int.MinValue)
                 throw new Exception("Error! Incorrect height - " + heightInTwipsString + ".");
 
             // Convert to mm
-            return (float)(heightInTwips * 25.4 / 1440);
+            return (float) (heightInTwips * 25.4 / 1440);
         }
 
         /// <summary>
@@ -40,8 +40,7 @@ namespace ApiExamples
         private static Color ConvertColor(string inputColor)
         {
             // Input should be from "0x000000" to "0xFFFFFF"
-            int color = int.MinValue;
-            int.TryParse(inputColor.Replace("0x", ""), out color);
+            int.TryParse(inputColor.Replace("0x", ""), out int color);
 
             if (color == int.MinValue)
                 throw new Exception("Error! Incorrect color - " + inputColor + ".");
@@ -60,14 +59,10 @@ namespace ApiExamples
         private static float ConvertScalingFactor(string scalingFactor)
         {
             bool isParsed = false;
-            int percents = int.MinValue;
-            int.TryParse(scalingFactor, out percents);
+            int.TryParse(scalingFactor, out int percents);
 
-            if (percents != int.MinValue)
-            {
-                if (percents >= 10 && percents <= 10000)
-                    isParsed = true;
-            }
+            if (percents != int.MinValue && percents >= 10 && percents <= 10000)
+                isParsed = true;
 
             if (!isParsed)
                 throw new Exception("Error! Incorrect scaling factor - " + scalingFactor + ".");
@@ -124,13 +119,12 @@ namespace ApiExamples
                     break;
             }
 
-            //builder.EncodeType = ConvertBarcodeType(parameters.BarcodeType);
-            if (builder.EncodeType == Aspose.BarCode.Generation.EncodeTypes.None)
+            if (builder.EncodeType.Equals(Aspose.BarCode.Generation.EncodeTypes.None))
                 return null;
 
             builder.CodeText = parameters.BarcodeValue;
 
-            if (builder.EncodeType == Aspose.BarCode.Generation.EncodeTypes.QR)
+            if (builder.EncodeType.Equals(Aspose.BarCode.Generation.EncodeTypes.QR))
                 builder.Display2DText = parameters.BarcodeValue;
 
             if (parameters.ForegroundColor != null)
@@ -155,7 +149,7 @@ namespace ApiExamples
             const float scale = 0.4f; // Empiric scaling factor for converting Word barcode to Aspose.BarCode
             float xdim = 1.0f;
 
-            if (builder.EncodeType == Aspose.BarCode.Generation.EncodeTypes.QR)
+            if (builder.EncodeType.Equals(Aspose.BarCode.Generation.EncodeTypes.QR))
             {
                 builder.AutoSize = false;
                 builder.ImageWidth *= scale;
@@ -168,7 +162,7 @@ namespace ApiExamples
             {
                 float scalingFactor = ConvertScalingFactor(parameters.ScalingFactor);
                 builder.ImageHeight *= scalingFactor;
-                if (builder.EncodeType == Aspose.BarCode.Generation.EncodeTypes.QR)
+                if (builder.EncodeType.Equals(Aspose.BarCode.Generation.EncodeTypes.QR))
                 {
                     builder.ImageWidth = builder.ImageHeight;
                     builder.xDimension = builder.yDimension = xdim * scalingFactor;
@@ -200,11 +194,13 @@ namespace ApiExamples
             if (parameters.PostalAddress == null)
                 return null;
 
-            BarCodeBuilder builder = new BarCodeBuilder();
+            BarCodeBuilder builder = new BarCodeBuilder
+            {
+                EncodeType = Aspose.BarCode.Generation.EncodeTypes.Postnet,
+                CodeText = parameters.PostalAddress
+            };
 
             // Hardcode type for old-fashioned Barcode
-            builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.Postnet;
-            builder.CodeText = parameters.PostalAddress;
 #if NETSTANDARD2_0 || __MOBILE__
             builder.BarCodeImage.Save(ApiExampleBase.MyDir + @"\Artifacts\OldBarcodeImage.png");
 
@@ -222,8 +218,9 @@ namespace ApiExamples
         /// </summary>
         public static int TryParseInt(String s)
         {
-            double temp;
-            return Double.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out temp) ? CastDoubleToInt(temp) : int.MinValue;
+            return Double.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out double temp)
+                ? CastDoubleToInt(temp)
+                : int.MinValue;
         }
 
         /// <summary>
@@ -231,8 +228,8 @@ namespace ApiExamples
         /// </summary>
         public static int CastDoubleToInt(double value)
         {
-            long temp = (long)value;
-            return (int)temp;
+            long temp = (long) value;
+            return (int) temp;
         }
 
         /// <summary>
@@ -241,8 +238,9 @@ namespace ApiExamples
         /// </summary>
         public static int TryParseHex(String s)
         {
-            int result;
-            return int.TryParse(s, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out result) ? result : int.MinValue;
+            return int.TryParse(s, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int result)
+                ? result
+                : int.MinValue;
         }
     }
 }

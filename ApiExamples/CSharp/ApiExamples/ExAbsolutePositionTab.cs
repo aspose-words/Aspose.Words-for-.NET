@@ -13,14 +13,14 @@ namespace ApiExamples
         //ExSummary:Shows how to use AbsolutePositionTab.
         [Test] //ExSkip
         public void DocumentToTxt()
-        {         
+        {
             // This document contains two sentences separated by an absolute position tab.
             Document doc = new Document(MyDir + "AbsolutePositionTab.docx");
 
             // An AbsolutePositionTab is a child node of a paragraph. 
             // AbsolutePositionTabs get picked up when looking for nodes of the SpecialChar type.
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
-            AbsolutePositionTab absPositionTab = (AbsolutePositionTab)para.GetChild(NodeType.SpecialChar, 0, true);
+            AbsolutePositionTab absPositionTab = (AbsolutePositionTab) para.GetChild(NodeType.SpecialChar, 0, true);
 
             // This implementation of the DocumentVisitor pattern converts the document to plain text.
             MyDocToTxtWriter myDocToTxtWriter = new MyDocToTxtWriter();
@@ -88,6 +88,7 @@ namespace ApiExamples
 
             private readonly StringBuilder mBuilder;
         }
+
         //ExEnd
     }
 }

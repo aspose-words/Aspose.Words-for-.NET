@@ -136,6 +136,7 @@ namespace ApiExamples
                 // Changing the line style made the borders visible
                 Assert.IsTrue(secondParaBorders[i].IsVisible);
             }
+
             //ExEnd
         }
 

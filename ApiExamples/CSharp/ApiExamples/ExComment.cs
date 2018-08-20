@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -7,6 +7,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using Aspose.Words;
 using NUnit.Framework;
 
@@ -41,7 +42,7 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            Comment docComment = (Comment)doc.GetChild(NodeType.Comment, 0, true);
+            Comment docComment = (Comment) doc.GetChild(NodeType.Comment, 0, true);
 
             Assert.AreEqual(1, docComment.Count);
             Assert.AreEqual(1, newComment.Replies.Count);
@@ -62,10 +63,10 @@ namespace ApiExamples
             //Get all comment from the document
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
 
-            Assert.AreEqual(12, comments.Count);//ExSkip
+            Assert.AreEqual(12, comments.Count); //ExSkip
 
             //For all comments and replies we identify comment level and info about it
-            foreach (Comment comment in comments)
+            foreach (Comment comment in comments.OfType<Comment>())
             {
                 if (comment.Ancestor == null)
                 {
@@ -74,7 +75,7 @@ namespace ApiExamples
                     Console.WriteLine("Comment author: " + comment.Author);
                     Console.WriteLine("Comment text: " + comment.GetText());
 
-                    foreach (Comment commentReply in comment.Replies)
+                    foreach (Comment commentReply in comment.Replies.OfType<Comment>())
                     {
                         Console.WriteLine("This is a comment reply\n");
 
@@ -83,6 +84,7 @@ namespace ApiExamples
                     }
                 }
             }
+
             //ExEnd
         }
 
@@ -95,7 +97,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Comment.Document.docx");
 
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
-            Comment comment = (Comment)comments[0];
+            Comment comment = (Comment) comments[0];
 
             comment.RemoveAllReplies();
             //ExEnd
@@ -111,7 +113,7 @@ namespace ApiExamples
 
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
 
-            Comment parentComment = (Comment)comments[0];
+            Comment parentComment = (Comment) comments[0];
 
             // Remove the first reply to comment
             parentComment.RemoveReply(parentComment.Replies[0]);
@@ -127,17 +129,17 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Comment.Document.docx");
 
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
+            Comment comment = (Comment) comments[0];
 
-            Comment comment = (Comment)comments[0];
-
-            foreach (Comment childComment in comment.Replies)
+            foreach (Comment childComment in comment.Replies.OfType<Comment>())
             {
-                if (childComment.Done == false)
+                if (!childComment.Done)
                 {
                     // Update comment reply Done mark.
                     childComment.Done = true;
                 }
             }
+
             //ExEnd
         }
     }

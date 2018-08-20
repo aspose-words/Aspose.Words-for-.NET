@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -30,7 +30,8 @@ namespace ApiExamples
 
             // By stream:
             Stream streamIn = new FileStream(MyDir + "Document.DigitalSignature.docx", FileMode.Open);
-            Stream streamOut = new FileStream(MyDir + @"\Artifacts\Document.NoSignatures.FromStream.doc", FileMode.Create);
+            Stream streamOut =
+                new FileStream(MyDir + @"\Artifacts\Document.NoSignatures.FromStream.doc", FileMode.Create);
 
             DigitalSignatureUtil.RemoveAllSignatures(streamIn, streamOut);
             //ExEnd
@@ -47,19 +48,19 @@ namespace ApiExamples
             //ExFor:DigitalSignatureUtil.LoadSignatures(String)
             //ExSummary:Shows how to load all existing signatures from a document.
             // By string:
-            DigitalSignatureCollection digitalSignatures = DigitalSignatureUtil.LoadSignatures(MyDir + "Document.DigitalSignature.docx");
+            DigitalSignatureCollection getDigitalSignaturesByString =
+                DigitalSignatureUtil.LoadSignatures(MyDir + "Document.DigitalSignature.docx");
 
             // By stream:
             Stream stream = new FileStream(MyDir + "Document.DigitalSignature.docx", FileMode.Open);
-
-            digitalSignatures = DigitalSignatureUtil.LoadSignatures(stream);
+            DigitalSignatureCollection getDigitalSignaturesByStream = DigitalSignatureUtil.LoadSignatures(stream);
             //ExEnd
 
             stream.Close();
         }
 
         [Test]
-        [Ignore("WORDSNET-16868")]
+        [Description("WORDSNET-16868")]
         public void SignDocument()
         {
             //ExStart
@@ -72,7 +73,8 @@ namespace ApiExamples
             SignOptions signOptions = new SignOptions { Comments = "My comment", SignTime = DateTime.Now };
 
             Stream streamIn = new FileStream(MyDir + "Document.DigitalSignature.docx", FileMode.Open);
-            Stream streamOut = new FileStream(MyDir + @"\Artifacts\Document.DigitalSignature.docx", FileMode.OpenOrCreate);
+            Stream streamOut =
+                new FileStream(MyDir + @"\Artifacts\Document.DigitalSignature.docx", FileMode.OpenOrCreate);
 
             DigitalSignatureUtil.Sign(streamIn, streamOut, certificateHolder, signOptions);
             //ExEnd
@@ -82,8 +84,7 @@ namespace ApiExamples
         }
 
         [Test]
-        [Description("WORDSNET-13036")]
-        [Ignore("WORDSNET-16868")]
+        [Description("WORDSNET-13036, WORDSNET-16868")]
         public void SignDocumentObfuscationBug()
         {
             CertificateHolder ch = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
@@ -97,7 +98,7 @@ namespace ApiExamples
         }
 
         [Test]
-        [Ignore("WORDSNET-16868")]
+        [Description("WORDSNET-16868")]
         public void IncorrectPasswordForDecrypring()
         {
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
@@ -105,15 +106,21 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.Encrypted.docx", new LoadOptions("docPassword"));
             string outputFileName = MyDir + @"\Artifacts\Document.Encrypted.docx";
 
-            SignOptions signOptions = new SignOptions { Comments = "Comment", SignTime = DateTime.Now, DecryptionPassword = "docPassword1" };
+            SignOptions signOptions = new SignOptions
+            {
+                Comments = "Comment",
+                SignTime = DateTime.Now,
+                DecryptionPassword = "docPassword1"
+            };
 
             // Digitally sign encrypted with "docPassword" document in the specified path.
-            Assert.That(() => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, certificateHolder, signOptions),
+            Assert.That(
+                () => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, certificateHolder, signOptions),
                 Throws.TypeOf<IncorrectPasswordException>(), "The document password is incorrect.");
         }
 
         [Test]
-        [Ignore("WORDSNET-16868")]
+        [Description("WORDSNET-16868")]
         public void SingDocumentWithPasswordDecrypring()
         {
             //ExStart
@@ -126,7 +133,12 @@ namespace ApiExamples
             // Create certificate holder from a file.
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
-            SignOptions signOptions = new SignOptions { Comments = "Comment", SignTime = DateTime.Now, DecryptionPassword = "docPassword" };
+            SignOptions signOptions = new SignOptions
+            {
+                Comments = "Comment",
+                SignTime = DateTime.Now,
+                DecryptionPassword = "docPassword"
+            };
 
             // Digitally sign encrypted with "docPassword" document in the specified path.
             DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, certificateHolder, signOptions);
@@ -146,7 +158,12 @@ namespace ApiExamples
         [Test]
         public void NoArgumentsForSing()
         {
-            SignOptions signOptions = new SignOptions { Comments = String.Empty, SignTime = DateTime.Now, DecryptionPassword = String.Empty };
+            SignOptions signOptions = new SignOptions
+            {
+                Comments = String.Empty,
+                SignTime = DateTime.Now,
+                DecryptionPassword = String.Empty
+            };
 
             Assert.That(() => DigitalSignatureUtil.Sign(String.Empty, String.Empty, null, signOptions),
                 Throws.TypeOf<ArgumentException>());
@@ -158,7 +175,12 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.DigitalSignature.docx");
             string outputFileName = MyDir + @"\Artifacts\Document.DigitalSignature.docx";
 
-            SignOptions signOptions = new SignOptions { Comments = "Comment", SignTime = DateTime.Now, DecryptionPassword = "docPassword" };
+            SignOptions signOptions = new SignOptions
+            {
+                Comments = "Comment",
+                SignTime = DateTime.Now,
+                DecryptionPassword = "docPassword"
+            };
 
             Assert.That(() => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, null, signOptions),
                 Throws.TypeOf<ArgumentNullException>());

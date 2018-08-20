@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -51,24 +51,12 @@ namespace ApiExamples
         {
             public Customer(string aFullName, string anAddress)
             {
-                this.mFullName = aFullName;
-                this.mAddress = anAddress;
+                FullName = aFullName;
+                Address = anAddress;
             }
 
-            public string FullName
-            {
-                get { return this.mFullName; }
-                set { this.mFullName = value; }
-            }
-
-            public string Address
-            {
-                get { return this.mAddress; }
-                set { this.mAddress = value; }
-            }
-
-            private string mFullName;
-            private string mAddress;
+            public string FullName { get; set; }
+            public string Address { get; set; }
         }
 
         /// <summary>
@@ -78,7 +66,7 @@ namespace ApiExamples
         {
             public new Customer this[int index]
             {
-                get { return (Customer)base[index]; }
+                get { return (Customer) base[index]; }
                 set { base[index] = value; }
             }
         }
@@ -91,10 +79,10 @@ namespace ApiExamples
         {
             public CustomerMailMergeDataSource(CustomerList customers)
             {
-                this.mCustomers = customers;
+                mCustomers = customers;
 
                 // When the data source is initialized, it must be positioned before the first record.
-                this.mRecordIndex = -1;
+                mRecordIndex = -1;
             }
 
             /// <summary>
@@ -113,10 +101,10 @@ namespace ApiExamples
                 switch (fieldName)
                 {
                     case "FullName":
-                        fieldValue = this.mCustomers[this.mRecordIndex].FullName;
+                        fieldValue = mCustomers[mRecordIndex].FullName;
                         return true;
                     case "Address":
-                        fieldValue = this.mCustomers[this.mRecordIndex].Address;
+                        fieldValue = mCustomers[mRecordIndex].Address;
                         return true;
                     default:
                         // A field with this name was not found, 
@@ -131,10 +119,10 @@ namespace ApiExamples
             /// </summary>
             public bool MoveNext()
             {
-                if (!this.IsEof)
-                    this.mRecordIndex++;
+                if (!IsEof)
+                    mRecordIndex++;
 
-                return (!this.IsEof);
+                return (!IsEof);
             }
 
             public IMailMergeDataSource GetChildDataSource(string tableName)
@@ -144,12 +132,13 @@ namespace ApiExamples
 
             private bool IsEof
             {
-                get { return (this.mRecordIndex >= this.mCustomers.Count); }
+                get { return (mRecordIndex >= mCustomers.Count); }
             }
 
             private readonly CustomerList mCustomers;
             private int mRecordIndex;
         }
+
         //ExEnd
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //////////////////////////////////////////////////////////////////////////
 // Copyright 2001-2013 Aspose Pty Ltd. All Rights Reserved.
 //
@@ -12,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Aspose.BarCode.BarCodeRecognition;
@@ -196,7 +197,7 @@ namespace ApiExamples
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
 
             // Execute mail merge.
-            doc.MailMerge.Execute(new String[] {"Date"}, new object[] {DateTime.Now});
+            doc.MailMerge.Execute(new[] { "Date" }, new object[] { DateTime.Now });
 
             // Restore the original culture.
             Thread.CurrentThread.CurrentCulture = currentCulture;
@@ -242,24 +243,16 @@ namespace ApiExamples
         private class InsertTcFieldHandler : IReplacingCallback
         {
             // Store the text and switches to be used for the TC fields.
-            private String mFieldText;
-            private String mFieldSwitches;
-
-            /// <summary>
-            /// The switches to use for each TC field. Can be an empty String or null.
-            /// </summary>
-            public InsertTcFieldHandler(String switches) : this(String.Empty, switches)
-            {
-                this.mFieldSwitches = switches;
-            }
+            private readonly String mFieldText;
+            private readonly String mFieldSwitches;
 
             /// <summary>
             /// The display text and switches to use for each TC field. Display name can be an empty String or null.
             /// </summary>
             public InsertTcFieldHandler(String text, String switches)
             {
-                this.mFieldText = text;
-                this.mFieldSwitches = switches;
+                mFieldText = text;
+                mFieldSwitches = switches;
             }
 
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)
@@ -273,13 +266,13 @@ namespace ApiExamples
                 // match String as the display text.
                 String insertText;
 
-                if (!String.IsNullOrEmpty(this.mFieldText))
-                    insertText = this.mFieldText;
+                if (!String.IsNullOrEmpty(mFieldText))
+                    insertText = mFieldText;
                 else
                     insertText = args.Match.Value;
 
                 // Insert the TC field before this node using the specified String as the display text and user defined switches.
-                builder.InsertField(String.Format("TC \"{0}\" {1}", insertText, this.mFieldSwitches));
+                builder.InsertField(String.Format("TC \"{0}\" {1}", insertText, mFieldSwitches));
 
                 // We have done what we want so skip replacement.
                 return ReplaceAction.Skip;
@@ -303,15 +296,16 @@ namespace ApiExamples
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
-            //Assert that field model is correct
+
+            // Assert that field model is correct
             Assert.IsTrue(doc.Range.Fields[0].IsDirty);
 
-            LoadOptions loadOptions = new LoadOptions();
-            loadOptions.UpdateDirtyFields = false;
+            LoadOptions loadOptions = new LoadOptions { UpdateDirtyFields = false };
 
-            doc = new Document(dstStream);
+            doc = new Document(dstStream, loadOptions);
             Field tocField = doc.Range.Fields[0];
-            //Assert that isDirty saves 
+
+            // Assert that isDirty saves 
             Assert.IsTrue(tocField.IsDirty);
         }
 
@@ -333,7 +327,7 @@ namespace ApiExamples
 
             //Add text into the paragraph
             Paragraph para = doc.FirstSection.Body.Paragraphs[0];
-            Run run = new Run(doc) {Text = " Hello World!"};
+            Run run = new Run(doc) { Text = " Hello World!" };
             para.AppendChild(run);
 
             FieldArgumentBuilder argumentBuilder = new FieldArgumentBuilder();
@@ -424,8 +418,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Field.Update(bool)
             //ExSummary:Shows a way to update a field ignoring the MERGEFORMAT switch
-            LoadOptions loadOptions = new LoadOptions();
-            loadOptions.PreserveIncludePictureField = true;
+            LoadOptions loadOptions = new LoadOptions { PreserveIncludePictureField = true };
 
             Document doc = new Document(MyDir + "Field.UpdateFieldIgnoringMergeFormat.docx", loadOptions);
 
@@ -510,8 +503,9 @@ namespace ApiExamples
             //ExEnd
 
             String secWithFields = DocumentHelper.GetSectionText(doc, 1);
-            Assert.AreEqual(secWithFields,
-                "Fields.Docx   Элементы указателя не найдены.     3.\rОшибка! Не указана последовательность.    Fields.Docx   Элементы указателя не найдены.     4.\r\r\r\r\r\f");
+            Assert.AreEqual(
+                "Fields.Docx   Элементы указателя не найдены.     3.\rОшибка! Не указана последовательность.    Fields.Docx   Элементы указателя не найдены.     4.\r\r\r\r\r\f",
+                secWithFields);
         }
 
         [Test]
@@ -521,13 +515,13 @@ namespace ApiExamples
             //ExFor:Field.Unlink
             //ExSummary:Shows how to unlink specific field
             Document doc = new Document(MyDir + "Field.UnlinkFields.docx");
-
             doc.Range.Fields[1].Unlink();
             //ExEnd
 
             String paraWithFields = DocumentHelper.GetParagraphText(doc, 0);
-            Assert.AreEqual(paraWithFields,
-                "\u0013 FILENAME  \\* Caps  \\* MERGEFORMAT \u0014Fields.Docx\u0015   Элементы указателя не найдены.     \u0013 LISTNUM  LegalDefault \u0015\r");
+            Assert.AreEqual(
+                "\u0013 FILENAME  \\* Caps  \\* MERGEFORMAT \u0014Fields.Docx\u0015   Элементы указателя не найдены.     \u0013 LISTNUM  LegalDefault \u0015\r",
+                paraWithFields);
         }
 
         [Test]
@@ -540,10 +534,10 @@ namespace ApiExamples
 
             NodeCollection paragraphCollection = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            foreach (Paragraph para in paragraphCollection)
+            foreach (Paragraph para in paragraphCollection.OfType<Paragraph>())
             {
                 // Check all runs in the paragraph for the first page breaks.
-                foreach (Run run in para.Runs)
+                foreach (Run run in para.Runs.OfType<Run>())
                 {
                     if (run.Text.Contains(ControlChar.PageBreak))
                     {
@@ -563,7 +557,7 @@ namespace ApiExamples
 
             NodeCollection fStart = doc.GetChildNodes(NodeType.FieldStart, true);
 
-            foreach (FieldStart field in fStart)
+            foreach (FieldStart field in fStart.OfType<FieldStart>())
             {
                 FieldType fType = field.FieldType;
                 if (fType == FieldType.FieldTOC)
@@ -625,7 +619,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Use a document builder to create and populate a combo box
-            string[] items = {"One", "Two", "Three"};
+            string[] items = { "One", "Two", "Three" };
             FormField comboBoxField = builder.InsertComboBox("DropDown", items, 0);
 
             // Get the list of drop down items
@@ -646,7 +640,7 @@ namespace ApiExamples
             {
                 while (dropDownCollectionEnumerator.MoveNext())
                 {
-                    string currentItem = (string) dropDownCollectionEnumerator.Current;
+                    string currentItem = dropDownCollectionEnumerator.Current;
                     Console.WriteLine(currentItem);
                 }
             }
@@ -717,7 +711,6 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Write("This text is in its normal place.");
-
             // Create an advance field using document builder
             FieldAdvance field = (FieldAdvance) builder.InsertField(FieldType.FieldAdvance, true);
 
@@ -725,13 +718,11 @@ namespace ApiExamples
 
             Assert.AreEqual(FieldType.FieldAdvance, field.Type);
             Assert.AreEqual(" ADVANCE ", field.GetFieldCode());
-
             // The second text that the builder added will now be moved
             field.RightOffset = "5";
             field.UpOffset = "5";
 
             Assert.AreEqual(" ADVANCE  \\r 5 \\u 5", field.GetFieldCode());
-
             // If we want to move text in the other direction, and try do that by using negative values for the above field members, we will get an error in our document
             // Instead, we need to specify a positive value for the opposite respective field directional variable
             field = (FieldAdvance) builder.InsertField(FieldType.FieldAdvance, true);
@@ -739,13 +730,10 @@ namespace ApiExamples
             field.LeftOffset = "100";
 
             Assert.AreEqual(" ADVANCE  \\d 5 \\l 100", field.GetFieldCode());
-
             // We are still on one paragraph
             Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
-
             // Since we're setting horizontal and vertical positions next, we need to end the paragraph so the previous line does not get moved with the next one
             builder.Writeln("This text is moved down and to the left, overlapping the previous text.");
-
             // This time we can also use negative values 
             field = (FieldAdvance) builder.InsertField(FieldType.FieldAdvance, true);
             field.HorizontalPosition = "-100";

@@ -11,10 +11,10 @@ namespace ApiExamples.TestData.TestClasses
 
         public SignPersonTestClass(Guid guid, string name, string position, byte[] image)
         {
-            this.PersonId = guid;
-            this.Name = name;
-            this.Position = position;
-            this.Image = image;
+            PersonId = guid;
+            Name = name;
+            Position = position;
+            Image = image;
         }
     }
 }
