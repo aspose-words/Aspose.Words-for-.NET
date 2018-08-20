@@ -12,13 +12,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Aspose.BarCode.BarCodeRecognition;
 using Aspose.Words;
 using Aspose.Words.Fields;
+using Aspose.Words.Markup;
 using Aspose.Words.Replacing;
 using NUnit.Framework;
+using Org.BouncyCastle.Utilities;
 
 namespace ApiExamples
 {
@@ -795,6 +798,62 @@ namespace ApiExamples
             Assert.AreEqual("<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>",
                 field.NameAndAddressFormat);
             Assert.AreEqual("1033", field.LanguageId);
+        }
+
+        [Test]
+        public void FieldCitation()
+        {
+            //ExStart
+            //ExFor:Fields.FieldCitation
+            //ExFor:Fields.FieldCitation.AnotherSourceTag
+            //ExFor:Fields.FieldCitation.FormatLanguageId
+            //ExFor:Fields.FieldCitation.PageNumber
+            //ExFor:Fields.FieldCitation.Prefix
+            //ExFor:Fields.FieldCitation.SourceTag
+            //ExFor:Fields.FieldCitation.Suffix
+            //ExFor:Fields.FieldCitation.SuppressAuthor
+            //ExFor:Fields.FieldCitation.SuppressTitle
+            //ExFor:Fields.FieldCitation.SuppressYear
+            //ExFor:Fields.FieldCitation.VolumeNumber
+            //ExSummary:Shows how to insert a citation field and edit its properties.
+            // Open a document that has sources that we want to cite
+            Document doc = new Document(MyDir + @"\Document.HasBibliography.docx");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // For any citation field to function, we need preceding text
+            builder.Write("Text to be cited with one source.");
+
+            // Create a citation field using document builder
+            FieldCitation field = (FieldCitation)builder.InsertField(FieldType.FieldCitation, true);
+
+            // First, we'll make a simple citation that has just the author's last name and page number
+            field.SourceTag = "Book1"; // We use tag names to refet to sources
+            field.PageNumber = "85";
+            field.SuppressAuthor = false;
+            field.SuppressTitle = true;
+            field.SuppressYear = true;
+
+            Assert.AreEqual(" CITATION  Book1 \\p 85 \\t \\y", field.GetFieldCode());
+
+            // Now we will insert another, more customized citation with 2 sources
+            builder.Write("Text to be cited with two sources.");
+            field = (FieldCitation)builder.InsertField(FieldType.FieldCitation, true);
+            field.SourceTag = "Book1";
+            field.AnotherSourceTag = "Book2";
+            field.FormatLanguageId = "en-US";
+            field.PageNumber = "19";
+            field.Prefix = "Prefix ";
+            field.Suffix = " Suffix";
+            field.SuppressAuthor = false;
+            field.SuppressTitle = false;
+            field.SuppressYear = false;
+            field.VolumeNumber = "VII";
+
+            Assert.AreEqual(" CITATION  Book1 \\m Book2 \\l en-US \\p 19 \\f \"Prefix \" \\s \" Suffix\" \\v VII", field.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Citation.docx");
+            //ExEnd
         }
     }
 }
