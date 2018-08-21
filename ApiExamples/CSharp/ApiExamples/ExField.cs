@@ -784,5 +784,54 @@ namespace ApiExamples
                 field.NameAndAddressFormat);
             Assert.AreEqual("1033", field.LanguageId);
         }
+
+        [Test]
+        public void FieldIf()
+        {
+            //ExStart
+            //ExFor:Fields.FieldIf
+            //ExFor:Fields.FieldIf.ComparisonOperator
+            //ExFor:Fields.FieldIf.EvaluateCondition
+            //ExFor:Fields.FieldIf.FalseText
+            //ExFor:Fields.FieldIf.LeftExpression
+            //ExFor:Fields.FieldIf.RightExpression
+            //ExFor:Fields.FieldIf.TrueText
+            //ExFor:Fields.FieldIfComparisonResult
+            //ExSummary:Shows how to insert an if field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Statement 1: ");
+
+            // Use document builder to insert an if field
+            FieldIf fieldIf = (FieldIf)builder.InsertField(FieldType.FieldIf, true);
+
+            // The if field will output either the TrueText or FalseText string into the document, depending on the truth of the statement
+            // In this case, "0 = 1" is incorrect, so the output will be "False"
+            fieldIf.LeftExpression = "0";
+            fieldIf.ComparisonOperator = "=";
+            fieldIf.RightExpression = "1";
+            fieldIf.TrueText = "True";
+            fieldIf.FalseText = "False";
+
+            Assert.AreEqual(" IF  0 = 1 True False", fieldIf.GetFieldCode());
+            Assert.AreEqual(FieldIfComparisonResult.False, fieldIf.EvaluateCondition());
+
+            // This time, the statement is correct, so the output will be "True"
+            builder.Write("\nStatement 2: ");
+            fieldIf = (FieldIf)builder.InsertField(FieldType.FieldIf, true);
+            fieldIf.LeftExpression = "5";
+            fieldIf.ComparisonOperator = "=";
+            fieldIf.RightExpression = "2 + 3";
+            fieldIf.TrueText = "True";
+            fieldIf.FalseText = "False";
+
+            Assert.AreEqual(" IF  5 = \"2 + 3\" True False", fieldIf.GetFieldCode());
+            Assert.AreEqual(FieldIfComparisonResult.True, fieldIf.EvaluateCondition());
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Compare.docx");
+            //ExEnd
+        }
     }
 }
