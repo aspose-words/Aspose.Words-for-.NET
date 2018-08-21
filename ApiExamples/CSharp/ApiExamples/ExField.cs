@@ -796,5 +796,45 @@ namespace ApiExamples
                 field.NameAndAddressFormat);
             Assert.AreEqual("1033", field.LanguageId);
         }
+
+        [Test]
+        public void FieldCompare()
+        {
+            //ExStart
+            //ExFor:Fields.FieldCompare
+            //ExFor:Fields.FieldCompare.ComparisonOperator
+            //ExFor:Fields.FieldCompare.LeftExpression
+            //ExFor:Fields.FieldCompare.RightExpression
+            //ExSummary:Shows how to insert a compare field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);           
+
+            // Insert a compare field using a document builder
+            FieldCompare field = (FieldCompare)builder.InsertField(FieldType.FieldCompare, true);
+
+            // Edit the field's expressions to construct the field code
+            field.LeftExpression = "3";
+            field.ComparisonOperator = "<";
+            field.RightExpression = "2";
+
+            // The result of this statement is false, so a "0" will be show up in the document
+            Assert.AreEqual(" COMPARE  3 < 2", field.GetFieldCode());
+
+            builder.Writeln();
+
+            // Here a "1" will show up
+            // A compare field outputs only 0s and 1s and is meant to be used in conjunction with other fields, such as the if field
+            field = (FieldCompare)builder.InsertField(FieldType.FieldCompare, true);
+            field.LeftExpression = "5";
+            field.ComparisonOperator = "=";
+            field.RightExpression = "2 + 3";
+
+            Assert.AreEqual(" COMPARE  5 = \"2 + 3\"", field.GetFieldCode());
+
+            doc.UpdateFields();
+
+            doc.Save(MyDir + @"\Artifacts\Field.Compare.docx");
+            //ExEnd
+        }
     }
 }
