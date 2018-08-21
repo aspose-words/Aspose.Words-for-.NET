@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -7,6 +7,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Aspose.Words;
 using NUnit.Framework;
@@ -23,18 +24,42 @@ namespace ApiExamples
         [SetUp]
         public void SetUp()
         {
-            SetUnlimitedLicense();
+            if (!CheckForSkipSetUp())
+            {
+                SetUnlimitedLicense();
 
-            if (!Directory.Exists(dirPath))
-                //Create new empty directory
-                Directory.CreateDirectory(dirPath);
+                if (!Directory.Exists(dirPath))
+                    //Create new empty directory
+                    Directory.CreateDirectory(dirPath);
+            }
         }
 
         [TearDown]
         public void TearDown()
         {
-            //Delete all dirs and files from directory
-            Directory.Delete(dirPath, true);
+            if (!CheckForSkipTearDown())
+            {
+                //Delete all dirs and files from directory
+                Directory.Delete(dirPath, true);
+            }
+        }
+
+        /// <summary>
+        /// Checks when we need to skip precondition before test.
+        /// </summary>
+        private static bool CheckForSkipSetUp()
+        {
+            bool skipSetup = TestContext.CurrentContext.Test.Properties["Category"].Contains("SkipSetup");
+            return skipSetup;
+        }
+
+        /// <summary>
+        /// Checks when we need to skip postcondition after test.
+        /// </summary>
+        private static bool CheckForSkipTearDown()
+        {
+            bool skipSetup = TestContext.CurrentContext.Test.Properties["Category"].Contains("SkipTearDown");
+            return skipSetup;
         }
 
         internal static void SetUnlimitedLicense()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Net;
 using System.Text;
 using Aspose.Words;
 using Aspose.Words.Drawing;
@@ -38,7 +39,7 @@ namespace ApiExamples
             arrow.Stroke.StartArrowWidth = ArrowWidth.Wide;
             arrow.Stroke.EndArrowType = ArrowType.Diamond;
             arrow.Stroke.DashStyle = DashStyle.Dash;
-            
+
             Assert.AreEqual(JoinStyle.Miter, arrow.Stroke.JoinStyle);
 
             builder.InsertNode(arrow);
@@ -70,20 +71,22 @@ namespace ApiExamples
             filledInArrowImg.Top = 160;
             filledInArrowImg.FlipOrientation = FlipOrientation.Both;
 
-            System.Net.WebClient webClient = new System.Net.WebClient();
-            byte[] imageBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
-
-            using (System.IO.MemoryStream stream = new System.IO.MemoryStream(imageBytes))
+            using (WebClient webClient = new WebClient())
             {
-                System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
-                // When we flipped the orientation of our arrow, the image content was flipped too
-                // If we want it to be displayed the right side up, we have to reverse the arrow flip on the image
-                image.RotateFlip(RotateFlipType.RotateNoneFlipXY);
+                byte[] imageBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
 
-                filledInArrowImg.ImageData.SetImage(image);
-                builder.InsertNode(filledInArrowImg);
+                using (System.IO.MemoryStream stream = new System.IO.MemoryStream(imageBytes))
+                {
+                    Image image = Image.FromStream(stream);
+                    // When we flipped the orientation of our arrow, the image content was flipped too
+                    // If we want it to be displayed the right side up, we have to reverse the arrow flip on the image
+                    image.RotateFlip(RotateFlipType.RotateNoneFlipXY);
 
-                filledInArrowImg.Stroke.JoinStyle = JoinStyle.Round;
+                    filledInArrowImg.ImageData.SetImage(image);
+                    builder.InsertNode(filledInArrowImg);
+
+                    filledInArrowImg.Stroke.JoinStyle = JoinStyle.Round;
+                }
             }
 
             doc.Save(MyDir + @"\Artifacts\Drawing.VariousShapes.docx");
@@ -189,17 +192,20 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            System.Net.WebClient webClient = new System.Net.WebClient();
-            byte[] imageBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
-
-            using (System.IO.MemoryStream stream = new System.IO.MemoryStream(imageBytes))
+            using (WebClient webClient = new WebClient())
             {
-                System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
+                byte[] imageBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
 
-                // The image started off as an animated .gif but it gets converted to a .png since there cannot be animated images in documents
-                Shape imgShape = builder.InsertImage(image);
-                Assert.AreEqual(ImageType.Png, imgShape.ImageData.ImageType);
+                using (System.IO.MemoryStream stream = new System.IO.MemoryStream(imageBytes))
+                {
+                    Image image = Image.FromStream(stream);
+
+                    // The image started off as an animated .gif but it gets converted to a .png since there cannot be animated images in documents
+                    Shape imgShape = builder.InsertImage(image);
+                    Assert.AreEqual(ImageType.Png, imgShape.ImageData.ImageType);
+                }
             }
+
             //ExEnd
         }
 #endif

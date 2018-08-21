@@ -37,7 +37,7 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(MyDir + @"\Artifacts\Border.ChangedColourBorder.doc");                                                    
+            doc.Save(MyDir + @"\Artifacts\Border.ChangedColourBorder.doc");
             //ExEnd
         }
 

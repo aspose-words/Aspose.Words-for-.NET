@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -7,6 +7,7 @@
 
 using System.Drawing;
 using System.Drawing.Printing;
+using System.Linq;
 using Aspose.Words;
 using NUnit.Framework;
 
@@ -117,11 +118,12 @@ namespace ApiExamples
             // The paper tray value stored in documents is completely printer specific. This means 
             // The code below resets all page tray values to use the current printers default tray.
             // You can enumerate PrinterSettings.PaperSources to find the other valid paper tray values of the selected printer.
-            foreach (Section section in doc.Sections)
+            foreach (Section section in doc.Sections.OfType<Section>())
             {
                 section.PageSetup.FirstPageTray = settings.DefaultPageSettings.PaperSource.RawKind;
                 section.PageSetup.OtherPagesTray = settings.DefaultPageSettings.PaperSource.RawKind;
             }
+
             //ExEnd
         }
 
@@ -144,7 +146,7 @@ namespace ApiExamples
             int printerTrayForLetter = settings.PaperSources[1].RawKind;
 
             // Set the page tray used for each section based off the paper size used in the section.
-            foreach (Section section in doc.Sections)
+            foreach (Section section in doc.Sections.OfType<Section>())
             {
                 if (section.PageSetup.PaperSize == Aspose.Words.PaperSize.Letter)
                 {
@@ -157,6 +159,7 @@ namespace ApiExamples
                     section.PageSetup.OtherPagesTray = printerTrayForA4;
                 }
             }
+
             //ExEnd
         }
 #endif

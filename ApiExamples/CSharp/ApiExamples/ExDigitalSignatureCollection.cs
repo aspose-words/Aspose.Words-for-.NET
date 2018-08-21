@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -21,7 +21,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:DigitalSignatureCollection.GetEnumerator
             //ExSummary:Shows how to load and enumerate all digital signatures of a document.
-            DigitalSignatureCollection digitalSignatures = DigitalSignatureUtil.LoadSignatures(MyDir + "Document.DigitalSignature.docx");
+            DigitalSignatureCollection digitalSignatures =
+                DigitalSignatureUtil.LoadSignatures(MyDir + "Document.DigitalSignature.docx");
 
             using (IEnumerator<DigitalSignature> enumerator = digitalSignatures.GetEnumerator())
             {
@@ -32,8 +33,9 @@ namespace ApiExamples
 
                     if (ds != null)
                         Console.WriteLine(ds.ToString());
-                } 
+                }
             }
+
             //ExEnd
         }
     }

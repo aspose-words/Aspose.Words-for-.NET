@@ -59,12 +59,14 @@ namespace ApiExamples
             // All the necessary preparation will be done in a custom document visitor that we will accept
             BuildingBlockVisitor visitor = new BuildingBlockVisitor(glossaryDoc);
             block.Accept(visitor);
-            
+
             // We can find the block we made in the glossary document like this
-            BuildingBlock customBlock = glossaryDoc.GetBuildingBlock(BuildingBlockGallery.QuickParts, "My custom building blocks", "Custom Block");
+            BuildingBlock customBlock = glossaryDoc.GetBuildingBlock(BuildingBlockGallery.QuickParts,
+                "My custom building blocks", "Custom Block");
 
             // Our block contains one section which now contains our text
-            Assert.AreEqual("Text inside " + customBlock.Name + '\f', customBlock.FirstSection.Body.FirstParagraph.GetText());
+            Assert.AreEqual("Text inside " + customBlock.Name + '\f',
+                customBlock.FirstSection.Body.FirstParagraph.GetText());
             Assert.AreEqual(customBlock.FirstSection, customBlock.LastSection);
 
             Assert.AreNotEqual("00000000-0000-0000-0000-000000000000", customBlock.Guid.ToString());
@@ -101,7 +103,8 @@ namespace ApiExamples
                 // Change values by default of created BuildingBlock
                 block.Behavior = BuildingBlockBehavior.Paragraph;
                 block.Category = "My custom building blocks";
-                block.Description = "Using this block in the Quick Parts section of word will place its contents at the cursor.";
+                block.Description =
+                    "Using this block in the Quick Parts section of word will place its contents at the cursor.";
                 block.Gallery = BuildingBlockGallery.QuickParts;
 
                 block.Guid = Guid.NewGuid();
@@ -165,7 +168,7 @@ namespace ApiExamples
             Assert.AreEqual(5, glossaryDoc.BuildingBlocks.Count);
 
             doc.GlossaryDocument = glossaryDoc;
-            
+
             // There is a different ways how to get created building blocks
             Assert.AreEqual("Block 1", glossaryDoc.FirstBuildingBlock.Name);
             Assert.AreEqual("Block 2", glossaryDoc.BuildingBlocks[1].Name);
@@ -173,7 +176,8 @@ namespace ApiExamples
             Assert.AreEqual("Block 5", glossaryDoc.LastBuildingBlock.Name);
 
             // Get a block by gallery, category and name
-            BuildingBlock block4 = glossaryDoc.GetBuildingBlock(BuildingBlockGallery.All, "(Empty Category)", "Block 4");
+            BuildingBlock block4 =
+                glossaryDoc.GetBuildingBlock(BuildingBlockGallery.All, "(Empty Category)", "Block 4");
 
             // All GUIDs are the same by default
             Assert.AreEqual("00000000-0000-0000-0000-000000000000", block4.Guid.ToString());
@@ -188,7 +192,7 @@ namespace ApiExamples
             Console.WriteLine(visitor.GetText());
 
             // We can find our new blocks in Microsoft Word via Insert > Quick Parts > Building Blocks Organizer...
-            doc.Save(MyDir + @"\Artifacts\BuildingBlocks.GlossaryDocument.dotx"); 
+            doc.Save(MyDir + @"\Artifacts\BuildingBlocks.GlossaryDocument.dotx");
         }
 
         /// <summary>
@@ -246,6 +250,7 @@ namespace ApiExamples
             private readonly Dictionary<Guid, BuildingBlock> mBlocksByGuid;
             private readonly StringBuilder mBuilder;
         }
+
         //ExEnd
     }
 }

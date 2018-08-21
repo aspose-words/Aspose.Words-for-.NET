@@ -113,7 +113,7 @@ namespace ApiExamples
             // Both the start and end of an editable range can accept visitors, but not the editable range itself
             edRange1Start.Accept(editableRangeReader);
             edRange2End.Accept(editableRangeReader);
-            
+
             // Or, if we want to go over all the editable ranges in a document, we can get the document to accept the visitor
             editableRangeReader.Reset();
             doc.Accept(editableRangeReader);

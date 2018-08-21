@@ -1,9 +1,10 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
+
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
@@ -14,6 +15,7 @@ using SkiaSharp;
 #if !(NETSTANDARD2_0 || __MOBILE__)
 using System.Drawing;
 using System.Drawing.Imaging;
+
 #endif
 
 namespace ApiExamples
@@ -32,7 +34,8 @@ namespace ApiExamples
 
             using (Stream stream = File.OpenRead(ImageDir + "Aspose.Words.gif"))
             {
-                builder.InsertImage(stream, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
+                builder.InsertImage(stream, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin,
+                    100, 200, 100, WrapType.Square);
             }
 
             builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromStreamRelativePosition.doc");
@@ -50,7 +53,8 @@ namespace ApiExamples
 #if NETSTANDARD2_0 || __MOBILE__
             using (SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
             {
-                using (SkiaSharp.SKFileWStream fs = new SkiaSharp.SKFileWStream(MyDir + "Artifacts/InsertImageFromByteArray.png"))
+                using (SkiaSharp.SKFileWStream fs =
+ new SkiaSharp.SKFileWStream(MyDir + "Artifacts/InsertImageFromByteArray.png"))
                 {
                     bitmap.Encode(fs, SKEncodedImageFormat.Png, 100);
                 }
@@ -60,14 +64,15 @@ namespace ApiExamples
             }
 #else
             // Prepare a byte array of an image.
-            Image image = Image.FromFile(ImageDir + "Aspose.Words.gif");
-
-            using (MemoryStream imageBytes = new MemoryStream())
+            using (Image image = Image.FromFile(ImageDir + "Aspose.Words.gif"))
             {
-                image.Save(imageBytes, ImageFormat.Png);
+                using (MemoryStream imageBytes = new MemoryStream())
+                {
+                    image.Save(imageBytes, ImageFormat.Png);
 
-                builder.InsertImage(imageBytes.ToArray());
-                builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromByteArrayDefault.doc");
+                    builder.InsertImage(imageBytes.ToArray());
+                    builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromByteArrayDefault.doc");
+                }
             }
 #endif
             //ExEnd
@@ -84,7 +89,8 @@ namespace ApiExamples
 #if NETSTANDARD2_0 || __MOBILE__
             using (SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
             {
-                using (SkiaSharp.SKFileWStream fs = new SkiaSharp.SKFileWStream(MyDir + "Artifacts/InsertImageFromByteArrayCustomSize.png"))
+                using (SkiaSharp.SKFileWStream fs =
+ new SkiaSharp.SKFileWStream(MyDir + "Artifacts/InsertImageFromByteArrayCustomSize.png"))
                 {
                     bitmap.Encode(fs, SKEncodedImageFormat.Png, 100);
                 }
@@ -94,14 +100,15 @@ namespace ApiExamples
             }
 #else
             // Prepare a byte array of an image.
-            Image image = Image.FromFile(ImageDir + "Aspose.Words.gif");
-
-            using (MemoryStream imageBytes = new MemoryStream())
+            using (Image image = Image.FromFile(ImageDir + "Aspose.Words.gif"))
             {
-                image.Save(imageBytes, ImageFormat.Png);
+                using (MemoryStream imageBytes = new MemoryStream())
+                {
+                    image.Save(imageBytes, ImageFormat.Png);
 
-                builder.InsertImage(imageBytes, ConvertUtil.PixelToPoint(450), ConvertUtil.PixelToPoint(144));
-                builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromByteArrayCustomSize.doc");
+                    builder.InsertImage(imageBytes, ConvertUtil.PixelToPoint(450), ConvertUtil.PixelToPoint(144));
+                    builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromByteArrayCustomSize.doc");
+                }
             }
 #endif
             //ExEnd
@@ -118,7 +125,8 @@ namespace ApiExamples
 #if NETSTANDARD2_0 || __MOBILE__
             using (SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
             {
-                using (SkiaSharp.SKFileWStream fs = new SkiaSharp.SKFileWStream(MyDir + "Artifacts/InsertImageFromByteArrayCustomSize.png"))
+                using (SkiaSharp.SKFileWStream fs =
+ new SkiaSharp.SKFileWStream(MyDir + "Artifacts/InsertImageFromByteArrayCustomSize.png"))
                 {
                     bitmap.Encode(fs, SKEncodedImageFormat.Png, 100);
                 }
@@ -128,14 +136,16 @@ namespace ApiExamples
             }
 #else
             // Prepare a byte array of an image.
-            Image image = Image.FromFile(ImageDir + "Aspose.Words.gif");
-
-            using (MemoryStream imageBytes = new MemoryStream())
+            using (Image image = Image.FromFile(ImageDir + "Aspose.Words.gif"))
             {
-                image.Save(imageBytes, ImageFormat.Png);
+                using (MemoryStream imageBytes = new MemoryStream())
+                {
+                    image.Save(imageBytes, ImageFormat.Png);
 
-                builder.InsertImage(imageBytes, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
-                builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromByteArrayRelativePosition.doc");
+                    builder.InsertImage(imageBytes, RelativeHorizontalPosition.Margin, 100,
+                        RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
+                    builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromByteArrayRelativePosition.doc");
+                }
             }
 #endif
             //ExEnd
@@ -182,7 +192,8 @@ namespace ApiExamples
 #else
             using (Image rasterImage = Image.FromFile(ImageDir + "Aspose.Words.gif"))
             {
-                builder.InsertImage(rasterImage, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
+                builder.InsertImage(rasterImage, RelativeHorizontalPosition.Margin, 100,
+                    RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
             }
 #endif
             builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromImageWithStreamRelativePosition.doc");
@@ -216,7 +227,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertImage(ImageDir + "Aspose.Words.gif", ConvertUtil.PixelToPoint(400), ConvertUtil.PixelToPoint(400));
+            builder.InsertImage(ImageDir + "Aspose.Words.gif", ConvertUtil.PixelToPoint(400),
+                ConvertUtil.PixelToPoint(400));
 
             doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertImageFromUrlCustomSize.doc");
             //ExEnd

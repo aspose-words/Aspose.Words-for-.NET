@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -48,7 +48,7 @@ namespace ApiExamples
             //ExFor:License.#ctor
             //ExFor:License.SetLicense(String)
             //ExId:LicenseFromFileNoPath
-            //ExSummary:In this example Aspose.Words will attempt to find the license file in the embedded resources or in the assembly folders.
+            //ExSummary:Aspose.Words will attempt to find the license file in the embedded resources or in the assembly folders.
             License license = new License();
             license.SetLicense("Aspose.Words.lic");
             //ExEnd
@@ -151,7 +151,6 @@ namespace ApiExamples
             //ExFor:LoadOptions.BaseUri
             //ExId:DocumentCtor_LoadOptions
             //ExSummary:Opens an HTML document with images from a stream using a base URI.
-
             // We are opening this HTML file:      
             //    <html>
             //    <body>
@@ -160,27 +159,21 @@ namespace ApiExamples
             //    </body>
             //    </html>
             String fileName = MyDir + "Document.OpenFromStreamWithBaseUri.html";
-
             // Open the stream.
             Stream stream = File.OpenRead(fileName);
-
             // Open the document. Note the Document constructor detects HTML format automatically.
             // Pass the URI of the base folder so any images with relative URIs in the HTML document can be found.
-            LoadOptions loadOptions = new LoadOptions();
-            loadOptions.BaseUri = MyDir;
+            LoadOptions loadOptions = new LoadOptions { BaseUri = MyDir };
             Document doc = new Document(stream, loadOptions);
-
             // You can close the stream now, it is no longer needed because the document is in memory.
             stream.Close();
-
             // Save in the DOC format.
             doc.Save(MyDir + @"\Artifacts\Document.OpenFromStreamWithBaseUri.doc");
             //ExEnd
 
             // Lets make sure the image was imported successfully into a Shape node.
             // Get the first shape node in the document.
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-
+            Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             // Verify some properties of the image.
             Assert.IsTrue(shape.IsImage);
             Assert.IsNotNull(shape.ImageData.ImageBytes);
@@ -195,26 +188,24 @@ namespace ApiExamples
             //ExFor:Document.#ctor(Stream)
             //ExSummary:Retrieves a document from a URL and saves it to disk in a different format.
             // This is the URL address pointing to where to find the document.
-            String url = "https://www.google.ru/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwjt_ZaU79XRAhUiJpoKHYPhAg4QFggaMAA&url=http%3A%2F%2Fdownload.microsoft.com%2Fdownload%2Ff%2F7%2F3%2Ff7395ee6-5642-4ab9-a881-786d0350e88d%2Fskills_development_white_paper_2009.doc&usg=AFQjCNHgXtYDBC_VAqdgqHNdaIQDzyXNpA&sig2=NqLNmbht9qC028yevlBvEg&bvm=bv.144224172,d.bGs";
-
+            String url = "https://is.gd/URJluZ";
             // The easiest way to load our document from the internet is make use of the 
             // System.Net.WebClient class. Create an instance of it and pass the URL
             // to download from.
-            WebClient webClient = new WebClient();
+            using (WebClient webClient = new WebClient())
+            {
+                // Download the bytes from the location referenced by the URL.
+                byte[] dataBytes = webClient.DownloadData(url);
+                // Wrap the bytes representing the document in memory into a MemoryStream object.
+                MemoryStream byteStream = new MemoryStream(dataBytes);
+                // Load this memory stream into a new Aspose.Words Document.
+                // The file format of the passed data is inferred from the content of the bytes itself. 
+                // You can load any document format supported by Aspose.Words in the same way.
+                Document doc = new Document(byteStream);
+                // Convert the document to any format supported by Aspose.Words.
+                doc.Save(MyDir + @"\Artifacts\Document.OpenFromWeb.docx");
+            }
 
-            // Download the bytes from the location referenced by the URL.
-            byte[] dataBytes = webClient.DownloadData(url);
-
-            // Wrap the bytes representing the document in memory into a MemoryStream object.
-            MemoryStream byteStream = new MemoryStream(dataBytes);
-
-            // Load this memory stream into a new Aspose.Words Document.
-            // The file format of the passed data is inferred from the content of the bytes itself. 
-            // You can load any document format supported by Aspose.Words in the same way.
-            Document doc = new Document(byteStream);
-
-            // Convert the document to any format supported by Aspose.Words.
-            doc.Save(MyDir + @"\Artifacts\Document.OpenFromWeb.docx");
             //ExEnd
         }
 
@@ -488,7 +479,7 @@ namespace ApiExamples
         //ExFor:FontSavingArgs.FontFileName
         //ExId:SaveHtmlExportFonts
         //ExSummary:Shows how to define custom logic for handling font exporting when saving to HTML based formats.
-        [Test]//ExSkip
+        [Test] //ExSkip
         public void SaveHtmlExportFonts()
         {
             Document doc = new Document(MyDir + "Document.doc");
@@ -521,7 +512,7 @@ namespace ApiExamples
         //ExFor:HtmlSaveOptions.ImageSavingCallback
         //ExId:SaveHtmlCustomExport
         //ExSummary:Shows how to define custom logic for controlling how images are saved when exporting to HTML based formats.
-        [Test]//ExSkip
+        [Test] //ExSkip
         public void SaveHtmlExportImages()
         {
             Document doc = new Document(MyDir + "Document.doc");
@@ -535,11 +526,11 @@ namespace ApiExamples
 
         public class HandleImageSaving : IImageSavingCallback
         {
-            void IImageSavingCallback.ImageSaving(ImageSavingArgs e)
+            void IImageSavingCallback.ImageSaving(ImageSavingArgs args)
             {
                 // Change any images in the document being exported with the extension of "jpeg" to "jpg".
-                if (e.ImageFileName.EndsWith(".jpeg"))
-                    e.ImageFileName = e.ImageFileName.Replace(".jpeg", ".jpg");
+                if (args.ImageFileName.EndsWith(".jpeg"))
+                    args.ImageFileName = args.ImageFileName.Replace(".jpeg", ".jpg");
             }
         }
         //ExEnd
@@ -555,7 +546,7 @@ namespace ApiExamples
         //ExFor:DocumentBase.NodeChangingCallback
         //ExId:NodeChangingInDocument
         //ExSummary:Shows how to implement custom logic over node insertion in the document by changing the font of inserted HTML content.
-        [Test]//ExSkip
+        [Test] //ExSkip
         public void TestNodeChangingInDocument()
         {
             // Create a blank document object
@@ -571,7 +562,7 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Document.FontChanger.doc");
 
             // Check that the inserted content has the correct formatting
-            Run run = (Run)doc.GetChild(NodeType.Run, 0, true);
+            Run run = (Run) doc.GetChild(NodeType.Run, 0, true);
             Assert.AreEqual(24.0, run.Font.Size);
             Assert.AreEqual("Arial", run.Font.Name);
         }
@@ -584,7 +575,7 @@ namespace ApiExamples
                 // Change the font of inserted text contained in the Run nodes.
                 if (args.Node.NodeType == NodeType.Run)
                 {
-                    Aspose.Words.Font font = ((Run)args.Node).Font;
+                    Aspose.Words.Font font = ((Run) args.Node).Font;
                     font.Size = 24;
                     font.Name = "Arial";
                 }
@@ -646,7 +637,8 @@ namespace ApiExamples
                 Document srcDoc = new Document();
 
                 // Open the document to join.
-                Assert.That(() => srcDoc == new Document(@"C:\DetailsList.doc"), Throws.TypeOf<FileNotFoundException>());
+                Assert.That(() => srcDoc == new Document(@"C:\DetailsList.doc"),
+                    Throws.TypeOf<FileNotFoundException>());
 
                 // Append the source document at the end of the destination document.
                 doc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles);
@@ -657,8 +649,10 @@ namespace ApiExamples
                 // If this is the second document or above being appended then unlink all headers footers in this section 
                 // from the headers and footers of the previous section.
                 if (i > 1)
-                    Assert.That(() => doc.Sections[i].HeadersFooters.LinkToPrevious(false), Throws.TypeOf<NullReferenceException>());
+                    Assert.That(() => doc.Sections[i].HeadersFooters.LinkToPrevious(false),
+                        Throws.TypeOf<NullReferenceException>());
             }
+
             //ExEnd
         }
 
@@ -703,10 +697,11 @@ namespace ApiExamples
             {
                 Console.WriteLine("*** Signature Found ***");
                 Console.WriteLine("Is valid: " + signature.IsValid);
-                Console.WriteLine("Reason for signing: " + signature.Comments); // This property is available in MS Word documents only.
-                Console.WriteLine("Signature type: " + signature.SignatureType.ToString());
+                Console.WriteLine("Reason for signing: " +
+                                  signature.Comments); // This property is available in MS Word documents only.
+                Console.WriteLine("Signature type: " + signature.SignatureType);
                 Console.WriteLine("Time of signing: " + signature.SignTime);
-                Console.WriteLine("Subject name: " + signature.CertificateHolder.Certificate.SubjectName.ToString());
+                Console.WriteLine("Subject name: " + signature.CertificateHolder.Certificate.SubjectName);
                 Console.WriteLine("Issuer name: " + signature.CertificateHolder.Certificate.IssuerName.Name);
                 Console.WriteLine();
             }
@@ -717,11 +712,12 @@ namespace ApiExamples
             Assert.AreEqual("Test Sign", digitalSig.Comments);
             Assert.AreEqual("XmlDsig", digitalSig.SignatureType.ToString());
             Assert.True(digitalSig.CertificateHolder.Certificate.Subject.Contains("Aspose Pty Ltd"));
-            Assert.True(digitalSig.CertificateHolder.Certificate.IssuerName.Name != null && digitalSig.CertificateHolder.Certificate.IssuerName.Name.Contains("VeriSign"));
+            Assert.True(digitalSig.CertificateHolder.Certificate.IssuerName.Name != null &&
+                        digitalSig.CertificateHolder.Certificate.IssuerName.Name.Contains("VeriSign"));
         }
 
         [Test]
-        [Ignore("WORDSNET-16868")]
+        [Description("WORDSNET-16868")]
         public void SignPdfDocument()
         {
             //ExStart
@@ -742,7 +738,8 @@ namespace ApiExamples
 
             // Pass the certificate and details to the save options class to sign with.
             PdfSaveOptions options = new PdfSaveOptions();
-            options.DigitalSignatureDetails = new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", DateTime.Now);
+            options.DigitalSignatureDetails =
+                new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", DateTime.Now);
 
             // Save the document as PDF with the digital signature set.
             doc.Save(MyDir + @"\Artifacts\Document.Signed.pdf", options);
@@ -773,7 +770,8 @@ namespace ApiExamples
 
             // Gather the files which will be appended to our template document.
             // In this case we add the optional parameter to include the search only for files with the ".doc" extension.
-            ArrayList files = new ArrayList(Directory.GetFiles(MyDir, "*.doc").Where(file => file.EndsWith(".doc", StringComparison.CurrentCultureIgnoreCase)).ToArray());
+            ArrayList files = new ArrayList(Directory.GetFiles(MyDir, "*.doc")
+                .Where(file => file.EndsWith(".doc", StringComparison.CurrentCultureIgnoreCase)).ToArray());
             // The list of files may come in any order, let's sort the files by name so the documents are enumerated alphabetically.
             files.Sort();
 
@@ -887,7 +885,7 @@ namespace ApiExamples
             // date formatting.
             CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-            doc.MailMerge.Execute(new String[] { "Date1" }, new object[] { new DateTime(2011, 1, 01) });
+            doc.MailMerge.Execute(new[] { "Date1" }, new object[] { new DateTime(2011, 1, 01) });
 
             //ExStart
             //ExFor:Document.FieldOptions
@@ -898,7 +896,7 @@ namespace ApiExamples
             //ExSummary:Shows how to specify where the culture used for date formatting during field update and mail merge is chosen from.
             // Set the culture used during field update to the culture used by the field.
             doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode;
-            doc.MailMerge.Execute(new String[] { "Date2" }, new object[] { new DateTime(2011, 1, 01) });
+            doc.MailMerge.Execute(new[] { "Date2" }, new object[] { new DateTime(2011, 1, 01) });
             //ExEnd
 
             // Verify the field update behavior is correct.
@@ -1119,7 +1117,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Table.TableStyle.docx");
 
             // Get the first cell of the first table in the document.
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             Cell firstCell = table.FirstRow.FirstCell;
 
             // First print the color of the cell shading. This should be empty as the current shading
@@ -1208,11 +1206,12 @@ namespace ApiExamples
                 // Do something useful.
                 Console.WriteLine("Name: {0}, Value: {1}", name, value);
             }
+
             //ExEnd
         }
 
         [Test]
-        [Ignore("WORDSNET-16099")]
+        [Description("WORDSNET-16099")]
         public void SetFootnoteNumberOfColumns()
         {
             Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
@@ -1371,7 +1370,8 @@ namespace ApiExamples
             doc1.Save(MyDir + @"\Artifacts\Document.CompareOptions.docx");
             //ExEnd
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\Document.CompareOptions.docx", MyDir + @"\Golds\Document.CompareOptions Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\Document.CompareOptions.docx",
+                MyDir + @"\Golds\Document.CompareOptions Gold.docx"));
         }
 
         [Test]
@@ -1389,7 +1389,8 @@ namespace ApiExamples
 
             doc1.Save(MyDir + @"\Artifacts\Document.UseCurrentDocumentFormatting.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\Document.UseCurrentDocumentFormatting.docx", MyDir + @"\Golds\Document.UseCurrentDocumentFormatting Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\Document.UseCurrentDocumentFormatting.docx",
+                MyDir + @"\Golds\Document.UseCurrentDocumentFormatting Gold.docx"));
         }
 
         [Test]
@@ -1399,7 +1400,8 @@ namespace ApiExamples
             Document docWithRevision = new Document(MyDir + "Document.Compare.Revisions.doc");
 
             if (docWithRevision.Revisions.Count > 0)
-                Assert.That(() => docWithRevision.Compare(doc1, "authorName", DateTime.Now), Throws.TypeOf<InvalidOperationException>());
+                Assert.That(() => docWithRevision.Compare(doc1, "authorName", DateTime.Now),
+                    Throws.TypeOf<InvalidOperationException>());
         }
 
         [Test]
@@ -1425,9 +1427,11 @@ namespace ApiExamples
             //ExSummary:Shows how to remove all unused styles and lists from a document. 
             Document doc = new Document(MyDir + "Document.doc");
 
-            CleanupOptions cleanupOptions = new CleanupOptions();
-            cleanupOptions.UnusedLists = true;
-            cleanupOptions.UnusedStyles = true;
+            CleanupOptions cleanupOptions = new CleanupOptions
+            {
+                UnusedLists = true,
+                UnusedStyles = true
+            };
 
             doc.Cleanup(cleanupOptions);
             //ExEnd
@@ -1539,7 +1543,11 @@ namespace ApiExamples
             //ExSummary:Shows how to configure document hyphenation options.
             Document doc = new Document();
             // Create new Run with text that we want to move to the next line using the hyphen
-            Run run = new Run(doc) { Text = "poqwjopiqewhpefobiewfbiowefob ewpj weiweohiewobew ipo efoiewfihpewfpojpief pijewfoihewfihoewfphiewfpioihewfoihweoihewfpj" };
+            Run run = new Run(doc)
+            {
+                Text =
+                    "poqwjopiqewhpefobiewfbiowefob ewpj weiweohiewobew ipo efoiewfihpewfpojpief pijewfoihewfihoewfphiewfpioihewfoihweoihewfpj"
+            };
 
             Paragraph para = doc.FirstSection.Body.Paragraphs[0];
             para.AppendChild(run);
@@ -1557,7 +1565,8 @@ namespace ApiExamples
             Assert.AreEqual(720, doc.HyphenationOptions.HyphenationZone);
             Assert.AreEqual(true, doc.HyphenationOptions.HyphenateCaps);
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\HyphenationOptions.docx", MyDir + @"\Golds\Document.HyphenationOptions Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\HyphenationOptions.docx",
+                MyDir + @"\Golds\Document.HyphenationOptions Gold.docx"));
         }
 
         [Test]
@@ -1582,7 +1591,8 @@ namespace ApiExamples
             doc.HyphenationOptions.ConsecutiveHyphenLimit = 0;
             Assert.That(() => doc.HyphenationOptions.HyphenationZone = 0, Throws.TypeOf<ArgumentOutOfRangeException>());
 
-            Assert.That(() => doc.HyphenationOptions.ConsecutiveHyphenLimit = -1, Throws.TypeOf<ArgumentOutOfRangeException>());
+            Assert.That(() => doc.HyphenationOptions.ConsecutiveHyphenLimit = -1,
+                Throws.TypeOf<ArgumentOutOfRangeException>());
             doc.HyphenationOptions.HyphenationZone = 360;
         }
 
@@ -1593,8 +1603,7 @@ namespace ApiExamples
             //ExFor:PlainTextDocument.#ctor(String)
             //ExFor:PlainTextDocument.#ctor(String, LoadOptions)
             //ExSummary:Show how to simply extract text from a document.
-            TxtLoadOptions loadOptions = new TxtLoadOptions();
-            loadOptions.DetectNumberingWithWhitespaces = false;
+            TxtLoadOptions loadOptions = new TxtLoadOptions { DetectNumberingWithWhitespaces = false };
 
             PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmark.docx");
             Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); //ExSkip 
@@ -1637,8 +1646,7 @@ namespace ApiExamples
             //ExFor:PlainTextDocument.#ctor(Stream)
             //ExFor:PlainTextDocument.#ctor(Stream, LoadOptions)
             //ExSummary:Show how to simply extract text from a stream.
-            TxtLoadOptions loadOptions = new TxtLoadOptions();
-            loadOptions.DetectNumberingWithWhitespaces = false;
+            TxtLoadOptions loadOptions = new TxtLoadOptions { DetectNumberingWithWhitespaces = false };
 
             Stream stream = new FileStream(MyDir + "Bookmark.docx", FileMode.Open);
 
@@ -1983,7 +1991,8 @@ namespace ApiExamples
             Assert.AreEqual(2, doc.Sections.Count);
 
             string newCopyrightInformation = String.Format("Copyright (C) {0} by Aspose Pty Ltd.", DateTime.Now.Year);
-            FindReplaceOptions findReplaceOptions = new FindReplaceOptions { MatchCase = false, FindWholeWordsOnly = false };
+            FindReplaceOptions findReplaceOptions =
+                new FindReplaceOptions { MatchCase = false, FindWholeWordsOnly = false };
 
             // Access the first and the last sections
             HeaderFooter firstSectionFooter = doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary];
@@ -2078,10 +2087,10 @@ namespace ApiExamples
             Assert.AreEqual(1, doc.Range.Fields.Count);
 
             // We can manually access the content of the field we added and change it
-            Run fieldText = (Run)doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Run, true)[0];
+            Run fieldText = (Run) doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Run, true)[0];
             Assert.AreEqual("DATE", fieldText.Text);
             fieldText.Text = "PAGE";
-            
+
             // We changed the text to "PAGE" but the field's type property did not update accoridngly
             Assert.AreEqual("PAGE", fieldText.GetText());
             Assert.AreNotEqual(FieldType.FieldPage, field.Type);
@@ -2112,21 +2121,23 @@ namespace ApiExamples
 
             Assert.IsFalse(doc.LayoutOptions.ShowHiddenText);
             Assert.IsFalse(doc.LayoutOptions.ShowParagraphMarks);
-            
+
             // The appearance of revisions can be controlled from the layout options property
             doc.StartTrackRevisions("John Doe", DateTime.Now);
             doc.LayoutOptions.RevisionOptions.InsertedTextColor = RevisionColor.BrightGreen;
             doc.LayoutOptions.RevisionOptions.ShowRevisionBars = false;
 
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Writeln("This is a revision. Normally the text is red with a bar to the left, but we made some changes to the revision options.");
+            builder.Writeln(
+                "This is a revision. Normally the text is red with a bar to the left, but we made some changes to the revision options.");
 
             doc.StopTrackRevisions();
 
             // Layout options can be used to show hidden text too
             builder.Writeln("This text is not hidden.");
             builder.Font.Hidden = true;
-            builder.Writeln("This text is hidden. It will only show up in the output if we allow it to via doc.LayoutOptions.");
+            builder.Writeln(
+                "This text is hidden. It will only show up in the output if we allow it to via doc.LayoutOptions.");
 
             doc.LayoutOptions.ShowHiddenText = true;
 
@@ -2153,8 +2164,11 @@ namespace ApiExamples
             // Also we'll need a data source, in this case it will be an ASCII text file
             // We can use any character we want as a delimiter, in this case we'll choose '|'
             // The delimiter character is selected in the ODSO settings of mail merge settings
-            string[] lines = { "FirstName|LastName|Message",
-                "John|Doe|Hello! This message was created with Aspose Words mail merge." };
+            string[] lines =
+            {
+                "FirstName|LastName|Message",
+                "John|Doe|Hello! This message was created with Aspose Words mail merge."
+            };
             File.WriteAllLines(MyDir + @"\Artifacts\Document.Lines.txt", lines);
 
             // Set the data source, query and other things
@@ -2165,7 +2179,7 @@ namespace ApiExamples
             mailMergeSettings.Query = "SELECT * FROM " + doc.MailMergeSettings.DataSource;
             mailMergeSettings.LinkToQuery = true;
             mailMergeSettings.ViewMergedData = true;
-            
+
             // Office Data Source Object settings
             Odso odso = mailMergeSettings.Odso;
             odso.DataSourceType = OdsoDataSourceType.Text;
@@ -2222,7 +2236,7 @@ namespace ApiExamples
 
             builder.Write("Text before bookmark. ");
 
-            builder.InsertTextInput("My bookmark", TextFormFieldType.Regular, "", 
+            builder.InsertTextInput("My bookmark", TextFormFieldType.Regular, "",
                 "If gray shading is turned on, this is the text that will have a gray background.", 0);
 
             // Our bookmarked text will appear gray here
@@ -2252,7 +2266,7 @@ namespace ApiExamples
             // We can use this property to see how many there are
             Assert.AreEqual(4, doc.VersionsCount);
 
-            doc.Save(MyDir + @"\Artifacts\Document.Versions.docx");      
+            doc.Save(MyDir + @"\Artifacts\Document.Versions.docx");
             doc = new Document(MyDir + @"\Artifacts\Document.Versions.docx");
 
             // If we save and open the document, the versions are lost

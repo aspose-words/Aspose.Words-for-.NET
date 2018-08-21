@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -15,6 +15,7 @@ using Aspose.Words.MailMerging;
 using NUnit.Framework;
 #if !(NETSTANDARD2_0 || __MOBILE__)
 using System.Web;
+
 #endif
 
 namespace ApiExamples
@@ -38,10 +39,13 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "MailMerge.ExecuteArray.doc");
 
             // Fill the fields in the document with user data.
-            doc.MailMerge.Execute(new String[] { "FullName", "Company", "Address", "Address2", "City" }, new object[] { "James Bond", "MI5 Headquarters", "Milbank", "", "London" });
+            doc.MailMerge.Execute(new String[] { "FullName", "Company", "Address", "Address2", "City" },
+                new object[] { "James Bond", "MI5 Headquarters", "Milbank", "", "London" });
 
             // Send the document in Word format to the client browser with an option to save to disk or open inside the current browser.
-            Assert.That(() => doc.Save(Response, @"\Artifacts\MailMerge.ExecuteArray.doc", ContentDisposition.Inline, null), Throws.TypeOf<ArgumentNullException>()); //Thrown because HttpResponse is null in the test.
+            Assert.That(
+                () => doc.Save(Response, @"\Artifacts\MailMerge.ExecuteArray.doc", ContentDisposition.Inline, null),
+                Throws.TypeOf<ArgumentNullException>()); //Thrown because HttpResponse is null in the test.
             //ExEnd
         }
 #endif
@@ -175,24 +179,28 @@ namespace ApiExamples
             //ExSummary:Shows how to get mail merge field names used by the field
             Document doc = new Document(MyDir + "MailMerge.GetFieldNames.docx");
 
-            string[] addressFieldsExpect = { "Company", "First Name", "Middle Name", "Last Name", "Suffix", "Address 1", "City", "State", "Country or Region", "Postal Code" };
+            string[] addressFieldsExpect =
+            {
+                "Company", "First Name", "Middle Name", "Last Name", "Suffix", "Address 1", "City", "State",
+                "Country or Region", "Postal Code"
+            };
 
-            FieldAddressBlock addressBlockField = (FieldAddressBlock)doc.Range.Fields[0]; 
+            FieldAddressBlock addressBlockField = (FieldAddressBlock) doc.Range.Fields[0];
             string[] addressBlockFieldNames = addressBlockField.GetFieldNames();
             //ExEnd
-                                                                                         
+
             Assert.AreEqual(addressFieldsExpect, addressBlockFieldNames);
 
             string[] greetingFieldsExpect = { "Courtesy Title", "Last Name" };
 
-            FieldGreetingLine greetingLineField = (FieldGreetingLine)doc.Range.Fields[1];
+            FieldGreetingLine greetingLineField = (FieldGreetingLine) doc.Range.Fields[1];
             string[] greetingLineFieldNames = greetingLineField.GetFieldNames();
 
             Assert.AreEqual(greetingFieldsExpect, greetingLineFieldNames);
-        }                                                                                
-                                                                                         
-        [Test]                                                                           
-        public void UseNonMergeFields()                                                  
+        }
+
+        [Test]
+        public void UseNonMergeFields()
         {
             Document doc = new Document();
             //ExStart
@@ -204,7 +212,8 @@ namespace ApiExamples
 
         [Test]
         [TestCase(true, "{{ testfield1 }}value 1{{ testfield3 }}\f")]
-        [TestCase(false, "\u0013MERGEFIELD \"testfield1\"\u0014«testfield1»\u0015value 1\u0013MERGEFIELD \"testfield3\"\u0014«testfield3»\u0015\f")]
+        [TestCase(false,
+            "\u0013MERGEFIELD \"testfield1\"\u0014«testfield1»\u0015value 1\u0013MERGEFIELD \"testfield3\"\u0014«testfield3»\u0015\f")]
         public void MustasheTemplateSyntax(bool restoreTags, String sectionText)
         {
             Document doc = new Document();
@@ -247,16 +256,16 @@ namespace ApiExamples
             //Get top regions in the document
             IList<MailMergeRegionInfo> topRegions = regionInfo.Regions;
             Assert.AreEqual(2, topRegions.Count);
-            Assert.AreEqual(topRegions[0].Name, "Region1");
-            Assert.AreEqual(topRegions[1].Name, "Region2");
+            Assert.AreEqual("Region1", topRegions[0].Name);
+            Assert.AreEqual("Region2", topRegions[1].Name);
             Assert.AreEqual(1, topRegions[0].Level);
             Assert.AreEqual(1, topRegions[1].Level);
 
             //Get nested region in first top region
             IList<MailMergeRegionInfo> nestedRegions = topRegions[0].Regions;
             Assert.AreEqual(2, nestedRegions.Count);
-            Assert.AreEqual(nestedRegions[0].Name, "NestedRegion1");
-            Assert.AreEqual(nestedRegions[1].Name, "NestedRegion2");
+            Assert.AreEqual("NestedRegion1", nestedRegions[0].Name);
+            Assert.AreEqual("NestedRegion2", nestedRegions[1].Name);
             Assert.AreEqual(2, nestedRegions[0].Level);
             Assert.AreEqual(2, nestedRegions[1].Level);
 
@@ -293,15 +302,10 @@ namespace ApiExamples
         {
             public void TagsReplaced()
             {
-                mTagsReplacedCounter++;
+                TagsReplacedCounter++;
             }
 
-            public int TagsReplacedCounter
-            {
-                get { return mTagsReplacedCounter; }
-            }
-
-            private int mTagsReplacedCounter;
+            public int TagsReplacedCounter { get; private set; }
         }
         //ExEnd
 
@@ -320,7 +324,7 @@ namespace ApiExamples
                 Assert.AreEqual(regionName, region.Name);
             }
         }
-        
+
         [Test]
         public void CleanupOptions()
         {
@@ -333,7 +337,8 @@ namespace ApiExamples
 
             doc.Save(MyDir + @"\Artifacts\MailMerge.CleanUp.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\MailMerge.CleanUp.docx", MyDir + @"\Golds\MailMerge.CleanUp Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\MailMerge.CleanUp.docx",
+                MyDir + @"\Golds\MailMerge.CleanUp Gold.docx"));
         }
 
         /// <summary>
