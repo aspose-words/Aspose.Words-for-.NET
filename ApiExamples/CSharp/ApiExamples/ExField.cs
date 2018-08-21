@@ -796,5 +796,55 @@ namespace ApiExamples
                 field.NameAndAddressFormat);
             Assert.AreEqual("1033", field.LanguageId);
         }
+
+        [Test]
+        public void FieldCollection()
+        {
+            //ExStart
+            //ExFor:Fields.FieldCollection
+            //ExFor:Fields.FieldCollection.Clear
+            //ExFor:Fields.FieldCollection.Count
+            //ExFor:Fields.FieldCollection.GetEnumerator
+            //ExFor:Fields.FieldCollection.Item(System.Int32)
+            //ExFor:Fields.FieldCollection.Remove(Fields.Field)
+            //ExFor:Fields.FieldCollection.Remove(Fields.FieldStart)
+            //ExFor:Fields.FieldCollection.RemoveAt(System.Int32)
+            //ExSummary:Shows how to insert a citation field and edit its properties.
+            // Open a document that has fields
+            Document doc = new Document(MyDir + @"\Document.ContainsFields.docx");
+
+            // Get the document's field collection
+            FieldCollection fields = doc.Range.Fields;
+            Assert.AreEqual(5, fields.Count);
+
+            // Iterate over collection and print contents and type of every field
+            using (IEnumerator<Field> fieldEnumerator = fields.GetEnumerator())
+            {
+                while (fieldEnumerator.MoveNext())
+                {
+                    Console.WriteLine("Field found: " + fieldEnumerator.Current.Type);
+                    Console.WriteLine("\t{" + fieldEnumerator.Current.GetFieldCode() + "}");
+                    Console.WriteLine("\t\"" + fieldEnumerator.Current.Result + "\"");
+                }
+            }
+
+            // Get a field to remove itself
+            fields[0].Remove();
+            Assert.AreEqual(4, fields.Count);
+
+            // Remove a field by reference
+            Field lastField = fields[3];
+            fields.Remove(lastField);
+            Assert.AreEqual(3, fields.Count);
+
+            // Remove a field by index
+            fields.RemoveAt(2);
+            Assert.AreEqual(2, fields.Count);
+
+            // Remove all fields from the document
+            fields.Clear();
+            Assert.AreEqual(0, fields.Count);
+            //ExEnd
+        }
     }
 }
