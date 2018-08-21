@@ -784,5 +784,83 @@ namespace ApiExamples
                 field.NameAndAddressFormat);
             Assert.AreEqual("1033", field.LanguageId);
         }
+
+        [Test]
+        public void FieldLink()
+        {
+            //ExStart
+            //ExFor:Fields.FieldLink
+            //ExFor:Fields.FieldLink.AutoUpdate
+            //ExFor:Fields.FieldLink.FormatUpdateType
+            //ExFor:Fields.FieldLink.InsertAsBitmap
+            //ExFor:Fields.FieldLink.InsertAsHtml
+            //ExFor:Fields.FieldLink.InsertAsPicture
+            //ExFor:Fields.FieldLink.InsertAsRtf
+            //ExFor:Fields.FieldLink.InsertAsText
+            //ExFor:Fields.FieldLink.InsertAsUnicode
+            //ExFor:Fields.FieldLink.IsLinked
+            //ExFor:Fields.FieldLink.ProgId
+            //ExFor:Fields.FieldLink.SourceFullName
+            //ExFor:Fields.FieldLink.SourceItem
+            //ExSummary:Shows how to create link fields with various sources and presentation types.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a field link
+            // Here we will insert an entire spreadsheet as a bitmap image
+            FieldLink field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
+            field.InsertAsBitmap = true;
+            field.AutoUpdate = true;
+            field.ProgId = "Excel.Sheet.8";
+            field.SourceFullName = MyDir + "MySpreadsheet.xlsx";
+            builder.Writeln();
+
+            // Inserting only one cell from a spreadsheet as text
+            field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
+            field.InsertAsText = true;
+            field.AutoUpdate = true;
+            field.ProgId = "Excel.Sheet.8";
+            field.SourceItem = "Sheet1!R2C2";
+            field.SourceFullName = MyDir + "MySpreadsheet.xlsx";
+            builder.Writeln();
+
+            // Inserting a word document as HTML format text
+            field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
+            field.InsertAsHtml = true;
+            field.AutoUpdate = true;
+            field.ProgId = "Word.Document.8";
+            field.SourceFullName = MyDir + "Document.doc";
+            builder.Writeln();
+
+            // Inserting a document as a rtf
+            field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
+            field.InsertAsRtf = true;
+            field.AutoUpdate = true;
+            field.ProgId = "Word.Document.8";
+            field.SourceFullName = MyDir + "Document.doc";
+            builder.Writeln();
+
+            // Inserting a document as unicode text
+            field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
+            field.InsertAsUnicode = true;
+            field.AutoUpdate = true;
+            field.ProgId = "Word.Document.8";
+            field.SourceFullName = MyDir + "Document.doc";
+            builder.Writeln();
+
+            // inserting an image
+            field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
+            field.InsertAsPicture = true;
+            field.AutoUpdate = true;
+            field.ProgId = "Paint.Picture";
+            field.SourceFullName = MyDir + "Images/Test_1024_768.bmp";
+            builder.Writeln();
+
+            doc.UpdateFields();
+
+            // You will be prompted to let the fields update when you open this document, give it a few seconds to do so
+            doc.Save(MyDir + @"\Artifacts\Field.Link.docx");
+            //ExEnd
+        }
     }
 }
