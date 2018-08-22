@@ -197,7 +197,7 @@ namespace ApiExamples
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
 
             // Execute mail merge.
-            doc.MailMerge.Execute(new[] { "Date" }, new object[] { DateTime.Now });
+            doc.MailMerge.Execute(new[] {"Date"}, new object[] {DateTime.Now});
 
             // Restore the original culture.
             Thread.CurrentThread.CurrentCulture = currentCulture;
@@ -300,7 +300,7 @@ namespace ApiExamples
             // Assert that field model is correct
             Assert.IsTrue(doc.Range.Fields[0].IsDirty);
 
-            LoadOptions loadOptions = new LoadOptions { UpdateDirtyFields = false };
+            LoadOptions loadOptions = new LoadOptions {UpdateDirtyFields = false};
 
             doc = new Document(dstStream, loadOptions);
             Field tocField = doc.Range.Fields[0];
@@ -327,7 +327,7 @@ namespace ApiExamples
 
             //Add text into the paragraph
             Paragraph para = doc.FirstSection.Body.Paragraphs[0];
-            Run run = new Run(doc) { Text = " Hello World!" };
+            Run run = new Run(doc) {Text = " Hello World!"};
             para.AppendChild(run);
 
             FieldArgumentBuilder argumentBuilder = new FieldArgumentBuilder();
@@ -418,7 +418,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Field.Update(bool)
             //ExSummary:Shows a way to update a field ignoring the MERGEFORMAT switch
-            LoadOptions loadOptions = new LoadOptions { PreserveIncludePictureField = true };
+            LoadOptions loadOptions = new LoadOptions {PreserveIncludePictureField = true};
 
             Document doc = new Document(MyDir + "Field.UpdateFieldIgnoringMergeFormat.docx", loadOptions);
 
@@ -619,7 +619,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Use a document builder to create and populate a combo box
-            string[] items = { "One", "Two", "Three" };
+            string[] items = {"One", "Two", "Three"};
             FormField comboBoxField = builder.InsertComboBox("DropDown", items, 0);
 
             // Get the list of drop down items
@@ -783,6 +783,87 @@ namespace ApiExamples
             Assert.AreEqual("<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>",
                 field.NameAndAddressFormat);
             Assert.AreEqual("1033", field.LanguageId);
+        }
+
+        [Test]
+        public void FieldData()
+        {
+            //ExStart
+            //ExFor:Fields.FieldData
+            //ExSummary:Shows how to insert a data field into a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a data field
+            FieldData field = (FieldData)builder.InsertField(FieldType.FieldData, true);
+          
+            Assert.AreEqual(" DATA ", field.GetFieldCode());
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldDataBase()
+        {
+            //ExStart
+            //ExFor:Fields.FieldDatabase
+            //ExFor:Fields.FieldDatabase.Connection
+            //ExFor:Fields.FieldDatabase.FileName
+            //ExFor:Fields.FieldDatabase.FirstRecord
+            //ExFor:Fields.FieldDatabase.FormatAttributes
+            //ExFor:Fields.FieldDatabase.InsertHeadings
+            //ExFor:Fields.FieldDatabase.InsertOnceOnMailMerge
+            //ExFor:Fields.FieldDatabase.LastRecord
+            //ExFor:Fields.FieldDatabase.Query
+            //ExFor:Fields.FieldDatabase.TableFormat
+            //ExSummary:Shows how to insert a database field into a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a data field
+            FieldDatabase field = (FieldDatabase)builder.InsertField(FieldType.FieldDatabase, true);
+
+            // Simple MS Access-compliant query that extracts one table from the database
+            string simpleQuery = "SELECT * FROM [Products]";
+            field.FileName = MyDir + @"Data\Northwind.mdb";
+            field.Query = simpleQuery;
+            field.Connection = "DSN=MS Access Databases";
+
+            // Insert another database field
+            field = (FieldDatabase)builder.InsertField(FieldType.FieldDatabase, true);
+
+            // This time the query will sort all the products by their gross sales in descending order
+            string complexQuery = "SELECT [Products].ProductName, FORMAT(SUM([Order Details].UnitPrice * (1 - [Order Details].Discount) * [Order Details].Quantity), 'Currency') AS GrossSales " +
+                                  "FROM([Products] " +
+                                  "LEFT JOIN[Order Details] ON[Products].[ProductID] = [Order Details].[ProductID]) " +
+                                  "GROUP BY[Products].ProductName " +
+                                  "ORDER BY SUM([Order Details].UnitPrice* (1 - [Order Details].Discount) * [Order Details].Quantity) DESC";
+
+            field.Connection = "DSN=MS Access Databases";
+            field.FileName = MyDir + @"Data\Northwind.mdb";
+            field.Query = complexQuery;
+
+            // This is the same as the LIMIT clause, you can simplify your query by putting those values in these attributes instead
+            // Indexing is not zero-based; the below attributes will get the first 10 elements of the query result, effectively giving us the top 10 products in terms of gross sales
+            field.FirstRecord = "1";
+            field.LastRecord = "10";
+
+            // The number we put here is the index of the format we want to use for our table
+            // The list of table formats is in the "Table AutoFormat..." menu we find in MS Word when we create a data table field from there
+            // Index "10" corresponds to the "Colorful 3" format
+            field.TableFormat = "10";
+
+            // This attribute decides which elements of the table format we picked above we incorporate into our table
+            // The number we use is a sum of a combination of values corresponding to which elements we choose
+            // 63 represents borders (1) + shading (2) + font (4) + colour (8) + autofit (16) + heading rows (32)
+            // Omitting any of the values from above will reset their respective parts of the table to the default format
+            field.FormatAttributes = "63";
+            field.InsertHeadings = true;
+            field.InsertOnceOnMailMerge = true;
+
+            doc.UpdateFields();
+
+            doc.Save(MyDir + @"\Artifacts\Field.Advance.docx");
+            //ExEnd
         }
     }
 }
