@@ -784,5 +784,50 @@ namespace ApiExamples
                 field.NameAndAddressFormat);
             Assert.AreEqual("1033", field.LanguageId);
         }
+
+        [Test]
+        public void FieldDate()
+        {
+            //ExStart
+            //ExFor:Fields.FieldDate
+            //ExFor:Fields.FieldDate.UseLastFormat
+            //ExFor:Fields.FieldDate.UseLunarCalendar
+            //ExFor:Fields.FieldDate.UseSakaEraCalendar
+            //ExFor:Fields.FieldDate.UseUmAlQuraCalendar
+            //ExSummary:Shows how to insert date fields using different kinds of calendars.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a date field
+            FieldDate field = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
+
+            // Set the field's date to the current date of the Islamic Lunar Calendar
+            field.UseLunarCalendar = true;
+            builder.Writeln();
+
+            // Insert a date field with the current date of the Umm al-Qura calendar
+            field = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
+            field.UseUmAlQuraCalendar = true;
+            builder.Writeln();
+
+            // Insert a date field with the current date of the Indian national calendar
+            field = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
+            field.UseSakaEraCalendar = true;
+            builder.Writeln();
+
+            // Insert a date field with the current date of the calendar used in the previous date field
+            field = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
+            field.UseLastFormat = true;
+            builder.Writeln();
+
+            // By default, the date field uses the Gregorian calendar
+            field = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
+            field.UseLastFormat = true;
+
+            doc.UpdateFields();
+
+            doc.Save(MyDir + @"\Artifacts\Field.Date.docx");
+            //ExEnd
+        }
     }
 }
