@@ -809,15 +809,15 @@ namespace ApiExamples
             //ExFor:Fields.FieldCollection.Remove(Fields.Field)
             //ExFor:Fields.FieldCollection.Remove(Fields.FieldStart)
             //ExFor:Fields.FieldCollection.RemoveAt(System.Int32)
-            //ExSummary:Shows how to insert a citation field and edit its properties.
+            //ExSummary:Shows how to work with a docment's collection of fields.
             // Open a document that has fields
             Document doc = new Document(MyDir + @"\Document.ContainsFields.docx");
 
-            // Get the document's field collection
+            // Get the collection that contains all the fields in a document
             FieldCollection fields = doc.Range.Fields;
             Assert.AreEqual(5, fields.Count);
 
-            // Iterate over collection and print contents and type of every field
+            // Iterate over the field collection and print contents and type of every field
             using (IEnumerator<Field> fieldEnumerator = fields.GetEnumerator())
             {
                 while (fieldEnumerator.MoveNext())
@@ -827,7 +827,7 @@ namespace ApiExamples
                     Console.WriteLine("\t\"" + fieldEnumerator.Current.Result + "\"");
                 }
             }
-
+            
             // Get a field to remove itself
             fields[0].Remove();
             Assert.AreEqual(4, fields.Count);
