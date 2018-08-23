@@ -848,46 +848,49 @@ namespace ApiExamples
 	    {
             Document doc = new Document();
 
-            // Create a glossary document and populate it with building blocks that our AutoText list field will select from
+            // Create a glossary document and populate it with auto text entries that our auto text list will let us select from
             doc.GlossaryDocument = new GlossaryDocument();        
-            doc.GlossaryDocument.AppendChild(CreateAutoTextEntry(doc.GlossaryDocument, "AutoText #1", "AutoText #1 contents"));
-            doc.GlossaryDocument.AppendChild(CreateAutoTextEntry(doc.GlossaryDocument, "AutoText #2", "AutoText #2 contents"));
-            doc.GlossaryDocument.AppendChild(CreateAutoTextEntry(doc.GlossaryDocument, "AutoText #3", "AutoText #3 contents"));
+            AppendAutoTextEntry(doc.GlossaryDocument, "AutoText 1", "Contents of AutoText 1");
+            AppendAutoTextEntry(doc.GlossaryDocument, "AutoText 2", "Contents of AutoText 2");
+            AppendAutoTextEntry(doc.GlossaryDocument, "AutoText 3", "Contents of AutoText 3");
 
-            // Insert an auto text list using a document builder and then change its properties
+            // Insert an auto text list using a document builder and change its properties
             DocumentBuilder builder = new DocumentBuilder(doc);
             FieldAutoTextList field = (FieldAutoTextList)builder.InsertField(FieldType.FieldAutoTextList, true);
 	        field.EntryName = "Right click here to pick an AutoText block"; // This is the text that will be visible in the document
             field.ListStyle = "Heading 1";
             field.ScreenTip = "Hover tip text for AutoTextList goes here";
 
-            doc.Save(MyDir + @"\Artifacts\Field.AutoTextList.dotx");
-
-            Assert.AreEqual("Right click here to pick an AutoText block", field.EntryName);
-            Assert.AreEqual("Heading 1", field.ListStyle);
-            Assert.AreEqual("Hover tip text for AutoTextList goes here", field.ScreenTip);
+	        Assert.AreEqual("Right click here to pick an AutoText block", field.EntryName); //ExSkip
+	        Assert.AreEqual("Heading 1", field.ListStyle); //ExSkip
+	        Assert.AreEqual("Hover tip text for AutoTextList goes here", field.ScreenTip); //ExSkip
             Assert.AreEqual(" AUTOTEXTLIST  \"Right click here to pick an AutoText block\" " +
-                            "\\s \"Heading 1\" " +
-                            "\\t \"Hover tip text for AutoTextList goes here\"", field.GetFieldCode());
+	                        "\\s \"Heading 1\" " +
+	                        "\\t \"Hover tip text for AutoTextList goes here\"", field.GetFieldCode());
+
+            doc.Save(MyDir + @"\Artifacts\Field.AutoTextList.dotx");
         }
 
-        private static BuildingBlock CreateAutoTextEntry(GlossaryDocument glossaryDoc, string name, string contents)
+        /// <summary>
+        /// Create an AutoText entry and add it to a glossary document
+        /// </summary>
+        private static void AppendAutoTextEntry(GlossaryDocument glossaryDoc, string name, string contents)
 	    {
-            // Create building block, name it and give it a paragraph
+            // Create building block and set it up as an auto text entry
             BuildingBlock buildingBlock = new BuildingBlock(glossaryDoc);
             buildingBlock.Name = name;
             buildingBlock.Gallery = BuildingBlockGallery.AutoText;
             buildingBlock.Category = "General";
             buildingBlock.Behavior = BuildingBlockBehavior.Paragraph;
 
-            Document buildingBlockSource = new Document();
-            DocumentBuilder buildingBlockSourceBuilder = new DocumentBuilder(buildingBlockSource);
-            buildingBlockSourceBuilder.Writeln(contents);
+            // Add content to the building block
+            Section section = new Section(glossaryDoc);
+	        section.AppendChild(new Body(glossaryDoc));
+	        section.Body.AppendParagraph(contents);
+            buildingBlock.AppendChild(section);
 
-            Node buildingBlockContent = glossaryDoc.ImportNode(buildingBlockSource.FirstSection, true);
-            buildingBlock.AppendChild(buildingBlockContent);
-
-            return buildingBlock;
+            // Add auto text entry to glossary document
+	        glossaryDoc.AppendChild(buildingBlock);
         }
         //ExEnd
     }
