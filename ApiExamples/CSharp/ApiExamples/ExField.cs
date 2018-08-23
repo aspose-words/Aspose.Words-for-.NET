@@ -805,25 +805,25 @@ namespace ApiExamples
             //ExFor:Fields.FieldCompare.ComparisonOperator
             //ExFor:Fields.FieldCompare.LeftExpression
             //ExFor:Fields.FieldCompare.RightExpression
-            //ExSummary:Shows how to insert a compare field.
+            //ExSummary:Shows how to insert a field that compares expressions.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);           
 
             // Insert a compare field using a document builder
             FieldCompare field = (FieldCompare)builder.InsertField(FieldType.FieldCompare, true);
 
-            // Edit the field's expressions to construct the field code
+            // Construct a comparison statement
             field.LeftExpression = "3";
             field.ComparisonOperator = "<";
             field.RightExpression = "2";
 
+            // The compare field will print a "0" or "1" depending on the truth of its statement
             // The result of this statement is false, so a "0" will be show up in the document
             Assert.AreEqual(" COMPARE  3 < 2", field.GetFieldCode());
 
             builder.Writeln();
 
-            // Here a "1" will show up
-            // A compare field outputs only 0s and 1s and is meant to be used in conjunction with other fields, such as the if field
+            // Here a "1" will show up, because the statement is true
             field = (FieldCompare)builder.InsertField(FieldType.FieldCompare, true);
             field.LeftExpression = "5";
             field.ComparisonOperator = "=";
@@ -832,7 +832,6 @@ namespace ApiExamples
             Assert.AreEqual(" COMPARE  5 = \"2 + 3\"", field.GetFieldCode());
 
             doc.UpdateFields();
-
             doc.Save(MyDir + @"\Artifacts\Field.Compare.docx");
             //ExEnd
         }
