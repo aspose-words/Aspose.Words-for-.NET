@@ -816,18 +816,18 @@ namespace ApiExamples
             //ExFor:Fields.FieldCitation.SuppressYear
             //ExFor:Fields.FieldCitation.VolumeNumber
             //ExSummary:Shows how to insert a citation field and edit its properties.
-            // Open a document that has sources that we want to cite
+            // Open a document that has bibliographical sources
             Document doc = new Document(MyDir + @"\Document.HasBibliography.docx");
-            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // For any citation field to function, we need preceding text
+            // Add text that we can cite
+            DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Write("Text to be cited with one source.");
 
-            // Create a citation field using document builder
+            // Create a citation field using the document builder
             FieldCitation field = (FieldCitation)builder.InsertField(FieldType.FieldCitation, true);
 
-            // First, we'll make a simple citation that has just the author's last name and page number
-            field.SourceTag = "Book1"; // We use tag names to refet to sources
+            // A simple citation can have just the page number and author's name
+            field.SourceTag = "Book1"; // We refer to sources using their tag names
             field.PageNumber = "85";
             field.SuppressAuthor = false;
             field.SuppressTitle = true;
@@ -835,7 +835,7 @@ namespace ApiExamples
 
             Assert.AreEqual(" CITATION  Book1 \\p 85 \\t \\y", field.GetFieldCode());
 
-            // Now we will insert another, more customized citation with 2 sources
+            // We can make a more detailed citation and make it cite 2 sources
             builder.Write("Text to be cited with two sources.");
             field = (FieldCitation)builder.InsertField(FieldType.FieldCitation, true);
             field.SourceTag = "Book1";
