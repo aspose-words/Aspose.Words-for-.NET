@@ -794,7 +794,7 @@ namespace ApiExamples
             //ExFor:Fields.FieldDate.UseLunarCalendar
             //ExFor:Fields.FieldDate.UseSakaEraCalendar
             //ExFor:Fields.FieldDate.UseUmAlQuraCalendar
-            //ExSummary:Shows how to insert date fields using different kinds of calendars.
+            //ExSummary:Shows how to insert date fields with different kinds of calendars.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -815,17 +815,12 @@ namespace ApiExamples
             field.UseSakaEraCalendar = true;
             builder.Writeln();
 
-            // Insert a date field with the current date of the calendar used in the previous date field
+            // Insert a date field with the current date of the calendar used in the (Insert > Date and Time) dialog box
             field = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
             field.UseLastFormat = true;
             builder.Writeln();
 
-            // By default, the date field uses the Gregorian calendar
-            field = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
-            field.UseLastFormat = true;
-
             doc.UpdateFields();
-
             doc.Save(MyDir + @"\Artifacts\Field.Date.docx");
             //ExEnd
         }
