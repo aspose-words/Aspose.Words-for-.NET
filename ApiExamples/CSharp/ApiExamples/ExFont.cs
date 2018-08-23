@@ -1108,7 +1108,7 @@ namespace ApiExamples
             doc.FontSettings = new FontSettings();
 
             // Create a font source from a folder that contains font files
-            FolderFontSource folderFontSource = new FolderFontSource(MyDir + "MyFonts", false, 1); // INSP: Ok, we can add one code line for FolderFontSource.#ctor, just let it be with a maximum number of parameters.
+            FolderFontSource folderFontSource = new FolderFontSource(MyDir + "MyFonts", false, 1);
 
             // Add that source to our document
             doc.FontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
