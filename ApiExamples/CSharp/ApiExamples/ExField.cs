@@ -784,5 +784,79 @@ namespace ApiExamples
                 field.NameAndAddressFormat);
             Assert.AreEqual("1033", field.LanguageId);
         }
+
+        [Test]
+        public void FieldXE()
+        {
+            //ExStart
+            //ExFor:Fields.FieldXE
+            //ExFor:Fields.FieldXE.EntryType
+            //ExFor:Fields.FieldXE.HasPageRangeBookmarkName
+            //ExFor:Fields.FieldXE.IsBold
+            //ExFor:Fields.FieldXE.IsItalic
+            //ExFor:Fields.FieldXE.PageNumberReplacement
+            //ExFor:Fields.FieldXE.PageRangeBookmarkName
+            //ExFor:Fields.FieldXE.Text
+            //ExFor:Fields.FieldXE.Yomi
+            //ExSummary:Shows how to populate an index field with index entries.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create an index field which will contain all the index entries
+            FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
+
+            // Our index will take up page 1
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // Use a document builder to insert an index entry
+            // Index entries are not added to the index manually, it will find them on its own
+            FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Index entry 1";
+            indexEntry.EntryType = "Type1";
+            indexEntry.IsBold = true;
+            indexEntry.IsItalic = true;
+            Assert.AreEqual(false, indexEntry.HasPageRangeBookmarkName);
+
+            // We can insert a bookmark and have the index field point to it
+            string bookmarkName = "MyBookmark";
+            builder.StartBookmark(bookmarkName);
+            builder.Writeln("Bookmark text contents.");
+            builder.EndBookmark(bookmarkName);
+
+            // Put the bookmark and index entry field on different pages
+            // Our index will use the page that the bookmark is on, not that of the index entry field, as the page number
+            builder.InsertBreak(BreakType.PageBreak);
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Index entry 2";
+            indexEntry.EntryType = "Type1";
+            indexEntry.PageRangeBookmarkName = bookmarkName;
+            Assert.AreEqual(true, indexEntry.HasPageRangeBookmarkName);
+
+            // We can use the PageNumberReplacement property to point to any page we want, even one that may not exist
+            builder.InsertBreak(BreakType.PageBreak);
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Index entry 3";
+            indexEntry.EntryType = "Type1";
+            indexEntry.PageNumberReplacement = "999";
+
+            // If we are using an East Asian language, we can sort entries phonetically (using Furigana) instead of alphabetically
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "漢字";
+            indexEntry.EntryType = "Type1";
+
+            // The Yomi field will contain the character looked up for sorting
+            indexEntry.Yomi = "か";
+
+            // If we are sorting phonetically, we need to notify the index
+            index.UseYomi = true;
+
+            // For all our entry fields, we set the entry type to "Type1"
+            // Our field index will not list those entries unless we set its entry type to that of the entries
+            index.EntryType = "Type1";
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.XE.docx");
+            //ExEnd
+        }
     }
 }
