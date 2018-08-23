@@ -830,7 +830,7 @@ namespace ApiExamples
             Assert.AreEqual(FieldIfComparisonResult.True, fieldIf.EvaluateCondition());
 
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\Field.Compare.docx");
+            doc.Save(MyDir + @"\Artifacts\Field.If.docx");
             //ExEnd
         }
     }
