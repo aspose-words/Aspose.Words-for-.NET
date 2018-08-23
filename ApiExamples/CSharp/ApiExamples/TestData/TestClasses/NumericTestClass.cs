@@ -13,12 +13,12 @@ namespace ApiExamples.TestData.TestClasses
 
         public NumericTestClass(int? value1, double value2, int value3, int? value4, bool logical, DateTime dateTime)
         {
-            this.Value1 = value1;
-            this.Value2 = value2;
-            this.Value3 = value3;
-            this.Value4 = value4;
-            this.Logical = logical;
-            this.Date = dateTime;
+            Value1 = value1;
+            Value2 = value2;
+            Value3 = value3;
+            Value4 = value4;
+            Logical = logical;
+            Date = dateTime;
         }
 
         public int Sum(int value1, int value2)

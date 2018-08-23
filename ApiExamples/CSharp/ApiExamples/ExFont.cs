@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -65,7 +65,7 @@ namespace ApiExamples
             Document doc = new Document();
 
             // Get the paragraph from the document, we will be adding runs of text to it.
-            Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
+            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
             Run run = new Run(doc, "All capitals");
             run.Font.AllCaps = true;
@@ -103,11 +103,12 @@ namespace ApiExamples
                 Console.WriteLine("IsTrueType: {0}", info.IsTrueType);
                 fontIndex++;
             }
+
             //ExEnd
         }
 
-        [Ignore("WORDSNET-16234")]
         [Test]
+        [Description("WORDSNET-16234")]
         public void DefaulValuesEmbeddedFontsParametrs()
         {
             Document doc = new Document();
@@ -139,10 +140,14 @@ namespace ApiExamples
         }
 
         [Test]
-        [TestCase(true, false, false, Description = "Save a document with embedded TrueType fonts. System fonts are not included. Saves full versions of embedding fonts.")]
-        [TestCase(true, true, false, Description = "Save a document with embedded TrueType fonts. System fonts are included. Saves full versions of embedding fonts.")]
-        [TestCase(true, true, true, Description = "Save a document with embedded TrueType fonts. System fonts are included. Saves subset of embedding fonts.")]
-        [TestCase(true, false, true, Description = "Save a document with embedded TrueType fonts. System fonts are not included. Saves subset of embedding fonts.")]
+        [TestCase(true, false, false, Description =
+            "Save a document with embedded TrueType fonts. System fonts are not included. Saves full versions of embedding fonts.")]
+        [TestCase(true, true, false, Description =
+            "Save a document with embedded TrueType fonts. System fonts are included. Saves full versions of embedding fonts.")]
+        [TestCase(true, true, true, Description =
+            "Save a document with embedded TrueType fonts. System fonts are included. Saves subset of embedding fonts.")]
+        [TestCase(true, false, true, Description =
+            "Save a document with embedded TrueType fonts. System fonts are not included. Saves subset of embedding fonts.")]
         [TestCase(false, false, false, Description = "Remove embedded fonts from the saved document.")]
         public void WorkWithEmbeddedFonts(bool embedTrueTypeFonts, bool embedSystemFonts, bool saveSubsetFonts)
         {
@@ -167,7 +172,7 @@ namespace ApiExamples
             Document doc = new Document();
 
             // Get the paragraph from the document, we will be adding runs of text to it.
-            Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
+            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
             Run run = new Run(doc, "Double strike through text");
             run.Font.DoubleStrikeThrough = true;
@@ -191,7 +196,7 @@ namespace ApiExamples
             Document doc = new Document();
 
             // Get the paragraph from the document, we will be adding runs of text to it.
-            Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
+            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
             // Add a run of text that is raised 5 points above the baseline.
             Run run = new Run(doc, "Raised text");
@@ -225,7 +230,7 @@ namespace ApiExamples
             Document doc = new Document();
 
             // Get the paragraph from the document, we will be adding runs of text to it.
-            Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
+            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
             // Add a run of text with characters 150% width of normal characters.
             Run run = new Run(doc, "Wide characters");
@@ -278,7 +283,7 @@ namespace ApiExamples
             //ExFor:Font.Shadow
             //ExSummary:Shows how to create a run of text formatted with a shadow.
             Run run = new Run(doc, "Hello");
-            run.Font.Engrave = true;
+            run.Font.Shadow = true;
             //ExEnd
         }
 
@@ -498,7 +503,7 @@ namespace ApiExamples
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
 
             // Loop through every run node.
-            foreach (Run run in runs)
+            foreach (Run run in runs.OfType<Run>())
             {
                 // If the character style of the run is what we want, do what we need. Change the style in this case.
                 // Note that using StyleIdentifier we can identify a built-in style regardless 
@@ -523,7 +528,7 @@ namespace ApiExamples
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
 
             // Loop through every run node.
-            foreach (Run run in runs)
+            foreach (Run run in runs.OfType<Run>())
             {
                 // If the character style of the run is what we want, do what we need. Change the style in this case.
                 // Note that names of built in styles could be different in documents 
@@ -549,7 +554,7 @@ namespace ApiExamples
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
 
             // Loop through every run node.
-            foreach (Run run in runs)
+            foreach (Run run in runs.OfType<Run>())
             {
                 Style charStyle = run.Font.Style;
 
@@ -576,7 +581,7 @@ namespace ApiExamples
             // Use a hashtable so we will keep only unique font names.
             Hashtable fontNames = new Hashtable();
 
-            foreach (Run run in runs)
+            foreach (Run run in runs.OfType<Run>())
             {
                 // This adds an entry into the hashtable.
                 // The key is the font name. The value is null, we don't need the value.
@@ -625,7 +630,9 @@ namespace ApiExamples
 
             Assert.Greater(callback.mFontWarnings.Count, 0);
             Assert.True(callback.mFontWarnings[0].WarningType == WarningType.FontSubstitution);
-            Assert.True(callback.mFontWarnings[0].Description.Equals("Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font."));
+            Assert.True(callback.mFontWarnings[0].Description
+                .Equals(
+                    "Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font."));
 
             // Restore default fonts. 
             FontSettings.DefaultInstance.SetFontsSources(origFontSources);
@@ -659,6 +666,54 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
+        public void EnableFontSubstitutionTrue()
+        {
+            //ExStart
+            //ExFor:FontSettings.EnableFontSubstitution
+            //ExSummary:Shows how to set the property for finding the closest match font among the available font sources instead missing font.
+            Document doc = new Document(MyDir + "Font.EnableFontSubstitution.docx");
+
+            // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
+            HandleDocumentWarnings callback = new HandleDocumentWarnings();
+            doc.WarningCallback = callback;
+
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.DefaultFontName = "Arial";
+            fontSettings.EnableFontSubstitution = true;
+            //ExEnd
+
+            doc.FontSettings = fontSettings;
+
+            doc.Save(MyDir + @"\Artifacts\Font.EnableFontSubstitution.pdf");
+
+            Assert.True(callback.mFontWarnings[0].Description
+                .Equals(
+                    "Font '28 Days Later' has not been found. Using 'Franklin Gothic Medium' font instead. Reason: closest match according to font info from the document."));
+        }
+
+        [Test]
+        public void EnableFontSubstitutionFalse()
+        {
+            Document doc = new Document(MyDir + "Font.EnableFontSubstitution.docx");
+
+            // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
+            HandleDocumentWarnings callback = new HandleDocumentWarnings();
+            doc.WarningCallback = callback;
+
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.DefaultFontName = "Arial";
+            fontSettings.EnableFontSubstitution = false;
+
+            doc.FontSettings = fontSettings;
+
+            doc.Save(MyDir + @"\Artifacts\Font.EnableFontSubstitution.pdf");
+
+            Assert.True(callback.mFontWarnings[0].Description
+                .Equals(
+                    "Font '28 Days Later' has not been found. Using 'Arial' font instead. Reason: default font setting."));
+        }
+
+        [Test]
         public void FontSubstitutionWarnings()
         {
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -669,15 +724,18 @@ namespace ApiExamples
 
             FontSettings fontSettings = new FontSettings();
             fontSettings.DefaultFontName = "Arial";
-            fontSettings.SetFontSubstitutes("Arial", new String[] { "Arvo", "Slab" });
+            fontSettings.SetFontSubstitutes("Arial", new string[] { "Arvo", "Slab" });
             fontSettings.SetFontsFolder(MyDir + @"MyFonts\", false);
 
             doc.FontSettings = fontSettings;
 
             doc.Save(MyDir + @"\Artifacts\Rendering.MissingFontNotification.pdf");
 
-            Assert.True(callback.mFontWarnings[0].Description.Equals("Font substitutes: 'Arial' replaced with 'Arvo'."));
-            Assert.True(callback.mFontWarnings[1].Description.Equals("Font 'Times New Roman' has not been found. Using 'Noticia Text' font instead. Reason: closest match according to font info from the document."));
+            Assert.True(callback.mFontWarnings[0].Description
+                .Equals("Font substitutes: 'Arial' replaced with 'Arvo'."));
+            Assert.True(callback.mFontWarnings[1].Description
+                .Equals(
+                    "Font 'Times New Roman' has not been found. Using 'Noticia Text' font instead. Reason: closest match according to font info from the document."));
         }
 
         [Test]
@@ -691,7 +749,9 @@ namespace ApiExamples
 
             doc.Save(MyDir + @"\Artifacts\Font.DisapearingBulletPoints.pdf");
 
-            Assert.True(callback.mFontWarnings[0].Description.Equals("Font 'SymbolPS' has not been found. Using 'Wingdings' font instead. Reason: closest match according to font info from the document."));
+            Assert.True(callback.mFontWarnings[0].Description
+                .Equals(
+                    "Font 'SymbolPS' has not been found. Using 'Wingdings' font instead. Reason: closest match according to font info from the document."));
         }
 
         [Test]
@@ -750,11 +810,11 @@ namespace ApiExamples
             doc.Accept(hiddenContentRemover);
 
             // Or we can run it on only a specific node.
-            Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 4, true);
+            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 4, true);
             para.Accept(hiddenContentRemover);
 
             // Or over a different type of node like below.
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             table.Accept(hiddenContentRemover);
 
             doc.Save(MyDir + @"\Artifacts\Font.Hidden.doc");
@@ -827,10 +887,10 @@ namespace ApiExamples
             /// <summary>
             /// Called when a FormField is encountered in the document.
             /// </summary>
-            public override VisitorAction VisitFormField(FormField field)
+            public override VisitorAction VisitFormField(FormField formField)
             {
-                if (isHidden(field))
-                    field.Remove();
+                if (isHidden(formField))
+                    formField.Remove();
 
                 return VisitorAction.Continue;
             }
@@ -923,10 +983,10 @@ namespace ApiExamples
             /// <summary>
             /// Called when a SpecialCharacter is encountered in the document.
             /// </summary>
-            public override VisitorAction VisitSpecialChar(SpecialChar character)
+            public override VisitorAction VisitSpecialChar(SpecialChar specialChar)
             {
-                if (isHidden(character))
-                    character.Remove();
+                if (isHidden(specialChar))
+                    specialChar.Remove();
 
                 return VisitorAction.Continue;
             }
@@ -936,28 +996,25 @@ namespace ApiExamples
             /// </summary>
             private bool isHidden(Node node)
             {
-                if (node is Inline)
+                if (node is Inline currentNode)
                 {
                     // If the node is Inline then cast it to retrieve the Font property which contains the hidden property
-                    Inline currentNode = (Inline)node;
                     return currentNode.Font.Hidden;
                 }
                 else if (node.NodeType == NodeType.Paragraph)
                 {
                     // If the node is a paragraph cast it to retrieve the ParagraphBreakFont which contains the hidden property
-                    Paragraph para = (Paragraph)node;
+                    Paragraph para = (Paragraph) node;
                     return para.ParagraphBreakFont.Hidden;
                 }
-                else if (node is ShapeBase)
+                else if (node is ShapeBase shape)
                 {
                     // Node is a shape or groupshape.
-                    ShapeBase shape = (ShapeBase)node;
                     return shape.Font.Hidden;
                 }
-                else if (node is InlineStory)
+                else if (node is InlineStory inlineStory)
                 {
                     // Node is a comment or footnote.
-                    InlineStory inlineStory = (InlineStory)node;
                     return inlineStory.Font.Hidden;
                 }
 
@@ -966,6 +1023,7 @@ namespace ApiExamples
                 return false;
             }
         }
+
         //ExEnd
 
         [Test]

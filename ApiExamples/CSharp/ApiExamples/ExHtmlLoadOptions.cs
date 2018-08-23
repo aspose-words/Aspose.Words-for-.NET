@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -59,11 +59,11 @@ namespace ApiExamples
 
             HtmlLoadOptions htmlLoadOptions = new HtmlLoadOptions();
             htmlLoadOptions.PreferredControlType = HtmlControlType.StructuredDocumentTag;
-            
+
             Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), htmlLoadOptions);
             NodeCollection nodes = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
-            
-            StructuredDocumentTag tag = (StructuredDocumentTag)nodes[0];
+
+            StructuredDocumentTag tag = (StructuredDocumentTag) nodes[0];
             //ExEnd
 
             Assert.AreEqual(2, tag.ListItems.Count);
@@ -90,7 +90,7 @@ namespace ApiExamples
 
             Assert.AreEqual(1, nodes.Count);
 
-            FormField formField = (FormField)nodes[0];
+            FormField formField = (FormField) nodes[0];
             Assert.AreEqual("Input value text", formField.Result);
         }
     }

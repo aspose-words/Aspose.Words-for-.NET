@@ -15,8 +15,8 @@ namespace ApiExamples.TestData.TestBuilders
         public ColorItemTestBuilder()
         {
             Name = "DefaultName";
-            Color = System.Drawing.Color.Black;
-            ColorCode = System.Drawing.Color.Black.ToArgb();
+            Color = Color.Black;
+            ColorCode = Color.Black.ToArgb();
             Value1 = 1.0;
             Value2 = 1.0;
             Value3 = 1.0;
@@ -24,35 +24,37 @@ namespace ApiExamples.TestData.TestBuilders
 
         public ColorItemTestBuilder WithColor(string name, Color color)
         {
-            this.Name = name;
-            this.Color = color;
+            Name = name;
+            Color = color;
             return this;
         }
 
         public ColorItemTestBuilder WithColorCode(string name, int colorCode)
         {
-            this.Name = name;
-            this.ColorCode = colorCode;
+            Name = name;
+            ColorCode = colorCode;
             return this;
         }
 
-        public ColorItemTestBuilder WithColorAndValues(string name, Color color, double value1, double value2, double value3)
+        public ColorItemTestBuilder WithColorAndValues(string name, Color color, double value1, double value2,
+            double value3)
         {
-            this.Name = name;
-            this.Color = color;
-            this.Value1 = value1;
-            this.Value2 = value2;
-            this.Value3 = value3;
+            Name = name;
+            Color = color;
+            Value1 = value1;
+            Value2 = value2;
+            Value3 = value3;
             return this;
         }
 
-        public ColorItemTestBuilder WithColorCodeAndValues(string name, int colorCode, double value1, double value2, double value3)
+        public ColorItemTestBuilder WithColorCodeAndValues(string name, int colorCode, double value1, double value2,
+            double value3)
         {
-            this.Name = name;
-            this.ColorCode = colorCode;
-            this.Value1 = value1;
-            this.Value2 = value2;
-            this.Value3 = value3;
+            Name = name;
+            ColorCode = colorCode;
+            Value1 = value1;
+            Value2 = value2;
+            Value3 = value3;
             return this;
         }
 

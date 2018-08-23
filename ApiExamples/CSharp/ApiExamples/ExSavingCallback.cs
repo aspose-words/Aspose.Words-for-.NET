@@ -42,7 +42,8 @@ namespace ApiExamples
             //ExSummary:Shows how separate pages are saved when a document is exported to fixed page format.
             Document doc = new Document(MyDir + "Rendering.doc");
 
-            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions { PageIndex = 0, PageCount = doc.PageCount };
+            HtmlFixedSaveOptions htmlFixedSaveOptions =
+                new HtmlFixedSaveOptions { PageIndex = 0, PageCount = doc.PageCount };
             htmlFixedSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
 
             doc.Save(MyDir + @"\Artifacts\Rendering.html", htmlFixedSaveOptions);
@@ -52,7 +53,7 @@ namespace ApiExamples
             for (int i = 0; i < doc.PageCount; i++)
             {
                 string file = string.Format(MyDir + @"\Artifacts\Page_{0}.html", i);
-                Assert.AreEqual(file, filePaths[i]);//ExSkip
+                Assert.AreEqual(file, filePaths[i]); //ExSkip
             }
         }
 
@@ -67,6 +68,7 @@ namespace ApiExamples
                 args.PageFileName = string.Format(MyDir + @"\Artifacts\Page_{0}.html", args.PageIndex);
             }
         }
+
         //ExEnd
     }
 }

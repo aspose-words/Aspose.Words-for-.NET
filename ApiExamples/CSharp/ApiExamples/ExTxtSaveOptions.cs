@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -15,26 +15,29 @@ namespace ApiExamples
     public class ExTxtSaveOptions : ApiExampleBase
     {
         [Test]
-        public void PageBreaks()
+        [TestCase(
+            "Some text before page break\r\rJidqwjidqwojidqwojidqwojidqwojidqwoji\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\rQwdqwdqwdqwdqwdqwdqwd\rQwdqwdqwdqwdqwdqwdqw\r\r\r\r\rqwdqwdqwdqwdqwdqwdqwqwd\r\f",
+            false)]
+        [TestCase(
+            "Some text before page break\r\f\r\fJidqwjidqwojidqwojidqwojidqwojidqwoji\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\rQwdqwdqwdqwdqwdqwdqwd\rQwdqwdqwdqwdqwdqwdqw\r\r\r\r\f\r\fqwdqwdqwdqwdqwdqwdqwqwd\r\f",
+            true)]
+        public void PageBreaks(string resultText, bool isForcePageBreaks)
         {
             //ExStart
             //ExFor:TxtSaveOptions.ForcePageBreaks
             //ExSummary:Shows how to specify whether the page breaks should be preserved during export.
             Document doc = new Document(MyDir + "SaveOptions.PageBreaks.docx");
 
-            TxtSaveOptions saveOptions = new TxtSaveOptions();
-            saveOptions.ForcePageBreaks = false;
+            TxtSaveOptions saveOptions = new TxtSaveOptions
+            {
+                ForcePageBreaks = isForcePageBreaks
+            };
 
-            doc.Save(MyDir + @"\Artifacts\SaveOptions.PageBreaks.False.txt", saveOptions);
+            doc.Save(MyDir + @"\Artifacts\SaveOptions.PageBreaks.txt", saveOptions);
             //ExEnd
-            Document docFalse = new Document(MyDir + @"\Artifacts\SaveOptions.PageBreaks.False.txt");
-            Assert.AreEqual("Some text before page break\r\rJidqwjidqwojidqwojidqwojidqwojidqwoji\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\rQwdqwdqwdqwdqwdqwdqwd\rQwdqwdqwdqwdqwdqwdqw\r\r\r\r\rqwdqwdqwdqwdqwdqwdqwqwd\r\f", docFalse.GetText());
 
-            saveOptions.ForcePageBreaks = true;
-            doc.Save(MyDir + @"\Artifacts\SaveOptions.PageBreaks.True.txt", saveOptions);
-
-            Document docTrue = new Document(MyDir + @"\Artifacts\SaveOptions.PageBreaks.True.txt");
-            Assert.AreEqual("Some text before page break\r\f\r\fJidqwjidqwojidqwojidqwojidqwojidqwoji\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\rQwdqwdqwdqwdqwdqwdqwd\rQwdqwdqwdqwdqwdqwdqw\r\r\r\r\f\r\fqwdqwdqwdqwdqwdqwdqwqwd\r\f", docTrue.GetText());
+            Document docFalse = new Document(MyDir + @"\Artifacts\SaveOptions.PageBreaks.txt");
+            Assert.AreEqual(resultText, docFalse.GetText());
         }
     }
 }

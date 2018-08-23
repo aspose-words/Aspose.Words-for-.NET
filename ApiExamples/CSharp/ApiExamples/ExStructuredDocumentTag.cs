@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -10,6 +10,7 @@ using Aspose.Words;
 using Aspose.Words.Markup;
 using NUnit.Framework;
 using System.IO;
+using System.Linq;
 
 namespace ApiExamples
 {
@@ -29,15 +30,16 @@ namespace ApiExamples
 
             NodeCollection sdTags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
 
-            foreach (StructuredDocumentTag sdTag in sdTags)
+            foreach (StructuredDocumentTag sdTag in sdTags.OfType<StructuredDocumentTag>())
             {
-                Console.WriteLine("Type of this SDT is: {0}",sdTag.SdtType);
+                Console.WriteLine("Type of this SDT is: {0}", sdTag.SdtType);
             }
+
             //ExEnd
-            StructuredDocumentTag sdTagRepeatingSection = (StructuredDocumentTag)sdTags[0];
+            StructuredDocumentTag sdTagRepeatingSection = (StructuredDocumentTag) sdTags[0];
             Assert.AreEqual(SdtType.RepeatingSection, sdTagRepeatingSection.SdtType);
 
-            StructuredDocumentTag sdTagRichText = (StructuredDocumentTag)sdTags[1];
+            StructuredDocumentTag sdTagRichText = (StructuredDocumentTag) sdTags[1];
             Assert.AreEqual(SdtType.RichText, sdTagRichText.SdtType);
         }
 
@@ -62,11 +64,13 @@ namespace ApiExamples
 
             NodeCollection sdts = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
 
-            StructuredDocumentTag sdt = (StructuredDocumentTag)sdts[0];
+            StructuredDocumentTag sdt = (StructuredDocumentTag) sdts[0];
             Assert.AreEqual(true, sdt.Checked);
+            Assert.IsEmpty(sdt.XmlMapping.StoreItemId); //Assert that this sdt has no StoreItemId
         }
 
         [Test]
+        [Category("SkipTearDown")]
         public void CreatingCustomXml()
         {
             //ExStart
@@ -77,7 +81,8 @@ namespace ApiExamples
             //ExSummary:Shows how to create structured document tag with a custom XML data.
             Document doc = new Document();
             // Add test XML data part to the collection.
-            CustomXmlPart xmlPart = doc.CustomXmlParts.Add(Guid.NewGuid().ToString("B"), "<root><text>Hello, World!</text></root>");
+            CustomXmlPart xmlPart =
+                doc.CustomXmlParts.Add(Guid.NewGuid().ToString("B"), "<root><text>Hello, World!</text></root>");
 
             StructuredDocumentTag sdt = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Block);
             sdt.XmlMapping.SetMapping(xmlPart, "/root[1]/text[1]", "");
@@ -86,7 +91,40 @@ namespace ApiExamples
 
             doc.Save(MyDir + @"\Artifacts\SDT.CustomXml.docx");
             //ExEnd
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\SDT.CustomXml.docx", MyDir + @"\Golds\SDT.CustomXml Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\SDT.CustomXml.docx",
+                MyDir + @"\Golds\SDT.CustomXml Gold.docx"));
+        }
+
+        [Test]
+        public void CustomXmlPartStoreItemIdReadOnly()
+        {
+            //ExStart
+            //ExFor:XmlMapping.StoreItemId
+            //ExSummary:Shows how to get special id of your xml part.
+            Document doc = new Document(MyDir + @"\Artifacts\SDT.CustomXml.docx");
+
+            StructuredDocumentTag sdt = (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
+            Console.WriteLine("The Id of your custom xml part is: " + sdt.XmlMapping.StoreItemId);
+            //ExEnd
+        }
+
+        [Test]
+        public void CustomXmlPartStoreItemIdReadOnlyNull()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            StructuredDocumentTag sdtCheckBox = new StructuredDocumentTag(doc, SdtType.Checkbox, MarkupLevel.Inline);
+            sdtCheckBox.Checked = true;
+
+            // Insert content control into the document
+            builder.InsertNode(sdtCheckBox);
+            //ExEnd
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            StructuredDocumentTag sdt = (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
+            Console.WriteLine("The Id of your custom xml part is: " + sdt.XmlMapping.StoreItemId);
         }
 
         [Test]
@@ -100,17 +138,20 @@ namespace ApiExamples
             NodeCollection sdts = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
             Assert.IsNotNull(sdts);
 
-            foreach (StructuredDocumentTag sdt in sdts)
+            foreach (StructuredDocumentTag sdt in sdts.OfType<StructuredDocumentTag>())
             {
                 sdt.Clear();
             }
+
             //ExEnd
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
             sdts = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
 
-            Assert.AreEqual("Enter any content that you want to repeat, including other content controls. You can also insert this control around table rows in order to repeat parts of a table.\r", sdts[0].GetText());
+            Assert.AreEqual(
+                "Enter any content that you want to repeat, including other content controls. You can also insert this control around table rows in order to repeat parts of a table.\r",
+                sdts[0].GetText());
             Assert.AreEqual("Click here to enter text.\f", sdts[2].GetText());
         }
 
@@ -119,7 +160,8 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "StructuredDocumentTag.BuildingBlocks.docx");
 
-            StructuredDocumentTag docPartObjSdt = (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
+            StructuredDocumentTag docPartObjSdt =
+                (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
 
             Assert.AreEqual(SdtType.DocPartObj, docPartObjSdt.SdtType);
             Assert.AreEqual("Table of Contents", docPartObjSdt.BuildingBlockGallery);
@@ -130,10 +172,12 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "StructuredDocumentTag.BuildingBlocks.docx");
 
-            StructuredDocumentTag plainTextSdt = (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 1, true);
+            StructuredDocumentTag plainTextSdt =
+                (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 1, true);
 
             Assert.AreEqual(SdtType.PlainText, plainTextSdt.SdtType);
-            Assert.That(() => plainTextSdt.BuildingBlockGallery, Throws.TypeOf<InvalidOperationException>(), "BuildingBlockType is only accessible for BuildingBlockGallery SDT type.");
+            Assert.That(() => plainTextSdt.BuildingBlockGallery, Throws.TypeOf<InvalidOperationException>(),
+                "BuildingBlockType is only accessible for BuildingBlockGallery SDT type.");
         }
 
         [Test]
@@ -141,18 +185,20 @@ namespace ApiExamples
         {
             Document doc = new Document();
 
-            StructuredDocumentTag buildingBlockSdt = new StructuredDocumentTag(doc, SdtType.BuildingBlockGallery, MarkupLevel.Block)
-            {
-                BuildingBlockCategory = "Built-in",
-                BuildingBlockGallery = "Table of Contents"
-            };
-            
+            StructuredDocumentTag buildingBlockSdt =
+                new StructuredDocumentTag(doc, SdtType.BuildingBlockGallery, MarkupLevel.Block)
+                {
+                    BuildingBlockCategory = "Built-in",
+                    BuildingBlockGallery = "Table of Contents"
+                };
+
             doc.FirstSection.Body.AppendChild(buildingBlockSdt);
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            buildingBlockSdt = (StructuredDocumentTag)doc.FirstSection.Body.GetChild(NodeType.StructuredDocumentTag, 0, true);
+            buildingBlockSdt =
+                (StructuredDocumentTag) doc.FirstSection.Body.GetChild(NodeType.StructuredDocumentTag, 0, true);
 
             Assert.AreEqual(SdtType.BuildingBlockGallery, buildingBlockSdt.SdtType);
             Assert.AreEqual("Table of Contents", buildingBlockSdt.BuildingBlockGallery);

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Drawing;
 using System.IO;
+using System.Net;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
@@ -16,6 +17,7 @@ using Aspose.Words.Fields;
 using Aspose.Words.Replacing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
+
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
@@ -25,8 +27,6 @@ namespace ApiExamples
     [TestFixture]
     public class ExDocumentBuilder : ApiExampleBase
     {
-        private readonly String mImage = ImageDir + "Test_636_852.gif";
-
         [Test]
         public void WriteAndFont()
         {
@@ -196,23 +196,29 @@ namespace ApiExamples
             {
                 if (field.Type == FieldType.FieldIf)
                 {
-                    FieldIf fieldIf = (FieldIf)field;
+                    FieldIf fieldIf = (FieldIf) field;
 
                     string fieldCode = fieldIf.GetFieldCode();
-                    Assert.AreEqual(" IF  MERGEFIELD Q223  > 0 \" (and additionally London Weighting of   MERGEFIELD  Q223 \\f £  per hour) \" \"\" ", fieldCode);//ExSkip
+                    Assert.AreEqual(
+                        " IF  MERGEFIELD Q223  > 0 \" (and additionally London Weighting of   MERGEFIELD  Q223 \\f £  per hour) \" \"\" ",
+                        fieldCode); //ExSkip
 
                     if (containsNestedFields)
                     {
                         fieldCode = fieldIf.GetFieldCode(true);
-                        Assert.AreEqual(" IF  MERGEFIELD Q223  > 0 \" (and additionally London Weighting of   MERGEFIELD  Q223 \\f £  per hour) \" \"\" ", fieldCode);//ExSkip
+                        Assert.AreEqual(
+                            " IF  MERGEFIELD Q223  > 0 \" (and additionally London Weighting of   MERGEFIELD  Q223 \\f £  per hour) \" \"\" ",
+                            fieldCode); //ExSkip
                     }
                     else
                     {
                         fieldCode = fieldIf.GetFieldCode(false);
-                        Assert.AreEqual(" IF  > 0 \" (and additionally London Weighting of   per hour) \" \"\" ", fieldCode);//ExSkip
+                        Assert.AreEqual(" IF  > 0 \" (and additionally London Weighting of   per hour) \" \"\" ",
+                            fieldCode); //ExSkip
                     }
                 }
             }
+
             //ExEnd
         }
 
@@ -360,7 +366,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            string html = "<P align='right'>Paragraph right</P>" + "<b>Implicit paragraph left</b>" + "<div align='center'>Div center</div>" + "<h1 align='left'>Heading 1 left.</h1>";
+            string html = "<P align='right'>Paragraph right</P>" + "<b>Implicit paragraph left</b>" +
+                          "<div align='center'>Div center</div>" + "<h1 align='left'>Heading 1 left.</h1>";
 
             builder.InsertHtml(html);
 
@@ -375,11 +382,11 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.InsertHtml(String, Boolean)
             //ExSummary:Inserts HTML into a document using. The current document formatting at the insertion position is applied to the inserted text. 
             Document doc = new Document();
+
             DocumentBuilder builder = new DocumentBuilder(doc);
-
-            bool useBuilderFormatting = true;
-
-            builder.InsertHtml("<P align='right'>Paragraph right</P>" + "<b>Implicit paragraph left</b>" + "<div align='center'>Div center</div>" + "<h1 align='left'>Heading 1 left.</h1>", useBuilderFormatting);
+            builder.InsertHtml(
+                "<P align='right'>Paragraph right</P>" + "<b>Implicit paragraph left</b>" +
+                "<div align='center'>Div center</div>" + "<h1 align='left'>Heading 1 left.</h1>", true);
 
             doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertHtml.doc");
             //ExEnd
@@ -394,17 +401,19 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            const String mathMl = "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mn>1</mn></mrow></msub></mrow></math>";
+            const String mathMl =
+                "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mn>1</mn></mrow></msub></mrow></math>";
 
             builder.InsertHtml(mathMl);
             //ExEnd
 
-            doc.Save(MyDir + @"\Artifacts\MathML Out.docx");
-            doc.Save(MyDir + @"\Artifacts\MathML Out.pdf");
+            doc.Save(MyDir + @"\Artifacts\MathML.docx");
+            doc.Save(MyDir + @"\Artifacts\MathML.pdf");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Golds\MathML Gold.docx", MyDir + @"\Artifacts\MathML Out.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Golds\MathML Gold.docx",
+                MyDir + @"\Artifacts\MathML.docx"));
 #if !(NETSTANDARD2_0 || __MOBILE__)
-            DocumentHelper.ComparePdf(MyDir + @"\Golds\MathML Gold.pdf", MyDir + @"\Artifacts\MathML Out.pdf");
+            DocumentHelper.ComparePdf(MyDir + @"\Golds\MathML Gold.pdf", MyDir + @"\Artifacts\MathML.pdf");
 #endif
         }
 
@@ -441,7 +450,11 @@ namespace ApiExamples
             builder.Writeln("");
             builder.Writeln("");
 
-            String[] items = new String[] { "-- Select your favorite footwear --", "Sneakers", "Oxfords", "Flip-flops", "Other", "I prefer to be barefoot" };
+            String[] items =
+            {
+                "-- Select your favorite footwear --", "Sneakers", "Oxfords", "Flip-flops", "Other",
+                "I prefer to be barefoot"
+            };
 
             // Insert a combo box to select a footwear type.
             builder.InsertComboBox("", items, 0);
@@ -455,7 +468,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Ignore("WORDSNET-16190")]
         public void InsertCheckBox()
         {
             //ExStart
@@ -464,19 +476,19 @@ namespace ApiExamples
             //ExSummary:Shows how to insert checkboxes to the document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             builder.InsertCheckBox(String.Empty, false, false, 0);
-            builder.InsertCheckBox("CheckBox_DefaultAndCheckedValue", true, true, 50);
+            builder.InsertCheckBox("CheckBox_Default", true, true, 50);
             builder.InsertCheckBox("CheckBox_OnlyCheckedValue", true, 100);
             //ExEnd
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            //Get checkboxes from the document
+            // Get checkboxes from the document
             FormFieldCollection formFields = doc.Range.FormFields;
 
-            //Check that is the right checkbox
+            // Check that is the right checkbox
             Assert.AreEqual(String.Empty, formFields[0].Name);
 
             //Assert that parameters sets correctly
@@ -484,18 +496,20 @@ namespace ApiExamples
             Assert.AreEqual(false, formFields[0].Default);
             Assert.AreEqual(10, formFields[0].CheckBoxSize);
 
-            //Check that is the right checkbox
-            Assert.AreEqual("CheckBox_DefaultAndCheckedValue", formFields[1].Name);
+            // Check that is the right checkbox
+            // Please pay attention that MS Word allows strings with at most 20 characters
+            Assert.AreEqual("CheckBox_Default", formFields[1].Name);
 
             //Assert that parameters sets correctly
             Assert.AreEqual(true, formFields[1].Checked);
             Assert.AreEqual(true, formFields[1].Default);
             Assert.AreEqual(50, formFields[1].CheckBoxSize);
 
-            //Check that is the right checkbox
-            Assert.AreEqual("CheckBox_OnlyCheckedValue", formFields[2].Name);
+            // Check that is the right checkbox
+            // Please pay attention that MS Word allows strings with at most 20 characters
+            Assert.AreEqual("CheckBox_OnlyChecked", formFields[2].Name);
 
-            //Assert that parameters sets correctly
+            // Assert that parameters sets correctly
             Assert.AreEqual(true, formFields[2].Checked);
             Assert.AreEqual(true, formFields[2].Default);
             Assert.AreEqual(100, formFields[2].CheckBoxSize);
@@ -533,16 +547,18 @@ namespace ApiExamples
             builder.MoveToBookmark("ParaToDelete");
             builder.CurrentParagraph.Remove();
 
-            FindReplaceOptions options = new FindReplaceOptions();
-            options.MatchCase = false;
-            options.FindWholeWordsOnly = true;
-            
+            FindReplaceOptions options = new FindReplaceOptions
+            {
+                MatchCase = false,
+                FindWholeWordsOnly = true
+            };
+
             // Move to a particular paragraph's run and replace all occurrences of "bad" with "good" within this run.
             builder.MoveTo(doc.LastSection.Body.Paragraphs[0].Runs[0]);
             Assert.IsTrue(builder.IsAtStartOfParagraph);
             Assert.IsFalse(builder.IsAtEndOfParagraph);
             builder.CurrentNode.Range.Replace("bad", "good", options);
-            
+
             // Mark the beginning of the document.
             builder.MoveToDocumentStart();
             builder.Writeln("Start of document.");
@@ -558,7 +574,7 @@ namespace ApiExamples
             Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
             Assert.IsFalse(builder.IsAtStartOfParagraph);
             Assert.IsTrue(builder.IsAtEndOfParagraph);
-            
+
             // Mark the ending of the document.
             builder.MoveToDocumentEnd();
             builder.Writeln("End of document.");
@@ -687,7 +703,7 @@ namespace ApiExamples
             builder.CellFormat.Width = 300;
             builder.CellFormat.VerticalAlignment = CellVerticalAlignment.Center;
             builder.CellFormat.Shading.BackgroundPatternColor = Color.GreenYellow;
-            
+
             builder.RowFormat.HeightRule = HeightRule.Exactly;
             builder.RowFormat.Height = 50;
             builder.RowFormat.Borders.LineStyle = LineStyle.Engrave3D;
@@ -752,7 +768,8 @@ namespace ApiExamples
             // Note that not all table styles are available when saving as .doc format.
             table.StyleIdentifier = StyleIdentifier.MediumShading1Accent1;
             // Apply which features should be formatted by the style.
-            table.StyleOptions = TableStyleOptions.FirstColumn | TableStyleOptions.RowBands | TableStyleOptions.FirstRow;
+            table.StyleOptions =
+                TableStyleOptions.FirstColumn | TableStyleOptions.RowBands | TableStyleOptions.FirstRow;
             table.AutoFit(AutoFitBehavior.AutoFitToContents);
 
             // Continue with building the table as normal.
@@ -786,10 +803,12 @@ namespace ApiExamples
             // Verify that the style was set by expanding to direct formatting.
             doc.ExpandTableStylesToDirectFormatting();
             Assert.AreEqual("Medium Shading 1 Accent 1", table.Style.Name);
-            Assert.AreEqual(TableStyleOptions.FirstColumn | TableStyleOptions.RowBands | TableStyleOptions.FirstRow, table.StyleOptions);
+            Assert.AreEqual(TableStyleOptions.FirstColumn | TableStyleOptions.RowBands | TableStyleOptions.FirstRow,
+                table.StyleOptions);
             Assert.AreEqual(189, table.FirstRow.FirstCell.CellFormat.Shading.BackgroundPatternColor.B);
             Assert.AreEqual(Color.White.ToArgb(), table.FirstRow.FirstCell.FirstParagraph.Runs[0].Font.Color.ToArgb());
-            Assert.AreNotEqual(Color.LightBlue.ToArgb(), table.LastRow.FirstCell.CellFormat.Shading.BackgroundPatternColor.B);
+            Assert.AreNotEqual(Color.LightBlue.ToArgb(),
+                table.LastRow.FirstCell.CellFormat.Shading.BackgroundPatternColor.B);
             Assert.AreEqual(Color.Empty.ToArgb(), table.LastRow.FirstCell.FirstParagraph.Runs[0].Font.Color.ToArgb());
         }
 
@@ -903,7 +922,8 @@ namespace ApiExamples
             builder.InsertCell();
             builder.CellFormat.PreferredWidth = PreferredWidth.Auto;
             builder.CellFormat.Shading.BackgroundPatternColor = Color.LightGreen;
-            builder.Writeln("Cell automatically sized. The size of this cell is calculated from the table preferred width.");
+            builder.Writeln(
+                "Cell automatically sized. The size of this cell is calculated from the table preferred width.");
             builder.Writeln("In this case the cell will fill up the rest of the available space.");
 
             doc.Save(MyDir + @"\Artifacts\Table.CellPreferredWidths.doc");
@@ -926,7 +946,8 @@ namespace ApiExamples
 
             // Insert the table from HTML. Note that AutoFitSettings does not apply to tables
             // inserted from HTML.
-            builder.InsertHtml("<table>" + "<tr>" + "<td>Row 1, Cell 1</td>" + "<td>Row 1, Cell 2</td>" + "</tr>" + "<tr>" + "<td>Row 2, Cell 2</td>" + "<td>Row 2, Cell 2</td>" + "</tr>" + "</table>");
+            builder.InsertHtml("<table>" + "<tr>" + "<td>Row 1, Cell 1</td>" + "<td>Row 1, Cell 2</td>" + "</tr>" +
+                               "<tr>" + "<td>Row 2, Cell 2</td>" + "<td>Row 2, Cell 2</td>" + "</tr>" + "</table>");
 
             doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertTableFromHtml.doc");
             //ExEnd
@@ -1018,9 +1039,9 @@ namespace ApiExamples
             //ExEnd
 
             // Verify that the cell count of the table is four.
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             Assert.IsNotNull(table);
-            Assert.AreEqual(table.GetChildNodes(NodeType.Cell, true).Count, 4);
+            Assert.AreEqual(4, table.GetChildNodes(NodeType.Cell, true).Count);
         }
 
         [Test]
@@ -1116,7 +1137,8 @@ namespace ApiExamples
             Assert.AreNotEqual(table.LeftIndent, 0.0);
             Assert.AreNotEqual(table.FirstRow.RowFormat.HeightRule, HeightRule.Auto);
             Assert.AreNotEqual(table.FirstRow.FirstCell.CellFormat.Shading.BackgroundPatternColor, Color.Empty);
-            Assert.AreNotEqual(table.FirstRow.FirstCell.FirstParagraph.ParagraphFormat.Alignment, ParagraphAlignment.Left);
+            Assert.AreNotEqual(table.FirstRow.FirstCell.FirstParagraph.ParagraphFormat.Alignment,
+                ParagraphAlignment.Left);
         }
 
         [Test]
@@ -1175,10 +1197,14 @@ namespace ApiExamples
             //ExEnd
 
             // Verify the table was created correctly.
-            Assert.AreEqual(Color.Red.ToArgb(), table.FirstRow.FirstCell.CellFormat.Shading.BackgroundPatternColor.ToArgb());
-            Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.Cells[1].CellFormat.Shading.BackgroundPatternColor.ToArgb());
-            Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.Cells[1].CellFormat.Shading.BackgroundPatternColor.ToArgb());
-            Assert.AreEqual(Color.Empty.ToArgb(), table.LastRow.FirstCell.CellFormat.Shading.BackgroundPatternColor.ToArgb());
+            Assert.AreEqual(Color.Red.ToArgb(),
+                table.FirstRow.FirstCell.CellFormat.Shading.BackgroundPatternColor.ToArgb());
+            Assert.AreEqual(Color.Green.ToArgb(),
+                table.FirstRow.Cells[1].CellFormat.Shading.BackgroundPatternColor.ToArgb());
+            Assert.AreEqual(Color.Green.ToArgb(),
+                table.FirstRow.Cells[1].CellFormat.Shading.BackgroundPatternColor.ToArgb());
+            Assert.AreEqual(Color.Empty.ToArgb(),
+                table.LastRow.FirstCell.CellFormat.Shading.BackgroundPatternColor.ToArgb());
 
             Assert.AreEqual(Color.Black.ToArgb(), table.FirstRow.FirstCell.CellFormat.Borders.Left.Color.ToArgb());
             Assert.AreEqual(Color.Black.ToArgb(), table.FirstRow.FirstCell.CellFormat.Borders.Left.Color.ToArgb());
@@ -1486,7 +1512,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "DocumentBuilder.TableCellVerticalRotatedFarEastTextOrientation.docx");
 
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             Cell cell = table.FirstRow.FirstCell;
 
             Assert.AreEqual(TextOrientation.VerticalRotatedFarEast, cell.CellFormat.Orientation);
@@ -1494,7 +1520,7 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table = (Table) doc.GetChild(NodeType.Table, 0, true);
             cell = table.FirstRow.FirstCell;
 
             Assert.AreEqual(TextOrientation.VerticalRotatedFarEast, cell.CellFormat.Orientation);
@@ -1542,7 +1568,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertImage(ImageDir + "Watermark.png", RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
+            builder.InsertImage(ImageDir + "Watermark.png", RelativeHorizontalPosition.Margin, 100,
+                RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
             //ExEnd
         }
 
@@ -1560,7 +1587,7 @@ namespace ApiExamples
             //ExEnd
 
             // Verify that the image was inserted into the document.
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             Assert.IsNotNull(shape);
             Assert.True(shape.HasImage);
         }
@@ -1576,7 +1603,8 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Pass a negative value to the width and height values to specify using the size of the source image.
-            builder.InsertImage(ImageDir + "LogoSmall.png", RelativeHorizontalPosition.Margin, 200, RelativeVerticalPosition.Margin, 100, -1, -1, WrapType.Square);
+            builder.InsertImage(ImageDir + "LogoSmall.png", RelativeHorizontalPosition.Margin, 200,
+                RelativeVerticalPosition.Margin, 100, -1, -1, WrapType.Square);
             //ExEnd
 
             doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertImageOriginalSize.doc");
@@ -1645,7 +1673,7 @@ namespace ApiExamples
         }
 
         [Test]
-        [Ignore("WORDSNET-16868")]
+        [Description("WORDSNET-16868")]
         public void CreateAndSignSignatureLineUsingProviderId()
         {
             //ExStart
@@ -1661,18 +1689,20 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            SignatureLineOptions signatureLineOptions = new SignatureLineOptions();
-            signatureLineOptions.Signer = "vderyushev";
-            signatureLineOptions.SignerTitle = "QA";
-            signatureLineOptions.Email = "vderyushev@aspose.com";
-            signatureLineOptions.ShowDate = true;
-            signatureLineOptions.DefaultInstructions = false;
-            signatureLineOptions.Instructions = "You need more info about signature line";
-            signatureLineOptions.AllowComments = true;
+            SignatureLineOptions signatureLineOptions = new SignatureLineOptions
+            {
+                Signer = "vderyushev",
+                SignerTitle = "QA",
+                Email = "vderyushev@aspose.com",
+                ShowDate = true,
+                DefaultInstructions = false,
+                Instructions = "You need more info about signature line",
+                AllowComments = true
+            };
 
             SignatureLine signatureLine = builder.InsertSignatureLine(signatureLineOptions).SignatureLine;
             signatureLine.ProviderId = Guid.Parse("CF5A7BB4-8F3C-4756-9DF6-BEF7F13259A2");
-            
+
             doc.Save(MyDir + @"\Artifacts\DocumentBuilder.SignatureLineProviderId In.docx");
 
             SignOptions signOptions = new SignOptions();
@@ -1680,13 +1710,16 @@ namespace ApiExamples
             signOptions.ProviderId = signatureLine.ProviderId;
             signOptions.Comments = "Document was signed by vderyushev";
             signOptions.SignTime = DateTime.Now;
-            
+
             CertificateHolder certHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
-            DigitalSignatureUtil.Sign(MyDir + @"\Artifacts\DocumentBuilder.SignatureLineProviderId In.docx", MyDir + @"\Artifacts\DocumentBuilder.SignatureLineProviderId Out.docx", certHolder, signOptions);
+            DigitalSignatureUtil.Sign(MyDir + @"\Artifacts\DocumentBuilder.SignatureLineProviderId In.docx",
+                MyDir + @"\Artifacts\DocumentBuilder.SignatureLineProviderId Out.docx", certHolder, signOptions);
             //ExEnd
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\DocumentBuilder.SignatureLineProviderId Out.docx", MyDir + @"\Golds\DocumentBuilder.SignatureLineProviderId Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(
+                MyDir + @"\Artifacts\DocumentBuilder.SignatureLineProviderId Out.docx",
+                MyDir + @"\Golds\DocumentBuilder.SignatureLineProviderId Gold.docx"));
         }
 
         [Test]
@@ -1698,22 +1731,25 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            SignatureLineOptions options = new SignatureLineOptions();
-            options.Signer = "John Doe";
-            options.SignerTitle = "Manager";
-            options.Email = "johndoe@aspose.com";
-            options.ShowDate = true;
-            options.DefaultInstructions = false;
-            options.Instructions = "You need more info about signature line";
-            options.AllowComments = true;
+            SignatureLineOptions options = new SignatureLineOptions
+            {
+                Signer = "John Doe",
+                SignerTitle = "Manager",
+                Email = "johndoe@aspose.com",
+                ShowDate = true,
+                DefaultInstructions = false,
+                Instructions = "You need more info about signature line",
+                AllowComments = true
+            };
 
-            builder.InsertSignatureLine(options, RelativeHorizontalPosition.RightMargin, 2.0, RelativeVerticalPosition.Page, 3.0, WrapType.Inline);
+            builder.InsertSignatureLine(options, RelativeHorizontalPosition.RightMargin, 2.0,
+                RelativeVerticalPosition.Page, 3.0, WrapType.Inline);
             //ExEnd
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
 
             SignatureLine signatureLine = shape.SignatureLine;
 
@@ -1772,8 +1808,10 @@ namespace ApiExamples
             paragraphFormat.SpaceAfter = 25;
 
             // Output text
-            builder.Writeln("I'm a very nice formatted paragraph. I'm intended to demonstrate how the left and right indents affect word wrapping.");
-            builder.Writeln("I'm another nice formatted paragraph. I'm intended to demonstrate how the space after paragraph looks like.");
+            builder.Writeln(
+                "I'm a very nice formatted paragraph. I'm intended to demonstrate how the left and right indents affect word wrapping.");
+            builder.Writeln(
+                "I'm another nice formatted paragraph. I'm intended to demonstrate how the space after paragraph looks like.");
             //ExEnd
         }
 
@@ -1921,7 +1959,8 @@ namespace ApiExamples
             }
             //ExEnd
 
-            Assert.AreEqual("Footnote text 0", doc.GetChildNodes(NodeType.Footnote, true)[0].ToString(SaveFormat.Text).Trim());
+            Assert.AreEqual("Footnote text 0",
+                doc.GetChildNodes(NodeType.Footnote, true)[0].ToString(SaveFormat.Text).Trim());
 
             doc.FootnoteOptions.NumberStyle = NumberStyle.Arabic;
             doc.FootnoteOptions.StartNumber = 1;
@@ -1929,7 +1968,8 @@ namespace ApiExamples
 
             doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertFootnote.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\DocumentBuilder.InsertFootnote.docx", MyDir + @"\Golds\DocumentBuilder.InsertFootnote Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\DocumentBuilder.InsertFootnote.docx",
+                MyDir + @"\Golds\DocumentBuilder.InsertFootnote Gold.docx"));
         }
 
         [Test]
@@ -1997,21 +2037,24 @@ namespace ApiExamples
         }
 
         [Test]
+        [Ignore("Bug: does not insert headers and footers, all lists (bullets, numbering, multilevel) breaks")]
         public void InsertDocument()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertDocument(Document, ImportFormatMode)
-            //ExSummary:Shows how to insert a document content into another document.
+            //ExFor:ImportFormatMode.KeepSourceFormatting
+            //ExSummary:Shows how to insert a document content into another document keep formating of inserted document.
             Document doc = new Document(MyDir + "Document.docx");
-            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Document docToInsert = new Document(MyDir + "DocumentBuilder.InsertedDoc.docx");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.MoveToDocumentEnd();
+            builder.InsertBreak(BreakType.PageBreak);
+
+            Document docToInsert = new Document(MyDir + "DocumentBuilder.KeepSourceFormatting.docx");
 
             builder.InsertDocument(docToInsert, ImportFormatMode.KeepSourceFormatting);
+            builder.Document.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertDocument.KeepSourceFormatting.docx");
             //ExEnd
-            builder.Document.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertDocument.docx");
-
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\DocumentBuilder.InsertDocument.docx", MyDir + @"\Golds\DocumentBuilder.InsertDocument Gold.docx"));
         }
 
         [Test]
@@ -2041,15 +2084,19 @@ namespace ApiExamples
 #if NETSTANDARD2_0 || __MOBILE__
             using (SKBitmap representingImage = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
             {
-                Shape oleObject = builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage);
-                Shape oleObjectWithProgId = builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false, representingImage);
+                Shape oleObject =
+ builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage);
+                Shape oleObjectWithProgId =
+ builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false, representingImage);
             }
 #else
             Image representingImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
 
-            Shape oleObject = builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage);
-            Shape oleObjectWithProgId = builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false, representingImage);
-#endif            
+            Shape oleObject =
+                builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage);
+            Shape oleObjectWithProgId = builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet",
+                false, false, representingImage);
+#endif
             doc.Save(MyDir + @"\Artifacts\Document.InsertedOleObject.docx");
             //ExEnd
         }
@@ -2060,7 +2107,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Assert.That(() => builder.InsertOleObject("", "checkbox", false, true, null), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => builder.InsertOleObject("", "checkbox", false, true, null),
+                Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -2087,7 +2135,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertChart(ChartType.Pie, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
+            builder.InsertChart(ChartType.Pie, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin,
+                100, 200, 100, WrapType.Square);
 
             doc.Save(MyDir + @"\Artifacts\Document.InsertedChartRelativePosition.doc");
             //ExEnd
@@ -2118,13 +2167,13 @@ namespace ApiExamples
             //ExSummary:Shows how to control how the field result is formatted.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             Field field = builder.InsertField("=-1234567.89 \\# \"### ### ###.000\"", null);
             doc.FieldOptions.ResultFormatter = new FieldResultFormatter("[{0}]", null);
 
             field.Update();
-            
-            Assert.AreEqual("[-1234567.89]", field.Result);//ExSkip
+
+            Assert.AreEqual("[-1234567.89]", field.Result); //ExSkip
         }
 
         private class FieldResultFormatter : IFieldResultFormatter
@@ -2164,11 +2213,9 @@ namespace ApiExamples
 
             private readonly ArrayList mNumberFormatInvocations = new ArrayList();
             private readonly ArrayList mDateFormatInvocations = new ArrayList();
-            private IFieldResultFormatter mfieldResultFormatterImplementation;
         }
         //ExEnd
 
-        //Todo: Add gold asserts
         [Test]
         public void InsertVideoWithUrl()
         {
@@ -2204,36 +2251,44 @@ namespace ApiExamples
             string vimeoVideoUrl = @"https://vimeo.com/52477838";
 
             // Embed Html code
-            string vimeoEmbedCode = "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
+            string vimeoEmbedCode =
+                "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
 
             // This video will have an automatically generated thumbnail, and we are setting the size according to its 16:9 aspect ratio
             builder.Writeln("Video with an automatically generated thumbnail at the top left corner of the page:");
-            builder.InsertOnlineVideo(vimeoVideoUrl, RelativeHorizontalPosition.LeftMargin, 0, RelativeVerticalPosition.TopMargin, 0, 320, 180, WrapType.Square);
+            builder.InsertOnlineVideo(vimeoVideoUrl, RelativeHorizontalPosition.LeftMargin, 0,
+                RelativeVerticalPosition.TopMargin, 0, 320, 180, WrapType.Square);
             builder.InsertBreak(BreakType.PageBreak);
 
             // We can get an image to use as a custom thumbnail
-            System.Net.WebClient webClient = new System.Net.WebClient();
-            byte[] imageBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
-
-            using (MemoryStream stream = new MemoryStream(imageBytes))
+            using (WebClient webClient = new WebClient())
             {
-                Image image = Image.FromStream(stream);
+                byte[] imageBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
 
-                // This puts the video where we are with our document builder, with a custom thumbnail and size depending on the size of the image
-                builder.Writeln("Custom thumbnail at document builder's cursor:");
-                builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, image.Width, image.Height);
-                builder.InsertBreak(BreakType.PageBreak);
-                
-                // We can put the video at the bottom right edge of the page too, but we'll have to take the page margins into account 
-                double left = builder.PageSetup.RightMargin - image.Width;
-                double top = builder.PageSetup.BottomMargin - image.Height;
+                using (MemoryStream stream = new MemoryStream(imageBytes))
+                {
+                    using (Image image = Image.FromStream(stream))
+                    {
+                        // This puts the video where we are with our document builder, with a custom thumbnail and size depending on the size of the image
+                        builder.Writeln("Custom thumbnail at document builder's cursor:");
+                        builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, image.Width, image.Height);
+                        builder.InsertBreak(BreakType.PageBreak);
 
-                // Here we use a custom thumbnail and relative positioning to put it and the bottom right of tha page
-                builder.Writeln("Bottom right of page with custom thumbnail:");
-                builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, RelativeHorizontalPosition.RightMargin, left, RelativeVerticalPosition.BottomMargin, top, image.Width, image.Height, WrapType.Square);
+                        // We can put the video at the bottom right edge of the page too, but we'll have to take the page margins into account 
+                        double left = builder.PageSetup.RightMargin - image.Width;
+                        double top = builder.PageSetup.BottomMargin - image.Height;
+
+                        // Here we use a custom thumbnail and relative positioning to put it and the bottom right of tha page
+                        builder.Writeln("Bottom right of page with custom thumbnail:");
+                        builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes,
+                            RelativeHorizontalPosition.RightMargin, left, RelativeVerticalPosition.BottomMargin, top,
+                            image.Width, image.Height, WrapType.Square);
+                    }
+                }
+
+                doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertOnlineVideo.docx");
             }
 
-            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertOnlineVideo.docx");
             //ExEnd
         }
 #endif
@@ -2260,7 +2315,7 @@ namespace ApiExamples
 
             builder.Writeln("Underlined text.");
 
-            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.Underline.docx");         
+            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.Underline.docx");
             //ExEnd
         }
 
@@ -2316,7 +2371,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Let's take a spreadsheet from our system and insert it into the document
-            System.IO.Stream spreadsheetStream = File.Open(MyDir + "DocumentBuilder.InsertOleObject.xlsx", FileMode.Open);
+            Stream spreadsheetStream = File.Open(MyDir + "DocumentBuilder.InsertOleObject.xlsx", FileMode.Open);
 
             // The spreadsheet can be activated by double clicking the panel that you'll see in the document immediately under the text we will add
             // We did not set the area to double click as an icon nor did we change its appearance so it looks like a simple panel
@@ -2325,30 +2380,34 @@ namespace ApiExamples
 
             // A powerpoint presentation is another type of object we can embed in our document
             // This time we'll also exercise some control over how it looks 
-            System.IO.Stream powerpointStream = File.Open(MyDir + "DocumentBuilder.InsertOleObject.pptx", FileMode.Open);
+            Stream powerpointStream = File.Open(MyDir + "DocumentBuilder.InsertOleObject.pptx", FileMode.Open);
 
             // If we insert the Ole object as an icon, we are still provided with a default icon
             // If that is not suitable, we can make the icon to look like any image
-            System.Net.WebClient webClient = new System.Net.WebClient();
-            byte[] imgBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
+            using (WebClient webClient = new WebClient())
+            {
+                byte[] imgBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
 
 #if NETSTANDARD2_0 || __MOBILE__
-            SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(imgBytes);
+                SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(imgBytes);
 
-            builder.InsertParagraph();
-            builder.Writeln("Powerpoint Ole object:");
-            builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, bitmap);
-#else
-            using (MemoryStream stream = new MemoryStream(imgBytes))
-            {
-                Image image = Image.FromStream(stream);
-
-                // If we double click the image, the powerpoint presentation will open
                 builder.InsertParagraph();
                 builder.Writeln("Powerpoint Ole object:");
-                builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, image);
-            }
+                builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, bitmap);
+#else
+                using (MemoryStream stream = new MemoryStream(imgBytes))
+                {
+                    using (Image image = Image.FromStream(stream))
+                    {
+                        // If we double click the image, the powerpoint presentation will open
+                        builder.InsertParagraph();
+                        builder.Writeln("Powerpoint Ole object:");
+                        builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, image);
+                    }
+                }
 #endif
+            }
+
             powerpointStream.Close();
             spreadsheetStream.Close();
 
@@ -2368,12 +2427,12 @@ namespace ApiExamples
             builder.Write("This text is in the default style. ");
 
             builder.InsertStyleSeparator();
-             
+
             // Create a custom style
             Style myStyle = builder.Document.Styles.Add(StyleType.Paragraph, "MyStyle");
             myStyle.Font.Size = 14;
             myStyle.Font.Name = "Courier New";
-            myStyle.Font.Color = System.Drawing.Color.Blue;
+            myStyle.Font.Color = Color.Blue;
 
             // Append text with custom style
             builder.ParagraphFormat.StyleName = myStyle.Name;
@@ -2381,6 +2440,53 @@ namespace ApiExamples
 
             doc.Save(MyDir + @"\Artifacts\DocumentBuilder.StyleSeparator.docx");
             //ExEnd
+        }
+
+        [Test]
+        public void InsertStyleSeparator()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertStyleSeparator
+            //ExSummary:Shows how to separate styles from two different paragraphs used in one logical printed paragraph.
+            DocumentBuilder builder = new DocumentBuilder(new Document());
+
+            Style paraStyle = builder.Document.Styles.Add(StyleType.Paragraph, "MyParaStyle");
+            paraStyle.Font.Bold = false;
+            paraStyle.Font.Size = 8;
+            paraStyle.Font.Name = "Arial";
+
+            // Append text with "Heading 1" style.
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
+            builder.Write("Heading 1");
+            builder.InsertStyleSeparator();
+
+            // Append text with another style.
+            builder.ParagraphFormat.StyleName = paraStyle.Name;
+            builder.Write("This is text with some other formatting ");
+            //ExEnd
+
+            builder.Document.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertStyleSeparator.docx");
+        }
+
+        [Test]
+        public void WithoutStyleSeparator()
+        {
+            DocumentBuilder builder = new DocumentBuilder(new Document());
+
+            Style paraStyle = builder.Document.Styles.Add(StyleType.Paragraph, "MyParaStyle");
+            paraStyle.Font.Bold = false;
+            paraStyle.Font.Size = 8;
+            paraStyle.Font.Name = "Arial";
+
+            // Append text with "Heading 1" style.
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
+            builder.Write("Heading 1");
+
+            // Append text with another style.
+            builder.ParagraphFormat.StyleName = paraStyle.Name;
+            builder.Write("This is text with some other formatting ");
+
+            builder.Document.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertStyleSeparator.docx");
         }
     }
 }
