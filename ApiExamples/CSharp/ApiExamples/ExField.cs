@@ -807,20 +807,26 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Use a document builder to insert a field link
-            // Here we will insert an entire spreadsheet as a bitmap image
+            // Here we will insert a spreadsheet as a bitmap image
             FieldLink field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
             field.InsertAsBitmap = true;
             field.AutoUpdate = true;
             field.ProgId = "Excel.Sheet.8";
             field.SourceFullName = MyDir + "MySpreadsheet.xlsx";
+
+            // Setting this field to "4" will keep the source format
+            field.FormatUpdateType = "4";
             builder.Writeln();
 
-            // Inserting only one cell from a spreadsheet as text
+            // Inserting one cell from a spreadsheet as text
             field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
             field.InsertAsText = true;
             field.AutoUpdate = true;
             field.ProgId = "Excel.Sheet.8";
+
+            // Take only one cell from the source spreadsheet
             field.SourceItem = "Sheet1!R2C2";
+
             field.SourceFullName = MyDir + "MySpreadsheet.xlsx";
             builder.Writeln();
 
@@ -848,17 +854,19 @@ namespace ApiExamples
             field.SourceFullName = MyDir + "Document.doc";
             builder.Writeln();
 
-            // inserting an image
+            // Insert an image
             field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
             field.InsertAsPicture = true;
             field.AutoUpdate = true;
             field.ProgId = "Paint.Picture";
             field.SourceFullName = MyDir + "Images/Test_1024_768.bmp";
+
+            // Setting this to true will not store the data in the document, reducing file size
+            field.IsLinked = true;
             builder.Writeln();
 
-            doc.UpdateFields();
-
             // You will be prompted to let the fields update when you open this document, give it a few seconds to do so
+            doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.Link.docx");
             //ExEnd
         }
