@@ -813,11 +813,11 @@ namespace ApiExamples
             //ExFor:Fields.FieldAutoNum
             //ExFor:Fields.FieldAutoNum.SeparatorCharacter
             //ExFor:Fields.FieldAutoNumOut
-            //ExSummary:Shows how to number paragraphs autonum fields.
+            //ExSummary:Shows how to number paragraphs using autonum fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The two fields we insert here will be numbered 1 and 2
+            // The two fields we insert here will be automatically numbered 1 and 2
             builder.InsertField(FieldType.FieldAutoNum, true);
             builder.Writeln("\tParagraph 1.");
             builder.InsertField(FieldType.FieldAutoNum, true);
@@ -827,11 +827,12 @@ namespace ApiExamples
             {
                 if (field.Type == FieldType.FieldAutoNum)
                 {
-                    // By default the separator will appear as "." in the document but here it is null
+                    // Leaving the FieldAutoNum.SeparatorCharacter field null will set the separator character to '.' by default
                     Assert.IsNull(((FieldAutoNum)field).SeparatorCharacter);
 
                     // The first character of the string entered here will be used as the separator character
                     ((FieldAutoNum)field).SeparatorCharacter = ":";
+
                     Assert.AreEqual(" AUTONUM  \\s :", field.GetFieldCode());
                 }
             }
