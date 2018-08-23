@@ -815,54 +815,50 @@ namespace ApiExamples
             //ExFor:Fields.FieldDatabase.LastRecord
             //ExFor:Fields.FieldDatabase.Query
             //ExFor:Fields.FieldDatabase.TableFormat
-            //ExSummary:Shows how to insert a database field into a document.
+            //ExSummary:Shows how to extract data from a database and insert it as a field into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a document builder to insert a data field
+            // Use a document builder to insert a database field
             FieldDatabase field = (FieldDatabase)builder.InsertField(FieldType.FieldDatabase, true);
 
-            // Simple MS Access-compliant query that extracts one table from the database
-            string simpleQuery = "SELECT * FROM [Products]";
+            // Create a simple query that extracts one table from the database
             field.FileName = MyDir + @"Data\Northwind.mdb";
-            field.Query = simpleQuery;
             field.Connection = "DSN=MS Access Databases";
+            field.Query = "SELECT * FROM [Products]";
 
             // Insert another database field
             field = (FieldDatabase)builder.InsertField(FieldType.FieldDatabase, true);
+            field.FileName = MyDir + @"Data\Northwind.mdb";
+            field.Connection = "DSN=MS Access Databases";
 
-            // This time the query will sort all the products by their gross sales in descending order
-            string complexQuery = "SELECT [Products].ProductName, FORMAT(SUM([Order Details].UnitPrice * (1 - [Order Details].Discount) * [Order Details].Quantity), 'Currency') AS GrossSales " +
+            // This query will sort all the products by their gross sales in descending order
+            field.Query = "SELECT [Products].ProductName, FORMAT(SUM([Order Details].UnitPrice * (1 - [Order Details].Discount) * [Order Details].Quantity), 'Currency') AS GrossSales " +
                                   "FROM([Products] " +
                                   "LEFT JOIN[Order Details] ON[Products].[ProductID] = [Order Details].[ProductID]) " +
                                   "GROUP BY[Products].ProductName " +
                                   "ORDER BY SUM([Order Details].UnitPrice* (1 - [Order Details].Discount) * [Order Details].Quantity) DESC";
 
-            field.Connection = "DSN=MS Access Databases";
-            field.FileName = MyDir + @"Data\Northwind.mdb";
-            field.Query = complexQuery;
-
-            // This is the same as the LIMIT clause, you can simplify your query by putting those values in these attributes instead
-            // Indexing is not zero-based; the below attributes will get the first 10 elements of the query result, effectively giving us the top 10 products in terms of gross sales
+            // You can use these variables instead of a LIMIT clause, to simplify your query
+            // In this case we are taking the first 10 values of the result of our query
             field.FirstRecord = "1";
             field.LastRecord = "10";
 
             // The number we put here is the index of the format we want to use for our table
-            // The list of table formats is in the "Table AutoFormat..." menu we find in MS Word when we create a data table field from there
+            // The list of table formats is in the "Table AutoFormat..." menu we find in MS Word when we create a data table field
             // Index "10" corresponds to the "Colorful 3" format
             field.TableFormat = "10";
 
             // This attribute decides which elements of the table format we picked above we incorporate into our table
             // The number we use is a sum of a combination of values corresponding to which elements we choose
             // 63 represents borders (1) + shading (2) + font (4) + colour (8) + autofit (16) + heading rows (32)
-            // Omitting any of the values from above will reset their respective parts of the table to the default format
             field.FormatAttributes = "63";
+
             field.InsertHeadings = true;
             field.InsertOnceOnMailMerge = true;
 
             doc.UpdateFields();
-
-            doc.Save(MyDir + @"\Artifacts\Field.Advance.docx");
+            doc.Save(MyDir + @"\Artifacts\Field.Database.docx");
             //ExEnd
         }
     }
