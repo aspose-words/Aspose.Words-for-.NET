@@ -789,23 +789,23 @@ namespace ApiExamples
         public void FieldLink()
         {
             //ExStart
-            //ExFor:Fields.FieldLink
-            //ExFor:Fields.FieldLink.AutoUpdate
-            //ExFor:Fields.FieldLink.FormatUpdateType
-            //ExFor:Fields.FieldLink.InsertAsBitmap
-            //ExFor:Fields.FieldLink.InsertAsHtml
-            //ExFor:Fields.FieldLink.InsertAsPicture
-            //ExFor:Fields.FieldLink.InsertAsRtf
-            //ExFor:Fields.FieldLink.InsertAsText
-            //ExFor:Fields.FieldLink.InsertAsUnicode
-            //ExFor:Fields.FieldLink.IsLinked
-            //ExFor:Fields.FieldLink.ProgId
-            //ExFor:Fields.FieldLink.SourceFullName
-            //ExFor:Fields.FieldLink.SourceItem
+            //ExFor:FieldLink
+            //ExFor:FieldLink.AutoUpdate
+            //ExFor:FieldLink.FormatUpdateType
+            //ExFor:FieldLink.InsertAsBitmap
+            //ExFor:FieldLink.InsertAsHtml
+            //ExFor:FieldLink.InsertAsPicture
+            //ExFor:FieldLink.InsertAsRtf
+            //ExFor:FieldLink.InsertAsText
+            //ExFor:FieldLink.InsertAsUnicode
+            //ExFor:FieldLink.IsLinked
+            //ExFor:FieldLink.ProgId
+            //ExFor:FieldLink.SourceFullName
+            //ExFor:FieldLink.SourceItem
             //ExSummary:Shows how to create link fields with various sources and presentation types.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-
+            
             // Use a document builder to insert a field link
             // Here we will insert a spreadsheet as a bitmap image
             FieldLink field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
@@ -813,7 +813,6 @@ namespace ApiExamples
             field.AutoUpdate = true;
             field.ProgId = "Excel.Sheet.8";
             field.SourceFullName = MyDir + "MySpreadsheet.xlsx";
-
             // Setting this field to "4" will keep the source format
             field.FormatUpdateType = "4";
             builder.Writeln();
@@ -823,10 +822,8 @@ namespace ApiExamples
             field.InsertAsText = true;
             field.AutoUpdate = true;
             field.ProgId = "Excel.Sheet.8";
-
             // Take only one cell from the source spreadsheet
             field.SourceItem = "Sheet1!R2C2";
-
             field.SourceFullName = MyDir + "MySpreadsheet.xlsx";
             builder.Writeln();
 
@@ -860,14 +857,13 @@ namespace ApiExamples
             field.AutoUpdate = true;
             field.ProgId = "Paint.Picture";
             field.SourceFullName = MyDir + "Images/Test_1024_768.bmp";
-
             // Setting this to true will not store the data in the document, reducing file size
             field.IsLinked = true;
             builder.Writeln();
 
             // You will be prompted to let the fields update when you open this document, give it a few seconds to do so
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\Field.Link.docx");
+            doc.Save(MyDir + @"\Artifacts\Field.Link.docx"); //INSP: Please check the result in the document. I see that there is not all correct as expected.
             //ExEnd
         }
     }
