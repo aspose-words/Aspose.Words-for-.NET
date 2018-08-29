@@ -789,15 +789,15 @@ namespace ApiExamples
         public void FieldXE()
         {
             //ExStart
-            //ExFor:Fields.FieldXE
-            //ExFor:Fields.FieldXE.EntryType
-            //ExFor:Fields.FieldXE.HasPageRangeBookmarkName
-            //ExFor:Fields.FieldXE.IsBold
-            //ExFor:Fields.FieldXE.IsItalic
-            //ExFor:Fields.FieldXE.PageNumberReplacement
-            //ExFor:Fields.FieldXE.PageRangeBookmarkName
-            //ExFor:Fields.FieldXE.Text
-            //ExFor:Fields.FieldXE.Yomi
+            //ExFor:FieldXE
+            //ExFor:FieldXE.EntryType
+            //ExFor:FieldXE.HasPageRangeBookmarkName
+            //ExFor:FieldXE.IsBold
+            //ExFor:FieldXE.IsItalic
+            //ExFor:FieldXE.PageNumberReplacement
+            //ExFor:FieldXE.PageRangeBookmarkName
+            //ExFor:FieldXE.Text
+            //ExFor:FieldXE.Yomi
             //ExSummary:Shows how to populate an index field with index entries.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -855,7 +855,7 @@ namespace ApiExamples
             index.EntryType = "Type1";
 
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\Field.XE.docx");
+            doc.Save(MyDir + @"\Artifacts\Field.XE.docx"); //INSP: Check the result, there is smth interesting. And fields are not updated by doc.UpdateFields();.
             //ExEnd
         }
     }
