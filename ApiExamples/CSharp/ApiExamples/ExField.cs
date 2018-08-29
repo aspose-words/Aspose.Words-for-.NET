@@ -801,10 +801,10 @@ namespace ApiExamples
         public void FieldCompare()
         {
             //ExStart
-            //ExFor:Fields.FieldCompare
-            //ExFor:Fields.FieldCompare.ComparisonOperator
-            //ExFor:Fields.FieldCompare.LeftExpression
-            //ExFor:Fields.FieldCompare.RightExpression
+            //ExFor:FieldCompare
+            //ExFor:FieldCompare.ComparisonOperator
+            //ExFor:FieldCompare.LeftExpression
+            //ExFor:FieldCompare.RightExpression
             //ExSummary:Shows how to insert a field that compares expressions.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);           
