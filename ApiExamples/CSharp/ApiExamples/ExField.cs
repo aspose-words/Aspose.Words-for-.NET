@@ -789,14 +789,14 @@ namespace ApiExamples
         public void FieldIf()
         {
             //ExStart
-            //ExFor:Fields.FieldIf
-            //ExFor:Fields.FieldIf.ComparisonOperator
-            //ExFor:Fields.FieldIf.EvaluateCondition
-            //ExFor:Fields.FieldIf.FalseText
-            //ExFor:Fields.FieldIf.LeftExpression
-            //ExFor:Fields.FieldIf.RightExpression
-            //ExFor:Fields.FieldIf.TrueText
-            //ExFor:Fields.FieldIfComparisonResult
+            //ExFor:FieldIf
+            //ExFor:FieldIf.ComparisonOperator
+            //ExFor:FieldIf.EvaluateCondition
+            //ExFor:FieldIf.FalseText
+            //ExFor:FieldIf.LeftExpression
+            //ExFor:FieldIf.RightExpression
+            //ExFor:FieldIf.TrueText
+            //ExFor:FieldIfComparisonResult
             //ExSummary:Shows how to insert an if field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
