@@ -789,32 +789,31 @@ namespace ApiExamples
         public void FieldData()
         {
             //ExStart
-            //ExFor:Fields.FieldData
+            //ExFor:FieldData
             //ExSummary:Shows how to insert a data field into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Use a document builder to insert a data field
             FieldData field = (FieldData)builder.InsertField(FieldType.FieldData, true);
-          
             Assert.AreEqual(" DATA ", field.GetFieldCode());
             //ExEnd
         }
 
         [Test]
-        public void FieldDataBase()
+        public void FieldDatabase()
         {
             //ExStart
-            //ExFor:Fields.FieldDatabase
-            //ExFor:Fields.FieldDatabase.Connection
-            //ExFor:Fields.FieldDatabase.FileName
-            //ExFor:Fields.FieldDatabase.FirstRecord
-            //ExFor:Fields.FieldDatabase.FormatAttributes
-            //ExFor:Fields.FieldDatabase.InsertHeadings
-            //ExFor:Fields.FieldDatabase.InsertOnceOnMailMerge
-            //ExFor:Fields.FieldDatabase.LastRecord
-            //ExFor:Fields.FieldDatabase.Query
-            //ExFor:Fields.FieldDatabase.TableFormat
+            //ExFor:FieldDatabase
+            //ExFor:FieldDatabase.Connection
+            //ExFor:FieldDatabase.FileName
+            //ExFor:FieldDatabase.FirstRecord
+            //ExFor:FieldDatabase.FormatAttributes
+            //ExFor:FieldDatabase.InsertHeadings
+            //ExFor:FieldDatabase.InsertOnceOnMailMerge
+            //ExFor:FieldDatabase.LastRecord
+            //ExFor:FieldDatabase.Query
+            //ExFor:FieldDatabase.TableFormat
             //ExSummary:Shows how to extract data from a database and insert it as a field into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -823,10 +822,11 @@ namespace ApiExamples
             FieldDatabase field = (FieldDatabase)builder.InsertField(FieldType.FieldDatabase, true);
 
             // Create a simple query that extracts one table from the database
-            field.FileName = MyDir + @"Data\Northwind.mdb";
+            field.FileName = MyDir + @"Data\Northwind.mdb"; //INSP: we already have this file in Database folder
             field.Connection = "DSN=MS Access Databases";
             field.Query = "SELECT * FROM [Products]";
 
+            //INSP: Check the result in the word document. I see only first field with SELECT * FROM [Products]. Also when I open the document, field not yet updated. Maybe it's bug?
             // Insert another database field
             field = (FieldDatabase)builder.InsertField(FieldType.FieldDatabase, true);
             field.FileName = MyDir + @"Data\Northwind.mdb";
@@ -839,6 +839,7 @@ namespace ApiExamples
                                   "GROUP BY[Products].ProductName " +
                                   "ORDER BY SUM([Order Details].UnitPrice* (1 - [Order Details].Discount) * [Order Details].Quantity) DESC";
 
+            //INSP: Try to apply this properties not only to the last field.
             // You can use these variables instead of a LIMIT clause, to simplify your query
             // In this case we are taking the first 10 values of the result of our query
             field.FirstRecord = "1";
