@@ -788,6 +788,7 @@ namespace ApiExamples
         [Test]
         public void FieldDate()
         {
+            //INSP: Can we combine this example with FieldCreateDate?
             //ExStart
             //ExFor:Fields.FieldDate
             //ExFor:Fields.FieldDate.UseLastFormat
