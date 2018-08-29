@@ -196,16 +196,19 @@ namespace ApiExamples
             {
                 // Download the bytes from the location referenced by the URL.
                 byte[] dataBytes = webClient.DownloadData(url);
-                // Wrap the bytes representing the document in memory into a MemoryStream object.
-                MemoryStream byteStream = new MemoryStream(dataBytes);
-                // Load this memory stream into a new Aspose.Words Document.
-                // The file format of the passed data is inferred from the content of the bytes itself. 
-                // You can load any document format supported by Aspose.Words in the same way.
-                Document doc = new Document(byteStream);
-                // Convert the document to any format supported by Aspose.Words.
-                doc.Save(MyDir + @"\Artifacts\Document.OpenFromWeb.docx");
-            }
 
+                // Wrap the bytes representing the document in memory into a MemoryStream object.
+                using (MemoryStream byteStream = new MemoryStream(dataBytes))
+                {
+                    // Load this memory stream into a new Aspose.Words Document.
+                    // The file format of the passed data is inferred from the content of the bytes itself. 
+                    // You can load any document format supported by Aspose.Words in the same way.
+                    Document doc = new Document(byteStream);
+
+                    // Convert the document to any format supported by Aspose.Words.
+                    doc.Save(MyDir + @"\Artifacts\Document.OpenFromWeb.docx");
+                }
+            }
             //ExEnd
         }
 
@@ -1510,6 +1513,26 @@ namespace ApiExamples
         }
 
         [Test]
+        public void RevisionHistory()
+        {
+            //ExStart
+            //ExFor:Paragraph.IsMoveFromRevision
+            //ExFor:Paragraph.IsMoveToRevision
+            //ExSummary:Shows how to get paragraph that was moved (deleted/inserted) in Microsoft Word while change tracking was enabled.
+            Document doc = new Document(MyDir + "MoveFromRevision.docx");
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+
+            for (int i = 0; i < paragraphs.Count; i++)
+            {
+                if (paragraphs[i].IsMoveFromRevision)
+                    Console.WriteLine("The paragraph {0} has been moved (deleted).", i);
+                if (paragraphs[i].IsMoveToRevision)
+                    Console.WriteLine("The paragraph {0} has been moved (inserted).", i);
+            }
+            //ExEnd
+        }
+
+        [Test]
         public void UpdateThumbnail()
         {
             //ExStart
@@ -2309,6 +2332,45 @@ namespace ApiExamples
 
             // We will still need the password if we want to open this one with Word
             docProtected.Save(MyDir + @"\Artifacts\Document.WriteProtectionEditedAfter.docx");
+            //ExEnd
+        }
+        
+        [Test]
+        public void AddEditingLanguage()
+        {
+            //ExStart
+            //ExFor:LanguagePreferences.AddEditingLanguage(EditingLanguage)
+            //ExSummary:Shows how to set up language preferences that will be used when document is loading
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.LanguagePreferences.AddEditingLanguage(EditingLanguage.Japanese);
+            
+            Document doc = new Document(MyDir + "Document.EditingLanguage.docx", loadOptions);
+
+            int localeIdFarEast = doc.Styles.DefaultFont.LocaleIdFarEast;
+            if (localeIdFarEast == (int)EditingLanguage.Japanese)
+                Console.WriteLine("The document either has no any FarEast language set in defaults or it was set to Japanese originally.");
+            else
+                Console.WriteLine("The document default FarEast language was set to another than Japanese language originally, so it is not overridden.");
+            //ExEnd
+        }
+
+        [Test]
+        public void SetEditingLanguageAsDefault()
+        {
+            //ExStart
+            //ExFor:LanguagePreferences.SetAsDefault(EditingLanguage)
+            //ExSummary:Shows how to set language as default
+            LoadOptions loadOptions = new LoadOptions();
+            // You can set language which only
+            loadOptions.LanguagePreferences.DefaultEditingLanguage = EditingLanguage.Russian;
+
+            Document doc = new Document(MyDir + "Document.EditingLanguage.docx", loadOptions);
+
+            int localeId = doc.Styles.DefaultFont.LocaleId;
+            if (localeId == (int)EditingLanguage.Russian)
+                Console.WriteLine("The document either has no any language set in defaults or it was set to Russian originally.");
+            else
+                Console.WriteLine("The document default language was set to another than Russian language originally, so it is not overridden.");
             //ExEnd
         }
     }

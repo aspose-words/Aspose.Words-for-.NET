@@ -241,6 +241,25 @@ namespace ApiExamples
             }
         }
 
+        [Test]
+        public void AsianTypographyProperties()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.FarEastLineBreakControl
+            //ExFor:ParagraphFormat.WordWrap
+            //ExFor:ParagraphFormat.HangingPunctuation
+            //ExSummary:Shows how to set special properties for Asian typography. 
+            Document doc = new Document(MyDir + "Document.docx");
+
+            ParagraphFormat format = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat;
+            format.FarEastLineBreakControl = true;
+            format.WordWrap = false;
+            format.HangingPunctuation = true;
+
+            doc.Save(MyDir + @"\Artifacts\Paragraph.AsianTypographyProperties.docx");
+            //ExEnd
+        }
+
         /// <summary>
         /// Insert field into the first paragraph of the current document using field type
         /// </summary>

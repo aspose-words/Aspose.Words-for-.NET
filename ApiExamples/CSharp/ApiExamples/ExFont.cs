@@ -347,7 +347,7 @@ namespace ApiExamples
             Run run = new Run(doc, "Привет");
 
             //Specify the locale so Microsoft Word recognizes this text as Russian.
-            //For the list of locale identifiers see http://www.microsoft.com/globaldev/reference/lcid-all.mspx
+            //For the list of locale identifiers see https://docs.microsoft.com/en-us/deployoffice/office2016/language-identifiers-and-optionstate-id-values-in-office-2016
             run.Font.LocaleId = 1049;
             //ExEnd
         }
@@ -434,7 +434,7 @@ namespace ApiExamples
             builder.Font.BoldBi = true;
 
             // Specify the locale so Microsoft Word recognizes this text as Arabic - Saudi Arabia.
-            // For the list of locale identifiers see http://www.microsoft.com/globaldev/reference/lcid-all.mspx
+            // For the list of locale identifiers see https://docs.microsoft.com/en-us/deployoffice/office2016/language-identifiers-and-optionstate-id-values-in-office-2016
             builder.Font.LocaleIdBi = 1025;
 
             // Insert some Arabic text.
@@ -459,7 +459,7 @@ namespace ApiExamples
             builder.Font.NameFarEast = "SimSun";
 
             // Specify the locale so Microsoft Word recognizes this text as Chinese.
-            // For the list of locale identifiers see http://www.microsoft.com/globaldev/reference/lcid-all.mspx
+            // For the list of locale identifiers see https://docs.microsoft.com/en-us/deployoffice/office2016/language-identifiers-and-optionstate-id-values-in-office-2016
             builder.Font.LocaleIdFarEast = 2052;
 
             // Insert some Chinese text.
