@@ -812,7 +812,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Fields.FieldAutoNum
             //ExFor:Fields.FieldAutoNum.SeparatorCharacter
-            //ExFor:Fields.FieldAutoNumOut
+            //ExFor:Fields.FieldAutoNumOut //INSP: Remove, there is no place in this method where you use it. Please don't forget to check tags
             //ExSummary:Shows how to number paragraphs using autonum fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -848,11 +848,12 @@ namespace ApiExamples
             //ExFor:Fields.FieldAutoNumLgl
             //ExFor:Fields.FieldAutoNumLgl.RemoveTrailingPeriod
             //ExFor:Fields.FieldAutoNumLgl.SeparatorCharacter
-            //ExSummary:Shows how to organize a document using auto num legal fields.
+            //ExSummary:Shows how to organize a document using autonum legal fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // In this case our auto num legal field will number our first paragraph as "1." like an ordinary auto num field
+            
+            //INSP: I think we can create a separate method for this three lines of code.
+            // In this case our autonum legal field will number our first paragraph as "1." like an ordinary autonum field
             builder.InsertField(FieldType.FieldAutoNumLegal, true);
             builder.CurrentParagraph.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
             builder.Writeln("\tHeading 1");
@@ -900,16 +901,17 @@ namespace ApiExamples
             //ExEnd
         }
 
+        //INSP:Are there any other differences from FieldType.FieldAutoNum?
         [Test]
         public void FieldAutoNumOut()
         {
             //ExStart
             //ExFor:Fields.FieldAutoNumOut
-            //ExSummary:Shows how to number paragraphs using auto num outline fields.
+            //ExSummary:Shows how to number paragraphs using autonum outline fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The two fields we insert here will be numbered 1 and 2
+            // The two fields that we insert here will be numbered 1 and 2
             builder.InsertField(FieldType.FieldAutoNumOutline, true);
             builder.Writeln("\tParagraph 1.");
             builder.InsertField(FieldType.FieldAutoNumOutline, true);
