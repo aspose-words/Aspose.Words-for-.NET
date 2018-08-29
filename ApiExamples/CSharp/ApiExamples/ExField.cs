@@ -801,17 +801,17 @@ namespace ApiExamples
         public void FieldCollection()
         {
             //ExStart
-            //ExFor:Fields.FieldCollection
-            //ExFor:Fields.FieldCollection.Clear
-            //ExFor:Fields.FieldCollection.Count
-            //ExFor:Fields.FieldCollection.GetEnumerator
-            //ExFor:Fields.FieldCollection.Item(System.Int32)
-            //ExFor:Fields.FieldCollection.Remove(Fields.Field)
-            //ExFor:Fields.FieldCollection.Remove(Fields.FieldStart)
-            //ExFor:Fields.FieldCollection.RemoveAt(System.Int32)
-            //ExSummary:Shows how to work with a docment's collection of fields.
+            //ExFor:FieldCollection
+            //ExFor:FieldCollection.Clear
+            //ExFor:FieldCollection.Count
+            //ExFor:FieldCollection.GetEnumerator
+            //ExFor:FieldCollection.Item(Int32)
+            //ExFor:FieldCollection.Remove(Field)
+            //ExFor:FieldCollection.Remove(FieldStart)
+            //ExFor:FieldCollection.RemoveAt(Int32)
+            //ExSummary:Shows how to work with a document's collection of fields.
             // Open a document that has fields
-            Document doc = new Document(MyDir + @"\Document.ContainsFields.docx");
+            Document doc = new Document(MyDir + "Document.ContainsFields.docx");
 
             // Get the collection that contains all the fields in a document
             FieldCollection fields = doc.Range.Fields;
