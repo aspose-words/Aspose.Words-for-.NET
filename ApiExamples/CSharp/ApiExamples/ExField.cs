@@ -800,6 +800,7 @@ namespace ApiExamples
             Assert.AreEqual("1033", field.LanguageId);
         }
 
+        //INSP: I don't see any fields in document, that have cite for smth. Please continue the analysis. Try to insert citation in word document firstly and see how it will be.
         [Test]
         public void FieldCitation()
         {
@@ -817,7 +818,7 @@ namespace ApiExamples
             //ExFor:Fields.FieldCitation.VolumeNumber
             //ExSummary:Shows how to insert a citation field and edit its properties.
             // Open a document that has bibliographical sources
-            Document doc = new Document(MyDir + @"\Document.HasBibliography.docx");
+            Document doc = new Document(MyDir + "Document.HasBibliography.docx");
 
             // Add text that we can cite
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -852,6 +853,7 @@ namespace ApiExamples
             Assert.AreEqual(" CITATION  Book1 \\m Book2 \\l en-US \\p 19 \\f \"Prefix \" \\s \" Suffix\" \\v VII", field.GetFieldCode());
 
             doc.UpdateFields();
+            //INSP: The outcome document has one more field in the end. Please check this. 
             doc.Save(MyDir + @"\Artifacts\Field.Citation.docx");
             //ExEnd
         }
