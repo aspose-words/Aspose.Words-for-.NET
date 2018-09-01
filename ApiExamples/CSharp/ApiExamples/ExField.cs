@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //////////////////////////////////////////////////////////////////////////
 // Copyright 2001-2013 Aspose Pty Ltd. All Rights Reserved.
 //
@@ -12,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Aspose.BarCode.BarCodeRecognition;
@@ -196,7 +197,7 @@ namespace ApiExamples
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
 
             // Execute mail merge.
-            doc.MailMerge.Execute(new String[] {"Date"}, new object[] {DateTime.Now});
+            doc.MailMerge.Execute(new[] { "Date" }, new object[] { DateTime.Now });
 
             // Restore the original culture.
             Thread.CurrentThread.CurrentCulture = currentCulture;
@@ -242,24 +243,16 @@ namespace ApiExamples
         private class InsertTcFieldHandler : IReplacingCallback
         {
             // Store the text and switches to be used for the TC fields.
-            private String mFieldText;
-            private String mFieldSwitches;
-
-            /// <summary>
-            /// The switches to use for each TC field. Can be an empty String or null.
-            /// </summary>
-            public InsertTcFieldHandler(String switches) : this(String.Empty, switches)
-            {
-                this.mFieldSwitches = switches;
-            }
+            private readonly String mFieldText;
+            private readonly String mFieldSwitches;
 
             /// <summary>
             /// The display text and switches to use for each TC field. Display name can be an empty String or null.
             /// </summary>
             public InsertTcFieldHandler(String text, String switches)
             {
-                this.mFieldText = text;
-                this.mFieldSwitches = switches;
+                mFieldText = text;
+                mFieldSwitches = switches;
             }
 
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)
@@ -273,18 +266,19 @@ namespace ApiExamples
                 // match String as the display text.
                 String insertText;
 
-                if (!String.IsNullOrEmpty(this.mFieldText))
-                    insertText = this.mFieldText;
+                if (!String.IsNullOrEmpty(mFieldText))
+                    insertText = mFieldText;
                 else
                     insertText = args.Match.Value;
 
                 // Insert the TC field before this node using the specified String as the display text and user defined switches.
-                builder.InsertField(String.Format("TC \"{0}\" {1}", insertText, this.mFieldSwitches));
+                builder.InsertField(String.Format("TC \"{0}\" {1}", insertText, mFieldSwitches));
 
                 // We have done what we want so skip replacement.
                 return ReplaceAction.Skip;
             }
         }
+
         //ExEnd
 
         [Test]
@@ -303,15 +297,16 @@ namespace ApiExamples
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
-            //Assert that field model is correct
+
+            // Assert that field model is correct
             Assert.IsTrue(doc.Range.Fields[0].IsDirty);
 
-            LoadOptions loadOptions = new LoadOptions();
-            loadOptions.UpdateDirtyFields = false;
+            LoadOptions loadOptions = new LoadOptions { UpdateDirtyFields = false };
 
-            doc = new Document(dstStream);
+            doc = new Document(dstStream, loadOptions);
             Field tocField = doc.Range.Fields[0];
-            //Assert that isDirty saves 
+
+            // Assert that isDirty saves 
             Assert.IsTrue(tocField.IsDirty);
         }
 
@@ -333,7 +328,7 @@ namespace ApiExamples
 
             //Add text into the paragraph
             Paragraph para = doc.FirstSection.Body.Paragraphs[0];
-            Run run = new Run(doc) {Text = " Hello World!"};
+            Run run = new Run(doc) { Text = " Hello World!" };
             para.AppendChild(run);
 
             FieldArgumentBuilder argumentBuilder = new FieldArgumentBuilder();
@@ -367,6 +362,7 @@ namespace ApiExamples
                 () => fieldBuilder.AddArgument(argumentBuilder).AddArgument("=").AddArgument("BestField")
                     .AddArgument(10).AddArgument(20.0).BuildAndInsert(run), Throws.TypeOf<ArgumentException>());
         }
+
 #if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
         public void BarCodeWord2Pdf()
@@ -424,8 +420,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Field.Update(bool)
             //ExSummary:Shows a way to update a field ignoring the MERGEFORMAT switch
-            LoadOptions loadOptions = new LoadOptions();
-            loadOptions.PreserveIncludePictureField = true;
+            LoadOptions loadOptions = new LoadOptions { PreserveIncludePictureField = true };
 
             Document doc = new Document(MyDir + "Field.UpdateFieldIgnoringMergeFormat.docx", loadOptions);
 
@@ -510,8 +505,9 @@ namespace ApiExamples
             //ExEnd
 
             String secWithFields = DocumentHelper.GetSectionText(doc, 1);
-            Assert.AreEqual(secWithFields,
-                "Fields.Docx   Элементы указателя не найдены.     3.\rОшибка! Не указана последовательность.    Fields.Docx   Элементы указателя не найдены.     4.\r\r\r\r\r\f");
+            Assert.AreEqual(
+                "Fields.Docx   Элементы указателя не найдены.     3.\rОшибка! Не указана последовательность.    Fields.Docx   Элементы указателя не найдены.     4.\r\r\r\r\r\f",
+                secWithFields);
         }
 
         [Test]
@@ -521,13 +517,13 @@ namespace ApiExamples
             //ExFor:Field.Unlink
             //ExSummary:Shows how to unlink specific field
             Document doc = new Document(MyDir + "Field.UnlinkFields.docx");
-
             doc.Range.Fields[1].Unlink();
             //ExEnd
 
             String paraWithFields = DocumentHelper.GetParagraphText(doc, 0);
-            Assert.AreEqual(paraWithFields,
-                "\u0013 FILENAME  \\* Caps  \\* MERGEFORMAT \u0014Fields.Docx\u0015   Элементы указателя не найдены.     \u0013 LISTNUM  LegalDefault \u0015\r");
+            Assert.AreEqual(
+                "\u0013 FILENAME  \\* Caps  \\* MERGEFORMAT \u0014Fields.Docx\u0015   Элементы указателя не найдены.     \u0013 LISTNUM  LegalDefault \u0015\r",
+                paraWithFields);
         }
 
         [Test]
@@ -540,10 +536,10 @@ namespace ApiExamples
 
             NodeCollection paragraphCollection = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            foreach (Paragraph para in paragraphCollection)
+            foreach (Paragraph para in paragraphCollection.OfType<Paragraph>())
             {
                 // Check all runs in the paragraph for the first page breaks.
-                foreach (Run run in para.Runs)
+                foreach (Run run in para.Runs.OfType<Run>())
                 {
                     if (run.Text.Contains(ControlChar.PageBreak))
                     {
@@ -563,7 +559,7 @@ namespace ApiExamples
 
             NodeCollection fStart = doc.GetChildNodes(NodeType.FieldStart, true);
 
-            foreach (FieldStart field in fStart)
+            foreach (FieldStart field in fStart.OfType<FieldStart>())
             {
                 FieldType fType = field.FieldType;
                 if (fType == FieldType.FieldTOC)
@@ -625,7 +621,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Use a document builder to create and populate a combo box
-            string[] items = {"One", "Two", "Three"};
+            string[] items = { "One", "Two", "Three" };
             FormField comboBoxField = builder.InsertComboBox("DropDown", items, 0);
 
             // Get the list of drop down items
@@ -646,7 +642,7 @@ namespace ApiExamples
             {
                 while (dropDownCollectionEnumerator.MoveNext())
                 {
-                    string currentItem = (string) dropDownCollectionEnumerator.Current;
+                    string currentItem = dropDownCollectionEnumerator.Current;
                     Console.WriteLine(currentItem);
                 }
             }
@@ -717,7 +713,6 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Write("This text is in its normal place.");
-
             // Create an advance field using document builder
             FieldAdvance field = (FieldAdvance) builder.InsertField(FieldType.FieldAdvance, true);
 
@@ -725,13 +720,11 @@ namespace ApiExamples
 
             Assert.AreEqual(FieldType.FieldAdvance, field.Type);
             Assert.AreEqual(" ADVANCE ", field.GetFieldCode());
-
             // The second text that the builder added will now be moved
             field.RightOffset = "5";
             field.UpOffset = "5";
 
             Assert.AreEqual(" ADVANCE  \\r 5 \\u 5", field.GetFieldCode());
-
             // If we want to move text in the other direction, and try do that by using negative values for the above field members, we will get an error in our document
             // Instead, we need to specify a positive value for the opposite respective field directional variable
             field = (FieldAdvance) builder.InsertField(FieldType.FieldAdvance, true);
@@ -739,13 +732,10 @@ namespace ApiExamples
             field.LeftOffset = "100";
 
             Assert.AreEqual(" ADVANCE  \\d 5 \\l 100", field.GetFieldCode());
-
             // We are still on one paragraph
             Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
-
             // Since we're setting horizontal and vertical positions next, we need to end the paragraph so the previous line does not get moved with the next one
             builder.Writeln("This text is moved down and to the left, overlapping the previous text.");
-
             // This time we can also use negative values 
             field = (FieldAdvance) builder.InsertField(FieldType.FieldAdvance, true);
             field.HorizontalPosition = "-100";
@@ -771,23 +761,30 @@ namespace ApiExamples
             //ExSummary:Shows how to build a field address block.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             // Use a document builder to insert a field address block
             FieldAddressBlock field = (FieldAddressBlock) builder.InsertField(FieldType.FieldAddressBlock, true);
+
             // Initially our field is an empty address block field with null attributes
             Assert.AreEqual(" ADDRESSBLOCK ", field.GetFieldCode());
+
             // Setting this to "2" will cause all countries/regions to be included, unless it is the one specified in the ExcludedCountryOrRegionName attribute
             field.IncludeCountryOrRegionName = "2";
             field.FormatAddressOnCountryOrRegion = true;
             field.ExcludedCountryOrRegionName = "United States";
+
             // Specify our own name and address format
             field.NameAndAddressFormat = "<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>";
+
             // By default, the language ID will be set to that of the first character of the document
             // In this case we will specify it to be English
             field.LanguageId = "1033";
+
             // Our field code has changed according to the attribute values that we set
             Assert.AreEqual(
                 " ADDRESSBLOCK  \\c 2 \\d \\e \"United States\" \\f \"<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>\" \\l 1033",
                 field.GetFieldCode());
+
             //ExEnd
             Assert.AreEqual("2", field.IncludeCountryOrRegionName);
             Assert.AreEqual(true, field.FormatAddressOnCountryOrRegion);
@@ -833,6 +830,179 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.Compare.docx");
+        }
+
+        [Test]
+        public void FieldIf()
+        {
+            //ExStart
+            //ExFor:FieldIf
+            //ExFor:FieldIf.ComparisonOperator
+            //ExFor:FieldIf.EvaluateCondition
+            //ExFor:FieldIf.FalseText
+            //ExFor:FieldIf.LeftExpression
+            //ExFor:FieldIf.RightExpression
+            //ExFor:FieldIf.TrueText
+            //ExFor:FieldIfComparisonResult
+            //ExSummary:Shows how to insert an if field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Statement 1: ");
+
+            // Use document builder to insert an if field
+            FieldIf fieldIf = (FieldIf)builder.InsertField(FieldType.FieldIf, true);
+
+            // The if field will output either the TrueText or FalseText string into the document, depending on the truth of the statement
+            // In this case, "0 = 1" is incorrect, so the output will be "False"
+            fieldIf.LeftExpression = "0";
+            fieldIf.ComparisonOperator = "=";
+            fieldIf.RightExpression = "1";
+            fieldIf.TrueText = "True";
+            fieldIf.FalseText = "False";
+
+            Assert.AreEqual(" IF  0 = 1 True False", fieldIf.GetFieldCode());
+            Assert.AreEqual(FieldIfComparisonResult.False, fieldIf.EvaluateCondition());
+
+            // This time, the statement is correct, so the output will be "True"
+            builder.Write("\nStatement 2: ");
+            fieldIf = (FieldIf)builder.InsertField(FieldType.FieldIf, true);
+            fieldIf.LeftExpression = "5";
+            fieldIf.ComparisonOperator = "=";
+            fieldIf.RightExpression = "2 + 3";
+            fieldIf.TrueText = "True";
+            fieldIf.FalseText = "False";
+
+            Assert.AreEqual(" IF  5 = \"2 + 3\" True False", fieldIf.GetFieldCode());
+            Assert.AreEqual(FieldIfComparisonResult.True, fieldIf.EvaluateCondition());
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.If.docx");
+        }
+        
+        [Test]
+        public void FieldAutoNum()
+        {
+            //ExStart
+            //ExFor:Fields.FieldAutoNum
+            //ExFor:Fields.FieldAutoNum.SeparatorCharacter
+            //ExSummary:Shows how to number paragraphs using autonum fields.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // The two fields we insert here will be automatically numbered 1 and 2
+            builder.InsertField(FieldType.FieldAutoNum, true);
+            builder.Writeln("\tParagraph 1.");
+            builder.InsertField(FieldType.FieldAutoNum, true);
+            builder.Writeln("\tParagraph 2.");
+
+            foreach (Field field in doc.Range.Fields)
+            {
+                if (field.Type == FieldType.FieldAutoNum)
+                {
+                    // Leaving the FieldAutoNum.SeparatorCharacter field null will set the separator character to '.' by default
+                    Assert.IsNull(((FieldAutoNum)field).SeparatorCharacter);
+
+                    // The first character of the string entered here will be used as the separator character
+                    ((FieldAutoNum)field).SeparatorCharacter = ":";
+
+                    Assert.AreEqual(" AUTONUM  \\s :", field.GetFieldCode());
+                }
+            }
+
+            doc.Save(MyDir + @"\Artifacts\Field.AutoNum.docx");
+            //ExEnd
+        }
+
+        //ExStart
+        //ExFor:Fields.FieldAutoNumLgl
+        //ExFor:Fields.FieldAutoNumLgl.RemoveTrailingPeriod
+        //ExFor:Fields.FieldAutoNumLgl.SeparatorCharacter
+        //ExSummary:Shows how to organize a document using autonum legal fields
+        [Test] //ExSkip
+        public void FieldAutoNumLgl()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // This string will be our paragraph text that
+            string loremIpsum =
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
+                "\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ";
+
+            // In this case our autonum legal field will number our first paragraph as "1."
+            InsertNumberedClause(builder, "\tHeading 1", loremIpsum, StyleIdentifier.Heading1);
+
+            // Our heading style number will be 1 again, so this field will keep counting headings at a heading level of 1
+            InsertNumberedClause(builder, "\tHeading 2", loremIpsum, StyleIdentifier.Heading1);
+
+            // Our heading style is 2, setting the paragraph numbering depth to 2, setting this field's value to "2.1."
+            InsertNumberedClause(builder, "\tHeading 3", loremIpsum, StyleIdentifier.Heading2);
+
+            // Our heading style is 3, so we are going deeper again to "2.1.1."
+            InsertNumberedClause(builder, "\tHeading 4", loremIpsum, StyleIdentifier.Heading3);
+
+            // Our heading style is 2, and the next field number at that level is "2.2."
+            InsertNumberedClause(builder, "\tHeading 5", loremIpsum, StyleIdentifier.Heading2);
+
+            foreach (Field field in doc.Range.Fields)
+            {
+                if (field.Type == FieldType.FieldAutoNumLegal)
+                {
+                    // By default the separator will appear as "." in the document but here it is null
+                    Assert.IsNull(((FieldAutoNumLgl)field).SeparatorCharacter);
+
+                    // Change the separator character and remove trailing separators
+                    ((FieldAutoNumLgl)field).SeparatorCharacter = ":";
+                    ((FieldAutoNumLgl)field).RemoveTrailingPeriod = true;
+                    Assert.AreEqual(" AUTONUMLGL  \\s : \\e", field.GetFieldCode());
+                }
+            }
+
+            doc.Save(MyDir + @"\Artifacts\Field.AutoNumLegal.docx");
+        }
+
+        /// <summary>
+        /// Get a document builder to insert a clause numbered by an autonum legal field
+        /// </summary>
+        private void InsertNumberedClause(DocumentBuilder builder, string heading, string contents, StyleIdentifier headingStyle)
+        {
+            // This legal field will automatically number our clauses, taking heading style level into account
+            builder.InsertField(FieldType.FieldAutoNumLegal, true);
+            builder.CurrentParagraph.ParagraphFormat.StyleIdentifier = headingStyle;
+            builder.Writeln(heading);
+
+            // This text will belong to the auto num legal field above it
+            // It will collapse when the arrow next to the corresponding autonum legal field is clicked in MS Word
+            builder.CurrentParagraph.ParagraphFormat.StyleIdentifier = StyleIdentifier.BodyText;
+            builder.Writeln(contents);
+        }
+        //ExEnd
+
+        [Test]
+        public void FieldAutoNumOut()
+        {
+            //ExStart
+            //ExFor:Fields.FieldAutoNumOut
+            //ExSummary:Shows how to number paragraphs using autonum outline fields.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // The two fields that we insert here will be numbered 1 and 2
+            builder.InsertField(FieldType.FieldAutoNumOutline, true);
+            builder.Writeln("\tParagraph 1.");
+            builder.InsertField(FieldType.FieldAutoNumOutline, true);
+            builder.Writeln("\tParagraph 2.");
+
+            foreach (Field field in doc.Range.Fields)
+            {
+                if (field.Type == FieldType.FieldAutoNumOutline)
+                {
+                    Assert.AreEqual(" AUTONUMOUT ", field.GetFieldCode());
+                }
+            }
+
+            doc.Save(MyDir + @"\Artifacts\Field.AutoNumOut.docx");
             //ExEnd
         }
     }

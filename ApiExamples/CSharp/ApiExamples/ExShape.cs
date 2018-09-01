@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -8,6 +8,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
@@ -17,6 +18,7 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
+
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
@@ -61,7 +63,7 @@ namespace ApiExamples
             //ExSummary:Shows how to test if a shape in the document is inline or floating.
             Document doc = new Document(MyDir + "Shape.DeleteAllShapes.doc");
 
-            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
+            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())
             {
                 if (shape.IsInline)
                     Console.WriteLine("Shape is inline.");
@@ -71,7 +73,7 @@ namespace ApiExamples
             //ExEnd
 
             // Verify that the first shape in the document is not inline.
-            Assert.False(((Shape)doc.GetChild(NodeType.Shape, 0, true)).IsInline);
+            Assert.False(((Shape) doc.GetChild(NodeType.Shape, 0, true)).IsInline);
         }
 
         [Test]
@@ -85,8 +87,8 @@ namespace ApiExamples
             Document doc = new Document();
 
             // The lines will cross the whole page.
-            float pageWidth = (float)doc.FirstSection.PageSetup.PageWidth;
-            float pageHeight = (float)doc.FirstSection.PageSetup.PageHeight;
+            float pageWidth = (float) doc.FirstSection.PageSetup.PageWidth;
+            float pageHeight = (float) doc.FirstSection.PageSetup.PageHeight;
 
             // This line goes from top left to bottom right by default. 
             Shape lineA = new Shape(doc, ShapeType.Line);
@@ -157,7 +159,7 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             Console.WriteLine("Shape text: " + shape.Title);
             //ExEnd
 
@@ -183,7 +185,7 @@ namespace ApiExamples
             // into a fixed size array, otherwise iterator will be invalidated.
             Node[] shapes = shapeCollection.ToArray();
 
-            foreach (Shape shape in shapes)
+            foreach (Shape shape in shapes.OfType<Shape>())
             {
                 // Filter out all shapes that we don't need.
                 if (shape.ShapeType.Equals(ShapeType.TextBox))
@@ -278,19 +280,20 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Shape.ActiveXObject.docx");
 
             //Get ActiveX control from the document 
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             OleControl oleControl = shape.OleFormat.OleControl;
 
             //Get ActiveX control properties
             if (oleControl.IsForms2OleControl)
             {
-                Forms2OleControl checkBox = (Forms2OleControl)oleControl;
+                Forms2OleControl checkBox = (Forms2OleControl) oleControl;
                 Assert.AreEqual("Первый", checkBox.Caption);
                 Assert.AreEqual("0", checkBox.Value);
                 Assert.AreEqual(true, checkBox.Enabled);
                 Assert.AreEqual(Forms2OleControlType.CheckBox, checkBox.Type);
                 Assert.AreEqual(null, checkBox.ChildNodes);
             }
+
             //ExEnd
         }
 
@@ -303,7 +306,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Shape.SuggestedFileName.rtf");
 
             // Gets the file name suggested for the current embedded object if you want to save it into a file
-            Shape oleShape = (Shape)doc.FirstSection.Body.GetChild(NodeType.Shape, 0, true);
+            Shape oleShape = (Shape) doc.FirstSection.Body.GetChild(NodeType.Shape, 0, true);
             String suggestedFileName = oleShape.OleFormat.SuggestedFileName;
             //ExEnd
 
@@ -315,7 +318,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Shape.ActiveXObject.docx");
 
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             Assert.IsEmpty(shape.OleFormat.SuggestedFileName);
         }
 
@@ -324,7 +327,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Shape.TextBox.doc");
 
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
 
             ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Jpeg);
 
@@ -335,20 +338,25 @@ namespace ApiExamples
             shape.Remove();
 
             // Check that the opaque bounds and bounds have default values
-            Assert.AreEqual(250, renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.VerticalResolution).Width);
-            Assert.AreEqual(52, renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.HorizontalResolution).Height);
+            Assert.AreEqual(250,
+                renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.VerticalResolution).Width);
+            Assert.AreEqual(52,
+                renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.HorizontalResolution).Height);
 
             Assert.AreEqual(250, renderer.GetBoundsInPixels(imageOptions.Scale, imageOptions.VerticalResolution).Width);
-            Assert.AreEqual(52, renderer.GetBoundsInPixels(imageOptions.Scale, imageOptions.HorizontalResolution).Height);
+            Assert.AreEqual(52,
+                renderer.GetBoundsInPixels(imageOptions.Scale, imageOptions.HorizontalResolution).Height);
 
-            Assert.AreEqual(250, renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.HorizontalResolution).Width);
-            Assert.AreEqual(52, renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.HorizontalResolution).Height);
+            Assert.AreEqual(250,
+                renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.HorizontalResolution).Width);
+            Assert.AreEqual(52,
+                renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.HorizontalResolution).Height);
 
             Assert.AreEqual(250, renderer.GetBoundsInPixels(imageOptions.Scale, imageOptions.VerticalResolution).Width);
             Assert.AreEqual(52, renderer.GetBoundsInPixels(imageOptions.Scale, imageOptions.VerticalResolution).Height);
 
-            Assert.AreEqual((float)187.850006, renderer.OpaqueBoundsInPoints.Width);
-            Assert.AreEqual((float)39.25, renderer.OpaqueBoundsInPoints.Height);
+            Assert.AreEqual((float) 187.850006, renderer.OpaqueBoundsInPoints.Width);
+            Assert.AreEqual((float) 39.25, renderer.OpaqueBoundsInPoints.Height);
         }
 
         [Test]
@@ -371,8 +379,9 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
 
             //Get OfficeMath node from the document and render this as image (you can also do the same with the Shape node)
-            OfficeMath math = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
-            math.GetMathRenderer().Save(MyDir + @"\Artifacts\Shape.OfficeMath.svg", new ImageSaveOptions(SaveFormat.Svg));
+            OfficeMath math = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
+            math.GetMathRenderer()
+                .Save(MyDir + @"\Artifacts\Shape.OfficeMath.svg", new ImageSaveOptions(SaveFormat.Svg));
             //ExEnd
         }
 
@@ -381,10 +390,11 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
 
-            OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
+            OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
             officeMath.DisplayType = OfficeMathDisplayType.Display;
 
-            Assert.That(() => officeMath.Justification = OfficeMathJustification.Inline, Throws.TypeOf<ArgumentException>());
+            Assert.That(() => officeMath.Justification = OfficeMathJustification.Inline,
+                Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -392,7 +402,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
 
-            OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
+            OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
 
             Assert.AreEqual(OfficeMathDisplayType.Display, officeMath.DisplayType);
             Assert.AreEqual(OfficeMathJustification.Center, officeMath.Justification);
@@ -407,13 +417,14 @@ namespace ApiExamples
             //ExSummary:Shows how to set office math display formatting.
             Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
 
-            OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
+            OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
             officeMath.DisplayType = OfficeMathDisplayType.Display;
             officeMath.Justification = OfficeMathJustification.Left;
 
             doc.Save(MyDir + @"Artifacts\Shape.OfficeMath.docx");
             //ExEnd
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"Artifacts\Shape.OfficeMath.docx", MyDir + @"\Golds\Shape.OfficeMath Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"Artifacts\Shape.OfficeMath.docx",
+                MyDir + @"\Golds\Shape.OfficeMath Gold.docx"));
         }
 
         [Test]
@@ -421,7 +432,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
 
-            OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
+            OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
             officeMath.DisplayType = OfficeMathDisplayType.Display;
 
             Assert.Throws<ArgumentException>(() => officeMath.Justification = OfficeMathJustification.Inline);
@@ -432,7 +443,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
 
-            OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
+            OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
             officeMath.DisplayType = OfficeMathDisplayType.Inline;
 
             Assert.Throws<ArgumentException>(() => officeMath.Justification = OfficeMathJustification.Center);
@@ -443,7 +454,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Shape.NestedOfficeMath.docx");
 
-            OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
+            OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
 
             //Always inline
             Assert.AreEqual(OfficeMathDisplayType.Inline, officeMath.DisplayType);
@@ -460,7 +471,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
 
-            OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, index, true);
+            OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, index, true);
             Assert.AreEqual(objectType, officeMath.MathObjectType);
         }
 
@@ -476,14 +487,14 @@ namespace ApiExamples
 
             // Get shape object from the document and set AspectRatioLocked(it is possible to get/set AspectRatioLocked for child shapes (mimic MS Word behavior), 
             // but AspectRatioLocked has effect only for top level shapes!)
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             shape.AspectRatioLocked = isLocked;
             //ExEnd
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             Assert.AreEqual(isLocked, shape.AspectRatioLocked);
         }
 
@@ -537,7 +548,7 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             Assert.AreEqual(true, shape.AspectRatioLocked);
 #endif
         }
@@ -550,17 +561,17 @@ namespace ApiExamples
             //ExSummary:Shows how get markup language for shape object in document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-
-            Shape image = builder.InsertImage(ImageDir + "dotnet-logo.png");
+            builder.InsertImage(ImageDir + "dotnet-logo.png");
 
             // Loop through all single shapes inside document.
-            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
+            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())
             {
-                Assert.AreEqual(ShapeMarkupLanguage.Dml, shape.MarkupLanguage);
+                Assert.AreEqual(ShapeMarkupLanguage.Dml, shape.MarkupLanguage); //ExSkip
 
                 Console.WriteLine("Shape: " + shape.MarkupLanguage);
                 Console.WriteLine("ShapeSize: " + shape.SizeInPoints);
             }
+
             //ExEnd
         }
 
@@ -572,17 +583,17 @@ namespace ApiExamples
         [TestCase(MsWordVersion.Word2010, ShapeMarkupLanguage.Dml)]
         [TestCase(MsWordVersion.Word2013, ShapeMarkupLanguage.Dml)]
         [TestCase(MsWordVersion.Word2016, ShapeMarkupLanguage.Dml)]
-        public void MarkupLunguageForDifferentMsWordVersions(MsWordVersion msWordVersion, ShapeMarkupLanguage shapeMarkupLanguage)
+        public void MarkupLunguageForDifferentMsWordVersions(MsWordVersion msWordVersion,
+            ShapeMarkupLanguage shapeMarkupLanguage)
         {
             Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
             doc.CompatibilityOptions.OptimizeFor(msWordVersion);
 
-            Shape image = builder.InsertImage(ImageDir + "dotnet-logo.png");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertImage(ImageDir + "dotnet-logo.png");
 
             // Loop through all single shapes inside document.
-            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
+            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())
             {
                 Assert.AreEqual(shapeMarkupLanguage, shape.MarkupLanguage);
             }
@@ -617,7 +628,7 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            rectangle = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            rectangle = (Shape) doc.GetChild(NodeType.Shape, 0, true);
 
             Stroke strokeAfter = rectangle.Stroke;
 
@@ -671,7 +682,7 @@ namespace ApiExamples
 
             doc = new Document(MyDir + @"\Artifacts\Shape.InsertOlePackage.docx");
 
-            Shape getShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Shape getShape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             OlePackage getOlePackage = getShape.OleFormat.OlePackage;
 
             Assert.AreEqual("Cat FileName.zip", getOlePackage.FileName);
@@ -685,7 +696,8 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Shape oleObject = builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, null);
-            Shape oleObjectAsOlePackage = builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false, null);
+            Shape oleObjectAsOlePackage =
+                builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false, null);
 
             Assert.AreEqual(null, oleObject.OleFormat.OlePackage);
             Assert.AreEqual(typeof(OlePackage), oleObjectAsOlePackage.OleFormat.OlePackage.GetType());
@@ -706,7 +718,8 @@ namespace ApiExamples
             chart.Series.Clear();
 
             // Add new series
-            ChartSeries series0 = chart.Series.Add("AW Series 0", new[] { "AW0", "AW1", "AW2" }, new[] { 2.5, 1.5, 3.5 });
+            ChartSeries series0 =
+                chart.Series.Add("AW Series 0", new[] { "AW0", "AW1", "AW2" }, new[] { 2.5, 1.5, 3.5 });
 
             // Add DataLabel to the first point of the first series.
             ChartDataLabel chartDataLabel0 = series0.DataLabels.Add(0);
@@ -733,7 +746,8 @@ namespace ApiExamples
 
             doc.Save(MyDir + @"\Artifacts\DocumentBuilder.NumberFormat.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\DocumentBuilder.NumberFormat.docx", MyDir + @"\Golds\DocumentBuilder.NumberFormat Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\DocumentBuilder.NumberFormat.docx",
+                MyDir + @"\Golds\DocumentBuilder.NumberFormat Gold.docx"));
         }
 
         [Test]
@@ -756,8 +770,13 @@ namespace ApiExamples
             seriesColl.Add("AW Series 1", categories, new double[] { 1, 2, double.NaN, 4, 5, 6 });
             seriesColl.Add("AW Series 2", categories, new double[] { 2, 3, double.NaN, 5, 6, 7 });
 
-            Assert.That(() => seriesColl.Add("AW Series 3", categories, new[] { double.NaN, 4, 5, double.NaN, double.NaN }), Throws.TypeOf<ArgumentException>());
-            Assert.That(() => seriesColl.Add("AW Series 4", categories, new[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN }), Throws.TypeOf<ArgumentException>());
+            Assert.That(
+                () => seriesColl.Add("AW Series 3", categories, new[] { double.NaN, 4, 5, double.NaN, double.NaN }),
+                Throws.TypeOf<ArgumentException>());
+            Assert.That(
+                () => seriesColl.Add("AW Series 4", categories,
+                    new[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN }),
+                Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -780,14 +799,244 @@ namespace ApiExamples
             seriesColl.Add("AW Series 1", categories, new[] { 1, 2, double.NaN, 4, 5, 6 });
             seriesColl.Add("AW Series 2", categories, new[] { 2, 3, double.NaN, 5, 6, 7 });
             seriesColl.Add("AW Series 3", categories, new[] { double.NaN, 4, 5, double.NaN, 7, 8 });
-            seriesColl.Add("AW Series 4", categories, new[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, 9 });
+            seriesColl.Add("AW Series 4", categories,
+                new[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, 9 });
 
             doc.Save(MyDir + @"\Artifacts\EmptyValuesInChartData.docx");
         }
 
         [Test]
-        public void ChartAxisProperties()
+        public void ChartDefaultValues()
         {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            builder.InsertChart(ChartType.Column3D, 432, 252);
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            Shape shapeNode = (Shape) doc.GetChild(NodeType.Shape, 0, true);
+            Chart chart = shapeNode.Chart;
+
+            // Assert X axis
+            Assert.AreEqual(ChartAxisType.Category, chart.AxisX.Type);
+            Assert.AreEqual(AxisCategoryType.Automatic, chart.AxisX.CategoryType);
+            Assert.AreEqual(AxisCrosses.Automatic, chart.AxisX.Crosses);
+            Assert.AreEqual(false, chart.AxisX.ReverseOrder);
+            Assert.AreEqual(AxisTickMark.None, chart.AxisX.MajorTickMark);
+            Assert.AreEqual(AxisTickMark.None, chart.AxisX.MinorTickMark);
+            Assert.AreEqual(AxisTickLabelPosition.NextToAxis, chart.AxisX.TickLabelPosition);
+            Assert.AreEqual(1, chart.AxisX.MajorUnit);
+            Assert.AreEqual(true, chart.AxisX.MajorUnitIsAuto);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisX.MajorUnitScale);
+            Assert.AreEqual(0.5, chart.AxisX.MinorUnit);
+            Assert.AreEqual(true, chart.AxisX.MinorUnitIsAuto);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisX.MinorUnitScale);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisX.BaseTimeUnit);
+            Assert.AreEqual("General", chart.AxisX.NumberFormat.FormatCode);
+            Assert.AreEqual(100, chart.AxisX.TickLabelOffset);
+            Assert.AreEqual(AxisBuiltInUnit.None, chart.AxisX.DisplayUnit.Unit);
+            Assert.AreEqual(true, chart.AxisX.AxisBetweenCategories);
+            Assert.AreEqual(AxisScaleType.Linear, chart.AxisX.Scaling.Type);
+            Assert.AreEqual(1, chart.AxisX.TickLabelSpacing);
+            Assert.AreEqual(true, chart.AxisX.TickLabelSpacingIsAuto);
+            Assert.AreEqual(1, chart.AxisX.TickMarkSpacing);
+            Assert.AreEqual(false, chart.AxisX.Hidden);
+
+            // Assert Y axis
+            Assert.AreEqual(ChartAxisType.Value, chart.AxisY.Type);
+            Assert.AreEqual(AxisCategoryType.Category, chart.AxisY.CategoryType);
+            Assert.AreEqual(AxisCrosses.Automatic, chart.AxisY.Crosses);
+            Assert.AreEqual(false, chart.AxisY.ReverseOrder);
+            Assert.AreEqual(AxisTickMark.None, chart.AxisY.MajorTickMark);
+            Assert.AreEqual(AxisTickMark.None, chart.AxisY.MinorTickMark);
+            Assert.AreEqual(AxisTickLabelPosition.NextToAxis, chart.AxisY.TickLabelPosition);
+            Assert.AreEqual(1, chart.AxisY.MajorUnit);
+            Assert.AreEqual(true, chart.AxisY.MajorUnitIsAuto);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisY.MajorUnitScale);
+            Assert.AreEqual(0.5, chart.AxisY.MinorUnit);
+            Assert.AreEqual(true, chart.AxisY.MinorUnitIsAuto);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisY.MinorUnitScale);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisY.BaseTimeUnit);
+            Assert.AreEqual("General", chart.AxisY.NumberFormat.FormatCode);
+            Assert.AreEqual(100, chart.AxisY.TickLabelOffset);
+            Assert.AreEqual(AxisBuiltInUnit.None, chart.AxisY.DisplayUnit.Unit);
+            Assert.AreEqual(true, chart.AxisY.AxisBetweenCategories);
+            Assert.AreEqual(AxisScaleType.Linear, chart.AxisY.Scaling.Type);
+            Assert.AreEqual(1, chart.AxisY.TickLabelSpacing);
+            Assert.AreEqual(true, chart.AxisY.TickLabelSpacingIsAuto);
+            Assert.AreEqual(1, chart.AxisY.TickMarkSpacing);
+            Assert.AreEqual(false, chart.AxisY.Hidden);
+
+            // Assert Z axis
+            Assert.AreEqual(ChartAxisType.Series, chart.AxisZ.Type);
+            Assert.AreEqual(AxisCategoryType.Category, chart.AxisZ.CategoryType);
+            Assert.AreEqual(AxisCrosses.Automatic, chart.AxisZ.Crosses);
+            Assert.AreEqual(false, chart.AxisZ.ReverseOrder);
+            Assert.AreEqual(AxisTickMark.None, chart.AxisZ.MajorTickMark);
+            Assert.AreEqual(AxisTickMark.None, chart.AxisZ.MinorTickMark);
+            Assert.AreEqual(AxisTickLabelPosition.NextToAxis, chart.AxisZ.TickLabelPosition);
+            Assert.AreEqual(1, chart.AxisZ.MajorUnit);
+            Assert.AreEqual(true, chart.AxisZ.MajorUnitIsAuto);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisZ.MajorUnitScale);
+            Assert.AreEqual(0.5, chart.AxisZ.MinorUnit);
+            Assert.AreEqual(true, chart.AxisZ.MinorUnitIsAuto);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisZ.MinorUnitScale);
+            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisZ.BaseTimeUnit);
+            Assert.AreEqual(string.Empty, chart.AxisZ.NumberFormat.FormatCode);
+            Assert.AreEqual(100, chart.AxisZ.TickLabelOffset);
+            Assert.AreEqual(AxisBuiltInUnit.None, chart.AxisZ.DisplayUnit.Unit);
+            Assert.AreEqual(true, chart.AxisZ.AxisBetweenCategories);
+            Assert.AreEqual(AxisScaleType.Linear, chart.AxisZ.Scaling.Type);
+            Assert.AreEqual(1, chart.AxisZ.TickLabelSpacing);
+            Assert.AreEqual(true, chart.AxisZ.TickLabelSpacingIsAuto);
+            Assert.AreEqual(1, chart.AxisZ.TickMarkSpacing);
+            Assert.AreEqual(false, chart.AxisZ.Hidden);
+        }
+
+        [Test]
+        public void InsertChartUsingAxisProperties()
+        {
+            //ExStart
+            //ExFor:ChartAxis
+            //ExFor:ChartAxis.CategoryType
+            //ExFor:ChartAxis.Crosses
+            //ExFor:ChartAxis.ReverseOrder
+            //ExFor:ChartAxis.MajorTickMark
+            //ExFor:ChartAxis.MinorTickMark
+            //ExFor:ChartAxis.MajorUnit
+            //ExFor:ChartAxis.MinorUnit
+            //ExFor:ChartAxis.TickLabelOffset
+            //ExFor:ChartAxis.TickLabelPosition
+            //ExFor:ChartAxis.TickLabelSpacingIsAuto
+            //ExFor:ChartAxis.TickMarkSpacing
+            //ExSummary:Shows how to insert chart using the axis options for detailed configuration.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+            chart.Series.Add("Aspose Test Series",
+                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new double[] { 640, 320, 280, 120, 150 });
+
+            // Get chart axises
+            ChartAxis xAxis = chart.AxisX;
+            ChartAxis yAxis = chart.AxisY;
+
+            // Set X-axis options
+            xAxis.CategoryType = AxisCategoryType.Category;
+            xAxis.Crosses = AxisCrosses.Minimum;
+            xAxis.ReverseOrder = false;
+            xAxis.MajorTickMark = AxisTickMark.Inside;
+            xAxis.MinorTickMark = AxisTickMark.Cross;
+            xAxis.MajorUnit = 10;
+            xAxis.MinorUnit = 15;
+            xAxis.TickLabelOffset = 50;
+            xAxis.TickLabelPosition = AxisTickLabelPosition.Low;
+            xAxis.TickLabelSpacingIsAuto = false;
+            xAxis.TickMarkSpacing = 1;
+
+            // Set Y-axis options
+            yAxis.CategoryType = AxisCategoryType.Automatic;
+            yAxis.Crosses = AxisCrosses.Maximum;
+            yAxis.ReverseOrder = true;
+            yAxis.MajorTickMark = AxisTickMark.Inside;
+            yAxis.MinorTickMark = AxisTickMark.Cross;
+            yAxis.MajorUnit = 100;
+            yAxis.MinorUnit = 20;
+            yAxis.TickLabelPosition = AxisTickLabelPosition.NextToAxis;
+            //ExEnd
+
+            doc.Save(MyDir + @"\Artifacts\Shape.InsertChartUsingAxisProperties Out.docx");
+            doc.Save(MyDir + @"\Artifacts\Shape.InsertChartUsingAxisProperties Out.pdf");
+        }
+
+        [Test]
+        public void InsertChartWithDateTimeValues()
+        {
+            //ExStart
+            //ExFor:ChartAxis.Scaling
+            //ExFor:AxisScaling.Minimum
+            //ExFor:AxisScaling.Maximum
+            //ExSummary: Shows how to insert chart with date/time values
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+
+            // Fill data.
+            chart.Series.Add("Aspose Test Series",
+                new DateTime[]
+                {
+                    new DateTime(2017, 11, 06), new DateTime(2017, 11, 09), new DateTime(2017, 11, 15),
+                    new DateTime(2017, 11, 21), new DateTime(2017, 11, 25), new DateTime(2017, 11, 29)
+                },
+                new double[] { 1.2, 0.3, 2.1, 2.9, 4.2, 5.3 });
+
+            // Set X axis bounds.
+            ChartAxis xAxis = chart.AxisX;
+            xAxis.Scaling.Minimum = new AxisBound(new DateTime(2017, 11, 05).ToOADate());
+            xAxis.Scaling.Maximum = new AxisBound(new DateTime(2017, 12, 03).ToOADate());
+
+            // Set major units to a week and minor units to a day.
+            xAxis.MajorUnit = 7;
+            xAxis.MinorUnit = 1;
+            xAxis.MajorTickMark = AxisTickMark.Cross;
+            xAxis.MinorTickMark = AxisTickMark.Outside;
+            //ExEnd
+
+            doc.Save(MyDir + @"\Artifacts\Shape.InsertChartWithDateTimeValues Out.docx");
+            doc.Save(MyDir + @"\Artifacts\Shape.InsertChartWithDateTimeValues Out.pdf");
+        }
+
+        [Test]
+        public void HideChartAxis()
+        {
+            //ExStart
+            //ExFor:ChartAxis.Hidden
+            //ExSummary:Shows how to hide chart axises.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+            chart.Series.Add("AW Series 1",
+                new string[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" },
+                new double[] { 1.2, 0.3, 2.1, 2.9, 4.2 });
+
+            MemoryStream stream = new MemoryStream();
+            doc.Save(stream, SaveFormat.Docx);
+
+            shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
+            chart = shape.Chart;
+
+            Assert.AreEqual(false, chart.AxisX.Hidden);
+            Assert.AreEqual(false, chart.AxisY.Hidden);
+        }
+
+        [Test]
+        public void SetNumberFormatToChartAxis()
+        {
+            //ExStart
+            //ExFor:ChartAxis.NumberFormat
+            //ExFor:NumberFormat.FormatCode
+            //ExSummary:Shows how to set formatting for chart values.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -798,31 +1047,185 @@ namespace ApiExamples
             // Clear demo data.
             chart.Series.Clear();
 
-            // Fill data.
-            chart.Series.Add("AW Series 1", new[] { "First", "Second", "Third", "Fourth", "Fifth" }, new double[] { 640, 320, 280, 120, 150 });
+            chart.Series.Add("Aspose Test Series",
+                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
 
-            ChartAxis xAxis = chart.AxisX;
-            ChartAxis yAxis = chart.AxisY;
+            // Set number format.
+            chart.AxisY.NumberFormat.FormatCode = "#,##0";
+            //ExEnd
 
-            // Change the X axis to be category instead of date, so all the points will be put with equal interval on the X axis.
-            xAxis.CategoryType = AxisCategoryType.Automatic;
+            doc.Save(MyDir + @"\Artifacts\Shape.SetNumberFormatToChartAxis Out.docx");
+            doc.Save(MyDir + @"\Artifacts\Shape.SetNumberFormatToChartAxis Out.pdf");
+        }
 
-            // Define X axis properties.
-            xAxis.Crosses = AxisCrosses.Automatic;
-            xAxis.ReverseOrder = true;
-            xAxis.MajorTickMark = AxisTickMark.Cross;
-            xAxis.MinorTickMark = AxisTickMark.Outside;
-            xAxis.TickLabelOffset = 200;
+        // Note: Tests below used for verification conversion docx to pdf and the correct display.
+        // For now, the results check manually.
+        [Test]
+        [TestCase(ChartType.Column)]
+        [TestCase(ChartType.Line)]
+        [TestCase(ChartType.Pie)]
+        [TestCase(ChartType.Bar)]
+        [TestCase(ChartType.Area)]
+        public void TestDisplayChartsWithConversion(ChartType chartType)
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Define Y axis properties.
-            yAxis.TickLabelPosition = AxisTickLabelPosition.High;
-            yAxis.MajorUnit = 100;
-            yAxis.MinorUnit = 50;
-            yAxis.DisplayUnit.Unit = AxisBuiltInUnit.Hundreds;
-            yAxis.Scaling.Minimum = new AxisBound(100);
-            yAxis.Scaling.Maximum = new AxisBound(700);
+            // Insert chart.
+            Shape shape = builder.InsertChart(chartType, 432, 252);
+            Chart chart = shape.Chart;
 
-            doc.Save(MyDir + @"\Artifacts\ChartAxisProperties.docx");
+            // Clear demo data.
+            chart.Series.Clear();
+
+            chart.Series.Add("Aspose Test Series",
+                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
+
+            doc.Save(MyDir + @"\Artifacts\Shape.TestDisplayChartsWithConversion Out.docx");
+            doc.Save(MyDir + @"\Artifacts\Shape.TestDisplayChartsWithConversion Out.pdf");
+        }
+
+        [Test]
+        public void Surface3DChart()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Surface3D, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+
+            chart.Series.Add("Aspose Test Series 1",
+                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
+
+            chart.Series.Add("Aspose Test Series 2",
+                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new double[] { 900000, 50000, 1100000, 400000, 2500000 });
+
+            chart.Series.Add("Aspose Test Series 3",
+                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new double[] { 500000, 820000, 1500000, 400000, 100000 });
+
+            doc.Save(MyDir + @"\Artifacts\SurfaceChart Out.docx");
+            doc.Save(MyDir + @"\Artifacts\SurfaceChart Out.pdf");
+        }
+
+        [Test]
+        public void BubbleChart()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert chart.
+            Shape shape = builder.InsertChart(ChartType.Bubble, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Clear demo data.
+            chart.Series.Clear();
+
+            chart.Series.Add("Aspose Test Series",
+                new double[] { 2900000, 350000, 1100000, 400000, 400000 },
+                new double[] { 1900000, 850000, 2100000, 600000, 1500000 },
+                new double[] { 900000, 450000, 2500000, 800000, 500000 });
+
+            doc.Save(MyDir + @"\Artifacts\BubbleChart Out.docx");
+            doc.Save(MyDir + @"\Artifacts\BubbleChart Out.pdf");
+        }
+
+        [Test]
+        public void ReplaceRelativeSizeToAbsolute()
+        {
+            Document doc = new Document(MyDir + "Shape.ShapeSize.docx");
+
+            //How we know about reletive size???
+            Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
+
+            //Change shape size and rotation
+            shape.Height = 300;
+            shape.Width = 500;
+            shape.Rotation = 30;
+
+            //How assert result without reletive sizes???
+            doc.Save(MyDir + @"\Artifacts\Shape.Resize.docx");
+        }
+
+        [Test]
+        public void DisplayTheShapeIntoATableCell()
+        {
+            //ExStart
+            //ExFor:ShapeBase.IsLayoutInCell
+            //ExSummary:Shows how to display the shape, inside a table or outside of it.
+            Document doc = new Document(MyDir + "Shape.LayoutInCell.docx");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
+            int num = 1;
+
+            foreach (Run run in runs.OfType<Run>())
+            {
+                Shape watermark = new Shape(doc, ShapeType.TextPlainText);
+                watermark.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
+                watermark.RelativeVerticalPosition = RelativeVerticalPosition.Page;
+                watermark.IsLayoutInCell =
+                    true; // False - display the shape outside of table cell, True - display the shape outside of table cell
+
+                watermark.Width = 30;
+                watermark.Height = 30;
+                watermark.HorizontalAlignment = HorizontalAlignment.Center;
+                watermark.VerticalAlignment = VerticalAlignment.Center;
+
+                watermark.Rotation = -40;
+                watermark.Fill.Color = Color.Gainsboro;
+                watermark.StrokeColor = Color.Gainsboro;
+
+                watermark.TextPath.Text = string.Format("{0}", num);
+                watermark.TextPath.FontFamily = "Arial";
+
+                watermark.Name = string.Format("WaterMark_{0}", Guid.NewGuid());
+                watermark.WrapType =
+                    WrapType.None; // Property will take effect only if the WrapType property is set to something other than WrapType.Inline
+                watermark.BehindText = true;
+
+                builder.MoveTo(run);
+                builder.InsertNode(watermark);
+
+                num = num + 1;
+            }
+
+            // Behaviour of MS Word on working with shapes in table cells is changed in the last versions.
+            // Adding the following line is needed to make the shape displayed in center of a page.
+            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2010);
+
+            doc.Save(MyDir + @"\Artifacts\Shape.LayoutInCell.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ShapeInsertion()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertShape(ShapeType, RelativeHorizontalPosition, double, RelativeVerticalPosition, double, double, double, WrapType)
+            //ExFor:DocumentBuilder.InsertShape(ShapeType, double, double)
+            //ExSummary:Shows how to insert DML shape into the document
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            // Two ways of shape insertion
+            Shape freeFloatingShape = builder.InsertShape(ShapeType.TextBox, RelativeHorizontalPosition.Page, 100, RelativeVerticalPosition.Page, 100, 50, 50, WrapType.None);
+            freeFloatingShape.Rotation = 30.0;
+            Shape inlineShape = builder.InsertShape(ShapeType.TextBox, 50, 50);
+            inlineShape.Rotation = 30.0;
+
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
+            // "Strict" or "Transitional" compliance allows to save shape as DML
+            saveOptions.Compliance = OoxmlCompliance.Iso29500_2008_Transitional;
+            doc.Save(MyDir + @"\Artifacts\RotatedShape.docx", saveOptions);
+            //ExEnd
         }
     }
 }

@@ -5,7 +5,7 @@ using ApiExamples.TestData.TestClasses;
 
 namespace ApiExamples.TestData
 {
-    public class Common
+    public static class Common
     {
         public static IEnumerable<ManagerTestClass> GetManagers()
         {
@@ -104,7 +104,8 @@ namespace ApiExamples.TestData
                     Client = new ClientTestClass
                     {
                         Name = "G & Co.",
-                        Country = "Greece", LocalAddress = "Karkisias 6 GR-111 42  ATHINA GRÉCE"
+                        Country = "Greece",
+                        LocalAddress = "Karkisias 6 GR-111 42  ATHINA GRÉCE"
                     },
                     Manager = manager,
                     Price = 350000,
@@ -115,7 +116,8 @@ namespace ApiExamples.TestData
                     Client = new ClientTestClass
                     {
                         Name = "H Group",
-                        Country = "Hungary", LocalAddress = "Budapest Fiktív utca 82., IV. em./28.2806"
+                        Country = "Hungary",
+                        LocalAddress = "Budapest Fiktív utca 82., IV. em./28.2806"
                     },
                     Manager = manager,
                     Price = 250000,
@@ -126,7 +128,7 @@ namespace ApiExamples.TestData
                     Client = new ClientTestClass
                     {
                         Name = "I & Sons",
-                        LocalAddress ="43 Vogel Street Roslyn Palmerston North 4414"
+                        LocalAddress = "43 Vogel Street Roslyn Palmerston North 4414"
                     },
                     Manager = manager,
                     Price = 100000,
@@ -136,8 +138,9 @@ namespace ApiExamples.TestData
                 {
                     Client = new ClientTestClass
                     {
-                        Name = "J Ent." ,
-                        Country = "Japan", LocalAddress = "Hakusan 4-Chōme 3-2 Bunkyō-ku, TŌKYŌ 112-0001 Japan"
+                        Name = "J Ent.",
+                        Country = "Japan",
+                        LocalAddress = "Hakusan 4-Chōme 3-2 Bunkyō-ku, TŌKYŌ 112-0001 Japan"
                     },
                     Manager = manager,
                     Price = 100000,

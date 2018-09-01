@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -8,6 +8,9 @@
 using System;
 using System.Collections;
 using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Threading;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
@@ -62,7 +65,7 @@ namespace ApiExamples
             Document doc = new Document();
 
             // Get the paragraph from the document, we will be adding runs of text to it.
-            Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
+            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
             Run run = new Run(doc, "All capitals");
             run.Font.AllCaps = true;
@@ -100,11 +103,12 @@ namespace ApiExamples
                 Console.WriteLine("IsTrueType: {0}", info.IsTrueType);
                 fontIndex++;
             }
+
             //ExEnd
         }
 
-        [Ignore("WORDSNET-16234")]
         [Test]
+        [Description("WORDSNET-16234")]
         public void DefaulValuesEmbeddedFontsParametrs()
         {
             Document doc = new Document();
@@ -136,10 +140,14 @@ namespace ApiExamples
         }
 
         [Test]
-        [TestCase(true, false, false, Description = "Save a document with embedded TrueType fonts. System fonts are not included. Saves full versions of embedding fonts.")]
-        [TestCase(true, true, false, Description = "Save a document with embedded TrueType fonts. System fonts are included. Saves full versions of embedding fonts.")]
-        [TestCase(true, true, true, Description = "Save a document with embedded TrueType fonts. System fonts are included. Saves subset of embedding fonts.")]
-        [TestCase(true, false, true, Description = "Save a document with embedded TrueType fonts. System fonts are not included. Saves subset of embedding fonts.")]
+        [TestCase(true, false, false, Description =
+            "Save a document with embedded TrueType fonts. System fonts are not included. Saves full versions of embedding fonts.")]
+        [TestCase(true, true, false, Description =
+            "Save a document with embedded TrueType fonts. System fonts are included. Saves full versions of embedding fonts.")]
+        [TestCase(true, true, true, Description =
+            "Save a document with embedded TrueType fonts. System fonts are included. Saves subset of embedding fonts.")]
+        [TestCase(true, false, true, Description =
+            "Save a document with embedded TrueType fonts. System fonts are not included. Saves subset of embedding fonts.")]
         [TestCase(false, false, false, Description = "Remove embedded fonts from the saved document.")]
         public void WorkWithEmbeddedFonts(bool embedTrueTypeFonts, bool embedSystemFonts, bool saveSubsetFonts)
         {
@@ -164,7 +172,7 @@ namespace ApiExamples
             Document doc = new Document();
 
             // Get the paragraph from the document, we will be adding runs of text to it.
-            Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
+            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
             Run run = new Run(doc, "Double strike through text");
             run.Font.DoubleStrikeThrough = true;
@@ -183,12 +191,12 @@ namespace ApiExamples
             //ExFor:Font.Position
             //ExFor:Font.Subscript
             //ExFor:Font.Superscript
-            //ExSummary:Shows how to use subscript, superscript and baseline text position properties.
+            //ExSummary:Shows how to use subscript, superscript, complex script, text effects, and baseline text position properties.
             // Create an empty document. It contains one empty paragraph.
             Document doc = new Document();
 
             // Get the paragraph from the document, we will be adding runs of text to it.
-            Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
+            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
             // Add a run of text that is raised 5 points above the baseline.
             Run run = new Run(doc, "Raised text");
@@ -222,7 +230,7 @@ namespace ApiExamples
             Document doc = new Document();
 
             // Get the paragraph from the document, we will be adding runs of text to it.
-            Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
+            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
             // Add a run of text with characters 150% width of normal characters.
             Run run = new Run(doc, "Wide characters");
@@ -275,7 +283,7 @@ namespace ApiExamples
             //ExFor:Font.Shadow
             //ExSummary:Shows how to create a run of text formatted with a shadow.
             Run run = new Run(doc, "Hello");
-            run.Font.Engrave = true;
+            run.Font.Shadow = true;
             //ExEnd
         }
 
@@ -339,7 +347,7 @@ namespace ApiExamples
             Run run = new Run(doc, "Привет");
 
             //Specify the locale so Microsoft Word recognizes this text as Russian.
-            //For the list of locale identifiers see http://www.microsoft.com/globaldev/reference/lcid-all.mspx
+            //For the list of locale identifiers see https://docs.microsoft.com/en-us/deployoffice/office2016/language-identifiers-and-optionstate-id-values-in-office-2016
             run.Font.LocaleId = 1049;
             //ExEnd
         }
@@ -355,6 +363,30 @@ namespace ApiExamples
             Run run = new Run(doc, "Hello");
             run.Font.Underline = Underline.Dotted;
             run.Font.UnderlineColor = Color.Red;
+            //ExEnd
+        }
+
+        [Test]
+        public void ComplexScript()
+        {
+            Document doc = new Document();
+            //ExStart
+            //ExFor:Font.ComplexScript
+            //ExSummary:Shows how to make a run that's always treated as complex script.
+            Run run = new Run(doc, "Complex script");
+            run.Font.ComplexScript = true;
+            //ExEnd
+        }
+
+        [Test]
+        public void SparklingText()
+        {
+            Document doc = new Document();
+            //ExStart
+            //ExFor:Font.TextEffect
+            //ExSummary:Shows how to apply a visual effect to a run.
+            Run run = new Run(doc, "Text with effect");
+            run.Font.TextEffect = TextEffect.SparkleText;
             //ExEnd
         }
 
@@ -402,7 +434,7 @@ namespace ApiExamples
             builder.Font.BoldBi = true;
 
             // Specify the locale so Microsoft Word recognizes this text as Arabic - Saudi Arabia.
-            // For the list of locale identifiers see http://www.microsoft.com/globaldev/reference/lcid-all.mspx
+            // For the list of locale identifiers see https://docs.microsoft.com/en-us/deployoffice/office2016/language-identifiers-and-optionstate-id-values-in-office-2016
             builder.Font.LocaleIdBi = 1025;
 
             // Insert some Arabic text.
@@ -427,7 +459,7 @@ namespace ApiExamples
             builder.Font.NameFarEast = "SimSun";
 
             // Specify the locale so Microsoft Word recognizes this text as Chinese.
-            // For the list of locale identifiers see http://www.microsoft.com/globaldev/reference/lcid-all.mspx
+            // For the list of locale identifiers see https://docs.microsoft.com/en-us/deployoffice/office2016/language-identifiers-and-optionstate-id-values-in-office-2016
             builder.Font.LocaleIdFarEast = 2052;
 
             // Insert some Chinese text.
@@ -471,7 +503,7 @@ namespace ApiExamples
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
 
             // Loop through every run node.
-            foreach (Run run in runs)
+            foreach (Run run in runs.OfType<Run>())
             {
                 // If the character style of the run is what we want, do what we need. Change the style in this case.
                 // Note that using StyleIdentifier we can identify a built-in style regardless 
@@ -496,7 +528,7 @@ namespace ApiExamples
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
 
             // Loop through every run node.
-            foreach (Run run in runs)
+            foreach (Run run in runs.OfType<Run>())
             {
                 // If the character style of the run is what we want, do what we need. Change the style in this case.
                 // Note that names of built in styles could be different in documents 
@@ -522,7 +554,7 @@ namespace ApiExamples
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
 
             // Loop through every run node.
-            foreach (Run run in runs)
+            foreach (Run run in runs.OfType<Run>())
             {
                 Style charStyle = run.Font.Style;
 
@@ -549,7 +581,7 @@ namespace ApiExamples
             // Use a hashtable so we will keep only unique font names.
             Hashtable fontNames = new Hashtable();
 
-            foreach (Run run in runs)
+            foreach (Run run in runs.OfType<Run>())
             {
                 // This adds an entry into the hashtable.
                 // The key is the font name. The value is null, we don't need the value.
@@ -574,6 +606,7 @@ namespace ApiExamples
             //ExFor:IWarningCallback
             //ExFor:DocumentBase.WarningCallback
             //ExFor:SaveOptions.WarningCallback
+            //ExFor:Fonts.FontSettings.DefaultInstance
             //ExId:FontSubstitutionNotification
             //ExSummary:Demonstrates how to receive notifications of font substitutions by using IWarningCallback.
             // Load the document to render.
@@ -597,7 +630,9 @@ namespace ApiExamples
 
             Assert.Greater(callback.mFontWarnings.Count, 0);
             Assert.True(callback.mFontWarnings[0].WarningType == WarningType.FontSubstitution);
-            Assert.True(callback.mFontWarnings[0].Description.Equals("Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font."));
+            Assert.True(callback.mFontWarnings[0].Description
+                .Equals(
+                    "Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font."));
 
             // Restore default fonts. 
             FontSettings.DefaultInstance.SetFontsSources(origFontSources);
@@ -631,6 +666,54 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
+        public void EnableFontSubstitutionTrue()
+        {
+            //ExStart
+            //ExFor:FontSettings.EnableFontSubstitution
+            //ExSummary:Shows how to set the property for finding the closest match font among the available font sources instead missing font.
+            Document doc = new Document(MyDir + "Font.EnableFontSubstitution.docx");
+
+            // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
+            HandleDocumentWarnings callback = new HandleDocumentWarnings();
+            doc.WarningCallback = callback;
+
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.DefaultFontName = "Arial";
+            fontSettings.EnableFontSubstitution = true;
+            //ExEnd
+
+            doc.FontSettings = fontSettings;
+
+            doc.Save(MyDir + @"\Artifacts\Font.EnableFontSubstitution.pdf");
+
+            Assert.True(callback.mFontWarnings[0].Description
+                .Equals(
+                    "Font '28 Days Later' has not been found. Using 'Franklin Gothic Medium' font instead. Reason: closest match according to font info from the document."));
+        }
+
+        [Test]
+        public void EnableFontSubstitutionFalse()
+        {
+            Document doc = new Document(MyDir + "Font.EnableFontSubstitution.docx");
+
+            // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
+            HandleDocumentWarnings callback = new HandleDocumentWarnings();
+            doc.WarningCallback = callback;
+
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.DefaultFontName = "Arial";
+            fontSettings.EnableFontSubstitution = false;
+
+            doc.FontSettings = fontSettings;
+
+            doc.Save(MyDir + @"\Artifacts\Font.EnableFontSubstitution.pdf");
+
+            Assert.True(callback.mFontWarnings[0].Description
+                .Equals(
+                    "Font '28 Days Later' has not been found. Using 'Arial' font instead. Reason: default font setting."));
+        }
+
+        [Test]
         public void FontSubstitutionWarnings()
         {
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -641,15 +724,18 @@ namespace ApiExamples
 
             FontSettings fontSettings = new FontSettings();
             fontSettings.DefaultFontName = "Arial";
-            fontSettings.SetFontSubstitutes("Arial", new String[] { "Arvo", "Slab" });
+            fontSettings.SetFontSubstitutes("Arial", new string[] { "Arvo", "Slab" });
             fontSettings.SetFontsFolder(MyDir + @"MyFonts\", false);
 
             doc.FontSettings = fontSettings;
 
             doc.Save(MyDir + @"\Artifacts\Rendering.MissingFontNotification.pdf");
 
-            Assert.True(callback.mFontWarnings[0].Description.Equals("Font substitutes: 'Arial' replaced with 'Arvo'."));
-            Assert.True(callback.mFontWarnings[1].Description.Equals("Font 'Times New Roman' has not been found. Using 'Noticia Text' font instead. Reason: closest match according to font info from the document."));
+            Assert.True(callback.mFontWarnings[0].Description
+                .Equals("Font substitutes: 'Arial' replaced with 'Arvo'."));
+            Assert.True(callback.mFontWarnings[1].Description
+                .Equals(
+                    "Font 'Times New Roman' has not been found. Using 'Noticia Text' font instead. Reason: closest match according to font info from the document."));
         }
 
         [Test]
@@ -663,7 +749,9 @@ namespace ApiExamples
 
             doc.Save(MyDir + @"\Artifacts\Font.DisapearingBulletPoints.pdf");
 
-            Assert.True(callback.mFontWarnings[0].Description.Equals("Font 'SymbolPS' has not been found. Using 'Wingdings' font instead. Reason: closest match according to font info from the document."));
+            Assert.True(callback.mFontWarnings[0].Description
+                .Equals(
+                    "Font 'SymbolPS' has not been found. Using 'Wingdings' font instead. Reason: closest match according to font info from the document."));
         }
 
         [Test]
@@ -722,11 +810,11 @@ namespace ApiExamples
             doc.Accept(hiddenContentRemover);
 
             // Or we can run it on only a specific node.
-            Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 4, true);
+            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 4, true);
             para.Accept(hiddenContentRemover);
 
             // Or over a different type of node like below.
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             table.Accept(hiddenContentRemover);
 
             doc.Save(MyDir + @"\Artifacts\Font.Hidden.doc");
@@ -799,10 +887,10 @@ namespace ApiExamples
             /// <summary>
             /// Called when a FormField is encountered in the document.
             /// </summary>
-            public override VisitorAction VisitFormField(FormField field)
+            public override VisitorAction VisitFormField(FormField formField)
             {
-                if (isHidden(field))
-                    field.Remove();
+                if (isHidden(formField))
+                    formField.Remove();
 
                 return VisitorAction.Continue;
             }
@@ -895,10 +983,10 @@ namespace ApiExamples
             /// <summary>
             /// Called when a SpecialCharacter is encountered in the document.
             /// </summary>
-            public override VisitorAction VisitSpecialChar(SpecialChar character)
+            public override VisitorAction VisitSpecialChar(SpecialChar specialChar)
             {
-                if (isHidden(character))
-                    character.Remove();
+                if (isHidden(specialChar))
+                    specialChar.Remove();
 
                 return VisitorAction.Continue;
             }
@@ -908,28 +996,25 @@ namespace ApiExamples
             /// </summary>
             private bool isHidden(Node node)
             {
-                if (node is Inline)
+                if (node is Inline currentNode)
                 {
                     // If the node is Inline then cast it to retrieve the Font property which contains the hidden property
-                    Inline currentNode = (Inline)node;
                     return currentNode.Font.Hidden;
                 }
                 else if (node.NodeType == NodeType.Paragraph)
                 {
                     // If the node is a paragraph cast it to retrieve the ParagraphBreakFont which contains the hidden property
-                    Paragraph para = (Paragraph)node;
+                    Paragraph para = (Paragraph) node;
                     return para.ParagraphBreakFont.Hidden;
                 }
-                else if (node is ShapeBase)
+                else if (node is ShapeBase shape)
                 {
                     // Node is a shape or groupshape.
-                    ShapeBase shape = (ShapeBase)node;
                     return shape.Font.Hidden;
                 }
-                else if (node is InlineStory)
+                else if (node is InlineStory inlineStory)
                 {
                     // Node is a comment or footnote.
-                    InlineStory inlineStory = (InlineStory)node;
                     return inlineStory.Font.Hidden;
                 }
 
@@ -938,6 +1023,237 @@ namespace ApiExamples
                 return false;
             }
         }
+
         //ExEnd
+
+        [Test]
+        public void BlankDocumentFonts()
+        {
+            //ExStart
+            //ExFor:Fonts.FontInfoCollection.Contains(String)
+            //ExFor:Fonts.FontInfoCollection.Count
+            //ExSummary:Shows info about the fonts that are present in the blank document.
+            // Create a new document
+            Document doc = new Document();
+            // A blank document comes with 3 fonts
+            Assert.AreEqual(3, doc.FontInfos.Count);
+            Assert.AreEqual(true, doc.FontInfos.Contains("Times New Roman"));
+            Assert.AreEqual(true, doc.FontInfos.Contains("Symbol"));
+            Assert.AreEqual(true, doc.FontInfos.Contains("Arial"));
+            //ExEnd
+        }
+
+        [Test]
+        public void ExtractEmbeddedFont()
+        {
+            //ExStart
+            //ExFor:Fonts.EmbeddedFontFormat
+            //ExFor:Fonts.EmbeddedFontStyle
+            //ExFor:Fonts.FontInfo.GetEmbeddedFont(EmbeddedFontFormat,EmbeddedFontStyle)
+            //ExFor:Fonts.FontInfoCollection.Item(Int32)
+            //ExFor:Fonts.FontInfoCollection.Item(String)
+            //ExSummary:Shows how to extract embedded font from a document.
+            Document doc = new Document(MyDir + "Font.Embedded.docx");
+            // Let's get the font we are interested in
+            FontInfo mittelschriftInfo = doc.FontInfos[2];
+            // We can now extract this embedded font
+            byte[] embeddedFontBytes = mittelschriftInfo.GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular);
+            Assert.IsNotNull(embeddedFontBytes);
+            // Then we can save the font to our directory
+            File.WriteAllBytes(MyDir + @"\Artifacts\Alte DIN 1451 Mittelschrift.ttf", embeddedFontBytes);
+            
+            // If we want to extract a font from a .doc as opposed to a .docx, we need to make sure to set the appropriate embedded font format
+            doc = new Document(MyDir + "Font.Embedded.doc");
+
+            Assert.IsNull(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular));
+            Assert.IsNotNull(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.EmbeddedOpenType, EmbeddedFontStyle.Regular));
+            //ExEnd
+        }
+
+        [Test]
+        public void GetFontInfoFromFile() 
+        {
+            //ExStart
+            //ExFor:Fonts.FontFamily
+            //ExFor:Fonts.FontPitch
+            //ExFor:Fonts.FontInfo.AltName
+            //ExFor:Fonts.FontInfo.Charset
+            //ExFor:Fonts.FontInfo.Family
+            //ExFor:Fonts.FontInfo.Panose
+            //ExFor:Fonts.FontInfo.Pitch
+            //ExFor:Fonts.FontInfoCollection.GetEnumerator
+            //ExSummary:Shows how to get information about each font in a document.
+            Document doc = new Document(MyDir + "Font.Embedded.docx");
+            
+            // We can iterate over all the fonts with an enumerator
+            IEnumerator fontCollectionEnumerator = doc.FontInfos.GetEnumerator();
+            // Print detailed information about each font to the console
+            while (fontCollectionEnumerator.MoveNext())
+            {
+                FontInfo fontInfo = (FontInfo)fontCollectionEnumerator.Current;
+                if (fontInfo != null)
+                {
+                    Console.WriteLine("Font name: " + fontInfo.Name);
+                    Console.WriteLine("Alt name: " + fontInfo.AltName); // Alt names are usually blank
+                    Console.WriteLine("\t- Family: " + fontInfo.Family);
+                    Console.WriteLine("\t- " + (fontInfo.IsTrueType ? "Is TrueType" : "Is not TrueType"));
+                    Console.WriteLine("\t- Pitch: " + fontInfo.Pitch);
+                    Console.WriteLine("\t- Charset: " + fontInfo.Charset);
+                    Console.WriteLine("\t- Panose:");
+                    Console.WriteLine("\t\tFamily Kind: " + fontInfo.Panose[0]);
+                    Console.WriteLine("\t\tSerif Style: " + fontInfo.Panose[1]);
+                    Console.WriteLine("\t\tWeight: " + fontInfo.Panose[2]);
+                    Console.WriteLine("\t\tProportion: " + fontInfo.Panose[3]);
+                    Console.WriteLine("\t\tContrast: " + fontInfo.Panose[4]);
+                    Console.WriteLine("\t\tStroke Variation: " + fontInfo.Panose[5]);
+                    Console.WriteLine("\t\tArm Style: " + fontInfo.Panose[6]);
+                    Console.WriteLine("\t\tLetterform: " + fontInfo.Panose[7]);
+                    Console.WriteLine("\t\tMidline: " + fontInfo.Panose[8]);
+                    Console.WriteLine("\t\tX-Height: " + fontInfo.Panose[9]);
+                }
+            }
+            //ExEnd
+
+            Assert.AreEqual(new int[] { 2, 15, 5, 2, 2, 2, 4, 3, 2, 4 }, doc.FontInfos["Calibri"].Panose);
+            Assert.AreEqual(new int[] { 2, 2, 6, 3, 5, 4, 5, 2, 3, 4 }, doc.FontInfos["Times New Roman"].Panose);
+        }
+
+        [Test]
+        public void FontSourceFile()
+        {
+            //ExStart
+            //ExFor:Fonts.FileFontSource
+            //ExFor:Fonts.FileFontSource.#ctor(String)
+            //ExFor:Fonts.FileFontSource.#ctor(String, Int32)
+            //ExFor:Fonts.FileFontSource.FilePath
+            //ExFor:Fonts.FileFontSource.Type
+            //ExFor:Fonts.FontSourceBase
+            //ExFor:Fonts.FontSourceBase.Priority
+            //ExFor:Fonts.FontSourceBase.Type
+            //ExFor:Fonts.FontSourceType
+            //ExSummary:Shows how to create a file font source.
+            Document doc = new Document();
+
+            // Create a font settings object for our document
+            doc.FontSettings = new FontSettings();
+
+            // Create a font source from a file in our system
+            FileFontSource fileFontSource = new FileFontSource(MyDir + "Alte DIN 1451 Mittelschrift.ttf", 0);
+
+            // Import the font source into our document
+            doc.FontSettings.SetFontsSources(new FontSourceBase[] { fileFontSource });
+
+            Assert.AreEqual(MyDir + "Alte DIN 1451 Mittelschrift.ttf", fileFontSource.FilePath);
+            Assert.AreEqual(FontSourceType.FontFile, fileFontSource.Type);
+            Assert.AreEqual(0, fileFontSource.Priority);
+            //ExEnd
+        }
+
+        [Test]
+        public void FontSourceFolder()
+        {
+            //ExStart
+            //ExFor:Fonts.FolderFontSource
+            //ExFor:Fonts.FolderFontSource.#ctor(String, Boolean)
+            //ExFor:Fonts.FolderFontSource.#ctor(String, Boolean, Int32)
+            //ExFor:Fonts.FolderFontSource.FolderPath
+            //ExFor:Fonts.FolderFontSource.ScanSubfolders
+            //ExFor:Fonts.FolderFontSource.Type
+            //ExSummary:Shows how to create a folder font source.
+            Document doc = new Document();
+
+            // Create a font settings object for our document
+            doc.FontSettings = new FontSettings();
+
+            // Create a font source from a folder that contains font files
+            FolderFontSource folderFontSource = new FolderFontSource(MyDir + "MyFonts", false, 1);
+
+            // Add that source to our document
+            doc.FontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
+
+            Assert.AreEqual(MyDir + "MyFonts", folderFontSource.FolderPath);
+            Assert.AreEqual(false, folderFontSource.ScanSubfolders);
+            Assert.AreEqual(FontSourceType.FontsFolder, folderFontSource.Type);
+            Assert.AreEqual(1, folderFontSource.Priority);
+            //ExEnd
+        }
+
+        [Test]
+        public void FontSourceMemory()
+        {
+            //ExStart
+            //ExFor:Fonts.MemoryFontSource
+            //ExFor:Fonts.MemoryFontSource.#ctor(Byte[])
+            //ExFor:Fonts.MemoryFontSource.#ctor(Byte[], Int32)
+            //ExFor:Fonts.MemoryFontSource.FontData
+            //ExFor:Fonts.MemoryFontSource.Type
+            //ExSummary:Shows how to create a memory font source.
+            Document doc = new Document();
+
+            // Create a font settings object for our document
+            doc.FontSettings = new FontSettings();
+
+            // Import a font file, putting its contents into a byte array
+            byte[] fontBytes = File.ReadAllBytes(MyDir + "Alte DIN 1451 Mittelschrift.ttf");
+
+            // Create a memory font source from our array
+            MemoryFontSource memoryFontSource = new MemoryFontSource(fontBytes, 0);
+
+            // Add that font source to our document
+            doc.FontSettings.SetFontsSources(new FontSourceBase[] { memoryFontSource });
+
+            Assert.AreEqual(52208, memoryFontSource.FontData.Length);
+            Assert.AreEqual(FontSourceType.MemoryFont, memoryFontSource.Type);
+            Assert.AreEqual(0, memoryFontSource.Priority);
+            //ExEnd
+        }
+
+        [Test]
+        public void FontSourceSystem()
+        {
+            //ExStart
+            //ExFor:Fonts.FontSettings.AddFontSubstitutes(String, String[])
+            //ExFor:Fonts.FontSettings.EnableFontSubstitution
+            //ExFor:Fonts.FontSettings.GetFontSubstitutes(String)
+            //ExFor:Fonts.FontSettings.ResetFontSources
+            //ExFor:Fonts.SystemFontSource
+            //ExFor:Fonts.SystemFontSource.#ctor
+            //ExFor:Fonts.SystemFontSource.#ctor(Int32)
+            //ExFor:Fonts.SystemFontSource.GetSystemFontFolders
+            //ExFor:Fonts.SystemFontSource.Type
+            //ExSummary:Shows how to access a document's system font source and set font substitutes.
+            Document doc = new Document();
+
+            // Create a font settings object for our document
+            doc.FontSettings = new FontSettings();
+
+            // By default we always start with a system font source
+            Assert.AreEqual(1, doc.FontSettings.GetFontsSources().Length);
+
+            SystemFontSource systemFontSource = (SystemFontSource)doc.FontSettings.GetFontsSources()[0];
+            Assert.AreEqual(FontSourceType.SystemFonts, systemFontSource.Type);
+            Assert.AreEqual(0, systemFontSource.Priority);
+            Assert.AreEqual(new[] { @"C:\WINDOWS\Fonts" }, SystemFontSource.GetSystemFontFolders());
+
+            // Set a font that exists in the windows fonts directory as a substitute for one that doesn't
+            doc.FontSettings.EnableFontSubstitution = true;
+            doc.FontSettings.AddFontSubstitutes("Kreon-Regular", new string[] { "Calibri" });
+
+            Assert.AreEqual(1, doc.FontSettings.GetFontSubstitutes("Kreon-Regular").Length);
+            Assert.Contains("Calibri", doc.FontSettings.GetFontSubstitutes("Kreon-Regular"));
+
+            // Alternatively, we could add a folder font source in which the corresponding folder contains the font
+            FolderFontSource folderFontSource = new FolderFontSource(MyDir + "MyFonts", false);
+            doc.FontSettings.SetFontsSources(new FontSourceBase[] { systemFontSource, folderFontSource });
+            Assert.AreEqual(2, doc.FontSettings.GetFontsSources().Length);
+
+            // Resetting the font sources still leaves us with the system font source as well as our substitutes
+            doc.FontSettings.ResetFontSources();
+
+            Assert.AreEqual(1, doc.FontSettings.GetFontsSources().Length);
+            Assert.AreEqual(FontSourceType.SystemFonts, doc.FontSettings.GetFontsSources()[0].Type);
+            Assert.AreEqual(1, doc.FontSettings.GetFontSubstitutes("Kreon-Regular").Length);
+            //ExEnd
+        }
     }
 }

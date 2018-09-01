@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -48,32 +48,14 @@ namespace ApiExamples
         {
             public Customer(string aFullName, string anAddress)
             {
-                this.mFullName = aFullName;
-                this.mAddress = anAddress;
-                this.mOrders = new OrderList();
+                FullName = aFullName;
+                Address = anAddress;
+                Orders = new OrderList();
             }
 
-            public string FullName
-            {
-                get { return this.mFullName; }
-                set { this.mFullName = value; }
-            }
-
-            public string Address
-            {
-                get { return this.mAddress; }
-                set { this.mAddress = value; }
-            }
-
-            public OrderList Orders
-            {
-                get { return this.mOrders; }
-                set { this.mOrders = value; }
-            }
-
-            private string mFullName;
-            private string mAddress;
-            private OrderList mOrders;
+            public string FullName { get; set; }
+            public string Address { get; set; }
+            public OrderList Orders { get; set; }
         }
 
         /// <summary>
@@ -83,7 +65,7 @@ namespace ApiExamples
         {
             public new Customer this[int index]
             {
-                get { return (Customer)base[index]; }
+                get { return (Customer) base[index]; }
                 set { base[index] = value; }
             }
         }
@@ -95,24 +77,12 @@ namespace ApiExamples
         {
             public Order(string oName, int oQuantity)
             {
-                this.mName = oName;
-                this.mQuantity = oQuantity;
+                Name = oName;
+                Quantity = oQuantity;
             }
 
-            public string Name
-            {
-                get { return this.mName; }
-                set { this.mName = value; }
-            }
-
-            public int Quantity
-            {
-                get { return this.mQuantity; }
-                set { this.mQuantity = value; }
-            }
-
-            private string mName;
-            private int mQuantity;
+            public string Name { get; set; }
+            public int Quantity { get; set; }
         }
 
         /// <summary>
@@ -122,7 +92,7 @@ namespace ApiExamples
         {
             public new Order this[int index]
             {
-                get { return (Order)base[index]; }
+                get { return (Order) base[index]; }
                 set { base[index] = value; }
             }
         }
@@ -135,10 +105,10 @@ namespace ApiExamples
         {
             public CustomerMailMergeDataSource(CustomerList customers)
             {
-                this.mCustomers = customers;
+                mCustomers = customers;
 
                 // When the data source is initialized, it must be positioned before the first record.
-                this.mRecordIndex = -1;
+                mRecordIndex = -1;
             }
 
             /// <summary>
@@ -157,13 +127,13 @@ namespace ApiExamples
                 switch (fieldName)
                 {
                     case "FullName":
-                        fieldValue = this.mCustomers[this.mRecordIndex].FullName;
+                        fieldValue = mCustomers[mRecordIndex].FullName;
                         return true;
                     case "Address":
-                        fieldValue = this.mCustomers[this.mRecordIndex].Address;
+                        fieldValue = mCustomers[mRecordIndex].Address;
                         return true;
                     case "Order":
-                        fieldValue = this.mCustomers[this.mRecordIndex].Orders;
+                        fieldValue = mCustomers[mRecordIndex].Orders;
                         return true;
                     default:
                         // A field with this name was not found, 
@@ -178,10 +148,10 @@ namespace ApiExamples
             /// </summary>
             public bool MoveNext()
             {
-                if (!this.IsEof)
-                    this.mRecordIndex++;
+                if (!IsEof)
+                    mRecordIndex++;
 
-                return (!this.IsEof);
+                return (!IsEof);
             }
 
             //ExStart
@@ -193,7 +163,7 @@ namespace ApiExamples
                 {
                     // Get the child collection to merge it with the region provided with tableName variable.
                     case "Order":
-                        return new OrderMailMergeDataSource(this.mCustomers[this.mRecordIndex].Orders);
+                        return new OrderMailMergeDataSource(mCustomers[mRecordIndex].Orders);
                     default:
                         return null;
                 }
@@ -202,7 +172,7 @@ namespace ApiExamples
 
             private bool IsEof
             {
-                get { return (this.mRecordIndex >= this.mCustomers.Count); }
+                get { return (mRecordIndex >= mCustomers.Count); }
             }
 
             private readonly CustomerList mCustomers;
@@ -213,10 +183,10 @@ namespace ApiExamples
         {
             public OrderMailMergeDataSource(OrderList orders)
             {
-                this.mOrders = orders;
+                mOrders = orders;
 
                 // When the data source is initialized, it must be positioned before the first record.
-                this.mRecordIndex = -1;
+                mRecordIndex = -1;
             }
 
             /// <summary>
@@ -235,10 +205,10 @@ namespace ApiExamples
                 switch (fieldName)
                 {
                     case "Name":
-                        fieldValue = this.mOrders[this.mRecordIndex].Name;
+                        fieldValue = mOrders[mRecordIndex].Name;
                         return true;
                     case "Quantity":
-                        fieldValue = this.mOrders[this.mRecordIndex].Quantity;
+                        fieldValue = mOrders[mRecordIndex].Quantity;
                         return true;
                     default:
                         // A field with this name was not found, 
@@ -253,10 +223,10 @@ namespace ApiExamples
             /// </summary>
             public bool MoveNext()
             {
-                if (!this.IsEof)
-                    this.mRecordIndex++;
+                if (!IsEof)
+                    mRecordIndex++;
 
-                return (!this.IsEof);
+                return (!IsEof);
             }
 
             // Return null because we haven't any child elements for this sort of object.
@@ -267,7 +237,7 @@ namespace ApiExamples
 
             private bool IsEof
             {
-                get { return (this.mRecordIndex >= this.mOrders.Count); }
+                get { return (mRecordIndex >= mOrders.Count); }
             }
 
             private readonly OrderList mOrders;

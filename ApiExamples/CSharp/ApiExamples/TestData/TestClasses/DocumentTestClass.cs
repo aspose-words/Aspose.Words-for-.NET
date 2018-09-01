@@ -12,10 +12,10 @@ namespace ApiExamples.TestData.TestClasses
 
         public DocumentTestClass(Document doc, Stream docStream, byte[] docBytes, string docUri)
         {
-            this.Document = doc;
-            this.DocumentStream = docStream;
-            this.DocumentBytes = docBytes;
-            this.DocumentUri = docUri;
+            Document = doc;
+            DocumentStream = docStream;
+            DocumentBytes = docBytes;
+            DocumentUri = docUri;
         }
     }
 }

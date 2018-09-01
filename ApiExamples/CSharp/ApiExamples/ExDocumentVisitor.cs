@@ -8,11 +8,9 @@
 using System;
 using System.Text;
 using Aspose.Words;
-using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Markup;
 using Aspose.Words.Math;
-using Aspose.Words.Replacing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 
@@ -59,7 +57,7 @@ namespace ApiExamples
         {
             public DocStructurePrinter()
             {
-                this.mBuilder = new StringBuilder();
+                mBuilder = new StringBuilder();
             }
 
             /// <summary>
@@ -67,18 +65,18 @@ namespace ApiExamples
             /// </summary>
             public String GetText()
             {
-                return this.mBuilder.ToString();
+                return mBuilder.ToString();
             }
 
             /// <summary>
             /// Called when a Document node is encountered.
             /// </summary>
-            public override VisitorAction VisitDocumentStart(Document document)
+            public override VisitorAction VisitDocumentStart(Document doc)
             {
-                int childNodeCount = document.GetChildNodes(NodeType.Any, true).Count;
+                int childNodeCount = doc.GetChildNodes(NodeType.Any, true).Count;
 
                 // A Document node is at the root of every document, so if we let a document accept a visitor, this will be the first visitor action to be carried out
-                this.IndentAndAppendLine("[Document start] Child nodes: " + childNodeCount);
+                IndentAndAppendLine("[Document start] Child nodes: " + childNodeCount);
                 mDocTraversalDepth++;
 
                 // Let the visitor continue visiting other nodes
@@ -88,11 +86,11 @@ namespace ApiExamples
             /// <summary>
             /// Called when the visiting of a Document is ended.
             /// </summary>
-            public override VisitorAction VisitDocumentEnd(Document document)
+            public override VisitorAction VisitDocumentEnd(Document doc)
             {
                 // If we let a document accept a visitor, this will be the last visitor action to be carried out
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[Document end]");
+                IndentAndAppendLine("[Document end]");
 
                 return VisitorAction.Continue;
             }
@@ -106,7 +104,7 @@ namespace ApiExamples
                 NodeCollection docSections = section.Document.GetChildNodes(NodeType.Section, false);
                 int sectionIndex = docSections.IndexOf(section);
 
-                this.IndentAndAppendLine("[Section start] Section index: " + sectionIndex);
+                IndentAndAppendLine("[Section start] Section index: " + sectionIndex);
                 mDocTraversalDepth++;
 
                 return VisitorAction.Continue;
@@ -118,7 +116,7 @@ namespace ApiExamples
             public override VisitorAction VisitSectionEnd(Section section)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[Section end]");
+                IndentAndAppendLine("[Section end]");
 
                 return VisitorAction.Continue;
             }
@@ -129,7 +127,7 @@ namespace ApiExamples
             public override VisitorAction VisitBodyStart(Body body)
             {
                 int paragraphCount = body.Paragraphs.Count;
-                this.IndentAndAppendLine("[Body start] Paragraphs: " + paragraphCount);
+                IndentAndAppendLine("[Body start] Paragraphs: " + paragraphCount);
                 mDocTraversalDepth++;
 
                 return VisitorAction.Continue;
@@ -141,7 +139,7 @@ namespace ApiExamples
             public override VisitorAction VisitBodyEnd(Body body)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[Body end]");
+                IndentAndAppendLine("[Body end]");
 
                 return VisitorAction.Continue;
             }
@@ -151,7 +149,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitParagraphStart(Paragraph paragraph)
             {
-                this.IndentAndAppendLine("[Paragraph start]");
+                IndentAndAppendLine("[Paragraph start]");
                 mDocTraversalDepth++;
 
                 return VisitorAction.Continue;
@@ -163,7 +161,7 @@ namespace ApiExamples
             public override VisitorAction VisitParagraphEnd(Paragraph paragraph)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[Paragraph end]");
+                IndentAndAppendLine("[Paragraph end]");
 
                 return VisitorAction.Continue;
             }
@@ -173,7 +171,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                IndentAndAppendLine("[Run] \"" + run.Text + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -183,7 +181,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitSubDocument(SubDocument subDocument)
             {
-                this.IndentAndAppendLine("[SubDocument]");
+                IndentAndAppendLine("[SubDocument]");
 
                 return VisitorAction.Continue;
             }
@@ -198,6 +196,7 @@ namespace ApiExamples
                 {
                     mBuilder.Append("|  ");
                 }
+
                 mBuilder.AppendLine(text);
             }
 
@@ -239,7 +238,7 @@ namespace ApiExamples
         {
             public TableInfoPrinter()
             {
-                this.mBuilder = new StringBuilder();
+                mBuilder = new StringBuilder();
                 mVisitorIsInsideTable = false;
             }
 
@@ -248,7 +247,7 @@ namespace ApiExamples
             /// </summary>
             public String GetText()
             {
-                return this.mBuilder.ToString();
+                return mBuilder.ToString();
             }
 
             /// <summary>
@@ -258,7 +257,7 @@ namespace ApiExamples
             {
                 // We want to print the contents of runs, but only if they consist of text from cells
                 // So we are only interested in runs that are children of table nodes
-                if (mVisitorIsInsideTable) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideTable) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -277,7 +276,7 @@ namespace ApiExamples
                     columns = table.FirstRow.Count;
                 }
 
-                this.IndentAndAppendLine("[Table start] Size: " + rows + "x" + columns);
+                IndentAndAppendLine("[Table start] Size: " + rows + "x" + columns);
                 mDocTraversalDepth++;
                 mVisitorIsInsideTable = true;
 
@@ -290,7 +289,7 @@ namespace ApiExamples
             public override VisitorAction VisitTableEnd(Table table)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[Table end]");
+                IndentAndAppendLine("[Table end]");
                 mVisitorIsInsideTable = false;
 
                 return VisitorAction.Continue;
@@ -301,7 +300,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRowStart(Row row)
             {
-                this.IndentAndAppendLine("[Row start]");
+                IndentAndAppendLine("[Row start]");
                 mDocTraversalDepth++;
 
                 return VisitorAction.Continue;
@@ -313,7 +312,7 @@ namespace ApiExamples
             public override VisitorAction VisitRowEnd(Row row)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[Row end]");
+                IndentAndAppendLine("[Row end]");
 
                 return VisitorAction.Continue;
             }
@@ -326,7 +325,8 @@ namespace ApiExamples
                 Row row = cell.ParentRow;
                 Table table = row.ParentTable;
 
-                this.IndentAndAppendLine("[Cell start] Row " + (table.IndexOf(row) + 1) + ", Col " + (row.IndexOf(cell) + 1) + "");
+                IndentAndAppendLine("[Cell start] Row " + (table.IndexOf(row) + 1) + ", Col " +
+                                    (row.IndexOf(cell) + 1) + "");
                 mDocTraversalDepth++;
 
                 return VisitorAction.Continue;
@@ -338,10 +338,9 @@ namespace ApiExamples
             public override VisitorAction VisitCellEnd(Cell cell)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[Cell end]");
+                IndentAndAppendLine("[Cell end]");
                 return VisitorAction.Continue;
             }
-
 
             /// <summary>
             /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
@@ -353,6 +352,7 @@ namespace ApiExamples
                 {
                     mBuilder.Append("|  ");
                 }
+
                 mBuilder.AppendLine(text);
             }
 
@@ -393,8 +393,8 @@ namespace ApiExamples
         {
             public CommentInfoPrinter()
             {
-                this.mBuilder = new StringBuilder();
-                this.mVisitorIsInsideComment = false;
+                mBuilder = new StringBuilder();
+                mVisitorIsInsideComment = false;
             }
 
             /// <summary>
@@ -402,7 +402,7 @@ namespace ApiExamples
             /// </summary>
             public String GetText()
             {
-                return this.mBuilder.ToString();
+                return mBuilder.ToString();
             }
 
             /// <summary>
@@ -410,7 +410,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideComment) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideComment) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -420,7 +420,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitCommentRangeStart(CommentRangeStart commentRangeStart)
             {
-                this.IndentAndAppendLine("[Comment range start] ID: " + commentRangeStart.Id);
+                IndentAndAppendLine("[Comment range start] ID: " + commentRangeStart.Id);
                 mDocTraversalDepth++;
                 mVisitorIsInsideComment = true;
 
@@ -433,7 +433,7 @@ namespace ApiExamples
             public override VisitorAction VisitCommentRangeEnd(CommentRangeEnd commentRangeEnd)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[Comment range end]");
+                IndentAndAppendLine("[Comment range end]");
                 mVisitorIsInsideComment = false;
 
                 return VisitorAction.Continue;
@@ -444,8 +444,8 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitCommentStart(Comment comment)
             {
-                
-                this.IndentAndAppendLine(String.Format("[Comment start] For comment range ID {0}, By {1} on {2}", comment.Id, comment.Author, comment.DateTime));
+                IndentAndAppendLine(String.Format("[Comment start] For comment range ID {0}, By {1} on {2}", comment.Id,
+                    comment.Author, comment.DateTime));
                 mDocTraversalDepth++;
                 mVisitorIsInsideComment = true;
 
@@ -458,7 +458,7 @@ namespace ApiExamples
             public override VisitorAction VisitCommentEnd(Comment comment)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[Comment end]");
+                IndentAndAppendLine("[Comment end]");
                 mVisitorIsInsideComment = false;
 
                 return VisitorAction.Continue;
@@ -474,6 +474,7 @@ namespace ApiExamples
                 {
                     mBuilder.Append("|  ");
                 }
+
                 mBuilder.AppendLine(text);
             }
 
@@ -513,8 +514,8 @@ namespace ApiExamples
         {
             public FieldInfoPrinter()
             {
-                this.mBuilder = new StringBuilder();
-                this.mVisitorIsInsideField = false;
+                mBuilder = new StringBuilder();
+                mVisitorIsInsideField = false;
             }
 
             /// <summary>
@@ -522,7 +523,7 @@ namespace ApiExamples
             /// </summary>
             public String GetText()
             {
-                return this.mBuilder.ToString();
+                return mBuilder.ToString();
             }
 
             /// <summary>
@@ -530,7 +531,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideField) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideField) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -540,9 +541,9 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitFieldStart(FieldStart fieldStart)
             {
-                this.IndentAndAppendLine("[Field start] FieldType: " + fieldStart.FieldType);
+                IndentAndAppendLine("[Field start] FieldType: " + fieldStart.FieldType);
                 mDocTraversalDepth++;
-                this.mVisitorIsInsideField = true;
+                mVisitorIsInsideField = true;
 
                 return VisitorAction.Continue;
             }
@@ -553,8 +554,8 @@ namespace ApiExamples
             public override VisitorAction VisitFieldEnd(FieldEnd fieldEnd)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[Field end]");
-                this.mVisitorIsInsideField = false;
+                IndentAndAppendLine("[Field end]");
+                mVisitorIsInsideField = false;
 
                 return VisitorAction.Continue;
             }
@@ -564,7 +565,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitFieldSeparator(FieldSeparator fieldSeparator)
             {
-                this.IndentAndAppendLine("[FieldSeparator]");
+                IndentAndAppendLine("[FieldSeparator]");
 
                 return VisitorAction.Continue;
             }
@@ -579,6 +580,7 @@ namespace ApiExamples
                 {
                     mBuilder.Append("|  ");
                 }
+
                 mBuilder.AppendLine(text);
             }
 
@@ -617,8 +619,8 @@ namespace ApiExamples
         {
             public HeaderFooterInfoPrinter()
             {
-                this.mBuilder = new StringBuilder();
-                this.mVisitorIsInsideHeaderFooter = false;
+                mBuilder = new StringBuilder();
+                mVisitorIsInsideHeaderFooter = false;
             }
 
             /// <summary>
@@ -626,7 +628,7 @@ namespace ApiExamples
             /// </summary>
             public String GetText()
             {
-                return this.mBuilder.ToString();
+                return mBuilder.ToString();
             }
 
             /// <summary>
@@ -634,7 +636,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideHeaderFooter) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideHeaderFooter) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -644,9 +646,9 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitHeaderFooterStart(HeaderFooter headerFooter)
             {
-                this.IndentAndAppendLine("[HeaderFooter start] HeaderFooterType: " + headerFooter.HeaderFooterType);
+                IndentAndAppendLine("[HeaderFooter start] HeaderFooterType: " + headerFooter.HeaderFooterType);
                 mDocTraversalDepth++;
-                this.mVisitorIsInsideHeaderFooter = true;
+                mVisitorIsInsideHeaderFooter = true;
 
                 return VisitorAction.Continue;
             }
@@ -657,8 +659,8 @@ namespace ApiExamples
             public override VisitorAction VisitHeaderFooterEnd(HeaderFooter headerFooter)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[HeaderFooter end]");
-                this.mVisitorIsInsideHeaderFooter = false;
+                IndentAndAppendLine("[HeaderFooter end]");
+                mVisitorIsInsideHeaderFooter = false;
 
                 return VisitorAction.Continue;
             }
@@ -673,6 +675,7 @@ namespace ApiExamples
                 {
                     mBuilder.Append("|  ");
                 }
+
                 mBuilder.AppendLine(text);
             }
 
@@ -714,8 +717,8 @@ namespace ApiExamples
         {
             public EditableRangeInfoPrinter()
             {
-                this.mBuilder = new StringBuilder();
-                this.mVisitorIsInsideEditableRange = false;
+                mBuilder = new StringBuilder();
+                mVisitorIsInsideEditableRange = false;
             }
 
             /// <summary>
@@ -723,7 +726,7 @@ namespace ApiExamples
             /// </summary>
             public String GetText()
             {
-                return this.mBuilder.ToString();
+                return mBuilder.ToString();
             }
 
             /// <summary>
@@ -732,7 +735,7 @@ namespace ApiExamples
             public override VisitorAction VisitRun(Run run)
             {
                 // We want to print the contents of runs, but only if they are inside shapes, as they would be in the case of text boxes
-                if (mVisitorIsInsideEditableRange) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideEditableRange) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -742,9 +745,10 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitEditableRangeStart(EditableRangeStart editableRangeStart)
             {
-                this.IndentAndAppendLine("[EditableRange start] ID: " + editableRangeStart.Id + " Owner: " + editableRangeStart.EditableRange.SingleUser);
+                IndentAndAppendLine("[EditableRange start] ID: " + editableRangeStart.Id + " Owner: " +
+                                    editableRangeStart.EditableRange.SingleUser);
                 mDocTraversalDepth++;
-                this.mVisitorIsInsideEditableRange = true;
+                mVisitorIsInsideEditableRange = true;
 
                 return VisitorAction.Continue;
             }
@@ -755,8 +759,8 @@ namespace ApiExamples
             public override VisitorAction VisitEditableRangeEnd(EditableRangeEnd editableRangeEnd)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[EditableRange end]");
-                this.mVisitorIsInsideEditableRange = false;
+                IndentAndAppendLine("[EditableRange end]");
+                mVisitorIsInsideEditableRange = false;
 
                 return VisitorAction.Continue;
             }
@@ -771,6 +775,7 @@ namespace ApiExamples
                 {
                     mBuilder.Append("|  ");
                 }
+
                 mBuilder.AppendLine(text);
             }
 
@@ -809,8 +814,8 @@ namespace ApiExamples
         {
             public FootnoteInfoPrinter()
             {
-                this.mBuilder = new StringBuilder();
-                this.mVisitorIsInsideFootnote = false;
+                mBuilder = new StringBuilder();
+                mVisitorIsInsideFootnote = false;
             }
 
             /// <summary>
@@ -818,7 +823,7 @@ namespace ApiExamples
             /// </summary>
             public String GetText()
             {
-                return this.mBuilder.ToString();
+                return mBuilder.ToString();
             }
 
             /// <summary>
@@ -826,9 +831,9 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitFootnoteStart(Footnote footnote)
             {
-                this.IndentAndAppendLine("[Footnote start] Type: " + footnote.FootnoteType);
+                IndentAndAppendLine("[Footnote start] Type: " + footnote.FootnoteType);
                 mDocTraversalDepth++;
-                this.mVisitorIsInsideFootnote = true;
+                mVisitorIsInsideFootnote = true;
 
                 return VisitorAction.Continue;
             }
@@ -839,8 +844,8 @@ namespace ApiExamples
             public override VisitorAction VisitFootnoteEnd(Footnote footnote)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[Footnote end]");
-                this.mVisitorIsInsideFootnote = false;
+                IndentAndAppendLine("[Footnote end]");
+                mVisitorIsInsideFootnote = false;
 
                 return VisitorAction.Continue;
             }
@@ -850,7 +855,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideFootnote) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideFootnote) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -865,6 +870,7 @@ namespace ApiExamples
                 {
                     mBuilder.Append("|  ");
                 }
+
                 mBuilder.AppendLine(text);
             }
 
@@ -903,8 +909,8 @@ namespace ApiExamples
         {
             public OfficeMathInfoPrinter()
             {
-                this.mBuilder = new StringBuilder();
-                this.mVisitorIsInsideOfficeMath = false;
+                mBuilder = new StringBuilder();
+                mVisitorIsInsideOfficeMath = false;
             }
 
             /// <summary>
@@ -912,7 +918,7 @@ namespace ApiExamples
             /// </summary>
             public String GetText()
             {
-                return this.mBuilder.ToString();
+                return mBuilder.ToString();
             }
 
             /// <summary>
@@ -920,7 +926,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideOfficeMath) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideOfficeMath) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -930,9 +936,9 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitOfficeMathStart(OfficeMath officeMath)
             {
-                this.IndentAndAppendLine("[OfficeMath start] Math object type: " + officeMath.MathObjectType);
+                IndentAndAppendLine("[OfficeMath start] Math object type: " + officeMath.MathObjectType);
                 mDocTraversalDepth++;
-                this.mVisitorIsInsideOfficeMath = true;
+                mVisitorIsInsideOfficeMath = true;
 
                 return VisitorAction.Continue;
             }
@@ -943,8 +949,8 @@ namespace ApiExamples
             public override VisitorAction VisitOfficeMathEnd(OfficeMath officeMath)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[OfficeMath end]");
-                this.mVisitorIsInsideOfficeMath = false;
+                IndentAndAppendLine("[OfficeMath end]");
+                mVisitorIsInsideOfficeMath = false;
 
                 return VisitorAction.Continue;
             }
@@ -959,6 +965,7 @@ namespace ApiExamples
                 {
                     mBuilder.Append("|  ");
                 }
+
                 mBuilder.AppendLine(text);
             }
 
@@ -997,8 +1004,8 @@ namespace ApiExamples
         {
             public SmartTagInfoPrinter()
             {
-                this.mBuilder = new StringBuilder();
-                this.mVisitorIsInsideSmartTag = false;
+                mBuilder = new StringBuilder();
+                mVisitorIsInsideSmartTag = false;
             }
 
             /// <summary>
@@ -1006,7 +1013,7 @@ namespace ApiExamples
             /// </summary>
             public String GetText()
             {
-                return this.mBuilder.ToString();
+                return mBuilder.ToString();
             }
 
             /// <summary>
@@ -1014,7 +1021,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideSmartTag) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideSmartTag) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -1024,7 +1031,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitSmartTagStart(SmartTag smartTag)
             {
-                this.IndentAndAppendLine("[SmartTag start] Name: " + smartTag.Element);
+                IndentAndAppendLine("[SmartTag start] Name: " + smartTag.Element);
                 mDocTraversalDepth++;
                 mVisitorIsInsideSmartTag = true;
 
@@ -1037,7 +1044,7 @@ namespace ApiExamples
             public override VisitorAction VisitSmartTagEnd(SmartTag smartTag)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[SmartTag end]");
+                IndentAndAppendLine("[SmartTag end]");
                 mVisitorIsInsideSmartTag = false;
 
                 return VisitorAction.Continue;
@@ -1053,6 +1060,7 @@ namespace ApiExamples
                 {
                     mBuilder.Append("|  ");
                 }
+
                 mBuilder.AppendLine(text);
             }
 
@@ -1091,8 +1099,8 @@ namespace ApiExamples
         {
             public StructuredDocumentTagInfoPrinter()
             {
-                this.mBuilder = new StringBuilder();
-                this.mVisitorIsInsideStructuredDocumentTag = false;
+                mBuilder = new StringBuilder();
+                mVisitorIsInsideStructuredDocumentTag = false;
             }
 
             /// <summary>
@@ -1100,7 +1108,7 @@ namespace ApiExamples
             /// </summary>
             public String GetText()
             {
-                return this.mBuilder.ToString();
+                return mBuilder.ToString();
             }
 
             /// <summary>
@@ -1108,7 +1116,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideStructuredDocumentTag) this.IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideStructuredDocumentTag) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -1116,9 +1124,9 @@ namespace ApiExamples
             /// <summary>
             /// Called when a StructuredDocumentTag node is encountered in the document.
             /// </summary>
-            public override VisitorAction VisitStructuredDocumentTagStart(StructuredDocumentTag structuredDocumentTag)
+            public override VisitorAction VisitStructuredDocumentTagStart(StructuredDocumentTag sdt)
             {
-                this.IndentAndAppendLine("[StructuredDocumentTag start] Title: " + structuredDocumentTag.Title);
+                IndentAndAppendLine("[StructuredDocumentTag start] Title: " + sdt.Title);
                 mDocTraversalDepth++;
 
                 return VisitorAction.Continue;
@@ -1127,10 +1135,10 @@ namespace ApiExamples
             /// <summary>
             /// Called when the visiting of a StructuredDocumentTag node is ended.
             /// </summary>
-            public override VisitorAction VisitStructuredDocumentTagEnd(StructuredDocumentTag structuredDocumentTag)
+            public override VisitorAction VisitStructuredDocumentTagEnd(StructuredDocumentTag sdt)
             {
                 mDocTraversalDepth--;
-                this.IndentAndAppendLine("[StructuredDocumentTag end]");
+                IndentAndAppendLine("[StructuredDocumentTag end]");
 
                 return VisitorAction.Continue;
             }
@@ -1145,13 +1153,15 @@ namespace ApiExamples
                 {
                     mBuilder.Append("|  ");
                 }
+
                 mBuilder.AppendLine(text);
             }
 
-            private bool mVisitorIsInsideStructuredDocumentTag;
+            private readonly bool mVisitorIsInsideStructuredDocumentTag;
             private int mDocTraversalDepth;
             private readonly StringBuilder mBuilder;
         }
+
         //ExEnd
-    }   
+    }
 }
