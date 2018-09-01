@@ -812,7 +812,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:Fields.FieldAutoNum
             //ExFor:Fields.FieldAutoNum.SeparatorCharacter
-            //ExFor:Fields.FieldAutoNumOut //INSP: Remove, there is no place in this method where you use it. Please don't forget to check tags
             //ExSummary:Shows how to number paragraphs using autonum fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -841,47 +840,36 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
+        //ExStart
+        //ExFor:Fields.FieldAutoNumLgl
+        //ExFor:Fields.FieldAutoNumLgl.RemoveTrailingPeriod
+        //ExFor:Fields.FieldAutoNumLgl.SeparatorCharacter
+        //ExSummary:Shows how to organize a document using autonum legal fields
+        [Test] //ExSkip
         public void FieldAutoNumLgl()
         {
-            //ExStart
-            //ExFor:Fields.FieldAutoNumLgl
-            //ExFor:Fields.FieldAutoNumLgl.RemoveTrailingPeriod
-            //ExFor:Fields.FieldAutoNumLgl.SeparatorCharacter
-            //ExSummary:Shows how to organize a document using autonum legal fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
-            //INSP: I think we can create a separate method for this three lines of code.
-            // In this case our autonum legal field will number our first paragraph as "1." like an ordinary autonum field
-            builder.InsertField(FieldType.FieldAutoNumLegal, true);
-            builder.CurrentParagraph.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
-            builder.Writeln("\tHeading 1");
 
-            // That heading will have an arrow to the left of it which will collapse all paragraphs between that heading and the next heading
-            builder.CurrentParagraph.ParagraphFormat.StyleIdentifier = StyleIdentifier.BodyText;
-            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
-            builder.Writeln("Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ");
+            // This string will be our paragraph text that
+            string loremIpsum =
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
+                "\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ";
 
-            // Our heading style number will be 1 again, so this field will keep working at a depth of 1
-            builder.InsertField(FieldType.FieldAutoNumLegal, true);
-            builder.CurrentParagraph.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
-            builder.Writeln("\tHeading 2");
+            // In this case our autonum legal field will number our first paragraph as "1."
+            InsertNumberedClause(builder, "\tHeading 1", loremIpsum, StyleIdentifier.Heading1);
+
+            // Our heading style number will be 1 again, so this field will keep counting headings at a heading level of 1
+            InsertNumberedClause(builder, "\tHeading 2", loremIpsum, StyleIdentifier.Heading1);
 
             // Our heading style is 2, setting the paragraph numbering depth to 2, setting this field's value to "2.1."
-            builder.InsertField(FieldType.FieldAutoNumLegal, true);
-            builder.CurrentParagraph.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading2;
-            builder.Writeln("\tHeading 3");
+            InsertNumberedClause(builder, "\tHeading 3", loremIpsum, StyleIdentifier.Heading2);
 
             // Our heading style is 3, so we are going deeper again to "2.1.1."
-            builder.InsertField(FieldType.FieldAutoNumLegal, true);
-            builder.CurrentParagraph.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading3;
-            builder.Writeln("\tHeading 4");
+            InsertNumberedClause(builder, "\tHeading 4", loremIpsum, StyleIdentifier.Heading3);
 
             // Our heading style is 2, and the next field number at that level is "2.2."
-            builder.InsertField(FieldType.FieldAutoNumLegal, true);
-            builder.CurrentParagraph.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading2;
-            builder.Writeln("\tHeading 5");
+            InsertNumberedClause(builder, "\tHeading 5", loremIpsum, StyleIdentifier.Heading2);
 
             foreach (Field field in doc.Range.Fields)
             {
@@ -898,10 +886,25 @@ namespace ApiExamples
             }
 
             doc.Save(MyDir + @"\Artifacts\Field.AutoNumLegal.docx");
-            //ExEnd
         }
 
-        //INSP:Are there any other differences from FieldType.FieldAutoNum?
+        /// <summary>
+        /// Get a document builder to insert a clause numbered by an autonum legal field
+        /// </summary>
+        private void InsertNumberedClause(DocumentBuilder builder, string heading, string contents, StyleIdentifier headingStyle)
+        {
+            // This legal field will automatically number our clauses, taking heading style level into account
+            builder.InsertField(FieldType.FieldAutoNumLegal, true);
+            builder.CurrentParagraph.ParagraphFormat.StyleIdentifier = headingStyle;
+            builder.Writeln(heading);
+
+            // This text will belong to the auto num legal field above it
+            // It will collapse when the arrow next to the corresponding autonum legal field is clicked in MS Word
+            builder.CurrentParagraph.ParagraphFormat.StyleIdentifier = StyleIdentifier.BodyText;
+            builder.Writeln(contents);
+        }
+        //ExEnd
+
         [Test]
         public void FieldAutoNumOut()
         {
@@ -916,6 +919,14 @@ namespace ApiExamples
             builder.Writeln("\tParagraph 1.");
             builder.InsertField(FieldType.FieldAutoNumOutline, true);
             builder.Writeln("\tParagraph 2.");
+
+            foreach (Field field in doc.Range.Fields)
+            {
+                if (field.Type == FieldType.FieldAutoNumOutline)
+                {
+                    Assert.AreEqual(" AUTONUMOUT ", field.GetFieldCode());
+                }
+            }
 
             doc.Save(MyDir + @"\Artifacts\Field.AutoNumOut.docx");
             //ExEnd
