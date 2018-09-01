@@ -795,6 +795,55 @@ namespace ApiExamples
         }
 
         [Test]
+        public void FieldCollection()
+        {
+            //ExStart
+            //ExFor:FieldCollection
+            //ExFor:FieldCollection.Clear
+            //ExFor:FieldCollection.Count
+            //ExFor:FieldCollection.GetEnumerator
+            //ExFor:FieldCollection.Item(Int32)
+            //ExFor:FieldCollection.Remove(Field)
+            //ExFor:FieldCollection.Remove(FieldStart)
+            //ExFor:FieldCollection.RemoveAt(Int32)
+            //ExSummary:Shows how to work with a document's collection of fields.
+            // Open a document that has fields
+            Document doc = new Document(MyDir + "Document.ContainsFields.docx");
+
+            // Get the collection that contains all the fields in a document
+            FieldCollection fields = doc.Range.Fields;
+            Assert.AreEqual(5, fields.Count);
+
+            // Iterate over the field collection and print contents and type of every field
+            using (IEnumerator<Field> fieldEnumerator = fields.GetEnumerator())
+            {
+                while (fieldEnumerator.MoveNext())
+                {
+                    Console.WriteLine("Field found: " + fieldEnumerator.Current.Type);
+                    Console.WriteLine("\t{" + fieldEnumerator.Current.GetFieldCode() + "}");
+                    Console.WriteLine("\t\"" + fieldEnumerator.Current.Result + "\"");
+                }
+            }
+            
+            // Get a field to remove itself
+            fields[0].Remove();
+            Assert.AreEqual(4, fields.Count);
+
+            // Remove a field by reference
+            Field lastField = fields[3];
+            fields.Remove(lastField);
+            Assert.AreEqual(3, fields.Count);
+
+            // Remove a field by index
+            fields.RemoveAt(2);
+            Assert.AreEqual(2, fields.Count);
+
+            // Remove all fields from the document
+            fields.Clear();
+            Assert.AreEqual(0, fields.Count);
+        }
+        
+        [Test]
         public void FieldCompare()
         {
             //ExStart
