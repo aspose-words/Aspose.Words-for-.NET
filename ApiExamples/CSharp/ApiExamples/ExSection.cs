@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -9,6 +9,7 @@ using System;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using Aspose.Words;
 using NUnit.Framework;
@@ -149,7 +150,7 @@ namespace ApiExamples
 
             // As a matter of interest, you can retrieve text of the whole document and
             // see that \x000c is automatically appended. \x000c is the end of section character.
-            Console.WriteLine("Hello World!\x000c", doc.GetText());
+            Console.WriteLine("Hello World!\x000c");
 
             // Save the document.
             doc.Save(MyDir + @"\Artifacts\Section.CreateFromScratch.doc");
@@ -188,7 +189,7 @@ namespace ApiExamples
             Console.WriteLine(doc.GetText());
 
             // Loop through all sections in the document.
-            foreach (Section section in doc.Sections)
+            foreach (Section section in doc.Sections.OfType<Section>())
             {
                 // Each section has a Body node that contains main story (main text) of the section.
                 Body body = section.Body;
@@ -232,7 +233,7 @@ namespace ApiExamples
                     case NodeType.Body:
                     {
                         // If the node type is Body, we can cast the node to the Body class.
-                        Body body = (Body)node;
+                        Body body = (Body) node;
 
                         // Write the content of the main story of the section to the console.
                         Console.WriteLine("*** Body ***");
@@ -242,7 +243,7 @@ namespace ApiExamples
                     case NodeType.HeaderFooter:
                     {
                         // If the node type is HeaderFooter, we can cast the node to the HeaderFooter class.
-                        HeaderFooter headerFooter = (HeaderFooter)node;
+                        HeaderFooter headerFooter = (HeaderFooter) node;
 
                         // Write the content of the header footer to the console.
                         Console.WriteLine("*** HeaderFooter ***");
@@ -257,6 +258,7 @@ namespace ApiExamples
                     }
                 }
             }
+
             //ExEnd
         }
 
@@ -390,7 +392,7 @@ namespace ApiExamples
             Document dstDoc = new Document();
 
             Section sourceSection = srcDoc.Sections[0];
-            Section newSection = (Section)dstDoc.ImportNode(sourceSection, true);
+            Section newSection = (Section) dstDoc.ImportNode(sourceSection, true);
             dstDoc.Sections.Add(newSection);
             //ExEnd
         }
@@ -405,7 +407,7 @@ namespace ApiExamples
             //ExId:MigrateFrom2XImportSection
             //ExSummary:This fragment shows how to insert a section from another document in Aspose.Words 3.0 or higher.
             Section sourceSection = srcDoc.Sections[0];
-            Section newSection = (Section)dstDoc.ImportNode(sourceSection, true);
+            Section newSection = (Section) dstDoc.ImportNode(sourceSection, true);
             dstDoc.Sections.Add(newSection);
             //ExEnd
         }
@@ -420,7 +422,7 @@ namespace ApiExamples
 
             // It is important to understand that a document can contain many sections and each
             // section has its own page setup. In this case we want to modify them all.
-            foreach (Section section in doc)
+            foreach (Section section in doc.OfType<Section>())
                 section.PageSetup.PaperSize = PaperSize.Letter;
 
             doc.Save(MyDir + @"\Artifacts\Section.ModifyPageSetupInAllSections.doc");

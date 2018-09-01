@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -67,6 +67,7 @@ namespace ApiExamples
                 DocumentProperty docProperty = doc.CustomDocumentProperties[i];
                 Console.WriteLine("{0}({1}) : {2}", docProperty.Name, docProperty.Type, docProperty.Value);
             }
+
             //ExEnd
         }
 
@@ -165,6 +166,7 @@ namespace ApiExamples
                 Console.WriteLine("The document is not authorized. Authorizing...");
                 doc.CustomDocumentProperties.Add("AuthorizedDate", DateTime.Now);
             }
+
             //ExEnd
         }
 
@@ -191,6 +193,7 @@ namespace ApiExamples
                 docProperties.Add("Authorized Revision", doc.BuiltInDocumentProperties.RevisionNumber);
                 docProperties.Add("Authorized Amount", 123.45);
             }
+
             //ExEnd
         }
 
@@ -253,6 +256,7 @@ namespace ApiExamples
                         throw new Exception("Unknown property type.");
                 }
             }
+
             //ExEnd
         }
     }

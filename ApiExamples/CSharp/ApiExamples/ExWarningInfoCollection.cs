@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections.Generic;
 using Aspose.Words;
 using NUnit.Framework;
 
@@ -23,14 +24,17 @@ namespace ApiExamples
             //ExSummary:Shows how to read and clear a collection of warnings.
             WarningInfoCollection wic = new WarningInfoCollection();
 
-            var enumerator = wic.GetEnumerator();
-            while (enumerator.MoveNext())
+            using (IEnumerator<WarningInfo> enumerator = wic.GetEnumerator())
             {
-                WarningInfo wi = (WarningInfo)enumerator.Current;
-                Console.WriteLine(wi.Description);
+                while (enumerator.MoveNext())
+                {
+                    WarningInfo wi = enumerator.Current;
+                    if (wi != null) Console.WriteLine(wi.Description);
+                }
+
+                wic.Clear();
             }
 
-            wic.Clear();
             //ExEnd
         }
     }

@@ -13,12 +13,12 @@ namespace ApiExamples.TestData.TestClasses
 
         public ColorItemTestClass(string name, Color color, int colorCode, double value1, double value2, double value3)
         {
-            this.Name = name;
-            this.Color = color;
-            this.ColorCode = colorCode;
-            this.Value1 = value1;
-            this.Value2 = value2;
-            this.Value3 = value3;
+            Name = name;
+            Color = color;
+            ColorCode = colorCode;
+            Value1 = value1;
+            Value2 = value2;
+            Value3 = value3;
         }
     }
 }
