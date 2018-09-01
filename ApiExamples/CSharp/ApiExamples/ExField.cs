@@ -933,8 +933,8 @@ namespace ApiExamples
         public void FieldAutoNum()
         {
             //ExStart
-            //ExFor:Fields.FieldAutoNum
-            //ExFor:Fields.FieldAutoNum.SeparatorCharacter
+            //ExFor:FieldAutoNum
+            //ExFor:FieldAutoNum.SeparatorCharacter
             //ExSummary:Shows how to number paragraphs using autonum fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -964,9 +964,9 @@ namespace ApiExamples
         }
 
         //ExStart
-        //ExFor:Fields.FieldAutoNumLgl
-        //ExFor:Fields.FieldAutoNumLgl.RemoveTrailingPeriod
-        //ExFor:Fields.FieldAutoNumLgl.SeparatorCharacter
+        //ExFor:FieldAutoNumLgl
+        //ExFor:FieldAutoNumLgl.RemoveTrailingPeriod
+        //ExFor:FieldAutoNumLgl.SeparatorCharacter
         //ExSummary:Shows how to organize a document using autonum legal fields
         [Test] //ExSkip
         public void FieldAutoNumLgl()
@@ -1032,7 +1032,7 @@ namespace ApiExamples
         public void FieldAutoNumOut()
         {
             //ExStart
-            //ExFor:Fields.FieldAutoNumOut
+            //ExFor:FieldAutoNumOut
             //ExSummary:Shows how to number paragraphs using autonum outline fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
