@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -12,6 +12,7 @@
 //ExSummary:Finds all hyperlinks in a Word document and changes their URL and display name.
 
 using System;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Aspose.Words;
@@ -37,7 +38,7 @@ namespace ApiExamples
 
             // Hyperlinks in a Word documents are fields, select all field start nodes so we can find the hyperlinks.
             NodeList fieldStarts = doc.SelectNodes("//FieldStart");
-            foreach (FieldStart fieldStart in fieldStarts)
+            foreach (FieldStart fieldStart in fieldStarts.OfType<FieldStart>())
             {
                 if (fieldStart.FieldType.Equals(FieldType.FieldHyperlink))
                 {
@@ -87,24 +88,24 @@ namespace ApiExamples
             if (!fieldStart.FieldType.Equals(FieldType.FieldHyperlink))
                 throw new ArgumentException("Field start type must be FieldHyperlink.");
 
-            this.mFieldStart = fieldStart;
+            mFieldStart = fieldStart;
 
             // Find the field separator node.
-            this.mFieldSeparator = FindNextSibling(this.mFieldStart, NodeType.FieldSeparator);
-            if (this.mFieldSeparator == null)
+            mFieldSeparator = FindNextSibling(mFieldStart, NodeType.FieldSeparator);
+            if (mFieldSeparator == null)
                 throw new InvalidOperationException("Cannot find field separator.");
 
             // Find the field end node. Normally field end will always be found, but in the example document 
             // there happens to be a paragraph break included in the hyperlink and this puts the field end 
             // in the next paragraph. It will be much more complicated to handle fields which span several 
             // paragraphs correctly, but in this case allowing field end to be null is enough for our purposes.
-            this.mFieldEnd = FindNextSibling(this.mFieldSeparator, NodeType.FieldEnd);
+            mFieldEnd = FindNextSibling(mFieldSeparator, NodeType.FieldEnd);
 
             // Field code looks something like [ HYPERLINK "http:\\www.myurl.com" ], but it can consist of several runs.
-            String fieldCode = GetTextSameParent(this.mFieldStart.NextSibling, this.mFieldSeparator);
+            String fieldCode = GetTextSameParent(mFieldStart.NextSibling, mFieldSeparator);
             Match match = gRegex.Match(fieldCode.Trim());
-            this.mIsLocal = (match.Groups[1].Length > 0); //The link is local if \l is present in the field code.
-            this.mTarget = match.Groups[2].Value;
+            mIsLocal = (match.Groups[1].Length > 0); //The link is local if \l is present in the field code.
+            mTarget = match.Groups[2].Value;
         }
 
         /// <summary>
@@ -112,16 +113,16 @@ namespace ApiExamples
         /// </summary>
         internal String Name
         {
-            get { return GetTextSameParent(this.mFieldSeparator, this.mFieldEnd); }
+            get { return GetTextSameParent(mFieldSeparator, mFieldEnd); }
             set
             {
                 // Hyperlink display name is stored in the field result which is a Run 
                 // node between field separator and field end.
-                Run fieldResult = (Run)this.mFieldSeparator.NextSibling;
+                Run fieldResult = (Run) mFieldSeparator.NextSibling;
                 fieldResult.Text = value;
 
                 // But sometimes the field result can consist of more than one run, delete these runs.
-                RemoveSameParent(fieldResult.NextSibling, this.mFieldEnd);
+                RemoveSameParent(fieldResult.NextSibling, mFieldEnd);
             }
         }
 
@@ -133,12 +134,12 @@ namespace ApiExamples
             get
             {
                 String dummy = null; // This is needed to fool the C# to VB.NET converter.
-                return this.mTarget;
+                return mTarget;
             }
             set
             {
-                this.mTarget = value;
-                this.UpdateFieldCode();
+                mTarget = value;
+                UpdateFieldCode();
             }
         }
 
@@ -147,22 +148,22 @@ namespace ApiExamples
         /// </summary>
         internal bool IsLocal
         {
-            get { return this.mIsLocal; }
+            get { return mIsLocal; }
             set
             {
-                this.mIsLocal = value;
-                this.UpdateFieldCode();
+                mIsLocal = value;
+                UpdateFieldCode();
             }
         }
 
         private void UpdateFieldCode()
         {
             // Field code is stored in a Run node between field start and field separator.
-            Run fieldCode = (Run)this.mFieldStart.NextSibling;
-            fieldCode.Text = String.Format("HYPERLINK {0}\"{1}\"", ((this.mIsLocal) ? "\\l " : ""), this.mTarget);
+            Run fieldCode = (Run) mFieldStart.NextSibling;
+            fieldCode.Text = String.Format("HYPERLINK {0}\"{1}\"", ((mIsLocal) ? "\\l " : ""), mTarget);
 
             // But sometimes the field code can consist of more than one run, delete these runs.
-            RemoveSameParent(fieldCode.NextSibling, this.mFieldSeparator);
+            RemoveSameParent(fieldCode.NextSibling, mFieldSeparator);
         }
 
         /// <summary>
@@ -175,6 +176,7 @@ namespace ApiExamples
                 if (node.NodeType.Equals(nodeType))
                     return node;
             }
+
             return null;
         }
 
@@ -220,13 +222,14 @@ namespace ApiExamples
         /// <summary>
         /// RK I am notoriously bad at regexes. It seems I don't understand their way of thinking.
         /// </summary>
-        private static readonly Regex gRegex = new Regex("\\S+" + // one or more non spaces HYPERLINK or other word in other languages
-                                                         "\\s+" + // one or more spaces
-                                                         "(?:\"\"\\s+)?" + // non capturing optional "" and one or more spaces, found in one of the customers files.
-                                                         "(\\\\l\\s+)?" + // optional \l flag followed by one or more spaces
-                                                         "\"" + // one apostrophe	
-                                                         "([^\"]+)" + // one or more chars except apostrophe (hyperlink target)
-                                                         "\"" // one closing apostrophe
+        private static readonly Regex gRegex = new Regex(
+            "\\S+" + // one or more non spaces HYPERLINK or other word in other languages
+            "\\s+" + // one or more spaces
+            "(?:\"\"\\s+)?" + // non capturing optional "" and one or more spaces, found in one of the customers files.
+            "(\\\\l\\s+)?" + // optional \l flag followed by one or more spaces
+            "\"" + // one apostrophe	
+            "([^\"]+)" + // one or more chars except apostrophe (hyperlink target)
+            "\"" // one closing apostrophe
         );
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -8,6 +8,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using Aspose.Words;
 using NUnit.Framework;
 
@@ -49,6 +50,7 @@ namespace ApiExamples
                     style.Font.Name = "Arial";
                 }
             }
+
             //ExEnd
         }
 
@@ -80,10 +82,11 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.TableOfContents.doc");
 
             // Iterate through all paragraphs in the document
-            foreach (Paragraph para in doc.GetChildNodes(NodeType.Paragraph, true))
+            foreach (Paragraph para in doc.GetChildNodes(NodeType.Paragraph, true).OfType<Paragraph>())
             {
                 // Check if this paragraph is formatted using the TOC result based styles. This is any style between TOC and TOC9.
-                if (para.ParagraphFormat.Style.StyleIdentifier >= StyleIdentifier.Toc1 && para.ParagraphFormat.Style.StyleIdentifier <= StyleIdentifier.Toc9)
+                if (para.ParagraphFormat.Style.StyleIdentifier >= StyleIdentifier.Toc1 &&
+                    para.ParagraphFormat.Style.StyleIdentifier <= StyleIdentifier.Toc9)
                 {
                     // Get the first tab used in this paragraph, this should be the tab used to align the page numbers.
                     TabStop tab = para.ParagraphFormat.TabStops[0];

@@ -4,6 +4,7 @@ using SkiaSharp;
 #endif
 #if !(NETSTANDARD2_0 || __MOBILE__)
 using System.Drawing;
+
 #endif
 
 namespace ApiExamples.TestData.TestClasses
@@ -30,10 +31,10 @@ namespace ApiExamples.TestData.TestClasses
 #else
         public ImageTestClass(Image image, Stream imageStream, byte[] imageBytes, string imageUri)
         {
-            this.Image = image;
-            this.ImageStream = imageStream;
-            this.ImageBytes = imageBytes;
-            this.ImageUri = imageUri;
+            Image = image;
+            ImageStream = imageStream;
+            ImageBytes = imageBytes;
+            ImageUri = imageUri;
         }
 #endif
     }

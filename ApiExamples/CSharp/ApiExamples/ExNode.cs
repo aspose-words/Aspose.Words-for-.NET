@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Linq;
 using System.Text;
 using System.Xml.XPath;
 using Aspose.Words;
@@ -52,8 +53,8 @@ namespace ApiExamples
             Node cloneWithoutChildren = para.Clone(false);
             //ExEnd
 
-            Assert.IsTrue(((CompositeNode)cloneWithChildren).HasChildNodes);
-            Assert.IsFalse(((CompositeNode)cloneWithoutChildren).HasChildNodes);
+            Assert.IsTrue(((CompositeNode) cloneWithChildren).HasChildNodes);
+            Assert.IsFalse(((CompositeNode) cloneWithoutChildren).HasChildNodes);
         }
 
         [Test]
@@ -120,7 +121,7 @@ namespace ApiExamples
             //ExFor:CompositeNode
             //ExFor:CompositeNode.GetChild
             //ExSummary:Shows how to extract a specific child node from a CompositeNode by using the GetChild method and passing the NodeType and index.
-            Paragraph paragraph = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
+            Paragraph paragraph = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
             //ExEnd
 
             //ExStart
@@ -135,10 +136,11 @@ namespace ApiExamples
                 if (child.NodeType.Equals(NodeType.Run))
                 {
                     // Say we found the node that we want, do something useful.
-                    Run run = (Run)child;
+                    Run run = (Run) child;
                     Console.WriteLine(run.Text);
                 }
             }
+
             //ExEnd
         }
 
@@ -146,7 +148,7 @@ namespace ApiExamples
         public void IndexChildNodes()
         {
             Document doc = new Document();
-            Paragraph paragraph = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
+            Paragraph paragraph = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
             //ExStart
             //ExFor:NodeCollection.Count
@@ -162,29 +164,30 @@ namespace ApiExamples
                 if (child.NodeType.Equals(NodeType.Run))
                 {
                     // Say we found the node that we want, do something useful.
-                    Run run = (Run)child;
+                    Run run = (Run) child;
                     Console.WriteLine(run.Text);
                 }
             }
+
             //ExEnd
         }
 
-        [Test]
+        //ExStart
+        //ExFor:Node.NextSibling
+        //ExFor:CompositeNode.FirstChild
+        //ExFor:Node.IsComposite
+        //ExFor:CompositeNode.IsComposite
+        //ExFor:Node.NodeTypeToString
+        //ExId:RecurseAllNodes            
+        //ExSummary:Shows how to efficiently visit all direct and indirect children of a composite node.
+        [Test] //ExSkip
         public void RecurseAllNodes()
         {
-            //ExStart
-            //ExFor:Node.NextSibling
-            //ExFor:CompositeNode.FirstChild
-            //ExFor:Node.IsComposite
-            //ExFor:CompositeNode.IsComposite
-            //ExFor:Node.NodeTypeToString
-            //ExId:RecurseAllNodes            
-            //ExSummary:Shows how to efficiently visit all direct and indirect children of a composite node.
             // Open a document.
             Document doc = new Document(MyDir + "Node.RecurseAllNodes.doc");
 
             // Invoke the recursive function that will walk the tree.
-            this.TraverseAllNodes(doc);
+            TraverseAllNodes(doc);
         }
 
         /// <summary>
@@ -201,7 +204,7 @@ namespace ApiExamples
 
                 // Recurse into the node if it is a composite node.
                 if (childNode.IsComposite)
-                    this.TraverseAllNodes((CompositeNode)childNode);
+                    TraverseAllNodes((CompositeNode) childNode);
             }
         }
         //ExEnd
@@ -238,6 +241,7 @@ namespace ApiExamples
                 // Continue going through child nodes until null (no more siblings) is reached.
                 curNode = nextNode;
             }
+
             //ExEnd
         }
 
@@ -262,6 +266,7 @@ namespace ApiExamples
                 // Output the types of the nodes that we come across.
                 Console.WriteLine(Node.NodeTypeToString(node.NodeType));
             }
+
             //ExEnd
         }
 
@@ -286,16 +291,15 @@ namespace ApiExamples
             // Quick typed access to all Table child nodes contained in the Body.
             TableCollection tables = body.Tables;
 
-            foreach (Table table in tables)
+            foreach (Table table in tables.OfType<Table>())
             {
                 // Quick typed access to the first row of the table.
-                if (table.FirstRow != null)
-                    table.FirstRow.Remove();
+                table.FirstRow?.Remove();
 
                 // Quick typed access to the last row of the table.
-                if (table.LastRow != null)
-                    table.LastRow.Remove();
+                table.LastRow?.Remove();
             }
+
             //ExEnd
         }
 
@@ -367,12 +371,13 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "MailMerge.MergeImage.doc");
 
             // Let's say we want to check if the Run below is inside a field.
-            Run run = (Run)doc.GetChild(NodeType.Run, 5, true);
+            Run run = (Run) doc.GetChild(NodeType.Run, 5, true);
 
             // Evaluate the XPath expression. The resulting NodeList will contain all nodes found inside a field a field (between FieldStart 
             // and FieldEnd exclusive). There can however be FieldStart and FieldEnd nodes in the list if there are nested fields 
             // in the path. Currently does not find rare fields in which the FieldCode or FieldResult spans across multiple paragraphs.
-            NodeList resultList = doc.SelectNodes("//FieldStart/following-sibling::node()[following-sibling::FieldEnd]");
+            NodeList resultList =
+                doc.SelectNodes("//FieldStart/following-sibling::node()[following-sibling::FieldEnd]");
 
             // Check if the specified run is one of the nodes that are inside the field.
             foreach (Node node in resultList)
@@ -383,6 +388,7 @@ namespace ApiExamples
                     break;
                 }
             }
+
             //ExEnd
         }
 
@@ -499,7 +505,9 @@ namespace ApiExamples
             String nodeAsHtml = node.ToString(SaveFormat.Html);
             //ExEnd
 
-            Assert.AreEqual("<p style=\"margin-top:0pt; margin-bottom:0pt; font-size:12pt\"><span style=\"font-family:'Times New Roman'\">Hello World!</span></p>", nodeAsHtml);
+            Assert.AreEqual(
+                "<p style=\"margin-top:0pt; margin-bottom:0pt; font-size:12pt\"><span style=\"font-family:'Times New Roman'\">Hello World!</span></p>",
+                nodeAsHtml);
         }
 
         [Test]
@@ -514,16 +522,20 @@ namespace ApiExamples
             Node node = doc.LastSection.Body.LastParagraph;
 
             // Create an instance of HtmlSaveOptions and set a few options.
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
-            saveOptions.ExportHeadersFootersMode = ExportHeadersFootersMode.PerSection;
-            saveOptions.ExportRelativeFontSize = true;
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions
+            {
+                ExportHeadersFootersMode = ExportHeadersFootersMode.PerSection,
+                ExportRelativeFontSize = true
+            };
 
             // Convert the document to HTML and return as a String. Pass the instance of HtmlSaveOptions to
             // to use the specified options during the conversion.
             String nodeAsHtml = node.ToString(saveOptions);
             //ExEnd
 
-            Assert.AreEqual("<p style=\"margin-top:0pt; margin-bottom:0pt\"><span style=\"font-family:'Times New Roman'\">Hello World!</span></p>", nodeAsHtml);
+            Assert.AreEqual(
+                "<p style=\"margin-top:0pt; margin-bottom:0pt\"><span style=\"font-family:'Times New Roman'\">Hello World!</span></p>",
+                nodeAsHtml);
         }
 
         [Test]
@@ -554,7 +566,8 @@ namespace ApiExamples
             builder.Writeln("The fourth paragraph");
 
             // Hot remove allows a node to be removed from a live collection and have the enumeration continue.
-            foreach (Paragraph para in builder.Document.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true))
+            foreach (Paragraph para in builder.Document.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true)
+                .OfType<Paragraph>())
             {
                 if (para.Range.Text.Contains("third"))
                 {
@@ -562,6 +575,7 @@ namespace ApiExamples
                     para.Remove();
                 }
             }
+
             //ExEnd
         }
 
@@ -578,7 +592,8 @@ namespace ApiExamples
             builder.Writeln("The fourth paragraph");
 
             // This causes unexpected behavior, the fourth paragraph in the collection is not visited.
-            foreach (Paragraph para in builder.Document.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true))
+            foreach (Paragraph para in builder.Document.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true)
+                .OfType<Paragraph>())
             {
                 if (para.Range.Text.Contains("third"))
                 {
@@ -586,6 +601,7 @@ namespace ApiExamples
                     para.Remove();
                 }
             }
+
             //ExEnd
         }
 
@@ -615,7 +631,7 @@ namespace ApiExamples
             Run run3 = new Run(doc, "Run 3. ");
 
             // We initialized them but not in our paragraph yet
-            Assert.AreEqual("Initial text. " + (char)12, paragraph.GetText());
+            Assert.AreEqual("Initial text. " + (char) 12, paragraph.GetText());
 
             // Insert run2 before initial paragraph text. This will be at the start of the paragraph
             paragraph.InsertBefore(run2, paragraphText);
@@ -626,14 +642,14 @@ namespace ApiExamples
             // Insert run1 before every other child node. run2 was the start of the paragraph, now it will be run1
             paragraph.PrependChild(run1);
 
-            Assert.AreEqual("Run 1. Run 2. Initial text. Run 3. " + (char)12, paragraph.GetText());
+            Assert.AreEqual("Run 1. Run 2. Initial text. Run 3. " + (char) 12, paragraph.GetText());
             Assert.AreEqual(4, paragraph.GetChildNodes(NodeType.Any, true).Count);
 
             // Access the child node collection and update/delete children
-            ((Run)paragraph.GetChildNodes(NodeType.Run, true)[1]).Text = "Updated run 2. ";
+            ((Run) paragraph.GetChildNodes(NodeType.Run, true)[1]).Text = "Updated run 2. ";
             paragraph.GetChildNodes(NodeType.Run, true).Remove(paragraphText);
 
-            Assert.AreEqual("Run 1. Updated run 2. Run 3. " + (char)12, paragraph.GetText());
+            Assert.AreEqual("Run 1. Updated run 2. Run 3. " + (char) 12, paragraph.GetText());
             Assert.AreEqual(3, paragraph.GetChildNodes(NodeType.Any, true).Count);
             //ExEnd
         }
@@ -648,27 +664,30 @@ namespace ApiExamples
             Document doc = new Document();
 
             // A document is a composite node so we can make a navigator straight away
-            System.Xml.XPath.XPathNavigator navigator = doc.CreateNavigator();
+            XPathNavigator navigator = doc.CreateNavigator();
 
             // Our root is the document node with 1 child, which is the first section
-            Assert.AreEqual("Document", navigator.Name);
-            Assert.AreEqual(false, navigator.MoveToNext());
-            Assert.AreEqual(1, navigator.SelectChildren(XPathNodeType.All).Count);
+            if (navigator != null)
+            {
+                Assert.AreEqual("Document", navigator.Name);
+                Assert.AreEqual(false, navigator.MoveToNext());
+                Assert.AreEqual(1, navigator.SelectChildren(XPathNodeType.All).Count);
 
-            // The document tree has the document, first section, body and first paragraph as nodes, with each being an only child of the previous
-            // We can add a few more to give the tree some branches for the navigator to traverse
-            DocumentBuilder docBuilder = new DocumentBuilder(doc);
-            docBuilder.Write("Section 1, Paragraph 1. ");
-            docBuilder.InsertParagraph();
-            docBuilder.Write("Section 1, Paragraph 2. ");
-            doc.AppendChild(new Section(doc));
-            docBuilder.MoveToSection(1);
-            docBuilder.Write("Section 2, Paragraph 1. ");
+                // The document tree has the document, first section, body and first paragraph as nodes, with each being an only child of the previous
+                // We can add a few more to give the tree some branches for the navigator to traverse
+                DocumentBuilder docBuilder = new DocumentBuilder(doc);
+                docBuilder.Write("Section 1, Paragraph 1. ");
+                docBuilder.InsertParagraph();
+                docBuilder.Write("Section 1, Paragraph 2. ");
+                doc.AppendChild(new Section(doc));
+                docBuilder.MoveToSection(1);
+                docBuilder.Write("Section 2, Paragraph 1. ");
 
-            // Use our navigator to print a map of all the nodes in the document to the console
-            StringBuilder stringBuilder = new StringBuilder();
-            MapDocument(navigator, stringBuilder, 0);
-            Console.Write(stringBuilder.ToString());
+                // Use our navigator to print a map of all the nodes in the document to the console
+                StringBuilder stringBuilder = new StringBuilder();
+                MapDocument(navigator, stringBuilder, 0);
+                Console.Write(stringBuilder.ToString());
+            }
         }
 
         /// <summary>
@@ -697,6 +716,7 @@ namespace ApiExamples
                 }
             } while (navigator.MoveToNext());
         }
+
         //ExEnd
     }
 }

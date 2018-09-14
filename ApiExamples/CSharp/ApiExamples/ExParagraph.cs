@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Fields;
 using Aspose.Words.Drawing;
@@ -52,7 +53,8 @@ namespace ApiExamples
 
             InsertFieldUsingFieldCode(doc, " AUTHOR ", null, false, 1);
 
-            Assert.AreEqual("\u0013 AUTHOR \u0014Test Author\u0015Hello World!\r", DocumentHelper.GetParagraphText(doc, 1));
+            Assert.AreEqual("\u0013 AUTHOR \u0014Test Author\u0015Hello World!\r",
+                DocumentHelper.GetParagraphText(doc, 1));
         }
 
         [Test]
@@ -64,7 +66,8 @@ namespace ApiExamples
 
             InsertFieldUsingFieldCode(doc, " DATE ", null, true, 1);
 
-            Assert.AreEqual(String.Format("Hello World!\u0013 DATE \u0014{0}\u0015\r", date), DocumentHelper.GetParagraphText(doc, 1));
+            Assert.AreEqual(String.Format("Hello World!\u0013 DATE \u0014{0}\u0015\r", date),
+                DocumentHelper.GetParagraphText(doc, 1));
         }
 
         [Test]
@@ -128,7 +131,8 @@ namespace ApiExamples
 
             InsertFieldUsingFieldCodeFieldString(doc, " AUTHOR ", "Test Field Value", run, false, 1);
 
-            Assert.AreEqual("Hello World!\u0013 AUTHOR \u0014Test Field Value\u0015 Hello World!\r", DocumentHelper.GetParagraphText(doc, 1));
+            Assert.AreEqual("Hello World!\u0013 AUTHOR \u0014Test Field Value\u0015 Hello World!\r",
+                DocumentHelper.GetParagraphText(doc, 1));
         }
 
         [Test]
@@ -141,7 +145,8 @@ namespace ApiExamples
 
             InsertFieldUsingFieldCodeFieldString(doc, " AUTHOR ", "", run, true, 1);
 
-            Assert.AreEqual("Hello World! Hello World!\u0013 AUTHOR \u0014\u0015\r", DocumentHelper.GetParagraphText(doc, 1));
+            Assert.AreEqual("Hello World! Hello World!\u0013 AUTHOR \u0014\u0015\r",
+                DocumentHelper.GetParagraphText(doc, 1));
         }
 
         [Test]
@@ -201,15 +206,17 @@ namespace ApiExamples
 
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
-            foreach (Paragraph paragraph in paragraphs)
+            foreach (Paragraph paragraph in paragraphs.OfType<Paragraph>())
             {
                 if (paragraph.FrameFormat.IsFrame)
                 {
                     Console.WriteLine("Width: " + paragraph.FrameFormat.Width);
                     Console.WriteLine("Height: " + paragraph.FrameFormat.Height);
                     Console.WriteLine("HorizontalPosition: " + paragraph.FrameFormat.HorizontalPosition);
-                    Console.WriteLine("RelativeHorizontalPosition: " + paragraph.FrameFormat.RelativeHorizontalPosition);
-                    Console.WriteLine("HorizontalDistanceFromText: " + paragraph.FrameFormat.HorizontalDistanceFromText);
+                    Console.WriteLine("RelativeHorizontalPosition: " +
+                                      paragraph.FrameFormat.RelativeHorizontalPosition);
+                    Console.WriteLine("HorizontalDistanceFromText: " +
+                                      paragraph.FrameFormat.HorizontalDistanceFromText);
                     Console.WriteLine("VerticalPosition: " + paragraph.FrameFormat.VerticalPosition);
                     Console.WriteLine("RelativeVerticalPosition: " + paragraph.FrameFormat.RelativeVerticalPosition);
                     Console.WriteLine("VerticalDistanceFromText: " + paragraph.FrameFormat.VerticalDistanceFromText);
@@ -230,14 +237,34 @@ namespace ApiExamples
             }
             else
             {
-                Assert.Fail("There are no frames in the document.");    
+                Assert.Fail("There are no frames in the document.");
             }
+        }
+
+        [Test]
+        public void AsianTypographyProperties()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.FarEastLineBreakControl
+            //ExFor:ParagraphFormat.WordWrap
+            //ExFor:ParagraphFormat.HangingPunctuation
+            //ExSummary:Shows how to set special properties for Asian typography. 
+            Document doc = new Document(MyDir + "Document.docx");
+
+            ParagraphFormat format = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat;
+            format.FarEastLineBreakControl = true;
+            format.WordWrap = false;
+            format.HangingPunctuation = true;
+
+            doc.Save(MyDir + @"\Artifacts\Paragraph.AsianTypographyProperties.docx");
+            //ExEnd
         }
 
         /// <summary>
         /// Insert field into the first paragraph of the current document using field type
         /// </summary>
-        private static void InsertFieldUsingFieldType(Document doc, FieldType fieldType, bool updateField, Node refNode, bool isAfter, int paraIndex)
+        private static void InsertFieldUsingFieldType(Document doc, FieldType fieldType, bool updateField, Node refNode,
+            bool isAfter, int paraIndex)
         {
             Paragraph para = DocumentHelper.GetParagraph(doc, paraIndex);
             para.InsertField(fieldType, updateField, refNode, isAfter);
@@ -246,7 +273,8 @@ namespace ApiExamples
         /// <summary>
         /// Insert field into the first paragraph of the current document using field code
         /// </summary>
-        private static void InsertFieldUsingFieldCode(Document doc, String fieldCode, Node refNode, bool isAfter, int paraIndex)
+        private static void InsertFieldUsingFieldCode(Document doc, String fieldCode, Node refNode, bool isAfter,
+            int paraIndex)
         {
             Paragraph para = DocumentHelper.GetParagraph(doc, paraIndex);
             para.InsertField(fieldCode, refNode, isAfter);
@@ -255,7 +283,8 @@ namespace ApiExamples
         /// <summary>
         /// Insert field into the first paragraph of the current document using field code and field String
         /// </summary>
-        private static void InsertFieldUsingFieldCodeFieldString(Document doc, String fieldCode, String fieldValue, Node refNode, bool isAfter, int paraIndex)
+        private static void InsertFieldUsingFieldCodeFieldString(Document doc, String fieldCode, String fieldValue,
+            Node refNode, bool isAfter, int paraIndex)
         {
             Paragraph para = DocumentHelper.GetParagraph(doc, paraIndex);
             para.InsertField(fieldCode, fieldValue, refNode, isAfter);

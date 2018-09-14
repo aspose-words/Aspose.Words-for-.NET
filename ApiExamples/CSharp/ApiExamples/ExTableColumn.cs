@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections;
+using System.Linq;
 using System.Text;
 using Aspose.Words;
 using Aspose.Words.Tables;
@@ -27,11 +28,8 @@ namespace ApiExamples
         {
             private Column(Table table, int columnIndex)
             {
-                if (table == null)
-                    throw new ArgumentException("table");
-
-                this.mTable = table;
-                this.mColumnIndex = columnIndex;
+                mTable = table ?? throw new ArgumentException("table");
+                mColumnIndex = columnIndex;
             }
 
             /// <summary>
@@ -47,7 +45,7 @@ namespace ApiExamples
             /// </summary>
             public Cell[] Cells
             {
-                get { return (Cell[])this.GetColumnCells().ToArray(typeof(Cell)); }
+                get { return (Cell[]) GetColumnCells().ToArray(typeof(Cell)); }
             }
 
             /// <summary>
@@ -55,7 +53,7 @@ namespace ApiExamples
             /// </summary>
             public int IndexOf(Cell cell)
             {
-                return this.GetColumnCells().IndexOf(cell);
+                return GetColumnCells().IndexOf(cell);
             }
 
             /// <summary>
@@ -63,7 +61,7 @@ namespace ApiExamples
             /// </summary>
             public Column InsertColumnBefore()
             {
-                Cell[] columnCells = this.Cells;
+                Cell[] columnCells = Cells;
 
                 if (columnCells.Length == 0)
                     throw new ArgumentException("Column must not be empty");
@@ -73,14 +71,14 @@ namespace ApiExamples
                     cell.ParentRow.InsertBefore(cell.Clone(false), cell);
 
                 // This is the new column.
-                Column column = new Column(columnCells[0].ParentRow.ParentTable, this.mColumnIndex);
+                Column column = new Column(columnCells[0].ParentRow.ParentTable, mColumnIndex);
 
                 // We want to make sure that the cells are all valid to work with (have at least one paragraph).
                 foreach (Cell cell in column.Cells)
                     cell.EnsureMinimum();
 
                 // Increase the index which this column represents since there is now one extra column infront.
-                this.mColumnIndex++;
+                mColumnIndex++;
 
                 return column;
             }
@@ -90,7 +88,7 @@ namespace ApiExamples
             /// </summary>
             public void Remove()
             {
-                foreach (Cell cell in this.Cells)
+                foreach (Cell cell in Cells)
                     cell.Remove();
             }
 
@@ -101,7 +99,7 @@ namespace ApiExamples
             {
                 StringBuilder builder = new StringBuilder();
 
-                foreach (Cell cell in this.Cells)
+                foreach (Cell cell in Cells)
                     builder.Append(cell.ToString(SaveFormat.Text));
 
                 return builder.ToString();
@@ -114,9 +112,9 @@ namespace ApiExamples
             {
                 ArrayList columnCells = new ArrayList();
 
-                foreach (Row row in this.mTable.Rows)
+                foreach (Row row in mTable.Rows.OfType<Row>())
                 {
-                    Cell cell = row.Cells[this.mColumnIndex];
+                    Cell cell = row.Cells[mColumnIndex];
                     if (cell != null)
                         columnCells.Add(cell);
                 }
@@ -125,7 +123,7 @@ namespace ApiExamples
             }
 
             private int mColumnIndex;
-            private Table mTable;
+            private readonly Table mTable;
         }
         //ExEnd
 
@@ -136,7 +134,7 @@ namespace ApiExamples
             //ExId:RemoveTableColumn
             //ExSummary:Shows how to remove a column from a table in a document.
             Document doc = new Document(MyDir + "Table.Document.doc");
-            Table table = (Table)doc.GetChild(NodeType.Table, 1, true);
+            Table table = (Table) doc.GetChild(NodeType.Table, 1, true);
 
             // Get the third column from the table and remove it.
             Column column = Column.FromIndex(table, 2);
@@ -154,7 +152,7 @@ namespace ApiExamples
         public void InsertNewColumnIntoTable()
         {
             Document doc = new Document(MyDir + "Table.Document.doc");
-            Table table = (Table)doc.GetChild(NodeType.Table, 1, true);
+            Table table = (Table) doc.GetChild(NodeType.Table, 1, true);
 
             //ExStart
             //ExId:InsertNewColumn
@@ -182,7 +180,7 @@ namespace ApiExamples
         public void TableColumnToTxt()
         {
             Document doc = new Document(MyDir + "Table.Document.doc");
-            Table table = (Table)doc.GetChild(NodeType.Table, 1, true);
+            Table table = (Table) doc.GetChild(NodeType.Table, 1, true);
 
             //ExStart
             //ExId:TableColumnToTxt

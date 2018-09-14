@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -87,6 +87,44 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\ReplaceWithRegex.docx");
         }
 
+        // Note: Need more info from dev.
+        [Test]
+        public void ReplaceWithoutPreserveMetaCharacters()
+        {
+            const string text = "some text";
+            const string replaceWithText = "&ldquo;";
+
+            Document doc = new Document();
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write(text);
+
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.PreserveMetaCharacters = false;
+
+            doc.Range.Replace(text, replaceWithText, options);
+
+            Assert.AreEqual("\vdquo;\f", doc.GetText());
+        }
+
+        [Test]
+        public void FindAndReplaceWithPreserveMetaCharacters()
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.PreserveMetaCharacters
+            //ExSummary:Shows how to preserved meta-characters that beginning with "&".
+            Document doc = new Document(MyDir + "Range.FindAndReplaceWithPreserveMetaCharacters.docx");
+
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.FindWholeWordsOnly = true;
+            options.PreserveMetaCharacters = true;
+
+            doc.Range.Replace("sad", "&ldquo; some text &rdquo;", options);
+            //ExEnd
+
+            doc.Save(MyDir + @"\Artifacts\Range.FindAndReplaceWithMetacharacters.docx");
+        }
+
         [Test]
         public void ReplaceWithInsertHtml()
         {
@@ -126,14 +164,14 @@ namespace ApiExamples
             /// NOTE: This is a simplistic method that will only work well when the match
             /// starts at the beginning of a run.
             /// </summary>
-            ReplaceAction IReplacingCallback.Replacing(ReplacingArgs e)
+            ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)
             {
-                DocumentBuilder builder = new DocumentBuilder((Document)e.MatchNode.Document);
-                builder.MoveTo(e.MatchNode);
+                DocumentBuilder builder = new DocumentBuilder((Document) args.MatchNode.Document);
+                builder.MoveTo(args.MatchNode);
 
                 // Replace '<CustomerName>' text with a red bold name.
                 builder.InsertHtml("<b><font color='red'>James Bond, </font></b>");
-                e.Replacement = "";
+                args.Replacement = "";
 
                 return ReplaceAction.Replace;
             }
@@ -149,7 +187,8 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Font.Name = "Arial";
-            builder.Write("There are few numbers that should be converted to HEX and highlighted: 123, 456, 789 and 17379.");
+            builder.Write(
+                "There are few numbers that should be converted to HEX and highlighted: 123, 456, 789 and 17379.");
 
             FindReplaceOptions options = new FindReplaceOptions();
 

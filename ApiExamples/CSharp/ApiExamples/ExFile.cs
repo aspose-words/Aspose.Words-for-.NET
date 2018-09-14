@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
@@ -23,6 +24,7 @@ namespace ApiExamples
             {
                 Console.WriteLine(e.Message);
             }
+
             //ExEnd
         }
 
@@ -87,8 +89,12 @@ namespace ApiExamples
             Assert.AreEqual(LoadFormat.Doc, FileFormatUtil.ContentTypeToLoadFormat("application/msword"));
             Assert.AreEqual(SaveFormat.Doc, FileFormatUtil.ContentTypeToSaveFormat("application/msword"));
 
-            Assert.AreEqual(LoadFormat.Docx, FileFormatUtil.ContentTypeToLoadFormat("application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
-            Assert.AreEqual(SaveFormat.Docx, FileFormatUtil.ContentTypeToSaveFormat("application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
+            Assert.AreEqual(LoadFormat.Docx,
+                FileFormatUtil.ContentTypeToLoadFormat(
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
+            Assert.AreEqual(SaveFormat.Docx,
+                FileFormatUtil.ContentTypeToSaveFormat(
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
 
             Assert.AreEqual(LoadFormat.Text, FileFormatUtil.ContentTypeToLoadFormat("text/plain"));
             Assert.AreEqual(SaveFormat.Text, FileFormatUtil.ContentTypeToSaveFormat("text/plain"));
@@ -136,7 +142,9 @@ namespace ApiExamples
             //ExSummary:Shows how to use the FileFormatUtil methods to detect the format of a document without any extension and save it with the correct file extension.
             // Load the document without a file extension into a stream and use the DetectFileFormat method to detect it's format. 
             // These are both times where you might need extract the file format as it's not visible
-            FileStream docStream = File.OpenRead(MyDir + "Document.FileWithoutExtension"); // The file format of this document is actually ".doc"
+            FileStream
+                docStream = File.OpenRead(
+                    MyDir + "Document.FileWithoutExtension"); // The file format of this document is actually ".doc"
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(docStream);
 
             // Retrieve the LoadFormat of the document.
@@ -158,7 +166,8 @@ namespace ApiExamples
             Document doc = new Document(docStream);
 
             // Save the document with the original file name, " Out" and the document's file extension.
-            doc.Save(MyDir + @"\Artifacts\Document.WithFileExtension" + FileFormatUtil.SaveFormatToExtension(saveFormat));
+            doc.Save(
+                MyDir + @"\Artifacts\Document.WithFileExtension" + FileFormatUtil.SaveFormatToExtension(saveFormat));
             //ExEnd
 
             Assert.AreEqual(".doc", FileFormatUtil.SaveFormatToExtension(saveFormat));
@@ -195,8 +204,11 @@ namespace ApiExamples
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(filePath);
             if (info.HasDigitalSignature)
             {
-                Console.WriteLine("Document {0} has digital signatures, they will be lost if you open/save this document with Aspose.Words.", Path.GetFileName(filePath));
+                Console.WriteLine(
+                    "Document {0} has digital signatures, they will be lost if you open/save this document with Aspose.Words.",
+                    Path.GetFileName(filePath));
             }
+
             //ExEnd
         }
 
@@ -218,16 +230,18 @@ namespace ApiExamples
 
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
             int imageIndex = 0;
-            foreach (Shape shape in shapes)
+            foreach (Shape shape in shapes.OfType<Shape>())
             {
                 if (shape.HasImage)
                 {
-                    string imageFileName = string.Format(@"\Artifacts\Image.ExportImages.{0} Out{1}", imageIndex, FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType));
+                    string imageFileName = string.Format(@"\Artifacts\Image.ExportImages.{0} Out{1}", imageIndex,
+                        FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType));
                     shape.ImageData.Save(MyDir + imageFileName);
                     imageIndex++;
                 }
             }
         }
+
         //ExEnd
     }
 }
