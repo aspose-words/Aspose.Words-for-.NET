@@ -1205,5 +1205,27 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Shape.LayoutInCell.docx");
             //ExEnd
         }
+
+        [Test]
+        public void ShapeInsertion()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertShape(ShapeType, RelativeHorizontalPosition, double, RelativeVerticalPosition, double, double, double, WrapType)
+            //ExFor:DocumentBuilder.InsertShape(ShapeType, double, double)
+            //ExSummary:Shows how to insert DML shape into the document
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            // Two ways of shape insertion
+            Shape freeFloatingShape = builder.InsertShape(ShapeType.TextBox, RelativeHorizontalPosition.Page, 100, RelativeVerticalPosition.Page, 100, 50, 50, WrapType.None);
+            freeFloatingShape.Rotation = 30.0;
+            Shape inlineShape = builder.InsertShape(ShapeType.TextBox, 50, 50);
+            inlineShape.Rotation = 30.0;
+
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
+            // "Strict" or "Transitional" compliance allows to save shape as DML
+            saveOptions.Compliance = OoxmlCompliance.Iso29500_2008_Transitional;
+            doc.Save(MyDir + @"\Artifacts\RotatedShape.docx", saveOptions);
+            //ExEnd
+        }
     }
 }

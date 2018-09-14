@@ -15,29 +15,31 @@ namespace ApiExamples
     public class ExTxtSaveOptions : ApiExampleBase
     {
         [Test]
-        [TestCase(
-            "Some text before page break\r\rJidqwjidqwojidqwojidqwojidqwojidqwoji\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\rQwdqwdqwdqwdqwdqwdqwd\rQwdqwdqwdqwdqwdqwdqw\r\r\r\r\rqwdqwdqwdqwdqwdqwdqwqwd\r\f",
-            false)]
-        [TestCase(
-            "Some text before page break\r\f\r\fJidqwjidqwojidqwojidqwojidqwojidqwoji\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\rQwdqwdqwdqwdqwdqwdqwd\rQwdqwdqwdqwdqwdqwdqw\r\r\r\r\f\r\fqwdqwdqwdqwdqwdqwdqwqwd\r\f",
-            true)]
-        public void PageBreaks(string resultText, bool isForcePageBreaks)
+        public void PageBreaks()
         {
             //ExStart
             //ExFor:TxtSaveOptions.ForcePageBreaks
             //ExSummary:Shows how to specify whether the page breaks should be preserved during export.
             Document doc = new Document(MyDir + "SaveOptions.PageBreaks.docx");
 
-            TxtSaveOptions saveOptions = new TxtSaveOptions
-            {
-                ForcePageBreaks = isForcePageBreaks
-            };
+            TxtSaveOptions saveOptions = new TxtSaveOptions { ForcePageBreaks = false };
 
             doc.Save(MyDir + @"\Artifacts\SaveOptions.PageBreaks.txt", saveOptions);
             //ExEnd
+        }
 
-            Document docFalse = new Document(MyDir + @"\Artifacts\SaveOptions.PageBreaks.txt");
-            Assert.AreEqual(resultText, docFalse.GetText());
+        [Test]
+        public void AddBidiMarks()
+        {
+            //ExStart
+            //ExFor:TxtSaveOptions.AddBidiMarks
+            //ExSummary:Shows how to insert Unicode Character 'RIGHT-TO-LEFT MARK' (U+200F) before each bi-directional Run in text.
+            Document doc = new Document(MyDir + "Document.docx");
+            // In Aspose.Words by default this option is set to true unlike Word
+            TxtSaveOptions saveOptions = new TxtSaveOptions { AddBidiMarks = false };
+
+            doc.Save(MyDir + @"\Artifacts\AddBidiMarks.txt", saveOptions);
+            //ExEnd
         }
     }
 }
