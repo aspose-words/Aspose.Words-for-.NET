@@ -334,12 +334,8 @@ namespace ApiExamples
         /// <summary>
         /// comparing two PDF documents.
         /// </summary>
-        /// <param name="firstPdf">
-        /// The first PDF document.
-        /// </param>
-        /// <param name="secondPdf">
-        /// The second PDF document.
-        /// </param>
+        /// <param name="firstPdf">The first PDF document</param>
+        /// <param name="secondPdf">The second PDF document</param>
         internal static void ComparePdf(string firstPdf, string secondPdf)
         {
             if (File.Exists(firstPdf) && File.Exists(secondPdf))

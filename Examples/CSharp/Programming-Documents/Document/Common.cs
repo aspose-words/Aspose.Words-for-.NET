@@ -40,22 +40,22 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             while (isExtracting)
             {
                 // Clone the current node and its children to obtain a copy.
-                CompositeNode cloneNode = (CompositeNode)currNode.Clone(true);
+                Node cloneNode = currNode.Clone(true);
                 isEndingNode = currNode.Equals(endNode);
 
-                if (isStartingNode || isEndingNode)
+                if ((isStartingNode || isEndingNode) && cloneNode.IsComposite)
                 {
                     // We need to process each marker separately so pass it off to a separate method instead.
                     if (isStartingNode)
                     {
-                        ProcessMarker(cloneNode, nodes, originalStartNode, isInclusive, isStartingNode, isEndingNode);
+                        ProcessMarker((CompositeNode)cloneNode, nodes, originalStartNode, isInclusive, isStartingNode, isEndingNode);
                         isStartingNode = false;
                     }
 
                     // Conditional needs to be separate as the block level start and end markers maybe the same node.
                     if (isEndingNode)
                     {
-                        ProcessMarker(cloneNode, nodes, originalEndNode, isInclusive, isStartingNode, isEndingNode);
+                        ProcessMarker((CompositeNode)cloneNode, nodes, originalEndNode, isInclusive, isStartingNode, isEndingNode);
                         isExtracting = false;
                     }
                 }
@@ -80,6 +80,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // Return the nodes between the node markers.
             return nodes;
         }
+
         // ExEnd:CommonExtractContent
         public static ArrayList ParagraphsByStyleName(Document doc, string styleName)
         {

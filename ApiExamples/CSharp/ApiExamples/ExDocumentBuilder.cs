@@ -2280,6 +2280,7 @@ namespace ApiExamples
 
                         // Here we use a custom thumbnail and relative positioning to put it and the bottom right of tha page
                         builder.Writeln("Bottom right of page with custom thumbnail:");
+
                         builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes,
                             RelativeHorizontalPosition.RightMargin, left, RelativeVerticalPosition.BottomMargin, top,
                             image.Width, image.Height, WrapType.Square);
@@ -2405,7 +2406,7 @@ namespace ApiExamples
                         builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, image);
                     }
                 }
-#endif
+#endif 
             }
 
             powerpointStream.Close();

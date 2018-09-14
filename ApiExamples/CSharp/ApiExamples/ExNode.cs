@@ -172,17 +172,17 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
+        //ExStart
+        //ExFor:Node.NextSibling
+        //ExFor:CompositeNode.FirstChild
+        //ExFor:Node.IsComposite
+        //ExFor:CompositeNode.IsComposite
+        //ExFor:Node.NodeTypeToString
+        //ExId:RecurseAllNodes            
+        //ExSummary:Shows how to efficiently visit all direct and indirect children of a composite node.
+        [Test] //ExSkip
         public void RecurseAllNodes()
         {
-            //ExStart
-            //ExFor:Node.NextSibling
-            //ExFor:CompositeNode.FirstChild
-            //ExFor:Node.IsComposite
-            //ExFor:CompositeNode.IsComposite
-            //ExFor:Node.NodeTypeToString
-            //ExId:RecurseAllNodes            
-            //ExSummary:Shows how to efficiently visit all direct and indirect children of a composite node.
             // Open a document.
             Document doc = new Document(MyDir + "Node.RecurseAllNodes.doc");
 
