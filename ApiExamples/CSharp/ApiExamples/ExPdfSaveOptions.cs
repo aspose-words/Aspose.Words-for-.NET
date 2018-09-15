@@ -54,7 +54,6 @@ namespace ApiExamples
             // "HeadingsOutlineLevels" specifies how many levels of headings to include in the document outline
             // "CreateMissingOutlineLevels" determining whether or not to create missing heading levels
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
-
             pdfSaveOptions.OutlineOptions.HeadingsOutlineLevels = 9;
             pdfSaveOptions.OutlineOptions.CreateMissingOutlineLevels = true;
             pdfSaveOptions.SaveFormat = SaveFormat.Pdf;
@@ -83,10 +82,7 @@ namespace ApiExamples
             //ExSummary:Shows how to define rendering for DML shapes
             Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
 
-            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions
-            {
-                DmlRenderingMode = DmlRenderingMode.DrawingML
-            };
+            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { DmlRenderingMode = DmlRenderingMode.DrawingML };
 
             doc.Save(MyDir + @"\Artifacts\DrawingMl.pdf", pdfSaveOptions);
             //ExEnd
@@ -123,10 +119,7 @@ namespace ApiExamples
         {
             Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
 
-            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions
-            {
-                UpdateFields = true
-            };
+            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { UpdateFields = true };
 
             doc.Save(MyDir + @"\Artifacts\UpdateFields_False.pdf", pdfSaveOptions);
 
@@ -140,7 +133,7 @@ namespace ApiExamples
             Assert.AreEqual("Page 1 of 2", textFragmentAbsorber.TextFragments[1].Text);
         }
 
-        //ToDo: Add gold asserts for PDF files
+        // ToDo: Add gold asserts for PDF files
         // For assert this test you need to open "SaveOptions.PdfImageCompression PDF_A_1_B Out.pdf" and "SaveOptions.PdfImageCompression PDF_A_1_A Out.pdf" 
         // and check that header image in this documents are equal header image in the "SaveOptions.PdfImageComppression Out.pdf" 
         [Test]
@@ -154,20 +147,19 @@ namespace ApiExamples
             //ExFor:PdfCompliance
             //ExSummary:Shows how to save images to PDF using JPEG encoding to decrease file size.
             Document doc = new Document(MyDir + "SaveOptions.PdfImageCompression.rtf");
-
+            
             PdfSaveOptions options = new PdfSaveOptions
             {
                 ImageCompression = PdfImageCompression.Jpeg,
                 PreserveFormFields = true
             };
-
             doc.Save(MyDir + @"\Artifacts\SaveOptions.PdfImageCompression.pdf", options);
 
             PdfSaveOptions optionsA1B = new PdfSaveOptions
             {
                 Compliance = PdfCompliance.PdfA1b,
-                ImageCompression = PdfImageCompression.Jpeg,
-                JpegQuality = 100 // Use JPEG compression at 50% quality to reduce file size.
+                ImageCompression = PdfImageCompression.Jpeg,                
+            	JpegQuality = 50 // Use JPEG compression at 50% quality to reduce file size.
             };
 
             doc.Save(MyDir + @"\Artifacts\SaveOptions.PdfImageComppression PDF_A_1_B.pdf", optionsA1B);
@@ -189,13 +181,10 @@ namespace ApiExamples
             //ExStart
             //ExFor:SaveOptions.ColorMode
             //ExSummary:Shows how change image color with save options property
-            Document doc = new Document(MyDir + "Rendering.doc"); // Open document with color image
-
+            // Open document with color image
+            Document doc = new Document(MyDir + "Rendering.doc");
             // Set grayscale mode for document
-            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions
-            {
-                ColorMode = ColorMode.Grayscale
-            };
+            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { ColorMode = ColorMode.Grayscale };
 
             doc.Save(MyDir + @"\Artifacts\ColorMode.PdfGrayscaleMode.pdf", pdfSaveOptions);
             //ExEnd
@@ -209,11 +198,8 @@ namespace ApiExamples
             //ExSummary:Shows how to display title of the document as title bar.
             Document doc = new Document(MyDir + "Rendering.doc");
             doc.BuiltInDocumentProperties.Title = "Windows bar pdf title";
-
-            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions
-            {
-                DisplayDocTitle = true
-            };
+            
+            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { DisplayDocTitle = true };
 
             doc.Save(MyDir + @"\Artifacts\PdfTitle.pdf", pdfSaveOptions);
             //ExEnd
@@ -231,7 +217,6 @@ namespace ApiExamples
             //ExFor:SaveOptions.MemoryOptimization
             //ExSummary:Shows an option to optimize memory consumption when you work with large documents.
             Document doc = new Document(MyDir + "SaveOptions.MemoryOptimization.doc");
-
             // When set to true it will improve document memory footprint but will add extra time to processing. 
             // This optimization is only applied during save operation.
             SaveOptions saveOptions = SaveOptions.CreateSaveOptions(SaveFormat.Pdf);
@@ -287,20 +272,18 @@ namespace ApiExamples
             //ExSummary:Shows added fallback to bitmap rendering and changing type of warnings about unsupported metafile records
             Document doc = new Document(MyDir + "PdfSaveOptions.HandleRasterWarnings.doc");
 
-            MetafileRenderingOptions metafileRenderingOptions = new MetafileRenderingOptions
-            {
-                EmulateRasterOperations = false,
-                RenderingMode =
-                    MetafileRenderingMode
-                        .VectorWithFallback // If Aspose.Words cannot correctly render some of the metafile records to vector graphics then Aspose.Words renders this metafile to a bitmap. 
-            };
+            MetafileRenderingOptions metafileRenderingOptions =
+                new MetafileRenderingOptions
+                {
+                    EmulateRasterOperations = false,
+                    RenderingMode = MetafileRenderingMode.VectorWithFallback
+                };
 
+            //If Aspose.Words cannot correctly render some of the metafile records to vector graphics then Aspose.Words renders this metafile to a bitmap. 
             HandleDocumentWarnings callback = new HandleDocumentWarnings();
             doc.WarningCallback = callback;
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions();
-            saveOptions.MetafileRenderingOptions = metafileRenderingOptions;
-
+            PdfSaveOptions saveOptions = new PdfSaveOptions { MetafileRenderingOptions = metafileRenderingOptions };
             doc.Save(MyDir + @"\Artifacts\PdfSaveOptions.HandleRasterWarnings.pdf", saveOptions);
 
             Assert.AreEqual(1, callback.mWarnings.Count);
@@ -326,7 +309,6 @@ namespace ApiExamples
 
             public WarningInfoCollection mWarnings = new WarningInfoCollection();
         }
-
         //ExEnd
     }
 }
