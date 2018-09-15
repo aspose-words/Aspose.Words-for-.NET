@@ -17,9 +17,11 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using Aspose.BarCode.BarCodeRecognition;
 using Aspose.Words;
+using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Fields;
 using Aspose.Words.Replacing;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace ApiExamples
 {
@@ -364,54 +366,54 @@ namespace ApiExamples
         }
 
 #if !(NETSTANDARD2_0 || __MOBILE__)
-        [Test]
-        public void BarCodeWord2Pdf()
-        {
-            Document doc = new Document(MyDir + "Field.BarCode.docx");
+		[Test]
+		public void BarCodeWord2Pdf()
+		{
+			Document doc = new Document(MyDir + "Field.BarCode.docx");
 
-            // Set custom barcode generator
-            doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
+			// Set custom barcode generator
+			doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
 
-            doc.Save(MyDir + @"\Artifacts\Field.BarCode.pdf");
+			doc.Save(MyDir + @"\Artifacts\Field.BarCode.pdf");
 
-            BarCodeReader barCode = BarCodeReaderPdf(MyDir + @"\Artifacts\Field.BarCode.pdf");
-            Assert.AreEqual("QR", barCode.GetCodeType().ToString());
-        }
+			BarCodeReader barCode = BarCodeReaderPdf(MyDir + @"\Artifacts\Field.BarCode.pdf");
+			Assert.AreEqual("QR", barCode.GetCodeType().ToString());
+		}
 
-        private BarCodeReader BarCodeReaderPdf(String filename)
-        {
-            //Set license for Aspose.BarCode
-            Aspose.BarCode.License licenceBarCode = new Aspose.BarCode.License();
-            licenceBarCode.SetLicense(@"X:\awnet\TestData\Licenses\Aspose.Total.lic");
+		private BarCodeReader BarCodeReaderPdf(String filename)
+		{
+			//Set license for Aspose.BarCode
+			Aspose.BarCode.License licenceBarCode = new Aspose.BarCode.License();
+			licenceBarCode.SetLicense(@"X:\awnet\TestData\Licenses\Aspose.Total.lic");
 
-            //bind the pdf document
-            Aspose.Pdf.Facades.PdfExtractor pdfExtractor = new Aspose.Pdf.Facades.PdfExtractor();
-            pdfExtractor.BindPdf(filename);
+			//bind the pdf document
+			Aspose.Pdf.Facades.PdfExtractor pdfExtractor = new Aspose.Pdf.Facades.PdfExtractor();
+			pdfExtractor.BindPdf(filename);
 
-            //set page range for image extraction
-            pdfExtractor.StartPage = 1;
-            pdfExtractor.EndPage = 1;
+			//set page range for image extraction
+			pdfExtractor.StartPage = 1;
+			pdfExtractor.EndPage = 1;
 
-            pdfExtractor.ExtractImage();
+			pdfExtractor.ExtractImage();
 
-            //save image to stream
-            MemoryStream imageStream = new MemoryStream();
-            pdfExtractor.GetNextImage(imageStream);
-            imageStream.Position = 0;
+			//save image to stream
+			MemoryStream imageStream = new MemoryStream();
+			pdfExtractor.GetNextImage(imageStream);
+			imageStream.Position = 0;
 
-            //recognize the barcode from the image stream above
-            BarCodeReader barcodeReader = new BarCodeReader(imageStream, DecodeType.QR);
-            while (barcodeReader.Read())
-            {
-                Console.WriteLine("Codetext found: " + barcodeReader.GetCodeText() + ", Symbology: " +
-                                  barcodeReader.GetCodeType());
-            }
+			//recognize the barcode from the image stream above
+			BarCodeReader barcodeReader = new BarCodeReader(imageStream, DecodeType.QR);
+			while (barcodeReader.Read())
+			{
+				Console.WriteLine("Codetext found: " + barcodeReader.GetCodeText() + ", Symbology: " +
+								  barcodeReader.GetCodeType());
+			}
 
-            //close the reader
-            barcodeReader.Close();
+			//close the reader
+			barcodeReader.Close();
 
-            return barcodeReader;
-        }
+			return barcodeReader;
+		}
 #endif
         //For assert result of the test you need to open document and check that image are added correct and without truncated inside frame
         [Test]
@@ -674,7 +676,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // We can use a document builder to create our field
-            FieldAsk fieldAsk = (FieldAsk) builder.InsertField(FieldType.FieldAsk, true);
+            FieldAsk fieldAsk = (FieldAsk)builder.InsertField(FieldType.FieldAsk, true);
 
             // The initial state of our ask field is empty
             Assert.AreEqual(" ASK ", fieldAsk.GetFieldCode());
@@ -714,7 +716,7 @@ namespace ApiExamples
 
             builder.Write("This text is in its normal place.");
             // Create an advance field using document builder
-            FieldAdvance field = (FieldAdvance) builder.InsertField(FieldType.FieldAdvance, true);
+            FieldAdvance field = (FieldAdvance)builder.InsertField(FieldType.FieldAdvance, true);
 
             builder.Write("This text is moved up and to the right.");
 
@@ -727,7 +729,7 @@ namespace ApiExamples
             Assert.AreEqual(" ADVANCE  \\r 5 \\u 5", field.GetFieldCode());
             // If we want to move text in the other direction, and try do that by using negative values for the above field members, we will get an error in our document
             // Instead, we need to specify a positive value for the opposite respective field directional variable
-            field = (FieldAdvance) builder.InsertField(FieldType.FieldAdvance, true);
+            field = (FieldAdvance)builder.InsertField(FieldType.FieldAdvance, true);
             field.DownOffset = "5";
             field.LeftOffset = "100";
 
@@ -737,7 +739,7 @@ namespace ApiExamples
             // Since we're setting horizontal and vertical positions next, we need to end the paragraph so the previous line does not get moved with the next one
             builder.Writeln("This text is moved down and to the left, overlapping the previous text.");
             // This time we can also use negative values 
-            field = (FieldAdvance) builder.InsertField(FieldType.FieldAdvance, true);
+            field = (FieldAdvance)builder.InsertField(FieldType.FieldAdvance, true);
             field.HorizontalPosition = "-100";
             field.VerticalPosition = "200";
 
@@ -748,6 +750,7 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.Advance.docx");
             //ExEnd
         }
+
 
         [Test]
         public void FieldAddressBlock()
@@ -1055,6 +1058,100 @@ namespace ApiExamples
             //ExEnd
         }
 
+        public void FieldAutoText()
+        {
+            //ExStart
+            //ExFor:Fields.FieldAutoText
+            //ExFor:FieldAutoText.EntryName
+            //ExSummary:Shows how to insert an auto text field and reference an auto text building block with it. 
+            Document doc = new Document();
+
+            // Create a glossary document and add an AutoText building block
+            doc.GlossaryDocument = new GlossaryDocument();
+            BuildingBlock buildingBlock = new BuildingBlock(doc.GlossaryDocument);
+            buildingBlock.Name = "MyBlock";
+            buildingBlock.Gallery = BuildingBlockGallery.AutoText;
+            buildingBlock.Category = "General";
+            buildingBlock.Description = "MyBlock description";
+            buildingBlock.Behavior = BuildingBlockBehavior.Paragraph;
+            doc.GlossaryDocument.AppendChild(buildingBlock);
+
+            // Create a source and add it as text content to our building block
+            Document buildingBlockSource = new Document();
+            DocumentBuilder buildingBlockSourceBuilder = new DocumentBuilder(buildingBlockSource);
+            buildingBlockSourceBuilder.Writeln("Hello World!");
+
+            Node buildingBlockContent = doc.GlossaryDocument.ImportNode(buildingBlockSource.FirstSection, true);
+            buildingBlock.AppendChild(buildingBlockContent);
+
+            // Create an advance field using document builder
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            FieldAutoText field = (FieldAutoText)builder.InsertField(FieldType.FieldAutoText, true);
+
+            // Refer to our building block by name
+            field.EntryName = "MyBlock";
+
+            // The text content of our building block will be visible in the output
+            doc.Save(MyDir + @"\Artifacts\Field.AutoText.dotx");
+        }
+
+        //ExStart
+        //ExFor:Fields.FieldAutoTextList
+        //ExFor:Fields.FieldAutoTextList.EntryName
+        //ExFor:Fields.FieldAutoTextList.ListStyle
+        //ExFor:Fields.FieldAutoTextList.ScreenTip
+        //ExSummary:Shows how to use an AutoTextList field to select from a list of AutoText entries.
+        [Test] //ExSkip
+        public void FieldAutoTextList()
+        {
+            Document doc = new Document();
+
+            // Create a glossary document and populate it with auto text entries that our auto text list will let us select from
+            doc.GlossaryDocument = new GlossaryDocument();
+            AppendAutoTextEntry(doc.GlossaryDocument, "AutoText 1", "Contents of AutoText 1");
+            AppendAutoTextEntry(doc.GlossaryDocument, "AutoText 2", "Contents of AutoText 2");
+            AppendAutoTextEntry(doc.GlossaryDocument, "AutoText 3", "Contents of AutoText 3");
+
+            // Insert an auto text list using a document builder and change its properties
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            FieldAutoTextList field = (FieldAutoTextList)builder.InsertField(FieldType.FieldAutoTextList, true);
+            field.EntryName = "Right click here to pick an AutoText block"; // This is the text that will be visible in the document
+            field.ListStyle = "Heading 1";
+            field.ScreenTip = "Hover tip text for AutoTextList goes here";
+
+            Assert.AreEqual("Right click here to pick an AutoText block", field.EntryName); //ExSkip
+            Assert.AreEqual("Heading 1", field.ListStyle); //ExSkip
+            Assert.AreEqual("Hover tip text for AutoTextList goes here", field.ScreenTip); //ExSkip
+            Assert.AreEqual(" AUTOTEXTLIST  \"Right click here to pick an AutoText block\" " +
+                            "\\s \"Heading 1\" " +
+                            "\\t \"Hover tip text for AutoTextList goes here\"", field.GetFieldCode());
+
+            doc.Save(MyDir + @"\Artifacts\Field.AutoTextList.dotx");
+        }
+
+        /// <summary>
+        /// Create an AutoText entry and add it to a glossary document
+        /// </summary>
+        private static void AppendAutoTextEntry(GlossaryDocument glossaryDoc, string name, string contents)
+        {
+            // Create building block and set it up as an auto text entry
+            BuildingBlock buildingBlock = new BuildingBlock(glossaryDoc);
+            buildingBlock.Name = name;
+            buildingBlock.Gallery = BuildingBlockGallery.AutoText;
+            buildingBlock.Category = "General";
+            buildingBlock.Behavior = BuildingBlockBehavior.Paragraph;
+
+            // Add content to the building block
+            Section section = new Section(glossaryDoc);
+            section.AppendChild(new Body(glossaryDoc));
+            section.Body.AppendParagraph(contents);
+            buildingBlock.AppendChild(section);
+
+            // Add auto text entry to glossary document
+            glossaryDoc.AppendChild(buildingBlock);
+        }
+        //ExEnd
+
         [Test]
         public void FieldDate()
         {
@@ -1072,52 +1169,60 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // One way of putting dates into our documents is using a document builder to insert a date field
+            // One way of putting dates into our documents is inserting DATE fields with document builder
             FieldDate fieldDate = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
 
             // Set the field's date to the current date of the Islamic Lunar Calendar
             fieldDate.UseLunarCalendar = true;
+            Assert.AreEqual(" DATE  \\h", fieldDate.GetFieldCode());
             builder.Writeln();
 
             // Insert a date field with the current date of the Umm al-Qura calendar
             fieldDate = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
             fieldDate.UseUmAlQuraCalendar = true;
+            Assert.AreEqual(" DATE  \\u", fieldDate.GetFieldCode());
             builder.Writeln();
 
             // Insert a date field with the current date of the Indian national calendar
             fieldDate = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
             fieldDate.UseSakaEraCalendar = true;
+            Assert.AreEqual(" DATE  \\s", fieldDate.GetFieldCode());
             builder.Writeln();
 
             // Insert a date field with the current date of the calendar used in the (Insert > Date and Time) dialog box
             fieldDate = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
             fieldDate.UseLastFormat = true;
+            Assert.AreEqual(" DATE  \\l", fieldDate.GetFieldCode());
             builder.Writeln();
 
             // We can also use a document builder to insert a create date field
-            // These fields will function just like date fields but will also have the current time at the field's creation
+            // These fields will display date and time
             FieldCreateDate fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
 
             // Set the field's date to the current date of the Islamic Lunar Calendar
             fieldCreateDate.UseLunarCalendar = true;
+            Assert.AreEqual(" CREATEDATE  \\h", fieldCreateDate.GetFieldCode());
             builder.Writeln();
 
             // Insert a create date field with the current date of the Umm al-Qura calendar
             fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
             fieldCreateDate.UseUmAlQuraCalendar = true;
+            Assert.AreEqual(" CREATEDATE  \\u", fieldCreateDate.GetFieldCode());
             builder.Writeln();
 
             // Insert a create date field with the current date of the Indian national calendar
             fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
             fieldCreateDate.UseSakaEraCalendar = true;
+            Assert.AreEqual(" CREATEDATE  \\s", fieldCreateDate.GetFieldCode());
             builder.Writeln();
 
             // Not specifying a calendar type in the field's properties will output the date of the Gregorian calendar
             fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
-            builder.Writeln();
+            Assert.AreEqual(" CREATEDATE ", fieldCreateDate.GetFieldCode());
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.Date.docx");
+            doc.Save(MyDir + @"\Date.docx");
             //ExEnd
         }
     }
