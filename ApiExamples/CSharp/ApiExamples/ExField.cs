@@ -1222,7 +1222,6 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.Date.docx");
-            doc.Save(MyDir + @"\Date.docx");
             //ExEnd
         }
     }
