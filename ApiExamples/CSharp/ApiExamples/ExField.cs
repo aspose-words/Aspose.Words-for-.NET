@@ -10,6 +10,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -1152,5 +1153,56 @@ namespace ApiExamples
             glossaryDoc.AppendChild(buildingBlock);
         }
         //ExEnd
+
+        [Test]
+        public void FieldGreetingLine()
+        {
+            //ExStart
+            //ExFor:FieldGreetingLine
+            //ExFor:FieldGreetingLine.AlternateText
+            //ExFor:FieldGreetingLine.GetFieldNames
+            //ExFor:FieldGreetingLine.LanguageId
+            //ExFor:FieldGreetingLine.NameFormat
+            //ExSummary:Shows how to insert a GREETINGLINE field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a custom greeting field with document builder, and also some content
+            FieldGreetingLine fieldGreetingLine = (FieldGreetingLine)builder.InsertField(FieldType.FieldGreetingLine, true);
+            builder.Writeln("\n\n\tThis is your custom greeting, created programmatically using Aspose Words!");
+
+            // This array contains strings that correspond to column names in the data table that we will mail merge into our document
+            Assert.AreEqual(0, fieldGreetingLine.GetFieldNames().Length);
+
+            // To populate that array, we need to specify a format for our greeting line
+            fieldGreetingLine.NameFormat = "<< _BEFORE_ Dear >><< _TITLE0_ >><< _LAST0_ >><< _AFTER_ ,>> ";
+
+            // In this case, our greeting line's field names array now has "Courtesy Title" and "Last Name"
+            Assert.AreEqual(2, fieldGreetingLine.GetFieldNames().Length);
+
+            // This string will cover any cases where the data in the data table is incorrect by substituting the malformed name with a string
+            fieldGreetingLine.AlternateText = "Sir or Madam";
+
+            // We can set the language ID here too
+            fieldGreetingLine.LanguageId = "1033";
+
+            Assert.AreEqual(" GREETINGLINE  \\f \"<< _BEFORE_ Dear >><< _TITLE0_ >><< _LAST0_ >><< _AFTER_ ,>> \" \\e \"Sir or Madam\" \\l 1033", fieldGreetingLine.GetFieldCode());
+
+            // Create a source table for our mail merge that has columns that our greeting line will look for
+            System.Data.DataTable table = new System.Data.DataTable("Employees");
+            table.Columns.Add("Courtesy Title");
+            table.Columns.Add("First Name");
+            table.Columns.Add("Last Name");
+            table.Rows.Add("Mr.", "John", "Doe" );
+            table.Rows.Add("Mrs.", "Jane", "Cardholder");
+            table.Rows.Add("", "No", "Name"); // This row has an invalid value in the Courtesy Title column, so our greeting will default to the alternate text
+
+            doc.MailMerge.Execute(table);
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.GreetingLine.docx");
+            //ExEnd
+        }
+
     }
 }
