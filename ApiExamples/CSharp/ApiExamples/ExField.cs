@@ -1152,5 +1152,57 @@ namespace ApiExamples
             glossaryDoc.AppendChild(buildingBlock);
         }
         //ExEnd
+
+        [Test]
+        public void FieldListNum()
+        {
+            //ExStart
+            //ExFor:FieldListNum
+            //ExFor:FieldListNum.HasListName
+            //ExFor:FieldListNum.ListLevel
+            //ExFor:FieldListNum.ListName
+            //ExFor:FieldListNum.StartingNumber
+            //ExSummary:Shows how to number paragraphs with LISTNUM fields.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a list num field using a document builder
+            FieldListNum fieldListNum = (FieldListNum) builder.InsertField(FieldType.FieldListNum, true);
+
+            // Lists start counting at 1 by default, but we can change this number at any time
+            // In this case, we'll do a zero-based count
+            fieldListNum.StartingNumber = "0";
+            builder.Writeln("Paragraph 1");
+
+            // Placing several list num fields in one paragraph increases the list level instead of the current number, in this case resulting in "1)a)i)", list level 3
+            builder.InsertField(FieldType.FieldListNum, true);
+            builder.InsertField(FieldType.FieldListNum, true);
+            builder.InsertField(FieldType.FieldListNum, true);
+            builder.Writeln("Paragraph 2");
+
+            // The list level resets with new paragraphs, so to keep counting at a desired list level, we need to set the ListLevel property accordingly
+            fieldListNum = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
+            fieldListNum.ListLevel = "3";
+            builder.Writeln("Paragraph 3");
+
+            fieldListNum = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
+
+            // Setting this property to this particulr value will emulate the AUTONUMOUT field
+            fieldListNum.ListName = "OutlineDefault";
+            Assert.IsTrue(fieldListNum.HasListName);
+
+            // Start counting from 1
+            fieldListNum.StartingNumber = "1";
+            builder.Writeln("Paragraph 4");
+
+            // Our fields keep track of the count automatically, but the ListName needs to be set with each new field
+            fieldListNum = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
+            fieldListNum.ListName = "OutlineDefault";
+            builder.Writeln("Paragraph 5");
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FieldListNum.docx");
+            //ExEnd
+        }
     }
 }
