@@ -1187,7 +1187,7 @@ namespace ApiExamples
 
             fieldListNum = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
 
-            // Setting this property to this particulr value will emulate the AUTONUMOUT field
+            // Setting this property to this particular value will emulate the AUTONUMOUT field
             fieldListNum.ListName = "OutlineDefault";
             Assert.IsTrue(fieldListNum.HasListName);
 
