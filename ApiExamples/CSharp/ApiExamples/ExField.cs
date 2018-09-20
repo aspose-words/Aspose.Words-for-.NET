@@ -789,6 +789,23 @@ namespace ApiExamples
         public void FieldXE()
         {
             //ExStart
+            //ExFor:FieldIndex
+            //ExFor:FieldIndex.BookmarkName
+            //ExFor:FieldIndex.CrossReferenceSeparator
+            //ExFor:FieldIndex.EntryType
+            //ExFor:FieldIndex.HasPageNumberSeparator
+            //ExFor:FieldIndex.HasSequenceName
+            //ExFor:FieldIndex.Heading
+            //ExFor:FieldIndex.LanguageId
+            //ExFor:FieldIndex.LetterRange
+            //ExFor:FieldIndex.NumberOfColumns
+            //ExFor:FieldIndex.PageNumberListSeparator
+            //ExFor:FieldIndex.PageNumberSeparator
+            //ExFor:FieldIndex.PageRangeSeparator
+            //ExFor:FieldIndex.RunSubentriesOnSameLine
+            //ExFor:FieldIndex.SequenceName
+            //ExFor:FieldIndex.SequenceSeparator
+            //ExFor:FieldIndex.UseYomi
             //ExFor:FieldXE
             //ExFor:FieldXE.EntryType
             //ExFor:FieldXE.HasPageRangeBookmarkName
@@ -805,6 +822,19 @@ namespace ApiExamples
             // Create an index field which will contain all the index entries
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
+            // Bookmark that will encompass a section that we want to index
+            string mainBookmarkName = "MainBookmark";
+            builder.StartBookmark(mainBookmarkName);
+            index.BookmarkName = mainBookmarkName;
+            index.CrossReferenceSeparator = ":";
+            index.Heading = ">";
+            index.LanguageId = "1033";
+            index.NumberOfColumns = "2";
+            index.PageNumberListSeparator = "|";
+            index.PageNumberSeparator = "|";
+            index.PageRangeSeparator = "/";
+            index.UseYomi = true;
+
             // Our index will take up page 1
             builder.InsertBreak(BreakType.PageBreak);
 
@@ -818,10 +848,10 @@ namespace ApiExamples
             Assert.AreEqual(false, indexEntry.HasPageRangeBookmarkName);
 
             // We can insert a bookmark and have the index field point to it
-            string bookmarkName = "MyBookmark";
-            builder.StartBookmark(bookmarkName);
+            string subBookmarkName = "MyBookmark";
+            builder.StartBookmark(subBookmarkName);
             builder.Writeln("Bookmark text contents.");
-            builder.EndBookmark(bookmarkName);
+            builder.EndBookmark(subBookmarkName);
 
             // Put the bookmark and index entry field on different pages
             // Our index will use the page that the bookmark is on, not that of the index entry field, as the page number
@@ -829,7 +859,7 @@ namespace ApiExamples
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Index entry 2";
             indexEntry.EntryType = "Type1";
-            indexEntry.PageRangeBookmarkName = bookmarkName;
+            indexEntry.PageRangeBookmarkName = subBookmarkName;
             Assert.AreEqual(true, indexEntry.HasPageRangeBookmarkName);
 
             // We can use the PageNumberReplacement property to point to any page we want, even one that may not exist
@@ -854,8 +884,10 @@ namespace ApiExamples
             // Our field index will not list those entries unless we set its entry type to that of the entries
             index.EntryType = "Type1";
 
+            builder.EndBookmark(mainBookmarkName);
+
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\Field.XE.docx"); //INSP: Check the result, there is smth interesting. And fields are not updated by doc.UpdateFields();.
+            doc.Save(MyDir + @"\Artifacts\Field.XE.docx");
             //ExEnd
         }
     }
