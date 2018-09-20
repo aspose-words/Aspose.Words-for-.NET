@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -9,7 +9,7 @@ using Aspose.Words;
 
 namespace ApiExamples
 {
-    public class ExMossRtf2Docx
+    public static class ExMossRtf2Docx
     {
         //ExStart
         //ExId:MossRtf2Docx
@@ -22,6 +22,7 @@ namespace ApiExamples
             // Save the document in the OOXML format.
             doc.Save(outFileName, SaveFormat.Docx);
         }
+
         //ExEnd
     }
 }

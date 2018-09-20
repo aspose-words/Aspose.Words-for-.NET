@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -8,7 +8,9 @@
 //ExStart
 //ExId:RenameMergeFields
 //ExSummary:Shows how to rename merge fields in a Word document.
+
 using System;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Aspose.Words;
@@ -34,7 +36,7 @@ namespace ApiExamples
 
             // Select all field start nodes so we can find the merge fields.
             NodeCollection fieldStarts = doc.GetChildNodes(NodeType.FieldStart, true);
-            foreach (FieldStart fieldStart in fieldStarts)
+            foreach (FieldStart fieldStart in fieldStarts.OfType<FieldStart>())
             {
                 if (fieldStart.FieldType.Equals(FieldType.FieldMergeField))
                 {
@@ -54,23 +56,21 @@ namespace ApiExamples
     {
         internal MergeField(FieldStart fieldStart)
         {
-            if (fieldStart.Equals(null))
-                throw new ArgumentNullException("fieldStart");
             if (!fieldStart.FieldType.Equals(FieldType.FieldMergeField))
                 throw new ArgumentException("Field start type must be FieldMergeField.");
 
-            this.mFieldStart = fieldStart;
+            mFieldStart = fieldStart;
 
             // Find the field separator node.
-            this.mFieldSeparator = FindNextSibling(this.mFieldStart, NodeType.FieldSeparator);
-            if (this.mFieldSeparator == null)
+            mFieldSeparator = FindNextSibling(mFieldStart, NodeType.FieldSeparator);
+            if (mFieldSeparator == null)
                 throw new InvalidOperationException("Cannot find field separator.");
 
             // Find the field end node. Normally field end will always be found, but in the example document 
             // there happens to be a paragraph break included in the hyperlink and this puts the field end 
             // in the next paragraph. It will be much more complicated to handle fields which span several 
             // paragraphs correctly, but in this case allowing field end to be null is enough for our purposes.
-            this.mFieldEnd = FindNextSibling(this.mFieldSeparator, NodeType.FieldEnd);
+            mFieldEnd = FindNextSibling(mFieldSeparator, NodeType.FieldEnd);
         }
 
         /// <summary>
@@ -78,32 +78,32 @@ namespace ApiExamples
         /// </summary>
         internal String Name
         {
-            get { return GetTextSameParent(this.mFieldSeparator.NextSibling, this.mFieldEnd).Trim('«', '»'); }
+            get { return GetTextSameParent(mFieldSeparator.NextSibling, mFieldEnd).Trim('«', '»'); }
             set
             {
                 // Merge field name is stored in the field result which is a Run 
                 // node between field separator and field end.
-                Run fieldResult = (Run)this.mFieldSeparator.NextSibling;
-                fieldResult.Text = String.Format("«{0}»", value);
+                Run fieldResult = (Run) mFieldSeparator.NextSibling;
+                fieldResult.Text = $"«{value}»";
 
                 // But sometimes the field result can consist of more than one run, delete these runs.
-                RemoveSameParent(fieldResult.NextSibling, this.mFieldEnd);
+                RemoveSameParent(fieldResult.NextSibling, mFieldEnd);
 
-                this.UpdateFieldCode(value);
+                UpdateFieldCode(value);
             }
         }
 
         private void UpdateFieldCode(String fieldName)
         {
             // Field code is stored in a Run node between field start and field separator.
-            Run fieldCode = (Run)this.mFieldStart.NextSibling;
+            Run fieldCode = (Run) mFieldStart.NextSibling;
             Match match = gRegex.Match(fieldCode.Text);
 
-            String newFieldCode = String.Format(" {0}{1} ", match.Groups["start"].Value, fieldName);
+            String newFieldCode = $" {match.Groups["start"].Value}{fieldName} ";
             fieldCode.Text = newFieldCode;
 
             // But sometimes the field code can consist of more than one run, delete these runs.
-            RemoveSameParent(fieldCode.NextSibling, this.mFieldSeparator);
+            RemoveSameParent(fieldCode.NextSibling, mFieldSeparator);
         }
 
         /// <summary>
@@ -116,6 +116,7 @@ namespace ApiExamples
                 if (node.NodeType.Equals(nodeType))
                     return node;
             }
+
             return null;
         }
 
@@ -159,5 +160,4 @@ namespace ApiExamples
         private static readonly Regex gRegex = new Regex(@"\s*(?<start>MERGEFIELD\s|)(\s|)(?<name>\S+)\s+");
     }
 }
-
 //ExEnd

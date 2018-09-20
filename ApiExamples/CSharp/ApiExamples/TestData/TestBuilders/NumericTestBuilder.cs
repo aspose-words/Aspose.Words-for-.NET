@@ -14,31 +14,33 @@ namespace ApiExamples.TestData.TestBuilders
 
         public NumericTestBuilder()
         {
-            this.mValue1 = 1;
-            this.mValue2 = 1.0;
-            this.mValue3 = 1;
-            this.mValue4 = 1;
-            this.mLogical = false;
-            this.mDate = new DateTime(2018,01,01);
+            mValue1 = 1;
+            mValue2 = 1.0;
+            mValue3 = 1;
+            mValue4 = 1;
+            mLogical = false;
+            mDate = new DateTime(2018, 01, 01);
         }
 
-        public NumericTestBuilder WithValuesAndDate(int? value1, double value2, int value3, int? value4, DateTime dateTime)
+        public NumericTestBuilder WithValuesAndDate(int? value1, double value2, int value3, int? value4,
+            DateTime dateTime)
         {
-            this.mValue1 = value1;
-            this.mValue2 = value2;
-            this.mValue3 = value3;
-            this.mValue4 = value4;
-            this.mDate = dateTime;
+            mValue1 = value1;
+            mValue2 = value2;
+            mValue3 = value3;
+            mValue4 = value4;
+            mDate = dateTime;
             return this;
         }
 
-        public NumericTestBuilder WithValuesAndLogical(int? value1, double value2, int value3, int? value4, bool logical)
+        public NumericTestBuilder WithValuesAndLogical(int? value1, double value2, int value3, int? value4,
+            bool logical)
         {
-            this.mValue1 = value1;
-            this.mValue2 = value2;
-            this.mValue3 = value3;
-            this.mValue4 = value4;
-            this.mLogical = logical;
+            mValue1 = value1;
+            mValue2 = value2;
+            mValue3 = value3;
+            mValue4 = value4;
+            mLogical = logical;
             return this;
         }
 

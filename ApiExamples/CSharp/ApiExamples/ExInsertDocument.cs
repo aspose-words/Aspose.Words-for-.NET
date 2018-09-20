@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -7,6 +7,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
@@ -32,17 +33,19 @@ namespace ApiExamples
         static void InsertDocument(Node insertAfterNode, Document srcDoc)
         {
             // Make sure that the node is either a paragraph or table.
-            if ((!insertAfterNode.NodeType.Equals(NodeType.Paragraph)) & (!insertAfterNode.NodeType.Equals(NodeType.Table)))
+            if ((!insertAfterNode.NodeType.Equals(NodeType.Paragraph)) &
+                (!insertAfterNode.NodeType.Equals(NodeType.Table)))
                 throw new ArgumentException("The destination node should be either a paragraph or table.");
 
             // We will be inserting into the parent of the destination paragraph.
             CompositeNode dstStory = insertAfterNode.ParentNode;
 
             // This object will be translating styles and lists during the import.
-            NodeImporter importer = new NodeImporter(srcDoc, insertAfterNode.Document, ImportFormatMode.KeepSourceFormatting);
+            NodeImporter importer =
+                new NodeImporter(srcDoc, insertAfterNode.Document, ImportFormatMode.KeepSourceFormatting);
 
             // Loop through all sections in the source document.
-            foreach (Section srcSection in srcDoc.Sections)
+            foreach (Section srcSection in srcDoc.Sections.OfType<Section>())
             {
                 // Loop through all block level nodes (paragraphs and tables) in the body of the section.
                 foreach (Node srcNode in srcSection.Body)
@@ -50,7 +53,7 @@ namespace ApiExamples
                     // Let's skip the node if it is a last empty paragraph in a section.
                     if (srcNode.NodeType.Equals(NodeType.Paragraph))
                     {
-                        Paragraph para = (Paragraph)srcNode;
+                        Paragraph para = (Paragraph) srcNode;
                         if (para.IsEndOfSection && !para.HasChildNodes)
                             continue;
                     }
@@ -110,16 +113,16 @@ namespace ApiExamples
             /// The field value contains the path to load the document. 
             /// We load the document and insert it into the current merge field.
             /// </summary>
-            void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
+            void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
             {
-                if (e.DocumentFieldName == "Document_1")
+                if (args.DocumentFieldName == "Document_1")
                 {
                     // Use document builder to navigate to the merge field with the specified name.
-                    DocumentBuilder builder = new DocumentBuilder(e.Document);
-                    builder.MoveToMergeField(e.DocumentFieldName);
+                    DocumentBuilder builder = new DocumentBuilder(args.Document);
+                    builder.MoveToMergeField(args.DocumentFieldName);
 
                     // The name of the document to load and insert is stored in the field value.
-                    Document subDoc = new Document((String)e.FieldValue);
+                    Document subDoc = new Document((String) args.FieldValue);
 
                     // Insert the document.
                     InsertDocument(builder.CurrentParagraph, subDoc);
@@ -129,48 +132,7 @@ namespace ApiExamples
                         builder.CurrentParagraph.Remove();
 
                     // Indicate to the mail merge engine that we have inserted what we wanted.
-                    e.Text = null;
-                }
-            }
-
-            void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs args)
-            {
-                // Do nothing.
-            }
-        }
-        //ExEnd
-
-        //ExStart
-        //ExId:InsertDocumentAtMailMergeBlob
-        //ExSummary:A slight variation to the above example to load a document from a BLOB database field instead of a file.
-        private class InsertDocumentAtMailMergeBlobHandler : IFieldMergingCallback
-        {
-            /// <summary>
-            /// This handler makes special processing for the "Document_1" field.
-            /// The field value contains the path to load the document. 
-            /// We load the document and insert it into the current merge field.
-            /// </summary>
-            void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
-            {
-                if (e.DocumentFieldName == "Document_1")
-                {
-                    // Use document builder to navigate to the merge field with the specified name.
-                    DocumentBuilder builder = new DocumentBuilder(e.Document);
-                    builder.MoveToMergeField(e.DocumentFieldName);
-
-                    // Load the document from the blob field.
-                    MemoryStream stream = new MemoryStream((byte[])e.FieldValue);
-                    Document subDoc = new Document(stream);
-
-                    // Insert the document.
-                    InsertDocument(builder.CurrentParagraph, subDoc);
-
-                    // The paragraph that contained the merge field might be empty now and you probably want to delete it.
-                    if (!builder.CurrentParagraph.HasChildNodes)
-                        builder.CurrentParagraph.Remove();
-
-                    // Indicate to the mail merge engine that we have inserted what we wanted.
-                    e.Text = null;
+                    args.Text = null;
                 }
             }
 
@@ -205,12 +167,12 @@ namespace ApiExamples
 
         private class InsertDocumentAtReplaceHandler : IReplacingCallback
         {
-            ReplaceAction IReplacingCallback.Replacing(ReplacingArgs e)
+            ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)
             {
                 Document subDoc = new Document(MyDir + "InsertDocument2.doc");
 
                 // Insert a document after the paragraph, containing the match text.
-                Paragraph para = (Paragraph)e.MatchNode.ParentNode;
+                Paragraph para = (Paragraph) args.MatchNode.ParentNode;
                 InsertDocument(para, subDoc);
 
                 // Remove the paragraph with the match text.
@@ -219,6 +181,7 @@ namespace ApiExamples
                 return ReplaceAction.Skip;
             }
         }
+
         //ExEnd
     }
 }
