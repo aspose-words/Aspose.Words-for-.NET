@@ -1343,7 +1343,7 @@ namespace ApiExamples
             Console.WriteLine(formFieldVisitor.GetText());
 
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Field.FormField.docx");
+            doc.Save(MyDir + @"\Artifacts\Field.FormField.docx");
         }
 
         /// <summary>
