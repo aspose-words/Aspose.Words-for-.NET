@@ -801,7 +801,7 @@ namespace ApiExamples
         public void FieldInclude()
         {
             //ExStart
-            //ExFor:FieldInclude
+            //ExFor:FieldInclude.#ctor
             //ExFor:FieldInclude.BookmarkName
             //ExFor:FieldInclude.LockFields
             //ExFor:FieldInclude.SourceFullName
@@ -826,7 +826,7 @@ namespace ApiExamples
         public void FieldIncludePicture()
         {
             //ExStart
-            //ExFor:FieldIncludePicture
+            //ExFor:FieldIncludePicture.#ctor
             //ExFor:FieldIncludePicture.GraphicFilter
             //ExFor:FieldIncludePicture.IsLinked
             //ExFor:FieldIncludePicture.ResizeHorizontally
@@ -851,7 +851,7 @@ namespace ApiExamples
         }
 
         //ExStart
-        //ExFor:FieldIncludeText
+        //ExFor:FieldIncludeText.#ctor
         //ExFor:FieldIncludeText.BookmarkName
         //ExFor:FieldIncludeText.Encoding
         //ExFor:FieldIncludeText.LockFields
@@ -863,7 +863,7 @@ namespace ApiExamples
         //ExFor:FieldIncludeText.XslTransformation
         //ExSummary:Shows how to create an INCLUDETEXT field and set its properties.
         [Test] //ExSkip
-        public void FieldIncludeText()
+        public void FieldIncludeText() // INSP: Please check the result of this example, for now it's not correct
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
