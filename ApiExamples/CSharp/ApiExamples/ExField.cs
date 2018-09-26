@@ -1260,7 +1260,7 @@ namespace ApiExamples
         public void MergeField()
         {
             //ExStart
-            //ExFor:FieldMergeField
+            //ExFor:FieldMergeField.#ctor
             //ExFor:FieldMergeField.FieldName
             //ExFor:FieldMergeField.FieldNameNoPrefix
             //ExFor:FieldMergeField.IsMapped
@@ -1270,7 +1270,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create data soruce for our merge fields
+            // Create data source for our merge fields
             System.Data.DataTable table = new System.Data.DataTable("Employees");
             table.Columns.Add("Courtesy Title");
             table.Columns.Add("First Name");
@@ -1286,7 +1286,7 @@ namespace ApiExamples
             fieldMergeField.TextBefore = "Dear ";
             fieldMergeField.TextAfter = " ";
 
-            // Insert another merge field for anoter column
+            // Insert another merge field for another column
             // We don't need to use every column to perform a mail merge
             fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
             fieldMergeField.FieldName = "Last Name";
