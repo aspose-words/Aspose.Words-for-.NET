@@ -1285,7 +1285,7 @@ namespace ApiExamples
         //ExFor:FormFieldCollection.Item(String)
         //ExFor:FormFieldCollection.Remove(String)
         //ExFor:FormFieldCollection.RemoveAt(Int32)
-        //ExSummary:Shows how to number paragraphs with LISTNUM fields. // INSP: Fix summary, always check your final result before sending on review
+        //ExSummary:Shows how insert different kinds of form fields into a document and process them with a visitor implementation.
         [Test] //ExSkip
         public void FormField()
         {
