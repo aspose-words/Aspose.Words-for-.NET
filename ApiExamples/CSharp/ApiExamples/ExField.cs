@@ -1154,10 +1154,10 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void FieldHyperlink()
+        public void FieldHyperlink() // INSP: All links in the document are corrupted, please always check your final results
         {
             //ExStart
-            //ExFor:FieldHyperlink
+            //ExFor:FieldHyperlink.#ctor
             //ExFor:FieldHyperlink.Address
             //ExFor:FieldHyperlink.IsImageMap
             //ExFor:FieldHyperlink.OpenInNewWindow
@@ -1175,11 +1175,12 @@ namespace ApiExamples
             fieldHyperlink.Address = MyDir + "Field.HyperlinkDestination.docx";
             fieldHyperlink.SubAddress = "My_Bookmark";
             fieldHyperlink.ScreenTip = "Open " + fieldHyperlink.Address + " on bookmark " + fieldHyperlink.SubAddress + " in a new window";
+            
             builder.Writeln();
 
             // Open html file at a specific frame
             fieldHyperlink = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
-            fieldHyperlink.Address = "Field.HyperlinkDestination.html";
+            fieldHyperlink.Address = MyDir + "Field.HyperlinkDestination.html";
             fieldHyperlink.ScreenTip = "Open " + fieldHyperlink.Address;
             fieldHyperlink.Target = "_iframe3";
             fieldHyperlink.OpenInNewWindow = true;
