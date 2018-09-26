@@ -11,6 +11,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -1297,5 +1298,155 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.MergeField.docx");
             //ExEnd
         }
+        
+        //ExStart
+        //ExFor:FormField.Accept(DocumentVisitor)
+        //ExFor:FormField.CalculateOnExit
+        //ExFor:FormField.CheckBoxSize
+        //ExFor:FormField.Checked
+        //ExFor:FormField.Default
+        //ExFor:FormField.DropDownItems
+        //ExFor:FormField.DropDownSelectedIndex
+        //ExFor:FormField.Enabled
+        //ExFor:FormField.EntryMacro
+        //ExFor:FormField.ExitMacro
+        //ExFor:FormField.HelpText
+        //ExFor:FormField.IsCheckBoxExactSize
+        //ExFor:FormField.MaxLength
+        //ExFor:FormField.OwnHelp
+        //ExFor:FormField.OwnStatus
+        //ExFor:FormField.SetTextInputValue(Object)
+        //ExFor:FormField.StatusText
+        //ExFor:FormField.TextInputDefault
+        //ExFor:FormField.TextInputFormat
+        //ExFor:FormField.TextInputType
+        //ExFor:FormFieldCollection.Clear
+        //ExFor:FormFieldCollection.Count
+        //ExFor:FormFieldCollection.GetEnumerator
+        //ExFor:FormFieldCollection.Item(Int32)
+        //ExFor:FormFieldCollection.Item(String)
+        //ExFor:FormFieldCollection.Remove(String)
+        //ExFor:FormFieldCollection.RemoveAt(Int32)
+        //ExSummary:Shows how insert different kinds of form fields into a document and process them with a visitor implementation.
+        [Test] //ExSkip
+        public void FormField()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a combo box
+            FormField comboBox = builder.InsertComboBox("MyComboBox", new[] { "One", "Two", "Three" }, 0);
+            comboBox.CalculateOnExit = true;
+            Assert.AreEqual(3, comboBox.DropDownItems.Count);
+            Assert.AreEqual(0, comboBox.DropDownSelectedIndex);
+            Assert.AreEqual(true, comboBox.Enabled);
+
+            builder.Writeln();
+
+            // Use a document builder to insert a check box
+            FormField checkBox = builder.InsertCheckBox("MyCheckBox", false, 50);
+            checkBox.IsCheckBoxExactSize = true;
+            checkBox.HelpText = "Right click to check this box";
+            checkBox.OwnHelp = true;
+            checkBox.StatusText = "Checkbox status text";
+            checkBox.OwnStatus = true;
+            Assert.AreEqual(50.0d, checkBox.CheckBoxSize);
+            Assert.AreEqual(false, checkBox.Checked);
+            Assert.AreEqual(false, checkBox.Default);
+
+            builder.Writeln();
+
+            // Use a document builder to insert text input form field
+            FormField textInput = builder.InsertTextInput("MyTextInput", TextFormFieldType.Regular, "", "Your text goes here", 50);
+            Assert.AreEqual(3, doc.Range.Fields.Count);
+            textInput.EntryMacro = "EntryMacro";
+            textInput.ExitMacro = "ExitMacro";
+            textInput.TextInputDefault = "Regular";
+            textInput.TextInputFormat = "FIRST CAPITAL";
+            textInput.SetTextInputValue("This value overrides the one we set during initialization");
+            Assert.AreEqual(TextFormFieldType.Regular, textInput.TextInputType);
+            Assert.AreEqual(50, textInput.MaxLength);
+
+            // Get the collection of form fields that has accumulated in our document
+            FormFieldCollection formFields = doc.Range.FormFields;
+            Assert.AreEqual(3, formFields.Count);
+
+            // Iterate over the collection with an enumerator, accepting a visitor with each form field
+            FormFieldVisitor formFieldVisitor = new FormFieldVisitor();
+            
+            using (IEnumerator<FormField> fieldEnumerator = formFields.GetEnumerator())
+            {
+                while (fieldEnumerator.MoveNext())
+                {
+                    fieldEnumerator.Current.Accept(formFieldVisitor);
+                }
+            }
+
+            Console.WriteLine(formFieldVisitor.GetText());
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FormField.docx");
+        }
+
+        /// <summary>
+        /// Visitor implementation that prints information about visited form fields. 
+        /// </summary>
+        public class FormFieldVisitor : DocumentVisitor
+        {
+            public FormFieldVisitor()
+            {
+                mBuilder = new StringBuilder();
+            }
+
+            /// <summary>
+            /// Called when a FormField node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitFormField(FormField formField)
+            {
+                AppendLine(formField.Type + ": \"" + formField.Name + "\"");
+                AppendLine("\tStatus: " + (formField.Enabled ? "Enabled" : "Disabled"));
+                AppendLine("\tHelp Text:  " + formField.HelpText);
+                AppendLine("\tEntry macro name: " + formField.EntryMacro);
+                AppendLine("\tExit macro name: " + formField.ExitMacro);
+
+                switch (formField.Type)
+                {
+                    case FieldType.FieldFormDropDown:
+                        AppendLine("\tDrop down items count: " + formField.DropDownItems.Count + ", default selected item index: " + formField.DropDownSelectedIndex);
+                        AppendLine("\tDrop down items: " + string.Join(", ", formField.DropDownItems.ToArray()));
+                        break;
+                    case FieldType.FieldFormCheckBox:
+                        AppendLine("\tCheckbox size: " + formField.CheckBoxSize);
+                        AppendLine("\t" + "Checkbox is currently: " + (formField.Checked ? "checked, " : "unchecked, ") + "by default: " + (formField.Default ? "checked" : "unchecked"));
+                        break;
+                    case FieldType.FieldFormTextInput:
+                        AppendLine("\tInput format: " + formField.TextInputFormat);
+                        AppendLine("\tCurrent contents: " + formField.Result);
+                        break;
+                }
+
+                // Let the visitor continue visiting other nodes.
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Adds newline char-terminated text to the current output.
+            /// </summary>
+            private void AppendLine(string text)
+            {
+                mBuilder.Append(text + '\n');
+            }
+
+            /// <summary>
+            /// Gets the plain text of the document that was accumulated by the visitor.
+            /// </summary>
+            public string GetText()
+            {
+                return mBuilder.ToString();
+            }
+
+            private readonly StringBuilder mBuilder;
+        }
+        //ExEnd
     }
 }
