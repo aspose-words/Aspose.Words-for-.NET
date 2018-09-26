@@ -1285,7 +1285,7 @@ namespace ApiExamples
         //ExFor:FormFieldCollection.Item(String)
         //ExFor:FormFieldCollection.Remove(String)
         //ExFor:FormFieldCollection.RemoveAt(Int32)
-        //ExSummary:Shows how to number paragraphs with LISTNUM fields.
+        //ExSummary:Shows how to number paragraphs with LISTNUM fields. // INSP: Fix summary, always check your final result before sending on review
         [Test] //ExSkip
         public void FormField()
         {
@@ -1331,7 +1331,7 @@ namespace ApiExamples
 
             // Iterate over the collection with an enumerator, accepting a visitor with each form field
             FormFieldVisitor formFieldVisitor = new FormFieldVisitor();
-
+            
             using (IEnumerator<FormField> fieldEnumerator = formFields.GetEnumerator())
             {
                 while (fieldEnumerator.MoveNext())
