@@ -1257,6 +1257,48 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [Test]
+        public void MergeField()
+        {
+            //ExStart
+            //ExFor:FieldMergeField.#ctor
+            //ExFor:FieldMergeField.FieldName
+            //ExFor:FieldMergeField.FieldNameNoPrefix
+            //ExFor:FieldMergeField.IsMapped
+            //ExFor:FieldMergeField.IsVerticalFormatting
+            //ExFor:FieldMergeField.TextAfter
+            //ExSummary:Shows how to use MERGEFIELD fields to perform a mail merge.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create data source for our merge fields
+            System.Data.DataTable table = new System.Data.DataTable("Employees");
+            table.Columns.Add("Courtesy Title");
+            table.Columns.Add("First Name");
+            table.Columns.Add("Last Name");
+            table.Rows.Add("Mr.", "John", "Doe");
+            table.Rows.Add("Mrs.", "Jane", "Cardholder");
+
+            // Insert a merge field that corresponds to one of our columns and put text before and after it
+            FieldMergeField fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            fieldMergeField.FieldName = "Courtesy Title";
+            fieldMergeField.IsMapped = true;
+            fieldMergeField.IsVerticalFormatting = false;
+            fieldMergeField.TextBefore = "Dear ";
+            fieldMergeField.TextAfter = " ";
+
+            // Insert another merge field for another column
+            // We don't need to use every column to perform a mail merge
+            fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            fieldMergeField.FieldName = "Last Name";
+            fieldMergeField.TextAfter = ":";
+
+            doc.UpdateFields();
+            doc.MailMerge.Execute(table);
+            doc.Save(MyDir + @"\Artifacts\Field.MergeField.docx");
+            //ExEnd
+        }
+        
         //ExStart
         //ExFor:FormField.Accept(DocumentVisitor)
         //ExFor:FormField.CalculateOnExit
