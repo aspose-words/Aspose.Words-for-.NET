@@ -1448,5 +1448,189 @@ namespace ApiExamples
             private readonly StringBuilder mBuilder;
         }
         //ExEnd
+        
+        //ExStart
+        //ExFor:FieldToc
+        //ExFor:FieldToc.BookmarkName
+        //ExFor:FieldToc.CustomStyles
+        //ExFor:FieldToc.EntrySeparator
+        //ExFor:FieldToc.HeadingLevelRange
+        //ExFor:FieldToc.HideInWebLayout
+        //ExFor:FieldToc.InsertHyperlinks
+        //ExFor:FieldToc.PageNumberOmittingLevelRange
+        //ExFor:FieldToc.PreserveLineBreaks
+        //ExFor:FieldToc.PreserveTabs
+        //ExFor:FieldToc.UpdatePageNumbers
+        //ExFor:FieldToc.UseParagraphOutlineLevel
+        //ExSummary:Shows how to insert a TOC and populate it with entries based on heading styles.
+        [Test] //ExSkip
+        public void FieldToc()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // The table of contents we will insert will accept entries that are only within the scope of this bookmark
+            builder.StartBookmark("MyBookmark");
+
+            // Insert a list num field using a document builder
+            FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
+
+            // Limit possible TOC entries to only those within the bookmark we name here
+            fieldToc.BookmarkName = "MyBookmark";
+
+            // Normally paragraphs with a "Heading n" style will be the only ones that will be added to a TOC as entries
+            // We can set this attribute to include others, such as the style "Quote" in this case
+            fieldToc.CustomStyles = "Quote,Heading 1";
+
+            // Filter out any headings that are outside this range
+            fieldToc.HeadingLevelRange = "1-3";
+
+            // Headings in this range won't display their page number in their TOC entry
+            fieldToc.PageNumberOmittingLevelRange = "2-5";
+
+            fieldToc.EntrySeparator = "-";
+            fieldToc.InsertHyperlinks = true;
+            fieldToc.HideInWebLayout = false;
+            fieldToc.PreserveLineBreaks = true;
+            fieldToc.PreserveTabs = true;
+            fieldToc.UseParagraphOutlineLevel = false;
+
+            InsertHeading(builder, "First entry", "Heading 1");
+            builder.Writeln("Paragraph text.");
+            InsertHeading(builder, "Second entry", "Heading 1");
+            InsertHeading(builder, "Third entry", "Quote");
+
+            // These two headings will have the page numbers omitted because they are within the "2-5" range
+            InsertHeading(builder, "Fourth entry", "Heading 2");
+            InsertHeading(builder, "Fifth entry", "Heading 3");
+
+            // This entry will be omitted because "Heading 4" is outside of the "1-3" range we set earlier
+            InsertHeading(builder, "Sixth entry", "Heading 4");
+
+            builder.EndBookmark("MyBookmark");
+            builder.Writeln("Paragraph text.");
+        
+            // This entry will be omitted because it is outside the bookmark specified by the TOC
+            InsertHeading(builder, "Fifth entry", "Heading 1");
+
+            Assert.AreEqual(" TOC  \\b MyBookmark \\t \"Quote,Heading 1\" \\o 1-3 \\n 2-5 \\p - \\h \\x \\w", fieldToc.GetFieldCode());
+
+            fieldToc.UpdatePageNumbers();
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FieldTOC.docx");
+        }
+
+        /// <summary>
+        /// Start a new page and insert a paragraph of a specified style
+        /// </summary>
+        public void InsertHeading(DocumentBuilder builder, string captionText, string styleName)
+        {
+            builder.InsertBreak(BreakType.PageBreak);
+            string originalStyle = builder.ParagraphFormat.StyleName;
+            builder.ParagraphFormat.Style = builder.Document.Styles[styleName];
+            builder.Writeln(captionText);
+            builder.ParagraphFormat.Style = builder.Document.Styles[originalStyle];
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:FieldToc.EntryIdentifier
+        //ExFor:FieldToc.EntryLevelRange
+        //ExSummary:Shows how to insert a TOC field and filter which TC fields end up as entries.
+        [Test] //ExSkip
+        public void FieldTocEntryIdentifier()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.StartBookmark("MyBookmark");
+
+            // Insert a list num field using a document builder
+            FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
+            fieldToc.EntryIdentifier = "A";
+            fieldToc.EntryLevelRange = "1-3";
+
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // These two entries will appear in the table
+            InsertTocEntry(builder, "TC field 1", "A", "1");
+            InsertTocEntry(builder, "TC field 2", "A", "2");
+
+            // These two entries will be omitted because of an incorrect type identifier
+            InsertTocEntry(builder, "TC field 3", "B", "1");
+
+            // ...and an out-of-range entry level
+            InsertTocEntry(builder, "TC field 4", "A", "5");
+
+            Assert.AreEqual(" TOC  \\f A \\l 1-3", fieldToc.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FieldTOC.TC.docx");
+        }
+
+        /// <summary>
+        /// Insert a table of contents entry via a document builder
+        /// </summary>
+        public void InsertTocEntry(DocumentBuilder builder, string text, string typeIdentifier, string entryLevel)
+        {
+            FieldTC fieldTc = (FieldTC)builder.InsertField(FieldType.FieldTOCEntry, true);
+            fieldTc.Text = text;
+            fieldTc.TypeIdentifier = typeIdentifier;
+            fieldTc.EntryLevel = entryLevel;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:FieldToc.TableOfFiguresLabel
+        //ExFor:FieldToc.CaptionlessTableOfFiguresLabel
+        //ExFor:FieldToc.PrefixedSequenceIdentifier
+        //ExFor:FieldToc.SequenceSeparator
+        //ExSummary:Insert a TOC field and build the table with SEQ fields.
+        [Test] //ExSkip
+        public void FieldTocFigure()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a list num field using a document builder
+            FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
+            fieldToc.CaptionlessTableOfFiguresLabel = "Figures";
+            fieldToc.PrefixedSequenceIdentifier = "ChapterNum";
+            fieldToc.SequenceSeparator = ":";
+
+            // By default, the table of contents 
+            fieldToc.TableOfFiguresLabel = "Figure";
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // These captions will have a sequence identifier that's the same as the table of figures label in our table of contents,
+            // so the table of contents will pick them up
+            InsertCaption(builder, "Prefix ", "ChapterNum");
+            InsertCaption(builder, " Figure ", "Figure");
+            builder.Writeln("\nMy paragraph contents.");
+            InsertCaption(builder, "Prefix ", "ChapterNum");
+            InsertCaption(builder, " Figure ", "Figure");
+            builder.Writeln("\nMy paragraph contents.");
+
+            // This will start a new count and won't be picked up by our table of contents
+            InsertCaption(builder, "Figure ", "OtherFigureSequence");
+            builder.Writeln("My paragraph contents.");
+
+            Assert.AreEqual(" TOC  \\a Figures \\s ChapterNum \\d : \\c Figure", fieldToc.GetFieldCode());
+
+            fieldToc.UpdatePageNumbers();
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FieldTOC.SEQ.docx");
+        }
+
+        /// <summary>
+        /// Insert a sequence field with preceding text and a specified sequence identifier
+        /// </summary>
+        public void InsertCaption(DocumentBuilder builder, string precedingText, string sequenceIdentifier)
+        {
+            builder.Write(precedingText);
+            FieldSeq caption = (FieldSeq)builder.InsertField(FieldType.FieldSequence, false);
+            caption.SequenceIdentifier = sequenceIdentifier;
+        }
+        //ExEnd
     }
 }
