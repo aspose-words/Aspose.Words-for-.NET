@@ -1153,6 +1153,7 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
+        [Ignore("SakaEra and UmAlQura calendar support needed")]
         public void FieldDate()
         {
             //ExStart
