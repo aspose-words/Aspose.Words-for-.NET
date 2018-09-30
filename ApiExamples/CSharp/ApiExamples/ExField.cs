@@ -786,6 +786,7 @@ namespace ApiExamples
         }
 
         [Test]
+        [Ignore("WORDSNET-17524")]
         public void FieldXE()
         {
             //ExStart
