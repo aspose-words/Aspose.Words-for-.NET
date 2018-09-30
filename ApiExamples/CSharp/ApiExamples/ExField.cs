@@ -829,11 +829,17 @@ namespace ApiExamples
             index.CrossReferenceSeparator = ":";
             index.Heading = ">";
             index.LanguageId = "1033";
+            index.LetterRange = "a-j";
             index.NumberOfColumns = "2";
             index.PageNumberListSeparator = "|";
             index.PageNumberSeparator = "|";
             index.PageRangeSeparator = "/";
             index.UseYomi = true;
+            index.RunSubentriesOnSameLine = false;
+            index.SequenceName = "Chapter";
+            index.SequenceSeparator = ":";
+            Assert.IsTrue(index.HasPageNumberSeparator);
+            Assert.IsTrue(index.HasSequenceName);
 
             // Our index will take up page 1
             builder.InsertBreak(BreakType.PageBreak);
