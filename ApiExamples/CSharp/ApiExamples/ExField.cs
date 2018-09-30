@@ -1071,6 +1071,7 @@ namespace ApiExamples
         }
 
         [Test]
+        [Ignore("WORDSNET-13854")]
         public void FieldDatabase()
         {
             //ExStart
@@ -1092,14 +1093,13 @@ namespace ApiExamples
             FieldDatabase field = (FieldDatabase) builder.InsertField(FieldType.FieldDatabase, true);
 
             // Create a simple query that extracts one table from the database
-            field.FileName = MyDir + @"Data\Northwind.mdb"; //INSP: we already have this file in Database folder
+            field.FileName = MyDir + @"Database\Northwind.mdb";
             field.Connection = "DSN=MS Access Databases";
             field.Query = "SELECT * FROM [Products]";
 
-            //INSP: Check the result in the word document. I see only first field with SELECT * FROM [Products]. Also when I open the document, field not yet updated. Maybe it's bug?
             // Insert another database field
             field = (FieldDatabase) builder.InsertField(FieldType.FieldDatabase, true);
-            field.FileName = MyDir + @"Data\Northwind.mdb";
+            field.FileName = MyDir + @"Database\Northwind.mdb";
             field.Connection = "DSN=MS Access Databases";
 
             // This query will sort all the products by their gross sales in descending order
@@ -1110,7 +1110,6 @@ namespace ApiExamples
                 "GROUP BY[Products].ProductName " +
                 "ORDER BY SUM([Order Details].UnitPrice* (1 - [Order Details].Discount) * [Order Details].Quantity) DESC";
 
-            //INSP: Try to apply this properties not only to the last field.
             // You can use these variables instead of a LIMIT clause, to simplify your query
             // In this case we are taking the first 10 values of the result of our query
             field.FirstRecord = "1";
