@@ -785,87 +785,99 @@ namespace ApiExamples
             Assert.AreEqual("1033", field.LanguageId);
         }
 
-        [Test]
-        [Ignore("InsertAsHtml issue (3rd field)")]
+        //ExStart
+        //ExFor:FieldLink
+        //ExFor:FieldLink.AutoUpdate
+        //ExFor:FieldLink.FormatUpdateType
+        //ExFor:FieldLink.InsertAsBitmap
+        //ExFor:FieldLink.InsertAsHtml
+        //ExFor:FieldLink.InsertAsPicture
+        //ExFor:FieldLink.InsertAsRtf
+        //ExFor:FieldLink.InsertAsText
+        //ExFor:FieldLink.InsertAsUnicode
+        //ExFor:FieldLink.IsLinked
+        //ExFor:FieldLink.ProgId
+        //ExFor:FieldLink.SourceFullName
+        //ExFor:FieldLink.SourceItem
+        //ExSummary:Shows how to create link fields with various sources and presentation types.
+        [Test] //ExSkip
+        [Ignore("InsertAsHtml issue (Unicode field)")] //ExSkip
         public void FieldLink()
         {
-            //ExStart
-            //ExFor:FieldLink
-            //ExFor:FieldLink.AutoUpdate
-            //ExFor:FieldLink.FormatUpdateType
-            //ExFor:FieldLink.InsertAsBitmap
-            //ExFor:FieldLink.InsertAsHtml
-            //ExFor:FieldLink.InsertAsPicture
-            //ExFor:FieldLink.InsertAsRtf
-            //ExFor:FieldLink.InsertAsText
-            //ExFor:FieldLink.InsertAsUnicode
-            //ExFor:FieldLink.IsLinked
-            //ExFor:FieldLink.ProgId
-            //ExFor:FieldLink.SourceFullName
-            //ExFor:FieldLink.SourceItem
-            //ExSummary:Shows how to create link fields with various sources and presentation types.
+
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
-            // Use a document builder to insert a field link
-            // Here we will insert a spreadsheet as a bitmap image
-            FieldLink field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
-            field.InsertAsBitmap = true;
-            field.AutoUpdate = true;
-            field.ProgId = "Excel.Sheet.8";
-            field.SourceFullName = MyDir + "MySpreadsheet.xlsx";
-            // Setting this field to "4" will keep the source format
-            field.FormatUpdateType = "4";
+
+            builder.Write("Unicode: ");
+            FieldLink field = InsetFieldLink(builder, InsertLinkAs.Unicode, true, "Word.Document.8", MyDir + "Document.doc", null);
             builder.Writeln();
 
-            // Inserting one cell from a spreadsheet as text
-            field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
-            field.InsertAsText = true;
-            field.AutoUpdate = true;
-            field.ProgId = "Excel.Sheet.8";
-            // Take only one cell from the source spreadsheet
-            field.SourceItem = "Sheet1!R2C2";
-            field.SourceFullName = MyDir + "MySpreadsheet.xlsx";
+            builder.Write("Html: ");
+            field = InsetFieldLink(builder, InsertLinkAs.Html, true, "Word.Document.8", MyDir + "Document.doc", null);
             builder.Writeln();
 
-            // Inserting a word document as HTML format text
-            field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
-            field.InsertAsHtml = true;
-            field.AutoUpdate = true;
-            field.ProgId = "Word.Document.8";
-            field.SourceFullName = MyDir + "Document.doc";
+            builder.Write("Rtf: ");
+            field = InsetFieldLink(builder, InsertLinkAs.Rtf, true, "Word.Document.8", MyDir + "Document.doc", null);
             builder.Writeln();
 
-            // Inserting a document as a rtf
-            field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
-            field.InsertAsRtf = true;
-            field.AutoUpdate = true;
-            field.ProgId = "Word.Document.8";
-            field.SourceFullName = MyDir + "Document.doc";
+            builder.Write("Picture: ");
+            field = InsetFieldLink(builder, InsertLinkAs.Picture, true, "Excel.Sheet.8", MyDir + "MySpreadsheet.xlsx", "Sheet1!R2C2");
             builder.Writeln();
 
-            // Inserting a document as unicode text
-            field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
-            field.InsertAsUnicode = true;
-            field.AutoUpdate = true;
-            field.ProgId = "Word.Document.8";
-            field.SourceFullName = MyDir + "Document.doc";
+            builder.Write("Bitmap: ");
+            field = InsetFieldLink(builder, InsertLinkAs.Bitmap, true, "Excel.Sheet.8", MyDir + "MySpreadsheet.xlsx", "Sheet1!R2C2");
             builder.Writeln();
 
-            // Insert an image
-            field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
-            field.InsertAsPicture = true;
-            field.AutoUpdate = true;
-            field.ProgId = "Paint.Picture";
-            field.SourceFullName = MyDir + "Images/Test_1024_768.bmp";
-            // Setting this to true will not store the data in the document, reducing file size
-            field.IsLinked = true;
-            builder.Writeln();
-
-            // You will be prompted to let the fields update when you open this document, give it a few seconds to do so
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.Link.docx");
-            //ExEnd
         }
+
+        /// <summary>
+        /// Use a document builder to insert a LINK field
+        /// </summary>
+        private FieldLink InsetFieldLink(DocumentBuilder builder, InsertLinkAs insertAs, bool autoUpdate, string progId, string sourceFullName, string sourceItem)
+        {
+            FieldLink field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
+
+            switch (insertAs)
+            {
+                case InsertLinkAs.Bitmap:
+                    field.InsertAsBitmap = true;
+                    break;
+                case InsertLinkAs.Html:
+                    field.InsertAsHtml = true;
+                    break;
+                case InsertLinkAs.Picture:
+                    field.InsertAsPicture = true;
+                    break;
+                case InsertLinkAs.Rtf:
+                    field.InsertAsRtf = true;
+                    break;
+                case InsertLinkAs.Text:
+                    field.InsertAsText = true;
+                    break;
+                case InsertLinkAs.Unicode:
+                    field.InsertAsUnicode = true;
+                    break;
+            }
+
+            field.AutoUpdate = autoUpdate;
+            field.ProgId = progId;
+            field.SourceFullName = sourceFullName;
+            field.SourceItem = sourceItem;
+
+            return field;
+        }
+
+        private enum InsertLinkAs
+        {
+            Bitmap,
+            Html,
+            Picture,
+            Rtf,
+            Text,
+            Unicode
+        }
+        //ExEnd
     }
 }
