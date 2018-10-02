@@ -801,32 +801,20 @@ namespace ApiExamples
         //ExFor:FieldLink.SourceItem
         //ExSummary:Shows how to create link fields with various sources and presentation types.
         [Test] //ExSkip
-        [Ignore("InsertAsHtml issue (Unicode field)")] //ExSkip
+        [Ignore("WORDSNET-16226")] //ExSkip
         public void FieldLink()
         {
-
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Write("Unicode: ");
-            FieldLink field = InsetFieldLink(builder, InsertLinkAs.Unicode, true, "Word.Document.8", MyDir + "Document.doc", null);
-            builder.Writeln();
+            // Insert contents of a document as various kinds of text
+            InsetFieldLink(builder, FieldLinkType.Unicode, true, "Word.Document.8", MyDir + "Document.doc", null, "Unicode: ", "\n");       
+            InsetFieldLink(builder, FieldLinkType.Html, true, "Word.Document.8", MyDir + "Document.doc", null, "Html: ", "\n");
+            InsetFieldLink(builder, FieldLinkType.Rtf, true, "Word.Document.8", MyDir + "Document.doc", null, "Rtf: ", "\n");
 
-            builder.Write("Html: ");
-            field = InsetFieldLink(builder, InsertLinkAs.Html, true, "Word.Document.8", MyDir + "Document.doc", null);
-            builder.Writeln();
-
-            builder.Write("Rtf: ");
-            field = InsetFieldLink(builder, InsertLinkAs.Rtf, true, "Word.Document.8", MyDir + "Document.doc", null);
-            builder.Writeln();
-
-            builder.Write("Picture: ");
-            field = InsetFieldLink(builder, InsertLinkAs.Picture, true, "Excel.Sheet.8", MyDir + "MySpreadsheet.xlsx", "Sheet1!R2C2");
-            builder.Writeln();
-
-            builder.Write("Bitmap: ");
-            field = InsetFieldLink(builder, InsertLinkAs.Bitmap, true, "Excel.Sheet.8", MyDir + "MySpreadsheet.xlsx", "Sheet1!R2C2");
-            builder.Writeln();
+            // Insert one cell from a spreadsheet as an image
+            InsetFieldLink(builder, FieldLinkType.Picture, true, "Excel.Sheet.8", MyDir + "MySpreadsheet.xlsx", "Sheet1!R2C2", "Picture: ", "\n");
+            InsetFieldLink(builder, FieldLinkType.Bitmap, true, "Excel.Sheet.8", MyDir + "MySpreadsheet.xlsx", "Sheet1!R2C2", "Bitmap: ", "\n");
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.Link.docx");
@@ -835,28 +823,30 @@ namespace ApiExamples
         /// <summary>
         /// Use a document builder to insert a LINK field
         /// </summary>
-        private FieldLink InsetFieldLink(DocumentBuilder builder, InsertLinkAs insertAs, bool autoUpdate, string progId, string sourceFullName, string sourceItem)
+        private void InsetFieldLink(DocumentBuilder builder, FieldLinkType fieldLinkType, bool autoUpdate, string progId, string sourceFullName, string sourceItem, string textBefore, string textAfter)
         {
+            builder.Write(textBefore);
+
             FieldLink field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
 
-            switch (insertAs)
+            switch (fieldLinkType)
             {
-                case InsertLinkAs.Bitmap:
+                case FieldLinkType.Bitmap:
                     field.InsertAsBitmap = true;
                     break;
-                case InsertLinkAs.Html:
+                case FieldLinkType.Html:
                     field.InsertAsHtml = true;
                     break;
-                case InsertLinkAs.Picture:
+                case FieldLinkType.Picture:
                     field.InsertAsPicture = true;
                     break;
-                case InsertLinkAs.Rtf:
+                case FieldLinkType.Rtf:
                     field.InsertAsRtf = true;
                     break;
-                case InsertLinkAs.Text:
+                case FieldLinkType.Text:
                     field.InsertAsText = true;
                     break;
-                case InsertLinkAs.Unicode:
+                case FieldLinkType.Unicode:
                     field.InsertAsUnicode = true;
                     break;
             }
@@ -866,10 +856,10 @@ namespace ApiExamples
             field.SourceFullName = sourceFullName;
             field.SourceItem = sourceItem;
 
-            return field;
+            builder.Write(textAfter);
         }
 
-        private enum InsertLinkAs
+        private enum FieldLinkType
         {
             Bitmap,
             Html,
