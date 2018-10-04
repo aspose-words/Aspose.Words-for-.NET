@@ -863,7 +863,8 @@ namespace ApiExamples
         //ExFor:FieldIncludeText.XslTransformation
         //ExSummary:Shows how to create an INCLUDETEXT field and set its properties.
         [Test] //ExSkip
-        public void FieldIncludeText() // INSP: Please check the result of this example, for now it's not correct
+        [Ignore("WORDSNET-17543")] //ExSkip
+        public void FieldIncludeText()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -875,7 +876,7 @@ namespace ApiExamples
             builder.Writeln();
 
             // Use a document builder to insert an include text field and use an XPath to take specific elements
-            fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "Field.Include.Source.xml", false, "text/xml", "XML", "ISO-8859-1");
+            fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "Field.IncludeText.Source.xml", false, "text/xml", "XML", "ISO-8859-1");
             fieldIncludeText.NamespaceMappings = "xmlns:n='myNamespace'";
             fieldIncludeText.XPath = "/catalog/cd/title";
 
