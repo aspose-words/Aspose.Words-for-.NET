@@ -1154,7 +1154,8 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void FieldHyperlink() // INSP: All links in the document are corrupted, please always check your final results
+        [Ignore("WORDSNET-17545")]
+        public void FieldHyperlink()
         {
             //ExStart
             //ExFor:FieldHyperlink.#ctor
@@ -1182,7 +1183,7 @@ namespace ApiExamples
             fieldHyperlink = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
             fieldHyperlink.Address = MyDir + "Field.HyperlinkDestination.html";
             fieldHyperlink.ScreenTip = "Open " + fieldHyperlink.Address;
-            fieldHyperlink.Target = "_iframe3";
+            fieldHyperlink.Target = "iframe_3";
             fieldHyperlink.OpenInNewWindow = true;
             fieldHyperlink.IsImageMap = false;
 
