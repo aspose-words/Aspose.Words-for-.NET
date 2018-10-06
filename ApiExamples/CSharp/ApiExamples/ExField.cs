@@ -1255,5 +1255,74 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.FieldListNum.docx");
             //ExEnd
         }
+
+        [Test]
+        public void FieldBarcode()
+        {
+            //ExStart
+            //ExFor:BarcodeParameters
+            //ExFor:BarcodeParameters.AddStartStopChar
+            //ExFor:BarcodeParameters.BackgroundColor
+            //ExFor:BarcodeParameters.BarcodeType
+            //ExFor:BarcodeParameters.BarcodeValue
+            //ExFor:BarcodeParameters.CaseCodeStyle
+            //ExFor:BarcodeParameters.DisplayText
+            //ExFor:BarcodeParameters.ErrorCorrectionLevel
+            //ExFor:BarcodeParameters.FacingIdentificationMark
+            //ExFor:BarcodeParameters.FixCheckDigit
+            //ExFor:BarcodeParameters.ForegroundColor
+            //ExFor:BarcodeParameters.IsBookmark
+            //ExFor:BarcodeParameters.IsUSPostalAddress
+            //ExFor:BarcodeParameters.PosCodeStyle
+            //ExFor:BarcodeParameters.PostalAddress
+            //ExFor:BarcodeParameters.ScalingFactor
+            //ExFor:BarcodeParameters.SymbolHeight
+            //ExFor:BarcodeParameters.SymbolRotation
+            //ExFor:FieldBarcode
+            //ExFor:FieldBarcode.FacingIdentificationMark
+            //ExFor:FieldBarcode.IsBookmark
+            //ExFor:FieldBarcode.IsUSPostalAddress
+            //ExFor:FieldBarcode.PostalAddress
+            //ExFor:FieldDisplayBarcode
+            //ExFor:FieldDisplayBarcode.AddStartStopChar
+            //ExFor:FieldDisplayBarcode.BackgroundColor
+            //ExFor:FieldDisplayBarcode.BarcodeType
+            //ExFor:FieldDisplayBarcode.BarcodeValue
+            //ExFor:FieldDisplayBarcode.CaseCodeStyle
+            //ExFor:FieldDisplayBarcode.DisplayText
+            //ExFor:FieldDisplayBarcode.ErrorCorrectionLevel
+            //ExFor:FieldDisplayBarcode.FixCheckDigit
+            //ExFor:FieldDisplayBarcode.ForegroundColor
+            //ExFor:FieldDisplayBarcode.PosCodeStyle
+            //ExFor:FieldDisplayBarcode.ScalingFactor
+            //ExFor:FieldDisplayBarcode.SymbolHeight
+            //ExFor:FieldDisplayBarcode.SymbolRotation
+            //ExFor:IBarcodeGenerator
+            //ExFor:IBarcodeGenerator.GetBarcodeImage(BarcodeParameters)
+            //ExFor:IBarcodeGenerator.GetOldBarcodeImage(BarcodeParameters)
+            //ExSummary:Shows how to insert an auto text field and reference an auto text building block with it. 
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.StartBookmark("BarcodeBookmark");
+            builder.Writeln("110110");
+            builder.EndBookmark("BarcodeBookmark");
+
+            builder.Writeln();
+
+            FieldBarcode fieldBarcode = (FieldBarcode)builder.InsertField(FieldType.FieldBarcode, true);
+            fieldBarcode.FacingIdentificationMark = "C";
+            fieldBarcode.PostalAddress = "110110";
+            fieldBarcode.IsUSPostalAddress = true;
+
+            builder.Writeln();
+
+            fieldBarcode = (FieldBarcode)builder.InsertField(FieldType.FieldBarcode, true);
+            fieldBarcode.PostalAddress = "BarcodeBookmark";
+            fieldBarcode.IsBookmark = true;
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.USAddressBarcode.docx");
+        }
     }
 }
