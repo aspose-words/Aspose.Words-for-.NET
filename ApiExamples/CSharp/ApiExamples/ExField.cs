@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Aspose.BarCode;
 using Aspose.BarCode.BarCodeRecognition;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
@@ -1283,24 +1284,10 @@ namespace ApiExamples
             //ExFor:FieldBarcode.IsBookmark
             //ExFor:FieldBarcode.IsUSPostalAddress
             //ExFor:FieldBarcode.PostalAddress
-            //ExFor:FieldDisplayBarcode
-            //ExFor:FieldDisplayBarcode.AddStartStopChar
-            //ExFor:FieldDisplayBarcode.BackgroundColor
-            //ExFor:FieldDisplayBarcode.BarcodeType
-            //ExFor:FieldDisplayBarcode.BarcodeValue
-            //ExFor:FieldDisplayBarcode.CaseCodeStyle
-            //ExFor:FieldDisplayBarcode.DisplayText
-            //ExFor:FieldDisplayBarcode.ErrorCorrectionLevel
-            //ExFor:FieldDisplayBarcode.FixCheckDigit
-            //ExFor:FieldDisplayBarcode.ForegroundColor
-            //ExFor:FieldDisplayBarcode.PosCodeStyle
-            //ExFor:FieldDisplayBarcode.ScalingFactor
-            //ExFor:FieldDisplayBarcode.SymbolHeight
-            //ExFor:FieldDisplayBarcode.SymbolRotation
             //ExFor:IBarcodeGenerator
             //ExFor:IBarcodeGenerator.GetBarcodeImage(BarcodeParameters)
             //ExFor:IBarcodeGenerator.GetOldBarcodeImage(BarcodeParameters)
-            //ExSummary:Shows how to insert an auto text field and reference an auto text building block with it. 
+            //ExSummary:Shows how to insert a BARCODE field and set its properties. 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1320,9 +1307,53 @@ namespace ApiExamples
             fieldBarcode = (FieldBarcode)builder.InsertField(FieldType.FieldBarcode, true);
             fieldBarcode.PostalAddress = "BarcodeBookmark";
             fieldBarcode.IsBookmark = true;
-
+       
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.USAddressBarcode.docx");
+        }
+
+        [Test]
+        public void FieldDisplayBarcode()
+        {
+            //ExStart
+            //ExFor:FieldDisplayBarcode
+            //ExFor:FieldDisplayBarcode.AddStartStopChar
+            //ExFor:FieldDisplayBarcode.BackgroundColor
+            //ExFor:FieldDisplayBarcode.BarcodeType
+            //ExFor:FieldDisplayBarcode.BarcodeValue
+            //ExFor:FieldDisplayBarcode.CaseCodeStyle
+            //ExFor:FieldDisplayBarcode.DisplayText
+            //ExFor:FieldDisplayBarcode.ErrorCorrectionLevel
+            //ExFor:FieldDisplayBarcode.FixCheckDigit
+            //ExFor:FieldDisplayBarcode.ForegroundColor
+            //ExFor:FieldDisplayBarcode.PosCodeStyle
+            //ExFor:FieldDisplayBarcode.ScalingFactor
+            //ExFor:FieldDisplayBarcode.SymbolHeight
+            //ExFor:FieldDisplayBarcode.SymbolRotation
+            //ExSummary:Shows how to insert a DISPLAYBARCODE field and set its properties. 
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            FieldDisplayBarcode fieldDisplayBarcode = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
+
+            // Insert a QR type barcode
+            fieldDisplayBarcode.BarcodeType = "QR";
+            fieldDisplayBarcode.BarcodeValue = "1234567";
+            fieldDisplayBarcode.BackgroundColor = "0xF8BD69";
+            fieldDisplayBarcode.ForegroundColor = "0xB5413B";
+
+            fieldDisplayBarcode.AddStartStopChar = true;
+            fieldDisplayBarcode.CaseCodeStyle = "EXT";
+            fieldDisplayBarcode.DisplayText = true;
+            fieldDisplayBarcode.ErrorCorrectionLevel = "3";
+            fieldDisplayBarcode.FixCheckDigit = true;
+            fieldDisplayBarcode.PosCodeStyle = "EAN8";
+            fieldDisplayBarcode.ScalingFactor = "125";
+            fieldDisplayBarcode.SymbolHeight = "1000";
+            fieldDisplayBarcode.SymbolRotation = "0";
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.DisplayBarcode.docx");
         }
     }
 }
