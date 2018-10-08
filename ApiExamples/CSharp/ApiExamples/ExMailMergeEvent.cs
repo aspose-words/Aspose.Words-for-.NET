@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -28,6 +28,7 @@ namespace ApiExamples
             //ExFor:IFieldMergingCallback
             //ExFor:FieldMergingArgs
             //ExFor:FieldMergingArgsBase.Field
+            //ExFor:FieldMergingArgs.Field
             //ExFor:FieldMergingArgsBase.DocumentFieldName
             //ExFor:FieldMergingArgsBase.Document
             //ExFor:FieldMergingArgsBase.FieldValue
@@ -53,6 +54,9 @@ namespace ApiExamples
 
             // Save resulting document with a new name.
             doc.Save(MyDir + @"\Artifacts\MailMerge.InsertHtml.doc");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\MailMerge.InsertHtml.doc",
+                MyDir + @"\Golds\MailMerge.InsertHtml Gold.doc"));
         }
 
         private class HandleMergeFieldInsertHtml : IFieldMergingCallback
@@ -60,29 +64,26 @@ namespace ApiExamples
             /// <summary>
             /// This is called when merge field is actually merged with data in the document.
             /// </summary>
-            void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
+            void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
             {
                 // All merge fields that expect HTML data should be marked with some prefix, e.g. 'html'.
-                if (e.DocumentFieldName.StartsWith("html"))
+                if (args.DocumentFieldName.StartsWith("html") && args.Field.GetFieldCode().Contains("\\b"))
                 {
-                    if (e.Field.GetFieldCode().Contains("\\b"))
-                    {
-                        FieldMergeField field = e.Field;
+                    FieldMergeField field = args.Field;
 
-                        // Insert the text for this merge field as HTML data, using DocumentBuilder.
-                        DocumentBuilder builder = new DocumentBuilder(e.Document);
-                        builder.MoveToMergeField(e.DocumentFieldName);
-                        builder.Write(field.TextBefore);
-                        builder.InsertHtml((string)e.FieldValue);
+                    // Insert the text for this merge field as HTML data, using DocumentBuilder.
+                    DocumentBuilder builder = new DocumentBuilder(args.Document);
+                    builder.MoveToMergeField(args.DocumentFieldName);
+                    builder.Write(field.TextBefore);
+                    builder.InsertHtml((string) args.FieldValue);
 
-                        // The HTML text itself should not be inserted.
-                        // We have already inserted it as an HTML.
-                        e.Text = "";
-                    }
+                    // The HTML text itself should not be inserted.
+                    // We have already inserted it as an HTML.
+                    args.Text = "";
                 }
             }
 
-            void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs e)
+            void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs args)
             {
                 // Do nothing.
             }
@@ -118,16 +119,16 @@ namespace ApiExamples
             /// This is called for each merge field in the document
             /// when Document.MailMerge.ExecuteWithRegions is called.
             /// </summary>
-            void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
+            void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
             {
-                if (e.DocumentFieldName.Equals("CourseName"))
+                if (args.DocumentFieldName.Equals("CourseName"))
                 {
                     // Insert the checkbox for this merge field, using DocumentBuilder.
-                    DocumentBuilder builder = new DocumentBuilder(e.Document);
-                    builder.MoveToMergeField(e.FieldName);
-                    builder.InsertCheckBox(e.DocumentFieldName + this.mCheckBoxCount.ToString(), false, 0);
-                    builder.Write((string)e.FieldValue);
-                    this.mCheckBoxCount++;
+                    DocumentBuilder builder = new DocumentBuilder(args.Document);
+                    builder.MoveToMergeField(args.FieldName);
+                    builder.InsertCheckBox(args.DocumentFieldName + mCheckBoxCount, false, 0);
+                    builder.Write((string) args.FieldValue);
+                    mCheckBoxCount++;
                 }
             }
 
@@ -154,8 +155,9 @@ namespace ApiExamples
             {
                 DataRow datarow = dataTable.NewRow();
                 dataTable.Rows.Add(datarow);
-                datarow[0] = "Course " + i.ToString();
+                datarow[0] = "Course " + i;
             }
+
             return dataTable;
         }
         //ExEnd
@@ -185,17 +187,17 @@ namespace ApiExamples
             /// We can either return some data to the mail merge engine or do something
             /// else with the document. In this case we modify cell formatting.
             /// </summary>
-            void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
+            void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
             {
-                if (this.mBuilder == null)
-                    this.mBuilder = new DocumentBuilder(e.Document);
+                if (mBuilder == null)
+                    mBuilder = new DocumentBuilder(args.Document);
 
                 // This way we catch the beginning of a new row.
-                if (e.FieldName.Equals("CompanyName"))
+                if (args.FieldName.Equals("CompanyName"))
                 {
                     // Select the color depending on whether the row number is even or odd.
                     Color rowColor;
-                    if (IsOdd(this.mRowIdx))
+                    if (IsOdd(mRowIdx))
                         rowColor = Color.FromArgb(213, 227, 235);
                     else
                         rowColor = Color.FromArgb(242, 242, 242);
@@ -204,11 +206,11 @@ namespace ApiExamples
                     // so we have to iterate over all cells in the row.
                     for (int colIdx = 0; colIdx < 4; colIdx++)
                     {
-                        this.mBuilder.MoveToCell(0, this.mRowIdx, colIdx, 0);
-                        this.mBuilder.CellFormat.Shading.BackgroundPatternColor = rowColor;
+                        mBuilder.MoveToCell(0, mRowIdx, colIdx, 0);
+                        mBuilder.CellFormat.Shading.BackgroundPatternColor = rowColor;
                     }
 
-                    this.mRowIdx++;
+                    mRowIdx++;
                 }
             }
 
@@ -243,9 +245,10 @@ namespace ApiExamples
             {
                 DataRow datarow = dataTable.NewRow();
                 dataTable.Rows.Add(datarow);
-                datarow[0] = "Company " + i.ToString();
-                datarow[1] = "Contact " + i.ToString();
+                datarow[0] = "Company " + i;
+                datarow[1] = "Contact " + i;
             }
+
             return dataTable;
         }
         //ExEnd
@@ -259,13 +262,14 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "MailMerge.MergeImageSimple.doc");
 
             // Pass a URL which points to the image to merge into the document.
-            doc.MailMerge.Execute(new string[] { "Logo" }, new object[] { "http://www.aspose.com/images/aspose-logo.gif" });
+            doc.MailMerge.Execute(new string[] { "Logo" },
+                new object[] { "http://www.aspose.com/images/aspose-logo.gif" });
 
             doc.Save(MyDir + @"\Artifacts\MailMerge.MergeImageFromUrl.doc");
             //ExEnd
 
             // Verify the image was merged into the document.
-            Shape logoImage = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Shape logoImage = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             Assert.IsNotNull(logoImage);
             Assert.IsTrue(logoImage.HasImage);
         }

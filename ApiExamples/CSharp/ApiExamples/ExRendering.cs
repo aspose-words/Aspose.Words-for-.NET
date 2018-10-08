@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -21,6 +21,7 @@ using SkiaSharp;
 using System.Drawing.Printing;
 using System.Drawing.Text;
 using System.Windows.Forms;
+
 #endif
 
 namespace ApiExamples
@@ -76,6 +77,7 @@ namespace ApiExamples
                 options.PageCount = 1;
                 doc.Save(stream, options);
             }
+
             //ExEnd
         }
 
@@ -184,10 +186,12 @@ namespace ApiExamples
             // Render the third page only and set the JPEG quality to 80%
             // In this case we need to pass the desired SaveFormat to the ImageSaveOptions constructor 
             // to signal what type of image to save as.
-            ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Jpeg);
-            imageOptions.PageIndex = 2;
-            imageOptions.PageCount = 1;
-            imageOptions.JpegQuality = 80;
+            ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Jpeg)
+            {
+                PageIndex = 2,
+                PageCount = 1,
+                JpegQuality = 80
+            };
             doc.Save(MyDir + @"\Artifacts\Rendering.JpegCustomOptions.jpg", imageOptions);
             //ExEnd
         }
@@ -199,7 +203,6 @@ namespace ApiExamples
             //ExFor:Document.Save(String)
             //ExSummary:Converts a whole document into a multipage TIFF file using default options.
             Document doc = new Document(MyDir + "Rendering.doc");
-
             doc.Save(MyDir + @"\Artifacts\Rendering.SaveToTiffDefault.tiff");
             //ExEnd
         }
@@ -216,10 +219,12 @@ namespace ApiExamples
             //ExSummary:Converts a page of a Word document into a TIFF image and uses the CCITT compression.
             Document doc = new Document(MyDir + "Rendering.doc");
 
-            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff);
-            options.TiffCompression = TiffCompression.Ccitt3;
-            options.PageIndex = 0;
-            options.PageCount = 1;
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff)
+            {
+                TiffCompression = TiffCompression.Ccitt3,
+                PageIndex = 0,
+                PageCount = 1
+            };
 
             doc.Save(MyDir + @"\Artifacts\Rendering.SaveToTiffCompression.tiff", options);
             //ExEnd
@@ -234,9 +239,11 @@ namespace ApiExamples
             //ExSummary:Renders a page of a Word document into a PNG image at a specific resolution.
             Document doc = new Document(MyDir + "Rendering.doc");
 
-            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
-            options.Resolution = 300;
-            options.PageCount = 1;
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png)
+            {
+                Resolution = 300,
+                PageCount = 1
+            };
 
             doc.Save(MyDir + @"\Artifacts\Rendering.SaveToImageResolution.png", options);
             //ExEnd
@@ -250,14 +257,14 @@ namespace ApiExamples
             //ExSummary:Converts every page of a DOC file into a separate scalable EMF file.
             Document doc = new Document(MyDir + "Rendering.doc");
 
-            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Emf);
-            options.PageCount = 1;
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Emf) { PageCount = 1 };
 
             for (int i = 0; i < doc.PageCount; i++)
             {
                 options.PageIndex = i;
-                doc.Save(MyDir + @"\Artifacts\Rendering.SaveToEmf." + i.ToString() + ".emf", options);
+                doc.Save(MyDir + @"\Artifacts\Rendering.SaveToEmf." + i + ".emf", options);
             }
+
             //ExEnd
         }
 
@@ -270,10 +277,8 @@ namespace ApiExamples
             //ExSummary:Converts a page of a Word document into JPEG images of different qualities.
             Document doc = new Document(MyDir + "Rendering.doc");
 
-            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
-
             // Try worst quality.
-            options.JpegQuality = 0;
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg) { JpegQuality = 0 };
             doc.Save(MyDir + @"\Artifacts\Rendering.SaveToImageJpegQuality0.jpeg", options);
 
             // Try best quality.
@@ -291,9 +296,7 @@ namespace ApiExamples
             //ExSummary:Renders a page of a Word document into an image with transparent or colored background.
             Document doc = new Document(MyDir + "Rendering.doc");
 
-            ImageSaveOptions imgOptions = new ImageSaveOptions(SaveFormat.Png);
-
-            imgOptions.PaperColor = Color.Transparent;
+            ImageSaveOptions imgOptions = new ImageSaveOptions(SaveFormat.Png) { PaperColor = Color.Transparent };
             doc.Save(MyDir + @"\Artifacts\Rendering.SaveToImagePaperColorTransparent.png", imgOptions);
 
             imgOptions.PaperColor = Color.LightCoral;
@@ -315,11 +318,14 @@ namespace ApiExamples
             // Rewind the stream and create a .NET image from it.
             stream.Position = 0;
 #if NETSTANDARD2_0 || __MOBILE__
-            // Read the stream back into an image.
+// Read the stream back into an image.
             SkiaSharp.SKBitmap image = SkiaSharp.SKBitmap.Decode(stream);
 #else
             // Read the stream back into an image.
-            Image image = Image.FromStream(stream);
+            using (Image image = Image.FromStream(stream))
+            {
+                // ...Do something.
+            }
 #endif
             //ExEnd
         }
@@ -787,7 +793,7 @@ namespace ApiExamples
         {
             public MyPrintDocument(Document document)
             {
-                this.mDocument = document;
+                mDocument = document;
             }
 
             /// <summary>
@@ -798,15 +804,15 @@ namespace ApiExamples
                 base.OnBeginPrint(e);
 
                 // Initialize the range of pages to be printed according to the user selection.
-                switch (this.PrinterSettings.PrintRange)
+                switch (PrinterSettings.PrintRange)
                 {
                     case System.Drawing.Printing.PrintRange.AllPages:
-                        this.mCurrentPage = 1;
-                        this.mPageTo = this.mDocument.PageCount;
+                        mCurrentPage = 1;
+                        mPageTo = mDocument.PageCount;
                         break;
                     case System.Drawing.Printing.PrintRange.SomePages:
-                        this.mCurrentPage = this.PrinterSettings.FromPage;
-                        this.mPageTo = this.PrinterSettings.ToPage;
+                        mCurrentPage = PrinterSettings.FromPage;
+                        mPageTo = PrinterSettings.ToPage;
                         break;
                     default:
                         throw new InvalidOperationException("Unsupported print range.");
@@ -823,8 +829,8 @@ namespace ApiExamples
                 // A single Word document can have multiple sections that specify pages with different sizes, 
                 // orientation and paper trays. This code is called by the .NET printing framework before 
                 // each page is printed and we get a chance to specify how the page is to be printed.
-                PageInfo pageInfo = this.mDocument.GetPageInfo(this.mCurrentPage - 1);
-                e.PageSettings.PaperSize = pageInfo.GetDotNetPaperSize(this.PrinterSettings.PaperSizes);
+                PageInfo pageInfo = mDocument.GetPageInfo(mCurrentPage - 1);
+                e.PageSettings.PaperSize = pageInfo.GetDotNetPaperSize(PrinterSettings.PaperSizes);
                 // MS Word stores the paper source (printer tray) for each section as a printer-specfic value.
                 // To obtain the correct tray value you will need to use the RawKindValue returned
                 // by .NET for your printer.
@@ -848,14 +854,14 @@ namespace ApiExamples
                 float hardOffsetY = 20;
 
                 // This is in .NET 2.0 only. Uncomment when needed.
-                //                float hardOffsetX = e.PageSettings.HardMarginX;
-                //                float hardOffsetY = e.PageSettings.HardMarginY;
+                // float hardOffsetX = e.PageSettings.HardMarginX;
+                // float hardOffsetY = e.PageSettings.HardMarginY;
 
-                int pageIndex = this.mCurrentPage - 1;
-                this.mDocument.RenderToScale(this.mCurrentPage, e.Graphics, -hardOffsetX, -hardOffsetY, 1.0f);
+                int pageIndex = mCurrentPage - 1;
+                mDocument.RenderToScale(mCurrentPage, e.Graphics, -hardOffsetX, -hardOffsetY, 1.0f);
 
-                this.mCurrentPage++;
-                e.HasMorePages = (this.mCurrentPage <= this.mPageTo);
+                mCurrentPage++;
+                e.HasMorePages = (mCurrentPage <= mPageTo);
             }
 
             private readonly Document mDocument;
@@ -883,8 +889,11 @@ namespace ApiExamples
             for (int i = 0; i < doc.PageCount; i++)
             {
                 PageInfo pageInfo = doc.GetPageInfo(i);
-                Console.WriteLine("Page {0}. PaperSize:{1} ({2:F0}x{3:F0}pt), Orientation:{4}, PaperTray:{5}", i + 1, pageInfo.PaperSize, pageInfo.WidthInPoints, pageInfo.HeightInPoints, pageInfo.Landscape ? "Landscape" : "Portrait", pageInfo.PaperTray);
+                Console.WriteLine("Page {0}. PaperSize:{1} ({2:F0}x{3:F0}pt), Orientation:{4}, PaperTray:{5}", i + 1,
+                    pageInfo.PaperSize, pageInfo.WidthInPoints, pageInfo.HeightInPoints,
+                    pageInfo.Landscape ? "Landscape" : "Portrait", pageInfo.PaperTray);
             }
+
             //ExEnd
         }
 
@@ -963,7 +972,7 @@ namespace ApiExamples
             fontSources.Add(folderFontSource);
 
             // Convert the ArrayList of source back into a primitive array of FontSource objects.
-            FontSourceBase[] updatedFontSources = (FontSourceBase[])fontSources.ToArray(typeof(FontSourceBase));
+            FontSourceBase[] updatedFontSources = (FontSourceBase[]) fontSources.ToArray(typeof(FontSourceBase));
 
             // Apply the new set of font sources to use.
             FontSettings.DefaultInstance.SetFontsSources(updatedFontSources);
@@ -972,10 +981,13 @@ namespace ApiExamples
             //ExEnd
 
             // Verify that font sources are set correctly.
-            Assert.IsInstanceOf(typeof(SystemFontSource), FontSettings.DefaultInstance.GetFontsSources()[0]); // The first source should be a system font source.
-            Assert.IsInstanceOf(typeof(FolderFontSource), FontSettings.DefaultInstance.GetFontsSources()[1]); // The second source should be our folder font source.
+            Assert.IsInstanceOf(typeof(SystemFontSource),
+                FontSettings.DefaultInstance.GetFontsSources()[0]); // The first source should be a system font source.
+            Assert.IsInstanceOf(typeof(FolderFontSource),
+                FontSettings.DefaultInstance
+                    .GetFontsSources()[1]); // The second source should be our folder font source.
 
-            FolderFontSource folderSource = ((FolderFontSource)FontSettings.DefaultInstance.GetFontsSources()[1]);
+            FolderFontSource folderSource = ((FolderFontSource) FontSettings.DefaultInstance.GetFontsSources()[1]);
             Assert.AreEqual(@"C:\MyFonts\", folderSource.FolderPath);
             Assert.True(folderSource.ScanSubfolders);
 
@@ -996,7 +1008,7 @@ namespace ApiExamples
 
             Document doc = new Document(MyDir + "Rendering.doc", loadOptions);
 
-            FolderFontSource folderSource = ((FolderFontSource)doc.FontSettings.GetFontsSources()[0]);
+            FolderFontSource folderSource = ((FolderFontSource) doc.FontSettings.GetFontsSources()[0]);
 
             Assert.AreEqual(MyDir + @"MyFonts\", folderSource.FolderPath);
             Assert.False(folderSource.ScanSubfolders);
@@ -1027,7 +1039,7 @@ namespace ApiExamples
             String[] alternativeFonts = doc.FontSettings.GetFontSubstitutes("Times New Roman");
             Assert.AreEqual(new String[] { "Slab", "Arvo" }, alternativeFonts);
         }
-        
+
         [Test]
         public void SetSpecifyFontFolders()
         {
@@ -1039,11 +1051,11 @@ namespace ApiExamples
             loadOptions.FontSettings = fontSettings;
             Document doc = new Document(MyDir + "Rendering.doc", loadOptions);
 
-            FolderFontSource folderSource = ((FolderFontSource)doc.FontSettings.GetFontsSources()[0]);
+            FolderFontSource folderSource = ((FolderFontSource) doc.FontSettings.GetFontsSources()[0]);
             Assert.AreEqual(MyDir + @"MyFonts\", folderSource.FolderPath);
             Assert.True(folderSource.ScanSubfolders);
 
-            folderSource = ((FolderFontSource)doc.FontSettings.GetFontsSources()[1]);
+            folderSource = ((FolderFontSource) doc.FontSettings.GetFontsSources()[1]);
             Assert.AreEqual(@"C:\Windows\Fonts\", folderSource.FolderPath);
             Assert.True(folderSource.ScanSubfolders);
         }
@@ -1221,7 +1233,8 @@ namespace ApiExamples
             PdfSaveOptions saveOptions = new PdfSaveOptions();
 
             // Create encryption details and set owner password.
-            PdfEncryptionDetails encryptionDetails = new PdfEncryptionDetails(String.Empty, "password", PdfEncryptionAlgorithm.RC4_128);
+            PdfEncryptionDetails encryptionDetails =
+                new PdfEncryptionDetails(String.Empty, "password", PdfEncryptionAlgorithm.RC4_128);
 
             // Start by disallowing all permissions.
             encryptionDetails.Permissions = PdfPermissions.DisallowAll;

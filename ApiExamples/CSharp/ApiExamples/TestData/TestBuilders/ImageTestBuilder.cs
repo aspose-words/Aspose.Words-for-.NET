@@ -3,8 +3,9 @@ using ApiExamples.TestData.TestClasses;
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
-#if !(NETSTANDARD2_0  || __MOBILE__)
+#if !(NETSTANDARD2_0 || __MOBILE__)
 using System.Drawing;
+
 #endif
 
 namespace ApiExamples.TestData.TestBuilders
@@ -25,11 +26,11 @@ namespace ApiExamples.TestData.TestBuilders
 #if NETSTANDARD2_0 || __MOBILE__
             this.mImage = SKBitmap.Decode(ImageDir + "Watermark.png");
 #else
-            this.mImage = Image.FromFile(ImageDir + "Watermark.png");
+            mImage = Image.FromFile(ImageDir + "Watermark.png");
 #endif
-            this.mImageStream = Stream.Null;
-            this.mImageBytes = new byte[0];
-            this.mImageUri = string.Empty;
+            mImageStream = Stream.Null;
+            mImageBytes = new byte[0];
+            mImageUri = string.Empty;
         }
 
 #if NETSTANDARD2_0 || __MOBILE__
@@ -41,26 +42,26 @@ namespace ApiExamples.TestData.TestBuilders
 #else
         public ImageTestBuilder WithImage(Image image)
         {
-            this.mImage = image;
+            mImage = image;
             return this;
         }
 #endif
 
         public ImageTestBuilder WithImageStream(Stream imageStream)
         {
-            this.mImageStream = imageStream;
+            mImageStream = imageStream;
             return this;
         }
 
         public ImageTestBuilder WithImageBytes(byte[] imageBytes)
         {
-            this.mImageBytes = imageBytes;
+            mImageBytes = imageBytes;
             return this;
         }
 
         public ImageTestBuilder WithImageUri(string imageUri)
         {
-            this.mImageUri = imageUri;
+            mImageUri = imageUri;
             return this;
         }
 

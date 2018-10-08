@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -9,13 +9,15 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Tables;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 #if !(NETSTANDARD2_0 || __MOBILE__)
-using System.Collections.Generic;
-using System.Linq;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
+
 #endif
 
 namespace ApiExamples
@@ -285,16 +287,55 @@ namespace ApiExamples
             return doc.FirstSection.Body.Paragraphs[paraIndex];
         }
 
+        internal void GetAllPublicMethods()
+        {
+            Assembly assembly = Assembly.Load(AssemblyDir + "Aspose.Words.dll");
+
+            foreach (Type type in assembly.ExportedTypes)
+            {
+                Console.WriteLine("\nClass: " + type.FullName);
+
+                IEnumerable<MethodInfo> methodInfos = type.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(p => p.DeclaringType != null && p.DeclaringType.FullName == type.FullName);
+
+                Console.WriteLine("\nMethods:");
+
+                foreach (MethodInfo info in methodInfos)
+                {
+                    Console.WriteLine(info.Name);
+                }
+            }
+        }
+
+        internal void GetAllPrivateClasses()
+        {
+            Assembly assembly = Assembly.Load(AssemblyDir + "Aspose.Words.dll");
+
+            foreach (Type type in assembly.ExportedTypes)
+            {
+                Console.WriteLine("\nClass: " + type.FullName);
+
+                IEnumerable<MethodInfo> methodInfos = type.GetMethods(BindingFlags.NonPublic);
+
+                Console.WriteLine("\nMethods:");
+
+                foreach (MethodInfo info in methodInfos)
+                {
+                    if (info != null)
+                    {
+                        Console.WriteLine(info.Name);
+                        Assert.Fail();
+                    }
+                }
+            }
+        }
+
 #if !(NETSTANDARD2_0 || __MOBILE__)
         /// <summary>
         /// comparing two PDF documents.
         /// </summary>
-        /// <param name="firstPdf">
-        /// The first PDF document.
-        /// </param>
-        /// <param name="secondPdf">
-        /// The second PDF document.
-        /// </param>
+        /// <param name="firstPdf">The first PDF document</param>
+        /// <param name="secondPdf">The second PDF document</param>
         internal static void ComparePdf(string firstPdf, string secondPdf)
         {
             if (File.Exists(firstPdf) && File.Exists(secondPdf))
@@ -321,13 +362,10 @@ namespace ApiExamples
                 Console.WriteLine("Files does not exist.");
             }
 
-            List<string> file1Diff;
-            List<string> file2Diff;
-
             IEnumerable<string> file1 = mFirstFile.Trim().Split('\r', '\n');
             IEnumerable<string> file2 = mSecondFile.Trim().Split('\r', '\n');
-            file1Diff = file1.ToList();
-            file2Diff = file2.ToList();
+            List<string> file1Diff = file1.ToList();
+            List<string> file2Diff = file2.ToList();
 
             if (file2.Count() > file1.Count())
             {
@@ -336,7 +374,8 @@ namespace ApiExamples
                 {
                     if (!file1Diff[i].Equals(file2Diff[i]))
                     {
-                        Console.WriteLine("File 1 content: " + file1Diff[i] + "\r\n" + "File 2 content: " + file2Diff[i]);
+                        Console.WriteLine(
+                            "File 1 content: " + file1Diff[i] + "\r\n" + "File 2 content: " + file2Diff[i]);
                     }
                 }
 
@@ -355,7 +394,8 @@ namespace ApiExamples
                 {
                     if (!file1Diff[i].Equals(file2Diff[i]))
                     {
-                        Console.WriteLine("File 1 content: " + file1Diff[i] + "\r\n" + "File 2 content: " + file2Diff[i]);
+                        Console.WriteLine(
+                            "File 1 content: " + file1Diff[i] + "\r\n" + "File 2 content: " + file2Diff[i]);
                     }
                 }
 
@@ -374,7 +414,8 @@ namespace ApiExamples
                 {
                     if (!file1Diff[i].Equals(file2Diff[i]))
                     {
-                        Console.WriteLine("File 1 content: " + file1Diff[i] + "\r\n" + "File 2 Content: " + file2Diff[i]);
+                        Console.WriteLine(
+                            "File 1 content: " + file1Diff[i] + "\r\n" + "File 2 Content: " + file2Diff[i]);
                     }
                 }
 

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -10,6 +10,7 @@
 //ExSummary:The following is the complete code of the document converter.
 
 using System;
+using System.Globalization;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.Saving;
@@ -20,7 +21,7 @@ namespace ApiExamples
     /// DOC2PDF document converter for SharePoint.
     /// Uses Aspose.Words to perform the conversion.
     /// </summary>
-    public class ExMossDoc2Pdf
+    public static class ExMossDoc2Pdf
     {
         /// <summary>
         /// The main entry point for the application.
@@ -40,7 +41,7 @@ namespace ApiExamples
 
             try
             {
-                gLog.WriteLine(DateTime.Now.ToString() + " Started");
+                gLog.WriteLine(DateTime.Now.ToString(CultureInfo.InvariantCulture) + " Started");
                 gLog.WriteLine(Environment.CommandLine);
 
                 ParseCommandLine(args);
@@ -95,6 +96,7 @@ namespace ApiExamples
                     default:
                         throw new Exception("Unknown command line argument: " + s);
                 }
+
                 i++;
             }
         }

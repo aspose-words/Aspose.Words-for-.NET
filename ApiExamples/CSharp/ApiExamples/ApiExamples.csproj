@@ -76,6 +76,7 @@
     <Compile Include="ExCellFormat.cs" />
     <Compile Include="ExComment.cs" />
     <Compile Include="ExControlChar.cs" />
+    <Compile Include="ExHtmlLoadOptions.cs" />
     <Compile Include="ExDigitalSignatureCollection.cs" />
     <Compile Include="ExDigitalSignatureUtil.cs" />
     <Compile Include="ExDocument.cs" />
@@ -90,7 +91,6 @@
     <Compile Include="ExFormFields.cs" />
     <Compile Include="ExHeaderFooter.cs" />
     <Compile Include="ExHtmlFixedSaveOptions.cs" />
-    <Compile Include="ExHtmlLoadOptions.cs" />
     <Compile Include="ExHtmlSaveOptions.cs" />
     <Compile Include="ExHyphenation.cs" />
     <Compile Include="ExImage.cs" />
@@ -133,11 +133,11 @@
     <Compile Include="ExWarningInfoCollection.cs" />
     <Compile Include="ExXpsSaveOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestData\Common.cs" />
     <Compile Include="TestData\TestBuilders\ColorItemTestBuilder.cs" />
     <Compile Include="TestData\TestBuilders\DocumentTestBuilder.cs" />
     <Compile Include="TestData\TestBuilders\ImageTestBuilder.cs" />
     <Compile Include="TestData\TestBuilders\NumericTestBuilder.cs" />
+    <Compile Include="TestData\Common.cs" />
     <Compile Include="TestData\TestClasses\ClientTestClass.cs" />
     <Compile Include="TestData\TestClasses\ColorItemTestClass.cs" />
     <Compile Include="TestData\TestClasses\ContractTestClass.cs" />
@@ -148,14 +148,15 @@
     <Compile Include="TestData\TestClasses\NumericTestClass.cs" />
     <Compile Include="TestData\TestClasses\SignPersonTestClass.cs" />
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\NUnit.3.10.1\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.10.1\build\NUnit.props'))" />
-  </Target>
 </Project>
