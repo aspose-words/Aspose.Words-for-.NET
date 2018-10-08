@@ -22,15 +22,16 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             KeepTableTogether(dataDir);
            
         }
-        public  static void RowFormatDisableBreakAcrossPages(string dataDir)
+        public static void RowFormatDisableBreakAcrossPages(string dataDir)
         {
             // ExStart:RowFormatDisableBreakAcrossPages
             Document doc = new Document(dataDir + "Table.TableAcrossPage.doc");
 
             // Retrieve the first table in the document.
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);            
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
             // Disable breaking across pages for all rows in the table.
-            foreach (Row row in table)
+            foreach (Row row in table.Rows)
                 row.RowFormat.AllowBreakAcrossPages = false;
 
             dataDir = dataDir + "Table.DisableBreakAcrossPages_out.doc";

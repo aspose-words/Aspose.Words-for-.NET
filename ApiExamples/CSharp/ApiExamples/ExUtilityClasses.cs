@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -83,7 +83,8 @@ namespace ApiExamples
             PageSetup pageSetup = builder.PageSetup;
             pageSetup.TopMargin = ConvertUtil.InchToPoint(2.0);
 
-            Console.WriteLine("The size of my top margin is {0} points, or {1} inches.", pageSetup.TopMargin, ConvertUtil.PointToInch(pageSetup.TopMargin));
+            Console.WriteLine("The size of my top margin is {0} points, or {1} inches.", pageSetup.TopMargin,
+                ConvertUtil.PointToInch(pageSetup.TopMargin));
             //ExEnd
         }
 
@@ -137,9 +138,11 @@ namespace ApiExamples
 
             double myDpi = 192.0;
 
-            Console.WriteLine("The size of my top margin is {0} points, or {1} pixels with default resolution.", pageSetup.TopMargin, ConvertUtil.PointToPixel(pageSetup.TopMargin));
+            Console.WriteLine("The size of my top margin is {0} points, or {1} pixels with default resolution.",
+                pageSetup.TopMargin, ConvertUtil.PointToPixel(pageSetup.TopMargin));
 
-            Console.WriteLine("The size of my top margin is {0} points, or {1} pixels with custom resolution.", pageSetup.TopMargin, ConvertUtil.PointToPixel(pageSetup.TopMargin, myDpi));
+            Console.WriteLine("The size of my top margin is {0} points, or {1} pixels with custom resolution.",
+                pageSetup.TopMargin, ConvertUtil.PointToPixel(pageSetup.TopMargin, myDpi));
             //ExEnd
         }
 
@@ -157,7 +160,8 @@ namespace ApiExamples
             double oldDpi = 92.0;
             double newDpi = 192.0;
 
-            Console.WriteLine("{0} pixels at {1} dpi becomes {2} pixels at {3} dpi.", pageSetup.TopMargin, oldDpi, ConvertUtil.PixelToNewDpi(pageSetup.TopMargin, oldDpi, newDpi), newDpi);
+            Console.WriteLine("{0} pixels at {1} dpi becomes {2} pixels at {3} dpi.", pageSetup.TopMargin, oldDpi,
+                ConvertUtil.PixelToNewDpi(pageSetup.TopMargin, oldDpi, newDpi), newDpi);
             //ExEnd
         }
     }

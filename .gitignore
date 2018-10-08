@@ -3,6 +3,8 @@ obj/
 classes/
 generated/
 *.suo
+*.ide
+applicationhost.config
 bin/
 * Out*
 * out*

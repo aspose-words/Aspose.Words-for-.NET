@@ -7,8 +7,8 @@
 
         public MessageTestClass(string name, string message)
         {
-            this.Name = name;
-            this.Message = message;
+            Name = name;
+            Message = message;
         }
     }
 }
