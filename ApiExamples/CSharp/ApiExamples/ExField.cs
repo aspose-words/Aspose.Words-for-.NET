@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //////////////////////////////////////////////////////////////////////////
 // Copyright 2001-2013 Aspose Pty Ltd. All Rights Reserved.
 //
@@ -1637,7 +1637,7 @@ namespace ApiExamples
         public void FieldData()
         {
             //ExStart
-            //ExFor:FieldData
+            //ExFor:FieldData.#ctor
             //ExSummary:Shows how to insert a data field into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1645,6 +1645,31 @@ namespace ApiExamples
             // Use a document builder to insert a data field
             FieldData field = (FieldData)builder.InsertField(FieldType.FieldData, true);
             Assert.AreEqual(" DATA ", field.GetFieldCode());
+            //ExEnd
+        }
+        
+        [Test]
+        public void FieldInclude()
+        {
+            //ExStart
+            //ExFor:FieldInclude.#ctor
+            //ExFor:FieldInclude.BookmarkName
+            //ExFor:FieldInclude.LockFields
+            //ExFor:FieldInclude.SourceFullName
+            //ExFor:FieldInclude.TextConverter
+            //ExSummary:Shows how to create an INCLUDE field and set its properties.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Add an INCLUDE field with document builder and import a portion of the document defined by a bookmark
+            FieldInclude fieldInclude = (FieldInclude)builder.InsertField(FieldType.FieldInclude, true);
+            fieldInclude.SourceFullName = MyDir + "Field.Include.Source.docx";
+            fieldInclude.BookmarkName = "Source_paragraph_2";
+            fieldInclude.LockFields = false;
+            fieldInclude.TextConverter = "Microsoft Word";
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Include.docx");
             //ExEnd
         }
 
@@ -1708,6 +1733,122 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.Database.docx");
+            //ExEnd
+        }
+        
+        [Test]
+        public void FieldIncludePicture()
+        {
+            //ExStart
+            //ExFor:FieldIncludePicture.#ctor
+            //ExFor:FieldIncludePicture.GraphicFilter
+            //ExFor:FieldIncludePicture.IsLinked
+            //ExFor:FieldIncludePicture.ResizeHorizontally
+            //ExFor:FieldIncludePicture.ResizeVertically
+            //ExFor:FieldIncludePicture.SourceFullName
+            //ExSummary:Shows how to create an INCLUDEPICTURE field and set its properties.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            FieldIncludePicture fieldIncludePicture = (FieldIncludePicture)builder.InsertField(FieldType.FieldIncludePicture, true);
+            fieldIncludePicture.SourceFullName = MyDir + "Images/Watermark.png";
+
+            // Apply, in this case, the PNG32.FLT filter
+            fieldIncludePicture.GraphicFilter = "PNG32";
+            fieldIncludePicture.IsLinked = true;
+            fieldIncludePicture.ResizeHorizontally = true;
+            fieldIncludePicture.ResizeVertically = true;
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.IncludePicture.docx");
+            //ExEnd
+        }
+
+        //ExStart
+        //ExFor:FieldIncludeText.#ctor
+        //ExFor:FieldIncludeText.BookmarkName
+        //ExFor:FieldIncludeText.Encoding
+        //ExFor:FieldIncludeText.LockFields
+        //ExFor:FieldIncludeText.MimeType
+        //ExFor:FieldIncludeText.NamespaceMappings
+        //ExFor:FieldIncludeText.SourceFullName
+        //ExFor:FieldIncludeText.TextConverter
+        //ExFor:FieldIncludeText.XPath
+        //ExFor:FieldIncludeText.XslTransformation
+        //ExSummary:Shows how to create an INCLUDETEXT field and set its properties.
+        [Test] //ExSkip
+        [Ignore("WORDSNET-17543")] //ExSkip
+        public void FieldIncludeText()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert an include text field and perform an XSL transformation on an XML document
+            FieldIncludeText fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "Field.IncludeText.Source.xml", false, "text/xml", "XML", "ISO-8859-1");
+            fieldIncludeText.XslTransformation = MyDir + "Field.IncludeText.Source.xsl";
+
+            builder.Writeln();
+
+            // Use a document builder to insert an include text field and use an XPath to take specific elements
+            fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "Field.IncludeText.Source.xml", false, "text/xml", "XML", "ISO-8859-1");
+            fieldIncludeText.NamespaceMappings = "xmlns:n='myNamespace'";
+            fieldIncludeText.XPath = "/catalog/cd/title";
+
+            doc.Save(MyDir + @"\Artifacts\Field.IncludeText.docx");
+        }
+
+        /// <summary>
+        /// Use a document builder to insert an INCLUDETEXT field and set its properties
+        /// </summary>
+        public FieldIncludeText CreateFieldIncludeText(DocumentBuilder builder, string sourceFullName, bool lockFields, string mimeType, string textConverter, string encoding)
+        {
+            FieldIncludeText fieldIncludeText = (FieldIncludeText)builder.InsertField(FieldType.FieldIncludeText, true);
+            fieldIncludeText.SourceFullName = sourceFullName;
+            fieldIncludeText.LockFields = lockFields;
+            fieldIncludeText.MimeType = mimeType;
+            fieldIncludeText.TextConverter = textConverter;
+            fieldIncludeText.Encoding = encoding;
+
+            return fieldIncludeText;
+        }
+        //ExEnd
+        
+        [Test] 
+        [Ignore("WORDSNET-17545")]
+        public void FieldHyperlink()
+        {
+            //ExStart
+            //ExFor:FieldHyperlink.#ctor
+            //ExFor:FieldHyperlink.Address
+            //ExFor:FieldHyperlink.IsImageMap
+            //ExFor:FieldHyperlink.OpenInNewWindow
+            //ExFor:FieldHyperlink.ScreenTip
+            //ExFor:FieldHyperlink.SubAddress
+            //ExFor:FieldHyperlink.Target
+            //ExSummary:Shows how to insert HYPERLINK fields.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a hyperlink with a document builder
+            FieldHyperlink fieldHyperlink = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
+
+            // When link is clicked, open a document and place the cursor on the bookmarked location
+            fieldHyperlink.Address = MyDir + "Field.HyperlinkDestination.docx";
+            fieldHyperlink.SubAddress = "My_Bookmark";
+            fieldHyperlink.ScreenTip = "Open " + fieldHyperlink.Address + " on bookmark " + fieldHyperlink.SubAddress + " in a new window";
+
+            builder.Writeln();
+
+            // Open html file at a specific frame
+            fieldHyperlink = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
+            fieldHyperlink.Address = MyDir + "Field.HyperlinkDestination.html";
+            fieldHyperlink.ScreenTip = "Open " + fieldHyperlink.Address;
+            fieldHyperlink.Target = "iframe_3";
+            fieldHyperlink.OpenInNewWindow = true;
+            fieldHyperlink.IsImageMap = false;
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Hyperlink.docx");
             //ExEnd
         }
     }
