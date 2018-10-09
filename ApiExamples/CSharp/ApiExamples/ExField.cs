@@ -52,7 +52,7 @@ namespace ApiExamples
             //ExFor:FieldChar
             //ExFor:FieldChar.FieldType
             //ExSummary:Shows how to find the type of field that is represented by a node which is derived from FieldChar.
-            FieldChar fieldStart = (FieldChar) doc.GetChild(NodeType.FieldStart, 0, true);
+            FieldChar fieldStart = (FieldChar)doc.GetChild(NodeType.FieldStart, 0, true);
             FieldType type = fieldStart.FieldType;
             //ExEnd
         }
@@ -67,7 +67,7 @@ namespace ApiExamples
             //ExSummary:Demonstrates how to retrieve the field class from an existing FieldStart node in the document.
             Document doc = new Document(MyDir + "Document.TableOfContents.doc");
 
-            FieldStart fieldStart = (FieldStart) doc.GetChild(NodeType.FieldStart, 0, true);
+            FieldStart fieldStart = (FieldStart)doc.GetChild(NodeType.FieldStart, 0, true);
 
             // Retrieve the facade object which represents the field in the document.
             Field field = fieldStart.GetField();
@@ -99,7 +99,7 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            FieldRevNum revNum = (FieldRevNum) doc.Range.Fields[0];
+            FieldRevNum revNum = (FieldRevNum)doc.Range.Fields[0];
             Assert.NotNull(revNum);
         }
 
@@ -114,7 +114,7 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            FieldRevNum revNum = (FieldRevNum) doc.Range.Fields[0];
+            FieldRevNum revNum = (FieldRevNum)doc.Range.Fields[0];
             Assert.NotNull(revNum);
         }
 
@@ -132,7 +132,7 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            FieldInfo info = (FieldInfo) doc.Range.Fields[0];
+            FieldInfo info = (FieldInfo)doc.Range.Fields[0];
             Assert.NotNull(info);
         }
 
@@ -147,7 +147,7 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            FieldInfo info = (FieldInfo) doc.Range.Fields[0];
+            FieldInfo info = (FieldInfo)doc.Range.Fields[0];
             Assert.NotNull(info);
         }
 
@@ -262,7 +262,7 @@ namespace ApiExamples
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)
             {
                 // Create a builder to insert the field.
-                DocumentBuilder builder = new DocumentBuilder((Document) args.MatchNode.Document);
+                DocumentBuilder builder = new DocumentBuilder((Document)args.MatchNode.Document);
                 // Move to the first node of the match.
                 builder.MoveTo(args.MatchNode);
 
@@ -368,54 +368,54 @@ namespace ApiExamples
         }
 
 #if !(NETSTANDARD2_0 || __MOBILE__)
-		[Test]
-		public void BarCodeWord2Pdf()
-		{
-			Document doc = new Document(MyDir + "Field.BarCode.docx");
+        [Test]
+        public void BarCodeWord2Pdf()
+        {
+            Document doc = new Document(MyDir + "Field.BarCode.docx");
 
-			// Set custom barcode generator
-			doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
+            // Set custom barcode generator
+            doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
 
-			doc.Save(MyDir + @"\Artifacts\Field.BarCode.pdf");
+            doc.Save(MyDir + @"\Artifacts\Field.BarCode.pdf");
 
-			BarCodeReader barCode = BarCodeReaderPdf(MyDir + @"\Artifacts\Field.BarCode.pdf");
-			Assert.AreEqual("QR", barCode.GetCodeType().ToString());
-		}
+            BarCodeReader barCode = BarCodeReaderPdf(MyDir + @"\Artifacts\Field.BarCode.pdf");
+            Assert.AreEqual("QR", barCode.GetCodeType().ToString());
+        }
 
-		private BarCodeReader BarCodeReaderPdf(String filename)
-		{
-			//Set license for Aspose.BarCode
-			Aspose.BarCode.License licenceBarCode = new Aspose.BarCode.License();
-			licenceBarCode.SetLicense(@"X:\awnet\TestData\Licenses\Aspose.Total.lic");
+        private BarCodeReader BarCodeReaderPdf(String filename)
+        {
+            //Set license for Aspose.BarCode
+            Aspose.BarCode.License licenceBarCode = new Aspose.BarCode.License();
+            licenceBarCode.SetLicense(@"X:\awnet\TestData\Licenses\Aspose.Total.lic");
 
-			//bind the pdf document
-			Aspose.Pdf.Facades.PdfExtractor pdfExtractor = new Aspose.Pdf.Facades.PdfExtractor();
-			pdfExtractor.BindPdf(filename);
+            //bind the pdf document
+            Aspose.Pdf.Facades.PdfExtractor pdfExtractor = new Aspose.Pdf.Facades.PdfExtractor();
+            pdfExtractor.BindPdf(filename);
 
-			//set page range for image extraction
-			pdfExtractor.StartPage = 1;
-			pdfExtractor.EndPage = 1;
+            //set page range for image extraction
+            pdfExtractor.StartPage = 1;
+            pdfExtractor.EndPage = 1;
 
-			pdfExtractor.ExtractImage();
+            pdfExtractor.ExtractImage();
 
-			//save image to stream
-			MemoryStream imageStream = new MemoryStream();
-			pdfExtractor.GetNextImage(imageStream);
-			imageStream.Position = 0;
+            //save image to stream
+            MemoryStream imageStream = new MemoryStream();
+            pdfExtractor.GetNextImage(imageStream);
+            imageStream.Position = 0;
 
-			//recognize the barcode from the image stream above
-			BarCodeReader barcodeReader = new BarCodeReader(imageStream, DecodeType.QR);
-			while (barcodeReader.Read())
-			{
-				Console.WriteLine("Codetext found: " + barcodeReader.GetCodeText() + ", Symbology: " +
-								  barcodeReader.GetCodeType());
-			}
+            //recognize the barcode from the image stream above
+            BarCodeReader barcodeReader = new BarCodeReader(imageStream, DecodeType.QR);
+            while (barcodeReader.Read())
+            {
+                Console.WriteLine("Codetext found: " + barcodeReader.GetCodeText() + ", Symbology: " +
+                                  barcodeReader.GetCodeType());
+            }
 
-			//close the reader
-			barcodeReader.Close();
+            //close the reader
+            barcodeReader.Close();
 
-			return barcodeReader;
-		}
+            return barcodeReader;
+        }
 #endif
         //For assert result of the test you need to open document and check that image are added correct and without truncated inside frame
         [Test]
@@ -432,7 +432,7 @@ namespace ApiExamples
             {
                 if (field.Type.Equals(FieldType.FieldIncludePicture))
                 {
-                    FieldIncludePicture includePicture = (FieldIncludePicture) field;
+                    FieldIncludePicture includePicture = (FieldIncludePicture)field;
 
                     includePicture.SourceFullName = MyDir + @"\Images\dotnet-logo.png";
                     includePicture.Update(true);
@@ -502,7 +502,7 @@ namespace ApiExamples
             //ExSummary:Shows how to unlink all fields in range
             Document doc = new Document(MyDir + "Field.UnlinkFields.docx");
 
-            Section newSection = (Section) doc.Sections[0].Clone(true);
+            Section newSection = (Section)doc.Sections[0].Clone(true);
             doc.Sections.Add(newSection);
 
             doc.Sections[1].Range.UnlinkFields();
@@ -568,7 +568,7 @@ namespace ApiExamples
                 FieldType fType = field.FieldType;
                 if (fType == FieldType.FieldTOC)
                 {
-                    Paragraph para = (Paragraph) field.GetAncestor(NodeType.Paragraph);
+                    Paragraph para = (Paragraph)field.GetAncestor(NodeType.Paragraph);
                     para.Range.UpdateFields();
                     break;
                 }
@@ -588,7 +588,7 @@ namespace ApiExamples
                 //Check whether current contains end node
                 if (curNode.IsComposite)
                 {
-                    CompositeNode curComposite = (CompositeNode) curNode;
+                    CompositeNode curComposite = (CompositeNode)curNode;
                     if (!curComposite.GetChildNodes(NodeType.Any, true).Contains(end) &&
                         !curComposite.GetChildNodes(NodeType.Any, true).Contains(start))
                     {
@@ -768,7 +768,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Use a document builder to insert a field address block
-            FieldAddressBlock field = (FieldAddressBlock) builder.InsertField(FieldType.FieldAddressBlock, true);
+            FieldAddressBlock field = (FieldAddressBlock)builder.InsertField(FieldType.FieldAddressBlock, true);
 
             // Initially our field is an empty address block field with null attributes
             Assert.AreEqual(" ADDRESSBLOCK ", field.GetFieldCode());
@@ -829,7 +829,7 @@ namespace ApiExamples
                     Console.WriteLine("\t\"" + fieldEnumerator.Current.Result + "\"");
                 }
             }
-            
+
             // Get a field to remove itself
             fields[0].Remove();
             Assert.AreEqual(4, fields.Count);
@@ -847,7 +847,7 @@ namespace ApiExamples
             fields.Clear();
             Assert.AreEqual(0, fields.Count);
         }
-        
+
         [Test]
         public void FieldCompare()
         {
@@ -858,7 +858,7 @@ namespace ApiExamples
             //ExFor:FieldCompare.RightExpression
             //ExSummary:Shows how to insert a field that compares expressions.
             Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);           
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a compare field using a document builder
             FieldCompare field = (FieldCompare)builder.InsertField(FieldType.FieldCompare, true);
@@ -933,7 +933,7 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.If.docx");
         }
-        
+
         [Test]
         public void FieldAutoNum()
         {
@@ -1194,7 +1194,7 @@ namespace ApiExamples
             table.Columns.Add("Courtesy Title");
             table.Columns.Add("First Name");
             table.Columns.Add("Last Name");
-            table.Rows.Add("Mr.", "John", "Doe" );
+            table.Rows.Add("Mr.", "John", "Doe");
             table.Rows.Add("Mrs.", "Jane", "Cardholder");
             table.Rows.Add("", "No", "Name"); // This row has an invalid value in the Courtesy Title column, so our greeting will default to the alternate text
 
@@ -1219,7 +1219,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a list num field using a document builder
-            FieldListNum fieldListNum = (FieldListNum) builder.InsertField(FieldType.FieldListNum, true);
+            FieldListNum fieldListNum = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
 
             // Lists start counting at 1 by default, but we can change this number at any time
             // In this case, we'll do a zero-based count
@@ -1298,7 +1298,7 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.MergeField.docx");
             //ExEnd
         }
-        
+
         //ExStart
         //ExFor:FormField.Accept(DocumentVisitor)
         //ExFor:FormField.CalculateOnExit
@@ -1373,7 +1373,7 @@ namespace ApiExamples
 
             // Iterate over the collection with an enumerator, accepting a visitor with each form field
             FormFieldVisitor formFieldVisitor = new FormFieldVisitor();
-            
+
             using (IEnumerator<FormField> fieldEnumerator = formFields.GetEnumerator())
             {
                 while (fieldEnumerator.MoveNext())
@@ -1448,7 +1448,7 @@ namespace ApiExamples
             private readonly StringBuilder mBuilder;
         }
         //ExEnd
-        
+
         //ExStart
         //ExFor:FieldToc
         //ExFor:FieldToc.BookmarkName
@@ -1509,7 +1509,7 @@ namespace ApiExamples
 
             builder.EndBookmark("MyBookmark");
             builder.Writeln("Paragraph text.");
-        
+
             // This entry will be omitted because it is outside the bookmark specified by the TOC
             InsertHeading(builder, "Fifth entry", "Heading 1");
 
@@ -1632,6 +1632,21 @@ namespace ApiExamples
             caption.SequenceIdentifier = sequenceIdentifier;
         }
         //ExEnd
+
+        [Test]
+        public void FieldData()
+        {
+            //ExStart
+            //ExFor:FieldData.#ctor
+            //ExSummary:Shows how to insert a data field into a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a data field
+            FieldData field = (FieldData)builder.InsertField(FieldType.FieldData, true);
+            Assert.AreEqual(" DATA ", field.GetFieldCode());
+            //ExEnd
+        }
         
         [Test]
         public void FieldInclude()
@@ -1658,6 +1673,69 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [Test]
+        [Ignore("WORDSNET-13854")]
+        public void FieldDatabase()
+        {
+            //ExStart
+            //ExFor:FieldDatabase
+            //ExFor:FieldDatabase.Connection
+            //ExFor:FieldDatabase.FileName
+            //ExFor:FieldDatabase.FirstRecord
+            //ExFor:FieldDatabase.FormatAttributes
+            //ExFor:FieldDatabase.InsertHeadings
+            //ExFor:FieldDatabase.InsertOnceOnMailMerge
+            //ExFor:FieldDatabase.LastRecord
+            //ExFor:FieldDatabase.Query
+            //ExFor:FieldDatabase.TableFormat
+            //ExSummary:Shows how to extract data from a database and insert it as a field into a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a database field
+            FieldDatabase field = (FieldDatabase)builder.InsertField(FieldType.FieldDatabase, true);
+
+            // Create a simple query that extracts one table from the database
+            field.FileName = MyDir + @"Database\Northwind.mdb";
+            field.Connection = "DSN=MS Access Databases";
+            field.Query = "SELECT * FROM [Products]";
+
+            // Insert another database field
+            field = (FieldDatabase)builder.InsertField(FieldType.FieldDatabase, true);
+            field.FileName = MyDir + @"Database\Northwind.mdb";
+            field.Connection = "DSN=MS Access Databases";
+
+            // This query will sort all the products by their gross sales in descending order
+            field.Query =
+                "SELECT [Products].ProductName, FORMAT(SUM([Order Details].UnitPrice * (1 - [Order Details].Discount) * [Order Details].Quantity), 'Currency') AS GrossSales " +
+                "FROM([Products] " +
+                "LEFT JOIN[Order Details] ON[Products].[ProductID] = [Order Details].[ProductID]) " +
+                "GROUP BY[Products].ProductName " +
+                "ORDER BY SUM([Order Details].UnitPrice* (1 - [Order Details].Discount) * [Order Details].Quantity) DESC";
+
+            // You can use these variables instead of a LIMIT clause, to simplify your query
+            // In this case we are taking the first 10 values of the result of our query
+            field.FirstRecord = "1";
+            field.LastRecord = "10";
+
+            // The number we put here is the index of the format we want to use for our table
+            // The list of table formats is in the "Table AutoFormat..." menu we find in MS Word when we create a data table field
+            // Index "10" corresponds to the "Colorful 3" format
+            field.TableFormat = "10";
+
+            // This attribute decides which elements of the table format we picked above we incorporate into our table
+            // The number we use is a sum of a combination of values corresponding to which elements we choose
+            // 63 represents borders (1) + shading (2) + font (4) + colour (8) + autofit (16) + heading rows (32)
+            field.FormatAttributes = "63";
+
+            field.InsertHeadings = true;
+            field.InsertOnceOnMailMerge = true;
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Database.docx");
+            //ExEnd
+        }
+        
         [Test]
         public void FieldIncludePicture()
         {
