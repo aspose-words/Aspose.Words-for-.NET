@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //////////////////////////////////////////////////////////////////////////
 // Copyright 2001-2013 Aspose Pty Ltd. All Rights Reserved.
 //
@@ -1632,5 +1632,44 @@ namespace ApiExamples
             caption.SequenceIdentifier = sequenceIdentifier;
         }
         //ExEnd
+        
+        [Test]
+        [Ignore("WORDSNET-17545")]
+        public void FieldHyperlink()
+        {
+            //ExStart
+            //ExFor:FieldHyperlink.#ctor
+            //ExFor:FieldHyperlink.Address
+            //ExFor:FieldHyperlink.IsImageMap
+            //ExFor:FieldHyperlink.OpenInNewWindow
+            //ExFor:FieldHyperlink.ScreenTip
+            //ExFor:FieldHyperlink.SubAddress
+            //ExFor:FieldHyperlink.Target
+            //ExSummary:Shows how to insert HYPERLINK fields.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a hyperlink with a document builder
+            FieldHyperlink fieldHyperlink = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
+
+            // When link is clicked, open a document and place the cursor on the bookmarked location
+            fieldHyperlink.Address = MyDir + "Field.HyperlinkDestination.docx";
+            fieldHyperlink.SubAddress = "My_Bookmark";
+            fieldHyperlink.ScreenTip = "Open " + fieldHyperlink.Address + " on bookmark " + fieldHyperlink.SubAddress + " in a new window";
+
+            builder.Writeln();
+
+            // Open html file at a specific frame
+            fieldHyperlink = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
+            fieldHyperlink.Address = MyDir + "Field.HyperlinkDestination.html";
+            fieldHyperlink.ScreenTip = "Open " + fieldHyperlink.Address;
+            fieldHyperlink.Target = "iframe_3";
+            fieldHyperlink.OpenInNewWindow = true;
+            fieldHyperlink.IsImageMap = false;
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Hyperlink.docx");
+            //ExEnd
+        }
     }
 }
