@@ -1634,6 +1634,63 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
+        [Ignore("WORDSNET-13854")]
+        public void FieldCitation()
+        {
+            //ExStart
+            //ExFor:Fields.FieldCitation
+            //ExFor:Fields.FieldCitation.AnotherSourceTag
+            //ExFor:Fields.FieldCitation.FormatLanguageId
+            //ExFor:Fields.FieldCitation.PageNumber
+            //ExFor:Fields.FieldCitation.Prefix
+            //ExFor:Fields.FieldCitation.SourceTag
+            //ExFor:Fields.FieldCitation.Suffix
+            //ExFor:Fields.FieldCitation.SuppressAuthor
+            //ExFor:Fields.FieldCitation.SuppressTitle
+            //ExFor:Fields.FieldCitation.SuppressYear
+            //ExFor:Fields.FieldCitation.VolumeNumber
+            //ExSummary:Shows how to insert a citation field and edit its properties.
+            // Open a document that has bibliographical sources
+            Document doc = new Document(MyDir + "Document.HasBibliography.docx");
+
+            // Add text that we can cite
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("Text to be cited with one source.");
+
+            // Create a citation field using the document builder
+            FieldCitation field = (FieldCitation)builder.InsertField(FieldType.FieldCitation, true);
+
+            // A simple citation can have just the page number and author's name
+            field.SourceTag = "Book1"; // We refer to sources using their tag names
+            field.PageNumber = "85";
+            field.SuppressAuthor = false;
+            field.SuppressTitle = true;
+            field.SuppressYear = true;
+
+            Assert.AreEqual(" CITATION  Book1 \\p 85 \\t \\y", field.GetFieldCode());
+
+            // We can make a more detailed citation and make it cite 2 sources
+            builder.Write("Text to be cited with two sources.");
+            field = (FieldCitation)builder.InsertField(FieldType.FieldCitation, true);
+            field.SourceTag = "Book1";
+            field.AnotherSourceTag = "Book2";
+            field.FormatLanguageId = "en-US";
+            field.PageNumber = "19";
+            field.Prefix = "Prefix ";
+            field.Suffix = " Suffix";
+            field.SuppressAuthor = false;
+            field.SuppressTitle = false;
+            field.SuppressYear = false;
+            field.VolumeNumber = "VII";
+
+            Assert.AreEqual(" CITATION  Book1 \\m Book2 \\l en-US \\p 19 \\f \"Prefix \" \\s \" Suffix\" \\v VII", field.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Citation.docx");
+            //ExEnd
+        }
+        
+        [Test]
         public void FieldData()
         {
             //ExStart
