@@ -126,6 +126,8 @@
     <Compile Include="ExTable.cs" />
     <Compile Include="ExTableColumn.cs" />
     <Compile Include="ExTabStopCollection.cs" />
+    <Compile Include="ExRtfLoadOptions.cs" />
+    <Compile Include="ExTxtLoadOptions.cs" />
     <Compile Include="ExTxtSaveOptions.cs" />
     <Compile Include="ExUtilityClasses.cs" />
     <Compile Include="ExVariableCollection.cs" />

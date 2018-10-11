@@ -359,6 +359,21 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.CssClassNamePrefix.html", saveOptions);
         }
 
+        [Test]
+        public void ContentIdScheme()
+        {
+            Document doc = new Document(MyDir + "HtmlSaveOptions.ContentIdScheme.docx");
+
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions
+            {
+                PrettyFormat = true,
+                ExportCidUrlsForMhtmlResources = true,
+                SaveFormat = SaveFormat.Mhtml // It doesn't work correct without this parameter
+            };
+
+            doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.ContentIdScheme.mhtml", saveOptions);
+        }
+
         private static void Save(Document inputDoc, string outputDocPath, SaveFormat saveFormat,
             SaveOptions saveOptions)
         {
