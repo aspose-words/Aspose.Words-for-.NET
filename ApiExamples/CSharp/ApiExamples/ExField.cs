@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //////////////////////////////////////////////////////////////////////////
 // Copyright 2001-2013 Aspose Pty Ltd. All Rights Reserved.
 //
@@ -11,6 +11,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -52,7 +53,7 @@ namespace ApiExamples
             //ExFor:FieldChar
             //ExFor:FieldChar.FieldType
             //ExSummary:Shows how to find the type of field that is represented by a node which is derived from FieldChar.
-            FieldChar fieldStart = (FieldChar) doc.GetChild(NodeType.FieldStart, 0, true);
+            FieldChar fieldStart = (FieldChar)doc.GetChild(NodeType.FieldStart, 0, true);
             FieldType type = fieldStart.FieldType;
             //ExEnd
         }
@@ -67,7 +68,7 @@ namespace ApiExamples
             //ExSummary:Demonstrates how to retrieve the field class from an existing FieldStart node in the document.
             Document doc = new Document(MyDir + "Document.TableOfContents.doc");
 
-            FieldStart fieldStart = (FieldStart) doc.GetChild(NodeType.FieldStart, 0, true);
+            FieldStart fieldStart = (FieldStart)doc.GetChild(NodeType.FieldStart, 0, true);
 
             // Retrieve the facade object which represents the field in the document.
             Field field = fieldStart.GetField();
@@ -99,7 +100,7 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            FieldRevNum revNum = (FieldRevNum) doc.Range.Fields[0];
+            FieldRevNum revNum = (FieldRevNum)doc.Range.Fields[0];
             Assert.NotNull(revNum);
         }
 
@@ -114,7 +115,7 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            FieldRevNum revNum = (FieldRevNum) doc.Range.Fields[0];
+            FieldRevNum revNum = (FieldRevNum)doc.Range.Fields[0];
             Assert.NotNull(revNum);
         }
 
@@ -132,7 +133,7 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            FieldInfo info = (FieldInfo) doc.Range.Fields[0];
+            FieldInfo info = (FieldInfo)doc.Range.Fields[0];
             Assert.NotNull(info);
         }
 
@@ -147,7 +148,7 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            FieldInfo info = (FieldInfo) doc.Range.Fields[0];
+            FieldInfo info = (FieldInfo)doc.Range.Fields[0];
             Assert.NotNull(info);
         }
 
@@ -262,7 +263,7 @@ namespace ApiExamples
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)
             {
                 // Create a builder to insert the field.
-                DocumentBuilder builder = new DocumentBuilder((Document) args.MatchNode.Document);
+                DocumentBuilder builder = new DocumentBuilder((Document)args.MatchNode.Document);
                 // Move to the first node of the match.
                 builder.MoveTo(args.MatchNode);
 
@@ -368,54 +369,54 @@ namespace ApiExamples
         }
 
 #if !(NETSTANDARD2_0 || __MOBILE__)
-		[Test]
-		public void BarCodeWord2Pdf()
-		{
-			Document doc = new Document(MyDir + "Field.BarCode.docx");
+        [Test]
+        public void BarCodeWord2Pdf()
+        {
+            Document doc = new Document(MyDir + "Field.BarCode.docx");
 
-			// Set custom barcode generator
-			doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
+            // Set custom barcode generator
+            doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
 
-			doc.Save(MyDir + @"\Artifacts\Field.BarCode.pdf");
+            doc.Save(MyDir + @"\Artifacts\Field.BarCode.pdf");
 
-			BarCodeReader barCode = BarCodeReaderPdf(MyDir + @"\Artifacts\Field.BarCode.pdf");
-			Assert.AreEqual("QR", barCode.GetCodeType().ToString());
-		}
+            BarCodeReader barCode = BarCodeReaderPdf(MyDir + @"\Artifacts\Field.BarCode.pdf");
+            Assert.AreEqual("QR", barCode.GetCodeType().ToString());
+        }
 
-		private BarCodeReader BarCodeReaderPdf(String filename)
-		{
-			//Set license for Aspose.BarCode
-			Aspose.BarCode.License licenceBarCode = new Aspose.BarCode.License();
-			licenceBarCode.SetLicense(@"X:\awnet\TestData\Licenses\Aspose.Total.lic");
+        private BarCodeReader BarCodeReaderPdf(String filename)
+        {
+            //Set license for Aspose.BarCode
+            Aspose.BarCode.License licenceBarCode = new Aspose.BarCode.License();
+            licenceBarCode.SetLicense(@"X:\awnet\TestData\Licenses\Aspose.Total.lic");
 
-			//bind the pdf document
-			Aspose.Pdf.Facades.PdfExtractor pdfExtractor = new Aspose.Pdf.Facades.PdfExtractor();
-			pdfExtractor.BindPdf(filename);
+            //bind the pdf document
+            Aspose.Pdf.Facades.PdfExtractor pdfExtractor = new Aspose.Pdf.Facades.PdfExtractor();
+            pdfExtractor.BindPdf(filename);
 
-			//set page range for image extraction
-			pdfExtractor.StartPage = 1;
-			pdfExtractor.EndPage = 1;
+            //set page range for image extraction
+            pdfExtractor.StartPage = 1;
+            pdfExtractor.EndPage = 1;
 
-			pdfExtractor.ExtractImage();
+            pdfExtractor.ExtractImage();
 
-			//save image to stream
-			MemoryStream imageStream = new MemoryStream();
-			pdfExtractor.GetNextImage(imageStream);
-			imageStream.Position = 0;
+            //save image to stream
+            MemoryStream imageStream = new MemoryStream();
+            pdfExtractor.GetNextImage(imageStream);
+            imageStream.Position = 0;
 
-			//recognize the barcode from the image stream above
-			BarCodeReader barcodeReader = new BarCodeReader(imageStream, DecodeType.QR);
-			while (barcodeReader.Read())
-			{
-				Console.WriteLine("Codetext found: " + barcodeReader.GetCodeText() + ", Symbology: " +
-								  barcodeReader.GetCodeType());
-			}
+            //recognize the barcode from the image stream above
+            BarCodeReader barcodeReader = new BarCodeReader(imageStream, DecodeType.QR);
+            while (barcodeReader.Read())
+            {
+                Console.WriteLine("Codetext found: " + barcodeReader.GetCodeText() + ", Symbology: " +
+                                  barcodeReader.GetCodeType());
+            }
 
-			//close the reader
-			barcodeReader.Close();
+            //close the reader
+            barcodeReader.Close();
 
-			return barcodeReader;
-		}
+            return barcodeReader;
+        }
 #endif
         //For assert result of the test you need to open document and check that image are added correct and without truncated inside frame
         [Test]
@@ -432,7 +433,7 @@ namespace ApiExamples
             {
                 if (field.Type.Equals(FieldType.FieldIncludePicture))
                 {
-                    FieldIncludePicture includePicture = (FieldIncludePicture) field;
+                    FieldIncludePicture includePicture = (FieldIncludePicture)field;
 
                     includePicture.SourceFullName = MyDir + @"\Images\dotnet-logo.png";
                     includePicture.Update(true);
@@ -502,7 +503,7 @@ namespace ApiExamples
             //ExSummary:Shows how to unlink all fields in range
             Document doc = new Document(MyDir + "Field.UnlinkFields.docx");
 
-            Section newSection = (Section) doc.Sections[0].Clone(true);
+            Section newSection = (Section)doc.Sections[0].Clone(true);
             doc.Sections.Add(newSection);
 
             doc.Sections[1].Range.UnlinkFields();
@@ -568,7 +569,7 @@ namespace ApiExamples
                 FieldType fType = field.FieldType;
                 if (fType == FieldType.FieldTOC)
                 {
-                    Paragraph para = (Paragraph) field.GetAncestor(NodeType.Paragraph);
+                    Paragraph para = (Paragraph)field.GetAncestor(NodeType.Paragraph);
                     para.Range.UpdateFields();
                     break;
                 }
@@ -588,7 +589,7 @@ namespace ApiExamples
                 //Check whether current contains end node
                 if (curNode.IsComposite)
                 {
-                    CompositeNode curComposite = (CompositeNode) curNode;
+                    CompositeNode curComposite = (CompositeNode)curNode;
                     if (!curComposite.GetChildNodes(NodeType.Any, true).Contains(end) &&
                         !curComposite.GetChildNodes(NodeType.Any, true).Contains(start))
                     {
@@ -768,7 +769,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Use a document builder to insert a field address block
-            FieldAddressBlock field = (FieldAddressBlock) builder.InsertField(FieldType.FieldAddressBlock, true);
+            FieldAddressBlock field = (FieldAddressBlock)builder.InsertField(FieldType.FieldAddressBlock, true);
 
             // Initially our field is an empty address block field with null attributes
             Assert.AreEqual(" ADDRESSBLOCK ", field.GetFieldCode());
@@ -829,7 +830,7 @@ namespace ApiExamples
                     Console.WriteLine("\t\"" + fieldEnumerator.Current.Result + "\"");
                 }
             }
-            
+
             // Get a field to remove itself
             fields[0].Remove();
             Assert.AreEqual(4, fields.Count);
@@ -847,7 +848,7 @@ namespace ApiExamples
             fields.Clear();
             Assert.AreEqual(0, fields.Count);
         }
-        
+
         [Test]
         public void FieldCompare()
         {
@@ -858,7 +859,7 @@ namespace ApiExamples
             //ExFor:FieldCompare.RightExpression
             //ExSummary:Shows how to insert a field that compares expressions.
             Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);           
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a compare field using a document builder
             FieldCompare field = (FieldCompare)builder.InsertField(FieldType.FieldCompare, true);
@@ -933,7 +934,7 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.If.docx");
         }
-        
+
         [Test]
         public void FieldAutoNum()
         {
@@ -1194,7 +1195,7 @@ namespace ApiExamples
             table.Columns.Add("Courtesy Title");
             table.Columns.Add("First Name");
             table.Columns.Add("Last Name");
-            table.Rows.Add("Mr.", "John", "Doe" );
+            table.Rows.Add("Mr.", "John", "Doe");
             table.Rows.Add("Mrs.", "Jane", "Cardholder");
             table.Rows.Add("", "No", "Name"); // This row has an invalid value in the Courtesy Title column, so our greeting will default to the alternate text
 
@@ -1219,7 +1220,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a list num field using a document builder
-            FieldListNum fieldListNum = (FieldListNum) builder.InsertField(FieldType.FieldListNum, true);
+            FieldListNum fieldListNum = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
 
             // Lists start counting at 1 by default, but we can change this number at any time
             // In this case, we'll do a zero-based count
@@ -1254,6 +1255,657 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.FieldListNum.docx");
+            //ExEnd
+        }
+
+        public void MergeField()
+        {
+            //ExStart
+            //ExFor:FieldMergeField.#ctor
+            //ExFor:FieldMergeField.FieldName
+            //ExFor:FieldMergeField.FieldNameNoPrefix
+            //ExFor:FieldMergeField.IsMapped
+            //ExFor:FieldMergeField.IsVerticalFormatting
+            //ExFor:FieldMergeField.TextAfter
+            //ExSummary:Shows how to use MERGEFIELD fields to perform a mail merge.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create data source for our merge fields
+            System.Data.DataTable table = new System.Data.DataTable("Employees");
+            table.Columns.Add("Courtesy Title");
+            table.Columns.Add("First Name");
+            table.Columns.Add("Last Name");
+            table.Rows.Add("Mr.", "John", "Doe");
+            table.Rows.Add("Mrs.", "Jane", "Cardholder");
+
+            // Insert a merge field that corresponds to one of our columns and put text before and after it
+            FieldMergeField fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            fieldMergeField.FieldName = "Courtesy Title";
+            fieldMergeField.IsMapped = true;
+            fieldMergeField.IsVerticalFormatting = false;
+            fieldMergeField.TextBefore = "Dear ";
+            fieldMergeField.TextAfter = " ";
+
+            // Insert another merge field for another column
+            // We don't need to use every column to perform a mail merge
+            fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            fieldMergeField.FieldName = "Last Name";
+            fieldMergeField.TextAfter = ":";
+
+            doc.UpdateFields();
+            doc.MailMerge.Execute(table);
+            doc.Save(MyDir + @"\Artifacts\Field.MergeField.docx");
+            //ExEnd
+        }
+
+        //ExStart
+        //ExFor:FormField.Accept(DocumentVisitor)
+        //ExFor:FormField.CalculateOnExit
+        //ExFor:FormField.CheckBoxSize
+        //ExFor:FormField.Checked
+        //ExFor:FormField.Default
+        //ExFor:FormField.DropDownItems
+        //ExFor:FormField.DropDownSelectedIndex
+        //ExFor:FormField.Enabled
+        //ExFor:FormField.EntryMacro
+        //ExFor:FormField.ExitMacro
+        //ExFor:FormField.HelpText
+        //ExFor:FormField.IsCheckBoxExactSize
+        //ExFor:FormField.MaxLength
+        //ExFor:FormField.OwnHelp
+        //ExFor:FormField.OwnStatus
+        //ExFor:FormField.SetTextInputValue(Object)
+        //ExFor:FormField.StatusText
+        //ExFor:FormField.TextInputDefault
+        //ExFor:FormField.TextInputFormat
+        //ExFor:FormField.TextInputType
+        //ExFor:FormFieldCollection.Clear
+        //ExFor:FormFieldCollection.Count
+        //ExFor:FormFieldCollection.GetEnumerator
+        //ExFor:FormFieldCollection.Item(Int32)
+        //ExFor:FormFieldCollection.Item(String)
+        //ExFor:FormFieldCollection.Remove(String)
+        //ExFor:FormFieldCollection.RemoveAt(Int32)
+        //ExSummary:Shows how insert different kinds of form fields into a document and process them with a visitor implementation.
+        [Test] //ExSkip
+        public void FormField()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a combo box
+            FormField comboBox = builder.InsertComboBox("MyComboBox", new[] { "One", "Two", "Three" }, 0);
+            comboBox.CalculateOnExit = true;
+            Assert.AreEqual(3, comboBox.DropDownItems.Count);
+            Assert.AreEqual(0, comboBox.DropDownSelectedIndex);
+            Assert.AreEqual(true, comboBox.Enabled);
+
+            builder.Writeln();
+
+            // Use a document builder to insert a check box
+            FormField checkBox = builder.InsertCheckBox("MyCheckBox", false, 50);
+            checkBox.IsCheckBoxExactSize = true;
+            checkBox.HelpText = "Right click to check this box";
+            checkBox.OwnHelp = true;
+            checkBox.StatusText = "Checkbox status text";
+            checkBox.OwnStatus = true;
+            Assert.AreEqual(50.0d, checkBox.CheckBoxSize);
+            Assert.AreEqual(false, checkBox.Checked);
+            Assert.AreEqual(false, checkBox.Default);
+
+            builder.Writeln();
+
+            // Use a document builder to insert text input form field
+            FormField textInput = builder.InsertTextInput("MyTextInput", TextFormFieldType.Regular, "", "Your text goes here", 50);
+            Assert.AreEqual(3, doc.Range.Fields.Count);
+            textInput.EntryMacro = "EntryMacro";
+            textInput.ExitMacro = "ExitMacro";
+            textInput.TextInputDefault = "Regular";
+            textInput.TextInputFormat = "FIRST CAPITAL";
+            textInput.SetTextInputValue("This value overrides the one we set during initialization");
+            Assert.AreEqual(TextFormFieldType.Regular, textInput.TextInputType);
+            Assert.AreEqual(50, textInput.MaxLength);
+
+            // Get the collection of form fields that has accumulated in our document
+            FormFieldCollection formFields = doc.Range.FormFields;
+            Assert.AreEqual(3, formFields.Count);
+
+            // Iterate over the collection with an enumerator, accepting a visitor with each form field
+            FormFieldVisitor formFieldVisitor = new FormFieldVisitor();
+
+            using (IEnumerator<FormField> fieldEnumerator = formFields.GetEnumerator())
+            {
+                while (fieldEnumerator.MoveNext())
+                {
+                    fieldEnumerator.Current.Accept(formFieldVisitor);
+                }
+            }
+
+            Console.WriteLine(formFieldVisitor.GetText());
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FormField.docx");
+        }
+
+        /// <summary>
+        /// Visitor implementation that prints information about visited form fields. 
+        /// </summary>
+        public class FormFieldVisitor : DocumentVisitor
+        {
+            public FormFieldVisitor()
+            {
+                mBuilder = new StringBuilder();
+            }
+
+            /// <summary>
+            /// Called when a FormField node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitFormField(FormField formField)
+            {
+                AppendLine(formField.Type + ": \"" + formField.Name + "\"");
+                AppendLine("\tStatus: " + (formField.Enabled ? "Enabled" : "Disabled"));
+                AppendLine("\tHelp Text:  " + formField.HelpText);
+                AppendLine("\tEntry macro name: " + formField.EntryMacro);
+                AppendLine("\tExit macro name: " + formField.ExitMacro);
+
+                switch (formField.Type)
+                {
+                    case FieldType.FieldFormDropDown:
+                        AppendLine("\tDrop down items count: " + formField.DropDownItems.Count + ", default selected item index: " + formField.DropDownSelectedIndex);
+                        AppendLine("\tDrop down items: " + string.Join(", ", formField.DropDownItems.ToArray()));
+                        break;
+                    case FieldType.FieldFormCheckBox:
+                        AppendLine("\tCheckbox size: " + formField.CheckBoxSize);
+                        AppendLine("\t" + "Checkbox is currently: " + (formField.Checked ? "checked, " : "unchecked, ") + "by default: " + (formField.Default ? "checked" : "unchecked"));
+                        break;
+                    case FieldType.FieldFormTextInput:
+                        AppendLine("\tInput format: " + formField.TextInputFormat);
+                        AppendLine("\tCurrent contents: " + formField.Result);
+                        break;
+                }
+
+                // Let the visitor continue visiting other nodes.
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Adds newline char-terminated text to the current output.
+            /// </summary>
+            private void AppendLine(string text)
+            {
+                mBuilder.Append(text + '\n');
+            }
+
+            /// <summary>
+            /// Gets the plain text of the document that was accumulated by the visitor.
+            /// </summary>
+            public string GetText()
+            {
+                return mBuilder.ToString();
+            }
+
+            private readonly StringBuilder mBuilder;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:FieldToc
+        //ExFor:FieldToc.BookmarkName
+        //ExFor:FieldToc.CustomStyles
+        //ExFor:FieldToc.EntrySeparator
+        //ExFor:FieldToc.HeadingLevelRange
+        //ExFor:FieldToc.HideInWebLayout
+        //ExFor:FieldToc.InsertHyperlinks
+        //ExFor:FieldToc.PageNumberOmittingLevelRange
+        //ExFor:FieldToc.PreserveLineBreaks
+        //ExFor:FieldToc.PreserveTabs
+        //ExFor:FieldToc.UpdatePageNumbers
+        //ExFor:FieldToc.UseParagraphOutlineLevel
+        //ExSummary:Shows how to insert a TOC and populate it with entries based on heading styles.
+        [Test] //ExSkip
+        public void FieldToc()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // The table of contents we will insert will accept entries that are only within the scope of this bookmark
+            builder.StartBookmark("MyBookmark");
+
+            // Insert a list num field using a document builder
+            FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
+
+            // Limit possible TOC entries to only those within the bookmark we name here
+            fieldToc.BookmarkName = "MyBookmark";
+
+            // Normally paragraphs with a "Heading n" style will be the only ones that will be added to a TOC as entries
+            // We can set this attribute to include others, such as the style "Quote" in this case
+            fieldToc.CustomStyles = "Quote,Heading 1";
+
+            // Filter out any headings that are outside this range
+            fieldToc.HeadingLevelRange = "1-3";
+
+            // Headings in this range won't display their page number in their TOC entry
+            fieldToc.PageNumberOmittingLevelRange = "2-5";
+
+            fieldToc.EntrySeparator = "-";
+            fieldToc.InsertHyperlinks = true;
+            fieldToc.HideInWebLayout = false;
+            fieldToc.PreserveLineBreaks = true;
+            fieldToc.PreserveTabs = true;
+            fieldToc.UseParagraphOutlineLevel = false;
+
+            InsertHeading(builder, "First entry", "Heading 1");
+            builder.Writeln("Paragraph text.");
+            InsertHeading(builder, "Second entry", "Heading 1");
+            InsertHeading(builder, "Third entry", "Quote");
+
+            // These two headings will have the page numbers omitted because they are within the "2-5" range
+            InsertHeading(builder, "Fourth entry", "Heading 2");
+            InsertHeading(builder, "Fifth entry", "Heading 3");
+
+            // This entry will be omitted because "Heading 4" is outside of the "1-3" range we set earlier
+            InsertHeading(builder, "Sixth entry", "Heading 4");
+
+            builder.EndBookmark("MyBookmark");
+            builder.Writeln("Paragraph text.");
+
+            // This entry will be omitted because it is outside the bookmark specified by the TOC
+            InsertHeading(builder, "Fifth entry", "Heading 1");
+
+            Assert.AreEqual(" TOC  \\b MyBookmark \\t \"Quote,Heading 1\" \\o 1-3 \\n 2-5 \\p - \\h \\x \\w", fieldToc.GetFieldCode());
+
+            fieldToc.UpdatePageNumbers();
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FieldTOC.docx");
+        }
+
+        /// <summary>
+        /// Start a new page and insert a paragraph of a specified style
+        /// </summary>
+        public void InsertHeading(DocumentBuilder builder, string captionText, string styleName)
+        {
+            builder.InsertBreak(BreakType.PageBreak);
+            string originalStyle = builder.ParagraphFormat.StyleName;
+            builder.ParagraphFormat.Style = builder.Document.Styles[styleName];
+            builder.Writeln(captionText);
+            builder.ParagraphFormat.Style = builder.Document.Styles[originalStyle];
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:FieldToc.EntryIdentifier
+        //ExFor:FieldToc.EntryLevelRange
+        //ExSummary:Shows how to insert a TOC field and filter which TC fields end up as entries.
+        [Test] //ExSkip
+        public void FieldTocEntryIdentifier()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.StartBookmark("MyBookmark");
+
+            // Insert a list num field using a document builder
+            FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
+            fieldToc.EntryIdentifier = "A";
+            fieldToc.EntryLevelRange = "1-3";
+
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // These two entries will appear in the table
+            InsertTocEntry(builder, "TC field 1", "A", "1");
+            InsertTocEntry(builder, "TC field 2", "A", "2");
+
+            // These two entries will be omitted because of an incorrect type identifier
+            InsertTocEntry(builder, "TC field 3", "B", "1");
+
+            // ...and an out-of-range entry level
+            InsertTocEntry(builder, "TC field 4", "A", "5");
+
+            Assert.AreEqual(" TOC  \\f A \\l 1-3", fieldToc.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FieldTOC.TC.docx");
+        }
+
+        /// <summary>
+        /// Insert a table of contents entry via a document builder
+        /// </summary>
+        public void InsertTocEntry(DocumentBuilder builder, string text, string typeIdentifier, string entryLevel)
+        {
+            FieldTC fieldTc = (FieldTC)builder.InsertField(FieldType.FieldTOCEntry, true);
+            fieldTc.Text = text;
+            fieldTc.TypeIdentifier = typeIdentifier;
+            fieldTc.EntryLevel = entryLevel;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:FieldToc.TableOfFiguresLabel
+        //ExFor:FieldToc.CaptionlessTableOfFiguresLabel
+        //ExFor:FieldToc.PrefixedSequenceIdentifier
+        //ExFor:FieldToc.SequenceSeparator
+        //ExSummary:Insert a TOC field and build the table with SEQ fields.
+        [Test] //ExSkip
+        public void FieldTocFigure()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a list num field using a document builder
+            FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
+            fieldToc.CaptionlessTableOfFiguresLabel = "Figures";
+            fieldToc.PrefixedSequenceIdentifier = "ChapterNum";
+            fieldToc.SequenceSeparator = ":";
+
+            // By default, the table of contents 
+            fieldToc.TableOfFiguresLabel = "Figure";
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // These captions will have a sequence identifier that's the same as the table of figures label in our table of contents,
+            // so the table of contents will pick them up
+            InsertCaption(builder, "Prefix ", "ChapterNum");
+            InsertCaption(builder, " Figure ", "Figure");
+            builder.Writeln("\nMy paragraph contents.");
+            InsertCaption(builder, "Prefix ", "ChapterNum");
+            InsertCaption(builder, " Figure ", "Figure");
+            builder.Writeln("\nMy paragraph contents.");
+
+            // This will start a new count and won't be picked up by our table of contents
+            InsertCaption(builder, "Figure ", "OtherFigureSequence");
+            builder.Writeln("My paragraph contents.");
+
+            Assert.AreEqual(" TOC  \\a Figures \\s ChapterNum \\d : \\c Figure", fieldToc.GetFieldCode());
+
+            fieldToc.UpdatePageNumbers();
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FieldTOC.SEQ.docx");
+        }
+
+        /// <summary>
+        /// Insert a sequence field with preceding text and a specified sequence identifier
+        /// </summary>
+        public void InsertCaption(DocumentBuilder builder, string precedingText, string sequenceIdentifier)
+        {
+            builder.Write(precedingText);
+            FieldSeq caption = (FieldSeq)builder.InsertField(FieldType.FieldSequence, false);
+            caption.SequenceIdentifier = sequenceIdentifier;
+        }
+        //ExEnd
+
+        [Test]
+        [Ignore("WORDSNET-13854")]
+        public void FieldCitation()
+        {
+            //ExStart
+            //ExFor:Fields.FieldCitation
+            //ExFor:Fields.FieldCitation.AnotherSourceTag
+            //ExFor:Fields.FieldCitation.FormatLanguageId
+            //ExFor:Fields.FieldCitation.PageNumber
+            //ExFor:Fields.FieldCitation.Prefix
+            //ExFor:Fields.FieldCitation.SourceTag
+            //ExFor:Fields.FieldCitation.Suffix
+            //ExFor:Fields.FieldCitation.SuppressAuthor
+            //ExFor:Fields.FieldCitation.SuppressTitle
+            //ExFor:Fields.FieldCitation.SuppressYear
+            //ExFor:Fields.FieldCitation.VolumeNumber
+            //ExSummary:Shows how to insert a citation field and edit its properties.
+            // Open a document that has bibliographical sources
+            Document doc = new Document(MyDir + "Document.HasBibliography.docx");
+
+            // Add text that we can cite
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("Text to be cited with one source.");
+
+            // Create a citation field using the document builder
+            FieldCitation field = (FieldCitation)builder.InsertField(FieldType.FieldCitation, true);
+
+            // A simple citation can have just the page number and author's name
+            field.SourceTag = "Book1"; // We refer to sources using their tag names
+            field.PageNumber = "85";
+            field.SuppressAuthor = false;
+            field.SuppressTitle = true;
+            field.SuppressYear = true;
+
+            Assert.AreEqual(" CITATION  Book1 \\p 85 \\t \\y", field.GetFieldCode());
+
+            // We can make a more detailed citation and make it cite 2 sources
+            builder.Write("Text to be cited with two sources.");
+            field = (FieldCitation)builder.InsertField(FieldType.FieldCitation, true);
+            field.SourceTag = "Book1";
+            field.AnotherSourceTag = "Book2";
+            field.FormatLanguageId = "en-US";
+            field.PageNumber = "19";
+            field.Prefix = "Prefix ";
+            field.Suffix = " Suffix";
+            field.SuppressAuthor = false;
+            field.SuppressTitle = false;
+            field.SuppressYear = false;
+            field.VolumeNumber = "VII";
+
+            Assert.AreEqual(" CITATION  Book1 \\m Book2 \\l en-US \\p 19 \\f \"Prefix \" \\s \" Suffix\" \\v VII", field.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Citation.docx");
+            //ExEnd
+        }
+        
+        [Test]
+        public void FieldData()
+        {
+            //ExStart
+            //ExFor:FieldData.#ctor
+            //ExSummary:Shows how to insert a data field into a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a data field
+            FieldData field = (FieldData)builder.InsertField(FieldType.FieldData, true);
+            Assert.AreEqual(" DATA ", field.GetFieldCode());
+            //ExEnd
+        }
+        
+        [Test]
+        public void FieldInclude()
+        {
+            //ExStart
+            //ExFor:FieldInclude.#ctor
+            //ExFor:FieldInclude.BookmarkName
+            //ExFor:FieldInclude.LockFields
+            //ExFor:FieldInclude.SourceFullName
+            //ExFor:FieldInclude.TextConverter
+            //ExSummary:Shows how to create an INCLUDE field and set its properties.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Add an INCLUDE field with document builder and import a portion of the document defined by a bookmark
+            FieldInclude fieldInclude = (FieldInclude)builder.InsertField(FieldType.FieldInclude, true);
+            fieldInclude.SourceFullName = MyDir + "Field.Include.Source.docx";
+            fieldInclude.BookmarkName = "Source_paragraph_2";
+            fieldInclude.LockFields = false;
+            fieldInclude.TextConverter = "Microsoft Word";
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Include.docx");
+            //ExEnd
+        }
+
+        [Test]
+        [Ignore("WORDSNET-13854")]
+        public void FieldDatabase()
+        {
+            //ExStart
+            //ExFor:FieldDatabase
+            //ExFor:FieldDatabase.Connection
+            //ExFor:FieldDatabase.FileName
+            //ExFor:FieldDatabase.FirstRecord
+            //ExFor:FieldDatabase.FormatAttributes
+            //ExFor:FieldDatabase.InsertHeadings
+            //ExFor:FieldDatabase.InsertOnceOnMailMerge
+            //ExFor:FieldDatabase.LastRecord
+            //ExFor:FieldDatabase.Query
+            //ExFor:FieldDatabase.TableFormat
+            //ExSummary:Shows how to extract data from a database and insert it as a field into a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a database field
+            FieldDatabase field = (FieldDatabase)builder.InsertField(FieldType.FieldDatabase, true);
+
+            // Create a simple query that extracts one table from the database
+            field.FileName = MyDir + @"Database\Northwind.mdb";
+            field.Connection = "DSN=MS Access Databases";
+            field.Query = "SELECT * FROM [Products]";
+
+            // Insert another database field
+            field = (FieldDatabase)builder.InsertField(FieldType.FieldDatabase, true);
+            field.FileName = MyDir + @"Database\Northwind.mdb";
+            field.Connection = "DSN=MS Access Databases";
+
+            // This query will sort all the products by their gross sales in descending order
+            field.Query =
+                "SELECT [Products].ProductName, FORMAT(SUM([Order Details].UnitPrice * (1 - [Order Details].Discount) * [Order Details].Quantity), 'Currency') AS GrossSales " +
+                "FROM([Products] " +
+                "LEFT JOIN[Order Details] ON[Products].[ProductID] = [Order Details].[ProductID]) " +
+                "GROUP BY[Products].ProductName " +
+                "ORDER BY SUM([Order Details].UnitPrice* (1 - [Order Details].Discount) * [Order Details].Quantity) DESC";
+
+            // You can use these variables instead of a LIMIT clause, to simplify your query
+            // In this case we are taking the first 10 values of the result of our query
+            field.FirstRecord = "1";
+            field.LastRecord = "10";
+
+            // The number we put here is the index of the format we want to use for our table
+            // The list of table formats is in the "Table AutoFormat..." menu we find in MS Word when we create a data table field
+            // Index "10" corresponds to the "Colorful 3" format
+            field.TableFormat = "10";
+
+            // This attribute decides which elements of the table format we picked above we incorporate into our table
+            // The number we use is a sum of a combination of values corresponding to which elements we choose
+            // 63 represents borders (1) + shading (2) + font (4) + colour (8) + autofit (16) + heading rows (32)
+            field.FormatAttributes = "63";
+
+            field.InsertHeadings = true;
+            field.InsertOnceOnMailMerge = true;
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Database.docx");
+            //ExEnd
+        }
+        
+        [Test]
+        public void FieldIncludePicture()
+        {
+            //ExStart
+            //ExFor:FieldIncludePicture.#ctor
+            //ExFor:FieldIncludePicture.GraphicFilter
+            //ExFor:FieldIncludePicture.IsLinked
+            //ExFor:FieldIncludePicture.ResizeHorizontally
+            //ExFor:FieldIncludePicture.ResizeVertically
+            //ExFor:FieldIncludePicture.SourceFullName
+            //ExSummary:Shows how to create an INCLUDEPICTURE field and set its properties.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            FieldIncludePicture fieldIncludePicture = (FieldIncludePicture)builder.InsertField(FieldType.FieldIncludePicture, true);
+            fieldIncludePicture.SourceFullName = MyDir + "Images/Watermark.png";
+
+            // Apply, in this case, the PNG32.FLT filter
+            fieldIncludePicture.GraphicFilter = "PNG32";
+            fieldIncludePicture.IsLinked = true;
+            fieldIncludePicture.ResizeHorizontally = true;
+            fieldIncludePicture.ResizeVertically = true;
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.IncludePicture.docx");
+            //ExEnd
+        }
+
+        //ExStart
+        //ExFor:FieldIncludeText.#ctor
+        //ExFor:FieldIncludeText.BookmarkName
+        //ExFor:FieldIncludeText.Encoding
+        //ExFor:FieldIncludeText.LockFields
+        //ExFor:FieldIncludeText.MimeType
+        //ExFor:FieldIncludeText.NamespaceMappings
+        //ExFor:FieldIncludeText.SourceFullName
+        //ExFor:FieldIncludeText.TextConverter
+        //ExFor:FieldIncludeText.XPath
+        //ExFor:FieldIncludeText.XslTransformation
+        //ExSummary:Shows how to create an INCLUDETEXT field and set its properties.
+        [Test] //ExSkip
+        [Ignore("WORDSNET-17543")] //ExSkip
+        public void FieldIncludeText()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert an include text field and perform an XSL transformation on an XML document
+            FieldIncludeText fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "Field.IncludeText.Source.xml", false, "text/xml", "XML", "ISO-8859-1");
+            fieldIncludeText.XslTransformation = MyDir + "Field.IncludeText.Source.xsl";
+
+            builder.Writeln();
+
+            // Use a document builder to insert an include text field and use an XPath to take specific elements
+            fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "Field.IncludeText.Source.xml", false, "text/xml", "XML", "ISO-8859-1");
+            fieldIncludeText.NamespaceMappings = "xmlns:n='myNamespace'";
+            fieldIncludeText.XPath = "/catalog/cd/title";
+
+            doc.Save(MyDir + @"\Artifacts\Field.IncludeText.docx");
+        }
+
+        /// <summary>
+        /// Use a document builder to insert an INCLUDETEXT field and set its properties
+        /// </summary>
+        public FieldIncludeText CreateFieldIncludeText(DocumentBuilder builder, string sourceFullName, bool lockFields, string mimeType, string textConverter, string encoding)
+        {
+            FieldIncludeText fieldIncludeText = (FieldIncludeText)builder.InsertField(FieldType.FieldIncludeText, true);
+            fieldIncludeText.SourceFullName = sourceFullName;
+            fieldIncludeText.LockFields = lockFields;
+            fieldIncludeText.MimeType = mimeType;
+            fieldIncludeText.TextConverter = textConverter;
+            fieldIncludeText.Encoding = encoding;
+
+            return fieldIncludeText;
+        }
+        //ExEnd
+        
+        [Test] 
+        [Ignore("WORDSNET-17545")]
+        public void FieldHyperlink()
+        {
+            //ExStart
+            //ExFor:FieldHyperlink.#ctor
+            //ExFor:FieldHyperlink.Address
+            //ExFor:FieldHyperlink.IsImageMap
+            //ExFor:FieldHyperlink.OpenInNewWindow
+            //ExFor:FieldHyperlink.ScreenTip
+            //ExFor:FieldHyperlink.SubAddress
+            //ExFor:FieldHyperlink.Target
+            //ExSummary:Shows how to insert HYPERLINK fields.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a hyperlink with a document builder
+            FieldHyperlink fieldHyperlink = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
+
+            // When link is clicked, open a document and place the cursor on the bookmarked location
+            fieldHyperlink.Address = MyDir + "Field.HyperlinkDestination.docx";
+            fieldHyperlink.SubAddress = "My_Bookmark";
+            fieldHyperlink.ScreenTip = "Open " + fieldHyperlink.Address + " on bookmark " + fieldHyperlink.SubAddress + " in a new window";
+
+            builder.Writeln();
+
+            // Open html file at a specific frame
+            fieldHyperlink = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
+            fieldHyperlink.Address = MyDir + "Field.HyperlinkDestination.html";
+            fieldHyperlink.ScreenTip = "Open " + fieldHyperlink.Address;
+            fieldHyperlink.Target = "iframe_3";
+            fieldHyperlink.OpenInNewWindow = true;
+            fieldHyperlink.IsImageMap = false;
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Hyperlink.docx");
             //ExEnd
         }
 
@@ -1307,7 +1959,7 @@ namespace ApiExamples
             fieldBarcode = (FieldBarcode)builder.InsertField(FieldType.FieldBarcode, true);
             fieldBarcode.PostalAddress = "BarcodeBookmark";
             fieldBarcode.IsBookmark = true;
-       
+
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.USAddressBarcode.docx");
         }
@@ -1334,7 +1986,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            FieldDisplayBarcode fieldDisplayBarcode = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
+            FieldDisplayBarcode fieldDisplayBarcode =
+                (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
 
             // Insert a QR type barcode
             fieldDisplayBarcode.BarcodeType = "QR";
@@ -1354,6 +2007,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.DisplayBarcode.docx");
+            //ExEnd
         }
     }
 }

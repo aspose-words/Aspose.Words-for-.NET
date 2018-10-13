@@ -1234,7 +1234,7 @@ namespace ApiExamples
 
             // Create encryption details and set owner password.
             PdfEncryptionDetails encryptionDetails =
-                new PdfEncryptionDetails(String.Empty, "password", PdfEncryptionAlgorithm.RC4_128);
+                new PdfEncryptionDetails("password", string.Empty, PdfEncryptionAlgorithm.RC4_128);
 
             // Start by disallowing all permissions.
             encryptionDetails.Permissions = PdfPermissions.DisallowAll;
