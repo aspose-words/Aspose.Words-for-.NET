@@ -51,7 +51,7 @@ namespace Aspose.Words.Examples.CSharp
             // =====================================================
 
             //DocumentExplorerExample.MainForm.Run();
-            
+
             // =====================================================
             // =====================================================
             // Quick Start
@@ -207,6 +207,7 @@ namespace Aspose.Words.Examples.CSharp
             // WorkingWithSaveOptions.Run();
             // SetCompatibilityOptions.Run();
             // Setuplanguagepreferences.Run();
+            // DocumentBuilderInsertHorizontalRule.Run();
 
             //// Fields
             //// =====================================================
@@ -280,7 +281,7 @@ namespace Aspose.Words.Examples.CSharp
             // ChangeStyleOfTOCLevel.Run();
             // ChangeTOCTabStops.Run();
             // InsertStyleSeparator.Run();
-
+            // CopyStyles.Run();
             //// Tables
             //// =====================================================
             //AutoFitTableToWindow.Run();
@@ -303,6 +304,7 @@ namespace Aspose.Words.Examples.CSharp
             // MergedCells.Run();
             // KeepTablesAndRowsBreaking.Run();
             // TablePosition.Run();
+
             //// Sections
             //// =====================================================
             // SectionsAccessByIndex.Run();
@@ -398,6 +400,7 @@ namespace Aspose.Words.Examples.CSharp
             // ChartWithFilteringGroupingOrdering.Run();
             //ConditionalBlocks.Run();
             //SettingBackgroundColor.Run();
+            //BuildOptions.RemoveEmptyParagraphs();
 
             // Stop before exiting
             Console.WriteLine("\n\nProgram Finished. Press any key to exit....");

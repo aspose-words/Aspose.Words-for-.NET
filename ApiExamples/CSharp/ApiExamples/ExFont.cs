@@ -638,12 +638,35 @@ namespace ApiExamples
             FontSettings.DefaultInstance.SetFontsSources(origFontSources);
         }
 
+        [Test] //TODO: write support to fix his example
+        public void GetAvailableFonts()
+        {
+            //ExStart
+            //ExFor:FontSourceBase.GetAvailableFonts
+            //ExFor:PhysicalFontInfo.FontFamilyName
+            //ExFor:PhysicalFontInfo.FullFontName
+            //ExFor:PhysicalFontInfo.Version
+            //ExFor:PhysicalFontInfo.FilePath
+            //ExSummary:Shows how to get available fonts and information about them.
+            // Add a new folder source which will instruct Aspose.Words to search the following folder for fonts. 
+            FontSourceBase[] folderFontSource = { new FolderFontSource(MyDir + @"MyFonts\", true) };
+            
+            foreach (PhysicalFontInfo fontInfo in folderFontSource[0].GetAvailableFonts())
+            {
+                Console.WriteLine("FontFamilyName : "+ fontInfo.FontFamilyName);
+                Console.WriteLine("FullFontName  : " + fontInfo.FullFontName);
+                Console.WriteLine("Version  : " + fontInfo.Version);
+                Console.WriteLine("FilePath : " + fontInfo.FilePath);
+            }
+            //ExEnd
+        }
+
         //ExStart
         //ExFor:IWarningCallback
         //ExFor:DocumentBase.WarningCallback
         //ExFor:SaveOptions.WarningCallback
         //ExId:FontSubstitutionWarningCallback
-        //ExSummary:Demonstrates how to implement the IWarningCallback to be notified of any font substitution during document save.
+        //ExSummary:Shows how to implement the IWarningCallback to be notified of any font substitution during document save.
         public class HandleDocumentWarnings : IWarningCallback
         {
             /// <summary>

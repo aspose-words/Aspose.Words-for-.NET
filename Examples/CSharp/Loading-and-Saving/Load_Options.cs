@@ -74,7 +74,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
         {
             // ExStart:AnnotationsAtBlockLevel   
             LoadOptions options = new LoadOptions();
-            options.AnnotationsAtBlockLevel = false;
+            options.AnnotationsAtBlockLevel = true;
             Document doc = new Document(dataDir + "AnnotationsAtBlockLevel.docx", options);
             DocumentBuilder builder = new DocumentBuilder(doc);
 

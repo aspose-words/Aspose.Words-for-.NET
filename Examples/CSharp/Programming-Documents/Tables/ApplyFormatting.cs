@@ -13,7 +13,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
     class ApplyFormatting
     {
         public static void Run()
-        {            
+        {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithTables();
             ApplyOutlineBorder(dataDir);
@@ -27,6 +27,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             //Get DistanceLeft, DistanceRight, DistanceTop, and DistanceBottom properties
             GetDistancebetweenTableSurroundingText(dataDir);
             SetTableTitleandDescription(dataDir);
+            AllowCellSpacing(dataDir);
         }
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
         {
             // ExStart:ApplyOutlineBorder
             Document doc = new Document(dataDir + "Table.EmptyTable.doc");
-            
+
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
             // Align the table to the center of the page.
             table.Alignment = TableAlignment.Center;
@@ -104,13 +105,13 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             // ExStart:ModifyRowFormatting
             Document doc = new Document(dataDir + "Table.Document.doc");
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
-            
+
             // Retrieve the first row in the table.
             Row firstRow = table.FirstRow;
             // Modify some row level properties.
             firstRow.RowFormat.Borders.LineStyle = LineStyle.None;
             firstRow.RowFormat.HeightRule = HeightRule.Auto;
-            firstRow.RowFormat.AllowBreakAcrossPages = true; 
+            firstRow.RowFormat.AllowBreakAcrossPages = true;
             // ExEnd:ModifyRowFormatting
             Console.WriteLine("\nSome row level properties modified successfully.");
         }
@@ -182,7 +183,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
         private static void ModifyCellFormatting(string dataDir)
         {
             // ExStart:ModifyCellFormatting
-            Document doc = new Document(dataDir + "Table.Document.doc"); 
+            Document doc = new Document(dataDir + "Table.Document.doc");
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             // Retrieve the first cell in the table.
@@ -267,6 +268,23 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
 
             // ExEnd:SetTableTitleandDescription
             Console.WriteLine("\nTable's title and description is set successfully.");
+        }
+
+        /// <summary>
+        /// Shows how to set "Allow spacing between cells" option
+        /// </summary>
+        private static void AllowCellSpacing(string dataDir)
+        {
+            // ExStart:AllowCellSpacing
+            Document doc = new Document(dataDir + "Table.Document.doc");
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table.AllowCellSpacing = true;
+
+            dataDir = dataDir + "Table.AllowCellSpacing_out.docx";
+            // Save the document to disk.
+            doc.Save(dataDir);
+            // ExEnd:AllowCellSpacing
+            Console.WriteLine("\nAllow spacing between cells is set successfully.\nFile saved at " + dataDir);
         }
     }
 }
