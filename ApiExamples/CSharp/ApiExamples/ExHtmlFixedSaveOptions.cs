@@ -99,6 +99,23 @@ namespace ApiExamples
         }
 
         [Test]
+        public void SaveFontFaceCssSeparately()
+        {
+            //ExStart
+            //ExFor:HtmlFixedSaveOptions.SaveFontFaceCssSeparately
+            //ExSummary:Shows how to placed '@font-face' CSS rules into separate 'fontFaces.css' file.
+            Document doc = new Document(MyDir + "Bookmark.doc");
+
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
+            {
+                SaveFontFaceCssSeparately = true
+            };
+
+            doc.Save(MyDir + @"\Artifacts\HtmlFixedSaveOptions.FontFaceCssSeparately.html", htmlFixedSaveOptions);
+            //ExEnd
+        }
+
+        [Test]
         public void AddCssClassNamesPrefix()
         {
             //ExStart
@@ -108,7 +125,8 @@ namespace ApiExamples
 
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
-                CssClassNamesPrefix = "test"
+                CssClassNamesPrefix = "test",
+                SaveFontFaceCssSeparately = true
             };
 
             doc.Save(MyDir + @"\Artifacts\HtmlFixedSaveOptions.CssPrefix.html", htmlFixedSaveOptions);

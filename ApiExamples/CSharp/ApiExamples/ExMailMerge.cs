@@ -363,5 +363,25 @@ namespace ApiExamples
 
             return dataTable;
         }
+
+        [Test] 
+        public void UnconditionalMergeFieldsAndRegions()
+        {
+            //ExStart
+            //ExFor:MailMerge.UnconditionalMergeFieldsAndRegions
+            //ExSummary:Shows how to merge fields or regions regardless of the parent IF field's condition.
+            Document doc = new Document(MyDir + "MailMerge.UnconditionalMergeFieldsAndRegions.docx");
+
+            // Merge fields and merge regions are merged regardless of the parent IF field's condition.
+            doc.MailMerge.UnconditionalMergeFieldsAndRegions = true;
+
+            // Fill the fields in the document with user data.
+            doc.MailMerge.Execute(
+                new string[] { "FullName" },
+                new object[] { "James Bond" });
+
+            doc.Save(MyDir + @"\Artifacts\MailMerge.UnconditionalMergeFieldsAndRegions.docx");
+            //ExEnd
+        }
     }
 }
