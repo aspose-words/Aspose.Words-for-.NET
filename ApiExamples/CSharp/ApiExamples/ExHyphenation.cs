@@ -42,12 +42,12 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.doc");
             Hyphenation.RegisterDictionary("en-US", MyDir + "hyph_en_US.dic");
 
-            Console.WriteLine(Hyphenation.IsDictionaryRegistered("en-US")); // True
+            Assert.AreEqual(true, Hyphenation.IsDictionaryRegistered("en-US"));
             //ExEnd
         }
 
         [Test]
-        public void UnregisterDictionaryEx()
+        public void UnregisteredDictionaryEx()
         {
             //ExStart
             //ExFor:Hyphenation.UnregisterDictionary(String)
@@ -57,7 +57,7 @@ namespace ApiExamples
 
             Hyphenation.UnregisterDictionary("en-US");
 
-            Console.WriteLine(Hyphenation.IsDictionaryRegistered("en-US")); // False
+            Assert.AreEqual(false, Hyphenation.IsDictionaryRegistered("en-US"));
             //ExEnd
         }
     }

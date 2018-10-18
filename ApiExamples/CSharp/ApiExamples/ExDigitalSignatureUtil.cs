@@ -22,13 +22,13 @@ namespace ApiExamples
             //ExFor:DigitalSignatureUtil.RemoveAllSignatures(Stream, Stream)
             //ExFor:DigitalSignatureUtil.RemoveAllSignatures(String, String)
             //ExSummary:Shows how to remove every signature from a document.
-            // By string:
+            // By string
             Document doc = new Document(MyDir + "Document.DigitalSignature.docx");
             string outFileName = MyDir + @"\Artifacts\Document.NoSignatures.FromString.docx";
 
             DigitalSignatureUtil.RemoveAllSignatures(doc.OriginalFileName, outFileName);
 
-            // By stream:
+            // By stream
             Stream streamIn = new FileStream(MyDir + "Document.DigitalSignature.docx", FileMode.Open);
             Stream streamOut =
                 new FileStream(MyDir + @"\Artifacts\Document.NoSignatures.FromStream.doc", FileMode.Create);

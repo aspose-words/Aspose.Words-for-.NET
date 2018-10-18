@@ -94,7 +94,7 @@ namespace ApiExamples
                 ExportFormFields = true
             };
 
-            doc.Save(MyDir + @"\Artifacts\ExportFormFiels.html", htmlFixedSaveOptions);
+            doc.Save(MyDir + @"\Artifacts\ExportFormFields.html", htmlFixedSaveOptions);
             //ExEnd
         }
 
@@ -200,7 +200,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void UsingMachineFonts()
         {
-            Document doc = new Document(MyDir + "Font.DisapearingBulletPoints.doc");
+            Document doc = new Document(MyDir + "Font.DisappearingBulletPoints.doc");
 
             HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions
             {
