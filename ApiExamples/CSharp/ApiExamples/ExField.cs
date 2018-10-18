@@ -1066,6 +1066,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Fields.FieldAutoText
             //ExFor:FieldAutoText.EntryName
+            //ExFor:FieldOptions.BuiltInTemplatesPaths
             //ExSummary:Shows how to insert an auto text field and reference an auto text building block with it. 
             Document doc = new Document();
 
@@ -1093,6 +1094,9 @@ namespace ApiExamples
 
             // Refer to our building block by name
             field.EntryName = "MyBlock";
+
+            // Put additional templates here
+            doc.FieldOptions.BuiltInTemplatesPaths = new[] {MyDir + "Document.BusinessBrochureTemplate.dotx"};
 
             // The text content of our building block will be visible in the output
             doc.Save(MyDir + @"\Artifacts\Field.AutoText.dotx");
@@ -1462,6 +1466,7 @@ namespace ApiExamples
         //ExFor:FieldToc.PreserveTabs
         //ExFor:FieldToc.UpdatePageNumbers
         //ExFor:FieldToc.UseParagraphOutlineLevel
+        //ExFor:FieldOptions.CustomTocStyleSeparator
         //ExSummary:Shows how to insert a TOC and populate it with entries based on heading styles.
         [Test] //ExSkip
         public void FieldToc()
@@ -1479,8 +1484,11 @@ namespace ApiExamples
             fieldToc.BookmarkName = "MyBookmark";
 
             // Normally paragraphs with a "Heading n" style will be the only ones that will be added to a TOC as entries
-            // We can set this attribute to include others, such as the style "Quote" in this case
-            fieldToc.CustomStyles = "Quote,Heading 1";
+            // We can set this attribute to include other styles, such as "Quote" and "Intense Quote" in this case
+            fieldToc.CustomStyles = "Quote; 6; Intense Quote; 7";
+
+            // Styles are normally separated by a comma (",") but we can use this property to set a custom delimiter
+            doc.FieldOptions.CustomTocStyleSeparator = ";";
 
             // Filter out any headings that are outside this range
             fieldToc.HeadingLevelRange = "1-3";
@@ -1499,25 +1507,26 @@ namespace ApiExamples
             builder.Writeln("Paragraph text.");
             InsertHeading(builder, "Second entry", "Heading 1");
             InsertHeading(builder, "Third entry", "Quote");
+            InsertHeading(builder, "Fourth entry", "Intense Quote");
 
             // These two headings will have the page numbers omitted because they are within the "2-5" range
-            InsertHeading(builder, "Fourth entry", "Heading 2");
-            InsertHeading(builder, "Fifth entry", "Heading 3");
+            InsertHeading(builder, "Fifth entry", "Heading 2");
+            InsertHeading(builder, "Sixth entry", "Heading 3");
 
             // This entry will be omitted because "Heading 4" is outside of the "1-3" range we set earlier
-            InsertHeading(builder, "Sixth entry", "Heading 4");
+            InsertHeading(builder, "Seventh entry", "Heading 4");
 
             builder.EndBookmark("MyBookmark");
             builder.Writeln("Paragraph text.");
 
             // This entry will be omitted because it is outside the bookmark specified by the TOC
-            InsertHeading(builder, "Fifth entry", "Heading 1");
+            InsertHeading(builder, "Eighth entry", "Heading 1");
 
-            Assert.AreEqual(" TOC  \\b MyBookmark \\t \"Quote,Heading 1\" \\o 1-3 \\n 2-5 \\p - \\h \\x \\w", fieldToc.GetFieldCode());
+            Assert.AreEqual(" TOC  \\b MyBookmark \\t \"Quote; 6; Intense Quote; 7\" \\o 1-3 \\n 2-5 \\p - \\h \\x \\w", fieldToc.GetFieldCode());
 
             fieldToc.UpdatePageNumbers();
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\Field.FieldTOC.docx");
+            doc.Save(MyDir + @"\Field.FieldTOC.docx");
         }
 
         /// <summary>
@@ -1908,5 +1917,160 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.Hyperlink.docx");
             //ExEnd
         }
+
+        [Test]
+        public void FieldOptionsCurrentUser()
+        {
+            //ExStart
+            //ExFor:FieldOptions.CurrentUser
+            //ExFor:FieldOptions.DefaultDocumentAuthor
+            //ExSummary:Shows how to use FieldOptions.
+            Document doc = new Document();
+
+            Assert.IsNull(doc.FieldOptions.DefaultDocumentAuthor);
+            Assert.IsNull(doc.FieldOptions.CurrentUser);
+
+            UserInformation userInformation = new UserInformation();
+            userInformation.Name = "John Doe";
+            userInformation.Address = "123 Main Street";
+            Assert.IsNull(userInformation.Initials);
+
+            userInformation.Initials = "J. D.";
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldOptionsFileName()
+        {
+            //ExStart
+            //ExFor:FieldOptions.FileName
+            //ExSummary:Shows how to use FieldOptions to override the default value for the FILENAME field.
+            Document doc = new Document(MyDir + "Document.docx");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.MoveToDocumentEnd();
+            builder.Writeln();
+
+            // The document came from a file, and the respective filename will appear in the FILENAME field
+            FieldFileName fieldFileName = (FieldFileName)builder.InsertField(FieldType.FieldFileName, true);
+
+            // If we manually set a value for this property of the document's field options object,
+            // our overriding value will appear at the FILENAME field
+            Assert.IsNull(doc.FieldOptions.FileName);
+            doc.FieldOptions.FileName = "Field.FileName.docx";
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\" + doc.FieldOptions.FileName);
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldOptionsBidi()
+        {
+            //ExStart
+            //ExFor:FieldOptions.IsBidiTextSupportedOnUpdate
+            //ExSummary:Shows how to use FieldOptions to ensure that bi-directional text is properly supported during field update.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a field which contains right-to-left text
+            FormField comboBox = builder.InsertComboBox("MyComboBox", new[] { "עֶשְׂרִים", "שְׁלוֹשִׁים", "אַרְבָּעִים", "חֲמִשִּׁים", "שִׁשִּׁים" }, 0);
+            comboBox.CalculateOnExit = true;
+
+            // Set this variable to make sure all right-to-left text inside fields shows up properly 
+            doc.FieldOptions.IsBidiTextSupportedOnUpdate = true;
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FieldOptionsBidi.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldOptionsLegacyNumberFormat()
+        {
+            //ExStart
+            //ExFor:FieldOptions.LegacyNumberFormat
+            //ExSummary:Shows how use FieldOptions to change the number format.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertField("= 2 + 3 \\# $##");
+
+            // When this property is false, the above field displays "$ 5", padded with one space per pound sign
+            // When true, no space will be present and "$5" will show up in the document
+            doc.FieldOptions.LegacyNumberFormat = true;
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FieldLegacyNumberFormat.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldOptionsPreProcessCulture()
+        {
+            //ExStart
+            //ExFor:FieldOptions.PreProcessCulture
+            //ExSummary:Shows how to switch set the preprocess culture.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            doc.FieldOptions.PreProcessCulture = CultureInfo.InvariantCulture;
+
+            builder.InsertField("DOCPROPERTY Pages");
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FieldPreProcessCulture.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldOptionsToaCategories()
+        {
+            //ExStart
+            //ExFor:FieldOptions.ToaCategories
+            //ExSummary:Shows how to specify a table of authorities for a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            doc.FieldOptions.ToaCategories = ToaCategories.DefaultCategories;
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldOptionsUseInvariantCultureNumberFormat()
+        {
+            //ExStart
+            //ExFor:FieldOptions.UseInvariantCultureNumberFormat
+            //ExSummary:Shows how to format numbers according to the invariant culture.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            doc.FieldOptions.UseInvariantCultureNumberFormat = true;
+            //ExEnd
+        }
+
+        //ExStart
+        //ExFor:FieldOptions.UserPromptRespondent
+        //ExSummary:Shows how to set up a custom prompt respondent.
+        [Test] //ExSkip
+        public void FieldOptionsUserPromptRespondent()
+        {
+            
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            MyPromptRespondent myPromptRespondent = new MyPromptRespondent();
+
+            doc.FieldOptions.UserPromptRespondent = myPromptRespondent;
+        }
+
+        private class MyPromptRespondent : IFieldUserPromptRespondent
+        {
+            public string Respond(string promptText, string defaultResponse)
+            {
+                throw new NotImplementedException();
+            }
+        }
+        //ExEnd
     }
 }
