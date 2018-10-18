@@ -2034,6 +2034,7 @@ namespace ApiExamples
         //ExFor:IBarcodeGenerator
         //ExFor:IBarcodeGenerator.GetBarcodeImage(BarcodeParameters)
         //ExFor:IBarcodeGenerator.GetOldBarcodeImage(BarcodeParameters)
+        //ExFor:FieldOptions.BarcodeGenerator
         //ExSummary:Shows how to create barcode images using a barcode generator.
         [Test] //ExSkip
         public void BarcodeGenerator()
