@@ -2163,6 +2163,10 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:IFieldResultFormatter
+            //ExFor:IFieldResultFormatter.Format(Double, GeneralFormat)
+            //ExFor:IFieldResultFormatter.Format(String, GeneralFormat)
+            //ExFor:IFieldResultFormatter.FormatDateTime(DateTime, String, CalendarType)
+            //ExFor:IFieldResultFormatter.FormatNumeric(Double, String)
             //ExFor:FieldOptions.ResultFormatter
             //ExSummary:Shows how to control how the field result is formatted.
             Document doc = new Document();
