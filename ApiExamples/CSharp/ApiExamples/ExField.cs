@@ -21,6 +21,7 @@ using Aspose.BarCode.BarCodeRecognition;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Fields;
+using Aspose.Words.MailMerging;
 using Aspose.Words.Replacing;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
@@ -1907,6 +1908,60 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.Hyperlink.docx");
             //ExEnd
+        }
+
+        [Test]
+        public void MergeFieldImageDimension()
+        {
+            //ExStart
+            //ExFor:MergeFieldImageDimension
+            //ExFor:MergeFieldImageDimension.#ctor
+            //ExFor:MergeFieldImageDimension.#ctor(Double)
+            //ExFor:MergeFieldImageDimension.#ctor(Double,MergeFieldImageDimensionUnit)
+            //ExFor:MergeFieldImageDimension.Unit
+            //ExFor:MergeFieldImageDimension.Value
+            //ExFor:MergeFieldImageDimensionUnit
+            //ExSummary:Shows how to set dimensions of merged images.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertField("MERGEFIELD Image:ResizedImage");
+
+            DataTable dataTable = new DataTable("Images");
+            dataTable.Columns.Add(new DataColumn("Column"));
+
+            for (int i = 0; i < 5; i++)
+            {
+                DataRow dataRow = dataTable.NewRow();
+                dataRow[0] = MyDir + @"Images\Watermark.png";
+                dataTable.Rows.Add(dataRow);
+            }
+
+            doc.MailMerge.FieldMergingCallback = new HandleMergeField();
+            doc.MailMerge.Execute(dataTable);
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.MergeFieldImageDimension.docx");
+            //ExEnd
+        }
+
+        private class HandleMergeField : IFieldMergingCallback
+        {
+            public void FieldMerging(FieldMergingArgs e) { 
+                throw new NotImplementedException();
+            }
+
+            public void ImageFieldMerging(ImageFieldMergingArgs args)
+            {
+                args.ImageFileName = MyDir + @"Images\Watermark.png";
+                args.ImageWidth = new MergeFieldImageDimension(450);
+
+                Assert.AreEqual(450.0d, args.ImageWidth.Value);
+                Assert.AreEqual(MergeFieldImageDimensionUnit.Point, args.ImageWidth.Unit);
+
+                args.ImageHeight = new MergeFieldImageDimension(200);
+                args.ImageHeight.Unit = MergeFieldImageDimensionUnit.Percent;
+            }
         }
     }
 }
