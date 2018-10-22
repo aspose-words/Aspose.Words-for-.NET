@@ -72,7 +72,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Struct
             Console.WriteLine("\nCreation of an XML part and binding a content control to it successfully.");
         }
 
-        public static void SetContentControlStype(string dataDir)
+        public static void SetContentControlStyle(string dataDir)
         {
             // ExStart:SetContentControlStype
             Document doc = new Document(dataDir + "input.docx");
