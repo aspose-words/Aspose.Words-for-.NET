@@ -1910,58 +1910,87 @@ namespace ApiExamples
             //ExEnd
         }
 
+        //ExStart
+        //ExFor:MergeFieldImageDimension
+        //ExFor:MergeFieldImageDimension.#ctor
+        //ExFor:MergeFieldImageDimension.#ctor(Double)
+        //ExFor:MergeFieldImageDimension.#ctor(Double,MergeFieldImageDimensionUnit)
+        //ExFor:MergeFieldImageDimension.Unit
+        //ExFor:MergeFieldImageDimension.Value
+        //ExFor:MergeFieldImageDimensionUnit
+        //ExSummary:Shows how to set the dimensions of merged images.
         [Test]
         public void MergeFieldImageDimension()
         {
-            //ExStart
-            //ExFor:MergeFieldImageDimension
-            //ExFor:MergeFieldImageDimension.#ctor
-            //ExFor:MergeFieldImageDimension.#ctor(Double)
-            //ExFor:MergeFieldImageDimension.#ctor(Double,MergeFieldImageDimensionUnit)
-            //ExFor:MergeFieldImageDimension.Unit
-            //ExFor:MergeFieldImageDimension.Value
-            //ExFor:MergeFieldImageDimensionUnit
-            //ExSummary:Shows how to set dimensions of merged images.
             Document doc = new Document();
+
+            // Insert a merge field where images will be placed during the mail merge
             DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertField("MERGEFIELD Image:ImageColumn");
 
-            builder.InsertField("MERGEFIELD Image:ResizedImage");
+            // Create a data table for the mail merge
+            // The name of the column that contains our image filenames needs to match the name of our merge field
+            DataTable dataTable = CreateDataTable("Images", "ImageColumn", 
+                new string[]
+                {
+                    MyDir + @"Images\Aspose.Words.gif",
+                    MyDir + @"Images\Watermark.png",
+                    MyDir + @"Images\dotnet-logo.png"
+                });
 
-            DataTable dataTable = new DataTable("Images");
-            dataTable.Columns.Add(new DataColumn("Column"));
-
-            for (int i = 0; i < 5; i++)
-            {
-                DataRow dataRow = dataTable.NewRow();
-                dataRow[0] = MyDir + @"Images\Watermark.png";
-                dataTable.Rows.Add(dataRow);
-            }
-
-            doc.MailMerge.FieldMergingCallback = new HandleMergeField();
+            doc.MailMerge.FieldMergingCallback = new MergedImageResizer(450, 200, MergeFieldImageDimensionUnit.Point);
             doc.MailMerge.Execute(dataTable);
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.MergeFieldImageDimension.docx");
-            //ExEnd
         }
 
-        private class HandleMergeField : IFieldMergingCallback
+        /// <summary>
+        /// Creates a data table with a single column
+        /// </summary>
+        private DataTable CreateDataTable(string tableName, string columnName, string[] columnContents)
         {
-            public void FieldMerging(FieldMergingArgs e) { 
+            DataTable dataTable = new DataTable(tableName);
+            dataTable.Columns.Add(new DataColumn(columnName));
+
+            foreach (string s in columnContents)
+            {
+                DataRow dataRow = dataTable.NewRow();
+                dataRow[0] = s;
+                dataTable.Rows.Add(dataRow);
+            }
+
+            return dataTable;
+        }
+
+        /// <summary>
+        /// Sets the size of all mail merged images to one defined width and height 
+        /// </summary>
+        private class MergedImageResizer : IFieldMergingCallback
+        {
+            public MergedImageResizer(double imageWidth, double imageHeight, MergeFieldImageDimensionUnit unit)
+            {
+                mImageWidth = imageWidth;
+                mImageHeight = imageHeight;
+                mUnit = unit;
+            }
+
+            public void FieldMerging(FieldMergingArgs e)
+            { 
                 throw new NotImplementedException();
             }
 
             public void ImageFieldMerging(ImageFieldMergingArgs args)
             {
-                args.ImageFileName = MyDir + @"Images\Watermark.png";
-                args.ImageWidth = new MergeFieldImageDimension(450);
-
-                Assert.AreEqual(450.0d, args.ImageWidth.Value);
-                Assert.AreEqual(MergeFieldImageDimensionUnit.Point, args.ImageWidth.Unit);
-
-                args.ImageHeight = new MergeFieldImageDimension(200);
-                args.ImageHeight.Unit = MergeFieldImageDimensionUnit.Percent;
+                args.ImageFileName = args.FieldValue.ToString();
+                args.ImageWidth = new MergeFieldImageDimension(mImageWidth, mUnit);
+                args.ImageHeight = new MergeFieldImageDimension(mImageHeight, mUnit);
             }
+
+            private readonly double mImageWidth;
+            private readonly double mImageHeight;
+            private readonly MergeFieldImageDimensionUnit mUnit;
         }
+        //ExEnd
     }
 }
