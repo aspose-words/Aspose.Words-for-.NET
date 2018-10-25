@@ -78,7 +78,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CalcuateDepthOfNestedTables()
+        public void CalculateDepthOfNestedTables()
         {
             //ExStart
             //ExFor:Node.GetAncestor(NodeType)
@@ -856,6 +856,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Table
+            //ExFor:Table.AllowCellSpacing
             //ExFor:Row
             //ExFor:Row.RowFormat
             //ExFor:RowFormat
@@ -905,6 +906,9 @@ namespace ApiExamples
             row.AppendChild(cell.Clone(false));
             row.LastCell.AppendChild(new Paragraph(doc));
             row.LastCell.FirstParagraph.AppendChild(new Run(doc, "Row 1, Cell 2 Text"));
+
+            // Remove spacing between cells
+            table.AllowCellSpacing = false;
 
             doc.Save(MyDir + @"\Artifacts\Table.InsertTableUsingNodes.doc");
             //ExEnd

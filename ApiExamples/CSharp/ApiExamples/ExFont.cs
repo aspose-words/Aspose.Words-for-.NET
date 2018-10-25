@@ -109,7 +109,7 @@ namespace ApiExamples
 
         [Test]
         [Description("WORDSNET-16234")]
-        public void DefaulValuesEmbeddedFontsParametrs()
+        public void DefaultValuesEmbeddedFontsParameters()
         {
             Document doc = new Document();
 
@@ -162,7 +162,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void Strikethrough()
+        public void StrikeThrough()
         {
             //ExStart
             //ExFor:Font.StrikeThrough
@@ -638,7 +638,7 @@ namespace ApiExamples
             FontSettings.DefaultInstance.SetFontsSources(origFontSources);
         }
 
-        [Test] //TODO: write support to fix his example
+        [Test]
         public void GetAvailableFonts()
         {
             //ExStart
@@ -653,10 +653,10 @@ namespace ApiExamples
             
             foreach (PhysicalFontInfo fontInfo in folderFontSource[0].GetAvailableFonts())
             {
-                Console.WriteLine("FontFamilyName : "+ fontInfo.FontFamilyName);
-                Console.WriteLine("FullFontName  : " + fontInfo.FullFontName);
-                Console.WriteLine("Version  : " + fontInfo.Version);
-                Console.WriteLine("FilePath : " + fontInfo.FilePath);
+                Console.WriteLine("FontFamilyName : {0}", fontInfo.FontFamilyName);
+                Console.WriteLine("FullFontName  : {0}", fontInfo.FullFontName);
+                Console.WriteLine("Version  : {0}", fontInfo.Version);
+                Console.WriteLine("FilePath : {0}\n", fontInfo.FilePath);
             }
             //ExEnd
         }
@@ -764,13 +764,13 @@ namespace ApiExamples
         [Test]
         public void FontSubstitutionWarningsClosestMatch()
         {
-            Document doc = new Document(MyDir + "Font.DisapearingBulletPoints.doc");
+            Document doc = new Document(MyDir + "Font.DisappearingBulletPoints.doc");
 
             // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
             HandleDocumentWarnings callback = new HandleDocumentWarnings();
             doc.WarningCallback = callback;
 
-            doc.Save(MyDir + @"\Artifacts\Font.DisapearingBulletPoints.pdf");
+            doc.Save(MyDir + @"\Artifacts\Font.DisappearingBulletPoints.pdf");
 
             Assert.True(callback.mFontWarnings[0].Description
                 .Equals(
@@ -804,16 +804,16 @@ namespace ApiExamples
             //ExStart
             //ExFor:Font.Hidden
             //ExFor:Paragraph.Accept
-            //ExFor:DocumentVisitor.VisitParagraphStart(Aspose.Words.Paragraph)
-            //ExFor:DocumentVisitor.VisitFormField(Aspose.Words.Fields.FormField)
-            //ExFor:DocumentVisitor.VisitTableEnd(Aspose.Words.Tables.Table)
-            //ExFor:DocumentVisitor.VisitCellEnd(Aspose.Words.Tables.Cell)
-            //ExFor:DocumentVisitor.VisitRowEnd(Aspose.Words.Tables.Row)
-            //ExFor:DocumentVisitor.VisitSpecialChar(Aspose.Words.SpecialChar)
-            //ExFor:DocumentVisitor.VisitGroupShapeStart(Aspose.Words.Drawing.GroupShape)
-            //ExFor:DocumentVisitor.VisitShapeStart(Aspose.Words.Drawing.Shape)
-            //ExFor:DocumentVisitor.VisitCommentStart(Aspose.Words.Comment)
-            //ExFor:DocumentVisitor.VisitFootnoteStart(Aspose.Words.Footnote)
+            //ExFor:DocumentVisitor.VisitParagraphStart(Paragraph)
+            //ExFor:DocumentVisitor.VisitFormField(FormField)
+            //ExFor:DocumentVisitor.VisitTableEnd(Table)
+            //ExFor:DocumentVisitor.VisitCellEnd(Cell)
+            //ExFor:DocumentVisitor.VisitRowEnd(Row)
+            //ExFor:DocumentVisitor.VisitSpecialChar(SpecialChar)
+            //ExFor:DocumentVisitor.VisitGroupShapeStart(GroupShape)
+            //ExFor:DocumentVisitor.VisitShapeStart(Shape)
+            //ExFor:DocumentVisitor.VisitCommentStart(Comment)
+            //ExFor:DocumentVisitor.VisitFootnoteStart(Footnote)
             //ExFor:SpecialChar
             //ExFor:Node.Accept
             //ExFor:Paragraph.ParagraphBreakFont
@@ -1276,6 +1276,56 @@ namespace ApiExamples
             Assert.AreEqual(1, doc.FontSettings.GetFontsSources().Length);
             Assert.AreEqual(FontSourceType.SystemFonts, doc.FontSettings.GetFontsSources()[0].Type);
             Assert.AreEqual(1, doc.FontSettings.GetFontSubstitutes("Kreon-Regular").Length);
+            //ExEnd
+        }
+
+        [Test]
+        public void LoadFontFallbackSettingsFromFile()
+        {
+            //ExStart
+            //ExFor:FontFallbackSettings.Load(String)
+            //ExFor:FontFallbackSettings.Save(String)
+            //ExSummary:Shows how to load and save font fallback settings from file.
+            Document doc = new Document(MyDir + "Rendering.doc");
+            
+            // By default fallback settings are initialized with predefined settings which mimics the Microsoft Word fallback.
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.FallbackSettings.Load(MyDir + "Fallback.xml");
+
+            doc.FontSettings = fontSettings;
+            doc.Save(MyDir + @"\Artifacts\LoadFontFallbackSettingsFromFile.pdf");
+
+            // Saves font fallback setting by string
+            doc.FontSettings.FallbackSettings.Save(MyDir + @"\Artifacts\FallbackSettings.xml");
+            //ExEnd
+        }
+
+        [Test]
+        public void LoadFontFallbackSettingsFromStream()
+        {
+            //ExStart
+            //ExFor:FontFallbackSettings.Load(Stream)
+            //ExFor:FontFallbackSettings.Save(Stream)
+            //ExSummary:Shows how to load and save font fallback settings from stream.
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            // By default fallback settings are initialized with predefined settings which mimics the Microsoft Word fallback.
+            using (FileStream fontFallbackStream = new FileStream(MyDir + "Fallback.xml", FileMode.Open))
+            {
+                FontSettings fontSettings = new FontSettings();
+                fontSettings.FallbackSettings.Load(fontFallbackStream);
+
+                doc.FontSettings = fontSettings;
+            }
+
+            doc.Save(MyDir + @"\Artifacts\LoadFontFallbackSettingsFromStream.pdf");
+
+            // Saves font fallback setting by stream
+            using (FileStream fontFallbackStream =
+                new FileStream(MyDir + @"\Artifacts\FallbackSettings.xml", FileMode.Create))
+            {
+                doc.FontSettings.FallbackSettings.Save(fontFallbackStream);
+            }
             //ExEnd
         }
     }

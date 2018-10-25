@@ -47,7 +47,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlLoadOptions.PreferredControlType
-            //ExSummary:Shows how to set preffered type of document nodes that will represent imported <input> and <select> elements.
+            //ExSummary:Shows how to set preferred type of document nodes that will represent imported <input> and <select> elements.
             const string html = @"
                 <html>
                     <select name='ComboBox' size='1'>

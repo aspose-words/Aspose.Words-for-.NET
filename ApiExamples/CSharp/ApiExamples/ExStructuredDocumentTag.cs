@@ -44,6 +44,43 @@ namespace ApiExamples
         }
 
         [Test]
+        public void SetSpecificStyleToSdt()
+        {
+            //ExStart
+            //ExFor:StructuredDocumentTag.Style
+            //ExFor:StructuredDocumentTag.StyleName
+            //ExSummary:Shows how to work with styles for content control elements.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Get specific style from the document to apply it to an SDT
+            Style quoteStyle = doc.Styles[StyleIdentifier.Quote];
+            StructuredDocumentTag sdtPlainText = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
+            sdtPlainText.Style = quoteStyle;
+
+            StructuredDocumentTag sdtRichText = new StructuredDocumentTag(doc, SdtType.RichText, MarkupLevel.Inline);
+            sdtRichText.StyleName = "Quote"; // Second method to apply specific style to an SDT control
+
+            // Insert content controls into the document
+            builder.InsertNode(sdtPlainText);
+            builder.InsertNode(sdtRichText);
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            NodeCollection tags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
+
+            foreach (Node node in tags)
+            {
+                StructuredDocumentTag sdt = (StructuredDocumentTag) node;
+                // If style was not defined before, style should be "Default Paragraph Font"
+                Assert.AreEqual(StyleIdentifier.Quote, sdt.Style.StyleIdentifier);
+                Assert.AreEqual("Quote", sdt.StyleName);
+            }
+            //ExEnd
+        }
+
+        [Test]
         public void CheckBox()
         {
             //ExStart

@@ -76,7 +76,8 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             Aspose.Words.Saving.HtmlSaveOptions saveOptions = new Aspose.Words.Saving.HtmlSaveOptions(SaveFormat.Mhtml);
             saveOptions.PrettyFormat = true;
             saveOptions.ExportCidUrlsForMhtmlResources = true;
-              
+            saveOptions.SaveFormat = SaveFormat.Mhtml;
+
             dataDir = dataDir + "SetExportCidUrlsForMhtmlResources_out.mhtml";
             doc.Save(dataDir, saveOptions);
             // ExEnd:SetExportCidUrlsForMhtmlResources
