@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
-    class Setuplanguagepreferences
+    class SetupLanguagePreferences
     {
         public static void Run()
         {

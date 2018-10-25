@@ -24,7 +24,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             dataDir = dataDir + "DocumentBuilder.InsertHorizontalRule_out.doc";
             doc.Save(dataDir);
             // ExEnd:DocumentBuilderInsertHorizontalRule
-            Console.WriteLine("\nBookmark using DocumentBuilder inserted successfully.\nFile saved at " + dataDir);
+            Console.WriteLine("\nHorizontal rule is inserted into document successfully.\nFile saved at " + dataDir);
         }
     }
 }

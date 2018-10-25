@@ -8,24 +8,19 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Text;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Aspose.BarCode;
 using Aspose.BarCode.BarCodeRecognition;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Fields;
 using Aspose.Words.Replacing;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
-using System.Drawing;
 
 namespace ApiExamples
 {
@@ -169,6 +164,29 @@ namespace ApiExamples
         }
 
         [Test]
+        public void InsertFieldNone()
+        {
+            //ExStart
+            //ExFor:FieldUnknown.#ctor
+            //ExSummary:Shows how to work with 'FieldNone' field in a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertField(FieldType.FieldNone, false);
+            
+            MemoryStream stream = new MemoryStream();
+            doc.Save(stream, SaveFormat.Docx);
+
+            FieldUnknown fieldUnknown = (FieldUnknown)doc.Range.Fields.FirstOrDefault(p => p.Type == FieldType.FieldNone);
+            if (fieldUnknown != null)
+                Assert.AreEqual(FieldType.FieldNone, fieldUnknown.Type);
+            else
+                Assert.Fail("FieldUnknown doesn't exist");
+            //ExEnd
+        }
+
+
+        [Test]
         public void InsertTcField()
         {
             //ExStart
@@ -249,13 +267,13 @@ namespace ApiExamples
         private class InsertTcFieldHandler : IReplacingCallback
         {
             // Store the text and switches to be used for the TC fields.
-            private readonly String mFieldText;
-            private readonly String mFieldSwitches;
+            private readonly string mFieldText;
+            private readonly string mFieldSwitches;
 
             /// <summary>
             /// The display text and switches to use for each TC field. Display name can be an empty String or null.
             /// </summary>
-            public InsertTcFieldHandler(String text, String switches)
+            public InsertTcFieldHandler(string text, string switches)
             {
                 mFieldText = text;
                 mFieldSwitches = switches;
@@ -272,13 +290,13 @@ namespace ApiExamples
                 // match String as the display text.
                 String insertText;
 
-                if (!String.IsNullOrEmpty(mFieldText))
+                if (!string.IsNullOrEmpty(mFieldText))
                     insertText = mFieldText;
                 else
                     insertText = args.Match.Value;
 
                 // Insert the TC field before this node using the specified String as the display text and user defined switches.
-                builder.InsertField(String.Format("TC \"{0}\" {1}", insertText, mFieldSwitches));
+                builder.InsertField(string.Format("TC \"{0}\" {1}", insertText, mFieldSwitches));
 
                 // We have done what we want so skip replacement.
                 return ReplaceAction.Skip;
@@ -2059,7 +2077,7 @@ namespace ApiExamples
             barcodeParameters.SymbolRotation = "0";
 
             // Save the generated barcode image to the file system
-            Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            System.Drawing.Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
             img.Save(MyDir + @"\Artifacts\Field.BarcodeGenerator.QR.jpg");
 
             // Insert the image into the document

@@ -28,14 +28,14 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            //Create new comment
+            // Create new comment
             Comment newComment = new Comment(doc, "John Doe", "J.D.", DateTime.Now);
             newComment.SetText("My comment.");
 
-            //Add this comment to a document node
+            // Add this comment to a document node
             builder.CurrentParagraph.AppendChild(newComment);
 
-            //Add comment reply
+            // Add comment reply
             newComment.AddReply("John Doe", "JD", new DateTime(2017, 9, 25, 12, 15, 0), "New reply");
             //ExEnd
 
@@ -60,12 +60,12 @@ namespace ApiExamples
             //ExSummary:Shows how to get all comments with all replies.
             Document doc = new Document(MyDir + "Comment.Document.docx");
 
-            //Get all comment from the document
+            // Get all comment from the document
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
 
             Assert.AreEqual(12, comments.Count); //ExSkip
 
-            //For all comments and replies we identify comment level and info about it
+            // For all comments and replies we identify comment level and info about it
             foreach (Comment comment in comments.OfType<Comment>())
             {
                 if (comment.Ancestor == null)

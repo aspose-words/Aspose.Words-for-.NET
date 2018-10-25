@@ -646,6 +646,7 @@ namespace ApiExamples
             //ExSummary:Shows how to append a document to the end of another document.
             // The document that the content will be appended to.
             Document dstDoc = new Document(MyDir + "Document.doc");
+            
             // The document to append.
             Document srcDoc = new Document(MyDir + "DocumentBuilder.doc");
 
@@ -668,6 +669,7 @@ namespace ApiExamples
             //ExSummary:Shows how to join multiple documents together.
             // The document that the other documents will be appended to.
             Document doc = new Document();
+            
             // We should call this method to clear this document of any existing content.
             doc.RemoveAllChildren();
 
@@ -1981,7 +1983,7 @@ namespace ApiExamples
 
             // Empty Microsoft Word documents by default come with an attached template called "Normal.dotm"
             // There is no default template for Aspose Words documents
-            Assert.AreEqual(String.Empty, doc.AttachedTemplate);
+            Assert.AreEqual(string.Empty, doc.AttachedTemplate);
 
             // For AutomaticallyUpdateStyles to have any effect, we need a document with a template
             // We can make a document with word and open it
@@ -2060,7 +2062,7 @@ namespace ApiExamples
             // We have a document with 2 sections, this way FirstSection and LastSection are not the same
             Assert.AreEqual(2, doc.Sections.Count);
 
-            string newCopyrightInformation = String.Format("Copyright (C) {0} by Aspose Pty Ltd.", DateTime.Now.Year);
+            string newCopyrightInformation = string.Format("Copyright (C) {0} by Aspose Pty Ltd.", DateTime.Now.Year);
             FindReplaceOptions findReplaceOptions =
                 new FindReplaceOptions { MatchCase = false, FindWholeWordsOnly = false };
 
@@ -2161,7 +2163,7 @@ namespace ApiExamples
             Assert.AreEqual("DATE", fieldText.Text);
             fieldText.Text = "PAGE";
 
-            // We changed the text to "PAGE" but the field's type property did not update accoridngly
+            // We changed the text to "PAGE" but the field's type property did not update accordingly
             Assert.AreEqual("PAGE", fieldText.GetText());
             Assert.AreNotEqual(FieldType.FieldPage, field.Type);
 
@@ -2515,6 +2517,36 @@ namespace ApiExamples
             doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.FormatAndDelete;
   
             doc.Save(MyDir + @"\Artifacts\Document.ShowRevisionsInBalloons.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void CopyStylesFromTemplateViaDocument()
+        {
+            //ExStart
+            //ExFor:Document.CopyStylesFromTemplate(Document)
+            //ExSummary:Shows how to copies styles from the template to a document.
+            Document template = new Document(MyDir + "Rendering.doc");
+
+            Document target = new Document(MyDir + "Document.docx");
+            target.CopyStylesFromTemplate(template);
+
+            target.Save(MyDir + @"\Artifacts\CopyStylesFromTemplateViaDocument.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void CopyStylesFromTemplateViaString()
+        {
+            //ExStart
+            //ExFor:Document.CopyStylesFromTemplate(String)
+            //ExSummary:Shows how to copies styles from the template to a document.
+            string templatePath = MyDir + "Rendering.doc";
+            
+            Document target = new Document(MyDir + "Document.docx");
+            target.CopyStylesFromTemplate(templatePath);
+
+            target.Save(MyDir + @"\Artifacts\CopyStylesFromTemplateViaString.docx");
             //ExEnd
         }
     }
