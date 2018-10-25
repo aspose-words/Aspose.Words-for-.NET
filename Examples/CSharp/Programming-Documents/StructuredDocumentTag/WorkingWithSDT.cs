@@ -14,11 +14,10 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Struct
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithStructuredDocumentTag();
-            SetContentControlStype(dataDir);
             BindSDTtoCustomXmlPart(dataDir);
             ClearContentsControl(dataDir);
             SetContentControlColor(dataDir);
-            SetContentControlStype(dataDir);
+            SetContentControlStyle(dataDir);
         }
 
         public static void SetContentControlColor(string dataDir)
@@ -74,7 +73,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Struct
 
         public static void SetContentControlStyle(string dataDir)
         {
-            // ExStart:SetContentControlStype
+            // ExStart:SetContentControlStyle
             Document doc = new Document(dataDir + "input.docx");
             StructuredDocumentTag sdt = (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
             Style style = doc.Styles[StyleIdentifier.Quote];
@@ -83,7 +82,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Struct
             dataDir = dataDir + "SetContentControlStyle_out.docx";
             // Save the document to disk.
             doc.Save(dataDir);
-            // ExEnd:SetContentControlStype
+            // ExEnd:SetContentControlStyle
             Console.WriteLine("\nSet the style of content control successfully.");
         }
     }
