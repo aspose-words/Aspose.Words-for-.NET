@@ -1950,7 +1950,7 @@ namespace ApiExamples
 
             // Create a data table for the mail merge
             // The name of the column that contains our image filenames needs to match the name of our merge field
-            DataTable dataTable = CreateDataTable("Images", "ImageColumn", 
+            System.Data.DataTable dataTable = CreateDataTable("Images", "ImageColumn", 
                 new string[]
                 {
                     MyDir + @"Images\Aspose.Words.gif",
@@ -1968,14 +1968,14 @@ namespace ApiExamples
         /// <summary>
         /// Creates a data table with a single column
         /// </summary>
-        private DataTable CreateDataTable(string tableName, string columnName, string[] columnContents)
+        private System.Data.DataTable CreateDataTable(string tableName, string columnName, string[] columnContents)
         {
-            DataTable dataTable = new DataTable(tableName);
-            dataTable.Columns.Add(new DataColumn(columnName));
+            System.Data.DataTable dataTable = new System.Data.DataTable(tableName);
+            dataTable.Columns.Add(new System.Data.DataColumn(columnName));
 
             foreach (string s in columnContents)
             {
-                DataRow dataRow = dataTable.NewRow();
+                System.Data.DataRow dataRow = dataTable.NewRow();
                 dataRow[0] = s;
                 dataTable.Rows.Add(dataRow);
             }
