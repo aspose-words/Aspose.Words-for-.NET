@@ -58,8 +58,7 @@ namespace Aspose.Words.Examples.CSharp
             // QuickStart.HelloWorld.Run();
             // QuickStart.UpdateFields.Run();
             // QuickStart.WorkingWithNodes.Run();
-            // Load_Options.Run();
-            // Load_Options.Run();
+            
             //// =====================================================
             //// =====================================================
             //// Loading and Saving
@@ -73,6 +72,7 @@ namespace Aspose.Words.Examples.CSharp
             // CheckFormat.Run();
             // SplitIntoHtmlPages.Run();
             // LoadTxt.Run();
+            // Load_Options.Run();
             // PageSplitter.Run();
             // ImageToPdf.Run();
             // SpecifySaveOption.Run();
