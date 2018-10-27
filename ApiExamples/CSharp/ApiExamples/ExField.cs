@@ -2005,6 +2005,11 @@ namespace ApiExamples
                 args.ImageFileName = args.FieldValue.ToString();
                 args.ImageWidth = new MergeFieldImageDimension(mImageWidth, mUnit);
                 args.ImageHeight = new MergeFieldImageDimension(mImageHeight, mUnit);
+
+                Assert.AreEqual(mImageWidth, args.ImageWidth.Value);
+                Assert.AreEqual(mUnit, args.ImageWidth.Unit);
+                Assert.AreEqual(mImageHeight, args.ImageHeight.Value);
+                Assert.AreEqual(mUnit, args.ImageHeight.Unit);
             }
 
             private readonly double mImageWidth;
