@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Net;
@@ -2173,7 +2174,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Field field = builder.InsertField("=-1234567.89 \\# \"### ### ###.000\"", null);
-            doc.FieldOptions.ResultFormatter = new FieldResultFormatter("[{0}]", null);
+            doc.FieldOptions.ResultFormatter = new FieldResultFormatter("[{0}]", null, null);
 
             field.Update();
 
@@ -2182,10 +2183,11 @@ namespace ApiExamples
 
         private class FieldResultFormatter : IFieldResultFormatter
         {
-            public FieldResultFormatter(string numberFormat, string dateFormat)
+            public FieldResultFormatter(string numberFormat, string dateFormat, string generalFormat)
             {
                 mNumberFormat = numberFormat;
                 mDateFormat = dateFormat;
+                mGeneralFormat = generalFormat;
             }
 
             public string FormatNumeric(double value, string format)
@@ -2204,19 +2206,27 @@ namespace ApiExamples
 
             public string Format(string value, GeneralFormat format)
             {
-                throw new NotImplementedException();
+                mGeneralFormatInvocations.Add(new object[] { value, format });
+
+                return string.IsNullOrEmpty(mGeneralFormat) ? null : string.Format(mGeneralFormat, value);
             }
 
             public string Format(double value, GeneralFormat format)
             {
-                throw new NotImplementedException();
+                mGeneralFormatInvocations.Add(new object[] { value, format });
+
+                // Return null to indicate that default formatting should be applied
+                return null;
             }
 
             private readonly string mNumberFormat;
             private readonly string mDateFormat;
+            private readonly string mGeneralFormat;
 
             private readonly ArrayList mNumberFormatInvocations = new ArrayList();
             private readonly ArrayList mDateFormatInvocations = new ArrayList();
+            private readonly ArrayList mGeneralFormatInvocations = new ArrayList();
+
         }
         //ExEnd
 
