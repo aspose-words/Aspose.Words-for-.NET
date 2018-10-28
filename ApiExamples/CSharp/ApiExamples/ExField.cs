@@ -2078,7 +2078,7 @@ namespace ApiExamples
 
             // Save the generated barcode image to the file system
             System.Drawing.Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-            img.Save(MyDir + @"\Artifacts\Field.BarcodeGenerator.QR.jpg");
+            img.Save(MyDir + @"\Artifacts\Field.BarcodeGenerator.QR.jpg"); // INSP: This image is a dark square, please check what happens
 
             // Insert the image into the document
             builder.InsertImage(img);
