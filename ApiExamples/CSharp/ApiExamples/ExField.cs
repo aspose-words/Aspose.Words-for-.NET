@@ -19,6 +19,7 @@ using Aspose.BarCode.BarCodeRecognition;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Fields;
+using Aspose.Words.MailMerging;
 using Aspose.Words.Replacing;
 using NUnit.Framework;
 
@@ -1928,5 +1929,93 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.Hyperlink.docx");
             //ExEnd
         }
+
+        //ExStart
+        //ExFor:MergeFieldImageDimension
+        //ExFor:MergeFieldImageDimension.#ctor
+        //ExFor:MergeFieldImageDimension.#ctor(Double)
+        //ExFor:MergeFieldImageDimension.#ctor(Double,MergeFieldImageDimensionUnit)
+        //ExFor:MergeFieldImageDimension.Unit
+        //ExFor:MergeFieldImageDimension.Value
+        //ExFor:MergeFieldImageDimensionUnit
+        //ExSummary:Shows how to set the dimensions of merged images.
+        [Test]
+        public void MergeFieldImageDimension()
+        {
+            Document doc = new Document();
+
+            // Insert a merge field where images will be placed during the mail merge
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertField("MERGEFIELD Image:ImageColumn");
+
+            // Create a data table for the mail merge
+            // The name of the column that contains our image filenames needs to match the name of our merge field
+            System.Data.DataTable dataTable = CreateDataTable("Images", "ImageColumn", 
+                new string[]
+                {
+                    MyDir + @"Images\Aspose.Words.gif",
+                    MyDir + @"Images\Watermark.png",
+                    MyDir + @"Images\dotnet-logo.png"
+                });
+
+            doc.MailMerge.FieldMergingCallback = new MergedImageResizer(450, 200, MergeFieldImageDimensionUnit.Point);
+            doc.MailMerge.Execute(dataTable);
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.MergeFieldImageDimension.docx");
+        }
+
+        /// <summary>
+        /// Creates a data table with a single column
+        /// </summary>
+        private System.Data.DataTable CreateDataTable(string tableName, string columnName, string[] columnContents)
+        {
+            System.Data.DataTable dataTable = new System.Data.DataTable(tableName);
+            dataTable.Columns.Add(new System.Data.DataColumn(columnName));
+
+            foreach (string s in columnContents)
+            {
+                System.Data.DataRow dataRow = dataTable.NewRow();
+                dataRow[0] = s;
+                dataTable.Rows.Add(dataRow);
+            }
+
+            return dataTable;
+        }
+
+        /// <summary>
+        /// Sets the size of all mail merged images to one defined width and height 
+        /// </summary>
+        private class MergedImageResizer : IFieldMergingCallback
+        {
+            public MergedImageResizer(double imageWidth, double imageHeight, MergeFieldImageDimensionUnit unit)
+            {
+                mImageWidth = imageWidth;
+                mImageHeight = imageHeight;
+                mUnit = unit;
+            }
+
+            public void FieldMerging(FieldMergingArgs e)
+            { 
+                throw new NotImplementedException();
+            }
+
+            public void ImageFieldMerging(ImageFieldMergingArgs args)
+            {
+                args.ImageFileName = args.FieldValue.ToString();
+                args.ImageWidth = new MergeFieldImageDimension(mImageWidth, mUnit);
+                args.ImageHeight = new MergeFieldImageDimension(mImageHeight, mUnit);
+
+                Assert.AreEqual(mImageWidth, args.ImageWidth.Value);
+                Assert.AreEqual(mUnit, args.ImageWidth.Unit);
+                Assert.AreEqual(mImageHeight, args.ImageHeight.Value);
+                Assert.AreEqual(mUnit, args.ImageHeight.Unit);
+            }
+
+            private readonly double mImageWidth;
+            private readonly double mImageHeight;
+            private readonly MergeFieldImageDimensionUnit mUnit;
+        }
+        //ExEnd
     }
 }
