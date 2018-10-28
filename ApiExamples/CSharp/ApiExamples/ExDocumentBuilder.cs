@@ -2173,12 +2173,40 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Field field = builder.InsertField("=-1234567.89 \\# \"### ### ###.000\"", null);
             doc.FieldOptions.ResultFormatter = new FieldResultFormatter("[{0}]", null, null);
 
+            Field field = builder.InsertField("=1 \\* CardText", null);
+            field.Update();
+            Assert.AreEqual("one", field.Result);
+
+            field = builder.InsertField("IF 1=1 IFTEXT \\* Lower", null);
+            field.Update();
+            Assert.AreEqual("iftext", field.Result);
+
+            field = builder.InsertField("QUOTE \"2\" \\* Ordinal", null);
+            field.Update();
+            Assert.AreEqual("2nd", field.Result);
+
+            field = builder.InsertField("QUOTE \"text\" \\* FirstCap", null);
+            field.Update();
+            Assert.AreEqual("Text", field.Result);
+
+            field = builder.InsertField("QUOTE \"3\" \\* OrdText \\* Upper", null);
+            field.Update();
+            Assert.AreEqual("THIRD", field.Result);
+
+
+            doc.UpdateFields();
             field.Update();
 
-            Assert.AreEqual("[-1234567.89]", field.Result); //ExSkip
+            ((FieldResultFormatter)doc.FieldOptions.ResultFormatter).PrintInvocations();
+            
+            field = builder.InsertField("DATE", null);
+            
+            doc.FieldOptions.ResultFormatter = new FieldResultFormatter(null, "mm.dd.yy", null);
+            field.Update();
+            //Assert.AreEqual("dd", field.Result);
+
         }
 
         private class FieldResultFormatter : IFieldResultFormatter
@@ -2206,17 +2234,42 @@ namespace ApiExamples
 
             public string Format(string value, GeneralFormat format)
             {
-                mGeneralFormatInvocations.Add(new object[] { value, format });
-
-                return string.IsNullOrEmpty(mGeneralFormat) ? null : string.Format(mGeneralFormat, value);
+                return Format((object)value, format);
             }
 
             public string Format(double value, GeneralFormat format)
             {
+                return Format((object)value, format);
+            }
+
+            private string Format(object value, GeneralFormat format)
+            {
                 mGeneralFormatInvocations.Add(new object[] { value, format });
 
-                // Return null to indicate that default formatting should be applied
-                return null;
+                return string.IsNullOrEmpty(mGeneralFormat)
+                    ? null
+                    : string.Format(mGeneralFormat, value);
+            }
+
+            public void PrintInvocations()
+            {
+                Console.WriteLine("Number format invocations ({0}):", mNumberFormatInvocations.Count);
+                foreach (object[] s in mNumberFormatInvocations)
+                {
+                    Console.Write(s[0] + " ");
+                }
+
+                Console.WriteLine("\nDate format invocations ({0}):", mDateFormatInvocations.Count);
+                foreach (object[] s in mDateFormatInvocations)
+                {
+                    Console.Write(s[0] + " ");
+                }
+
+                Console.WriteLine("\nGeneral format invocations ({0}):", mGeneralFormatInvocations.Count);
+                foreach (object[] s in mGeneralFormatInvocations)
+                {
+                    Console.Write(s[0] + " ");
+                }
             }
 
             private readonly string mNumberFormat;
