@@ -833,13 +833,13 @@ namespace ApiExamples
             builder.Writeln("LINK fields: ");
 
             // Insert LINK fields containing text from another document and present them as text
-            InsetFieldLink(builder, InsertLinkedObjectAs.Unicode, true, "Word.Document.8", MyDir + "Document.doc", null, "\tUnicode: ", "\n");       
-            InsetFieldLink(builder, InsertLinkedObjectAs.Html, true, "Word.Document.8", MyDir + "Document.doc", null, "\tHtml: ", "\n");
-            InsetFieldLink(builder, InsertLinkedObjectAs.Rtf, true, "Word.Document.8", MyDir + "Document.doc", null, "\tRtf: ", "\n");
+            InsertFieldLink(builder, InsertLinkedObjectAs.Unicode, true, "Word.Document.8", MyDir + "Document.doc", null, "\tUnicode: ", "\n");       
+            InsertFieldLink(builder, InsertLinkedObjectAs.Html, true, "Word.Document.8", MyDir + "Document.doc", null, "\tHtml: ", "\n");
+            InsertFieldLink(builder, InsertLinkedObjectAs.Rtf, true, "Word.Document.8", MyDir + "Document.doc", null, "\tRtf: ", "\n");
 
             // Insert one cell from a spreadsheet as an image
-            InsetFieldLink(builder, InsertLinkedObjectAs.Picture, true, "Excel.Sheet.8", MyDir + "MySpreadsheet.xlsx", "Sheet1!R2C2", "\tPicture: ", "\n");
-            InsetFieldLink(builder, InsertLinkedObjectAs.Bitmap, true, "Excel.Sheet.8", MyDir + "MySpreadsheet.xlsx", "Sheet1!R2C2", "\tBitmap: ", "\n");
+            InsertFieldLink(builder, InsertLinkedObjectAs.Picture, true, "Excel.Sheet.8", MyDir + "MySpreadsheet.xlsx", "Sheet1!R2C2", "\tPicture: ", "\n");
+            InsertFieldLink(builder, InsertLinkedObjectAs.Bitmap, true, "Excel.Sheet.8", MyDir + "MySpreadsheet.xlsx", "Sheet1!R2C2", "\tBitmap: ", "\n");
 
             builder.Writeln("DDE fields: ");
 
@@ -870,7 +870,7 @@ namespace ApiExamples
         /// <summary>
         /// Use a document builder to insert a LINK field and set its properties according to parameters
         /// </summary>
-        private void InsetFieldLink(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs, bool autoUpdate, string progId, string sourceFullName, string sourceItem, string textBefore, string textAfter)
+        private void InsertFieldLink(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs, bool autoUpdate, string progId, string sourceFullName, string sourceItem, string textBefore, string textAfter)
         {
             builder.Write(textBefore);
 
