@@ -2178,42 +2178,25 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            doc.FieldOptions.ResultFormatter = new FieldResultFormatter("[{0}]", null, null);
+            doc.FieldOptions.ResultFormatter = new FieldResultFormatter("[{0}]", "[{0}]", "[{0}]");
 
-            Field field = builder.InsertField("=1 \\* CardText", null);
-            field.Update();
-            Assert.AreEqual("one", field.Result);
+            // Insert a field with a numeric format
+            builder.InsertField(" = 2 + 3 \\# $###", null);
 
-            field = builder.InsertField("IF 1=1 IFTEXT \\* Lower", null);
-            field.Update();
-            Assert.AreEqual("iftext", field.Result);
+            // Insert a field with a date/time format
+            builder.InsertField("DATE \\@ \"MMMM, yyyy\"", null);
 
-            field = builder.InsertField("QUOTE \"2\" \\* Ordinal", null);
-            field.Update();
-            Assert.AreEqual("2nd", field.Result);
+            // Insert a field with a general format
+            builder.InsertField("QUOTE \"2\" \\* Ordinal", null);
 
-            field = builder.InsertField("QUOTE \"text\" \\* FirstCap", null);
-            field.Update();
-            Assert.AreEqual("Text", field.Result);
-
-            field = builder.InsertField("QUOTE \"3\" \\* OrdText \\* Upper", null);
-            field.Update();
-            Assert.AreEqual("THIRD", field.Result);
-
-
+            // Our custom formatter will do it's work at this point
             doc.UpdateFields();
-            field.Update();
-
             ((FieldResultFormatter)doc.FieldOptions.ResultFormatter).PrintInvocations();
-            
-            field = builder.InsertField("DATE", null);
-            
-            doc.FieldOptions.ResultFormatter = new FieldResultFormatter(null, "mm.dd.yy", null);
-            field.Update();
-            //Assert.AreEqual("dd", field.Result);
-
         }
 
+        /// <summary>
+        /// Custom IFieldResult implementation that applies formats and tracks format invocations
+        /// </summary>
         private class FieldResultFormatter : IFieldResultFormatter
         {
             public FieldResultFormatter(string numberFormat, string dateFormat, string generalFormat)
@@ -2251,9 +2234,7 @@ namespace ApiExamples
             {
                 mGeneralFormatInvocations.Add(new object[] { value, format });
 
-                return string.IsNullOrEmpty(mGeneralFormat)
-                    ? null
-                    : string.Format(mGeneralFormat, value);
+                return string.IsNullOrEmpty(mGeneralFormat) ? null : string.Format(mGeneralFormat, value);
             }
 
             public void PrintInvocations()
@@ -2261,19 +2242,19 @@ namespace ApiExamples
                 Console.WriteLine("Number format invocations ({0}):", mNumberFormatInvocations.Count);
                 foreach (object[] s in mNumberFormatInvocations)
                 {
-                    Console.Write(s[0] + " ");
+                    Console.WriteLine("\tValue: " + s[0] + ", format: " + s[1]);
                 }
 
-                Console.WriteLine("\nDate format invocations ({0}):", mDateFormatInvocations.Count);
+                Console.WriteLine("Date format invocations ({0}):", mDateFormatInvocations.Count);
                 foreach (object[] s in mDateFormatInvocations)
                 {
-                    Console.Write(s[0] + " ");
+                    Console.WriteLine("\tValue: " + s[0] + ", format: " + s[1]);
                 }
 
-                Console.WriteLine("\nGeneral format invocations ({0}):", mGeneralFormatInvocations.Count);
+                Console.WriteLine("General format invocations ({0}):", mGeneralFormatInvocations.Count);
                 foreach (object[] s in mGeneralFormatInvocations)
                 {
-                    Console.Write(s[0] + " ");
+                    Console.WriteLine("\tValue: " + s[0] + ", format: " + s[1]);
                 }
             }
 
