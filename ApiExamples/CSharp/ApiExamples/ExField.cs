@@ -2055,6 +2055,7 @@ namespace ApiExamples
         //ExFor:FieldOptions.BarcodeGenerator
         //ExSummary:Shows how to create barcode images using a barcode generator.
         [Test] //ExSkip
+        [Ignore("WORDSNET-17633")]
         public void BarcodeGenerator()
         {
             Document doc = new Document();
