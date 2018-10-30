@@ -2159,22 +2159,17 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        public void InsertCustomFormattingField()
+        //ExStart
+        //ExFor:IFieldResultFormatter
+        //ExFor:IFieldResultFormatter.Format(Double, GeneralFormat)
+        //ExFor:IFieldResultFormatter.Format(String, GeneralFormat)
+        //ExFor:IFieldResultFormatter.FormatDateTime(DateTime, String, CalendarType)
+        //ExFor:IFieldResultFormatter.FormatNumeric(Double, String)
+        //ExFor:FieldOptions.ResultFormatter
+        //ExSummary:Shows how to control how the field result is formatted.
+        [Test] //ExSkip
+        public void FieldResultFormatting()
         {
-            //ExStart
-            //ExFor:IFieldResultFormatter
-            //ExFor:IFieldResultFormatter.Format(Double, GeneralFormat)
-            //ExFor:IFieldResultFormatter.Format(String, GeneralFormat)
-            //ExFor:IFieldResultFormatter.FormatDateTime(DateTime, String, CalendarType)
-            //ExFor:IFieldResultFormatter.FormatNumeric(Double, String)
-            //ExFor:GeneralFormatCollection
-            //ExFor:GeneralFormatCollection.Count
-            //ExFor:GeneralFormatCollection.Item(System.Int32)
-            //ExFor:GeneralFormatCollection.Remove(GeneralFormat)
-            //ExFor:GeneralFormatCollection.RemoveAt(System.Int32)
-            //ExFor:FieldOptions.ResultFormatter
-            //ExSummary:Shows how to control how the field result is formatted.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
