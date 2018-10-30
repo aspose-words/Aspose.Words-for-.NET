@@ -2030,7 +2030,6 @@ namespace ApiExamples
             //ExFor:FieldOptions.ToaCategories
             //ExSummary:Shows how to specify a table of authorities for a document.
             Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
 
             doc.FieldOptions.ToaCategories = ToaCategories.DefaultCategories;
             //ExEnd
@@ -2045,7 +2044,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            doc.FieldOptions.UseInvariantCultureNumberFormat = true;
+            Field field = builder.InsertField(" = 2.2 + 3.3");
+            field.Update();
+            Assert.AreEqual("5.5", field.Result);
             //ExEnd
         }
 
@@ -2054,14 +2055,10 @@ namespace ApiExamples
         //ExSummary:Shows how to set up a custom prompt respondent.
         [Test] //ExSkip
         public void FieldOptionsUserPromptRespondent()
-        {
-            
+        {      
             Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            MyPromptRespondent myPromptRespondent = new MyPromptRespondent();
-
-            doc.FieldOptions.UserPromptRespondent = myPromptRespondent;
+            doc.FieldOptions.UserPromptRespondent = new MyPromptRespondent();
         }
 
         private class MyPromptRespondent : IFieldUserPromptRespondent
