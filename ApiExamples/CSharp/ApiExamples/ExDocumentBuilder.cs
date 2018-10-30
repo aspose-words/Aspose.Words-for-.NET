@@ -2184,7 +2184,7 @@ namespace ApiExamples
             // Insert a field with a general format
             builder.InsertField("QUOTE \"2\" \\* Ordinal", null);
 
-            // Our custom formatter will do it's work at this point
+            // Formats will be applied and recorded by the formatter during the field update
             doc.UpdateFields();
             ((FieldResultFormatter)doc.FieldOptions.ResultFormatter).PrintInvocations();
         }
