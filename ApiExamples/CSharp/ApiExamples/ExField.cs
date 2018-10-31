@@ -2055,7 +2055,6 @@ namespace ApiExamples
         //ExFor:FieldOptions.BarcodeGenerator
         //ExSummary:Shows how to create barcode images using a barcode generator.
         [Test] //ExSkip
-        [Ignore("WORDSNET-17633")]
         public void BarcodeGenerator()
         {
             Document doc = new Document();
@@ -2079,7 +2078,7 @@ namespace ApiExamples
 
             // Save the generated barcode image to the file system
             System.Drawing.Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-            img.Save(MyDir + @"\Artifacts\Field.BarcodeGenerator.QR.jpg"); // INSP: This image is a dark square, please check what happens
+            img.Save(MyDir + @"\Artifacts\Field.BarcodeGenerator.QR.jpg");
 
             // Insert the image into the document
             builder.InsertImage(img);
