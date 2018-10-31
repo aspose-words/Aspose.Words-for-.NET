@@ -664,18 +664,22 @@ namespace ApiExamples
             Assert.AreEqual(0, dropDownItems.Count);
         }
 
+        //ExStart
+        //ExFor:Fields.FieldAsk
+        //ExFor:Fields.FieldAsk.BookmarkName
+        //ExFor:Fields.FieldAsk.DefaultResponse
+        //ExFor:Fields.FieldAsk.PromptOnceOnMailMerge
+        //ExFor:Fields.FieldAsk.PromptText
+        //ExFor:FieldOptions.UserPromptRespondent
+        //ExSummary:Shows how to create an ASK field and set its properties.
         [Test]
         public void FieldAsk()
         {
-            //ExStart
-            //ExFor:Fields.FieldAsk
-            //ExFor:Fields.FieldAsk.BookmarkName
-            //ExFor:Fields.FieldAsk.DefaultResponse
-            //ExFor:Fields.FieldAsk.PromptOnceOnMailMerge
-            //ExFor:Fields.FieldAsk.PromptText
-            //ExSummary:Shows how to create an ASK field and set its properties.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Assign a prompt respondent
+            doc.FieldOptions.UserPromptRespondent = new MyPromptRespondent();
 
             // We can use a document builder to create our field
             FieldAsk fieldAsk = (FieldAsk)builder.InsertField(FieldType.FieldAsk, true);
@@ -689,17 +693,27 @@ namespace ApiExamples
             fieldAsk.DefaultResponse = "This is the default response.";
             fieldAsk.PromptOnceOnMailMerge = true;
 
+            doc.Save(MyDir + @"\Artifacts\Fields.AskField.docx");
+
             // The attributes we changed are now incorporated into the field code
             Assert.AreEqual(
                 " ASK  MyAskField \"Please provide a response for this ASK field\" \\d \"This is the default response.\" \\o",
                 fieldAsk.GetFieldCode());
-            //ExEnd
 
-            Assert.AreEqual("MyAskField", fieldAsk.BookmarkName);
-            Assert.AreEqual("Please provide a response for this ASK field", fieldAsk.PromptText);
-            Assert.AreEqual("This is the default response.", fieldAsk.DefaultResponse);
-            Assert.AreEqual(true, fieldAsk.PromptOnceOnMailMerge);
+            Assert.AreEqual("MyAskField", fieldAsk.BookmarkName); //ExSkip
+            Assert.AreEqual("Please provide a response for this ASK field", fieldAsk.PromptText); // ExSkip
+            Assert.AreEqual("This is the default response.", fieldAsk.DefaultResponse); //ExSkip
+            Assert.AreEqual(true, fieldAsk.PromptOnceOnMailMerge); //ExSkip
         }
+
+        private class MyPromptRespondent : IFieldUserPromptRespondent
+        {
+            public string Respond(string promptText, string defaultResponse)
+            {
+                return "Response from MyPromptRespondent. " + defaultResponse;
+            }
+        }
+        //ExEnd
 
         [Test]
         public void FieldAdvance()
@@ -1951,8 +1965,8 @@ namespace ApiExamples
             builder.MoveToDocumentEnd();
             builder.Writeln();
 
-            // The document came from a file, and the respective filename will appear in the FILENAME field
-            FieldFileName fieldFileName = (FieldFileName)builder.InsertField(FieldType.FieldFileName, true);
+            // This FILENAME field will currently contain the actual filename for the document
+            builder.InsertField(FieldType.FieldFileName, true);
 
             // If we manually set a value for this property of the document's field options object,
             // our overriding value will appear at the FILENAME field
@@ -1969,16 +1983,16 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldOptions.IsBidiTextSupportedOnUpdate
-            //ExSummary:Shows how to use FieldOptions to ensure that bi-directional text is properly supported during field update.
+            //ExSummary:Shows how to use FieldOptions to ensure that bi-directional text is properly supported during the field update.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Ensure that any field operation involving right-to-left text is performed correctly 
+            doc.FieldOptions.IsBidiTextSupportedOnUpdate = true;
 
             // Use a document builder to insert a field which contains right-to-left text
             FormField comboBox = builder.InsertComboBox("MyComboBox", new[] { "עֶשְׂרִים", "שְׁלוֹשִׁים", "אַרְבָּעִים", "חֲמִשִּׁים", "שִׁשִּׁים" }, 0);
             comboBox.CalculateOnExit = true;
-
-            // Set this variable to make sure all right-to-left text inside fields shows up properly 
-            doc.FieldOptions.IsBidiTextSupportedOnUpdate = true;
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.FieldOptionsBidi.docx");
@@ -1994,14 +2008,14 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertField("= 2 + 3 \\# $##");
+            Field field = builder.InsertField("= 2 + 3 \\# $##");
 
-            // When this property is false, the above field displays "$ 5", padded with one space per pound sign
-            // When true, no space will be present and "$5" will show up in the document
+            Assert.AreEqual("$ 5", field.Result);
+
             doc.FieldOptions.LegacyNumberFormat = true;
+            field.Update();
 
-            doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\Field.FieldLegacyNumberFormat.docx");
+            Assert.AreEqual("$5", field.Result);
             //ExEnd
         }
 
@@ -2010,16 +2024,19 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldOptions.PreProcessCulture
-            //ExSummary:Shows how to switch set the preprocess culture.
-            Document doc = new Document();
+            //ExSummary:Shows how to set the preprocess culture.
+            Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
+
+            doc.FieldOptions.PreProcessCulture = new CultureInfo("de-DE");
+
+            Field field = builder.InsertField(" DOCPROPERTY CreateTime \\* MERGEFORMAT ");
+            Assert.AreEqual("05.12.2017 22:56", field.Result);
 
             doc.FieldOptions.PreProcessCulture = CultureInfo.InvariantCulture;
 
-            builder.InsertField("DOCPROPERTY Pages");
-
-            doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\Field.FieldPreProcessCulture.docx");
+            field.Update();
+            Assert.AreEqual("12/05/2017 22:56", field.Result);
             //ExEnd
         }
 
@@ -2028,10 +2045,31 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldOptions.ToaCategories
-            //ExSummary:Shows how to specify a table of authorities for a document.
+            //ExSummary:Shows how to specify a table of authorities categories for a document.
             Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            doc.FieldOptions.ToaCategories = ToaCategories.DefaultCategories;
+            // There are default category values we can use, or we can make our own like this
+            ToaCategories toaCategories = new ToaCategories();
+            doc.FieldOptions.ToaCategories = toaCategories;
+
+            toaCategories[1] = "My Category 1"; // Replaces default value "Cases"
+            toaCategories[2] = "My Category 2"; // Replaces default value "Statutes"
+
+            // Insert 2 tables of authorities, one per category
+            builder.InsertField("TOA \\c 1 \\h", null);
+            builder.InsertField("TOA \\c 2 \\h", null);
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // Insert table of authorities entries across 2 categories
+            builder.InsertField("TA \\c 2 \\l \"entry 1\"");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.InsertField("TA \\c 1 \\l \"entry 2\"");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.InsertField("TA \\c 2 \\l \"entry 3\"");
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.TableOfAuthorities.Categories.docx");
             //ExEnd
         }
 
@@ -2044,30 +2082,19 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Field field = builder.InsertField(" = 2.2 + 3.3");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
+            Field field = builder.InsertField(" = 1234567,89 \\# $#,###,###.##");
             field.Update();
-            Assert.AreEqual("5.5", field.Result);
+
+            // The combination of field, number format and thread culture can sometimes produce an unsuitable result
+            Assert.IsFalse(doc.FieldOptions.UseInvariantCultureNumberFormat);
+            Assert.AreEqual("$1234567,89 .     ", field.Result);
+
+            // We can set this attribute to avoid changing the whole thread culture just for numeric formats
+            doc.FieldOptions.UseInvariantCultureNumberFormat = true;
+            field.Update();
+            Assert.AreEqual("$1.234.567,89", field.Result);
             //ExEnd
         }
-
-        //ExStart
-        //ExFor:FieldOptions.UserPromptRespondent
-        //ExSummary:Shows how to set up a custom prompt respondent.
-        [Test] //ExSkip
-        public void FieldOptionsUserPromptRespondent()
-        {      
-            Document doc = new Document();
-
-            doc.FieldOptions.UserPromptRespondent = new MyPromptRespondent();
-        }
-
-        private class MyPromptRespondent : IFieldUserPromptRespondent
-        {
-            public string Respond(string promptText, string defaultResponse)
-            {
-                throw new NotImplementedException();
-            }
-        }
-        //ExEnd
     }
 }
