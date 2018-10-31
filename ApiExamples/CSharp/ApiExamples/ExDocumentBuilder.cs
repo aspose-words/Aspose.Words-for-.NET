@@ -2242,19 +2242,19 @@ namespace ApiExamples
                 Console.WriteLine("Number format invocations ({0}):", mNumberFormatInvocations.Count);
                 foreach (object[] s in mNumberFormatInvocations)
                 {
-                    Console.WriteLine("\tValue: " + s[0] + ", format: " + s[1]);
+                    Console.WriteLine("\tValue: " + s[0] + ", original format: " + s[1]);
                 }
 
                 Console.WriteLine("Date format invocations ({0}):", mDateFormatInvocations.Count);
                 foreach (object[] s in mDateFormatInvocations)
                 {
-                    Console.WriteLine("\tValue: " + s[0] + ", format: " + s[1]);
+                    Console.WriteLine("\tValue: " + s[0] + ", original format: " + s[1] + ", calendar type: " + s[2]);
                 }
 
                 Console.WriteLine("General format invocations ({0}):", mGeneralFormatInvocations.Count);
                 foreach (object[] s in mGeneralFormatInvocations)
                 {
-                    Console.WriteLine("\tValue: " + s[0] + ", format: " + s[1]);
+                    Console.WriteLine("\tValue: " + s[0] + ", original format: " + s[1]);
                 }
             }
 
