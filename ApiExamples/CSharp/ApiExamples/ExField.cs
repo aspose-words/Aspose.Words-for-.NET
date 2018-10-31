@@ -476,28 +476,49 @@ namespace ApiExamples
             //ExFor:FieldFormat.GeneralFormats
             //ExFor:GeneralFormat
             //ExFor:GeneralFormatCollection.Add(GeneralFormat)
-            //ExSummary:Shows how to formatting fields
+            //ExFor:GeneralFormatCollection
+            //ExFor:GeneralFormatCollection.Count
+            //ExFor:GeneralFormatCollection.Item(System.Int32)
+            //ExFor:GeneralFormatCollection.Remove(GeneralFormat)
+            //ExFor:GeneralFormatCollection.RemoveAt(System.Int32)
+            //ExSummary:Shows how to format fields
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Field field = builder.InsertField("MERGEFIELD Date");
+            // Use a document builder to insert field with no format
+            Field field = builder.InsertField("= 2 + 3");
 
+            // We can format our field here instead of in the field code
             FieldFormat format = field.Format;
+            format.NumericFormat = "$###.00";
+            field.Update();
 
-            format.DateTimeFormat = "dddd, MMMM dd, yyyy";
-            format.NumericFormat = "0.#";
-            format.GeneralFormats.Add(GeneralFormat.CharFormat);
-            //ExEnd
-
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
-            field = doc.Range.Fields[0];
+            // Apply a date/time format
+            field = builder.InsertField("DATE");
             format = field.Format;
+            format.DateTimeFormat = "dddd, MMMM dd, yyyy";
+            field.Update();
 
-            Assert.AreEqual("0.#", format.NumericFormat);
-            Assert.AreEqual("dddd, MMMM dd, yyyy", format.DateTimeFormat);
-            Assert.AreEqual(GeneralFormat.CharFormat, format.GeneralFormats[0]);
+            // Apply 2 general formats at the same time
+            field = builder.InsertField("= 25 + 33");
+            format = field.Format;
+            format.GeneralFormats.Add(GeneralFormat.LowercaseRoman);
+            format.GeneralFormats.Add(GeneralFormat.Upper);
+            field.Update();
+
+            Assert.AreEqual("LVIII", field.Result);
+            Assert.AreEqual(2, format.GeneralFormats.Count);
+            Assert.AreEqual(GeneralFormat.LowercaseRoman, format.GeneralFormats[0]);
+
+            // Removing field formats
+            format.GeneralFormats.Remove(GeneralFormat.LowercaseRoman);
+            format.GeneralFormats.RemoveAt(0);
+            Assert.AreEqual(0, format.GeneralFormats.Count);
+            field.Update();
+
+            // Our field has no general formats left and is back to default form
+            Assert.AreEqual("58", field.Result);
+            //ExEnd
         }
 
         [Test]
