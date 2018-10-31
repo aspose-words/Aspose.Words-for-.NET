@@ -2173,7 +2173,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            doc.FieldOptions.ResultFormatter = new FieldResultFormatter("[{0}]", "[{0}]", "[{0}]");
+            doc.FieldOptions.ResultFormatter = new FieldResultFormatter("${0}", "Date: {0}", "Item # {0}:");
 
             // Insert a field with a numeric format
             builder.InsertField(" = 2 + 3 \\# $###", null);
@@ -2186,7 +2186,12 @@ namespace ApiExamples
 
             // Formats will be applied and recorded by the formatter during the field update
             doc.UpdateFields();
-            ((FieldResultFormatter)doc.FieldOptions.ResultFormatter).PrintInvocations(); // INSP: Maybe we need to show how value has changed with formats? For now, it's always the same, even if I change a format.
+            ((FieldResultFormatter)doc.FieldOptions.ResultFormatter).PrintInvocations();
+
+            // Our formatter has also overridden the formats that were originally applied in the fields
+            Assert.AreEqual("$5", doc.Range.Fields[0].Result);
+            Assert.IsTrue(doc.Range.Fields[1].Result.StartsWith("Date: "));
+            Assert.AreEqual("Item # 2:", doc.Range.Fields[2].Result);
         }
 
         /// <summary>
