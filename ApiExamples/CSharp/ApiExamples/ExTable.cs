@@ -11,6 +11,7 @@ using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Replacing;
+using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 
@@ -77,7 +78,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CalcuateDepthOfNestedTables()
+        public void CalculateDepthOfNestedTables()
         {
             //ExStart
             //ExFor:Node.GetAncestor(NodeType)
@@ -855,6 +856,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Table
+            //ExFor:Table.AllowCellSpacing
             //ExFor:Row
             //ExFor:Row.RowFormat
             //ExFor:RowFormat
@@ -905,6 +907,9 @@ namespace ApiExamples
             row.LastCell.AppendChild(new Paragraph(doc));
             row.LastCell.FirstParagraph.AppendChild(new Run(doc, "Row 1, Cell 2 Text"));
 
+            // Remove spacing between cells
+            table.AllowCellSpacing = false;
+
             doc.Save(MyDir + @"\Artifacts\Table.InsertTableUsingNodes.doc");
             //ExEnd
 
@@ -920,6 +925,8 @@ namespace ApiExamples
         //ExFor:Row
         //ExFor:Cell
         //ExFor:Table.#ctor(DocumentBase)
+        //ExFor:Table.Title
+        //ExFor:Table.Description
         //ExFor:Row.#ctor(DocumentBase)
         //ExFor:Cell.#ctor(DocumentBase)
         //ExId:NestedTableNodeConstructors
@@ -945,6 +952,8 @@ namespace ApiExamples
             Assert.AreEqual(1, outerTable.FirstRow.FirstCell.Tables.Count); //ExSkip
             Assert.AreEqual(16, outerTable.GetChildNodes(NodeType.Cell, true).Count); //ExSkip
             Assert.AreEqual(4, innerTable.GetChildNodes(NodeType.Cell, true).Count); //ExSkip
+            Assert.AreEqual("Aspose table title", innerTable.Title); //ExSkip
+            Assert.AreEqual("Aspose table description", innerTable.Description); //ExSkip
         }
 
         /// <summary>
@@ -972,6 +981,12 @@ namespace ApiExamples
                     cell.FirstParagraph.AppendChild(new Run(doc, cellText));
                 }
             }
+
+            // You can add title and description to your table only when added at least one row to the table first
+            // This properties are meaningful for ISO / IEC 29500 compliant DOCX documents(see the OoxmlCompliance class)
+            // When saved to pre-ISO/IEC 29500 formats, the properties are ignored
+            table.Title = "Aspose table title";
+            table.Description = "Aspose table description";
 
             return table;
         }

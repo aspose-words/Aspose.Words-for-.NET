@@ -41,14 +41,14 @@
     <StartupObject>Aspose.Words.Examples.CSharp.RunExamples</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.BarCode, Version=18.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.BarCode.18.4.0\lib\net45\Aspose.BarCode.dll</HintPath>
+    <Reference Include="Aspose.BarCode, Version=18.8.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.BarCode.18.8.0\lib\net45\Aspose.BarCode.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Email, Version=18.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Email.18.4.0\lib\net40\Aspose.Email.dll</HintPath>
+    <Reference Include="Aspose.Email, Version=18.8.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Email.18.8.0\lib\net40\Aspose.Email.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Words, Version=18.8.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.18.8.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=18.10.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.18.10.0\lib\net40\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="SkiaSharp, Version=1.60.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <HintPath>..\packages\SkiaSharp.1.60.0\lib\net45\SkiaSharp.dll</HintPath>
@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="LINQ\BuildOptions.cs" />
     <Compile Include="LINQ\Common.cs" />
     <Compile Include="LINQ\Contract.cs" />
     <Compile Include="LINQ\Client.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Mail-Merge\ApplyCustomLogicToEmptyRegions.cs" />
     <Compile Include="Mail-Merge\ExecuteArray.cs" />
     <Compile Include="Mail-Merge\HandleMailMergeSwitches.cs" />
+    <Compile Include="Mail-Merge\MailMergeAndConditionalField.cs" />
     <Compile Include="Mail-Merge\SimpleMailMerge.cs" />
     <Compile Include="Mail-Merge\NestedMailMergeCustom.cs" />
     <Compile Include="Mail-Merge\ExecuteWithRegionsDataTable.cs" />
@@ -155,6 +157,7 @@
     <Compile Include="Programming-Documents\Comments\CommentReply.cs" />
     <Compile Include="Programming-Documents\ConvertUtil\UtilityClasses.cs" />
     <Compile Include="Programming-Documents\Document\CleansUnusedStylesandLists.cs" />
+    <Compile Include="Programming-Documents\Document\DocumentBuilderInsertHorizontalRule.cs" />
     <Compile Include="Programming-Documents\Document\DocumentPageSetup.cs" />
     <Compile Include="Programming-Documents\Document\GenerateACustomBarCodeImage.cs" />
     <Compile Include="Programming-Documents\Document\CloningDocument.cs" />
@@ -193,6 +196,7 @@
     <Compile Include="Programming-Documents\Fields\ChangeLocale.cs" />
     <Compile Include="Programming-Documents\Fields\EvaluateIFCondition.cs" />
     <Compile Include="Programming-Documents\Fields\GetFieldNames.cs" />
+    <Compile Include="Programming-Documents\Fields\InsertFieldNone.cs" />
     <Compile Include="Programming-Documents\Fields\InsertIncludeFieldWithoutDocumentBuilder.cs" />
     <Compile Include="Programming-Documents\Fields\InsertTOAFieldWithoutDocumentBuilder.cs" />
     <Compile Include="Programming-Documents\Fields\RenameMergeFields.cs" />
@@ -227,6 +231,7 @@
     <Compile Include="Programming-Documents\StructuredDocumentTag\WorkingWithSDT.cs" />
     <Compile Include="Programming-Documents\Styles\ChangeStyleOfTOCLevel.cs" />
     <Compile Include="Programming-Documents\Styles\ChangeTOCTabStops.cs" />
+    <Compile Include="Programming-Documents\Styles\CopyStyles.cs" />
     <Compile Include="Programming-Documents\Styles\InsertStyleSeparator.cs" />
     <Compile Include="Programming-Documents\Tables\BuildTableFromDataTable.cs" />
     <Compile Include="Programming-Documents\Tables\KeepTablesAndRowsBreaking.cs" />

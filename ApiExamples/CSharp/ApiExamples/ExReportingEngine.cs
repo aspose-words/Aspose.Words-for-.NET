@@ -69,7 +69,6 @@ namespace ApiExamples
 
             NumericTestClass sender = new NumericTestBuilder()
                 .WithValuesAndDate(1, 2.2, 200, null, DateTime.Parse("10.09.2016 10:00:00")).Build();
-
             BuildReport(doc, sender, "s");
 
             MemoryStream dstStream = new MemoryStream();
@@ -84,7 +83,6 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "ReportingEngine.TestDataTable.docx");
 
             BuildReport(doc, Common.GetContracts(), "Contracts");
-
             doc.Save(MyDir + @"\Artifacts\ReportingEngine.TestDataTable.docx");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.TestDataTable.docx",
@@ -173,7 +171,6 @@ namespace ApiExamples
             };
 
             BuildReport(doc, colors, "colorItems", new[] { typeof(ColorItemTestClass) });
-
             doc.Save(MyDir + @"\Artifacts\ReportingEngine.SetPointColorDinamically.docx");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(
@@ -189,7 +186,6 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "ReportingEngine.TestRemoveChartSeries.docx");
 
             BuildReport(doc, new object[] { Common.GetManagers(), condition }, new[] { "managers", "condition" });
-
             doc.Save(MyDir + @"\Artifacts\ReportingEngine.TestLeaveChartSeries.docx");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.TestLeaveChartSeries.docx",
@@ -204,7 +200,6 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "ReportingEngine.TestRemoveChartSeries.docx");
 
             BuildReport(doc, new object[] { Common.GetManagers(), condition }, new[] { "managers", "condition" });
-
             doc.Save(MyDir + @"\Artifacts\ReportingEngine.TestRemoveChartSeries.docx");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.TestRemoveChartSeries.docx",
@@ -293,6 +288,27 @@ namespace ApiExamples
                 MyDir + @"\Artifacts\ReportingEngine.ContextualObjectMemberAccess.docx",
                 MyDir + @"\Golds\ReportingEngine.ContextualObjectMemberAccess Gold.docx"));
         }
+
+        [Test]
+        public void InsertDocumentDinamicallyWithAdditionalTemplateChecking()
+        {
+            Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document] -build>>");
+
+            DocumentTestClass doc = new DocumentTestBuilder()
+                .WithDocument(new Document(MyDir + "ReportingEngine.TestDataTable.docx")).Build();
+
+            BuildReport(template, new object[] { doc, Common.GetContracts() }, new[] { "src", "Contracts" }, 
+                ReportBuildOptions.None);
+            template.Save(
+                MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamicallyWithAdditionalTemplateChecking.docx");
+
+            Assert.IsTrue(
+                DocumentHelper.CompareDocs(
+                    MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamicallyWithAdditionalTemplateChecking.docx",
+                    MyDir + @"\Golds\ReportingEngine.InsertDocumentDinamicallyWithAdditionalTemplateChecking Gold.docx"),
+                "Fail inserting document by document");
+        }
+
 
         [Test]
         public void InsertDocumentDinamically()
@@ -435,6 +451,30 @@ namespace ApiExamples
         }
 
         [Test]
+        public void InsertHyperlinksDinamically()
+        {
+            Document template = new Document(MyDir + "ReportingEngine.InsertingHyperlinks.docx");
+            BuildReport(template, 
+                new Object[]
+                {
+                    "https://auckland.dynabic.com/wiki/display/org/Supported+dynamic+insertion+of+hyperlinks+for+LINQ+Reporting+Engine",
+                    "Aspose"
+                },
+                new[]
+                {
+                    "uri_expression", 
+                    "display_text_expression"
+                });
+
+            template.Save(MyDir + @"\Artifacts\ReportingEngine.InsertHyperlinksDinamically.docx");
+
+            Assert.IsTrue(
+                DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.InsertHyperlinksDinamically.docx",
+                    MyDir + @"\Golds\ReportingEngine.InsertHyperlinksDinamically Gold.docx"),
+                "Fail inserting document by bytes");
+        }
+
+        [Test]
         public void WithoutKnownType()
         {
             Document doc = new Document();
@@ -459,7 +499,6 @@ namespace ApiExamples
             builder.Writeln("<<[new DateTime(2016, 1, 20).Month]>>");
 
             BuildReport(doc, "", new[] { typeof(DateTime) });
-
             doc.Save(MyDir + @"\Artifacts\ReportingEngine.KnownTypes.docx");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.KnownTypes.docx",
@@ -709,18 +748,49 @@ namespace ApiExamples
                 MyDir + @"\Golds\ReportingEngine.BackColor Gold.docx"));
         }
 
+        [Test]
+        public void DoNotRemoveEmptyParagraphs()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.RemoveEmptyParagraphs.docx");
+
+            BuildReport(doc, Common.GetManagers(), "Managers");
+
+            doc.Save(MyDir + @"\Artifacts\ReportingEngine.DoNotRemoveEmptyParagraphs.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.DoNotRemoveEmptyParagraphs.docx",
+                MyDir + @"\Golds\ReportingEngine.DoNotRemoveEmptyParagraphs Gold.docx"));
+        }
+
+        [Test]
+        public void RemoveEmptyParagraphs()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.RemoveEmptyParagraphs.docx");
+
+            BuildReport(doc, Common.GetManagers(), "Managers", ReportBuildOptions.RemoveEmptyParagraphs);
+
+            doc.Save(MyDir + @"\Artifacts\ReportingEngine.RemoveEmptyParagraphs.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.RemoveEmptyParagraphs.docx",
+                MyDir + @"\Golds\ReportingEngine.RemoveEmptyParagraphs Gold.docx"));
+        }
+
         private static void BuildReport(Document document, object dataSource, string dataSourceName,
             ReportBuildOptions reportBuildOptions)
         {
             ReportingEngine engine = new ReportingEngine { Options = reportBuildOptions };
-
             engine.BuildReport(document, dataSource, dataSourceName);
         }
 
         private static void BuildReport(Document document, object[] dataSource, string[] dataSourceName)
         {
             ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(document, dataSource, dataSourceName);
+        }
 
+        private static void BuildReport(Document document, object[] dataSource, string[] dataSourceName,
+            ReportBuildOptions reportBuildOptions)
+        {
+            ReportingEngine engine = new ReportingEngine { Options = reportBuildOptions };
             engine.BuildReport(document, dataSource, dataSourceName);
         }
 

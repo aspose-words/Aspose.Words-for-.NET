@@ -93,11 +93,6 @@ namespace ApiExamples
                 mGlossaryDoc = ownerGlossaryDoc;
             }
 
-            public string GetText()
-            {
-                return mBuilder.ToString();
-            }
-
             public override VisitorAction VisitBuildingBlockStart(BuildingBlock block)
             {
                 // Change values by default of created BuildingBlock

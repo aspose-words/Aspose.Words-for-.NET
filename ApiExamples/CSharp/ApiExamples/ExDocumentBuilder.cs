@@ -162,6 +162,17 @@ namespace ApiExamples
         }
 
         [Test]
+        public void InsertHorizontalRule()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertHorizontalRule
+            //ExSummary:Shows how to insert horizontal rule shape in a document.
+            DocumentBuilder builder = new DocumentBuilder();
+            builder.InsertHorizontalRule();
+            //ExEnd
+        }
+
+        [Test]
         public void FieldLocale()
         {
             //ExStart
@@ -450,7 +461,7 @@ namespace ApiExamples
             builder.Writeln("");
             builder.Writeln("");
 
-            String[] items =
+            string[] items =
             {
                 "-- Select your favorite footwear --", "Sneakers", "Oxfords", "Flip-flops", "Other",
                 "I prefer to be barefoot"
@@ -2043,7 +2054,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.InsertDocument(Document, ImportFormatMode)
             //ExFor:ImportFormatMode.KeepSourceFormatting
-            //ExSummary:Shows how to insert a document content into another document keep formating of inserted document.
+            //ExSummary:Shows how to insert a document content into another document keep formatting of inserted document.
             Document doc = new Document(MyDir + "Document.docx");
 
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2280,6 +2291,7 @@ namespace ApiExamples
 
                         // Here we use a custom thumbnail and relative positioning to put it and the bottom right of tha page
                         builder.Writeln("Bottom right of page with custom thumbnail:");
+
                         builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes,
                             RelativeHorizontalPosition.RightMargin, left, RelativeVerticalPosition.BottomMargin, top,
                             image.Width, image.Height, WrapType.Square);
@@ -2405,7 +2417,7 @@ namespace ApiExamples
                         builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, image);
                     }
                 }
-#endif
+#endif 
             }
 
             powerpointStream.Close();

@@ -12,23 +12,21 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using NUnit.Framework;
 #if !(NETSTANDARD2_0 || __MOBILE__)
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
-
 #endif
 
 namespace ApiExamples
 {
     /// <summary>
-    /// Functions for operations with document and content
+    /// Functions for operations with documents and content
     /// </summary>
     internal class DocumentHelper : ApiExampleBase
     {
         /// <summary>
-        /// Create new document without run in the paragraph
+        /// Create simple document without run in the paragraph
         /// </summary>
         internal static Document CreateDocumentWithoutDummyText()
         {
@@ -107,7 +105,7 @@ namespace ApiExamples
         /// <summary>
         /// Create new document template for reporting engine
         /// </summary>
-        internal static Document CreateSimpleDocument(String templateText)
+        internal static Document CreateSimpleDocument(string templateText)
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -120,7 +118,7 @@ namespace ApiExamples
         /// <summary>
         /// Create new document with textbox shape and some query
         /// </summary>
-        internal static Document CreateTemplateDocumentWithDrawObjects(String templateText, ShapeType shapeType)
+        internal static Document CreateTemplateDocumentWithDrawObjects(string templateText, ShapeType shapeType)
         {
             Document doc = new Document();
 
@@ -287,59 +285,12 @@ namespace ApiExamples
             return doc.FirstSection.Body.Paragraphs[paraIndex];
         }
 
-        internal void GetAllPublicMethods()
-        {
-            Assembly assembly = Assembly.Load(AssemblyDir + "Aspose.Words.dll");
-
-            foreach (Type type in assembly.ExportedTypes)
-            {
-                Console.WriteLine("\nClass: " + type.FullName);
-
-                IEnumerable<MethodInfo> methodInfos = type.GetMethods(BindingFlags.Public | BindingFlags.Instance)
-                    .Where(p => p.DeclaringType != null && p.DeclaringType.FullName == type.FullName);
-
-                Console.WriteLine("\nMethods:");
-
-                foreach (MethodInfo info in methodInfos)
-                {
-                    Console.WriteLine(info.Name);
-                }
-            }
-        }
-
-        internal void GetAllPrivateClasses()
-        {
-            Assembly assembly = Assembly.Load(AssemblyDir + "Aspose.Words.dll");
-
-            foreach (Type type in assembly.ExportedTypes)
-            {
-                Console.WriteLine("\nClass: " + type.FullName);
-
-                IEnumerable<MethodInfo> methodInfos = type.GetMethods(BindingFlags.NonPublic);
-
-                Console.WriteLine("\nMethods:");
-
-                foreach (MethodInfo info in methodInfos)
-                {
-                    if (info != null)
-                    {
-                        Console.WriteLine(info.Name);
-                        Assert.Fail();
-                    }
-                }
-            }
-        }
-
 #if !(NETSTANDARD2_0 || __MOBILE__)
         /// <summary>
-        /// comparing two PDF documents.
+        /// Comparing two PDF documents.
         /// </summary>
-        /// <param name="firstPdf">
-        /// The first PDF document.
-        /// </param>
-        /// <param name="secondPdf">
-        /// The second PDF document.
-        /// </param>
+        /// <param name="firstPdf">The first PDF document</param>
+        /// <param name="secondPdf">The second PDF document</param>
         internal static void ComparePdf(string firstPdf, string secondPdf)
         {
             if (File.Exists(firstPdf) && File.Exists(secondPdf))

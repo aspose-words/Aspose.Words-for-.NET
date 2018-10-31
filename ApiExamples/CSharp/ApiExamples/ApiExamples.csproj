@@ -39,8 +39,8 @@
     <Reference Include="Aspose.PDF, Version=18.5.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
       <HintPath>..\packages\Aspose.PDF.18.5.0\lib\net40-client\Aspose.PDF.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Words, Version=18.8.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.18.8.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=18.10.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.18.10.0\lib\net40\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
@@ -126,6 +126,8 @@
     <Compile Include="ExTable.cs" />
     <Compile Include="ExTableColumn.cs" />
     <Compile Include="ExTabStopCollection.cs" />
+    <Compile Include="ExRtfLoadOptions.cs" />
+    <Compile Include="ExTxtLoadOptions.cs" />
     <Compile Include="ExTxtSaveOptions.cs" />
     <Compile Include="ExUtilityClasses.cs" />
     <Compile Include="ExVariableCollection.cs" />
@@ -154,6 +156,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
