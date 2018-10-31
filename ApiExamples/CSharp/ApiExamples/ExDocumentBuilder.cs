@@ -2179,14 +2179,14 @@ namespace ApiExamples
             builder.InsertField(" = 2 + 3 \\# $###", null);
 
             // Insert a field with a date/time format
-            builder.InsertField("DATE \\@ \"MMMM, yyyy\"", null);
+            builder.InsertField("DATE \\@ \"d MMMM yyyy\"", null);
 
             // Insert a field with a general format
             builder.InsertField("QUOTE \"2\" \\* Ordinal", null);
 
             // Formats will be applied and recorded by the formatter during the field update
             doc.UpdateFields();
-            ((FieldResultFormatter)doc.FieldOptions.ResultFormatter).PrintInvocations();
+            ((FieldResultFormatter)doc.FieldOptions.ResultFormatter).PrintInvocations(); // INSP: Maybe we need to show how value has changed with formats? For now, it's always the same, even if I change a format.
         }
 
         /// <summary>
