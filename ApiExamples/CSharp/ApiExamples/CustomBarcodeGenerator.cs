@@ -23,7 +23,7 @@ namespace ApiExamples
         private static float ConvertSymbolHeight(string heightInTwipsString)
         {
             // Input value is in 1/1440 inches (twips)
-            int.TryParse(heightInTwipsString, out int heightInTwips);
+            int heightInTwips = TryParseInt(heightInTwipsString);
 
             if (heightInTwips == int.MinValue)
                 throw new Exception("Error! Incorrect height - " + heightInTwipsString + ".");
@@ -40,7 +40,7 @@ namespace ApiExamples
         private static Color ConvertColor(string inputColor)
         {
             // Input should be from "0x000000" to "0xFFFFFF"
-            int.TryParse(inputColor.Replace("0x", ""), out int color);
+            int color = TryParseHex(inputColor.Replace("0x", ""));
 
             if (color == int.MinValue)
                 throw new Exception("Error! Incorrect color - " + inputColor + ".");
@@ -59,7 +59,7 @@ namespace ApiExamples
         private static float ConvertScalingFactor(string scalingFactor)
         {
             bool isParsed = false;
-            int.TryParse(scalingFactor, out int percents);
+            int percents = TryParseInt(scalingFactor);
 
             if (percents != int.MinValue && percents >= 10 && percents <= 10000)
                 isParsed = true;
@@ -216,9 +216,9 @@ namespace ApiExamples
         /// Allows leading sign.
         /// Allows leading and trailing spaces.
         /// </summary>
-        public static int TryParseInt(String s)
+        public static int TryParseInt(string s)
         {
-            return Double.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out double temp)
+            return double.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out double temp)
                 ? CastDoubleToInt(temp)
                 : int.MinValue;
         }
