@@ -678,34 +678,48 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Assign a prompt respondent
-            doc.FieldOptions.UserPromptRespondent = new MyPromptRespondent();
+            // Place a field where the response to our ASK field will be placed
+            FieldRef fieldRef = (FieldRef)builder.InsertField(FieldType.FieldRef, true);
+            fieldRef.BookmarkName = "MyAskField";
+            builder.Writeln();
 
-            // We can use a document builder to create our field
+            // Insert the ASK field and edit its properties, making sure to reference our REF field
             FieldAsk fieldAsk = (FieldAsk)builder.InsertField(FieldType.FieldAsk, true);
-
-            // The initial state of our ask field is empty
-            Assert.AreEqual(" ASK ", fieldAsk.GetFieldCode());
-
-            // Add functionality to our field
             fieldAsk.BookmarkName = "MyAskField";
             fieldAsk.PromptText = "Please provide a response for this ASK field";
-            fieldAsk.DefaultResponse = "This is the default response.";
+            fieldAsk.DefaultResponse = "Response from within the field.";
             fieldAsk.PromptOnceOnMailMerge = true;
+            builder.Writeln();
 
+            // ASK fields apply the default response to their respective REF fields during a mail merge
+            System.Data.DataTable table = new System.Data.DataTable("My Table");
+            table.Columns.Add("Column 1");
+            table.Rows.Add("Row 1");
+            table.Rows.Add("Row 2");
+
+            FieldMergeField fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            fieldMergeField.FieldName = "Column 1";
+
+            // We can modify or override the default response in our ASK fields with a custom prompt responder, which will take place during a mail merge
+            doc.FieldOptions.UserPromptRespondent = new MyPromptRespondent();
+            doc.MailMerge.Execute(table);
+
+            doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Fields.AskField.docx");
 
-            // The attributes we changed are now incorporated into the field code
             Assert.AreEqual(
-                " ASK  MyAskField \"Please provide a response for this ASK field\" \\d \"This is the default response.\" \\o",
+                " ASK  MyAskField \"Please provide a response for this ASK field\" \\d \"Response from within the field.\" \\o",
                 fieldAsk.GetFieldCode());
 
             Assert.AreEqual("MyAskField", fieldAsk.BookmarkName); //ExSkip
             Assert.AreEqual("Please provide a response for this ASK field", fieldAsk.PromptText); // ExSkip
-            Assert.AreEqual("This is the default response.", fieldAsk.DefaultResponse); //ExSkip
+            Assert.AreEqual("Response from within the field.", fieldAsk.DefaultResponse); //ExSkip
             Assert.AreEqual(true, fieldAsk.PromptOnceOnMailMerge); //ExSkip
         }
 
+        /// <summary>
+        /// IFieldUserPromptRespondent implementation that appends a line to the default response of an ASK field during a mail merge
+        /// </summary>
         private class MyPromptRespondent : IFieldUserPromptRespondent
         {
             public string Respond(string promptText, string defaultResponse)
@@ -1938,7 +1952,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldOptions.CurrentUser
             //ExFor:FieldOptions.DefaultDocumentAuthor
-            //ExSummary:Shows how to use FieldOptions.
+            //ExSummary:Shows how to use FieldOptions to change user details.
             Document doc = new Document();
 
             Assert.IsNull(doc.FieldOptions.DefaultDocumentAuthor);
