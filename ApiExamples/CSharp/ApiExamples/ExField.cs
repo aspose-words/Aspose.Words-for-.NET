@@ -1554,7 +1554,7 @@ namespace ApiExamples
 
             fieldToc.UpdatePageNumbers();
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Field.FieldTOC.docx");
+            doc.Save(MyDir + @"\Artifacts\Field.FieldTOC.docx");
         }
 
         /// <summary>
@@ -1952,18 +1952,21 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldOptions.CurrentUser
             //ExFor:FieldOptions.DefaultDocumentAuthor
-            //ExSummary:Shows how to use FieldOptions to change user details.
+            //ExSummary:Shows how to set user details and insert them as fields.
             Document doc = new Document();
-            // INSP: It's not clear how FieldOptions.DefaultDocumentAuthor and FieldOptions.CurrentUser is related to UserInformation. Will they change after that? Can we add asserts on this?
-            Assert.IsNull(doc.FieldOptions.DefaultDocumentAuthor);
-            Assert.IsNull(doc.FieldOptions.CurrentUser);
 
+            // Set user information
             UserInformation userInformation = new UserInformation();
             userInformation.Name = "John Doe";
-            userInformation.Address = "123 Main Street";
-            Assert.IsNull(userInformation.Initials);
-
             userInformation.Initials = "J. D.";
+            userInformation.Address = "123 Main Street";
+            doc.FieldOptions.CurrentUser = userInformation;
+
+            // Insert fields that reference our user information
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            Assert.AreEqual(userInformation.Name, builder.InsertField(" USERNAME ").Result);
+            Assert.AreEqual(userInformation.Initials, builder.InsertField(" USERINITIALS ").Result);
+            Assert.AreEqual(userInformation.Address, builder.InsertField(" USERADDRESS ").Result);
             //ExEnd
         }
 
@@ -2044,14 +2047,16 @@ namespace ApiExamples
 
             doc.FieldOptions.PreProcessCulture = new CultureInfo("de-DE");
 
-            // INSP: We have different times in result. Try to use another way independent of settings
-            Field field = builder.InsertField(" DOCPROPERTY CreateTime \\* MERGEFORMAT ");
-            Assert.AreEqual("05.12.2017 22:56", field.Result);
-
+            Field field = builder.InsertField(" DOCPROPERTY CreateTime");
+            
+            // Conforming to the German culture, the date/time will be presented in the "dd.mm.yyyy hh:mm" format
+            Assert.IsTrue(Regex.Match(field.Result, @"\d{2}[.]\d{2}[.]\d{4} \d{2}[:]\d{2}").Success);
+            
             doc.FieldOptions.PreProcessCulture = CultureInfo.InvariantCulture;
-
             field.Update();
-            Assert.AreEqual("12/05/2017 22:56", field.Result);
+
+            // After switching to the invariant culture, the date/time will be presented in the "mm/dd/yyyy hh:mm" format
+            Assert.IsTrue(Regex.Match(field.Result, @"\d{2}[/]\d{2}[/]\d{4} \d{2}[:]\d{2}").Success);
             //ExEnd
         }
 
@@ -2084,7 +2089,6 @@ namespace ApiExamples
             builder.InsertField("TA \\c 2 \\l \"entry 3\"");
 
             doc.UpdateFields();
-            // INSP: Please check that this is the correct behavior in document
             doc.Save(MyDir + @"\Artifacts\Field.TableOfAuthorities.Categories.docx");
             //ExEnd
         }
