@@ -824,157 +824,164 @@ namespace ApiExamples
         //ExFor:FieldDdeAuto.SourceItem
         //ExSummary:Shows how to insert linked objects as LINK, DDE and DDEAUTO fields and present them within the document in different ways.
         [Test] //ExSkip
+        [TestCase(InsertLinkedObjectAs.Text)] //ExSkip
+        [TestCase(InsertLinkedObjectAs.Unicode)] //ExSkip
+        [TestCase(InsertLinkedObjectAs.Html)] //ExSkip
+        [TestCase(InsertLinkedObjectAs.Rtf)] //ExSkip
         [Ignore("WORDSNET-16226")] //ExSkip
-        public void FieldLink()
+        public void FieldLinkedObjectsAsText(InsertLinkedObjectAs insertLinkedObjectAs)
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Writeln("LINK fields: ");
+            // Insert fields containing text from another document and present them as text (see InsertLinkedObjectAs enum).
+            builder.Writeln("FieldLink:\n");
+            InsertFieldLink(builder, insertLinkedObjectAs, "Word.Document.8", MyDir + "Document.doc", null, true);
 
-            // Insert LINK fields containing text from another document and present them as text
-            InsertFieldLink(builder, InsertLinkedObjectAs.Unicode, true, "Word.Document.8", MyDir + "Document.doc", null, "\tUnicode: ", "\n");       
-            InsertFieldLink(builder, InsertLinkedObjectAs.Html, true, "Word.Document.8", MyDir + "Document.doc", null, "\tHtml: ", "\n");
-            InsertFieldLink(builder, InsertLinkedObjectAs.Rtf, true, "Word.Document.8", MyDir + "Document.doc", null, "\tRtf: ", "\n");
+            // INSP: Please see FieldDde and FieldDdeAuto on your side, for me, it doesn't work correctly
+            builder.Writeln("FieldDde:\n");
+            InsertFieldDde(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Document.Spreadsheet.xlsx",
+                "Sheet1!R1C1", true, true); 
 
-            // Insert one cell from a spreadsheet as an image
-            InsertFieldLink(builder, InsertLinkedObjectAs.Picture, true, "Excel.Sheet.8", MyDir + "MySpreadsheet.xlsx", "Sheet1!R2C2", "\tPicture: ", "\n");
-            InsertFieldLink(builder, InsertLinkedObjectAs.Bitmap, true, "Excel.Sheet.8", MyDir + "MySpreadsheet.xlsx", "Sheet1!R2C2", "\tBitmap: ", "\n");
-
-            builder.Writeln("DDE fields: ");
-
-            // Insert DDE fields as text or images
-            InsertFieldDde(builder, InsertLinkedObjectAs.Text, "excel", MyDir + "Document.Spreadsheet.xlsx", "Sheet1!R1C1", true, true, "\tText: ", "\n");
-            InsertFieldDde(builder, InsertLinkedObjectAs.Unicode, "excel", MyDir + "Document.Spreadsheet.xlsx", "Sheet1!R1C1", true, true, "\tUnicode: ", "\n");
-            InsertFieldDde(builder, InsertLinkedObjectAs.Html, "excel", MyDir + "Document.Spreadsheet.xlsx", "Sheet1!R1C1", true, true, "\tHtml: ", "\n");
-            InsertFieldDde(builder, InsertLinkedObjectAs.Rtf, "excel", MyDir + "Document.Spreadsheet.xlsx", "Sheet1!R1C1", true, true, "\tRtf: ", "\n");
-
-            InsertFieldDde(builder, InsertLinkedObjectAs.Picture, "excel", MyDir + "Document.Spreadsheet.xlsx", "Sheet1!R1C1", true, true, "\tPicture: ", "\n");
-            InsertFieldDde(builder, InsertLinkedObjectAs.Bitmap, "excel", MyDir + "Document.Spreadsheet.xlsx", "Sheet1!R1C1", true, true, "\tBitmap: ", "\n");
-
-            builder.Writeln("DDEAUTO fields: ");
-
-            // Insert DDEAUTO fields as text or images
-            InsertFieldDdeAuto(builder, InsertLinkedObjectAs.Text, "excel", MyDir + "Document.Spreadsheet.xlsx", "Sheet1!R1C1", true, "\tText: ", "\n");
-            InsertFieldDdeAuto(builder, InsertLinkedObjectAs.Unicode, "excel", MyDir + "Document.Spreadsheet.xlsx", "Sheet1!R1C1", true, "\tUnicode: ", "\n");
-            InsertFieldDdeAuto(builder, InsertLinkedObjectAs.Html, "excel", MyDir + "Document.Spreadsheet.xlsx", "Sheet1!R1C1", true, "\tHtml: ", "\n");
-            InsertFieldDdeAuto(builder, InsertLinkedObjectAs.Rtf, "excel", MyDir + "Document.Spreadsheet.xlsx", "Sheet1!R1C1", true, "\tRtf: ", "\n");
-
-            InsertFieldDdeAuto(builder, InsertLinkedObjectAs.Bitmap, "excel", MyDir + "Document.Spreadsheet.xlsx", "Sheet1!R1C1", true, "\tBitmap: ", "\n");
-            InsertFieldDdeAuto(builder, InsertLinkedObjectAs.Picture, "excel", MyDir + "Document.Spreadsheet.xlsx", "Sheet1!R1C1", true, "\tPicture: ", "\n");
+            builder.Writeln("FieldDdeAuto:\n");
+            InsertFieldDdeAuto(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Document.Spreadsheet.xlsx",
+                "Sheet1!R1C1", true);
 
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\Field.LinkedObjects.docx");
+            doc.Save(MyDir + @"\Artifacts\Field.LinkedObjectsAsText.docx");
+        }
+
+        [Test] //ExSkip
+        [TestCase(InsertLinkedObjectAs.Picture)] //ExSkip
+        [TestCase(InsertLinkedObjectAs.Bitmap)] //ExSkip
+        [Ignore("WORDSNET-16226")] //ExSkip
+        public void FieldLinkedObjectsAsImage(InsertLinkedObjectAs insertLinkedObjectAs)
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert one cell from a spreadsheet as an image (see InsertLinkedObjectAs enum).
+            builder.Writeln("FieldLink:\n");
+            InsertFieldLink(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "MySpreadsheet.xlsx",
+                "Sheet1!R2C2", true);
+
+            // INSP: Please see FieldDde and FieldDdeAuto on your side, for me, it doesn't work correctly
+            builder.Writeln("FieldDde:\n");
+            InsertFieldDde(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Document.Spreadsheet.xlsx",
+                "Sheet1!R1C1", true, true);
+
+            builder.Writeln("FieldDdeAuto:\n");
+            InsertFieldDdeAuto(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Document.Spreadsheet.xlsx",
+                "Sheet1!R1C1", true);
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.LinkedObjectsAsImage.docx");
         }
 
         /// <summary>
         /// Use a document builder to insert a LINK field and set its properties according to parameters
         /// </summary>
-        private void InsertFieldLink(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs, bool autoUpdate, string progId, string sourceFullName, string sourceItem, string textBefore, string textAfter)
+        private void InsertFieldLink(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs,
+            string progId, string sourceFullName, string sourceItem, bool shouldAutoUpdate)
         {
-            builder.Write(textBefore);
-
             FieldLink field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
 
             switch (insertLinkedObjectAs)
             {
-                case InsertLinkedObjectAs.Bitmap:
-                    field.InsertAsBitmap = true;
-                    break;
-                case InsertLinkedObjectAs.Html:
-                    field.InsertAsHtml = true;
-                    break;
-                case InsertLinkedObjectAs.Picture:
-                    field.InsertAsPicture = true;
-                    break;
-                case InsertLinkedObjectAs.Rtf:
-                    field.InsertAsRtf = true;
-                    break;
                 case InsertLinkedObjectAs.Text:
                     field.InsertAsText = true;
                     break;
                 case InsertLinkedObjectAs.Unicode:
                     field.InsertAsUnicode = true;
                     break;
+                case InsertLinkedObjectAs.Html:
+                    field.InsertAsHtml = true;
+                    break;
+                case InsertLinkedObjectAs.Rtf:
+                    field.InsertAsRtf = true;
+                    break;
+                case InsertLinkedObjectAs.Picture:
+                    field.InsertAsPicture = true;
+                    break;
+                case InsertLinkedObjectAs.Bitmap:
+                    field.InsertAsBitmap = true;
+                    break;
             }
 
-            field.AutoUpdate = autoUpdate;
+            field.AutoUpdate = shouldAutoUpdate;
             field.ProgId = progId;
             field.SourceFullName = sourceFullName;
             field.SourceItem = sourceItem;
 
-            builder.Write(textAfter);
+            builder.Writeln("\n");
         }
 
         /// <summary>
-        /// Get a document builder to insert a DDE field and set its properties according to parameters
+        /// Use a document builder to insert a DDE field and set its properties according to parameters
         /// </summary>
-        private void InsertFieldDde(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs, string progId, string sourceFullName, string sourceItem, bool isLinked, bool shouldAutoUpdate, string textBefore, string textAfter)
+        private void InsertFieldDde(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs, string progId,
+            string sourceFullName, string sourceItem, bool isLinked, bool shouldAutoUpdate)
         {
-            builder.Write(textBefore);
-
-            FieldDde field = (FieldDde)builder.InsertField(FieldType.FieldDDE, true);
+            FieldDde field = (FieldDde) builder.InsertField(FieldType.FieldDDE, true);
 
             switch (insertLinkedObjectAs)
             {
-                case InsertLinkedObjectAs.Bitmap:
-                    field.InsertAsBitmap = true;
-                    break;
-                case InsertLinkedObjectAs.Html:
-                    field.InsertAsHtml = true;
-                    break;
-                case InsertLinkedObjectAs.Picture:
-                    field.InsertAsPicture = true;
-                    break;
-                case InsertLinkedObjectAs.Rtf:
-                    field.InsertAsRtf = true;
-                    break;
                 case InsertLinkedObjectAs.Text:
                     field.InsertAsText = true;
                     break;
                 case InsertLinkedObjectAs.Unicode:
                     field.InsertAsUnicode = true;
                     break;
+                case InsertLinkedObjectAs.Html:
+                    field.InsertAsHtml = true;
+                    break;
+                case InsertLinkedObjectAs.Rtf:
+                    field.InsertAsRtf = true;
+                    break;
+                case InsertLinkedObjectAs.Picture:
+                    field.InsertAsPicture = true;
+                    break;
+                case InsertLinkedObjectAs.Bitmap:
+                    field.InsertAsBitmap = true;
+                    break;
             }
 
+            field.AutoUpdate = shouldAutoUpdate;
             field.ProgId = progId;
             field.SourceFullName = sourceFullName;
             field.SourceItem = sourceItem;
             field.IsLinked = isLinked;
-            field.AutoUpdate = shouldAutoUpdate;
-            builder.Writeln();
 
-            builder.Write(textAfter);
+            builder.Writeln("\n");
         }
 
         /// <summary>
-        /// Get a document builder to insert a DDEAUTO field and set its properties according to parameters
+        /// Use a document builder to insert a DDEAUTO field and set its properties according to parameters
         /// </summary>
-        private void InsertFieldDdeAuto(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs, string progId, string sourceFullName, string sourceItem, bool isLinked, string textBefore, string textAfter)
+        private void InsertFieldDdeAuto(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs,
+            string progId, string sourceFullName, string sourceItem, bool isLinked)
         {
-            builder.Write(textBefore);
-
             FieldDdeAuto field = (FieldDdeAuto)builder.InsertField(FieldType.FieldDDEAuto, true);
 
             switch (insertLinkedObjectAs)
             {
-                case InsertLinkedObjectAs.Bitmap:
-                    field.InsertAsBitmap = true;
-                    break;
-                case InsertLinkedObjectAs.Html:
-                    field.InsertAsHtml = true;
-                    break;
-                case InsertLinkedObjectAs.Picture:
-                    field.InsertAsPicture = true;
-                    break;
-                case InsertLinkedObjectAs.Rtf:
-                    field.InsertAsRtf = true;
-                    break;
                 case InsertLinkedObjectAs.Text:
                     field.InsertAsText = true;
                     break;
                 case InsertLinkedObjectAs.Unicode:
                     field.InsertAsUnicode = true;
+                    break;
+                case InsertLinkedObjectAs.Html:
+                    field.InsertAsHtml = true;
+                    break;
+                case InsertLinkedObjectAs.Rtf:
+                    field.InsertAsRtf = true;
+                    break;
+                case InsertLinkedObjectAs.Picture:
+                    field.InsertAsPicture = true;
+                    break;
+                case InsertLinkedObjectAs.Bitmap:
+                    field.InsertAsBitmap = true;
                     break;
             }
 
@@ -982,19 +989,18 @@ namespace ApiExamples
             field.SourceFullName = sourceFullName;
             field.SourceItem = sourceItem;
             field.IsLinked = isLinked;
-            builder.Writeln();
-
-            builder.Write(textAfter);
         }
 
-        private enum InsertLinkedObjectAs
+        public enum InsertLinkedObjectAs
         {
-            Bitmap,
-            Html,
-            Picture,
-            Rtf,
+            // LinkedObjectAsText
             Text,
-            Unicode
+            Unicode,
+            Html,
+            Rtf,
+            // LinkedObjectAsImage
+            Picture,
+            Bitmap
         }
         //ExEnd
     }
