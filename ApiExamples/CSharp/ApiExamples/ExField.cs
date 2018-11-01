@@ -1954,7 +1954,7 @@ namespace ApiExamples
             //ExFor:FieldOptions.DefaultDocumentAuthor
             //ExSummary:Shows how to use FieldOptions to change user details.
             Document doc = new Document();
-
+            // INSP: It's not clear how FieldOptions.DefaultDocumentAuthor and FieldOptions.CurrentUser is related to UserInformation. Will they change after that? Can we add asserts on this?
             Assert.IsNull(doc.FieldOptions.DefaultDocumentAuthor);
             Assert.IsNull(doc.FieldOptions.CurrentUser);
 
@@ -2044,6 +2044,7 @@ namespace ApiExamples
 
             doc.FieldOptions.PreProcessCulture = new CultureInfo("de-DE");
 
+            // INSP: We have different times in result. Try to use another way independent of settings
             Field field = builder.InsertField(" DOCPROPERTY CreateTime \\* MERGEFORMAT ");
             Assert.AreEqual("05.12.2017 22:56", field.Result);
 
@@ -2083,6 +2084,7 @@ namespace ApiExamples
             builder.InsertField("TA \\c 2 \\l \"entry 3\"");
 
             doc.UpdateFields();
+            // INSP: Please check that this is the correct behavior in document
             doc.Save(MyDir + @"\Artifacts\Field.TableOfAuthorities.Categories.docx");
             //ExEnd
         }
