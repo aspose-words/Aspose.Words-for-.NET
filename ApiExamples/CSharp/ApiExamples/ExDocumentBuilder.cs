@@ -2436,7 +2436,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Let's take a spreadsheet from our system and insert it into the document
-            Stream spreadsheetStream = File.Open(MyDir + "DocumentBuilder.InsertOleObject.xlsx", FileMode.Open);
+            Stream spreadsheetStream = File.Open(MyDir + "MySpreadsheet.xlsx", FileMode.Open);
 
             // The spreadsheet can be activated by double clicking the panel that you'll see in the document immediately under the text we will add
             // We did not set the area to double click as an icon nor did we change its appearance so it looks like a simple panel
@@ -2445,7 +2445,7 @@ namespace ApiExamples
 
             // A powerpoint presentation is another type of object we can embed in our document
             // This time we'll also exercise some control over how it looks 
-            Stream powerpointStream = File.Open(MyDir + "DocumentBuilder.InsertOleObject.pptx", FileMode.Open);
+            Stream powerpointStream = File.Open(MyDir + "MyPresentation.pptx", FileMode.Open);
 
             // If we insert the Ole object as an icon, we are still provided with a default icon
             // If that is not suitable, we can make the icon to look like any image
