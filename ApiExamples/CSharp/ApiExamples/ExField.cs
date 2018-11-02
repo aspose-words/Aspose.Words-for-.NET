@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using System.Globalization;
 using System.IO;
@@ -2561,5 +2562,120 @@ namespace ApiExamples
             Bitmap
         }
         //ExEnd
+
+        [Test]
+        public void FieldStyleRef()
+        {
+            //ExStart
+
+            //ExSummary:
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
+            builder.Writeln("My Title");
+            builder.ParagraphFormat.Style = doc.Styles["Quote"];
+            builder.Writeln("Middle");
+            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
+            builder.Write("End");
+
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+
+            FieldStyleRef fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef.StyleName = "Heading 1";
+
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+
+            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef.StyleName = "Heading 1";
+            fieldStyleRef.SearchFromBottom = true;
+
+            //fieldStyleRef.InsertParagraphNumber = true;
+            //fieldStyleRef.InsertParagraphNumberInFullContext = true;
+            //fieldStyleRef.InsertParagraphNumberInRelativeContext = true;
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Field.FieldStyleRef.docx");
+            //ExEnd
+        }
+
+
+        [Test]
+        [Ignore("WORDSNET-17657")]
+        public void FieldStyleRefParagraphNumbers()
+        {
+            //ExStart
+            //ExFor:FieldStyleRef
+            //ExFor:FieldStyleRef.InsertParagraphNumber
+            //ExFor:FieldStyleRef.InsertParagraphNumberInFullContext
+            //ExFor:FieldStyleRef.InsertParagraphNumberInRelativeContext
+            //ExFor:FieldStyleRef.InsertRelativePosition
+            //ExFor:FieldStyleRef.SearchFromBottom
+            //ExFor:FieldStyleRef.StyleName
+            //ExFor:FieldStyleRef.SuppressNonDelimiters
+            //ExSummary:Shows how to use STYLEREF fields.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create a list based on one of the Microsoft Word list templates.
+            Aspose.Words.Lists.List list = doc.Lists.Add(Aspose.Words.Lists.ListTemplate.NumberDefault);
+
+            // The generated list will look like "1.a )"
+            // The space before the bracket is a non-delimiter character which can be suppressed from within a STYLEREF field
+            list.ListLevels[0].NumberFormat = "\x0000.";
+            list.ListLevels[1].NumberFormat = "\x0001 )"; 
+
+            // The styles we apply can be referenced by STYLEREF fields
+            builder.ListFormat.List = list;
+            builder.ListFormat.ListIndent();
+            builder.ParagraphFormat.Style = doc.Styles["List Paragraph"];
+            builder.Writeln("Item 1");
+            builder.ParagraphFormat.Style = doc.Styles["Quote"];
+            builder.Writeln("Item 2");
+            builder.ParagraphFormat.Style = doc.Styles["List Paragraph"];
+            builder.Writeln("Item 3");
+            builder.ListFormat.RemoveNumbers();
+            builder.ParagraphFormat.Style = doc.Styles["Normal"];
+
+
+            // Place a STYLEREF field in the header and have it reference the first "List Paragraph"-styled text in the document
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            FieldStyleRef fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef.StyleName = "List Paragraph";
+
+            // Place a field in the footer and have it reference the last text
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef.StyleName = "List Paragraph";
+            fieldStyleRef.SearchFromBottom = true;
+
+            builder.MoveToDocumentEnd();
+
+            // We can also use STYLEREF fields to reference the list numbers of list elements
+            builder.Write("\nParagraph number: ");
+            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef.StyleName = "Quote";
+            fieldStyleRef.InsertParagraphNumber = true;
+
+            builder.Write("\nParagraph number, relative context: ");
+            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef.StyleName = "Quote";
+            fieldStyleRef.InsertParagraphNumberInRelativeContext = true;
+
+            builder.Write("\nParagraph number, full context: ");
+            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef.StyleName = "Quote";
+            fieldStyleRef.InsertParagraphNumberInFullContext = true;
+
+            builder.Write("\nParagraph number, full context, non-delimiter chars suppressed: ");
+            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef.StyleName = "Quote";
+            fieldStyleRef.InsertParagraphNumberInFullContext = true;
+            fieldStyleRef.SuppressNonDelimiters = true;
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FieldStyleRef.docx");
+            //ExEnd
+        }
     }
 }
