@@ -476,28 +476,49 @@ namespace ApiExamples
             //ExFor:FieldFormat.GeneralFormats
             //ExFor:GeneralFormat
             //ExFor:GeneralFormatCollection.Add(GeneralFormat)
-            //ExSummary:Shows how to formatting fields
+            //ExFor:GeneralFormatCollection
+            //ExFor:GeneralFormatCollection.Count
+            //ExFor:GeneralFormatCollection.Item(System.Int32)
+            //ExFor:GeneralFormatCollection.Remove(GeneralFormat)
+            //ExFor:GeneralFormatCollection.RemoveAt(System.Int32)
+            //ExSummary:Shows how to format fields
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Field field = builder.InsertField("MERGEFIELD Date");
+            // Use a document builder to insert field with no format
+            Field field = builder.InsertField("= 2 + 3");
 
+            // We can format our field here instead of in the field code
             FieldFormat format = field.Format;
+            format.NumericFormat = "$###.00";
+            field.Update();
 
-            format.DateTimeFormat = "dddd, MMMM dd, yyyy";
-            format.NumericFormat = "0.#";
-            format.GeneralFormats.Add(GeneralFormat.CharFormat);
-            //ExEnd
-
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
-            field = doc.Range.Fields[0];
+            // Apply a date/time format
+            field = builder.InsertField("DATE");
             format = field.Format;
+            format.DateTimeFormat = "dddd, MMMM dd, yyyy";
+            field.Update();
 
-            Assert.AreEqual("0.#", format.NumericFormat);
-            Assert.AreEqual("dddd, MMMM dd, yyyy", format.DateTimeFormat);
-            Assert.AreEqual(GeneralFormat.CharFormat, format.GeneralFormats[0]);
+            // Apply 2 general formats at the same time
+            field = builder.InsertField("= 25 + 33");
+            format = field.Format;
+            format.GeneralFormats.Add(GeneralFormat.LowercaseRoman);
+            format.GeneralFormats.Add(GeneralFormat.Upper);
+            field.Update();
+
+            Assert.AreEqual("LVIII", field.Result);
+            Assert.AreEqual(2, format.GeneralFormats.Count);
+            Assert.AreEqual(GeneralFormat.LowercaseRoman, format.GeneralFormats[0]);
+
+            // Removing field formats
+            format.GeneralFormats.Remove(GeneralFormat.LowercaseRoman);
+            format.GeneralFormats.RemoveAt(0);
+            Assert.AreEqual(0, format.GeneralFormats.Count);
+            field.Update();
+
+            // Our field has no general formats left and is back to default form
+            Assert.AreEqual("58", field.Result);
+            //ExEnd
         }
 
         [Test]
@@ -2130,5 +2151,198 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.XE.docx");
             //ExEnd
         }
+
+        [Test]
+        public void FieldBarcode()
+        {
+            //ExStart
+            //ExFor:FieldBarcode
+            //ExFor:FieldBarcode.FacingIdentificationMark
+            //ExFor:FieldBarcode.IsBookmark
+            //ExFor:FieldBarcode.IsUSPostalAddress
+            //ExFor:FieldBarcode.PostalAddress
+            //ExSummary:Shows how to insert a BARCODE field and set its properties. 
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a bookmark with a US postal code in it
+            builder.StartBookmark("BarcodeBookmark");
+            builder.Writeln("96801");
+            builder.EndBookmark("BarcodeBookmark");
+
+            builder.Writeln();
+
+            // Reference a US postal code directly
+            FieldBarcode fieldBarcode = (FieldBarcode)builder.InsertField(FieldType.FieldBarcode, true);
+            fieldBarcode.FacingIdentificationMark = "C";
+            fieldBarcode.PostalAddress = "96801";
+            fieldBarcode.IsUSPostalAddress = true;
+
+            builder.Writeln();
+
+            // Reference a US postal code from a bookmark
+            fieldBarcode = (FieldBarcode)builder.InsertField(FieldType.FieldBarcode, true);
+            fieldBarcode.PostalAddress = "BarcodeBookmark";
+            fieldBarcode.IsBookmark = true;
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.USAddressBarcode.docx");
+        }
+
+        [Test]
+        public void FieldDisplayBarcode()
+        {
+            //ExStart
+            //ExFor:FieldDisplayBarcode
+            //ExFor:FieldDisplayBarcode.AddStartStopChar
+            //ExFor:FieldDisplayBarcode.BackgroundColor
+            //ExFor:FieldDisplayBarcode.BarcodeType
+            //ExFor:FieldDisplayBarcode.BarcodeValue
+            //ExFor:FieldDisplayBarcode.CaseCodeStyle
+            //ExFor:FieldDisplayBarcode.DisplayText
+            //ExFor:FieldDisplayBarcode.ErrorCorrectionLevel
+            //ExFor:FieldDisplayBarcode.FixCheckDigit
+            //ExFor:FieldDisplayBarcode.ForegroundColor
+            //ExFor:FieldDisplayBarcode.PosCodeStyle
+            //ExFor:FieldDisplayBarcode.ScalingFactor
+            //ExFor:FieldDisplayBarcode.SymbolHeight
+            //ExFor:FieldDisplayBarcode.SymbolRotation
+            //ExSummary:Shows how to insert a DISPLAYBARCODE field and set its properties. 
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            FieldDisplayBarcode fieldDisplayBarcode = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
+
+            // Insert a QR code
+            fieldDisplayBarcode.BarcodeType = "QR";
+            fieldDisplayBarcode.BarcodeValue = "ABC123";
+            fieldDisplayBarcode.BackgroundColor = "0xF8BD69";
+            fieldDisplayBarcode.ForegroundColor = "0xB5413B";
+            fieldDisplayBarcode.ErrorCorrectionLevel = "3";
+            fieldDisplayBarcode.ScalingFactor = "250";
+            fieldDisplayBarcode.SymbolHeight = "1000";
+            fieldDisplayBarcode.SymbolRotation = "0";
+
+            builder.Writeln();
+
+            // insert a EAN13 barcode
+            fieldDisplayBarcode = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
+            fieldDisplayBarcode.BarcodeType = "EAN13";
+            fieldDisplayBarcode.BarcodeValue = "501234567890";
+            fieldDisplayBarcode.DisplayText = true;
+            fieldDisplayBarcode.PosCodeStyle = "CASE";
+            fieldDisplayBarcode.FixCheckDigit = true;
+
+            builder.Writeln();
+
+            // insert a CODE39 barcode
+            fieldDisplayBarcode = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
+            fieldDisplayBarcode.BarcodeType = "CODE39";
+            fieldDisplayBarcode.BarcodeValue = "12345ABCDE";
+            fieldDisplayBarcode.AddStartStopChar = true;
+
+            builder.Writeln();
+
+            // insert a ITF14 barcode
+            fieldDisplayBarcode = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
+            fieldDisplayBarcode.BarcodeType = "ITF14";
+            fieldDisplayBarcode.BarcodeValue = "09312345678907";
+            fieldDisplayBarcode.CaseCodeStyle = "STD";
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.DisplayBarcode.docx");
+            //ExEnd
+        }
+
+#if !NETSTANDARD2_0
+        //ExStart
+        //ExFor:BarcodeParameters
+        //ExFor:BarcodeParameters.AddStartStopChar
+        //ExFor:BarcodeParameters.BackgroundColor
+        //ExFor:BarcodeParameters.BarcodeType
+        //ExFor:BarcodeParameters.BarcodeValue
+        //ExFor:BarcodeParameters.CaseCodeStyle
+        //ExFor:BarcodeParameters.DisplayText
+        //ExFor:BarcodeParameters.ErrorCorrectionLevel
+        //ExFor:BarcodeParameters.FacingIdentificationMark
+        //ExFor:BarcodeParameters.FixCheckDigit
+        //ExFor:BarcodeParameters.ForegroundColor
+        //ExFor:BarcodeParameters.IsBookmark
+        //ExFor:BarcodeParameters.IsUSPostalAddress
+        //ExFor:BarcodeParameters.PosCodeStyle
+        //ExFor:BarcodeParameters.PostalAddress
+        //ExFor:BarcodeParameters.ScalingFactor
+        //ExFor:BarcodeParameters.SymbolHeight
+        //ExFor:BarcodeParameters.SymbolRotation
+        //ExFor:IBarcodeGenerator
+        //ExFor:IBarcodeGenerator.GetBarcodeImage(BarcodeParameters)
+        //ExFor:IBarcodeGenerator.GetOldBarcodeImage(BarcodeParameters)
+        //ExFor:FieldOptions.BarcodeGenerator
+        //ExSummary:Shows how to create barcode images using a barcode generator.
+        [Test] //ExSkip
+        public void BarcodeGenerator()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Assert.IsNull(doc.FieldOptions.BarcodeGenerator);
+
+            // Barcodes generated in this way will be images, and we can use a custom IBarcodeGenerator implementation to generate them
+            doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
+
+            // Configure barcode parameters for a QR barcode
+            BarcodeParameters barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "QR";
+            barcodeParameters.BarcodeValue = "ABC123";
+            barcodeParameters.BackgroundColor = "0xF8BD69";
+            barcodeParameters.ForegroundColor = "0xB5413B";
+            barcodeParameters.ErrorCorrectionLevel = "3";
+            barcodeParameters.ScalingFactor = "250";
+            barcodeParameters.SymbolHeight = "1000";
+            barcodeParameters.SymbolRotation = "0";
+
+            // Save the generated barcode image to the file system
+            System.Drawing.Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(MyDir + @"\Artifacts\Field.BarcodeGenerator.QR.jpg");
+
+            // Insert the image into the document
+            builder.InsertImage(img);
+
+            // Configure barcode parameters for a EAN13 barcode
+            barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "EAN13";
+            barcodeParameters.BarcodeValue = "501234567890";
+            barcodeParameters.DisplayText = true;
+            barcodeParameters.PosCodeStyle = "CASE";
+            barcodeParameters.FixCheckDigit = true;
+
+            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(MyDir + @"\Artifacts\Field.BarcodeGenerator.EAN13.jpg");
+            builder.InsertImage(img);
+
+            // Configure barcode parameters for a CODE39 barcode
+            barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "CODE39";
+            barcodeParameters.BarcodeValue = "12345ABCDE";
+            barcodeParameters.AddStartStopChar = true;
+
+            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(MyDir + @"\Artifacts\Field.BarcodeGenerator.CODE39.jpg");
+            builder.InsertImage(img);
+
+            // Configure barcode parameters for an ITF14 barcode
+            barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "ITF14";
+            barcodeParameters.BarcodeValue = "09312345678907";
+            barcodeParameters.CaseCodeStyle = "STD";
+
+            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(MyDir + @"\Artifacts\Field.BarcodeGenerator.ITF14.jpg");
+            builder.InsertImage(img);
+
+            doc.Save(MyDir + @"\Artifacts\Field.BarcodeGenerator.docx");
+        }
+        //ExEnd
+#endif
     }
 }
