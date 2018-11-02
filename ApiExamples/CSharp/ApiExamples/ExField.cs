@@ -838,7 +838,6 @@ namespace ApiExamples
             builder.Writeln("FieldLink:\n");
             InsertFieldLink(builder, insertLinkedObjectAs, "Word.Document.8", MyDir + "Document.doc", null, true);
 
-            // INSP: Please see FieldDde and FieldDdeAuto on your side, for me, it doesn't work correctly
             builder.Writeln("FieldDde:\n");
             InsertFieldDde(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Document.Spreadsheet.xlsx",
                 "Sheet1!R1C1", true, true); 
@@ -865,7 +864,6 @@ namespace ApiExamples
             InsertFieldLink(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "MySpreadsheet.xlsx",
                 "Sheet1!R2C2", true);
 
-            // INSP: Please see FieldDde and FieldDdeAuto on your side, for me, it doesn't work correctly
             builder.Writeln("FieldDde:\n");
             InsertFieldDde(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Document.Spreadsheet.xlsx",
                 "Sheet1!R1C1", true, true);
