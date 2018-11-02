@@ -2564,43 +2564,6 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void FieldStyleRef()
-        {
-            //ExStart
-
-            //ExSummary:
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
-            builder.Writeln("My Title");
-            builder.ParagraphFormat.Style = doc.Styles["Quote"];
-            builder.Writeln("Middle");
-            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
-            builder.Write("End");
-
-            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-
-            FieldStyleRef fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
-            fieldStyleRef.StyleName = "Heading 1";
-
-            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
-
-            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
-            fieldStyleRef.StyleName = "Heading 1";
-            fieldStyleRef.SearchFromBottom = true;
-
-            //fieldStyleRef.InsertParagraphNumber = true;
-            //fieldStyleRef.InsertParagraphNumberInFullContext = true;
-            //fieldStyleRef.InsertParagraphNumberInRelativeContext = true;
-
-            doc.UpdateFields();
-            doc.Save(MyDir + @"\Field.FieldStyleRef.docx");
-            //ExEnd
-        }
-
-
-        [Test]
         [Ignore("WORDSNET-17657")]
         public void FieldStyleRefParagraphNumbers()
         {
