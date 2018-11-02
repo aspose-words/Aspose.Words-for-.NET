@@ -8,7 +8,7 @@ using Aspose.Words.Layout;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 {
-    class SpecifylocaleAtFieldlevel
+    class SpecifyLocaleAtFieldLevel
     {
         public static void Run()
         {

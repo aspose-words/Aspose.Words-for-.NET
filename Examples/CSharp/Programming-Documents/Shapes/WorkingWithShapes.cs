@@ -20,6 +20,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
             SetAspectRatioLocked(dataDir);
             InsertShapeUsingDocumentBuilder(dataDir);
             AddCornersSnipped(dataDir);
+            GetActualShapeBoundsPoints(dataDir);
         }
 
         public static void InsertShapeUsingDocumentBuilder(string dataDir)
@@ -122,6 +123,19 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
             doc.Save(dataDir, so);
             // ExEnd:AddCornersSnipped
             Console.WriteLine("\nCorner Snip shape is created successfully.\nFile saved at " + dataDir);
+        }
+
+        public static void GetActualShapeBoundsPoints(string dataDir)
+        {
+            // ExStart:GetActualShapeBoundsPoints
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            var shape = builder.InsertImage(dataDir + "Test.png");
+            shape.AspectRatioLocked = false;
+
+            Console.Write("\nGets the actual bounds of the shape in points.");
+            Console.WriteLine(shape.GetShapeRenderer().BoundsInPoints);
+            // ExEnd:GetActualShapeBoundsPoints
         }
     }
 }
