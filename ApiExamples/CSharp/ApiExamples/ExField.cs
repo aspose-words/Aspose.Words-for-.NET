@@ -2580,15 +2580,15 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a list based on one of the Microsoft Word list templates.
+            // Create a list based on one of the Microsoft Word list templates
             Aspose.Words.Lists.List list = doc.Lists.Add(Aspose.Words.Lists.ListTemplate.NumberDefault);
 
-            // The generated list will look like "1.a )"
-            // The space before the bracket is a non-delimiter character which can be suppressed from within a STYLEREF field
+            // This generated list will look like "1.a )"
+            // The space before the bracket is a non-delimiter character that can be suppressed
             list.ListLevels[0].NumberFormat = "\x0000.";
             list.ListLevels[1].NumberFormat = "\x0001 )"; 
 
-            // The styles we apply can be referenced by STYLEREF fields
+            // Add text and apply paragraph styles that will be referenced by STYLEREF fields
             builder.ListFormat.List = list;
             builder.ListFormat.ListIndent();
             builder.ParagraphFormat.Style = doc.Styles["List Paragraph"];
@@ -2600,13 +2600,12 @@ namespace ApiExamples
             builder.ListFormat.RemoveNumbers();
             builder.ParagraphFormat.Style = doc.Styles["Normal"];
 
-
-            // Place a STYLEREF field in the header and have it reference the first "List Paragraph"-styled text in the document
+            // Place a STYLEREF field in the header and have it display the first "List Paragraph"-styled text in the document
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             FieldStyleRef fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
             fieldStyleRef.StyleName = "List Paragraph";
 
-            // Place a field in the footer and have it reference the last text
+            // Place a STYLEREF field in the footer and have it display the last text
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
             fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
             fieldStyleRef.StyleName = "List Paragraph";
@@ -2614,7 +2613,7 @@ namespace ApiExamples
 
             builder.MoveToDocumentEnd();
 
-            // We can also use STYLEREF fields to reference the list numbers of list elements
+            // We can also use STYLEREF fields to reference the list numbers of lists
             builder.Write("\nParagraph number: ");
             fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
             fieldStyleRef.StyleName = "Quote";
