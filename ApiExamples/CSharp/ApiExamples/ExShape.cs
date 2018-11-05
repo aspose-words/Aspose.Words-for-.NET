@@ -81,28 +81,39 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ShapeBase.Bounds
+            //ExFor:ShapeBase.BoundsInPoints
             //ExFor:ShapeBase.FlipOrientation
             //ExFor:FlipOrientation
-            //ExSummary:Creates two line shapes. One line goes from top left to bottom right. Another line goes from bottom left to top right.
+            //ExSummary:Shows how to create line shapes and set specific location and size.
             Document doc = new Document();
 
             // The lines will cross the whole page.
             float pageWidth = (float) doc.FirstSection.PageSetup.PageWidth;
             float pageHeight = (float) doc.FirstSection.PageSetup.PageHeight;
 
-            // This line goes from top left to bottom right by default. 
-            Shape lineA = new Shape(doc, ShapeType.Line);
-            lineA.Bounds = new RectangleF(0, 0, pageWidth, pageHeight);
-            lineA.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
-            lineA.RelativeVerticalPosition = RelativeVerticalPosition.Page;
-            doc.FirstSection.Body.FirstParagraph.AppendChild(lineA);
+            // This line goes from top left to bottom right by default.
+            Shape lineA = new Shape(doc, ShapeType.Line)
+            {
+                Bounds = new RectangleF(0, 0, pageWidth, pageHeight),
+                RelativeHorizontalPosition = RelativeHorizontalPosition.Page,
+                RelativeVerticalPosition = RelativeVerticalPosition.Page
+            };
 
-            // This line goes from bottom left to top right because we flipped it. 
-            Shape lineB = new Shape(doc, ShapeType.Line);
-            lineB.Bounds = new RectangleF(0, 0, pageWidth, pageHeight);
-            lineB.FlipOrientation = FlipOrientation.Horizontal;
-            lineB.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
-            lineB.RelativeVerticalPosition = RelativeVerticalPosition.Page;
+            Assert.AreEqual(new RectangleF(0, 0, pageWidth, pageHeight), lineA.BoundsInPoints);
+
+            // This line goes from bottom left to top right because we flipped it.
+            Shape lineB = new Shape(doc, ShapeType.Line)
+            {
+                Bounds = new RectangleF(0, 0, pageWidth, pageHeight),
+                FlipOrientation = FlipOrientation.Horizontal,
+                RelativeHorizontalPosition = RelativeHorizontalPosition.Page,
+                RelativeVerticalPosition = RelativeVerticalPosition.Page
+            };
+
+            Assert.AreEqual(new RectangleF(0, 0, pageWidth, pageHeight), lineB.BoundsInPoints);
+
+            // Add lines to the document.
+            doc.FirstSection.Body.FirstParagraph.AppendChild(lineA);
             doc.FirstSection.Body.FirstParagraph.AppendChild(lineB);
 
             doc.Save(MyDir + @"\Artifacts\Shape.LineFlipOrientation.doc");
@@ -1143,15 +1154,13 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Shape.ShapeSize.docx");
 
-            //How we know about reletive size???
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
 
-            //Change shape size and rotation
+            // Change shape size and rotation
             shape.Height = 300;
             shape.Width = 500;
             shape.Rotation = 30;
 
-            //How assert result without reletive sizes???
             doc.Save(MyDir + @"\Artifacts\Shape.Resize.docx");
         }
 

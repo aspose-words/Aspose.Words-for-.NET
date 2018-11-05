@@ -71,7 +71,7 @@ namespace ApiExamples
             }
 
             /// <summary>
-            /// Adds text to the current output. Honours the enabled/disabled output flag.
+            /// Adds text to the current output. Honors the enabled/disabled output flag.
             /// </summary>
             private void AppendText(string text)
             {

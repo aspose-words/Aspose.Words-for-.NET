@@ -279,7 +279,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             Document doc = new Document(dataDir + "Table.Document.doc");
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
             table.AllowCellSpacing = true;
-
+            table.CellSpacing = 2;
             dataDir = dataDir + "Table.AllowCellSpacing_out.docx";
             // Save the document to disk.
             doc.Save(dataDir);

@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Net;
@@ -159,6 +160,17 @@ namespace ApiExamples
             // Finally let's completely remove the field from the document. This can easily be done by invoking the Remove method on the object.
             dateField.Remove();
             //ExEnd			
+        }
+
+        [Test]
+        public void InsertHorizontalRule()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertHorizontalRule
+            //ExSummary:Shows how to insert horizontal rule shape in a document.
+            DocumentBuilder builder = new DocumentBuilder();
+            builder.InsertHorizontalRule();
+            //ExEnd
         }
 
         [Test]
@@ -450,7 +462,7 @@ namespace ApiExamples
             builder.Writeln("");
             builder.Writeln("");
 
-            String[] items =
+            string[] items =
             {
                 "-- Select your favorite footwear --", "Sneakers", "Oxfords", "Flip-flops", "Other",
                 "I prefer to be barefoot"
@@ -2043,7 +2055,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.InsertDocument(Document, ImportFormatMode)
             //ExFor:ImportFormatMode.KeepSourceFormatting
-            //ExSummary:Shows how to insert a document content into another document keep formating of inserted document.
+            //ExSummary:Shows how to insert a document content into another document keep formatting of inserted document.
             Document doc = new Document(MyDir + "Document.docx");
 
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2158,30 +2170,51 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        public void InsertCustomFormattingField()
+        //ExStart
+        //ExFor:IFieldResultFormatter
+        //ExFor:IFieldResultFormatter.Format(Double, GeneralFormat)
+        //ExFor:IFieldResultFormatter.Format(String, GeneralFormat)
+        //ExFor:IFieldResultFormatter.FormatDateTime(DateTime, String, CalendarType)
+        //ExFor:IFieldResultFormatter.FormatNumeric(Double, String)
+        //ExFor:FieldOptions.ResultFormatter
+        //ExSummary:Shows how to control how the field result is formatted.
+        [Test] //ExSkip
+        public void FieldResultFormatting()
         {
-            //ExStart
-            //ExFor:IFieldResultFormatter
-            //ExFor:FieldOptions.ResultFormatter
-            //ExSummary:Shows how to control how the field result is formatted.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Field field = builder.InsertField("=-1234567.89 \\# \"### ### ###.000\"", null);
-            doc.FieldOptions.ResultFormatter = new FieldResultFormatter("[{0}]", null);
+            doc.FieldOptions.ResultFormatter = new FieldResultFormatter("${0}", "Date: {0}", "Item # {0}:");
 
-            field.Update();
+            // Insert a field with a numeric format
+            builder.InsertField(" = 2 + 3 \\# $###", null);
 
-            Assert.AreEqual("[-1234567.89]", field.Result); //ExSkip
+            // Insert a field with a date/time format
+            builder.InsertField("DATE \\@ \"d MMMM yyyy\"", null);
+
+            // Insert a field with a general format
+            builder.InsertField("QUOTE \"2\" \\* Ordinal", null);
+
+            // Formats will be applied and recorded by the formatter during the field update
+            doc.UpdateFields();
+            ((FieldResultFormatter)doc.FieldOptions.ResultFormatter).PrintInvocations();
+
+            // Our formatter has also overridden the formats that were originally applied in the fields
+            Assert.AreEqual("$5", doc.Range.Fields[0].Result);
+            Assert.IsTrue(doc.Range.Fields[1].Result.StartsWith("Date: "));
+            Assert.AreEqual("Item # 2:", doc.Range.Fields[2].Result);
         }
 
+        /// <summary>
+        /// Custom IFieldResult implementation that applies formats and tracks format invocations
+        /// </summary>
         private class FieldResultFormatter : IFieldResultFormatter
         {
-            public FieldResultFormatter(string numberFormat, string dateFormat)
+            public FieldResultFormatter(string numberFormat, string dateFormat, string generalFormat)
             {
                 mNumberFormat = numberFormat;
                 mDateFormat = dateFormat;
+                mGeneralFormat = generalFormat;
             }
 
             public string FormatNumeric(double value, string format)
@@ -2200,19 +2233,50 @@ namespace ApiExamples
 
             public string Format(string value, GeneralFormat format)
             {
-                throw new NotImplementedException();
+                return Format((object)value, format);
             }
 
             public string Format(double value, GeneralFormat format)
             {
-                throw new NotImplementedException();
+                return Format((object)value, format);
+            }
+
+            private string Format(object value, GeneralFormat format)
+            {
+                mGeneralFormatInvocations.Add(new object[] { value, format });
+
+                return string.IsNullOrEmpty(mGeneralFormat) ? null : string.Format(mGeneralFormat, value);
+            }
+
+            public void PrintInvocations()
+            {
+                Console.WriteLine("Number format invocations ({0}):", mNumberFormatInvocations.Count);
+                foreach (object[] s in mNumberFormatInvocations)
+                {
+                    Console.WriteLine("\tValue: " + s[0] + ", original format: " + s[1]);
+                }
+
+                Console.WriteLine("Date format invocations ({0}):", mDateFormatInvocations.Count);
+                foreach (object[] s in mDateFormatInvocations)
+                {
+                    Console.WriteLine("\tValue: " + s[0] + ", original format: " + s[1] + ", calendar type: " + s[2]);
+                }
+
+                Console.WriteLine("General format invocations ({0}):", mGeneralFormatInvocations.Count);
+                foreach (object[] s in mGeneralFormatInvocations)
+                {
+                    Console.WriteLine("\tValue: " + s[0] + ", original format: " + s[1]);
+                }
             }
 
             private readonly string mNumberFormat;
             private readonly string mDateFormat;
+            private readonly string mGeneralFormat;
 
             private readonly ArrayList mNumberFormatInvocations = new ArrayList();
             private readonly ArrayList mDateFormatInvocations = new ArrayList();
+            private readonly ArrayList mGeneralFormatInvocations = new ArrayList();
+
         }
         //ExEnd
 
@@ -2372,7 +2436,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Let's take a spreadsheet from our system and insert it into the document
-            Stream spreadsheetStream = File.Open(MyDir + "DocumentBuilder.InsertOleObject.xlsx", FileMode.Open);
+            Stream spreadsheetStream = File.Open(MyDir + "MySpreadsheet.xlsx", FileMode.Open);
 
             // The spreadsheet can be activated by double clicking the panel that you'll see in the document immediately under the text we will add
             // We did not set the area to double click as an icon nor did we change its appearance so it looks like a simple panel
@@ -2381,7 +2445,7 @@ namespace ApiExamples
 
             // A powerpoint presentation is another type of object we can embed in our document
             // This time we'll also exercise some control over how it looks 
-            Stream powerpointStream = File.Open(MyDir + "DocumentBuilder.InsertOleObject.pptx", FileMode.Open);
+            Stream powerpointStream = File.Open(MyDir + "MyPresentation.pptx", FileMode.Open);
 
             // If we insert the Ole object as an icon, we are still provided with a default icon
             // If that is not suitable, we can make the icon to look like any image

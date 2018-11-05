@@ -8,9 +8,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Text;
 using System.Globalization;
 using System.IO;
@@ -21,9 +19,9 @@ using Aspose.BarCode.BarCodeRecognition;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Fields;
+using Aspose.Words.MailMerging;
 using Aspose.Words.Replacing;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 
 namespace ApiExamples
 {
@@ -167,6 +165,29 @@ namespace ApiExamples
         }
 
         [Test]
+        public void InsertFieldNone()
+        {
+            //ExStart
+            //ExFor:FieldUnknown.#ctor
+            //ExSummary:Shows how to work with 'FieldNone' field in a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertField(FieldType.FieldNone, false);
+
+            MemoryStream stream = new MemoryStream();
+            doc.Save(stream, SaveFormat.Docx);
+
+            FieldUnknown fieldUnknown = (FieldUnknown)doc.Range.Fields.FirstOrDefault(p => p.Type == FieldType.FieldNone);
+            if (fieldUnknown != null)
+                Assert.AreEqual(FieldType.FieldNone, fieldUnknown.Type);
+            else
+                Assert.Fail("FieldUnknown doesn't exist");
+            //ExEnd
+        }
+
+
+        [Test]
         public void InsertTcField()
         {
             //ExStart
@@ -247,13 +268,13 @@ namespace ApiExamples
         private class InsertTcFieldHandler : IReplacingCallback
         {
             // Store the text and switches to be used for the TC fields.
-            private readonly String mFieldText;
-            private readonly String mFieldSwitches;
+            private readonly string mFieldText;
+            private readonly string mFieldSwitches;
 
             /// <summary>
             /// The display text and switches to use for each TC field. Display name can be an empty String or null.
             /// </summary>
-            public InsertTcFieldHandler(String text, String switches)
+            public InsertTcFieldHandler(string text, string switches)
             {
                 mFieldText = text;
                 mFieldSwitches = switches;
@@ -270,13 +291,13 @@ namespace ApiExamples
                 // match String as the display text.
                 String insertText;
 
-                if (!String.IsNullOrEmpty(mFieldText))
+                if (!string.IsNullOrEmpty(mFieldText))
                     insertText = mFieldText;
                 else
                     insertText = args.Match.Value;
 
                 // Insert the TC field before this node using the specified String as the display text and user defined switches.
-                builder.InsertField(String.Format("TC \"{0}\" {1}", insertText, mFieldSwitches));
+                builder.InsertField(string.Format("TC \"{0}\" {1}", insertText, mFieldSwitches));
 
                 // We have done what we want so skip replacement.
                 return ReplaceAction.Skip;
@@ -455,28 +476,49 @@ namespace ApiExamples
             //ExFor:FieldFormat.GeneralFormats
             //ExFor:GeneralFormat
             //ExFor:GeneralFormatCollection.Add(GeneralFormat)
-            //ExSummary:Shows how to formatting fields
+            //ExFor:GeneralFormatCollection
+            //ExFor:GeneralFormatCollection.Count
+            //ExFor:GeneralFormatCollection.Item(System.Int32)
+            //ExFor:GeneralFormatCollection.Remove(GeneralFormat)
+            //ExFor:GeneralFormatCollection.RemoveAt(System.Int32)
+            //ExSummary:Shows how to format fields
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Field field = builder.InsertField("MERGEFIELD Date");
+            // Use a document builder to insert field with no format
+            Field field = builder.InsertField("= 2 + 3");
 
+            // We can format our field here instead of in the field code
             FieldFormat format = field.Format;
+            format.NumericFormat = "$###.00";
+            field.Update();
 
-            format.DateTimeFormat = "dddd, MMMM dd, yyyy";
-            format.NumericFormat = "0.#";
-            format.GeneralFormats.Add(GeneralFormat.CharFormat);
-            //ExEnd
-
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
-            field = doc.Range.Fields[0];
+            // Apply a date/time format
+            field = builder.InsertField("DATE");
             format = field.Format;
+            format.DateTimeFormat = "dddd, MMMM dd, yyyy";
+            field.Update();
 
-            Assert.AreEqual("0.#", format.NumericFormat);
-            Assert.AreEqual("dddd, MMMM dd, yyyy", format.DateTimeFormat);
-            Assert.AreEqual(GeneralFormat.CharFormat, format.GeneralFormats[0]);
+            // Apply 2 general formats at the same time
+            field = builder.InsertField("= 25 + 33");
+            format = field.Format;
+            format.GeneralFormats.Add(GeneralFormat.LowercaseRoman);
+            format.GeneralFormats.Add(GeneralFormat.Upper);
+            field.Update();
+
+            Assert.AreEqual("LVIII", field.Result);
+            Assert.AreEqual(2, format.GeneralFormats.Count);
+            Assert.AreEqual(GeneralFormat.LowercaseRoman, format.GeneralFormats[0]);
+
+            // Removing field formats
+            format.GeneralFormats.Remove(GeneralFormat.LowercaseRoman);
+            format.GeneralFormats.RemoveAt(0);
+            Assert.AreEqual(0, format.GeneralFormats.Count);
+            field.Update();
+
+            // Our field has no general formats left and is back to default form
+            Assert.AreEqual("58", field.Result);
+            //ExEnd
         }
 
         [Test]
@@ -1124,7 +1166,7 @@ namespace ApiExamples
             field.EntryName = "MyBlock";
 
             // Put additional templates here
-            doc.FieldOptions.BuiltInTemplatesPaths = new[] {MyDir + "Document.BusinessBrochureTemplate.dotx"};
+            doc.FieldOptions.BuiltInTemplatesPaths = new[] { MyDir + "Document.BusinessBrochureTemplate.dotx" };
 
             // The text content of our building block will be visible in the output
             doc.Save(MyDir + @"\Artifacts\Field.AutoText.dotx");
@@ -1726,7 +1768,7 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.Citation.docx");
             //ExEnd
         }
-        
+
         [Test]
         public void FieldData()
         {
@@ -1741,7 +1783,7 @@ namespace ApiExamples
             Assert.AreEqual(" DATA ", field.GetFieldCode());
             //ExEnd
         }
-        
+
         [Test]
         public void FieldInclude()
         {
@@ -1829,7 +1871,7 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.Database.docx");
             //ExEnd
         }
-        
+
         [Test]
         public void FieldIncludePicture()
         {
@@ -1906,8 +1948,8 @@ namespace ApiExamples
             return fieldIncludeText;
         }
         //ExEnd
-        
-        [Test] 
+
+        [Test]
         [Ignore("WORDSNET-17545")]
         public void FieldHyperlink()
         {
@@ -1945,6 +1987,617 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.Hyperlink.docx");
             //ExEnd
         }
+
+        //ExStart
+        //ExFor:MergeFieldImageDimension
+        //ExFor:MergeFieldImageDimension.#ctor
+        //ExFor:MergeFieldImageDimension.#ctor(Double)
+        //ExFor:MergeFieldImageDimension.#ctor(Double,MergeFieldImageDimensionUnit)
+        //ExFor:MergeFieldImageDimension.Unit
+        //ExFor:MergeFieldImageDimension.Value
+        //ExFor:MergeFieldImageDimensionUnit
+        //ExSummary:Shows how to set the dimensions of merged images.
+        [Test]
+        public void MergeFieldImageDimension()
+        {
+            Document doc = new Document();
+
+            // Insert a merge field where images will be placed during the mail merge
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertField("MERGEFIELD Image:ImageColumn");
+
+            // Create a data table for the mail merge
+            // The name of the column that contains our image filenames needs to match the name of our merge field
+            System.Data.DataTable dataTable = CreateDataTable("Images", "ImageColumn",
+                new string[]
+                {
+                    MyDir + @"Images\Aspose.Words.gif",
+                    MyDir + @"Images\Watermark.png",
+                    MyDir + @"Images\dotnet-logo.png"
+                });
+
+            doc.MailMerge.FieldMergingCallback = new MergedImageResizer(450, 200, MergeFieldImageDimensionUnit.Point);
+            doc.MailMerge.Execute(dataTable);
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.MergeFieldImageDimension.docx");
+        }
+
+        /// <summary>
+        /// Creates a data table with a single column
+        /// </summary>
+        private System.Data.DataTable CreateDataTable(string tableName, string columnName, string[] columnContents)
+        {
+            System.Data.DataTable dataTable = new System.Data.DataTable(tableName);
+            dataTable.Columns.Add(new System.Data.DataColumn(columnName));
+
+            foreach (string s in columnContents)
+            {
+                System.Data.DataRow dataRow = dataTable.NewRow();
+                dataRow[0] = s;
+                dataTable.Rows.Add(dataRow);
+            }
+
+            return dataTable;
+        }
+
+        /// <summary>
+        /// Sets the size of all mail merged images to one defined width and height 
+        /// </summary>
+        private class MergedImageResizer : IFieldMergingCallback
+        {
+            public MergedImageResizer(double imageWidth, double imageHeight, MergeFieldImageDimensionUnit unit)
+            {
+                mImageWidth = imageWidth;
+                mImageHeight = imageHeight;
+                mUnit = unit;
+            }
+
+            public void FieldMerging(FieldMergingArgs e)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void ImageFieldMerging(ImageFieldMergingArgs args)
+            {
+                args.ImageFileName = args.FieldValue.ToString();
+                args.ImageWidth = new MergeFieldImageDimension(mImageWidth, mUnit);
+                args.ImageHeight = new MergeFieldImageDimension(mImageHeight, mUnit);
+
+                Assert.AreEqual(mImageWidth, args.ImageWidth.Value);
+                Assert.AreEqual(mUnit, args.ImageWidth.Unit);
+                Assert.AreEqual(mImageHeight, args.ImageHeight.Value);
+                Assert.AreEqual(mUnit, args.ImageHeight.Unit);
+            }
+
+            private readonly double mImageWidth;
+            private readonly double mImageHeight;
+            private readonly MergeFieldImageDimensionUnit mUnit;
+        }
+        //ExEnd
+
+        [Test]
+        [Ignore("WORDSNET-17524")]
+        public void FieldXE()
+        {
+            //ExStart
+            //ExFor:FieldIndex
+            //ExFor:FieldIndex.BookmarkName
+            //ExFor:FieldIndex.CrossReferenceSeparator
+            //ExFor:FieldIndex.EntryType
+            //ExFor:FieldIndex.HasPageNumberSeparator
+            //ExFor:FieldIndex.HasSequenceName
+            //ExFor:FieldIndex.Heading
+            //ExFor:FieldIndex.LanguageId
+            //ExFor:FieldIndex.LetterRange
+            //ExFor:FieldIndex.NumberOfColumns
+            //ExFor:FieldIndex.PageNumberListSeparator
+            //ExFor:FieldIndex.PageNumberSeparator
+            //ExFor:FieldIndex.PageRangeSeparator
+            //ExFor:FieldIndex.RunSubentriesOnSameLine
+            //ExFor:FieldIndex.SequenceName
+            //ExFor:FieldIndex.SequenceSeparator
+            //ExFor:FieldIndex.UseYomi
+            //ExFor:FieldXE
+            //ExFor:FieldXE.EntryType
+            //ExFor:FieldXE.HasPageRangeBookmarkName
+            //ExFor:FieldXE.IsBold
+            //ExFor:FieldXE.IsItalic
+            //ExFor:FieldXE.PageNumberReplacement
+            //ExFor:FieldXE.PageRangeBookmarkName
+            //ExFor:FieldXE.Text
+            //ExFor:FieldXE.Yomi
+            //ExSummary:Shows how to populate an index field with index entries.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create an index field which will contain all the index entries
+            FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
+
+            // Bookmark that will encompass a section that we want to index
+            string mainBookmarkName = "MainBookmark";
+            builder.StartBookmark(mainBookmarkName);
+            index.BookmarkName = mainBookmarkName;
+            index.CrossReferenceSeparator = ":";
+            index.Heading = ">";
+            index.LanguageId = "1033";
+            index.LetterRange = "a-j";
+            index.NumberOfColumns = "2";
+            index.PageNumberListSeparator = "|";
+            index.PageNumberSeparator = "|";
+            index.PageRangeSeparator = "/";
+            index.UseYomi = true;
+            index.RunSubentriesOnSameLine = false;
+            index.SequenceName = "Chapter";
+            index.SequenceSeparator = ":";
+            Assert.IsTrue(index.HasPageNumberSeparator);
+            Assert.IsTrue(index.HasSequenceName);
+
+            // Our index will take up page 1
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // Use a document builder to insert an index entry
+            // Index entries are not added to the index manually, it will find them on its own
+            FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Index entry 1";
+            indexEntry.EntryType = "Type1";
+            indexEntry.IsBold = true;
+            indexEntry.IsItalic = true;
+            Assert.AreEqual(false, indexEntry.HasPageRangeBookmarkName);
+
+            // We can insert a bookmark and have the index field point to it
+            string subBookmarkName = "MyBookmark";
+            builder.StartBookmark(subBookmarkName);
+            builder.Writeln("Bookmark text contents.");
+            builder.EndBookmark(subBookmarkName);
+
+            // Put the bookmark and index entry field on different pages
+            // Our index will use the page that the bookmark is on, not that of the index entry field, as the page number
+            builder.InsertBreak(BreakType.PageBreak);
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Index entry 2";
+            indexEntry.EntryType = "Type1";
+            indexEntry.PageRangeBookmarkName = subBookmarkName;
+            Assert.AreEqual(true, indexEntry.HasPageRangeBookmarkName);
+
+            // We can use the PageNumberReplacement property to point to any page we want, even one that may not exist
+            builder.InsertBreak(BreakType.PageBreak);
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Index entry 3";
+            indexEntry.EntryType = "Type1";
+            indexEntry.PageNumberReplacement = "999";
+
+            // If we are using an East Asian language, we can sort entries phonetically (using Furigana) instead of alphabetically
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "漢字";
+            indexEntry.EntryType = "Type1";
+
+            // The Yomi field will contain the character looked up for sorting
+            indexEntry.Yomi = "か";
+
+            // If we are sorting phonetically, we need to notify the index
+            index.UseYomi = true;
+
+            // For all our entry fields, we set the entry type to "Type1"
+            // Our field index will not list those entries unless we set its entry type to that of the entries
+            index.EntryType = "Type1";
+
+            builder.EndBookmark(mainBookmarkName);
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.XE.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldBarcode()
+        {
+            //ExStart
+            //ExFor:FieldBarcode
+            //ExFor:FieldBarcode.FacingIdentificationMark
+            //ExFor:FieldBarcode.IsBookmark
+            //ExFor:FieldBarcode.IsUSPostalAddress
+            //ExFor:FieldBarcode.PostalAddress
+            //ExSummary:Shows how to insert a BARCODE field and set its properties. 
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a bookmark with a US postal code in it
+            builder.StartBookmark("BarcodeBookmark");
+            builder.Writeln("96801");
+            builder.EndBookmark("BarcodeBookmark");
+
+            builder.Writeln();
+
+            // Reference a US postal code directly
+            FieldBarcode fieldBarcode = (FieldBarcode)builder.InsertField(FieldType.FieldBarcode, true);
+            fieldBarcode.FacingIdentificationMark = "C";
+            fieldBarcode.PostalAddress = "96801";
+            fieldBarcode.IsUSPostalAddress = true;
+
+            builder.Writeln();
+
+            // Reference a US postal code from a bookmark
+            fieldBarcode = (FieldBarcode)builder.InsertField(FieldType.FieldBarcode, true);
+            fieldBarcode.PostalAddress = "BarcodeBookmark";
+            fieldBarcode.IsBookmark = true;
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.USAddressBarcode.docx");
+        }
+
+        [Test]
+        public void FieldDisplayBarcode()
+        {
+            //ExStart
+            //ExFor:FieldDisplayBarcode
+            //ExFor:FieldDisplayBarcode.AddStartStopChar
+            //ExFor:FieldDisplayBarcode.BackgroundColor
+            //ExFor:FieldDisplayBarcode.BarcodeType
+            //ExFor:FieldDisplayBarcode.BarcodeValue
+            //ExFor:FieldDisplayBarcode.CaseCodeStyle
+            //ExFor:FieldDisplayBarcode.DisplayText
+            //ExFor:FieldDisplayBarcode.ErrorCorrectionLevel
+            //ExFor:FieldDisplayBarcode.FixCheckDigit
+            //ExFor:FieldDisplayBarcode.ForegroundColor
+            //ExFor:FieldDisplayBarcode.PosCodeStyle
+            //ExFor:FieldDisplayBarcode.ScalingFactor
+            //ExFor:FieldDisplayBarcode.SymbolHeight
+            //ExFor:FieldDisplayBarcode.SymbolRotation
+            //ExSummary:Shows how to insert a DISPLAYBARCODE field and set its properties. 
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            FieldDisplayBarcode fieldDisplayBarcode = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
+
+            // Insert a QR code
+            fieldDisplayBarcode.BarcodeType = "QR";
+            fieldDisplayBarcode.BarcodeValue = "ABC123";
+            fieldDisplayBarcode.BackgroundColor = "0xF8BD69";
+            fieldDisplayBarcode.ForegroundColor = "0xB5413B";
+            fieldDisplayBarcode.ErrorCorrectionLevel = "3";
+            fieldDisplayBarcode.ScalingFactor = "250";
+            fieldDisplayBarcode.SymbolHeight = "1000";
+            fieldDisplayBarcode.SymbolRotation = "0";
+
+            builder.Writeln();
+
+            // insert a EAN13 barcode
+            fieldDisplayBarcode = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
+            fieldDisplayBarcode.BarcodeType = "EAN13";
+            fieldDisplayBarcode.BarcodeValue = "501234567890";
+            fieldDisplayBarcode.DisplayText = true;
+            fieldDisplayBarcode.PosCodeStyle = "CASE";
+            fieldDisplayBarcode.FixCheckDigit = true;
+
+            builder.Writeln();
+
+            // insert a CODE39 barcode
+            fieldDisplayBarcode = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
+            fieldDisplayBarcode.BarcodeType = "CODE39";
+            fieldDisplayBarcode.BarcodeValue = "12345ABCDE";
+            fieldDisplayBarcode.AddStartStopChar = true;
+
+            builder.Writeln();
+
+            // insert a ITF14 barcode
+            fieldDisplayBarcode = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
+            fieldDisplayBarcode.BarcodeType = "ITF14";
+            fieldDisplayBarcode.BarcodeValue = "09312345678907";
+            fieldDisplayBarcode.CaseCodeStyle = "STD";
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.DisplayBarcode.docx");
+            //ExEnd
+        }
+
+#if !NETSTANDARD2_0
+        //ExStart
+        //ExFor:BarcodeParameters
+        //ExFor:BarcodeParameters.AddStartStopChar
+        //ExFor:BarcodeParameters.BackgroundColor
+        //ExFor:BarcodeParameters.BarcodeType
+        //ExFor:BarcodeParameters.BarcodeValue
+        //ExFor:BarcodeParameters.CaseCodeStyle
+        //ExFor:BarcodeParameters.DisplayText
+        //ExFor:BarcodeParameters.ErrorCorrectionLevel
+        //ExFor:BarcodeParameters.FacingIdentificationMark
+        //ExFor:BarcodeParameters.FixCheckDigit
+        //ExFor:BarcodeParameters.ForegroundColor
+        //ExFor:BarcodeParameters.IsBookmark
+        //ExFor:BarcodeParameters.IsUSPostalAddress
+        //ExFor:BarcodeParameters.PosCodeStyle
+        //ExFor:BarcodeParameters.PostalAddress
+        //ExFor:BarcodeParameters.ScalingFactor
+        //ExFor:BarcodeParameters.SymbolHeight
+        //ExFor:BarcodeParameters.SymbolRotation
+        //ExFor:IBarcodeGenerator
+        //ExFor:IBarcodeGenerator.GetBarcodeImage(BarcodeParameters)
+        //ExFor:IBarcodeGenerator.GetOldBarcodeImage(BarcodeParameters)
+        //ExFor:FieldOptions.BarcodeGenerator
+        //ExSummary:Shows how to create barcode images using a barcode generator.
+        [Test] //ExSkip
+        public void BarcodeGenerator()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Assert.IsNull(doc.FieldOptions.BarcodeGenerator);
+
+            // Barcodes generated in this way will be images, and we can use a custom IBarcodeGenerator implementation to generate them
+            doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
+
+            // Configure barcode parameters for a QR barcode
+            BarcodeParameters barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "QR";
+            barcodeParameters.BarcodeValue = "ABC123";
+            barcodeParameters.BackgroundColor = "0xF8BD69";
+            barcodeParameters.ForegroundColor = "0xB5413B";
+            barcodeParameters.ErrorCorrectionLevel = "3";
+            barcodeParameters.ScalingFactor = "250";
+            barcodeParameters.SymbolHeight = "1000";
+            barcodeParameters.SymbolRotation = "0";
+
+            // Save the generated barcode image to the file system
+            System.Drawing.Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(MyDir + @"\Artifacts\Field.BarcodeGenerator.QR.jpg");
+
+            // Insert the image into the document
+            builder.InsertImage(img);
+
+            // Configure barcode parameters for a EAN13 barcode
+            barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "EAN13";
+            barcodeParameters.BarcodeValue = "501234567890";
+            barcodeParameters.DisplayText = true;
+            barcodeParameters.PosCodeStyle = "CASE";
+            barcodeParameters.FixCheckDigit = true;
+
+            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(MyDir + @"\Artifacts\Field.BarcodeGenerator.EAN13.jpg");
+            builder.InsertImage(img);
+
+            // Configure barcode parameters for a CODE39 barcode
+            barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "CODE39";
+            barcodeParameters.BarcodeValue = "12345ABCDE";
+            barcodeParameters.AddStartStopChar = true;
+
+            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(MyDir + @"\Artifacts\Field.BarcodeGenerator.CODE39.jpg");
+            builder.InsertImage(img);
+
+            // Configure barcode parameters for an ITF14 barcode
+            barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "ITF14";
+            barcodeParameters.BarcodeValue = "09312345678907";
+            barcodeParameters.CaseCodeStyle = "STD";
+
+            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(MyDir + @"\Artifacts\Field.BarcodeGenerator.ITF14.jpg");
+            builder.InsertImage(img);
+
+            doc.Save(MyDir + @"\Artifacts\Field.BarcodeGenerator.docx");
+        }
+        //ExEnd
+#endif
+
+        //ExStart
+        //ExFor:FieldLink
+        //ExFor:FieldLink.AutoUpdate
+        //ExFor:FieldLink.FormatUpdateType
+        //ExFor:FieldLink.InsertAsBitmap
+        //ExFor:FieldLink.InsertAsHtml
+        //ExFor:FieldLink.InsertAsPicture
+        //ExFor:FieldLink.InsertAsRtf
+        //ExFor:FieldLink.InsertAsText
+        //ExFor:FieldLink.InsertAsUnicode
+        //ExFor:FieldLink.IsLinked
+        //ExFor:FieldLink.ProgId
+        //ExFor:FieldLink.SourceFullName
+        //ExFor:FieldLink.SourceItem
+        //ExFor:FieldDde.#ctor
+        //ExFor:FieldDde.AutoUpdate
+        //ExFor:FieldDde.InsertAsBitmap
+        //ExFor:FieldDde.InsertAsHtml
+        //ExFor:FieldDde.InsertAsPicture
+        //ExFor:FieldDde.InsertAsRtf
+        //ExFor:FieldDde.InsertAsText
+        //ExFor:FieldDde.InsertAsUnicode
+        //ExFor:FieldDde.IsLinked
+        //ExFor:FieldDde.ProgId
+        //ExFor:FieldDde.SourceFullName
+        //ExFor:FieldDde.SourceItem
+        //ExFor:FieldDdeAuto.#ctor
+        //ExFor:FieldDdeAuto.InsertAsBitmap
+        //ExFor:FieldDdeAuto.InsertAsHtml
+        //ExFor:FieldDdeAuto.InsertAsPicture
+        //ExFor:FieldDdeAuto.InsertAsRtf
+        //ExFor:FieldDdeAuto.InsertAsText
+        //ExFor:FieldDdeAuto.InsertAsUnicode
+        //ExFor:FieldDdeAuto.IsLinked
+        //ExFor:FieldDdeAuto.ProgId
+        //ExFor:FieldDdeAuto.SourceFullName
+        //ExFor:FieldDdeAuto.SourceItem
+        //ExSummary:Shows how to insert linked objects as LINK, DDE and DDEAUTO fields and present them within the document in different ways.
+        [Test] //ExSkip
+        [TestCase(InsertLinkedObjectAs.Text)] //ExSkip
+        [TestCase(InsertLinkedObjectAs.Unicode)] //ExSkip
+        [TestCase(InsertLinkedObjectAs.Html)] //ExSkip
+        [TestCase(InsertLinkedObjectAs.Rtf)] //ExSkip
+        [Ignore("WORDSNET-16226")] //ExSkip
+        public void FieldLinkedObjectsAsText(InsertLinkedObjectAs insertLinkedObjectAs)
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert fields containing text from another document and present them as text (see InsertLinkedObjectAs enum).
+            builder.Writeln("FieldLink:\n");
+            InsertFieldLink(builder, insertLinkedObjectAs, "Word.Document.8", MyDir + "Document.doc", null, true);
+
+            builder.Writeln("FieldDde:\n");
+            InsertFieldDde(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Document.Spreadsheet.xlsx",
+                "Sheet1!R1C1", true, true);
+
+            builder.Writeln("FieldDdeAuto:\n");
+            InsertFieldDdeAuto(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Document.Spreadsheet.xlsx",
+                "Sheet1!R1C1", true);
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.LinkedObjectsAsText.docx");
+        }
+
+        [Test] //ExSkip
+        [TestCase(InsertLinkedObjectAs.Picture)] //ExSkip
+        [TestCase(InsertLinkedObjectAs.Bitmap)] //ExSkip
+        [Ignore("WORDSNET-16226")] //ExSkip
+        public void FieldLinkedObjectsAsImage(InsertLinkedObjectAs insertLinkedObjectAs)
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert one cell from a spreadsheet as an image (see InsertLinkedObjectAs enum).
+            builder.Writeln("FieldLink:\n");
+            InsertFieldLink(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "MySpreadsheet.xlsx",
+                "Sheet1!R2C2", true);
+
+            builder.Writeln("FieldDde:\n");
+            InsertFieldDde(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Document.Spreadsheet.xlsx",
+                "Sheet1!R1C1", true, true);
+
+            builder.Writeln("FieldDdeAuto:\n");
+            InsertFieldDdeAuto(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Document.Spreadsheet.xlsx",
+                "Sheet1!R1C1", true);
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.LinkedObjectsAsImage.docx");
+        }
+
+        /// <summary>
+        /// Use a document builder to insert a LINK field and set its properties according to parameters
+        /// </summary>
+        private void InsertFieldLink(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs,
+            string progId, string sourceFullName, string sourceItem, bool shouldAutoUpdate)
+        {
+            FieldLink field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
+
+            switch (insertLinkedObjectAs)
+            {
+                case InsertLinkedObjectAs.Text:
+                    field.InsertAsText = true;
+                    break;
+                case InsertLinkedObjectAs.Unicode:
+                    field.InsertAsUnicode = true;
+                    break;
+                case InsertLinkedObjectAs.Html:
+                    field.InsertAsHtml = true;
+                    break;
+                case InsertLinkedObjectAs.Rtf:
+                    field.InsertAsRtf = true;
+                    break;
+                case InsertLinkedObjectAs.Picture:
+                    field.InsertAsPicture = true;
+                    break;
+                case InsertLinkedObjectAs.Bitmap:
+                    field.InsertAsBitmap = true;
+                    break;
+            }
+
+            field.AutoUpdate = shouldAutoUpdate;
+            field.ProgId = progId;
+            field.SourceFullName = sourceFullName;
+            field.SourceItem = sourceItem;
+
+            builder.Writeln("\n");
+        }
+
+        /// <summary>
+        /// Use a document builder to insert a DDE field and set its properties according to parameters
+        /// </summary>
+        private void InsertFieldDde(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs, string progId,
+            string sourceFullName, string sourceItem, bool isLinked, bool shouldAutoUpdate)
+        {
+            FieldDde field = (FieldDde)builder.InsertField(FieldType.FieldDDE, true);
+
+            switch (insertLinkedObjectAs)
+            {
+                case InsertLinkedObjectAs.Text:
+                    field.InsertAsText = true;
+                    break;
+                case InsertLinkedObjectAs.Unicode:
+                    field.InsertAsUnicode = true;
+                    break;
+                case InsertLinkedObjectAs.Html:
+                    field.InsertAsHtml = true;
+                    break;
+                case InsertLinkedObjectAs.Rtf:
+                    field.InsertAsRtf = true;
+                    break;
+                case InsertLinkedObjectAs.Picture:
+                    field.InsertAsPicture = true;
+                    break;
+                case InsertLinkedObjectAs.Bitmap:
+                    field.InsertAsBitmap = true;
+                    break;
+            }
+
+            field.AutoUpdate = shouldAutoUpdate;
+            field.ProgId = progId;
+            field.SourceFullName = sourceFullName;
+            field.SourceItem = sourceItem;
+            field.IsLinked = isLinked;
+
+            builder.Writeln("\n");
+        }
+
+        /// <summary>
+        /// Use a document builder to insert a DDEAUTO field and set its properties according to parameters
+        /// </summary>
+        private void InsertFieldDdeAuto(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs,
+            string progId, string sourceFullName, string sourceItem, bool isLinked)
+        {
+            FieldDdeAuto field = (FieldDdeAuto)builder.InsertField(FieldType.FieldDDEAuto, true);
+
+            switch (insertLinkedObjectAs)
+            {
+                case InsertLinkedObjectAs.Text:
+                    field.InsertAsText = true;
+                    break;
+                case InsertLinkedObjectAs.Unicode:
+                    field.InsertAsUnicode = true;
+                    break;
+                case InsertLinkedObjectAs.Html:
+                    field.InsertAsHtml = true;
+                    break;
+                case InsertLinkedObjectAs.Rtf:
+                    field.InsertAsRtf = true;
+                    break;
+                case InsertLinkedObjectAs.Picture:
+                    field.InsertAsPicture = true;
+                    break;
+                case InsertLinkedObjectAs.Bitmap:
+                    field.InsertAsBitmap = true;
+                    break;
+            }
+
+            field.ProgId = progId;
+            field.SourceFullName = sourceFullName;
+            field.SourceItem = sourceItem;
+            field.IsLinked = isLinked;
+        }
+
+        public enum InsertLinkedObjectAs
+        {
+            // LinkedObjectAsText
+            Text,
+            Unicode,
+            Html,
+            Rtf,
+            // LinkedObjectAsImage
+            Picture,
+            Bitmap
+        }
+        //ExEnd
 
         [Test]
         public void FieldOptionsCurrentUser()
@@ -2048,10 +2701,10 @@ namespace ApiExamples
             doc.FieldOptions.PreProcessCulture = new CultureInfo("de-DE");
 
             Field field = builder.InsertField(" DOCPROPERTY CreateTime");
-            
+
             // Conforming to the German culture, the date/time will be presented in the "dd.mm.yyyy hh:mm" format
             Assert.IsTrue(Regex.Match(field.Result, @"\d{2}[.]\d{2}[.]\d{4} \d{2}[:]\d{2}").Success);
-            
+
             doc.FieldOptions.PreProcessCulture = CultureInfo.InvariantCulture;
             field.Update();
 

@@ -748,6 +748,32 @@ namespace ApiExamples
                 MyDir + @"\Golds\ReportingEngine.BackColor Gold.docx"));
         }
 
+        [Test]
+        public void DoNotRemoveEmptyParagraphs()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.RemoveEmptyParagraphs.docx");
+
+            BuildReport(doc, Common.GetManagers(), "Managers");
+
+            doc.Save(MyDir + @"\Artifacts\ReportingEngine.DoNotRemoveEmptyParagraphs.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.DoNotRemoveEmptyParagraphs.docx",
+                MyDir + @"\Golds\ReportingEngine.DoNotRemoveEmptyParagraphs Gold.docx"));
+        }
+
+        [Test]
+        public void RemoveEmptyParagraphs()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.RemoveEmptyParagraphs.docx");
+
+            BuildReport(doc, Common.GetManagers(), "Managers", ReportBuildOptions.RemoveEmptyParagraphs);
+
+            doc.Save(MyDir + @"\Artifacts\ReportingEngine.RemoveEmptyParagraphs.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.RemoveEmptyParagraphs.docx",
+                MyDir + @"\Golds\ReportingEngine.RemoveEmptyParagraphs Gold.docx"));
+        }
+
         private static void BuildReport(Document document, object dataSource, string dataSourceName,
             ReportBuildOptions reportBuildOptions)
         {
