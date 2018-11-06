@@ -133,7 +133,6 @@ namespace ApiExamples
             Assert.AreEqual("Page 1 of 2", textFragmentAbsorber.TextFragments[1].Text);
         }
 
-        // ToDo: Add gold asserts for PDF files
         // For assert this test you need to open "SaveOptions.PdfImageCompression PDF_A_1_B Out.pdf" and "SaveOptions.PdfImageCompression PDF_A_1_A Out.pdf" 
         // and check that header image in this documents are equal header image in the "SaveOptions.PdfImageComppression Out.pdf" 
         [Test]
@@ -294,7 +293,7 @@ namespace ApiExamples
         {
             /// <summary>
             /// Our callback only needs to implement the "Warning" method. This method is called whenever there is a
-            /// potential issue during document procssing. The callback can be set to listen for warnings generated during document
+            /// potential issue during document processing. The callback can be set to listen for warnings generated during document
             /// load and/or document save.
             /// </summary>
             public void Warning(WarningInfo info)
@@ -310,5 +309,36 @@ namespace ApiExamples
             public WarningInfoCollection mWarnings = new WarningInfoCollection();
         }
         //ExEnd
+
+        [Test]
+        [TestCase(Aspose.Words.Saving.HeaderFooterBookmarksExportMode.None)]
+        [TestCase(Aspose.Words.Saving.HeaderFooterBookmarksExportMode.First)] // Need to check in AW tests
+        [TestCase(Aspose.Words.Saving.HeaderFooterBookmarksExportMode.All)]
+        public void HeaderFooterBookmarksExportMode(HeaderFooterBookmarksExportMode headerFooterBookmarksExportMode)
+        {
+            //ExStart
+            //ExFor:HeaderFooterBookmarksExportMode
+            //ExSummary:Shows how bookmarks in headers/footers are exported to pdf
+            Document doc = new Document(MyDir + "PdfSaveOption.HeaderFooterBookmarksExportMode.docx");
+
+            // You can specify how bookmarks in headers/footers are exported.
+            // There is a several options for this:
+            // "None" - Bookmarks in headers/footers are not exported.
+            // "First" - Only bookmark in first header/footer of the section is exported.
+            // "All" - Bookmarks in all headers/footers are exported.
+            PdfSaveOptions saveOptions = new PdfSaveOptions
+            {
+                HeaderFooterBookmarksExportMode = headerFooterBookmarksExportMode,
+                OutlineOptions = { DefaultBookmarksOutlineLevel = 1 }
+            };
+            doc.Save(MyDir + @"\Artifacts\PdfSaveOption.HeaderFooterBookmarksExportMode.pdf", saveOptions);
+            //ExEnd
+        }
+
+        [Test]
+        public void CreateOutlinesForHeadingsInTables()
+        {
+
+        }
     }
 }

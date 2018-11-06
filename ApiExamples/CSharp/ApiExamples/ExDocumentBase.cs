@@ -29,7 +29,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBase.PageColor
-            //ExSummary:Shows how to set the page colour.
+            //ExSummary:Shows how to set the page color.
             Document doc = new Document();
 
             doc.PageColor = System.Drawing.Color.LightGray;

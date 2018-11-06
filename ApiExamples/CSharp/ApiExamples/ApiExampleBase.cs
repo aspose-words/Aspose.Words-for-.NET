@@ -19,7 +19,7 @@ namespace ApiExamples
     /// </summary>
     public class ApiExampleBase
     {
-        private readonly String dirPath = MyDir + @"\Artifacts\";
+        private readonly string artifactsPath = MyDir + @"\Artifacts\";
 
         [SetUp]
         public void SetUp()
@@ -28,9 +28,9 @@ namespace ApiExamples
             {
                 SetUnlimitedLicense();
 
-                if (!Directory.Exists(dirPath))
+                if (!Directory.Exists(artifactsPath))
                     //Create new empty directory
-                    Directory.CreateDirectory(dirPath);
+                    Directory.CreateDirectory(artifactsPath);
             }
         }
 
@@ -40,7 +40,7 @@ namespace ApiExamples
             if (!CheckForSkipTearDown())
             {
                 //Delete all dirs and files from directory
-                Directory.Delete(dirPath, true);
+                Directory.Delete(artifactsPath, true);
             }
         }
 
@@ -54,7 +54,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Checks when we need to skip postcondition after test.
+        /// Checks when we need to skip post-condition after test.
         /// </summary>
         private static bool CheckForSkipTearDown()
         {
@@ -78,7 +78,7 @@ namespace ApiExamples
         /// <summary>
         /// Returns the assembly directory correctly even if the assembly is shadow-copied.
         /// </summary>
-        internal static String GetAssemblyDir(Assembly assembly)
+        internal static string GetAssemblyDir(Assembly assembly)
         {
             // CodeBase is a full URI, such as file:///x:\blahblah.
             Uri uri = new Uri(assembly.CodeBase);
@@ -88,7 +88,7 @@ namespace ApiExamples
         /// <summary>
         /// Gets the path to the currently running executable.
         /// </summary>
-        internal static String AssemblyDir
+        internal static string AssemblyDir
         {
             get { return gAssemblyDir; }
         }
@@ -96,7 +96,7 @@ namespace ApiExamples
         /// <summary>
         /// Gets the path to the documents used by the code examples. Ends with a back slash.
         /// </summary>
-        internal static String MyDir
+        internal static string MyDir
         {
             get { return gMyDir; }
         }
@@ -104,7 +104,7 @@ namespace ApiExamples
         /// <summary>
         /// Gets the path to the images used by the code examples. Ends with a back slash.
         /// </summary>
-        internal static String ImageDir
+        internal static string ImageDir
         {
             get { return gImageDir; }
         }
@@ -112,7 +112,7 @@ namespace ApiExamples
         /// <summary>
         /// Gets the path of the demo database. Ends with a back slash.
         /// </summary>
-        internal static String DatabaseDir
+        internal static string DatabaseDir
         {
             get { return gDatabaseDir; }
         }
@@ -125,14 +125,14 @@ namespace ApiExamples
             gDatabaseDir = new Uri(new Uri(gAssemblyDir), @"../../../../Data/Database/").LocalPath;
         }
 
-        internal static readonly String gAssemblyDir;
-        internal static readonly String gMyDir;
-        internal static readonly String gImageDir;
-        internal static readonly String gDatabaseDir;
+        internal static readonly string gAssemblyDir;
+        internal static readonly string gMyDir;
+        internal static readonly string gImageDir;
+        internal static readonly string gDatabaseDir;
 
         /// <summary>
         /// This is where the test license is on my development machine.
         /// </summary>
-        internal const String TestLicenseFileName = @"X:\awnet\TestData\Licenses\Aspose.Total.lic";
+        internal const string TestLicenseFileName = @"X:\awnet\TestData\Licenses\Aspose.Total.lic";
     }
 }

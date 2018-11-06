@@ -290,6 +290,27 @@ namespace ApiExamples
         }
 
         [Test]
+        public void InsertDocumentDinamicallyWithAdditionalTemplateChecking()
+        {
+            Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document] -build>>");
+
+            DocumentTestClass doc = new DocumentTestBuilder()
+                .WithDocument(new Document(MyDir + "ReportingEngine.TestDataTable.docx")).Build();
+
+            BuildReport(template, new object[] { doc, Common.GetContracts() }, new[] { "src", "Contracts" }, 
+                ReportBuildOptions.None);
+            template.Save(
+                MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamicallyWithAdditionalTemplateChecking.docx");
+
+            Assert.IsTrue(
+                DocumentHelper.CompareDocs(
+                    MyDir + @"\Artifacts\ReportingEngine.InsertDocumentDinamicallyWithAdditionalTemplateChecking.docx",
+                    MyDir + @"\Golds\ReportingEngine.InsertDocumentDinamicallyWithAdditionalTemplateChecking Gold.docx"),
+                "Fail inserting document by document");
+        }
+
+
+        [Test]
         public void InsertDocumentDinamically()
         {
             Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document]>>");
@@ -727,6 +748,32 @@ namespace ApiExamples
                 MyDir + @"\Golds\ReportingEngine.BackColor Gold.docx"));
         }
 
+        [Test]
+        public void DoNotRemoveEmptyParagraphs()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.RemoveEmptyParagraphs.docx");
+
+            BuildReport(doc, Common.GetManagers(), "Managers");
+
+            doc.Save(MyDir + @"\Artifacts\ReportingEngine.DoNotRemoveEmptyParagraphs.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.DoNotRemoveEmptyParagraphs.docx",
+                MyDir + @"\Golds\ReportingEngine.DoNotRemoveEmptyParagraphs Gold.docx"));
+        }
+
+        [Test]
+        public void RemoveEmptyParagraphs()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.RemoveEmptyParagraphs.docx");
+
+            BuildReport(doc, Common.GetManagers(), "Managers", ReportBuildOptions.RemoveEmptyParagraphs);
+
+            doc.Save(MyDir + @"\Artifacts\ReportingEngine.RemoveEmptyParagraphs.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\ReportingEngine.RemoveEmptyParagraphs.docx",
+                MyDir + @"\Golds\ReportingEngine.RemoveEmptyParagraphs Gold.docx"));
+        }
+
         private static void BuildReport(Document document, object dataSource, string dataSourceName,
             ReportBuildOptions reportBuildOptions)
         {
@@ -737,6 +784,13 @@ namespace ApiExamples
         private static void BuildReport(Document document, object[] dataSource, string[] dataSourceName)
         {
             ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(document, dataSource, dataSourceName);
+        }
+
+        private static void BuildReport(Document document, object[] dataSource, string[] dataSourceName,
+            ReportBuildOptions reportBuildOptions)
+        {
+            ReportingEngine engine = new ReportingEngine { Options = reportBuildOptions };
             engine.BuildReport(document, dataSource, dataSourceName);
         }
 

@@ -7,7 +7,7 @@ using Aspose.Words.Saving;
 
 namespace Aspose.Words.Examples.CSharp.Loading_Saving
 {
-    class WorkingwithTxt
+    class WorkingWithTxt
     {
         public static void Run()
         {

@@ -299,6 +299,43 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [Test] 
+        public void AnnotationsAtBlockLevel()
+        {
+            //ExStart
+            //ExFor:LoadOptions.AnnotationsAtBlockLevel
+            //ExSummary:Shows how to place bookmark nodes on the block, cell and row levels.
+            LoadOptions loadOptions = new LoadOptions { AnnotationsAtBlockLevel = true };
+
+            Document doc = new Document(MyDir + "Document.AnnotationsAtBlockLevel.docx", loadOptions);
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            StructuredDocumentTag sdt = (StructuredDocumentTag)doc.GetChildNodes(NodeType.StructuredDocumentTag, true)[1];
+
+            BookmarkStart start = builder.StartBookmark("bm");
+            BookmarkEnd end = builder.EndBookmark("bm");
+
+            sdt.ParentNode.InsertBefore(start, sdt);
+            sdt.ParentNode.InsertAfter(end, sdt);
+
+            doc.Save(MyDir + @"\Artifacts\Document.AnnotationsAtBlockLevel.docx", SaveFormat.Docx);
+            //ExEnd
+        }
+
+        [Test]
+        public void ConvertShapeToOfficeMath()
+        {
+            //ExStart
+            //ExFor:LoadOptions.ConvertShapeToOfficeMath
+            //ExSummary:Shows how to convert shapes with EquationXML to Office Math objects.
+            LoadOptions loadOptions = new LoadOptions { ConvertShapeToOfficeMath = false };
+
+            // Specify load option to convert math shapes to office math objects on loading stage.
+            Document doc = new Document(MyDir + "Document.ConvertShapeToOfficeMath.docx", loadOptions);
+            doc.Save(MyDir + @"\Artifacts\Document.ConvertShapeToOfficeMath.docx", SaveFormat.Docx);
+            //ExEnd
+        }
+
         [Test]
         public void ConvertToHtml()
         {
@@ -609,6 +646,7 @@ namespace ApiExamples
             //ExSummary:Shows how to append a document to the end of another document.
             // The document that the content will be appended to.
             Document dstDoc = new Document(MyDir + "Document.doc");
+            
             // The document to append.
             Document srcDoc = new Document(MyDir + "DocumentBuilder.doc");
 
@@ -631,6 +669,7 @@ namespace ApiExamples
             //ExSummary:Shows how to join multiple documents together.
             // The document that the other documents will be appended to.
             Document doc = new Document();
+            
             // We should call this method to clear this document of any existing content.
             doc.RemoveAllChildren();
 
@@ -1357,24 +1396,34 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:CompareOptions.IgnoreFormatting
+            //ExFor:CompareOptions.IgnoreCaseChanges
+            //ExFor:CompareOptions.IgnoreComments
+            //ExFor:CompareOptions.IgnoreTables
+            //ExFor:CompareOptions.IgnoreFields
+            //ExFor:CompareOptions.IgnoreFootnotes
+            //ExFor:CompareOptions.IgnoreTextboxes
             //ExFor:CompareOptions.Target
             //ExFor:Document.Compare(Document, String, DateTime, CompareOptions)
             //ExSummary: Shows how to specify which document shall be used as a target during comparison
             Document doc1 = new Document(MyDir + "Document.CompareOptions.1.docx");
             Document doc2 = new Document(MyDir + "Document.CompareOptions.2.docx");
 
-            //ComparisonTargetType with IgnoreFormatting setting determines which document has to be used as formatting source for ranges of equal text.
-            Aspose.Words.CompareOptions compareOptions = new Aspose.Words.CompareOptions();
-            compareOptions.IgnoreFormatting = true;
-            compareOptions.Target = ComparisonTargetType.New;
-
+            // ComparisonTargetType with IgnoreFormatting setting determines which document has to be used as formatting source for ranges of equal text.
+            Aspose.Words.CompareOptions compareOptions = new Aspose.Words.CompareOptions
+            {
+                IgnoreFormatting = true,
+                IgnoreCaseChanges = true,
+                IgnoreComments = true,
+                IgnoreTables = true,
+                IgnoreFields = true,
+                IgnoreFootnotes = true,
+                IgnoreTextboxes = true,
+                Target = ComparisonTargetType.New
+            };
             doc1.Compare(doc2, "vderyushev", DateTime.Now, compareOptions);
 
             doc1.Save(MyDir + @"\Artifacts\Document.CompareOptions.docx");
             //ExEnd
-
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\Document.CompareOptions.docx",
-                MyDir + @"\Golds\Document.CompareOptions Gold.docx"));
         }
 
         [Test]
@@ -1519,7 +1568,7 @@ namespace ApiExamples
             //ExFor:Paragraph.IsMoveFromRevision
             //ExFor:Paragraph.IsMoveToRevision
             //ExSummary:Shows how to get paragraph that was moved (deleted/inserted) in Microsoft Word while change tracking was enabled.
-            Document doc = new Document(MyDir + "MoveFromRevision.docx");
+            Document doc = new Document(MyDir + "Document.Revisions.docx");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
             for (int i = 0; i < paragraphs.Count; i++)
@@ -1781,7 +1830,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Writeln("This is the frst line.");
+            builder.Writeln("This is the first line.");
             builder.Writeln("This is the second line.");
             builder.Writeln("These three lines contain eighteen words in total.");
 
@@ -1830,7 +1879,7 @@ namespace ApiExamples
             // doc.Cleanup() removes all unused styles and lists
             doc.Cleanup();
 
-            // It currently has no effect becase the 2 items we added plus the original 4 styles are all used
+            // It currently has no effect because the 2 items we added plus the original 4 styles are all used
             Assert.AreEqual(5, doc.Styles.Count);
             Assert.AreEqual(1, doc.Lists.Count);
 
@@ -1934,7 +1983,7 @@ namespace ApiExamples
 
             // Empty Microsoft Word documents by default come with an attached template called "Normal.dotm"
             // There is no default template for Aspose Words documents
-            Assert.AreEqual(String.Empty, doc.AttachedTemplate);
+            Assert.AreEqual(string.Empty, doc.AttachedTemplate);
 
             // For AutomaticallyUpdateStyles to have any effect, we need a document with a template
             // We can make a document with word and open it
@@ -1943,7 +1992,7 @@ namespace ApiExamples
 
             Assert.IsTrue(doc.AttachedTemplate.EndsWith("Document.BusinessBrochureTemplate.dotx"));
 
-            // Any changes to the styes in this template will be propagated to those styles in the document
+            // Any changes to the styles in this template will be propagated to those styles in the document
             doc.AutomaticallyUpdateSyles = true;
 
             doc.Save(MyDir + @"\Artifacts\TemplateStylesUpdating.docx");
@@ -1955,7 +2004,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.CompatibilityOptions
-            //ExSummary:Shows how to optimise our document for different word versions.
+            //ExSummary:Shows how to optimize our document for different word versions.
             Document doc = new Document();
             CompatibilityOptions co = doc.CompatibilityOptions;
 
@@ -1985,7 +2034,7 @@ namespace ApiExamples
             Assert.AreEqual(false, co.UseWord2002TableStyleRules);
             Assert.AreEqual(true, co.UseWord2010TableStyleRules);
 
-            doc.Save(MyDir + @"\Artifacts\Optimised for Word 2010.docx");
+            doc.Save(MyDir + @"\Artifacts\Optimized for Word 2010.docx");
 
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
 
@@ -1997,7 +2046,7 @@ namespace ApiExamples
             Assert.AreEqual(true, co.UseWord2002TableStyleRules);
             Assert.AreEqual(false, co.UseWord2010TableStyleRules);
 
-            doc.Save(MyDir + @"\Artifacts\Optimised for Word 2000.docx");
+            doc.Save(MyDir + @"\Artifacts\Optimized for Word 2000.docx");
             //ExEnd
         }
 
@@ -2013,7 +2062,7 @@ namespace ApiExamples
             // We have a document with 2 sections, this way FirstSection and LastSection are not the same
             Assert.AreEqual(2, doc.Sections.Count);
 
-            string newCopyrightInformation = String.Format("Copyright (C) {0} by Aspose Pty Ltd.", DateTime.Now.Year);
+            string newCopyrightInformation = string.Format("Copyright (C) {0} by Aspose Pty Ltd.", DateTime.Now.Year);
             FindReplaceOptions findReplaceOptions =
                 new FindReplaceOptions { MatchCase = false, FindWholeWordsOnly = false };
 
@@ -2043,10 +2092,10 @@ namespace ApiExamples
             // When creating a blank document, Aspose Words creates a default theme object
             Theme theme = doc.Theme;
 
-            // These colour properties correspond to the 10 colour columns that you see 
-            // in the "Theme colors" section in the colour selector menu when changing font or shading colour
-            // We can view and edit the leading colour for each column, and the five different tints that
-            // make up the rest of the column will be derived automatically from each leading colour
+            // These color properties correspond to the 10 color columns that you see 
+            // in the "Theme colors" section in the color selector menu when changing font or shading color
+            // We can view and edit the leading color for each column, and the five different tints that
+            // make up the rest of the column will be derived automatically from each leading color
             // Aspose Words sets the defaults to what they are in the Microsoft Word default theme
             Assert.AreEqual(Color.FromArgb(255, 255, 255, 255), theme.Colors.Light1);
             Assert.AreEqual(Color.FromArgb(255, 0, 0, 0), theme.Colors.Dark1);
@@ -2059,7 +2108,7 @@ namespace ApiExamples
             Assert.AreEqual(Color.FromArgb(255, 75, 172, 198), theme.Colors.Accent5);
             Assert.AreEqual(Color.FromArgb(255, 247, 150, 70), theme.Colors.Accent6);
 
-            // Hyperlink colours
+            // Hyperlink colors
             Assert.AreEqual(Color.FromArgb(255, 0, 0, 255), theme.Colors.Hyperlink);
             Assert.AreEqual(Color.FromArgb(255, 128, 0, 128), theme.Colors.FollowedHyperlink);
 
@@ -2114,7 +2163,7 @@ namespace ApiExamples
             Assert.AreEqual("DATE", fieldText.Text);
             fieldText.Text = "PAGE";
 
-            // We changed the text to "PAGE" but the field's type property did not update accoridngly
+            // We changed the text to "PAGE" but the field's type property did not update accordingly
             Assert.AreEqual("PAGE", fieldText.GetText());
             Assert.AreNotEqual(FieldType.FieldPage, field.Type);
 
@@ -2371,6 +2420,133 @@ namespace ApiExamples
                 Console.WriteLine("The document either has no any language set in defaults or it was set to Russian originally.");
             else
                 Console.WriteLine("The document default language was set to another than Russian language originally, so it is not overridden.");
+            //ExEnd
+        }
+
+        [Test]
+        public void GetInfoAboutRevisionsInRevisionGroups()
+        {
+            //ExStart
+            //ExFor:RevisionGroup.#ctor
+            //ExFor:RevisionGroup.Author
+            //ExFor:RevisionGroup.RevisionType
+            //ExFor:RevisionGroup.Text
+            //ExFor:RevisionGroupCollection.#ctor
+            //ExFor:RevisionGroupCollection.Count
+            //ExSummary:Shows how to get info about a set of revisions in document.
+            Document doc = new Document(MyDir + "Document.Revisions.docx");
+
+            Console.WriteLine("Revision groups count: {0}\n", doc.Revisions.Groups.Count);
+
+            // Get info about all of revisions in document
+            foreach (RevisionGroup group in doc.Revisions.Groups)
+            {
+                Console.WriteLine("Revision author: {0}; Revision type: {1} \nRevision text: {2}", group.Author,
+                    group.RevisionType, group.RevisionType);
+            }
+
+            //ExEnd
+        }
+
+        [Test]
+        public void GetSpecificRevisionGroup()
+        {
+            //ExStart
+            //ExFor:RevisionGroupCollection.#ctor
+            //ExFor:RevisionGroupCollection.Item(Int32)
+            //ExSummary:Shows how to get a set of revisions in document.
+            Document doc = new Document(MyDir + "Document.Revisions.docx");
+
+            // Get revision group by index.
+            RevisionGroup revisionGroup = doc.Revisions.Groups[1];
+
+            // Get info about specific revision groups sorted by RevisionType
+            IEnumerable<string> revisionGroupCollectionInsertionType =
+                doc.Revisions.Groups.Where(p => p.RevisionType == RevisionType.Insertion).Select(p =>
+                    string.Format("Revision type: {0},\nRevision author: {1},\nRevision text: {2}.\n",
+                        p.RevisionType.ToString(), p.Author, p.Text));
+
+            foreach (string revisionGroupInfo in revisionGroupCollectionInsertionType)
+            {
+                Console.WriteLine(revisionGroupInfo);
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void RemovePersonalInformation()
+        {
+            //ExStart
+            //ExFor:Document.RemovePersonalInformation
+            //ExSummary:Shows how to get or set a flag to remove all user information upon saving the MS Word document.
+            Document doc = new Document(MyDir + "Document.docx")
+            {
+                // If flag sets to 'true' that MS Word will remove all user information from comments, revisions and
+                // document properties upon saving the document. In MS Word 2013 and 2016 you can see this using
+                // File -> Options -> Trust Center -> Trust Center Settings -> Privacy Options -> then the
+                // checkbox "Remove personal information from file properties on save".
+                RemovePersonalInformation = true
+            };
+            
+            doc.Save(MyDir + @"\Artifacts\Document.RemovePersonalInformation.docx");
+        }
+
+        [Test]
+        public void ShowComments()
+        {
+            //ExStart
+            //ExFor:LayoutOptions.ShowComments
+            //ExSummary:Shows how to show or hide comments in PDF document.
+            Document doc = new Document(MyDir + "Comment.Document.docx");
+            
+            doc.LayoutOptions.ShowComments = false;
+            
+            doc.Save(MyDir + @"\Artifacts\Document.DoNotShowComments.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void ShowRevisionsInBalloons()
+        {
+            //ExStart
+            //ExFor:ShowInBalloons
+            //ExFor:RevisionOptions.ShowInBalloons
+            //ExSummary:Show how to render revisions in the balloons.
+            Document doc = new Document(MyDir + "Document.Revisions.docx");
+            
+            doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.FormatAndDelete;
+  
+            doc.Save(MyDir + @"\Artifacts\Document.ShowRevisionsInBalloons.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void CopyStylesFromTemplateViaDocument()
+        {
+            //ExStart
+            //ExFor:Document.CopyStylesFromTemplate(Document)
+            //ExSummary:Shows how to copies styles from the template to a document.
+            Document template = new Document(MyDir + "Rendering.doc");
+
+            Document target = new Document(MyDir + "Document.docx");
+            target.CopyStylesFromTemplate(template);
+
+            target.Save(MyDir + @"\Artifacts\CopyStylesFromTemplateViaDocument.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void CopyStylesFromTemplateViaString()
+        {
+            //ExStart
+            //ExFor:Document.CopyStylesFromTemplate(String)
+            //ExSummary:Shows how to copies styles from the template to a document.
+            string templatePath = MyDir + "Rendering.doc";
+            
+            Document target = new Document(MyDir + "Document.docx");
+            target.CopyStylesFromTemplate(templatePath);
+
+            target.Save(MyDir + @"\Artifacts\CopyStylesFromTemplateViaString.docx");
             //ExEnd
         }
     }
