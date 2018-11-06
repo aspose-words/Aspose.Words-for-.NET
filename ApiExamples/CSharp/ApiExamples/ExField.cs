@@ -2769,5 +2769,82 @@ namespace ApiExamples
             Assert.AreEqual("$1.234.567,89", field.Result);
             //ExEnd
         }
+
+        [Test]
+        [Ignore("WORDSNET-17657")]
+        public void FieldStyleRefParagraphNumbers()
+        {
+            //ExStart
+            //ExFor:FieldStyleRef
+            //ExFor:FieldStyleRef.InsertParagraphNumber
+            //ExFor:FieldStyleRef.InsertParagraphNumberInFullContext
+            //ExFor:FieldStyleRef.InsertParagraphNumberInRelativeContext
+            //ExFor:FieldStyleRef.InsertRelativePosition
+            //ExFor:FieldStyleRef.SearchFromBottom
+            //ExFor:FieldStyleRef.StyleName
+            //ExFor:FieldStyleRef.SuppressNonDelimiters
+            //ExSummary:Shows how to use STYLEREF fields.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create a list based on one of the Microsoft Word list templates
+            Aspose.Words.Lists.List list = doc.Lists.Add(Aspose.Words.Lists.ListTemplate.NumberDefault);
+
+            // This generated list will look like "1.a )"
+            // The space before the bracket is a non-delimiter character that can be suppressed
+            list.ListLevels[0].NumberFormat = "\x0000.";
+            list.ListLevels[1].NumberFormat = "\x0001 )";
+
+            // Add text and apply paragraph styles that will be referenced by STYLEREF fields
+            builder.ListFormat.List = list;
+            builder.ListFormat.ListIndent();
+            builder.ParagraphFormat.Style = doc.Styles["List Paragraph"];
+            builder.Writeln("Item 1");
+            builder.ParagraphFormat.Style = doc.Styles["Quote"];
+            builder.Writeln("Item 2");
+            builder.ParagraphFormat.Style = doc.Styles["List Paragraph"];
+            builder.Writeln("Item 3");
+            builder.ListFormat.RemoveNumbers();
+            builder.ParagraphFormat.Style = doc.Styles["Normal"];
+
+            // Place a STYLEREF field in the header and have it display the first "List Paragraph"-styled text in the document
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            FieldStyleRef fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef.StyleName = "List Paragraph";
+
+            // Place a STYLEREF field in the footer and have it display the last text
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef.StyleName = "List Paragraph";
+            fieldStyleRef.SearchFromBottom = true;
+
+            builder.MoveToDocumentEnd();
+
+            // We can also use STYLEREF fields to reference the list numbers of lists
+            builder.Write("\nParagraph number: ");
+            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef.StyleName = "Quote";
+            fieldStyleRef.InsertParagraphNumber = true;
+
+            builder.Write("\nParagraph number, relative context: ");
+            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef.StyleName = "Quote";
+            fieldStyleRef.InsertParagraphNumberInRelativeContext = true;
+
+            builder.Write("\nParagraph number, full context: ");
+            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef.StyleName = "Quote";
+            fieldStyleRef.InsertParagraphNumberInFullContext = true;
+
+            builder.Write("\nParagraph number, full context, non-delimiter chars suppressed: ");
+            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef.StyleName = "Quote";
+            fieldStyleRef.InsertParagraphNumberInFullContext = true;
+            fieldStyleRef.SuppressNonDelimiters = true;
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FieldStyleRef.docx");
+            //ExEnd
+        }
     }
 }
