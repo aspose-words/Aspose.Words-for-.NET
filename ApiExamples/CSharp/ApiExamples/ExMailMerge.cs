@@ -174,7 +174,7 @@ namespace ApiExamples
         public void GetFieldNames()
         {
             //ExStart
-            //ExFor:FieldAddressBlock.#ctor
+            //ExFor:FieldAddressBlock
             //ExFor:FieldAddressBlock.GetFieldNames
             //ExSummary:Shows how to get mail merge field names used by the field
             Document doc = new Document(MyDir + "MailMerge.GetFieldNames.docx");

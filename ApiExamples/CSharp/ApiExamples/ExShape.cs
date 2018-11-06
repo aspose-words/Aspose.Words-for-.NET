@@ -1024,6 +1024,8 @@ namespace ApiExamples
             // Insert chart.
             Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
             Chart chart = shape.Chart;
+            chart.AxisX.Hidden = true;
+            chart.AxisY.Hidden = true;
 
             // Clear demo data.
             chart.Series.Clear();
@@ -1037,8 +1039,9 @@ namespace ApiExamples
             shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             chart = shape.Chart;
 
-            Assert.AreEqual(false, chart.AxisX.Hidden);
-            Assert.AreEqual(false, chart.AxisY.Hidden);
+            Assert.AreEqual(true, chart.AxisX.Hidden);
+            Assert.AreEqual(true, chart.AxisY.Hidden);
+            //ExEnd
         }
 
         [Test]
@@ -1046,7 +1049,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ChartAxis.NumberFormat
-            //ExFor:NumberFormat.FormatCode
+            //ExFor:ChartNumberFormat.FormatCode
             //ExSummary:Shows how to set formatting for chart values.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

@@ -2054,7 +2054,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertDocument(Document, ImportFormatMode)
-            //ExFor:ImportFormatMode.KeepSourceFormatting
+            //ExFor:ImportFormatMode
             //ExSummary:Shows how to insert a document content into another document keep formatting of inserted document.
             Document doc = new Document(MyDir + "Document.docx");
 

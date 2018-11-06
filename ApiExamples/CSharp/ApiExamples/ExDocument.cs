@@ -1472,13 +1472,12 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Cleanup(CleanupOptions)
-            //ExFor:Document.RemoveUnusedResources
             //ExFor:CleanupOptions
             //ExFor:CleanupOptions.UnusedLists
             //ExFor:CleanupOptions.UnusedStyles
             //ExSummary:Shows how to remove all unused styles and lists from a document. 
             Document doc = new Document(MyDir + "Document.doc");
-
+            
             CleanupOptions cleanupOptions = new CleanupOptions
             {
                 UnusedLists = true,
@@ -2427,11 +2426,11 @@ namespace ApiExamples
         public void GetInfoAboutRevisionsInRevisionGroups()
         {
             //ExStart
-            //ExFor:RevisionGroup.#ctor
+            //ExFor:RevisionGroup
             //ExFor:RevisionGroup.Author
             //ExFor:RevisionGroup.RevisionType
             //ExFor:RevisionGroup.Text
-            //ExFor:RevisionGroupCollection.#ctor
+            //ExFor:RevisionGroupCollection
             //ExFor:RevisionGroupCollection.Count
             //ExSummary:Shows how to get info about a set of revisions in document.
             Document doc = new Document(MyDir + "Document.Revisions.docx");
@@ -2452,7 +2451,7 @@ namespace ApiExamples
         public void GetSpecificRevisionGroup()
         {
             //ExStart
-            //ExFor:RevisionGroupCollection.#ctor
+            //ExFor:RevisionGroupCollection
             //ExFor:RevisionGroupCollection.Item(Int32)
             //ExSummary:Shows how to get a set of revisions in document.
             Document doc = new Document(MyDir + "Document.Revisions.docx");
@@ -2489,6 +2488,7 @@ namespace ApiExamples
             };
             
             doc.Save(MyDir + @"\Artifacts\Document.RemovePersonalInformation.docx");
+            //ExEnd
         }
 
         [Test]
@@ -2525,7 +2525,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.CopyStylesFromTemplate(Document)
-            //ExSummary:Shows how to copies styles from the template to a document.
+            //ExSummary:Shows how to copies styles from the template to a document via Document.
             Document template = new Document(MyDir + "Rendering.doc");
 
             Document target = new Document(MyDir + "Document.docx");
@@ -2540,7 +2540,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.CopyStylesFromTemplate(String)
-            //ExSummary:Shows how to copies styles from the template to a document.
+            //ExSummary:Shows how to copies styles from the template to a document via string.
             string templatePath = MyDir + "Rendering.doc";
             
             Document target = new Document(MyDir + "Document.docx");

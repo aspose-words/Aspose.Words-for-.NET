@@ -28,7 +28,6 @@ namespace ApiExamples
             //ExFor:IFieldMergingCallback
             //ExFor:FieldMergingArgs
             //ExFor:FieldMergingArgsBase.Field
-            //ExFor:FieldMergingArgs.Field
             //ExFor:FieldMergingArgsBase.DocumentFieldName
             //ExFor:FieldMergingArgsBase.Document
             //ExFor:FieldMergingArgsBase.FieldValue

@@ -168,7 +168,7 @@ namespace ApiExamples
         public void InsertFieldNone()
         {
             //ExStart
-            //ExFor:FieldUnknown.#ctor
+            //ExFor:FieldUnknown
             //ExSummary:Shows how to work with 'FieldNone' field in a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -700,6 +700,7 @@ namespace ApiExamples
             Assert.IsFalse(dropDownItems.Contains("Four"));
 
             doc.Save(MyDir + @"\Artifacts\Fields.DropDownItems.docx");
+            //ExEnd
 
             // Empty the collection
             dropDownItems.Clear();
@@ -916,6 +917,7 @@ namespace ApiExamples
             // Remove all fields from the document
             fields.Clear();
             Assert.AreEqual(0, fields.Count);
+            //ExEnd
         }
 
         [Test]
@@ -954,6 +956,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.Compare.docx");
+            //ExEnd
         }
 
         [Test]
@@ -1002,6 +1005,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.If.docx");
+            //ExEnd
         }
 
         [Test]
@@ -1170,6 +1174,7 @@ namespace ApiExamples
 
             // The text content of our building block will be visible in the output
             doc.Save(MyDir + @"\Artifacts\Field.AutoText.dotx");
+            //ExEnd
         }
 
         //ExStart
@@ -1335,7 +1340,7 @@ namespace ApiExamples
         public void MergeField()
         {
             //ExStart
-            //ExFor:FieldMergeField.#ctor
+            //ExFor:FieldMergeField
             //ExFor:FieldMergeField.FieldName
             //ExFor:FieldMergeField.FieldNameNoPrefix
             //ExFor:FieldMergeField.IsMapped
@@ -1773,7 +1778,7 @@ namespace ApiExamples
         public void FieldData()
         {
             //ExStart
-            //ExFor:FieldData.#ctor
+            //ExFor:FieldData
             //ExSummary:Shows how to insert a data field into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1788,7 +1793,7 @@ namespace ApiExamples
         public void FieldInclude()
         {
             //ExStart
-            //ExFor:FieldInclude.#ctor
+            //ExFor:FieldInclude
             //ExFor:FieldInclude.BookmarkName
             //ExFor:FieldInclude.LockFields
             //ExFor:FieldInclude.SourceFullName
@@ -1876,7 +1881,7 @@ namespace ApiExamples
         public void FieldIncludePicture()
         {
             //ExStart
-            //ExFor:FieldIncludePicture.#ctor
+            //ExFor:FieldIncludePicture
             //ExFor:FieldIncludePicture.GraphicFilter
             //ExFor:FieldIncludePicture.IsLinked
             //ExFor:FieldIncludePicture.ResizeHorizontally
@@ -1901,7 +1906,7 @@ namespace ApiExamples
         }
 
         //ExStart
-        //ExFor:FieldIncludeText.#ctor
+        //ExFor:FieldIncludeText
         //ExFor:FieldIncludeText.BookmarkName
         //ExFor:FieldIncludeText.Encoding
         //ExFor:FieldIncludeText.LockFields
@@ -1954,7 +1959,7 @@ namespace ApiExamples
         public void FieldHyperlink()
         {
             //ExStart
-            //ExFor:FieldHyperlink.#ctor
+            //ExFor:FieldHyperlink
             //ExFor:FieldHyperlink.Address
             //ExFor:FieldHyperlink.IsImageMap
             //ExFor:FieldHyperlink.OpenInNewWindow
@@ -2224,6 +2229,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.USAddressBarcode.docx");
+            //ExEnd
         }
 
         [Test]
@@ -2396,7 +2402,7 @@ namespace ApiExamples
         //ExFor:FieldLink.ProgId
         //ExFor:FieldLink.SourceFullName
         //ExFor:FieldLink.SourceItem
-        //ExFor:FieldDde.#ctor
+        //ExFor:FieldDde
         //ExFor:FieldDde.AutoUpdate
         //ExFor:FieldDde.InsertAsBitmap
         //ExFor:FieldDde.InsertAsHtml
@@ -2408,7 +2414,7 @@ namespace ApiExamples
         //ExFor:FieldDde.ProgId
         //ExFor:FieldDde.SourceFullName
         //ExFor:FieldDde.SourceItem
-        //ExFor:FieldDdeAuto.#ctor
+        //ExFor:FieldDdeAuto
         //ExFor:FieldDdeAuto.InsertAsBitmap
         //ExFor:FieldDdeAuto.InsertAsHtml
         //ExFor:FieldDdeAuto.InsertAsPicture
