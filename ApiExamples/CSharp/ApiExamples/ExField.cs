@@ -2814,7 +2814,7 @@ namespace ApiExamples
 
             // Place a STYLEREF field in the footer and have it display the last text
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
-            fieldStyleRef = (FieldStyleRef) builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
             fieldStyleRef.StyleName = "List Paragraph";
             fieldStyleRef.SearchFromBottom = true;
 
@@ -2822,22 +2822,22 @@ namespace ApiExamples
 
             // We can also use STYLEREF fields to reference the list numbers of lists
             builder.Write("\nParagraph number: ");
-            fieldStyleRef = (FieldStyleRef) builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
             fieldStyleRef.StyleName = "Quote";
             fieldStyleRef.InsertParagraphNumber = true;
 
             builder.Write("\nParagraph number, relative context: ");
-            fieldStyleRef = (FieldStyleRef) builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
             fieldStyleRef.StyleName = "Quote";
             fieldStyleRef.InsertParagraphNumberInRelativeContext = true;
 
             builder.Write("\nParagraph number, full context: ");
-            fieldStyleRef = (FieldStyleRef) builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
             fieldStyleRef.StyleName = "Quote";
             fieldStyleRef.InsertParagraphNumberInFullContext = true;
 
             builder.Write("\nParagraph number, full context, non-delimiter chars suppressed: ");
-            fieldStyleRef = (FieldStyleRef) builder.InsertField(FieldType.FieldStyleRef, true);
+            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
             fieldStyleRef.StyleName = "Quote";
             fieldStyleRef.InsertParagraphNumberInFullContext = true;
             fieldStyleRef.SuppressNonDelimiters = true;
