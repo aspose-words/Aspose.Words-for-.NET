@@ -2809,7 +2809,7 @@ namespace ApiExamples
 
             // Place a STYLEREF field in the header and have it display the first "List Paragraph"-styled text in the document
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-            FieldStyleRef fieldStyleRef = (FieldStyleRef) builder.InsertField(FieldType.FieldStyleRef, true);
+            FieldStyleRef fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
             fieldStyleRef.StyleName = "List Paragraph";
 
             // Place a STYLEREF field in the footer and have it display the last text
