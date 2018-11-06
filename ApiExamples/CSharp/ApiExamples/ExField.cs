@@ -2846,5 +2846,86 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.FieldStyleRef.docx");
             //ExEnd
         }
+        
+        [Test]
+        public void FieldDate()
+        {
+            //ExStart
+            //ExFor:FieldCreateDate
+            //ExFor:FieldCreateDate.UseLunarCalendar
+            //ExFor:FieldCreateDate.UseSakaEraCalendar
+            //ExFor:FieldCreateDate.UseUmAlQuraCalendar
+            //ExSummary:Shows how to insert DATE fields with different kinds of calendars.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // One way of putting dates into our documents is inserting DATE fields with document builder
+            FieldDate fieldDate = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
+
+            // Set the field's date to the current date of the Islamic Lunar Calendar
+            fieldDate.UseLunarCalendar = true;
+            Assert.AreEqual(" DATE  \\h", fieldDate.GetFieldCode());
+            builder.Writeln();
+
+            // Insert a date field with the current date of the Umm al-Qura calendar
+            fieldDate = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
+            fieldDate.UseUmAlQuraCalendar = true;
+            Assert.AreEqual(" DATE  \\u", fieldDate.GetFieldCode());
+            builder.Writeln();
+
+            // Insert a date field with the current date of the Indian national calendar
+            fieldDate = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
+            fieldDate.UseSakaEraCalendar = true;
+            Assert.AreEqual(" DATE  \\s", fieldDate.GetFieldCode());
+            builder.Writeln();
+
+            // Insert a date field with the current date of the calendar used in the (Insert > Date and Time) dialog box
+            fieldDate = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
+            fieldDate.UseLastFormat = true;
+            Assert.AreEqual(" DATE  \\l", fieldDate.GetFieldCode());
+            builder.Writeln();
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Date.docx");
+            //ExEnd
+        }
+
+        [Test]
+        [Ignore("WORDSNET-17669")]
+        public void FieldCreateDate()
+        {
+            //ExStart
+            //ExFor:FieldCreateDate
+            //ExFor:FieldCreateDate.UseLunarCalendar
+            //ExFor:FieldCreateDate.UseSakaEraCalendar
+            //ExFor:FieldCreateDate.UseUmAlQuraCalendar
+            //ExSummary:Shows how to insert CREATEDATE fields with different kinds of calendars.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // These fields will display date and time when our document was created
+            FieldCreateDate fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
+
+            // Display the date according to the Lunar calendar
+            fieldCreateDate.UseLunarCalendar = true;
+            Assert.AreEqual(" CREATEDATE  \\h", fieldCreateDate.GetFieldCode());
+            builder.Writeln();
+
+            // Insert a create date field with the document creation date according to the Umm al-Qura calendar
+            fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
+            fieldCreateDate.UseUmAlQuraCalendar = true;
+            Assert.AreEqual(" CREATEDATE  \\u", fieldCreateDate.GetFieldCode());
+            builder.Writeln();
+
+            // Insert a create date field with the document creation date according to the Indian national calendar
+            fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
+            fieldCreateDate.UseSakaEraCalendar = true;
+            Assert.AreEqual(" CREATEDATE  \\s", fieldCreateDate.GetFieldCode());
+            builder.Writeln();
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.CreateDate.docx");
+            //ExEnd
+        }
     }
 }
