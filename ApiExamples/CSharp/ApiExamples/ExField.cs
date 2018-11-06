@@ -2900,38 +2900,30 @@ namespace ApiExamples
             //ExFor:FieldCreateDate.UseSakaEraCalendar
             //ExFor:FieldCreateDate.UseUmAlQuraCalendar
             //ExSummary:Shows how to insert CREATEDATE fields with different kinds of calendars.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // These fields will display date and time when the document was created
+            // These fields will display date and time when our document was created
             FieldCreateDate fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
 
-            // CREATEDATE fields will draw their culture from that of the thread
-            doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.CurrentThread;
-
-            // Set the culture to one that matches that of the Lunar calendar, then apply according changes to the field
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("he-il");
+            // Display the date according to the Lunar calendar
             fieldCreateDate.UseLunarCalendar = true;
-            fieldCreateDate.Update();
             Assert.AreEqual(" CREATEDATE  \\h", fieldCreateDate.GetFieldCode());
             builder.Writeln();
 
-            // Insert a create date field with the current date of the Umm al-Qura calendar
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("ar-sa");
+            // Insert a create date field with the document creation date according to the Umm al-Qura calendar
             fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
             fieldCreateDate.UseUmAlQuraCalendar = true;
-            fieldCreateDate.Update();
             Assert.AreEqual(" CREATEDATE  \\u", fieldCreateDate.GetFieldCode());
             builder.Writeln();
 
-            // Insert a create date field with the current date of the Indian national calendar
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("hi-in");
+            // Insert a create date field with the document creation date according to the Indian national calendar
             fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
             fieldCreateDate.UseSakaEraCalendar = true;
-            fieldCreateDate.Update();
             Assert.AreEqual(" CREATEDATE  \\s", fieldCreateDate.GetFieldCode());
             builder.Writeln();
 
+            doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.CreateDate.docx");
             //ExEnd
         }
