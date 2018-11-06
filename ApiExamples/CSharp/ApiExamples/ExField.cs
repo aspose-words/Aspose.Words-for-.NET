@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Text;
 using System.Globalization;
 using System.IO;
@@ -707,42 +706,70 @@ namespace ApiExamples
             Assert.AreEqual(0, dropDownItems.Count);
         }
 
+        //ExStart
+        //ExFor:Fields.FieldAsk
+        //ExFor:Fields.FieldAsk.BookmarkName
+        //ExFor:Fields.FieldAsk.DefaultResponse
+        //ExFor:Fields.FieldAsk.PromptOnceOnMailMerge
+        //ExFor:Fields.FieldAsk.PromptText
+        //ExFor:FieldOptions.UserPromptRespondent
+        //ExSummary:Shows how to create an ASK field and set its properties.
         [Test]
         public void FieldAsk()
         {
-            //ExStart
-            //ExFor:Fields.FieldAsk
-            //ExFor:Fields.FieldAsk.BookmarkName
-            //ExFor:Fields.FieldAsk.DefaultResponse
-            //ExFor:Fields.FieldAsk.PromptOnceOnMailMerge
-            //ExFor:Fields.FieldAsk.PromptText
-            //ExSummary:Shows how to create an ASK field and set its properties.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // We can use a document builder to create our field
+            // Place a field where the response to our ASK field will be placed
+            FieldRef fieldRef = (FieldRef)builder.InsertField(FieldType.FieldRef, true);
+            fieldRef.BookmarkName = "MyAskField";
+            builder.Writeln();
+
+            // Insert the ASK field and edit its properties, making sure to reference our REF field
             FieldAsk fieldAsk = (FieldAsk)builder.InsertField(FieldType.FieldAsk, true);
-
-            // The initial state of our ask field is empty
-            Assert.AreEqual(" ASK ", fieldAsk.GetFieldCode());
-
-            // Add functionality to our field
             fieldAsk.BookmarkName = "MyAskField";
             fieldAsk.PromptText = "Please provide a response for this ASK field";
-            fieldAsk.DefaultResponse = "This is the default response.";
+            fieldAsk.DefaultResponse = "Response from within the field.";
             fieldAsk.PromptOnceOnMailMerge = true;
+            builder.Writeln();
 
-            // The attributes we changed are now incorporated into the field code
+            // ASK fields apply the default response to their respective REF fields during a mail merge
+            System.Data.DataTable table = new System.Data.DataTable("My Table");
+            table.Columns.Add("Column 1");
+            table.Rows.Add("Row 1");
+            table.Rows.Add("Row 2");
+
+            FieldMergeField fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            fieldMergeField.FieldName = "Column 1";
+
+            // We can modify or override the default response in our ASK fields with a custom prompt responder, which will take place during a mail merge
+            doc.FieldOptions.UserPromptRespondent = new MyPromptRespondent();
+            doc.MailMerge.Execute(table);
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Fields.AskField.docx");
+
             Assert.AreEqual(
-                " ASK  MyAskField \"Please provide a response for this ASK field\" \\d \"This is the default response.\" \\o",
+                " ASK  MyAskField \"Please provide a response for this ASK field\" \\d \"Response from within the field.\" \\o",
                 fieldAsk.GetFieldCode());
-            //ExEnd
 
-            Assert.AreEqual("MyAskField", fieldAsk.BookmarkName);
-            Assert.AreEqual("Please provide a response for this ASK field", fieldAsk.PromptText);
-            Assert.AreEqual("This is the default response.", fieldAsk.DefaultResponse);
-            Assert.AreEqual(true, fieldAsk.PromptOnceOnMailMerge);
+            Assert.AreEqual("MyAskField", fieldAsk.BookmarkName); //ExSkip
+            Assert.AreEqual("Please provide a response for this ASK field", fieldAsk.PromptText); // ExSkip
+            Assert.AreEqual("Response from within the field.", fieldAsk.DefaultResponse); //ExSkip
+            Assert.AreEqual(true, fieldAsk.PromptOnceOnMailMerge); //ExSkip
         }
+
+        /// <summary>
+        /// IFieldUserPromptRespondent implementation that appends a line to the default response of an ASK field during a mail merge
+        /// </summary>
+        private class MyPromptRespondent : IFieldUserPromptRespondent
+        {
+            public string Respond(string promptText, string defaultResponse)
+            {
+                return "Response from MyPromptRespondent. " + defaultResponse;
+            }
+        }
+        //ExEnd
 
         [Test]
         public void FieldAdvance()
@@ -1109,6 +1136,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Fields.FieldAutoText
             //ExFor:FieldAutoText.EntryName
+            //ExFor:FieldOptions.BuiltInTemplatesPaths
             //ExSummary:Shows how to insert an auto text field and reference an auto text building block with it. 
             Document doc = new Document();
 
@@ -1136,6 +1164,9 @@ namespace ApiExamples
 
             // Refer to our building block by name
             field.EntryName = "MyBlock";
+
+            // Put additional templates here
+            doc.FieldOptions.BuiltInTemplatesPaths = new[] { MyDir + "Document.BusinessBrochureTemplate.dotx" };
 
             // The text content of our building block will be visible in the output
             doc.Save(MyDir + @"\Artifacts\Field.AutoText.dotx");
@@ -1505,6 +1536,7 @@ namespace ApiExamples
         //ExFor:FieldToc.PreserveTabs
         //ExFor:FieldToc.UpdatePageNumbers
         //ExFor:FieldToc.UseParagraphOutlineLevel
+        //ExFor:FieldOptions.CustomTocStyleSeparator
         //ExSummary:Shows how to insert a TOC and populate it with entries based on heading styles.
         [Test] //ExSkip
         public void FieldToc()
@@ -1522,8 +1554,11 @@ namespace ApiExamples
             fieldToc.BookmarkName = "MyBookmark";
 
             // Normally paragraphs with a "Heading n" style will be the only ones that will be added to a TOC as entries
-            // We can set this attribute to include others, such as the style "Quote" in this case
-            fieldToc.CustomStyles = "Quote,Heading 1";
+            // We can set this attribute to include other styles, such as "Quote" and "Intense Quote" in this case
+            fieldToc.CustomStyles = "Quote; 6; Intense Quote; 7";
+
+            // Styles are normally separated by a comma (",") but we can use this property to set a custom delimiter
+            doc.FieldOptions.CustomTocStyleSeparator = ";";
 
             // Filter out any headings that are outside this range
             fieldToc.HeadingLevelRange = "1-3";
@@ -1542,21 +1577,22 @@ namespace ApiExamples
             builder.Writeln("Paragraph text.");
             InsertHeading(builder, "Second entry", "Heading 1");
             InsertHeading(builder, "Third entry", "Quote");
+            InsertHeading(builder, "Fourth entry", "Intense Quote");
 
             // These two headings will have the page numbers omitted because they are within the "2-5" range
-            InsertHeading(builder, "Fourth entry", "Heading 2");
-            InsertHeading(builder, "Fifth entry", "Heading 3");
+            InsertHeading(builder, "Fifth entry", "Heading 2");
+            InsertHeading(builder, "Sixth entry", "Heading 3");
 
             // This entry will be omitted because "Heading 4" is outside of the "1-3" range we set earlier
-            InsertHeading(builder, "Sixth entry", "Heading 4");
+            InsertHeading(builder, "Seventh entry", "Heading 4");
 
             builder.EndBookmark("MyBookmark");
             builder.Writeln("Paragraph text.");
 
             // This entry will be omitted because it is outside the bookmark specified by the TOC
-            InsertHeading(builder, "Fifth entry", "Heading 1");
+            InsertHeading(builder, "Eighth entry", "Heading 1");
 
-            Assert.AreEqual(" TOC  \\b MyBookmark \\t \"Quote,Heading 1\" \\o 1-3 \\n 2-5 \\p - \\h \\x \\w", fieldToc.GetFieldCode());
+            Assert.AreEqual(" TOC  \\b MyBookmark \\t \"Quote; 6; Intense Quote; 7\" \\o 1-3 \\n 2-5 \\p - \\h \\x \\w", fieldToc.GetFieldCode());
 
             fieldToc.UpdatePageNumbers();
             doc.UpdateFields();
@@ -2564,6 +2600,177 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
+        public void FieldOptionsCurrentUser()
+        {
+            //ExStart
+            //ExFor:FieldOptions.CurrentUser
+            //ExFor:FieldOptions.DefaultDocumentAuthor
+            //ExSummary:Shows how to set user details and insert them as fields.
+            Document doc = new Document();
+
+            // Set user information
+            UserInformation userInformation = new UserInformation();
+            userInformation.Name = "John Doe";
+            userInformation.Initials = "J. D.";
+            userInformation.Address = "123 Main Street";
+            doc.FieldOptions.CurrentUser = userInformation;
+
+            // Insert fields that reference our user information
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            Assert.AreEqual(userInformation.Name, builder.InsertField(" USERNAME ").Result);
+            Assert.AreEqual(userInformation.Initials, builder.InsertField(" USERINITIALS ").Result);
+            Assert.AreEqual(userInformation.Address, builder.InsertField(" USERADDRESS ").Result);
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldOptionsFileName()
+        {
+            //ExStart
+            //ExFor:FieldOptions.FileName
+            //ExSummary:Shows how to use FieldOptions to override the default value for the FILENAME field.
+            Document doc = new Document(MyDir + "Document.docx");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.MoveToDocumentEnd();
+            builder.Writeln();
+
+            // This FILENAME field will currently contain the actual filename for the document
+            builder.InsertField(FieldType.FieldFileName, true);
+
+            // If we manually set a value for this property of the document's field options object,
+            // our overriding value will appear at the FILENAME field
+            Assert.IsNull(doc.FieldOptions.FileName);
+            doc.FieldOptions.FileName = "Field.FileName.docx";
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\" + doc.FieldOptions.FileName);
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldOptionsBidi()
+        {
+            //ExStart
+            //ExFor:FieldOptions.IsBidiTextSupportedOnUpdate
+            //ExSummary:Shows how to use FieldOptions to ensure that bi-directional text is properly supported during the field update.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Ensure that any field operation involving right-to-left text is performed correctly 
+            doc.FieldOptions.IsBidiTextSupportedOnUpdate = true;
+
+            // Use a document builder to insert a field which contains right-to-left text
+            FormField comboBox = builder.InsertComboBox("MyComboBox", new[] { "עֶשְׂרִים", "שְׁלוֹשִׁים", "אַרְבָּעִים", "חֲמִשִּׁים", "שִׁשִּׁים" }, 0);
+            comboBox.CalculateOnExit = true;
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FieldOptionsBidi.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldOptionsLegacyNumberFormat()
+        {
+            //ExStart
+            //ExFor:FieldOptions.LegacyNumberFormat
+            //ExSummary:Shows how use FieldOptions to change the number format.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Field field = builder.InsertField("= 2 + 3 \\# $##");
+
+            Assert.AreEqual("$ 5", field.Result);
+
+            doc.FieldOptions.LegacyNumberFormat = true;
+            field.Update();
+
+            Assert.AreEqual("$5", field.Result);
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldOptionsPreProcessCulture()
+        {
+            //ExStart
+            //ExFor:FieldOptions.PreProcessCulture
+            //ExSummary:Shows how to set the preprocess culture.
+            Document doc = new Document(MyDir + "Document.docx");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            doc.FieldOptions.PreProcessCulture = new CultureInfo("de-DE");
+
+            Field field = builder.InsertField(" DOCPROPERTY CreateTime");
+
+            // Conforming to the German culture, the date/time will be presented in the "dd.mm.yyyy hh:mm" format
+            Assert.IsTrue(Regex.Match(field.Result, @"\d{2}[.]\d{2}[.]\d{4} \d{2}[:]\d{2}").Success);
+
+            doc.FieldOptions.PreProcessCulture = CultureInfo.InvariantCulture;
+            field.Update();
+
+            // After switching to the invariant culture, the date/time will be presented in the "mm/dd/yyyy hh:mm" format
+            Assert.IsTrue(Regex.Match(field.Result, @"\d{2}[/]\d{2}[/]\d{4} \d{2}[:]\d{2}").Success);
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldOptionsToaCategories()
+        {
+            //ExStart
+            //ExFor:FieldOptions.ToaCategories
+            //ExSummary:Shows how to specify a table of authorities categories for a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // There are default category values we can use, or we can make our own like this
+            ToaCategories toaCategories = new ToaCategories();
+            doc.FieldOptions.ToaCategories = toaCategories;
+
+            toaCategories[1] = "My Category 1"; // Replaces default value "Cases"
+            toaCategories[2] = "My Category 2"; // Replaces default value "Statutes"
+
+            // Insert 2 tables of authorities, one per category
+            builder.InsertField("TOA \\c 1 \\h", null);
+            builder.InsertField("TOA \\c 2 \\h", null);
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // Insert table of authorities entries across 2 categories
+            builder.InsertField("TA \\c 2 \\l \"entry 1\"");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.InsertField("TA \\c 1 \\l \"entry 2\"");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.InsertField("TA \\c 2 \\l \"entry 3\"");
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.TableOfAuthorities.Categories.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldOptionsUseInvariantCultureNumberFormat()
+        {
+            //ExStart
+            //ExFor:FieldOptions.UseInvariantCultureNumberFormat
+            //ExSummary:Shows how to format numbers according to the invariant culture.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
+            Field field = builder.InsertField(" = 1234567,89 \\# $#,###,###.##");
+            field.Update();
+
+            // The combination of field, number format and thread culture can sometimes produce an unsuitable result
+            Assert.IsFalse(doc.FieldOptions.UseInvariantCultureNumberFormat);
+            Assert.AreEqual("$1234567,89 .     ", field.Result);
+
+            // We can set this attribute to avoid changing the whole thread culture just for numeric formats
+            doc.FieldOptions.UseInvariantCultureNumberFormat = true;
+            field.Update();
+            Assert.AreEqual("$1.234.567,89", field.Result);
+            //ExEnd
+        }
+
+        [Test]
         [Ignore("WORDSNET-17657")]
         public void FieldStyleRefParagraphNumbers()
         {
@@ -2586,7 +2793,7 @@ namespace ApiExamples
             // This generated list will look like "1.a )"
             // The space before the bracket is a non-delimiter character that can be suppressed
             list.ListLevels[0].NumberFormat = "\x0000.";
-            list.ListLevels[1].NumberFormat = "\x0001 )"; 
+            list.ListLevels[1].NumberFormat = "\x0001 )";
 
             // Add text and apply paragraph styles that will be referenced by STYLEREF fields
             builder.ListFormat.List = list;
