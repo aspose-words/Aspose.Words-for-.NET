@@ -2009,6 +2009,10 @@ namespace ApiExamples
         //ExFor:MergeFieldImageDimension.Unit
         //ExFor:MergeFieldImageDimension.Value
         //ExFor:MergeFieldImageDimensionUnit
+        //ExFor:ImageFieldMergingArgs
+        //ExFor:ImageFieldMergingArgs.ImageFileName
+        //ExFor:ImageFieldMergingArgs.ImageWidth
+        //ExFor:ImageFieldMergingArgs.ImageHeight
         //ExSummary:Shows how to set the dimensions of merged images.
         [Test]
         public void MergeFieldImageDimension()

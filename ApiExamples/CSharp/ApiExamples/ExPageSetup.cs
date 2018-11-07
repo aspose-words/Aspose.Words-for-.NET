@@ -56,6 +56,7 @@ namespace ApiExamples
             //ExFor:PageSetup.LayoutMode
             //ExFor:PageSetup.CharactersPerLine
             //ExFor:PageSetup.LinesPerPage
+            //ExFor:SectionLayoutMode
             //ExSummary:Creates headers and footers different for first, even and odd pages using DocumentBuilder.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -390,7 +391,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PageSetup.FootnoteOptions
-            //ExSummary: Shows how to set footnote options for current section
+            //ExSummary:Shows how to set options for footnotes in current section
             Document doc = new Document();
 
             PageSetup pageSetup = doc.Sections[0].PageSetup;
@@ -408,7 +409,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PageSetup.EndnoteOptions
-            //ExSummary: Shows how to set endnote options for current section
+            //ExSummary:Shows how to set options for endnotes in current section
             Document doc = new Document();
 
             PageSetup pageSetup = doc.Sections[0].PageSetup;

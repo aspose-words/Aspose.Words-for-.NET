@@ -41,7 +41,7 @@ namespace ApiExamples
             // Create a building block and name it
             BuildingBlock block = new BuildingBlock(glossaryDoc);
             block.Name = "Custom Block";
-
+            
             // Put in in the document's glossary document
             glossaryDoc.AppendChild(block);
             Assert.AreEqual(1, glossaryDoc.Count);

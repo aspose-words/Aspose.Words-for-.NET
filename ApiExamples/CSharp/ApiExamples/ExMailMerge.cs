@@ -241,6 +241,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:MailMerge.GetRegionsHierarchy
+            //ExFor:MailMergeRegionInfo
             //ExFor:MailMergeRegionInfo.Regions
             //ExFor:MailMergeRegionInfo.Name
             //ExFor:MailMergeRegionInfo.Fields
@@ -285,7 +286,9 @@ namespace ApiExamples
         public void TestTagsReplacedEventShouldRisedWithUseNonMergeFieldsOption()
         {
             //ExStart
+            //ExFor:MailMerge.MailMergeCallback
             //ExFor:IMailMergeCallback
+            //ExFor:IMailMergeCallback.TagsReplaced
             //ExSummary:Shows how to define custom logic for handling events during mail merge.
             Document document = new Document();
             document.MailMerge.UseNonMergeFields = true;

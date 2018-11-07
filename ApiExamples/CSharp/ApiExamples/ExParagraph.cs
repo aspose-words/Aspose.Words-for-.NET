@@ -192,9 +192,13 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Paragraph.FrameFormat
+            //ExFor:FrameFormat
             //ExFor:FrameFormat.IsFrame
             //ExFor:FrameFormat.Width
             //ExFor:FrameFormat.Height
+            //ExFor:FrameFormat.HeightRule
+            //ExFor:FrameFormat.HorizontalAlignment
+            //ExFor:FrameFormat.VerticalAlignment
             //ExFor:FrameFormat.HorizontalPosition
             //ExFor:FrameFormat.RelativeHorizontalPosition
             //ExFor:FrameFormat.HorizontalDistanceFromText
@@ -212,6 +216,9 @@ namespace ApiExamples
                 {
                     Console.WriteLine("Width: " + paragraph.FrameFormat.Width);
                     Console.WriteLine("Height: " + paragraph.FrameFormat.Height);
+                    Console.WriteLine("HeightRule: " + paragraph.FrameFormat.HeightRule);
+                    Console.WriteLine("HorizontalAlignment: " + paragraph.FrameFormat.HorizontalAlignment);
+                    Console.WriteLine("VerticalAlignment: " + paragraph.FrameFormat.VerticalAlignment);
                     Console.WriteLine("HorizontalPosition: " + paragraph.FrameFormat.HorizontalPosition);
                     Console.WriteLine("RelativeHorizontalPosition: " +
                                       paragraph.FrameFormat.RelativeHorizontalPosition);

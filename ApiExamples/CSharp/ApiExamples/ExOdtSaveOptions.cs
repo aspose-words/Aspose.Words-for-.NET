@@ -19,6 +19,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OdtSaveOptions.MeasureUnit
+            //ExFor:OdtSaveMeasureUnit
             //ExSummary:Shows how to work with units of measure of document content
             Document doc = new Document(MyDir + "OdtSaveOptions.MeasureUnit.docx");
 

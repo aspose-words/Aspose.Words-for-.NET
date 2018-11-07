@@ -84,7 +84,6 @@ namespace ApiExamples
                     }
                 }
             }
-
             //ExEnd
         }
 
@@ -139,7 +138,6 @@ namespace ApiExamples
                     childComment.Done = true;
                 }
             }
-
             //ExEnd
         }
     }
