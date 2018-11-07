@@ -18,6 +18,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             AddBidiMarks(dataDir);
             DetectNumberingWithWhitespaces(dataDir);
             HandleSpacesOptions(dataDir);
+            ExportHeadersFootersMode(dataDir);
         }
 
         public static void SaveAsTxt(string dataDir)
@@ -70,6 +71,32 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             doc.Save(dataDir);
             //ExEnd:HandleSpacesOptions
             Console.WriteLine("\nTrim leading and trailing spaces while importing text document.\nFile saved at " + dataDir);
+        }
+
+
+        public static void ExportHeadersFootersMode(string dataDir)
+        {
+            //ExStart:ExportHeadersFootersMode
+             
+            Document doc = new Document(dataDir + "TxtExportHeadersFootersMode.docx");
+
+            TxtSaveOptions options = new TxtSaveOptions();
+            options.SaveFormat = SaveFormat.Text;
+
+            // All headers and footers are placed at the very end of the output document.
+            options.ExportHeadersFootersMode = TxtExportHeadersFootersMode.AllAtEnd;
+            doc.Save(dataDir + "outputFileNameA.txt", options);
+
+            // Only primary headers and footers are exported at the beginning and end of each section.
+            options.ExportHeadersFootersMode = TxtExportHeadersFootersMode.PrimaryOnly;
+            doc.Save(dataDir + "outputFileNameB.txt", options);
+
+            // No headers and footers are exported.
+            options.ExportHeadersFootersMode = TxtExportHeadersFootersMode.None;
+            doc.Save(dataDir + "outputFileNameC.txt", options);
+
+            //ExEnd:ExportHeadersFootersMode
+            Console.WriteLine("\nExport text files with TxtExportHeadersFootersMode.\nFiles saved at " + dataDir);
         }
     }
 }

@@ -58,7 +58,7 @@ namespace Aspose.Words.Examples.CSharp
             // QuickStart.HelloWorld.Run();
             // QuickStart.UpdateFields.Run();
             // QuickStart.WorkingWithNodes.Run();
-            
+
             //// =====================================================
             //// =====================================================
             //// Loading and Saving
@@ -340,6 +340,8 @@ namespace Aspose.Words.Examples.CSharp
             // RemoveRowsFromTable.Run();
             // HandleMailMergeSwitches.Run();
             // MailMergeAndConditionalField.Run();
+
+            // MailMergeCleanUp.Run();
 
             //// =====================================================
             //// =====================================================
