@@ -85,6 +85,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldBuilder.#ctor(FieldType)
             //ExFor:FieldBuilder.BuildAndInsert(Inline)
+            //ExFor:FieldRevNum
             //ExSummary:Builds and inserts a field into the document before the specified inline node
             Document doc = new Document();
             Run run = DocumentHelper.InsertNewRun(doc, " Hello World!", 0);
@@ -339,10 +340,10 @@ namespace ApiExamples
         public void InsertFieldWithFieldBuilder()
         {
             //ExStart
-            //ExFor:FieldArgumentBuilder.#ctor
+            //ExFor:FieldArgumentBuilder
             //ExFor:FieldArgumentBuilder.AddField(FieldBuilder)
             //ExFor:FieldArgumentBuilder.AddText(String)
-            //ExFor:FieldBuilder.#ctor
+            //ExFor:FieldBuilder
             //ExFor:FieldBuilder.AddArgument(FieldArgumentBuilder)
             //ExFor:FieldBuilder.AddArgument(String)
             //ExFor:FieldBuilder.AddArgument(Int32)
@@ -475,12 +476,12 @@ namespace ApiExamples
             //ExFor:FieldFormat.NumericFormat
             //ExFor:FieldFormat.GeneralFormats
             //ExFor:GeneralFormat
-            //ExFor:GeneralFormatCollection.Add(GeneralFormat)
             //ExFor:GeneralFormatCollection
+            //ExFor:GeneralFormatCollection.Add(GeneralFormat)
             //ExFor:GeneralFormatCollection.Count
-            //ExFor:GeneralFormatCollection.Item(System.Int32)
+            //ExFor:GeneralFormatCollection.Item(Int32)
             //ExFor:GeneralFormatCollection.Remove(GeneralFormat)
-            //ExFor:GeneralFormatCollection.RemoveAt(System.Int32)
+            //ExFor:GeneralFormatCollection.RemoveAt(Int32)
             //ExSummary:Shows how to format fields
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -714,6 +715,7 @@ namespace ApiExamples
         //ExFor:Fields.FieldAsk.PromptOnceOnMailMerge
         //ExFor:Fields.FieldAsk.PromptText
         //ExFor:FieldOptions.UserPromptRespondent
+        //ExFor:IFieldUserPromptRespondent
         //ExSummary:Shows how to create an ASK field and set its properties.
         [Test]
         public void FieldAsk()
@@ -1620,6 +1622,11 @@ namespace ApiExamples
         //ExStart
         //ExFor:FieldToc.EntryIdentifier
         //ExFor:FieldToc.EntryLevelRange
+        //ExFor:FieldTC
+        //ExFor:FieldTC.OmitPageNumber
+        //ExFor:FieldTC.Text
+        //ExFor:FieldTC.TypeIdentifier
+        //ExFor:FieldTC.EntryLevel
         //ExSummary:Shows how to insert a TOC field and filter which TC fields end up as entries.
         [Test] //ExSkip
         public void FieldTocEntryIdentifier()
@@ -1658,6 +1665,7 @@ namespace ApiExamples
         public void InsertTocEntry(DocumentBuilder builder, string text, string typeIdentifier, string entryLevel)
         {
             FieldTC fieldTc = (FieldTC)builder.InsertField(FieldType.FieldTOCEntry, true);
+            fieldTc.OmitPageNumber = true;
             fieldTc.Text = text;
             fieldTc.TypeIdentifier = typeIdentifier;
             fieldTc.EntryLevel = entryLevel;
@@ -2611,6 +2619,10 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldOptions.CurrentUser
             //ExFor:FieldOptions.DefaultDocumentAuthor
+            //ExFor:UserInformation
+            //ExFor:UserInformation.Name
+            //ExFor:UserInformation.Initials
+            //ExFor:UserInformation.Address
             //ExSummary:Shows how to set user details and insert them as fields.
             Document doc = new Document();
 
@@ -2724,6 +2736,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldOptions.ToaCategories
+            //ExFor:ToaCategories
+            //ExFor:ToaCategories.Item(Int32)
             //ExSummary:Shows how to specify a table of authorities categories for a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2731,7 +2745,7 @@ namespace ApiExamples
             // There are default category values we can use, or we can make our own like this
             ToaCategories toaCategories = new ToaCategories();
             doc.FieldOptions.ToaCategories = toaCategories;
-
+            
             toaCategories[1] = "My Category 1"; // Replaces default value "Cases"
             toaCategories[2] = "My Category 2"; // Replaces default value "Statutes"
 
@@ -2857,10 +2871,11 @@ namespace ApiExamples
         public void FieldDate()
         {
             //ExStart
-            //ExFor:FieldCreateDate
-            //ExFor:FieldCreateDate.UseLunarCalendar
-            //ExFor:FieldCreateDate.UseSakaEraCalendar
-            //ExFor:FieldCreateDate.UseUmAlQuraCalendar
+            //ExFor:FieldDate
+            //ExFor:FieldDate.UseLunarCalendar
+            //ExFor:FieldDate.UseSakaEraCalendar
+            //ExFor:FieldDate.UseUmAlQuraCalendar
+            //ExFor:FieldDate.UseLastFormat
             //ExSummary:Shows how to insert DATE fields with different kinds of calendars.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
