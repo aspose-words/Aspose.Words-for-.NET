@@ -156,7 +156,7 @@ namespace ApiExamples
 
             // Insert content control into the document
             builder.InsertNode(sdtCheckBox);
-            //ExEnd
+            
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 

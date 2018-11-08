@@ -61,7 +61,7 @@ namespace ApiExamples
         public void WorkWithDocumentEncryptedWithAPassword(SaveFormat saveFormat)
         {
             //ExStart
-            //ExFor:OdtSaveOptions.OdtSaveOptions(String)
+            //ExFor:OdtSaveOptions.#ctor(String)
             //ExSummary:Shows how to load and change odt/ott encrypted document
             Document doc = new Document(MyDir + "OdtSaveOptions.LoadDocumentEncryptedWithAPassword" +
                                         FileFormatUtil.SaveFormatToExtension(saveFormat),

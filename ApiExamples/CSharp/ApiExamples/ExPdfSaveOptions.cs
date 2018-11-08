@@ -225,7 +225,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //Note: it works only for spaces. Why?
         [Test]
         [TestCase(@"https://www.google.com/search?q= aspose", @"https://www.google.com/search?q=%20aspose", true)]
         [TestCase(@"https://www.google.com/search?q=%20aspose", @"https://www.google.com/search?q=%20aspose", true)]
@@ -243,31 +242,30 @@ namespace ApiExamples
             PdfSaveOptions options = new PdfSaveOptions();
             options.EscapeUri = isEscaped;
 
-            builder.Document.Save(MyDir + @"\Artifacts\PdfSaveOptions.EscapedUri Out.pdf", options);
+            builder.Document.Save(MyDir + @"\Artifacts\PdfSaveOptions.EscapedUri.pdf", options);
             //ExEnd
 
             Aspose.Pdf.Document pdfDocument =
-                new Aspose.Pdf.Document(MyDir + @"\Artifacts\PdfSaveOptions.EscapedUri Out.pdf");
+                new Aspose.Pdf.Document(MyDir + @"\Artifacts\PdfSaveOptions.EscapedUri.pdf");
 
-            // get first page
+            // Get first page
             Page page = pdfDocument.Pages[1];
-            // get the first link annotation
+            // Get the first link annotation
             LinkAnnotation linkAnnot = (LinkAnnotation) page.Annotations[1];
 
             GoToURIAction action = (GoToURIAction) linkAnnot.Action;
             string uriText = action.URI;
 
             Assert.AreEqual(result, uriText);
-            //ExEnd
         }
 
         [Test]
         public void HandleBinaryRasterWarnings()
         {
             //ExStart
-            //ExFor:MetafileRenderingMode.VectorWithFallback
+            //ExFor:MetafileRenderingMode
             //ExFor:IWarningCallback
-            //ExFor:PdfSaveOptions.MetafileRenderingOptions
+            //ExFor:FixedPageSaveOptions.MetafileRenderingOptions
             //ExSummary:Shows added fallback to bitmap rendering and changing type of warnings about unsupported metafile records
             Document doc = new Document(MyDir + "PdfSaveOptions.HandleRasterWarnings.doc");
 

@@ -85,6 +85,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldBuilder.#ctor(FieldType)
             //ExFor:FieldBuilder.BuildAndInsert(Inline)
+            //ExFor:FieldRevNum
             //ExSummary:Builds and inserts a field into the document before the specified inline node
             Document doc = new Document();
             Run run = DocumentHelper.InsertNewRun(doc, " Hello World!", 0);
@@ -168,7 +169,7 @@ namespace ApiExamples
         public void InsertFieldNone()
         {
             //ExStart
-            //ExFor:FieldUnknown.#ctor
+            //ExFor:FieldUnknown
             //ExSummary:Shows how to work with 'FieldNone' field in a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -339,10 +340,10 @@ namespace ApiExamples
         public void InsertFieldWithFieldBuilder()
         {
             //ExStart
-            //ExFor:FieldArgumentBuilder.#ctor
+            //ExFor:FieldArgumentBuilder
             //ExFor:FieldArgumentBuilder.AddField(FieldBuilder)
             //ExFor:FieldArgumentBuilder.AddText(String)
-            //ExFor:FieldBuilder.#ctor
+            //ExFor:FieldBuilder
             //ExFor:FieldBuilder.AddArgument(FieldArgumentBuilder)
             //ExFor:FieldBuilder.AddArgument(String)
             //ExFor:FieldBuilder.AddArgument(Int32)
@@ -475,12 +476,12 @@ namespace ApiExamples
             //ExFor:FieldFormat.NumericFormat
             //ExFor:FieldFormat.GeneralFormats
             //ExFor:GeneralFormat
-            //ExFor:GeneralFormatCollection.Add(GeneralFormat)
             //ExFor:GeneralFormatCollection
+            //ExFor:GeneralFormatCollection.Add(GeneralFormat)
             //ExFor:GeneralFormatCollection.Count
-            //ExFor:GeneralFormatCollection.Item(System.Int32)
+            //ExFor:GeneralFormatCollection.Item(Int32)
             //ExFor:GeneralFormatCollection.Remove(GeneralFormat)
-            //ExFor:GeneralFormatCollection.RemoveAt(System.Int32)
+            //ExFor:GeneralFormatCollection.RemoveAt(Int32)
             //ExSummary:Shows how to format fields
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -700,6 +701,7 @@ namespace ApiExamples
             Assert.IsFalse(dropDownItems.Contains("Four"));
 
             doc.Save(MyDir + @"\Artifacts\Fields.DropDownItems.docx");
+            //ExEnd
 
             // Empty the collection
             dropDownItems.Clear();
@@ -713,6 +715,7 @@ namespace ApiExamples
         //ExFor:Fields.FieldAsk.PromptOnceOnMailMerge
         //ExFor:Fields.FieldAsk.PromptText
         //ExFor:FieldOptions.UserPromptRespondent
+        //ExFor:IFieldUserPromptRespondent
         //ExSummary:Shows how to create an ASK field and set its properties.
         [Test]
         public void FieldAsk()
@@ -916,6 +919,7 @@ namespace ApiExamples
             // Remove all fields from the document
             fields.Clear();
             Assert.AreEqual(0, fields.Count);
+            //ExEnd
         }
 
         [Test]
@@ -954,6 +958,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.Compare.docx");
+            //ExEnd
         }
 
         [Test]
@@ -1002,6 +1007,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.If.docx");
+            //ExEnd
         }
 
         [Test]
@@ -1170,6 +1176,7 @@ namespace ApiExamples
 
             // The text content of our building block will be visible in the output
             doc.Save(MyDir + @"\Artifacts\Field.AutoText.dotx");
+            //ExEnd
         }
 
         //ExStart
@@ -1335,7 +1342,7 @@ namespace ApiExamples
         public void MergeField()
         {
             //ExStart
-            //ExFor:FieldMergeField.#ctor
+            //ExFor:FieldMergeField
             //ExFor:FieldMergeField.FieldName
             //ExFor:FieldMergeField.FieldNameNoPrefix
             //ExFor:FieldMergeField.IsMapped
@@ -1615,6 +1622,11 @@ namespace ApiExamples
         //ExStart
         //ExFor:FieldToc.EntryIdentifier
         //ExFor:FieldToc.EntryLevelRange
+        //ExFor:FieldTC
+        //ExFor:FieldTC.OmitPageNumber
+        //ExFor:FieldTC.Text
+        //ExFor:FieldTC.TypeIdentifier
+        //ExFor:FieldTC.EntryLevel
         //ExSummary:Shows how to insert a TOC field and filter which TC fields end up as entries.
         [Test] //ExSkip
         public void FieldTocEntryIdentifier()
@@ -1653,6 +1665,7 @@ namespace ApiExamples
         public void InsertTocEntry(DocumentBuilder builder, string text, string typeIdentifier, string entryLevel)
         {
             FieldTC fieldTc = (FieldTC)builder.InsertField(FieldType.FieldTOCEntry, true);
+            fieldTc.OmitPageNumber = true;
             fieldTc.Text = text;
             fieldTc.TypeIdentifier = typeIdentifier;
             fieldTc.EntryLevel = entryLevel;
@@ -1773,7 +1786,7 @@ namespace ApiExamples
         public void FieldData()
         {
             //ExStart
-            //ExFor:FieldData.#ctor
+            //ExFor:FieldData
             //ExSummary:Shows how to insert a data field into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1788,7 +1801,7 @@ namespace ApiExamples
         public void FieldInclude()
         {
             //ExStart
-            //ExFor:FieldInclude.#ctor
+            //ExFor:FieldInclude
             //ExFor:FieldInclude.BookmarkName
             //ExFor:FieldInclude.LockFields
             //ExFor:FieldInclude.SourceFullName
@@ -1876,7 +1889,7 @@ namespace ApiExamples
         public void FieldIncludePicture()
         {
             //ExStart
-            //ExFor:FieldIncludePicture.#ctor
+            //ExFor:FieldIncludePicture
             //ExFor:FieldIncludePicture.GraphicFilter
             //ExFor:FieldIncludePicture.IsLinked
             //ExFor:FieldIncludePicture.ResizeHorizontally
@@ -1901,7 +1914,7 @@ namespace ApiExamples
         }
 
         //ExStart
-        //ExFor:FieldIncludeText.#ctor
+        //ExFor:FieldIncludeText
         //ExFor:FieldIncludeText.BookmarkName
         //ExFor:FieldIncludeText.Encoding
         //ExFor:FieldIncludeText.LockFields
@@ -1954,7 +1967,7 @@ namespace ApiExamples
         public void FieldHyperlink()
         {
             //ExStart
-            //ExFor:FieldHyperlink.#ctor
+            //ExFor:FieldHyperlink
             //ExFor:FieldHyperlink.Address
             //ExFor:FieldHyperlink.IsImageMap
             //ExFor:FieldHyperlink.OpenInNewWindow
@@ -2224,6 +2237,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.USAddressBarcode.docx");
+            //ExEnd
         }
 
         [Test]
@@ -2396,7 +2410,7 @@ namespace ApiExamples
         //ExFor:FieldLink.ProgId
         //ExFor:FieldLink.SourceFullName
         //ExFor:FieldLink.SourceItem
-        //ExFor:FieldDde.#ctor
+        //ExFor:FieldDde
         //ExFor:FieldDde.AutoUpdate
         //ExFor:FieldDde.InsertAsBitmap
         //ExFor:FieldDde.InsertAsHtml
@@ -2408,7 +2422,7 @@ namespace ApiExamples
         //ExFor:FieldDde.ProgId
         //ExFor:FieldDde.SourceFullName
         //ExFor:FieldDde.SourceItem
-        //ExFor:FieldDdeAuto.#ctor
+        //ExFor:FieldDdeAuto
         //ExFor:FieldDdeAuto.InsertAsBitmap
         //ExFor:FieldDdeAuto.InsertAsHtml
         //ExFor:FieldDdeAuto.InsertAsPicture
@@ -2605,6 +2619,10 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldOptions.CurrentUser
             //ExFor:FieldOptions.DefaultDocumentAuthor
+            //ExFor:UserInformation
+            //ExFor:UserInformation.Name
+            //ExFor:UserInformation.Initials
+            //ExFor:UserInformation.Address
             //ExSummary:Shows how to set user details and insert them as fields.
             Document doc = new Document();
 
@@ -2718,6 +2736,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldOptions.ToaCategories
+            //ExFor:ToaCategories
+            //ExFor:ToaCategories.Item(Int32)
             //ExSummary:Shows how to specify a table of authorities categories for a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2725,7 +2745,7 @@ namespace ApiExamples
             // There are default category values we can use, or we can make our own like this
             ToaCategories toaCategories = new ToaCategories();
             doc.FieldOptions.ToaCategories = toaCategories;
-
+            
             toaCategories[1] = "My Category 1"; // Replaces default value "Cases"
             toaCategories[2] = "My Category 2"; // Replaces default value "Statutes"
 
@@ -2851,10 +2871,11 @@ namespace ApiExamples
         public void FieldDate()
         {
             //ExStart
-            //ExFor:FieldCreateDate
-            //ExFor:FieldCreateDate.UseLunarCalendar
-            //ExFor:FieldCreateDate.UseSakaEraCalendar
-            //ExFor:FieldCreateDate.UseUmAlQuraCalendar
+            //ExFor:FieldDate
+            //ExFor:FieldDate.UseLunarCalendar
+            //ExFor:FieldDate.UseSakaEraCalendar
+            //ExFor:FieldDate.UseUmAlQuraCalendar
+            //ExFor:FieldDate.UseLastFormat
             //ExSummary:Shows how to insert DATE fields with different kinds of calendars.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

@@ -182,13 +182,10 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FixedPageSaveOptions.OptimizeOutput
-            //ExSummary:Shows how to optimize document objects while saving.
+            //ExSummary:Shows how to optimize document objects while saving to html.
             Document doc = new Document(MyDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.doc");
 
-            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions
-            {
-                OptimizeOutput = false
-            };
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { OptimizeOutput = false };
 
             doc.Save(MyDir + @"\Artifacts\HtmlFixedSaveOptions.OptimizeGraphicsOutput.html", saveOptions);
             //ExEnd
