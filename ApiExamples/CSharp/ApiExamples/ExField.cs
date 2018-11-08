@@ -2948,5 +2948,30 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.CreateDate.docx");
             //ExEnd
         }
+
+        [Test]
+        public void FieldAuthor()
+        {
+            //ExStart
+            //ExFor:FieldAuthor
+            //ExFor:FieldAuthor.AuthorName            
+            //ExSummary:Shows how to display a document creator's name with an AUTHOR field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("This document was created by ");
+            FieldAuthor fieldAuthor = (FieldAuthor) builder.InsertField(FieldType.FieldAuthor, true);
+
+            // If we open an existing document, the document's author's full name will be displayed by the field
+            // If we create a document programmatically, we need to set this attribute to the author's name so our field has something to display
+            doc.BuiltInDocumentProperties.Author = "John Doe";
+
+            // Our field can also override the document's built in author name like this
+            fieldAuthor.AuthorName = "Jane Doe";
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Field.Author.docx");
+            //ExEnd
+        }
     }
 }
