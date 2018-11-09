@@ -523,7 +523,7 @@ namespace ApiExamples
 
                 using (SKFileWStream fs = new SKFileWStream(MyDir + "Artifacts/Rendering.RenderToScale.png"))
                 {
-                    bitmap.Encode(fs, SKEncodedImageFormat.Png, 100);
+                    bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
                 }
             }
 #else
@@ -607,7 +607,7 @@ namespace ApiExamples
 
                     using (SKFileWStream fs = new SKFileWStream(MyDir + "Artifacts/Rendering.RenderToSize.png"))
                     {
-                        bitmap.Encode(fs, SKEncodedImageFormat.Png, 100);
+                        bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
                     }
                 }
             }
@@ -724,7 +724,7 @@ namespace ApiExamples
 
                     using (SKFileWStream fs = new SKFileWStream(MyDir + "Artifacts/Rendering.Thumbnails.png"))
                     {
-                        bitmap.Encode(fs, SKEncodedImageFormat.Png, 100);
+                        bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
                     }
                 }
             }
