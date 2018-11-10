@@ -39,6 +39,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:VariableCollection.Clear
+            //ExFor:VariableCollection.Count
             //ExSummary:Shows how to clear all document variables from a document.
             Document doc = new Document(MyDir + "Document.doc");
 

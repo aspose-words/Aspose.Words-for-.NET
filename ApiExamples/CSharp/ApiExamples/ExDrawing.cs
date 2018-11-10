@@ -26,6 +26,13 @@ namespace ApiExamples
             //ExFor:Drawing.Fill.ImageBytes
             //ExFor:Drawing.Fill.On
             //ExFor:Drawing.JoinStyle
+            //ExFor:Stroke.Color
+            //ExFor:Stroke.StartArrowLength
+            //ExFor:Stroke.StartArrowType
+            //ExFor:Stroke.StartArrowWidth
+            //ExFor:Stroke.DashStyle
+            //ExFor:Stroke.EndArrowType
+            //ExFor:Stroke.EndCap
             //ExSummary:Shows to create a variety of shapes
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

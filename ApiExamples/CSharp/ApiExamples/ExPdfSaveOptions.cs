@@ -264,6 +264,9 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:MetafileRenderingMode
+            //ExFor:MetafileRenderingOptions
+            //ExFor:MetafileRenderingOptions.EmulateRasterOperations
+            //ExFor:MetafileRenderingOptions.RenderingMode
             //ExFor:IWarningCallback
             //ExFor:FixedPageSaveOptions.MetafileRenderingOptions
             //ExSummary:Shows added fallback to bitmap rendering and changing type of warnings about unsupported metafile records
@@ -276,7 +279,7 @@ namespace ApiExamples
                     RenderingMode = MetafileRenderingMode.VectorWithFallback
                 };
 
-            //If Aspose.Words cannot correctly render some of the metafile records to vector graphics then Aspose.Words renders this metafile to a bitmap. 
+            // If Aspose.Words cannot correctly render some of the metafile records to vector graphics then Aspose.Words renders this metafile to a bitmap. 
             HandleDocumentWarnings callback = new HandleDocumentWarnings();
             doc.WarningCallback = callback;
 
@@ -316,6 +319,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HeaderFooterBookmarksExportMode
+            //ExFor:OutlineOptions
+            //ExFor:OutlineOptions.DefaultBookmarksOutlineLevel
             //ExSummary:Shows how bookmarks in headers/footers are exported to pdf
             Document doc = new Document(MyDir + "PdfSaveOption.HeaderFooterBookmarksExportMode.docx");
 
@@ -331,12 +336,6 @@ namespace ApiExamples
             };
             doc.Save(MyDir + @"\Artifacts\PdfSaveOption.HeaderFooterBookmarksExportMode.pdf", saveOptions);
             //ExEnd
-        }
-
-        [Test]
-        public void CreateOutlinesForHeadingsInTables()
-        {
-
         }
     }
 }

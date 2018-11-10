@@ -38,6 +38,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:IPageSavingCallback
+            //ExFor:PageSavingArgs
+            //ExFor:PageSavingArgs.PageFileName
             //ExFor:FixedPageSaveOptions.PageSavingCallback
             //ExSummary:Shows how separate pages are saved when a document is exported to fixed page format.
             Document doc = new Document(MyDir + "Rendering.doc");

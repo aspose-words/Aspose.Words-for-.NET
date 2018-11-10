@@ -601,7 +601,6 @@ namespace ApiExamples
                     para.Remove();
                 }
             }
-
             //ExEnd
         }
 
@@ -716,7 +715,6 @@ namespace ApiExamples
                 }
             } while (navigator.MoveToNext());
         }
-
         //ExEnd
     }
 }

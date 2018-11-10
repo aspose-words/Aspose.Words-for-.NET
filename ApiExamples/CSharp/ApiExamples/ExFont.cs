@@ -662,6 +662,13 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:IWarningCallback
+        //ExFor:IWarningCallback.Warning(WarningInfo)
+        //ExFor:WarningInfo
+        //ExFor:WarningInfo.Description
+        //ExFor:WarningInfo.WarningType
+        //ExFor:WarningInfoCollection
+        //ExFor:WarningInfoCollection.Warning(WarningInfo)
+        //ExFor:WarningType
         //ExFor:DocumentBase.WarningCallback
         //ExId:FontSubstitutionWarningCallback
         //ExSummary:Shows how to implement the IWarningCallback to be notified of any font substitution during document save.

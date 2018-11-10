@@ -21,6 +21,9 @@ namespace ApiExamples
     {
         //ExStart
         //ExFor:Paragraph.IsEndOfSection
+        //ExFor:NodeImporter
+        //ExFor:NodeImporter.#ctor(DocumentBase, DocumentBase, ImportFormatMode)
+        //ExFor:NodeImporter.ImportNode(Node, Boolean)
         //ExId:InsertDocumentMain
         //ExSummary:This is a method that inserts contents of one document at a specified location in another document.
         /// <summary>
@@ -153,6 +156,7 @@ namespace ApiExamples
             //ExFor:IReplacingCallback.Replacing
             //ExFor:ReplacingArgs
             //ExFor:ReplacingArgs.MatchNode
+            //ExFor:FindReplaceDirection
             //ExId:InsertDocumentAtReplace
             //ExSummary:Shows how to insert content of one document into another during a customized find and replace operation.
             Document mainDoc = new Document(MyDir + "InsertDocument1.doc");

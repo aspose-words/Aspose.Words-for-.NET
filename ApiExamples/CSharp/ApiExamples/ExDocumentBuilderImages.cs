@@ -56,7 +56,7 @@ namespace ApiExamples
                 using (SkiaSharp.SKFileWStream fs =
  new SkiaSharp.SKFileWStream(MyDir + "Artifacts/InsertImageFromByteArray.png"))
                 {
-                    bitmap.Encode(fs, SKEncodedImageFormat.Png, 100);
+                    bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
                 }
 
                 builder.InsertImage(bitmap);
@@ -90,23 +90,23 @@ namespace ApiExamples
             using (SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
             {
                 using (SkiaSharp.SKFileWStream fs =
- new SkiaSharp.SKFileWStream(MyDir + "Artifacts/InsertImageFromByteArrayCustomSize.png"))
+                    new SkiaSharp.SKFileWStream(MyDir + "Artifacts/InsertImageFromByteArrayCustomSize.png"))
                 {
-                    bitmap.Encode(fs, SKEncodedImageFormat.Png, 100);
+                    bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
                 }
 
-                builder.InsertImage(bitmap, ConvertUtil.PixelToPoint(450), ConvertUtil.PixelToPoint(144));
+                builder.InsertImage(bitmap, ConvertUtil.PixelToPoint(250), ConvertUtil.PixelToPoint(144));
                 builder.Document.Save(MyDir + "Artifacts/Image.CreateFromByteArrayCustomSize.doc");
             }
 #else
-            // Prepare a byte array of an image.
+// Prepare a byte array of an image.
             using (Image image = Image.FromFile(ImageDir + "Aspose.Words.gif"))
             {
                 using (MemoryStream imageBytes = new MemoryStream())
                 {
                     image.Save(imageBytes, ImageFormat.Png);
 
-                    builder.InsertImage(imageBytes, ConvertUtil.PixelToPoint(450), ConvertUtil.PixelToPoint(144));
+                    builder.InsertImage(imageBytes, ConvertUtil.PixelToPoint(250), ConvertUtil.PixelToPoint(144));
                     builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromByteArrayCustomSize.doc");
                 }
             }
@@ -128,7 +128,7 @@ namespace ApiExamples
                 using (SkiaSharp.SKFileWStream fs =
  new SkiaSharp.SKFileWStream(MyDir + "Artifacts/InsertImageFromByteArrayCustomSize.png"))
                 {
-                    bitmap.Encode(fs, SKEncodedImageFormat.Png, 100);
+                    bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
                 }
 
                 builder.InsertImage(bitmap, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
