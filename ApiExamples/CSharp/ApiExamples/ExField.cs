@@ -2952,5 +2952,34 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.CreateDate.docx");
             //ExEnd
         }
+
+        [Test]
+        public void FieldBuilder()
+        {
+            //ExStart
+            //ExFor:FieldBuilder.AddArgument(FieldBuilder)
+            //ExFor:FieldBuilder.AddSwitch(String)
+            //ExFor:FieldBuilder.AddSwitch(String, Double)
+            //ExFor:FieldBuilder.AddSwitch(String, Int32)
+            //ExFor:FieldBuilder.BuildAndInsert(Paragraph)
+            //ExFor:FieldArgumentBuilder.#ctor
+            //ExFor:FieldArgumentBuilder.AddNode(Inline)
+            //ExSummary:Shows how to insert fields using a field builder.
+            Document doc = new Document();
+
+            // Create a DATE field
+            FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldDate);
+
+            // Add a switch
+            fieldBuilder.AddSwitch("\\@", "MMMM, yyyy");
+
+            // Place that field in a paragraph
+            Field field = fieldBuilder.BuildAndInsert(doc.FirstSection.Body.FirstParagraph);
+            Assert.AreEqual(" DATE \\@ \"MMMM, yyyy\" ", field.GetFieldCode());
+            
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Field.FieldBuilder.docx");
+            //ExEnd
+        }
     }
 }
