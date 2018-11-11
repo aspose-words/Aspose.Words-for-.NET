@@ -1730,18 +1730,20 @@ namespace ApiExamples
         public void FieldCitation()
         {
             //ExStart
-            //ExFor:Fields.FieldCitation
-            //ExFor:Fields.FieldCitation.AnotherSourceTag
-            //ExFor:Fields.FieldCitation.FormatLanguageId
-            //ExFor:Fields.FieldCitation.PageNumber
-            //ExFor:Fields.FieldCitation.Prefix
-            //ExFor:Fields.FieldCitation.SourceTag
-            //ExFor:Fields.FieldCitation.Suffix
-            //ExFor:Fields.FieldCitation.SuppressAuthor
-            //ExFor:Fields.FieldCitation.SuppressTitle
-            //ExFor:Fields.FieldCitation.SuppressYear
-            //ExFor:Fields.FieldCitation.VolumeNumber
-            //ExSummary:Shows how to insert a citation field and edit its properties.
+            //ExFor:FieldCitation
+            //ExFor:FieldCitation.AnotherSourceTag
+            //ExFor:FieldCitation.FormatLanguageId
+            //ExFor:FieldCitation.PageNumber
+            //ExFor:FieldCitation.Prefix
+            //ExFor:FieldCitation.SourceTag
+            //ExFor:FieldCitation.Suffix
+            //ExFor:FieldCitation.SuppressAuthor
+            //ExFor:FieldCitation.SuppressTitle
+            //ExFor:FieldCitation.SuppressYear
+            //ExFor:FieldCitation.VolumeNumber
+            //ExFor:FieldBibliography
+            //ExFor:FieldBibliography.FormatLanguageId
+            //ExSummary:Shows how to work with CITATION and BIBLIOGRAPHY fields.
             // Open a document that has bibliographical sources
             Document doc = new Document(MyDir + "Document.HasBibliography.docx");
 
@@ -1776,6 +1778,15 @@ namespace ApiExamples
             field.VolumeNumber = "VII";
 
             Assert.AreEqual(" CITATION  Book1 \\m Book2 \\l en-US \\p 19 \\f \"Prefix \" \\s \" Suffix\" \\v VII", field.GetFieldCode());
+
+            // Insert a new page which will contain our bibliography
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // All our sources can be displayed using a BIBLIOGRAPHY field
+            FieldBibliography fieldBibliography = (FieldBibliography)builder.InsertField(FieldType.FieldBibliography, true);
+            fieldBibliography.FormatLanguageId = "1124";
+
+            Assert.AreEqual(" BIBLIOGRAPHY  \\l 1124", fieldBibliography.GetFieldCode());
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.Citation.docx");
