@@ -2650,6 +2650,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldOptions.FileName
+            //ExFor:FieldFileName
+            //ExFor:FieldFileName.IncludeFullPath
             //ExSummary:Shows how to use FieldOptions to override the default value for the FILENAME field.
             Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2657,16 +2659,20 @@ namespace ApiExamples
             builder.MoveToDocumentEnd();
             builder.Writeln();
 
-            // This FILENAME field will currently contain the actual filename for the document
-            builder.InsertField(FieldType.FieldFileName, true);
+            // This FILENAME field will display the file name of the document we opened
+            FieldFileName field = (FieldFileName)builder.InsertField(FieldType.FieldFileName, true);
+            builder.Writeln();
 
-            // If we manually set a value for this property of the document's field options object,
-            // our overriding value will appear at the FILENAME field
+            // By default, the FILENAME field does not show the full path, and we can change this
+            field = (FieldFileName)builder.InsertField(FieldType.FieldFileName, true);
+            field.IncludeFullPath = true;
+
+            // We can override the values displayed by our FILENAME fields by setting this attribute
             Assert.IsNull(doc.FieldOptions.FileName);
             doc.FieldOptions.FileName = "Field.FileName.docx";
 
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\" + doc.FieldOptions.FileName);
+            doc.Save(MyDir + @"\Artifacts\Field.FileName.docx");
             //ExEnd
         }
 
