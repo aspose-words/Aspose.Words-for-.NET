@@ -52,6 +52,9 @@ namespace ApiExamples
             //ExSummary:Shows how to find the type of field that is represented by a node which is derived from FieldChar.
             FieldChar fieldStart = (FieldChar)doc.GetChild(NodeType.FieldStart, 0, true);
             FieldType type = fieldStart.FieldType;
+
+            fieldStart.IsDirty = false;
+            fieldStart.IsLocked = true;
             //ExEnd
         }
 
