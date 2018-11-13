@@ -2961,16 +2961,21 @@ namespace ApiExamples
 
             builder.Write("This document was created by ");
             FieldAuthor fieldAuthor = (FieldAuthor) builder.InsertField(FieldType.FieldAuthor, true);
-
+            
             // If we open an existing document, the document's author's full name will be displayed by the field
             // If we create a document programmatically, we need to set this attribute to the author's name so our field has something to display
             doc.BuiltInDocumentProperties.Author = "John Doe";
-
+            
+            fieldAuthor.Update();
+            Assert.AreEqual("John Doe", fieldAuthor.Result); // INSP: I think we need to add validation of our results
+            
             // Our field can also override the document's built in author name like this
             fieldAuthor.AuthorName = "Jane Doe";
+            fieldAuthor.Update();
+            Assert.AreEqual("Jane Doe", fieldAuthor.Result);
 
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Field.Author.docx");
+            doc.Save(MyDir + @"\Artifacts\Field.Author.docx"); // INSP: Do not forget to add an artifact folder
             //ExEnd
         }
     }
