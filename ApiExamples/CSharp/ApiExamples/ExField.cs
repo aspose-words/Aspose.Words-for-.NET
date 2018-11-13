@@ -2942,48 +2942,54 @@ namespace ApiExamples
             //ExSummary:Shows how to insert fields using a field builder.
             Document doc = new Document();
 
-            // Create a SYMBOL field
-            FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldSymbol);
+            // INSP: We need to simplify our code as much as possible.
+            //       Also Aspose.Words team have ruled for code line length,
+            //       lines should not exceed 120 characters.
+            //       You can use https://marketplace.visualstudio.com/items?itemName=PaulHarrington.EditorGuidelines
 
-            // Add switches
-            fieldBuilder.AddArgument(402);
-            fieldBuilder.AddSwitch("\\f", "Arial");
-            fieldBuilder.AddSwitch("\\s", 25);
-            fieldBuilder.AddSwitch("\\u");
+            // Create a SYMBOL field with switches and insert field at the beginning of the document
+            // INSP: Add more convenient names for all fields and also add more comments and asserts
+            Field fieldBuilder = new FieldBuilder(FieldType.FieldSymbol). 
+                AddArgument(402).
+                AddSwitch("\\f", "Arial").
+                AddSwitch("\\s", 25).
+                AddSwitch("\\u").
+                BuildAndInsert(doc.FirstSection.Body.FirstParagraph);
 
-            // Place that field in a paragraph
-            Field field = fieldBuilder.BuildAndInsert(doc.FirstSection.Body.FirstParagraph);
-            Assert.AreEqual(" SYMBOL 402 \\f Arial \\s 25 \\u ", field.GetFieldCode());
+            Assert.AreEqual(" SYMBOL 402 \\f Arial \\s 25 \\u ", fieldBuilder.GetFieldCode());
 
             // Add a field builder as an argument to another field builder
-            fieldBuilder = new FieldBuilder(FieldType.FieldSymbol);
-            fieldBuilder.AddArgument(
-                new FieldBuilder(FieldType.FieldFormula).
+            fieldBuilder = new FieldBuilder(FieldType.FieldSymbol).
+                AddArgument(new FieldBuilder(FieldType.FieldFormula).
                     AddArgument(100).
                     AddArgument("+").
-                    AddArgument(74));
-
-            fieldBuilder.BuildAndInsert(doc.FirstSection.Body.AppendParagraph(""));
+                    AddArgument(74)).
+                BuildAndInsert(doc.FirstSection.Body.AppendParagraph(""));
 
             // Place 2 formula fields inside an IF field
             FieldBuilder innerEquation1 = new FieldBuilder(FieldType.FieldFormula).
-                AddArgument(2).
-                AddArgument("+").
-                AddArgument(3);
+                    AddArgument(2).
+                    AddArgument("+").
+                    AddArgument(3);
 
             FieldBuilder innerEquation2 = new FieldBuilder(FieldType.FieldFormula).
                 AddArgument(2.5).
                 AddArgument("*").
                 AddArgument(5.2);
 
-            fieldBuilder = new FieldBuilder(FieldType.FieldIf)
-                .AddArgument(innerEquation1)
-                .AddArgument("=")
-                .AddArgument(innerEquation2)
-                .AddArgument(new FieldArgumentBuilder().AddText("True, both equations amount to ").AddField(innerEquation1))
-                .AddArgument(new FieldArgumentBuilder().AddNode(new Run(doc, "False, ")).AddField(innerEquation1).AddNode(new Run(doc, " does not equal ")).AddField(innerEquation2));
-
-            fieldBuilder.BuildAndInsert(doc.FirstSection.Body.AppendParagraph(""));
+            fieldBuilder = new FieldBuilder(FieldType.FieldIf).
+                AddArgument(innerEquation1).
+                AddArgument("=").
+                AddArgument(innerEquation2).
+                AddArgument(new FieldArgumentBuilder().
+                    AddText("True, both equations amount to ").
+                    AddField(innerEquation1)).
+                AddArgument(new FieldArgumentBuilder().
+                    AddNode(new Run(doc, "False, ")).
+                    AddField(innerEquation1).
+                    AddNode(new Run(doc, " does not equal ")).
+                    AddField(innerEquation2)).
+                BuildAndInsert(doc.FirstSection.Body.AppendParagraph(""));
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.FieldBuilder.docx");
