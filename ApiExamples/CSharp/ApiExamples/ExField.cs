@@ -2658,7 +2658,7 @@ namespace ApiExamples
 
             builder.MoveToDocumentEnd();
             builder.Writeln();
-
+            // INSP: Add asserts after each field change
             // This FILENAME field will display the file name of the document we opened
             FieldFileName field = (FieldFileName)builder.InsertField(FieldType.FieldFileName, true);
             builder.Writeln();
