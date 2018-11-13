@@ -337,39 +337,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertFieldWithFieldBuilder()
-        {
-            //ExStart
-            //ExFor:FieldArgumentBuilder
-            //ExFor:FieldArgumentBuilder.AddField(FieldBuilder)
-            //ExFor:FieldArgumentBuilder.AddText(String)
-            //ExFor:FieldBuilder
-            //ExFor:FieldBuilder.AddArgument(FieldArgumentBuilder)
-            //ExFor:FieldBuilder.AddArgument(String)
-            //ExFor:FieldBuilder.AddArgument(Int32)
-            //ExFor:FieldBuilder.AddArgument(Double)
-            //ExFor:FieldBuilder.AddSwitch(String, String)
-            //ExSummary:Inserts a field into a document using field builder constructor
-            Document doc = new Document();
-
-            //Add text into the paragraph
-            Paragraph para = doc.FirstSection.Body.Paragraphs[0];
-            Run run = new Run(doc) { Text = " Hello World!" };
-            para.AppendChild(run);
-
-            FieldArgumentBuilder argumentBuilder = new FieldArgumentBuilder();
-            argumentBuilder.AddField(new FieldBuilder(FieldType.FieldMergeField));
-            argumentBuilder.AddText("BestField");
-
-            FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldIf);
-            fieldBuilder.AddArgument(argumentBuilder).AddArgument("=").AddArgument("BestField").AddArgument(10)
-                .AddArgument(20.0).AddSwitch("12", "13").BuildAndInsert(run);
-
-            doc.UpdateFields();
-            //ExEnd
-        }
-
-        [Test]
         public void InsertFieldWithFieldBuilderException()
         {
             Document doc = new Document();
@@ -2957,28 +2924,69 @@ namespace ApiExamples
         public void FieldBuilder()
         {
             //ExStart
+            //ExFor:FieldBuilder
+            //ExFor:FieldBuilder.AddArgument(Int32)
+            //ExFor:FieldBuilder.AddArgument(FieldArgumentBuilder)
+            //ExFor:FieldBuilder.AddArgument(String)
+            //ExFor:FieldBuilder.AddArgument(Double)
             //ExFor:FieldBuilder.AddArgument(FieldBuilder)
             //ExFor:FieldBuilder.AddSwitch(String)
             //ExFor:FieldBuilder.AddSwitch(String, Double)
             //ExFor:FieldBuilder.AddSwitch(String, Int32)
+            //ExFor:FieldBuilder.AddSwitch(String, String)
             //ExFor:FieldBuilder.BuildAndInsert(Paragraph)
-            //ExFor:FieldArgumentBuilder.#ctor
+            //ExFor:FieldArgumentBuilder
+            //ExFor:FieldArgumentBuilder.AddField(FieldBuilder)
+            //ExFor:FieldArgumentBuilder.AddText(String)
             //ExFor:FieldArgumentBuilder.AddNode(Inline)
             //ExSummary:Shows how to insert fields using a field builder.
             Document doc = new Document();
 
-            // Create a DATE field
-            FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldDate);
+            // Create a SYMBOL field
+            FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldSymbol);
 
-            // Add a switch
-            fieldBuilder.AddSwitch("\\@", "MMMM, yyyy");
+            // Add switches
+            fieldBuilder.AddArgument(402);
+            fieldBuilder.AddSwitch("\\f", "Arial");
+            fieldBuilder.AddSwitch("\\s", 25);
+            fieldBuilder.AddSwitch("\\u");
 
             // Place that field in a paragraph
             Field field = fieldBuilder.BuildAndInsert(doc.FirstSection.Body.FirstParagraph);
-            Assert.AreEqual(" DATE \\@ \"MMMM, yyyy\" ", field.GetFieldCode());
-            
+            Assert.AreEqual(" SYMBOL 402 \\f Arial \\s 25 \\u ", field.GetFieldCode());
+
+            // Add a field builder as an argument to another field builder
+            fieldBuilder = new FieldBuilder(FieldType.FieldSymbol);
+            fieldBuilder.AddArgument(
+                new FieldBuilder(FieldType.FieldFormula).
+                    AddArgument(100).
+                    AddArgument("+").
+                    AddArgument(74));
+
+            fieldBuilder.BuildAndInsert(doc.FirstSection.Body.AppendParagraph(""));
+
+            // Place 2 formula fields inside an IF field
+            FieldBuilder innerEquation1 = new FieldBuilder(FieldType.FieldFormula).
+                AddArgument(2).
+                AddArgument("+").
+                AddArgument(3);
+
+            FieldBuilder innerEquation2 = new FieldBuilder(FieldType.FieldFormula).
+                AddArgument(2.5).
+                AddArgument("*").
+                AddArgument(5.2);
+
+            fieldBuilder = new FieldBuilder(FieldType.FieldIf)
+                .AddArgument(innerEquation1)
+                .AddArgument("=")
+                .AddArgument(innerEquation2)
+                .AddArgument(new FieldArgumentBuilder().AddText("True, both equations amount to ").AddField(innerEquation1))
+                .AddArgument(new FieldArgumentBuilder().AddNode(new Run(doc, "False, ")).AddField(innerEquation1).AddNode(new Run(doc, " does not equal ")).AddField(innerEquation2));
+
+            fieldBuilder.BuildAndInsert(doc.FirstSection.Body.AppendParagraph(""));
+
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Field.FieldBuilder.docx");
+            doc.Save(MyDir + @"\Artifacts\Field.FieldBuilder.docx");
             //ExEnd
         }
     }
