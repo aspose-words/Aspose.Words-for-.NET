@@ -41,46 +41,33 @@ namespace ApiExamples
         }
 
         [Test]
-        public void GetFieldType()
+        public void GetFieldFromDocument()
         {
-            Document doc = new Document(MyDir + "Document.TableOfContents.doc");
-
             //ExStart
             //ExFor:FieldType
             //ExFor:FieldChar
             //ExFor:FieldChar.FieldType
             //ExFor:FieldChar.IsDirty
             //ExFor:FieldChar.IsLocked
-            //ExSummary:Shows how to find the type of field that is represented by a node which is derived from FieldChar.
-            FieldChar fieldStart = (FieldChar)doc.GetChild(NodeType.FieldStart, 0, true);
-            FieldType type = fieldStart.FieldType;
-
-            fieldStart.IsDirty = false;
-            fieldStart.IsLocked = true;
-            //ExEnd
-        }
-
-        [Test]
-        public void GetFieldFromDocument()
-        {
-            //ExStart
             //ExFor:FieldChar.GetField
             //ExFor:Field.IsLocked
             //ExId:GetField
             //ExSummary:Demonstrates how to retrieve the field class from an existing FieldStart node in the document.
             Document doc = new Document(MyDir + "Document.TableOfContents.doc");
 
-            FieldStart fieldStart = (FieldStart)doc.GetChild(NodeType.FieldStart, 0, true);
+            FieldChar fieldStart = (FieldChar)doc.GetChild(NodeType.FieldStart, 0, true);
+            Assert.AreEqual(FieldType.FieldTOC, fieldStart.FieldType);
+            Assert.AreEqual(true, fieldStart.IsDirty);
+            Assert.AreEqual(false, fieldStart.IsLocked);
 
             // Retrieve the facade object which represents the field in the document.
             Field field = fieldStart.GetField();
 
-            Console.WriteLine("Field code:" + field.GetFieldCode());
-            Console.WriteLine("Field result: " + field.Result);
-            Console.WriteLine("Is locked: " + field.IsLocked);
+            Assert.AreEqual(false, field.IsLocked);
+            Assert.AreEqual(" TOC \\o \"1-3\" \\h \\z \\u ", field.GetFieldCode());
 
             // This updates only this field in the document.
-            field.Update();
+            field.Update();         
             //ExEnd
         }
 
