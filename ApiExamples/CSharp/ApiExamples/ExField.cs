@@ -872,19 +872,22 @@ namespace ApiExamples
             Assert.AreEqual("1033", field.LanguageId);
         }
 
-        [Test]
+        //ExStart
+        //ExFor:FieldCollection
+        //ExFor:FieldCollection.Clear
+        //ExFor:FieldCollection.Count
+        //ExFor:FieldCollection.GetEnumerator
+        //ExFor:FieldCollection.Item(Int32)
+        //ExFor:FieldCollection.Remove(Field)
+        //ExFor:FieldCollection.Remove(FieldStart)
+        //ExFor:FieldCollection.RemoveAt(Int32)
+        //ExFor:FieldEnd
+        //ExFor:FieldEnd.Accept(DocumentVisitor)
+        //ExFor:FieldEnd.HasSeparator
+        //ExSummary:Shows how to work with a document's field collection.
+        [Test] //ExSkip
         public void FieldCollection()
         {
-            //ExStart
-            //ExFor:FieldCollection
-            //ExFor:FieldCollection.Clear
-            //ExFor:FieldCollection.Count
-            //ExFor:FieldCollection.GetEnumerator
-            //ExFor:FieldCollection.Item(Int32)
-            //ExFor:FieldCollection.Remove(Field)
-            //ExFor:FieldCollection.Remove(FieldStart)
-            //ExFor:FieldCollection.RemoveAt(Int32)
-            //ExSummary:Shows how to work with a document's collection of fields.
             // Open a document that has fields
             Document doc = new Document(MyDir + "Document.ContainsFields.docx");
 
@@ -892,16 +895,19 @@ namespace ApiExamples
             FieldCollection fields = doc.Range.Fields;
             Assert.AreEqual(5, fields.Count);
 
-            // Iterate over the field collection and print contents and type of every field
+            // Iterate over the field collection and print contents and type of every field using a custom visitor implementation
+            FieldVisitor fieldVisitor = new FieldVisitor();
+
             using (IEnumerator<Field> fieldEnumerator = fields.GetEnumerator())
             {
                 while (fieldEnumerator.MoveNext())
                 {
-                    Console.WriteLine("Field found: " + fieldEnumerator.Current.Type);
-                    Console.WriteLine("\t{" + fieldEnumerator.Current.GetFieldCode() + "}");
-                    Console.WriteLine("\t\"" + fieldEnumerator.Current.Result + "\"");
+                    fieldEnumerator.Current.Start.Accept(fieldVisitor);
+                    fieldEnumerator.Current.End.Accept(fieldVisitor);
                 }
             }
+
+            Console.WriteLine(fieldVisitor.GetText());
 
             // Get a field to remove itself
             fields[0].Remove();
@@ -919,8 +925,52 @@ namespace ApiExamples
             // Remove all fields from the document
             fields.Clear();
             Assert.AreEqual(0, fields.Count);
-            //ExEnd
         }
+
+        /// <summary>
+        /// Document visitor implementation that prints field info
+        /// </summary>
+        public class FieldVisitor : DocumentVisitor
+        {
+            public FieldVisitor()
+            {
+                mBuilder = new StringBuilder();
+            }
+
+            /// <summary>
+            /// Gets the plain text of the document that was accumulated by the visitor.
+            /// </summary>
+            public String GetText()
+            {
+                return mBuilder.ToString();
+            }
+
+            /// <summary>
+            /// Called when a FieldStart node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitFieldStart(FieldStart fieldStart)
+            {
+                mBuilder.AppendLine("Found field: " + fieldStart.FieldType);
+                mBuilder.AppendLine("\tField code: " + fieldStart.GetField().GetFieldCode());
+                mBuilder.AppendLine("\tCurrent result: " + fieldStart.GetField().Result);
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when a FieldEnd node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitFieldEnd(FieldEnd fieldEnd)
+            {
+                if (fieldEnd.HasSeparator)
+                    mBuilder.AppendLine("\tSeparator: " + fieldEnd.GetField().Separator.GetText());
+
+                return VisitorAction.Continue;
+            }
+
+            private readonly StringBuilder mBuilder;
+        }
+        //ExEnd
 
         [Test]
         public void FieldCompare()
@@ -2650,6 +2700,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldOptions.FileName
+            //ExFor:FieldFileName
+            //ExFor:FieldFileName.IncludeFullPath
             //ExSummary:Shows how to use FieldOptions to override the default value for the FILENAME field.
             Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2657,16 +2709,28 @@ namespace ApiExamples
             builder.MoveToDocumentEnd();
             builder.Writeln();
 
-            // This FILENAME field will currently contain the actual filename for the document
-            builder.InsertField(FieldType.FieldFileName, true);
+            // This FILENAME field will display the file name of the document we opened
+            FieldFileName field = (FieldFileName)builder.InsertField(FieldType.FieldFileName, true);
+            field.Update();
 
-            // If we manually set a value for this property of the document's field options object,
-            // our overriding value will appear at the FILENAME field
+            Assert.AreEqual(" FILENAME ", field.GetFieldCode());
+            Assert.AreEqual("Document.docx", field.Result);
+
+            builder.Writeln();
+
+            // By default, the FILENAME field does not show the full path, and we can change this
+            field = (FieldFileName)builder.InsertField(FieldType.FieldFileName, true);
+            field.IncludeFullPath = true;
+
+            // We can override the values displayed by our FILENAME fields by setting this attribute
             Assert.IsNull(doc.FieldOptions.FileName);
             doc.FieldOptions.FileName = "Field.FileName.docx";
+            field.Update();
 
-            doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\" + doc.FieldOptions.FileName);
+            Assert.AreEqual(" FILENAME  \\p", field.GetFieldCode());
+            Assert.AreEqual("Field.FileName.docx", field.Result);
+
+            doc.Save(MyDir + @"\Artifacts\Field.FileName.docx");
             //ExEnd
         }
 
@@ -2979,6 +3043,37 @@ namespace ApiExamples
             Assert.AreEqual("My overriding comment.", field.Result);
 
             doc.Save(MyDir + @"\Artifacts\Field.Comments.docx");
+            //ExEnd
+        }
+        
+        [Test]
+        public void FieldFileSize()
+        {
+            //ExStart
+            //ExFor:FieldFileSize
+            //ExFor:FieldFileSize.IsInKilobytes
+            //ExFor:FieldFileSize.IsInMegabytes            
+            //ExSummary:Shows how to display the file size of a document with a FILESIZE field.
+            Document doc = new Document(MyDir + "Document.doc");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.MoveToDocumentEnd();
+
+            // By default, file size is displayed in bytes
+            FieldFileSize field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
+            field.Update();
+            Assert.AreEqual("23040", field.Result);
+
+            // Set the field to display size in kilobytes
+            field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
+            field.IsInKilobytes = true;
+            field.Update();
+            Assert.AreEqual("23", field.Result);
+
+            // Set the field to display size in megabytes
+            field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
+            field.IsInMegabytes = true;
+            field.Update();
+            Assert.AreEqual("0", field.Result);
             //ExEnd
         }
     }
