@@ -2942,54 +2942,66 @@ namespace ApiExamples
             //ExSummary:Shows how to insert fields using a field builder.
             Document doc = new Document();
 
-            // INSP: We need to simplify our code as much as possible.
-            //       Also Aspose.Words team have ruled for code line length,
-            //       lines should not exceed 120 characters.
-            //       You can use https://marketplace.visualstudio.com/items?itemName=PaulHarrington.EditorGuidelines
+            // Use a field builder to add a SYMBOL field which displays the "F with hook" symbol
+            FieldBuilder builder = new FieldBuilder(FieldType.FieldSymbol);
+            builder.AddArgument(402);
+            builder.AddSwitch("\\f", "Arial");
+            builder.AddSwitch("\\s", 25);
+            builder.AddSwitch("\\u");
+            Field field = builder.BuildAndInsert(doc.FirstSection.Body.FirstParagraph);
 
-            // Create a SYMBOL field with switches and insert field at the beginning of the document
-            // INSP: Add more convenient names for all fields and also add more comments and asserts
-            Field fieldBuilder = new FieldBuilder(FieldType.FieldSymbol). 
-                AddArgument(402).
-                AddSwitch("\\f", "Arial").
-                AddSwitch("\\s", 25).
-                AddSwitch("\\u").
-                BuildAndInsert(doc.FirstSection.Body.FirstParagraph);
+            Assert.AreEqual(" SYMBOL 402 \\f Arial \\s 25 \\u ", field.GetFieldCode());
 
-            Assert.AreEqual(" SYMBOL 402 \\f Arial \\s 25 \\u ", fieldBuilder.GetFieldCode());
+            // Use a field builder to create a formula field that will be used by another field builder
+            FieldBuilder innerFormulaBuilder = new FieldBuilder(FieldType.FieldFormula);
+            innerFormulaBuilder.AddArgument(100);
+            innerFormulaBuilder.AddArgument("+");
+            innerFormulaBuilder.AddArgument(74);
 
             // Add a field builder as an argument to another field builder
-            fieldBuilder = new FieldBuilder(FieldType.FieldSymbol).
-                AddArgument(new FieldBuilder(FieldType.FieldFormula).
-                    AddArgument(100).
-                    AddArgument("+").
-                    AddArgument(74)).
-                BuildAndInsert(doc.FirstSection.Body.AppendParagraph(""));
+            // The result of our formula field will be used as an ANSI value representing the "enclosed R" symbol,
+            // to be displayed by this SYMBOL field
+            builder = new FieldBuilder(FieldType.FieldSymbol);
+            builder.AddArgument(innerFormulaBuilder);
+            field = builder.BuildAndInsert(doc.FirstSection.Body.AppendParagraph(""));
 
-            // Place 2 formula fields inside an IF field
-            FieldBuilder innerEquation1 = new FieldBuilder(FieldType.FieldFormula).
-                    AddArgument(2).
-                    AddArgument("+").
-                    AddArgument(3);
+            Assert.AreEqual(" SYMBOL \u0013 = 100 + 74 \u0014\u0015 ", field.GetFieldCode());
 
-            FieldBuilder innerEquation2 = new FieldBuilder(FieldType.FieldFormula).
-                AddArgument(2.5).
-                AddArgument("*").
-                AddArgument(5.2);
+            // Now we will use our builder to construct a more complex field with nested fields
+            // For our IF field, we will first create two formula fields to serve as expressions
+            // Their results will be tested for equality to decide what value an IF field displays
+            FieldBuilder leftExpression = new FieldBuilder(FieldType.FieldFormula);
+            leftExpression.AddArgument(2);
+            leftExpression.AddArgument("+");
+            leftExpression.AddArgument(3);
 
-            fieldBuilder = new FieldBuilder(FieldType.FieldIf).
-                AddArgument(innerEquation1).
-                AddArgument("=").
-                AddArgument(innerEquation2).
-                AddArgument(new FieldArgumentBuilder().
-                    AddText("True, both equations amount to ").
-                    AddField(innerEquation1)).
-                AddArgument(new FieldArgumentBuilder().
-                    AddNode(new Run(doc, "False, ")).
-                    AddField(innerEquation1).
-                    AddNode(new Run(doc, " does not equal ")).
-                    AddField(innerEquation2)).
-                BuildAndInsert(doc.FirstSection.Body.AppendParagraph(""));
+            FieldBuilder rightExpression = new FieldBuilder(FieldType.FieldFormula);
+            rightExpression.AddArgument(2.5);
+            rightExpression.AddArgument("*");
+            rightExpression.AddArgument(5.2);
+
+            // Next, we will create two field arguments using field argument builders
+            // These will serve as the two possible outputs of our IF field and they will also use our two expressions
+            FieldArgumentBuilder trueOutput = new FieldArgumentBuilder();
+            trueOutput.AddText("True, both expressions amount to ");
+            trueOutput.AddField(leftExpression);
+
+            FieldArgumentBuilder falseOutput = new FieldArgumentBuilder();
+            falseOutput.AddNode(new Run(doc, "False, "));
+            falseOutput.AddField(leftExpression);
+            falseOutput.AddNode(new Run(doc, " does not equal "));
+            falseOutput.AddField(rightExpression);
+
+            // Finally, we will use a field builder to create an IF field which takes two field builders as expressions,
+            // and two field argument builders as the two potential outputs
+            builder = new FieldBuilder(FieldType.FieldIf);
+            builder.AddArgument(leftExpression);
+            builder.AddArgument("=");
+            builder.AddArgument(rightExpression);
+            builder.AddArgument(trueOutput);
+            builder.AddArgument(falseOutput);
+
+            builder.BuildAndInsert(doc.FirstSection.Body.AppendParagraph(""));
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.FieldBuilder.docx");
