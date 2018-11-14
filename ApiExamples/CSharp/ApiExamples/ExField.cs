@@ -2952,5 +2952,36 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.CreateDate.docx");
             //ExEnd
         }
+
+        [Test]
+        public void FieldFileSize()
+        {
+            //ExStart
+            //ExFor:FieldFileSize
+            //ExFor:FieldFileSize.IsInKilobytes
+            //ExFor:FieldFileSize.IsInMegabytes            
+            //ExSummary:Shows how to display the file size of a document with a FILESIZE field.
+            Document doc = new Document(MyDir + "Document.doc");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.MoveToDocumentEnd();
+
+            // By default, file size is displayed in bytes
+            FieldFileSize field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
+            field.Update();
+            Assert.AreEqual("23040", field.Result);
+
+            // Set the field to display size in kilobytes
+            field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
+            field.IsInKilobytes = true;
+            field.Update();
+            Assert.AreEqual("23", field.Result);
+
+            // Set the field to display size in megabytes
+            field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
+            field.IsInMegabytes = true;
+            field.Update();
+            Assert.AreEqual("0", field.Result);
+            //ExEnd
+        }
     }
 }
