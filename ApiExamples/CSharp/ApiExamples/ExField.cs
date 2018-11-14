@@ -3021,6 +3021,78 @@ namespace ApiExamples
         }
 
         [Test]
+        public void FieldAuthor()
+        {
+            //ExStart
+            //ExFor:FieldAuthor
+            //ExFor:FieldAuthor.AuthorName                 
+            //ExSummary:Shows how to display a document creator's name with an AUTHOR field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("This document was created by ");
+            FieldAuthor fieldAuthor = (FieldAuthor)builder.InsertField(FieldType.FieldAuthor, true);
+            
+            // If we open an existing document, the document's author's full name will be displayed by the field
+            // If we create a document programmatically, we need to set this attribute to the author's name so our field has something to display
+            doc.BuiltInDocumentProperties.Author = "John Doe";
+            
+            fieldAuthor.Update();
+
+            Assert.AreEqual(" AUTHOR ", fieldAuthor.GetFieldCode());
+            Assert.AreEqual("John Doe", fieldAuthor.Result);
+            
+            // Our field can also override the document's built in author name like this
+            fieldAuthor.AuthorName = "Jane Doe";
+            fieldAuthor.Update();
+
+            Assert.AreEqual(" AUTHOR  \"Jane Doe\"", fieldAuthor.GetFieldCode());
+            Assert.AreEqual("Jane Doe", fieldAuthor.Result);
+            
+            doc.Save(MyDir + @"\Artifacts\Field.Author.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldDoc()
+        {
+            //ExStart
+            //ExFor:FieldDocProperty
+            //ExFor:FieldDocVariable
+            //ExFor:FieldDocVariable.VariableName
+            //ExSummary:Shows how to use fields to display document properties and variables.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set the value of a document property
+            doc.BuiltInDocumentProperties.Category = "My category";
+
+            // Display the value of that property with a DOCPROPERTY field
+            FieldDocProperty fieldDocProperty = (FieldDocProperty)builder.InsertField(" DOCPROPERTY Category ");
+            fieldDocProperty.Update();
+
+            Assert.AreEqual(" DOCPROPERTY Category ", fieldDocProperty.GetFieldCode());
+            Assert.AreEqual("My category", doc.BuiltInDocumentProperties.Category);
+
+            builder.Writeln();
+
+            // While the set of a document's properties is fixed, we can add, name and define our own values in the variables collection
+            Assert.IsEmpty(doc.Variables);
+            doc.Variables.Add("My variable", "My variable's value");
+
+            // We can access a variable using its name and display it with a DOCVARIABLE field
+            FieldDocVariable fieldDocVariable = (FieldDocVariable)builder.InsertField(FieldType.FieldDocVariable, true);
+            fieldDocVariable.VariableName = "My Variable";
+            fieldDocVariable.Update();
+
+            Assert.AreEqual(" DOCVARIABLE  \"My Variable\"", fieldDocVariable.GetFieldCode());
+            Assert.AreEqual("My variable's value", fieldDocVariable.Result);
+
+            doc.Save(MyDir + @"\Artifacts\Field.DocProperties.docx");
+            //ExEnd
+        }
+        
+        [Test]
         public void FieldComments()
         {
             //ExStart
