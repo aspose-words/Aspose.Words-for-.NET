@@ -2981,8 +2981,10 @@ namespace ApiExamples
             Assert.AreEqual(" AUTHOR  \"Jane Doe\"", fieldAuthor.GetFieldCode());
             Assert.AreEqual("Jane Doe", fieldAuthor.Result);
 
-            builder.Writeln();
-
+            builder.Writeln(); 
+            
+            // INSP: I think no reason for making this example bigger, please separate them
+            
             // We can also access a document's built in properties with a DOCPROPERTY field
             doc.BuiltInDocumentProperties.Category = "My category";
             FieldDocProperty fieldDocProperty = (FieldDocProperty)builder.InsertField(" DOCPROPERTY Category ");
@@ -2993,7 +2995,7 @@ namespace ApiExamples
 
             builder.Writeln();
 
-            // While the set of a document's peoperties is fixed, we can name and define our own properties in the variables collection
+            // While the set of a document's properties is fixed, we can name and define our own properties in the variables collection
             Assert.IsEmpty(doc.Variables);
             doc.Variables.Add("My variable", "My variable's value");
 
