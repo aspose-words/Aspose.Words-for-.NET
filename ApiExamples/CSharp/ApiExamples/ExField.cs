@@ -2658,9 +2658,14 @@ namespace ApiExamples
 
             builder.MoveToDocumentEnd();
             builder.Writeln();
-            // INSP: Add asserts after each field change
+
             // This FILENAME field will display the file name of the document we opened
             FieldFileName field = (FieldFileName)builder.InsertField(FieldType.FieldFileName, true);
+            field.Update();
+
+            Assert.AreEqual(" FILENAME ", field.GetFieldCode());
+            Assert.AreEqual("Document.docx", field.Result);
+
             builder.Writeln();
 
             // By default, the FILENAME field does not show the full path, and we can change this
@@ -2670,8 +2675,11 @@ namespace ApiExamples
             // We can override the values displayed by our FILENAME fields by setting this attribute
             Assert.IsNull(doc.FieldOptions.FileName);
             doc.FieldOptions.FileName = "Field.FileName.docx";
+            field.Update();
 
-            doc.UpdateFields();
+            Assert.AreEqual(" FILENAME  \\p", field.GetFieldCode());
+            Assert.AreEqual("Field.FileName.docx", field.Result);
+
             doc.Save(MyDir + @"\Artifacts\Field.FileName.docx");
             //ExEnd
         }
