@@ -872,19 +872,22 @@ namespace ApiExamples
             Assert.AreEqual("1033", field.LanguageId);
         }
 
-        [Test]
+        //ExStart
+        //ExFor:FieldCollection
+        //ExFor:FieldCollection.Clear
+        //ExFor:FieldCollection.Count
+        //ExFor:FieldCollection.GetEnumerator
+        //ExFor:FieldCollection.Item(Int32)
+        //ExFor:FieldCollection.Remove(Field)
+        //ExFor:FieldCollection.Remove(FieldStart)
+        //ExFor:FieldCollection.RemoveAt(Int32)
+        //ExFor:FieldEnd
+        //ExFor:FieldEnd.Accept(DocumentVisitor)
+        //ExFor:FieldEnd.HasSeparator
+        //ExSummary:Shows how to work with a document's field collection.
+        [Test] //ExSkip
         public void FieldCollection()
         {
-            //ExStart
-            //ExFor:FieldCollection
-            //ExFor:FieldCollection.Clear
-            //ExFor:FieldCollection.Count
-            //ExFor:FieldCollection.GetEnumerator
-            //ExFor:FieldCollection.Item(Int32)
-            //ExFor:FieldCollection.Remove(Field)
-            //ExFor:FieldCollection.Remove(FieldStart)
-            //ExFor:FieldCollection.RemoveAt(Int32)
-            //ExSummary:Shows how to work with a document's collection of fields.
             // Open a document that has fields
             Document doc = new Document(MyDir + "Document.ContainsFields.docx");
 
@@ -892,16 +895,19 @@ namespace ApiExamples
             FieldCollection fields = doc.Range.Fields;
             Assert.AreEqual(5, fields.Count);
 
-            // Iterate over the field collection and print contents and type of every field
+            // Iterate over the field collection and print contents and type of every field using a custom visitor implementation
+            FieldVisitor fieldVisitor = new FieldVisitor();
+
             using (IEnumerator<Field> fieldEnumerator = fields.GetEnumerator())
             {
                 while (fieldEnumerator.MoveNext())
                 {
-                    Console.WriteLine("Field found: " + fieldEnumerator.Current.Type);
-                    Console.WriteLine("\t{" + fieldEnumerator.Current.GetFieldCode() + "}");
-                    Console.WriteLine("\t\"" + fieldEnumerator.Current.Result + "\"");
+                    fieldEnumerator.Current.Start.Accept(fieldVisitor);
+                    fieldEnumerator.Current.End.Accept(fieldVisitor);
                 }
             }
+
+            Console.WriteLine(fieldVisitor.GetText());
 
             // Get a field to remove itself
             fields[0].Remove();
@@ -919,8 +925,52 @@ namespace ApiExamples
             // Remove all fields from the document
             fields.Clear();
             Assert.AreEqual(0, fields.Count);
-            //ExEnd
         }
+
+        /// <summary>
+        /// Document visitor implementation that prints field info
+        /// </summary>
+        public class FieldVisitor : DocumentVisitor
+        {
+            public FieldVisitor()
+            {
+                mBuilder = new StringBuilder();
+            }
+
+            /// <summary>
+            /// Gets the plain text of the document that was accumulated by the visitor.
+            /// </summary>
+            public String GetText()
+            {
+                return mBuilder.ToString();
+            }
+
+            /// <summary>
+            /// Called when a FieldStart node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitFieldStart(FieldStart fieldStart)
+            {
+                mBuilder.AppendLine("Found field: " + fieldStart.FieldType);
+                mBuilder.AppendLine("\tField code: " + fieldStart.GetField().GetFieldCode());
+                mBuilder.AppendLine("\tCurrent result: " + fieldStart.GetField().Result);
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when a FieldEnd node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitFieldEnd(FieldEnd fieldEnd)
+            {
+                if (fieldEnd.HasSeparator)
+                    mBuilder.AppendLine("\tSeparator: " + fieldEnd.GetField().Separator.GetText());
+
+                return VisitorAction.Continue;
+            }
+
+            private readonly StringBuilder mBuilder;
+        }
+        //ExEnd
 
         [Test]
         public void FieldCompare()
