@@ -21,6 +21,7 @@ namespace ApiExamples
     {
         //ExStart
         //ExFor:Document.Accept(DocumentVisitor)
+        //ExFor:DocumentVisitor
         //ExFor:DocumentVisitor.VisitRun(Run)
         //ExFor:DocumentVisitor.VisitDocumentEnd(Document)
         //ExFor:DocumentVisitor.VisitDocumentStart(Document)

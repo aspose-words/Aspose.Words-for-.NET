@@ -699,6 +699,7 @@ namespace ApiExamples
             //ExFor:RowFormat.HeightRule
             //ExFor:RowFormat.Height
             //ExFor:RowFormat.Borders
+            //ExFor:HeightRule
             //ExFor:Shading.BackgroundPatternColor
             //ExFor:Shading.ClearFormatting
             //ExSummary:Shows how to build a nice bordered table.
@@ -2177,6 +2178,7 @@ namespace ApiExamples
         //ExFor:IFieldResultFormatter.FormatDateTime(DateTime, String, CalendarType)
         //ExFor:IFieldResultFormatter.FormatNumeric(Double, String)
         //ExFor:FieldOptions.ResultFormatter
+        //ExFor:CalendarType
         //ExSummary:Shows how to control how the field result is formatted.
         [Test] //ExSkip
         public void FieldResultFormatting()

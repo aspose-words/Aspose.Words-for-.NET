@@ -145,6 +145,14 @@ namespace ApiExamples
 #if !(NETSTANDARD2_0 || __MOBILE__)
         //ExStart
         //ExFor:DocumentBase.ResourceLoadingCallback
+        //ExFor:IResourceLoadingCallback
+        //ExFor:IResourceLoadingCallback.ResourceLoading(ResourceLoadingArgs)
+        //ExFor:ResourceLoadingAction
+        //ExFor:ResourceLoadingArgs
+        //ExFor:ResourceLoadingArgs.OriginalUri
+        //ExFor:ResourceLoadingArgs.ResourceType
+        //ExFor:ResourceLoadingArgs.SetData(Byte[])
+        //ExFor:ResourceType
         //ExSummary:Shows how to process inserted resources differently.
         [Test] //ExSkip
         public void ResourceLoadingCallback()

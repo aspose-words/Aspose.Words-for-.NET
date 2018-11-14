@@ -21,6 +21,8 @@ namespace ApiExamples
             //ExFor:TxtLoadOptions.DetectNumberingWithWhitespaces
             //ExFor:TxtLoadOptions.TrailingSpacesOptions
             //ExFor:TxtLoadOptions.LeadingSpacesOptions
+            //ExFor:TxtTrailingSpacesOptions
+            //ExFor:TxtLeadingSpacesOptions
             //ExSummary:Shows how to load plain text as is.
             TxtLoadOptions loadOptions = new TxtLoadOptions
             {

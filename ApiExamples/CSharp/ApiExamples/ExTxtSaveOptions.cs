@@ -41,5 +41,27 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\AddBidiMarks.txt", saveOptions);
             //ExEnd
         }
+
+        [Test]
+        [TestCase(TxtExportHeadersFootersMode.None)]
+        [TestCase(TxtExportHeadersFootersMode.AllAtEnd)]
+        [TestCase(TxtExportHeadersFootersMode.PrimaryOnly)]
+        public void ExportHeadersFooters(TxtExportHeadersFootersMode txtExportHeadersFootersMode)
+        {
+            //ExStart
+            //ExFor:TxtSaveOptions.ExportHeadersFootersMode
+            //ExFor:TxtExportHeadersFootersMode
+            //ExSummary:Shows how to specifies the way headers and footers are exported to plain text format.
+            Document doc = new Document(MyDir + "HeaderFooter.HeaderFooterOrder.docx");
+
+            // Three values are available in TxtExportHeadersFootersMode enum:
+            // "None" - No headers and footers are exported
+            // "AllAtEnd" - All headers and footers are placed after all section bodies at the very end of a document
+            // "PrimaryOnly" - Only primary headers and footers are exported at the beginning and end of each section (default value)
+            TxtSaveOptions saveOptions = new TxtSaveOptions { ExportHeadersFootersMode = txtExportHeadersFootersMode };
+
+            doc.Save(MyDir + @"\Artifacts\ExportHeadersFooters.txt", saveOptions);
+            //ExEnd
+        }
     }
 }

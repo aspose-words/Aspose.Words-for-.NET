@@ -282,6 +282,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OleControl
+            //ExFor:Forms2OleControl
             //ExFor:Forms2OleControl.Caption
             //ExFor:Forms2OleControl.Value
             //ExFor:Forms2OleControl.Enabled
@@ -615,6 +616,10 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Stroke
+            //ExFor:Stroke.On
+            //ExFor:Stroke.Weight
+            //ExFor:Stroke.JoinStyle
+            //ExFor:Stroke.LineStyle
             //ExSummary:Shows how change stroke properties
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -735,7 +740,7 @@ namespace ApiExamples
             // Add DataLabel to the first point of the first series.
             ChartDataLabel chartDataLabel0 = series0.DataLabels.Add(0);
             chartDataLabel0.ShowValue = true;
-
+            
             // Set currency format code.
             chartDataLabel0.NumberFormat.FormatCode = "\"$\"#,##0.00";
 
@@ -973,10 +978,13 @@ namespace ApiExamples
         public void InsertChartWithDateTimeValues()
         {
             //ExStart
+            //ExFor:AxisBound
+            //ExFor:AxisBound.#ctor(Double)
+            //ExFor:AxisBound.#ctor(DateTime)
             //ExFor:ChartAxis.Scaling
             //ExFor:AxisScaling.Minimum
             //ExFor:AxisScaling.Maximum
-            //ExSummary: Shows how to insert chart with date/time values
+            //ExSummary:Shows how to insert chart with date/time values
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -989,17 +997,17 @@ namespace ApiExamples
 
             // Fill data.
             chart.Series.Add("Aspose Test Series",
-                new DateTime[]
+                new []
                 {
                     new DateTime(2017, 11, 06), new DateTime(2017, 11, 09), new DateTime(2017, 11, 15),
                     new DateTime(2017, 11, 21), new DateTime(2017, 11, 25), new DateTime(2017, 11, 29)
                 },
-                new double[] { 1.2, 0.3, 2.1, 2.9, 4.2, 5.3 });
+                new [] { 1.2, 0.3, 2.1, 2.9, 4.2, 5.3 });
 
             // Set X axis bounds.
             ChartAxis xAxis = chart.AxisX;
             xAxis.Scaling.Minimum = new AxisBound(new DateTime(2017, 11, 05).ToOADate());
-            xAxis.Scaling.Maximum = new AxisBound(new DateTime(2017, 12, 03).ToOADate());
+            xAxis.Scaling.Maximum = new AxisBound(new DateTime(2017, 12, 03));
 
             // Set major units to a week and minor units to a day.
             xAxis.MajorUnit = 7;
@@ -1172,6 +1180,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ShapeBase.IsLayoutInCell
+            //ExFor:MsWordVersion
             //ExSummary:Shows how to display the shape, inside a table or outside of it.
             Document doc = new Document(MyDir + "Shape.LayoutInCell.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);

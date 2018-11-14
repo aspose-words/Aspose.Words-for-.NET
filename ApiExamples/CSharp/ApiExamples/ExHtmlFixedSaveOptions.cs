@@ -193,6 +193,8 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:HtmlFixedSaveOptions.UseTargetMachineFonts
+        //ExFor:IResourceSavingCallback
+        //ExFor:IResourceSavingCallback.ResourceSaving(ResourceSavingArgs)
         //ExSummary: Shows how used target machine fonts to display the document.
         [Test] //ExSkip
         public void UsingMachineFonts()
