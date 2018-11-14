@@ -3018,6 +3018,35 @@ namespace ApiExamples
         }
 
         [Test]
+        public void FieldComments()
+        {
+            //ExStart
+            //ExFor:FieldComments
+            //ExFor:FieldComments.Text
+            //ExSummary:Shows how to use the COMMENTS field to display a document's comments.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // This property is where the COMMENTS field will source its content from
+            doc.BuiltInDocumentProperties.Comments = "My comment.";
+
+            // Insert a COMMENTS field with a document builder
+            FieldComments field = (FieldComments)builder.InsertField(FieldType.FieldComments, true);
+            field.Update();
+
+            Assert.AreEqual("My comment.", field.Result);
+
+            // We can override the comment from the document's built in properties and display any text we put here instead
+            field.Text = "My overriding comment.";
+            field.Update();
+
+            Assert.AreEqual("My overriding comment.", field.Result);
+
+            doc.Save(MyDir + @"\Artifacts\Field.Comments.docx");
+            //ExEnd
+        }
+        
+        [Test]
         public void FieldFileSize()
         {
             //ExStart
