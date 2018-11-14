@@ -2954,10 +2954,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldAuthor
-            //ExFor:FieldAuthor.AuthorName        
-            //ExFor:FieldDocProperty
-            //ExFor:FieldDocVariable
-            //ExFor:FieldDocVariable.VariableName
+            //ExFor:FieldAuthor.AuthorName                 
             //ExSummary:Shows how to display a document creator's name with an AUTHOR field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2980,13 +2977,26 @@ namespace ApiExamples
 
             Assert.AreEqual(" AUTHOR  \"Jane Doe\"", fieldAuthor.GetFieldCode());
             Assert.AreEqual("Jane Doe", fieldAuthor.Result);
+            
+            doc.Save(MyDir + @"\Artifacts\Field.Author.docx");
+            //ExEnd
+        }
 
-            builder.Writeln(); 
-            
-            // INSP: I think no reason for making this example bigger, please separate them
-            
-            // We can also access a document's built in properties with a DOCPROPERTY field
+        [Test]
+        public void FieldDoc()
+        {
+            //ExStart
+            //ExFor:FieldDocProperty
+            //ExFor:FieldDocVariable
+            //ExFor:FieldDocVariable.VariableName
+            //ExSummary:Shows how to use fields to display document properties and variables.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set the value of a document property
             doc.BuiltInDocumentProperties.Category = "My category";
+
+            // Display the value of that property with a DOCPROPERTY field
             FieldDocProperty fieldDocProperty = (FieldDocProperty)builder.InsertField(" DOCPROPERTY Category ");
             fieldDocProperty.Update();
 
@@ -2995,7 +3005,7 @@ namespace ApiExamples
 
             builder.Writeln();
 
-            // While the set of a document's properties is fixed, we can name and define our own properties in the variables collection
+            // While the set of a document's properties is fixed, we can add, name and define our own values in the variables collection
             Assert.IsEmpty(doc.Variables);
             doc.Variables.Add("My variable", "My variable's value");
 
