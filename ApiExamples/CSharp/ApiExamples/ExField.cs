@@ -3219,21 +3219,15 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // This property is where the COMMENTS field will source its content from
-            doc.BuiltInDocumentProperties.Comments = "My comment.";
-
             // Insert a FILLIN field with a document builder
             FieldFillIn field = (FieldFillIn)builder.InsertField(FieldType.FieldFillIn, true);
             field.PromptText = "Please enter a response:";
-            field.DefaultResponse = "Default response";
+            field.DefaultResponse = "A default response";
+
+            // Set this to prompt the user when a mail merge is performed in MS Word
             field.PromptOnceOnMailMerge = true;
-            field.Update();
 
-            // Do a basic mail merge 
-            FieldMergeField fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
-            fieldMergeField.FieldName = "MergeField";
-            doc.MailMerge.Execute(new [] { "MergeField" }, new object[] { "My value" });
-
+            doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.FillIn.docx");
             //ExEnd
         }
