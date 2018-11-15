@@ -41,41 +41,33 @@ namespace ApiExamples
         }
 
         [Test]
-        public void GetFieldType()
+        public void GetFieldFromDocument()
         {
-            Document doc = new Document(MyDir + "Document.TableOfContents.doc");
-
             //ExStart
             //ExFor:FieldType
             //ExFor:FieldChar
             //ExFor:FieldChar.FieldType
-            //ExSummary:Shows how to find the type of field that is represented by a node which is derived from FieldChar.
-            FieldChar fieldStart = (FieldChar)doc.GetChild(NodeType.FieldStart, 0, true);
-            FieldType type = fieldStart.FieldType;
-            //ExEnd
-        }
-
-        [Test]
-        public void GetFieldFromDocument()
-        {
-            //ExStart
+            //ExFor:FieldChar.IsDirty
+            //ExFor:FieldChar.IsLocked
             //ExFor:FieldChar.GetField
             //ExFor:Field.IsLocked
             //ExId:GetField
             //ExSummary:Demonstrates how to retrieve the field class from an existing FieldStart node in the document.
             Document doc = new Document(MyDir + "Document.TableOfContents.doc");
 
-            FieldStart fieldStart = (FieldStart)doc.GetChild(NodeType.FieldStart, 0, true);
+            FieldChar fieldStart = (FieldChar)doc.GetChild(NodeType.FieldStart, 0, true);
+            Assert.AreEqual(FieldType.FieldTOC, fieldStart.FieldType);
+            Assert.AreEqual(true, fieldStart.IsDirty);
+            Assert.AreEqual(false, fieldStart.IsLocked);
 
             // Retrieve the facade object which represents the field in the document.
             Field field = fieldStart.GetField();
 
-            Console.WriteLine("Field code:" + field.GetFieldCode());
-            Console.WriteLine("Field result: " + field.Result);
-            Console.WriteLine("Is locked: " + field.IsLocked);
+            Assert.AreEqual(false, field.IsLocked);
+            Assert.AreEqual(" TOC \\o \"1-3\" \\h \\z \\u ", field.GetFieldCode());
 
             // This updates only this field in the document.
-            field.Update();
+            field.Update();         
             //ExEnd
         }
 
@@ -334,39 +326,6 @@ namespace ApiExamples
 
             // Assert that isDirty saves 
             Assert.IsTrue(tocField.IsDirty);
-        }
-
-        [Test]
-        public void InsertFieldWithFieldBuilder()
-        {
-            //ExStart
-            //ExFor:FieldArgumentBuilder
-            //ExFor:FieldArgumentBuilder.AddField(FieldBuilder)
-            //ExFor:FieldArgumentBuilder.AddText(String)
-            //ExFor:FieldBuilder
-            //ExFor:FieldBuilder.AddArgument(FieldArgumentBuilder)
-            //ExFor:FieldBuilder.AddArgument(String)
-            //ExFor:FieldBuilder.AddArgument(Int32)
-            //ExFor:FieldBuilder.AddArgument(Double)
-            //ExFor:FieldBuilder.AddSwitch(String, String)
-            //ExSummary:Inserts a field into a document using field builder constructor
-            Document doc = new Document();
-
-            //Add text into the paragraph
-            Paragraph para = doc.FirstSection.Body.Paragraphs[0];
-            Run run = new Run(doc) { Text = " Hello World!" };
-            para.AppendChild(run);
-
-            FieldArgumentBuilder argumentBuilder = new FieldArgumentBuilder();
-            argumentBuilder.AddField(new FieldBuilder(FieldType.FieldMergeField));
-            argumentBuilder.AddText("BestField");
-
-            FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldIf);
-            fieldBuilder.AddArgument(argumentBuilder).AddArgument("=").AddArgument("BestField").AddArgument(10)
-                .AddArgument(20.0).AddSwitch("12", "13").BuildAndInsert(run);
-
-            doc.UpdateFields();
-            //ExEnd
         }
 
         [Test]
@@ -872,19 +831,22 @@ namespace ApiExamples
             Assert.AreEqual("1033", field.LanguageId);
         }
 
-        [Test]
+        //ExStart
+        //ExFor:FieldCollection
+        //ExFor:FieldCollection.Clear
+        //ExFor:FieldCollection.Count
+        //ExFor:FieldCollection.GetEnumerator
+        //ExFor:FieldCollection.Item(Int32)
+        //ExFor:FieldCollection.Remove(Field)
+        //ExFor:FieldCollection.Remove(FieldStart)
+        //ExFor:FieldCollection.RemoveAt(Int32)
+        //ExFor:FieldEnd
+        //ExFor:FieldEnd.Accept(DocumentVisitor)
+        //ExFor:FieldEnd.HasSeparator
+        //ExSummary:Shows how to work with a document's field collection.
+        [Test] //ExSkip
         public void FieldCollection()
         {
-            //ExStart
-            //ExFor:FieldCollection
-            //ExFor:FieldCollection.Clear
-            //ExFor:FieldCollection.Count
-            //ExFor:FieldCollection.GetEnumerator
-            //ExFor:FieldCollection.Item(Int32)
-            //ExFor:FieldCollection.Remove(Field)
-            //ExFor:FieldCollection.Remove(FieldStart)
-            //ExFor:FieldCollection.RemoveAt(Int32)
-            //ExSummary:Shows how to work with a document's collection of fields.
             // Open a document that has fields
             Document doc = new Document(MyDir + "Document.ContainsFields.docx");
 
@@ -892,16 +854,19 @@ namespace ApiExamples
             FieldCollection fields = doc.Range.Fields;
             Assert.AreEqual(5, fields.Count);
 
-            // Iterate over the field collection and print contents and type of every field
+            // Iterate over the field collection and print contents and type of every field using a custom visitor implementation
+            FieldVisitor fieldVisitor = new FieldVisitor();
+
             using (IEnumerator<Field> fieldEnumerator = fields.GetEnumerator())
             {
                 while (fieldEnumerator.MoveNext())
                 {
-                    Console.WriteLine("Field found: " + fieldEnumerator.Current.Type);
-                    Console.WriteLine("\t{" + fieldEnumerator.Current.GetFieldCode() + "}");
-                    Console.WriteLine("\t\"" + fieldEnumerator.Current.Result + "\"");
+                    fieldEnumerator.Current.Start.Accept(fieldVisitor);
+                    fieldEnumerator.Current.End.Accept(fieldVisitor);
                 }
             }
+
+            Console.WriteLine(fieldVisitor.GetText());
 
             // Get a field to remove itself
             fields[0].Remove();
@@ -919,8 +884,52 @@ namespace ApiExamples
             // Remove all fields from the document
             fields.Clear();
             Assert.AreEqual(0, fields.Count);
-            //ExEnd
         }
+
+        /// <summary>
+        /// Document visitor implementation that prints field info
+        /// </summary>
+        public class FieldVisitor : DocumentVisitor
+        {
+            public FieldVisitor()
+            {
+                mBuilder = new StringBuilder();
+            }
+
+            /// <summary>
+            /// Gets the plain text of the document that was accumulated by the visitor.
+            /// </summary>
+            public String GetText()
+            {
+                return mBuilder.ToString();
+            }
+
+            /// <summary>
+            /// Called when a FieldStart node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitFieldStart(FieldStart fieldStart)
+            {
+                mBuilder.AppendLine("Found field: " + fieldStart.FieldType);
+                mBuilder.AppendLine("\tField code: " + fieldStart.GetField().GetFieldCode());
+                mBuilder.AppendLine("\tCurrent result: " + fieldStart.GetField().Result);
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when a FieldEnd node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitFieldEnd(FieldEnd fieldEnd)
+            {
+                if (fieldEnd.HasSeparator)
+                    mBuilder.AppendLine("\tSeparator: " + fieldEnd.GetField().Separator.GetText());
+
+                return VisitorAction.Continue;
+            }
+
+            private readonly StringBuilder mBuilder;
+        }
+        //ExEnd
 
         [Test]
         public void FieldCompare()
@@ -1730,18 +1739,20 @@ namespace ApiExamples
         public void FieldCitation()
         {
             //ExStart
-            //ExFor:Fields.FieldCitation
-            //ExFor:Fields.FieldCitation.AnotherSourceTag
-            //ExFor:Fields.FieldCitation.FormatLanguageId
-            //ExFor:Fields.FieldCitation.PageNumber
-            //ExFor:Fields.FieldCitation.Prefix
-            //ExFor:Fields.FieldCitation.SourceTag
-            //ExFor:Fields.FieldCitation.Suffix
-            //ExFor:Fields.FieldCitation.SuppressAuthor
-            //ExFor:Fields.FieldCitation.SuppressTitle
-            //ExFor:Fields.FieldCitation.SuppressYear
-            //ExFor:Fields.FieldCitation.VolumeNumber
-            //ExSummary:Shows how to insert a citation field and edit its properties.
+            //ExFor:FieldCitation
+            //ExFor:FieldCitation.AnotherSourceTag
+            //ExFor:FieldCitation.FormatLanguageId
+            //ExFor:FieldCitation.PageNumber
+            //ExFor:FieldCitation.Prefix
+            //ExFor:FieldCitation.SourceTag
+            //ExFor:FieldCitation.Suffix
+            //ExFor:FieldCitation.SuppressAuthor
+            //ExFor:FieldCitation.SuppressTitle
+            //ExFor:FieldCitation.SuppressYear
+            //ExFor:FieldCitation.VolumeNumber
+            //ExFor:FieldBibliography
+            //ExFor:FieldBibliography.FormatLanguageId
+            //ExSummary:Shows how to work with CITATION and BIBLIOGRAPHY fields.
             // Open a document that has bibliographical sources
             Document doc = new Document(MyDir + "Document.HasBibliography.docx");
 
@@ -1776,6 +1787,15 @@ namespace ApiExamples
             field.VolumeNumber = "VII";
 
             Assert.AreEqual(" CITATION  Book1 \\m Book2 \\l en-US \\p 19 \\f \"Prefix \" \\s \" Suffix\" \\v VII", field.GetFieldCode());
+
+            // Insert a new page which will contain our bibliography
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // All our sources can be displayed using a BIBLIOGRAPHY field
+            FieldBibliography fieldBibliography = (FieldBibliography)builder.InsertField(FieldType.FieldBibliography, true);
+            fieldBibliography.FormatLanguageId = "1124";
+
+            Assert.AreEqual(" BIBLIOGRAPHY  \\l 1124", fieldBibliography.GetFieldCode());
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.Citation.docx");
@@ -2650,6 +2670,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldOptions.FileName
+            //ExFor:FieldFileName
+            //ExFor:FieldFileName.IncludeFullPath
             //ExSummary:Shows how to use FieldOptions to override the default value for the FILENAME field.
             Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2657,16 +2679,28 @@ namespace ApiExamples
             builder.MoveToDocumentEnd();
             builder.Writeln();
 
-            // This FILENAME field will currently contain the actual filename for the document
-            builder.InsertField(FieldType.FieldFileName, true);
+            // This FILENAME field will display the file name of the document we opened
+            FieldFileName field = (FieldFileName)builder.InsertField(FieldType.FieldFileName, true);
+            field.Update();
 
-            // If we manually set a value for this property of the document's field options object,
-            // our overriding value will appear at the FILENAME field
+            Assert.AreEqual(" FILENAME ", field.GetFieldCode());
+            Assert.AreEqual("Document.docx", field.Result);
+
+            builder.Writeln();
+
+            // By default, the FILENAME field does not show the full path, and we can change this
+            field = (FieldFileName)builder.InsertField(FieldType.FieldFileName, true);
+            field.IncludeFullPath = true;
+
+            // We can override the values displayed by our FILENAME fields by setting this attribute
             Assert.IsNull(doc.FieldOptions.FileName);
             doc.FieldOptions.FileName = "Field.FileName.docx";
+            field.Update();
 
-            doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\" + doc.FieldOptions.FileName);
+            Assert.AreEqual(" FILENAME  \\p", field.GetFieldCode());
+            Assert.AreEqual("Field.FileName.docx", field.Result);
+
+            doc.Save(MyDir + @"\Artifacts\Field.FileName.docx");
             //ExEnd
         }
 
@@ -2950,6 +2984,226 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.CreateDate.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldBuilder()
+        {
+            //ExStart
+            //ExFor:FieldBuilder
+            //ExFor:FieldBuilder.AddArgument(Int32)
+            //ExFor:FieldBuilder.AddArgument(FieldArgumentBuilder)
+            //ExFor:FieldBuilder.AddArgument(String)
+            //ExFor:FieldBuilder.AddArgument(Double)
+            //ExFor:FieldBuilder.AddArgument(FieldBuilder)
+            //ExFor:FieldBuilder.AddSwitch(String)
+            //ExFor:FieldBuilder.AddSwitch(String, Double)
+            //ExFor:FieldBuilder.AddSwitch(String, Int32)
+            //ExFor:FieldBuilder.AddSwitch(String, String)
+            //ExFor:FieldBuilder.BuildAndInsert(Paragraph)
+            //ExFor:FieldArgumentBuilder
+            //ExFor:FieldArgumentBuilder.AddField(FieldBuilder)
+            //ExFor:FieldArgumentBuilder.AddText(String)
+            //ExFor:FieldArgumentBuilder.AddNode(Inline)
+            //ExSummary:Shows how to insert fields using a field builder.
+            Document doc = new Document();
+
+            // Use a field builder to add a SYMBOL field which displays the "F with hook" symbol
+            FieldBuilder builder = new FieldBuilder(FieldType.FieldSymbol);
+            builder.AddArgument(402);
+            builder.AddSwitch("\\f", "Arial");
+            builder.AddSwitch("\\s", 25);
+            builder.AddSwitch("\\u");
+            Field field = builder.BuildAndInsert(doc.FirstSection.Body.FirstParagraph);
+
+            Assert.AreEqual(" SYMBOL 402 \\f Arial \\s 25 \\u ", field.GetFieldCode());
+
+            // Use a field builder to create a formula field that will be used by another field builder
+            FieldBuilder innerFormulaBuilder = new FieldBuilder(FieldType.FieldFormula);
+            innerFormulaBuilder.AddArgument(100);
+            innerFormulaBuilder.AddArgument("+");
+            innerFormulaBuilder.AddArgument(74);
+
+            // Add a field builder as an argument to another field builder
+            // The result of our formula field will be used as an ANSI value representing the "enclosed R" symbol,
+            // to be displayed by this SYMBOL field
+            builder = new FieldBuilder(FieldType.FieldSymbol);
+            builder.AddArgument(innerFormulaBuilder);
+            field = builder.BuildAndInsert(doc.FirstSection.Body.AppendParagraph(""));
+
+            Assert.AreEqual(" SYMBOL \u0013 = 100 + 74 \u0014\u0015 ", field.GetFieldCode());
+
+            // Now we will use our builder to construct a more complex field with nested fields
+            // For our IF field, we will first create two formula fields to serve as expressions
+            // Their results will be tested for equality to decide what value an IF field displays
+            FieldBuilder leftExpression = new FieldBuilder(FieldType.FieldFormula);
+            leftExpression.AddArgument(2);
+            leftExpression.AddArgument("+");
+            leftExpression.AddArgument(3);
+
+            FieldBuilder rightExpression = new FieldBuilder(FieldType.FieldFormula);
+            rightExpression.AddArgument(2.5);
+            rightExpression.AddArgument("*");
+            rightExpression.AddArgument(5.2);
+
+            // Next, we will create two field arguments using field argument builders
+            // These will serve as the two possible outputs of our IF field and they will also use our two expressions
+            FieldArgumentBuilder trueOutput = new FieldArgumentBuilder();
+            trueOutput.AddText("True, both expressions amount to ");
+            trueOutput.AddField(leftExpression);
+
+            FieldArgumentBuilder falseOutput = new FieldArgumentBuilder();
+            falseOutput.AddNode(new Run(doc, "False, "));
+            falseOutput.AddField(leftExpression);
+            falseOutput.AddNode(new Run(doc, " does not equal "));
+            falseOutput.AddField(rightExpression);
+
+            // Finally, we will use a field builder to create an IF field which takes two field builders as expressions,
+            // and two field argument builders as the two potential outputs
+            builder = new FieldBuilder(FieldType.FieldIf);
+            builder.AddArgument(leftExpression);
+            builder.AddArgument("=");
+            builder.AddArgument(rightExpression);
+            builder.AddArgument(trueOutput);
+            builder.AddArgument(falseOutput);
+
+            builder.BuildAndInsert(doc.FirstSection.Body.AppendParagraph(""));
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FieldBuilder.docx");
+            //ExEnd
+        }
+        
+        [Test]
+        public void FieldAuthor()
+        {
+            //ExStart
+            //ExFor:FieldAuthor
+            //ExFor:FieldAuthor.AuthorName                 
+            //ExSummary:Shows how to display a document creator's name with an AUTHOR field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("This document was created by ");
+            FieldAuthor fieldAuthor = (FieldAuthor)builder.InsertField(FieldType.FieldAuthor, true);
+            
+            // If we open an existing document, the document's author's full name will be displayed by the field
+            // If we create a document programmatically, we need to set this attribute to the author's name so our field has something to display
+            doc.BuiltInDocumentProperties.Author = "John Doe";
+            
+            fieldAuthor.Update();
+
+            Assert.AreEqual(" AUTHOR ", fieldAuthor.GetFieldCode());
+            Assert.AreEqual("John Doe", fieldAuthor.Result);
+            
+            // Our field can also override the document's built in author name like this
+            fieldAuthor.AuthorName = "Jane Doe";
+            fieldAuthor.Update();
+
+            Assert.AreEqual(" AUTHOR  \"Jane Doe\"", fieldAuthor.GetFieldCode());
+            Assert.AreEqual("Jane Doe", fieldAuthor.Result);
+            
+            doc.Save(MyDir + @"\Artifacts\Field.Author.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldDoc()
+        {
+            //ExStart
+            //ExFor:FieldDocProperty
+            //ExFor:FieldDocVariable
+            //ExFor:FieldDocVariable.VariableName
+            //ExSummary:Shows how to use fields to display document properties and variables.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set the value of a document property
+            doc.BuiltInDocumentProperties.Category = "My category";
+
+            // Display the value of that property with a DOCPROPERTY field
+            FieldDocProperty fieldDocProperty = (FieldDocProperty)builder.InsertField(" DOCPROPERTY Category ");
+            fieldDocProperty.Update();
+
+            Assert.AreEqual(" DOCPROPERTY Category ", fieldDocProperty.GetFieldCode());
+            Assert.AreEqual("My category", doc.BuiltInDocumentProperties.Category);
+
+            builder.Writeln();
+
+            // While the set of a document's properties is fixed, we can add, name and define our own values in the variables collection
+            Assert.IsEmpty(doc.Variables);
+            doc.Variables.Add("My variable", "My variable's value");
+
+            // We can access a variable using its name and display it with a DOCVARIABLE field
+            FieldDocVariable fieldDocVariable = (FieldDocVariable)builder.InsertField(FieldType.FieldDocVariable, true);
+            fieldDocVariable.VariableName = "My Variable";
+            fieldDocVariable.Update();
+
+            Assert.AreEqual(" DOCVARIABLE  \"My Variable\"", fieldDocVariable.GetFieldCode());
+            Assert.AreEqual("My variable's value", fieldDocVariable.Result);
+
+            doc.Save(MyDir + @"\Artifacts\Field.DocProperties.docx");
+            //ExEnd
+        }
+        
+        [Test]
+        public void FieldComments()
+        {
+            //ExStart
+            //ExFor:FieldComments
+            //ExFor:FieldComments.Text
+            //ExSummary:Shows how to use the COMMENTS field to display a document's comments.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // This property is where the COMMENTS field will source its content from
+            doc.BuiltInDocumentProperties.Comments = "My comment.";
+
+            // Insert a COMMENTS field with a document builder
+            FieldComments field = (FieldComments)builder.InsertField(FieldType.FieldComments, true);
+            field.Update();
+
+            Assert.AreEqual("My comment.", field.Result);
+
+            // We can override the comment from the document's built in properties and display any text we put here instead
+            field.Text = "My overriding comment.";
+            field.Update();
+
+            Assert.AreEqual("My overriding comment.", field.Result);
+
+            doc.Save(MyDir + @"\Artifacts\Field.Comments.docx");
+            //ExEnd
+        }
+        
+        [Test]
+        public void FieldFileSize()
+        {
+            //ExStart
+            //ExFor:FieldFileSize
+            //ExFor:FieldFileSize.IsInKilobytes
+            //ExFor:FieldFileSize.IsInMegabytes            
+            //ExSummary:Shows how to display the file size of a document with a FILESIZE field.
+            Document doc = new Document(MyDir + "Document.doc");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.MoveToDocumentEnd();
+
+            // By default, file size is displayed in bytes
+            FieldFileSize field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
+            field.Update();
+            Assert.AreEqual("23040", field.Result);
+
+            // Set the field to display size in kilobytes
+            field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
+            field.IsInKilobytes = true;
+            field.Update();
+            Assert.AreEqual("23", field.Result);
+
+            // Set the field to display size in megabytes
+            field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
+            field.IsInMegabytes = true;
+            field.Update();
+            Assert.AreEqual("0", field.Result);
             //ExEnd
         }
     }
