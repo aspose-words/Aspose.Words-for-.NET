@@ -1915,18 +1915,28 @@ namespace ApiExamples
             //ExFor:FieldIncludePicture.ResizeHorizontally
             //ExFor:FieldIncludePicture.ResizeVertically
             //ExFor:FieldIncludePicture.SourceFullName
-            //ExSummary:Shows how to create an INCLUDEPICTURE field and set its properties.
+            //ExFor:FieldImport
+            //ExFor:FieldImport.GraphicFilter
+            //ExFor:FieldImport.IsLinked
+            //ExFor:FieldImport.SourceFullName
+            //ExSummary:Shows how to insert images using IMPORT and INCLUDEPICTURE fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             FieldIncludePicture fieldIncludePicture = (FieldIncludePicture)builder.InsertField(FieldType.FieldIncludePicture, true);
-            fieldIncludePicture.SourceFullName = MyDir + "Images/Watermark.png";
+            fieldIncludePicture.SourceFullName = MyDir + @"Images\Watermark.png";
 
-            // Apply, in this case, the PNG32.FLT filter
+            // Here we apply the PNG32.FLT filter
             fieldIncludePicture.GraphicFilter = "PNG32";
             fieldIncludePicture.IsLinked = true;
             fieldIncludePicture.ResizeHorizontally = true;
             fieldIncludePicture.ResizeVertically = true;
+
+            // We can do the same thing with an IMPORT field
+            FieldImport fieldImport = (FieldImport)builder.InsertField(FieldType.FieldImport, true);
+            fieldImport.GraphicFilter = "PNG32";
+            fieldImport.IsLinked = true;
+            fieldImport.SourceFullName = MyDir + @"Images\Watermark.png";
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.IncludePicture.docx");
