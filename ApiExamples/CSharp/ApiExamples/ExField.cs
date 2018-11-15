@@ -3206,5 +3206,36 @@ namespace ApiExamples
             Assert.AreEqual("0", field.Result);
             //ExEnd
         }
+
+        [Test]
+        public void FieldFillIn()
+        {
+            //ExStart
+            //ExFor:FieldFillIn
+            //ExFor:FieldFillIn.DefaultResponse
+            //ExFor:FieldFillIn.PromptOnceOnMailMerge
+            //ExFor:FieldFillIn.PromptText
+            //ExSummary:Shows how to use the FILLIN field to prompt the user for a response.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // This property is where the COMMENTS field will source its content from
+            doc.BuiltInDocumentProperties.Comments = "My comment.";
+
+            // Insert a FILLIN field with a document builder
+            FieldFillIn field = (FieldFillIn)builder.InsertField(FieldType.FieldFillIn, true);
+            field.PromptText = "Please enter a response:";
+            field.DefaultResponse = "Default response";
+            field.PromptOnceOnMailMerge = true;
+            field.Update();
+
+            // Do a basic mail merge 
+            FieldMergeField fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            fieldMergeField.FieldName = "MergeField";
+            doc.MailMerge.Execute(new [] { "MergeField" }, new object[] { "My value" });
+
+            doc.Save(MyDir + @"\Artifacts\Field.FillIn.docx");
+            //ExEnd
+        }
     }
 }
