@@ -3209,7 +3209,7 @@ namespace ApiExamples
 
 
         [Test]
-        public void FieldInfo() // INSP: Fix field names and a document name
+        public void FieldInfo()
         {
             //ExStart
             //ExFor:FieldInfo
@@ -3224,27 +3224,27 @@ namespace ApiExamples
 
             // We can access a property using its name and display it with an INFO field
             // In this case it will be the Comments property
-            FieldInfo fieldDocVariable = (FieldInfo)builder.InsertField(FieldType.FieldInfo, true);
-            fieldDocVariable.InfoType = "Comments";
-            fieldDocVariable.Update();
+            FieldInfo field = (FieldInfo)builder.InsertField(FieldType.FieldInfo, true);
+            field.InfoType = "Comments";
+            field.Update();
 
-            Assert.AreEqual(" INFO  Comments", fieldDocVariable.GetFieldCode());
-            Assert.AreEqual("My comment", fieldDocVariable.Result);
+            Assert.AreEqual(" INFO  Comments", field.GetFieldCode());
+            Assert.AreEqual("My comment", field.Result);
 
             builder.Writeln();
 
             // We can override the value of a document property by setting an INFO field's optional new value
-            fieldDocVariable = (FieldInfo)builder.InsertField(FieldType.FieldInfo, true);
-            fieldDocVariable.InfoType = "Comments";
-            fieldDocVariable.NewValue = "New comment";
-            fieldDocVariable.Update();
+            field = (FieldInfo)builder.InsertField(FieldType.FieldInfo, true);
+            field.InfoType = "Comments";
+            field.NewValue = "New comment";
+            field.Update();
 
             // Our field's new value has been applied to the corresponding property
-            Assert.AreEqual(" INFO  Comments \"New comment\"", fieldDocVariable.GetFieldCode());
-            Assert.AreEqual("New comment", fieldDocVariable.Result);
+            Assert.AreEqual(" INFO  Comments \"New comment\"", field.GetFieldCode());
+            Assert.AreEqual("New comment", field.Result);
             Assert.AreEqual("New comment", doc.BuiltInDocumentProperties.Comments);
 
-            doc.Save(MyDir + @"\Artifacts\Field.DocProperties.docx");
+            doc.Save(MyDir + @"\Artifacts\Field.Info.docx");
             //ExEnd
         }
     }
