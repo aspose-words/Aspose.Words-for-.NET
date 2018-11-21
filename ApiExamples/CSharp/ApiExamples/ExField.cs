@@ -3207,6 +3207,50 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [Test]
+        //ExStart
+        //ExFor:FieldFillIn
+        //ExFor:FieldFillIn.DefaultResponse
+        //ExFor:FieldFillIn.PromptOnceOnMailMerge
+        //ExFor:FieldFillIn.PromptText
+        //ExSummary:Shows how to use the FILLIN field to prompt the user for a response.
+        public void FieldFillIn()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a FILLIN field with a document builder
+            FieldFillIn field = (FieldFillIn)builder.InsertField(FieldType.FieldFillIn, true);
+            field.PromptText = "Please enter a response:";
+            field.DefaultResponse = "A default response";
+
+            // Set this to prompt the user for a response when a mail merge is performed
+            field.PromptOnceOnMailMerge = true;
+
+            Assert.AreEqual(" FILLIN  \"Please enter a response:\" \\d \"A default response\" \\o", field.GetFieldCode());
+
+            // Perform a simple mail merge
+            FieldMergeField mergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            mergeField.FieldName = "MergeField";
+            
+            doc.FieldOptions.UserPromptRespondent = new PromptRespondent();
+            doc.MailMerge.Execute(new [] { "MergeField" }, new object[] { "" });
+            
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FillIn.docx");
+        }
+
+        /// <summary>
+        /// IFieldUserPromptRespondent implementation that appends a line to the default response of an FILLIN field during a mail merge
+        /// </summary>
+        private class PromptRespondent : IFieldUserPromptRespondent
+        {
+            public string Respond(string promptText, string defaultResponse)
+            {
+                return "Response from PromptRespondent. " + defaultResponse;
+            }
+        }
+        //ExEnd
 
         [Test]
         public void FieldInfo()
