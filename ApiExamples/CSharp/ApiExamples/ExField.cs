@@ -3209,7 +3209,7 @@ namespace ApiExamples
 
 
         [Test]
-        public void FieldInfo()
+        public void FieldInfo() // INSP: Fix field names and a document name
         {
             //ExStart
             //ExFor:FieldInfo
