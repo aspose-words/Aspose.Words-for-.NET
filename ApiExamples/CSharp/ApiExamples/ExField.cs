@@ -3208,14 +3208,14 @@ namespace ApiExamples
         }
 
         [Test]
+        //ExStart
+        //ExFor:FieldFillIn
+        //ExFor:FieldFillIn.DefaultResponse
+        //ExFor:FieldFillIn.PromptOnceOnMailMerge
+        //ExFor:FieldFillIn.PromptText
+        //ExSummary:Shows how to use the FILLIN field to prompt the user for a response.
         public void FieldFillIn()
         {
-            //ExStart
-            //ExFor:FieldFillIn
-            //ExFor:FieldFillIn.DefaultResponse
-            //ExFor:FieldFillIn.PromptOnceOnMailMerge
-            //ExFor:FieldFillIn.PromptText
-            //ExSummary:Shows how to use the FILLIN field to prompt the user for a response.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -3232,11 +3232,24 @@ namespace ApiExamples
             // Perform a simple mail merge
             FieldMergeField mergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
             mergeField.FieldName = "MergeField";
-            doc.MailMerge.Execute(new [] { "MergeField" }, new [] { "Value" });
-
+            
+            doc.FieldOptions.UserPromptRespondent = new PromptRespondent();
+            doc.MailMerge.Execute(new [] { "MergeField" }, new object[] { "" });
+            
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.FillIn.docx");
-            //ExEnd
         }
+
+        /// <summary>
+        /// IFieldUserPromptRespondent implementation that appends a line to the default response of an FILLIN field during a mail merge
+        /// </summary>
+        private class PromptRespondent : IFieldUserPromptRespondent
+        {
+            public string Respond(string promptText, string defaultResponse)
+            {
+                return "Response from PromptRespondent. " + defaultResponse;
+            }
+        }
+        //ExEnd
     }
 }
