@@ -1552,7 +1552,7 @@ namespace ApiExamples
         public void ShowRevisionBalloonsInPdf()
         {
             //ExStart
-            //ExFor:RevisionOptions.ShowRevisionBalloons
+            //ExFor:RevisionOptions.ShowInBalloons
             //ExSummary:Shows how render tracking changes in balloons
             Document doc = new Document(MyDir + "ShowRevisionBalloons.docx");
 
