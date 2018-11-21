@@ -3225,10 +3225,10 @@ namespace ApiExamples
             field.DefaultResponse = "A default response";
 
             // Set this to prompt the user when a mail merge is performed in MS Word
-            field.PromptOnceOnMailMerge = true;
+            field.PromptOnceOnMailMerge = true; // INSP: we need to add mail merge operation to show how work 'PromptOnceOnMailMerge'
 
-            doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\Field.FillIn.docx");
+            doc.UpdateFields(); // INSP: The field does not update (maybe it's because there is not mail merge operation)
+            doc.Save(MyDir + @"\Artifacts\Field.FillIn.docx"); // INSP: Also, add asserts after saving the document
             //ExEnd
         }
     }
