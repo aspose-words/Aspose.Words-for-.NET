@@ -1152,7 +1152,9 @@ namespace ApiExamples
             //ExFor:Fields.FieldAutoText
             //ExFor:FieldAutoText.EntryName
             //ExFor:FieldOptions.BuiltInTemplatesPaths
-            //ExSummary:Shows how to insert an auto text field and reference an auto text building block with it. 
+            //ExFor:FieldGlossary
+            //ExFor:FieldGlossary.EntryName
+            //ExSummary:Shows how to insert a building block into a document and display it with AUTOTEXT and GLOSSARY fields. 
             Document doc = new Document();
 
             // Create a glossary document and add an AutoText building block
@@ -1175,15 +1177,24 @@ namespace ApiExamples
 
             // Create an advance field using document builder
             DocumentBuilder builder = new DocumentBuilder(doc);
-            FieldAutoText field = (FieldAutoText)builder.InsertField(FieldType.FieldAutoText, true);
+            FieldAutoText fieldAutoText = (FieldAutoText)builder.InsertField(FieldType.FieldAutoText, true);
 
             // Refer to our building block by name
-            field.EntryName = "MyBlock";
+            fieldAutoText.EntryName = "MyBlock";
+
+            Assert.AreEqual(" AUTOTEXT  MyBlock", fieldAutoText.GetFieldCode());
 
             // Put additional templates here
             doc.FieldOptions.BuiltInTemplatesPaths = new[] { MyDir + "Document.BusinessBrochureTemplate.dotx" };
 
+            // We can also display our building block with a GLOSSARY field
+            FieldGlossary fieldGlossary = (FieldGlossary)builder.InsertField(FieldType.FieldGlossary, true);
+            fieldGlossary.EntryName = "MyBlock";
+
+            Assert.AreEqual(" GLOSSARY  MyBlock", fieldGlossary.GetFieldCode());
+
             // The text content of our building block will be visible in the output
+            doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.AutoText.dotx");
             //ExEnd
         }
