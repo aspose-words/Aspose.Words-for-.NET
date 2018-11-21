@@ -3224,11 +3224,18 @@ namespace ApiExamples
             field.PromptText = "Please enter a response:";
             field.DefaultResponse = "A default response";
 
-            // Set this to prompt the user when a mail merge is performed in MS Word
-            field.PromptOnceOnMailMerge = true; // INSP: we need to add mail merge operation to show how work 'PromptOnceOnMailMerge'
+            // Set this to prompt the user for a response when a mail merge is performed
+            field.PromptOnceOnMailMerge = true;
 
-            doc.UpdateFields(); // INSP: The field does not update (maybe it's because there is not mail merge operation)
-            doc.Save(MyDir + @"\Artifacts\Field.FillIn.docx"); // INSP: Also, add asserts after saving the document
+            Assert.AreEqual(" FILLIN  \"Please enter a response:\" \\d \"A default response\" \\o", field.GetFieldCode());
+
+            // Perform a simple mail merge
+            FieldMergeField mergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            mergeField.FieldName = "MergeField";
+            doc.MailMerge.Execute(new [] { "MergeField" }, new [] { "Value" });
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FillIn.docx");
             //ExEnd
         }
     }
