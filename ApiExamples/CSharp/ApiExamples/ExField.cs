@@ -3218,6 +3218,34 @@ namespace ApiExamples
         }
 
         [Test]
+        public void FieldGoToButton()
+        {
+            //ExStart
+            //ExFor:FieldGoToButton
+            //ExFor:FieldGoToButton.DisplayText
+            //ExFor:FieldGoToButton.Location
+            //ExSummary:Shows to insert a GOTOBUTTON field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Add a GOTOBUTTON which will take us to a bookmark referenced by "MyBookmark"
+            FieldGoToButton field = (FieldGoToButton)builder.InsertField(FieldType.FieldGoToButton, true);
+            field.DisplayText = "My Button";
+            field.Location = "MyBookmark";
+
+            Assert.AreEqual(" GOTOBUTTON  MyBookmark My Button", field.GetFieldCode());
+
+            // Add an arrival destination for our button
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.StartBookmark(field.Location);
+            builder.Writeln("Bookmark text contents.");
+            builder.EndBookmark(field.Location);
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.GoToButton.docx");
+        }
+        
+        [Test]
         //ExStart
         //ExFor:FieldFillIn
         //ExFor:FieldFillIn.DefaultResponse
