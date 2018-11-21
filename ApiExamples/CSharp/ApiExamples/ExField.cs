@@ -3251,5 +3251,45 @@ namespace ApiExamples
             }
         }
         //ExEnd
+
+        [Test]
+        public void FieldInfo()
+        {
+            //ExStart
+            //ExFor:FieldInfo
+            //ExFor:FieldInfo.InfoType
+            //ExFor:FieldInfo.NewValue
+            //ExSummary:Shows how to work with INFO fields.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set the value of a document property
+            doc.BuiltInDocumentProperties.Comments = "My comment";
+
+            // We can access a property using its name and display it with an INFO field
+            // In this case it will be the Comments property
+            FieldInfo field = (FieldInfo)builder.InsertField(FieldType.FieldInfo, true);
+            field.InfoType = "Comments";
+            field.Update();
+
+            Assert.AreEqual(" INFO  Comments", field.GetFieldCode());
+            Assert.AreEqual("My comment", field.Result);
+
+            builder.Writeln();
+
+            // We can override the value of a document property by setting an INFO field's optional new value
+            field = (FieldInfo)builder.InsertField(FieldType.FieldInfo, true);
+            field.InfoType = "Comments";
+            field.NewValue = "New comment";
+            field.Update();
+
+            // Our field's new value has been applied to the corresponding property
+            Assert.AreEqual(" INFO  Comments \"New comment\"", field.GetFieldCode());
+            Assert.AreEqual("New comment", field.Result);
+            Assert.AreEqual("New comment", doc.BuiltInDocumentProperties.Comments);
+
+            doc.Save(MyDir + @"\Artifacts\Field.Info.docx");
+            //ExEnd
+        }
     }
 }
