@@ -1152,7 +1152,9 @@ namespace ApiExamples
             //ExFor:Fields.FieldAutoText
             //ExFor:FieldAutoText.EntryName
             //ExFor:FieldOptions.BuiltInTemplatesPaths
-            //ExSummary:Shows how to insert an auto text field and reference an auto text building block with it. 
+            //ExFor:FieldGlossary
+            //ExFor:FieldGlossary.EntryName
+            //ExSummary:Shows how to insert a building block into a document and display it with AUTOTEXT and GLOSSARY fields. 
             Document doc = new Document();
 
             // Create a glossary document and add an AutoText building block
@@ -1175,15 +1177,24 @@ namespace ApiExamples
 
             // Create an advance field using document builder
             DocumentBuilder builder = new DocumentBuilder(doc);
-            FieldAutoText field = (FieldAutoText)builder.InsertField(FieldType.FieldAutoText, true);
+            FieldAutoText fieldAutoText = (FieldAutoText)builder.InsertField(FieldType.FieldAutoText, true);
 
             // Refer to our building block by name
-            field.EntryName = "MyBlock";
+            fieldAutoText.EntryName = "MyBlock";
+
+            Assert.AreEqual(" AUTOTEXT  MyBlock", fieldAutoText.GetFieldCode());
 
             // Put additional templates here
             doc.FieldOptions.BuiltInTemplatesPaths = new[] { MyDir + "Document.BusinessBrochureTemplate.dotx" };
 
+            // We can also display our building block with a GLOSSARY field
+            FieldGlossary fieldGlossary = (FieldGlossary)builder.InsertField(FieldType.FieldGlossary, true);
+            fieldGlossary.EntryName = "MyBlock";
+
+            Assert.AreEqual(" GLOSSARY  MyBlock", fieldGlossary.GetFieldCode());
+
             // The text content of our building block will be visible in the output
+            doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.AutoText.dotx");
             //ExEnd
         }
@@ -1915,18 +1926,28 @@ namespace ApiExamples
             //ExFor:FieldIncludePicture.ResizeHorizontally
             //ExFor:FieldIncludePicture.ResizeVertically
             //ExFor:FieldIncludePicture.SourceFullName
-            //ExSummary:Shows how to create an INCLUDEPICTURE field and set its properties.
+            //ExFor:FieldImport
+            //ExFor:FieldImport.GraphicFilter
+            //ExFor:FieldImport.IsLinked
+            //ExFor:FieldImport.SourceFullName
+            //ExSummary:Shows how to insert images using IMPORT and INCLUDEPICTURE fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             FieldIncludePicture fieldIncludePicture = (FieldIncludePicture)builder.InsertField(FieldType.FieldIncludePicture, true);
-            fieldIncludePicture.SourceFullName = MyDir + "Images/Watermark.png";
+            fieldIncludePicture.SourceFullName = MyDir + @"Images\Watermark.png";
 
-            // Apply, in this case, the PNG32.FLT filter
+            // Here we apply the PNG32.FLT filter
             fieldIncludePicture.GraphicFilter = "PNG32";
             fieldIncludePicture.IsLinked = true;
             fieldIncludePicture.ResizeHorizontally = true;
             fieldIncludePicture.ResizeVertically = true;
+
+            // We can do the same thing with an IMPORT field
+            FieldImport fieldImport = (FieldImport)builder.InsertField(FieldType.FieldImport, true);
+            fieldImport.GraphicFilter = "PNG32";
+            fieldImport.IsLinked = true;
+            fieldImport.SourceFullName = MyDir + @"Images\Watermark.png";
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.IncludePicture.docx");
@@ -3204,6 +3225,119 @@ namespace ApiExamples
             field.IsInMegabytes = true;
             field.Update();
             Assert.AreEqual("0", field.Result);
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldGoToButton()
+        {
+            //ExStart
+            //ExFor:FieldGoToButton
+            //ExFor:FieldGoToButton.DisplayText
+            //ExFor:FieldGoToButton.Location
+            //ExSummary:Shows to insert a GOTOBUTTON field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Add a GOTOBUTTON which will take us to a bookmark referenced by "MyBookmark"
+            FieldGoToButton field = (FieldGoToButton)builder.InsertField(FieldType.FieldGoToButton, true);
+            field.DisplayText = "My Button";
+            field.Location = "MyBookmark";
+
+            Assert.AreEqual(" GOTOBUTTON  MyBookmark My Button", field.GetFieldCode());
+
+            // Add an arrival destination for our button
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.StartBookmark(field.Location);
+            builder.Writeln("Bookmark text contents.");
+            builder.EndBookmark(field.Location);
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.GoToButton.docx");
+        }
+        
+        [Test]
+        //ExStart
+        //ExFor:FieldFillIn
+        //ExFor:FieldFillIn.DefaultResponse
+        //ExFor:FieldFillIn.PromptOnceOnMailMerge
+        //ExFor:FieldFillIn.PromptText
+        //ExSummary:Shows how to use the FILLIN field to prompt the user for a response.
+        public void FieldFillIn()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a FILLIN field with a document builder
+            FieldFillIn field = (FieldFillIn)builder.InsertField(FieldType.FieldFillIn, true);
+            field.PromptText = "Please enter a response:";
+            field.DefaultResponse = "A default response";
+
+            // Set this to prompt the user for a response when a mail merge is performed
+            field.PromptOnceOnMailMerge = true;
+
+            Assert.AreEqual(" FILLIN  \"Please enter a response:\" \\d \"A default response\" \\o", field.GetFieldCode());
+
+            // Perform a simple mail merge
+            FieldMergeField mergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            mergeField.FieldName = "MergeField";
+            
+            doc.FieldOptions.UserPromptRespondent = new PromptRespondent();
+            doc.MailMerge.Execute(new [] { "MergeField" }, new object[] { "" });
+            
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.FillIn.docx");
+        }
+
+        /// <summary>
+        /// IFieldUserPromptRespondent implementation that appends a line to the default response of an FILLIN field during a mail merge
+        /// </summary>
+        private class PromptRespondent : IFieldUserPromptRespondent
+        {
+            public string Respond(string promptText, string defaultResponse)
+            {
+                return "Response from PromptRespondent. " + defaultResponse;
+            }
+        }
+        //ExEnd
+
+        [Test]
+        public void FieldInfo()
+        {
+            //ExStart
+            //ExFor:FieldInfo
+            //ExFor:FieldInfo.InfoType
+            //ExFor:FieldInfo.NewValue
+            //ExSummary:Shows how to work with INFO fields.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set the value of a document property
+            doc.BuiltInDocumentProperties.Comments = "My comment";
+
+            // We can access a property using its name and display it with an INFO field
+            // In this case it will be the Comments property
+            FieldInfo field = (FieldInfo)builder.InsertField(FieldType.FieldInfo, true);
+            field.InfoType = "Comments";
+            field.Update();
+
+            Assert.AreEqual(" INFO  Comments", field.GetFieldCode());
+            Assert.AreEqual("My comment", field.Result);
+
+            builder.Writeln();
+
+            // We can override the value of a document property by setting an INFO field's optional new value
+            field = (FieldInfo)builder.InsertField(FieldType.FieldInfo, true);
+            field.InfoType = "Comments";
+            field.NewValue = "New comment";
+            field.Update();
+
+            // Our field's new value has been applied to the corresponding property
+            Assert.AreEqual(" INFO  Comments \"New comment\"", field.GetFieldCode());
+            Assert.AreEqual("New comment", field.Result);
+            Assert.AreEqual("New comment", doc.BuiltInDocumentProperties.Comments);
+
+            doc.Save(MyDir + @"\Artifacts\Field.Info.docx");
             //ExEnd
         }
     }
