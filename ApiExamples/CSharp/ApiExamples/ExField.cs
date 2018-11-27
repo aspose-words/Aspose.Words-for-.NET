@@ -3340,5 +3340,98 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.Info.docx");
             //ExEnd
         }
+
+        [Test]
+        public void FieldMergeBarcode()
+        {
+            //ExStart
+            //ExFor:FieldMergeBarcode
+            //ExFor:FieldMergeBarcode.AddStartStopChar
+            //ExFor:FieldMergeBarcode.BackgroundColor
+            //ExFor:FieldMergeBarcode.BarcodeType
+            //ExFor:FieldMergeBarcode.BarcodeValue
+            //ExFor:FieldMergeBarcode.CaseCodeStyle
+            //ExFor:FieldMergeBarcode.DisplayText
+            //ExFor:FieldMergeBarcode.ErrorCorrectionLevel
+            //ExFor:FieldMergeBarcode.FixCheckDigit
+            //ExFor:FieldMergeBarcode.ForegroundColor
+            //ExFor:FieldMergeBarcode.PosCodeStyle
+            //ExFor:FieldMergeBarcode.ScalingFactor
+            //ExFor:FieldMergeBarcode.SymbolHeight
+            //ExFor:FieldMergeBarcode.SymbolRotation
+            //ExSummary:Shows how to use MERGEBARCODE fields to integrate barcodes into mail merge operations.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a MERGEFIELD
+            FieldMergeField fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            fieldMergeField.FieldName = "MyMergeField";
+            Assert.AreEqual(" MERGEFIELD  MyMergeField", fieldMergeField.GetFieldCode());
+            builder.Writeln();
+
+            // Insert a QR code
+            FieldMergeBarcode field = (FieldMergeBarcode)builder.InsertField(FieldType.FieldMergeBarcode, true);
+            field.BarcodeType = "QR";
+
+            // In a DISPLAYBARCODE field, the BarcodeValue attribute decides what value the barcode will display
+            // However, in a MERGEBARCODE field, it has the same function as the FieldName attribute of a MERGEFIELD
+            field.BarcodeValue = "MyQRCode";
+            field.BackgroundColor = "0xF8BD69";
+            field.ForegroundColor = "0xB5413B";
+            field.ErrorCorrectionLevel = "3";
+            field.ScalingFactor = "250";
+            field.SymbolHeight = "1000";
+            field.SymbolRotation = "0";
+
+            Assert.AreEqual(" MERGEBARCODE  MyQRCode QR \\b 0xF8BD69 \\f 0xB5413B \\q 3 \\s 250 \\h 1000 \\r 0", field.GetFieldCode());
+            builder.Writeln();
+
+            // insert a EAN13 barcode
+            field = (FieldMergeBarcode)builder.InsertField(FieldType.FieldMergeBarcode, true);
+            field.BarcodeType = "EAN13";
+            field.BarcodeValue = "MyEAN13Barcode";
+            field.DisplayText = true;
+            field.PosCodeStyle = "CASE";
+            field.FixCheckDigit = true;
+
+            Assert.AreEqual(" MERGEBARCODE  MyEAN13Barcode EAN13 \\t \\p CASE \\x", field.GetFieldCode());
+            builder.Writeln();
+
+            // insert a CODE39 barcode
+            field = (FieldMergeBarcode)builder.InsertField(FieldType.FieldMergeBarcode, true);
+            field.BarcodeType = "CODE39";
+            field.BarcodeValue = "MyCODE39Barcode";
+            field.AddStartStopChar = true;
+
+            Assert.AreEqual(" MERGEBARCODE  MyCODE39Barcode CODE39 \\d", field.GetFieldCode());
+            builder.Writeln();
+
+            // insert a ITF14 barcode
+            field = (FieldMergeBarcode)builder.InsertField(FieldType.FieldMergeBarcode, true);
+            field.BarcodeType = "ITF14";
+            field.BarcodeValue = "MyITF14Barcode";
+            field.CaseCodeStyle = "STD";
+
+            // Add a data table with named columns
+            // These correspond to the FieldName attributes of MERGEFIELD fields as well as BarcodeValue attributes of DISPLAYBARCODE fields
+            System.Data.DataTable table = new System.Data.DataTable("Barcodes");
+            table.Columns.Add("MyMergeField");
+            table.Columns.Add("MyQRCode");
+            table.Columns.Add("MyEAN13Barcode");
+            table.Columns.Add("MyCODE39Barcode");
+            table.Columns.Add("MyITF14Barcode");
+
+            // Add rows of values for a 2-page mail merge
+            table.Rows.Add(new object[] { "Barcodes page 1", "ABC123", "501234567890", "12345ABCDE", "09312345678907" });
+            table.Rows.Add(new object[] { "Barcodes page 2", "DEF456", "123456789012", "67890FGHIJ", "1234567891234" });
+
+            // Our MERGEBARCODE fields will be converted into DISPLAYBARCODE fields,
+            // with values from the data table rows deposited into corresponding BarcodeValue attributes
+            doc.MailMerge.Execute(table);
+
+            doc.Save(MyDir + @"\Artifacts\Field.MergeBarcode.docx");
+            //ExEnd
+        }
+
     }
 }
