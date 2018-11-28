@@ -3530,6 +3530,42 @@ namespace ApiExamples
         }
 
         [Test]
+        public void FieldMacroButton()
+        {
+            //ExStart
+            //ExFor:Document.HasMacros
+            //ExFor:FieldMacroButton
+            //ExFor:FieldMacroButton.DisplayText
+            //ExFor:FieldMacroButton.MacroName
+            //ExSummary:Shows how to use MACROBUTTON fields that enable us to run macros by clicking.
+            // Open a document that contains macros
+            Document doc = new Document(MyDir + "Document.HasMacro.docm");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            Assert.IsTrue(doc.HasMacros);
+
+            // Insert a MACROBUTTON field and reference by name a macro that exists within the input document
+            FieldMacroButton field = (FieldMacroButton)builder.InsertField(FieldType.FieldMacroButton, true);
+            field.MacroName = "MyMacro";
+            field.DisplayText = "Double click to run macro: " + field.MacroName;
+
+            Assert.AreEqual(" MACROBUTTON  MyMacro Double click to run macro: MyMacro", field.GetFieldCode());
+
+            builder.InsertParagraph();
+
+            // Reference "ViewZoom200", a macro that was shipped with Microsoft Word, found under "Word commands"
+            // If our document has a macro of the same name as one from another source, the field will select ours to run
+            field = (FieldMacroButton)builder.InsertField(FieldType.FieldMacroButton, true);
+            field.MacroName = "ViewZoom200";
+            field.DisplayText = "Run " + field.MacroName;
+
+            Assert.AreEqual(" MACROBUTTON  ViewZoom200 Run ViewZoom200", field.GetFieldCode());
+
+            // Save the document as a macro-enabled document type
+            doc.Save(MyDir + @"\Artifacts\Field.MacroButton.docm");
+            //ExEnd
+        }
+        
+        [Test]
         public void FieldKeywords()
         {
             //ExStart

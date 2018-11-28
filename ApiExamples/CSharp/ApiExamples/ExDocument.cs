@@ -1977,27 +1977,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void HasMacros()
-        {
-            //ExStart
-            //ExFor:Document.HasMacros
-            //ExSummary:Shows how to check if a document contains macros.
-            Document doc = new Document();
-
-            // A blank document has no macros by default
-            Assert.IsFalse(doc.HasMacros);
-
-            // We can't programmatically add macros but we can open a file that has them
-            Document docWithMacros = new Document(MyDir + "Document.HasMacros.docm");
-            Assert.IsTrue(docWithMacros.HasMacros);
-
-            // We can also remove them
-            docWithMacros.RemoveMacros();
-            Assert.IsFalse(docWithMacros.HasMacros);
-            //ExEnd
-        }
-
-        [Test]
         public void AutoUpdateStyles()
         {
             //ExStart
