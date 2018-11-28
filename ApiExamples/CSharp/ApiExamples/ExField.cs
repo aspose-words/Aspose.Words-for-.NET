@@ -3340,5 +3340,38 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.Info.docx");
             //ExEnd
         }
+
+        [Test]
+        public void FieldKeywords()
+        {
+            //ExStart
+            //ExFor:FieldKeywords
+            //ExFor:FieldKeywords.Text
+            //ExSummary:Shows to insert a KEYWORDS field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Add some keywords, also referred to as "tags" in File Explorer
+            doc.BuiltInDocumentProperties.Keywords = "Keyword1, Keyword2";
+
+            // Add a KEYWORDS field which will display our keywords
+            FieldKeywords field = (FieldKeywords)builder.InsertField(FieldType.FieldKeyword, true);
+            field.Update();
+
+            Assert.AreEqual(" KEYWORDS ", field.GetFieldCode());
+            Assert.AreEqual("Keyword1, Keyword2", field.Result);
+
+            // We can set the Text property of our field to display a different value to the one within the document's properties
+            field.Text = "OverridingKeyword";
+            field.Update();
+
+            Assert.AreEqual(" KEYWORDS  OverridingKeyword", field.GetFieldCode());
+            Assert.AreEqual("OverridingKeyword", field.Result);
+
+            // Setting a KEYWORDS field's Text property also updates the document's keywords to our new value
+            Assert.AreEqual("OverridingKeyword", doc.BuiltInDocumentProperties.Keywords);
+
+            doc.Save(MyDir + @"\Artifacts\Field.Keywords.docx");
+        }
     }
 }
