@@ -2356,7 +2356,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        // INSP: I separated a big example to a few little, for better reading. In cases like this, it's more useful. Please check that all is correct.
         //ExStart
         //ExFor:FieldMergeBarcode
         //ExFor:FieldMergeBarcode.AddStartStopChar
@@ -2384,7 +2383,7 @@ namespace ApiExamples
             field.BarcodeType = "QR";
 
             // In a DISPLAYBARCODE field, the BarcodeValue attribute decides what value the barcode will display
-            // However, in a MERGEBARCODE field, it has the same function as the FieldName attribute of a MERGEFIELD
+            // However in our MERGEBARCODE fields, it has the same function as the FieldName attribute of a MERGEFIELD
             field.BarcodeValue = "MyQRCode";
             field.BackgroundColor = "0xF8BD69";
             field.ForegroundColor = "0xB5413B";
@@ -2397,17 +2396,19 @@ namespace ApiExamples
                 field.GetFieldCode());
             builder.Writeln();
 
-            // Add a data table with named columns
-            // These correspond to the FieldName attributes of MERGEFIELD fields as well as BarcodeValue attributes of DISPLAYBARCODE fields
+            // Create a data source for our mail merge
+            // This source is a data table, whose column names correspond to the FieldName attributes of MERGEFIELD fields
+            // as well as BarcodeValue attributes of DISPLAYBARCODE fields
             DataTable table = CreateTable("Barcodes", new[] { "MyQRCode" },
                 new[,] { { "ABC123" }, { "DEF456" } });
 
-            // Our MERGEBARCODE fields will be converted into DISPLAYBARCODE fields,
+            // During the mail merge, all our MERGEBARCODE fields will be converted into DISPLAYBARCODE fields,
             // with values from the data table rows deposited into corresponding BarcodeValue attributes
             doc.MailMerge.Execute(table);
 
-            // INSP: We need to specify that after mail merge execution 'FieldMergeBarcode' become 'FieldDisplayBarcode'. Write about it in comments.
-            // Add asserts to other methods.
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[1].Type);
+
             Assert.AreEqual("DISPLAYBARCODE \"ABC123\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B",
                 doc.Range.Fields[0].GetFieldCode());
             Assert.AreEqual("DISPLAYBARCODE \"DEF456\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B",
@@ -2438,6 +2439,14 @@ namespace ApiExamples
 
             doc.MailMerge.Execute(table);
 
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[1].Type);
+
+            Assert.AreEqual("DISPLAYBARCODE \"501234567890\" EAN13 \\t \\p CASE \\x",
+                doc.Range.Fields[0].GetFieldCode());
+            Assert.AreEqual("DISPLAYBARCODE \"123456789012\" EAN13 \\t \\p CASE \\x",
+                doc.Range.Fields[1].GetFieldCode());
+
             doc.Save(MyDir + @"\Artifacts\Field.MergeBarcode_EAN13.docx");
         }
 
@@ -2461,6 +2470,14 @@ namespace ApiExamples
 
             doc.MailMerge.Execute(table);
 
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[1].Type);
+
+            Assert.AreEqual("DISPLAYBARCODE \"12345ABCDE\" CODE39 \\d",
+                doc.Range.Fields[0].GetFieldCode());
+            Assert.AreEqual("DISPLAYBARCODE \"67890FGHIJ\" CODE39 \\d",
+                doc.Range.Fields[1].GetFieldCode());
+
             doc.Save(MyDir + @"\Artifacts\Field.MergeBarcode_CODE39.docx");
         }
 
@@ -2476,15 +2493,28 @@ namespace ApiExamples
             field.BarcodeValue = "MyITF14Barcode";
             field.CaseCodeStyle = "STD";
 
+            Assert.AreEqual(" MERGEBARCODE  MyITF14Barcode ITF14 \\c STD", field.GetFieldCode());
+
             DataTable table = CreateTable("Barcodes", new[] { "MyITF14Barcode" },
                 new[,] { { "09312345678907" }, { "1234567891234" } });
 
             doc.MailMerge.Execute(table);
 
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[1].Type);
+
+            Assert.AreEqual("DISPLAYBARCODE \"09312345678907\" ITF14 \\c STD",
+                doc.Range.Fields[0].GetFieldCode());
+            Assert.AreEqual("DISPLAYBARCODE \"1234567891234\" ITF14 \\c STD",
+                doc.Range.Fields[1].GetFieldCode());
+
             doc.Save(MyDir + @"\Artifacts\Field.MergeBarcode_ITF14.docx");
         }
 
-        // INSP: Please add summary and other information if needed
+        /// <summary>
+        /// Creates a DataTable named by dataTableName, adds a column for every element in columnNames
+        /// and fills rows with data from dataSet
+        /// </summary>
         public DataTable CreateTable(string dataTableName, string[] columnNames, object[,] dataSet)
         {
             if (dataTableName != string.Empty || columnNames.Length != 0)
