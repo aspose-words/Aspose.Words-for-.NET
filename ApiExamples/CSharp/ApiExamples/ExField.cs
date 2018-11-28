@@ -3345,12 +3345,13 @@ namespace ApiExamples
         public void FieldMacroButton()
         {
             //ExStart
+            //ExFor:Document.HasMacros
             //ExFor:FieldMacroButton
             //ExFor:FieldMacroButton.DisplayText
             //ExFor:FieldMacroButton.MacroName
             //ExSummary:Shows how to use MACROBUTTON fields that enable us to run macros by clicking.
             // Open a document that contains macros
-            Document doc = new Document(MyDir + "Document.HasMacro.docm"); // INSP: We already have the document 'Document.HasMacros.docm', can we merge them?
+            Document doc = new Document(MyDir + "Document.HasMacro.docm");
             DocumentBuilder builder = new DocumentBuilder(doc);
             Assert.IsTrue(doc.HasMacros);
 
