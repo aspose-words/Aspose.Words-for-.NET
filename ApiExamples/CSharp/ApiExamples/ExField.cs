@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using System.Globalization;
 using System.IO;
@@ -2307,48 +2308,235 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            FieldDisplayBarcode fieldDisplayBarcode = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
+            FieldDisplayBarcode field = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
 
             // Insert a QR code
-            fieldDisplayBarcode.BarcodeType = "QR";
-            fieldDisplayBarcode.BarcodeValue = "ABC123";
-            fieldDisplayBarcode.BackgroundColor = "0xF8BD69";
-            fieldDisplayBarcode.ForegroundColor = "0xB5413B";
-            fieldDisplayBarcode.ErrorCorrectionLevel = "3";
-            fieldDisplayBarcode.ScalingFactor = "250";
-            fieldDisplayBarcode.SymbolHeight = "1000";
-            fieldDisplayBarcode.SymbolRotation = "0";
+            field.BarcodeType = "QR";
+            field.BarcodeValue = "ABC123";
+            field.BackgroundColor = "0xF8BD69";
+            field.ForegroundColor = "0xB5413B";
+            field.ErrorCorrectionLevel = "3";
+            field.ScalingFactor = "250";
+            field.SymbolHeight = "1000";
+            field.SymbolRotation = "0";
 
+            Assert.AreEqual(" DISPLAYBARCODE  ABC123 QR \\b 0xF8BD69 \\f 0xB5413B \\q 3 \\s 250 \\h 1000 \\r 0", field.GetFieldCode());
             builder.Writeln();
 
             // insert a EAN13 barcode
-            fieldDisplayBarcode = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
-            fieldDisplayBarcode.BarcodeType = "EAN13";
-            fieldDisplayBarcode.BarcodeValue = "501234567890";
-            fieldDisplayBarcode.DisplayText = true;
-            fieldDisplayBarcode.PosCodeStyle = "CASE";
-            fieldDisplayBarcode.FixCheckDigit = true;
+            field = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
+            field.BarcodeType = "EAN13";
+            field.BarcodeValue = "501234567890";
+            field.DisplayText = true;
+            field.PosCodeStyle = "CASE";
+            field.FixCheckDigit = true;
 
+            Assert.AreEqual(" DISPLAYBARCODE  501234567890 EAN13 \\t \\p CASE \\x", field.GetFieldCode());
             builder.Writeln();
 
             // insert a CODE39 barcode
-            fieldDisplayBarcode = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
-            fieldDisplayBarcode.BarcodeType = "CODE39";
-            fieldDisplayBarcode.BarcodeValue = "12345ABCDE";
-            fieldDisplayBarcode.AddStartStopChar = true;
+            field = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
+            field.BarcodeType = "CODE39";
+            field.BarcodeValue = "12345ABCDE";
+            field.AddStartStopChar = true;
 
+            Assert.AreEqual(" DISPLAYBARCODE  12345ABCDE CODE39 \\d", field.GetFieldCode());
             builder.Writeln();
 
             // insert a ITF14 barcode
-            fieldDisplayBarcode = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
-            fieldDisplayBarcode.BarcodeType = "ITF14";
-            fieldDisplayBarcode.BarcodeValue = "09312345678907";
-            fieldDisplayBarcode.CaseCodeStyle = "STD";
+            field = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
+            field.BarcodeType = "ITF14";
+            field.BarcodeValue = "09312345678907";
+            field.CaseCodeStyle = "STD";
+
+            Assert.AreEqual(" DISPLAYBARCODE  09312345678907 ITF14 \\c STD", field.GetFieldCode());
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.DisplayBarcode.docx");
             //ExEnd
         }
+
+        //ExStart
+        //ExFor:FieldMergeBarcode
+        //ExFor:FieldMergeBarcode.AddStartStopChar
+        //ExFor:FieldMergeBarcode.BackgroundColor
+        //ExFor:FieldMergeBarcode.BarcodeType
+        //ExFor:FieldMergeBarcode.BarcodeValue
+        //ExFor:FieldMergeBarcode.CaseCodeStyle
+        //ExFor:FieldMergeBarcode.DisplayText
+        //ExFor:FieldMergeBarcode.ErrorCorrectionLevel
+        //ExFor:FieldMergeBarcode.FixCheckDigit
+        //ExFor:FieldMergeBarcode.ForegroundColor
+        //ExFor:FieldMergeBarcode.PosCodeStyle
+        //ExFor:FieldMergeBarcode.ScalingFactor
+        //ExFor:FieldMergeBarcode.SymbolHeight
+        //ExFor:FieldMergeBarcode.SymbolRotation
+        //ExSummary:Shows how to use MERGEBARCODE fields to integrate barcodes into mail merge operations.
+        [Test] //ExSkip
+        public void FieldMergeBarcode_QR()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a QR code
+            FieldMergeBarcode field = (FieldMergeBarcode) builder.InsertField(FieldType.FieldMergeBarcode, true);
+            field.BarcodeType = "QR";
+
+            // In a DISPLAYBARCODE field, the BarcodeValue attribute decides what value the barcode will display
+            // However in our MERGEBARCODE fields, it has the same function as the FieldName attribute of a MERGEFIELD
+            field.BarcodeValue = "MyQRCode";
+            field.BackgroundColor = "0xF8BD69";
+            field.ForegroundColor = "0xB5413B";
+            field.ErrorCorrectionLevel = "3";
+            field.ScalingFactor = "250";
+            field.SymbolHeight = "1000";
+            field.SymbolRotation = "0";
+
+            Assert.AreEqual(" MERGEBARCODE  MyQRCode QR \\b 0xF8BD69 \\f 0xB5413B \\q 3 \\s 250 \\h 1000 \\r 0",
+                field.GetFieldCode());
+            builder.Writeln();
+
+            // Create a data source for our mail merge
+            // This source is a data table, whose column names correspond to the FieldName attributes of MERGEFIELD fields
+            // as well as BarcodeValue attributes of DISPLAYBARCODE fields
+            DataTable table = CreateTable("Barcodes", new[] { "MyQRCode" },
+                new[,] { { "ABC123" }, { "DEF456" } });
+
+            // During the mail merge, all our MERGEBARCODE fields will be converted into DISPLAYBARCODE fields,
+            // with values from the data table rows deposited into corresponding BarcodeValue attributes
+            doc.MailMerge.Execute(table);
+
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[1].Type);
+
+            Assert.AreEqual("DISPLAYBARCODE \"ABC123\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B",
+                doc.Range.Fields[0].GetFieldCode());
+            Assert.AreEqual("DISPLAYBARCODE \"DEF456\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B",
+                doc.Range.Fields[1].GetFieldCode());
+
+            doc.Save(MyDir + @"\Artifacts\Field.MergeBarcode_QR.docx");
+        }
+
+        [Test] //ExSkip
+        public void FieldMergeBarcode_EAN13()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a EAN13 barcode
+            FieldMergeBarcode field = (FieldMergeBarcode) builder.InsertField(FieldType.FieldMergeBarcode, true);
+            field.BarcodeType = "EAN13";
+            field.BarcodeValue = "MyEAN13Barcode";
+            field.DisplayText = true;
+            field.PosCodeStyle = "CASE";
+            field.FixCheckDigit = true;
+
+            Assert.AreEqual(" MERGEBARCODE  MyEAN13Barcode EAN13 \\t \\p CASE \\x", field.GetFieldCode());
+            builder.Writeln();
+
+            DataTable table = CreateTable("Barcodes", new[] { "MyEAN13Barcode" },
+                new[,] { { "501234567890" }, { "123456789012" } });
+
+            doc.MailMerge.Execute(table);
+
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[1].Type);
+
+            Assert.AreEqual("DISPLAYBARCODE \"501234567890\" EAN13 \\t \\p CASE \\x",
+                doc.Range.Fields[0].GetFieldCode());
+            Assert.AreEqual("DISPLAYBARCODE \"123456789012\" EAN13 \\t \\p CASE \\x",
+                doc.Range.Fields[1].GetFieldCode());
+
+            doc.Save(MyDir + @"\Artifacts\Field.MergeBarcode_EAN13.docx");
+        }
+
+        [Test] //ExSkip
+        public void FieldMergeBarcode_CODE39()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a CODE39 barcode
+            FieldMergeBarcode field = (FieldMergeBarcode) builder.InsertField(FieldType.FieldMergeBarcode, true);
+            field.BarcodeType = "CODE39";
+            field.BarcodeValue = "MyCODE39Barcode";
+            field.AddStartStopChar = true;
+
+            Assert.AreEqual(" MERGEBARCODE  MyCODE39Barcode CODE39 \\d", field.GetFieldCode());
+            builder.Writeln();
+
+            DataTable table = CreateTable("Barcodes", new[] { "MyCODE39Barcode" },
+                new[,] { { "12345ABCDE" }, { "67890FGHIJ" } });
+
+            doc.MailMerge.Execute(table);
+
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[1].Type);
+
+            Assert.AreEqual("DISPLAYBARCODE \"12345ABCDE\" CODE39 \\d",
+                doc.Range.Fields[0].GetFieldCode());
+            Assert.AreEqual("DISPLAYBARCODE \"67890FGHIJ\" CODE39 \\d",
+                doc.Range.Fields[1].GetFieldCode());
+
+            doc.Save(MyDir + @"\Artifacts\Field.MergeBarcode_CODE39.docx");
+        }
+
+        [Test] //ExSkip
+        public void FieldMergeBarcode_ITF14()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a ITF14 barcode
+            FieldMergeBarcode field = (FieldMergeBarcode) builder.InsertField(FieldType.FieldMergeBarcode, true);
+            field.BarcodeType = "ITF14";
+            field.BarcodeValue = "MyITF14Barcode";
+            field.CaseCodeStyle = "STD";
+
+            Assert.AreEqual(" MERGEBARCODE  MyITF14Barcode ITF14 \\c STD", field.GetFieldCode());
+
+            DataTable table = CreateTable("Barcodes", new[] { "MyITF14Barcode" },
+                new[,] { { "09312345678907" }, { "1234567891234" } });
+
+            doc.MailMerge.Execute(table);
+
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[1].Type);
+
+            Assert.AreEqual("DISPLAYBARCODE \"09312345678907\" ITF14 \\c STD",
+                doc.Range.Fields[0].GetFieldCode());
+            Assert.AreEqual("DISPLAYBARCODE \"1234567891234\" ITF14 \\c STD",
+                doc.Range.Fields[1].GetFieldCode());
+
+            doc.Save(MyDir + @"\Artifacts\Field.MergeBarcode_ITF14.docx");
+        }
+
+        /// <summary>
+        /// Creates a DataTable named by dataTableName, adds a column for every element in columnNames
+        /// and fills rows with data from dataSet
+        /// </summary>
+        public DataTable CreateTable(string dataTableName, string[] columnNames, object[,] dataSet)
+        {
+            if (dataTableName != string.Empty || columnNames.Length != 0)
+            {
+                DataTable table = new DataTable(dataTableName);
+
+                foreach (string columnName in columnNames)
+                {
+                    table.Columns.Add(columnName);
+                }
+
+                foreach (object data in dataSet)
+                {
+                    table.Rows.Add(data);
+                }
+
+                return table;
+            }
+
+            throw new ArgumentException("DataTable name and Column name must be declared.");
+        }
+        //ExEnd
 
 #if !NETSTANDARD2_0
         //ExStart
@@ -3339,6 +3527,75 @@ namespace ApiExamples
 
             doc.Save(MyDir + @"\Artifacts\Field.Info.docx");
             //ExEnd
+        }
+
+        [Test]
+        public void FieldMacroButton()
+        {
+            //ExStart
+            //ExFor:Document.HasMacros
+            //ExFor:FieldMacroButton
+            //ExFor:FieldMacroButton.DisplayText
+            //ExFor:FieldMacroButton.MacroName
+            //ExSummary:Shows how to use MACROBUTTON fields that enable us to run macros by clicking.
+            // Open a document that contains macros
+            Document doc = new Document(MyDir + "Document.HasMacro.docm");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            Assert.IsTrue(doc.HasMacros);
+
+            // Insert a MACROBUTTON field and reference by name a macro that exists within the input document
+            FieldMacroButton field = (FieldMacroButton)builder.InsertField(FieldType.FieldMacroButton, true);
+            field.MacroName = "MyMacro";
+            field.DisplayText = "Double click to run macro: " + field.MacroName;
+
+            Assert.AreEqual(" MACROBUTTON  MyMacro Double click to run macro: MyMacro", field.GetFieldCode());
+
+            builder.InsertParagraph();
+
+            // Reference "ViewZoom200", a macro that was shipped with Microsoft Word, found under "Word commands"
+            // If our document has a macro of the same name as one from another source, the field will select ours to run
+            field = (FieldMacroButton)builder.InsertField(FieldType.FieldMacroButton, true);
+            field.MacroName = "ViewZoom200";
+            field.DisplayText = "Run " + field.MacroName;
+
+            Assert.AreEqual(" MACROBUTTON  ViewZoom200 Run ViewZoom200", field.GetFieldCode());
+
+            // Save the document as a macro-enabled document type
+            doc.Save(MyDir + @"\Artifacts\Field.MacroButton.docm");
+            //ExEnd
+        }
+        
+        [Test]
+        public void FieldKeywords()
+        {
+            //ExStart
+            //ExFor:FieldKeywords
+            //ExFor:FieldKeywords.Text
+            //ExSummary:Shows to insert a KEYWORDS field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Add some keywords, also referred to as "tags" in File Explorer
+            doc.BuiltInDocumentProperties.Keywords = "Keyword1, Keyword2";
+
+            // Add a KEYWORDS field which will display our keywords
+            FieldKeywords field = (FieldKeywords)builder.InsertField(FieldType.FieldKeyword, true);
+            field.Update();
+
+            Assert.AreEqual(" KEYWORDS ", field.GetFieldCode());
+            Assert.AreEqual("Keyword1, Keyword2", field.Result);
+
+            // We can set the Text property of our field to display a different value to the one within the document's properties
+            field.Text = "OverridingKeyword";
+            field.Update();
+
+            Assert.AreEqual(" KEYWORDS  OverridingKeyword", field.GetFieldCode());
+            Assert.AreEqual("OverridingKeyword", field.Result);
+
+            // Setting a KEYWORDS field's Text property also updates the document's keywords to our new value
+            Assert.AreEqual("OverridingKeyword", doc.BuiltInDocumentProperties.Keywords);
+
+            doc.Save(MyDir + @"\Artifacts\Field.Keywords.docx");
         }
     }
 }
