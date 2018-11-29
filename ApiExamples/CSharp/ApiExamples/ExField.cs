@@ -22,6 +22,7 @@ using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using Aspose.Words.Replacing;
+using iTextSharp.text.pdf.qrcode;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -3596,6 +3597,46 @@ namespace ApiExamples
             Assert.AreEqual("OverridingKeyword", doc.BuiltInDocumentProperties.Keywords);
 
             doc.Save(MyDir + @"\Artifacts\Field.Keywords.docx");
+        }
+
+        [Test]
+        public void FieldNum()
+        {
+            //ExStart
+            //ExFor:FieldPage
+            //ExFor:FieldNumChars
+            //ExFor:FieldNumPages
+            //ExFor:FieldNumWords
+            //ExSummary:Shows how to use fields to create word/character/page counts.
+            // Open a document to which we wish to add character, word and page counts
+            Document doc = new Document(MyDir + "Lists.PrintOutAllLists.doc");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // We will put all the information in the footer, starting with the character and word counts
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+            FieldNumChars fieldNumChars = (FieldNumChars)builder.InsertField(FieldType.FieldNumChars, true);       
+            builder.Writeln(" characters");
+            FieldNumWords fieldNumWords = (FieldNumWords)builder.InsertField(FieldType.FieldNumWords, true);
+            builder.Writeln(" words");
+
+            // Insert a "Page x of y" page count
+            builder.ParagraphFormat.Alignment = ParagraphAlignment.Right;
+            builder.Write("Page ");
+            FieldPage fieldPage = (FieldPage)builder.InsertField(FieldType.FieldPage, true);
+            builder.Write(" of ");
+            FieldNumPages fieldNumPages = (FieldNumPages)builder.InsertField(FieldType.FieldNumPages, true);
+
+            Assert.AreEqual(" NUMCHARS ", fieldNumChars.GetFieldCode());
+            Assert.AreEqual(" NUMWORDS ", fieldNumWords.GetFieldCode());
+            Assert.AreEqual(" NUMPAGES ", fieldNumPages.GetFieldCode());
+            Assert.AreEqual(" PAGE ", fieldPage.GetFieldCode());
+
+            // These fields won't update in real time, so an update has to be done either with doc.UpdateFields()
+            // or manually in MS Word any time we wish to see a precise value
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Num.docx");
+            //ExEnd
         }
     }
 }
