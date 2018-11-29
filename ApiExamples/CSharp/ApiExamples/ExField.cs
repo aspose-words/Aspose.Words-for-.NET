@@ -22,7 +22,6 @@ using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using Aspose.Words.Replacing;
-using iTextSharp.text.pdf.qrcode;
 using NUnit.Framework;
 
 namespace ApiExamples
