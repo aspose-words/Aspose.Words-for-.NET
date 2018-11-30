@@ -3599,6 +3599,7 @@ namespace ApiExamples
         }
 
         [Test]
+        [Ignore("WORDSNET-17836")]
         public void FieldPageRef()
         {
             //ExStart
