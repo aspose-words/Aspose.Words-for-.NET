@@ -3597,5 +3597,25 @@ namespace ApiExamples
 
             doc.Save(MyDir + @"\Artifacts\Field.Keywords.docx");
         }
+
+        [Test]
+        public void FieldQuote()
+        {
+            //ExStart
+            //ExFor:FieldQuote
+            //ExFor:FieldQuote.Text
+            //ExSummary:Shows to insert a QUOTE field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a QUOTE field
+            FieldQuote field = (FieldQuote)builder.InsertField(FieldType.FieldQuote, true);
+            field.Text = "Quoted text";
+
+            Assert.AreEqual(" QUOTE  \"Quoted text\"", field.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Quote.docx");
+        }
     }
 }
