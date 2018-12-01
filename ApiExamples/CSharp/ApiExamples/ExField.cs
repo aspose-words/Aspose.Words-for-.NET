@@ -3597,5 +3597,72 @@ namespace ApiExamples
 
             doc.Save(MyDir + @"\Artifacts\Field.Keywords.docx");
         }
+
+        [Test]
+        public void FieldNoteRef()
+        {
+            //ExStart
+            //ExFor:FieldNoteRef
+            //ExFor:FieldNoteRef.BookmarkName
+            //ExFor:FieldNoteRef.InsertHyperlink
+            //ExFor:FieldNoteRef.InsertReferenceMark
+            //ExFor:FieldNoteRef.InsertRelativePosition
+            //ExSummary:Shows to insert NOTEREF fields and present them in different ways.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // A NOTEREF field references a bookmark with a footnote or endnote inside it
+            InsertBookmarkWithFootnote(builder, "MyBookmark1", "Contents of MyBookmark1", "Footnote from MyBookmark1");
+
+            // This field will display just the footnote number inside this bookmark
+            // Setting the InsertHyperlink attribute to true makes the field behave like a hyperlink
+            Assert.AreEqual(" NOTEREF  MyBookmark2 \\h",
+                InsertFieldNoteRef(builder, "MyBookmark2", true, false, false, "Hyperlink to Bookmark2, with footnote number ").GetFieldCode());
+
+            // When we use the \p flag, after the footnote number the field also displays the position of the bookmark relative to the field
+            // Bookmark1 is above this field and contains footnote number 1, so the result will be "1 above" on update
+            Assert.AreEqual(" NOTEREF  MyBookmark1 \\h \\p",
+                InsertFieldNoteRef(builder, "MyBookmark1", true, true, false, "Bookmark1, with footnote number ").GetFieldCode());
+
+            // Bookmark2 is below this field and contains footnote number 2, so the field will display "2 below"
+            // The \f flag makes the number 2 appear in the same format as the footnote number in the text
+            Assert.AreEqual(" NOTEREF  MyBookmark2 \\h \\f \\p",
+                InsertFieldNoteRef(builder, "MyBookmark2", true, true, true, "Bookmark2, with footnote number ").GetFieldCode());
+
+            builder.InsertBreak(BreakType.PageBreak);
+            InsertBookmarkWithFootnote(builder, "MyBookmark2", "Contents of MyBookmark2", "Footnote from MyBookmark2");
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.NoteRef.docx");
+        }
+
+        /// <summary>
+        /// Uses a document builder to insert a NOTEREF field and sets its attributes
+        /// </summary>
+        private FieldNoteRef InsertFieldNoteRef(DocumentBuilder builder, string bookmarkName, bool insertHyperlink, bool insertRelativePosition, bool insertReferenceMark, string textBefore)
+        {
+            builder.Write(textBefore);
+
+            FieldNoteRef field = (FieldNoteRef)builder.InsertField(FieldType.FieldNoteRef, true);
+            field.BookmarkName = bookmarkName;
+            field.InsertHyperlink = insertHyperlink;
+            field.InsertReferenceMark = insertReferenceMark;
+            field.InsertRelativePosition = insertRelativePosition;
+            builder.Writeln();
+
+            return field;
+        }
+
+        /// <summary>
+        /// Uses a document builder to insert a named bookmark with a footnote at the end
+        /// </summary>
+        private void InsertBookmarkWithFootnote(DocumentBuilder builder, string bookmarkName, string bookmarkText, string footnoteText)
+        {
+            builder.StartBookmark(bookmarkName);
+            builder.Write(bookmarkText);
+            builder.InsertFootnote(FootnoteType.Footnote, footnoteText);
+            builder.EndBookmark(bookmarkName);
+            builder.Writeln();
+        }
     }
 }
