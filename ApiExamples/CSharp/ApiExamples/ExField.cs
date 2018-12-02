@@ -3631,8 +3631,6 @@ namespace ApiExamples
             Assert.AreEqual(" NUMPAGES ", fieldNumPages.GetFieldCode());
             Assert.AreEqual(" PAGE ", fieldPage.GetFieldCode());
 
-            // These fields won't update in real time, so an update has to be done either with doc.UpdateFields()
-            // or manually in MS Word any time we wish to see a precise value
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.Num.docx");
             //ExEnd
