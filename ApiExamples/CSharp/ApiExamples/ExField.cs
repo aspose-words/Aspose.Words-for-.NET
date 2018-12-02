@@ -3608,7 +3608,7 @@ namespace ApiExamples
             //ExFor:FieldNoteRef.InsertHyperlink
             //ExFor:FieldNoteRef.InsertReferenceMark
             //ExFor:FieldNoteRef.InsertRelativePosition
-            //ExSummary:Shows to insert NOTEREF fields and present them in different ways.
+            //ExSummary:Shows to insert NOTEREF fields and change their appearance.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -3616,7 +3616,7 @@ namespace ApiExamples
             InsertBookmarkWithFootnote(builder, "MyBookmark1", "Contents of MyBookmark1", "Footnote from MyBookmark1");
 
             // This field will display just the footnote number inside this bookmark
-            // Setting the InsertHyperlink attribute to true makes the field behave like a hyperlink
+            // Setting the InsertHyperlink attribute lets us jump to the bookmark by Ctrl + clicking the field
             Assert.AreEqual(" NOTEREF  MyBookmark2 \\h",
                 InsertFieldNoteRef(builder, "MyBookmark2", true, false, false, "Hyperlink to Bookmark2, with footnote number ").GetFieldCode());
 
