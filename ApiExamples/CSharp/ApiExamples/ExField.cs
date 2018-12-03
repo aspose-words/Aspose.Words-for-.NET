@@ -3597,5 +3597,60 @@ namespace ApiExamples
 
             doc.Save(MyDir + @"\Artifacts\Field.Keywords.docx");
         }
+
+        [Test]
+        public void FieldPrint()
+        {
+            //ExStart
+            //ExFor:FieldPrint
+            //ExFor:FieldPrint.PostScriptGroup
+            //ExFor:FieldPrint.PrinterInstructions
+            //ExFor:FieldPrintDate
+            //ExFor:FieldPrintDate.UseLunarCalendar
+            //ExFor:FieldPrintDate.UseSakaEraCalendar
+            //ExFor:FieldPrintDate.UseUmAlQuraCalendar
+            //ExSummary:Shows to insert a PRINT field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("My paragraph");
+
+            // Add a PRINT field which will send instructions to the printer when the document is printed
+            FieldPrint field = (FieldPrint)builder.InsertField(FieldType.FieldPrint, true);
+
+            // Our instructions will operate over the paragraph that contains the PRINT field
+            field.PostScriptGroup = "para";
+
+            // When printed, this command will set the entire area that we specified in field.PostScriptGroup white 
+            field.PrinterInstructions = "erasepage";
+
+            Assert.AreEqual(" PRINT  erasepage \\p para", field.GetFieldCode());
+
+            builder.InsertParagraph();
+
+            // PRINTDATE field will display "1/1/0001" by default
+            // When a document is printed by a printer or printed as a PDF (but not exported as PDF),
+            // these fields will display the date/time of the print operation, in various calendars
+            FieldPrintDate fieldPrintDate = (FieldPrintDate)builder.InsertField(FieldType.FieldPrintDate, true);
+            fieldPrintDate.UseLunarCalendar = true;
+            builder.Writeln();
+
+            Assert.AreEqual(" PRINTDATE  \\h", fieldPrintDate.GetFieldCode());
+
+            fieldPrintDate = (FieldPrintDate)builder.InsertField(FieldType.FieldPrintDate, true);
+            fieldPrintDate.UseSakaEraCalendar = true;
+            builder.Writeln();
+
+            Assert.AreEqual(" PRINTDATE  \\s", fieldPrintDate.GetFieldCode());
+
+            fieldPrintDate = (FieldPrintDate)builder.InsertField(FieldType.FieldPrintDate, true);
+            fieldPrintDate.UseUmAlQuraCalendar = true;
+            builder.Writeln();
+
+            Assert.AreEqual(" PRINTDATE  \\u", fieldPrintDate.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Print.docx");
+        }
     }
 }
