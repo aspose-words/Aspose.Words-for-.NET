@@ -3598,35 +3598,44 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.Keywords.docx");
         }
 
-        [Test]
+        //ExStart
+        //ExFor:FieldNext
+        //ExFor:FieldNextIf
+        //ExFor:FieldNextIf.ComparisonOperator
+        //ExFor:FieldNextIf.LeftExpression
+        //ExFor:FieldNextIf.RightExpression
+        //ExSummary:Shows how to use NEXT/NEXTIF fields to merge more than one row into one page during a mail merge.
+        [Test] //ExSkip
         public void FieldNext()
         {
-            //ExStart
-            //ExFor:FieldNext
-            //ExFor:FieldNextIf
-            //ExFor:FieldNextIf.ComparisonOperator
-            //ExFor:FieldNextIf.LeftExpression
-            //ExFor:FieldNextIf.RightExpression
-            //ExSummary:Shows how to use NEXT/NEXTIF fields to merge more than one row into one page during a mail merge.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert one set of merge fields
-            // During the mail merge, these three will take data from the first row of a data table
+            // Create a data source for our mail merge with 3 rows
+            // With 3 rows, we can normally expect to get 3 pages in the output
+            System.Data.DataTable table = new System.Data.DataTable("Employees");
+            table.Columns.Add("Courtesy Title");
+            table.Columns.Add("First Name");
+            table.Columns.Add("Last Name");
+            table.Rows.Add("Mr.", "John", "Doe");
+            table.Rows.Add("Mrs.", "Jane", "Cardholder");
+            table.Rows.Add("Mr.", "Joe", "Bloggs");
+
+            // Insert a set of merge fields
             InsertMergeFields(builder, "First row: ");
 
             // Normally, if we have multiple merge fields that have the same FieldName,
-            // they will receive data from the same row and will have the same value
-            // A NEXT field tells the mail merge to move down one row
-            // Any upcoming merge fields will have data deposited from the next row
-            // Make sure to never skip a row with when we are on the last row
+            // they will receive data from the same row and will display the same value after the merge
+            // A NEXT field tells the mail merge instantly to move down one row,
+            // so any upcoming merge fields will have data deposited from the next row
+            // Make sure not to skip with a NEXT/NEXTIF field while on the last row
             FieldNext fieldNext = (FieldNext)builder.InsertField(FieldType.FieldNext, true);
 
-            // These merge fields will take values from the second row
+            // These merge fields are the same as the ones as above but will take values from the second row
             InsertMergeFields(builder, "Second row: ");
 
             // A NEXTIF field has the same function as a NEXT field,
-            // but only if a condition expressed by the following 3 attributes is satisfied
+            // but it skips to the next row only if a condition expressed by the following 3 attributes is fulfilled
             FieldNextIf fieldNextIf = (FieldNextIf)builder.InsertField(FieldType.FieldNextIf, true);
             fieldNextIf.LeftExpression = "5";
             fieldNextIf.RightExpression = "2 + 3";
@@ -3637,17 +3646,8 @@ namespace ApiExamples
             // If the comparison is false, then these fields will take data from row 2 again 
             InsertMergeFields(builder, "Third row: ");
 
-            // Create a data source for our mail merge
-            System.Data.DataTable table = new System.Data.DataTable("Employees");
-            table.Columns.Add("Courtesy Title");
-            table.Columns.Add("First Name");
-            table.Columns.Add("Last Name");
-            table.Rows.Add("Mr.", "John", "Doe");
-            table.Rows.Add("Mrs.", "Jane", "Cardholder");
-            table.Rows.Add("Mr.", "Joe", "Bloggs");
-
             // Normally a mail merge creates one page per row in the data table
-            // Our data source has 3 rows and we skipped rows twice, so our output will have page
+            // Our data source has 3 rows and we skipped rows twice, so our output will have one page
             // with data from all 3 rows
             doc.MailMerge.Execute(table);
 
@@ -3678,5 +3678,6 @@ namespace ApiExamples
             field.TextBefore = textBefore;
             field.TextAfter = textAfter;
         }
+        //ExEnd
     }
 }
