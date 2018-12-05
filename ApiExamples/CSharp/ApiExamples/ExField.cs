@@ -3604,7 +3604,7 @@ namespace ApiExamples
         //ExFor:FieldNoteRef.InsertHyperlink
         //ExFor:FieldNoteRef.InsertReferenceMark
         //ExFor:FieldNoteRef.InsertRelativePosition
-        //ExSummary:Shows to insert NOTEREF fields and change their appearance.
+        //ExSummary:Shows to insert NOTEREF fields and modify their appearance.
         [Test] //ExSkip
         [Ignore("WORDSNET-17845")]
         public void FieldNoteRef()
@@ -3615,7 +3615,7 @@ namespace ApiExamples
             // Create a boomkark with a footnote for the NOTEREF field to reference
             InsertBookmarkWithFootnote(builder, "MyBookmark1", "Contents of MyBookmark1", "Footnote from MyBookmark1");
 
-            // This field will display just the number of the footnote inside this bookmark
+            // This NOTEREF field will display just the number of the footnote inside the referenced bookmark
             // Setting the InsertHyperlink attribute lets us jump to the bookmark by Ctrl + clicking the field
             Assert.AreEqual(" NOTEREF  MyBookmark2 \\h",
                 InsertFieldNoteRef(builder, "MyBookmark2", true, false, false, "Hyperlink to Bookmark2, with footnote number ").GetFieldCode());
