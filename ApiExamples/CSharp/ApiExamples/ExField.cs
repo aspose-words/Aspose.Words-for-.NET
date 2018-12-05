@@ -3610,7 +3610,6 @@ namespace ApiExamples
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-
             // Create a data source for our mail merge with 3 rows,
             // This would normally amount to 3 pages in the output of a mail merge
             System.Data.DataTable table = new System.Data.DataTable("Employees");
@@ -3676,6 +3675,136 @@ namespace ApiExamples
             field.FieldName = fieldName;
             field.TextBefore = textBefore;
             field.TextAfter = textAfter;
+        }
+        //ExEnd
+        
+        //ExFor:FieldNoteRef
+        //ExFor:FieldNoteRef.BookmarkName
+        //ExFor:FieldNoteRef.InsertHyperlink
+        //ExFor:FieldNoteRef.InsertReferenceMark
+        //ExFor:FieldNoteRef.InsertRelativePosition
+        //ExSummary:Shows to insert NOTEREF fields and modify their appearance.
+        [Test] //ExSkip
+        [Ignore("WORDSNET-17845")] //ExSkip
+        public void FieldNoteRef()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create a boomkark with a footnote for the NOTEREF field to reference
+            InsertBookmarkWithFootnote(builder, "MyBookmark1", "Contents of MyBookmark1", "Footnote from MyBookmark1");
+
+            // This NOTEREF field will display just the number of the footnote inside the referenced bookmark
+            // Setting the InsertHyperlink attribute lets us jump to the bookmark by Ctrl + clicking the field
+            Assert.AreEqual(" NOTEREF  MyBookmark2 \\h",
+                InsertFieldNoteRef(builder, "MyBookmark2", true, false, false, "Hyperlink to Bookmark2, with footnote number ").GetFieldCode());
+
+            // When using the \p flag, after the footnote number the field also displays the position of the bookmark relative to the field
+            // Bookmark1 is above this field and contains footnote number 1, so the result will be "1 above" on update
+            Assert.AreEqual(" NOTEREF  MyBookmark1 \\h \\p",
+                InsertFieldNoteRef(builder, "MyBookmark1", true, true, false, "Bookmark1, with footnote number ").GetFieldCode());
+
+            // Bookmark2 is below this field and contains footnote number 2, so the field will display "2 below"
+            // The \f flag makes the number 2 appear in the same format as the footnote number label in the actual text
+            Assert.AreEqual(" NOTEREF  MyBookmark2 \\h \\f \\p",
+                InsertFieldNoteRef(builder, "MyBookmark2", true, true, true, "Bookmark2, with footnote number ").GetFieldCode());
+
+            builder.InsertBreak(BreakType.PageBreak);
+            InsertBookmarkWithFootnote(builder, "MyBookmark2", "Contents of MyBookmark2", "Footnote from MyBookmark2");
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.NoteRef.docx");
+        }
+
+        /// <summary>
+        /// Uses a document builder to insert a NOTEREF field and sets its attributes
+        /// </summary>
+        private FieldNoteRef InsertFieldNoteRef(DocumentBuilder builder, string bookmarkName, bool insertHyperlink, bool insertRelativePosition, bool insertReferenceMark, string textBefore)
+        {
+            builder.Write(textBefore);
+
+            FieldNoteRef field = (FieldNoteRef)builder.InsertField(FieldType.FieldNoteRef, true);
+            field.BookmarkName = bookmarkName;
+            field.InsertHyperlink = insertHyperlink;
+            field.InsertReferenceMark = insertReferenceMark;
+            field.InsertRelativePosition = insertRelativePosition;
+            builder.Writeln();
+            
+            return field;
+        }
+        
+        /// <summary>
+        /// Uses a document builder to insert a named bookmark with a footnote at the end
+        /// </summary>
+        private void InsertBookmarkWithFootnote(DocumentBuilder builder, string bookmarkName, string bookmarkText, string footnoteText)
+        {
+            builder.StartBookmark(bookmarkName);
+            builder.Write(bookmarkText);
+            builder.InsertFootnote(FootnoteType.Footnote, footnoteText);
+            builder.EndBookmark(bookmarkName);
+            builder.Writeln();
+        }
+        //ExEnd
+
+        //ExFor:FieldPageRef
+        //ExFor:FieldPageRef.BookmarkName
+        //ExFor:FieldPageRef.InsertHyperlink
+        //ExFor:FieldPageRef.InsertRelativePosition
+        //ExSummary:Shows to insert PAGEREF fields and present them in different ways.
+        [Test] //ExSkip
+        [Ignore("WORDSNET-17836")] //ExSkip
+        public void FieldPageRef()
+            InsertAndNameBookmark(builder, "MyBookmark1");
+
+            // This field will display just the page number where the bookmark starts
+            // Setting InsertHyperlink attribute makes the field function as a link to the bookmark
+            Assert.AreEqual(" PAGEREF  MyBookmark3 \\h", 
+                InsertFieldPageRef(builder, "MyBookmark3", true, false, "Hyperlink to Bookmark3, on page: ").GetFieldCode());
+
+            // Setting the \p flag makes the field display the relative position of the bookmark to the field instead of a page number
+            // Bookmark1 is on the same page and above this field, so the result will be "above" on update
+            Assert.AreEqual(" PAGEREF  MyBookmark1 \\h \\p", 
+                InsertFieldPageRef(builder, "MyBookmark1", true, true, "Bookmark1 is ").GetFieldCode());
+
+            // Bookmark2 will be on the same page and below this field, so the field will display "below"
+            Assert.AreEqual(" PAGEREF  MyBookmark2 \\h \\p", 
+                InsertFieldPageRef(builder, "MyBookmark2", true, true, "Bookmark2 is ").GetFieldCode());
+
+            // Bookmark3 will be on a different page, so the field will display "on page 2"
+            Assert.AreEqual(" PAGEREF  MyBookmark3 \\h \\p", 
+                InsertFieldPageRef(builder, "MyBookmark3", true, true, "Bookmark3 is ").GetFieldCode());
+
+            InsertAndNameBookmark(builder, "MyBookmark2");
+            builder.InsertBreak(BreakType.PageBreak);
+            InsertAndNameBookmark(builder, "MyBookmark3");
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.PageRef.docx");
+        }
+
+        /// <summary>
+        /// Uses a document builder to insert a PAGEREF field and sets its attributes
+        /// </summary>
+        private FieldPageRef InsertFieldPageRef(DocumentBuilder builder, string bookmarkName, bool insertHyperlink, bool insertRelativePosition, string textBefore)
+        {
+            builder.Write(textBefore);
+
+            FieldPageRef field = (FieldPageRef)builder.InsertField(FieldType.FieldPageRef, true);
+            field.BookmarkName = bookmarkName;
+            field.InsertHyperlink = insertHyperlink;
+            field.InsertRelativePosition = insertRelativePosition;
+            builder.Writeln();
+          
+            return field;
+        }
+
+        /// Uses a document builder to insert a named bookmark
+        /// </summary>
+        private void InsertAndNameBookmark(DocumentBuilder builder, string bookmarkName)
+        {
+            builder.StartBookmark(bookmarkName);
+            builder.Writeln(String.Format("Contents of bookmark \"{0}\".", bookmarkName));
+            builder.EndBookmark(bookmarkName);
         }
         //ExEnd
     }
