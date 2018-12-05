@@ -3598,28 +3598,27 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.Keywords.docx");
         }
 
-        [Test]
-        [Ignore("WORDSNET-17836")]
+        //ExStart
+        //ExFor:FieldPageRef
+        //ExFor:FieldPageRef.BookmarkName
+        //ExFor:FieldPageRef.InsertHyperlink
+        //ExFor:FieldPageRef.InsertRelativePosition
+        //ExSummary:Shows to insert PAGEREF fields and present them in different ways.
+        [Test] //ExSkip
+        //[Ignore("WORDSNET-17836")]
         public void FieldPageRef()
         {
-            //ExStart
-            //ExFor:FieldPageRef
-            //ExFor:FieldPageRef.BookmarkName
-            //ExFor:FieldPageRef.InsertHyperlink
-            //ExFor:FieldPageRef.InsertRelativePosition
-            //ExSummary:Shows to insert PAGEREF fields and present them in different ways.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            InsertBookmark(builder, "MyBookmark1");
+            InsertAndNameBookmark(builder, "MyBookmark1");
 
             // This field will display just the page number where the bookmark starts
-            // Setting InsertHyperlink attribute to true makes the field behave like a hyperlink
+            // Setting InsertHyperlink attribute makes the field function as a link to the bookmark
             Assert.AreEqual(" PAGEREF  MyBookmark3 \\h", 
                 InsertFieldPageRef(builder, "MyBookmark3", true, false, "Hyperlink to Bookmark3, on page: ").GetFieldCode());
 
-            // We will insert a few PAGEREF fields with the \p flag,
-            // which makes the field display the relative position of the bookmark to the field instead of a page number
+            // Setting the \p flag makes the field display the relative position of the bookmark to the field instead of a page number
             // Bookmark1 is on the same page and above this field, so the result will be "above" on update
             Assert.AreEqual(" PAGEREF  MyBookmark1 \\h \\p", 
                 InsertFieldPageRef(builder, "MyBookmark1", true, true, "Bookmark1 is ").GetFieldCode());
@@ -3632,12 +3631,12 @@ namespace ApiExamples
             Assert.AreEqual(" PAGEREF  MyBookmark3 \\h \\p", 
                 InsertFieldPageRef(builder, "MyBookmark3", true, true, "Bookmark3 is ").GetFieldCode());
 
-            InsertBookmark(builder, "MyBookmark2");
+            InsertAndNameBookmark(builder, "MyBookmark2");
             builder.InsertBreak(BreakType.PageBreak);
-            InsertBookmark(builder, "MyBookmark3");
+            InsertAndNameBookmark(builder, "MyBookmark3");
 
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\Field.PageRef.docx");
+            doc.Save(MyDir + @"\Field.PageRef.docx");
         }
 
         /// <summary>
@@ -3659,11 +3658,12 @@ namespace ApiExamples
         /// <summary>
         /// Uses a document builder to insert a named bookmark
         /// </summary>
-        private void InsertBookmark(DocumentBuilder builder, string bookmarkName)
+        private void InsertAndNameBookmark(DocumentBuilder builder, string bookmarkName)
         {
             builder.StartBookmark(bookmarkName);
             builder.Writeln(String.Format("Contents of bookmark \"{0}\".", bookmarkName));
             builder.EndBookmark(bookmarkName);
         }
+        //ExEnd
     }
 }
