@@ -3606,14 +3606,16 @@ namespace ApiExamples
             //ExFor:FieldNumChars
             //ExFor:FieldNumPages
             //ExFor:FieldNumWords
-            //ExSummary:Shows how to use fields to create word/character/page counts.
-            // Open a document to which we wish to add character, word and page counts
+            //ExSummary:Shows how to use NUMCHARS, NUMWORDS, NUMPAGES and PAGE fields to track the size of our documents.
+            // Open a document to which we want to add character/word/page counts
             Document doc = new Document(MyDir + "Lists.PrintOutAllLists.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // We will put all the information in the footer, starting with the character and word counts
+            // Move the document builder to the footer, where we will store our fields
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+
+            // Insert character and word counts
             FieldNumChars fieldNumChars = (FieldNumChars)builder.InsertField(FieldType.FieldNumChars, true);       
             builder.Writeln(" characters");
             FieldNumWords fieldNumWords = (FieldNumWords)builder.InsertField(FieldType.FieldNumWords, true);
