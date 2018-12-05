@@ -3638,6 +3638,7 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [Test]
         public void FieldPrint()
         {
             //ExStart
@@ -3695,6 +3696,7 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [Test]
         public void FieldQuote()
         {
             //ExStart
@@ -3741,7 +3743,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             // Create a data source for our mail merge with 3 rows,
             // This would normally amount to 3 pages in the output of a mail merge
-            System.Data.DataTable table = new System.Data.DataTable("Employees");
+            DataTable table = new DataTable("Employees");
             table.Columns.Add("Courtesy Title");
             table.Columns.Add("First Name");
             table.Columns.Add("Last Name");
@@ -3883,6 +3885,10 @@ namespace ApiExamples
         [Test] //ExSkip
         [Ignore("WORDSNET-17836")] //ExSkip
         public void FieldPageRef()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
             InsertAndNameBookmark(builder, "MyBookmark1");
 
             // This field will display just the page number where the bookmark starts
@@ -3927,12 +3933,13 @@ namespace ApiExamples
             return field;
         }
 
+        /// <summary>
         /// Uses a document builder to insert a named bookmark
         /// </summary>
         private void InsertAndNameBookmark(DocumentBuilder builder, string bookmarkName)
         {
             builder.StartBookmark(bookmarkName);
-            builder.Writeln(String.Format("Contents of bookmark \"{0}\".", bookmarkName));
+            builder.Writeln(string.Format("Contents of bookmark \"{0}\".", bookmarkName));
             builder.EndBookmark(bookmarkName);
         }
         //ExEnd
