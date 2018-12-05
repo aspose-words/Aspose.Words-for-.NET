@@ -3615,22 +3615,24 @@ namespace ApiExamples
 
             builder.Write("My paragraph");
 
-            // Add a PRINT field which will send instructions to the printer when the document is printed
+            // The PRINT field can send instructions to the printer that we use to print our document
             FieldPrint field = (FieldPrint)builder.InsertField(FieldType.FieldPrint, true);
 
-            // Our instructions will operate over the paragraph that contains the PRINT field
+            // Set the area for the printer to perform instructions over
+            // In this case it will be the paragraph that contains our PRINT field
             field.PostScriptGroup = "para";
 
-            // When printed, this command will set the entire area that we specified in field.PostScriptGroup white 
+            // When our document is printed using a printer that supports PostScript,
+            // this command will turn the entire area that we specified in field.PostScriptGroup white 
             field.PrinterInstructions = "erasepage";
 
             Assert.AreEqual(" PRINT  erasepage \\p para", field.GetFieldCode());
 
             builder.InsertParagraph();
 
-            // PRINTDATE field will display "1/1/0001" by default
+            // PRINTDATE field will display "0/0/0000" by default
             // When a document is printed by a printer or printed as a PDF (but not exported as PDF),
-            // these fields will display the date/time of the print operation, in various calendars
+            // these fields will display the date/time of the printing operation, in various calendars
             FieldPrintDate fieldPrintDate = (FieldPrintDate)builder.InsertField(FieldType.FieldPrintDate, true);
             fieldPrintDate.UseLunarCalendar = true;
             builder.Writeln();
@@ -3651,6 +3653,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.Print.docx");
+            //ExEnd
         }
     }
 }
