@@ -3605,7 +3605,7 @@ namespace ApiExamples
         //ExFor:FieldPageRef.InsertRelativePosition
         //ExSummary:Shows to insert PAGEREF fields and present them in different ways.
         [Test] //ExSkip
-        [Ignore("WORDSNET-17836")]
+       // [Ignore("WORDSNET-17836")]
         public void FieldPageRef()
         {
             Document doc = new Document();
@@ -3636,11 +3636,11 @@ namespace ApiExamples
             InsertAndNameBookmark(builder, "MyBookmark3");
 
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Field.PageRef.docx");
+            doc.Save(MyDir + @"\Artifacts\Field.PageRef.docx");
         }
 
         /// <summary>
-        /// Uses a document builder to insert a PAGEREF field and sets its attributes
+        /// Uses a document builder to insert a PAGEREF field and sets its attributes //INSP: I think we can use private void instead of private FieldPageRef, because in examples you never use this field. Please fix also in ExNoteRef branch.
         /// </summary>
         private FieldPageRef InsertFieldPageRef(DocumentBuilder builder, string bookmarkName, bool insertHyperlink, bool insertRelativePosition, string textBefore)
         {
