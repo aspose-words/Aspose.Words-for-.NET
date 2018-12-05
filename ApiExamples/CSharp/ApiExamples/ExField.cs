@@ -3598,6 +3598,39 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.Keywords.docx");
         }
 
+        [Test]
+        public void FieldQuote()
+        {
+            //ExStart
+            //ExFor:FieldQuote
+            //ExFor:FieldQuote.Text
+            //ExSummary:Shows to use the QUOTE field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a QUOTE field, which will display content from the Text attribute
+            FieldQuote field = (FieldQuote)builder.InsertField(FieldType.FieldQuote, true);
+            field.Text = "\"Quoted text\"";
+
+            Assert.AreEqual(" QUOTE  \"\\\"Quoted text\\\"\"", field.GetFieldCode());
+
+            builder.InsertParagraph();
+
+            // Insert a QUOTE field with a nested DATE field
+            // DATE fields normally update their value to the current date every time the document is opened
+            // Nesting the DATE field inside the QUOTE field like this will freeze its value to the date when we created the document
+            builder.Write("Document creation date: ");
+            field = (FieldQuote)builder.InsertField(FieldType.FieldQuote, true);
+            builder.MoveTo(field.Separator);
+            builder.InsertField(FieldType.FieldDate, true);
+
+            Assert.AreEqual(" QUOTE \u0013 DATE \u0014" + System.DateTime.Now.Date.ToShortDateString() + "\u0015", field.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Quote.docx");
+            //ExEnd
+        }
+
         //ExStart
         //ExFor:FieldNext
         //ExFor:FieldNextIf
