@@ -3605,7 +3605,7 @@ namespace ApiExamples
         //ExFor:FieldPageRef.InsertRelativePosition
         //ExSummary:Shows to insert PAGEREF fields and present them in different ways.
         [Test] //ExSkip
-        //[Ignore("WORDSNET-17836")]
+        [Ignore("WORDSNET-17836")]
         public void FieldPageRef()
         {
             Document doc = new Document();
