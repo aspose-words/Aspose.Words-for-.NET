@@ -3599,6 +3599,85 @@ namespace ApiExamples
         }
 
         //ExStart
+        //ExFor:FieldNext
+        //ExFor:FieldNextIf
+        //ExFor:FieldNextIf.ComparisonOperator
+        //ExFor:FieldNextIf.LeftExpression
+        //ExFor:FieldNextIf.RightExpression
+        //ExSummary:Shows how to use NEXT/NEXTIF fields to merge more than one row into one page during a mail merge.
+        [Test] //ExSkip
+        public void FieldNext()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            // Create a data source for our mail merge with 3 rows,
+            // This would normally amount to 3 pages in the output of a mail merge
+            System.Data.DataTable table = new System.Data.DataTable("Employees");
+            table.Columns.Add("Courtesy Title");
+            table.Columns.Add("First Name");
+            table.Columns.Add("Last Name");
+            table.Rows.Add("Mr.", "John", "Doe");
+            table.Rows.Add("Mrs.", "Jane", "Cardholder");
+            table.Rows.Add("Mr.", "Joe", "Bloggs");
+
+            // Insert a set of merge fields
+            InsertMergeFields(builder, "First row: ");
+
+            // If we have multiple merge fields with the same FieldName,
+            // they will receive data from the same row of the data source and will display the same value after the merge
+            // A NEXT field tells the mail merge instantly to move down one row,
+            // so any upcoming merge fields will have data deposited from the next row
+            // Make sure not to skip with a NEXT/NEXTIF field while on the last row
+            FieldNext fieldNext = (FieldNext)builder.InsertField(FieldType.FieldNext, true);
+
+            // These merge fields are the same as the ones as above but will take values from the second row
+            InsertMergeFields(builder, "Second row: ");
+
+            // A NEXTIF field has the same function as a NEXT field,
+            // but it skips to the next row only if a condition expressed by the following 3 attributes is fulfilled
+            FieldNextIf fieldNextIf = (FieldNextIf)builder.InsertField(FieldType.FieldNextIf, true);
+            fieldNextIf.LeftExpression = "5";
+            fieldNextIf.RightExpression = "2 + 3";
+            fieldNextIf.ComparisonOperator = "=";
+
+            // If the comparison asserted by the above field is correct,
+            // the following 3 merge fields will take data from the third row
+            // Otherwise, these fields will take data from row 2 again 
+            InsertMergeFields(builder, "Third row: ");
+
+            // Our data source has 3 rows and we skipped rows twice, so our output will have one page
+            // with data from all 3 rows
+            doc.MailMerge.Execute(table);
+
+            Assert.AreEqual(" NEXT ", fieldNext.GetFieldCode());
+            Assert.AreEqual(" NEXTIF  5 = \"2 + 3\"", fieldNextIf.GetFieldCode());
+
+            doc.Save(MyDir + @"\Artifacts\Field.Next.docx");
+        }
+
+        /// <summary>
+        /// Uses a document builder to insert merge fields for a data table that has "Courtesy Title", "First Name" and "Last Name" columns
+        /// </summary>
+        public void InsertMergeFields(DocumentBuilder builder, string firstFieldTextBefore)
+        {
+            InsertMergeField(builder, "Courtesy Title", firstFieldTextBefore, " ");
+            InsertMergeField(builder, "First Name", null, " ");
+            InsertMergeField(builder, "Last Name", null, null);
+            builder.InsertParagraph();
+        }
+
+        /// <summary>
+        /// Uses a document builder to insert a merge field
+        /// </summary>
+        public void InsertMergeField(DocumentBuilder builder, string fieldName, string textBefore, string textAfter)
+        {
+            FieldMergeField field = (FieldMergeField) builder.InsertField(FieldType.FieldMergeField, true);
+            field.FieldName = fieldName;
+            field.TextBefore = textBefore;
+            field.TextAfter = textAfter;
+        }
+        //ExEnd
+        
         //ExFor:FieldNoteRef
         //ExFor:FieldNoteRef.BookmarkName
         //ExFor:FieldNoteRef.InsertHyperlink
@@ -3702,7 +3781,6 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(MyDir + @"\Artifacts\Field.PageRef.docx");
         }
-
 
         /// <summary>
         /// Uses a document builder to insert a PAGEREF field and sets its attributes
