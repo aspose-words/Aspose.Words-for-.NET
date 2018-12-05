@@ -3637,5 +3637,304 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.Num.docx");
             //ExEnd
         }
+
+        public void FieldPrint()
+        {
+            //ExStart
+            //ExFor:FieldPrint
+            //ExFor:FieldPrint.PostScriptGroup
+            //ExFor:FieldPrint.PrinterInstructions
+            //ExFor:FieldPrintDate
+            //ExFor:FieldPrintDate.UseLunarCalendar
+            //ExFor:FieldPrintDate.UseSakaEraCalendar
+            //ExFor:FieldPrintDate.UseUmAlQuraCalendar
+            //ExSummary:Shows to insert a PRINT field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("My paragraph");
+
+            // The PRINT field can send instructions to the printer that we use to print our document
+            FieldPrint field = (FieldPrint)builder.InsertField(FieldType.FieldPrint, true);
+
+            // Set the area for the printer to perform instructions over
+            // In this case it will be the paragraph that contains our PRINT field
+            field.PostScriptGroup = "para";
+
+            // When our document is printed using a printer that supports PostScript,
+            // this command will turn the entire area that we specified in field.PostScriptGroup white 
+            field.PrinterInstructions = "erasepage";
+
+            Assert.AreEqual(" PRINT  erasepage \\p para", field.GetFieldCode());
+
+            builder.InsertParagraph();
+
+            // PRINTDATE field will display "0/0/0000" by default
+            // When a document is printed by a printer or printed as a PDF (but not exported as PDF),
+            // these fields will display the date/time of the printing operation, in various calendars
+            FieldPrintDate fieldPrintDate = (FieldPrintDate)builder.InsertField(FieldType.FieldPrintDate, true);
+            fieldPrintDate.UseLunarCalendar = true;
+            builder.Writeln();
+
+            Assert.AreEqual(" PRINTDATE  \\h", fieldPrintDate.GetFieldCode());
+
+            fieldPrintDate = (FieldPrintDate)builder.InsertField(FieldType.FieldPrintDate, true);
+            fieldPrintDate.UseSakaEraCalendar = true;
+            builder.Writeln();
+
+            Assert.AreEqual(" PRINTDATE  \\s", fieldPrintDate.GetFieldCode());
+
+            fieldPrintDate = (FieldPrintDate)builder.InsertField(FieldType.FieldPrintDate, true);
+            fieldPrintDate.UseUmAlQuraCalendar = true;
+            builder.Writeln();
+
+            Assert.AreEqual(" PRINTDATE  \\u", fieldPrintDate.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Print.docx");
+            //ExEnd
+        }
+
+        public void FieldQuote()
+        {
+            //ExStart
+            //ExFor:FieldQuote
+            //ExFor:FieldQuote.Text
+            //ExSummary:Shows to use the QUOTE field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a QUOTE field, which will display content from the Text attribute
+            FieldQuote field = (FieldQuote)builder.InsertField(FieldType.FieldQuote, true);
+            field.Text = "\"Quoted text\"";
+
+            Assert.AreEqual(" QUOTE  \"\\\"Quoted text\\\"\"", field.GetFieldCode());
+
+            builder.InsertParagraph();
+
+            // Insert a QUOTE field with a nested DATE field
+            // DATE fields normally update their value to the current date every time the document is opened
+            // Nesting the DATE field inside the QUOTE field like this will freeze its value to the date when we created the document
+            builder.Write("Document creation date: ");
+            field = (FieldQuote)builder.InsertField(FieldType.FieldQuote, true);
+            builder.MoveTo(field.Separator);
+            builder.InsertField(FieldType.FieldDate, true);
+
+            Assert.AreEqual(" QUOTE \u0013 DATE \u0014" + System.DateTime.Now.Date.ToShortDateString() + "\u0015", field.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Quote.docx");
+            //ExEnd
+        }
+
+        //ExStart
+        //ExFor:FieldNext
+        //ExFor:FieldNextIf
+        //ExFor:FieldNextIf.ComparisonOperator
+        //ExFor:FieldNextIf.LeftExpression
+        //ExFor:FieldNextIf.RightExpression
+        //ExSummary:Shows how to use NEXT/NEXTIF fields to merge more than one row into one page during a mail merge.
+        [Test] //ExSkip
+        public void FieldNext()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            // Create a data source for our mail merge with 3 rows,
+            // This would normally amount to 3 pages in the output of a mail merge
+            System.Data.DataTable table = new System.Data.DataTable("Employees");
+            table.Columns.Add("Courtesy Title");
+            table.Columns.Add("First Name");
+            table.Columns.Add("Last Name");
+            table.Rows.Add("Mr.", "John", "Doe");
+            table.Rows.Add("Mrs.", "Jane", "Cardholder");
+            table.Rows.Add("Mr.", "Joe", "Bloggs");
+
+            // Insert a set of merge fields
+            InsertMergeFields(builder, "First row: ");
+
+            // If we have multiple merge fields with the same FieldName,
+            // they will receive data from the same row of the data source and will display the same value after the merge
+            // A NEXT field tells the mail merge instantly to move down one row,
+            // so any upcoming merge fields will have data deposited from the next row
+            // Make sure not to skip with a NEXT/NEXTIF field while on the last row
+            FieldNext fieldNext = (FieldNext)builder.InsertField(FieldType.FieldNext, true);
+
+            // These merge fields are the same as the ones as above but will take values from the second row
+            InsertMergeFields(builder, "Second row: ");
+
+            // A NEXTIF field has the same function as a NEXT field,
+            // but it skips to the next row only if a condition expressed by the following 3 attributes is fulfilled
+            FieldNextIf fieldNextIf = (FieldNextIf)builder.InsertField(FieldType.FieldNextIf, true);
+            fieldNextIf.LeftExpression = "5";
+            fieldNextIf.RightExpression = "2 + 3";
+            fieldNextIf.ComparisonOperator = "=";
+
+            // If the comparison asserted by the above field is correct,
+            // the following 3 merge fields will take data from the third row
+            // Otherwise, these fields will take data from row 2 again 
+            InsertMergeFields(builder, "Third row: ");
+
+            // Our data source has 3 rows and we skipped rows twice, so our output will have one page
+            // with data from all 3 rows
+            doc.MailMerge.Execute(table);
+
+            Assert.AreEqual(" NEXT ", fieldNext.GetFieldCode());
+            Assert.AreEqual(" NEXTIF  5 = \"2 + 3\"", fieldNextIf.GetFieldCode());
+
+            doc.Save(MyDir + @"\Artifacts\Field.Next.docx");
+        }
+
+        /// <summary>
+        /// Uses a document builder to insert merge fields for a data table that has "Courtesy Title", "First Name" and "Last Name" columns
+        /// </summary>
+        public void InsertMergeFields(DocumentBuilder builder, string firstFieldTextBefore)
+        {
+            InsertMergeField(builder, "Courtesy Title", firstFieldTextBefore, " ");
+            InsertMergeField(builder, "First Name", null, " ");
+            InsertMergeField(builder, "Last Name", null, null);
+            builder.InsertParagraph();
+        }
+
+        /// <summary>
+        /// Uses a document builder to insert a merge field
+        /// </summary>
+        public void InsertMergeField(DocumentBuilder builder, string fieldName, string textBefore, string textAfter)
+        {
+            FieldMergeField field = (FieldMergeField) builder.InsertField(FieldType.FieldMergeField, true);
+            field.FieldName = fieldName;
+            field.TextBefore = textBefore;
+            field.TextAfter = textAfter;
+        }
+        //ExEnd
+        
+        //ExFor:FieldNoteRef
+        //ExFor:FieldNoteRef.BookmarkName
+        //ExFor:FieldNoteRef.InsertHyperlink
+        //ExFor:FieldNoteRef.InsertReferenceMark
+        //ExFor:FieldNoteRef.InsertRelativePosition
+        //ExSummary:Shows to insert NOTEREF fields and modify their appearance.
+        [Test] //ExSkip
+        [Ignore("WORDSNET-17845")] //ExSkip
+        public void FieldNoteRef()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create a boomkark with a footnote for the NOTEREF field to reference
+            InsertBookmarkWithFootnote(builder, "MyBookmark1", "Contents of MyBookmark1", "Footnote from MyBookmark1");
+
+            // This NOTEREF field will display just the number of the footnote inside the referenced bookmark
+            // Setting the InsertHyperlink attribute lets us jump to the bookmark by Ctrl + clicking the field
+            Assert.AreEqual(" NOTEREF  MyBookmark2 \\h",
+                InsertFieldNoteRef(builder, "MyBookmark2", true, false, false, "Hyperlink to Bookmark2, with footnote number ").GetFieldCode());
+
+            // When using the \p flag, after the footnote number the field also displays the position of the bookmark relative to the field
+            // Bookmark1 is above this field and contains footnote number 1, so the result will be "1 above" on update
+            Assert.AreEqual(" NOTEREF  MyBookmark1 \\h \\p",
+                InsertFieldNoteRef(builder, "MyBookmark1", true, true, false, "Bookmark1, with footnote number ").GetFieldCode());
+
+            // Bookmark2 is below this field and contains footnote number 2, so the field will display "2 below"
+            // The \f flag makes the number 2 appear in the same format as the footnote number label in the actual text
+            Assert.AreEqual(" NOTEREF  MyBookmark2 \\h \\f \\p",
+                InsertFieldNoteRef(builder, "MyBookmark2", true, true, true, "Bookmark2, with footnote number ").GetFieldCode());
+
+            builder.InsertBreak(BreakType.PageBreak);
+            InsertBookmarkWithFootnote(builder, "MyBookmark2", "Contents of MyBookmark2", "Footnote from MyBookmark2");
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.NoteRef.docx");
+        }
+
+        /// <summary>
+        /// Uses a document builder to insert a NOTEREF field and sets its attributes
+        /// </summary>
+        private FieldNoteRef InsertFieldNoteRef(DocumentBuilder builder, string bookmarkName, bool insertHyperlink, bool insertRelativePosition, bool insertReferenceMark, string textBefore)
+        {
+            builder.Write(textBefore);
+
+            FieldNoteRef field = (FieldNoteRef)builder.InsertField(FieldType.FieldNoteRef, true);
+            field.BookmarkName = bookmarkName;
+            field.InsertHyperlink = insertHyperlink;
+            field.InsertReferenceMark = insertReferenceMark;
+            field.InsertRelativePosition = insertRelativePosition;
+            builder.Writeln();
+            
+            return field;
+        }
+        
+        /// <summary>
+        /// Uses a document builder to insert a named bookmark with a footnote at the end
+        /// </summary>
+        private void InsertBookmarkWithFootnote(DocumentBuilder builder, string bookmarkName, string bookmarkText, string footnoteText)
+        {
+            builder.StartBookmark(bookmarkName);
+            builder.Write(bookmarkText);
+            builder.InsertFootnote(FootnoteType.Footnote, footnoteText);
+            builder.EndBookmark(bookmarkName);
+            builder.Writeln();
+        }
+        //ExEnd
+
+        //ExFor:FieldPageRef
+        //ExFor:FieldPageRef.BookmarkName
+        //ExFor:FieldPageRef.InsertHyperlink
+        //ExFor:FieldPageRef.InsertRelativePosition
+        //ExSummary:Shows to insert PAGEREF fields and present them in different ways.
+        [Test] //ExSkip
+        [Ignore("WORDSNET-17836")] //ExSkip
+        public void FieldPageRef()
+            InsertAndNameBookmark(builder, "MyBookmark1");
+
+            // This field will display just the page number where the bookmark starts
+            // Setting InsertHyperlink attribute makes the field function as a link to the bookmark
+            Assert.AreEqual(" PAGEREF  MyBookmark3 \\h", 
+                InsertFieldPageRef(builder, "MyBookmark3", true, false, "Hyperlink to Bookmark3, on page: ").GetFieldCode());
+
+            // Setting the \p flag makes the field display the relative position of the bookmark to the field instead of a page number
+            // Bookmark1 is on the same page and above this field, so the result will be "above" on update
+            Assert.AreEqual(" PAGEREF  MyBookmark1 \\h \\p", 
+                InsertFieldPageRef(builder, "MyBookmark1", true, true, "Bookmark1 is ").GetFieldCode());
+
+            // Bookmark2 will be on the same page and below this field, so the field will display "below"
+            Assert.AreEqual(" PAGEREF  MyBookmark2 \\h \\p", 
+                InsertFieldPageRef(builder, "MyBookmark2", true, true, "Bookmark2 is ").GetFieldCode());
+
+            // Bookmark3 will be on a different page, so the field will display "on page 2"
+            Assert.AreEqual(" PAGEREF  MyBookmark3 \\h \\p", 
+                InsertFieldPageRef(builder, "MyBookmark3", true, true, "Bookmark3 is ").GetFieldCode());
+
+            InsertAndNameBookmark(builder, "MyBookmark2");
+            builder.InsertBreak(BreakType.PageBreak);
+            InsertAndNameBookmark(builder, "MyBookmark3");
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.PageRef.docx");
+        }
+
+        /// <summary>
+        /// Uses a document builder to insert a PAGEREF field and sets its attributes
+        /// </summary>
+        private FieldPageRef InsertFieldPageRef(DocumentBuilder builder, string bookmarkName, bool insertHyperlink, bool insertRelativePosition, string textBefore)
+        {
+            builder.Write(textBefore);
+
+            FieldPageRef field = (FieldPageRef)builder.InsertField(FieldType.FieldPageRef, true);
+            field.BookmarkName = bookmarkName;
+            field.InsertHyperlink = insertHyperlink;
+            field.InsertRelativePosition = insertRelativePosition;
+            builder.Writeln();
+          
+            return field;
+        }
+
+        /// Uses a document builder to insert a named bookmark
+        /// </summary>
+        private void InsertAndNameBookmark(DocumentBuilder builder, string bookmarkName)
+        {
+            builder.StartBookmark(bookmarkName);
+            builder.Writeln(String.Format("Contents of bookmark \"{0}\".", bookmarkName));
+            builder.EndBookmark(bookmarkName);
+        }
+        //ExEnd
     }
 }
