@@ -3598,35 +3598,35 @@ namespace ApiExamples
             doc.Save(MyDir + @"\Artifacts\Field.Keywords.docx");
         }
 
-        [Test]
+        //ExStart
+        //ExFor:FieldNoteRef
+        //ExFor:FieldNoteRef.BookmarkName
+        //ExFor:FieldNoteRef.InsertHyperlink
+        //ExFor:FieldNoteRef.InsertReferenceMark
+        //ExFor:FieldNoteRef.InsertRelativePosition
+        //ExSummary:Shows to insert NOTEREF fields and change their appearance.
+        [Test] //ExSkip
         [Ignore("WORDSNET-17845")]
         public void FieldNoteRef()
         {
-            //ExStart
-            //ExFor:FieldNoteRef
-            //ExFor:FieldNoteRef.BookmarkName
-            //ExFor:FieldNoteRef.InsertHyperlink
-            //ExFor:FieldNoteRef.InsertReferenceMark
-            //ExFor:FieldNoteRef.InsertRelativePosition
-            //ExSummary:Shows to insert NOTEREF fields and change their appearance.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // A NOTEREF field references a bookmark with a footnote or endnote inside it
+            // Create a boomkark with a footnote for the NOTEREF field to reference
             InsertBookmarkWithFootnote(builder, "MyBookmark1", "Contents of MyBookmark1", "Footnote from MyBookmark1");
 
-            // This field will display just the footnote number inside this bookmark
+            // This field will display just the number of the footnote inside this bookmark
             // Setting the InsertHyperlink attribute lets us jump to the bookmark by Ctrl + clicking the field
             Assert.AreEqual(" NOTEREF  MyBookmark2 \\h",
                 InsertFieldNoteRef(builder, "MyBookmark2", true, false, false, "Hyperlink to Bookmark2, with footnote number ").GetFieldCode());
 
-            // When we use the \p flag, after the footnote number the field also displays the position of the bookmark relative to the field
+            // When using the \p flag, after the footnote number the field also displays the position of the bookmark relative to the field
             // Bookmark1 is above this field and contains footnote number 1, so the result will be "1 above" on update
             Assert.AreEqual(" NOTEREF  MyBookmark1 \\h \\p",
                 InsertFieldNoteRef(builder, "MyBookmark1", true, true, false, "Bookmark1, with footnote number ").GetFieldCode());
 
             // Bookmark2 is below this field and contains footnote number 2, so the field will display "2 below"
-            // The \f flag makes the number 2 appear in the same format as the footnote number in the text
+            // The \f flag makes the number 2 appear in the same format as the footnote number label in the actual text
             Assert.AreEqual(" NOTEREF  MyBookmark2 \\h \\f \\p",
                 InsertFieldNoteRef(builder, "MyBookmark2", true, true, true, "Bookmark2, with footnote number ").GetFieldCode());
 
@@ -3665,5 +3665,6 @@ namespace ApiExamples
             builder.EndBookmark(bookmarkName);
             builder.Writeln();
         }
+        //ExEnd
     }
 }
