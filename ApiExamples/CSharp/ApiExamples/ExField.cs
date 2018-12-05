@@ -3611,8 +3611,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a data source for our mail merge with 3 rows
-            // With 3 rows, we can normally expect to get 3 pages in the output
+            // Create a data source for our mail merge with 3 rows,
+            // This would normally amount to 3 pages in the output of a mail merge
             System.Data.DataTable table = new System.Data.DataTable("Employees");
             table.Columns.Add("Courtesy Title");
             table.Columns.Add("First Name");
@@ -3624,8 +3624,8 @@ namespace ApiExamples
             // Insert a set of merge fields
             InsertMergeFields(builder, "First row: ");
 
-            // Normally, if we have multiple merge fields that have the same FieldName,
-            // they will receive data from the same row and will display the same value after the merge
+            // If we have multiple merge fields with the same FieldName,
+            // they will receive data from the same row of the data source and will display the same value after the merge
             // A NEXT field tells the mail merge instantly to move down one row,
             // so any upcoming merge fields will have data deposited from the next row
             // Make sure not to skip with a NEXT/NEXTIF field while on the last row
@@ -3643,10 +3643,9 @@ namespace ApiExamples
 
             // If the comparison asserted by the above field is correct,
             // the following 3 merge fields will take data from the third row
-            // If the comparison is false, then these fields will take data from row 2 again 
+            // Otherwise, these fields will take data from row 2 again 
             InsertMergeFields(builder, "Third row: ");
 
-            // Normally a mail merge creates one page per row in the data table
             // Our data source has 3 rows and we skipped rows twice, so our output will have one page
             // with data from all 3 rows
             doc.MailMerge.Execute(table);
