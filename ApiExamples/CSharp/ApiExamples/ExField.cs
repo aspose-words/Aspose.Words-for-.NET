@@ -3599,6 +3599,45 @@ namespace ApiExamples
         }
 
         [Test]
+        public void FieldNum()
+        {
+            //ExStart
+            //ExFor:FieldPage
+            //ExFor:FieldNumChars
+            //ExFor:FieldNumPages
+            //ExFor:FieldNumWords
+            //ExSummary:Shows how to use NUMCHARS, NUMWORDS, NUMPAGES and PAGE fields to track the size of our documents.
+            // Open a document to which we want to add character/word/page counts
+            Document doc = new Document(MyDir + "Lists.PrintOutAllLists.doc");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Move the document builder to the footer, where we will store our fields
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+
+            // Insert character and word counts
+            FieldNumChars fieldNumChars = (FieldNumChars)builder.InsertField(FieldType.FieldNumChars, true);       
+            builder.Writeln(" characters");
+            FieldNumWords fieldNumWords = (FieldNumWords)builder.InsertField(FieldType.FieldNumWords, true);
+            builder.Writeln(" words");
+
+            // Insert a "Page x of y" page count
+            builder.ParagraphFormat.Alignment = ParagraphAlignment.Right;
+            builder.Write("Page ");
+            FieldPage fieldPage = (FieldPage)builder.InsertField(FieldType.FieldPage, true);
+            builder.Write(" of ");
+            FieldNumPages fieldNumPages = (FieldNumPages)builder.InsertField(FieldType.FieldNumPages, true);
+
+            Assert.AreEqual(" NUMCHARS ", fieldNumChars.GetFieldCode());
+            Assert.AreEqual(" NUMWORDS ", fieldNumWords.GetFieldCode());
+            Assert.AreEqual(" NUMPAGES ", fieldNumPages.GetFieldCode());
+            Assert.AreEqual(" PAGE ", fieldPage.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(MyDir + @"\Artifacts\Field.Num.docx");
+            //ExEnd
+        }
+
         public void FieldPrint()
         {
             //ExStart
