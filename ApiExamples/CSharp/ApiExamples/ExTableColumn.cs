@@ -141,7 +141,7 @@ namespace ApiExamples
             column.Remove();
             //ExEnd
 
-            doc.Save(MyDir + @"\Artifacts\Table.RemoveColumn.doc");
+            doc.Save(ArtifactsDir + "Table.RemoveColumn.doc");
 
             Assert.AreEqual(16, table.GetChildNodes(NodeType.Cell, true).Count);
             Assert.AreEqual("Cell 3 contents", table.Rows[2].Cells[2].ToString(SaveFormat.Text).Trim());
@@ -169,7 +169,7 @@ namespace ApiExamples
                 cell.FirstParagraph.AppendChild(new Run(doc, "Column Text " + newColumn.IndexOf(cell)));
             //ExEnd
 
-            doc.Save(MyDir + @"\Artifacts\Table.InsertColumn.doc");
+            doc.Save(ArtifactsDir + "Table.InsertColumn.doc");
 
             Assert.AreEqual(24, table.GetChildNodes(NodeType.Cell, true).Count);
             Assert.AreEqual("Column Text 0", table.FirstRow.Cells[1].ToString(SaveFormat.Text).Trim());

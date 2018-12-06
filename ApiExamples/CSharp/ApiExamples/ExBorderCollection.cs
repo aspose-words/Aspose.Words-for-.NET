@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -37,7 +37,7 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(MyDir + @"\Artifacts\Border.ChangedColourBorder.doc");
+            doc.Save(ArtifactsDir + "Border.ChangedColorBorder.doc");                                                    
             //ExEnd
         }
 

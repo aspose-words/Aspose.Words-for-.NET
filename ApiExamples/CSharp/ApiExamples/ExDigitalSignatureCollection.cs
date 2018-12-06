@@ -35,7 +35,6 @@ namespace ApiExamples
                         Console.WriteLine(ds.ToString());
                 }
             }
-
             //ExEnd
         }
     }

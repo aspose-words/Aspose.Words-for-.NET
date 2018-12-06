@@ -15,7 +15,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FileCorruptedException
-            //ExSummary:Shows how to catch a FileCorrputedException
+            //ExSummary:Shows how to catch a FileCorruptedException
             try
             {
                 Document doc = new Document(MyDir + "Corrupted.docx");
@@ -35,7 +35,7 @@ namespace ApiExamples
             //ExFor:FileFormatInfo.Encoding
             //ExFor:FileFormatUtil
             //ExSummary:Shows how to detect encoding in an html file.
-            // This will not work on a non-html file
+            // 'DetectFileFormat' not working on a non-html files
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.doc");
             Assert.AreEqual(LoadFormat.Doc, info.LoadFormat);
             Assert.IsNull(info.Encoding);
@@ -167,7 +167,7 @@ namespace ApiExamples
 
             // Save the document with the original file name, " Out" and the document's file extension.
             doc.Save(
-                MyDir + @"\Artifacts\Document.WithFileExtension" + FileFormatUtil.SaveFormatToExtension(saveFormat));
+                ArtifactsDir + "Document.WithFileExtension" + FileFormatUtil.SaveFormatToExtension(saveFormat));
             //ExEnd
 
             Assert.AreEqual(".doc", FileFormatUtil.SaveFormatToExtension(saveFormat));
@@ -217,7 +217,7 @@ namespace ApiExamples
         //ExFor:Shape.ImageData
         //ExFor:Shape.HasImage
         //ExFor:ImageData
-        //ExFor:FileFormatUtil.ImageTypeToExtension(Aspose.Words.Drawing.ImageType)
+        //ExFor:FileFormatUtil.ImageTypeToExtension(ImageType)
         //ExFor:ImageData.ImageType
         //ExFor:ImageData.Save(String)
         //ExFor:CompositeNode.GetChildNodes(NodeType, bool)
@@ -234,9 +234,9 @@ namespace ApiExamples
             {
                 if (shape.HasImage)
                 {
-                    string imageFileName = string.Format(@"\Artifacts\Image.ExportImages.{0} Out{1}", imageIndex,
+                    string imageFileName = string.Format("Image.ExportImages.{0}{1}", imageIndex,
                         FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType));
-                    shape.ImageData.Save(MyDir + imageFileName);
+                    shape.ImageData.Save(ArtifactsDir + imageFileName);
                     imageIndex++;
                 }
             }

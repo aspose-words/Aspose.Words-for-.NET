@@ -79,7 +79,7 @@ namespace ApiExamples
             doc.AppendChild(doc.ImportNode(customBlock.FirstSection, true));
 
             // Or we can find it in Microsoft Word's Building Blocks Organizer and place it manually
-            doc.Save(MyDir + @"\Artifacts\BuildingBlocks.BuildingBlock.dotx");
+            doc.Save(ArtifactsDir + "BuildingBlocks.BuildingBlock.dotx");
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace ApiExamples
             Console.WriteLine(visitor.GetText());
 
             // We can find our new blocks in Microsoft Word via Insert > Quick Parts > Building Blocks Organizer...
-            doc.Save(MyDir + @"\Artifacts\BuildingBlocks.GlossaryDocument.dotx");
+            doc.Save(ArtifactsDir + "BuildingBlocks.GlossaryDocument.dotx"); 
         }
 
         /// <summary>
@@ -245,7 +245,6 @@ namespace ApiExamples
             private readonly Dictionary<Guid, BuildingBlock> mBlocksByGuid;
             private readonly StringBuilder mBuilder;
         }
-
         //ExEnd
     }
 }

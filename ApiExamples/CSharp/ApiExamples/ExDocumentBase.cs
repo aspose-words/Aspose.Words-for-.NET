@@ -2,8 +2,10 @@
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
-using Aspose.Words.Loading;
 using NUnit.Framework;
+#if !(NETSTANDARD2_0 || __MOBILE__)
+using Aspose.Words.Loading;
+#endif
 
 namespace ApiExamples
 {
@@ -34,7 +36,7 @@ namespace ApiExamples
 
             doc.PageColor = System.Drawing.Color.LightGray;
 
-            doc.Save(MyDir + @"\Artifacts\DocumentBase.SetPageColor.docx");
+            doc.Save(ArtifactsDir + "DocumentBase.SetPageColor.docx");
             //ExEnd
         }
 
@@ -123,10 +125,10 @@ namespace ApiExamples
             // This rectangle covers the entire page in the output document
             // We can also do this by setting doc.PageColor
             shapeRectangle.FillColor = System.Drawing.Color.LightBlue;
-            doc.Save(MyDir + @"\Artifacts\DocumentBase.BackgroundShapeFlatColor.docx");
+            doc.Save(ArtifactsDir + "DocumentBase.BackgroundShapeFlatColor.docx");
 
             // Setting the image will override the flat background colour with the image
-            shapeRectangle.ImageData.SetImage(MyDir + @"\Images\Watermark.png");
+            shapeRectangle.ImageData.SetImage(MyDir + "Images/Watermark.png");
             Assert.IsTrue(doc.BackgroundShape.HasImage);
 
             // This image is a photo with a white background
@@ -138,7 +140,7 @@ namespace ApiExamples
             // Microsoft Word does not support images in background shapes, so even though we set the background as an image,
             // the output will show a light blue background like before
             // However, we can see our watermark in an output pdf
-            doc.Save(MyDir + @"\Artifacts\DocumentBase.BackgroundShapeWatermark.pdf");
+            doc.Save(ArtifactsDir + "DocumentBase.BackgroundShapeWatermark.pdf");
             //ExEnd
         }
 
@@ -176,7 +178,7 @@ namespace ApiExamples
 
             Assert.AreEqual(3, doc.GetChildNodes(NodeType.Shape, true).Count);
 
-            doc.Save(MyDir + @"\Artifacts\DocumentBase.ResourceLoadingCallback.docx");
+            doc.Save(ArtifactsDir + "DocumentBase.ResourceLoadingCallback.docx");            
         }
 
         private class ImageNameHandler : IResourceLoadingCallback
@@ -212,8 +214,8 @@ namespace ApiExamples
                     // We can find and add an image any way we like, as long as args.SetData() is called with some image byte array as a parameter
                     if (args.OriginalUri == "My Watermark")
                     {
-                        System.Drawing.Image watermark =
-                            System.Drawing.Image.FromFile(MyDir + @"\Images\Watermark.png");
+                        System.Drawing.Image watermark = System.Drawing.Image.FromFile(MyDir + "Images/Watermark.png");
+
                         System.Drawing.ImageConverter converter = new System.Drawing.ImageConverter();
                         byte[] imageBytes = (byte[]) converter.ConvertTo(watermark, typeof(byte[]));
                         args.SetData(imageBytes);

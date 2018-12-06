@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -194,7 +194,7 @@ namespace ApiExamples
 
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            //Is not valid structure for the current document
+            // Checking that isn't valid structure for the current document
             Assert.That(() => builder.EndEditableRange(), Throws.TypeOf<InvalidOperationException>());
 
             builder.StartEditableRange();
@@ -209,7 +209,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:EditableRange.EditorGroup
             //ExSummary:Shows how to add editing group for editable ranges
-            //Add EditableRangeStart
             EditableRangeStart startRange1 = builder.StartEditableRange();
 
             builder.Writeln("EditableRange_1_1");

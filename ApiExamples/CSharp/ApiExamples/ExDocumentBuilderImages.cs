@@ -9,13 +9,11 @@ using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if NETSTANDARD2_0 || __MOBILE__
+#if (NETSTANDARD2_0 || __MOBILE__)
 using SkiaSharp;
-#endif
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#else
 using System.Drawing;
 using System.Drawing.Imaging;
-
 #endif
 
 namespace ApiExamples
@@ -24,214 +22,179 @@ namespace ApiExamples
     public class ExDocumentBuilderImages : ApiExampleBase
     {
         [Test]
-        public void InsertImageStreamRelativePosition()
+        public void InsertImageFromStream()
         {
             //ExStart
+            //ExFor:DocumentBuilder.InsertImage(Stream)
+            //ExFor:DocumentBuilder.InsertImage(Stream, Double, Double)
             //ExFor:DocumentBuilder.InsertImage(Stream, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Shows how to insert an image into a document from a stream, also using relative positions.
+            //ExSummary:Shows different solutions of how to import an image into a document from a stream.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             using (Stream stream = File.OpenRead(ImageDir + "Aspose.Words.gif"))
             {
+                builder.Writeln("Inserted image from stream: ");
+                builder.InsertImage(stream);
+                
+                builder.Writeln("\nInserted image from stream with a custom size: ");
+                builder.InsertImage(stream, ConvertUtil.PixelToPoint(250), ConvertUtil.PixelToPoint(144));
+                
+                builder.Writeln("\nInserted image from stream using relative positions: ");
                 builder.InsertImage(stream, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin,
                     100, 200, 100, WrapType.Square);
             }
 
-            builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromStreamRelativePosition.doc");
+            doc.Save(ArtifactsDir + "InsertImageFromStream.docx");
             //ExEnd
         }
 
+        [Test]
+        public void InsertImageFromString()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertImage(String)
+            //ExFor:DocumentBuilder.InsertImage(String, Double, Double)
+            //ExFor:DocumentBuilder.InsertImage(String, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
+            //ExSummary:Shows different solutions of how to import an image into a document from a string.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("\nInserted image from string: ");
+            builder.InsertImage(ImageDir + "Aspose.Words.gif");
+
+            builder.Writeln("\nInserted image from string with a custom size: ");
+            builder.InsertImage(ImageDir + "Aspose.Words.gif", ConvertUtil.PixelToPoint(250),
+                ConvertUtil.PixelToPoint(144));
+
+            builder.Writeln("\nInserted image from string using relative positions: ");
+            builder.InsertImage(ImageDir + "Aspose.Words.gif", RelativeHorizontalPosition.Margin, 100, 
+                RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
+
+            doc.Save(ArtifactsDir + "InsertImageFromString.docx");
+            //ExEnd
+        }
+
+#if !(NETSTANDARD2_0 || __MOBILE__)
+        [Test]
+        public void InsertImageFromImageClass()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertImage(Image)
+            //ExFor:DocumentBuilder.InsertImage(Image, Double, Double)
+            //ExFor:DocumentBuilder.InsertImage(Image, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
+            //ExSummary:Shows different solutions of how to import an image into a document from Image class.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Image image = Image.FromFile(ImageDir + "Aspose.Words.gif");
+
+            builder.Writeln("\nInserted image from Image class: ");
+            builder.InsertImage(image);
+
+            builder.Writeln("\nInserted image from Image class with a custom size: ");
+            builder.InsertImage(image, ConvertUtil.PixelToPoint(250), ConvertUtil.PixelToPoint(144));
+
+            builder.Writeln("\nInserted image from Image class using relative positions: ");
+            builder.InsertImage(image, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin,
+                100, 200, 100, WrapType.Square);
+
+            doc.Save(ArtifactsDir + "InsertImageFromImageClass.docx");
+            //ExEnd
+        }
+#else
+        [Test]
+        public void InsertImageFromImageClassNetStandard2()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertImage(SKBitmap)
+            //ExFor:DocumentBuilder.InsertImage(SKBitmap, Double, Double)
+            //ExFor:DocumentBuilder.InsertImage(SKBitmap, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
+            //ExSummary:Shows different solutions of how to import an image into a document from Image class (.NetStandard 2.0).
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            using (SKBitmap bitmap = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
+            {
+                builder.Writeln("\nInserted image from Image class: ");
+                builder.InsertImage(bitmap);
+
+                builder.Writeln("\nInserted image from Image class with a custom size: ");
+                builder.InsertImage(bitmap, ConvertUtil.PixelToPoint(250), ConvertUtil.PixelToPoint(144));
+
+                builder.Writeln("\nInserted image from Image class using relative positions: ");
+                builder.InsertImage(bitmap, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin,
+                    100, 200, 100, WrapType.Square);
+            }
+
+            doc.Save(ArtifactsDir + "InsertImageFromImageClass.NetStandard2.docx");
+            //ExEnd
+        }
+#endif
+
+#if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
         public void InsertImageFromByteArray()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertImage(Byte[])
-            //ExSummary:Shows how to import an image into a document from a byte array.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-#if NETSTANDARD2_0 || __MOBILE__
-            using (SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
-            {
-                using (SkiaSharp.SKFileWStream fs =
- new SkiaSharp.SKFileWStream(MyDir + "Artifacts/InsertImageFromByteArray.png"))
-                {
-                    bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
-                }
-
-                builder.InsertImage(bitmap);
-                builder.Document.Save(MyDir + "Artifacts/Image.CreateFromByteArrayDefault.docx");
-            }
-#else
-            // Prepare a byte array of an image.
-            using (Image image = Image.FromFile(ImageDir + "Aspose.Words.gif"))
-            {
-                using (MemoryStream imageBytes = new MemoryStream())
-                {
-                    image.Save(imageBytes, ImageFormat.Png);
-
-                    builder.InsertImage(imageBytes.ToArray());
-                    builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromByteArrayDefault.doc");
-                }
-            }
-#endif
-            //ExEnd
-        }
-
-        [Test]
-        public void InsertImageFromByteArrayCustomSize()
-        {
-            //ExStart
             //ExFor:DocumentBuilder.InsertImage(Byte[], Double, Double)
-            //ExSummary:Shows how to import an image into a document from a byte array, with a custom size.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-#if NETSTANDARD2_0 || __MOBILE__
-            using (SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
-            {
-                using (SkiaSharp.SKFileWStream fs =
-                    new SkiaSharp.SKFileWStream(MyDir + "Artifacts/InsertImageFromByteArrayCustomSize.png"))
-                {
-                    bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
-                }
-
-                builder.InsertImage(bitmap, ConvertUtil.PixelToPoint(250), ConvertUtil.PixelToPoint(144));
-                builder.Document.Save(MyDir + "Artifacts/Image.CreateFromByteArrayCustomSize.doc");
-            }
-#else
-// Prepare a byte array of an image.
-            using (Image image = Image.FromFile(ImageDir + "Aspose.Words.gif"))
-            {
-                using (MemoryStream imageBytes = new MemoryStream())
-                {
-                    image.Save(imageBytes, ImageFormat.Png);
-
-                    builder.InsertImage(imageBytes, ConvertUtil.PixelToPoint(250), ConvertUtil.PixelToPoint(144));
-                    builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromByteArrayCustomSize.doc");
-                }
-            }
-#endif
-            //ExEnd
-        }
-
-        [Test]
-        public void InsertImageFromByteArrayRelativePosition()
-        {
-            //ExStart
             //ExFor:DocumentBuilder.InsertImage(Byte[], RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Shows how to import an image into a document from a byte array, also using relative positions.
+            //ExSummary:Shows different solutions of how to import an image into a document from a byte array.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-#if NETSTANDARD2_0 || __MOBILE__
-            using (SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
-            {
-                using (SkiaSharp.SKFileWStream fs =
- new SkiaSharp.SKFileWStream(MyDir + "Artifacts/InsertImageFromByteArrayCustomSize.png"))
-                {
-                    bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
-                }
 
-                builder.InsertImage(bitmap, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
-                builder.Document.Save(MyDir + "Artifacts/Image.CreateFromByteArrayCustomSize.doc");
+            Image image = Image.FromFile(ImageDir + "Aspose.Words.gif");
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                image.Save(ms, ImageFormat.Png);
+                byte[] imageByteArray = ms.ToArray();
+ 
+                builder.Writeln("\nInserted image from byte array: ");
+                builder.InsertImage(imageByteArray);
+
+                builder.Writeln("\nInserted image from byte array with a custom size: ");
+                builder.InsertImage(imageByteArray, ConvertUtil.PixelToPoint(250), ConvertUtil.PixelToPoint(144));
+
+                builder.Writeln("\nInserted image from byte array using relative positions: ");
+                builder.InsertImage(imageByteArray, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 
+                    100, 200, 100, WrapType.Square);
             }
+
+            doc.Save(ArtifactsDir + "InsertImageFromByteArray.docx");
+            //ExEnd
+        }
 #else
-            // Prepare a byte array of an image.
-            using (Image image = Image.FromFile(ImageDir + "Aspose.Words.gif"))
-            {
-                using (MemoryStream imageBytes = new MemoryStream())
-                {
-                    image.Save(imageBytes, ImageFormat.Png);
+        [Test]
+        public void InsertImageFromByteArrayNetStandard2()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertImage(Byte[])
+            //ExFor:DocumentBuilder.InsertImage(Byte[], Double, Double)
+            //ExFor:DocumentBuilder.InsertImage(Byte[], RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
+            //ExSummary:Shows different solutions of how to import an image into a document from a byte array (.NetStandard 2.0).
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-                    builder.InsertImage(imageBytes, RelativeHorizontalPosition.Margin, 100,
-                        RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
-                    builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromByteArrayRelativePosition.doc");
-                }
+            using (SKBitmap bitmap = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
+            {
+                byte[] imageByteArray = bitmap.Bytes;
+
+                builder.Writeln("\nInserted image from byte array: ");
+                builder.InsertImage(imageByteArray);
+
+                builder.Writeln("\nInserted image from byte array with a custom size: ");
+                builder.InsertImage(imageByteArray, ConvertUtil.PixelToPoint(250), ConvertUtil.PixelToPoint(144));
+
+                builder.Writeln("\nInserted image from byte array using relative positions: ");
+                builder.InsertImage(imageByteArray, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 
+                    100, 200, 100, WrapType.Square);
             }
+            
+            doc.Save(ArtifactsDir + "InsertImageFromByteArray.NetStandard2.docx");
+            //ExEnd
+        }
 #endif
-            //ExEnd
-        }
-
-        [Test]
-        public void InsertImageFromImageCustomSize()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertImage(Image, Double, Double)
-            //ExSummary:Shows how to import an image into a document, with a custom size.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-#if NETSTANDARD2_0 || __MOBILE__
-            using (SkiaSharp.SKBitmap rasterImage = SkiaSharp.SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
-            {
-                builder.InsertImage(rasterImage, ConvertUtil.PixelToPoint(450), ConvertUtil.PixelToPoint(144));
-                builder.Writeln();
-            }
-#else
-            using (Image rasterImage = Image.FromFile(ImageDir + "Aspose.Words.gif"))
-            {
-                builder.InsertImage(rasterImage, ConvertUtil.PixelToPoint(450), ConvertUtil.PixelToPoint(144));
-                builder.Writeln();
-            }
-#endif
-            builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromImageWithStreamCustomSize.doc");
-            //ExEnd
-        }
-
-        [Test]
-        public void InsertImageFromImageRelativePosition()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertImage(Image, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Shows how to import an image into a document, also using relative positions.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-#if NETSTANDARD2_0 || __MOBILE__
-            using (SkiaSharp.SKBitmap rasterImage = SkiaSharp.SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
-            {
-                builder.InsertImage(rasterImage, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
-            }
-#else
-            using (Image rasterImage = Image.FromFile(ImageDir + "Aspose.Words.gif"))
-            {
-                builder.InsertImage(rasterImage, RelativeHorizontalPosition.Margin, 100,
-                    RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
-            }
-#endif
-            builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromImageWithStreamRelativePosition.doc");
-            //ExEnd
-        }
-
-        [Test]
-        public void InsertImageStreamCustomSize()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertImage(Stream, Double, Double)
-            //ExSummary:Shows how to import an image from a stream into a document with a custom size.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            using (Stream stream = File.OpenRead(ImageDir + "Aspose.Words.gif"))
-            {
-                builder.InsertImage(stream, ConvertUtil.PixelToPoint(400), ConvertUtil.PixelToPoint(400));
-            }
-
-            builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromStreamCustomSize.doc");
-            //ExEnd
-        }
-
-        [Test]
-        public void InsertImageStringCustomSize()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertImage(String, Double, Double)
-            //ExSummary:Shows how to import an image from a url into a document with a custom size.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.InsertImage(ImageDir + "Aspose.Words.gif", ConvertUtil.PixelToPoint(400),
-                ConvertUtil.PixelToPoint(400));
-
-            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.InsertImageFromUrlCustomSize.doc");
-            //ExEnd
-        }
     }
 }

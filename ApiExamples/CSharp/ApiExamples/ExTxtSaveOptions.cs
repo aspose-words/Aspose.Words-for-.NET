@@ -24,7 +24,7 @@ namespace ApiExamples
 
             TxtSaveOptions saveOptions = new TxtSaveOptions { ForcePageBreaks = false };
 
-            doc.Save(MyDir + @"\Artifacts\SaveOptions.PageBreaks.txt", saveOptions);
+            doc.Save(ArtifactsDir + "SaveOptions.PageBreaks.txt", saveOptions);
             //ExEnd
         }
 
@@ -38,7 +38,7 @@ namespace ApiExamples
             // In Aspose.Words by default this option is set to true unlike Word
             TxtSaveOptions saveOptions = new TxtSaveOptions { AddBidiMarks = false };
 
-            doc.Save(MyDir + @"\Artifacts\AddBidiMarks.txt", saveOptions);
+            doc.Save(ArtifactsDir + "AddBidiMarks.txt", saveOptions);
             //ExEnd
         }
 
@@ -60,7 +60,7 @@ namespace ApiExamples
             // "PrimaryOnly" - Only primary headers and footers are exported at the beginning and end of each section (default value)
             TxtSaveOptions saveOptions = new TxtSaveOptions { ExportHeadersFootersMode = txtExportHeadersFootersMode };
 
-            doc.Save(MyDir + @"\Artifacts\ExportHeadersFooters.txt", saveOptions);
+            doc.Save(ArtifactsDir + "ExportHeadersFooters.txt", saveOptions);
             //ExEnd
         }
     }

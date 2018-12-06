@@ -24,17 +24,16 @@ namespace ApiExamples
             //ExFor:HtmlFixedSaveOptions.Encoding
             //ExSummary:Shows how to set encoding while exporting to HTML.
             Document doc = new Document();
-
             DocumentBuilder builder = new DocumentBuilder(doc);
+            
             builder.Writeln("Hello World!");
 
-            // Encoding the document
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
                 Encoding = new ASCIIEncoding()
             };
 
-            doc.Save(MyDir + @"\Artifacts\UseEncoding.html", htmlFixedSaveOptions);
+            doc.Save(ArtifactsDir + "UseEncoding.html", htmlFixedSaveOptions);
             //ExEnd
         }
 
@@ -50,7 +49,7 @@ namespace ApiExamples
                 Encoding = Encoding.GetEncoding("utf-16")
             };
 
-            doc.Save(MyDir + @"\Artifacts\EncodingUsingGetEncoding.html", htmlFixedSaveOptions);
+            doc.Save(ArtifactsDir + "EncodingUsingGetEncoding.html", htmlFixedSaveOptions);
         }
 
         // Note: Test doesn't contain validation result, because it's may take a lot of time for assert result
@@ -74,7 +73,7 @@ namespace ApiExamples
                 ExportEmbeddedSvg = true
             };
 
-            doc.Save(MyDir + @"\Artifacts\ExportEmbeddedObjects.html", htmlFixedSaveOptions);
+            doc.Save(ArtifactsDir + "ExportEmbeddedObjects.html", htmlFixedSaveOptions);
             //ExEnd
         }
 
@@ -94,25 +93,7 @@ namespace ApiExamples
                 ExportFormFields = true
             };
 
-            doc.Save(MyDir + @"\Artifacts\ExportFormFields.html", htmlFixedSaveOptions);
-            //ExEnd
-        }
-
-        [Test]
-        public void SaveFontFaceCssSeparately()
-        {
-            //ExStart
-            //ExFor:HtmlFixedSaveOptions.SaveFontFaceCssSeparately
-            //ExSummary:Shows how to placed '@font-face' CSS rules into separate 'fontFaces.css' file.
-            Document doc = new Document(MyDir + "Bookmark.doc");
-
-            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
-            {
-                SaveFontFaceCssSeparately = true
-            };
-
-            doc.Save(MyDir + @"\Artifacts\HtmlFixedSaveOptions.FontFaceCssSeparately.html", htmlFixedSaveOptions);
-            //ExEnd
+            doc.Save(ArtifactsDir + "ExportFormFields.html", htmlFixedSaveOptions);
         }
 
         [Test]
@@ -120,6 +101,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlFixedSaveOptions.CssClassNamesPrefix
+            //ExFor:HtmlFixedSaveOptions.SaveFontFaceCssSeparately
             //ExSummary:Shows how to add prefix to all class names in css file.
             Document doc = new Document(MyDir + "Bookmark.doc");
 
@@ -129,10 +111,10 @@ namespace ApiExamples
                 SaveFontFaceCssSeparately = true
             };
 
-            doc.Save(MyDir + @"\Artifacts\HtmlFixedSaveOptions.CssPrefix.html", htmlFixedSaveOptions);
+            doc.Save(ArtifactsDir + "cssPrefix_Out.html", htmlFixedSaveOptions);
             //ExEnd
 
-            DocumentHelper.FindTextInFile(MyDir + @"\Artifacts\HtmlFixedSaveOptions.CssPrefix\styles.css", "test");
+            DocumentHelper.FindTextInFile(ArtifactsDir + "cssPrefix_Out/styles.css", "test");
         }
 
         [Test]
@@ -149,7 +131,7 @@ namespace ApiExamples
                 PageHorizontalAlignment = HtmlFixedPageHorizontalAlignment.Left
             };
 
-            doc.Save(MyDir + @"\Artifacts\HtmlFixedPageHorizontalAlignment.html", htmlFixedSaveOptions);
+            doc.Save(ArtifactsDir + "HtmlFixedPageHorizontalAlignment.html", htmlFixedSaveOptions);
             //ExEnd
         }
 
@@ -166,8 +148,7 @@ namespace ApiExamples
                 PageMargins = 10
             };
 
-            doc.Save(MyDir + @"\Artifacts\HtmlFixedPageMargins.html", saveOptions);
-            //ExEnd
+            doc.Save(ArtifactsDir + "HtmlFixedPageMargins.html", saveOptions);
         }
 
         [Test]
@@ -187,7 +168,7 @@ namespace ApiExamples
 
             HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { OptimizeOutput = false };
 
-            doc.Save(MyDir + @"\Artifacts\HtmlFixedSaveOptions.OptimizeGraphicsOutput.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlFixedPageMargins.html", saveOptions);
             //ExEnd
         }
 
@@ -209,7 +190,7 @@ namespace ApiExamples
                 ResourceSavingCallback = new ResourceSavingCallback()
             };
 
-            doc.Save(MyDir + @"\Artifacts\UseMachineFonts Out.html", saveOptions);
+            doc.Save(ArtifactsDir + "UseMachineFonts.html", saveOptions);
         }
 
         private class ResourceSavingCallback : IResourceSavingCallback

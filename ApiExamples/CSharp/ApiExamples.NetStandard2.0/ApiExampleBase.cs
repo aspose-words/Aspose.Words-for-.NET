@@ -102,6 +102,22 @@ namespace ApiExamples
         /// <summary>
         /// Gets the path to the documents used by the code examples. Ends with a back slash.
         /// </summary>
+        internal static String ArtifactsDir
+        {
+            get { return gArtifactsDir; }
+        }
+
+        /// <summary>
+        /// Gets the path to the documents used by the code examples. Ends with a back slash.
+        /// </summary>
+        internal static String GoldsDir
+        {
+            get { return gGoldsDir; }
+        }
+
+        /// <summary>
+        /// Gets the path to the documents used by the code examples. Ends with a back slash.
+        /// </summary>
         internal static String MyDir
         {
             get { return gMyDir; }
@@ -126,12 +142,16 @@ namespace ApiExamples
         static ApiExampleBase()
         {
             gAssemblyDir = GetAssemblyDir(Assembly.GetExecutingAssembly());
+            gArtifactsDir = new Uri(new Uri(gAssemblyDir), @"../../../../../Data/Artifacts/").LocalPath;
+            gGoldsDir = new Uri(new Uri(gAssemblyDir), @"../../../../../Data/Golds/").LocalPath;
             gMyDir = new Uri(new Uri(gAssemblyDir), @"../../../../../Data/").LocalPath;
             gImageDir = new Uri(new Uri(gAssemblyDir), @"../../../../../Data/Images/").LocalPath;
             gDatabaseDir = new Uri(new Uri(gAssemblyDir), @"../../../../../Data/Database/").LocalPath;
         }
 
         private static readonly String gAssemblyDir;
+        private static readonly String gArtifactsDir;
+        private static readonly String gGoldsDir;
         private static readonly String gMyDir;
         private static readonly String gImageDir;
         private static readonly String gDatabaseDir;

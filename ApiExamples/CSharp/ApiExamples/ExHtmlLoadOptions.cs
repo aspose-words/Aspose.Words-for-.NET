@@ -31,7 +31,7 @@ namespace ApiExamples
             loadOptions.WebRequestTimeout = 1000;
 
             Document doc = new Document(MyDir + "Shape.VmlAndDml.htm", loadOptions);
-            doc.Save(MyDir + @"\Artifacts\Shape.VmlAndDml.docx");
+            doc.Save(ArtifactsDir + "Shape.VmlAndDml.docx");
             //ExEnd
         }
 

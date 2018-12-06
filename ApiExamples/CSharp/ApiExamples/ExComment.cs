@@ -39,8 +39,10 @@ namespace ApiExamples
             newComment.AddReply("John Doe", "JD", new DateTime(2017, 9, 25, 12, 15, 0), "New reply");
             //ExEnd
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            using (MemoryStream dstStream = new MemoryStream())
+            {
+                doc.Save(dstStream, SaveFormat.Docx);
+            }
 
             Comment docComment = (Comment) doc.GetChild(NodeType.Comment, 0, true);
 

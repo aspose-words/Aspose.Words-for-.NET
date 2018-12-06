@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -19,19 +19,17 @@ namespace ApiExamples
     /// </summary>
     public class ApiExampleBase
     {
-        private readonly string artifactsPath = MyDir + @"\Artifacts\";
-
         [SetUp]
         public void SetUp()
         {
             if (!CheckForSkipSetUp())
             {
                 SetUnlimitedLicense();
-
-                if (!Directory.Exists(artifactsPath))
-                    //Create new empty directory
-                    Directory.CreateDirectory(artifactsPath);
             }
+
+            if (!Directory.Exists(ArtifactsDir))
+                //Create new empty directory
+                Directory.CreateDirectory(ArtifactsDir);
         }
 
         [TearDown]
@@ -40,7 +38,7 @@ namespace ApiExamples
             if (!CheckForSkipTearDown())
             {
                 //Delete all dirs and files from directory
-                Directory.Delete(artifactsPath, true);
+                Directory.Delete(ArtifactsDir, true);
             }
         }
 
@@ -96,7 +94,23 @@ namespace ApiExamples
         /// <summary>
         /// Gets the path to the documents used by the code examples. Ends with a back slash.
         /// </summary>
-        internal static string MyDir
+        internal static String ArtifactsDir
+        {
+            get { return gArtifactsDir; }
+        }
+
+        /// <summary>
+        /// Gets the path to the documents used by the code examples. Ends with a back slash.
+        /// </summary>
+        internal static String GoldsDir
+        {
+            get { return gGoldsDir; }
+        }
+
+        /// <summary>
+        /// Gets the path to the documents used by the code examples. Ends with a back slash.
+        /// </summary>
+        internal static String MyDir
         {
             get { return gMyDir; }
         }
@@ -120,15 +134,19 @@ namespace ApiExamples
         static ApiExampleBase()
         {
             gAssemblyDir = GetAssemblyDir(Assembly.GetExecutingAssembly());
+            gArtifactsDir = new Uri(new Uri(gAssemblyDir), @"../../../../Data/Artifacts/").LocalPath;
+            gGoldsDir = new Uri(new Uri(gAssemblyDir), @"../../../../Data/Golds/").LocalPath;
             gMyDir = new Uri(new Uri(gAssemblyDir), @"../../../../Data/").LocalPath;
             gImageDir = new Uri(new Uri(gAssemblyDir), @"../../../../Data/Images/").LocalPath;
             gDatabaseDir = new Uri(new Uri(gAssemblyDir), @"../../../../Data/Database/").LocalPath;
         }
 
-        internal static readonly string gAssemblyDir;
-        internal static readonly string gMyDir;
-        internal static readonly string gImageDir;
-        internal static readonly string gDatabaseDir;
+        private static readonly String gAssemblyDir;
+        private static readonly String gArtifactsDir;
+        private static readonly String gGoldsDir;
+        private static readonly String gMyDir;
+        private static readonly String gImageDir;
+        private static readonly String gDatabaseDir;
 
         /// <summary>
         /// This is where the test license is on my development machine.

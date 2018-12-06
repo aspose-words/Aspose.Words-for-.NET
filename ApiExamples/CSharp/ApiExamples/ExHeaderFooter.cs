@@ -37,7 +37,7 @@ namespace ApiExamples
             // Add a paragraph with text to the footer.
             footer.AppendParagraph("TEST FOOTER");
 
-            doc.Save(MyDir + @"\Artifacts\HeaderFooter.CreateFooter.doc");
+            doc.Save(ArtifactsDir + "HeaderFooter.CreateFooter.doc");
             //ExEnd
 
             Assert.True(doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].Range.Text
@@ -72,7 +72,7 @@ namespace ApiExamples
                 footer?.Remove();
             }
 
-            doc.Save(MyDir + @"\Artifacts\HeaderFooter.RemoveFooters.doc");
+            doc.Save(ArtifactsDir + "HeaderFooter.RemoveFooters.doc");
             //ExEnd
         }
 
@@ -89,11 +89,11 @@ namespace ApiExamples
             HtmlSaveOptions saveOptions =
                 new HtmlSaveOptions(SaveFormat.Html) { ExportHeadersFootersMode = ExportHeadersFootersMode.None };
 
-            doc.Save(MyDir + @"\Artifacts\HeaderFooter.DisableHeadersFooters.html", saveOptions);
+            doc.Save(ArtifactsDir + "HeaderFooter.DisableHeadersFooters.html", saveOptions);
             //ExEnd
 
             // Verify that the output document is correct.
-            doc = new Document(MyDir + @"\Artifacts\HeaderFooter.DisableHeadersFooters.html");
+            doc = new Document(ArtifactsDir + "HeaderFooter.DisableHeadersFooters.html");
             Assert.IsFalse(doc.Range.Text.Contains("DYNAMIC TEMPLATE"));
         }
 
@@ -121,11 +121,11 @@ namespace ApiExamples
 
             footer.Range.Replace("(C) 2006 Aspose Pty Ltd.", "Copyright (C) 2011 by Aspose Pty Ltd.", options);
 
-            doc.Save(MyDir + @"\Artifacts\HeaderFooter.ReplaceText.doc");
+            doc.Save(ArtifactsDir + "HeaderFooter.ReplaceText.doc");
             //ExEnd
 
             // Verify that the appropriate changes were made to the output document.
-            doc = new Document(MyDir + @"\Artifacts\HeaderFooter.ReplaceText.doc");
+            doc = new Document(ArtifactsDir + "HeaderFooter.ReplaceText.doc");
             Assert.IsTrue(doc.Range.Text.Contains("Copyright (C) 2011 by Aspose Pty Ltd."));
         }
 
@@ -138,8 +138,8 @@ namespace ApiExamples
             //ExSummary: Show changes for headers and footers order
             Document doc = new Document(MyDir + "HeaderFooter.HeaderFooterOrder.docx");
 
-            //Assert that we use special header and footer for the first page
-            //The order for this: first header\footer, even header\footer, primary header\footer
+            // Assert that we use special header and footer for the first page
+            // The order for this: first header\footer, even header\footer, primary header\footer
             Section firstPageSection = doc.FirstSection;
             Assert.AreEqual(true, firstPageSection.PageSetup.DifferentFirstPageHeaderFooter);
 
@@ -148,20 +148,27 @@ namespace ApiExamples
 
             doc.Range.Replace(new Regex("(header|footer)"), "", options);
 
+            doc.Save(ArtifactsDir + "HeaderFooter.HeaderFooterOrder.docx");
+#if __MOBILE__
+            Assert.AreEqual("First header\nFirst footer\nSecond header\nSecond footer\nThird header\n" +
+                            "Third footer\n", logger.Text);
+#else
             Assert.AreEqual("First header\r\nFirst footer\r\nSecond header\r\nSecond footer\r\nThird header\r\n" +
                             "Third footer\r\n", logger.Text);
-
-            //Prepare our string builder for assert results without "DifferentFirstPageHeaderFooter"
+#endif
+            // Prepare our string builder for assert results without "DifferentFirstPageHeaderFooter"
             logger.ClearText();
 
-            //Remove special first page
-            //The order for this: primary header, default header, primary footer, default footer, even header\footer
+            // Remove special first page
+            // The order for this: primary header, default header, primary footer, default footer, even header\footer
             firstPageSection.PageSetup.DifferentFirstPageHeaderFooter = false;
 
             doc.Range.Replace(new Regex("(header|footer)"), "", options);
-            Assert.AreEqual(
-                "Third header\r\nFirst header\r\nThird footer\r\nFirst footer\r\nSecond header\r\nSecond footer\r\n",
-                logger.Text);
+#if __MOBILE__
+            Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\nSecond footer\n", logger.Text);
+#else
+            Assert.AreEqual("Third header\r\nFirst header\r\nThird footer\r\nFirst footer\r\nSecond header\r\nSecond footer\r\n", logger.Text);
+#endif
         }
 
         private class ReplaceLog : IReplacingCallback
@@ -304,7 +311,7 @@ namespace ApiExamples
             row.LastCell.CellFormat.PreferredWidth = PreferredWidth.FromPercent(100.0F * 2 / 3);
 
             // Save the resulting document.
-            doc.Save(MyDir + @"\Artifacts\HeaderFooter.Primer.doc");
+            doc.Save(ArtifactsDir + "HeaderFooter.Primer.doc");
         }
 
         /// <summary>

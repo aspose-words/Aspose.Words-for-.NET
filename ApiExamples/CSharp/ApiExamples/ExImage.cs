@@ -37,14 +37,14 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             builder.Write("Image from local file: ");
-            builder.InsertImage(MyDir + @"\Images\Aspose.Words.gif");
+            builder.InsertImage(MyDir + "Images/Aspose.Words.gif");
             builder.Writeln();
 
             builder.Write("Image from an Internet url, automatically downloaded for you: ");
             builder.InsertImage("http://www.aspose.com/Images/aspose-logo.jpg");
             builder.Writeln();
 
-            builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromUrl.doc");
+            builder.Document.Save(ArtifactsDir + "Image.CreateFromUrl.doc");
             //ExEnd
         }
 
@@ -57,7 +57,7 @@ namespace ApiExamples
             // This creates a builder and also an empty document inside the builder.
             DocumentBuilder builder = new DocumentBuilder();
 
-            Stream stream = File.OpenRead(MyDir + @"\Images\Aspose.Words.gif");
+            Stream stream = File.OpenRead(MyDir + "Images/Aspose.Words.gif");
             try
             {
                 builder.Write("Image from stream: ");
@@ -68,7 +68,7 @@ namespace ApiExamples
                 stream.Close();
             }
 
-            builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromStream.doc");
+            builder.Document.Save(ArtifactsDir + "Image.CreateFromStream.doc");
             //ExEnd
         }
 
@@ -91,7 +91,7 @@ namespace ApiExamples
             }
 #else
             // Insert a raster image.
-            Image rasterImage = Image.FromFile(MyDir + @"\Images\Aspose.Words.gif");
+            Image rasterImage = Image.FromFile(MyDir + "Images/Aspose.Words.gif");
             try
             {
                 builder.Write("Raster image: ");
@@ -104,7 +104,7 @@ namespace ApiExamples
             }
 
             // Aspose.Words allows to insert a metafile too.
-            Image metafile = Image.FromFile(MyDir + @"\Images\Hammer.wmf");
+            Image metafile = Image.FromFile(MyDir + "Images/Hammer.wmf");
             try
             {
                 builder.Write("Metafile: ");
@@ -116,7 +116,7 @@ namespace ApiExamples
                 metafile.Dispose();
             }
 #endif
-            builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFromImage.doc");
+            builder.Document.Save(ArtifactsDir + "Image.CreateFromImage.doc");
             //ExEnd
         }
 
@@ -143,7 +143,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             // By default, the image is inline.
-            Shape shape = builder.InsertImage(MyDir + @"\Images\Aspose.Words.gif");
+            Shape shape = builder.InsertImage(MyDir + "Images/Aspose.Words.gif");
 
             // Make the image float, put it behind text and center on the page.
             shape.WrapType = WrapType.None;
@@ -153,7 +153,7 @@ namespace ApiExamples
             shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
             shape.VerticalAlignment = VerticalAlignment.Center;
 
-            builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFloatingPageCenter.doc");
+            builder.Document.Save(ArtifactsDir + "Image.CreateFloatingPageCenter.doc");
             //ExEnd
         }
 
@@ -172,7 +172,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             // By default, the image is inline.
-            Shape shape = builder.InsertImage(MyDir + @"\Images\Hammer.wmf");
+            Shape shape = builder.InsertImage(MyDir + "Images/Hammer.wmf");
 
             // Make the image float, put it behind text and center on the page.
             shape.WrapType = WrapType.None;
@@ -187,7 +187,7 @@ namespace ApiExamples
             shape.Width = builder.CurrentSection.PageSetup.PageWidth;
             shape.Height = 50;
 
-            builder.Document.Save(MyDir + @"\Artifacts\Image.CreateFloatingPositionSize.doc");
+            builder.Document.Save(ArtifactsDir + "Image.CreateFloatingPositionSize.doc");
             //ExEnd
         }
 
@@ -201,11 +201,11 @@ namespace ApiExamples
             // This creates a builder and also an empty document inside the builder.
             DocumentBuilder builder = new DocumentBuilder();
 
-            Shape shape = builder.InsertImage(MyDir + @"\Images\Hammer.wmf");
+            Shape shape = builder.InsertImage(MyDir + "Images/Hammer.wmf");
             shape.HRef = "http://www.aspose.com/Community/Forums/75/ShowForum.aspx";
             shape.ScreenTip = "Aspose.Words Support Forums";
 
-            builder.Document.Save(MyDir + @"\Artifacts\Image.InsertImageWithHyperlink.doc");
+            builder.Document.Save(ArtifactsDir + "Image.InsertImageWithHyperlink.doc");
             //ExEnd
         }
 
@@ -219,13 +219,13 @@ namespace ApiExamples
             Document doc = new Document();
 
             Shape shape = new Shape(doc, ShapeType.Image);
-            shape.ImageData.SetImage(MyDir + @"\Images\Hammer.wmf");
+            shape.ImageData.SetImage(MyDir + "Images/Hammer.wmf");
             shape.Width = 100;
             shape.Height = 100;
 
             doc.FirstSection.Body.FirstParagraph.AppendChild(shape);
 
-            doc.Save(MyDir + @"\Artifacts\Image.CreateImageDirectly.doc");
+            doc.Save(ArtifactsDir + "Image.CreateImageDirectly.doc");
             //ExEnd
         }
 
@@ -241,7 +241,7 @@ namespace ApiExamples
             //ExSummary:Shows how to insert a linked image into a document. 
             DocumentBuilder builder = new DocumentBuilder();
 
-            string imageFileName = MyDir + @"\Images\Hammer.wmf";
+            string imageFileName = MyDir + "Images/Hammer.wmf";
 
             builder.Write("Image linked, not stored in the document: ");
 
@@ -271,7 +271,7 @@ namespace ApiExamples
             builder.InsertNode(stored);
             builder.Writeln();
 
-            builder.Document.Save(MyDir + @"\Artifacts\Image.CreateLinkedImage.doc");
+            builder.Document.Save(ArtifactsDir + "Image.CreateLinkedImage.doc");
             //ExEnd
         }
 
@@ -305,7 +305,7 @@ namespace ApiExamples
             //ExEnd
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
-            doc.Save(MyDir + @"\Artifacts\Image.DeleteAllImages.doc");
+            doc.Save(ArtifactsDir + "Image.DeleteAllImages.doc");
         }
 
         [Test]
@@ -336,8 +336,38 @@ namespace ApiExamples
             //ExEnd
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
-            doc.Save(MyDir + @"\Artifacts\Image.DeleteAllImagesPreOrder.doc");
+            doc.Save(ArtifactsDir + "Image.DeleteAllImagesPreOrder.doc");
         }
+
+        //ExStart
+        //ExFor:Shape
+        //ExFor:Shape.ImageData
+        //ExFor:Shape.HasImage
+        //ExFor:ImageData
+        //ExFor:FileFormatUtil.ImageTypeToExtension(Aspose.Words.Drawing.ImageType)
+        //ExFor:ImageData.ImageType
+        //ExFor:ImageData.Save(String)
+        //ExFor:CompositeNode.GetChildNodes(NodeType, bool)
+        //ExId:ExtractImagesToFiles
+        //ExSummary:Shows how to extract images from a document and save them as files.
+        [Test] //ExSkip
+        public void ExtractImagesToFiles()
+        {
+            Document doc = new Document(MyDir + "Image.SampleImages.doc");
+
+            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
+            int imageIndex = 0;
+            foreach (Shape shape in shapes)
+            {
+                if (shape.HasImage)
+                {
+                    string imageFileName = string.Format("Image.ExportImages.{0} Out{1}", imageIndex, FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType));
+                    shape.ImageData.Save(ArtifactsDir + imageFileName);
+                    imageIndex++;
+                }
+            }
+        }
+        //ExEnd
 
         [Test]
         public void ScaleImage()
@@ -353,7 +383,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             // By default, the image is inserted at 100% scale.
-            Shape shape = builder.InsertImage(MyDir + @"\Images\Aspose.Words.gif");
+            Shape shape = builder.InsertImage(MyDir + "Images/Aspose.Words.gif");
 
             // It is easy to change the shape size. In this case, make it 50% relative to the current shape size.
             shape.Width = shape.Width * 0.5;
@@ -364,7 +394,7 @@ namespace ApiExamples
             shape.Width = imageSize.WidthPoints * 1.1;
             shape.Height = imageSize.HeightPoints * 1.1;
 
-            builder.Document.Save(MyDir + @"\Artifacts\Image.ScaleImage.doc");
+            builder.Document.Save(ArtifactsDir + "Image.ScaleImage.doc");
             //ExEnd
         }
     }

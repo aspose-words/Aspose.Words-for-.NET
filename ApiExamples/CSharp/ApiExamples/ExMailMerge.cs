@@ -14,6 +14,7 @@ using Aspose.Words;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
 #if !(NETSTANDARD2_0 || __MOBILE__)
+using System.Data.OleDb;
 using System.Web;
 
 #endif
@@ -43,9 +44,7 @@ namespace ApiExamples
                 new object[] { "James Bond", "MI5 Headquarters", "Milbank", "", "London" });
 
             // Send the document in Word format to the client browser with an option to save to disk or open inside the current browser.
-            Assert.That(
-                () => doc.Save(Response, @"\Artifacts\MailMerge.ExecuteArray.doc", ContentDisposition.Inline, null),
-                Throws.TypeOf<ArgumentNullException>()); //Thrown because HttpResponse is null in the test.
+            Assert.That(() => doc.Save(Response, "Artifacts/MailMerge.ExecuteArray.doc", ContentDisposition.Inline, null), Throws.TypeOf<ArgumentNullException>()); //Thrown because HttpResponse is null in the test.
             //ExEnd
         }
 #endif
@@ -71,7 +70,7 @@ namespace ApiExamples
             // Field values from the table are inserted into the mail merge fields found in the document.
             doc.MailMerge.Execute(table);
 
-            doc.Save(MyDir + @"\Artifacts\MailMerge.ExecuteDataTable.doc");
+            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.doc");
             //ExEnd
         }
 
@@ -221,7 +220,7 @@ namespace ApiExamples
 
             doc.MailMerge.Execute(new[] { "Option_1", "Option_2" }, new object[] { null, null });
 
-            doc.Save(MyDir + @"\Artifacts\RemoveColonBetweenEmptyMergeFields.docx");
+            doc.Save(ArtifactsDir + "RemoveColonBetweenEmptyMergeFields.docx");
             //ExEnd
 
             Assert.AreEqual(resultText, doc.GetText());
@@ -395,10 +394,9 @@ namespace ApiExamples
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveEmptyTableRows;
             doc.MailMerge.ExecuteWithRegions(data);
 
-            doc.Save(MyDir + @"\Artifacts\MailMerge.CleanUp.docx");
+            doc.Save(ArtifactsDir + "MailMerge.CleanUp.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\MailMerge.CleanUp.docx",
-                MyDir + @"\Golds\MailMerge.CleanUp Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "MailMerge.CleanUp.docx", GoldsDir + "MailMerge.CleanUp Gold.docx"));
         }
 
         /// <summary>
@@ -440,7 +438,7 @@ namespace ApiExamples
                 new string[] { "FullName" },
                 new object[] { "James Bond" });
 
-            doc.Save(MyDir + @"\Artifacts\MailMerge.UnconditionalMergeFieldsAndRegions.docx");
+            doc.Save(ArtifactsDir + "MailMerge.UnconditionalMergeFieldsAndRegions.docx");
             //ExEnd
         }
     }
