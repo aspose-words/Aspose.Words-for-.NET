@@ -17,6 +17,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             ImportExportSVGinHTML(dataDir);
             SetCssClassNamePrefix(dataDir);
             SetExportCidUrlsForMhtmlResources(dataDir);
+            SetResolveFontNames(dataDir);
         }
 
         public static void SaveHtmlWithMetafileFormat(string dataDir)
@@ -82,6 +83,21 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             doc.Save(dataDir, saveOptions);
             // ExEnd:SetExportCidUrlsForMhtmlResources
             Console.WriteLine("\nDocument has saved with Content - Id URL scheme.\nFile saved at " + dataDir);
+        }
+
+        public static void SetResolveFontNames(string dataDir)
+        {
+            // ExStart:SetResolveFontNames
+            Document doc = new Document(dataDir + "Test File (docx).docx");
+
+            Aspose.Words.Saving.HtmlSaveOptions saveOptions = new Aspose.Words.Saving.HtmlSaveOptions(SaveFormat.Html);
+            saveOptions.PrettyFormat = true;
+            saveOptions.ResolveFontNames = true;
+
+            dataDir = dataDir + "ResolveFontNames_out.html";
+            doc.Save(dataDir, saveOptions);
+            // ExEnd:SetResolveFontNames
+            Console.WriteLine("\nFontSettings is used to resolve font family name.\nFile saved at " + dataDir);
         }
     }
 }

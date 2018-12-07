@@ -17,6 +17,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
 
             EscapeUriInPdf(dataDir);
             ExportHeaderFooterBookmarks(dataDir);
+            ScaleWmfFontsToMetafileSize(dataDir);
         }
 
         public static void EscapeUriInPdf(String dataDir)
@@ -50,5 +51,27 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             // ExEnd:ExportHeaderFooterBookmarks
             Console.WriteLine("\nFile saved at " + dataDir);
         }
+
+        public static void ScaleWmfFontsToMetafileSize(String dataDir)
+        {
+            // ExStart:ScaleWmfFontsToMetafileSize
+            // The path to the documents directory.
+            Document doc = new Document(dataDir + "MetafileRendering.docx");
+
+            MetafileRenderingOptions metafileRenderingOptions =
+                       new MetafileRenderingOptions
+                       {
+                           ScaleWmfFontsToMetafileSize = false
+                       };
+
+            // If Aspose.Words cannot correctly render some of the metafile records to vector graphics then Aspose.Words renders this metafile to a bitmap. 
+            PdfSaveOptions options = new PdfSaveOptions { MetafileRenderingOptions = metafileRenderingOptions };
+
+            dataDir = dataDir + "ScaleWmfFontsToMetafileSize_out.pdf";
+            doc.Save(dataDir, options);
+            // ExEnd:ScaleWmfFontsToMetafileSize
+            Console.WriteLine("\nFonts as metafile are rendered to its default size in PDF. File saved at " + dataDir);
+        }
+        
     }
 }

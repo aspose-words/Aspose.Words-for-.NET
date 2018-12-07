@@ -200,7 +200,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             }
             // cloneNode is a clone of blockLevelNode. If node != blockLevelNode, blockLevelAncestor is ancestor of node
             // that means it is a composite node.
-            Debug.Assert(cloneNode.IsComposite);
+            System.Diagnostics.Debug.Assert(cloneNode.IsComposite);
 
             // If a marker is a FieldStart node check if it's to be included or not.
             // We assume for simplicity that the FieldStart and FieldEnd appear in the same paragraph.
