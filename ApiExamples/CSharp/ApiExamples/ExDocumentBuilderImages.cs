@@ -179,17 +179,23 @@ namespace ApiExamples
 
             using (SKBitmap bitmap = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
             {
-                byte[] imageByteArray = bitmap.Bytes;
+                using (SKImage image = SKImage.FromBitmap(bitmap))
+                {
+                    using (SKData data = image.Encode()) // Encode the image (defaults to PNG)
+                    {
+                        byte[] imageByteArray = data.ToArray();
 
-                builder.Writeln("\nInserted image from byte array: ");
-                builder.InsertImage(imageByteArray);
+                        builder.Writeln("\nInserted image from byte array: ");
+                        builder.InsertImage(imageByteArray);
 
-                builder.Writeln("\nInserted image from byte array with a custom size: ");
-                builder.InsertImage(imageByteArray, ConvertUtil.PixelToPoint(250), ConvertUtil.PixelToPoint(144));
+                        builder.Writeln("\nInserted image from byte array with a custom size: ");
+                        builder.InsertImage(imageByteArray, ConvertUtil.PixelToPoint(250), ConvertUtil.PixelToPoint(144));
 
-                builder.Writeln("\nInserted image from byte array using relative positions: ");
-                builder.InsertImage(imageByteArray, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 
-                    100, 200, 100, WrapType.Square);
+                        builder.Writeln("\nInserted image from byte array using relative positions: ");
+                        builder.InsertImage(imageByteArray, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 
+                            100, 200, 100, WrapType.Square);
+                    }
+                }
             }
             
             doc.Save(ArtifactsDir + "InsertImageFromByteArray.NetStandard2.docx");
