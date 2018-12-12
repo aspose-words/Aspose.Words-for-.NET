@@ -5,12 +5,12 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+#if !__MOBILE__
 using System;
 using System.Collections;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
@@ -777,11 +777,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Font.DisapearingBulletPoints.pdf");
 
-#if __MOBILE__
-            Assert.True(callback.mFontWarnings[4].Description.Equals("Font 'SymbolPS' has not been found. Using 'Roboto Thin' font instead. Reason: closest match according to font info from the document."));
-#else
             Assert.True(callback.mFontWarnings[0].Description.Equals("Font 'SymbolPS' has not been found. Using 'Wingdings' font instead. Reason: closest match according to font info from the document."));
-#endif
         }
 
         [Test]
@@ -1337,3 +1333,4 @@ namespace ApiExamples
         }
     }
 }
+#endif

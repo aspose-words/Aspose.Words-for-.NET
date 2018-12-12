@@ -9,8 +9,6 @@ using System;
 using System.IO;
 using Aspose.Words;
 using NUnit.Framework;
-using Exception = System.Exception;
-using String = System.String;
 
 namespace ApiExamples
 {
@@ -136,6 +134,6 @@ namespace ApiExamples
         private static readonly String gDatabaseDir;
         private static readonly String gGoldsDir;
 
-        internal static readonly string TestLicenseFileName = Path.Combine(mExternalAppPath, "Aspose.Data/License/Aspose.Total.lic");
+        internal static readonly string TestLicenseFileName = Path.Combine(mExternalAppPath, "Aspose.Data/License/Aspose.Words.lic");
     }
 }

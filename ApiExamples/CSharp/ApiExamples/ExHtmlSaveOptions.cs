@@ -201,6 +201,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlSaveOptions.Html5Support.html", saveOptions);
         }
 
+#if !__MOBILE__
         [Test]
         [TestCase(false)]
         [TestCase(true)]
@@ -219,30 +220,21 @@ namespace ApiExamples
                 case false:
 
                     doc.Save(ArtifactsDir + "DocumentExportFonts 1.html", saveOptions);
-#if __MOBILE__
-                    Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir, "DocumentExportFonts 1.notoserif-regular.ttf",
-                        SearchOption.AllDirectories));
-                    break;
-#else
                     Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir, "DocumentExportFonts 1.times.ttf",
                         SearchOption.AllDirectories));
                     break;
-#endif
+
                 case true:
 
                     doc.Save(ArtifactsDir + "DocumentExportFonts 2.html", saveOptions);
-#if __MOBILE__
-                    Assert.IsEmpty(Directory.GetFiles(ArtifactsDir, "DocumentExportFonts 2.notoserif-regular.ttf",
-                        SearchOption.AllDirectories));
-                    break;
-#else
                     Assert.IsEmpty(Directory.GetFiles(ArtifactsDir, "DocumentExportFonts 2.times.ttf",
                         SearchOption.AllDirectories));
                     break;
-#endif
             }
         }
+#endif
 
+#if !__MOBILE__
         [Test]
         public void ResourceFolderPriority()
         {
@@ -260,14 +252,12 @@ namespace ApiExamples
                 SearchOption.AllDirectories);
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.001.jpeg", SearchOption.AllDirectories));
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.002.png", SearchOption.AllDirectories));
-#if __MOBILE__
-            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.roboto-regular.ttf", SearchOption.AllDirectories));
-#else
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.calibri.ttf", SearchOption.AllDirectories));
-#endif
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.css", SearchOption.AllDirectories));
         }
+#endif
 
+#if !__MOBILE__
         [Test]
         public void ResourceFolderLowPriority()
         {
@@ -293,6 +283,7 @@ namespace ApiExamples
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.css",
                 SearchOption.AllDirectories));
         }
+#endif
 
         [Test]
         public void SvgMetafileFormat()

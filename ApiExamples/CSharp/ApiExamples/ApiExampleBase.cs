@@ -144,13 +144,17 @@ namespace ApiExamples
 
         static ApiExampleBase()
         {
+#if __MOBILE__
+            gAssemblyDir = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
+#else
             gAssemblyDir = GetAssemblyDir(Assembly.GetExecutingAssembly());
-            gArtifactsDir = new Uri(new Uri(gAssemblyDir), @"../../../../Data/Artifacts/").LocalPath;
-            gLicenseDir = new Uri(new Uri(gAssemblyDir), @"../../../../Data/License/").LocalPath;
-            gGoldsDir = new Uri(new Uri(gAssemblyDir), @"../../../../Data/Golds/").LocalPath;
-            gMyDir = new Uri(new Uri(gAssemblyDir), @"../../../../Data/").LocalPath;
-            gImageDir = new Uri(new Uri(gAssemblyDir), @"../../../../Data/Images/").LocalPath;
-            gDatabaseDir = new Uri(new Uri(gAssemblyDir), @"../../../../Data/Database/").LocalPath;
+#endif
+            gArtifactsDir = new Uri(new Uri(gAssemblyDir), @"../../../../../Data/Artifacts/").LocalPath;
+            gLicenseDir = new Uri(new Uri(gAssemblyDir), @"../../../../../Data/License/").LocalPath;
+            gGoldsDir = new Uri(new Uri(gAssemblyDir), @"../../../../../Data/Golds/").LocalPath;
+            gMyDir = new Uri(new Uri(gAssemblyDir), @"../../../../../Data/").LocalPath;
+            gImageDir = new Uri(new Uri(gAssemblyDir), @"../../../../../Data/Images/").LocalPath;
+            gDatabaseDir = new Uri(new Uri(gAssemblyDir), @"../../../../../Data/Database/").LocalPath;
         }
 
         private static readonly String gAssemblyDir;

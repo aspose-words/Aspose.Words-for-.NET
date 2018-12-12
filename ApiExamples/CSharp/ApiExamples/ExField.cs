@@ -858,8 +858,15 @@ namespace ApiExamples
             {
                 while (fieldEnumerator.MoveNext())
                 {
-                    fieldEnumerator.Current.Start.Accept(fieldVisitor);
-                    fieldEnumerator.Current.End.Accept(fieldVisitor);
+                    if (fieldEnumerator.Current != null)
+                    {
+                        fieldEnumerator.Current.Start.Accept(fieldVisitor);
+                        fieldEnumerator.Current.End.Accept(fieldVisitor);
+                    }
+                    else
+                    {
+                        Console.WriteLine("There are no fields in the document.");
+                    }
                 }
             }
 
@@ -2410,7 +2417,7 @@ namespace ApiExamples
             Assert.AreEqual("DISPLAYBARCODE \"DEF456\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B",
                 doc.Range.Fields[1].GetFieldCode());
 
-            doc.Save(MyDir + @"\Artifacts\Field.MergeBarcode_QR.docx");
+            doc.Save(ArtifactsDir + "Field.MergeBarcode_QR.docx");
         }
 
         [Test] //ExSkip
@@ -2443,7 +2450,7 @@ namespace ApiExamples
             Assert.AreEqual("DISPLAYBARCODE \"123456789012\" EAN13 \\t \\p CASE \\x",
                 doc.Range.Fields[1].GetFieldCode());
 
-            doc.Save(MyDir + @"\Artifacts\Field.MergeBarcode_EAN13.docx");
+            doc.Save(ArtifactsDir + "Field.MergeBarcode_EAN13.docx");
         }
 
         [Test] //ExSkip
@@ -2474,7 +2481,7 @@ namespace ApiExamples
             Assert.AreEqual("DISPLAYBARCODE \"67890FGHIJ\" CODE39 \\d",
                 doc.Range.Fields[1].GetFieldCode());
 
-            doc.Save(MyDir + @"\Artifacts\Field.MergeBarcode_CODE39.docx");
+            doc.Save(ArtifactsDir + "Field.MergeBarcode_CODE39.docx");
         }
 
         [Test] //ExSkip
@@ -2504,7 +2511,7 @@ namespace ApiExamples
             Assert.AreEqual("DISPLAYBARCODE \"1234567891234\" ITF14 \\c STD",
                 doc.Range.Fields[1].GetFieldCode());
 
-            doc.Save(MyDir + @"\Artifacts\Field.MergeBarcode_ITF14.docx");
+            doc.Save(ArtifactsDir + "Field.MergeBarcode_ITF14.docx");
         }
 
         /// <summary>
@@ -3110,7 +3117,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Field.FieldStyleRef.docx");
             //ExEnd
         }
-        
+
+#if (!__MOBILE__)
         [Test]
         public void FieldDate()
         {
@@ -3154,6 +3162,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Field.Date.docx");
             //ExEnd
         }
+#endif
 
         [Test]
         [Ignore("WORDSNET-17669")]
@@ -3277,7 +3286,7 @@ namespace ApiExamples
             builder.BuildAndInsert(doc.FirstSection.Body.AppendParagraph(""));
 
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\Field.FieldBuilder.docx");
+            doc.Save(ArtifactsDir + "Field.FieldBuilder.docx");
             //ExEnd
         }
         
@@ -3310,7 +3319,7 @@ namespace ApiExamples
             Assert.AreEqual(" AUTHOR  \"Jane Doe\"", fieldAuthor.GetFieldCode());
             Assert.AreEqual("Jane Doe", fieldAuthor.Result);
             
-            doc.Save(MyDir + @"\Artifacts\Field.Author.docx");
+            doc.Save(ArtifactsDir + "Field.Author.docx");
             //ExEnd
         }
 
@@ -3349,7 +3358,7 @@ namespace ApiExamples
             Assert.AreEqual(" DOCVARIABLE  \"My Variable\"", fieldDocVariable.GetFieldCode());
             Assert.AreEqual("My variable's value", fieldDocVariable.Result);
 
-            doc.Save(MyDir + @"\Artifacts\Field.DocProperties.docx");
+            doc.Save(ArtifactsDir + "Field.DocProperties.docx");
             //ExEnd
         }
         
@@ -3378,7 +3387,7 @@ namespace ApiExamples
 
             Assert.AreEqual("My overriding comment.", field.Result);
 
-            doc.Save(MyDir + @"\Artifacts\Field.Comments.docx");
+            doc.Save(ArtifactsDir + "Field.Comments.docx");
             //ExEnd
         }
         
@@ -3438,7 +3447,7 @@ namespace ApiExamples
             builder.EndBookmark(field.Location);
 
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\Field.GoToButton.docx");
+            doc.Save(ArtifactsDir + "Field.GoToButton.docx");
         }
         
         [Test]
@@ -3471,7 +3480,7 @@ namespace ApiExamples
             doc.MailMerge.Execute(new [] { "MergeField" }, new object[] { "" });
             
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\Field.FillIn.docx");
+            doc.Save(ArtifactsDir + "Field.FillIn.docx");
         }
 
         /// <summary>
@@ -3522,7 +3531,7 @@ namespace ApiExamples
             Assert.AreEqual("New comment", field.Result);
             Assert.AreEqual("New comment", doc.BuiltInDocumentProperties.Comments);
 
-            doc.Save(MyDir + @"\Artifacts\Field.Info.docx");
+            doc.Save(ArtifactsDir + "Field.Info.docx");
             //ExEnd
         }
 
@@ -3558,7 +3567,7 @@ namespace ApiExamples
             Assert.AreEqual(" MACROBUTTON  ViewZoom200 Run ViewZoom200", field.GetFieldCode());
 
             // Save the document as a macro-enabled document type
-            doc.Save(MyDir + @"\Artifacts\Field.MacroButton.docm");
+            doc.Save(ArtifactsDir + "Field.MacroButton.docm");
             //ExEnd
         }
         
@@ -3592,7 +3601,7 @@ namespace ApiExamples
             // Setting a KEYWORDS field's Text property also updates the document's keywords to our new value
             Assert.AreEqual("OverridingKeyword", doc.BuiltInDocumentProperties.Keywords);
 
-            doc.Save(MyDir + @"\Artifacts\Field.Keywords.docx");
+            doc.Save(ArtifactsDir + "Field.Keywords.docx");
         }
 
         [Test]
@@ -3631,7 +3640,7 @@ namespace ApiExamples
             Assert.AreEqual(" PAGE ", fieldPage.GetFieldCode());
 
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\Field.Num.docx");
+            doc.Save(ArtifactsDir + "Field.Num.docx");
             //ExEnd
         }
 
@@ -3689,7 +3698,7 @@ namespace ApiExamples
             Assert.AreEqual(" PRINTDATE  \\u", fieldPrintDate.GetFieldCode());
 
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\Field.Print.docx");
+            doc.Save(ArtifactsDir + "Field.Print.docx");
             //ExEnd
         }
 
@@ -3722,7 +3731,7 @@ namespace ApiExamples
             Assert.AreEqual(" QUOTE \u0013 DATE \u0014" + System.DateTime.Now.Date.ToShortDateString() + "\u0015", field.GetFieldCode());
 
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\Field.Quote.docx");
+            doc.Save(ArtifactsDir + "Field.Quote.docx");
             //ExEnd
         }
 
@@ -3780,7 +3789,7 @@ namespace ApiExamples
             Assert.AreEqual(" NEXT ", fieldNext.GetFieldCode());
             Assert.AreEqual(" NEXTIF  5 = \"2 + 3\"", fieldNextIf.GetFieldCode());
 
-            doc.Save(MyDir + @"\Artifacts\Field.Next.docx");
+            doc.Save(ArtifactsDir + "Field.Next.docx");
         }
 
         /// <summary>
@@ -3841,7 +3850,7 @@ namespace ApiExamples
             InsertBookmarkWithFootnote(builder, "MyBookmark2", "Contents of MyBookmark2", "Footnote from MyBookmark2");
 
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\Field.NoteRef.docx");
+            doc.Save(ArtifactsDir + "Field.NoteRef.docx");
         }
 
         /// <summary>
@@ -3911,7 +3920,7 @@ namespace ApiExamples
             InsertAndNameBookmark(builder, "MyBookmark3");
 
             doc.UpdateFields();
-            doc.Save(MyDir + @"\Artifacts\Field.PageRef.docx");
+            doc.Save(ArtifactsDir + "Field.PageRef.docx");
         }
 
         /// <summary>

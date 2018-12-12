@@ -61,7 +61,6 @@ namespace ApiExamples
             license.SetLicense("");
             File.Delete(dstFileName);
         }
-#endif
 
         [Test]
         public void LicenseFromStream()
@@ -85,7 +84,7 @@ namespace ApiExamples
                 myStream.Close();
             }
         }
-
+#endif
         [Test]
         public void DocumentCtor()
         {

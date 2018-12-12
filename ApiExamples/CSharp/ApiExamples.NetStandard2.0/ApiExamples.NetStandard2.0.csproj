@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\ApiExamples\ApiExampleBase.cs" Link="ApiExampleBase.cs" />
     <Compile Include="..\ApiExamples\CustomBarcodeGenerator.cs" Link="CustomBarcodeGenerator.cs" />
     <Compile Include="..\ApiExamples\DocumentHelper.cs" Link="DocumentHelper.cs" />
     <Compile Include="..\ApiExamples\ExAbsolutePositionTab.cs" Link="ExAbsolutePositionTab.cs" />

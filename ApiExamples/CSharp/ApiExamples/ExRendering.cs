@@ -1111,7 +1111,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.doc");
 
             // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class.
-            ExFont.HandleDocumentWarnings callback = new ExFont.HandleDocumentWarnings();
+            HandleDocumentWarnings callback = new HandleDocumentWarnings();
             doc.WarningCallback = callback;
 
             // We can choose the default font to use in the case of any missing fonts.
@@ -1139,6 +1139,26 @@ namespace ApiExamples
 
             // Restore default fonts. 
             FontSettings.DefaultInstance.SetFontsSources(origFontSources);
+        }
+
+        public class HandleDocumentWarnings : IWarningCallback
+        {
+            /// <summary>
+            /// Our callback only needs to implement the "Warning" method. This method is called whenever there is a
+            /// potential issue during document processing. The callback can be set to listen for warnings generated during document
+            /// load and/or document save.
+            /// </summary>
+            public void Warning(WarningInfo info)
+            {
+                // We are only interested in fonts being substituted.
+                if (info.WarningType == WarningType.FontSubstitution)
+                {
+                    Console.WriteLine("Font substitution: " + info.Description);
+                    mFontWarnings.Warning(info); //ExSkip
+                }
+            }
+
+            public WarningInfoCollection mFontWarnings = new WarningInfoCollection(); //ExSkip
         }
 
         [Test]
