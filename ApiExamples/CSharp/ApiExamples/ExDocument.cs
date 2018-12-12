@@ -40,9 +40,12 @@ namespace ApiExamples
         [Test]
         public void LicenseFromFileNoPath()
         {
+            // This is where the test license is on my development machine.
+            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Words.lic");
+
             // Copy a license to the bin folder so the example can execute.
-            String dstFileName = Path.Combine(AssemblyDir, "Aspose.Words.lic");
-            File.Copy(TestLicenseFileName, dstFileName);
+            string dstFileName = Path.Combine(AssemblyDir, "Aspose.Words.lic");
+            File.Copy(testLicenseFileName, dstFileName);
 
             //ExStart
             //ExFor:License
@@ -63,7 +66,10 @@ namespace ApiExamples
         [Test]
         public void LicenseFromStream()
         {
-            Stream myStream = File.OpenRead(TestLicenseFileName);
+            // This is where the test license is on my development machine.
+            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Words.lic");
+
+            Stream myStream = File.OpenRead(testLicenseFileName);
             try
             {
                 //ExStart
