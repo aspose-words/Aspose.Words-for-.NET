@@ -272,8 +272,10 @@ namespace ApiExamples
             Assert.IsNotNull(logoImage);
             Assert.IsTrue(logoImage.HasImage);
         }
+
 #if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
+        [Ignore("Test need to be reworked")]
         public void MailMergeImageFromBlob()
         {
             //ExStart
