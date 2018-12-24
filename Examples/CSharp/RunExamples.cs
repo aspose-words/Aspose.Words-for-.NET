@@ -89,7 +89,7 @@ namespace Aspose.Words.Examples.CSharp
             // WorkingWithTxt.Run();
             // WorkingWithRTF.Run();
             // SaveOptionsHtmlFixed.Run();
-             SaveDocWithHtmlSaveOptions.Run();
+            // SaveDocWithHtmlSaveOptions.Run();
 
             //// =====================================================
             //// =====================================================

@@ -16,9 +16,15 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
     {
         public static void Run()
         {
+            string dataDir = RunExamples.GetDataDir_MailMergeAndReporting();
+            MustacheSyntax(dataDir);
+            UseOfifelseMustacheSyntax(dataDir);
+        }
+
+        public static void MustacheSyntax(string dataDir)
+        {
             // ExStart:MailMergeUsingMustacheSyntax
             // The path to the documents directory.
-            string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); 
             DataSet ds = new DataSet();
 
             ds.ReadXml(dataDir + "Vendors.xml");
@@ -35,6 +41,28 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
             doc.Save(dataDir);
             // ExEnd:MailMergeUsingMustacheSyntax
             Console.WriteLine("\nMail merge performed with mustache syntax successfully.\nFile saved at " + dataDir);
+        }
+
+        public static void UseOfifelseMustacheSyntax(string dataDir)
+        {
+            // ExStart:MailMergeUsingMustacheSyntax
+            // The path to the documents directory.
+            DataSet ds = new DataSet();
+
+            ds.ReadXml(dataDir + "Vendors.xml");
+
+            // Open a template document.
+            Document doc = new Document(dataDir + "UseOfifelseMustacheSyntax.docx");
+
+            doc.MailMerge.UseNonMergeFields = true;
+
+            doc.MailMerge.Execute(new String[] { "GENDER" }, new Object[] { "MALE" });
+
+            dataDir = dataDir + "MailMergeUsingMustacheSyntaxifelse_out.docx";
+            // Save the output document.
+            doc.Save(dataDir);
+            // ExEnd:MailMergeUsingMustacheSyntax
+            Console.WriteLine("\nMail merge performed with mustache if else syntax successfully.\nFile saved at " + dataDir);
         }
     }
 }
