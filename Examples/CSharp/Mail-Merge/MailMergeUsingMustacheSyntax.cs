@@ -24,7 +24,6 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
         public static void MustacheSyntax(string dataDir)
         {
             // ExStart:MailMergeUsingMustacheSyntax
-            // The path to the documents directory.
             DataSet ds = new DataSet();
 
             ds.ReadXml(dataDir + "Vendors.xml");
