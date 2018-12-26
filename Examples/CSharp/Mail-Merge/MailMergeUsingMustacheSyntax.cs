@@ -45,12 +45,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
 
         public static void UseOfifelseMustacheSyntax(string dataDir)
         {
-            // ExStart:MailMergeUsingMustacheSyntax
-            // The path to the documents directory.
-            DataSet ds = new DataSet();
-
-            ds.ReadXml(dataDir + "Vendors.xml");
-
+            // ExStart:UseOfifelseMustacheSyntax
             // Open a template document.
             Document doc = new Document(dataDir + "UseOfifelseMustacheSyntax.docx");
 
@@ -61,7 +56,7 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
             dataDir = dataDir + "MailMergeUsingMustacheSyntaxifelse_out.docx";
             // Save the output document.
             doc.Save(dataDir);
-            // ExEnd:MailMergeUsingMustacheSyntax
+            // ExEnd:UseOfifelseMustacheSyntax
             Console.WriteLine("\nMail merge performed with mustache if else syntax successfully.\nFile saved at " + dataDir);
         }
     }
