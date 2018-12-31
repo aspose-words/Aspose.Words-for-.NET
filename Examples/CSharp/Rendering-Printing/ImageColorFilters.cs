@@ -24,7 +24,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             SaveBlackWhiteTIFFwithLZW(doc, dataDir, true);
             SaveBlackWhiteTIFFwithCITT4(doc, dataDir, true);
             SaveBlackWhiteTIFFwithRLE(doc, dataDir, true);
-           
+            ExposeThresholdControlForTiffBinarization(dataDir);
         }
 
 
@@ -170,6 +170,22 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             doc.Save(dataDir, opt);
             // ExEnd:SaveImageToOnebitPerPixel   
             Console.WriteLine("\nDocument converted to PNG successfully with 1 bit per pixel.\nFile saved at " + dataDir);
+        }
+
+        private static void ExposeThresholdControlForTiffBinarization(string dataDir)
+        {
+            // ExStart:ExposeThresholdControlForTiffBinarization
+            Document doc = new Document(dataDir + "TestFile.Colors.docx");
+            ImageSaveOptions options = new ImageSaveOptions(Aspose.Words.SaveFormat.Tiff);
+            options.TiffCompression = TiffCompression.Ccitt3;
+            options.ImageColorMode = ImageColorMode.Grayscale;
+            options.TiffBinarizationMethod = ImageBinarizationMethod.FloydSteinbergDithering;
+            options.ThresholdForFloydSteinbergDithering = 254;
+
+            dataDir = dataDir + "ThresholdForFloydSteinbergDithering_out.tiff";
+            doc.Save(dataDir, options);
+            // ExEnd:ExposeThresholdControlForTiffBinarization   
+            Console.WriteLine("\nExpose Threshold Control For Tiff Binarization.\nFile saved at " + dataDir);
         }
     }
 }
