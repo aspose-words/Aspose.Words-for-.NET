@@ -24,7 +24,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             DocSaveOptions docSaveOptions = new DocSaveOptions();
             docSaveOptions.Password = "password";
             dataDir = dataDir + "Document.Password_out.doc";
-            doc.Save(dataDir);
+            doc.Save(dataDir, docSaveOptions);
             //ExEnd:EncryptDocumentWithPassword
             Console.WriteLine("\nThe password of document is set using RC4 encryption method. \nFile saved at " + dataDir);
         }
