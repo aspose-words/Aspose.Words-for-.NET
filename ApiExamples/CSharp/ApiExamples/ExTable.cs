@@ -172,7 +172,7 @@ namespace ApiExamples
             //ExId:TextboxToTable
             //ExSummary:Shows how to convert a textbox to a table and retain almost identical formatting. This is useful for HTML export.
             // Open the document
-            Document doc = new Document(MyDir + "Shape.Textbox.doc");
+            Document doc = new Document(MyDir + "Shape.TextBox.doc");
 
             // Convert all shape nodes which contain child nodes.
             // We convert the collection to an array as static "snapshot" because the original textboxes will be removed after conversion which will
@@ -185,7 +185,7 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(MyDir + @"\Artifacts\Table.ConvertTextboxToTable.html");
+            doc.Save(ArtifactsDir + "Table.ConvertTextBoxToTable.html");
         }
 
         /// <summary>
@@ -349,7 +349,7 @@ namespace ApiExamples
             // Fill the cells with a light green solid color.
             table.SetShading(TextureIndex.TextureSolid, Color.LightGreen, Color.Empty);
 
-            doc.Save(MyDir + @"\Artifacts\Table.SetOutlineBorders.doc");
+            doc.Save(ArtifactsDir + "Table.SetOutlineBorders.doc");
             //ExEnd
 
             // Verify the borders were set correctly.
@@ -380,7 +380,7 @@ namespace ApiExamples
             // Set a green border around and inside the table.
             table.SetBorders(LineStyle.Single, 1.5, Color.Green);
 
-            doc.Save(MyDir + @"\Artifacts\Table.SetAllBorders.doc");
+            doc.Save(ArtifactsDir + "Table.SetAllBorders.doc");
             //ExEnd
 
             // Verify the borders were set correctly.
@@ -412,10 +412,10 @@ namespace ApiExamples
             firstRow.RowFormat.AllowBreakAcrossPages = true;
             //ExEnd
 
-            doc.Save(MyDir + @"\Artifacts\Table.RowFormat.doc");
+            doc.Save(ArtifactsDir + "Table.RowFormat.doc");
 
-            doc = new Document(MyDir + @"\Artifacts\Table.RowFormat.doc");
-            table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            doc = new Document(ArtifactsDir + "Table.RowFormat.doc");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
             Assert.AreEqual(LineStyle.None, table.FirstRow.RowFormat.Borders.LineStyle);
             Assert.AreEqual(HeightRule.Auto, table.FirstRow.RowFormat.HeightRule);
             Assert.True(table.FirstRow.RowFormat.AllowBreakAcrossPages);
@@ -441,10 +441,10 @@ namespace ApiExamples
             firstCell.CellFormat.Shading.ForegroundPatternColor = Color.LightGreen;
             //ExEnd
 
-            doc.Save(MyDir + @"\Artifacts\Table.CellFormat.doc");
+            doc.Save(ArtifactsDir + "Table.CellFormat.doc");
 
-            doc = new Document(MyDir + @"\Artifacts\Table.CellFormat.doc");
-            table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            doc = new Document(ArtifactsDir + "Table.CellFormat.doc");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
             Assert.AreEqual(30, table.FirstRow.FirstCell.CellFormat.Width);
             Assert.AreEqual(TextOrientation.Downward, table.FirstRow.FirstCell.CellFormat.Orientation);
             Assert.AreEqual(Color.LightGreen.ToArgb(),
@@ -479,7 +479,7 @@ namespace ApiExamples
             // Clear the borders all cells in the table.
             table.ClearBorders();
 
-            doc.Save(MyDir + @"\Artifacts\Table.ClearBorders.doc");
+            doc.Save(ArtifactsDir + "Table.ClearBorders.doc");
             //ExEnd
         }
 
@@ -505,7 +505,7 @@ namespace ApiExamples
             // Replace any instances of our String in the last cell of the table only.
             table.LastRow.LastCell.Range.Replace("50", "20", options);
 
-            doc.Save(MyDir + @"\Artifacts\Table.ReplaceCellText.doc");
+            doc.Save(ArtifactsDir + "Table.ReplaceCellText.doc");
             //ExEnd
 
             Assert.AreEqual("20", table.LastRow.LastCell.ToString(SaveFormat.Text).Trim());
@@ -568,7 +568,7 @@ namespace ApiExamples
             // upon save. This has to do with document validation.
             table.ParentNode.InsertAfter(new Paragraph(doc), table);
 
-            doc.Save(MyDir + @"\Artifacts\Table.CloneTableAndInsert.doc");
+            doc.Save(ArtifactsDir + "Table.CloneTableAndInsert.doc");
             //ExEnd
 
             // Verify that the table was cloned and inserted properly.
@@ -602,7 +602,7 @@ namespace ApiExamples
                 row.RowFormat.AllowBreakAcrossPages = false;
             //ExEnd
 
-            doc.Save(MyDir + @"\Artifacts\Table.DisableBreakAcrossPages.doc");
+            doc.Save(ArtifactsDir + "Table.DisableBreakAcrossPages.doc");
 
             Assert.False(table.FirstRow.RowFormat.AllowBreakAcrossPages);
             Assert.False(table.LastRow.RowFormat.AllowBreakAcrossPages);
@@ -649,7 +649,7 @@ namespace ApiExamples
                     para.ParagraphFormat.KeepWithNext = true;
             //ExEnd
 
-            doc.Save(MyDir + @"\Artifacts\Table.KeepTableTogether.doc");
+            doc.Save(ArtifactsDir + "Table.KeepTableTogether.doc");
 
             // Verify the correct paragraphs were set properly.
             foreach (Paragraph para in table.GetChildNodes(NodeType.Paragraph, true).OfType<Paragraph>())
@@ -682,7 +682,7 @@ namespace ApiExamples
             // Add the row to the end of the table.
             table.AppendChild(clonedRow);
 
-            doc.Save(MyDir + @"\Artifacts\Table.AddCloneRowToTable.doc");
+            doc.Save(ArtifactsDir + "Table.AddCloneRowToTable.doc");
             //ExEnd
 
             // Verify that the row was cloned and appended properly.
@@ -910,7 +910,7 @@ namespace ApiExamples
             // Remove spacing between cells
             table.AllowCellSpacing = false;
 
-            doc.Save(MyDir + @"\Artifacts\Table.InsertTableUsingNodes.doc");
+            doc.Save(ArtifactsDir + "Table.InsertTableUsingNodes.doc");
             //ExEnd
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count);
@@ -946,7 +946,7 @@ namespace ApiExamples
             // Add this table to the first cell of the outer table.
             outerTable.FirstRow.FirstCell.AppendChild(innerTable);
 
-            doc.Save(MyDir + @"\Artifacts\Table.CreateNestedTable.doc");
+            doc.Save(ArtifactsDir + "Table.CreateNestedTable.doc");
 
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count); // ExSkip
             Assert.AreEqual(1, outerTable.FirstRow.FirstCell.Tables.Count); //ExSkip
@@ -1057,7 +1057,7 @@ namespace ApiExamples
             //ExEnd
 
             // Save the document.
-            doc.Save(MyDir + @"\Artifacts\Table.MergeCellRange.doc");
+            doc.Save(ArtifactsDir + "Table.MergeCellRange.doc");
 
             // Verify the cells were merged
             int mergedCellsCount = 0;
@@ -1143,7 +1143,7 @@ namespace ApiExamples
             // Remove the empty table container.
             secondTable.Remove();
 
-            doc.Save(MyDir + @"\Artifacts\Table.CombineTables.doc");
+            doc.Save(ArtifactsDir + "Table.CombineTables.doc");
             //ExEnd
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count);
@@ -1183,10 +1183,10 @@ namespace ApiExamples
                 table.PrependChild(currentRow);
             } while (currentRow != row);
 
-            doc.Save(MyDir + @"\Artifacts\Table.SplitTable.doc");
+            doc.Save(ArtifactsDir + "Table.SplitTable.doc");
             //ExEnd
 
-            doc = new Document(MyDir + @"\Artifacts\Table.SplitTable.doc");
+            doc = new Document(ArtifactsDir + "Table.SplitTable.doc");
             // Test we are adding the rows in the correct order and the 
             // selected row was also moved.
             Assert.AreEqual(row, table.FirstRow);

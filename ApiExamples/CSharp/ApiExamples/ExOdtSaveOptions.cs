@@ -27,7 +27,7 @@ namespace ApiExamples
             OdtSaveOptions saveOptions = new OdtSaveOptions();
             saveOptions.MeasureUnit = OdtSaveMeasureUnit.Inches;
 
-            doc.Save(MyDir + @"\Artifacts\OdtSaveOptions.MeasureUnit.odt");
+            doc.Save(ArtifactsDir + "OdtSaveOptions.MeasureUnit.odt");
             //ExEnd
         }
 
@@ -45,13 +45,13 @@ namespace ApiExamples
             saveOptions.Password = "@sposeEncrypted_1145";
 
             // Saving document using password property of OdtSaveOptions
-            doc.Save(MyDir + @"\Artifacts\OdtSaveOptions.SaveDocumentEncryptedWithAPassword" +
+            doc.Save(ArtifactsDir + "OdtSaveOptions.SaveDocumentEncryptedWithAPassword" +
                      FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
             //ExEnd
 
             // Check that all documents are encrypted with a password
             FileFormatInfo docInfo = FileFormatUtil.DetectFileFormat(
-                MyDir + @"\Artifacts\OdtSaveOptions.SaveDocumentEncryptedWithAPassword" +
+                ArtifactsDir + "OdtSaveOptions.SaveDocumentEncryptedWithAPassword" +
                 FileFormatUtil.SaveFormatToExtension(saveFormat));
             Assert.IsTrue(docInfo.IsEncrypted);
         }
@@ -73,13 +73,13 @@ namespace ApiExamples
             builder.Writeln("Encrypted document after changes.");
 
             // Saving document using new instance of OdtSaveOptions
-            doc.Save(MyDir + @"\Artifacts\OdtSaveOptions.LoadDocumentEncryptedWithAPassword" +
+            doc.Save(ArtifactsDir + "OdtSaveOptions.LoadDocumentEncryptedWithAPassword" +
                      FileFormatUtil.SaveFormatToExtension(saveFormat), new OdtSaveOptions("@sposeEncrypted_1145"));
             //ExEnd
 
             // Check that document is still encrypted with a password
             FileFormatInfo docInfo = FileFormatUtil.DetectFileFormat(
-                MyDir + @"\Artifacts\OdtSaveOptions.LoadDocumentEncryptedWithAPassword" +
+                ArtifactsDir + "OdtSaveOptions.LoadDocumentEncryptedWithAPassword" +
                 FileFormatUtil.SaveFormatToExtension(saveFormat));
             Assert.IsTrue(docInfo.IsEncrypted);
         }

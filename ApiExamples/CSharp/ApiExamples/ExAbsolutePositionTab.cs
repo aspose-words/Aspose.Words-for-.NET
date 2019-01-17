@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using NUnit.Framework;
 using Aspose.Words;
 
@@ -20,7 +21,7 @@ namespace ApiExamples
             // An AbsolutePositionTab is a child node of a paragraph. 
             // AbsolutePositionTabs get picked up when looking for nodes of the SpecialChar type.
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
-            AbsolutePositionTab absPositionTab = (AbsolutePositionTab) para.GetChild(NodeType.SpecialChar, 0, true);
+            AbsolutePositionTab absPositionTab = (AbsolutePositionTab)para.GetChild(NodeType.SpecialChar, 0, true);
 
             // This implementation of the DocumentVisitor pattern converts the document to plain text.
             MyDocToTxtWriter myDocToTxtWriter = new MyDocToTxtWriter();

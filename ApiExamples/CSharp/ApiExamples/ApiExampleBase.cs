@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -19,19 +19,17 @@ namespace ApiExamples
     /// </summary>
     public class ApiExampleBase
     {
-        private readonly string artifactsPath = MyDir + @"\Artifacts\";
-
         [SetUp]
         public void SetUp()
         {
             if (!CheckForSkipSetUp())
             {
                 SetUnlimitedLicense();
-
-                if (!Directory.Exists(artifactsPath))
-                    //Create new empty directory
-                    Directory.CreateDirectory(artifactsPath);
             }
+
+            if (!Directory.Exists(ArtifactsDir))
+                //Create new empty directory
+                Directory.CreateDirectory(ArtifactsDir);
         }
 
         [TearDown]
@@ -40,7 +38,7 @@ namespace ApiExamples
             if (!CheckForSkipTearDown())
             {
                 //Delete all dirs and files from directory
-                Directory.Delete(artifactsPath, true);
+                Directory.Delete(ArtifactsDir, true);
             }
         }
 
@@ -64,14 +62,17 @@ namespace ApiExamples
 
         internal static void SetUnlimitedLicense()
         {
-            if (File.Exists(TestLicenseFileName))
+            // This is where the test license is on my development machine.
+            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Words.lic");
+
+            if (File.Exists(testLicenseFileName))
             {
                 // This shows how to use an Aspose.Words license when you have purchased one.
                 // You don't have to specify full path as shown here. You can specify just the 
                 // file name if you copy the license file into the same folder as your application
                 // binaries or you add the license to your project as an embedded resource.
                 License license = new License();
-                license.SetLicense(TestLicenseFileName);
+                license.SetLicense(testLicenseFileName);
             }
         }
 
@@ -96,7 +97,31 @@ namespace ApiExamples
         /// <summary>
         /// Gets the path to the documents used by the code examples. Ends with a back slash.
         /// </summary>
-        internal static string MyDir
+        internal static String ArtifactsDir
+        {
+            get { return gArtifactsDir; }
+        }
+
+        /// <summary>
+        /// Gets the path to the license used by the code examples.
+        /// </summary>
+        internal static String LicenseDir
+        {
+            get { return gLicenseDir; }
+        }
+
+        /// <summary>
+        /// Gets the path to the documents used by the code examples. Ends with a back slash.
+        /// </summary>
+        internal static String GoldsDir
+        {
+            get { return gGoldsDir; }
+        }
+
+        /// <summary>
+        /// Gets the path to the documents used by the code examples. Ends with a back slash.
+        /// </summary>
+        internal static String MyDir
         {
             get { return gMyDir; }
         }
@@ -120,19 +145,20 @@ namespace ApiExamples
         static ApiExampleBase()
         {
             gAssemblyDir = GetAssemblyDir(Assembly.GetExecutingAssembly());
+            gArtifactsDir = new Uri(new Uri(gAssemblyDir), @"../../../../Data/Artifacts/").LocalPath;
+            gLicenseDir = new Uri(new Uri(gAssemblyDir), @"../../../../Data/License/").LocalPath;
+            gGoldsDir = new Uri(new Uri(gAssemblyDir), @"../../../../Data/Golds/").LocalPath;
             gMyDir = new Uri(new Uri(gAssemblyDir), @"../../../../Data/").LocalPath;
             gImageDir = new Uri(new Uri(gAssemblyDir), @"../../../../Data/Images/").LocalPath;
             gDatabaseDir = new Uri(new Uri(gAssemblyDir), @"../../../../Data/Database/").LocalPath;
         }
 
-        internal static readonly string gAssemblyDir;
-        internal static readonly string gMyDir;
-        internal static readonly string gImageDir;
-        internal static readonly string gDatabaseDir;
-
-        /// <summary>
-        /// This is where the test license is on my development machine.
-        /// </summary>
-        internal const string TestLicenseFileName = @"X:\awnet\TestData\Licenses\Aspose.Total.lic";
+        private static readonly String gAssemblyDir;
+        private static readonly String gArtifactsDir;
+        private static readonly String gLicenseDir;
+        private static readonly String gGoldsDir;
+        private static readonly String gMyDir;
+        private static readonly String gImageDir;
+        private static readonly String gDatabaseDir;
     }
 }

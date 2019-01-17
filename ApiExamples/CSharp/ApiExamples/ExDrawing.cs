@@ -96,7 +96,7 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(MyDir + @"\Artifacts\Drawing.VariousShapes.docx");
+            doc.Save(ArtifactsDir + "Drawing.VariousShapes.docx");
             //ExEnd
         }
 #endif
@@ -116,27 +116,28 @@ namespace ApiExamples
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            Shape balloon = new Shape(doc, ShapeType.Balloon)
+            {
+                Width = 200, 
+                Height = 200,
+                Stroke = { Color = Color.Red }
+            };
+
+            Shape cube = new Shape(doc, ShapeType.Cube)
+            {
+                Width = 100, 
+                Height = 100,
+                Stroke = { Color = Color.Blue }
+            };
+
             GroupShape group = new GroupShape(doc);
-
-            Assert.AreEqual(0, group.ChildNodes.Count);
-
-            Shape balloon = new Shape(doc, ShapeType.Balloon);
-            balloon.Width = 200;
-            balloon.Height = 200;
-            balloon.Stroke.Color = Color.Red;
-
-            Shape cube = new Shape(doc, ShapeType.Cube);
-            cube.Width = 100;
-            cube.Height = 100;
-            cube.Stroke.Color = Color.Blue;
-
             group.AppendChild(balloon);
             group.AppendChild(cube);
 
             builder.InsertNode(group);
 
             ShapeInfoPrinter printer = new ShapeInfoPrinter();
-
             group.Accept(printer);
 
             Console.WriteLine(printer.GetText());
@@ -226,21 +227,20 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Shape textbox = new Shape(doc, ShapeType.TextBox);
-
-            textbox.Width = 100;
-            textbox.Height = 100;
-
+            Shape textbox = new Shape(doc, ShapeType.TextBox)
+            {
+                Width = 100, 
+                Height = 100,
+                TextBox = { LayoutFlow = LayoutFlow.BottomToTop }
+            };
+            
             textbox.AppendChild(new Paragraph(doc));
-
             builder.InsertNode(textbox);
 
             builder.MoveTo(textbox.FirstParagraph);
-
             builder.Write("This text is flipped 90 degrees to the left.");
 
-            textbox.TextBox.LayoutFlow = LayoutFlow.BottomToTop;
-            doc.Save(MyDir + @"\Artifacts\Drawing.TextBox.docx");
+            doc.Save(ArtifactsDir + "Drawing.TextBox.docx");
             //ExEnd
         }
     }

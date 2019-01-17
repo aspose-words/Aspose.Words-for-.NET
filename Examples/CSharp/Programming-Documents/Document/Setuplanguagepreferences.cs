@@ -38,8 +38,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // ExStart:SetRussianAsDefaultEditingLanguage
             // The path to the documents directory.
             LoadOptions loadOptions = new LoadOptions();
-
-            loadOptions.LanguagePreferences.SetAsDefault(EditingLanguage.Russian);
+            loadOptions.LanguagePreferences.DefaultEditingLanguage = EditingLanguage.Russian;
 
             Document doc = new Document(dataDir + @"languagepreferences.docx", loadOptions);
 

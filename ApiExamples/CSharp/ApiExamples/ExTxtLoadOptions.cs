@@ -33,7 +33,7 @@ namespace ApiExamples
             };
 
             Document doc = new Document(MyDir + "TxtLoadOptions.DetectNumberingWithWhitespaces.txt", loadOptions);
-            doc.Save(MyDir + @"\Artifacts\TxtLoadOptions.DetectNumberingWithWhitespaces.txt");
+            doc.Save(ArtifactsDir + "TxtLoadOptions.DetectNumberingWithWhitespaces.txt");
             //ExEnd
         }
     }

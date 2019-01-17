@@ -98,7 +98,7 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(MyDir + @"\Artifacts\Document.TableOfContentsTabStops.doc");
+            doc.Save(ArtifactsDir + "Document.TableOfContentsTabStops.doc");
             //ExEnd
         }
 

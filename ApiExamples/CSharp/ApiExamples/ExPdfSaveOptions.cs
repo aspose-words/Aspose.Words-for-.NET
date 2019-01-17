@@ -6,12 +6,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using Aspose.Pdf;
-using Aspose.Pdf.Annotations;
 using Aspose.Words;
 using Aspose.Words.Saving;
-using Aspose.Pdf.Facades;
-using Aspose.Pdf.Text;
 using NUnit.Framework;
 using Document = Aspose.Words.Document;
 using IWarningCallback = Aspose.Words.IWarningCallback;
@@ -20,6 +16,12 @@ using SaveFormat = Aspose.Words.SaveFormat;
 using SaveOptions = Aspose.Words.Saving.SaveOptions;
 using WarningInfo = Aspose.Words.WarningInfo;
 using WarningType = Aspose.Words.WarningType;
+#if !__MOBILE__
+using Aspose.Pdf;
+using Aspose.Pdf.Facades;
+using Aspose.Pdf.Text;  
+using Aspose.Pdf.Annotations;
+#endif
 
 namespace ApiExamples
 {
@@ -58,17 +60,63 @@ namespace ApiExamples
             pdfSaveOptions.OutlineOptions.CreateMissingOutlineLevels = true;
             pdfSaveOptions.SaveFormat = SaveFormat.Pdf;
 
-            doc.Save(MyDir + @"\Artifacts\CreateMissingOutlineLevels.pdf", pdfSaveOptions);
+            doc.Save(ArtifactsDir + "CreateMissingOutlineLevels.pdf", pdfSaveOptions);
             //ExEnd
-
+#if !__MOBILE__
             // Bind PDF with Aspose.PDF
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
-            bookmarkEditor.BindPdf(MyDir + @"\Artifacts\CreateMissingOutlineLevels.pdf");
+            bookmarkEditor.BindPdf(ArtifactsDir + "CreateMissingOutlineLevels.pdf");
 
             // Get all bookmarks from the document
             Bookmarks bookmarks = bookmarkEditor.ExtractBookmarks();
 
             Assert.AreEqual(11, bookmarks.Count);
+#endif
+        }
+
+        [Test]
+        public void AllowToAddBookmarksWithWhiteSpaces()
+        {
+            //ExStart
+            //ExFor:OutlineOptions.BookmarksOutlineLevels
+            //ExFor:BookmarksOutlineLevelCollection.Add(String, Int32)
+            //ExSummary:Shows how adding bookmarks outlines with whitespaces(pdf, xps)
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Add bookmarks with whitespaces. MS Word formats (like doc, docx) does not support bookmarks with whitespaces by default 
+            // and all whitespaces in the bookmarks were replaced with underscores. If you need to use bookmarks in PDF or XPS outlines, you can use them with whitespaces.
+            builder.StartBookmark("My Bookmark");
+            builder.Writeln("Text inside a bookmark.");
+
+            builder.StartBookmark("Nested Bookmark");
+            builder.Writeln("Text inside a NestedBookmark.");
+            builder.EndBookmark("Nested Bookmark");
+
+            builder.Writeln("Text after Nested Bookmark.");
+            builder.EndBookmark("My Bookmark");
+
+            // Specify bookmarks outline level. If you are using xps format, just use XpsSaveOptions.
+            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
+            pdfSaveOptions.OutlineOptions.BookmarksOutlineLevels.Add("My Bookmark", 1);
+            pdfSaveOptions.OutlineOptions.BookmarksOutlineLevels.Add("Nested Bookmark", 2);
+
+            doc.Save(ArtifactsDir + "Bookmarks.WhiteSpaces.pdf", pdfSaveOptions);
+            //ExEnd
+#if !__MOBILE__
+            // Bind pdf with Aspose.Pdf
+            PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
+            bookmarkEditor.BindPdf(ArtifactsDir + "Bookmarks.WhiteSpaces.pdf");
+
+            // Get all bookmarks from the document
+            Bookmarks bookmarks = bookmarkEditor.ExtractBookmarks();
+
+            Assert.AreEqual(2, bookmarks.Count);
+
+            // Assert that all the bookmarks title are with whitespaces
+            Assert.AreEqual("My Bookmark", bookmarks[0].Title);
+            Assert.AreEqual("Nested Bookmark", bookmarks[1].Title);
+#endif
         }
 
         //Note: Test doesn't contain validation result.
@@ -84,7 +132,7 @@ namespace ApiExamples
 
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { DmlRenderingMode = DmlRenderingMode.DrawingML };
 
-            doc.Save(MyDir + @"\Artifacts\DrawingMl.pdf", pdfSaveOptions);
+            doc.Save(ArtifactsDir + "DrawingMl.pdf", pdfSaveOptions);
             //ExEnd
         }
 
@@ -101,10 +149,10 @@ namespace ApiExamples
                 UpdateFields = false
             };
 
-            doc.Save(MyDir + @"\Artifacts\UpdateFields_False.pdf", pdfSaveOptions);
+            doc.Save(ArtifactsDir + "UpdateFields_False.pdf", pdfSaveOptions);
             //ExEnd
-
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(MyDir + @"\Artifacts\UpdateFields_False.pdf");
+#if !__MOBILE__
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "UpdateFields_False.pdf");
 
             // Get text fragment by search String
             TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber("Page  of");
@@ -112,6 +160,7 @@ namespace ApiExamples
 
             // Assert that fields are not updated
             Assert.AreEqual("Page  of", textFragmentAbsorber.TextFragments[1].Text);
+#endif
         }
 
         [Test]
@@ -121,9 +170,9 @@ namespace ApiExamples
 
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { UpdateFields = true };
 
-            doc.Save(MyDir + @"\Artifacts\UpdateFields_False.pdf", pdfSaveOptions);
-
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(MyDir + @"\Artifacts\UpdateFields_False.pdf");
+            doc.Save(ArtifactsDir + "UpdateFields_False.pdf", pdfSaveOptions);
+#if !__MOBILE__
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "UpdateFields_False.pdf");
 
             // Get text fragment by search String from PDF document
             TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber("Page 1 of 2");
@@ -131,6 +180,7 @@ namespace ApiExamples
 
             // Assert that fields are updated
             Assert.AreEqual("Page 1 of 2", textFragmentAbsorber.TextFragments[1].Text);
+#endif
         }
 
         // For assert this test you need to open "SaveOptions.PdfImageCompression PDF_A_1_B Out.pdf" and "SaveOptions.PdfImageCompression PDF_A_1_A Out.pdf" 
@@ -152,16 +202,14 @@ namespace ApiExamples
                 ImageCompression = PdfImageCompression.Jpeg,
                 PreserveFormFields = true
             };
-            doc.Save(MyDir + @"\Artifacts\SaveOptions.PdfImageCompression.pdf", options);
+            doc.Save(ArtifactsDir + "SaveOptions.PdfImageCompression.pdf", options);
 
-            PdfSaveOptions optionsA1B = new PdfSaveOptions
-            {
-                Compliance = PdfCompliance.PdfA1b,
-                ImageCompression = PdfImageCompression.Jpeg,                
-            	JpegQuality = 50 // Use JPEG compression at 50% quality to reduce file size.
-            };
+            PdfSaveOptions optionsA1B = new PdfSaveOptions();
+            optionsA1B.Compliance = PdfCompliance.PdfA1b;
+            optionsA1B.ImageCompression = PdfImageCompression.Jpeg;
+            optionsA1B.JpegQuality = 100; // Use JPEG compression at 50% quality to reduce file size.
 
-            doc.Save(MyDir + @"\Artifacts\SaveOptions.PdfImageComppression PDF_A_1_B.pdf", optionsA1B);
+            doc.Save(ArtifactsDir + "SaveOptions.PdfImageComppression PDF_A_1_B.pdf", optionsA1B);
             //ExEnd
 
             PdfSaveOptions optionsA1A = new PdfSaveOptions
@@ -171,7 +219,7 @@ namespace ApiExamples
                 ImageCompression = PdfImageCompression.Jpeg
             };
 
-            doc.Save(MyDir + @"\Artifacts\SaveOptions.PdfImageComppression PDF_A_1_A.pdf", optionsA1A);
+            doc.Save(ArtifactsDir + "SaveOptions.PdfImageComppression PDF_A_1_A.pdf", optionsA1A);
         }
 
         [Test]
@@ -185,7 +233,8 @@ namespace ApiExamples
             // Set grayscale mode for document
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { ColorMode = ColorMode.Grayscale };
 
-            doc.Save(MyDir + @"\Artifacts\ColorMode.PdfGrayscaleMode.pdf", pdfSaveOptions);
+            // Assert that color image in document was grey
+            doc.Save(ArtifactsDir + "ColorMode.PdfGrayscaleMode.pdf", pdfSaveOptions);
             //ExEnd
         }
 
@@ -200,13 +249,14 @@ namespace ApiExamples
             
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { DisplayDocTitle = true };
 
-            doc.Save(MyDir + @"\Artifacts\PdfTitle.pdf", pdfSaveOptions);
+            doc.Save(ArtifactsDir + "PdfTitle.pdf", pdfSaveOptions);
             //ExEnd
-
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(MyDir + @"\Artifacts\PdfTitle.pdf");
+#if !__MOBILE__
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfTitle.pdf");
 
             Assert.IsTrue(pdfDocument.DisplayDocTitle);
             Assert.AreEqual("Windows bar pdf title", pdfDocument.Info.Title);
+#endif
         }
 
         [Test]
@@ -221,7 +271,7 @@ namespace ApiExamples
             SaveOptions saveOptions = SaveOptions.CreateSaveOptions(SaveFormat.Pdf);
             saveOptions.MemoryOptimization = true;
 
-            doc.Save(MyDir + @"\Artifacts\SaveOptions.MemoryOptimization.pdf", saveOptions);
+            doc.Save(ArtifactsDir + "SaveOptions.MemoryOptimization.pdf", saveOptions);
             //ExEnd
         }
 
@@ -242,11 +292,12 @@ namespace ApiExamples
             PdfSaveOptions options = new PdfSaveOptions();
             options.EscapeUri = isEscaped;
 
-            builder.Document.Save(MyDir + @"\Artifacts\PdfSaveOptions.EscapedUri.pdf", options);
+            builder.Document.Save(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf", options);
             //ExEnd
 
+#if !__MOBILE__
             Aspose.Pdf.Document pdfDocument =
-                new Aspose.Pdf.Document(MyDir + @"\Artifacts\PdfSaveOptions.EscapedUri.pdf");
+                new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf");
 
             // Get first page
             Page page = pdfDocument.Pages[1];
@@ -257,6 +308,8 @@ namespace ApiExamples
             string uriText = action.URI;
 
             Assert.AreEqual(result, uriText);
+#endif
+            //ExEnd
         }
 
         [Test]
@@ -283,8 +336,10 @@ namespace ApiExamples
             HandleDocumentWarnings callback = new HandleDocumentWarnings();
             doc.WarningCallback = callback;
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions { MetafileRenderingOptions = metafileRenderingOptions };
-            doc.Save(MyDir + @"\Artifacts\PdfSaveOptions.HandleRasterWarnings.pdf", saveOptions);
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.MetafileRenderingOptions = metafileRenderingOptions;
+            
+            doc.Save(ArtifactsDir + "PdfSaveOptions.HandleRasterWarnings.pdf", saveOptions);
 
             Assert.AreEqual(1, callback.mWarnings.Count);
             Assert.True(callback.mWarnings[0].Description.Contains("R2_XORPEN"));
@@ -334,7 +389,7 @@ namespace ApiExamples
                 HeaderFooterBookmarksExportMode = headerFooterBookmarksExportMode,
                 OutlineOptions = { DefaultBookmarksOutlineLevel = 1 }
             };
-            doc.Save(MyDir + @"\Artifacts\PdfSaveOption.HeaderFooterBookmarksExportMode.pdf", saveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOption.HeaderFooterBookmarksExportMode.pdf", saveOptions);
             //ExEnd
         }
     }

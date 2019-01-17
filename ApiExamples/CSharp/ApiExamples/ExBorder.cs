@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2017 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -77,7 +77,7 @@ namespace ApiExamples
 
             builder.CurrentParagraph.Runs[0].Text = "Paragraph with no border";
 
-            doc.Save(MyDir + @"\Artifacts\Border.NoBorder.doc");
+            doc.Save(ArtifactsDir + "Border.NoBorder.doc");
             //ExEnd
         }
 
@@ -200,7 +200,7 @@ namespace ApiExamples
                 table.AppendChild(row);
             }
 
-            doc.Save(MyDir + @"\Artifacts\Border.HorizontalAndVerticalBorders.docx");
+            doc.Save(ArtifactsDir + "Border.HorizontalAndVerticalBorders.docx");
             //ExEnd
         }
     }

@@ -16,7 +16,6 @@ namespace ApiExamples
     [TestFixture]
     internal class ExHtmlSaveOptions : ApiExampleBase
     {
-        // Note: For assert this test you need to open HTML docs and they shouldn't have negative left margins
         [Test]
         [TestCase(SaveFormat.Html)]
         [TestCase(SaveFormat.Mhtml)]
@@ -31,8 +30,7 @@ namespace ApiExamples
                 ExportPageMargins = true
             };
 
-            Save(doc, @"\Artifacts\HtmlSaveOptions.ExportPageMargins." + saveFormat.ToString().ToLower(), saveFormat,
-                saveOptions);
+            doc.Save(ArtifactsDir +"HtmlSaveOptions.ExportPageMargins" + FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
         }
 
         [Test]
@@ -43,32 +41,45 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "OfficeMath.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions
-            {
-                OfficeMathOutputMode = outputMode
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.OfficeMathOutputMode = outputMode;
 
-            Save(doc, @"\Artifacts\HtmlSaveOptions.ExportToHtmlUsingImage." + saveFormat.ToString().ToLower(),
-                saveFormat, saveOptions);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportToHtmlUsingImage" + FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
+        }
+
+        [Test]
+        [TestCase(SaveFormat.Html, true, Description = "TextBox as svg (html)")]
+        [TestCase(SaveFormat.Epub, true, Description = "TextBox as svg (epub)")]
+        [TestCase(SaveFormat.Mhtml, false, Description = "TextBox as img (mhtml)")]
+        public void ExportTextBoxAsSvg(SaveFormat saveFormat, bool isTextBoxAsSvg)
+        {
+            string[] dirFiles;
+
+            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportTextBoxAsSvg.docx");
+
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions(saveFormat);
+            saveOptions.ExportTextBoxAsSvg = isTextBoxAsSvg;
+            
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportTextBoxAsSvg" + FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
 
             switch (saveFormat)
             {
                 case SaveFormat.Html:
-                    DocumentHelper.FindTextInFile(
-                        MyDir + @"\Artifacts\HtmlSaveOptions.ExportToHtmlUsingImage." + saveFormat.ToString().ToLower(),
-                        "<img src=\"HtmlSaveOptions.ExportToHtmlUsingImage.001.png\" width=\"49\" height=\"19\" alt=\"\" style=\"vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />");
-                    return;
-
-                case SaveFormat.Mhtml:
-                    DocumentHelper.FindTextInFile(
-                        MyDir + @"\Artifacts\HtmlSaveOptions.ExportToHtmlUsingImage." + saveFormat.ToString().ToLower(),
-                        "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>A</mi><mo>=</mo><mi>π</mi><msup><mrow><mi>r</mi></mrow><mrow><mn>2</mn></mrow></msup></math>");
+                    
+                    dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvg.001.png", SearchOption.AllDirectories);
+                    Assert.IsEmpty(dirFiles);
                     return;
 
                 case SaveFormat.Epub:
-                    DocumentHelper.FindTextInFile(
-                        MyDir + @"\Artifacts\HtmlSaveOptions.ExportToHtmlUsingImage." + saveFormat.ToString().ToLower(),
-                        "<span style=\"font-family:\'Cambria Math\'\">A=π</span><span style=\"font-family:\'Cambria Math\'\">r</span><span style=\"font-family:\'Cambria Math\'\">2</span>");
+
+                    dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvg.001.png", SearchOption.AllDirectories);
+                    Assert.IsEmpty(dirFiles);
+                    return;
+
+                case SaveFormat.Mhtml: // ToDo: Check results of this assert
+
+                    dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvg.001.png", SearchOption.AllDirectories);
+                    Assert.IsEmpty(dirFiles);
                     return;
             }
         }
@@ -90,7 +101,7 @@ namespace ApiExamples
                 ExportListLabels = howExportListLabels
             };
 
-            doc.Save(MyDir + @"\Artifacts\Document.ExportListLabels.html", saveOptions);
+            doc.Save(ArtifactsDir + "Document.ExportListLabels.html", saveOptions);
         }
 
         [Test]
@@ -102,17 +113,14 @@ namespace ApiExamples
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions { ExportOriginalUrlForLinkedImages = export };
 
-            doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.ExportUrlForLinkedImage.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportUrlForLinkedImage.html", saveOptions);
 
-            string[] dirFiles = Directory.GetFiles(MyDir + @"\Artifacts\",
-                "HtmlSaveOptions.ExportUrlForLinkedImage.001.png", SearchOption.AllDirectories);
+            string[] dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportUrlForLinkedImage.001.png", SearchOption.AllDirectories);
 
             if (dirFiles.Length == 0)
-                DocumentHelper.FindTextInFile(MyDir + @"\Artifacts\HtmlSaveOptions.ExportUrlForLinkedImage.html",
-                    "<img src=\"http://www.aspose.com/images/aspose-logo.gif\"");
+                DocumentHelper.FindTextInFile(ArtifactsDir + "HtmlSaveOptions.ExportUrlForLinkedImage.html", "<img src=\"http://www.aspose.com/images/aspose-logo.gif\"");
             else
-                DocumentHelper.FindTextInFile(MyDir + @"\Artifacts\HtmlSaveOptions.ExportUrlForLinkedImage.html",
-                    "<img src=\"HtmlSaveOptions.ExportUrlForLinkedImage.001.png\"");
+                DocumentHelper.FindTextInFile(ArtifactsDir + "HtmlSaveOptions.ExportUrlForLinkedImage.html", "<img src=\"HtmlSaveOptions.ExportUrlForLinkedImage.001.png\"");
         }
 
         [Test]
@@ -120,8 +128,22 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "HtmlSaveOptions.ExportPageMargins.docx");
             HtmlSaveOptions saveOptions = new HtmlSaveOptions { ExportRoundtripInformation = true };
+            
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.RoundtripInformation.html", saveOptions);
+        }
 
-            doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.RoundtripInformation.html", saveOptions);
+        [Test]
+        public void RoundtripInformationDefaulValue()
+        {
+            //Assert that default value is true for HTML and false for MHTML and EPUB.
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html);
+            Assert.AreEqual(true, saveOptions.ExportRoundtripInformation);
+
+            saveOptions = new HtmlSaveOptions(SaveFormat.Mhtml);
+            Assert.AreEqual(false, saveOptions.ExportRoundtripInformation);
+
+            saveOptions = new HtmlSaveOptions(SaveFormat.Epub);
+            Assert.AreEqual(false, saveOptions.ExportRoundtripInformation);
         }
 
         [Test]
@@ -137,38 +159,33 @@ namespace ApiExamples
                 ResourceFolderAlias = "https://www.aspose.com/"
             };
 
-            doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.ExportPageMargins.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportPageMargins.html", saveOptions);
 
-            string[] imageFiles =
-                Directory.GetFiles(MyDir + @"\Artifacts\Resources\", "*.png", SearchOption.AllDirectories);
+            string[] imageFiles = Directory.GetFiles(ArtifactsDir + "Resources/", "*.png", SearchOption.AllDirectories);
             Assert.AreEqual(3, imageFiles.Length);
 
-            string[] fontFiles =
-                Directory.GetFiles(MyDir + @"\Artifacts\Resources\", "*.ttf", SearchOption.AllDirectories);
+            string[] fontFiles = Directory.GetFiles(ArtifactsDir + "Resources/", "*.ttf", SearchOption.AllDirectories);
             Assert.AreEqual(1, fontFiles.Length);
 
-            string[] cssFiles =
-                Directory.GetFiles(MyDir + @"\Artifacts\Resources\", "*.css", SearchOption.AllDirectories);
+            string[] cssFiles = Directory.GetFiles(ArtifactsDir + "Resources/", "*.css", SearchOption.AllDirectories);
             Assert.AreEqual(1, cssFiles.Length);
 
-            DocumentHelper.FindTextInFile(MyDir + @"\Artifacts\HtmlSaveOptions.ExportPageMargins.html",
-                "<link href=\"https://www.aspose.com/HtmlSaveOptions.ExportPageMargins.css\"");
+            DocumentHelper.FindTextInFile(ArtifactsDir + "HtmlSaveOptions.ExportPageMargins.html", "<link href=\"https://www.aspose.com/HtmlSaveOptions.ExportPageMargins.css\"");
         }
 
         [Test]
         public void ConvertFontsAsBase64()
         {
             Document doc = new Document(MyDir + "HtmlSaveOptions.ExportPageMargins.docx");
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions
-            {
-                CssStyleSheetType = CssStyleSheetType.External,
-                ResourceFolder = "Resources",
-                ExportFontResources = true,
-                ExportFontsAsBase64 = true
-            };
 
-            doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.ExportPageMargins.html", saveOptions);
-        }
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.CssStyleSheetType = CssStyleSheetType.External;
+            saveOptions.ResourceFolder = "Resources";
+            saveOptions.ExportFontResources = true;
+            saveOptions.ExportFontsAsBase64 = true;
+            
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportPageMargins.html", saveOptions);
+		}
 
         [TestCase(HtmlVersion.Html5)]
         [TestCase(HtmlVersion.Xhtml)]
@@ -181,9 +198,10 @@ namespace ApiExamples
                 HtmlVersion = htmlVersion
             };
 
-            doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.Html5Support.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.Html5Support.html", saveOptions);
         }
 
+#if !__MOBILE__
         [Test]
         [TestCase(false)]
         [TestCase(true)]
@@ -201,47 +219,45 @@ namespace ApiExamples
             {
                 case false:
 
-                    doc.Save(MyDir + @"\Artifacts\DocumentExportFonts.html", saveOptions);
-                    // Verify that the font has been added to the folder
-                    Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"Artifacts\", "DocumentExportFonts.times.ttf",
+                    doc.Save(ArtifactsDir + "DocumentExportFonts 1.html", saveOptions);
+                    Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir, "DocumentExportFonts 1.times.ttf",
                         SearchOption.AllDirectories));
                     break;
 
                 case true:
 
-                    doc.Save(MyDir + @"\Artifacts\DocumentExportFonts.html", saveOptions);
-                    // Verify that the font is not added to the folder
-                    Assert.IsEmpty(Directory.GetFiles(MyDir + @"Artifacts\", "DocumentExportFonts.times.ttf",
+                    doc.Save(ArtifactsDir + "DocumentExportFonts 2.html", saveOptions);
+                    Assert.IsEmpty(Directory.GetFiles(ArtifactsDir, "DocumentExportFonts 2.times.ttf",
                         SearchOption.AllDirectories));
                     break;
             }
         }
+#endif
 
+#if !__MOBILE__
         [Test]
         public void ResourceFolderPriority()
         {
             Document doc = new Document(MyDir + "HtmlSaveOptions.ResourceFolder.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions
-            {
-                CssStyleSheetType = CssStyleSheetType.External,
-                ExportFontResources = true,
-                ResourceFolder = MyDir + @"\Artifacts\Resources",
-                ResourceFolderAlias = "http://example.com/resources"
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.CssStyleSheetType = CssStyleSheetType.External;
+            saveOptions.ExportFontResources = true;
+            saveOptions.ResourceFolder = ArtifactsDir + "Resources";
+            saveOptions.ResourceFolderAlias = "http://example.com/resources";
 
-            doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.ResourceFolder.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ResourceFolder.html", saveOptions);
 
-            Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Resources",
-                "HtmlSaveOptions.ResourceFolder.001.jpeg", SearchOption.AllDirectories));
-            Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Resources",
-                "HtmlSaveOptions.ResourceFolder.002.png", SearchOption.AllDirectories));
-            Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Resources",
-                "HtmlSaveOptions.ResourceFolder.calibri.ttf", SearchOption.AllDirectories));
-            Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Resources", "HtmlSaveOptions.ResourceFolder.css",
-                SearchOption.AllDirectories));
+            string[] a = Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.001.jpeg",
+                SearchOption.AllDirectories);
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.001.jpeg", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.002.png", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.calibri.ttf", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.css", SearchOption.AllDirectories));
         }
+#endif
 
+#if !__MOBILE__
         [Test]
         public void ResourceFolderLowPriority()
         {
@@ -250,23 +266,24 @@ namespace ApiExamples
             {
                 CssStyleSheetType = CssStyleSheetType.External,
                 ExportFontResources = true,
-                FontsFolder = MyDir + @"\Artifacts\Fonts",
-                ImagesFolder = MyDir + @"\Artifacts\Images",
-                ResourceFolder = MyDir + @"\Artifacts\Resources",
+                FontsFolder = ArtifactsDir + "Fonts",
+                ImagesFolder = ArtifactsDir + "Images",
+                ResourceFolder = ArtifactsDir + "Resources",
                 ResourceFolderAlias = "http://example.com/resources"
             };
 
-            doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.ResourceFolder.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ResourceFolder.html", saveOptions);
 
-            Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Images",
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Images",
                 "HtmlSaveOptions.ResourceFolder.001.jpeg", SearchOption.AllDirectories));
-            Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Images", "HtmlSaveOptions.ResourceFolder.002.png",
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Images", "HtmlSaveOptions.ResourceFolder.002.png",
                 SearchOption.AllDirectories));
-            Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Fonts",
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Fonts",
                 "HtmlSaveOptions.ResourceFolder.calibri.ttf", SearchOption.AllDirectories));
-            Assert.IsNotEmpty(Directory.GetFiles(MyDir + @"\Artifacts\Resources", "HtmlSaveOptions.ResourceFolder.css",
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.css",
                 SearchOption.AllDirectories));
         }
+#endif
 
         [Test]
         public void SvgMetafileFormat()
@@ -280,7 +297,7 @@ namespace ApiExamples
                         style='fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;' />
                   </svg> ");
 
-            builder.Document.Save(MyDir + @"\Artifacts\HtmlSaveOptions.MetafileFormat.html",
+            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.MetafileFormat.html",
                 new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.Png });
         }
 
@@ -296,7 +313,7 @@ namespace ApiExamples
                         style='fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;' />
                   </svg> ");
 
-            builder.Document.Save(MyDir + @"\Artifacts\HtmlSaveOptions.MetafileFormat.html",
+            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.MetafileFormat.html",
                 new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.Png });
         }
 
@@ -315,7 +332,7 @@ namespace ApiExamples
                     ch9//q1uH4TLzw4d6+ErXMMcXuHWxId3KOETnnXXV6MJpcq2MLaI97CER3N0
                     vr4MkhoXe0rZigAAAABJRU5ErkJggg=="" alt=""Red dot"" />");
 
-            builder.Document.Save(MyDir + @"\Artifacts\HtmlSaveOptions.MetafileFormat.html",
+            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.MetafileFormat.html",
                 new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.EmfOrWmf });
         }
 
@@ -333,7 +350,7 @@ namespace ApiExamples
                 CssClassNamePrefix = "aspose-"
             };
 
-            doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.CssClassNamePrefix.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.CssClassNamePrefix.html", saveOptions);
             //ExEnd
         }
 
@@ -356,7 +373,7 @@ namespace ApiExamples
                 CssClassNamePrefix = null
             };
 
-            doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.CssClassNamePrefix.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.CssClassNamePrefix.html", saveOptions);
         }
 
         [Test]
@@ -364,31 +381,13 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "HtmlSaveOptions.ContentIdScheme.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Mhtml)
             {
                 PrettyFormat = true,
-                ExportCidUrlsForMhtmlResources = true,
-                SaveFormat = SaveFormat.Mhtml // It doesn't work correct without this parameter
+                ExportCidUrlsForMhtmlResources = true
             };
 
-            doc.Save(MyDir + @"\Artifacts\HtmlSaveOptions.ContentIdScheme.mhtml", saveOptions);
-        }
-
-        private static void Save(Document inputDoc, string outputDocPath, SaveFormat saveFormat,
-            SaveOptions saveOptions)
-        {
-            switch (saveFormat)
-            {
-                case SaveFormat.Html:
-                    inputDoc.Save(MyDir + outputDocPath, saveOptions);
-                    return;
-                case SaveFormat.Mhtml:
-                    inputDoc.Save(MyDir + outputDocPath, saveOptions);
-                    return;
-                case SaveFormat.Epub:
-                    inputDoc.Save(MyDir + outputDocPath, saveOptions);
-                    return;
-            }
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ContentIdScheme.mhtml", saveOptions);
         }
     }
 }

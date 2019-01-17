@@ -52,7 +52,7 @@ namespace ApiExamples
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).Count);
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.GroupShape, true).Count);
 
-            doc.Save(MyDir + @"\Artifacts\Shape.DeleteAllShapes.doc");
+            doc.Save(ArtifactsDir + "Shape.DeleteAllShapes.doc");
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace ApiExamples
             doc.FirstSection.Body.FirstParagraph.AppendChild(lineA);
             doc.FirstSection.Body.FirstParagraph.AppendChild(lineB);
 
-            doc.Save(MyDir + @"\Artifacts\Shape.LineFlipOrientation.doc");
+            doc.Save(ArtifactsDir + "Shape.LineFlipOrientation.doc");
             //ExEnd
         }
 
@@ -146,7 +146,7 @@ namespace ApiExamples
             shape.Top = -100;
             builder.InsertNode(shape);
 
-            builder.Document.Save(MyDir + @"\Artifacts\Shape.Fill.doc");
+            builder.Document.Save(ArtifactsDir + "Shape.Fill.doc");
             //ExEnd
         }
 
@@ -225,7 +225,7 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(MyDir + @"\Artifacts\Shape.ReplaceTextboxesWithImages.doc");
+            doc.Save(ArtifactsDir + "Shape.ReplaceTextboxesWithImages.doc");
             //ExEnd
         }
 
@@ -273,7 +273,7 @@ namespace ApiExamples
             doc.FirstSection.Body.FirstParagraph.AppendChild(textBox);
 
             // Save the output
-            doc.Save(MyDir + @"\Artifacts\Shape.CreateTextBox.doc");
+            doc.Save(ArtifactsDir + "Shape.CreateTextBox.doc");
             //ExEnd
         }
 
@@ -391,9 +391,8 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
 
             //Get OfficeMath node from the document and render this as image (you can also do the same with the Shape node)
-            OfficeMath math = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
-            math.GetMathRenderer()
-                .Save(MyDir + @"\Artifacts\Shape.OfficeMath.svg", new ImageSaveOptions(SaveFormat.Svg));
+            OfficeMath math = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
+            math.GetMathRenderer().Save(ArtifactsDir + "Shape.OfficeMath.svg", new ImageSaveOptions(SaveFormat.Svg));
             //ExEnd
         }
 
@@ -433,10 +432,9 @@ namespace ApiExamples
             officeMath.DisplayType = OfficeMathDisplayType.Display;
             officeMath.Justification = OfficeMathJustification.Left;
 
-            doc.Save(MyDir + @"Artifacts\Shape.OfficeMath.docx");
+            doc.Save(ArtifactsDir + "Shape.OfficeMath.docx");
             //ExEnd
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"Artifacts\Shape.OfficeMath.docx",
-                MyDir + @"\Golds\Shape.OfficeMath Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "Shape.OfficeMath.docx", GoldsDir + "Shape.OfficeMath Gold.docx"));
         }
 
         [Test]
@@ -666,7 +664,7 @@ namespace ApiExamples
 
             builder.InsertOleObject("http://www.aspose.com", "htmlfile", true, false, null);
 
-            doc.Save(MyDir + @"\Artifacts\Document.InsertedOleObject.docx");
+            doc.Save(ArtifactsDir + "Document.InsertedOleObject.docx");
         }
 
         [Test]
@@ -692,11 +690,11 @@ namespace ApiExamples
                 setOlePackage.FileName = "Cat FileName.zip";
                 setOlePackage.DisplayName = "Cat DisplayName.zip";
 
-                doc.Save(MyDir + @"\Artifacts\Shape.InsertOlePackage.docx");
+                doc.Save(ArtifactsDir + "Shape.InsertOlePackage.docx");
             }
             //ExEnd
 
-            doc = new Document(MyDir + @"\Artifacts\Shape.InsertOlePackage.docx");
+            doc = new Document(ArtifactsDir + "Shape.InsertOlePackage.docx");
 
             Shape getShape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             OlePackage getOlePackage = getShape.OleFormat.OlePackage;
@@ -760,10 +758,9 @@ namespace ApiExamples
             // in this case NumberFormat will be reset to general and inherited from a source cell.
             chartDataLabel2.NumberFormat.IsLinkedToSource = true;
 
-            doc.Save(MyDir + @"\Artifacts\DocumentBuilder.NumberFormat.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.NumberFormat.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\DocumentBuilder.NumberFormat.docx",
-                MyDir + @"\Golds\DocumentBuilder.NumberFormat Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "DocumentBuilder.NumberFormat.docx", GoldsDir + "DocumentBuilder.NumberFormat Gold.docx"));
         }
 
         [Test]
@@ -818,7 +815,7 @@ namespace ApiExamples
             seriesColl.Add("AW Series 4", categories,
                 new[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, 9 });
 
-            doc.Save(MyDir + @"\Artifacts\EmptyValuesInChartData.docx");
+            doc.Save(ArtifactsDir + "EmptyValuesInChartData.docx");
         }
 
         [Test]
@@ -970,8 +967,8 @@ namespace ApiExamples
             yAxis.TickLabelPosition = AxisTickLabelPosition.NextToAxis;
             //ExEnd
 
-            doc.Save(MyDir + @"\Artifacts\Shape.InsertChartUsingAxisProperties Out.docx");
-            doc.Save(MyDir + @"\Artifacts\Shape.InsertChartUsingAxisProperties Out.pdf");
+            doc.Save(ArtifactsDir + "Shape.InsertChartUsingAxisProperties Out.docx");
+            doc.Save(ArtifactsDir + "Shape.InsertChartUsingAxisProperties Out.pdf");
         }
 
         [Test]
@@ -1004,8 +1001,10 @@ namespace ApiExamples
                 },
                 new [] { 1.2, 0.3, 2.1, 2.9, 4.2, 5.3 });
 
-            // Set X axis bounds.
             ChartAxis xAxis = chart.AxisX;
+            ChartAxis yAxis = chart.AxisY;
+
+            // Set X axis bounds.
             xAxis.Scaling.Minimum = new AxisBound(new DateTime(2017, 11, 05).ToOADate());
             xAxis.Scaling.Maximum = new AxisBound(new DateTime(2017, 12, 03));
 
@@ -1014,10 +1013,17 @@ namespace ApiExamples
             xAxis.MinorUnit = 1;
             xAxis.MajorTickMark = AxisTickMark.Cross;
             xAxis.MinorTickMark = AxisTickMark.Outside;
-            //ExEnd
+            
+            // Define Y axis properties.
+            yAxis.TickLabelPosition = AxisTickLabelPosition.High;
+            yAxis.MajorUnit = 100;
+            yAxis.MinorUnit = 50;
+            yAxis.DisplayUnit.Unit = AxisBuiltInUnit.Hundreds;
+            yAxis.Scaling.Minimum = new AxisBound(100);
+            yAxis.Scaling.Maximum = new AxisBound(700);
 
-            doc.Save(MyDir + @"\Artifacts\Shape.InsertChartWithDateTimeValues Out.docx");
-            doc.Save(MyDir + @"\Artifacts\Shape.InsertChartWithDateTimeValues Out.pdf");
+            doc.Save(ArtifactsDir + "ChartAxisProperties.docx");
+            //ExEnd
         }
 
         [Test]
@@ -1077,8 +1083,8 @@ namespace ApiExamples
             chart.AxisY.NumberFormat.FormatCode = "#,##0";
             //ExEnd
 
-            doc.Save(MyDir + @"\Artifacts\Shape.SetNumberFormatToChartAxis Out.docx");
-            doc.Save(MyDir + @"\Artifacts\Shape.SetNumberFormatToChartAxis Out.pdf");
+            doc.Save(ArtifactsDir + "Shape.SetNumberFormatToChartAxis Out.docx");
+            doc.Save(ArtifactsDir + "Shape.SetNumberFormatToChartAxis Out.pdf");
         }
 
         // Note: Tests below used for verification conversion docx to pdf and the correct display.
@@ -1105,8 +1111,8 @@ namespace ApiExamples
                 new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
 
-            doc.Save(MyDir + @"\Artifacts\Shape.TestDisplayChartsWithConversion Out.docx");
-            doc.Save(MyDir + @"\Artifacts\Shape.TestDisplayChartsWithConversion Out.pdf");
+            doc.Save(ArtifactsDir + "Shape.TestDisplayChartsWithConversion Out.docx");
+            doc.Save(ArtifactsDir + "Shape.TestDisplayChartsWithConversion Out.pdf");
         }
 
         [Test]
@@ -1134,8 +1140,8 @@ namespace ApiExamples
                 new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 500000, 820000, 1500000, 400000, 100000 });
 
-            doc.Save(MyDir + @"\Artifacts\SurfaceChart Out.docx");
-            doc.Save(MyDir + @"\Artifacts\SurfaceChart Out.pdf");
+            doc.Save(ArtifactsDir + "SurfaceChart Out.docx");
+            doc.Save(ArtifactsDir + "SurfaceChart Out.pdf");
         }
 
         [Test]
@@ -1156,8 +1162,8 @@ namespace ApiExamples
                 new double[] { 1900000, 850000, 2100000, 600000, 1500000 },
                 new double[] { 900000, 450000, 2500000, 800000, 500000 });
 
-            doc.Save(MyDir + @"\Artifacts\BubbleChart Out.docx");
-            doc.Save(MyDir + @"\Artifacts\BubbleChart Out.pdf");
+            doc.Save(ArtifactsDir + "BubbleChart Out.docx");
+            doc.Save(ArtifactsDir + "BubbleChart Out.pdf");
         }
 
         [Test]
@@ -1172,7 +1178,7 @@ namespace ApiExamples
             shape.Width = 500;
             shape.Rotation = 30;
 
-            doc.Save(MyDir + @"\Artifacts\Shape.Resize.docx");
+            doc.Save(ArtifactsDir + "Shape.Resize.docx");
         }
 
         [Test]
@@ -1223,7 +1229,7 @@ namespace ApiExamples
             // Adding the following line is needed to make the shape displayed in center of a page.
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2010);
 
-            doc.Save(MyDir + @"\Artifacts\Shape.LayoutInCell.docx");
+            doc.Save(ArtifactsDir + "Shape.LayoutInCell.docx");
             //ExEnd
         }
 
@@ -1245,7 +1251,7 @@ namespace ApiExamples
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
             // "Strict" or "Transitional" compliance allows to save shape as DML
             saveOptions.Compliance = OoxmlCompliance.Iso29500_2008_Transitional;
-            doc.Save(MyDir + @"\Artifacts\RotatedShape.docx", saveOptions);
+            doc.Save(ArtifactsDir + "RotatedShape.docx", saveOptions);
             //ExEnd
         }
     }

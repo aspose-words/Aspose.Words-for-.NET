@@ -26,7 +26,7 @@ namespace ApiExamples
             };
 
             Document doc = new Document(MyDir + "RtfLoadOptions.RecognizeUtf8Text.rtf", loadOptions);
-            doc.Save(MyDir + @"\Artifacts\RtfLoadOptions.RecognizeUtf8Text.rtf");
+            doc.Save(ArtifactsDir + "RtfLoadOptions.RecognizeUtf8Text.rtf");
             //ExEnd
         }
     }

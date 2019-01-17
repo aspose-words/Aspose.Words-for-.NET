@@ -13,6 +13,9 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
+#if !(NETSTANDARD2_0 || __MOBILE__)
+using System.Data.OleDb;
+#endif
 
 namespace ApiExamples
 {
@@ -52,10 +55,7 @@ namespace ApiExamples
             doc.MailMerge.Execute(new string[] { "htmlField1" }, new object[] { htmltext });
 
             // Save resulting document with a new name.
-            doc.Save(MyDir + @"\Artifacts\MailMerge.InsertHtml.doc");
-
-            Assert.IsTrue(DocumentHelper.CompareDocs(MyDir + @"\Artifacts\MailMerge.InsertHtml.doc",
-                MyDir + @"\Golds\MailMerge.InsertHtml Gold.doc"));
+            doc.Save(ArtifactsDir + "MailMerge.InsertHtml.doc");
         }
 
         private class HandleMergeFieldInsertHtml : IFieldMergingCallback
@@ -109,7 +109,7 @@ namespace ApiExamples
             doc.MailMerge.ExecuteWithRegions(dataTable);
 
             // Save resulting document with a new name.
-            doc.Save(MyDir + @"\Artifacts\MailMerge.InsertCheckBox.doc");
+            doc.Save(ArtifactsDir + "MailMerge.InsertCheckBox.doc");
         }
 
         private class HandleMergeFieldInsertCheckBox : IFieldMergingCallback
@@ -176,7 +176,7 @@ namespace ApiExamples
             DataTable dataTable = GetSuppliersDataTable();
             doc.MailMerge.ExecuteWithRegions(dataTable);
 
-            doc.Save(MyDir + @"\Artifacts\MailMerge.AlternatingRows.doc");
+            doc.Save(ArtifactsDir + "MailMerge.AlternatingRows.doc");
         }
 
         private class HandleMergeFieldAlternatingRows : IFieldMergingCallback
@@ -264,7 +264,7 @@ namespace ApiExamples
             doc.MailMerge.Execute(new string[] { "Logo" },
                 new object[] { "http://www.aspose.com/images/aspose-logo.gif" });
 
-            doc.Save(MyDir + @"\Artifacts\MailMerge.MergeImageFromUrl.doc");
+            doc.Save(ArtifactsDir + "MailMerge.MergeImageFromUrl.doc");
             //ExEnd
 
             // Verify the image was merged into the document.
@@ -272,5 +272,64 @@ namespace ApiExamples
             Assert.IsNotNull(logoImage);
             Assert.IsTrue(logoImage.HasImage);
         }
+
+        #if !(NETSTANDARD2_0 || __MOBILE__)
+        [Test]
+        public void MailMergeImageFromBlob()
+        {
+            //ExStart
+            //ExFor:MailMerge.FieldMergingCallback
+            //ExFor:MailMerge.ExecuteWithRegions(IDataReader,String)
+            //ExFor:IFieldMergingCallback
+            //ExFor:ImageFieldMergingArgs
+            //ExFor:IFieldMergingCallback.FieldMerging
+            //ExFor:IFieldMergingCallback.ImageFieldMerging
+            //ExFor:ImageFieldMergingArgs.ImageStream
+            //ExId:MailMergeImageFromBlob
+            //ExSummary:Shows how to insert images stored in a database BLOB field into a report.
+            Document doc = new Document(MyDir + "MailMerge.MergeImage.doc");
+
+            // Set up the event handler for image fields.
+            doc.MailMerge.FieldMergingCallback = new HandleMergeImageFieldFromBlob();
+
+            // Open a database connection.
+            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.mdb";
+            OleDbConnection conn = new OleDbConnection(connString);
+            conn.Open();
+
+            // Open the data reader. It needs to be in the normal mode that reads all record at once.
+            OleDbCommand cmd = new OleDbCommand("SELECT * FROM Employees", conn);
+            IDataReader dataReader = cmd.ExecuteReader();
+
+            // Perform mail merge.
+            doc.MailMerge.ExecuteWithRegions(dataReader, "Employees");
+
+            // Close the database.
+            conn.Close();
+
+            doc.Save(ArtifactsDir + "MailMerge.MergeImage.doc");
+        }
+
+        private class HandleMergeImageFieldFromBlob : IFieldMergingCallback
+        {
+            void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
+            {
+                // Do nothing.
+            }
+
+            /// <summary>
+            /// This is called when mail merge engine encounters Image:XXX merge field in the document.
+            /// You have a chance to return an Image object, file name or a stream that contains the image.
+            /// </summary>
+            void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs e)
+            {
+                // The field value is a byte array, just cast it and create a stream on it.
+                MemoryStream imageStream = new MemoryStream((byte[])e.FieldValue);
+                // Now the mail merge engine will retrieve the image from the stream.
+                e.ImageStream = imageStream;
+            }
+        }
+        //ExEnd
+#endif
     }
 }

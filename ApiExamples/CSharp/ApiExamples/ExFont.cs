@@ -1,16 +1,17 @@
-// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+#if !__MOBILE__
 using System;
 using System.Collections;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Threading;
+using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
@@ -135,7 +136,7 @@ namespace ApiExamples
             fontInfos.EmbedSystemFonts = false;
             fontInfos.SaveSubsetFonts = false;
 
-            doc.Save(MyDir + @"/Artifacts/Document.docx");
+            doc.Save(ArtifactsDir + "Document.docx");
             //ExEnd
         }
 
@@ -158,7 +159,7 @@ namespace ApiExamples
             fontInfos.EmbedSystemFonts = embedSystemFonts;
             fontInfos.SaveSubsetFonts = saveSubsetFonts;
 
-            doc.Save(MyDir + @"/Artifacts/Document.docx");
+            doc.Save(ArtifactsDir + "Document.docx");
         }
 
         [Test]
@@ -440,7 +441,7 @@ namespace ApiExamples
             // Insert some Arabic text.
             builder.Writeln("مرحبًا");
 
-            builder.Document.Save(MyDir + @"\Artifacts\Font.Bidi.doc");
+            builder.Document.Save(ArtifactsDir + "Font.Bidi.doc");
             //ExEnd
         }
 
@@ -465,7 +466,7 @@ namespace ApiExamples
             // Insert some Chinese text.
             builder.Writeln("你好世界");
 
-            builder.Document.Save(MyDir + @"\Artifacts\Font.FarEast.doc");
+            builder.Document.Save(ArtifactsDir + "Font.FarEast.doc");
             //ExEnd
         }
 
@@ -486,7 +487,7 @@ namespace ApiExamples
 
             builder.Writeln("Hello, Привет");
 
-            builder.Document.Save(MyDir + @"\Artifacts\Font.Names.doc");
+            builder.Document.Save(ArtifactsDir + "Font.Names.doc");
             //ExEnd
         }
 
@@ -512,7 +513,7 @@ namespace ApiExamples
                     run.Font.StyleIdentifier = StyleIdentifier.Strong;
             }
 
-            doc.Save(MyDir + @"\Artifacts\Font.StyleIdentifier.doc");
+            doc.Save(ArtifactsDir + "Font.StyleIdentifier.doc");
             //ExEnd
         }
 
@@ -537,7 +538,7 @@ namespace ApiExamples
                     run.Font.StyleName = "Strong";
             }
 
-            doc.Save(MyDir + @"\Artifacts\Font.StyleName.doc");
+            doc.Save(ArtifactsDir + "Font.StyleName.doc");
             //ExEnd
         }
 
@@ -563,7 +564,7 @@ namespace ApiExamples
                     run.Font.Underline = Underline.Double;
             }
 
-            doc.Save(MyDir + @"\Artifacts\Font.Style.doc");
+            doc.Save(ArtifactsDir + "Font.Style.doc");
             //ExEnd
         }
 
@@ -624,7 +625,7 @@ namespace ApiExamples
             FontSettings.DefaultInstance.SetFontsFolder(String.Empty, false);
 
             // Pass the save options along with the save path to the save method.
-            doc.Save(MyDir + @"\Artifacts\Rendering.MissingFontNotification.pdf");
+            doc.Save(ArtifactsDir + "Rendering.MissingFontNotification.pdf");
             //ExEnd
 
             Assert.Greater(callback.mFontWarnings.Count, 0);
@@ -711,12 +712,19 @@ namespace ApiExamples
             //ExEnd
 
             doc.FontSettings = fontSettings;
+            doc.Save(ArtifactsDir + "Font.EnableFontSubstitution.pdf");
 
-            doc.Save(MyDir + @"\Artifacts\Font.EnableFontSubstitution.pdf");
-
-            Assert.True(callback.mFontWarnings[0].Description
-                .Equals(
-                    "Font '28 Days Later' has not been found. Using 'Franklin Gothic Medium' font instead. Reason: closest match according to font info from the document."));
+            Regex reg = new Regex("Font \'28 Days Later\' has not been found. Using (.*) font instead. Reason: closest match according to font info from the document.");
+            
+            foreach (var fontWarning in callback.mFontWarnings)
+            {        
+                Match match = reg.Match(fontWarning.Description);
+                if (match.Success)
+                {
+                    Assert.Pass();
+                    break;
+                }
+            }
         }
 
         [Test]
@@ -733,12 +741,19 @@ namespace ApiExamples
             fontSettings.EnableFontSubstitution = false;
 
             doc.FontSettings = fontSettings;
+            doc.Save(ArtifactsDir + "Font.EnableFontSubstitution.pdf");
 
-            doc.Save(MyDir + @"\Artifacts\Font.EnableFontSubstitution.pdf");
-
-            Assert.True(callback.mFontWarnings[0].Description
-                .Equals(
-                    "Font '28 Days Later' has not been found. Using 'Arial' font instead. Reason: default font setting."));
+            Regex reg = new Regex("Font '28 Days Later' has not been found. Using (.*) font instead. Reason: default font setting.");
+            
+            foreach (var fontWarning in callback.mFontWarnings)
+            {        
+                Match match = reg.Match(fontWarning.Description);
+                if (match.Success)
+                {
+                    Assert.Pass();
+                    break;
+                }
+            }
         }
 
         [Test]
@@ -757,7 +772,7 @@ namespace ApiExamples
 
             doc.FontSettings = fontSettings;
 
-            doc.Save(MyDir + @"\Artifacts\Rendering.MissingFontNotification.pdf");
+            doc.Save(ArtifactsDir + "Rendering.MissingFontNotification.pdf");
 
             Assert.True(callback.mFontWarnings[0].Description
                 .Equals("Font substitutes: 'Arial' replaced with 'Arvo'."));
@@ -775,11 +790,9 @@ namespace ApiExamples
             HandleDocumentWarnings callback = new HandleDocumentWarnings();
             doc.WarningCallback = callback;
 
-            doc.Save(MyDir + @"\Artifacts\Font.DisappearingBulletPoints.pdf");
+            doc.Save(ArtifactsDir + "Font.DisapearingBulletPoints.pdf");
 
-            Assert.True(callback.mFontWarnings[0].Description
-                .Equals(
-                    "Font 'SymbolPS' has not been found. Using 'Wingdings' font instead. Reason: closest match according to font info from the document."));
+            Assert.True(callback.mFontWarnings[0].Description.Equals("Font 'SymbolPS' has not been found. Using 'Wingdings' font instead. Reason: closest match according to font info from the document."));
         }
 
         [Test]
@@ -845,7 +858,7 @@ namespace ApiExamples
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             table.Accept(hiddenContentRemover);
 
-            doc.Save(MyDir + @"\Artifacts\Font.Hidden.doc");
+            doc.Save(ArtifactsDir + "Font.Hidden.doc");
 
             Assert.AreEqual(13, doc.GetChildNodes(NodeType.Paragraph, true).Count); //ExSkip
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count); //ExSkip
@@ -1088,7 +1101,7 @@ namespace ApiExamples
             byte[] embeddedFontBytes = mittelschriftInfo.GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular);
             Assert.IsNotNull(embeddedFontBytes);
             // Then we can save the font to our directory
-            File.WriteAllBytes(MyDir + @"\Artifacts\Alte DIN 1451 Mittelschrift.ttf", embeddedFontBytes);
+            File.WriteAllBytes(ArtifactsDir + "Alte DIN 1451 Mittelschrift.ttf", embeddedFontBytes);
             
             // If we want to extract a font from a .doc as opposed to a .docx, we need to make sure to set the appropriate embedded font format
             doc = new Document(MyDir + "Font.Embedded.doc");
@@ -1263,6 +1276,11 @@ namespace ApiExamples
             Assert.AreEqual(0, systemFontSource.Priority);
             Assert.AreEqual(new[] { @"C:\WINDOWS\Fonts" }, SystemFontSource.GetSystemFontFolders());
 
+            foreach (string systemFontFolder in SystemFontSource.GetSystemFontFolders())
+            {
+                Console.WriteLine(systemFontFolder);
+            }
+
             // Set a font that exists in the windows fonts directory as a substitute for one that doesn't
             doc.FontSettings.EnableFontSubstitution = true;
             doc.FontSettings.AddFontSubstitutes("Kreon-Regular", new string[] { "Calibri" });
@@ -1298,10 +1316,10 @@ namespace ApiExamples
             fontSettings.FallbackSettings.Load(MyDir + "Fallback.xml");
 
             doc.FontSettings = fontSettings;
-            doc.Save(MyDir + @"\Artifacts\LoadFontFallbackSettingsFromFile.pdf");
+            doc.Save(ArtifactsDir + "LoadFontFallbackSettingsFromFile.pdf");
 
             // Saves font fallback setting by string
-            doc.FontSettings.FallbackSettings.Save(MyDir + @"\Artifacts\FallbackSettings.xml");
+            doc.FontSettings.FallbackSettings.Save(ArtifactsDir + "FallbackSettings.xml");
             //ExEnd
         }
 
@@ -1323,11 +1341,11 @@ namespace ApiExamples
                 doc.FontSettings = fontSettings;
             }
 
-            doc.Save(MyDir + @"\Artifacts\LoadFontFallbackSettingsFromStream.pdf");
+            doc.Save(ArtifactsDir + "LoadFontFallbackSettingsFromStream.pdf");
 
             // Saves font fallback setting by stream
             using (FileStream fontFallbackStream =
-                new FileStream(MyDir + @"\Artifacts\FallbackSettings.xml", FileMode.Create))
+                new FileStream(ArtifactsDir + "FallbackSettings.xml", FileMode.Create))
             {
                 doc.FontSettings.FallbackSettings.Save(fontFallbackStream);
             }
@@ -1335,3 +1353,4 @@ namespace ApiExamples
         }
     }
 }
+#endif

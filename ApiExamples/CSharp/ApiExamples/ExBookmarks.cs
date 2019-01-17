@@ -7,11 +7,13 @@
 
 using System;
 using System.Collections.Generic;
-using Aspose.Pdf.Facades;
 using NUnit.Framework;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using Bookmark = Aspose.Words.Bookmark;
+#if !__MOBILE__
+using Aspose.Pdf.Facades;
+#endif
 
 namespace ApiExamples
 {
@@ -173,7 +175,7 @@ namespace ApiExamples
 
             p.AppendChild(new Run(doc, "Text after bookmark."));
 
-            doc.Save(MyDir + @"\Artifacts\Bookmarks.CreateBookmarkWithNodes.doc");
+            doc.Save(ArtifactsDir + "Bookmarks.CreateBookmarkWithNodes.doc");
             //ExEnd
 
             Assert.AreEqual("Text inside bookmark.", doc.Range.Bookmarks["My bookmark"].Text);
@@ -189,15 +191,16 @@ namespace ApiExamples
 
             Assert.AreEqual("My_Bookmark", doc.Range.Bookmarks[0].Name); //ExSkip
 
-            //MS Word document does not support bookmark names with whitespaces by default. 
-            //If you have document which contains bookmark names with underscores, you can simply replace them to whitespaces.
+            // MS Word document does not support bookmark names with whitespaces by default. 
+            // If you have document which contains bookmark names with underscores, you can simply replace them to whitespaces.
             foreach (Bookmark bookmark in doc.Range.Bookmarks)
             {
                 bookmark.Name = bookmark.Name.Replace("_", " ");
             }
             //ExEnd
 
-            Assert.AreEqual("My Bookmark", doc.Range.Bookmarks[0].Name); //Check that our replace was correct
+            // Check that our replace was correct
+            Assert.AreEqual("My Bookmark", doc.Range.Bookmarks[0].Name);
         }
 
         [Test]
@@ -227,12 +230,12 @@ namespace ApiExamples
             pdfSaveOptions.OutlineOptions.BookmarksOutlineLevels.Add("My Bookmark", 1);
             pdfSaveOptions.OutlineOptions.BookmarksOutlineLevels.Add("Nested Bookmark", 2);
 
-            doc.Save(MyDir + @"\Artifacts\Bookmarks.WhiteSpaces.pdf", pdfSaveOptions);
+            doc.Save(ArtifactsDir + "Bookmarks.WhiteSpaces.pdf", pdfSaveOptions);
             //ExEnd
-
+#if !__MOBILE__
             // Bind pdf with Aspose.Pdf
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
-            bookmarkEditor.BindPdf(MyDir + @"\Artifacts\Bookmarks.WhiteSpaces.pdf");
+            bookmarkEditor.BindPdf(ArtifactsDir + "Bookmarks.WhiteSpaces.pdf");
 
             // Get all bookmarks from the document
             Bookmarks bookmarks = bookmarkEditor.ExtractBookmarks();
@@ -242,6 +245,7 @@ namespace ApiExamples
             // Assert that all the bookmarks title are with whitespaces
             Assert.AreEqual("My Bookmark", bookmarks[0].Title);
             Assert.AreEqual("Nested Bookmark", bookmarks[1].Title);
+#endif
         }
 
         //ExStart

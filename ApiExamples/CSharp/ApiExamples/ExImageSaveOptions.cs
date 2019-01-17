@@ -8,6 +8,7 @@
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
+
 #if !(NETSTANDARD2_0 || __MOBILE__)
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
@@ -32,7 +33,7 @@ namespace ApiExamples
                 UseGdiEmfRenderer = false
             };
 
-            doc.Save(MyDir + @"\Artifacts\SaveOptions.UseGdiEmfRenderer.docx", saveOptions);
+            doc.Save(ArtifactsDir + "SaveOptions.UseGdiEmfRenderer.docx", saveOptions);
             //ExEnd
         }
 
@@ -49,7 +50,7 @@ namespace ApiExamples
                 PageIndex = 0 // Define which page will save
             };
 
-            doc.Save(MyDir + @"\Artifacts\SaveOptions.PageIndex.gif", saveOptions);
+            doc.Save(ArtifactsDir + "SaveOptions.MyraidPro.gif", saveOptions);
             //ExEnd
         }
 
@@ -73,7 +74,7 @@ namespace ApiExamples
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Jpeg);
             saveOptions.GraphicsQualityOptions = qualityOptions;
 
-            doc.Save(MyDir + @"\Artifacts\SaveOptions.QualityOptions.jpeg", saveOptions);
+            doc.Save(ArtifactsDir + "SaveOptions.QualityOptions.jpeg", saveOptions);
             //ExEnd
         }
 #endif
@@ -87,13 +88,11 @@ namespace ApiExamples
             //ExSummary:Show how to convert document images to black and white with 1 bit per pixel
             Document doc = new Document(MyDir + "ImageSaveOptions.BlackAndWhite.docx");
 
-            ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png)
-            {
-                ImageColorMode = ImageColorMode.BlackAndWhite,
-                PixelFormat = ImagePixelFormat.Format1bppIndexed
-            };
-
-            doc.Save(MyDir + @"\Artifacts\ImageSaveOptions.BlackAndWhite.png", imageSaveOptions);
+            ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
+            imageSaveOptions.ImageColorMode = ImageColorMode.BlackAndWhite;
+            imageSaveOptions.PixelFormat = ImagePixelFormat.Format1bppIndexed;
+            
+            doc.Save(ArtifactsDir + "ImageSaveOptions.BlackAndWhite.png", imageSaveOptions);
             //ExEnd
         }
     }

@@ -3,9 +3,11 @@ using System.Drawing;
 using System.Globalization;
 using Aspose.BarCode;
 using Aspose.Words.Fields;
-
+using Image =
 #if NETSTANDARD2_0 || __MOBILE__
-using SkiaSharp;
+SkiaSharp.SKBitmap;
+#else
+System.Drawing.Image;
 #endif
 
 namespace ApiExamples
@@ -75,11 +77,7 @@ namespace ApiExamples
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns></returns>
-#if NETSTANDARD2_0 || __MOBILE__
-        public SKBitmap GetBarcodeImage(BarcodeParameters parameters)
-#else
         public Image GetBarcodeImage(BarcodeParameters parameters)
-#endif
         {
             if (parameters.BarcodeType == null || parameters.BarcodeValue == null)
                 return null;
@@ -172,9 +170,9 @@ namespace ApiExamples
             }
 
 #if NETSTANDARD2_0 || __MOBILE__
-            builder.BarCodeImage.Save(ApiExampleBase.MyDir + @"\Artifacts\GetBarcodeImage.png");
+            builder.BarCodeImage.Save(ApiExampleBase.ArtifactsDir + "GetBarcodeImage.png");
 
-            return SkiaSharp.SKBitmap.Decode(ApiExampleBase.MyDir + @"\Artifacts\OldBarcodeImage.png");
+            return Image.Decode(ApiExampleBase.ArtifactsDir + "OldBarcodeImage.png");
 #else
             return builder.BarCodeImage;
 #endif
@@ -185,11 +183,7 @@ namespace ApiExamples
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns></returns>
-#if NETSTANDARD2_0 || __MOBILE__
-        public SKBitmap GetOldBarcodeImage(BarcodeParameters parameters)
-#else
         public Image GetOldBarcodeImage(BarcodeParameters parameters)
-#endif
         {
             if (parameters.PostalAddress == null)
                 return null;
@@ -202,9 +196,9 @@ namespace ApiExamples
 
             // Hardcode type for old-fashioned Barcode
 #if NETSTANDARD2_0 || __MOBILE__
-            builder.BarCodeImage.Save(ApiExampleBase.MyDir + @"\Artifacts\OldBarcodeImage.png");
-
-            return SkiaSharp.SKBitmap.Decode(ApiExampleBase.MyDir + @"\Artifacts\OldBarcodeImage.png");
+            builder.BarCodeImage.Save(ApiExampleBase.ArtifactsDir + "OldBarcodeImage.png");
+            
+            return Image.Decode(ApiExampleBase.ArtifactsDir + "OldBarcodeImage.png");
 #else
             return builder.BarCodeImage;
 #endif
@@ -236,7 +230,7 @@ namespace ApiExamples
         /// Try parses a hex String into an integer value.
         /// on error return int.MinValue
         /// </summary>
-        public static int TryParseHex(String s)
+        public static int TryParseHex(string s)
         {
             return int.TryParse(s, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int result)
                 ? result

@@ -65,6 +65,8 @@ namespace Aspose.Words.Examples.CSharp
             //// =====================================================
             //// =====================================================
 
+            //WorkingWithOoxml.Run();
+            //WorkingWithDoc.Run();
             // OpenEncryptedDocument.Run();
             // LoadAndSaveToDisk.Run();
             // LoadAndSaveToStream.Run();
@@ -229,7 +231,7 @@ namespace Aspose.Words.Examples.CSharp
             // GetFieldNames.Run();
             // InsertTOAFieldWithoutDocumentBuilder.Run();
             // InsertFieldIncludeTextWithoutDocumentBuilder.Run();
-
+            // FieldUpdateCulture.Run();
             //// Images
             //// =====================================================
             // AddImageToEachPage.Run();

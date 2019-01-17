@@ -1162,7 +1162,6 @@ namespace ApiExamples
             private int mDocTraversalDepth;
             private readonly StringBuilder mBuilder;
         }
-
         //ExEnd
     }
 }
