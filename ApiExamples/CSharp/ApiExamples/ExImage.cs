@@ -81,8 +81,8 @@ namespace ApiExamples
             // This creates a builder and also an empty document inside the builder.
             DocumentBuilder builder = new DocumentBuilder();
 #if NETSTANDARD2_0 || __MOBILE__
-// Insert a raster image.
-// SKBitmap doesn't allow to insert a metafiles.
+            // Insert a raster image.
+            // SKBitmap doesn't allow to insert a metafiles.
             using (SKBitmap rasterImage = SKBitmap.Decode(MyDir + "Images/Aspose.Words.gif"))
             {
                 builder.Write("Raster image: ");
