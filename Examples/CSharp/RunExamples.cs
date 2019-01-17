@@ -65,7 +65,8 @@ namespace Aspose.Words.Examples.CSharp
             //// =====================================================
             //// =====================================================
 
-            // WorkingWithDoc.Run();
+            //WorkingWithOoxml.Run();
+            //WorkingWithDoc.Run();
             // OpenEncryptedDocument.Run();
             // LoadAndSaveToDisk.Run();
             // LoadAndSaveToStream.Run();
