@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Fields
 {
+    // ExStart:FieldUpdateCultureProviderGetCulture
     class FieldUpdateCultureProvider : IFieldUpdateCultureProvider
     {
-        // ExStart:FieldUpdateCultureProviderGetCulture
         public CultureInfo GetCulture(string name, Field field)
         {
             switch (name)
