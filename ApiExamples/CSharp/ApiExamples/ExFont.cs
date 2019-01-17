@@ -11,6 +11,7 @@ using System.Collections;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
@@ -711,12 +712,19 @@ namespace ApiExamples
             //ExEnd
 
             doc.FontSettings = fontSettings;
-
             doc.Save(ArtifactsDir + "Font.EnableFontSubstitution.pdf");
 
-            Assert.True(callback.mFontWarnings[0].Description
-                .Equals(
-                    "Font '28 Days Later' has not been found. Using 'Franklin Gothic Medium' font instead. Reason: closest match according to font info from the document."));
+            Regex reg = new Regex("Font \'28 Days Later\' has not been found. Using (.*) font instead. Reason: closest match according to font info from the document.");
+            
+            foreach (var fontWarning in callback.mFontWarnings)
+            {        
+                Match match = reg.Match(fontWarning.Description);
+                if (match.Success)
+                {
+                    Assert.Pass();
+                    break;
+                }
+            }
         }
 
         [Test]
@@ -733,12 +741,19 @@ namespace ApiExamples
             fontSettings.EnableFontSubstitution = false;
 
             doc.FontSettings = fontSettings;
-
             doc.Save(ArtifactsDir + "Font.EnableFontSubstitution.pdf");
 
-            Assert.True(callback.mFontWarnings[0].Description
-                .Equals(
-                    "Font '28 Days Later' has not been found. Using 'Arial' font instead. Reason: default font setting."));
+            Regex reg = new Regex("Font '28 Days Later' has not been found. Using (.*) font instead. Reason: default font setting.");
+            
+            foreach (var fontWarning in callback.mFontWarnings)
+            {        
+                Match match = reg.Match(fontWarning.Description);
+                if (match.Success)
+                {
+                    Assert.Pass();
+                    break;
+                }
+            }
         }
 
         [Test]
@@ -1260,6 +1275,11 @@ namespace ApiExamples
             Assert.AreEqual(FontSourceType.SystemFonts, systemFontSource.Type);
             Assert.AreEqual(0, systemFontSource.Priority);
             Assert.AreEqual(new[] { @"C:\WINDOWS\Fonts" }, SystemFontSource.GetSystemFontFolders());
+
+            foreach (string systemFontFolder in SystemFontSource.GetSystemFontFolders())
+            {
+                Console.WriteLine(systemFontFolder);
+            }
 
             // Set a font that exists in the windows fonts directory as a substitute for one that doesn't
             doc.FontSettings.EnableFontSubstitution = true;

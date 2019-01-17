@@ -47,7 +47,6 @@ namespace ApiExamples
 
             // It now has some more useful information
             Assert.AreEqual("iso-8859-1", info.Encoding.BodyName);
-            Assert.AreEqual("Western European (Windows)", info.Encoding.EncodingName);
             //ExEnd
         }
 

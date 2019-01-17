@@ -153,8 +153,8 @@ namespace ApiExamples
             Assert.AreEqual("First header\nFirst footer\nSecond header\nSecond footer\nThird header\n" +
                             "Third footer\n", logger.Text);
 #else
-            Assert.AreEqual("First header\r\nFirst footer\r\nSecond header\r\nSecond footer\r\nThird header\r\n" +
-                            "Third footer\r\n", logger.Text);
+            Assert.AreEqual("First header\nFirst footer\nSecond header\nSecond footer\nThird header\n" +
+                            "Third footer\n", logger.Text.Replace("\r", ""));
 #endif
             // Prepare our string builder for assert results without "DifferentFirstPageHeaderFooter"
             logger.ClearText();
@@ -167,7 +167,7 @@ namespace ApiExamples
 #if __MOBILE__
             Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\nSecond footer\n", logger.Text);
 #else
-            Assert.AreEqual("Third header\r\nFirst header\r\nThird footer\r\nFirst footer\r\nSecond header\r\nSecond footer\r\n", logger.Text);
+            Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\nSecond footer\n", logger.Text.Replace("\r", ""));
 #endif
         }
 
