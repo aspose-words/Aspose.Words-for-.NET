@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiExamples.NetStandard2.0", "ApiExamples.NetStandard2.0/ApiExamples.NetStandard2.0.csproj", "{38053FB3-9B05-49F2-A6BC-9B633BE04AF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiExamples.NetStandard2.0", "ApiExamples/ApiExamples.NetStandard2.0.csproj", "{38053FB3-9B05-49F2-A6BC-9B633BE04AF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

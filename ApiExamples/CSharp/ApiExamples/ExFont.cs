@@ -1274,7 +1274,13 @@ namespace ApiExamples
             SystemFontSource systemFontSource = (SystemFontSource)doc.FontSettings.GetFontsSources()[0];
             Assert.AreEqual(FontSourceType.SystemFonts, systemFontSource.Type);
             Assert.AreEqual(0, systemFontSource.Priority);
-            Assert.AreEqual(new[] { @"C:\WINDOWS\Fonts" }, SystemFontSource.GetSystemFontFolders());
+            
+            PlatformID pid = Environment.OSVersion.Platform;
+            bool isWindows = (pid == PlatformID.Win32NT) || (pid == PlatformID.Win32S) || (pid == PlatformID.Win32Windows) || (pid == PlatformID.WinCE);
+            if (isWindows)
+            {
+                Assert.AreEqual(new[] { @"C:\WINDOWS\Fonts" }, SystemFontSource.GetSystemFontFolders());
+            }
 
             foreach (string systemFontFolder in SystemFontSource.GetSystemFontFolders())
             {
