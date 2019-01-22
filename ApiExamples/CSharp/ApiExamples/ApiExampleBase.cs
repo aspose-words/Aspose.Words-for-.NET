@@ -77,15 +77,25 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Returns the assembly directory correctly even if the assembly is shadow-copied.
+        /// Returns the codebase directory.
         /// </summary>
-        internal static string GetAssemblyDir(Assembly assembly)
+        internal static string GetCodeBaseDir(Assembly assembly)
         {
             // CodeBase is a full URI, such as file:///x:\blahblah.
             Uri uri = new Uri(assembly.CodeBase);
             string mainFolder = Path.GetDirectoryName(uri.LocalPath)
                 ?.Substring(0, uri.LocalPath.IndexOf("CSharp", StringComparison.Ordinal));
             return mainFolder;
+        }
+
+        /// <summary>
+        /// Returns the assembly directory correctly even if the assembly is shadow-copied.
+        /// </summary>
+        internal static string GetAssemblyDir(Assembly assembly)
+        {
+            // CodeBase is a full URI, such as file:///x:\blahblah.
+            Uri uri = new Uri(assembly.CodeBase);
+            return Path.GetDirectoryName(uri.LocalPath) + Path.DirectorySeparatorChar;
         }
 
         /// <summary>
@@ -147,15 +157,17 @@ namespace ApiExamples
         static ApiExampleBase()
         {
             gAssemblyDir = GetAssemblyDir(Assembly.GetExecutingAssembly());
-            gArtifactsDir = new Uri(new Uri(gAssemblyDir), @"Data/Artifacts/").LocalPath;
-            gLicenseDir = new Uri(new Uri(gAssemblyDir), @"Data/License/").LocalPath;
-            gGoldsDir = new Uri(new Uri(gAssemblyDir), @"Data/Golds/").LocalPath;
-            gMyDir = new Uri(new Uri(gAssemblyDir), @"Data/").LocalPath;
-            gImageDir = new Uri(new Uri(gAssemblyDir), @"Data/Images/").LocalPath;
-            gDatabaseDir = new Uri(new Uri(gAssemblyDir), @"Data/Database/").LocalPath;
+            gCodeBaseDir = GetCodeBaseDir(Assembly.GetExecutingAssembly());
+            gArtifactsDir = new Uri(new Uri(gCodeBaseDir), @"Data/Artifacts/").LocalPath;
+            gLicenseDir = new Uri(new Uri(gCodeBaseDir), @"Data/License/").LocalPath;
+            gGoldsDir = new Uri(new Uri(gCodeBaseDir), @"Data/Golds/").LocalPath;
+            gMyDir = new Uri(new Uri(gCodeBaseDir), @"Data/").LocalPath;
+            gImageDir = new Uri(new Uri(gCodeBaseDir), @"Data/Images/").LocalPath;
+            gDatabaseDir = new Uri(new Uri(gCodeBaseDir), @"Data/Database/").LocalPath;
         }
 
         private static readonly String gAssemblyDir;
+        private static readonly String gCodeBaseDir;
         private static readonly String gArtifactsDir;
         private static readonly String gLicenseDir;
         private static readonly String gGoldsDir;

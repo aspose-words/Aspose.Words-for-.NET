@@ -137,6 +137,7 @@ namespace ApiExamples
         }
 
         [Test]
+        [Platform(Exclude = "Linux")]
         public void WithoutUpdateFields()
         {
             //ExStart
@@ -164,6 +165,7 @@ namespace ApiExamples
         }
 
         [Test]
+        [Platform(Exclude = "Linux")]
         public void WithUpdateFields()
         {
             Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
@@ -313,6 +315,7 @@ namespace ApiExamples
         }
 
         [Test]
+        [Platform(Exclude = "Linux")]
         public void HandleBinaryRasterWarnings()
         {
             //ExStart

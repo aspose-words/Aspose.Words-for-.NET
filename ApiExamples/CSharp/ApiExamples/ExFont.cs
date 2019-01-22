@@ -598,7 +598,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void RecieveFontSubstitutionNotification()
+        public void ReceiveFontSubstitutionNotification()
         {
             // Store the font sources currently used so we can restore them later. 
             FontSourceBase[] origFontSources = FontSettings.DefaultInstance.GetFontsSources();
@@ -757,6 +757,7 @@ namespace ApiExamples
         }
 
         [Test]
+        [Platform(Exclude = "Linux")]
         public void FontSubstitutionWarnings()
         {
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -767,11 +768,10 @@ namespace ApiExamples
 
             FontSettings fontSettings = new FontSettings();
             fontSettings.DefaultFontName = "Arial";
-            fontSettings.SetFontSubstitutes("Arial", new string[] { "Arvo", "Slab" });
             fontSettings.SetFontsFolder(MyDir + @"MyFonts\", false);
-
+            fontSettings.AddFontSubstitutes("Arial", "Arvo", "Slab");
+            
             doc.FontSettings = fontSettings;
-
             doc.Save(ArtifactsDir + "Rendering.MissingFontNotification.pdf");
 
             Assert.True(callback.mFontWarnings[0].Description
