@@ -195,7 +195,7 @@ namespace ApiExamples
         }
 
         [Test]
-        [Platform(Exclude = "Linux")]
+        [Category("SkipMono")]
         public void SaveToTiffDefault()
         {
             //ExStart
@@ -208,7 +208,7 @@ namespace ApiExamples
         }
 
         [Test]
-        [Platform(Exclude = "Linux")]
+        [Category("SkipMono")]
         public void SaveToTiffCompression()
         {
             //ExStart
@@ -251,7 +251,7 @@ namespace ApiExamples
         }
 
         [Test]
-        [Platform(Exclude = "Linux")]
+        [Category("SkipMono")]
         public void SaveToEmf()
         {
             //ExStart

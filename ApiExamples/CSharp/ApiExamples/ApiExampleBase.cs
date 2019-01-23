@@ -22,6 +22,11 @@ namespace ApiExamples
         [SetUp]
         public void SetUp()
         {
+            if (CheckForSkipMono() && IsRunningOnMono())
+            {
+                Assert.Ignore("Test skipped on mono");
+            }
+
             if (!CheckForSkipSetUp())
             {
                 SetUnlimitedLicense();
@@ -58,6 +63,24 @@ namespace ApiExamples
         {
             bool skipSetup = TestContext.CurrentContext.Test.Properties["Category"].Contains("SkipTearDown");
             return skipSetup;
+        }
+
+        /// <summary>
+        /// Checks when we need to skip post-condition after test.
+        /// </summary>
+        private static bool CheckForSkipMono()
+        {
+            bool skipMono = TestContext.CurrentContext.Test.Properties["Category"].Contains("SkipMono");
+            return skipMono;
+        }
+
+        /// <summary>
+        /// Determine if runtime is Mono.
+        /// Workaround for .netcore.
+        /// </summary>
+        /// <returns>True if being executed in Mono, false otherwise.</returns>
+        public static bool IsRunningOnMono() {
+            return Type.GetType("Mono.Runtime") != null;
         }
 
         internal static void SetUnlimitedLicense()

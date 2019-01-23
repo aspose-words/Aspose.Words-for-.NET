@@ -37,7 +37,7 @@ namespace ApiExamples
         [TestCase(SaveFormat.Html, HtmlOfficeMathOutputMode.Image)]
         [TestCase(SaveFormat.Mhtml, HtmlOfficeMathOutputMode.MathML)]
         [TestCase(SaveFormat.Epub, HtmlOfficeMathOutputMode.Text)]
-        [Platform(Exclude = "Linux")]
+        [Category("SkipMono")]
         public void ExportOfficeMath(SaveFormat saveFormat, HtmlOfficeMathOutputMode outputMode)
         {
             Document doc = new Document(MyDir + "OfficeMath.docx");

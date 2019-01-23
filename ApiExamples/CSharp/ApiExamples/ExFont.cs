@@ -757,7 +757,7 @@ namespace ApiExamples
         }
 
         [Test]
-        [Platform(Exclude = "Linux")]
+        [Category("SkipMono")]
         public void FontSubstitutionWarnings()
         {
             Document doc = new Document(MyDir + "Rendering.doc");
