@@ -34,10 +34,9 @@ namespace ApiExamples
         }
 
         [Test]
-        [TestCase(SaveFormat.Html, HtmlOfficeMathOutputMode.Image)]
-        [TestCase(SaveFormat.Mhtml, HtmlOfficeMathOutputMode.MathML)]
-        [TestCase(SaveFormat.Epub, HtmlOfficeMathOutputMode.Text)]
-        [Category("SkipMono")]
+        [TestCase(SaveFormat.Html, HtmlOfficeMathOutputMode.Image, Category = "SkipMono")]
+        [TestCase(SaveFormat.Mhtml, HtmlOfficeMathOutputMode.MathML, Category = "SkipMono")]
+        [TestCase(SaveFormat.Epub, HtmlOfficeMathOutputMode.Text, Category = "SkipMono")]
         public void ExportOfficeMath(SaveFormat saveFormat, HtmlOfficeMathOutputMode outputMode)
         {
             Document doc = new Document(MyDir + "OfficeMath.docx");

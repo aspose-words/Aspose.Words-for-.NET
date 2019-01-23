@@ -42,8 +42,9 @@ namespace ApiExamples
         {
             if (!CheckForSkipTearDown())
             {
-                //Delete all dirs and files from directory
-                Directory.Delete(ArtifactsDir, true);
+                if (!Directory.Exists(ArtifactsDir))
+                    //Delete all dirs and files from directory
+                    Directory.Delete(ArtifactsDir, true);
             }
         }
 
