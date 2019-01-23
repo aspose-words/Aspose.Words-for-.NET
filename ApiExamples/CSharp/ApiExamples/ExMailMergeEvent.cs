@@ -275,6 +275,7 @@ namespace ApiExamples
 
         #if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
+        [Category("SkipMono")]
         public void MailMergeImageFromBlob()
         {
             //ExStart

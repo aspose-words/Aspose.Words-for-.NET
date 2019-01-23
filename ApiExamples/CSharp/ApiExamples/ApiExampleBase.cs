@@ -22,6 +22,11 @@ namespace ApiExamples
         [SetUp]
         public void SetUp()
         {
+            if (CheckForSkipMono() && IsRunningOnMono())
+            {
+                Assert.Ignore("Test skipped on mono");
+            }
+
             if (!CheckForSkipSetUp())
             {
                 SetUnlimitedLicense();
@@ -37,8 +42,9 @@ namespace ApiExamples
         {
             if (!CheckForSkipTearDown())
             {
-                //Delete all dirs and files from directory
-                Directory.Delete(ArtifactsDir, true);
+                if (!Directory.Exists(ArtifactsDir))
+                    //Delete all dirs and files from directory
+                    Directory.Delete(ArtifactsDir, true);
             }
         }
 
@@ -60,6 +66,24 @@ namespace ApiExamples
             return skipSetup;
         }
 
+        /// <summary>
+        /// Checks when we need to skip post-condition after test.
+        /// </summary>
+        private static bool CheckForSkipMono()
+        {
+            bool skipMono = TestContext.CurrentContext.Test.Properties["Category"].Contains("SkipMono");
+            return skipMono;
+        }
+
+        /// <summary>
+        /// Determine if runtime is Mono.
+        /// Workaround for .netcore.
+        /// </summary>
+        /// <returns>True if being executed in Mono, false otherwise.</returns>
+        public static bool IsRunningOnMono() {
+            return Type.GetType("Mono.Runtime") != null;
+        }
+
         internal static void SetUnlimitedLicense()
         {
             // This is where the test license is on my development machine.
@@ -74,6 +98,18 @@ namespace ApiExamples
                 License license = new License();
                 license.SetLicense(testLicenseFileName);
             }
+        }
+
+        /// <summary>
+        /// Returns the codebase directory.
+        /// </summary>
+        internal static string GetCodeBaseDir(Assembly assembly)
+        {
+            // CodeBase is a full URI, such as file:///x:\blahblah.
+            Uri uri = new Uri(assembly.CodeBase);
+            string mainFolder = Path.GetDirectoryName(uri.LocalPath)
+                ?.Substring(0, uri.LocalPath.IndexOf("CSharp", StringComparison.Ordinal));
+            return mainFolder;
         }
 
         /// <summary>
@@ -145,15 +181,17 @@ namespace ApiExamples
         static ApiExampleBase()
         {
             gAssemblyDir = GetAssemblyDir(Assembly.GetExecutingAssembly());
-            gArtifactsDir = new Uri(new Uri(gAssemblyDir), @"../../../../../Data/Artifacts/").LocalPath;
-            gLicenseDir = new Uri(new Uri(gAssemblyDir), @"../../../../../Data/License/").LocalPath;
-            gGoldsDir = new Uri(new Uri(gAssemblyDir), @"../../../../../Data/Golds/").LocalPath;
-            gMyDir = new Uri(new Uri(gAssemblyDir), @"../../../../../Data/").LocalPath;
-            gImageDir = new Uri(new Uri(gAssemblyDir), @"../../../../../Data/Images/").LocalPath;
-            gDatabaseDir = new Uri(new Uri(gAssemblyDir), @"../../../../../Data/Database/").LocalPath;
+            gCodeBaseDir = GetCodeBaseDir(Assembly.GetExecutingAssembly());
+            gArtifactsDir = new Uri(new Uri(gCodeBaseDir), @"Data/Artifacts/").LocalPath;
+            gLicenseDir = new Uri(new Uri(gCodeBaseDir), @"Data/License/").LocalPath;
+            gGoldsDir = new Uri(new Uri(gCodeBaseDir), @"Data/Golds/").LocalPath;
+            gMyDir = new Uri(new Uri(gCodeBaseDir), @"Data/").LocalPath;
+            gImageDir = new Uri(new Uri(gCodeBaseDir), @"Data/Images/").LocalPath;
+            gDatabaseDir = new Uri(new Uri(gCodeBaseDir), @"Data/Database/").LocalPath;
         }
 
         private static readonly String gAssemblyDir;
+        private static readonly String gCodeBaseDir;
         private static readonly String gArtifactsDir;
         private static readonly String gLicenseDir;
         private static readonly String gGoldsDir;

@@ -137,6 +137,7 @@ namespace ApiExamples
         }
 
         [Test]
+        [Category("SkipMono")]
         public void WithoutUpdateFields()
         {
             //ExStart
@@ -164,6 +165,7 @@ namespace ApiExamples
         }
 
         [Test]
+        [Category("SkipMono")]
         public void WithUpdateFields()
         {
             Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
@@ -313,6 +315,7 @@ namespace ApiExamples
         }
 
         [Test]
+        [Category("SkipMono")]
         public void HandleBinaryRasterWarnings()
         {
             //ExStart

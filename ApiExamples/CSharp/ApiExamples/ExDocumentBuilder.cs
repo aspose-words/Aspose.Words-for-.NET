@@ -446,9 +446,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "MathML.pdf");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(GoldsDir + "MathML Gold.docx", ArtifactsDir + "MathML.docx"));
-#if !(NETSTANDARD2_0 || __MOBILE__)
-            DocumentHelper.ComparePdf(GoldsDir + "MathML Gold.pdf", ArtifactsDir + "MathML.pdf");
-#endif
         }
 
         [Test]

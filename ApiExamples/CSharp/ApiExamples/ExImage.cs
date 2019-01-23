@@ -73,6 +73,7 @@ namespace ApiExamples
         }
 
         [Test]
+        [Category("SkipMono")]
         public void CreateFromImage()
         {
             //ExStart

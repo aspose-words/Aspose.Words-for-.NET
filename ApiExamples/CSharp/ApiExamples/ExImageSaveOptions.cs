@@ -80,6 +80,7 @@ namespace ApiExamples
 #endif
 
         [Test]
+        [Category("SkipMono")]
         public void ConverImageColorsToBlackAndWhite()
         {
             //ExStart
