@@ -73,7 +73,7 @@ namespace ApiExamples
         }
 
         [Test]
-        [Platform(Exclude = "Linux")]
+        [Category("SkipMono")]
         public void CreateFromImage()
         {
             //ExStart

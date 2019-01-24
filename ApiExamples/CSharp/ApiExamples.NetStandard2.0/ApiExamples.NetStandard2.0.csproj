@@ -95,12 +95,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="18.5.0" />
-    <PackageReference Include="Aspose.PDF" Version="18.5.0" />
-    <PackageReference Include="Aspose.Words" Version="18.12.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
-    <PackageReference Include="NUnit" Version="3.10.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+    <PackageReference Include="Aspose.BarCode" Version="18.12.0" />
+    <PackageReference Include="Aspose.PDF" Version="19.1.0" />
+    <PackageReference Include="Aspose.Words" Version="19.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="NUnit" Version="3.11.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.12.0" />
   </ItemGroup>
 
   <ItemGroup>

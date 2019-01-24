@@ -80,7 +80,7 @@ namespace ApiExamples
 #endif
 
         [Test]
-        [Platform(Exclude = "Linux")]
+        [Category("SkipMono")]
         public void ConverImageColorsToBlackAndWhite()
         {
             //ExStart
