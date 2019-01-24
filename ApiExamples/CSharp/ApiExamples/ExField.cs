@@ -3951,28 +3951,30 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        [Ignore("TOC entries not taken from referenced document until manual update")]
+        [Ignore("WORDSNET-18068")]
         public void FieldRD()
         {
             //ExStart
             //ExFor:FieldRD
             //ExFor:FieldRD.FileName
             //ExFor:FieldRD.IsPathRelative
-            //ExSummary:Shows to insert an RD field.
+            //ExSummary:Shows to insert an RD field to source table of contents entries from an external document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a document builder to insert a table of contents and one entry, on the next page
+            // Use a document builder to insert a table of contents and, on the following page, one entry
             builder.InsertField(FieldType.FieldTOC, true);
             builder.InsertBreak(BreakType.PageBreak);
             builder.CurrentParagraph.ParagraphFormat.StyleName = "Heading 1";
-            builder.Writeln("TOC entry from our document");
+            builder.Writeln("TOC entry from within this document");
 
             // Insert an RD field, designating an external document that our TOC field will look in for more entries
             FieldRD field = (FieldRD)builder.InsertField(FieldType.FieldRefDoc, true);
             field.FileName = "ReferencedDocument.docx";
             field.IsPathRelative = true;
             field.Update();
+
+            Assert.AreEqual(" RD  ReferencedDocument.docx \\f", field.GetFieldCode());
 
             // Create the document and insert a TOC entry, which will end up in the TOC of our original document
             Document referencedDoc = new Document();
