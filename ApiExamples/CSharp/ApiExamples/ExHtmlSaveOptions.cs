@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using Aspose.Words;
+using Aspose.Words.Fonts;
 using NUnit.Framework;
 using Aspose.Words.Saving;
 
@@ -388,6 +389,34 @@ namespace ApiExamples
             };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ContentIdScheme.mhtml", saveOptions);
+        }
+
+        [Test]
+        public void ResolveFontNames()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions.ResolveFontNames
+            //ExSummary:Shows how to resolve all font names before writing them to HTML.
+            Document document = new Document(MyDir + "HtmlSaveOptions.ResolveFontNames.docx");
+
+            FontSettings fontSettings = new FontSettings
+            {
+                DefaultFontName = "Arial", 
+                EnableFontSubstitution = false
+            };
+
+            document.FontSettings = fontSettings;
+
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html)
+            {
+                // By default this option is set to 'False' and Aspose.Words writes font names as specified in the source document.
+                ResolveFontNames = true 
+            };
+
+            document.Save(ArtifactsDir + "HtmlSaveOptions.ResolveFontNames.html", saveOptions);
+            //ExEnd
+
+            DocumentHelper.FindTextInFile(ArtifactsDir + "HtmlSaveOptions.ResolveFontNames.html", "<span style=\"font-family:Arial\">");
         }
     }
 }

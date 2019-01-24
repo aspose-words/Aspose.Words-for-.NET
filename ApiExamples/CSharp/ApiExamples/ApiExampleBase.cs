@@ -42,7 +42,7 @@ namespace ApiExamples
         {
             if (!CheckForSkipTearDown())
             {
-                if (!Directory.Exists(ArtifactsDir))
+                if (Directory.Exists(ArtifactsDir))
                     //Delete all dirs and files from directory
                     Directory.Delete(ArtifactsDir, true);
             }
@@ -101,7 +101,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Returns the codebase directory.
+        /// Returns the code-base directory.
         /// </summary>
         internal static string GetCodeBaseDir(Assembly assembly)
         {
