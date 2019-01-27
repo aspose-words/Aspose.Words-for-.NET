@@ -837,6 +837,8 @@ namespace ApiExamples
         //ExFor:FieldCollection.Remove(Field)
         //ExFor:FieldCollection.Remove(FieldStart)
         //ExFor:FieldCollection.RemoveAt(Int32)
+        //ExFor:FieldSeparator
+        //ExFor:FieldSeparator.Accept(DocumentVisitor)
         //ExFor:FieldEnd
         //ExFor:FieldEnd.Accept(DocumentVisitor)
         //ExFor:FieldEnd.HasSeparator
@@ -849,7 +851,7 @@ namespace ApiExamples
 
             // Get the collection that contains all the fields in a document
             FieldCollection fields = doc.Range.Fields;
-            Assert.AreEqual(5, fields.Count);
+            Assert.AreEqual(6, fields.Count);
 
             // Iterate over the field collection and print contents and type of every field using a custom visitor implementation
             FieldVisitor fieldVisitor = new FieldVisitor();
@@ -861,6 +863,7 @@ namespace ApiExamples
                     if (fieldEnumerator.Current != null)
                     {
                         fieldEnumerator.Current.Start.Accept(fieldVisitor);
+                        fieldEnumerator.Current.Separator?.Accept(fieldVisitor);
                         fieldEnumerator.Current.End.Accept(fieldVisitor);
                     }
                     else
@@ -874,16 +877,16 @@ namespace ApiExamples
 
             // Get a field to remove itself
             fields[0].Remove();
-            Assert.AreEqual(4, fields.Count);
+            Assert.AreEqual(5, fields.Count);
 
             // Remove a field by reference
             Field lastField = fields[3];
             fields.Remove(lastField);
-            Assert.AreEqual(3, fields.Count);
+            Assert.AreEqual(4, fields.Count);
 
             // Remove a field by index
             fields.RemoveAt(2);
-            Assert.AreEqual(2, fields.Count);
+            Assert.AreEqual(3, fields.Count);
 
             // Remove all fields from the document
             fields.Clear();
@@ -915,7 +918,17 @@ namespace ApiExamples
             {
                 mBuilder.AppendLine("Found field: " + fieldStart.FieldType);
                 mBuilder.AppendLine("\tField code: " + fieldStart.GetField().GetFieldCode());
-                mBuilder.AppendLine("\tCurrent result: " + fieldStart.GetField().Result);
+                mBuilder.AppendLine("\tDisplayed as: " + fieldStart.GetField().Result);
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when a FieldSeparator node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitFieldSeparator(FieldSeparator fieldSeparator)
+            {
+                mBuilder.AppendLine("\tFound separator: " + fieldSeparator.GetText());
 
                 return VisitorAction.Continue;
             }
@@ -925,8 +938,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitFieldEnd(FieldEnd fieldEnd)
             {
-                if (fieldEnd.HasSeparator)
-                    mBuilder.AppendLine("\tSeparator: " + fieldEnd.GetField().Separator.GetText());
+                mBuilder.AppendLine("End of field: " + fieldEnd.FieldType);
 
                 return VisitorAction.Continue;
             }
