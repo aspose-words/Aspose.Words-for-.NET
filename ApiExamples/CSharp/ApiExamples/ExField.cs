@@ -3165,7 +3165,7 @@ namespace ApiExamples
 #endif
 
         [Test]
-        //[Ignore("WORDSNET-17669")]
+        [Ignore("WORDSNET-17669")]
         public void FieldCreateDate()
         {
             //ExStart
