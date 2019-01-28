@@ -837,6 +837,8 @@ namespace ApiExamples
         //ExFor:FieldCollection.Remove(Field)
         //ExFor:FieldCollection.Remove(FieldStart)
         //ExFor:FieldCollection.RemoveAt(Int32)
+        //ExFor:FieldSeparator
+        //ExFor:FieldSeparator.Accept(DocumentVisitor)
         //ExFor:FieldEnd
         //ExFor:FieldEnd.Accept(DocumentVisitor)
         //ExFor:FieldEnd.HasSeparator
@@ -849,7 +851,7 @@ namespace ApiExamples
 
             // Get the collection that contains all the fields in a document
             FieldCollection fields = doc.Range.Fields;
-            Assert.AreEqual(5, fields.Count);
+            Assert.AreEqual(6, fields.Count);
 
             // Iterate over the field collection and print contents and type of every field using a custom visitor implementation
             FieldVisitor fieldVisitor = new FieldVisitor();
@@ -861,6 +863,7 @@ namespace ApiExamples
                     if (fieldEnumerator.Current != null)
                     {
                         fieldEnumerator.Current.Start.Accept(fieldVisitor);
+                        fieldEnumerator.Current.Separator?.Accept(fieldVisitor);
                         fieldEnumerator.Current.End.Accept(fieldVisitor);
                     }
                     else
@@ -874,16 +877,16 @@ namespace ApiExamples
 
             // Get a field to remove itself
             fields[0].Remove();
-            Assert.AreEqual(4, fields.Count);
+            Assert.AreEqual(5, fields.Count);
 
             // Remove a field by reference
             Field lastField = fields[3];
             fields.Remove(lastField);
-            Assert.AreEqual(3, fields.Count);
+            Assert.AreEqual(4, fields.Count);
 
             // Remove a field by index
             fields.RemoveAt(2);
-            Assert.AreEqual(2, fields.Count);
+            Assert.AreEqual(3, fields.Count);
 
             // Remove all fields from the document
             fields.Clear();
@@ -915,7 +918,17 @@ namespace ApiExamples
             {
                 mBuilder.AppendLine("Found field: " + fieldStart.FieldType);
                 mBuilder.AppendLine("\tField code: " + fieldStart.GetField().GetFieldCode());
-                mBuilder.AppendLine("\tCurrent result: " + fieldStart.GetField().Result);
+                mBuilder.AppendLine("\tDisplayed as: " + fieldStart.GetField().Result);
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when a FieldSeparator node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitFieldSeparator(FieldSeparator fieldSeparator)
+            {
+                mBuilder.AppendLine("\tFound separator: " + fieldSeparator.GetText());
 
                 return VisitorAction.Continue;
             }
@@ -925,8 +938,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitFieldEnd(FieldEnd fieldEnd)
             {
-                if (fieldEnd.HasSeparator)
-                    mBuilder.AppendLine("\tSeparator: " + fieldEnd.GetField().Separator.GetText());
+                mBuilder.AppendLine("End of field: " + fieldEnd.FieldType);
 
                 return VisitorAction.Continue;
             }
@@ -1701,51 +1713,147 @@ namespace ApiExamples
         //ExFor:FieldToc.CaptionlessTableOfFiguresLabel
         //ExFor:FieldToc.PrefixedSequenceIdentifier
         //ExFor:FieldToc.SequenceSeparator
+        //ExFor:FieldSeq
+        //ExFor:FieldSeq.BookmarkName
+        //ExFor:FieldSeq.InsertNextNumber
+        //ExFor:FieldSeq.ResetHeadingLevel
+        //ExFor:FieldSeq.ResetNumber
+        //ExFor:FieldSeq.SequenceIdentifier
         //ExSummary:Insert a TOC field and build the table with SEQ fields.
         [Test] //ExSkip
-        public void FieldTocFigure()
+        public void TocSeqPrefix()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a list num field using a document builder
+            // Filter by sequence identifier and a prefix sequence identifier, and change sequence separator
             FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
-            fieldToc.CaptionlessTableOfFiguresLabel = "Figures";
-            fieldToc.PrefixedSequenceIdentifier = "ChapterNum";
-            fieldToc.SequenceSeparator = ":";
+            fieldToc.TableOfFiguresLabel = "MySequence";
+            fieldToc.PrefixedSequenceIdentifier = "PrefixSequence";
+            fieldToc.SequenceSeparator = ">";
 
-            // By default, the table of contents 
-            fieldToc.TableOfFiguresLabel = "Figure";
+            Assert.AreEqual(" TOC  \\c MySequence \\s PrefixSequence \\d >", fieldToc.GetFieldCode());
+
             builder.InsertBreak(BreakType.PageBreak);
 
-            // These captions will have a sequence identifier that's the same as the table of figures label in our table of contents,
-            // so the table of contents will pick them up
-            InsertCaption(builder, "Prefix ", "ChapterNum");
-            InsertCaption(builder, " Figure ", "Figure");
-            builder.Writeln("\nMy paragraph contents.");
-            InsertCaption(builder, "Prefix ", "ChapterNum");
-            InsertCaption(builder, " Figure ", "Figure");
-            builder.Writeln("\nMy paragraph contents.");
+            // Add two SEQ fields in one paragraph, setting the TOC's sequence and prefix sequence as their sequence identifiers
+            FieldSeq fieldSeq = InsertSeqField(builder, "PrefixSequence ", "", "PrefixSequence");
+            Assert.AreEqual(" SEQ  PrefixSequence", fieldSeq.GetFieldCode());
 
-            // This will start a new count and won't be picked up by our table of contents
-            InsertCaption(builder, "Figure ", "OtherFigureSequence");
-            builder.Writeln("My paragraph contents.");
+            fieldSeq = InsertSeqField(builder, ", MySequence ", "\n", "MySequence");
+            Assert.AreEqual(" SEQ  MySequence", fieldSeq.GetFieldCode());
 
-            Assert.AreEqual(" TOC  \\a Figures \\s ChapterNum \\d : \\c Figure", fieldToc.GetFieldCode());
+            InsertSeqField(builder, "PrefixSequence ", "", "PrefixSequence");
+            InsertSeqField(builder, ", MySequence ", "\n", "MySequence");
 
-            fieldToc.UpdatePageNumbers();
+            // If the sqeuence identifier doesn't match that of the TOC, the entry won't be included
+            InsertSeqField(builder, "PrefixSequence ", "", "PrefixSequence");           
+            fieldSeq = InsertSeqField(builder, ", MySequence ", "", "OtherSequence");
+            builder.Writeln(" This text, from a different sequence, won't be included in the same TOC as the one above.");
+
+            Assert.AreEqual(" SEQ  OtherSequence", fieldSeq.GetFieldCode());
+
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.FieldTOC.SEQ.docx");
+            doc.Save(ArtifactsDir + "Field.TOC.SEQ.Prefix.docx");
+        }
+
+        [Test] //ExSkip
+        [Ignore("WORDSNET-18083")]
+        public void TocSeqNumbering()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Filter by sequence identifier and a prefix sequence identifier, and change sequence separator
+            FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
+            fieldToc.TableOfFiguresLabel = "MySequence";
+
+            Assert.AreEqual(" TOC  \\c MySequence", fieldToc.GetFieldCode());
+
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // Set the current number of the sequence to 100
+            FieldSeq fieldSeq = InsertSeqField(builder, "MySequence ", "\n", "MySequence");
+            fieldSeq.ResetNumber = "100";
+            Assert.AreEqual(" SEQ  MySequence \\r 100", fieldSeq.GetFieldCode());
+
+            fieldSeq = InsertSeqField(builder, "MySequence ", "\n", "MySequence");
+
+            // Insert a heading
+            builder.InsertBreak(BreakType.ParagraphBreak);
+            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
+            builder.Writeln("My heading");
+            builder.ParagraphFormat.Style = doc.Styles["Normal"];
+
+            // Reset sequence when we encounter a heading, resetting the sequence back to 1
+            fieldSeq = InsertSeqField(builder, "MySequence ", "\n", "MySequence");
+            fieldSeq.ResetHeadingLevel = "1";
+            Assert.AreEqual(" SEQ  MySequence \\s 1", fieldSeq.GetFieldCode());
+
+            // Move to the next number
+            fieldSeq = InsertSeqField(builder, "MySequence ", "\n", "MySequence");
+            fieldSeq.InsertNextNumber = true;
+            Assert.AreEqual(" SEQ  MySequence \\n", fieldSeq.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.TOC.SEQ.ResetNumbering.docx");
+        }
+
+        [Test] //ExSkip
+        [Ignore("WORDSNET-18084")]
+        public void TocSeqBookmark()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // This TOC takes in all SEQ fields with "MySequence" inside "TOCBookmark"
+            FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
+            fieldToc.TableOfFiguresLabel = "MySequence";
+            fieldToc.BookmarkName = "TOCBookmark";
+            builder.InsertBreak(BreakType.PageBreak);
+
+            Assert.AreEqual(" TOC  \\c MySequence \\b TOCBookmark", fieldToc.GetFieldCode());
+
+            InsertSeqField(builder, "MySequence ", "", "MySequence");
+            builder.Writeln(" This text won't show up in the TOC because it is outside of the bookmark.");
+
+            builder.StartBookmark("TOCBookmark");
+
+            InsertSeqField(builder, "MySequence ", "", "MySequence");
+            builder.Writeln(" This text will show up in the TOC next to the entry for the above caption.");
+
+            InsertSeqField(builder, "OtherSequence ", "", "OtherSequence");
+            builder.Writeln(" This text, from a different sequence, won't be included in the same TOC as the one above.");
+
+            // The contents of the bookmark we reference here will not appear at the SEQ field, but will appear in the corresponding TOC entry
+            FieldSeq fieldSeq = InsertSeqField(builder, " MySequence ", "\n", "MySequence");
+            fieldSeq.BookmarkName = "SEQBookmark";
+            Assert.AreEqual(" SEQ  MySequence SEQBookmark", fieldSeq.GetFieldCode());
+
+            // Add bookmark to reference
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.StartBookmark("SEQBookmark");
+            InsertSeqField(builder, " MySequence ", "", "MySequence");
+            builder.Writeln(" Text inside SEQBookmark.");
+            builder.EndBookmark("SEQBookmark");
+
+            builder.EndBookmark("TOCBookmark");
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.TOC.SEQ.Bookmark.docx");
         }
 
         /// <summary>
         /// Insert a sequence field with preceding text and a specified sequence identifier
         /// </summary>
-        public void InsertCaption(DocumentBuilder builder, string precedingText, string sequenceIdentifier)
+        public FieldSeq InsertSeqField(DocumentBuilder builder, string textBefore, string textAfter, string sequenceIdentifier)
         {
-            builder.Write(precedingText);
-            FieldSeq caption = (FieldSeq)builder.InsertField(FieldType.FieldSequence, false);
-            caption.SequenceIdentifier = sequenceIdentifier;
+            builder.Write(textBefore);
+            FieldSeq fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
+            fieldSeq.SequenceIdentifier = sequenceIdentifier;
+            builder.Write(textAfter);
+
+            return fieldSeq;
         }
         //ExEnd
 
@@ -3173,25 +3281,29 @@ namespace ApiExamples
             //ExFor:FieldCreateDate.UseLunarCalendar
             //ExFor:FieldCreateDate.UseSakaEraCalendar
             //ExFor:FieldCreateDate.UseUmAlQuraCalendar
-            //ExSummary:Shows how to insert CREATEDATE fields with different kinds of calendars.
-            Document doc = new Document();
+            //ExSummary:Shows how to insert CREATEDATE fields to display document creation dates.
+            // Open an existing document and move a document builder to the end
+            Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.MoveToDocumentEnd();
+            builder.Writeln(" Date this document was created:");
 
-            // These fields will display date and time when our document was created
+            // Insert a CREATEDATE field and display, using the Lunar Calendar, the date the document was created
+            builder.Write("According to the Lunar Calendar - ");
             FieldCreateDate fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
-
-            // Display the date according to the Lunar calendar
             fieldCreateDate.UseLunarCalendar = true;
             Assert.AreEqual(" CREATEDATE  \\h", fieldCreateDate.GetFieldCode());
             builder.Writeln();
 
-            // Insert a create date field with the document creation date according to the Umm al-Qura calendar
+            // Display the date using the Umm al-Qura Calendar
+            builder.Write("According to the Umm al-Qura Calendar - ");
             fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
             fieldCreateDate.UseUmAlQuraCalendar = true;
             Assert.AreEqual(" CREATEDATE  \\u", fieldCreateDate.GetFieldCode());
             builder.Writeln();
 
-            // Insert a create date field with the document creation date according to the Indian national calendar
+            // Display the date using the Indian National Calendar
+            builder.Write("According to the Indian National Calendar - ");
             fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
             fieldCreateDate.UseSakaEraCalendar = true;
             Assert.AreEqual(" CREATEDATE  \\s", fieldCreateDate.GetFieldCode());
@@ -3199,6 +3311,47 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.CreateDate.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldSaveDate()
+        {
+            //ExStart
+            //ExFor:FieldSaveDate
+            //ExFor:FieldSaveDate.UseLunarCalendar
+            //ExFor:FieldSaveDate.UseSakaEraCalendar
+            //ExFor:FieldSaveDate.UseUmAlQuraCalendar
+            //ExSummary:Shows how to insert SAVEDATE fields the date and time a document was last saved.
+            // Open an existing document and move a document builder to the end
+            Document doc = new Document(MyDir + "Document.docx");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.MoveToDocumentEnd();
+            builder.Writeln(" Date this document was last saved:");
+
+            // Insert a SAVEDATE field and display, using the Lunar Calendar, the date the document was last saved
+            builder.Write("According to the Lunar Calendar - ");
+            FieldSaveDate fieldSaveDate = (FieldSaveDate)builder.InsertField(FieldType.FieldSaveDate, true);
+            fieldSaveDate.UseLunarCalendar = true;
+            Assert.AreEqual(" SAVEDATE  \\h", fieldSaveDate.GetFieldCode());
+            builder.Writeln();
+
+            // Display the date using the Umm al-Qura Calendar
+            builder.Write("According to the Umm al-Qura calendar - ");
+            fieldSaveDate = (FieldSaveDate)builder.InsertField(FieldType.FieldSaveDate, true);
+            fieldSaveDate.UseUmAlQuraCalendar = true;
+            Assert.AreEqual(" SAVEDATE  \\u", fieldSaveDate.GetFieldCode());
+            builder.Writeln();
+
+            // Display the date using the Indian National Calendar
+            builder.Write("According to the Indian National calendar - ");
+            fieldSaveDate = (FieldSaveDate)builder.InsertField(FieldType.FieldSaveDate, true);
+            fieldSaveDate.UseSakaEraCalendar = true;
+            Assert.AreEqual(" SAVEDATE  \\s", fieldSaveDate.GetFieldCode());
+            builder.Writeln();
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.SaveDate.docx");
             //ExEnd
         }
 
@@ -4048,5 +4201,119 @@ namespace ApiExamples
             return field;
         }
         //ExEnd
+
+        [Test]
+        [Ignore("WORDSNET-18068")]
+        public void FieldRD()
+        {
+            //ExStart
+            //ExFor:FieldRD
+            //ExFor:FieldRD.FileName
+            //ExFor:FieldRD.IsPathRelative
+            //ExSummary:Shows to insert an RD field to source table of contents entries from an external document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a table of contents and, on the following page, one entry
+            builder.InsertField(FieldType.FieldTOC, true);
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.CurrentParagraph.ParagraphFormat.StyleName = "Heading 1";
+            builder.Writeln("TOC entry from within this document");
+
+            // Insert an RD field, designating an external document that our TOC field will look in for more entries
+            FieldRD field = (FieldRD)builder.InsertField(FieldType.FieldRefDoc, true);
+            field.FileName = "ReferencedDocument.docx";
+            field.IsPathRelative = true;
+            field.Update();
+
+            Assert.AreEqual(" RD  ReferencedDocument.docx \\f", field.GetFieldCode());
+
+            // Create the document and insert a TOC entry, which will end up in the TOC of our original document
+            Document referencedDoc = new Document();
+            DocumentBuilder refDocBuilder = new DocumentBuilder(referencedDoc);
+            refDocBuilder.CurrentParagraph.ParagraphFormat.StyleName = "Heading 1";
+            refDocBuilder.Writeln("TOC entry from referenced document");
+            referencedDoc.Save(ArtifactsDir + "ReferencedDocument.docx");
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.RefDoc.docx");
+            //ExEnd
+        }
+      
+        [Test]
+        public void SkipIf()
+        {
+            //ExStart
+            //ExFor:FieldSkipIf
+            //ExFor:FieldSkipIf.ComparisonOperator
+            //ExFor:FieldSkipIf.LeftExpression
+            //ExFor:FieldSkipIf.RightExpression
+            //ExSummary:Shows how to skip pages in a mail merge using the SKIPIF field
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create a data table that will be the source for our mail merge
+            System.Data.DataTable table = new System.Data.DataTable("Employees");
+            table.Columns.Add("Name");
+            table.Columns.Add("Department");
+            table.Rows.Add("John Doe", "Sales");
+            table.Rows.Add("Jane Doe", "Accounting");
+            table.Rows.Add("John Cardholder", "HR");
+
+            // Insert a SKIPIF field, which will skip a page of a mail merge if the condition is fulfilled
+            // We will move to the SKIPIF field's separator character and insert a MERGEFIELD at that place to create a nested field
+            FieldSkipIf fieldSkipIf = (FieldSkipIf) builder.InsertField(FieldType.FieldSkipIf, true);
+            builder.MoveTo(fieldSkipIf.Separator);
+            FieldMergeField fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            fieldMergeField.FieldName = "Department";
+
+            // The MERGEFIELD refers to the "Department" column in our data table, and our SKIPIF field will check if its value equals to "HR"
+            // One of three rows satisfies that condition, so we will expect the result of our mail merge to have two pages
+            fieldSkipIf.LeftExpression = "=";
+            fieldSkipIf.RightExpression = "HR";
+
+            // Add some content to our mail merge and execute it
+            builder.MoveToDocumentEnd();
+            builder.Write("Dear ");
+            fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            fieldMergeField.FieldName = "Name";
+            builder.Writeln(", ");
+
+            doc.MailMerge.Execute(table);
+            doc.Save(ArtifactsDir + "Field.SKIPIF.docx");
+            //ExEnd
+        }
+      
+        [Test]
+        public void FieldSet()
+        {
+            //ExStart
+            //ExFor:FieldSet
+            //ExFor:FieldSet.BookmarkName
+            //ExFor:FieldSet.BookmarkText
+            //ExSummary:Shows to alter a bookmark's text with a SET field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.StartBookmark("MyBookmark");
+            builder.Writeln("Bookmark contents");
+            builder.EndBookmark("MyBookmark");
+
+            Bookmark bookmark = doc.Range.Bookmarks["MyBookmark"];
+            bookmark.Text = "Old text";
+
+            FieldSet field = (FieldSet)builder.InsertField(FieldType.FieldSet, false);
+            field.BookmarkName = "MyBookmark";
+            field.BookmarkText = "New text";
+
+            Assert.AreEqual(" SET  MyBookmark \"New text\"", field.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.SET.docx");
+            //ExEnd
+
+            bookmark = doc.Range.Bookmarks["MyBookmark"];
+            Assert.AreEqual("New text", bookmark.Text);
+        }
     }
 }
