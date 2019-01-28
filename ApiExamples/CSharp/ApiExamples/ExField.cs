@@ -1709,10 +1709,8 @@ namespace ApiExamples
         //ExFor:FieldSeq.SequenceIdentifier
         //ExSummary:Insert a TOC field and build the table with SEQ fields.
         [Test] //ExSkip
-        [Ignore("WORDSNET-18082, WORDSNET-18083, WORDSNET-18084")]
-        public void FieldTocFigure()
+        public void TocSeqPrefix()
         {
-            // INSP: Very big example. It's hard to read. Please rework with multiple methods or maybe examples.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1726,55 +1724,48 @@ namespace ApiExamples
 
             builder.InsertBreak(BreakType.PageBreak);
 
-            // All SEQ fields with "MySequence" inside "TOCBookmark"
-            fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
-            fieldToc.TableOfFiguresLabel = "MySequence";
-            fieldToc.BookmarkName = "TOCBookmark";
-
-            Assert.AreEqual(" TOC  \\c MySequence \\b TOCBookmark", fieldToc.GetFieldCode());
-
-            builder.InsertBreak(BreakType.PageBreak);
-
-            // Filter by label
-            fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
-            fieldToc.CaptionlessTableOfFiguresLabel = "OtherSequence";
-
-            Assert.AreEqual(" TOC  \\a OtherSequence", fieldToc.GetFieldCode());
-
-            builder.InsertBreak(BreakType.PageBreak);
-
-            // These captions will have a sequence identifier that's the same as the table of figures label in our table of contents,
-            // so the table of contents will pick them up
+            // Add two SEQ fields in one paragraph, setting the TOC's sequence and prefix sequence as their sequence identifiers
             FieldSeq fieldSeq = InsertSeqField(builder, "PrefixSequence ", "", "PrefixSequence");
-            InsertSeqField(builder, ", MySequence ", "", "MySequence");
-            builder.Writeln("\nThis text is outside the \"TOCBookmark\" bookmark.");
-
-            // Encapsulate the following SEQ fields inside a bookmark 
-            builder.StartBookmark("TOCBookmark");
-
-            fieldSeq = InsertSeqField(builder, "PrefixSequence ", "", "PrefixSequence");
             Assert.AreEqual(" SEQ  PrefixSequence", fieldSeq.GetFieldCode());
 
-            fieldSeq = InsertSeqField(builder, ", MySequence ", "", "MySequence");
+            fieldSeq = InsertSeqField(builder, ", MySequence ", "\n", "MySequence");
             Assert.AreEqual(" SEQ  MySequence", fieldSeq.GetFieldCode());
 
-            builder.Writeln("\nThis text is inside \"TOCBookmark\" bookmark.");
+            InsertSeqField(builder, "PrefixSequence ", "", "PrefixSequence");
+            InsertSeqField(builder, ", MySequence ", "\n", "MySequence");
 
-            InsertSeqField(builder, "MySequence ", "", "MySequence");
-            builder.Writeln(" This text will show up in the TOC next to the entry for the above caption.");
-
-            InsertSeqField(builder, "MySequence ", "", "OtherSequence");
+            // If the sqeuence identifier doesn't match that of the TOC, the entry won't be included
+            InsertSeqField(builder, "PrefixSequence ", "", "PrefixSequence");           
+            fieldSeq = InsertSeqField(builder, ", MySequence ", "", "OtherSequence");
             builder.Writeln(" This text, from a different sequence, won't be included in the same TOC as the one above.");
 
-            builder.EndBookmark("TOCBookmark");
+            Assert.AreEqual(" SEQ  OtherSequence", fieldSeq.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.TOC.SEQ.Prefix.docx");
+        }
+
+        [Test] //ExSkip
+        [Ignore("WORDSNET-18083")]
+        public void TocSeqNumbering()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Filter by sequence identifier and a prefix sequence identifier, and change sequence separator
+            FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
+            fieldToc.TableOfFiguresLabel = "MySequence";
+
+            Assert.AreEqual(" TOC  \\c MySequence", fieldToc.GetFieldCode());
+
+            builder.InsertBreak(BreakType.PageBreak);
 
             // Set the current number of the sequence to 100
-            fieldSeq = InsertSeqField(builder, " MySequence ", "\n", "MySequence");
+            FieldSeq fieldSeq = InsertSeqField(builder, "MySequence ", "\n", "MySequence");
             fieldSeq.ResetNumber = "100";
             Assert.AreEqual(" SEQ  MySequence \\r 100", fieldSeq.GetFieldCode());
 
-            fieldSeq = InsertSeqField(builder, " MySequence ", "\n", "MySequence");
-            fieldSeq = InsertSeqField(builder, " MySequence ", "\n", "MySequence");
+            fieldSeq = InsertSeqField(builder, "MySequence ", "\n", "MySequence");
 
             // Insert a heading
             builder.InsertBreak(BreakType.ParagraphBreak);
@@ -1782,18 +1773,48 @@ namespace ApiExamples
             builder.Writeln("My heading");
             builder.ParagraphFormat.Style = doc.Styles["Normal"];
 
-            // Reset sequence when we encounter a heading, resetting the sequence from 103 back to 1
-            fieldSeq = InsertSeqField(builder, " MySequence ", "\n", "MySequence");
+            // Reset sequence when we encounter a heading, resetting the sequence back to 1
+            fieldSeq = InsertSeqField(builder, "MySequence ", "\n", "MySequence");
             fieldSeq.ResetHeadingLevel = "1";
             Assert.AreEqual(" SEQ  MySequence \\s 1", fieldSeq.GetFieldCode());
 
             // Move to the next number
-            fieldSeq = InsertSeqField(builder, " MySequence ", "\n", "MySequence");
+            fieldSeq = InsertSeqField(builder, "MySequence ", "\n", "MySequence");
             fieldSeq.InsertNextNumber = true;
             Assert.AreEqual(" SEQ  MySequence \\n", fieldSeq.GetFieldCode());
 
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.TOC.SEQ.ResetNumbering.docx");
+        }
+
+        [Test] //ExSkip
+        [Ignore("WORDSNET-18084")]
+        public void TocSeqBookmark()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // This TOC takes in all SEQ fields with "MySequence" inside "TOCBookmark"
+            FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
+            fieldToc.TableOfFiguresLabel = "MySequence";
+            fieldToc.BookmarkName = "TOCBookmark";
+            builder.InsertBreak(BreakType.PageBreak);
+
+            Assert.AreEqual(" TOC  \\c MySequence \\b TOCBookmark", fieldToc.GetFieldCode());
+
+            InsertSeqField(builder, "MySequence ", "", "MySequence");
+            builder.Writeln(" This text won't show up in the TOC because it is outside of the bookmark.");
+
+            builder.StartBookmark("TOCBookmark");
+
+            InsertSeqField(builder, "MySequence ", "", "MySequence");
+            builder.Writeln(" This text will show up in the TOC next to the entry for the above caption.");
+
+            InsertSeqField(builder, "OtherSequence ", "", "OtherSequence");
+            builder.Writeln(" This text, from a different sequence, won't be included in the same TOC as the one above.");
+
             // The contents of the bookmark we reference here will not appear at the SEQ field, but will appear in the corresponding TOC entry
-            fieldSeq = InsertSeqField(builder, " MySequence ", "\n", "MySequence");
+            FieldSeq fieldSeq = InsertSeqField(builder, " MySequence ", "\n", "MySequence");
             fieldSeq.BookmarkName = "SEQBookmark";
             Assert.AreEqual(" SEQ  MySequence SEQBookmark", fieldSeq.GetFieldCode());
 
@@ -1804,8 +1825,10 @@ namespace ApiExamples
             builder.Writeln(" Text inside SEQBookmark.");
             builder.EndBookmark("SEQBookmark");
 
+            builder.EndBookmark("TOCBookmark");
+
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.TOC.SEQ.docx");
+            doc.Save(ArtifactsDir + "Field.TOC.SEQ.Bookmark.docx");
         }
 
         /// <summary>
