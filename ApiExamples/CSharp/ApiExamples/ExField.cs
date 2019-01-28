@@ -1712,6 +1712,7 @@ namespace ApiExamples
         [Ignore("WORDSNET-18082, WORDSNET-18083, WORDSNET-18084")]
         public void FieldTocFigure()
         {
+            // INSP: Very big example. It's hard to read. Please rework with multiple methods or maybe examples.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
