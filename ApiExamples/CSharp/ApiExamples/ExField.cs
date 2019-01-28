@@ -4047,6 +4047,50 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
+        public void SkipIf()
+        {
+            //ExStart
+            //ExFor:FieldSkipIf
+            //ExFor:FieldSkipIf.ComparisonOperator
+            //ExFor:FieldSkipIf.LeftExpression
+            //ExFor:FieldSkipIf.RightExpression
+            //ExSummary:Shows how to skip pages in a mail merge using the SKIPIF field
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create a data table that will be the source for our mail merge
+            System.Data.DataTable table = new System.Data.DataTable("Employees");
+            table.Columns.Add("Name");
+            table.Columns.Add("Department");
+            table.Rows.Add("John Doe", "Sales");
+            table.Rows.Add("Jane Doe", "Accounting");
+            table.Rows.Add("John Cardholder", "HR");
+
+            // Insert a SKIPIF field, which will skip a page of a mail merge if the condition is fulfilled
+            // We will move to the SKIPIF field's separator character and insert a MERGEFIELD at that place to create a nested field
+            FieldSkipIf fieldSkipIf = (FieldSkipIf) builder.InsertField(FieldType.FieldSkipIf, true);
+            builder.MoveTo(fieldSkipIf.Separator);
+            FieldMergeField fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            fieldMergeField.FieldName = "Department";
+
+            // The MERGEFIELD refers to the "Department" column in our data table, and our SKIPIF field will check if its value equals to "HR"
+            // One of three rows satisfies that condition, so we will expect the result of our mail merge to have two pages
+            fieldSkipIf.LeftExpression = "=";
+            fieldSkipIf.RightExpression = "HR";
+
+            // Add some content to our mail merge and execute it
+            builder.MoveToDocumentEnd();
+            builder.Write("Dear ");
+            fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            fieldMergeField.FieldName = "Name";
+            builder.Writeln(", ");
+
+            doc.MailMerge.Execute(table);
+            doc.Save(ArtifactsDir + "Field.SKIPIF.docx");
+            //ExEnd
+        }
+      
+        [Test]
         public void FieldSet()
         {
             //ExStart
