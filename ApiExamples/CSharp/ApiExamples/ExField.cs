@@ -4103,6 +4103,105 @@ namespace ApiExamples
         }
         //ExEnd
 
+        //ExStart
+        //ExFor:FieldRef
+        //ExFor:FieldRef.BookmarkName
+        //ExFor:FieldRef.IncludeNoteOrComment
+        //ExFor:FieldRef.InsertHyperlink
+        //ExFor:FieldRef.InsertParagraphNumber
+        //ExFor:FieldRef.InsertParagraphNumberInFullContext
+        //ExFor:FieldRef.InsertParagraphNumberInRelativeContext
+        //ExFor:FieldRef.InsertRelativePosition
+        //ExFor:FieldRef.NumberSeparator
+        //ExFor:FieldRef.SuppressNonDelimiters
+        //ExSummary:Shows how to insert REF fields to reference bookmarks and present them in various ways.
+        [Test] //ExSkip
+        [Ignore("WORDSNET-18067")]
+        public void FieldRef()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert the bookmark that all our REF fields will reference and leave it at the end of the document
+            builder.StartBookmark("MyBookmark");
+            builder.InsertFootnote(FootnoteType.Footnote, "MyBookmark footnote #1");
+            builder.Write("Text that will appear in REF field");
+            builder.InsertFootnote(FootnoteType.Footnote, "MyBookmark footnote #2");
+            builder.EndBookmark("MyBookmark");
+            builder.MoveToDocumentStart();
+
+            // We will apply a custom list format, where the amount of angle brackets indicates the list level we are currently at
+            // Note that the angle brackets count as non-delimiter characters
+            builder.ListFormat.ApplyNumberDefault();
+            builder.ListFormat.ListLevel.NumberFormat = "> \x0000";
+
+            // Insert a REF field that will contain the text within our bookmark, act as a hyperlink, and clone the bookmark's footnotes
+            FieldRef field = InsertFieldRef(builder, "MyBookmark", "", "\n");
+            field.IncludeNoteOrComment = true;
+            field.InsertHyperlink = true;
+
+            Assert.AreEqual(" REF  MyBookmark \\f \\h", field.GetFieldCode());
+
+            // Insert a REF field and display whether the referenced bookmark is above or below it
+            field = InsertFieldRef(builder, "MyBookmark", "The referenced paragraph is ", " this field.\n");
+            field.InsertRelativePosition = true;
+
+            Assert.AreEqual(" REF  MyBookmark \\p", field.GetFieldCode());
+
+            // Display the list number of the bookmark, as it appears in the document
+            field = InsertFieldRef(builder, "MyBookmark", "The bookmark's paragraph number is ", "\n");
+            field.InsertParagraphNumber = true;
+
+            Assert.AreEqual(" REF  MyBookmark \\n", field.GetFieldCode());
+
+            // Display the list number of the bookmark, but with non-delimiter characters omitted
+            // In this case they are the angle brackets
+            field = InsertFieldRef(builder, "MyBookmark", "The bookmark's paragraph number, non-delimiters suppressed, is ", "\n");
+            field.InsertParagraphNumber = true;
+            field.SuppressNonDelimiters = true;
+
+            Assert.AreEqual(" REF  MyBookmark \\n \\t", field.GetFieldCode());
+
+            // Move down one list level
+            builder.ListFormat.ListLevelNumber++;
+            builder.ListFormat.ListLevel.NumberFormat = ">> \x0001";
+
+            // Display the list number of the bookmark as well as the numbers of all the list levels above it
+            field = InsertFieldRef(builder, "MyBookmark", "The bookmark's full context paragraph number is ", "\n");
+            field.InsertParagraphNumberInFullContext = true;
+
+            Assert.AreEqual(" REF  MyBookmark \\w", field.GetFieldCode());
+
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // Display the list level numbers between this REF field and the bookmark that it is referencing
+            field = InsertFieldRef(builder, "MyBookmark", "The bookmark's relative paragraph number is ", "\n");
+            field.InsertParagraphNumberInRelativeContext = true;
+
+            Assert.AreEqual(" REF  MyBookmark \\r", field.GetFieldCode());
+
+            // The bookmark, which is at the end of the document, will show up as a list item here
+            builder.Writeln("List level above bookmark");
+            builder.ListFormat.ListLevelNumber++;
+            builder.ListFormat.ListLevel.NumberFormat = ">>> \x0002";
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.Ref.docx");
+        }
+
+        /// <summary>
+        /// Get the document builder to insert a REF field, reference a bookmark with it, and add text before and after
+        /// </summary>
+        private FieldRef InsertFieldRef(DocumentBuilder builder, string bookmarkName, string textBefore, string textAfter)
+        {
+            builder.Write(textBefore);
+            FieldRef field = (FieldRef)builder.InsertField(FieldType.FieldRef, true);
+            field.BookmarkName = bookmarkName;
+            builder.Write(textAfter);
+            return field;
+        }
+        //ExEnd
+
         [Test]
         [Ignore("WORDSNET-18068")]
         public void FieldRD()
