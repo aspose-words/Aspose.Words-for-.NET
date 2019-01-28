@@ -3269,25 +3269,29 @@ namespace ApiExamples
             //ExFor:FieldCreateDate.UseLunarCalendar
             //ExFor:FieldCreateDate.UseSakaEraCalendar
             //ExFor:FieldCreateDate.UseUmAlQuraCalendar
-            //ExSummary:Shows how to insert CREATEDATE fields with different kinds of calendars.
-            Document doc = new Document();
+            //ExSummary:Shows how to insert CREATEDATE fields to display document creation dates.
+            // Open an existing document and move a document builder to the end
+            Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.MoveToDocumentEnd();
+            builder.Writeln(" Date this document was created:");
 
-            // These fields will display date and time when our document was created
+            // Insert a CREATEDATE field and display, using the Lunar Calendar, the date the document was created
+            builder.Write("According to the Lunar Calendar - ");
             FieldCreateDate fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
-
-            // Display the date according to the Lunar calendar
             fieldCreateDate.UseLunarCalendar = true;
             Assert.AreEqual(" CREATEDATE  \\h", fieldCreateDate.GetFieldCode());
             builder.Writeln();
 
-            // Insert a create date field with the document creation date according to the Umm al-Qura calendar
+            // Display the date using the Umm al-Qura Calendar
+            builder.Write("According to the Umm al-Qura Calendar - ");
             fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
             fieldCreateDate.UseUmAlQuraCalendar = true;
             Assert.AreEqual(" CREATEDATE  \\u", fieldCreateDate.GetFieldCode());
             builder.Writeln();
 
-            // Insert a create date field with the document creation date according to the Indian national calendar
+            // Display the date using the Indian National Calendar
+            builder.Write("According to the Indian National Calendar - ");
             fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
             fieldCreateDate.UseSakaEraCalendar = true;
             Assert.AreEqual(" CREATEDATE  \\s", fieldCreateDate.GetFieldCode());
@@ -3295,6 +3299,47 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.CreateDate.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldSaveDate()
+        {
+            //ExStart
+            //ExFor:FieldSaveDate
+            //ExFor:FieldSaveDate.UseLunarCalendar
+            //ExFor:FieldSaveDate.UseSakaEraCalendar
+            //ExFor:FieldSaveDate.UseUmAlQuraCalendar
+            //ExSummary:Shows how to insert SAVEDATE fields the date and time a document was last saved.
+            // Open an existing document and move a document builder to the end
+            Document doc = new Document(MyDir + "Document.docx");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.MoveToDocumentEnd();
+            builder.Writeln(" Date this document was last saved:");
+
+            // Insert a SAVEDATE field and display, using the Lunar Calendar, the date the document was last saved
+            builder.Write("According to the Lunar Calendar - ");
+            FieldSaveDate fieldSaveDate = (FieldSaveDate)builder.InsertField(FieldType.FieldSaveDate, true);
+            fieldSaveDate.UseLunarCalendar = true;
+            Assert.AreEqual(" SAVEDATE  \\h", fieldSaveDate.GetFieldCode());
+            builder.Writeln();
+
+            // Display the date using the Umm al-Qura Calendar
+            builder.Write("According to the Umm al-Qura calendar - ");
+            fieldSaveDate = (FieldSaveDate)builder.InsertField(FieldType.FieldSaveDate, true);
+            fieldSaveDate.UseUmAlQuraCalendar = true;
+            Assert.AreEqual(" SAVEDATE  \\u", fieldSaveDate.GetFieldCode());
+            builder.Writeln();
+
+            // Display the date using the Indian National Calendar
+            builder.Write("According to the Indian National calendar - ");
+            fieldSaveDate = (FieldSaveDate)builder.InsertField(FieldType.FieldSaveDate, true);
+            fieldSaveDate.UseSakaEraCalendar = true;
+            Assert.AreEqual(" SAVEDATE  \\s", fieldSaveDate.GetFieldCode());
+            builder.Writeln();
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.SaveDate.docx");
             //ExEnd
         }
 
