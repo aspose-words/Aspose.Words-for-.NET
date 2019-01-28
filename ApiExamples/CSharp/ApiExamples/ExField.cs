@@ -3977,7 +3977,6 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.SET.docx");
             //ExEnd
-            doc = new Document(ArtifactsDir + "Field.SET.docx");
 
             bookmark = doc.Range.Bookmarks["MyBookmark"];
             Assert.AreEqual("New text", bookmark.Text);
