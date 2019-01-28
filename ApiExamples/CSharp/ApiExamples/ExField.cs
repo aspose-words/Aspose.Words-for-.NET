@@ -3949,5 +3949,38 @@ namespace ApiExamples
             builder.EndBookmark(bookmarkName);
         }
         //ExEnd
+
+        [Test]
+        public void FieldSet()
+        {
+            //ExStart
+            //ExFor:FieldSet
+            //ExFor:FieldSet.BookmarkName
+            //ExFor:FieldSet.BookmarkText
+            //ExSummary:Shows to alter a bookmark's text with a SET field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.StartBookmark("MyBookmark");
+            builder.Writeln("Bookmark contents");
+            builder.EndBookmark("MyBookmark");
+
+            Bookmark bookmark = doc.Range.Bookmarks["MyBookmark"];
+            bookmark.Text = "Old text";
+
+            FieldSet field = (FieldSet)builder.InsertField(FieldType.FieldSet, false);
+            field.BookmarkName = "MyBookmark";
+            field.BookmarkText = "New text";
+
+            Assert.AreEqual(" SET  MyBookmark \"New text\"", field.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.SET.docx");
+            //ExEnd
+            doc = new Document(ArtifactsDir + "Field.SET.docx");
+
+            bookmark = doc.Range.Bookmarks["MyBookmark"];
+            Assert.AreEqual("New text", bookmark.Text);
+        }
     }
 }
