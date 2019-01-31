@@ -112,7 +112,6 @@ namespace ApiExamples
                 TiffBinarizationMethod = ImageBinarizationMethod.FloydSteinbergDithering,
                 ThresholdForFloydSteinbergDithering = 254 // The default value of this property is 128. The higher value, the darker image.
             };
-            
 
             doc.Save(ArtifactsDir + "ImagesSaveOptions.ThresholdForFloydSteinbergDithering.tiff", options);
             //ExEnd
