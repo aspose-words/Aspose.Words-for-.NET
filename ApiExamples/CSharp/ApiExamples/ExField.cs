@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Aspose.Pdf.Text;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Fields;
@@ -3965,15 +3966,10 @@ namespace ApiExamples
             doc.FieldOptions.FieldUpdateCultureProvider = new FieldUpdateCultureProvider();
 
             FieldTime fieldDate = (FieldTime) doc.Range.Fields[0];
-            Assert.AreEqual("7:54 AM", fieldDate.Result);
+            if (fieldDate.LocaleId != (int) EditingLanguage.Russian)
+                fieldDate.LocaleId = (int) EditingLanguage.Russian;
             
-            fieldDate.LocaleId = (int) EditingLanguage.Russian;
-            fieldDate.Update();
-
-            string time = string.Format("{0:hh:mm:ss}", DateTime.Now);
-            Assert.AreEqual("2019 01 (месяц 1) 29 (день недели 2) " + time + " После полудня", fieldDate.Result);
-
-            doc.Save(ArtifactsDir + "Field.UpdateDateTimeFormatting.docx");
+            doc.Save(ArtifactsDir + "Field.UpdateDateTimeFormatting.pdf");
         }
 
         /// <summary>
@@ -3991,7 +3987,7 @@ namespace ApiExamples
                     case "ru-RU":
                         CultureInfo culture = new CultureInfo(name, false);
                         DateTimeFormatInfo format = culture.DateTimeFormat;
- 
+                        
                         format.MonthNames = new []{"месяц 1", "месяц 2", "месяц 3", "месяц 4", "месяц 5", "месяц 6", "месяц 7", "месяц 8", "месяц 9", "месяц 10", "месяц 11", "месяц 12", ""};
                         format.MonthGenitiveNames = format.MonthNames;
                         format.AbbreviatedMonthNames = new []{"мес 1", "мес 2", "мес 3", "мес 4", "мес 5", "мес 6", "мес 7", "мес 8", "мес 9", "мес 10", "мес 11", "мес 12", ""};
