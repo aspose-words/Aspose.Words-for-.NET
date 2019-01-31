@@ -96,5 +96,26 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ImageSaveOptions.BlackAndWhite.png", imageSaveOptions);
             //ExEnd
         }
+
+        [Test]
+        public void ThresholdForFloydSteinbergDithering()
+        {
+            //ExStart
+            //ExFor:ImageSaveOptions.ThresholdForFloydSteinbergDithering
+            //ExSummary: Shows how to control the threshold for TIFF binarization in the Floyd-Steinberg method
+            Document doc = new Document (MyDir + "ImagesSaveOptions.ThresholdForFloydSteinbergDithering.docx");
+
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff)
+            {
+                TiffCompression = TiffCompression.Ccitt3,
+                ImageColorMode = ImageColorMode.Grayscale,
+                TiffBinarizationMethod = ImageBinarizationMethod.FloydSteinbergDithering,
+                ThresholdForFloydSteinbergDithering = 254 // The default value of this property is 128. The higher value, the darker image.
+            };
+            
+
+            doc.Save(ArtifactsDir + "ImagesSaveOptions.ThresholdForFloydSteinbergDithering.tiff", options);
+            //ExEnd
+        }
     }
 }
