@@ -75,13 +75,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void HideMark()
-        {
-            Document doc = new Document(MyDir + "Original Word document.docx");
-            doc.Save(ArtifactsDir + "Original Word document.pdf");
-        }
-
-        [Test]
         public void AllowToAddBookmarksWithWhiteSpaces()
         {
             //ExStart
