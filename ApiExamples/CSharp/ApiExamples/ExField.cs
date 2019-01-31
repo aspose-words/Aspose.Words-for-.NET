@@ -3951,7 +3951,6 @@ namespace ApiExamples
         }
         //ExEnd
 
-        // TODO: обсудить с разрабами, почему в документе отображается не паттерн и написать о исправлении примера Тахиру
         //ExStart
         //ExFor:FieldOptions.FieldUpdateCultureProvider
         //ExFor:IFieldUpdateCultureProvider
