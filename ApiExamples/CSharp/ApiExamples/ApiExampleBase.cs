@@ -42,7 +42,7 @@ namespace ApiExamples
         {
             if (!CheckForSkipTearDown())
             {
-                if (!Directory.Exists(ArtifactsDir))
+                if (Directory.Exists(ArtifactsDir))
                     //Delete all dirs and files from directory
                     Directory.Delete(ArtifactsDir, true);
             }
