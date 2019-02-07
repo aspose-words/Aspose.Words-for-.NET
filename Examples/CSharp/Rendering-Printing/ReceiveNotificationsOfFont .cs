@@ -19,7 +19,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             FontSettings FontSettings = new FontSettings();          
 
             // We can choose the default font to use in the case of any missing fonts.
-            FontSettings.DefaultFontName = "Arial";
+            FontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
             // For testing we will set Aspose.Words to look for fonts only in a folder which doesn't exist. Since Aspose.Words won't
             // Find any fonts in the specified directory, then during rendering the fonts in the document will be subsuited with the default
             // Font specified under FontSettings.DefaultFontName. We can pick up on this subsuition using our callback.

@@ -617,7 +617,7 @@ namespace ApiExamples
             doc.WarningCallback = callback;
 
             // We can choose the default font to use in the case of any missing fonts.
-            FontSettings.DefaultInstance.DefaultFontName = "Arial";
+            FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
 
             // For testing we will set Aspose.Words to look for fonts only in a folder which doesn't exist. Since Aspose.Words won't
             // find any fonts in the specified directory, then during rendering the fonts in the document will be substituted with the default 
@@ -707,8 +707,8 @@ namespace ApiExamples
             doc.WarningCallback = callback;
 
             FontSettings fontSettings = new FontSettings();
-            fontSettings.DefaultFontName = "Arial";
-            fontSettings.EnableFontSubstitution = true;
+            fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial"; ;
+            fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = true;
             //ExEnd
 
             doc.FontSettings = fontSettings;
@@ -737,8 +737,8 @@ namespace ApiExamples
             doc.WarningCallback = callback;
 
             FontSettings fontSettings = new FontSettings();
-            fontSettings.DefaultFontName = "Arial";
-            fontSettings.EnableFontSubstitution = false;
+            fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
+            fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = false;
 
             doc.FontSettings = fontSettings;
             doc.Save(ArtifactsDir + "Font.EnableFontSubstitution.pdf");
@@ -767,9 +767,9 @@ namespace ApiExamples
             doc.WarningCallback = callback;
 
             FontSettings fontSettings = new FontSettings();
-            fontSettings.DefaultFontName = "Arial";
+            fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
             fontSettings.SetFontsFolder(MyDir + @"MyFonts\", false);
-            fontSettings.AddFontSubstitutes("Arial", "Arvo", "Slab");
+            fontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Arial", "Arvo", "Slab");
             
             doc.FontSettings = fontSettings;
             doc.Save(ArtifactsDir + "Rendering.MissingFontNotification.pdf");
@@ -1288,11 +1288,11 @@ namespace ApiExamples
             }
 
             // Set a font that exists in the windows fonts directory as a substitute for one that doesn't
-            doc.FontSettings.EnableFontSubstitution = true;
-            doc.FontSettings.AddFontSubstitutes("Kreon-Regular", new string[] { "Calibri" });
+            doc.FontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = true;
+            doc.FontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Kreon-Regular", new string[] { "Calibri" });
 
-            Assert.AreEqual(1, doc.FontSettings.GetFontSubstitutes("Kreon-Regular").Length);
-            Assert.Contains("Calibri", doc.FontSettings.GetFontSubstitutes("Kreon-Regular"));
+            Assert.AreEqual(1, doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Kreon-Regular").Count());
+            Assert.Contains("Calibri", doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Kreon-Regular").ToArray());
 
             // Alternatively, we could add a folder font source in which the corresponding folder contains the font
             FolderFontSource folderFontSource = new FolderFontSource(MyDir + "MyFonts", false);
@@ -1304,7 +1304,7 @@ namespace ApiExamples
 
             Assert.AreEqual(1, doc.FontSettings.GetFontsSources().Length);
             Assert.AreEqual(FontSourceType.SystemFonts, doc.FontSettings.GetFontsSources()[0].Type);
-            Assert.AreEqual(1, doc.FontSettings.GetFontSubstitutes("Kreon-Regular").Length);
+            Assert.AreEqual(1, doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Kreon-Regular").Count());
             //ExEnd
         }
 
