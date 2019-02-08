@@ -3483,6 +3483,8 @@ namespace ApiExamples
             //ExFor:FieldDocProperty
             //ExFor:FieldDocVariable
             //ExFor:FieldDocVariable.VariableName
+            //ExFor:FieldSubject
+            //ExFor:FieldSubject.Text
             //ExSummary:Shows how to use fields to display document properties and variables.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -3510,6 +3512,28 @@ namespace ApiExamples
 
             Assert.AreEqual(" DOCVARIABLE  \"My Variable\"", fieldDocVariable.GetFieldCode());
             Assert.AreEqual("My variable's value", fieldDocVariable.Result);
+
+            builder.Writeln();
+
+            // Set a value for the document's subject property
+            doc.BuiltInDocumentProperties.Subject = "My subject";
+
+            // We can display this value with a SUBJECT field
+            FieldSubject fieldSubject = (FieldSubject)builder.InsertField(FieldType.FieldSubject, true);
+            fieldSubject.Update();
+
+            Assert.AreEqual(" SUBJECT ", fieldSubject.GetFieldCode());
+            Assert.AreEqual("My subject", fieldSubject.Result);
+
+            // We can also set the field's Text attribute to override the current value of the Subject property
+            fieldSubject.Text = "My new subject";
+            fieldSubject.Update();
+
+            Assert.AreEqual(" SUBJECT  \"My new subject\"", fieldSubject.GetFieldCode());
+            Assert.AreEqual("My new subject", fieldSubject.Result);
+
+            // As well as displaying a new value in our field, we also changed the value of the document property
+            Assert.AreEqual("My new subject", doc.BuiltInDocumentProperties.Subject);
 
             doc.Save(ArtifactsDir + "Field.DocProperties.docx");
             //ExEnd
