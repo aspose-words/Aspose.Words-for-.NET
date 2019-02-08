@@ -4315,5 +4315,30 @@ namespace ApiExamples
             bookmark = doc.Range.Bookmarks["MyBookmark"];
             Assert.AreEqual("New text", bookmark.Text);
         }
+
+        [Test]
+        [Ignore("WORDSNET-18137")]
+        public void FieldTemplate()
+        {
+            //ExStart
+            //ExFor:FieldTemplate
+            //ExFor:FieldTemplate.IncludeFullPath
+            //ExSummary:Shows how to display the location of the document's template with a TEMPLATE field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            FieldTemplate field = (FieldTemplate)builder.InsertField(FieldType.FieldTemplate, false);
+            Assert.AreEqual(" TEMPLATE ", field.GetFieldCode());
+
+            builder.Writeln();
+            field = (FieldTemplate)builder.InsertField(FieldType.FieldTemplate, false);
+            field.IncludeFullPath = true;
+
+            Assert.AreEqual(" TEMPLATE  \\p", field.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.TEMPLATE.docx");
+            //ExEnd
+        }
     }
 }
