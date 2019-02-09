@@ -2967,21 +2967,73 @@ namespace ApiExamples
             //ExFor:UserInformation.Name
             //ExFor:UserInformation.Initials
             //ExFor:UserInformation.Address
-            //ExSummary:Shows how to set user details and insert them as fields.
+            //ExFor:FieldUserAddress
+            //ExFor:FieldUserAddress.UserAddress
+            //ExFor:FieldUserInitials
+            //ExFor:FieldUserInitials.UserInitials
+            //ExFor:FieldUserName
+            //ExFor:FieldUserName.UserName
+            //ExSummary:Shows how to set user details and display them with fields.
             Document doc = new Document();
 
-            // Set user information
-            UserInformation userInformation = new UserInformation();
-            userInformation.Name = "John Doe";
-            userInformation.Initials = "J. D.";
-            userInformation.Address = "123 Main Street";
+            // Create a user information object and set the name, initials and address
+            UserInformation userInformation = new UserInformation()
+            {
+                Name = "John Doe",
+                Initials = "J. D.",
+                Address = "123 Main Street"
+            };
+
+            // Set the document's user information property in the field options to the object we created,
+            // so its values can be referenced by fields
             doc.FieldOptions.CurrentUser = userInformation;
 
-            // Insert fields that reference our user information
+            // We will use a document builder to insert fields
             DocumentBuilder builder = new DocumentBuilder(doc);
-            Assert.AreEqual(userInformation.Name, builder.InsertField(" USERNAME ").Result);
-            Assert.AreEqual(userInformation.Initials, builder.InsertField(" USERINITIALS ").Result);
-            Assert.AreEqual(userInformation.Address, builder.InsertField(" USERADDRESS ").Result);
+
+            // Display the current user's name with a USERNAME field
+            FieldUserName fieldUserName = (FieldUserName)builder.InsertField(FieldType.FieldUserName, true);
+
+            Assert.AreEqual(" USERNAME ", fieldUserName.GetFieldCode());
+            Assert.AreEqual("John Doe", fieldUserName.Result);
+
+            // Override the value from the user information object with one we put into this attribute
+            fieldUserName.UserName = "Jane Cardholder";
+            fieldUserName.Update();
+
+            Assert.AreEqual(" USERNAME  \"Jane Cardholder\"", fieldUserName.GetFieldCode());
+            Assert.AreEqual("Jane Cardholder", fieldUserName.Result);
+
+            // Display the current user's initials with a USERINITIALS field
+            FieldUserInitials fieldUserInitials = (FieldUserInitials)builder.InsertField(FieldType.FieldUserInitials, true);
+            Assert.AreEqual(userInformation.Initials, fieldUserInitials.Result);
+
+            Assert.AreEqual(" USERINITIALS ", fieldUserInitials.GetFieldCode());
+            Assert.AreEqual("J. D.", fieldUserInitials.Result);
+
+            fieldUserInitials.UserInitials = "J. C.";
+            fieldUserInitials.Update();
+
+            Assert.AreEqual(" USERINITIALS  \"J. C.\"", fieldUserInitials.GetFieldCode());
+            Assert.AreEqual("J. C.", fieldUserInitials.Result);
+
+            // Display the current user's address with a USERADDRESS field
+            FieldUserAddress fieldUserAddress = (FieldUserAddress)builder.InsertField(FieldType.FieldUserAddress, true);
+            Assert.AreEqual(userInformation.Address, fieldUserAddress.Result);
+
+            Assert.AreEqual(" USERADDRESS ", fieldUserAddress.GetFieldCode());
+            Assert.AreEqual("123 Main Street", fieldUserAddress.Result);
+
+            fieldUserAddress.UserAddress = "456 North Road";
+            fieldUserAddress.Update();
+
+            Assert.AreEqual(" USERADDRESS  \"456 North Road\"", fieldUserAddress.GetFieldCode());
+            Assert.AreEqual("456 North Road", fieldUserAddress.Result);
+
+            // The values in the user information object are not affected
+            Assert.AreEqual("John Doe", doc.FieldOptions.CurrentUser.Name);
+            Assert.AreEqual("J. D.", doc.FieldOptions.CurrentUser.Initials);
+            Assert.AreEqual("123 Main Street", doc.FieldOptions.CurrentUser.Address);
             //ExEnd
         }
 
