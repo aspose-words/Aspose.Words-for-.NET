@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Fonts;
 using Aspose.Words.Rendering;
