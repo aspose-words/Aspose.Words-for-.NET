@@ -4335,6 +4335,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // INSP: I see other symbols, not the ones described in the comments
+
             // Insert a SYMBOL field to display a symbol, designated by a character code
             FieldSymbol field = (FieldSymbol)builder.InsertField(FieldType.FieldSymbol, true);
 
@@ -4374,6 +4376,8 @@ namespace ApiExamples
             field.IsShiftJis = true;
 
             Assert.AreEqual(" SYMBOL  33440 \\f \"MS Gothic\" \\j", field.GetFieldCode());
+
+            builder.Write("Line 3");
 
             doc.Save(ArtifactsDir + "Field.SYMBOL.docx");
             //ExEnd
