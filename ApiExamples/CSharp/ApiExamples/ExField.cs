@@ -3590,7 +3590,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void FieldDoc()
+        public void FieldDocVariable()
         {
             //ExStart
             //ExFor:FieldDocProperty
@@ -3608,7 +3608,7 @@ namespace ApiExamples
             fieldDocProperty.Update();
 
             Assert.AreEqual(" DOCPROPERTY Category ", fieldDocProperty.GetFieldCode());
-            Assert.AreEqual("My category", doc.BuiltInDocumentProperties.Category);
+            Assert.AreEqual("My category", fieldDocProperty.Result);
 
             builder.Writeln();
 
@@ -3623,11 +3623,40 @@ namespace ApiExamples
 
             Assert.AreEqual(" DOCVARIABLE  \"My Variable\"", fieldDocVariable.GetFieldCode());
             Assert.AreEqual("My variable's value", fieldDocVariable.Result);
-
-            doc.Save(ArtifactsDir + "Field.DocProperties.docx");
             //ExEnd
         }
-        
+
+        [Test]
+        public void FieldSubject()
+        {
+            //ExStart
+            //ExFor:FieldSubject
+            //ExFor:FieldSubject.Text
+            //ExSummary:Shows how to use the SUBJECT field.
+            Document doc = new Document();
+
+            // Set a value for the document's subject property
+            doc.BuiltInDocumentProperties.Subject = "My subject";
+
+            // We can display this value with a SUBJECT field
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            FieldSubject field = (FieldSubject)builder.InsertField(FieldType.FieldSubject, true);
+            field.Update();
+
+            Assert.AreEqual(" SUBJECT ", field.GetFieldCode());
+            Assert.AreEqual("My subject", field.Result);
+
+            // We can also set the field's Text attribute to override the current value of the Subject property
+            field.Text = "My new subject";
+            field.Update();
+
+            Assert.AreEqual(" SUBJECT  \"My new subject\"", field.GetFieldCode());
+            Assert.AreEqual("My new subject", field.Result);
+
+            // As well as displaying a new value in our field, we also changed the value of the document property
+            Assert.AreEqual("My new subject", doc.BuiltInDocumentProperties.Subject);
+        }
+
         [Test]
         public void FieldComments()
         {
