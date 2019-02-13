@@ -4335,8 +4335,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // INSP: I see other symbols, not the ones described in the comments
-
             // Insert a SYMBOL field to display a symbol, designated by a character code
             FieldSymbol field = (FieldSymbol)builder.InsertField(FieldType.FieldSymbol, true);
 
@@ -4348,16 +4346,14 @@ namespace ApiExamples
 
             builder.Writeln(" Line 1");
 
-            // A code like "221E" is outside the range of ANSI characters, but it can have a Unicode representation
-            // Attempting to represent it as an ANSI character will display "###", signifying an error
-            // In Unicode it will be the infinity symbol
+            // In Unicode, the "221E" code is reserved for ths infinity symbol
             field = (FieldSymbol)builder.InsertField(FieldType.FieldSymbol, true);
             field.CharacterCode = 0x221E.ToString();
             field.IsUnicode = true;
 
-            // Change the font and size of our symbol
-            // Note that symbols at certain character codes can vary from font to font
-            // See the Windows Character Map ot look up the full list of fonts and their symbols
+            // Change the appearance of our symbol
+            // Note that some symbols can change from font to font
+            // The full list of symbols and their fonts can be looked up in the Windows Character Map
             field.FontName = "Calibri";
             field.FontSize = "24";
 
