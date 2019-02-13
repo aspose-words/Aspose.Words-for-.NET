@@ -2962,78 +2962,128 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldOptions.CurrentUser
-            //ExFor:FieldOptions.DefaultDocumentAuthor
             //ExFor:UserInformation
             //ExFor:UserInformation.Name
             //ExFor:UserInformation.Initials
             //ExFor:UserInformation.Address
-            //ExFor:FieldUserAddress
-            //ExFor:FieldUserAddress.UserAddress
-            //ExFor:FieldUserInitials
-            //ExFor:FieldUserInitials.UserInitials
-            //ExFor:FieldUserName
-            //ExFor:FieldUserName.UserName
             //ExSummary:Shows how to set user details and display them with fields.
             Document doc = new Document();
-
-            // Create a user information object and set the name, initials and address
-            UserInformation userInformation = new UserInformation()
-            {
-                Name = "John Doe",
-                Initials = "J. D.",
-                Address = "123 Main Street"
-            };
-
-            // Set the document's user information property in the field options to the object we created,
-            // so its values can be referenced by fields
-            doc.FieldOptions.CurrentUser = userInformation;
-
-            // We will use a document builder to insert fields
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Display the current user's name with a USERNAME field
-            FieldUserName fieldUserName = (FieldUserName)builder.InsertField(FieldType.FieldUserName, true);
+            // Set user information
+            UserInformation userInformation = new UserInformation();
+            userInformation.Name = "John Doe";
+            userInformation.Initials = "J. D.";
+            userInformation.Address = "123 Main Street";
+            doc.FieldOptions.CurrentUser = userInformation;
 
-            Assert.AreEqual(" USERNAME ", fieldUserName.GetFieldCode());
-            Assert.AreEqual("John Doe", fieldUserName.Result);
+            // Insert fields that reference our user information
+            Assert.AreEqual(userInformation.Name, builder.InsertField(" USERNAME ").Result);
+            Assert.AreEqual(userInformation.Initials, builder.InsertField(" USERINITIALS ").Result);
+            Assert.AreEqual(userInformation.Address, builder.InsertField(" USERADDRESS ").Result);
+            //ExEnd
+        }
 
-            // Override the value from the user information object with one we put into this attribute
-            fieldUserName.UserName = "Jane Cardholder";
-            fieldUserName.Update();
+        [Test]
+        public void FieldUserAddress()
+        {
+            //ExStart
+            //ExFor:FieldUserAddress
+            //ExFor:FieldUserAddress.UserAddress
+            //ExSummary:Shows how to use the USERADDRESS field.
+            Document doc = new Document();
 
-            Assert.AreEqual(" USERNAME  \"Jane Cardholder\"", fieldUserName.GetFieldCode());
-            Assert.AreEqual("Jane Cardholder", fieldUserName.Result);
-
-            // Display the current user's initials with a USERINITIALS field
-            FieldUserInitials fieldUserInitials = (FieldUserInitials)builder.InsertField(FieldType.FieldUserInitials, true);
-            Assert.AreEqual(userInformation.Initials, fieldUserInitials.Result);
-
-            Assert.AreEqual(" USERINITIALS ", fieldUserInitials.GetFieldCode());
-            Assert.AreEqual("J. D.", fieldUserInitials.Result);
-
-            fieldUserInitials.UserInitials = "J. C.";
-            fieldUserInitials.Update();
-
-            Assert.AreEqual(" USERINITIALS  \"J. C.\"", fieldUserInitials.GetFieldCode());
-            Assert.AreEqual("J. C.", fieldUserInitials.Result);
+            // Create a user information object and set it as the data source for our field
+            UserInformation userInformation = new UserInformation();
+            userInformation.Address = "123 Main Street";
+            doc.FieldOptions.CurrentUser = userInformation;
 
             // Display the current user's address with a USERADDRESS field
+            DocumentBuilder builder = new DocumentBuilder(doc);
             FieldUserAddress fieldUserAddress = (FieldUserAddress)builder.InsertField(FieldType.FieldUserAddress, true);
             Assert.AreEqual(userInformation.Address, fieldUserAddress.Result);
 
             Assert.AreEqual(" USERADDRESS ", fieldUserAddress.GetFieldCode());
             Assert.AreEqual("123 Main Street", fieldUserAddress.Result);
 
+            // We can set this attribute to get our field to display a different value
             fieldUserAddress.UserAddress = "456 North Road";
             fieldUserAddress.Update();
 
             Assert.AreEqual(" USERADDRESS  \"456 North Road\"", fieldUserAddress.GetFieldCode());
             Assert.AreEqual("456 North Road", fieldUserAddress.Result);
 
-            // The values in the user information object are not affected
-            Assert.AreEqual("John Doe", doc.FieldOptions.CurrentUser.Name);
-            Assert.AreEqual("J. D.", doc.FieldOptions.CurrentUser.Initials);
+            // This does not change the value in the user information object
             Assert.AreEqual("123 Main Street", doc.FieldOptions.CurrentUser.Address);
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldUserInitials()
+        {
+            //ExStart
+            //ExFor:FieldUserInitials
+            //ExFor:FieldUserInitials.UserInitials
+            //ExSummary:Shows how to use the USERINITIALS field.
+            Document doc = new Document();
+
+            // Create a user information object and set it as the data source for our field
+            UserInformation userInformation = new UserInformation();
+            userInformation.Initials = "J. D.";
+            doc.FieldOptions.CurrentUser = userInformation;
+
+            // Display the current user's Initials with a USERINITIALS field
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            FieldUserInitials fieldUserInitials = (FieldUserInitials)builder.InsertField(FieldType.FieldUserInitials, true);
+            Assert.AreEqual(userInformation.Initials, fieldUserInitials.Result);
+
+            Assert.AreEqual(" USERINITIALS ", fieldUserInitials.GetFieldCode());
+            Assert.AreEqual("J. D.", fieldUserInitials.Result);
+
+            // We can set this attribute to get our field to display a different value
+            fieldUserInitials.UserInitials = "J. C.";
+            fieldUserInitials.Update();
+
+            Assert.AreEqual(" USERINITIALS  \"J. C.\"", fieldUserInitials.GetFieldCode());
+            Assert.AreEqual("J. C.", fieldUserInitials.Result);
+
+            // This does not change the value in the user information object
+            Assert.AreEqual("J. D.", doc.FieldOptions.CurrentUser.Initials);
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldUserName()
+        {
+            //ExStart
+            //ExFor:FieldUserName
+            //ExFor:FieldUserName.UserName
+            //ExSummary:Shows how to use the USERNAME field.
+            Document doc = new Document();
+
+            // Create a user information object and set it as the data source for our field
+            UserInformation userInformation = new UserInformation();
+            userInformation.Name = "John Doe";
+            doc.FieldOptions.CurrentUser = userInformation;
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Display the current user's Name with a USERNAME field
+            FieldUserName fieldUserName = (FieldUserName)builder.InsertField(FieldType.FieldUserName, true);
+            Assert.AreEqual(userInformation.Name, fieldUserName.Result);
+
+            Assert.AreEqual(" USERNAME ", fieldUserName.GetFieldCode());
+            Assert.AreEqual("John Doe", fieldUserName.Result);
+
+            // We can set this attribute to get our field to display a different value
+            fieldUserName.UserName = "Jane Doe";
+            fieldUserName.Update();
+
+            Assert.AreEqual(" USERNAME  \"Jane Doe\"", fieldUserName.GetFieldCode());
+            Assert.AreEqual("Jane Doe", fieldUserName.Result);
+
+            // This does not change the value in the user information object
+            Assert.AreEqual("John Doe", doc.FieldOptions.CurrentUser.Name);
             //ExEnd
         }
 
@@ -3500,31 +3550,42 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldAuthor
-            //ExFor:FieldAuthor.AuthorName                 
+            //ExFor:FieldAuthor.AuthorName  
+            //ExFor:FieldOptions.DefaultDocumentAuthor
             //ExSummary:Shows how to display a document creator's name with an AUTHOR field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Write("This document was created by ");
-            FieldAuthor fieldAuthor = (FieldAuthor)builder.InsertField(FieldType.FieldAuthor, true);
-            
             // If we open an existing document, the document's author's full name will be displayed by the field
             // If we create a document programmatically, we need to set this attribute to the author's name so our field has something to display
-            doc.BuiltInDocumentProperties.Author = "John Doe";
-            
-            fieldAuthor.Update();
+            doc.FieldOptions.DefaultDocumentAuthor = "Joe Bloggs";
 
-            Assert.AreEqual(" AUTHOR ", fieldAuthor.GetFieldCode());
-            Assert.AreEqual("John Doe", fieldAuthor.Result);
+            builder.Write("This document was created by ");
+            FieldAuthor field = (FieldAuthor)builder.InsertField(FieldType.FieldAuthor, true);
+            field.Update();
+
+            Assert.AreEqual(" AUTHOR ", field.GetFieldCode());
+            Assert.AreEqual("Joe Bloggs", field.Result);
+            
+            // If this property has a value, it will supersede the one we set above 
+            doc.BuiltInDocumentProperties.Author = "John Doe";      
+            field.Update();
+
+            Assert.AreEqual(" AUTHOR ", field.GetFieldCode());
+            Assert.AreEqual("John Doe", field.Result);
             
             // Our field can also override the document's built in author name like this
-            fieldAuthor.AuthorName = "Jane Doe";
-            fieldAuthor.Update();
+            field.AuthorName = "Jane Doe";
+            field.Update();
 
-            Assert.AreEqual(" AUTHOR  \"Jane Doe\"", fieldAuthor.GetFieldCode());
-            Assert.AreEqual("Jane Doe", fieldAuthor.Result);
-            
-            doc.Save(ArtifactsDir + "Field.Author.docx");
+            Assert.AreEqual(" AUTHOR  \"Jane Doe\"", field.GetFieldCode());
+            Assert.AreEqual("Jane Doe", field.Result);
+
+            // The author name in the built in properties was changed by the field, but the default document author stays the same
+            Assert.AreEqual("Jane Doe", doc.BuiltInDocumentProperties.Author);
+            Assert.AreEqual("Joe Bloggs", doc.FieldOptions.DefaultDocumentAuthor);
+
+            doc.Save(ArtifactsDir + "Field.AUTHOR.docx");
             //ExEnd
         }
 
