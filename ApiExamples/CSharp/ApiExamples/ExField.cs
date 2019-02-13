@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Text;
 using System.Globalization;
@@ -15,11 +16,13 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using Aspose.Words.Replacing;
+using Aspose.Words.Saving;
 using NUnit.Framework;
 #if !(NETSTANDARD2_0 || __MOBILE__)
 using Aspose.BarCode.BarCodeRecognition;
@@ -302,7 +305,7 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        [Description("WORDSNET-16037")]
+        [NUnit.Framework.Description("WORDSNET-16037")]
         public void InsertAndUpdateDirtyField()
         {
             //ExStart
@@ -4314,6 +4317,66 @@ namespace ApiExamples
 
             bookmark = doc.Range.Bookmarks["MyBookmark"];
             Assert.AreEqual("New text", bookmark.Text);
+        }
+
+        [Test]
+        public void FieldSymbol()
+        {
+            //ExStart
+            //ExFor:FieldSymbol
+            //ExFor:FieldSymbol.CharacterCode
+            //ExFor:FieldSymbol.DontAffectsLineSpacing
+            //ExFor:FieldSymbol.FontName
+            //ExFor:FieldSymbol.FontSize
+            //ExFor:FieldSymbol.IsAnsi
+            //ExFor:FieldSymbol.IsShiftJis
+            //ExFor:FieldSymbol.IsUnicode
+            //ExSummary:Shows how to use the SYMBOL field
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a SYMBOL field to display a symbol, designated by a character code
+            FieldSymbol field = (FieldSymbol)builder.InsertField(FieldType.FieldSymbol, true);
+
+            // The ANSI character code "U+00A9", or "169" in integer form, is reserved for the copyright symbol 
+            field.CharacterCode = 0x00a9.ToString();
+            field.IsAnsi = true;
+
+            Assert.AreEqual(" SYMBOL  169 \\a", field.GetFieldCode());
+
+            builder.Writeln(" Line 1");
+
+            // A code like "221E" is outside the range of ANSI characters, but it can have a Unicode representation
+            // Attempting to represent it as an ANSI character will display "###", signifying an error
+            // In Unicode it will be the infinity symbol
+            field = (FieldSymbol)builder.InsertField(FieldType.FieldSymbol, true);
+            field.CharacterCode = 0x221E.ToString();
+            field.IsUnicode = true;
+
+            // Change the font and size of our symbol
+            // Note that symbols at certain character codes can vary from font to font
+            // See the Windows Character Map ot look up the full list of fonts and their symbols
+            field.FontName = "Calibri";
+            field.FontSize = "24";
+
+            // A tall symbol like the one we placed can also be made to not push down the text on its line
+            field.DontAffectsLineSpacing = true;
+
+            Assert.AreEqual(" SYMBOL  8734 \\u \\f Calibri \\s 24 \\h", field.GetFieldCode());
+
+            builder.Writeln("Line 2");
+
+            // Display a symbol from the Shift-JIS, also known as the Windows-932 code page
+            // With a font that supports Shift-JIS, this symbol will display "あ", which is the large Hiragana letter "A"
+            field = (FieldSymbol)builder.InsertField(FieldType.FieldSymbol, true);
+            field.FontName = "MS Gothic";
+            field.CharacterCode = 0x82A0.ToString();
+            field.IsShiftJis = true;
+
+            Assert.AreEqual(" SYMBOL  33440 \\f \"MS Gothic\" \\j", field.GetFieldCode());
+
+            doc.Save(ArtifactsDir + "Field.SYMBOL.docx");
+            //ExEnd
         }
     }
 }
