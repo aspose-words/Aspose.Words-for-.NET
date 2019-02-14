@@ -4545,5 +4545,43 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Field.SYMBOL.docx");
             //ExEnd
         }
+
+        [Test]
+        public void FieldTitle()
+        {
+            //ExStart
+            //ExFor:FieldTitle
+            //ExFor:FieldTitle.Text
+            //ExSummary:Shows how to use the TITLE field.
+            Document doc = new Document();
+
+            // A TITLE field will display the value assigned to this variable
+            doc.BuiltInDocumentProperties.Title = "My Title";
+
+            // Insert a TITLE field using a document builder
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            FieldTitle field = (FieldTitle)builder.InsertField(FieldType.FieldTitle, false);
+            field.Update();
+
+            Assert.AreEqual(" TITLE ", field.GetFieldCode());
+            Assert.AreEqual("My Title", field.Result);
+
+            builder.Writeln();
+
+            // Insert a TITLE field and display a different value to what's in the document's properties
+            field = (FieldTitle)builder.InsertField(FieldType.FieldTitle, false);
+            field.Text = "My New Title";
+            field.Update();
+
+            Assert.AreEqual(" TITLE  \"My New Title\"", field.GetFieldCode());
+            Assert.AreEqual("My New Title", field.Result);
+
+            // By setting the text attribute we've also changed the title in the document's properties
+            Assert.AreEqual("My New Title", doc.BuiltInDocumentProperties.Title);
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.TITLE.docx");
+            //ExEnd
+        }
     }
 }
