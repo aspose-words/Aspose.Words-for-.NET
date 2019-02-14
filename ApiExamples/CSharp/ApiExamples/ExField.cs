@@ -4568,7 +4568,7 @@ namespace ApiExamples
 
             builder.Writeln();
 
-            // Insert a TITLE field and display a different value to what's in the document's properties
+            // Set the Text attribute to display a different value
             field = (FieldTitle)builder.InsertField(FieldType.FieldTitle, false);
             field.Text = "My New Title";
             field.Update();
@@ -4576,7 +4576,7 @@ namespace ApiExamples
             Assert.AreEqual(" TITLE  \"My New Title\"", field.GetFieldCode());
             Assert.AreEqual("My New Title", field.Result);
 
-            // By setting the text attribute we've also changed the title in the document's properties
+            // In doing that we've also changed the title in the document properties
             Assert.AreEqual("My New Title", doc.BuiltInDocumentProperties.Title);
 
             doc.UpdateFields();
