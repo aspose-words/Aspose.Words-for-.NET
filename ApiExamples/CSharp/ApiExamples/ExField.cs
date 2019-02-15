@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Drawing;
 using System.Text;
 using System.Globalization;
 using System.IO;
@@ -4545,5 +4546,132 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Field.SYMBOL.docx");
             //ExEnd
         }
+
+        //ExStart
+        //ExFor:FieldToa
+        //ExFor:FieldToa.BookmarkName
+        //ExFor:FieldToa.EntryCategory
+        //ExFor:FieldToa.EntrySeparator
+        //ExFor:FieldToa.PageNumberListSeparator
+        //ExFor:FieldToa.PageRangeSeparator
+        //ExFor:FieldToa.RemoveEntryFormatting
+        //ExFor:FieldToa.SequenceName
+        //ExFor:FieldToa.SequenceSeparator
+        //ExFor:FieldToa.UseHeading
+        //ExFor:FieldToa.UsePassim
+        //ExFor:FieldTA
+        //ExFor:FieldTA.EntryCategory
+        //ExFor:FieldTA.IsBold
+        //ExFor:FieldTA.IsItalic
+        //ExFor:FieldTA.LongCitation
+        //ExFor:FieldTA.PageRangeBookmarkName
+        //ExFor:FieldTA.ShortCitation
+        //ExSummary:Shows how to build and customize a table of authorities using TOA and TA fields.
+        [Test] //ExSkip
+        public void FieldTOA()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a TOA field, which will list all the TA entries in the document,
+            // displaying long citations and page numbers for each
+            FieldToa fieldToa = (FieldToa)builder.InsertField(FieldType.FieldTOA, false);
+
+            // Set the entry category for our table
+            // For a TA field to be included in this table, it will have to have a matching entry category
+            fieldToa.EntryCategory = "1";
+
+            // Moreover, the Table of Authorities category at index 1 is "Cases",
+            // which will show up as the title of our table if we set this variable to true
+            fieldToa.UseHeading = true;
+
+            // We can further filter TA fields by designating a named bookmark that they have to be inside of
+            fieldToa.BookmarkName = "MyBookmark";
+
+            // By default, a dotted line page-wide tab appears between the TA field's citation and its page number
+            // We can replace it with any text we put in this attribute, even preserving the tab if we use tab character
+            fieldToa.EntrySeparator = " \t p.";
+
+            // If we have multiple TA entries that share the same long citation,
+            // all their respective page numbers will show up on one row,
+            // and the page numbers separated by a string specified here
+            fieldToa.PageNumberListSeparator = " & p. ";
+
+            // To reduce clutter, we can set this to true to get our table to display the word "passim"
+            // if there would be 5 or more page numbers in one row
+            fieldToa.UsePassim = true;
+
+            // One TA field can refer to a range of pages, and the sequence specified here will be between the start and end page numbers
+            fieldToa.PageRangeSeparator = " to ";
+
+            // The format from the TA fields will carry over into our table, and we can stop it from doing so by setting this variable
+            fieldToa.RemoveEntryFormatting = true;
+            builder.Font.Color = Color.Green;
+            builder.Font.Name = "Arial Black";
+
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // We will insert a TA entry using a document builder
+            // This entry is outside the bookmark specified by our table, so it won't be displayed
+            FieldTA fieldTA = InsertToaEntry(builder, "1", "Source 1");
+
+            // This entry is inside the bookmark,
+            // but the entry category doesn't match that of the table, so it will also be omitted
+            builder.StartBookmark("MyBookmark");
+            fieldTA = InsertToaEntry(builder, "2", "Source 2");
+
+            // This entry will appear in the table
+            fieldTA = InsertToaEntry(builder, "1", "Source 3");
+
+            // Short citations aren't displayed by a TOA table,
+            // but they can be used as a shorthand to refer to bulky source names that multiple TA fields reference
+            fieldTA.ShortCitation = "S.3";
+
+            // The page number can be made to appear bold and/or italic
+            // This will still be displayed if our table is set to ignore formatting
+            fieldTA = InsertToaEntry(builder, "1", "Source 2");
+            fieldTA.IsBold = true;
+            fieldTA.IsItalic = true;
+
+            // We can get TA fields to refer to a range of pages that a bookmark spans across instead of the page that they are on
+            // Note that this entry refers to the same source as the one above, so they will share one row in our table,
+            // displaying the page number of the entry above as well as the page range of this entry,
+            // with the table's page list and page number range separators between page numbers
+            fieldTA = InsertToaEntry(builder, "1", "Source 3");
+            fieldTA.PageRangeBookmarkName = "MyMultiPageBookmark";
+
+            builder.StartBookmark("MyMultiPageBookmark");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.EndBookmark("MyMultiPageBookmark");
+
+            // Having 5 or more TA entries with the same source invokes the "passim" feature of our table, if we enabled it
+            for (int i = 0; i < 5; i++)
+            {
+                InsertToaEntry(builder, "1", "Source 4");
+            }
+
+            builder.EndBookmark("MyBookmark");
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.TOA.TA.docx");
+        }
+
+        /// <summary>
+        /// Get a builder to insert a TA field, specifying its long citation and category,
+        /// then insert a page break and return the field we created
+        /// </summary>
+        private FieldTA InsertToaEntry(DocumentBuilder builder, string entryCategory, string longCitation)
+        {
+            FieldTA field = (FieldTA)builder.InsertField(FieldType.FieldTOAEntry, false);
+            field.EntryCategory = entryCategory;
+            field.LongCitation = longCitation;
+
+            builder.InsertBreak(BreakType.PageBreak);
+
+            return field;
+        }
+        //ExEnd
     }
 }
