@@ -4609,11 +4609,15 @@ namespace ApiExamples
             builder.Font.Color = Color.Green;
             builder.Font.Name = "Arial Black";
 
+            Assert.AreEqual(" TOA  \\c 1 \\h \\b MyBookmark \\e \" \t p.\" \\l \" & p. \" \\p \\g \" to \" \\f", fieldToa.GetFieldCode());
+
             builder.InsertBreak(BreakType.PageBreak);
 
             // We will insert a TA entry using a document builder
             // This entry is outside the bookmark specified by our table, so it won't be displayed
             FieldTA fieldTA = InsertToaEntry(builder, "1", "Source 1");
+
+            Assert.AreEqual(" TA  \\c 1 \\l \"Source 1\"", fieldTA.GetFieldCode());
 
             // This entry is inside the bookmark,
             // but the entry category doesn't match that of the table, so it will also be omitted
@@ -4627,11 +4631,15 @@ namespace ApiExamples
             // but they can be used as a shorthand to refer to bulky source names that multiple TA fields reference
             fieldTA.ShortCitation = "S.3";
 
+            Assert.AreEqual(" TA  \\c 1 \\l \"Source 3\" \\s S.3", fieldTA.GetFieldCode());
+
             // The page number can be made to appear bold and/or italic
             // This will still be displayed if our table is set to ignore formatting
             fieldTA = InsertToaEntry(builder, "1", "Source 2");
             fieldTA.IsBold = true;
             fieldTA.IsItalic = true;
+
+            Assert.AreEqual(" TA  \\c 1 \\l \"Source 2\" \\b \\i", fieldTA.GetFieldCode());
 
             // We can get TA fields to refer to a range of pages that a bookmark spans across instead of the page that they are on
             // Note that this entry refers to the same source as the one above, so they will share one row in our table,
@@ -4645,6 +4653,8 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             builder.InsertBreak(BreakType.PageBreak);
             builder.EndBookmark("MyMultiPageBookmark");
+
+            Assert.AreEqual(" TA  \\c 1 \\l \"Source 3\" \\r MyMultiPageBookmark", fieldTA.GetFieldCode());
 
             // Having 5 or more TA entries with the same source invokes the "passim" feature of our table, if we enabled it
             for (int i = 0; i < 5; i++)
