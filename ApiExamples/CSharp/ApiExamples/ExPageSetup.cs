@@ -10,9 +10,6 @@ using System.Drawing.Printing;
 using System.Linq;
 using Aspose.Words;
 using NUnit.Framework;
-#if !__MOBILE__
-using System.Drawing.Printing;
-#endif
 
 namespace ApiExamples
 {

@@ -8,18 +8,22 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
+using System.Drawing;
 using System.Text;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using Aspose.Words.Replacing;
+using Aspose.Words.Saving;
 using NUnit.Framework;
 #if !(NETSTANDARD2_0 || __MOBILE__)
 using Aspose.BarCode.BarCodeRecognition;
@@ -302,7 +306,7 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        [Description("WORDSNET-16037")]
+        [NUnit.Framework.Description("WORDSNET-16037")]
         public void InsertAndUpdateDirtyField()
         {
             //ExStart
@@ -2962,13 +2966,13 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldOptions.CurrentUser
-            //ExFor:FieldOptions.DefaultDocumentAuthor
             //ExFor:UserInformation
             //ExFor:UserInformation.Name
             //ExFor:UserInformation.Initials
             //ExFor:UserInformation.Address
-            //ExSummary:Shows how to set user details and insert them as fields.
+            //ExSummary:Shows how to set user details and display them with fields.
             Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Set user information
             UserInformation userInformation = new UserInformation();
@@ -2978,10 +2982,112 @@ namespace ApiExamples
             doc.FieldOptions.CurrentUser = userInformation;
 
             // Insert fields that reference our user information
-            DocumentBuilder builder = new DocumentBuilder(doc);
             Assert.AreEqual(userInformation.Name, builder.InsertField(" USERNAME ").Result);
             Assert.AreEqual(userInformation.Initials, builder.InsertField(" USERINITIALS ").Result);
             Assert.AreEqual(userInformation.Address, builder.InsertField(" USERADDRESS ").Result);
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldUserAddress()
+        {
+            //ExStart
+            //ExFor:FieldUserAddress
+            //ExFor:FieldUserAddress.UserAddress
+            //ExSummary:Shows how to use the USERADDRESS field.
+            Document doc = new Document();
+
+            // Create a user information object and set it as the data source for our field
+            UserInformation userInformation = new UserInformation();
+            userInformation.Address = "123 Main Street";
+            doc.FieldOptions.CurrentUser = userInformation;
+
+            // Display the current user's address with a USERADDRESS field
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            FieldUserAddress fieldUserAddress = (FieldUserAddress)builder.InsertField(FieldType.FieldUserAddress, true);
+            Assert.AreEqual(userInformation.Address, fieldUserAddress.Result);
+
+            Assert.AreEqual(" USERADDRESS ", fieldUserAddress.GetFieldCode());
+            Assert.AreEqual("123 Main Street", fieldUserAddress.Result);
+
+            // We can set this attribute to get our field to display a different value
+            fieldUserAddress.UserAddress = "456 North Road";
+            fieldUserAddress.Update();
+
+            Assert.AreEqual(" USERADDRESS  \"456 North Road\"", fieldUserAddress.GetFieldCode());
+            Assert.AreEqual("456 North Road", fieldUserAddress.Result);
+
+            // This does not change the value in the user information object
+            Assert.AreEqual("123 Main Street", doc.FieldOptions.CurrentUser.Address);
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldUserInitials()
+        {
+            //ExStart
+            //ExFor:FieldUserInitials
+            //ExFor:FieldUserInitials.UserInitials
+            //ExSummary:Shows how to use the USERINITIALS field.
+            Document doc = new Document();
+
+            // Create a user information object and set it as the data source for our field
+            UserInformation userInformation = new UserInformation();
+            userInformation.Initials = "J. D.";
+            doc.FieldOptions.CurrentUser = userInformation;
+
+            // Display the current user's Initials with a USERINITIALS field
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            FieldUserInitials fieldUserInitials = (FieldUserInitials)builder.InsertField(FieldType.FieldUserInitials, true);
+            Assert.AreEqual(userInformation.Initials, fieldUserInitials.Result);
+
+            Assert.AreEqual(" USERINITIALS ", fieldUserInitials.GetFieldCode());
+            Assert.AreEqual("J. D.", fieldUserInitials.Result);
+
+            // We can set this attribute to get our field to display a different value
+            fieldUserInitials.UserInitials = "J. C.";
+            fieldUserInitials.Update();
+
+            Assert.AreEqual(" USERINITIALS  \"J. C.\"", fieldUserInitials.GetFieldCode());
+            Assert.AreEqual("J. C.", fieldUserInitials.Result);
+
+            // This does not change the value in the user information object
+            Assert.AreEqual("J. D.", doc.FieldOptions.CurrentUser.Initials);
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldUserName()
+        {
+            //ExStart
+            //ExFor:FieldUserName
+            //ExFor:FieldUserName.UserName
+            //ExSummary:Shows how to use the USERNAME field.
+            Document doc = new Document();
+
+            // Create a user information object and set it as the data source for our field
+            UserInformation userInformation = new UserInformation();
+            userInformation.Name = "John Doe";
+            doc.FieldOptions.CurrentUser = userInformation;
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Display the current user's Name with a USERNAME field
+            FieldUserName fieldUserName = (FieldUserName)builder.InsertField(FieldType.FieldUserName, true);
+            Assert.AreEqual(userInformation.Name, fieldUserName.Result);
+
+            Assert.AreEqual(" USERNAME ", fieldUserName.GetFieldCode());
+            Assert.AreEqual("John Doe", fieldUserName.Result);
+
+            // We can set this attribute to get our field to display a different value
+            fieldUserName.UserName = "Jane Doe";
+            fieldUserName.Update();
+
+            Assert.AreEqual(" USERNAME  \"Jane Doe\"", fieldUserName.GetFieldCode());
+            Assert.AreEqual("Jane Doe", fieldUserName.Result);
+
+            // This does not change the value in the user information object
+            Assert.AreEqual("John Doe", doc.FieldOptions.CurrentUser.Name);
             //ExEnd
         }
 
@@ -3448,36 +3554,47 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldAuthor
-            //ExFor:FieldAuthor.AuthorName                 
+            //ExFor:FieldAuthor.AuthorName  
+            //ExFor:FieldOptions.DefaultDocumentAuthor
             //ExSummary:Shows how to display a document creator's name with an AUTHOR field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Write("This document was created by ");
-            FieldAuthor fieldAuthor = (FieldAuthor)builder.InsertField(FieldType.FieldAuthor, true);
-            
             // If we open an existing document, the document's author's full name will be displayed by the field
             // If we create a document programmatically, we need to set this attribute to the author's name so our field has something to display
-            doc.BuiltInDocumentProperties.Author = "John Doe";
-            
-            fieldAuthor.Update();
+            doc.FieldOptions.DefaultDocumentAuthor = "Joe Bloggs";
 
-            Assert.AreEqual(" AUTHOR ", fieldAuthor.GetFieldCode());
-            Assert.AreEqual("John Doe", fieldAuthor.Result);
+            builder.Write("This document was created by ");
+            FieldAuthor field = (FieldAuthor)builder.InsertField(FieldType.FieldAuthor, true);
+            field.Update();
+
+            Assert.AreEqual(" AUTHOR ", field.GetFieldCode());
+            Assert.AreEqual("Joe Bloggs", field.Result);
+            
+            // If this property has a value, it will supersede the one we set above 
+            doc.BuiltInDocumentProperties.Author = "John Doe";      
+            field.Update();
+
+            Assert.AreEqual(" AUTHOR ", field.GetFieldCode());
+            Assert.AreEqual("John Doe", field.Result);
             
             // Our field can also override the document's built in author name like this
-            fieldAuthor.AuthorName = "Jane Doe";
-            fieldAuthor.Update();
+            field.AuthorName = "Jane Doe";
+            field.Update();
 
-            Assert.AreEqual(" AUTHOR  \"Jane Doe\"", fieldAuthor.GetFieldCode());
-            Assert.AreEqual("Jane Doe", fieldAuthor.Result);
-            
-            doc.Save(ArtifactsDir + "Field.Author.docx");
+            Assert.AreEqual(" AUTHOR  \"Jane Doe\"", field.GetFieldCode());
+            Assert.AreEqual("Jane Doe", field.Result);
+
+            // The author name in the built in properties was changed by the field, but the default document author stays the same
+            Assert.AreEqual("Jane Doe", doc.BuiltInDocumentProperties.Author);
+            Assert.AreEqual("Joe Bloggs", doc.FieldOptions.DefaultDocumentAuthor);
+
+            doc.Save(ArtifactsDir + "Field.AUTHOR.docx");
             //ExEnd
         }
 
         [Test]
-        public void FieldDoc()
+        public void FieldDocVariable()
         {
             //ExStart
             //ExFor:FieldDocProperty
@@ -3495,7 +3612,7 @@ namespace ApiExamples
             fieldDocProperty.Update();
 
             Assert.AreEqual(" DOCPROPERTY Category ", fieldDocProperty.GetFieldCode());
-            Assert.AreEqual("My category", doc.BuiltInDocumentProperties.Category);
+            Assert.AreEqual("My category", fieldDocProperty.Result);
 
             builder.Writeln();
 
@@ -3510,11 +3627,40 @@ namespace ApiExamples
 
             Assert.AreEqual(" DOCVARIABLE  \"My Variable\"", fieldDocVariable.GetFieldCode());
             Assert.AreEqual("My variable's value", fieldDocVariable.Result);
-
-            doc.Save(ArtifactsDir + "Field.DocProperties.docx");
             //ExEnd
         }
-        
+
+        [Test]
+        public void FieldSubject()
+        {
+            //ExStart
+            //ExFor:FieldSubject
+            //ExFor:FieldSubject.Text
+            //ExSummary:Shows how to use the SUBJECT field.
+            Document doc = new Document();
+
+            // Set a value for the document's subject property
+            doc.BuiltInDocumentProperties.Subject = "My subject";
+
+            // We can display this value with a SUBJECT field
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            FieldSubject field = (FieldSubject)builder.InsertField(FieldType.FieldSubject, true);
+            field.Update();
+
+            Assert.AreEqual(" SUBJECT ", field.GetFieldCode());
+            Assert.AreEqual("My subject", field.Result);
+
+            // We can also set the field's Text attribute to override the current value of the Subject property
+            field.Text = "My new subject";
+            field.Update();
+
+            Assert.AreEqual(" SUBJECT  \"My new subject\"", field.GetFieldCode());
+            Assert.AreEqual("My new subject", field.Result);
+
+            // As well as displaying a new value in our field, we also changed the value of the document property
+            Assert.AreEqual("My new subject", doc.BuiltInDocumentProperties.Subject);
+        }
+
         [Test]
         public void FieldComments()
         {
@@ -4315,5 +4461,265 @@ namespace ApiExamples
             bookmark = doc.Range.Bookmarks["MyBookmark"];
             Assert.AreEqual("New text", bookmark.Text);
         }
+      
+        [Test]
+        [Ignore("WORDSNET-18137")]
+        public void FieldTemplate()
+        {
+            //ExStart
+            //ExFor:FieldTemplate
+            //ExFor:FieldTemplate.IncludeFullPath
+            //ExSummary:Shows how to display the location of the document's template with a TEMPLATE field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            FieldTemplate field = (FieldTemplate)builder.InsertField(FieldType.FieldTemplate, false);
+            Assert.AreEqual(" TEMPLATE ", field.GetFieldCode());
+
+            builder.Writeln();
+            field = (FieldTemplate)builder.InsertField(FieldType.FieldTemplate, false);
+            field.IncludeFullPath = true;
+
+            Assert.AreEqual(" TEMPLATE  \\p", field.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.TEMPLATE.docx");
+            //ExEnd
+        }
+      
+        [Test]
+        public void FieldSymbol()
+        {
+            //ExStart
+            //ExFor:FieldSymbol
+            //ExFor:FieldSymbol.CharacterCode
+            //ExFor:FieldSymbol.DontAffectsLineSpacing
+            //ExFor:FieldSymbol.FontName
+            //ExFor:FieldSymbol.FontSize
+            //ExFor:FieldSymbol.IsAnsi
+            //ExFor:FieldSymbol.IsShiftJis
+            //ExFor:FieldSymbol.IsUnicode
+            //ExSummary:Shows how to use the SYMBOL field
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a SYMBOL field to display a symbol, designated by a character code
+            FieldSymbol field = (FieldSymbol)builder.InsertField(FieldType.FieldSymbol, true);
+
+            // The ANSI character code "U+00A9", or "169" in integer form, is reserved for the copyright symbol 
+            field.CharacterCode = 0x00a9.ToString();
+            field.IsAnsi = true;
+
+            Assert.AreEqual(" SYMBOL  169 \\a", field.GetFieldCode());
+
+            builder.Writeln(" Line 1");
+
+            // In Unicode, the "221E" code is reserved for ths infinity symbol
+            field = (FieldSymbol)builder.InsertField(FieldType.FieldSymbol, true);
+            field.CharacterCode = 0x221E.ToString();
+            field.IsUnicode = true;
+
+            // Change the appearance of our symbol
+            // Note that some symbols can change from font to font
+            // The full list of symbols and their fonts can be looked up in the Windows Character Map
+            field.FontName = "Calibri";
+            field.FontSize = "24";
+
+            // A tall symbol like the one we placed can also be made to not push down the text on its line
+            field.DontAffectsLineSpacing = true;
+
+            Assert.AreEqual(" SYMBOL  8734 \\u \\f Calibri \\s 24 \\h", field.GetFieldCode());
+
+            builder.Writeln("Line 2");
+
+            // Display a symbol from the Shift-JIS, also known as the Windows-932 code page
+            // With a font that supports Shift-JIS, this symbol will display "あ", which is the large Hiragana letter "A"
+            field = (FieldSymbol)builder.InsertField(FieldType.FieldSymbol, true);
+            field.FontName = "MS Gothic";
+            field.CharacterCode = 0x82A0.ToString();
+            field.IsShiftJis = true;
+
+            Assert.AreEqual(" SYMBOL  33440 \\f \"MS Gothic\" \\j", field.GetFieldCode());
+
+            builder.Write("Line 3");
+
+            doc.Save(ArtifactsDir + "Field.SYMBOL.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldTitle()
+        {
+            //ExStart
+            //ExFor:FieldTitle
+            //ExFor:FieldTitle.Text
+            //ExSummary:Shows how to use the TITLE field.
+            Document doc = new Document();
+
+            // A TITLE field will display the value assigned to this variable
+            doc.BuiltInDocumentProperties.Title = "My Title";
+
+            // Insert a TITLE field using a document builder
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            FieldTitle field = (FieldTitle)builder.InsertField(FieldType.FieldTitle, false);
+            field.Update();
+
+            Assert.AreEqual(" TITLE ", field.GetFieldCode());
+            Assert.AreEqual("My Title", field.Result);
+
+            builder.Writeln();
+
+            // Set the Text attribute to display a different value
+            field = (FieldTitle)builder.InsertField(FieldType.FieldTitle, false);
+            field.Text = "My New Title";
+            field.Update();
+
+            Assert.AreEqual(" TITLE  \"My New Title\"", field.GetFieldCode());
+            Assert.AreEqual("My New Title", field.Result);
+
+            // In doing that we've also changed the title in the document properties
+            Assert.AreEqual("My New Title", doc.BuiltInDocumentProperties.Title);
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.TITLE.docx");
+            //ExEnd
+        }
+
+        //ExStart
+        //ExFor:FieldToa
+        //ExFor:FieldToa.BookmarkName
+        //ExFor:FieldToa.EntryCategory
+        //ExFor:FieldToa.EntrySeparator
+        //ExFor:FieldToa.PageNumberListSeparator
+        //ExFor:FieldToa.PageRangeSeparator
+        //ExFor:FieldToa.RemoveEntryFormatting
+        //ExFor:FieldToa.SequenceName
+        //ExFor:FieldToa.SequenceSeparator
+        //ExFor:FieldToa.UseHeading
+        //ExFor:FieldToa.UsePassim
+        //ExFor:FieldTA
+        //ExFor:FieldTA.EntryCategory
+        //ExFor:FieldTA.IsBold
+        //ExFor:FieldTA.IsItalic
+        //ExFor:FieldTA.LongCitation
+        //ExFor:FieldTA.PageRangeBookmarkName
+        //ExFor:FieldTA.ShortCitation
+        //ExSummary:Shows how to build and customize a table of authorities using TOA and TA fields.
+        [Test] //ExSkip
+        public void FieldTOA()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a TOA field, which will list all the TA entries in the document,
+            // displaying long citations and page numbers for each
+            FieldToa fieldToa = (FieldToa)builder.InsertField(FieldType.FieldTOA, false);
+
+            // Set the entry category for our table
+            // For a TA field to be included in this table, it will have to have a matching entry category
+            fieldToa.EntryCategory = "1";
+
+            // Moreover, the Table of Authorities category at index 1 is "Cases",
+            // which will show up as the title of our table if we set this variable to true
+            fieldToa.UseHeading = true;
+
+            // We can further filter TA fields by designating a named bookmark that they have to be inside of
+            fieldToa.BookmarkName = "MyBookmark";
+
+            // By default, a dotted line page-wide tab appears between the TA field's citation and its page number
+            // We can replace it with any text we put in this attribute, even preserving the tab if we use tab character
+            fieldToa.EntrySeparator = " \t p.";
+
+            // If we have multiple TA entries that share the same long citation,
+            // all their respective page numbers will show up on one row,
+            // and the page numbers separated by a string specified here
+            fieldToa.PageNumberListSeparator = " & p. ";
+
+            // To reduce clutter, we can set this to true to get our table to display the word "passim"
+            // if there would be 5 or more page numbers in one row
+            fieldToa.UsePassim = true;
+
+            // One TA field can refer to a range of pages, and the sequence specified here will be between the start and end page numbers
+            fieldToa.PageRangeSeparator = " to ";
+
+            // The format from the TA fields will carry over into our table, and we can stop it from doing so by setting this variable
+            fieldToa.RemoveEntryFormatting = true;
+            builder.Font.Color = Color.Green;
+            builder.Font.Name = "Arial Black";
+
+            Assert.AreEqual(" TOA  \\c 1 \\h \\b MyBookmark \\e \" \t p.\" \\l \" & p. \" \\p \\g \" to \" \\f", fieldToa.GetFieldCode());
+
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // We will insert a TA entry using a document builder
+            // This entry is outside the bookmark specified by our table, so it won't be displayed
+            FieldTA fieldTA = InsertToaEntry(builder, "1", "Source 1");
+
+            Assert.AreEqual(" TA  \\c 1 \\l \"Source 1\"", fieldTA.GetFieldCode());
+
+            // This entry is inside the bookmark,
+            // but the entry category doesn't match that of the table, so it will also be omitted
+            builder.StartBookmark("MyBookmark");
+            fieldTA = InsertToaEntry(builder, "2", "Source 2");
+
+            // This entry will appear in the table
+            fieldTA = InsertToaEntry(builder, "1", "Source 3");
+
+            // Short citations aren't displayed by a TOA table,
+            // but they can be used as a shorthand to refer to bulky source names that multiple TA fields reference
+            fieldTA.ShortCitation = "S.3";
+
+            Assert.AreEqual(" TA  \\c 1 \\l \"Source 3\" \\s S.3", fieldTA.GetFieldCode());
+
+            // The page number can be made to appear bold and/or italic
+            // This will still be displayed if our table is set to ignore formatting
+            fieldTA = InsertToaEntry(builder, "1", "Source 2");
+            fieldTA.IsBold = true;
+            fieldTA.IsItalic = true;
+
+            Assert.AreEqual(" TA  \\c 1 \\l \"Source 2\" \\b \\i", fieldTA.GetFieldCode());
+
+            // We can get TA fields to refer to a range of pages that a bookmark spans across instead of the page that they are on
+            // Note that this entry refers to the same source as the one above, so they will share one row in our table,
+            // displaying the page number of the entry above as well as the page range of this entry,
+            // with the table's page list and page number range separators between page numbers
+            fieldTA = InsertToaEntry(builder, "1", "Source 3");
+            fieldTA.PageRangeBookmarkName = "MyMultiPageBookmark";
+
+            builder.StartBookmark("MyMultiPageBookmark");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.EndBookmark("MyMultiPageBookmark");
+
+            Assert.AreEqual(" TA  \\c 1 \\l \"Source 3\" \\r MyMultiPageBookmark", fieldTA.GetFieldCode());
+
+            // Having 5 or more TA entries with the same source invokes the "passim" feature of our table, if we enabled it
+            for (int i = 0; i < 5; i++)
+            {
+                InsertToaEntry(builder, "1", "Source 4");
+            }
+
+            builder.EndBookmark("MyBookmark");
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.TOA.TA.docx");
+        }
+
+        /// <summary>
+        /// Get a builder to insert a TA field, specifying its long citation and category,
+        /// then insert a page break and return the field we created
+        /// </summary>
+        private FieldTA InsertToaEntry(DocumentBuilder builder, string entryCategory, string longCitation)
+        {
+            FieldTA field = (FieldTA)builder.InsertField(FieldType.FieldTOAEntry, false);
+            field.EntryCategory = entryCategory;
+            field.LongCitation = longCitation;
+
+            builder.InsertBreak(BreakType.PageBreak);
+
+            return field;
+        }
+        //ExEnd
     }
 }
