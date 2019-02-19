@@ -18,7 +18,6 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Reporting;
 using NUnit.Framework;
-
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
@@ -690,6 +689,20 @@ namespace ApiExamples
             //Assert that build report success with "ReportBuildOptions.AllowMissingMembers"
             Assert.AreEqual(ControlChar.ParagraphBreak + ControlChar.ParagraphBreak + ControlChar.SectionBreak,
                 builder.Document.GetText());
+        }
+
+        [Test]
+        public void InlineErrorMassages()
+        {
+            DocumentBuilder builder = new DocumentBuilder();
+
+            //Add templete to the document for reporting engine
+            DocumentHelper.InsertBuilderText(builder,
+                new[] { "<<[missingObject.First().id]>>", "<<foreach [in missingObject]>><<[id]>><</foreach>>" });
+
+            BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.InlineErrorMessages);
+
+            builder.Document.Save(ArtifactsDir + "ReportingEngine.InlineErrorMassages.docx");
         }
 
         [Test]
