@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -9,12 +9,10 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Tables;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using NUnit.Framework;
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 #endif

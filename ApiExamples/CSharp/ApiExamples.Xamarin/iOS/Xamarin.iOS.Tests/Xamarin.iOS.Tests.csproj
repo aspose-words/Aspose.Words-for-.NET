@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1DACDD0E-6ADB-4293-B460-65043DE59F22}</ProjectGuid>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Xamarin.iOS.Tests</RootNamespace>
+    <AssemblyName>Xamarin.iOS.Tests</AssemblyName>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
+    <MtouchFastDev>true</MtouchFastDev>
+    <IOSDebuggerPort>43169</IOSDebuggerPort>
+    <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
+    <DeviceSpecificBuild>false</DeviceSpecificBuild>
+    <MtouchVerbosity></MtouchVerbosity>
+    <MtouchLink></MtouchLink>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <DefineConstants></DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
+    <MtouchLink>SdkOnly</MtouchLink>
+    <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
+    <MtouchVerbosity></MtouchVerbosity>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Xamarin.iOS" />
+    <Reference Include="SkiaSharp">
+      <HintPath>..\..\..\packages\SkiaSharp.1.68.0\lib\Xamarin.iOS\SkiaSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Words">
+      <HintPath>..\..\..\packages\Aspose.Words.19.2.0\lib\Xamarin.iOS10\Aspose.Words.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.BarCode">
+      <HintPath>..\..\..\packages\Aspose.BarCode.19.2.0\lib\netstandard2.0\Aspose.BarCode.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoTouch.NUnitLite" />
+    <Reference Include="OpenTK-1.0" />
+    <Reference Include="System.Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\..\ApiExamples\CustomBarcodeGenerator.cs">
+      <Link>CustomBarcodeGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\DocumentHelper.cs">
+      <Link>DocumentHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExAbsolutePositionTab.cs">
+      <Link>ExAbsolutePositionTab.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExBookmarks.cs">
+      <Link>ExBookmarks.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExBorder.cs">
+      <Link>ExBorder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExBorderCollection.cs">
+      <Link>ExBorderCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExBuildingBlocks.cs">
+      <Link>ExBuildingBlocks.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExBuildVersion.cs">
+      <Link>ExBuildVersion.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExCellFormat.cs">
+      <Link>ExCellFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExComment.cs">
+      <Link>ExComment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExControlChar.cs">
+      <Link>ExControlChar.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExDigitalSignatureCollection.cs">
+      <Link>ExDigitalSignatureCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExDigitalSignatureUtil.cs">
+      <Link>ExDigitalSignatureUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExDocument.cs">
+      <Link>ExDocument.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExDocumentBase.cs">
+      <Link>ExDocumentBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExDocumentBuilder.cs">
+      <Link>ExDocumentBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExDocumentBuilderImages.cs">
+      <Link>ExDocumentBuilderImages.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExDocumentVisitor.cs">
+      <Link>ExDocumentVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExDrawing.cs">
+      <Link>ExDrawing.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExEditableRange.cs">
+      <Link>ExEditableRange.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExFile.cs">
+      <Link>ExFile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExFont.cs">
+      <Link>ExFont.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExFormFields.cs">
+      <Link>ExFormFields.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExHeaderFooter.cs">
+      <Link>ExHeaderFooter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExHtmlFixedSaveOptions.cs">
+      <Link>ExHtmlFixedSaveOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExHtmlLoadOptions.cs">
+      <Link>ExHtmlLoadOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExHtmlSaveOptions.cs">
+      <Link>ExHtmlSaveOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExHyphenation.cs">
+      <Link>ExHyphenation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExImage.cs">
+      <Link>ExImage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExImageSaveOptions.cs">
+      <Link>ExImageSaveOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExInlineStory.cs">
+      <Link>ExInlineStory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExInsertDocument.cs">
+      <Link>ExInsertDocument.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExLists.cs">
+      <Link>ExLists.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExMailMerge.cs">
+      <Link>ExMailMerge.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExMailMergeCustom.cs">
+      <Link>ExMailMergeCustom.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExMailMergeEvent.cs">
+      <Link>ExMailMergeEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExMossDoc2Pdf.cs">
+      <Link>ExMossDoc2Pdf.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExMossRtf2Docx.cs">
+      <Link>ExMossRtf2Docx.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExNestedMailMergeCustom.cs">
+      <Link>ExNestedMailMergeCustom.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExNode.cs">
+      <Link>ExNode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExOdtSaveOptions.cs">
+      <Link>ExOdtSaveOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExOoxmlSaveOptions.cs">
+      <Link>ExOoxmlSaveOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExPageSetup.cs">
+      <Link>ExPageSetup.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExParagraph.cs">
+      <Link>ExParagraph.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExPclSaveOptions.cs">
+      <Link>ExPclSaveOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExPdfSaveOptions.cs">
+      <Link>ExPdfSaveOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExProperties.cs">
+      <Link>ExProperties.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExRange.cs">
+      <Link>ExRange.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExRenameMergeFields.cs">
+      <Link>ExRenameMergeFields.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExRendering.cs">
+      <Link>ExRendering.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExReplaceHyperlinks.cs">
+      <Link>ExReplaceHyperlinks.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExReportingEngine.cs">
+      <Link>ExReportingEngine.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExRtfLoadOptions.cs">
+      <Link>ExRtfLoadOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExSavingCallback.cs">
+      <Link>ExSavingCallback.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExSection.cs">
+      <Link>ExSection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExShape.cs">
+      <Link>ExShape.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExSignDocumentCustom.cs">
+      <Link>ExSignDocumentCustom.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExStructuredDocumentTag.cs">
+      <Link>ExStructuredDocumentTag.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExStyles.cs">
+      <Link>ExStyles.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExTable.cs">
+      <Link>ExTable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExTableColumn.cs">
+      <Link>ExTableColumn.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExTabStopCollection.cs">
+      <Link>ExTabStopCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExTxtLoadOptions.cs">
+      <Link>ExTxtLoadOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExTxtSaveOptions.cs">
+      <Link>ExTxtSaveOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExUtilityClasses.cs">
+      <Link>ExUtilityClasses.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExVariableCollection.cs">
+      <Link>ExVariableCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExVisitor.cs">
+      <Link>ExVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExWarningInfoCollection.cs">
+      <Link>ExWarningInfoCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExXpsSaveOptions.cs">
+      <Link>ExXpsSaveOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\TestData\Common.cs">
+      <Link>TestData\Common.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\TestData\TestBuilders\ColorItemTestBuilder.cs">
+      <Link>TestData\TestBuilders\ColorItemTestBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\TestData\TestBuilders\DocumentTestBuilder.cs">
+      <Link>TestData\TestBuilders\DocumentTestBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\TestData\TestBuilders\ImageTestBuilder.cs">
+      <Link>TestData\TestBuilders\ImageTestBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\TestData\TestBuilders\NumericTestBuilder.cs">
+      <Link>TestData\TestBuilders\NumericTestBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\TestData\TestClasses\ClientTestClass.cs">
+      <Link>TestData\TestClasses\ClientTestClass.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\TestData\TestClasses\ColorItemTestClass.cs">
+      <Link>TestData\TestClasses\ColorItemTestClass.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\TestData\TestClasses\ContractTestClass.cs">
+      <Link>TestData\TestClasses\ContractTestClass.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\TestData\TestClasses\DocumentTestClass.cs">
+      <Link>TestData\TestClasses\DocumentTestClass.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\TestData\TestClasses\ImageTestClass.cs">
+      <Link>TestData\TestClasses\ImageTestClass.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\TestData\TestClasses\ManagerTestClass.cs">
+      <Link>TestData\TestClasses\ManagerTestClass.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\TestData\TestClasses\MessageTestClass.cs">
+      <Link>TestData\TestClasses\MessageTestClass.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\TestData\TestClasses\NumericTestClass.cs">
+      <Link>TestData\TestClasses\NumericTestClass.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\TestData\TestClasses\SignPersonTestClass.cs">
+      <Link>TestData\TestClasses\SignPersonTestClass.cs</Link>
+    </Compile>
+    <Compile Include="ApiExampleBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+</Project>

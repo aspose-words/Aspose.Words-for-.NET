@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -11,7 +11,7 @@ using NUnit.Framework;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using Bookmark = Aspose.Words.Bookmark;
-#if !__MOBILE__
+#if !(__MOBILE__ || MAC)
 using Aspose.Pdf.Facades;
 #endif
 
@@ -232,7 +232,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Bookmarks.WhiteSpaces.pdf", pdfSaveOptions);
             //ExEnd
-#if !__MOBILE__
+#if !(__MOBILE__ || MAC)
             // Bind pdf with Aspose.Pdf
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "Bookmarks.WhiteSpaces.pdf");

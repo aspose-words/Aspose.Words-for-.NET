@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -91,7 +91,7 @@ namespace ApiExamples
             CertificateHolder ch = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
             Document doc = new Document(MyDir + "TestRepeatingSection.docx");
-            String outputFileName = ArtifactsDir + "TestRepeatingSection.Signed.doc";
+            string outputFileName = ArtifactsDir + "TestRepeatingSection.Signed.doc";
 
             SignOptions signOptions = new SignOptions { Comments = "Comment", SignTime = DateTime.Now };
 
@@ -116,7 +116,7 @@ namespace ApiExamples
 
             // Digitally sign encrypted with "docPassword" document in the specified path.
             Assert.That(
-                () => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, certificateHolder, signOptions),
+                new TestDelegate(() => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, certificateHolder, signOptions)),
                 Throws.TypeOf<IncorrectPasswordException>(), "The document password is incorrect.");
         }
 

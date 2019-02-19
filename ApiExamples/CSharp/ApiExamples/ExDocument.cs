@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -36,7 +36,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExDocument : ApiExampleBase
     {
-#if !__MOBILE__
+#if !(__MOBILE__ || MAC)
         [Test]
         public void LicenseFromFileNoPath()
         {
@@ -960,7 +960,7 @@ namespace ApiExamples
             //ExEnd
 
             // Verify that runs were joined in the document.
-            Assert.Less(runsAfter, runsBefore);
+            Assert.That(runsAfter, Is.LessThan(runsBefore));
             Assert.AreNotEqual(0, joinCount);
         }
 
@@ -1820,7 +1820,7 @@ namespace ApiExamples
             CustomDocumentProperties customDocumentProperties = plaintext.CustomDocumentProperties;
             //ExEnd
 
-            Assert.IsEmpty(customDocumentProperties);
+            Assert.That(customDocumentProperties, Is.Empty);
         }
 
         [Test]
