@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -775,10 +775,10 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Rendering.MissingFontNotification.pdf");
 
             Assert.True(callback.mFontWarnings[0].Description
-                .Equals("Font substitutes: 'Arial' replaced with 'Arvo'."));
+                .Equals("Font \'Arial\' has not been found. Using \'Arvo\' font instead. Reason: table substitution."));
             Assert.True(callback.mFontWarnings[1].Description
                 .Equals(
-                    "Font 'Times New Roman' has not been found. Using 'Noticia Text' font instead. Reason: closest match according to font info from the document."));
+                    "Font \'Times New Roman\' has not been found. Using \'Noticia Text\' font instead. Reason: font info substitution."));
         }
 
         [Test]
@@ -792,7 +792,9 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Font.DisapearingBulletPoints.pdf");
 
-            Assert.True(callback.mFontWarnings[0].Description.Equals("Font 'SymbolPS' has not been found. Using 'Wingdings' font instead. Reason: closest match according to font info from the document."));
+            Assert.True(callback.mFontWarnings[0].Description
+                .Equals(
+                    "Font \'SymbolPS\' has not been found. Using \'Wingdings\' font instead. Reason: font info substitution."));
         }
 
         [Test]
@@ -1280,6 +1282,11 @@ namespace ApiExamples
             if (isWindows)
             {
                 Assert.AreEqual(new[] { @"C:\WINDOWS\Fonts" }, SystemFontSource.GetSystemFontFolders());
+            }
+
+            foreach (string systemFontFolder in SystemFontSource.GetSystemFontFolders())
+            {
+                Console.WriteLine(systemFontFolder);
             }
 
             foreach (string systemFontFolder in SystemFontSource.GetSystemFontFolders())

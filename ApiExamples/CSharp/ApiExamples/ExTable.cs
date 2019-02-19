@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -11,7 +11,6 @@ using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Replacing;
-using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 
@@ -74,7 +73,7 @@ namespace ApiExamples
             }
             //ExEnd
 
-            Assert.Greater(tables.Count, 0);
+            Assert.That(tables.Count, Is.GreaterThan(0));
         }
 
         [Test]

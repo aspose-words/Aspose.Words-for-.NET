@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -6,7 +6,6 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Aspose.Words;

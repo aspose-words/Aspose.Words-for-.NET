@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -16,10 +16,8 @@ using SaveFormat = Aspose.Words.SaveFormat;
 using SaveOptions = Aspose.Words.Saving.SaveOptions;
 using WarningInfo = Aspose.Words.WarningInfo;
 using WarningType = Aspose.Words.WarningType;
-#if !__MOBILE__
-using Aspose.Pdf;
+#if !(__MOBILE__ || MAC)
 using Aspose.Pdf.Facades;
-using Aspose.Pdf.Text;  
 using Aspose.Pdf.Annotations;
 #endif
 
@@ -62,7 +60,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "CreateMissingOutlineLevels.pdf", pdfSaveOptions);
             //ExEnd
-#if !__MOBILE__
+#if !(__MOBILE__ || MAC)
             // Bind PDF with Aspose.PDF
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "CreateMissingOutlineLevels.pdf");
@@ -103,7 +101,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Bookmarks.WhiteSpaces.pdf", pdfSaveOptions);
             //ExEnd
-#if !__MOBILE__
+#if !(__MOBILE__ || MAC)
             // Bind pdf with Aspose.Pdf
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "Bookmarks.WhiteSpaces.pdf");
@@ -152,11 +150,11 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "UpdateFields_False.pdf", pdfSaveOptions);
             //ExEnd
-#if !__MOBILE__
+#if !(__MOBILE__ || MAC)
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "UpdateFields_False.pdf");
 
             // Get text fragment by search String
-            TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber("Page  of");
+            Aspose.Pdf.Text.TextFragmentAbsorber textFragmentAbsorber = new Aspose.Pdf.Text.TextFragmentAbsorber("Page  of");
             pdfDocument.Pages.Accept(textFragmentAbsorber);
 
             // Assert that fields are not updated
@@ -173,11 +171,11 @@ namespace ApiExamples
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { UpdateFields = true };
 
             doc.Save(ArtifactsDir + "UpdateFields_False.pdf", pdfSaveOptions);
-#if !__MOBILE__
+#if !(__MOBILE__ || MAC)
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "UpdateFields_False.pdf");
 
             // Get text fragment by search String from PDF document
-            TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber("Page 1 of 2");
+            Aspose.Pdf.Text.TextFragmentAbsorber textFragmentAbsorber = new Aspose.Pdf.Text.TextFragmentAbsorber("Page 1 of 2");
             pdfDocument.Pages.Accept(textFragmentAbsorber);
 
             // Assert that fields are updated
@@ -253,7 +251,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfTitle.pdf", pdfSaveOptions);
             //ExEnd
-#if !__MOBILE__
+#if !(__MOBILE__ || MAC)
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfTitle.pdf");
 
             Assert.IsTrue(pdfDocument.DisplayDocTitle);
@@ -297,12 +295,12 @@ namespace ApiExamples
             builder.Document.Save(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf", options);
             //ExEnd
 
-#if !__MOBILE__
+#if !(__MOBILE__ || MAC)
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf");
 
             // Get first page
-            Page page = pdfDocument.Pages[1];
+            Aspose.Pdf.Page page = pdfDocument.Pages[1];
             // Get the first link annotation
             LinkAnnotation linkAnnot = (LinkAnnotation) page.Annotations[1];
 

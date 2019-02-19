@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -13,7 +13,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
 using System.Data.OleDb;
 #endif
 
@@ -273,7 +273,7 @@ namespace ApiExamples
             Assert.IsTrue(logoImage.HasImage);
         }
 
-        #if !(NETSTANDARD2_0 || __MOBILE__)
+        #if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
         [Test]
         [Category("SkipMono")]
         public void MailMergeImageFromBlob()

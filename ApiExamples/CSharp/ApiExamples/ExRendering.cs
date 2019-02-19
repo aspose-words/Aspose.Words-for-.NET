@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -6,8 +6,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections;
 using System.Drawing;
+using System.Collections;
 using System.IO;
 using System.Linq;
 using Aspose.Words;
@@ -15,15 +15,14 @@ using Aspose.Words.Fonts;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using NUnit.Framework;
+#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
+using System.Windows.Forms;
+#endif
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
-#endif
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#else
 using System.Drawing.Printing;
 using System.Drawing.Text;
-using System.Windows.Forms;
-using System.Linq;
-
 #endif
 
 namespace ApiExamples
@@ -380,7 +379,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Rendering.UpdateFields.pdf");
             //ExEnd
         }
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
         [Ignore("Run only when the printer driver is installed")]
         [Test]
         public void Print()
@@ -988,13 +987,11 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Rendering.SetFontsFolders.pdf");
             //ExEnd
 
-            // Verify that font sources are set correctly.
-            Assert.IsInstanceOf(typeof(SystemFontSource),
-                FontSettings.DefaultInstance.GetFontsSources()[0]); // The first source should be a system font source.
-            Assert.IsInstanceOf(typeof(FolderFontSource),
-                FontSettings.DefaultInstance
-                    .GetFontsSources()[1]); // The second source should be our folder font source.
-
+            // The first source should be a system font source.
+            Assert.That(FontSettings.DefaultInstance.GetFontsSources()[0], Is.InstanceOf(typeof(SystemFontSource))); 
+            // The second source should be our folder font source.
+            Assert.That(FontSettings.DefaultInstance.GetFontsSources()[1], Is.InstanceOf(typeof(FolderFontSource))); 
+            
             FolderFontSource folderSource = ((FolderFontSource) FontSettings.DefaultInstance.GetFontsSources()[1]);
             Assert.AreEqual(@"C:\MyFonts\", folderSource.FolderPath);
             Assert.True(folderSource.ScanSubfolders);
@@ -1138,7 +1135,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Rendering.FontsNotificationUpdatePageLayout.pdf");
             //ExEnd
 
-            Assert.Greater(callback.mFontWarnings.Count, 0);
+            Assert.That(callback.mFontWarnings.Count, Is.GreaterThan(0));
             Assert.True(callback.mFontWarnings[0].WarningType == WarningType.FontSubstitution);
             Assert.True(callback.mFontWarnings[0].Description.Contains("has not been found"));
 

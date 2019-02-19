@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
@@ -17,15 +16,13 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Windows.Forms;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using Aspose.Words.Replacing;
-using Aspose.Words.Saving;
 using NUnit.Framework;
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
 using Aspose.BarCode.BarCodeRecognition;
 #endif
 
@@ -349,7 +346,7 @@ namespace ApiExamples
                     .AddArgument(10).AddArgument(20.0).BuildAndInsert(run), Throws.TypeOf<ArgumentException>());
         }
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
         [Test]
         public void BarCodeWord2Pdf()
         {
@@ -2653,7 +2650,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
         //ExStart
         //ExFor:BarcodeParameters
         //ExFor:BarcodeParameters.AddStartStopChar
@@ -3617,7 +3614,7 @@ namespace ApiExamples
             builder.Writeln();
 
             // While the set of a document's properties is fixed, we can add, name and define our own values in the variables collection
-            Assert.IsEmpty(doc.Variables);
+            Assert.That(doc.Variables, Is.Empty);
             doc.Variables.Add("My variable", "My variable's value");
 
             // We can access a variable using its name and display it with a DOCVARIABLE field
