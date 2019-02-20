@@ -341,7 +341,7 @@ namespace ApiExamples
 
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.MetafileRenderingOptions = metafileRenderingOptions;
-            
+
             doc.Save(ArtifactsDir + "PdfSaveOptions.HandleRasterWarnings.pdf", saveOptions);
 
             Assert.AreEqual(1, callback.mWarnings.Count);
