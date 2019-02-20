@@ -36,7 +36,7 @@ namespace ApiExamples
             Document doc = DocumentHelper.CreateSimpleDocument("<<[s.Name]>> says: <<[s.Message]>>");
 
             MessageTestClass sender = new MessageTestClass("LINQ Reporting Engine", "Hello World");
-            BuildReport(doc, sender, "s", ReportBuildOptions.None);
+            BuildReport(doc, sender, "s", ReportBuildOptions.InlineErrorMessages);
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
@@ -689,6 +689,21 @@ namespace ApiExamples
             //Assert that build report success with "ReportBuildOptions.AllowMissingMembers"
             Assert.AreEqual(ControlChar.ParagraphBreak + ControlChar.ParagraphBreak + ControlChar.SectionBreak,
                 builder.Document.GetText());
+        }
+
+        [TestCase("<<[missingObject.First().id]>>", "<<[missingObject.First( Error! Can not get the value of member \'missingObject\' on type \'System.Data.DataSet\'. ).id]>>")]
+        [TestCase("<<[new DateTime()]:”dd.MM.yyyy”>>", "<<[new DateTime( Error! A type identifier is expected. )]:”dd.MM.yyyy”>>")]
+        [TestCase("<<]>>", "<<] Error! Character ']' is unexpected. >>")]
+        [TestCase("<<[>>", "<<[>> Error! An expression is expected.")]
+        [TestCase("<<>>", "<<>> Error! Tag end is unexpected.")]
+        public void InlineErrorMassages(string templateText, string result)
+        {
+            DocumentBuilder builder = new DocumentBuilder();
+            DocumentHelper.InsertBuilderText(builder, new[] { templateText });
+            
+            BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.InlineErrorMessages);
+
+            Assert.That(builder.Document.FirstSection.Body.Paragraphs[0].GetText().TrimEnd(), Is.EqualTo(result));
         }
 
         [Test]
