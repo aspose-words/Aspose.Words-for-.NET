@@ -7,6 +7,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -440,6 +441,7 @@ namespace ApiExamples
             //ExFor:GeneralFormatCollection.Item(Int32)
             //ExFor:GeneralFormatCollection.Remove(GeneralFormat)
             //ExFor:GeneralFormatCollection.RemoveAt(Int32)
+            //ExFor:GeneralFormatCollection.GetEnumerator
             //ExSummary:Shows how to format fields
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -457,13 +459,22 @@ namespace ApiExamples
             format = field.Format;
             format.DateTimeFormat = "dddd, MMMM dd, yyyy";
             field.Update();
-
+            
             // Apply 2 general formats at the same time
             field = builder.InsertField("= 25 + 33");
             format = field.Format;
             format.GeneralFormats.Add(GeneralFormat.LowercaseRoman);
             format.GeneralFormats.Add(GeneralFormat.Upper);
             field.Update();
+
+            int index = 0;
+            using (IEnumerator<GeneralFormat> generalFormatEnumerator = format.GeneralFormats.GetEnumerator())
+            {
+                while (generalFormatEnumerator.MoveNext())
+                {
+                    Console.WriteLine($"General format index {index++}: {generalFormatEnumerator.Current}");
+                }
+            }
 
             Assert.AreEqual("LVIII", field.Result);
             Assert.AreEqual(2, format.GeneralFormats.Count);
@@ -674,6 +685,7 @@ namespace ApiExamples
         //ExFor:Fields.FieldAsk.PromptText
         //ExFor:FieldOptions.UserPromptRespondent
         //ExFor:IFieldUserPromptRespondent
+        //ExFor:IFieldUserPromptRespondent.Respond(String,String)
         //ExSummary:Shows how to create an ASK field and set its properties.
         [Test]
         public void FieldAsk()
@@ -839,11 +851,17 @@ namespace ApiExamples
         //ExFor:FieldCollection.Remove(Field)
         //ExFor:FieldCollection.Remove(FieldStart)
         //ExFor:FieldCollection.RemoveAt(Int32)
+        //ExFor:FieldStart
+        //ExFor:FieldStart.Accept(DocumentVisitor)
         //ExFor:FieldSeparator
         //ExFor:FieldSeparator.Accept(DocumentVisitor)
         //ExFor:FieldEnd
         //ExFor:FieldEnd.Accept(DocumentVisitor)
         //ExFor:FieldEnd.HasSeparator
+        //ExFor:Field.End
+        //ExFor:Field.Remove()
+        //ExFor:Field.Separator
+        //ExFor:Field.Start
         //ExSummary:Shows how to work with a document's field collection.
         [Test] //ExSkip
         public void FieldCollection()
@@ -2968,6 +2986,7 @@ namespace ApiExamples
             //ExFor:UserInformation.Name
             //ExFor:UserInformation.Initials
             //ExFor:UserInformation.Address
+            //ExFor:UserInformation.DefaultUser
             //ExSummary:Shows how to set user details and display them with fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2983,6 +3002,16 @@ namespace ApiExamples
             Assert.AreEqual(userInformation.Name, builder.InsertField(" USERNAME ").Result);
             Assert.AreEqual(userInformation.Initials, builder.InsertField(" USERINITIALS ").Result);
             Assert.AreEqual(userInformation.Address, builder.InsertField(" USERADDRESS ").Result);
+            
+            // The field options object also has a static default user value that fields from many documents can refer to
+            UserInformation.DefaultUser.Name = "Default User";
+            UserInformation.DefaultUser.Initials = "D. U.";
+            UserInformation.DefaultUser.Address = "One Microsoft Way";
+            doc.FieldOptions.CurrentUser = UserInformation.DefaultUser;
+            
+            Assert.AreEqual("Default User", builder.InsertField(" USERNAME ").Result);
+            Assert.AreEqual("D. U.", builder.InsertField(" USERINITIALS ").Result);
+            Assert.AreEqual("One Microsoft Way", builder.InsertField(" USERADDRESS ").Result);
             //ExEnd
         }
 
@@ -3201,6 +3230,7 @@ namespace ApiExamples
             //ExFor:FieldOptions.ToaCategories
             //ExFor:ToaCategories
             //ExFor:ToaCategories.Item(Int32)
+            //ExFor:ToaCategories.DefaultCategories
             //ExSummary:Shows how to specify a table of authorities categories for a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -3211,6 +3241,10 @@ namespace ApiExamples
             
             toaCategories[1] = "My Category 1"; // Replaces default value "Cases"
             toaCategories[2] = "My Category 2"; // Replaces default value "Statutes"
+
+            // Even if we changed the categories in the FieldOptions object, the default categories are still available here
+            Assert.AreEqual("Cases", ToaCategories.DefaultCategories[1]);
+            Assert.AreEqual("Statutes", ToaCategories.DefaultCategories[2]);
 
             // Insert 2 tables of authorities, one per category
             builder.InsertField("TOA \\c 1 \\h", null);
@@ -3223,7 +3257,7 @@ namespace ApiExamples
             builder.InsertField("TA \\c 1 \\l \"entry 2\"");
             builder.InsertBreak(BreakType.PageBreak);
             builder.InsertField("TA \\c 2 \\l \"entry 3\"");
-
+            
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.TableOfAuthorities.Categories.docx");
             //ExEnd
@@ -3657,6 +3691,7 @@ namespace ApiExamples
 
             // As well as displaying a new value in our field, we also changed the value of the document property
             Assert.AreEqual("My new subject", doc.BuiltInDocumentProperties.Subject);
+            //ExEnd
         }
 
         [Test]
@@ -3745,6 +3780,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.GoToButton.docx");
+            //ExEnd
         }
         
         [Test]
@@ -3899,6 +3935,7 @@ namespace ApiExamples
             Assert.AreEqual("OverridingKeyword", doc.BuiltInDocumentProperties.Keywords);
 
             doc.Save(ArtifactsDir + "Field.Keywords.docx");
+            //ExEnd
         }
 
         [Test]
@@ -4112,6 +4149,7 @@ namespace ApiExamples
         }
         //ExEnd
         
+        //ExStart
         //ExFor:FieldNoteRef
         //ExFor:FieldNoteRef.BookmarkName
         //ExFor:FieldNoteRef.InsertHyperlink
@@ -4180,6 +4218,7 @@ namespace ApiExamples
         }
         //ExEnd
 
+        //ExStart
         //ExFor:FieldPageRef
         //ExFor:FieldPageRef.BookmarkName
         //ExFor:FieldPageRef.InsertHyperlink
@@ -4779,6 +4818,425 @@ namespace ApiExamples
 
             builder.InsertBreak(BreakType.PageBreak);
 
+            return field;
+        }
+        //ExEnd
+
+        [Test]
+        public void FieldAddin()
+        {
+            //ExStart
+            //ExFor:FieldAddIn
+            //ExSummary:Shows how to process an ADDIN field.
+            // Open a document that contains an ADDIN field
+            Document doc = new Document(MyDir + "Field.Addin.docx");
+
+            // Aspose.Words does not support inserting ADDIN fields, but they can be read
+            FieldAddIn field = (FieldAddIn)doc.Range.Fields[0];
+            Assert.AreEqual(" ADDIN \"My value\" ", field.GetFieldCode());
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldEditTime()
+        {
+            //ExStart
+            //ExFor:FieldEditTime
+            //ExSummary:Shows how to use the EDITTIME field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert an EDITTIME field in the header
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            builder.Write("You've been editing this document for ");
+            FieldEditTime field = (FieldEditTime)builder.InsertField(FieldType.FieldEditTime, true);
+            builder.Writeln(" minutes.");
+
+            // The EDITTIME field will show, in minutes only,
+            // the time spent with the document open in a Microsoft Word window
+            // The minutes are tracked in a document property, which we can change like this
+            doc.BuiltInDocumentProperties.TotalEditingTime = 10;
+            field.Update();
+
+            Assert.AreEqual(" EDITTIME ", field.GetFieldCode());
+            Assert.AreEqual("10", field.Result);
+
+            // The field does not update in real time and will have to be manually updated in Microsoft Word also
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.EDITTIME.docx");
+            //ExEnd
+        }
+
+        //ExStart
+        //ExFor:FieldEQ
+        //ExSummary:Shows how to use the EQ field to display a variety of mathematical equations.
+        [Test] //ExSkip
+        public void FieldEQ()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // An EQ field displays a mathematical equation consisting of one or many elements
+            // Each element takes the following form: [switch][options][arguments]
+            // One switch, several possible options, followed by a set of argument values inside round braces
+
+            // Here we use a document builder to insert an EQ field, with an "\f" switch, which corresponds to "Fraction"
+            // No options are invoked, and the values 1 and 4 are passed as arguments
+            // This field will display a fraction with 1 as the numerator and 4 as the denominator
+            FieldEQ field = InsertFieldEQ(builder, @"\f(1,4)");
+
+            Assert.AreEqual(@" EQ \f(1,4)", field.GetFieldCode());
+
+            // One EQ field may contain multiple elements placed sequentially,
+            // and elements may also be nested by being placed inside the argument brackets of other elements
+            // The full list of switches and their corresponding options can be found here:
+            // https://blogs.msdn.microsoft.com/murrays/2018/01/23/microsoft-word-eq-field/
+
+            // Array switch "\a", aligned left, 2 columns, 3 points of horizontal and vertical spacing
+            InsertFieldEQ(builder, @"\a \al \co2 \vs3 \hs3(4x,- 4y,-4x,+ y)");
+
+            // Bracket switch "\b", bracket character "[", to enclose the contents in a set of square braces
+            // Note that we are nesting an array inside the brackets, which will altogether look like a matrix in the output
+            InsertFieldEQ(builder, @"\b \bc\[ (\a \al \co3 \vs3 \hs3(1,0,0,0,1,0,0,0,1))");
+
+            // Displacement switch "\d", displacing text "B" 30 spaces to the right of "A", displaying the gap as an underline
+            InsertFieldEQ(builder, @"A \d \fo30 \li() B");
+
+            // Formula consisting of multiple fractions
+            InsertFieldEQ(builder, @"\f(d,dx)(u + v) = \f(du,dx) + \f(dv,dx)");
+
+            // Integral switch "\i", with a summation symbol
+            InsertFieldEQ(builder, @"\i \su(n=1,5,n)");
+
+            // List switch "\l"
+            InsertFieldEQ(builder, @"\l(1,1,2,3,n,8,13)");
+
+            // Radical switch "\r", displaying a cubed root of x
+            InsertFieldEQ(builder, @"\r (3,x)");
+
+            // Subscript/superscript switch "/s", first as a superscript and then as a subscript
+            InsertFieldEQ(builder, @"\s \up8(Superscript) Text \s \do8(Subscript)");
+
+            // Box switch "\x", with lines at the top, bottom, left and right of the input
+            InsertFieldEQ(builder, @"\x \to \bo \le \ri(5)");
+
+            // More complex combinations
+            InsertFieldEQ(builder, @"\a \ac \vs1 \co1(lim,n→∞) \b (\f(n,n2 + 12) + \f(n,n2 + 22) + ... + \f(n,n2 + n2))");
+            InsertFieldEQ(builder, @"\i (,,  \b(\f(x,x2 + 3x + 2))) \s \up10(2)");
+            InsertFieldEQ(builder, @"\i \in( tan x, \s \up2(sec x), \b(\r(3) )\s \up4(t) \s \up7(2)  dt)");
+
+            doc.Save(ArtifactsDir + "Field.EQ.docx");
+        }
+
+        /// <summary>
+        /// Use a document builder to insert an EQ field, set its arguments and start a new paragraph
+        /// </summary>
+        private FieldEQ InsertFieldEQ(DocumentBuilder builder, string args)
+        {
+            FieldEQ field = (FieldEQ)builder.InsertField(FieldType.FieldEquation, true);
+            builder.MoveTo(field.Separator);
+            builder.Write(args);
+            builder.MoveTo(field.Start.ParentNode);
+
+            builder.InsertParagraph();
+            return field;
+        }
+        //ExEnd
+
+        [Test]
+        public void FieldForms()
+        {
+            //ExStart
+            //ExFor:FieldFormCheckBox
+            //ExFor:FieldFormDropDown
+            //ExFor:FieldFormText
+            //ExSummary:Shows how to process FORMCHECKBOX, FORMDROPDOWN and FORMTEXT fields.
+            // These fields are legacy equivalents of the FormField, and they can be read and not inserted by Aspose.Words,
+            // and are inserted in Microsoft Word 2019 via the Legacy Tools menu in the Developer tab
+            Document doc = new Document(MyDir + "Field.FieldForms.doc");
+
+            FieldFormCheckBox fieldFormCheckBox = (FieldFormCheckBox)doc.Range.Fields[1];
+            Assert.AreEqual(" FORMCHECKBOX \u0001", fieldFormCheckBox.GetFieldCode());
+
+            FieldFormDropDown fieldFormDropDown = (FieldFormDropDown)doc.Range.Fields[2];
+            Assert.AreEqual(" FORMDROPDOWN \u0001", fieldFormDropDown.GetFieldCode());
+
+            FieldFormText fieldFormText = (FieldFormText)doc.Range.Fields[0];
+            Assert.AreEqual(" FORMTEXT \u0001", fieldFormText.GetFieldCode());
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldFormula()
+        {
+            //ExStart
+            //ExFor:FieldFormula
+            //ExSummary:Shows how to use the "=" field.
+            Document doc = new Document();
+
+            // Create a formula field using a field builder
+            FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldFormula);
+            fieldBuilder.AddArgument(2);
+            fieldBuilder.AddArgument("*");
+            fieldBuilder.AddArgument(5);
+
+            FieldFormula field = (FieldFormula)fieldBuilder.BuildAndInsert(doc.FirstSection.Body.FirstParagraph);
+            field.Update();
+
+            Assert.AreEqual(" = 2 * 5 ", field.GetFieldCode());
+            Assert.AreEqual("10", field.Result);
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.FORMULA.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldLastSavedBy()
+        {
+            //ExStart
+            //ExFor:FieldLastSavedBy
+            //ExSummary:Shows how to use the LASTSAVEDBY field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // If we create a document in Microsoft Word, it will have the user's name in the "Last saved by" property
+            // This is the property that a LASTSAVEDBY field looks up and displays
+            // If we make a document programmatically, this property is null and needs to have a value assigned to it first
+            doc.BuiltInDocumentProperties.LastSavedBy = "John Doe";
+
+            // Insert a LASTSAVEDBY field using a document builder
+            FieldLastSavedBy field = (FieldLastSavedBy)builder.InsertField(FieldType.FieldLastSavedBy, true);
+
+            // The value from our document property appears here
+            Assert.AreEqual(" LASTSAVEDBY ", field.GetFieldCode());
+            Assert.AreEqual("John Doe", field.Result);
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.LASTSAVEDBY.docx");
+            //ExEnd
+        }
+
+        [Test]
+        [Ignore("WORDSNET-18173")]
+        public void FieldMergeRec()
+        {
+            //ExStart
+            //ExFor:FieldMergeRec
+            //ExFor:FieldMergeSeq
+            //ExSummary:Shows how to number and count mail merge records in the output documents of a mail merge using MERGEREC and MERGESEQ fields.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a merge field
+            builder.Write("Dear ");
+            FieldMergeField fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            fieldMergeField.FieldName = "Name";
+            builder.Writeln(",");
+
+            // A MERGEREC field will print the row number of the data being merged
+            builder.Write("\nRow number of record in data source: ");
+            FieldMergeRec fieldMergeRec = (FieldMergeRec)builder.InsertField(FieldType.FieldMergeRec, true);
+
+            Assert.AreEqual(" MERGEREC ", fieldMergeRec.GetFieldCode());
+
+            // A MERGESEQ field will count the number of successful merges and print the current value on each respective page
+            // If no rows are skipped and the data source is not sorted, and no SKIP/SKIPIF/NEXT/NEXTIF fields are invoked,
+            // the MERGESEQ and MERGEREC fields will function the same
+            builder.Write("\nSuccessful merge number: ");
+            FieldMergeSeq fieldMergeSeq = (FieldMergeSeq)builder.InsertField(FieldType.FieldMergeSeq, true);
+
+            Assert.AreEqual(" MERGESEQ ", fieldMergeSeq.GetFieldCode());
+
+            // Insert a SKIPIF field, which will skip a merge if the name is "John Doe"
+            FieldSkipIf fieldSkipIf = (FieldSkipIf)builder.InsertField(FieldType.FieldSkipIf, true);
+            builder.MoveTo(fieldSkipIf.Separator);
+            fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            fieldMergeField.FieldName = "Name";
+            fieldSkipIf.LeftExpression = "=";
+            fieldSkipIf.RightExpression = "John Doe";
+
+            // Create a data source with 3 rows, one of them having "John Doe" as a value for the "Name" column
+            // Since a SKIPIF field will be triggered once by that value, the output of our mail merge will have 2 pages instead of 3
+            // On page 1, the MERGESEQ and MERGEREC fields will both display "1"
+            // On page 2, the MERGEREC field will display "3" and the MERGESEQ field will display "2"
+            DataTable table = CreateTable("Employees", new[] { "Name" },
+                new[,] { { "Jane Doe" }, { "John Doe" }, { "Joe Bloggs" } });
+
+            // Execute mail merge and save document
+            doc.MailMerge.Execute(table);
+            doc.Save(ArtifactsDir + "Field.MERGEREC.MERGESEQ.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldOcx()
+        {
+            //ExStart
+            //ExFor:FieldOcx
+            //ExSummary:Shows how to insert an OCX field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert an OCX field
+            FieldOcx field = (FieldOcx)builder.InsertField(FieldType.FieldOcx, true);
+
+            Assert.AreEqual(" OCX ", field.GetFieldCode());
+            //ExEnd
+        }
+
+        //ExStart
+        //ExFor:FieldPrivate
+        //ExSummary:Shows how to process PRIVATE fields.
+        [Test] //ExSkip
+        public void FieldPrivate()
+        {
+            // Open a Corel WordPerfect document that was converted to .docx format
+            Document doc = new Document(MyDir + "Field.FromWpd.docx");
+
+            // WordPerfect 5.x/6.x documents like the one we opened may contain PRIVATE fields
+            // The PRIVATE field is a WordPerfect artifact that is preserved when a file is opened and saved in Microsoft Word
+            // However, they have no functionality in Microsoft Word
+            FieldPrivate field = (FieldPrivate)doc.Range.Fields[0];
+            Assert.AreEqual(" PRIVATE \"My value\" ", field.GetFieldCode());
+
+            // PRIVATE fields can also be inserted by a document builder
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertField(FieldType.FieldPrivate, true);
+
+            // It is strongly advised against using them to attempt to hide or store private information
+            // Unless backward compatibility with older versions of WordPerfect is necessary, these fields can safely be removed
+            // This can be done using a document visitor implementation
+            Assert.AreEqual(2, doc.Range.Fields.Count);
+
+            FieldPrivateRemover remover = new FieldPrivateRemover();
+            doc.Accept(remover);
+
+            Assert.AreEqual(2, remover.GetFieldsRemovedCount());
+            Assert.AreEqual(0, doc.Range.Fields.Count);
+        }
+
+        /// <summary>
+        /// Visitor implementation that removes all PRIVATE fields that it comes across.
+        /// </summary>
+        public class FieldPrivateRemover : DocumentVisitor
+        {
+            public FieldPrivateRemover()
+            {
+                mFieldsRemovedCount = 0;
+            }
+
+            public int GetFieldsRemovedCount()
+            {
+                return mFieldsRemovedCount;
+            }
+
+            /// <summary>
+            /// Called when a FieldEnd node is encountered in the document.
+            /// If the node belongs to a PRIVATE field, the entire field is removed.
+            /// </summary>
+            public override VisitorAction VisitFieldEnd(FieldEnd fieldEnd)
+            {
+                if (fieldEnd.FieldType == FieldType.FieldPrivate)
+                {
+                    fieldEnd.GetField().Remove();
+                    mFieldsRemovedCount++;
+                }
+
+                return VisitorAction.Continue;
+            }
+
+            private int mFieldsRemovedCount;
+        }
+        //ExEnd
+
+        [Test]
+        public void FieldSection()
+        {
+            //ExStart
+            //ExFor:FieldSection
+            //ExFor:FieldSectionPages
+            //ExSummary:Shows how to use SECTION and SECTIONPAGES fields to facilitate page numbering separated by sections.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Move the document builder to the header that appears across all pages and align to the top right
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            builder.ParagraphFormat.Alignment = ParagraphAlignment.Right;
+
+            // A SECTION field displays the number of the section it is placed in
+            builder.Write("Section ");
+            FieldSection fieldSection = (FieldSection)builder.InsertField(FieldType.FieldSection, true);
+
+            Assert.AreEqual(" SECTION ", fieldSection.GetFieldCode());
+
+            // A PAGE field displays the number of the page it is placed in
+            builder.Write("\nPage ");
+            FieldPage fieldPage = (FieldPage)builder.InsertField(FieldType.FieldPage, true);
+
+            Assert.AreEqual(" PAGE ", fieldPage.GetFieldCode());
+
+            // A SECTIONPAGES field displays the number of pages that the section it is in spans across
+            builder.Write(" of ");
+            FieldSectionPages fieldSectionPages = (FieldSectionPages)builder.InsertField(FieldType.FieldSectionPages, true);
+
+            Assert.AreEqual(" SECTIONPAGES ", fieldSectionPages.GetFieldCode());
+
+            // Move out of the header back into the main document and insert two pages
+            // Both these pages will be in the first section and our three fields will keep track of the numbers in each header
+            builder.MoveToDocumentEnd();
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // We can insert a new section with the document builder like this
+            // This will change the values displayed in the SECTION and SECTIONPAGES fields in all upcoming headers
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+
+            // The PAGE field will keep counting pages across the whole document
+            // We can manually reset its count after a new section is added to keep track of pages section-by-section
+            builder.CurrentSection.PageSetup.RestartPageNumbering = true;
+            builder.InsertBreak(BreakType.PageBreak);
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.SECTION.SECTIONPAGES.docx");
+            //ExEnd
+        }
+
+        //ExStart
+        //ExFor:FieldTime
+        //ExSummary:Shows how to display the current time using the TIME field.
+        [Test] //ExSkip
+        public void FieldTime()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // By default, time is displayed in the "h:mm am/pm" format
+            FieldTime field = InsertFieldTime(builder, "");
+            Assert.AreEqual(" TIME ", field.GetFieldCode());
+
+            // By using the \@ flag, we can change the appearance of our time
+            field = InsertFieldTime(builder, "\\@ HHmm");
+            Assert.AreEqual(" TIME \\@ HHmm", field.GetFieldCode());
+
+            // We can even display the date, according to the gregorian calendar
+            field = InsertFieldTime(builder, "\\@ \"M/d/yyyy h mm:ss am/pm\"");
+            Assert.AreEqual(" TIME \\@ \"M/d/yyyy h mm:ss am/pm\"", field.GetFieldCode());
+
+            doc.Save(ArtifactsDir + "Field.TIME.docx");
+        }
+
+        /// <summary>
+        /// Use a document builder to insert a TIME field, insert a new paragraph and return the field
+        /// </summary>
+        private FieldTime InsertFieldTime(DocumentBuilder builder, string format)
+        {
+            FieldTime field = (FieldTime)builder.InsertField(FieldType.FieldTime, true);
+            builder.MoveTo(field.Separator);
+            builder.Write(format);
+            builder.MoveTo(field.Start.ParentNode);
+
+            builder.InsertParagraph();
             return field;
         }
         //ExEnd
