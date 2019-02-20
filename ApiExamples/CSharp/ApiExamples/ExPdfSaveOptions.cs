@@ -368,7 +368,7 @@ namespace ApiExamples
 
         [Test]
         [TestCase(Aspose.Words.Saving.HeaderFooterBookmarksExportMode.None)]
-        [TestCase(Aspose.Words.Saving.HeaderFooterBookmarksExportMode.First)] // Need to check in AW tests
+        [TestCase(Aspose.Words.Saving.HeaderFooterBookmarksExportMode.First)]
         [TestCase(Aspose.Words.Saving.HeaderFooterBookmarksExportMode.All)]
         public void HeaderFooterBookmarksExportMode(HeaderFooterBookmarksExportMode headerFooterBookmarksExportMode)
         {
@@ -390,6 +390,25 @@ namespace ApiExamples
                 OutlineOptions = { DefaultBookmarksOutlineLevel = 1 }
             };
             doc.Save(ArtifactsDir + "PdfSaveOption.HeaderFooterBookmarksExportMode.pdf", saveOptions);
+            //ExEnd
+        }
+
+        [Test]
+        public void FontsScaledToMetafileSize()
+        {
+            //ExStart
+            //ExFor:MetafileRenderingOptions.ScaleWmfFontsToMetafileSize
+            //ExSummary:Shows how to WMF fonts scaling according to metafile size on the page
+            Document doc = new Document(MyDir + "PdfSaveOptions.FontsScaledToMetafileSize.docx");
+
+            // There is a several options for this:
+            // 'True' - Aspose.Words emulates font scaling according to metafile size on the page.
+            // 'False' - Aspose.Words displays the fonts as metafile is rendered to its default size.
+            // Use 'False' option is used only when metafile is rendered as vector graphics.
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.MetafileRenderingOptions.ScaleWmfFontsToMetafileSize = true;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.FontsScaledToMetafileSize.pdf", saveOptions);
             //ExEnd
         }
     }
