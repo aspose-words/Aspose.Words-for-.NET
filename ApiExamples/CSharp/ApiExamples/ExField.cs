@@ -3686,6 +3686,7 @@ namespace ApiExamples
 
             // As well as displaying a new value in our field, we also changed the value of the document property
             Assert.AreEqual("My new subject", doc.BuiltInDocumentProperties.Subject);
+            //ExEnd
         }
 
         [Test]
@@ -3774,6 +3775,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.GoToButton.docx");
+            //ExEnd
         }
         
         [Test]
@@ -3928,6 +3930,7 @@ namespace ApiExamples
             Assert.AreEqual("OverridingKeyword", doc.BuiltInDocumentProperties.Keywords);
 
             doc.Save(ArtifactsDir + "Field.Keywords.docx");
+            //ExEnd
         }
 
         [Test]
@@ -4141,6 +4144,7 @@ namespace ApiExamples
         }
         //ExEnd
         
+        //ExStart
         //ExFor:FieldNoteRef
         //ExFor:FieldNoteRef.BookmarkName
         //ExFor:FieldNoteRef.InsertHyperlink
@@ -4209,6 +4213,7 @@ namespace ApiExamples
         }
         //ExEnd
 
+        //ExStart
         //ExFor:FieldPageRef
         //ExFor:FieldPageRef.BookmarkName
         //ExFor:FieldPageRef.InsertHyperlink
@@ -4753,7 +4758,7 @@ namespace ApiExamples
         public void FieldAddin()
         {
             //ExStart
-            //ExFor:FieldAddin
+            //ExFor:FieldAddIn
             //ExSummary:Shows how to process an ADDIN field.
             // Open a document that contains an ADDIN field
             Document doc = new Document(MyDir + "Field.Addin.docx");
