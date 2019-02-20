@@ -4754,7 +4754,7 @@ namespace ApiExamples
             //ExFor:FieldAddin
             //ExSummary:Shows how to process an ADDIN field.
             // Open a document that contains an ADDIN field
-            Document doc = new Document(MyDir + "Field.ADDIN.docx");
+            Document doc = new Document(MyDir + "Field.Addin.docx");
 
             // Aspose.Words does not support inserting ADDIN fields, but they can be read
             FieldAddIn field = (FieldAddIn)doc.Range.Fields[0];
