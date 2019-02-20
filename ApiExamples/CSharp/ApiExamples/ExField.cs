@@ -466,11 +466,13 @@ namespace ApiExamples
             format.GeneralFormats.Add(GeneralFormat.Upper);
             field.Update();
 
-            IEnumerator<GeneralFormat> generalFormatEnumerator = format.GeneralFormats.GetEnumerator();
             int index = 0;
-            while (generalFormatEnumerator.MoveNext())
+            using (IEnumerator<GeneralFormat> generalFormatEnumerator = format.GeneralFormats.GetEnumerator())
             {
-                Console.WriteLine($"General format index {index++}: {generalFormatEnumerator.Current}");
+                while (generalFormatEnumerator.MoveNext())
+                {
+                    Console.WriteLine($"General format index {index++}: {generalFormatEnumerator.Current}");
+                }
             }
 
             Assert.AreEqual("LVIII", field.Result);
@@ -2997,11 +2999,11 @@ namespace ApiExamples
             Assert.AreEqual(userInformation.Address, builder.InsertField(" USERADDRESS ").Result);
             
             // The field options object also has a static default user value that fields from many documents can refer to
-            doc.FieldOptions.CurrentUser = UserInformation.DefaultUser;
             UserInformation.DefaultUser.Name = "Default User";
             UserInformation.DefaultUser.Initials = "D. U.";
             UserInformation.DefaultUser.Address = "One Microsoft Way";
-
+            doc.FieldOptions.CurrentUser = UserInformation.DefaultUser;
+            
             Assert.AreEqual("Default User", builder.InsertField(" USERNAME ").Result);
             Assert.AreEqual("D. U.", builder.InsertField(" USERINITIALS ").Result);
             Assert.AreEqual("One Microsoft Way", builder.InsertField(" USERADDRESS ").Result);
@@ -3235,6 +3237,10 @@ namespace ApiExamples
             toaCategories[1] = "My Category 1"; // Replaces default value "Cases"
             toaCategories[2] = "My Category 2"; // Replaces default value "Statutes"
 
+            // Even if we changed the categories in the FieldOptions object, the default categories are still available here
+            Assert.AreEqual("Cases", ToaCategories.DefaultCategories[1]);
+            Assert.AreEqual("Statutes", ToaCategories.DefaultCategories[2]);
+
             // Insert 2 tables of authorities, one per category
             builder.InsertField("TOA \\c 1 \\h", null);
             builder.InsertField("TOA \\c 2 \\h", null);
@@ -3246,11 +3252,7 @@ namespace ApiExamples
             builder.InsertField("TA \\c 1 \\l \"entry 2\"");
             builder.InsertBreak(BreakType.PageBreak);
             builder.InsertField("TA \\c 2 \\l \"entry 3\"");
-
-            // If we change the categories in the FieldOprions object, the default categories are still available here
-            Assert.AreEqual("Cases", ToaCategories.DefaultCategories[1]);
-            Assert.AreEqual("Statutes", ToaCategories.DefaultCategories[2]);
-
+            
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.TableOfAuthorities.Categories.docx");
             //ExEnd
@@ -4754,7 +4756,7 @@ namespace ApiExamples
             //ExFor:FieldAddin
             //ExSummary:Shows how to process an ADDIN field.
             // Open a document that contains an ADDIN field
-            Document doc = new Document(MyDir + "Field.ADDIN.docx");
+            Document doc = new Document(MyDir + "Field.ADDIN.docx"); // INSP: File could not be find
 
             // Aspose.Words does not support inserting ADDIN fields, but they can be read
             FieldAddIn field = (FieldAddIn)doc.Range.Fields[0];
@@ -5095,7 +5097,7 @@ namespace ApiExamples
 
             Assert.AreEqual(" SECTION ", fieldSection.GetFieldCode());
 
-            // A PAGE field displays the number of the page is is placed in
+            // A PAGE field displays the number of the page it is placed in
             builder.Write("\nPage ");
             FieldPage fieldPage = (FieldPage)builder.InsertField(FieldType.FieldPage, true);
 
@@ -5138,17 +5140,14 @@ namespace ApiExamples
 
             // By default, time is displayed in the "h:mm am/pm" format
             FieldTime field = InsertFieldTime(builder, "");
-
             Assert.AreEqual(" TIME ", field.GetFieldCode());
 
             // By using the \@ flag, we can change the appearance of our time
             field = InsertFieldTime(builder, "\\@ HHmm");
-
             Assert.AreEqual(" TIME \\@ HHmm", field.GetFieldCode());
 
             // We can even display the date, according to the gregorian calendar
             field = InsertFieldTime(builder, "\\@ \"M/d/yyyy h mm:ss am/pm\"");
-
             Assert.AreEqual(" TIME \\@ \"M/d/yyyy h mm:ss am/pm\"", field.GetFieldCode());
 
             doc.Save(ArtifactsDir + "Field.TIME.docx");
@@ -5156,7 +5155,7 @@ namespace ApiExamples
 
         /// <summary>
         /// Use a document builder to insert a TIME field, insert a new paragraph and return the field
-        /// <</summary>
+        /// </summary>
         private FieldTime InsertFieldTime(DocumentBuilder builder, string format)
         {
             FieldTime field = (FieldTime)builder.InsertField(FieldType.FieldTime, true);
