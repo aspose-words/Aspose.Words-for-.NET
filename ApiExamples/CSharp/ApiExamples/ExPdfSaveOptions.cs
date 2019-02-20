@@ -369,7 +369,6 @@ namespace ApiExamples
         }
         //ExEnd
 
-        [Test]
         [TestCase(Aspose.Words.Saving.HeaderFooterBookmarksExportMode.None)]
         [TestCase(Aspose.Words.Saving.HeaderFooterBookmarksExportMode.First)] // Need to check in AW tests
         [TestCase(Aspose.Words.Saving.HeaderFooterBookmarksExportMode.All)]
