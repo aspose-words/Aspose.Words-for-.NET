@@ -6,6 +6,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Drawing;
+using System.Threading.Tasks;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
@@ -392,6 +394,34 @@ namespace ApiExamples
             };
             doc.Save(ArtifactsDir + "PdfSaveOption.HeaderFooterBookmarksExportMode.pdf", saveOptions);
             //ExEnd
+        }
+
+        [Test]
+        public void UnsupportedImageFormatWarning()
+        {
+            Document doc = new Document(MyDir + "PdfSaveOptions.TestCorruptedImage.docx");
+
+            SaveWarningCallback saveWarningCallback = new SaveWarningCallback();
+            doc.WarningCallback = saveWarningCallback;
+
+            doc.Save(ArtifactsDir + "PdfSaveOption.HeaderFooterBookmarksExportMode.pdf", SaveFormat.Pdf);
+
+            Assert.That(saveWarningCallback.mSaveWarnings[0].Description,
+                Is.EqualTo("Image can not be processed. Possibly unsupported image format."));
+        }
+
+        public class SaveWarningCallback : IWarningCallback
+        {
+            public void Warning(WarningInfo info)
+            {
+                if (info.WarningType == WarningType.MinorFormattingLoss)
+                {
+                    Console.WriteLine($"{info.WarningType}: {info.Description}.");
+                    mSaveWarnings.Warning(info);
+                }
+            }
+
+            internal WarningInfoCollection mSaveWarnings = new WarningInfoCollection();
         }
     }
 }
