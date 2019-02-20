@@ -18,7 +18,6 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Reporting;
 using NUnit.Framework;
-
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
@@ -37,7 +36,7 @@ namespace ApiExamples
             Document doc = DocumentHelper.CreateSimpleDocument("<<[s.Name]>> says: <<[s.Message]>>");
 
             MessageTestClass sender = new MessageTestClass("LINQ Reporting Engine", "Hello World");
-            BuildReport(doc, sender, "s", ReportBuildOptions.None);
+            BuildReport(doc, sender, "s", ReportBuildOptions.InlineErrorMessages);
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
@@ -294,7 +293,6 @@ namespace ApiExamples
                 "Fail inserting document by document");
         }
 
-
         [Test]
         public void InsertDocumentDinamically()
         {
@@ -361,7 +359,6 @@ namespace ApiExamples
 #else
             ImageTestClass image = new ImageTestBuilder().WithImage(Image.FromFile(mImage, true)).Build();
 #endif
-
             BuildReport(template, image, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertImageDinamically.docx");
 
@@ -490,7 +487,7 @@ namespace ApiExamples
         [Test]
         public void TableRowConditionalBlocks()
         {
-            Document doc = new Document(MyDir + "TableRowConditionalBlocks.docx");
+            Document doc = new Document(MyDir + "ReportingEngine.TableRowConditionalBlocks.docx");
 
             List<ClientTestClass> clients = new List<ClientTestClass>
             {
@@ -534,7 +531,7 @@ namespace ApiExamples
 
             BuildReport(doc, obj);
 
-            doc.Save(ArtifactsDir + "IfGreedy.docx");
+            doc.Save(ArtifactsDir + "ReportingEngine.IfGreedy.docx");
         }
 
         public class AsposeData
@@ -692,6 +689,21 @@ namespace ApiExamples
                 builder.Document.GetText());
         }
 
+        [TestCase("<<[missingObject.First().id]>>", "<<[missingObject.First( Error! Can not get the value of member \'missingObject\' on type \'System.Data.DataSet\'. ).id]>>")]
+        [TestCase("<<[new DateTime()]:”dd.MM.yyyy”>>", "<<[new DateTime( Error! A type identifier is expected. )]:”dd.MM.yyyy”>>")]
+        [TestCase("<<]>>", "<<] Error! Character ']' is unexpected. >>")]
+        [TestCase("<<[>>", "<<[>> Error! An expression is expected.")]
+        [TestCase("<<>>", "<<>> Error! Tag end is unexpected.")]
+        public void InlineErrorMassages(string templateText, string result)
+        {
+            DocumentBuilder builder = new DocumentBuilder();
+            DocumentHelper.InsertBuilderText(builder, new[] { templateText });
+            
+            BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.InlineErrorMessages);
+
+            Assert.That(builder.Document.FirstSection.Body.Paragraphs[0].GetText().TrimEnd(), Is.EqualTo(result));
+        }
+
         [Test]
         public void SetBackgroundColor()
         {
@@ -736,6 +748,46 @@ namespace ApiExamples
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RemoveEmptyParagraphs.docx",
                 GoldsDir + "ReportingEngine.RemoveEmptyParagraphs Gold.docx"));
+        }
+
+        [TestCase("Hello", "Hello", "ReportingEngine.MergingTableCellsDynamically.Merged", Description = "Cells in the first two tables must be merged")]
+        [TestCase("Hello", "Name", "ReportingEngine.MergingTableCellsDynamically.NotMerged", Description = "Only last table cells must be merge")]
+        public void MergingTableCellsDynamically(string value1, string value2, string resultDocumentName)
+        {
+            string artifactPath = ArtifactsDir + resultDocumentName +
+                                   FileFormatUtil.SaveFormatToExtension(SaveFormat.Docx);
+            string goldPath = GoldsDir + resultDocumentName + " Gold" +
+                              FileFormatUtil.SaveFormatToExtension(SaveFormat.Docx);
+            
+            Document doc = new Document(MyDir + "ReportingEngine.MergingTableCellsDynamically.docx");
+
+            List<ClientTestClass> clients = new List<ClientTestClass>
+            {
+                new ClientTestClass
+                {
+                    Name = "John Monrou",
+                    Country = "France",
+                    LocalAddress = "27 RUE PASTEUR"
+                },
+                new ClientTestClass
+                {
+                    Name = "James White",
+                    Country = "New Zealand",
+                    LocalAddress = "14 Tottenham Court Road"
+                },
+                new ClientTestClass
+                {
+                    Name = "Kate Otts",
+                    Country = "New Zealand",
+                    LocalAddress = "Wellington 6004"
+                }
+            };
+            
+            BuildReport(doc, new object[] { value1, value2, clients }, new [] { "value1", "value2", "clients" });
+            
+            doc.Save(artifactPath);
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(artifactPath, goldPath));
         }
 
         private static void BuildReport(Document document, object dataSource, string dataSourceName,
