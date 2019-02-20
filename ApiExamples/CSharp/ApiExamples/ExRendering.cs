@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -6,22 +6,23 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections;
 using System.Drawing;
+using System.Collections;
 using System.IO;
+using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Fonts;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using NUnit.Framework;
+#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
+using System.Windows.Forms;
+#endif
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
-#endif
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#else
 using System.Drawing.Printing;
 using System.Drawing.Text;
-using System.Windows.Forms;
-
 #endif
 
 namespace ApiExamples
@@ -378,7 +379,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Rendering.UpdateFields.pdf");
             //ExEnd
         }
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
         [Ignore("Run only when the printer driver is installed")]
         [Test]
         public void Print()
@@ -986,13 +987,11 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Rendering.SetFontsFolders.pdf");
             //ExEnd
 
-            // Verify that font sources are set correctly.
-            Assert.IsInstanceOf(typeof(SystemFontSource),
-                FontSettings.DefaultInstance.GetFontsSources()[0]); // The first source should be a system font source.
-            Assert.IsInstanceOf(typeof(FolderFontSource),
-                FontSettings.DefaultInstance
-                    .GetFontsSources()[1]); // The second source should be our folder font source.
-
+            // The first source should be a system font source.
+            Assert.That(FontSettings.DefaultInstance.GetFontsSources()[0], Is.InstanceOf(typeof(SystemFontSource))); 
+            // The second source should be our folder font source.
+            Assert.That(FontSettings.DefaultInstance.GetFontsSources()[1], Is.InstanceOf(typeof(FolderFontSource))); 
+            
             FolderFontSource folderSource = ((FolderFontSource) FontSettings.DefaultInstance.GetFontsSources()[1]);
             Assert.AreEqual(@"C:\MyFonts\", folderSource.FolderPath);
             Assert.True(folderSource.ScanSubfolders);
@@ -1028,7 +1027,7 @@ namespace ApiExamples
             //ExFor:FontSettings.SetFontSubstitutes(String, String[])
             //ExSummary:Shows how to define alternative fonts if original does not exist
             FontSettings fontSettings = new FontSettings();
-            fontSettings.SetFontSubstitutes("Times New Roman", new String[] { "Slab", "Arvo" });
+            fontSettings.SubstitutionSettings.TableSubstitution.SetSubstitutes("Times New Roman", new String[] { "Slab", "Arvo" });
             //ExEnd
             Document doc = new Document(MyDir + "Rendering.doc");
             doc.FontSettings = fontSettings;
@@ -1040,9 +1039,9 @@ namespace ApiExamples
             FontSourceBase[] fontSource = doc.FontSettings.GetFontsSources();
             Assert.AreEqual("SystemFonts", fontSource[0].Type.ToString());
 
-            Assert.AreEqual("Times New Roman", doc.FontSettings.DefaultFontName);
+            Assert.AreEqual("Times New Roman", doc.FontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName);
 
-            String[] alternativeFonts = doc.FontSettings.GetFontSubstitutes("Times New Roman");
+            String[] alternativeFonts = doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Times New Roman").ToArray();
             Assert.AreEqual(new String[] { "Slab", "Arvo" }, alternativeFonts);
         }
 
@@ -1070,8 +1069,8 @@ namespace ApiExamples
         public void AddFontSubstitutes()
         {
             FontSettings fontSettings = new FontSettings();
-            fontSettings.SetFontSubstitutes("Slab", new String[] { "Times New Roman", "Arial" });
-            fontSettings.AddFontSubstitutes("Arvo", new String[] { "Open Sans", "Arial" });
+            fontSettings.SubstitutionSettings.TableSubstitution.SetSubstitutes("Slab", new String[] { "Times New Roman", "Arial" });
+            fontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Arvo", new String[] { "Open Sans", "Arial" });
 
             Document doc = new Document(MyDir + "Rendering.doc");
             doc.FontSettings = fontSettings;
@@ -1079,10 +1078,10 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            String[] alternativeFonts = doc.FontSettings.GetFontSubstitutes("Slab");
+            String[] alternativeFonts = doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Slab").ToArray();
             Assert.AreEqual(new String[] { "Times New Roman", "Arial" }, alternativeFonts);
 
-            alternativeFonts = doc.FontSettings.GetFontSubstitutes("Arvo");
+            alternativeFonts = doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Arvo").ToArray();
             Assert.AreEqual(new String[] { "Open Sans", "Arial" }, alternativeFonts);
         }
 
@@ -1096,7 +1095,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Rendering.doc");
 
             // If the default font defined here cannot be found during rendering then the closest font on the machine is used instead.
-            FontSettings.DefaultInstance.DefaultFontName = "Arial Unicode MS";
+            FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial Unicode MS";
 
             // Now the set default font is used in place of any missing fonts during any rendering calls.
             doc.Save(ArtifactsDir + "Rendering.SetDefaultFont.pdf");
@@ -1118,7 +1117,7 @@ namespace ApiExamples
             doc.WarningCallback = callback;
 
             // We can choose the default font to use in the case of any missing fonts.
-            FontSettings.DefaultInstance.DefaultFontName = "Arial";
+            FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
 
             // For testing we will set Aspose.Words to look for fonts only in a folder which doesn't exist. Since Aspose.Words won't
             // find any fonts in the specified directory, then during rendering the fonts in the document will be substituted with the default 
@@ -1136,7 +1135,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Rendering.FontsNotificationUpdatePageLayout.pdf");
             //ExEnd
 
-            Assert.Greater(callback.mFontWarnings.Count, 0);
+            Assert.That(callback.mFontWarnings.Count, Is.GreaterThan(0));
             Assert.True(callback.mFontWarnings[0].WarningType == WarningType.FontSubstitution);
             Assert.True(callback.mFontWarnings[0].Description.Contains("has not been found"));
 

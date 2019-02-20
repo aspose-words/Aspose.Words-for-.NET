@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Drawing;
-using System.Net;
 using System.Text;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
 using Shape = Aspose.Words.Drawing.Shape;
+#if !(NETSTANDARD2_0 || __MOBILE__)
+using System.Net;
+#endif
 
 namespace ApiExamples
 {

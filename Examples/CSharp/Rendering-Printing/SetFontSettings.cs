@@ -24,8 +24,8 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             Document doc = new Document(dataDir + "Rendering.doc");
 
             FontSettings fontSettings = new FontSettings();
-            fontSettings.DefaultFontName = "Arial";
-            fontSettings.EnableFontSubstitution = false;
+            fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
+            fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = false;
 
             // Set font settings
             doc.FontSettings = fontSettings;

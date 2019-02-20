@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -68,19 +68,19 @@ namespace ApiExamples
                 case SaveFormat.Html:
                     
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvg.001.png", SearchOption.AllDirectories);
-                    Assert.IsEmpty(dirFiles);
+                    Assert.That(dirFiles, Is.Empty);
                     return;
 
                 case SaveFormat.Epub:
 
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvg.001.png", SearchOption.AllDirectories);
-                    Assert.IsEmpty(dirFiles);
+                    Assert.That(dirFiles, Is.Empty);
                     return;
 
-                case SaveFormat.Mhtml: // ToDo: Check results of this assert
+                case SaveFormat.Mhtml:
 
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvg.001.png", SearchOption.AllDirectories);
-                    Assert.IsEmpty(dirFiles);
+                    Assert.That(dirFiles, Is.Empty);
                     return;
             }
         }
@@ -202,7 +202,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlSaveOptions.Html5Support.html", saveOptions);
         }
 
-#if !__MOBILE__
+#if !(__MOBILE__ || MAC)
         [Test]
         [TestCase(false)]
         [TestCase(true)]
@@ -235,7 +235,7 @@ namespace ApiExamples
         }
 #endif
 
-#if !__MOBILE__
+#if !(__MOBILE__ || MAC)
         [Test]
         public void ResourceFolderPriority()
         {
@@ -258,7 +258,7 @@ namespace ApiExamples
         }
 #endif
 
-#if !__MOBILE__
+#if !(__MOBILE__ || MAC)
         [Test]
         public void ResourceFolderLowPriority()
         {

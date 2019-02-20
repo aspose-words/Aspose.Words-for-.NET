@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -105,7 +105,7 @@ namespace ApiExamples
 
             StructuredDocumentTag sdt = (StructuredDocumentTag) sdts[0];
             Assert.AreEqual(true, sdt.Checked);
-            Assert.IsEmpty(sdt.XmlMapping.StoreItemId); //Assert that this sdt has no StoreItemId
+            Assert.That(sdt.XmlMapping.StoreItemId, Is.Empty); //Assert that this sdt has no StoreItemId
         }
 
         [Test]

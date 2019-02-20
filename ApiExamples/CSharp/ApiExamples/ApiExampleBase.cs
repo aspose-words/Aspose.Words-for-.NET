@@ -125,78 +125,53 @@ namespace ApiExamples
         /// <summary>
         /// Gets the path to the currently running executable.
         /// </summary>
-        internal static string AssemblyDir
-        {
-            get { return gAssemblyDir; }
-        }
+        internal static string AssemblyDir { get; }
 
         /// <summary>
-        /// Gets the path to the documents used by the code examples. Ends with a back slash.
+        /// Gets the path to the codebase directory.
         /// </summary>
-        internal static String ArtifactsDir
-        {
-            get { return gArtifactsDir; }
-        }
+        internal static string CodeBaseDir { get; }
 
         /// <summary>
         /// Gets the path to the license used by the code examples.
         /// </summary>
-        internal static String LicenseDir
-        {
-            get { return gLicenseDir; }
-        }
+        internal static string LicenseDir { get; }
 
         /// <summary>
         /// Gets the path to the documents used by the code examples. Ends with a back slash.
         /// </summary>
-        internal static String GoldsDir
-        {
-            get { return gGoldsDir; }
-        }
+        internal static string ArtifactsDir { get; }
+        
+        /// <summary>
+        /// Gets the path to the documents used by the code examples. Ends with a back slash.
+        /// </summary>
+        internal static string GoldsDir { get; }
 
         /// <summary>
         /// Gets the path to the documents used by the code examples. Ends with a back slash.
         /// </summary>
-        internal static String MyDir
-        {
-            get { return gMyDir; }
-        }
+        internal static string MyDir { get; }
 
         /// <summary>
         /// Gets the path to the images used by the code examples. Ends with a back slash.
         /// </summary>
-        internal static string ImageDir
-        {
-            get { return gImageDir; }
-        }
+        internal static string ImageDir { get; }
 
         /// <summary>
         /// Gets the path of the demo database. Ends with a back slash.
         /// </summary>
-        internal static string DatabaseDir
-        {
-            get { return gDatabaseDir; }
-        }
+        internal static string DatabaseDir { get; }
 
         static ApiExampleBase()
         {
-            gAssemblyDir = GetAssemblyDir(Assembly.GetExecutingAssembly());
-            gCodeBaseDir = GetCodeBaseDir(Assembly.GetExecutingAssembly());
-            gArtifactsDir = new Uri(new Uri(gCodeBaseDir), @"Data/Artifacts/").LocalPath;
-            gLicenseDir = new Uri(new Uri(gCodeBaseDir), @"Data/License/").LocalPath;
-            gGoldsDir = new Uri(new Uri(gCodeBaseDir), @"Data/Golds/").LocalPath;
-            gMyDir = new Uri(new Uri(gCodeBaseDir), @"Data/").LocalPath;
-            gImageDir = new Uri(new Uri(gCodeBaseDir), @"Data/Images/").LocalPath;
-            gDatabaseDir = new Uri(new Uri(gCodeBaseDir), @"Data/Database/").LocalPath;
+            AssemblyDir = GetAssemblyDir(Assembly.GetExecutingAssembly());
+            CodeBaseDir = GetCodeBaseDir(Assembly.GetExecutingAssembly());
+            ArtifactsDir = new Uri(new Uri(CodeBaseDir), @"Data/Artifacts/").LocalPath;
+            LicenseDir = new Uri(new Uri(CodeBaseDir), @"Data/License/").LocalPath;
+            GoldsDir = new Uri(new Uri(CodeBaseDir), @"Data/Golds/").LocalPath;
+            MyDir = new Uri(new Uri(CodeBaseDir), @"Data/").LocalPath;
+            ImageDir = new Uri(new Uri(CodeBaseDir), @"Data/Images/").LocalPath;
+            DatabaseDir = new Uri(new Uri(CodeBaseDir), @"Data/Database/").LocalPath;
         }
-
-        private static readonly String gAssemblyDir;
-        private static readonly String gCodeBaseDir;
-        private static readonly String gArtifactsDir;
-        private static readonly String gLicenseDir;
-        private static readonly String gGoldsDir;
-        private static readonly String gMyDir;
-        private static readonly String gImageDir;
-        private static readonly String gDatabaseDir;
     }
 }

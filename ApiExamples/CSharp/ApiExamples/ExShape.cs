@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2018 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -331,7 +331,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Shape.ActiveXObject.docx");
 
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
-            Assert.IsEmpty(shape.OleFormat.SuggestedFileName);
+            Assert.That(shape.OleFormat.SuggestedFileName, Is.Empty);
         }
 
         [Test]

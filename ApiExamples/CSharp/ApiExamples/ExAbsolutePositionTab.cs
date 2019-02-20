@@ -4,7 +4,8 @@ using Aspose.Words;
 
 namespace ApiExamples
 {
-    internal class ExAbsolutePositionTab : ApiExampleBase
+    [TestFixture]
+    public class ExAbsolutePositionTab : ApiExampleBase
     {
         //ExStart
         //ExFor:AbsolutePositionTab
