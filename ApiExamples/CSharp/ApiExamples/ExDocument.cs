@@ -649,83 +649,6 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void DetectFileFormat()
-        {
-            //ExStart
-            //ExFor:FileFormatUtil.DetectFileFormat(String)
-            //ExFor:FileFormatInfo
-            //ExFor:FileFormatInfo.LoadFormat
-            //ExFor:FileFormatInfo.IsEncrypted
-            //ExFor:FileFormatInfo.HasDigitalSignature
-            //ExId:DetectFileFormat
-            //ExSummary:Shows how to use the FileFormatUtil class to detect the document format and other features of the document.
-            FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.doc");
-            Console.WriteLine("The document format is: " + FileFormatUtil.LoadFormatToExtension(info.LoadFormat));
-            Console.WriteLine("Document is encrypted: " + info.IsEncrypted);
-            Console.WriteLine("Document has a digital signature: " + info.HasDigitalSignature);
-            //ExEnd
-        }
-
-        [Test]
-        public void DetectFileFormat_EnumConversions()
-        {
-            //ExStart
-            //ExFor:FileFormatUtil.DetectFileFormat(Stream)
-            //ExFor:FileFormatUtil.LoadFormatToExtension(LoadFormat)
-            //ExFor:FileFormatUtil.ExtensionToSaveFormat(String)
-            //ExFor:FileFormatUtil.SaveFormatToExtension(SaveFormat)
-            //ExFor:FileFormatUtil.LoadFormatToSaveFormat(LoadFormat)
-            //ExFor:Document.OriginalFileName
-            //ExFor:FileFormatInfo.LoadFormat
-            //ExSummary:Shows how to use the FileFormatUtil methods to detect the format of a document without any extension and save it with the correct file extension.
-            // Load the document without a file extension into a stream and use the DetectFileFormat method to detect it's format. 
-            // These are both times where you might need extract the file format as it's not visible
-            FileStream docStream = File.OpenRead(MyDir + "Document.FileWithoutExtension"); // The file format of this document is actually ".doc"
-            FileFormatInfo info = FileFormatUtil.DetectFileFormat(docStream);
-
-            // Retrieve the LoadFormat of the document.
-            LoadFormat loadFormat = info.LoadFormat;
-
-            // Let's show the different methods of converting LoadFormat enumerations to SaveFormat enumerations.
-            //
-            // Method #1
-            // Convert the LoadFormat to a String first for working with. The String will include the leading dot in front of the extension.
-            String fileExtension = FileFormatUtil.LoadFormatToExtension(loadFormat);
-            // Now convert this extension into the corresponding SaveFormat enumeration
-            SaveFormat saveFormat = FileFormatUtil.ExtensionToSaveFormat(fileExtension);
-
-            // Method #2
-            // Convert the LoadFormat enumeration directly to the SaveFormat enumeration.
-            saveFormat = FileFormatUtil.LoadFormatToSaveFormat(loadFormat);
-
-            // Load a document from the stream.
-            Document doc = new Document(docStream);
-
-            // Save the document with the original file name, " Out" and the document's file extension.
-            doc.Save(ArtifactsDir + "Document.WithFileExtension" + FileFormatUtil.SaveFormatToExtension(saveFormat));
-            //ExEnd
-
-            Assert.AreEqual(".doc", FileFormatUtil.SaveFormatToExtension(saveFormat));
-        }
-
-        [Test]
-        public void DetectFileFormat_SaveFormatToLoadFormat()
-        {
-            //ExStart
-            //ExFor:FileFormatUtil.SaveFormatToLoadFormat(SaveFormat)
-            //ExSummary:Shows how to use the FileFormatUtil class and to convert a SaveFormat enumeration into the corresponding LoadFormat enumeration.
-            // Define the SaveFormat enumeration to convert.
-            SaveFormat saveFormat = SaveFormat.Html;
-            // Convert the SaveFormat enumeration to LoadFormat enumeration.
-            LoadFormat loadFormat = FileFormatUtil.SaveFormatToLoadFormat(saveFormat);
-            Console.WriteLine("The converted LoadFormat is: " + FileFormatUtil.LoadFormatToExtension(loadFormat));
-            //ExEnd
-
-            Assert.AreEqual(".html", FileFormatUtil.SaveFormatToExtension(saveFormat));
-            Assert.AreEqual(".html", FileFormatUtil.LoadFormatToExtension(loadFormat));
-        }
-
-        [Test]
         public void AppendDocument()
         {
             //ExStart
@@ -2523,7 +2446,6 @@ namespace ApiExamples
         public void SetEditingLanguageAsDefault()
         {
             //ExStart
-            //ExFor:LanguagePreferences.SetAsDefault(EditingLanguage)
             //ExFor:LanguagePreferences.DefaultEditingLanguage
             //ExSummary:Shows how to set language as default
             LoadOptions loadOptions = new LoadOptions();

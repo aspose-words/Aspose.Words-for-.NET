@@ -101,7 +101,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Returns the codebase directory.
+        /// Returns the code-base directory.
         /// </summary>
         internal static string GetCodeBaseDir(Assembly assembly)
         {
