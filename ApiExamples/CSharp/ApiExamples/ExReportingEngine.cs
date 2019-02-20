@@ -293,7 +293,6 @@ namespace ApiExamples
                 "Fail inserting document by document");
         }
 
-
         [Test]
         public void InsertDocumentDinamically()
         {
@@ -360,7 +359,6 @@ namespace ApiExamples
 #else
             ImageTestClass image = new ImageTestBuilder().WithImage(Image.FromFile(mImage, true)).Build();
 #endif
-
             BuildReport(template, image, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertImageDinamically.docx");
 
@@ -752,7 +750,6 @@ namespace ApiExamples
                 GoldsDir + "ReportingEngine.RemoveEmptyParagraphs Gold.docx"));
         }
 
-        [Test]
         [TestCase("Hello", "Hello", "ReportingEngine.MergingTableCellsDynamically.Merged", Description = "Cells in the first two tables must be merged")]
         [TestCase("Hello", "Name", "ReportingEngine.MergingTableCellsDynamically.NotMerged", Description = "Only last table cells must be merge")]
         public void MergingTableCellsDynamically(string value1, string value2, string resultDocumentName)
