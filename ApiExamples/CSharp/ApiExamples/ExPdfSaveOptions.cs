@@ -309,7 +309,6 @@ namespace ApiExamples
 
             Assert.AreEqual(result, uriText);
 #endif
-            //ExEnd
         }
 
         [Test]
