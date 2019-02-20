@@ -4945,7 +4945,7 @@ namespace ApiExamples
         }
 
         [Test]
-        [Ignore("WORDSNET-18173")] // RS: Java code example is forthcoming about non-functioning MERGESEQ field https://apireference.aspose.com/java/words/com.aspose.words/FieldMergeRec
+        [Ignore("WORDSNET-18173")]
         public void FieldMergeRec()
         {
             //ExStart
