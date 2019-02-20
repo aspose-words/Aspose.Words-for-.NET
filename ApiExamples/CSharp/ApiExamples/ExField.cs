@@ -857,6 +857,10 @@ namespace ApiExamples
         //ExFor:FieldEnd
         //ExFor:FieldEnd.Accept(DocumentVisitor)
         //ExFor:FieldEnd.HasSeparator
+        //ExFor:Field.End
+        //ExFor:Field.Remove()
+        //ExFor:Field.Separator
+        //ExFor:Field.Start
         //ExSummary:Shows how to work with a document's field collection.
         [Test] //ExSkip
         public void FieldCollection()
