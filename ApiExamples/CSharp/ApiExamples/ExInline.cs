@@ -5,6 +5,8 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
+using Aspose.Words;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -23,7 +25,20 @@ namespace ApiExamples
             //ExFor:Inline.IsMoveFromRevision
             //ExFor:Inline.IsMoveToRevision
             //ExFor:Inline.ParentParagraph
-            //ExSummary:Shows how to add a footnote to a paragraph in the document.
+            //ExSummary:.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Is not a revision");
+
+            Assert.False(doc.HasRevisions);
+            Assert.False(builder.CurrentParagraph.Runs[0].IsInsertRevision);
+
+            doc.StartTrackRevisions("John Doe", DateTime.Now);
+
+            builder.Write("Is a revision");
+            Assert.True(doc.HasRevisions);
+            Assert.True(builder.CurrentParagraph.Runs[1].IsInsertRevision);
         }
     }
 }
