@@ -422,5 +422,31 @@ namespace ApiExamples
             pageSetup.EndnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
             //ExEnd
         }
+
+        [Test]
+        public void Bidi()
+        {
+            //ExStart
+            //ExFor:PageSetup.Bidi
+            //ExSummary:Shows how to set options for endnotes in current section
+            Document doc = new Document();
+
+            PageSetup pageSetup = doc.Sections[0].PageSetup;
+            pageSetup.TextColumns.SetCount(3);
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Column 1.");
+            builder.InsertBreak(BreakType.ColumnBreak);
+            builder.Write("Column 2.");
+            builder.InsertBreak(BreakType.ColumnBreak);
+            builder.Write("Column 3.");
+
+            // Reverse the order of the columns
+            pageSetup.Bidi = true;
+
+            doc.Save(ArtifactsDir + "PageSetup.Bidi.doc");
+            //ExEnd
+        }
     }
 }
