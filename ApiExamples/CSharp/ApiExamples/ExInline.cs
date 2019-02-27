@@ -15,7 +15,7 @@ namespace ApiExamples
     class ExInline : ApiExampleBase
     {
         [Test]
-        public void Inline()
+        public void InlineRevisions()
         {
             //ExStart
             //ExFor:Inline
@@ -40,17 +40,16 @@ namespace ApiExamples
 
             Assert.AreEqual(6, runs.Count);
 
-            // For all runs not involved in revisions, all the Is...Revision flags will be false
-
             // The text in the run at index #2 was typed after revisions were tracked, so it will count as an insert revision
             // The font was changed, so it will also be a format revision
             Assert.IsTrue(runs[2].IsInsertRevision);
             Assert.IsTrue(runs[2].IsFormatRevision);
 
-            // For a "move", in regards to tracked revisions, to take place,
-            // some text which contains at least one complete sentence must be removed from one location and placed into another
-            // Typically this will happen when we highlight text with the mouse and drag it around, or cut and paste (but not copy and paste)
-            // The node with the "IsMoveToRevision" flag is the destination, and the node with the "IsMoveFromRevision" flag is the departure point
+            // If one node was moved from one place to another while changes were tracked,
+            // the node will be placed at the departure location as a "move to revision",
+            // and a "move from revision" node will be left behind at the origin, in case we want to reject changes
+            // Highlighting text and dragging it to another place with the mouse and cut-and-pasting (but not copy-pasting) both count as "move revisions"
+            // The node with the "IsMoveToRevision" flag is the arrival of the move operation, and the node with the "IsMoveFromRevision" flag is the departure point
             Assert.IsTrue(runs[1].IsMoveToRevision);
             Assert.IsTrue(runs[4].IsMoveFromRevision);
         }
