@@ -25,7 +25,7 @@ namespace ApiExamples
             //ExFor:Inline.IsMoveFromRevision
             //ExFor:Inline.IsMoveToRevision
             //ExFor:Inline.ParentParagraph
-            //ExSummary:Shows how to view revision-related properties of Inline nodes.
+            //ExSummary:Shows how to process revision-related properties of Inline nodes.
             Document doc = new Document(MyDir + "Inline.Revisions.docx");
 
             // This document has 5 revisions
@@ -52,6 +52,7 @@ namespace ApiExamples
             // The node with the "IsMoveToRevision" flag is the arrival of the move operation, and the node with the "IsMoveFromRevision" flag is the departure point
             Assert.IsTrue(runs[1].IsMoveToRevision);
             Assert.IsTrue(runs[4].IsMoveFromRevision);
+            //ExEnd
         }
     }
 }
