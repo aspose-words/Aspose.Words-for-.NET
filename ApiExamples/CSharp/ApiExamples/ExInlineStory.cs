@@ -70,7 +70,7 @@ namespace ApiExamples
         public void InlineStoryRevisions()
         {
             //ExStart
-            //ExFor:InlineStory.IsDeleteRevision
+            //ExFor:InlineStory.IsDeleteRevision // INSP: What about that?
             //ExFor:InlineStory.IsInsertRevision
             //ExFor:InlineStory.IsMoveFromRevision
             //ExFor:InlineStory.IsMoveToRevision
