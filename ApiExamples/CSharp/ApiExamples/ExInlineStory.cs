@@ -74,7 +74,7 @@ namespace ApiExamples
             //ExFor:InlineStory.IsInsertRevision
             //ExFor:InlineStory.IsMoveFromRevision
             //ExFor:InlineStory.IsMoveToRevision
-            //ExSummary:Shows how to work with InlineStory revisions.
+            //ExSummary:Shows how to process revision-related properties of InlineStory nodes.
             // Open a document that has revisions from changes being tracked
             Document doc = new Document(MyDir + "InlineStory.Revisions.docx");
             Assert.IsTrue(doc.HasRevisions);
@@ -93,6 +93,7 @@ namespace ApiExamples
             // The node with the "IsMoveToRevision" flag is the arrival of the move operation, and the node with the "IsMoveFromRevision" flag is the departure point
             Assert.IsTrue(footnotes[1].IsMoveToRevision);
             Assert.IsTrue(footnotes[3].IsMoveFromRevision);
+            //ExEnd
         }
 
         [Test]
@@ -152,6 +153,7 @@ namespace ApiExamples
             Assert.AreEqual(StoryType.Comments, comment.StoryType);
 
             doc.Save(ArtifactsDir + "Document.InlineStory.docx");
+            //ExEnd
         }
     }
 }
