@@ -19,7 +19,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Inline
-            //ExFor:Inline.IsDeleteRevision //INSP: What about this?
+            //ExFor:Inline.IsDeleteRevision
             //ExFor:Inline.IsFormatRevision
             //ExFor:Inline.IsInsertRevision
             //ExFor:Inline.IsMoveFromRevision
