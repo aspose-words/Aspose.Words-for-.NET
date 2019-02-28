@@ -28,8 +28,8 @@ namespace ApiExamples
             //ExSummary:Shows how to process revision-related properties of Inline nodes.
             Document doc = new Document(MyDir + "Inline.Revisions.docx");
 
-            // This document has 5 revisions
-            Assert.AreEqual(5, doc.Revisions.Count);
+            // This document has 6 revisions
+            Assert.AreEqual(6, doc.Revisions.Count);
 
             // The parent node of a revision is the run that the revision concerns, which is an Inline node
             Run run = (Run)doc.Revisions[0].ParentNode;
@@ -52,6 +52,9 @@ namespace ApiExamples
             // The node with the "IsMoveToRevision" flag is the arrival of the move operation, and the node with the "IsMoveFromRevision" flag is the departure point
             Assert.IsTrue(runs[1].IsMoveToRevision);
             Assert.IsTrue(runs[4].IsMoveFromRevision);
+
+            // If an Inline node gets deleted while changes are being tracked, it will leave behind a node with the IsDeleteRevision flag set to true until changes are accepted
+            Assert.IsTrue(runs[5].IsDeleteRevision);
             //ExEnd
         }
     }
