@@ -70,7 +70,7 @@ namespace ApiExamples
         public void InlineStoryRevisions()
         {
             //ExStart
-            //ExFor:InlineStory.IsDeleteRevision // INSP: What about that?
+            //ExFor:InlineStory.IsDeleteRevision
             //ExFor:InlineStory.IsInsertRevision
             //ExFor:InlineStory.IsMoveFromRevision
             //ExFor:InlineStory.IsMoveToRevision
@@ -81,7 +81,7 @@ namespace ApiExamples
 
             // Get a collection of all footnotes from the document
             List<Footnote> footnotes = doc.GetChildNodes(NodeType.Footnote, true).Cast<Footnote>().ToList();
-            Assert.AreEqual(4, footnotes.Count);
+            Assert.AreEqual(5, footnotes.Count);
 
             // If a node was inserted in Microsoft Word while changes were being tracked, this flag will be set to true
             Assert.IsTrue(footnotes[2].IsInsertRevision);
@@ -92,7 +92,10 @@ namespace ApiExamples
             // Highlighting text and dragging it to another place with the mouse and cut-and-pasting (but not copy-pasting) both count as "move revisions"
             // The node with the "IsMoveToRevision" flag is the arrival of the move operation, and the node with the "IsMoveFromRevision" flag is the departure point
             Assert.IsTrue(footnotes[1].IsMoveToRevision);
-            Assert.IsTrue(footnotes[3].IsMoveFromRevision);
+            Assert.IsTrue(footnotes[4].IsMoveFromRevision);
+
+            // If a node was deleted while changes were being tracked, it will stay behind as a delete revision until we accept/reject changes
+            Assert.IsTrue(footnotes[3].IsDeleteRevision);
             //ExEnd
         }
 
