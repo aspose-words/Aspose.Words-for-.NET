@@ -428,7 +428,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PageSetup.Bidi
-            //ExSummary:Shows how to set options for endnotes in current section
+            //ExSummary:Shows how to set options for end notes in current section
             Document doc = new Document();
 
             PageSetup pageSetup = doc.Sections[0].PageSetup;
