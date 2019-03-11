@@ -51,7 +51,7 @@ namespace ApiExamples
         }
 
         [Test]
-        [Explicit("This test is manual check that PaperTray information are preserved in pcl document.")]
+        [Ignore("This test is manual check that PaperTray information are preserved in pcl document.")]
         public void GetPreservedPaperTrayInformation()
         {
             Document doc = new Document(MyDir + "Document.EpubConversion.doc");

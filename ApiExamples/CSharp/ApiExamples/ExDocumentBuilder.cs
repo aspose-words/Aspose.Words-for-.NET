@@ -206,18 +206,18 @@ namespace ApiExamples
             {
                 if (field.Type == FieldType.FieldIf)
                 {
-                    FieldIf fieldIf = (FieldIf) field;
+                    FieldIf fieldIf = (FieldIf)field;
 
                     string fieldCode = fieldIf.GetFieldCode();
                     Assert.AreEqual(
-                        " IF  MERGEFIELD Q223  > 0 \" (and additionally London Weighting of   MERGEFIELD  Q223 \\f £  per hour) \" \"\" ",
+                        " IF " + ControlChar.FieldStartChar + " MERGEFIELD Q223 " + ControlChar.FieldSeparatorChar + ControlChar.FieldEndChar + " > 0 \" (and additionally London Weighting of  " + ControlChar.FieldStartChar + " MERGEFIELD  Q223 \\f £ " + ControlChar.FieldSeparatorChar + ControlChar.FieldEndChar + " per hour) \" \"\" ",
                         fieldCode); //ExSkip
 
                     if (containsNestedFields)
                     {
                         fieldCode = fieldIf.GetFieldCode(true);
                         Assert.AreEqual(
-                            " IF  MERGEFIELD Q223  > 0 \" (and additionally London Weighting of   MERGEFIELD  Q223 \\f £  per hour) \" \"\" ",
+                            " IF " + ControlChar.FieldStartChar + " MERGEFIELD Q223 " + ControlChar.FieldSeparatorChar + ControlChar.FieldEndChar + " > 0 \" (and additionally London Weighting of  " + ControlChar.FieldStartChar + " MERGEFIELD  Q223 \\f £ " + ControlChar.FieldSeparatorChar + ControlChar.FieldEndChar + " per hour) \" \"\" ",
                             fieldCode); //ExSkip
                     }
                     else
