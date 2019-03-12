@@ -605,8 +605,12 @@ namespace ApiExamples
             Body body = new Body(doc);
             section.AppendChild(body);
 
+            Assert.AreEqual(section, body.ParentNode);
+
             Paragraph para = new Paragraph(doc);
             body.AppendChild(para);
+
+            Assert.AreEqual(body, para.ParentNode);
 
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.MoveTo(para);
