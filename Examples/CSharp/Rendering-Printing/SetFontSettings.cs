@@ -15,6 +15,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting();
             EnableDisableFontSubstitution(dataDir);
             SetFontFallbackSettings(dataDir);
+            SetPredefinedFontFallbackSettings(dataDir);
         }
 
         public static void EnableDisableFontSubstitution(string dataDir)
@@ -51,5 +52,23 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             // ExEnd:SetFontFallbackSettings      
             Console.WriteLine("\nDocument is rendered to PDF with font fallback.\nFile saved at " + dataDir);
         }
+
+        public static void SetPredefinedFontFallbackSettings(string dataDir)
+        {
+            // ExStart:SetPredefinedFontFallbackSettings
+            // The path to the documents directory.
+            Document doc = new Document(dataDir + "Rendering.doc");
+
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.FallbackSettings.LoadNotoFallbackSettings();
+
+            // Set font settings
+            doc.FontSettings = fontSettings;
+            dataDir = dataDir + "Rendering.FontFallbackGoogleNoto_out.pdf";
+            doc.Save(dataDir);
+            // ExEnd:SetPredefinedFontFallbackSettings      
+            Console.WriteLine("\nDocument is rendered to PDF with font fallback.\nFile saved at " + dataDir);
+        }
+
     }
 }
