@@ -569,6 +569,7 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:PageSetup.SuppressEndnotes
+        //ExFor:Body.ParentSection
         //ExSummary:Shows how to store endnotes at the end of each section instead of the document and manipulate their positions.
         [Test] //ExSkip
         public void SuppressEndnotes()
