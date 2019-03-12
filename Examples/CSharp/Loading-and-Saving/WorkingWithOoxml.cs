@@ -19,6 +19,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             EncryptDocxWithPassword(dataDir);
             SetOOXMLCompliance(dataDir);
             UpdateLastSavedTimeProperty(dataDir);
+            KeepLegacyControlChars(dataDir);
         }
 
         public static void EncryptDocxWithPassword(string dataDir)
@@ -67,6 +68,22 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             doc.Save(dataDir, ooxmlSaveOptions);
             // ExEnd:UpdateLastSavedTimeProperty
             Console.WriteLine("\nUpdated Last Saved Time Property successfully.\nFile saved at " + dataDir);
+        }
+
+        public static void KeepLegacyControlChars(String dataDir)
+        {
+            // ExStart:KeepLegacyControlChars
+            Document doc = new Document(dataDir + "Document.doc");
+
+            OoxmlSaveOptions so = new OoxmlSaveOptions(SaveFormat.FlatOpc);
+            so.KeepLegacyControlChars = true;
+
+            dataDir = dataDir + "Document_out.docx";
+            // Save the document to disk.
+            doc.Save(dataDir, so);
+
+            // ExEnd:KeepLegacyControlChars
+            Console.WriteLine("\nUpdated Last Saved With Keeping Legacy Control Chars Successfully.\nFile saved at " + dataDir);
         }
     }
 }
