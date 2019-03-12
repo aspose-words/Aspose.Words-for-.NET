@@ -173,8 +173,6 @@ namespace ApiExamples
         [Test]
         public void ConditionalExpressionForLeaveChartSeries()
         {
-            int condition = 3;
-
             Document doc = new Document(MyDir + "ReportingEngine.TestRemoveChartSeries.docx");
 
             doc.Save(ArtifactsDir + "ReportingEngine.TestLeaveChartSeries.docx");
@@ -185,8 +183,6 @@ namespace ApiExamples
         [Test]
         public void ConditionalExpressionForRemoveChartSeries()
         {
-            int condition = 2;
-
             Document doc = new Document(MyDir + "ReportingEngine.TestRemoveChartSeries.docx");
 
             doc.Save(ArtifactsDir + "ReportingEngine.TestRemoveChartSeries.docx");

@@ -401,8 +401,19 @@ namespace ApiExamples
 
             FontSettings fontSettings = new FontSettings
             {
-                DefaultFontName = "Arial", 
-                EnableFontSubstitution = false
+                SubstitutionSettings =
+                {
+                    DefaultFontSubstitution =
+                    {
+                        DefaultFontName = "Arial",
+                        Enabled = true
+                    },
+
+                    FontInfoSubstitution =
+                    {
+                        Enabled = true
+                    }
+                }
             };
 
             document.FontSettings = fontSettings;

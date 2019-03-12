@@ -1281,12 +1281,8 @@ namespace ApiExamples
             bool isWindows = (pid == PlatformID.Win32NT) || (pid == PlatformID.Win32S) || (pid == PlatformID.Win32Windows) || (pid == PlatformID.WinCE);
             if (isWindows)
             {
-                Assert.AreEqual(new[] { @"C:\WINDOWS\Fonts" }, SystemFontSource.GetSystemFontFolders());
-            }
-
-            foreach (string systemFontFolder in SystemFontSource.GetSystemFontFolders())
-            {
-                Console.WriteLine(systemFontFolder);
+                string fontsPath = @"C:\WINDOWS\Fonts";
+                Assert.AreEqual(fontsPath.ToLower(), SystemFontSource.GetSystemFontFolders().FirstOrDefault()?.ToLower());
             }
 
             foreach (string systemFontFolder in SystemFontSource.GetSystemFontFolders())
