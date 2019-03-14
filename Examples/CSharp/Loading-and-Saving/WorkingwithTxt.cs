@@ -19,6 +19,9 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             DetectNumberingWithWhitespaces(dataDir);
             HandleSpacesOptions(dataDir);
             ExportHeadersFootersMode(dataDir);
+            UseTabCharacterPerLevelForListIndentation(dataDir);
+            UseSpaceCharacterPerLevelForListIndentation(dataDir);
+            DefaultLevelForListIndentation(dataDir);
         }
 
         public static void SaveAsTxt(string dataDir)
@@ -36,7 +39,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             //ExStart:AddBidiMarks
             Document doc = new Document(dataDir + "Input.docx");
             TxtSaveOptions saveOptions = new TxtSaveOptions();
-            saveOptions.AddBidiMarks = false;
+            saveOptions.AddBidiMarks = true;
 
             dataDir = dataDir + "Document.AddBidiMarks_out.txt";
             doc.Save(dataDir, saveOptions);
@@ -73,7 +76,6 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             Console.WriteLine("\nTrim leading and trailing spaces while importing text document.\nFile saved at " + dataDir);
         }
 
-
         public static void ExportHeadersFootersMode(string dataDir)
         {
             //ExStart:ExportHeadersFootersMode
@@ -97,6 +99,44 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
 
             //ExEnd:ExportHeadersFootersMode
             Console.WriteLine("\nExport text files with TxtExportHeadersFootersMode.\nFiles saved at " + dataDir);
+        }
+
+        public static void UseTabCharacterPerLevelForListIndentation(string dataDir)
+        {
+            //ExStart:UseTabCharacterPerLevelForListIndentation
+            Document doc = new Document("input_document");
+
+            TxtSaveOptions options = new TxtSaveOptions();
+            options.ListIndentation.Count = 1;
+            options.ListIndentation.Character = '\t';
+
+            doc.Save(dataDir + "output.txt", options);
+            //ExEnd:UseTabCharacterPerLevelForListIndentation
+        }
+
+        public static void UseSpaceCharacterPerLevelForListIndentation(string dataDir)
+        {
+            //ExStart:UseSpaceCharacterPerLevelForListIndentation
+            Document doc = new Document("input_document");
+
+            TxtSaveOptions options = new TxtSaveOptions();
+            options.ListIndentation.Count = 3;
+            options.ListIndentation.Character = ' ';
+
+            doc.Save(dataDir + "output.txt", options);
+            //ExEnd:UseSpaceCharacterPerLevelForListIndentation
+        }
+
+        public static void DefaultLevelForListIndentation(string dataDir)
+        {
+            //ExStart:DefaultLevelForListIndentation
+            Document doc1 = new Document("input_document");
+            doc1.Save(dataDir + "output1.txt");
+
+            Document doc2 = new Document("input_document");
+            TxtSaveOptions options = new TxtSaveOptions();
+            doc2.Save(dataDir + "output2.txt", options);
+            //ExEnd:DefaultLevelForListIndentation
         }
     }
 }
