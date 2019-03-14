@@ -245,5 +245,30 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Drawing.TextBox.docx");
             //ExEnd
         }
+
+        [Test]
+        public void ImageSize()
+        {
+            //ExFor:ImageSize.#ctor(ImageSizeCore)
+            //ExFor:ImageSize.#ctor(Int32,Int32)
+            //ExFor:ImageSize.#ctor(Int32,Int32,Double,Double)
+            //ExFor:ImageSize.HeightPixels
+            //ExFor:ImageSize.HorizontalResolution
+            //ExFor:ImageSize.VerticalResolution
+            //ExFor:ImageSize.WidthPixels
+            Document doc = new Document();
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // By default, the image is inserted at 100% scale.
+            Shape shape = builder.InsertImage(MyDir + @"\Images\Aspose.Words.gif");
+
+            // However, we can also go back to the original image size and scale from there, say 110%.
+            ImageSize imageSize = shape.ImageData.ImageSize;
+            shape.Width = imageSize.WidthPoints * 1.1;
+            shape.Height = imageSize.HeightPoints * 1.1;
+
+            doc.Save(ArtifactsDir + "Image.ImageSize.docx");
+        }
     }
 }
