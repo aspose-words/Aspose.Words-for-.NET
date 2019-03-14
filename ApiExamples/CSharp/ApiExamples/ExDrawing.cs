@@ -251,7 +251,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SaveImage() //INSP: I think it's not correct naming for this example
+        public void GetDataFromImage()
         {
             //ExStart
             //ExFor:ImageData.ImageBytes
@@ -268,7 +268,8 @@ namespace ApiExamples
             // ToByteArray() returns the value of the ImageBytes property
             Assert.AreEqual(shapes[0].ImageData.ImageBytes, shapes[0].ImageData.ToByteArray());
 
-            // //INSP: was there supposed to be a comment? 
+            // Put the shape's image data into a stream
+            // Then, put the image data from that stream into another stream which uses that data to create an image
             using (Stream imgStream = shapes[0].ImageData.ToStream())
             {
                 FileStream outStream = new FileStream(ArtifactsDir + "MyImg.png", FileMode.CreateNew);
