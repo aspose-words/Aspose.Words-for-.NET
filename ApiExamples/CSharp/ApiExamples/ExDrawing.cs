@@ -423,8 +423,9 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ImageSize()
+        public void ImageSizeTransform()
         {
+            //ExStart
             //ExFor:ImageSize.#ctor(ImageSizeCore)
             //ExFor:ImageSize.#ctor(Int32,Int32)
             //ExFor:ImageSize.#ctor(Int32,Int32,Double,Double)
@@ -433,18 +434,28 @@ namespace ApiExamples
             //ExFor:ImageSize.VerticalResolution
             //ExFor:ImageSize.WidthPixels
             Document doc = new Document();
-
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // By default, the image is inserted at 100% scale.
+            // Insert a shape into the document which contains an image taken from our local file system
             Shape shape = builder.InsertImage(MyDir + @"\Images\Aspose.Words.gif");
 
-            // However, we can also go back to the original image size and scale from there, say 110%.
+            // If the shape contains an image, its ImageData property will be valid, and it will contain an ImageSize object
             ImageSize imageSize = shape.ImageData.ImageSize;
-            shape.Width = imageSize.WidthPoints * 1.1;
-            shape.Height = imageSize.HeightPoints * 1.1;
+
+            // The ImageSize object contains raw information about the image that the shape displays
+            Assert.AreEqual(200, imageSize.HeightPixels);
+            Assert.AreEqual(200, imageSize.WidthPixels);
+
+            Assert.AreEqual(95.986599999999996d, imageSize.HorizontalResolution);
+            Assert.AreEqual(95.986599999999996d, imageSize.VerticalResolution);
+
+            // Those values are read-only, so if we want to transform the image, we have to change the size of the shape itself
+            // We can those values as a reference, for example, to double the size of the image
+            shape.Width = imageSize.WidthPoints * 2;
+            shape.Height = imageSize.HeightPoints * 2;
 
             doc.Save(ArtifactsDir + "Image.ImageSize.docx");
+            //ExEnd
         }
     }
 }
