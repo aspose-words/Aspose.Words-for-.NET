@@ -431,7 +431,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PageSetup.Bidi
-            //ExSummary:Shows how to set options for end notes in current section
+            //ExSummary:Shows how to set options for end notes in current section //INSP: Please double check summary
             Document doc = new Document();
 
             PageSetup pageSetup = doc.Sections[0].PageSetup;
@@ -458,7 +458,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:PageSetup.BorderSurroundsFooter
             //ExFor:PageSetup.BorderSurroundsHeader
-            //ExSummary:Shows how to set options for end notes in current section
+            //ExSummary:Shows how to set options for end notes in current section //INSP: Please double check summary
             Document doc = new Document();
 
             // Insert header and footer text
