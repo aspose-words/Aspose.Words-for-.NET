@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
 using System.Text;
 using Aspose.Words;
 using Aspose.Words.Drawing;
@@ -243,6 +247,178 @@ namespace ApiExamples
             builder.Write("This text is flipped 90 degrees to the left.");
 
             doc.Save(ArtifactsDir + "Drawing.TextBox.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void GetDataFromImage()
+        {
+            //ExStart
+            //ExFor:ImageData.ImageBytes
+            //ExFor:ImageData.ToByteArray
+            //ExFor:ImageData.ToStream
+            //ExSummary:Shows how to access raw image data in a shape's ImageData object.
+            Document imgSourceDoc = new Document(MyDir + "Image.SampleImages.doc");
+
+            // Images are stored as shapes
+            // Get into the document's shape collection to verify that it contains 6 images
+            List<Shape> shapes = imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
+            Assert.AreEqual(6, shapes.Count);
+
+            // ToByteArray() returns the value of the ImageBytes property
+            Assert.AreEqual(shapes[0].ImageData.ImageBytes, shapes[0].ImageData.ToByteArray());
+
+            // Put the shape's image data into a stream
+            // Then, put the image data from that stream into another stream which creates an image file in the local file system
+            using (Stream imgStream = shapes[0].ImageData.ToStream())
+            {
+                FileStream outStream = new FileStream(ArtifactsDir + "MyImg.png", FileMode.CreateNew);
+                imgStream.CopyTo(outStream);
+            }        
+            //ExEnd
+        }
+
+        [Test]
+        public void SaveAllImages()
+        {
+            //ExStart
+            //ExFor:ImageData.HasImage
+            //ExFor:ImageData.ToImage
+            //ExFor:ImageData.Save(Stream)
+            //ExSummary:Shows how to save all the images from a document to the file system.
+            Document imgSourceDoc = new Document(MyDir + "Image.SampleImages.doc");
+
+            // Images are stored as shapes
+            // Get into the document's shape collection to verify that it contains 6 images
+            List<Shape> shapes = imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
+            Assert.AreEqual(6, shapes.Count);
+
+            // We will use an ImageFormatConverter to determine an image's file extension
+            ImageFormatConverter formatConverter = new ImageFormatConverter();
+
+            // Go over all of the document's shapes
+            // If a shape contains image data, save the image in the local file system
+            for (int i = 0; i < shapes.Count; i++)
+            {
+                ImageData imageData = shapes[i].ImageData;
+
+                if (imageData.HasImage)
+                {
+                    ImageFormat format = imageData.ToImage().RawFormat;
+                    string fileExtension = formatConverter.ConvertToString(format);
+
+                    using (FileStream fileStream = File.Create(ArtifactsDir + $"Image from shape {i}.{fileExtension}"))
+                    {
+                        imageData.Save(fileStream);
+                    }
+                }
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void ImageData()
+        {
+            //ExStart
+            //ExFor:ImageData.BiLevel
+            //ExFor:ImageData.Borders
+            //ExFor:ImageData.Brightness
+            //ExFor:ImageData.ChromaKey
+            //ExFor:ImageData.Contrast
+            //ExFor:ImageData.CropBottom
+            //ExFor:ImageData.CropLeft
+            //ExFor:ImageData.CropRight
+            //ExFor:ImageData.CropTop
+            //ExFor:ImageData.GrayScale
+            //ExFor:ImageData.IsLink
+            //ExFor:ImageData.IsLinkOnly
+            //ExFor:ImageData.Title
+            //ExSummary:Shows how to edit images using the ImageData attribute.
+            // Open a document that contains images
+            Document imgSourceDoc = new Document(MyDir + "Image.SampleImages.doc");
+
+            Shape sourceShape = (Shape)imgSourceDoc.GetChildNodes(NodeType.Shape, true)[0];
+            
+            Document dstDoc = new Document();
+
+            // Import a shape from the source document and append it to the first paragraph, effectively cloning it
+            Shape importedShape = (Shape)dstDoc.ImportNode(sourceShape, true);
+            dstDoc.FirstSection.Body.FirstParagraph.AppendChild(importedShape);
+
+            // Get the ImageData of the imported shape
+            ImageData imageData = importedShape.ImageData;
+            imageData.Title = "Imported Image";
+
+            // If an image appears to have no borders, its ImageData object will still have them, but in an unspecified color
+            Assert.AreEqual(4, imageData.Borders.Count);
+            Assert.AreEqual(Color.Empty, imageData.Borders[0].Color);
+
+            Assert.True(imageData.HasImage);
+
+            // This image is not linked to a shape or to an image in the file system
+            Assert.False(imageData.IsLink);
+            Assert.False(imageData.IsLinkOnly);
+
+            // Brightness and contrast are defined on a 0-1 scale, with 0.5 being the default value
+            imageData.Brightness = 0.8d;
+            imageData.Contrast = 1.0d;
+
+            // Our image will have a lot of white now that we've changed the brightness and contrast like that
+            // We can treat white as transparent with the following attribute
+            imageData.ChromaKey = Color.White;
+
+            // Import the source shape again, set it to black and white
+            importedShape = (Shape)dstDoc.ImportNode(sourceShape, true);
+            dstDoc.FirstSection.Body.FirstParagraph.AppendChild(importedShape);
+
+            importedShape.ImageData.GrayScale = true;
+
+            // Import the source shape again to create a third image, and set it to BiLevel
+            // Unlike greyscale, which preserves the brightness of the original colors,
+            // BiLevel sets every pixel to either black or white, whichever is closer to the original color
+            importedShape = (Shape)dstDoc.ImportNode(sourceShape, true);
+            dstDoc.FirstSection.Body.FirstParagraph.AppendChild(importedShape);
+
+            importedShape.ImageData.BiLevel = true;
+
+            // Cropping is determined on a 0-1 scale
+            // Cropping a side by 0.3 will crop 30% of the image out at that side
+            importedShape.ImageData.CropBottom = 0.3d;
+            importedShape.ImageData.CropLeft = 0.3d;
+            importedShape.ImageData.CropTop = 0.3d;
+            importedShape.ImageData.CropRight = 0.3d;
+
+            dstDoc.Save(ArtifactsDir + "ImageData.EditedImages.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ImportImage()
+        {
+            //ExStart
+            //ExFor:ImageData.SetImage(Image)
+            //ExFor:ImageData.SetImage(Stream)
+            //ExSummary:Shows two ways of importing images from the local file system into a document.
+            Document doc = new Document();
+
+            // We can get an image from a file, set it as the image of a shape and append it to a paragraph
+            Image srcImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
+
+            Shape imgShape = new Shape(doc, ShapeType.Image);
+            doc.FirstSection.Body.FirstParagraph.AppendChild(imgShape);
+            imgShape.ImageData.SetImage(srcImage);
+            srcImage.Dispose();
+
+            // We can also open an image file using a stream and set its contents as a shape's image 
+            using (Stream stream = new FileStream(ImageDir + "Aspose.Words.gif", FileMode.Open, FileAccess.Read))
+            {
+                imgShape = new Shape(doc, ShapeType.Image);
+                doc.FirstSection.Body.FirstParagraph.AppendChild(imgShape);
+                imgShape.ImageData.SetImage(stream);
+                imgShape.Left = 150.0f;
+            }
+
+            doc.Save(ArtifactsDir + "ImageData.ImportedImage.docx");
             //ExEnd
         }
     }
