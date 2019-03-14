@@ -251,7 +251,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SaveImage()
+        public void SaveImage() //INSP: I think it's not correct naming for this example
         {
             //ExStart
             //ExFor:ImageData.ImageBytes
@@ -268,7 +268,7 @@ namespace ApiExamples
             // ToByteArray() returns the value of the ImageBytes property
             Assert.AreEqual(shapes[0].ImageData.ImageBytes, shapes[0].ImageData.ToByteArray());
 
-            // 
+            // //INSP: was there supposed to be a comment? 
             using (Stream imgStream = shapes[0].ImageData.ToStream())
             {
                 FileStream outStream = new FileStream(ArtifactsDir + "MyImg.png", FileMode.CreateNew);
@@ -336,17 +336,16 @@ namespace ApiExamples
             // Open a document that contains images
             Document imgSourceDoc = new Document(MyDir + "Image.SampleImages.doc");
 
-            // Get the ImageData of the document's first shape
             Shape sourceShape = (Shape)imgSourceDoc.GetChildNodes(NodeType.Shape, true)[0];
-            ImageData imageData = sourceShape.ImageData;
-
+            
             Document dstDoc = new Document();
 
             // Import a shape from the source document and append it to the first paragraph, effectively cloning it
             Shape importedShape = (Shape)dstDoc.ImportNode(sourceShape, true);
             dstDoc.FirstSection.Body.FirstParagraph.AppendChild(importedShape);
 
-            imageData = importedShape.ImageData;
+            // Get the ImageData of the imported shape
+            ImageData imageData = importedShape.ImageData;
             imageData.Title = "Imported Image";
 
             // If an image appears to have no borders, its ImageData object will still have them, but in an unspecified color
@@ -402,7 +401,7 @@ namespace ApiExamples
             Document doc = new Document();
 
             // We can get an image from a file, set it as the image of a shape and append it to a paragraph
-            Image srcImage = Image.FromFile(MyDir + "Images/Aspose.Words.gif");
+            Image srcImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
 
             Shape imgShape = new Shape(doc, ShapeType.Image);
             doc.FirstSection.Body.FirstParagraph.AppendChild(imgShape);
@@ -410,7 +409,7 @@ namespace ApiExamples
             srcImage.Dispose();
 
             // We can also open an image file using a stream and set its contents as a shape's image 
-            using (Stream stream = new FileStream(MyDir + "Images/Aspose.Words.gif", FileMode.Open, FileAccess.Read))
+            using (Stream stream = new FileStream(ImageDir + "Aspose.Words.gif", FileMode.Open, FileAccess.Read))
             {
                 imgShape = new Shape(doc, ShapeType.Image);
                 doc.FirstSection.Body.FirstParagraph.AppendChild(imgShape);
