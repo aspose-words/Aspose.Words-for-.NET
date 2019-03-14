@@ -269,7 +269,7 @@ namespace ApiExamples
             Assert.AreEqual(shapes[0].ImageData.ImageBytes, shapes[0].ImageData.ToByteArray());
 
             // Put the shape's image data into a stream
-            // Then, put the image data from that stream into another stream which uses that data to create an image
+            // Then, put the image data from that stream into another stream which creates an image file in the local file system
             using (Stream imgStream = shapes[0].ImageData.ToStream())
             {
                 FileStream outStream = new FileStream(ArtifactsDir + "MyImg.png", FileMode.CreateNew);
