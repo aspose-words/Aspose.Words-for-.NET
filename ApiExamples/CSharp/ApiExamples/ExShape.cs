@@ -6,9 +6,11 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
@@ -18,6 +20,7 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
+using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
@@ -282,6 +285,9 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OleControl
+            //ExFor:Ole.OleControl.IsForms2OleControl
+            //ExFor:Ole.OleControl.Name
+            //ExFor:OleFormat.OleControl
             //ExFor:Forms2OleControl
             //ExFor:Forms2OleControl.Caption
             //ExFor:Forms2OleControl.Value
@@ -295,6 +301,8 @@ namespace ApiExamples
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             OleControl oleControl = shape.OleFormat.OleControl;
 
+            Assert.AreEqual(null, oleControl.Name);
+
             //Get ActiveX control properties
             if (oleControl.IsForms2OleControl)
             {
@@ -305,7 +313,115 @@ namespace ApiExamples
                 Assert.AreEqual(Forms2OleControlType.CheckBox, checkBox.Type);
                 Assert.AreEqual(null, checkBox.ChildNodes);
             }
+            //ExEnd
+        }
 
+        [Test]
+        public void OleControl()
+        {
+            //ExStart
+            //ExFor:OleFormat
+            //ExFor:OleFormat.AutoUpdate
+            //ExFor:OleFormat.IsLocked
+            //ExFor:OleFormat.ProgId
+            //ExFor:OleFormat.Save(Stream)
+            //ExFor:OleFormat.Save(String)
+            //ExFor:OleFormat.SuggestedExtension
+            //ExSummary:
+            Document doc = new Document(MyDir + "Shape.Ole.docm");
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            // Linked excel spreadsheet
+            OleFormat oleFormat = shape.OleFormat;
+            Assert.AreEqual("Excel.Sheet.12", oleFormat.ProgId);
+
+            // Our object is neither auto updating nor locked from updates
+            Assert.False(oleFormat.AutoUpdate);
+            Assert.AreEqual(false, oleFormat.IsLocked);
+
+            // If we want to save just the OLE object in a file, this property tells us the suitable extension
+            Assert.AreEqual(".xlsx", oleFormat.SuggestedExtension);
+
+            // We can save it either via a stream
+            using (FileStream fs = new FileStream(ArtifactsDir + "MyFile from stream" + oleFormat.SuggestedExtension, FileMode.Create))
+            {
+                oleFormat.Save(fs);
+            }
+
+            // Or we can save it directly to a file
+            oleFormat.Save(ArtifactsDir + "MyFile from oleFormat" + oleFormat.SuggestedExtension);
+            //ExEnd
+        }
+
+        [Test]
+        public void OleLinks()
+        {
+            //ExStart
+            //ExFor:OleFormat.IconCaption
+            //ExFor:OleFormat.GetOleEntry(String)
+            //ExFor:OleFormat.IsLink
+            //ExFor:OleFormat.OleIcon
+            //ExFor:OleFormat.SourceFullName
+            //ExFor:OleFormat.SourceItem
+            //ExSummary:
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertOleObject(MyDir + @"Images\visio2010.vsd", "Package", false, false, null);
+            builder.InsertOleObject(MyDir + @"Images\visio2010.vsd", "Package", true, true, null);
+
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
+
+            OleFormat oleFormat = shapes[0].OleFormat;
+            Assert.AreEqual(false, oleFormat.IsLink);
+            Assert.AreEqual(false, oleFormat.OleIcon);
+
+            oleFormat = shapes[1].OleFormat;
+            Assert.AreEqual(true, oleFormat.IsLink);
+            Assert.AreEqual(true, oleFormat.OleIcon);
+
+            Assert.AreEqual("", oleFormat.SourceItem);
+            Assert.True(oleFormat.SourceFullName.EndsWith(@"Images\visio2010.vsd"));
+
+            Assert.AreEqual("Packager", oleFormat.IconCaption);
+
+            using (MemoryStream stream = oleFormat.GetOleEntry("\x0001CompObj"))
+            {
+                Assert.NotNull(stream);
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void Forms2OleControlCollection()
+        {
+            //ExStart
+            //ExFor:OleFormat.Clsid
+            //ExFor:Ole.Forms2OleControlCollection
+            //ExFor:Ole.Forms2OleControlCollection.Count
+            //ExFor:Ole.Forms2OleControlCollection.Item(Int32)
+            //ExFor:Ole.NamespaceDoc
+            //ExSummary:
+            Document doc = new Document(MyDir + "Shape.Ole.ControlCollection.docm");
+
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
+
+            Forms2OleControl fc = (Forms2OleControl)shapes[0].OleFormat.OleControl;
+            Forms2OleControlCollection b = fc.ChildNodes;
+
+            Assert.AreEqual("6e182020-f460-11ce-9bcd-00aa00608e01", shapes[0].OleFormat.Clsid.ToString());
+
+            Assert.AreEqual(3, b.Count);
+
+            Assert.AreEqual("C#", b[0].Caption);
+            Assert.AreEqual("1", b[0].Value);
+
+            Assert.AreEqual("Visual Basic", b[1].Caption);
+            Assert.AreEqual("0", b[1].Value);
+
+            Assert.AreEqual("Delphi", b[2].Caption);
+            Assert.AreEqual("0", b[2].Value);
             //ExEnd
         }
 
