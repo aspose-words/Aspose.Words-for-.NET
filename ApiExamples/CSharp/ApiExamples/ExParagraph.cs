@@ -296,5 +296,30 @@ namespace ApiExamples
             Paragraph para = DocumentHelper.GetParagraph(doc, paraIndex);
             para.InsertField(fieldCode, fieldValue, refNode, isAfter);
         }
+
+        [Test]
+        public void DropCapPosition()
+        {
+            //ExStart
+            //ExFor:DropCapPosition
+            //ExSummary:Shows how to set the position of a drop cap.
+            // Create a blank document
+            Document doc = new Document();
+
+            // Every paragraph has its own drop cap setting
+            Paragraph para = doc.FirstSection.Body.FirstParagraph;
+
+            // By default, it is "none", for no drop caps
+            Assert.AreEqual(Aspose.Words.DropCapPosition.None, para.ParagraphFormat.DropCapPosition);
+
+            // Move the first capital to outside the text margin
+            para.ParagraphFormat.DropCapPosition = Aspose.Words.DropCapPosition.Margin;
+
+            // This text will be affected
+            para.Runs.Add(new Run(doc, "Hello World!"));
+
+            doc.Save(ArtifactsDir + "Paragraph.DropCap.docx");
+            //ExEnd
+        }
     }
 }
