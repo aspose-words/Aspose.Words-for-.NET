@@ -8,6 +8,7 @@
 using System.Drawing;
 using System.Linq;
 using Aspose.Words;
+using Aspose.Words.Settings;
 using NUnit.Framework;
 #if !(__MOBILE__ || MAC)
 using System.Drawing.Printing;
@@ -271,6 +272,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PageSetup.LineStartingNumber
+            //ExFor:PageSetup.LineNumberDistanceFromText
             //ExFor:PageSetup.LineNumberCountBy
             //ExFor:PageSetup.LineNumberRestartMode
             //ExFor:LineNumberRestartMode
@@ -281,6 +283,7 @@ namespace ApiExamples
             ps.LineStartingNumber = 1;
             ps.LineNumberCountBy = 5;
             ps.LineNumberRestartMode = LineNumberRestartMode.RestartPage;
+            ps.LineNumberDistanceFromText = 50.0d;
 
             for (int i = 1; i <= 20; i++)
                 builder.Writeln(string.Format("Line {0}.", i));
@@ -422,5 +425,199 @@ namespace ApiExamples
             pageSetup.EndnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
             //ExEnd
         }
+
+        [Test]
+        public void Bidi()
+        {
+            //ExStart
+            //ExFor:PageSetup.Bidi
+            //ExSummary:Shows how to change the order of columns.
+            Document doc = new Document();
+
+            PageSetup pageSetup = doc.Sections[0].PageSetup;
+            pageSetup.TextColumns.SetCount(3);
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Column 1.");
+            builder.InsertBreak(BreakType.ColumnBreak);
+            builder.Write("Column 2.");
+            builder.InsertBreak(BreakType.ColumnBreak);
+            builder.Write("Column 3.");
+
+            // Reverse the order of the columns
+            pageSetup.Bidi = true;
+
+            doc.Save(ArtifactsDir + "PageSetup.Bidi.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void BorderSurrounds()
+        {
+            //ExStart
+            //ExFor:PageSetup.BorderSurroundsFooter
+            //ExFor:PageSetup.BorderSurroundsHeader
+            //ExSummary:Shows how to apply a border to the page and header/footer.
+            Document doc = new Document();
+
+            // Insert header and footer text
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            builder.Write("Header");
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            builder.Write("Footer");
+            builder.MoveToDocumentEnd();
+
+            // Insert a page border and set the color and line style
+            PageSetup pageSetup = doc.Sections[0].PageSetup;
+            pageSetup.Borders.LineStyle = LineStyle.Double;
+            pageSetup.Borders.Color = Color.Blue;
+
+            // By default, page borders don't surround headers and footers
+            // We can change that by setting these flags
+            pageSetup.BorderSurroundsFooter = true;
+            pageSetup.BorderSurroundsHeader = true;
+
+            doc.Save(ArtifactsDir + "PageSetup.BorderSurrounds.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void Gutter()
+        {
+            //ExStart
+            //ExFor:PageSetup.Gutter
+            //ExFor:PageSetup.RtlGutter
+            //ExFor:PageSetup.MultiplePages
+            //ExSummary:Shows how to set gutter margins.
+            Document doc = new Document();
+
+            // Insert text spanning several pages
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            for (int i = 0; i < 6; i++)
+            {
+                builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+                builder.InsertBreak(BreakType.PageBreak);
+            }
+
+            // We can access the gutter margin in the section's page options,
+            // which is a margin which is added to the page margin at one side of the page
+            PageSetup pageSetup = doc.Sections[0].PageSetup;
+            pageSetup.Gutter = 100.0;
+
+            // If our text is LTR, the gutter will appear on the left side of the page
+            // Setting this flag will move it to the right side
+            pageSetup.RtlGutter = true;
+
+            // Mirroring the margins will make the gutter alternate in position from page to page
+            pageSetup.MultiplePages = MultiplePagesType.MirrorMargins;
+
+            doc.Save(ArtifactsDir + "PageSetup.Gutter.docx");
+            //ExEnd
+        }
+
+
+        [Test]
+        public void Booklet()
+        {
+            //ExStart
+            //ExFor:PageSetup.SheetsPerBooklet
+            //ExSummary:Shows how to create a booklet.
+            Document doc = new Document();
+
+            // Use a document builder to create 16 pages of content that will be compiled in a booklet
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("My Booklet:");
+
+            for (int i = 0; i < 15; i++)
+            {
+                builder.InsertBreak(BreakType.PageBreak);
+                builder.Write($"Booklet face #{i}");
+            }
+
+            // Set the number of sheets that will be used by the printer to create the booklet
+            // After being printed on both sides, the sheets can be stacked and folded down the centre
+            // The contents that we placed in such a way that they will be in order once the booklet is folded
+            // We can only specify the number of sheets in multiples of 4
+            PageSetup pageSetup = doc.Sections[0].PageSetup;
+            pageSetup.MultiplePages = MultiplePagesType.BookFoldPrinting;
+            pageSetup.SheetsPerBooklet = 4;
+
+            doc.Save(ArtifactsDir + "PageSetup.Booklet.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void TextOrientation()
+        {
+            //ExStart
+            //ExFor:PageSetup.TextOrientation
+            //ExSummary:Shows how to set text orientation.
+            Document doc = new Document();
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
+
+            // Setting this value will rotate the section's text 90 degrees to the right
+            PageSetup pageSetup = doc.Sections[0].PageSetup;
+            pageSetup.TextOrientation = Aspose.Words.TextOrientation.Upward;
+
+            doc.Save(ArtifactsDir + "PageSetup.TextOrientation.docx");
+            //ExEnd
+        }
+
+        //ExStart
+        //ExFor:PageSetup.SuppressEndnotes
+        //ExFor:Body.ParentSection
+        //ExSummary:Shows how to store endnotes at the end of each section instead of the document and manipulate their positions.
+        [Test] //ExSkip
+        public void SuppressEndnotes()
+        {
+            // Create a new document and make it empty
+            Document doc = new Document();
+            doc.RemoveAllChildren();
+
+            // Normally endnotes are all stored at the end of a document, but this option lets us store them at the end of each section
+            doc.EndnoteOptions.Position = EndnotePosition.EndOfSection;
+
+            // Create 3 new sections, each having a paragraph and an endnote at the end
+            InsertSection(doc, "Section 1", "Endnote 1, will stay in section 1");
+            InsertSection(doc, "Section 2", "Endnote 2, will be pushed down to section 3");
+            InsertSection(doc, "Section 3", "Endnote 3, will stay in section 3");
+
+            // Each section contains its own page setup object
+            // Setting this value will push this section's endnotes down to the next section
+            PageSetup pageSetup = doc.Sections[1].PageSetup;
+            pageSetup.SuppressEndnotes = true;
+
+            doc.Save(ArtifactsDir + "PageSetup.SuppressEndnotes.docx");
+        }
+
+        /// <summary>
+        /// Add a section to the end of a document, give it a body and a paragraph, then add text and an endnote to that paragraph
+        /// </summary>
+        private void InsertSection(Document doc, string sectionBodyText, string endnoteText)
+        {
+            Section section = new Section(doc);
+
+            doc.AppendChild(section);
+
+            Body body = new Body(doc);
+            section.AppendChild(body);
+
+            Assert.AreEqual(section, body.ParentNode);
+
+            Paragraph para = new Paragraph(doc);
+            body.AppendChild(para);
+
+            Assert.AreEqual(body, para.ParentNode);
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.MoveTo(para);
+            builder.Write(sectionBodyText);
+            builder.InsertFootnote(FootnoteType.Endnote, endnoteText);
+        }
+        //ExEnd
     }
 }
