@@ -13,6 +13,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using Aspose.Words;
@@ -29,6 +31,7 @@ using Aspose.Words.Settings;
 using Aspose.Words.Tables;
 using Aspose.Words.Themes;
 using NUnit.Framework;
+using Org.BouncyCastle.Pkcs;
 using CompareOptions = Aspose.Words.CompareOptions;
 
 namespace ApiExamples
@@ -806,6 +809,52 @@ namespace ApiExamples
 
             // Save the document as PDF with the digital signature set.
             doc.Save(ArtifactsDir + "Document.Signed.pdf", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void CertHolderCreate()
+        {
+            //ExStart
+            //ExFor:Create(Byte[], SecureString)
+            //ExFor:Create(Byte[], String)
+            //ExFor:Create(X509Certificate2)
+            //ExFor:Create(String, String, String)
+            //ExSummary:Shows several ways of creating CertificateHolder objects.
+            // 1: Load a PKCS #12 file into a byte array and apply its password to create the CertificateHolder
+            byte[] certBytes = File.ReadAllBytes(MyDir + "morzal.pfx");
+            CertificateHolder certificateHolder = CertificateHolder.Create(certBytes, "aw");
+
+            // 2: Pass a SecureString which contains the password instead of a normal string
+            SecureString password = new NetworkCredential("", "aw").SecurePassword;
+            certificateHolder = CertificateHolder.Create(certBytes, password);
+
+            // 3: The CertificateHolder holds an X509Certificate2 instance, which we can create by ourselves and pass to the CertificateHolder constructor
+            X509Certificate2 x509Certificate2 = new X509Certificate2(certBytes, "aw", X509KeyStorageFlags.Exportable);
+            certificateHolder = CertificateHolder.Create(x509Certificate2);
+
+            // 4: If the certificate has private keys corresponding to aliases, we can use the aliases to fetch their respective keys
+            // First, we'll check for valid aliases like this
+            using (FileStream certStream = new FileStream(MyDir + "morzal.pfx", FileMode.Open))
+            {
+                Pkcs12Store pkcs12Store = new Pkcs12Store(certStream, "aw".ToCharArray());
+                IEnumerator enumerator = pkcs12Store.Aliases.GetEnumerator();
+
+                while (enumerator.MoveNext())
+                {
+                    string currentAlias = enumerator.Current.ToString();
+                    if (pkcs12Store.IsKeyEntry(currentAlias) && pkcs12Store.GetKey(currentAlias).Key.IsPrivate)
+                    {
+                        Console.WriteLine($"Valid alias found: {enumerator.Current}");
+                    }
+                }
+            }
+
+            // For this file, we'll use an alias found above
+            certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw", "c20be521-11ea-4976-81ed-865fbbfc9f24");
+
+            // If we leave the alias null, then the first possible alias that retrieves a private key will be used
+            certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
             //ExEnd
         }
 
