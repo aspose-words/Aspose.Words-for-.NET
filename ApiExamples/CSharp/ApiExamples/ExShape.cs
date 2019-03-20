@@ -6,9 +6,11 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
@@ -18,6 +20,8 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
+using Org.BouncyCastle.Crypto;
+using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
@@ -282,6 +286,9 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OleControl
+            //ExFor:Ole.OleControl.IsForms2OleControl
+            //ExFor:Ole.OleControl.Name
+            //ExFor:OleFormat.OleControl
             //ExFor:Forms2OleControl
             //ExFor:Forms2OleControl.Caption
             //ExFor:Forms2OleControl.Value
@@ -295,6 +302,8 @@ namespace ApiExamples
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             OleControl oleControl = shape.OleFormat.OleControl;
 
+            Assert.AreEqual(null, oleControl.Name);
+
             //Get ActiveX control properties
             if (oleControl.IsForms2OleControl)
             {
@@ -305,7 +314,133 @@ namespace ApiExamples
                 Assert.AreEqual(Forms2OleControlType.CheckBox, checkBox.Type);
                 Assert.AreEqual(null, checkBox.ChildNodes);
             }
+            //ExEnd
+        }
 
+        [Test]
+        public void OleControl()
+        {
+            //ExStart
+            //ExFor:OleFormat
+            //ExFor:OleFormat.AutoUpdate
+            //ExFor:OleFormat.IsLocked
+            //ExFor:OleFormat.ProgId
+            //ExFor:OleFormat.Save(Stream)
+            //ExFor:OleFormat.Save(String)
+            //ExFor:OleFormat.SuggestedExtension
+            //ExSummary:Shows how to extract embedded OLE objects into files.
+            Document doc = new Document(MyDir + "Shape.Ole.Spreadsheet.docm");
+
+            // The first shape will contain an OLE object
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            // This object is a Microsoft Excel spreadsheet
+            OleFormat oleFormat = shape.OleFormat;
+            Assert.AreEqual("Excel.Sheet.12", oleFormat.ProgId);
+
+            // Our object is neither auto updating nor locked from updates
+            Assert.False(oleFormat.AutoUpdate);
+            Assert.AreEqual(false, oleFormat.IsLocked);
+
+            // If we want to extract the OLE object by saving it into our local file system, this property can tell us the relevant file extension
+            Assert.AreEqual(".xlsx", oleFormat.SuggestedExtension);
+
+            // We can save it via a stream
+            using (FileStream fs = new FileStream(ArtifactsDir + "OLE spreadsheet extracted via stream" + oleFormat.SuggestedExtension, FileMode.Create))
+            {
+                oleFormat.Save(fs);
+            }
+
+            // We can also save it directly to a file
+            oleFormat.Save(ArtifactsDir + "OLE spreadsheet saved directly" + oleFormat.SuggestedExtension);
+            //ExEnd
+        }
+
+        [Test]
+        public void OleLinked()
+        {
+            //ExStart
+            //ExFor:OleFormat.IconCaption
+            //ExFor:OleFormat.GetOleEntry(String)
+            //ExFor:OleFormat.IsLink
+            //ExFor:OleFormat.OleIcon
+            //ExFor:OleFormat.SourceFullName
+            //ExFor:OleFormat.SourceItem
+            //ExSummary:Shows how to insert linked and unlinked OLE objects.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Embed a Microsoft Visio drawing as an OLE object into the document
+            builder.InsertOleObject(ImageDir + "visio2010.vsd", "Package", false, false, null);
+
+            // Insert a link to the file in the local file system and display it as an icon
+            builder.InsertOleObject(ImageDir + "visio2010.vsd", "Package", true, true, null);
+            
+            // Both the OLE objects are stored within shapes
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
+            Assert.AreEqual(2, shapes.Count);
+
+            // If the shape is an OLE object, it will have a valid OleFormat property
+            // We can use it check if it is linked or displayed as an icon, among other things
+            OleFormat oleFormat = shapes[0].OleFormat;
+            Assert.AreEqual(false, oleFormat.IsLink);
+            Assert.AreEqual(false, oleFormat.OleIcon);
+
+            oleFormat = shapes[1].OleFormat;
+            Assert.AreEqual(true, oleFormat.IsLink);
+            Assert.AreEqual(true, oleFormat.OleIcon);
+
+            // Get the name or the source file and verify that the whole file is linked
+            Assert.True(oleFormat.SourceFullName.EndsWith(@"Images\visio2010.vsd"));
+            Assert.AreEqual("", oleFormat.SourceItem);
+
+            Assert.AreEqual("Packager", oleFormat.IconCaption);
+
+            doc.Save(ArtifactsDir + "Shape.OleLinks.docx");
+
+            // We can get a stream with the OLE data entry, if the object has this
+            using (MemoryStream stream = oleFormat.GetOleEntry("\x0001CompObj"))
+            {
+                byte[] oleEntryBytes = stream.ToArray();
+                Assert.AreEqual(76, oleEntryBytes.Length);
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void OleControlCollection()
+        {
+            //ExStart
+            //ExFor:OleFormat.Clsid
+            //ExFor:Ole.Forms2OleControlCollection
+            //ExFor:Ole.Forms2OleControlCollection.Count
+            //ExFor:Ole.Forms2OleControlCollection.Item(Int32)
+            //ExFor:Ole.NamespaceDoc
+            //ExSummary:Shows how to access an OLE control embedded in a document and its child controls.
+            // Open a document that contains a Microsoft Forms OLE control with child controls
+            Document doc = new Document(MyDir + "Shape.Ole.ControlCollection.docm");
+
+            // Get the shape that contains the control
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual("6e182020-f460-11ce-9bcd-00aa00608e01", shape.OleFormat.Clsid.ToString());
+
+            Forms2OleControl oleControl = (Forms2OleControl)shape.OleFormat.OleControl;
+
+            // Some controls contain child controls
+            Forms2OleControlCollection oleControlCollection = oleControl.ChildNodes;
+
+            // In this case, the child controls are 3 option buttons
+            Assert.AreEqual(3, oleControlCollection.Count);
+
+            Assert.AreEqual("C#", oleControlCollection[0].Caption);
+            Assert.AreEqual("1", oleControlCollection[0].Value);
+
+            Assert.AreEqual("Visual Basic", oleControlCollection[1].Caption);
+            Assert.AreEqual("0", oleControlCollection[1].Value);
+
+            Assert.AreEqual("Delphi", oleControlCollection[2].Caption);
+            Assert.AreEqual("0", oleControlCollection[2].Value);
             //ExEnd
         }
 
