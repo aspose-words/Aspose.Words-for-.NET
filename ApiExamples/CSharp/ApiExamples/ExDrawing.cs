@@ -438,8 +438,6 @@ namespace ApiExamples
             Shape shape = builder.InsertImage(ImageDir + "Aspose.Words.gif");
 
             // If the shape contains an image, its ImageData property will be valid, and it will contain an ImageSize object
-            
-            // like ImageSize imageSize = new ImageSize(WidthPixels, HeightPixels, HorizontalResolution, VerticalResolution)
             ImageSize imageSize = shape.ImageData.ImageSize; 
 
             // The ImageSize object contains raw information about the image within the shape
