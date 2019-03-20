@@ -421,5 +421,41 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ImageData.ImportedImage.docx");
             //ExEnd
         }
+
+        [Test]
+        public void ImageSize()
+        {
+            //ExStart
+            //ExFor:ImageSize.HeightPixels
+            //ExFor:ImageSize.HorizontalResolution
+            //ExFor:ImageSize.VerticalResolution
+            //ExFor:ImageSize.WidthPixels
+            //ExSummary:Shows how to access and use a shape's ImageSize property.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a shape into the document which contains an image taken from our local file system
+            Shape shape = builder.InsertImage(ImageDir + "Aspose.Words.gif");
+
+            // If the shape contains an image, its ImageData property will be valid, and it will contain an ImageSize object
+            ImageSize imageSize = shape.ImageData.ImageSize; 
+
+            // The ImageSize object contains raw information about the image within the shape
+            Assert.AreEqual(200, imageSize.HeightPixels);
+            Assert.AreEqual(200, imageSize.WidthPixels);
+
+            Assert.AreEqual(95.986599999999996d, imageSize.HorizontalResolution);
+            Assert.AreEqual(95.986599999999996d, imageSize.VerticalResolution);
+
+            // These values are read-only
+            // If we want to transform the image, we need to change the size of the shape that contains it
+            // We can still use values within ImageSize as a reference
+            // In the example below, we will get the shape to display the image in twice its original size
+            shape.Width = imageSize.WidthPoints * 2;
+            shape.Height = imageSize.HeightPoints * 2;
+
+            doc.Save(ArtifactsDir + "Image.ImageSize.docx");
+            //ExEnd
+        }
     }
 }
