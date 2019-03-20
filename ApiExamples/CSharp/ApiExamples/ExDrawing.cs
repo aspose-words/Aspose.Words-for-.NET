@@ -426,8 +426,6 @@ namespace ApiExamples
         public void ImageSize()
         {
             //ExStart
-            //ExFor:ImageSize.#ctor(Int32,Int32)
-            //ExFor:ImageSize.#ctor(Int32,Int32,Double,Double)
             //ExFor:ImageSize.HeightPixels
             //ExFor:ImageSize.HorizontalResolution
             //ExFor:ImageSize.VerticalResolution
