@@ -426,7 +426,6 @@ namespace ApiExamples
         public void ImageSize()
         {
             //ExStart
-            //ExFor:ImageSize.#ctor(ImageSizeCore) //INSP: I have not found an implementation, you can remove it
             //ExFor:ImageSize.#ctor(Int32,Int32)
             //ExFor:ImageSize.#ctor(Int32,Int32,Double,Double)
             //ExFor:ImageSize.HeightPixels
@@ -442,7 +441,6 @@ namespace ApiExamples
 
             // If the shape contains an image, its ImageData property will be valid, and it will contain an ImageSize object
             
-            // INSP: We also need to add examples for ImageSize.#ctor(Int32,Int32) and ImageSize.#ctor(Int32,Int32,Double,Double)
             // like ImageSize imageSize = new ImageSize(WidthPixels, HeightPixels, HorizontalResolution, VerticalResolution)
             ImageSize imageSize = shape.ImageData.ImageSize; 
 
