@@ -818,7 +818,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:CertificateHolder.Create(Byte[], SecureString)
             //ExFor:CertificateHolder.Create(Byte[], String)
-            //ExFor:CertificateHolder.Create(X509Certificate2)
             //ExFor:CertificateHolder.Create(String, String, String)
             //ExSummary:Shows how to create CertificateHolder objects.
             // 1: Load a PKCS #12 file into a byte array and apply its password to create the CertificateHolder
@@ -829,11 +828,7 @@ namespace ApiExamples
             SecureString password = new NetworkCredential("", "aw").SecurePassword;
             CertificateHolder.Create(certBytes, password);
 
-            // 3: The CertificateHolder holds an X509Certificate2 instance, which we can create by ourselves and pass to the CertificateHolder constructor
-            X509Certificate2 x509Certificate2 = new X509Certificate2(certBytes, "aw", X509KeyStorageFlags.Exportable);
-            CertificateHolder.Create(x509Certificate2); //INSP: This method is obsolete, I think we can not do example for those methods
-
-            // 4: If the certificate has private keys corresponding to aliases, we can use the aliases to fetch their respective keys
+            // 3: If the certificate has private keys corresponding to aliases, we can use the aliases to fetch their respective keys
             // First, we'll check for valid aliases like this
             using (FileStream certStream = new FileStream(MyDir + "morzal.pfx", FileMode.Open))
             {
