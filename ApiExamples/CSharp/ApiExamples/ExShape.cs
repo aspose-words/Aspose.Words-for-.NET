@@ -328,7 +328,7 @@ namespace ApiExamples
             //ExFor:OleFormat.Save(Stream)
             //ExFor:OleFormat.Save(String)
             //ExFor:OleFormat.SuggestedExtension
-            //ExSummary: //INSP: Add summary
+            //ExSummary:Shows how to extract embedded OLE objects into files.
             Document doc = new Document(MyDir + "Shape.Ole.Spreadsheet.docm");
 
             // The first shape will contain an OLE object
