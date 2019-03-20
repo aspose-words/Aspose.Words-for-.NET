@@ -328,7 +328,7 @@ namespace ApiExamples
             //ExFor:OleFormat.Save(Stream)
             //ExFor:OleFormat.Save(String)
             //ExFor:OleFormat.SuggestedExtension
-            //ExSummary:
+            //ExSummary: //INSP: Add summary
             Document doc = new Document(MyDir + "Shape.Ole.Spreadsheet.docm");
 
             // The first shape will contain an OLE object
@@ -371,10 +371,10 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Embed a Microsoft Visio drawing as an OLE object into the document
-            builder.InsertOleObject(MyDir + @"Images\visio2010.vsd", "Package", false, false, null);
+            builder.InsertOleObject(ImageDir + "visio2010.vsd", "Package", false, false, null);
 
             // Insert a link to the file in the local file system and display it as an icon
-            builder.InsertOleObject(MyDir + @"Images\visio2010.vsd", "Package", true, true, null);
+            builder.InsertOleObject(ImageDir + "visio2010.vsd", "Package", true, true, null);
             
             // Both the OLE objects are stored within shapes
             List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
