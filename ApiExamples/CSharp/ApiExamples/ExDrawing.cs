@@ -426,7 +426,7 @@ namespace ApiExamples
         public void ImageSize()
         {
             //ExStart
-            //ExFor:ImageSize.#ctor(ImageSizeCore)
+            //ExFor:ImageSize.#ctor(ImageSizeCore) //INSP: I have not found an implementation, you can remove it
             //ExFor:ImageSize.#ctor(Int32,Int32)
             //ExFor:ImageSize.#ctor(Int32,Int32,Double,Double)
             //ExFor:ImageSize.HeightPixels
@@ -438,10 +438,13 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a shape into the document which contains an image taken from our local file system
-            Shape shape = builder.InsertImage(MyDir + @"\Images\Aspose.Words.gif");
+            Shape shape = builder.InsertImage(ImageDir + "Aspose.Words.gif");
 
             // If the shape contains an image, its ImageData property will be valid, and it will contain an ImageSize object
-            ImageSize imageSize = shape.ImageData.ImageSize;
+            
+            // INSP: We also need to add examples for ImageSize.#ctor(Int32,Int32) and ImageSize.#ctor(Int32,Int32,Double,Double)
+            // like ImageSize imageSize = new ImageSize(WidthPixels, HeightPixels, HorizontalResolution, VerticalResolution)
+            ImageSize imageSize = shape.ImageData.ImageSize; 
 
             // The ImageSize object contains raw information about the image within the shape
             Assert.AreEqual(200, imageSize.HeightPixels);
