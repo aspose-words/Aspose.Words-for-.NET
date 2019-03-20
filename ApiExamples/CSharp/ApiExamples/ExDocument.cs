@@ -2428,6 +2428,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:LanguagePreferences
             //ExFor:LanguagePreferences.AddEditingLanguage(EditingLanguage)
+            //ExFor:EditingLanguage
             //ExSummary:Shows how to set up language preferences that will be used when document is loading
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.LanguagePreferences.AddEditingLanguage(EditingLanguage.Japanese);
