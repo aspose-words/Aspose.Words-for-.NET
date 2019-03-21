@@ -32,18 +32,22 @@ namespace ApiExamples
             //ExFor:Drawing.Fill.ImageBytes
             //ExFor:Drawing.Fill.On
             //ExFor:Drawing.JoinStyle
+            //ExFor:Shape.Stroke
             //ExFor:Stroke.Color
             //ExFor:Stroke.StartArrowLength
             //ExFor:Stroke.StartArrowType
             //ExFor:Stroke.StartArrowWidth
+            //ExFor:Stroke.EndArrowLength
+            //ExFor:Stroke.EndArrowWidth
             //ExFor:Stroke.DashStyle
             //ExFor:Stroke.EndArrowType
             //ExFor:Stroke.EndCap
-            //ExSummary:Shows to create a variety of shapes
+            //ExFor:Stroke.Opacity
+            //ExSummary:Shows to create a variety of shapes.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Draw a dotted horizontal red line with an arrow on the left end and a diamond on the other
+            // Draw a dotted horizontal half-transparent red line with an arrow on the left end and a diamond on the other
             Shape arrow = new Shape(doc, ShapeType.Line);
             arrow.Width = 200;
             arrow.Stroke.Color = Color.Red;
@@ -51,7 +55,10 @@ namespace ApiExamples
             arrow.Stroke.StartArrowLength = ArrowLength.Long;
             arrow.Stroke.StartArrowWidth = ArrowWidth.Wide;
             arrow.Stroke.EndArrowType = ArrowType.Diamond;
+            arrow.Stroke.EndArrowLength = ArrowLength.Long;
+            arrow.Stroke.EndArrowWidth = ArrowWidth.Wide;
             arrow.Stroke.DashStyle = DashStyle.Dash;
+            arrow.Stroke.Opacity = 0.5;
 
             Assert.AreEqual(JoinStyle.Miter, arrow.Stroke.JoinStyle);
 
@@ -96,9 +103,9 @@ namespace ApiExamples
                     image.RotateFlip(RotateFlipType.RotateNoneFlipXY);
 
                     filledInArrowImg.ImageData.SetImage(image);
-                    builder.InsertNode(filledInArrowImg);
-
                     filledInArrowImg.Stroke.JoinStyle = JoinStyle.Round;
+
+                    builder.InsertNode(filledInArrowImg);
                 }
             }
 
@@ -106,6 +113,32 @@ namespace ApiExamples
             //ExEnd
         }
 #endif
+
+        [Test]
+        public void StrokePattern()
+        {
+            //ExStart
+            //ExFor:Stroke.Color2
+            //ExFor:Stroke.ImageBytes
+            //ExSummary:Shows how to process shape stroke features from older versions of Microsoft Word.
+            // Open a document which contains a rectangle with a thick, two-tone-patterned outline
+            // These features cannot be recreated in new versions of Microsoft Word, so we will open an older .doc file
+            Document doc = new Document(MyDir + "Shape.StrokePattern.doc");
+
+            // Get the first shape's stroke
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Stroke s = shape.Stroke;
+
+            // Every stroke will have a Color attribute, but only strokes from older Word versions have a Color2 attribute,
+            // since the two-tone pattern line feature which requires the Color2 attribute is no longer supported
+            Assert.AreEqual(Color.FromArgb(255, 128, 0, 0), s.Color);
+            Assert.AreEqual(Color.FromArgb(255, 255, 255, 0), s.Color2);
+
+            // This attribute contains the image data for the pattern, which we can save to our local file system
+            Assert.NotNull(s.ImageBytes);
+            File.WriteAllBytes(ArtifactsDir + "Drawing.StrokePattern.png", s.ImageBytes);
+            //ExEnd
+        }
 
         //ExStart
         //ExFor:DocumentVisitor.VisitShapeEnd(Shape)

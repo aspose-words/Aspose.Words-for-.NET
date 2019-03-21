@@ -1448,7 +1448,7 @@ namespace ApiExamples
             /// </summary>
             public string GetText()
             {
-                return mStringBuilder.ToString();
+                return $"Shapes visited: {mShapesVisited}\n{mStringBuilder}";
             }
 
             /// <summary>
@@ -1493,6 +1493,7 @@ namespace ApiExamples
             public override VisitorAction VisitShapeEnd(Shape shape)
             {
                 mTextIndentLevel--;
+                mShapesVisited++;
                 AppendLine($"End of {shape.ShapeType}");
 
                 return VisitorAction.Continue;
@@ -1574,40 +1575,6 @@ namespace ApiExamples
             Assert.False(sl.IsValid);
 
             doc.Save(ArtifactsDir + "Drawing.SignatureLine.docx");
-            //ExEnd
-        }
-
-        [Test]
-        public void Stroke()
-        {
-            //ExStart
-            //ExFor:Shape.Stroke
-            //ExFor:Stroke.Color2
-            //ExFor:Stroke.EndArrowLength
-            //ExFor:Stroke.EndArrowWidth
-            //ExFor:Stroke.ImageBytes
-            //ExFor:Stroke.Opacity
-            //ExSummary:
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            Shape s = builder.InsertShape(ShapeType.Line, 300.0, 200.0);
-
-            Assert.NotNull(s.Stroke);
-
-            Stroke st = s.Stroke;
-
-//                Assert.AreEqual(Color.FromArgb(255, 56, 93, 138), st.Color);
-            Assert.AreEqual(Color.Empty, st.Color2);
-
-
-            st.Color2 = Color.Red;
-            st.Opacity = 1;
-            st.DashStyle = DashStyle.DashDot;
-            st.Weight = 5.0;
-
-            doc.Save(ArtifactsDir + "Drawing.Stroke.docx");
-
             //ExEnd
         }
 
