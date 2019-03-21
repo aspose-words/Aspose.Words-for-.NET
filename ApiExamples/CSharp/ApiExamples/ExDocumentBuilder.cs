@@ -1611,7 +1611,7 @@ namespace ApiExamples
             //ExSummary:Shows how to insert an image into a document from a web address.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.InsertImage("http://www.aspose.com/images/aspose-logo.gif");
+            builder.InsertImage(AsposeLogoUrl);
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertImageFromUrl.doc");
             //ExEnd
@@ -2362,7 +2362,7 @@ namespace ApiExamples
             // We can get an image to use as a custom thumbnail
             using (WebClient webClient = new WebClient())
             {
-                byte[] imageBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
+                byte[] imageBytes = webClient.DownloadData(AsposeLogoUrl);
 
                 using (MemoryStream stream = new MemoryStream(imageBytes))
                 {
@@ -2485,7 +2485,7 @@ namespace ApiExamples
                     // If that is not suitable, we can make the icon to look like any image
                     using (WebClient webClient = new WebClient())
                     {
-                        byte[] imgBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
+                        byte[] imgBytes = webClient.DownloadData(AsposeLogoUrl);
 
 #if NETSTANDARD2_0 || __MOBILE__
                         SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(imgBytes);

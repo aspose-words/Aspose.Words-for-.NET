@@ -41,7 +41,7 @@ namespace ApiExamples
             builder.Writeln();
 
             builder.Write("Image from an Internet url, automatically downloaded for you: ");
-            builder.InsertImage("http://www.aspose.com/Images/aspose-logo.jpg");
+            builder.InsertImage(AsposeLogoUrl);
             builder.Writeln();
 
             builder.Document.Save(ArtifactsDir + "Image.CreateFromUrl.doc");
