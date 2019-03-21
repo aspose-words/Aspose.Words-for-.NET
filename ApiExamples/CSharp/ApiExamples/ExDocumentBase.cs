@@ -205,7 +205,7 @@ namespace ApiExamples
                     {
                         using (WebClient webClient = new WebClient())
                         {
-                            byte[] imageBytes = webClient.DownloadData("https://www.aspose.com/Images/aspose-logo.jpg");
+                            byte[] imageBytes = webClient.DownloadData(AsposeLogoUrl);
                             args.SetData(imageBytes);
                             return ResourceLoadingAction.UserProvided;
                         }

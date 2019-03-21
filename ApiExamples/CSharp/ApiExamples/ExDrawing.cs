@@ -86,7 +86,7 @@ namespace ApiExamples
 
             using (WebClient webClient = new WebClient())
             {
-                byte[] imageBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
+                byte[] imageBytes = webClient.DownloadData(AsposeLogoUrl);
 
                 using (System.IO.MemoryStream stream = new System.IO.MemoryStream(imageBytes))
                 {
@@ -208,7 +208,7 @@ namespace ApiExamples
 
             using (WebClient webClient = new WebClient())
             {
-                byte[] imageBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
+                byte[] imageBytes = webClient.DownloadData(AsposeLogoUrl);
 
                 using (System.IO.MemoryStream stream = new System.IO.MemoryStream(imageBytes))
                 {
@@ -272,8 +272,10 @@ namespace ApiExamples
             // Then, put the image data from that stream into another stream which creates an image file in the local file system
             using (Stream imgStream = shapes[0].ImageData.ToStream())
             {
-                FileStream outStream = new FileStream(ArtifactsDir + "MyImg.png", FileMode.CreateNew);
-                imgStream.CopyTo(outStream);
+                using (FileStream outStream = new FileStream(ArtifactsDir + "MyImg.png", FileMode.CreateNew))
+                {
+                    imgStream.CopyTo(outStream);
+                }
             }        
             //ExEnd
         }

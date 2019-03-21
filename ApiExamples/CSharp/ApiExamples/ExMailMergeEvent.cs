@@ -262,7 +262,7 @@ namespace ApiExamples
 
             // Pass a URL which points to the image to merge into the document.
             doc.MailMerge.Execute(new string[] { "Logo" },
-                new object[] { "http://www.aspose.com/images/aspose-logo.gif" });
+                new object[] { AsposeLogoUrl });
 
             doc.Save(ArtifactsDir + "MailMerge.MergeImageFromUrl.doc");
             //ExEnd
