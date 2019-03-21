@@ -20,6 +20,7 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 
 #if NETSTANDARD2_0 || __MOBILE__
@@ -1524,5 +1525,143 @@ namespace ApiExamples
             private readonly StringBuilder mStringBuilder;
         }
         //ExEnd
+
+        [Test]
+        public void SignatureLine()
+        {
+            //ExStart
+            //ExFor:Shape.SignatureLine
+            //ExFor:SignatureLine
+            //ExFor:SignatureLine.AllowComments
+            //ExFor:SignatureLine.DefaultInstructions
+            //ExFor:SignatureLine.Email
+            //ExFor:SignatureLine.Instructions
+            //ExFor:SignatureLine.IsSigned
+            //ExFor:SignatureLine.IsValid
+            //ExFor:SignatureLine.ShowDate
+            //ExFor:SignatureLine.Signer
+            //ExFor:SignatureLine.SignerTitle
+            //ExSummary:
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            SignatureLineOptions options = new SignatureLineOptions
+            {
+                AllowComments = true,
+                DefaultInstructions = true,
+                Email = "john.doe@management.com",
+                Instructions = "Please sign here",
+                ShowDate = true,
+                Signer = "John Doe",
+                SignerTitle = "Senior Manager"
+            };
+
+            Shape s = builder.InsertSignatureLine(options, RelativeHorizontalPosition.RightMargin, -170.0, RelativeVerticalPosition.BottomMargin, -60.0, WrapType.None);
+            Assert.True(s.IsSignatureLine);
+
+            SignatureLine sl = s.SignatureLine;
+
+            Assert.AreEqual("john.doe@management.com", sl.Email);
+            Assert.AreEqual("Please sign here", sl.Instructions);
+
+            Assert.True(sl.ShowDate);
+            Assert.AreEqual("John Doe", sl.Signer);
+            Assert.AreEqual("Senior Manager", sl.SignerTitle);
+
+            Assert.True(sl.AllowComments);
+            Assert.True(sl.DefaultInstructions);
+            Assert.False(sl.IsSigned);
+            Assert.False(sl.IsValid);
+
+            doc.Save(ArtifactsDir + "Drawing.SignatureLine.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void Stroke()
+        {
+            //ExStart
+            //ExFor:Shape.Stroke
+            //ExFor:Stroke.Color2
+            //ExFor:Stroke.EndArrowLength
+            //ExFor:Stroke.EndArrowWidth
+            //ExFor:Stroke.ImageBytes
+            //ExFor:Stroke.Opacity
+            //ExSummary:
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape s = builder.InsertShape(ShapeType.Line, 300.0, 200.0);
+
+            Assert.NotNull(s.Stroke);
+
+            Stroke st = s.Stroke;
+
+//                Assert.AreEqual(Color.FromArgb(255, 56, 93, 138), st.Color);
+            Assert.AreEqual(Color.Empty, st.Color2);
+
+
+            st.Color2 = Color.Red;
+            st.Opacity = 1;
+            st.DashStyle = DashStyle.DashDot;
+            st.Weight = 5.0;
+
+            doc.Save(ArtifactsDir + "Drawing.Stroke.docx");
+
+            //ExEnd
+        }
+
+        [Test]
+        public void TextBox()
+        {
+            //ExStart
+            //ExFor:Shape.TextBox
+            //ExFor:Shape.LastParagraph
+            //ExFor:TextBox
+            //ExFor:TextBox.FitShapeToText
+            //ExFor:TextBox.InternalMarginBottom
+            //ExFor:TextBox.InternalMarginLeft
+            //ExFor:TextBox.InternalMarginRight
+            //ExFor:TextBox.InternalMarginTop
+            //ExFor:TextBox.LayoutFlow
+            //ExFor:TextBox.TextBoxWrapMode
+            //ExFor:TextBoxWrapMode
+            //ExSummary:
+
+            //ExEnd
+        }
+
+        [Test]
+        public void TextPath()
+        {
+            //ExStart
+            //ExFor:Shape.TextPath
+            //ExFor:TextPath
+            //ExFor:TextPath.Bold
+            //ExFor:TextPath.FitPath
+            //ExFor:TextPath.FitShape
+            //ExFor:TextPath.FontFamily
+            //ExFor:TextPath.Italic
+            //ExFor:TextPath.Kerning
+            //ExFor:TextPath.On
+            //ExFor:TextPath.ReverseRows
+            //ExFor:TextPath.RotateLetters
+            //ExFor:TextPath.SameLetterHeights
+            //ExFor:TextPath.Shadow
+            //ExFor:TextPath.Size
+            //ExFor:TextPath.SmallCaps
+            //ExFor:TextPath.Spacing
+            //ExFor:TextPath.StrikeThrough
+            //ExFor:TextPath.Text
+            //ExFor:TextPath.TextPathAlignment
+            //ExFor:TextPath.Trim
+            //ExFor:TextPath.Underline
+            //ExFor:TextPath.XScale
+            //ExFor:TextPathAlignment
+            //ExSummary:
+
+            //ExEnd
+        }
+
     }
 }
