@@ -1542,10 +1542,12 @@ namespace ApiExamples
             //ExFor:SignatureLine.ShowDate
             //ExFor:SignatureLine.Signer
             //ExFor:SignatureLine.SignerTitle
-            //ExSummary:
+            //ExSummary:Shows how to create a line for a signature and insert it into a document.
+            // Create a blank document and its DocumentBuilder
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // The SignatureLineOptions will contain all the data that the signature line will display
             SignatureLineOptions options = new SignatureLineOptions
             {
                 AllowComments = true,
@@ -1557,22 +1559,29 @@ namespace ApiExamples
                 SignerTitle = "Senior Manager"
             };
 
-            Shape s = builder.InsertSignatureLine(options, RelativeHorizontalPosition.RightMargin, -170.0, RelativeVerticalPosition.BottomMargin, -60.0, WrapType.None);
-            Assert.True(s.IsSignatureLine);
+            // Insert the signature line, applying our SignatureLineOptions
+            // We can control where the signature line will appear on the page using a combination of left/top indents and margin-relative positions
+            // Since we're placing the signature line at the bottom right of the page, we will need to use negative indents to move it into view 
+            Shape shape = builder.InsertSignatureLine(options, RelativeHorizontalPosition.RightMargin, -170.0, RelativeVerticalPosition.BottomMargin, -60.0, WrapType.None);
+            Assert.True(shape.IsSignatureLine);
 
-            SignatureLine sl = s.SignatureLine;
+            // The SignatureLine object is a member of the shape that contains it
+            SignatureLine signatureLine = shape.SignatureLine;
 
-            Assert.AreEqual("john.doe@management.com", sl.Email);
-            Assert.AreEqual("Please sign here", sl.Instructions);
+            Assert.AreEqual("john.doe@management.com", signatureLine.Email);
+            Assert.AreEqual("John Doe", signatureLine.Signer);
+            Assert.AreEqual("Senior Manager", signatureLine.SignerTitle);
+            Assert.AreEqual("Please sign here", signatureLine.Instructions);
+            Assert.True(signatureLine.ShowDate);
 
-            Assert.True(sl.ShowDate);
-            Assert.AreEqual("John Doe", sl.Signer);
-            Assert.AreEqual("Senior Manager", sl.SignerTitle);
+            Assert.True(signatureLine.AllowComments);
+            Assert.True(signatureLine.DefaultInstructions);
 
-            Assert.True(sl.AllowComments);
-            Assert.True(sl.DefaultInstructions);
-            Assert.False(sl.IsSigned);
-            Assert.False(sl.IsValid);
+            // We will be prompted to sign it when we open the document
+            Assert.False(signatureLine.IsSigned);
+
+            // The object may be valid, but the signature itself isn't until it is signed
+            Assert.False(signatureLine.IsValid);
 
             doc.Save(ArtifactsDir + "Drawing.SignatureLine.docx");
             //ExEnd
@@ -1593,8 +1602,52 @@ namespace ApiExamples
             //ExFor:TextBox.LayoutFlow
             //ExFor:TextBox.TextBoxWrapMode
             //ExFor:TextBoxWrapMode
-            //ExSummary:
+            //ExSummary:Shows how to insert text boxes and arrange their text.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Insert a shape that contains a TextBox
+            Shape textBoxShape = builder.InsertShape(ShapeType.TextBox, 150, 100);
+            TextBox textBox = textBoxShape.TextBox;
+
+            // Move the document builder to inside the TextBox and write text
+            builder.MoveTo(textBoxShape.LastParagraph);
+            builder.Write("Vertical text");
+
+            // Text is displayed vertically, written top to bottom
+            textBox.LayoutFlow = LayoutFlow.TopToBottomIdeographic;
+
+            // Move the builder out of the shape and back into the main document body
+            builder.CurrentSection.Body.AppendParagraph("");
+            builder.MoveToDocumentEnd();
+
+            // Insert another TextBox
+            textBoxShape = builder.InsertShape(ShapeType.TextBox, 150, 100);
+            textBox = textBoxShape.TextBox;
+
+            // Apply these values to both these members to get the parent shape to defy the dimensions we set to fit tightly around the TextBox's text
+            textBox.FitShapeToText = true;
+            textBox.TextBoxWrapMode = TextBoxWrapMode.None;
+
+            builder.MoveTo(textBoxShape.LastParagraph);
+            builder.Write("Text fit tightly inside textbox");
+
+            builder.CurrentSection.Body.AppendParagraph("");
+            builder.MoveToDocumentEnd();
+
+            textBoxShape = builder.InsertShape(ShapeType.TextBox, 100, 100);
+            textBox = textBoxShape.TextBox;
+
+            // Set margins for the textbox
+            textBox.InternalMarginTop = 15;
+            textBox.InternalMarginBottom = 15;
+            textBox.InternalMarginLeft = 15;
+            textBox.InternalMarginRight = 15;
+
+            builder.MoveTo(textBoxShape.LastParagraph);
+            builder.Write("Text placed according to textbox margins");
+
+            doc.Save(ArtifactsDir + "Drawing.TextBox.docx");
             //ExEnd
         }
 
