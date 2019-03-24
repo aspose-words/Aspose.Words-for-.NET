@@ -20,7 +20,6 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 
 #if NETSTANDARD2_0 || __MOBILE__
@@ -1651,36 +1650,169 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        public void TextPath()
+        //ExStart
+        //ExFor:Shape.TextPath
+        //ExFor:TextPath
+        //ExFor:TextPath.Bold
+        //ExFor:TextPath.FitPath
+        //ExFor:TextPath.FitShape
+        //ExFor:TextPath.FontFamily
+        //ExFor:TextPath.Italic
+        //ExFor:TextPath.Kerning
+        //ExFor:TextPath.On
+        //ExFor:TextPath.ReverseRows
+        //ExFor:TextPath.RotateLetters
+        //ExFor:TextPath.SameLetterHeights
+        //ExFor:TextPath.Shadow
+        //ExFor:TextPath.SmallCaps
+        //ExFor:TextPath.Spacing
+        //ExFor:TextPath.StrikeThrough
+        //ExFor:TextPath.Text
+        //ExFor:TextPath.TextPathAlignment
+        //ExFor:TextPath.Trim
+        //ExFor:TextPath.Underline
+        //ExFor:TextPath.XScale
+        //ExFor:TextPathAlignment
+        //ExSummary:Shows how to work with WordArt.
+        [Test] //ExSkip
+        public void InsertTextPaths()
         {
-            //ExStart
-            //ExFor:Shape.TextPath
-            //ExFor:TextPath
-            //ExFor:TextPath.Bold
-            //ExFor:TextPath.FitPath
-            //ExFor:TextPath.FitShape
-            //ExFor:TextPath.FontFamily
-            //ExFor:TextPath.Italic
-            //ExFor:TextPath.Kerning
-            //ExFor:TextPath.On
-            //ExFor:TextPath.ReverseRows
-            //ExFor:TextPath.RotateLetters
-            //ExFor:TextPath.SameLetterHeights
-            //ExFor:TextPath.Shadow
-            //ExFor:TextPath.Size
-            //ExFor:TextPath.SmallCaps
-            //ExFor:TextPath.Spacing
-            //ExFor:TextPath.StrikeThrough
-            //ExFor:TextPath.Text
-            //ExFor:TextPath.TextPathAlignment
-            //ExFor:TextPath.Trim
-            //ExFor:TextPath.Underline
-            //ExFor:TextPath.XScale
-            //ExFor:TextPathAlignment
-            //ExSummary:
+            Document doc = new Document();
 
-            //ExEnd
+            // Insert a WordArt object and capture the shape that contains it in a variable
+            Shape shape = AppendWordArt(doc, "Bold & Italic", "Arial", 240, 24, Color.White, Color.Black, ShapeType.TextPlainText);
+
+            // View and verify various text formatting settings
+            shape.TextPath.Bold = true;
+            shape.TextPath.Italic = true;
+
+            Assert.False(shape.TextPath.Underline);
+            Assert.False(shape.TextPath.Shadow);
+            Assert.False(shape.TextPath.StrikeThrough);
+            Assert.False(shape.TextPath.ReverseRows);
+            Assert.False(shape.TextPath.XScale);
+            Assert.False(shape.TextPath.Trim);
+            Assert.False(shape.TextPath.SmallCaps);
+
+            Assert.AreEqual(36.0, shape.TextPath.Size);
+            Assert.AreEqual("Bold & Italic", shape.TextPath.Text);
+
+            // Toggle whether or not to display text
+            shape = AppendWordArt(doc, "On set to true", "Calibri", 150, 24, Color.Yellow, Color.Red, ShapeType.TextPlainText);
+            shape.TextPath.On = true;
+
+            shape = AppendWordArt(doc, "On set to false", "Calibri", 150, 24, Color.Yellow, Color.Red, ShapeType.TextPlainText);
+            shape.TextPath.On = false;
+
+            // Apply kerning
+            shape = AppendWordArt(doc, "Kerning: VAV", "Times New Roman", 90, 24, Color.Orange, Color.Red, ShapeType.TextPlainText);
+            shape.TextPath.Kerning = true;
+
+            shape = AppendWordArt(doc, "No kerning: VAV", "Times New Roman", 100, 24, Color.Orange, Color.Red, ShapeType.TextPlainText);
+            shape.TextPath.Kerning = false;
+
+            // Apply custom spacing, on a scale from 0.0 (none) to 1.0 (default)
+            shape = AppendWordArt(doc, "Spacing set to 0.1", "Calibri", 120, 24, Color.BlueViolet, Color.Blue, ShapeType.TextCascadeDown);
+            shape.TextPath.Spacing = 0.1;
+
+            // Rotate letters 90 degrees to the left, text is still laid out horizontally
+            shape = AppendWordArt(doc, "RotateLetters", "Calibri", 200, 36, Color.GreenYellow, Color.Green, ShapeType.TextWave);
+            shape.TextPath.RotateLetters = true;
+
+            // Set the x-height to equal the cap height
+            shape = AppendWordArt(doc, "Same character height for lower and UPPER case", "Calibri", 300, 24, Color.DeepSkyBlue, Color.DodgerBlue, ShapeType.TextSlantUp);
+            shape.TextPath.SameLetterHeights = true;
+
+            // By default, the size of the text will scale to always fit the size of the containing shape, overriding the text size setting
+            shape = AppendWordArt(doc, "FitShape on", "Calibri", 160, 24, Color.LightBlue, Color.Blue, ShapeType.TextPlainText);
+            Assert.True(shape.TextPath.FitShape);
+            shape.TextPath.Size = 24.0;
+
+            // If we set FitShape to false, the size of the text will defy the shape bounds and always keep the size value we set below
+            // We can also set TextPathAlignment to align the text
+            shape = AppendWordArt(doc, "FitShape off", "Calibri", 160, 24, Color.LightBlue, Color.Blue, ShapeType.TextPlainText);
+            shape.TextPath.FitShape = false;
+            shape.TextPath.Size = 24.0;
+            shape.TextPath.TextPathAlignment = TextPathAlignment.Right;
+            
+            doc.Save(ArtifactsDir + "Drawing.TextPath.docx");
+        }
+
+        /// <summary>
+        /// Insert a new paragraph with a WordArt shape inside it 
+        /// </summary>
+        private Shape AppendWordArt(Document doc, string text, string textFontFamily, double shapeWidth, double shapeHeight, Color wordArtFill, Color line, ShapeType wordArtShapeType)
+        {
+            // Insert a new paragraph
+            Paragraph para = (Paragraph)doc.FirstSection.Body.AppendChild(new Paragraph(doc));
+
+            // Create an inline Shape, which will serve as a container for our WordArt, and append it to the paragraph
+            // The shape can only be a valid WordArt shape if the ShapeType assigned here is a WordArt-designated ShapeType
+            // These types will have "WordArt object" in the description and their enumerator names will start with "Text..."
+            Shape shape = new Shape(doc, wordArtShapeType);
+            shape.WrapType = WrapType.Inline;
+            para.AppendChild(shape);
+
+            // Set the shape's width and height
+            shape.Width = shapeWidth;
+            shape.Height = shapeHeight;
+
+            // These color settings will apply to the letters of the displayed WordArt text
+            shape.FillColor = wordArtFill;
+            shape.StrokeColor = line;
+
+            // The WordArt object is accessed here, and we will will set the text and font like this
+            shape.TextPath.Text = text;
+            shape.TextPath.FontFamily = textFontFamily;
+            
+            return shape;
+        }
+        //ExEnd
+
+        //ExFor:ShapeBase.AdjustWithEffects(System.Drawing.RectangleF)
+        //ExFor:ShapeBase.AllowOverlap
+        //ExFor:ShapeBase.AlternativeText
+        //ExFor:ShapeBase.AnchorLocked
+        //ExFor:ShapeBase.Bottom
+        //ExFor:ShapeBase.BoundsWithEffects
+        //ExFor:ShapeBase.CanHaveImage
+        //ExFor:ShapeBase.CoordOrigin
+        //ExFor:ShapeBase.CoordSize
+        //ExFor:ShapeBase.DistanceBottom
+        //ExFor:ShapeBase.DistanceLeft
+        //ExFor:ShapeBase.DistanceRight
+        //ExFor:ShapeBase.DistanceTop
+        //ExFor:ShapeBase.FetchInheritedShapeAttr(System.Int32)
+        //ExFor:ShapeBase.FetchShapeAttr(System.Int32)
+        //ExFor:ShapeBase.Font
+        //ExFor:ShapeBase.GetDirectShapeAttr(System.Int32)
+        //ExFor:ShapeBase.GetShapeRenderer
+        //ExFor:ShapeBase.IsDeleteRevision
+        //ExFor:ShapeBase.IsGroup
+        //ExFor:ShapeBase.IsHorizontalRule
+        //ExFor:ShapeBase.IsImage
+        //ExFor:ShapeBase.IsInsertRevision
+        //ExFor:ShapeBase.IsMoveFromRevision
+        //ExFor:ShapeBase.IsMoveToRevision
+        //ExFor:ShapeBase.IsSignatureLine
+        //ExFor:ShapeBase.IsTopLevel
+        //ExFor:ShapeBase.IsWordArt
+        //ExFor:ShapeBase.LocalToParent(System.Drawing.PointF)
+        //ExFor:ShapeBase.Name
+        //ExFor:ShapeBase.ParentParagraph
+        //ExFor:ShapeBase.RemoveShapeAttr(System.Int32)
+        //ExFor:ShapeBase.Right
+        //ExFor:ShapeBase.Rotation
+        //ExFor:ShapeBase.SetShapeAttr(System.Int32, System.Object)
+        //ExFor:ShapeBase.ShapeType
+        //ExFor:ShapeBase.SizeInPoints
+        //ExFor:ShapeBase.Target
+        //ExFor:ShapeLineStyle
+        //ExFor:ShapeMarkupLanguage
+        [Test]
+        public void ShapeBase()
+        {
+
         }
 
     }
