@@ -1772,6 +1772,71 @@ namespace ApiExamples
         }
         //ExEnd
 
+        [Test]
+        public void ShapeRevision()
+        {
+            //ExStart
+            //ExFor:ShapeBase.IsDeleteRevision
+            //ExFor:ShapeBase.IsInsertRevision
+            //ExFor:ShapeBase.IsMoveFromRevision
+            //ExFor:ShapeBase.IsMoveToRevision
+            //ExSummary:Shows how to work with revision shapes.
+            // Open a blank document
+            Document doc = new Document();
+
+            // Insert an inline shape without tracking revisions
+            Assert.False(doc.TrackRevisions);
+            Shape shape = new Shape(doc, ShapeType.Cube);
+            shape.WrapType = WrapType.Inline;
+            shape.Width = 100.0;
+            shape.Height = 100.0;
+            doc.FirstSection.Body.FirstParagraph.AppendChild(shape);
+
+            // Start tracking revisions and then insert another shape
+            doc.StartTrackRevisions("John Doe");
+
+            shape = new Shape(doc, ShapeType.Sun);
+            shape.WrapType = WrapType.Inline;
+            shape.Width = 100.0;
+            shape.Height = 100.0;
+            doc.FirstSection.Body.FirstParagraph.AppendChild(shape);
+
+            // Get the document's shape collection which includes just the two shapes we added
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
+            Assert.AreEqual(2, shapes.Count);
+
+            // Remove the first shape
+            shapes[0].Remove();
+
+            // Because we removed that shape while changes were being tracked, the shape counts as a delete revision
+            Assert.AreEqual(ShapeType.Cube, shapes[0].ShapeType);
+            Assert.True(shapes[0].IsDeleteRevision);
+
+            // And we inserted another shape while tracking changes, so it counts as an insert revision
+            Assert.AreEqual(ShapeType.Sun, shapes[1].ShapeType);
+            Assert.True(shapes[1].IsInsertRevision);
+
+            // Open a document that contains a move revision
+            // A move revision is when we, while changes are tracked, cut(not copy)-and-paste or highlight and drag text from one place to another
+            // If inline shapes are caught up in the text movement, they will count as move revisions as well
+            // Moving a shape with no text wrapping around will not count as a move revision
+            doc = new Document(MyDir + "Shape.Revisions.docx");
+
+            // The document has one shape that was moved, but shape move revisions will have two instances of that shape
+            // One will be the shape at its arrival destination and the other will be the shape at its original location
+            List<Shape> nc = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
+            Assert.AreEqual(2, nc.Count);
+
+            // This is the move to revision, also the shape at its arrival destination
+            Assert.False(nc[0].IsMoveFromRevision);
+            Assert.True(nc[0].IsMoveToRevision);
+
+            // This is the move from revision, which is the shape at its original location
+            Assert.True(nc[1].IsMoveFromRevision);
+            Assert.False(nc[1].IsMoveToRevision);
+            //ExEnd
+        }
+
         //ExFor:ShapeBase.AdjustWithEffects(System.Drawing.RectangleF)
         //ExFor:ShapeBase.AllowOverlap
         //ExFor:ShapeBase.AlternativeText
@@ -1790,13 +1855,9 @@ namespace ApiExamples
         //ExFor:ShapeBase.Font
         //ExFor:ShapeBase.GetDirectShapeAttr(System.Int32)
         //ExFor:ShapeBase.GetShapeRenderer
-        //ExFor:ShapeBase.IsDeleteRevision
         //ExFor:ShapeBase.IsGroup
         //ExFor:ShapeBase.IsHorizontalRule
         //ExFor:ShapeBase.IsImage
-        //ExFor:ShapeBase.IsInsertRevision
-        //ExFor:ShapeBase.IsMoveFromRevision
-        //ExFor:ShapeBase.IsMoveToRevision
         //ExFor:ShapeBase.IsTopLevel
         //ExFor:ShapeBase.LocalToParent(System.Drawing.PointF)
         //ExFor:ShapeBase.Name
@@ -1810,15 +1871,7 @@ namespace ApiExamples
         //ExFor:ShapeBase.Target
         //ExFor:ShapeLineStyle
         //ExFor:ShapeMarkupLanguage
-        [Test]
-        public void ShapeBase()
-        {
-            Document doc = new Document(MyDir + "Shape.Revisions.docx");
 
-            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
-
-            //Assert.AreEqual(6, shapes.Count);
-        }
 
     }
 }
