@@ -1407,7 +1407,7 @@ namespace ApiExamples
         public void VisitShapes()
         {
             // Open a document that contains shapes
-            Document doc = new Document(MyDir + "Shape.VarietyOfShapes.docx");
+            Document doc = new Document(MyDir + "Shape.Revisions.docx");
             
             // Create a ShapeVisitor and get the document to accept it
             ShapeVisitor shapeVisitor = new ShapeVisitor();
@@ -1531,6 +1531,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Shape.SignatureLine
+            //ExFor:ShapeBase.IsSignatureLine
             //ExFor:SignatureLine
             //ExFor:SignatureLine.AllowComments
             //ExFor:SignatureLine.DefaultInstructions
@@ -1652,6 +1653,7 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:Shape.TextPath
+        //ExFor:ShapeBase.IsWordArt
         //ExFor:TextPath
         //ExFor:TextPath.Bold
         //ExFor:TextPath.FitPath
@@ -1696,6 +1698,7 @@ namespace ApiExamples
 
             Assert.AreEqual(36.0, shape.TextPath.Size);
             Assert.AreEqual("Bold & Italic", shape.TextPath.Text);
+            Assert.AreEqual(ShapeType.TextPlainText, shape.ShapeType);
 
             // Toggle whether or not to display text
             shape = AppendWordArt(doc, "On set to true", "Calibri", 150, 24, Color.Yellow, Color.Red, ShapeType.TextPlainText);
@@ -1794,9 +1797,7 @@ namespace ApiExamples
         //ExFor:ShapeBase.IsInsertRevision
         //ExFor:ShapeBase.IsMoveFromRevision
         //ExFor:ShapeBase.IsMoveToRevision
-        //ExFor:ShapeBase.IsSignatureLine
         //ExFor:ShapeBase.IsTopLevel
-        //ExFor:ShapeBase.IsWordArt
         //ExFor:ShapeBase.LocalToParent(System.Drawing.PointF)
         //ExFor:ShapeBase.Name
         //ExFor:ShapeBase.ParentParagraph
@@ -1812,7 +1813,11 @@ namespace ApiExamples
         [Test]
         public void ShapeBase()
         {
+            Document doc = new Document(MyDir + "Shape.Revisions.docx");
 
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
+
+            //Assert.AreEqual(6, shapes.Count);
         }
 
     }
