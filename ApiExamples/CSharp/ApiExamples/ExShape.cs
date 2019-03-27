@@ -20,6 +20,7 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
+using Org.BouncyCastle.Bcpg.OpenPgp;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 
 #if NETSTANDARD2_0 || __MOBILE__
@@ -34,6 +35,160 @@ namespace ApiExamples
     [TestFixture]
     public class ExShape : ApiExampleBase
     {
+        [Test]
+        public void InsertShape()
+        {
+            //ExStart
+            //ExFor:ShapeBase.AlternativeText
+            //ExFor:ShapeBase.Name
+            //ExFor:ShapeBase.Font
+            //ExFor:ShapeBase.CanHaveImage
+            //ExFor:ShapeBase.ParentParagraph
+            //ExFor:ShapeBase.Rotation
+            //ExSummary:Shows how to insert shapes.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a cube and set its name
+            Shape shape = builder.InsertShape(ShapeType.Cube, 150, 150);
+            shape.Name = "MyCube";
+            
+            // We can also set the alt text like this
+            // This text will be found in Format AutoShape > Alt Text
+            shape.AlternativeText = "Alt text for MyCube.";
+            
+            // Insert a text box
+            shape = builder.InsertShape(ShapeType.TextBox, 300, 50);
+            shape.Font.Name = "Arial";
+            
+            // Move the builder into the text box and write text
+            builder.MoveTo(shape.LastParagraph);
+            builder.Write("Hello world!");
+
+            // Move the builder out of the text box back into the main document
+            builder.MoveTo(shape.ParentParagraph);         
+
+            // Insert a shape with an image
+            shape = builder.InsertImage(Image.FromFile(ImageDir + "Aspose.Words.gif"));
+            Assert.True(shape.CanHaveImage);
+            Assert.True(shape.HasImage);
+
+            // Rotate the image
+            shape.Rotation = 45.0;
+
+            doc.Save(ArtifactsDir + "Shape.InsertShapes.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ShapeCoords()
+        {
+            //ExFor:ShapeBase.DistanceBottom
+            //ExFor:ShapeBase.DistanceLeft
+            //ExFor:ShapeBase.DistanceRight
+            //ExFor:ShapeBase.DistanceTop
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, 150, 150);
+            shape.WrapType = WrapType.Square;
+
+            // Push text out of the way
+            shape.DistanceTop = 20.0;
+            shape.DistanceBottom = 20.0;
+            shape.DistanceLeft = 20.0;
+            shape.DistanceRight = 20.0;
+
+            shape.Left = 100.0;
+            shape.Top = 100.0;
+
+            shape.CoordOrigin = new Point(100, 100);
+
+            for (int i = 0; i < 500; i++)
+            {
+                builder.Write("text ");
+            }
+
+            doc.Save(ArtifactsDir + "Shape.ShapeCoords.docx");
+        }
+
+        [Test]
+        public void InsertGroupShape()
+        {
+            //ExStart
+            //ExFor:ShapeBase.AnchorLocked
+            //ExFor:ShapeBase.IsTopLevel
+            //ExFor:ShapeBase.CoordOrigin
+            //ExFor:ShapeBase.CoordSize
+            //ExFor:ShapeBase.LocalToParent(PointF)
+            //ExSummary:Shows how to create and work with a group of shapes.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Every GroupShape is top level
+            GroupShape group = new GroupShape(doc);
+            Assert.True(group.IsGroup);
+            Assert.True(group.IsTopLevel);
+
+            // And it is a floating shape too, so we can set its coordinates independently of the text
+            Assert.AreEqual(WrapType.None, group.WrapType);
+
+            // Make it a floating shape
+            group.WrapType = WrapType.None;
+
+            // Top level shapes can have this property changed
+            group.AnchorLocked = true;
+
+            // Set the XY coordinates of the shape group and the size of its containing block, as it appears on the page
+            group.Bounds = new RectangleF(100, 50, 200, 100);
+
+            // Set the scale of the inner coordinates of the shape group
+            // These values mean that the bottom right corner of the 200x100 outer block we set before
+            // will be at x = 2000 and y = 1000, or 2000 units from the left and 1000 units from the top
+            group.CoordSize = new Size(2000, 1000);
+
+            // The coordinate origin of a shape group is x = 0, y = 0 by default, which is the top left corner
+            // If we insert a child shape and set its distance from the left to 2000 and the distance from the top to 1000,
+            // its origin will be at the bottom right corner of the shape group
+            // We can offset the coordinate origin by setting the CoordOrigin attribute
+            // In this instance, we move the origin to the centre of the shape group
+            group.CoordOrigin = new Point(-1000, -500);
+            
+            // Populate the shape group with child shapes
+            // First, insert a rectangle
+            Shape subShape = new Shape(doc, ShapeType.Rectangle);
+            subShape.Width = 500;
+            subShape.Height = 700;
+
+            // Place its top left corner at the parent group's coordinate origin, which is currently at its centre
+            subShape.Left = 0;
+            subShape.Top = 0;
+
+            group.AppendChild(subShape);
+
+            // Insert a triangle
+            subShape = new Shape(doc, ShapeType.Triangle);
+            subShape.Width = 400;
+            subShape.Height = 400;
+
+            // Place its origin at the bottom right corner of the group
+            subShape.Left = 1000;
+            subShape.Top = 500;
+
+            // The offset between this child shape and parent group can be seen here
+            Assert.AreEqual(new PointF(1000, 500), subShape.LocalToParent(new PointF(0, 0)));
+
+            group.AppendChild(subShape);
+
+            // Child shapes of a group shape are not top level
+            Assert.False(subShape.IsTopLevel);
+
+            // Finally, insert the group into the document and save
+            builder.InsertNode(group);
+            doc.Save(ArtifactsDir + "Shape.InsertGroupShape.docx");
+            //ExEnd
+        }
+
         [Test]
         public void DeleteAllShapes()
         {
@@ -702,6 +857,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ShapeBase.MarkupLanguage
+            //ExFor:ShapeBase.SizeInPoints
             //ExSummary:Shows how get markup language for shape object in document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -752,6 +908,7 @@ namespace ApiExamples
             //ExFor:Stroke.Weight
             //ExFor:Stroke.JoinStyle
             //ExFor:Stroke.LineStyle
+            //ExFor:ShapeLineStyle
             //ExSummary:Shows how change stroke properties
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1737,7 +1894,7 @@ namespace ApiExamples
             shape.TextPath.FitShape = false;
             shape.TextPath.Size = 24.0;
             shape.TextPath.TextPathAlignment = TextPathAlignment.Right;
-            
+
             doc.Save(ArtifactsDir + "Drawing.TextPath.docx");
         }
 
@@ -1812,14 +1969,14 @@ namespace ApiExamples
             Assert.AreEqual(ShapeType.Cube, shapes[0].ShapeType);
             Assert.True(shapes[0].IsDeleteRevision);
 
-            // And we inserted another shape while tracking changes, so it counts as an insert revision
+            // And we inserted another shape while tracking changes, so that shape will count as an insert revision
             Assert.AreEqual(ShapeType.Sun, shapes[1].ShapeType);
             Assert.True(shapes[1].IsInsertRevision);
 
             // Open a document that contains a move revision
             // A move revision is when we, while changes are tracked, cut(not copy)-and-paste or highlight and drag text from one place to another
             // If inline shapes are caught up in the text movement, they will count as move revisions as well
-            // Moving a shape with no text wrapping around will not count as a move revision
+            // Moving a floating shape will not count as a move revision
             doc = new Document(MyDir + "Shape.Revisions.docx");
 
             // The document has one shape that was moved, but shape move revisions will have two instances of that shape
@@ -1837,41 +1994,96 @@ namespace ApiExamples
             //ExEnd
         }
 
-        //ExFor:ShapeBase.AdjustWithEffects(System.Drawing.RectangleF)
-        //ExFor:ShapeBase.AllowOverlap
-        //ExFor:ShapeBase.AlternativeText
-        //ExFor:ShapeBase.AnchorLocked
-        //ExFor:ShapeBase.Bottom
-        //ExFor:ShapeBase.BoundsWithEffects
-        //ExFor:ShapeBase.CanHaveImage
-        //ExFor:ShapeBase.CoordOrigin
-        //ExFor:ShapeBase.CoordSize
-        //ExFor:ShapeBase.DistanceBottom
-        //ExFor:ShapeBase.DistanceLeft
-        //ExFor:ShapeBase.DistanceRight
-        //ExFor:ShapeBase.DistanceTop
-        //ExFor:ShapeBase.FetchInheritedShapeAttr(System.Int32)
-        //ExFor:ShapeBase.FetchShapeAttr(System.Int32)
-        //ExFor:ShapeBase.Font
-        //ExFor:ShapeBase.GetDirectShapeAttr(System.Int32)
-        //ExFor:ShapeBase.GetShapeRenderer
-        //ExFor:ShapeBase.IsGroup
-        //ExFor:ShapeBase.IsHorizontalRule
-        //ExFor:ShapeBase.IsImage
-        //ExFor:ShapeBase.IsTopLevel
-        //ExFor:ShapeBase.LocalToParent(System.Drawing.PointF)
-        //ExFor:ShapeBase.Name
-        //ExFor:ShapeBase.ParentParagraph
-        //ExFor:ShapeBase.RemoveShapeAttr(System.Int32)
-        //ExFor:ShapeBase.Right
-        //ExFor:ShapeBase.Rotation
-        //ExFor:ShapeBase.SetShapeAttr(System.Int32, System.Object)
-        //ExFor:ShapeBase.ShapeType
-        //ExFor:ShapeBase.SizeInPoints
-        //ExFor:ShapeBase.Target
-        //ExFor:ShapeLineStyle
-        //ExFor:ShapeMarkupLanguage
+        [Test]
+        public void AdjustWithEffects()
+        {
+            //ExStart
+            //ExFor:ShapeBase.AdjustWithEffects(RectangleF)
+            //ExFor:ShapeBase.BoundsWithEffects
+            //ExSummary:Shows how to check how a shape's bounds are affected by shape effects.
+            // Open a document that contains two shapes and get its shape collection
+            Document doc = new Document(MyDir + "Shape.AdjustWithEffects.docx");
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
+            Assert.AreEqual(2, shapes.Count);
 
+            // The two shapes are identical in terms of dimensions and shape type
+            Assert.AreEqual(shapes[0].Width, shapes[1].Width);
+            Assert.AreEqual(shapes[0].Height, shapes[1].Height);
+            Assert.AreEqual(shapes[0].ShapeType, shapes[1].ShapeType);
 
+            // However, the first shape has no effects, while the second one has a shadow and thick outline
+            Assert.AreEqual(0.0, shapes[0].StrokeWeight);
+            Assert.AreEqual(20.0, shapes[1].StrokeWeight);
+            Assert.False(shapes[0].ShadowEnabled);
+            Assert.True(shapes[1].ShadowEnabled);
+
+            // These effects make the size of the second shape's silhouette bigger than that of the first
+            // Even though the size of the rectangle that shows up when we click on these shapes in Microsoft Word is the same,
+            // the practical outer bounds of the second shape are affected by the shadow and outline and are bigger
+            // We can use the AdjustWithEffects method to see exactly how much bigger they are
+
+            // The first shape has no outline or effects
+            Shape shape = shapes[0];
+
+            // Create a RectangleF object, which represents a rectangle, which we could potentially use as the coordinates and bounds for a shape
+            RectangleF rectangleF = new RectangleF(200, 200, 1000, 1000);
+
+            // Run this method to get the size of the rectangle adjusted for all of our shape's effects
+            RectangleF rectangleFOut = shape.AdjustWithEffects(rectangleF);
+
+            // Since the shape has no border-changing effects, its boundary dimensions are unaffected
+            Assert.AreEqual(200, rectangleFOut.X);
+            Assert.AreEqual(200, rectangleFOut.Y);
+            Assert.AreEqual(1000, rectangleFOut.Width);
+            Assert.AreEqual(1000, rectangleFOut.Height);
+
+            // The final extent of the first shape, in points
+            Assert.AreEqual(0, shape.BoundsWithEffects.X);
+            Assert.AreEqual(0, shape.BoundsWithEffects.Y);
+            Assert.AreEqual(147, shape.BoundsWithEffects.Width);
+            Assert.AreEqual(147, shape.BoundsWithEffects.Height);
+
+            // Do the same with the second shape
+            shape = shapes[1];
+            rectangleF = new RectangleF(200, 200, 1000, 1000);
+            rectangleFOut = shape.AdjustWithEffects(rectangleF);
+            
+            // The shape's x/y coordinates (top left corner location) have been pushed back by the thick outline
+            Assert.AreEqual(171.5, rectangleFOut.X);
+            Assert.AreEqual(167, rectangleFOut.Y);
+
+            // The width and height were also affected by the outline and shadow
+            Assert.AreEqual(1045, rectangleFOut.Width);
+            Assert.AreEqual(1132, rectangleFOut.Height);
+
+            // These values are also affected by effects
+            Assert.AreEqual(-28.5, shape.BoundsWithEffects.X);
+            Assert.AreEqual(-33, shape.BoundsWithEffects.Y);
+            Assert.AreEqual(192, shape.BoundsWithEffects.Width);
+            Assert.AreEqual(279, shape.BoundsWithEffects.Height);
+            //ExEnd
+        }
+
+        [Test]
+        public void RenderAllShapes()
+        {
+            //ExStart
+            //ExFor:ShapeBase.GetShapeRenderer
+            //ExSummary:Shows how to export shapes using a shape renderer.
+            // Open a document that contains shapes and get its shape collection
+            Document doc = new Document(MyDir + "Shape.VarietyOfShapes.docx");
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
+            Assert.AreEqual(7, shapes.Count);
+
+            // There are 7 shapes in the document, with one group shape with 2 child shapes
+            // The child shapes will be rendered but their parent group shape will be skipped, so we will see 6 output files
+            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())
+            {
+                ShapeRenderer renderer = shape.GetShapeRenderer();
+                ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
+                renderer.Save(ArtifactsDir + $"Shape.ShapeRenderer {shape.Name}.png", options);
+            }
+            //ExEnd
+        }
     }
 }

@@ -149,6 +149,8 @@ namespace ApiExamples
         //ExFor:Drawing.GroupShape.#ctor(DocumentBase)
         //ExFor:Drawing.GroupShape.#ctor(DocumentBase,Drawing.ShapeMarkupLanguage)
         //ExFor:Drawing.GroupShape.Accept(DocumentVisitor)
+        //ExFor:ShapeBase.IsGroup
+        //ExFor:ShapeBase.ShapeType
         //ExSummary:Shows how to create a group of shapes, and let it accept a visitor
         [Test] //ExSkip
         public void GroupOfShapes()
@@ -173,6 +175,8 @@ namespace ApiExamples
             GroupShape group = new GroupShape(doc);
             group.AppendChild(balloon);
             group.AppendChild(cube);
+
+            Assert.True(group.IsGroup);
 
             builder.InsertNode(group);
 

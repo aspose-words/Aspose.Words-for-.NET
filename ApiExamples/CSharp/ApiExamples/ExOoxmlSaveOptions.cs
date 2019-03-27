@@ -26,6 +26,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:OoxmlCompliance
             //ExFor:OoxmlSaveOptions.Compliance
+            //ExFor:ShapeMarkupLanguage
             //ExSummary:Shows conversion VML shapes to DML using ISO/IEC 29500:2008 Strict compliance level
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
