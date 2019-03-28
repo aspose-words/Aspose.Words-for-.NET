@@ -20,7 +20,6 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
-using Org.BouncyCastle.Bcpg.OpenPgp;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 
 #if NETSTANDARD2_0 || __MOBILE__
@@ -81,7 +80,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ShapeCoords()
+        public void ShapeCoords() //INSP: Please add tags (ExStart, ExSummary, ExEnd)
         {
             //ExStart
             //ExFor:ShapeBase.DistanceBottom
@@ -1927,7 +1926,7 @@ namespace ApiExamples
             shape.FillColor = wordArtFill;
             shape.StrokeColor = line;
 
-            // The WordArt object is accessed here, and we will will set the text and font like this
+            // The WordArt object is accessed here, and we will set the text and font like this
             shape.TextPath.Text = text;
             shape.TextPath.FontFamily = textFontFamily;
             
@@ -1978,6 +1977,8 @@ namespace ApiExamples
             // And we inserted another shape while tracking changes, so that shape will count as an insert revision
             Assert.AreEqual(ShapeType.Sun, shapes[1].ShapeType);
             Assert.True(shapes[1].IsInsertRevision);
+
+            //INSP: I think it will be more convenient to divide this example into two
 
             // Open a document that contains a move revision
             // A move revision is when we, while changes are tracked, cut(not copy)-and-paste or highlight and drag text from one place to another
