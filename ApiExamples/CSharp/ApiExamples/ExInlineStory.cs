@@ -120,7 +120,7 @@ namespace ApiExamples
             table.EnsureMinimum();
 
             // We can place a table inside a footnote, which will make it appear at the footer of the referencing page
-            Assert.IsEmpty(footnote.Tables);
+            Assert.That(footnote.Tables, Is.Empty);
             footnote.AppendChild(table);
             Assert.AreEqual(1, footnote.Tables.Count);
             Assert.AreEqual(NodeType.Table, footnote.LastChild.NodeType);

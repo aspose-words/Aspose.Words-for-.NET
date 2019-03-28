@@ -14,7 +14,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using Aspose.Words;
@@ -31,8 +30,10 @@ using Aspose.Words.Settings;
 using Aspose.Words.Tables;
 using Aspose.Words.Themes;
 using NUnit.Framework;
-using Org.BouncyCastle.Pkcs;
 using CompareOptions = Aspose.Words.CompareOptions;
+#if !(NETSTANDARD2_0 || __MOBILE__)
+using Org.BouncyCastle.Pkcs;
+#endif
 
 namespace ApiExamples
 {
@@ -813,6 +814,7 @@ namespace ApiExamples
             //ExEnd
         }
 
+#if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
         public void CertificateHolderCreate()
         {
@@ -856,6 +858,7 @@ namespace ApiExamples
             CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
             //ExEnd
         }
+#endif
 
         [Test]
         public void DigitalSignatureSign()

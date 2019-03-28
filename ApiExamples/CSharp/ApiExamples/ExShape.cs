@@ -34,6 +34,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExShape : ApiExampleBase
     {
+#if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
         public void InsertShape()
         {
@@ -78,6 +79,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Shape.InsertShapes.docx");
             //ExEnd
         }
+#endif
 
         [Test]
         public void ShapeCoords()

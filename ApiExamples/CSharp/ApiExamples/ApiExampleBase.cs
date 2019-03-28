@@ -178,7 +178,6 @@ namespace ApiExamples
             ImageDir = new Uri(new Uri(CodeBaseDir), @"Data/Images/").LocalPath;
             DatabaseDir = new Uri(new Uri(CodeBaseDir), @"Data/Database/").LocalPath;
             AsposeLogoUrl = new Uri("https://www.aspose.cloud/templates/aspose/App_Themes/V3/images/words/header/aspose_words-for-net.png").AbsoluteUri;
-            
         }
     }
 }

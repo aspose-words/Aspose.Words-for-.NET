@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,6 +9,7 @@ using Aspose.Words.Drawing;
 using NUnit.Framework;
 using Shape = Aspose.Words.Drawing.Shape;
 #if !(NETSTANDARD2_0 || __MOBILE__)
+using System.Drawing.Imaging;
 using System.Net;
 #endif
 
@@ -317,6 +317,7 @@ namespace ApiExamples
             //ExEnd
         }
 
+#if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
         public void SaveAllImages()
         {
@@ -354,6 +355,7 @@ namespace ApiExamples
             }
             //ExEnd
         }
+#endif
 
         [Test]
         public void ImageData()
@@ -431,6 +433,7 @@ namespace ApiExamples
             //ExEnd
         }
 
+#if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
         public void ImportImage()
         {
@@ -460,6 +463,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ImageData.ImportedImage.docx");
             //ExEnd
         }
+#endif
 
         [Test]
         public void ImageSize()
