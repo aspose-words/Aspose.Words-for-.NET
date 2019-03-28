@@ -154,6 +154,7 @@ namespace ApiExamples
             //ExFor:Document.#ctor(Stream,LoadOptions)
             //ExFor:LoadOptions.#ctor
             //ExFor:LoadOptions.BaseUri
+            //ExFor:ShapeBase.IsImage
             //ExId:DocumentCtor_LoadOptions
             //ExSummary:Opens an HTML document with images from a stream using a base URI.
             Document doc = new Document();

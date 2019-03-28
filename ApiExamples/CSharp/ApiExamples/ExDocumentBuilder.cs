@@ -165,9 +165,15 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertHorizontalRule
+            //ExFor:ShapeBase.IsHorizontalRule
             //ExSummary:Shows how to insert horizontal rule shape in a document.
+            // Use a document builder to insert a horizontal rule
             DocumentBuilder builder = new DocumentBuilder();
             builder.InsertHorizontalRule();
+
+            // Get the rule from the document's shape collection and verify it
+            Shape horizontalRule = (Shape)builder.Document.GetChild(NodeType.Shape, 0, true);
+            Assert.True(horizontalRule.IsHorizontalRule);
             //ExEnd
         }
 

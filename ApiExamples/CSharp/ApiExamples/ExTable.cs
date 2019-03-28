@@ -1226,6 +1226,7 @@ namespace ApiExamples
             //ExFor:Table.AbsoluteHorizontalDistance
             //ExFor:Table.AbsoluteVerticalDistance
             //ExFor:Table.AllowOverlap
+            //ExFor:ShapeBase.AllowOverlap
             //ExSummary:Shows how get properties for floating tables
             Document doc = new Document(MyDir + "Table.Distance.docx");
 
@@ -1241,7 +1242,6 @@ namespace ApiExamples
                 Assert.AreEqual(4.8, table.AbsoluteVerticalDistance);
                 Assert.AreEqual(true, table.AllowOverlap);
             }
-
             //ExEnd
         }
     }
