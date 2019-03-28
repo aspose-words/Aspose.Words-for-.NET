@@ -1242,7 +1242,6 @@ namespace ApiExamples
                 Assert.AreEqual(4.8, table.AbsoluteVerticalDistance);
                 Assert.AreEqual(true, table.AllowOverlap);
             }
-
             //ExEnd
         }
     }

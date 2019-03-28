@@ -59,7 +59,7 @@ namespace ApiExamples
             
             // Insert a text box
             shape = builder.InsertShape(ShapeType.TextBox, 300, 50);
-            shape.Font.Name = "Arial";
+            shape.Font.Name = "Times New Roman";
             
             // Move the builder into the text box and write text
             builder.MoveTo(shape.LastParagraph);
@@ -83,33 +83,40 @@ namespace ApiExamples
         [Test]
         public void ShapeCoords()
         {
+            //ExStart
             //ExFor:ShapeBase.DistanceBottom
             //ExFor:ShapeBase.DistanceLeft
             //ExFor:ShapeBase.DistanceRight
             //ExFor:ShapeBase.DistanceTop
+            //ExSummary:Shows how to set the wrapping distance for text that surrounds a shape.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Insert a rectangle and get the text to wrap tightly around its bounds
             Shape shape = builder.InsertShape(ShapeType.Rectangle, 150, 150);
-            shape.WrapType = WrapType.Square;
+            shape.WrapType = WrapType.Tight;
 
-            // Push text out of the way
-            shape.DistanceTop = 20.0;
-            shape.DistanceBottom = 20.0;
-            shape.DistanceLeft = 20.0;
-            shape.DistanceRight = 20.0;
+            // Set the minimum distance between the shape and surrounding text
+            shape.DistanceTop = 40.0;
+            shape.DistanceBottom = 40.0;
+            shape.DistanceLeft = 40.0;
+            shape.DistanceRight = 40.0;
 
+            // Move the shape closer to the centre of the page
             shape.Left = 100.0;
             shape.Top = 100.0;
 
-            shape.CoordOrigin = new Point(100, 100);
+            // Rotate the shape
+            shape.Rotation = 60.0;
 
+            // Add text that the shape will push out of the way
             for (int i = 0; i < 500; i++)
             {
                 builder.Write("text ");
             }
 
             doc.Save(ArtifactsDir + "Shape.ShapeCoords.docx");
+            //ExEnd
         }
 
         [Test]
@@ -164,6 +171,7 @@ namespace ApiExamples
             subShape.Left = 0;
             subShape.Top = 0;
 
+            // Add the rectangle to the group
             group.AppendChild(subShape);
 
             // Insert a triangle
@@ -178,6 +186,7 @@ namespace ApiExamples
             // The offset between this child shape and parent group can be seen here
             Assert.AreEqual(new PointF(1000, 500), subShape.LocalToParent(new PointF(0, 0)));
 
+            // Add the triangle to the group
             group.AppendChild(subShape);
 
             // Child shapes of a group shape are not top level
@@ -871,7 +880,6 @@ namespace ApiExamples
                 Console.WriteLine("Shape: " + shape.MarkupLanguage);
                 Console.WriteLine("ShapeSize: " + shape.SizeInPoints);
             }
-
             //ExEnd
         }
 
@@ -1775,8 +1783,7 @@ namespace ApiExamples
             textBox.LayoutFlow = LayoutFlow.TopToBottomIdeographic;
 
             // Move the builder out of the shape and back into the main document body
-            builder.CurrentSection.Body.AppendParagraph("");
-            builder.MoveToDocumentEnd();
+            builder.MoveTo(textBoxShape.ParentParagraph);
 
             // Insert another TextBox
             textBoxShape = builder.InsertShape(ShapeType.TextBox, 150, 100);
@@ -1789,8 +1796,7 @@ namespace ApiExamples
             builder.MoveTo(textBoxShape.LastParagraph);
             builder.Write("Text fit tightly inside textbox");
 
-            builder.CurrentSection.Body.AppendParagraph("");
-            builder.MoveToDocumentEnd();
+            builder.MoveTo(textBoxShape.ParentParagraph);
 
             textBoxShape = builder.InsertShape(ShapeType.TextBox, 100, 100);
             textBox = textBoxShape.TextBox;
@@ -2069,7 +2075,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ShapeBase.GetShapeRenderer
-            //ExSummary:Shows how to export shapes using a shape renderer.
+            //ExSummary:Shows how to export shapes to files in the local file system using a shape renderer.
             // Open a document that contains shapes and get its shape collection
             Document doc = new Document(MyDir + "Shape.VarietyOfShapes.docx");
             List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
