@@ -80,7 +80,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ShapeCoords() //INSP: Please add tags (ExStart, ExSummary, ExEnd)
+        public void ShapeCoords()
         {
             //ExStart
             //ExFor:ShapeBase.DistanceBottom
@@ -1940,8 +1940,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:ShapeBase.IsDeleteRevision
             //ExFor:ShapeBase.IsInsertRevision
-            //ExFor:ShapeBase.IsMoveFromRevision
-            //ExFor:ShapeBase.IsMoveToRevision
             //ExSummary:Shows how to work with revision shapes.
             // Open a blank document
             Document doc = new Document();
@@ -1977,14 +1975,21 @@ namespace ApiExamples
             // And we inserted another shape while tracking changes, so that shape will count as an insert revision
             Assert.AreEqual(ShapeType.Sun, shapes[1].ShapeType);
             Assert.True(shapes[1].IsInsertRevision);
+            //ExEnd
+        }
 
-            //INSP: I think it will be more convenient to divide this example into two
-
+        [Test]
+        public void MoveRevisions()
+        {
+            //ExStart
+            //ExFor:ShapeBase.IsMoveFromRevision
+            //ExFor:ShapeBase.IsMoveToRevision
+            //ExSummary:Shows how to identify move revision shapes.
             // Open a document that contains a move revision
             // A move revision is when we, while changes are tracked, cut(not copy)-and-paste or highlight and drag text from one place to another
             // If inline shapes are caught up in the text movement, they will count as move revisions as well
             // Moving a floating shape will not count as a move revision
-            doc = new Document(MyDir + "Shape.Revisions.docx");
+            Document doc = new Document(MyDir + "Shape.Revisions.docx");
 
             // The document has one shape that was moved, but shape move revisions will have two instances of that shape
             // One will be the shape at its arrival destination and the other will be the shape at its original location
