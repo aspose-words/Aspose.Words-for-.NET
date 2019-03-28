@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiExampleBase.cs" />
+    <Compile Include="ComHelper.cs" />
     <Compile Include="CustomBarcodeGenerator.cs" />
     <Compile Include="DocumentHelper.cs" />
     <Compile Include="ExAbsolutePositionTab.cs" />
