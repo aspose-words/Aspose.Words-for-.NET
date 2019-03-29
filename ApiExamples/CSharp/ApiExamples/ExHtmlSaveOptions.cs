@@ -401,12 +401,18 @@ namespace ApiExamples
 
             FontSettings fontSettings = new FontSettings
             {
-                DefaultFontName = "Arial", 
-                EnableFontSubstitution = false
+                SubstitutionSettings =
+                {
+                    DefaultFontSubstitution =
+                    {
+                        DefaultFontName = "Arial",
+                        Enabled = true
+                    }
+                }
             };
 
             document.FontSettings = fontSettings;
-
+            
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html)
             {
                 // By default this option is set to 'False' and Aspose.Words writes font names as specified in the source document.

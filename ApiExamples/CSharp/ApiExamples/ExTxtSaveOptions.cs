@@ -35,8 +35,8 @@ namespace ApiExamples
             //ExFor:TxtSaveOptions.AddBidiMarks
             //ExSummary:Shows how to insert Unicode Character 'RIGHT-TO-LEFT MARK' (U+200F) before each bi-directional Run in text.
             Document doc = new Document(MyDir + "Document.docx");
-            // In Aspose.Words by default this option is set to true unlike Word
-            TxtSaveOptions saveOptions = new TxtSaveOptions { AddBidiMarks = false };
+            
+            TxtSaveOptions saveOptions = new TxtSaveOptions { AddBidiMarks = true };
 
             doc.Save(ArtifactsDir + "AddBidiMarks.txt", saveOptions);
             //ExEnd
