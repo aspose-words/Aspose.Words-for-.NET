@@ -10,7 +10,6 @@
 //ExFor:FieldStart
 //ExId:ReplaceHyperlinks
 //ExSummary:Finds all hyperlinks in a Word document and changes their URL and display name.
-
 using System;
 using System.Linq;
 using System.Text;
@@ -133,7 +132,6 @@ namespace ApiExamples
         {
             get
             {
-                String dummy = null; // This is needed to fool the C# to VB.NET converter.
                 return mTarget;
             }
             set
@@ -233,5 +231,4 @@ namespace ApiExamples
         );
     }
 }
-
 //ExEnd
