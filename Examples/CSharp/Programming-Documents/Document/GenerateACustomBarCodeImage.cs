@@ -4,6 +4,7 @@ using System;
 using Aspose.Words.Fields;
 using System.Drawing;
 using Aspose.BarCode;
+using Aspose.BarCode.Generation;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
@@ -98,49 +99,49 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             if (parameters.BarcodeType == null || parameters.BarcodeValue == null)
                 return null;
 
-            BarCodeBuilder builder = new BarCodeBuilder();
-
             string type = parameters.BarcodeType.ToUpper();
+            var encodeType = EncodeTypes.None;
 
             switch (type)
             {
                 case "QR":
-                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.QR;
+                    encodeType = Aspose.BarCode.Generation.EncodeTypes.QR;
                     break;
                 case "CODE128":
-                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.Code128;
+                    encodeType = Aspose.BarCode.Generation.EncodeTypes.Code128;
                     break;
                 case "CODE39":
-                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.Code39Standard;
+                    encodeType = Aspose.BarCode.Generation.EncodeTypes.Code39Standard;
                     break;
                 case "EAN8":
-                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.EAN8;
+                    encodeType = Aspose.BarCode.Generation.EncodeTypes.EAN8;
                     break;
                 case "EAN13":
-                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.EAN13;
+                    encodeType = Aspose.BarCode.Generation.EncodeTypes.EAN13;
                     break;
                 case "UPCA":
-                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.UPCA;
+                    encodeType = Aspose.BarCode.Generation.EncodeTypes.UPCA;
                     break;
                 case "UPCE":
-                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.UPCE;
+                    encodeType = Aspose.BarCode.Generation.EncodeTypes.UPCE;
                     break;
                 case "ITF14":
-                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.ITF14;
+                    encodeType = Aspose.BarCode.Generation.EncodeTypes.ITF14;
                     break;
                 case "CASE":
-                    builder.EncodeType = Aspose.BarCode.Generation.EncodeTypes.None;
+                    encodeType = Aspose.BarCode.Generation.EncodeTypes.None;
                     break;
             }
 
             //builder.EncodeType = ConvertBarcodeType(parameters.BarcodeType);
-            if (builder.EncodeType == Aspose.BarCode.Generation.EncodeTypes.None)
+            if (encodeType == Aspose.BarCode.Generation.EncodeTypes.None)
                 return null;
 
+            BarCodeGenerator builder = new BarCodeGenerator(encodeType);
             builder.CodeText = parameters.BarcodeValue;
 
-            if (builder.EncodeType == Aspose.BarCode.Generation.EncodeTypes.QR)
-                builder.Display2DText = parameters.BarcodeValue;
+            if (encodeType == Aspose.BarCode.Generation.EncodeTypes.QR)
+                builder.D2.DisplayText = parameters.BarcodeValue;
 
             if (parameters.ForegroundColor != null)
                 builder.ForeColor = ConvertColor(parameters.ForegroundColor);
@@ -150,42 +151,42 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 
             if (parameters.SymbolHeight != null)
             {
-                builder.ImageHeight = ConvertSymbolHeight(parameters.SymbolHeight);
-                builder.AutoSize = false;
+                builder.BarCodeHeight.Millimeters = ConvertSymbolHeight(parameters.SymbolHeight);
+                builder.AutoSizeMode = AutoSizeMode.Nearest;
             }
 
-            builder.CodeLocation = CodeLocation.None;
+            builder.CodeTextStyle.Location = CodeLocation.None;
 
             if (parameters.DisplayText)
-                builder.CodeLocation = CodeLocation.Below;
+                builder.CodeTextStyle.Location = CodeLocation.Below;
 
             builder.CaptionAbove.Text = "";
 
             const float scale = 0.4f; // Empiric scaling factor for converting Word barcode to Aspose.BarCode
             float xdim = 1.0f;
 
-            if (builder.EncodeType == Aspose.BarCode.Generation.EncodeTypes.QR)
+            if (encodeType == Aspose.BarCode.Generation.EncodeTypes.QR)
             {
-                builder.AutoSize = false;
-                builder.ImageWidth *= scale;
-                builder.ImageHeight = builder.ImageWidth;
-                xdim = builder.ImageHeight / 25;
-                builder.xDimension = builder.yDimension = xdim;
+                builder.AutoSizeMode = AutoSizeMode.Nearest;
+                builder.BarCodeWidth.Millimeters *= scale;
+                builder.BarCodeHeight.Millimeters = builder.BarCodeWidth.Millimeters;
+                xdim = builder.BarCodeHeight.Millimeters / 25;
+                builder.XDimension.Millimeters = builder.BarHeight.Millimeters = xdim;
             }
 
             if (parameters.ScalingFactor != null)
             {
                 float scalingFactor = ConvertScalingFactor(parameters.ScalingFactor);
-                builder.ImageHeight *= scalingFactor;
-                if (builder.EncodeType == Aspose.BarCode.Generation.EncodeTypes.QR)
+                builder.BarCodeHeight.Millimeters *= scalingFactor;
+                if (encodeType == Aspose.BarCode.Generation.EncodeTypes.QR)
                 {
-                    builder.ImageWidth = builder.ImageHeight;
-                    builder.xDimension = builder.yDimension = xdim * scalingFactor;
+                    builder.BarCodeWidth.Millimeters = builder.BarCodeHeight.Millimeters;
+                    builder.XDimension.Millimeters = builder.BarHeight.Millimeters = xdim * scalingFactor;
                 }
 
-                builder.AutoSize = false;
+                builder.AutoSizeMode = AutoSizeMode.Nearest;
             }
-            return builder.BarCodeImage;
+            return builder.GenerateBarCodeImage();
         }
 
         //Image IBarcodeGenerator.GetBarcodeImage(BarcodeParameters parameters)

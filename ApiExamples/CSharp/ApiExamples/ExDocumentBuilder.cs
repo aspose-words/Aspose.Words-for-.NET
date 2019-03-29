@@ -165,9 +165,15 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertHorizontalRule
+            //ExFor:ShapeBase.IsHorizontalRule
             //ExSummary:Shows how to insert horizontal rule shape in a document.
+            // Use a document builder to insert a horizontal rule
             DocumentBuilder builder = new DocumentBuilder();
             builder.InsertHorizontalRule();
+
+            // Get the rule from the document's shape collection and verify it
+            Shape horizontalRule = (Shape)builder.Document.GetChild(NodeType.Shape, 0, true);
+            Assert.True(horizontalRule.IsHorizontalRule);
             //ExEnd
         }
 
@@ -1611,7 +1617,7 @@ namespace ApiExamples
             //ExSummary:Shows how to insert an image into a document from a web address.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.InsertImage("http://www.aspose.com/images/aspose-logo.gif");
+            builder.InsertImage(AsposeLogoUrl);
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertImageFromUrl.doc");
             //ExEnd
@@ -2362,7 +2368,7 @@ namespace ApiExamples
             // We can get an image to use as a custom thumbnail
             using (WebClient webClient = new WebClient())
             {
-                byte[] imageBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
+                byte[] imageBytes = webClient.DownloadData(AsposeLogoUrl);
 
                 using (MemoryStream stream = new MemoryStream(imageBytes))
                 {
@@ -2485,7 +2491,7 @@ namespace ApiExamples
                     // If that is not suitable, we can make the icon to look like any image
                     using (WebClient webClient = new WebClient())
                     {
-                        byte[] imgBytes = webClient.DownloadData("http://www.aspose.com/images/aspose-logo.gif");
+                        byte[] imgBytes = webClient.DownloadData(AsposeLogoUrl);
 
 #if NETSTANDARD2_0 || __MOBILE__
                         SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(imgBytes);

@@ -21,6 +21,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
             SetboundsOfAxis(dataDir);
             SetIntervalUnitBetweenLabelsOnAxis(dataDir);
             HideChartAxis(dataDir);
+            TickMultiLineLabelAlignment(dataDir);
         }
 
 
@@ -211,6 +212,20 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
             doc.Save(dataDir);
             // ExEnd:HideChartAxis
             Console.WriteLine("\nY Axis of chart has hidden successfully.\nFile saved at " + dataDir);
+        }
+
+        public static void TickMultiLineLabelAlignment(string dataDir)
+        {
+            // ExStart:TickMultiLineLabelAlignment
+            Document doc = new Document(dataDir + "Document.docx");
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            ChartAxis axis = shape.Chart.AxisX;
+
+            //This property has effect only for multi-line labels.
+            axis.TickLabelAlignment = ParagraphAlignment.Right;
+
+            doc.Save(dataDir + "Document_out.docx");
+            // ExEnd:TickMultiLineLabelAlignment
         }
     }
 }

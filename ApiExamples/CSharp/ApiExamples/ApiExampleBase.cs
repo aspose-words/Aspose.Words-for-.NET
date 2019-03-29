@@ -162,6 +162,11 @@ namespace ApiExamples
         /// </summary>
         internal static string DatabaseDir { get; }
 
+        /// <summary>
+        /// Gets the url of the Aspose logo.
+        /// </summary>
+        internal static string AsposeLogoUrl { get; }
+
         static ApiExampleBase()
         {
             AssemblyDir = GetAssemblyDir(Assembly.GetExecutingAssembly());
@@ -172,6 +177,7 @@ namespace ApiExamples
             MyDir = new Uri(new Uri(CodeBaseDir), @"Data/").LocalPath;
             ImageDir = new Uri(new Uri(CodeBaseDir), @"Data/Images/").LocalPath;
             DatabaseDir = new Uri(new Uri(CodeBaseDir), @"Data/Database/").LocalPath;
+            AsposeLogoUrl = new Uri("https://www.aspose.cloud/templates/aspose/App_Themes/V3/images/words/header/aspose_words-for-net.png").AbsoluteUri;
         }
     }
 }

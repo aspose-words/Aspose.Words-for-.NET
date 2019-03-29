@@ -41,7 +41,7 @@ namespace ApiExamples
             builder.Writeln();
 
             builder.Write("Image from an Internet url, automatically downloaded for you: ");
-            builder.InsertImage("http://www.aspose.com/Images/aspose-logo.jpg");
+            builder.InsertImage(AsposeLogoUrl);
             builder.Writeln();
 
             builder.Document.Save(ArtifactsDir + "Image.CreateFromUrl.doc");
@@ -163,7 +163,9 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ShapeBase.Left
+            //ExFor:ShapeBase.Right
             //ExFor:ShapeBase.Top
+            //ExFor:ShapeBase.Bottom
             //ExFor:ShapeBase.Width
             //ExFor:ShapeBase.Height
             //ExFor:DocumentBuilder.CurrentSection
@@ -173,7 +175,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             // By default, the image is inline.
-            Shape shape = builder.InsertImage(MyDir + "Images/Hammer.wmf");
+            Shape shape = builder.InsertImage(MyDir + "Images/Aspose.Words.gif");
 
             // Make the image float, put it behind text and center on the page.
             shape.WrapType = WrapType.None;
@@ -182,13 +184,21 @@ namespace ApiExamples
             shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
             shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
 
-            // Make the shape occupy a band 50 points high at the very top of the page.
-            shape.Left = 0;
-            shape.Top = 0;
-            shape.Width = builder.CurrentSection.PageSetup.PageWidth;
-            shape.Height = 50;
+            // Set the shape's coordinates, from the top left corner of the page
+            shape.Left = 100;
+            shape.Top = 80;
 
-            builder.Document.Save(ArtifactsDir + "Image.CreateFloatingPositionSize.doc");
+            // Set the shape's height
+            shape.Height = 125.0;
+
+            // The width will be scaled to the height and the dimensions of the real image
+            Assert.AreEqual(125.0, shape.Width);
+
+            // The Bottom and Right members contain the locations of the bottom and right edges of the image
+            Assert.AreEqual(shape.Top + shape.Height, shape.Bottom);
+            Assert.AreEqual(shape.Left + shape.Width, shape.Right);
+
+            builder.Document.Save(ArtifactsDir + "Image.CreateFloatingPositionSize.docx");
             //ExEnd
         }
 
@@ -198,12 +208,14 @@ namespace ApiExamples
             //ExStart
             //ExFor:ShapeBase.HRef
             //ExFor:ShapeBase.ScreenTip
+            //ExFor:ShapeBase.Target
             //ExSummary:Shows how to insert an image with a hyperlink.
             // This creates a builder and also an empty document inside the builder.
             DocumentBuilder builder = new DocumentBuilder();
 
             Shape shape = builder.InsertImage(MyDir + "Images/Hammer.wmf");
             shape.HRef = "http://www.aspose.com/Community/Forums/75/ShowForum.aspx";
+            shape.Target = "New Window";
             shape.ScreenTip = "Aspose.Words Support Forums";
 
             builder.Document.Save(ArtifactsDir + "Image.InsertImageWithHyperlink.doc");

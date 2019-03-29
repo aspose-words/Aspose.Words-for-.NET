@@ -119,6 +119,11 @@ namespace ApiExamples
             get { return gGoldsDir; }
         }
 
+        /// <summary>
+        /// Gets the url of the Aspose logo.
+        /// </summary>
+        internal static string AsposeLogoUrl { get; }
+
         static ApiExampleBase()
         {
             gArtifactsDir = Path.Combine(mExternalAppPath, "Data/Artifacts/");
@@ -126,6 +131,7 @@ namespace ApiExamples
             gImageDir = Path.Combine(mExternalAppPath, "Data/Images/");
             gDatabaseDir = Path.Combine(mExternalAppPath, "Data/Database/");
             gGoldsDir = Path.Combine(mExternalAppPath, "Data/Golds/");
+            AsposeLogoUrl = new Uri("https://www.aspose.cloud/templates/aspose/App_Themes/V3/images/words/header/aspose_words-for-net.png").AbsoluteUri;
         }
 
         private static readonly String gArtifactsDir;

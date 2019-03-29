@@ -208,6 +208,7 @@ namespace ApiExamples
 
             //ExStart
             //ExFor:EditableRange.EditorGroup
+            //ExFor:EditorType
             //ExSummary:Shows how to add editing group for editable ranges
             EditableRangeStart startRange1 = builder.StartEditableRange();
 
