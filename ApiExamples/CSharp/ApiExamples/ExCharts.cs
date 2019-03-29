@@ -115,5 +115,42 @@ namespace ApiExamples
             return chart;
         }
         //ExEnd
+
+        [Test]
+        public void AxisScaling()
+        {
+            //ExStart
+            //ExFor:Charts.AxisScaleType
+            //ExFor:Charts.AxisScaling
+            //ExFor:Charts.AxisScaling.LogBase
+            //ExFor:Charts.AxisScaling.Type
+            //ExSummary:Shows how to set up logarithmic axis scaling.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a scatter chart and clear its default data series
+            Shape chartShape = builder.InsertChart(ChartType.Scatter, 450, 300);
+            Chart chart = chartShape.Chart;
+            chart.Series.Clear();
+
+            // Insert a series with X/Y coordinates for 5 points
+            // Note that, because of the erratic Y values, a graph with linear Y-axis scaling may not produce a satisfactory result
+            chart.Series.Add("Series 1", new[] { 1.0, 2.0, 3.0, 4.0, 5.0 }, new[] { 1.0, 10.0, 100.0, 1000.0, 10000.0 });
+
+            // The scaling of the X axis is linear,
+            // which means that the X value goes up by the same amount (in this case, 1) at each vertical line
+            // This X-axis ruler will display "1  2  3.."
+            Assert.AreEqual(AxisScaleType.Linear, chart.AxisX.Scaling.Type);
+
+            // As for the Y axis, we can set the scaling to Logarithmic,
+            // which means that the Y-values go up by an order of magnitude at each horizontal line
+            // The order of magnitude is decided by the LogBase attribute, which we will leave at 10, its default value
+            // This Y-axis ruler will display "1  10  100..."
+            chart.AxisY.Scaling.Type = AxisScaleType.Logarithmic;
+            Assert.AreEqual(10.0, chart.AxisX.Scaling.LogBase);
+
+            doc.Save(ArtifactsDir + "Charts.AxisScaling.docx");
+            //ExEnd
+        }
     }
 }
