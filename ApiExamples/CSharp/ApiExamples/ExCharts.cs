@@ -22,13 +22,16 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Use a document builder to insert a bar chart
             Shape chartShape = builder.InsertChart(ChartType.Bar, 400, 300);
 
             Assert.AreEqual(ShapeType.NonPrimitive, chartShape.ShapeType);
             Assert.True(chartShape.HasChart);
 
+            // Get the chart object from the containing shape
             Chart chart = chartShape.Chart;
             
+            // Set the title text, which appears at the top center of the chart and modify its appearance
             ChartTitle title = chart.Title;
             title.Text = "MyChart";
             title.Overlay = true;
@@ -150,6 +153,65 @@ namespace ApiExamples
             Assert.AreEqual(10.0, chart.AxisX.Scaling.LogBase);
 
             doc.Save(ArtifactsDir + "Charts.AxisScaling.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void AxisBound()
+        {
+            //ExStart
+            //ExFor:Charts.AxisBound.#ctor
+            //ExFor:Charts.AxisBound.IsAuto
+            //ExFor:Charts.AxisBound.Value
+            //ExFor:Charts.AxisBound.ValueAsDate
+            //ExSummary:Shows how to set custom axis bounds.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a scatter chart, remove default data and populate it with data from a ChartSeries
+            Shape chartShape = builder.InsertChart(ChartType.Scatter, 450, 300);
+            Chart chart = chartShape.Chart;
+            chart.Series.Clear();
+            chart.Series.Add("Series 1", new[] { 1.1, 5.4, 7.9, 3.5, 2.1, 9.7 }, new[] { 2.1, 0.3, 0.6, 3.3, 1.4, 1.9 });
+
+            // By default, the axis bounds are automatically defined so all the series data within the table is included
+            Assert.True(chart.AxisX.Scaling.Minimum.IsAuto);
+
+            // If we wish to set our own scale bounds, we need to replace them with new ones
+            // Both the axis rulers will go from 0 to 10
+            chart.AxisX.Scaling.Minimum = new AxisBound(0);
+            chart.AxisX.Scaling.Maximum = new AxisBound(10);
+            chart.AxisY.Scaling.Minimum = new AxisBound(0);
+            chart.AxisY.Scaling.Maximum = new AxisBound(10);
+
+            // These are custom and not defined automatically
+            Assert.False(chart.AxisX.Scaling.Minimum.IsAuto);
+            Assert.False(chart.AxisY.Scaling.Minimum.IsAuto);
+
+            // Create a line graph
+            chartShape = builder.InsertChart(ChartType.Line, 450, 300);
+            chart = chartShape.Chart;
+            chart.Series.Clear();
+
+            // Create a collection of dates, which will make up the X axis
+            DateTime[] dates = { new DateTime(1973, 5, 11),
+                new DateTime(1981, 2, 4),
+                new DateTime(1985, 9, 23),
+                new DateTime(1989, 6, 28),
+                new DateTime(1994, 12, 15)
+            };
+
+            // Assign a Y-value for each date 
+            chart.Series.Add("Series 1", dates, new[] { 3.0, 4.7, 5.9, 7.1, 8.9 });
+
+            // Set the bounds for the X-axis so that dates from before 1980, and from 1990 and onwards are outside of the bounds
+            // This will exclude the first and the last of our five values
+            // Note that while the excluded values do not appear in the viewport, they still exist in the graph,
+            // seeing as the data line in the line graph still tends towards them
+            chart.AxisX.Scaling.Minimum = new AxisBound(new DateTime(1980, 1, 1));
+            chart.AxisX.Scaling.Maximum = new AxisBound(new DateTime(1990, 1, 1));
+
+            doc.Save(ArtifactsDir + "Charts.AxisBound.docx");
             //ExEnd
         }
     }
