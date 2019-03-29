@@ -50,7 +50,8 @@ namespace ApiExamples
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-
+            
+            // There are 4 ways of populating a chart's series collection
             // 1: Each series has a string array of categories, each with a corresponding data value
             // Some of the other possible applications are bar, column, line and surface charts
             Chart chart = AppendChart(builder, ChartType.Column, 300, 300);
@@ -107,13 +108,12 @@ namespace ApiExamples
         {
             Shape chartShape = builder.InsertChart(chartType, width, height);
             Chart chart = chartShape.Chart;
-            ChartSeriesCollection seriesCollection = chart.Series;
-            seriesCollection.Clear();
+            chart.Series.Clear();
 
             Assert.AreEqual(0, chart.Series.Count);
 
             return chart;
         }
-        //ExSKip
+        //ExEnd
     }
 }
