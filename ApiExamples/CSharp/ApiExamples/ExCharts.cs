@@ -13,6 +13,7 @@ namespace ApiExamples
         public void ChartSeries()
         {
             //ExStart
+            //ExFor:Charts.Chart
             //ExFor:Charts.Chart.Title
             //ExFor:Charts.ChartTitle
             //ExFor:Charts.ChartTitle.Overlay
@@ -212,6 +213,35 @@ namespace ApiExamples
             chart.AxisX.Scaling.Maximum = new AxisBound(new DateTime(1990, 1, 1));
 
             doc.Save(ArtifactsDir + "Charts.AxisBound.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ChartLegend()
+        {
+            //ExStart
+            //ExFor:Charts.Chart.Legend
+            //ExFor:Charts.ChartLegend
+            //ExFor:Charts.ChartLegend.Overlay
+            //ExFor:Charts.ChartLegend.Position
+            //ExSummary:Shows how to edit the appearance of a chart's legend.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a line graph
+            Shape chartShape = builder.InsertChart(ChartType.Line, 450, 300);
+            Chart chart = chartShape.Chart;
+
+            // Get its legend
+            ChartLegend legend = chart.Legend;
+
+            // By default, other elements of a chart will not overlap with its legend
+            Assert.False(legend.Overlay);
+
+            // We can move its position by setting this attribute
+            legend.Position = LegendPosition.TopRight;
+
+            doc.Save(ArtifactsDir + "Charts.ChartLegend.docx");
             //ExEnd
         }
     }
