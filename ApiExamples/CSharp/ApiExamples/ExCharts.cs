@@ -10,7 +10,7 @@ namespace ApiExamples
     public class ExCharts : ApiExampleBase
     {
         [Test]
-        public void ChartSeries()
+        public void ChartTitle()
         {
             //ExStart
             //ExFor:Charts.Chart
@@ -19,7 +19,7 @@ namespace ApiExamples
             //ExFor:Charts.ChartTitle.Overlay
             //ExFor:Charts.ChartTitle.Show
             //ExFor:Charts.ChartTitle.Text
-            //ExSumary:Shows how to insert a chart and change its title.
+            //ExSummary:Shows how to insert a chart and change its title.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -38,9 +38,93 @@ namespace ApiExamples
             title.Overlay = true;
             title.Show = true;
 
-            doc.Save(ArtifactsDir + "Charts.BarChart.docx");
+            doc.Save(ArtifactsDir + "Charts.ChartSeries.docx");
             //ExEnd
         }
+
+        //ExStart
+        //ExFor:Charts.ChartSeries
+        //ExFor:Charts.ChartSeries.DataLabels
+        //ExFor:Charts.ChartSeries.DataPoints
+        //ExFor:Charts.ChartSeries.Name
+        //ExFor:Charts.ChartSeries.Smooth
+        //ExFor:Charts.ChartDataLabel
+        //ExFor:Charts.ChartDataLabel.Index
+        //ExFor:Charts.ChartDataLabel.IsVisible
+        //ExFor:Charts.ChartDataLabel.NumberFormat
+        //ExFor:Charts.ChartDataLabel.Separator
+        //ExFor:Charts.ChartDataLabel.ShowBubbleSize
+        //ExFor:Charts.ChartDataLabel.ShowCategoryName
+        //ExFor:Charts.ChartDataLabel.ShowDataLabelsRange
+        //ExFor:Charts.ChartDataLabel.ShowLeaderLines
+        //ExFor:Charts.ChartDataLabel.ShowLegendKey
+        //ExFor:Charts.ChartDataLabel.ShowPercentage
+        //ExFor:Charts.ChartDataLabel.ShowSeriesName
+        //ExFor:Charts.ChartDataLabel.ShowValue
+        //ExFor:Charts.ChartDataLabelCollection
+        //ExFor:Charts.ChartDataLabelCollection.Add(System.Int32)
+        //ExFor:Charts.ChartDataLabelCollection.Clear
+        //ExFor:Charts.ChartDataLabelCollection.Count
+        //ExFor:Charts.ChartDataLabelCollection.GetEnumerator
+        //ExFor:Charts.ChartDataLabelCollection.Item(System.Int32)
+        //ExFor:Charts.ChartDataLabelCollection.RemoveAt(System.Int32)
+        //ExSummary:Shows how to apply labels to chart data points.
+        [Test] //ExSkip
+        public void ChartDataLabels()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            // Use a document builder to insert a bar chart
+            Shape chartShape = builder.InsertChart(ChartType.Line, 400, 300);
+
+            // Get the chart object from the containing shape
+            Chart chart = chartShape.Chart;
+
+            // The chart already contains demo data
+            Assert.AreEqual(3, chart.Series.Count);
+
+            ChartSeries series = chart.Series[0];
+            Assert.AreEqual("Series 1", series.Name);
+
+            // The line for this series will be smoothed
+            series.Smooth = true;
+
+            ApplyDataLabels(series, 3);
+
+            Assert.AreEqual(3, series.DataLabels.Count);
+
+            doc.Save(ArtifactsDir + "Charts.ChartDataLabels.docx");
+        }
+
+        /// <summary>
+        /// Apply uniform data labels to a number of data points in a series, up to maxIndex
+        /// </summary>
+        private void ApplyDataLabels(ChartSeries series, int maxIndex)
+        {
+            for (int i = 0; i < maxIndex; i++)
+            {
+                ChartDataLabel label = series.DataLabels.Add(i);
+                label.ShowCategoryName = true;
+                label.ShowSeriesName = true;
+                label.ShowValue = true;
+
+                label.NumberFormat.FormatCode = "000.0";
+                label.Separator = ", ";
+
+                label.ShowLeaderLines = true;
+                label.ShowLegendKey = true;
+
+                Assert.False(label.ShowPercentage);
+                Assert.False(label.ShowDataLabelsRange);
+                Assert.True(label.IsVisible);
+
+                // Attributes that only apply to bubble graphs
+                Assert.False(series.Bubble3D);
+                Assert.False(label.ShowBubbleSize);
+            }
+        }
+        //ExEnd
 
         //ExStart
         //ExFor:Charts.Chart.Series
@@ -48,6 +132,7 @@ namespace ApiExamples
         //ExFor:Charts.ChartSeriesCollection.Add(String,Double[],Double[])
         //ExFor:Charts.ChartSeriesCollection.Add(String,Double[],Double[],Double[])
         //ExFor:Charts.ChartSeriesCollection.Add(String,String[],Double[])
+        //ExFor:Charts.ChartType
         //ExSummary:Shows an appropriate graph type for each chart series.
         [Test] //ExSkip
         public void ChartSeriesCollection()

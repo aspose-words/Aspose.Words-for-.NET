@@ -1225,6 +1225,9 @@ namespace ApiExamples
             //ExFor:ChartAxis.TickLabelPosition
             //ExFor:ChartAxis.TickLabelSpacingIsAuto
             //ExFor:ChartAxis.TickMarkSpacing
+            //ExFor:Charts.Chart.AxisX
+            //ExFor:Charts.Chart.AxisY
+            //ExFor:Charts.Chart.AxisZ
             //ExSummary:Shows how to insert chart using the axis options for detailed configuration.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1239,9 +1242,12 @@ namespace ApiExamples
                 new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 640, 320, 280, 120, 150 });
 
-            // Get chart axises
+            // Get chart axes
             ChartAxis xAxis = chart.AxisX;
             ChartAxis yAxis = chart.AxisY;
+
+            // For 2D charts like the one we made, the Z axis is null
+            Assert.Null(chart.AxisZ);
 
             // Set X-axis options
             xAxis.CategoryType = AxisCategoryType.Category;
