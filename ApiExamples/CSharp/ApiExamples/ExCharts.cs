@@ -48,13 +48,11 @@ namespace ApiExamples
         //ExFor:Charts.ChartSeries.DataLabels
         //ExFor:Charts.ChartSeries.DataPoints
         //ExFor:Charts.ChartSeries.Name
-        //ExFor:Charts.ChartSeries.Smooth
         //ExFor:Charts.ChartDataLabel
         //ExFor:Charts.ChartDataLabel.Index
         //ExFor:Charts.ChartDataLabel.IsVisible
         //ExFor:Charts.ChartDataLabel.NumberFormat
         //ExFor:Charts.ChartDataLabel.Separator
-        //ExFor:Charts.ChartDataLabel.ShowBubbleSize
         //ExFor:Charts.ChartDataLabel.ShowCategoryName
         //ExFor:Charts.ChartDataLabel.ShowDataLabelsRange
         //ExFor:Charts.ChartDataLabel.ShowLeaderLines
@@ -85,9 +83,6 @@ namespace ApiExamples
             // The chart already contains demo data comprised of 3 series each with 4 categories
             Assert.AreEqual(3, chart.Series.Count);
             Assert.AreEqual("Series 1", chart.Series[0].Name);
-
-            // The line for this series will be smoothed
-            chart.Series[0].Smooth = true;
 
             // Apply data labels to every series in the graph
             foreach (ChartSeries series in chart.Series)
@@ -139,10 +134,6 @@ namespace ApiExamples
                 label.NumberFormat.FormatCode = numberFormat;
                 label.Separator = separator;
 
-                // Attributes that apply exclusively to bubble graphs
-                Assert.False(series.Bubble3D);
-                Assert.False(label.ShowBubbleSize);
-
                 // The label automatically becomes visible
                 Assert.True(label.IsVisible);
             }
@@ -150,6 +141,9 @@ namespace ApiExamples
         //ExEnd
 
         //ExStart
+        //ExFor:Charts.ChartSeries.Smooth
+        //ExFor:Charts.ChartDataPoint
+        //ExFor:Charts.ChartDataPoint.Index
         //ExFor:Charts.ChartDataPointCollection
         //ExFor:Charts.ChartDataPointCollection.Add(System.Int32)
         //ExFor:Charts.ChartDataPointCollection.Clear
@@ -157,9 +151,10 @@ namespace ApiExamples
         //ExFor:Charts.ChartDataPointCollection.GetEnumerator
         //ExFor:Charts.ChartDataPointCollection.Item(System.Int32)
         //ExFor:Charts.ChartDataPointCollection.RemoveAt(System.Int32)
+        //ExFor:Charts.ChartMarker
+        //ExFor:Charts.ChartMarker.Size
+        //ExFor:Charts.ChartMarker.Symbol
         //ExFor:Charts.IChartDataPoint
-        //ExFor:Charts.IChartDataPoint.Bubble3D
-        //ExFor:Charts.IChartDataPoint.Explosion
         //ExFor:Charts.IChartDataPoint.InvertIfNegative
         //ExFor:Charts.IChartDataPoint.Marker
         //ExFor:Charts.MarkerSymbol
@@ -170,35 +165,104 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add chart with default data.
+            // Add a line chart, which will have default data that we will use
             Shape shape = builder.InsertChart(ChartType.Line, 500, 350);
             Chart chart = shape.Chart;
 
-            // Get first chart series.
-            ChartSeries firstChartSeries = chart.Series[0];
+            // Apply diamond-shaped data points to the line of the first series
+            foreach (ChartSeries series in chart.Series)
+            {
+                ApplyDataPoints(series, 4, MarkerSymbol.Diamond, 15);
+            }
 
-            // Get ChartDataPoint collection for the first series.
-            ApplyDataPoints(firstChartSeries, 4);
+            // We can further decorate a series line by smoothing it
+            chart.Series[0].Smooth = true;
+
+            // Get the enumerator for the data point collection from one series
+            using (IEnumerator<ChartDataPoint> enumerator = chart.Series[0].DataPoints.GetEnumerator())
+            {
+                // And use it to go over all the data labels in one series and change their separator
+                while (enumerator.MoveNext())
+                {
+                    Assert.False(enumerator.Current.InvertIfNegative);
+                }
+            }
+
+            // If the chart looks too busy, we can remove data points one by one
+            chart.Series[1].DataPoints.RemoveAt(2);
+
+            // We can also clear an entire data point collection for one whole series
+            chart.Series[2].DataPoints.Clear();
 
             doc.Save(ArtifactsDir + "Charts.ChartDataPoint.docx");
         }
 
-        private void ApplyDataPoints(ChartSeries series, int dataPointsCount)
+        /// <summary>
+        /// Applies a number of data points to a series
+        /// </summary>
+        private void ApplyDataPoints(ChartSeries series, int dataPointsCount, MarkerSymbol markerSymbol, int dataPointSize)
         {
-            ChartDataPointCollection dataPoints = series.DataPoints;
-            Assert.AreEqual(0, dataPoints.Count);
-
-            Assert.AreEqual(MarkerSymbol.None, series.Marker.Symbol);
-
             for (int i = 0; i < dataPointsCount; i++)
             {
                 ChartDataPoint point = series.DataPoints.Add(i);
-                // Add custom data marker for the first data point.
-                point.Marker.Symbol = MarkerSymbol.Circle;
-                point.Marker.Size = 15;
+                point.Marker.Symbol = markerSymbol;
+                point.Marker.Size = dataPointSize;
+
+                Assert.AreEqual(i, point.Index);
             }
         }
         //ExEnd
+
+        [Test]
+        public void PieChartExplosion()
+        {
+            //ExStart
+            //ExFor:Charts.IChartDataPoint.Explosion
+            //ExSummary:Shows how to manipulate the position of the portions of a pie chart.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Pie, 500, 350);
+            Chart chart = shape.Chart;
+
+            // In a pie chart, the portions are the data points, which cannot have markers or sizes applied to them
+            // However, we can set this variable to move any individual "slice" away from the center of the chart
+            ChartDataPoint cdp = chart.Series[0].DataPoints.Add(0);
+            cdp.Explosion = 10;
+
+            cdp = chart.Series[0].DataPoints.Add(1);
+            cdp.Explosion = 40;
+
+            doc.Save(ArtifactsDir + "Charts.PieChartExplosion.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void Bubble3D()
+        {
+            //ExStart
+            //ExFor:Charts.ChartDataLabel.ShowBubbleSize
+            //ExFor:Charts.IChartDataPoint.Bubble3D
+            //ExSummary:Demonstrates bubble chart-exclusive features.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a bubble chart with 3D effects on each bubble
+            Shape shape = builder.InsertChart(ChartType.Bubble3D, 500, 350);
+            Chart chart = shape.Chart;
+
+            Assert.True(chart.Series[0].Bubble3D);
+
+            // Apply a data label to each bubble that displays the size of its bubble
+            for (int i = 0; i < 3; i++)
+            {
+                ChartDataLabel cdl = chart.Series[0].DataLabels.Add(i);
+                cdl.ShowBubbleSize = true;
+            }
+            
+            doc.Save(ArtifactsDir + "Charts.Bubble3D.docx");
+            //ExEnd
+        }
 
         //ExStart
         //ExFor:Charts.Chart.Series
@@ -374,6 +438,7 @@ namespace ApiExamples
             //ExFor:Charts.ChartLegend
             //ExFor:Charts.ChartLegend.Overlay
             //ExFor:Charts.ChartLegend.Position
+            //ExFor:Charts.LegendPosition
             //ExSummary:Shows how to edit the appearance of a chart's legend.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
