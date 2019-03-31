@@ -117,8 +117,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Apply uniform data labels to a number (determined by labelsCount) of data points in a series
-        /// Also apply a number format and separator
+        /// Apply uniform data labels with custom number format and separator to a number (determined by labelsCount) of data points in a series
         /// </summary>
         private void ApplyDataLabels(ChartSeries series, int labelsCount, string numberFormat, string separator)
         {
@@ -146,6 +145,57 @@ namespace ApiExamples
 
                 // The label automatically becomes visible
                 Assert.True(label.IsVisible);
+            }
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:Charts.ChartDataPointCollection
+        //ExFor:Charts.ChartDataPointCollection.Add(System.Int32)
+        //ExFor:Charts.ChartDataPointCollection.Clear
+        //ExFor:Charts.ChartDataPointCollection.Count
+        //ExFor:Charts.ChartDataPointCollection.GetEnumerator
+        //ExFor:Charts.ChartDataPointCollection.Item(System.Int32)
+        //ExFor:Charts.ChartDataPointCollection.RemoveAt(System.Int32)
+        //ExFor:Charts.IChartDataPoint
+        //ExFor:Charts.IChartDataPoint.Bubble3D
+        //ExFor:Charts.IChartDataPoint.Explosion
+        //ExFor:Charts.IChartDataPoint.InvertIfNegative
+        //ExFor:Charts.IChartDataPoint.Marker
+        //ExFor:Charts.MarkerSymbol
+        //ExSummary:Shows how to customize chart data points.
+        [Test]
+        public void ChartDataPointCollection()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Add chart with default data.
+            Shape shape = builder.InsertChart(ChartType.Line, 500, 350);
+            Chart chart = shape.Chart;
+
+            // Get first chart series.
+            ChartSeries firstChartSeries = chart.Series[0];
+
+            // Get ChartDataPoint collection for the first series.
+            ApplyDataPoints(firstChartSeries, 4);
+
+            doc.Save(ArtifactsDir + "Charts.ChartDataPoint.docx");
+        }
+
+        private void ApplyDataPoints(ChartSeries series, int dataPointsCount)
+        {
+            ChartDataPointCollection dataPoints = series.DataPoints;
+            Assert.AreEqual(0, dataPoints.Count);
+
+            Assert.AreEqual(MarkerSymbol.None, series.Marker.Symbol);
+
+            for (int i = 0; i < dataPointsCount; i++)
+            {
+                ChartDataPoint point = series.DataPoints.Add(i);
+                // Add custom data marker for the first data point.
+                point.Marker.Symbol = MarkerSymbol.Circle;
+                point.Marker.Size = 15;
             }
         }
         //ExEnd
