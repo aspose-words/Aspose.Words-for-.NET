@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
@@ -81,36 +82,55 @@ namespace ApiExamples
             // Get the chart object from the containing shape
             Chart chart = chartShape.Chart;
 
-            // The chart already contains demo data
+            // The chart already contains demo data comprised of 3 series each with 4 categories
             Assert.AreEqual(3, chart.Series.Count);
-
-            ChartSeries series = chart.Series[0];
-            Assert.AreEqual("Series 1", series.Name);
+            Assert.AreEqual("Series 1", chart.Series[0].Name);
 
             // The line for this series will be smoothed
-            series.Smooth = true;
+            chart.Series[0].Smooth = true;
 
-            ApplyDataLabels(series, 3);
+            // Apply data labels to every series in the graph
+            foreach (ChartSeries series in chart.Series)
+            {
+                ApplyDataLabels(series, 4, "000.0", ", ");
+                Assert.AreEqual(4, series.DataLabels.Count);
+            }
 
-            Assert.AreEqual(3, series.DataLabels.Count);
+            // Get the enumerator for a data label collection
+            using (IEnumerator<ChartDataLabel> enumerator = chart.Series[0].DataLabels.GetEnumerator())
+            {
+                // And use it to go over all the data labels in one series and change their separator
+                while (enumerator.MoveNext())
+                {
+                    Assert.AreEqual(", ", enumerator.Current.Separator);
+                    enumerator.Current.Separator = " & ";
+                }
+            }
+
+            // If the chart looks too busy, we can remove data labels one by one
+            chart.Series[1].DataLabels.RemoveAt(2);
+
+            // We can also clear an entire data label collection for one whole series
+            chart.Series[2].DataLabels.Clear();
 
             doc.Save(ArtifactsDir + "Charts.ChartDataLabels.docx");
         }
 
         /// <summary>
-        /// Apply uniform data labels to a number of data points in a series, up to maxIndex
+        /// Apply uniform data labels to a number, determined by labelsCount, of data points in a series
+        /// Also apply a number format and separator
         /// </summary>
-        private void ApplyDataLabels(ChartSeries series, int maxIndex)
+        private void ApplyDataLabels(ChartSeries series, int labelsCount, string numberFormat, string separator)
         {
-            for (int i = 0; i < maxIndex; i++)
+            for (int i = 0; i < labelsCount; i++)
             {
                 ChartDataLabel label = series.DataLabels.Add(i);
                 label.ShowCategoryName = true;
                 label.ShowSeriesName = true;
                 label.ShowValue = true;
 
-                label.NumberFormat.FormatCode = "000.0";
-                label.Separator = ", ";
+                label.NumberFormat.FormatCode = numberFormat;
+                label.Separator = separator;
 
                 label.ShowLeaderLines = true;
                 label.ShowLegendKey = true;
