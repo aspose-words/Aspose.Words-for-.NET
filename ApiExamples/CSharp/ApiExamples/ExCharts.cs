@@ -459,5 +459,89 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Charts.ChartLegend.docx");
             //ExEnd
         }
+
+        [Test]
+        public void AxisCross()
+        {
+            //ExStart
+            //ExFor:Charts.ChartAxis.AxisBetweenCategories
+            //ExFor:Charts.ChartAxis.CrossesAt
+            //ExSummary:Shows how to get a graph axis to cross at a custom location.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a column chart, which is populated by default values
+            Shape shape = builder.InsertChart(ChartType.Column, 450, 250);
+            Chart chart = shape.Chart;
+
+            // Get the Y-axis to cross at a value of 3.0, making 3.0 the new Y-zero of our column chart
+            // This effectively means that all the columns with Y-values about 3.0 will be above the Y-centre and point up,
+            // while ones below 3.0 will point down
+            ChartAxis axis = chart.AxisX;
+            axis.AxisBetweenCategories = true;
+            axis.Crosses = AxisCrosses.Custom;
+            axis.CrossesAt = 3.0;
+
+            doc.Save(ArtifactsDir + "Charts.AxisCross.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ChartAxisDisplayUnit()
+        {
+            //ExStart
+            //ExFor:Charts.ChartAxis.DisplayUnit
+            //ExFor:Charts.ChartAxis.MajorUnitIsAuto
+            //ExFor:Charts.ChartAxis.MajorUnitScale
+            //ExFor:Charts.ChartAxis.MinorUnitIsAuto
+            //ExFor:Charts.ChartAxis.MinorUnitScale
+            //ExFor:Charts.ChartAxis.TickLabelSpacing
+            //ExFor:Charts.AxisDisplayUnit
+            //ExFor:Charts.AxisDisplayUnit.CustomUnit
+            //ExFor:Charts.AxisDisplayUnit.Unit
+            //ExSummary:Shows how to manipulate the tick marks and displayed values of a chart axis.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a scatter chart, which is populated by default values
+            Shape shape = builder.InsertChart(ChartType.Scatter, 450, 250);
+            Chart chart = shape.Chart;
+
+            // Set they Y axis to show major ticks every at every 10 units and minor ticks at every 1 units
+            ChartAxis axis = chart.AxisY;
+            axis.MajorTickMark = AxisTickMark.Outside;
+            axis.MinorTickMark = AxisTickMark.Outside;
+
+            axis.MajorUnit = 10.0;
+            axis.MinorUnit = 1.0;
+
+            // Stretch out the bounds of the axis out to show 3 major ticks and 27 minor ticks
+            axis.Scaling.Minimum = new AxisBound(-10);
+            axis.Scaling.Maximum = new AxisBound(20);
+
+            // Do the same for the X-axis
+            axis = chart.AxisX;
+            axis.MajorTickMark = AxisTickMark.Inside;
+            axis.MinorTickMark = AxisTickMark.Inside;
+            axis.MajorUnit = 10.0;
+            axis.Scaling.Minimum = new AxisBound(-10);
+            axis.Scaling.Maximum = new AxisBound(30);
+
+            // We can also use this attribute to set minor tick spacing
+            axis.TickLabelSpacing = 2;
+
+            // Get the axis to display values, but in millions
+            axis.DisplayUnit.Unit = AxisBuiltInUnit.Millions;
+
+            // Besides the built-in axis units we can choose from,
+            // we can also set the axis to display values in some custom denomination, using the following attribute
+            // The statement below is equivalent to the one above
+            axis.DisplayUnit.CustomUnit = 1000000.0;
+
+            doc.Save(ArtifactsDir + "Charts.ChartAxisDisplayUnit.docx");
+            //ExEnd
+        }
+
+
     }
 }
