@@ -729,7 +729,7 @@ namespace ApiExamples
         //ExFor:Charts.ChartType
         //ExSummary:Shows an appropriate graph type for each chart series.
         [Test] //ExSkip
-        public void ChartSeriesCollection()
+        public void ChartSeriesCollectionCreate()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -794,6 +794,61 @@ namespace ApiExamples
             return chart;
         }
         //ExEnd
+
+        [Test]
+        public void ChartSeriesCollectionModify()
+        {
+            //ExStart
+            //ExFor:Charts.ChartSeriesCollection
+            //ExFor:Charts.ChartSeriesCollection.Clear
+            //ExFor:Charts.ChartSeriesCollection.Count
+            //ExFor:Charts.ChartSeriesCollection.GetEnumerator
+            //ExFor:Charts.ChartSeriesCollection.Item(Int32)
+            //ExFor:Charts.ChartSeriesCollection.RemoveAt(Int32)
+            //ExSummary:Shows how to work with a chart's data collection.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a bar chart
+            Shape chartShape = builder.InsertChart(ChartType.Column, 400, 300);
+            Chart chart = chartShape.Chart;
+
+            // All charts come with demo data
+            // This column chart currently has 3 series with 4 categories, which means 4 clusters, 3 columns in each
+            ChartSeriesCollection chartData = chart.Series;
+            Assert.AreEqual(3, chartData.Count);
+
+            // Iterate through the series with an enumerator and print their names
+            using (IEnumerator<ChartSeries> enumerator = chart.Series.GetEnumerator())
+            {
+                // And use it to go over all the data labels in one series and change their separator
+                while (enumerator.MoveNext())
+                {
+                    Console.WriteLine(enumerator.Current.Name);
+                }
+            }
+
+            // We can add new data by adding a new series to the collection, with categories and data
+            // We will match the existing category/series names in the demo data and add a 4th column to each column cluster
+            string[] categories = { "Category 1", "Category 2", "Category 3", "Category 4" };
+            chart.Series.Add("Series 4", categories, new[] { 4.4, 7.0, 3.5, 2.1 });
+
+            Assert.AreEqual(4, chartData.Count);
+            Assert.AreEqual("Series 4", chartData[3].Name);
+
+            // We can remove series by index
+            chartData.RemoveAt(2);
+
+            Assert.AreEqual(3, chartData.Count);
+            Assert.AreEqual("Series 4", chartData[2].Name);
+
+            // We can also remove out all the series
+            // This leaves us with an empty graph and is a convenient way of wiping out demo data
+            chartData.Clear();
+
+            Assert.AreEqual(0, chartData.Count);
+            //ExEnd
+        }
 
         [Test]
         public void AxisScaling()
