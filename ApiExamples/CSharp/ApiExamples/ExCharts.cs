@@ -252,6 +252,8 @@ namespace ApiExamples
             //ExFor:ChartAxis.TickLabelPosition
             //ExFor:ChartAxis.TickLabelSpacingIsAuto
             //ExFor:ChartAxis.TickMarkSpacing
+            //ExFor:Charts.AxisCategoryType
+            //ExFor:Charts.AxisCrosses
             //ExFor:Charts.Chart.AxisX
             //ExFor:Charts.Chart.AxisY
             //ExFor:Charts.Chart.AxisZ
@@ -311,9 +313,13 @@ namespace ApiExamples
             //ExFor:AxisBound
             //ExFor:AxisBound.#ctor(Double)
             //ExFor:AxisBound.#ctor(DateTime)
-            //ExFor:ChartAxis.Scaling
             //ExFor:AxisScaling.Minimum
             //ExFor:AxisScaling.Maximum
+            //ExFor:ChartAxis.Scaling
+            //ExFor:Charts.AxisTickMark
+            //ExFor:Charts.AxisTickLabelPosition
+            //ExFor:Charts.AxisTimeUnit
+            //ExFor:Charts.ChartAxis.BaseTimeUnit
             //ExSummary:Shows how to insert chart with date/time values
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -321,7 +327,7 @@ namespace ApiExamples
             // Insert chart.
             Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
             Chart chart = shape.Chart;
-
+            
             // Clear demo data.
             chart.Series.Clear();
 
@@ -342,6 +348,7 @@ namespace ApiExamples
             xAxis.Scaling.Maximum = new AxisBound(new DateTime(2017, 12, 03));
 
             // Set major units to a week and minor units to a day.
+            xAxis.BaseTimeUnit = AxisTimeUnit.Days;
             xAxis.MajorUnit = 7;
             xAxis.MinorUnit = 1;
             xAxis.MajorTickMark = AxisTickMark.Cross;
@@ -396,7 +403,9 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ChartAxis.NumberFormat
+            //ExFor:Charts.ChartNumberFormat
             //ExFor:ChartNumberFormat.FormatCode
+            //ExFor:Charts.ChartNumberFormat.IsLinkedToSource
             //ExSummary:Shows how to set formatting for chart values.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -414,6 +423,9 @@ namespace ApiExamples
 
             // Set number format.
             chart.AxisY.NumberFormat.FormatCode = "#,##0";
+
+            // Set this to override the above value and draw the number format from the source cell
+            Assert.False(chart.AxisY.NumberFormat.IsLinkedToSource);
             //ExEnd
 
             doc.Save(ArtifactsDir + "Shape.SetNumberFormatToChartAxis Out.docx");
@@ -721,12 +733,14 @@ namespace ApiExamples
         }
 
         //ExStart
+        //ExFor:Charts.ChartAxis.Type
+        //ExFor:Charts.ChartAxisType
+        //ExFor:Charts.ChartType
         //ExFor:Charts.Chart.Series
         //ExFor:Charts.ChartSeriesCollection.Add(String,DateTime[],Double[])
         //ExFor:Charts.ChartSeriesCollection.Add(String,Double[],Double[])
         //ExFor:Charts.ChartSeriesCollection.Add(String,Double[],Double[],Double[])
         //ExFor:Charts.ChartSeriesCollection.Add(String,String[],Double[])
-        //ExFor:Charts.ChartType
         //ExSummary:Shows an appropriate graph type for each chart series.
         [Test] //ExSkip
         public void ChartSeriesCollection()
@@ -746,6 +760,10 @@ namespace ApiExamples
             // This will generate a column graph with 3 clusters of 2 bars
             chart.Series.Add("Series 1", categories, new [] { 76.6, 82.1, 91.6 });
             chart.Series.Add("Series 2", categories, new [] { 64.2, 79.5, 94.0 });
+
+            // Categories are distributed along the X-axis while values are distributed along the Y-axis
+            Assert.AreEqual(ChartAxisType.Category, chart.AxisX.Type);
+            Assert.AreEqual(ChartAxisType.Value, chart.AxisY.Type);
 
             // 2: Each series will have a collection of dates with a corresponding value for each date
             // Area, radar and stock charts are some of the appropriate chart types for this
@@ -771,6 +789,10 @@ namespace ApiExamples
             chart.Series.Add("Series 1", new[] { 3.1, 3.5, 6.3, 4.1, 2.2, 8.3, 1.2, 3.6 }, new[] { 3.1, 6.3, 4.6, 0.9, 8.5, 4.2, 2.3, 9.9 });
             chart.Series.Add("Series 2", new[] { 2.6, 7.3, 4.5, 6.6, 2.1, 9.3, 0.7, 3.3 }, new[] { 7.1, 6.6, 3.5, 7.8, 7.7, 9.5, 1.3, 4.6 });
 
+            // Both axes are value axes in this case
+            Assert.AreEqual(ChartAxisType.Value, chart.AxisX.Type);
+            Assert.AreEqual(ChartAxisType.Value, chart.AxisY.Type);
+
             // 4: Each series will be built from three data arrays, used for bubble charts
             chart = AppendChart(builder, ChartType.Bubble, 300, 300);
 
@@ -779,7 +801,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Charts.ChartSeriesCollection.docx");
         }
-
+        
         /// <summary>
         /// Get the DocumentBuilder to insert a chart of a specified ChartType, width and height and clean out its default data
         /// </summary>
@@ -1001,6 +1023,7 @@ namespace ApiExamples
         public void ChartAxisDisplayUnit()
         {
             //ExStart
+            //ExFor:Charts.AxisBuiltInUnit
             //ExFor:Charts.ChartAxis.DisplayUnit
             //ExFor:Charts.ChartAxis.MajorUnitIsAuto
             //ExFor:Charts.ChartAxis.MajorUnitScale
