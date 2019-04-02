@@ -40,7 +40,7 @@ namespace ApiExamples
             title.Overlay = true;
             title.Show = true;
 
-            doc.Save(ArtifactsDir + "Charts.ChartSeries.docx");
+            doc.Save(ArtifactsDir + "Charts.ChartTitle.docx");
             //ExEnd
         }
 
@@ -616,7 +616,7 @@ namespace ApiExamples
         //ExFor:Charts.MarkerSymbol
         //ExSummary:Shows how to customize chart data points.
         [Test]
-        public void ChartDataPointCollection()
+        public void ChartDataPoint()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -729,7 +729,7 @@ namespace ApiExamples
         //ExFor:Charts.ChartType
         //ExSummary:Shows an appropriate graph type for each chart series.
         [Test] //ExSkip
-        public void ChartSeriesCollectionCreate()
+        public void ChartSeriesCollection()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1052,7 +1052,5 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Charts.ChartAxisDisplayUnit.docx");
             //ExEnd
         }
-
-
     }
 }
