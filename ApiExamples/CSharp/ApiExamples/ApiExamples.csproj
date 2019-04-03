@@ -95,6 +95,7 @@
     <Compile Include="ExBuildingBlocks.cs" />
     <Compile Include="ExBuildVersion.cs" />
     <Compile Include="ExCellFormat.cs" />
+    <Compile Include="ExCharts.cs" />
     <Compile Include="ExComment.cs" />
     <Compile Include="ExControlChar.cs" />
     <Compile Include="ExHtmlLoadOptions.cs" />
