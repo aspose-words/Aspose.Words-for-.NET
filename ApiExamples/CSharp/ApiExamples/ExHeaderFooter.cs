@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using Aspose.Words;
@@ -21,27 +22,117 @@ namespace ApiExamples
     public class ExHeaderFooter : ApiExampleBase
     {
         [Test]
-        public void CreateFooter()
+        public void HeaderFooterCreate()
         {
             //ExStart
             //ExFor:HeaderFooter
             //ExFor:HeaderFooter.#ctor(DocumentBase, HeaderFooterType)
+            //ExFor:HeaderFooter.HeaderFooterType
+            //ExFor:HeaderFooter.IsHeader
             //ExFor:HeaderFooterCollection
             //ExFor:Story.AppendParagraph
-            //ExSummary:Creates a footer using the document object model and inserts it into a section.
+            //ExSummary:Creates a header and footer using the document object model and insert them into a section.
             Document doc = new Document();
+            
+            HeaderFooter header = new HeaderFooter(doc, HeaderFooterType.HeaderPrimary);
+            doc.FirstSection.HeadersFooters.Add(header);
+
+            // Add a paragraph with text to the footer.
+            header.AppendParagraph("My header");
+
+            Assert.True(header.IsHeader);
 
             HeaderFooter footer = new HeaderFooter(doc, HeaderFooterType.FooterPrimary);
             doc.FirstSection.HeadersFooters.Add(footer);
 
+            Assert.False(footer.IsHeader);
+
             // Add a paragraph with text to the footer.
-            footer.AppendParagraph("TEST FOOTER");
+            footer.AppendParagraph("My footer");
 
-            doc.Save(ArtifactsDir + "HeaderFooter.CreateFooter.doc");
+            Assert.AreEqual(header.ParentSection, footer.ParentSection);
+
+            doc.Save(ArtifactsDir + "HeaderFooter.HeaderFooterCreate.docx");
             //ExEnd
+            doc = new Document(ArtifactsDir + "HeaderFooter.HeaderFooterCreate.docx");
 
+            Assert.True(doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].Range.Text
+                .Contains("My header"));
             Assert.True(doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].Range.Text
-                .Contains("TEST FOOTER"));
+                .Contains("My footer"));
+        }
+
+        [Test]
+        public void HeaderFooterLink()
+        {
+            //ExStart
+            //ExFor:HeaderFooter.IsLinkedToPrevious
+            //ExFor:HeaderFooterCollection.Item(System.Int32)
+            //ExFor:HeaderFooterCollection.LinkToPrevious(Aspose.Words.HeaderFooterType,System.Boolean)
+            //ExFor:HeaderFooterCollection.LinkToPrevious(System.Boolean)
+            //ExFor:HeaderFooter.ParentSection
+            //ExSummary:Shows how to link header/footers between sections.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create three sections
+            builder.Write("Section 1");
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.Write("Section 2");
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.Write("Section 3");
+
+            // Create a header and footer in the first section and give them text
+            builder.MoveToSection(0);
+
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            builder.Write("This is the header, which will be displayed in sections 1 and 2.");
+
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            builder.Write("This is the footer, which will be displayed in sections 1, 2 and 3.");
+
+            // If headers/footers are linked by the next section, they appear in that section also
+            // The second section will display the header/footers of the first
+            doc.Sections[1].HeadersFooters.LinkToPrevious(true);
+
+            // However, the underlying headers/footers in the respective header/footer collections of the sections still remain different
+            // Linking just overrides the existing headers/footers from the latter section
+            Assert.AreEqual(doc.Sections[0].HeadersFooters[0].HeaderFooterType, doc.Sections[1].HeadersFooters[0].HeaderFooterType);
+            Assert.AreNotEqual(doc.Sections[0].HeadersFooters[0].ParentSection, doc.Sections[1].HeadersFooters[0].ParentSection);
+            Assert.AreNotEqual(doc.Sections[0].HeadersFooters[0].GetText(), doc.Sections[1].HeadersFooters[0].GetText());
+
+            // Likewise, unlinking headers/footers makes them not appear
+            doc.Sections[2].HeadersFooters.LinkToPrevious(false);
+
+            // We can also choose only certain header/footer types to get linked, like the footer in this case
+            // The 3rd section now won't have the same header but will have the same footer as the 2nd and 1st sections
+            doc.Sections[2].HeadersFooters.LinkToPrevious(HeaderFooterType.FooterPrimary, true);
+            
+            // The first section's header/footers can't link themselves to anything because there is no previous section
+            Assert.AreEqual(2, doc.Sections[0].HeadersFooters.Count);
+            Assert.False(doc.Sections[0].HeadersFooters[0].IsLinkedToPrevious);
+            Assert.False(doc.Sections[0].HeadersFooters[1].IsLinkedToPrevious);
+
+            // All of the second section's header/footers are linked to those of the first
+            Assert.AreEqual(6, doc.Sections[1].HeadersFooters.Count);
+            Assert.True(doc.Sections[1].HeadersFooters[0].IsLinkedToPrevious);
+            Assert.True(doc.Sections[1].HeadersFooters[1].IsLinkedToPrevious);
+            Assert.True(doc.Sections[1].HeadersFooters[2].IsLinkedToPrevious);
+            Assert.True(doc.Sections[1].HeadersFooters[3].IsLinkedToPrevious);
+            Assert.True(doc.Sections[1].HeadersFooters[4].IsLinkedToPrevious);
+            Assert.True(doc.Sections[1].HeadersFooters[5].IsLinkedToPrevious);
+
+            // In the third section, only the footer we explicitly linked is linked to that of the second, and consequently the first section
+            Assert.AreEqual(6, doc.Sections[2].HeadersFooters.Count);
+            Assert.False(doc.Sections[2].HeadersFooters[0].IsLinkedToPrevious);
+            Assert.False(doc.Sections[2].HeadersFooters[1].IsLinkedToPrevious);
+            Assert.False(doc.Sections[2].HeadersFooters[2].IsLinkedToPrevious);
+            Assert.True(doc.Sections[2].HeadersFooters[3].IsLinkedToPrevious);
+            Assert.False(doc.Sections[2].HeadersFooters[4].IsLinkedToPrevious);
+            Assert.False(doc.Sections[2].HeadersFooters[5].IsLinkedToPrevious);
+    
+            doc.Save(ArtifactsDir + "HeaderFooter.HeaderFooterLink.docx");
+            //ExEnd
         }
 
         [Test]
