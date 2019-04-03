@@ -789,6 +789,7 @@ namespace ApiExamples
         //ExStart
         //ExFor:DocumentVisitor.VisitFootnoteEnd(Footnote)
         //ExFor:DocumentVisitor.VisitFootnoteStart(Footnote)
+        //ExFor:Footnote.Accept(DocumentVisitor)
         //ExSummary:Traverse a document with a visitor that prints all footnotes that it encounters.
         [Test] //ExSkip
         public void FootnoteToText()
