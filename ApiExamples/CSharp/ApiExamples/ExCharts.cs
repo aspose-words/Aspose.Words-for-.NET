@@ -85,9 +85,9 @@ namespace ApiExamples
             // in this case NumberFormat will be reset to general and inherited from a source cell.
             chartDataLabel2.NumberFormat.IsLinkedToSource = true;
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.NumberFormat.docx");
+            doc.Save(ArtifactsDir + "Charts.NumberFormat.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "DocumentBuilder.NumberFormat.docx", GoldsDir + "DocumentBuilder.NumberFormat Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "Charts.NumberFormat.docx", GoldsDir + "DocumentBuilder.NumberFormat Gold.docx"));
         }
 
         [Test]
@@ -142,7 +142,7 @@ namespace ApiExamples
             seriesColl.Add("AW Series 4", categories,
                 new[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, 9 });
 
-            doc.Save(ArtifactsDir + "EmptyValuesInChartData.docx");
+            doc.Save(ArtifactsDir + "Charts.EmptyValuesInChartData.docx");
         }
 
         [Test]
@@ -302,8 +302,8 @@ namespace ApiExamples
             yAxis.TickLabelPosition = AxisTickLabelPosition.NextToAxis;
             //ExEnd
 
-            doc.Save(ArtifactsDir + "Shape.InsertChartUsingAxisProperties.docx");
-            doc.Save(ArtifactsDir + "Shape.InsertChartUsingAxisProperties.pdf");
+            doc.Save(ArtifactsDir + "Charts.InsertChartUsingAxisProperties.docx");
+            doc.Save(ArtifactsDir + "Charts.InsertChartUsingAxisProperties.pdf");
         }
 
         [Test]
@@ -362,7 +362,7 @@ namespace ApiExamples
             yAxis.Scaling.Minimum = new AxisBound(100);
             yAxis.Scaling.Maximum = new AxisBound(700);
 
-            doc.Save(ArtifactsDir + "ChartAxisProperties.docx");
+            doc.Save(ArtifactsDir + "Charts.ChartAxisProperties.docx");
             //ExEnd
         }
 
@@ -428,8 +428,8 @@ namespace ApiExamples
             Assert.False(chart.AxisY.NumberFormat.IsLinkedToSource);
             //ExEnd
 
-            doc.Save(ArtifactsDir + "Shape.SetNumberFormatToChartAxis.docx");
-            doc.Save(ArtifactsDir + "Shape.SetNumberFormatToChartAxis.pdf");
+            doc.Save(ArtifactsDir + "Charts.SetNumberFormatToChartAxis.docx");
+            doc.Save(ArtifactsDir + "Charts.SetNumberFormatToChartAxis.pdf");
         }
 
         // Note: Tests below used for verification conversion docx to pdf and the correct display.
@@ -456,8 +456,8 @@ namespace ApiExamples
                 new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
 
-            doc.Save(ArtifactsDir + "Shape.TestDisplayChartsWithConversion.docx");
-            doc.Save(ArtifactsDir + "Shape.TestDisplayChartsWithConversion.pdf");
+            doc.Save(ArtifactsDir + "Charts.TestDisplayChartsWithConversion.docx");
+            doc.Save(ArtifactsDir + "Charts.TestDisplayChartsWithConversion.pdf");
         }
 
         [Test]
@@ -485,8 +485,8 @@ namespace ApiExamples
                 new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 500000, 820000, 1500000, 400000, 100000 });
 
-            doc.Save(ArtifactsDir + "SurfaceChart.docx");
-            doc.Save(ArtifactsDir + "SurfaceChart.pdf");
+            doc.Save(ArtifactsDir + "Charts.SurfaceChart.docx");
+            doc.Save(ArtifactsDir + "Charts.SurfaceChart.pdf");
         }
 
         [Test]
@@ -507,8 +507,8 @@ namespace ApiExamples
                 new double[] { 1900000, 850000, 2100000, 600000, 1500000 },
                 new double[] { 900000, 450000, 2500000, 800000, 500000 });
 
-            doc.Save(ArtifactsDir + "BubbleChart.docx");
-            doc.Save(ArtifactsDir + "BubbleChart.pdf");
+            doc.Save(ArtifactsDir + "Charts.BubbleChart.docx");
+            doc.Save(ArtifactsDir + "Charts.BubbleChart.pdf");
         }
 
         //ExStart
