@@ -302,8 +302,8 @@ namespace ApiExamples
             yAxis.TickLabelPosition = AxisTickLabelPosition.NextToAxis;
             //ExEnd
 
-            doc.Save(ArtifactsDir + "Shape.InsertChartUsingAxisProperties Out.docx");
-            doc.Save(ArtifactsDir + "Shape.InsertChartUsingAxisProperties Out.pdf");
+            doc.Save(ArtifactsDir + "Shape.InsertChartUsingAxisProperties.docx");
+            doc.Save(ArtifactsDir + "Shape.InsertChartUsingAxisProperties.pdf");
         }
 
         [Test]
@@ -428,8 +428,8 @@ namespace ApiExamples
             Assert.False(chart.AxisY.NumberFormat.IsLinkedToSource);
             //ExEnd
 
-            doc.Save(ArtifactsDir + "Shape.SetNumberFormatToChartAxis Out.docx");
-            doc.Save(ArtifactsDir + "Shape.SetNumberFormatToChartAxis Out.pdf");
+            doc.Save(ArtifactsDir + "Shape.SetNumberFormatToChartAxis.docx");
+            doc.Save(ArtifactsDir + "Shape.SetNumberFormatToChartAxis.pdf");
         }
 
         // Note: Tests below used for verification conversion docx to pdf and the correct display.
@@ -456,8 +456,8 @@ namespace ApiExamples
                 new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
 
-            doc.Save(ArtifactsDir + "Shape.TestDisplayChartsWithConversion Out.docx");
-            doc.Save(ArtifactsDir + "Shape.TestDisplayChartsWithConversion Out.pdf");
+            doc.Save(ArtifactsDir + "Shape.TestDisplayChartsWithConversion.docx");
+            doc.Save(ArtifactsDir + "Shape.TestDisplayChartsWithConversion.pdf");
         }
 
         [Test]
@@ -485,8 +485,8 @@ namespace ApiExamples
                 new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 500000, 820000, 1500000, 400000, 100000 });
 
-            doc.Save(ArtifactsDir + "SurfaceChart Out.docx");
-            doc.Save(ArtifactsDir + "SurfaceChart Out.pdf");
+            doc.Save(ArtifactsDir + "SurfaceChart.docx");
+            doc.Save(ArtifactsDir + "SurfaceChart.pdf");
         }
 
         [Test]
@@ -507,8 +507,8 @@ namespace ApiExamples
                 new double[] { 1900000, 850000, 2100000, 600000, 1500000 },
                 new double[] { 900000, 450000, 2500000, 800000, 500000 });
 
-            doc.Save(ArtifactsDir + "BubbleChart Out.docx");
-            doc.Save(ArtifactsDir + "BubbleChart Out.pdf");
+            doc.Save(ArtifactsDir + "BubbleChart.docx");
+            doc.Save(ArtifactsDir + "BubbleChart.pdf");
         }
 
         //ExStart
