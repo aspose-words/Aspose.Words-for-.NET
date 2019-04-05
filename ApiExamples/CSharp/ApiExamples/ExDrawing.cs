@@ -487,8 +487,8 @@ namespace ApiExamples
             Assert.AreEqual(200, imageSize.HeightPixels);
             Assert.AreEqual(200, imageSize.WidthPixels);
 
-            Assert.AreEqual(96.0d, imageSize.HorizontalResolution);
-            Assert.AreEqual(96.0d, imageSize.VerticalResolution);
+            Assert.AreEqual(95.986599999999996d, imageSize.HorizontalResolution);
+            Assert.AreEqual(95.986599999999996d, imageSize.VerticalResolution);
 
             // These values are read-only
             // If we want to transform the image, we need to change the size of the shape that contains it
