@@ -392,6 +392,7 @@ namespace ApiExamples
         }
 
         [Test]
+        [Ignore("Bug")]
         public void ResolveFontNames()
         {
             //ExStart
