@@ -1705,6 +1705,9 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.Revisions.docx");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
+            // There are two sets of move revisions in this document
+            // One moves a small part of a paragraph, while the other moves a whole paragraph
+            // Paragraph.IsMoveFromRevision/IsMoveToRevision will only be true if a whole paragraph is moved, as in the latter case
             for (int i = 0; i < paragraphs.Count; i++)
             {
                 if (paragraphs[i].IsMoveFromRevision)
