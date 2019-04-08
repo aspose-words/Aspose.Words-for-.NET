@@ -21,6 +21,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
             InsertShapeUsingDocumentBuilder(dataDir);
             AddCornersSnipped(dataDir);
             GetActualShapeBoundsPoints(dataDir);
+            SpecifyVerticalAnchor(dataDir);
         }
 
         public static void InsertShapeUsingDocumentBuilder(string dataDir)
@@ -136,6 +137,20 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
             Console.Write("\nGets the actual bounds of the shape in points.");
             Console.WriteLine(shape.GetShapeRenderer().BoundsInPoints);
             // ExEnd:GetActualShapeBoundsPoints
+        }
+
+        public static void SpecifyVerticalAnchor(string dataDir)
+        {
+            // ExStart:SpecifyVerticalAnchor
+            Document doc = new Document(dataDir + @"VerticalAnchor.docx");
+            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
+            Shape textBoxShape = shapes[0] as Shape;
+            if (textBoxShape != null)
+            {
+                textBoxShape.TextBox.VerticalAnchor = TextBoxAnchor.Bottom;
+            }
+            doc.Save(dataDir + "VerticalAnchor_out.docx");
+            // ExEnd:SpecifyVerticalAnchor
         }
     }
 }
