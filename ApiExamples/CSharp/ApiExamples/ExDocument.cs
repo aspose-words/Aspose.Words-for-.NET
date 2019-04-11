@@ -2680,7 +2680,7 @@ namespace ApiExamples
             RevisionOptions revisionOptions = doc.LayoutOptions.RevisionOptions;
 
             // Get movement, deletion, formatting revisions and comments to show up in green balloons on the right side of the page
-            revisionOptions.ShowInBalloons = ShowInBalloons.FormatAndDelete;
+            revisionOptions.ShowInBalloons = ShowInBalloons.Format;
             revisionOptions.CommentColor = RevisionColor.BrightGreen;
 
             // Render text inserted while revisions were being tracked in italic green
