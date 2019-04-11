@@ -1373,7 +1373,7 @@ namespace ApiExamples
             //ExFor:Fonts.DefaultFontSubstitutionRule
             //ExFor:Fonts.DefaultFontSubstitutionRule.DefaultFontName
             //ExFor:Fonts.FontSubstitutionSettings.DefaultFontSubstitution
-            //ExSummary:Shows how to with the default font substitution rule.
+            //ExSummary:Shows how to set the default font substitution rule.
             // Create a blank document and a new FontSettings property
             Document doc = new Document();
             FontSettings fontSettings = new FontSettings();
@@ -1409,7 +1409,7 @@ namespace ApiExamples
             //ExFor:Fonts.FontSubstitutionRule
             //ExFor:Fonts.FontSubstitutionRule.Enabled
             //ExFor:Fonts.FontSubstitutionSettings.FontConfigSubstitution
-            //ExSummary:Shows OS-dependent font substitution rules.
+            //ExSummary:Shows OS-dependent font config substitution.
             // Create a new FontSettings object and get its font config substitution rule
             FontSettings fontSettings = new FontSettings();
             FontConfigSubstitutionRule fontConfigSubstitution = fontSettings.SubstitutionSettings.FontConfigSubstitution;
@@ -1442,11 +1442,40 @@ namespace ApiExamples
         public void FallbackSettings()
         {
             //ExStart
+            //ExFor:Fonts.FontFallbackSettings.LoadMsOfficeFallbackSettings
+            //ExFor:Fonts.FontFallbackSettings.LoadNotoFallbackSettings
+            //ExSummary:Shows how to load pre-defined fallback font settings.
+            Document doc = new Document();
+
+            // Create a FontSettings object for our document and get its FallbackSettings attribute
+            FontSettings fontSettings = new FontSettings();
+            doc.FontSettings = fontSettings;
+            FontFallbackSettings fontFallbackSettings = fontSettings.FallbackSettings;
+
+            // Save the default fallback font scheme in an XML document
+            // For example, one of the elements has a value of "0C00-0C7F" for Range and a corresponding "Vani" value for FallbackFonts
+            // This means that if the font we are using does not have symbols for the 0x0C00-0x0C7F unicode block,
+            // the symbols from the "Vani" font will be used as a substitute
+            fontFallbackSettings.Save(ArtifactsDir + "Font.FallbackSettings.Default.xml");
+
+            // There are two pre-defined font fallback schemes we can choose from
+            // 1: Use the default Microsoft Office scheme, which is the same one as the default
+            fontFallbackSettings.LoadMsOfficeFallbackSettings();
+            fontFallbackSettings.Save(ArtifactsDir + "Font.FallbackSettings.LoadMsOfficeFallbackSettings.xml");
+
+            // 2: Use the scheme built from Google Noto fonts
+            fontFallbackSettings.LoadNotoFallbackSettings();
+            fontFallbackSettings.Save(ArtifactsDir + "Font.FallbackSettings.LoadNotoFallbackSettings.xml");
+            //ExEnd
+        }
+
+        [Test]
+        public void FallbackSettingsCustom()
+        {
+            //ExStart
             //ExFor:Fonts.FontSettings.FallbackSettings
             //ExFor:Fonts.FontFallbackSettings
             //ExFor:Fonts.FontFallbackSettings.BuildAutomatic
-            //ExFor:Fonts.FontFallbackSettings.LoadMsOfficeFallbackSettings
-            //ExFor:Fonts.FontFallbackSettings.LoadNotoFallbackSettings
             //ExSummary:Shows how to distribute fallback fonts across unicode character code ranges.
             Document doc = new Document();
 
@@ -1455,37 +1484,16 @@ namespace ApiExamples
             doc.FontSettings = fontSettings;
             FontFallbackSettings fontFallbackSettings = fontSettings.FallbackSettings;
 
-            // There are many unicode blocks, usually for different languages/symbol sets, each with many codes for their glyphs,
-            // The vast majority of fonts, while providing us with all the required english characters, cannot cover all other unicode blocks
-            // To make sure that as many unicode character values as possible are represented by glyphs, we can use fallback font schemes that designate fonts to
-            // "patch up" gaps in unicode block representation
-            // By default, we are provided with a robust scheme of ~40 fallback fonts, which can be saved for viewing in the form of an XML document, as we do below
-            fontFallbackSettings.Save(ArtifactsDir + "Font.FallbackSettings.Default.xml");
-
-            // Each element in this document has a "Ranges" attribute, which specifies a range of unicode codes,
-            // and a "FallbackFonts" attribute, which designates a font that governs that range
-            // In this instance, the "Mongolian Baiti" font covers the "1800-18FF" range
-            // This means that if the font that we are using does not have glyphs within the "1800-18FF" unicode block, and we insert characters from within that range,
-            // we will fall back to the "Mongolian Baiti" font to make sure we get proper text and not rectangles
-
-            // Aside from the default fallback font scheme, there are 4 others we can choose from
-            // 1: Use the default Microsoft Office scheme, which is the same one as the default that Aspose uses
-            fontFallbackSettings.LoadMsOfficeFallbackSettings();
-            fontFallbackSettings.Save(ArtifactsDir + "Font.FallbackSettings.LoadMsOfficeFallbackSettings.xml");
-
-            // 2: Use the scheme built from Google Noto fonts
-            fontFallbackSettings.LoadNotoFallbackSettings();
-            fontFallbackSettings.Save(ArtifactsDir + "Font.FallbackSettings.LoadNotoFallbackSettings.xml");
-
-            // 3: Set the fonts to come exclusively from a local folder
-            // Then, automatically generate a scheme that attempts to cover as many Unicode codes with fonts as possible
+            // Set our fonts to be sourced exclusively from the "MyFonts" folder
             FolderFontSource folderFontSource = new FolderFontSource(MyDir + @"\MyFonts", false);
             fontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
 
+            // Calling BuildAutomatic() will generate a fallback scheme that distributes accessible fonts across as many unicode character codes as possible
+            // In our case, it only has access to the handful of fonts inside the "MyFonts" folder
             fontFallbackSettings.BuildAutomatic();
             fontFallbackSettings.Save(ArtifactsDir + "Font.FontFallbackSettings.BuildAutomatic.xml");
 
-            // 4: Take a scheme from a local file
+            // We can also load a custom substitution scheme from a file like this
             // This scheme applies the "Arvo" font across the "0000-00ff" unicode blocks, the "Squarish Sans CT" font across "0100-024f",
             // and the "M+ 2m" font in every place that none of the other fonts cover
             fontFallbackSettings.Load(MyDir + "Font.FallbackSettings.Custom.xml");
@@ -1522,18 +1530,12 @@ namespace ApiExamples
         public void TableSubstitutionRule()
         {
             //ExStart
-            //ExFor:Fonts.FontSubstitutionSettings.TableSubstitution
             //ExFor:Fonts.TableSubstitutionRule
-            //ExFor:Fonts.TableSubstitutionRule.AddSubstitutes(System.String,System.String[])
-            //ExFor:Fonts.TableSubstitutionRule.GetSubstitutes(System.String)
-            //ExFor:Fonts.TableSubstitutionRule.Load(System.IO.Stream)
-            //ExFor:Fonts.TableSubstitutionRule.Load(System.String)
             //ExFor:Fonts.TableSubstitutionRule.LoadLinuxSettings
             //ExFor:Fonts.TableSubstitutionRule.LoadWindowsSettings
             //ExFor:Fonts.TableSubstitutionRule.Save(System.IO.Stream)
             //ExFor:Fonts.TableSubstitutionRule.Save(System.String)
-            //ExFor:Fonts.TableSubstitutionRule.SetSubstitutes(System.String,System.String[])
-            //ExSummary:Shows how to substitute fonts.
+            //ExSummary:Shows how to access font substitution tables for Windows and Linux.
             // Create a blank document and a new FontSettings object
             Document doc = new Document();
             FontSettings fontSettings = new FontSettings();
@@ -1554,8 +1556,32 @@ namespace ApiExamples
             tableSubstitutionRule.LoadLinuxSettings();
             Assert.AreEqual(new[] { "FreeSerif", "Liberation Serif", "DejaVu Serif" }, tableSubstitutionRule.GetSubstitutes("Times New Roman CE").ToArray());
 
-            // Save the Linux substitution table
-            tableSubstitutionRule.Save(ArtifactsDir + "Font.TableSubstitutionRule.Linux.xml");
+            // Save the Linux substitution table using a stream
+            using (FileStream fileStream = new FileStream(ArtifactsDir + "Font.TableSubstitutionRule.Linux.xml", FileMode.Create))
+            {
+                tableSubstitutionRule.Save(fileStream);
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void TableSubstitutionRuleCustom()
+        {
+            //ExStart
+            //ExFor:Fonts.FontSubstitutionSettings.TableSubstitution
+            //ExFor:Fonts.TableSubstitutionRule.AddSubstitutes(System.String,System.String[])
+            //ExFor:Fonts.TableSubstitutionRule.GetSubstitutes(System.String)
+            //ExFor:Fonts.TableSubstitutionRule.Load(System.IO.Stream)
+            //ExFor:Fonts.TableSubstitutionRule.Load(System.String)
+            //ExFor:Fonts.TableSubstitutionRule.SetSubstitutes(System.String,System.String[])
+            //ExSummary:Shows how to work with custom font substitution tables.
+            // Create a blank document and a new FontSettings object
+            Document doc = new Document();
+            FontSettings fontSettings = new FontSettings();
+            doc.FontSettings = fontSettings;
+
+            // Create a new table substitution rule and load the default Windows font substitution table
+            TableSubstitutionRule tableSubstitutionRule = fontSettings.SubstitutionSettings.TableSubstitution;
 
             // If we select fonts exclusively from our own folder, we will need a custom substitution table
             FolderFontSource folderFontSource = new FolderFontSource(MyDir + @"\MyFonts", false);
