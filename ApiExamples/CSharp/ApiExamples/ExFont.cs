@@ -1373,28 +1373,26 @@ namespace ApiExamples
             //ExFor:Fonts.DefaultFontSubstitutionRule
             //ExFor:Fonts.DefaultFontSubstitutionRule.DefaultFontName
             //ExFor:Fonts.FontSubstitutionSettings.DefaultFontSubstitution
-            //ExSummary:
+            //ExSummary:Shows how to with the default font substitution rule.
+            // Create a blank document and a new FontSettings property
             Document doc = new Document();
-
             FontSettings fontSettings = new FontSettings();
             doc.FontSettings = fontSettings;
 
-            FolderFontSource folderFontSource = new FolderFontSource(MyDir + @"\MyFonts", false);
-            fontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
-
+            // Get the default substitution rule within FontSettings, which will be enabled by default and will substitute all missing fonts with "Times New Roman"
             DefaultFontSubstitutionRule defaultFontSubstitutionRule = fontSettings.SubstitutionSettings.DefaultFontSubstitution;
             Assert.True(defaultFontSubstitutionRule.Enabled);
             Assert.AreEqual("Times New Roman", defaultFontSubstitutionRule.DefaultFontName);
 
-            Assert.True(File.Exists(MyDir + @"\MyFonts\Kreon-regular.ttf"));
-            defaultFontSubstitutionRule.DefaultFontName = "Kreon";
+            // Set the default font substitute to "Courier New"
+            defaultFontSubstitutionRule.DefaultFontName = "Courier New";
 
+            // Using a document builder, add some text in a font that we don't have to see the substitution take place,
+            // and render the result in a PDF
             DocumentBuilder builder = new DocumentBuilder(doc);
-            Assert.AreEqual("Times New Roman", builder.Font.Name);
-            builder.Writeln($"Line written in {builder.Font.Name}.");
 
-            builder.Font.Name = "Nonexistent Font";
-            builder.Writeln($"Line written in font \"{builder.Font.Name}\", which we don't have, so it be substituted with {defaultFontSubstitutionRule.DefaultFontName}.");
+            builder.Font.Name = "Missing Font";
+            builder.Writeln("Line written in a missing font, which will be substituted with Courier New.");
 
             doc.Save(ArtifactsDir + "Font.DefaultFontSubstitutionRule.pdf");
             //ExEnd
@@ -1411,11 +1409,13 @@ namespace ApiExamples
             //ExFor:Fonts.FontSubstitutionRule
             //ExFor:Fonts.FontSubstitutionRule.Enabled
             //ExFor:Fonts.FontSubstitutionSettings.FontConfigSubstitution
-            //ExSummary:
+            //ExSummary:Shows OS-dependent font substitution rules.
+            // Create a new FontSettings object and get its font config substitution rule
             FontSettings fontSettings = new FontSettings();
-
             FontConfigSubstitutionRule fontConfigSubstitution = fontSettings.SubstitutionSettings.FontConfigSubstitution;
 
+            // The FontConfigSubstitutionRule object works differently on Windows/non-Windows platforms
+            // On Windows, it is unavailable
             PlatformID pid = Environment.OSVersion.Platform;
             bool isWindows = pid == PlatformID.Win32NT || pid == PlatformID.Win32S || pid == PlatformID.Win32Windows || pid == PlatformID.WinCE;
 
@@ -1425,9 +1425,10 @@ namespace ApiExamples
                 Assert.False(fontConfigSubstitution.IsFontConfigAvailable());
             }
 
-            bool isLinuxLike = pid == PlatformID.Unix || pid == PlatformID.MacOSX;
+            // On Linux/Mac, we will have access and will be able to perform operations
+            bool isLinuxOrMac = pid == PlatformID.Unix || pid == PlatformID.MacOSX;
 
-            if (isLinuxLike)
+            if (isLinuxOrMac)
             {
                 Assert.True(fontConfigSubstitution.Enabled);
                 Assert.True(fontConfigSubstitution.IsFontConfigAvailable());
@@ -1467,31 +1468,32 @@ namespace ApiExamples
             // This means that if the font that we are using does not have glyphs within the "1800-18FF" unicode block, and we insert characters from within that range,
             // we will fall back to the "Mongolian Baiti" font to make sure we get proper text and not rectangles
 
-            // We can also load the Microsoft Office default fallback font scheme which is the same as the default one Aspose uses
+            // Aside from the default fallback font scheme, there are 4 others we can choose from
+            // 1: Use the default Microsoft Office scheme, which is the same one as the default that Aspose uses
             fontFallbackSettings.LoadMsOfficeFallbackSettings();
             fontFallbackSettings.Save(ArtifactsDir + "Font.FallbackSettings.LoadMsOfficeFallbackSettings.xml");
 
-            // Also, there is a scheme built from Google Noto fonts
+            // 2: Use the scheme built from Google Noto fonts
             fontFallbackSettings.LoadNotoFallbackSettings();
             fontFallbackSettings.Save(ArtifactsDir + "Font.FallbackSettings.LoadNotoFallbackSettings.xml");
 
-            // Set out font source to one local folder which contains .ttf files
+            // 3: Set the fonts to come exclusively from a local folder
+            // Then, automatically generate a scheme that attempts to cover as many Unicode codes with fonts as possible
             FolderFontSource folderFontSource = new FolderFontSource(MyDir + @"\MyFonts", false);
             fontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
 
-            // We can automatically generate a fallback font scheme which assigns available fonts to cover as many unicode values as possible
             fontFallbackSettings.BuildAutomatic();
             fontFallbackSettings.Save(ArtifactsDir + "Font.FontFallbackSettings.BuildAutomatic.xml");
 
-            // Finally, we can load a custom fallback font scheme from a local file
+            // 4: Take a scheme from a local file
             // This scheme applies the "Arvo" font across the "0000-00ff" unicode blocks, the "Squarish Sans CT" font across "0100-024f",
             // and the "M+ 2m" font in every place that none of the other fonts cover
             fontFallbackSettings.Load(MyDir + "Font.FallbackSettings.Custom.xml");
 
             // Create a document builder and set its font to one that doesn't exist in any of our sources
-            // By doing that we are relying completely on our font fallback scheme to render text
+            // In doing that we will rely completely on our font fallback scheme to render text
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Font.Name = "Nonexistent Font";
+            builder.Font.Name = "Missing Font";
 
             // Type out every unicode character from 0x0021 to 0x052F, with descriptive lines dividing unicode blocks we defined in our custom font fallback scheme
             for (int i = 0x0021; i < 0x0530; i++)
@@ -1505,7 +1507,7 @@ namespace ApiExamples
                         builder.Writeln("\n\n0x0100 - 0x024F: \nLatin Extended A/B blocks, mostly in \"Squarish Sans CT\" font:");
                         break;
                     case 0x0250:
-                        builder.Writeln("\n\n0x0021 - 0x00FF: \nIPA/Greek/Cyrillic blocks in \"M+ 2m\" font:");
+                        builder.Writeln("\n\n0x0250 - 0x052F: \nIPA/Greek/Cyrillic blocks in \"M+ 2m\" font:");
                         break;
                 }
 
@@ -1531,50 +1533,70 @@ namespace ApiExamples
             //ExFor:Fonts.TableSubstitutionRule.Save(System.IO.Stream)
             //ExFor:Fonts.TableSubstitutionRule.Save(System.String)
             //ExFor:Fonts.TableSubstitutionRule.SetSubstitutes(System.String,System.String[])
-            //ExSummary:
+            //ExSummary:Shows how to substitute fonts.
+            // Create a blank document and a new FontSettings object
             Document doc = new Document();
-
             FontSettings fontSettings = new FontSettings();
             doc.FontSettings = fontSettings;
 
+            // Create a new table substitution rule and load the default Windows font substitution table
             TableSubstitutionRule tableSubstitutionRule = fontSettings.SubstitutionSettings.TableSubstitution;
             tableSubstitutionRule.LoadWindowsSettings();
 
+            // In Windows, the default substitute for the "Times New Roman CE" font is "Times New Roman"
             Assert.AreEqual(new[] { "Times New Roman" }, tableSubstitutionRule.GetSubstitutes("Times New Roman CE").ToArray());
 
+            // We can save the table for viewing in the form of an XML document
             tableSubstitutionRule.Save(ArtifactsDir + "Font.TableSubstitutionRule.Windows.xml");
 
+            // Linux has its own substitution table
+            // If "FreeSerif" is unavailable to substitute for "Times New Roman CE", we then look for "Liberation Serif", and so on
             tableSubstitutionRule.LoadLinuxSettings();
             Assert.AreEqual(new[] { "FreeSerif", "Liberation Serif", "DejaVu Serif" }, tableSubstitutionRule.GetSubstitutes("Times New Roman CE").ToArray());
 
+            // Save the Linux substitution table
             tableSubstitutionRule.Save(ArtifactsDir + "Font.TableSubstitutionRule.Linux.xml");
 
+            // If we select fonts exclusively from our own folder, we will need a custom substitution table
             FolderFontSource folderFontSource = new FolderFontSource(MyDir + @"\MyFonts", false);
             fontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
 
+            // There are two ways of loading a substitution table from a file in the local file system
+            // 1: Loading from a stream
             using (FileStream fileStream = new FileStream(MyDir + "Font.TableSubstitutionRule.Custom.xml", FileMode.Open))
             {
                 tableSubstitutionRule.Load(fileStream);
             }
 
+            // 2: Load directly from file
             tableSubstitutionRule.Load(MyDir + "Font.TableSubstitutionRule.Custom.xml");
-            Assert.AreEqual(new[] { "Nonexistent Font", "Kreon" }, tableSubstitutionRule.GetSubstitutes("Arial").ToArray());
 
+            // Since we no longer have access to "Arial", our font table will first try substitute it with "Nonexistent Font", which we don't have,
+            // and then with "Kreon", found in the "MyFonts" folder
+            Assert.AreEqual(new[] { "Missing Font", "Kreon" }, tableSubstitutionRule.GetSubstitutes("Arial").ToArray());
+
+            // If we find this substitution table lacking, we can also expand it programmatically
+            // In this case, we add an entry that substitutes "Times New Roman" with "Arvo"
+            Assert.Null(tableSubstitutionRule.GetSubstitutes("Times New Roman"));
             tableSubstitutionRule.AddSubstitutes("Times New Roman", "Arvo");
             Assert.AreEqual(new[] { "Arvo" }, tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
 
+            // We can add a secondary fallback substitute for an existing font entry with AddSubstitutes()
+            // In case "Arvo" is unavailable, our table will look for "M+ 2m"
             tableSubstitutionRule.AddSubstitutes("Times New Roman", "M+ 2m");
             Assert.AreEqual(new[] { "Arvo", "M+ 2m" }, tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
 
-            tableSubstitutionRule.SetSubstitutes("Times New Roman", "Squarish Sans CT");
-            Assert.AreEqual(new[] { "Squarish Sans CT" }, tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
+            // SetSubstitutes() can set a new list of substitute fonts for a font
+            tableSubstitutionRule.SetSubstitutes("Times New Roman", new[] { "Squarish Sans CT", "M+ 2m" });
+            Assert.AreEqual(new[] { "Squarish Sans CT", "M+ 2m" }, tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
 
+            // TO demonstrate substitution, write text in fonts we have no access to and render the result in a PDF
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Font.Name = "Arial";
-            builder.Writeln("Text written in Arial, but will be substituted by Kreon.");
+            builder.Writeln("Text written in Arial, to be substituted by Kreon.");
 
             builder.Font.Name = "Times New Roman";
-            builder.Writeln("Text written in Times New Roman, but will be substituted by Squarish Sans CT.");
+            builder.Writeln("Text written in Times New Roman, to be substituted by Squarish Sans CT.");
 
             doc.Save(ArtifactsDir + "Font.TableSubstitutionRule.Custom.pdf");
             //ExEnd
