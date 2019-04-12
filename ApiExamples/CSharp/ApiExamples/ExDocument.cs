@@ -1705,9 +1705,6 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.Revisions.docx");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
-            // There are two sets of move revisions in this document
-            // One moves a small part of a paragraph, while the other moves a whole paragraph
-            // Paragraph.IsMoveFromRevision/IsMoveToRevision will only be true if a whole paragraph is moved, as in the latter case
             for (int i = 0; i < paragraphs.Count; i++)
             {
                 if (paragraphs[i].IsMoveFromRevision)
@@ -2660,58 +2657,11 @@ namespace ApiExamples
             //ExStart
             //ExFor:ShowInBalloons
             //ExFor:RevisionOptions.ShowInBalloons
-            //ExFor:RevisionOptions.CommentColor
-            //ExFor:RevisionOptions.DeletedTextColor
-            //ExFor:RevisionOptions.DeletedTextEffect
-            //ExFor:RevisionOptions.InsertedTextEffect
-            //ExFor:RevisionOptions.MovedFromTextColor
-            //ExFor:RevisionOptions.MovedFromTextEffect
-            //ExFor:RevisionOptions.MovedToTextColor
-            //ExFor:RevisionOptions.MovedToTextEffect
-            //ExFor:RevisionOptions.RevisedPropertiesColor
-            //ExFor:RevisionOptions.RevisedPropertiesEffect
-            //ExFor:RevisionOptions.RevisionBarsColor
-            //ExFor:RevisionOptions.RevisionBarsWidth
-            //ExFor:RevisionOptions.ShowOriginalRevision
-            //ExFor:RevisionOptions.ShowRevisionMarks
-            //ExFor:RevisionTextEffect
-            //ExSummary:Show how to render revisions in the balloons and edit their appearance.
+            //ExSummary:Show how to render revisions in the balloons.
             Document doc = new Document(MyDir + "Document.Revisions.docx");
-
-            // Get the RevisionOptions object that controls the appearance of revisions
-            RevisionOptions revisionOptions = doc.LayoutOptions.RevisionOptions;
-
-            // Get movement, deletion, formatting revisions and comments to show up in green balloons on the right side of the page
-            revisionOptions.ShowInBalloons = ShowInBalloons.Format;
-            revisionOptions.CommentColor = RevisionColor.BrightGreen;
-
-            // Render text inserted while revisions were being tracked in italic green
-            revisionOptions.InsertedTextColor = RevisionColor.Green;
-            revisionOptions.InsertedTextEffect = RevisionTextEffect.Italic;
-
-            // Render text deleted while revisions were being tracked in bold red
-            revisionOptions.DeletedTextColor = RevisionColor.Red;
-            revisionOptions.DeletedTextEffect = RevisionTextEffect.Bold;
-
-            // In a movement revision, the same text will appear twice: once at the departure point and once at the arrival destination
-            // Render the text at the moved-from revision yellow with double strike through and double underlined blue at the moved-to revision
-            revisionOptions.MovedFromTextColor = RevisionColor.Yellow;
-            revisionOptions.MovedFromTextEffect = RevisionTextEffect.DoubleStrikeThrough;
-            revisionOptions.MovedToTextColor = RevisionColor.Blue;
-            revisionOptions.MovedFromTextEffect = RevisionTextEffect.DoubleUnderline;
-
-            // Render text which had its format changed while revisions were being tracked in bold dark red
-            revisionOptions.RevisedPropertiesColor = RevisionColor.DarkRed;
-            revisionOptions.RevisedPropertiesEffect = RevisionTextEffect.Bold;
-
-            // Place a thick dark blue bar on the left side of the page next to lines affected by revisions
-            revisionOptions.RevisionBarsColor = RevisionColor.DarkBlue;
-            revisionOptions.RevisionBarsWidth = 15.0f;
-
-            // Show revision marks and original text
-            revisionOptions.ShowOriginalRevision = true;
-            revisionOptions.ShowRevisionMarks = true;
-
+            
+            doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.FormatAndDelete;
+  
             doc.Save(ArtifactsDir + "Document.ShowRevisionsInBalloons.pdf");
             //ExEnd
         }
