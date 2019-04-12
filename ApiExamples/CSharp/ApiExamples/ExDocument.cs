@@ -2306,6 +2306,8 @@ namespace ApiExamples
             //ExFor:Document.LayoutOptions
             //ExFor:LayoutOptions
             //ExFor:LayoutOptions.RevisionOptions
+            //ExFor:Layout.LayoutOptions.ShowHiddenText
+            //ExFor:Layout.LayoutOptions.ShowParagraphMarks
             //ExFor:RevisionColor
             //ExFor:RevisionOptions
             //ExFor:RevisionOptions.InsertedTextColor
@@ -2760,6 +2762,7 @@ namespace ApiExamples
         }
 
         //ExStart
+        //ExFor:Layout.LayoutEntityType
         //ExFor:Layout.LayoutEnumerator
         //ExFor:Layout.LayoutEnumerator.#ctor(Document)
         //ExFor:Layout.LayoutEnumerator.Document
