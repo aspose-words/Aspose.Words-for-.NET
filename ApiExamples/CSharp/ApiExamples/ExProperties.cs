@@ -148,66 +148,56 @@ namespace ApiExamples
         //ExFor:BuiltInDocumentProperties.Words
         //ExSummary:Shows how to work with document properties from the "Content" category.
         [Test] //ExSkip
-        public void BuiltInPropertiesContent()
+        public void Content()
         {
-            // Create a new document and populate it with paragraphs and text
-            Document doc = new Document();
-            doc.RemoveAllChildren();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Writeln("Paragraph 1.");
-            builder.InsertBreak(BreakType.PageBreak);
-            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
-            builder.Write("Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
-            builder.Writeln("Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.");
-            builder.InsertBreak(BreakType.PageBreak);
-            builder.Writeln("Paragraph 3.");
+            // Open a document with a couple paragraphs of content
+            Document doc = new Document(MyDir + "Properties.Content.docx");
 
-            // A document's built in properties can be viewed without opening the document,
-            // by right-clicking the file in Windows Explorer, navigating to Properties > Details
-            // The "Content" category will have the properties we are about to work with
-            // They are not updated automatically; their values need to be sourced from the document and assigned manually
+            // If we want to display document stats such as page/word counts inside a document, we can use fields such as NUMPAGES, NUMWORDS, NUMCHARS etc
+            // To be able to glance at these values without opening the document, we can use a document's built in document property collection
+            // These properties are accessed by right-clicking the file in Windows Explorer and navigating to Properties > Details
+            // The "Content" category will have all the properties we will work with
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
 
-            // Page count: The number of pages is in a document's PageCount attribute, which is always up to date,
-            // and can be transferred to a built in property at any time
+            // Page count: The PageCount attribute shows the page count in real time and its value can be assigned to the Pages property
             properties.Pages = doc.PageCount;
-            Assert.AreEqual(3, properties.Pages);
+            Assert.AreEqual(2, properties.Pages);
 
-            // Word count: The UpdateWordCount() automatically assigns the real time word/character counts to the relevant properties
+            // Word count: The UpdateWordCount() automatically assigns the real time word/character counts to the respective built in properties
             doc.UpdateWordCount();
-            Assert.AreEqual(54, properties.Words);
-            Assert.AreEqual(305, properties.Characters);
-            Assert.AreEqual(356, properties.CharactersWithSpaces);
+            Assert.AreEqual(198, properties.Words);
+            Assert.AreEqual(1114, properties.Characters);
+            Assert.AreEqual(1310, properties.CharactersWithSpaces);
 
-            // Line count: Count the lines in a document and assign value to the property
+            // Line count: Count the lines in a document and assign value to the Lines property
             LineCounter lineCounter = new LineCounter(doc);
             properties.Lines = lineCounter.GetLineCount();
-            Assert.AreEqual(6, properties.Lines);
+            Assert.AreEqual(14, properties.Lines);
 
-            // Paragraph count: Assign the size of the array of all paragraphs to the Paragraphs property
+            // Paragraph count: Assign the size of the count of child Paragraph-nodes to the Paragraphs built in property
             properties.Paragraphs = doc.GetChildNodes(NodeType.Paragraph, true).Count;
-            Assert.AreEqual(4, properties.Paragraphs);
+            Assert.AreEqual(2, properties.Paragraphs);
 
-            // Bytes: Get the real document file size from a stream and assign it to the property
+            // Bytes: Use a stream to find out the real file size of our document and assign it to the Property
             using (MemoryStream stream = new MemoryStream())
             {
                 doc.Save(stream, SaveFormat.Docx);
                 properties.Bytes = (int)stream.Length;
-                Assert.AreEqual(5756, properties.Bytes);
+                Assert.AreEqual(10871, properties.Bytes);
             }
             
-            // Template: If we change a document's template, the Template property will need a descriptive name for the template added manually
+            // Template: The Template attribute can reflect the filename of the attached template document
             doc.AttachedTemplate = MyDir + "Document.BusinessBrochureTemplate.dot";
-            Assert.AreEqual("Normal.dot", properties.Template);          
-            properties.Template = "Document.BusinessBrochureTemplate.dot";
+            Assert.AreEqual("Normal", properties.Template);          
+            properties.Template = doc.AttachedTemplate;
 
-            // Content status: This is a descriptive field that we can glance at without opening the document
+            // Content status: This is a descriptive field
             properties.ContentStatus = "Draft";
 
             // Content type: Upon saving, any value we assign to this field will be overwritten by the MIME type of the output save format
             Assert.AreEqual("", properties.ContentType);
 
-            // If the document contains links that are up to date, we can set this to true
+            // If the document contains links and they are all up to date, we can set this to true
             Assert.False(properties.LinksUpToDate);
             
             doc.Save(ArtifactsDir + "Properties.BuiltInPropertiesContent.docx");
