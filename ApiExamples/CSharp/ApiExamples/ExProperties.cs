@@ -8,6 +8,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Web.UI;
 using Aspose.Words;
 using Aspose.Words.Layout;
 using Aspose.Words.Properties;
@@ -141,6 +142,7 @@ namespace ApiExamples
         //ExFor:BuiltInDocumentProperties.ContentStatus
         //ExFor:BuiltInDocumentProperties.ContentType
         //ExFor:BuiltInDocumentProperties.Lines
+        //ExFor:BuiltInDocumentProperties.LinksUpToDate
         //ExFor:BuiltInDocumentProperties.Pages
         //ExFor:BuiltInDocumentProperties.Paragraphs
         //ExFor:BuiltInDocumentProperties.Words
@@ -256,6 +258,31 @@ namespace ApiExamples
             private bool mScanningLineForRealText;
         }
         //ExEnd
+
+        [Test]
+        public void Thumbnail()
+        {
+            //ExStart
+            //ExFor:Properties.BuiltInDocumentProperties.Thumbnail
+            //ExSummary:Shows how to append a thumbnail to an Epub document.
+            // Create a blank document and add some text with a DocumentBuilder
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
+
+            // The thumbnail property resides in a document's built in properties, but is used exclusively by Epub e-book documents
+            BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
+
+            // Load an image from our file system into a byte array
+            byte[] thumbnailBytes = File.ReadAllBytes(ImageDir + "Aspose.Words.gif");
+
+            // Set the value of the Thumbnail property to the array from above
+            properties.Thumbnail = thumbnailBytes;
+
+            // Our thumbnail should be visible at the start of the document, before the text we added
+            doc.Save(ArtifactsDir + "Properties.Thumbnail.epub");
+            //ExEnd
+        }
 
         [Test]
         public void CustomNamedAccess()
