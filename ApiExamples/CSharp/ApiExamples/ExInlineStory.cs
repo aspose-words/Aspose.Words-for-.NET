@@ -23,24 +23,80 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Footnote
+            //ExFor:Footnote.IsAuto
+            //ExFor:Footnote.ReferenceMark
             //ExFor:InlineStory
             //ExFor:InlineStory.Paragraphs
             //ExFor:InlineStory.FirstParagraph
             //ExFor:FootnoteType
             //ExFor:Footnote.#ctor
-            //ExSummary:Shows how to add a footnote to a paragraph in the document.
+            //ExSummary:Shows how to add a footnote to a paragraph in the document and set its marker.
+            // Create a new document and append some text that we will reference with a footnote
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Write("Some text is added.");
+            builder.Write("Main body text.");
 
-            Footnote footnote = new Footnote(doc, FootnoteType.Footnote);
-            builder.CurrentParagraph.AppendChild(footnote);
-            footnote.Paragraphs.Add(new Paragraph(doc));
-            footnote.FirstParagraph.Runs.Add(new Run(doc, "Footnote text."));
+            // Add a footnote and give it text, which will appear at the bottom of the page
+            Footnote footnote = builder.InsertFootnote(FootnoteType.Footnote, "Footnote text.");
+
+            // This attribute means the footnote in the main text will automatically be assigned a number, "1" in this instance
+            // The next footnote will get "2"
+            Assert.True(footnote.IsAuto);
+
+            // We can edit the footnote's text like this
+            // Make sure to move the builder back into the document body afterwards
+            builder.MoveTo(footnote.FirstParagraph);
+            builder.Write(" More text added by a DocumentBuilder.");
+            builder.MoveToDocumentEnd();
+
+            Assert.AreEqual("Footnote text. More text added by a DocumentBuilder.", footnote.Paragraphs[0].ToString(SaveFormat.Text).Trim());
+
+            builder.Write(" More main body text.");
+            footnote = builder.InsertFootnote(FootnoteType.Footnote, "Footnote text.");
+
+            // Substitute the reference number for our own custom mark by setting this variable, "IsAuto" will also be set to false
+            footnote.ReferenceMark = "RefMark";
+            Assert.False(footnote.IsAuto);
+
+            // This bookmark will get a number "3" even though there was no "2"
+            builder.Write(" More main body text.");
+            footnote = builder.InsertFootnote(FootnoteType.Footnote, "Footnote text.");
+            Assert.True(footnote.IsAuto);
+
+            doc.Save(ArtifactsDir + "InlineStory.AddFootnote.docx");
             //ExEnd
 
-            Assert.AreEqual("Footnote text.",
+            Assert.AreEqual("Footnote text. More text added by a DocumentBuilder.",
                 doc.GetChildNodes(NodeType.Footnote, true)[0].ToString(SaveFormat.Text).Trim());
+        }
+
+        [Test]
+        public void FootnoteEndnote()
+        {
+            //ExStart
+            //ExFor:Footnote.FootnoteType
+            //ExSummary:Demonstrates the difference between footnotes and endnotes.
+            // Create a document and a corresponding document builder
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Write text and insert a footnote to reference it at the bottom of the page
+            builder.Write("Footnote referenced main body text.");
+            Footnote footnote = builder.InsertFootnote(FootnoteType.Footnote, "Footnote text, will appear at the bottom of the page that contains the referenced text.");
+
+            // Write text and insert an endnote to reference it at the end of the document
+            builder.Write("Endnote referenced main body text.");
+            Footnote endnote = builder.InsertFootnote(FootnoteType.Endnote, "Endnote text, will appear at the very end of the document.");
+
+            // Since endnotes are at the end of the document, breaks like this will push them down while the footnotes stay where they are
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+
+            Assert.AreEqual(FootnoteType.Footnote, footnote.FootnoteType);
+            Assert.AreEqual(FootnoteType.Endnote, endnote.FootnoteType);
+
+            doc.Save(ArtifactsDir + "InlineStory.FootnoteEndnote.docx");
+            //ExEnd
         }
 
         [Test]
@@ -103,6 +159,8 @@ namespace ApiExamples
         public void InsertInlineStoryNodes()
         {
             //ExStart
+            //ExFor:Comment.StoryType
+            //ExFor:Footnote.StoryType
             //ExFor:InlineStory.EnsureMinimum
             //ExFor:InlineStory.Font
             //ExFor:InlineStory.LastParagraph
@@ -156,7 +214,7 @@ namespace ApiExamples
 
             Assert.AreEqual(StoryType.Comments, comment.StoryType);
 
-            doc.Save(ArtifactsDir + "Document.InlineStory.docx");
+            doc.Save(ArtifactsDir + "InlineStory.InsertInlineStoryNodes.docx");
             //ExEnd
         }
     }

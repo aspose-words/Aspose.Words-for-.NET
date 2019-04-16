@@ -594,6 +594,8 @@ namespace ApiExamples
         //ExStart
         //ExFor:DocumentVisitor.VisitHeaderFooterStart(HeaderFooter)
         //ExFor:DocumentVisitor.VisitHeaderFooterEnd(HeaderFooter)
+        //ExFor:HeaderFooter.Accept(Aspose.Words.DocumentVisitor)
+        //ExFor:HeaderFooterCollection.ToArray
         //ExSummary:Traverse a document with a visitor that prints all header/footer nodes that it encounters.
         [Test] //ExSkip
         public void HeaderFooterToText()
@@ -611,6 +613,11 @@ namespace ApiExamples
             // Once the visiting is complete, we can retrieve the result of the operation,
             // that in this example, has accumulated in the visitor
             Console.WriteLine(visitor.GetText());
+
+            // An alternative way of visiting a document's header/footers section-by-section is by accessing the collection
+            // We can also turn it into an array
+            HeaderFooter[] headerFooters = doc.FirstSection.HeadersFooters.ToArray();
+            Assert.AreEqual(6, headerFooters.Length);
         }
 
         /// <summary>
@@ -789,6 +796,7 @@ namespace ApiExamples
         //ExStart
         //ExFor:DocumentVisitor.VisitFootnoteEnd(Footnote)
         //ExFor:DocumentVisitor.VisitFootnoteStart(Footnote)
+        //ExFor:Footnote.Accept(DocumentVisitor)
         //ExSummary:Traverse a document with a visitor that prints all footnotes that it encounters.
         [Test] //ExSkip
         public void FootnoteToText()
