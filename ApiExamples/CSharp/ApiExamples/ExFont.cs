@@ -701,7 +701,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:Fonts.FontInfoSubstitutionRule
             //ExFor:Fonts.FontSubstitutionSettings.FontInfoSubstitution
-            //ExFor:FontSettings.EnableFontSubstitution
             //ExSummary:Shows how to set the property for finding the closest match font among the available font sources instead missing font.
             Document doc = new Document(MyDir + "Font.EnableFontSubstitution.docx");
 
