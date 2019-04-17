@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<FontFallbackSettings xmlns="Aspose.Words">
+	<FallbackTable>
+		<Rule Ranges="0000-00FF" FallbackFonts="Arvo" />
+		<Rule Ranges="0100-024F" FallbackFonts="Squarish Sans CT" />
+		<Rule FallbackFonts="M+ 2m" />
+	</FallbackTable>
+</FontFallbackSettings>
