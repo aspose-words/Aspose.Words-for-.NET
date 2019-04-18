@@ -1626,6 +1626,25 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Font.TableSubstitutionRule.Custom.pdf");
             //ExEnd
         }
+
+        [Test]
+        public void ResolveFontsBeforeLoadingDocument()
+        {
+            //ExStart
+            //ExFor:LoadOptions.FontSettings
+            //ExSummary:Shows how to resolve fonts before loading HTML and SVG documents.
+            FontSettings fontSettings = new FontSettings();
+            TableSubstitutionRule substitutionRule = fontSettings.SubstitutionSettings.TableSubstitution;
+            // If "HaettenSchweiler" is not installed on the local machine,
+            // it is still considered available, because it is substituted with "Comic Sans MS"
+            substitutionRule.AddSubstitutes("HaettenSchweiler", new string[] { "Comic Sans MS" });
+            
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.FontSettings = fontSettings;
+            // The same for SVG document
+            Document doc = new Document(MyDir + "Document.LoadFormat.html", loadOptions);
+            //ExEnd
+        }
     }
 }
 #endif
