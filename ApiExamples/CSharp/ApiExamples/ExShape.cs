@@ -1369,7 +1369,7 @@ namespace ApiExamples
 
         [Test]
         [Ignore("WORDSNET-18484")]
-        public void CreateNewTextBoxAndChangeAnchor()
+        public void CreateNewTextBoxAndChangeTextAnchor()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1384,7 +1384,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void GetTextBoxAndChangeAnchor()
+        public void GetTextBoxAndChangeTextAnchor()
         {
             //ExStart
             //ExFor:TextBoxAnchor
