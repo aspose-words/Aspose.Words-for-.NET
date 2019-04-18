@@ -642,6 +642,7 @@ namespace ApiExamples
         public void GetAvailableFonts()
         {
             //ExStart
+            //ExFor:Fonts.PhysicalFontInfo
             //ExFor:FontSourceBase.GetAvailableFonts
             //ExFor:PhysicalFontInfo.FontFamilyName
             //ExFor:PhysicalFontInfo.FullFontName
@@ -698,7 +699,8 @@ namespace ApiExamples
         public void EnableFontSubstitutionTrue()
         {
             //ExStart
-            //ExFor:FontSettings.EnableFontSubstitution
+            //ExFor:Fonts.FontInfoSubstitutionRule
+            //ExFor:Fonts.FontSubstitutionSettings.FontInfoSubstitution
             //ExSummary:Shows how to set the property for finding the closest match font among the available font sources instead missing font.
             Document doc = new Document(MyDir + "Font.EnableFontSubstitution.docx");
 
@@ -1259,6 +1261,8 @@ namespace ApiExamples
             //ExFor:Fonts.FontSettings.EnableFontSubstitution
             //ExFor:Fonts.FontSettings.GetFontSubstitutes(String)
             //ExFor:Fonts.FontSettings.ResetFontSources
+            //ExFor:Fonts.FontSettings.SubstitutionSettings
+            //ExFor:Fonts.FontSubstitutionSettings
             //ExFor:Fonts.SystemFontSource
             //ExFor:Fonts.SystemFontSource.#ctor
             //ExFor:Fonts.SystemFontSource.#ctor(Int32)
@@ -1358,6 +1362,268 @@ namespace ApiExamples
             {
                 doc.FontSettings.FallbackSettings.Save(fontFallbackStream);
             }
+            //ExEnd
+        }
+
+        [Test]
+        public void DefaultFontSubstitutionRule()
+        {
+            //ExStart
+            //ExFor:Fonts.DefaultFontSubstitutionRule
+            //ExFor:Fonts.DefaultFontSubstitutionRule.DefaultFontName
+            //ExFor:Fonts.FontSubstitutionSettings.DefaultFontSubstitution
+            //ExSummary:Shows how to set the default font substitution rule.
+            // Create a blank document and a new FontSettings property
+            Document doc = new Document();
+            FontSettings fontSettings = new FontSettings();
+            doc.FontSettings = fontSettings;
+
+            // Get the default substitution rule within FontSettings, which will be enabled by default and will substitute all missing fonts with "Times New Roman"
+            DefaultFontSubstitutionRule defaultFontSubstitutionRule = fontSettings.SubstitutionSettings.DefaultFontSubstitution;
+            Assert.True(defaultFontSubstitutionRule.Enabled);
+            Assert.AreEqual("Times New Roman", defaultFontSubstitutionRule.DefaultFontName);
+
+            // Set the default font substitute to "Courier New"
+            defaultFontSubstitutionRule.DefaultFontName = "Courier New";
+
+            // Using a document builder, add some text in a font that we don't have to see the substitution take place,
+            // and render the result in a PDF
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "Missing Font";
+            builder.Writeln("Line written in a missing font, which will be substituted with Courier New.");
+
+            doc.Save(ArtifactsDir + "Font.DefaultFontSubstitutionRule.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void FontConfigSubstitution()
+        {
+            //ExStart
+            //ExFor:Fonts.FontConfigSubstitutionRule
+            //ExFor:Fonts.FontConfigSubstitutionRule.Enabled
+            //ExFor:Fonts.FontConfigSubstitutionRule.IsFontConfigAvailable
+            //ExFor:Fonts.FontConfigSubstitutionRule.ResetCache
+            //ExFor:Fonts.FontSubstitutionRule
+            //ExFor:Fonts.FontSubstitutionRule.Enabled
+            //ExFor:Fonts.FontSubstitutionSettings.FontConfigSubstitution
+            //ExSummary:Shows OS-dependent font config substitution.
+            // Create a new FontSettings object and get its font config substitution rule
+            FontSettings fontSettings = new FontSettings();
+            FontConfigSubstitutionRule fontConfigSubstitution = fontSettings.SubstitutionSettings.FontConfigSubstitution;
+
+            // The FontConfigSubstitutionRule object works differently on Windows/non-Windows platforms
+            // On Windows, it is unavailable
+            PlatformID pid = Environment.OSVersion.Platform;
+            bool isWindows = pid == PlatformID.Win32NT || pid == PlatformID.Win32S || pid == PlatformID.Win32Windows || pid == PlatformID.WinCE;
+
+            if (isWindows)
+            {
+                Assert.False(fontConfigSubstitution.Enabled);
+                Assert.False(fontConfigSubstitution.IsFontConfigAvailable());
+            }
+
+            // On Linux/Mac, we will have access and will be able to perform operations
+            bool isLinuxOrMac = pid == PlatformID.Unix || pid == PlatformID.MacOSX;
+
+            if (isLinuxOrMac)
+            {
+                Assert.True(fontConfigSubstitution.Enabled);
+                Assert.True(fontConfigSubstitution.IsFontConfigAvailable());
+
+                fontConfigSubstitution.ResetCache();
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void FallbackSettings()
+        {
+            //ExStart
+            //ExFor:Fonts.FontFallbackSettings.LoadMsOfficeFallbackSettings
+            //ExFor:Fonts.FontFallbackSettings.LoadNotoFallbackSettings
+            //ExSummary:Shows how to load pre-defined fallback font settings.
+            Document doc = new Document();
+
+            // Create a FontSettings object for our document and get its FallbackSettings attribute
+            FontSettings fontSettings = new FontSettings();
+            doc.FontSettings = fontSettings;
+            FontFallbackSettings fontFallbackSettings = fontSettings.FallbackSettings;
+
+            // Save the default fallback font scheme in an XML document
+            // For example, one of the elements has a value of "0C00-0C7F" for Range and a corresponding "Vani" value for FallbackFonts
+            // This means that if the font we are using does not have symbols for the 0x0C00-0x0C7F unicode block,
+            // the symbols from the "Vani" font will be used as a substitute
+            fontFallbackSettings.Save(ArtifactsDir + "Font.FallbackSettings.Default.xml");
+
+            // There are two pre-defined font fallback schemes we can choose from
+            // 1: Use the default Microsoft Office scheme, which is the same one as the default
+            fontFallbackSettings.LoadMsOfficeFallbackSettings();
+            fontFallbackSettings.Save(ArtifactsDir + "Font.FallbackSettings.LoadMsOfficeFallbackSettings.xml");
+
+            // 2: Use the scheme built from Google Noto fonts
+            fontFallbackSettings.LoadNotoFallbackSettings();
+            fontFallbackSettings.Save(ArtifactsDir + "Font.FallbackSettings.LoadNotoFallbackSettings.xml");
+            //ExEnd
+        }
+
+        [Test]
+        public void FallbackSettingsCustom()
+        {
+            //ExStart
+            //ExFor:Fonts.FontSettings.FallbackSettings
+            //ExFor:Fonts.FontFallbackSettings
+            //ExFor:Fonts.FontFallbackSettings.BuildAutomatic
+            //ExSummary:Shows how to distribute fallback fonts across unicode character code ranges.
+            Document doc = new Document();
+
+            // Create a FontSettings object for our document and get its FallbackSettings attribute
+            FontSettings fontSettings = new FontSettings();
+            doc.FontSettings = fontSettings;
+            FontFallbackSettings fontFallbackSettings = fontSettings.FallbackSettings;
+
+            // Set our fonts to be sourced exclusively from the "MyFonts" folder
+            FolderFontSource folderFontSource = new FolderFontSource(MyDir + @"\MyFonts", false);
+            fontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
+
+            // Calling BuildAutomatic() will generate a fallback scheme that distributes accessible fonts across as many unicode character codes as possible
+            // In our case, it only has access to the handful of fonts inside the "MyFonts" folder
+            fontFallbackSettings.BuildAutomatic();
+            fontFallbackSettings.Save(ArtifactsDir + "Font.FontFallbackSettings.BuildAutomatic.xml");
+
+            // We can also load a custom substitution scheme from a file like this
+            // This scheme applies the "Arvo" font across the "0000-00ff" unicode blocks, the "Squarish Sans CT" font across "0100-024f",
+            // and the "M+ 2m" font in every place that none of the other fonts cover
+            fontFallbackSettings.Load(MyDir + "Font.FallbackSettings.Custom.xml");
+
+            // Create a document builder and set its font to one that doesn't exist in any of our sources
+            // In doing that we will rely completely on our font fallback scheme to render text
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Font.Name = "Missing Font";
+
+            // Type out every unicode character from 0x0021 to 0x052F, with descriptive lines dividing unicode blocks we defined in our custom font fallback scheme
+            for (int i = 0x0021; i < 0x0530; i++)
+            {
+                switch (i)
+                {
+                    case 0x0021:
+                        builder.Writeln("\n\n0x0021 - 0x00FF: \nBasic Latin/Latin-1 Supplement unicode blocks in \"Arvo\" font:");
+                        break;
+                    case 0x0100:
+                        builder.Writeln("\n\n0x0100 - 0x024F: \nLatin Extended A/B blocks, mostly in \"Squarish Sans CT\" font:");
+                        break;
+                    case 0x0250:
+                        builder.Writeln("\n\n0x0250 - 0x052F: \nIPA/Greek/Cyrillic blocks in \"M+ 2m\" font:");
+                        break;
+                }
+
+                builder.Write(Convert.ToChar(i).ToString());
+            }
+
+            doc.Save(ArtifactsDir + "Font.FallbackSettings.Custom.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void TableSubstitutionRule()
+        {
+            //ExStart
+            //ExFor:Fonts.TableSubstitutionRule
+            //ExFor:Fonts.TableSubstitutionRule.LoadLinuxSettings
+            //ExFor:Fonts.TableSubstitutionRule.LoadWindowsSettings
+            //ExFor:Fonts.TableSubstitutionRule.Save(System.IO.Stream)
+            //ExFor:Fonts.TableSubstitutionRule.Save(System.String)
+            //ExSummary:Shows how to access font substitution tables for Windows and Linux.
+            // Create a blank document and a new FontSettings object
+            Document doc = new Document();
+            FontSettings fontSettings = new FontSettings();
+            doc.FontSettings = fontSettings;
+
+            // Create a new table substitution rule and load the default Windows font substitution table
+            TableSubstitutionRule tableSubstitutionRule = fontSettings.SubstitutionSettings.TableSubstitution;
+            tableSubstitutionRule.LoadWindowsSettings();
+
+            // In Windows, the default substitute for the "Times New Roman CE" font is "Times New Roman"
+            Assert.AreEqual(new[] { "Times New Roman" }, tableSubstitutionRule.GetSubstitutes("Times New Roman CE").ToArray());
+
+            // We can save the table for viewing in the form of an XML document
+            tableSubstitutionRule.Save(ArtifactsDir + "Font.TableSubstitutionRule.Windows.xml");
+
+            // Linux has its own substitution table
+            // If "FreeSerif" is unavailable to substitute for "Times New Roman CE", we then look for "Liberation Serif", and so on
+            tableSubstitutionRule.LoadLinuxSettings();
+            Assert.AreEqual(new[] { "FreeSerif", "Liberation Serif", "DejaVu Serif" }, tableSubstitutionRule.GetSubstitutes("Times New Roman CE").ToArray());
+
+            // Save the Linux substitution table using a stream
+            using (FileStream fileStream = new FileStream(ArtifactsDir + "Font.TableSubstitutionRule.Linux.xml", FileMode.Create))
+            {
+                tableSubstitutionRule.Save(fileStream);
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void TableSubstitutionRuleCustom()
+        {
+            //ExStart
+            //ExFor:Fonts.FontSubstitutionSettings.TableSubstitution
+            //ExFor:Fonts.TableSubstitutionRule.AddSubstitutes(System.String,System.String[])
+            //ExFor:Fonts.TableSubstitutionRule.GetSubstitutes(System.String)
+            //ExFor:Fonts.TableSubstitutionRule.Load(System.IO.Stream)
+            //ExFor:Fonts.TableSubstitutionRule.Load(System.String)
+            //ExFor:Fonts.TableSubstitutionRule.SetSubstitutes(System.String,System.String[])
+            //ExSummary:Shows how to work with custom font substitution tables.
+            // Create a blank document and a new FontSettings object
+            Document doc = new Document();
+            FontSettings fontSettings = new FontSettings();
+            doc.FontSettings = fontSettings;
+
+            // Create a new table substitution rule and load the default Windows font substitution table
+            TableSubstitutionRule tableSubstitutionRule = fontSettings.SubstitutionSettings.TableSubstitution;
+
+            // If we select fonts exclusively from our own folder, we will need a custom substitution table
+            FolderFontSource folderFontSource = new FolderFontSource(MyDir + @"\MyFonts", false);
+            fontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
+
+            // There are two ways of loading a substitution table from a file in the local file system
+            // 1: Loading from a stream
+            using (FileStream fileStream = new FileStream(MyDir + "Font.TableSubstitutionRule.Custom.xml", FileMode.Open))
+            {
+                tableSubstitutionRule.Load(fileStream);
+            }
+
+            // 2: Load directly from file
+            tableSubstitutionRule.Load(MyDir + "Font.TableSubstitutionRule.Custom.xml");
+
+            // Since we no longer have access to "Arial", our font table will first try substitute it with "Nonexistent Font", which we don't have,
+            // and then with "Kreon", found in the "MyFonts" folder
+            Assert.AreEqual(new[] { "Missing Font", "Kreon" }, tableSubstitutionRule.GetSubstitutes("Arial").ToArray());
+
+            // If we find this substitution table lacking, we can also expand it programmatically
+            // In this case, we add an entry that substitutes "Times New Roman" with "Arvo"
+            Assert.Null(tableSubstitutionRule.GetSubstitutes("Times New Roman"));
+            tableSubstitutionRule.AddSubstitutes("Times New Roman", "Arvo");
+            Assert.AreEqual(new[] { "Arvo" }, tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
+
+            // We can add a secondary fallback substitute for an existing font entry with AddSubstitutes()
+            // In case "Arvo" is unavailable, our table will look for "M+ 2m"
+            tableSubstitutionRule.AddSubstitutes("Times New Roman", "M+ 2m");
+            Assert.AreEqual(new[] { "Arvo", "M+ 2m" }, tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
+
+            // SetSubstitutes() can set a new list of substitute fonts for a font
+            tableSubstitutionRule.SetSubstitutes("Times New Roman", new[] { "Squarish Sans CT", "M+ 2m" });
+            Assert.AreEqual(new[] { "Squarish Sans CT", "M+ 2m" }, tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
+
+            // TO demonstrate substitution, write text in fonts we have no access to and render the result in a PDF
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Font.Name = "Arial";
+            builder.Writeln("Text written in Arial, to be substituted by Kreon.");
+
+            builder.Font.Name = "Times New Roman";
+            builder.Writeln("Text written in Times New Roman, to be substituted by Squarish Sans CT.");
+
+            doc.Save(ArtifactsDir + "Font.TableSubstitutionRule.Custom.pdf");
             //ExEnd
         }
     }
