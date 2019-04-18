@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Web.UI;
@@ -300,7 +301,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CustomAdd()
+        public void DocumentPropertyCollection()
         {
             //ExStart
             //ExFor:CustomDocumentProperties.Add(String,String)
@@ -308,34 +309,57 @@ namespace ApiExamples
             //ExFor:CustomDocumentProperties.Add(String,int)
             //ExFor:CustomDocumentProperties.Add(String,DateTime)
             //ExFor:CustomDocumentProperties.Add(String,Double)
+            //ExFor:Properties.DocumentPropertyCollection
+            //ExFor:Properties.DocumentPropertyCollection.Clear
+            //ExFor:Properties.DocumentPropertyCollection.Contains(System.String)
+            //ExFor:Properties.DocumentPropertyCollection.GetEnumerator
+            //ExFor:Properties.DocumentPropertyCollection.IndexOf(System.String)
+            //ExFor:Properties.DocumentPropertyCollection.RemoveAt(System.Int32)
+            //ExFor:Properties.DocumentPropertyCollection.Remove
             //ExId:AddCustomProperties
-            //ExSummary:Checks if a custom property with a given name exists in a document and adds few more custom document properties.
-            Document doc = new Document(MyDir + "Properties.doc");
+            //ExSummary:Shows how to add custom properties to a document.
+            // Create a blank document and get its custom property collection
+            Document doc = new Document();
+            CustomDocumentProperties properties = doc.CustomDocumentProperties;
 
-            CustomDocumentProperties docProperties = doc.CustomDocumentProperties;
+            // The collection will be empty by default
+            Assert.AreEqual(0, properties.Count);
 
-            if (docProperties["Authorized"] == null)
+            // We can populate it with key/value pairs with a variety of value types
+            properties.Add("Authorized", true);
+            properties.Add("Authorized By", "John Doe");
+            properties.Add("Authorized Date", DateTime.Today);
+            properties.Add("Authorized Revision", doc.BuiltInDocumentProperties.RevisionNumber);
+            properties.Add("Authorized Amount", 123.45);
+
+            // Custom properties are automatically sorted in alphabetic order
+            Assert.AreEqual(1, properties.IndexOf("Authorized Amount"));
+            Assert.AreEqual(5, properties.Count);
+
+            // Enumerate and print all custom properties
+            using (IEnumerator<DocumentProperty> enumerator = properties.GetEnumerator())
             {
-                docProperties.Add("Authorized", true);
-                docProperties.Add("Authorized By", "John Smith");
-                docProperties.Add("Authorized Date", DateTime.Today);
-                docProperties.Add("Authorized Revision", doc.BuiltInDocumentProperties.RevisionNumber);
-                docProperties.Add("Authorized Amount", 123.45);
+                while (enumerator.MoveNext())
+                {
+                    Console.WriteLine($"Name: \"{enumerator.Current.Name}\", Type: \"{enumerator.Current.Type}\", Value: \"{enumerator.Current.Value}\"");
+                }
             }
 
-            //ExEnd
-        }
+            // We can view/edit custom properties by opening the document and looking in File > Properties > Advanced Properties > Custom
+            doc.Save(ArtifactsDir + "Properties.DocumentPropertyCollection.docx");
 
-        [Test]
-        public void CustomRemove()
-        {
-            //ExStart
-            //ExFor:DocumentPropertyCollection.Remove
-            //ExId:RemoveCustomProperties
-            //ExSummary:Removes a custom document property.
-            Document doc = new Document(MyDir + "Properties.doc");
+            // We can remove elements from the property collection by index or by name
+            properties.RemoveAt(1);
+            Assert.False(properties.Contains("Authorized Amount"));
+            Assert.AreEqual(4, properties.Count);
 
-            doc.CustomDocumentProperties.Remove("Authorized Date");
+            properties.Remove("Authorized Revision");
+            Assert.False(properties.Contains("Authorized Revision"));
+            Assert.AreEqual(3, properties.Count);
+
+            // We can also empty the entire custom property collection at once
+            properties.Clear();
+            Assert.AreEqual(0, properties.Count);
             //ExEnd
         }
 
