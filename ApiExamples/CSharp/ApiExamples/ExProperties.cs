@@ -255,6 +255,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Properties.BuiltInDocumentProperties.Thumbnail
+            //ExFor:Properties.DocumentProperty.ToByteArray
             //ExSummary:Shows how to append a thumbnail to an Epub document.
             // Create a blank document and add some text with a DocumentBuilder
             Document doc = new Document();
@@ -272,6 +273,10 @@ namespace ApiExamples
 
             // Our thumbnail should be visible at the start of the document, before the text we added
             doc.Save(ArtifactsDir + "Properties.Thumbnail.epub");
+
+            // We can also extract a thumbnail property into a byte array and then into the local file system like this
+            DocumentProperty thumbnail = doc.BuiltInDocumentProperties["Thumbnail"];
+            File.WriteAllBytes(ArtifactsDir + "Properties.Thumbnail.gif", thumbnail.ToByteArray());
             //ExEnd
         }
 
