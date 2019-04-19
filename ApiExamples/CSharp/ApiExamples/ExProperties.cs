@@ -7,9 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Web.UI;
 using Aspose.Words;
 using Aspose.Words.Layout;
 using Aspose.Words.Properties;
@@ -327,6 +325,52 @@ namespace ApiExamples
             // By default the name is an empty string, as we can see above, but after saving the document it will inherit the value of the Title property
             doc.BuiltInDocumentProperties.Title = "My Title";
             doc.Save(ArtifactsDir + "Properties.HeadingPairs.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void Security()
+        {
+            //ExStart
+            //ExFor:Properties.BuiltInDocumentProperties.Security
+            //ExFor:Properties.DocumentSecurity
+            //ExSummary:Shows how to use document properties to display the security level of a document.
+            // Create a blank document, which has no security of any kind by default
+            Document doc = new Document();
+
+            // The "Security" property serves as a description of the security level of a document
+            Assert.AreEqual(DocumentSecurity.None, doc.BuiltInDocumentProperties.Security);
+
+            // Upon saving a document after setting its security level, Aspose automatically updates this property to the appropriate value
+            doc.WriteProtection.ReadOnlyRecommended = true;
+            doc.Save(ArtifactsDir + "Properties.Security.ReadOnlyRecommended.docx");
+
+            // We can open a document and glance at its security level like this
+            Assert.AreEqual(DocumentSecurity.ReadOnlyRecommended, 
+                new Document(ArtifactsDir + "Properties.Security.ReadOnlyRecommended.docx").BuiltInDocumentProperties.Security);
+
+            // Create a new document and set it to Write-Protected
+            doc = new Document();
+
+            Assert.False(doc.WriteProtection.IsWriteProtected);
+            doc.WriteProtection.SetPassword("MyPassword");
+            Assert.True(doc.WriteProtection.ValidatePassword("MyPassword"));
+            Assert.True(doc.WriteProtection.IsWriteProtected);
+            doc.Save(ArtifactsDir + "Properties.Security.ReadOnlyEnforced.docx");
+            
+            // This document's security level counts as "ReadOnlyEnforced" 
+            Assert.AreEqual(DocumentSecurity.ReadOnlyEnforced,
+                new Document(ArtifactsDir + "Properties.Security.ReadOnlyEnforced.docx").BuiltInDocumentProperties.Security);
+
+            // Since this is still a descriptive property, we can protect a document and pick a suitable value ourselves
+            doc = new Document();
+
+            doc.Protect(ProtectionType.AllowOnlyComments, "MyPassword");
+            doc.BuiltInDocumentProperties.Security = DocumentSecurity.ReadOnlyExceptAnnotations;
+            doc.Save(ArtifactsDir + "Properties.Security.ReadOnlyExceptAnnotations.docx");
+
+            Assert.AreEqual(DocumentSecurity.ReadOnlyExceptAnnotations,
+                new Document(ArtifactsDir + "Properties.Security.ReadOnlyExceptAnnotations.docx").BuiltInDocumentProperties.Security);
             //ExEnd
         }
 
