@@ -349,8 +349,6 @@ namespace ApiExamples
             // "Heading 2"
             Assert.AreEqual("Part6", titlesOfParts[6]);
             Assert.AreEqual("Part7", titlesOfParts[7]);
-            
-            doc.Save(ArtifactsDir + "Properties.HeadingPairs.docx");
         }
 
         [Test]
