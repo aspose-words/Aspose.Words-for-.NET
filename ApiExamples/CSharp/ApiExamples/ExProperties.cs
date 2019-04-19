@@ -317,9 +317,16 @@ namespace ApiExamples
             //ExSummary:Shows the relationship between HeadingPairs and TitlesOfParts properties.
             // Open a document that contains entries in the HeadingPairs/TitlesOfParts properties
             Document doc = new Document(MyDir + "Properties.HeadingPairs.docx");
+            
+            // We can find the combined values of these collections in File > Properties > Advanced Properties > Contents tab
 
-            // The HeadingPairs property is a collection of <string, int> pairs that determines how many document parts a heading spans over
+            // The HeadingPairs property is a collection of <string, int> pairs that determines
+            // how many document parts a heading spans over
             object[] headingPairs = doc.BuiltInDocumentProperties.HeadingPairs;
+
+            // The TitlesOfParts property contains the names of parts that belong to the above headings
+            string[] titlesOfParts = doc.BuiltInDocumentProperties.TitlesOfParts;
+            //ExEnd
 
             // There are 6 array elements designating 3 heading/part count pairs
             Assert.AreEqual(6, headingPairs.Length);
@@ -330,32 +337,20 @@ namespace ApiExamples
             Assert.AreEqual("Heading 2", headingPairs[4].ToString());
             Assert.AreEqual("2", headingPairs[5].ToString());
 
-            // The TitlesOfParts property contains the names of parts that belong to the above headings
-            // The above headings preside over (1 + 5 + 2) = 8 parts, and this collection contains their names 
-            string[] titlesOfParts = doc.BuiltInDocumentProperties.TitlesOfParts;
             Assert.AreEqual(8, titlesOfParts.Length);
-
             // "Title"
             Assert.AreEqual("", titlesOfParts[0]);
-
             // "Heading 1"
             Assert.AreEqual("Part1", titlesOfParts[1]);
             Assert.AreEqual("Part2", titlesOfParts[2]);
             Assert.AreEqual("Part3", titlesOfParts[3]);
             Assert.AreEqual("Part4", titlesOfParts[4]);
             Assert.AreEqual("Part5", titlesOfParts[5]);
-
             // "Heading 2"
             Assert.AreEqual("Part6", titlesOfParts[6]);
             Assert.AreEqual("Part7", titlesOfParts[7]);
-
-            // We can find the combined values of these collections in File > Properties > Advanced Properties > Contents tab
-            // In the special case of the Title property, changing its name like this will change the value of the part name belonging to the "Title" heading
-            // By default the name is an empty string, as we can see above, but after saving the document it will inherit the value of the Title property
-            doc.BuiltInDocumentProperties.Title = "My Title";
-
+            
             doc.Save(ArtifactsDir + "Properties.HeadingPairs.docx");
-            //ExEnd
         }
 
         [Test]
