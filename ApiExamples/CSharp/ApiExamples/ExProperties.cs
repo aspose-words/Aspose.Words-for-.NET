@@ -253,8 +253,8 @@ namespace ApiExamples
         public void Thumbnail()
         {
             //ExStart
-            //ExFor:Properties.BuiltInDocumentProperties.Thumbnail
-            //ExFor:Properties.DocumentProperty.ToByteArray
+            //ExFor:BuiltInDocumentProperties.Thumbnail
+            //ExFor:DocumentProperty.ToByteArray
             //ExSummary:Shows how to append a thumbnail to an Epub document.
             // Create a blank document and add some text with a DocumentBuilder
             Document doc = new Document();
@@ -276,6 +276,35 @@ namespace ApiExamples
             // We can also extract a thumbnail property into a byte array and then into the local file system like this
             DocumentProperty thumbnail = doc.BuiltInDocumentProperties["Thumbnail"];
             File.WriteAllBytes(ArtifactsDir + "Properties.Thumbnail.gif", thumbnail.ToByteArray());
+            //ExEnd
+        }
+
+        [Test]
+        public void HyperlinkBase()
+        {
+            //ExStart
+            //ExFor:BuiltInDocumentProperties.HyperlinkBase
+            //ExSummary:Shows how to store the base part of a hyperlink in the document's properties.
+            // Create a blank document and a DocumentBuilder
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a relative hyperlink to "Document.docx", which will open that document when clicked on
+            builder.InsertHyperlink("Relative hyperlink", "Document.docx", false);
+
+            // If we don't have a "Document.docx" in the same folder as the document we are about to save, we will end up with a broken link
+            Assert.False(File.Exists(ArtifactsDir + "Document.docx"));
+            doc.Save(ArtifactsDir + "Properties.HyperlinkBase.BrokenLink.docx");
+
+            // We could keep prepending something like "C:\users\...\data" to every hyperlink we place to remedy this
+            // Alternatively, if we know that all our linked files will come from the same folder,
+            // we could set a base hyperlink in the document properties, keeping our hyperlinks short
+            BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
+
+            Assert.True(File.Exists(MyDir + "Document.docx"));
+            properties.HyperlinkBase = MyDir;
+
+            doc.Save(ArtifactsDir + "Properties.HyperlinkBase.WorkingLink.docx");
             //ExEnd
         }
 
@@ -324,6 +353,7 @@ namespace ApiExamples
             // In the special case of the Title property, changing its name like this will change the value of the part name belonging to the "Title" heading
             // By default the name is an empty string, as we can see above, but after saving the document it will inherit the value of the Title property
             doc.BuiltInDocumentProperties.Title = "My Title";
+
             doc.Save(ArtifactsDir + "Properties.HeadingPairs.docx");
             //ExEnd
         }
