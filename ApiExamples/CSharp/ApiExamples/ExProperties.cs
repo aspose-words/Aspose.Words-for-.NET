@@ -155,6 +155,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Properties.Content.docx");
 
             // If we want to display document stats such as page/word counts inside a document, we can use fields such as NUMPAGES, NUMWORDS, NUMCHARS etc
+            // Also, these statistics are found in File > Properties > Advanced Properties > Statistics
             // To be able to glance at these values without opening the document, we can use a document's built in document property collection
             // These properties are accessed by right-clicking the file in Windows Explorer and navigating to Properties > Details
             // The "Content" category will have all the properties we will work with
@@ -277,6 +278,55 @@ namespace ApiExamples
             // We can also extract a thumbnail property into a byte array and then into the local file system like this
             DocumentProperty thumbnail = doc.BuiltInDocumentProperties["Thumbnail"];
             File.WriteAllBytes(ArtifactsDir + "Properties.Thumbnail.gif", thumbnail.ToByteArray());
+            //ExEnd
+        }
+
+        [Test]
+        public void HeadingPairs()
+        {
+            //ExStart
+            //ExFor:Properties.BuiltInDocumentProperties.HeadingPairs
+            //ExFor:Properties.BuiltInDocumentProperties.TitlesOfParts
+            //ExSummary:Shows the relationship between HeadingPairs and TitlesOfParts properties.
+            // Open a document that contains entries in the HeadingPairs/TitlesOfParts properties
+            Document doc = new Document(MyDir + "Properties.HeadingPairs.docx");
+
+            // The HeadingPairs property is a collection of <string, int> pairs that determines how many document parts a heading spans over
+            object[] headingPairs = doc.BuiltInDocumentProperties.HeadingPairs;
+
+            // There are 6 array elements designating 3 heading/part count pairs
+            Assert.AreEqual(6, headingPairs.Length);
+            Assert.AreEqual("Title", headingPairs[0].ToString());
+            Assert.AreEqual("1", headingPairs[1].ToString());
+            Assert.AreEqual("Heading 1", headingPairs[2].ToString());
+            Assert.AreEqual("5", headingPairs[3].ToString());
+            Assert.AreEqual("Heading 2", headingPairs[4].ToString());
+            Assert.AreEqual("2", headingPairs[5].ToString());
+
+            // The TitlesOfParts property contains the names of parts that belong to the above headings
+            // The above headings preside over (1 + 5 + 2) = 8 parts, and this collection contains their names 
+            string[] titlesOfParts = doc.BuiltInDocumentProperties.TitlesOfParts;
+            Assert.AreEqual(8, titlesOfParts.Length);
+
+            // "Title"
+            Assert.AreEqual("", titlesOfParts[0]);
+
+            // "Heading 1"
+            Assert.AreEqual("Part1", titlesOfParts[1]);
+            Assert.AreEqual("Part2", titlesOfParts[2]);
+            Assert.AreEqual("Part3", titlesOfParts[3]);
+            Assert.AreEqual("Part4", titlesOfParts[4]);
+            Assert.AreEqual("Part5", titlesOfParts[5]);
+
+            // "Heading 2"
+            Assert.AreEqual("Part6", titlesOfParts[6]);
+            Assert.AreEqual("Part7", titlesOfParts[7]);
+
+            // We can find the combined values of these collections in File > Properties > Advanced Properties > Contents tab
+            // In the special case of the Title property, changing its name like this will change the value of the part name belonging to the "Title" heading
+            // By default the name is an empty string, as we can see above, but after saving the document it will inherit the value of the Title property
+            doc.BuiltInDocumentProperties.Title = "My Title";
+            doc.Save(ArtifactsDir + "Properties.HeadingPairs.docx");
             //ExEnd
         }
 
