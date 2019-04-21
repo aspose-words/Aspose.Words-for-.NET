@@ -91,21 +91,16 @@ namespace ApiExamples
         public void BuiltInPropertiesDirectAccess()
         {
             //ExStart
-            //ExFor:BuiltInDocumentProperties.Author
-            //ExFor:BuiltInDocumentProperties.Category
-            //ExFor:BuiltInDocumentProperties.Comments
+
             //ExFor:BuiltInDocumentProperties.Company
             //ExFor:BuiltInDocumentProperties.CreatedTime
-            //ExFor:BuiltInDocumentProperties.Keywords
             //ExFor:BuiltInDocumentProperties.LastPrinted
             //ExFor:BuiltInDocumentProperties.LastSavedBy
             //ExFor:BuiltInDocumentProperties.LastSavedTime
             //ExFor:BuiltInDocumentProperties.Manager
             //ExFor:BuiltInDocumentProperties.NameOfApplication
             //ExFor:BuiltInDocumentProperties.RevisionNumber
-            //ExFor:BuiltInDocumentProperties.Subject
             //ExFor:BuiltInDocumentProperties.Template
-            //ExFor:BuiltInDocumentProperties.Title
             //ExFor:BuiltInDocumentProperties.TotalEditingTime
             //ExFor:BuiltInDocumentProperties.Version
             //ExSummary:Retrieves information from the built-in document properties.
@@ -113,12 +108,8 @@ namespace ApiExamples
             Document doc = new Document(fileName);
 
             Console.WriteLine("Document name: {0}", fileName);
-            Console.WriteLine("Document author: {0}", doc.BuiltInDocumentProperties.Author);
-            Console.WriteLine("Category: {0}", doc.BuiltInDocumentProperties.Category);
-            Console.WriteLine("Comments: {0}", doc.BuiltInDocumentProperties.Comments);
             Console.WriteLine("Company: {0}", doc.BuiltInDocumentProperties.Company);
             Console.WriteLine("Create time: {0}", doc.BuiltInDocumentProperties.CreatedTime);
-            Console.WriteLine("Keywords: {0}", doc.BuiltInDocumentProperties.Keywords);
             Console.WriteLine("Last printed: {0}", doc.BuiltInDocumentProperties.LastPrinted);
             Console.WriteLine("Last saved by: {0}", doc.BuiltInDocumentProperties.LastSavedBy);
             Console.WriteLine("Last saved: {0}", doc.BuiltInDocumentProperties.LastSavedTime);
@@ -126,9 +117,7 @@ namespace ApiExamples
             Console.WriteLine("Manager: {0}", doc.BuiltInDocumentProperties.Manager);
             Console.WriteLine("Name of application: {0}", doc.BuiltInDocumentProperties.NameOfApplication);
             Console.WriteLine("Revision number: {0}", doc.BuiltInDocumentProperties.RevisionNumber);
-            Console.WriteLine("Subject: {0}", doc.BuiltInDocumentProperties.Subject);
             Console.WriteLine("Template: {0}", doc.BuiltInDocumentProperties.Template);
-            Console.WriteLine("Title: {0}", doc.BuiltInDocumentProperties.Title);
             Console.WriteLine("Total editing time: {0}", doc.BuiltInDocumentProperties.TotalEditingTime);
             Console.WriteLine("Version: {0}", doc.BuiltInDocumentProperties.Version);
             //ExEnd
@@ -138,20 +127,32 @@ namespace ApiExamples
         public void Description()
         {
             //ExStart
+            //ExFor:BuiltInDocumentProperties.Author
+            //ExFor:BuiltInDocumentProperties.Category
+            //ExFor:BuiltInDocumentProperties.Comments
+            //ExFor:BuiltInDocumentProperties.Keywords
+            //ExFor:BuiltInDocumentProperties.Subject
+            //ExFor:BuiltInDocumentProperties.Title
             //ExSummary:Shows how to work with document properties in the "Description" category.
+            // Create a blank document 
             Document doc = new Document();
 
+            // The properties we will work with are in the Properties attribute
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
 
+            // Set the values of some descriptive properties
+            // These are metadata that can be glanced at without opening the document in the "Details" or "Content" folder views in Windows Explorer 
+            // The "Details" view has columns dedicated to these properties
             properties.Author = "John Doe";
             properties.Title = "John's Document";
             properties.Subject = "My subject";
             properties.Category = "My category";
+            properties.Comments = $"This is {properties.Author}'s document about {properties.Subject}";
 
-            properties.Comments = $"This is a document about {properties.Subject}";
-
+            // Tags can be used as keywords and are separated by semicolons
             properties.Keywords = "Tag 1; Tag 2; Tag 3";
 
+            // When right clicking the document file in Windows Explorer, these properties are found in Properties > Details > Description
             doc.Save(ArtifactsDir + "Properties.Description.docx");
             //ExEnd
         }
