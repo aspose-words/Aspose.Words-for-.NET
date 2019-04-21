@@ -143,6 +143,7 @@ namespace ApiExamples
             // Set the values of some descriptive properties
             // These are metadata that can be glanced at without opening the document in the "Details" or "Content" folder views in Windows Explorer 
             // The "Details" view has columns dedicated to these properties
+            // Fields such as AUTHOR, SUBJECT, TITLE etc. can be used to display these values inside the document
             properties.Author = "John Doe";
             properties.Title = "John's Document";
             properties.Subject = "My subject";
