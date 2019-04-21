@@ -134,6 +134,28 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [Test]
+        public void Description()
+        {
+            //ExStart
+            //ExSummary:Shows how to work with document properties in the "Description" category.
+            Document doc = new Document();
+
+            BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
+
+            properties.Author = "John Doe";
+            properties.Title = "John's Document";
+            properties.Subject = "My subject";
+            properties.Category = "My category";
+
+            properties.Comments = $"This is a document about {properties.Subject}";
+
+            properties.Keywords = "Tag 1; Tag 2; Tag 3";
+
+            doc.Save(ArtifactsDir + "Properties.Description.docx");
+            //ExEnd
+        }
+
         //ExStart
         //ExFor:BuiltInDocumentProperties.Bytes
         //ExFor:BuiltInDocumentProperties.Characters
@@ -145,7 +167,7 @@ namespace ApiExamples
         //ExFor:BuiltInDocumentProperties.Pages
         //ExFor:BuiltInDocumentProperties.Paragraphs
         //ExFor:BuiltInDocumentProperties.Words
-        //ExSummary:Shows how to work with document properties from the "Content" category.
+        //ExSummary:Shows how to work with document properties in the "Content" category.
         [Test] //ExSkip
         public void Content()
         {
