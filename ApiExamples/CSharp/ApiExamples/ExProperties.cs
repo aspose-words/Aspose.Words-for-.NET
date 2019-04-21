@@ -87,41 +87,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        public void BuiltInPropertiesDirectAccess()
-        {
-            //ExStart
-
-            //ExFor:BuiltInDocumentProperties.Company
-            //ExFor:BuiltInDocumentProperties.CreatedTime
-            //ExFor:BuiltInDocumentProperties.LastPrinted
-            //ExFor:BuiltInDocumentProperties.LastSavedBy
-            //ExFor:BuiltInDocumentProperties.LastSavedTime
-            //ExFor:BuiltInDocumentProperties.Manager
-            //ExFor:BuiltInDocumentProperties.NameOfApplication
-            //ExFor:BuiltInDocumentProperties.RevisionNumber
-            //ExFor:BuiltInDocumentProperties.Template
-            //ExFor:BuiltInDocumentProperties.TotalEditingTime
-            //ExFor:BuiltInDocumentProperties.Version
-            //ExSummary:Retrieves information from the built-in document properties.
-            String fileName = MyDir + "Properties.doc";
-            Document doc = new Document(fileName);
-
-            Console.WriteLine("Document name: {0}", fileName);
-            Console.WriteLine("Company: {0}", doc.BuiltInDocumentProperties.Company);
-            Console.WriteLine("Create time: {0}", doc.BuiltInDocumentProperties.CreatedTime);
-            Console.WriteLine("Last printed: {0}", doc.BuiltInDocumentProperties.LastPrinted);
-            Console.WriteLine("Last saved by: {0}", doc.BuiltInDocumentProperties.LastSavedBy);
-            Console.WriteLine("Last saved: {0}", doc.BuiltInDocumentProperties.LastSavedTime);
-            Console.WriteLine("Lines: {0}", doc.BuiltInDocumentProperties.Lines);
-            Console.WriteLine("Manager: {0}", doc.BuiltInDocumentProperties.Manager);
-            Console.WriteLine("Name of application: {0}", doc.BuiltInDocumentProperties.NameOfApplication);
-            Console.WriteLine("Revision number: {0}", doc.BuiltInDocumentProperties.RevisionNumber);
-            Console.WriteLine("Template: {0}", doc.BuiltInDocumentProperties.Template);
-            Console.WriteLine("Total editing time: {0}", doc.BuiltInDocumentProperties.TotalEditingTime);
-            Console.WriteLine("Version: {0}", doc.BuiltInDocumentProperties.Version);
-            //ExEnd
-        }
 
         [Test]
         public void Description()
@@ -155,6 +120,29 @@ namespace ApiExamples
 
             // When right clicking the document file in Windows Explorer, these properties are found in Properties > Details > Description
             doc.Save(ArtifactsDir + "Properties.Description.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void Origin()
+        {
+            //ExStart
+            //ExFor:BuiltInDocumentProperties.Company
+            //ExFor:BuiltInDocumentProperties.CreatedTime
+            //ExFor:BuiltInDocumentProperties.LastPrinted
+            //ExFor:BuiltInDocumentProperties.LastSavedBy
+            //ExFor:BuiltInDocumentProperties.LastSavedTime
+            //ExFor:BuiltInDocumentProperties.Manager
+            //ExFor:BuiltInDocumentProperties.NameOfApplication
+            //ExFor:BuiltInDocumentProperties.RevisionNumber
+            //ExFor:BuiltInDocumentProperties.Template
+            //ExFor:BuiltInDocumentProperties.TotalEditingTime
+            //ExFor:BuiltInDocumentProperties.Version
+            // Create a blank document 
+            Document doc = new Document();
+
+            // The properties we will work with are in the Properties attribute
+            BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
             //ExEnd
         }
 
