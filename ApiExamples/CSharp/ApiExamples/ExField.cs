@@ -5241,5 +5241,24 @@ namespace ApiExamples
             return field;
         }
         //ExEnd
+
+        [Test]
+        public void Shape()
+        {
+            //ExStart
+            //ExFor:FieldShape
+            //ExFor:FieldShape.Text
+            //ExFor:Shows how to read SHAPE fields.
+            // Open a document that contains two fields
+            Document doc = new Document(MyDir + "Field.ContainsShapeField.doc");
+            Assert.AreEqual(2, doc.Range.Fields.Count);
+
+            // The first field is a SHAPE field
+            // SHAPE fields inserted by 97-03 versions of Microsoft Word, or via Compatibility Move with .doc files on newer versions
+            // These fields serve as anchors for autoshape/chart canvases with the "In line with text" wrapping style enabled
+            FieldShape field = (FieldShape)doc.Range.Fields[0];
+            Assert.AreEqual("Text inside SHAPE field", field.Text);
+            //ExENd
+        }
     }
 }
