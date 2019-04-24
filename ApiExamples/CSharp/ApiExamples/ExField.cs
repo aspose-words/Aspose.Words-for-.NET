@@ -5279,42 +5279,6 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void Legacy()
-        {
-            //ExStart
-            //ExFor:FieldEmbed
-            //ExFor:FieldShape
-            //ExFor:FieldShape.Text
-            //ExSummary:Shows how some older Microsoft Word fields such as SHAPE and EMBED are handled.
-            // Open a document that was created in Microsoft Word 2003
-            Document doc = new Document(MyDir + "Field.Legacy.doc");
-
-            // If we open the document in Word and press Alt+F9, we will see a SHAPE and an EMBED field
-            // A SHAPE field is the anchor/canvas for an autoshape object with the "In line with text" wrapping style enabled
-            // An EMBED field has the same function, but for an embedded object, such as a spreadsheet from an external Excel document
-            // However, these fields will not appear in the document's Fields collection
-            Assert.AreEqual(0, doc.Range.Fields.Count);
-
-            // These fields are supported only by old versions of Microsoft Word
-            // As such, they are converted into shapes during the document importation process and can instead be found in the collection of Shape nodes
-            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
-            Assert.AreEqual(3, shapes.Count);
-
-            // The first Shape node corresponds to what was the SHAPE field in the input document: the inline canvas for an autoshape
-            Shape shape = (Shape)shapes[0];
-            Assert.AreEqual(ShapeType.Image,shape.ShapeType);
-
-            // The next Shape node is the autoshape that is within the canvas
-            shape = (Shape)shapes[1];
-            Assert.AreEqual(ShapeType.Can, shape.ShapeType);
-
-            // The third Shape is what was the EMBED field that contained the external spreadsheet
-            shape = (Shape)shapes[2];
-            Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
-            //ExEnd
-        }
-
-        [Test]
         public void BidiOutline()
         {
             //ExStart
@@ -5351,6 +5315,40 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [Test]
+        public void Legacy()
+        {
+            //ExStart
+            //ExFor:FieldEmbed
+            //ExFor:FieldShape
+            //ExFor:FieldShape.Text
+            //ExSummary:Shows how some older Microsoft Word fields such as SHAPE and EMBED are handled.
+            // Open a document that was created in Microsoft Word 2003
+            Document doc = new Document(MyDir + "Field.Legacy.doc");
 
+            // If we open the document in Word and press Alt+F9, we will see a SHAPE and an EMBED field
+            // A SHAPE field is the anchor/canvas for an autoshape object with the "In line with text" wrapping style enabled
+            // An EMBED field has the same function, but for an embedded object, such as a spreadsheet from an external Excel document
+            // However, these fields will not appear in the document's Fields collection
+            Assert.AreEqual(0, doc.Range.Fields.Count);
+
+            // These fields are supported only by old versions of Microsoft Word
+            // As such, they are converted into shapes during the document importation process and can instead be found in the collection of Shape nodes
+            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
+            Assert.AreEqual(3, shapes.Count);
+
+            // The first Shape node corresponds to what was the SHAPE field in the input document: the inline canvas for an autoshape
+            Shape shape = (Shape)shapes[0];
+            Assert.AreEqual(ShapeType.Image, shape.ShapeType);
+
+            // The next Shape node is the autoshape that is within the canvas
+            shape = (Shape)shapes[1];
+            Assert.AreEqual(ShapeType.Can, shape.ShapeType);
+
+            // The third Shape is what was the EMBED field that contained the external spreadsheet
+            shape = (Shape)shapes[2];
+            Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
+            //ExEnd
+        }
     }
 }
