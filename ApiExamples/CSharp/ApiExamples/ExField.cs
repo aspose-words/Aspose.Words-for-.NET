@@ -21,6 +21,7 @@ using System.Xml.Linq;
 using Aspose.Pdf.Text;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
+using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using Aspose.Words.Replacing;
@@ -4220,6 +4221,40 @@ namespace ApiExamples
         }
         //ExEnd
 
+        [Test]
+        public void FootnoteRef()
+        {
+            //ExStart
+            //ExFor:FieldFootnote
+            //ExSummary:Shows how to cross-reference footnotes with the FOOTNOTEREF field
+            // Create a blank document and a document builder for it
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert some text, and a footnote, all inside a bookmark named "CrossRefBookmark"
+            builder.StartBookmark("CrossRefBookmark");
+            builder.Write("Hello world!");
+            builder.InsertFootnote(FootnoteType.Footnote, "Cross referenced footnote.");
+            builder.EndBookmark("CrossRefBookmark");
+
+            builder.InsertParagraph();
+            builder.Write("CrossReference: ");
+
+            // Insert a FOOTNOTEREF field, which lets us reference a footnote more than once while re-using the same footnote marker
+            Field f = builder.InsertField(" ftnref ");
+
+            // Get this field to reference a bookmark
+            // The bookmark that we chose contains a footnote marker belonging to the footnote we inserted, which will be displayed by the field, just by itself
+            builder.MoveTo(f.Separator);
+            builder.Write("CrossRefBookmark");
+
+            Assert.AreEqual(" ftnref CrossRefBookmark", f.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.FootnoteRef.docx");
+            //ExEnd
+        }
+
         //ExStart
         //ExFor:FieldPageRef
         //ExFor:FieldPageRef.BookmarkName
@@ -5245,40 +5280,38 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void Shape()
-        {
-            //ExStart
-            //ExFor:FieldShape
-            //ExFor:FieldShape.Text
-            //ExSummary:Shows how to read SHAPE fields.
-            // Open a document that contains two fields
-            Document doc = new Document(MyDir + "Field.ContainsShapeField.doc");
-            Assert.AreEqual(2, doc.Range.Fields.Count);
-
-            // The first field is a SHAPE field
-            // SHAPE fields inserted by 97-03 versions of Microsoft Word, or via Compatibility Move with .doc files on newer versions
-            // These fields serve as anchors for autoshape/chart canvases with the "In line with text" wrapping style enabled
-            FieldShape field = (FieldShape)doc.Range.Fields[0];
-            Assert.AreEqual(" SHAPE  \\* MERGEFORMAT \"Text inside SHAPE field\"", field.GetFieldCode());
-            Assert.AreEqual("Text inside SHAPE field", field.Text);
-            //ExEnd
-        }
-
-
-        [Test]
-        public void Embed()
+        public void Legacy()
         {
             //ExStart
             //ExFor:FieldEmbed
-            //ExSummary:Shows how to read EMBED fields.
-            // Open a document that contains an embedded spreadsheet
-            Document doc = new Document(MyDir + "Shape.Ole.Spreadsheet.docm");
-            Assert.AreEqual(1, doc.Range.Fields.Count);
+            //ExFor:FieldShape
+            //ExFor:FieldShape.Text
+            //ExSummary:Shows how some older Microsoft Word fields such as SHAPE and EMBED are handled.
+            // Open a document that was created in Microsoft Word 2003
+            Document doc = new Document(MyDir + "Field.Legacy.doc");
 
-            // There will be an EMBED field at the location of every embedded OLE object
-            // This field will also contain the external application that the object belongs to
-            FieldEmbed field = (FieldEmbed)doc.Range.Fields[0];
-            Assert.AreEqual(" EMBED Excel.Sheet.12 ", field.GetFieldCode());
+            // If we open the document in Word and press Alt+F9, we will see a SHAPE and an EMBED field
+            // A SHAPE field is the anchor/canvas for an autoshape object with the "In line with text" wrapping style enabled
+            // An EMBED field has the same function, but for an embedded object, such as a spreadsheet from an external Excel document
+            // However, these fields will not appear in the document's Fields collection
+            Assert.AreEqual(0, doc.Range.Fields.Count);
+
+            // These fields are supported only by old versions of Microsoft Word
+            // As such, they are converted into shapes during the document importation process and can instead be found in the collection of Shape nodes
+            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
+            Assert.AreEqual(3, shapes.Count);
+
+            // The first Shape node corresponds to what was the SHAPE field in the input document: the inline canvas for an autoshape
+            Shape shape = (Shape)shapes[0];
+            Assert.AreEqual(ShapeType.Image,shape.ShapeType);
+
+            // The next Shape node is the autoshape that is within the canvas
+            shape = (Shape)shapes[1];
+            Assert.AreEqual(ShapeType.Can, shape.ShapeType);
+
+            // The third Shape is what was the EMBED field that contained the external spreadsheet
+            shape = (Shape)shapes[2];
+            Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
             //ExEnd
         }
 
