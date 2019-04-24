@@ -1368,13 +1368,17 @@ namespace ApiExamples
         }
 
         [Test]
-        [Ignore("WORDSNET-18484")]
         public void CreateNewTextBoxAndChangeTextAnchor()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Set compatibility options to correctly using of VerticalAnchor property
+            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2016);
+
             Shape textBoxShape = builder.InsertShape(ShapeType.TextBox, 100, 100);
+            // Not all formats are compatible with this one
+            // For most of incompatible formats AW generated a warnings on save, so use doc.WarningCallback to check it.
             textBoxShape.TextBox.VerticalAnchor = TextBoxAnchor.Bottom;
             
             builder.MoveTo(textBoxShape.LastParagraph);
