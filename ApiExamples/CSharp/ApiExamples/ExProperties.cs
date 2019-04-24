@@ -134,7 +134,7 @@ namespace ApiExamples
             //ExFor:BuiltInDocumentProperties.LastSavedTime
             //ExFor:BuiltInDocumentProperties.Manager
             //ExFor:BuiltInDocumentProperties.NameOfApplication
-            //ExFor:BuiltInDocumentProperties.RevisionNumber
+            //ExFor:BuiltInDocumentProperties.RevisionNumber //INSP: Nothing about that property
             //ExFor:BuiltInDocumentProperties.Template
             //ExFor:BuiltInDocumentProperties.TotalEditingTime
             //ExFor:BuiltInDocumentProperties.Version
