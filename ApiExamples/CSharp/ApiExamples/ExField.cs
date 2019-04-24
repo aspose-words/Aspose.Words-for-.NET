@@ -5250,7 +5250,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldShape
             //ExFor:FieldShape.Text
-            //ExFor:Shows how to read SHAPE fields.
+            //ExSummary:Shows how to read SHAPE fields.
             // Open a document that contains two fields
             Document doc = new Document(MyDir + "Field.ContainsShapeField.doc");
             Assert.AreEqual(2, doc.Range.Fields.Count);
@@ -5260,7 +5260,7 @@ namespace ApiExamples
             // These fields serve as anchors for autoshape/chart canvases with the "In line with text" wrapping style enabled
             FieldShape field = (FieldShape)doc.Range.Fields[0];
             Assert.AreEqual("Text inside SHAPE field", field.Text);
-            //ExENd
+            //ExEnd
         }
 
         [Test]
@@ -5269,7 +5269,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldShape
             //ExFor:FieldShape.Text
-            //ExFor:Shows how to create RTL lists with BIDIOUTLINE fields.
+            //ExSummary:Shows how to create RTL lists with BIDIOUTLINE fields.
             // Create a blank document and a document builder
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -5297,7 +5297,9 @@ namespace ApiExamples
             // If a RTL editing language is enabled in Microsoft Word, out fields will display numbers
             // Otherwise, they will appear as "###" 
             doc.Save(ArtifactsDir + "Field.BIDIOUTLINE.docx");
-            //ExENd
+            //ExEnd
         }
+
+
     }
 }
