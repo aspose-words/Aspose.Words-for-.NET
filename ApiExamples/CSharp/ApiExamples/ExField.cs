@@ -4225,7 +4225,6 @@ namespace ApiExamples
         public void FootnoteRef()
         {
             //ExStart
-            //ExFor:FieldFootnote
             //ExSummary:Shows how to cross-reference footnotes with the FOOTNOTEREF field
             // Create a blank document and a document builder for it
             Document doc = new Document();
@@ -4241,14 +4240,14 @@ namespace ApiExamples
             builder.Write("CrossReference: ");
 
             // Insert a FOOTNOTEREF field, which lets us reference a footnote more than once while re-using the same footnote marker
-            Field f = builder.InsertField(" ftnref ");
+            Field field = builder.InsertField(" ftnref ");
 
             // Get this field to reference a bookmark
             // The bookmark that we chose contains a footnote marker belonging to the footnote we inserted, which will be displayed by the field, just by itself
-            builder.MoveTo(f.Separator);
+            builder.MoveTo(field.Separator);
             builder.Write("CrossRefBookmark");
 
-            Assert.AreEqual(" ftnref CrossRefBookmark", f.GetFieldCode());
+            Assert.AreEqual(" ftnref CrossRefBookmark", field.GetFieldCode());
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.FootnoteRef.docx");
