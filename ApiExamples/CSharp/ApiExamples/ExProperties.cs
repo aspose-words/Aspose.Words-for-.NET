@@ -87,50 +87,84 @@ namespace ApiExamples
             //ExEnd
         }
 
+
         [Test]
-        public void BuiltInPropertiesDirectAccess()
+        public void Description()
         {
             //ExStart
             //ExFor:BuiltInDocumentProperties.Author
             //ExFor:BuiltInDocumentProperties.Category
             //ExFor:BuiltInDocumentProperties.Comments
+            //ExFor:BuiltInDocumentProperties.Keywords
+            //ExFor:BuiltInDocumentProperties.Subject
+            //ExFor:BuiltInDocumentProperties.Title
+            //ExSummary:Shows how to work with document properties in the "Description" category.
+            // Create a blank document 
+            Document doc = new Document();
+
+            // The properties we will work with are members of the BuiltInDocumentProperties attribute
+            BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
+
+            // Set the values of some descriptive properties
+            // These are metadata that can be glanced at without opening the document in the "Details" or "Content" folder views in Windows Explorer 
+            // The "Details" view has columns dedicated to these properties
+            // Fields such as AUTHOR, SUBJECT, TITLE etc. can be used to display these values inside the document
+            properties.Author = "John Doe";
+            properties.Title = "John's Document";
+            properties.Subject = "My subject";
+            properties.Category = "My category";
+            properties.Comments = $"This is {properties.Author}'s document about {properties.Subject}";
+
+            // Tags can be used as keywords and are separated by semicolons
+            properties.Keywords = "Tag 1; Tag 2; Tag 3";
+
+            // When right clicking the document file in Windows Explorer, these properties are found in Properties > Details > Description
+            doc.Save(ArtifactsDir + "Properties.Description.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void Origin()
+        {
+            //ExStart
             //ExFor:BuiltInDocumentProperties.Company
             //ExFor:BuiltInDocumentProperties.CreatedTime
-            //ExFor:BuiltInDocumentProperties.Keywords
             //ExFor:BuiltInDocumentProperties.LastPrinted
             //ExFor:BuiltInDocumentProperties.LastSavedBy
             //ExFor:BuiltInDocumentProperties.LastSavedTime
             //ExFor:BuiltInDocumentProperties.Manager
             //ExFor:BuiltInDocumentProperties.NameOfApplication
             //ExFor:BuiltInDocumentProperties.RevisionNumber
-            //ExFor:BuiltInDocumentProperties.Subject
             //ExFor:BuiltInDocumentProperties.Template
-            //ExFor:BuiltInDocumentProperties.Title
             //ExFor:BuiltInDocumentProperties.TotalEditingTime
             //ExFor:BuiltInDocumentProperties.Version
-            //ExSummary:Retrieves information from the built-in document properties.
-            String fileName = MyDir + "Properties.doc";
-            Document doc = new Document(fileName);
+            //ExSummary:Shows how to work with document properties in the "Origin" category.
+            // Open a document 
+            Document doc = new Document(MyDir + "Properties.doc");
 
-            Console.WriteLine("Document name: {0}", fileName);
-            Console.WriteLine("Document author: {0}", doc.BuiltInDocumentProperties.Author);
-            Console.WriteLine("Category: {0}", doc.BuiltInDocumentProperties.Category);
-            Console.WriteLine("Comments: {0}", doc.BuiltInDocumentProperties.Comments);
-            Console.WriteLine("Company: {0}", doc.BuiltInDocumentProperties.Company);
-            Console.WriteLine("Create time: {0}", doc.BuiltInDocumentProperties.CreatedTime);
-            Console.WriteLine("Keywords: {0}", doc.BuiltInDocumentProperties.Keywords);
-            Console.WriteLine("Last printed: {0}", doc.BuiltInDocumentProperties.LastPrinted);
-            Console.WriteLine("Last saved by: {0}", doc.BuiltInDocumentProperties.LastSavedBy);
-            Console.WriteLine("Last saved: {0}", doc.BuiltInDocumentProperties.LastSavedTime);
-            Console.WriteLine("Lines: {0}", doc.BuiltInDocumentProperties.Lines);
-            Console.WriteLine("Manager: {0}", doc.BuiltInDocumentProperties.Manager);
-            Console.WriteLine("Name of application: {0}", doc.BuiltInDocumentProperties.NameOfApplication);
-            Console.WriteLine("Revision number: {0}", doc.BuiltInDocumentProperties.RevisionNumber);
-            Console.WriteLine("Subject: {0}", doc.BuiltInDocumentProperties.Subject);
-            Console.WriteLine("Template: {0}", doc.BuiltInDocumentProperties.Template);
-            Console.WriteLine("Title: {0}", doc.BuiltInDocumentProperties.Title);
-            Console.WriteLine("Total editing time: {0}", doc.BuiltInDocumentProperties.TotalEditingTime);
-            Console.WriteLine("Version: {0}", doc.BuiltInDocumentProperties.Version);
+            // The properties we will work with are members of the BuiltInDocumentProperties attribute
+            BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
+
+            // Since this document has been edited and printed in the past, values generated by Microsoft Word will appear here
+            // These values can be glanced at by right clicking the file in Windows Explorer, without actually opening the document
+            // Fields such as PRINTDATE, EDITTIME etc. can display these values inside the document
+            Console.WriteLine($"Created using {properties.NameOfApplication}, on {properties.CreatedTime}");
+            Console.WriteLine($"Minutes spent editing: {properties.TotalEditingTime}");
+            Console.WriteLine($"Date/time last printed: {properties.LastPrinted}");
+            Console.WriteLine($"Template document: {properties.Template}");
+
+            // We can set these properties ourselves
+            properties.Company = "Doe Ltd.";
+            properties.Manager = "Jane Doe";
+            properties.Version = 5;
+            properties.RevisionNumber++;
+
+            // If we plan on programmatically saving the document, we may record some details like this
+            properties.LastSavedBy = "John Doe";
+            properties.LastSavedTime = DateTime.Now;
+
+            // When right clicking the document file in Windows Explorer, these properties are found in Properties > Details > Origin
+            doc.Save(ArtifactsDir + "Properties.Origin.docx");
             //ExEnd
         }
 
@@ -145,20 +179,21 @@ namespace ApiExamples
         //ExFor:BuiltInDocumentProperties.Pages
         //ExFor:BuiltInDocumentProperties.Paragraphs
         //ExFor:BuiltInDocumentProperties.Words
-        //ExSummary:Shows how to work with document properties from the "Content" category.
+        //ExSummary:Shows how to work with document properties in the "Content" category.
         [Test] //ExSkip
         public void Content()
         {
             // Open a document with a couple paragraphs of content
             Document doc = new Document(MyDir + "Properties.Content.docx");
 
-            // If we want to display document stats such as page/word counts inside a document, we can use fields such as NUMPAGES, NUMWORDS, NUMCHARS etc
-            // Also, these statistics are found in File > Properties > Advanced Properties > Statistics
-            // To be able to glance at these values without opening the document, we can use a document's built in document property collection
-            // These properties are accessed by right-clicking the file in Windows Explorer and navigating to Properties > Details
-            // The "Content" category will have all the properties we will work with
+            // The properties we will work with are members of the BuiltInDocumentProperties attribute
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
 
+            // By using built in properties,
+            // we can treat document statistics such as word/page/character counts as metadata that can be glanced at without opening the document
+            // These properties are accessed by right-clicking the file in Windows Explorer and navigating to Properties > Details > Content
+            // If we want to display this data inside the document, we can use fields such as NUMPAGES, NUMWORDS, NUMCHARS etc.
+            // Also, these values can also be viewed in Microsoft Word by navigating File > Properties > Advanced Properties > Statistics
             // Page count: The PageCount attribute shows the page count in real time and its value can be assigned to the Pages property
             properties.Pages = doc.PageCount;
             Assert.AreEqual(2, properties.Pages);
@@ -169,7 +204,7 @@ namespace ApiExamples
             Assert.AreEqual(1114, properties.Characters);
             Assert.AreEqual(1310, properties.CharactersWithSpaces);
 
-            // Line count: Count the lines in a document and assign value to the Lines property
+            // Line count: Count the lines in a document and assign value to the Lines property\
             LineCounter lineCounter = new LineCounter(doc);
             properties.Lines = lineCounter.GetLineCount();
             Assert.AreEqual(14, properties.Lines);
@@ -200,7 +235,7 @@ namespace ApiExamples
             // If the document contains links and they are all up to date, we can set this to true
             Assert.False(properties.LinksUpToDate);
             
-            doc.Save(ArtifactsDir + "Properties.BuiltInPropertiesContent.docx");
+            doc.Save(ArtifactsDir + "Properties.Content.docx");
         }
 
         /// <summary>
