@@ -5259,7 +5259,26 @@ namespace ApiExamples
             // SHAPE fields inserted by 97-03 versions of Microsoft Word, or via Compatibility Move with .doc files on newer versions
             // These fields serve as anchors for autoshape/chart canvases with the "In line with text" wrapping style enabled
             FieldShape field = (FieldShape)doc.Range.Fields[0];
+            Assert.AreEqual(" SHAPE  \\* MERGEFORMAT \"Text inside SHAPE field\"", field.GetFieldCode());
             Assert.AreEqual("Text inside SHAPE field", field.Text);
+            //ExEnd
+        }
+
+
+        [Test]
+        public void Embed()
+        {
+            //ExStart
+            //ExFor:FieldEmbed
+            //ExSummary:Shows how to read EMBED fields.
+            // Open a document that contains an embedded spreadsheet
+            Document doc = new Document(MyDir + "Shape.Ole.Spreadsheet.docm");
+            Assert.AreEqual(1, doc.Range.Fields.Count);
+
+            // There will be an EMBED field at the location of every embedded OLE object
+            // This field will also contain the external application that the object belongs to
+            FieldEmbed field = (FieldEmbed)doc.Range.Fields[0];
+            Assert.AreEqual(" EMBED Excel.Sheet.12 ", field.GetFieldCode());
             //ExEnd
         }
 
