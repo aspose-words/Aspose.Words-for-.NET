@@ -134,7 +134,7 @@ namespace ApiExamples
             //ExFor:BuiltInDocumentProperties.LastSavedTime
             //ExFor:BuiltInDocumentProperties.Manager
             //ExFor:BuiltInDocumentProperties.NameOfApplication
-            //ExFor:BuiltInDocumentProperties.RevisionNumber //INSP: Nothing about that property
+            //ExFor:BuiltInDocumentProperties.RevisionNumber
             //ExFor:BuiltInDocumentProperties.Template
             //ExFor:BuiltInDocumentProperties.TotalEditingTime
             //ExFor:BuiltInDocumentProperties.Version
@@ -157,6 +157,7 @@ namespace ApiExamples
             properties.Company = "Doe Ltd.";
             properties.Manager = "Jane Doe";
             properties.Version = 5;
+            properties.RevisionNumber++;
 
             // If we plan on programmatically saving the document, we may record some details like this
             properties.LastSavedBy = "John Doe";
