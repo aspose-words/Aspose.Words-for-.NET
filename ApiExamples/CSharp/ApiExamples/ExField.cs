@@ -17,6 +17,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Xml.Linq;
 using Aspose.Pdf.Text;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
@@ -24,6 +25,7 @@ using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using Aspose.Words.Replacing;
 using NUnit.Framework;
+using LoadOptions = Aspose.Words.LoadOptions;
 #if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
 using Aspose.BarCode.BarCodeRecognition;
 #endif
@@ -5258,6 +5260,43 @@ namespace ApiExamples
             // These fields serve as anchors for autoshape/chart canvases with the "In line with text" wrapping style enabled
             FieldShape field = (FieldShape)doc.Range.Fields[0];
             Assert.AreEqual("Text inside SHAPE field", field.Text);
+            //ExENd
+        }
+
+        [Test]
+        public void BidiOutline()
+        {
+            //ExStart
+            //ExFor:FieldShape
+            //ExFor:FieldShape.Text
+            //ExFor:Shows how to create RTL lists with BIDIOUTLINE fields.
+            // Create a blank document and a document builder
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use our builder to insert a BIDIOUTLINE field
+            // This field numbers paragraphs like the AUTONUM/LISTNUM fields,
+            // but is only visible when a RTL editing language is enabled, such as Hebrew or Arabic
+            // The following field will display ".1", the RTL equivalent of list number "1."
+            FieldBidiOutline field = (FieldBidiOutline)builder.InsertField(FieldType.FieldBidiOutline, true);
+            Assert.AreEqual(" BIDIOUTLINE ", field.GetFieldCode());
+            builder.Writeln("שלום");
+
+            // Add two more BIDIOUTLINE fields, which will be automatically numbered ".2" and ".3"
+            builder.InsertField(FieldType.FieldBidiOutline, true);
+            builder.Writeln("שלום");
+            builder.InsertField(FieldType.FieldBidiOutline, true);
+            builder.Writeln("שלום");
+
+            // Set the horizontal text alignment for every paragraph in the document to RTL
+            foreach (Paragraph para in doc.GetChildNodes(NodeType.Paragraph, true))
+            {
+                para.ParagraphFormat.Bidi = true;
+            }
+
+            // If a RTL editing language is enabled in Microsoft Word, out fields will display numbers
+            // Otherwise, they will appear as "###" 
+            doc.Save(ArtifactsDir + "Field.BIDIOUTLINE.docx");
             //ExENd
         }
     }
