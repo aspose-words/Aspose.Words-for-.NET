@@ -166,6 +166,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExId:MailMergeAlternatingRows
+            //ExFor:MailMerge.ExecuteWithRegions(DataTable)
             //ExSummary:Demonstrates how to implement custom logic in the MergeField event to apply cell formatting.
             Document doc = new Document(MyDir + "MailMerge.AlternatingRows.doc");
 
