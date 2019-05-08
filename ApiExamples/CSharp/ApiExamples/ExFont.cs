@@ -1257,9 +1257,9 @@ namespace ApiExamples
         public void FontSourceSystem()
         {
             //ExStart
-            //ExFor:Fonts.FontSettings.AddFontSubstitutes(String, String[])
-            //ExFor:Fonts.FontSettings.EnableFontSubstitution
-            //ExFor:Fonts.FontSettings.GetFontSubstitutes(String)
+            //ExFor:TableSubstitutionRule.AddSubstitutes(String, String[])
+            //ExFor:FontSubstitutionRule.Enabled
+            //ExFor:TableSubstitutionRule.GetSubstitutes(String)
             //ExFor:Fonts.FontSettings.ResetFontSources
             //ExFor:Fonts.FontSettings.SubstitutionSettings
             //ExFor:Fonts.FontSubstitutionSettings

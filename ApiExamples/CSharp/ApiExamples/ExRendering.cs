@@ -1024,7 +1024,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.FontSettings
-            //ExFor:FontSettings.SetFontSubstitutes(String, String[])
+            //ExFor:TableSubstitutionRule.SetSubstitutes(String, String[])
             //ExSummary:Shows how to define alternative fonts if original does not exist
             FontSettings fontSettings = new FontSettings();
             fontSettings.SubstitutionSettings.TableSubstitution.SetSubstitutes("Times New Roman", new String[] { "Slab", "Arvo" });
@@ -1089,7 +1089,7 @@ namespace ApiExamples
         public void SetDefaultFontName()
         {
             //ExStart
-            //ExFor:FontSettings.DefaultFontName
+            //ExFor:DefaultFontSubstitutionRule.DefaultFontName
             //ExId:SetDefaultFontName
             //ExSummary:Demonstrates how to specify what font to substitute for a missing font during rendering.
             Document doc = new Document(MyDir + "Rendering.doc");
