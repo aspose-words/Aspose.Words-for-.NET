@@ -364,7 +364,7 @@
     <Compile Include="Rendering-Printing\ImageColorFilters.cs" />
     <Compile Include="Rendering-Printing\RenderShape.cs" />
     <Compile Include="Rendering-Printing\SaveAsMultipageTiff.cs" />
-    <Compile Include="Rendering-Printing\WorkingWithStreamFontSource.cs" />
+    <Compile Include="Rendering-Printing\ResourceSteamFontSourceExample.cs" />
     <Compile Include="Viewers-Visualizers\Document-Explorer\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
