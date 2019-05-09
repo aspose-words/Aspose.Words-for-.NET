@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aspose.Words.Examples.CSharp.Rendering_Printing
+namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
 {
     // ExStart:ResourceSteamFontSourceExample
     class ResourceSteamFontSourceExample : StreamFontSource
