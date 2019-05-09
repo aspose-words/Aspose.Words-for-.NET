@@ -206,6 +206,7 @@ namespace Aspose.Words.Examples.CSharp
             // DocumentBuilderInsertHorizontalRule.Run();
             // GetFontLineSpacing.Run();
             // CheckDMLTextEffect.Run();
+            // ParagraphStyleSeparator.Run();
 
             //// Fields
             //// =====================================================

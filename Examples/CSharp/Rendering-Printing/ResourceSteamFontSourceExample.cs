@@ -29,5 +29,5 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             doc.Save(dataDir + "Rendering.SetFontsFolders.pdf");
         }
     }
-    // ExStart:ResourceSteamFontSourceExample
+    // ExEnd:ResourceSteamFontSourceExample
 }

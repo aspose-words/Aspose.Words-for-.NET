@@ -172,6 +172,7 @@
     <Compile Include="Programming-Documents\Document\AddGroupShapeToDocument.cs" />
     <Compile Include="Programming-Documents\Document\CompareDocument.cs" />
     <Compile Include="Programming-Documents\Document\GetFontLineSpacing.cs" />
+    <Compile Include="Programming-Documents\Document\ParagraphStyleSeparator.cs" />
     <Compile Include="Programming-Documents\Document\WorkingWithImportFormatOptions.cs" />
     <Compile Include="Programming-Documents\Document\WorkingWithRevisions.cs" />
     <Compile Include="Programming-Documents\Document\CheckBoxTypeContentControl.cs" />
