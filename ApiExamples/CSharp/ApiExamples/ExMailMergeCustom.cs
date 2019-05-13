@@ -25,6 +25,7 @@ namespace ApiExamples
             //ExFor:IMailMergeDataSource.GetValue
             //ExFor:IMailMergeDataSource.GetChildDataSource
             //ExFor:MailMerge.Execute(IMailMergeDataSource)
+            //ExFor:MailMerge.Execute(IMailMergeDataSourceCore)
             //ExSummary:Performs mail merge from a custom data source.
             // Create some data that we will use in the mail merge.
             CustomerList customers = new CustomerList();
