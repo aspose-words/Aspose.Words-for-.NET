@@ -141,7 +141,6 @@ namespace ApiExamples
             private readonly CustomerList mCustomers;
             private int mRecordIndex;
         }
-
         //ExEnd
     }
 }
