@@ -119,6 +119,7 @@ namespace Aspose.Words.Examples.CSharp
             // UpdatePageLayout.Run();
             // AppendDocumentManually.Run();
             // PrependDocument.Run();
+            // AppendWithImportFormatOptions.Run();
 
             //// Find and Replace
             //// =====================================================
@@ -203,6 +204,9 @@ namespace Aspose.Words.Examples.CSharp
             // SetCompatibilityOptions.Run();
             // SetupLanguagePreferences.Run();
             // DocumentBuilderInsertHorizontalRule.Run();
+            // GetFontLineSpacing.Run();
+            // CheckDMLTextEffect.Run();
+            // ParagraphStyleSeparator.Run();
 
             //// Fields
             //// =====================================================
@@ -215,7 +219,6 @@ namespace Aspose.Words.Examples.CSharp
             // UpdateDocFields.Run();
             // SpecifyLocaleAtFieldLevel.Run();
             // UseOfficeMathProperties.Run();
-
             // InsertField.Run();
             // InsertMergeFieldUsingDOM.Run();
             // InsertMailMergeAddressBlockFieldUsingDOM.Run();
@@ -232,6 +235,8 @@ namespace Aspose.Words.Examples.CSharp
             // InsertTOAFieldWithoutDocumentBuilder.Run();
             // InsertFieldIncludeTextWithoutDocumentBuilder.Run();
             // FieldUpdateCulture.Run();
+            // FieldDisplayResults.Run();
+
             //// Images
             //// =====================================================
             // AddImageToEachPage.Run();
@@ -372,6 +377,7 @@ namespace Aspose.Words.Examples.CSharp
             // SetFontSettings.Run();
             // WorkingWithPdfSaveOptions.Run();
             // WorkingWithFontSources.Run();
+            // ResourceSteamFontSourceExample.Run();
 
             //// =====================================================
             //// =====================================================
