@@ -4224,8 +4224,6 @@ namespace ApiExamples
         [Test]
         public void FootnoteRef()
         {
-            //ExStart
-            //ExSummary:Shows how to cross-reference footnotes with the FOOTNOTEREF field
             // Create a blank document and a document builder for it
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -4251,7 +4249,6 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.FootnoteRef.docx");
-            //ExEnd
         }
 
         //ExStart
