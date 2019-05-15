@@ -780,7 +780,7 @@ namespace ApiExamples
                 .Equals("Font \'Arial\' has not been found. Using \'Arvo\' font instead. Reason: table substitution."));
             Assert.True(callback.mFontWarnings[1].Description
                 .Equals(
-                    "Font \'Times New Roman\' has not been found. Using \'Noticia Text\' font instead. Reason: font info substitution."));
+                    "Font \'Times New Roman\' has not been found. Using \'M+ 2m\' font instead. Reason: font info substitution."));
         }
 
         [Test]
