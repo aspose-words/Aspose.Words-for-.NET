@@ -167,6 +167,93 @@ namespace ApiExamples
             //ExEnd
         }
 
+        //ExStart
+        //ExFor:MailMerge.ExecuteWithRegions(System.Data.DataSet)
+        //ExSummary:Shows how to create a nested mail merge with regions with data from a data set with two related tables.
+        [Test]
+        public void ExecuteWithRegions()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create a MERGEFIELD with a value of "TableStart:Customers"
+            // Normally, MERGEFIELDs specify the name of the column that they take row data from
+            // "TableStart:Customers" however means that we are starting a mail merge region which belongs to a table called "Customers"
+            // This will be the outer region and an "TableEnd:Customers" MERGEFIELD will signify its end 
+            builder.InsertField(" MERGEFIELD TableStart:Customers");
+
+            // Data from rows of the "CustomerName" column of the "Customers" table will go in this MERGEFIELD
+            builder.Write("Orders for ");
+            builder.InsertField(" MERGEFIELD CustomerName");
+            builder.Write(":");
+
+            // Create column headers for a table which will contain values from the second inner region
+            builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Item");
+            builder.InsertCell();
+            builder.Write("Quantity");
+            builder.EndRow();
+
+            // We have a second data table called "Orders", which has a many-to-one relationship with "Customers", related by a "CustomerID" column
+            // It will preside over this inner nested mail merge region,
+            // which will iterate over the "Orders" table once for each merge of the outer "Customers" region, picking up rows with the same CustomerID value
+            builder.InsertCell();
+            builder.InsertField(" MERGEFIELD TableStart:Orders");
+            builder.InsertField(" MERGEFIELD ItemName");
+            builder.InsertCell();
+            builder.InsertField(" MERGEFIELD Quantity");
+
+            // End the inner region
+            // One stipulation of using regions and tables is that the opening and closing of a mail merge region must only happen over one row of a document's table  
+            builder.InsertField(" MERGEFIELD TableEnd:Orders");
+            builder.EndTable();
+
+            // End the outer region
+            builder.InsertField(" MERGEFIELD TableEnd:Customers");
+
+            doc.MailMerge.ExecuteWithRegions(CreateDataSet());
+            doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegions.docx");
+        }
+
+        /// <summary>
+        /// Generates a data set which has two data tables named "Customers" and "Orders",
+        /// with a one-to-many relationship between the former and latter on the "CustomerID" column
+        /// </summary>
+        private DataSet CreateDataSet()
+        {
+            // Create the two data tables
+            DataTable tableCustomers = new DataTable("Customers");
+            tableCustomers.Columns.Add("CustomerID");
+            tableCustomers.Columns.Add("CustomerName");
+            tableCustomers.Rows.Add(new object[] { 1, "John Doe" });
+            tableCustomers.Rows.Add(new object[] { 2, "Jane Doe" });
+            tableCustomers.Rows.Add(new object[] { 3, "John Cardholder" });
+            tableCustomers.Rows.Add(new object[] { 4, "Joe Bloggs" });
+
+            DataTable tableOrders = new DataTable("Orders");
+            tableOrders.Columns.Add("CustomerID");
+            tableOrders.Columns.Add("ItemName");
+            tableOrders.Columns.Add("Quantity");
+            tableOrders.Rows.Add(new object[] { 1, "Hawaiian", 2 });
+            tableOrders.Rows.Add(new object[] { 2, "Pepperoni", 1 });
+            tableOrders.Rows.Add(new object[] { 2, "Chicago", 1 });
+            tableOrders.Rows.Add(new object[] { 3, "Hawaiian", 3 });
+            tableOrders.Rows.Add(new object[] { 3, "Chicken", 2 });
+            tableOrders.Rows.Add(new object[] { 4, "Cheese", 1 });
+
+            // Add both tables to a data set
+            DataSet dataSet = new DataSet();
+            dataSet.Tables.Add(tableCustomers);
+            dataSet.Tables.Add(tableOrders);
+
+            // The "CustomerID" column, also the primary key of the customers table is the foreign key for the Orders table
+            dataSet.Relations.Add(tableCustomers.Columns["CustomerID"], tableOrders.Columns["CustomerID"]);
+
+            return dataSet;
+        }
+        //ExEnd
+
         [Test]
         public void TrimWhiteSpaces()
         {
