@@ -8,6 +8,7 @@
 #if !__MOBILE__
 using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -18,6 +19,7 @@ using Aspose.Words.Fields;
 using Aspose.Words.Fonts;
 using Aspose.Words.Tables;
 using NUnit.Framework;
+using Font = Aspose.Words.Font;
 
 namespace ApiExamples
 {
@@ -1624,6 +1626,40 @@ namespace ApiExamples
             builder.Writeln("Text written in Times New Roman, to be substituted by Squarish Sans CT.");
 
             doc.Save(ArtifactsDir + "Font.TableSubstitutionRule.Custom.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void GetFontLeading()
+        {
+            //ExStart
+            //ExFor:Font.LineSpacing
+            //ExSummary:Shows how to get line spacing of current font (in points)
+            DocumentBuilder builder = new DocumentBuilder(new Document());
+            builder.Font.Name = "Calibri";
+            builder.Writeln("qText");
+
+            // Obtain line spacing.
+            Aspose.Words.Font font = builder.Document.FirstSection.Body.FirstParagraph.Runs[0].Font;
+            Console.WriteLine($"lineSpacing = { font.LineSpacing }");
+            //ExEnd
+        }
+
+        [Test]
+        public void HasDmlEffect()
+        {
+            //ExStart
+            //ExFor:Font.HasDmlEffect(TextDmlEffect)
+            //ExSummary:Shows how to checks if particular Dml text effect is applied.
+            Document doc = new Document(MyDir + "Font.HasDmlEffect.docx");
+            
+            RunCollection runs = doc.FirstSection.Body.FirstParagraph.Runs;
+            
+            Assert.True(runs[0].Font.HasDmlEffect(TextDmlEffect.Shadow));
+            Assert.True(runs[1].Font.HasDmlEffect(TextDmlEffect.Shadow));
+            Assert.True(runs[2].Font.HasDmlEffect(TextDmlEffect.Reflection));
+            Assert.True(runs[3].Font.HasDmlEffect(TextDmlEffect.Effect3D));
+            Assert.True(runs[4].Font.HasDmlEffect(TextDmlEffect.Fill));
             //ExEnd
         }
     }
