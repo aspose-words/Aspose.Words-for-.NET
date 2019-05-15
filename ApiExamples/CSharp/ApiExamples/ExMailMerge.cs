@@ -8,6 +8,8 @@
 using System;
 using System.Data;
 using System.Collections.Generic;
+using System.Data.Odbc;
+using System.Data.SqlClient;
 using Aspose.Words.Fields;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
@@ -55,6 +57,7 @@ namespace ApiExamples
             //ExFor:Document
             //ExFor:MailMerge
             //ExFor:MailMerge.Execute(DataTable)
+            //ExFor:MailMerge.Execute(DataRow)
             //ExFor:Document.MailMerge
             //ExSummary:Executes mail merge from an ADO.NET DataTable.
             Document doc = new Document(MyDir + "MailMerge.ExecuteDataTable.doc");
@@ -70,6 +73,97 @@ namespace ApiExamples
             doc.MailMerge.Execute(table);
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.doc");
+
+            // Open a fresh copy of our document to perform another mail merge.
+            doc = new Document(MyDir + "MailMerge.ExecuteDataTable.doc");
+
+            // We can also source values for a mail merge from a single row in the table
+            doc.MailMerge.Execute(table.Rows[1]);
+
+            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.OneRow.doc");
+            //ExEnd
+        }
+
+        [Test]
+        public void ExecuteDataView()
+        {
+            //ExStart
+            //ExFor:MailMerge.Execute(DataView)
+            //ExSummary:Shows how to process a DataTable's data with a DataView before using it in a mail merge.
+            // Create a new document and populate it with merge fields
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("Congratulations ");
+            builder.InsertField(" MERGEFIELD Name");
+            builder.Write(" for passing with a grade of ");
+            builder.InsertField(" MERGEFIELD Grade");
+
+            // Create a data table that merge data will be sourced from 
+            DataTable table = new DataTable("ExamResults");
+            table.Columns.Add("Name");
+            table.Columns.Add("Grade");
+            table.Rows.Add(new object[] { "John Doe", "67" });
+            table.Rows.Add(new object[] { "Jane Doe", "81" });
+            table.Rows.Add(new object[] { "John Cardholder", "47" });
+            table.Rows.Add(new object[] { "Joe Bloggs", "75" });
+
+            // If we execute the mail merge on the table, a page will be created for each row in the order that it appears in the table
+            // If we want to sort/filter rows without changing the table, we can use a data view
+            DataView view = new DataView(table);
+            view.Sort = "Grade DESC";
+            view.RowFilter = "Grade >= 50";
+
+            // This mail merge will be executed on a view where the rows are sorted by the "Grade" column
+            // and rows where the Grade values are below 50 are filtered out
+            doc.MailMerge.Execute(view);
+
+            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataView.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ExecuteDataReader()
+        {
+            //ExStart
+            //ExFor:MailMerge.Execute(IDataReader)
+            //ExSummary:Shows how to use a Data Reader to execute a mail merge on a database.
+            // Create a new document and populate it with merge fields
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("Product:\t");
+            builder.InsertField(" MERGEFIELD ProductName");
+            builder.Write("\nSupplier:\t");
+            builder.InsertField(" MERGEFIELD CompanyName");
+            builder.Writeln();
+            builder.InsertField(" MERGEFIELD QuantityPerUnit");
+            builder.Write(" for $");
+            builder.InsertField(" MERGEFIELD UnitPrice");
+
+            // Create a connection string which points to the "Northwind" database file in our local file system and open a connection
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb)};Dbq=" + DatabaseDir + "Northwind.mdb";
+
+            using (OdbcConnection connection = new OdbcConnection())
+            {
+                connection.ConnectionString = connectionString;
+                connection.Open();
+
+                // Create an SQL command that will source data for our mail merge
+                // The command has to comply to the driver we are using, which in this case is "ODBC"
+                // The names of the columns returned by this SELECT statement should correspond to the merge fields we placed above
+                OdbcCommand command = connection.CreateCommand();
+                command.CommandText = @"SELECT Products.ProductName, Suppliers.CompanyName, Products.QuantityPerUnit, {fn ROUND(Products.UnitPrice,2)} as UnitPrice
+                                        FROM Products 
+                                        INNER JOIN Suppliers 
+                                        ON Products.SupplierID = Suppliers.SupplierID";
+
+                // This will run the command and store the data in the reader
+                OdbcDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection);
+
+                // Now we can take the data from the reader and use it in the mail merge
+                doc.MailMerge.Execute(reader);
+            }
+
+            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataReader.docx");
             //ExEnd
         }
 

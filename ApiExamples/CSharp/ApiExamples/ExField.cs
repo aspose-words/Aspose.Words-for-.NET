@@ -2271,7 +2271,7 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:ImageFieldMergingArgs.Image
-        //ExSummary:
+        //ExSummary:Shows how to set which images to merge during the mail merge.
         [Test] //ExSkip
         public void MergeFieldImages()
         {
