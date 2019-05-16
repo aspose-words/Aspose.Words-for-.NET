@@ -157,9 +157,6 @@ namespace ApiExamples
                 return (!IsEof);
             }
 
-            //ExStart
-            //ExId:GetChildDataSourceExample
-            //ExSummary:Shows how to get a child collection of objects by using the GetChildDataSource method in the parent class.
             public IMailMergeDataSource GetChildDataSource(string tableName)
             {
                 switch (tableName)
@@ -171,7 +168,6 @@ namespace ApiExamples
                         return null;
                 }
             }
-            //ExEnd
 
             private bool IsEof
             {
