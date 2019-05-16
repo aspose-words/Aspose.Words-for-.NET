@@ -1662,6 +1662,36 @@ namespace ApiExamples
             Assert.True(runs[4].Font.HasDmlEffect(TextDmlEffect.Fill));
             //ExEnd
         }
+
+        //ExStart
+        //ExFor:StreamFontSource
+        //ExFor:StreamFontSource.OpenFontDataStream
+        //ExSummary:Shows how to allows to load fonts from stream.
+        [Test] //ExSkip
+        public void StreamFontSourceFileRendering()
+        {
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.SetFontsSources(new FontSourceBase[] { new StreamFontSourceFile() });
+
+            DocumentBuilder builder = new DocumentBuilder();
+            builder.Document.FontSettings = fontSettings;
+            builder.Font.Name = "Kreon-Regular";
+            builder.Writeln("Test aspose text when saving to PDF.");
+
+            builder.Document.Save(ArtifactsDir + "Font.StreamFontSourceFileRendering.pdf");
+        }
+        
+        /// <summary>
+        /// Load the font data only when it is required and not to store it in the memory for the "FontSettings" lifetime.
+        /// </summary>
+        private class StreamFontSourceFile : StreamFontSource
+        {
+            public override Stream OpenFontDataStream()
+            {
+                return File.OpenRead(FontsDir + "Kreon-Regular.ttf");
+            }
+        }
+        //ExEnd
     }
 }
 #endif
