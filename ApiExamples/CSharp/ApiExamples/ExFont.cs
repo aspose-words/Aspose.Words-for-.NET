@@ -776,11 +776,10 @@ namespace ApiExamples
             doc.FontSettings = fontSettings;
             doc.Save(ArtifactsDir + "Rendering.MissingFontNotification.pdf");
 
-            Assert.True(callback.mFontWarnings[0].Description
-                .Equals("Font \'Arial\' has not been found. Using \'Arvo\' font instead. Reason: table substitution."));
-            Assert.True(callback.mFontWarnings[1].Description
-                .Equals(
-                    "Font \'Times New Roman\' has not been found. Using \'Noticia Text\' font instead. Reason: font info substitution."));
+            Assert.AreEqual("Font \'Arial\' has not been found. Using \'Arvo\' font instead. Reason: table substitution.",
+                callback.mFontWarnings[0].Description);
+            Assert.AreEqual("Font \'Times New Roman\' has not been found. Using \'M+ 2m\' font instead. Reason: font info substitution.",
+                callback.mFontWarnings[1].Description);
         }
 
         [Test]
@@ -1257,9 +1256,9 @@ namespace ApiExamples
         public void FontSourceSystem()
         {
             //ExStart
-            //ExFor:Fonts.FontSettings.AddFontSubstitutes(String, String[])
-            //ExFor:Fonts.FontSettings.EnableFontSubstitution
-            //ExFor:Fonts.FontSettings.GetFontSubstitutes(String)
+            //ExFor:TableSubstitutionRule.AddSubstitutes(String, String[])
+            //ExFor:FontSubstitutionRule.Enabled
+            //ExFor:TableSubstitutionRule.GetSubstitutes(String)
             //ExFor:Fonts.FontSettings.ResetFontSources
             //ExFor:Fonts.FontSettings.SubstitutionSettings
             //ExFor:Fonts.FontSubstitutionSettings
