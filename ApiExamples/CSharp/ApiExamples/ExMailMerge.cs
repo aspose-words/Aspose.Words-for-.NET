@@ -171,7 +171,7 @@ namespace ApiExamples
         //ExFor:MailMerge.ExecuteWithRegions(System.Data.DataSet)
         //ExSummary:Shows how to create a nested mail merge with regions with data from a data set with two related tables.
         [Test]
-        public void ExecuteWithRegions()
+        public void ExecuteWithRegionsNested()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -179,7 +179,7 @@ namespace ApiExamples
             // Create a MERGEFIELD with a value of "TableStart:Customers"
             // Normally, MERGEFIELDs specify the name of the column that they take row data from
             // "TableStart:Customers" however means that we are starting a mail merge region which belongs to a table called "Customers"
-            // This will be the outer region and an "TableEnd:Customers" MERGEFIELD will signify its end 
+            // This will start the outer region and an "TableEnd:Customers" MERGEFIELD will signify its end 
             builder.InsertField(" MERGEFIELD TableStart:Customers");
 
             // Data from rows of the "CustomerName" column of the "Customers" table will go in this MERGEFIELD
@@ -196,7 +196,7 @@ namespace ApiExamples
             builder.EndRow();
 
             // We have a second data table called "Orders", which has a many-to-one relationship with "Customers", related by a "CustomerID" column
-            // It will preside over this inner nested mail merge region,
+            // We will start this inner mail merge region over which the "Orders" table will preside,
             // which will iterate over the "Orders" table once for each merge of the outer "Customers" region, picking up rows with the same CustomerID value
             builder.InsertCell();
             builder.InsertField(" MERGEFIELD TableStart:Orders");
@@ -212,8 +212,10 @@ namespace ApiExamples
             // End the outer region
             builder.InsertField(" MERGEFIELD TableEnd:Customers");
 
-            doc.MailMerge.ExecuteWithRegions(CreateDataSet());
-            doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegions.docx");
+            DataSet customersAndOrders = CreateDataSet();
+            doc.MailMerge.ExecuteWithRegions(customersAndOrders);
+
+            doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegionsNested.docx");
         }
 
         /// <summary>
@@ -222,15 +224,14 @@ namespace ApiExamples
         /// </summary>
         private DataSet CreateDataSet()
         {
-            // Create the two data tables
+            // Create the outer mail merge
             DataTable tableCustomers = new DataTable("Customers");
             tableCustomers.Columns.Add("CustomerID");
             tableCustomers.Columns.Add("CustomerName");
             tableCustomers.Rows.Add(new object[] { 1, "John Doe" });
             tableCustomers.Rows.Add(new object[] { 2, "Jane Doe" });
-            tableCustomers.Rows.Add(new object[] { 3, "John Cardholder" });
-            tableCustomers.Rows.Add(new object[] { 4, "Joe Bloggs" });
 
+            // Create the table for the inner merge
             DataTable tableOrders = new DataTable("Orders");
             tableOrders.Columns.Add("CustomerID");
             tableOrders.Columns.Add("ItemName");
@@ -238,9 +239,6 @@ namespace ApiExamples
             tableOrders.Rows.Add(new object[] { 1, "Hawaiian", 2 });
             tableOrders.Rows.Add(new object[] { 2, "Pepperoni", 1 });
             tableOrders.Rows.Add(new object[] { 2, "Chicago", 1 });
-            tableOrders.Rows.Add(new object[] { 3, "Hawaiian", 3 });
-            tableOrders.Rows.Add(new object[] { 3, "Chicken", 2 });
-            tableOrders.Rows.Add(new object[] { 4, "Cheese", 1 });
 
             // Add both tables to a data set
             DataSet dataSet = new DataSet();
@@ -253,6 +251,62 @@ namespace ApiExamples
             return dataSet;
         }
         //ExEnd
+
+        [Test]
+        public void ExecuteWithRegionsConcurrent()
+        {
+            //ExStart
+            //ExFor:MailMerge.ExecuteWithRegions(DataTable)
+            //ExFor:MailMerge.ExecuteWithRegions(DataView)
+            //ExSummary:Shows how to use regions to execute two separate mail merges in one document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // If we want to perform two consecutive mail merges on one document while taking data from two tables
+            // that are related to each other in any way, we can separate the mail merges with regions
+            // A mail merge region starts and ends with "TableStart:[RegionName]" and "TableEnd:[RegionName]" MERGEFIELDs
+            // These regions are separate for unrelated data, while they can be nested for hierarchical data
+            builder.Writeln("\tCities: ");
+            builder.InsertField(" MERGEFIELD TableStart:Cities");
+            builder.InsertField(" MERGEFIELD Name");
+            builder.InsertField(" MERGEFIELD TableEnd:Cities");
+            builder.InsertParagraph();
+
+            // Both MERGEFIELDs refer to a same column name, but values for each will come from different data tables
+            builder.Writeln("\tFruit: ");
+            builder.InsertField(" MERGEFIELD TableStart:Fruit");
+            builder.InsertField(" MERGEFIELD Name");
+            builder.InsertField(" MERGEFIELD TableEnd:Fruit");
+
+            // Create two data tables that aren't linked or related in any way which we still want in the same document
+            DataTable tableCities = new DataTable("Cities");
+            tableCities.Columns.Add("Name");
+            tableCities.Rows.Add(new object[] { "Washington" });
+            tableCities.Rows.Add(new object[] { "London" });
+            tableCities.Rows.Add(new object[] { "New York" });
+
+            DataTable tableFruit = new DataTable("Fruit");
+            tableFruit.Columns.Add("Name");
+            tableFruit.Rows.Add(new object[] { "Cherry"});
+            tableFruit.Rows.Add(new object[] { "Apple" });
+            tableFruit.Rows.Add(new object[] { "Watermelon" });
+            tableFruit.Rows.Add(new object[] { "Banana" });
+
+            // We will need to run one mail merge per table
+            // This mail merge will populate the MERGEFIELDs in the "Cities" range, while leaving the fields in "Fruit" empty
+            doc.MailMerge.ExecuteWithRegions(tableCities);
+
+            // Run a second merge for the "Fruit" table
+            // We can use a DataView to sort or filter values of a DataTable before it is merged
+            DataView dv = new DataView(tableFruit);
+            dv.Sort = "Name ASC";
+            doc.MailMerge.ExecuteWithRegions(dv);
+
+            doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegionsConcurrent.docx");
+            //ExEnd
+        }
+
+
 
         [Test]
         public void TrimWhiteSpaces()
