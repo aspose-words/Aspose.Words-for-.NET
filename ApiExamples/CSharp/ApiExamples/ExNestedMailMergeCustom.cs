@@ -15,7 +15,10 @@ namespace ApiExamples
     [TestFixture]
     public class ExNestedMailMergeCustom : ApiExampleBase
     {
-        [Test]
+        //ExStart
+        //ExFor:MailMerge.ExecuteWithRegions(IMailMergeDataSource)
+        //ExSummary:Performs mail merge with regions from a custom data source.
+        [Test] //ExSkip
         public void MailMergeCustomDataSource()
         {
             // Create some data that we will use in the mail merge.
@@ -243,5 +246,6 @@ namespace ApiExamples
             private readonly OrderList mOrders;
             private int mRecordIndex;
         }
+        //ExEnd
     }
 }
