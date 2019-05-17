@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System.Collections;
+using System.Collections.Generic;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
@@ -136,6 +137,172 @@ namespace ApiExamples
             }
 
             private readonly CustomerList mCustomers;
+            private int mRecordIndex;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:IMailMergeDataSourceRoot
+        //ExFor:IMailMergeDataSourceRoot.GetDataSource(String)
+        //ExFor:MailMerge.ExecuteWithRegions(IMailMergeDataSourceRoot)
+        [Test] //ExSkip
+        public void MailMergeCustomDataSourceRoot()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create two consecutive mail merge regions
+            builder.Writeln("\nWashington branch: ");
+            builder.InsertField(" MERGEFIELD TableStart:Washington");
+            builder.InsertField(" MERGEFIELD FullName");
+            builder.Write(", ");
+            builder.InsertField(" MERGEFIELD Department");
+            builder.InsertField(" MERGEFIELD TableEnd:Washington");
+
+            builder.Writeln("\n\nSeattle branch: ");
+            builder.InsertField(" MERGEFIELD TableStart:Seattle");
+            builder.InsertField(" MERGEFIELD FullName");
+            builder.Write(", ");
+            builder.InsertField(" MERGEFIELD Department");
+            builder.InsertField(" MERGEFIELD TableEnd:Seattle");
+
+            // Create two data sources
+            EmployeeList employeesWashingtonBranch = new EmployeeList();
+            employeesWashingtonBranch.Add(new Employee("John Doe", "Sales"));
+            employeesWashingtonBranch.Add(new Employee("Jane Doe", "Management"));
+
+            EmployeeList employeesSeattleBranch = new EmployeeList();
+            employeesSeattleBranch.Add(new Employee("John Cardholder", "Management"));
+            employeesSeattleBranch.Add(new Employee("Joe Bloggs", "Sales"));
+
+            // Register our data sources by name in a data source root
+            DataSourceRoot sourceRoot = new DataSourceRoot();
+            sourceRoot.RegisterSource("Washington", new EmployeeListMailMergeSource(employeesWashingtonBranch));
+            sourceRoot.RegisterSource("Seattle", new EmployeeListMailMergeSource(employeesSeattleBranch));
+
+            // Since we have consecutive mail merge regions, we would normally have to perform two mail merges
+            // However, one mail merge source data root call every relevant data source and merge automatically 
+            doc.MailMerge.ExecuteWithRegions(sourceRoot);
+
+            doc.Save(ArtifactsDir + "MailMerge.MailMergeCustomDataSourceRoot.docx");
+        }
+
+        /// <summary>
+        /// An example of a "data entity" class in your application.
+        /// </summary>
+        public class Employee
+        {
+            public Employee(string aFullName, string aDepartment)
+            {
+                FullName = aFullName;
+                Department = aDepartment;
+            }
+
+            public string FullName { get; set; }
+            public string Department { get; set; }
+        }
+
+        /// <summary>
+        /// An example of a typed collection that contains your "data" objects.
+        /// </summary>
+        public class EmployeeList : ArrayList
+        {
+            public new Employee this[int index]
+            {
+                get { return (Employee)base[index]; }
+                set { base[index] = value; }
+            }
+        }
+
+        /// <summary>
+        /// Data source root that can be passed directly into a mail merge which can register and contain many child data sources
+        /// These sources must all implement IMailMergeDataSource, and are registered and differentiated by a name
+        /// which corresponds to a mail merge region that will read the respective data
+        /// </summary>
+        private class DataSourceRoot : IMailMergeDataSourceRoot
+        {
+            Dictionary<string, EmployeeListMailMergeSource> sources = new Dictionary<string, EmployeeListMailMergeSource>();
+
+            public IMailMergeDataSource GetDataSource(string tableName)
+            {
+                EmployeeListMailMergeSource source = sources[tableName];
+                source.Reset();
+                return sources[tableName];
+            }
+
+            public void RegisterSource(string sourceName, EmployeeListMailMergeSource source)
+            {
+                sources.Add(sourceName, source);
+            }
+        }
+
+        /// <summary>
+        /// Custom mail merge data source
+        /// </summary>
+        private class EmployeeListMailMergeSource : IMailMergeDataSource
+        {
+            public EmployeeListMailMergeSource(EmployeeList employees)
+            {
+                mEmployees = employees;
+                mRecordIndex = -1;
+            }
+
+            /// <summary>
+            /// A standard implementation for moving to a next record in a collection.
+            /// </summary>
+            public bool MoveNext()
+            {
+                if (!IsEof)
+                    mRecordIndex++;
+
+                return (!IsEof);
+            }
+
+            private bool IsEof
+            {
+                get { return (mRecordIndex >= mEmployees.Count); }
+            }
+
+            public void Reset()
+            {
+                mRecordIndex = -1;
+            }
+
+            /// <summary>
+            /// The name of the data source. Used by Aspose.Words only when executing mail merge with repeatable regions.
+            /// </summary>
+            public string TableName
+            {
+                get { return "Employees"; }
+            }
+
+            /// <summary>
+            /// Aspose.Words calls this method to get a value for every data field.
+            /// </summary>
+            public bool GetValue(string fieldName, out object fieldValue)
+            {
+                switch (fieldName)
+                {
+                    case "FullName":
+                        fieldValue = mEmployees[mRecordIndex].FullName;
+                        return true;
+                    case "Department":
+                        fieldValue = mEmployees[mRecordIndex].Department;
+                        return true;
+                    default:
+                        // A field with this name was not found, 
+                        // return false to the Aspose.Words mail merge engine.
+                        fieldValue = null;
+                        return false;
+                }
+            }
+
+            public IMailMergeDataSource GetChildDataSource(string tableName)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            private EmployeeList mEmployees;
             private int mRecordIndex;
         }
         //ExEnd
