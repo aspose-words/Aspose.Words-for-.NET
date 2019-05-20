@@ -297,12 +297,15 @@ namespace ApiExamples
                 }
             }
 
+            /// <summary>
+            /// Child data sources are for nested mail merges
+            /// </summary>
             public IMailMergeDataSource GetChildDataSource(string tableName)
             {
                 throw new System.NotImplementedException();
             }
 
-            private EmployeeList mEmployees;
+            private readonly EmployeeList mEmployees;
             private int mRecordIndex;
         }
         //ExEnd
