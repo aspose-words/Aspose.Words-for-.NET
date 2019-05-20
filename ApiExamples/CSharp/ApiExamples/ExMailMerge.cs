@@ -14,6 +14,7 @@ using Aspose.Words.Fields;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 #if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
 using System.Data.OleDb;
 using System.Web;
@@ -167,6 +168,45 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [Test]
+        public void ExecuteADO()
+        {
+            //ExStart
+            //ExFor:MailMerge.ExecuteADO(Object)
+            //ExSummary:Shows how to run a mail merge on an ADO dataset
+            // Create a blank document and populate it with MERGEFIELDS that will accept data when a mail merge is executed
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Product:\t");
+            builder.InsertField(" MERGEFIELD ProductName");
+            builder.Writeln();
+            builder.InsertField(" MERGEFIELD QuantityPerUnit");
+            builder.Write(" for $");
+            builder.InsertField(" MERGEFIELD UnitPrice");
+
+            // To work with ADO DataSets, we need to add a reference to the Microsoft ActiveX Data Objects library,
+            // which is included in the .NET distribution and stored in "adodb.dll", then create a connection
+            ADODB.Connection connection = new ADODB.Connection();
+
+            // We will then create a connection string which points to the "Northwind" database file in our local file system and open a connection
+            string connectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + DatabaseDir + "Northwind.mdb";
+            connection.Open(connectionString);
+
+            // Create a record set
+            ADODB.Recordset recordset = new ADODB.Recordset();
+
+            // Run an SQL command on the database we are connected to to populate our dataset
+            // The names of the columns returned here correspond to the values of the MERGEFIELDS that will accomodate our data
+            string command = @"SELECT ProductName, QuantityPerUnit, UnitPrice FROM Products";
+            recordset.Open(command, connection);
+
+            // Execute the mail merge and save the document
+            doc.MailMerge.ExecuteADO(recordset);
+            doc.Save(ArtifactsDir + "MailMerge.ExecuteADO.docx");
+            //ExEnd
+        }
+
         //ExStart
         //ExFor:MailMerge.ExecuteWithRegions(System.Data.DataSet)
         //ExSummary:Shows how to create a nested mail merge with regions with data from a data set with two related tables.
@@ -305,8 +345,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegionsConcurrent.docx");
             //ExEnd
         }
-
-
 
         [Test]
         public void TrimWhiteSpaces()
