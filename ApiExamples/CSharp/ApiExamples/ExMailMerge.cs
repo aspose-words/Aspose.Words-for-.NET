@@ -10,6 +10,7 @@ using System.Data;
 using System.Collections.Generic;
 using System.Data.Odbc;
 using System.Data.SqlClient;
+using System.Linq;
 using Aspose.Words.Fields;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
@@ -204,6 +205,54 @@ namespace ApiExamples
             // Execute the mail merge and save the document
             doc.MailMerge.ExecuteADO(recordset);
             doc.Save(ArtifactsDir + "MailMerge.ExecuteADO.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ListMergeRegions()
+        {
+            //ExStart
+            //ExFor:MailMerge.GetFieldNamesForRegion(System.String)
+            //ExFor:MailMerge.GetFieldNamesForRegion(System.String,System.Int32)
+            //ExFor:MailMerge.GetRegionsByName(System.String)
+            //ExFor:MailMerge.RegionEndTag
+            //ExFor:MailMerge.RegionStartTag
+            //ExSummary:Shows how to create, list and read mail merge regions.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // These tags, which go inside MERGEFIELDs, denote the strings that signify the starts and ends of mail merge regions 
+            Assert.AreEqual("TableStart", doc.MailMerge.RegionStartTag);
+            Assert.AreEqual("TableEnd", doc.MailMerge.RegionEndTag);
+
+            // By using these tags, we will start and end a "MailMergeRegion1", which will contain MERGEFIELDs for two columns
+            builder.InsertField(" MERGEFIELD TableStart:MailMergeRegion1");
+            builder.InsertField(" MERGEFIELD Column1");
+            builder.Write(", ");
+            builder.InsertField(" MERGEFIELD Column2");
+            builder.InsertField(" MERGEFIELD TableEnd:MailMergeRegion1");
+
+            // We can keep track of merge regions and their columns by looking at these collections
+            IList<MailMergeRegionInfo> regions = doc.MailMerge.GetRegionsByName("MailMergeRegion1");
+            Assert.AreEqual(1, regions.Count);
+            Assert.AreEqual("MailMergeRegion1", regions[0].Name);
+
+            string[] mergeFieldNames = doc.MailMerge.GetFieldNamesForRegion("MailMergeRegion1");
+            Assert.AreEqual("Column1", mergeFieldNames[0]);
+            Assert.AreEqual("Column2", mergeFieldNames[1]);
+
+            // Insert a region with the same name as an existing region, which will make it a duplicate
+            builder.InsertParagraph(); // A single ror/paragraph cannot be shared by multiple regions
+            builder.InsertField(" MERGEFIELD TableStart:MailMergeRegion1");
+            builder.InsertField(" MERGEFIELD Column3");
+            builder.InsertField(" MERGEFIELD TableEnd:MailMergeRegion1");
+
+            // Regions that share the same name are still accounted for and can be accessed by index
+            regions = doc.MailMerge.GetRegionsByName("MailMergeRegion1");
+            Assert.AreEqual(2, regions.Count);
+
+            mergeFieldNames = doc.MailMerge.GetFieldNamesForRegion("MailMergeRegion1", 1);
+            Assert.AreEqual("Column3", mergeFieldNames[0]);
             //ExEnd
         }
 
