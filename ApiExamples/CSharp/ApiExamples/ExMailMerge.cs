@@ -127,7 +127,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:MailMerge.Execute(IDataReader)
-            //ExSummary:Shows how to use a Data Reader to execute a mail merge on a database.
+            //ExSummary:Shows how to run a mail merge using data from a data reader.
             // Create a new document and populate it with merge fields
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -173,7 +173,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:MailMerge.ExecuteADO(Object)
-            //ExSummary:Shows how to run a mail merge on an ADO dataset
+            //ExSummary:Shows how to run a mail merge with data from an ADO dataset.
             // Create a blank document and populate it with MERGEFIELDS that will accept data when a mail merge is executed
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -208,7 +208,7 @@ namespace ApiExamples
         }
 
         //ExStart
-        //ExFor:MailMerge.ExecuteWithRegions(System.Data.DataSet)
+        //ExFor:MailMerge.ExecuteWithRegions(DataSet)
         //ExSummary:Shows how to create a nested mail merge with regions with data from a data set with two related tables.
         [Test]
         public void ExecuteWithRegionsNested()
