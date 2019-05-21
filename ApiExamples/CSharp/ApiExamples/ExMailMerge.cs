@@ -189,7 +189,7 @@ namespace ApiExamples
             // which is included in the .NET distribution and stored in "adodb.dll", then create a connection
             ADODB.Connection connection = new ADODB.Connection();
 
-            // We will then create a connection string which points to the "Northwind" database file in our local file system and open a connection
+            // Create a connection string which points to the "Northwind" database file in our local file system and open a connection
             string connectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + DatabaseDir + "Northwind.mdb";
             connection.Open(connectionString);
 
@@ -204,6 +204,67 @@ namespace ApiExamples
             // Execute the mail merge and save the document
             doc.MailMerge.ExecuteADO(recordset);
             doc.Save(ArtifactsDir + "MailMerge.ExecuteADO.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ExecuteWithRegionsADO()
+        {
+            //ExStart
+            //ExFor:MailMerge.ExecuteWithRegionsADO(Object,String)
+            //ExSummary:Shows how to run a mail merge with regions, compiled with data from an ADO dataset.
+            // Create a blank document and use MERGEFIELDS to create two sequential mail merge regions with TableStart/TableEnd tags
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // First mail merge region
+            builder.Writeln("\tEmployees: ");
+            builder.InsertField(" MERGEFIELD TableStart:MergeRegion1");
+            builder.InsertField(" MERGEFIELD FirstName");
+            builder.Write(", ");
+            builder.InsertField(" MERGEFIELD LastName");
+            builder.Write(", ");
+            builder.InsertField(" MERGEFIELD City");
+            builder.InsertField(" MERGEFIELD TableEnd:MergeRegion1");
+            builder.InsertParagraph();
+
+            // Second mail merge region
+            builder.Writeln("\tCustomers: ");
+            builder.InsertField(" MERGEFIELD TableStart:MergeRegion2");
+            builder.InsertField(" MERGEFIELD ContactName");
+            builder.Write(", ");
+            builder.InsertField(" MERGEFIELD Address");
+            builder.Write(", ");
+            builder.InsertField(" MERGEFIELD City");
+            builder.InsertField(" MERGEFIELD TableEnd:MergeRegion2");
+
+            // To work with ADO DataSets, we need to add a reference to the Microsoft ActiveX Data Objects library,
+            // which is included in the .NET distribution and stored in "adodb.dll", then create a connection
+            ADODB.Connection connection = new ADODB.Connection();
+
+            // Create a connection string which points to the "Northwind" database file in our local file system and open a connection
+            string connectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + DatabaseDir + "Northwind.mdb";
+            connection.Open(connectionString);
+
+            // Create a record set
+            ADODB.Recordset recordset = new ADODB.Recordset();
+
+            // Create an SQL query that fetches data with column names that are suitable for our first mail merge region, then populate our record set with the data
+            string command = @"SELECT FirstName, LastName, City FROM Employees";
+            recordset.Open(command, connection);
+
+            // Run a mail merge on just the first region, filling its MERGEFIELDS with data from the ADO record set
+            doc.MailMerge.ExecuteWithRegionsADO(recordset, "MergeRegion1");
+
+            // Close the record set and reopen it with data from another SQL query
+            recordset.Close();
+            command = @"SELECT * FROM Customers";
+            recordset.Open(command, connection);
+
+            // Run a mail merge on the second region and save the document
+            doc.MailMerge.ExecuteWithRegionsADO(recordset, "MergeRegion2");
+
+            doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegionsADO.docx");
             //ExEnd
         }
 
