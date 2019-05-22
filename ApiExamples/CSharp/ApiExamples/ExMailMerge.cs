@@ -510,6 +510,46 @@ namespace ApiExamples
         }
         //ExEnd
 
+        [Test]
+        public void PreserveUnusedTags()
+        {
+            // Create a simple data table with one column
+            DataTable dataTable = new DataTable("MyTable");
+            dataTable.Columns.Add("Column1");
+            dataTable.Rows.Add(new object[] { "Value1" });
+
+            // Create a document that has one column that values from our table can be merged into,
+            // and one 
+            Document doc = CreateDocWithNonMergeFields();
+            Assert.False(doc.MailMerge.PreserveUnusedTags);
+
+            doc.MailMerge.Execute(dataTable);
+
+            doc.Save(ArtifactsDir + "MailMerge.PreserveUnusedTags.False.docx");
+
+            doc = CreateDocWithNonMergeFields();
+            doc.MailMerge.PreserveUnusedTags = true;
+            doc.MailMerge.Execute(dataTable);
+
+            doc.Save(ArtifactsDir + "MailMerge.PreserveUnusedTags.True.docx");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private Document CreateDocWithNonMergeFields()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("{{ Column1 }}");
+            builder.Write("{{ Column2 }}");
+
+            doc.MailMerge.UseNonMergeFields = true;
+
+            return doc;
+        }
+
         //ExStart
         //ExFor:MailMerge.MergeWholeDocument
         //ExSummary:Shows the relationship between mail merges with regions and field updating.
