@@ -558,12 +558,13 @@ namespace ApiExamples
         }
         //ExEnd
 
-        //ExStart
-        //ExFor:MailMerge.MergeWholeDocument
-        //ExSummary:Shows the relationship between mail merges with regions and field updating.
-        [Test] //ExSkip
+
+        [Test]
         public void MergeWholeDocument()
-        {           
+        {
+            //ExStart
+            //ExFor:MailMerge.MergeWholeDocument
+            //ExSummary:Shows the relationship between mail merges with regions and field updating.
             // Create a simple data table that will be used in a mail merge
             DataTable dataTable = new DataTable("MyTable");
             dataTable.Columns.Add("MyColumn");
@@ -587,6 +588,7 @@ namespace ApiExamples
             // All fields are now updated regardless of regions
             doc.MailMerge.ExecuteWithRegions(dataTable);
             doc.Save(ArtifactsDir + "MailMerge.MergeWholeDocument.True.docx");
+            //ExEnd
         }
 
         /// <summary>
