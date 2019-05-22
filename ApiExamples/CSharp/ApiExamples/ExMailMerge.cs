@@ -558,13 +558,12 @@ namespace ApiExamples
         }
         //ExEnd
 
-
-        [Test]
+        //ExStart
+        //ExFor:MailMerge.MergeWholeDocument
+        //ExSummary:Shows the relationship between mail merges with regions and field updating.
+        [Test] //ExSkip
         public void MergeWholeDocument()
         {
-            //ExStart
-            //ExFor:MailMerge.MergeWholeDocument
-            //ExSummary:Shows the relationship between mail merges with regions and field updating.
             // Create a simple data table that will be used in a mail merge
             DataTable dataTable = new DataTable("MyTable");
             dataTable.Columns.Add("MyColumn");
@@ -588,7 +587,6 @@ namespace ApiExamples
             // All fields are now updated regardless of regions
             doc.MailMerge.ExecuteWithRegions(dataTable);
             doc.Save(ArtifactsDir + "MailMerge.MergeWholeDocument.True.docx");
-            //ExEnd
         }
 
         /// <summary>
@@ -619,6 +617,46 @@ namespace ApiExamples
             return doc;
         }
         //ExEnd
+
+        [Test]
+        public void UseWholeParagraphAsRegion()
+        {
+            //ExStart
+            //ExFor:MailMerge.UseWholeParagraphAsRegion
+            //ExSummary:Shows the relationship between mail merge regions and paragraphs.
+            // Create a document with two mail merge regions sharing one paragraph
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Region 1: ");
+            builder.InsertField(" MERGEFIELD TableStart:MyTable");
+            builder.InsertField(" MERGEFIELD Column1");
+            builder.Write(", ");
+            builder.InsertField(" MERGEFIELD Column2");
+            builder.InsertField(" MERGEFIELD TableEnd:MyTable");
+
+            builder.Write(", Region 2: ");
+            builder.InsertField(" MERGEFIELD TableStart:MyOtherTable");
+            builder.InsertField(" MERGEFIELD TableEnd:MyOtherTable");
+
+            // Create a data table that can populate the first region during a mail merge
+            DataTable dataTable = new DataTable("MyTable");
+            dataTable.Columns.Add("Column1");
+            dataTable.Columns.Add("Column2");
+            dataTable.Rows.Add(new object[] { "Value 1", "Value 2" });
+
+            // By default, a paragraph can belong to no more than one mail merge region
+            // Our document breaks this rule so executing a mail merge with regions now will cause an exception to be thrown
+            Assert.True(doc.MailMerge.UseWholeParagraphAsRegion);
+            
+            // If we set this variable to false, paragraphs and mail merge regions are independent so we can safely run our mail merge
+            doc.MailMerge.UseWholeParagraphAsRegion = false;
+            doc.MailMerge.ExecuteWithRegions(dataTable);
+
+            // Our first region is populated, while our second is safely displayed as unused all across one paragraph
+            doc.Save(ArtifactsDir + "MailMerge.UseWholeParagraphAsRegion.docx");
+            //ExEnd
+        }
 
         [Test]
         public void TrimWhiteSpaces()
