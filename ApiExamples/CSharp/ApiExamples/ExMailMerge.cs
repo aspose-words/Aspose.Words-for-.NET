@@ -462,14 +462,14 @@ namespace ApiExamples
         [Test] //ExSkip
         public void MergeDuplicateRegions()
         {
-            // Create a 2x1 data table that will be used in a mail merge
+            // Create a data table that will be used in a mail merge
             DataTable dataTable = new DataTable("MergeRegion");
             dataTable.Columns.Add("Column1");
             dataTable.Columns.Add("Column2");
             dataTable.Rows.Add(new object[] { "Value 1", "Value 2" });
 
             // Create a document with two mail merge regions, with each having one MERGEFIELD for each column 
-            Document doc = GetDocumentWithDuplicateRegions();
+            Document doc = CreateMergeDuplicateRegionsSourceDoc();
             
             // This value is false by default, meaning that only one region gets mail merged during every mail merge
             Assert.False(doc.MailMerge.MergeDuplicateRegions);
@@ -481,7 +481,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "MailMerge.MergeDuplicateRegions.False.docx");
 
             // Create a new document and set MergeDuplicateRegions to true
-            doc = GetDocumentWithDuplicateRegions();
+            doc = CreateMergeDuplicateRegionsSourceDoc();
             doc.MailMerge.MergeDuplicateRegions = true;
 
             // Now, both regions are affected by one mail merge
@@ -490,9 +490,9 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Return a simple document that contains two duplicate mail merge regions (same name in the TableStart/End" tags)
+        /// Return a document that contains two duplicate mail merge regions (sharing the same name in the "TableStart/End" tags)
         /// </summary>
-        private Document GetDocumentWithDuplicateRegions()
+        private Document CreateMergeDuplicateRegionsSourceDoc()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -505,6 +505,66 @@ namespace ApiExamples
             builder.InsertField(" MERGEFIELD TableStart:MergeRegion");
             builder.InsertField(" MERGEFIELD Column2");
             builder.InsertField(" MERGEFIELD TableEnd:MergeRegion");
+
+            return doc;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:MailMerge.MergeWholeDocument
+        //ExSummary:Shows the relationship between mail merges with regions and field updating.
+        [Test] //ExSkip
+        public void MergeWholeDocument()
+        {           
+            // Create a simple data table that will be used in a mail merge
+            DataTable dataTable = new DataTable("MyTable");
+            dataTable.Columns.Add("MyColumn");
+            dataTable.Rows.Add(new object[] { "MyValue" });
+
+            Document doc = CreateMergeWholeDocumentSourceDoc();
+
+            // A regular mail merge will update all fields in the document as part of the procedure
+            // A mail merge with regions will only update fields inside of the designated mail merge region,
+            // unless we set doc.MailMerge.MergeWholeDocument to true, in which case then will update all fields in the document
+            doc.MailMerge.ExecuteWithRegions(dataTable);
+
+            // In this case that property is false, so the first QUOTE field will not be updated and will not show a value,
+            // but the second one inside the region designated by the data table name will show the correct value
+            doc.Save(ArtifactsDir + "MailMerge.MergeWholeDocument.False.docx");
+
+            // Create a new document and set doc.MailMerge.MergeWholeDocument to true
+            doc = CreateMergeWholeDocumentSourceDoc();
+            doc.MailMerge.MergeWholeDocument = true;
+
+            // All fields are now updated regardless of regions
+            doc.MailMerge.ExecuteWithRegions(dataTable);
+            doc.Save(ArtifactsDir + "MailMerge.MergeWholeDocument.True.docx");
+        }
+
+        /// <summary>
+        /// Create a document with a QUOTE field outside and one more inside a mail merge region called "MyTable"
+        /// </summary>
+        private Document CreateMergeWholeDocumentSourceDoc()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert QUOTE field outside of any mail merge regions
+            FieldQuote field = (FieldQuote)builder.InsertField(FieldType.FieldQuote, true);
+            field.Text = "This QUOTE field is outside of the \"MyTable\" merge region.";
+
+            // Start "MyTable" merge region
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD TableStart:MyTable");
+
+            // Insert QUOTE field inside "MyTable" merge region
+            field = (FieldQuote)builder.InsertField(FieldType.FieldQuote, true);
+            field.Text = "This QUOTE field is inside the \"MyTable\" merge region.";
+            builder.InsertParagraph();
+
+            // Add a MERGEFIELD for a column in the data table, end the "MyTable" region and return the document
+            builder.InsertField(" MERGEFIELD MyColumn");
+            builder.InsertField(" MERGEFIELD TableEnd:MyTable");
 
             return doc;
         }
