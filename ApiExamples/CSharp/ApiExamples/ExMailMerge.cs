@@ -510,7 +510,10 @@ namespace ApiExamples
         }
         //ExEnd
 
-        [Test]
+        //ExStart
+        //ExFor:MailMerge.PreserveUnusedTags
+        //ExSummary:Shows how to preserve the appearance of alternative mail merge tags that go unused during a mail merge. 
+        [Test] //ExSkip
         public void PreserveUnusedTags()
         {
             // Create a simple data table with one column
@@ -518,16 +521,19 @@ namespace ApiExamples
             dataTable.Columns.Add("Column1");
             dataTable.Rows.Add(new object[] { "Value1" });
 
-            // Create a document that has one column that values from our table can be merged into,
-            // and one 
+            // Create a document with one merge tag for values from the column in our table,
+            // and one tag for a column that doesn't exist
             Document doc = CreateDocWithNonMergeFields();
+
+            // By default, alternative merge tags that can't receive data because the data source has no columns with their name
+            // are converted to and left on display as MERGEFIELDs after the mail merge
             Assert.False(doc.MailMerge.PreserveUnusedTags);
-
             doc.MailMerge.Execute(dataTable);
-
             doc.Save(ArtifactsDir + "MailMerge.PreserveUnusedTags.False.docx");
 
             doc = CreateDocWithNonMergeFields();
+
+            // We can preserve their appearance and not turn into MERGEFIELDs by setting this attribute
             doc.MailMerge.PreserveUnusedTags = true;
             doc.MailMerge.Execute(dataTable);
 
@@ -535,20 +541,22 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// 
+        /// Create a document and add two tags that can accept mail merge data that are not the traditional MERGEFIELDs
         /// </summary>
         private Document CreateDocWithNonMergeFields()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Write("{{ Column1 }}");
-            builder.Write("{{ Column2 }}");
+            builder.Writeln("{{ Column1 }}");
+            builder.Writeln("{{ Column2 }}");
 
+            // Our tags will only register as destinations for mail merge data if we set this to true
             doc.MailMerge.UseNonMergeFields = true;
 
             return doc;
         }
+        //ExEnd
 
         //ExStart
         //ExFor:MailMerge.MergeWholeDocument
