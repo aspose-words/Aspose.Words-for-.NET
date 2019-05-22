@@ -458,7 +458,7 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:MailMerge.MergeDuplicateRegions
-        //ExSummary:
+        //ExSummary:Shows how to work with duplicate mail merge regions.
         [Test] //ExSkip
         public void MergeDuplicateRegions()
         {
@@ -487,13 +487,6 @@ namespace ApiExamples
             // Now, both regions are affected by one mail merge
             doc.MailMerge.ExecuteWithRegions(dataTable);
             doc.Save(ArtifactsDir + "MailMerge.MergeDuplicateRegions.True.docx");
-
-            doc = GetDocumentWithDuplicateRegions();
-            doc.MailMerge.MergeWholeDocument = true;
-
-            // Now, both regions are affected by one mail merge
-            doc.MailMerge.ExecuteWithRegions(dataTable);
-            doc.Save(ArtifactsDir + "MailMerge.MergeWholeDocument.True.docx");
         }
 
         /// <summary>
