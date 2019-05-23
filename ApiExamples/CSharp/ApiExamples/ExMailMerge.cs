@@ -811,6 +811,76 @@ namespace ApiExamples
         }
 
         [Test]
+        public void MappedDataFieldCollection()
+        {
+            //ExStart
+            //ExFor:MappedDataFieldCollection.Clear
+            //ExFor:MappedDataFieldCollection.ContainsKey(String)
+            //ExFor:MappedDataFieldCollection.ContainsValue(String)
+            //ExFor:MappedDataFieldCollection.Count
+            //ExFor:MappedDataFieldCollection.GetEnumerator
+            //ExFor:MappedDataFieldCollection.Item(String)
+            //ExFor:MappedDataFieldCollection.Remove(String)
+            //ExSummary:Shows how to map data columns and MERGEFIELDs with different names so the data is transferred between them during a mail merge.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create a data table that will be used in a mail merge
+            DataTable dataTable = new DataTable("MyTable");
+            dataTable.Columns.Add("Column1");
+            dataTable.Columns.Add("Column2");
+            dataTable.Rows.Add(new object[] { "Value1", "Value2" });
+
+            // Insert two MERGEFIELDs that will accept data from that table
+            builder.InsertField(" MERGEFIELD Column1");
+            builder.Write(", ");
+            builder.InsertField(" MERGEFIELD Column3");
+
+            // We have a column "Column2" in the data table that doesn't have a respective MERGEFIELD in the document
+            // Also, we have a MERGEFIELD named "Column3" that does not exist as a column in the data source
+            // If data from "Column2" is suitable for the "Column3" MERGEFIELD,
+            // we can map that column name to the MERGEFIELD in the "MappedDataFields" key/value pair
+            MappedDataFieldCollection mappedDataFields = doc.MailMerge.MappedDataFields;
+
+            // A data source column name is linked to a MERGEFIELD name by adding an element like this
+            mappedDataFields.Add("MergeFieldName", "DataSourceColumnName");
+
+            // So, values from "Column2" will now go into MERGEFIELDs named "Column3" as well as "Column2", if there are any
+            mappedDataFields.Add("Column3", "Column2");
+
+            // The MERGEFIELD name is the "key" to the respective data source column name "value"
+            Assert.AreEqual("DataSourceColumnName", mappedDataFields["MergeFieldName"]);
+            Assert.True(mappedDataFields.ContainsKey("MergeFieldName"));
+            Assert.True(mappedDataFields.ContainsValue("DataSourceColumnName"));
+
+            // Now if we run this mail merge, the "Column3" MERGEFIELDs will take data from "Column2" of the table
+            doc.MailMerge.Execute(dataTable);
+
+            // We can count and iterate over the mapped columns/fields
+            Assert.AreEqual(2, mappedDataFields.Count);
+
+            using (IEnumerator<KeyValuePair<string, string>> enumerator = mappedDataFields.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    Console.WriteLine($"Column named {enumerator.Current.Value} is mapped to MERGEFIELDs named {enumerator.Current.Key}");
+                }
+            }
+
+            // We can also remove some or all of the elements
+            mappedDataFields.Remove("MergeFieldName");
+            Assert.False(mappedDataFields.ContainsKey("MergeFieldName"));
+            Assert.False(mappedDataFields.ContainsValue("DataSourceColumnName"));
+
+            mappedDataFields.Clear();
+            Assert.AreEqual(0, mappedDataFields.Count);
+
+            // Removing the mapped key/value pairs has no effect on the document because the merge was already done with them in place
+            doc.Save(ArtifactsDir + "MailMerge.MappedDataFieldCollection.docx");
+            //ExEnd
+        }
+
+        [Test]
         public void GetFieldNames()
         {
             //ExStart
