@@ -677,20 +677,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void MappedDataFields()
-        {
-            Document doc = new Document();
-            //ExStart
-            //ExFor:MailMerge.MappedDataFields
-            //ExFor:MappedDataFieldCollection
-            //ExFor:MappedDataFieldCollection.Add
-            //ExId:MailMergeMappedDataFields
-            //ExSummary:Shows how to add a mapping when a merge field in a document and a data field in a data source have different names.
-            doc.MailMerge.MappedDataFields.Add("MyFieldName_InDocument", "MyFieldName_InDataSource");
-            //ExEnd
-        }
-
-        [Test]
         public void MailMergeGetFieldNames()
         {
             Document doc = new Document();
@@ -814,6 +800,9 @@ namespace ApiExamples
         public void MappedDataFieldCollection()
         {
             //ExStart
+            //ExFor:MailMerge.MappedDataFields
+            //ExFor:MappedDataFieldCollection
+            //ExFor:MappedDataFieldCollection.Add
             //ExFor:MappedDataFieldCollection.Clear
             //ExFor:MappedDataFieldCollection.ContainsKey(String)
             //ExFor:MappedDataFieldCollection.ContainsValue(String)
