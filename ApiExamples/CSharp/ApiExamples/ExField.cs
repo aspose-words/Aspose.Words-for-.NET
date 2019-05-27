@@ -4218,6 +4218,41 @@ namespace ApiExamples
         }
         //ExEnd
 
+        [Test]
+        public void FootnoteRef()
+        {
+            //ExStart
+            //ExFor:FieldFootnoteRef
+            //ExSummary:Shows how to cross-reference footnotes with the FOOTNOTEREF field
+            // Create a blank document and a document builder for it
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert some text, and a footnote, all inside a bookmark named "CrossRefBookmark"
+            builder.StartBookmark("CrossRefBookmark");
+            builder.Write("Hello world!");
+            builder.InsertFootnote(FootnoteType.Footnote, "Cross referenced footnote.");
+            builder.EndBookmark("CrossRefBookmark");
+
+            builder.InsertParagraph();
+            builder.Write("CrossReference: ");
+
+            // Insert a FOOTNOTEREF field, which lets us reference a footnote more than once while re-using the same footnote marker
+            //Field field = builder.insertField(" ftnref ");
+            FieldFootnoteRef field = (FieldFootnoteRef) builder.InsertField(FieldType.FieldFootnoteRef, true);
+
+            // Get this field to reference a bookmark
+            // The bookmark that we chose contains a footnote marker belonging to the footnote we inserted, which will be displayed by the field, just by itself
+            builder.MoveTo(field.Separator);
+            builder.Write("CrossRefBookmark");
+
+            Assert.AreEqual(field.GetFieldCode(), " FOOTNOTEREF CrossRefBookmark");
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.FootnoteRef.docx");
+            //ExEnd
+        }
+
         //ExStart
         //ExFor:FieldPageRef
         //ExFor:FieldPageRef.BookmarkName
