@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections.Generic;
 using Aspose.Words;
 using Aspose.Words.Markup;
 using NUnit.Framework;
@@ -132,6 +133,58 @@ namespace ApiExamples
             //ExEnd
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "SDT.CustomXml.docx", GoldsDir + "SDT.CustomXml Gold.docx"));
+        }
+
+        [Test]
+        public void CustomXmlSchemaCollection()
+        {
+            //ExStart
+            //ExFor:CustomXmlSchemaCollection
+            //ExFor:CustomXmlSchemaCollection.Add(System.String)
+            //ExFor:CustomXmlSchemaCollection.Clear
+            //ExFor:CustomXmlSchemaCollection.Clone
+            //ExFor:CustomXmlSchemaCollection.Count
+            //ExFor:CustomXmlSchemaCollection.GetEnumerator
+            //ExFor:CustomXmlSchemaCollection.IndexOf(System.String)
+            //ExFor:CustomXmlSchemaCollection.Item(System.Int32)
+            //ExFor:CustomXmlSchemaCollection.Remove(System.String)
+            //ExFor:CustomXmlSchemaCollection.RemoveAt(System.Int32)
+            //ExSummary:Shows how to work with an XML schema collection.
+            // Create a document and add a custom XML part
+            Document doc = new Document();
+
+            string xmlPartId = Guid.NewGuid().ToString("B");
+            string xmlPartContent = "<root><text>Hello, World!</text></root>";
+            CustomXmlPart xmlPart = doc.CustomXmlParts.Add(xmlPartId, xmlPartContent);
+
+            // Once the part is created, we can add XML schema associations like this,
+            // and perform other collection-related operations on the list of schemas for this part
+            xmlPart.Schemas.Add("http://www.w3.org/2001/XMLSchema");
+
+            // Collections can be cloned and elements can be added
+            CustomXmlSchemaCollection schemas = xmlPart.Schemas.Clone();
+            schemas.Add("http://www.w3.org/2001/XMLSchema-instance");
+            schemas.Add("http://schemas.microsoft.com/office/2006/metadata/contentType");
+            
+            Assert.AreEqual(3, schemas.Count);
+            Assert.AreEqual(2, schemas.IndexOf(("http://schemas.microsoft.com/office/2006/metadata/contentType")));
+
+            // We can iterate over the collection with an enumerator
+            using (IEnumerator<string> enumerator = schemas.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    Console.WriteLine(enumerator.Current);
+                }
+            }
+
+            // We can also remove elements by index, element, or we can clear the entire collection
+            schemas.RemoveAt(2);
+            schemas.Remove("http://www.w3.org/2001/XMLSchema");
+            schemas.Clear();
+
+            Assert.AreEqual(0, schemas.Count);
+            //ExEnd
         }
 
         [Test]
