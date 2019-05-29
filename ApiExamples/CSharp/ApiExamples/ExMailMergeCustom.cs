@@ -148,23 +148,8 @@ namespace ApiExamples
         [Test] //ExSkip
         public void MailMergeCustomDataSourceRoot()
         {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Create two consecutive mail merge regions
-            builder.Writeln("\nWashington branch: ");
-            builder.InsertField(" MERGEFIELD TableStart:Washington");
-            builder.InsertField(" MERGEFIELD FullName");
-            builder.Write(", ");
-            builder.InsertField(" MERGEFIELD Department");
-            builder.InsertField(" MERGEFIELD TableEnd:Washington");
-
-            builder.Writeln("\n\nSeattle branch: ");
-            builder.InsertField(" MERGEFIELD TableStart:Seattle");
-            builder.InsertField(" MERGEFIELD FullName");
-            builder.Write(", ");
-            builder.InsertField(" MERGEFIELD Department");
-            builder.InsertField(" MERGEFIELD TableEnd:Seattle");
+            // Create a document with two mail merge regions named "Washington" and "Seattle"
+            Document doc = CreateSourceDocumentWithMailMergeRegions(new string[] { "Washington", "Seattle" });
 
             // Create two data sources
             EmployeeList employeesWashingtonBranch = new EmployeeList();
@@ -188,9 +173,30 @@ namespace ApiExamples
         }
 
         /// <summary>
+        /// Create document that contains consecutive mail merge regions, with names designated by the input array, for a data table of employees
+        /// </summary>
+        private Document CreateSourceDocumentWithMailMergeRegions(string[] regions)
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            foreach (string s in regions)
+            {
+                builder.Writeln("\n" + s + " branch: ");
+                builder.InsertField(" MERGEFIELD TableStart:" + s);
+                builder.InsertField(" MERGEFIELD FullName");
+                builder.Write(", ");
+                builder.InsertField(" MERGEFIELD Department");
+                builder.InsertField(" MERGEFIELD TableEnd:" + s);
+            }
+
+            return doc;
+        }
+
+        /// <summary>
         /// An example of a "data entity" class in your application.
         /// </summary>
-        public class Employee
+        private class Employee
         {
             public Employee(string aFullName, string aDepartment)
             {
@@ -198,14 +204,14 @@ namespace ApiExamples
                 Department = aDepartment;
             }
 
-            public string FullName { get; set; }
-            public string Department { get; set; }
+            public string FullName { get; }
+            public string Department { get; }
         }
 
         /// <summary>
         /// An example of a typed collection that contains your "data" objects.
         /// </summary>
-        public class EmployeeList : ArrayList
+        private class EmployeeList : ArrayList
         {
             public new Employee this[int index]
             {

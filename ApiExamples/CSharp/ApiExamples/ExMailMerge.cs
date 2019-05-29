@@ -164,22 +164,14 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
+        //ExStart
+        //ExFor:MailMerge.ExecuteADO(Object)
+        //ExSummary:Shows how to run a mail merge with data from an ADO dataset.
+        [Test] //ExSkip
         public void ExecuteADO()
         {
-            //ExStart
-            //ExFor:MailMerge.ExecuteADO(Object)
-            //ExSummary:Shows how to run a mail merge with data from an ADO dataset.
-            // Create a blank document and populate it with MERGEFIELDS that will accept data when a mail merge is executed
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.Write("Product:\t");
-            builder.InsertField(" MERGEFIELD ProductName");
-            builder.Writeln();
-            builder.InsertField(" MERGEFIELD QuantityPerUnit");
-            builder.Write(" for $");
-            builder.InsertField(" MERGEFIELD UnitPrice");
+            // Create a document that will be merged
+            Document doc = CreateSourceDocADOMailMerge();
 
             // To work with ADO DataSets, we need to add a reference to the Microsoft ActiveX Data Objects library,
             // which is included in the .NET distribution and stored in "adodb.dll", then create a connection
@@ -200,39 +192,35 @@ namespace ApiExamples
             // Execute the mail merge and save the document
             doc.MailMerge.ExecuteADO(recordset);
             doc.Save(ArtifactsDir + "MailMerge.ExecuteADO.docx");
-            //ExEnd
         }
 
-        [Test]
-        public void ExecuteWithRegionsADO()
+        /// <summary>
+        /// Create a blank document and populate it with MERGEFIELDS that will accept data when a mail merge is executed
+        /// </summary>
+        private Document CreateSourceDocADOMailMerge()
         {
-            //ExStart
-            //ExFor:MailMerge.ExecuteWithRegionsADO(Object,String)
-            //ExSummary:Shows how to run a mail merge with regions, compiled with data from an ADO dataset.
-            // Create a blank document and use MERGEFIELDS to create two sequential mail merge regions with TableStart/TableEnd tags
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // First mail merge region
-            builder.Writeln("\tEmployees: ");
-            builder.InsertField(" MERGEFIELD TableStart:MergeRegion1");
-            builder.InsertField(" MERGEFIELD FirstName");
-            builder.Write(", ");
-            builder.InsertField(" MERGEFIELD LastName");
-            builder.Write(", ");
-            builder.InsertField(" MERGEFIELD City");
-            builder.InsertField(" MERGEFIELD TableEnd:MergeRegion1");
-            builder.InsertParagraph();
+            builder.Write("Product:\t");
+            builder.InsertField(" MERGEFIELD ProductName");
+            builder.Writeln();
+            builder.InsertField(" MERGEFIELD QuantityPerUnit");
+            builder.Write(" for $");
+            builder.InsertField(" MERGEFIELD UnitPrice");
 
-            // Second mail merge region
-            builder.Writeln("\tCustomers: ");
-            builder.InsertField(" MERGEFIELD TableStart:MergeRegion2");
-            builder.InsertField(" MERGEFIELD ContactName");
-            builder.Write(", ");
-            builder.InsertField(" MERGEFIELD Address");
-            builder.Write(", ");
-            builder.InsertField(" MERGEFIELD City");
-            builder.InsertField(" MERGEFIELD TableEnd:MergeRegion2");
+            return doc;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:MailMerge.ExecuteWithRegionsADO(Object,String)
+        //ExSummary:Shows how to run a mail merge with regions, compiled with data from an ADO dataset.
+        [Test]
+        public void ExecuteWithRegionsADO()
+        {
+            // Create a document that will be merged
+            Document doc = CreateSourceDocADOMailMergeWithRegions();
 
             // To work with ADO DataSets, we need to add a reference to the Microsoft ActiveX Data Objects library,
             // which is included in the .NET distribution and stored in "adodb.dll", then create a connection
@@ -261,8 +249,40 @@ namespace ApiExamples
             doc.MailMerge.ExecuteWithRegionsADO(recordset, "MergeRegion2");
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegionsADO.docx");
-            //ExEnd
         }
+
+        /// <summary>
+        /// Create a blank document and use MERGEFIELDS to create two sequential mail merge regions with TableStart/TableEnd tags
+        /// </summary>
+        private Document CreateSourceDocADOMailMergeWithRegions()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // First mail merge region
+            builder.Writeln("\tEmployees: ");
+            builder.InsertField(" MERGEFIELD TableStart:MergeRegion1");
+            builder.InsertField(" MERGEFIELD FirstName");
+            builder.Write(", ");
+            builder.InsertField(" MERGEFIELD LastName");
+            builder.Write(", ");
+            builder.InsertField(" MERGEFIELD City");
+            builder.InsertField(" MERGEFIELD TableEnd:MergeRegion1");
+            builder.InsertParagraph();
+
+            // Second mail merge region
+            builder.Writeln("\tCustomers: ");
+            builder.InsertField(" MERGEFIELD TableStart:MergeRegion2");
+            builder.InsertField(" MERGEFIELD ContactName");
+            builder.Write(", ");
+            builder.InsertField(" MERGEFIELD Address");
+            builder.Write(", ");
+            builder.InsertField(" MERGEFIELD City");
+            builder.InsertField(" MERGEFIELD TableEnd:MergeRegion2");
+
+            return doc;
+        }
+        //ExEnd
 
         //ExStart
         //ExFor:MailMerge.ExecuteWithRegions(DataSet)
@@ -455,41 +475,28 @@ namespace ApiExamples
         //ExFor:MailMerge.MergeDuplicateRegions
         //ExSummary:Shows how to work with duplicate mail merge regions.
         [Test] //ExSkip
-        public void MergeDuplicateRegions()
+        [TestCase(true)] //ExSkip
+        [TestCase(false)] //ExSkip
+        public void MergeDuplicateRegions(bool isMergeDuplicateRegions)
         {
-            //INSP: There are some different styles in the file. Somewhere you use a builder in the test, somewhere you separate it into methods. Same with creation DataTable. Let's use additional methods for prepare to test.
+            // Create a document and table that we will merge
+            Document doc = CreateSourceDocMergeDuplicateRegions();
+            DataTable dataTable = CreateSourceTableMergeDuplicateRegions();
 
-            // Create a data table that will be used in a mail merge
-            DataTable dataTable = new DataTable("MergeRegion");
-            dataTable.Columns.Add("Column1");
-            dataTable.Columns.Add("Column2");
-            dataTable.Rows.Add(new object[] { "Value 1", "Value 2" });
-
-            // Create a document with two mail merge regions, with each having one MERGEFIELD for each column 
-            Document doc = CreateMergeDuplicateRegionsSourceDoc();
-            
-            // This value is false by default, meaning that only one region gets mail merged during every mail merge
-            Assert.False(doc.MailMerge.MergeDuplicateRegions);
-            
-            // Run the mail merge and save the document
-            // The first region was merged while the MERGEFIELDs of the second one are in the original state
+            // If this property is false, the first region will be merged
+            // while the MERGEFIELDs of the second one will be left in the pre-merge state
             // To get both regions merged we would have to execute the mail merge twice, on a table of the same name
-            doc.MailMerge.ExecuteWithRegions(dataTable);
-            doc.Save(ArtifactsDir + "MailMerge.MergeDuplicateRegions.False.docx");
+            // If this is set to true, both regions will be affected by the merge
+            doc.MailMerge.MergeDuplicateRegions = isMergeDuplicateRegions;
 
-            // Create a new document and set MergeDuplicateRegions to true
-            doc = CreateMergeDuplicateRegionsSourceDoc();
-            doc.MailMerge.MergeDuplicateRegions = true;
-
-            // Now, both regions are affected by one mail merge
             doc.MailMerge.ExecuteWithRegions(dataTable);
-            doc.Save(ArtifactsDir + "MailMerge.MergeDuplicateRegions.True.docx");
+            doc.Save(ArtifactsDir + "MailMerge.MergeDuplicateRegions.docx");
         }
 
         /// <summary>
         /// Return a document that contains two duplicate mail merge regions (sharing the same name in the "TableStart/End" tags)
         /// </summary>
-        private Document CreateMergeDuplicateRegionsSourceDoc()
+        private Document CreateSourceDocMergeDuplicateRegions()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -505,42 +512,46 @@ namespace ApiExamples
 
             return doc;
         }
+
+        /// <summary>
+        /// Create a data table with one row and two columns
+        /// </summary>
+        private DataTable CreateSourceTableMergeDuplicateRegions()
+        {
+            DataTable dataTable = new DataTable("MergeRegion");
+            dataTable.Columns.Add("Column1");
+            dataTable.Columns.Add("Column2");
+            dataTable.Rows.Add(new object[] { "Value 1", "Value 2" });
+
+            return dataTable;
+        }
         //ExEnd
 
         //ExStart
         //ExFor:MailMerge.PreserveUnusedTags
         //ExSummary:Shows how to preserve the appearance of alternative mail merge tags that go unused during a mail merge. 
         [Test] //ExSkip
-        public void PreserveUnusedTags()
+        [TestCase(false)] //ExSkip
+        [TestCase(true)] //ExSkip
+        public void PreserveUnusedTags(bool preserveUnusedTags)
         {
-            // Create a simple data table with one column
-            DataTable dataTable = new DataTable("MyTable");
-            dataTable.Columns.Add("Column1");
-            dataTable.Rows.Add(new object[] { "Value1" });
-
-            // Create a document with one merge tag for values from the column in our table,
-            // and one tag for a column that doesn't exist
-            Document doc = CreateDocWithNonMergeFields();
+            // Create a document and table that we will merge
+            Document doc = CreateSourceDocWithAlternativeMergeFields();
+            DataTable dataTable = CreateSourceTablePreserveUnusedTags();
 
             // By default, alternative merge tags that can't receive data because the data source has no columns with their name
             // are converted to and left on display as MERGEFIELDs after the mail merge
-            Assert.False(doc.MailMerge.PreserveUnusedTags);
-            doc.MailMerge.Execute(dataTable);
-            doc.Save(ArtifactsDir + "MailMerge.PreserveUnusedTags.False.docx");
-
-            doc = CreateDocWithNonMergeFields();
-
-            // We can preserve their appearance and not turn into MERGEFIELDs by setting this attribute
-            doc.MailMerge.PreserveUnusedTags = true;
+            // We can preserve their original appearance setting this attribute to true
+            doc.MailMerge.PreserveUnusedTags = preserveUnusedTags;
             doc.MailMerge.Execute(dataTable);
 
-            doc.Save(ArtifactsDir + "MailMerge.PreserveUnusedTags.True.docx");
+            doc.Save(ArtifactsDir + "MailMerge.PreserveUnusedTags.docx");
         }
 
         /// <summary>
         /// Create a document and add two tags that can accept mail merge data that are not the traditional MERGEFIELDs
         /// </summary>
-        private Document CreateDocWithNonMergeFields()
+        private Document CreateSourceDocWithAlternativeMergeFields()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -553,6 +564,18 @@ namespace ApiExamples
 
             return doc;
         }
+
+        /// <summary>
+        /// Create a simple data table with one column
+        /// </summary>
+        private DataTable CreateSourceTablePreserveUnusedTags()
+        {
+            DataTable dataTable = new DataTable("MyTable");
+            dataTable.Columns.Add("Column1");
+            dataTable.Rows.Add(new object[] { "Value1" });
+
+            return dataTable;
+        }
         //ExEnd
 
         //ExStart
@@ -563,40 +586,26 @@ namespace ApiExamples
         [TestCase(true)] //ExSkip
         public void MergeWholeDocument(bool isMergeWholeDocument)
         {
-            // Create a simple data table that will be used in a mail merge
-            DataTable dataTable = new DataTable("MyTable");
-            dataTable.Columns.Add("MyColumn");
-            dataTable.Rows.Add(new object[] { "MyValue" });
+            // Create a document and data table that will both be merged
+            Document doc = CreateSourceDocMergeWholeDocument();
+            DataTable dataTable = CreateSourceTableMergeWholeDocument();
 
-            Document doc = CreateMergeWholeDocumentSourceDoc();
-
-            //INSP: I think you have a good description below, so we can use isMergeWholeDocument as TestData to make this example quite simple.
-            //INSP: Please see other places where we can do the same.
-
-            // A regular mail merge will update all fields in the document as part of the procedure
-            // A mail merge with regions will only update fields inside of the designated mail merge region,
-            // unless we set doc.MailMerge.MergeWholeDocument to true, in which case then will update all fields in the document
+            // A regular mail merge will update all fields in the document as part of the procedure,
+            // which will happen if this property is set to true
+            // Otherwise, a mail merge with regions will only update fields inside of the designated mail merge region
             doc.MailMerge.MergeWholeDocument = isMergeWholeDocument;
             doc.MailMerge.ExecuteWithRegions(dataTable);
 
+            // If true, all fields in the document will be updated upon merging
             // In this case that property is false, so the first QUOTE field will not be updated and will not show a value,
             // but the second one inside the region designated by the data table name will show the correct value
-            doc.Save(ArtifactsDir + "MailMerge.MergeWholeDocument.docx"); // INSP: Just renamed here
-
-            //INSP: And we can delete code below
-            // Create a new document and set doc.MailMerge.MergeWholeDocument to true
-            doc = CreateMergeWholeDocumentSourceDoc();
-            doc.MailMerge.MergeWholeDocument = true;
-
-            // All fields are now updated regardless of regions
-            doc.MailMerge.ExecuteWithRegions(dataTable);
-            doc.Save(ArtifactsDir + "MailMerge.MergeWholeDocument.True.docx");
+            doc.Save(ArtifactsDir + "MailMerge.MergeWholeDocument.docx");
         }
 
         /// <summary>
         /// Create a document with a QUOTE field outside and one more inside a mail merge region called "MyTable"
         /// </summary>
-        private Document CreateMergeWholeDocumentSourceDoc()
+        private Document CreateSourceDocMergeWholeDocument()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -620,15 +629,47 @@ namespace ApiExamples
 
             return doc;
         }
+
+        /// <summary>
+        /// Create a simple data table that will be used in a mail merge
+        /// </summary>
+        private DataTable CreateSourceTableMergeWholeDocument()
+        {
+            DataTable dataTable = new DataTable("MyTable");
+            dataTable.Columns.Add("MyColumn");
+            dataTable.Rows.Add(new object[] { "MyValue" });
+
+            return dataTable;
+        }
         //ExEnd
 
-        [Test]
+        //ExStart
+        //ExFor:MailMerge.UseWholeParagraphAsRegion
+        //ExSummary:Shows the relationship between mail merge regions and paragraphs.
+        [Test] //ExSkip
         public void UseWholeParagraphAsRegion()
         {
-            //ExStart
-            //ExFor:MailMerge.UseWholeParagraphAsRegion
-            //ExSummary:Shows the relationship between mail merge regions and paragraphs.
-            // Create a document with two mail merge regions sharing one paragraph
+            // Create a document with 2 mail merge regions in one paragraph and a table to which can fill one of the regions during a mail merge
+            Document doc = CreateSourceDocWithNestedMergeRegions();
+            DataTable dataTable = CreateSourceTableDataTableForOneRegion();
+
+            // By default, a paragraph can belong to no more than one mail merge region
+            // Our document breaks this rule so executing a mail merge with regions now will cause an exception to be thrown
+            Assert.True(doc.MailMerge.UseWholeParagraphAsRegion);
+            
+            // If we set this variable to false, paragraphs and mail merge regions are independent so we can safely run our mail merge
+            doc.MailMerge.UseWholeParagraphAsRegion = false;
+            doc.MailMerge.ExecuteWithRegions(dataTable);
+
+            // Our first region is populated, while our second is safely displayed as unused all across one paragraph
+            doc.Save(ArtifactsDir + "MailMerge.UseWholeParagraphAsRegion.docx");
+        }
+
+        /// <summary>
+        /// Create a document with two mail merge regions sharing one paragraph
+        /// </summary>
+        private Document CreateSourceDocWithNestedMergeRegions()
+        {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -643,24 +684,22 @@ namespace ApiExamples
             builder.InsertField(" MERGEFIELD TableStart:MyOtherTable");
             builder.InsertField(" MERGEFIELD TableEnd:MyOtherTable");
 
-            // Create a data table that can populate the first region during a mail merge
+            return doc;
+        }
+
+        /// <summary>
+        /// Create a data table that can populate one region during a mail merge
+        /// </summary>
+        private DataTable CreateSourceTableDataTableForOneRegion()
+        {
             DataTable dataTable = new DataTable("MyTable");
             dataTable.Columns.Add("Column1");
             dataTable.Columns.Add("Column2");
             dataTable.Rows.Add(new object[] { "Value 1", "Value 2" });
 
-            // By default, a paragraph can belong to no more than one mail merge region
-            // Our document breaks this rule so executing a mail merge with regions now will cause an exception to be thrown
-            Assert.True(doc.MailMerge.UseWholeParagraphAsRegion);
-            
-            // If we set this variable to false, paragraphs and mail merge regions are independent so we can safely run our mail merge
-            doc.MailMerge.UseWholeParagraphAsRegion = false;
-            doc.MailMerge.ExecuteWithRegions(dataTable);
-
-            // Our first region is populated, while our second is safely displayed as unused all across one paragraph
-            doc.Save(ArtifactsDir + "MailMerge.UseWholeParagraphAsRegion.docx");
-            //ExEnd
+            return dataTable;
         }
+        //ExEnd
 
         [Test]
         public void TrimWhiteSpaces()
@@ -800,35 +839,25 @@ namespace ApiExamples
             Assert.AreEqual(resultText, doc.GetText());
         }
 
-        [Test]
+        //ExStart
+        //ExFor:MailMerge.MappedDataFields
+        //ExFor:MappedDataFieldCollection
+        //ExFor:MappedDataFieldCollection.Add
+        //ExFor:MappedDataFieldCollection.Clear
+        //ExFor:MappedDataFieldCollection.ContainsKey(String)
+        //ExFor:MappedDataFieldCollection.ContainsValue(String)
+        //ExFor:MappedDataFieldCollection.Count
+        //ExFor:MappedDataFieldCollection.GetEnumerator
+        //ExFor:MappedDataFieldCollection.Item(String)
+        //ExFor:MappedDataFieldCollection.Remove(String)
+        //ExSummary:Shows how to map data columns and MERGEFIELDs with different names so the data is transferred between them during a mail merge.
+        [Test] //ExSkip
         public void MappedDataFieldCollection()
         {
-            //ExStart
-            //ExFor:MailMerge.MappedDataFields
-            //ExFor:MappedDataFieldCollection
-            //ExFor:MappedDataFieldCollection.Add
-            //ExFor:MappedDataFieldCollection.Clear
-            //ExFor:MappedDataFieldCollection.ContainsKey(String)
-            //ExFor:MappedDataFieldCollection.ContainsValue(String)
-            //ExFor:MappedDataFieldCollection.Count
-            //ExFor:MappedDataFieldCollection.GetEnumerator
-            //ExFor:MappedDataFieldCollection.Item(String)
-            //ExFor:MappedDataFieldCollection.Remove(String)
-            //ExSummary:Shows how to map data columns and MERGEFIELDs with different names so the data is transferred between them during a mail merge.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Create a data table that will be used in a mail merge
-            DataTable dataTable = new DataTable("MyTable");
-            dataTable.Columns.Add("Column1");
-            dataTable.Columns.Add("Column2");
-            dataTable.Rows.Add(new object[] { "Value1", "Value2" });
-
-            // Insert two MERGEFIELDs that will accept data from that table
-            builder.InsertField(" MERGEFIELD Column1");
-            builder.Write(", ");
-            builder.InsertField(" MERGEFIELD Column3");
-
+            // Create a document and table that we will merge
+            Document doc = CreateSourceDocMappedDataFields();
+            DataTable dataTable = CreateSourceTableMappedDataFields();
+            
             // We have a column "Column2" in the data table that doesn't have a respective MERGEFIELD in the document
             // Also, we have a MERGEFIELD named "Column3" that does not exist as a column in the data source
             // If data from "Column2" is suitable for the "Column3" MERGEFIELD,
@@ -870,8 +899,38 @@ namespace ApiExamples
 
             // Removing the mapped key/value pairs has no effect on the document because the merge was already done with them in place
             doc.Save(ArtifactsDir + "MailMerge.MappedDataFieldCollection.docx");
-            //ExEnd
         }
+
+        /// <summary>
+        /// Create a document with 2 MERGEFIELDs, one of which does not have a corresponding column in the data table
+        /// </summary>
+        private Document CreateSourceDocMappedDataFields()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert two MERGEFIELDs that will accept data from that table
+            builder.InsertField(" MERGEFIELD Column1");
+            builder.Write(", ");
+            builder.InsertField(" MERGEFIELD Column3");
+
+            return doc;
+        }
+
+        /// <summary>
+        /// Create a data table with 2 columns, one of which does not have a corresponding MERGEFIELD in our source document
+        /// </summary>
+        private DataTable CreateSourceTableMappedDataFields()
+        {
+            // Create a data table that will be used in a mail merge
+            DataTable dataTable = new DataTable("MyTable");
+            dataTable.Columns.Add("Column1");
+            dataTable.Columns.Add("Column2");
+            dataTable.Rows.Add(new object[] { "Value1", "Value2" });
+
+            return dataTable;
+        }
+        //ExEnd
 
         [Test]
         public void GetFieldNames()
