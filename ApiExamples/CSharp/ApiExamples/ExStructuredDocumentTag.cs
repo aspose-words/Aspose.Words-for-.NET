@@ -199,6 +199,7 @@ namespace ApiExamples
         public void SmartTagProperties()
         {
             //ExStart
+            //ExFor:CustomXmlProperty.Uri
             //ExFor:CustomXmlPropertyCollection
             //ExFor:CustomXmlPropertyCollection.Add(CustomXmlProperty)
             //ExFor:CustomXmlPropertyCollection.Clear
@@ -266,7 +267,6 @@ namespace ApiExamples
             //ExFor:CustomXmlProperty
             //ExFor:CustomXmlProperty.#ctor(String,String,String)
             //ExFor:CustomXmlProperty.Name
-            //ExFor:CustomXmlProperty.Uri
             //ExFor:CustomXmlProperty.Value
             //ExSummary:Shows how to work with smart tag properties.
             Document doc = new Document();
