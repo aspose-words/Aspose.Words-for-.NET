@@ -6,9 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Aspose.Words;
 using Aspose.Words.Markup;
 using NUnit.Framework;
