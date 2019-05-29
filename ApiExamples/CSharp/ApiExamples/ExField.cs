@@ -2190,7 +2190,7 @@ namespace ApiExamples
         //ExFor:ImageFieldMergingArgs.ImageWidth
         //ExFor:ImageFieldMergingArgs.ImageHeight
         //ExSummary:Shows how to set the dimensions of merged images.
-        [Test]
+        [Test] //ExSkip
         public void MergeFieldImageDimension()
         {
             Document doc = new Document();
@@ -2266,6 +2266,67 @@ namespace ApiExamples
             private readonly double mImageWidth;
             private readonly double mImageHeight;
             private readonly MergeFieldImageDimensionUnit mUnit;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:ImageFieldMergingArgs.Image
+        //ExSummary:Shows how to set which images to merge during the mail merge.
+        [Test] //ExSkip
+        public void MergeFieldImages()
+        {
+            Document doc = new Document();
+
+            // Insert a merge field where images will be placed during the mail merge
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertField("MERGEFIELD Image:ImageColumn");
+
+            // When we merge images, our data table will normally have the full filenames of the images we wish to merge
+            // If this is cumbersome, we can move image filename logic to another place and populate the data table with just shorthands for images
+            System.Data.DataTable dataTable = CreateDataTable("Images", "ImageColumn",
+                new string[]
+                {
+                    "Aspose logo",
+                    ".Net logo",
+                    "Watermark"
+                });
+
+            // A custom merging callback will contain filenames that our shorthands will refer to
+            doc.MailMerge.FieldMergingCallback = new ImageFilenameCallback();
+            doc.MailMerge.Execute(dataTable);
+
+            doc.Save(ArtifactsDir + "Field.MergeFieldImages.docx");
+        }
+
+        /// <summary>
+        /// Image merging callback that pairs image shorthand names with filenames
+        /// </summary>
+        private class ImageFilenameCallback : IFieldMergingCallback
+        {
+            public ImageFilenameCallback()
+            {
+                imageFilenames = new Dictionary<string, string>();
+                imageFilenames.Add("Aspose logo", ImageDir + "Aspose.Words.gif");
+                imageFilenames.Add(".Net logo", ImageDir + "dotnet-logo.png");
+                imageFilenames.Add("Watermark", ImageDir + "Watermark.png");
+            }
+
+            void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs e)
+            {
+                if (imageFilenames.ContainsKey(e.FieldValue.ToString()))
+                {
+                    e.Image = Image.FromFile(imageFilenames[e.FieldValue.ToString()]);
+                }
+                
+                Assert.NotNull(e.Image);
+            }
+
+            private readonly Dictionary<string, string> imageFilenames;
         }
         //ExEnd
 
