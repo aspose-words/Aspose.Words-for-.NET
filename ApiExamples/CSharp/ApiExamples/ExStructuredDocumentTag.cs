@@ -254,12 +254,12 @@ namespace ApiExamples
             // We can also remove elements by name, index or clear the collection entirely
             properties.RemoveAt(3);
             properties.Remove("Year");
-
             Assert.AreEqual(2, (properties.Count));
 
             properties.Clear();
             Assert.AreEqual(0, (properties.Count));
 
+            //INSP: There are two examples in one. Looks not good. Please add the code below in another method.
             // Remove the smart tag and add a new one
             smartTag.Remove();
 
