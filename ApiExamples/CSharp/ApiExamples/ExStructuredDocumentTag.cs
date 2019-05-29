@@ -199,11 +199,6 @@ namespace ApiExamples
         public void SmartTagProperties()
         {
             //ExStart
-            //ExFor:CustomXmlProperty
-            //ExFor:CustomXmlProperty.#ctor(String,String,String)
-            //ExFor:CustomXmlProperty.Name
-            //ExFor:CustomXmlProperty.Uri
-            //ExFor:CustomXmlProperty.Value
             //ExFor:CustomXmlPropertyCollection
             //ExFor:CustomXmlPropertyCollection.Add(CustomXmlProperty)
             //ExFor:CustomXmlPropertyCollection.Clear
@@ -259,31 +254,43 @@ namespace ApiExamples
             properties.Clear();
             Assert.AreEqual(0, (properties.Count));
 
-            //INSP: There are two examples in one. Looks not good. Please add the code below in another method.
-            // Remove the smart tag and add a new one
+            // We can remove the entire smart tag like this
             smartTag.Remove();
+            //ExEnd
+        }
 
-            SmartTag st = new SmartTag(doc);
-            st.Element = "date";
+        [Test]
+        public void SmartTagProperty()
+        {
+            //ExStart
+            //ExFor:CustomXmlProperty
+            //ExFor:CustomXmlProperty.#ctor(String,String,String)
+            //ExFor:CustomXmlProperty.Name
+            //ExFor:CustomXmlProperty.Uri
+            //ExFor:CustomXmlProperty.Value
+            //ExSummary:Shows how to work with smart tag properties.
+            Document doc = new Document();
+            SmartTag smartTag = new SmartTag(doc);
+            smartTag.Element = "date";
 
-            // Specify a new date and according smart tag properties
-            st.AppendChild(new Run(doc, "May 29, 2019"));
+            // Specify a date and set smart tag properties accordingly
+            smartTag.AppendChild(new Run(doc, "May 29, 2019"));
 
-            st.Properties.Add(new CustomXmlProperty("Day", "", "29"));
-            st.Properties.Add(new CustomXmlProperty("Month", "", "5"));
-            st.Properties.Add(new CustomXmlProperty("Year", "", "2019"));
+            smartTag.Properties.Add(new CustomXmlProperty("Day", "", "29"));
+            smartTag.Properties.Add(new CustomXmlProperty("Month", "", "5"));
+            smartTag.Properties.Add(new CustomXmlProperty("Year", "", "2019"));
 
-            doc.FirstSection.Body.FirstParagraph.AppendChild(st);
-            doc.FirstSection.Body.FirstParagraph.AppendChild(new Run(doc, " is also a date."));
+            doc.FirstSection.Body.FirstParagraph.AppendChild(smartTag);
+            doc.FirstSection.Body.FirstParagraph.AppendChild(new Run(doc, " is a date."));
 
             doc.Save(ArtifactsDir + "SmartTagProperties.doc");
             //ExEnd
             doc = new Document(ArtifactsDir + "SmartTagProperties.doc");
 
-            smartTags = doc.GetChildNodes(NodeType.SmartTag, true);
+            NodeCollection smartTags = doc.GetChildNodes(NodeType.SmartTag, true);
 
-            Assert.AreEqual(8, smartTags.Count);
-            smartTag = (SmartTag)smartTags[7];
+            Assert.AreEqual(1, smartTags.Count);
+            smartTag = (SmartTag)smartTags[0];
             Assert.AreEqual(3, smartTag.Properties.Count);
             Assert.AreEqual("29", smartTag.Properties["Day"].Value);
             Assert.AreEqual("5", smartTag.Properties["Month"].Value);
