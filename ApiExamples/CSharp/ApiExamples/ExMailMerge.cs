@@ -9,17 +9,12 @@ using System;
 using System.Data;
 using System.Collections.Generic;
 using System.Data.Odbc;
-using System.Data.SqlClient;
-using System.Linq;
 using Aspose.Words.Fields;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 #if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
-using System.Data.OleDb;
 using System.Web;
-
 #endif
 
 namespace ApiExamples
@@ -462,6 +457,8 @@ namespace ApiExamples
         [Test] //ExSkip
         public void MergeDuplicateRegions()
         {
+            //INSP: There are some different styles in the file. Somewhere you use a builder in the test, somewhere you separate it into methods. Same with creation DataTable. Let's use additional methods for prepare to test.
+
             // Create a data table that will be used in a mail merge
             DataTable dataTable = new DataTable("MergeRegion");
             dataTable.Columns.Add("Column1");
@@ -562,7 +559,9 @@ namespace ApiExamples
         //ExFor:MailMerge.MergeWholeDocument
         //ExSummary:Shows the relationship between mail merges with regions and field updating.
         [Test] //ExSkip
-        public void MergeWholeDocument()
+        [TestCase(false)] //ExSkip
+        [TestCase(true)] //ExSkip
+        public void MergeWholeDocument(bool isMergeWholeDocument)
         {
             // Create a simple data table that will be used in a mail merge
             DataTable dataTable = new DataTable("MyTable");
@@ -571,15 +570,20 @@ namespace ApiExamples
 
             Document doc = CreateMergeWholeDocumentSourceDoc();
 
+            //INSP: I think you have a good description below, so we can use isMergeWholeDocument as TestData to make this example quite simple.
+            //INSP: Please see other places where we can do the same.
+
             // A regular mail merge will update all fields in the document as part of the procedure
             // A mail merge with regions will only update fields inside of the designated mail merge region,
             // unless we set doc.MailMerge.MergeWholeDocument to true, in which case then will update all fields in the document
+            doc.MailMerge.MergeWholeDocument = isMergeWholeDocument;
             doc.MailMerge.ExecuteWithRegions(dataTable);
 
             // In this case that property is false, so the first QUOTE field will not be updated and will not show a value,
             // but the second one inside the region designated by the data table name will show the correct value
-            doc.Save(ArtifactsDir + "MailMerge.MergeWholeDocument.False.docx");
+            doc.Save(ArtifactsDir + "MailMerge.MergeWholeDocument.docx"); // INSP: Just renamed here
 
+            //INSP: And we can delete code below
             // Create a new document and set doc.MailMerge.MergeWholeDocument to true
             doc = CreateMergeWholeDocumentSourceDoc();
             doc.MailMerge.MergeWholeDocument = true;
