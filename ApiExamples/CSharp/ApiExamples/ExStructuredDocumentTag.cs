@@ -12,6 +12,7 @@ using Aspose.Words.Markup;
 using NUnit.Framework;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace ApiExamples
 {
@@ -115,15 +116,75 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:CustomXmlPart
+            //ExFor:CustomXmlPart.Clone
+            //ExFor:CustomXmlPart.Data
+            //ExFor:CustomXmlPart.Id
+            //ExFor:CustomXmlPart.Schemas
+            //ExFor:CustomXmlPartCollection
+            //ExFor:CustomXmlPartCollection.Add(CustomXmlPart)
             //ExFor:CustomXmlPartCollection.Add(String, String)
+            //ExFor:CustomXmlPartCollection.Clear
+            //ExFor:CustomXmlPartCollection.Clone
+            //ExFor:CustomXmlPartCollection.Count
+            //ExFor:CustomXmlPartCollection.GetById(String)
+            //ExFor:CustomXmlPartCollection.GetEnumerator
+            //ExFor:CustomXmlPartCollection.Item(Int32)
+            //ExFor:CustomXmlPartCollection.RemoveAt(Int32)
             //ExFor:Document.CustomXmlParts
             //ExFor:XmlMapping.SetMapping(CustomXmlPart, String, String)
             //ExSummary:Shows how to create structured document tag with a custom XML data.
             Document doc = new Document();
-            // Add test XML data part to the collection.
-            CustomXmlPart xmlPart =
-                doc.CustomXmlParts.Add(Guid.NewGuid().ToString("B"), "<root><text>Hello, World!</text></root>");
 
+            // Construct an XML part that contains data and add it to the document's collection
+            // Once the "Developer" tab in Mircosoft Word is enabled,
+            // we can find elements from this collection as well as a couple defaults in the "XML Mapping Pane" 
+            string xmlPartId = Guid.NewGuid().ToString("B");
+            string xmlPartContent = "<root><text>Hello, World!</text></root>";
+            CustomXmlPart xmlPart = doc.CustomXmlParts.Add(xmlPartId, xmlPartContent);
+
+            // The data we entered resides in these variables
+            Assert.AreEqual(xmlPartContent.ToCharArray(), xmlPart.Data);
+            Assert.AreEqual(xmlPartId, xmlPart.Id);
+
+            // XML parts can be referenced by collection index or GUID
+            Assert.AreEqual(xmlPart, doc.CustomXmlParts[0]);
+            Assert.AreEqual(xmlPart, doc.CustomXmlParts.GetById(xmlPartId));
+
+            // Once the part is created, we can add XML schema associations like this
+            xmlPart.Schemas.Add("http://www.w3.org/2001/XMLSchema");
+            
+            // We can also clone parts and insert them into the collection directly
+            CustomXmlPart xmlPartClone = xmlPart.Clone();
+            xmlPartClone.Id = Guid.NewGuid().ToString("B");
+            doc.CustomXmlParts.Add(xmlPartClone);
+
+            Assert.AreEqual(2, doc.CustomXmlParts.Count);
+
+            // Iterate through collection with an enumerator and print the contents of each part
+            using (IEnumerator<CustomXmlPart> enumerator = doc.CustomXmlParts.GetEnumerator())
+            {
+                int index = 0;
+                while (enumerator.MoveNext())
+                {
+                    Console.WriteLine($"XML part index {index}, ID: {enumerator.Current.Id}");
+                    Console.WriteLine($"\tContent: {Encoding.UTF8.GetString(enumerator.Current.Data)}");
+                    index++;
+                }
+            }
+
+            // XML parts can be removed by index
+            doc.CustomXmlParts.RemoveAt(1);
+
+            Assert.AreEqual(1, doc.CustomXmlParts.Count);
+
+            // The XML part collection itself can be cloned also
+            CustomXmlPartCollection customXmlParts = doc.CustomXmlParts.Clone();
+
+            // And all elements can be cleared like this
+            customXmlParts.Clear();
+
+            // Create a StructuredDocumentTag that will display the contents of our part,
+            // insert it into the document and save the document
             StructuredDocumentTag sdt = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Block);
             sdt.XmlMapping.SetMapping(xmlPart, "/root[1]/text[1]", "");
 
