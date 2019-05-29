@@ -6,6 +6,9 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Aspose.Words;
 using Aspose.Words.Markup;
 using NUnit.Framework;
@@ -192,6 +195,101 @@ namespace ApiExamples
                 "Enter any content that you want to repeat, including other content controls. You can also insert this control around table rows in order to repeat parts of a table.\r",
                 sdts[0].GetText());
             Assert.AreEqual("Click here to enter text.\f", sdts[2].GetText());
+        }
+
+        [Test]
+        public void SmartTagProperties()
+        {
+            //ExStart
+            //ExFor:CustomXmlProperty
+            //ExFor:CustomXmlProperty.#ctor(String,String,String)
+            //ExFor:CustomXmlProperty.Name
+            //ExFor:CustomXmlProperty.Uri
+            //ExFor:CustomXmlProperty.Value
+            //ExFor:CustomXmlPropertyCollection
+            //ExFor:CustomXmlPropertyCollection.Add(CustomXmlProperty)
+            //ExFor:CustomXmlPropertyCollection.Clear
+            //ExFor:CustomXmlPropertyCollection.Contains(String)
+            //ExFor:CustomXmlPropertyCollection.Count
+            //ExFor:CustomXmlPropertyCollection.GetEnumerator
+            //ExFor:CustomXmlPropertyCollection.IndexOfKey(String)
+            //ExFor:CustomXmlPropertyCollection.Item(Int32)
+            //ExFor:CustomXmlPropertyCollection.Item(String)
+            //ExFor:CustomXmlPropertyCollection.Remove(String)
+            //ExFor:CustomXmlPropertyCollection.RemoveAt(Int32)
+            //ExSummary:Shows how to work with smart tag properties to get in depth information about smart tags.
+            // Open a document that contains smart tags and their collection
+            Document doc = new Document(MyDir + "SmartTags.doc");
+
+            // Smart tags are an older Microsoft Word feature that can automatically detect and tag
+            // any parts of the text that it registers as commonly used information objects such as names, addresses, stock tickers, dates etc
+            // In Word 2003, smart tags can be turned on in Tools > AutoCorrect options... > SmartTags tab
+            // In our input document there are three objects that were registered as smart tags, but since they can be nested, we have 8 in this collection
+            NodeCollection smartTags = doc.GetChildNodes(NodeType.SmartTag, true);
+            Assert.AreEqual(8, smartTags.Count);
+
+            // The last smart tag is of the "Date" type, which we will retrieve here
+            SmartTag smartTag = (SmartTag)smartTags[7];
+
+            // The Properties attribute, for some smart tags, elaborates on the text object that Word picked up as a smart tag
+            // In the case of our "Date" smart tag, its properties will let us know the year, month and day within the smart tag
+            CustomXmlPropertyCollection properties = smartTag.Properties;
+
+            // We can enumerate over the collection and print the aforementioned properties to the console
+            Assert.AreEqual(4, properties.Count);
+
+            using (IEnumerator<CustomXmlProperty> enumerator = properties.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    Console.WriteLine($"Property name: {enumerator.Current.Name}, value: {enumerator.Current.Value}");
+                    Assert.AreEqual("", enumerator.Current.Uri);
+                }
+            }
+            
+            // We can also access the elements in various ways, including as a key-value pair
+            Assert.True(properties.Contains("Day"));
+            Assert.AreEqual("22", properties["Day"].Value);
+            Assert.AreEqual("2003", properties[2].Value);
+            Assert.AreEqual(1, properties.IndexOfKey("Month"));
+
+            // We can also remove elements by name, index or clear the collection entirely
+            properties.RemoveAt(3);
+            properties.Remove("Year");
+
+            Assert.AreEqual(2, (properties.Count));
+
+            properties.Clear();
+            Assert.AreEqual(0, (properties.Count));
+
+            // Remove the smart tag and add a new one
+            smartTag.Remove();
+
+            SmartTag st = new SmartTag(doc);
+            st.Element = "date";
+
+            // Specify a new date and according smart tag properties
+            st.AppendChild(new Run(doc, "May 29, 2019"));
+
+            st.Properties.Add(new CustomXmlProperty("Day", "", "29"));
+            st.Properties.Add(new CustomXmlProperty("Month", "", "5"));
+            st.Properties.Add(new CustomXmlProperty("Year", "", "2019"));
+
+            doc.FirstSection.Body.FirstParagraph.AppendChild(st);
+            doc.FirstSection.Body.FirstParagraph.AppendChild(new Run(doc, " is also a date."));
+
+            doc.Save(ArtifactsDir + "SmartTagProperties.doc");
+            //ExEnd
+            doc = new Document(ArtifactsDir + "SmartTagProperties.doc");
+
+            smartTags = doc.GetChildNodes(NodeType.SmartTag, true);
+
+            Assert.AreEqual(8, smartTags.Count);
+            smartTag = (SmartTag)smartTags[7];
+            Assert.AreEqual(3, smartTag.Properties.Count);
+            Assert.AreEqual("29", smartTag.Properties["Day"].Value);
+            Assert.AreEqual("5", smartTag.Properties["Month"].Value);
+            Assert.AreEqual("2019", smartTag.Properties["Year"].Value);
         }
 
         [Test]
