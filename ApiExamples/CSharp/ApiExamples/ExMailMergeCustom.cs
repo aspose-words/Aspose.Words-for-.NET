@@ -145,6 +145,7 @@ namespace ApiExamples
         //ExFor:IMailMergeDataSourceRoot
         //ExFor:IMailMergeDataSourceRoot.GetDataSource(String)
         //ExFor:MailMerge.ExecuteWithRegions(IMailMergeDataSourceRoot)
+        //ExSummary:Performs mail merge from a custom data source with master-detail data.
         [Test] //ExSkip
         public void MailMergeCustomDataSourceRoot()
         {
