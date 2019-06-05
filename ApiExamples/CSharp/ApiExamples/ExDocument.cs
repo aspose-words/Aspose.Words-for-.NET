@@ -2394,7 +2394,6 @@ namespace ApiExamples
         public void DocPackageCustomParts()
         {
             //ExStart
-            //ExFor:Document.PackageCustomParts
             //ExFor:CustomPart
             //ExFor:CustomPart.ContentType
             //ExFor:CustomPart.RelationshipType
@@ -2402,37 +2401,85 @@ namespace ApiExamples
             //ExFor:CustomPart.Data
             //ExFor:CustomPart.Name
             //ExFor:CustomPart.Clone
+            //ExFor:CustomPartCollection
+            //ExFor:CustomPartCollection.Add(CustomPart)
+            //ExFor:CustomPartCollection.Clear
+            //ExFor:CustomPartCollection.Clone
+            //ExFor:CustomPartCollection.Count
+            //ExFor:CustomPartCollection.GetEnumerator
+            //ExFor:CustomPartCollection.Item(Int32)
+            //ExFor:CustomPartCollection.RemoveAt(Int32)
+            //ExFor:Document.PackageCustomParts
             //ExSummary:Shows how to open a document with custom parts and access them.
-            Document doc = new Document(MyDir + "Document.PackageCustomParts.docx");
-
-            Assert.AreEqual(2, doc.PackageCustomParts.Count);
-
+            // Open a document that contains custom parts
             // CustomParts are arbitrary content OOXML parts
             // Not to be confused with Custom XML data which is represented by CustomXmlParts
             // This part is internal, meaning it is contained inside the OOXML package
-            CustomPart part = doc.PackageCustomParts[0];
-            Assert.AreEqual("/payload/payload_on_package.test", part.Name);
-            Assert.AreEqual("mytest/somedata", part.ContentType);
-            Assert.AreEqual("http://mytest.payload.internal", part.RelationshipType);
-            Assert.AreEqual(false, part.IsExternal);
-            Assert.AreEqual(18, part.Data.Length);
+            Document doc = new Document(MyDir + "Document.PackageCustomParts.docx");
+            Assert.AreEqual(2, doc.PackageCustomParts.Count);
+
+            // Clone the second part
+            CustomPart clonedPart = doc.PackageCustomParts[1].Clone();
+
+            // Add the clone to the collection
+            doc.PackageCustomParts.Add(clonedPart);
+            
+            Assert.AreEqual(3, doc.PackageCustomParts.Count);
+
+            // Use an enumerator to print information about the contents of each part 
+            using (IEnumerator<CustomPart> enumerator = doc.PackageCustomParts.GetEnumerator())
+            {
+                int index = 0;
+                while (enumerator.MoveNext())
+                {
+                    Console.WriteLine($"Part index {index}:");
+                    Console.WriteLine($"\tName: {enumerator.Current.Name}");
+                    Console.WriteLine($"\tContentType: {enumerator.Current.ContentType}");
+                    Console.WriteLine($"\tRelationshipType: {enumerator.Current.RelationshipType}");
+                    if (enumerator.Current.IsExternal)
+                    {
+                        Console.WriteLine("\tSourced from outside the document");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"\tSourced from within the document, length: {enumerator.Current.Data.Length} bytes");
+                    }
+                    index++;
+                }
+            }
+
+            TestCustomPartRead(doc); //ExSkip
+
+            // Delete parts one at a time based on index
+            doc.PackageCustomParts.RemoveAt(2);
+            Assert.AreEqual(2, doc.PackageCustomParts.Count);
+
+            // Delete all parts
+            doc.PackageCustomParts.Clear();
+            Assert.AreEqual(0, doc.PackageCustomParts.Count);
+            //ExEnd
+        }
+
+        private void TestCustomPartRead(Document docWithCustomParts)
+        {
+            Assert.AreEqual("/payload/payload_on_package.test", docWithCustomParts.PackageCustomParts[0].Name); 
+            Assert.AreEqual("mytest/somedata", docWithCustomParts.PackageCustomParts[0].ContentType); 
+            Assert.AreEqual("http://mytest.payload.internal", docWithCustomParts.PackageCustomParts[0].RelationshipType); 
+            Assert.AreEqual(false, docWithCustomParts.PackageCustomParts[0].IsExternal); 
+            Assert.AreEqual(18, docWithCustomParts.PackageCustomParts[0].Data.Length); 
 
             // This part is external and its content is sourced from outside the document
-            part = doc.PackageCustomParts[1];
-            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", part.Name);
-            Assert.AreEqual("", part.ContentType);
-            Assert.AreEqual("http://mytest.payload.external", part.RelationshipType);
-            Assert.AreEqual(true, part.IsExternal);
-            Assert.AreEqual(0, part.Data.Length);
+            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", docWithCustomParts.PackageCustomParts[1].Name); 
+            Assert.AreEqual("", docWithCustomParts.PackageCustomParts[1].ContentType); 
+            Assert.AreEqual("http://mytest.payload.external", docWithCustomParts.PackageCustomParts[1].RelationshipType); 
+            Assert.AreEqual(true, docWithCustomParts.PackageCustomParts[1].IsExternal); 
+            Assert.AreEqual(0, docWithCustomParts.PackageCustomParts[1].Data.Length); 
 
-            // Lets copy external part
-            CustomPart clonedPart = doc.PackageCustomParts[1].Clone();
-            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", clonedPart.Name);
-            Assert.AreEqual("", clonedPart.ContentType);
-            Assert.AreEqual("http://mytest.payload.external", clonedPart.RelationshipType);
-            Assert.AreEqual(true, clonedPart.IsExternal);
-            Assert.AreEqual(0, clonedPart.Data.Length);
-            //ExEnd
+            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", docWithCustomParts.PackageCustomParts[2].Name); 
+            Assert.AreEqual("", docWithCustomParts.PackageCustomParts[2].ContentType); 
+            Assert.AreEqual("http://mytest.payload.external", docWithCustomParts.PackageCustomParts[2].RelationshipType); 
+            Assert.AreEqual(true, docWithCustomParts.PackageCustomParts[2].IsExternal); 
+            Assert.AreEqual(0, docWithCustomParts.PackageCustomParts[2].Data.Length); 
         }
 
         [Test]
