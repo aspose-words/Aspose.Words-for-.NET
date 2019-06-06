@@ -3046,6 +3046,7 @@ namespace ApiExamples
         public void ReadMacrosFromDocument()
         {
             //ExStart
+            //ExFor:Document.VbaProject
             //ExFor:VbaProject
             //ExFor:VbaModuleCollection
             //ExFor:VbaModule

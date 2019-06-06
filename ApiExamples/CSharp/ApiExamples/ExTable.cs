@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Aspose.Words;
@@ -1242,6 +1243,234 @@ namespace ApiExamples
                 Assert.AreEqual(4.8, table.AbsoluteVerticalDistance);
                 Assert.AreEqual(true, table.AllowOverlap);
             }
+            //ExEnd
+        }
+
+        [Test]
+        public void TableStyleCreation()
+        {
+            //ExStart
+            //ExFor:TableStyle
+            //ExFor:TableStyle.AllowBreakAcrossPages
+            //ExFor:TableStyle.Bidi
+            //ExFor:TableStyle.CellSpacing
+            //ExFor:TableStyle.BottomPadding
+            //ExFor:TableStyle.LeftPadding
+            //ExFor:TableStyle.RightPadding
+            //ExFor:TableStyle.TopPadding
+            //ExFor:TableStyle.Shading
+            //ExFor:TableStyle.Borders
+            //ExSummary:Shows how to create your own style settings for the table.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+ 
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Name");
+            builder.InsertCell();
+            builder.Write("مرحبًا");
+            builder.EndRow();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.EndTable();
+ 
+            TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
+            tableStyle.AllowBreakAcrossPages = true;
+            tableStyle.Bidi = true;
+            tableStyle.CellSpacing = 5.0;
+            tableStyle.BottomPadding = 20.0;
+            tableStyle.LeftPadding = 5;
+            tableStyle.RightPadding = 10;
+            tableStyle.TopPadding = 20.0;
+            tableStyle.Shading.BackgroundPatternColor = Color.AntiqueWhite;
+            tableStyle.Borders.Color = Color.Black;
+            tableStyle.Borders.LineStyle = LineStyle.DotDash;
+
+            table.Style = tableStyle;
+ 
+            doc.Save(ArtifactsDir + "Table.TableStyleCreation.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void SetTableAligment()
+        {
+            //ExStart
+            //ExFor:TableStyle.Alignment
+            //ExFor:TableStyle.LeftIndent
+            //ExSummary:Shows how to set table position.
+            Document doc = new Document();
+ 
+            TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
+            // By default AW uses Alignment instead of LeftIndent
+            // To set table position use
+            tableStyle.Alignment = TableAlignment.Center;
+            // or
+            tableStyle.LeftIndent = 55.0;
+            //ExEnd
+        }
+
+        [Test]
+        public void WorkWithTableConditionalStyles()
+        {
+            //ExStart
+            //ExFor:ConditionalStyle
+            //ExFor:ConditionalStyle.Shading
+            //ExFor:ConditionalStyle.Borders
+            //ExFor:ConditionalStyle.ParagraphFormat
+            //ExFor:ConditionalStyle.BottomPadding
+            //ExFor:ConditionalStyle.LeftPadding
+            //ExFor:ConditionalStyle.RightPadding
+            //ExFor:ConditionalStyle.TopPadding
+            //ExFor:ConditionalStyle.Font
+            //ExFor:ConditionalStyleCollection.FirstRow
+            //ExFor:ConditionalStyleCollection.LastRow
+            //ExFor:ConditionalStyleCollection.LastColumn
+            //ExFor:ConditionalStyleCollection.Count
+            //ExFor:ConditionalStyleCollection
+            //ExFor:ConditionalStyleCollection.BottomLeftCell
+            //ExFor:ConditionalStyleCollection.BottomRightCell
+            //ExFor:ConditionalStyleCollection.EvenColumnBanding
+            //ExFor:ConditionalStyleCollection.EvenRowBanding
+            //ExFor:ConditionalStyleCollection.FirstColumn
+            //ExFor:ConditionalStyleCollection.Item(ConditionalStyleType)
+            //ExFor:ConditionalStyleCollection.Item(TableStyleOverrideType)
+            //ExFor:ConditionalStyleCollection.Item(Int32)
+            //ExFor:ConditionalStyleCollection.OddColumnBanding
+            //ExFor:ConditionalStyleCollection.OddRowBanding
+            //ExFor:ConditionalStyleCollection.TopLeftCell
+            //ExFor:ConditionalStyleCollection.TopRightCell
+            //ExFor:ConditionalStyleType
+            //ExSummary:Shows how to work with certain area styles of a table.
+            Document doc = new Document(MyDir + "Table.ConditionalStyles.docx");
+
+            TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
+            // There is a different ways how to get conditional styles:
+            // by conditional style type
+            tableStyle.ConditionalStyles[ConditionalStyleType.FirstRow].Shading.BackgroundPatternColor = Color.AliceBlue;
+            // by index
+            tableStyle.ConditionalStyles[0].Borders.Color = Color.Black;
+            tableStyle.ConditionalStyles[0].Borders.LineStyle = LineStyle.DotDash;
+            Assert.AreEqual(ConditionalStyleType.FirstRow, tableStyle.ConditionalStyles[0].Type);
+            // directly from ConditionalStyleCollection
+            tableStyle.ConditionalStyles.FirstRow.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+            // To see this in Word document select Total Row checkbox in Design Tab
+            tableStyle.ConditionalStyles.LastRow.BottomPadding = 10;
+            tableStyle.ConditionalStyles.LastRow.LeftPadding = 10;
+            tableStyle.ConditionalStyles.LastRow.RightPadding = 10;
+            tableStyle.ConditionalStyles.LastRow.TopPadding = 10;
+            // To see this in Word document select Last Column checkbox in Design Tab
+            tableStyle.ConditionalStyles.LastColumn.Font.Bold = true;
+
+            Console.WriteLine(tableStyle.ConditionalStyles.Count);
+            Console.WriteLine(tableStyle.ConditionalStyles[0].Type);
+
+            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            table.Style = tableStyle;
+            
+            doc.Save(ArtifactsDir + "Table.WorkWithTableConditionalStyles.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ClearTableStyleFormatting()
+        {
+            //ExStart
+            //ExFor:ConditionalStyle.ClearFormatting
+            //ExFor:ConditionalStyleCollection.ClearFormatting
+            //ExSummary:Shows how to reset all table styles.
+            Document doc = new Document(MyDir + "Table.ConditionalStyles.docx");
+
+            TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
+            // You can reset styles from the specific table area
+            tableStyle.ConditionalStyles[0].ClearFormatting();
+            // Or clear all table styles
+            tableStyle.ConditionalStyles.ClearFormatting();
+            //ExEnd
+        }
+
+        [Test]
+        [Ignore("WORDSNET-18708")]
+        public void GetConditionalStylesEnumerator()
+        {
+            //ExStart
+            //ExFor:ConditionalStyle.Type
+            //ExFor:ConditionalStyleCollection.GetEnumerator
+            //ExSummary:Shows how to enumerate all table styles in a collection.
+            Document doc = new Document(MyDir + "Table.ConditionalStyles.docx");
+
+            TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
+
+            // Get the enumerator from the document's ConditionalStyleCollection and iterate over the styles
+            using (IEnumerator<ConditionalStyle> enumerator = tableStyle.ConditionalStyles.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    ConditionalStyle currentStyle = enumerator.Current;
+
+                    if (currentStyle != null)
+                    {
+                        Console.WriteLine(currentStyle.Type);
+                    }
+                }
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void WorkWithOddEvenRowColumnStyles()
+        {
+            //ExStart
+            //ExFor:TableStyle.ColumnStripe
+            //ExFor:TableStyle.RowStripe
+            //ExSummary:Shows how to work with odd/even row/column styles.
+            Document doc = new Document(MyDir + "Table.ConditionalStyles.docx");
+
+            TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
+            tableStyle.Borders.Color = Color.Black;
+            tableStyle.Borders.LineStyle = LineStyle.DotDash;
+            // Define our stripe through one column and row
+            tableStyle.ColumnStripe = 1;
+            tableStyle.RowStripe = 1;
+            // Let's start from the first row and second column
+            tableStyle.ConditionalStyles[ConditionalStyleType.OddRowBanding].Shading.BackgroundPatternColor = Color.AliceBlue;
+            tableStyle.ConditionalStyles[ConditionalStyleType.EvenColumnBanding].Shading.BackgroundPatternColor = Color.AliceBlue;
+            
+            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            table.Style = tableStyle;
+
+            doc.Save(ArtifactsDir + "Table.WorkWithOddEvenRowColumnStyles.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ConvertToHorizontallyMergedCells()
+        {
+            //ExStart
+            //ExFor:Table.ConvertToHorizontallyMergedCells
+            //ExSummary:Shows how to convert cells horizontally merged by width to cells merged by CellFormat.HorizontalMerge.
+            Document doc = new Document(MyDir + "Table.ConvertToHorizontallyMergedCells.docx");
+
+            // MS Word does not write merge flags anymore, they define merged cells by its width
+            // So AW by default define only 5 cells in a row and all of it didn't have horizontal merge flag
+            Table table = doc.FirstSection.Body.Tables[0];
+            Row row = table.Rows[0];
+            Assert.AreEqual(5, row.Cells.Count);
+
+            // To resolve this inconvenience, we have added new public method to convert cells which are horizontally merged
+            // by its width to the cell horizontally merged by flags. Thus now we have 7 cells and some of them have
+            // horizontal merge value
+            table.ConvertToHorizontallyMergedCells();
+            row = table.Rows[0];
+            Assert.AreEqual(7, row.Cells.Count);
+
+            Assert.AreEqual(CellMerge.None, row.Cells[0].CellFormat.HorizontalMerge);
+            Assert.AreEqual(CellMerge.First, row.Cells[1].CellFormat.HorizontalMerge);
+            Assert.AreEqual(CellMerge.Previous, row.Cells[2].CellFormat.HorizontalMerge);
+            Assert.AreEqual(CellMerge.None, row.Cells[3].CellFormat.HorizontalMerge);
+            Assert.AreEqual(CellMerge.First, row.Cells[4].CellFormat.HorizontalMerge);
+            Assert.AreEqual(CellMerge.Previous, row.Cells[5].CellFormat.HorizontalMerge);
+            Assert.AreEqual(CellMerge.None, row.Cells[6].CellFormat.HorizontalMerge);
             //ExEnd
         }
     }
