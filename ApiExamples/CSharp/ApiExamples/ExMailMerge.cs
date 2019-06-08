@@ -8,13 +8,13 @@
 using System;
 using System.Data;
 using System.Collections.Generic;
-using System.Data.Odbc;
 using Aspose.Words.Fields;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
 #if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
 using System.Web;
+using System.Data.Odbc;
 #endif
 
 namespace ApiExamples
@@ -118,7 +118,9 @@ namespace ApiExamples
             //ExEnd
         }
 
+#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
         [Test]
+        [Category("SkipMono")]
         public void ExecuteDataReader()
         {
             //ExStart
@@ -283,6 +285,7 @@ namespace ApiExamples
             return doc;
         }
         //ExEnd
+#endif
 
         //ExStart
         //ExFor:MailMerge.ExecuteWithRegions(DataSet)

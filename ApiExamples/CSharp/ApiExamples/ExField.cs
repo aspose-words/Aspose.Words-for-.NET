@@ -7,7 +7,6 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -17,8 +16,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Xml.Linq;
-using Aspose.Pdf.Text;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
@@ -29,6 +26,8 @@ using NUnit.Framework;
 using LoadOptions = Aspose.Words.LoadOptions;
 #if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
 using Aspose.BarCode.BarCodeRecognition;
+#else
+using SkiaSharp;
 #endif
 
 namespace ApiExamples
@@ -2281,7 +2280,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertField("MERGEFIELD Image:ImageColumn");
 
-            // When we merge images, our data table will normally have the full filenames of the images we wish to merge
+            // When we merge images, our data table will normally have the full e. of the images we wish to merge
             // If this is cumbersome, we can move image filename logic to another place and populate the data table with just shorthands for images
             System.Data.DataTable dataTable = CreateDataTable("Images", "ImageColumn",
                 new string[]
@@ -2320,7 +2319,12 @@ namespace ApiExamples
             {
                 if (imageFilenames.ContainsKey(e.FieldValue.ToString()))
                 {
+                    #if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
                     e.Image = Image.FromFile(imageFilenames[e.FieldValue.ToString()]);
+                    #else
+                    e.Image = SKBitmap.Decode(imageFilenames[e.FieldValue.ToString()]);
+                    e.ImageFileName = imageFilenames[e.FieldValue.ToString()];
+                    #endif
                 }
                 
                 Assert.NotNull(e.Image);
