@@ -127,6 +127,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:CertificateHolder
             //ExFor:SignOptions.DecryptionPassword
+            //ExFor:LoadOptions.Password
             //ExSummary:Shows how to sign encrypted document file.
             string outputFileName = ArtifactsDir + "Document.Encrypted.docx";
 
@@ -147,7 +148,10 @@ namespace ApiExamples
             //ExEnd
 
             // Open encrypted document from a file.
-            Document signedDoc = new Document(outputFileName, new LoadOptions("docPassword"));
+            LoadOptions loadOptions = new LoadOptions("docPassword");
+            Assert.AreEqual(signOptions.DecryptionPassword,loadOptions.Password);
+
+            Document signedDoc = new Document(outputFileName, loadOptions);
 
             // Check that encrypted document was successfully signed.
             DigitalSignatureCollection signatures = signedDoc.DigitalSignatures;
