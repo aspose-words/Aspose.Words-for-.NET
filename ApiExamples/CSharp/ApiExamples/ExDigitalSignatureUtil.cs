@@ -122,7 +122,7 @@ namespace ApiExamples
 
         [Test]
         [Description("WORDSNET-16868")]
-        public void SingDocumentWithPasswordDecrypring()
+        public void SignDocumentWithDecryptionPassword()
         {
             //ExStart
             //ExFor:CertificateHolder
