@@ -264,6 +264,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.#ctor(String,LoadOptions)
+            //ExFor:LoadOptions.LoadFormat
             //ExFor:LoadFormat
             //ExSummary:Explicitly loads a document as HTML without automatic file format detection.
             LoadOptions loadOptions = new LoadOptions();
