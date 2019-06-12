@@ -318,16 +318,26 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:LoadOptions.AnnotationsAtBlockLevel
+            //ExFor:LoadOptions.AnnotationsAtBlockLevelAsDefault
             //ExSummary:Shows how to place bookmark nodes on the block, cell and row levels.
-            LoadOptions loadOptions = new LoadOptions { AnnotationsAtBlockLevel = true };
+            // Any LoadOptions instances we create will have a default AnnotationsAtBlockLevel value equal to this
+            LoadOptions.AnnotationsAtBlockLevelAsDefault = false;
 
+            LoadOptions loadOptions = new LoadOptions();
+            Assert.AreEqual(loadOptions.AnnotationsAtBlockLevel, LoadOptions.AnnotationsAtBlockLevelAsDefault);
+
+            // If we want to work with annotations that transcend structures like tables, we will need to set this to true
+            loadOptions.AnnotationsAtBlockLevel = true;
+
+            // Open a document with a structured document tag and get that tag
             Document doc = new Document(MyDir + "Document.AnnotationsAtBlockLevel.docx", loadOptions);
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             StructuredDocumentTag sdt = (StructuredDocumentTag)doc.GetChildNodes(NodeType.StructuredDocumentTag, true)[1];
 
-            BookmarkStart start = builder.StartBookmark("bm");
-            BookmarkEnd end = builder.EndBookmark("bm");
+            // Insert a bookmark and make it envelop our tag
+            BookmarkStart start = builder.StartBookmark("MyBookmark");
+            BookmarkEnd end = builder.EndBookmark("MyBookmark");
 
             sdt.ParentNode.InsertBefore(start, sdt);
             sdt.ParentNode.InsertAfter(end, sdt);
