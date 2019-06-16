@@ -361,6 +361,37 @@ namespace ApiExamples
         }
 
         [Test]
+        public void LoadOptionsEncoding()
+        {
+            //ExStart
+            //ExFor:LoadOptions.Encoding
+            //ExSummary:Shows how to set the encoding with which to open a document.
+            // Get the file format info of a file in our local file system
+            FileFormatInfo fileFormatInfo = FileFormatUtil.DetectFileFormat(MyDir + "EncodedInUTF-7.txt");
+
+            // One of the aspects of a document that the FileFormatUtil can pick up is the text encoding
+            // This automatically takes place every time we open a document programmatically
+            // Occasionally, due to the text content in the document as well as the lack of an encoding declaration,
+            // the encoding of a document may be ambiguous 
+            // In this case, while we know that our document is in UTF-7, the file encoding detector doesn't
+            Assert.AreNotEqual(Encoding.UTF7, fileFormatInfo.Encoding);
+
+            // If we open the document normally, the wrong encoding will be applied,
+            // and the content of the document will not be represented correctly
+            Document doc = new Document(MyDir + "EncodedInUTF-7.txt");
+            Assert.AreEqual("Hello world+ACE-\r\n\r\n", doc.ToString(SaveFormat.Text));
+
+            // In these cases we can set the Encoding attribute in a LoadOptions object
+            // to override the automatically chosen encoding with the one we know to be correct
+            LoadOptions loadOptions = new LoadOptions { Encoding = Encoding.UTF7 };
+            doc = new Document(MyDir + "EncodedInUTF-7.txt", loadOptions);
+
+            // This will give us the correct text
+            Assert.AreEqual("Hello world!\r\n\r\n", doc.ToString(SaveFormat.Text));
+            //ExEnd
+        }
+
+        [Test]
         public void ConvertToHtml()
         {
             //ExStart
