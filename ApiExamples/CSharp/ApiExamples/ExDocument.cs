@@ -19,6 +19,7 @@ using System.Threading;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
+using Aspose.Words.Fonts;
 using Aspose.Words.Layout;
 using Aspose.Words.Lists;
 using Aspose.Words.Markup;
@@ -388,6 +389,28 @@ namespace ApiExamples
 
             // This will give us the correct text
             Assert.AreEqual("Hello world!\r\n\r\n", doc.ToString(SaveFormat.Text));
+            //ExEnd
+        }
+
+        [Test]
+        public void LoadOptionsFontSettings()
+        {
+            //ExStart
+            //ExFor:LoadOptions.FontSettings
+            //ExSummary:Shows how to set font settings and apply them during the loading of a document. 
+            // Create a FontSettings object that will substitute the "Times New Roman" font with the font "Arvo" from our "MyFonts" folder 
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.SetFontsFolder(MyDir + @"MyFonts\", false);
+            fontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Times New Roman", "Arvo");
+
+            // Set that FontSettings object as a member of a newly created LoadOptions object
+            LoadOptions loadOptions = new LoadOptions { FontSettings = fontSettings };
+
+            // We can now open a document while also passing the LoadOptions object into the constructor so the font substitution occurs upon loading
+            Document doc = new Document(MyDir + "Document.docx", loadOptions);
+
+            // The effects of our font settings can be observed after rendering
+            doc.Save(ArtifactsDir + "Document.LoadOptionsFontSettings.pdf");
             //ExEnd
         }
 
