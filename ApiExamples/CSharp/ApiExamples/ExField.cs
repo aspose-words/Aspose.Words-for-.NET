@@ -406,6 +406,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Field.Update(bool)
+            //ExFor:LoadOptions.PreserveIncludePictureField
             //ExSummary:Shows a way to update a field ignoring the MERGEFORMAT switch
             LoadOptions loadOptions = new LoadOptions { PreserveIncludePictureField = true };
 

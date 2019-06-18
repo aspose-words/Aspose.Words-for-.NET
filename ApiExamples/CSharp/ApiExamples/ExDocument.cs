@@ -22,6 +22,7 @@ using Aspose.Words.Fields;
 using Aspose.Words.Fonts;
 using Aspose.Words.Layout;
 using Aspose.Words.Lists;
+using Aspose.Words.Loading;
 using Aspose.Words.Markup;
 using Aspose.Words.Properties;
 using Aspose.Words.Rendering;
@@ -413,6 +414,76 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.LoadOptionsFontSettings.pdf");
             //ExEnd
         }
+
+        [Test]
+        public void LoadOptionsMswVersion()
+        {
+            //ExStart
+            //ExFor:LoadOptions.MswVersion
+            //ExSummary:Shows how to emulate the loading procedure of a specific Microsoft Word version during document loading.
+            // Create a new LoadOptions object, which will load documents according to MS Word 2007 specification by default
+            LoadOptions loadOptions = new LoadOptions();
+            Assert.AreEqual(MsWordVersion.Word2007, loadOptions.MswVersion);
+
+            // This document is missing the default paragraph format style,
+            // so when it is opened with either Microsoft Word or Aspose Words, that default style will be regenerated,
+            // and will show up in the Styles collection, with values according to Microsoft Word 2007 specifications
+            Document doc = new Document(MyDir + "Document.docx", loadOptions);
+            Assert.AreEqual(13.8, doc.Styles.DefaultParagraphFormat.LineSpacing, 0.005f);
+
+            // We can change the loading version like this, to Microsoft Word 2016
+            loadOptions.MswVersion = MsWordVersion.Word2016;
+
+            // The generated default style now has a different spacing, which will impact the appearance of our document
+            doc = new Document(MyDir + "Document.docx", loadOptions);
+            Assert.AreEqual(12.95, doc.Styles.DefaultParagraphFormat.LineSpacing, 0.005f);
+            //ExEnd
+        }
+
+        //ExStart
+        //ExFor:LoadOptions.ResourceLoadingCallback
+        //ExSummary:Shows how to handle external resources in Html documents during loading.
+        [Test] //ExSkip
+        public void LoadOptionsCallback()
+        {
+            LoadOptions loadOptions = new LoadOptions { ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback() };
+
+            Document doc = new Document(MyDir + "ResourcesForCallback.html", loadOptions);
+            doc.Save(ArtifactsDir + "Document.LoadOptionsCallback.pdf");
+        }
+
+        /// <summary>
+        /// Resource loading callback that, upon encountering external resources,
+        /// acknowledges CSS style sheets and replaces all images with a substitute
+        /// </summary>
+        private class HtmlLinkedResourceLoadingCallback : IResourceLoadingCallback
+        {
+            public ResourceLoadingAction ResourceLoading(ResourceLoadingArgs args)
+            {
+                switch (args.ResourceType)
+                {
+                    case ResourceType.CssStyleSheet:
+                        Console.WriteLine($"External CSS Stylesheet found upon loading: {args.OriginalUri}");
+                        return ResourceLoadingAction.Default;
+                    case ResourceType.Image:
+                        Console.WriteLine($"External Image found upon loading: {args.OriginalUri}");
+
+                        string newImageFilename =  "Images\\Aspose.Words.gif";
+                        Console.WriteLine($"\tImage will be substituted with: {newImageFilename}");
+
+                        System.Drawing.Image newImage = System.Drawing.Image.FromFile(MyDir + newImageFilename);
+
+                        System.Drawing.ImageConverter converter = new System.Drawing.ImageConverter();
+                        byte[] imageBytes = (byte[])converter.ConvertTo(newImage, typeof(byte[]));
+                        args.SetData(imageBytes);
+
+                        return ResourceLoadingAction.UserProvided;
+
+                }
+                return ResourceLoadingAction.Default;
+            }
+        }
+        //ExEnd
 
         [Test]
         public void ConvertToHtml()
