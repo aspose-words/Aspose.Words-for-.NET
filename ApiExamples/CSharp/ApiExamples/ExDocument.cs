@@ -446,15 +446,19 @@ namespace ApiExamples
         [Test] //ExSkip
         public void LoadOptionsCallback()
         {
+            // Create a new LoadOptions object and set its ResourceLoadingCallback attribute
+            // as an instance of our IResourceLoadingCallback implementation 
             LoadOptions loadOptions = new LoadOptions { ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback() };
 
+            // When we open an Html document, external resources such as references to CSS stylesheet files and external images
+            // will be handled in a custom manner by the loading callback as the document is loaded
             Document doc = new Document(MyDir + "ResourcesForCallback.html", loadOptions);
             doc.Save(ArtifactsDir + "Document.LoadOptionsCallback.pdf");
         }
 
         /// <summary>
         /// Resource loading callback that, upon encountering external resources,
-        /// acknowledges CSS style sheets and replaces all images with a substitute
+        /// acknowledges CSS style sheets and replaces all images with a substitute.
         /// </summary>
         private class HtmlLinkedResourceLoadingCallback : IResourceLoadingCallback
         {
@@ -481,6 +485,32 @@ namespace ApiExamples
 
                 }
                 return ResourceLoadingAction.Default;
+            }
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:LoadOptions.WarningCallback
+        //ExSummary:Shows how to print warnings that occur during document loading.
+        [Test] //ExSkip
+        public void LoadOptionsWarningCallback()
+        {
+            // Create a new LoadOptions object and set its WarningCallback attribute as an instance of our IWarningCallback implementation 
+            LoadOptions loadOptions = new LoadOptions { WarningCallback = new DocumentLoadingWarningCallback() };
+
+            // Minor warnings that might not prevent the effective loading of the document will now be printed
+            Document doc = new Document(MyDir + "Document.docx", loadOptions);
+        }
+
+        /// <summary>
+        /// IWarningCallback that prints warnings and their details as they arise during document loading.
+        /// </summary>
+        private class DocumentLoadingWarningCallback : IWarningCallback
+        {
+            public void Warning(WarningInfo info)
+            {
+                Console.WriteLine($"WARNING: {info.WarningType}, source: {info.Source}");
+                Console.WriteLine($"\tDescription: {info.Description}");
             }
         }
         //ExEnd
