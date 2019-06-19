@@ -373,15 +373,21 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        public void SmartTagProperty()
+        //ExStart
+        //ExFor:CustomXmlProperty
+        //ExFor:CustomXmlProperty.#ctor(String,String,String)
+        //ExFor:CustomXmlProperty.Name
+        //ExFor:CustomXmlProperty.Value
+        //ExFor:Markup.SmartTag
+        //ExFor:Markup.SmartTag.#ctor(Aspose.Words.DocumentBase)
+        //ExFor:Markup.SmartTag.Accept(Aspose.Words.DocumentVisitor)
+        //ExFor:Markup.SmartTag.Element
+        //ExFor:Markup.SmartTag.Properties
+        //ExFor:Markup.SmartTag.Uri
+        //ExSummary:Shows how to create smart tags.
+        [Test] //ExSkip
+        public void SmartTags()
         {
-            //ExStart
-            //ExFor:CustomXmlProperty
-            //ExFor:CustomXmlProperty.#ctor(String,String,String)
-            //ExFor:CustomXmlProperty.Name
-            //ExFor:CustomXmlProperty.Value
-            //ExSummary:Shows how to work with smart tag properties.
             Document doc = new Document();
             SmartTag smartTag = new SmartTag(doc);
             smartTag.Element = "date";
@@ -393,22 +399,73 @@ namespace ApiExamples
             smartTag.Properties.Add(new CustomXmlProperty("Month", "", "5"));
             smartTag.Properties.Add(new CustomXmlProperty("Year", "", "2019"));
 
+            // Set the smart tag's uri to the default
+            smartTag.Uri = "urn:schemas-microsoft-com:office:smarttags";
+
             doc.FirstSection.Body.FirstParagraph.AppendChild(smartTag);
-            doc.FirstSection.Body.FirstParagraph.AppendChild(new Run(doc, " is a date."));
+            doc.FirstSection.Body.FirstParagraph.AppendChild(new Run(doc, " is a date. "));
 
-            doc.Save(ArtifactsDir + "SmartTagProperties.doc");
+            // Create and add one more smart tag, this time for a financial symbol
+            smartTag = new SmartTag(doc);
+            smartTag.Element = "stockticker";
+            smartTag.Uri = "urn:schemas-microsoft-com:office:smarttags";
+
+            smartTag.AppendChild(new Run(doc, "MSFT"));
+
+            doc.FirstSection.Body.FirstParagraph.AppendChild(smartTag);
+            doc.FirstSection.Body.FirstParagraph.AppendChild(new Run(doc, " is a stock ticker."));
+
+            // Print all the smart tags in our document with a document visitor
+            doc.Accept(new SmartTagVisitor());
+
+            doc.Save(ArtifactsDir + "SmartTags.doc");
             //ExEnd
-            doc = new Document(ArtifactsDir + "SmartTagProperties.doc");
-
-            NodeCollection smartTags = doc.GetChildNodes(NodeType.SmartTag, true);
-
-            Assert.AreEqual(1, smartTags.Count);
-            smartTag = (SmartTag)smartTags[0];
-            Assert.AreEqual(3, smartTag.Properties.Count);
-            Assert.AreEqual("29", smartTag.Properties["Day"].Value);
-            Assert.AreEqual("5", smartTag.Properties["Month"].Value);
-            Assert.AreEqual("2019", smartTag.Properties["Year"].Value);
         }
+
+        /// <summary>
+        /// DocumentVisitor implementation that prints smart tags and their contents
+        /// </summary>
+        private class SmartTagVisitor : DocumentVisitor
+        {
+            /// <summary>
+            /// Called when a SmartTag node is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitSmartTagStart(SmartTag smartTag)
+            {
+                Console.WriteLine($"Smart tag type: {smartTag.Element}");
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when the visiting of a SmartTag node is ended.
+            /// </summary>
+            public override VisitorAction VisitSmartTagEnd(SmartTag smartTag)
+            {
+                Console.WriteLine($"\tContents: \"{smartTag.ToString(SaveFormat.Text)}\"");
+
+                if (smartTag.Properties.Count == 0)
+                {
+                    Console.WriteLine("\tContains no properties");
+
+                }
+                else
+                {
+                    Console.Write("\tProperties: ");
+                    string[] properties = new string[smartTag.Properties.Count];
+                    int index = 0;         
+                    
+                    foreach (CustomXmlProperty cxp in smartTag.Properties)
+                    {
+                        properties[index++] = $"\"{cxp.Name}\" = \"{cxp.Value}\"";
+                    }
+
+                    Console.WriteLine(String.Join(", ", properties));
+                }
+
+                return VisitorAction.Continue;
+            }
+        }
+        //ExEnd
 
         [Test]
         public void AccessToBuildingBlockPropertiesFromDocPartObjSdt()
