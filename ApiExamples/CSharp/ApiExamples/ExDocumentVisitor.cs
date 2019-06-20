@@ -892,7 +892,10 @@ namespace ApiExamples
         //ExStart
         //ExFor:DocumentVisitor.VisitOfficeMathEnd(Math.OfficeMath)
         //ExFor:DocumentVisitor.VisitOfficeMathStart(Math.OfficeMath)
-        //ExSummary:Traverse a document with a visitor that prints all offise math nodes that it encounters.
+        //ExFor:Math.MathObjectType
+        //ExFor:Math.OfficeMath.Accept(DocumentVisitor)
+        //ExFor:Math.OfficeMath.MathObjectType
+        //ExSummary:Traverse a document with a visitor that prints all OfficeMath nodes that it encounters.
         [Test] //ExSkip
         public void OfficeMathToText()
         {

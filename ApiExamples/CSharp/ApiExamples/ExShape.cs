@@ -721,12 +721,29 @@ namespace ApiExamples
         public void OfficeMathDisplayGold()
         {
             //ExStart
+            //ExFor:OfficeMath
             //ExFor:OfficeMath.DisplayType
+            //ExFor:OfficeMath.EquationXmlEncoding
             //ExFor:OfficeMath.Justification
+            //ExFor:OfficeMath.NodeType
+            //ExFor:OfficeMath.ParentParagraph
+            //ExFor:OfficeMathDisplayType
+            //ExFor:OfficeMathJustification
             //ExSummary:Shows how to set office math display formatting.
             Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
 
             OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
+
+            // OfficeMath nodes that are children of other OfficeMath nodes are always inline
+            // The node we are working with is a base node, so its location and display type can be changed
+            Assert.AreEqual(MathObjectType.OMathPara, officeMath.MathObjectType);
+            Assert.AreEqual(NodeType.OfficeMath, officeMath.NodeType);
+            Assert.AreEqual(officeMath.ParentNode, officeMath.ParentParagraph);
+
+            // Used by OOXML and WML formats
+            Assert.IsNull(officeMath.EquationXmlEncoding);
+
+            // We can change the location and display type of the OfficeMath node
             officeMath.DisplayType = OfficeMathDisplayType.Display;
             officeMath.Justification = OfficeMathJustification.Left;
 
