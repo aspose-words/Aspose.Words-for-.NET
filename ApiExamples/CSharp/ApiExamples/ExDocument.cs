@@ -19,8 +19,10 @@ using System.Threading;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
+using Aspose.Words.Fonts;
 using Aspose.Words.Layout;
 using Aspose.Words.Lists;
+using Aspose.Words.Loading;
 using Aspose.Words.Markup;
 using Aspose.Words.Properties;
 using Aspose.Words.Rendering;
@@ -264,6 +266,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.#ctor(String,LoadOptions)
+            //ExFor:LoadOptions.LoadFormat
             //ExFor:LoadFormat
             //ExSummary:Explicitly loads a document as HTML without automatic file format detection.
             LoadOptions loadOptions = new LoadOptions();
@@ -317,16 +320,26 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:LoadOptions.AnnotationsAtBlockLevel
+            //ExFor:LoadOptions.AnnotationsAtBlockLevelAsDefault
             //ExSummary:Shows how to place bookmark nodes on the block, cell and row levels.
-            LoadOptions loadOptions = new LoadOptions { AnnotationsAtBlockLevel = true };
+            // Any LoadOptions instances we create will have a default AnnotationsAtBlockLevel value equal to this
+            LoadOptions.AnnotationsAtBlockLevelAsDefault = false;
 
+            LoadOptions loadOptions = new LoadOptions();
+            Assert.AreEqual(loadOptions.AnnotationsAtBlockLevel, LoadOptions.AnnotationsAtBlockLevelAsDefault);
+
+            // If we want to work with annotations that transcend structures like tables, we will need to set this to true
+            loadOptions.AnnotationsAtBlockLevel = true;
+
+            // Open a document with a structured document tag and get that tag
             Document doc = new Document(MyDir + "Document.AnnotationsAtBlockLevel.docx", loadOptions);
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             StructuredDocumentTag sdt = (StructuredDocumentTag)doc.GetChildNodes(NodeType.StructuredDocumentTag, true)[1];
 
-            BookmarkStart start = builder.StartBookmark("bm");
-            BookmarkEnd end = builder.EndBookmark("bm");
+            // Insert a bookmark and make it envelop our tag
+            BookmarkStart start = builder.StartBookmark("MyBookmark");
+            BookmarkEnd end = builder.EndBookmark("MyBookmark");
 
             sdt.ParentNode.InsertBefore(start, sdt);
             sdt.ParentNode.InsertAfter(end, sdt);
@@ -348,6 +361,159 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.ConvertShapeToOfficeMath.docx", SaveFormat.Docx);
             //ExEnd
         }
+
+        [Test]
+        public void LoadOptionsEncoding()
+        {
+            //ExStart
+            //ExFor:LoadOptions.Encoding
+            //ExSummary:Shows how to set the encoding with which to open a document.
+            // Get the file format info of a file in our local file system
+            FileFormatInfo fileFormatInfo = FileFormatUtil.DetectFileFormat(MyDir + "EncodedInUTF-7.txt");
+
+            // One of the aspects of a document that the FileFormatUtil can pick up is the text encoding
+            // This automatically takes place every time we open a document programmatically
+            // Occasionally, due to the text content in the document as well as the lack of an encoding declaration,
+            // the encoding of a document may be ambiguous 
+            // In this case, while we know that our document is in UTF-7, the file encoding detector doesn't
+            Assert.AreNotEqual(Encoding.UTF7, fileFormatInfo.Encoding);
+
+            // If we open the document normally, the wrong encoding will be applied,
+            // and the content of the document will not be represented correctly
+            Document doc = new Document(MyDir + "EncodedInUTF-7.txt");
+            Assert.AreEqual("Hello world+ACE-\r\n\r\n", doc.ToString(SaveFormat.Text));
+
+            // In these cases we can set the Encoding attribute in a LoadOptions object
+            // to override the automatically chosen encoding with the one we know to be correct
+            LoadOptions loadOptions = new LoadOptions { Encoding = Encoding.UTF7 };
+            doc = new Document(MyDir + "EncodedInUTF-7.txt", loadOptions);
+
+            // This will give us the correct text
+            Assert.AreEqual("Hello world!\r\n\r\n", doc.ToString(SaveFormat.Text));
+            //ExEnd
+        }
+
+        [Test]
+        public void LoadOptionsFontSettings()
+        {
+            //ExStart
+            //ExFor:LoadOptions.FontSettings
+            //ExSummary:Shows how to set font settings and apply them during the loading of a document. 
+            // Create a FontSettings object that will substitute the "Times New Roman" font with the font "Arvo" from our "MyFonts" folder 
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.SetFontsFolder(MyDir + @"MyFonts\", false);
+            fontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Times New Roman", "Arvo");
+
+            // Set that FontSettings object as a member of a newly created LoadOptions object
+            LoadOptions loadOptions = new LoadOptions { FontSettings = fontSettings };
+
+            // We can now open a document while also passing the LoadOptions object into the constructor so the font substitution occurs upon loading
+            Document doc = new Document(MyDir + "Document.docx", loadOptions);
+
+            // The effects of our font settings can be observed after rendering
+            doc.Save(ArtifactsDir + "Document.LoadOptionsFontSettings.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void LoadOptionsMswVersion()
+        {
+            //ExStart
+            //ExFor:LoadOptions.MswVersion
+            //ExSummary:Shows how to emulate the loading procedure of a specific Microsoft Word version during document loading.
+            // Create a new LoadOptions object, which will load documents according to MS Word 2007 specification by default
+            LoadOptions loadOptions = new LoadOptions();
+            Assert.AreEqual(MsWordVersion.Word2007, loadOptions.MswVersion);
+
+            // This document is missing the default paragraph format style,
+            // so when it is opened with either Microsoft Word or Aspose Words, that default style will be regenerated,
+            // and will show up in the Styles collection, with values according to Microsoft Word 2007 specifications
+            Document doc = new Document(MyDir + "Document.docx", loadOptions);
+            Assert.AreEqual(13.8, doc.Styles.DefaultParagraphFormat.LineSpacing, 0.005f);
+
+            // We can change the loading version like this, to Microsoft Word 2016
+            loadOptions.MswVersion = MsWordVersion.Word2016;
+
+            // The generated default style now has a different spacing, which will impact the appearance of our document
+            doc = new Document(MyDir + "Document.docx", loadOptions);
+            Assert.AreEqual(12.95, doc.Styles.DefaultParagraphFormat.LineSpacing, 0.005f);
+            //ExEnd
+        }
+
+        //ExStart
+        //ExFor:LoadOptions.ResourceLoadingCallback
+        //ExSummary:Shows how to handle external resources in Html documents during loading.
+        [Test] //ExSkip
+        public void LoadOptionsCallback()
+        {
+            // Create a new LoadOptions object and set its ResourceLoadingCallback attribute
+            // as an instance of our IResourceLoadingCallback implementation 
+            LoadOptions loadOptions = new LoadOptions { ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback() };
+
+            // When we open an Html document, external resources such as references to CSS stylesheet files and external images
+            // will be handled in a custom manner by the loading callback as the document is loaded
+            Document doc = new Document(MyDir + "ResourcesForCallback.html", loadOptions);
+            doc.Save(ArtifactsDir + "Document.LoadOptionsCallback.pdf");
+        }
+
+        /// <summary>
+        /// Resource loading callback that, upon encountering external resources,
+        /// acknowledges CSS style sheets and replaces all images with a substitute.
+        /// </summary>
+        private class HtmlLinkedResourceLoadingCallback : IResourceLoadingCallback
+        {
+            public ResourceLoadingAction ResourceLoading(ResourceLoadingArgs args)
+            {
+                switch (args.ResourceType)
+                {
+                    case ResourceType.CssStyleSheet:
+                        Console.WriteLine($"External CSS Stylesheet found upon loading: {args.OriginalUri}");
+                        return ResourceLoadingAction.Default;
+                    case ResourceType.Image:
+                        Console.WriteLine($"External Image found upon loading: {args.OriginalUri}");
+
+                        string newImageFilename =  "Images\\Aspose.Words.gif";
+                        Console.WriteLine($"\tImage will be substituted with: {newImageFilename}");
+
+                        System.Drawing.Image newImage = System.Drawing.Image.FromFile(MyDir + newImageFilename);
+
+                        System.Drawing.ImageConverter converter = new System.Drawing.ImageConverter();
+                        byte[] imageBytes = (byte[])converter.ConvertTo(newImage, typeof(byte[]));
+                        args.SetData(imageBytes);
+
+                        return ResourceLoadingAction.UserProvided;
+
+                }
+                return ResourceLoadingAction.Default;
+            }
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:LoadOptions.WarningCallback
+        //ExSummary:Shows how to print warnings that occur during document loading.
+        [Test] //ExSkip
+        public void LoadOptionsWarningCallback()
+        {
+            // Create a new LoadOptions object and set its WarningCallback attribute as an instance of our IWarningCallback implementation 
+            LoadOptions loadOptions = new LoadOptions { WarningCallback = new DocumentLoadingWarningCallback() };
+
+            // Minor warnings that might not prevent the effective loading of the document will now be printed
+            Document doc = new Document(MyDir + "Document.docx", loadOptions);
+        }
+
+        /// <summary>
+        /// IWarningCallback that prints warnings and their details as they arise during document loading.
+        /// </summary>
+        private class DocumentLoadingWarningCallback : IWarningCallback
+        {
+            public void Warning(WarningInfo info)
+            {
+                Console.WriteLine($"WARNING: {info.WarningType}, source: {info.Source}");
+                Console.WriteLine($"\tDescription: {info.Description}");
+            }
+        }
+        //ExEnd
 
         [Test]
         public void ConvertToHtml()
@@ -2582,6 +2748,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:LanguagePreferences
             //ExFor:LanguagePreferences.AddEditingLanguage(EditingLanguage)
+            //ExFor:LoadOptions.LanguagePreferences
             //ExFor:EditingLanguage
             //ExSummary:Shows how to set up language preferences that will be used when document is loading
             LoadOptions loadOptions = new LoadOptions();
