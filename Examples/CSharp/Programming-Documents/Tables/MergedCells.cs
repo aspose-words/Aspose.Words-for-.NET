@@ -26,6 +26,8 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             MergeCellRange(dataDir);
             // Show how to prints the horizontal and vertical merge of a cell.
             PrintHorizontalAndVerticalMerged(dataDir);
+            // This method converts cells which are horizontally merged by its width to the cell horizontally merged by flags
+            ConvertToHorizontallyMergedCells(dataDir);
         }
         public static void CheckCellsMerged(string dataDir)
         {
@@ -158,6 +160,16 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             // ExEnd:PrintHorizontalAndVerticalMerged
             Console.WriteLine("\nHorizontal and vertical merged of a cell prints successfully.");
            
+        }
+        public static void ConvertToHorizontallyMergedCells(string dataDir)
+        {
+            // ExStart:ConvertToHorizontallyMergedCells         
+            Document doc = new Document();
+
+            Table table = doc.FirstSection.Body.Tables[0];
+            table.ConvertToHorizontallyMergedCells();   // Now merged cells have appropriate merge flags.
+            // ExEnd:ConvertToHorizontallyMergedCells
+            Console.WriteLine("\nNow merged cells have appropriate merge flags.\nFile saved at " + dataDir);
         }
         // ExStart:MergeCells
         internal static void MergeCells(Cell startCell, Cell endCell)

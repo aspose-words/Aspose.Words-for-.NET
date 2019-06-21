@@ -12,11 +12,11 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
         public static void Run()
         {
             /* meta-characters
-           &p - paragraph break
-           &b - section break
-           &m - page break
-           &l - manual line break
-               */
+            &p - paragraph break
+            &b - section break
+            &m - page break
+            &l - manual line break
+            */
 
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_FindAndReplace();

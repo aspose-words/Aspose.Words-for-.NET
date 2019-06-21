@@ -16,7 +16,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithTables();
             BuildTableWithStyle(dataDir);
-            ExpandFormattingOnCellsAndRowFromStyle(dataDir);                       
+            ExpandFormattingOnCellsAndRowFromStyle(dataDir);
+            CreateTableStyle(dataDir);
+            DefineConditionalFormatting(dataDir);
         }
         /// <summary>
         /// Shows how to build a new table with a table style applied.
@@ -95,6 +97,61 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             Console.WriteLine("Cell shading after style expansion: " + cellShadingAfter.ToString());
             // ExEnd:ExpandFormattingOnCellsAndRowFromStyle
             
+        }
+        private static void CreateTableStyle(string dataDir)
+        {
+            // ExStart:CreateTableStyle
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Name");
+            builder.InsertCell();
+            builder.Write("Value");
+            builder.EndRow();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.EndTable();
+
+            TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
+            tableStyle.Borders.LineStyle = LineStyle.Double;
+            tableStyle.Borders.LineWidth = 1;
+            tableStyle.LeftPadding = 18;
+            tableStyle.RightPadding = 18;
+            tableStyle.TopPadding = 12;
+            tableStyle.BottomPadding = 12;
+
+            table.Style = tableStyle;
+
+            doc.Save(dataDir + "TableStyleCreation.docx");
+            // ExEnd:CreateTableStyle
+        }
+        private static void DefineConditionalFormatting(string dataDir)
+        {
+            // ExStart:DefineConditionalFormatting
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Name");
+            builder.InsertCell();
+            builder.Write("Value");
+            builder.EndRow();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.EndTable();
+
+            TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
+            // Define background color to the first row of table.
+            tableStyle.ConditionalStyles.FirstRow.Shading.BackgroundPatternColor = Color.GreenYellow;
+            tableStyle.ConditionalStyles.FirstRow.Shading.Texture = TextureIndex.TextureNone;
+
+            table.Style = tableStyle;
+
+            doc.Save(dataDir + "TableConditionalStyle.docx");
+            // ExEnd:DefineConditionalFormatting
         }
     }
 }
