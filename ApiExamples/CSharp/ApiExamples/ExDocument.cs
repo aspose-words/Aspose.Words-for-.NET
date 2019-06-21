@@ -3185,5 +3185,70 @@ namespace ApiExamples
             Console.WriteLine($"{tabs}   Page {layoutEnumerator.PageIndex}");
         }
         //ExEnd
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void AlwaysCompressMetafiles(bool isAlwaysCompressMetafiles)
+        {
+            //ExStart
+            //ExFor:DocSaveOptions.AlwaysCompressMetafiles
+            //ExSummary:Shows how to change metafiles compression in a document while saving.
+            // The document has a mathematical formula
+            Document doc = new Document(MyDir + "Document.AlwaysCompressMetafiles.doc");
+            
+            // Large metafiles are always compressed when exporting a document in Aspose.Words, but small metafiles are not
+            // compressed for performance reason. Some other document editors, such as LibreOffice, cannot read uncompressed
+            // metafiles. The following option 'AlwaysCompressMetafiles' was introduced to choose appropriate behavior
+            DocSaveOptions saveOptions = new DocSaveOptions();
+            // False - small metafiles are not compressed for performance reason
+            // True - all metafiles are compressed regardless of its size
+            saveOptions.AlwaysCompressMetafiles = isAlwaysCompressMetafiles;
+            
+            doc.Save(ArtifactsDir + "Document.AlwaysCompressMetafiles.doc", saveOptions);
+            //ExEnd
+        }
+
+        [Test]
+        public void ReadMacrosFromDocument()
+        {
+            //ExStart
+            //ExFor:Document.VbaProject
+            //ExFor:VbaProject
+            //ExFor:VbaModuleCollection
+            //ExFor:VbaModule
+            //ExFor:VbaProject.Name
+            //ExFor:VbaProject.Modules
+            //ExFor:VbaModule.Name
+            //ExFor:VbaModule.SourceCode
+            //ExSummary:Shows how to get access to VBA project information in the document.
+            Document doc = new Document(MyDir + "Document.TestButton.docm");
+
+            // A VBA project inside the document is defined as a collection of VBA modules
+            VbaProject vbaProject = doc.VbaProject;
+            Console.WriteLine($"Project name: {vbaProject.Name}; Modules count: {vbaProject.Modules.Count()}\n");
+            
+            Assert.AreEqual(vbaProject.Name, "AsposeVBAtest"); //ExSkip
+            Assert.AreEqual(vbaProject.Modules.Count(), 3); //ExSkip
+
+            VbaModuleCollection vbaModules = doc.VbaProject.Modules;
+            foreach (VbaModule module in vbaModules)
+            {
+                Console.WriteLine($"Module name: {module.Name};\nModule code:\n{module.SourceCode}\n");
+            }
+            //ExEnd
+
+            VbaModule defaultModule = vbaModules[0];
+            Assert.AreEqual(defaultModule.Name, "ThisDocument");
+            Assert.IsTrue(defaultModule.SourceCode.Contains("MsgBox \"First test\""));
+
+            VbaModule createdModule = vbaModules[1];
+            Assert.AreEqual(createdModule.Name, "Module1");
+            Assert.IsTrue(createdModule.SourceCode.Contains("MsgBox \"Second test\""));
+
+            VbaModule classModule = vbaModules[2];
+            Assert.AreEqual(classModule.Name, "Class1");
+            Assert.IsTrue(classModule.SourceCode.Contains("MsgBox \"Class test\""));
+        }
     }
 }
