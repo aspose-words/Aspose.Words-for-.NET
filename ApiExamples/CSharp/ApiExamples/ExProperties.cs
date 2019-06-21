@@ -218,7 +218,7 @@ namespace ApiExamples
             {
                 doc.Save(stream, SaveFormat.Docx);
                 properties.Bytes = (int)stream.Length;
-                Assert.AreEqual(10870, properties.Bytes);
+                Assert.AreEqual(10871, properties.Bytes);
             }
             
             // Template: The Template attribute can reflect the filename of the attached template document

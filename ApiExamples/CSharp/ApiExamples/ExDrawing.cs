@@ -487,7 +487,7 @@ namespace ApiExamples
             Assert.AreEqual(200, imageSize.HeightPixels);
             Assert.AreEqual(200, imageSize.WidthPixels);
 
-            const double delta = 0.05;
+			const double delta = 0.05;
             Assert.AreEqual(95.98d, imageSize.HorizontalResolution, delta);
             Assert.AreEqual(95.98d, imageSize.VerticalResolution, delta);
 
