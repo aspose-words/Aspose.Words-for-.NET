@@ -139,7 +139,7 @@ namespace ApiExamples
 
             // Each SdtListItem has text that will be displayed when the drop down list is opened, and also a value
             // When we initialize with one string, we are providing just the value
-            // If we do that, that value is passed to DisplayText and will consequently be displayed on the screen 
+            // Accordingly, value is passed as DisplayText and will consequently be displayed on the screen
             Assert.AreEqual(listItems[0].DisplayText, listItems[0].Value);
 
             // Add 3 more SdtListItems with non-empty strings passed to DisplayText
@@ -159,7 +159,8 @@ namespace ApiExamples
             {
                 while (enumerator.MoveNext())
                 {
-                    Console.WriteLine($"List item: {enumerator.Current.DisplayText}, value: {enumerator.Current.Value}");
+                    if (enumerator.Current != null)
+                        Console.WriteLine($"List item: {enumerator.Current.DisplayText}, value: {enumerator.Current.Value}");
                 }
             }
 
