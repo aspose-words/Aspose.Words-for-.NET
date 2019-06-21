@@ -111,6 +111,74 @@ namespace ApiExamples
         }
 
         [Test]
+        public void ListItemCollection()
+        {
+            //ExStart
+            //ExFor:SdtListItem
+            //ExFor:SdtListItem.#ctor(System.String)
+            //ExFor:SdtListItem.#ctor(System.String,System.String)
+            //ExFor:SdtListItem.DisplayText
+            //ExFor:SdtListItem.Value
+            //ExFor:SdtListItemCollection
+            //ExFor:SdtListItemCollection.Add(Aspose.Words.Markup.SdtListItem)
+            //ExFor:SdtListItemCollection.Clear
+            //ExFor:SdtListItemCollection.Count
+            //ExFor:SdtListItemCollection.GetEnumerator
+            //ExFor:SdtListItemCollection.Item(System.Int32)
+            //ExFor:SdtListItemCollection.RemoveAt(System.Int32)
+            //ExFor:SdtListItemCollection.SelectedValue
+            //ExSummary:Shows how to work with StructuredDocumentTag nodes of the DropDownList type.
+            // Create a blank document and insert a StructuredDocumentTag that will contain a drop down list
+            Document doc = new Document();
+            StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.DropDownList, MarkupLevel.Block);
+            doc.FirstSection.Body.AppendChild(tag);
+
+            // A drop down list needs elements, each of which will be a SdtListItem
+            SdtListItemCollection listItems = tag.ListItems;
+            listItems.Add(new SdtListItem("Value 1"));
+
+            // Each SdtListItem has text that will be displayed when the drop down list is opened, and also a value
+            // When we initialize with one string, we are providing just the value
+            // If we do that, that value is passed to DisplayText and will consequently be displayed on the screen 
+            Assert.AreEqual(listItems[0].DisplayText, listItems[0].Value);
+
+            // Add 3 more SdtListItems with non-empty strings passed to DisplayText
+            listItems.Add(new SdtListItem("Item 2", "Value 2"));
+            listItems.Add(new SdtListItem("Item 3", "Value 3"));
+            listItems.Add(new SdtListItem("Item 4", "Value 4"));
+
+            // We can obtain a count of the SdtListItems and also set the drop down list's SelectedValue attribute to
+            // automatically have one of them pre-selected when we open the document in Microsoft Word
+            Assert.AreEqual(4, listItems.Count);
+            listItems.SelectedValue = listItems[3];
+
+            Assert.AreEqual("Value 4", listItems.SelectedValue.Value);
+
+            // We can enumerate over the collection and print each element
+            using (IEnumerator<SdtListItem> enumerator = listItems.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    Console.WriteLine($"List item: {enumerator.Current.DisplayText}, value: {enumerator.Current.Value}");
+                }
+            }
+
+            // We can also remove elements one at a time
+            listItems.RemoveAt(3);
+            Assert.AreEqual(3, listItems.Count);
+
+            // Make sure to update the SelectedValue's index if it ever ends up out of bounds before saving the document
+            listItems.SelectedValue = listItems[1];
+           
+            doc.Save(ArtifactsDir + "SDT.ListItemCollection.docx");
+
+            // We can clear the whole collection at once too
+            listItems.Clear();
+            Assert.AreEqual(0, listItems.Count);
+            //ExEnd
+        }
+
+        [Test]
         [Category("SkipTearDown")]
         public void CreatingCustomXml()
         {
