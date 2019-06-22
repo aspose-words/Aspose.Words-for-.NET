@@ -50,6 +50,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:StructuredDocumentTag
+            //ExFor:StructuredDocumentTag.NodeType
             //ExFor:StructuredDocumentTag.Style
             //ExFor:StructuredDocumentTag.StyleName
             //ExFor:MarkupLevel
@@ -72,6 +73,9 @@ namespace ApiExamples
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
+
+            // We can get a collection of StructuredDocumentTags by looking for the document's child nodes of this NodeType
+            Assert.AreEqual(NodeType.StructuredDocumentTag, sdtPlainText.NodeType);
 
             NodeCollection tags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
 
