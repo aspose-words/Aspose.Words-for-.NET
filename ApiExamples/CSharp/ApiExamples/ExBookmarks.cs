@@ -9,11 +9,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Aspose.Words;
-using Aspose.Words.Saving;
 using Bookmark = Aspose.Words.Bookmark;
-#if !(__MOBILE__ || MAC)
-using Aspose.Pdf.Facades;
-#endif
 
 namespace ApiExamples
 {

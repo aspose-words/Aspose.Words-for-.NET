@@ -282,7 +282,7 @@ namespace ApiExamples
 
             builder.MoveTo(textbox.FirstParagraph);
             builder.Write("This text is flipped 90 degrees to the left.");
-
+            
             doc.Save(ArtifactsDir + "Drawing.TextBox.docx");
             //ExEnd
         }

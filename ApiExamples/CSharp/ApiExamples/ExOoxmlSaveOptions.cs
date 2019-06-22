@@ -123,5 +123,21 @@ namespace ApiExamples
             DateTime documentTimeAfterSave = doc.BuiltInDocumentProperties.LastSavedTime;
             Assert.AreNotEqual(documentTimeBeforeSave, documentTimeAfterSave);
         }
+
+        [Test]
+        public void KeepLegacyControlChars()
+        {
+            //ExStart
+            //ExFor:OoxmlSaveOptions.KeepLegacyControlChars
+            //ExSummary:Shows how to support legacy control characters when converting to .docx
+            Document doc = new Document(MyDir + "OoxmlSaveOptions.KeepLegacyControlChars.doc");
+ 
+            // Note that only one legacy character (ShortDateTime) is supported which declared in the "DOC" format
+            OoxmlSaveOptions so = new OoxmlSaveOptions();
+            so.KeepLegacyControlChars = true;
+ 
+            doc.Save(ArtifactsDir + "OoxmlSaveOptions.KeepLegacyControlChars.docx", so);
+            //ExEnd
+        }
     }
 }

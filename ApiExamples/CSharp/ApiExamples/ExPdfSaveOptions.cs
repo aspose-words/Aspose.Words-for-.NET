@@ -6,8 +6,6 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Drawing;
-using System.Threading.Tasks;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
@@ -438,6 +436,23 @@ namespace ApiExamples
             saveOptions.MetafileRenderingOptions.ScaleWmfFontsToMetafileSize = true;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.FontsScaledToMetafileSize.pdf", saveOptions);
+            //ExEnd
+        }
+
+        [Test]
+        public void AdditionalTextPositioning()
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.AdditionalTextPositioning
+            //ExSummary:Show how to write additional text positioning operators.
+            Document doc = new Document(MyDir + "PdfSaveOptions.AdditionalTextPositioning.docx");
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            // This may help to overcome issues with inaccurate text positioning with some printers
+            saveOptions.AdditionalTextPositioning = true;
+            saveOptions.TextCompression = PdfTextCompression.None;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf", saveOptions);
             //ExEnd
         }
     }

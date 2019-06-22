@@ -440,6 +440,7 @@ namespace ApiExamples
             //ExEnd
         }
 
+#if !(NETSTANDARD2_0 || __MOBILE__)
         //ExStart
         //ExFor:LoadOptions.ResourceLoadingCallback
         //ExSummary:Shows how to handle external resources in Html documents during loading.
@@ -488,6 +489,7 @@ namespace ApiExamples
             }
         }
         //ExEnd
+#endif
 
         //ExStart
         //ExFor:LoadOptions.WarningCallback

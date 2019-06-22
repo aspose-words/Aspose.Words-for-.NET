@@ -321,5 +321,24 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Paragraph.DropCap.docx");
             //ExEnd
         }
+
+        [Test]
+        public void BreakIsStyleSeparator()
+        {
+            //ExStart
+            //ExFor:Paragraph.BreakIsStyleSeparator
+            //ExSummary:Shows how to check if paragraph break is a Style Separator
+            Document doc = new Document(MyDir + "Paragraph.BreakIsStyleSeparator.docx");
+            
+            Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
+            if (paragraph.BreakIsStyleSeparator)
+            {
+                // Do something ...
+                Assert.Pass(); //ExSkip
+            }
+
+            Assert.Fail(); //ExSkip
+            //ExEnd
+        }
     }
 }

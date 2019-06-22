@@ -1365,6 +1365,28 @@ namespace ApiExamples
         }
 
         [Test]
+        public void LoadNotoFontsFallbackSettings()
+        {
+            //ExStart
+            //ExFor:FontFallbackSettings.LoadNotoFallbackSettings
+            //ExSummary:Shows how to add predefined font fallback settings for Google Noto fonts.
+            FontSettings fontSettings = new FontSettings();
+            // These are free fonts licensed under SIL OFL
+            // They can be downloaded from https://www.google.com/get/noto/#sans-lgc
+            fontSettings.SetFontsFolder(FontsDir + "Noto", false);
+            // Note that only Sans style Noto fonts with regular weight are used in the predefined settings
+            // Some of the Noto fonts uses advanced typography features
+            // Advanced typography is currently not supported by AW and these fonts may be rendered inaccurately
+            fontSettings.FallbackSettings.LoadNotoFallbackSettings();
+            fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = false;
+            fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Noto Sans";
+
+            Document doc = new Document();
+            doc.FontSettings = fontSettings;
+            //ExEnd
+        }
+
+        [Test]
         public void DefaultFontSubstitutionRule()
         {
             //ExStart
@@ -1625,6 +1647,89 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Font.TableSubstitutionRule.Custom.pdf");
             //ExEnd
         }
+
+        [Test]
+        public void ResolveFontsBeforeLoadingDocument()
+        {
+            //ExStart
+            //ExFor:LoadOptions.FontSettings
+            //ExSummary:Shows how to resolve fonts before loading HTML and SVG documents.
+            FontSettings fontSettings = new FontSettings();
+            TableSubstitutionRule substitutionRule = fontSettings.SubstitutionSettings.TableSubstitution;
+            // If "HaettenSchweiler" is not installed on the local machine,
+            // it is still considered available, because it is substituted with "Comic Sans MS"
+            substitutionRule.AddSubstitutes("HaettenSchweiler", new string[] { "Comic Sans MS" });
+            
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.FontSettings = fontSettings;
+            // The same for SVG document
+            Document doc = new Document(MyDir + "Document.LoadFormat.html", loadOptions);
+            //ExEnd
+        }
+        
+		[Test]
+        public void GetFontLeading()
+        {
+            //ExStart
+            //ExFor:Font.LineSpacing
+            //ExSummary:Shows how to get line spacing of current font (in points)
+            DocumentBuilder builder = new DocumentBuilder(new Document());
+            builder.Font.Name = "Calibri";
+            builder.Writeln("qText");
+
+            // Obtain line spacing.
+            Aspose.Words.Font font = builder.Document.FirstSection.Body.FirstParagraph.Runs[0].Font;
+            Console.WriteLine($"lineSpacing = { font.LineSpacing }");
+            //ExEnd
+        }
+
+        [Test]
+        public void HasDmlEffect()
+        {
+            //ExStart
+            //ExFor:Font.HasDmlEffect(TextDmlEffect)
+            //ExSummary:Shows how to checks if particular Dml text effect is applied.
+            Document doc = new Document(MyDir + "Font.HasDmlEffect.docx");
+            
+            RunCollection runs = doc.FirstSection.Body.FirstParagraph.Runs;
+            
+            Assert.True(runs[0].Font.HasDmlEffect(TextDmlEffect.Shadow));
+            Assert.True(runs[1].Font.HasDmlEffect(TextDmlEffect.Shadow));
+            Assert.True(runs[2].Font.HasDmlEffect(TextDmlEffect.Reflection));
+            Assert.True(runs[3].Font.HasDmlEffect(TextDmlEffect.Effect3D));
+            Assert.True(runs[4].Font.HasDmlEffect(TextDmlEffect.Fill));
+            //ExEnd
+        }
+
+        //ExStart
+        //ExFor:StreamFontSource
+        //ExFor:StreamFontSource.OpenFontDataStream
+        //ExSummary:Shows how to allows to load fonts from stream.
+        [Test] //ExSkip
+        public void StreamFontSourceFileRendering()
+        {
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.SetFontsSources(new FontSourceBase[] { new StreamFontSourceFile() });
+
+            DocumentBuilder builder = new DocumentBuilder();
+            builder.Document.FontSettings = fontSettings;
+            builder.Font.Name = "Kreon-Regular";
+            builder.Writeln("Test aspose text when saving to PDF.");
+
+            builder.Document.Save(ArtifactsDir + "Font.StreamFontSourceFileRendering.pdf");
+        }
+        
+        /// <summary>
+        /// Load the font data only when it is required and not to store it in the memory for the "FontSettings" lifetime.
+        /// </summary>
+        private class StreamFontSourceFile : StreamFontSource
+        {
+            public override Stream OpenFontDataStream()
+            {
+                return File.OpenRead(FontsDir + "Kreon-Regular.ttf");
+            }
+        }
+        //ExEnd
     }
 }
 #endif
