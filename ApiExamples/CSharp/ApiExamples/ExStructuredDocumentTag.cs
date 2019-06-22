@@ -127,6 +127,7 @@ namespace ApiExamples
             //ExFor:SdtListItemCollection.Item(System.Int32)
             //ExFor:SdtListItemCollection.RemoveAt(System.Int32)
             //ExFor:SdtListItemCollection.SelectedValue
+            //ExFor:StructuredDocumentTag.ListItems
             //ExSummary:Shows how to work with StructuredDocumentTag nodes of the DropDownList type.
             // Create a blank document and insert a StructuredDocumentTag that will contain a drop down list
             Document doc = new Document();
@@ -200,6 +201,7 @@ namespace ApiExamples
             //ExFor:CustomXmlPartCollection.Item(Int32)
             //ExFor:CustomXmlPartCollection.RemoveAt(Int32)
             //ExFor:Document.CustomXmlParts
+            //ExFor:StructuredDocumentTag.XmlMapping
             //ExFor:XmlMapping.SetMapping(CustomXmlPart, String, String)
             //ExSummary:Shows how to create structured document tag with a custom XML data.
             Document doc = new Document();
