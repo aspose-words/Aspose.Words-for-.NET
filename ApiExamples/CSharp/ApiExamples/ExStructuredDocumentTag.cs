@@ -494,7 +494,7 @@ namespace ApiExamples
             // Print all the smart tags in our document with a document visitor
             doc.Accept(new SmartTagVisitor());
 
-            doc.Save(ArtifactsDir + "SmartTags.doc");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.SmartTags.docx");
             //ExEnd
         }
 
