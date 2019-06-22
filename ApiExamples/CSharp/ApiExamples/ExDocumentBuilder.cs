@@ -2685,5 +2685,67 @@ namespace ApiExamples
 
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.InsertTextWithoutStyleSeparator.docx");
         }
+
+        [Test]
+        public void ResolveStyleBehaviorWhileInsertDocument()
+        {
+            //ExStart
+            //ExFor:ImportFormatOptions
+            //ExFor:ImportFormatOptions.SmartStyleBehavior
+            //ExFor:DocumentBuilder.InsertDocument(Document, ImportFormatMode, ImportFormatOptions)
+            //ExSummary:Shows how to resolve styles behavior while inserting documents.
+            Document destDoc = new Document(MyDir + "DocumentBuilder.SmartStyleBehavior.DestinationDocument.docx");
+            Document sourceDoc1 = new Document(MyDir + "DocumentBuilder.SmartStyleBehavior.SourceDocument01.docx");
+            Document sourceDoc2 = new Document(MyDir + "DocumentBuilder.SmartStyleBehavior.SourceDocument02.docx");
+
+            DocumentBuilder builder = new DocumentBuilder(destDoc);
+
+            builder.MoveToDocumentEnd();
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.MoveToDocumentEnd();
+
+            ImportFormatOptions importFormatOptions = new ImportFormatOptions();
+            importFormatOptions.SmartStyleBehavior = true;
+            
+            // When SmartStyleBehavior is enabled,
+            // a source style will be expanded into a direct attributes inside a destination document,
+            // if KeepSourceFormatting importing mode is used.
+            builder.InsertDocument(sourceDoc1, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
+            
+            builder.MoveToDocumentEnd();
+            builder.InsertBreak(BreakType.PageBreak);
+            
+            // When SmartStyleBehavior is disabled,
+            // a source style will be expanded only if it is numbered.
+            // Existing destination attributes will not be overridden, including lists.
+            builder.InsertDocument(sourceDoc2, ImportFormatMode.UseDestinationStyles);
+
+            destDoc.Save(ArtifactsDir + @"DocumentBuilder.SmartStyleBehavior.ResultDocument.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ResolveStyleBehaviorWhileAppendDocument()
+        {
+            //ExStart
+            //ExFor:Document.AppendDocument(Document, ImportFormatMode, ImportFormatOptions)
+            //ExSummary:Shows how to resolve styles behavior while append document.
+            Document srcDoc = new Document(MyDir + "DocumentBuilder.ResolveStyleBehaviorWhileAppendDocument.Source.docx");
+            Document dstDoc = new Document(MyDir + "DocumentBuilder.ResolveStyleBehaviorWhileAppendDocument.Destination.docx");
+
+            ImportFormatOptions options = new ImportFormatOptions();
+            // Specify that if numbering clashes in source and destination documents
+            // then a numbering from the source document will be used.
+            options.KeepSourceNumbering = true;
+            dstDoc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles, options);
+            dstDoc.UpdateListLabels();
+            //ExEnd
+
+            Paragraph para = dstDoc.Sections[1].Body.LastParagraph;
+            string paraText = para.GetText();
+
+            Assert.AreEqual("1.", para.ListLabel.LabelString);
+            Assert.IsTrue(paraText.StartsWith("13->13"), paraText);
+        }
     }
 }

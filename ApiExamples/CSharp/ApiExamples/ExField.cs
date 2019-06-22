@@ -5413,5 +5413,30 @@ namespace ApiExamples
             Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
             //ExEnd
         }
+
+        [Test]
+        public void FieldDisplayResult()
+        {
+            //ExStart
+            //ExFor:Field.DisplayResult
+            //ExSummary:Shows how to get the text that represents the displayed field result.
+            Document document = new Document(MyDir + "Field.FieldDisplayResult.docx");
+ 
+            FieldCollection fields = document.Range.Fields;
+ 
+            Assert.AreEqual("111", fields[0].DisplayResult);
+            Assert.AreEqual("222", fields[1].DisplayResult);
+            Assert.AreEqual("Multi\rLine\rText", fields[2].DisplayResult);
+            Assert.AreEqual("%", fields[3].DisplayResult);
+            Assert.AreEqual("Macro Button Text", fields[4].DisplayResult);
+            Assert.AreEqual(string.Empty, fields[5].DisplayResult);
+ 
+            // Method must be called to obtain correct value for the "FieldListNum", "FieldAutoNum",
+            // "FieldAutoNumOut" and "FieldAutoNumLgl" fields
+            document.UpdateListLabels();
+ 
+            Assert.AreEqual("1)", fields[5].DisplayResult);
+            //ExEnd
+        }
     }
 }
