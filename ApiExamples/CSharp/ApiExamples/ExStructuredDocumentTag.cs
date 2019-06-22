@@ -49,6 +49,7 @@ namespace ApiExamples
         public void SetSpecificStyleToSdt()
         {
             //ExStart
+            //ExFor:StructuredDocumentTag
             //ExFor:StructuredDocumentTag.Style
             //ExFor:StructuredDocumentTag.StyleName
             //ExFor:MarkupLevel
