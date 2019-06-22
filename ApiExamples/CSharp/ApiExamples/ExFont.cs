@@ -8,7 +8,6 @@
 #if !__MOBILE__
 using System;
 using System.Collections;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -19,7 +18,6 @@ using Aspose.Words.Fields;
 using Aspose.Words.Fonts;
 using Aspose.Words.Tables;
 using NUnit.Framework;
-using Font = Aspose.Words.Font;
 
 namespace ApiExamples
 {

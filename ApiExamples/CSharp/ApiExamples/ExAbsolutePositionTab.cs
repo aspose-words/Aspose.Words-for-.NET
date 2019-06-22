@@ -89,7 +89,6 @@ namespace ApiExamples
 
             private readonly StringBuilder mBuilder;
         }
-
         //ExEnd
     }
 }
