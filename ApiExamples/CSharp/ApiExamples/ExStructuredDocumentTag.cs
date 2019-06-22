@@ -569,8 +569,12 @@ namespace ApiExamples
         }
 
         [Test]
-        public void AccessToBuildingBlockPropertiesFromBuildingBlockGallerySdtType()
+        public void BuildingBlockCategories()
         {
+            //ExStart
+            //ExFor:StructuredDocumentTag.BuildingBlockCategory
+            //ExFor:StructuredDocumentTag.BuildingBlockGallery
+            //ExSummary:Shows how to insert a StructuredDocumentTag as a building block and set its category and gallery.
             Document doc = new Document();
 
             StructuredDocumentTag buildingBlockSdt =
@@ -582,9 +586,8 @@ namespace ApiExamples
 
             doc.FirstSection.Body.AppendChild(buildingBlockSdt);
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.BuildingBlockCategories.docx");
+            //ExEnd
             buildingBlockSdt =
                 (StructuredDocumentTag) doc.FirstSection.Body.GetChild(NodeType.StructuredDocumentTag, 0, true);
 
