@@ -63,5 +63,24 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ExportHeadersFooters.txt", saveOptions);
             //ExEnd
         }
+
+        [Test]
+        public void TxtListIndentation()
+        {
+            //ExStart
+            //ExFor:TxtListIndentation
+            //ExFor:TxtListIndentation.Count
+            //ExFor:TxtListIndentation.Character
+            //ExSummary:Shows how list levels are displayed when the document is converting to plain text format
+            Document doc = new Document(MyDir + "TxtSaveOptions.TxtListIndentation.docx");
+ 
+            TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
+            txtSaveOptions.ListIndentation.Count = 3;
+            txtSaveOptions.ListIndentation.Character = ' ';
+            txtSaveOptions.PreserveTableLayout = true;
+ 
+            doc.Save(ArtifactsDir + "TxtSaveOptions.TxtListIndentation.txt", txtSaveOptions);
+            //ExEnd
+        }
     }
 }

@@ -1365,6 +1365,28 @@ namespace ApiExamples
         }
 
         [Test]
+        public void LoadNotoFontsFallbackSettings()
+        {
+            //ExStart
+            //ExFor:FontFallbackSettings.LoadNotoFallbackSettings
+            //ExSummary:Shows how to add predefined font fallback settings for Google Noto fonts.
+            FontSettings fontSettings = new FontSettings();
+            // These are free fonts licensed under SIL OFL
+            // They can be downloaded from https://www.google.com/get/noto/#sans-lgc
+            fontSettings.SetFontsFolder(FontsDir + "Noto", false);
+            // Note that only Sans style Noto fonts with regular weight are used in the predefined settings
+            // Some of the Noto fonts uses advanced typography features
+            // Advanced typography is currently not supported by AW and these fonts may be rendered inaccurately
+            fontSettings.FallbackSettings.LoadNotoFallbackSettings();
+            fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = false;
+            fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Noto Sans";
+
+            Document doc = new Document();
+            doc.FontSettings = fontSettings;
+            //ExEnd
+        }
+
+        [Test]
         public void DefaultFontSubstitutionRule()
         {
             //ExStart

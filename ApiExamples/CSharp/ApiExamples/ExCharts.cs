@@ -1030,6 +1030,7 @@ namespace ApiExamples
             //ExFor:Charts.ChartAxis.MinorUnitIsAuto
             //ExFor:Charts.ChartAxis.MinorUnitScale
             //ExFor:Charts.ChartAxis.TickLabelSpacing
+            //ExFor:Charts.ChartAxis.TickLabelAlignment
             //ExFor:Charts.AxisDisplayUnit
             //ExFor:Charts.AxisDisplayUnit.CustomUnit
             //ExFor:Charts.AxisDisplayUnit.Unit
@@ -1063,6 +1064,9 @@ namespace ApiExamples
 
             // We can also use this attribute to set minor tick spacing
             axis.TickLabelSpacing = 2;
+            // We can define text alignment when axis tick labels are multi-line
+            // MS Word aligns them to the center by default
+            axis.TickLabelAlignment = ParagraphAlignment.Right;
 
             // Get the axis to display values, but in millions
             axis.DisplayUnit.Unit = AxisBuiltInUnit.Millions;
