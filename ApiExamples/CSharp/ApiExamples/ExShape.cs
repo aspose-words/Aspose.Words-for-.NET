@@ -19,6 +19,8 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
+using Color = System.Drawing.Color;
+using DashStyle = Aspose.Words.Drawing.DashStyle;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 
 #if NETSTANDARD2_0 || __MOBILE__
@@ -1363,6 +1365,42 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Drawing.TextBox.docx");
             //ExEnd
+        }
+
+        [Test]
+        public void CreateNewTextBoxAndChangeTextAnchor()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set compatibility options to correctly using of VerticalAnchor property
+            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2016);
+
+            Shape textBoxShape = builder.InsertShape(ShapeType.TextBox, 100, 100);
+            // Not all formats are compatible with this one
+            // For most of incompatible formats AW generated a warnings on save, so use doc.WarningCallback to check it.
+            textBoxShape.TextBox.VerticalAnchor = TextBoxAnchor.Bottom;
+            
+            builder.MoveTo(textBoxShape.LastParagraph);
+            builder.Write("Text placed bottom");
+
+            doc.Save(ArtifactsDir + "Shape.CreateNewTextBoxAndChangeAnchor.docx");
+        }
+
+        [Test]
+        public void GetTextBoxAndChangeTextAnchor()
+        {
+            //ExStart
+            //ExFor:TextBoxAnchor
+            //ExFor:TextBox.VerticalAnchor
+            //ExSummary:Shows how to change text position inside textbox shape.
+            Document doc = new Document(MyDir + "Shape.GetTextBoxAndChangeAnchor.docx");
+            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
+
+            Shape textbox = (Shape) shapes[0];
+            textbox.TextBox.VerticalAnchor = TextBoxAnchor.Bottom;
+            
+            doc.Save(ArtifactsDir + "Shape.GetTextBoxAndChangeAnchor.docx");
         }
 
         //ExStart
