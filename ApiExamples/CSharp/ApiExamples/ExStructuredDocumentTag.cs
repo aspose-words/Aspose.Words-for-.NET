@@ -214,6 +214,40 @@ namespace ApiExamples
         }
 
         [Test]
+        public void IsTemporary()
+        {
+            //ExStart
+            //ExFor:StructuredDocumentTag.IsTemporary
+            //ExSummary:Demonstrates the effects of making a StructuredDocumentTag temporary.
+            // Create a new Document
+            Document doc = new Document();
+
+            // Insert a plain text StructuredDocumentTag, which will prompt the user to enter text
+            // and allow them to edit it like a text box
+            StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
+
+            // If we set its Temporary attribute to true, as soon as we start typing,
+            // the tag will disappear and its contents will be assimilated into the parent Paragraph
+            tag.IsTemporary = true;
+
+            // Insert the StructuredDocumentTag with a DocumentBuilder
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("Temporary text box: ");
+            builder.InsertNode(tag);
+
+            // A StructuredDocumentTag in the form of a check box will let the user a square to check and uncheck
+            // Setting it to temporary will freeze its value after the first time it is clicked
+            tag = new StructuredDocumentTag(doc, SdtType.Checkbox, MarkupLevel.Inline);
+            tag.IsTemporary = true;
+
+            builder.Write("\nTemporary checkbox: ");
+            builder.InsertNode(tag);
+
+            doc.Save(ArtifactsDir + "SDT.IsTemporary.docx");
+            //ExEnd
+        }
+
+        [Test]
         public void ListItemCollection()
         {
             //ExStart
