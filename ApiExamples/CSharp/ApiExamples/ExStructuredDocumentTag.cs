@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Aspose.Words;
 using Aspose.Words.Markup;
 using NUnit.Framework;
@@ -113,6 +114,52 @@ namespace ApiExamples
             StructuredDocumentTag sdt = (StructuredDocumentTag) sdts[0];
             Assert.AreEqual(true, sdt.Checked);
             Assert.That(sdt.XmlMapping.StoreItemId, Is.Empty); //Assert that this sdt has no StoreItemId
+        }
+
+        [Test]
+        public void Date()
+        {
+            //ExStart
+            //ExFor:StructuredDocumentTag.CalendarType
+            //ExFor:StructuredDocumentTag.DateDisplayFormat
+            //ExFor:StructuredDocumentTag.DateDisplayLocale
+            //ExFor:StructuredDocumentTag.DateStorageFormat
+            //ExFor:StructuredDocumentTag.FullDate
+            // Create a new document
+            Document doc = new Document();
+
+            // Insert a StructuredDocumentTag that prompts the user to enter a date
+            // In Microsoft Word, this element is known as a "Date picker content control"
+            // When we click on the arrow on the right end of this tag in Microsoft Word,
+            // we will see a pop up in the form of a clickable calendar
+            // We can use that popup to select a date that will be displayed by the tag 
+            StructuredDocumentTag sdtDate = new StructuredDocumentTag(doc, SdtType.Date, MarkupLevel.Inline);
+
+            // This attribute sets the language that the calendar will be displayed in,
+            // which in this case will be Saudi Arabian Arabic
+            sdtDate.DateDisplayLocale = CultureInfo.GetCultureInfo("ar-SA").LCID;
+
+            // We can set the format with which to display the date like this
+            // The locale we set above will be carried over to the displayed date
+            sdtDate.DateDisplayFormat = "dd MMMM, yyyy";
+
+            // Select how the data will be stored in the document
+            sdtDate.DateStorageFormat = SdtDateStorageFormat.DateTime;
+
+            // Set the calendar type that will be used to select and display the date
+            sdtDate.CalendarType = SdtCalendarType.Hijri;
+
+            // Before a date is chosen, the tag will display the text "Click here to enter a date."
+            // We can set a default date to display by setting this variable
+            // We must convert the date to the appropriate calendar ourselves
+            sdtDate.FullDate = new DateTime(1440, 10, 20);
+
+            // Insert the StructuredDocumentTag into the document with a DocumentBuilder and save the document
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertNode(sdtDate);
+
+            doc.Save(ArtifactsDir + "SDT.Date.docx");
+            //ExEnd
         }
 
         [Test]
