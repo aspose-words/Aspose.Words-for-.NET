@@ -184,7 +184,7 @@ namespace ApiExamples
 
             // Set the title and color of the frame that appears when you mouse over it
             tag.Title = "My plain text";
-            tag.Color = Color.Fuchsia;
+            tag.Color = Color.Magenta;
 
             // Set a programmatic tag for this StructuredDocumentTag
             // Unlike the title, this value will not be visible in the document but will be programmatically obtainable
