@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using Aspose.Words;
 using Aspose.Words.Markup;
@@ -159,6 +160,56 @@ namespace ApiExamples
             builder.InsertNode(sdtDate);
 
             doc.Save(ArtifactsDir + "SDT.Date.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void PlainText()
+        {
+            //ExStart
+            //ExFor:StructuredDocumentTag.Color
+            //ExFor:StructuredDocumentTag.ContentsFont
+            //ExFor:StructuredDocumentTag.EndCharacterFont
+            //ExFor:StructuredDocumentTag.Id
+            //ExFor:StructuredDocumentTag.Level
+            //ExFor:StructuredDocumentTag.Multiline
+            //ExFor:StructuredDocumentTag.Tag
+            //ExFor:StructuredDocumentTag.Title
+            //ExSummary:Shows how to create a StructuredDocumentTag in the form of a plain text box.
+            // Create a new document 
+            Document doc = new Document();
+
+            // Create a StructuredDocumentTag that will contain plain text
+            StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
+
+            // Set the title and color of the frame that appears when you mouse over it
+            tag.Title = "My plain text";
+            tag.Color = Color.Fuchsia;
+
+            // Set a programmatic tag for this StructuredDocumentTag
+            // Unlike the title, this value will not be visible in the document but will be programmatically obtainable
+            // as an XML element named "tag", with the string below in its "@val" attribute
+            tag.Tag = "MyPlainTextSDT";
+
+            // Every StructuredDocumentTag gets a random unique ID
+            Assert.Positive(tag.Id);
+
+            // Set the font for the text inside the StructuredDocumentTag
+            tag.ContentsFont.Name = "Arial";
+
+            // Set the font for the text at the end of the StructuredDocumentTag
+            // Any text that's typed in the document body after moving out of the tag with arrow keys will keep this font
+            tag.EndCharacterFont.Name = "Arial Black";
+
+            // By default, this is false and pressing enter while inside a StructuredDocumentTag does nothing
+            Assert.False(tag.Multiline);
+            tag.Multiline = true;
+
+            // Insert the StructuredDocumentTag into the document with a DocumentBuilder and save the document to a file
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertNode(tag);
+
+            doc.Save(ArtifactsDir + "SDT.PlainText.docx");
             //ExEnd
         }
 
