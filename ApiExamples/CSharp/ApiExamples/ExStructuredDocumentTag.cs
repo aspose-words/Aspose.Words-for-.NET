@@ -15,6 +15,7 @@ using NUnit.Framework;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Aspose.Words.BuildingBlocks;
 
 namespace ApiExamples
 {
@@ -164,6 +165,7 @@ namespace ApiExamples
         }
 
         [Test]
+        [Category("SkipTearDown")]
         public void PlainText()
         {
             //ExStart
@@ -202,7 +204,7 @@ namespace ApiExamples
             tag.EndCharacterFont.Name = "Arial Black";
 
             // By default, this is false and pressing enter while inside a StructuredDocumentTag does nothing
-            Assert.False(tag.Multiline);
+            // When set to true, our StructuredDocumentTag can have multiple lines
             tag.Multiline = true;
 
             // Insert the StructuredDocumentTag into the document with a DocumentBuilder and save the document to a file
@@ -244,6 +246,47 @@ namespace ApiExamples
             builder.InsertNode(tag);
 
             doc.Save(ArtifactsDir + "SDT.IsTemporary.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void PlaceholderBuildingBlock()
+        {
+            //ExStart
+            //ExFor:StructuredDocumentTag.Placeholder
+            //ExFor:StructuredDocumentTag.PlaceholderName
+            //ExSummary:Shows how to insert a StructuredDocumentTag which will display the contents of a BuildingBlock. 
+            Document doc = new Document();
+
+            // Insert a plain text StructuredDocumentTag, which will prompt the user to enter text
+            // and allow them to edit it like a text box
+            StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
+
+            // First, we need at least one BuildingBlock in our GlossaryDocument
+            // This BuildingBlock will contain text
+            GlossaryDocument glossaryDoc = doc.GlossaryDocument;
+
+            BuildingBlock block = new BuildingBlock(glossaryDoc);
+            block.Name = "Custom Block";
+            block.AppendChild(new Section(glossaryDoc));
+            block.FirstSection.AppendChild(new Body(glossaryDoc));
+            block.FirstSection.Body.AppendParagraph("Text contents of \"Custom Block\".");
+
+            glossaryDoc.AppendChild(block);
+
+            // Use the StructuredDocumentTag's PlaceholderName attribute to refer to our BuildingBlock by name
+            tag.PlaceholderName = "Custom Block";
+
+            // The Placeholder attribute has automatically become the custom block we designated
+            // This means that our StructuredDocumentTag will display the contents of our BuildingBlock
+            // instead of the default "Click here to enter text."
+            Assert.AreEqual(block, tag.Placeholder);
+
+            // Insert the StructuredDocumentTag into the document using a DocumentBuilder and save the document to a file
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertNode(tag);
+
+            doc.Save(ArtifactsDir + "SDT.PlaceholderBuildingBlock.docx");
             //ExEnd
         }
 
