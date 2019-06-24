@@ -177,7 +177,8 @@ namespace ApiExamples
             //ExFor:StructuredDocumentTag.Multiline
             //ExFor:StructuredDocumentTag.Tag
             //ExFor:StructuredDocumentTag.Title
-            //ExSummary:Shows how to create a StructuredDocumentTag in the form of a plain text box.
+            //ExFor:StructuredDocumentTag.RemoveSelfOnly
+            //ExSummary:Shows how to create a StructuredDocumentTag in the form of a plain text box and modify its appearance.
             // Create a new document 
             Document doc = new Document();
 
@@ -210,6 +211,14 @@ namespace ApiExamples
             // Insert the StructuredDocumentTag into the document with a DocumentBuilder and save the document to a file
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertNode(tag);
+
+            // Insert a clone of our StructuredDocumentTag in a new paragraph
+            StructuredDocumentTag tagClone = (StructuredDocumentTag)tag.Clone(true);
+            builder.InsertParagraph();
+            builder.InsertNode(tagClone);
+
+            // We can remove the tag while keeping its contents where they were in the Paragraph by calling RemoveSelfOnly()
+            tagClone.RemoveSelfOnly();
 
             doc.Save(ArtifactsDir + "SDT.PlainText.docx");
             //ExEnd
@@ -281,7 +290,7 @@ namespace ApiExamples
 
             // The Placeholder attribute has automatically become the custom block we designated
             // This means that our StructuredDocumentTag will display the contents of our BuildingBlock
-            // instead of the default "Click here to enter text."
+            // instead of the default "Click here to enter text." prompt
             Assert.AreEqual(block, tag.Placeholder);
 
             // We can prohibit the users from entering/changing text in Microsoft Word by setting this to true
