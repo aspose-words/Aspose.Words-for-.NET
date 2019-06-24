@@ -127,6 +127,7 @@ namespace ApiExamples
             //ExFor:StructuredDocumentTag.DateDisplayLocale
             //ExFor:StructuredDocumentTag.DateStorageFormat
             //ExFor:StructuredDocumentTag.FullDate
+            //ExSummary:Shows how to prompt the user to enter a date with a StructuredDocumentTag.
             // Create a new document
             Document doc = new Document();
 
@@ -165,7 +166,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Category("SkipTearDown")]
         public void PlainText()
         {
             //ExStart
@@ -253,6 +253,8 @@ namespace ApiExamples
         public void PlaceholderBuildingBlock()
         {
             //ExStart
+            //ExFor:StructuredDocumentTag.LockContentControl
+            //ExFor:StructuredDocumentTag.LockContents
             //ExFor:StructuredDocumentTag.Placeholder
             //ExFor:StructuredDocumentTag.PlaceholderName
             //ExSummary:Shows how to insert a StructuredDocumentTag which will display the contents of a BuildingBlock. 
@@ -263,7 +265,7 @@ namespace ApiExamples
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
 
             // First, we need at least one BuildingBlock in our GlossaryDocument
-            // This BuildingBlock will contain text
+            // We will create one that contains text and add it to the GlossaryDocument
             GlossaryDocument glossaryDoc = doc.GlossaryDocument;
 
             BuildingBlock block = new BuildingBlock(glossaryDoc);
@@ -281,6 +283,12 @@ namespace ApiExamples
             // This means that our StructuredDocumentTag will display the contents of our BuildingBlock
             // instead of the default "Click here to enter text."
             Assert.AreEqual(block, tag.Placeholder);
+
+            // We can prohibit the users from entering/changing text in Microsoft Word by setting this to true
+            tag.LockContents = true;
+
+            // Also, we can prevent the deletion of a StructuredDocumentTag with the backspace key with this
+            tag.LockContentControl = true;
 
             // Insert the StructuredDocumentTag into the document using a DocumentBuilder and save the document to a file
             DocumentBuilder builder = new DocumentBuilder(doc);
