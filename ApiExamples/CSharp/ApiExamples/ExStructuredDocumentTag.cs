@@ -262,36 +262,43 @@ namespace ApiExamples
         public void PlaceholderBuildingBlock()
         {
             //ExStart
+            //ExFor:StructuredDocumentTag.IsShowingPlaceholderText
             //ExFor:StructuredDocumentTag.LockContentControl
             //ExFor:StructuredDocumentTag.LockContents
             //ExFor:StructuredDocumentTag.Placeholder
             //ExFor:StructuredDocumentTag.PlaceholderName
-            //ExSummary:Shows how to insert a StructuredDocumentTag which will display the contents of a BuildingBlock. 
+            //ExSummary:Shows how to use the contents of a BuildingBlock as a custom placeholder text for a StructuredDocumentTag. 
             Document doc = new Document();
 
-            // Insert a plain text StructuredDocumentTag, which will prompt the user to enter text
-            // and allow them to edit it like a text box
+            // Insert a plain text StructuredDocumentTag of the PlainText type, which will function like a text box
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
 
-            // First, we need at least one BuildingBlock in our GlossaryDocument
-            // We will create one that contains text and add it to the GlossaryDocument
+            // By default, the StructuredDocumentTag will contain the "Click here to enter text." phrase, 
+            // prompting the user to click it in Microsoft Word and replace it with other text
+            // We can substitute this with a custom phrase, which will be drawn from a BuildingBlock
+            // First we will need to create a BuildingBlock, give it content and add it to the GlossaryDocument
             GlossaryDocument glossaryDoc = doc.GlossaryDocument;
 
-            BuildingBlock block = new BuildingBlock(glossaryDoc);
-            block.Name = "Custom Block";
-            block.AppendChild(new Section(glossaryDoc));
-            block.FirstSection.AppendChild(new Body(glossaryDoc));
-            block.FirstSection.Body.AppendParagraph("Text contents of \"Custom Block\".");
+            BuildingBlock substituteBlock = new BuildingBlock(glossaryDoc);
+            substituteBlock.Name = "Custom Placeholder";
+            substituteBlock.AppendChild(new Section(glossaryDoc));
+            substituteBlock.FirstSection.AppendChild(new Body(glossaryDoc));
+            substituteBlock.FirstSection.Body.AppendParagraph("Custom placeholder text.");
 
-            glossaryDoc.AppendChild(block);
+            glossaryDoc.AppendChild(substituteBlock);
 
-            // Use the StructuredDocumentTag's PlaceholderName attribute to refer to our BuildingBlock by name
-            tag.PlaceholderName = "Custom Block";
+            // The substitute BuildingBlock we made can be referenced by name
+            tag.PlaceholderName = "Custom Placeholder";
 
-            // The Placeholder attribute has automatically become the custom block we designated
-            // This means that our StructuredDocumentTag will display the contents of our BuildingBlock
-            // instead of the default "Click here to enter text." prompt
-            Assert.AreEqual(block, tag.Placeholder);
+            // If PlaceholderName refers to an existing block in the parent document's GlossaryDocument,
+            // the BuildingBlock will be automatically found and assigned to the Placeholder attribute
+            Assert.AreEqual(substituteBlock, tag.Placeholder);
+
+            // Setting this to true will register the text inside the StructuredDocumentTag as placeholder text
+            // This means that, in Microsoft Word, all the text contents of the StructuredDocumentTag will be highlighted with one click,
+            // so we can immediately replace the entire substitute text by typing
+            // If this is false, the text will behave like an ordinary Paragraph and a cursor will be placed with nothing highlighted
+            tag.IsShowingPlaceholderText = true;
 
             // We can prohibit the users from entering/changing text in Microsoft Word by setting this to true
             tag.LockContents = true;
