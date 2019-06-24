@@ -263,20 +263,17 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:StructuredDocumentTag.IsShowingPlaceholderText
-            //ExFor:StructuredDocumentTag.LockContentControl
-            //ExFor:StructuredDocumentTag.LockContents
             //ExFor:StructuredDocumentTag.Placeholder
             //ExFor:StructuredDocumentTag.PlaceholderName
             //ExSummary:Shows how to use the contents of a BuildingBlock as a custom placeholder text for a StructuredDocumentTag. 
             Document doc = new Document();
 
             // Insert a plain text StructuredDocumentTag of the PlainText type, which will function like a text box
+            // It contains a default "Click here to enter text." prompt, which we can click and replace with our own text
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
 
-            // By default, the StructuredDocumentTag will contain the "Click here to enter text." phrase, 
-            // prompting the user to click it in Microsoft Word and replace it with other text
-            // We can substitute this with a custom phrase, which will be drawn from a BuildingBlock
-            // First we will need to create a BuildingBlock, give it content and add it to the GlossaryDocument
+            // We can substitute that default placeholder with a custom phrase, which will be drawn from a BuildingBlock
+            // First we will need to create the BuildingBlock, give it content and add it to the GlossaryDocument
             GlossaryDocument glossaryDoc = doc.GlossaryDocument;
 
             BuildingBlock substituteBlock = new BuildingBlock(glossaryDoc);
@@ -300,17 +297,44 @@ namespace ApiExamples
             // If this is false, the text will behave like an ordinary Paragraph and a cursor will be placed with nothing highlighted
             tag.IsShowingPlaceholderText = true;
 
-            // We can prohibit the users from entering/changing text in Microsoft Word by setting this to true
-            tag.LockContents = true;
-
-            // Also, we can prevent the deletion of a StructuredDocumentTag with the backspace key with this
-            tag.LockContentControl = true;
-
             // Insert the StructuredDocumentTag into the document using a DocumentBuilder and save the document to a file
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertNode(tag);
 
             doc.Save(ArtifactsDir + "SDT.PlaceholderBuildingBlock.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void Lock()
+        {
+            //ExStart
+            //ExFor:StructuredDocumentTag.LockContentControl
+            //ExFor:StructuredDocumentTag.LockContents
+            //ExSummary:Shows how to restrict the editing of a StructuredDocumentTag.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a plain text StructuredDocumentTag of the PlainText type, which will function like a text box
+            // It contains a default "Click here to enter text." prompt, which we can click and replace with our own text
+            StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
+
+            // We can prohibit the users from editing the inner text in Microsoft Word by setting this to true
+            tag.LockContents = true;
+            builder.Write("The contents of this StructuredDocumentTag cannot be edited: ");
+            builder.InsertNode(tag);
+
+            tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
+
+            // Setting this to true will disable the deletion of this StructuredDocumentTag
+            // by text editing operations in Microsoft Word
+            tag.LockContentControl = true;
+
+            builder.InsertParagraph();
+            builder.Write("This StructuredDocumentTag cannot be deleted but its contents can be edited: ");
+            builder.InsertNode(tag);
+
+            doc.Save(ArtifactsDir + "SDT.Lock.docx");
             //ExEnd
         }
 
