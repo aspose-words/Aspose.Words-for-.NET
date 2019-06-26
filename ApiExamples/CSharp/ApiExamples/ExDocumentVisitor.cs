@@ -1083,6 +1083,7 @@ namespace ApiExamples
         //ExEnd
 
         //ExStart
+        //ExFor:StructuredDocumentTag.Accept(DocumentVisitor)
         //ExFor:DocumentVisitor.VisitStructuredDocumentTagEnd(Markup.StructuredDocumentTag)
         //ExFor:DocumentVisitor.VisitStructuredDocumentTagStart(Markup.StructuredDocumentTag)
         //ExSummary:Traverse a document with a visitor that prints all structured document tag nodes that it encounters.
