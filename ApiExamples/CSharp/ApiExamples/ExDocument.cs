@@ -19,14 +19,17 @@ using System.Threading;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
+using Aspose.Words.Fonts;
 using Aspose.Words.Layout;
 using Aspose.Words.Lists;
+using Aspose.Words.Loading;
 using Aspose.Words.Markup;
 using Aspose.Words.Properties;
 using Aspose.Words.Rendering;
 using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
+using Aspose.Words.Shaping.HarfBuzz;
 using Aspose.Words.Tables;
 using Aspose.Words.Themes;
 using NUnit.Framework;
@@ -264,6 +267,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.#ctor(String,LoadOptions)
+            //ExFor:LoadOptions.LoadFormat
             //ExFor:LoadFormat
             //ExSummary:Explicitly loads a document as HTML without automatic file format detection.
             LoadOptions loadOptions = new LoadOptions();
@@ -317,16 +321,26 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:LoadOptions.AnnotationsAtBlockLevel
+            //ExFor:LoadOptions.AnnotationsAtBlockLevelAsDefault
             //ExSummary:Shows how to place bookmark nodes on the block, cell and row levels.
-            LoadOptions loadOptions = new LoadOptions { AnnotationsAtBlockLevel = true };
+            // Any LoadOptions instances we create will have a default AnnotationsAtBlockLevel value equal to this
+            LoadOptions.AnnotationsAtBlockLevelAsDefault = false;
 
+            LoadOptions loadOptions = new LoadOptions();
+            Assert.AreEqual(loadOptions.AnnotationsAtBlockLevel, LoadOptions.AnnotationsAtBlockLevelAsDefault);
+
+            // If we want to work with annotations that transcend structures like tables, we will need to set this to true
+            loadOptions.AnnotationsAtBlockLevel = true;
+
+            // Open a document with a structured document tag and get that tag
             Document doc = new Document(MyDir + "Document.AnnotationsAtBlockLevel.docx", loadOptions);
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             StructuredDocumentTag sdt = (StructuredDocumentTag)doc.GetChildNodes(NodeType.StructuredDocumentTag, true)[1];
 
-            BookmarkStart start = builder.StartBookmark("bm");
-            BookmarkEnd end = builder.EndBookmark("bm");
+            // Insert a bookmark and make it envelop our tag
+            BookmarkStart start = builder.StartBookmark("MyBookmark");
+            BookmarkEnd end = builder.EndBookmark("MyBookmark");
 
             sdt.ParentNode.InsertBefore(start, sdt);
             sdt.ParentNode.InsertAfter(end, sdt);
@@ -348,6 +362,161 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.ConvertShapeToOfficeMath.docx", SaveFormat.Docx);
             //ExEnd
         }
+
+        [Test]
+        public void LoadOptionsEncoding()
+        {
+            //ExStart
+            //ExFor:LoadOptions.Encoding
+            //ExSummary:Shows how to set the encoding with which to open a document.
+            // Get the file format info of a file in our local file system
+            FileFormatInfo fileFormatInfo = FileFormatUtil.DetectFileFormat(MyDir + "EncodedInUTF-7.txt");
+
+            // One of the aspects of a document that the FileFormatUtil can pick up is the text encoding
+            // This automatically takes place every time we open a document programmatically
+            // Occasionally, due to the text content in the document as well as the lack of an encoding declaration,
+            // the encoding of a document may be ambiguous 
+            // In this case, while we know that our document is in UTF-7, the file encoding detector doesn't
+            Assert.AreNotEqual(Encoding.UTF7, fileFormatInfo.Encoding);
+
+            // If we open the document normally, the wrong encoding will be applied,
+            // and the content of the document will not be represented correctly
+            Document doc = new Document(MyDir + "EncodedInUTF-7.txt");
+            Assert.AreEqual("Hello world+ACE-\r\n\r\n", doc.ToString(SaveFormat.Text));
+
+            // In these cases we can set the Encoding attribute in a LoadOptions object
+            // to override the automatically chosen encoding with the one we know to be correct
+            LoadOptions loadOptions = new LoadOptions { Encoding = Encoding.UTF7 };
+            doc = new Document(MyDir + "EncodedInUTF-7.txt", loadOptions);
+
+            // This will give us the correct text
+            Assert.AreEqual("Hello world!\r\n\r\n", doc.ToString(SaveFormat.Text));
+            //ExEnd
+        }
+
+        [Test]
+        public void LoadOptionsFontSettings()
+        {
+            //ExStart
+            //ExFor:LoadOptions.FontSettings
+            //ExSummary:Shows how to set font settings and apply them during the loading of a document. 
+            // Create a FontSettings object that will substitute the "Times New Roman" font with the font "Arvo" from our "MyFonts" folder 
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.SetFontsFolder(MyDir + @"MyFonts\", false);
+            fontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Times New Roman", "Arvo");
+
+            // Set that FontSettings object as a member of a newly created LoadOptions object
+            LoadOptions loadOptions = new LoadOptions { FontSettings = fontSettings };
+
+            // We can now open a document while also passing the LoadOptions object into the constructor so the font substitution occurs upon loading
+            Document doc = new Document(MyDir + "Document.docx", loadOptions);
+
+            // The effects of our font settings can be observed after rendering
+            doc.Save(ArtifactsDir + "Document.LoadOptionsFontSettings.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void LoadOptionsMswVersion()
+        {
+            //ExStart
+            //ExFor:LoadOptions.MswVersion
+            //ExSummary:Shows how to emulate the loading procedure of a specific Microsoft Word version during document loading.
+            // Create a new LoadOptions object, which will load documents according to MS Word 2007 specification by default
+            LoadOptions loadOptions = new LoadOptions();
+            Assert.AreEqual(MsWordVersion.Word2007, loadOptions.MswVersion);
+
+            // This document is missing the default paragraph format style,
+            // so when it is opened with either Microsoft Word or Aspose Words, that default style will be regenerated,
+            // and will show up in the Styles collection, with values according to Microsoft Word 2007 specifications
+            Document doc = new Document(MyDir + "Document.docx", loadOptions);
+            Assert.AreEqual(13.8, doc.Styles.DefaultParagraphFormat.LineSpacing, 0.005f);
+
+            // We can change the loading version like this, to Microsoft Word 2016
+            loadOptions.MswVersion = MsWordVersion.Word2016;
+
+            // The generated default style now has a different spacing, which will impact the appearance of our document
+            doc = new Document(MyDir + "Document.docx", loadOptions);
+            Assert.AreEqual(12.95, doc.Styles.DefaultParagraphFormat.LineSpacing, 0.005f);
+            //ExEnd
+        }
+
+#if !(NETSTANDARD2_0 || __MOBILE__)
+        //ExStart
+        //ExFor:LoadOptions.ResourceLoadingCallback
+        //ExSummary:Shows how to handle external resources in Html documents during loading.
+        [Test] //ExSkip
+        public void LoadOptionsCallback()
+        {
+            // Create a new LoadOptions object and set its ResourceLoadingCallback attribute
+            // as an instance of our IResourceLoadingCallback implementation 
+            LoadOptions loadOptions = new LoadOptions { ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback() };
+
+            // When we open an Html document, external resources such as references to CSS stylesheet files and external images
+            // will be handled in a custom manner by the loading callback as the document is loaded
+            Document doc = new Document(MyDir + "ResourcesForCallback.html", loadOptions);
+            doc.Save(ArtifactsDir + "Document.LoadOptionsCallback.pdf");
+        }
+
+        /// <summary>
+        /// Resource loading callback that, upon encountering external resources,
+        /// acknowledges CSS style sheets and replaces all images with a substitute.
+        /// </summary>
+        private class HtmlLinkedResourceLoadingCallback : IResourceLoadingCallback
+        {
+            public ResourceLoadingAction ResourceLoading(ResourceLoadingArgs args)
+            {
+                switch (args.ResourceType)
+                {
+                    case ResourceType.CssStyleSheet:
+                        Console.WriteLine($"External CSS Stylesheet found upon loading: {args.OriginalUri}");
+                        return ResourceLoadingAction.Default;
+                    case ResourceType.Image:
+                        Console.WriteLine($"External Image found upon loading: {args.OriginalUri}");
+
+                        string newImageFilename =  "Images\\Aspose.Words.gif";
+                        Console.WriteLine($"\tImage will be substituted with: {newImageFilename}");
+
+                        System.Drawing.Image newImage = System.Drawing.Image.FromFile(MyDir + newImageFilename);
+
+                        System.Drawing.ImageConverter converter = new System.Drawing.ImageConverter();
+                        byte[] imageBytes = (byte[])converter.ConvertTo(newImage, typeof(byte[]));
+                        args.SetData(imageBytes);
+
+                        return ResourceLoadingAction.UserProvided;
+
+                }
+                return ResourceLoadingAction.Default;
+            }
+        }
+        //ExEnd
+#endif
+
+        //ExStart
+        //ExFor:LoadOptions.WarningCallback
+        //ExSummary:Shows how to print warnings that occur during document loading.
+        [Test] //ExSkip
+        public void LoadOptionsWarningCallback()
+        {
+            // Create a new LoadOptions object and set its WarningCallback attribute as an instance of our IWarningCallback implementation 
+            LoadOptions loadOptions = new LoadOptions { WarningCallback = new DocumentLoadingWarningCallback() };
+
+            // Minor warnings that might not prevent the effective loading of the document will now be printed
+            Document doc = new Document(MyDir + "Document.docx", loadOptions);
+        }
+
+        /// <summary>
+        /// IWarningCallback that prints warnings and their details as they arise during document loading.
+        /// </summary>
+        private class DocumentLoadingWarningCallback : IWarningCallback
+        {
+            public void Warning(WarningInfo info)
+            {
+                Console.WriteLine($"WARNING: {info.WarningType}, source: {info.Source}");
+                Console.WriteLine($"\tDescription: {info.Description}");
+            }
+        }
+        //ExEnd
 
         [Test]
         public void ConvertToHtml()
@@ -2394,7 +2563,6 @@ namespace ApiExamples
         public void DocPackageCustomParts()
         {
             //ExStart
-            //ExFor:Document.PackageCustomParts
             //ExFor:CustomPart
             //ExFor:CustomPart.ContentType
             //ExFor:CustomPart.RelationshipType
@@ -2402,37 +2570,85 @@ namespace ApiExamples
             //ExFor:CustomPart.Data
             //ExFor:CustomPart.Name
             //ExFor:CustomPart.Clone
+            //ExFor:CustomPartCollection
+            //ExFor:CustomPartCollection.Add(CustomPart)
+            //ExFor:CustomPartCollection.Clear
+            //ExFor:CustomPartCollection.Clone
+            //ExFor:CustomPartCollection.Count
+            //ExFor:CustomPartCollection.GetEnumerator
+            //ExFor:CustomPartCollection.Item(Int32)
+            //ExFor:CustomPartCollection.RemoveAt(Int32)
+            //ExFor:Document.PackageCustomParts
             //ExSummary:Shows how to open a document with custom parts and access them.
-            Document doc = new Document(MyDir + "Document.PackageCustomParts.docx");
-
-            Assert.AreEqual(2, doc.PackageCustomParts.Count);
-
+            // Open a document that contains custom parts
             // CustomParts are arbitrary content OOXML parts
             // Not to be confused with Custom XML data which is represented by CustomXmlParts
             // This part is internal, meaning it is contained inside the OOXML package
-            CustomPart part = doc.PackageCustomParts[0];
-            Assert.AreEqual("/payload/payload_on_package.test", part.Name);
-            Assert.AreEqual("mytest/somedata", part.ContentType);
-            Assert.AreEqual("http://mytest.payload.internal", part.RelationshipType);
-            Assert.AreEqual(false, part.IsExternal);
-            Assert.AreEqual(18, part.Data.Length);
+            Document doc = new Document(MyDir + "Document.PackageCustomParts.docx");
+            Assert.AreEqual(2, doc.PackageCustomParts.Count);
+
+            // Clone the second part
+            CustomPart clonedPart = doc.PackageCustomParts[1].Clone();
+
+            // Add the clone to the collection
+            doc.PackageCustomParts.Add(clonedPart);
+            
+            Assert.AreEqual(3, doc.PackageCustomParts.Count);
+
+            // Use an enumerator to print information about the contents of each part 
+            using (IEnumerator<CustomPart> enumerator = doc.PackageCustomParts.GetEnumerator())
+            {
+                int index = 0;
+                while (enumerator.MoveNext())
+                {
+                    Console.WriteLine($"Part index {index}:");
+                    Console.WriteLine($"\tName: {enumerator.Current.Name}");
+                    Console.WriteLine($"\tContentType: {enumerator.Current.ContentType}");
+                    Console.WriteLine($"\tRelationshipType: {enumerator.Current.RelationshipType}");
+                    if (enumerator.Current.IsExternal)
+                    {
+                        Console.WriteLine("\tSourced from outside the document");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"\tSourced from within the document, length: {enumerator.Current.Data.Length} bytes");
+                    }
+                    index++;
+                }
+            }
+
+            TestCustomPartRead(doc); //ExSkip
+
+            // Delete parts one at a time based on index
+            doc.PackageCustomParts.RemoveAt(2);
+            Assert.AreEqual(2, doc.PackageCustomParts.Count);
+
+            // Delete all parts
+            doc.PackageCustomParts.Clear();
+            Assert.AreEqual(0, doc.PackageCustomParts.Count);
+            //ExEnd
+        }
+
+        private void TestCustomPartRead(Document docWithCustomParts)
+        {
+            Assert.AreEqual("/payload/payload_on_package.test", docWithCustomParts.PackageCustomParts[0].Name); 
+            Assert.AreEqual("mytest/somedata", docWithCustomParts.PackageCustomParts[0].ContentType); 
+            Assert.AreEqual("http://mytest.payload.internal", docWithCustomParts.PackageCustomParts[0].RelationshipType); 
+            Assert.AreEqual(false, docWithCustomParts.PackageCustomParts[0].IsExternal); 
+            Assert.AreEqual(18, docWithCustomParts.PackageCustomParts[0].Data.Length); 
 
             // This part is external and its content is sourced from outside the document
-            part = doc.PackageCustomParts[1];
-            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", part.Name);
-            Assert.AreEqual("", part.ContentType);
-            Assert.AreEqual("http://mytest.payload.external", part.RelationshipType);
-            Assert.AreEqual(true, part.IsExternal);
-            Assert.AreEqual(0, part.Data.Length);
+            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", docWithCustomParts.PackageCustomParts[1].Name); 
+            Assert.AreEqual("", docWithCustomParts.PackageCustomParts[1].ContentType); 
+            Assert.AreEqual("http://mytest.payload.external", docWithCustomParts.PackageCustomParts[1].RelationshipType); 
+            Assert.AreEqual(true, docWithCustomParts.PackageCustomParts[1].IsExternal); 
+            Assert.AreEqual(0, docWithCustomParts.PackageCustomParts[1].Data.Length); 
 
-            // Lets copy external part
-            CustomPart clonedPart = doc.PackageCustomParts[1].Clone();
-            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", clonedPart.Name);
-            Assert.AreEqual("", clonedPart.ContentType);
-            Assert.AreEqual("http://mytest.payload.external", clonedPart.RelationshipType);
-            Assert.AreEqual(true, clonedPart.IsExternal);
-            Assert.AreEqual(0, clonedPart.Data.Length);
-            //ExEnd
+            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", docWithCustomParts.PackageCustomParts[2].Name); 
+            Assert.AreEqual("", docWithCustomParts.PackageCustomParts[2].ContentType); 
+            Assert.AreEqual("http://mytest.payload.external", docWithCustomParts.PackageCustomParts[2].RelationshipType); 
+            Assert.AreEqual(true, docWithCustomParts.PackageCustomParts[2].IsExternal); 
+            Assert.AreEqual(0, docWithCustomParts.PackageCustomParts[2].Data.Length); 
         }
 
         [Test]
@@ -2535,6 +2751,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:LanguagePreferences
             //ExFor:LanguagePreferences.AddEditingLanguage(EditingLanguage)
+            //ExFor:LoadOptions.LanguagePreferences
             //ExFor:EditingLanguage
             //ExSummary:Shows how to set up language preferences that will be used when document is loading
             LoadOptions loadOptions = new LoadOptions();
@@ -2971,5 +3188,92 @@ namespace ApiExamples
             Console.WriteLine($"{tabs}   Page {layoutEnumerator.PageIndex}");
         }
         //ExEnd
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void AlwaysCompressMetafiles(bool isAlwaysCompressMetafiles)
+        {
+            //ExStart
+            //ExFor:DocSaveOptions.AlwaysCompressMetafiles
+            //ExSummary:Shows how to change metafiles compression in a document while saving.
+            // The document has a mathematical formula
+            Document doc = new Document(MyDir + "Document.AlwaysCompressMetafiles.doc");
+            
+            // Large metafiles are always compressed when exporting a document in Aspose.Words, but small metafiles are not
+            // compressed for performance reason. Some other document editors, such as LibreOffice, cannot read uncompressed
+            // metafiles. The following option 'AlwaysCompressMetafiles' was introduced to choose appropriate behavior
+            DocSaveOptions saveOptions = new DocSaveOptions();
+            // False - small metafiles are not compressed for performance reason
+            // True - all metafiles are compressed regardless of its size
+            saveOptions.AlwaysCompressMetafiles = isAlwaysCompressMetafiles;
+            
+            doc.Save(ArtifactsDir + "Document.AlwaysCompressMetafiles.doc", saveOptions);
+            //ExEnd
+        }
+
+        [Test]
+        public void ReadMacrosFromDocument()
+        {
+            //ExStart
+            //ExFor:Document.VbaProject
+            //ExFor:VbaProject
+            //ExFor:VbaModuleCollection
+            //ExFor:VbaModule
+            //ExFor:VbaProject.Name
+            //ExFor:VbaProject.Modules
+            //ExFor:VbaModule.Name
+            //ExFor:VbaModule.SourceCode
+            //ExSummary:Shows how to get access to VBA project information in the document.
+            Document doc = new Document(MyDir + "Document.TestButton.docm");
+
+            // A VBA project inside the document is defined as a collection of VBA modules
+            VbaProject vbaProject = doc.VbaProject;
+            Console.WriteLine($"Project name: {vbaProject.Name}; Modules count: {vbaProject.Modules.Count()}\n");
+            
+            Assert.AreEqual(vbaProject.Name, "AsposeVBAtest"); //ExSkip
+            Assert.AreEqual(vbaProject.Modules.Count(), 3); //ExSkip
+
+            VbaModuleCollection vbaModules = doc.VbaProject.Modules;
+            foreach (VbaModule module in vbaModules)
+            {
+                Console.WriteLine($"Module name: {module.Name};\nModule code:\n{module.SourceCode}\n");
+            }
+            //ExEnd
+
+            VbaModule defaultModule = vbaModules[0];
+            Assert.AreEqual(defaultModule.Name, "ThisDocument");
+            Assert.IsTrue(defaultModule.SourceCode.Contains("MsgBox \"First test\""));
+
+            VbaModule createdModule = vbaModules[1];
+            Assert.AreEqual(createdModule.Name, "Module1");
+            Assert.IsTrue(createdModule.SourceCode.Contains("MsgBox \"Second test\""));
+
+            VbaModule classModule = vbaModules[2];
+            Assert.AreEqual(classModule.Name, "Class1");
+            Assert.IsTrue(classModule.SourceCode.Contains("MsgBox \"Class test\""));
+        }
+
+        [Test]
+        public void OpenType()
+        {
+            //ExStart
+            //ExFor:LayoutOptions.TextShaperFactory
+            //ExSummary:Shows how to support OpenType features using HarfBuzz text shaping engine.
+            // Open a document
+            Document doc = new Document(MyDir + "OpenType.Document.docx");
+
+            // Aspose.Words is capable of using text shaper objects provided externally.
+            // A text shaper represents a font and computes shaping information for a text.
+            // A document typically refers to multiple fonts thus a text shaper factory is necessary.
+            // When text shaper factory is set, layout starts to use OpenType features.
+            // An Instance property returns static BasicTextShaperCache object wrapping HarfBuzzTextShaperFactory
+            doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
+
+            // Render the document to PDF format
+            doc.Save(ArtifactsDir + "OpenType.Document.pdf");
+            //ExEnd
+        }
+
     }
 }

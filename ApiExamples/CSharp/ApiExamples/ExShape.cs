@@ -19,8 +19,9 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
+using Color = System.Drawing.Color;
+using DashStyle = Aspose.Words.Drawing.DashStyle;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
-
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
@@ -721,12 +722,29 @@ namespace ApiExamples
         public void OfficeMathDisplayGold()
         {
             //ExStart
+            //ExFor:OfficeMath
             //ExFor:OfficeMath.DisplayType
+            //ExFor:OfficeMath.EquationXmlEncoding
             //ExFor:OfficeMath.Justification
+            //ExFor:OfficeMath.NodeType
+            //ExFor:OfficeMath.ParentParagraph
+            //ExFor:OfficeMathDisplayType
+            //ExFor:OfficeMathJustification
             //ExSummary:Shows how to set office math display formatting.
             Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
 
             OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
+
+            // OfficeMath nodes that are children of other OfficeMath nodes are always inline
+            // The node we are working with is a base node, so its location and display type can be changed
+            Assert.AreEqual(MathObjectType.OMathPara, officeMath.MathObjectType);
+            Assert.AreEqual(NodeType.OfficeMath, officeMath.NodeType);
+            Assert.AreEqual(officeMath.ParentNode, officeMath.ParentParagraph);
+
+            // Used by OOXML and WML formats
+            Assert.IsNull(officeMath.EquationXmlEncoding);
+
+            // We can change the location and display type of the OfficeMath node
             officeMath.DisplayType = OfficeMathDisplayType.Display;
             officeMath.Justification = OfficeMathJustification.Left;
 
@@ -1362,6 +1380,43 @@ namespace ApiExamples
             builder.Write("Text placed according to textbox margins");
 
             doc.Save(ArtifactsDir + "Drawing.TextBox.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void CreateNewTextBoxAndChangeTextAnchor()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set compatibility options to correctly using of VerticalAnchor property
+            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2016);
+
+            Shape textBoxShape = builder.InsertShape(ShapeType.TextBox, 100, 100);
+            // Not all formats are compatible with this one
+            // For most of incompatible formats AW generated a warnings on save, so use doc.WarningCallback to check it.
+            textBoxShape.TextBox.VerticalAnchor = TextBoxAnchor.Bottom;
+            
+            builder.MoveTo(textBoxShape.LastParagraph);
+            builder.Write("Text placed bottom");
+
+            doc.Save(ArtifactsDir + "Shape.CreateNewTextBoxAndChangeAnchor.docx");
+        }
+
+        [Test]
+        public void GetTextBoxAndChangeTextAnchor()
+        {
+            //ExStart
+            //ExFor:TextBoxAnchor
+            //ExFor:TextBox.VerticalAnchor
+            //ExSummary:Shows how to change text position inside textbox shape.
+            Document doc = new Document(MyDir + "Shape.GetTextBoxAndChangeAnchor.docx");
+            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
+
+            Shape textbox = (Shape) shapes[0];
+            textbox.TextBox.VerticalAnchor = TextBoxAnchor.Bottom;
+            
+            doc.Save(ArtifactsDir + "Shape.GetTextBoxAndChangeAnchor.docx");
             //ExEnd
         }
 

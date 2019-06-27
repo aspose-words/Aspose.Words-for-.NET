@@ -12,11 +12,6 @@ using System;
 using System.IO;
 using NUnit.Framework;
 
-#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
-using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.parser;
-#endif
-
 namespace ApiExamples
 {
     /// <summary>

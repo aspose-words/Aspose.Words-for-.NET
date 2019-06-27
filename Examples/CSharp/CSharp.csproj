@@ -41,14 +41,14 @@
     <StartupObject>Aspose.Words.Examples.CSharp.RunExamples</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.BarCode, Version=19.2.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.BarCode.19.2.0\lib\net45\Aspose.BarCode.dll</HintPath>
+    <Reference Include="Aspose.BarCode, Version=19.5.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.BarCode.19.5.0\lib\net45\Aspose.BarCode.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Email, Version=19.2.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Email.19.2.0\lib\net40\Aspose.Email.dll</HintPath>
+    <Reference Include="Aspose.Email, Version=19.5.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Email.19.5.0\lib\net40\Aspose.Email.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Words, Version=19.3.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.19.3.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=19.6.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.19.6.0\lib\net40\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="SkiaSharp, Version=1.68.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <HintPath>..\packages\SkiaSharp.1.68.0\lib\net45\SkiaSharp.dll</HintPath>
@@ -125,6 +125,7 @@
     <Compile Include="Loading-and-Saving\LoadTxt.cs" />
     <Compile Include="Loading-and-Saving\PageSplitter.cs" />
     <Compile Include="Loading-and-Saving\SplitIntoHtmlPages.cs" />
+    <Compile Include="Loading-and-Saving\WorkingWithVbaMacros.cs" />
     <Compile Include="Mail-Merge\ApplyCustomLogicToEmptyRegions.cs" />
     <Compile Include="Mail-Merge\ExecuteArray.cs" />
     <Compile Include="Mail-Merge\HandleMailMergeSwitches.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Programming-Documents\Comments\AnchorComment.cs" />
     <Compile Include="Programming-Documents\Comments\CommentReply.cs" />
     <Compile Include="Programming-Documents\ConvertUtil\UtilityClasses.cs" />
+    <Compile Include="Programming-Documents\Document\CheckDMLTextEffect.cs" />
     <Compile Include="Programming-Documents\Document\CleansUnusedStylesandLists.cs" />
     <Compile Include="Programming-Documents\Document\DocumentBuilderInsertHorizontalRule.cs" />
     <Compile Include="Programming-Documents\Document\DocumentPageSetup.cs" />
@@ -170,6 +172,9 @@
     <Compile Include="Programming-Documents\Document\AccessStyles.cs" />
     <Compile Include="Programming-Documents\Document\AddGroupShapeToDocument.cs" />
     <Compile Include="Programming-Documents\Document\CompareDocument.cs" />
+    <Compile Include="Programming-Documents\Document\GetFontLineSpacing.cs" />
+    <Compile Include="Programming-Documents\Document\ParagraphStyleSeparator.cs" />
+    <Compile Include="Programming-Documents\Document\WorkingWithImportFormatOptions.cs" />
     <Compile Include="Programming-Documents\Document\WorkingWithRevisions.cs" />
     <Compile Include="Programming-Documents\Document\CheckBoxTypeContentControl.cs" />
     <Compile Include="Programming-Documents\Document\ComboBoxContentControl.cs" />
@@ -201,6 +206,7 @@
     <Compile Include="Programming-Documents\Fields\ChangeFieldUpdateCultureSource.cs" />
     <Compile Include="Programming-Documents\Fields\ChangeLocale.cs" />
     <Compile Include="Programming-Documents\Fields\EvaluateIFCondition.cs" />
+    <Compile Include="Programming-Documents\Fields\FieldDisplayResults.cs" />
     <Compile Include="Programming-Documents\Fields\FieldUpdateCulture.cs" />
     <Compile Include="Programming-Documents\Fields\FieldUpdateCultureProvider.cs" />
     <Compile Include="Programming-Documents\Fields\GetFieldNames.cs" />
@@ -223,13 +229,16 @@
     <Compile Include="Programming-Documents\Fields\SpecifylocaleAtFieldlevel.cs" />
     <Compile Include="Programming-Documents\Find-Replace\FindReplaceUsingMetaCharacters.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceHtmlTextWithMeta-Characters.cs" />
+    <Compile Include="Programming-Documents\Find-Replace\ReplaceInHeaderAndFooter.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceWithEvaluator.cs" />
+    <Compile Include="Programming-Documents\Find-Replace\ReplaceWithHTML.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceWithRegex.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceWithString.cs" />
     <Compile Include="Programming-Documents\Hyperlink\ReplaceHyperlinks.cs" />
     <Compile Include="Programming-Documents\Images\RemoveWatermark.cs" />
     <Compile Include="Programming-Documents\Images\InsertBarcodeImage.cs" />
     <Compile Include="Programming-Documents\Images\ExtractImagesToFiles.cs" />
+    <Compile Include="Programming-Documents\Joining-Appending\AppendWithImportFormatOptions.cs" />
     <Compile Include="Programming-Documents\List\WorkingWithList.cs" />
     <Compile Include="Programming-Documents\Node\ExNode.cs" />
     <Compile Include="Programming-Documents\Ranges\RangesDeleteText.cs" />
@@ -343,6 +352,7 @@
     <Compile Include="Rendering-Printing\Print_CachePrinterSettings.cs" />
     <Compile Include="Rendering-Printing\ReceiveNotificationsOfFont .cs" />
     <Compile Include="Rendering-Printing\SetFontSettings.cs" />
+    <Compile Include="Rendering-Printing\WorkingWithFontResolution.cs" />
     <Compile Include="Rendering-Printing\WorkingWithFontSources.cs" />
     <Compile Include="Rendering-Printing\WorkingWithPdfSaveOptions.cs" />
     <Compile Include="Rendering-Printing\SpecifyDefaultFontWhenRendering.cs" />
@@ -358,6 +368,7 @@
     <Compile Include="Rendering-Printing\ImageColorFilters.cs" />
     <Compile Include="Rendering-Printing\RenderShape.cs" />
     <Compile Include="Rendering-Printing\SaveAsMultipageTiff.cs" />
+    <Compile Include="Rendering-Printing\ResourceSteamFontSourceExample.cs" />
     <Compile Include="Viewers-Visualizers\Document-Explorer\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -15,7 +15,10 @@ namespace ApiExamples
     [TestFixture]
     public class ExNestedMailMergeCustom : ApiExampleBase
     {
-        [Test]
+        //ExStart
+        //ExFor:MailMerge.ExecuteWithRegions(IMailMergeDataSource)
+        //ExSummary:Performs mail merge with regions from a custom data source.
+        [Test] //ExSkip
         public void MailMergeCustomDataSource()
         {
             // Create some data that we will use in the mail merge.
@@ -154,9 +157,6 @@ namespace ApiExamples
                 return (!IsEof);
             }
 
-            //ExStart
-            //ExId:GetChildDataSourceExample
-            //ExSummary:Shows how to get a child collection of objects by using the GetChildDataSource method in the parent class.
             public IMailMergeDataSource GetChildDataSource(string tableName)
             {
                 switch (tableName)
@@ -168,7 +168,6 @@ namespace ApiExamples
                         return null;
                 }
             }
-            //ExEnd
 
             private bool IsEof
             {
@@ -243,5 +242,6 @@ namespace ApiExamples
             private readonly OrderList mOrders;
             private int mRecordIndex;
         }
+        //ExEnd
     }
 }

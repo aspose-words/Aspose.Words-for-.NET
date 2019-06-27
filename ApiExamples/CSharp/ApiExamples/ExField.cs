@@ -7,7 +7,6 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -17,15 +16,18 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Aspose.Pdf.Text;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
+using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using Aspose.Words.Replacing;
 using NUnit.Framework;
+using LoadOptions = Aspose.Words.LoadOptions;
 #if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
 using Aspose.BarCode.BarCodeRecognition;
+#else
+using SkiaSharp;
 #endif
 
 namespace ApiExamples
@@ -404,6 +406,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Field.Update(bool)
+            //ExFor:LoadOptions.PreserveIncludePictureField
             //ExSummary:Shows a way to update a field ignoring the MERGEFORMAT switch
             LoadOptions loadOptions = new LoadOptions { PreserveIncludePictureField = true };
 
@@ -2187,7 +2190,7 @@ namespace ApiExamples
         //ExFor:ImageFieldMergingArgs.ImageWidth
         //ExFor:ImageFieldMergingArgs.ImageHeight
         //ExSummary:Shows how to set the dimensions of merged images.
-        [Test]
+        [Test] //ExSkip
         public void MergeFieldImageDimension()
         {
             Document doc = new Document();
@@ -2263,6 +2266,72 @@ namespace ApiExamples
             private readonly double mImageWidth;
             private readonly double mImageHeight;
             private readonly MergeFieldImageDimensionUnit mUnit;
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:ImageFieldMergingArgs.Image
+        //ExSummary:Shows how to set which images to merge during the mail merge.
+        [Test] //ExSkip
+        public void MergeFieldImages()
+        {
+            Document doc = new Document();
+
+            // Insert a merge field where images will be placed during the mail merge
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertField("MERGEFIELD Image:ImageColumn");
+
+            // When we merge images, our data table will normally have the full e. of the images we wish to merge
+            // If this is cumbersome, we can move image filename logic to another place and populate the data table with just shorthands for images
+            System.Data.DataTable dataTable = CreateDataTable("Images", "ImageColumn",
+                new string[]
+                {
+                    "Aspose logo",
+                    ".Net logo",
+                    "Watermark"
+                });
+
+            // A custom merging callback will contain filenames that our shorthands will refer to
+            doc.MailMerge.FieldMergingCallback = new ImageFilenameCallback();
+            doc.MailMerge.Execute(dataTable);
+
+            doc.Save(ArtifactsDir + "Field.MergeFieldImages.docx");
+        }
+
+        /// <summary>
+        /// Image merging callback that pairs image shorthand names with filenames
+        /// </summary>
+        private class ImageFilenameCallback : IFieldMergingCallback
+        {
+            public ImageFilenameCallback()
+            {
+                imageFilenames = new Dictionary<string, string>();
+                imageFilenames.Add("Aspose logo", ImageDir + "Aspose.Words.gif");
+                imageFilenames.Add(".Net logo", ImageDir + "dotnet-logo.png");
+                imageFilenames.Add("Watermark", ImageDir + "Watermark.png");
+            }
+
+            void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs e)
+            {
+                if (imageFilenames.ContainsKey(e.FieldValue.ToString()))
+                {
+                    #if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
+                    e.Image = Image.FromFile(imageFilenames[e.FieldValue.ToString()]);
+                    #else
+                    e.Image = SKBitmap.Decode(imageFilenames[e.FieldValue.ToString()]);
+                    e.ImageFileName = imageFilenames[e.FieldValue.ToString()];
+                    #endif
+                }
+                
+                Assert.NotNull(e.Image);
+            }
+
+            private readonly Dictionary<string, string> imageFilenames;
         }
         //ExEnd
 
@@ -5276,5 +5345,103 @@ namespace ApiExamples
             return field;
         }
         //ExEnd
+
+        [Test]
+        public void BidiOutline()
+        {
+            //ExStart
+            //ExFor:FieldShape
+            //ExFor:FieldShape.Text
+            //ExSummary:Shows how to create RTL lists with BIDIOUTLINE fields.
+            // Create a blank document and a document builder
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use our builder to insert a BIDIOUTLINE field
+            // This field numbers paragraphs like the AUTONUM/LISTNUM fields,
+            // but is only visible when a RTL editing language is enabled, such as Hebrew or Arabic
+            // The following field will display ".1", the RTL equivalent of list number "1."
+            FieldBidiOutline field = (FieldBidiOutline)builder.InsertField(FieldType.FieldBidiOutline, true);
+            Assert.AreEqual(" BIDIOUTLINE ", field.GetFieldCode());
+            builder.Writeln("שלום");
+
+            // Add two more BIDIOUTLINE fields, which will be automatically numbered ".2" and ".3"
+            builder.InsertField(FieldType.FieldBidiOutline, true);
+            builder.Writeln("שלום");
+            builder.InsertField(FieldType.FieldBidiOutline, true);
+            builder.Writeln("שלום");
+
+            // Set the horizontal text alignment for every paragraph in the document to RTL
+            foreach (Paragraph para in doc.GetChildNodes(NodeType.Paragraph, true))
+            {
+                para.ParagraphFormat.Bidi = true;
+            }
+
+            // If a RTL editing language is enabled in Microsoft Word, out fields will display numbers
+            // Otherwise, they will appear as "###" 
+            doc.Save(ArtifactsDir + "Field.BIDIOUTLINE.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void Legacy()
+        {
+            //ExStart
+            //ExFor:FieldEmbed
+            //ExFor:FieldShape
+            //ExFor:FieldShape.Text
+            //ExSummary:Shows how some older Microsoft Word fields such as SHAPE and EMBED are handled.
+            // Open a document that was created in Microsoft Word 2003
+            Document doc = new Document(MyDir + "Field.Legacy.doc");
+
+            // If we open the document in Word and press Alt+F9, we will see a SHAPE and an EMBED field
+            // A SHAPE field is the anchor/canvas for an autoshape object with the "In line with text" wrapping style enabled
+            // An EMBED field has the same function, but for an embedded object, such as a spreadsheet from an external Excel document
+            // However, these fields will not appear in the document's Fields collection
+            Assert.AreEqual(0, doc.Range.Fields.Count);
+
+            // These fields are supported only by old versions of Microsoft Word
+            // As such, they are converted into shapes during the document importation process and can instead be found in the collection of Shape nodes
+            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
+            Assert.AreEqual(3, shapes.Count);
+
+            // The first Shape node corresponds to what was the SHAPE field in the input document: the inline canvas for an autoshape
+            Shape shape = (Shape)shapes[0];
+            Assert.AreEqual(ShapeType.Image, shape.ShapeType);
+
+            // The next Shape node is the autoshape that is within the canvas
+            shape = (Shape)shapes[1];
+            Assert.AreEqual(ShapeType.Can, shape.ShapeType);
+
+            // The third Shape is what was the EMBED field that contained the external spreadsheet
+            shape = (Shape)shapes[2];
+            Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
+            //ExEnd
+        }
+
+        [Test]
+        public void FieldDisplayResult()
+        {
+            //ExStart
+            //ExFor:Field.DisplayResult
+            //ExSummary:Shows how to get the text that represents the displayed field result.
+            Document document = new Document(MyDir + "Field.FieldDisplayResult.docx");
+ 
+            FieldCollection fields = document.Range.Fields;
+ 
+            Assert.AreEqual("111", fields[0].DisplayResult);
+            Assert.AreEqual("222", fields[1].DisplayResult);
+            Assert.AreEqual("Multi\rLine\rText", fields[2].DisplayResult);
+            Assert.AreEqual("%", fields[3].DisplayResult);
+            Assert.AreEqual("Macro Button Text", fields[4].DisplayResult);
+            Assert.AreEqual(string.Empty, fields[5].DisplayResult);
+ 
+            // Method must be called to obtain correct value for the "FieldListNum", "FieldAutoNum",
+            // "FieldAutoNumOut" and "FieldAutoNumLgl" fields
+            document.UpdateListLabels();
+ 
+            Assert.AreEqual("1)", fields[5].DisplayResult);
+            //ExEnd
+        }
     }
 }

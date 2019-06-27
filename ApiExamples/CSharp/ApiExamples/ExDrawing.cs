@@ -282,7 +282,7 @@ namespace ApiExamples
 
             builder.MoveTo(textbox.FirstParagraph);
             builder.Write("This text is flipped 90 degrees to the left.");
-
+            
             doc.Save(ArtifactsDir + "Drawing.TextBox.docx");
             //ExEnd
         }
@@ -487,8 +487,9 @@ namespace ApiExamples
             Assert.AreEqual(200, imageSize.HeightPixels);
             Assert.AreEqual(200, imageSize.WidthPixels);
 
-            Assert.AreEqual(95.986599999999996d, imageSize.HorizontalResolution);
-            Assert.AreEqual(95.986599999999996d, imageSize.VerticalResolution);
+			const double delta = 0.05;
+            Assert.AreEqual(95.98d, imageSize.HorizontalResolution, delta);
+            Assert.AreEqual(95.98d, imageSize.VerticalResolution, delta);
 
             // These values are read-only
             // If we want to transform the image, we need to change the size of the shape that contains it

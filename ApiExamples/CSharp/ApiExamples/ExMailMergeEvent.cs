@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -30,6 +31,7 @@ namespace ApiExamples
             //ExFor:MailMerge.FieldMergingCallback
             //ExFor:IFieldMergingCallback
             //ExFor:FieldMergingArgs
+            //ExFor:FieldMergingArgsBase
             //ExFor:FieldMergingArgsBase.Field
             //ExFor:FieldMergingArgsBase.DocumentFieldName
             //ExFor:FieldMergingArgsBase.Document
@@ -95,6 +97,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.MoveToMergeField(String)
             //ExFor:FieldMergingArgsBase.FieldName
+            //ExFor:FieldMergingArgsBase.TableName
+            //ExFor:FieldMergingArgsBase.RecordIndex
             //ExSummary:Shows how to insert checkbox form fields into a document during mail merge.
             // File 'MailMerge.InsertCheckBox.doc' is a template
             // containing the table with the following fields in it:
@@ -122,11 +126,21 @@ namespace ApiExamples
             {
                 if (args.DocumentFieldName.Equals("CourseName"))
                 {
+                    // The name of the table that we are merging can be found here
+                    Assert.AreEqual("StudentCourse", args.TableName);
+
                     // Insert the checkbox for this merge field, using DocumentBuilder.
                     DocumentBuilder builder = new DocumentBuilder(args.Document);
                     builder.MoveToMergeField(args.FieldName);
                     builder.InsertCheckBox(args.DocumentFieldName + mCheckBoxCount, false, 0);
-                    builder.Write((string) args.FieldValue);
+
+                    // Get the actual value of the field
+                    string fieldValue = args.FieldValue.ToString();
+
+                    // In this case, for every record index 'n', the corresponding field value is "Course n"
+                    Assert.AreEqual(Char.GetNumericValue(fieldValue[7]), args.RecordIndex);
+
+                    builder.Write(fieldValue);
                     mCheckBoxCount++;
                 }
             }
@@ -166,6 +180,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExId:MailMergeAlternatingRows
+            //ExFor:MailMerge.ExecuteWithRegions(DataTable)
             //ExSummary:Demonstrates how to implement custom logic in the MergeField event to apply cell formatting.
             Document doc = new Document(MyDir + "MailMerge.AlternatingRows.doc");
 
