@@ -18,7 +18,7 @@ namespace ApiExamples
         public void PageBreaks()
         {
             //ExStart
-            //ExFor:TxtSaveOptions.ForcePageBreaks
+            //ExFor:TxtSaveOptionsBase.ForcePageBreaks
             //ExSummary:Shows how to specify whether the page breaks should be preserved during export.
             Document doc = new Document(MyDir + "SaveOptions.PageBreaks.docx");
 
@@ -49,7 +49,7 @@ namespace ApiExamples
         public void ExportHeadersFooters(TxtExportHeadersFootersMode txtExportHeadersFootersMode)
         {
             //ExStart
-            //ExFor:TxtSaveOptions.ExportHeadersFootersMode
+            //ExFor:TxtSaveOptionsBase.ExportHeadersFootersMode
             //ExFor:TxtExportHeadersFootersMode
             //ExSummary:Shows how to specifies the way headers and footers are exported to plain text format.
             Document doc = new Document(MyDir + "HeaderFooter.HeaderFooterOrder.docx");
