@@ -496,6 +496,44 @@ namespace ApiExamples
         }
 
         [Test]
+        public void XmlMapping()
+        {
+            //ExStart
+            //ExFor:XmlMapping
+            //ExFor:XmlMapping.CustomXmlPart
+            //ExFor:XmlMapping.Delete
+            //ExFor:XmlMapping.IsMapped
+            //ExFor:XmlMapping.PrefixMappings
+            //ExFor:XmlMapping.XPath
+            //ExSummary:Shows how to set XML mappings for CustomXmlParts.
+            Document doc = new Document();
+
+            // Construct an XML part that contains data and add it to the document's CustomXmlPart collection
+            string xmlPartId = Guid.NewGuid().ToString("B");
+            string xmlPartContent = "<root><text>Text element #1</text><text>Text element #2</text></root>";
+            CustomXmlPart xmlPart = doc.CustomXmlParts.Add(xmlPartId, xmlPartContent);
+            Console.WriteLine(Encoding.UTF8.GetString(xmlPart.Data));
+
+            // Create a StructuredDocumentTag that will display the contents of our CustomXmlPart in the document
+            StructuredDocumentTag sdt = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Block);
+
+            // If we set a mapping for our StructuredDocumentTag,
+            // it will only display a part of the CustomXmlPart that the XPath points to
+            // This XPath will point to the contents second "<text>" element of the first "<root>" element of our CustomXmlPart
+            sdt.XmlMapping.SetMapping(xmlPart, "/root[1]/text[2]", "xmlns:ns='http://www.w3.org/2001/XMLSchema'");
+
+            Assert.True(sdt.XmlMapping.IsMapped);
+            Assert.AreEqual(xmlPart, sdt.XmlMapping.CustomXmlPart);
+            Assert.AreEqual("/root[1]/text[2]", sdt.XmlMapping.XPath);
+            Assert.AreEqual("xmlns:ns='http://www.w3.org/2001/XMLSchema'", sdt.XmlMapping.PrefixMappings);
+
+            // Add the StructuredDocumentTag to the document to display the content from our CustomXmlPart
+            doc.FirstSection.Body.AppendChild(sdt);
+            doc.Save(ArtifactsDir + "SDT.XmlMapping.docx");
+            //ExEnd
+        }
+
+        [Test]
         public void CustomXmlSchemaCollection()
         {
             //ExStart
