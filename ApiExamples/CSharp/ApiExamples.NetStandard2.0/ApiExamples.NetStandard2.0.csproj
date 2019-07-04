@@ -97,7 +97,8 @@
   <ItemGroup>
     <PackageReference Include="Aspose.BarCode" Version="19.2.0" />
     <PackageReference Include="Aspose.PDF" Version="19.2.0" />
-    <PackageReference Include="Aspose.Words" Version="19.6.0" />
+    <PackageReference Include="Aspose.Words" Version="19.7.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="19.7.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="NUnit" Version="3.11.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.12.0" />
