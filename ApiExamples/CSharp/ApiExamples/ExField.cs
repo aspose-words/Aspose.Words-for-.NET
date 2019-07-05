@@ -5347,6 +5347,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldShape
             //ExFor:FieldShape.Text
+            //ExFor:ParagraphFormat.Bidi
             //ExSummary:Shows how to create RTL lists with BIDIOUTLINE fields.
             // Create a blank document and a document builder
             Document doc = new Document();

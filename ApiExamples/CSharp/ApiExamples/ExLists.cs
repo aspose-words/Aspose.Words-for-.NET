@@ -135,6 +135,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ListFormat.List
+            //ExFor:ParagraphFormat.ClearFormatting
+            //ExFor:ParagraphFormat.DropCapPosition
             //ExSummary:Shows how to start a numbered list, add a bulleted list inside it, then return to the numbered list.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
