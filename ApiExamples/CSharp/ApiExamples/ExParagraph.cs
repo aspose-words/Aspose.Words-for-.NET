@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web.UI;
 using Aspose.Words;
 using Aspose.Words.Fields;
 using Aspose.Words.Drawing;
@@ -378,17 +379,34 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Paragraph.BreakIsStyleSeparator
-            //ExSummary:Shows how to check if paragraph break is a Style Separator
-            Document doc = new Document(MyDir + "Paragraph.BreakIsStyleSeparator.docx");
-            
-            Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
-            if (paragraph.BreakIsStyleSeparator)
-            {
-                // Do something ...
-                Assert.Pass(); //ExSkip
-            }
+            //ExSummary:Shows how to write text to the same line as a TOC heading and have it not show up in the TOC.
+            // Create a blank document and insert a table of contents field
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertTableOfContents("\\o \\h \\z \\u");
+            builder.InsertBreak(BreakType.PageBreak);
 
-            Assert.Fail(); //ExSkip
+            // Insert a paragraph with a style that will be picked up as an entry in the TOC
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
+
+            // Both these strings are on the same line and same paragraph and will therefore show up on the same TOC entry
+            builder.Write("Heading 1. ");
+            builder.Write("Will appear in the TOC. ");
+
+            // Any text on a new line that does not have a heading style will not register as a TOC entry
+            // If we insert a style separator, we can write more text on the same line
+            // and use a different style without it showing up in the TOC
+            // If we use a heading type style afterwards, we can draw two TOC entries from one line of document text
+            builder.InsertStyleSeparator();
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Quote;
+            builder.Write("Won't appear in the TOC. ");
+
+            // This flag is set to true for such paragraphs
+            Assert.True(doc.FirstSection.Body.Paragraphs[0].BreakIsStyleSeparator);
+
+            // Update the TOC and save the document
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Paragraph.BreakIsStyleSeparator.docx");
             //ExEnd
         }
     }
