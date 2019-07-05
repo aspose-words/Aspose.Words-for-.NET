@@ -332,6 +332,48 @@ namespace ApiExamples
         }
 
         [Test]
+        public void IsRevision()
+        {
+            //ExStart
+            //ExFor:Paragraph.IsDeleteRevision
+            //ExFor:Paragraph.IsInsertRevision
+            //ExSummary:Shows how to work with revision paragraphs
+            // Create a blank document, populate the first paragraph with text and add two more
+            Document doc = new Document();
+            Body body = doc.FirstSection.Body;
+            Paragraph para = body.FirstParagraph;
+            para.AppendChild(new Run(doc, "Paragraph 1. "));
+            body.AppendParagraph("Paragraph 2. ");
+            body.AppendParagraph("Paragraph 3. ");
+
+            // We have three paragraphs, none of which registered as any type of revision
+            // If we add/remove any content in the document while tracking revisions,
+            // they will be displayed as such in the document and can be accepted/rejected
+            doc.StartTrackRevisions("John Doe", DateTime.Now);
+
+            // This paragraph is a revision and will have the according "IsInsertRevision" flag set
+            para = body.AppendParagraph("Paragraph 4. ");
+            Assert.True(para.IsInsertRevision);
+            
+            // Get the document's paragraph collection and remove a paragraph
+            ParagraphCollection paragraphs = body.Paragraphs;
+            Assert.AreEqual(4, paragraphs.Count);
+            para = paragraphs[2];
+            para.Remove();
+
+            // Since we are tracking revisions, the paragraph still exists in the document, will have the "IsDeleteRevision" set
+            // and will be displayed as a revision in Microsoft Word, until we accept or reject all revisions
+            Assert.AreEqual(4, paragraphs.Count);
+            Assert.True(para.IsDeleteRevision);
+
+            // The delete revision paragraph is removed once we accept changes
+            doc.AcceptAllRevisions();
+            Assert.AreEqual(3, paragraphs.Count);
+            Assert.IsEmpty(para);
+            //ExEnd
+        }
+
+        [Test]
         public void BreakIsStyleSeparator()
         {
             //ExStart
