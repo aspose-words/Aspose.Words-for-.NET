@@ -29,6 +29,9 @@ namespace ApiExamples
             //ExFor:HeaderFooter.HeaderFooterType
             //ExFor:HeaderFooter.IsHeader
             //ExFor:HeaderFooterCollection
+            //ExFor:Paragraph.IsEndOfHeaderFooter
+            //ExFor:Paragraph.ParentSection
+            //ExFor:Paragraph.ParentStory
             //ExFor:Story.AppendParagraph
             //ExSummary:Creates a header and footer using the document object model and insert them into a section.
             Document doc = new Document();
@@ -37,20 +40,24 @@ namespace ApiExamples
             doc.FirstSection.HeadersFooters.Add(header);
 
             // Add a paragraph with text to the footer.
-            header.AppendParagraph("My header");
+            Paragraph para = header.AppendParagraph("My header");
 
             Assert.True(header.IsHeader);
+            Assert.True(para.IsEndOfHeaderFooter);
 
             HeaderFooter footer = new HeaderFooter(doc, HeaderFooterType.FooterPrimary);
             doc.FirstSection.HeadersFooters.Add(footer);
 
-            Assert.False(footer.IsHeader);
-
             // Add a paragraph with text to the footer.
-            footer.AppendParagraph("My footer");
+            para = footer.AppendParagraph("My footer");
 
-            Assert.AreEqual(header.ParentSection, footer.ParentSection);
+            Assert.False(footer.IsHeader);
+            Assert.True(para.IsEndOfHeaderFooter);
 
+            Assert.AreEqual(footer, para.ParentStory);
+            Assert.AreEqual(footer.ParentSection, para.ParentSection);
+            Assert.AreEqual(footer.ParentSection, header.ParentSection);
+            
             doc.Save(ArtifactsDir + "HeaderFooter.HeaderFooterCreate.docx");
             //ExEnd
             doc = new Document(ArtifactsDir + "HeaderFooter.HeaderFooterCreate.docx");

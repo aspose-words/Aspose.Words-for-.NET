@@ -1,6 +1,6 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
-using System.Web.UI;
 using Aspose.Words;
 using Aspose.Words.Fields;
 using Aspose.Words.Drawing;
@@ -407,6 +407,86 @@ namespace ApiExamples
             // Update the TOC and save the document
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Paragraph.BreakIsStyleSeparator.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void TabStops()
+        {
+            //ExStart
+            //ExFor:Paragraph.GetEffectiveTabStops
+            //ExSummary:Shows how to set custom tab stops.
+            // Create a blank document and get the first paragraph
+            Document doc = new Document();
+            Paragraph para = doc.FirstSection.Body.FirstParagraph;
+
+            // If there are no tab stops in this collection, while we are in this paragraph
+            // the cursor will jump 36 points each time we press the Tab key in Microsoft Word
+            Assert.AreEqual(0, para.GetEffectiveTabStops().Length);
+
+            // We can add custom tab stops in Microsoft Word if we enable the ruler via the view tab
+            // Each unit on that ruler is two default tab stops, which is 72 points
+            // Those tab stops can be programmatically added to the paragraph like this
+            para.ParagraphFormat.TabStops.Add(72, TabAlignment.Left, TabLeader.Dots);
+            para.ParagraphFormat.TabStops.Add(216, TabAlignment.Center, TabLeader.Dashes);
+            para.ParagraphFormat.TabStops.Add(360, TabAlignment.Right, TabLeader.Line);
+
+            // These tab stops are added to this collection, and can also be seen by enabling the ruler mentioned above
+            Assert.AreEqual(3, para.GetEffectiveTabStops().Length);
+
+            // Add a Run with tab characters that will snap the text to our TabStop positions and save the document
+            para.AppendChild(new Run(doc, "\tTab 1\tTab 2\tTab 3"));
+            doc.Save(ArtifactsDir + "Paragraph.TabStops.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void JoinRuns()
+        {
+            //ExStart
+            //ExFor:Paragraph.JoinRunsWithSameFormatting
+            //ExSummary:Shows how to simplify paragraphs by merging superfluous runs.
+            // Create a blank Document and insert a few short Runs into the first Paragraph
+            // Having many small runs with the same formatting can happen if, for instance,
+            // we edit a document extensively in Microsoft Word
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("Run 1. ");
+            builder.Write("Run 2. ");
+            builder.Write("Run 3. ");
+            builder.Write("Run 4. ");
+
+            // The Paragraph may look like it's in once piece in Microsoft Word,
+            // but under the surface it is fragmented into several Runs, which leaves room for optimization
+            Paragraph para = builder.CurrentParagraph;
+            Assert.AreEqual(4, para.Runs.Count);
+
+            // Change the style of the last run to something different from the first three
+            para.Runs[3].Font.StyleIdentifier = StyleIdentifier.Emphasis;
+
+            // Currently, the document is 5689 bytes in size
+            using (MemoryStream stream = new MemoryStream())
+            {
+                doc.Save(stream, SaveFormat.Docx);
+                Assert.AreEqual(5689, (int)stream.Length);
+            }
+
+            // We can run the JoinRunsWithSameFormatting() method to merge similar Runs
+            // This method also returns the number of joins that occured during the merge
+            // Two merges occured to combine Runs 1-3, while Run 4 was left out because it has an incompatible style
+            Assert.AreEqual(2, para.JoinRunsWithSameFormatting());
+
+            // The paragraph has been simplified to two runs
+            Assert.AreEqual(2, para.Runs.Count);
+            Assert.AreEqual("Run 1. Run 2. Run 3. ", para.Runs[0].Text);
+            Assert.AreEqual("Run 4. ", para.Runs[1].Text);
+
+            // Even the Document's size has been slightly reduced
+            using (MemoryStream stream = new MemoryStream())
+            {
+                doc.Save(stream, SaveFormat.Docx);
+                Assert.AreEqual(5688, (int)stream.Length);
+            }
             //ExEnd
         }
     }
