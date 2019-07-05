@@ -14,35 +14,44 @@ namespace ApiExamples
         public void InsertField()
         {
             //ExStart
+            //ExFor:Paragraph.AppendField(FieldType, Boolean)
+            //ExFor:Paragraph.AppendField(String)
+            //ExFor:Paragraph.AppendField(String, String)
             //ExFor:Paragraph.InsertField(string, Node, bool)
             //ExFor:Paragraph.InsertField(FieldType, bool, Node, bool)
             //ExFor:Paragraph.InsertField(string, string, Node, bool)
-            //ExSummary:Shows how to insert field using several methods: "field code", "field code and field value", "field code and field value after a run of text"
+            //ExSummary:Demonstrates various ways of inserting fields.
+            // Create a blank document and get its first paragraph
             Document doc = new Document();
-
-            // Get the first paragraph of the document
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
 
-            // Inserting field using field code
-            // Note: All methods support inserting field after some node. Just set "true" in the "isAfter" parameter
-            para.InsertField(" AUTHOR ", null, false);
+            // Choose a field by FieldType, append it to the end of the paragraph and update it
+            para.AppendField(FieldType.FieldDate, true);
 
-            // Using field type
-            // Note:
-            // 1. For inserting field using field type, you can choose, update field before or after you open the document ("updateField" parameter)
-            // 2. For other methods it's works automatically
-            para.InsertField(FieldType.FieldAuthor, false, null, true);
+            // Append a field with a field code created by hand 
+            para.AppendField(" TIME  \\@ \"HH:mm:ss\" ");
 
-            // Using field code and field value
-            para.InsertField(" AUTHOR ", "Test Field Value", null, false);
+            // Append a field that will display a placeholder value until it is updated manually in Microsoft Word
+            // or programmatically with Document.UpdateFields() or Field.Update()
+            para.AppendField(" QUOTE \"Real value\"", "Placeholder value");
 
-            // Add a run of text
-            Run run = new Run(doc) { Text = " Hello World!" };
+            // We can choose a node in the paragraph and insert a field
+            // before or after that node instead of appending it to the end of a paragraph
+            para = doc.FirstSection.Body.AppendParagraph("");
+            Run run = new Run(doc) { Text = " My Run. " };
             para.AppendChild(run);
 
-            // Using field code and field value before a run of text
-            // Note: For inserting field before/after a run of text you can use all methods above, just add ref on your text ("refNode" parameter)
-            para.InsertField(" AUTHOR ", "Test Field Value", run, false);
+            // Insert a field into the paragraph and place it before the run we created
+            doc.BuiltInDocumentProperties["Author"].Value = "John Doe";
+            para.InsertField(FieldType.FieldAuthor, true, run, false);
+
+            // Insert another field designated by field code before the run
+            para.InsertField(" QUOTE \"Real value\" ", run, false);
+
+            // Insert another field with a place holder value and place it after the run
+            para.InsertField(" QUOTE \"Real value\"", " Placeholder value. ", run, true);
+
+            doc.Save(ArtifactsDir + "Paragraph.InsertField.docx");
             //ExEnd
         }
 
