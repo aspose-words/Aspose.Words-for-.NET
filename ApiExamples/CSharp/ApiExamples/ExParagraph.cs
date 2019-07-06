@@ -21,7 +21,7 @@ namespace ApiExamples
             //ExFor:Paragraph.InsertField(string, Node, bool)
             //ExFor:Paragraph.InsertField(FieldType, bool, Node, bool)
             //ExFor:Paragraph.InsertField(string, string, Node, bool)
-            //ExSummary:Demonstrates various ways of inserting fields.
+            //ExSummary:Shows how to insert fields in different ways.
             // Create a blank document and get its first paragraph
             Document doc = new Document();
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
@@ -338,7 +338,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Paragraph.IsDeleteRevision
             //ExFor:Paragraph.IsInsertRevision
-            //ExSummary:Shows how to work with revision paragraphs
+            //ExSummary:Shows how to work with revision paragraphs.
             // Create a blank document, populate the first paragraph with text and add two more
             Document doc = new Document();
             Body body = doc.FirstSection.Body;
@@ -464,7 +464,7 @@ namespace ApiExamples
             // Change the style of the last run to something different from the first three
             para.Runs[3].Font.StyleIdentifier = StyleIdentifier.Emphasis;
 
-            // Currently, the document is 5689 bytes in size
+            // Currently, the document is 5689 bytes in size // INSP: I think this code will not benefit to users
             using (MemoryStream stream = new MemoryStream())
             {
                 doc.Save(stream, SaveFormat.Docx);
@@ -481,7 +481,7 @@ namespace ApiExamples
             Assert.AreEqual("Run 1. Run 2. Run 3. ", para.Runs[0].Text);
             Assert.AreEqual("Run 4. ", para.Runs[1].Text);
 
-            // Even the Document's size has been slightly reduced
+            // Even the Document's size has been slightly reduced // INSP: See above
             using (MemoryStream stream = new MemoryStream())
             {
                 doc.Save(stream, SaveFormat.Docx);
