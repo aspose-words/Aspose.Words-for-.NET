@@ -1108,18 +1108,28 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.InsertShape(ShapeType, RelativeHorizontalPosition, double, RelativeVerticalPosition, double, double, double, WrapType)
             //ExFor:DocumentBuilder.InsertShape(ShapeType, double, double)
-            //ExSummary:Shows how to insert DML shape into the document
+            //ExSummary:Shows how to insert DML shapes into the document using a document builder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            // Two ways of shape insertion
-            Shape freeFloatingShape = builder.InsertShape(ShapeType.TextBox, RelativeHorizontalPosition.Page, 100, RelativeVerticalPosition.Page, 100, 50, 50, WrapType.None);
+            
+            // There are two ways of shape insertion
+            // These methods allow inserting DML shape into the document model
+            // Document must be saved in the format, which supports DML shapes, otherwise, such nodes will be converted
+            // to VML shape, while document saving
+
+            // 1. Free-floating shape insertion
+            Shape freeFloatingShape = builder.InsertShape(ShapeType.TopCornersRounded, RelativeHorizontalPosition.Page, 100, RelativeVerticalPosition.Page, 100, 50, 50, WrapType.None);
             freeFloatingShape.Rotation = 30.0;
-            Shape inlineShape = builder.InsertShape(ShapeType.TextBox, 50, 50);
+            // 2. Inline shape insertion
+            Shape inlineShape = builder.InsertShape(ShapeType.DiagonalCornersRounded, 50, 50);
             inlineShape.Rotation = 30.0;
 
+            // If you need to create "NonPrimitive" shapes, like SingleCornerSnipped, TopCornersSnipped, DiagonalCornersSnipped,
+            // TopCornersOneRoundedOneSnipped, SingleCornerRounded, TopCornersRounded, DiagonalCornersRounded
+            // please save the document with "Strict" or "Transitional" compliance which allows saving shape as DML
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
-            // "Strict" or "Transitional" compliance allows to save shape as DML
             saveOptions.Compliance = OoxmlCompliance.Iso29500_2008_Transitional;
+            
             doc.Save(ArtifactsDir + "RotatedShape.docx", saveOptions);
             //ExEnd
         }

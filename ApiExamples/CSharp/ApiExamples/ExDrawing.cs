@@ -158,6 +158,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
+            // If you need to create "NonPrimitive" shapes, like SingleCornerSnipped, TopCornersSnipped, DiagonalCornersSnipped,
+            // TopCornersOneRoundedOneSnipped, SingleCornerRounded, TopCornersRounded, DiagonalCornersRounded
+            // please use DocumentBuilder.InsertShape methods
             Shape balloon = new Shape(doc, ShapeType.Balloon)
             {
                 Width = 200, 
