@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Fields;
@@ -14,35 +15,44 @@ namespace ApiExamples
         public void InsertField()
         {
             //ExStart
+            //ExFor:Paragraph.AppendField(FieldType, Boolean)
+            //ExFor:Paragraph.AppendField(String)
+            //ExFor:Paragraph.AppendField(String, String)
             //ExFor:Paragraph.InsertField(string, Node, bool)
             //ExFor:Paragraph.InsertField(FieldType, bool, Node, bool)
             //ExFor:Paragraph.InsertField(string, string, Node, bool)
-            //ExSummary:Shows how to insert field using several methods: "field code", "field code and field value", "field code and field value after a run of text"
+            //ExSummary:Shows how to insert fields in different ways.
+            // Create a blank document and get its first paragraph
             Document doc = new Document();
-
-            // Get the first paragraph of the document
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
 
-            // Inserting field using field code
-            // Note: All methods support inserting field after some node. Just set "true" in the "isAfter" parameter
-            para.InsertField(" AUTHOR ", null, false);
+            // Choose a field by FieldType, append it to the end of the paragraph and update it
+            para.AppendField(FieldType.FieldDate, true);
 
-            // Using field type
-            // Note:
-            // 1. For inserting field using field type, you can choose, update field before or after you open the document ("updateField" parameter)
-            // 2. For other methods it's works automatically
-            para.InsertField(FieldType.FieldAuthor, false, null, true);
+            // Append a field with a field code created by hand 
+            para.AppendField(" TIME  \\@ \"HH:mm:ss\" ");
 
-            // Using field code and field value
-            para.InsertField(" AUTHOR ", "Test Field Value", null, false);
+            // Append a field that will display a placeholder value until it is updated manually in Microsoft Word
+            // or programmatically with Document.UpdateFields() or Field.Update()
+            para.AppendField(" QUOTE \"Real value\"", "Placeholder value");
 
-            // Add a run of text
-            Run run = new Run(doc) { Text = " Hello World!" };
+            // We can choose a node in the paragraph and insert a field
+            // before or after that node instead of appending it to the end of a paragraph
+            para = doc.FirstSection.Body.AppendParagraph("");
+            Run run = new Run(doc) { Text = " My Run. " };
             para.AppendChild(run);
 
-            // Using field code and field value before a run of text
-            // Note: For inserting field before/after a run of text you can use all methods above, just add ref on your text ("refNode" parameter)
-            para.InsertField(" AUTHOR ", "Test Field Value", run, false);
+            // Insert a field into the paragraph and place it before the run we created
+            doc.BuiltInDocumentProperties["Author"].Value = "John Doe";
+            para.InsertField(FieldType.FieldAuthor, true, run, false);
+
+            // Insert another field designated by field code before the run
+            para.InsertField(" QUOTE \"Real value\" ", run, false);
+
+            // Insert another field with a place holder value and place it after the run
+            para.InsertField(" QUOTE \"Real value\"", " Placeholder value. ", run, true);
+
+            doc.Save(ArtifactsDir + "Paragraph.InsertField.docx");
             //ExEnd
         }
 
@@ -323,21 +333,146 @@ namespace ApiExamples
         }
 
         [Test]
+        public void IsRevision()
+        {
+            //ExStart
+            //ExFor:Paragraph.IsDeleteRevision
+            //ExFor:Paragraph.IsInsertRevision
+            //ExSummary:Shows how to work with revision paragraphs.
+            // Create a blank document, populate the first paragraph with text and add two more
+            Document doc = new Document();
+            Body body = doc.FirstSection.Body;
+            Paragraph para = body.FirstParagraph;
+            para.AppendChild(new Run(doc, "Paragraph 1. "));
+            body.AppendParagraph("Paragraph 2. ");
+            body.AppendParagraph("Paragraph 3. ");
+
+            // We have three paragraphs, none of which registered as any type of revision
+            // If we add/remove any content in the document while tracking revisions,
+            // they will be displayed as such in the document and can be accepted/rejected
+            doc.StartTrackRevisions("John Doe", DateTime.Now);
+
+            // This paragraph is a revision and will have the according "IsInsertRevision" flag set
+            para = body.AppendParagraph("Paragraph 4. ");
+            Assert.True(para.IsInsertRevision);
+            
+            // Get the document's paragraph collection and remove a paragraph
+            ParagraphCollection paragraphs = body.Paragraphs;
+            Assert.AreEqual(4, paragraphs.Count);
+            para = paragraphs[2];
+            para.Remove();
+
+            // Since we are tracking revisions, the paragraph still exists in the document, will have the "IsDeleteRevision" set
+            // and will be displayed as a revision in Microsoft Word, until we accept or reject all revisions
+            Assert.AreEqual(4, paragraphs.Count);
+            Assert.True(para.IsDeleteRevision);
+
+            // The delete revision paragraph is removed once we accept changes
+            doc.AcceptAllRevisions();
+            Assert.AreEqual(3, paragraphs.Count);
+            Assert.IsEmpty(para);
+            //ExEnd
+        }
+
+        [Test]
         public void BreakIsStyleSeparator()
         {
             //ExStart
             //ExFor:Paragraph.BreakIsStyleSeparator
-            //ExSummary:Shows how to check if paragraph break is a Style Separator
-            Document doc = new Document(MyDir + "Paragraph.BreakIsStyleSeparator.docx");
-            
-            Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
-            if (paragraph.BreakIsStyleSeparator)
-            {
-                // Do something ...
-                Assert.Pass(); //ExSkip
-            }
+            //ExSummary:Shows how to write text to the same line as a TOC heading and have it not show up in the TOC.
+            // Create a blank document and insert a table of contents field
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertTableOfContents("\\o \\h \\z \\u");
+            builder.InsertBreak(BreakType.PageBreak);
 
-            Assert.Fail(); //ExSkip
+            // Insert a paragraph with a style that will be picked up as an entry in the TOC
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
+
+            // Both these strings are on the same line and same paragraph and will therefore show up on the same TOC entry
+            builder.Write("Heading 1. ");
+            builder.Write("Will appear in the TOC. ");
+
+            // Any text on a new line that does not have a heading style will not register as a TOC entry
+            // If we insert a style separator, we can write more text on the same line
+            // and use a different style without it showing up in the TOC
+            // If we use a heading type style afterwards, we can draw two TOC entries from one line of document text
+            builder.InsertStyleSeparator();
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Quote;
+            builder.Write("Won't appear in the TOC. ");
+
+            // This flag is set to true for such paragraphs
+            Assert.True(doc.FirstSection.Body.Paragraphs[0].BreakIsStyleSeparator);
+
+            // Update the TOC and save the document
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Paragraph.BreakIsStyleSeparator.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void TabStops()
+        {
+            //ExStart
+            //ExFor:Paragraph.GetEffectiveTabStops
+            //ExSummary:Shows how to set custom tab stops.
+            // Create a blank document and get the first paragraph
+            Document doc = new Document();
+            Paragraph para = doc.FirstSection.Body.FirstParagraph;
+
+            // If there are no tab stops in this collection, while we are in this paragraph
+            // the cursor will jump 36 points each time we press the Tab key in Microsoft Word
+            Assert.AreEqual(0, para.GetEffectiveTabStops().Length);
+
+            // We can add custom tab stops in Microsoft Word if we enable the ruler via the view tab
+            // Each unit on that ruler is two default tab stops, which is 72 points
+            // Those tab stops can be programmatically added to the paragraph like this
+            para.ParagraphFormat.TabStops.Add(72, TabAlignment.Left, TabLeader.Dots);
+            para.ParagraphFormat.TabStops.Add(216, TabAlignment.Center, TabLeader.Dashes);
+            para.ParagraphFormat.TabStops.Add(360, TabAlignment.Right, TabLeader.Line);
+
+            // These tab stops are added to this collection, and can also be seen by enabling the ruler mentioned above
+            Assert.AreEqual(3, para.GetEffectiveTabStops().Length);
+
+            // Add a Run with tab characters that will snap the text to our TabStop positions and save the document
+            para.AppendChild(new Run(doc, "\tTab 1\tTab 2\tTab 3"));
+            doc.Save(ArtifactsDir + "Paragraph.TabStops.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void JoinRuns()
+        {
+            //ExStart
+            //ExFor:Paragraph.JoinRunsWithSameFormatting
+            //ExSummary:Shows how to simplify paragraphs by merging superfluous runs.
+            // Create a blank Document and insert a few short Runs into the first Paragraph
+            // Having many small runs with the same formatting can happen if, for instance,
+            // we edit a document extensively in Microsoft Word
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("Run 1. ");
+            builder.Write("Run 2. ");
+            builder.Write("Run 3. ");
+            builder.Write("Run 4. ");
+
+            // The Paragraph may look like it's in once piece in Microsoft Word,
+            // but under the surface it is fragmented into several Runs, which leaves room for optimization
+            Paragraph para = builder.CurrentParagraph;
+            Assert.AreEqual(4, para.Runs.Count);
+
+            // Change the style of the last run to something different from the first three
+            para.Runs[3].Font.StyleIdentifier = StyleIdentifier.Emphasis;
+
+            // We can run the JoinRunsWithSameFormatting() method to merge similar Runs
+            // This method also returns the number of joins that occured during the merge
+            // Two merges occured to combine Runs 1-3, while Run 4 was left out because it has an incompatible style
+            Assert.AreEqual(2, para.JoinRunsWithSameFormatting());
+
+            // The paragraph has been simplified to two runs
+            Assert.AreEqual(2, para.Runs.Count);
+            Assert.AreEqual("Run 1. Run 2. Run 3. ", para.Runs[0].Text);
+            Assert.AreEqual("Run 4. ", para.Runs[1].Text);
             //ExEnd
         }
     }

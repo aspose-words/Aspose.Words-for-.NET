@@ -636,6 +636,7 @@ namespace ApiExamples
             //ExFor:ParagraphFormat.KeepWithNext
             //ExFor:Row.IsLastRow
             //ExFor:Paragraph.IsEndOfCell
+            //ExFor:Paragraph.IsInCell
             //ExFor:Cell.ParentRow
             //ExFor:Cell.Paragraphs
             //ExId:KeepTableTogether
@@ -645,8 +646,13 @@ namespace ApiExamples
             // row of the table.
             foreach (Cell cell in table.GetChildNodes(NodeType.Cell, true).OfType<Cell>())
             foreach (Paragraph para in cell.Paragraphs.OfType<Paragraph>())
+            {
+                // Every paragraph that's inside a cell will have this flag set
+                Assert.True(para.IsInCell);
+
                 if (!(cell.ParentRow.IsLastRow && para.IsEndOfCell))
                     para.ParagraphFormat.KeepWithNext = true;
+            }
             //ExEnd
 
             doc.Save(ArtifactsDir + "Table.KeepTableTogether.doc");
