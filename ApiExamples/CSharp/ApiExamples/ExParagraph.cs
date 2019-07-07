@@ -464,13 +464,6 @@ namespace ApiExamples
             // Change the style of the last run to something different from the first three
             para.Runs[3].Font.StyleIdentifier = StyleIdentifier.Emphasis;
 
-            // Currently, the document is 5689 bytes in size // INSP: I think this code will not benefit to users
-            using (MemoryStream stream = new MemoryStream())
-            {
-                doc.Save(stream, SaveFormat.Docx);
-                Assert.AreEqual(5689, (int)stream.Length);
-            }
-
             // We can run the JoinRunsWithSameFormatting() method to merge similar Runs
             // This method also returns the number of joins that occured during the merge
             // Two merges occured to combine Runs 1-3, while Run 4 was left out because it has an incompatible style
@@ -480,13 +473,6 @@ namespace ApiExamples
             Assert.AreEqual(2, para.Runs.Count);
             Assert.AreEqual("Run 1. Run 2. Run 3. ", para.Runs[0].Text);
             Assert.AreEqual("Run 4. ", para.Runs[1].Text);
-
-            // Even the Document's size has been slightly reduced // INSP: See above
-            using (MemoryStream stream = new MemoryStream())
-            {
-                doc.Save(stream, SaveFormat.Docx);
-                Assert.AreEqual(5688, (int)stream.Length);
-            }
             //ExEnd
         }
     }
