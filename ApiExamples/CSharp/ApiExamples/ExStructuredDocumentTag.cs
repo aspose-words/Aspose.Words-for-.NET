@@ -756,7 +756,6 @@ namespace ApiExamples
             doc.Accept(new SmartTagVisitor());
 
             doc.Save(ArtifactsDir + "StructuredDocumentTag.SmartTags.docx");
-            //ExEnd
         }
 
         /// <summary>

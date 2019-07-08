@@ -1428,6 +1428,7 @@ namespace ApiExamples
             textbox.TextBox.VerticalAnchor = TextBoxAnchor.Bottom;
             
             doc.Save(ArtifactsDir + "Shape.GetTextBoxAndChangeAnchor.docx");
+            //ExEnd
         }
 
         //ExStart
