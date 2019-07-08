@@ -195,7 +195,7 @@ namespace ApiExamples
             tag.Tag = "MyPlainTextSDT";
 
             // Every StructuredDocumentTag gets a random unique ID
-            Assert.Positive(tag.Id);
+            Assert.That(tag.Id, Is.Positive);
 
             // Set the font for the text inside the StructuredDocumentTag
             tag.ContentsFont.Name = "Arial";

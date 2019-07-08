@@ -370,7 +370,7 @@ namespace ApiExamples
             // The delete revision paragraph is removed once we accept changes
             doc.AcceptAllRevisions();
             Assert.AreEqual(3, paragraphs.Count);
-            Assert.IsEmpty(para);
+            Assert.That(para, Is.Empty);
             //ExEnd
         }
 

@@ -63,7 +63,7 @@
       <HintPath>..\packages\Aspose.PDF.19.2.0\lib\net4.0\Aspose.PDF.dll</HintPath>
     </Reference>
     <Reference Include="Aspose.Words, Version=19.7.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.19.7.1\lib\net40\Aspose.Words.dll</HintPath>
+      <HintPath>..\packages\Aspose.Words.19.7.0\lib\net40\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="Aspose.Words.Shaping.HarfBuzz, Version=19.7.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
       <HintPath>..\packages\Aspose.Words.Shaping.HarfBuzz.19.7.0\lib\net40\Aspose.Words.Shaping.HarfBuzz.dll</HintPath>
