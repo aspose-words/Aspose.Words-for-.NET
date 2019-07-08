@@ -31,7 +31,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_Replace
                 FindWholeWordsOnly = false
             };
 
-            footer.Range.Replace("(C) 2006 Aspose Pty Ltd.", "Copyright (C) 2011 by Aspose Pty Ltd.", options);
+            footer.Range.Replace("(C) 2006 Aspose Pty Ltd.", "Copyright (C) 2019 by Aspose Pty Ltd.", options);
 
             doc.Save(dataDir + "HeaderFooter.ReplaceText.doc");
             // ExEnd:ReplaceTextInFooter

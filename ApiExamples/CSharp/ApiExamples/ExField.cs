@@ -4307,7 +4307,6 @@ namespace ApiExamples
             builder.Write("CrossReference: ");
 
             // Insert a FOOTNOTEREF field, which lets us reference a footnote more than once while re-using the same footnote marker
-            //Field field = builder.insertField(" ftnref ");
             FieldFootnoteRef field = (FieldFootnoteRef) builder.InsertField(FieldType.FieldFootnoteRef, true);
 
             // Get this field to reference a bookmark

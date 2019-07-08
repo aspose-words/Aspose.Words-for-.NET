@@ -1456,6 +1456,7 @@ namespace ApiExamples
             //ExFor:ParagraphFormat.KeepTogether
             //ExFor:ParagraphFormat.AddSpaceBetweenFarEastAndAlpha
             //ExFor:ParagraphFormat.AddSpaceBetweenFarEastAndDigit
+            //ExFor:Paragraph.IsEndOfDocument
             //ExId:DocumentBuilderInsertParagraph
             //ExSummary:Shows how to insert a paragraph into the document.
             Document doc = new Document();
@@ -1478,6 +1479,9 @@ namespace ApiExamples
             paragraphFormat.KeepTogether = true;
 
             builder.Writeln("A whole paragraph.");
+
+            // We can use this flag to ensure that we're at the end of the document
+            Assert.True(builder.CurrentParagraph.IsEndOfDocument);
             //ExEnd
         }
 

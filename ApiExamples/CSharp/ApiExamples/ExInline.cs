@@ -17,6 +17,7 @@ namespace ApiExamples
         public void InlineRevisions()
         {
             //ExStart
+            //ExFor:Paragraph.Runs
             //ExFor:Inline
             //ExFor:Inline.IsDeleteRevision
             //ExFor:Inline.IsFormatRevision
