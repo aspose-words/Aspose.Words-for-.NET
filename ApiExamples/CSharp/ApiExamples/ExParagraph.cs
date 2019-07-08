@@ -355,7 +355,7 @@ namespace ApiExamples
             // This paragraph is a revision and will have the according "IsInsertRevision" flag set
             para = body.AppendParagraph("Paragraph 4. ");
             Assert.True(para.IsInsertRevision);
-            
+
             // Get the document's paragraph collection and remove a paragraph
             ParagraphCollection paragraphs = body.Paragraphs;
             Assert.AreEqual(4, paragraphs.Count);
@@ -370,7 +370,7 @@ namespace ApiExamples
             // The delete revision paragraph is removed once we accept changes
             doc.AcceptAllRevisions();
             Assert.AreEqual(3, paragraphs.Count);
-            Assert.IsEmpty(para);
+            Assert.That(para, Is.Empty);
             //ExEnd
         }
 

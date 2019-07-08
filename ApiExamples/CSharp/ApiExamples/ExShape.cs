@@ -22,7 +22,6 @@ using NUnit.Framework;
 using Color = System.Drawing.Color;
 using DashStyle = Aspose.Words.Drawing.DashStyle;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
-
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
