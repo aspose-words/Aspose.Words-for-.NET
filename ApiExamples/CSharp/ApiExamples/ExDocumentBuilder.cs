@@ -1456,6 +1456,7 @@ namespace ApiExamples
             //ExFor:ParagraphFormat.KeepTogether
             //ExFor:ParagraphFormat.AddSpaceBetweenFarEastAndAlpha
             //ExFor:ParagraphFormat.AddSpaceBetweenFarEastAndDigit
+            //ExFor:Paragraph.IsEndOfDocument
             //ExId:DocumentBuilderInsertParagraph
             //ExSummary:Shows how to insert a paragraph into the document.
             Document doc = new Document();
@@ -1478,6 +1479,9 @@ namespace ApiExamples
             paragraphFormat.KeepTogether = true;
 
             builder.Writeln("A whole paragraph.");
+
+            // We can use this flag to ensure that we're at the end of the document
+            Assert.True(builder.CurrentParagraph.IsEndOfDocument);
             //ExEnd
         }
 
@@ -2089,44 +2093,6 @@ namespace ApiExamples
             //ExEnd
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "DocumentBuilder.InsertDocument.docx", GoldsDir + "DocumentBuilder.InsertDocument Gold.docx"));
-        }
-
-        [Test]
-        public void SmartStyleBehavior()
-        {
-            //ExStart
-            //ExFor:ImportFormatOptions
-            //ExFor:ImportFormatOptions.SmartStyleBehavior
-            //ExFor:DocumentBuilder.InsertDocument(Document, ImportFormatMode, ImportFormatOptions)
-            //ExSummary:Shows how to resolve styles behavior while inserting documents.
-            Document destDoc = new Document(MyDir + "DocumentBuilder.SmartStyleBehavior.DestinationDocument.docx");
-            Document sourceDoc1 = new Document(MyDir + "DocumentBuilder.SmartStyleBehavior.SourceDocument01.docx");
-            Document sourceDoc2 = new Document(MyDir + "DocumentBuilder.SmartStyleBehavior.SourceDocument02.docx");
-
-            DocumentBuilder builder = new DocumentBuilder(destDoc);
-
-            builder.MoveToDocumentEnd();
-            builder.InsertBreak(BreakType.PageBreak);
-            builder.MoveToDocumentEnd();
-
-            ImportFormatOptions importFormatOptions = new ImportFormatOptions();
-            importFormatOptions.SmartStyleBehavior = true;
-            
-            // When SmartStyleBehavior is enabled,
-            // a source style will be expanded into a direct attributes inside a destination document,
-            // if KeepSourceFormatting importing mode is used.
-            builder.InsertDocument(sourceDoc1, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
-            
-            builder.MoveToDocumentEnd();
-            builder.InsertBreak(BreakType.PageBreak);
-            
-            // When SmartStyleBehavior is disabled,
-            // a source style will be expanded only if it is numbered.
-            // Existing destination attributes will not be overridden, including lists.
-            builder.InsertDocument(sourceDoc2, ImportFormatMode.UseDestinationStyles);
-
-            destDoc.Save(ArtifactsDir + @"DocumentBuilder.SmartStyleBehavior.ResultDocument.docx");
-            //ExEnd
         }
 
         [Test]

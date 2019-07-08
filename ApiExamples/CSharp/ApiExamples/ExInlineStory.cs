@@ -167,7 +167,6 @@ namespace ApiExamples
             //ExFor:InlineStory.ParentParagraph
             //ExFor:InlineStory.StoryType
             //ExFor:InlineStory.Tables
-            //ExFor:Comment.StoryType
             //ExSummary:Shows how to insert InlineStory nodes.
             // Create a new document and insert a blank footnote
             Document doc = new Document();

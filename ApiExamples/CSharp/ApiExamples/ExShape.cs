@@ -22,7 +22,6 @@ using NUnit.Framework;
 using Color = System.Drawing.Color;
 using DashStyle = Aspose.Words.Drawing.DashStyle;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
-
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
@@ -1428,6 +1427,7 @@ namespace ApiExamples
             textbox.TextBox.VerticalAnchor = TextBoxAnchor.Bottom;
             
             doc.Save(ArtifactsDir + "Shape.GetTextBoxAndChangeAnchor.docx");
+            //ExEnd
         }
 
         //ExStart

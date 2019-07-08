@@ -29,6 +29,7 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
+using Aspose.Words.Shaping.HarfBuzz;
 using Aspose.Words.Tables;
 using Aspose.Words.Themes;
 using NUnit.Framework;
@@ -1869,6 +1870,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:Paragraph.IsMoveFromRevision
             //ExFor:Paragraph.IsMoveToRevision
+            //ExFor:ParagraphCollection
+            //ExFor:ParagraphCollection.Item(Int32)
             //ExSummary:Shows how to get paragraph that was moved (deleted/inserted) in Microsoft Word while change tracking was enabled.
             Document doc = new Document(MyDir + "Document.Revisions.docx");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
@@ -3251,6 +3254,29 @@ namespace ApiExamples
             VbaModule classModule = vbaModules[2];
             Assert.AreEqual(classModule.Name, "Class1");
             Assert.IsTrue(classModule.SourceCode.Contains("MsgBox \"Class test\""));
+        }
+
+        [Test]
+        public void OpenType()
+        {
+            //ExStart
+            //ExFor:LayoutOptions.TextShaperFactory
+            //ExSummary:Shows how to support OpenType features using HarfBuzz text shaping engine.
+            // Open a document
+            Document doc = new Document(MyDir + "OpenType.Document.docx");
+
+            // Please note that text shaping is only performed when exporting to PDF or XPS formats now
+
+            // Aspose.Words is capable of using text shaper objects provided externally.
+            // A text shaper represents a font and computes shaping information for a text.
+            // A document typically refers to multiple fonts thus a text shaper factory is necessary.
+            // When text shaper factory is set, layout starts to use OpenType features.
+            // An Instance property returns static BasicTextShaperCache object wrapping HarfBuzzTextShaperFactory
+            doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
+
+            // Render the document to PDF format
+            doc.Save(ArtifactsDir + "OpenType.Document.pdf");
+            //ExEnd
         }
     }
 }
