@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Fields;
@@ -324,6 +323,7 @@ namespace ApiExamples
 
             // Move the first capital to outside the text margin
             para.ParagraphFormat.DropCapPosition = Aspose.Words.DropCapPosition.Margin;
+            para.ParagraphFormat.LinesToDrop = 2;
 
             // This text will be affected
             para.Runs.Add(new Run(doc, "Hello World!"));
@@ -473,6 +473,177 @@ namespace ApiExamples
             Assert.AreEqual(2, para.Runs.Count);
             Assert.AreEqual("Run 1. Run 2. Run 3. ", para.Runs[0].Text);
             Assert.AreEqual("Run 4. ", para.Runs[1].Text);
+            //ExEnd
+        }
+
+        [Test]
+        public void LineSpacing()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.LineSpacing
+            //ExFor:ParagraphFormat.LineSpacingRule
+            //ExSummary:Shows how to work with line spacing.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set the paragraph's line spacing to have a minimum value
+            // This will give vertical padding to lines of text of any size that's too small to maintain the line height
+            builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.AtLeast;
+            builder.ParagraphFormat.LineSpacing = 20.0;
+
+            builder.Writeln("Minimum line spacing of 20.");
+            builder.Writeln("Minimum line spacing of 20.");
+
+            // Set the line spacing to always be exactly 5 points
+            // If the font size is larger than the spacing, the top of the text will be truncated
+            builder.InsertParagraph();
+            builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.Exactly;
+            builder.ParagraphFormat.LineSpacing = 5.0;
+
+            builder.Writeln("Line spacing of exactly 5.");
+            builder.Writeln("Line spacing of exactly 5.");
+
+            // Set the line spacing to a multiple of the default line spacing, which is 12 points by default
+            // 18 points will set the spacing to always be 1.5 lines, which will scale with different font sizes
+            builder.InsertParagraph();
+            builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.Multiple;
+            builder.ParagraphFormat.LineSpacing = 18.0;
+
+            builder.Writeln("Line spacing of 1.5 default lines.");
+            builder.Writeln("Line spacing of 1.5 default lines.");
+
+            doc.Save(ArtifactsDir + "Paragraph.LineSpacing.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ParagraphSpacing()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.NoSpaceBetweenParagraphsOfSameStyle
+            //ExFor:ParagraphFormat.SpaceAfter
+            //ExFor:ParagraphFormat.SpaceAfterAuto
+            //ExFor:ParagraphFormat.SpaceBefore
+            //ExFor:ParagraphFormat.SpaceBeforeAuto
+            //ExSummary:Shows how to work with paragraph spacing.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set the amount of white space before and after each paragraph to 12 points
+            builder.ParagraphFormat.SpaceBefore = 12.0f;
+            builder.ParagraphFormat.SpaceAfter = 12.0f;
+
+            // We can set these flags to apply default spacing, effectively ignoring the spacing in the attributes we set above
+            Assert.False(builder.ParagraphFormat.SpaceAfterAuto);
+            Assert.False(builder.ParagraphFormat.SpaceBeforeAuto);
+            Assert.False(builder.ParagraphFormat.NoSpaceBetweenParagraphsOfSameStyle);
+
+            // Insert two paragraphs which will have padding above and below them and save the document
+            builder.Writeln("Paragraph 1.");
+            builder.Writeln("Paragraph 2.");
+
+            doc.Save(ArtifactsDir + "Paragraph.ParagraphSpacing.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void OutlineLevel()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.OutlineLevel
+            //ExSummary:Shows how to set paragraph outline levels to create collapsible text.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Each paragraph has an OutlineLevel, which could be any number from 1 to 9, or at the default "BodyText" value
+            // Setting the attribute to one of the numbered values will enable an arrow in Microsoft Word
+            // next to the beginning of the paragraph that, when clicked, will collapse the paragraph
+            builder.ParagraphFormat.OutlineLevel = Aspose.Words.OutlineLevel.Level1;
+            builder.Writeln("Paragraph outline level 1.");
+
+            // Level 1 is the topmost level, which practically means that clicking its arrow will also collapse
+            // any following paragraph with a lower level, like the paragraphs below
+            builder.ParagraphFormat.OutlineLevel = Aspose.Words.OutlineLevel.Level2;
+            builder.Writeln("Paragraph outline level 2.");
+
+            // Two paragraphs of the same level will not collapse each other
+            builder.ParagraphFormat.OutlineLevel = Aspose.Words.OutlineLevel.Level3;
+            builder.Writeln("Paragraph outline level 3.");
+            builder.Writeln("Paragraph outline level 3.");
+
+            // The default "BodyText" value is the lowest
+            builder.ParagraphFormat.OutlineLevel = Aspose.Words.OutlineLevel.BodyText;
+            builder.Writeln("Paragraph at main text level.");
+
+            doc.Save(ArtifactsDir + "Paragraph.OutlineLevel.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void PageBreakBefore()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.PageBreakBefore
+            //ExSummary:Shows how to force a page break before each paragraph.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set this to insert a page break before this paragraph
+            builder.ParagraphFormat.PageBreakBefore = true;
+
+            // The value we set is propagated to all paragraphs that are created afterwards
+            builder.Writeln("Paragraph 1, page 1.");
+            builder.Writeln("Paragraph 2, page 2.");
+
+            doc.Save(ArtifactsDir + "Paragraph.PageBreakBefore.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void WidowControl()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.WidowControl
+            //ExSummary:Shows how to enable widow/orphan control for a paragraph.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert text that will not fit on one page, with one line spilling into page 2
+            builder.Font.Size = 68;
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+
+            // This line is referred to as an "Orphan",
+            // and a line left behind on the end of the previous page is likewise called a "Widow"
+            // These are not ideal for readability, and the alternative to changing size/line spacing/page margins
+            // in order to accomodate ill fitting text is this flag, for which the corresponding Microsoft Word option is 
+            // found in Home > Paragraph > Paragraph Settings (button on the bottom right of the tab) 
+            // In our document this will add more text to the orphan by putting two lines of text into the second page
+            builder.ParagraphFormat.WidowControl = true;
+
+            doc.Save(ArtifactsDir + "Paragraph.WidowControl.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void LinesToDrop()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.LinesToDrop
+            //ExSummary:Shows how to set the size of the drop cap text.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Setting this attribute will designate the current paragraph as a drop cap,
+            // in this case with a height of 4 lines of text
+            builder.ParagraphFormat.LinesToDrop = 4;
+            builder.Write("H");
+
+            // Any subsequent paragraphs will wrap around the drop cap
+            builder.InsertParagraph();
+            builder.Write("ello world.");
+
+            doc.Save(ArtifactsDir + "Paragraph.LinesToDrop.odt");
             //ExEnd
         }
     }
