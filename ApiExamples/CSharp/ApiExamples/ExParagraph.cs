@@ -580,5 +580,26 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Paragraph.OutlineLevel.docx");
             //ExEnd
         }
+
+
+        [Test]
+        public void PageBreakBefore()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.PageBreakBefore
+            //ExSummary:Shows how to force a page break before each paragraph.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set this to insert a page break before this paragraph
+            builder.ParagraphFormat.PageBreakBefore = true;
+
+            // The value we set is propagated to all paragraphs that are created afterwards
+            builder.Writeln("Paragraph 1, page 1.");
+            builder.Writeln("Paragraph 2, page 2.");
+
+            doc.Save(ArtifactsDir + "Paragraph.PageBreakBefore.docx");
+            //ExEnd
+        }
     }
 }

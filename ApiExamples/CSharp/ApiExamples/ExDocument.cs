@@ -1921,22 +1921,25 @@ namespace ApiExamples
             //ExFor:HyphenationOptions.ConsecutiveHyphenLimit
             //ExFor:HyphenationOptions.HyphenationZone
             //ExFor:HyphenationOptions.HyphenateCaps
+            //ExFor:ParagraphFormat.SuppressAutoHyphens
             //ExSummary:Shows how to configure document hyphenation options.
             Document doc = new Document();
-            // Create new Run with text that we want to move to the next line using the hyphen
-            Run run = new Run(doc)
-            {
-                Text =
-                    "poqwjopiqewhpefobiewfbiowefob ewpj weiweohiewobew ipo efoiewfihpewfpojpief pijewfoihewfihoewfphiewfpioihewfoihweoihewfpj"
-            };
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Paragraph para = doc.FirstSection.Body.Paragraphs[0];
-            para.AppendChild(run);
+            // Set this to insert a page break before this paragraph
+            builder.Font.Size = 24;
+            builder.ParagraphFormat.SuppressAutoHyphens = false;
+
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
 
             doc.HyphenationOptions.AutoHyphenation = true;
             doc.HyphenationOptions.ConsecutiveHyphenLimit = 2;
             doc.HyphenationOptions.HyphenationZone = 720; // 0.5 inch
             doc.HyphenationOptions.HyphenateCaps = true;
+
+            // Each paragraph has this flag that can be set to suppress hyphenation
+            Assert.False(builder.ParagraphFormat.SuppressAutoHyphens);
 
             doc.Save(ArtifactsDir + "HyphenationOptions.docx");
             //ExEnd
