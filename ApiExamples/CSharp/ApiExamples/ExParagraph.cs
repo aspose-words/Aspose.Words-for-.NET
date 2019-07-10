@@ -601,5 +601,31 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Paragraph.PageBreakBefore.docx");
             //ExEnd
         }
+
+        [Test]
+        public void WidowControl()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.SuppressAutoHyphens
+            //ExSummary:Shows how to enable widow/orphan control for a paragraph.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert text that will not fit on one page, with one line spilling into page 2
+            builder.Font.Size = 68;
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+
+            // This line is referred to as an "Orphan",
+            // and a line left behind on the end of the previous page is likewise called a "Widow"
+            // These are not ideal for readability, and the alternative to changing size/line spacing/page margins
+            // in order to accomodate ill fitting text is this flag, for which the corresponding Microsoft Word option is 
+            // found in Home > Paragraph > Paragraph Settings (button on the bottom right of the tab) 
+            // In our document this will add more text to the orphan by putting two lines of text into the second page
+            builder.ParagraphFormat.WidowControl = true;
+
+            doc.Save(ArtifactsDir + "Paragraph.WidowControl.docx");
+            //ExEnd
+        }
     }
 }
