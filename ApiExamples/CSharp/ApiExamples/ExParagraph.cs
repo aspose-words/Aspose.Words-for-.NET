@@ -606,7 +606,7 @@ namespace ApiExamples
         public void WidowControl()
         {
             //ExStart
-            //ExFor:ParagraphFormat.SuppressAutoHyphens
+            //ExFor:ParagraphFormat.WidowControl
             //ExSummary:Shows how to enable widow/orphan control for a paragraph.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
