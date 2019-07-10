@@ -4,6 +4,7 @@ using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Fields;
 using Aspose.Words.Drawing;
+using Aspose.Words.Tables;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -625,6 +626,28 @@ namespace ApiExamples
             builder.ParagraphFormat.WidowControl = true;
 
             doc.Save(ArtifactsDir + "Paragraph.WidowControl.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void LinesToDrop()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.LinesToDrop
+            //ExSummary:Shows how to set the size of the drop cap text.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Setting this attribute will designate the current paragraph as a drop cap,
+            // in this case with a height of 4 lines of text
+            builder.ParagraphFormat.LinesToDrop = 4;
+            builder.Write("H");
+
+            // Any subsequent paragraphs will wrap around the drop cap
+            builder.InsertParagraph();
+            builder.Write("ello world.");
+
+            doc.Save(ArtifactsDir + "Paragraph.LinesToDrop.odt");
             //ExEnd
         }
     }
