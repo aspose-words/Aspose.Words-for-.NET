@@ -308,6 +308,7 @@ namespace ApiExamples
         }
 
         [Test]
+        [Category("SkipTearDown")]
         public void DropCapPosition()
         {
             //ExStart
@@ -324,6 +325,7 @@ namespace ApiExamples
 
             // Move the first capital to outside the text margin
             para.ParagraphFormat.DropCapPosition = Aspose.Words.DropCapPosition.Margin;
+            para.ParagraphFormat.LinesToDrop = 2;
 
             // This text will be affected
             para.Runs.Add(new Run(doc, "Hello World!"));
@@ -476,7 +478,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-
         [Test]
         public void LineSpacing()
         {
@@ -492,8 +493,8 @@ namespace ApiExamples
             builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.AtLeast;
             builder.ParagraphFormat.LineSpacing = 20.0;
 
-            builder.Writeln("Minimum line spacing of 20");
-            builder.Writeln("Minimum line spacing of 20");
+            builder.Writeln("Minimum line spacing of 20.");
+            builder.Writeln("Minimum line spacing of 20.");
 
             // Set the line spacing to always be exactly 5 points
             // If the font size is larger than the spacing, the top of the text will be truncated
@@ -501,8 +502,8 @@ namespace ApiExamples
             builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.Exactly;
             builder.ParagraphFormat.LineSpacing = 5.0;
 
-            builder.Writeln("Line spacing of exactly 5");
-            builder.Writeln("Line spacing of exactly 5");
+            builder.Writeln("Line spacing of exactly 5.");
+            builder.Writeln("Line spacing of exactly 5.");
 
             // Set the line spacing to a multiple of the default line spacing, which is 12 points by default
             // 18 points will set the spacing to always be 1.5 lines, which will scale with different font sizes
@@ -510,10 +511,73 @@ namespace ApiExamples
             builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.Multiple;
             builder.ParagraphFormat.LineSpacing = 18.0;
 
-            builder.Writeln("Line spacing of 1.5 default lines");
-            builder.Writeln("Line spacing of 1.5 default lines");
+            builder.Writeln("Line spacing of 1.5 default lines.");
+            builder.Writeln("Line spacing of 1.5 default lines.");
 
             doc.Save(ArtifactsDir + "Paragraph.LineSpacing.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ParagraphSpacing()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.NoSpaceBetweenParagraphsOfSameStyle
+            //ExFor:ParagraphFormat.SpaceAfter
+            //ExFor:ParagraphFormat.SpaceAfterAuto
+            //ExFor:ParagraphFormat.SpaceBefore
+            //ExFor:ParagraphFormat.SpaceBeforeAuto
+            //ExSummary:Shows how to work with paragraph spacing.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set the amount of white space before and after each paragraph to 12 points
+            builder.ParagraphFormat.SpaceBefore = 12.0f;
+            builder.ParagraphFormat.SpaceAfter = 12.0f;
+
+            // We can set these flags to apply default spacing, effectively ignoring the spacing in the attributes we set above
+            Assert.False(builder.ParagraphFormat.SpaceAfterAuto);
+            Assert.False(builder.ParagraphFormat.SpaceBeforeAuto);
+            Assert.False(builder.ParagraphFormat.NoSpaceBetweenParagraphsOfSameStyle);
+
+            // Insert two paragraphs which will have padding above and below them and save the document
+            builder.Writeln("Paragraph 1.");
+            builder.Writeln("Paragraph 2.");
+
+            doc.Save(ArtifactsDir + "Paragraph.ParagraphSpacing.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void OutlineLevel()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.OutlineLevel
+            //ExSummary:Shows how to set paragraph outline levels to create collapsible text.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Each paragraph has an OutlineLevel, which could be any number from 1 to 9, or at the default "BodyText" value
+            // Setting the attribute to one of the numbered values will enable an arrow in Microsoft Word
+            // next to the beginning of the paragraph that, when clicked, will collapse the paragraph
+            builder.ParagraphFormat.OutlineLevel = Aspose.Words.OutlineLevel.Level1;
+            builder.Writeln("Paragraph outline level 1.");
+
+            // Level 1 is the topmost level, which practically means that clicking its arrow will also collapse
+            // any following paragraph with a lower level, like the paragraphs below
+            builder.ParagraphFormat.OutlineLevel = Aspose.Words.OutlineLevel.Level2;
+            builder.Writeln("Paragraph outline level 2.");
+
+            // Two paragraphs of the same level will not collapse each other
+            builder.ParagraphFormat.OutlineLevel = Aspose.Words.OutlineLevel.Level3;
+            builder.Writeln("Paragraph outline level 3.");
+            builder.Writeln("Paragraph outline level 3.");
+
+            // The default "BodyText" value is the lowest
+            builder.ParagraphFormat.OutlineLevel = Aspose.Words.OutlineLevel.BodyText;
+            builder.Writeln("Paragraph at main text level.");
+
+            doc.Save(ArtifactsDir + "Paragraph.OutlineLevel.docx");
             //ExEnd
         }
     }

@@ -179,7 +179,7 @@ namespace ApiExamples
 
             builder.ParagraphFormat.ClearFormatting();
 
-            builder.Document.Save(ArtifactsDir + "Lists.NestedLists.doc");
+            builder.Document.Save(ArtifactsDir + "Lists.NestedLists.docx");
             //ExEnd
         }
 

@@ -1831,7 +1831,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:ParagraphFormat.RightIndent
             //ExFor:ParagraphFormat.LeftIndent
-            //ExFor:ParagraphFormat.SpaceAfter
             //ExId:DocumentBuilderSetParagraphFormatting
             //ExSummary:Shows how to set paragraph formatting.
             Document doc = new Document();
