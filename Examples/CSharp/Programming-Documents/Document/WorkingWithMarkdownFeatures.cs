@@ -12,9 +12,11 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
-            //MarkdownDocumentWithEmphases(dataDir);
-            //MarkdownDocumentWithHeadings(dataDir);
+            MarkdownDocumentWithEmphases(dataDir);
+            MarkdownDocumentWithHeadings(dataDir);
             MarkdownDocumentWithBlockQuotes(dataDir);
+            MarkdownDocumentWithHorizontalRule(dataDir);
+            ReadMarkdownDocument(dataDir);
         }
 
         private static void MarkdownDocumentWithEmphases(string dataDir)
