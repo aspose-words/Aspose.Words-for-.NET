@@ -307,7 +307,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Category("SkipTearDown")]
         public void DropCapPosition()
         {
             //ExStart
