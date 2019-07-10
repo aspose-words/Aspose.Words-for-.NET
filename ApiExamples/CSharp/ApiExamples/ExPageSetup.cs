@@ -275,6 +275,7 @@ namespace ApiExamples
             //ExFor:PageSetup.LineNumberDistanceFromText
             //ExFor:PageSetup.LineNumberCountBy
             //ExFor:PageSetup.LineNumberRestartMode
+            //ExFor:ParagraphFormat.SuppressLineNumbers
             //ExFor:LineNumberRestartMode
             //ExSummary:Turns on Microsoft Word line numbering for a section.
             DocumentBuilder builder = new DocumentBuilder();
@@ -285,10 +286,13 @@ namespace ApiExamples
             ps.LineNumberRestartMode = LineNumberRestartMode.RestartPage;
             ps.LineNumberDistanceFromText = 50.0d;
 
+            // The line counter will skip any paragraph with this flag set to true
+            Assert.False(builder.ParagraphFormat.SuppressLineNumbers);
+
             for (int i = 1; i <= 20; i++)
                 builder.Writeln(string.Format("Line {0}.", i));
 
-            builder.Document.Save(ArtifactsDir + "PageSetup.LineNumbers.doc");
+            builder.Document.Save(ArtifactsDir + "PageSetup.LineNumbers.docx");
             //ExEnd
         }
 
