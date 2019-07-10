@@ -1,10 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Fields;
 using Aspose.Words.Drawing;
-using Aspose.Words.Tables;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -581,7 +579,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Paragraph.OutlineLevel.docx");
             //ExEnd
         }
-
 
         [Test]
         public void PageBreakBefore()
