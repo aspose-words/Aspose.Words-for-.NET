@@ -41,8 +41,8 @@
     <StartupObject>Aspose.Words.Examples.CSharp.RunExamples</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.BarCode, Version=19.6.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.BarCode.19.6.0\lib\net45\Aspose.BarCode.dll</HintPath>
+    <Reference Include="Aspose.BarCode, Version=19.6.1.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.BarCode.19.6.1\lib\net45\Aspose.BarCode.dll</HintPath>
     </Reference>
     <Reference Include="Aspose.Email, Version=19.6.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
       <HintPath>..\packages\Aspose.Email.19.6.0\lib\net40\Aspose.Email.dll</HintPath>
@@ -178,6 +178,7 @@
     <Compile Include="Programming-Documents\Document\GetFontLineSpacing.cs" />
     <Compile Include="Programming-Documents\Document\ParagraphStyleSeparator.cs" />
     <Compile Include="Programming-Documents\Document\WorkingWithImportFormatOptions.cs" />
+    <Compile Include="Programming-Documents\Document\WorkingWithMarkdownFeatures.cs" />
     <Compile Include="Programming-Documents\Document\WorkingWithRevisions.cs" />
     <Compile Include="Programming-Documents\Document\CheckBoxTypeContentControl.cs" />
     <Compile Include="Programming-Documents\Document\ComboBoxContentControl.cs" />
@@ -242,6 +243,7 @@
     <Compile Include="Programming-Documents\Images\InsertBarcodeImage.cs" />
     <Compile Include="Programming-Documents\Images\ExtractImagesToFiles.cs" />
     <Compile Include="Programming-Documents\Joining-Appending\AppendWithImportFormatOptions.cs" />
+    <Compile Include="Programming-Documents\Linked-Textboxes\WorkingWithLinkedTextboxes.cs" />
     <Compile Include="Programming-Documents\List\WorkingWithList.cs" />
     <Compile Include="Programming-Documents\Node\ExNode.cs" />
     <Compile Include="Programming-Documents\OpenType\OpenTypeFeatures.cs" />
