@@ -421,7 +421,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:LoadOptions.MswVersion
-            //ExFor:ParagraphFormat.LineSpacing
             //ExSummary:Shows how to emulate the loading procedure of a specific Microsoft Word version during document loading.
             // Create a new LoadOptions object, which will load documents according to MS Word 2007 specification by default
             LoadOptions loadOptions = new LoadOptions();

@@ -475,5 +475,46 @@ namespace ApiExamples
             Assert.AreEqual("Run 4. ", para.Runs[1].Text);
             //ExEnd
         }
+
+
+        [Test]
+        public void LineSpacing()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.LineSpacing
+            //ExFor:ParagraphFormat.LineSpacingRule
+            //ExSummary:Shows how to work with line spacing.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set the paragraph's line spacing to have a minimum value
+            // This will give vertical padding to lines of text of any size that's too small to maintain the line height
+            builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.AtLeast;
+            builder.ParagraphFormat.LineSpacing = 20.0;
+
+            builder.Writeln("Minimum line spacing of 20");
+            builder.Writeln("Minimum line spacing of 20");
+
+            // Set the line spacing to always be exactly 5 points
+            // If the font size is larger than the spacing, the top of the text will be truncated
+            builder.InsertParagraph();
+            builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.Exactly;
+            builder.ParagraphFormat.LineSpacing = 5.0;
+
+            builder.Writeln("Line spacing of exactly 5");
+            builder.Writeln("Line spacing of exactly 5");
+
+            // Set the line spacing to a multiple of the default line spacing, which is 12 points by default
+            // 18 points will set the spacing to always be 1.5 lines, which will scale with different font sizes
+            builder.InsertParagraph();
+            builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.Multiple;
+            builder.ParagraphFormat.LineSpacing = 18.0;
+
+            builder.Writeln("Line spacing of 1.5 default lines");
+            builder.Writeln("Line spacing of 1.5 default lines");
+
+            doc.Save(ArtifactsDir + "Paragraph.LineSpacing.docx");
+            //ExEnd
+        }
     }
 }
