@@ -36,6 +36,7 @@ namespace Aspose.Words.Examples.CSharp
         {
             Console.WriteLine("Open RunExamples.cs. \nIn Main() method uncomment the example that you want to run.");
             Console.WriteLine("=====================================================");
+
             //Uncomment the one you want to try out
 
             // =====================================================
@@ -92,7 +93,7 @@ namespace Aspose.Words.Examples.CSharp
             // WorkingWithRTF.Run();
             // SaveOptionsHtmlFixed.Run();
             // SaveDocWithHtmlSaveOptions.Run();
-            WorkingWithVbaMacros.Run();
+            // WorkingWithVbaMacros.Run();
 
             //// =====================================================
             //// =====================================================
@@ -208,6 +209,7 @@ namespace Aspose.Words.Examples.CSharp
             // GetFontLineSpacing.Run();
             // CheckDMLTextEffect.Run();
             // ParagraphStyleSeparator.Run();
+            WorkingWithMarkdownFeatures.Run();
 
             //// Fields
             //// =====================================================
