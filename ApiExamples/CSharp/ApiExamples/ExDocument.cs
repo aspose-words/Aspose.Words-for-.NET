@@ -1895,6 +1895,9 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.UpdateThumbnail()
             //ExFor:Document.UpdateThumbnail(ThumbnailGeneratingOptions)
+            //ExFor:ThumbnailGeneratingOptions
+            //ExFor:ThumbnailGeneratingOptions.GenerateFromFirstPage
+            //ExFor:ThumbnailGeneratingOptions.ThumbnailSize
             //ExSummary:Shows how to update a document's thumbnail.
             Document doc = new Document();
 
