@@ -17,7 +17,6 @@ namespace ApiExamples
         public void InlineRevisions()
         {
             //ExStart
-            //ExFor:Paragraph.Runs
             //ExFor:Inline
             //ExFor:Inline.IsDeleteRevision
             //ExFor:Inline.IsFormatRevision
@@ -25,6 +24,8 @@ namespace ApiExamples
             //ExFor:Inline.IsMoveFromRevision
             //ExFor:Inline.IsMoveToRevision
             //ExFor:Inline.ParentParagraph
+            //ExFor:Paragraph.Runs
+            //ExFor:Revision.ParentNode
             //ExSummary:Shows how to process revision-related properties of Inline nodes.
             Document doc = new Document(MyDir + "Inline.Revisions.docx");
 
