@@ -1672,7 +1672,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.Compare(Document, String, DateTime)
             //ExFor:RevisionCollection.AcceptAll
-            //ExFor:RevisionCollection.Count
             //ExSummary:Shows how to apply the compare method to two documents and then use the results. 
             Document doc1 = new Document(MyDir + "Document.Compare.1.doc");
             Document doc2 = new Document(MyDir + "Document.Compare.2.doc");
@@ -2222,6 +2221,13 @@ namespace ApiExamples
         public void Revisions()
         {
             //ExStart
+            //ExFor:Revision
+            //ExFor:Revision.Author
+            //ExFor:Revision.DateTime
+            //ExFor:Revision.Group
+            //ExFor:Revision.RevisionType
+            //ExFor:RevisionCollection
+            //ExFor:RevisionCollection.Count
             //ExFor:Document.HasRevisions
             //ExFor:Document.TrackRevisions
             //ExFor:Document.Revisions
@@ -2229,19 +2235,24 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // A blank document comes with no revisions
-            Assert.IsFalse(doc.HasRevisions);
-
+            // Normal editing of the document does not count as a revision
             builder.Writeln("This does not count as a revision.");
-
-            // Just adding text does not count as a revision
             Assert.IsFalse(doc.HasRevisions);
 
             // For our edits to count as revisions, we need to declare an author and start tracking them
             doc.StartTrackRevisions("John Doe", DateTime.Now);
+            builder.Write("This is a revision.");
 
-            builder.Writeln("This is a revision.");
+            // As well as nodes in the document, revisions get referenced in this collection
+            Revision revision = doc.Revisions[0];
+            Assert.AreEqual(1, doc.Revisions.Count);
 
+            Assert.AreEqual("John Doe", revision.Author);
+            Assert.AreEqual("This is a revision.", revision.ParentNode.GetText());
+            Assert.AreEqual(RevisionType.Insertion, revision.RevisionType);
+            Assert.AreEqual(revision.DateTime.Date, DateTime.Now.Date);
+            Assert.AreEqual(doc.Revisions.Groups[0], revision.Group);
+            
             // The above text is now tracked as a revision and will show up accordingly in our output file
             Assert.IsTrue(doc.HasRevisions);
             Assert.AreEqual("John Doe", doc.Revisions[0].Author);
