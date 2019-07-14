@@ -1671,6 +1671,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Compare(Document, String, DateTime)
+            //ExFor:RevisionCollection.AcceptAll
+            //ExFor:RevisionCollection.Count
             //ExSummary:Shows how to apply the compare method to two documents and then use the results. 
             Document doc1 = new Document(MyDir + "Document.Compare.1.doc");
             Document doc2 = new Document(MyDir + "Document.Compare.2.doc");
