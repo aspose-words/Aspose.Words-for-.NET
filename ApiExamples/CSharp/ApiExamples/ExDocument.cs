@@ -2236,49 +2236,47 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Normal editing of the document does not count as a revision
-            builder.Writeln("This does not count as a revision.");
+            builder.Write("This does not count as a revision. ");
             Assert.IsFalse(doc.HasRevisions);
 
-            // For our edits to count as revisions, we need to declare an author and start tracking them
+            // In order for our edits to count as revisions, we need to declare an author and start tracking them
             doc.StartTrackRevisions("John Doe", DateTime.Now);
-            builder.Write("This is a revision.");
+            builder.Write("This is revision #1. ");
+
+            // This flag corresponds to the "Track Changes" option being turned on in Microsoft Word,
+            // not the programmatic tracking we are doing here
+            Assert.IsFalse(doc.TrackRevisions);
 
             // As well as nodes in the document, revisions get referenced in this collection
-            Revision revision = doc.Revisions[0];
+            Assert.IsTrue(doc.HasRevisions);
             Assert.AreEqual(1, doc.Revisions.Count);
 
+            Revision revision = doc.Revisions[0];
             Assert.AreEqual("John Doe", revision.Author);
-            Assert.AreEqual("This is a revision.", revision.ParentNode.GetText());
+            Assert.AreEqual("This is revision #1. ", revision.ParentNode.GetText());
             Assert.AreEqual(RevisionType.Insertion, revision.RevisionType);
             Assert.AreEqual(revision.DateTime.Date, DateTime.Now.Date);
             Assert.AreEqual(doc.Revisions.Groups[0], revision.Group);
-            
-            // The above text is now tracked as a revision and will show up accordingly in our output file
-            Assert.IsTrue(doc.HasRevisions);
-            Assert.AreEqual("John Doe", doc.Revisions[0].Author);
 
-            // Document.TrackRevisions corresponds to Microsoft Word tracking changes, not the ones we programmatically make here 
-            Assert.IsFalse(doc.TrackRevisions);
+            // Deleting content also counts as a revision
+            // The most recent revisions are put at the start of the collection
+            doc.FirstSection.Body.FirstParagraph.Runs[0].Remove();
+            Assert.AreEqual(RevisionType.Deletion, doc.Revisions[0].RevisionType);
+            Assert.AreEqual(2, doc.Revisions.Count);
+
+            // Accepting the deletion revision will assimilate it into the paragraph text and remove it from the collection
+            doc.Revisions[0].Accept();
+
+            // The second insertion revision is now at index 0, which we can reject to ignore it
+            doc.Revisions[0].Reject();
+            Assert.AreEqual(0, doc.Revisions.Count);
 
             // This takes us back to not counting changes as revisions
             doc.StopTrackRevisions();
 
-            builder.Writeln("This does not count as a revision.");
+            builder.Writeln("This also does not count as a revision. ");
 
             doc.Save(ArtifactsDir + "Revisions.docx");
-
-            // We can get rid of all the changes we made that counted as revisions
-            doc.Revisions.RejectAll();
-            Assert.IsFalse(doc.HasRevisions);
-
-            // The second line that our builder wrote will not appear at all in the output
-            doc.Save(ArtifactsDir + "RevisionsRejected.docx");
-
-            // Alternatively, we can track revisions from Microsoft Word like this
-            // This is the same as turning on "Track Changes" in Word
-            doc.TrackRevisions = true;
-
-            doc.Save(ArtifactsDir + "RevisionsTrackedFromMSWord.docx");
             //ExEnd
         }
 
