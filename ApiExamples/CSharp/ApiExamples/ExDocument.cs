@@ -2222,11 +2222,14 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Revision
+            //ExFor:Revision.Accept
             //ExFor:Revision.Author
             //ExFor:Revision.DateTime
             //ExFor:Revision.Group
+            //ExFor:Revision.Reject
             //ExFor:Revision.RevisionType
             //ExFor:RevisionCollection
+            //ExFor:RevisionCollection.Item(Int32)
             //ExFor:RevisionCollection.Count
             //ExFor:Document.HasRevisions
             //ExFor:Document.TrackRevisions
@@ -2276,7 +2279,67 @@ namespace ApiExamples
 
             builder.Writeln("This also does not count as a revision. ");
 
-            doc.Save(ArtifactsDir + "Revisions.docx");
+            doc.Save(ArtifactsDir + "Document.Revisions.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void RevisionCollection()
+        {
+            //ExStart
+            //ExFor:Revision.ParentStyle
+            //ExFor:RevisionCollection.GetEnumerator
+            //ExFor:RevisionCollection.Groups
+            //ExFor:RevisionCollection.RejectAll
+            //ExFor:RevisionGroupCollection.GetEnumerator
+            //ExSummary:Shows how to look through a document's revisions.
+            // Open a document that contains revisions and get its revision collection
+            Document doc = new Document(MyDir + "Document.Revisions.docx");
+            RevisionCollection revisions = doc.Revisions;
+
+            // This collection itself has a collection of revision groups, which are merged sequences of adjacent revisions
+            Console.WriteLine($"{revisions.Groups.Count} revision groups:");
+
+            // We can iterate over the collection of groups and access the text that the revision concerns
+            using (IEnumerator<RevisionGroup> e = revisions.Groups.GetEnumerator())
+            {
+                while (e.MoveNext())
+                {
+                    Console.WriteLine($"\tGroup type \"{e.Current.RevisionType}\", " +
+                                      $"author: {e.Current.Author}, contents: [{e.Current.Text.Trim()}]");
+                }
+            }
+
+            // The collection of revisions is considerably larger than the condensed form we printed above,
+            // depending on how many Runs the text has been segmented into during editing in Microsoft Word,
+            // since each Run affected by a revision gets its own Revision object
+            Console.WriteLine($"\n{revisions.Count} revisions:");
+
+            using (IEnumerator<Revision> e = revisions.GetEnumerator())
+            {
+                while (e.MoveNext())
+                {
+                    // A StyleDefinitionChange strictly affects styles and not document nodes, so in this case the ParentStyle
+                    // attribute will always be used, while the ParentNode will always be null
+                    // Since all other changes affect nodes, ParentNode will conversely be in use and ParentStyle will be null
+                    if (e.Current.RevisionType == RevisionType.StyleDefinitionChange)
+                    {
+                        Console.WriteLine($"\tRevision type \"{e.Current.RevisionType}\", " +
+                                          $"author: {e.Current.Author}, style: [{e.Current.ParentStyle.Name}]");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"\tRevision type \"{e.Current.RevisionType}\", " +
+                                          $"author: {e.Current.Author}, contents: [{e.Current.ParentNode.GetText().Trim()}]");
+                    }
+                }
+            }
+
+            // While the collection of revision groups provides a clearer overview of all revisions that took place in the document,
+            // the changes must be accepted/rejected by the revisions themselves, the RevisionCollection, or the document
+            // In this case we will reject all revisions via the collection, reverting the document to its original form, which we will then save
+            revisions.RejectAll();
+            doc.Save(ArtifactsDir + "Document.RevisionCollection.docx");
             //ExEnd
         }
 
