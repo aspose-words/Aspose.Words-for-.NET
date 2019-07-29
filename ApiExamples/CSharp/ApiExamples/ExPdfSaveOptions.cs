@@ -31,12 +31,14 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OutlineOptions.CreateMissingOutlineLevels
+            //ExFor:ParagraphFormat.IsHeading
             //ExSummary:Shows how to create missing outline levels saving the document in PDF
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Creating TOC entries
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
+            Assert.True(builder.ParagraphFormat.IsHeading);
 
             builder.Writeln("Heading 1");
 
