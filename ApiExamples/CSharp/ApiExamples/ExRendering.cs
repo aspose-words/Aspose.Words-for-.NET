@@ -880,6 +880,7 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
+        [Ignore("Run only when the printer driver is installed")]
         public void PrintPageInfo()
         {
             //ExStart
@@ -895,18 +896,13 @@ namespace ApiExamples
             //ExSummary:Shows how to print page size and orientation information for every page in a Word document.
             Document doc = new Document(MyDir + "Rendering.doc");
 
-            // Create a collection of PaperSources
-            PaperSource[] sources = new PaperSource[3];
-            PrinterSettings.PaperSourceCollection psc = new PrinterSettings.PaperSourceCollection(sources);
+            // The first section has 2 pages
+            // We will assign a different printer paper tray to each one, whose number will match a kind of paper source
+            // These sources and their Kinds will vary depending on the installed printer driver
+            PrinterSettings.PaperSourceCollection paperSources = new PrinterSettings().PaperSources;
 
-            sources[0] = new PaperSource() { RawKind = 1, SourceName = "Source 1"};
-            sources[1] = new PaperSource() { RawKind = 4, SourceName = "Source 2"};
-            sources[2] = new PaperSource() { RawKind = 0, SourceName = "Default" };
-
-            // The first section spans 2 pages
-            // We will assign a different printer paper tray to each one, whose number will match a PaperSourceKind 
-            doc.FirstSection.PageSetup.FirstPageTray = 1;
-            doc.FirstSection.PageSetup.OtherPagesTray = 4;
+            doc.FirstSection.PageSetup.FirstPageTray = paperSources[0].RawKind;
+            doc.FirstSection.PageSetup.OtherPagesTray = paperSources[1].RawKind;
 
             Console.WriteLine("Document \"{0}\" contains {1} pages.", doc.OriginalFileName, doc.PageCount);
 
@@ -927,7 +923,7 @@ namespace ApiExamples
 
                 // Paper source tray information
                 Console.WriteLine($"\tTray:\t{pageInfo.PaperTray}");
-                PaperSource source = pageInfo.GetSpecifiedPrinterPaperSource(psc, psc[2]);
+                PaperSource source = pageInfo.GetSpecifiedPrinterPaperSource(paperSources, paperSources[0]);
                 Console.WriteLine($"\tSuitable print source:\t{source.SourceName}, kind: {source.Kind}");
             }
             //ExEnd
