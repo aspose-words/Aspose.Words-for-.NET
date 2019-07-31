@@ -15,7 +15,6 @@ using Aspose.Words.Fonts;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using NUnit.Framework;
-using PaperSize = Aspose.Words.PaperSize;
 #if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
 using System.Windows.Forms;
 #endif
