@@ -880,28 +880,56 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void WritePageInfo()
+        public void PrintPageInfo()
         {
             //ExStart
             //ExFor:PageInfo
+            //ExFor:PageInfo.GetSizeInPixels(Single, Single, Single)
+            //ExFor:PageInfo.GetSpecifiedPrinterPaperSource(PaperSourceCollection, PaperSource)
+            //ExFor:PageInfo.HeightInPoints
+            //ExFor:PageInfo.Landscape
             //ExFor:PageInfo.PaperSize
             //ExFor:PageInfo.PaperTray
-            //ExFor:PageInfo.Landscape
+            //ExFor:PageInfo.SizeInPoints
             //ExFor:PageInfo.WidthInPoints
-            //ExFor:PageInfo.HeightInPoints
-            //ExSummary:Retrieves page size and orientation information for every page in a Word document.
+            //ExSummary:Shows how to print page size and orientation information for every page in a Word document.
             Document doc = new Document(MyDir + "Rendering.doc");
+
+            // Create a collection of PaperSources
+            PaperSource[] sources = new PaperSource[3];
+            PrinterSettings.PaperSourceCollection psc = new PrinterSettings.PaperSourceCollection(sources);
+
+            sources[0] = new PaperSource() { RawKind = 1, SourceName = "Source 1"};
+            sources[1] = new PaperSource() { RawKind = 4, SourceName = "Source 2"};
+            sources[2] = new PaperSource() { RawKind = 0, SourceName = "Default" };
+
+            // The first section spans 2 pages
+            // We will assign a different printer paper tray to each one, whose number will match a PaperSourceKind 
+            doc.FirstSection.PageSetup.FirstPageTray = 1;
+            doc.FirstSection.PageSetup.OtherPagesTray = 4;
 
             Console.WriteLine("Document \"{0}\" contains {1} pages.", doc.OriginalFileName, doc.PageCount);
 
+            float scale = 1.0f;
+            float dpi = 96;
+
             for (int i = 0; i < doc.PageCount; i++)
             {
+                // Each page has a PageInfo object, whose index is the respective page's number
                 PageInfo pageInfo = doc.GetPageInfo(i);
-                Console.WriteLine("Page {0}. PaperSize:{1} ({2:F0}x{3:F0}pt), Orientation:{4}, PaperTray:{5}", i + 1,
-                    pageInfo.PaperSize, pageInfo.WidthInPoints, pageInfo.HeightInPoints,
-                    pageInfo.Landscape ? "Landscape" : "Portrait", pageInfo.PaperTray);
-            }
 
+                // Print the page's orientation and dimensions
+                Console.WriteLine($"Page {i + 1}:");
+                Console.WriteLine($"\tOrientation:\t{(pageInfo.Landscape ? "Landscape" : "Portrait")}");
+                Console.WriteLine($"\tPaper size:\t\t{pageInfo.PaperSize} ({pageInfo.WidthInPoints:F0}x{pageInfo.HeightInPoints:F0}pt)");
+                Console.WriteLine($"\tSize in points:\t{pageInfo.SizeInPoints}");
+                Console.WriteLine($"\tSize in pixels:\t{pageInfo.GetSizeInPixels(1.0f, 96)} at {scale * 100}% scale, {dpi} dpi");
+
+                // Paper source tray information
+                Console.WriteLine($"\tTray:\t{pageInfo.PaperTray}");
+                PaperSource source = pageInfo.GetSpecifiedPrinterPaperSource(psc, psc[2]);
+                Console.WriteLine($"\tSuitable print source:\t{source.SourceName}, kind: {source.Kind}");
+            }
             //ExEnd
         }
 
