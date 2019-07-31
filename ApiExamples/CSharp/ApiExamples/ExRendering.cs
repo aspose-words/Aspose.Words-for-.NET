@@ -15,6 +15,7 @@ using Aspose.Words.Fonts;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using NUnit.Framework;
+using PaperSize = Aspose.Words.PaperSize;
 #if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
 using System.Windows.Forms;
 #endif
@@ -928,6 +929,45 @@ namespace ApiExamples
             }
             //ExEnd
         }
+
+        [Test]
+        [Ignore("Run only when the printer driver is installed")]
+        public void PrinterSettingsContainer()
+        {
+            //ExStart
+            //ExFor:PrinterSettingsContainer
+            //ExFor:PrinterSettingsContainer.#ctor(PrinterSettings)
+            //ExFor:PrinterSettingsContainer.DefaultPageSettingsPaperSource
+            //ExFor:PrinterSettingsContainer.PaperSizes
+            //ExFor:PrinterSettingsContainer.PaperSources
+            //ExSummary:Shows how to access and list your printer's paper sources and sizes.
+            // The PrinterSettingsContainer contains a PrinterSettings object,
+            // which contains unique data for different printer drivers
+            PrinterSettingsContainer container = new PrinterSettingsContainer(new PrinterSettings());
+
+            // You can find the printer's list of paper sources here
+            Console.WriteLine($"{container.PaperSources.Count} printer paper sources:");
+            foreach (PaperSource paperSource in container.PaperSources)
+            {
+                bool isDefault = container.DefaultPageSettingsPaperSource.SourceName == paperSource.SourceName;
+                Console.WriteLine($"\t{paperSource.SourceName}, " +
+                                  $"RawKind: {paperSource.RawKind} {(isDefault ? "(Default)" : "")}");
+            }
+
+            // You can find the list of PaperSizes that can be sent to the printer here
+            // Both the PrinterSource and PrinterSize contain a "RawKind" attribute,
+            // which equates to a paper type listed on the PaperSourceKind enum
+            // If the list of PaperSources contains a PaperSource with the same RawKind as that of the page being printed,
+            // the page will be printed by the paper source and on the appropriate paper size by the printer
+            // Otherwise, the printer will default to the source designated by DefaultPageSettingsPaperSource 
+            Console.WriteLine($"{container.PaperSizes.Count} paper sizes:");
+            foreach (System.Drawing.Printing.PaperSize paperSize in container.PaperSizes)
+            {
+                Console.WriteLine($"\t{paperSize}, RawKind: {paperSize.RawKind}");
+            }
+            //ExEnd
+        }
+
 
         [Test]
         public void SetTrueTypeFontsFolder()
