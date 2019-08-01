@@ -7,12 +7,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Globalization;
 using Aspose.Words;
 using Aspose.Words.Markup;
 using NUnit.Framework;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Aspose.Words.BuildingBlocks;
 
 namespace ApiExamples
 {
@@ -49,6 +52,8 @@ namespace ApiExamples
         public void SetSpecificStyleToSdt()
         {
             //ExStart
+            //ExFor:StructuredDocumentTag
+            //ExFor:StructuredDocumentTag.NodeType
             //ExFor:StructuredDocumentTag.Style
             //ExFor:StructuredDocumentTag.StyleName
             //ExFor:MarkupLevel
@@ -71,6 +76,9 @@ namespace ApiExamples
 
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
+
+            // We can get a collection of StructuredDocumentTags by looking for the document's child nodes of this NodeType
+            Assert.AreEqual(NodeType.StructuredDocumentTag, sdtPlainText.NodeType);
 
             NodeCollection tags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
 
@@ -111,6 +119,296 @@ namespace ApiExamples
         }
 
         [Test]
+        public void Date()
+        {
+            //ExStart
+            //ExFor:StructuredDocumentTag.CalendarType
+            //ExFor:StructuredDocumentTag.DateDisplayFormat
+            //ExFor:StructuredDocumentTag.DateDisplayLocale
+            //ExFor:StructuredDocumentTag.DateStorageFormat
+            //ExFor:StructuredDocumentTag.FullDate
+            //ExSummary:Shows how to prompt the user to enter a date with a StructuredDocumentTag.
+            // Create a new document
+            Document doc = new Document();
+
+            // Insert a StructuredDocumentTag that prompts the user to enter a date
+            // In Microsoft Word, this element is known as a "Date picker content control"
+            // When we click on the arrow on the right end of this tag in Microsoft Word,
+            // we will see a pop up in the form of a clickable calendar
+            // We can use that popup to select a date that will be displayed by the tag 
+            StructuredDocumentTag sdtDate = new StructuredDocumentTag(doc, SdtType.Date, MarkupLevel.Inline);
+
+            // This attribute sets the language that the calendar will be displayed in,
+            // which in this case will be Saudi Arabian Arabic
+            sdtDate.DateDisplayLocale = CultureInfo.GetCultureInfo("ar-SA").LCID;
+
+            // We can set the format with which to display the date like this
+            // The locale we set above will be carried over to the displayed date
+            sdtDate.DateDisplayFormat = "dd MMMM, yyyy";
+
+            // Select how the data will be stored in the document
+            sdtDate.DateStorageFormat = SdtDateStorageFormat.DateTime;
+
+            // Set the calendar type that will be used to select and display the date
+            sdtDate.CalendarType = SdtCalendarType.Hijri;
+
+            // Before a date is chosen, the tag will display the text "Click here to enter a date."
+            // We can set a default date to display by setting this variable
+            // We must convert the date to the appropriate calendar ourselves
+            sdtDate.FullDate = new DateTime(1440, 10, 20);
+
+            // Insert the StructuredDocumentTag into the document with a DocumentBuilder and save the document
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertNode(sdtDate);
+
+            doc.Save(ArtifactsDir + "SDT.Date.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void PlainText()
+        {
+            //ExStart
+            //ExFor:StructuredDocumentTag.Color
+            //ExFor:StructuredDocumentTag.ContentsFont
+            //ExFor:StructuredDocumentTag.EndCharacterFont
+            //ExFor:StructuredDocumentTag.Id
+            //ExFor:StructuredDocumentTag.Level
+            //ExFor:StructuredDocumentTag.Multiline
+            //ExFor:StructuredDocumentTag.Tag
+            //ExFor:StructuredDocumentTag.Title
+            //ExFor:StructuredDocumentTag.RemoveSelfOnly
+            //ExSummary:Shows how to create a StructuredDocumentTag in the form of a plain text box and modify its appearance.
+            // Create a new document 
+            Document doc = new Document();
+
+            // Create a StructuredDocumentTag that will contain plain text
+            StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
+
+            // Set the title and color of the frame that appears when you mouse over it
+            tag.Title = "My plain text";
+            tag.Color = Color.Magenta;
+
+            // Set a programmatic tag for this StructuredDocumentTag
+            // Unlike the title, this value will not be visible in the document but will be programmatically obtainable
+            // as an XML element named "tag", with the string below in its "@val" attribute
+            tag.Tag = "MyPlainTextSDT";
+
+            // Every StructuredDocumentTag gets a random unique ID
+            Assert.That(tag.Id, Is.Positive);
+
+            // Set the font for the text inside the StructuredDocumentTag
+            tag.ContentsFont.Name = "Arial";
+
+            // Set the font for the text at the end of the StructuredDocumentTag
+            // Any text that's typed in the document body after moving out of the tag with arrow keys will keep this font
+            tag.EndCharacterFont.Name = "Arial Black";
+
+            // By default, this is false and pressing enter while inside a StructuredDocumentTag does nothing
+            // When set to true, our StructuredDocumentTag can have multiple lines
+            tag.Multiline = true;
+
+            // Insert the StructuredDocumentTag into the document with a DocumentBuilder and save the document to a file
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertNode(tag);
+
+            // Insert a clone of our StructuredDocumentTag in a new paragraph
+            StructuredDocumentTag tagClone = (StructuredDocumentTag)tag.Clone(true);
+            builder.InsertParagraph();
+            builder.InsertNode(tagClone);
+
+            // We can remove the tag while keeping its contents where they were in the Paragraph by calling RemoveSelfOnly()
+            tagClone.RemoveSelfOnly();
+
+            doc.Save(ArtifactsDir + "SDT.PlainText.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void IsTemporary()
+        {
+            //ExStart
+            //ExFor:StructuredDocumentTag.IsTemporary
+            //ExSummary:Demonstrates the effects of making a StructuredDocumentTag temporary.
+            // Create a new Document
+            Document doc = new Document();
+
+            // Insert a plain text StructuredDocumentTag, which will prompt the user to enter text
+            // and allow them to edit it like a text box
+            StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
+
+            // If we set its Temporary attribute to true, as soon as we start typing,
+            // the tag will disappear and its contents will be assimilated into the parent Paragraph
+            tag.IsTemporary = true;
+
+            // Insert the StructuredDocumentTag with a DocumentBuilder
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("Temporary text box: ");
+            builder.InsertNode(tag);
+
+            // A StructuredDocumentTag in the form of a check box will let the user a square to check and uncheck
+            // Setting it to temporary will freeze its value after the first time it is clicked
+            tag = new StructuredDocumentTag(doc, SdtType.Checkbox, MarkupLevel.Inline);
+            tag.IsTemporary = true;
+
+            builder.Write("\nTemporary checkbox: ");
+            builder.InsertNode(tag);
+
+            doc.Save(ArtifactsDir + "SDT.IsTemporary.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void PlaceholderBuildingBlock()
+        {
+            //ExStart
+            //ExFor:StructuredDocumentTag.IsShowingPlaceholderText
+            //ExFor:StructuredDocumentTag.Placeholder
+            //ExFor:StructuredDocumentTag.PlaceholderName
+            //ExSummary:Shows how to use the contents of a BuildingBlock as a custom placeholder text for a StructuredDocumentTag. 
+            Document doc = new Document();
+
+            // Insert a plain text StructuredDocumentTag of the PlainText type, which will function like a text box
+            // It contains a default "Click here to enter text." prompt, which we can click and replace with our own text
+            StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
+
+            // We can substitute that default placeholder with a custom phrase, which will be drawn from a BuildingBlock
+            // First we will need to create the BuildingBlock, give it content and add it to the GlossaryDocument
+            GlossaryDocument glossaryDoc = doc.GlossaryDocument;
+
+            BuildingBlock substituteBlock = new BuildingBlock(glossaryDoc);
+            substituteBlock.Name = "Custom Placeholder";
+            substituteBlock.AppendChild(new Section(glossaryDoc));
+            substituteBlock.FirstSection.AppendChild(new Body(glossaryDoc));
+            substituteBlock.FirstSection.Body.AppendParagraph("Custom placeholder text.");
+
+            glossaryDoc.AppendChild(substituteBlock);
+
+            // The substitute BuildingBlock we made can be referenced by name
+            tag.PlaceholderName = "Custom Placeholder";
+
+            // If PlaceholderName refers to an existing block in the parent document's GlossaryDocument,
+            // the BuildingBlock will be automatically found and assigned to the Placeholder attribute
+            Assert.AreEqual(substituteBlock, tag.Placeholder);
+
+            // Setting this to true will register the text inside the StructuredDocumentTag as placeholder text
+            // This means that, in Microsoft Word, all the text contents of the StructuredDocumentTag will be highlighted with one click,
+            // so we can immediately replace the entire substitute text by typing
+            // If this is false, the text will behave like an ordinary Paragraph and a cursor will be placed with nothing highlighted
+            tag.IsShowingPlaceholderText = true;
+
+            // Insert the StructuredDocumentTag into the document using a DocumentBuilder and save the document to a file
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertNode(tag);
+
+            doc.Save(ArtifactsDir + "SDT.PlaceholderBuildingBlock.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void Lock()
+        {
+            //ExStart
+            //ExFor:StructuredDocumentTag.LockContentControl
+            //ExFor:StructuredDocumentTag.LockContents
+            //ExSummary:Shows how to restrict the editing of a StructuredDocumentTag.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a plain text StructuredDocumentTag of the PlainText type, which will function like a text box
+            // It contains a default "Click here to enter text." prompt, which we can click and replace with our own text
+            StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
+
+            // We can prohibit the users from editing the inner text in Microsoft Word by setting this to true
+            tag.LockContents = true;
+            builder.Write("The contents of this StructuredDocumentTag cannot be edited: ");
+            builder.InsertNode(tag);
+
+            tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
+
+            // Setting this to true will disable the deletion of this StructuredDocumentTag
+            // by text editing operations in Microsoft Word
+            tag.LockContentControl = true;
+
+            builder.InsertParagraph();
+            builder.Write("This StructuredDocumentTag cannot be deleted but its contents can be edited: ");
+            builder.InsertNode(tag);
+
+            doc.Save(ArtifactsDir + "SDT.Lock.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ListItemCollection()
+        {
+            //ExStart
+            //ExFor:SdtListItem
+            //ExFor:SdtListItem.#ctor(System.String)
+            //ExFor:SdtListItem.#ctor(System.String,System.String)
+            //ExFor:SdtListItem.DisplayText
+            //ExFor:SdtListItem.Value
+            //ExFor:SdtListItemCollection
+            //ExFor:SdtListItemCollection.Add(Aspose.Words.Markup.SdtListItem)
+            //ExFor:SdtListItemCollection.Clear
+            //ExFor:SdtListItemCollection.Count
+            //ExFor:SdtListItemCollection.GetEnumerator
+            //ExFor:SdtListItemCollection.Item(System.Int32)
+            //ExFor:SdtListItemCollection.RemoveAt(System.Int32)
+            //ExFor:SdtListItemCollection.SelectedValue
+            //ExFor:StructuredDocumentTag.ListItems
+            //ExSummary:Shows how to work with StructuredDocumentTag nodes of the DropDownList type.
+            // Create a blank document and insert a StructuredDocumentTag that will contain a drop down list
+            Document doc = new Document();
+            StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.DropDownList, MarkupLevel.Block);
+            doc.FirstSection.Body.AppendChild(tag);
+
+            // A drop down list needs elements, each of which will be a SdtListItem
+            SdtListItemCollection listItems = tag.ListItems;
+            listItems.Add(new SdtListItem("Value 1"));
+
+            // Each SdtListItem has text that will be displayed when the drop down list is opened, and also a value
+            // When we initialize with one string, we are providing just the value
+            // Accordingly, value is passed as DisplayText and will consequently be displayed on the screen
+            Assert.AreEqual(listItems[0].DisplayText, listItems[0].Value);
+
+            // Add 3 more SdtListItems with non-empty strings passed to DisplayText
+            listItems.Add(new SdtListItem("Item 2", "Value 2"));
+            listItems.Add(new SdtListItem("Item 3", "Value 3"));
+            listItems.Add(new SdtListItem("Item 4", "Value 4"));
+
+            // We can obtain a count of the SdtListItems and also set the drop down list's SelectedValue attribute to
+            // automatically have one of them pre-selected when we open the document in Microsoft Word
+            Assert.AreEqual(4, listItems.Count);
+            listItems.SelectedValue = listItems[3];
+
+            Assert.AreEqual("Value 4", listItems.SelectedValue.Value);
+
+            // We can enumerate over the collection and print each element
+            using (IEnumerator<SdtListItem> enumerator = listItems.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    if (enumerator.Current != null)
+                        Console.WriteLine($"List item: {enumerator.Current.DisplayText}, value: {enumerator.Current.Value}");
+                }
+            }
+
+            // We can also remove elements one at a time
+            listItems.RemoveAt(3);
+            Assert.AreEqual(3, listItems.Count);
+
+            // Make sure to update the SelectedValue's index if it ever ends up out of bounds before saving the document
+            listItems.SelectedValue = listItems[1];
+           
+            doc.Save(ArtifactsDir + "SDT.ListItemCollection.docx");
+
+            // We can clear the whole collection at once too
+            listItems.Clear();
+            Assert.AreEqual(0, listItems.Count);
+            //ExEnd
+        }
+
+        [Test]
         [Category("SkipTearDown")]
         public void CreatingCustomXml()
         {
@@ -131,6 +429,7 @@ namespace ApiExamples
             //ExFor:CustomXmlPartCollection.Item(Int32)
             //ExFor:CustomXmlPartCollection.RemoveAt(Int32)
             //ExFor:Document.CustomXmlParts
+            //ExFor:StructuredDocumentTag.XmlMapping
             //ExFor:XmlMapping.SetMapping(CustomXmlPart, String, String)
             //ExSummary:Shows how to create structured document tag with a custom XML data.
             Document doc = new Document();
@@ -194,6 +493,44 @@ namespace ApiExamples
             //ExEnd
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "SDT.CustomXml.docx", GoldsDir + "SDT.CustomXml Gold.docx"));
+        }
+
+        [Test]
+        public void XmlMapping()
+        {
+            //ExStart
+            //ExFor:XmlMapping
+            //ExFor:XmlMapping.CustomXmlPart
+            //ExFor:XmlMapping.Delete
+            //ExFor:XmlMapping.IsMapped
+            //ExFor:XmlMapping.PrefixMappings
+            //ExFor:XmlMapping.XPath
+            //ExSummary:Shows how to set XML mappings for CustomXmlParts.
+            Document doc = new Document();
+
+            // Construct an XML part that contains data and add it to the document's CustomXmlPart collection
+            string xmlPartId = Guid.NewGuid().ToString("B");
+            string xmlPartContent = "<root><text>Text element #1</text><text>Text element #2</text></root>";
+            CustomXmlPart xmlPart = doc.CustomXmlParts.Add(xmlPartId, xmlPartContent);
+            Console.WriteLine(Encoding.UTF8.GetString(xmlPart.Data));
+
+            // Create a StructuredDocumentTag that will display the contents of our CustomXmlPart in the document
+            StructuredDocumentTag sdt = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Block);
+
+            // If we set a mapping for our StructuredDocumentTag,
+            // it will only display a part of the CustomXmlPart that the XPath points to
+            // This XPath will point to the contents second "<text>" element of the first "<root>" element of our CustomXmlPart
+            sdt.XmlMapping.SetMapping(xmlPart, "/root[1]/text[2]", "xmlns:ns='http://www.w3.org/2001/XMLSchema'");
+
+            Assert.True(sdt.XmlMapping.IsMapped);
+            Assert.AreEqual(xmlPart, sdt.XmlMapping.CustomXmlPart);
+            Assert.AreEqual("/root[1]/text[2]", sdt.XmlMapping.XPath);
+            Assert.AreEqual("xmlns:ns='http://www.w3.org/2001/XMLSchema'", sdt.XmlMapping.PrefixMappings);
+
+            // Add the StructuredDocumentTag to the document to display the content from our CustomXmlPart
+            doc.FirstSection.Body.AppendChild(sdt);
+            doc.Save(ArtifactsDir + "SDT.XmlMapping.docx");
+            //ExEnd
         }
 
         [Test]
@@ -418,8 +755,7 @@ namespace ApiExamples
             // Print all the smart tags in our document with a document visitor
             doc.Accept(new SmartTagVisitor());
 
-            doc.Save(ArtifactsDir + "SmartTags.doc");
-            //ExEnd
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.SmartTags.docx");
         }
 
         /// <summary>
@@ -493,8 +829,12 @@ namespace ApiExamples
         }
 
         [Test]
-        public void AccessToBuildingBlockPropertiesFromBuildingBlockGallerySdtType()
+        public void BuildingBlockCategories()
         {
+            //ExStart
+            //ExFor:StructuredDocumentTag.BuildingBlockCategory
+            //ExFor:StructuredDocumentTag.BuildingBlockGallery
+            //ExSummary:Shows how to insert a StructuredDocumentTag as a building block and set its category and gallery.
             Document doc = new Document();
 
             StructuredDocumentTag buildingBlockSdt =
@@ -506,9 +846,8 @@ namespace ApiExamples
 
             doc.FirstSection.Body.AppendChild(buildingBlockSdt);
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.BuildingBlockCategories.docx");
+            //ExEnd
             buildingBlockSdt =
                 (StructuredDocumentTag) doc.FirstSection.Body.GetChild(NodeType.StructuredDocumentTag, 0, true);
 

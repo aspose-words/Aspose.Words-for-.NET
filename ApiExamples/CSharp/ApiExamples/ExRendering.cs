@@ -447,7 +447,8 @@ namespace ApiExamples
         public void PreviewAndPrint()
         {
             //ExStart
-            //ExFor:AsposeWordsPrintDocument
+            //ExFor:AsposeWordsPrintDocument.#ctor(Document)
+            //ExFor:AsposeWordsPrintDocument.CachePrinterSettings
             //ExSummary:Shows the Print dialog that allows selecting the printer and page range to print with. Then brings up the print preview from which you can preview the document and choose to print or close.
             Document doc = new Document(MyDir + "Rendering.doc");
 

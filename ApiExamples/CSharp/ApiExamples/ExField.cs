@@ -4290,6 +4290,9 @@ namespace ApiExamples
         [Test]
         public void FootnoteRef()
         {
+            //ExStart
+            //ExFor:FieldFootnoteRef
+            //ExSummary:Shows how to cross-reference footnotes with the FOOTNOTEREF field
             // Create a blank document and a document builder for it
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -4304,17 +4307,18 @@ namespace ApiExamples
             builder.Write("CrossReference: ");
 
             // Insert a FOOTNOTEREF field, which lets us reference a footnote more than once while re-using the same footnote marker
-            Field field = builder.InsertField(" ftnref ");
+            FieldFootnoteRef field = (FieldFootnoteRef) builder.InsertField(FieldType.FieldFootnoteRef, true);
 
             // Get this field to reference a bookmark
             // The bookmark that we chose contains a footnote marker belonging to the footnote we inserted, which will be displayed by the field, just by itself
             builder.MoveTo(field.Separator);
             builder.Write("CrossRefBookmark");
 
-            Assert.AreEqual(" ftnref CrossRefBookmark", field.GetFieldCode());
+            Assert.AreEqual(field.GetFieldCode(), " FOOTNOTEREF CrossRefBookmark");
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.FootnoteRef.docx");
+            //ExEnd
         }
 
         //ExStart
@@ -5347,6 +5351,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldShape
             //ExFor:FieldShape.Text
+            //ExFor:ParagraphFormat.Bidi
             //ExSummary:Shows how to create RTL lists with BIDIOUTLINE fields.
             // Create a blank document and a document builder
             Document doc = new Document();

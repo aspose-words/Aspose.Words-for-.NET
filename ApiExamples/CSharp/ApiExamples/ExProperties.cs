@@ -213,14 +213,9 @@ namespace ApiExamples
             properties.Paragraphs = doc.GetChildNodes(NodeType.Paragraph, true).Count;
             Assert.AreEqual(2, properties.Paragraphs);
 
-            // Bytes: Use a stream to find out the real file size of our document and assign it to the Property
-            using (MemoryStream stream = new MemoryStream())
-            {
-                doc.Save(stream, SaveFormat.Docx);
-                properties.Bytes = (int)stream.Length;
-                Assert.AreEqual(10871, properties.Bytes);
-            }
-            
+            // Check the real file size of our document
+            Assert.AreEqual(13485, properties.Bytes);
+
             // Template: The Template attribute can reflect the filename of the attached template document
             doc.AttachedTemplate = MyDir + "Document.BusinessBrochureTemplate.dot";
             Assert.AreEqual("Normal", properties.Template);          
@@ -234,7 +229,7 @@ namespace ApiExamples
 
             // If the document contains links and they are all up to date, we can set this to true
             Assert.False(properties.LinksUpToDate);
-            
+
             doc.Save(ArtifactsDir + "Properties.Content.docx");
         }
 

@@ -135,6 +135,10 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ListFormat.List
+            //ExFor:ParagraphFormat.ClearFormatting
+            //ExFor:ParagraphFormat.DropCapPosition
+            //ExFor:ParagraphFormat.IsListItem
+            //ExFor:Paragraph.IsListItem
             //ExSummary:Shows how to start a numbered list, add a bulleted list inside it, then return to the numbered list.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -150,6 +154,10 @@ namespace ApiExamples
             builder.ListFormat.List = numberedList;
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Normal;
             builder.Writeln("Numbered list item 1.");
+
+            // Every paragraph that comprises a list will have this flag
+            Assert.True(builder.CurrentParagraph.IsListItem);
+            Assert.True(builder.ParagraphFormat.IsListItem);
 
             // Create a bulleted list.
             List bulletedList = doc.Lists.Add(ListTemplate.BulletDefault);
@@ -171,7 +179,7 @@ namespace ApiExamples
 
             builder.ParagraphFormat.ClearFormatting();
 
-            builder.Document.Save(ArtifactsDir + "Lists.NestedLists.doc");
+            builder.Document.Save(ArtifactsDir + "Lists.NestedLists.docx");
             //ExEnd
         }
 
