@@ -2267,8 +2267,10 @@ namespace ApiExamples
             Assert.AreEqual(RevisionType.Deletion, doc.Revisions[0].RevisionType);
             Assert.AreEqual(2, doc.Revisions.Count);
 
+            // INSP: I think we need to check that elements in the document also changed or not, not only 'revisions count'
             // Accepting the deletion revision will assimilate it into the paragraph text and remove it from the collection
             doc.Revisions[0].Accept();
+            Assert.AreEqual(1, doc.Revisions.Count);
 
             // The second insertion revision is now at index 0, which we can reject to ignore it
             doc.Revisions[0].Reject();
@@ -2278,6 +2280,7 @@ namespace ApiExamples
             doc.StopTrackRevisions();
 
             builder.Writeln("This also does not count as a revision. ");
+            Assert.AreEqual(0, doc.Revisions.Count);
 
             doc.Save(ArtifactsDir + "Document.Revisions.docx");
             //ExEnd
@@ -2296,7 +2299,7 @@ namespace ApiExamples
             // Open a document that contains revisions and get its revision collection
             Document doc = new Document(MyDir + "Document.Revisions.docx");
             RevisionCollection revisions = doc.Revisions;
-
+            
             // This collection itself has a collection of revision groups, which are merged sequences of adjacent revisions
             Console.WriteLine($"{revisions.Groups.Count} revision groups:");
 
@@ -2339,6 +2342,8 @@ namespace ApiExamples
             // the changes must be accepted/rejected by the revisions themselves, the RevisionCollection, or the document
             // In this case we will reject all revisions via the collection, reverting the document to its original form, which we will then save
             revisions.RejectAll();
+            Assert.AreEqual(0, revisions.Count);
+
             doc.Save(ArtifactsDir + "Document.RevisionCollection.docx");
             //ExEnd
         }
