@@ -172,7 +172,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -258,7 +258,7 @@ namespace ApiExamples
             {
                 // We want to print the contents of runs, but only if they consist of text from cells
                 // So we are only interested in runs that are children of table nodes
-                if (mVisitorIsInsideTable) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideTable) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -411,7 +411,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideComment) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideComment) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -532,7 +532,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideField) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideField) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -596,6 +596,8 @@ namespace ApiExamples
         //ExFor:DocumentVisitor.VisitHeaderFooterEnd(HeaderFooter)
         //ExFor:HeaderFooter.Accept(Aspose.Words.DocumentVisitor)
         //ExFor:HeaderFooterCollection.ToArray
+        //ExFor:Run.Accept(DocumentVisitor)
+        //ExFor:Run.GetText
         //ExSummary:Traverse a document with a visitor that prints all header/footer nodes that it encounters.
         [Test] //ExSkip
         public void HeaderFooterToText()
@@ -644,7 +646,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideHeaderFooter) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideHeaderFooter) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -743,7 +745,7 @@ namespace ApiExamples
             public override VisitorAction VisitRun(Run run)
             {
                 // We want to print the contents of runs, but only if they are inside shapes, as they would be in the case of text boxes
-                if (mVisitorIsInsideEditableRange) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideEditableRange) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -864,7 +866,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideFootnote) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideFootnote) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -938,7 +940,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideOfficeMath) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideOfficeMath) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -1033,7 +1035,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideSmartTag) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideSmartTag) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -1129,7 +1131,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideStructuredDocumentTag) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideStructuredDocumentTag) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
