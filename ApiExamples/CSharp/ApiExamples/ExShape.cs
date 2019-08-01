@@ -11,6 +11,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Ole;
@@ -22,6 +23,8 @@ using NUnit.Framework;
 using Color = System.Drawing.Color;
 using DashStyle = Aspose.Words.Drawing.DashStyle;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
+using TextBox = Aspose.Words.Drawing.TextBox;
+
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
@@ -631,43 +634,6 @@ namespace ApiExamples
 
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             Assert.That(shape.OleFormat.SuggestedFileName, Is.Empty);
-        }
-
-        [Test]
-        public void GetOpaqueBoundsInPixels()
-        {
-            Document doc = new Document(MyDir + "Shape.TextBox.doc");
-
-            Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
-
-            ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Jpeg);
-
-            MemoryStream stream = new MemoryStream();
-            ShapeRenderer renderer = shape.GetShapeRenderer();
-            renderer.Save(stream, imageOptions);
-
-            shape.Remove();
-
-            // Check that the opaque bounds and bounds have default values
-            Assert.AreEqual(250,
-                renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.VerticalResolution).Width);
-            Assert.AreEqual(52,
-                renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.HorizontalResolution).Height);
-
-            Assert.AreEqual(250, renderer.GetBoundsInPixels(imageOptions.Scale, imageOptions.VerticalResolution).Width);
-            Assert.AreEqual(52,
-                renderer.GetBoundsInPixels(imageOptions.Scale, imageOptions.HorizontalResolution).Height);
-
-            Assert.AreEqual(250,
-                renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.HorizontalResolution).Width);
-            Assert.AreEqual(52,
-                renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.HorizontalResolution).Height);
-
-            Assert.AreEqual(250, renderer.GetBoundsInPixels(imageOptions.Scale, imageOptions.VerticalResolution).Width);
-            Assert.AreEqual(52, renderer.GetBoundsInPixels(imageOptions.Scale, imageOptions.VerticalResolution).Height);
-
-            Assert.AreEqual((float) 187.850006, renderer.OpaqueBoundsInPoints.Width);
-            Assert.AreEqual((float) 39.25, renderer.OpaqueBoundsInPoints.Height);
         }
 
         [Test]
@@ -1698,6 +1664,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ShapeBase.GetShapeRenderer
+            //ExFor:NodeRendererBase.Save(Stream, ImageSaveOptions)
             //ExSummary:Shows how to export shapes to files in the local file system using a shape renderer.
             // Open a document that contains shapes and get its shape collection
             Document doc = new Document(MyDir + "Shape.VarietyOfShapes.docx");
@@ -1714,5 +1681,107 @@ namespace ApiExamples
             }
             //ExEnd
         }
+
+        [Test]
+        public void OfficeMathRenderer()
+        {
+            //ExStart
+            //ExFor:NodeRendererBase
+            //ExFor:NodeRendererBase.BoundsInPoints
+            //ExFor:NodeRendererBase.GetBoundsInPixels(Single, Single)
+            //ExFor:NodeRendererBase.GetBoundsInPixels(Single, Single, Single)
+            //ExFor:NodeRendererBase.GetOpaqueBoundsInPixels(Single, Single)
+            //ExFor:NodeRendererBase.GetOpaqueBoundsInPixels(Single, Single, Single)
+            //ExFor:NodeRendererBase.GetSizeInPixels(Single, Single)
+            //ExFor:NodeRendererBase.GetSizeInPixels(Single, Single, Single)
+            //ExFor:NodeRendererBase.OpaqueBoundsInPoints
+            //ExFor:NodeRendererBase.SizeInPoints
+            //ExFor:OfficeMathRenderer
+            //ExFor:OfficeMathRenderer.#ctor(Math.OfficeMath)
+            //ExSummary:Shows how to measure and scale shapes.
+            // Open a document that contains an OfficeMath object
+            Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
+
+            // Create a renderer for the OfficeMath object 
+            OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
+            OfficeMathRenderer renderer = new OfficeMathRenderer(officeMath);
+
+            // We can measure the size of the image that the OfficeMath object will create when we render it
+            Assert.AreEqual(117.0f, renderer.SizeInPoints.Width, 0.1f);
+            Assert.AreEqual(12.9f, renderer.SizeInPoints.Height, 0.1f);
+
+            Assert.AreEqual(117.0f, renderer.BoundsInPoints.Width, 0.1f);
+            Assert.AreEqual(12.9f, renderer.BoundsInPoints.Height, 0.1f);
+
+            // Shapes with transparent parts may return different values here
+            Assert.AreEqual(117.0f, renderer.OpaqueBoundsInPoints.Width, 0.1f);
+            Assert.AreEqual(14.7f, renderer.OpaqueBoundsInPoints.Height, 0.1f);
+
+            // Get the shape size in pixels, with linear scaling to a specific DPI
+            Rectangle bounds = renderer.GetBoundsInPixels(1.0f, 96.0f);
+            Assert.AreEqual(156, bounds.Width);
+            Assert.AreEqual(18, bounds.Height);
+
+            // Get the shape size in pixels, but with a different DPI for the horizontal and vertical dimensions
+            bounds = renderer.GetBoundsInPixels(1.0f, 96.0f, 150.0f);
+            Assert.AreEqual(156, bounds.Width);
+            Assert.AreEqual(27, bounds.Height);
+
+            // The opaque bounds may vary here also
+            bounds = renderer.GetOpaqueBoundsInPixels(1.0f, 96.0f);
+            Assert.AreEqual(156, bounds.Width);
+            Assert.AreEqual(20, bounds.Height);
+
+            bounds = renderer.GetOpaqueBoundsInPixels(1.0f, 96.0f, 150.0f);
+            Assert.AreEqual(156, bounds.Width);
+            Assert.AreEqual(31, bounds.Height);
+            //ExEnd
+        }
+
+        //ExStart
+        //ExFor:NodeRendererBase.RenderToScale(Graphics, Single, Single, Single)
+        //ExFor:NodeRendererBase.RenderToSize(Graphics, Single, Single, Single, Single)
+        //ExFor:ShapeRenderer
+        //ExFor:ShapeRenderer.#ctor(ShapeBase)
+        //ExSummary:Shows how to render a shape with a Graphics object.
+        [Test] //ExSkip
+        public void DisplayShapeForm()
+        {
+            // Create a new ShapeForm instance and show it as a dialog box
+            ShapeForm shapeForm = new ShapeForm();
+            shapeForm.ShowDialog();
+        }
+
+        /// <summary>
+        /// Windows Form that renders and displays shapes from a document.
+        /// </summary>
+        private class ShapeForm : Form
+        {
+            protected override void OnPaint(PaintEventArgs e)
+            {
+                // Set the size of the Form canvas
+                this.Size = new Size(1000, 800);
+
+                // Open a document and get its first shape, which is a chart
+                Document doc = new Document(MyDir + "Shape.VarietyOfShapes.docx");
+                Shape shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+                // Create a ShapeRenderer instance and a Graphics object
+                // The ShapeRenderer will render the shape that is passed during construction over the Graphics object
+                // Whatever is rendered on this Graphics object will be displayed on the screen inside this form
+                ShapeRenderer renderer = new ShapeRenderer(shape);
+                Graphics formGraphics = CreateGraphics();
+
+                // Call this method on the renderer to render the chart in the passed Graphics object,
+                // on a specified x/y coordinate and scale
+                renderer.RenderToScale(formGraphics, 0, 0, 1.5f);
+
+                // Get another shape from the document, and render it to a specific size instead of a linear scale
+                GroupShape groupShape = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
+                renderer = new ShapeRenderer(groupShape);
+                renderer.RenderToSize(formGraphics, 500, 400, 100, 200);
+            }
+        }
+        //ExEnd
     }
 }

@@ -880,30 +880,93 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void WritePageInfo()
+        [Ignore("Run only when the printer driver is installed")]
+        public void PrintPageInfo()
         {
             //ExStart
             //ExFor:PageInfo
+            //ExFor:PageInfo.GetSizeInPixels(Single, Single, Single)
+            //ExFor:PageInfo.GetSpecifiedPrinterPaperSource(PaperSourceCollection, PaperSource)
+            //ExFor:PageInfo.HeightInPoints
+            //ExFor:PageInfo.Landscape
             //ExFor:PageInfo.PaperSize
             //ExFor:PageInfo.PaperTray
-            //ExFor:PageInfo.Landscape
+            //ExFor:PageInfo.SizeInPoints
             //ExFor:PageInfo.WidthInPoints
-            //ExFor:PageInfo.HeightInPoints
-            //ExSummary:Retrieves page size and orientation information for every page in a Word document.
+            //ExSummary:Shows how to print page size and orientation information for every page in a Word document.
             Document doc = new Document(MyDir + "Rendering.doc");
+
+            // The first section has 2 pages
+            // We will assign a different printer paper tray to each one, whose number will match a kind of paper source
+            // These sources and their Kinds will vary depending on the installed printer driver
+            PrinterSettings.PaperSourceCollection paperSources = new PrinterSettings().PaperSources;
+
+            doc.FirstSection.PageSetup.FirstPageTray = paperSources[0].RawKind;
+            doc.FirstSection.PageSetup.OtherPagesTray = paperSources[1].RawKind;
 
             Console.WriteLine("Document \"{0}\" contains {1} pages.", doc.OriginalFileName, doc.PageCount);
 
+            float scale = 1.0f;
+            float dpi = 96;
+
             for (int i = 0; i < doc.PageCount; i++)
             {
+                // Each page has a PageInfo object, whose index is the respective page's number
                 PageInfo pageInfo = doc.GetPageInfo(i);
-                Console.WriteLine("Page {0}. PaperSize:{1} ({2:F0}x{3:F0}pt), Orientation:{4}, PaperTray:{5}", i + 1,
-                    pageInfo.PaperSize, pageInfo.WidthInPoints, pageInfo.HeightInPoints,
-                    pageInfo.Landscape ? "Landscape" : "Portrait", pageInfo.PaperTray);
-            }
 
+                // Print the page's orientation and dimensions
+                Console.WriteLine($"Page {i + 1}:");
+                Console.WriteLine($"\tOrientation:\t{(pageInfo.Landscape ? "Landscape" : "Portrait")}");
+                Console.WriteLine($"\tPaper size:\t\t{pageInfo.PaperSize} ({pageInfo.WidthInPoints:F0}x{pageInfo.HeightInPoints:F0}pt)");
+                Console.WriteLine($"\tSize in points:\t{pageInfo.SizeInPoints}");
+                Console.WriteLine($"\tSize in pixels:\t{pageInfo.GetSizeInPixels(1.0f, 96)} at {scale * 100}% scale, {dpi} dpi");
+
+                // Paper source tray information
+                Console.WriteLine($"\tTray:\t{pageInfo.PaperTray}");
+                PaperSource source = pageInfo.GetSpecifiedPrinterPaperSource(paperSources, paperSources[0]);
+                Console.WriteLine($"\tSuitable print source:\t{source.SourceName}, kind: {source.Kind}");
+            }
             //ExEnd
         }
+
+        [Test]
+        [Ignore("Run only when the printer driver is installed")]
+        public void PrinterSettingsContainer()
+        {
+            //ExStart
+            //ExFor:PrinterSettingsContainer
+            //ExFor:PrinterSettingsContainer.#ctor(PrinterSettings)
+            //ExFor:PrinterSettingsContainer.DefaultPageSettingsPaperSource
+            //ExFor:PrinterSettingsContainer.PaperSizes
+            //ExFor:PrinterSettingsContainer.PaperSources
+            //ExSummary:Shows how to access and list your printer's paper sources and sizes.
+            // The PrinterSettingsContainer contains a PrinterSettings object,
+            // which contains unique data for different printer drivers
+            PrinterSettingsContainer container = new PrinterSettingsContainer(new PrinterSettings());
+
+            // You can find the printer's list of paper sources here
+            Console.WriteLine($"{container.PaperSources.Count} printer paper sources:");
+            foreach (PaperSource paperSource in container.PaperSources)
+            {
+                bool isDefault = container.DefaultPageSettingsPaperSource.SourceName == paperSource.SourceName;
+                Console.WriteLine($"\t{paperSource.SourceName}, " +
+                                  $"RawKind: {paperSource.RawKind} {(isDefault ? "(Default)" : "")}");
+            }
+
+            // You can find the list of PaperSizes that can be sent to the printer here
+            // Both the PrinterSource and PrinterSize contain a "RawKind" attribute,
+            // which equates to a paper type listed on the PaperSourceKind enum
+            // If the list of PaperSources contains a PaperSource with the same RawKind as that of the page being printed,
+            // the page will be printed by the paper source and on the appropriate paper size by the printer
+            // Otherwise, the printer will default to the source designated by DefaultPageSettingsPaperSource 
+            Console.WriteLine($"{container.PaperSizes.Count} paper sizes:");
+            foreach (System.Drawing.Printing.PaperSize paperSize in container.PaperSizes)
+            {
+                Console.WriteLine($"\t{paperSize}, RawKind: {paperSize.RawKind}");
+            }
+            //ExEnd
+        }
+
 
         [Test]
         public void SetTrueTypeFontsFolder()
