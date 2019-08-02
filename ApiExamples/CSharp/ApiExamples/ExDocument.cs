@@ -1671,6 +1671,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Compare(Document, String, DateTime)
+            //ExFor:RevisionCollection.AcceptAll
             //ExSummary:Shows how to apply the compare method to two documents and then use the results. 
             Document doc1 = new Document(MyDir + "Document.Compare.1.doc");
             Document doc2 = new Document(MyDir + "Document.Compare.2.doc");
@@ -2220,6 +2221,16 @@ namespace ApiExamples
         public void Revisions()
         {
             //ExStart
+            //ExFor:Revision
+            //ExFor:Revision.Accept
+            //ExFor:Revision.Author
+            //ExFor:Revision.DateTime
+            //ExFor:Revision.Group
+            //ExFor:Revision.Reject
+            //ExFor:Revision.RevisionType
+            //ExFor:RevisionCollection
+            //ExFor:RevisionCollection.Item(Int32)
+            //ExFor:RevisionCollection.Count
             //ExFor:Document.HasRevisions
             //ExFor:Document.TrackRevisions
             //ExFor:Document.Revisions
@@ -2227,45 +2238,120 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // A blank document comes with no revisions
+            // Normal editing of the document does not count as a revision
+            builder.Write("This does not count as a revision. ");
             Assert.IsFalse(doc.HasRevisions);
 
-            builder.Writeln("This does not count as a revision.");
-
-            // Just adding text does not count as a revision
-            Assert.IsFalse(doc.HasRevisions);
-
-            // For our edits to count as revisions, we need to declare an author and start tracking them
+            // In order for our edits to count as revisions, we need to declare an author and start tracking them
             doc.StartTrackRevisions("John Doe", DateTime.Now);
+            builder.Write("This is revision #1. ");
 
-            builder.Writeln("This is a revision.");
-
-            // The above text is now tracked as a revision and will show up accordingly in our output file
-            Assert.IsTrue(doc.HasRevisions);
-            Assert.AreEqual("John Doe", doc.Revisions[0].Author);
-
-            // Document.TrackRevisions corresponds to Microsoft Word tracking changes, not the ones we programmatically make here 
+            // This flag corresponds to the "Track Changes" option being turned on in Microsoft Word, to track the editing manually
+            // done there and not the programmatic changes we are about to do here
             Assert.IsFalse(doc.TrackRevisions);
+
+            // As well as nodes in the document, revisions get referenced in this collection
+            Assert.IsTrue(doc.HasRevisions);
+            Assert.AreEqual(1, doc.Revisions.Count);
+
+            Revision revision = doc.Revisions[0];
+            Assert.AreEqual("John Doe", revision.Author);
+            Assert.AreEqual("This is revision #1. ", revision.ParentNode.GetText());
+            Assert.AreEqual(RevisionType.Insertion, revision.RevisionType);
+            Assert.AreEqual(revision.DateTime.Date, DateTime.Now.Date);
+            Assert.AreEqual(doc.Revisions.Groups[0], revision.Group);
+
+            // Deleting content also counts as a revision
+            // The most recent revisions are put at the start of the collection
+            doc.FirstSection.Body.FirstParagraph.Runs[0].Remove();
+            Assert.AreEqual(RevisionType.Deletion, doc.Revisions[0].RevisionType);
+            Assert.AreEqual(2, doc.Revisions.Count);
+
+            // Insert revisions are treated as document text by the GetText() method before they are accepted,
+            // since they are still nodes with text and are in the body
+            Assert.AreEqual("This does not count as a revision. This is revision #1.", doc.GetText().Trim());
+
+            // Accepting the deletion revision will assimilate it into the paragraph text and remove it from the collection
+            doc.Revisions[0].Accept();
+            Assert.AreEqual(1, doc.Revisions.Count);
+
+            // Once the delete revision is accepted, the nodes that it concerns are removed and their text will not show up here
+            Assert.AreEqual("This is revision #1.", doc.GetText().Trim());
+
+            // The second insertion revision is now at index 0, which we can reject to ignore and discard it
+            doc.Revisions[0].Reject();
+            Assert.AreEqual(0, doc.Revisions.Count);
+            Assert.AreEqual("", doc.GetText().Trim());
 
             // This takes us back to not counting changes as revisions
             doc.StopTrackRevisions();
 
-            builder.Writeln("This does not count as a revision.");
+            builder.Writeln("This also does not count as a revision.");
+            Assert.AreEqual(0, doc.Revisions.Count);
 
-            doc.Save(ArtifactsDir + "Revisions.docx");
+            doc.Save(ArtifactsDir + "Document.Revisions.docx");
+            //ExEnd
+        }
 
-            // We can get rid of all the changes we made that counted as revisions
-            doc.Revisions.RejectAll();
-            Assert.IsFalse(doc.HasRevisions);
+        [Test]
+        public void RevisionCollection()
+        {
+            //ExStart
+            //ExFor:Revision.ParentStyle
+            //ExFor:RevisionCollection.GetEnumerator
+            //ExFor:RevisionCollection.Groups
+            //ExFor:RevisionCollection.RejectAll
+            //ExFor:RevisionGroupCollection.GetEnumerator
+            //ExSummary:Shows how to look through a document's revisions.
+            // Open a document that contains revisions and get its revision collection
+            Document doc = new Document(MyDir + "Document.Revisions.docx");
+            RevisionCollection revisions = doc.Revisions;
+            
+            // This collection itself has a collection of revision groups, which are merged sequences of adjacent revisions
+            Console.WriteLine($"{revisions.Groups.Count} revision groups:");
 
-            // The second line that our builder wrote will not appear at all in the output
-            doc.Save(ArtifactsDir + "RevisionsRejected.docx");
+            // We can iterate over the collection of groups and access the text that the revision concerns
+            using (IEnumerator<RevisionGroup> e = revisions.Groups.GetEnumerator())
+            {
+                while (e.MoveNext())
+                {
+                    Console.WriteLine($"\tGroup type \"{e.Current.RevisionType}\", " +
+                                      $"author: {e.Current.Author}, contents: [{e.Current.Text.Trim()}]");
+                }
+            }
 
-            // Alternatively, we can track revisions from Microsoft Word like this
-            // This is the same as turning on "Track Changes" in Word
-            doc.TrackRevisions = true;
+            // The collection of revisions is considerably larger than the condensed form we printed above,
+            // depending on how many Runs the text has been segmented into during editing in Microsoft Word,
+            // since each Run affected by a revision gets its own Revision object
+            Console.WriteLine($"\n{revisions.Count} revisions:");
 
-            doc.Save(ArtifactsDir + "RevisionsTrackedFromMSWord.docx");
+            using (IEnumerator<Revision> e = revisions.GetEnumerator())
+            {
+                while (e.MoveNext())
+                {
+                    // A StyleDefinitionChange strictly affects styles and not document nodes, so in this case the ParentStyle
+                    // attribute will always be used, while the ParentNode will always be null
+                    // Since all other changes affect nodes, ParentNode will conversely be in use and ParentStyle will be null
+                    if (e.Current.RevisionType == RevisionType.StyleDefinitionChange)
+                    {
+                        Console.WriteLine($"\tRevision type \"{e.Current.RevisionType}\", " +
+                                          $"author: {e.Current.Author}, style: [{e.Current.ParentStyle.Name}]");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"\tRevision type \"{e.Current.RevisionType}\", " +
+                                          $"author: {e.Current.Author}, contents: [{e.Current.ParentNode.GetText().Trim()}]");
+                    }
+                }
+            }
+
+            // While the collection of revision groups provides a clearer overview of all revisions that took place in the document,
+            // the changes must be accepted/rejected by the revisions themselves, the RevisionCollection, or the document
+            // In this case we will reject all revisions via the collection, reverting the document to its original form, which we will then save
+            revisions.RejectAll();
+            Assert.AreEqual(0, revisions.Count);
+
+            doc.Save(ArtifactsDir + "Document.RevisionCollection.docx");
             //ExEnd
         }
 
