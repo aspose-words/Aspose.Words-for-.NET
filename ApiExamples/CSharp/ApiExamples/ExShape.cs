@@ -1714,5 +1714,24 @@ namespace ApiExamples
             }
             //ExEnd
         }
+
+        [Test]
+        public void DocumentHasSmartArtObject()
+        {
+            //ExStart
+            //ExFor:Shape.HasSmartArt
+            //ExSummary:Shows how to detect if Shape has a SmartArt object.
+            Document doc = new Document(MyDir + "Shape.SmartArt.docx");
+ 
+            int count = 0;
+            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
+            {
+                if (shape.HasSmartArt)
+                    count++;
+            }
+ 
+            Console.WriteLine("The document has {0} shapes with SmartArt.", count);
+            //ExEnd
+        }
     }
 }
