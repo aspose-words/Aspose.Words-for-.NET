@@ -1414,6 +1414,57 @@ namespace ApiExamples
         }
 
         [Test]
+        public void CreateLinkBetweenTextBoxes()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2016);
+
+            Shape textBoxShape1 = builder.InsertShape(ShapeType.TextBox, 100, 100);
+            builder.Writeln();
+            Shape textBoxShape2 = builder.InsertShape(ShapeType.TextBox, 100, 100);
+            builder.Writeln();
+            Shape textBoxShape3 = builder.InsertShape(ShapeType.TextBox, 100, 100);
+
+            TextBox textBox1 = textBoxShape1.TextBox;
+            TextBox textBox2 = textBoxShape2.TextBox;
+            TextBox textBox3 = textBoxShape3.TextBox;
+            
+            //builder.MoveTo(textBoxShape2.LastParagraph);
+            //builder.Write("Vertical text");
+
+            // You can only create link on empty textbox
+            // Thus this is not valid link target
+            if (textBox1.IsValidLinkTarget(textBox2))
+                textBox1.Next = textBox2;
+
+            if (textBox2.IsValidLinkTarget(textBox3))
+                textBox2.Next = textBox3;
+
+            if ((textBox1.Next != null) && (textBox1.Previous == null))
+            {
+                Console.WriteLine("textBox1: The head of the sequence");
+            }
+ 
+            if ((textBox2.Next != null) && (textBox2.Previous != null))
+            {
+                Console.WriteLine("textBox2: The Middle of the sequence");
+            }
+ 
+            if ((textBox3.Next == null) && (textBox3.Previous != null))
+            {
+                Console.WriteLine("textBox3: The Tail of the sequence");
+                textBox3.Previous.BreakForwardLink();
+            }
+
+            Assert.IsTrue(textBox2.Next == null);
+            Assert.IsTrue(textBox3.Previous == null);
+
+            doc.Save(ArtifactsDir + "Shape.CreateLinkBetweenTextBoxes.docx");
+        }
+
+        [Test]
         public void GetTextBoxAndChangeTextAnchor()
         {
             //ExStart
