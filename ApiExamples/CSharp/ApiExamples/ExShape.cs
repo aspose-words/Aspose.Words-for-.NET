@@ -1416,52 +1416,63 @@ namespace ApiExamples
         [Test]
         public void CreateLinkBetweenTextBoxes()
         {
+            //ExStart
+            //ExFor:TextBox.IsValidLinkTarget(TextBox)
+            //ExFor:TextBox.Next
+            //ExFor:TextBox.Previous
+            //ExFor:TextBox.BreakForwardLink
+            //ExSummary:Shows how to work with textbox forward link
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2016);
-
+            // Create a few textboxes for example
             Shape textBoxShape1 = builder.InsertShape(ShapeType.TextBox, 100, 100);
-            builder.Writeln();
-            Shape textBoxShape2 = builder.InsertShape(ShapeType.TextBox, 100, 100);
-            builder.Writeln();
-            Shape textBoxShape3 = builder.InsertShape(ShapeType.TextBox, 100, 100);
-
             TextBox textBox1 = textBoxShape1.TextBox;
-            TextBox textBox2 = textBoxShape2.TextBox;
-            TextBox textBox3 = textBoxShape3.TextBox;
+            builder.Writeln();
             
-            //builder.MoveTo(textBoxShape2.LastParagraph);
-            //builder.Write("Vertical text");
+            Shape textBoxShape2 = builder.InsertShape(ShapeType.TextBox, 100, 100);
+            TextBox textBox2 = textBoxShape2.TextBox;
+            builder.Writeln();
+            
+            Shape textBoxShape3 = builder.InsertShape(ShapeType.TextBox, 100, 100);
+            TextBox textBox3 = textBoxShape3.TextBox;
+            builder.Writeln();
 
-            // You can only create link on empty textbox
-            // Thus this is not valid link target
+            Shape textBoxShape4 = builder.InsertShape(ShapeType.TextBox, 100, 100);
+            TextBox textBox4 = textBoxShape4.TextBox;
+            
+            // Create link between textboxes if possible
             if (textBox1.IsValidLinkTarget(textBox2))
                 textBox1.Next = textBox2;
 
             if (textBox2.IsValidLinkTarget(textBox3))
                 textBox2.Next = textBox3;
 
-            if ((textBox1.Next != null) && (textBox1.Previous == null))
-            {
-                Console.WriteLine("textBox1: The head of the sequence");
-            }
+            // You can only create link on empty textbox
+            builder.MoveTo(textBoxShape4.LastParagraph);
+            builder.Write("Vertical text");
+            // Thus it's not valid link target
+            Assert.IsFalse(textBox3.IsValidLinkTarget(textBox4));
+            
+            if (textBox1.Next != null && textBox1.Previous == null)
+                Console.WriteLine("This TextBox is the head of the sequence");
  
-            if ((textBox2.Next != null) && (textBox2.Previous != null))
-            {
-                Console.WriteLine("textBox2: The Middle of the sequence");
-            }
+            if (textBox2.Next != null && textBox2.Previous != null)
+                Console.WriteLine("This TextBox is the Middle of the sequence");
  
-            if ((textBox3.Next == null) && (textBox3.Previous != null))
+            if (textBox3.Next == null && textBox3.Previous != null)
             {
-                Console.WriteLine("textBox3: The Tail of the sequence");
+                Console.WriteLine("This TextBox is the Tail of the sequence");
+                
+                // Break the forward link between textBox2 and textBox3
                 textBox3.Previous.BreakForwardLink();
+                // Check that link was break successfully
+                Assert.IsTrue(textBox2.Next == null);
+                Assert.IsTrue(textBox3.Previous == null);
             }
-
-            Assert.IsTrue(textBox2.Next == null);
-            Assert.IsTrue(textBox3.Previous == null);
 
             doc.Save(ArtifactsDir + "Shape.CreateLinkBetweenTextBoxes.docx");
+            //ExEnd
         }
 
         [Test]
@@ -1771,7 +1782,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Shape.HasSmartArt
-            //ExSummary:Shows how to detect if Shape has a SmartArt object.
+            //ExSummary:Shows how to detect that Shape has a SmartArt object.
             Document doc = new Document(MyDir + "Shape.SmartArt.docx");
  
             int count = 0;
