@@ -1745,7 +1745,7 @@ namespace ApiExamples
         //ExFor:ShapeRenderer
         //ExFor:ShapeRenderer.#ctor(ShapeBase)
         //ExSummary:Shows how to render a shape with a Graphics object.
-        [Test] //ExSkip
+        [Test, Category("IgnoreOnJenkins")] //ExSkip
         public void DisplayShapeForm()
         {
             // Create a new ShapeForm instance and show it as a dialog box
