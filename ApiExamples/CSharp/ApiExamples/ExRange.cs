@@ -180,12 +180,13 @@ namespace ApiExamples
         }
         //ExEnd
 
-        [Test]
+        //ExStart
+        //ExFor:FindReplaceOptions.ApplyFont
+        //ExFor:FindReplaceOptions.ReplacingCallback
+        //ExSummary:Shows how to apply a different font to new content via FindReplaceOptions.
+        [Test] //ExSkip
         public void ReplaceNumbersAsHex()
         {
-            //ExStart
-            //ExFor:FindReplaceOptions.ApplyFont
-            //ExSummary:Shows how to apply a different font to new content via FindReplaceOptions.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -200,10 +201,11 @@ namespace ApiExamples
             options.ReplacingCallback = new NumberHexer();
 
             int count = doc.Range.Replace(new Regex("[0-9]+"), "", options);
-            //ExEnd
         }
 
-        // Customer defined callback.
+        /// <summary>
+        /// Replaces arabic numbers with hexadecimal equivalents
+        /// </summary>
         private class NumberHexer : IReplacingCallback
         {
             public ReplaceAction Replacing(ReplacingArgs args)
@@ -217,6 +219,7 @@ namespace ApiExamples
                 return ReplaceAction.Replace;
             }
         }
+        //ExEnd
 
         #endregion
 
