@@ -183,6 +183,9 @@ namespace ApiExamples
         [Test]
         public void ReplaceNumbersAsHex()
         {
+            //ExStart
+            //ExFor:FindReplaceOptions.ApplyFont
+            //ExSummary:Shows how to apply a different font to new content via FindReplaceOptions.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -197,6 +200,7 @@ namespace ApiExamples
             options.ReplacingCallback = new NumberHexer();
 
             int count = doc.Range.Replace(new Regex("[0-9]+"), "", options);
+            //ExEnd
         }
 
         // Customer defined callback.
