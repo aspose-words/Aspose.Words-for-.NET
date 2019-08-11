@@ -182,6 +182,7 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:FindReplaceOptions.ApplyFont
+        //ExFor:FindReplaceOptions.Direction
         //ExFor:FindReplaceOptions.ReplacingCallback
         //ExSummary:Shows how to apply a different font to new content via FindReplaceOptions.
         [Test] //ExSkip
@@ -199,6 +200,7 @@ namespace ApiExamples
             // Highlight newly inserted content.
             options.ApplyFont.HighlightColor = Color.DarkOrange;
             options.ReplacingCallback = new NumberHexer();
+            Assert.AreEqual(FindReplaceDirection.Forward, options.Direction);
 
             int count = doc.Range.Replace(new Regex("[0-9]+"), "", options);
         }
