@@ -184,6 +184,7 @@ namespace ApiExamples
         //ExFor:FindReplaceOptions.ApplyFont
         //ExFor:FindReplaceOptions.Direction
         //ExFor:FindReplaceOptions.ReplacingCallback
+        //ExFor:ReplacingArgs.Match
         //ExSummary:Shows how to apply a different font to new content via FindReplaceOptions.
         [Test] //ExSkip
         public void ReplaceNumbersAsHex()
