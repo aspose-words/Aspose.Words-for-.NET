@@ -876,7 +876,6 @@ namespace ApiExamples
             private int mCurrentPage;
             private int mPageTo;
         }
-#endif
         //ExEnd
 
         [Test]
@@ -966,7 +965,7 @@ namespace ApiExamples
             }
             //ExEnd
         }
-
+#endif
 
         [Test]
         public void SetTrueTypeFontsFolder()
