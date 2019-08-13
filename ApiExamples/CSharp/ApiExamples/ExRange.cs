@@ -185,6 +185,7 @@ namespace ApiExamples
         //ExFor:FindReplaceOptions.Direction
         //ExFor:FindReplaceOptions.ReplacingCallback
         //ExFor:ReplacingArgs.Match
+        //ExFor:ReplacingArgs.MatchOffset
         //ExSummary:Shows how to apply a different font to new content via FindReplaceOptions.
         [Test] //ExSkip
         public void ReplaceNumbersAsHex()
@@ -228,6 +229,11 @@ namespace ApiExamples
 
                 // And write it as HEX.
                 args.Replacement = $"0x{number:X} (replacement #{mCurrentReplacementNumber})";
+
+                Console.WriteLine($"Match #{mCurrentReplacementNumber}");
+                Console.WriteLine($"\tOriginal value:\t{args.Match.Value}");
+                Console.WriteLine($"\tReplacement:\t{args.Replacement}");
+                Console.WriteLine($"\tOffset in containing {args.MatchNode.NodeType} node:\t{args.MatchOffset}");
 
                 return ReplaceAction.Replace;
             }
