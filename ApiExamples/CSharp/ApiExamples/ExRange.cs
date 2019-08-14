@@ -226,10 +226,10 @@ namespace ApiExamples
             {
                 mCurrentReplacementNumber++;
                 
-                // Parse numbers.
+                // Parse numbers
                 int number = Convert.ToInt32(args.Match.Value);
 
-                // And write it as HEX.
+                // And write it as HEX
                 args.Replacement = $"0x{number:X} (replacement #{mCurrentReplacementNumber})";
 
                 Console.WriteLine($"Match #{mCurrentReplacementNumber}");
@@ -237,14 +237,10 @@ namespace ApiExamples
                 Console.WriteLine($"\tReplacement:\t{args.Replacement}");
                 Console.WriteLine($"\tOffset in parent {args.MatchNode.NodeType} node:\t{args.MatchOffset}");
 
-                if (String.IsNullOrEmpty(args.GroupName))
-                {
+                if (string.IsNullOrEmpty(args.GroupName))
                     Console.WriteLine($"\tGroup index:\t{args.GroupIndex}");
-                }
                 else
-                {
                     Console.WriteLine($"\tGroup name:\t{args.GroupName}");
-                }
 
                 return ReplaceAction.Replace;
             }
