@@ -104,6 +104,7 @@
     <Compile Include="ExCharts.cs" />
     <Compile Include="ExComment.cs" />
     <Compile Include="ExControlChar.cs" />
+    <Compile Include="ExDocSaveOptions.cs" />
     <Compile Include="ExHtmlLoadOptions.cs" />
     <Compile Include="ExDigitalSignatureCollection.cs" />
     <Compile Include="ExDigitalSignatureUtil.cs" />
