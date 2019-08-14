@@ -184,6 +184,8 @@ namespace ApiExamples
         //ExFor:FindReplaceOptions.ApplyFont
         //ExFor:FindReplaceOptions.Direction
         //ExFor:FindReplaceOptions.ReplacingCallback
+        //ExFor:ReplacingArgs.GroupIndex
+        //ExFor:ReplacingArgs.GroupName
         //ExFor:ReplacingArgs.Match
         //ExFor:ReplacingArgs.MatchOffset
         //ExSummary:Shows how to apply a different font to new content via FindReplaceOptions.
@@ -233,7 +235,16 @@ namespace ApiExamples
                 Console.WriteLine($"Match #{mCurrentReplacementNumber}");
                 Console.WriteLine($"\tOriginal value:\t{args.Match.Value}");
                 Console.WriteLine($"\tReplacement:\t{args.Replacement}");
-                Console.WriteLine($"\tOffset in containing {args.MatchNode.NodeType} node:\t{args.MatchOffset}");
+                Console.WriteLine($"\tOffset in parent {args.MatchNode.NodeType} node:\t{args.MatchOffset}");
+
+                if (String.IsNullOrEmpty(args.GroupName))
+                {
+                    Console.WriteLine($"\tGroup index:\t{args.GroupIndex}");
+                }
+                else
+                {
+                    Console.WriteLine($"\tGroup name:\t{args.GroupName}");
+                }
 
                 return ReplaceAction.Replace;
             }
