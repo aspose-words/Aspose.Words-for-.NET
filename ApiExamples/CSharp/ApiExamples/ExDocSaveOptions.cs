@@ -20,6 +20,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocSaveOptions
             //ExFor:DocSaveOptions.#ctor
+            //ExFor:DocSaveOptions.#ctor(SaveFormat)
             //ExFor:DocSaveOptions.Password
             //ExFor:DocSaveOptions.SaveFormat
             //ExFor:DocSaveOptions.SaveRoutingSlip
