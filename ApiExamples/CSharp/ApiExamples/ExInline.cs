@@ -17,7 +17,6 @@ namespace ApiExamples
         public void InlineRevisions()
         {
             //ExStart
-            //ExFor:Paragraph.Runs
             //ExFor:Inline
             //ExFor:Inline.IsDeleteRevision
             //ExFor:Inline.IsFormatRevision
@@ -25,6 +24,11 @@ namespace ApiExamples
             //ExFor:Inline.IsMoveFromRevision
             //ExFor:Inline.IsMoveToRevision
             //ExFor:Inline.ParentParagraph
+            //ExFor:Paragraph.Runs
+            //ExFor:Revision.ParentNode
+            //ExFor:RunCollection
+            //ExFor:RunCollection.Item(Int32)
+            //ExFor:RunCollection.ToArray
             //ExSummary:Shows how to process revision-related properties of Inline nodes.
             Document doc = new Document(MyDir + "Inline.Revisions.docx");
 
@@ -38,7 +42,7 @@ namespace ApiExamples
             Paragraph firstParagraph = run.ParentParagraph;
             RunCollection runs = firstParagraph.Runs;
 
-            Assert.AreEqual(6, runs.Count);
+            Assert.AreEqual(6, runs.ToArray().Length);
 
             // The text in the run at index #2 was typed after revisions were tracked, so it will count as an insert revision
             // The font was changed, so it will also be a format revision
