@@ -180,7 +180,16 @@ namespace ApiExamples
         }
         //ExEnd
 
-        [Test]
+        //ExStart
+        //ExFor:FindReplaceOptions.ApplyFont
+        //ExFor:FindReplaceOptions.Direction
+        //ExFor:FindReplaceOptions.ReplacingCallback
+        //ExFor:ReplacingArgs.GroupIndex
+        //ExFor:ReplacingArgs.GroupName
+        //ExFor:ReplacingArgs.Match
+        //ExFor:ReplacingArgs.MatchOffset
+        //ExSummary:Shows how to apply a different font to new content via FindReplaceOptions.
+        [Test] //ExSkip
         public void ReplaceNumbersAsHex()
         {
             Document doc = new Document();
@@ -192,29 +201,78 @@ namespace ApiExamples
 
             FindReplaceOptions options = new FindReplaceOptions();
 
-            // Highlight newly inserted content.
-            options.ApplyFont.HighlightColor = Color.DarkOrange;
+            // Highlight newly inserted content with a color
+            options.ApplyFont.HighlightColor = Color.LightGray;
+
+            // Apply an IReplacingCallback to make the replacement to convert integers into hex equivalents
+            // and also to count replacements in the order they take place
             options.ReplacingCallback = new NumberHexer();
 
+            // By default, text is searched for replacements front to back, but we can change it to go the other way
+            options.Direction = FindReplaceDirection.Backward;
+
             int count = doc.Range.Replace(new Regex("[0-9]+"), "", options);
+            Assert.AreEqual(4, count);
+
+            doc.Save(ArtifactsDir + "Range.ReplaceNumbersAsHex.docx");
         }
 
-        // Customer defined callback.
+        /// <summary>
+        /// Replaces arabic numbers with hexadecimal equivalents and appends the number of each replacement
+        /// </summary>
         private class NumberHexer : IReplacingCallback
         {
             public ReplaceAction Replacing(ReplacingArgs args)
             {
-                // Parse numbers.
+                mCurrentReplacementNumber++;
+                
+                // Parse numbers
                 int number = Convert.ToInt32(args.Match.Value);
 
-                // And write it as HEX.
-                args.Replacement = String.Format("0x{0:X}", number);
+                // And write it as HEX
+                args.Replacement = $"0x{number:X} (replacement #{mCurrentReplacementNumber})";
+
+                Console.WriteLine($"Match #{mCurrentReplacementNumber}");
+                Console.WriteLine($"\tOriginal value:\t{args.Match.Value}");
+                Console.WriteLine($"\tReplacement:\t{args.Replacement}");
+                Console.WriteLine($"\tOffset in parent {args.MatchNode.NodeType} node:\t{args.MatchOffset}");
+
+                if (string.IsNullOrEmpty(args.GroupName))
+                    Console.WriteLine($"\tGroup index:\t{args.GroupIndex}");
+                else
+                    Console.WriteLine($"\tGroup name:\t{args.GroupName}");
 
                 return ReplaceAction.Replace;
             }
+
+            private int mCurrentReplacementNumber;
         }
+        //ExEnd
 
         #endregion
+
+        [Test]
+        public void ApplyParagraphFormat()
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.ApplyParagraphFormat
+            //ExSummary:Shows how to affect the format of paragraphs with successful replacements.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Every paragraph that ends with a full stop like this one will be right aligned.");
+            builder.Writeln("This one will not!");
+            builder.Writeln("And this one will.");
+            
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.ApplyParagraphFormat.Alignment = ParagraphAlignment.Right;
+
+            int count = doc.Range.Replace(".&p", "!&p", options);
+            Assert.AreEqual(2, count);
+
+            doc.Save(ArtifactsDir + "Range.ApplyParagraphFormat.docx");
+            //ExEnd
+        }
 
         [Test]
         public void DeleteSelection()
