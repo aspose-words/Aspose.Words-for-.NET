@@ -74,52 +74,6 @@ namespace ApiExamples
 #endif
         }
 
-        [Test]
-        public void AllowToAddBookmarksWithWhiteSpaces()
-        {
-            //ExStart
-            //ExFor:OutlineOptions.BookmarksOutlineLevels
-            //ExFor:BookmarksOutlineLevelCollection
-            //ExFor:BookmarksOutlineLevelCollection.Add(String, Int32)
-            //ExSummary:Shows how adding bookmarks outlines with whitespaces(pdf, xps)
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Add bookmarks with whitespaces. MS Word formats (like doc, docx) does not support bookmarks with whitespaces by default 
-            // and all whitespaces in the bookmarks were replaced with underscores. If you need to use bookmarks in PDF or XPS outlines, you can use them with whitespaces.
-            builder.StartBookmark("My Bookmark");
-            builder.Writeln("Text inside a bookmark.");
-
-            builder.StartBookmark("Nested Bookmark");
-            builder.Writeln("Text inside a NestedBookmark.");
-            builder.EndBookmark("Nested Bookmark");
-
-            builder.Writeln("Text after Nested Bookmark.");
-            builder.EndBookmark("My Bookmark");
-
-            // Specify bookmarks outline level. If you are using xps format, just use XpsSaveOptions.
-            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
-            pdfSaveOptions.OutlineOptions.BookmarksOutlineLevels.Add("My Bookmark", 1);
-            pdfSaveOptions.OutlineOptions.BookmarksOutlineLevels.Add("Nested Bookmark", 2);
-
-            doc.Save(ArtifactsDir + "Bookmarks.WhiteSpaces.pdf", pdfSaveOptions);
-            //ExEnd
-#if !(__MOBILE__ || MAC)
-            // Bind pdf with Aspose.Pdf
-            PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
-            bookmarkEditor.BindPdf(ArtifactsDir + "Bookmarks.WhiteSpaces.pdf");
-
-            // Get all bookmarks from the document
-            Bookmarks bookmarks = bookmarkEditor.ExtractBookmarks();
-
-            Assert.AreEqual(2, bookmarks.Count);
-
-            // Assert that all the bookmarks title are with whitespaces
-            Assert.AreEqual("My Bookmark", bookmarks[0].Title);
-            Assert.AreEqual("Nested Bookmark", bookmarks[1].Title);
-#endif
-        }
-
         //Note: Test doesn't contain validation result.
         //For validation result, you can add some shapes to the document and assert, that the DML shapes are render correctly
         [Test]
