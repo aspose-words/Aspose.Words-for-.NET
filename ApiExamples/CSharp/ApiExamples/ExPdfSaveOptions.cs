@@ -79,6 +79,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OutlineOptions.BookmarksOutlineLevels
+            //ExFor:BookmarksOutlineLevelCollection
             //ExFor:BookmarksOutlineLevelCollection.Add(String, Int32)
             //ExSummary:Shows how adding bookmarks outlines with whitespaces(pdf, xps)
             Document doc = new Document();
