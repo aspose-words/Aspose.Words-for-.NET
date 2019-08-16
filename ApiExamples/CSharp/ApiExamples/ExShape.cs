@@ -11,7 +11,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Ole;
@@ -24,9 +23,10 @@ using Color = System.Drawing.Color;
 using DashStyle = Aspose.Words.Drawing.DashStyle;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 using TextBox = Aspose.Words.Drawing.TextBox;
-
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
+#else
+using System.Windows.Forms;
 #endif
 
 namespace ApiExamples
@@ -1738,13 +1738,14 @@ namespace ApiExamples
             //ExEnd
         }
 
+#if !(NETSTANDARD2_0 || __MOBILE__)
         //ExStart
         //ExFor:NodeRendererBase.RenderToScale(Graphics, Single, Single, Single)
         //ExFor:NodeRendererBase.RenderToSize(Graphics, Single, Single, Single, Single)
         //ExFor:ShapeRenderer
         //ExFor:ShapeRenderer.#ctor(ShapeBase)
         //ExSummary:Shows how to render a shape with a Graphics object.
-        [Test] //ExSkip
+        [Test, Category("IgnoreOnJenkins")] //ExSkip
         public void DisplayShapeForm()
         {
             // Create a new ShapeForm instance and show it as a dialog box
@@ -1783,5 +1784,6 @@ namespace ApiExamples
             }
         }
         //ExEnd
+    #endif
     }
 }
