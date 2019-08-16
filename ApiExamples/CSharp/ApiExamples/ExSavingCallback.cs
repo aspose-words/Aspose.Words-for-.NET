@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
@@ -33,15 +34,15 @@ namespace ApiExamples
             xpsSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
         }
 
-        [Test]
+        //ExStart
+        //ExFor:IPageSavingCallback
+        //ExFor:PageSavingArgs
+        //ExFor:PageSavingArgs.PageFileName
+        //ExFor:FixedPageSaveOptions.PageSavingCallback
+        //ExSummary:Shows how separate pages are saved when a document is exported to fixed page format.
+        [Test] //ExSkip
         public void PageFileNameSavingCallback()
         {
-            //ExStart
-            //ExFor:IPageSavingCallback
-            //ExFor:PageSavingArgs
-            //ExFor:PageSavingArgs.PageFileName
-            //ExFor:FixedPageSaveOptions.PageSavingCallback
-            //ExSummary:Shows how separate pages are saved when a document is exported to fixed page format.
             Document doc = new Document(MyDir + "Rendering.doc");
 
             HtmlFixedSaveOptions htmlFixedSaveOptions =
@@ -55,7 +56,7 @@ namespace ApiExamples
             for (int i = 0; i < doc.PageCount; i++)
             {
                 string file = string.Format(ArtifactsDir + "Page_{0}.html", i);
-                Assert.AreEqual(file, filePaths[i]);//ExSkip
+                Assert.AreEqual(file, filePaths[i]); //ExSkip
             }
         }
 
@@ -69,6 +70,68 @@ namespace ApiExamples
                 // Specify name of the output file for the current page.
                 args.PageFileName = string.Format(ArtifactsDir + "Page_{0}.html", args.PageIndex);
             }
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:CssSavingArgs
+        //ExFor:CssSavingArgs.CssStream
+        //ExFor:CssSavingArgs.Document
+        //ExFor:CssSavingArgs.IsExportNeeded
+        //ExFor:CssSavingArgs.KeepCssStreamOpen
+        //ExFor:CssStyleSheetType
+        //ExFor:ICssSavingCallback
+        //ExFor:ICssSavingCallback.CssSaving(CssSavingArgs)
+        //ExSummary:Shows how to work with CSS stylesheets that may be created along with Html documents.
+        [Test] //ExSkip
+        public void CssSavingCallback()
+        {
+            // Open a document to be converted to html
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            // If our output document will produce a CSS stylesheet, we can control where and how that stylesheet is created
+            // using a SaveOptions subclass specific Html files, which has a CssSavingCallback member that deals with CSS stylesheets
+            HtmlSaveOptions htmlFixedSaveOptions = new HtmlSaveOptions();
+
+            // By default, CSS stylesheets are stored inside their Html documents,
+            // so if we want our Html to link to an external stylesheet instead, we need to specify the stylesheet type accordingly
+            htmlFixedSaveOptions.CssStyleSheetType = CssStyleSheetType.External;
+
+            // Now that our CSS stylesheet is external, this callback can specify where the linked stylesheet will be saved to
+            htmlFixedSaveOptions.CssSavingCallback =
+                new CustomCssSavingCallback(ArtifactsDir + "Rendering.CssSavingCallback.css", true, false);
+
+            // The CssSaving() method of our callback will be called at this stage
+            doc.Save(ArtifactsDir + "Rendering.CssSavingCallback.html", htmlFixedSaveOptions);
+        }
+
+        /// <summary>
+        /// Sets up a FileStream through which a CSS stylesheet file will be saved to the local file system
+        /// </summary>
+        private class CustomCssSavingCallback : ICssSavingCallback
+        {
+            public CustomCssSavingCallback(string cssDocFilename, bool isExportNeeded, bool keepCssStreamOpen)
+            {
+                mCssTextFileName = cssDocFilename;
+                mIsExportNeeded = isExportNeeded;
+                mKeepCssStreamOpen = keepCssStreamOpen;
+            }
+
+            public void CssSaving(CssSavingArgs args)
+            {
+                // Set up the stream that will create the CSS document         
+                args.CssStream = new FileStream(mCssTextFileName, FileMode.Create); ;
+                Assert.True(args.CssStream.CanWrite);
+                args.IsExportNeeded = mIsExportNeeded;
+                args.KeepCssStreamOpen = mKeepCssStreamOpen;
+
+                // We can also access the original document here like this
+                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.doc"));
+            }
+
+            private readonly string mCssTextFileName;
+            private readonly bool mIsExportNeeded;
+            private readonly bool mKeepCssStreamOpen;
         }
         //ExEnd
     }
