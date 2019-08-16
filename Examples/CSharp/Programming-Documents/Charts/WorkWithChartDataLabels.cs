@@ -7,13 +7,20 @@ using Aspose.Words.Drawing.Charts;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
 {
-    class WorkWithChartDataLabel
+    class WorkWithChartDataLabels
     {
         public static void Run()
         {
             // ExStart:WorkWithChartDataLabel
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithCharts();
+            WorkWithChartDataLabel(dataDir);
+            DefaultOptionsForDataLabels(dataDir);
+        }
+
+        public static void WorkWithChartDataLabel(string dataDir)
+        {
+            // ExStart:WorkWithChartDataLabel
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -46,6 +53,31 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
             doc.Save(dataDir);
             // ExEnd:WorkWithChartDataLabel
             Console.WriteLine("\nSimple bar chart created successfully.\nFile saved at " + dataDir);
-        }        
+        }
+
+        public static void DefaultOptionsForDataLabels(string dataDir)
+        {
+            // ExStart:DefaultOptionsForDataLabels
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Pie, 432, 252);
+            Chart chart = shape.Chart;
+            chart.Series.Clear();
+
+            ChartSeries series = chart.Series.Add("Series 1",
+                new string[] { "Category1", "Category2", "Category3" },
+                new double[] { 2.7, 3.2, 0.8 });
+
+            ChartDataLabelCollection labels = series.DataLabels;
+            labels.ShowPercentage = true;
+            labels.ShowValue = true;
+            labels.ShowLeaderLines = false;
+            labels.Separator = " - ";
+
+            doc.Save(dataDir + "Demo.docx");
+            // ExEnd:DefaultOptionsForDataLabels
+            Console.WriteLine("\nDefault options for data labels of chart series created successfully.\nFile saved at " + dataDir);
+        }
     }
 }
