@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
@@ -60,6 +61,10 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:GraphicsQualityOptions
+            //ExFor:GraphicsQualityOptions.CompositingMode
+            //ExFor:GraphicsQualityOptions.CompositingQuality
+            //ExFor:GraphicsQualityOptions.InterpolationMode
+            //ExFor:GraphicsQualityOptions.StringFormat
             //ExFor:GraphicsQualityOptions.SmoothingMode
             //ExFor:GraphicsQualityOptions.TextRenderingHint
             //ExSummary:Shows how to set render quality options. 
@@ -68,7 +73,11 @@ namespace ApiExamples
             GraphicsQualityOptions qualityOptions = new GraphicsQualityOptions
             {
                 SmoothingMode = SmoothingMode.AntiAlias,
-                TextRenderingHint = TextRenderingHint.ClearTypeGridFit
+                TextRenderingHint = TextRenderingHint.ClearTypeGridFit,
+                CompositingMode = CompositingMode.SourceCopy,
+                CompositingQuality = CompositingQuality.HighQuality,
+                InterpolationMode = InterpolationMode.High,
+                StringFormat = StringFormat.GenericTypographic
             };
 
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Jpeg);
