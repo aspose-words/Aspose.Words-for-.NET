@@ -120,7 +120,7 @@ namespace ApiExamples
             public void CssSaving(CssSavingArgs args)
             {
                 // Set up the stream that will create the CSS document         
-                args.CssStream = new FileStream(mCssTextFileName, FileMode.Create); ;
+                args.CssStream = new FileStream(mCssTextFileName, FileMode.Create);
                 Assert.True(args.CssStream.CanWrite);
                 args.IsExportNeeded = mIsExportNeeded;
                 args.KeepCssStreamOpen = mKeepCssStreamOpen;
