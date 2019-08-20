@@ -71,5 +71,44 @@ namespace ApiExamples
             }
         }
         //ExEnd
+
+        //ExStart
+        //ExFor:IDocumentPartSavingCallback
+        //ExFor:IDocumentPartSavingCallback(DocumentPartSavingArgs)
+        //ExSummary:Shows how split a document into parts and save them.
+        [Test] //ExSkip
+        public void DocumentPartSavingCallback()
+        {
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            string outFileName = "SavingCallback.DocumentPartSavingCallback.html";
+
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.DocumentSplitCriteria = DocumentSplitCriteria.SectionBreak;
+            options.DocumentPartSavingCallback = new DocumentPartRename(outFileName, options.DocumentSplitCriteria);
+            doc.Save(ArtifactsDir + outFileName, options);
+        }
+
+        /// <summary>
+        /// Renames saved document parts that are produced when an HTML document is saved 
+        /// </summary>
+        private class DocumentPartRename : IDocumentPartSavingCallback
+        {
+            public DocumentPartRename(string outFileName, DocumentSplitCriteria documentSplitCriteria)
+            {
+                mOutFileName = outFileName;
+                mDocumentSplitCriteria = documentSplitCriteria;
+            }
+
+            void IDocumentPartSavingCallback.DocumentPartSaving(DocumentPartSavingArgs args)
+            {
+                args.DocumentPartFileName = $"{mOutFileName} {mDocumentSplitCriteria} #{mCount++}{Path.GetExtension(args.DocumentPartFileName)}";
+            }
+
+            private int mCount;
+            private readonly string mOutFileName;
+            private readonly DocumentSplitCriteria mDocumentSplitCriteria;
+        }
+        //ExEnd
     }
 }
