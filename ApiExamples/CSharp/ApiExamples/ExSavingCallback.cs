@@ -1,4 +1,11 @@
-﻿using System.IO;
+﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
+
+using System.IO;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
@@ -75,26 +82,45 @@ namespace ApiExamples
         //ExStart
         //ExFor:IDocumentPartSavingCallback
         //ExFor:IDocumentPartSavingCallback(DocumentPartSavingArgs)
+        //ExFor:IImageSavingCallback
+        //ExFor:IImageSavingCallback.ImageSaving
+        //ExFor:ImageSavingArgs
+        //ExFor:ImageSavingArgs.ImageFileName
+        //ExFor:HtmlSaveOptions
+        //ExFor:HtmlSaveOptions.ImageSavingCallback
         //ExSummary:Shows how split a document into parts and save them.
         [Test] //ExSkip
-        public void DocumentPartSavingCallback()
+        public void DocumentParts()
         {
+            // Open a document to be converted to html
             Document doc = new Document(MyDir + "Rendering.doc");
+            string outFileName = "SavingCallback.DocumentParts.html";
 
-            string outFileName = "SavingCallback.DocumentPartSavingCallback.html";
-
+            // We can use an appropriate SaveOptions subclass to customize the conversion process
             HtmlSaveOptions options = new HtmlSaveOptions();
+
+            // We can use it to split a document into smaller parts, in this instance split by section breaks
+            // Each part will be saved into a separate file, creating many files during the conversion process instead of just one
             options.DocumentSplitCriteria = DocumentSplitCriteria.SectionBreak;
-            options.DocumentPartSavingCallback = new DocumentPartRename(outFileName, options.DocumentSplitCriteria);
+
+            // We can set a callback to name each document part file ourselves
+            options.DocumentPartSavingCallback = new SavedDocumentPartRename(outFileName, options.DocumentSplitCriteria);
+
+            // If we convert a document that contains images into html, we will end up with one html file which links to several images
+            // Each image will be in the form of a file in the local file system
+            // There is also a callback that can customize the name and file system location of each image
+            options.ImageSavingCallback = new SavedImageRename(outFileName);
+
+            // The DocumentPartSaving() and ImageSaving() methods of our callbacks will be run at this time
             doc.Save(ArtifactsDir + outFileName, options);
         }
 
         /// <summary>
-        /// Renames saved document parts that are produced when an HTML document is saved 
+        /// Renames saved document parts that are produced when an HTML document is saved while being split according to a criteria
         /// </summary>
-        private class DocumentPartRename : IDocumentPartSavingCallback
+        private class SavedDocumentPartRename : IDocumentPartSavingCallback
         {
-            public DocumentPartRename(string outFileName, DocumentSplitCriteria documentSplitCriteria)
+            public SavedDocumentPartRename(string outFileName, DocumentSplitCriteria documentSplitCriteria)
             {
                 mOutFileName = outFileName;
                 mDocumentSplitCriteria = documentSplitCriteria;
@@ -102,12 +128,49 @@ namespace ApiExamples
 
             void IDocumentPartSavingCallback.DocumentPartSaving(DocumentPartSavingArgs args)
             {
-                args.DocumentPartFileName = $"{mOutFileName} {mDocumentSplitCriteria} #{mCount++}{Path.GetExtension(args.DocumentPartFileName)}";
+                string partType = "";
+
+                switch (mDocumentSplitCriteria)
+                {
+                    case DocumentSplitCriteria.PageBreak:
+                        partType = "Page";
+                        break;
+                    case DocumentSplitCriteria.ColumnBreak:
+                        partType = "Column";
+                        break;
+                    case DocumentSplitCriteria.SectionBreak:
+                        partType = "Section";
+                        break;
+                    case DocumentSplitCriteria.HeadingParagraph:
+                        partType = "Paragraph from heading";
+                        break;
+                }
+                
+                args.DocumentPartFileName = $"{mOutFileName} part {++mCount}, part type {partType}{Path.GetExtension(args.DocumentPartFileName)}";
             }
 
             private int mCount;
             private readonly string mOutFileName;
             private readonly DocumentSplitCriteria mDocumentSplitCriteria;
+        }
+
+        /// <summary>
+        /// Renames saved images that are produced when an HTML document is saved 
+        /// </summary>
+        public class SavedImageRename : IImageSavingCallback
+        {
+            public SavedImageRename(string outFileName)
+            {
+                mOutFileName = outFileName;
+            }
+
+            void IImageSavingCallback.ImageSaving(ImageSavingArgs args)
+            {
+                args.ImageFileName = $"{mOutFileName} shape {++mCount}, shape type {args.CurrentShape.ShapeType}{Path.GetExtension(args.ImageFileName)}";
+            }
+
+            private int mCount;
+            private readonly string mOutFileName;
         }
         //ExEnd
     }

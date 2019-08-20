@@ -728,38 +728,6 @@ namespace ApiExamples
         //ExEnd
 
         //ExStart
-        //ExFor:IImageSavingCallback
-        //ExFor:IImageSavingCallback.ImageSaving
-        //ExFor:ImageSavingArgs
-        //ExFor:ImageSavingArgs.ImageFileName
-        //ExFor:HtmlSaveOptions
-        //ExFor:HtmlSaveOptions.ImageSavingCallback
-        //ExId:SaveHtmlCustomExport
-        //ExSummary:Shows how to define custom logic for controlling how images are saved when exporting to HTML based formats.
-        [Test] //ExSkip
-        public void SaveHtmlExportImages()
-        {
-            Document doc = new Document(MyDir + "Document.doc");
-
-            // Create and pass the object which implements the handler methods.
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
-            options.ImageSavingCallback = new HandleImageSaving();
-
-            doc.Save(ArtifactsDir + "Document.SaveWithCustomImagesExport.html", options);
-        }
-
-        public class HandleImageSaving : IImageSavingCallback
-        {
-            void IImageSavingCallback.ImageSaving(ImageSavingArgs args)
-            {
-                // Change any images in the document being exported with the extension of "jpeg" to "jpg".
-                if (args.ImageFileName.EndsWith(".jpeg"))
-                    args.ImageFileName = args.ImageFileName.Replace(".jpeg", ".jpg");
-            }
-        }
-        //ExEnd
-
-        //ExStart
         //ExFor:INodeChangingCallback
         //ExFor:INodeChangingCallback.NodeInserting
         //ExFor:INodeChangingCallback.NodeInserted
