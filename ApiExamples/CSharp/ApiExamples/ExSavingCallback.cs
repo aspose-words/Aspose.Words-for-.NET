@@ -80,6 +80,11 @@ namespace ApiExamples
         //ExEnd
 
         //ExStart
+        //ExFor:DocumentPartSavingArgs
+        //ExFor:DocumentPartSavingArgs.Document
+        //ExFor:DocumentPartSavingArgs.DocumentPartFileName
+        //ExFor:DocumentPartSavingArgs.DocumentPartStream
+        //ExFor:DocumentPartSavingArgs.KeepDocumentPartStreamOpen
         //ExFor:IDocumentPartSavingCallback
         //ExFor:IDocumentPartSavingCallback(DocumentPartSavingArgs)
         //ExFor:IImageSavingCallback
@@ -128,6 +133,8 @@ namespace ApiExamples
 
             void IDocumentPartSavingCallback.DocumentPartSaving(DocumentPartSavingArgs args)
             {
+                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.doc"));
+
                 string partType = "";
 
                 switch (mDocumentSplitCriteria)
@@ -145,8 +152,16 @@ namespace ApiExamples
                         partType = "Paragraph from heading";
                         break;
                 }
-                
-                args.DocumentPartFileName = $"{mOutFileName} part {++mCount}, part type {partType}{Path.GetExtension(args.DocumentPartFileName)}";
+
+                string partFileName = $"{mOutFileName} part {++mCount}, of type {partType}{Path.GetExtension(args.DocumentPartFileName)}";
+
+                // We can designate the filename and location of each output file either by filename
+                args.DocumentPartFileName = partFileName;
+
+                // Or we can make a new stream and choose the location of the file at construction
+                args.DocumentPartStream = new FileStream(ArtifactsDir + partFileName, FileMode.Create);
+                Assert.True(args.DocumentPartStream.CanWrite);
+                Assert.False(args.KeepDocumentPartStreamOpen);
             }
 
             private int mCount;
@@ -166,7 +181,15 @@ namespace ApiExamples
 
             void IImageSavingCallback.ImageSaving(ImageSavingArgs args)
             {
-                args.ImageFileName = $"{mOutFileName} shape {++mCount}, shape type {args.CurrentShape.ShapeType}{Path.GetExtension(args.ImageFileName)}";
+                // Same filename and stream functions as above in IDocumentPartSavingCallback apply here
+                string imageFileName = $"{mOutFileName} shape {++mCount}, of type {args.CurrentShape.ShapeType}{Path.GetExtension(args.ImageFileName)}";
+
+                args.ImageFileName = imageFileName;
+
+                args.ImageStream = new FileStream(ArtifactsDir + imageFileName, FileMode.Create);
+                Assert.True(args.ImageStream.CanWrite);
+                Assert.True(args.IsImageAvailable);
+                Assert.False(args.KeepImageStreamOpen);
             }
 
             private int mCount;
