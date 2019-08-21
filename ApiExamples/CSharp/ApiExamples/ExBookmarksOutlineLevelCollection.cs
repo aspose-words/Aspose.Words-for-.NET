@@ -31,13 +31,12 @@ namespace ApiExamples
             //ExFor:BookmarksOutlineLevelCollection.RemoveAt(System.Int32)
             //ExFor:OutlineOptions.BookmarksOutlineLevels
             //ExSummary:Shows how to set outline levels for bookmarks.
-            // Open a blank document, create a DocumentBuilder, and use the builder to create some text wrapped inside bookmarks
+            // Open a blank document, create a DocumentBuilder, and use the builder to add some text wrapped inside bookmarks
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Note that whitespaces inside bookmark identifier names are not supported by Microsoft Word formats such as .doc or .docx,
-            // while they are supported by .pdf or .xps documents
-            // Saving these in a Microsoft Word format will replace white spaces with underscores
+            // Note that whitespaces in bookmark names will be converted into underscores when saved to Microsoft Word formats
+            // such as .doc and .docx, but will be preserved in other formats like .pdf or .xps
             builder.StartBookmark("Bookmark 1");
             builder.Writeln("Text inside Bookmark 1.");
 
@@ -55,8 +54,7 @@ namespace ApiExamples
             // We can specify outline levels for our bookmarks so that they show up in the table of contents and are indented by an amount
             // of space proportional to the indent level in a SaveOptions object
             // Some pdf/xps readers such as Google Chrome also allow the collapsing of all higher level bookmarks by adjacent lower level bookmarks
-            // Since this feature is not applicable to all save formats, the base SaveOptions class does not have access to it,
-            // but its subclasses such as PdfSaveOptions or XpsSaveOptions have a dictionary that links bookmark names to outline levels 
+            // This feature applies to .pdf or .xps file formats, so only their respective SaveOptions subclasses will support it
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
             BookmarksOutlineLevelCollection outlineLevels = pdfSaveOptions.OutlineOptions.BookmarksOutlineLevels;
 
