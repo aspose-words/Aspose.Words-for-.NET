@@ -1,5 +1,11 @@
-﻿using System.IO;
-using System.Threading;
+// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
+
+using System.IO;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
@@ -34,15 +40,15 @@ namespace ApiExamples
             xpsSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
         }
 
-        //ExStart
-        //ExFor:IPageSavingCallback
-        //ExFor:PageSavingArgs
-        //ExFor:PageSavingArgs.PageFileName
-        //ExFor:FixedPageSaveOptions.PageSavingCallback
-        //ExSummary:Shows how separate pages are saved when a document is exported to fixed page format.
-        [Test] //ExSkip
+        [Test]
         public void PageFileNameSavingCallback()
         {
+            //ExStart
+            //ExFor:IPageSavingCallback
+            //ExFor:PageSavingArgs
+            //ExFor:PageSavingArgs.PageFileName
+            //ExFor:FixedPageSaveOptions.PageSavingCallback
+            //ExSummary:Shows how separate pages are saved when a document is exported to fixed page format.
             Document doc = new Document(MyDir + "Rendering.doc");
 
             HtmlFixedSaveOptions htmlFixedSaveOptions =
@@ -56,7 +62,7 @@ namespace ApiExamples
             for (int i = 0; i < doc.PageCount; i++)
             {
                 string file = string.Format(ArtifactsDir + "Page_{0}.html", i);
-                Assert.AreEqual(file, filePaths[i]); //ExSkip
+                Assert.AreEqual(file, filePaths[i]);//ExSkip
             }
         }
 
@@ -73,6 +79,124 @@ namespace ApiExamples
         }
         //ExEnd
 
+        //ExStart
+        //ExFor:DocumentPartSavingArgs
+        //ExFor:DocumentPartSavingArgs.Document
+        //ExFor:DocumentPartSavingArgs.DocumentPartFileName
+        //ExFor:DocumentPartSavingArgs.DocumentPartStream
+        //ExFor:DocumentPartSavingArgs.KeepDocumentPartStreamOpen
+        //ExFor:IDocumentPartSavingCallback
+        //ExFor:IDocumentPartSavingCallback(DocumentPartSavingArgs)
+        //ExFor:IImageSavingCallback
+        //ExFor:IImageSavingCallback.ImageSaving
+        //ExFor:ImageSavingArgs
+        //ExFor:ImageSavingArgs.ImageFileName
+        //ExFor:HtmlSaveOptions
+        //ExFor:HtmlSaveOptions.ImageSavingCallback
+        //ExSummary:Shows how split a document into parts and save them.
+        [Test] //ExSkip
+        public void DocumentParts()
+        {
+            // Open a document to be converted to html
+            Document doc = new Document(MyDir + "Rendering.doc");
+            string outFileName = "SavingCallback.DocumentParts.html";
+
+            // We can use an appropriate SaveOptions subclass to customize the conversion process
+            HtmlSaveOptions options = new HtmlSaveOptions();
+
+            // We can use it to split a document into smaller parts, in this instance split by section breaks
+            // Each part will be saved into a separate file, creating many files during the conversion process instead of just one
+            options.DocumentSplitCriteria = DocumentSplitCriteria.SectionBreak;
+
+            // We can set a callback to name each document part file ourselves
+            options.DocumentPartSavingCallback = new SavedDocumentPartRename(outFileName, options.DocumentSplitCriteria);
+
+            // If we convert a document that contains images into html, we will end up with one html file which links to several images
+            // Each image will be in the form of a file in the local file system
+            // There is also a callback that can customize the name and file system location of each image
+            options.ImageSavingCallback = new SavedImageRename(outFileName);
+
+            // The DocumentPartSaving() and ImageSaving() methods of our callbacks will be run at this time
+            doc.Save(ArtifactsDir + outFileName, options);
+        }
+
+        /// <summary>
+        /// Renames saved document parts that are produced when an HTML document is saved while being split according to a criteria
+        /// </summary>
+        private class SavedDocumentPartRename : IDocumentPartSavingCallback
+        {
+            public SavedDocumentPartRename(string outFileName, DocumentSplitCriteria documentSplitCriteria)
+            {
+                mOutFileName = outFileName;
+                mDocumentSplitCriteria = documentSplitCriteria;
+            }
+
+            void IDocumentPartSavingCallback.DocumentPartSaving(DocumentPartSavingArgs args)
+            {
+                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.doc"));
+
+                string partType = "";
+
+                switch (mDocumentSplitCriteria)
+                {
+                    case DocumentSplitCriteria.PageBreak:
+                        partType = "Page";
+                        break;
+                    case DocumentSplitCriteria.ColumnBreak:
+                        partType = "Column";
+                        break;
+                    case DocumentSplitCriteria.SectionBreak:
+                        partType = "Section";
+                        break;
+                    case DocumentSplitCriteria.HeadingParagraph:
+                        partType = "Paragraph from heading";
+                        break;
+                }
+
+                string partFileName = $"{mOutFileName} part {++mCount}, of type {partType}{Path.GetExtension(args.DocumentPartFileName)}";
+
+                // We can designate the filename and location of each output file either by filename
+                args.DocumentPartFileName = partFileName;
+
+                // Or we can make a new stream and choose the location of the file at construction
+                args.DocumentPartStream = new FileStream(ArtifactsDir + partFileName, FileMode.Create);
+                Assert.True(args.DocumentPartStream.CanWrite);
+                Assert.False(args.KeepDocumentPartStreamOpen);
+            }
+
+            private int mCount;
+            private readonly string mOutFileName;
+            private readonly DocumentSplitCriteria mDocumentSplitCriteria;
+        }
+
+        /// <summary>
+        /// Renames saved images that are produced when an HTML document is saved 
+        /// </summary>
+        public class SavedImageRename : IImageSavingCallback
+        {
+            public SavedImageRename(string outFileName)
+            {
+                mOutFileName = outFileName;
+            }
+
+            void IImageSavingCallback.ImageSaving(ImageSavingArgs args)
+            {
+                // Same filename and stream functions as above in IDocumentPartSavingCallback apply here
+                string imageFileName = $"{mOutFileName} shape {++mCount}, of type {args.CurrentShape.ShapeType}{Path.GetExtension(args.ImageFileName)}";
+
+                args.ImageFileName = imageFileName;
+
+                args.ImageStream = new FileStream(ArtifactsDir + imageFileName, FileMode.Create);
+                Assert.True(args.ImageStream.CanWrite);
+                Assert.True(args.IsImageAvailable);
+                Assert.False(args.KeepImageStreamOpen);
+            }
+
+            private int mCount;
+            private readonly string mOutFileName;
+        }
+        //ExEnd
+		
         //ExStart
         //ExFor:CssSavingArgs
         //ExFor:CssSavingArgs.CssStream

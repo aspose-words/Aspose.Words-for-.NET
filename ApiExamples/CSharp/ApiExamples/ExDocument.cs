@@ -699,62 +699,57 @@ namespace ApiExamples
         //ExFor:IFontSavingCallback
         //ExFor:IFontSavingCallback.FontSaving
         //ExFor:FontSavingArgs
+        //ExFor:FontSavingArgs.Bold
+        //ExFor:FontSavingArgs.Document
         //ExFor:FontSavingArgs.FontFamilyName
         //ExFor:FontSavingArgs.FontFileName
-        //ExId:SaveHtmlExportFonts
+        //ExFor:FontSavingArgs.FontStream
+        //ExFor:FontSavingArgs.IsExportNeeded
+        //ExFor:FontSavingArgs.IsSubsettingNeeded
+        //ExFor:FontSavingArgs.Italic
+        //ExFor:FontSavingArgs.KeepFontStreamOpen
+        //ExFor:FontSavingArgs.OriginalFileName
+        //ExFor:FontSavingArgs.OriginalFileSize
         //ExSummary:Shows how to define custom logic for handling font exporting when saving to HTML based formats.
         [Test] //ExSkip
         public void SaveHtmlExportFonts()
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
-            // Set the option to export font resources.
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Mhtml);
+            // Set the option to export font resources
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
             options.ExportFontResources = true;
-            // Create and pass the object which implements the handler methods.
+            // Create and pass the object which implements the handler methods
             options.FontSavingCallback = new HandleFontSaving();
 
             doc.Save(ArtifactsDir + "Document.SaveWithFontsExport.html", options);
         }
 
+        /// <summary>
+        /// Prints information about fonts and saves them alongside their output .html
+        /// </summary>
         public class HandleFontSaving : IFontSavingCallback
         {
             void IFontSavingCallback.FontSaving(FontSavingArgs args)
             {
-                // You can implement logic here to rename fonts, save to file etc. For this example just print some details about the current font being handled.
-                Console.WriteLine("Font Name = {0}, Font Filename = {1}", args.FontFamilyName, args.FontFileName);
-            }
-        }
-        //ExEnd
+                // Print information about fonts
+                Console.Write($"Font:\t{args.FontFamilyName}");
+                if (args.Bold) Console.Write(", bold");
+                if (args.Italic) Console.Write(", italic");
+                Console.WriteLine($"\nSource:\t{args.OriginalFileName}, {args.OriginalFileSize} bytes\n");
 
-        //ExStart
-        //ExFor:IImageSavingCallback
-        //ExFor:IImageSavingCallback.ImageSaving
-        //ExFor:ImageSavingArgs
-        //ExFor:ImageSavingArgs.ImageFileName
-        //ExFor:HtmlSaveOptions
-        //ExFor:HtmlSaveOptions.ImageSavingCallback
-        //ExId:SaveHtmlCustomExport
-        //ExSummary:Shows how to define custom logic for controlling how images are saved when exporting to HTML based formats.
-        [Test] //ExSkip
-        public void SaveHtmlExportImages()
-        {
-            Document doc = new Document(MyDir + "Document.doc");
+                Assert.True(args.IsExportNeeded);
+                Assert.True(args.IsSubsettingNeeded);
 
-            // Create and pass the object which implements the handler methods.
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
-            options.ImageSavingCallback = new HandleImageSaving();
+                // We can designate where each font will be saved by either specifying a file name, or creating a new stream
+                args.FontFileName = args.OriginalFileName.Split('\\').Last();
 
-            doc.Save(ArtifactsDir + "Document.SaveWithCustomImagesExport.html", options);
-        }
+                args.FontStream = 
+                    new FileStream(ArtifactsDir + args.OriginalFileName.Split('\\').Last(), FileMode.Create);
+                Assert.False(args.KeepFontStreamOpen);
 
-        public class HandleImageSaving : IImageSavingCallback
-        {
-            void IImageSavingCallback.ImageSaving(ImageSavingArgs args)
-            {
-                // Change any images in the document being exported with the extension of "jpeg" to "jpg".
-                if (args.ImageFileName.EndsWith(".jpeg"))
-                    args.ImageFileName = args.ImageFileName.Replace(".jpeg", ".jpg");
+                // We can access the source document from here also
+                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.doc"));
             }
         }
         //ExEnd
