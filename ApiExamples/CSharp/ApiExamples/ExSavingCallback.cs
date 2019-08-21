@@ -92,7 +92,7 @@ namespace ApiExamples
             // If our output document will produce a CSS stylesheet, we can use an HtmlSaveOptions to control where it is saved
             HtmlSaveOptions htmlFixedSaveOptions = new HtmlSaveOptions();
 
-            // By default, a CSS stylesheet are stored inside its HTML document, but we can have it saved to a separate file
+            // By default, a CSS stylesheet is stored inside its HTML document, but we can have it saved to a separate file
             htmlFixedSaveOptions.CssStyleSheetType = CssStyleSheetType.External;
 
             // A custom ICssSavingCallback implementation can control where that stylesheet will be saved and linked to by the Html document
