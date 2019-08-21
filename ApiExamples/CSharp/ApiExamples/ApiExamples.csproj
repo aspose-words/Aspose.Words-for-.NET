@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiExampleBase.cs" />
+    <Compile Include="ExBookmarksOutlineLevelCollection.cs" />
     <Compile Include="ExComHelper.cs" />
     <Compile Include="CustomBarcodeGenerator.cs" />
     <Compile Include="DocumentHelper.cs" />
