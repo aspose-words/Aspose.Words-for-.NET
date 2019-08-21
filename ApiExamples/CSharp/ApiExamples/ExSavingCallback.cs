@@ -89,15 +89,13 @@ namespace ApiExamples
             // Open a document to be converted to html
             Document doc = new Document(MyDir + "Rendering.doc");
 
-            // If our output document will produce a CSS stylesheet, we can control where and how that stylesheet is created
-            // using a SaveOptions subclass specific Html files, which has a CssSavingCallback member that deals with CSS stylesheets
+            // If our output document will produce a CSS stylesheet, we can use an HtmlSaveOptions to control where it is saved
             HtmlSaveOptions htmlFixedSaveOptions = new HtmlSaveOptions();
 
-            // By default, CSS stylesheets are stored inside their Html documents,
-            // so if we want our Html to link to an external stylesheet instead, we need to specify the stylesheet type accordingly
+            // By default, a CSS stylesheet are stored inside its HTML document, but we can have it saved to a separate file
             htmlFixedSaveOptions.CssStyleSheetType = CssStyleSheetType.External;
 
-            // Now that our CSS stylesheet is external, this callback can specify where the linked stylesheet will be saved to
+            // A custom ICssSavingCallback implementation can control where that stylesheet will be saved and linked to by the Html document
             htmlFixedSaveOptions.CssSavingCallback =
                 new CustomCssSavingCallback(ArtifactsDir + "Rendering.CssSavingCallback.css", true, false);
 
@@ -106,7 +104,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Sets up a FileStream through which a CSS stylesheet file will be saved to the local file system
+        /// Designates a filename and other parameters for the saving of a CSS stylesheet
         /// </summary>
         private class CustomCssSavingCallback : ICssSavingCallback
         {
