@@ -74,7 +74,7 @@ namespace ApiExamples
             {
                 SmoothingMode = SmoothingMode.AntiAlias,
                 TextRenderingHint = TextRenderingHint.ClearTypeGridFit,
-                CompositingMode = CompositingMode.SourceCopy,
+                CompositingMode = CompositingMode.SourceOver,
                 CompositingQuality = CompositingQuality.HighQuality,
                 InterpolationMode = InterpolationMode.High,
                 StringFormat = StringFormat.GenericTypographic
