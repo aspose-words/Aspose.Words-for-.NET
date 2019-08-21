@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -194,6 +194,66 @@ namespace ApiExamples
 
             private int mCount;
             private readonly string mOutFileName;
+        }
+        //ExEnd
+		
+        //ExStart
+        //ExFor:CssSavingArgs
+        //ExFor:CssSavingArgs.CssStream
+        //ExFor:CssSavingArgs.Document
+        //ExFor:CssSavingArgs.IsExportNeeded
+        //ExFor:CssSavingArgs.KeepCssStreamOpen
+        //ExFor:CssStyleSheetType
+        //ExFor:ICssSavingCallback
+        //ExFor:ICssSavingCallback.CssSaving(CssSavingArgs)
+        //ExSummary:Shows how to work with CSS stylesheets that may be created along with Html documents.
+        [Test] //ExSkip
+        public void CssSavingCallback()
+        {
+            // Open a document to be converted to html
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            // If our output document will produce a CSS stylesheet, we can use an HtmlSaveOptions to control where it is saved
+            HtmlSaveOptions htmlFixedSaveOptions = new HtmlSaveOptions();
+
+            // By default, a CSS stylesheet is stored inside its HTML document, but we can have it saved to a separate file
+            htmlFixedSaveOptions.CssStyleSheetType = CssStyleSheetType.External;
+
+            // A custom ICssSavingCallback implementation can control where that stylesheet will be saved and linked to by the Html document
+            htmlFixedSaveOptions.CssSavingCallback =
+                new CustomCssSavingCallback(ArtifactsDir + "Rendering.CssSavingCallback.css", true, false);
+
+            // The CssSaving() method of our callback will be called at this stage
+            doc.Save(ArtifactsDir + "Rendering.CssSavingCallback.html", htmlFixedSaveOptions);
+        }
+
+        /// <summary>
+        /// Designates a filename and other parameters for the saving of a CSS stylesheet
+        /// </summary>
+        private class CustomCssSavingCallback : ICssSavingCallback
+        {
+            public CustomCssSavingCallback(string cssDocFilename, bool isExportNeeded, bool keepCssStreamOpen)
+            {
+                mCssTextFileName = cssDocFilename;
+                mIsExportNeeded = isExportNeeded;
+                mKeepCssStreamOpen = keepCssStreamOpen;
+            }
+
+            public void CssSaving(CssSavingArgs args)
+            {
+                // Set up the stream that will create the CSS document         
+                args.CssStream = new FileStream(mCssTextFileName, FileMode.Create);
+                Assert.True(args.CssStream.CanWrite);
+                args.IsExportNeeded = mIsExportNeeded;
+                args.KeepCssStreamOpen = mKeepCssStreamOpen;
+
+                // We can also access the original document here like this
+                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.doc"));
+            }
+
+            private readonly string mCssTextFileName;
+            private readonly bool mIsExportNeeded;
+            private readonly bool mKeepCssStreamOpen;
         }
         //ExEnd
     }
