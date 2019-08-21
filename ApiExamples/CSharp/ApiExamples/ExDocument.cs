@@ -699,17 +699,25 @@ namespace ApiExamples
         //ExFor:IFontSavingCallback
         //ExFor:IFontSavingCallback.FontSaving
         //ExFor:FontSavingArgs
+        //ExFor:FontSavingArgs.Bold
+        //ExFor:FontSavingArgs.Document
         //ExFor:FontSavingArgs.FontFamilyName
         //ExFor:FontSavingArgs.FontFileName
-        //ExId:SaveHtmlExportFonts
+        //ExFor:FontSavingArgs.FontStream
+        //ExFor:FontSavingArgs.IsExportNeeded
+        //ExFor:FontSavingArgs.IsSubsettingNeeded
+        //ExFor:FontSavingArgs.Italic
+        //ExFor:FontSavingArgs.KeepFontStreamOpen
+        //ExFor:FontSavingArgs.OriginalFileName
+        //ExFor:FontSavingArgs.OriginalFileSize
         //ExSummary:Shows how to define custom logic for handling font exporting when saving to HTML based formats.
         [Test] //ExSkip
         public void SaveHtmlExportFonts()
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // Set the option to export font resources.
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Mhtml);
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
             options.ExportFontResources = true;
             // Create and pass the object which implements the handler methods.
             options.FontSavingCallback = new HandleFontSaving();
@@ -717,12 +725,31 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.SaveWithFontsExport.html", options);
         }
 
+        /// <summary>
+        /// Prints information about fonts and saves them alongside their output .html
+        /// </summary>
         public class HandleFontSaving : IFontSavingCallback
         {
             void IFontSavingCallback.FontSaving(FontSavingArgs args)
             {
-                // You can implement logic here to rename fonts, save to file etc. For this example just print some details about the current font being handled.
-                Console.WriteLine("Font Name = {0}, Font Filename = {1}", args.FontFamilyName, args.FontFileName);
+                // Print information about fonts
+                Console.Write($"Font:\t{args.FontFamilyName}");
+                if (args.Bold) Console.Write(", bold");
+                if (args.Italic) Console.Write(", italic");
+                Console.WriteLine($"\nSource:\t{args.OriginalFileName}, {args.OriginalFileSize} bytes\n");
+
+                Assert.True(args.IsExportNeeded);
+                Assert.True(args.IsSubsettingNeeded);
+
+                // We can designate where each font will be saved by either specifying a file name, or creating a new stream
+                args.FontFileName = args.OriginalFileName.Split('\\').Last();
+
+                args.FontStream = 
+                    new FileStream(ArtifactsDir + args.OriginalFileName.Split('\\').Last(), FileMode.Create);
+                Assert.False(args.KeepFontStreamOpen);
+
+                // We can access the source document from here also
+                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.doc"));
             }
         }
         //ExEnd
