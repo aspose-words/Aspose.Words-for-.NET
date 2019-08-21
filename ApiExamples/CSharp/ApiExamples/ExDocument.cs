@@ -716,10 +716,10 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Rendering.doc");
 
-            // Set the option to export font resources.
+            // Set the option to export font resources
             HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
             options.ExportFontResources = true;
-            // Create and pass the object which implements the handler methods.
+            // Create and pass the object which implements the handler methods
             options.FontSavingCallback = new HandleFontSaving();
 
             doc.Save(ArtifactsDir + "Document.SaveWithFontsExport.html", options);
