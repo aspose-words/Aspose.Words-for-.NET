@@ -27,7 +27,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:ImageSaveOptions.UseGdiEmfRenderer
             //ExSummary:Shows how to save metafiles directly without using GDI+ to EMF.
-            Document doc = new Document(MyDir + "SaveOptions.MyraidPro.docx");
+            Document doc = new Document(MyDir + "SaveOptions.MyriadPro.docx");
 
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Emf)
             {
@@ -44,7 +44,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:ImageSaveOptions.PageIndex
             //ExSummary:Shows how to save specific document page as image file.
-            Document doc = new Document(MyDir + "SaveOptions.MyraidPro.docx");
+            Document doc = new Document(MyDir + "SaveOptions.MyriadPro.docx");
 
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Gif)
             {
@@ -57,7 +57,7 @@ namespace ApiExamples
 
 #if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
-        public void QualityOptions()
+        public void GraphicsQuality()
         {
             //ExStart
             //ExFor:GraphicsQualityOptions
@@ -67,8 +67,8 @@ namespace ApiExamples
             //ExFor:GraphicsQualityOptions.StringFormat
             //ExFor:GraphicsQualityOptions.SmoothingMode
             //ExFor:GraphicsQualityOptions.TextRenderingHint
-            //ExSummary:Shows how to set render quality options. 
-            Document doc = new Document(MyDir + "SaveOptions.MyraidPro.docx");
+            //ExSummary:Shows how to set render quality options when converting documents to image formats. 
+            Document doc = new Document(MyDir + "SaveOptions.MyriadPro.docx");
 
             GraphicsQualityOptions qualityOptions = new GraphicsQualityOptions
             {
@@ -83,7 +83,7 @@ namespace ApiExamples
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Jpeg);
             saveOptions.GraphicsQualityOptions = qualityOptions;
 
-            doc.Save(ArtifactsDir + "SaveOptions.QualityOptions.jpeg", saveOptions);
+            doc.Save(ArtifactsDir + "SaveOptions.GraphicsQuality.jpeg", saveOptions);
             //ExEnd
         }
 #endif
