@@ -27,7 +27,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:ImageSaveOptions.UseGdiEmfRenderer
             //ExSummary:Shows how to save metafiles directly without using GDI+ to EMF.
-            Document doc = new Document(MyDir + "SaveOptions.MyraidPro.docx");
+            Document doc = new Document(MyDir + "SaveOptions.MyriadPro.docx");
 
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Emf)
             {
@@ -44,7 +44,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:ImageSaveOptions.PageIndex
             //ExSummary:Shows how to save specific document page as image file.
-            Document doc = new Document(MyDir + "SaveOptions.MyraidPro.docx");
+            Document doc = new Document(MyDir + "SaveOptions.MyriadPro.docx");
 
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Gif)
             {
