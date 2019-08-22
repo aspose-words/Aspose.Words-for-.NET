@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
@@ -56,25 +57,33 @@ namespace ApiExamples
 
 #if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
-        public void QualityOptions()
+        public void GraphicsQuality()
         {
             //ExStart
             //ExFor:GraphicsQualityOptions
+            //ExFor:GraphicsQualityOptions.CompositingMode
+            //ExFor:GraphicsQualityOptions.CompositingQuality
+            //ExFor:GraphicsQualityOptions.InterpolationMode
+            //ExFor:GraphicsQualityOptions.StringFormat
             //ExFor:GraphicsQualityOptions.SmoothingMode
             //ExFor:GraphicsQualityOptions.TextRenderingHint
-            //ExSummary:Shows how to set render quality options. 
-            Document doc = new Document(MyDir + "SaveOptions.MyraidPro.docx");
+            //ExSummary:Shows how to set render quality options when converting documents to image formats. 
+            Document doc = new Document(MyDir + "SaveOptions.MyriadPro.docx");
 
             GraphicsQualityOptions qualityOptions = new GraphicsQualityOptions
             {
                 SmoothingMode = SmoothingMode.AntiAlias,
-                TextRenderingHint = TextRenderingHint.ClearTypeGridFit
+                TextRenderingHint = TextRenderingHint.ClearTypeGridFit,
+                CompositingMode = CompositingMode.SourceOver,
+                CompositingQuality = CompositingQuality.HighQuality,
+                InterpolationMode = InterpolationMode.High,
+                StringFormat = StringFormat.GenericTypographic
             };
 
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Jpeg);
             saveOptions.GraphicsQualityOptions = qualityOptions;
 
-            doc.Save(ArtifactsDir + "SaveOptions.QualityOptions.jpeg", saveOptions);
+            doc.Save(ArtifactsDir + "SaveOptions.GraphicsQuality.jpeg", saveOptions);
             //ExEnd
         }
 #endif
