@@ -86,7 +86,7 @@ namespace ApiExamples
         //ExFor:DocumentPartSavingArgs.DocumentPartStream
         //ExFor:DocumentPartSavingArgs.KeepDocumentPartStreamOpen
         //ExFor:IDocumentPartSavingCallback
-        //ExFor:IDocumentPartSavingCallback(DocumentPartSavingArgs)
+        //ExFor:IDocumentPartSavingCallback.DocumentPartSaving(DocumentPartSavingArgs)
         //ExFor:IImageSavingCallback
         //ExFor:IImageSavingCallback.ImageSaving
         //ExFor:ImageSavingArgs
