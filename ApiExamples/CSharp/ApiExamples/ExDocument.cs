@@ -2413,6 +2413,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Compatibility
             //ExFor:CompatibilityOptions
+            //ExFor:CompatibilityOptions.GrowAutofit
             //ExFor:Document.CompatibilityOptions
             //ExSummary:Shows how to optimize our document for different word versions.
             Document doc = new Document();
