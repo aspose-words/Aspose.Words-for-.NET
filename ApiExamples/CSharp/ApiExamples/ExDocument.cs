@@ -2414,6 +2414,12 @@ namespace ApiExamples
             //ExFor:Compatibility
             //ExFor:CompatibilityOptions
             //ExFor:CompatibilityOptions.GrowAutofit
+            //ExFor:CompatibilityOptions.DoNotBreakWrappedTables
+            //ExFor:CompatibilityOptions.DoNotUseEastAsianBreakRules
+            //ExFor:CompatibilityOptions.SelectFldWithFirstOrLastChar
+            //ExFor:CompatibilityOptions.UseWord97LineBreakRules
+            //ExFor:CompatibilityOptions.UseWord2002TableStyleRules
+            //ExFor:CompatibilityOptions.UseWord2010TableStyleRules
             //ExFor:Document.CompatibilityOptions
             //ExSummary:Shows how to optimize our document for different word versions.
             Document doc = new Document();
