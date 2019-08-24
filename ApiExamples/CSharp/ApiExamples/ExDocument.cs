@@ -2380,6 +2380,8 @@ namespace ApiExamples
         public void CompatibilityOptions()
         {
             //ExStart
+            //ExFor:Compatibility
+            //ExFor:CompatibilityOptions
             //ExFor:Document.CompatibilityOptions
             //ExSummary:Shows how to optimize our document for different word versions.
             Document doc = new Document();
