@@ -2411,7 +2411,6 @@ namespace ApiExamples
         public void CompatibilityOptions()
         {
             //ExStart
-            //ExFor:Compatibility
             //ExFor:CompatibilityOptions
             //ExFor:CompatibilityOptions.GrowAutofit
             //ExFor:CompatibilityOptions.DoNotBreakWrappedTables
