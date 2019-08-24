@@ -642,6 +642,37 @@ namespace ApiExamples
         }
 
         [Test]
+        public void DownsampleOptions()
+        {
+            //ExStart
+            //ExFor:DownsampleOptions
+            //ExFor:DownsampleOptions.DownsampleImages
+            //ExFor:DownsampleOptions.Resolution
+            //ExFor:DownsampleOptions.ResolutionThreshold
+            //ExSummary:Shows how to change the resolution of images in output pdf documents.
+            // Open a document that contains images 
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            // If we want to convert the document to .pdf, we can use a SaveOptions implementation to customize the saving process
+            PdfSaveOptions options = new PdfSaveOptions();
+
+            // This conversion will downsample images by default
+            Assert.True(options.DownsampleOptions.DownsampleImages);
+            Assert.AreEqual(220, options.DownsampleOptions.Resolution);
+
+            // We can set the output resolution to a different value
+            // The first two images in the input document will be affected by this
+            options.DownsampleOptions.Resolution = 36;
+
+            // We can set a minimum threshold for downsampling 
+            // This value will prevent the second image in the input document from being downsampled
+            options.DownsampleOptions.ResolutionThreshold = 128;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.pdf", options);
+            //ExEnd
+        }
+
+        [Test]
         public void SaveHtmlPrettyFormat()
         {
             //ExStart
