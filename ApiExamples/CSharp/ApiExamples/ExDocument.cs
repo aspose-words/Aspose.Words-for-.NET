@@ -2411,10 +2411,12 @@ namespace ApiExamples
         public void CompatibilityOptions()
         {
             //ExStart
+            //ExFor:Compatibility
             //ExFor:CompatibilityOptions
             //ExFor:CompatibilityOptions.GrowAutofit
             //ExFor:CompatibilityOptions.DoNotBreakWrappedTables
             //ExFor:CompatibilityOptions.DoNotUseEastAsianBreakRules
+            //ExFor:CompatibilityOptions.OptimizeFor(MsWordVersion)
             //ExFor:CompatibilityOptions.SelectFldWithFirstOrLastChar
             //ExFor:CompatibilityOptions.UseWord97LineBreakRules
             //ExFor:CompatibilityOptions.UseWord2002TableStyleRules
@@ -2442,7 +2444,6 @@ namespace ApiExamples
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2010);
 
             Assert.AreEqual(false, co.GrowAutofit);
-            Assert.AreEqual(false, co.GrowAutofit);
             Assert.AreEqual(false, co.DoNotBreakWrappedTables);
             Assert.AreEqual(false, co.DoNotUseEastAsianBreakRules);
             Assert.AreEqual(false, co.SelectFldWithFirstOrLastChar);
@@ -2462,7 +2463,7 @@ namespace ApiExamples
             Assert.AreEqual(true, co.UseWord2002TableStyleRules);
             Assert.AreEqual(false, co.UseWord2010TableStyleRules);
 
-            doc.Save(ArtifactsDir + "Optimised for Word 2000.docx");
+            doc.Save(ArtifactsDir + "Optimised for Word 2000.doc");
             //ExEnd
         }
 
