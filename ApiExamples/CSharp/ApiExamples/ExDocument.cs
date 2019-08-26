@@ -2451,7 +2451,7 @@ namespace ApiExamples
             Assert.AreEqual(false, co.UseWord2002TableStyleRules);
             Assert.AreEqual(true, co.UseWord2010TableStyleRules);
 
-            doc.Save(ArtifactsDir + "Optimised for Word 2010.docx");
+            doc.Save(ArtifactsDir + "Optimized for Word 2010.docx");
 
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
 
@@ -2463,7 +2463,7 @@ namespace ApiExamples
             Assert.AreEqual(true, co.UseWord2002TableStyleRules);
             Assert.AreEqual(false, co.UseWord2010TableStyleRules);
 
-            doc.Save(ArtifactsDir + "Optimised for Word 2000.doc");
+            doc.Save(ArtifactsDir + "Optimized for Word 2000.doc");
             //ExEnd
         }
 
