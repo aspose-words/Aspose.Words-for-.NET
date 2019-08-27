@@ -101,9 +101,8 @@ namespace ApiExamples
             builder.Write("Paragraph 3.");
 
             // When saved to plain text, the paragraphs we created can be separated by a custom string
-            TxtSaveOptions txtSaveOptions = new TxtSaveOptions {SaveFormat = SaveFormat.Text};
-            txtSaveOptions.ParagraphBreak = " End of paragraph.\n\n\t";
-
+            TxtSaveOptions txtSaveOptions = new TxtSaveOptions { ParagraphBreak = " End of paragraph.\n\n\t" };
+            
             doc.Save(ArtifactsDir + "TxtSaveOptions.ParagraphBreak.txt", txtSaveOptions);
             //ExEnd
         }
@@ -120,8 +119,7 @@ namespace ApiExamples
             builder.Writeln("À È Ì Ò Ù.");
 
             // We can use a SaveOptions object to make sure the encoding we save the .txt document in supports our content
-            TxtSaveOptions txtSaveOptions = 
-                new TxtSaveOptions { SaveFormat = SaveFormat.Text, Encoding = System.Text.Encoding.UTF8 };
+            TxtSaveOptions txtSaveOptions = new TxtSaveOptions { Encoding = System.Text.Encoding.UTF8 };
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.Encoding.txt", txtSaveOptions);
             //ExEnd
