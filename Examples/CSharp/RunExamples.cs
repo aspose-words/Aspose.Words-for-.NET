@@ -182,7 +182,7 @@ namespace Aspose.Words.Examples.CSharp
             // AddGroupShapeToDocument.Run();
             // CompareDocument.Run();
             // DocProperties.Run();
-            // WorkingWithRevisions.Run();
+             WorkingWithRevisions.Run();
             // WriteAndFont.Run();
             // DocumentBuilderInsertParagraph.Run();
             // DocumentBuilderBuildTable.Run();
@@ -262,7 +262,7 @@ namespace Aspose.Words.Examples.CSharp
             // InsertAreaChart.Run();
             // InsertBubbleChart.Run();
             // CreateChartUsingShape.Run();
-            // WorkWithChartDataLabel.Run();
+            // WorkWithChartDataLabels.Run();
             // WorkWithSingleChartDataPoint.Run();
             // WorkWithSingleChartSeries.Run();
             // WorkingWithChartAxis.Run();
@@ -329,7 +329,7 @@ namespace Aspose.Words.Examples.CSharp
 
             //// Linked TextBoxes
             //// =====================================================
-             WorkingWithLinkedTextboxes.Run();
+            // WorkingWithLinkedTextboxes.Run();
 
             //// =====================================================
             //// =====================================================

@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiExampleBase.cs" />
+    <Compile Include="ExBookmarksOutlineLevelCollection.cs" />
     <Compile Include="ExComHelper.cs" />
     <Compile Include="CustomBarcodeGenerator.cs" />
     <Compile Include="DocumentHelper.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="ExCharts.cs" />
     <Compile Include="ExComment.cs" />
     <Compile Include="ExControlChar.cs" />
+    <Compile Include="ExDocSaveOptions.cs" />
     <Compile Include="ExHtmlLoadOptions.cs" />
     <Compile Include="ExDigitalSignatureCollection.cs" />
     <Compile Include="ExDigitalSignatureUtil.cs" />
