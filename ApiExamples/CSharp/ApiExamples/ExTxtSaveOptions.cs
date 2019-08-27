@@ -101,7 +101,7 @@ namespace ApiExamples
             builder.Write("Paragraph 3.");
 
             // When saved to plain text, the paragraphs we created can be separated by a custom string
-            TxtSaveOptions txtSaveOptions = new TxtSaveOptions { ParagraphBreak = " End of paragraph.\n\n\t" };
+            TxtSaveOptions txtSaveOptions = new TxtSaveOptions { SaveFormat = SaveFormat.Text, ParagraphBreak = " End of paragraph.\n\n\t" };
             
             doc.Save(ArtifactsDir + "TxtSaveOptions.ParagraphBreak.txt", txtSaveOptions);
             //ExEnd
