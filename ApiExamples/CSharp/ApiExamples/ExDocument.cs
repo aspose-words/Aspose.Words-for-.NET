@@ -2408,7 +2408,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CompatibilityOptions()
+        public void CompatibilityOptionsOptimizeFor()
         {
             //ExStart
             //ExFor:Compatibility
@@ -2464,6 +2464,25 @@ namespace ApiExamples
             Assert.AreEqual(false, co.UseWord2010TableStyleRules);
 
             doc.Save(ArtifactsDir + "Optimized for Word 2000.doc");
+            //ExEnd
+        }
+
+        [Test]
+        public void CompatibilityOptionsManual()
+        {
+            //ExStart
+            //ExFor:CompatibilityOptions.AdjustLineHeightInTable
+            //ExFor:CompatibilityOptions.AlignTablesRowByRow
+            //ExFor:CompatibilityOptions.AllowSpaceOfSameStyleInTable
+            //ExSummary:Shows how to manually set optimization options for a document.
+            Document doc = new Document();
+            CompatibilityOptions co = doc.CompatibilityOptions;
+
+            co.AdjustLineHeightInTable = true;
+            co.AlignTablesRowByRow = true;
+            co.AllowSpaceOfSameStyleInTable = true;
+
+            doc.Save(ArtifactsDir + "Document.CompatibilityOptionsManual.docx");
             //ExEnd
         }
 
