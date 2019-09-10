@@ -2474,6 +2474,7 @@ namespace ApiExamples
             //ExFor:CompatibilityOptions.AdjustLineHeightInTable
             //ExFor:CompatibilityOptions.AlignTablesRowByRow
             //ExFor:CompatibilityOptions.AllowSpaceOfSameStyleInTable
+            //ExFor:CompatibilityOptions.ApplyBreakingRules
             //ExSummary:Shows how to manually set optimization options for a document.
             Document doc = new Document();
             CompatibilityOptions co = doc.CompatibilityOptions;
@@ -2481,6 +2482,8 @@ namespace ApiExamples
             co.AdjustLineHeightInTable = true;
             co.AlignTablesRowByRow = true;
             co.AllowSpaceOfSameStyleInTable = true;
+            co.ApplyBreakingRules = true;
+
 
             doc.Save(ArtifactsDir + "Document.CompatibilityOptionsManual.docx");
             //ExEnd
