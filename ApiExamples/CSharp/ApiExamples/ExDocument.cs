@@ -34,6 +34,8 @@ using Aspose.Words.Tables;
 using Aspose.Words.Themes;
 using NUnit.Framework;
 using CompareOptions = Aspose.Words.CompareOptions;
+using License = Aspose.Words.License;
+using DescriptionAttribute = NUnit.Framework.DescriptionAttribute;
 #if !(NETSTANDARD2_0 || __MOBILE__)
 using Org.BouncyCastle.Pkcs;
 #endif
@@ -2407,74 +2409,140 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
+        //ExStart
+        //ExFor:Compatibility
+        //ExFor:CompatibilityOptions
+        //ExFor:CompatibilityOptions.GrowAutofit
+        //ExFor:CompatibilityOptions.DoNotBreakWrappedTables
+        //ExFor:CompatibilityOptions.DoNotUseEastAsianBreakRules
+        //ExFor:CompatibilityOptions.OptimizeFor(MsWordVersion)
+        //ExFor:CompatibilityOptions.SelectFldWithFirstOrLastChar
+        //ExFor:CompatibilityOptions.UseWord97LineBreakRules
+        //ExFor:CompatibilityOptions.UseWord2002TableStyleRules
+        //ExFor:CompatibilityOptions.UseWord2010TableStyleRules
+        //ExFor:CompatibilityOptions.AdjustLineHeightInTable
+        //ExFor:CompatibilityOptions.AlignTablesRowByRow
+        //ExFor:CompatibilityOptions.AllowSpaceOfSameStyleInTable
+        //ExFor:CompatibilityOptions.ApplyBreakingRules
+        //ExFor:CompatibilityOptions.AutofitToFirstFixedWidthCell
+        //ExFor:CompatibilityOptions.AutoSpaceLikeWord95
+        //ExFor:CompatibilityOptions.BalanceSingleByteDoubleByteWidth
+        //ExFor:CompatibilityOptions.CachedColBalance
+        //ExFor:CompatibilityOptions.ConvMailMergeEsc
+        //ExFor:CompatibilityOptions.DisplayHangulFixedWidth
+        //ExFor:CompatibilityOptions.DoNotAutofitConstrainedTables
+        //ExFor:CompatibilityOptions.DoNotBreakConstrainedForcedTable
+        //ExFor:CompatibilityOptions.DoNotExpandShiftReturn
+        //ExFor:CompatibilityOptions.DoNotLeaveBackslashAlone
+        //ExFor:CompatibilityOptions.DoNotSnapToGridInCell
+        //ExFor:CompatibilityOptions.DoNotSuppressIndentation
+        //ExFor:CompatibilityOptions.DoNotSuppressParagraphBorders
+        //ExFor:CompatibilityOptions.DoNotUseHTMLParagraphAutoSpacing
+        //ExFor:CompatibilityOptions.DoNotUseIndentAsNumberingTabStop
+        //ExFor:CompatibilityOptions.DoNotVertAlignCellWithSp
+        //ExFor:CompatibilityOptions.DoNotVertAlignInTxbx
+        //ExFor:CompatibilityOptions.DoNotWrapTextWithPunct
+        //ExFor:CompatibilityOptions.FootnoteLayoutLikeWW8
+        //ExFor:CompatibilityOptions.ForgetLastTabAlignment
+        //ExFor:CompatibilityOptions.LayoutRawTableWidth
+        //ExFor:CompatibilityOptions.LayoutTableRowsApart
+        //ExFor:CompatibilityOptions.LineWrapLikeWord6
+        //ExFor:CompatibilityOptions.MWSmallCaps
+        //ExFor:CompatibilityOptions.NoColumnBalance
+        //ExFor:CompatibilityOptions.NoExtraLineSpacing
+        //ExFor:CompatibilityOptions.NoLeading
+        //ExFor:CompatibilityOptions.NoSpaceRaiseLower
+        //ExFor:CompatibilityOptions.NoTabHangInd
+        //ExFor:CompatibilityOptions.OverrideTableStyleFontSizeAndJustification
+        //ExFor:CompatibilityOptions.PrintBodyTextBeforeHeader
+        //ExFor:CompatibilityOptions.PrintColBlack
+        //ExFor:CompatibilityOptions.ShapeLayoutLikeWW8
+        //ExFor:CompatibilityOptions.ShowBreaksInFrames
+        //ExFor:CompatibilityOptions.SpaceForUL
+        //ExFor:CompatibilityOptions.SpacingInWholePoints
+        //ExFor:CompatibilityOptions.SplitPgBreakAndParaMark
+        //ExFor:CompatibilityOptions.SubFontBySize
+        //ExFor:CompatibilityOptions.SuppressBottomSpacing
+        //ExFor:CompatibilityOptions.SuppressSpacingAtTopOfPage
+        //ExFor:CompatibilityOptions.SuppressSpBfAfterPgBrk
+        //ExFor:CompatibilityOptions.SuppressTopSpacing
+        //ExFor:CompatibilityOptions.SuppressTopSpacingWP
+        //ExFor:CompatibilityOptions.SwapBordersFacingPgs
+        //ExFor:CompatibilityOptions.TransparentMetafiles
+        //ExFor:CompatibilityOptions.TruncateFontHeightsLikeWP6
+        //ExFor:CompatibilityOptions.UICompat97To2003
+        //ExFor:CompatibilityOptions.UlTrailSpace
+        //ExFor:CompatibilityOptions.UnderlineTabInNumList
+        //ExFor:CompatibilityOptions.UseAltKinsokuLineBreakRules
+        //ExFor:CompatibilityOptions.UseAnsiKerningPairs
+        //ExFor:CompatibilityOptions.UseFELayout
+        //ExFor:CompatibilityOptions.UseNormalStyleForList
+        //ExFor:CompatibilityOptions.UsePrinterMetrics
+        //ExFor:CompatibilityOptions.UseSingleBorderforContiguousCells
+        //ExFor:CompatibilityOptions.WPJustification
+        //ExFor:CompatibilityOptions.WPSpaceWidth
+        //ExFor:CompatibilityOptions.WrapTrailSpaces
+        //ExFor:Document.CompatibilityOptions
+        //ExSummary:Shows how to optimize our document for different word versions.
+        [Test] //ExSkip
         public void CompatibilityOptionsOptimizeFor()
         {
-            //ExStart
-            //ExFor:Compatibility
-            //ExFor:CompatibilityOptions
-            //ExFor:CompatibilityOptions.GrowAutofit
-            //ExFor:CompatibilityOptions.DoNotBreakWrappedTables
-            //ExFor:CompatibilityOptions.DoNotUseEastAsianBreakRules
-            //ExFor:CompatibilityOptions.OptimizeFor(MsWordVersion)
-            //ExFor:CompatibilityOptions.SelectFldWithFirstOrLastChar
-            //ExFor:CompatibilityOptions.UseWord97LineBreakRules
-            //ExFor:CompatibilityOptions.UseWord2002TableStyleRules
-            //ExFor:CompatibilityOptions.UseWord2010TableStyleRules
-            //ExFor:Document.CompatibilityOptions
-            //ExSummary:Shows how to optimize our document for different word versions.
+            // Create a blank document and get its CompatibilityOptions object
             Document doc = new Document();
-            CompatibilityOptions co = doc.CompatibilityOptions;
+            CompatibilityOptions options = doc.CompatibilityOptions;
 
-            // Here are some default values
-            Assert.AreEqual(true, co.GrowAutofit);
-            Assert.AreEqual(false, co.DoNotBreakWrappedTables);
-            Assert.AreEqual(false, co.DoNotUseEastAsianBreakRules);
-            Assert.AreEqual(false, co.SelectFldWithFirstOrLastChar);
-            Assert.AreEqual(false, co.UseWord97LineBreakRules);
-            Assert.AreEqual(true, co.UseWord2002TableStyleRules);
-            Assert.AreEqual(false, co.UseWord2010TableStyleRules);
+            // By default, the CompatibilityOptions will contain the set of values printed below
+            Console.WriteLine("\nDefault optimization settings:");
+            PrintCompatibilityOptions(options);
 
-            // This example covers only a small portion of all the compatibility attributes 
-            // To see the entire list, in any of the output files go into File > Options > Advanced > Compatibility for...
+            // These attributes can be accessed in the output document via File > Options > Advanced > Compatibility for...
             doc.Save(ArtifactsDir + "DefaultCompatibility.docx");
 
-            // We can hand pick any value and change it to create a custom compatibility
-            // We can also change a bunch of values at once to suit a defined compatibility scheme with the OptimizeFor method
+            // We can use the OptimizeFor method to set these values automatically
+            // for maximum compatibility with some Microsoft Word versions
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2010);
-
-            Assert.AreEqual(false, co.GrowAutofit);
-            Assert.AreEqual(false, co.DoNotBreakWrappedTables);
-            Assert.AreEqual(false, co.DoNotUseEastAsianBreakRules);
-            Assert.AreEqual(false, co.SelectFldWithFirstOrLastChar);
-            Assert.AreEqual(false, co.UseWord97LineBreakRules);
-            Assert.AreEqual(false, co.UseWord2002TableStyleRules);
-            Assert.AreEqual(true, co.UseWord2010TableStyleRules);
-
-            doc.Save(ArtifactsDir + "Optimized for Word 2010.docx");
+            Console.WriteLine("\nOptimized for Word 2010:");
+            PrintCompatibilityOptions(options);
 
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
-
-            Assert.AreEqual(true, co.GrowAutofit);
-            Assert.AreEqual(true, co.DoNotBreakWrappedTables);
-            Assert.AreEqual(true, co.DoNotUseEastAsianBreakRules);
-            Assert.AreEqual(true, co.SelectFldWithFirstOrLastChar);
-            Assert.AreEqual(false, co.UseWord97LineBreakRules);
-            Assert.AreEqual(true, co.UseWord2002TableStyleRules);
-            Assert.AreEqual(false, co.UseWord2010TableStyleRules);
-
-            doc.Save(ArtifactsDir + "Optimized for Word 2000.doc");
-            //ExEnd
+            Console.WriteLine("\nOptimized for Word 2000:");
+            PrintCompatibilityOptions(options);
         }
+
+        /// <summary>
+        /// Groups the values of the boolean members of a passed CompatibilityOptions object and prints them in alphabetical order
+        /// </summary>
+        private void PrintCompatibilityOptions(CompatibilityOptions options)
+        {
+            for (int i = 1; i >= 0; i--)
+            {
+                bool b = Convert.ToBoolean(i);
+                Console.WriteLine(b ? "\tEnabled:" : "\tDisabled:");
+                List<string> types = new List<string>();
+
+                foreach (System.ComponentModel.PropertyDescriptor descriptor in System.ComponentModel.TypeDescriptor.GetProperties(options))
+                {
+                    if (descriptor.PropertyType == Type.GetType("System.Boolean") && Convert.ToInt32(descriptor.GetValue(options)) == i)
+                    {
+                        types.Add(descriptor.Name);
+                    }
+                }
+
+                types.Sort();
+
+                foreach (string s in types)
+                {
+                    Console.WriteLine($"\t\t{s}");
+                }
+            }
+        }
+        //ExEnd
 
         [Test]
         public void CompatibilityOptionsManual()
         {
             //ExStart
-            //ExFor:CompatibilityOptions.AdjustLineHeightInTable
-            //ExFor:CompatibilityOptions.AlignTablesRowByRow
-            //ExFor:CompatibilityOptions.AllowSpaceOfSameStyleInTable
-            //ExFor:CompatibilityOptions.ApplyBreakingRules
+
             //ExSummary:Shows how to manually set optimization options for a document.
             Document doc = new Document();
             CompatibilityOptions co = doc.CompatibilityOptions;
