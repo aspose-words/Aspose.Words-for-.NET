@@ -2640,6 +2640,10 @@ namespace ApiExamples
             //ExFor:Document.MailMergeSettings
             //ExFor:MailMergeDataType
             //ExFor:MailMergeMainDocumentType
+            //ExFor:Odso.ColumnDelimiter
+            //ExFor:Odso.DataSource
+            //ExFor:Odso.DataSourceType
+            //ExFor:Odso.FirstRowContainsColumnNames
             //ExSummary:Shows how to execute a mail merge with MailMergeSettings.
             // We'll create a simple document that will act as a destination for mail merge data
             Document doc = new Document();
@@ -2669,9 +2673,9 @@ namespace ApiExamples
 
             // Office Data Source Object settings
             Odso odso = mailMergeSettings.Odso;
+            odso.DataSource = ArtifactsDir + "Document.Lines.txt";
             odso.DataSourceType = OdsoDataSourceType.Text;
             odso.ColumnDelimiter = '|';
-            odso.DataSource = ArtifactsDir + "Document.Lines.txt";
             odso.FirstRowContainsColumnNames = true;
 
             // The mail merge will be performed when this document is opened 
