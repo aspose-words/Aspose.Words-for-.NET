@@ -2510,27 +2510,24 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Groups the values of the boolean members of a passed CompatibilityOptions object and prints them in alphabetical order
+        /// Prints all options of a CompatibilityOptions object and indicates whether they are enabled or disabled
         /// </summary>
         private void PrintCompatibilityOptions(CompatibilityOptions options)
         {
             for (int i = 1; i >= 0; i--)
             {
-                bool b = Convert.ToBoolean(i);
-                Console.WriteLine(b ? "\tEnabled:" : "\tDisabled:");
-                List<string> types = new List<string>();
+                Console.WriteLine(Convert.ToBoolean(i) ? "\tEnabled options:" : "\tDisabled options:");
+                SortedSet<string> optionNames = new SortedSet<string>();
 
                 foreach (System.ComponentModel.PropertyDescriptor descriptor in System.ComponentModel.TypeDescriptor.GetProperties(options))
                 {
                     if (descriptor.PropertyType == Type.GetType("System.Boolean") && Convert.ToInt32(descriptor.GetValue(options)) == i)
                     {
-                        types.Add(descriptor.Name);
+                        optionNames.Add(descriptor.Name);
                     }
                 }
 
-                types.Sort();
-
-                foreach (string s in types)
+                foreach (string s in optionNames)
                 {
                     Console.WriteLine($"\t\t{s}");
                 }
