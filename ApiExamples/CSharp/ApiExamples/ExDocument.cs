@@ -2640,6 +2640,7 @@ namespace ApiExamples
             //ExFor:Document.MailMergeSettings
             //ExFor:MailMergeDataType
             //ExFor:MailMergeMainDocumentType
+            //ExFor:Odso.Clone
             //ExFor:Odso.ColumnDelimiter
             //ExFor:Odso.DataSource
             //ExFor:Odso.DataSourceType
@@ -2677,6 +2678,9 @@ namespace ApiExamples
             odso.DataSourceType = OdsoDataSourceType.Text;
             odso.ColumnDelimiter = '|';
             odso.FirstRowContainsColumnNames = true;
+
+            // ODSO objects can also be cloned
+            Assert.AreNotSame(odso, odso.Clone());
 
             // The mail merge will be performed when this document is opened 
             doc.Save(ArtifactsDir + "Document.MailMergeSettings.docx");
