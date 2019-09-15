@@ -1,4 +1,5 @@
 ﻿using Aspose.Words.Markup;
+using Aspose.Words.Tables;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -18,6 +19,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Struct
             ClearContentsControl(dataDir);
             SetContentControlColor(dataDir);
             SetContentControlStyle(dataDir);
+            CreatingTableRepeatingSectionMappedToCustomXmlPart(dataDir);
         }
 
         public static void SetContentControlColor(string dataDir)
@@ -84,6 +86,55 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Struct
             doc.Save(dataDir);
             // ExEnd:SetContentControlStyle
             Console.WriteLine("\nSet the style of content control successfully.");
+        }
+
+        public static void CreatingTableRepeatingSectionMappedToCustomXmlPart(string dataDir)
+        {
+            // ExStart:CreatingTableRepeatingSectionMappedToCustomXmlPart
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            CustomXmlPart xmlPart = doc.CustomXmlParts.Add("Books",
+                "<books><book><title>Everyday Italian</title><author>Giada De Laurentiis</author></book>" +
+                "<book><title>Harry Potter</title><author>J K. Rowling</author></book>" +
+                "<book><title>Learning XML</title><author>Erik T. Ray</author></book></books>");
+
+            Table table = builder.StartTable();
+
+            builder.InsertCell();
+            builder.Write("Title");
+
+            builder.InsertCell();
+            builder.Write("Author");
+
+            builder.EndRow();
+            builder.EndTable();
+
+            StructuredDocumentTag repeatingSectionSdt =
+                new StructuredDocumentTag(doc, SdtType.RepeatingSection, MarkupLevel.Row);
+            repeatingSectionSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book", "");
+            table.AppendChild(repeatingSectionSdt);
+
+            StructuredDocumentTag repeatingSectionItemSdt =
+                new StructuredDocumentTag(doc, SdtType.RepeatingSectionItem, MarkupLevel.Row);
+            repeatingSectionSdt.AppendChild(repeatingSectionItemSdt);
+
+            Row row = new Row(doc);
+            repeatingSectionItemSdt.AppendChild(row);
+
+            StructuredDocumentTag titleSdt =
+                new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Cell);
+            titleSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book[1]/title[1]", "");
+            row.AppendChild(titleSdt);
+
+            StructuredDocumentTag authorSdt =
+                new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Cell);
+            authorSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book[1]/author[1]", "");
+            row.AppendChild(authorSdt);
+
+            doc.Save(dataDir + "Document.docx");
+            // ExEnd:CreatingTableRepeatingSectionMappedToCustomXmlPart
+            Console.WriteLine("\nCreation of a Table Repeating Section Mapped To a Custom Xml Part is successfull.");
         }
     }
 }
