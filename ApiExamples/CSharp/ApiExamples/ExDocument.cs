@@ -2640,6 +2640,7 @@ namespace ApiExamples
             //ExFor:Document.MailMergeSettings
             //ExFor:MailMergeDataType
             //ExFor:MailMergeMainDocumentType
+            //ExFor:Odso
             //ExFor:Odso.Clone
             //ExFor:Odso.ColumnDelimiter
             //ExFor:Odso.DataSource
