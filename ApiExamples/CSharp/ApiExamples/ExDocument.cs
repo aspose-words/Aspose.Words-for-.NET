@@ -3383,7 +3383,6 @@ namespace ApiExamples
             Assert.IsTrue(classModule.SourceCode.Contains("MsgBox \"Class test\""));
         }
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
         public void OpenType()
         {
@@ -3406,6 +3405,5 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "OpenType.Document.pdf");
             //ExEnd
         }
-#endif
     }
 }
