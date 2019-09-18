@@ -143,7 +143,7 @@ namespace ApiExamples
             //ExFor:Document.Save(String)
             //ExFor:Document.Save(Stream, SaveFormat)
             //ExFor:Document.Save(String, SaveOptions)
-            //ExSummary:Shows how to save a document to the XPS format using the Save method and the XpsSaveOptions class.
+            //ExSummary:Shows how to save a document to the XPS format in different ways.
             // Open the document
             Document doc = new Document(MyDir + "Rendering.doc");
 
