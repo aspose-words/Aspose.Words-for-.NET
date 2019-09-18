@@ -2484,8 +2484,15 @@ namespace ApiExamples
         //ExFor:CompatibilityOptions.WrapTrailSpaces
         //ExFor:Document.CompatibilityOptions
         //ExSummary:Shows how to optimize our document for different word versions.
+
+        // INSP: Good for indicates compatibility options, but this example does not show anything. 
+        // We have a lot of options and we need to show how the user can use them.
+        // Now users won't even understand why they should use doc.CompatibilityOptions.OptimizeFor(MsWordVersion),
+        // not to mention the rest.
+        // Each option(several options) must be a specific document(case) of how and why user need to use it.
+        // Maybe you can use some examples from dev side.
         [Test] //ExSkip
-        public void CompatibilityOptionsOptimizeFor()
+        public void CompatibilityOptionsOptimizeFor() 
         {
             // Create a blank document and get its CompatibilityOptions object
             Document doc = new Document();
@@ -2536,7 +2543,7 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void CompatibilityOptionsManual()
+        public void CompatibilityOptionsManual() //INSP: What with example and tags?
         {
             //ExStart
 
