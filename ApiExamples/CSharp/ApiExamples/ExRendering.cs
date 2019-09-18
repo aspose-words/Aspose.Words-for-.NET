@@ -14,6 +14,7 @@ using Aspose.Words;
 using Aspose.Words.Fonts;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
+using Aspose.Words.Settings;
 using NUnit.Framework;
 #if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
 using System.Windows.Forms;
@@ -137,28 +138,57 @@ namespace ApiExamples
             //ExStart
             //ExFor:XpsSaveOptions
             //ExFor:XpsSaveOptions.#ctor
+            //ExFor:XpsSaveOptions.OutlineOptions
+            //ExFor:XpsSaveOptions.SaveFormat
             //ExFor:Document.Save(String)
             //ExFor:Document.Save(Stream, SaveFormat)
             //ExFor:Document.Save(String, SaveOptions)
-            //ExId:SaveToXps_NewAPI
             //ExSummary:Shows how to save a document to the XPS format using the Save method and the XpsSaveOptions class.
             // Open the document
             Document doc = new Document(MyDir + "Rendering.doc");
+
             // Save document to file in the XPS format with default options
-            doc.Save(ArtifactsDir + "Rendering.XpsDefaultOptions.xps");
+            doc.Save(ArtifactsDir + "Rendering.SaveAsXps.DefaultOptions.xps");
 
             // Save document to stream in the XPS format with default options
-            MemoryStream docStream = new MemoryStream();
+            FileStream docStream = new FileStream(ArtifactsDir + "Rendering.SaveAsXps.FromStream.xps", FileMode.Create);
             doc.Save(docStream, SaveFormat.Xps);
-            // Rewind the stream position back to the beginning, ready for use
-            docStream.Seek(0, SeekOrigin.Begin);
+            docStream.Close();
 
             // Save document to file in the XPS format with specified options
-            // Render the first page only
+            // Render 3 pages starting from page 2; pages 2, 3 and 4
             XpsSaveOptions xpsOptions = new XpsSaveOptions();
-            xpsOptions.PageIndex = 0;
-            xpsOptions.PageCount = 1;
-            doc.Save(ArtifactsDir + "Rendering.XpsCustomOptions.xps", xpsOptions);
+            xpsOptions.SaveFormat = SaveFormat.Xps;
+            xpsOptions.PageIndex = 1;
+            xpsOptions.PageCount = 3;
+
+            // All paragraphs in the "Heading 1" style will be included in the outline but "Heading 2" and onwards won't
+            xpsOptions.OutlineOptions.HeadingsOutlineLevels = 1;
+
+            doc.Save(ArtifactsDir + "Rendering.SaveAsXps.PartialDocument.xps", xpsOptions);
+            //ExEnd
+        }
+
+        [Test]
+        public void SaveAsXpsBookFold()
+        {
+            //ExStart
+            //ExFor:XpsSaveOptions.#ctor(SaveFormat)
+            //ExFor:XpsSaveOptions.UseBookFoldPrintingSettings
+            //ExSummary:Shows how to save a document to the XPS format in the form of a book fold.
+            // Open a document with multiple paragraphs
+            Document doc = new Document(MyDir + "Paragraphs.docx");
+
+            // Configure both page setup and XpsSaveOptions to create a book fold
+            foreach (Section s in doc.Sections)
+            {
+                s.PageSetup.MultiplePages = MultiplePagesType.BookFoldPrinting;
+            }
+
+            XpsSaveOptions xpsOptions = new XpsSaveOptions(SaveFormat.Xps);
+            xpsOptions.UseBookFoldPrintingSettings = true;
+
+            doc.Save(ArtifactsDir + "Rendering.SaveAsXpsBookFold.xps", xpsOptions);
             //ExEnd
         }
 
