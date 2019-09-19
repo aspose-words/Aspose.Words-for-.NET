@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.IO;
 using System.Text;
 using Aspose.Words;
@@ -21,6 +22,7 @@ namespace ApiExamples
         public void SupportVml()
         {
             //ExStart
+            //ExFor:HtmlLoadOptions.#ctor
             //ExFor:HtmlLoadOptions.SupportVml
             //ExSummary:Shows how to parse HTML document with conditional comments like "<!--[if gte vml 1]>" and "<![if !vml]>"
             HtmlLoadOptions loadOptions = new HtmlLoadOptions();
@@ -40,6 +42,36 @@ namespace ApiExamples
         {
             HtmlLoadOptions loadOptions = new HtmlLoadOptions();
             Assert.AreEqual(100000, loadOptions.WebRequestTimeout);
+        }
+
+        [Test]
+        public void EncryptedHtml()
+        {
+            //ExStart
+            //ExFor:HtmlLoadOptions.#ctor(String)
+            //ExSummary:Shows how to encrypt an Html document and then open it using a password.
+            // Create and sign an encrypted html document from an encrypted .docx
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+
+            SignOptions signOptions = new SignOptions
+            {
+                Comments = "Comment",
+                SignTime = DateTime.Now,
+                DecryptionPassword = "docPassword"
+            };
+
+            string inputFileName = MyDir + "Document.Encrypted.docx";
+            string outputFileName = ArtifactsDir + "HtmlLoadOptions.EncryptedHtml.html";
+            DigitalSignatureUtil.Sign(inputFileName, outputFileName, certificateHolder, signOptions);
+
+            // This .html document will need a password to be decrypted, opened and have its contents accessed
+            // The password is specified by HtmlLoadOptions.Password
+            HtmlLoadOptions loadOptions = new HtmlLoadOptions("docPassword");
+            Assert.AreEqual(signOptions.DecryptionPassword, loadOptions.Password);
+
+            Document doc = new Document(outputFileName, loadOptions);
+            Assert.AreEqual("Test signed document.", doc.GetText().Trim());       
+            //ExEnd
         }
 
         [Test]
