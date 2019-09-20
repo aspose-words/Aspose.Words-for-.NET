@@ -45,7 +45,7 @@ namespace ApiExamples
         //ExFor:SvgSaveOptions.ResourcesFolder
         //ExFor:SvgSaveOptions.ResourcesFolderAlias
         //ExFor:SvgSaveOptions.SaveFormat
-        //ExSummary:Shows how to rename 
+        //ExSummary:Shows how to rename // INSP: incorrect summary
         [Test] //ExSkip
         public void AlternativeResourceFolder()
         {
