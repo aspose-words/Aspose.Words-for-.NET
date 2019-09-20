@@ -25,24 +25,19 @@ namespace ApiExamples
             //ExStart
             //ExFor:HtmlLoadOptions.#ctor
             //ExFor:HtmlLoadOptions.SupportVml
+            //ExFor:HtmlLoadOptions.WebRequestTimeout
             //ExSummary:Shows how to parse HTML document with conditional comments like "<!--[if gte vml 1]>" and "<![if !vml]>"
             HtmlLoadOptions loadOptions = new HtmlLoadOptions();
 
-            //If value is true, then we parse "<!--[if gte vml 1]>", else parse "<![if !vml]>"
+            // If value is true, then we parse "<!--[if gte vml 1]>", else parse "<![if !vml]>"
             loadOptions.SupportVml = true;
-            //Wait for a response, when loading external resources
+
+            // Wait for a response, when loading external resources
             loadOptions.WebRequestTimeout = 1000;
 
             Document doc = new Document(MyDir + "Shape.VmlAndDml.htm", loadOptions);
             doc.Save(ArtifactsDir + "Shape.VmlAndDml.docx");
             //ExEnd
-        }
-
-        [Test]
-        public void WebRequestTimeoutDefaultValue()
-        {
-            HtmlLoadOptions loadOptions = new HtmlLoadOptions();
-            Assert.AreEqual(100000, loadOptions.WebRequestTimeout);
         }
 
         [Test]
@@ -80,7 +75,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlLoadOptions.#ctor(LoadFormat,String,String)
-            //ExSummary:
+            //ExSummary:Shows how to specify a base URI when opening an html document.
             // Create and sign an encrypted html document from an encrypted .docx
             // If we want to load an .html document which contains an image linked by a relative URI
             // while the image is in a different location, we will need to resolve the relative URI into an absolute one
