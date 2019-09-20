@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Text;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Markup;
 using NUnit.Framework;
@@ -71,6 +72,30 @@ namespace ApiExamples
 
             Document doc = new Document(outputFileName, loadOptions);
             Assert.AreEqual("Test signed document.", doc.GetText().Trim());       
+            //ExEnd
+        }
+
+        [Test]
+        public void BaseUri()
+        {
+            //ExStart
+            //ExFor:HtmlLoadOptions.#ctor(LoadFormat,String,String)
+            //ExSummary:
+            // Create and sign an encrypted html document from an encrypted .docx
+            // If we want to load an .html document which contains an image linked by a relative URI
+            // while the image is in a different location, we will need to resolve the relative URI into an absolute one
+            // by creating an HtmlLoadOptions and providing a base URI 
+            HtmlLoadOptions loadOptions = new HtmlLoadOptions(LoadFormat.Html, "", MyDir + "/images/");
+
+            Document doc = new Document(MyDir + "Document.OpenFromStreamWithBaseUri.html", loadOptions);
+
+            // The image will be displayed correctly by the output document and
+            doc.Save(ArtifactsDir + "Shape.BaseUri.docx");
+        
+            Shape imgShape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
+            Assert.True(imgShape.IsImage);
+
+            imgShape.ImageData.Save(ArtifactsDir + "BaseUri.png");
             //ExEnd
         }
 
