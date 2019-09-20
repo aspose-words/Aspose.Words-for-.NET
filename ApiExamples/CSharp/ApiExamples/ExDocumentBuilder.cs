@@ -717,7 +717,7 @@ namespace ApiExamples
             //ExFor:CellFormat.Width
             //ExFor:CellFormat.VerticalAlignment
             //ExFor:CellFormat.Shading
-            //ExFor.CellFormat.Orientation
+            //ExFor:CellFormat.Orientation
             //ExFor:RowFormat
             //ExFor:RowFormat.HeightRule
             //ExFor:RowFormat.Height
@@ -728,12 +728,11 @@ namespace ApiExamples
             //ExSummary:Shows how to build a nice bordered table.
             DocumentBuilder builder = new DocumentBuilder();
 
-            // Start building a table.
+            // Start building a table
             builder.StartTable();
 
             // Set the appropriate paragraph, cell, and row formatting. The formatting properties are preserved
-            // until they are explicitly modified so there's no need to set them for each row or cell. 
-
+            // until they are explicitly modified so there's no need to set them for each row or cell
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
 
             builder.CellFormat.Width = 300;
@@ -753,7 +752,7 @@ namespace ApiExamples
 
             builder.EndRow();
 
-            // Remove the shading (clear background).
+            // Remove the shading (clear background)
             builder.CellFormat.Shading.ClearFormatting();
 
             builder.InsertCell();
@@ -766,7 +765,7 @@ namespace ApiExamples
 
             builder.InsertCell();
 
-            // Make the row height bigger so that a vertically oriented text could fit into cells.
+            // Make the row height bigger so that a vertically oriented text could fit into cells
             builder.RowFormat.Height = 150;
             builder.CellFormat.Orientation = TextOrientation.Upward;
             builder.Write("Row 3, Col 1");
