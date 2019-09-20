@@ -45,7 +45,7 @@ namespace ApiExamples
         //ExFor:SvgSaveOptions.ResourcesFolder
         //ExFor:SvgSaveOptions.ResourcesFolderAlias
         //ExFor:SvgSaveOptions.SaveFormat
-        //ExSummary:Shows how to rename // INSP: incorrect summary
+        //ExSummary:Shows how to manipulate the saved file locations of linked images during when saving a document to .svg.
         [Test] //ExSkip
         public void AlternativeResourceFolder()
         {
