@@ -176,7 +176,7 @@ namespace ApiExamples
                 // Open the document. Note the Document constructor detects HTML format automatically.
                 // Pass the URI of the base folder so any images with relative URIs in the HTML document can be found.
                 LoadOptions loadOptions = new LoadOptions();
-                loadOptions.BaseUri = MyDir + "/images/";
+                loadOptions.BaseUri = ImageDir;
 
                 doc = new Document(stream, loadOptions);
             }

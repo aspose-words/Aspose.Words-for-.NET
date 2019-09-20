@@ -80,7 +80,7 @@ namespace ApiExamples
             // If we want to load an .html document which contains an image linked by a relative URI
             // while the image is in a different location, we will need to resolve the relative URI into an absolute one
             // by creating an HtmlLoadOptions and providing a base URI 
-            HtmlLoadOptions loadOptions = new HtmlLoadOptions(LoadFormat.Html, "", MyDir + "/images/");
+            HtmlLoadOptions loadOptions = new HtmlLoadOptions(LoadFormat.Html, "", ImageDir);
 
             Document doc = new Document(MyDir + "Document.OpenFromStreamWithBaseUri.html", loadOptions);
 
