@@ -129,10 +129,6 @@ namespace ApiExamples
             //ExFor:SignOptions.DecryptionPassword
             //ExFor:LoadOptions.Password
             //ExSummary:Shows how to sign encrypted document file.
-            string outputFileName = ArtifactsDir + "Document.Encrypted.docx";
-
-            Document doc = new Document(MyDir + "Document.Encrypted.docx", new LoadOptions("docPassword"));
-
             // Create certificate holder from a file.
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
@@ -144,7 +140,10 @@ namespace ApiExamples
             };
 
             // Digitally sign encrypted with "docPassword" document in the specified path.
-            DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, certificateHolder, signOptions);
+            string inputFileName = MyDir + "Document.Encrypted.docx";
+            string outputFileName = ArtifactsDir + "Document.Encrypted.docx";
+
+            DigitalSignatureUtil.Sign(inputFileName, outputFileName, certificateHolder, signOptions);
             //ExEnd
 
             // Open encrypted document from a file.
