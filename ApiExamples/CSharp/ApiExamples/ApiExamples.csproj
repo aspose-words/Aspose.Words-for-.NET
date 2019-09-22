@@ -104,6 +104,7 @@
     <Compile Include="ExCellFormat.cs" />
     <Compile Include="ExCharts.cs" />
     <Compile Include="ExComment.cs" />
+    <Compile Include="ExCompatibilityOptions.cs" />
     <Compile Include="ExControlChar.cs" />
     <Compile Include="ExDocSaveOptions.cs" />
     <Compile Include="ExHtmlLoadOptions.cs" />
