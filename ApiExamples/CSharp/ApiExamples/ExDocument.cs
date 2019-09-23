@@ -2695,10 +2695,9 @@ namespace ApiExamples
             //ExStart
             //ExFor:Odso.TableName
             //ExFor:Odso.UdlConnectString
-            //ExSummary:Shows how to execute a mail merge with MailMergeSettings.
+            //ExSummary:Shows how to execute a mail merge while connecting to an external data source.
             Document doc = new Document(MyDir + "OdsoData.doc");
             
-            // Office Data Source Object settings
             Odso odso = doc.MailMergeSettings.Odso;
             Assert.AreEqual(OdsoDataSourceType.Email, odso.DataSourceType);
             Assert.AreEqual("Contacts", odso.TableName);
