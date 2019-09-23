@@ -2646,6 +2646,7 @@ namespace ApiExamples
             //ExFor:Odso.DataSource
             //ExFor:Odso.DataSourceType
             //ExFor:Odso.FirstRowContainsColumnNames
+            //ExFor:OdsoDataSourceType
             //ExSummary:Shows how to execute a mail merge with MailMergeSettings.
             // We'll create a simple document that will act as a destination for mail merge data
             Document doc = new Document();
@@ -2685,6 +2686,92 @@ namespace ApiExamples
 
             // The mail merge will be performed when this document is opened 
             doc.Save(ArtifactsDir + "Document.MailMergeSettings.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ExOdsoFieldMapDataCollection()
+        {
+            //ExStart
+            //ExFor:Odso.FieldMapDatas
+            //ExFor:OdsoFieldMapData
+            //ExFor:OdsoFieldMapData.Clone
+            //ExFor:OdsoFieldMapData.Column
+            //ExFor:OdsoFieldMapData.MappedName
+            //ExFor:OdsoFieldMapData.Name
+            //ExFor:OdsoFieldMapData.Type
+            //ExFor:OdsoFieldMapDataCollection
+            //ExFor:OdsoFieldMapDataCollection.Add(OdsoFieldMapData)
+            //ExFor:OdsoFieldMapDataCollection.Clear
+            //ExFor:OdsoFieldMapDataCollection.Count
+            //ExFor:OdsoFieldMapDataCollection.GetEnumerator
+            //ExFor:OdsoFieldMapDataCollection.Item(Int32)
+            //ExFor:OdsoFieldMapDataCollection.RemoveAt(Int32)
+            //ExSummary:Shows how to access the collection of data that maps data source columns to merge fields.
+            Document doc = new Document(MyDir + "OdsoData.doc");
+
+            // This collection defines how columns from an external data source will be mapped to predefined MERGEFIELD,
+            // ADDRESSBLOCK and GREETINGLINE fields during a mail merge
+            OdsoFieldMapDataCollection fieldMapDataCollection = doc.MailMergeSettings.Odso.FieldMapDatas;
+
+            Assert.AreEqual(30, fieldMapDataCollection.Count);
+            int index = 0;
+
+            foreach (OdsoFieldMapData data in fieldMapDataCollection)
+            {
+                Console.WriteLine($"Field map data index #{index++}, type \"{data.Type}\":");
+
+                if (data.Type != OdsoFieldMappingType.Null)
+                {
+                    Console.WriteLine(
+                        $"\tColumn named {data.Name}, number {data.Column} in the data source mapped to merge field named {data.MappedName}.");
+                }
+                else
+                {
+                    Console.WriteLine("\tNo valid column to field mapping data present.");
+                }
+
+                Assert.AreNotEqual(data, data.Clone());
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void ExOdsoRecipientDataCollection()
+        {
+            //ExStart
+            //ExFor:Odso.RecipientDatas
+            //ExFor:OdsoRecipientData
+            //ExFor:OdsoRecipientData.Active
+            //ExFor:OdsoRecipientData.Clone
+            //ExFor:OdsoRecipientData.Column
+            //ExFor:OdsoRecipientData.Hash
+            //ExFor:OdsoRecipientData.UniqueTag
+            //ExFor:OdsoRecipientDataCollection
+            //ExFor:OdsoRecipientDataCollection.Add(OdsoRecipientData)
+            //ExFor:OdsoRecipientDataCollection.Clear
+            //ExFor:OdsoRecipientDataCollection.Count
+            //ExFor:OdsoRecipientDataCollection.GetEnumerator
+            //ExFor:OdsoRecipientDataCollection.Item(Int32)
+            //ExFor:OdsoRecipientDataCollection.RemoveAt(Int32)
+            //ExSummary:Shows how to access the collection of data that designates merge data source records to be excluded from a merge.
+            Document doc = new Document(MyDir + "OdsoData.doc");
+
+            // Records in this collection that do not have the "Active" flag set to true will be excluded from the mail merge
+            OdsoRecipientDataCollection odsoRecipientDataCollection = doc.MailMergeSettings.Odso.RecipientDatas;
+
+            Assert.AreEqual(70, odsoRecipientDataCollection.Count);
+            int index = 0;
+
+            foreach (OdsoRecipientData data in odsoRecipientDataCollection)
+            {
+                Console.WriteLine($"Osdo recipient data index #{index++}, will {(data.Active ? "" : "not ")}be imported upon mail merge.");
+                Console.WriteLine($"\tColumn #{data.Column}");
+                Console.WriteLine($"\tHash code: {data.Hash}");
+                Console.WriteLine($"\tContents array length: {data.UniqueTag.Length}");
+
+                Assert.AreNotEqual(data, data.Clone());
+            }
             //ExEnd
         }
 
