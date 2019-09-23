@@ -2690,7 +2690,24 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ExOdsoFieldMapDataCollection()
+        public void OdsoEmail()
+        {
+            //ExStart
+            //ExFor:Odso.TableName
+            //ExFor:Odso.UdlConnectString
+            //ExSummary:Shows how to execute a mail merge with MailMergeSettings.
+            Document doc = new Document(MyDir + "OdsoData.doc");
+            
+            // Office Data Source Object settings
+            Odso odso = doc.MailMergeSettings.Odso;
+            Assert.AreEqual(OdsoDataSourceType.Email, odso.DataSourceType);
+            Assert.AreEqual("Contacts", odso.TableName);
+            Assert.True(odso.UdlConnectString.StartsWith("Provider=Microsoft.ACE.OLEDB.12.0;User ID=Admin;Data Source="));
+            //ExEnd
+        }
+
+        [Test]
+        public void OdsoFieldMapDataCollection()
         {
             //ExStart
             //ExFor:Odso.FieldMapDatas
@@ -2707,6 +2724,7 @@ namespace ApiExamples
             //ExFor:OdsoFieldMapDataCollection.GetEnumerator
             //ExFor:OdsoFieldMapDataCollection.Item(Int32)
             //ExFor:OdsoFieldMapDataCollection.RemoveAt(Int32)
+            //ExFor:OdsoFieldMappingType
             //ExSummary:Shows how to access the collection of data that maps data source columns to merge fields.
             Document doc = new Document(MyDir + "OdsoData.doc");
 
@@ -2737,7 +2755,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ExOdsoRecipientDataCollection()
+        public void OdsoRecipientDataCollection()
         {
             //ExStart
             //ExFor:Odso.RecipientDatas
