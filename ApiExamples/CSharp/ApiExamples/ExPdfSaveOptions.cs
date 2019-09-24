@@ -32,6 +32,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:OutlineOptions.CreateMissingOutlineLevels
             //ExFor:ParagraphFormat.IsHeading
+            //ExFor:PdfSaveOptions.OutlineOptions
+            //ExFor:PdfSaveOptions.SaveFormat
             //ExSummary:Shows how to create missing outline levels saving the document in PDF
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
