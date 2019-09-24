@@ -95,6 +95,18 @@ namespace ApiExamples
         }
 
         [Test]
+        [Category("SkipTearDown")]
+        public void Format()
+        {
+            //ExStart
+            //ExSummary:
+            Document doc = new Document(MyDir + "Table.Document.doc");
+
+
+            //ExEnd
+        }
+
+        [Test]
         public void CalculateDepthOfNestedTables()
         {
             //ExStart
@@ -343,6 +355,7 @@ namespace ApiExamples
             //ExFor:Table.Alignment
             //ExFor:TableAlignment
             //ExFor:Table.ClearBorders
+            //ExFor:Table.ClearShading
             //ExFor:Table.SetBorder
             //ExFor:TextureIndex
             //ExFor:Table.SetShading
@@ -354,8 +367,9 @@ namespace ApiExamples
             // Align the table to the center of the page.
             table.Alignment = TableAlignment.Center;
 
-            // Clear any existing borders from the table.
+            // Clear any existing borders and shading from the table.
             table.ClearBorders();
+            table.ClearShading();
 
             // Set a green border around the table but not inside. 
             table.SetBorder(BorderType.Left, LineStyle.Single, 1.5, Color.Green, true);
