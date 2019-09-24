@@ -454,6 +454,12 @@ namespace ApiExamples
         [Test]
         public void GetDistance()
         {
+            //ExStart
+            //ExFor:Table.DistanceBottom
+            //ExFor:Table.DistanceLeft
+            //ExFor:Table.DistanceRight
+            //ExFor:Table.DistanceTop
+            //ExSummary:Shows the minimum distance operations between table boundaries and text.
             Document doc = new Document(MyDir + "Table.Distance.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -462,6 +468,7 @@ namespace ApiExamples
             Assert.AreEqual(26.35d, table.DistanceBottom);
             Assert.AreEqual(9.05d, table.DistanceLeft);
             Assert.AreEqual(22.7d, table.DistanceRight);
+            //ExEnd
         }
 
         [Test]
@@ -1205,6 +1212,10 @@ namespace ApiExamples
         [Test]
         public void CheckDefaultValuesForFloatingTableProperties()
         {
+            //ExStart
+            //ExFor:Table.TextWrapping
+            //ExFor:TextWrapping
+            //ExSummary:Shows how to work with table text wrapping.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1220,6 +1231,7 @@ namespace ApiExamples
                 Assert.AreEqual(0, table.AbsoluteVerticalDistance);
                 Assert.AreEqual(true, table.AllowOverlap);
             }
+            //ExEnd
         }
 
         [Test]
@@ -1256,6 +1268,10 @@ namespace ApiExamples
         public void TableStyleCreation()
         {
             //ExStart
+            //ExFor:Table.Bidi
+            //ExFor:Table.CellSpacing
+            //ExFor:Table.Style
+            //ExFor:Table.StyleName
             //ExFor:TableStyle
             //ExFor:TableStyle.AllowBreakAcrossPages
             //ExFor:TableStyle.Bidi
@@ -1293,7 +1309,12 @@ namespace ApiExamples
             tableStyle.Borders.LineStyle = LineStyle.DotDash;
 
             table.Style = tableStyle;
- 
+
+            // Some Table attributes are linked to style variables
+            Assert.AreEqual(true, table.Bidi);
+            Assert.AreEqual(5.0, table.CellSpacing);
+            Assert.AreEqual("MyTableStyle1", table.StyleName);
+
             doc.Save(ArtifactsDir + "Table.TableStyleCreation.docx");
             //ExEnd
         }

@@ -137,6 +137,7 @@ namespace ApiExamples
         }
 
         [Test]
+        [Category("SkipTearDown")]
         public void VerticalAndHorizontalBorders()
         {
             //ExStart
@@ -192,7 +193,7 @@ namespace ApiExamples
 
                 row.AppendChild(new Cell(doc));
                 row.LastCell.AppendChild(new Paragraph(doc));
-                row.LastCell.FirstParagraph.AppendChild(new Run(doc, "Vertical border to the left."));
+                row.LastCell.LastParagraph.AppendChild(new Run(doc, "Vertical border to the left."));
                 table.AppendChild(row);
             }
 
