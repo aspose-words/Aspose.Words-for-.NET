@@ -142,6 +142,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:BorderCollection.Horizontal
             //ExFor:BorderCollection.Vertical
+            //ExFor:Cell.LastParagraph
             //ExSummary:Shows the difference between the Horizontal and Vertical properties of BorderCollection.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

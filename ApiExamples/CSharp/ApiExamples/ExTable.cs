@@ -86,8 +86,7 @@ namespace ApiExamples
                     Console.WriteLine($"\tEnd of Row {j}");
                 }
 
-                Console.WriteLine($"End of Table {i}");
-                Console.WriteLine();
+                Console.WriteLine($"End of Table {i}\n");
             }
             //ExEnd
 
