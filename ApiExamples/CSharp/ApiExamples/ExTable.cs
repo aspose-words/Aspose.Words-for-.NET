@@ -95,18 +95,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Category("SkipTearDown")]
-        public void Format()
-        {
-            //ExStart
-            //ExSummary:
-            Document doc = new Document(MyDir + "Table.Document.doc");
-
-
-            //ExEnd
-        }
-
-        [Test]
         public void CalculateDepthOfNestedTables()
         {
             //ExStart
@@ -1400,6 +1388,7 @@ namespace ApiExamples
             //ExFor:ConditionalStyleCollection.TopLeftCell
             //ExFor:ConditionalStyleCollection.TopRightCell
             //ExFor:ConditionalStyleType
+            //ExFor:TableStyle.ConditionalStyles
             //ExSummary:Shows how to work with certain area styles of a table.
             Document doc = new Document(MyDir + "Table.ConditionalStyles.docx");
 

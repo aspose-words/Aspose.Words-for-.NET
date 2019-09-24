@@ -703,7 +703,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Category("SkipTearDown")]
         public void InsertTable()
         {
             //ExStart
@@ -938,9 +937,13 @@ namespace ApiExamples
             //ExStart
             //ExFor:CellFormat.PreferredWidth
             //ExFor:PreferredWidth
+            //ExFor:PreferredWidth.Auto
+            //ExFor:PreferredWidth.Equals(Aspose.Words.Tables.PreferredWidth)
+            //ExFor:PreferredWidth.Equals(System.Object)
             //ExFor:PreferredWidth.FromPoints
             //ExFor:PreferredWidth.FromPercent
-            //ExFor:PreferredWidth.Auto
+            //ExFor:PreferredWidth.GetHashCode
+            //ExFor:PreferredWidth.ToString
             //ExId:CellPreferredWidths
             //ExSummary:Shows how to set the different preferred width settings.
             Document doc = new Document();
@@ -955,11 +958,20 @@ namespace ApiExamples
             builder.CellFormat.Shading.BackgroundPatternColor = Color.LightYellow;
             builder.Writeln("Cell at 40 points width");
 
+            PreferredWidth width = builder.CellFormat.PreferredWidth;
+            Console.WriteLine($"Width \"{width.GetHashCode()}\": {width.ToString()}");
+
             // Insert a relative (percent) sized cell.
             builder.InsertCell();
             builder.CellFormat.PreferredWidth = PreferredWidth.FromPercent(20);
             builder.CellFormat.Shading.BackgroundPatternColor = Color.LightBlue;
             builder.Writeln("Cell at 20% width");
+
+            // Each cell had its own PreferredWidth
+            Assert.False(builder.CellFormat.PreferredWidth.Equals(width));
+
+            width = builder.CellFormat.PreferredWidth;
+            Console.WriteLine($"Width \"{width.GetHashCode()}\": {width.ToString()}");
 
             // Insert a auto sized cell.
             builder.InsertCell();
@@ -969,7 +981,7 @@ namespace ApiExamples
                 "Cell automatically sized. The size of this cell is calculated from the table preferred width.");
             builder.Writeln("In this case the cell will fill up the rest of the available space.");
 
-            doc.Save(ArtifactsDir + "Table.CellPreferredWidths.doc");
+            doc.Save(ArtifactsDir + "Table.CellPreferredWidths.docx");
             //ExEnd
 
             // Verify the correct settings were applied.

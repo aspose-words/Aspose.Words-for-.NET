@@ -137,7 +137,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Category("SkipTearDown")]
         public void VerticalAndHorizontalBorders()
         {
             //ExStart
