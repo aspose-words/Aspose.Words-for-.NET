@@ -8,6 +8,7 @@
 using System;
 using Aspose.Words;
 using Aspose.Words.Saving;
+using Aspose.Words.Settings;
 using NUnit.Framework;
 using Document = Aspose.Words.Document;
 using IWarningCallback = Aspose.Words.IWarningCallback;
@@ -412,6 +413,50 @@ namespace ApiExamples
             saveOptions.TextCompression = PdfTextCompression.None;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf", saveOptions);
+            //ExEnd
+        }
+
+        [Test]
+        public void SaveAsPdfBookFold()
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.UseBookFoldPrintingSettings
+            //ExSummary:Shows how to save a document to the PDF format in the form of a book fold.
+            // Open a document with multiple paragraphs
+            Document doc = new Document(MyDir + "Paragraphs.docx");
+
+            // Configure both page setup and PdfSaveOptions to create a book fold
+            foreach (Section s in doc.Sections)
+            {
+                s.PageSetup.MultiplePages = MultiplePagesType.BookFoldPrinting;
+            }
+
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.UseBookFoldPrintingSettings = true;
+
+            // In order to make a booklet, we will need to print this document, stack the pages
+            // in the order they come out of the printer and then fold down the middle
+            doc.Save(ArtifactsDir + "PdfSaveOptions.SaveAsPdfBookFold.pdf", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void ZoomBehaviour()
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.ZoomBehavior
+            //ExFor:PdfSaveOptions.ZoomFactor
+            //ExSummary:Shows how to set the default zooming of an output PDF to 1/4 of default size.
+            // Open a document with multiple paragraphs
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.ZoomBehavior = PdfZoomBehavior.ZoomFactor;
+            options.ZoomFactor = 25;
+
+            // In order to make a booklet, we will need to print this document, stack the pages
+            // in the order they come out of the printer and then fold down the middle
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ZoomBehaviour.pdf", options);
             //ExEnd
         }
     }
