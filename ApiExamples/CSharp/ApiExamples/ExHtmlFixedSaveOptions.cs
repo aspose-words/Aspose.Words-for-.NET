@@ -22,7 +22,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlFixedSaveOptions.Encoding
-            //ExFor:HtmlFixedSaveOptions.SaveFormat
             //ExSummary:Shows how to set encoding while exporting to HTML.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -31,9 +30,7 @@ namespace ApiExamples
 
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
-                Encoding = new ASCIIEncoding(),
-                SaveFormat = SaveFormat.HtmlFixed
-                
+                Encoding = new ASCIIEncoding()
             };
 
             doc.Save(ArtifactsDir + "UseEncoding.html", htmlFixedSaveOptions);
@@ -168,7 +165,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FixedPageSaveOptions.OptimizeOutput
-            //ExFor:HtmlFixedSaveOptions.OptimizeOutput
             //ExSummary:Shows how to optimize document objects while saving to html.
             Document doc = new Document(MyDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.doc");
 
@@ -223,6 +219,49 @@ namespace ApiExamples
             }
         }
 
+        //ExEnd
+
+        //ExStart
+        //ExFor:HtmlFixedSaveOptions
+        //ExFor:HtmlFixedSaveOptions.ResourceSavingCallback
+        //ExFor:HtmlFixedSaveOptions.ResourcesFolder
+        //ExFor:HtmlFixedSaveOptions.ResourcesFolderAlias
+        //ExFor:HtmlFixedSaveOptions.ShowPageBorder
+        //ExSummary:Shows how to print the URIs of linked resources created during conversion of a document to fixed-form .html.
+        [Test] //ExSkip
+        public void HtmlFixedResourceFolder()
+        {
+            // Open a document which contains images
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            HtmlFixedSaveOptions options = new HtmlFixedSaveOptions
+            {
+                SaveFormat = SaveFormat.HtmlFixed,
+                ExportEmbeddedImages = false,
+                ResourcesFolder = ArtifactsDir + "HtmlFixedResourceFolder",
+                ResourcesFolderAlias = ArtifactsDir + "HtmlFixedResourceFolderAlias",
+                ShowPageBorder = false,
+
+                ResourceSavingCallback = new ResourceUriPrinter()
+            };
+
+            doc.Save(ArtifactsDir + "HtmlFixedResourceFolder.Html", options);
+        }
+
+        /// <summary>
+        /// Counts and prints URIs of resources contained by as they are converted to fixed .Html
+        /// </summary>
+        private class ResourceUriPrinter : IResourceSavingCallback
+        {
+            void IResourceSavingCallback.ResourceSaving(ResourceSavingArgs args)
+            {
+                // If we set a folder alias in the SaveOptions object, it will be printed here
+                Console.WriteLine($"Resource #{++mSavedResourceCount} \"{args.ResourceFileName}\"");
+                Console.WriteLine("\t" + args.ResourceFileUri);
+            }
+
+            private int mSavedResourceCount;
+        }
         //ExEnd
     }
 }
