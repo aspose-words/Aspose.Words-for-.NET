@@ -2785,7 +2785,7 @@ namespace ApiExamples
 
             foreach (OdsoRecipientData data in odsoRecipientDataCollection)
             {
-                Console.WriteLine($"Osdo recipient data index #{index++}, will {(data.Active ? "" : "not ")}be imported upon mail merge.");
+                Console.WriteLine($"Odso recipient data index #{index++}, will {(data.Active ? "" : "not ")}be imported upon mail merge.");
                 Console.WriteLine($"\tColumn #{data.Column}");
                 Console.WriteLine($"\tHash code: {data.Hash}");
                 Console.WriteLine($"\tContents array length: {data.UniqueTag.Length}");
