@@ -158,9 +158,9 @@ namespace ApiExamples
             {
                 Compliance = PdfCompliance.PdfA1b,
                 ImageCompression = PdfImageCompression.Jpeg,
-                JpegQuality = 100, // Use JPEG compression at 50% quality to reduce file size.
-                ImageColorSpaceExportMode = PdfImageColorSpaceExportMode.SimpleCmyk,
-        };
+                JpegQuality = 100, // Use JPEG compression at 50% quality to reduce file size
+                ImageColorSpaceExportMode = PdfImageColorSpaceExportMode.SimpleCmyk
+            };
 
             doc.Save(ArtifactsDir + "SaveOptions.PdfImageComppression PDF_A_1_B.pdf", optionsA1B);        
             //ExEnd
@@ -331,14 +331,14 @@ namespace ApiExamples
             //ExFor:PdfSaveOptions.HeaderFooterBookmarksExportMode
             //ExFor:OutlineOptions
             //ExFor:OutlineOptions.DefaultBookmarksOutlineLevel
-            //ExSummary:Shows how bookmarks in headers/footers are exported to pdf
+            //ExSummary:Shows how bookmarks in headers/footers are exported to pdf.
             Document doc = new Document(MyDir + "PdfSaveOption.HeaderFooterBookmarksExportMode.docx");
 
-            // You can specify how bookmarks in headers/footers are exported.
+            // You can specify how bookmarks in headers/footers are exported
             // There is a several options for this:
-            // "None" - Bookmarks in headers/footers are not exported.
-            // "First" - Only bookmark in first header/footer of the section is exported.
-            // "All" - Bookmarks in all headers/footers are exported.
+            // "None" - Bookmarks in headers/footers are not exported
+            // "First" - Only bookmark in first header/footer of the section is exported
+            // "All" - Bookmarks in all headers/footers are exported
             PdfSaveOptions saveOptions = new PdfSaveOptions
             {
                 HeaderFooterBookmarksExportMode = headerFooterBookmarksExportMode,
@@ -454,7 +454,7 @@ namespace ApiExamples
             options.ZoomFactor = 25;
             options.PageMode = PdfPageMode.UseThumbs;
 
-            // When opening the .pdf with a viewer such as Asobe Acrobat Pro, the zoom level will be at 25% by default,
+            // When opening the .pdf with a viewer such as Adobe Acrobat Pro, the zoom level will be at 25% by default,
             // with thumbnails for each page to the left
             doc.Save(ArtifactsDir + "PdfSaveOptions.ZoomBehaviour.pdf", options);
             //ExEnd
