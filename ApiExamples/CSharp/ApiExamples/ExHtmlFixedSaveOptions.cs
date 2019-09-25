@@ -244,6 +244,7 @@ namespace ApiExamples
 
                 ResourceSavingCallback = new ResourceUriPrinter()
             };
+            Directory.CreateDirectory(options.ResourcesFolderAlias);
 
             doc.Save(ArtifactsDir + "HtmlFixedResourceFolder.Html", options);
         }
@@ -258,6 +259,10 @@ namespace ApiExamples
                 // If we set a folder alias in the SaveOptions object, it will be printed here
                 Console.WriteLine($"Resource #{++mSavedResourceCount} \"{args.ResourceFileName}\"");
                 Console.WriteLine("\t" + args.ResourceFileUri);
+
+                // We will also need to redirect each stream to put its resource in the alias folder
+                args.ResourceStream = new FileStream(args.ResourceFileUri, FileMode.Create);
+                args.KeepResourceStreamOpen = false;
             }
 
             private int mSavedResourceCount;
