@@ -120,6 +120,7 @@ namespace ApiExamples
             Assert.AreEqual(true, co.UseWord2002TableStyleRules);
             Assert.AreEqual(false, co.UseWord2010TableStyleRules);
 
+            // These options will become available in File > Options > Advanced > Compatibility Options in the output document
             doc.Save(ArtifactsDir + "CompatibilityOptionsTable.docx");
             //ExEnd
         }
@@ -147,6 +148,7 @@ namespace ApiExamples
             Assert.AreEqual(true, co.UseAltKinsokuLineBreakRules);
             Assert.AreEqual(false, co.UseWord97LineBreakRules);
 
+            // These options will become available in File > Options > Advanced > Compatibility Options in the output document
             doc.Save(ArtifactsDir + "CompatibilityOptionsBreaks.docx");
             //ExEnd
         }
@@ -186,6 +188,7 @@ namespace ApiExamples
             Assert.AreEqual(false, co.SuppressTopSpacing);
             Assert.AreEqual(false, co.UlTrailSpace);
 
+            // These options will become available in File > Options > Advanced > Compatibility Options in the output document
             doc.Save(ArtifactsDir + "CompatibilityOptionsSpacing.docx");
             //ExEnd
         }
@@ -211,6 +214,7 @@ namespace ApiExamples
             Assert.AreEqual(false, co.WPSpaceWidth);
             Assert.AreEqual(false, co.WrapTrailSpaces);
 
+            // These options will become available in File > Options > Advanced > Compatibility Options in the output document
             doc.Save(ArtifactsDir + "CompatibilityOptionsWordPerfect.docx");
             //ExEnd
         }
@@ -234,6 +238,7 @@ namespace ApiExamples
             Assert.AreEqual(true, co.DoNotWrapTextWithPunct);
             Assert.AreEqual(false, co.NoTabHangInd);
 
+            // These options will become available in File > Options > Advanced > Compatibility Options in the output document
             doc.Save(ArtifactsDir + "CompatibilityOptionsAlignment.docx");
             //ExEnd
         }
@@ -259,6 +264,7 @@ namespace ApiExamples
             Assert.AreEqual(false, co.ShapeLayoutLikeWW8);
             Assert.AreEqual(false, co.UICompat97To2003);
 
+            // These options will become available in File > Options > Advanced > Compatibility Options in the output document
             doc.Save(ArtifactsDir + "CompatibilityOptionsLegacy.docx");
             //ExEnd
         }
@@ -278,6 +284,7 @@ namespace ApiExamples
             Assert.AreEqual(true, co.UnderlineTabInNumList);
             Assert.AreEqual(true, co.UseNormalStyleForList);
 
+            // These options will become available in File > Options > Advanced > Compatibility Options in the output document
             doc.Save(ArtifactsDir + "CompatibilityOptionsList.docx");
             //ExEnd
         }
@@ -323,6 +330,7 @@ namespace ApiExamples
             Assert.AreEqual(false, co.UseFELayout);
             Assert.AreEqual(false, co.UsePrinterMetrics);
 
+            // These options will become available in File > Options > Advanced > Compatibility Options in the output document
             doc.Save(ArtifactsDir + "CompatibilityOptionsMisc.docx");
             //ExEnd
         }
