@@ -247,8 +247,7 @@ namespace ApiExamples
 
                 ResourceSavingCallback = new ResourceUriPrinter()
             };
-            Directory.CreateDirectory(options.ResourcesFolderAlias);
-
+            
             Directory.CreateDirectory(options.ResourcesFolderAlias);
 
             doc.Save(ArtifactsDir + "HtmlFixedResourceFolder.html", options);
