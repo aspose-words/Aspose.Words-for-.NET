@@ -22,6 +22,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlFixedSaveOptions.Encoding
+            //ExFor:HtmlFixedSaveOptions.SaveFormat
             //ExSummary:Shows how to set encoding while exporting to HTML.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -30,7 +31,9 @@ namespace ApiExamples
 
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
-                Encoding = new ASCIIEncoding()
+                Encoding = new ASCIIEncoding(),
+                SaveFormat = SaveFormat.HtmlFixed
+                
             };
 
             doc.Save(ArtifactsDir + "UseEncoding.html", htmlFixedSaveOptions);
@@ -165,6 +168,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FixedPageSaveOptions.OptimizeOutput
+            //ExFor:HtmlFixedSaveOptions.OptimizeOutput
             //ExSummary:Shows how to optimize document objects while saving to html.
             Document doc = new Document(MyDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.doc");
 
