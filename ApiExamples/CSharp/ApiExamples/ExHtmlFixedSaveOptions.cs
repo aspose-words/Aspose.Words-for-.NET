@@ -239,6 +239,9 @@ namespace ApiExamples
                 SaveFormat = SaveFormat.HtmlFixed,
                 ExportEmbeddedImages = false,
                 ResourcesFolder = ArtifactsDir + "HtmlFixedResourceFolder",
+                // INSP: Please add info about using ResourcesFolderAlias in all examples where it's needed
+                // if we use ResourcesFolderAlias in options, we need to create ResourcesFolderAlias directory and use args.ResourceStream
+                // if we did not use ResourcesFolderAlias, we don't need it
                 ResourcesFolderAlias = ArtifactsDir + "HtmlFixedResourceFolderAlias",
                 ShowPageBorder = false,
 
@@ -246,7 +249,9 @@ namespace ApiExamples
             };
             Directory.CreateDirectory(options.ResourcesFolderAlias);
 
-            doc.Save(ArtifactsDir + "HtmlFixedResourceFolder.Html", options);
+            Directory.CreateDirectory(options.ResourcesFolderAlias);
+
+            doc.Save(ArtifactsDir + "HtmlFixedResourceFolder.html", options);
         }
 
         /// <summary>

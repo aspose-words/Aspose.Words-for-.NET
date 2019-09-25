@@ -19,7 +19,7 @@ namespace ApiExamples
         //ExStart
         //ExFor:XamlFlowSaveOptions
         //ExFor:XamlFlowSaveOptions.#ctor
-        //ExFor:XamlFlowSaveOptions.#ctor(Aspose.Words.SaveFormat)
+        //ExFor:XamlFlowSaveOptions.#ctor(SaveFormat)
         //ExFor:XamlFlowSaveOptions.ImageSavingCallback
         //ExFor:XamlFlowSaveOptions.ImagesFolder
         //ExFor:XamlFlowSaveOptions.ImagesFolderAlias
