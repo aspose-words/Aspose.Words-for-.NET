@@ -2699,9 +2699,12 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "OdsoData.doc");
             
             Odso odso = doc.MailMergeSettings.Odso;
-            Assert.AreEqual(OdsoDataSourceType.Email, odso.DataSourceType);
-            Assert.AreEqual("Contacts", odso.TableName);
-            Assert.True(odso.UdlConnectString.StartsWith("Provider=Microsoft.ACE.OLEDB.12.0;User ID=Admin;Data Source="));
+            
+            Console.WriteLine($"File will connect to data source located in:\n\t\"{odso.DataSource}\"");
+            Console.WriteLine($"Source type:\n\t{odso.DataSourceType}");
+            Console.WriteLine($"Connection string:\n\t{odso.UdlConnectString}");
+            Console.WriteLine($"Table:\n\t{odso.TableName}");
+            Console.WriteLine($"Query:\n\t{doc.MailMergeSettings.Query}");
             //ExEnd
         }
 
