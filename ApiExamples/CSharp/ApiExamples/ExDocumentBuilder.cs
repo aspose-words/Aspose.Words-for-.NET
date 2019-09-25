@@ -938,7 +938,7 @@ namespace ApiExamples
             //ExFor:CellFormat.PreferredWidth
             //ExFor:PreferredWidth
             //ExFor:PreferredWidth.Auto
-            //ExFor:PreferredWidth.Equals(Aspose.Words.Tables.PreferredWidth)
+            //ExFor:PreferredWidth.Equals(PreferredWidth)
             //ExFor:PreferredWidth.Equals(System.Object)
             //ExFor:PreferredWidth.FromPoints
             //ExFor:PreferredWidth.FromPercent
