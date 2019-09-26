@@ -649,6 +649,7 @@ namespace ApiExamples
             //ExFor:DownsampleOptions.DownsampleImages
             //ExFor:DownsampleOptions.Resolution
             //ExFor:DownsampleOptions.ResolutionThreshold
+            //ExFor:PdfSaveOptions.DownsampleOptions
             //ExSummary:Shows how to change the resolution of images in output pdf documents.
             // Open a document that contains images 
             Document doc = new Document(MyDir + "Rendering.doc");
