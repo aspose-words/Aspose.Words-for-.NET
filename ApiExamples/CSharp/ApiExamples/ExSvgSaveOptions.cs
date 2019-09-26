@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.IO;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
@@ -45,9 +46,9 @@ namespace ApiExamples
         //ExFor:SvgSaveOptions.ResourcesFolder
         //ExFor:SvgSaveOptions.ResourcesFolderAlias
         //ExFor:SvgSaveOptions.SaveFormat
-        //ExSummary:Shows how to manipulate the saved file locations of linked images during when saving a document to .svg.
+        //ExSummary:Shows how to manipulate and print the URIs of linked resources created during conversion of a document to .svg.
         [Test] //ExSkip
-        public void AlternativeResourceFolder()
+        public void SvgResourceFolder()
         {
             // Open a document which contains images
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -56,29 +57,31 @@ namespace ApiExamples
             {
                 SaveFormat = SaveFormat.Svg,
                 ExportEmbeddedImages = false,
-                ResourcesFolder = ArtifactsDir + "AlternativeResourceFolder",
-                ResourcesFolderAlias = ArtifactsDir + "FolderAlias",
+                ResourcesFolder = ArtifactsDir + "SvgResourceFolder",
+                ResourcesFolderAlias = ArtifactsDir + "SvgResourceFolderAlias",
                 ShowPageBorder = false,
 
-                ResourceSavingCallback = new ImageUriPrinter()
+                ResourceSavingCallback = new ResourceUriPrinter()
             };
 
-            doc.Save(ArtifactsDir + "AlternativeResourceFolder.svg", options);
+            Directory.CreateDirectory(options.ResourcesFolderAlias);
+
+            doc.Save(ArtifactsDir + "SvgResourceFolder.svg", options);
         }
 
         /// <summary>
-        /// Counts and prints URIs of images contained by as they are converted to .svg
+        /// Counts and prints URIs of resources contained by as they are converted to .svg
         /// </summary>
-        private class ImageUriPrinter : IResourceSavingCallback
+        private class ResourceUriPrinter : IResourceSavingCallback
         {
             void IResourceSavingCallback.ResourceSaving(ResourceSavingArgs args)
             {
                 // If we set a folder alias in the SaveOptions object, it will be printed here
-                Console.WriteLine($"Image #{++mSavedImageCount} \"{args.ResourceFileName}\"");
+                Console.WriteLine($"Resource #{++mSavedResourceCount} \"{args.ResourceFileName}\"");
                 Console.WriteLine("\t" + args.ResourceFileUri);
             }
 
-            private int mSavedImageCount;
+            private int mSavedResourceCount;
         }
         //ExEnd
     }

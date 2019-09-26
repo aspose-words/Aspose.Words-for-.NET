@@ -218,7 +218,56 @@ namespace ApiExamples
                 }
             }
         }
+        //ExEnd
 
+        //ExStart
+        //ExFor:HtmlFixedSaveOptions
+        //ExFor:HtmlFixedSaveOptions.ResourceSavingCallback
+        //ExFor:HtmlFixedSaveOptions.ResourcesFolder
+        //ExFor:HtmlFixedSaveOptions.ResourcesFolderAlias
+        //ExFor:HtmlFixedSaveOptions.ShowPageBorder
+        //ExSummary:Shows how to print the URIs of linked resources created during conversion of a document to fixed-form .html.
+        [Test] //ExSkip
+        public void HtmlFixedResourceFolder()
+        {
+            // Open a document which contains images
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            HtmlFixedSaveOptions options = new HtmlFixedSaveOptions
+            {
+                SaveFormat = SaveFormat.HtmlFixed,
+                ExportEmbeddedImages = false,
+                ResourcesFolder = ArtifactsDir + "HtmlFixedResourceFolder",
+                ResourcesFolderAlias = ArtifactsDir + "HtmlFixedResourceFolderAlias",
+                ShowPageBorder = false,
+                ResourceSavingCallback = new ResourceUriPrinter()
+            };
+
+            // A folder specified by ResourcesFolderAlias will contain the resources instead of ResourcesFolder
+            // We must ensure the folder exists before the streams can put their resources into it
+            Directory.CreateDirectory(options.ResourcesFolderAlias);
+
+            doc.Save(ArtifactsDir + "HtmlFixedResourceFolder.html", options);
+        }
+
+        /// <summary>
+        /// Counts and prints URIs of resources contained by as they are converted to fixed .Html
+        /// </summary>
+        private class ResourceUriPrinter : IResourceSavingCallback
+        {
+            void IResourceSavingCallback.ResourceSaving(ResourceSavingArgs args)
+            {
+                // If we set a folder alias in the SaveOptions object, it will be printed here
+                Console.WriteLine($"Resource #{++mSavedResourceCount} \"{args.ResourceFileName}\"");
+                Console.WriteLine("\t" + args.ResourceFileUri);
+
+                // If we specified a ResourcesFolderAlias we will also need to redirect each stream to put its resource in that folder
+                args.ResourceStream = new FileStream(args.ResourceFileUri, FileMode.Create);
+                args.KeepResourceStreamOpen = false;
+            }
+
+            private int mSavedResourceCount;
+        }
         //ExEnd
     }
 }
