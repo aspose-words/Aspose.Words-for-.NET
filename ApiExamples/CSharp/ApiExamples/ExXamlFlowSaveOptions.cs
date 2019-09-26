@@ -39,6 +39,8 @@ namespace ApiExamples
                 ImageSavingCallback = new ImageUriPrinter(ArtifactsDir + "XamlFlowImageFolderAlias")
             };
 
+            // A folder specified by ImagesFolderAlias will contain the images instead of ImagesFolder
+            // We must ensure the folder exists before the streams can put their images into it
             Directory.CreateDirectory(options.ImagesFolderAlias);
 
             doc.Save(ArtifactsDir + "XamlFlowImageFolder.xaml", options);
@@ -58,7 +60,7 @@ namespace ApiExamples
             {
                 Console.WriteLine($"Image #{++mSavedImageCount} \"{args.ImageFileName}\"");
 
-                // We will also need to redirect each stream to put its resource in the alias folder
+                // If we specified a ImagesFolderAlias we will also need to redirect each stream to put its image in that folder
                 args.ImageStream = new FileStream($"{mImagesFolderAlias}/{args.ImageFileName}", FileMode.Create);
                 args.KeepImageStreamOpen = false;
             }

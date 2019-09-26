@@ -218,7 +218,6 @@ namespace ApiExamples
                 }
             }
         }
-
         //ExEnd
 
         //ExStart
@@ -239,15 +238,13 @@ namespace ApiExamples
                 SaveFormat = SaveFormat.HtmlFixed,
                 ExportEmbeddedImages = false,
                 ResourcesFolder = ArtifactsDir + "HtmlFixedResourceFolder",
-                // INSP: Please add info about using ResourcesFolderAlias in all examples where it's needed
-                // if we use ResourcesFolderAlias in options, we need to create ResourcesFolderAlias directory and use args.ResourceStream
-                // if we did not use ResourcesFolderAlias, we don't need it
                 ResourcesFolderAlias = ArtifactsDir + "HtmlFixedResourceFolderAlias",
                 ShowPageBorder = false,
-
                 ResourceSavingCallback = new ResourceUriPrinter()
             };
-            
+
+            // A folder specified by ResourcesFolderAlias will contain the resources instead of ResourcesFolder
+            // We must ensure the folder exists before the streams can put their resources into it
             Directory.CreateDirectory(options.ResourcesFolderAlias);
 
             doc.Save(ArtifactsDir + "HtmlFixedResourceFolder.html", options);
@@ -264,7 +261,7 @@ namespace ApiExamples
                 Console.WriteLine($"Resource #{++mSavedResourceCount} \"{args.ResourceFileName}\"");
                 Console.WriteLine("\t" + args.ResourceFileUri);
 
-                // We will also need to redirect each stream to put its resource in the alias folder
+                // If we specified a ResourcesFolderAlias we will also need to redirect each stream to put its resource in that folder
                 args.ResourceStream = new FileStream(args.ResourceFileUri, FileMode.Create);
                 args.KeepResourceStreamOpen = false;
             }

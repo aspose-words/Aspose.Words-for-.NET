@@ -37,6 +37,8 @@ namespace ApiExamples
                 ResourceSavingCallback = new ResourceUriPrinter()
             };
 
+            // A folder specified by ResourcesFolderAlias will contain the resources instead of ResourcesFolder
+            // We must ensure the folder exists before the streams can put their resources into it
             Directory.CreateDirectory(options.ResourcesFolderAlias);
 
             doc.Save(ArtifactsDir + "XamlFixedResourceFolder.xaml", options);
@@ -53,7 +55,7 @@ namespace ApiExamples
                 Console.WriteLine($"Resource #{++mSavedResourceCount} \"{args.ResourceFileName}\"");
                 Console.WriteLine("\t" + args.ResourceFileUri);
 
-                // We will also need to redirect each stream to put its resource in the alias folder
+                // If we specified a ResourcesFolderAlias we will also need to redirect each stream to put its resource in that folder
                 args.ResourceStream = new FileStream(args.ResourceFileUri, FileMode.Create);
                 args.KeepResourceStreamOpen = false;
             }
