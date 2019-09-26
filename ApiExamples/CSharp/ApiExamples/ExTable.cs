@@ -27,50 +27,66 @@ namespace ApiExamples
         public void DisplayContentOfTables()
         {
             //ExStart
-            //ExFor:Table
-            //ExFor:Row.Cells
-            //ExFor:Table.Rows
             //ExFor:Cell
-            //ExFor:Row
-            //ExFor:RowCollection
             //ExFor:CellCollection
-            //ExFor:NodeCollection.IndexOf(Node)
+            //ExFor:CellCollection.Item(System.Int32)
+            //ExFor:CellCollection.ToArray
+            //ExFor:Row
+            //ExFor:Row.Cells
+            //ExFor:RowCollection
+            //ExFor:RowCollection.Item(System.Int32)
+            //ExFor:RowCollection.ToArray
+            //ExFor:Table
+            //ExFor:Table.Rows
+            //ExFor:TableCollection.Item(System.Int32)
+            //ExFor:TableCollection.ToArray
             //ExSummary:Shows how to iterate through all tables in the document and display the content from each cell.
             Document doc = new Document(MyDir + "Table.Document.doc");
 
             // Here we get all tables from the Document node. You can do this for any other composite node
             // which can contain block level nodes. For example you can retrieve tables from header or from a cell
             // containing another table (nested tables).
-            NodeCollection tables = doc.GetChildNodes(NodeType.Table, true);
+            TableCollection tables = doc.FirstSection.Body.Tables;
+
+            // We can make a new array to clone all of the tables in the collection
+            Assert.AreEqual(2, tables.ToArray().Length);
 
             // Iterate through all tables in the document
-            foreach (Table table in tables.OfType<Table>())
+            for (int i = 0; i < tables.Count; i++)
             {
                 // Get the index of the table node as contained in the parent node of the table
-                int tableIndex = table.ParentNode.ChildNodes.IndexOf(table);
-                Console.WriteLine("Start of Table {0}", tableIndex);
+                Console.WriteLine($"Start of Table {i}");
+
+                RowCollection rows = tables[i].Rows;
+
+                // RowCollections can be cloned into arrays
+                Assert.AreEqual(rows, rows.ToArray());
+                Assert.AreNotSame(rows, rows.ToArray());
 
                 // Iterate through all rows in the table
-                foreach (Row row in table.Rows.OfType<Row>())
+                for (int j = 0; j < rows.Count; j++)
                 {
-                    int rowIndex = table.Rows.IndexOf(row);
-                    Console.WriteLine("\tStart of Row {0}", rowIndex);
+                    Console.WriteLine($"\tStart of Row {j}");
+
+                    CellCollection cells = rows[j].Cells;
+
+                    // RowCollections can also be cloned into arrays 
+                    Assert.AreEqual(cells, cells.ToArray());
+                    Assert.AreNotSame(cells, cells.ToArray());
 
                     // Iterate through all cells in the row
-                    foreach (Cell cell in row.Cells.OfType<Cell>())
+                    for (int k = 0; k < cells.Count; k++)
                     {
-                        int cellIndex = row.Cells.IndexOf(cell);
                         // Get the plain text content of this cell.
-                        String cellText = cell.ToString(SaveFormat.Text).Trim();
+                        String cellText = cells[k].ToString(SaveFormat.Text).Trim();
                         // Print the content of the cell.
-                        Console.WriteLine("\t\tContents of Cell:{0} = \"{1}\"", cellIndex, cellText);
+                        Console.WriteLine($"\t\tContents of Cell:{k} = \"{cellText}\"");
                     }
 
-                    Console.WriteLine("\tEnd of Row {0}", rowIndex);
+                    Console.WriteLine($"\tEnd of Row {j}");
                 }
 
-                Console.WriteLine("End of Table {0}", tableIndex);
-                Console.WriteLine();
+                Console.WriteLine($"End of Table {i}\n");
             }
             //ExEnd
 
@@ -326,6 +342,7 @@ namespace ApiExamples
             //ExFor:Table.Alignment
             //ExFor:TableAlignment
             //ExFor:Table.ClearBorders
+            //ExFor:Table.ClearShading
             //ExFor:Table.SetBorder
             //ExFor:TextureIndex
             //ExFor:Table.SetShading
@@ -337,8 +354,9 @@ namespace ApiExamples
             // Align the table to the center of the page.
             table.Alignment = TableAlignment.Center;
 
-            // Clear any existing borders from the table.
+            // Clear any existing borders and shading from the table.
             table.ClearBorders();
+            table.ClearShading();
 
             // Set a green border around the table but not inside. 
             table.SetBorder(BorderType.Left, LineStyle.Single, 1.5, Color.Green, true);
@@ -454,6 +472,12 @@ namespace ApiExamples
         [Test]
         public void GetDistance()
         {
+            //ExStart
+            //ExFor:Table.DistanceBottom
+            //ExFor:Table.DistanceLeft
+            //ExFor:Table.DistanceRight
+            //ExFor:Table.DistanceTop
+            //ExSummary:Shows the minimum distance operations between table boundaries and text.
             Document doc = new Document(MyDir + "Table.Distance.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -462,6 +486,7 @@ namespace ApiExamples
             Assert.AreEqual(26.35d, table.DistanceBottom);
             Assert.AreEqual(9.05d, table.DistanceLeft);
             Assert.AreEqual(22.7d, table.DistanceRight);
+            //ExEnd
         }
 
         [Test]
@@ -806,6 +831,7 @@ namespace ApiExamples
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             //ExStart
             //ExFor:NodeCollection.IndexOf
+            //ExFor:NodeCollection.IndexOf(Node)
             //ExId:IndexOfTable
             //ExSummary:Retrieves the index of a table in the document.
             NodeCollection allTables = doc.GetChildNodes(NodeType.Table, true);
@@ -1205,6 +1231,10 @@ namespace ApiExamples
         [Test]
         public void CheckDefaultValuesForFloatingTableProperties()
         {
+            //ExStart
+            //ExFor:Table.TextWrapping
+            //ExFor:TextWrapping
+            //ExSummary:Shows how to work with table text wrapping.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1220,6 +1250,7 @@ namespace ApiExamples
                 Assert.AreEqual(0, table.AbsoluteVerticalDistance);
                 Assert.AreEqual(true, table.AllowOverlap);
             }
+            //ExEnd
         }
 
         [Test]
@@ -1256,6 +1287,10 @@ namespace ApiExamples
         public void TableStyleCreation()
         {
             //ExStart
+            //ExFor:Table.Bidi
+            //ExFor:Table.CellSpacing
+            //ExFor:Table.Style
+            //ExFor:Table.StyleName
             //ExFor:TableStyle
             //ExFor:TableStyle.AllowBreakAcrossPages
             //ExFor:TableStyle.Bidi
@@ -1293,7 +1328,12 @@ namespace ApiExamples
             tableStyle.Borders.LineStyle = LineStyle.DotDash;
 
             table.Style = tableStyle;
- 
+
+            // Some Table attributes are linked to style variables
+            Assert.AreEqual(true, table.Bidi);
+            Assert.AreEqual(5.0, table.CellSpacing);
+            Assert.AreEqual("MyTableStyle1", table.StyleName);
+
             doc.Save(ArtifactsDir + "Table.TableStyleCreation.docx");
             //ExEnd
         }
@@ -1347,6 +1387,7 @@ namespace ApiExamples
             //ExFor:ConditionalStyleCollection.TopLeftCell
             //ExFor:ConditionalStyleCollection.TopRightCell
             //ExFor:ConditionalStyleType
+            //ExFor:TableStyle.ConditionalStyles
             //ExSummary:Shows how to work with certain area styles of a table.
             Document doc = new Document(MyDir + "Table.ConditionalStyles.docx");
 
