@@ -176,7 +176,7 @@ namespace ApiExamples
                 // Open the document. Note the Document constructor detects HTML format automatically.
                 // Pass the URI of the base folder so any images with relative URIs in the HTML document can be found.
                 LoadOptions loadOptions = new LoadOptions();
-                loadOptions.BaseUri = MyDir;
+                loadOptions.BaseUri = ImageDir;
 
                 doc = new Document(stream, loadOptions);
             }
@@ -649,6 +649,7 @@ namespace ApiExamples
             //ExFor:DownsampleOptions.DownsampleImages
             //ExFor:DownsampleOptions.Resolution
             //ExFor:DownsampleOptions.ResolutionThreshold
+            //ExFor:PdfSaveOptions.DownsampleOptions
             //ExSummary:Shows how to change the resolution of images in output pdf documents.
             // Open a document that contains images 
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -2640,6 +2641,13 @@ namespace ApiExamples
             //ExFor:Document.MailMergeSettings
             //ExFor:MailMergeDataType
             //ExFor:MailMergeMainDocumentType
+            //ExFor:Odso
+            //ExFor:Odso.Clone
+            //ExFor:Odso.ColumnDelimiter
+            //ExFor:Odso.DataSource
+            //ExFor:Odso.DataSourceType
+            //ExFor:Odso.FirstRowContainsColumnNames
+            //ExFor:OdsoDataSourceType
             //ExSummary:Shows how to execute a mail merge with MailMergeSettings.
             // We'll create a simple document that will act as a destination for mail merge data
             Document doc = new Document();
@@ -2669,13 +2677,122 @@ namespace ApiExamples
 
             // Office Data Source Object settings
             Odso odso = mailMergeSettings.Odso;
+            odso.DataSource = ArtifactsDir + "Document.Lines.txt";
             odso.DataSourceType = OdsoDataSourceType.Text;
             odso.ColumnDelimiter = '|';
-            odso.DataSource = ArtifactsDir + "Document.Lines.txt";
             odso.FirstRowContainsColumnNames = true;
+
+            // ODSO objects can also be cloned
+            Assert.AreNotSame(odso, odso.Clone());
 
             // The mail merge will be performed when this document is opened 
             doc.Save(ArtifactsDir + "Document.MailMergeSettings.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void OdsoEmail()
+        {
+            //ExStart
+            //ExFor:Odso.TableName
+            //ExFor:Odso.UdlConnectString
+            //ExSummary:Shows how to execute a mail merge while connecting to an external data source.
+            Document doc = new Document(MyDir + "OdsoData.doc");
+            
+            Odso odso = doc.MailMergeSettings.Odso;
+            
+            Console.WriteLine($"File will connect to data source located in:\n\t\"{odso.DataSource}\"");
+            Console.WriteLine($"Source type:\n\t{odso.DataSourceType}");
+            Console.WriteLine($"Connection string:\n\t{odso.UdlConnectString}");
+            Console.WriteLine($"Table:\n\t{odso.TableName}");
+            Console.WriteLine($"Query:\n\t{doc.MailMergeSettings.Query}");
+            //ExEnd
+        }
+
+        [Test]
+        public void OdsoFieldMapDataCollection()
+        {
+            //ExStart
+            //ExFor:Odso.FieldMapDatas
+            //ExFor:OdsoFieldMapData
+            //ExFor:OdsoFieldMapData.Clone
+            //ExFor:OdsoFieldMapData.Column
+            //ExFor:OdsoFieldMapData.MappedName
+            //ExFor:OdsoFieldMapData.Name
+            //ExFor:OdsoFieldMapData.Type
+            //ExFor:OdsoFieldMapDataCollection
+            //ExFor:OdsoFieldMapDataCollection.Add(OdsoFieldMapData)
+            //ExFor:OdsoFieldMapDataCollection.Clear
+            //ExFor:OdsoFieldMapDataCollection.Count
+            //ExFor:OdsoFieldMapDataCollection.GetEnumerator
+            //ExFor:OdsoFieldMapDataCollection.Item(Int32)
+            //ExFor:OdsoFieldMapDataCollection.RemoveAt(Int32)
+            //ExFor:OdsoFieldMappingType
+            //ExSummary:Shows how to access the collection of data that maps data source columns to merge fields.
+            Document doc = new Document(MyDir + "OdsoData.doc");
+
+            // This collection defines how columns from an external data source will be mapped to predefined MERGEFIELD,
+            // ADDRESSBLOCK and GREETINGLINE fields during a mail merge
+            OdsoFieldMapDataCollection fieldMapDataCollection = doc.MailMergeSettings.Odso.FieldMapDatas;
+
+            Assert.AreEqual(30, fieldMapDataCollection.Count);
+            int index = 0;
+
+            foreach (OdsoFieldMapData data in fieldMapDataCollection)
+            {
+                Console.WriteLine($"Field map data index #{index++}, type \"{data.Type}\":");
+
+                if (data.Type != OdsoFieldMappingType.Null)
+                {
+                    Console.WriteLine(
+                        $"\tColumn named {data.Name}, number {data.Column} in the data source mapped to merge field named {data.MappedName}.");
+                }
+                else
+                {
+                    Console.WriteLine("\tNo valid column to field mapping data present.");
+                }
+
+                Assert.AreNotEqual(data, data.Clone());
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void OdsoRecipientDataCollection()
+        {
+            //ExStart
+            //ExFor:Odso.RecipientDatas
+            //ExFor:OdsoRecipientData
+            //ExFor:OdsoRecipientData.Active
+            //ExFor:OdsoRecipientData.Clone
+            //ExFor:OdsoRecipientData.Column
+            //ExFor:OdsoRecipientData.Hash
+            //ExFor:OdsoRecipientData.UniqueTag
+            //ExFor:OdsoRecipientDataCollection
+            //ExFor:OdsoRecipientDataCollection.Add(OdsoRecipientData)
+            //ExFor:OdsoRecipientDataCollection.Clear
+            //ExFor:OdsoRecipientDataCollection.Count
+            //ExFor:OdsoRecipientDataCollection.GetEnumerator
+            //ExFor:OdsoRecipientDataCollection.Item(Int32)
+            //ExFor:OdsoRecipientDataCollection.RemoveAt(Int32)
+            //ExSummary:Shows how to access the collection of data that designates merge data source records to be excluded from a merge.
+            Document doc = new Document(MyDir + "OdsoData.doc");
+
+            // Records in this collection that do not have the "Active" flag set to true will be excluded from the mail merge
+            OdsoRecipientDataCollection odsoRecipientDataCollection = doc.MailMergeSettings.Odso.RecipientDatas;
+
+            Assert.AreEqual(70, odsoRecipientDataCollection.Count);
+            int index = 0;
+
+            foreach (OdsoRecipientData data in odsoRecipientDataCollection)
+            {
+                Console.WriteLine($"Odso recipient data index #{index++}, will {(data.Active ? "" : "not ")}be imported upon mail merge.");
+                Console.WriteLine($"\tColumn #{data.Column}");
+                Console.WriteLine($"\tHash code: {data.Hash}");
+                Console.WriteLine($"\tContents array length: {data.UniqueTag.Length}");
+
+                Assert.AreNotEqual(data, data.Clone());
+            }
             //ExEnd
         }
 
@@ -3374,7 +3491,6 @@ namespace ApiExamples
             Assert.IsTrue(classModule.SourceCode.Contains("MsgBox \"Class test\""));
         }
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
         public void OpenType()
         {
@@ -3397,6 +3513,5 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "OpenType.Document.pdf");
             //ExEnd
         }
-#endif
     }
 }

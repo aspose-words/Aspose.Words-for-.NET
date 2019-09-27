@@ -142,6 +142,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:BorderCollection.Horizontal
             //ExFor:BorderCollection.Vertical
+            //ExFor:Cell.LastParagraph
             //ExSummary:Shows the difference between the Horizontal and Vertical properties of BorderCollection.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -192,7 +193,7 @@ namespace ApiExamples
 
                 row.AppendChild(new Cell(doc));
                 row.LastCell.AppendChild(new Paragraph(doc));
-                row.LastCell.FirstParagraph.AppendChild(new Run(doc, "Vertical border to the left."));
+                row.LastCell.LastParagraph.AppendChild(new Run(doc, "Vertical border to the left."));
                 table.AppendChild(row);
             }
 
