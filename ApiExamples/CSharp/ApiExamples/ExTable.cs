@@ -830,7 +830,6 @@ namespace ApiExamples
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             //ExStart
-            //ExFor:NodeCollection.IndexOf
             //ExFor:NodeCollection.IndexOf(Node)
             //ExId:IndexOfTable
             //ExSummary:Retrieves the index of a table in the document.
