@@ -566,7 +566,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PdfSaveOptions.PreblendImages
-            //ExSummary:Shows how to preblend images with transparent backgrounds.
+            //ExSummary:Shows how to preblend images with transparent backgrounds (.NetStandard 2.0).
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
