@@ -44,7 +44,7 @@ namespace ApiExamples
             StructuredDocumentTag sdTagRepeatingSection = (StructuredDocumentTag) sdTags[0];
             Assert.AreEqual(SdtType.RepeatingSection, sdTagRepeatingSection.SdtType);
 
-            StructuredDocumentTag sdTagRichText = (StructuredDocumentTag) sdTags[1];
+            StructuredDocumentTag sdTagRichText = (StructuredDocumentTag) sdTags[2];
             Assert.AreEqual(SdtType.RichText, sdTagRichText.SdtType);
         }
 

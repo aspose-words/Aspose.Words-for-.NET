@@ -18,7 +18,10 @@ using SaveFormat = Aspose.Words.SaveFormat;
 using SaveOptions = Aspose.Words.Saving.SaveOptions;
 using WarningInfo = Aspose.Words.WarningInfo;
 using WarningType = Aspose.Words.WarningType;
-#if !(__MOBILE__ || MAC)
+#if NETSTANDARD2_0
+using SkiaSharp;   
+#endif
+#if  !(__MOBILE__ || MAC)
 using Aspose.Pdf.Facades;
 using Aspose.Pdf.Annotations;
 #endif
@@ -229,10 +232,10 @@ namespace ApiExamples
         }
 
         [Test]
-        [TestCase(@"https://www.google.com/search?q= aspose", @"https://www.google.com/search?q=%20aspose", true)]
-        [TestCase(@"https://www.google.com/search?q=%20aspose", @"https://www.google.com/search?q=%20aspose", true)]
-        [TestCase(@"https://www.google.com/search?q= aspose", @"https://www.google.com/search?q= aspose", false)]
-        [TestCase(@"https://www.google.com/search?q=%20aspose", @"https://www.google.com/search?q=%20aspose", false)]
+        [TestCase(@"https://www.google.com/search?q= aspose", "app.launchURL(\"https://www.google.com/search?q=%20aspose\", true);", true)]
+        [TestCase(@"https://www.google.com/search?q=%20aspose", "app.launchURL(\"https://www.google.com/search?q=%20aspose\", true);", true)]
+        [TestCase(@"https://www.google.com/search?q= aspose", "app.launchURL(\"https://www.google.com/search?q= aspose\", true);", false)]
+        [TestCase(@"https://www.google.com/search?q=%20aspose", "app.launchURL(\"https://www.google.com/search?q=%20aspose\", true);", false)]
         public void EscapeUri(string uri, string result, bool isEscaped)
         {
             //ExStart
@@ -259,8 +262,8 @@ namespace ApiExamples
             // Get the first link annotation
             LinkAnnotation linkAnnot = (LinkAnnotation) page.Annotations[1];
 
-            GoToURIAction action = (GoToURIAction) linkAnnot.Action;
-            string uriText = action.URI;
+            JavascriptAction action = (JavascriptAction) linkAnnot.Action;
+            string uriText = action.Script;
 
             Assert.AreEqual(result, uriText);
 #endif
@@ -536,6 +539,7 @@ namespace ApiExamples
             //ExEnd
         }
 
+#if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
         public void PreblendImages()
         {
@@ -556,5 +560,29 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
             //ExEnd
         }
+#else
+        [Test]
+        public void PreblendImagesNetStandard2()
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.PreblendImages
+            //ExSummary:Shows how to preblend images with transparent backgrounds (.NetStandard 2.0).
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            using (SKBitmap image = SKBitmap.Decode(ImageDir + "TransparentBG.png"))
+            {
+                builder.InsertImage(image);
+            }
+
+            // Create a PdfSaveOptions object and setting this flag may change the quality and size of the output .pdf
+            // because of the way some images are rendered
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.PreblendImages = true;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
+            //ExEnd
+        }
+#endif
     }
 }
