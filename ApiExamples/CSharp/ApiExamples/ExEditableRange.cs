@@ -100,8 +100,8 @@ namespace ApiExamples
             Assert.AreEqual(editableRange2.Id, edRange2End.EditableRangeStart.EditableRange.Id);
 
             // If the editable range was found in a document, it will probably have something in the single user property
-            // But if we make one programmatically, the property is null by default
-            Assert.AreEqual(null, editableRange1.SingleUser);
+            // But if we make one programmatically, the property is empty by default
+            Assert.AreEqual(string.Empty, editableRange1.SingleUser);
 
             // We have to set it ourselves if we want the ranges to belong to somebody
             editableRange1.SingleUser = "john.doe@myoffice.com";

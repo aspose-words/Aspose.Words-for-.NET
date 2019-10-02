@@ -29,7 +29,6 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
-using Aspose.Words.Shaping.HarfBuzz;
 using Aspose.Words.Tables;
 using Aspose.Words.Themes;
 using NUnit.Framework;
@@ -774,10 +773,10 @@ namespace ApiExamples
                 Assert.True(args.IsSubsettingNeeded);
 
                 // We can designate where each font will be saved by either specifying a file name, or creating a new stream
-                args.FontFileName = args.OriginalFileName.Split('\\').Last();
+                args.FontFileName = args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last();
 
                 args.FontStream = 
-                    new FileStream(ArtifactsDir + args.OriginalFileName.Split('\\').Last(), FileMode.Create);
+                    new FileStream(ArtifactsDir + args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last(), FileMode.Create);
                 Assert.False(args.KeepFontStreamOpen);
 
                 // We can access the source document from here also
@@ -3491,27 +3490,27 @@ namespace ApiExamples
             Assert.IsTrue(classModule.SourceCode.Contains("MsgBox \"Class test\""));
         }
 
-        [Test]
-        public void OpenType()
-        {
-            //ExStart
-            //ExFor:LayoutOptions.TextShaperFactory
-            //ExSummary:Shows how to support OpenType features using HarfBuzz text shaping engine.
-            // Open a document
-            Document doc = new Document(MyDir + "OpenType.Document.docx");
+        //[Test]
+        //public void OpenType()
+        //{
+        //    //ExStart
+        //    //ExFor:LayoutOptions.TextShaperFactory
+        //    //ExSummary:Shows how to support OpenType features using HarfBuzz text shaping engine.
+        //    // Open a document
+        //    Document doc = new Document(MyDir + "OpenType.Document.docx");
 
-            // Please note that text shaping is only performed when exporting to PDF or XPS formats now
+        //    // Please note that text shaping is only performed when exporting to PDF or XPS formats now
 
-            // Aspose.Words is capable of using text shaper objects provided externally.
-            // A text shaper represents a font and computes shaping information for a text.
-            // A document typically refers to multiple fonts thus a text shaper factory is necessary.
-            // When text shaper factory is set, layout starts to use OpenType features.
-            // An Instance property returns static BasicTextShaperCache object wrapping HarfBuzzTextShaperFactory
-            doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
+        //    // Aspose.Words is capable of using text shaper objects provided externally.
+        //    // A text shaper represents a font and computes shaping information for a text.
+        //    // A document typically refers to multiple fonts thus a text shaper factory is necessary.
+        //    // When text shaper factory is set, layout starts to use OpenType features.
+        //    // An Instance property returns static BasicTextShaperCache object wrapping HarfBuzzTextShaperFactory
+        //    doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
 
-            // Render the document to PDF format
-            doc.Save(ArtifactsDir + "OpenType.Document.pdf");
-            //ExEnd
-        }
+        //    // Render the document to PDF format
+        //    doc.Save(ArtifactsDir + "OpenType.Document.pdf");
+        //    //ExEnd
+        //}
     }
 }
