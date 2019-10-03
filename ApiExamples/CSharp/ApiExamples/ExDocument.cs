@@ -33,6 +33,9 @@ using Aspose.Words.Tables;
 using Aspose.Words.Themes;
 using NUnit.Framework;
 using CompareOptions = Aspose.Words.CompareOptions;
+#if !(__MOBILE__ || MAC)
+using Aspose.Words.Shaping.HarfBuzz;
+#endif
 #if !(NETSTANDARD2_0 || __MOBILE__)
 using Org.BouncyCastle.Pkcs;
 #endif
@@ -3490,27 +3493,29 @@ namespace ApiExamples
             Assert.IsTrue(classModule.SourceCode.Contains("MsgBox \"Class test\""));
         }
 
-        //[Test]
-        //public void OpenType()
-        //{
-        //    //ExStart
-        //    //ExFor:LayoutOptions.TextShaperFactory
-        //    //ExSummary:Shows how to support OpenType features using HarfBuzz text shaping engine.
-        //    // Open a document
-        //    Document doc = new Document(MyDir + "OpenType.Document.docx");
+#if !(__MOBILE__ || MAC)
+        [Test]
+        public void OpenType()
+        {
+            //ExStart
+            //ExFor:LayoutOptions.TextShaperFactory
+            //ExSummary:Shows how to support OpenType features using HarfBuzz text shaping engine.
+            // Open a document
+            Document doc = new Document(MyDir + "OpenType.Document.docx");
 
-        //    // Please note that text shaping is only performed when exporting to PDF or XPS formats now
+            // Please note that text shaping is only performed when exporting to PDF or XPS formats now
 
-        //    // Aspose.Words is capable of using text shaper objects provided externally.
-        //    // A text shaper represents a font and computes shaping information for a text.
-        //    // A document typically refers to multiple fonts thus a text shaper factory is necessary.
-        //    // When text shaper factory is set, layout starts to use OpenType features.
-        //    // An Instance property returns static BasicTextShaperCache object wrapping HarfBuzzTextShaperFactory
-        //    doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
+            // Aspose.Words is capable of using text shaper objects provided externally.
+            // A text shaper represents a font and computes shaping information for a text.
+            // A document typically refers to multiple fonts thus a text shaper factory is necessary.
+            // When text shaper factory is set, layout starts to use OpenType features.
+            // An Instance property returns static BasicTextShaperCache object wrapping HarfBuzzTextShaperFactory
+            doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
 
-        //    // Render the document to PDF format
-        //    doc.Save(ArtifactsDir + "OpenType.Document.pdf");
-        //    //ExEnd
-        //}
+            // Render the document to PDF format
+            doc.Save(ArtifactsDir + "OpenType.Document.pdf");
+            //ExEnd
+        }
+#endif
     }
 }
