@@ -18,6 +18,7 @@ namespace ApiExamples
         public void RegisterDictionaryEx()
         {
             //ExStart
+            //ExFor:Hyphenation
             //ExFor:Hyphenation.RegisterDictionary(String, Stream)
             //ExFor:Hyphenation.RegisterDictionary(String, String)
             //ExSummary:Shows how to open and register a dictionary from a file.
