@@ -259,6 +259,19 @@ namespace ApiExamples
             {
                 // If we set a folder alias in the SaveOptions object, it will be printed here
                 Console.WriteLine($"Resource #{++mSavedResourceCount} \"{args.ResourceFileName}\"");
+
+                string extension = Path.GetExtension(args.ResourceFileName);
+                switch (extension)
+                {
+                    case ".ttf":
+                    case ".woff":
+                    {
+                        // By default 'ResourceFileUri' used system folder for fonts
+                        // To avoid problems across platforms you must explicitly specify the path for the fonts
+                        args.ResourceFileUri = ArtifactsDir + Path.DirectorySeparatorChar + args.ResourceFileName;
+                        break;
+                    }
+                }
                 Console.WriteLine("\t" + args.ResourceFileUri);
 
                 // If we specified a ResourcesFolderAlias we will also need to redirect each stream to put its resource in that folder
