@@ -83,8 +83,8 @@
     <Reference Include="Aspose.Words, Version=19.10.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
       <HintPath>..\packages\Aspose.Words.19.10.0\lib\net40\Aspose.Words.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Words.Shaping.HarfBuzz, Version=19.9.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.Shaping.HarfBuzz.19.10.1\lib\net40\Aspose.Words.Shaping.HarfBuzz.dll</HintPath>
+    <Reference Include="Aspose.Words.Shaping.HarfBuzz, Version=19.10.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.Shaping.HarfBuzz.19.10.0\lib\net40\Aspose.Words.Shaping.HarfBuzz.dll</HintPath>
     </Reference>
     <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
@@ -219,7 +219,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.12.0\build\NUnit.props'))" />
-    <Error Condition="!Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.19.10.1\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Aspose.Words.Shaping.HarfBuzz.19.10.1\build\net20\Aspose.Words.Shaping.HarfBuzz.targets'))" />
+    <Error Condition="!Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.19.10.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Aspose.Words.Shaping.HarfBuzz.19.10.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets'))" />
   </Target>
-  <Import Project="..\packages\Aspose.Words.Shaping.HarfBuzz.19.10.1\build\net20\Aspose.Words.Shaping.HarfBuzz.targets" Condition="Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.19.10.1\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" />
+  <Import Project="..\packages\Aspose.Words.Shaping.HarfBuzz.19.10.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets" Condition="Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.19.10.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" />
 </Project>
