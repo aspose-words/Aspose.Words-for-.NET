@@ -8,6 +8,7 @@
 using System;
 using Aspose.Words;
 using Aspose.Words.Saving;
+using Aspose.Words.Settings;
 using NUnit.Framework;
 using Document = Aspose.Words.Document;
 using IWarningCallback = Aspose.Words.IWarningCallback;
@@ -16,7 +17,12 @@ using SaveFormat = Aspose.Words.SaveFormat;
 using SaveOptions = Aspose.Words.Saving.SaveOptions;
 using WarningInfo = Aspose.Words.WarningInfo;
 using WarningType = Aspose.Words.WarningType;
-#if !(__MOBILE__ || MAC)
+#if NETSTANDARD2_0 || __MOBILE__
+using SkiaSharp;
+#else 
+using Image = System.Drawing.Image;
+#endif
+#if  !(__MOBILE__ || MAC)
 using Aspose.Pdf.Facades;
 using Aspose.Pdf.Annotations;
 #endif
@@ -32,6 +38,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:OutlineOptions.CreateMissingOutlineLevels
             //ExFor:ParagraphFormat.IsHeading
+            //ExFor:PdfSaveOptions.OutlineOptions
+            //ExFor:PdfSaveOptions.SaveFormat
             //ExSummary:Shows how to create missing outline levels saving the document in PDF
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -74,28 +82,12 @@ namespace ApiExamples
 #endif
         }
 
-        //Note: Test doesn't contain validation result.
-        //For validation result, you can add some shapes to the document and assert, that the DML shapes are render correctly
-        [Test]
-        public void DrawingMl()
-        {
-            //ExStart
-            //ExFor:DmlRenderingMode
-            //ExFor:SaveOptions.DmlRenderingMode
-            //ExSummary:Shows how to define rendering for DML shapes
-            Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
-
-            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { DmlRenderingMode = DmlRenderingMode.DrawingML };
-
-            doc.Save(ArtifactsDir + "DrawingMl.pdf", pdfSaveOptions);
-            //ExEnd
-        }
-
         [Test]
         [Category("SkipMono")]
         public void WithoutUpdateFields()
         {
             //ExStart
+            //ExFor:PdfSaveOptions.Clone
             //ExFor:SaveOptions.UpdateFields
             //ExSummary:Shows how to update fields before saving into a PDF document.
             Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
@@ -104,6 +96,9 @@ namespace ApiExamples
             {
                 UpdateFields = false
             };
+
+            // PdfSaveOptions objects can be cloned
+            Assert.AreNotSame(pdfSaveOptions, pdfSaveOptions.Clone());
 
             doc.Save(ArtifactsDir + "UpdateFields_False.pdf", pdfSaveOptions);
             //ExEnd
@@ -148,9 +143,11 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfSaveOptions.Compliance
             //ExFor:PdfSaveOptions.ImageCompression
+            //ExFor:PdfSaveOptions.ImageColorSpaceExportMode
             //ExFor:PdfSaveOptions.JpegQuality
             //ExFor:PdfImageCompression
             //ExFor:PdfCompliance
+            //ExFor:PdfImageColorSpaceExportMode
             //ExSummary:Shows how to save images to PDF using JPEG encoding to decrease file size.
             Document doc = new Document(MyDir + "SaveOptions.PdfImageCompression.rtf");
             
@@ -161,12 +158,15 @@ namespace ApiExamples
             };
             doc.Save(ArtifactsDir + "SaveOptions.PdfImageCompression.pdf", options);
 
-            PdfSaveOptions optionsA1B = new PdfSaveOptions();
-            optionsA1B.Compliance = PdfCompliance.PdfA1b;
-            optionsA1B.ImageCompression = PdfImageCompression.Jpeg;
-            optionsA1B.JpegQuality = 100; // Use JPEG compression at 50% quality to reduce file size.
+            PdfSaveOptions optionsA1B = new PdfSaveOptions
+            {
+                Compliance = PdfCompliance.PdfA1b,
+                ImageCompression = PdfImageCompression.Jpeg,
+                JpegQuality = 100, // Use JPEG compression at 50% quality to reduce file size
+                ImageColorSpaceExportMode = PdfImageColorSpaceExportMode.SimpleCmyk
+            };
 
-            doc.Save(ArtifactsDir + "SaveOptions.PdfImageComppression PDF_A_1_B.pdf", optionsA1B);
+            doc.Save(ArtifactsDir + "SaveOptions.PdfImageComppression PDF_A_1_B.pdf", optionsA1B);        
             //ExEnd
 
             PdfSaveOptions optionsA1A = new PdfSaveOptions
@@ -233,14 +233,15 @@ namespace ApiExamples
         }
 
         [Test]
-        [TestCase(@"https://www.google.com/search?q= aspose", @"https://www.google.com/search?q=%20aspose", true)]
-        [TestCase(@"https://www.google.com/search?q=%20aspose", @"https://www.google.com/search?q=%20aspose", true)]
-        [TestCase(@"https://www.google.com/search?q= aspose", @"https://www.google.com/search?q= aspose", false)]
-        [TestCase(@"https://www.google.com/search?q=%20aspose", @"https://www.google.com/search?q=%20aspose", false)]
+        [TestCase(@"https://www.google.com/search?q= aspose", "app.launchURL(\"https://www.google.com/search?q=%20aspose\", true);", true)]
+        [TestCase(@"https://www.google.com/search?q=%20aspose", "app.launchURL(\"https://www.google.com/search?q=%20aspose\", true);", true)]
+        [TestCase(@"https://www.google.com/search?q= aspose", "app.launchURL(\"https://www.google.com/search?q= aspose\", true);", false)]
+        [TestCase(@"https://www.google.com/search?q=%20aspose", "app.launchURL(\"https://www.google.com/search?q=%20aspose\", true);", false)]
         public void EscapeUri(string uri, string result, bool isEscaped)
         {
             //ExStart
             //ExFor:PdfSaveOptions.EscapeUri
+            //ExFor:PdfSaveOptions.OpenHyperlinksInNewWindow
             //ExSummary: Shows how to escape hyperlinks or not in the document.
             DocumentBuilder builder = new DocumentBuilder();
             builder.InsertHyperlink("Testlink", uri, false);
@@ -248,6 +249,7 @@ namespace ApiExamples
             // Set this property to false if you are sure that hyperlinks in document's model are already escaped
             PdfSaveOptions options = new PdfSaveOptions();
             options.EscapeUri = isEscaped;
+            options.OpenHyperlinksInNewWindow = true;
 
             builder.Document.Save(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf", options);
             //ExEnd
@@ -261,8 +263,8 @@ namespace ApiExamples
             // Get the first link annotation
             LinkAnnotation linkAnnot = (LinkAnnotation) page.Annotations[1];
 
-            GoToURIAction action = (GoToURIAction) linkAnnot.Action;
-            string uriText = action.URI;
+            JavascriptAction action = (JavascriptAction) linkAnnot.Action;
+            string uriText = action.Script;
 
             Assert.AreEqual(result, uriText);
 #endif
@@ -330,16 +332,17 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HeaderFooterBookmarksExportMode
+            //ExFor:PdfSaveOptions.HeaderFooterBookmarksExportMode
             //ExFor:OutlineOptions
             //ExFor:OutlineOptions.DefaultBookmarksOutlineLevel
-            //ExSummary:Shows how bookmarks in headers/footers are exported to pdf
+            //ExSummary:Shows how bookmarks in headers/footers are exported to pdf.
             Document doc = new Document(MyDir + "PdfSaveOption.HeaderFooterBookmarksExportMode.docx");
 
-            // You can specify how bookmarks in headers/footers are exported.
+            // You can specify how bookmarks in headers/footers are exported
             // There is a several options for this:
-            // "None" - Bookmarks in headers/footers are not exported.
-            // "First" - Only bookmark in first header/footer of the section is exported.
-            // "All" - Bookmarks in all headers/footers are exported.
+            // "None" - Bookmarks in headers/footers are not exported
+            // "First" - Only bookmark in first header/footer of the section is exported
+            // "All" - Bookmarks in all headers/footers are exported
             PdfSaveOptions saveOptions = new PdfSaveOptions
             {
                 HeaderFooterBookmarksExportMode = headerFooterBookmarksExportMode,
@@ -412,5 +415,175 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf", saveOptions);
             //ExEnd
         }
+
+        [Test]
+        public void SaveAsPdfBookFold()
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.UseBookFoldPrintingSettings
+            //ExSummary:Shows how to save a document to the PDF format in the form of a book fold.
+            // Open a document with multiple paragraphs
+            Document doc = new Document(MyDir + "Paragraphs.docx");
+
+            // Configure both page setup and PdfSaveOptions to create a book fold
+            foreach (Section s in doc.Sections)
+            {
+                s.PageSetup.MultiplePages = MultiplePagesType.BookFoldPrinting;
+            }
+
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.UseBookFoldPrintingSettings = true;
+
+            // In order to make a booklet, we will need to print this document, stack the pages
+            // in the order they come out of the printer and then fold down the middle
+            doc.Save(ArtifactsDir + "PdfSaveOptions.SaveAsPdfBookFold.pdf", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void ZoomBehaviour()
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.PageMode
+            //ExFor:PdfSaveOptions.ZoomBehavior
+            //ExFor:PdfSaveOptions.ZoomFactor
+            //ExFor:PdfPageMode
+            //ExFor:PdfZoomBehavior
+            //ExSummary:Shows how to set the default zooming of an output PDF to 1/4 of default size.
+            // Open a document with multiple paragraphs
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.ZoomBehavior = PdfZoomBehavior.ZoomFactor;
+            options.ZoomFactor = 25;
+            options.PageMode = PdfPageMode.UseThumbs;
+
+            // When opening the .pdf with a viewer such as Adobe Acrobat Pro, the zoom level will be at 25% by default,
+            // with thumbnails for each page to the left
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ZoomBehaviour.pdf", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void NoteHyperlinks()
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.CreateNoteHyperlinks
+            //ExSummary:Shows how to make footnotes and endnotes work like hyperlinks.
+            // Open a document with footnotes/endnotes
+            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+
+            // Creating a PdfSaveOptions instance with this flag set will convert footnote/endnote number symbols in the text
+            // into hyperlinks pointing to the footnotes, and the actual footnotes/endnotes at the end of pages into links to their
+            // referenced body text
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.CreateNoteHyperlinks = true;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void CustomPropertiesExport()
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.CustomPropertiesExport
+            //ExSummary:Shows how to export custom properties while saving to .pdf.
+            Document doc = new Document();
+
+            // Add a custom document property that doesn't use the name of some built in properties
+            doc.CustomDocumentProperties.Add("Company", "My value");
+            
+            // Configure the PdfSaveOptions like this will display the properties
+            // in the "Document Properties" menu of Adobe Acrobat Pro
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.CustomPropertiesExport = PdfCustomPropertiesExport.Standard;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void DrawingML()
+        {
+            //ExStart
+            //ExFor:DmlRenderingMode
+            //ExFor:PdfSaveOptions.DmlEffectsRenderingMode
+            //ExFor:SaveOptions.DmlRenderingMode
+            //ExSummary:Shows how to configure DrawingML rendering quality with PdfSaveOptions.
+            Document doc = new Document(MyDir + "DrawingMLEffects.docx");
+
+            // Creating a new PdfSaveOptions object and setting its DmlEffectsRenderingMode to "None" will
+            // strip the shapes of all their shading effects in the output pdf
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.DmlEffectsRenderingMode = DmlEffectsRenderingMode.None;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.DrawingML.pdf", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void ExportDocumentStructure()
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.ExportDocumentStructure
+            //ExSummary:Shows how to convert a .docx to .pdf while preserving the document structure.
+            Document doc = new Document(MyDir + "Paragraphs.docx");
+
+            // Create a PdfSaveOptions object and configure it to preserve the logical structure that's in the input document
+            // The file size will be increased and the structure will be visible in the "Content" navigation pane
+            // of Adobe Acrobat Pro, while editing the .pdf
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.ExportDocumentStructure = true;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ExportDocumentStructure.pdf", options);
+            //ExEnd
+        }
+
+#if !(NETSTANDARD2_0 || __MOBILE__)
+        [Test]
+        public void PreblendImages()
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.PreblendImages
+            //ExSummary:Shows how to preblend images with transparent backgrounds.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Image img = Image.FromFile(ImageDir + "TransparentBG.png");
+            builder.InsertImage(img);
+
+            // Create a PdfSaveOptions object and setting this flag may change the quality and size of the output .pdf
+            // because of the way some images are rendered
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.PreblendImages = true;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
+            //ExEnd
+        }
+#else
+        [Test]
+        public void PreblendImagesNetStandard2()
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.PreblendImages
+            //ExSummary:Shows how to preblend images with transparent backgrounds (.NetStandard 2.0).
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            using (SKBitmap image = SKBitmap.Decode(ImageDir + "TransparentBG.png"))
+            {
+                builder.InsertImage(image);
+            }
+
+            // Create a PdfSaveOptions object and setting this flag may change the quality and size of the output .pdf
+            // because of the way some images are rendered
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.PreblendImages = true;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
+            //ExEnd
+        }
+#endif
     }
 }

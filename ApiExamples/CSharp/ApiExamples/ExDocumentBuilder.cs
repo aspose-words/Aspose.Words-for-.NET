@@ -714,32 +714,38 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.CellFormat
             //ExFor:DocumentBuilder.RowFormat
             //ExFor:CellFormat
+            //ExFor:CellFormat.FitText
             //ExFor:CellFormat.Width
             //ExFor:CellFormat.VerticalAlignment
             //ExFor:CellFormat.Shading
-            //ExFor.CellFormat.Orientation
+            //ExFor:CellFormat.Orientation
+            //ExFor:CellFormat.WrapText
             //ExFor:RowFormat
+            //ExFor:RowFormat.Borders
+            //ExFor:RowFormat.ClearFormatting
             //ExFor:RowFormat.HeightRule
             //ExFor:RowFormat.Height
-            //ExFor:RowFormat.Borders
             //ExFor:HeightRule
             //ExFor:Shading.BackgroundPatternColor
             //ExFor:Shading.ClearFormatting
             //ExSummary:Shows how to build a nice bordered table.
             DocumentBuilder builder = new DocumentBuilder();
 
-            // Start building a table.
+            // Start building a table
             builder.StartTable();
-
+            
             // Set the appropriate paragraph, cell, and row formatting. The formatting properties are preserved
-            // until they are explicitly modified so there's no need to set them for each row or cell. 
-
+            // until they are explicitly modified so there's no need to set them for each row or cell
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
 
-            builder.CellFormat.Width = 300;
+            builder.CellFormat.ClearFormatting();
+            builder.CellFormat.Width = 150;
             builder.CellFormat.VerticalAlignment = CellVerticalAlignment.Center;
             builder.CellFormat.Shading.BackgroundPatternColor = Color.GreenYellow;
+            builder.CellFormat.WrapText = false;
+            builder.CellFormat.FitText = true;
 
+            builder.RowFormat.ClearFormatting();
             builder.RowFormat.HeightRule = HeightRule.Exactly;
             builder.RowFormat.Height = 50;
             builder.RowFormat.Borders.LineStyle = LineStyle.Engrave3D;
@@ -753,7 +759,7 @@ namespace ApiExamples
 
             builder.EndRow();
 
-            // Remove the shading (clear background).
+            // Remove the shading (clear background)
             builder.CellFormat.Shading.ClearFormatting();
 
             builder.InsertCell();
@@ -766,7 +772,7 @@ namespace ApiExamples
 
             builder.InsertCell();
 
-            // Make the row height bigger so that a vertically oriented text could fit into cells.
+            // Make the row height bigger so that a vertically oriented text could fit into cells
             builder.RowFormat.Height = 150;
             builder.CellFormat.Orientation = TextOrientation.Upward;
             builder.Write("Row 3, Col 1");
@@ -779,7 +785,7 @@ namespace ApiExamples
 
             builder.EndTable();
 
-            builder.Document.Save(ArtifactsDir + "DocumentBuilder.InsertTable.doc");
+            builder.Document.Save(ArtifactsDir + "DocumentBuilder.InsertTable.docx");
             //ExEnd
         }
 
@@ -931,9 +937,13 @@ namespace ApiExamples
             //ExStart
             //ExFor:CellFormat.PreferredWidth
             //ExFor:PreferredWidth
+            //ExFor:PreferredWidth.Auto
+            //ExFor:PreferredWidth.Equals(PreferredWidth)
+            //ExFor:PreferredWidth.Equals(System.Object)
             //ExFor:PreferredWidth.FromPoints
             //ExFor:PreferredWidth.FromPercent
-            //ExFor:PreferredWidth.Auto
+            //ExFor:PreferredWidth.GetHashCode
+            //ExFor:PreferredWidth.ToString
             //ExId:CellPreferredWidths
             //ExSummary:Shows how to set the different preferred width settings.
             Document doc = new Document();
@@ -948,11 +958,20 @@ namespace ApiExamples
             builder.CellFormat.Shading.BackgroundPatternColor = Color.LightYellow;
             builder.Writeln("Cell at 40 points width");
 
+            PreferredWidth width = builder.CellFormat.PreferredWidth;
+            Console.WriteLine($"Width \"{width.GetHashCode()}\": {width.ToString()}");
+
             // Insert a relative (percent) sized cell.
             builder.InsertCell();
             builder.CellFormat.PreferredWidth = PreferredWidth.FromPercent(20);
             builder.CellFormat.Shading.BackgroundPatternColor = Color.LightBlue;
             builder.Writeln("Cell at 20% width");
+
+            // Each cell had its own PreferredWidth
+            Assert.False(builder.CellFormat.PreferredWidth.Equals(width));
+
+            width = builder.CellFormat.PreferredWidth;
+            Console.WriteLine($"Width \"{width.GetHashCode()}\": {width.ToString()}");
 
             // Insert a auto sized cell.
             builder.InsertCell();
@@ -962,7 +981,7 @@ namespace ApiExamples
                 "Cell automatically sized. The size of this cell is calculated from the table preferred width.");
             builder.Writeln("In this case the cell will fill up the rest of the available space.");
 
-            doc.Save(ArtifactsDir + "Table.CellPreferredWidths.doc");
+            doc.Save(ArtifactsDir + "Table.CellPreferredWidths.docx");
             //ExEnd
 
             // Verify the correct settings were applied.

@@ -558,7 +558,7 @@ namespace ApiExamples
             Assert.AreEqual(true, oleFormat.OleIcon);
 
             // Get the name or the source file and verify that the whole file is linked
-            Assert.True(oleFormat.SourceFullName.EndsWith(@"Images\visio2010.vsd"));
+            Assert.True(oleFormat.SourceFullName.EndsWith(@"Images" + Path.DirectorySeparatorChar + "visio2010.vsd"));
             Assert.AreEqual("", oleFormat.SourceItem);
 
             Assert.AreEqual("Packager", oleFormat.IconCaption);
