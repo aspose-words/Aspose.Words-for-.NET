@@ -26,7 +26,6 @@ namespace ApiExamples
             //ExFor:Document.CustomDocumentProperties
             //ExFor:BuiltInDocumentProperties
             //ExFor:CustomDocumentProperties
-            //ExId:DocumentProperties
             //ExSummary:Enumerates through all built-in and custom properties in a document.
             Document doc = new Document(MyDir + "Properties.doc");
 
@@ -468,7 +467,6 @@ namespace ApiExamples
             //ExFor:Properties.DocumentPropertyCollection.IndexOf(System.String)
             //ExFor:Properties.DocumentPropertyCollection.RemoveAt(System.Int32)
             //ExFor:Properties.DocumentPropertyCollection.Remove
-            //ExId:AddCustomProperties
             //ExSummary:Shows how to add custom properties to a document.
             // Create a blank document and get its custom property collection
             Document doc = new Document();

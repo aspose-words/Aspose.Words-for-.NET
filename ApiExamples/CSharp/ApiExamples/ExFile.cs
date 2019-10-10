@@ -118,7 +118,6 @@ namespace ApiExamples
             //ExFor:FileFormatInfo.LoadFormat
             //ExFor:FileFormatInfo.IsEncrypted
             //ExFor:FileFormatInfo.HasDigitalSignature
-            //ExId:DetectFileFormat
             //ExSummary:Shows how to use the FileFormatUtil class to detect the document format and other features of the document.
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.doc");
             Console.WriteLine("The document format is: " + FileFormatUtil.LoadFormatToExtension(info.LoadFormat));
@@ -195,7 +194,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:FileFormatUtil.DetectFileFormat(String)
             //ExFor:FileFormatInfo.HasDigitalSignature
-            //ExId:DetectDocumentSignatures
             //ExSummary:Shows how to check a document for digital signatures before loading it into a Document object.
             // The path to the document which is to be processed.
             String filePath = MyDir + "Document.Signed.docx";
@@ -220,7 +218,6 @@ namespace ApiExamples
         //ExFor:ImageData.ImageType
         //ExFor:ImageData.Save(String)
         //ExFor:CompositeNode.GetChildNodes(NodeType, bool)
-        //ExId:ExtractImagesToFiles
         //ExSummary:Shows how to extract images from a document and save them as files.
         [Test] //ExSkip
         public void ExtractImagesToFiles()

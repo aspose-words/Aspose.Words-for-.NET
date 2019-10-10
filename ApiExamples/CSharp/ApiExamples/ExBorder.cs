@@ -7,6 +7,7 @@
 
 using System.Drawing;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 
@@ -85,12 +86,13 @@ namespace ApiExamples
         public void EqualityCountingAndVisibility()
         {
             //ExStart
-            //ExFor:Border.Equals(System.Object)
+            //ExFor:Border.Equals(Object)
+            //ExFor:Border.Equals(Border)
             //ExFor:Border.GetHashCode
             //ExFor:Border.IsVisible
             //ExFor:BorderCollection.Count
             //ExFor:BorderCollection.Equals(BorderCollection)
-            //ExFor:BorderCollection.Item(System.Int32)
+            //ExFor:BorderCollection.Item(Int32)
             //ExSummary:Shows the equality of BorderCollections as well counting, visibility of their elements.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

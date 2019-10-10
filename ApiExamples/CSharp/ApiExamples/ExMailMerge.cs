@@ -32,7 +32,6 @@ namespace ApiExamples
             //ExFor:MailMerge.Execute(String[], Object[])
             //ExFor:ContentDisposition
             //ExFor:Document.Save(HttpResponse,String,ContentDisposition,SaveOptions)
-            //ExId:MailMergeArray
             //ExSummary:Performs a simple insertion of data into merge fields and sends the document to the browser inline.
             // Open an existing document.
             Document doc = new Document(MyDir + "MailMerge.ExecuteArray.doc");
@@ -728,7 +727,6 @@ namespace ApiExamples
             Document doc = new Document();
             //ExStart
             //ExFor:MailMerge.GetFieldNames
-            //ExId:MailMergeGetFieldNames
             //ExSummary:Shows how to get names of all merge fields in a document.
             String[] fieldNames = doc.MailMerge.GetFieldNames();
             //ExEnd
@@ -740,7 +738,6 @@ namespace ApiExamples
             Document doc = new Document();
             //ExStart
             //ExFor:MailMerge.DeleteFields
-            //ExId:MailMergeDeleteFields
             //ExSummary:Shows how to delete all merge fields from a document without executing mail merge.
             doc.MailMerge.DeleteFields();
             //ExEnd
@@ -753,7 +750,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:MailMerge.CleanupOptions
             //ExFor:MailMergeCleanupOptions
-            //ExId:MailMergeRemoveContainingFields
             //ExSummary:Shows how to instruct the mail merge engine to remove any containing fields from around a merge field during mail merge.
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveContainingFields;
             //ExEnd
@@ -766,7 +762,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:MailMerge.CleanupOptions
             //ExFor:MailMergeCleanupOptions
-            //ExId:MailMergeRemoveUnusedFields
             //ExSummary:Shows how to automatically remove unmerged merge fields during mail merge.
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveUnusedFields;
             //ExEnd
@@ -779,7 +774,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:MailMerge.CleanupOptions
             //ExFor:MailMergeCleanupOptions
-            //ExId:MailMergeRemoveEmptyParagraphs
             //ExSummary:Shows how to make sure empty paragraphs that result from merging fields with no data are removed from the document.
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveEmptyParagraphs;
             //ExEnd

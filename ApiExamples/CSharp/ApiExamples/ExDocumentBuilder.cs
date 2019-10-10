@@ -36,7 +36,6 @@ namespace ApiExamples
             //ExFor:Font.Color
             //ExFor:Font.Underline
             //ExFor:DocumentBuilder.#ctor
-            //ExId:DocumentBuilderInsertText
             //ExSummary:Inserts formatted text using DocumentBuilder.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -65,7 +64,6 @@ namespace ApiExamples
             //ExFor:PageSetup.DifferentFirstPageHeaderFooter
             //ExFor:PageSetup.OddAndEvenPagesHeaderFooter
             //ExFor:BreakType
-            //ExId:DocumentBuilderMoveToHeaderFooter
             //ExSummary:Creates headers and footers in a document using DocumentBuilder.
             // Create a blank document.
             Document doc = new Document();
@@ -101,7 +99,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.InsertField(String)
             //ExFor:DocumentBuilder.MoveToMergeField(String, Boolean, Boolean)
-            //ExId:DocumentBuilderInsertField
             //ExSummary:Shows how to insert merge fields and move between them.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -240,16 +237,12 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderAndSave()
         {
-            //ExStart
-            //ExId:DocumentBuilderAndSave
-            //ExSummary:Shows how to create build a document using a document builder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Writeln("Hello World!");
 
             doc.Save(ArtifactsDir + "DocumentBuilderAndSave.docx");
-            //ExEnd
         }
 
         [Test]
@@ -261,7 +254,6 @@ namespace ApiExamples
             //ExFor:Font.Color
             //ExFor:Font.Underline
             //ExFor:Underline
-            //ExId:DocumentBuilderInsertHyperlink
             //ExSummary:Inserts a hyperlink into a document using DocumentBuilder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -401,7 +393,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder
             //ExFor:DocumentBuilder.InsertHtml(String)
-            //ExId:DocumentBuilderInsertHtml
             //ExSummary:Inserts HTML into a document. The formatting specified in the HTML is applied.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -655,7 +646,6 @@ namespace ApiExamples
             //ExFor:ParagraphFormat.StyleIdentifier
             //ExFor:DocumentBuilder.InsertBreak
             //ExFor:BreakType
-            //ExId:InsertTableOfContents
             //ExSummary:Demonstrates how to insert a Table of contents (TOC) into a document using heading styles as entries.
             // Use a blank document
             Document doc = new Document();
@@ -798,7 +788,6 @@ namespace ApiExamples
             //ExFor:TableStyleOptions
             //ExFor:Table.AutoFit
             //ExFor:AutoFitBehavior
-            //ExId:InsertTableWithTableStyle
             //ExSummary:Shows how to build a new table with a table style applied.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -859,7 +848,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:RowFormat.HeadingFormat
-            //ExId:InsertTableWithHeadingFormat
             //ExSummary:Shows how to build a table which include heading rows that repeat on subsequent pages. 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -904,7 +892,6 @@ namespace ApiExamples
             //ExFor:Table.PreferredWidth
             //ExFor:PreferredWidth.FromPercent
             //ExFor:PreferredWidth
-            //ExId:TablePreferredWidth
             //ExSummary:Shows how to set a table to auto fit to 50% of the page width.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -944,7 +931,6 @@ namespace ApiExamples
             //ExFor:PreferredWidth.FromPercent
             //ExFor:PreferredWidth.GetHashCode
             //ExFor:PreferredWidth.ToString
-            //ExId:CellPreferredWidths
             //ExSummary:Shows how to set the different preferred width settings.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -993,9 +979,6 @@ namespace ApiExamples
         [Test]
         public void InsertTableFromHtml()
         {
-            //ExStart
-            //ExId:InsertTableFromHtml
-            //ExSummary:Shows how to insert a table in a document from a String containing HTML tags.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1005,7 +988,6 @@ namespace ApiExamples
                                "<tr>" + "<td>Row 2, Cell 2</td>" + "<td>Row 2, Cell 2</td>" + "</tr>" + "</table>");
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertTableFromHtml.doc");
-            //ExEnd
 
             // Verify the table was constructed properly.
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count);
@@ -1018,7 +1000,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Cell.FirstParagraph
-            //ExId:BuildNestedTableUsingDocumentBuilder
             //ExSummary:Shows how to insert a nested table using DocumentBuilder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1061,7 +1042,6 @@ namespace ApiExamples
             //ExFor:DocumentBuilder
             //ExFor:DocumentBuilder.Write
             //ExFor:DocumentBuilder.InsertCell
-            //ExId:BuildSimpleTable
             //ExSummary:Shows how to create a simple table using DocumentBuilder with default formatting.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1112,7 +1092,6 @@ namespace ApiExamples
             //ExFor:Shading.BackgroundPatternColor
             //ExFor:DocumentBuilder.ParagraphFormat
             //ExFor:DocumentBuilder.Font
-            //ExId:BuildFormattedTable
             //ExSummary:Shows how to create a formatted table using DocumentBuilder
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1207,7 +1186,6 @@ namespace ApiExamples
             //ExFor:BorderCollection.Right
             //ExFor:BorderCollection.Top
             //ExFor:BorderCollection.Bottom
-            //ExId:TableBordersAndShading
             //ExSummary:Shows how to format table and cell with different borders and shadings
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1320,27 +1298,19 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderCtor()
         {
-            //ExStart
-            //ExId:DocumentBuilderCtor
-            //ExSummary:Shows how to create a simple document using a document builder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Write("Hello World!");
-            //ExEnd
         }
 
         [Test]
         public void DocumentBuilderCursorPosition()
         {
-            //ExStart
-            //ExId:DocumentBuilderCursorPosition
-            //ExSummary:Shows how to access the current node in a document builder.
             Document doc = new Document(MyDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Node curNode = builder.CurrentNode;
             Paragraph curParagraph = builder.CurrentParagraph;
-            //ExEnd
         }
 
         [Test]
@@ -1349,7 +1319,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:Story.LastParagraph
             //ExFor:DocumentBuilder.MoveTo(Node)
-            //ExId:DocumentBuilderMoveToNode
             //ExSummary:Shows how to move a cursor position to a specified node.
             Document doc = new Document(MyDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1361,9 +1330,6 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderMoveToDocumentStartEnd()
         {
-            //ExStart
-            //ExId:DocumentBuilderMoveToDocumentStartEnd
-            //ExSummary:Shows how to move a cursor position to the beginning or end of a document.
             Document doc = new Document(MyDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1372,22 +1338,17 @@ namespace ApiExamples
 
             builder.MoveToDocumentStart();
             builder.Writeln("This is the beginning of the document.");
-            //ExEnd
         }
 
         [Test]
         public void DocumentBuilderMoveToSection()
         {
-            //ExStart
-            //ExId:DocumentBuilderMoveToSection
-            //ExSummary:Shows how to move a cursor position to the specified section.
             Document doc = new Document(MyDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Parameters are 0-index. Moves to third section.
             builder.MoveToSection(2);
             builder.Writeln("This is the 3rd section.");
-            //ExEnd
         }
 
         [Test]
@@ -1395,7 +1356,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.MoveToParagraph
-            //ExId:DocumentBuilderMoveToParagraph
             //ExSummary:Shows how to move a cursor position to the specified paragraph.
             Document doc = new Document(MyDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1411,7 +1371,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.MoveToCell
-            //ExId:DocumentBuilderMoveToTableCell
             //ExSummary:Shows how to move a cursor position to the specified table cell.
             Document doc = new Document(MyDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1425,15 +1384,11 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderMoveToBookmark()
         {
-            //ExStart
-            //ExId:DocumentBuilderMoveToBookmark
-            //ExSummary:Shows how to move a cursor position to a bookmark.
             Document doc = new Document(MyDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveToBookmark("CoolBookmark");
             builder.Writeln("This is a very cool bookmark.");
-            //ExEnd
         }
 
         [Test]
@@ -1441,7 +1396,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.MoveToBookmark(String, Boolean, Boolean)
-            //ExId:DocumentBuilderMoveToBookmarkEnd
             //ExSummary:Shows how to move a cursor position to just after the bookmark end.
             Document doc = new Document(MyDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1454,15 +1408,11 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderMoveToMergeField()
         {
-            //ExStart
-            //ExId:DocumentBuilderMoveToMergeField
-            //ExSummary:Shows how to move the cursor to a position just beyond the specified merge field.
             Document doc = new Document(MyDir + "DocumentBuilder.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveToMergeField("NiceMergeField");
             builder.Writeln("This is a very nice merge field.");
-            //ExEnd
         }
 
         [Test]
@@ -1476,7 +1426,6 @@ namespace ApiExamples
             //ExFor:ParagraphFormat.AddSpaceBetweenFarEastAndAlpha
             //ExFor:ParagraphFormat.AddSpaceBetweenFarEastAndDigit
             //ExFor:Paragraph.IsEndOfDocument
-            //ExId:DocumentBuilderInsertParagraph
             //ExSummary:Shows how to insert a paragraph into the document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1524,7 +1473,6 @@ namespace ApiExamples
             //ExFor:TextOrientation
             //ExFor:Table.AutoFit
             //ExFor:AutoFitBehavior
-            //ExId:DocumentBuilderBuildTable
             //ExSummary:Shows how to build a formatted table that contains 2 rows and 2 columns.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1588,9 +1536,6 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderInsertBreak()
         {
-            //ExStart
-            //ExId:DocumentBuilderInsertBreak
-            //ExSummary:Shows how to insert page breaks into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1601,20 +1546,15 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
 
             builder.Writeln("This is page 3.");
-            //ExEnd
         }
 
         [Test]
         public void DocumentBuilderInsertInlineImage()
         {
-            //ExStart
-            //ExId:DocumentBuilderInsertInlineImage
-            //ExSummary:Shows how to insert an inline image at the cursor position into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertImage(ImageDir + "Watermark.png");
-            //ExEnd
         }
 
         [Test]
@@ -1622,7 +1562,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertImage(String, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExId:DocumentBuilderInsertFloatingImage
             //ExSummary:Shows how to insert a floating image from a file or URL.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1656,7 +1595,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertImage(String, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExId:DocumentBuilderInsertFloatingImageSourceSize
             //ExSummary:Shows how to insert a floating image from a file or URL and retain the original image size in the document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1672,16 +1610,12 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderInsertBookmark()
         {
-            //ExStart
-            //ExId:DocumentBuilderInsertBookmark
-            //ExSummary:Shows how to insert a bookmark into a document using a document builder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.StartBookmark("FineBookmark");
             builder.Writeln("This is just a fine bookmark.");
             builder.EndBookmark("FineBookmark");
-            //ExEnd
         }
 
         [Test]
@@ -1689,7 +1623,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertTextInput
-            //ExId:DocumentBuilderInsertTextInputFormField
             //ExSummary:Shows how to insert a text input form field into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1703,7 +1636,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertComboBox
-            //ExId:DocumentBuilderInsertComboBoxFormField
             //ExSummary:Shows how to insert a combobox form field into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1716,9 +1648,6 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderInsertToc()
         {
-            //ExStart
-            //ExId:DocumentBuilderInsertTOC
-            //ExSummary:Shows how to insert a Table of Contents field into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1728,7 +1657,6 @@ namespace ApiExamples
             // The newly inserted table of contents will be initially empty.
             // It needs to be populated by updating the fields in the document.
             doc.UpdateFields();
-            //ExEnd
         }
 
         [Test]
@@ -1823,9 +1751,6 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderSetFontFormatting()
         {
-            //ExStart
-            //ExId:DocumentBuilderSetFontFormatting
-            //ExSummary:Shows how to set font formatting.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1841,7 +1766,6 @@ namespace ApiExamples
 
             // Output formatted text
             builder.Writeln("I'm a very nice formatted String.");
-            //ExEnd
         }
 
         [Test]
@@ -1850,7 +1774,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:ParagraphFormat.RightIndent
             //ExFor:ParagraphFormat.LeftIndent
-            //ExId:DocumentBuilderSetParagraphFormatting
             //ExSummary:Shows how to set paragraph formatting.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1882,7 +1805,6 @@ namespace ApiExamples
             //ExFor:CellFormat.BottomPadding
             //ExFor:DocumentBuilder.StartTable
             //ExFor:DocumentBuilder.EndTable
-            //ExId:DocumentBuilderSetCellFormatting
             //ExSummary:Shows how to create a table that contains a single formatted cell.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1916,7 +1838,6 @@ namespace ApiExamples
             //ExFor:Table.RightPadding
             //ExFor:Table.TopPadding
             //ExFor:Table.BottomPadding
-            //ExId:DocumentBuilderSetRowFormatting
             //ExSummary:Shows how to create a table that contains a single cell and apply row formatting.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1944,9 +1865,6 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderSetListFormatting()
         {
-            //ExStart
-            //ExId:DocumentBuilderSetListFormatting
-            //ExSummary:Shows how to build a multilevel list.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1974,15 +1892,11 @@ namespace ApiExamples
             builder.Writeln("Item 3");
 
             builder.ListFormat.RemoveNumbers();
-            //ExEnd
         }
 
         [Test]
         public void DocumentBuilderSetSectionFormatting()
         {
-            //ExStart
-            //ExId:DocumentBuilderSetSectionFormatting
-            //ExSummary:Shows how to set such properties as page size and orientation for the current section.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1990,7 +1904,6 @@ namespace ApiExamples
             builder.PageSetup.Orientation = Orientation.Landscape;
             builder.PageSetup.LeftMargin = 50;
             builder.PageSetup.PaperSize = PaperSize.Paper10x14;
-            //ExEnd
         }
 
         [Test]
@@ -2029,9 +1942,6 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderApplyParagraphStyle()
         {
-            //ExStart
-            //ExId:DocumentBuilderApplyParagraphStyle
-            //ExSummary:Shows how to apply a paragraph style.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -2039,7 +1949,6 @@ namespace ApiExamples
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Title;
 
             builder.Write("Hello");
-            //ExEnd
         }
 
         [Test]
@@ -2053,7 +1962,6 @@ namespace ApiExamples
             //ExFor:Shading.Texture
             //ExFor:Shading.BackgroundPatternColor
             //ExFor:Shading.ForegroundPatternColor
-            //ExId:DocumentBuilderApplyBordersAndShading
             //ExSummary:Shows how to apply borders and shading to a paragraph.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
