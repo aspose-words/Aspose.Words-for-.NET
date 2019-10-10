@@ -14,6 +14,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
             ReadVbaMacros(dataDir);
+            ModifyVbaMacros(dataDir);
         }
 
         public static void ReadVbaMacros(string dataDir)
