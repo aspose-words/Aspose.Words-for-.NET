@@ -409,7 +409,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Category("SkipTearDown")]
         public void CreatingCustomXml()
         {
             //ExStart
@@ -442,7 +441,7 @@ namespace ApiExamples
             CustomXmlPart xmlPart = doc.CustomXmlParts.Add(xmlPartId, xmlPartContent);
 
             // The data we entered resides in these variables
-            Assert.AreEqual(xmlPartContent.ToCharArray(), xmlPart.Data);
+            Assert.AreEqual(Encoding.ASCII.GetBytes(xmlPartContent), xmlPart.Data);
             Assert.AreEqual(xmlPartId, xmlPart.Id);
 
             // XML parts can be referenced by collection index or GUID
@@ -591,7 +590,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:XmlMapping.StoreItemId
             //ExSummary:Shows how to get special id of your xml part.
-            Document doc = new Document(ArtifactsDir + "SDT.CustomXml.docx");
+            Document doc = new Document(MyDir + "SDT.CustomXml.docx");
 
             StructuredDocumentTag sdt = (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
             Console.WriteLine("The Id of your custom xml part is: " + sdt.XmlMapping.StoreItemId);

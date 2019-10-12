@@ -11,15 +11,16 @@ using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
 using Document = Aspose.Words.Document;
-using Image = System.Drawing.Image;
 using IWarningCallback = Aspose.Words.IWarningCallback;
 using PdfSaveOptions = Aspose.Words.Saving.PdfSaveOptions;
 using SaveFormat = Aspose.Words.SaveFormat;
 using SaveOptions = Aspose.Words.Saving.SaveOptions;
 using WarningInfo = Aspose.Words.WarningInfo;
 using WarningType = Aspose.Words.WarningType;
-#if NETSTANDARD2_0
-using SkiaSharp;   
+#if NETSTANDARD2_0 || __MOBILE__
+using SkiaSharp;
+#else 
+using Image = System.Drawing.Image;
 #endif
 #if  !(__MOBILE__ || MAC)
 using Aspose.Pdf.Facades;

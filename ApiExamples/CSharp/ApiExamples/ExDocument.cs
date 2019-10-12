@@ -29,13 +29,13 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
-using Aspose.Words.Shaping.HarfBuzz;
 using Aspose.Words.Tables;
 using Aspose.Words.Themes;
 using NUnit.Framework;
 using CompareOptions = Aspose.Words.CompareOptions;
-using License = Aspose.Words.License;
-using DescriptionAttribute = NUnit.Framework.DescriptionAttribute;
+#if !(__MOBILE__ || MAC)
+using Aspose.Words.Shaping.HarfBuzz;
+#endif
 #if !(NETSTANDARD2_0 || __MOBILE__)
 using Org.BouncyCastle.Pkcs;
 #endif
@@ -776,10 +776,10 @@ namespace ApiExamples
                 Assert.True(args.IsSubsettingNeeded);
 
                 // We can designate where each font will be saved by either specifying a file name, or creating a new stream
-                args.FontFileName = args.OriginalFileName.Split('\\').Last();
+                args.FontFileName = args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last();
 
                 args.FontStream = 
-                    new FileStream(ArtifactsDir + args.OriginalFileName.Split('\\').Last(), FileMode.Create);
+                    new FileStream(ArtifactsDir + args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last(), FileMode.Create);
                 Assert.False(args.KeepFontStreamOpen);
 
                 // We can access the source document from here also
@@ -3442,6 +3442,7 @@ namespace ApiExamples
             Assert.IsTrue(classModule.SourceCode.Contains("MsgBox \"Class test\""));
         }
 
+#if !(__MOBILE__ || MAC)
         [Test]
         public void OpenType()
         {
@@ -3464,5 +3465,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "OpenType.Document.pdf");
             //ExEnd
         }
+#endif
     }
 }

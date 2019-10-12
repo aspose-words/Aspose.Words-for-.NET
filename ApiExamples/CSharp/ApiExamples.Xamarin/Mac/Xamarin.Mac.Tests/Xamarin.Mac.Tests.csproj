@@ -49,12 +49,8 @@
     </XamMacArch>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words, Version=19.9.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Aspose.Words.19.9.0\lib\net40\Aspose.Words.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Aspose.Words.Shaping.HarfBuzz, Version=19.9.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Aspose.Words.Shaping.HarfBuzz.19.9.0\lib\net40\Aspose.Words.Shaping.HarfBuzz.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=19.10.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Aspose.Words.19.10.0\lib\net40\Aspose.Words.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -267,9 +263,6 @@
     <Compile Include="..\..\..\ApiExamples\ExVariableCollection.cs">
       <Link>ExVariableCollection.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\ApiExamples\ExVisitor.cs">
-      <Link>ExVisitor.cs</Link>
-    </Compile>
     <Compile Include="..\..\..\ApiExamples\ExWarningInfoCollection.cs">
       <Link>ExWarningInfoCollection.cs</Link>
     </Compile>
@@ -325,11 +318,4 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="..\..\..\packages\SkiaSharp.1.68.0\build\net45\SkiaSharp.targets" Condition="Exists('..\..\..\packages\SkiaSharp.1.68.0\build\net45\SkiaSharp.targets')" />
-  <Import Project="..\..\..\packages\Aspose.Words.Shaping.HarfBuzz.19.9.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets" Condition="Exists('..\..\..\packages\Aspose.Words.Shaping.HarfBuzz.19.9.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\..\packages\Aspose.Words.Shaping.HarfBuzz.19.9.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Aspose.Words.Shaping.HarfBuzz.19.9.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets'))" />
-  </Target>
 </Project>
