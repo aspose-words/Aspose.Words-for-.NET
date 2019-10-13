@@ -1,0 +1,2 @@
+﻿Evaluation Only. Created with Aspose.Words. Copyright 2003-2019 Aspose Pty Ltd.
+Test document for TxtExportHeadersFootersMode
