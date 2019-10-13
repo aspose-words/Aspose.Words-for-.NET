@@ -90,7 +90,7 @@ namespace Aspose.Words.Examples.CSharp
             // ConvertDocumentToEPUB.Run();
             // ConvertDocumentToHtmlWithRoundtrip.Run();
             // DetectDocumentSignatures.Run();
-            // WorkingWithTxt.Run();
+             WorkingWithTxt.Run();
             // WorkingWithRTF.Run();
             // SaveOptionsHtmlFixed.Run();
             // SaveDocWithHtmlSaveOptions.Run();
@@ -182,7 +182,7 @@ namespace Aspose.Words.Examples.CSharp
             // AddGroupShapeToDocument.Run();
             // CompareDocument.Run();
             // DocProperties.Run();
-             WorkingWithRevisions.Run();
+            // WorkingWithRevisions.Run();
             // WriteAndFont.Run();
             // DocumentBuilderInsertParagraph.Run();
             // DocumentBuilderBuildTable.Run();
