@@ -34,6 +34,8 @@ namespace ApiExamples
             Hyphenation.RegisterDictionary("de-CH", dictionaryStream);
 
             // Register by string via callback
+            Hyphenation.WarningCallback = new HyphenationWarnings();
+
             Hyphenation.Callback = new HyphenationPrinter();
             Hyphenation.Callback.RequestDictionary("en-US");
         }
@@ -61,6 +63,17 @@ namespace ApiExamples
             }
 
             private readonly Dictionary<string, string> mDictionaryFilenames;
+        }
+
+        /// <summary>
+        /// Prints hyphenation warnings
+        /// </summary>
+        private class HyphenationWarnings : IWarningCallback
+        {
+            void IWarningCallback.Warning(WarningInfo info)
+            {
+                Console.WriteLine(info.Description);
+            }
         }
         //ExEnd
 
