@@ -21,33 +21,50 @@ namespace ApiExamples
         //ExFor:Hyphenation.Callback
         //ExFor:Hyphenation.RegisterDictionary(String, Stream)
         //ExFor:Hyphenation.RegisterDictionary(String, String)
+        //ExFor:Hyphenation.WarningCallback
         //ExFor:IHyphenationCallback
         //ExFor:IHyphenationCallback.RequestDictionary(System.String)
         //ExSummary:Shows how to open and register a dictionary from a file.
-        [Test] //ExSKip
-        public void RegisterDictionaryEx()
+        [Test] //ExSkip
+        public void RegisterDictionary()
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            // Set up a callback that tracks warnings that occur during hyphenation dictionary registration
+            WarningInfoCollection warningInfoCollection = new WarningInfoCollection();
+            Hyphenation.WarningCallback = warningInfoCollection;
 
-            // Register by stream
-            Stream dictionaryStream = new FileStream(MyDir + "hyph_de_CH.dic", FileMode.Open);
-            Hyphenation.RegisterDictionary("de-CH", dictionaryStream);
+            // Register an English (US) hyphenation dictionary by stream
+            Stream dictionaryStream = new FileStream(MyDir + "hyph_en_US.dic", FileMode.Open);
+            Hyphenation.RegisterDictionary("en-US", dictionaryStream);
 
-            // Register by string via callback
-            Hyphenation.WarningCallback = new HyphenationWarnings();
+            // No warnings detected
+            Assert.AreEqual(0, warningInfoCollection.Count);
 
-            Hyphenation.Callback = new HyphenationPrinter();
-            Hyphenation.Callback.RequestDictionary("en-US");
+            // Open a document with a German locale that might not get automatically hyphenated by Microsoft Word an english machine
+            Document doc = new Document(MyDir + "RandomGermanWords.doc");
+
+            // To hyphenate that document upon saving, we need a hyphenation dictionary for the "de-CH" language code
+            // This callback will handle the automatic request for that dictionary 
+            Hyphenation.Callback = new CustomHyphenationDictionaryRegister();
+
+            // When we save the document, it will be hyphenated according to rules defined by the dictionary known by our callback
+            doc.Save(ArtifactsDir + "Hyphenation.RegisterDictionary.pdf");
+
+            // This dictionary contains two identical patterns, which will trigger a warning
+            Assert.AreEqual(1, warningInfoCollection.Count);
+            Assert.AreEqual(WarningType.MinorFormattingLoss, warningInfoCollection[0].WarningType);
+            Assert.AreEqual(WarningSource.Layout, warningInfoCollection[0].Source);
+            Assert.AreEqual("Hyphenation dictionary contains duplicate patterns. The only first found pattern will be used. " +
+                            "Content can be wrapped differently.", warningInfoCollection[0].Description);
         }
 
         /// <summary>
-        /// Associates ISO language codes with dictionary files for their respective languages
+        /// Associates ISO language codes with custom local system dictionary files for their respective languages
         /// </summary>
-        private class HyphenationPrinter : IHyphenationCallback
+        private class CustomHyphenationDictionaryRegister : IHyphenationCallback
         {
-            public HyphenationPrinter()
+            public CustomHyphenationDictionaryRegister()
             {
-                mDictionaryFilenames = new Dictionary<string, string>
+                mHyphenationDictionaryFiles = new Dictionary<string, string>
                 {
                     { "en-US", MyDir + "hyph_en_US.dic" },
                     { "de-CH", MyDir + "hyph_de_CH.dic" }
@@ -56,24 +73,25 @@ namespace ApiExamples
 
             public void RequestDictionary(string language)
             {
-                if (mDictionaryFilenames.ContainsKey(language) && !Hyphenation.IsDictionaryRegistered(language))
+                Console.Write("Hyphenation dictionary requested: " + language);
+
+                if (Hyphenation.IsDictionaryRegistered(language))
                 {
-                    Hyphenation.RegisterDictionary(language, mDictionaryFilenames[language]);
+                    Console.WriteLine(", is already registered.");
+                    return;
                 }
+
+                if (mHyphenationDictionaryFiles.ContainsKey(language))
+                {
+                    Hyphenation.RegisterDictionary(language, mHyphenationDictionaryFiles[language]);
+                    Console.WriteLine(", successfully registered.");
+                    return;
+                }
+
+                Console.WriteLine(", no respective dictionary file known by this Callback.");
             }
 
-            private readonly Dictionary<string, string> mDictionaryFilenames;
-        }
-
-        /// <summary>
-        /// Prints hyphenation warnings
-        /// </summary>
-        private class HyphenationWarnings : IWarningCallback
-        {
-            void IWarningCallback.Warning(WarningInfo info)
-            {
-                Console.WriteLine(info.Description);
-            }
+            private readonly Dictionary<string, string> mHyphenationDictionaryFiles;
         }
         //ExEnd
 
