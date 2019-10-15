@@ -5,9 +5,11 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.IO;
 using System.Text;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Markup;
 using NUnit.Framework;
@@ -21,13 +23,16 @@ namespace ApiExamples
         public void SupportVml()
         {
             //ExStart
+            //ExFor:HtmlLoadOptions.#ctor
             //ExFor:HtmlLoadOptions.SupportVml
+            //ExFor:HtmlLoadOptions.WebRequestTimeout
             //ExSummary:Shows how to parse HTML document with conditional comments like "<!--[if gte vml 1]>" and "<![if !vml]>"
             HtmlLoadOptions loadOptions = new HtmlLoadOptions();
 
-            //If value is true, then we parse "<!--[if gte vml 1]>", else parse "<![if !vml]>"
+            // If value is true, then we parse "<!--[if gte vml 1]>", else parse "<![if !vml]>"
             loadOptions.SupportVml = true;
-            //Wait for a response, when loading external resources
+
+            // Wait for a response, when loading external resources
             loadOptions.WebRequestTimeout = 1000;
 
             Document doc = new Document(MyDir + "Shape.VmlAndDml.htm", loadOptions);
@@ -36,10 +41,57 @@ namespace ApiExamples
         }
 
         [Test]
-        public void WebRequestTimeoutDefaultValue()
+        public void EncryptedHtml()
         {
-            HtmlLoadOptions loadOptions = new HtmlLoadOptions();
-            Assert.AreEqual(100000, loadOptions.WebRequestTimeout);
+            //ExStart
+            //ExFor:HtmlLoadOptions.#ctor(String)
+            //ExSummary:Shows how to encrypt an Html document and then open it using a password.
+            // Create and sign an encrypted html document from an encrypted .docx
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+
+            SignOptions signOptions = new SignOptions
+            {
+                Comments = "Comment",
+                SignTime = DateTime.Now,
+                DecryptionPassword = "docPassword"
+            };
+
+            string inputFileName = MyDir + "Document.Encrypted.docx";
+            string outputFileName = ArtifactsDir + "HtmlLoadOptions.EncryptedHtml.html";
+            DigitalSignatureUtil.Sign(inputFileName, outputFileName, certificateHolder, signOptions);
+
+            // This .html document will need a password to be decrypted, opened and have its contents accessed
+            // The password is specified by HtmlLoadOptions.Password
+            HtmlLoadOptions loadOptions = new HtmlLoadOptions("docPassword");
+            Assert.AreEqual(signOptions.DecryptionPassword, loadOptions.Password);
+
+            Document doc = new Document(outputFileName, loadOptions);
+            Assert.AreEqual("Test signed document.", doc.GetText().Trim());       
+            //ExEnd
+        }
+
+        [Test]
+        public void BaseUri()
+        {
+            //ExStart
+            //ExFor:HtmlLoadOptions.#ctor(LoadFormat,String,String)
+            //ExSummary:Shows how to specify a base URI when opening an html document.
+            // Create and sign an encrypted html document from an encrypted .docx
+            // If we want to load an .html document which contains an image linked by a relative URI
+            // while the image is in a different location, we will need to resolve the relative URI into an absolute one
+            // by creating an HtmlLoadOptions and providing a base URI 
+            HtmlLoadOptions loadOptions = new HtmlLoadOptions(LoadFormat.Html, "", ImageDir);
+
+            Document doc = new Document(MyDir + "Document.OpenFromStreamWithBaseUri.html", loadOptions);
+
+            // The image will be displayed correctly by the output document and
+            doc.Save(ArtifactsDir + "Shape.BaseUri.docx");
+        
+            Shape imgShape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
+            Assert.True(imgShape.IsImage);
+
+            imgShape.ImageData.Save(ArtifactsDir + "BaseUri.png");
+            //ExEnd
         }
 
         [Test]

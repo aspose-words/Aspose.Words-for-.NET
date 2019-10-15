@@ -19,6 +19,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             CustomRemove(dataDir);
 
             RemovePersonalInformation(dataDir);
+            ConfiguringLinkToContent(dataDir);
         }
         public static void EnumerateProperties(string dataDir)
         {
@@ -58,7 +59,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             doc.CustomDocumentProperties.Remove("Authorized Date");
             // ExEnd:CustomRemove
         }
-         
         public static void RemovePersonalInformation(string dataDir)
         {
             // ExStart:RemovePersonalInformation            
@@ -69,6 +69,30 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             doc.Save(dataDir);
             // ExEnd:RemovePersonalInformation
             Console.WriteLine("\nPersonal information has removed from document successfully.\nFile saved at " + dataDir);
+        }
+        public static void ConfiguringLinkToContent(string dataDir)
+        {
+            // ExStart:ConfiguringLinkToContent            
+            Document doc = new Document(dataDir + "test.docx");
+
+            // Retrieve a list of all custom document properties from the file.
+            CustomDocumentProperties customProperties = doc.CustomDocumentProperties;
+
+            // Add linked to content property.
+            DocumentProperty customProperty = customProperties.AddLinkToContent("PropertyName", "BookmarkName");
+
+            // Also, accessing the custom document property can be performed by using the property name.
+            customProperty = customProperties["PropertyName"];
+
+            // Check whether the property is linked to content.
+            bool isLinkedToContent = customProperty.IsLinkToContent;
+
+            // Get the source of the property.
+            string source = customProperty.LinkSource;
+
+            // Get the value of the property.
+            string value = customProperty.Value.ToString();
+            // ExEnd:ConfiguringLinkToContent
         }
     }
 }

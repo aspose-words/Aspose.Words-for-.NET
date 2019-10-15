@@ -46,11 +46,8 @@
     </MtouchVerbosity>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words, Version=19.8.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Aspose.Words.19.8.0\lib\Xamarin.iOS10\Aspose.Words.dll</HintPath>
-    </Reference>
-    <Reference Include="Aspose.Words.Shaping.HarfBuzz, Version=19.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Aspose.Words.Shaping.HarfBuzz.19.7.0\lib\netstandard2.0\Aspose.Words.Shaping.HarfBuzz.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=19.10.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Aspose.Words.19.10.0\lib\Xamarin.iOS10\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -268,9 +265,6 @@
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExVariableCollection.cs">
       <Link>ExVariableCollection.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\ApiExamples\ExVisitor.cs">
-      <Link>ExVisitor.cs</Link>
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExWarningInfoCollection.cs">
       <Link>ExWarningInfoCollection.cs</Link>
