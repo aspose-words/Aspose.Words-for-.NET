@@ -11,6 +11,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using ApiExamples.TestData;
 using ApiExamples.TestData.TestBuilders;
 using ApiExamples.TestData.TestClasses;
@@ -778,12 +779,35 @@ namespace ApiExamples
                     LocalAddress = "Wellington 6004"
                 }
             };
-            
+
             BuildReport(doc, new object[] { value1, value2, clients }, new [] { "value1", "value2", "clients" });
-            
             doc.Save(artifactPath);
 
             Assert.IsTrue(DocumentHelper.CompareDocs(artifactPath, goldPath));
+        }
+
+        [Test]
+        public void UsingXmlDataStringWithoutSchema()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.XmlDataSource.docx");
+            XmlDataSource dataSource = new XmlDataSource(MyDir + "XmlData.xml");
+            
+            BuildReport(doc, dataSource, "persons");
+            doc.Save(ArtifactsDir + "ReportingEngine.XmlDataSource.docx");
+        }
+
+        [Test]
+        public void UsingXmlDataStreamWithoutSchema()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.XmlDataSource.docx");
+
+            using (FileStream stream = File.OpenRead(MyDir + "XmlData.xml"))
+            {
+                XmlDataSource dataSource = new XmlDataSource(stream);
+                BuildReport(doc, dataSource, "persons");
+            }
+
+            doc.Save(ArtifactsDir + "ReportingEngine.XmlDataSource.docx");
         }
 
         private static void BuildReport(Document document, object dataSource, string dataSourceName,

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Persons>
+   <Person>
+       <Name>John Doe</Name>
+       <Age>30</Age>
+	   <Money>1160.90</Money>
+	   <Childs>true</Childs>
+       <Birth>1989-04-01 4:00:00 pm</Birth>
+   </Person>
+   <Person>
+       <Name>Jane Doe</Name>
+       <Age>27</Age>
+	   <Money>3010.15</Money>
+	   <Childs>false</Childs>
+       <Birth>1992-01-31 07:00:00 am</Birth>
+   </Person>
+   <Person>
+       <Name>John Smith</Name>
+       <Age>51</Age>
+	   <Money>60.70</Money>
+	   <Childs>true</Childs>
+       <Birth>1968-03-08 1:00:00 pm</Birth>
+   </Person>
+</Persons>
