@@ -425,5 +425,39 @@ namespace ApiExamples
 
             DocumentHelper.FindTextInFile(ArtifactsDir + "HtmlSaveOptions.ResolveFontNames.html", "<span style=\"font-family:Arial\">");
         }
+
+        [Test]
+        public void HeadingLevels()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions.#ctor(SaveFormat)
+            //ExFor:HtmlSaveOptions.DocumentSplitHeadingLevel
+            //ExSummary:Shows how to split a document into several html documents by heading levels.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert headings of levels 1 - 3
+            builder.ParagraphFormat.Style = builder.Document.Styles["Heading 1"];
+            builder.Writeln("Heading #1");
+            builder.ParagraphFormat.Style = builder.Document.Styles["Heading 2"];
+            builder.Writeln("Heading #2");
+            builder.ParagraphFormat.Style = builder.Document.Styles["Heading 3"];
+            builder.Writeln("Heading #3");
+            builder.ParagraphFormat.Style = builder.Document.Styles["Heading 1"];
+            builder.Writeln("Heading #4");
+            builder.ParagraphFormat.Style = builder.Document.Styles["Heading 2"];
+            builder.Writeln("Heading #5");
+            builder.ParagraphFormat.Style = builder.Document.Styles["Heading 3"];
+            builder.Writeln("Heading #6");
+
+            // Create a HtmlSaveOptions object and set the DocumentSplitHeadingLevel to 2
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
+            options.DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph;
+            options.DocumentSplitHeadingLevel = 2;
+
+            // Instead of one output html, the document will be split up into 4 parts, on heading levels 1 and 2
+            doc.Save(ArtifactsDir + "HeadingLevels.html", options);
+            //ExEnd
+        }
     }
 }
