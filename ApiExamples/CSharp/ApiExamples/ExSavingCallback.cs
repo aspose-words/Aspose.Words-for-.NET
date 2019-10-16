@@ -41,15 +41,16 @@ namespace ApiExamples
             xpsSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
         }
 
-        [Test]
+        //ExStart
+        //ExFor:IPageSavingCallback
+        //ExFor:PageSavingArgs
+        //ExFor:PageSavingArgs.PageFileName
+        //ExFor:FixedPageSaveOptions.PageSavingCallback
+        //ExSummary:Shows how separate pages are saved when a document is exported to fixed page format.
+        [Test] //ExSkip
         public void PageFileNameSavingCallback()
         {
-            //ExStart
-            //ExFor:IPageSavingCallback
-            //ExFor:PageSavingArgs
-            //ExFor:PageSavingArgs.PageFileName
-            //ExFor:FixedPageSaveOptions.PageSavingCallback
-            //ExSummary:Shows how separate pages are saved when a document is exported to fixed page format.
+
             Document doc = new Document(MyDir + "Rendering.doc");
 
             HtmlFixedSaveOptions htmlFixedSaveOptions =
