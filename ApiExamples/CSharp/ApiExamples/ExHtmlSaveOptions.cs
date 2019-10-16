@@ -11,6 +11,7 @@ using Aspose.Words;
 using Aspose.Words.Fonts;
 using NUnit.Framework;
 using Aspose.Words.Saving;
+using Aspose.Words.Tables;
 
 namespace ApiExamples
 {
@@ -457,6 +458,34 @@ namespace ApiExamples
 
             // Instead of one output html, the document will be split up into 4 parts, on heading levels 1 and 2
             doc.Save(ArtifactsDir + "HeadingLevels.html", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void NegativeIndent()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions.AllowNegativeIndent
+            //ExSummary:Shows how to preserve negative indents in the output .html.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a table and give it a negative value for its indent, effectively pushing it out of the left page boundary
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Cell 1");
+            builder.InsertCell();
+            builder.Write("Cell 2");
+            builder.EndTable();
+            table.LeftIndent = -36;
+            table.PreferredWidth = PreferredWidth.FromPoints(144);
+
+            // When saving to .html, this indent will only be preserved if we set this flag
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
+            options.AllowNegativeIndent = true;
+
+            // The first cell with "Cell 1" will not be visible in the output 
+            doc.Save(ArtifactsDir + "AllowNegativeIndent.html", options);
             //ExEnd
         }
     }
