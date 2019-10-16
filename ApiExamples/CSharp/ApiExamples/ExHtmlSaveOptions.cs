@@ -12,6 +12,7 @@ using Aspose.Words.Fonts;
 using NUnit.Framework;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
+using HtmlVersion = Aspose.Words.Saving.HtmlVersion;
 
 namespace ApiExamples
 {
@@ -189,8 +190,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportPageMargins.html", saveOptions);
 		}
 
-        [TestCase(HtmlVersion.Html5)]
-        [TestCase(HtmlVersion.Xhtml)]
+        [TestCase(Aspose.Words.Saving.HtmlVersion.Html5)]
+        [TestCase(Aspose.Words.Saving.HtmlVersion.Xhtml)]
         public void Html5Support(HtmlVersion htmlVersion)
         {
             Document doc = new Document(MyDir + "Document.doc");
@@ -486,6 +487,59 @@ namespace ApiExamples
 
             // The first cell with "Cell 1" will not be visible in the output 
             doc.Save(ArtifactsDir + "AllowNegativeIndent.html", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void FolderAlias()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions.FontsFolder
+            //ExFor:HtmlSaveOptions.FontsFolderAlias
+            //ExFor:HtmlSaveOptions.ImageResolution
+            //ExFor:HtmlSaveOptions.ImagesFolderAlias
+            //ExFor:HtmlSaveOptions.ResourceFolder
+            //ExFor:HtmlSaveOptions.ResourceFolderAlias
+            //ExSummary:Shows how to set folders and folder aliases for externally saved resources when saving to html.
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            HtmlSaveOptions options = new HtmlSaveOptions
+            {
+                CssStyleSheetType = CssStyleSheetType.External,
+                ExportFontResources = true,
+                ImageResolution = 72,
+                FontResourcesSubsettingSizeThreshold = 0,
+                FontsFolder = ArtifactsDir + "Fonts",
+                ImagesFolder = ArtifactsDir + "Images",
+                ResourceFolder = ArtifactsDir + "Resources",
+                FontsFolderAlias = "http://example.com/fonts",
+                ImagesFolderAlias = "http://example.com/images",
+                ResourceFolderAlias = "http://example.com/resources"
+            };
+
+            doc.Save(ArtifactsDir + "FolderAlias.html", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void HtmlVersion()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions.ExportXhtmlTransitional
+            //ExFor:HtmlSaveOptions.HtmlVersion
+            //ExSummary:Shows how to set a saved .html document to a specific version.
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            // Save the document to a .html file of the XHTML 1.0 Transitional standard
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
+            {
+                HtmlVersion = Aspose.Words.Saving.HtmlVersion.Xhtml,
+                ExportXhtmlTransitional = true,
+                PrettyFormat = true
+            };
+
+            // The DOCTYPE declaration at the top of this document will indicate the html version we chose
+            doc.Save(ArtifactsDir + "HtmlVersion.html", options);
             //ExEnd
         }
     }
