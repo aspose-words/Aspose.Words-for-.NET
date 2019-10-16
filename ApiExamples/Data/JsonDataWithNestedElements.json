@@ -1,0 +1,83 @@
+[
+   {
+       Name: "John Smith",
+       Contract:
+       [
+           {
+               Client:
+               {
+                   Name: "A Company"
+               },
+               Price: 1200000
+           },
+           {
+               Client:
+               {
+                   Name: "B Ltd."
+               },
+               Price: 750000
+           },
+           {
+               Client:
+               {
+                   Name: "C & D"
+               },
+               Price: 350000
+           }
+       ]
+   },
+   {
+       Name: "Tony Anderson",
+       Contract:
+       [
+           {
+               Client:
+               {
+                   Name: "E Corp."
+               },
+               Price: 650000
+           },
+           {
+               Client:
+               {
+                   Name: "F & Partners"
+               },
+               Price: 550000
+           }
+       ]
+   },
+   {
+       Name: "July James",
+       Contract:
+       [
+           {
+               Client:
+               {
+                   Name: "G & Co."
+               },
+               Price: 350000
+           },
+           {
+               Client:
+               {
+                   Name: "H Group"
+               },
+               Price: 250000
+           },
+           {
+               Client:
+               {
+                   Name: "I & Sons"
+               },
+               Price: 100000
+           },
+           {
+               Client:
+               {
+                   Name: "J Ent."
+               },
+               Price: 100000
+           }
+       ]
+   }
+]

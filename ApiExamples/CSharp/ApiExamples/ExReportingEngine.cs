@@ -787,19 +787,19 @@ namespace ApiExamples
         }
 
         [Test]
-        public void UsingXmlDataStringWithoutSchema()
+        public void XmlDataStringWithoutSchema()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.XmlDataSource.docx");
+            Document doc = new Document(MyDir + "ReportingEngine.XmlData.docx");
             XmlDataSource dataSource = new XmlDataSource(MyDir + "XmlData.xml");
             
             BuildReport(doc, dataSource, "persons");
-            doc.Save(ArtifactsDir + "ReportingEngine.XmlDataSource.docx");
+            doc.Save(ArtifactsDir + "ReportingEngine.XmlDataString.docx");
         }
 
         [Test]
-        public void UsingXmlDataStreamWithoutSchema()
+        public void XmlDataStreamWithoutSchema()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.XmlDataSource.docx");
+            Document doc = new Document(MyDir + "ReportingEngine.XmlData.docx");
 
             using (FileStream stream = File.OpenRead(MyDir + "XmlData.xml"))
             {
@@ -807,7 +807,80 @@ namespace ApiExamples
                 BuildReport(doc, dataSource, "persons");
             }
 
-            doc.Save(ArtifactsDir + "ReportingEngine.XmlDataSource.docx");
+            doc.Save(ArtifactsDir + "ReportingEngine.XmlDataStream.docx");
+        }
+
+        [Test]
+        public void XmlDataWithNestedElements()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.XmlDataWithNestedElements.docx");
+            XmlDataSource dataSource = new XmlDataSource(MyDir + "XmlDataWithNestedElements.xml");
+            
+            BuildReport(doc, dataSource, "managers");
+            doc.Save(ArtifactsDir + "ReportingEngine.XmlDataWithNestedElements.docx");
+        }
+
+        [Test]
+        public void JsonDataString()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.XmlData.docx");
+            JsonDataSource dataSource = new JsonDataSource(MyDir + "JsonData.json");
+
+            BuildReport(doc, dataSource, "persons");
+            doc.Save(ArtifactsDir + "ReportingEngine.JsonDataString.docx");
+        }
+
+        [Test]
+        public void JsonDataStream()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.XmlData.docx");
+            using (FileStream stream = File.OpenRead(MyDir + "JsonData.json"))
+            {
+                JsonDataSource dataSource = new JsonDataSource(stream);
+                BuildReport(doc, dataSource, "persons");
+            }
+
+            doc.Save(ArtifactsDir + "ReportingEngine.JsonDataStream.docx");
+        }
+
+        [Test]
+        public void JsonDataWithNestedElements()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.XmlDataWithNestedElements.docx");
+            JsonDataSource dataSource = new JsonDataSource(MyDir + "JsonDataWithNestedElements.json");
+
+            BuildReport(doc, dataSource, "managers");
+            doc.Save(ArtifactsDir + "ReportingEngine.JsonDataWithNestedElements.docx");
+        }
+
+        [Test]
+        public void CsvDataString()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.CsvData.docx");
+            CsvDataLoadOptions loadOptions = new CsvDataLoadOptions(true);
+            loadOptions.Delimiter = ';';
+            loadOptions.CommentChar = '$';
+            CsvDataSource dataSource = new CsvDataSource(MyDir + "CsvData.csv", loadOptions);
+
+            BuildReport(doc, dataSource, "persons");
+            doc.Save(ArtifactsDir + "ReportingEngine.CsvDataString.docx");
+        }
+
+        [Test]
+        public void CsvDataStream()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.CsvData.docx");
+            CsvDataLoadOptions loadOptions = new CsvDataLoadOptions(true);
+            loadOptions.Delimiter = ';';
+            loadOptions.CommentChar = '$';
+
+            using (FileStream stream = File.OpenRead(MyDir + "CsvData.csv"))
+            {
+                CsvDataSource dataSource = new CsvDataSource(stream, loadOptions);
+                BuildReport(doc, dataSource, "persons");
+            }
+            
+            doc.Save(ArtifactsDir + "ReportingEngine.CsvDataStream.docx");
         }
 
         private static void BuildReport(Document document, object dataSource, string dataSourceName,
