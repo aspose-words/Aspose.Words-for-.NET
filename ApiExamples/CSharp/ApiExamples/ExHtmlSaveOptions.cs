@@ -467,6 +467,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlSaveOptions.AllowNegativeIndent
+            //ExFor:HtmlSaveOptions.TableWidthOutputMode
             //ExSummary:Shows how to preserve negative indents in the output .html.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -484,6 +485,7 @@ namespace ApiExamples
             // When saving to .html, this indent will only be preserved if we set this flag
             HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
             options.AllowNegativeIndent = true;
+            options.TableWidthOutputMode = HtmlElementSizeOutputMode.RelativeOnly;
 
             // The first cell with "Cell 1" will not be visible in the output 
             doc.Save(ArtifactsDir + "AllowNegativeIndent.html", options);
@@ -540,6 +542,83 @@ namespace ApiExamples
 
             // The DOCTYPE declaration at the top of this document will indicate the html version we chose
             doc.Save(ArtifactsDir + "HtmlVersion.html", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void EpubHeadings()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions.EpubNavigationMapLevel
+            //ExSummary:Shows the relationship between heading levels and the Epub navigation panel.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert headings of levels 1 - 3
+            builder.ParagraphFormat.Style = builder.Document.Styles["Heading 1"];
+            builder.Writeln("Heading #1");
+            builder.ParagraphFormat.Style = builder.Document.Styles["Heading 2"];
+            builder.Writeln("Heading #2");
+            builder.ParagraphFormat.Style = builder.Document.Styles["Heading 3"];
+            builder.Writeln("Heading #3");
+            builder.ParagraphFormat.Style = builder.Document.Styles["Heading 1"];
+            builder.Writeln("Heading #4");
+            builder.ParagraphFormat.Style = builder.Document.Styles["Heading 2"];
+            builder.Writeln("Heading #5");
+            builder.ParagraphFormat.Style = builder.Document.Styles["Heading 3"];
+            builder.Writeln("Heading #6");
+
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Epub)
+            {
+                EpubNavigationMapLevel = 2,
+                HtmlVersion = Aspose.Words.Saving.HtmlVersion.Xhtml
+            };
+
+            doc.Save(ArtifactsDir + "EpubHeadings.epub", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void ContentIdUrls()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions.ExportCidUrlsForMhtmlResources
+            //ExSummary:Shows how to enable content IDs for output MHTML documents.
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            // Setting this flag will replace "Content-Location" tags with "Content-ID" tags for each resource from the input document
+            // The file names that were next to each "Content-Location" tag are re-purposed as content IDs
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Mhtml)
+            {
+                ExportCidUrlsForMhtmlResources = true,
+                CssStyleSheetType = CssStyleSheetType.External,
+                ExportFontResources = true,
+                PrettyFormat = true
+            };
+
+            doc.Save(ArtifactsDir + "ContentIdUrls.mht", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void DropDownFormField()
+        {
+            //ExStart
+            //ExSummary:
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a combo box with the value "Two" selected
+            builder.InsertComboBox("MyComboBox", new[] { "One", "Two", "Three" }, 1);
+            
+            // When converting to .html, drop down combo boxes will be converted to select/option tags to preserve their functionality
+            // If we want to freeze a combo box at its current selected value and convert it into plain text, we can do so with this flag
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
+            {
+                ExportDropDownFormFieldAsText = true
+            };
+
+            doc.Save(ArtifactsDir + "DropDownFormField.html", options);
             //ExEnd
         }
     }
