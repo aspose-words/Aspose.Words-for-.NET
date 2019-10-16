@@ -150,6 +150,7 @@
     <Compile Include="ExMailMerge.cs" />
     <Compile Include="ExMailMergeCustom.cs" />
     <Compile Include="ExMailMergeEvent.cs" />
+    <Compile Include="ExMetered.cs" />
     <Compile Include="ExMossDoc2Pdf.cs" />
     <Compile Include="ExMossRtf2Docx.cs" />
     <Compile Include="ExNestedMailMergeCustom.cs" />
