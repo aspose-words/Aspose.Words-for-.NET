@@ -3478,6 +3478,13 @@ namespace ApiExamples
             {
                 Console.WriteLine($"Module name: {module.Name};\nModule code:\n{module.SourceCode}\n");
             }
+
+            // Set new source code for VBA module
+            string oldCode = vbaModules[0].SourceCode;
+            vbaModules[0].SourceCode = "Your VBA code...";
+            Assert.AreNotEqual(oldCode, vbaModules[0].SourceCode); //ExSkip
+            Assert.AreEqual("Your VBA code...", vbaModules[0].SourceCode); //ExSkip
+            vbaModules[0].SourceCode = oldCode;
             //ExEnd
 
             VbaModule defaultModule = vbaModules[0];
