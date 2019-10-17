@@ -11,7 +11,6 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using ApiExamples.TestData;
 using ApiExamples.TestData.TestBuilders;
 using ApiExamples.TestData.TestClasses;
@@ -789,17 +788,21 @@ namespace ApiExamples
         [Test]
         public void XmlDataStringWithoutSchema()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.XmlData.docx");
+            Document doc = new Document(MyDir + "ReportingEngine.DataSource.docx");
+
             XmlDataSource dataSource = new XmlDataSource(MyDir + "XmlData.xml");
-            
             BuildReport(doc, dataSource, "persons");
+
             doc.Save(ArtifactsDir + "ReportingEngine.XmlDataString.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.XmlDataString.docx",
+                GoldsDir + "ReportingEngine.DataSource Gold.docx"));
         }
 
         [Test]
         public void XmlDataStreamWithoutSchema()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.XmlData.docx");
+            Document doc = new Document(MyDir + "ReportingEngine.DataSource.docx");
 
             using (FileStream stream = File.OpenRead(MyDir + "XmlData.xml"))
             {
@@ -808,32 +811,43 @@ namespace ApiExamples
             }
 
             doc.Save(ArtifactsDir + "ReportingEngine.XmlDataStream.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.XmlDataStream.docx",
+                GoldsDir + "ReportingEngine.DataSource Gold.docx"));
         }
 
         [Test]
         public void XmlDataWithNestedElements()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.XmlDataWithNestedElements.docx");
+            Document doc = new Document(MyDir + "ReportingEngine.DataSourceWithNestedElements.docx");
+
             XmlDataSource dataSource = new XmlDataSource(MyDir + "XmlDataWithNestedElements.xml");
-            
             BuildReport(doc, dataSource, "managers");
+
             doc.Save(ArtifactsDir + "ReportingEngine.XmlDataWithNestedElements.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.XmlDataWithNestedElements.docx",
+                GoldsDir + "ReportingEngine.DataSourceWithNestedElements Gold.docx"));
         }
 
         [Test]
         public void JsonDataString()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.XmlData.docx");
-            JsonDataSource dataSource = new JsonDataSource(MyDir + "JsonData.json");
+            Document doc = new Document(MyDir + "ReportingEngine.DataSource.docx");
 
+            JsonDataSource dataSource = new JsonDataSource(MyDir + "JsonData.json");
             BuildReport(doc, dataSource, "persons");
+            
             doc.Save(ArtifactsDir + "ReportingEngine.JsonDataString.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataString.docx",
+                GoldsDir + "ReportingEngine.DataSource Gold.docx"));
         }
 
         [Test]
         public void JsonDataStream()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.XmlData.docx");
+            Document doc = new Document(MyDir + "ReportingEngine.DataSource.docx");
             using (FileStream stream = File.OpenRead(MyDir + "JsonData.json"))
             {
                 JsonDataSource dataSource = new JsonDataSource(stream);
@@ -841,35 +855,48 @@ namespace ApiExamples
             }
 
             doc.Save(ArtifactsDir + "ReportingEngine.JsonDataStream.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataStream.docx",
+                GoldsDir + "ReportingEngine.DataSource Gold.docx"));
         }
 
         [Test]
         public void JsonDataWithNestedElements()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.XmlDataWithNestedElements.docx");
-            JsonDataSource dataSource = new JsonDataSource(MyDir + "JsonDataWithNestedElements.json");
+            Document doc = new Document(MyDir + "ReportingEngine.DataSourceWithNestedElements.docx");
 
+            JsonDataSource dataSource = new JsonDataSource(MyDir + "JsonDataWithNestedElements.json");
             BuildReport(doc, dataSource, "managers");
+            
             doc.Save(ArtifactsDir + "ReportingEngine.JsonDataWithNestedElements.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataWithNestedElements.docx",
+                GoldsDir + "ReportingEngine.DataSourceWithNestedElements Gold.docx"));
         }
 
         [Test]
         public void CsvDataString()
         {
             Document doc = new Document(MyDir + "ReportingEngine.CsvData.docx");
+            
             CsvDataLoadOptions loadOptions = new CsvDataLoadOptions(true);
             loadOptions.Delimiter = ';';
             loadOptions.CommentChar = '$';
-            CsvDataSource dataSource = new CsvDataSource(MyDir + "CsvData.csv", loadOptions);
 
+            CsvDataSource dataSource = new CsvDataSource(MyDir + "CsvData.csv", loadOptions);
             BuildReport(doc, dataSource, "persons");
+            
             doc.Save(ArtifactsDir + "ReportingEngine.CsvDataString.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.CsvDataString.docx",
+                GoldsDir + "ReportingEngine.CsvData Gold.docx"));
         }
 
         [Test]
         public void CsvDataStream()
         {
             Document doc = new Document(MyDir + "ReportingEngine.CsvData.docx");
+            
             CsvDataLoadOptions loadOptions = new CsvDataLoadOptions(true);
             loadOptions.Delimiter = ';';
             loadOptions.CommentChar = '$';
@@ -881,6 +908,9 @@ namespace ApiExamples
             }
             
             doc.Save(ArtifactsDir + "ReportingEngine.CsvDataStream.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.CsvDataStream.docx",
+                GoldsDir + "ReportingEngine.CsvData Gold.docx"));
         }
 
         private static void BuildReport(Document document, object dataSource, string dataSourceName,

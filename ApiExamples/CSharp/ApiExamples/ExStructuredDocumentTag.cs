@@ -875,14 +875,12 @@ namespace ApiExamples
                 "<author>Erik T. Ray</author></book>" +
                 "</books>");
  
+            // Create headers for data from xml content
             Table table = builder.StartTable();
- 
             builder.InsertCell();
             builder.Write("Title");
- 
             builder.InsertCell();
             builder.Write("Author");
- 
             builder.EndRow();
             builder.EndTable();
  
@@ -911,7 +909,7 @@ namespace ApiExamples
             authorSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book[1]/author[1]", "");
             row.AppendChild(authorSdt);
  
-            doc.Save(ArtifactsDir + "RepeatingSectionItem.docx");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.RepeatingSectionItem.docx");
         }
     }
 }
