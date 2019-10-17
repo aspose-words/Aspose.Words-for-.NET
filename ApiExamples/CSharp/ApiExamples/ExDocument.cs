@@ -3523,6 +3523,17 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "OpenType.Document.pdf");
             //ExEnd
         }
+
+        [Test]
+        public void NumberFormatting()
+        {
+            Document doc = new Document(MyDir + "Document.NumberFormatting.docx");
+
+            // Use OpenType to correct displaying numbers in pdf
+            doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
+            
+            doc.Save(ArtifactsDir + "Document.NumberFormatting.pdf");
+        }
 #endif
     }
 }
