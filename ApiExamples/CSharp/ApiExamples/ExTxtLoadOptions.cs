@@ -35,5 +35,22 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "TxtLoadOptions.DetectNumberingWithWhitespaces.txt");
             //ExEnd
         }
+
+        [Test]
+        [TestCase("TxtLoadOptions.Hebrew.txt", true)]
+        [TestCase("TxtLoadOptions.English.txt", false)]
+        public void DetectDocumentDirection(string documentPath, bool isBidi)
+        {
+            //ExStart
+            //ExFor:TxtLoadOptions.DocumentDirection
+            //ExSummary:Shows how to detect document direction automatically.
+            TxtLoadOptions loadOptions = new TxtLoadOptions();
+            loadOptions.DocumentDirection = DocumentDirection.Auto;
+ 
+            Document doc = new Document(MyDir + documentPath, loadOptions);
+            Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
+            Assert.AreEqual(isBidi, paragraph.ParagraphFormat.Bidi);
+            //ExEnd
+        }
     }
 }
