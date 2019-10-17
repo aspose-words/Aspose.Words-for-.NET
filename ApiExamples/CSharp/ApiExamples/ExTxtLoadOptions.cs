@@ -47,6 +47,7 @@ namespace ApiExamples
             TxtLoadOptions loadOptions = new TxtLoadOptions();
             loadOptions.DocumentDirection = DocumentDirection.Auto;
  
+            // Text like Hebrew/Arabic will be automatically detected as RTL
             Document doc = new Document(MyDir + documentPath, loadOptions);
             Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
             Assert.AreEqual(isBidi, paragraph.ParagraphFormat.Bidi);
