@@ -8,7 +8,9 @@
 using System;
 using System.IO;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Fonts;
+using Aspose.Words.Lists;
 using NUnit.Framework;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
@@ -496,6 +498,7 @@ namespace ApiExamples
         public void FolderAlias()
         {
             //ExStart
+            //ExFor:HtmlSaveOptions.ExportOriginalUrlForLinkedImages
             //ExFor:HtmlSaveOptions.FontsFolder
             //ExFor:HtmlSaveOptions.FontsFolderAlias
             //ExFor:HtmlSaveOptions.ImageResolution
@@ -516,10 +519,11 @@ namespace ApiExamples
                 ResourceFolder = ArtifactsDir + "Resources",
                 FontsFolderAlias = "http://example.com/fonts",
                 ImagesFolderAlias = "http://example.com/images",
-                ResourceFolderAlias = "http://example.com/resources"
+                ResourceFolderAlias = "http://example.com/resources",
+                ExportOriginalUrlForLinkedImages = true
             };
 
-            doc.Save(ArtifactsDir + "FolderAlias.html", options);
+            doc.Save(ArtifactsDir + "FolderAliasf.html", options);
             //ExEnd
         }
 
@@ -604,7 +608,8 @@ namespace ApiExamples
         public void DropDownFormField()
         {
             //ExStart
-            //ExSummary:
+            //ExFor:HtmlSaveOptions.ExportDropDownFormFieldAsText
+            //ExSummary:Shows how to get drop down combo box form fields to blend in with paragraph text when saving to html.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -621,5 +626,119 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DropDownFormField.html", options);
             //ExEnd
         }
+
+        [Test]
+        public void ExportBase64()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions.ExportFontsAsBase64
+            //ExFor:HtmlSaveOptions.ExportImagesAsBase64
+            //ExSummary:Shows how to save a .html document with resources embedded inside it.
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            // By default, when converting a document with images to .html, resources such as images will be linked to in external files
+            // We can set these flags to embed resources inside the output .html instead, cutting down on the amount of files created during the conversion
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
+            {
+                ExportFontsAsBase64 = true,
+                ExportImagesAsBase64 = true,
+                PrettyFormat = true
+            };
+
+            doc.Save(ArtifactsDir + "ExportBase64.html", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void ExportLanguageInformation()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions.ExportLanguageInformation
+            //ExSummary:Shows how to preserve language information when saving to .html.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use the builder to write text in more than one language
+            builder.Font.LocaleId = 2057; // en-GB
+            builder.Writeln("Hello world!");
+
+            builder.Font.LocaleId = 1049; // ru-RU
+            builder.Write("Привет, мир!");
+
+            // Normally, when saving a document with more than one proofing language to .html,
+            // only the text content is preserved with no traces of any other languages
+            // Saving with a HtmlSaveOptions object with this flag set will add "lang" attributes to spans 
+            // in places where other proofing languages were used 
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
+            {
+                ExportLanguageInformation = true,
+                PrettyFormat = true
+            };
+
+            doc.Save(ArtifactsDir + "ExportLanguageInformation.html", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void List()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions.ExportListLabels
+            //ExSummary:Shows how to export an indented list to .html as plain text.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use the builder to insert a list
+            Aspose.Words.Lists.List list = doc.Lists.Add(ListTemplate.NumberDefault);
+            builder.ListFormat.List = list;
+            
+            builder.Writeln("List item 1.");
+            builder.ListFormat.ListIndent();
+            builder.Writeln("List item 2.");
+            builder.ListFormat.ListIndent();
+            builder.Write("List item 3.");
+
+            // When we save this to .html, normally our list will be represented by <li> tags
+            // We can set this flag to have lists as plain text instead
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
+            {
+                ExportListLabels = ExportListLabels.AsInlineText,
+                PrettyFormat = true
+            };
+
+            doc.Save(ArtifactsDir + "List.html", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void ExportPageMargins()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions.ExportPageMargins
+            //ExSummary:Shows how to show out-of-bounds objects in output .html documents.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a builder to insert a shape with no wrapping
+            Shape shape = builder.InsertShape(ShapeType.Cube, 200, 200);
+
+            shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
+            shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
+            shape.WrapType = WrapType.None;
+
+            // Negative values for shape position may cause the shape to go out of page bounds
+            // If we export this to .html, the shape will be truncated
+            shape.Left = -150;
+
+            // We can avoid that and have the entire shape be visible by setting this flag
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
+            {
+                ExportPageMargins = true
+            };
+
+            doc.Save(ArtifactsDir + "ExportPageMargins.html", options);
+            //ExEnd
+        }
+
     }
 }
