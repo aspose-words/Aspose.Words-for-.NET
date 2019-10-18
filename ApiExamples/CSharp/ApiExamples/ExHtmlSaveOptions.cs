@@ -740,5 +740,67 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [Test]
+        [Category("SkipTearDown")]
+        public void ExportPageSetup()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions.ExportPageSetup
+            //ExSummary:Shows how to preserve section structure/page setup information when saving to html.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a DocumentBuilder to insert two sections with text
+            builder.Writeln("Section 1");
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.Writeln("Section 2");
+
+            // Change dimensions and paper size of first section
+            PageSetup pageSetup = doc.Sections[0].PageSetup;
+            pageSetup.TopMargin = 36.0;
+            pageSetup.BottomMargin = 36.0;
+            pageSetup.PaperSize = PaperSize.A5;
+
+            // Section structure and pagination are normally lost when when converting to .html
+            // We can create an HtmlSaveOptions object with the ExportPageSetup flag set to true
+            // to preserve the section structure in <div> tags and page dimensions in the output document's CSS
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
+            {
+                ExportPageSetup = true,
+                PrettyFormat = true
+            };
+
+            doc.Save(ArtifactsDir + "ExportPageSetup.html", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void RelativeFontSize()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions.ExportRelativeFontSize
+            //ExSummary:Shows how to use relative font sizes when saving to .html.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a builder to write some text in various sizes
+            builder.Writeln("Default font size, ");
+            builder.Font.Size = 24.0;
+            builder.Writeln("2x default font size,");
+            builder.Font.Size = 96;
+            builder.Write("8x default font size");
+
+            // We can save font sizes as ratios of the default size, which will be 12 in this case
+            // If we use an input .html, this size can be set with the AbsSize {font-size:12pt} tag
+            // The ExportRelativeFontSize will enable this feature
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
+            {
+                ExportRelativeFontSize = true,
+                PrettyFormat = true
+            };
+
+            doc.Save(ArtifactsDir + "RelativeFontSize.html", options);
+            //ExEnd
+        }
     }
 }
