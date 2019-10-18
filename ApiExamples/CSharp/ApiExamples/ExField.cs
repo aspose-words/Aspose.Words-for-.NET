@@ -1639,24 +1639,24 @@ namespace ApiExamples
             fieldToc.PreserveTabs = true;
             fieldToc.UseParagraphOutlineLevel = false;
 
-            InsertHeading(builder, "First entry", "Heading 1");
+            InsertNewPageWithHeading(builder, "First entry", "Heading 1");
             builder.Writeln("Paragraph text.");
-            InsertHeading(builder, "Second entry", "Heading 1");
-            InsertHeading(builder, "Third entry", "Quote");
-            InsertHeading(builder, "Fourth entry", "Intense Quote");
+            InsertNewPageWithHeading(builder, "Second entry", "Heading 1");
+            InsertNewPageWithHeading(builder, "Third entry", "Quote");
+            InsertNewPageWithHeading(builder, "Fourth entry", "Intense Quote");
 
             // These two headings will have the page numbers omitted because they are within the "2-5" range
-            InsertHeading(builder, "Fifth entry", "Heading 2");
-            InsertHeading(builder, "Sixth entry", "Heading 3");
+            InsertNewPageWithHeading(builder, "Fifth entry", "Heading 2");
+            InsertNewPageWithHeading(builder, "Sixth entry", "Heading 3");
 
             // This entry will be omitted because "Heading 4" is outside of the "1-3" range we set earlier
-            InsertHeading(builder, "Seventh entry", "Heading 4");
+            InsertNewPageWithHeading(builder, "Seventh entry", "Heading 4");
 
             builder.EndBookmark("MyBookmark");
             builder.Writeln("Paragraph text.");
 
             // This entry will be omitted because it is outside the bookmark specified by the TOC
-            InsertHeading(builder, "Eighth entry", "Heading 1");
+            InsertNewPageWithHeading(builder, "Eighth entry", "Heading 1");
 
             Assert.AreEqual(" TOC  \\b MyBookmark \\t \"Quote; 6; Intense Quote; 7\" \\o 1-3 \\n 2-5 \\p - \\h \\x \\w", fieldToc.GetFieldCode());
 
@@ -1668,7 +1668,7 @@ namespace ApiExamples
         /// <summary>
         /// Start a new page and insert a paragraph of a specified style
         /// </summary>
-        public void InsertHeading(DocumentBuilder builder, string captionText, string styleName)
+        public void InsertNewPageWithHeading(DocumentBuilder builder, string captionText, string styleName)
         {
             builder.InsertBreak(BreakType.PageBreak);
             string originalStyle = builder.ParagraphFormat.StyleName;
