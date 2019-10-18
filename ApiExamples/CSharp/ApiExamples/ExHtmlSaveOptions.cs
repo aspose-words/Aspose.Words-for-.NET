@@ -455,7 +455,7 @@ namespace ApiExamples
             builder.ParagraphFormat.Style = builder.Document.Styles["Heading 3"];
             builder.Writeln("Heading #6");
 
-            // Create a HtmlSaveOptions object and set the DocumentSplitHeadingLevel to 2
+            // Create a HtmlSaveOptions object and set the DocumentSplitHeadingLevel to 2 //INSP: Comment duplicates code, instead of explaining why we use these options.
             HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
             options.DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph;
             options.DocumentSplitHeadingLevel = 2;
