@@ -150,7 +150,6 @@ namespace ApiExamples
             //ExFor:HeaderFooterCollection.Item(HeaderFooterType)
             //ExFor:HeaderFooter
             //ExFor:HeaderFooterType
-            //ExId:RemoveFooters
             //ExSummary:Deletes all footers from all sections, but leaves headers intact.
             Document doc = new Document(MyDir + "HeaderFooter.RemoveFooters.doc");
 
@@ -293,9 +292,6 @@ namespace ApiExamples
         [Test]
         public void Primer()
         {
-            //ExStart
-            //ExId:HeaderFooterPrimer
-            //ExSummary:Maybe a bit complicated example, but demonstrates many things that can be done with headers/footers.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -428,7 +424,5 @@ namespace ApiExamples
                 section.HeadersFooters.Add(headerFooter.Clone(true));
             }
         }
-
-        //ExEnd
     }
 }

@@ -60,7 +60,6 @@ namespace ApiExamples
             //ExFor:License
             //ExFor:License.#ctor
             //ExFor:License.SetLicense(String)
-            //ExId:LicenseFromFileNoPath
             //ExSummary:Aspose.Words will attempt to find the license file in the embedded resources or in the assembly folders.
             License license = new License();
             license.SetLicense("Aspose.Words.lic");
@@ -82,7 +81,6 @@ namespace ApiExamples
             {
                 //ExStart
                 //ExFor:License.SetLicense(Stream)
-                //ExId:LicenseFromStream
                 //ExSummary:Initializes a license from a stream.
                 License license = new License();
                 license.SetLicense(myStream);
@@ -98,7 +96,6 @@ namespace ApiExamples
         public void DocumentCtor()
         {
             //ExStart
-            //ExId:DocumentCtor
             //ExFor:Document.#ctor(Boolean)
             //ExSummary:Shows how to create a blank document. Note the blank document contains one section and one paragraph.
             Document doc = new Document();
@@ -110,7 +107,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.#ctor(String)
-            //ExId:OpenFromFile
             //ExSummary:Opens a document from a file.
             // Open a document. The file is opened read only and only for the duration of the constructor.
             Document doc = new Document(MyDir + "Document.doc");
@@ -118,7 +114,6 @@ namespace ApiExamples
 
             //ExStart
             //ExFor:Document.Save(String)
-            //ExId:SaveToFile
             //ExSummary:Saves a document to a file.
             doc.Save(ArtifactsDir + "Document.OpenFromFile.doc");
             //ExEnd
@@ -127,12 +122,8 @@ namespace ApiExamples
         [Test]
         public void OpenAndSaveToFile()
         {
-            //ExStart
-            //ExId:OpenAndSaveToFile
-            //ExSummary:Opens a document from a file and saves it to a different format
             Document doc = new Document(MyDir + "Document.doc");
             doc.Save(ArtifactsDir + "Document.html");
-            //ExEnd
         }
 
         [Test]
@@ -140,7 +131,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.#ctor(Stream)
-            //ExId:OpenFromStream
             //ExSummary:Opens a document from a stream.
             // Open the stream. Read only access is enough for Aspose.Words to load a document.
             using (Stream stream = File.OpenRead(MyDir + "Document.doc"))
@@ -161,7 +151,6 @@ namespace ApiExamples
             //ExFor:LoadOptions.#ctor
             //ExFor:LoadOptions.BaseUri
             //ExFor:ShapeBase.IsImage
-            //ExId:DocumentCtor_LoadOptions
             //ExSummary:Opens an HTML document with images from a stream using a base URI.
             Document doc = new Document();
             // We are opening this HTML file:      
@@ -299,7 +288,6 @@ namespace ApiExamples
             //ExFor:Document.#ctor(String,LoadOptions)
             //ExFor:LoadOptions
             //ExFor:LoadOptions.#ctor(String)
-            //ExId:OpenEncrypted
             //ExSummary:Loads a Microsoft Word document encrypted with a password.
             Document doc = new Document(MyDir + "Document.LoadEncrypted.doc", new LoadOptions("qwerty"));
             //ExEnd
@@ -528,7 +516,6 @@ namespace ApiExamples
             //ExFor:SaveFormat
             //ExSummary:Converts from DOC to HTML format.
             Document doc = new Document(MyDir + "Document.doc");
-
             doc.Save(ArtifactsDir + "Document.ConvertToHtml.html", SaveFormat.Html);
             //ExEnd
         }
@@ -540,7 +527,6 @@ namespace ApiExamples
             //ExFor:Document.Save(String)
             //ExSummary:Converts from DOC to MHTML format.
             Document doc = new Document(MyDir + "Document.doc");
-
             doc.Save(ArtifactsDir + "Document.ConvertToMhtml.mht");
             //ExEnd
         }
@@ -548,13 +534,9 @@ namespace ApiExamples
         [Test]
         public void ConvertToTxt()
         {
-            //ExStart
-            //ExId:ExtractContentSaveAsText
-            //ExSummary:Shows how to save a document in TXT format.
             Document doc = new Document(MyDir + "Document.doc");
-
             doc.Save(ArtifactsDir + "Document.ConvertToTxt.txt");
-            //ExEnd
+            
         }
 
         [Test]
@@ -563,10 +545,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document
             //ExFor:Document.Save(String)
-            //ExId:Doc2PdfSave
             //ExSummary:Converts a whole document from DOC to PDF using default options.
             Document doc = new Document(MyDir + "Document.doc");
-
             doc.Save(ArtifactsDir + "Document.Doc2PdfSave.pdf");
             //ExEnd
         }
@@ -576,7 +556,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Save(Stream,SaveFormat)
-            //ExId:SaveToStream
             //ExSummary:Shows how to save a document to a stream.
             Document doc = new Document(MyDir + "Document.doc");
 
@@ -593,16 +572,10 @@ namespace ApiExamples
         [Test]
         public void Doc2EpubSave()
         {
-            //ExStart
-            //ExId:Doc2EpubSave
-            //ExSummary:Converts a document to EPUB using default save options.
-
             // Open an existing document from disk.
             Document doc = new Document(MyDir + "Document.EpubConversion.doc");
-
             // Save the document in EPUB format.
             doc.Save(ArtifactsDir + "Document.EpubConversion.epub");
-            //ExEnd
         }
 
         [Test]
@@ -615,7 +588,6 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions.DocumentSplitCriteria
             //ExFor:HtmlSaveOptions.ExportDocumentProperties
             //ExFor:HtmlSaveOptions.SaveFormat
-            //ExId:Doc2EpubSaveWithOptions
             //ExSummary:Converts a document to EPUB with save options specified.
             // Open an existing document from disk.
             Document doc = new Document(MyDir + "Document.EpubConversion.doc");
@@ -699,7 +671,6 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions
             //ExFor:HtmlSaveOptions.ExportTextInputFormFieldAsText
             //ExFor:HtmlSaveOptions.ImagesFolder
-            //ExId:SaveWithOptions
             //ExSummary:Shows how to set save options before saving a document to HTML.
             Document doc = new Document(MyDir + "Rendering.doc");
 
@@ -797,7 +768,6 @@ namespace ApiExamples
         //ExFor:NodeChangingArgs
         //ExFor:NodeChangingArgs.Node
         //ExFor:DocumentBase.NodeChangingCallback
-        //ExId:NodeChangingInDocument
         //ExSummary:Shows how to implement custom logic over node insertion in the document by changing the font of inserted HTML content.
         [Test] //ExSkip
         public void TestNodeChangingInDocument()
@@ -877,9 +847,6 @@ namespace ApiExamples
         // the file not to be found.
         public void AppendDocumentFromAutomation()
         {
-            //ExStart
-            //ExId:AppendDocumentFromAutomation
-            //ExSummary:Shows how to join multiple documents together.
             // The document that the other documents will be appended to.
             Document doc = new Document();
             
@@ -907,8 +874,6 @@ namespace ApiExamples
                     Assert.That(() => doc.Sections[i].HeadersFooters.LinkToPrevious(false),
                         Throws.TypeOf<NullReferenceException>());
             }
-
-            //ExEnd
         }
 
         [Test]
@@ -921,7 +886,6 @@ namespace ApiExamples
             //ExFor:DigitalSignatureCollection.Count
             //ExFor:DigitalSignatureCollection.Item(Int32)
             //ExFor:DigitalSignatureType
-            //ExId:ValidateAllDocumentSignatures
             //ExSummary:Shows how to validate all signatures in a document.
             // Load the signed document.
             Document doc = new Document(MyDir + "Document.DigitalSignature.docx");
@@ -954,7 +918,6 @@ namespace ApiExamples
             //ExFor:DigitalSignature.SignTime
             //ExFor:DigitalSignature.SignatureType
             //ExFor:DigitalSignature.Certificate
-            //ExId:ValidateIndividualSignatures
             //ExSummary:Shows how to validate each signature in a document and display basic information about the signature.
             // Load the document which contains signature.
             Document doc = new Document(MyDir + "Document.DigitalSignature.docx");
@@ -991,7 +954,6 @@ namespace ApiExamples
             //ExFor:PdfDigitalSignatureDetails
             //ExFor:PdfSaveOptions.DigitalSignatureDetails
             //ExFor:PdfDigitalSignatureDetails.#ctor(CertificateHolder, String, String, DateTime)
-            //ExId:SignPDFDocument
             //ExSummary:Shows how to sign a generated PDF document using Aspose.Words.
             // Create a simple document from scratch.
             Document doc = new Document();
@@ -1223,7 +1185,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Clone
-            //ExId:CloneDocument
             //ExSummary:Shows how to deep clone a document.
             Document doc = new Document(MyDir + "Document.doc");
             Document clone = doc.Clone();
@@ -1255,7 +1216,6 @@ namespace ApiExamples
             //ExFor:FieldOptions
             //ExFor:FieldOptions.FieldUpdateCultureSource
             //ExFor:FieldUpdateCultureSource
-            //ExId:ChangeFieldUpdateCultureSource
             //ExSummary:Shows how to specify where the culture used for date formatting during field update and mail merge is chosen from.
             // Set the culture used during field update to the culture used by the field.
             doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode;
@@ -1275,7 +1235,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:CompositeNode.GetText
             //ExFor:Node.ToString(SaveFormat)
-            //ExId:NodeTxtExportDifferences
             //ExSummary:Shows the difference between calling the GetText and ToString methods on a node.
             Document doc = new Document();
 
@@ -1296,9 +1255,6 @@ namespace ApiExamples
         [Test]
         public void DocumentByteArray()
         {
-            //ExStart
-            //ExId:DocumentToFromByteArray
-            //ExSummary:Shows how to convert a document object to an array of bytes and back into a document object again.
             // Load the document.
             Document doc = new Document(MyDir + "Document.doc");
 
@@ -1317,8 +1273,6 @@ namespace ApiExamples
 
             // Load the stream into a new document object.
             Document loadDoc = new Document(streamIn);
-            //ExEnd
-
             Assert.AreEqual(doc.GetText(), loadDoc.GetText());
         }
 
@@ -1327,7 +1281,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Protect(ProtectionType,String)
-            //ExId:ProtectDocument
             //ExSummary:Shows how to protect a document.
             Document doc = new Document();
             doc.Protect(ProtectionType.AllowOnlyFormFields, "password");
@@ -1335,7 +1288,6 @@ namespace ApiExamples
 
             //ExStart
             //ExFor:Document.Unprotect
-            //ExId:UnprotectDocument
             //ExSummary:Shows how to unprotect a document. Note that the password is not required.
             doc.Unprotect();
             //ExEnd
@@ -1368,7 +1320,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.ProtectionType
-            //ExId:GetProtectionType
             //ExSummary:Shows how to get protection type currently set in the document.
             Document doc = new Document(MyDir + "Document.doc");
             ProtectionType protectionType = doc.ProtectionType;
@@ -1407,7 +1358,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.UpdateTableLayout
-            //ExId:UpdateTableLayout
             //ExSummary:Shows how to update the layout of tables in a document.
             Document doc = new Document(MyDir + "Document.doc");
 
@@ -1440,7 +1390,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.UpdateFields
-            //ExId:UpdateFieldsInDocument
             //ExSummary:Shows how to update all fields in a document.
             Document doc = new Document(MyDir + "Document.doc");
             doc.UpdateFields();
@@ -1475,7 +1424,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.ExpandTableStylesToDirectFormatting
-            //ExId:TableStyleToDirectFormatting
             //ExSummary:Shows how to expand the formatting from styles onto the rows and cells of the table as direct formatting.
             Document doc = new Document(MyDir + "Table.TableStyle.docx");
 
@@ -1542,7 +1490,6 @@ namespace ApiExamples
             //ExFor:ViewOptions.ViewType
             //ExFor:ViewOptions.ZoomPercent
             //ExFor:ViewType
-            //ExId:SetZoom
             //ExSummary:The following code shows how to make sure the document is displayed at 50% zoom when opened in Microsoft Word.
             Document doc = new Document(MyDir + "Document.doc");
             doc.ViewOptions.ViewType = ViewType.PageLayout;
@@ -1557,7 +1504,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.Variables
             //ExFor:VariableCollection
-            //ExId:GetDocumentVariables
             //ExSummary:Shows how to enumerate over document variables.
             Document doc = new Document(MyDir + "Document.doc");
 

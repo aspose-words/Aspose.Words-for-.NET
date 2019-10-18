@@ -39,12 +39,7 @@ namespace ApiExamples
         public void UpdateToc()
         {
             Document doc = new Document();
-
-            //ExStart
-            //ExId:UpdateTOC
-            //ExSummary:Shows how to completely rebuild TOC fields in the document by invoking field update.
             doc.UpdateFields();
-            //ExEnd
         }
 
         [Test]
@@ -58,7 +53,6 @@ namespace ApiExamples
             //ExFor:FieldChar.IsLocked
             //ExFor:FieldChar.GetField
             //ExFor:Field.IsLocked
-            //ExId:GetField
             //ExSummary:Demonstrates how to retrieve the field class from an existing FieldStart node in the document.
             Document doc = new Document(MyDir + "Document.TableOfContents.doc");
 
@@ -152,16 +146,12 @@ namespace ApiExamples
         [Test]
         public void GetFieldFromFieldCollection()
         {
-            //ExStart
-            //ExId:GetFieldFromFieldCollection
-            //ExSummary:Demonstrates how to retrieve a field using the range of a node.
             Document doc = new Document(MyDir + "Document.TableOfContents.doc");
 
             Field field = doc.Range.Fields[0];
 
             // This should be the first field in the document - a TOC field.
             Console.WriteLine(field.Type);
-            //ExEnd
         }
 
         [Test]
@@ -190,9 +180,6 @@ namespace ApiExamples
         [Test]
         public void InsertTcField()
         {
-            //ExStart
-            //ExId:InsertTCField
-            //ExSummary:Shows how to insert a TC field into the document using DocumentBuilder.
             // Create a blank document.
             Document doc = new Document();
 
@@ -201,7 +188,6 @@ namespace ApiExamples
 
             // Insert a TC field at the current document builder position.
             builder.InsertField("TC \"Entry Text\" \\f t");
-            //ExEnd
         }
 
         [Test]
@@ -213,9 +199,6 @@ namespace ApiExamples
 
             builder.InsertField("MERGEFIELD Date");
 
-            //ExStart
-            //ExId:ChangeCurrentCulture
-            //ExSummary:Shows how to change the culture used in formatting fields during update.
             // Store the current culture so it can be set back once mail merge is complete.
             CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
             // Set to German language so dates and numbers are formatted using this culture during mail merge.
@@ -226,7 +209,6 @@ namespace ApiExamples
 
             // Restore the original culture.
             Thread.CurrentThread.CurrentCulture = currentCulture;
-            //ExEnd
 
             doc.Save(ArtifactsDir + "Field.ChangeLocale.doc");
         }
@@ -236,7 +218,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:CompositeNode.GetChildNodes(NodeType, Boolean)
-            //ExId:RemoveTableOfContents
             //ExSummary:Demonstrates how to remove a specified TOC from a document.
             // Open a document which contains a TOC.
             Document doc = new Document(MyDir + "Document.TableOfContents.doc");
@@ -251,9 +232,6 @@ namespace ApiExamples
         }
 
         [Test]
-        //ExStart
-        //ExId:TCFieldsRangeReplace
-        //ExSummary:Shows how to find and insert a TC field at text in a document.
         public void InsertTcFieldsAtText()
         {
             Document doc = new Document();
@@ -304,10 +282,8 @@ namespace ApiExamples
             }
         }
 
-        //ExEnd
-
         [Test]
-        [NUnit.Framework.Description("WORDSNET-16037")]
+        [Description("WORDSNET-16037")]
         public void InsertAndUpdateDirtyField()
         {
             //ExStart
@@ -2768,7 +2744,7 @@ namespace ApiExamples
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-
+            
             Assert.IsNull(doc.FieldOptions.BarcodeGenerator);
 
             // Barcodes generated in this way will be images, and we can use a custom IBarcodeGenerator implementation to generate them
@@ -4392,6 +4368,7 @@ namespace ApiExamples
         //ExStart
         //ExFor:FieldOptions.FieldUpdateCultureProvider
         //ExFor:IFieldUpdateCultureProvider
+        //ExFor:IFieldUpdateCultureProvider.GetCulture(string, Field)
         //ExSummary:Shows how to specifying a culture defining date/time formatting on per field basis
         [Test]
         public void DefineDateTimeFormatting()
@@ -5349,6 +5326,7 @@ namespace ApiExamples
         public void BidiOutline()
         {
             //ExStart
+            //ExFor:FieldBidiOutline
             //ExFor:FieldShape
             //ExFor:FieldShape.Text
             //ExFor:ParagraphFormat.Bidi
