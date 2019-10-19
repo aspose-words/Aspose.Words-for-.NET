@@ -67,6 +67,7 @@ namespace ApiExamples
             //ExFor:GraphicsQualityOptions.StringFormat
             //ExFor:GraphicsQualityOptions.SmoothingMode
             //ExFor:GraphicsQualityOptions.TextRenderingHint
+            //ExFor:ImageSaveOptions.GraphicsQualityOptions
             //ExSummary:Shows how to set render quality options when converting documents to image formats. 
             Document doc = new Document(MyDir + "SaveOptions.MyriadPro.docx");
 
@@ -93,6 +94,8 @@ namespace ApiExamples
         public void ConverImageColorsToBlackAndWhite()
         {
             //ExStart
+            //ExFor:ImageColorMode
+            //ExFor:ImagePixelFormat
             //ExFor:ImageSaveOptions.ImageColorMode
             //ExFor:ImageSaveOptions.PixelFormat
             //ExSummary:Show how to convert document images to black and white with 1 bit per pixel
@@ -110,7 +113,9 @@ namespace ApiExamples
         public void ThresholdForFloydSteinbergDithering()
         {
             //ExStart
+            //ExFor:ImageBinarizationMethod
             //ExFor:ImageSaveOptions.ThresholdForFloydSteinbergDithering
+            //ExFor:ImageSaveOptions.TiffBinarizationMethod
             //ExSummary: Shows how to control the threshold for TIFF binarization in the Floyd-Steinberg method
             Document doc = new Document (MyDir + "ImagesSaveOptions.ThresholdForFloydSteinbergDithering.docx");
 
