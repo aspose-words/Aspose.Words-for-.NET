@@ -455,12 +455,15 @@ namespace ApiExamples
             builder.ParagraphFormat.Style = builder.Document.Styles["Heading 3"];
             builder.Writeln("Heading #6");
 
-            // Create a HtmlSaveOptions object and set the DocumentSplitHeadingLevel to 2 //INSP: Comment duplicates code, instead of explaining why we use these options.
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
-            options.DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph;
-            options.DocumentSplitHeadingLevel = 2;
-
-            // Instead of one output html, the document will be split up into 4 parts, on heading levels 1 and 2
+            // Create a HtmlSaveOptions object and set the split criteria to "HeadingParagraph", meaning that the document 
+            // will be split into parts at the beginning of every paragraph of a "Heading" style, and each part will be saved as a separate document
+            // Also, we will set the DocumentSplitHeadingLevel to 2, which will split the document only at headings that have levels from 1 to 2
+            HtmlSaveOptions options = new HtmlSaveOptions
+            {
+                DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph,
+                DocumentSplitHeadingLevel = 2
+            };
+            
             doc.Save(ArtifactsDir + "HtmlSaveOptions.HeadingLevels.html", options);
             //ExEnd
         }
