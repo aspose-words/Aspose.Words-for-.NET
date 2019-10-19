@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.Saving;
@@ -40,15 +41,16 @@ namespace ApiExamples
             xpsSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
         }
 
-        [Test]
+        //ExStart
+        //ExFor:IPageSavingCallback
+        //ExFor:PageSavingArgs
+        //ExFor:PageSavingArgs.PageFileName
+        //ExFor:FixedPageSaveOptions.PageSavingCallback
+        //ExSummary:Shows how separate pages are saved when a document is exported to fixed page format.
+        [Test] //ExSkip
         public void PageFileNameSavingCallback()
         {
-            //ExStart
-            //ExFor:IPageSavingCallback
-            //ExFor:PageSavingArgs
-            //ExFor:PageSavingArgs.PageFileName
-            //ExFor:FixedPageSaveOptions.PageSavingCallback
-            //ExSummary:Shows how separate pages are saved when a document is exported to fixed page format.
+
             Document doc = new Document(MyDir + "Rendering.doc");
 
             HtmlFixedSaveOptions htmlFixedSaveOptions =
@@ -92,6 +94,7 @@ namespace ApiExamples
         //ExFor:ImageSavingArgs
         //ExFor:ImageSavingArgs.ImageFileName
         //ExFor:HtmlSaveOptions
+        //ExFor:HtmlSaveOptions.DocumentPartSavingCallback
         //ExFor:HtmlSaveOptions.ImageSavingCallback
         //ExSummary:Shows how split a document into parts and save them.
         [Test] //ExSkip
@@ -99,7 +102,7 @@ namespace ApiExamples
         {
             // Open a document to be converted to html
             Document doc = new Document(MyDir + "Rendering.doc");
-            string outFileName = "SavingCallback.DocumentParts.html";
+            string outFileName = "SavingCallback.DocumentParts.Rendering.html";
 
             // We can use an appropriate SaveOptions subclass to customize the conversion process
             HtmlSaveOptions options = new HtmlSaveOptions();
@@ -196,7 +199,7 @@ namespace ApiExamples
             private readonly string mOutFileName;
         }
         //ExEnd
-		
+
         //ExStart
         //ExFor:CssSavingArgs
         //ExFor:CssSavingArgs.CssStream
@@ -204,6 +207,9 @@ namespace ApiExamples
         //ExFor:CssSavingArgs.IsExportNeeded
         //ExFor:CssSavingArgs.KeepCssStreamOpen
         //ExFor:CssStyleSheetType
+        //ExFor:HtmlSaveOptions.CssSavingCallback
+        //ExFor:HtmlSaveOptions.CssStyleSheetFileName
+        //ExFor:HtmlSaveOptions.CssStyleSheetType
         //ExFor:ICssSavingCallback
         //ExFor:ICssSavingCallback.CssSaving(CssSavingArgs)
         //ExSummary:Shows how to work with CSS stylesheets that may be created along with Html documents.
@@ -214,17 +220,22 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Rendering.doc");
 
             // If our output document will produce a CSS stylesheet, we can use an HtmlSaveOptions to control where it is saved
-            HtmlSaveOptions htmlFixedSaveOptions = new HtmlSaveOptions();
+            HtmlSaveOptions options = new HtmlSaveOptions();
 
             // By default, a CSS stylesheet is stored inside its HTML document, but we can have it saved to a separate file
-            htmlFixedSaveOptions.CssStyleSheetType = CssStyleSheetType.External;
+            options.CssStyleSheetType = CssStyleSheetType.External;
 
-            // A custom ICssSavingCallback implementation can control where that stylesheet will be saved and linked to by the Html document
-            htmlFixedSaveOptions.CssSavingCallback =
+            // We can designate a filename for our stylesheet like this
+            options.CssStyleSheetFileName = ArtifactsDir + "Rendering.CssSavingCallback.css";
+
+            // A custom ICssSavingCallback implementation can also control where that stylesheet will be saved and linked to by the Html document
+            // This callback will override the filename we specified above in options.CssStyleSheetFileName,
+            // but will give us more control over the saving process
+            options.CssSavingCallback =
                 new CustomCssSavingCallback(ArtifactsDir + "Rendering.CssSavingCallback.css", true, false);
 
             // The CssSaving() method of our callback will be called at this stage
-            doc.Save(ArtifactsDir + "Rendering.CssSavingCallback.html", htmlFixedSaveOptions);
+            doc.Save(ArtifactsDir + "Rendering.CssSavingCallback.html", options);
         }
 
         /// <summary>
