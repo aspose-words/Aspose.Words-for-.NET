@@ -7,11 +7,13 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Fonts;
+using Aspose.Words.Layout;
 using Aspose.Words.Lists;
 using NUnit.Framework;
 using Aspose.Words.Saving;
@@ -979,5 +981,50 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ScaleImageToShapeSize.html", options);
             //ExEnd
         }
+
+        //ExStart
+        //ExFor:ImageSavingArgs.CurrentShape
+        //ExFor:ImageSavingArgs.Document
+        //ExFor:ImageSavingArgs.ImageStream
+        //ExFor:ImageSavingArgs.IsImageAvailable
+        //ExFor:ImageSavingArgs.KeepImageStreamOpen
+        //ExSummary:Shows how to involve an image saving callback in an .html conversion process.
+        [Test] //ExSkip
+        public void ImageSavingCallback()
+        {
+            // Open a document which contains shapes with images
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            // Create a HtmlSaveOptions object with a custom image saving callback that will print image information
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.ImageSavingCallback = new ImageShapePrinter();
+           
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ImageSavingCallback.html", options);
+        }
+
+        /// <summary>
+        /// Prints information of all images that are about to be saved from within a document to image files
+        /// </summary>
+        private class ImageShapePrinter : IImageSavingCallback
+        {
+            void IImageSavingCallback.ImageSaving(ImageSavingArgs args)
+            {
+                args.KeepImageStreamOpen = false;
+                Assert.True(args.IsImageAvailable);
+
+                Console.WriteLine($"{args.Document.OriginalFileName.Split('\\').Last()} Image #{++mImageCount}");
+
+                LayoutCollector layoutCollector = new LayoutCollector(args.Document);
+
+                Console.WriteLine($"\tOn page:\t{layoutCollector.GetStartPageIndex(args.CurrentShape)}");
+                Console.WriteLine($"\tDimensions:\t{args.CurrentShape.Bounds.ToString()}");
+                Console.WriteLine($"\tAlignment:\t{args.CurrentShape.VerticalAlignment}");
+                Console.WriteLine($"\tWrap type:\t{args.CurrentShape.WrapType}");
+                Console.WriteLine($"Output filename:\t{args.ImageFileName}\n");
+            }
+
+            private int mImageCount;
+        }
+        //ExEnd
     }
 }
