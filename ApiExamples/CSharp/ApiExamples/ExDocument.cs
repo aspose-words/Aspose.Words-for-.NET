@@ -989,6 +989,13 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfSaveOptions
             //ExFor:PdfDigitalSignatureDetails
+            //ExFor:PdfDigitalSignatureDetails.#ctor
+            //ExFor:PdfDigitalSignatureDetails.HashAlgorithm
+            //ExFor:PdfDigitalSignatureDetails.Location
+            //ExFor:PdfDigitalSignatureDetails.Reason
+            //ExFor:PdfDigitalSignatureDetails.SignatureDate
+            //ExFor:PdfDigitalSignatureDetails.TimestampSettings
+            //ExFor:PdfDigitalSignatureHashAlgorithm
             //ExFor:PdfSaveOptions.DigitalSignatureDetails
             //ExFor:PdfDigitalSignatureDetails.#ctor(CertificateHolder, String, String, DateTime)
             //ExId:SignPDFDocument
@@ -1006,6 +1013,11 @@ namespace ApiExamples
             PdfSaveOptions options = new PdfSaveOptions();
             options.DigitalSignatureDetails =
                 new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", DateTime.Now);
+
+            options.DigitalSignatureDetails.HashAlgorithm = PdfDigitalSignatureHashAlgorithm.Sha256;
+            options.DigitalSignatureDetails.TimestampSettings = 
+                new PdfDigitalSignatureTimestampSettings("https://freetsa.org/tsr", "JohnDoe", "********");
+
 
             // Save the document as PDF with the digital signature set.
             doc.Save(ArtifactsDir + "Document.Signed.pdf", options);
