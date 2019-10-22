@@ -996,6 +996,14 @@ namespace ApiExamples
             //ExFor:PdfDigitalSignatureDetails.SignatureDate
             //ExFor:PdfDigitalSignatureDetails.TimestampSettings
             //ExFor:PdfDigitalSignatureHashAlgorithm
+            //ExFor:PdfDigitalSignatureTimestampSettings
+            //ExFor:PdfDigitalSignatureTimestampSettings.#ctor
+            //ExFor:PdfDigitalSignatureTimestampSettings.#ctor(String,String,String)
+            //ExFor:PdfDigitalSignatureTimestampSettings.#ctor(String,String,String,TimeSpan)
+            //ExFor:PdfDigitalSignatureTimestampSettings.Password
+            //ExFor:PdfDigitalSignatureTimestampSettings.ServerUrl
+            //ExFor:PdfDigitalSignatureTimestampSettings.Timeout
+            //ExFor:PdfDigitalSignatureTimestampSettings.UserName
             //ExFor:PdfSaveOptions.DigitalSignatureDetails
             //ExFor:PdfDigitalSignatureDetails.#ctor(CertificateHolder, String, String, DateTime)
             //ExId:SignPDFDocument
@@ -1005,21 +1013,31 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Test Signed PDF.");
 
-            // Load the certificate from disk.
-            // The other constructor overloads can be used to load certificates from different locations.
+            // Load the certificate from disk
+            // The other constructor overloads can be used to load certificates from different locations
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
-            // Pass the certificate and details to the save options class to sign with.
+            // Pass the certificate and details to the save options class to sign with
             PdfSaveOptions options = new PdfSaveOptions();
-            options.DigitalSignatureDetails =
-                new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", DateTime.Now);
 
-            options.DigitalSignatureDetails.HashAlgorithm = PdfDigitalSignatureHashAlgorithm.Sha256;
+            PdfDigitalSignatureDetails signatureDetails = new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", DateTime.Now);
+            options.DigitalSignatureDetails = signatureDetails;
+                
+            // We can use this attribute to set a different hash algorithm
+            signatureDetails.HashAlgorithm = PdfDigitalSignatureHashAlgorithm.Sha256;
+
+            // We can set a verified timestamp for our signature as well, with a valid timestamp authority
             options.DigitalSignatureDetails.TimestampSettings = 
-                new PdfDigitalSignatureTimestampSettings("https://freetsa.org/tsr", "JohnDoe", "********");
+                new PdfDigitalSignatureTimestampSettings("https://freetsa.org/tsr", "JohnDoe", "MyPassword");
 
+            // The default lifespan of the timestamp is 100 seconds
+            Assert.AreEqual(100.0d, options.DigitalSignatureDetails.TimestampSettings.Timeout.TotalSeconds);
 
-            // Save the document as PDF with the digital signature set.
+            // We can set our own timeout period via the constructor
+            options.DigitalSignatureDetails.TimestampSettings =
+                new PdfDigitalSignatureTimestampSettings("https://freetsa.org/tsr", "JohnDoe", "MyPassword", TimeSpan.FromMinutes(30));
+
+            // Save the document as PDF with the digital signature set
             doc.Save(ArtifactsDir + "Document.Signed.pdf", options);
             //ExEnd
         }

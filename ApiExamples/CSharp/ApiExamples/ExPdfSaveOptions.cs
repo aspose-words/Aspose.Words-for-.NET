@@ -487,6 +487,7 @@ namespace ApiExamples
         public void CustomPropertiesExport()
         {
             //ExStart
+            //ExFor:PdfCustomPropertiesExport
             //ExFor:PdfSaveOptions.CustomPropertiesExport
             //ExSummary:Shows how to export custom properties while saving to .pdf.
             Document doc = new Document();
