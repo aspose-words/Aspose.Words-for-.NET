@@ -93,16 +93,17 @@ namespace ApiExamples
             Assert.That(tables.Count, Is.GreaterThan(0));
         }
 
-        [Test]
+        //ExStart
+        //ExFor:Node.GetAncestor(NodeType)
+        //ExFor:Node.GetAncestor(System.Type)
+        //ExFor:Table.NodeType
+        //ExFor:Cell.Tables
+        //ExFor:TableCollection
+        //ExFor:NodeCollection.Count
+        //ExSummary:Shows how to find out if a table contains another table or if the table itself is nested inside another table.
+        [Test] //ExSkip
         public void CalculateDepthOfNestedTables()
         {
-            //ExStart
-            //ExFor:Node.GetAncestor(NodeType)
-            //ExFor:Table.NodeType
-            //ExFor:Cell.Tables
-            //ExFor:TableCollection
-            //ExFor:NodeCollection.Count
-            //ExSummary:Shows how to find out if a table contains another table or if the table itself is nested inside another table.
             Document doc = new Document(MyDir + "Table.NestedTables.doc");
             int tableIndex = 0;
 
@@ -137,16 +138,15 @@ namespace ApiExamples
         {
             int depth = 0;
 
-            NodeType type = table.NodeType;
             // The parent of the table will be a Cell, instead attempt to find a grandparent that is of type Table
-            Node parent = table.GetAncestor(type);
+            Node parent = table.GetAncestor(table.NodeType);
 
             while (parent != null)
             {
                 // Every time we find a table a level up we increase the depth counter and then try to find an
                 // ancestor of type table from the parent.
                 depth++;
-                parent = parent.GetAncestor(type);
+                parent = parent.GetAncestor(typeof(Table));
             }
 
             return depth;
