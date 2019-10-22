@@ -588,6 +588,8 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions.DocumentSplitCriteria
             //ExFor:HtmlSaveOptions.ExportDocumentProperties
             //ExFor:HtmlSaveOptions.SaveFormat
+            //ExFor:SaveOptions
+            //ExFor:SaveOptions.SaveFormat
             //ExSummary:Converts a document to EPUB with save options specified.
             // Open an existing document from disk.
             Document doc = new Document(MyDir + "Document.EpubConversion.doc");
@@ -2094,18 +2096,19 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Save(Stream, String, Saving.SaveOptions)
+            //ExFor:SaveOptions.UseAntiAliasing
+            //ExFor:SaveOptions.UseHighQualityRendering
             //ExSummary:Improve the quality of a rendered document with SaveOptions.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Font.Size = 60;
-
             builder.Writeln("Some text.");
 
             SaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
+            Assert.AreEqual(false, options.UseAntiAliasing);
 
-            options.UseAntiAliasing = false;
-            doc.Save(ArtifactsDir + "Document.SaveOptionsLowQuality.jpg", options);
+            doc.Save(ArtifactsDir + "Document.SaveOptionsDefault.jpg", options);
 
             options.UseAntiAliasing = true;
             options.UseHighQualityRendering = true;
