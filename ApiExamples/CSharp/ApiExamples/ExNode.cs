@@ -23,19 +23,6 @@ namespace ApiExamples
     public class ExNode : ApiExampleBase
     {
         [Test]
-        public void UseNodeType()
-        {
-            //ExStart
-            //ExFor:NodeType
-            //ExSummary:The following example shows how to use the NodeType enumeration.
-            Document doc = new Document();
-
-            // Returns NodeType.Document
-            NodeType type = doc.NodeType;
-            //ExEnd
-        }
-
-        [Test]
         public void CloneCompositeNode()
         {
             //ExStart
@@ -118,6 +105,7 @@ namespace ApiExamples
             Document doc = new Document();
             //ExStart
             //ExFor:Node
+            //ExFor:NodeType
             //ExFor:CompositeNode
             //ExFor:CompositeNode.GetChild
             //ExSummary:Shows how to extract a specific child node from a CompositeNode by using the GetChild method and passing the NodeType and index.
