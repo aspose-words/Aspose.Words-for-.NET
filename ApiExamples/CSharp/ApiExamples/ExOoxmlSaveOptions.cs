@@ -43,6 +43,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:OoxmlSaveOptions
             //ExFor:OoxmlSaveOptions.#ctor
+            //ExFor:OoxmlSaveOptions.SaveFormat
             //ExFor:OoxmlCompliance
             //ExFor:OoxmlSaveOptions.Compliance
             //ExFor:ShapeMarkupLanguage
@@ -88,7 +89,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:List.IsRestartAtEachSection
-            //ExFor:OoxmlSaveOptions.SaveFormat
             //ExSummary:Shows how to specify that the list has to be restarted at each section.
             Document doc = new Document();
 
@@ -117,8 +117,6 @@ namespace ApiExamples
             {
                 Compliance = OoxmlCompliance.Iso29500_2008_Transitional
             };
-
-            Assert.AreEqual(SaveFormat.Docx, options.SaveFormat);
 
             doc.Save(ArtifactsDir + "RestartingDocumentList.docx", options);
             //ExEnd

@@ -2342,7 +2342,7 @@ namespace ApiExamples
             // Any changes to the styles in this template will be propagated to those styles in the document
             doc.AutomaticallyUpdateSyles = true;
 
-            doc.Save(ArtifactsDir + "Document.TemplateStylesUpdating.docx".Length);
+            doc.Save(ArtifactsDir + "Document.TemplateStylesUpdating.docx");
             //ExEnd
         }
 
