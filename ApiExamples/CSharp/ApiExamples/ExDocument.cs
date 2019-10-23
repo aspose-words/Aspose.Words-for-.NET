@@ -984,7 +984,7 @@ namespace ApiExamples
 
         [Test]
         [Description("WORDSNET-16868")]
-        public void SignPdfDocument()
+        public void SignPdfDocument() // INSP: No all of ExFor provided in example. The example should not be too generic.
         {
             //ExStart
             //ExFor:PdfSaveOptions
