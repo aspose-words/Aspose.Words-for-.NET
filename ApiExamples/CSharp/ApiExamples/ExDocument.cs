@@ -1152,19 +1152,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DetachTemplate()
-        {
-            //ExStart
-            //ExFor:Document.AttachedTemplate
-            //ExSummary:Opens a document, makes sure it is no longer attached to a template and saves the document.
-            Document doc = new Document(MyDir + "Document.doc");
-
-            doc.AttachedTemplate = "";
-            doc.Save(ArtifactsDir + "Document.DetachTemplate.doc");
-            //ExEnd
-        }
-
-        [Test]
         public void DefaultTabStop()
         {
             //ExStart
@@ -2355,7 +2342,31 @@ namespace ApiExamples
             // Any changes to the styles in this template will be propagated to those styles in the document
             doc.AutomaticallyUpdateSyles = true;
 
-            doc.Save(ArtifactsDir + "TemplateStylesUpdating.docx");
+            doc.Save(ArtifactsDir + "Document.TemplateStylesUpdating.docx".Length);
+            //ExEnd
+        }
+
+        [Test]
+        public void DefaultTemplate()
+        {
+            //ExStart
+            //ExFor:Document.AttachedTemplate
+            //ExFor:SaveOptions.CreateSaveOptions(String)
+            //ExFor:SaveOptions.DefaultTemplate
+            //ExSummary:Shows how to set a default .docx document template.
+            Document doc = new Document();
+
+            // If we set this flag to true while not having a template attached to the document,
+            // there will be no effect because there is no template document to draw style changes from
+            doc.AutomaticallyUpdateSyles = true;
+            Assert.IsEmpty(doc.AttachedTemplate);
+
+            // We can set a default template document filename in a SaveOptions object to make it apply to
+            // all documents we save with it that have no AttachedTemplate value
+            SaveOptions options = SaveOptions.CreateSaveOptions("Document.DefaultTemplate.docx");
+            options.DefaultTemplate = MyDir + "Document.BusinessBrochureTemplate.dotx";
+
+            doc.Save(ArtifactsDir + "Document.DefaultTemplate.docx", options);
             //ExEnd
         }
 
