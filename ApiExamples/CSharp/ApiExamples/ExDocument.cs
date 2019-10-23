@@ -3477,5 +3477,22 @@ namespace ApiExamples
             //ExEnd
         }
 #endif
+
+        [Test]
+        public void SaveOutputParameters()
+        {
+            //ExStart
+            //ExFor:SaveOutputParameters
+            //ExFor:SaveOutputParameters.ContentType
+            //ExSummary:Shows how to verify Content-Type strings from save output parameters.
+            Document doc = new Document(MyDir + "Document.doc");
+
+            SaveOutputParameters parameters = doc.Save(ArtifactsDir + "Document.SaveOutputParameters.doc");
+            Assert.AreEqual("application/msword", parameters.ContentType);
+
+            parameters = doc.Save(ArtifactsDir + "Document.SaveOutputParameters.pdf");
+            Assert.AreEqual("application/pdf", parameters.ContentType);
+            //ExEnd
+        }
     }
 }

@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Aspose.Words.BuildingBlocks;
+using Aspose.Words.Saving;
 
 namespace ApiExamples
 {
@@ -853,6 +854,39 @@ namespace ApiExamples
             Assert.AreEqual(SdtType.BuildingBlockGallery, buildingBlockSdt.SdtType);
             Assert.AreEqual("Table of Contents", buildingBlockSdt.BuildingBlockGallery);
             Assert.AreEqual("Built-in", buildingBlockSdt.BuildingBlockCategory);
+        }
+
+        [Test]
+        [Category("SkipTearDown")]
+        public void UpdateSdtContent()
+        {
+            //ExStart
+            //ExFor:SaveOptions.UpdateSdtContent
+            //ExSummary:
+            Document doc = new Document();
+
+            // Insert two StructuredDocumentTags; a date and a drop down list 
+            StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.Date, MarkupLevel.Block);
+            tag.FullDate = DateTime.Now;
+
+            doc.FirstSection.Body.AppendChild(tag);
+
+            tag = new StructuredDocumentTag(doc, SdtType.DropDownList, MarkupLevel.Block);
+            tag.ListItems.Add(new SdtListItem("Value 1"));
+            tag.ListItems.Add(new SdtListItem("Value 2"));
+            tag.ListItems.Add(new SdtListItem("Value 3"));
+            tag.ListItems.SelectedValue = tag.ListItems[1];
+
+            doc.FirstSection.Body.AppendChild(tag);
+            
+            // We've selected default values for both tags
+            // We can save those values in the document without immediately updating the tags, leaving them in their default state
+            // by using a SaveOptions object with this flag set
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.UpdateSdtContent = false;
+
+            doc.Save(ArtifactsDir + "UpdateSdtContent.pdf", options);
+            //ExEnd
         }
     }
 }
