@@ -857,12 +857,11 @@ namespace ApiExamples
         }
 
         [Test]
-        [Category("SkipTearDown")]
         public void UpdateSdtContent()
         {
             //ExStart
             //ExFor:SaveOptions.UpdateSdtContent
-            //ExSummary:
+            //ExSummary:Shows how structured document tags can be updated while saving to .pdf.
             Document doc = new Document();
 
             // Insert two StructuredDocumentTags; a date and a drop down list 

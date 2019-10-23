@@ -18,16 +18,22 @@ namespace ApiExamples
         public void MeasureUnitOption()
         {
             //ExStart
+            //ExFor:OdtSaveOptions
+            //ExFor:OdtSaveOptions.#ctor
+            //ExFor:OdtSaveOptions.IsStrictSchema11
             //ExFor:OdtSaveOptions.MeasureUnit
             //ExFor:OdtSaveMeasureUnit
             //ExSummary:Shows how to work with units of measure of document content
             Document doc = new Document(MyDir + "OdtSaveOptions.MeasureUnit.docx");
 
             // Open Office uses centimeters, MS Office uses inches
-            OdtSaveOptions saveOptions = new OdtSaveOptions();
-            saveOptions.MeasureUnit = OdtSaveMeasureUnit.Inches;
+            OdtSaveOptions saveOptions = new OdtSaveOptions
+            {
+                MeasureUnit = OdtSaveMeasureUnit.Inches,
+                IsStrictSchema11 = true
+            };
 
-            doc.Save(ArtifactsDir + "OdtSaveOptions.MeasureUnit.odt");
+            doc.Save(ArtifactsDir + "OdtSaveOptions.MeasureUnit.odt", saveOptions);
             //ExEnd
         }
 
@@ -37,7 +43,9 @@ namespace ApiExamples
         public void SaveDocumentEncryptedWithAPassword(SaveFormat saveFormat)
         {
             //ExStart
+            //ExFor:OdtSaveOptions.#ctor(SaveFormat)
             //ExFor:OdtSaveOptions.Password
+            //ExFor:OdtSaveOptions.SaveFormat
             //ExSummary:Shows how to encrypted your odt/ott documents with a password.
             Document doc = new Document(MyDir + "Document.docx");
 

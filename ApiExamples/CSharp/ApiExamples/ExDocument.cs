@@ -3508,7 +3508,6 @@ namespace ApiExamples
             {
                 SaveFormat = SaveFormat.WordML,
                 MemoryOptimization = true
-
             };
 
             doc.Save(ArtifactsDir + "Document.WordML2003SaveOptions.wml", options);
