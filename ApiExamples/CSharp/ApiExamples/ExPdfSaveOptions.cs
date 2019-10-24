@@ -596,9 +596,9 @@ namespace ApiExamples
             //ExFor:PdfDigitalSignatureDetails.#ctor
             //ExFor:PdfDigitalSignatureDetails.#ctor(CertificateHolder, String, String, DateTime)
             //ExFor:PdfDigitalSignatureDetails.HashAlgorithm
-            //ExFor:PdfDigitalSignatureDetails.Location
-            //ExFor:PdfDigitalSignatureDetails.Reason
-            //ExFor:PdfDigitalSignatureDetails.SignatureDate
+            //ExFor:PdfDigitalSignatureDetails.Location // INSP: Can we use asserts for this methods?
+            //ExFor:PdfDigitalSignatureDetails.Reason // INSP: Can we use asserts for this methods?
+            //ExFor:PdfDigitalSignatureDetails.SignatureDate // INSP: Can we use asserts for this methods?
             //ExFor:PdfDigitalSignatureHashAlgorithm
             //ExFor:PdfSaveOptions.DigitalSignatureDetails
             //ExSummary:Shows how to sign a generated PDF using Aspose.Words.
@@ -613,6 +613,8 @@ namespace ApiExamples
             // Pass the certificate and details to the save options class to sign with
             PdfSaveOptions options = new PdfSaveOptions();
             options.DigitalSignatureDetails = new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", DateTime.Now);
+
+            Assert.AreEqual(options.DigitalSignatureDetails.Location, "Aspose Office"); // INSP: Like this
 
             // We can use this attribute to set a different hash algorithm
             options.DigitalSignatureDetails.HashAlgorithm = PdfDigitalSignatureHashAlgorithm.Sha256;
@@ -630,9 +632,9 @@ namespace ApiExamples
             //ExFor:PdfDigitalSignatureTimestampSettings.#ctor
             //ExFor:PdfDigitalSignatureTimestampSettings.#ctor(String,String,String)
             //ExFor:PdfDigitalSignatureTimestampSettings.#ctor(String,String,String,TimeSpan)
-            //ExFor:PdfDigitalSignatureTimestampSettings.Password
-            //ExFor:PdfDigitalSignatureTimestampSettings.ServerUrl
-            //ExFor:PdfDigitalSignatureTimestampSettings.Timeout
+            //ExFor:PdfDigitalSignatureTimestampSettings.Password // INSP: Can we use asserts for this methods?
+            //ExFor:PdfDigitalSignatureTimestampSettings.ServerUrl // INSP: Can we use asserts for this methods?
+            //ExFor:PdfDigitalSignatureTimestampSettings.Timeout // INSP: Can we use asserts for this methods?
             //ExFor:PdfDigitalSignatureTimestampSettings.UserName
             //ExSummary:Shows how to sign a generated PDF and timestamp it using Aspose.Words.
             Document doc = new Document();
