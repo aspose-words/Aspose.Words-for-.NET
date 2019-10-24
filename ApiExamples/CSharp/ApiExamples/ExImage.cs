@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
@@ -332,12 +333,18 @@ namespace ApiExamples
             Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
 
             //ExStart
-            //ExFor:Node.NextPreOrder
+            //ExFor:Node.NextPreOrder(Node)
+            //ExFor:Node.PreviousPreOrder(Node)
             //ExSummary:Shows how to delete all images from a document using pre-order tree traversal.
             Node curNode = doc;
             while (curNode != null)
             {
                 Node nextNode = curNode.NextPreOrder(doc);
+
+                if (curNode.PreviousPreOrder(doc) != null && nextNode != null)
+                {
+                    Assert.AreEqual(curNode, nextNode.PreviousPreOrder(doc));
+                }
 
                 if (curNode.NodeType.Equals(NodeType.Shape))
                 {

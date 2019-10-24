@@ -6,10 +6,13 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Xml.XPath;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using NUnit.Framework;
@@ -19,19 +22,6 @@ namespace ApiExamples
     [TestFixture]
     public class ExNode : ApiExampleBase
     {
-        [Test]
-        public void UseNodeType()
-        {
-            //ExStart
-            //ExFor:NodeType
-            //ExSummary:The following example shows how to use the NodeType enumeration.
-            Document doc = new Document();
-
-            // Returns NodeType.Document
-            NodeType type = doc.NodeType;
-            //ExEnd
-        }
-
         [Test]
         public void CloneCompositeNode()
         {
@@ -115,6 +105,7 @@ namespace ApiExamples
             Document doc = new Document();
             //ExStart
             //ExFor:Node
+            //ExFor:NodeType
             //ExFor:CompositeNode
             //ExFor:CompositeNode.GetChild
             //ExSummary:Shows how to extract a specific child node from a CompositeNode by using the GetChild method and passing the NodeType and index.
@@ -338,6 +329,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:CompositeNode.SelectSingleNode
             //ExFor:CompositeNode.SelectNodes
+            //ExFor:NodeList.GetEnumerator
+            //ExFor:NodeList.ToArray
             //ExSummary:Shows how to select certain nodes by using an XPath expression.
             Document doc = new Document(MyDir + "Table.Document.doc");
 
@@ -345,8 +338,21 @@ namespace ApiExamples
             // This will return any paragraphs which are in a table.
             NodeList nodeList = doc.SelectNodes("//Table//Paragraph");
 
+            // Iterate through the list with an enumerator and print the contents of every paragraph in each cell of the table
+            int index = 0;
+            using (IEnumerator<Node> e = nodeList.GetEnumerator())
+            {
+                while (e.MoveNext())
+                {
+                    Console.WriteLine($"Table paragraph index {index++}, contents: \"{e.Current.GetText().Trim()}\"");
+                }
+            }
+
             // This expression will select any paragraphs that are direct children of any body node in the document.
             nodeList = doc.SelectNodes("//Body/Paragraph");
+
+            // We can treat the list as an array too
+            Assert.AreEqual(4, nodeList.ToArray().Length);
 
             // Use SelectSingleNode to select the first result of the same expression as above.
             Node node = doc.SelectSingleNode("//Body/Paragraph");
@@ -705,5 +711,156 @@ namespace ApiExamples
             } while (navigator.MoveToNext());
         }
         //ExEnd
+
+        //ExStart
+        //ExFor:NodeChangingAction
+        //ExFor:NodeChangingArgs.Action
+        //ExFor:NodeChangingArgs.NewParent
+        //ExFor:NodeChangingArgs.OldParent
+        //ExSummary:Shows how to use a NodeChangingCallback to monitor changes to the document tree as it is edited.
+        [Test] //ExSkip
+        public void NodeChangingCallback()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set the NodeChangingCallback attribute to a custom printer 
+            doc.NodeChangingCallback = new NodeChangingPrinter();
+
+            // All node additions and removals will be printed to the console as we edit the document
+            builder.Writeln("Hello world!");
+            builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Cell 1");
+            builder.InsertCell();
+            builder.Write("Cell 2");
+            builder.EndTable();
+
+            builder.InsertImage(Image.FromFile(ImageDir + "Aspose.Words.gif"));
+
+            builder.CurrentParagraph.ParentNode.RemoveAllChildren();
+        }
+
+        /// <summary>
+        /// Prints all inserted/removed nodes as well as their parent nodes
+        /// </summary>
+        private class NodeChangingPrinter : INodeChangingCallback
+        {
+            void INodeChangingCallback.NodeInserting(NodeChangingArgs args)
+            {
+                Assert.AreEqual(NodeChangingAction.Insert, args.Action);
+                Assert.AreEqual(null, args.OldParent);
+            }
+
+            void INodeChangingCallback.NodeInserted(NodeChangingArgs args)
+            {
+                Assert.AreEqual(NodeChangingAction.Insert, args.Action);
+                Assert.NotNull(args.NewParent);
+
+                Console.WriteLine($"Inserted node:");
+                Console.WriteLine($"\tType:\t{args.Node.NodeType}");
+
+                if (args.Node.GetText().Trim() != "")
+                {
+                    Console.WriteLine($"\tText:\t\"{args.Node.GetText().Trim()}\"");
+                }
+
+                Console.WriteLine($"\tHash:\t{args.Node.GetHashCode()}");
+                Console.WriteLine($"\tParent:\t{args.NewParent.NodeType} ({args.NewParent.GetHashCode()})");
+            }
+
+            void INodeChangingCallback.NodeRemoving(NodeChangingArgs args)
+            {
+                Assert.AreEqual(NodeChangingAction.Remove, args.Action);
+            }
+
+            void INodeChangingCallback.NodeRemoved(NodeChangingArgs args)
+            {
+                Assert.AreEqual(NodeChangingAction.Remove, args.Action);
+                Assert.Null(args.NewParent);
+
+                Console.WriteLine($"Removed node: {args.Node.NodeType} ({args.Node.GetHashCode()})");
+            }
+        }
+        //ExEnd
+
+        [Test]
+        public void NodeCollection()
+        {
+            //ExStart
+            //ExFor:NodeCollection.Contains(Node)
+            //ExFor:NodeCollection.Insert(Int32,Node)
+            //ExFor:NodeCollection.Remove(Node)
+            //ExSummary:Shows how to work with a NodeCollection.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // The normal way to insert Runs into a document is to add text using a DocumentBuilder
+            builder.Write("Run 1. ");
+            builder.Write("Run 2. ");
+
+            // Every .Write() invocation creates a new Run, which is added to the parent Paragraph's RunCollection
+            RunCollection runs = doc.FirstSection.Body.FirstParagraph.Runs;
+            Assert.AreEqual(2, runs.Count);
+
+            // We can insert a node into the RunCollection manually to achieve the same effect
+            Run newRun = new Run(doc, "Run 3. ");
+            runs.Insert(3, newRun);
+
+            Assert.True(runs.Contains(newRun));
+            Assert.AreEqual("Run 1. Run 2. Run 3.", doc.GetText().Trim());
+
+            // Text can also be deleted from the document by accessing individual Runs via the RunCollection and editing or removing them
+            Run run = runs[1];
+            runs.Remove(run);
+            Assert.AreEqual("Run 1. Run 3.", doc.GetText().Trim());
+
+            Assert.NotNull(run);
+            Assert.False(runs.Contains(run));
+            //ExEnd
+        }
+
+        [Test]
+        public void NodeList()
+        {
+            //ExStart
+            //ExFor:NodeList.Count
+            //ExFor:NodeList.Item(System.Int32)
+            //ExSummary:Shows how to use XPaths to navigate a NodeList.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert some nodes with a DocumentBuilder
+            builder.Writeln("Hello world!");
+
+            builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Cell 1");
+            builder.InsertCell();
+            builder.Write("Cell 2");
+            builder.EndTable();
+
+            builder.InsertImage(Image.FromFile(ImageDir + "Aspose.Words.gif"));
+
+            // Get all run nodes, of which we put 3 in the entire document
+            NodeList nodeList = doc.SelectNodes("//Run");
+            Assert.AreEqual(3, nodeList.Count);
+
+            // Using a double forward slash, select all Run nodes that are indirect descendants of a Table node,
+            // which would in this case be the runs inside the two cells we inserted
+            nodeList = doc.SelectNodes("//Table//Run");
+            Assert.AreEqual(2, nodeList.Count);
+
+            // Single forward slashes specify direct descendant relationships,
+            // of which we skipped quite a few by using double slashes
+            Assert.AreEqual(doc.SelectNodes("//Table//Run"), doc.SelectNodes("//Table/Row/Cell/Paragraph/Run"));
+
+            // We can access the actual nodes via a NodeList too
+            nodeList = doc.SelectNodes("//Shape");
+            Assert.AreEqual(1, nodeList.Count);
+            Shape shape = (Shape)nodeList[0];
+            Assert.True(shape.HasImage);
+            //ExEnd
+        }
     }
 }
