@@ -183,6 +183,7 @@ namespace ApiExamples
         public void ColorRendering()
         {
             //ExStart
+            //ExFor:PdfSaveOptions
             //ExFor:SaveOptions.ColorMode
             //ExSummary:Shows how change image color with save options property
             // Open document with color image
@@ -562,6 +563,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
             //ExEnd
         }
+
 #else
         [Test]
         public void PreblendImagesNetStandard2()
@@ -586,5 +588,75 @@ namespace ApiExamples
             //ExEnd
         }
 #endif
+        [Test]
+        public void PdfDigitalSignature()
+        {
+            //ExStart
+            //ExFor:PdfDigitalSignatureDetails
+            //ExFor:PdfDigitalSignatureDetails.#ctor
+            //ExFor:PdfDigitalSignatureDetails.#ctor(CertificateHolder, String, String, DateTime)
+            //ExFor:PdfDigitalSignatureDetails.HashAlgorithm
+            //ExFor:PdfDigitalSignatureDetails.Location
+            //ExFor:PdfDigitalSignatureDetails.Reason
+            //ExFor:PdfDigitalSignatureDetails.SignatureDate
+            //ExFor:PdfDigitalSignatureHashAlgorithm
+            //ExFor:PdfSaveOptions.DigitalSignatureDetails
+            //ExSummary:Shows how to sign a generated PDF using Aspose.Words.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Signed PDF contents.");
+
+            // Load the certificate from disk
+            // The other constructor overloads can be used to load certificates from different locations
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+
+            // Pass the certificate and details to the save options class to sign with
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.DigitalSignatureDetails = new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", DateTime.Now);
+
+            // We can use this attribute to set a different hash algorithm
+            options.DigitalSignatureDetails.HashAlgorithm = PdfDigitalSignatureHashAlgorithm.Sha256;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void PdfDigitalSignatureTimestamp()
+        {
+            //ExStart
+            //ExFor:PdfDigitalSignatureDetails.TimestampSettings
+            //ExFor:PdfDigitalSignatureTimestampSettings
+            //ExFor:PdfDigitalSignatureTimestampSettings.#ctor
+            //ExFor:PdfDigitalSignatureTimestampSettings.#ctor(String,String,String)
+            //ExFor:PdfDigitalSignatureTimestampSettings.#ctor(String,String,String,TimeSpan)
+            //ExFor:PdfDigitalSignatureTimestampSettings.Password
+            //ExFor:PdfDigitalSignatureTimestampSettings.ServerUrl
+            //ExFor:PdfDigitalSignatureTimestampSettings.Timeout
+            //ExFor:PdfDigitalSignatureTimestampSettings.UserName
+            //ExSummary:Shows how to sign a generated PDF and timestamp it using Aspose.Words.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Signed PDF contents.");
+
+            // Create a digital signature for the document that we will save
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.DigitalSignatureDetails = new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", DateTime.Now);
+
+            // We can set a verified timestamp for our signature as well, with a valid timestamp authority
+            options.DigitalSignatureDetails.TimestampSettings =
+                new PdfDigitalSignatureTimestampSettings("https://freetsa.org/tsr", "JohnDoe", "MyPassword");
+
+            // The default lifespan of the timestamp is 100 seconds
+            Assert.AreEqual(100.0d, options.DigitalSignatureDetails.TimestampSettings.Timeout.TotalSeconds);
+
+            // We can set our own timeout period via the constructor
+            options.DigitalSignatureDetails.TimestampSettings =
+                new PdfDigitalSignatureTimestampSettings("https://freetsa.org/tsr", "JohnDoe", "MyPassword", TimeSpan.FromMinutes(30));
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf");
+            //ExEnd
+        }
     }
 }
