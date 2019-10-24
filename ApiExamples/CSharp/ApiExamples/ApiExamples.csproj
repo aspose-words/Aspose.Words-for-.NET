@@ -189,7 +189,7 @@
     <Compile Include="ExXpsSaveOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExSvgSaveOptions.cs" />
-    <Compile Include="PsSaveOptions.cs" />
+    <Compile Include="ExPsSaveOptions.cs" />
     <Compile Include="TestData\TestBuilders\ColorItemTestBuilder.cs" />
     <Compile Include="TestData\TestBuilders\DocumentTestBuilder.cs" />
     <Compile Include="TestData\TestBuilders\ImageTestBuilder.cs" />
