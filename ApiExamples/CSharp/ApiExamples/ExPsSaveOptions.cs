@@ -22,7 +22,7 @@ namespace ApiExamples
             //ExFor:PsSaveOptions
             //ExFor:PsSaveOptions.SaveFormat
             //ExFor:PsSaveOptions.UseBookFoldPrintingSettings
-            ////ExSummary:Shows how to create a bookfold in the PostScript format.
+            //ExSummary:Shows how to create a bookfold in the PostScript format.
             Document doc = new Document(MyDir + "Paragraphs.docx");
 
             // Configure both page setup and PsSaveOptions to create a book fold
