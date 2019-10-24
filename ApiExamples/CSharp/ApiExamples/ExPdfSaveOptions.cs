@@ -220,6 +220,7 @@ namespace ApiExamples
         public void MemoryOptimization()
         {
             //ExStart
+            //ExFor:SaveOptions.CreateSaveOptions(SaveFormat)
             //ExFor:SaveOptions.MemoryOptimization
             //ExSummary:Shows an option to optimize memory consumption when you work with large documents.
             Document doc = new Document(MyDir + "SaveOptions.MemoryOptimization.doc");
@@ -488,6 +489,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PdfSaveOptions.CustomPropertiesExport
+            //ExFor:SaveOptions.DmlEffectsRenderingMode
             //ExSummary:Shows how to export custom properties while saving to .pdf.
             Document doc = new Document();
 

@@ -588,6 +588,8 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions.DocumentSplitCriteria
             //ExFor:HtmlSaveOptions.ExportDocumentProperties
             //ExFor:HtmlSaveOptions.SaveFormat
+            //ExFor:SaveOptions
+            //ExFor:SaveOptions.SaveFormat
             //ExSummary:Converts a document to EPUB with save options specified.
             // Open an existing document from disk.
             Document doc = new Document(MyDir + "Document.EpubConversion.doc");
@@ -1147,19 +1149,6 @@ namespace ApiExamples
             // Verify that runs were joined in the document.
             Assert.That(runsAfter, Is.LessThan(runsBefore));
             Assert.AreNotEqual(0, joinCount);
-        }
-
-        [Test]
-        public void DetachTemplate()
-        {
-            //ExStart
-            //ExFor:Document.AttachedTemplate
-            //ExSummary:Opens a document, makes sure it is no longer attached to a template and saves the document.
-            Document doc = new Document(MyDir + "Document.doc");
-
-            doc.AttachedTemplate = "";
-            doc.Save(ArtifactsDir + "Document.DetachTemplate.doc");
-            //ExEnd
         }
 
         [Test]
@@ -2094,18 +2083,19 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Save(Stream, String, Saving.SaveOptions)
+            //ExFor:SaveOptions.UseAntiAliasing
+            //ExFor:SaveOptions.UseHighQualityRendering
             //ExSummary:Improve the quality of a rendered document with SaveOptions.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Font.Size = 60;
-
             builder.Writeln("Some text.");
 
             SaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
+            Assert.AreEqual(false, options.UseAntiAliasing);
 
-            options.UseAntiAliasing = false;
-            doc.Save(ArtifactsDir + "Document.SaveOptionsLowQuality.jpg", options);
+            doc.Save(ArtifactsDir + "Document.SaveOptionsDefault.jpg", options);
 
             options.UseAntiAliasing = true;
             options.UseHighQualityRendering = true;
@@ -2352,7 +2342,31 @@ namespace ApiExamples
             // Any changes to the styles in this template will be propagated to those styles in the document
             doc.AutomaticallyUpdateSyles = true;
 
-            doc.Save(ArtifactsDir + "TemplateStylesUpdating.docx");
+            doc.Save(ArtifactsDir + "Document.TemplateStylesUpdating.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void DefaultTemplate()
+        {
+            //ExStart
+            //ExFor:Document.AttachedTemplate
+            //ExFor:SaveOptions.CreateSaveOptions(String)
+            //ExFor:SaveOptions.DefaultTemplate
+            //ExSummary:Shows how to set a default .docx document template.
+            Document doc = new Document();
+
+            // If we set this flag to true while not having a template attached to the document,
+            // there will be no effect because there is no template document to draw style changes from
+            doc.AutomaticallyUpdateSyles = true;
+            Assert.IsEmpty(doc.AttachedTemplate);
+
+            // We can set a default template document filename in a SaveOptions object to make it apply to
+            // all documents we save with it that have no AttachedTemplate value
+            SaveOptions options = SaveOptions.CreateSaveOptions("Document.DefaultTemplate.docx");
+            options.DefaultTemplate = MyDir + "Document.BusinessBrochureTemplate.dotx";
+
+            doc.Save(ArtifactsDir + "Document.DefaultTemplate.docx", options);
             //ExEnd
         }
 
@@ -3459,9 +3473,45 @@ namespace ApiExamples
             doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
 
             // Render the document to PDF format
-            doc.Save(ArtifactsDir + "OpenType.Document.pdf");
+            doc.Save(ArtifactsDir + "Document.OpenType.pdf");
             //ExEnd
         }
 #endif
+
+        [Test]
+        public void SaveOutputParameters()
+        {
+            //ExStart
+            //ExFor:SaveOutputParameters
+            //ExFor:SaveOutputParameters.ContentType
+            //ExSummary:Shows how to verify Content-Type strings from save output parameters.
+            Document doc = new Document(MyDir + "Document.doc");
+
+            SaveOutputParameters parameters = doc.Save(ArtifactsDir + "Document.SaveOutputParameters.doc");
+            Assert.AreEqual("application/msword", parameters.ContentType);
+
+            parameters = doc.Save(ArtifactsDir + "Document.SaveOutputParameters.pdf");
+            Assert.AreEqual("application/pdf", parameters.ContentType);
+            //ExEnd
+        }
+
+        [Test]
+        public void WordML2003SaveOptions()
+        {
+            //ExStart
+            //ExFor:WordML2003SaveOptions
+            //ExFor:WordML2003SaveOptions.SaveFormat
+            //ExSummary:Shows how to save to a .wml document while applying save options.
+            Document doc = new Document(MyDir + "Document.doc");
+
+            WordML2003SaveOptions options = new WordML2003SaveOptions()
+            {
+                SaveFormat = SaveFormat.WordML,
+                MemoryOptimization = true
+            };
+
+            doc.Save(ArtifactsDir + "Document.WordML2003SaveOptions.wml", options);
+            //ExEnd
+        }
     }
 }

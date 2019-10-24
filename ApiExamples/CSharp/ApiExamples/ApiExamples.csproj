@@ -167,6 +167,7 @@
     <Compile Include="ExRendering.cs" />
     <Compile Include="ExReplaceHyperlinks.cs" />
     <Compile Include="ExReportingEngine.cs" />
+    <Compile Include="ExRtfSaveOptions.cs" />
     <Compile Include="ExSavingCallback.cs" />
     <Compile Include="ExSection.cs" />
     <Compile Include="ExShape.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="ExXpsSaveOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExSvgSaveOptions.cs" />
+    <Compile Include="PsSaveOptions.cs" />
     <Compile Include="TestData\TestBuilders\ColorItemTestBuilder.cs" />
     <Compile Include="TestData\TestBuilders\DocumentTestBuilder.cs" />
     <Compile Include="TestData\TestBuilders\ImageTestBuilder.cs" />
