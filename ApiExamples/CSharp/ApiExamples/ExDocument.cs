@@ -2603,6 +2603,14 @@ namespace ApiExamples
             //ExFor:Document.MailMergeSettings
             //ExFor:MailMergeDataType
             //ExFor:MailMergeMainDocumentType
+            //ExFor:MailMergeSettings
+            //ExFor:MailMergeSettings.DataSource
+            //ExFor:MailMergeSettings.DataType
+            //ExFor:MailMergeSettings.LinkToQuery
+            //ExFor:MailMergeSettings.MainDocumentType
+            //ExFor:MailMergeSettings.Odso
+            //ExFor:MailMergeSettings.Query
+            //ExFor:MailMergeSettings.ViewMergedData
             //ExFor:Odso
             //ExFor:Odso.Clone
             //ExFor:Odso.ColumnDelimiter
@@ -2610,7 +2618,7 @@ namespace ApiExamples
             //ExFor:Odso.DataSourceType
             //ExFor:Odso.FirstRowContainsColumnNames
             //ExFor:OdsoDataSourceType
-            //ExSummary:Shows how to execute a mail merge with MailMergeSettings.
+            //ExSummary:Shows how to execute an Office Data Source Object mail merge with MailMergeSettings.
             // We'll create a simple document that will act as a destination for mail merge data
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
