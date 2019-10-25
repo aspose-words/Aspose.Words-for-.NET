@@ -179,7 +179,6 @@ namespace ApiExamples
         public void MailMergeAlternatingRows()
         {
             //ExStart
-            //ExId:MailMergeAlternatingRows
             //ExFor:MailMerge.ExecuteWithRegions(DataTable)
             //ExSummary:Demonstrates how to implement custom logic in the MergeField event to apply cell formatting.
             Document doc = new Document(MyDir + "MailMerge.AlternatingRows.doc");
@@ -301,7 +300,6 @@ namespace ApiExamples
             //ExFor:IFieldMergingCallback.FieldMerging
             //ExFor:IFieldMergingCallback.ImageFieldMerging
             //ExFor:ImageFieldMergingArgs.ImageStream
-            //ExId:MailMergeImageFromBlob
             //ExSummary:Shows how to insert images stored in a database BLOB field into a report.
             Document doc = new Document(MyDir + "MailMerge.MergeImage.doc");
 

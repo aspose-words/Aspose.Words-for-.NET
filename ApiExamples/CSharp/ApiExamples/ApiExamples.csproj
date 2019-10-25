@@ -150,6 +150,7 @@
     <Compile Include="ExMailMerge.cs" />
     <Compile Include="ExMailMergeCustom.cs" />
     <Compile Include="ExMailMergeEvent.cs" />
+    <Compile Include="ExMetered.cs" />
     <Compile Include="ExMossDoc2Pdf.cs" />
     <Compile Include="ExMossRtf2Docx.cs" />
     <Compile Include="ExNestedMailMergeCustom.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="ExRendering.cs" />
     <Compile Include="ExReplaceHyperlinks.cs" />
     <Compile Include="ExReportingEngine.cs" />
+    <Compile Include="ExRtfSaveOptions.cs" />
     <Compile Include="ExSavingCallback.cs" />
     <Compile Include="ExSection.cs" />
     <Compile Include="ExShape.cs" />
@@ -187,6 +189,7 @@
     <Compile Include="ExXpsSaveOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExSvgSaveOptions.cs" />
+    <Compile Include="ExPsSaveOptions.cs" />
     <Compile Include="TestData\TestBuilders\ColorItemTestBuilder.cs" />
     <Compile Include="TestData\TestBuilders\DocumentTestBuilder.cs" />
     <Compile Include="TestData\TestBuilders\ImageTestBuilder.cs" />

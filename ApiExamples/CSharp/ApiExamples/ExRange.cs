@@ -303,7 +303,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:Range
             //ExFor:Range.Text
-            //ExId:RangesGetText
             //ExSummary:Shows how to get plain, unformatted text of a range.
             Document doc = new Document(MyDir + "Document.doc");
             String text = doc.Range.Text;

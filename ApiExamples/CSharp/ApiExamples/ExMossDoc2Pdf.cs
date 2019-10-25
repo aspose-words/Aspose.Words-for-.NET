@@ -5,10 +5,6 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-//ExStart
-//ExId:MossDoc2Pdf
-//ExSummary:The following is the complete code of the document converter.
-
 using System;
 using System.Globalization;
 using System.IO;
@@ -115,4 +111,3 @@ namespace ApiExamples
         private static StreamWriter gLog;
     }
 }
-//ExEnd

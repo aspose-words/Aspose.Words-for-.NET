@@ -24,7 +24,6 @@ namespace ApiExamples
             //ExFor:Bookmark.Name
             //ExFor:Bookmark.Text
             //ExFor:Range.Bookmarks
-            //ExId:BookmarksGetNameSetText
             //ExSummary:Shows how to get or set bookmark name and text.
             Document doc = new Document(MyDir + "Bookmark.doc");
 
@@ -84,7 +83,6 @@ namespace ApiExamples
             //ExFor:BookmarkCollection
             //ExFor:BookmarkCollection.Item(Int32)
             //ExFor:BookmarkCollection.Item(String)
-            //ExId:BookmarksAccess
             //ExSummary:Shows how to obtain bookmarks from a bookmark collection.
             Document doc = new Document(MyDir + "Bookmarks.doc");
 
@@ -123,16 +121,12 @@ namespace ApiExamples
         [Test]
         public void BookmarksInsertBookmarkWithDocumentBuilder()
         {
-            //ExStart
-            //ExId:BookmarksInsertBookmark
-            //ExSummary:Shows how to create a new bookmark.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.StartBookmark("MyBookmark");
             builder.Writeln("Text inside a bookmark.");
             builder.EndBookmark("MyBookmark");
-            //ExEnd
         }
 
         [Test]
@@ -232,7 +226,6 @@ namespace ApiExamples
 
             // Look at initial values of our bookmarks
             PrintAllBookmarkInfo(bookmarks);
-
             Assert.AreEqual("Bookmark 1", bookmarks[0].Name); //ExSkip
             Assert.AreEqual("Text content of Bookmark 2", bookmarks[1].Text); //ExSkip
             Assert.AreEqual(3, bookmarks.Count); //ExSkip
@@ -246,7 +239,6 @@ namespace ApiExamples
 
             // Look at updated values of our bookmarks
             PrintAllBookmarkInfo(bookmarks);
-
             Assert.AreEqual("Updated name of Bookmark 1", bookmarks[0].Name); //ExSkip
             Assert.AreEqual("Updated text content of Bookmark 2", bookmarks[1].Text); //ExSkip
             Assert.AreEqual(2, bookmarks.Count); //ExSkip

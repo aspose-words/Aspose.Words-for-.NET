@@ -11,9 +11,6 @@ namespace ApiExamples
 {
     public static class ExMossRtf2Docx
     {
-        //ExStart
-        //ExId:MossRtf2Docx
-        //ExSummary:Converts an RTF document to OOXML.
         public static void ConvertRtfToDocx(string inFileName, string outFileName)
         {
             // Load an RTF file into Aspose.Words.
@@ -22,7 +19,5 @@ namespace ApiExamples
             // Save the document in the OOXML format.
             doc.Save(outFileName, SaveFormat.Docx);
         }
-
-        //ExEnd
     }
 }
