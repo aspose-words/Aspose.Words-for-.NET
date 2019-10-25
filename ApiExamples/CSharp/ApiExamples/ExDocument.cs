@@ -947,35 +947,6 @@ namespace ApiExamples
                         digitalSig.CertificateHolder.Certificate.IssuerName.Name.Contains("VeriSign"));
         }
 
-        [Test]
-        [Description("WORDSNET-16868")]
-        public void SignPdfDocument()
-        {
-            //ExStart
-            //ExFor:PdfSaveOptions
-            //ExFor:PdfDigitalSignatureDetails
-            //ExFor:PdfSaveOptions.DigitalSignatureDetails
-            //ExFor:PdfDigitalSignatureDetails.#ctor(CertificateHolder, String, String, DateTime)
-            //ExSummary:Shows how to sign a generated PDF document using Aspose.Words.
-            // Create a simple document from scratch.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Writeln("Test Signed PDF.");
-
-            // Load the certificate from disk.
-            // The other constructor overloads can be used to load certificates from different locations.
-            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
-
-            // Pass the certificate and details to the save options class to sign with.
-            PdfSaveOptions options = new PdfSaveOptions();
-            options.DigitalSignatureDetails =
-                new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", DateTime.Now);
-
-            // Save the document as PDF with the digital signature set.
-            doc.Save(ArtifactsDir + "Document.Signed.pdf", options);
-            //ExEnd
-        }
-
 #if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
         public void CertificateHolderCreate()
