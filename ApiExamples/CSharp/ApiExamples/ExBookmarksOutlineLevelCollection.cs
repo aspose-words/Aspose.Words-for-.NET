@@ -84,6 +84,7 @@ namespace ApiExamples
             // We can empty this dictionary to remove the contents table
             outlineLevels.Clear();
             //ExEnd
+
 #if !(__MOBILE__ || MAC)
             // Bind pdf with Aspose.Pdf
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();

@@ -40,7 +40,7 @@ namespace ApiExamples
         //ExFor:Range.Bookmarks
         //ExFor:DocumentVisitor.VisitBookmarkStart 
         //ExFor:DocumentVisitor.VisitBookmarkEnd
-        //ExSummary:Shows how add bookmarks and update their contents.
+        //ExSummary:Shows how to add bookmarks and update their contents.
         [Test] //ExSkip
         public void CreateUpdateAndPrintBookmarks()
         {
@@ -63,8 +63,7 @@ namespace ApiExamples
             // The bookmarked text is not deleted
             bookmarks[2].Remove();
 
-            bookmarks = doc.Range.Bookmarks;
-            
+            bookmarks = doc.Range.Bookmarks;            
             // Check that we have 2 bookmarks after the latest bookmark was deleted
             Assert.AreEqual(2, bookmarks.Count);
             Assert.AreEqual("Updated name of MyBookmark 1", bookmarks[0].Name); //ExSkip
@@ -158,6 +157,7 @@ namespace ApiExamples
             //ExSummary:Shows how to remove all bookmarks from a document.
             // Open a document with 3 bookmarks: "MyBookmark1", "My_Bookmark2", "MyBookmark3"
             Document doc = new Document(MyDir + "Bookmarks.docx");
+            
             // Remove all bookmarks from the document
             // The bookmarked text is not deleted
             doc.Range.Bookmarks.Clear();
