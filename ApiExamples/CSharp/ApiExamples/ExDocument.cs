@@ -29,11 +29,13 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
-using Aspose.Words.Shaping.HarfBuzz;
 using Aspose.Words.Tables;
 using Aspose.Words.Themes;
 using NUnit.Framework;
 using CompareOptions = Aspose.Words.CompareOptions;
+#if !(__MOBILE__ || MAC)
+using Aspose.Words.Shaping.HarfBuzz;
+#endif
 #if !(NETSTANDARD2_0 || __MOBILE__)
 using Org.BouncyCastle.Pkcs;
 #endif
@@ -58,7 +60,6 @@ namespace ApiExamples
             //ExFor:License
             //ExFor:License.#ctor
             //ExFor:License.SetLicense(String)
-            //ExId:LicenseFromFileNoPath
             //ExSummary:Aspose.Words will attempt to find the license file in the embedded resources or in the assembly folders.
             License license = new License();
             license.SetLicense("Aspose.Words.lic");
@@ -80,7 +81,6 @@ namespace ApiExamples
             {
                 //ExStart
                 //ExFor:License.SetLicense(Stream)
-                //ExId:LicenseFromStream
                 //ExSummary:Initializes a license from a stream.
                 License license = new License();
                 license.SetLicense(myStream);
@@ -96,7 +96,6 @@ namespace ApiExamples
         public void DocumentCtor()
         {
             //ExStart
-            //ExId:DocumentCtor
             //ExFor:Document.#ctor(Boolean)
             //ExSummary:Shows how to create a blank document. Note the blank document contains one section and one paragraph.
             Document doc = new Document();
@@ -108,7 +107,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.#ctor(String)
-            //ExId:OpenFromFile
             //ExSummary:Opens a document from a file.
             // Open a document. The file is opened read only and only for the duration of the constructor.
             Document doc = new Document(MyDir + "Document.doc");
@@ -116,7 +114,6 @@ namespace ApiExamples
 
             //ExStart
             //ExFor:Document.Save(String)
-            //ExId:SaveToFile
             //ExSummary:Saves a document to a file.
             doc.Save(ArtifactsDir + "Document.OpenFromFile.doc");
             //ExEnd
@@ -125,12 +122,8 @@ namespace ApiExamples
         [Test]
         public void OpenAndSaveToFile()
         {
-            //ExStart
-            //ExId:OpenAndSaveToFile
-            //ExSummary:Opens a document from a file and saves it to a different format
             Document doc = new Document(MyDir + "Document.doc");
             doc.Save(ArtifactsDir + "Document.html");
-            //ExEnd
         }
 
         [Test]
@@ -138,7 +131,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.#ctor(Stream)
-            //ExId:OpenFromStream
             //ExSummary:Opens a document from a stream.
             // Open the stream. Read only access is enough for Aspose.Words to load a document.
             using (Stream stream = File.OpenRead(MyDir + "Document.doc"))
@@ -159,7 +151,6 @@ namespace ApiExamples
             //ExFor:LoadOptions.#ctor
             //ExFor:LoadOptions.BaseUri
             //ExFor:ShapeBase.IsImage
-            //ExId:DocumentCtor_LoadOptions
             //ExSummary:Opens an HTML document with images from a stream using a base URI.
             Document doc = new Document();
             // We are opening this HTML file:      
@@ -176,7 +167,7 @@ namespace ApiExamples
                 // Open the document. Note the Document constructor detects HTML format automatically.
                 // Pass the URI of the base folder so any images with relative URIs in the HTML document can be found.
                 LoadOptions loadOptions = new LoadOptions();
-                loadOptions.BaseUri = MyDir;
+                loadOptions.BaseUri = ImageDir;
 
                 doc = new Document(stream, loadOptions);
             }
@@ -297,7 +288,6 @@ namespace ApiExamples
             //ExFor:Document.#ctor(String,LoadOptions)
             //ExFor:LoadOptions
             //ExFor:LoadOptions.#ctor(String)
-            //ExId:OpenEncrypted
             //ExSummary:Loads a Microsoft Word document encrypted with a password.
             Document doc = new Document(MyDir + "Document.LoadEncrypted.doc", new LoadOptions("qwerty"));
             //ExEnd
@@ -526,7 +516,6 @@ namespace ApiExamples
             //ExFor:SaveFormat
             //ExSummary:Converts from DOC to HTML format.
             Document doc = new Document(MyDir + "Document.doc");
-
             doc.Save(ArtifactsDir + "Document.ConvertToHtml.html", SaveFormat.Html);
             //ExEnd
         }
@@ -538,7 +527,6 @@ namespace ApiExamples
             //ExFor:Document.Save(String)
             //ExSummary:Converts from DOC to MHTML format.
             Document doc = new Document(MyDir + "Document.doc");
-
             doc.Save(ArtifactsDir + "Document.ConvertToMhtml.mht");
             //ExEnd
         }
@@ -546,13 +534,9 @@ namespace ApiExamples
         [Test]
         public void ConvertToTxt()
         {
-            //ExStart
-            //ExId:ExtractContentSaveAsText
-            //ExSummary:Shows how to save a document in TXT format.
             Document doc = new Document(MyDir + "Document.doc");
-
             doc.Save(ArtifactsDir + "Document.ConvertToTxt.txt");
-            //ExEnd
+            
         }
 
         [Test]
@@ -561,10 +545,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document
             //ExFor:Document.Save(String)
-            //ExId:Doc2PdfSave
             //ExSummary:Converts a whole document from DOC to PDF using default options.
             Document doc = new Document(MyDir + "Document.doc");
-
             doc.Save(ArtifactsDir + "Document.Doc2PdfSave.pdf");
             //ExEnd
         }
@@ -574,7 +556,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Save(Stream,SaveFormat)
-            //ExId:SaveToStream
             //ExSummary:Shows how to save a document to a stream.
             Document doc = new Document(MyDir + "Document.doc");
 
@@ -591,16 +572,10 @@ namespace ApiExamples
         [Test]
         public void Doc2EpubSave()
         {
-            //ExStart
-            //ExId:Doc2EpubSave
-            //ExSummary:Converts a document to EPUB using default save options.
-
             // Open an existing document from disk.
             Document doc = new Document(MyDir + "Document.EpubConversion.doc");
-
             // Save the document in EPUB format.
             doc.Save(ArtifactsDir + "Document.EpubConversion.epub");
-            //ExEnd
         }
 
         [Test]
@@ -613,7 +588,8 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions.DocumentSplitCriteria
             //ExFor:HtmlSaveOptions.ExportDocumentProperties
             //ExFor:HtmlSaveOptions.SaveFormat
-            //ExId:Doc2EpubSaveWithOptions
+            //ExFor:SaveOptions
+            //ExFor:SaveOptions.SaveFormat
             //ExSummary:Converts a document to EPUB with save options specified.
             // Open an existing document from disk.
             Document doc = new Document(MyDir + "Document.EpubConversion.doc");
@@ -642,6 +618,38 @@ namespace ApiExamples
         }
 
         [Test]
+        public void DownsampleOptions()
+        {
+            //ExStart
+            //ExFor:DownsampleOptions
+            //ExFor:DownsampleOptions.DownsampleImages
+            //ExFor:DownsampleOptions.Resolution
+            //ExFor:DownsampleOptions.ResolutionThreshold
+            //ExFor:PdfSaveOptions.DownsampleOptions
+            //ExSummary:Shows how to change the resolution of images in output pdf documents.
+            // Open a document that contains images 
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            // If we want to convert the document to .pdf, we can use a SaveOptions implementation to customize the saving process
+            PdfSaveOptions options = new PdfSaveOptions();
+
+            // This conversion will downsample images by default
+            Assert.True(options.DownsampleOptions.DownsampleImages);
+            Assert.AreEqual(220, options.DownsampleOptions.Resolution);
+
+            // We can set the output resolution to a different value
+            // The first two images in the input document will be affected by this
+            options.DownsampleOptions.Resolution = 36;
+
+            // We can set a minimum threshold for downsampling 
+            // This value will prevent the second image in the input document from being downsampled
+            options.DownsampleOptions.ResolutionThreshold = 128;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.pdf", options);
+            //ExEnd
+        }
+
+        [Test]
         public void SaveHtmlPrettyFormat()
         {
             //ExStart
@@ -665,7 +673,6 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions
             //ExFor:HtmlSaveOptions.ExportTextInputFormFieldAsText
             //ExFor:HtmlSaveOptions.ImagesFolder
-            //ExId:SaveWithOptions
             //ExSummary:Shows how to set save options before saving a document to HTML.
             Document doc = new Document(MyDir + "Rendering.doc");
 
@@ -699,62 +706,57 @@ namespace ApiExamples
         //ExFor:IFontSavingCallback
         //ExFor:IFontSavingCallback.FontSaving
         //ExFor:FontSavingArgs
+        //ExFor:FontSavingArgs.Bold
+        //ExFor:FontSavingArgs.Document
         //ExFor:FontSavingArgs.FontFamilyName
         //ExFor:FontSavingArgs.FontFileName
-        //ExId:SaveHtmlExportFonts
+        //ExFor:FontSavingArgs.FontStream
+        //ExFor:FontSavingArgs.IsExportNeeded
+        //ExFor:FontSavingArgs.IsSubsettingNeeded
+        //ExFor:FontSavingArgs.Italic
+        //ExFor:FontSavingArgs.KeepFontStreamOpen
+        //ExFor:FontSavingArgs.OriginalFileName
+        //ExFor:FontSavingArgs.OriginalFileSize
         //ExSummary:Shows how to define custom logic for handling font exporting when saving to HTML based formats.
         [Test] //ExSkip
         public void SaveHtmlExportFonts()
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
-            // Set the option to export font resources.
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Mhtml);
+            // Set the option to export font resources
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
             options.ExportFontResources = true;
-            // Create and pass the object which implements the handler methods.
+            // Create and pass the object which implements the handler methods
             options.FontSavingCallback = new HandleFontSaving();
 
             doc.Save(ArtifactsDir + "Document.SaveWithFontsExport.html", options);
         }
 
+        /// <summary>
+        /// Prints information about fonts and saves them alongside their output .html
+        /// </summary>
         public class HandleFontSaving : IFontSavingCallback
         {
             void IFontSavingCallback.FontSaving(FontSavingArgs args)
             {
-                // You can implement logic here to rename fonts, save to file etc. For this example just print some details about the current font being handled.
-                Console.WriteLine("Font Name = {0}, Font Filename = {1}", args.FontFamilyName, args.FontFileName);
-            }
-        }
-        //ExEnd
+                // Print information about fonts
+                Console.Write($"Font:\t{args.FontFamilyName}");
+                if (args.Bold) Console.Write(", bold");
+                if (args.Italic) Console.Write(", italic");
+                Console.WriteLine($"\nSource:\t{args.OriginalFileName}, {args.OriginalFileSize} bytes\n");
 
-        //ExStart
-        //ExFor:IImageSavingCallback
-        //ExFor:IImageSavingCallback.ImageSaving
-        //ExFor:ImageSavingArgs
-        //ExFor:ImageSavingArgs.ImageFileName
-        //ExFor:HtmlSaveOptions
-        //ExFor:HtmlSaveOptions.ImageSavingCallback
-        //ExId:SaveHtmlCustomExport
-        //ExSummary:Shows how to define custom logic for controlling how images are saved when exporting to HTML based formats.
-        [Test] //ExSkip
-        public void SaveHtmlExportImages()
-        {
-            Document doc = new Document(MyDir + "Document.doc");
+                Assert.True(args.IsExportNeeded);
+                Assert.True(args.IsSubsettingNeeded);
 
-            // Create and pass the object which implements the handler methods.
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
-            options.ImageSavingCallback = new HandleImageSaving();
+                // We can designate where each font will be saved by either specifying a file name, or creating a new stream
+                args.FontFileName = args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last();
 
-            doc.Save(ArtifactsDir + "Document.SaveWithCustomImagesExport.html", options);
-        }
+                args.FontStream = 
+                    new FileStream(ArtifactsDir + args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last(), FileMode.Create);
+                Assert.False(args.KeepFontStreamOpen);
 
-        public class HandleImageSaving : IImageSavingCallback
-        {
-            void IImageSavingCallback.ImageSaving(ImageSavingArgs args)
-            {
-                // Change any images in the document being exported with the extension of "jpeg" to "jpg".
-                if (args.ImageFileName.EndsWith(".jpeg"))
-                    args.ImageFileName = args.ImageFileName.Replace(".jpeg", ".jpg");
+                // We can access the source document from here also
+                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.doc"));
             }
         }
         //ExEnd
@@ -768,7 +770,6 @@ namespace ApiExamples
         //ExFor:NodeChangingArgs
         //ExFor:NodeChangingArgs.Node
         //ExFor:DocumentBase.NodeChangingCallback
-        //ExId:NodeChangingInDocument
         //ExSummary:Shows how to implement custom logic over node insertion in the document by changing the font of inserted HTML content.
         [Test] //ExSkip
         public void TestNodeChangingInDocument()
@@ -848,9 +849,6 @@ namespace ApiExamples
         // the file not to be found.
         public void AppendDocumentFromAutomation()
         {
-            //ExStart
-            //ExId:AppendDocumentFromAutomation
-            //ExSummary:Shows how to join multiple documents together.
             // The document that the other documents will be appended to.
             Document doc = new Document();
             
@@ -878,8 +876,6 @@ namespace ApiExamples
                     Assert.That(() => doc.Sections[i].HeadersFooters.LinkToPrevious(false),
                         Throws.TypeOf<NullReferenceException>());
             }
-
-            //ExEnd
         }
 
         [Test]
@@ -892,7 +888,6 @@ namespace ApiExamples
             //ExFor:DigitalSignatureCollection.Count
             //ExFor:DigitalSignatureCollection.Item(Int32)
             //ExFor:DigitalSignatureType
-            //ExId:ValidateAllDocumentSignatures
             //ExSummary:Shows how to validate all signatures in a document.
             // Load the signed document.
             Document doc = new Document(MyDir + "Document.DigitalSignature.docx");
@@ -925,7 +920,6 @@ namespace ApiExamples
             //ExFor:DigitalSignature.SignTime
             //ExFor:DigitalSignature.SignatureType
             //ExFor:DigitalSignature.Certificate
-            //ExId:ValidateIndividualSignatures
             //ExSummary:Shows how to validate each signature in a document and display basic information about the signature.
             // Load the document which contains signature.
             Document doc = new Document(MyDir + "Document.DigitalSignature.docx");
@@ -951,36 +945,6 @@ namespace ApiExamples
             Assert.True(digitalSig.CertificateHolder.Certificate.Subject.Contains("Aspose Pty Ltd"));
             Assert.True(digitalSig.CertificateHolder.Certificate.IssuerName.Name != null &&
                         digitalSig.CertificateHolder.Certificate.IssuerName.Name.Contains("VeriSign"));
-        }
-
-        [Test]
-        [Description("WORDSNET-16868")]
-        public void SignPdfDocument()
-        {
-            //ExStart
-            //ExFor:PdfSaveOptions
-            //ExFor:PdfDigitalSignatureDetails
-            //ExFor:PdfSaveOptions.DigitalSignatureDetails
-            //ExFor:PdfDigitalSignatureDetails.#ctor(CertificateHolder, String, String, DateTime)
-            //ExId:SignPDFDocument
-            //ExSummary:Shows how to sign a generated PDF document using Aspose.Words.
-            // Create a simple document from scratch.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Writeln("Test Signed PDF.");
-
-            // Load the certificate from disk.
-            // The other constructor overloads can be used to load certificates from different locations.
-            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
-
-            // Pass the certificate and details to the save options class to sign with.
-            PdfSaveOptions options = new PdfSaveOptions();
-            options.DigitalSignatureDetails =
-                new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", DateTime.Now);
-
-            // Save the document as PDF with the digital signature set.
-            doc.Save(ArtifactsDir + "Document.Signed.pdf", options);
-            //ExEnd
         }
 
 #if !(NETSTANDARD2_0 || __MOBILE__)
@@ -1159,19 +1123,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DetachTemplate()
-        {
-            //ExStart
-            //ExFor:Document.AttachedTemplate
-            //ExSummary:Opens a document, makes sure it is no longer attached to a template and saves the document.
-            Document doc = new Document(MyDir + "Document.doc");
-
-            doc.AttachedTemplate = "";
-            doc.Save(ArtifactsDir + "Document.DetachTemplate.doc");
-            //ExEnd
-        }
-
-        [Test]
         public void DefaultTabStop()
         {
             //ExStart
@@ -1194,7 +1145,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Clone
-            //ExId:CloneDocument
             //ExSummary:Shows how to deep clone a document.
             Document doc = new Document(MyDir + "Document.doc");
             Document clone = doc.Clone();
@@ -1226,7 +1176,6 @@ namespace ApiExamples
             //ExFor:FieldOptions
             //ExFor:FieldOptions.FieldUpdateCultureSource
             //ExFor:FieldUpdateCultureSource
-            //ExId:ChangeFieldUpdateCultureSource
             //ExSummary:Shows how to specify where the culture used for date formatting during field update and mail merge is chosen from.
             // Set the culture used during field update to the culture used by the field.
             doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode;
@@ -1246,7 +1195,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:CompositeNode.GetText
             //ExFor:Node.ToString(SaveFormat)
-            //ExId:NodeTxtExportDifferences
             //ExSummary:Shows the difference between calling the GetText and ToString methods on a node.
             Document doc = new Document();
 
@@ -1267,9 +1215,6 @@ namespace ApiExamples
         [Test]
         public void DocumentByteArray()
         {
-            //ExStart
-            //ExId:DocumentToFromByteArray
-            //ExSummary:Shows how to convert a document object to an array of bytes and back into a document object again.
             // Load the document.
             Document doc = new Document(MyDir + "Document.doc");
 
@@ -1288,8 +1233,6 @@ namespace ApiExamples
 
             // Load the stream into a new document object.
             Document loadDoc = new Document(streamIn);
-            //ExEnd
-
             Assert.AreEqual(doc.GetText(), loadDoc.GetText());
         }
 
@@ -1298,7 +1241,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Protect(ProtectionType,String)
-            //ExId:ProtectDocument
             //ExSummary:Shows how to protect a document.
             Document doc = new Document();
             doc.Protect(ProtectionType.AllowOnlyFormFields, "password");
@@ -1306,7 +1248,6 @@ namespace ApiExamples
 
             //ExStart
             //ExFor:Document.Unprotect
-            //ExId:UnprotectDocument
             //ExSummary:Shows how to unprotect a document. Note that the password is not required.
             doc.Unprotect();
             //ExEnd
@@ -1339,7 +1280,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.ProtectionType
-            //ExId:GetProtectionType
             //ExSummary:Shows how to get protection type currently set in the document.
             Document doc = new Document(MyDir + "Document.doc");
             ProtectionType protectionType = doc.ProtectionType;
@@ -1378,7 +1318,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.UpdateTableLayout
-            //ExId:UpdateTableLayout
             //ExSummary:Shows how to update the layout of tables in a document.
             Document doc = new Document(MyDir + "Document.doc");
 
@@ -1411,7 +1350,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.UpdateFields
-            //ExId:UpdateFieldsInDocument
             //ExSummary:Shows how to update all fields in a document.
             Document doc = new Document(MyDir + "Document.doc");
             doc.UpdateFields();
@@ -1446,7 +1384,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.ExpandTableStylesToDirectFormatting
-            //ExId:TableStyleToDirectFormatting
             //ExSummary:Shows how to expand the formatting from styles onto the rows and cells of the table as direct formatting.
             Document doc = new Document(MyDir + "Table.TableStyle.docx");
 
@@ -1513,7 +1450,6 @@ namespace ApiExamples
             //ExFor:ViewOptions.ViewType
             //ExFor:ViewOptions.ZoomPercent
             //ExFor:ViewType
-            //ExId:SetZoom
             //ExSummary:The following code shows how to make sure the document is displayed at 50% zoom when opened in Microsoft Word.
             Document doc = new Document(MyDir + "Document.doc");
             doc.ViewOptions.ViewType = ViewType.PageLayout;
@@ -1528,7 +1464,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.Variables
             //ExFor:VariableCollection
-            //ExId:GetDocumentVariables
             //ExSummary:Shows how to enumerate over document variables.
             Document doc = new Document(MyDir + "Document.doc");
 
@@ -1671,6 +1606,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Compare(Document, String, DateTime)
+            //ExFor:RevisionCollection.AcceptAll
             //ExSummary:Shows how to apply the compare method to two documents and then use the results. 
             Document doc1 = new Document(MyDir + "Document.Compare.1.doc");
             Document doc2 = new Document(MyDir + "Document.Compare.2.doc");
@@ -1895,6 +1831,9 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.UpdateThumbnail()
             //ExFor:Document.UpdateThumbnail(ThumbnailGeneratingOptions)
+            //ExFor:ThumbnailGeneratingOptions
+            //ExFor:ThumbnailGeneratingOptions.GenerateFromFirstPage
+            //ExFor:ThumbnailGeneratingOptions.ThumbnailSize
             //ExSummary:Shows how to update a document's thumbnail.
             Document doc = new Document();
 
@@ -1921,22 +1860,25 @@ namespace ApiExamples
             //ExFor:HyphenationOptions.ConsecutiveHyphenLimit
             //ExFor:HyphenationOptions.HyphenationZone
             //ExFor:HyphenationOptions.HyphenateCaps
+            //ExFor:ParagraphFormat.SuppressAutoHyphens
             //ExSummary:Shows how to configure document hyphenation options.
             Document doc = new Document();
-            // Create new Run with text that we want to move to the next line using the hyphen
-            Run run = new Run(doc)
-            {
-                Text =
-                    "poqwjopiqewhpefobiewfbiowefob ewpj weiweohiewobew ipo efoiewfihpewfpojpief pijewfoihewfihoewfphiewfpioihewfoihweoihewfpj"
-            };
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Paragraph para = doc.FirstSection.Body.Paragraphs[0];
-            para.AppendChild(run);
+            // Set this to insert a page break before this paragraph
+            builder.Font.Size = 24;
+            builder.ParagraphFormat.SuppressAutoHyphens = false;
+
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
 
             doc.HyphenationOptions.AutoHyphenation = true;
             doc.HyphenationOptions.ConsecutiveHyphenLimit = 2;
             doc.HyphenationOptions.HyphenationZone = 720; // 0.5 inch
             doc.HyphenationOptions.HyphenateCaps = true;
+
+            // Each paragraph has this flag that can be set to suppress hyphenation
+            Assert.False(builder.ParagraphFormat.SuppressAutoHyphens);
 
             doc.Save(ArtifactsDir + "HyphenationOptions.docx");
             //ExEnd
@@ -2112,18 +2054,19 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Save(Stream, String, Saving.SaveOptions)
+            //ExFor:SaveOptions.UseAntiAliasing
+            //ExFor:SaveOptions.UseHighQualityRendering
             //ExSummary:Improve the quality of a rendered document with SaveOptions.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Font.Size = 60;
-
             builder.Writeln("Some text.");
 
             SaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
+            Assert.AreEqual(false, options.UseAntiAliasing);
 
-            options.UseAntiAliasing = false;
-            doc.Save(ArtifactsDir + "Document.SaveOptionsLowQuality.jpg", options);
+            doc.Save(ArtifactsDir + "Document.SaveOptionsDefault.jpg", options);
 
             options.UseAntiAliasing = true;
             options.UseHighQualityRendering = true;
@@ -2214,6 +2157,16 @@ namespace ApiExamples
         public void Revisions()
         {
             //ExStart
+            //ExFor:Revision
+            //ExFor:Revision.Accept
+            //ExFor:Revision.Author
+            //ExFor:Revision.DateTime
+            //ExFor:Revision.Group
+            //ExFor:Revision.Reject
+            //ExFor:Revision.RevisionType
+            //ExFor:RevisionCollection
+            //ExFor:RevisionCollection.Item(Int32)
+            //ExFor:RevisionCollection.Count
             //ExFor:Document.HasRevisions
             //ExFor:Document.TrackRevisions
             //ExFor:Document.Revisions
@@ -2221,45 +2174,120 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // A blank document comes with no revisions
+            // Normal editing of the document does not count as a revision
+            builder.Write("This does not count as a revision. ");
             Assert.IsFalse(doc.HasRevisions);
 
-            builder.Writeln("This does not count as a revision.");
-
-            // Just adding text does not count as a revision
-            Assert.IsFalse(doc.HasRevisions);
-
-            // For our edits to count as revisions, we need to declare an author and start tracking them
+            // In order for our edits to count as revisions, we need to declare an author and start tracking them
             doc.StartTrackRevisions("John Doe", DateTime.Now);
+            builder.Write("This is revision #1. ");
 
-            builder.Writeln("This is a revision.");
-
-            // The above text is now tracked as a revision and will show up accordingly in our output file
-            Assert.IsTrue(doc.HasRevisions);
-            Assert.AreEqual("John Doe", doc.Revisions[0].Author);
-
-            // Document.TrackRevisions corresponds to Microsoft Word tracking changes, not the ones we programmatically make here 
+            // This flag corresponds to the "Track Changes" option being turned on in Microsoft Word, to track the editing manually
+            // done there and not the programmatic changes we are about to do here
             Assert.IsFalse(doc.TrackRevisions);
+
+            // As well as nodes in the document, revisions get referenced in this collection
+            Assert.IsTrue(doc.HasRevisions);
+            Assert.AreEqual(1, doc.Revisions.Count);
+
+            Revision revision = doc.Revisions[0];
+            Assert.AreEqual("John Doe", revision.Author);
+            Assert.AreEqual("This is revision #1. ", revision.ParentNode.GetText());
+            Assert.AreEqual(RevisionType.Insertion, revision.RevisionType);
+            Assert.AreEqual(revision.DateTime.Date, DateTime.Now.Date);
+            Assert.AreEqual(doc.Revisions.Groups[0], revision.Group);
+
+            // Deleting content also counts as a revision
+            // The most recent revisions are put at the start of the collection
+            doc.FirstSection.Body.FirstParagraph.Runs[0].Remove();
+            Assert.AreEqual(RevisionType.Deletion, doc.Revisions[0].RevisionType);
+            Assert.AreEqual(2, doc.Revisions.Count);
+
+            // Insert revisions are treated as document text by the GetText() method before they are accepted,
+            // since they are still nodes with text and are in the body
+            Assert.AreEqual("This does not count as a revision. This is revision #1.", doc.GetText().Trim());
+
+            // Accepting the deletion revision will assimilate it into the paragraph text and remove it from the collection
+            doc.Revisions[0].Accept();
+            Assert.AreEqual(1, doc.Revisions.Count);
+
+            // Once the delete revision is accepted, the nodes that it concerns are removed and their text will not show up here
+            Assert.AreEqual("This is revision #1.", doc.GetText().Trim());
+
+            // The second insertion revision is now at index 0, which we can reject to ignore and discard it
+            doc.Revisions[0].Reject();
+            Assert.AreEqual(0, doc.Revisions.Count);
+            Assert.AreEqual("", doc.GetText().Trim());
 
             // This takes us back to not counting changes as revisions
             doc.StopTrackRevisions();
 
-            builder.Writeln("This does not count as a revision.");
+            builder.Writeln("This also does not count as a revision.");
+            Assert.AreEqual(0, doc.Revisions.Count);
 
-            doc.Save(ArtifactsDir + "Revisions.docx");
+            doc.Save(ArtifactsDir + "Document.Revisions.docx");
+            //ExEnd
+        }
 
-            // We can get rid of all the changes we made that counted as revisions
-            doc.Revisions.RejectAll();
-            Assert.IsFalse(doc.HasRevisions);
+        [Test]
+        public void RevisionCollection()
+        {
+            //ExStart
+            //ExFor:Revision.ParentStyle
+            //ExFor:RevisionCollection.GetEnumerator
+            //ExFor:RevisionCollection.Groups
+            //ExFor:RevisionCollection.RejectAll
+            //ExFor:RevisionGroupCollection.GetEnumerator
+            //ExSummary:Shows how to look through a document's revisions.
+            // Open a document that contains revisions and get its revision collection
+            Document doc = new Document(MyDir + "Document.Revisions.docx");
+            RevisionCollection revisions = doc.Revisions;
+            
+            // This collection itself has a collection of revision groups, which are merged sequences of adjacent revisions
+            Console.WriteLine($"{revisions.Groups.Count} revision groups:");
 
-            // The second line that our builder wrote will not appear at all in the output
-            doc.Save(ArtifactsDir + "RevisionsRejected.docx");
+            // We can iterate over the collection of groups and access the text that the revision concerns
+            using (IEnumerator<RevisionGroup> e = revisions.Groups.GetEnumerator())
+            {
+                while (e.MoveNext())
+                {
+                    Console.WriteLine($"\tGroup type \"{e.Current.RevisionType}\", " +
+                                      $"author: {e.Current.Author}, contents: [{e.Current.Text.Trim()}]");
+                }
+            }
 
-            // Alternatively, we can track revisions from Microsoft Word like this
-            // This is the same as turning on "Track Changes" in Word
-            doc.TrackRevisions = true;
+            // The collection of revisions is considerably larger than the condensed form we printed above,
+            // depending on how many Runs the text has been segmented into during editing in Microsoft Word,
+            // since each Run affected by a revision gets its own Revision object
+            Console.WriteLine($"\n{revisions.Count} revisions:");
 
-            doc.Save(ArtifactsDir + "RevisionsTrackedFromMSWord.docx");
+            using (IEnumerator<Revision> e = revisions.GetEnumerator())
+            {
+                while (e.MoveNext())
+                {
+                    // A StyleDefinitionChange strictly affects styles and not document nodes, so in this case the ParentStyle
+                    // attribute will always be used, while the ParentNode will always be null
+                    // Since all other changes affect nodes, ParentNode will conversely be in use and ParentStyle will be null
+                    if (e.Current.RevisionType == RevisionType.StyleDefinitionChange)
+                    {
+                        Console.WriteLine($"\tRevision type \"{e.Current.RevisionType}\", " +
+                                          $"author: {e.Current.Author}, style: [{e.Current.ParentStyle.Name}]");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"\tRevision type \"{e.Current.RevisionType}\", " +
+                                          $"author: {e.Current.Author}, contents: [{e.Current.ParentNode.GetText().Trim()}]");
+                    }
+                }
+            }
+
+            // While the collection of revision groups provides a clearer overview of all revisions that took place in the document,
+            // the changes must be accepted/rejected by the revisions themselves, the RevisionCollection, or the document
+            // In this case we will reject all revisions via the collection, reverting the document to its original form, which we will then save
+            revisions.RejectAll();
+            Assert.AreEqual(0, revisions.Count);
+
+            doc.Save(ArtifactsDir + "Document.RevisionCollection.docx");
             //ExEnd
         }
 
@@ -2285,7 +2313,31 @@ namespace ApiExamples
             // Any changes to the styles in this template will be propagated to those styles in the document
             doc.AutomaticallyUpdateSyles = true;
 
-            doc.Save(ArtifactsDir + "TemplateStylesUpdating.docx");
+            doc.Save(ArtifactsDir + "Document.TemplateStylesUpdating.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void DefaultTemplate()
+        {
+            //ExStart
+            //ExFor:Document.AttachedTemplate
+            //ExFor:SaveOptions.CreateSaveOptions(String)
+            //ExFor:SaveOptions.DefaultTemplate
+            //ExSummary:Shows how to set a default .docx document template.
+            Document doc = new Document();
+
+            // If we set this flag to true while not having a template attached to the document,
+            // there will be no effect because there is no template document to draw style changes from
+            doc.AutomaticallyUpdateSyles = true;
+            Assert.That(doc.AttachedTemplate, Is.Empty);
+
+            // We can set a default template document filename in a SaveOptions object to make it apply to
+            // all documents we save with it that have no AttachedTemplate value
+            SaveOptions options = SaveOptions.CreateSaveOptions("Document.DefaultTemplate.docx");
+            options.DefaultTemplate = MyDir + "Document.BusinessBrochureTemplate.dotx";
+
+            doc.Save(ArtifactsDir + "Document.DefaultTemplate.docx", options);
             //ExEnd
         }
 
@@ -2522,6 +2574,13 @@ namespace ApiExamples
             //ExFor:Document.MailMergeSettings
             //ExFor:MailMergeDataType
             //ExFor:MailMergeMainDocumentType
+            //ExFor:Odso
+            //ExFor:Odso.Clone
+            //ExFor:Odso.ColumnDelimiter
+            //ExFor:Odso.DataSource
+            //ExFor:Odso.DataSourceType
+            //ExFor:Odso.FirstRowContainsColumnNames
+            //ExFor:OdsoDataSourceType
             //ExSummary:Shows how to execute a mail merge with MailMergeSettings.
             // We'll create a simple document that will act as a destination for mail merge data
             Document doc = new Document();
@@ -2551,13 +2610,122 @@ namespace ApiExamples
 
             // Office Data Source Object settings
             Odso odso = mailMergeSettings.Odso;
+            odso.DataSource = ArtifactsDir + "Document.Lines.txt";
             odso.DataSourceType = OdsoDataSourceType.Text;
             odso.ColumnDelimiter = '|';
-            odso.DataSource = ArtifactsDir + "Document.Lines.txt";
             odso.FirstRowContainsColumnNames = true;
+
+            // ODSO objects can also be cloned
+            Assert.AreNotSame(odso, odso.Clone());
 
             // The mail merge will be performed when this document is opened 
             doc.Save(ArtifactsDir + "Document.MailMergeSettings.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void OdsoEmail()
+        {
+            //ExStart
+            //ExFor:Odso.TableName
+            //ExFor:Odso.UdlConnectString
+            //ExSummary:Shows how to execute a mail merge while connecting to an external data source.
+            Document doc = new Document(MyDir + "OdsoData.doc");
+            
+            Odso odso = doc.MailMergeSettings.Odso;
+            
+            Console.WriteLine($"File will connect to data source located in:\n\t\"{odso.DataSource}\"");
+            Console.WriteLine($"Source type:\n\t{odso.DataSourceType}");
+            Console.WriteLine($"Connection string:\n\t{odso.UdlConnectString}");
+            Console.WriteLine($"Table:\n\t{odso.TableName}");
+            Console.WriteLine($"Query:\n\t{doc.MailMergeSettings.Query}");
+            //ExEnd
+        }
+
+        [Test]
+        public void OdsoFieldMapDataCollection()
+        {
+            //ExStart
+            //ExFor:Odso.FieldMapDatas
+            //ExFor:OdsoFieldMapData
+            //ExFor:OdsoFieldMapData.Clone
+            //ExFor:OdsoFieldMapData.Column
+            //ExFor:OdsoFieldMapData.MappedName
+            //ExFor:OdsoFieldMapData.Name
+            //ExFor:OdsoFieldMapData.Type
+            //ExFor:OdsoFieldMapDataCollection
+            //ExFor:OdsoFieldMapDataCollection.Add(OdsoFieldMapData)
+            //ExFor:OdsoFieldMapDataCollection.Clear
+            //ExFor:OdsoFieldMapDataCollection.Count
+            //ExFor:OdsoFieldMapDataCollection.GetEnumerator
+            //ExFor:OdsoFieldMapDataCollection.Item(Int32)
+            //ExFor:OdsoFieldMapDataCollection.RemoveAt(Int32)
+            //ExFor:OdsoFieldMappingType
+            //ExSummary:Shows how to access the collection of data that maps data source columns to merge fields.
+            Document doc = new Document(MyDir + "OdsoData.doc");
+
+            // This collection defines how columns from an external data source will be mapped to predefined MERGEFIELD,
+            // ADDRESSBLOCK and GREETINGLINE fields during a mail merge
+            OdsoFieldMapDataCollection fieldMapDataCollection = doc.MailMergeSettings.Odso.FieldMapDatas;
+
+            Assert.AreEqual(30, fieldMapDataCollection.Count);
+            int index = 0;
+
+            foreach (OdsoFieldMapData data in fieldMapDataCollection)
+            {
+                Console.WriteLine($"Field map data index #{index++}, type \"{data.Type}\":");
+
+                if (data.Type != OdsoFieldMappingType.Null)
+                {
+                    Console.WriteLine(
+                        $"\tColumn named {data.Name}, number {data.Column} in the data source mapped to merge field named {data.MappedName}.");
+                }
+                else
+                {
+                    Console.WriteLine("\tNo valid column to field mapping data present.");
+                }
+
+                Assert.AreNotEqual(data, data.Clone());
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void OdsoRecipientDataCollection()
+        {
+            //ExStart
+            //ExFor:Odso.RecipientDatas
+            //ExFor:OdsoRecipientData
+            //ExFor:OdsoRecipientData.Active
+            //ExFor:OdsoRecipientData.Clone
+            //ExFor:OdsoRecipientData.Column
+            //ExFor:OdsoRecipientData.Hash
+            //ExFor:OdsoRecipientData.UniqueTag
+            //ExFor:OdsoRecipientDataCollection
+            //ExFor:OdsoRecipientDataCollection.Add(OdsoRecipientData)
+            //ExFor:OdsoRecipientDataCollection.Clear
+            //ExFor:OdsoRecipientDataCollection.Count
+            //ExFor:OdsoRecipientDataCollection.GetEnumerator
+            //ExFor:OdsoRecipientDataCollection.Item(Int32)
+            //ExFor:OdsoRecipientDataCollection.RemoveAt(Int32)
+            //ExSummary:Shows how to access the collection of data that designates merge data source records to be excluded from a merge.
+            Document doc = new Document(MyDir + "OdsoData.doc");
+
+            // Records in this collection that do not have the "Active" flag set to true will be excluded from the mail merge
+            OdsoRecipientDataCollection odsoRecipientDataCollection = doc.MailMergeSettings.Odso.RecipientDatas;
+
+            Assert.AreEqual(70, odsoRecipientDataCollection.Count);
+            int index = 0;
+
+            foreach (OdsoRecipientData data in odsoRecipientDataCollection)
+            {
+                Console.WriteLine($"Odso recipient data index #{index++}, will {(data.Active ? "" : "not ")}be imported upon mail merge.");
+                Console.WriteLine($"\tColumn #{data.Column}");
+                Console.WriteLine($"\tHash code: {data.Hash}");
+                Console.WriteLine($"\tContents array length: {data.UniqueTag.Length}");
+
+                Assert.AreNotEqual(data, data.Clone());
+            }
             //ExEnd
         }
 
@@ -3256,6 +3424,7 @@ namespace ApiExamples
             Assert.IsTrue(classModule.SourceCode.Contains("MsgBox \"Class test\""));
         }
 
+#if !(__MOBILE__ || MAC)
         [Test]
         public void OpenType()
         {
@@ -3275,7 +3444,44 @@ namespace ApiExamples
             doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
 
             // Render the document to PDF format
-            doc.Save(ArtifactsDir + "OpenType.Document.pdf");
+            doc.Save(ArtifactsDir + "Document.OpenType.pdf");
+            //ExEnd
+        }
+#endif
+
+        [Test]
+        public void SaveOutputParameters()
+        {
+            //ExStart
+            //ExFor:SaveOutputParameters
+            //ExFor:SaveOutputParameters.ContentType
+            //ExSummary:Shows how to verify Content-Type strings from save output parameters.
+            Document doc = new Document(MyDir + "Document.doc");
+
+            SaveOutputParameters parameters = doc.Save(ArtifactsDir + "Document.SaveOutputParameters.doc");
+            Assert.AreEqual("application/msword", parameters.ContentType);
+
+            parameters = doc.Save(ArtifactsDir + "Document.SaveOutputParameters.pdf");
+            Assert.AreEqual("application/pdf", parameters.ContentType);
+            //ExEnd
+        }
+
+        [Test]
+        public void WordML2003SaveOptions()
+        {
+            //ExStart
+            //ExFor:WordML2003SaveOptions
+            //ExFor:WordML2003SaveOptions.SaveFormat
+            //ExSummary:Shows how to save to a .wml document while applying save options.
+            Document doc = new Document(MyDir + "Document.doc");
+
+            WordML2003SaveOptions options = new WordML2003SaveOptions()
+            {
+                SaveFormat = SaveFormat.WordML,
+                MemoryOptimization = true
+            };
+
+            doc.Save(ArtifactsDir + "Document.WordML2003SaveOptions.wml", options);
             //ExEnd
         }
     }

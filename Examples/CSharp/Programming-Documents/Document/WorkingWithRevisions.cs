@@ -16,6 +16,8 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             GetRevisionTypes(dataDir);
             GetRevisionGroups(dataDir);
             SetShowCommentsinPDF(dataDir);
+            GetRevisionGroupDetails(dataDir);
+            AccessRevisedVersion(dataDir);
         }
 
         private static void AcceptRevisions(string dataDir)
@@ -51,7 +53,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             }
             // ExEnd:GetRevisionTypes
         }
-
 
         private static void GetRevisionGroups(string dataDir)
         {
@@ -92,6 +93,51 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             doc.Save(dataDir + "SetShowInBalloons_out.pdf");
             // ExEnd:SetShowInBalloons
             Console.WriteLine("\nFile saved at " + dataDir);
+        }
+
+        private static void GetRevisionGroupDetails(string dataDir)
+        {
+            // ExStart:GetRevisionGroupDetails
+            Document doc = new Document(dataDir + "TestFormatDescription.docx");
+
+            foreach (Revision revision in doc.Revisions)
+            {
+                string groupText = revision.Group != null
+                    ? "Revision group text: " + revision.Group.Text
+                    : "Revision has no group";
+
+                Console.WriteLine("Type: " + revision.RevisionType);
+                Console.WriteLine("Author: " + revision.Author);
+                Console.WriteLine("Date: " + revision.DateTime);
+                Console.WriteLine("Revision text: " + revision.ParentNode.ToString(SaveFormat.Text));
+                Console.WriteLine(groupText);
+            }
+            // ExEnd:GetRevisionGroupDetails
+        }
+
+        private static void AccessRevisedVersion(string dataDir)
+        {
+            // ExStart:AccessRevisedVersion
+            Document doc = new Document(dataDir + "Test.docx");
+            doc.UpdateListLabels();
+
+            // Switch to the revised version of the document.
+            doc.RevisionsView = RevisionsView.Final;
+
+            foreach (Revision revision in doc.Revisions)
+            {
+                if (revision.ParentNode.NodeType == NodeType.Paragraph)
+                {
+                    Paragraph paragraph = (Paragraph)revision.ParentNode;
+                    if (paragraph.IsListItem)
+                    {
+                        // Print revised version of LabelString and ListLevel.
+                        Console.WriteLine(paragraph.ListLabel.LabelString);
+                        Console.WriteLine(paragraph.ListFormat.ListLevel);
+                    }
+                }
+            }
+            // ExEnd:AccessRevisedVersion
         }
     }
 }

@@ -22,6 +22,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
             AddCornersSnipped(dataDir);
             GetActualShapeBoundsPoints(dataDir);
             SpecifyVerticalAnchor(dataDir);
+            DetectSmartArtShape(dataDir);
         }
 
         public static void InsertShapeUsingDocumentBuilder(string dataDir)
@@ -151,6 +152,22 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
             }
             doc.Save(dataDir + "VerticalAnchor_out.docx");
             // ExEnd:SpecifyVerticalAnchor
+        }
+
+        public static void DetectSmartArtShape(string dataDir)
+        {
+            // ExStart:DetectSmartArtShape
+            Document doc = new Document(dataDir + "input.docx");
+
+            int count = 0;
+            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
+            {
+                if (shape.HasSmartArt)
+                    count++;
+            }
+
+            Console.WriteLine("The document has {0} shapes with SmartArt.", count);
+            // ExEnd:DetectSmartArtShape
         }
     }
 }

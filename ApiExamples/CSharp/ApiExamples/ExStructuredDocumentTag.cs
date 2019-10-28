@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Aspose.Words.BuildingBlocks;
+using Aspose.Words.Saving;
 
 namespace ApiExamples
 {
@@ -44,7 +45,7 @@ namespace ApiExamples
             StructuredDocumentTag sdTagRepeatingSection = (StructuredDocumentTag) sdTags[0];
             Assert.AreEqual(SdtType.RepeatingSection, sdTagRepeatingSection.SdtType);
 
-            StructuredDocumentTag sdTagRichText = (StructuredDocumentTag) sdTags[1];
+            StructuredDocumentTag sdTagRichText = (StructuredDocumentTag) sdTags[2];
             Assert.AreEqual(SdtType.RichText, sdTagRichText.SdtType);
         }
 
@@ -409,7 +410,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Category("SkipTearDown")]
         public void CreatingCustomXml()
         {
             //ExStart
@@ -442,7 +442,7 @@ namespace ApiExamples
             CustomXmlPart xmlPart = doc.CustomXmlParts.Add(xmlPartId, xmlPartContent);
 
             // The data we entered resides in these variables
-            Assert.AreEqual(xmlPartContent.ToCharArray(), xmlPart.Data);
+            Assert.AreEqual(Encoding.ASCII.GetBytes(xmlPartContent), xmlPart.Data);
             Assert.AreEqual(xmlPartId, xmlPart.Id);
 
             // XML parts can be referenced by collection index or GUID
@@ -591,7 +591,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:XmlMapping.StoreItemId
             //ExSummary:Shows how to get special id of your xml part.
-            Document doc = new Document(ArtifactsDir + "SDT.CustomXml.docx");
+            Document doc = new Document(MyDir + "SDT.CustomXml.docx");
 
             StructuredDocumentTag sdt = (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
             Console.WriteLine("The Id of your custom xml part is: " + sdt.XmlMapping.StoreItemId);
@@ -854,6 +854,38 @@ namespace ApiExamples
             Assert.AreEqual(SdtType.BuildingBlockGallery, buildingBlockSdt.SdtType);
             Assert.AreEqual("Table of Contents", buildingBlockSdt.BuildingBlockGallery);
             Assert.AreEqual("Built-in", buildingBlockSdt.BuildingBlockCategory);
+        }
+
+        [Test]
+        public void UpdateSdtContent()
+        {
+            //ExStart
+            //ExFor:SaveOptions.UpdateSdtContent
+            //ExSummary:Shows how structured document tags can be updated while saving to .pdf.
+            Document doc = new Document();
+
+            // Insert two StructuredDocumentTags; a date and a drop down list 
+            StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.Date, MarkupLevel.Block);
+            tag.FullDate = DateTime.Now;
+
+            doc.FirstSection.Body.AppendChild(tag);
+
+            tag = new StructuredDocumentTag(doc, SdtType.DropDownList, MarkupLevel.Block);
+            tag.ListItems.Add(new SdtListItem("Value 1"));
+            tag.ListItems.Add(new SdtListItem("Value 2"));
+            tag.ListItems.Add(new SdtListItem("Value 3"));
+            tag.ListItems.SelectedValue = tag.ListItems[1];
+
+            doc.FirstSection.Body.AppendChild(tag);
+            
+            // We've selected default values for both tags
+            // We can save those values in the document without immediately updating the tags, leaving them in their default state
+            // by using a SaveOptions object with this flag set
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.UpdateSdtContent = false;
+
+            doc.Save(ArtifactsDir + "UpdateSdtContent.pdf", options);
+            //ExEnd
         }
     }
 }

@@ -7,6 +7,7 @@
 
 using System.Drawing;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 
@@ -85,12 +86,13 @@ namespace ApiExamples
         public void EqualityCountingAndVisibility()
         {
             //ExStart
-            //ExFor:Border.Equals(System.Object)
+            //ExFor:Border.Equals(Object)
+            //ExFor:Border.Equals(Border)
             //ExFor:Border.GetHashCode
             //ExFor:Border.IsVisible
             //ExFor:BorderCollection.Count
             //ExFor:BorderCollection.Equals(BorderCollection)
-            //ExFor:BorderCollection.Item(System.Int32)
+            //ExFor:BorderCollection.Item(Int32)
             //ExSummary:Shows the equality of BorderCollections as well counting, visibility of their elements.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -114,9 +116,6 @@ namespace ApiExamples
                 // Borders are invisible by default
                 Assert.IsFalse(firstParaBorders[i].IsVisible);
             }
-
-            // We see that the elements in both collections are equal, while the collections themselves are not.
-            Assert.IsFalse(firstParaBorders.Equals(secondParaBorders));
 
             // Each border in the second paragraph collection becomes no longer the same as its counterpart from the first paragraph collection
             // There are always 6 elements in a border collection, and changing all of them will make the second collection completely different from the first
@@ -145,6 +144,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:BorderCollection.Horizontal
             //ExFor:BorderCollection.Vertical
+            //ExFor:Cell.LastParagraph
             //ExSummary:Shows the difference between the Horizontal and Vertical properties of BorderCollection.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -195,7 +195,7 @@ namespace ApiExamples
 
                 row.AppendChild(new Cell(doc));
                 row.LastCell.AppendChild(new Paragraph(doc));
-                row.LastCell.FirstParagraph.AppendChild(new Run(doc, "Vertical border to the left."));
+                row.LastCell.LastParagraph.AppendChild(new Run(doc, "Vertical border to the left."));
                 table.AppendChild(row);
             }
 

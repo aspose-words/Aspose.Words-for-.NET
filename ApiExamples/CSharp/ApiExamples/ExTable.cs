@@ -27,66 +27,83 @@ namespace ApiExamples
         public void DisplayContentOfTables()
         {
             //ExStart
-            //ExFor:Table
-            //ExFor:Row.Cells
-            //ExFor:Table.Rows
             //ExFor:Cell
-            //ExFor:Row
-            //ExFor:RowCollection
             //ExFor:CellCollection
-            //ExFor:NodeCollection.IndexOf(Node)
+            //ExFor:CellCollection.Item(System.Int32)
+            //ExFor:CellCollection.ToArray
+            //ExFor:Row
+            //ExFor:Row.Cells
+            //ExFor:RowCollection
+            //ExFor:RowCollection.Item(System.Int32)
+            //ExFor:RowCollection.ToArray
+            //ExFor:Table
+            //ExFor:Table.Rows
+            //ExFor:TableCollection.Item(System.Int32)
+            //ExFor:TableCollection.ToArray
             //ExSummary:Shows how to iterate through all tables in the document and display the content from each cell.
             Document doc = new Document(MyDir + "Table.Document.doc");
 
             // Here we get all tables from the Document node. You can do this for any other composite node
             // which can contain block level nodes. For example you can retrieve tables from header or from a cell
             // containing another table (nested tables).
-            NodeCollection tables = doc.GetChildNodes(NodeType.Table, true);
+            TableCollection tables = doc.FirstSection.Body.Tables;
+
+            // We can make a new array to clone all of the tables in the collection
+            Assert.AreEqual(2, tables.ToArray().Length);
 
             // Iterate through all tables in the document
-            foreach (Table table in tables.OfType<Table>())
+            for (int i = 0; i < tables.Count; i++)
             {
                 // Get the index of the table node as contained in the parent node of the table
-                int tableIndex = table.ParentNode.ChildNodes.IndexOf(table);
-                Console.WriteLine("Start of Table {0}", tableIndex);
+                Console.WriteLine($"Start of Table {i}");
+
+                RowCollection rows = tables[i].Rows;
+
+                // RowCollections can be cloned into arrays
+                Assert.AreEqual(rows, rows.ToArray());
+                Assert.AreNotSame(rows, rows.ToArray());
 
                 // Iterate through all rows in the table
-                foreach (Row row in table.Rows.OfType<Row>())
+                for (int j = 0; j < rows.Count; j++)
                 {
-                    int rowIndex = table.Rows.IndexOf(row);
-                    Console.WriteLine("\tStart of Row {0}", rowIndex);
+                    Console.WriteLine($"\tStart of Row {j}");
+
+                    CellCollection cells = rows[j].Cells;
+
+                    // RowCollections can also be cloned into arrays 
+                    Assert.AreEqual(cells, cells.ToArray());
+                    Assert.AreNotSame(cells, cells.ToArray());
 
                     // Iterate through all cells in the row
-                    foreach (Cell cell in row.Cells.OfType<Cell>())
+                    for (int k = 0; k < cells.Count; k++)
                     {
-                        int cellIndex = row.Cells.IndexOf(cell);
                         // Get the plain text content of this cell.
-                        String cellText = cell.ToString(SaveFormat.Text).Trim();
+                        String cellText = cells[k].ToString(SaveFormat.Text).Trim();
                         // Print the content of the cell.
-                        Console.WriteLine("\t\tContents of Cell:{0} = \"{1}\"", cellIndex, cellText);
+                        Console.WriteLine($"\t\tContents of Cell:{k} = \"{cellText}\"");
                     }
 
-                    Console.WriteLine("\tEnd of Row {0}", rowIndex);
+                    Console.WriteLine($"\tEnd of Row {j}");
                 }
 
-                Console.WriteLine("End of Table {0}", tableIndex);
-                Console.WriteLine();
+                Console.WriteLine($"End of Table {i}\n");
             }
             //ExEnd
 
             Assert.That(tables.Count, Is.GreaterThan(0));
         }
 
-        [Test]
+        //ExStart
+        //ExFor:Node.GetAncestor(NodeType)
+        //ExFor:Node.GetAncestor(System.Type)
+        //ExFor:Table.NodeType
+        //ExFor:Cell.Tables
+        //ExFor:TableCollection
+        //ExFor:NodeCollection.Count
+        //ExSummary:Shows how to find out if a table contains another table or if the table itself is nested inside another table.
+        [Test] //ExSkip
         public void CalculateDepthOfNestedTables()
         {
-            //ExStart
-            //ExFor:Node.GetAncestor(NodeType)
-            //ExFor:Table.NodeType
-            //ExFor:Cell.Tables
-            //ExFor:TableCollection
-            //ExFor:NodeCollection.Count
-            //ExSummary:Shows how to find out if a table contains another table or if the table itself is nested inside another table.
             Document doc = new Document(MyDir + "Table.NestedTables.doc");
             int tableIndex = 0;
 
@@ -121,16 +138,15 @@ namespace ApiExamples
         {
             int depth = 0;
 
-            NodeType type = table.NodeType;
             // The parent of the table will be a Cell, instead attempt to find a grandparent that is of type Table
-            Node parent = table.GetAncestor(type);
+            Node parent = table.GetAncestor(table.NodeType);
 
             while (parent != null)
             {
                 // Every time we find a table a level up we increase the depth counter and then try to find an
                 // ancestor of type table from the parent.
                 depth++;
-                parent = parent.GetAncestor(type);
+                parent = parent.GetAncestor(typeof(Table));
             }
 
             return depth;
@@ -168,9 +184,6 @@ namespace ApiExamples
         [Test]
         public void ConvertTextboxToTable()
         {
-            //ExStart
-            //ExId:TextboxToTable
-            //ExSummary:Shows how to convert a textbox to a table and retain almost identical formatting. This is useful for HTML export.
             // Open the document
             Document doc = new Document(MyDir + "Shape.TextBox.doc");
 
@@ -263,7 +276,6 @@ namespace ApiExamples
             // Remove the empty textbox from the document.
             textBox.Remove();
         }
-        //ExEnd
 
         [Test]
         public void EnsureTableMinimum()
@@ -326,10 +338,10 @@ namespace ApiExamples
             //ExFor:Table.Alignment
             //ExFor:TableAlignment
             //ExFor:Table.ClearBorders
+            //ExFor:Table.ClearShading
             //ExFor:Table.SetBorder
             //ExFor:TextureIndex
             //ExFor:Table.SetShading
-            //ExId:TableBordersOutline
             //ExSummary:Shows how to apply a outline border to a table.
             Document doc = new Document(MyDir + "Table.EmptyTable.doc");
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -337,8 +349,9 @@ namespace ApiExamples
             // Align the table to the center of the page.
             table.Alignment = TableAlignment.Center;
 
-            // Clear any existing borders from the table.
+            // Clear any existing borders and shading from the table.
             table.ClearBorders();
+            table.ClearShading();
 
             // Set a green border around the table but not inside. 
             table.SetBorder(BorderType.Left, LineStyle.Single, 1.5, Color.Green, true);
@@ -369,7 +382,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Table.SetBorders
-            //ExId:TableBordersAll
             //ExSummary:Shows how to build a table with all borders enabled (grid).
             Document doc = new Document(MyDir + "Table.EmptyTable.doc");
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -398,7 +410,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:RowFormat
             //ExFor:Row.RowFormat
-            //ExId:RowFormatProperties
             //ExSummary:Shows how to modify formatting of a table row.
             Document doc = new Document(MyDir + "Table.Document.doc");
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -427,7 +438,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:CellFormat
             //ExFor:Cell.CellFormat
-            //ExId:CellFormatProperties
             //ExSummary:Shows how to modify formatting of a table cell.
             Document doc = new Document(MyDir + "Table.Document.doc");
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -454,6 +464,12 @@ namespace ApiExamples
         [Test]
         public void GetDistance()
         {
+            //ExStart
+            //ExFor:Table.DistanceBottom
+            //ExFor:Table.DistanceLeft
+            //ExFor:Table.DistanceRight
+            //ExFor:Table.DistanceTop
+            //ExSummary:Shows the minimum distance operations between table boundaries and text.
             Document doc = new Document(MyDir + "Table.Distance.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -462,6 +478,7 @@ namespace ApiExamples
             Assert.AreEqual(26.35d, table.DistanceBottom);
             Assert.AreEqual(9.05d, table.DistanceLeft);
             Assert.AreEqual(22.7d, table.DistanceRight);
+            //ExEnd
         }
 
         [Test]
@@ -489,7 +506,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:Range.Replace(String, String, FindReplaceOptions)
             //ExFor:Cell
-            //ExId:ReplaceTextTable
             //ExSummary:Shows how to replace all instances of String of text in a table and cell.
             Document doc = new Document(MyDir + "Table.SimpleTable.doc");
 
@@ -514,9 +530,6 @@ namespace ApiExamples
         [Test]
         public void PrintTableRange()
         {
-            //ExStart
-            //ExId:PrintTableRange
-            //ExSummary:Shows how to print the text range of a table.
             Document doc = new Document(MyDir + "Table.SimpleTable.doc");
 
             // Get the first table in the document.
@@ -528,11 +541,7 @@ namespace ApiExamples
             // Print the plain text range of the table to the screen.
             Console.WriteLine("Contents of the table: ");
             Console.WriteLine(table.Range.Text);
-            //ExEnd
-
-            //ExStart
-            //ExId:PrintRowAndCellRange
-            //ExSummary:Shows how to print the text range of row and table elements.
+            
             // Print the contents of the second row to the screen.
             Console.WriteLine("\nContents of the row: ");
             Console.WriteLine(table.Rows[1].Range.Text);
@@ -540,8 +549,7 @@ namespace ApiExamples
             // Print the contents of the last cell in the table to the screen.
             Console.WriteLine("\nContents of the cell: ");
             Console.WriteLine(table.LastRow.LastCell.Range.Text);
-            //ExEnd
-
+            
             Assert.AreEqual("Apples\r" + ControlChar.Cell + "20\r" + ControlChar.Cell + ControlChar.Cell,
                 table.Rows[1].Range.Text);
             Assert.AreEqual("50\r\a", table.LastRow.LastCell.Range.Text);
@@ -550,9 +558,6 @@ namespace ApiExamples
         [Test]
         public void CloneTable()
         {
-            //ExStart
-            //ExId:CloneTable
-            //ExSummary:Shows how to make a clone of a table in the document and insert it after the original table.
             Document doc = new Document(MyDir + "Table.SimpleTable.doc");
 
             // Retrieve the first table in the document.
@@ -569,19 +574,14 @@ namespace ApiExamples
             table.ParentNode.InsertAfter(new Paragraph(doc), table);
 
             doc.Save(ArtifactsDir + "Table.CloneTableAndInsert.doc");
-            //ExEnd
-
+            
             // Verify that the table was cloned and inserted properly.
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count);
             Assert.AreEqual(table.Range.Text, tableClone.Range.Text);
 
-            //ExStart
-            //ExId:CloneTableRemoveContent
-            //ExSummary:Shows how to remove all content from the cells of a cloned table.
             foreach (Cell cell in tableClone.GetChildNodes(NodeType.Cell, true).OfType<Cell>())
                 cell.RemoveAllChildren();
-            //ExEnd
-
+            
             Assert.AreEqual(String.Empty, tableClone.ToString(SaveFormat.Text).Trim());
         }
 
@@ -595,7 +595,6 @@ namespace ApiExamples
 
             //ExStart
             //ExFor:RowFormat.AllowBreakAcrossPages
-            //ExId:RowFormatAllowBreaks
             //ExSummary:Shows how to disable rows breaking across pages for every row in a table.
             // Disable breaking across pages for all rows in the table.
             foreach (Row row in table.OfType<Row>())
@@ -618,7 +617,6 @@ namespace ApiExamples
 
             //ExStart
             //ExFor:Table.AllowAutoFit
-            //ExId:AllowAutoFit
             //ExSummary:Shows how to set a table to shrink or grow each cell to accommodate its contents.
             table.AllowAutoFit = true;
             //ExEnd
@@ -639,7 +637,6 @@ namespace ApiExamples
             //ExFor:Paragraph.IsInCell
             //ExFor:Cell.ParentRow
             //ExFor:Cell.Paragraphs
-            //ExId:KeepTableTogether
             //ExSummary:Shows how to set a table to stay together on the same page.
             // To keep a table from breaking across a page we need to enable KeepWithNext 
             // for every paragraph in the table except for the last paragraphs in the last 
@@ -670,7 +667,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Row
-            //ExId:AddClonedRowToTable
             //ExSummary:Shows how to make a clone of the last row of a table and append it to the table.
             Document doc = new Document(MyDir + "Table.SimpleTable.doc");
 
@@ -700,9 +696,6 @@ namespace ApiExamples
         [Test]
         public void FixDefaultTableWidthsInAw105()
         {
-            //ExStart
-            //ExId:FixTablesDefaultFixedColumnWidth
-            //ExSummary:Shows how to revert the default behavior of table sizing to use column widths.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -719,15 +712,11 @@ namespace ApiExamples
             table.AutoFit(AutoFitBehavior.FixedColumnWidths);
 
             // Continue with building your table as usual...
-            //ExEnd
         }
 
         [Test]
         public void FixDefaultTableBordersIn105()
         {
-            //ExStart
-            //ExId:FixTablesDefaultBorders
-            //ExSummary:Shows how to revert the default borders on tables back to no border lines.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -739,15 +728,11 @@ namespace ApiExamples
             table.ClearBorders();
 
             // Continue with building your table as usual...
-            //ExEnd
         }
 
         [Test]
         public void FixDefaultTableFormattingExceptionIn105()
         {
-            //ExStart
-            //ExId:FixTableFormattingException
-            //ExSummary:Shows how to avoid encountering an exception when applying table formatting.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -760,15 +745,11 @@ namespace ApiExamples
             table.AllowAutoFit = true;
 
             // Continue with building your table as usual...
-            //ExEnd
         }
 
         [Test]
         public void FixRowFormattingNotAppliedIn105()
         {
-            //ExStart
-            //ExId:FixRowFormattingNotApplied
-            //ExSummary:Shows how to fix row formatting not being applied to some rows.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -795,7 +776,6 @@ namespace ApiExamples
             builder.RowFormat.HeadingFormat = false;
 
             // Continue with building your table as usual...
-            //ExEnd
         }
 
         [Test]
@@ -805,8 +785,7 @@ namespace ApiExamples
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             //ExStart
-            //ExFor:NodeCollection.IndexOf
-            //ExId:IndexOfTable
+            //ExFor:NodeCollection.IndexOf(Node)
             //ExSummary:Retrieves the index of a table in the document.
             NodeCollection allTables = doc.GetChildNodes(NodeType.Table, true);
             int tableIndex = allTables.IndexOf(table);
@@ -816,7 +795,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:Row
             //ExFor:CompositeNode.IndexOf
-            //ExId:IndexOfRow
             //ExSummary:Retrieves the index of a row in a table.
             int rowIndex = table.IndexOf(row);
             //ExEnd
@@ -825,7 +803,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:Cell
             //ExFor:CompositeNode.IndexOf
-            //ExId:IndexOfCell
             //ExSummary:Retrieves the index of a cell in a row.
             int cellIndex = row.IndexOf(cell);
             //ExEnd
@@ -846,7 +823,6 @@ namespace ApiExamples
             //ExFor:PreferredWidthType
             //ExFor:PreferredWidth.Type
             //ExFor:PreferredWidth.Value
-            //ExId:GetPreferredWidthTypeAndValue
             //ExSummary:Retrieves the preferred width type of a table cell.
             Cell firstCell = table.FirstRow.FirstCell;
             PreferredWidthType type = firstCell.CellFormat.PreferredWidth.Type;
@@ -871,7 +847,6 @@ namespace ApiExamples
             //ExFor:CellFormat
             //ExFor:CellFormat.Shading
             //ExFor:Cell.FirstParagraph
-            //ExId:InsertTableUsingNodeConstructors
             //ExSummary:Shows how to insert a table using the constructors of nodes.
             Document doc = new Document();
 
@@ -935,7 +910,6 @@ namespace ApiExamples
         //ExFor:Table.Description
         //ExFor:Row.#ctor(DocumentBase)
         //ExFor:Cell.#ctor(DocumentBase)
-        //ExId:NestedTableNodeConstructors
         //ExSummary:Shows how to build a nested table without using DocumentBuilder.
         [Test] //ExSkip
         public void NestedTablesUsingNodeConstructors()
@@ -1002,7 +976,6 @@ namespace ApiExamples
         //ExFor:CellFormat.HorizontalMerge
         //ExFor:CellFormat.VerticalMerge
         //ExFor:CellMerge
-        //ExId:CheckCellMerge
         //ExSummary:Prints the horizontal and vertical merge type of a cell.
         [Test] //ExSkip
         public void CheckCellsMerged()
@@ -1051,16 +1024,12 @@ namespace ApiExamples
             // Retrieve the first table in the body of the first section.
             Table table = doc.FirstSection.Body.Tables[0];
 
-            //ExStart
-            //ExId:MergeCellRange
-            //ExSummary:Merges the range of cells between the two specified cells.
             // We want to merge the range of cells found in between these two cells.
             Cell cellStartRange = table.Rows[2].Cells[2];
             Cell cellEndRange = table.Rows[3].Cells[3];
 
             // Merge all the cells between the two specified cells into one.
             MergeCells(cellStartRange, cellEndRange);
-            //ExEnd
 
             // Save the document.
             doc.Save(ArtifactsDir + "Table.MergeCellRange.doc");
@@ -1082,9 +1051,6 @@ namespace ApiExamples
             Assert.True(table.Rows[3].Cells[3].CellFormat.VerticalMerge == CellMerge.Previous);
         }
 
-        //ExStart
-        //ExId:MergeCellsMethod
-        //ExSummary:A method which merges all cells of a table in the specified range of cells.
         /// <summary>
         /// Merges the range of cells found between the two specified cells both horizontally and vertically. Can span over multiple rows.
         /// </summary>
@@ -1119,7 +1085,6 @@ namespace ApiExamples
                 }
             }
         }
-        //ExEnd
 
         [Test]
         public void CombineTables()
@@ -1131,7 +1096,6 @@ namespace ApiExamples
             //ExFor:Table.Rows
             //ExFor:Table.FirstRow
             //ExFor:CellFormat.ClearFormatting
-            //ExId:CombineTables
             //ExSummary:Shows how to combine the rows from two tables into one.
             // Load the document.
             Document doc = new Document(MyDir + "Table.Document.doc");
@@ -1160,9 +1124,6 @@ namespace ApiExamples
         [Test]
         public void SplitTable()
         {
-            //ExStart
-            //ExId:SplitTableAtRow
-            //ExSummary:Shows how to split a table into two tables a specific row.
             // Load the document.
             Document doc = new Document(MyDir + "Table.SimpleTable.doc");
 
@@ -1190,7 +1151,6 @@ namespace ApiExamples
             } while (currentRow != row);
 
             doc.Save(ArtifactsDir + "Table.SplitTable.doc");
-            //ExEnd
 
             doc = new Document(ArtifactsDir + "Table.SplitTable.doc");
             // Test we are adding the rows in the correct order and the 
@@ -1205,6 +1165,10 @@ namespace ApiExamples
         [Test]
         public void CheckDefaultValuesForFloatingTableProperties()
         {
+            //ExStart
+            //ExFor:Table.TextWrapping
+            //ExFor:TextWrapping
+            //ExSummary:Shows how to work with table text wrapping.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1220,6 +1184,7 @@ namespace ApiExamples
                 Assert.AreEqual(0, table.AbsoluteVerticalDistance);
                 Assert.AreEqual(true, table.AllowOverlap);
             }
+            //ExEnd
         }
 
         [Test]
@@ -1256,6 +1221,10 @@ namespace ApiExamples
         public void TableStyleCreation()
         {
             //ExStart
+            //ExFor:Table.Bidi
+            //ExFor:Table.CellSpacing
+            //ExFor:Table.Style
+            //ExFor:Table.StyleName
             //ExFor:TableStyle
             //ExFor:TableStyle.AllowBreakAcrossPages
             //ExFor:TableStyle.Bidi
@@ -1293,7 +1262,12 @@ namespace ApiExamples
             tableStyle.Borders.LineStyle = LineStyle.DotDash;
 
             table.Style = tableStyle;
- 
+
+            // Some Table attributes are linked to style variables
+            Assert.AreEqual(true, table.Bidi);
+            Assert.AreEqual(5.0, table.CellSpacing);
+            Assert.AreEqual("MyTableStyle1", table.StyleName);
+
             doc.Save(ArtifactsDir + "Table.TableStyleCreation.docx");
             //ExEnd
         }
@@ -1347,6 +1321,7 @@ namespace ApiExamples
             //ExFor:ConditionalStyleCollection.TopLeftCell
             //ExFor:ConditionalStyleCollection.TopRightCell
             //ExFor:ConditionalStyleType
+            //ExFor:TableStyle.ConditionalStyles
             //ExSummary:Shows how to work with certain area styles of a table.
             Document doc = new Document(MyDir + "Table.ConditionalStyles.docx");
 

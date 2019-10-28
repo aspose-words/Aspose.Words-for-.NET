@@ -21,6 +21,7 @@ namespace ApiExamples
     {
         //ExStart
         //ExFor:Document.Accept(DocumentVisitor)
+        //ExFor:Body.Accept(DocumentVisitor)
         //ExFor:DocumentVisitor
         //ExFor:DocumentVisitor.VisitRun(Run)
         //ExFor:DocumentVisitor.VisitDocumentEnd(Document)
@@ -64,7 +65,7 @@ namespace ApiExamples
             /// <summary>
             /// Gets the plain text of the document that was accumulated by the visitor.
             /// </summary>
-            public String GetText()
+            public string GetText()
             {
                 return mBuilder.ToString();
             }
@@ -172,7 +173,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -207,12 +208,21 @@ namespace ApiExamples
         //ExEnd
 
         //ExStart
+        //ExFor:Cell.Accept(DocumentVisitor)
+        //ExFor:Cell.IsFirstCell
+        //ExFor:Cell.IsLastCell
         //ExFor:DocumentVisitor.VisitTableEnd(Tables.Table)
         //ExFor:DocumentVisitor.VisitTableStart(Tables.Table)
         //ExFor:DocumentVisitor.VisitRowEnd(Tables.Row)
         //ExFor:DocumentVisitor.VisitRowStart(Tables.Row)
         //ExFor:DocumentVisitor.VisitCellStart(Tables.Cell)
         //ExFor:DocumentVisitor.VisitCellEnd(Tables.Cell)
+        //ExFor:Row.Accept(DocumentVisitor)
+        //ExFor:Row.FirstCell
+        //ExFor:Row.GetText
+        //ExFor:Row.IsFirstRow
+        //ExFor:Row.LastCell
+        //ExFor:Row.ParentTable
         //ExSummary:Traverse a document with a visitor that prints all tables that it encounters.
         [Test] //ExSkip
         public void TableToText()
@@ -258,7 +268,7 @@ namespace ApiExamples
             {
                 // We want to print the contents of runs, but only if they consist of text from cells
                 // So we are only interested in runs that are children of table nodes
-                if (mVisitorIsInsideTable) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideTable) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -301,7 +311,16 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRowStart(Row row)
             {
-                IndentAndAppendLine("[Row start]");
+                string rowContents = row.GetText().TrimEnd(new []{ '\u0007', ' ' }).Replace("\u0007", ", ");
+                int rowWidth = row.IndexOf(row.LastCell) + 1;
+                int rowIndex = row.ParentTable.IndexOf(row);
+                string rowStatusInTable = row.IsFirstRow && row.IsLastRow ? "only" : row.IsFirstRow ? "first" : row.IsLastRow ? "last" : "";
+                if (rowStatusInTable != "")
+                {
+                    rowStatusInTable = $", the {rowStatusInTable} row in this table,";
+                }
+
+                IndentAndAppendLine($"[Row start] Row #{++rowIndex}{rowStatusInTable} width {rowWidth}, \"{rowContents}\"");
                 mDocTraversalDepth++;
 
                 return VisitorAction.Continue;
@@ -325,9 +344,13 @@ namespace ApiExamples
             {
                 Row row = cell.ParentRow;
                 Table table = row.ParentTable;
+                string cellStatusInRow = cell.IsFirstCell && cell.IsLastCell ? "only" : cell.IsFirstCell ? "first" : cell.IsLastCell ? "last" : "";
+                if (cellStatusInRow != "")
+                {
+                    cellStatusInRow = $", the {cellStatusInRow} cell in this row";
+                }
 
-                IndentAndAppendLine("[Cell start] Row " + (table.IndexOf(row) + 1) + ", Col " +
-                                    (row.IndexOf(cell) + 1) + "");
+                IndentAndAppendLine($"[Cell start] Row {table.IndexOf(row) + 1}, Col {row.IndexOf(cell) + 1}{cellStatusInRow}");
                 mDocTraversalDepth++;
 
                 return VisitorAction.Continue;
@@ -411,7 +434,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideComment) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideComment) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -532,7 +555,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideField) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideField) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -596,6 +619,8 @@ namespace ApiExamples
         //ExFor:DocumentVisitor.VisitHeaderFooterEnd(HeaderFooter)
         //ExFor:HeaderFooter.Accept(Aspose.Words.DocumentVisitor)
         //ExFor:HeaderFooterCollection.ToArray
+        //ExFor:Run.Accept(DocumentVisitor)
+        //ExFor:Run.GetText
         //ExSummary:Traverse a document with a visitor that prints all header/footer nodes that it encounters.
         [Test] //ExSkip
         public void HeaderFooterToText()
@@ -644,7 +669,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideHeaderFooter) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideHeaderFooter) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -743,7 +768,7 @@ namespace ApiExamples
             public override VisitorAction VisitRun(Run run)
             {
                 // We want to print the contents of runs, but only if they are inside shapes, as they would be in the case of text boxes
-                if (mVisitorIsInsideEditableRange) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideEditableRange) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -864,7 +889,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideFootnote) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideFootnote) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -938,7 +963,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideOfficeMath) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideOfficeMath) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -1033,7 +1058,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideSmartTag) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideSmartTag) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }
@@ -1129,7 +1154,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (mVisitorIsInsideStructuredDocumentTag) IndentAndAppendLine("[Run] \"" + run.Text + "\"");
+                if (mVisitorIsInsideStructuredDocumentTag) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
             }

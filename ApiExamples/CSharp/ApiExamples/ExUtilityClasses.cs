@@ -22,7 +22,6 @@ namespace ApiExamples
             //ExFor:ControlChar
             //ExFor:ControlChar.Cr
             //ExFor:ControlChar.CrLf
-            //ExId:UtilityClassesUseControlCharacters
             //ExSummary:Shows how to use control characters.
             // Replace "\r" control character with "\r\n"
             text = text.Replace(ControlChar.Cr, ControlChar.CrLf);
@@ -34,7 +33,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ConvertUtil
-            //ExId:UtilityClassesConvertBetweenMeasurementUnits
             //ExSummary:Shows how to specify page properties in inches.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

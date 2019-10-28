@@ -26,6 +26,7 @@ using Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document;
 using Aspose.Words.Examples.CSharp.Rendering_and_Printing;
 using Aspose.Words.Examples.CSharp.Rendering_Printing;
 using QuickStart = Aspose.Words.Examples.CSharp.Quick_Start;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Linked_Textboxes;
 
 namespace Aspose.Words.Examples.CSharp
 {
@@ -36,6 +37,7 @@ namespace Aspose.Words.Examples.CSharp
         {
             Console.WriteLine("Open RunExamples.cs. \nIn Main() method uncomment the example that you want to run.");
             Console.WriteLine("=====================================================");
+
             //Uncomment the one you want to try out
 
             // =====================================================
@@ -88,11 +90,11 @@ namespace Aspose.Words.Examples.CSharp
             // ConvertDocumentToEPUB.Run();
             // ConvertDocumentToHtmlWithRoundtrip.Run();
             // DetectDocumentSignatures.Run();
-            // WorkingWithTxt.Run();
+             WorkingWithTxt.Run();
             // WorkingWithRTF.Run();
             // SaveOptionsHtmlFixed.Run();
             // SaveDocWithHtmlSaveOptions.Run();
-            WorkingWithVbaMacros.Run();
+            // WorkingWithVbaMacros.Run();
 
             //// =====================================================
             //// =====================================================
@@ -208,6 +210,7 @@ namespace Aspose.Words.Examples.CSharp
             // GetFontLineSpacing.Run();
             // CheckDMLTextEffect.Run();
             // ParagraphStyleSeparator.Run();
+            // WorkingWithMarkdownFeatures.Run();
 
             //// Fields
             //// =====================================================
@@ -259,7 +262,7 @@ namespace Aspose.Words.Examples.CSharp
             // InsertAreaChart.Run();
             // InsertBubbleChart.Run();
             // CreateChartUsingShape.Run();
-            // WorkWithChartDataLabel.Run();
+            // WorkWithChartDataLabels.Run();
             // WorkWithSingleChartDataPoint.Run();
             // WorkWithSingleChartSeries.Run();
             // WorkingWithChartAxis.Run();
@@ -323,6 +326,10 @@ namespace Aspose.Words.Examples.CSharp
             //// EndNote and Footnote 
             //// =====================================================
             // WorkingWithFootnote.Run();
+
+            //// Linked TextBoxes
+            //// =====================================================
+            // WorkingWithLinkedTextboxes.Run();
 
             //// =====================================================
             //// =====================================================
