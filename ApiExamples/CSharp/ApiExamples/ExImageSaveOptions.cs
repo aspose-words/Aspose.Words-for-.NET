@@ -9,11 +9,11 @@ using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
-
 #if !(NETSTANDARD2_0 || __MOBILE__)
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-
+#else
+using SkiaSharp;
 #endif
 
 namespace ApiExamples
@@ -162,6 +162,7 @@ namespace ApiExamples
             //ExEnd
         }
 
+#if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
         public void WindowsMetaFile()
         {
@@ -182,5 +183,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ImagesSaveOptions.WindowsMetaFile.png", options);
             //ExEnd
         }
+#endif
     }
 }

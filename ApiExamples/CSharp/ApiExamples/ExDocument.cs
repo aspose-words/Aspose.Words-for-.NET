@@ -2330,7 +2330,7 @@ namespace ApiExamples
             // If we set this flag to true while not having a template attached to the document,
             // there will be no effect because there is no template document to draw style changes from
             doc.AutomaticallyUpdateSyles = true;
-            Assert.IsEmpty(doc.AttachedTemplate);
+            Assert.That(doc.AttachedTemplate, Is.Empty);
 
             // We can set a default template document filename in a SaveOptions object to make it apply to
             // all documents we save with it that have no AttachedTemplate value

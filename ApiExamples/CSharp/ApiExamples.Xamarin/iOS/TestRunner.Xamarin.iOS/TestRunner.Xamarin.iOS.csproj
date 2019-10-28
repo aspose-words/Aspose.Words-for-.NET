@@ -123,6 +123,8 @@
     <ProjectReference Include="..\Xamarin.iOS.Tests\Xamarin.iOS.Tests.csproj">
       <Project>{1DACDD0E-6ADB-4293-B460-65043DE59F22}</Project>
       <Name>Xamarin.iOS.Tests</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
