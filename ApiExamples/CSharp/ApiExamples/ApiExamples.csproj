@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\NUnit.3.11.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.11.0\build\NUnit.props')" />
+  <Import Project="..\packages\NUnit.3.12.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -52,6 +52,24 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -59,14 +77,14 @@
     <Reference Include="Aspose.BarCode, Version=18.8.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
       <HintPath>..\packages\Aspose.BarCode.18.8.0\lib\net45\Aspose.BarCode.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.PDF, Version=19.2.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.PDF.19.2.0\lib\net4.0\Aspose.PDF.dll</HintPath>
+    <Reference Include="Aspose.PDF, Version=19.9.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.PDF.19.9.0\lib\net4.0\Aspose.PDF.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Words, Version=19.7.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.19.7.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=19.10.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.19.10.0\lib\net40\Aspose.Words.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Words.Shaping.HarfBuzz, Version=19.7.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.Shaping.HarfBuzz.19.7.0\lib\net40\Aspose.Words.Shaping.HarfBuzz.dll</HintPath>
+    <Reference Include="Aspose.Words.Shaping.HarfBuzz, Version=19.10.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.Shaping.HarfBuzz.19.10.0\lib\net40\Aspose.Words.Shaping.HarfBuzz.dll</HintPath>
     </Reference>
     <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
@@ -74,8 +92,8 @@
     <Reference Include="itextsharp.pdfa, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\itextsharp.pdfa.5.5.13\lib\itextsharp.pdfa.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=3.11.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.11.0\lib\net45\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -91,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiExampleBase.cs" />
+    <Compile Include="ExBookmarksOutlineLevelCollection.cs" />
     <Compile Include="ExComHelper.cs" />
     <Compile Include="CustomBarcodeGenerator.cs" />
     <Compile Include="DocumentHelper.cs" />
@@ -104,6 +123,7 @@
     <Compile Include="ExCharts.cs" />
     <Compile Include="ExComment.cs" />
     <Compile Include="ExControlChar.cs" />
+    <Compile Include="ExDocSaveOptions.cs" />
     <Compile Include="ExHtmlLoadOptions.cs" />
     <Compile Include="ExDigitalSignatureCollection.cs" />
     <Compile Include="ExDigitalSignatureUtil.cs" />
@@ -162,8 +182,11 @@
     <Compile Include="ExVariableCollection.cs" />
     <Compile Include="ExDocumentVisitor.cs" />
     <Compile Include="ExWarningInfoCollection.cs" />
+    <Compile Include="ExXamlFixedSaveOptions.cs" />
+    <Compile Include="ExXamlFlowSaveOptions.cs" />
     <Compile Include="ExXpsSaveOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ExSvgSaveOptions.cs" />
     <Compile Include="TestData\TestBuilders\ColorItemTestBuilder.cs" />
     <Compile Include="TestData\TestBuilders\DocumentTestBuilder.cs" />
     <Compile Include="TestData\TestBuilders\ImageTestBuilder.cs" />
@@ -195,8 +218,8 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\NUnit.3.11.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.11.0\build\NUnit.props'))" />
-    <Error Condition="!Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.19.7.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Aspose.Words.Shaping.HarfBuzz.19.7.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets'))" />
+    <Error Condition="!Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.12.0\build\NUnit.props'))" />
+    <Error Condition="!Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.19.10.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Aspose.Words.Shaping.HarfBuzz.19.10.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets'))" />
   </Target>
-  <Import Project="..\packages\Aspose.Words.Shaping.HarfBuzz.19.7.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets" Condition="Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.19.7.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" />
+  <Import Project="..\packages\Aspose.Words.Shaping.HarfBuzz.19.10.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets" Condition="Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.19.10.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" />
 </Project>

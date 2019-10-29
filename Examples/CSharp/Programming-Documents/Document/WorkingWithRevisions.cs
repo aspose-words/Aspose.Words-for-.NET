@@ -17,6 +17,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             GetRevisionGroups(dataDir);
             SetShowCommentsinPDF(dataDir);
             GetRevisionGroupDetails(dataDir);
+            AccessRevisedVersion(dataDir);
         }
 
         private static void AcceptRevisions(string dataDir)
@@ -112,6 +113,31 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
                 Console.WriteLine(groupText);
             }
             // ExEnd:GetRevisionGroupDetails
+        }
+
+        private static void AccessRevisedVersion(string dataDir)
+        {
+            // ExStart:AccessRevisedVersion
+            Document doc = new Document(dataDir + "Test.docx");
+            doc.UpdateListLabels();
+
+            // Switch to the revised version of the document.
+            doc.RevisionsView = RevisionsView.Final;
+
+            foreach (Revision revision in doc.Revisions)
+            {
+                if (revision.ParentNode.NodeType == NodeType.Paragraph)
+                {
+                    Paragraph paragraph = (Paragraph)revision.ParentNode;
+                    if (paragraph.IsListItem)
+                    {
+                        // Print revised version of LabelString and ListLevel.
+                        Console.WriteLine(paragraph.ListLabel.LabelString);
+                        Console.WriteLine(paragraph.ListFormat.ListLevel);
+                    }
+                }
+            }
+            // ExEnd:AccessRevisedVersion
         }
     }
 }

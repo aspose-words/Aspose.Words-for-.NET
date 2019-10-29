@@ -14,6 +14,7 @@ using Aspose.Words;
 using Aspose.Words.Fonts;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
+using Aspose.Words.Settings;
 using NUnit.Framework;
 #if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
 using System.Windows.Forms;
@@ -137,28 +138,59 @@ namespace ApiExamples
             //ExStart
             //ExFor:XpsSaveOptions
             //ExFor:XpsSaveOptions.#ctor
+            //ExFor:XpsSaveOptions.OutlineOptions
+            //ExFor:XpsSaveOptions.SaveFormat
             //ExFor:Document.Save(String)
             //ExFor:Document.Save(Stream, SaveFormat)
             //ExFor:Document.Save(String, SaveOptions)
-            //ExId:SaveToXps_NewAPI
-            //ExSummary:Shows how to save a document to the XPS format using the Save method and the XpsSaveOptions class.
+            //ExSummary:Shows how to save a document to the XPS format in different ways.
             // Open the document
             Document doc = new Document(MyDir + "Rendering.doc");
+
             // Save document to file in the XPS format with default options
-            doc.Save(ArtifactsDir + "Rendering.XpsDefaultOptions.xps");
+            doc.Save(ArtifactsDir + "Rendering.SaveAsXps.DefaultOptions.xps");
 
             // Save document to stream in the XPS format with default options
-            MemoryStream docStream = new MemoryStream();
+            FileStream docStream = new FileStream(ArtifactsDir + "Rendering.SaveAsXps.FromStream.xps", FileMode.Create);
             doc.Save(docStream, SaveFormat.Xps);
-            // Rewind the stream position back to the beginning, ready for use
-            docStream.Seek(0, SeekOrigin.Begin);
+            docStream.Close();
 
             // Save document to file in the XPS format with specified options
-            // Render the first page only
+            // Render 3 pages starting from page 2; pages 2, 3 and 4
             XpsSaveOptions xpsOptions = new XpsSaveOptions();
-            xpsOptions.PageIndex = 0;
-            xpsOptions.PageCount = 1;
-            doc.Save(ArtifactsDir + "Rendering.XpsCustomOptions.xps", xpsOptions);
+            xpsOptions.SaveFormat = SaveFormat.Xps;
+            xpsOptions.PageIndex = 1;
+            xpsOptions.PageCount = 3;
+
+            // All paragraphs in the "Heading 1" style will be included in the outline but "Heading 2" and onwards won't
+            xpsOptions.OutlineOptions.HeadingsOutlineLevels = 1;
+
+            doc.Save(ArtifactsDir + "Rendering.SaveAsXps.PartialDocument.xps", xpsOptions);
+            //ExEnd
+        }
+
+        [Test]
+        public void SaveAsXpsBookFold()
+        {
+            //ExStart
+            //ExFor:XpsSaveOptions.#ctor(SaveFormat)
+            //ExFor:XpsSaveOptions.UseBookFoldPrintingSettings
+            //ExSummary:Shows how to save a document to the XPS format in the form of a book fold.
+            // Open a document with multiple paragraphs
+            Document doc = new Document(MyDir + "Paragraphs.docx");
+
+            // Configure both page setup and XpsSaveOptions to create a book fold
+            foreach (Section s in doc.Sections)
+            {
+                s.PageSetup.MultiplePages = MultiplePagesType.BookFoldPrinting;
+            }
+
+            XpsSaveOptions xpsOptions = new XpsSaveOptions(SaveFormat.Xps);
+            xpsOptions.UseBookFoldPrintingSettings = true;
+
+            // In order to make a booklet, we will need to print this document, stack the pages
+            // in the order they come out of the printer and then fold down the middle
+            doc.Save(ArtifactsDir + "Rendering.SaveAsXpsBookFold.xps", xpsOptions);
             //ExEnd
         }
 
@@ -876,34 +908,96 @@ namespace ApiExamples
             private int mCurrentPage;
             private int mPageTo;
         }
-#endif
         //ExEnd
 
         [Test]
-        public void WritePageInfo()
+        [Ignore("Run only when the printer driver is installed")]
+        public void PrintPageInfo()
         {
             //ExStart
             //ExFor:PageInfo
+            //ExFor:PageInfo.GetSizeInPixels(Single, Single, Single)
+            //ExFor:PageInfo.GetSpecifiedPrinterPaperSource(PaperSourceCollection, PaperSource)
+            //ExFor:PageInfo.HeightInPoints
+            //ExFor:PageInfo.Landscape
             //ExFor:PageInfo.PaperSize
             //ExFor:PageInfo.PaperTray
-            //ExFor:PageInfo.Landscape
+            //ExFor:PageInfo.SizeInPoints
             //ExFor:PageInfo.WidthInPoints
-            //ExFor:PageInfo.HeightInPoints
-            //ExSummary:Retrieves page size and orientation information for every page in a Word document.
+            //ExSummary:Shows how to print page size and orientation information for every page in a Word document.
             Document doc = new Document(MyDir + "Rendering.doc");
+
+            // The first section has 2 pages
+            // We will assign a different printer paper tray to each one, whose number will match a kind of paper source
+            // These sources and their Kinds will vary depending on the installed printer driver
+            PrinterSettings.PaperSourceCollection paperSources = new PrinterSettings().PaperSources;
+
+            doc.FirstSection.PageSetup.FirstPageTray = paperSources[0].RawKind;
+            doc.FirstSection.PageSetup.OtherPagesTray = paperSources[1].RawKind;
 
             Console.WriteLine("Document \"{0}\" contains {1} pages.", doc.OriginalFileName, doc.PageCount);
 
+            float scale = 1.0f;
+            float dpi = 96;
+
             for (int i = 0; i < doc.PageCount; i++)
             {
+                // Each page has a PageInfo object, whose index is the respective page's number
                 PageInfo pageInfo = doc.GetPageInfo(i);
-                Console.WriteLine("Page {0}. PaperSize:{1} ({2:F0}x{3:F0}pt), Orientation:{4}, PaperTray:{5}", i + 1,
-                    pageInfo.PaperSize, pageInfo.WidthInPoints, pageInfo.HeightInPoints,
-                    pageInfo.Landscape ? "Landscape" : "Portrait", pageInfo.PaperTray);
-            }
 
+                // Print the page's orientation and dimensions
+                Console.WriteLine($"Page {i + 1}:");
+                Console.WriteLine($"\tOrientation:\t{(pageInfo.Landscape ? "Landscape" : "Portrait")}");
+                Console.WriteLine($"\tPaper size:\t\t{pageInfo.PaperSize} ({pageInfo.WidthInPoints:F0}x{pageInfo.HeightInPoints:F0}pt)");
+                Console.WriteLine($"\tSize in points:\t{pageInfo.SizeInPoints}");
+                Console.WriteLine($"\tSize in pixels:\t{pageInfo.GetSizeInPixels(1.0f, 96)} at {scale * 100}% scale, {dpi} dpi");
+
+                // Paper source tray information
+                Console.WriteLine($"\tTray:\t{pageInfo.PaperTray}");
+                PaperSource source = pageInfo.GetSpecifiedPrinterPaperSource(paperSources, paperSources[0]);
+                Console.WriteLine($"\tSuitable print source:\t{source.SourceName}, kind: {source.Kind}");
+            }
             //ExEnd
         }
+
+        [Test]
+        [Ignore("Run only when the printer driver is installed")]
+        public void PrinterSettingsContainer()
+        {
+            //ExStart
+            //ExFor:PrinterSettingsContainer
+            //ExFor:PrinterSettingsContainer.#ctor(PrinterSettings)
+            //ExFor:PrinterSettingsContainer.DefaultPageSettingsPaperSource
+            //ExFor:PrinterSettingsContainer.PaperSizes
+            //ExFor:PrinterSettingsContainer.PaperSources
+            //ExSummary:Shows how to access and list your printer's paper sources and sizes.
+            // The PrinterSettingsContainer contains a PrinterSettings object,
+            // which contains unique data for different printer drivers
+            PrinterSettingsContainer container = new PrinterSettingsContainer(new PrinterSettings());
+
+            // You can find the printer's list of paper sources here
+            Console.WriteLine($"{container.PaperSources.Count} printer paper sources:");
+            foreach (PaperSource paperSource in container.PaperSources)
+            {
+                bool isDefault = container.DefaultPageSettingsPaperSource.SourceName == paperSource.SourceName;
+                Console.WriteLine($"\t{paperSource.SourceName}, " +
+                                  $"RawKind: {paperSource.RawKind} {(isDefault ? "(Default)" : "")}");
+            }
+
+            // You can find the list of PaperSizes that can be sent to the printer here
+            // Both the PrinterSource and PrinterSize contain a "RawKind" attribute,
+            // which equates to a paper type listed on the PaperSourceKind enum
+            // If the list of PaperSources contains a PaperSource with the same RawKind as that of the page being printed,
+            // the page will be printed by the paper source and on the appropriate paper size by the printer
+            // Otherwise, the printer will default to the source designated by DefaultPageSettingsPaperSource 
+            Console.WriteLine($"{container.PaperSizes.Count} paper sizes:");
+            foreach (System.Drawing.Printing.PaperSize paperSize in container.PaperSizes)
+            {
+                Console.WriteLine($"\t{paperSize}, RawKind: {paperSize.RawKind}");
+            }
+            //ExEnd
+        }
+#endif
 
         [Test]
         public void SetTrueTypeFontsFolder()

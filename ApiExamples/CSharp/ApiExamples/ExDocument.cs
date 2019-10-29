@@ -29,11 +29,13 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
-using Aspose.Words.Shaping.HarfBuzz;
 using Aspose.Words.Tables;
 using Aspose.Words.Themes;
 using NUnit.Framework;
 using CompareOptions = Aspose.Words.CompareOptions;
+#if !(__MOBILE__ || MAC)
+using Aspose.Words.Shaping.HarfBuzz;
+#endif
 #if !(NETSTANDARD2_0 || __MOBILE__)
 using Org.BouncyCastle.Pkcs;
 #endif
@@ -176,7 +178,7 @@ namespace ApiExamples
                 // Open the document. Note the Document constructor detects HTML format automatically.
                 // Pass the URI of the base folder so any images with relative URIs in the HTML document can be found.
                 LoadOptions loadOptions = new LoadOptions();
-                loadOptions.BaseUri = MyDir;
+                loadOptions.BaseUri = ImageDir;
 
                 doc = new Document(stream, loadOptions);
             }
@@ -642,6 +644,38 @@ namespace ApiExamples
         }
 
         [Test]
+        public void DownsampleOptions()
+        {
+            //ExStart
+            //ExFor:DownsampleOptions
+            //ExFor:DownsampleOptions.DownsampleImages
+            //ExFor:DownsampleOptions.Resolution
+            //ExFor:DownsampleOptions.ResolutionThreshold
+            //ExFor:PdfSaveOptions.DownsampleOptions
+            //ExSummary:Shows how to change the resolution of images in output pdf documents.
+            // Open a document that contains images 
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            // If we want to convert the document to .pdf, we can use a SaveOptions implementation to customize the saving process
+            PdfSaveOptions options = new PdfSaveOptions();
+
+            // This conversion will downsample images by default
+            Assert.True(options.DownsampleOptions.DownsampleImages);
+            Assert.AreEqual(220, options.DownsampleOptions.Resolution);
+
+            // We can set the output resolution to a different value
+            // The first two images in the input document will be affected by this
+            options.DownsampleOptions.Resolution = 36;
+
+            // We can set a minimum threshold for downsampling 
+            // This value will prevent the second image in the input document from being downsampled
+            options.DownsampleOptions.ResolutionThreshold = 128;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.pdf", options);
+            //ExEnd
+        }
+
+        [Test]
         public void SaveHtmlPrettyFormat()
         {
             //ExStart
@@ -699,62 +733,57 @@ namespace ApiExamples
         //ExFor:IFontSavingCallback
         //ExFor:IFontSavingCallback.FontSaving
         //ExFor:FontSavingArgs
+        //ExFor:FontSavingArgs.Bold
+        //ExFor:FontSavingArgs.Document
         //ExFor:FontSavingArgs.FontFamilyName
         //ExFor:FontSavingArgs.FontFileName
-        //ExId:SaveHtmlExportFonts
+        //ExFor:FontSavingArgs.FontStream
+        //ExFor:FontSavingArgs.IsExportNeeded
+        //ExFor:FontSavingArgs.IsSubsettingNeeded
+        //ExFor:FontSavingArgs.Italic
+        //ExFor:FontSavingArgs.KeepFontStreamOpen
+        //ExFor:FontSavingArgs.OriginalFileName
+        //ExFor:FontSavingArgs.OriginalFileSize
         //ExSummary:Shows how to define custom logic for handling font exporting when saving to HTML based formats.
         [Test] //ExSkip
         public void SaveHtmlExportFonts()
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
-            // Set the option to export font resources.
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Mhtml);
+            // Set the option to export font resources
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
             options.ExportFontResources = true;
-            // Create and pass the object which implements the handler methods.
+            // Create and pass the object which implements the handler methods
             options.FontSavingCallback = new HandleFontSaving();
 
             doc.Save(ArtifactsDir + "Document.SaveWithFontsExport.html", options);
         }
 
+        /// <summary>
+        /// Prints information about fonts and saves them alongside their output .html
+        /// </summary>
         public class HandleFontSaving : IFontSavingCallback
         {
             void IFontSavingCallback.FontSaving(FontSavingArgs args)
             {
-                // You can implement logic here to rename fonts, save to file etc. For this example just print some details about the current font being handled.
-                Console.WriteLine("Font Name = {0}, Font Filename = {1}", args.FontFamilyName, args.FontFileName);
-            }
-        }
-        //ExEnd
+                // Print information about fonts
+                Console.Write($"Font:\t{args.FontFamilyName}");
+                if (args.Bold) Console.Write(", bold");
+                if (args.Italic) Console.Write(", italic");
+                Console.WriteLine($"\nSource:\t{args.OriginalFileName}, {args.OriginalFileSize} bytes\n");
 
-        //ExStart
-        //ExFor:IImageSavingCallback
-        //ExFor:IImageSavingCallback.ImageSaving
-        //ExFor:ImageSavingArgs
-        //ExFor:ImageSavingArgs.ImageFileName
-        //ExFor:HtmlSaveOptions
-        //ExFor:HtmlSaveOptions.ImageSavingCallback
-        //ExId:SaveHtmlCustomExport
-        //ExSummary:Shows how to define custom logic for controlling how images are saved when exporting to HTML based formats.
-        [Test] //ExSkip
-        public void SaveHtmlExportImages()
-        {
-            Document doc = new Document(MyDir + "Document.doc");
+                Assert.True(args.IsExportNeeded);
+                Assert.True(args.IsSubsettingNeeded);
 
-            // Create and pass the object which implements the handler methods.
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
-            options.ImageSavingCallback = new HandleImageSaving();
+                // We can designate where each font will be saved by either specifying a file name, or creating a new stream
+                args.FontFileName = args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last();
 
-            doc.Save(ArtifactsDir + "Document.SaveWithCustomImagesExport.html", options);
-        }
+                args.FontStream = 
+                    new FileStream(ArtifactsDir + args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last(), FileMode.Create);
+                Assert.False(args.KeepFontStreamOpen);
 
-        public class HandleImageSaving : IImageSavingCallback
-        {
-            void IImageSavingCallback.ImageSaving(ImageSavingArgs args)
-            {
-                // Change any images in the document being exported with the extension of "jpeg" to "jpg".
-                if (args.ImageFileName.EndsWith(".jpeg"))
-                    args.ImageFileName = args.ImageFileName.Replace(".jpeg", ".jpg");
+                // We can access the source document from here also
+                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.doc"));
             }
         }
         //ExEnd
@@ -1671,6 +1700,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Compare(Document, String, DateTime)
+            //ExFor:RevisionCollection.AcceptAll
             //ExSummary:Shows how to apply the compare method to two documents and then use the results. 
             Document doc1 = new Document(MyDir + "Document.Compare.1.doc");
             Document doc2 = new Document(MyDir + "Document.Compare.2.doc");
@@ -2220,6 +2250,16 @@ namespace ApiExamples
         public void Revisions()
         {
             //ExStart
+            //ExFor:Revision
+            //ExFor:Revision.Accept
+            //ExFor:Revision.Author
+            //ExFor:Revision.DateTime
+            //ExFor:Revision.Group
+            //ExFor:Revision.Reject
+            //ExFor:Revision.RevisionType
+            //ExFor:RevisionCollection
+            //ExFor:RevisionCollection.Item(Int32)
+            //ExFor:RevisionCollection.Count
             //ExFor:Document.HasRevisions
             //ExFor:Document.TrackRevisions
             //ExFor:Document.Revisions
@@ -2227,45 +2267,120 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // A blank document comes with no revisions
+            // Normal editing of the document does not count as a revision
+            builder.Write("This does not count as a revision. ");
             Assert.IsFalse(doc.HasRevisions);
 
-            builder.Writeln("This does not count as a revision.");
-
-            // Just adding text does not count as a revision
-            Assert.IsFalse(doc.HasRevisions);
-
-            // For our edits to count as revisions, we need to declare an author and start tracking them
+            // In order for our edits to count as revisions, we need to declare an author and start tracking them
             doc.StartTrackRevisions("John Doe", DateTime.Now);
+            builder.Write("This is revision #1. ");
 
-            builder.Writeln("This is a revision.");
-
-            // The above text is now tracked as a revision and will show up accordingly in our output file
-            Assert.IsTrue(doc.HasRevisions);
-            Assert.AreEqual("John Doe", doc.Revisions[0].Author);
-
-            // Document.TrackRevisions corresponds to Microsoft Word tracking changes, not the ones we programmatically make here 
+            // This flag corresponds to the "Track Changes" option being turned on in Microsoft Word, to track the editing manually
+            // done there and not the programmatic changes we are about to do here
             Assert.IsFalse(doc.TrackRevisions);
+
+            // As well as nodes in the document, revisions get referenced in this collection
+            Assert.IsTrue(doc.HasRevisions);
+            Assert.AreEqual(1, doc.Revisions.Count);
+
+            Revision revision = doc.Revisions[0];
+            Assert.AreEqual("John Doe", revision.Author);
+            Assert.AreEqual("This is revision #1. ", revision.ParentNode.GetText());
+            Assert.AreEqual(RevisionType.Insertion, revision.RevisionType);
+            Assert.AreEqual(revision.DateTime.Date, DateTime.Now.Date);
+            Assert.AreEqual(doc.Revisions.Groups[0], revision.Group);
+
+            // Deleting content also counts as a revision
+            // The most recent revisions are put at the start of the collection
+            doc.FirstSection.Body.FirstParagraph.Runs[0].Remove();
+            Assert.AreEqual(RevisionType.Deletion, doc.Revisions[0].RevisionType);
+            Assert.AreEqual(2, doc.Revisions.Count);
+
+            // Insert revisions are treated as document text by the GetText() method before they are accepted,
+            // since they are still nodes with text and are in the body
+            Assert.AreEqual("This does not count as a revision. This is revision #1.", doc.GetText().Trim());
+
+            // Accepting the deletion revision will assimilate it into the paragraph text and remove it from the collection
+            doc.Revisions[0].Accept();
+            Assert.AreEqual(1, doc.Revisions.Count);
+
+            // Once the delete revision is accepted, the nodes that it concerns are removed and their text will not show up here
+            Assert.AreEqual("This is revision #1.", doc.GetText().Trim());
+
+            // The second insertion revision is now at index 0, which we can reject to ignore and discard it
+            doc.Revisions[0].Reject();
+            Assert.AreEqual(0, doc.Revisions.Count);
+            Assert.AreEqual("", doc.GetText().Trim());
 
             // This takes us back to not counting changes as revisions
             doc.StopTrackRevisions();
 
-            builder.Writeln("This does not count as a revision.");
+            builder.Writeln("This also does not count as a revision.");
+            Assert.AreEqual(0, doc.Revisions.Count);
 
-            doc.Save(ArtifactsDir + "Revisions.docx");
+            doc.Save(ArtifactsDir + "Document.Revisions.docx");
+            //ExEnd
+        }
 
-            // We can get rid of all the changes we made that counted as revisions
-            doc.Revisions.RejectAll();
-            Assert.IsFalse(doc.HasRevisions);
+        [Test]
+        public void RevisionCollection()
+        {
+            //ExStart
+            //ExFor:Revision.ParentStyle
+            //ExFor:RevisionCollection.GetEnumerator
+            //ExFor:RevisionCollection.Groups
+            //ExFor:RevisionCollection.RejectAll
+            //ExFor:RevisionGroupCollection.GetEnumerator
+            //ExSummary:Shows how to look through a document's revisions.
+            // Open a document that contains revisions and get its revision collection
+            Document doc = new Document(MyDir + "Document.Revisions.docx");
+            RevisionCollection revisions = doc.Revisions;
+            
+            // This collection itself has a collection of revision groups, which are merged sequences of adjacent revisions
+            Console.WriteLine($"{revisions.Groups.Count} revision groups:");
 
-            // The second line that our builder wrote will not appear at all in the output
-            doc.Save(ArtifactsDir + "RevisionsRejected.docx");
+            // We can iterate over the collection of groups and access the text that the revision concerns
+            using (IEnumerator<RevisionGroup> e = revisions.Groups.GetEnumerator())
+            {
+                while (e.MoveNext())
+                {
+                    Console.WriteLine($"\tGroup type \"{e.Current.RevisionType}\", " +
+                                      $"author: {e.Current.Author}, contents: [{e.Current.Text.Trim()}]");
+                }
+            }
 
-            // Alternatively, we can track revisions from Microsoft Word like this
-            // This is the same as turning on "Track Changes" in Word
-            doc.TrackRevisions = true;
+            // The collection of revisions is considerably larger than the condensed form we printed above,
+            // depending on how many Runs the text has been segmented into during editing in Microsoft Word,
+            // since each Run affected by a revision gets its own Revision object
+            Console.WriteLine($"\n{revisions.Count} revisions:");
 
-            doc.Save(ArtifactsDir + "RevisionsTrackedFromMSWord.docx");
+            using (IEnumerator<Revision> e = revisions.GetEnumerator())
+            {
+                while (e.MoveNext())
+                {
+                    // A StyleDefinitionChange strictly affects styles and not document nodes, so in this case the ParentStyle
+                    // attribute will always be used, while the ParentNode will always be null
+                    // Since all other changes affect nodes, ParentNode will conversely be in use and ParentStyle will be null
+                    if (e.Current.RevisionType == RevisionType.StyleDefinitionChange)
+                    {
+                        Console.WriteLine($"\tRevision type \"{e.Current.RevisionType}\", " +
+                                          $"author: {e.Current.Author}, style: [{e.Current.ParentStyle.Name}]");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"\tRevision type \"{e.Current.RevisionType}\", " +
+                                          $"author: {e.Current.Author}, contents: [{e.Current.ParentNode.GetText().Trim()}]");
+                    }
+                }
+            }
+
+            // While the collection of revision groups provides a clearer overview of all revisions that took place in the document,
+            // the changes must be accepted/rejected by the revisions themselves, the RevisionCollection, or the document
+            // In this case we will reject all revisions via the collection, reverting the document to its original form, which we will then save
+            revisions.RejectAll();
+            Assert.AreEqual(0, revisions.Count);
+
+            doc.Save(ArtifactsDir + "Document.RevisionCollection.docx");
             //ExEnd
         }
 
@@ -2528,6 +2643,13 @@ namespace ApiExamples
             //ExFor:Document.MailMergeSettings
             //ExFor:MailMergeDataType
             //ExFor:MailMergeMainDocumentType
+            //ExFor:Odso
+            //ExFor:Odso.Clone
+            //ExFor:Odso.ColumnDelimiter
+            //ExFor:Odso.DataSource
+            //ExFor:Odso.DataSourceType
+            //ExFor:Odso.FirstRowContainsColumnNames
+            //ExFor:OdsoDataSourceType
             //ExSummary:Shows how to execute a mail merge with MailMergeSettings.
             // We'll create a simple document that will act as a destination for mail merge data
             Document doc = new Document();
@@ -2557,13 +2679,122 @@ namespace ApiExamples
 
             // Office Data Source Object settings
             Odso odso = mailMergeSettings.Odso;
+            odso.DataSource = ArtifactsDir + "Document.Lines.txt";
             odso.DataSourceType = OdsoDataSourceType.Text;
             odso.ColumnDelimiter = '|';
-            odso.DataSource = ArtifactsDir + "Document.Lines.txt";
             odso.FirstRowContainsColumnNames = true;
+
+            // ODSO objects can also be cloned
+            Assert.AreNotSame(odso, odso.Clone());
 
             // The mail merge will be performed when this document is opened 
             doc.Save(ArtifactsDir + "Document.MailMergeSettings.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void OdsoEmail()
+        {
+            //ExStart
+            //ExFor:Odso.TableName
+            //ExFor:Odso.UdlConnectString
+            //ExSummary:Shows how to execute a mail merge while connecting to an external data source.
+            Document doc = new Document(MyDir + "OdsoData.doc");
+            
+            Odso odso = doc.MailMergeSettings.Odso;
+            
+            Console.WriteLine($"File will connect to data source located in:\n\t\"{odso.DataSource}\"");
+            Console.WriteLine($"Source type:\n\t{odso.DataSourceType}");
+            Console.WriteLine($"Connection string:\n\t{odso.UdlConnectString}");
+            Console.WriteLine($"Table:\n\t{odso.TableName}");
+            Console.WriteLine($"Query:\n\t{doc.MailMergeSettings.Query}");
+            //ExEnd
+        }
+
+        [Test]
+        public void OdsoFieldMapDataCollection()
+        {
+            //ExStart
+            //ExFor:Odso.FieldMapDatas
+            //ExFor:OdsoFieldMapData
+            //ExFor:OdsoFieldMapData.Clone
+            //ExFor:OdsoFieldMapData.Column
+            //ExFor:OdsoFieldMapData.MappedName
+            //ExFor:OdsoFieldMapData.Name
+            //ExFor:OdsoFieldMapData.Type
+            //ExFor:OdsoFieldMapDataCollection
+            //ExFor:OdsoFieldMapDataCollection.Add(OdsoFieldMapData)
+            //ExFor:OdsoFieldMapDataCollection.Clear
+            //ExFor:OdsoFieldMapDataCollection.Count
+            //ExFor:OdsoFieldMapDataCollection.GetEnumerator
+            //ExFor:OdsoFieldMapDataCollection.Item(Int32)
+            //ExFor:OdsoFieldMapDataCollection.RemoveAt(Int32)
+            //ExFor:OdsoFieldMappingType
+            //ExSummary:Shows how to access the collection of data that maps data source columns to merge fields.
+            Document doc = new Document(MyDir + "OdsoData.doc");
+
+            // This collection defines how columns from an external data source will be mapped to predefined MERGEFIELD,
+            // ADDRESSBLOCK and GREETINGLINE fields during a mail merge
+            OdsoFieldMapDataCollection fieldMapDataCollection = doc.MailMergeSettings.Odso.FieldMapDatas;
+
+            Assert.AreEqual(30, fieldMapDataCollection.Count);
+            int index = 0;
+
+            foreach (OdsoFieldMapData data in fieldMapDataCollection)
+            {
+                Console.WriteLine($"Field map data index #{index++}, type \"{data.Type}\":");
+
+                if (data.Type != OdsoFieldMappingType.Null)
+                {
+                    Console.WriteLine(
+                        $"\tColumn named {data.Name}, number {data.Column} in the data source mapped to merge field named {data.MappedName}.");
+                }
+                else
+                {
+                    Console.WriteLine("\tNo valid column to field mapping data present.");
+                }
+
+                Assert.AreNotEqual(data, data.Clone());
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void OdsoRecipientDataCollection()
+        {
+            //ExStart
+            //ExFor:Odso.RecipientDatas
+            //ExFor:OdsoRecipientData
+            //ExFor:OdsoRecipientData.Active
+            //ExFor:OdsoRecipientData.Clone
+            //ExFor:OdsoRecipientData.Column
+            //ExFor:OdsoRecipientData.Hash
+            //ExFor:OdsoRecipientData.UniqueTag
+            //ExFor:OdsoRecipientDataCollection
+            //ExFor:OdsoRecipientDataCollection.Add(OdsoRecipientData)
+            //ExFor:OdsoRecipientDataCollection.Clear
+            //ExFor:OdsoRecipientDataCollection.Count
+            //ExFor:OdsoRecipientDataCollection.GetEnumerator
+            //ExFor:OdsoRecipientDataCollection.Item(Int32)
+            //ExFor:OdsoRecipientDataCollection.RemoveAt(Int32)
+            //ExSummary:Shows how to access the collection of data that designates merge data source records to be excluded from a merge.
+            Document doc = new Document(MyDir + "OdsoData.doc");
+
+            // Records in this collection that do not have the "Active" flag set to true will be excluded from the mail merge
+            OdsoRecipientDataCollection odsoRecipientDataCollection = doc.MailMergeSettings.Odso.RecipientDatas;
+
+            Assert.AreEqual(70, odsoRecipientDataCollection.Count);
+            int index = 0;
+
+            foreach (OdsoRecipientData data in odsoRecipientDataCollection)
+            {
+                Console.WriteLine($"Odso recipient data index #{index++}, will {(data.Active ? "" : "not ")}be imported upon mail merge.");
+                Console.WriteLine($"\tColumn #{data.Column}");
+                Console.WriteLine($"\tHash code: {data.Hash}");
+                Console.WriteLine($"\tContents array length: {data.UniqueTag.Length}");
+
+                Assert.AreNotEqual(data, data.Clone());
+            }
             //ExEnd
         }
 
@@ -3262,6 +3493,7 @@ namespace ApiExamples
             Assert.IsTrue(classModule.SourceCode.Contains("MsgBox \"Class test\""));
         }
 
+#if !(__MOBILE__ || MAC)
         [Test]
         public void OpenType()
         {
@@ -3284,5 +3516,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "OpenType.Document.pdf");
             //ExEnd
         }
+#endif
     }
 }
