@@ -29,11 +29,13 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
-using Aspose.Words.Shaping.HarfBuzz;
 using Aspose.Words.Tables;
 using Aspose.Words.Themes;
 using NUnit.Framework;
 using CompareOptions = Aspose.Words.CompareOptions;
+#if !(__MOBILE__ || MAC)
+using Aspose.Words.Shaping.HarfBuzz;
+#endif
 #if !(NETSTANDARD2_0 || __MOBILE__)
 using Org.BouncyCastle.Pkcs;
 #endif
@@ -176,7 +178,7 @@ namespace ApiExamples
                 // Open the document. Note the Document constructor detects HTML format automatically.
                 // Pass the URI of the base folder so any images with relative URIs in the HTML document can be found.
                 LoadOptions loadOptions = new LoadOptions();
-                loadOptions.BaseUri = MyDir;
+                loadOptions.BaseUri = ImageDir;
 
                 doc = new Document(stream, loadOptions);
             }
@@ -642,6 +644,38 @@ namespace ApiExamples
         }
 
         [Test]
+        public void DownsampleOptions()
+        {
+            //ExStart
+            //ExFor:DownsampleOptions
+            //ExFor:DownsampleOptions.DownsampleImages
+            //ExFor:DownsampleOptions.Resolution
+            //ExFor:DownsampleOptions.ResolutionThreshold
+            //ExFor:PdfSaveOptions.DownsampleOptions
+            //ExSummary:Shows how to change the resolution of images in output pdf documents.
+            // Open a document that contains images 
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            // If we want to convert the document to .pdf, we can use a SaveOptions implementation to customize the saving process
+            PdfSaveOptions options = new PdfSaveOptions();
+
+            // This conversion will downsample images by default
+            Assert.True(options.DownsampleOptions.DownsampleImages);
+            Assert.AreEqual(220, options.DownsampleOptions.Resolution);
+
+            // We can set the output resolution to a different value
+            // The first two images in the input document will be affected by this
+            options.DownsampleOptions.Resolution = 36;
+
+            // We can set a minimum threshold for downsampling 
+            // This value will prevent the second image in the input document from being downsampled
+            options.DownsampleOptions.ResolutionThreshold = 128;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.pdf", options);
+            //ExEnd
+        }
+
+        [Test]
         public void SaveHtmlPrettyFormat()
         {
             //ExStart
@@ -699,62 +733,57 @@ namespace ApiExamples
         //ExFor:IFontSavingCallback
         //ExFor:IFontSavingCallback.FontSaving
         //ExFor:FontSavingArgs
+        //ExFor:FontSavingArgs.Bold
+        //ExFor:FontSavingArgs.Document
         //ExFor:FontSavingArgs.FontFamilyName
         //ExFor:FontSavingArgs.FontFileName
-        //ExId:SaveHtmlExportFonts
+        //ExFor:FontSavingArgs.FontStream
+        //ExFor:FontSavingArgs.IsExportNeeded
+        //ExFor:FontSavingArgs.IsSubsettingNeeded
+        //ExFor:FontSavingArgs.Italic
+        //ExFor:FontSavingArgs.KeepFontStreamOpen
+        //ExFor:FontSavingArgs.OriginalFileName
+        //ExFor:FontSavingArgs.OriginalFileSize
         //ExSummary:Shows how to define custom logic for handling font exporting when saving to HTML based formats.
         [Test] //ExSkip
         public void SaveHtmlExportFonts()
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
-            // Set the option to export font resources.
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Mhtml);
+            // Set the option to export font resources
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
             options.ExportFontResources = true;
-            // Create and pass the object which implements the handler methods.
+            // Create and pass the object which implements the handler methods
             options.FontSavingCallback = new HandleFontSaving();
 
             doc.Save(ArtifactsDir + "Document.SaveWithFontsExport.html", options);
         }
 
+        /// <summary>
+        /// Prints information about fonts and saves them alongside their output .html
+        /// </summary>
         public class HandleFontSaving : IFontSavingCallback
         {
             void IFontSavingCallback.FontSaving(FontSavingArgs args)
             {
-                // You can implement logic here to rename fonts, save to file etc. For this example just print some details about the current font being handled.
-                Console.WriteLine("Font Name = {0}, Font Filename = {1}", args.FontFamilyName, args.FontFileName);
-            }
-        }
-        //ExEnd
+                // Print information about fonts
+                Console.Write($"Font:\t{args.FontFamilyName}");
+                if (args.Bold) Console.Write(", bold");
+                if (args.Italic) Console.Write(", italic");
+                Console.WriteLine($"\nSource:\t{args.OriginalFileName}, {args.OriginalFileSize} bytes\n");
 
-        //ExStart
-        //ExFor:IImageSavingCallback
-        //ExFor:IImageSavingCallback.ImageSaving
-        //ExFor:ImageSavingArgs
-        //ExFor:ImageSavingArgs.ImageFileName
-        //ExFor:HtmlSaveOptions
-        //ExFor:HtmlSaveOptions.ImageSavingCallback
-        //ExId:SaveHtmlCustomExport
-        //ExSummary:Shows how to define custom logic for controlling how images are saved when exporting to HTML based formats.
-        [Test] //ExSkip
-        public void SaveHtmlExportImages()
-        {
-            Document doc = new Document(MyDir + "Document.doc");
+                Assert.True(args.IsExportNeeded);
+                Assert.True(args.IsSubsettingNeeded);
 
-            // Create and pass the object which implements the handler methods.
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
-            options.ImageSavingCallback = new HandleImageSaving();
+                // We can designate where each font will be saved by either specifying a file name, or creating a new stream
+                args.FontFileName = args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last();
 
-            doc.Save(ArtifactsDir + "Document.SaveWithCustomImagesExport.html", options);
-        }
+                args.FontStream = 
+                    new FileStream(ArtifactsDir + args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last(), FileMode.Create);
+                Assert.False(args.KeepFontStreamOpen);
 
-        public class HandleImageSaving : IImageSavingCallback
-        {
-            void IImageSavingCallback.ImageSaving(ImageSavingArgs args)
-            {
-                // Change any images in the document being exported with the extension of "jpeg" to "jpg".
-                if (args.ImageFileName.EndsWith(".jpeg"))
-                    args.ImageFileName = args.ImageFileName.Replace(".jpeg", ".jpg");
+                // We can access the source document from here also
+                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.doc"));
             }
         }
         //ExEnd
@@ -2644,6 +2673,13 @@ namespace ApiExamples
             //ExFor:Document.MailMergeSettings
             //ExFor:MailMergeDataType
             //ExFor:MailMergeMainDocumentType
+            //ExFor:Odso
+            //ExFor:Odso.Clone
+            //ExFor:Odso.ColumnDelimiter
+            //ExFor:Odso.DataSource
+            //ExFor:Odso.DataSourceType
+            //ExFor:Odso.FirstRowContainsColumnNames
+            //ExFor:OdsoDataSourceType
             //ExSummary:Shows how to execute a mail merge with MailMergeSettings.
             // We'll create a simple document that will act as a destination for mail merge data
             Document doc = new Document();
@@ -2673,13 +2709,122 @@ namespace ApiExamples
 
             // Office Data Source Object settings
             Odso odso = mailMergeSettings.Odso;
+            odso.DataSource = ArtifactsDir + "Document.Lines.txt";
             odso.DataSourceType = OdsoDataSourceType.Text;
             odso.ColumnDelimiter = '|';
-            odso.DataSource = ArtifactsDir + "Document.Lines.txt";
             odso.FirstRowContainsColumnNames = true;
+
+            // ODSO objects can also be cloned
+            Assert.AreNotSame(odso, odso.Clone());
 
             // The mail merge will be performed when this document is opened 
             doc.Save(ArtifactsDir + "Document.MailMergeSettings.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void OdsoEmail()
+        {
+            //ExStart
+            //ExFor:Odso.TableName
+            //ExFor:Odso.UdlConnectString
+            //ExSummary:Shows how to execute a mail merge while connecting to an external data source.
+            Document doc = new Document(MyDir + "OdsoData.doc");
+            
+            Odso odso = doc.MailMergeSettings.Odso;
+            
+            Console.WriteLine($"File will connect to data source located in:\n\t\"{odso.DataSource}\"");
+            Console.WriteLine($"Source type:\n\t{odso.DataSourceType}");
+            Console.WriteLine($"Connection string:\n\t{odso.UdlConnectString}");
+            Console.WriteLine($"Table:\n\t{odso.TableName}");
+            Console.WriteLine($"Query:\n\t{doc.MailMergeSettings.Query}");
+            //ExEnd
+        }
+
+        [Test]
+        public void OdsoFieldMapDataCollection()
+        {
+            //ExStart
+            //ExFor:Odso.FieldMapDatas
+            //ExFor:OdsoFieldMapData
+            //ExFor:OdsoFieldMapData.Clone
+            //ExFor:OdsoFieldMapData.Column
+            //ExFor:OdsoFieldMapData.MappedName
+            //ExFor:OdsoFieldMapData.Name
+            //ExFor:OdsoFieldMapData.Type
+            //ExFor:OdsoFieldMapDataCollection
+            //ExFor:OdsoFieldMapDataCollection.Add(OdsoFieldMapData)
+            //ExFor:OdsoFieldMapDataCollection.Clear
+            //ExFor:OdsoFieldMapDataCollection.Count
+            //ExFor:OdsoFieldMapDataCollection.GetEnumerator
+            //ExFor:OdsoFieldMapDataCollection.Item(Int32)
+            //ExFor:OdsoFieldMapDataCollection.RemoveAt(Int32)
+            //ExFor:OdsoFieldMappingType
+            //ExSummary:Shows how to access the collection of data that maps data source columns to merge fields.
+            Document doc = new Document(MyDir + "OdsoData.doc");
+
+            // This collection defines how columns from an external data source will be mapped to predefined MERGEFIELD,
+            // ADDRESSBLOCK and GREETINGLINE fields during a mail merge
+            OdsoFieldMapDataCollection fieldMapDataCollection = doc.MailMergeSettings.Odso.FieldMapDatas;
+
+            Assert.AreEqual(30, fieldMapDataCollection.Count);
+            int index = 0;
+
+            foreach (OdsoFieldMapData data in fieldMapDataCollection)
+            {
+                Console.WriteLine($"Field map data index #{index++}, type \"{data.Type}\":");
+
+                if (data.Type != OdsoFieldMappingType.Null)
+                {
+                    Console.WriteLine(
+                        $"\tColumn named {data.Name}, number {data.Column} in the data source mapped to merge field named {data.MappedName}.");
+                }
+                else
+                {
+                    Console.WriteLine("\tNo valid column to field mapping data present.");
+                }
+
+                Assert.AreNotEqual(data, data.Clone());
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void OdsoRecipientDataCollection()
+        {
+            //ExStart
+            //ExFor:Odso.RecipientDatas
+            //ExFor:OdsoRecipientData
+            //ExFor:OdsoRecipientData.Active
+            //ExFor:OdsoRecipientData.Clone
+            //ExFor:OdsoRecipientData.Column
+            //ExFor:OdsoRecipientData.Hash
+            //ExFor:OdsoRecipientData.UniqueTag
+            //ExFor:OdsoRecipientDataCollection
+            //ExFor:OdsoRecipientDataCollection.Add(OdsoRecipientData)
+            //ExFor:OdsoRecipientDataCollection.Clear
+            //ExFor:OdsoRecipientDataCollection.Count
+            //ExFor:OdsoRecipientDataCollection.GetEnumerator
+            //ExFor:OdsoRecipientDataCollection.Item(Int32)
+            //ExFor:OdsoRecipientDataCollection.RemoveAt(Int32)
+            //ExSummary:Shows how to access the collection of data that designates merge data source records to be excluded from a merge.
+            Document doc = new Document(MyDir + "OdsoData.doc");
+
+            // Records in this collection that do not have the "Active" flag set to true will be excluded from the mail merge
+            OdsoRecipientDataCollection odsoRecipientDataCollection = doc.MailMergeSettings.Odso.RecipientDatas;
+
+            Assert.AreEqual(70, odsoRecipientDataCollection.Count);
+            int index = 0;
+
+            foreach (OdsoRecipientData data in odsoRecipientDataCollection)
+            {
+                Console.WriteLine($"Odso recipient data index #{index++}, will {(data.Active ? "" : "not ")}be imported upon mail merge.");
+                Console.WriteLine($"\tColumn #{data.Column}");
+                Console.WriteLine($"\tHash code: {data.Hash}");
+                Console.WriteLine($"\tContents array length: {data.UniqueTag.Length}");
+
+                Assert.AreNotEqual(data, data.Clone());
+            }
             //ExEnd
         }
 
@@ -3378,7 +3523,7 @@ namespace ApiExamples
             Assert.IsTrue(classModule.SourceCode.Contains("MsgBox \"Class test\""));
         }
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#if !(__MOBILE__ || MAC)
         [Test]
         public void OpenType()
         {

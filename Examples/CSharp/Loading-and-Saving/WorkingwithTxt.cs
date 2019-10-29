@@ -18,6 +18,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             AddBidiMarks(dataDir);
             DetectNumberingWithWhitespaces(dataDir);
             HandleSpacesOptions(dataDir);
+            DocumentTextDirection(dataDir);
             ExportHeadersFootersMode(dataDir);
             UseTabCharacterPerLevelForListIndentation(dataDir);
             UseSpaceCharacterPerLevelForListIndentation(dataDir);
@@ -74,6 +75,23 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             doc.Save(dataDir);
             //ExEnd:HandleSpacesOptions
             Console.WriteLine("\nTrim leading and trailing spaces while importing text document.\nFile saved at " + dataDir);
+        }
+
+        public static void DocumentTextDirection(string dataDir)
+        {
+            //ExStart:DocumentTextDirection
+            TxtLoadOptions loadOptions = new TxtLoadOptions();
+            loadOptions.DocumentDirection = DocumentDirection.Auto;
+
+            Document doc = new Document(dataDir + "arabic.txt", loadOptions);
+
+            Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
+            Console.WriteLine(paragraph.ParagraphFormat.Bidi);
+
+            dataDir = dataDir + "DocumentDirection_out.docx";
+            doc.Save(dataDir);
+            //ExEnd:DocumentTextDirection
+            Console.WriteLine("\nFile saved at " + dataDir);
         }
 
         public static void ExportHeadersFootersMode(string dataDir)
