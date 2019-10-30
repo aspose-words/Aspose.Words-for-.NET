@@ -1380,6 +1380,68 @@ namespace ApiExamples
         }
 
         [Test]
+        public void CreateLinkBetweenTextBoxes()
+        {
+            //ExStart
+            //ExFor:TextBox.IsValidLinkTarget(TextBox)
+            //ExFor:TextBox.Next
+            //ExFor:TextBox.Previous
+            //ExFor:TextBox.BreakForwardLink
+            //ExSummary:Shows how to work with textbox forward link
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create a few textboxes for example
+            Shape textBoxShape1 = builder.InsertShape(ShapeType.TextBox, 100, 100);
+            TextBox textBox1 = textBoxShape1.TextBox;
+            builder.Writeln();
+            
+            Shape textBoxShape2 = builder.InsertShape(ShapeType.TextBox, 100, 100);
+            TextBox textBox2 = textBoxShape2.TextBox;
+            builder.Writeln();
+            
+            Shape textBoxShape3 = builder.InsertShape(ShapeType.TextBox, 100, 100);
+            TextBox textBox3 = textBoxShape3.TextBox;
+            builder.Writeln();
+
+            Shape textBoxShape4 = builder.InsertShape(ShapeType.TextBox, 100, 100);
+            TextBox textBox4 = textBoxShape4.TextBox;
+            
+            // Create link between textboxes if possible
+            if (textBox1.IsValidLinkTarget(textBox2))
+                textBox1.Next = textBox2;
+
+            if (textBox2.IsValidLinkTarget(textBox3))
+                textBox2.Next = textBox3;
+
+            // You can only create link on empty textbox
+            builder.MoveTo(textBoxShape4.LastParagraph);
+            builder.Write("Vertical text");
+            // Thus it's not valid link target
+            Assert.IsFalse(textBox3.IsValidLinkTarget(textBox4));
+            
+            if (textBox1.Next != null && textBox1.Previous == null)
+                Console.WriteLine("This TextBox is the head of the sequence");
+ 
+            if (textBox2.Next != null && textBox2.Previous != null)
+                Console.WriteLine("This TextBox is the Middle of the sequence");
+ 
+            if (textBox3.Next == null && textBox3.Previous != null)
+            {
+                Console.WriteLine("This TextBox is the Tail of the sequence");
+                
+                // Break the forward link between textBox2 and textBox3
+                textBox3.Previous.BreakForwardLink();
+                // Check that link was break successfully
+                Assert.IsTrue(textBox2.Next == null);
+                Assert.IsTrue(textBox3.Previous == null);
+            }
+
+            doc.Save(ArtifactsDir + "Shape.CreateLinkBetweenTextBoxes.docx");
+            //ExEnd
+        }
+
+        [Test]
         public void GetTextBoxAndChangeTextAnchor()
         {
             //ExStart
@@ -1679,6 +1741,25 @@ namespace ApiExamples
                 ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
                 renderer.Save(ArtifactsDir + $"Shape.ShapeRenderer {shape.Name}.png", options);
             }
+            //ExEnd
+        }
+
+        [Test]
+        public void DocumentHasSmartArtObject()
+        {
+            //ExStart
+            //ExFor:Shape.HasSmartArt
+            //ExSummary:Shows how to detect that Shape has a SmartArt object.
+            Document doc = new Document(MyDir + "Shape.SmartArt.docx");
+ 
+            int count = 0;
+            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
+            {
+                if (shape.HasSmartArt)
+                    count++;
+            }
+ 
+            Console.WriteLine("The document has {0} shapes with SmartArt.", count);
             //ExEnd
         }
 

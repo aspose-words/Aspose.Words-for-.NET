@@ -1920,6 +1920,36 @@ namespace ApiExamples
         }
 
         [Test]
+        public void GetRevisedPropertiesOfList()
+        {
+            //ExStart
+            //ExFor:RevisionsView
+            //ExFor:Document.RevisionsView
+            //ExSummary:Shows how to get revised version of list label and list level formatting in a document.
+            Document doc = new Document(MyDir + "GetRevisedVersionOfDocument.docx");
+            doc.UpdateListLabels();
+
+            // Switch to the revised version of the document
+            doc.RevisionsView = RevisionsView.Final;
+
+            foreach (Revision revision in doc.Revisions)
+            {
+                if (revision.ParentNode.NodeType == NodeType.Paragraph)
+                {
+                    Paragraph paragraph = (Paragraph)revision.ParentNode;
+
+                    if (paragraph.IsListItem)
+                    {
+                        // Print revised version of LabelString and ListLevel
+                        Console.WriteLine(paragraph.ListLabel.LabelString);
+                        Console.WriteLine(paragraph.ListFormat.ListLevel);
+                    }
+                }
+            }
+            //ExEnd
+        }
+
+        [Test]
         public void UpdateThumbnail()
         {
             //ExStart
@@ -3478,6 +3508,15 @@ namespace ApiExamples
             {
                 Console.WriteLine($"Module name: {module.Name};\nModule code:\n{module.SourceCode}\n");
             }
+
+            // Set new source code for VBA module
+            string oldCode = vbaModules[0].SourceCode;
+            vbaModules[0].SourceCode = "Your VBA code...";
+
+            Assert.AreNotEqual(oldCode, vbaModules[0].SourceCode); //ExSkip
+            Assert.AreEqual("Your VBA code...", vbaModules[0].SourceCode); //ExSkip
+            
+            vbaModules[0].SourceCode = oldCode;
             //ExEnd
 
             VbaModule defaultModule = vbaModules[0];
@@ -3515,6 +3554,17 @@ namespace ApiExamples
             // Render the document to PDF format
             doc.Save(ArtifactsDir + "OpenType.Document.pdf");
             //ExEnd
+        }
+
+        [Test]
+        public void NumberFormatting()
+        {
+            Document doc = new Document(MyDir + "Document.NumberFormatting.docx");
+
+            // Use OpenType to correct displaying numbers in pdf
+            doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
+            
+            doc.Save(ArtifactsDir + "Document.NumberFormatting.pdf");
         }
 #endif
     }
