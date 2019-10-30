@@ -1,0 +1,5 @@
+Name;Age;Money;GotKids;Birth
+John Doe;30;1160.90;true;1989-04-01 4:00:00 pm
+Jane Doe;27;3010.15;false;1992-01-31 07:00:00 am
+John Smith;51;60.70;true;1968-03-08 1:00:00 pm
+$John Smith;51;60.70;true;1968-03-08 1:00:00 pm

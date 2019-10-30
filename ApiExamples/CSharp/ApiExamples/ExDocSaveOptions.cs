@@ -41,5 +41,22 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocSaveOptions.SaveAsDoc.doc", options);          
             //ExEnd
         }
+
+        [Test]
+        public void PictureBullets()
+        {
+            //ExStart
+            //ExFor:DocSaveOptions.SavePictureBullet
+            //ExSummary:Shows how to remove PictureBullet data from the document.
+            Document doc = new Document(MyDir + "Document.PictureBullets.docx");
+
+            // Word 97 cannot work correctly with PictureBullet data
+            // To remove PictureBullet data, set the option to "false"
+            DocSaveOptions saveOptions = new DocSaveOptions(SaveFormat.Doc);
+            saveOptions.SavePictureBullet = false;
+
+            doc.Save(ArtifactsDir + "Document.PictureBullets.doc", saveOptions);
+            //ExEnd
+        }
     }
 }
