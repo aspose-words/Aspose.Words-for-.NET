@@ -15,12 +15,12 @@ namespace ApiExamples
         public void ChartTitle()
         {
             //ExStart
-            //ExFor:Charts.Chart
-            //ExFor:Charts.Chart.Title
-            //ExFor:Charts.ChartTitle
-            //ExFor:Charts.ChartTitle.Overlay
-            //ExFor:Charts.ChartTitle.Show
-            //ExFor:Charts.ChartTitle.Text
+            //ExFor:Chart
+            //ExFor:Chart.Title
+            //ExFor:ChartTitle
+            //ExFor:ChartTitle.Overlay
+            //ExFor:ChartTitle.Show
+            //ExFor:ChartTitle.Text
             //ExSummary:Shows how to insert a chart and change its title.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -45,49 +45,31 @@ namespace ApiExamples
         }
 
         [Test]
-        public void NumberFormat()
+        public void DefineNumberFormatForDataLabels()
         {
+            //ExStart
+            //ExFor:ChartDataLabelCollection.NumberFormat
+            //ExFor:ChartNumberFormat.FormatCode
+            //ExSummary:Shows how to set number format for the data labels of the entire series.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add chart with default data.
+            // Add chart with default data
             Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
-            Chart chart = shape.Chart;
-            chart.Title.Text = "Data Labels With Different Number Format";
+            // Delete default generated series
+            shape.Chart.Series.Clear();
+            
+            ChartSeries series =
+                shape.Chart.Series.Add("Aspose Test Series", new[] { "Word", "PDF", "Excel" }, new[] { 2.5, 1.5, 3.5 });
 
-            // Delete default generated series.
-            chart.Series.Clear();
+            ChartDataLabelCollection dataLabels = series.DataLabels;
+            // Display chart values in the data labels, by default it is false
+            dataLabels.ShowValue = true;
+            // Set currency format for the data labels of the entire series
+            dataLabels.NumberFormat.FormatCode = "\"$\"#,##0.00";
 
-            // Add new series
-            ChartSeries series0 =
-                chart.Series.Add("AW Series 0", new[] { "AW0", "AW1", "AW2" }, new[] { 2.5, 1.5, 3.5 });
-
-            // Add DataLabel to the first point of the first series.
-            ChartDataLabel chartDataLabel0 = series0.DataLabels.Add(0);
-            chartDataLabel0.ShowValue = true;
-
-            // Set currency format code.
-            chartDataLabel0.NumberFormat.FormatCode = "\"$\"#,##0.00";
-
-            ChartDataLabel chartDataLabel1 = series0.DataLabels.Add(1);
-            chartDataLabel1.ShowValue = true;
-
-            // Set date format code.
-            chartDataLabel1.NumberFormat.FormatCode = "d/mm/yyyy";
-
-            ChartDataLabel chartDataLabel2 = series0.DataLabels.Add(2);
-            chartDataLabel2.ShowValue = true;
-
-            // Set percentage format code.
-            chartDataLabel2.NumberFormat.FormatCode = "0.00%";
-
-            // Or you can set format code to be linked to a source cell,
-            // in this case NumberFormat will be reset to general and inherited from a source cell.
-            chartDataLabel2.NumberFormat.IsLinkedToSource = true;
-
-            doc.Save(ArtifactsDir + "Charts.NumberFormat.docx");
-
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "Charts.NumberFormat.docx", GoldsDir + "DocumentBuilder.NumberFormat Gold.docx"));
+            doc.Save(ArtifactsDir + "Charts.DefineNumberFormatForDataLabels.docx");
+            //ExEnd
         }
 
         [Test]
@@ -146,97 +128,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ChartDefaultValues()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Insert chart.
-            builder.InsertChart(ChartType.Column3D, 432, 252);
-
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
-            Shape shapeNode = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            Chart chart = shapeNode.Chart;
-
-            // Assert X axis
-            Assert.AreEqual(ChartAxisType.Category, chart.AxisX.Type);
-            Assert.AreEqual(AxisCategoryType.Automatic, chart.AxisX.CategoryType);
-            Assert.AreEqual(AxisCrosses.Automatic, chart.AxisX.Crosses);
-            Assert.AreEqual(false, chart.AxisX.ReverseOrder);
-            Assert.AreEqual(AxisTickMark.None, chart.AxisX.MajorTickMark);
-            Assert.AreEqual(AxisTickMark.None, chart.AxisX.MinorTickMark);
-            Assert.AreEqual(AxisTickLabelPosition.NextToAxis, chart.AxisX.TickLabelPosition);
-            Assert.AreEqual(1, chart.AxisX.MajorUnit);
-            Assert.AreEqual(true, chart.AxisX.MajorUnitIsAuto);
-            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisX.MajorUnitScale);
-            Assert.AreEqual(0.5, chart.AxisX.MinorUnit);
-            Assert.AreEqual(true, chart.AxisX.MinorUnitIsAuto);
-            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisX.MinorUnitScale);
-            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisX.BaseTimeUnit);
-            Assert.AreEqual("General", chart.AxisX.NumberFormat.FormatCode);
-            Assert.AreEqual(100, chart.AxisX.TickLabelOffset);
-            Assert.AreEqual(AxisBuiltInUnit.None, chart.AxisX.DisplayUnit.Unit);
-            Assert.AreEqual(true, chart.AxisX.AxisBetweenCategories);
-            Assert.AreEqual(AxisScaleType.Linear, chart.AxisX.Scaling.Type);
-            Assert.AreEqual(1, chart.AxisX.TickLabelSpacing);
-            Assert.AreEqual(true, chart.AxisX.TickLabelSpacingIsAuto);
-            Assert.AreEqual(1, chart.AxisX.TickMarkSpacing);
-            Assert.AreEqual(false, chart.AxisX.Hidden);
-
-            // Assert Y axis
-            Assert.AreEqual(ChartAxisType.Value, chart.AxisY.Type);
-            Assert.AreEqual(AxisCategoryType.Category, chart.AxisY.CategoryType);
-            Assert.AreEqual(AxisCrosses.Automatic, chart.AxisY.Crosses);
-            Assert.AreEqual(false, chart.AxisY.ReverseOrder);
-            Assert.AreEqual(AxisTickMark.None, chart.AxisY.MajorTickMark);
-            Assert.AreEqual(AxisTickMark.None, chart.AxisY.MinorTickMark);
-            Assert.AreEqual(AxisTickLabelPosition.NextToAxis, chart.AxisY.TickLabelPosition);
-            Assert.AreEqual(1, chart.AxisY.MajorUnit);
-            Assert.AreEqual(true, chart.AxisY.MajorUnitIsAuto);
-            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisY.MajorUnitScale);
-            Assert.AreEqual(0.5, chart.AxisY.MinorUnit);
-            Assert.AreEqual(true, chart.AxisY.MinorUnitIsAuto);
-            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisY.MinorUnitScale);
-            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisY.BaseTimeUnit);
-            Assert.AreEqual("General", chart.AxisY.NumberFormat.FormatCode);
-            Assert.AreEqual(100, chart.AxisY.TickLabelOffset);
-            Assert.AreEqual(AxisBuiltInUnit.None, chart.AxisY.DisplayUnit.Unit);
-            Assert.AreEqual(true, chart.AxisY.AxisBetweenCategories);
-            Assert.AreEqual(AxisScaleType.Linear, chart.AxisY.Scaling.Type);
-            Assert.AreEqual(1, chart.AxisY.TickLabelSpacing);
-            Assert.AreEqual(true, chart.AxisY.TickLabelSpacingIsAuto);
-            Assert.AreEqual(1, chart.AxisY.TickMarkSpacing);
-            Assert.AreEqual(false, chart.AxisY.Hidden);
-
-            // Assert Z axis
-            Assert.AreEqual(ChartAxisType.Series, chart.AxisZ.Type);
-            Assert.AreEqual(AxisCategoryType.Category, chart.AxisZ.CategoryType);
-            Assert.AreEqual(AxisCrosses.Automatic, chart.AxisZ.Crosses);
-            Assert.AreEqual(false, chart.AxisZ.ReverseOrder);
-            Assert.AreEqual(AxisTickMark.None, chart.AxisZ.MajorTickMark);
-            Assert.AreEqual(AxisTickMark.None, chart.AxisZ.MinorTickMark);
-            Assert.AreEqual(AxisTickLabelPosition.NextToAxis, chart.AxisZ.TickLabelPosition);
-            Assert.AreEqual(1, chart.AxisZ.MajorUnit);
-            Assert.AreEqual(true, chart.AxisZ.MajorUnitIsAuto);
-            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisZ.MajorUnitScale);
-            Assert.AreEqual(0.5, chart.AxisZ.MinorUnit);
-            Assert.AreEqual(true, chart.AxisZ.MinorUnitIsAuto);
-            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisZ.MinorUnitScale);
-            Assert.AreEqual(AxisTimeUnit.Automatic, chart.AxisZ.BaseTimeUnit);
-            Assert.AreEqual(string.Empty, chart.AxisZ.NumberFormat.FormatCode);
-            Assert.AreEqual(100, chart.AxisZ.TickLabelOffset);
-            Assert.AreEqual(AxisBuiltInUnit.None, chart.AxisZ.DisplayUnit.Unit);
-            Assert.AreEqual(true, chart.AxisZ.AxisBetweenCategories);
-            Assert.AreEqual(AxisScaleType.Linear, chart.AxisZ.Scaling.Type);
-            Assert.AreEqual(1, chart.AxisZ.TickLabelSpacing);
-            Assert.AreEqual(true, chart.AxisZ.TickLabelSpacingIsAuto);
-            Assert.AreEqual(1, chart.AxisZ.TickMarkSpacing);
-            Assert.AreEqual(false, chart.AxisZ.Hidden);
-        }
-
-        [Test]
         public void InsertChartUsingAxisProperties()
         {
             //ExStart
@@ -268,7 +159,7 @@ namespace ApiExamples
             // Clear demo data.
             chart.Series.Clear();
             chart.Series.Add("Aspose Test Series",
-                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 640, 320, 280, 120, 150 });
 
             // Get chart axes
@@ -303,7 +194,6 @@ namespace ApiExamples
             //ExEnd
 
             doc.Save(ArtifactsDir + "Charts.InsertChartUsingAxisProperties.docx");
-            doc.Save(ArtifactsDir + "Charts.InsertChartUsingAxisProperties.pdf");
         }
 
         [Test]
@@ -328,10 +218,10 @@ namespace ApiExamples
             Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
             Chart chart = shape.Chart;
             
-            // Clear demo data.
+            // Clear demo data
             chart.Series.Clear();
 
-            // Fill data.
+            // Fill data
             chart.Series.Add("Aspose Test Series",
                 new[]
                 {
@@ -343,18 +233,18 @@ namespace ApiExamples
             ChartAxis xAxis = chart.AxisX;
             ChartAxis yAxis = chart.AxisY;
 
-            // Set X axis bounds.
+            // Set X axis bounds
             xAxis.Scaling.Minimum = new AxisBound(new DateTime(2017, 11, 05).ToOADate());
             xAxis.Scaling.Maximum = new AxisBound(new DateTime(2017, 12, 03));
 
-            // Set major units to a week and minor units to a day.
+            // Set major units to a week and minor units to a day
             xAxis.BaseTimeUnit = AxisTimeUnit.Days;
             xAxis.MajorUnit = 7;
             xAxis.MinorUnit = 1;
             xAxis.MajorTickMark = AxisTickMark.Cross;
             xAxis.MinorTickMark = AxisTickMark.Outside;
 
-            // Define Y axis properties.
+            // Define Y axis properties
             yAxis.TickLabelPosition = AxisTickLabelPosition.High;
             yAxis.MajorUnit = 100;
             yAxis.MinorUnit = 50;
@@ -375,13 +265,13 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert chart.
+            // Insert chart
             Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
             Chart chart = shape.Chart;
             chart.AxisX.Hidden = true;
             chart.AxisY.Hidden = true;
 
-            // Clear demo data.
+            // Clear demo data
             chart.Series.Clear();
             chart.Series.Add("AW Series 1",
                 new string[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" },
@@ -410,18 +300,18 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert chart.
+            // Insert chart
             Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
             Chart chart = shape.Chart;
 
-            // Clear demo data.
+            // Clear demo data
             chart.Series.Clear();
 
             chart.Series.Add("Aspose Test Series",
                 new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
 
-            // Set number format.
+            // Set number format
             chart.AxisY.NumberFormat.FormatCode = "#,##0";
 
             // Set this to override the above value and draw the number format from the source cell
@@ -429,7 +319,6 @@ namespace ApiExamples
             //ExEnd
 
             doc.Save(ArtifactsDir + "Charts.SetNumberFormatToChartAxis.docx");
-            doc.Save(ArtifactsDir + "Charts.SetNumberFormatToChartAxis.pdf");
         }
 
         // Note: Tests below used for verification conversion docx to pdf and the correct display.
@@ -445,15 +334,15 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert chart.
+            // Insert chart
             Shape shape = builder.InsertChart(chartType, 432, 252);
             Chart chart = shape.Chart;
 
-            // Clear demo data.
+            // Clear demo data
             chart.Series.Clear();
 
             chart.Series.Add("Aspose Test Series",
-                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
 
             doc.Save(ArtifactsDir + "Charts.TestDisplayChartsWithConversion.docx");
@@ -466,11 +355,11 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert chart.
+            // Insert chart
             Shape shape = builder.InsertChart(ChartType.Surface3D, 432, 252);
             Chart chart = shape.Chart;
 
-            // Clear demo data.
+            // Clear demo data
             chart.Series.Clear();
 
             chart.Series.Add("Aspose Test Series 1",
@@ -490,51 +379,84 @@ namespace ApiExamples
         }
 
         [Test]
-        public void BubbleChart()
+        public void WorkWithChartDataLabelCollection()
         {
+            //ExStart
+            //ExFor:ChartDataLabelCollection.ShowBubbleSize
+            //ExFor:ChartDataLabelCollection.ShowCategoryName
+            //ExFor:ChartDataLabelCollection.ShowSeriesName
+            //ExFor:ChartDataLabelCollection.Separator
+            //ExFor:ChartDataLabelCollection.ShowLeaderLines
+            //ExFor:ChartDataLabelCollection.ShowLegendKey
+            //ExFor:ChartDataLabelCollection.ShowPercentage
+            //ExFor:ChartDataLabelCollection.ShowValue
+            //ExSummary:Shows how to set default values for the data labels.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert chart.
-            Shape shape = builder.InsertChart(ChartType.Bubble, 432, 252);
-            Chart chart = shape.Chart;
+            // Insert bubble chart
+            Shape shapeWithBubbleChart = builder.InsertChart(ChartType.Bubble, 432, 252);
+            // Clear demo data
+            shapeWithBubbleChart.Chart.Series.Clear();
+            
+            ChartSeries bubbleChartSeries = shapeWithBubbleChart.Chart.Series.Add("Aspose Test Series",
+                new[] { 2.9, 3.5, 1.1, 4, 4 },
+                new[] { 1.9, 8.5, 2.1, 6, 1.5 },
+                new[] { 9, 4.5, 2.5, 8, 5 });
 
-            // Clear demo data.
-            chart.Series.Clear();
+            // Set default values for the bubble chart data labels
+            ChartDataLabelCollection bubbleChartDataLabels = bubbleChartSeries.DataLabels;
+            bubbleChartDataLabels.ShowBubbleSize = true;
+            bubbleChartDataLabels.ShowCategoryName = true;
+            bubbleChartDataLabels.ShowSeriesName = true;
+            bubbleChartDataLabels.Separator = " - ";
 
-            chart.Series.Add("Aspose Test Series",
-                new double[] { 2900000, 350000, 1100000, 400000, 400000 },
-                new double[] { 1900000, 850000, 2100000, 600000, 1500000 },
-                new double[] { 900000, 450000, 2500000, 800000, 500000 });
+            builder.InsertBreak(BreakType.PageBreak);
 
-            doc.Save(ArtifactsDir + "Charts.BubbleChart.docx");
-            doc.Save(ArtifactsDir + "Charts.BubbleChart.pdf");
+            // Insert pie chart
+            Shape shapeWithPieChart = builder.InsertChart(ChartType.Pie, 432, 252);
+            // Clear demo data
+            shapeWithPieChart.Chart.Series.Clear();
+
+            ChartSeries pieChartSeries = shapeWithPieChart.Chart.Series.Add("Aspose Test Series",
+                new string[] { "Word", "PDF", "Excel" },
+                new double[] { 2.7, 3.2, 0.8 });
+
+            // Set default values for the pie chart data labels
+            ChartDataLabelCollection pieChartDataLabels = pieChartSeries.DataLabels;
+            pieChartDataLabels.ShowLeaderLines = true;
+            pieChartDataLabels.ShowLegendKey = true;
+            pieChartDataLabels.ShowPercentage = true;
+            pieChartDataLabels.ShowValue = true;
+
+            doc.Save(ArtifactsDir + "Charts.WorkWithChartDataLabelCollection.docx");
+            //ExEnd
         }
 
         //ExStart
-        //ExFor:Charts.ChartSeries
-        //ExFor:Charts.ChartSeries.DataLabels
-        //ExFor:Charts.ChartSeries.DataPoints
-        //ExFor:Charts.ChartSeries.Name
-        //ExFor:Charts.ChartDataLabel
-        //ExFor:Charts.ChartDataLabel.Index
-        //ExFor:Charts.ChartDataLabel.IsVisible
-        //ExFor:Charts.ChartDataLabel.NumberFormat
-        //ExFor:Charts.ChartDataLabel.Separator
-        //ExFor:Charts.ChartDataLabel.ShowCategoryName
-        //ExFor:Charts.ChartDataLabel.ShowDataLabelsRange
-        //ExFor:Charts.ChartDataLabel.ShowLeaderLines
-        //ExFor:Charts.ChartDataLabel.ShowLegendKey
-        //ExFor:Charts.ChartDataLabel.ShowPercentage
-        //ExFor:Charts.ChartDataLabel.ShowSeriesName
-        //ExFor:Charts.ChartDataLabel.ShowValue
-        //ExFor:Charts.ChartDataLabelCollection
-        //ExFor:Charts.ChartDataLabelCollection.Add(System.Int32)
-        //ExFor:Charts.ChartDataLabelCollection.Clear
-        //ExFor:Charts.ChartDataLabelCollection.Count
-        //ExFor:Charts.ChartDataLabelCollection.GetEnumerator
-        //ExFor:Charts.ChartDataLabelCollection.Item(System.Int32)
-        //ExFor:Charts.ChartDataLabelCollection.RemoveAt(System.Int32)
+        //ExFor:ChartSeries
+        //ExFor:ChartSeries.DataLabels
+        //ExFor:ChartSeries.DataPoints
+        //ExFor:ChartSeries.Name
+        //ExFor:ChartDataLabel
+        //ExFor:ChartDataLabel.Index
+        //ExFor:ChartDataLabel.IsVisible
+        //ExFor:ChartDataLabel.NumberFormat
+        //ExFor:ChartDataLabel.Separator
+        //ExFor:ChartDataLabel.ShowCategoryName
+        //ExFor:ChartDataLabel.ShowDataLabelsRange
+        //ExFor:ChartDataLabel.ShowLeaderLines
+        //ExFor:ChartDataLabel.ShowLegendKey
+        //ExFor:ChartDataLabel.ShowPercentage
+        //ExFor:ChartDataLabel.ShowSeriesName
+        //ExFor:ChartDataLabel.ShowValue
+        //ExFor:ChartDataLabelCollection
+        //ExFor:ChartDataLabelCollection.Add(System.Int32)
+        //ExFor:ChartDataLabelCollection.Clear
+        //ExFor:ChartDataLabelCollection.Count
+        //ExFor:ChartDataLabelCollection.GetEnumerator
+        //ExFor:ChartDataLabelCollection.Item(System.Int32)
+        //ExFor:ChartDataLabelCollection.RemoveAt(System.Int32)
         //ExSummary:Shows how to apply labels to data points in a chart.
         [Test] //ExSkip
         public void ChartDataLabels()
@@ -609,23 +531,23 @@ namespace ApiExamples
         //ExEnd
 
         //ExStart
-        //ExFor:Charts.ChartSeries.Smooth
-        //ExFor:Charts.ChartDataPoint
-        //ExFor:Charts.ChartDataPoint.Index
-        //ExFor:Charts.ChartDataPointCollection
-        //ExFor:Charts.ChartDataPointCollection.Add(System.Int32)
-        //ExFor:Charts.ChartDataPointCollection.Clear
-        //ExFor:Charts.ChartDataPointCollection.Count
-        //ExFor:Charts.ChartDataPointCollection.GetEnumerator
-        //ExFor:Charts.ChartDataPointCollection.Item(System.Int32)
-        //ExFor:Charts.ChartDataPointCollection.RemoveAt(System.Int32)
-        //ExFor:Charts.ChartMarker
-        //ExFor:Charts.ChartMarker.Size
-        //ExFor:Charts.ChartMarker.Symbol
-        //ExFor:Charts.IChartDataPoint
-        //ExFor:Charts.IChartDataPoint.InvertIfNegative
-        //ExFor:Charts.IChartDataPoint.Marker
-        //ExFor:Charts.MarkerSymbol
+        //ExFor:ChartSeries.Smooth
+        //ExFor:ChartDataPoint
+        //ExFor:ChartDataPoint.Index
+        //ExFor:ChartDataPointCollection
+        //ExFor:ChartDataPointCollection.Add(System.Int32)
+        //ExFor:ChartDataPointCollection.Clear
+        //ExFor:ChartDataPointCollection.Count
+        //ExFor:ChartDataPointCollection.GetEnumerator
+        //ExFor:ChartDataPointCollection.Item(System.Int32)
+        //ExFor:ChartDataPointCollection.RemoveAt(System.Int32)
+        //ExFor:ChartMarker
+        //ExFor:ChartMarker.Size
+        //ExFor:ChartMarker.Symbol
+        //ExFor:IChartDataPoint
+        //ExFor:IChartDataPoint.InvertIfNegative
+        //ExFor:IChartDataPoint.Marker
+        //ExFor:MarkerSymbol
         //ExSummary:Shows how to customize chart data points.
         [Test]
         public void ChartDataPoint()
@@ -733,14 +655,14 @@ namespace ApiExamples
         }
 
         //ExStart
-        //ExFor:Charts.ChartAxis.Type
-        //ExFor:Charts.ChartAxisType
-        //ExFor:Charts.ChartType
-        //ExFor:Charts.Chart.Series
-        //ExFor:Charts.ChartSeriesCollection.Add(String,DateTime[],Double[])
-        //ExFor:Charts.ChartSeriesCollection.Add(String,Double[],Double[])
-        //ExFor:Charts.ChartSeriesCollection.Add(String,Double[],Double[],Double[])
-        //ExFor:Charts.ChartSeriesCollection.Add(String,String[],Double[])
+        //ExFor:ChartAxis.Type
+        //ExFor:ChartAxisType
+        //ExFor:ChartType
+        //ExFor:Chart.Series
+        //ExFor:ChartSeriesCollection.Add(String,DateTime[],Double[])
+        //ExFor:ChartSeriesCollection.Add(String,Double[],Double[])
+        //ExFor:ChartSeriesCollection.Add(String,Double[],Double[],Double[])
+        //ExFor:ChartSeriesCollection.Add(String,String[],Double[])
         //ExSummary:Shows an appropriate graph type for each chart series.
         [Test] //ExSkip
         public void ChartSeriesCollection()
@@ -821,12 +743,12 @@ namespace ApiExamples
         public void ChartSeriesCollectionModify()
         {
             //ExStart
-            //ExFor:Charts.ChartSeriesCollection
-            //ExFor:Charts.ChartSeriesCollection.Clear
-            //ExFor:Charts.ChartSeriesCollection.Count
-            //ExFor:Charts.ChartSeriesCollection.GetEnumerator
-            //ExFor:Charts.ChartSeriesCollection.Item(Int32)
-            //ExFor:Charts.ChartSeriesCollection.RemoveAt(Int32)
+            //ExFor:ChartSeriesCollection
+            //ExFor:ChartSeriesCollection.Clear
+            //ExFor:ChartSeriesCollection.Count
+            //ExFor:ChartSeriesCollection.GetEnumerator
+            //ExFor:ChartSeriesCollection.Item(Int32)
+            //ExFor:ChartSeriesCollection.RemoveAt(Int32)
             //ExSummary:Shows how to work with a chart's data collection.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -876,10 +798,10 @@ namespace ApiExamples
         public void AxisScaling()
         {
             //ExStart
-            //ExFor:Charts.AxisScaleType
-            //ExFor:Charts.AxisScaling
-            //ExFor:Charts.AxisScaling.LogBase
-            //ExFor:Charts.AxisScaling.Type
+            //ExFor:AxisScaleType
+            //ExFor:AxisScaling
+            //ExFor:AxisScaling.LogBase
+            //ExFor:AxisScaling.Type
             //ExSummary:Shows how to set up logarithmic axis scaling.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -909,10 +831,10 @@ namespace ApiExamples
         public void AxisBound()
         {
             //ExStart
-            //ExFor:Charts.AxisBound.#ctor
-            //ExFor:Charts.AxisBound.IsAuto
-            //ExFor:Charts.AxisBound.Value
-            //ExFor:Charts.AxisBound.ValueAsDate
+            //ExFor:AxisBound.#ctor
+            //ExFor:AxisBound.IsAuto
+            //ExFor:AxisBound.Value
+            //ExFor:AxisBound.ValueAsDate
             //ExSummary:Shows how to set custom axis bounds.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -967,11 +889,11 @@ namespace ApiExamples
         public void ChartLegend()
         {
             //ExStart
-            //ExFor:Charts.Chart.Legend
-            //ExFor:Charts.ChartLegend
-            //ExFor:Charts.ChartLegend.Overlay
-            //ExFor:Charts.ChartLegend.Position
-            //ExFor:Charts.LegendPosition
+            //ExFor:Chart.Legend
+            //ExFor:ChartLegend
+            //ExFor:ChartLegend.Overlay
+            //ExFor:ChartLegend.Position
+            //ExFor:LegendPosition
             //ExSummary:Shows how to edit the appearance of a chart's legend.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -997,8 +919,8 @@ namespace ApiExamples
         public void AxisCross()
         {
             //ExStart
-            //ExFor:Charts.ChartAxis.AxisBetweenCategories
-            //ExFor:Charts.ChartAxis.CrossesAt
+            //ExFor:ChartAxis.AxisBetweenCategories
+            //ExFor:ChartAxis.CrossesAt
             //ExSummary:Shows how to get a graph axis to cross at a custom location.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1023,17 +945,17 @@ namespace ApiExamples
         public void ChartAxisDisplayUnit()
         {
             //ExStart
-            //ExFor:Charts.AxisBuiltInUnit
-            //ExFor:Charts.ChartAxis.DisplayUnit
-            //ExFor:Charts.ChartAxis.MajorUnitIsAuto
-            //ExFor:Charts.ChartAxis.MajorUnitScale
-            //ExFor:Charts.ChartAxis.MinorUnitIsAuto
-            //ExFor:Charts.ChartAxis.MinorUnitScale
-            //ExFor:Charts.ChartAxis.TickLabelSpacing
-            //ExFor:Charts.ChartAxis.TickLabelAlignment
-            //ExFor:Charts.AxisDisplayUnit
-            //ExFor:Charts.AxisDisplayUnit.CustomUnit
-            //ExFor:Charts.AxisDisplayUnit.Unit
+            //ExFor:AxisBuiltInUnit
+            //ExFor:ChartAxis.DisplayUnit
+            //ExFor:ChartAxis.MajorUnitIsAuto
+            //ExFor:ChartAxis.MajorUnitScale
+            //ExFor:ChartAxis.MinorUnitIsAuto
+            //ExFor:ChartAxis.MinorUnitScale
+            //ExFor:ChartAxis.TickLabelSpacing
+            //ExFor:ChartAxis.TickLabelAlignment
+            //ExFor:AxisDisplayUnit
+            //ExFor:AxisDisplayUnit.CustomUnit
+            //ExFor:AxisDisplayUnit.Unit
             //ExSummary:Shows how to manipulate the tick marks and displayed values of a chart axis.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

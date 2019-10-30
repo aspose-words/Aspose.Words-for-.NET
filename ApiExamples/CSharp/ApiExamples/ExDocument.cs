@@ -1920,6 +1920,36 @@ namespace ApiExamples
         }
 
         [Test]
+        public void GetRevisedPropertiesOfList()
+        {
+            //ExStart
+            //ExFor:RevisionsView
+            //ExFor:Document.RevisionsView
+            //ExSummary:Shows how to get revised version of list label and list level formatting in a document.
+            Document doc = new Document(MyDir + "GetRevisedVersionOfDocument.docx");
+            doc.UpdateListLabels();
+
+            // Switch to the revised version of the document
+            doc.RevisionsView = RevisionsView.Final;
+
+            foreach (Revision revision in doc.Revisions)
+            {
+                if (revision.ParentNode.NodeType == NodeType.Paragraph)
+                {
+                    Paragraph paragraph = (Paragraph)revision.ParentNode;
+
+                    if (paragraph.IsListItem)
+                    {
+                        // Print revised version of LabelString and ListLevel
+                        Console.WriteLine(paragraph.ListLabel.LabelString);
+                        Console.WriteLine(paragraph.ListFormat.ListLevel);
+                    }
+                }
+            }
+            //ExEnd
+        }
+
+        [Test]
         public void UpdateThumbnail()
         {
             //ExStart
