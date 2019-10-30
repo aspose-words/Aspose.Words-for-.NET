@@ -1920,12 +1920,12 @@ namespace ApiExamples
         }
 
         [Test]
-        public void GetRevisedVersionOfDocument()
+        public void GetRevisedPropertiesOfList()
         {
             //ExStart
             //ExFor:RevisionsView
             //ExFor:Document.RevisionsView
-            //ExSummary:Shows how to work with the original or revised version of a document.
+            //ExSummary:Shows how to get revised version of list label and list level formatting in a document.
             Document doc = new Document(MyDir + "GetRevisedVersionOfDocument.docx");
             doc.UpdateListLabels();
 
