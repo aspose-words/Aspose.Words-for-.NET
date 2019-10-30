@@ -452,27 +452,24 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertHyperlinksDinamically()
+        [TestCase("https://auckland.dynabic.com/wiki/display/org/Supported+dynamic+insertion+of+hyperlinks+for+LINQ+Reporting+Engine")]
+        [TestCase("Bookmark")]
+        public void InsertHyperlinksDinamically(string link)
         {
             Document template = new Document(MyDir + "ReportingEngine.InsertingHyperlinks.docx");
             BuildReport(template, 
-                new Object[]
+                new object[]
                 {
-                    "https://auckland.dynabic.com/wiki/display/org/Supported+dynamic+insertion+of+hyperlinks+for+LINQ+Reporting+Engine",
+                    link, // Use URI or the name of a bookmark within the same document for a hyperlink
                     "Aspose"
                 },
                 new[]
                 {
-                    "uri_expression", 
+                    "uri_or_bookmark_expression", 
                     "display_text_expression"
                 });
 
             template.Save(ArtifactsDir + "ReportingEngine.InsertHyperlinksDinamically.docx");
-
-            Assert.IsTrue(
-                DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertHyperlinksDinamically.docx",
-                    GoldsDir + "ReportingEngine.InsertHyperlinksDinamically Gold.docx"),
-                "Fail inserting document by bytes");
         }
 
         [Test]
