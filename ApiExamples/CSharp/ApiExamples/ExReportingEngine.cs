@@ -113,6 +113,50 @@ namespace ApiExamples
         }
 
         [Test]
+        public void RestartingListNumberingDynamically()
+        {
+            Document template = new Document(MyDir + "ReportingEngine.RestartingListNumberingDynamically.docx");
+
+            BuildReport(template, Common.GetManagers(), "Managers", ReportBuildOptions.RemoveEmptyParagraphs);
+
+            template.Save(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamically.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamically.docx", GoldsDir + "ReportingEngine.RestartingListNumberingDynamically Gold.docx"));
+        }
+
+        [Test]
+        public void RestartingListNumberingDynamicallyWhileInsertingDocumentDinamically()
+        {
+            Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document] -build>>");
+            
+            DocumentTestClass doc = new DocumentTestBuilder()
+                .WithDocument(new Document(MyDir + "ReportingEngine.RestartingListNumberingDynamically.docx")).Build();
+
+            BuildReport(template, new object[] {doc, Common.GetManagers()} , new[] {"src", "Managers"}, ReportBuildOptions.RemoveEmptyParagraphs);
+
+            template.Save(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDinamically.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDinamically.docx", GoldsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDinamically Gold.docx"));
+        }
+
+        [Test]
+        public void RestartingListNumberingDynamicallyWhileMultipleInsertionsDocumentDinamically()
+        {
+            Document mainTemplate = DocumentHelper.CreateSimpleDocument("<<doc [src] -build>>");
+            Document template1 = DocumentHelper.CreateSimpleDocument("<<doc [src1] -build>>");
+            Document template2 = DocumentHelper.CreateSimpleDocument("<<doc [src2.Document] -build>>");
+            
+            DocumentTestClass doc = new DocumentTestBuilder()
+                .WithDocument(new Document(MyDir + "ReportingEngine.RestartingListNumberingDynamically.docx")).Build();
+
+            BuildReport(mainTemplate, new object[] {template1, template2, doc, Common.GetManagers()} , new[] {"src", "src1", "src2", "Managers"}, ReportBuildOptions.RemoveEmptyParagraphs);
+
+            mainTemplate.Save(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileMultipleInsertionsDocumentDinamically.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileMultipleInsertionsDocumentDinamically.docx", GoldsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDinamically Gold.docx"));
+         }
+
+        [Test]
         public void ChartTest()
         {
             Document doc = new Document(MyDir + "ReportingEngine.TestChart.docx");
