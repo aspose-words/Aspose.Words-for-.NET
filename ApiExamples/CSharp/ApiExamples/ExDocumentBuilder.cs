@@ -2897,20 +2897,21 @@ namespace ApiExamples
             // Prepare our created document for further work
             // And clear paragraph formatting not to use the previous styles
             builder.MoveToDocumentEnd();
+            builder.Writeln("\n");
             builder.ParagraphFormat.ClearFormatting();
             builder.Writeln("\n");
-            
+
             // By default Heading styles in Word may have bold and italic formatting
             // If we do not want text to be emphasized, set these properties explicitly to false
             // Thus we can't use 'builder.Font.ClearFormatting()' because Bold/Italic will be set to true
             builder.Font.Bold = false;
             builder.Font.Italic = false;
 
-            Style headingQuoteLevel1 = doc.Styles.Add(StyleType.Paragraph, "QuoteHeading 1");
+            Style headingQuoteLevel1 = doc.Styles.Add(StyleType.Paragraph, "Quote.Heading 1");
             builder.ParagraphFormat.Style = headingQuoteLevel1;
             builder.Writeln("HeadingBlockquote 1");
             
-            Style headingQuoteLevel2 = doc.Styles.Add(StyleType.Paragraph, "Quote1Heading 2");
+            Style headingQuoteLevel2 = doc.Styles.Add(StyleType.Paragraph, "Quote1.Heading 2");
             builder.ParagraphFormat.Style = headingQuoteLevel2;
             builder.Font.Italic = true;
             builder.Writeln("ItalicHeadingBlockquote 2");
@@ -2919,7 +2920,7 @@ namespace ApiExamples
             builder.Font.Bold = false;
             builder.Font.Italic = false;
             
-            Style headingQuoteLevel3 = doc.Styles.Add(StyleType.Paragraph, "Quote2Heading 3");
+            Style headingQuoteLevel3 = doc.Styles.Add(StyleType.Paragraph, "Quote2.Heading 3");
             builder.ParagraphFormat.Style = headingQuoteLevel3;
             builder.Font.Bold = true;
             builder.Writeln("BoldHeadingBlockquote 3");
@@ -2928,7 +2929,7 @@ namespace ApiExamples
             builder.Font.Bold = false;
             builder.Font.Italic = false;
             
-            Style headingQuoteLevel4 = doc.Styles.Add(StyleType.Paragraph, "Quote3Heading 4");
+            Style headingQuoteLevel4 = doc.Styles.Add(StyleType.Paragraph, "Quote3.Heading 4");
             builder.ParagraphFormat.Style = headingQuoteLevel4;
             builder.Font.Italic = true;
             builder.Font.Bold = true;
@@ -2938,11 +2939,11 @@ namespace ApiExamples
             builder.Font.Bold = false;
             builder.Font.Italic = false;
             
-            Style headingQuoteLevel5 = doc.Styles.Add(StyleType.Paragraph, "Quote4Heading 5");
+            Style headingQuoteLevel5 = doc.Styles.Add(StyleType.Paragraph, "Quote4.Heading 5");
             builder.ParagraphFormat.Style = headingQuoteLevel5;
             builder.Writeln("HeadingBlockquote 5");
             
-            Style headingQuoteLevel6 = doc.Styles.Add(StyleType.Paragraph, "Quote5Heading 6");
+            Style headingQuoteLevel6 = doc.Styles.Add(StyleType.Paragraph, "Quote5.Heading 6");
             builder.ParagraphFormat.Style = headingQuoteLevel6;
             builder.Writeln("HeadingBlockquote 6");
             
@@ -2992,12 +2993,12 @@ namespace ApiExamples
         [TestCase("Blockquote 4", "Quote4", false, false, Category = "SkipTearDown")]
         [TestCase("Blockquote 5", "Quote5", false, false, Category = "SkipTearDown")]
         [TestCase("ItalicBoldBlockquote 6", "Quote6", true, true, Category = "SkipTearDown")]
-        [TestCase("HeadingBlockquote 1", "QuoteHeading 1", false, false, Category = "SkipTearDown")]
-        [TestCase("ItalicHeadingBlockquote 2", "Quote1Heading 2", true, false, Category = "SkipTearDown")]
-        [TestCase("BoldHeadingBlockquote 3", "Quote2Heading 3", false, true, Category = "SkipTearDown")]
-        [TestCase("ItalicBoldHeadingBlockquote 4", "Quote3Heading 4", true, true, Category = "SkipTearDown")]
-        [TestCase("HeadingBlockquote 5", "Quote4Heading 5", false, false, Category = "SkipTearDown")]
-        [TestCase("HeadingBlockquote 6", "Quote5Heading 6", false, false)]
+        [TestCase("HeadingBlockquote 1", "Quote.Heading 1", false, false, Category = "SkipTearDown")]
+        [TestCase("ItalicHeadingBlockquote 2", "Quote1.Heading 2", true, false, Category = "SkipTearDown")]
+        [TestCase("BoldHeadingBlockquote 3", "Quote2.Heading 3", false, true, Category = "SkipTearDown")]
+        [TestCase("ItalicBoldHeadingBlockquote 4", "Quote3.Heading 4", true, true, Category = "SkipTearDown")]
+        [TestCase("HeadingBlockquote 5", "Quote4.Heading 5", false, false, Category = "SkipTearDown")]
+        [TestCase("HeadingBlockquote 6", "Quote5.Heading 6", false, false)]
         public void LoadMarkdownDocumentAndAssertContent(string text, string styleName, bool isItalic, bool isBold)
         {
             // Load created document from previous tests
