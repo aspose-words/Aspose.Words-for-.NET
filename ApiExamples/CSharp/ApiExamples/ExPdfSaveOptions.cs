@@ -615,7 +615,7 @@ namespace ApiExamples
             // Pass the certificate and details to the save options class to sign with
             PdfSaveOptions options = new PdfSaveOptions();
             DateTime signingTime = DateTime.Now;
-            options.DigitalSignatureDetails = new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", DateTime.Now);
+            options.DigitalSignatureDetails = new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", signingTime);
 
             // We can use this attribute to set a different hash algorithm
             options.DigitalSignatureDetails.HashAlgorithm = PdfDigitalSignatureHashAlgorithm.Sha256;
