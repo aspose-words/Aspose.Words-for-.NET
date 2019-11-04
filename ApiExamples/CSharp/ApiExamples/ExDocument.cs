@@ -2572,9 +2572,14 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.MailMergeSettings
+            //ExFor:MailMergeCheckErrors
             //ExFor:MailMergeDataType
+            //ExFor:MailMergeDestination
             //ExFor:MailMergeMainDocumentType
             //ExFor:MailMergeSettings
+            //ExFor:MailMergeSettings.CheckErrors
+            //ExFor:MailMergeSettings.Clone
+            //ExFor:MailMergeSettings.Destination
             //ExFor:MailMergeSettings.DataSource
             //ExFor:MailMergeSettings.DataType
             //ExFor:MailMergeSettings.LinkToQuery
@@ -2610,11 +2615,14 @@ namespace ApiExamples
             // Set the data source, query and other things
             MailMergeSettings mailMergeSettings = doc.MailMergeSettings;
             mailMergeSettings.MainDocumentType = MailMergeMainDocumentType.MailingLabels;
+            mailMergeSettings.CheckErrors = MailMergeCheckErrors.Simulate;
             mailMergeSettings.DataType = MailMergeDataType.Native;
             mailMergeSettings.DataSource = ArtifactsDir + "Document.Lines.txt";
             mailMergeSettings.Query = "SELECT * FROM " + doc.MailMergeSettings.DataSource;
             mailMergeSettings.LinkToQuery = true;
             mailMergeSettings.ViewMergedData = true;
+
+            Assert.AreEqual(MailMergeDestination.Default, mailMergeSettings.Destination);
 
             // Office Data Source Object settings
             Odso odso = mailMergeSettings.Odso;
@@ -2623,8 +2631,9 @@ namespace ApiExamples
             odso.ColumnDelimiter = '|';
             odso.FirstRowContainsColumnNames = true;
 
-            // ODSO objects can also be cloned
+            // ODSO/MailMergeSettings objects can also be cloned
             Assert.AreNotSame(odso, odso.Clone());
+            Assert.AreNotSame(mailMergeSettings, mailMergeSettings.Clone());
 
             // The mail merge will be performed when this document is opened 
             doc.Save(ArtifactsDir + "Document.MailMergeSettings.docx");
