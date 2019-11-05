@@ -2580,7 +2580,6 @@ namespace ApiExamples
             //ExFor:MailMergeSettings.CheckErrors
             //ExFor:MailMergeSettings.Clone
             //ExFor:MailMergeSettings.Destination
-            //ExFor:MailMergeSettings.DataSource
             //ExFor:MailMergeSettings.DataType
             //ExFor:MailMergeSettings.DoNotSupressBlankLines
             //ExFor:MailMergeSettings.LinkToQuery
@@ -2599,6 +2598,7 @@ namespace ApiExamples
             // We'll create a simple document that will act as a destination for mail merge data
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             builder.Write("Dear ");
             builder.InsertField("MERGEFIELD FirstName", "<FirstName>");
             builder.Write(" ");
@@ -2651,6 +2651,7 @@ namespace ApiExamples
             //ExFor:MailMergeSettings.ConnectString
             //ExFor:MailMergeSettings.MailAsAttachment
             //ExFor:MailMergeSettings.MailSubject
+            //ExFor:MailMergeSettings.Clear
             //ExFor:Odso.TableName
             //ExFor:Odso.UdlConnectString
             //ExSummary:Shows how to execute a mail merge while connecting to an external data source.
@@ -2671,6 +2672,50 @@ namespace ApiExamples
             Console.WriteLine($"UDL connection string string:\n\t{odso.UdlConnectString}");
             Console.WriteLine($"Table:\n\t{odso.TableName}");
             Console.WriteLine($"Query:\n\t{doc.MailMergeSettings.Query}");
+
+            // We can clear the settings, which will take place during saving
+            settings.Clear();
+
+            doc.Save(ArtifactsDir + "Document.OdsoEmail.docx");
+
+            doc = new Document(ArtifactsDir + "Document.OdsoEmail.docx");
+            Assert.IsEmpty(doc.MailMergeSettings.ConnectString);
+            //ExEnd
+        }
+
+        [Test]
+        public void MailingLabelMerge()
+        {
+            //ExStart
+            //ExFor:MailMergeSettings.DataSource
+            //ExFor:MailMergeSettings.HeaderSource
+            //ExSummary:Shows how to execute a mail merge while drawing data from a header and a data file.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create a merge destination document with MERGEFIELDS that will accept data
+            builder.Write("Dear ");
+            builder.InsertField("MERGEFIELD FirstName", "<FirstName>");
+            builder.Write(" ");
+            builder.InsertField("MERGEFIELD LastName", "<LastName>");
+
+            // Configure settings to draw data and headers from other documents
+            MailMergeSettings settings = doc.MailMergeSettings;
+
+            // The "header" document contains column names for the data in the "data" document,
+            // which will correspond to the names of our MERGEFIELDs
+            settings.HeaderSource = MyDir + "MailingLabelMergeHeader.doc";
+            settings.DataSource = MyDir + "MailingLabelMergeData.doc";
+
+            // Configure the rest of the MailMergeSettings object
+            settings.Query = "SELECT * FROM " + doc.MailMergeSettings.DataSource;
+            settings.MainDocumentType = MailMergeMainDocumentType.MailingLabels;
+            settings.DataType = MailMergeDataType.TextFile;
+            settings.LinkToQuery = true;
+            settings.ViewMergedData = true;
+
+            // The mail merge will be performed when this document is opened 
+            doc.Save(ArtifactsDir + "Document.MailingLabelMerge.doc");
             //ExEnd
         }
 
