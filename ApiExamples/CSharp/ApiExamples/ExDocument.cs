@@ -2582,6 +2582,7 @@ namespace ApiExamples
             //ExFor:MailMergeSettings.Destination
             //ExFor:MailMergeSettings.DataSource
             //ExFor:MailMergeSettings.DataType
+            //ExFor:MailMergeSettings.DoNotSupressBlankLines
             //ExFor:MailMergeSettings.LinkToQuery
             //ExFor:MailMergeSettings.MainDocumentType
             //ExFor:MailMergeSettings.Odso
@@ -2613,19 +2614,20 @@ namespace ApiExamples
             File.WriteAllLines(ArtifactsDir + "Document.Lines.txt", lines);
 
             // Set the data source, query and other things
-            MailMergeSettings mailMergeSettings = doc.MailMergeSettings;
-            mailMergeSettings.MainDocumentType = MailMergeMainDocumentType.MailingLabels;
-            mailMergeSettings.CheckErrors = MailMergeCheckErrors.Simulate;
-            mailMergeSettings.DataType = MailMergeDataType.Native;
-            mailMergeSettings.DataSource = ArtifactsDir + "Document.Lines.txt";
-            mailMergeSettings.Query = "SELECT * FROM " + doc.MailMergeSettings.DataSource;
-            mailMergeSettings.LinkToQuery = true;
-            mailMergeSettings.ViewMergedData = true;
+            MailMergeSettings settings = doc.MailMergeSettings;
+            settings.MainDocumentType = MailMergeMainDocumentType.MailingLabels;
+            settings.CheckErrors = MailMergeCheckErrors.Simulate;
+            settings.DataType = MailMergeDataType.Native;
+            settings.DataSource = ArtifactsDir + "Document.Lines.txt";
+            settings.Query = "SELECT * FROM " + doc.MailMergeSettings.DataSource;
+            settings.LinkToQuery = true;
+            settings.ViewMergedData = true;
 
-            Assert.AreEqual(MailMergeDestination.Default, mailMergeSettings.Destination);
+            Assert.AreEqual(MailMergeDestination.Default, settings.Destination);
+            Assert.False(settings.DoNotSupressBlankLines);
 
             // Office Data Source Object settings
-            Odso odso = mailMergeSettings.Odso;
+            Odso odso = settings.Odso;
             odso.DataSource = ArtifactsDir + "Document.Lines.txt";
             odso.DataSourceType = OdsoDataSourceType.Text;
             odso.ColumnDelimiter = '|';
@@ -2633,7 +2635,7 @@ namespace ApiExamples
 
             // ODSO/MailMergeSettings objects can also be cloned
             Assert.AreNotSame(odso, odso.Clone());
-            Assert.AreNotSame(mailMergeSettings, mailMergeSettings.Clone());
+            Assert.AreNotSame(settings, settings.Clone());
 
             // The mail merge will be performed when this document is opened 
             doc.Save(ArtifactsDir + "Document.MailMergeSettings.docx");
@@ -2644,16 +2646,29 @@ namespace ApiExamples
         public void OdsoEmail()
         {
             //ExStart
+            //ExFor:MailMergeSettings.ActiveRecord
+            //ExFor:MailMergeSettings.AddressFieldName
+            //ExFor:MailMergeSettings.ConnectString
+            //ExFor:MailMergeSettings.MailAsAttachment
+            //ExFor:MailMergeSettings.MailSubject
             //ExFor:Odso.TableName
             //ExFor:Odso.UdlConnectString
             //ExSummary:Shows how to execute a mail merge while connecting to an external data source.
             Document doc = new Document(MyDir + "OdsoData.doc");
+
+            MailMergeSettings settings = doc.MailMergeSettings;
+
+            Console.WriteLine($"Connection string:\n\t{settings.ConnectString}");
+            Console.WriteLine($"Mail merge docs as attachment:\n\t{settings.MailAsAttachment}");
+            Console.WriteLine($"Mail merge doc e-mail subject:\n\t{settings.MailSubject}");
+            Console.WriteLine($"Column that contains e-mail addresses:\n\t{settings.AddressFieldName}");
+            Console.WriteLine($"Active record:\n\t{settings.ActiveRecord}");
             
-            Odso odso = doc.MailMergeSettings.Odso;
+            Odso odso = settings.Odso;
             
             Console.WriteLine($"File will connect to data source located in:\n\t\"{odso.DataSource}\"");
             Console.WriteLine($"Source type:\n\t{odso.DataSourceType}");
-            Console.WriteLine($"Connection string:\n\t{odso.UdlConnectString}");
+            Console.WriteLine($"UDL connection string string:\n\t{odso.UdlConnectString}");
             Console.WriteLine($"Table:\n\t{odso.TableName}");
             Console.WriteLine($"Query:\n\t{doc.MailMergeSettings.Query}");
             //ExEnd
