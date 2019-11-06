@@ -17,6 +17,7 @@ using System.Linq;
 using System.Text;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Saving;
+using Aspose.Words.Tables;
 
 namespace ApiExamples
 {
@@ -886,6 +887,62 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "UpdateSdtContent.pdf", options);
             //ExEnd
+
+		[Test]
+        public void FillTableUsingRepeatingSectionItem()
+        {
+            //ExStart
+            //ExFor:SdtType
+            //ExSummary:Shows how to fill the table with data contained in the XML part.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+ 
+            CustomXmlPart xmlPart = doc.CustomXmlParts.Add("Books",
+                "<books>" +
+                "<book><title>Everyday Italian</title>" +
+                "<author>Giada De Laurentiis</author></book>" +
+                "<book><title>Harry Potter</title>" +
+                "<author>J K. Rowling</author></book>" +
+                "<book><title>Learning XML</title>" +
+                "<author>Erik T. Ray</author></book>" +
+                "</books>");
+ 
+            // Create headers for data from xml content
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Title");
+            builder.InsertCell();
+            builder.Write("Author");
+            builder.EndRow();
+            builder.EndTable();
+ 
+            // Create table with RepeatingSection inside
+            StructuredDocumentTag repeatingSectionSdt =
+                new StructuredDocumentTag(doc, SdtType.RepeatingSection, MarkupLevel.Row);
+            repeatingSectionSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book", "");
+            table.AppendChild(repeatingSectionSdt);
+ 
+            // Add RepeatingSectionItem inside RepeatingSection and mark it as a row
+            StructuredDocumentTag repeatingSectionItemSdt =
+                new StructuredDocumentTag(doc, SdtType.RepeatingSectionItem, MarkupLevel.Row);
+            repeatingSectionSdt.AppendChild(repeatingSectionItemSdt);
+ 
+            Row row = new Row(doc);
+            repeatingSectionItemSdt.AppendChild(row);
+ 
+            // Map xml data with created table cells for book title and author
+            StructuredDocumentTag titleSdt =
+                new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Cell);
+            titleSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book[1]/title[1]", "");
+            row.AppendChild(titleSdt);
+ 
+            StructuredDocumentTag authorSdt =
+                new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Cell);
+            authorSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book[1]/author[1]", "");
+            row.AppendChild(authorSdt);
+ 
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.RepeatingSectionItem.docx");
+			//ExEnd
         }
     }
 }

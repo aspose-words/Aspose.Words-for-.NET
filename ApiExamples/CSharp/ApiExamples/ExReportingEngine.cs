@@ -113,6 +113,50 @@ namespace ApiExamples
         }
 
         [Test]
+        public void RestartingListNumberingDynamically()
+        {
+            Document template = new Document(MyDir + "ReportingEngine.RestartingListNumberingDynamically.docx");
+
+            BuildReport(template, Common.GetManagers(), "Managers", ReportBuildOptions.RemoveEmptyParagraphs);
+
+            template.Save(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamically.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamically.docx", GoldsDir + "ReportingEngine.RestartingListNumberingDynamically Gold.docx"));
+        }
+
+        [Test]
+        public void RestartingListNumberingDynamicallyWhileInsertingDocumentDinamically()
+        {
+            Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document] -build>>");
+            
+            DocumentTestClass doc = new DocumentTestBuilder()
+                .WithDocument(new Document(MyDir + "ReportingEngine.RestartingListNumberingDynamically.docx")).Build();
+
+            BuildReport(template, new object[] {doc, Common.GetManagers()} , new[] {"src", "Managers"}, ReportBuildOptions.RemoveEmptyParagraphs);
+
+            template.Save(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDinamically.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDinamically.docx", GoldsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDinamically Gold.docx"));
+        }
+
+        [Test]
+        public void RestartingListNumberingDynamicallyWhileMultipleInsertionsDocumentDinamically()
+        {
+            Document mainTemplate = DocumentHelper.CreateSimpleDocument("<<doc [src] -build>>");
+            Document template1 = DocumentHelper.CreateSimpleDocument("<<doc [src1] -build>>");
+            Document template2 = DocumentHelper.CreateSimpleDocument("<<doc [src2.Document] -build>>");
+            
+            DocumentTestClass doc = new DocumentTestBuilder()
+                .WithDocument(new Document(MyDir + "ReportingEngine.RestartingListNumberingDynamically.docx")).Build();
+
+            BuildReport(mainTemplate, new object[] {template1, template2, doc, Common.GetManagers()} , new[] {"src", "src1", "src2", "Managers"}, ReportBuildOptions.RemoveEmptyParagraphs);
+
+            mainTemplate.Save(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileMultipleInsertionsDocumentDinamically.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileMultipleInsertionsDocumentDinamically.docx", GoldsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDinamically Gold.docx"));
+         }
+
+        [Test]
         public void ChartTest()
         {
             Document doc = new Document(MyDir + "ReportingEngine.TestChart.docx");
@@ -408,27 +452,24 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertHyperlinksDinamically()
+        [TestCase("https://auckland.dynabic.com/wiki/display/org/Supported+dynamic+insertion+of+hyperlinks+for+LINQ+Reporting+Engine")]
+        [TestCase("Bookmark")]
+        public void InsertHyperlinksDinamically(string link)
         {
             Document template = new Document(MyDir + "ReportingEngine.InsertingHyperlinks.docx");
             BuildReport(template, 
-                new Object[]
+                new object[]
                 {
-                    "https://auckland.dynabic.com/wiki/display/org/Supported+dynamic+insertion+of+hyperlinks+for+LINQ+Reporting+Engine",
+                    link, // Use URI or the name of a bookmark within the same document for a hyperlink
                     "Aspose"
                 },
                 new[]
                 {
-                    "uri_expression", 
+                    "uri_or_bookmark_expression", 
                     "display_text_expression"
                 });
 
             template.Save(ArtifactsDir + "ReportingEngine.InsertHyperlinksDinamically.docx");
-
-            Assert.IsTrue(
-                DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertHyperlinksDinamically.docx",
-                    GoldsDir + "ReportingEngine.InsertHyperlinksDinamically Gold.docx"),
-                "Fail inserting document by bytes");
         }
 
         [Test]
@@ -778,12 +819,139 @@ namespace ApiExamples
                     LocalAddress = "Wellington 6004"
                 }
             };
-            
+
             BuildReport(doc, new object[] { value1, value2, clients }, new [] { "value1", "value2", "clients" });
-            
             doc.Save(artifactPath);
 
             Assert.IsTrue(DocumentHelper.CompareDocs(artifactPath, goldPath));
+        }
+
+        [Test]
+        public void XmlDataStringWithoutSchema()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.DataSource.docx");
+
+            XmlDataSource dataSource = new XmlDataSource(MyDir + "XmlData.xml");
+            BuildReport(doc, dataSource, "persons");
+
+            doc.Save(ArtifactsDir + "ReportingEngine.XmlDataString.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.XmlDataString.docx",
+                GoldsDir + "ReportingEngine.DataSource Gold.docx"));
+        }
+
+        [Test]
+        public void XmlDataStreamWithoutSchema()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.DataSource.docx");
+
+            using (FileStream stream = File.OpenRead(MyDir + "XmlData.xml"))
+            {
+                XmlDataSource dataSource = new XmlDataSource(stream);
+                BuildReport(doc, dataSource, "persons");
+            }
+
+            doc.Save(ArtifactsDir + "ReportingEngine.XmlDataStream.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.XmlDataStream.docx",
+                GoldsDir + "ReportingEngine.DataSource Gold.docx"));
+        }
+
+        [Test]
+        public void XmlDataWithNestedElements()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.DataSourceWithNestedElements.docx");
+
+            XmlDataSource dataSource = new XmlDataSource(MyDir + "XmlDataWithNestedElements.xml");
+            BuildReport(doc, dataSource, "managers");
+
+            doc.Save(ArtifactsDir + "ReportingEngine.XmlDataWithNestedElements.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.XmlDataWithNestedElements.docx",
+                GoldsDir + "ReportingEngine.DataSourceWithNestedElements Gold.docx"));
+        }
+
+        [Test]
+        public void JsonDataString()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.DataSource.docx");
+
+            JsonDataSource dataSource = new JsonDataSource(MyDir + "JsonData.json");
+            BuildReport(doc, dataSource, "persons");
+            
+            doc.Save(ArtifactsDir + "ReportingEngine.JsonDataString.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataString.docx",
+                GoldsDir + "ReportingEngine.DataSource Gold.docx"));
+        }
+
+        [Test]
+        public void JsonDataStream()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.DataSource.docx");
+            using (FileStream stream = File.OpenRead(MyDir + "JsonData.json"))
+            {
+                JsonDataSource dataSource = new JsonDataSource(stream);
+                BuildReport(doc, dataSource, "persons");
+            }
+
+            doc.Save(ArtifactsDir + "ReportingEngine.JsonDataStream.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataStream.docx",
+                GoldsDir + "ReportingEngine.DataSource Gold.docx"));
+        }
+
+        [Test]
+        public void JsonDataWithNestedElements()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.DataSourceWithNestedElements.docx");
+
+            JsonDataSource dataSource = new JsonDataSource(MyDir + "JsonDataWithNestedElements.json");
+            BuildReport(doc, dataSource, "managers");
+            
+            doc.Save(ArtifactsDir + "ReportingEngine.JsonDataWithNestedElements.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataWithNestedElements.docx",
+                GoldsDir + "ReportingEngine.DataSourceWithNestedElements Gold.docx"));
+        }
+
+        [Test]
+        public void CsvDataString()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.CsvData.docx");
+            
+            CsvDataLoadOptions loadOptions = new CsvDataLoadOptions(true);
+            loadOptions.Delimiter = ';';
+            loadOptions.CommentChar = '$';
+
+            CsvDataSource dataSource = new CsvDataSource(MyDir + "CsvData.csv", loadOptions);
+            BuildReport(doc, dataSource, "persons");
+            
+            doc.Save(ArtifactsDir + "ReportingEngine.CsvDataString.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.CsvDataString.docx",
+                GoldsDir + "ReportingEngine.CsvData Gold.docx"));
+        }
+
+        [Test]
+        public void CsvDataStream()
+        {
+            Document doc = new Document(MyDir + "ReportingEngine.CsvData.docx");
+            
+            CsvDataLoadOptions loadOptions = new CsvDataLoadOptions(true);
+            loadOptions.Delimiter = ';';
+            loadOptions.CommentChar = '$';
+
+            using (FileStream stream = File.OpenRead(MyDir + "CsvData.csv"))
+            {
+                CsvDataSource dataSource = new CsvDataSource(stream, loadOptions);
+                BuildReport(doc, dataSource, "persons");
+            }
+            
+            doc.Save(ArtifactsDir + "ReportingEngine.CsvDataStream.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.CsvDataStream.docx",
+                GoldsDir + "ReportingEngine.CsvData Gold.docx"));
         }
 
         private static void BuildReport(Document document, object dataSource, string dataSourceName,
