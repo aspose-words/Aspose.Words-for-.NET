@@ -878,7 +878,7 @@ namespace ApiExamples
             tag.ListItems.SelectedValue = tag.ListItems[1];
 
             doc.FirstSection.Body.AppendChild(tag);
-            
+
             // We've selected default values for both tags
             // We can save those values in the document without immediately updating the tags, leaving them in their default state
             // by using a SaveOptions object with this flag set
@@ -887,8 +887,9 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "UpdateSdtContent.pdf", options);
             //ExEnd
+        }
 
-		[Test]
+        [Test]
         public void FillTableUsingRepeatingSectionItem()
         {
             //ExStart
