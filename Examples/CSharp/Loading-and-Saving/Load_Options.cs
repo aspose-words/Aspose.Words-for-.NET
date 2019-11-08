@@ -19,7 +19,6 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             LoadAndSaveEncryptedODT(dataDir);
             VerifyODTdocument(dataDir);
             ConvertShapeToOfficeMath(dataDir);
-            AnnotationsAtBlockLevel(dataDir);
         }
 
         public static void LoadOptionsUpdateDirtyFields(string dataDir)
@@ -68,27 +67,6 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             //Save the document into DOCX
             doc.Save(dataDir + "ConvertShapeToOfficeMath_out.docx", SaveFormat.Docx);
             // ExEnd:ConvertShapeToOfficeMath  
-        }
-
-        public static void AnnotationsAtBlockLevel(string dataDir)
-        {
-            // ExStart:AnnotationsAtBlockLevel   
-            LoadOptions options = new LoadOptions();
-            options.AnnotationsAtBlockLevel = true;
-            Document doc = new Document(dataDir + "AnnotationsAtBlockLevel.docx", options);
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            StructuredDocumentTag sdt = (StructuredDocumentTag)doc.GetChildNodes(NodeType.StructuredDocumentTag, true)[0];
-
-            BookmarkStart start = builder.StartBookmark("bm");
-            BookmarkEnd end = builder.EndBookmark("bm");
-
-            sdt.ParentNode.InsertBefore(start, sdt);
-            sdt.ParentNode.InsertAfter(end, sdt);
-
-            //Save the document into DOCX
-            doc.Save(dataDir + "AnnotationsAtBlockLevel_out.docx", SaveFormat.Docx);
-            // ExEnd:AnnotationsAtBlockLevel  
         }
     }
 }
