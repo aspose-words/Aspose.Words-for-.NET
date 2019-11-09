@@ -2709,7 +2709,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.OdsoEmail.docx");
 
             doc = new Document(ArtifactsDir + "Document.OdsoEmail.docx");
-            Assert.IsEmpty(doc.MailMergeSettings.ConnectString);
+            Assert.That(doc.MailMergeSettings.ConnectString, Is.Empty);
             //ExEnd
         }
 

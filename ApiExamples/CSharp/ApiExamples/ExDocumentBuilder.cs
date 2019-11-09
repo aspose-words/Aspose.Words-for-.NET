@@ -2640,6 +2640,7 @@ namespace ApiExamples
             Assert.IsTrue(paraText.StartsWith("13->13"), paraText);
         }
 
+#if (!__MOBILE__)
         /// <summary>
         /// All markdown tests work with the same file
         /// That's why we need order for them 
@@ -2934,5 +2935,6 @@ namespace ApiExamples
                 Assert.IsTrue(horizontalRuleShape.IsHorizontalRule);
             }
         }
+#endif
     }
 }
