@@ -607,7 +607,6 @@ namespace ApiExamples
             //ExFor:IWarningCallback
             //ExFor:DocumentBase.WarningCallback
             //ExFor:Fonts.FontSettings.DefaultInstance
-            //ExId:FontSubstitutionNotification
             //ExSummary:Demonstrates how to receive notifications of font substitutions by using IWarningCallback.
             // Load the document to render.
             Document doc = new Document(MyDir + "Document.doc");
@@ -672,7 +671,6 @@ namespace ApiExamples
         //ExFor:WarningInfoCollection.Warning(WarningInfo)
         //ExFor:WarningType
         //ExFor:DocumentBase.WarningCallback
-        //ExId:FontSubstitutionWarningCallback
         //ExSummary:Shows how to implement the IWarningCallback to be notified of any font substitution during document save.
         public class HandleDocumentWarnings : IWarningCallback
         {

@@ -582,7 +582,6 @@ namespace ApiExamples
             //ExFor:Ole.Forms2OleControlCollection
             //ExFor:Ole.Forms2OleControlCollection.Count
             //ExFor:Ole.Forms2OleControlCollection.Item(Int32)
-            //ExFor:Ole.NamespaceDoc
             //ExSummary:Shows how to access an OLE control embedded in a document and its child controls.
             // Open a document that contains a Microsoft Forms OLE control with child controls
             Document doc = new Document(MyDir + "Shape.Ole.ControlCollection.docm");
