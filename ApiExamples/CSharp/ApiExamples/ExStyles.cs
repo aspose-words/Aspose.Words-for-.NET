@@ -265,13 +265,11 @@ namespace ApiExamples
             // The aliases, separate from the name can be found here
             Style style = doc.Styles["MyStyle"];
             Assert.AreEqual(new [] { "MyStyle Alias 1", "MyStyle Alias 2" }, style.Aliases);
-            Assert.AreEqual("Normal", style.BaseStyleName);
+            Assert.AreEqual("Title", style.BaseStyleName);
+            Assert.AreEqual("MyStyle Char", style.LinkedStyleName);
 
             // A style can be referenced by alias as well as name
             Assert.IsTrue(style.Equals(doc.Styles["MyStyle Alias 1"]));
-
-            // We can get the name of another style that this style is based on like this
-            Assert.AreEqual("Title", style.LinkedStyleName);
             //ExEnd
         }
     }
