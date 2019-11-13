@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -18,19 +19,67 @@ namespace ApiExamples
     public class ExStyles : ApiExampleBase
     {
         [Test]
-        public void GetStyles()
+        public void Styles()
         {
             //ExStart
             //ExFor:DocumentBase.Styles
+            //ExFor:Style.Document
             //ExFor:Style.Name
+            //ExFor:Style.IsHeading
+            //ExFor:Style.IsQuickStyle
+            //ExFor:Style.NextParagraphStyleName
+            //ExFor:Style.Styles
+            //ExFor:Style.Type
+            //ExFor:StyleCollection.Document
+            //ExFor:StyleCollection.GetEnumerator
             //ExSummary:Shows how to get access to the collection of styles defined in the document.
             Document doc = new Document();
-            StyleCollection styles = doc.Styles;
+           
+            using (IEnumerator<Style> stylesEnum = doc.Styles.GetEnumerator())
+            {
+                while (stylesEnum.MoveNext())
+                {
+                    Style curStyle = stylesEnum.Current;
+                    Console.WriteLine($"Style name:\t\"{curStyle.Name}\", of type \"{curStyle.Type}\"");
+                    Console.WriteLine($"\tSubsequent style:\t{curStyle.NextParagraphStyleName}");
+                    Console.WriteLine($"\tIs heading:\t\t\t{curStyle.IsHeading}");
+                    Console.WriteLine($"\tIs QuickStyle:\t\t{curStyle.IsQuickStyle}");
 
-            foreach (Style style in styles)
-                Console.WriteLine(style.Name);
+                    Assert.AreEqual(doc, curStyle.Document);
+                }
+            }
             //ExEnd
         }
+
+        [Test]
+        public void StyleCollection()
+        {
+            //ExStart
+            //ExFor:StyleCollection.Add(Style)
+            //ExFor:StyleCollection.Count
+            //ExFor:StyleCollection.DefaultFont
+            //ExFor:StyleCollection.DefaultParagraphFormat
+            //ExFor:StyleCollection.Item(StyleIdentifier)
+            //ExFor:StyleCollection.Item(Int32)
+            //ExSummary:Shows how to add a Style to a StyleCollection.
+            Document doc = new Document();
+
+            // New documents come with a collection of default styles that can be applied to paragraphs
+            StyleCollection styles = doc.Styles;
+            Assert.AreEqual(4, styles.Count);
+
+            // We can set default parameters for new styles that will be added to the collection from now on
+            styles.DefaultFont.Name = "Courier New";
+            styles.DefaultParagraphFormat.FirstLineIndent = 15.0;
+
+            styles.Add(StyleType.Paragraph, "MyStyle");
+
+            // Styles within the collection can be referenced either by index or name
+            Assert.AreEqual("Courier New", styles[4].Font.Name);
+            Assert.AreEqual(15.0, styles["MyStyle"].ParagraphFormat.FirstLineIndent);
+            //ExEnd
+        }
+
 
         [Test]
         public void SetAllStyles()
@@ -49,7 +98,6 @@ namespace ApiExamples
                     style.Font.Name = "Arial";
                 }
             }
-
             //ExEnd
         }
 
@@ -199,6 +247,31 @@ namespace ApiExamples
             //ExSummary:Shows how to pick a style that is defined in the document and remove it.
             Document doc = new Document();
             doc.Styles["Normal"].Remove();
+            //ExEnd
+        }
+
+        [Test]
+        public void StyleAliases()
+        {
+            //ExStart
+            //ExFor:Style.Aliases
+            //ExFor:Style.BaseStyleName
+            //ExFor:Style.Equals(Aspose.Words.Style)
+            //ExFor:Style.LinkedStyleName
+            //ExSummary:Shows how to use style aliases.
+            // Open a document that had a style inserted with commas in its name which separate the style name and aliases
+            Document doc = new Document(MyDir + "StyleWithAlias.docx");
+
+            // The aliases, separate from the name can be found here
+            Style style = doc.Styles["MyStyle"];
+            Assert.AreEqual(new [] { "MyStyle Alias 1", "MyStyle Alias 2" }, style.Aliases);
+            Assert.AreEqual("Normal", style.BaseStyleName);
+
+            // A style can be referenced by alias as well as name
+            Assert.IsTrue(style.Equals(doc.Styles["MyStyle Alias 1"]));
+
+            // We can get the name of another style that this style is based on like this
+            Assert.AreEqual("Title", style.LinkedStyleName);
             //ExEnd
         }
     }
