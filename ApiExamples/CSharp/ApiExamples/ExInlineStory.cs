@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 
@@ -214,6 +215,32 @@ namespace ApiExamples
             Assert.AreEqual(StoryType.Comments, comment.StoryType);
 
             doc.Save(ArtifactsDir + "InlineStory.InsertInlineStoryNodes.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void DeleteShapes()
+        {
+            //ExStart
+            //ExFor:Story
+            //ExFor:Story.DeleteShapes
+            //ExFor:Story.StoryType
+            //ExFor:StoryType
+            //ExSummary:Shows how to clear a body of inline shapes.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a DocumentBuilder to insert a shape
+            // This is an inline shape, which has a parent Paragraph, which is in turn a child of the Body
+            builder.InsertShape(ShapeType.Cube, 100.0, 100.0);
+
+            Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
+
+            // We can delete all such shapes from the Body, affecting all child Paragraphs
+            Assert.AreEqual(StoryType.MainText, doc.FirstSection.Body.StoryType);
+            doc.FirstSection.Body.DeleteShapes();
+
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).Count);
             //ExEnd
         }
     }
