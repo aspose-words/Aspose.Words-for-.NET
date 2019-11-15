@@ -27,7 +27,7 @@ namespace ApiExamples
             //ExFor:ViewOptions.ZoomType
             //ExFor:ViewOptions.ZoomPercent
             //ExFor:ViewType
-            //ExSummary:The following code shows how to make sure the document is displayed at 50% zoom when opened in Microsoft Word.
+            //ExSummary:Shows how to make sure the document is displayed at 50% zoom when opened in Microsoft Word.
             Document doc = new Document(MyDir + "Document.doc");
 
             // We can set the zoom factor to a percentage
