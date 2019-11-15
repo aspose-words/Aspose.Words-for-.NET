@@ -1442,80 +1442,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetZoom()
-        {
-            //ExStart
-            //ExFor:Document.ViewOptions
-            //ExFor:ViewOptions
-            //ExFor:ViewOptions.ViewType
-            //ExFor:ViewOptions.ZoomPercent
-            //ExFor:ViewType
-            //ExSummary:The following code shows how to make sure the document is displayed at 50% zoom when opened in Microsoft Word.
-            Document doc = new Document(MyDir + "Document.doc");
-            doc.ViewOptions.ViewType = ViewType.PageLayout;
-            doc.ViewOptions.ZoomPercent = 50;
-            doc.Save(ArtifactsDir + "Document.SetZoom.doc");
-            //ExEnd
-        }
-
-
-        [Test]
-        public void DisplayBackgroundShape()
-        {
-            //ExStart
-            //ExFor:Settings.ViewOptions.DisplayBackgroundShape
-            //ExSummary:Shows how to hide/display document background images in view options.
-            // Create a new document from an html string
-            const string html = @"
-            <html>
-                <body style='background-color: blue'>
-                    <p>Hello world!</p>
-                </body>
-            </html>";
-
-            Document doc = new Document(new MemoryStream(Encoding.Unicode.GetBytes(html)));
-
-            // The source for the document has a flat color background, the presence of which will turn on the DisplayBackgroundShape flag
-            // We can disable it like this
-            doc.ViewOptions.DisplayBackgroundShape = false;
-
-            doc.Save(ArtifactsDir + "Document.DisplayBackgroundShape.docx");
-            //ExEnd
-        }
-
-
-        [Test]
-        public void DisplayPageBoundaries()
-        {
-            //ExStart
-            //ExFor:Settings.ViewOptions.DoNotDisplayPageBoundaries
-            //ExSummary:Shows how to hide vertical whitespace and headers/footers in view options.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Insert content spanning 3 pages
-            builder.Writeln("Paragraph 1, Page 1");
-            builder.InsertBreak(BreakType.PageBreak);
-            builder.Writeln("Paragraph 2, Page 2");
-            builder.InsertBreak(BreakType.PageBreak);
-            builder.Writeln("Paragraph 3, Page 3");
-
-            // Insert a header and a footer
-            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-            builder.Writeln("Header");
-            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
-            builder.Writeln("Footer");
-
-            // In this case we have a lot of space taken up by quite a little amount of content
-            // In older versions of Microsoft Word, we can hide headers/footers and compact vertical whitespace of pages
-            // to give the document's main body content some flow by setting this flag
-            doc.ViewOptions.DoNotDisplayPageBoundaries = true;
-
-            doc.Save(ArtifactsDir + "Document.DisplayPageBoundaries.doc");
-            //ExEnd
-        }
-
-        [Test]
         public void GetDocumentVariables()
         {
             //ExStart
@@ -3647,25 +3573,6 @@ namespace ApiExamples
 
             parameters = doc.Save(ArtifactsDir + "Document.SaveOutputParameters.pdf");
             Assert.AreEqual("application/pdf", parameters.ContentType);
-            //ExEnd
-        }
-
-        [Test]
-        public void WordML2003SaveOptions()
-        {
-            //ExStart
-            //ExFor:WordML2003SaveOptions
-            //ExFor:WordML2003SaveOptions.SaveFormat
-            //ExSummary:Shows how to save to a .wml document while applying save options.
-            Document doc = new Document(MyDir + "Document.doc");
-
-            WordML2003SaveOptions options = new WordML2003SaveOptions()
-            {
-                SaveFormat = SaveFormat.WordML,
-                MemoryOptimization = true
-            };
-
-            doc.Save(ArtifactsDir + "Document.WordML2003SaveOptions.wml", options);
             //ExEnd
         }
     }

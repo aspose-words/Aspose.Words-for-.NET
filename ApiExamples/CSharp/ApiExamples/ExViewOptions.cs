@@ -1,0 +1,124 @@
+﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
+
+using System.IO;
+using System.Text;
+using Aspose.Words;
+using Aspose.Words.Saving;
+using Aspose.Words.Settings;
+using NUnit.Framework;
+
+namespace ApiExamples
+{
+    [TestFixture]
+    public class ExViewOptions : ApiExampleBase
+    {
+        [Test]
+        public void SetZoom()
+        {
+            //ExStart
+            //ExFor:Document.ViewOptions
+            //ExFor:ViewOptions
+            //ExFor:ViewOptions.ViewType
+            //ExFor:ViewOptions.ZoomType
+            //ExFor:ViewOptions.ZoomPercent
+            //ExFor:ViewType
+            //ExSummary:The following code shows how to make sure the document is displayed at 50% zoom when opened in Microsoft Word.
+            Document doc = new Document(MyDir + "Document.doc");
+
+            // We can set the zoom factor to a percentage
+            doc.ViewOptions.ViewType = ViewType.PageLayout;
+            doc.ViewOptions.ZoomPercent = 50;
+
+            // Or we can set the ZoomType to a different value to avoid using percentages 
+            Assert.AreEqual(ZoomType.None, doc.ViewOptions.ZoomType);
+
+            doc.Save(ArtifactsDir + "ViewOptions.SetZoom.doc");
+            //ExEnd
+        }
+
+        [Test]
+        public void DisplayBackgroundShape()
+        {
+            //ExStart
+            //ExFor:ViewOptions.DisplayBackgroundShape
+            //ExSummary:Shows how to hide/display document background images in view options.
+            // Create a new document from an html string
+            const string html = @"
+            <html>
+                <body style='background-color: blue'>
+                    <p>Hello world!</p>
+                </body>
+            </html>";
+
+            Document doc = new Document(new MemoryStream(Encoding.Unicode.GetBytes(html)));
+
+            // The source for the document has a flat color background, the presence of which will turn on the DisplayBackgroundShape flag
+            // We can disable it like this
+            doc.ViewOptions.DisplayBackgroundShape = false;
+
+            doc.Save(ArtifactsDir + "ViewOptions.DisplayBackgroundShape.docx");
+            //ExEnd
+        }
+
+
+        [Test]
+        public void DisplayPageBoundaries()
+        {
+            //ExStart
+            //ExFor:ViewOptions.DoNotDisplayPageBoundaries
+            //ExSummary:Shows how to hide vertical whitespace and headers/footers in view options.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert content spanning 3 pages
+            builder.Writeln("Paragraph 1, Page 1");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Paragraph 2, Page 2");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Paragraph 3, Page 3");
+
+            // Insert a header and a footer
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            builder.Writeln("Header");
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            builder.Writeln("Footer");
+
+            // In this case we have a lot of space taken up by quite a little amount of content
+            // In older versions of Microsoft Word, we can hide headers/footers and compact vertical whitespace of pages
+            // to give the document's main body content some flow by setting this flag
+            doc.ViewOptions.DoNotDisplayPageBoundaries = true;
+
+            doc.Save(ArtifactsDir + "ViewOptions.DisplayPageBoundaries.doc");
+            //ExEnd
+        }
+
+        [Test]
+        public void FormsDesign()
+        {
+            //ExStart
+            //ExFor:ViewOptions.FormsDesign
+            //ExFor:WordML2003SaveOptions
+            //ExFor:WordML2003SaveOptions.SaveFormat
+            //ExSummary:Shows how to save to a .wml document while applying save options.
+            Document doc = new Document(MyDir + "Document.doc");
+
+            WordML2003SaveOptions options = new WordML2003SaveOptions()
+            {
+                SaveFormat = SaveFormat.WordML,
+                MemoryOptimization = true,
+                PrettyFormat = true
+            };
+
+            // Enables forms design mode in WordML documents
+            doc.ViewOptions.FormsDesign = true;
+
+            doc.Save(ArtifactsDir + "ViewOptions.FormsDesign.xml", options);
+            //ExEnd
+        }
+    }
+}
