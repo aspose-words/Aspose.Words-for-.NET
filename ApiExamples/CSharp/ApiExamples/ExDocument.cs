@@ -3611,5 +3611,22 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.WordML2003SaveOptions.wml", options);
             //ExEnd
         }
+
+        [Test]
+        public void Subdocument()
+        {
+            //ExStart
+            //ExFor:SubDocument
+            //ExFor:SubDocument.NodeType
+            //ExSummary:Shows how to access a master document's subdocument.
+            Document doc = new Document(MyDir + "SubDocumentMaster.docx");
+
+            NodeCollection subDocuments = doc.GetChildNodes(NodeType.SubDocument, true);
+            Assert.AreEqual(1, subDocuments.Count);
+
+            SubDocument subDocument = (SubDocument)doc.GetChildNodes(NodeType.SubDocument, true)[0];
+            Assert.False(subDocument.IsComposite);
+            //ExEnd
+        }
     }
 }
