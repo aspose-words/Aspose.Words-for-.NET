@@ -179,11 +179,13 @@
     <Compile Include="ExTableColumn.cs" />
     <Compile Include="ExTabStopCollection.cs" />
     <Compile Include="ExRtfLoadOptions.cs" />
+    <Compile Include="ExThemes.cs" />
     <Compile Include="ExTxtLoadOptions.cs" />
     <Compile Include="ExTxtSaveOptions.cs" />
     <Compile Include="ExUtilityClasses.cs" />
     <Compile Include="ExVariableCollection.cs" />
     <Compile Include="ExDocumentVisitor.cs" />
+    <Compile Include="ExViewOptions.cs" />
     <Compile Include="ExWarningInfoCollection.cs" />
     <Compile Include="ExXamlFixedSaveOptions.cs" />
     <Compile Include="ExXamlFlowSaveOptions.cs" />
