@@ -184,6 +184,7 @@
     <Compile Include="ExUtilityClasses.cs" />
     <Compile Include="ExVariableCollection.cs" />
     <Compile Include="ExDocumentVisitor.cs" />
+    <Compile Include="ExViewOptions.cs" />
     <Compile Include="ExWarningInfoCollection.cs" />
     <Compile Include="ExXamlFixedSaveOptions.cs" />
     <Compile Include="ExXamlFlowSaveOptions.cs" />

@@ -1442,23 +1442,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetZoom()
-        {
-            //ExStart
-            //ExFor:Document.ViewOptions
-            //ExFor:ViewOptions
-            //ExFor:ViewOptions.ViewType
-            //ExFor:ViewOptions.ZoomPercent
-            //ExFor:ViewType
-            //ExSummary:The following code shows how to make sure the document is displayed at 50% zoom when opened in Microsoft Word.
-            Document doc = new Document(MyDir + "Document.doc");
-            doc.ViewOptions.ViewType = ViewType.PageLayout;
-            doc.ViewOptions.ZoomPercent = 50;
-            doc.Save(ArtifactsDir + "Document.SetZoom.doc");
-            //ExEnd
-        }
-
-        [Test]
         public void GetDocumentVariables()
         {
             //ExStart
@@ -3590,25 +3573,6 @@ namespace ApiExamples
 
             parameters = doc.Save(ArtifactsDir + "Document.SaveOutputParameters.pdf");
             Assert.AreEqual("application/pdf", parameters.ContentType);
-            //ExEnd
-        }
-
-        [Test]
-        public void WordML2003SaveOptions()
-        {
-            //ExStart
-            //ExFor:WordML2003SaveOptions
-            //ExFor:WordML2003SaveOptions.SaveFormat
-            //ExSummary:Shows how to save to a .wml document while applying save options.
-            Document doc = new Document(MyDir + "Document.doc");
-
-            WordML2003SaveOptions options = new WordML2003SaveOptions()
-            {
-                SaveFormat = SaveFormat.WordML,
-                MemoryOptimization = true
-            };
-
-            doc.Save(ArtifactsDir + "Document.WordML2003SaveOptions.wml", options);
             //ExEnd
         }
     }
