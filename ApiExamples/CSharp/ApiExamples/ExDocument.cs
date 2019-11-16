@@ -1791,6 +1791,7 @@ namespace ApiExamples
             //ExFor:Paragraph.IsMoveToRevision
             //ExFor:ParagraphCollection
             //ExFor:ParagraphCollection.Item(Int32)
+            //ExFor:Story.Paragraphs
             //ExSummary:Shows how to get paragraph that was moved (deleted/inserted) in Microsoft Word while change tracking was enabled.
             Document doc = new Document(MyDir + "Document.Revisions.docx");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
