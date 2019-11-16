@@ -51,12 +51,14 @@ namespace ApiExamples
             //ExFor:TabStopCollection.GetHashCode
             //ExFor:TabStopCollection.Item(Double)
             //ExFor:TabStopCollection.Item(Int32)
-            //ExSummary:
+            //ExSummary:Shows how to add tab stops to a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Access the collection of tab stops and add some tab stops to it
             TabStopCollection tabStops = builder.ParagraphFormat.TabStops;
 
+            // 72 points is one "inch" on the Microsoft Word tab stop ruler
             tabStops.Add(new TabStop(72.0));
             tabStops.Add(new TabStop(432.0, TabAlignment.Right, TabLeader.Dashes));
 
