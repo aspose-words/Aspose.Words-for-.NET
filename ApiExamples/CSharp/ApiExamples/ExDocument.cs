@@ -3484,5 +3484,41 @@ namespace ApiExamples
             Assert.AreEqual("application/pdf", parameters.ContentType);
             //ExEnd
         }
+
+        [Test]
+        public void WordML2003SaveOptions()
+        {
+            //ExStart
+            //ExFor:WordML2003SaveOptions
+            //ExFor:WordML2003SaveOptions.SaveFormat
+            //ExSummary:Shows how to save to a .wml document while applying save options.
+            Document doc = new Document(MyDir + "Document.doc");
+
+            WordML2003SaveOptions options = new WordML2003SaveOptions()
+            {
+                SaveFormat = SaveFormat.WordML,
+                MemoryOptimization = true
+            };
+
+            doc.Save(ArtifactsDir + "Document.WordML2003SaveOptions.wml", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void Subdocument()
+        {
+            //ExStart
+            //ExFor:SubDocument
+            //ExFor:SubDocument.NodeType
+            //ExSummary:Shows how to access a master document's subdocument.
+            Document doc = new Document(MyDir + "SubDocumentMaster.docx");
+
+            NodeCollection subDocuments = doc.GetChildNodes(NodeType.SubDocument, true);
+            Assert.AreEqual(1, subDocuments.Count);
+
+            SubDocument subDocument = (SubDocument)doc.GetChildNodes(NodeType.SubDocument, true)[0];
+            Assert.False(subDocument.IsComposite);
+            //ExEnd
+        }
     }
 }
