@@ -945,5 +945,37 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "StructuredDocumentTag.RepeatingSectionItem.docx");
 			//ExEnd
         }
+
+        [Test]
+        public void CustomXmlPart()
+        {
+            // Obtain an XML in the form of a string
+            string xmlString = "<?xml version=\"1.0\"?>" +
+                               "<Company>" +
+                               "<Employee id=\"1\">" +
+                               "<FirstName>John</FirstName>" +
+                               "<LastName>Doe</LastName>" +
+                               "</Employee>" +
+                               "<Employee id=\"2\">" +
+                               "<FirstName>Jane</FirstName>" +
+                               "<LastName>Doe</LastName>" +
+                               "</Employee>" +
+                               "</Company>";
+
+            // Create a blank document
+            Document doc = new Document();
+
+            // Insert the full XML document as a custom document part
+            // The mapping for this part will be seen in the "XML Mapping Pane" in the "Developer" tab, if it is enabled
+            CustomXmlPart xmlPart = doc.CustomXmlParts.Add(Guid.NewGuid().ToString("B"), xmlString);
+
+            // None of the XML is in the document body at this point
+            // Create a StructuredDocumentTag, which will refer to a single element from the XML with an XPath
+            StructuredDocumentTag sdt = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Block);
+            sdt.XmlMapping.SetMapping(xmlPart, "Company//Employee[@id='2']/FirstName", "");
+
+            // Add the StructuredDocumentTag to the document to display the element in the text 
+            doc.FirstSection.Body.AppendChild(sdt);
+        }
     }
 }
