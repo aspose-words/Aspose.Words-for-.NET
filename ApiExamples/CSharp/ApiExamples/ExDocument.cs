@@ -3501,5 +3501,25 @@ namespace ApiExamples
             Assert.False(subDocument.IsComposite);
             //ExEnd
         }
+
+        [Test]
+        public void EpubCover()
+        {
+            // Create a blank document and insert some text
+            Document doc = new Document();
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
+
+            // When saving to .epub, some Microsoft Word document properties can be converted to .epub metadata
+            doc.BuiltInDocumentProperties.Author = "John Doe";
+            doc.BuiltInDocumentProperties.Title = "My Book Title";
+
+            // The thumbnail we specify here can become the cover image
+            byte[] image = System.IO.File.ReadAllBytes(ImageDir + "Watermark.png");
+            doc.BuiltInDocumentProperties.Thumbnail = image;
+
+            doc.Save(ArtifactsDir + "EpubCover.epub");
+        }
     }
 }
