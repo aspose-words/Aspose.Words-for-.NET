@@ -3486,25 +3486,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void WordML2003SaveOptions()
-        {
-            //ExStart
-            //ExFor:WordML2003SaveOptions
-            //ExFor:WordML2003SaveOptions.SaveFormat
-            //ExSummary:Shows how to save to a .wml document while applying save options.
-            Document doc = new Document(MyDir + "Document.doc");
-
-            WordML2003SaveOptions options = new WordML2003SaveOptions()
-            {
-                SaveFormat = SaveFormat.WordML,
-                MemoryOptimization = true
-            };
-
-            doc.Save(ArtifactsDir + "Document.WordML2003SaveOptions.wml", options);
-            //ExEnd
-        }
-
-        [Test]
         public void Subdocument()
         {
             //ExStart
