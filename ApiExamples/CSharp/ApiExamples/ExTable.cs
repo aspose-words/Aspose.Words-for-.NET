@@ -1371,7 +1371,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Ignore("WORDSNET-18708")]
         public void GetConditionalStylesEnumerator()
         {
             //ExStart
