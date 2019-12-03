@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Globalization;
 using Aspose.Words;
 using Aspose.Words.Markup;
 using NUnit.Framework;
@@ -120,6 +119,7 @@ namespace ApiExamples
             Assert.That(sdt.XmlMapping.StoreItemId, Is.Empty); //Assert that this sdt has no StoreItemId
         }
 
+#if !__MOBILE__ // because of xamarin bug with CultureInfo (https://xamarin.github.io/bugzilla-archives/59/59077/bug.html)
         [Test]
         public void Date()
         {
@@ -166,6 +166,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "SDT.Date.docx");
             //ExEnd
         }
+#endif
 
         [Test]
         public void PlainText()
