@@ -267,7 +267,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:SectionCollection.Item(Int32)
-            //ExId:SectionsAccessByIndex
             //ExSummary:Shows how to access a section at the specified index.
             Document doc = new Document(MyDir + "Document.doc");
             Section section = doc.Sections[0];
@@ -279,7 +278,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:NodeCollection.Add
-            //ExId:SectionsAddSection
             //ExSummary:Shows how to add a section to the end of the document.
             Document doc = new Document(MyDir + "Document.doc");
             Section sectionToAdd = new Section(doc);
@@ -290,12 +288,8 @@ namespace ApiExamples
         [Test]
         public void SectionsDeleteSection()
         {
-            //ExStart
-            //ExId:SectionsDeleteSection
-            //ExSummary:Shows how to remove a section at the specified index.
             Document doc = new Document(MyDir + "Document.doc");
             doc.Sections.RemoveAt(0);
-            //ExEnd
         }
 
         [Test]
@@ -303,7 +297,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:NodeCollection.Clear
-            //ExId:SectionsDeleteAllSections
             //ExSummary:Shows how to remove all sections from a document.
             Document doc = new Document(MyDir + "Document.doc");
             doc.Sections.Clear();
@@ -316,7 +309,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:Section.AppendContent
             //ExFor:Section.PrependContent
-            //ExId:SectionsAppendSectionContent
             //ExSummary:Shows how to append content of an existing section. The number of sections in the document remains the same.
             Document doc = new Document(MyDir + "Section.AppendContent.doc");
 
@@ -338,7 +330,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Section.ClearContent
-            //ExId:SectionsDeleteSectionContent
             //ExSummary:Shows how to delete main content of a section.
             Document doc = new Document(MyDir + "Document.doc");
             Section section = doc.Sections[0];
@@ -351,7 +342,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Section.ClearHeadersFooters
-            //ExId:SectionsDeleteHeaderFooter
             //ExSummary:Clears content of all headers and footers in a section.
             Document doc = new Document(MyDir + "Document.doc");
             Section section = doc.Sections[0];
@@ -374,27 +364,19 @@ namespace ApiExamples
         [Test]
         public void SectionsCloneSection()
         {
-            //ExStart
-            //ExId:SectionsCloneSection
-            //ExSummary:Shows how to create a duplicate of a particular section.
             Document doc = new Document(MyDir + "Document.doc");
             Section cloneSection = doc.Sections[0].Clone();
-            //ExEnd
         }
 
         [Test]
         public void SectionsImportSection()
         {
-            //ExStart
-            //ExId:SectionsImportSection
-            //ExSummary:Shows how to copy sections between documents.
             Document srcDoc = new Document(MyDir + "Document.doc");
             Document dstDoc = new Document();
 
             Section sourceSection = srcDoc.Sections[0];
             Section newSection = (Section) dstDoc.ImportNode(sourceSection, true);
             dstDoc.Sections.Add(newSection);
-            //ExEnd
         }
 
         [Test]
@@ -403,21 +385,14 @@ namespace ApiExamples
             Document srcDoc = new Document();
             Document dstDoc = new Document();
 
-            //ExStart
-            //ExId:MigrateFrom2XImportSection
-            //ExSummary:This fragment shows how to insert a section from another document in Aspose.Words 3.0 or higher.
             Section sourceSection = srcDoc.Sections[0];
             Section newSection = (Section) dstDoc.ImportNode(sourceSection, true);
             dstDoc.Sections.Add(newSection);
-            //ExEnd
         }
 
         [Test]
         public void ModifyPageSetupInAllSections()
         {
-            //ExStart
-            //ExId:ModifyPageSetupInAllSections
-            //ExSummary:Shows how to set paper size for the whole document.
             Document doc = new Document(MyDir + "Section.ModifyPageSetupInAllSections.doc");
 
             // It is important to understand that a document can contain many sections and each
@@ -426,7 +401,6 @@ namespace ApiExamples
                 section.PageSetup.PaperSize = PaperSize.Letter;
 
             doc.Save(ArtifactsDir + "Section.ModifyPageSetupInAllSections.doc");
-            //ExEnd
         }
 
         [Test]

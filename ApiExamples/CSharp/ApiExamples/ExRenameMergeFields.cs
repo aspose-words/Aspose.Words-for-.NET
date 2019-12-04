@@ -5,10 +5,6 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-//ExStart
-//ExId:RenameMergeFields
-//ExSummary:Shows how to rename merge fields in a Word document.
-
 using System;
 using System.Linq;
 using System.Text;
@@ -160,4 +156,3 @@ namespace ApiExamples
         private static readonly Regex gRegex = new Regex(@"\s*(?<start>MERGEFIELD\s|)(\s|)(?<name>\S+)\s+");
     }
 }
-//ExEnd

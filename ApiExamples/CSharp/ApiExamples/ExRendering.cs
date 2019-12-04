@@ -108,7 +108,6 @@ namespace ApiExamples
             //ExFor:Document.Save(String)
             //ExFor:Document.Save(Stream, SaveFormat)
             //ExFor:Document.Save(String, SaveOptions)
-            //ExId:SaveToPdf_NewAPI
             //ExSummary:Shows how to save a document to the PDF format using the Save method and the PdfSaveOptions class.
             // Open the document
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -202,7 +201,6 @@ namespace ApiExamples
             //ExFor:Document.Save(String)
             //ExFor:Document.Save(Stream, SaveFormat)
             //ExFor:Document.Save(String, SaveOptions)
-            //ExId:SaveToImage_NewAPI
             //ExSummary:Shows how to save a document to the JPEG format using the Save method and the ImageSaveOptions class.
             // Open the document
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -401,7 +399,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.UpdateFields
-            //ExId:UpdateFieldsBeforeRendering
             //ExSummary:Shows how to update all fields before rendering a document.
             Document doc = new Document(MyDir + "Rendering.doc");
 
@@ -1008,7 +1005,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:FontSettings
             //ExFor:FontSettings.SetFontsFolder(String, Boolean)
-            //ExId:SetFontsFolderCustomFolder
             //ExSummary:Demonstrates how to set the folder Aspose.Words uses to look for TrueType fonts during rendering or embedding of fonts.
             Document doc = new Document(MyDir + "Rendering.doc");
 
@@ -1033,7 +1029,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:FontSettings
             //ExFor:FontSettings.SetFontsFolders(String[], Boolean)
-            //ExId:SetFontsFoldersMultipleFolders
             //ExSummary:Demonstrates how to set Aspose.Words to look in multiple folders for TrueType fonts when rendering or embedding fonts.
             Document doc = new Document(MyDir + "Rendering.doc");
 
@@ -1059,7 +1054,6 @@ namespace ApiExamples
             //ExFor:FontSettings            
             //ExFor:FontSettings.GetFontsSources()
             //ExFor:FontSettings.SetFontsSources()
-            //ExId:SetFontsFoldersSystemAndCustomFolder
             //ExSummary:Demonstrates how to set Aspose.Words to look for TrueType fonts in system folders as well as a custom defined folder when scanning for fonts.
             Document doc = new Document(MyDir + "Rendering.doc");
 
@@ -1185,7 +1179,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DefaultFontSubstitutionRule.DefaultFontName
-            //ExId:SetDefaultFontName
             //ExSummary:Demonstrates how to specify what font to substitute for a missing font during rendering.
             Document doc = new Document(MyDir + "Rendering.doc");
 
@@ -1219,17 +1212,13 @@ namespace ApiExamples
             // font specified under FontSettings.DefaultFontName. We can pick up on this substitution using our callback.
             FontSettings.DefaultInstance.SetFontsFolder(String.Empty, false);
 
-            //ExStart
-            //ExId:FontSubstitutionUpdatePageLayout
-            //ExSummary:Demonstrates how IWarningCallback will still receive warning notifications even if UpdatePageLayout is called before document save.
             // When you call UpdatePageLayout the document is rendered in memory. Any warnings that occurred during rendering
             // are stored until the document save and then sent to the appropriate WarningCallback.
             doc.UpdatePageLayout();
 
             // Even though the document was rendered previously, any save warnings are notified to the user during document save.
             doc.Save(ArtifactsDir + "Rendering.FontsNotificationUpdatePageLayout.pdf");
-            //ExEnd
-
+            
             Assert.That(callback.mFontWarnings.Count, Is.GreaterThan(0));
             Assert.True(callback.mFontWarnings[0].WarningType == WarningType.FontSubstitution);
             Assert.True(callback.mFontWarnings[0].Description.Contains("has not been found"));
@@ -1264,7 +1253,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfSaveOptions.#ctor
             //ExFor:PdfSaveOptions.EmbedFullFonts
-            //ExId:EmbedFullFonts
             //ExSummary:Demonstrates how to set Aspose.Words to embed full fonts in the output PDF document.
             // Load the document to render.
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -1284,7 +1272,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PdfSaveOptions.EmbedFullFonts
-            //ExId:Subset
             //ExSummary:Demonstrates how to set Aspose.Words to subset fonts in the output PDF.
             // Load the document to render.
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -1305,7 +1292,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfSaveOptions.FontEmbeddingMode
             //ExFor:PdfFontEmbeddingMode
-            //ExId:EmbedStandardWindowsFonts
             //ExSummary:Shows how to set Aspose.Words to skip embedding Arial and Times New Roman fonts into a PDF document.
             // Load the document to render.
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -1324,7 +1310,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PdfSaveOptions.UseCoreFonts
-            //ExId:DisableUseOfCoreFonts
             //ExSummary:Shows how to set Aspose.Words to avoid embedding core fonts and let the reader substitute PDF Type 1 fonts instead.
             // Load the document to render.
             Document doc = new Document(MyDir + "Rendering.doc");

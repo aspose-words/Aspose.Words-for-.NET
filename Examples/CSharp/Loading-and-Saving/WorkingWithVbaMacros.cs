@@ -13,14 +13,39 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
+            CreateVbaProject(dataDir);
             ReadVbaMacros(dataDir);
             ModifyVbaMacros(dataDir);
+        }
+
+        public static void CreateVbaProject(string dataDir)
+        {
+            //ExStart:CreateVbaProject
+            Document doc = new Document();
+
+            // Create a new VBA project.
+            VbaProject project = new VbaProject();
+            project.Name = "AsposeProject";
+            doc.VbaProject = project;
+
+            // Create a new module and specify a macro source code.
+            VbaModule module = new VbaModule();
+            module.Name = "AsposeModule";
+            module.Type = VbaModuleType.ProceduralModule;
+            module.SourceCode = "New source code";
+
+            // Add module to the VBA project.
+            doc.VbaProject.Modules.Add(module);
+
+            doc.Save(dataDir + "VbaProject_out.docm");
+            //ExEnd:CreateVbaProject
+            Console.WriteLine("\nDocument saved successfully.\nFile saved at " + dataDir);
         }
 
         public static void ReadVbaMacros(string dataDir)
         {
             //ExStart:ReadVbaMacros
-            Document doc = new Document(dataDir + "Document.dot");
+            Document doc = new Document(dataDir + "VbaProject_out.docm");
 
             if (doc.VbaProject != null)
             {
@@ -35,14 +60,17 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
         public static void ModifyVbaMacros(string dataDir)
         {
             //ExStart:ModifyVbaMacros
-            Document doc = new Document(dataDir + "test.docm");
+            Document doc = new Document(dataDir + "VbaProject_out.docm");
             VbaProject project = doc.VbaProject;
 
             const string newSourceCode = "Test change source code";
 
             // Choose a module, and set a new source code.
             project.Modules[0].SourceCode = newSourceCode;
+
+            doc.Save(dataDir + "VbaProject_out.docm");
             //ExEnd:ModifyVbaMacros
+            Console.WriteLine("\nDocument saved successfully.\nFile saved at " + dataDir);
         }
     }
 }

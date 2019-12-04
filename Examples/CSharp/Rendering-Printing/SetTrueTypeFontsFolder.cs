@@ -21,7 +21,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             // Note that this setting will override any default font sources that are being searched by default. Now only these folders will be searched for
             // Fonts when rendering or embedding fonts. To add an extra font source while keeping system font sources then use both FontSettings.GetFontSources and
             // FontSettings.SetFontSources instead.
-            FontSettings.SetFontsFolder(@"C:MyFonts\", false);
+            FontSettings.SetFontsFolder(@"C:\MyFonts\", false);
             // Set font settings
             doc.FontSettings = FontSettings;
             dataDir = dataDir + "Rendering.SetFontsFolder_out.pdf";
