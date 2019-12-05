@@ -16,6 +16,7 @@ using System.Net;
 using System.Security;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
@@ -31,6 +32,7 @@ using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using Aspose.Words.Tables;
 using Aspose.Words.Themes;
+using Aspose.Words.WebExtensions;
 using NUnit.Framework;
 using CompareOptions = Aspose.Words.CompareOptions;
 #if !(__MOBILE__ || MAC)
@@ -3490,26 +3492,77 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ReadMacrosFromDocument()
+        public void CreateNewVbaProject()
+        {
+            //ExStart
+            //ExFor:VbaProject.#ctor
+            //ExFor:VbaProject.Name
+            //ExFor:VbaModule.#ctor
+            //ExFor:VbaModule.Name
+            //ExFor:VbaModule.Type
+            //ExFor:VbaModule.SourceCode
+            //ExFor:VbaModuleCollection.Add(VbaModule)
+            //ExFor:VbaModuleType
+            //ExSummary:Shows how to create a VbaProject from a scratch for using macros.
+            Document doc = new Document();
+
+            // Create a new VBA project
+            VbaProject project = new VbaProject();
+            project.Name = "Aspose.Project";
+            doc.VbaProject = project;
+
+            // Create a new module and specify a macro source code
+            VbaModule module = new VbaModule();
+            module.Name = "Aspose.Module";
+            // VbaModuleType values:
+            // procedural module - A collection of subroutines and functions
+            // ------
+            // document module - A type of VBA project item that specifies a module for embedded macros and programmatic access
+            // operations that are associated with a document
+            // ------
+            // class module - A module that contains the definition for a new object. Each instance of a class creates
+            // a new object, and procedures that are defined in the module become properties and methods of the object
+            // ------
+            // designer module - A VBA module that extends the methods and properties of an ActiveX control that has been
+            // registered with the project
+            module.Type = VbaModuleType.ProceduralModule;
+            module.SourceCode = "New source code";
+
+            // Add module to the VBA project
+            doc.VbaProject.Modules.Add(module);
+
+            doc.Save(ArtifactsDir + "Document.CreateVBAMacros.docm");
+            //ExEnd
+        }
+
+        [Test]
+        public void ReadMacrosFromExistingDocument()
         {
             //ExStart
             //ExFor:Document.VbaProject
             //ExFor:VbaProject
             //ExFor:VbaModuleCollection
+            //ExFor:VbaModuleCollection.Count
             //ExFor:VbaModule
             //ExFor:VbaProject.Name
             //ExFor:VbaProject.Modules
+            //ExFor:VbaProject.CodePage
             //ExFor:VbaModule.Name
             //ExFor:VbaModule.SourceCode
+            //ExFor:VbaModuleCollection.Item(System.Int32)
+            //ExFor:VbaModuleCollection.Item(System.String)
+            //ExFor:VbaModuleCollection.Remove
             //ExSummary:Shows how to get access to VBA project information in the document.
             Document doc = new Document(MyDir + "Document.TestButton.docm");
 
             // A VBA project inside the document is defined as a collection of VBA modules
             VbaProject vbaProject = doc.VbaProject;
-            Console.WriteLine($"Project name: {vbaProject.Name}; Modules count: {vbaProject.Modules.Count()}\n");
-            
-            Assert.AreEqual(vbaProject.Name, "AsposeVBAtest"); //ExSkip
-            Assert.AreEqual(vbaProject.Modules.Count(), 3); //ExSkip
+            Console.WriteLine(
+                $"Project name: {vbaProject.Name}; Project code page: {vbaProject.CodePage}; Modules count: {vbaProject.Modules.Count}\n");
+
+            Assert.AreEqual("AsposeVBAtest", vbaProject.Name); //ExSkip
+            Assert.AreEqual(1251, vbaProject.CodePage); //ExSkip
+            Assert.AreEqual(3, vbaProject.Modules.Count); //ExSkip
 
             VbaModuleCollection vbaModules = doc.VbaProject.Modules;
             foreach (VbaModule module in vbaModules)
@@ -3518,26 +3571,17 @@ namespace ApiExamples
             }
 
             // Set new source code for VBA module
-            string oldCode = vbaModules[0].SourceCode;
+            // You can retrieve object by integer or by name
             vbaModules[0].SourceCode = "Your VBA code...";
+            vbaModules["Module1"].SourceCode = "Your VBA code...";
 
-            Assert.AreNotEqual(oldCode, vbaModules[0].SourceCode); //ExSkip
-            Assert.AreEqual("Your VBA code...", vbaModules[0].SourceCode); //ExSkip
-            
-            vbaModules[0].SourceCode = oldCode;
+            // Remove one of VbaModule from VbaModuleCollection
+            vbaModules.Remove(vbaModules[2]);
             //ExEnd
 
-            VbaModule defaultModule = vbaModules[0];
-            Assert.AreEqual(defaultModule.Name, "ThisDocument");
-            Assert.IsTrue(defaultModule.SourceCode.Contains("MsgBox \"First test\""));
-
-            VbaModule createdModule = vbaModules[1];
-            Assert.AreEqual(createdModule.Name, "Module1");
-            Assert.IsTrue(createdModule.SourceCode.Contains("MsgBox \"Second test\""));
-
-            VbaModule classModule = vbaModules[2];
-            Assert.AreEqual(classModule.Name, "Class1");
-            Assert.IsTrue(classModule.SourceCode.Contains("MsgBox \"Class test\""));
+            Assert.AreEqual("Your VBA code...", vbaModules[0].SourceCode);
+            Assert.AreEqual("Your VBA code...", vbaModules[1].SourceCode);
+            Assert.That(() => vbaModules[2], Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
 #if !(__MOBILE__ || MAC)
@@ -3609,6 +3653,112 @@ namespace ApiExamples
             };
 
             doc.Save(ArtifactsDir + "Document.WordML2003SaveOptions.wml", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void CreateWebExtension()
+        {
+            //ExStart
+            //ExFor:BaseWebExtensionCollection`1.Add(`0)
+            //ExFor:TaskPane.#ctor
+            //ExFor:TaskPane.DockState
+            //ExFor:TaskPane.IsVisible
+            //ExFor:TaskPane.Width
+            //ExFor:TaskPane.IsLocked
+            //ExFor:TaskPane.WebExtension
+            //ExFor:TaskPane.Row
+            //ExFor:WebExtension
+            //ExFor:WebExtension.Reference
+            //ExFor:WebExtension.Properties
+            //ExFor:WebExtension.Bindings
+            //ExFor:WebExtension.IsFrozen
+            //ExFor:WebExtensionReference.Id
+            //ExFor:WebExtensionReference.Version
+            //ExFor:WebExtensionReference.StoreType
+            //ExFor:WebExtensionReference.Store
+            //ExFor:WebExtensionPropertyCollection
+            //ExFor:WebExtensionBindingCollection
+            //ExFor:WebExtensionProperty.#ctor(String, String)
+            //ExFor:WebExtensionBinding.#ctor(String, WebExtensionBindingType, String)
+            //ExFor:WebExtensionStoreType
+            //ExFor:WebExtensionBindingType
+            //ExFor:TaskPaneDockState
+            //ExFor:TaskPaneCollection
+            //ExFor:WebExtensionBindingCollection
+            //ExFor:WebExtensionPropertyCollection
+            //ExSummary:Shows how to create add-ins inside the document
+            Document doc = new Document();
+
+            // Create taskpane with "MyScript" add-in which will be used by the document
+            TaskPane myScriptTaskPane = new TaskPane();
+            doc.WebExtensionTaskPanes.Add(myScriptTaskPane);
+
+            // Define task pane location when the document opens
+            myScriptTaskPane.DockState = TaskPaneDockState.Right;
+            myScriptTaskPane.IsVisible = true;
+            myScriptTaskPane.Width = 300;
+            myScriptTaskPane.IsLocked = true;
+            // Use this option if you have several taskpanes
+            myScriptTaskPane.Row = 1;
+
+            // Add "MyScript Math Sample" add-in which will be displayed inside task pane
+            // Application Id from store
+            myScriptTaskPane.WebExtension.Reference.Id = "WA104380646";
+            // The current version of the application used
+            myScriptTaskPane.WebExtension.Reference.Version = "1.0.0.0";
+            // Type of marketplace
+            myScriptTaskPane.WebExtension.Reference.StoreType = WebExtensionStoreType.OMEX;
+            // Marketplace based on your locale
+            myScriptTaskPane.WebExtension.Reference.Store = "en-us";
+            myScriptTaskPane.WebExtension.Properties.Add(new WebExtensionProperty("MyScript", "MyScript Math Sample"));
+            myScriptTaskPane.WebExtension.Bindings.Add(new WebExtensionBinding("Binding1", WebExtensionBindingType.Text, "104380646"));
+            // Use this option if you need to block web extension from any action
+            myScriptTaskPane.WebExtension.IsFrozen = false;
+
+            doc.Save(ArtifactsDir + "Document.WebExtension.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void GetWebExtensionInfo()
+        {
+            //ExStart
+            //ExFor:BaseWebExtensionCollection`1
+            //ExFor:BaseWebExtensionCollection`1.Add(`0)
+            //ExFor:BaseWebExtensionCollection`1.Clear
+            //ExFor:BaseWebExtensionCollection`1.GetEnumerator
+            //ExFor:BaseWebExtensionCollection`1.Remove(Int32)
+            //ExFor:BaseWebExtensionCollection`1.Count
+            //ExFor:BaseWebExtensionCollection`1.Item(Int32)
+            //ExSummary:Shows how to work with web extension collections.
+            Document doc = new Document(MyDir + "Document.WebExtension.docx");
+
+            Assert.AreEqual(1, doc.WebExtensionTaskPanes.Count);
+            
+            // Add new taskpane to the collection
+            TaskPane newTaskPane = new TaskPane();
+            doc.WebExtensionTaskPanes.Add(newTaskPane);
+            Assert.AreEqual(2, doc.WebExtensionTaskPanes.Count);
+
+            // Enumerate all WebExtensionProperty in a collection
+            WebExtensionPropertyCollection webExtensionPropertyCollection = doc.WebExtensionTaskPanes[0].WebExtension.Properties;
+            using (IEnumerator<WebExtensionProperty> enumerator = webExtensionPropertyCollection.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    WebExtensionProperty webExtensionProperty = enumerator.Current;
+                    Console.WriteLine($"Binding name: {webExtensionProperty.Name}; Binding value: {webExtensionProperty.Value}");
+                }
+            }
+
+            // Delete specific taskpane from the collection
+            doc.WebExtensionTaskPanes.Remove(1);
+            Assert.AreEqual(1, doc.WebExtensionTaskPanes.Count); //ExSkip
+
+            // Or remove all items from the collection
+            doc.WebExtensionTaskPanes.Clear();
+            Assert.AreEqual(0, doc.WebExtensionTaskPanes.Count); //ExSkip
             //ExEnd
         }
     }
