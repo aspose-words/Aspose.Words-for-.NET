@@ -2908,6 +2908,7 @@ namespace ApiExamples
         [TestCase("ItalicBoldHeadingBlockquote 4", "Quote3.Heading 4", true, true, Category = "SkipTearDown")]
         [TestCase("HeadingBlockquote 5", "Quote4.Heading 5", false, false, Category = "SkipTearDown")]
         [TestCase("HeadingBlockquote 6", "Quote5.Heading 6", false, false)]
+        [Ignore("WORDSNET-19631")]
         public void LoadMarkdownDocumentAndAssertContent(string text, string styleName, bool isItalic, bool isBold)
         {
             // Load created document from previous tests
