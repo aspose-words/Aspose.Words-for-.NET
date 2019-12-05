@@ -1442,23 +1442,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetZoom()
-        {
-            //ExStart
-            //ExFor:Document.ViewOptions
-            //ExFor:ViewOptions
-            //ExFor:ViewOptions.ViewType
-            //ExFor:ViewOptions.ZoomPercent
-            //ExFor:ViewType
-            //ExSummary:The following code shows how to make sure the document is displayed at 50% zoom when opened in Microsoft Word.
-            Document doc = new Document(MyDir + "Document.doc");
-            doc.ViewOptions.ViewType = ViewType.PageLayout;
-            doc.ViewOptions.ZoomPercent = 50;
-            doc.Save(ArtifactsDir + "Document.SetZoom.doc");
-            //ExEnd
-        }
-
-        [Test]
         public void GetDocumentVariables()
         {
             //ExStart
@@ -1808,6 +1791,7 @@ namespace ApiExamples
             //ExFor:Paragraph.IsMoveToRevision
             //ExFor:ParagraphCollection
             //ExFor:ParagraphCollection.Item(Int32)
+            //ExFor:Story.Paragraphs
             //ExSummary:Shows how to get paragraph that was moved (deleted/inserted) in Microsoft Word while change tracking was enabled.
             Document doc = new Document(MyDir + "Document.Revisions.docx");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
@@ -2013,52 +1997,6 @@ namespace ApiExamples
             //ExEnd
 
             stream.Close();
-        }
-
-        [Test]
-        public void DocumentThemeProperties()
-        {
-            //ExStart
-            //ExFor:Theme
-            //ExFor:Theme.Colors
-            //ExFor:Theme.MajorFonts
-            //ExFor:Theme.MinorFonts
-            //ExSummary:Show how to change document theme options.
-            Document doc = new Document();
-            // Get document theme and do something useful
-            Theme theme = doc.Theme;
-
-            theme.Colors.Accent1 = Color.Black;
-            theme.Colors.Dark1 = Color.Blue;
-            theme.Colors.FollowedHyperlink = Color.White;
-            theme.Colors.Hyperlink = Color.WhiteSmoke;
-            theme.Colors.Light1 = Color.Empty; //There is default Color.Black
-
-            theme.MajorFonts.ComplexScript = "Arial";
-            theme.MajorFonts.EastAsian = String.Empty;
-            theme.MajorFonts.Latin = "Times New Roman";
-
-            theme.MinorFonts.ComplexScript = String.Empty;
-            theme.MinorFonts.EastAsian = "Times New Roman";
-            theme.MinorFonts.Latin = "Arial";
-            //ExEnd
-
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
-            Assert.AreEqual(Color.Black.ToArgb(), doc.Theme.Colors.Accent1.ToArgb());
-            Assert.AreEqual(Color.Blue.ToArgb(), doc.Theme.Colors.Dark1.ToArgb());
-            Assert.AreEqual(Color.White.ToArgb(), doc.Theme.Colors.FollowedHyperlink.ToArgb());
-            Assert.AreEqual(Color.WhiteSmoke.ToArgb(), doc.Theme.Colors.Hyperlink.ToArgb());
-            Assert.AreEqual(Color.Black.ToArgb(), doc.Theme.Colors.Light1.ToArgb());
-
-            Assert.AreEqual("Arial", doc.Theme.MajorFonts.ComplexScript);
-            Assert.AreEqual(String.Empty, doc.Theme.MajorFonts.EastAsian);
-            Assert.AreEqual("Times New Roman", doc.Theme.MajorFonts.Latin);
-
-            Assert.AreEqual(String.Empty, doc.Theme.MinorFonts.ComplexScript);
-            Assert.AreEqual("Times New Roman", doc.Theme.MinorFonts.EastAsian);
-            Assert.AreEqual("Arial", doc.Theme.MinorFonts.Latin);
         }
 
         [Test]
@@ -2450,52 +2388,6 @@ namespace ApiExamples
             Assert.AreEqual(doc.LastSection, doc.Sections[1]);
 
             doc.Save(ArtifactsDir + "HeaderFooter.ReplaceText.doc");
-            //ExEnd
-        }
-
-        [Test]
-        public void DocTheme()
-        {
-            //ExStart
-            //ExFor:Document.Theme
-            //ExSummary:Shows what we can do with the Themes property of Document.
-            Document doc = new Document();
-
-            // When creating a blank document, Aspose Words creates a default theme object
-            Theme theme = doc.Theme;
-
-            // These color properties correspond to the 10 color columns that you see 
-            // in the "Theme colors" section in the color selector menu when changing font or shading color
-            // We can view and edit the leading color for each column, and the five different tints that
-            // make up the rest of the column will be derived automatically from each leading color
-            // Aspose Words sets the defaults to what they are in the Microsoft Word default theme
-            Assert.AreEqual(Color.FromArgb(255, 255, 255, 255), theme.Colors.Light1);
-            Assert.AreEqual(Color.FromArgb(255, 0, 0, 0), theme.Colors.Dark1);
-            Assert.AreEqual(Color.FromArgb(255, 238, 236, 225), theme.Colors.Light2);
-            Assert.AreEqual(Color.FromArgb(255, 31, 73, 125), theme.Colors.Dark2);
-            Assert.AreEqual(Color.FromArgb(255, 79, 129, 189), theme.Colors.Accent1);
-            Assert.AreEqual(Color.FromArgb(255, 192, 80, 77), theme.Colors.Accent2);
-            Assert.AreEqual(Color.FromArgb(255, 155, 187, 89), theme.Colors.Accent3);
-            Assert.AreEqual(Color.FromArgb(255, 128, 100, 162), theme.Colors.Accent4);
-            Assert.AreEqual(Color.FromArgb(255, 75, 172, 198), theme.Colors.Accent5);
-            Assert.AreEqual(Color.FromArgb(255, 247, 150, 70), theme.Colors.Accent6);
-
-            // Hyperlink colors
-            Assert.AreEqual(Color.FromArgb(255, 0, 0, 255), theme.Colors.Hyperlink);
-            Assert.AreEqual(Color.FromArgb(255, 128, 0, 128), theme.Colors.FollowedHyperlink);
-
-            // These appear at the very top of the font selector in the "Theme Fonts" section
-            Assert.AreEqual("Cambria", theme.MajorFonts.Latin);
-            Assert.AreEqual("Calibri", theme.MinorFonts.Latin);
-
-            // Change some values to make a custom theme
-            theme.MinorFonts.Latin = "Bodoni MT";
-            theme.MajorFonts.Latin = "Tahoma";
-            theme.Colors.Accent1 = Color.Cyan;
-            theme.Colors.Accent2 = Color.Yellow;
-
-            // Save the document to use our theme
-            doc.Save(ArtifactsDir + "Document.Theme.docx");
             //ExEnd
         }
 
@@ -3594,22 +3486,40 @@ namespace ApiExamples
         }
 
         [Test]
-        public void WordML2003SaveOptions()
+        public void Subdocument()
         {
             //ExStart
-            //ExFor:WordML2003SaveOptions
-            //ExFor:WordML2003SaveOptions.SaveFormat
-            //ExSummary:Shows how to save to a .wml document while applying save options.
-            Document doc = new Document(MyDir + "Document.doc");
+            //ExFor:SubDocument
+            //ExFor:SubDocument.NodeType
+            //ExSummary:Shows how to access a master document's subdocument.
+            Document doc = new Document(MyDir + "SubDocumentMaster.docx");
 
-            WordML2003SaveOptions options = new WordML2003SaveOptions()
-            {
-                SaveFormat = SaveFormat.WordML,
-                MemoryOptimization = true
-            };
+            NodeCollection subDocuments = doc.GetChildNodes(NodeType.SubDocument, true);
+            Assert.AreEqual(1, subDocuments.Count);
 
-            doc.Save(ArtifactsDir + "Document.WordML2003SaveOptions.wml", options);
+            SubDocument subDocument = (SubDocument)doc.GetChildNodes(NodeType.SubDocument, true)[0];
+            Assert.False(subDocument.IsComposite);
             //ExEnd
+        }
+
+        [Test]
+        public void EpubCover()
+        {
+            // Create a blank document and insert some text
+            Document doc = new Document();
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
+
+            // When saving to .epub, some Microsoft Word document properties can be converted to .epub metadata
+            doc.BuiltInDocumentProperties.Author = "John Doe";
+            doc.BuiltInDocumentProperties.Title = "My Book Title";
+
+            // The thumbnail we specify here can become the cover image
+            byte[] image = System.IO.File.ReadAllBytes(ImageDir + "Watermark.png");
+            doc.BuiltInDocumentProperties.Thumbnail = image;
+
+            doc.Save(ArtifactsDir + "EpubCover.epub");
         }
     }
 }
