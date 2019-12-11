@@ -79,7 +79,7 @@ namespace ApiExamples
             doc.AppendChild(doc.ImportNode(customBlock.FirstSection, true));
 
             // Or we can find it in Microsoft Word's Building Blocks Organizer and place it manually
-            doc.Save(ArtifactsDir + "BuildingBlocks.BuildingBlock.dotx");
+            doc.Save(ArtifactsDir + "BuildingBlocks.BuildingBlockFields.dotx");
         }
 
         /// <summary>
