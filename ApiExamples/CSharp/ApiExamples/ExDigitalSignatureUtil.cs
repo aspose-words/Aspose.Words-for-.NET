@@ -25,14 +25,14 @@ namespace ApiExamples
             //ExSummary:Shows how to remove every signature from a document.
             // Remove all signatures from the document using string parameters
             Document doc = new Document(MyDir + "Document.DigitalSignature.docx");
-            string outFileName = ArtifactsDir + "Document.NoSignatures.FromString.docx";
+            string outFileName = ArtifactsDir + "DigitalSignatureUtil.RemoveAllSignatures.FromString.docx";
 
             DigitalSignatureUtil.RemoveAllSignatures(doc.OriginalFileName, outFileName);
 
             // Remove all signatures from the document using stream parameters
             using (Stream streamIn = new FileStream(MyDir + "Document.DigitalSignature.docx", FileMode.Open))
             {
-                using (Stream streamOut = new FileStream(ArtifactsDir + "Document.NoSignatures.FromStream.docx", FileMode.Create))
+                using (Stream streamOut = new FileStream(ArtifactsDir + "DigitalSignatureUtil.RemoveAllSignatures.FromStream.docx", FileMode.Create))
                 {
                     DigitalSignatureUtil.RemoveAllSignatures(streamIn, streamOut);
                 } 
@@ -76,7 +76,7 @@ namespace ApiExamples
 
             using (Stream streamIn = new FileStream(MyDir + "Document.DigitalSignature.docx", FileMode.Open))
             {
-                using (Stream streamOut = new FileStream(ArtifactsDir + "Document.DigitalSignature.docx", FileMode.OpenOrCreate))
+                using (Stream streamOut = new FileStream(ArtifactsDir + "DigitalSignatureUtil.SignDocument.docx", FileMode.OpenOrCreate))
                 {
                     DigitalSignatureUtil.Sign(streamIn, streamOut, certificateHolder, signOptions);
                 }
@@ -91,7 +91,7 @@ namespace ApiExamples
             CertificateHolder ch = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
             Document doc = new Document(MyDir + "TestRepeatingSection.docx");
-            string outputFileName = ArtifactsDir + "TestRepeatingSection.Signed.doc";
+            string outputFileName = ArtifactsDir + "DigitalSignatureUtil.SignDocumentObfuscationBug.doc";
 
             SignOptions signOptions = new SignOptions { Comments = "Comment", SignTime = DateTime.Now };
 
@@ -100,12 +100,12 @@ namespace ApiExamples
 
         [Test]
         [Description("WORDSNET-16868")]
-        public void IncorrectPasswordForDecrypring()
+        public void IncorrectDecryptionPassword()
         {
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
             Document doc = new Document(MyDir + "Document.Encrypted.docx", new LoadOptions("docPassword"));
-            string outputFileName = ArtifactsDir + "Document.Encrypted.docx";
+            string outputFileName = ArtifactsDir + "DigitalSignatureUtil.IncorrectDecryptionPassword.docx";
 
             SignOptions signOptions = new SignOptions
             {
@@ -122,7 +122,7 @@ namespace ApiExamples
 
         [Test]
         [Description("WORDSNET-16868")]
-        public void SignDocumentWithDecryptionPassword()
+        public void DecryptionPassword()
         {
             //ExStart
             //ExFor:CertificateHolder
@@ -141,7 +141,7 @@ namespace ApiExamples
 
             // Digitally sign encrypted with "docPassword" document in the specified path.
             string inputFileName = MyDir + "Document.Encrypted.docx";
-            string outputFileName = ArtifactsDir + "Document.Encrypted.docx";
+            string outputFileName = ArtifactsDir + "DigitalSignatureUtil.DecryptionPassword.docx";
 
             DigitalSignatureUtil.Sign(inputFileName, outputFileName, certificateHolder, signOptions);
             //ExEnd
@@ -178,7 +178,7 @@ namespace ApiExamples
         public void NoCertificateForSign()
         {
             Document doc = new Document(MyDir + "Document.DigitalSignature.docx");
-            string outputFileName = ArtifactsDir + "Document.DigitalSignature.docx";
+            string outputFileName = ArtifactsDir + "DigitalSignatureUtil.NoCertificateForSign.docx";
 
             SignOptions signOptions = new SignOptions
             {
