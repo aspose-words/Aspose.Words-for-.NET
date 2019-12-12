@@ -2394,9 +2394,9 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:FindReplaceOptions.UseLegacyOrder
-        //ExSummary:
-        [TestCase(true)]
-        [TestCase(false)]
+        //ExSummary:Shows how to include text box analyzing, during replacing text.
+        [TestCase(true)] //ExSkip
+        [TestCase(false)] //ExSkip
         public void UseLegacyOrder(bool isUseLegacyOrder)
         {
             Document doc = new Document(MyDir + "Document.UseLegacyOrder.doc");
@@ -2405,6 +2405,7 @@ namespace ApiExamples
             
             FindReplaceOptions options = new FindReplaceOptions();
             options.ReplacingCallback = callback;
+            // Use this option if want to search text sequentially from top to bottom considering the text boxes
             options.UseLegacyOrder = isUseLegacyOrder;
  
             doc.Range.Replace(new Regex(@"\[(.*?)\]"), "", options);
