@@ -16,49 +16,44 @@ namespace ApiExamples
     public class ExDigitalSignatureUtil : ApiExampleBase
     {
         [Test]
-        public void RemoveAllSignatures()
+        public void LoadAndRemove()
         {
             //ExStart
             //ExFor:DigitalSignatureUtil
+            //ExFor:DigitalSignatureUtil.LoadSignatures(String)
+            //ExFor:DigitalSignatureUtil.LoadSignatures(Stream)
             //ExFor:DigitalSignatureUtil.RemoveAllSignatures(Stream, Stream)
             //ExFor:DigitalSignatureUtil.RemoveAllSignatures(String, String)
-            //ExSummary:Shows how to remove every signature from a document.
+            //ExSummary:Shows how to load and remove digital signatures from a document.
             // Remove all signatures from the document using string parameters
-            Document doc = new Document(MyDir + "Document.DigitalSignature.docx");
-            string outFileName = ArtifactsDir + "DigitalSignatureUtil.RemoveAllSignatures.FromString.docx";
+            string inFilename = MyDir + "Document.DigitalSignature.docx";
 
-            DigitalSignatureUtil.RemoveAllSignatures(doc.OriginalFileName, outFileName);
+            // Load digital signatures via filename string to verify that the document is signed
+            DigitalSignatureCollection digitalSignatures = DigitalSignatureUtil.LoadSignatures(inFilename);
+            Assert.AreEqual(1, digitalSignatures.Count);
+
+            // Re-save the document to an output filename with all digital signatures removed
+            DigitalSignatureUtil.RemoveAllSignatures(inFilename, ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromString.docx");
 
             // Remove all signatures from the document using stream parameters
             using (Stream streamIn = new FileStream(MyDir + "Document.DigitalSignature.docx", FileMode.Open))
             {
-                using (Stream streamOut = new FileStream(ArtifactsDir + "DigitalSignatureUtil.RemoveAllSignatures.FromStream.docx", FileMode.Create))
+                using (Stream streamOut = new FileStream(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx", FileMode.Create))
                 {
                     DigitalSignatureUtil.RemoveAllSignatures(streamIn, streamOut);
                 } 
             }
+
+            // We can also load a document's digital signatures via stream, which we will do to verify that all signatures have been removed
+            using (Stream stream = new FileStream(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx", FileMode.Open))
+            {
+                digitalSignatures = DigitalSignatureUtil.LoadSignatures(stream);
+            }
+
+            Assert.AreEqual(0, digitalSignatures.Count);
             //ExEnd
         }
-
-        [Test]
-        public void LoadSignatures()
-        {
-            //ExStart
-            //ExFor:DigitalSignatureUtil.LoadSignatures(Stream)
-            //ExFor:DigitalSignatureUtil.LoadSignatures(String)
-            //ExSummary:Shows how to load all existing signatures from a document.
-            // Load all signatures from the document using string parameters
-            DigitalSignatureCollection digitalSignatures = DigitalSignatureUtil.LoadSignatures(MyDir + "Document.DigitalSignature.docx");
-            Assert.NotNull(digitalSignatures);
-            
-            // Load all signatures from the document using stream parameters
-            Stream stream = new FileStream(MyDir + "Document.DigitalSignature.docx", FileMode.Open);
-            digitalSignatures = DigitalSignatureUtil.LoadSignatures(stream);
-            //ExEnd
-
-            stream.Close();
-        }
-
+        
         [Test]
         [Description("WORDSNET-16868")]
         public void SignDocument()
