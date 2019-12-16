@@ -123,7 +123,7 @@ namespace ApiExamples
         public void OpenAndSaveToFile()
         {
             Document doc = new Document(MyDir + "Document.doc");
-            doc.Save(ArtifactsDir + "Document.html");
+            doc.Save(ArtifactsDir + "Document.OpenAndSaveToFile.html");
         }
 
         [Test]
@@ -211,7 +211,7 @@ namespace ApiExamples
                     Document doc = new Document(byteStream);
 
                     // Convert the document to any format supported by Aspose.Words.
-                    doc.Save(ArtifactsDir + "Document.OpenFromWeb.docx");
+                    doc.Save(ArtifactsDir + "Document.OpenDocumentFromWeb.docx");
                 }
             }
             //ExEnd
@@ -248,7 +248,7 @@ namespace ApiExamples
 
                 // Save the document to disk.
                 // The extension of the filename can be changed to save the document into other formats. e.g PDF, DOCX, ODT, RTF.
-                doc.Save(ArtifactsDir + "Document.HtmlPageFromWebpage.doc");
+                doc.Save(ArtifactsDir + "Document.InsertHtmlFromWebPage.doc");
             }
             //ExEnd
         }
@@ -269,7 +269,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void LoadFormatForOldDocuments()
+        public void OldLoadFormat()
         {
             //ExStart
             //ExFor:LoadFormat
@@ -277,31 +277,37 @@ namespace ApiExamples
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.LoadFormat = Aspose.Words.LoadFormat.DocPreWord60;
 
-            Document doc = new Document(MyDir + "Document.PreWord60.doc", loadOptions);
+            Document doc = new Document(MyDir + "Document.OldLoadFormat.doc", loadOptions);
             //ExEnd
         }
 
         [Test]
-        public void LoadEncryptedFromFile()
-        {
-            //ExStart
-            //ExFor:Document.#ctor(String,LoadOptions)
-            //ExFor:LoadOptions
-            //ExFor:LoadOptions.#ctor(String)
-            //ExSummary:Loads a Microsoft Word document encrypted with a password.
-            Document doc = new Document(MyDir + "Document.LoadEncrypted.doc", new LoadOptions("qwerty"));
-            //ExEnd
-        }
-
-        [Test]
-        public void LoadEncryptedFromStream()
+        public void LoadEncrypted()
         {
             //ExStart
             //ExFor:Document.#ctor(Stream,LoadOptions)
-            //ExSummary:Loads a Microsoft Word document encrypted with a password from a stream.
+            //ExFor:Document.#ctor(String,LoadOptions)
+            //ExFor:LoadOptions
+            //ExFor:LoadOptions.#ctor(String)
+            //ExSummary:Shows how to load a Microsoft Word document encrypted with a password.
+            Document doc;
+
+            // Trying to open a password-encrypted document the normal way will cause an exception to be thrown
+            Assert.Throws<IncorrectPasswordException>(() =>
+            {
+                doc = new Document(MyDir + "Document.LoadEncrypted.doc");
+            });
+
+            // To open it and access its contents, we need to open it using the correct password
+            // The password is delivered via a LoadOptions object, after being passed to it's constructor
+            LoadOptions options = new LoadOptions("qwerty");
+
+            // We can now open the document either by filename or stream
+            doc = new Document(MyDir + "Document.LoadEncrypted.doc", options);
+
             using (Stream stream = File.OpenRead(MyDir + "Document.LoadEncrypted.doc"))
             {
-                Document doc = new Document(stream, new LoadOptions("qwerty"));
+                doc = new Document(stream, options);
             }
             //ExEnd
         }
