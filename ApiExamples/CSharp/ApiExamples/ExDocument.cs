@@ -277,7 +277,7 @@ namespace ApiExamples
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.LoadFormat = Aspose.Words.LoadFormat.DocPreWord60;
 
-            Document doc = new Document(MyDir + "Document.OldLoadFormat.doc", loadOptions);
+            Document doc = new Document(MyDir + "Document.PreWord60.doc", loadOptions);
             //ExEnd
         }
 
@@ -581,11 +581,11 @@ namespace ApiExamples
             // Open an existing document from disk.
             Document doc = new Document(MyDir + "Document.EpubConversion.doc");
             // Save the document in EPUB format.
-            doc.Save(ArtifactsDir + "Document.EpubConversion.epub");
+            doc.Save(ArtifactsDir + "Document.Doc2EpubSave.epub");
         }
 
         [Test]
-        public void Doc2EpubSaveWithOptions()
+        public void Doc2EpubSaveOptions()
         {
             //ExStart
             //ExFor:HtmlSaveOptions
@@ -619,7 +619,7 @@ namespace ApiExamples
             saveOptions.SaveFormat = SaveFormat.Epub;
 
             // Export the document as an EPUB file.
-            doc.Save(ArtifactsDir + "Document.EpubConversion.epub", saveOptions);
+            doc.Save(ArtifactsDir + "Document.Doc2EpubSaveOptions.epub", saveOptions);
             //ExEnd
         }
 
@@ -651,7 +651,7 @@ namespace ApiExamples
             // This value will prevent the second image in the input document from being downsampled
             options.DownsampleOptions.ResolutionThreshold = 128;
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.pdf", options);
+            doc.Save(ArtifactsDir + "Document.DownsampleOptions.pdf", options);
             //ExEnd
         }
 
@@ -668,7 +668,7 @@ namespace ApiExamples
             // If this is setting is false (by default) then the HTML tags will be exported in condensed form with no indentation.
             htmlOptions.PrettyFormat = true;
 
-            doc.Save(ArtifactsDir + "Document.PrettyFormat.html", htmlOptions);
+            doc.Save(ArtifactsDir + "Document.SaveHtmlPrettyFormat.html", htmlOptions);
             //ExEnd
         }
 
@@ -696,11 +696,11 @@ namespace ApiExamples
             options.ExportTextInputFormFieldAsText = true;
             options.ImagesFolder = imagesDir;
 
-            doc.Save(ArtifactsDir + "Document.SaveWithOptions.html", options);
+            doc.Save(ArtifactsDir + "Document.SaveHtmlWithOptions.html", options);
             //ExEnd
 
             // Verify the images were saved to the correct location.
-            Assert.IsTrue(File.Exists(ArtifactsDir + "Document.SaveWithOptions.html"));
+            Assert.IsTrue(File.Exists(ArtifactsDir + "Document.SaveHtmlWithOptions.html"));
             Assert.AreEqual(9, Directory.GetFiles(imagesDir).Length);
 
             Directory.Delete(imagesDir, true);
@@ -735,7 +735,7 @@ namespace ApiExamples
             // Create and pass the object which implements the handler methods
             options.FontSavingCallback = new HandleFontSaving();
 
-            doc.Save(ArtifactsDir + "Document.SaveWithFontsExport.html", options);
+            doc.Save(ArtifactsDir + "Document.SaveHtmlExportFonts.html", options);
         }
 
         /// <summary>
@@ -778,7 +778,7 @@ namespace ApiExamples
         //ExFor:DocumentBase.NodeChangingCallback
         //ExSummary:Shows how to implement custom logic over node insertion in the document by changing the font of inserted HTML content.
         [Test] //ExSkip
-        public void TestNodeChangingInDocument()
+        public void FontChangeViaCallback()
         {
             // Create a blank document object
             Document doc = new Document();
@@ -790,7 +790,7 @@ namespace ApiExamples
             // Insert sample HTML content
             builder.InsertHtml("<p>Hello World</p>");
 
-            doc.Save(ArtifactsDir + "Document.FontChanger.doc");
+            doc.Save(ArtifactsDir + "Document.FontChangeViaCallback.doc");
 
             // Check that the inserted content has the correct formatting
             Run run = (Run) doc.GetChild(NodeType.Run, 0, true);
@@ -1053,7 +1053,7 @@ namespace ApiExamples
         [Test]
         public void AppendAllDocumentsInFolder()
         {
-            String path = ArtifactsDir + "Document.AppendDocumentsFromFolder.doc";
+            String path = ArtifactsDir + "Document.AppendAllDocumentsInFolder.doc";
 
             // Delete the file that was created by the previous run as I don't want to append it again.
             if (File.Exists(path))
@@ -1117,7 +1117,7 @@ namespace ApiExamples
             // This is for illustration purposes only, see how many runs are left after joining.
             int runsAfter = doc.GetChildNodes(NodeType.Run, true).Count;
 
-            Console.WriteLine("Number of runs before:{0}, after:{1}, joined:{2}", runsBefore, runsAfter, joinCount);
+            Console.WriteLine("Number of runs before: {0}, after: {1}, joins: {2}", runsBefore, runsAfter, joinCount);
 
             // Save the optimized document to disk.
             doc.Save(ArtifactsDir + "Document.JoinRunsWithSameFormatting.html");
@@ -1409,9 +1409,9 @@ namespace ApiExamples
             // should have been applied from the table style.
             double cellShadingAfter = table.FirstRow.RowFormat.Height;
             Console.WriteLine("Cell shading after style expansion: " + cellShadingAfter);
-            //ExEnd
 
-            doc.Save(ArtifactsDir + "Table.ExpandTableStyleFormatting.docx");
+            doc.Save(ArtifactsDir + "Document.TableStyleToDirectFormatting.docx");
+            //ExEnd
 
             Assert.AreEqual(0.0d, cellShadingBefore);
             Assert.AreEqual(0.0d, cellShadingAfter);
@@ -1469,7 +1469,7 @@ namespace ApiExamples
 
         [Test]
         [Description("WORDSNET-16099")]
-        public void SetFootnoteNumberOfColumns()
+        public void FootnoteColumns()
         {
             //ExStart
             //ExFor:FootnoteOptions
@@ -1482,11 +1482,11 @@ namespace ApiExamples
             // Lets change number of columns for footnotes on page. If columns value is 0 than footnotes area
             // is formatted with a number of columns based on the number of columns on the displayed page
             doc.FootnoteOptions.Columns = 2;
-            doc.Save(ArtifactsDir + "Document.FootnoteOptions.docx");
+            doc.Save(ArtifactsDir + "Document.FootnoteColumns.docx");
             //ExEnd
 
             //Assert that number of columns gets correct
-            doc = new Document(ArtifactsDir + "Document.FootnoteOptions.docx");
+            doc = new Document(ArtifactsDir + "Document.FootnoteColumns.docx");
             Assert.AreEqual(2, doc.FirstSection.PageSetup.FootnoteOptions.Columns);
         }
 
@@ -1591,7 +1591,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CompareDocuments()
+        public void Compare()
         {
             //ExStart
             //ExFor:Document.Compare(Document, String, DateTime)
@@ -1617,7 +1617,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CompareDocumentsWithCompareOptions()
+        public void CompareOptions()
         {
             //ExStart
             //ExFor:CompareOptions
@@ -1657,7 +1657,7 @@ namespace ApiExamples
 
         [Test]
         [Description("Result of this test is normal behavior MS Word. The bullet is missing for the 3rd list item")]
-        public void UseCurrentDocumentFormattingWhenCompareDocuments()
+        public void UseCurrentDocumentFormatting()
         {
             Document doc1 = new Document(MyDir + "Document.CompareOptions.1.docx");
             Document doc2 = new Document(MyDir + "Document.CompareOptions.2.docx");
@@ -1756,7 +1756,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ShowRevisionBalloonsInPdf()
+        public void ShowRevisionBalloons()
         {
             //ExStart
             //ExFor:RevisionOptions.ShowInBalloons
@@ -1785,7 +1785,7 @@ namespace ApiExamples
 
             // Revisions will now show up as normal text in the output document.
             doc.AcceptAllRevisions();
-            doc.Save(ArtifactsDir + "Document.AcceptedRevisions.doc");
+            doc.Save(ArtifactsDir + "Document.AcceptAllRevisions.doc");
             //ExEnd
         }
 
@@ -1900,7 +1900,7 @@ namespace ApiExamples
             // Each paragraph has this flag that can be set to suppress hyphenation
             Assert.False(builder.ParagraphFormat.SuppressAutoHyphens);
 
-            doc.Save(ArtifactsDir + "HyphenationOptions.docx");
+            doc.Save(ArtifactsDir + "Document.HyphenationOptions.docx");
             //ExEnd
 
             Assert.AreEqual(true, doc.HyphenationOptions.AutoHyphenation);
@@ -1908,7 +1908,7 @@ namespace ApiExamples
             Assert.AreEqual(720, doc.HyphenationOptions.HyphenationZone);
             Assert.AreEqual(true, doc.HyphenationOptions.HyphenateCaps);
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "HyphenationOptions.docx",
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "Document.HyphenationOptions.docx",
                 GoldsDir + "Document.HyphenationOptions Gold.docx"));
         }
 
@@ -2024,7 +2024,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SaveWithOptions()
+        public void ImageSaveOptions()
         {
             //ExStart
             //ExFor:Document.Save(Stream, String, Saving.SaveOptions)
@@ -2040,11 +2040,12 @@ namespace ApiExamples
             SaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
             Assert.AreEqual(false, options.UseAntiAliasing);
 
-            doc.Save(ArtifactsDir + "Document.SaveOptionsDefault.jpg", options);
+            doc.Save(ArtifactsDir + "Document.ImageSaveOptions.Default.jpg", options);
 
             options.UseAntiAliasing = true;
             options.UseHighQualityRendering = true;
-            doc.Save(ArtifactsDir + "Document.SaveOptionsHighQuality.jpg", options);
+
+            doc.Save(ArtifactsDir + "Document.ImageSaveOptions.HighQuality.jpg", options);
             //ExEnd
         }
 
@@ -2266,10 +2267,10 @@ namespace ApiExamples
         }
 
         [Test]
-        public void AutoUpdateStyles()
+        public void AutomaticallyUpdateStyles()
         {
             //ExStart
-            //ExFor:Document.AutomaticallyUpdateSyles
+            //ExFor:Document.AutomaticallyUpdateStyles
             //ExSummary:Shows how to update a document's styles based on its template.
             Document doc = new Document();
 
@@ -2287,7 +2288,7 @@ namespace ApiExamples
             // Any changes to the styles in this template will be propagated to those styles in the document
             doc.AutomaticallyUpdateSyles = true;
 
-            doc.Save(ArtifactsDir + "Document.TemplateStylesUpdating.docx");
+            doc.Save(ArtifactsDir + "Document.AutomaticallyUpdateStyles.docx");
             //ExEnd
         }
 
@@ -2335,7 +2336,7 @@ namespace ApiExamples
 
             // This example covers only a small portion of all the compatibility attributes 
             // To see the entire list, in any of the output files go into File > Options > Advanced > Compatibility for...
-            doc.Save(ArtifactsDir + "DefaultCompatibility.docx");
+            doc.Save(ArtifactsDir + "Document.CompatibilityOptions.docx");
 
             // We can hand pick any value and change it to create a custom compatibility
             // We can also change a bunch of values at once to suit a defined compatibility scheme with the OptimizeFor method
@@ -2350,7 +2351,7 @@ namespace ApiExamples
             Assert.AreEqual(false, co.UseWord2002TableStyleRules);
             Assert.AreEqual(true, co.UseWord2010TableStyleRules);
 
-            doc.Save(ArtifactsDir + "Optimised for Word 2010.docx");
+            doc.Save(ArtifactsDir + "Document.CompatibilityOptions.Word2010.docx");
 
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
 
@@ -2362,7 +2363,7 @@ namespace ApiExamples
             Assert.AreEqual(true, co.UseWord2002TableStyleRules);
             Assert.AreEqual(false, co.UseWord2010TableStyleRules);
 
-            doc.Save(ArtifactsDir + "Optimised for Word 2000.docx");
+            doc.Save(ArtifactsDir + "Document.CompatibilityOptions.Word2000.docx");
             //ExEnd
         }
 
@@ -2393,7 +2394,7 @@ namespace ApiExamples
             Assert.AreEqual(doc.FirstSection, doc.Sections[0]);
             Assert.AreEqual(doc.LastSection, doc.Sections[1]);
 
-            doc.Save(ArtifactsDir + "HeaderFooter.ReplaceText.doc");
+            doc.Save(ArtifactsDir + "Document.Sections.doc");
             //ExEnd
         }
 
@@ -2454,7 +2455,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocLayoutOptions()
+        public void LayoutOptions()
         {
             //ExStart
             //ExFor:Document.LayoutOptions
@@ -2496,7 +2497,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocMailMergeSettings()
+        public void MailMergeSettings()
         {
             //ExStart
             //ExFor:Document.MailMergeSettings
@@ -2539,14 +2540,16 @@ namespace ApiExamples
             // The delimiter character is selected in the ODSO settings of mail merge settings
             string[] lines = { "FirstName|LastName|Message",
                 "John|Doe|Hello! This message was created with Aspose Words mail merge." };
-            File.WriteAllLines(ArtifactsDir + "Document.Lines.txt", lines);
+            string dataSrcFilename = ArtifactsDir + "Document.MailMergeSettings.DataSource.txt";
+
+            File.WriteAllLines(dataSrcFilename, lines);
 
             // Set the data source, query and other things
             MailMergeSettings settings = doc.MailMergeSettings;
             settings.MainDocumentType = MailMergeMainDocumentType.MailingLabels;
             settings.CheckErrors = MailMergeCheckErrors.Simulate;
             settings.DataType = MailMergeDataType.Native;
-            settings.DataSource = ArtifactsDir + "Document.Lines.txt";
+            settings.DataSource = dataSrcFilename;
             settings.Query = "SELECT * FROM " + doc.MailMergeSettings.DataSource;
             settings.LinkToQuery = true;
             settings.ViewMergedData = true;
@@ -2556,7 +2559,7 @@ namespace ApiExamples
 
             // Office Data Source Object settings
             Odso odso = settings.Odso;
-            odso.DataSource = ArtifactsDir + "Document.Lines.txt";
+            odso.DataSource = dataSrcFilename;
             odso.DataSourceType = OdsoDataSourceType.Text;
             odso.ColumnDelimiter = '|';
             odso.FirstRowContainsColumnNames = true;
@@ -2827,7 +2830,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocShadeFormData()
+        public void ShadeFormData()
         {
             //ExStart
             //ExFor:Document.ShadeFormData
@@ -2841,19 +2844,16 @@ namespace ApiExamples
             builder.Write("Text before bookmark. ");
 
             builder.InsertTextInput("My bookmark", TextFormFieldType.Regular, "",
-                "If gray shading is turned on, this is the text that will have a gray background.", 0);
+                "If gray form field shading is turned on, this is the text that will have a gray background.", 0);
 
-            // Our bookmarked text will appear gray here
-            doc.Save(ArtifactsDir + "Document.ShadeFormDataTrue.docx");
-
-            // In this file, shading will be turned off and the bookmarked text will blend in with the other text
+            // We can turn the grey shading off so the bookmarked text will blend in with the other text
             doc.ShadeFormData = false;
-            doc.Save(ArtifactsDir + "Document.ShadeFormDataFalse.docx");
+            doc.Save(ArtifactsDir + "Document.ShadeFormData.docx");
             //ExEnd
         }
 
         [Test]
-        public void DocVersionsCount()
+        public void VersionsCount()
         {
             //ExStart
             //ExFor:Document.VersionsCount
@@ -2870,8 +2870,8 @@ namespace ApiExamples
             // We can use this property to see how many there are
             Assert.AreEqual(4, doc.VersionsCount);
 
-            doc.Save(ArtifactsDir + "Document.Versions.docx");      
-            doc = new Document(ArtifactsDir + "Document.Versions.docx");
+            doc.Save(ArtifactsDir + "Document.VersionsCount.docx");      
+            doc = new Document(ArtifactsDir + "Document.VersionsCount.docx");
 
             // If we save and open the document, the versions are lost
             Assert.AreEqual(0, doc.VersionsCount);
@@ -2879,7 +2879,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocWriteProtection()
+        public void WriteProtection()
         {
             //ExStart
             //ExFor:Document.WriteProtection
@@ -2912,11 +2912,9 @@ namespace ApiExamples
             docProtectedBuilder.MoveToDocumentEnd();
 
             // We can programmatically edit this document without using our password
+            // However, if we wish to edit it in Microsoft Word, we will need the password to open it
             Assert.IsTrue(docProtected.WriteProtection.IsWriteProtected);
             docProtectedBuilder.Writeln("Writing text in a protected document.");
-
-            // We will still need the password if we want to open this one with Word
-            docProtected.Save(ArtifactsDir + "Document.WriteProtectionEditedAfter.docx");
             //ExEnd
         }
         
@@ -3033,7 +3031,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ShowComments()
+        public void HideComments()
         {
             //ExStart
             //ExFor:LayoutOptions.ShowComments
@@ -3042,7 +3040,7 @@ namespace ApiExamples
             
             doc.LayoutOptions.ShowComments = false;
             
-            doc.Save(ArtifactsDir + "Document.DoNotShowComments.pdf");
+            doc.Save(ArtifactsDir + "Document.HideComments.pdf");
             //ExEnd
         }
 
@@ -3109,7 +3107,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CopyStylesFromTemplateViaDocument()
+        public void CopyTemplateStylesViaDocument()
         {
             //ExStart
             //ExFor:Document.CopyStylesFromTemplate(Document)
@@ -3119,12 +3117,12 @@ namespace ApiExamples
             Document target = new Document(MyDir + "Document.docx");
             target.CopyStylesFromTemplate(template);
 
-            target.Save(ArtifactsDir + "CopyStylesFromTemplateViaDocument.docx");
+            target.Save(ArtifactsDir + "Document.CopyTemplateStylesViaDocument.docx");
             //ExEnd
         }
 
         [Test]
-        public void CopyStylesFromTemplateViaString()
+        public void CopyTemplateStylesViaString()
         {
             //ExStart
             //ExFor:Document.CopyStylesFromTemplate(String)
@@ -3134,7 +3132,7 @@ namespace ApiExamples
             Document target = new Document(MyDir + "Document.docx");
             target.CopyStylesFromTemplate(templatePath);
 
-            target.Save(ArtifactsDir + "CopyStylesFromTemplateViaString.docx");
+            target.Save(ArtifactsDir + "Document.CopyTemplateStylesViaString.docx");
             //ExEnd
         }
 
@@ -3525,7 +3523,7 @@ namespace ApiExamples
             byte[] image = System.IO.File.ReadAllBytes(ImageDir + "Watermark.png");
             doc.BuiltInDocumentProperties.Thumbnail = image;
 
-            doc.Save(ArtifactsDir + "EpubCover.epub");
+            doc.Save(ArtifactsDir + "Document.EpubCover.epub");
         }
     }
 }

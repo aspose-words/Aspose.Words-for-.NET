@@ -140,7 +140,7 @@ namespace ApiExamples
             // Microsoft Word does not support images in background shapes, so even though we set the background as an image,
             // the output will show a light blue background like before
             // However, we can see our watermark in an output pdf
-            doc.Save(ArtifactsDir + "DocumentBase.BackgroundShapeWatermark.pdf");
+            doc.Save(ArtifactsDir + "DocumentBase.BackgroundShape.pdf");
             //ExEnd
         }
 

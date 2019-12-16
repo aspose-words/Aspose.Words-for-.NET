@@ -94,7 +94,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertMergeField()
+        public void MergeFields()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertField(String)
@@ -235,17 +235,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentBuilderAndSave()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.Writeln("Hello World!");
-
-            doc.Save(ArtifactsDir + "DocumentBuilderAndSave.docx");
-        }
-
-        [Test]
         public void InsertHyperlink()
         {
             //ExStart
@@ -382,7 +371,7 @@ namespace ApiExamples
                 shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
             }
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertWatermark.NetStandard2.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertWatermarkNetStandard2.doc");
             //ExEnd
         }
 #endif
@@ -407,7 +396,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertHtmlWithCurrentDocumentFormatting()
+        public void InsertHtmlWithFormatting()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertHtml(String, Boolean)
@@ -419,12 +408,12 @@ namespace ApiExamples
                 "<P align='right'>Paragraph right</P>" + "<b>Implicit paragraph left</b>" +
                 "<div align='center'>Div center</div>" + "<h1 align='left'>Heading 1 left.</h1>", true);
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertHtml.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertHtmlWithFormatting.doc");
             //ExEnd
         }
 
         [Test]
-        public void InsertMathMl()
+        public void MathML()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertHtml(String)
@@ -438,10 +427,10 @@ namespace ApiExamples
             builder.InsertHtml(mathMl);
             //ExEnd
 
-            doc.Save(ArtifactsDir + "MathML.docx");
-            doc.Save(ArtifactsDir + "MathML.pdf");
+            doc.Save(ArtifactsDir + "DocumentBuilder.MathML.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.MathML.pdf");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(GoldsDir + "MathML Gold.docx", ArtifactsDir + "MathML.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(GoldsDir + "DocumentBuilder.MathML Gold.docx", ArtifactsDir + "DocumentBuilder.MathML.docx"));
         }
 
         [Test]
@@ -697,6 +686,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder
+            //ExFor:DocumentBuilder.Write
             //ExFor:DocumentBuilder.StartTable
             //ExFor:DocumentBuilder.InsertCell
             //ExFor:DocumentBuilder.EndRow
@@ -780,7 +770,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertTableWithTableStyle()
+        public void InsertTableWithStyle()
         {
             //ExStart
             //ExFor:Table.StyleIdentifier
@@ -828,7 +818,7 @@ namespace ApiExamples
             builder.Writeln("50");
             builder.EndRow();
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.SetTableStyle.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertTableWithStyle.docx");
             //ExEnd
 
             // Verify that the style was set by expanding to direct formatting.
@@ -877,7 +867,7 @@ namespace ApiExamples
                 builder.EndRow();
             }
 
-            doc.Save(ArtifactsDir + "Table.HeadingRow.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertTableSetHeadingRow.doc");
             //ExEnd
 
             Assert.True(table.FirstRow.RowFormat.HeadingFormat);
@@ -910,7 +900,7 @@ namespace ApiExamples
             builder.InsertCell();
             builder.Writeln("Cell #3");
 
-            doc.Save(ArtifactsDir + "Table.PreferredWidth.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertTableWithPreferredWidth.doc");
             //ExEnd
 
             // Verify the correct settings were applied.
@@ -919,7 +909,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertCellsWithDifferentPreferredCellWidths()
+        public void InsertCellsWithPreferredWidths()
         {
             //ExStart
             //ExFor:CellFormat.PreferredWidth
@@ -967,7 +957,7 @@ namespace ApiExamples
                 "Cell automatically sized. The size of this cell is calculated from the table preferred width.");
             builder.Writeln("In this case the cell will fill up the rest of the available space.");
 
-            doc.Save(ArtifactsDir + "Table.CellPreferredWidths.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertCellsWithPreferredWidths.docx");
             //ExEnd
 
             // Verify the correct settings were applied.
@@ -996,7 +986,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void BuildNestedTableUsingDocumentBuilder()
+        public void InsertNestedTable()
         {
             //ExStart
             //ExFor:Cell.FirstParagraph
@@ -1036,51 +1026,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void BuildSimpleTable()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder
-            //ExFor:DocumentBuilder.Write
-            //ExFor:DocumentBuilder.InsertCell
-            //ExSummary:Shows how to create a simple table using DocumentBuilder with default formatting.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // We call this method to start building the table.
-            builder.StartTable();
-            builder.InsertCell();
-            builder.Write("Row 1, Cell 1 Content.");
-
-            // Build the second cell
-            builder.InsertCell();
-            builder.Write("Row 1, Cell 2 Content.");
-            // Call the following method to end the row and start a new row.
-            builder.EndRow();
-
-            // Build the first cell of the second row.
-            builder.InsertCell();
-            builder.Write("Row 2, Cell 1 Content");
-
-            // Build the second cell.
-            builder.InsertCell();
-            builder.Write("Row 2, Cell 2 Content.");
-            builder.EndRow();
-
-            // Signal that we have finished building the table.
-            builder.EndTable();
-
-            // Save the document to disk.
-            doc.Save(ArtifactsDir + "DocumentBuilder.CreateSimpleTable.doc");
-            //ExEnd
-
-            // Verify that the cell count of the table is four.
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
-            Assert.IsNotNull(table);
-            Assert.AreEqual(4, table.GetChildNodes(NodeType.Cell, true).Count);
-        }
-
-        [Test]
-        public void BuildFormattedTable()
+        public void CreateFormattedTable()
         {
             //ExStart
             //ExFor:DocumentBuilder
@@ -1176,7 +1122,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetCellShadingAndBorders()
+        public void TableBordersAndShading()
         {
             //ExStart
             //ExFor:Shading
@@ -1226,7 +1172,7 @@ namespace ApiExamples
             builder.CellFormat.ClearFormatting();
             builder.Writeln("Cell #4");
 
-            doc.Save(ArtifactsDir + "Table.SetBordersAndShading.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.TableBordersAndShading.doc");
             //ExEnd
 
             // Verify the table was created correctly.
@@ -1591,7 +1537,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentBuilderInsertImageSourceSize()
+        public void InsertImageOriginalSize()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertImage(String, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
@@ -1661,7 +1607,7 @@ namespace ApiExamples
 
         [Test]
         [Description("WORDSNET-16868")]
-        public void CreateAndSignSignatureLineUsingProviderId()
+        public void SignatureLineProviderId()
         {
             //ExStart
             //ExFor:SignatureLine.ProviderId
@@ -1707,7 +1653,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertSignatureLineCurrentPozition()
+        public void InsertSignatureLineCurrentPosition()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertSignatureLine(SignatureLineOptions, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, WrapType)
@@ -2109,7 +2055,7 @@ namespace ApiExamples
             //OleObject with ProgId
             builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false, representingImage);
 
-            doc.Save(ArtifactsDir + "Document.InsertedOleObject.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertedOleObject.docx");
             //ExEnd
         }
 
@@ -2133,7 +2079,7 @@ namespace ApiExamples
                     representingImage);
             }
 
-            doc.Save(ArtifactsDir + "Document.InsertedOleObject.NetStandard2.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObjectNetStandard2.docx");
             //ExEnd
         }
 #endif            
@@ -2159,7 +2105,7 @@ namespace ApiExamples
 
             builder.InsertChart(ChartType.Pie, ConvertUtil.PixelToPoint(300), ConvertUtil.PixelToPoint(300));
 
-            doc.Save(ArtifactsDir + "Document.InsertedChartDouble.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertedChartDouble.doc");
             //ExEnd
         }
 
@@ -2175,12 +2121,12 @@ namespace ApiExamples
             builder.InsertChart(ChartType.Pie, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin,
                 100, 200, 100, WrapType.Square);
 
-            doc.Save(ArtifactsDir + "Document.InsertedChartRelativePosition.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertedChartRelativePosition.doc");
             //ExEnd
         }
 
         [Test]
-        public void InsertFieldFieldType()
+        public void InsertFieldByType()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertField(FieldType, Boolean)
@@ -2191,7 +2137,7 @@ namespace ApiExamples
             builder.Write("This field was inserted/updated at ");
             builder.InsertField(FieldType.FieldTime, true);
 
-            doc.Save(ArtifactsDir + "Document.InsertedField.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertFieldByType.doc");
             //ExEnd
         }
 
@@ -2327,7 +2273,7 @@ namespace ApiExamples
 
 #if !__MOBILE__
         [Test]
-        public void InsertVideoWithHtmlCode()
+        public void InsertOnlineVideo()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], Double, Double)
@@ -2405,12 +2351,12 @@ namespace ApiExamples
 
             builder.Writeln("Underlined text.");
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.Underline.docx");         
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertUnderline.docx");         
             //ExEnd
         }
 
         [Test]
-        public void AddTextToCurrentStory()
+        public void CurrentStory()
         {
             //ExStart
             //ExFor:DocumentBuilder.CurrentStory
@@ -2452,7 +2398,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void BuilderInsertOleObject()
+        public void InsertOlePowerpoint()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertOleObject(Stream, String, Boolean, Image)
@@ -2500,12 +2446,12 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObject.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOlePowerpoint.docx");
             //ExEnd
         }
 
         [Test]
-        public void BuilderInsertStyleSeparator()
+        public void StyleSeparator()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertStyleSeparator
@@ -2575,11 +2521,11 @@ namespace ApiExamples
             builder.ParagraphFormat.StyleName = paraStyle.Name;
             builder.Write("This is text with some other formatting ");
 
-            builder.Document.Save(ArtifactsDir + "DocumentBuilder.InsertTextWithoutStyleSeparator.docx");
+            builder.Document.Save(ArtifactsDir + "DocumentBuilder.WithoutStyleSeparator.docx");
         }
 
         [Test]
-        public void ResolveStyleBehaviorWhileInsertDocument()
+        public void SmartStyleBehavior()
         {
             //ExStart
             //ExFor:ImportFormatOptions
@@ -2646,7 +2592,7 @@ namespace ApiExamples
         /// That's why we need order for them 
         /// </summary>
         [Test, Order(1), Category("SkipTearDown")]
-        public void CreateMarkdownDocumentWithEmphases()
+        public void MarkdownDocumentEmphases()
         {
             DocumentBuilder builder = new DocumentBuilder();
             
@@ -2669,7 +2615,7 @@ namespace ApiExamples
             builder.Writeln("ItalicBold");
             
             // Markdown treats asterisks (*) and underscores (_) as indicators of emphasis
-            builder.Document.Save(ArtifactsDir + "MarkdownExample.md");
+            builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocumentEmphases.md");
         }
 
         /// <summary>
@@ -2677,7 +2623,7 @@ namespace ApiExamples
         /// That's why we need order for them 
         /// </summary>
         [Test, Order(2), Category("SkipTearDown")]
-        public void AddHeadingsToMarkdownDocument()
+        public void MarkdownDocumentHeadings()
         {
             Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2732,7 +2678,7 @@ namespace ApiExamples
             builder.Font.Bold = true;
             builder.Writeln("BoldHeading 6");
             
-            doc.Save(ArtifactsDir + "MarkdownExample.md");
+            doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocumentHeadings.md");
         }
 
         /// <summary>
@@ -2740,7 +2686,7 @@ namespace ApiExamples
         /// That's why we need order for them 
         /// </summary>
         [Test, Order(3), Category("SkipTearDown")]
-        public void AddBlockquotesToMarkdownDocument()
+        public void MarkdownDocumentBlockquotes()
         {
             Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2790,7 +2736,7 @@ namespace ApiExamples
             builder.Font.Bold = true;
             builder.Writeln("ItalicBoldBlockquote 6");
             
-            doc.Save(ArtifactsDir + "MarkdownExample.md");
+            doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocumentBlockquotes.md");
         }
 
         /// <summary>
@@ -2798,7 +2744,7 @@ namespace ApiExamples
         /// That's why we need order for them 
         /// </summary>
         [Test, Order(4), Category("SkipTearDown")]
-        public void AddHeadingsAsBlockquotesToMarkdownDocument()
+        public void MarkdownDocumentHeadingsAsBlockquotes()
         {
             Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2856,7 +2802,7 @@ namespace ApiExamples
             builder.ParagraphFormat.Style = headingQuoteLevel6;
             builder.Writeln("HeadingBlockquote 6");
             
-            doc.Save(ArtifactsDir + "MarkdownExample.md");
+            doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocumentHeadingsAsBlockquotes.md");
         }
 
         /// <summary>
@@ -2864,7 +2810,7 @@ namespace ApiExamples
         /// That's why we need order for them 
         /// </summary>
         [Test, Order(5), Category("SkipTearDown")]
-        public void AddHorizontalRuleToMarkdownDocument()
+        public void MarkdownDocumentHorizontalRule()
         {
             Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2878,7 +2824,7 @@ namespace ApiExamples
             // Insert HorizontalRule that will be present in .md file as '-----'
             builder.InsertHorizontalRule();
  
-            builder.Document.Save(ArtifactsDir + "MarkdownExample.md");
+            builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocumentHorizontalRule.md");
         }
 
         /// <summary>
