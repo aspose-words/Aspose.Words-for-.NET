@@ -9,7 +9,7 @@ using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#if NETFRAMEWORK
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 #else
@@ -55,7 +55,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#if NETFRAMEWORK
         [Test]
         public void GraphicsQuality()
         {
@@ -85,6 +85,27 @@ namespace ApiExamples
             saveOptions.GraphicsQualityOptions = qualityOptions;
 
             doc.Save(ArtifactsDir + "SaveOptions.GraphicsQuality.jpeg", saveOptions);
+            //ExEnd
+        }
+
+        [Test]
+        public void WindowsMetaFile()
+        {
+            //ExStart
+            //ExFor:ImageSaveOptions.MetafileRenderingOptions
+            //ExSummary:Shows how to set the rendering mode for Windows Metafiles. 
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a DocumentBuilder to insert a .wmf image into the document
+            builder.InsertImage(Image.FromFile(ImageDir + "Hammer.wmf"));
+
+            // For documents that contain .wmf images, when converting the documents themselves to images,
+            // we can use a ImageSaveOptions object to designate a rendering method for the .wmf images
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
+            options.MetafileRenderingOptions.RenderingMode = MetafileRenderingMode.Bitmap;
+
+            doc.Save(ArtifactsDir + "ImagesSaveOptions.WindowsMetaFile.png", options);
             //ExEnd
         }
 #endif
@@ -161,28 +182,5 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ImagesSaveOptions.EditImage.png", options);
             //ExEnd
         }
-
-#if !(NETSTANDARD2_0 || __MOBILE__)
-        [Test]
-        public void WindowsMetaFile()
-        {
-            //ExStart
-            //ExFor:ImageSaveOptions.MetafileRenderingOptions
-            //ExSummary:Shows how to set the rendering mode for Windows Metafiles. 
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Use a DocumentBuilder to insert a .wmf image into the document
-            builder.InsertImage(Image.FromFile(ImageDir + "Hammer.wmf"));
-
-            // For documents that contain .wmf images, when converting the documents themselves to images,
-            // we can use a ImageSaveOptions object to designate a rendering method for the .wmf images
-            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
-            options.MetafileRenderingOptions.RenderingMode = MetafileRenderingMode.Bitmap;
-
-            doc.Save(ArtifactsDir + "ImagesSaveOptions.WindowsMetaFile.png", options);
-            //ExEnd
-        }
-#endif
     }
 }

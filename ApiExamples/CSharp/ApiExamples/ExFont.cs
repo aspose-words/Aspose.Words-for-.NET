@@ -5,7 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-#if !__MOBILE__
+#if NETFRAMEWORK || NETSTANDARD2_0
 using System;
 using System.Collections;
 using System.Drawing;

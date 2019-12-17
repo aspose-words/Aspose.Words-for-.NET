@@ -12,12 +12,10 @@ using ApiExamples.TestData.TestClasses;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#if NETFRAMEWORK
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-
 #endif
 
 namespace ApiExamples
@@ -107,7 +105,7 @@ namespace ApiExamples
             DigitalSignatureUtil.Sign(dstDocumentPath, dstDocumentPath, certificateHolder, signOptions);
         }
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
+        #if NETFRAMEWORK
         /// <summary>
         /// Converting image file to bytes array
         /// </summary>
@@ -119,7 +117,7 @@ namespace ApiExamples
                 return ms.ToArray();
             }
         }
-#endif
+        #endif
 
         /// <summary>
         /// Create test data that contains info about sing persons
@@ -128,18 +126,21 @@ namespace ApiExamples
         {
             gSignPersonList = new List<SignPersonTestClass>
             {
-#if NETSTANDARD2_0 || __MOBILE__
-                new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer", SkiaSharp.SKBitmap.Decode(ImageDir + "LogoSmall.png").Bytes),
-#else
+                #if NETFRAMEWORK
                 new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer",
                     ImageToByteArray(Image.FromFile(ImageDir + "LogoSmall.png"))),
-#endif
-#if NETSTANDARD2_0 || __MOBILE__
-                new SignPersonTestClass(Guid.NewGuid(), "Stephen Morse", "Head of Compliance", SkiaSharp.SKBitmap.Decode(ImageDir + "LogoSmall.png").Bytes)
-#else
+                #else
+                new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer", 
+                    SkiaSharp.SKBitmap.Decode(ImageDir + "LogoSmall.png").Bytes),
+                #endif
+                
+                #if NETFRAMEWORK
                 new SignPersonTestClass(Guid.NewGuid(), "Stephen Morse", "Head of Compliance",
                     ImageToByteArray(Image.FromFile(ImageDir + "LogoSmall.png")))
-#endif
+                #else
+                new SignPersonTestClass(Guid.NewGuid(), "Stephen Morse", "Head of Compliance", 
+                    SkiaSharp.SKBitmap.Decode(ImageDir + "LogoSmall.png").Bytes)
+                #endif
             };
         }
 

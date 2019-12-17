@@ -394,11 +394,13 @@ namespace ApiExamples
         {
             Document template =
                 DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Image]>>", ShapeType.TextBox);
-#if NETSTANDARD2_0 || __MOBILE__
-            ImageTestClass image = new ImageTestBuilder().WithImage(SKBitmap.Decode(mImage)).Build();
-#else
+            
+            #if NETFRAMEWORK
             ImageTestClass image = new ImageTestBuilder().WithImage(Image.FromFile(mImage, true)).Build();
-#endif
+            #else
+            ImageTestClass image = new ImageTestBuilder().WithImage(SKBitmap.Decode(mImage)).Build();
+            #endif
+            
             BuildReport(template, image, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertImageDinamically.docx");
 
