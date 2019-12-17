@@ -310,7 +310,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
+        #if NETFRAMEWORK
         [Test]
         public void InsertWatermark()
         {
@@ -347,7 +347,28 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertWatermark.doc");
             //ExEnd
         }
-#else
+
+        [Test]
+        public void InsertOleObject()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, Boolean, Image)
+            //ExFor:DocumentBuilder.InsertOleObject(String, String, Boolean, Boolean, Image)
+            //ExSummary:Shows how to insert an OLE object into a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Image representingImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
+
+            // OleObject
+            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage); 
+            //OleObject with ProgId
+            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false, representingImage);
+
+            doc.Save(ArtifactsDir + "Document.InsertedOleObject.docx");
+            //ExEnd
+        }
+        #else
         [Test]
         public void InsertWatermarkNetStandard2()
         {
@@ -385,7 +406,30 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertWatermark.NetStandard2.doc");
             //ExEnd
         }
-#endif
+
+        [Test]
+        public void InsertOleObjectNetStandard2()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, Boolean, Image)
+            //ExFor:DocumentBuilder.InsertOleObject(String, String, Boolean, Boolean, Image)
+            //ExSummary:Shows how to insert an OLE object into a document (.NetStandard 2.0).
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            using (SKBitmap representingImage = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
+            {
+                // OleObject
+                builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage);
+                //OleObject with ProgId
+                builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false,
+                    representingImage);
+            }
+
+            doc.Save(ArtifactsDir + "Document.InsertedOleObject.NetStandard2.docx");
+            //ExEnd
+        }
+        #endif
 
         [Test]
         public void InsertHtml()
@@ -2089,54 +2133,7 @@ namespace ApiExamples
 
             builder.MoveToField(field, true);
             //ExEnd
-        }
-
-#if !(NETSTANDARD2_0 || __MOBILE__)
-        [Test]
-        public void InsertOleObject()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, Boolean, Image)
-            //ExFor:DocumentBuilder.InsertOleObject(String, String, Boolean, Boolean, Image)
-            //ExSummary:Shows how to insert an OLE object into a document.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            Image representingImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
-
-            // OleObject
-            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage); 
-            //OleObject with ProgId
-            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false, representingImage);
-
-            doc.Save(ArtifactsDir + "Document.InsertedOleObject.docx");
-            //ExEnd
-        }
-
-#else
-        [Test]
-        public void InsertOleObjectNetStandard2()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, Boolean, Image)
-            //ExFor:DocumentBuilder.InsertOleObject(String, String, Boolean, Boolean, Image)
-            //ExSummary:Shows how to insert an OLE object into a document (.NetStandard 2.0).
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            using (SKBitmap representingImage = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
-            {
-                // OleObject
-                builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage);
-                //OleObject with ProgId
-                builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false,
-                    representingImage);
-            }
-
-            doc.Save(ArtifactsDir + "Document.InsertedOleObject.NetStandard2.docx");
-            //ExEnd
-        }
-#endif            
+        }          
 
         [Test]
         public void InsertOleObjectException()
@@ -2325,64 +2322,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if !__MOBILE__
-        [Test]
-        public void InsertVideoWithHtmlCode()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], Double, Double)
-            //ExFor:DocumentBuilder.InsertOnlineVideo(String, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Show how to insert online video into a document using html code
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Visible url
-            string vimeoVideoUrl = @"https://vimeo.com/52477838";
-
-            // Embed Html code
-            string vimeoEmbedCode =
-                "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
-
-            // This video will have an automatically generated thumbnail, and we are setting the size according to its 16:9 aspect ratio
-            builder.Writeln("Video with an automatically generated thumbnail at the top left corner of the page:");
-            builder.InsertOnlineVideo(vimeoVideoUrl, RelativeHorizontalPosition.LeftMargin, 0,
-                RelativeVerticalPosition.TopMargin, 0, 320, 180, WrapType.Square);
-            builder.InsertBreak(BreakType.PageBreak);
-
-            // We can get an image to use as a custom thumbnail
-            using (WebClient webClient = new WebClient())
-            {
-                byte[] imageBytes = webClient.DownloadData(AsposeLogoUrl);
-
-                using (MemoryStream stream = new MemoryStream(imageBytes))
-                {
-                    using (Image image = Image.FromStream(stream))
-                    {
-                        // This puts the video where we are with our document builder, with a custom thumbnail and size depending on the size of the image
-                        builder.Writeln("Custom thumbnail at document builder's cursor:");
-                        builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, image.Width, image.Height);
-                        builder.InsertBreak(BreakType.PageBreak);
-
-                        // We can put the video at the bottom right edge of the page too, but we'll have to take the page margins into account 
-                        double left = builder.PageSetup.RightMargin - image.Width;
-                        double top = builder.PageSetup.BottomMargin - image.Height;
-
-                        // Here we use a custom thumbnail and relative positioning to put it and the bottom right of tha page
-                        builder.Writeln("Bottom right of page with custom thumbnail:");
-
-                        builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes,
-                            RelativeHorizontalPosition.RightMargin, left, RelativeVerticalPosition.BottomMargin, top,
-                            image.Width, image.Height, WrapType.Square);
-                    }
-                }
-            }
-
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOnlineVideo.docx");
-            //ExEnd
-        }
-#endif
-
         [Test]
         public void InsertUnderline()
         {
@@ -2478,13 +2417,15 @@ namespace ApiExamples
                     {
                         byte[] imgBytes = webClient.DownloadData(AsposeLogoUrl);
 
-#if NETSTANDARD2_0 || __MOBILE__
+                        #if NETSTANDARD2_0 || __MOBILE__
+                        
                         SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(imgBytes);
-
                         builder.InsertParagraph();
                         builder.Writeln("Powerpoint Ole object:");
                         builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, bitmap);
-#else
+                        
+                        #else
+                        
                         using (MemoryStream stream = new MemoryStream(imgBytes))
                         {
                             using (Image image = Image.FromStream(stream))
@@ -2495,7 +2436,8 @@ namespace ApiExamples
                                 builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, image);
                             }
                         }
-#endif
+
+                        #endif
                     }
                 }
             }
@@ -2639,5 +2581,359 @@ namespace ApiExamples
             Assert.AreEqual("1.", para.ListLabel.LabelString);
             Assert.IsTrue(paraText.StartsWith("13->13"), paraText);
         }
+
+        #if NETFRAMEWORK || NETSTANDARD2_0
+        /// <summary>
+        /// All markdown tests work with the same file
+        /// That's why we need order for them 
+        /// </summary>
+        [Test, Order(1), Category("SkipTearDown")]
+        public void CreateMarkdownDocumentWithEmphases()
+        {
+            DocumentBuilder builder = new DocumentBuilder();
+            
+            // Bold and Italic are represented as Font.Bold and Font.Italic
+            builder.Font.Italic = true;
+            builder.Writeln("Italic");
+            
+            // Use clear formatting if don't want to combine styles between paragraphs
+            builder.Font.ClearFormatting();
+            
+            builder.Font.Bold = true;
+            builder.Writeln("Bold");
+            
+            // Use clear formatting if don't want to combine styles between paragraphs
+            builder.Font.ClearFormatting();
+            
+            // You can also write create BoldItalic text
+            builder.Font.Italic = true;
+            builder.Font.Bold = true;
+            builder.Writeln("ItalicBold");
+            
+            // Markdown treats asterisks (*) and underscores (_) as indicators of emphasis
+            builder.Document.Save(ArtifactsDir + "MarkdownExample.md");
+        }
+
+        /// <summary>
+        /// All markdown tests work with the same file
+        /// That's why we need order for them 
+        /// </summary>
+        [Test, Order(2), Category("SkipTearDown")]
+        public void AddHeadingsToMarkdownDocument()
+        {
+            Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Prepare our created document for further work
+            // And clear paragraph formatting not to use the previous styles
+            builder.MoveToDocumentEnd();
+            builder.Writeln("\n");
+            builder.ParagraphFormat.ClearFormatting();
+            
+            // By default Heading styles in Word may have bold and italic formatting
+            // If we do not want text to be emphasized, set these properties explicitly to false
+            // Thus we can't use 'builder.Font.ClearFormatting()' because Bold/Italic will be set to true
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
+            
+            // Create one heading for each level
+            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
+            builder.Font.Italic = true;
+            builder.Writeln("ItalicHeading 1");
+            // Reset our styles from the previous paragraph to not combine styles between paragraphs
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
+            
+            builder.ParagraphFormat.Style = doc.Styles["Heading 2"];
+            builder.Writeln("Heading 2");
+            // Reset our styles from the previous paragraph to not combine styles between paragraphs
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
+            
+            builder.ParagraphFormat.Style = doc.Styles["Heading 3"];
+            builder.Writeln("Heading 3");
+            // Reset our styles from the previous paragraph to not combine styles between paragraphs
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
+
+            builder.ParagraphFormat.Style = doc.Styles["Heading 4"];
+            builder.Writeln("Heading 4");
+            // Reset our styles from the previous paragraph to not combine styles between paragraphs
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
+
+            builder.ParagraphFormat.Style = doc.Styles["Heading 5"];
+            builder.Font.Italic = true;
+            builder.Font.Bold = true;
+            builder.Writeln("ItalicBoldHeading 5");
+            // Reset our styles from the previous paragraph to not combine styles between paragraphs
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
+
+            builder.ParagraphFormat.Style = doc.Styles["Heading 6"];
+            builder.Font.Bold = true;
+            builder.Writeln("BoldHeading 6");
+            
+            doc.Save(ArtifactsDir + "MarkdownExample.md");
+        }
+
+        /// <summary>
+        /// All markdown tests work with the same file
+        /// That's why we need order for them 
+        /// </summary>
+        [Test, Order(3), Category("SkipTearDown")]
+        public void AddBlockquotesToMarkdownDocument()
+        {
+            Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Prepare our created document for further work
+            // And clear paragraph formatting not to use the previous styles
+            builder.MoveToDocumentEnd();
+            builder.Writeln("\n");
+            builder.ParagraphFormat.ClearFormatting();
+            
+            // By default document stores blockquote style for the first level
+            builder.ParagraphFormat.Style = doc.Styles["Quote"];
+            builder.Writeln("Blockquote");
+            
+            // But you also can create styles for nested levels
+            Style quoteLevel2 = doc.Styles.Add(StyleType.Paragraph, "Quote1");
+            builder.ParagraphFormat.Style = quoteLevel2;
+            builder.Writeln("Blockquote 1");
+            
+            Style quoteLevel3 = doc.Styles.Add(StyleType.Paragraph, "Quote2");
+            builder.ParagraphFormat.Style = quoteLevel3;
+            builder.Font.Italic = true;
+            builder.Writeln("ItalicBlockquote 2");
+            
+            // Use clear formatting if don't want to combine styles between paragraphs
+            builder.Font.ClearFormatting();
+            
+            Style quoteLevel4 = doc.Styles.Add(StyleType.Paragraph, "Quote3");
+            builder.ParagraphFormat.Style = quoteLevel4;
+            builder.Font.Bold = true;
+            builder.Writeln("BoldBlockquote 3");
+            
+            // Use clear formatting if don't want to combine styles between paragraphs
+            builder.Font.ClearFormatting();
+            
+            Style quoteLevel5 = doc.Styles.Add(StyleType.Paragraph, "Quote4");
+            builder.ParagraphFormat.Style = quoteLevel5;
+            builder.Writeln("Blockquote 4");
+            
+            Style quoteLevel6 = doc.Styles.Add(StyleType.Paragraph, "Quote5");
+            builder.ParagraphFormat.Style = quoteLevel6;
+            builder.Writeln("Blockquote 5");
+            
+            Style quoteLevel7 = doc.Styles.Add(StyleType.Paragraph, "Quote6");
+            builder.ParagraphFormat.Style = quoteLevel7;
+            builder.Font.Italic = true;
+            builder.Font.Bold = true;
+            builder.Writeln("ItalicBoldBlockquote 6");
+            
+            doc.Save(ArtifactsDir + "MarkdownExample.md");
+        }
+
+        /// <summary>
+        /// All markdown tests work with the same file
+        /// That's why we need order for them 
+        /// </summary>
+        [Test, Order(4), Category("SkipTearDown")]
+        public void AddHeadingsAsBlockquotesToMarkdownDocument()
+        {
+            Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Prepare our created document for further work
+            // And clear paragraph formatting not to use the previous styles
+            builder.MoveToDocumentEnd();
+            builder.Writeln("\n");
+            builder.ParagraphFormat.ClearFormatting();
+            builder.Writeln("\n");
+
+            // By default Heading styles in Word may have bold and italic formatting
+            // If we do not want text to be emphasized, set these properties explicitly to false
+            // Thus we can't use 'builder.Font.ClearFormatting()' because Bold/Italic will be set to true
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
+
+            Style headingQuoteLevel1 = doc.Styles.Add(StyleType.Paragraph, "Quote.Heading 1");
+            builder.ParagraphFormat.Style = headingQuoteLevel1;
+            builder.Writeln("HeadingBlockquote 1");
+            
+            Style headingQuoteLevel2 = doc.Styles.Add(StyleType.Paragraph, "Quote1.Heading 2");
+            builder.ParagraphFormat.Style = headingQuoteLevel2;
+            builder.Font.Italic = true;
+            builder.Writeln("ItalicHeadingBlockquote 2");
+            
+            // Reset our styles from the previous paragraph to not combine styles between paragraphs
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
+            
+            Style headingQuoteLevel3 = doc.Styles.Add(StyleType.Paragraph, "Quote2.Heading 3");
+            builder.ParagraphFormat.Style = headingQuoteLevel3;
+            builder.Font.Bold = true;
+            builder.Writeln("BoldHeadingBlockquote 3");
+            
+            // Reset our styles from the previous paragraph to not combine styles between paragraphs
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
+            
+            Style headingQuoteLevel4 = doc.Styles.Add(StyleType.Paragraph, "Quote3.Heading 4");
+            builder.ParagraphFormat.Style = headingQuoteLevel4;
+            builder.Font.Italic = true;
+            builder.Font.Bold = true;
+            builder.Writeln("ItalicBoldHeadingBlockquote 4");
+            
+            // Reset our styles from the previous paragraph to not combine styles between paragraphs
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
+            
+            Style headingQuoteLevel5 = doc.Styles.Add(StyleType.Paragraph, "Quote4.Heading 5");
+            builder.ParagraphFormat.Style = headingQuoteLevel5;
+            builder.Writeln("HeadingBlockquote 5");
+            
+            Style headingQuoteLevel6 = doc.Styles.Add(StyleType.Paragraph, "Quote5.Heading 6");
+            builder.ParagraphFormat.Style = headingQuoteLevel6;
+            builder.Writeln("HeadingBlockquote 6");
+            
+            doc.Save(ArtifactsDir + "MarkdownExample.md");
+        }
+
+        /// <summary>
+        /// All markdown tests work with the same file
+        /// That's why we need order for them 
+        /// </summary>
+        [Test, Order(5), Category("SkipTearDown")]
+        public void AddHorizontalRuleToMarkdownDocument()
+        {
+            Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Prepare our created document for further work
+            // And clear paragraph formatting not to use the previous styles
+            builder.MoveToDocumentEnd();
+            builder.Writeln("\n");
+            builder.ParagraphFormat.ClearFormatting();
+
+            // Insert HorizontalRule that will be present in .md file as '-----'
+            builder.InsertHorizontalRule();
+ 
+            builder.Document.Save(ArtifactsDir + "MarkdownExample.md");
+        }
+
+        /// <summary>
+        /// All markdown tests work with the same file
+        /// That's why we need order for them 
+        /// </summary>
+        [Test, Order(6)]
+        [TestCase("Italic", "Normal", true, false, Category = "SkipTearDown")]
+        [TestCase("Bold", "Normal", false, true, Category = "SkipTearDown")]
+        [TestCase("ItalicBold", "Normal", true, true, Category = "SkipTearDown")]
+        [TestCase("ItalicHeading 1", "Heading 1", true, false, Category = "SkipTearDown")]
+        [TestCase("Heading 2", "Heading 2", false, false, Category = "SkipTearDown")]
+        [TestCase("Heading 3", "Heading 3", false, false, Category = "SkipTearDown")]
+        [TestCase("Heading 4", "Heading 4", false, false, Category = "SkipTearDown")]
+        [TestCase("ItalicBoldHeading 5", "Heading 5", true, true, Category = "SkipTearDown")]
+        [TestCase("BoldHeading 6", "Heading 6", false, true, Category = "SkipTearDown")]
+        [TestCase("Blockquote", "Quote", false, false, Category = "SkipTearDown")]
+        [TestCase("Blockquote 1", "Quote1", false, false, Category = "SkipTearDown")]
+        [TestCase("ItalicBlockquote 2", "Quote2", true, false, Category = "SkipTearDown")]
+        [TestCase("BoldBlockquote 3", "Quote3", false, true, Category = "SkipTearDown")]
+        [TestCase("Blockquote 4", "Quote4", false, false, Category = "SkipTearDown")]
+        [TestCase("Blockquote 5", "Quote5", false, false, Category = "SkipTearDown")]
+        [TestCase("ItalicBoldBlockquote 6", "Quote6", true, true, Category = "SkipTearDown")]
+        [TestCase("HeadingBlockquote 1", "Quote.Heading 1", false, false, Category = "SkipTearDown")]
+        [TestCase("ItalicHeadingBlockquote 2", "Quote1.Heading 2", true, false, Category = "SkipTearDown")]
+        [TestCase("BoldHeadingBlockquote 3", "Quote2.Heading 3", false, true, Category = "SkipTearDown")]
+        [TestCase("ItalicBoldHeadingBlockquote 4", "Quote3.Heading 4", true, true, Category = "SkipTearDown")]
+        [TestCase("HeadingBlockquote 5", "Quote4.Heading 5", false, false, Category = "SkipTearDown")]
+        [TestCase("HeadingBlockquote 6", "Quote5.Heading 6", false, false)]
+        [Ignore("WORDSNET-19631")]
+        public void LoadMarkdownDocumentAndAssertContent(string text, string styleName, bool isItalic, bool isBold)
+        {
+            // Load created document from previous tests
+            Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+
+            foreach (Paragraph paragraph in paragraphs)
+            {
+                if (paragraph.Runs.Count != 0)
+                {
+                    if (paragraph.Runs[0].Text == text)
+                    {
+                        // Check that all document text has the necessary styles
+                        Assert.AreEqual(styleName, paragraph.ParagraphFormat.Style.Name);
+                        Assert.AreEqual(isItalic, paragraph.Runs[0].Font.Italic);
+                        Assert.AreEqual(isBold, paragraph.Runs[0].Font.Bold);
+                    }
+                }
+
+                // Check that document also has a HorizontalRule present as a shape
+                NodeCollection shapesCollection = doc.FirstSection.Body.GetChildNodes(NodeType.Shape, true);
+                Shape horizontalRuleShape = (Shape) shapesCollection[0];
+                
+                Assert.IsTrue(shapesCollection.Count == 1);
+                Assert.IsTrue(horizontalRuleShape.IsHorizontalRule);
+            }
+        }
+
+        [Test]
+        public void InsertVideoWithHtmlCode()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], Double, Double)
+            //ExFor:DocumentBuilder.InsertOnlineVideo(String, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
+            //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
+            //ExSummary:Show how to insert online video into a document using html code
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Visible url
+            string vimeoVideoUrl = @"https://vimeo.com/52477838";
+
+            // Embed Html code
+            string vimeoEmbedCode =
+                "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
+
+            // This video will have an automatically generated thumbnail, and we are setting the size according to its 16:9 aspect ratio
+            builder.Writeln("Video with an automatically generated thumbnail at the top left corner of the page:");
+            builder.InsertOnlineVideo(vimeoVideoUrl, RelativeHorizontalPosition.LeftMargin, 0,
+                RelativeVerticalPosition.TopMargin, 0, 320, 180, WrapType.Square);
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // We can get an image to use as a custom thumbnail
+            using (WebClient webClient = new WebClient())
+            {
+                byte[] imageBytes = webClient.DownloadData(AsposeLogoUrl);
+
+                using (MemoryStream stream = new MemoryStream(imageBytes))
+                {
+                    using (Image image = Image.FromStream(stream))
+                    {
+                        // This puts the video where we are with our document builder, with a custom thumbnail and size depending on the size of the image
+                        builder.Writeln("Custom thumbnail at document builder's cursor:");
+                        builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, image.Width, image.Height);
+                        builder.InsertBreak(BreakType.PageBreak);
+
+                        // We can put the video at the bottom right edge of the page too, but we'll have to take the page margins into account 
+                        double left = builder.PageSetup.RightMargin - image.Width;
+                        double top = builder.PageSetup.BottomMargin - image.Height;
+
+                        // Here we use a custom thumbnail and relative positioning to put it and the bottom right of tha page
+                        builder.Writeln("Bottom right of page with custom thumbnail:");
+
+                        builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes,
+                            RelativeHorizontalPosition.RightMargin, left, RelativeVerticalPosition.BottomMargin, top,
+                            image.Width, image.Height, WrapType.Square);
+                    }
+                }
+            }
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOnlineVideo.docx");
+            //ExEnd
+        }
+        #endif
     }
 }

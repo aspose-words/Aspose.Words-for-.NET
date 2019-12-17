@@ -11,17 +11,17 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
     class PageSplitter
     {
         public static void Run()
-        {           
+        {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving() + "Split";
-           
-            SplitAllDocumentsToPages(dataDir);           
+
+            SplitAllDocumentsToPages(dataDir);
 
             Console.WriteLine("\nDocument split to pages successfully.\nFile saved at " + dataDir + "\\_out");
         }
 
         public static void SplitDocumentToPages(string docName)
-        {           
+        {
             string folderName = Path.GetDirectoryName(docName);
             string fileName = Path.GetFileNameWithoutExtension(docName);
             string extensionName = Path.GetExtension(docName);
@@ -30,7 +30,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             Console.WriteLine("Processing document: " + fileName + extensionName);
 
             Document doc = new Document(docName);
-        
+
             // Split nodes in the document into separate pages.
             DocumentPageSplitter splitter = new DocumentPageSplitter(doc);
 
@@ -39,19 +39,19 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             {
                 Document pageDoc = splitter.GetDocumentOfPage(page);
                 pageDoc.Save(Path.Combine(outFolder, string.Format("{0} - page{1} Out{2}", fileName, page, extensionName)));
-            }           
+            }
         }
 
         public static void SplitAllDocumentsToPages(string folderName)
         {
-           
+
             string[] fileNames = Directory.GetFiles(folderName, "*.doc?", SearchOption.TopDirectoryOnly);
 
             foreach (string fileName in fileNames)
             {
                 SplitDocumentToPages(fileName);
             }
-            
+
         }
     }
 
@@ -631,6 +631,12 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
                     int pageNum = this.pageNumberFinder.GetPage(childNode);
                     if (pageNum == targetPageNum)
                     {
+                        if (cloneNode.NodeType == NodeType.Row)
+                            ((Row)cloneNode).EnsureMinimum();
+
+                        if (cloneNode.NodeType == NodeType.Cell)
+                            ((Cell)cloneNode).EnsureMinimum();
+
                         cloneNode.LastChild.Remove();
                         cloneNode.AppendChild(childNode);
                     }

@@ -30,13 +30,12 @@ using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using Aspose.Words.Tables;
-using Aspose.Words.Themes;
 using NUnit.Framework;
 using CompareOptions = Aspose.Words.CompareOptions;
-#if !(__MOBILE__ || MAC)
+#if NETFRAMEWORK || NETSTANDARD2_0
 using Aspose.Words.Shaping.HarfBuzz;
 #endif
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#if NETFRAMEWORK || MAC
 using Org.BouncyCastle.Pkcs;
 #endif
 
@@ -45,7 +44,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExDocument : ApiExampleBase
     {
-#if !(__MOBILE__ || MAC)
+        #if NETFRAMEWORK || NETSTANDARD2_0
         [Test]
         public void LicenseFromFileNoPath()
         {
@@ -91,7 +90,137 @@ namespace ApiExamples
                 myStream.Close();
             }
         }
-#endif
+
+        [Test]
+        public void OpenType()
+        {
+            //ExStart
+            //ExFor:LayoutOptions.TextShaperFactory
+            //ExSummary:Shows how to support OpenType features using HarfBuzz text shaping engine.
+            // Open a document
+            Document doc = new Document(MyDir + "OpenType.Document.docx");
+
+            // Please note that text shaping is only performed when exporting to PDF or XPS formats now
+
+            // Aspose.Words is capable of using text shaper objects provided externally.
+            // A text shaper represents a font and computes shaping information for a text.
+            // A document typically refers to multiple fonts thus a text shaper factory is necessary.
+            // When text shaper factory is set, layout starts to use OpenType features.
+            // An Instance property returns static BasicTextShaperCache object wrapping HarfBuzzTextShaperFactory
+            doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
+
+            // Render the document to PDF format
+            doc.Save(ArtifactsDir + "Document.OpenType.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void NumberFormatting()
+        {
+            Document doc = new Document(MyDir + "Document.NumberFormatting.docx");
+
+            // Use OpenType to correct displaying numbers in pdf
+            doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
+            
+            doc.Save(ArtifactsDir + "Document.NumberFormatting.pdf");
+        }
+        #endif
+
+        #if NETFRAMEWORK || MAC
+        //ExStart
+        //ExFor:LoadOptions.ResourceLoadingCallback
+        //ExSummary:Shows how to handle external resources in Html documents during loading.
+        [Test] //ExSkip
+        public void LoadOptionsCallback()
+        {
+            // Create a new LoadOptions object and set its ResourceLoadingCallback attribute
+            // as an instance of our IResourceLoadingCallback implementation 
+            LoadOptions loadOptions = new LoadOptions { ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback() };
+
+            // When we open an Html document, external resources such as references to CSS stylesheet files and external images
+            // will be handled in a custom manner by the loading callback as the document is loaded
+            Document doc = new Document(MyDir + "ResourcesForCallback.html", loadOptions);
+            doc.Save(ArtifactsDir + "Document.LoadOptionsCallback.pdf");
+        }
+
+        /// <summary>
+        /// Resource loading callback that, upon encountering external resources,
+        /// acknowledges CSS style sheets and replaces all images with a substitute.
+        /// </summary>
+        private class HtmlLinkedResourceLoadingCallback : IResourceLoadingCallback
+        {
+            public ResourceLoadingAction ResourceLoading(ResourceLoadingArgs args)
+            {
+                switch (args.ResourceType)
+                {
+                    case ResourceType.CssStyleSheet:
+                        Console.WriteLine($"External CSS Stylesheet found upon loading: {args.OriginalUri}");
+                        return ResourceLoadingAction.Default;
+                    case ResourceType.Image:
+                        Console.WriteLine($"External Image found upon loading: {args.OriginalUri}");
+
+                        string newImageFilename = "Images\\Aspose.Words.gif";
+                        Console.WriteLine($"\tImage will be substituted with: {newImageFilename}");
+
+                        Image newImage = Image.FromFile(MyDir + newImageFilename);
+
+                        ImageConverter converter = new ImageConverter();
+                        byte[] imageBytes = (byte[])converter.ConvertTo(newImage, typeof(byte[]));
+                        args.SetData(imageBytes);
+
+                        return ResourceLoadingAction.UserProvided;
+
+                }
+                return ResourceLoadingAction.Default;
+            }
+        }
+        //ExEnd
+
+        [Test]
+        public void CertificateHolderCreate()
+        {
+            //ExStart
+            //ExFor:CertificateHolder.Create(Byte[], SecureString)
+            //ExFor:CertificateHolder.Create(Byte[], String)
+            //ExFor:CertificateHolder.Create(String, String, String)
+            //ExSummary:Shows how to create CertificateHolder objects.
+            // 1: Load a PKCS #12 file into a byte array and apply its password to create the CertificateHolder
+            byte[] certBytes = File.ReadAllBytes(MyDir + "morzal.pfx");
+            CertificateHolder.Create(certBytes, "aw");
+
+            // 2: Pass a SecureString which contains the password instead of a normal string
+            SecureString password = new NetworkCredential("", "aw").SecurePassword;
+            CertificateHolder.Create(certBytes, password);
+
+            // 3: If the certificate has private keys corresponding to aliases, we can use the aliases to fetch their respective keys
+            // First, we'll check for valid aliases like this
+            using (FileStream certStream = new FileStream(MyDir + "morzal.pfx", FileMode.Open))
+            {
+                Pkcs12Store pkcs12Store = new Pkcs12Store(certStream, "aw".ToCharArray());
+                IEnumerator enumerator = pkcs12Store.Aliases.GetEnumerator();
+
+                while (enumerator.MoveNext())
+                {
+                    if (enumerator.Current != null)
+                    {
+                        string currentAlias = enumerator.Current.ToString();
+                        if (pkcs12Store.IsKeyEntry(currentAlias) && pkcs12Store.GetKey(currentAlias).Key.IsPrivate)
+                        {
+                            Console.WriteLine($"Valid alias found: {enumerator.Current}");
+                        }
+                    }
+                }
+            }
+
+            // For this file, we'll use an alias found above
+            CertificateHolder.Create(MyDir + "morzal.pfx", "aw", "c20be521-11ea-4976-81ed-865fbbfc9f24");
+
+            // If we leave the alias null, then the first possible alias that retrieves a private key will be used
+            CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
+            //ExEnd
+        }
+        #endif
+
         [Test]
         public void DocumentCtor()
         {
@@ -430,57 +559,6 @@ namespace ApiExamples
             Assert.AreEqual(12.95, doc.Styles.DefaultParagraphFormat.LineSpacing, 0.005f);
             //ExEnd
         }
-
-#if !(NETSTANDARD2_0 || __MOBILE__)
-        //ExStart
-        //ExFor:LoadOptions.ResourceLoadingCallback
-        //ExSummary:Shows how to handle external resources in Html documents during loading.
-        [Test] //ExSkip
-        public void LoadOptionsCallback()
-        {
-            // Create a new LoadOptions object and set its ResourceLoadingCallback attribute
-            // as an instance of our IResourceLoadingCallback implementation 
-            LoadOptions loadOptions = new LoadOptions { ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback() };
-
-            // When we open an Html document, external resources such as references to CSS stylesheet files and external images
-            // will be handled in a custom manner by the loading callback as the document is loaded
-            Document doc = new Document(MyDir + "ResourcesForCallback.html", loadOptions);
-            doc.Save(ArtifactsDir + "Document.LoadOptionsCallback.pdf");
-        }
-
-        /// <summary>
-        /// Resource loading callback that, upon encountering external resources,
-        /// acknowledges CSS style sheets and replaces all images with a substitute.
-        /// </summary>
-        private class HtmlLinkedResourceLoadingCallback : IResourceLoadingCallback
-        {
-            public ResourceLoadingAction ResourceLoading(ResourceLoadingArgs args)
-            {
-                switch (args.ResourceType)
-                {
-                    case ResourceType.CssStyleSheet:
-                        Console.WriteLine($"External CSS Stylesheet found upon loading: {args.OriginalUri}");
-                        return ResourceLoadingAction.Default;
-                    case ResourceType.Image:
-                        Console.WriteLine($"External Image found upon loading: {args.OriginalUri}");
-
-                        string newImageFilename =  "Images\\Aspose.Words.gif";
-                        Console.WriteLine($"\tImage will be substituted with: {newImageFilename}");
-
-                        System.Drawing.Image newImage = System.Drawing.Image.FromFile(MyDir + newImageFilename);
-
-                        System.Drawing.ImageConverter converter = new System.Drawing.ImageConverter();
-                        byte[] imageBytes = (byte[])converter.ConvertTo(newImage, typeof(byte[]));
-                        args.SetData(imageBytes);
-
-                        return ResourceLoadingAction.UserProvided;
-
-                }
-                return ResourceLoadingAction.Default;
-            }
-        }
-        //ExEnd
-#endif
 
         //ExStart
         //ExFor:LoadOptions.WarningCallback
@@ -861,7 +939,7 @@ namespace ApiExamples
                 Document srcDoc = new Document();
 
                 // Open the document to join.
-                Assert.That(() => srcDoc == new Document(@"C:\DetailsList.doc"),
+                Assert.That(() => srcDoc == new Document("C:\\DetailsList.doc"),
                     Throws.TypeOf<FileNotFoundException>());
 
                 // Append the source document at the end of the destination document.
@@ -946,52 +1024,6 @@ namespace ApiExamples
             Assert.True(digitalSig.CertificateHolder.Certificate.IssuerName.Name != null &&
                         digitalSig.CertificateHolder.Certificate.IssuerName.Name.Contains("VeriSign"));
         }
-
-#if !(NETSTANDARD2_0 || __MOBILE__)
-        [Test]
-        public void CertificateHolderCreate()
-        {
-            //ExStart
-            //ExFor:CertificateHolder.Create(Byte[], SecureString)
-            //ExFor:CertificateHolder.Create(Byte[], String)
-            //ExFor:CertificateHolder.Create(String, String, String)
-            //ExSummary:Shows how to create CertificateHolder objects.
-            // 1: Load a PKCS #12 file into a byte array and apply its password to create the CertificateHolder
-            byte[] certBytes = File.ReadAllBytes(MyDir + "morzal.pfx");
-            CertificateHolder.Create(certBytes, "aw");
-
-            // 2: Pass a SecureString which contains the password instead of a normal string
-            SecureString password = new NetworkCredential("", "aw").SecurePassword;
-            CertificateHolder.Create(certBytes, password);
-
-            // 3: If the certificate has private keys corresponding to aliases, we can use the aliases to fetch their respective keys
-            // First, we'll check for valid aliases like this
-            using (FileStream certStream = new FileStream(MyDir + "morzal.pfx", FileMode.Open))
-            {
-                Pkcs12Store pkcs12Store = new Pkcs12Store(certStream, "aw".ToCharArray());
-                IEnumerator enumerator = pkcs12Store.Aliases.GetEnumerator();
-
-                while (enumerator.MoveNext())
-                {
-                    if (enumerator.Current != null)
-                    {
-                        string currentAlias = enumerator.Current.ToString();
-                        if (pkcs12Store.IsKeyEntry(currentAlias) && pkcs12Store.GetKey(currentAlias).Key.IsPrivate)
-                        {
-                            Console.WriteLine($"Valid alias found: {enumerator.Current}");
-                        }
-                    }
-                }
-            }
-
-            // For this file, we'll use an alias found above
-            CertificateHolder.Create(MyDir + "morzal.pfx", "aw", "c20be521-11ea-4976-81ed-865fbbfc9f24");
-
-            // If we leave the alias null, then the first possible alias that retrieves a private key will be used
-            CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
-            //ExEnd
-        }
-#endif
 
         [Test]
         public void DigitalSignatureSign()
@@ -1442,23 +1474,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetZoom()
-        {
-            //ExStart
-            //ExFor:Document.ViewOptions
-            //ExFor:ViewOptions
-            //ExFor:ViewOptions.ViewType
-            //ExFor:ViewOptions.ZoomPercent
-            //ExFor:ViewType
-            //ExSummary:The following code shows how to make sure the document is displayed at 50% zoom when opened in Microsoft Word.
-            Document doc = new Document(MyDir + "Document.doc");
-            doc.ViewOptions.ViewType = ViewType.PageLayout;
-            doc.ViewOptions.ZoomPercent = 50;
-            doc.Save(ArtifactsDir + "Document.SetZoom.doc");
-            //ExEnd
-        }
-
-        [Test]
         public void GetDocumentVariables()
         {
             //ExStart
@@ -1808,6 +1823,7 @@ namespace ApiExamples
             //ExFor:Paragraph.IsMoveToRevision
             //ExFor:ParagraphCollection
             //ExFor:ParagraphCollection.Item(Int32)
+            //ExFor:Story.Paragraphs
             //ExSummary:Shows how to get paragraph that was moved (deleted/inserted) in Microsoft Word while change tracking was enabled.
             Document doc = new Document(MyDir + "Document.Revisions.docx");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
@@ -1821,6 +1837,36 @@ namespace ApiExamples
                     Console.WriteLine("The paragraph {0} has been moved (deleted).", i);
                 if (paragraphs[i].IsMoveToRevision)
                     Console.WriteLine("The paragraph {0} has been moved (inserted).", i);
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void GetRevisedPropertiesOfList()
+        {
+            //ExStart
+            //ExFor:RevisionsView
+            //ExFor:Document.RevisionsView
+            //ExSummary:Shows how to get revised version of list label and list level formatting in a document.
+            Document doc = new Document(MyDir + "GetRevisedVersionOfDocument.docx");
+            doc.UpdateListLabels();
+
+            // Switch to the revised version of the document
+            doc.RevisionsView = RevisionsView.Final;
+
+            foreach (Revision revision in doc.Revisions)
+            {
+                if (revision.ParentNode.NodeType == NodeType.Paragraph)
+                {
+                    Paragraph paragraph = (Paragraph)revision.ParentNode;
+
+                    if (paragraph.IsListItem)
+                    {
+                        // Print revised version of LabelString and ListLevel
+                        Console.WriteLine(paragraph.ListLabel.LabelString);
+                        Console.WriteLine(paragraph.ListFormat.ListLevel);
+                    }
+                }
             }
             //ExEnd
         }
@@ -1983,52 +2029,6 @@ namespace ApiExamples
             //ExEnd
 
             stream.Close();
-        }
-
-        [Test]
-        public void DocumentThemeProperties()
-        {
-            //ExStart
-            //ExFor:Theme
-            //ExFor:Theme.Colors
-            //ExFor:Theme.MajorFonts
-            //ExFor:Theme.MinorFonts
-            //ExSummary:Show how to change document theme options.
-            Document doc = new Document();
-            // Get document theme and do something useful
-            Theme theme = doc.Theme;
-
-            theme.Colors.Accent1 = Color.Black;
-            theme.Colors.Dark1 = Color.Blue;
-            theme.Colors.FollowedHyperlink = Color.White;
-            theme.Colors.Hyperlink = Color.WhiteSmoke;
-            theme.Colors.Light1 = Color.Empty; //There is default Color.Black
-
-            theme.MajorFonts.ComplexScript = "Arial";
-            theme.MajorFonts.EastAsian = String.Empty;
-            theme.MajorFonts.Latin = "Times New Roman";
-
-            theme.MinorFonts.ComplexScript = String.Empty;
-            theme.MinorFonts.EastAsian = "Times New Roman";
-            theme.MinorFonts.Latin = "Arial";
-            //ExEnd
-
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
-            Assert.AreEqual(Color.Black.ToArgb(), doc.Theme.Colors.Accent1.ToArgb());
-            Assert.AreEqual(Color.Blue.ToArgb(), doc.Theme.Colors.Dark1.ToArgb());
-            Assert.AreEqual(Color.White.ToArgb(), doc.Theme.Colors.FollowedHyperlink.ToArgb());
-            Assert.AreEqual(Color.WhiteSmoke.ToArgb(), doc.Theme.Colors.Hyperlink.ToArgb());
-            Assert.AreEqual(Color.Black.ToArgb(), doc.Theme.Colors.Light1.ToArgb());
-
-            Assert.AreEqual("Arial", doc.Theme.MajorFonts.ComplexScript);
-            Assert.AreEqual(String.Empty, doc.Theme.MajorFonts.EastAsian);
-            Assert.AreEqual("Times New Roman", doc.Theme.MajorFonts.Latin);
-
-            Assert.AreEqual(String.Empty, doc.Theme.MinorFonts.ComplexScript);
-            Assert.AreEqual("Times New Roman", doc.Theme.MinorFonts.EastAsian);
-            Assert.AreEqual("Arial", doc.Theme.MinorFonts.Latin);
         }
 
         [Test]
@@ -2424,52 +2424,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocTheme()
-        {
-            //ExStart
-            //ExFor:Document.Theme
-            //ExSummary:Shows what we can do with the Themes property of Document.
-            Document doc = new Document();
-
-            // When creating a blank document, Aspose Words creates a default theme object
-            Theme theme = doc.Theme;
-
-            // These color properties correspond to the 10 color columns that you see 
-            // in the "Theme colors" section in the color selector menu when changing font or shading color
-            // We can view and edit the leading color for each column, and the five different tints that
-            // make up the rest of the column will be derived automatically from each leading color
-            // Aspose Words sets the defaults to what they are in the Microsoft Word default theme
-            Assert.AreEqual(Color.FromArgb(255, 255, 255, 255), theme.Colors.Light1);
-            Assert.AreEqual(Color.FromArgb(255, 0, 0, 0), theme.Colors.Dark1);
-            Assert.AreEqual(Color.FromArgb(255, 238, 236, 225), theme.Colors.Light2);
-            Assert.AreEqual(Color.FromArgb(255, 31, 73, 125), theme.Colors.Dark2);
-            Assert.AreEqual(Color.FromArgb(255, 79, 129, 189), theme.Colors.Accent1);
-            Assert.AreEqual(Color.FromArgb(255, 192, 80, 77), theme.Colors.Accent2);
-            Assert.AreEqual(Color.FromArgb(255, 155, 187, 89), theme.Colors.Accent3);
-            Assert.AreEqual(Color.FromArgb(255, 128, 100, 162), theme.Colors.Accent4);
-            Assert.AreEqual(Color.FromArgb(255, 75, 172, 198), theme.Colors.Accent5);
-            Assert.AreEqual(Color.FromArgb(255, 247, 150, 70), theme.Colors.Accent6);
-
-            // Hyperlink colors
-            Assert.AreEqual(Color.FromArgb(255, 0, 0, 255), theme.Colors.Hyperlink);
-            Assert.AreEqual(Color.FromArgb(255, 128, 0, 128), theme.Colors.FollowedHyperlink);
-
-            // These appear at the very top of the font selector in the "Theme Fonts" section
-            Assert.AreEqual("Cambria", theme.MajorFonts.Latin);
-            Assert.AreEqual("Calibri", theme.MinorFonts.Latin);
-
-            // Change some values to make a custom theme
-            theme.MinorFonts.Latin = "Bodoni MT";
-            theme.MajorFonts.Latin = "Tahoma";
-            theme.Colors.Accent1 = Color.Cyan;
-            theme.Colors.Accent2 = Color.Yellow;
-
-            // Save the document to use our theme
-            doc.Save(ArtifactsDir + "Document.Theme.docx");
-            //ExEnd
-        }
-
-        [Test]
         public void SetEndnoteOptions()
         {
             //ExStart
@@ -2572,8 +2526,21 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.MailMergeSettings
+            //ExFor:MailMergeCheckErrors
             //ExFor:MailMergeDataType
+            //ExFor:MailMergeDestination
             //ExFor:MailMergeMainDocumentType
+            //ExFor:MailMergeSettings
+            //ExFor:MailMergeSettings.CheckErrors
+            //ExFor:MailMergeSettings.Clone
+            //ExFor:MailMergeSettings.Destination
+            //ExFor:MailMergeSettings.DataType
+            //ExFor:MailMergeSettings.DoNotSupressBlankLines
+            //ExFor:MailMergeSettings.LinkToQuery
+            //ExFor:MailMergeSettings.MainDocumentType
+            //ExFor:MailMergeSettings.Odso
+            //ExFor:MailMergeSettings.Query
+            //ExFor:MailMergeSettings.ViewMergedData
             //ExFor:Odso
             //ExFor:Odso.Clone
             //ExFor:Odso.ColumnDelimiter
@@ -2581,10 +2548,11 @@ namespace ApiExamples
             //ExFor:Odso.DataSourceType
             //ExFor:Odso.FirstRowContainsColumnNames
             //ExFor:OdsoDataSourceType
-            //ExSummary:Shows how to execute a mail merge with MailMergeSettings.
+            //ExSummary:Shows how to execute an Office Data Source Object mail merge with MailMergeSettings.
             // We'll create a simple document that will act as a destination for mail merge data
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             builder.Write("Dear ");
             builder.InsertField("MERGEFIELD FirstName", "<FirstName>");
             builder.Write(" ");
@@ -2600,23 +2568,28 @@ namespace ApiExamples
             File.WriteAllLines(ArtifactsDir + "Document.Lines.txt", lines);
 
             // Set the data source, query and other things
-            MailMergeSettings mailMergeSettings = doc.MailMergeSettings;
-            mailMergeSettings.MainDocumentType = MailMergeMainDocumentType.MailingLabels;
-            mailMergeSettings.DataType = MailMergeDataType.Native;
-            mailMergeSettings.DataSource = ArtifactsDir + "Document.Lines.txt";
-            mailMergeSettings.Query = "SELECT * FROM " + doc.MailMergeSettings.DataSource;
-            mailMergeSettings.LinkToQuery = true;
-            mailMergeSettings.ViewMergedData = true;
+            MailMergeSettings settings = doc.MailMergeSettings;
+            settings.MainDocumentType = MailMergeMainDocumentType.MailingLabels;
+            settings.CheckErrors = MailMergeCheckErrors.Simulate;
+            settings.DataType = MailMergeDataType.Native;
+            settings.DataSource = ArtifactsDir + "Document.Lines.txt";
+            settings.Query = "SELECT * FROM " + doc.MailMergeSettings.DataSource;
+            settings.LinkToQuery = true;
+            settings.ViewMergedData = true;
+
+            Assert.AreEqual(MailMergeDestination.Default, settings.Destination);
+            Assert.False(settings.DoNotSupressBlankLines);
 
             // Office Data Source Object settings
-            Odso odso = mailMergeSettings.Odso;
+            Odso odso = settings.Odso;
             odso.DataSource = ArtifactsDir + "Document.Lines.txt";
             odso.DataSourceType = OdsoDataSourceType.Text;
             odso.ColumnDelimiter = '|';
             odso.FirstRowContainsColumnNames = true;
 
-            // ODSO objects can also be cloned
+            // ODSO/MailMergeSettings objects can also be cloned
             Assert.AreNotSame(odso, odso.Clone());
+            Assert.AreNotSame(settings, settings.Clone());
 
             // The mail merge will be performed when this document is opened 
             doc.Save(ArtifactsDir + "Document.MailMergeSettings.docx");
@@ -2627,18 +2600,76 @@ namespace ApiExamples
         public void OdsoEmail()
         {
             //ExStart
+            //ExFor:MailMergeSettings.ActiveRecord
+            //ExFor:MailMergeSettings.AddressFieldName
+            //ExFor:MailMergeSettings.ConnectString
+            //ExFor:MailMergeSettings.MailAsAttachment
+            //ExFor:MailMergeSettings.MailSubject
+            //ExFor:MailMergeSettings.Clear
             //ExFor:Odso.TableName
             //ExFor:Odso.UdlConnectString
             //ExSummary:Shows how to execute a mail merge while connecting to an external data source.
             Document doc = new Document(MyDir + "OdsoData.doc");
+
+            MailMergeSettings settings = doc.MailMergeSettings;
+
+            Console.WriteLine($"Connection string:\n\t{settings.ConnectString}");
+            Console.WriteLine($"Mail merge docs as attachment:\n\t{settings.MailAsAttachment}");
+            Console.WriteLine($"Mail merge doc e-mail subject:\n\t{settings.MailSubject}");
+            Console.WriteLine($"Column that contains e-mail addresses:\n\t{settings.AddressFieldName}");
+            Console.WriteLine($"Active record:\n\t{settings.ActiveRecord}");
             
-            Odso odso = doc.MailMergeSettings.Odso;
+            Odso odso = settings.Odso;
             
             Console.WriteLine($"File will connect to data source located in:\n\t\"{odso.DataSource}\"");
             Console.WriteLine($"Source type:\n\t{odso.DataSourceType}");
-            Console.WriteLine($"Connection string:\n\t{odso.UdlConnectString}");
+            Console.WriteLine($"UDL connection string string:\n\t{odso.UdlConnectString}");
             Console.WriteLine($"Table:\n\t{odso.TableName}");
             Console.WriteLine($"Query:\n\t{doc.MailMergeSettings.Query}");
+
+            // We can clear the settings, which will take place during saving
+            settings.Clear();
+
+            doc.Save(ArtifactsDir + "Document.OdsoEmail.docx");
+
+            doc = new Document(ArtifactsDir + "Document.OdsoEmail.docx");
+            Assert.That(doc.MailMergeSettings.ConnectString, Is.Empty);
+            //ExEnd
+        }
+
+        [Test]
+        public void MailingLabelMerge()
+        {
+            //ExStart
+            //ExFor:MailMergeSettings.DataSource
+            //ExFor:MailMergeSettings.HeaderSource
+            //ExSummary:Shows how to execute a mail merge while drawing data from a header and a data file.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create a merge destination document with MERGEFIELDS that will accept data
+            builder.Write("Dear ");
+            builder.InsertField("MERGEFIELD FirstName", "<FirstName>");
+            builder.Write(" ");
+            builder.InsertField("MERGEFIELD LastName", "<LastName>");
+
+            // Configure settings to draw data and headers from other documents
+            MailMergeSettings settings = doc.MailMergeSettings;
+
+            // The "header" document contains column names for the data in the "data" document,
+            // which will correspond to the names of our MERGEFIELDs
+            settings.HeaderSource = MyDir + "MailingLabelMergeHeader.doc";
+            settings.DataSource = MyDir + "MailingLabelMergeData.doc";
+
+            // Configure the rest of the MailMergeSettings object
+            settings.Query = "SELECT * FROM " + doc.MailMergeSettings.DataSource;
+            settings.MainDocumentType = MailMergeMainDocumentType.MailingLabels;
+            settings.DataType = MailMergeDataType.TextFile;
+            settings.LinkToQuery = true;
+            settings.ViewMergedData = true;
+
+            // The mail merge will be performed when this document is opened 
+            doc.Save(ArtifactsDir + "Document.MailingLabelMerge.doc");
             //ExEnd
         }
 
@@ -3409,6 +3440,15 @@ namespace ApiExamples
             {
                 Console.WriteLine($"Module name: {module.Name};\nModule code:\n{module.SourceCode}\n");
             }
+
+            // Set new source code for VBA module
+            string oldCode = vbaModules[0].SourceCode;
+            vbaModules[0].SourceCode = "Your VBA code...";
+
+            Assert.AreNotEqual(oldCode, vbaModules[0].SourceCode); //ExSkip
+            Assert.AreEqual("Your VBA code...", vbaModules[0].SourceCode); //ExSkip
+            
+            vbaModules[0].SourceCode = oldCode;
             //ExEnd
 
             VbaModule defaultModule = vbaModules[0];
@@ -3423,31 +3463,6 @@ namespace ApiExamples
             Assert.AreEqual(classModule.Name, "Class1");
             Assert.IsTrue(classModule.SourceCode.Contains("MsgBox \"Class test\""));
         }
-
-#if !(__MOBILE__ || MAC)
-        [Test]
-        public void OpenType()
-        {
-            //ExStart
-            //ExFor:LayoutOptions.TextShaperFactory
-            //ExSummary:Shows how to support OpenType features using HarfBuzz text shaping engine.
-            // Open a document
-            Document doc = new Document(MyDir + "OpenType.Document.docx");
-
-            // Please note that text shaping is only performed when exporting to PDF or XPS formats now
-
-            // Aspose.Words is capable of using text shaper objects provided externally.
-            // A text shaper represents a font and computes shaping information for a text.
-            // A document typically refers to multiple fonts thus a text shaper factory is necessary.
-            // When text shaper factory is set, layout starts to use OpenType features.
-            // An Instance property returns static BasicTextShaperCache object wrapping HarfBuzzTextShaperFactory
-            doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
-
-            // Render the document to PDF format
-            doc.Save(ArtifactsDir + "Document.OpenType.pdf");
-            //ExEnd
-        }
-#endif
 
         [Test]
         public void SaveOutputParameters()
@@ -3467,22 +3482,40 @@ namespace ApiExamples
         }
 
         [Test]
-        public void WordML2003SaveOptions()
+        public void Subdocument()
         {
             //ExStart
-            //ExFor:WordML2003SaveOptions
-            //ExFor:WordML2003SaveOptions.SaveFormat
-            //ExSummary:Shows how to save to a .wml document while applying save options.
-            Document doc = new Document(MyDir + "Document.doc");
+            //ExFor:SubDocument
+            //ExFor:SubDocument.NodeType
+            //ExSummary:Shows how to access a master document's subdocument.
+            Document doc = new Document(MyDir + "SubDocumentMaster.docx");
 
-            WordML2003SaveOptions options = new WordML2003SaveOptions()
-            {
-                SaveFormat = SaveFormat.WordML,
-                MemoryOptimization = true
-            };
+            NodeCollection subDocuments = doc.GetChildNodes(NodeType.SubDocument, true);
+            Assert.AreEqual(1, subDocuments.Count);
 
-            doc.Save(ArtifactsDir + "Document.WordML2003SaveOptions.wml", options);
+            SubDocument subDocument = (SubDocument)doc.GetChildNodes(NodeType.SubDocument, true)[0];
+            Assert.False(subDocument.IsComposite);
             //ExEnd
+        }
+
+        [Test]
+        public void EpubCover()
+        {
+            // Create a blank document and insert some text
+            Document doc = new Document();
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
+
+            // When saving to .epub, some Microsoft Word document properties can be converted to .epub metadata
+            doc.BuiltInDocumentProperties.Author = "John Doe";
+            doc.BuiltInDocumentProperties.Title = "My Book Title";
+
+            // The thumbnail we specify here can become the cover image
+            byte[] image = System.IO.File.ReadAllBytes(ImageDir + "Watermark.png");
+            doc.BuiltInDocumentProperties.Thumbnail = image;
+
+            doc.Save(ArtifactsDir + "EpubCover.epub");
         }
     }
 }

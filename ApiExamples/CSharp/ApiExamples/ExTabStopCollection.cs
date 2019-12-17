@@ -34,6 +34,59 @@ namespace ApiExamples
         }
 
         [Test]
+        public void TabStops()
+        {
+            //ExStart
+            //ExFor:TabStop.#ctor
+            //ExFor:TabStop.#ctor(Double)
+            //ExFor:TabStop.#ctor(Double,TabAlignment,TabLeader)
+            //ExFor:TabStop.Equals(TabStop)
+            //ExFor:TabStop.IsClear
+            //ExFor:TabStopCollection
+            //ExFor:TabStopCollection.After(Double)
+            //ExFor:TabStopCollection.Before(Double)
+            //ExFor:TabStopCollection.Count
+            //ExFor:TabStopCollection.Equals(TabStopCollection)
+            //ExFor:TabStopCollection.Equals(Object)
+            //ExFor:TabStopCollection.GetHashCode
+            //ExFor:TabStopCollection.Item(Double)
+            //ExFor:TabStopCollection.Item(Int32)
+            //ExSummary:Shows how to add tab stops to a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Access the collection of tab stops and add some tab stops to it
+            TabStopCollection tabStops = builder.ParagraphFormat.TabStops;
+
+            // 72 points is one "inch" on the Microsoft Word tab stop ruler
+            tabStops.Add(new TabStop(72.0));
+            tabStops.Add(new TabStop(432.0, TabAlignment.Right, TabLeader.Dashes));
+
+            Assert.AreEqual(2, tabStops.Count);
+            Assert.IsFalse(tabStops[0].IsClear);
+            Assert.IsFalse(tabStops[0].Equals(tabStops[1]));
+
+            builder.Writeln("Start\tTab 1\tTab 2");
+
+            // Get the collection of paragraphs that we've created
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+            Assert.AreEqual(2, paragraphs.Count);
+
+            // Each paragraph gets its own TabStopCollection which gets values from the DocumentBuilder's collection
+            Assert.AreEqual(paragraphs[0].ParagraphFormat.TabStops, paragraphs[1].ParagraphFormat.TabStops);
+            Assert.AreNotSame(paragraphs[0].ParagraphFormat.TabStops, paragraphs[1].ParagraphFormat.TabStops);
+            Assert.AreNotEqual(paragraphs[0].ParagraphFormat.TabStops.GetHashCode(),
+                paragraphs[1].ParagraphFormat.TabStops.GetHashCode());
+
+            // A TabStopCollection can point us to TabStops before and after certain positions
+            Assert.AreEqual(72.0, tabStops.Before(100.0).Position);
+            Assert.AreEqual(432.0, tabStops.After(100.0).Position);
+
+            doc.Save(ArtifactsDir + "TabStopCollection.TabStops.docx");
+            //ExEnd
+        }
+
+        [Test]
         public void AddEx()
         {
             //ExStart

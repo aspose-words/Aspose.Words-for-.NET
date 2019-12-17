@@ -37,7 +37,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExShape : ApiExampleBase
     {
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#if NETFRAMEWORK
         [Test]
         public void InsertShape()
         {
@@ -81,6 +81,115 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.InsertShapes.docx");
             //ExEnd
+        }
+
+        //ExStart
+        //ExFor:NodeRendererBase.RenderToScale(Graphics, Single, Single, Single)
+        //ExFor:NodeRendererBase.RenderToSize(Graphics, Single, Single, Single, Single)
+        //ExFor:ShapeRenderer
+        //ExFor:ShapeRenderer.#ctor(ShapeBase)
+        //ExSummary:Shows how to render a shape with a Graphics object.
+        [Test, Category("IgnoreOnJenkins")] //ExSkip
+        public void DisplayShapeForm()
+        {
+            // Create a new ShapeForm instance and show it as a dialog box
+            ShapeForm shapeForm = new ShapeForm();
+            shapeForm.ShowDialog();
+        }
+
+        /// <summary>
+        /// Windows Form that renders and displays shapes from a document.
+        /// </summary>
+        private class ShapeForm : Form
+        {
+            protected override void OnPaint(PaintEventArgs e)
+            {
+                // Set the size of the Form canvas
+                this.Size = new Size(1000, 800);
+
+                // Open a document and get its first shape, which is a chart
+                Document doc = new Document(MyDir + "Shape.VarietyOfShapes.docx");
+                Shape shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+                // Create a ShapeRenderer instance and a Graphics object
+                // The ShapeRenderer will render the shape that is passed during construction over the Graphics object
+                // Whatever is rendered on this Graphics object will be displayed on the screen inside this form
+                ShapeRenderer renderer = new ShapeRenderer(shape);
+                Graphics formGraphics = CreateGraphics();
+
+                // Call this method on the renderer to render the chart in the passed Graphics object,
+                // on a specified x/y coordinate and scale
+                renderer.RenderToScale(formGraphics, 0, 0, 1.5f);
+
+                // Get another shape from the document, and render it to a specific size instead of a linear scale
+                GroupShape groupShape = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
+                renderer = new ShapeRenderer(groupShape);
+                renderer.RenderToSize(formGraphics, 500, 400, 100, 200);
+            }
+        }
+        //ExEnd
+
+        [Test]
+        public void AspectRatioLockedDefaultValue()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // The best place for the watermark image is in the header or footer so it is shown on every page.
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            Image image = Image.FromFile(ImageDir + "Watermark.png");
+
+            // Insert a floating picture.
+            Shape shape = builder.InsertImage(image);
+            shape.WrapType = WrapType.None;
+            shape.BehindText = true;
+
+            shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
+            shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
+
+            // Calculate image left and top position so it appears in the centre of the page.
+            shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
+            shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
+
+            MemoryStream dstStream = new MemoryStream();
+            doc.Save(dstStream, SaveFormat.Docx);
+
+            shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
+            Assert.AreEqual(true, shape.AspectRatioLocked);            
+        }
+#else
+        [Test]
+        public void AspectRatioLockedDefaultValueNetStandard2()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // The best place for the watermark image is in the header or footer so it is shown on every page.
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            
+            using (SKManagedStream stream = new SKManagedStream(File.OpenRead(ImageDir + "Watermark.png")))
+            {
+                using (SKBitmap bitmap = SKBitmap.Decode(stream))
+                {
+                    // Insert a floating picture.
+                    Shape shape = builder.InsertImage(bitmap);
+                    shape.WrapType = WrapType.None;
+                    shape.BehindText = true;
+
+                    shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
+                    shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
+
+                    // Calculate image left and top position so it appears in the centre of the page.
+                    shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
+                    shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
+
+                    MemoryStream dstStream = new MemoryStream();
+                    doc.Save(dstStream, SaveFormat.Docx);
+
+                    shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
+                    Assert.AreEqual(true, shape.AspectRatioLocked);
+                }
+            }            
         }
 #endif
 
@@ -790,61 +899,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void AspectRatioLockedDefaultValue()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // The best place for the watermark image is in the header or footer so it is shown on every page.
-            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-#if NETSTANDARD2_0 || __MOBILE__
-            using (SKManagedStream stream = new SKManagedStream(File.OpenRead(ImageDir + "Watermark.png")))
-            {
-                using (SKBitmap bitmap = SKBitmap.Decode(stream))
-                {
-                    // Insert a floating picture.
-                    Shape shape = builder.InsertImage(bitmap);
-                    shape.WrapType = WrapType.None;
-                    shape.BehindText = true;
-
-                    shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
-                    shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
-
-                    // Calculate image left and top position so it appears in the centre of the page.
-                    shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
-                    shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
-
-                    MemoryStream dstStream = new MemoryStream();
-                    doc.Save(dstStream, SaveFormat.Docx);
-
-                    shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
-                    Assert.AreEqual(true, shape.AspectRatioLocked);
-                }
-            }
-#else
-            Image image = Image.FromFile(ImageDir + "Watermark.png");
-
-            // Insert a floating picture.
-            Shape shape = builder.InsertImage(image);
-            shape.WrapType = WrapType.None;
-            shape.BehindText = true;
-
-            shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
-            shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
-
-            // Calculate image left and top position so it appears in the centre of the page.
-            shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
-            shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
-
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
-            shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
-            Assert.AreEqual(true, shape.AspectRatioLocked);
-#endif
-        }
-
-        [Test]
         public void MarkupLunguageByDefault()
         {
             //ExStart
@@ -1379,6 +1433,68 @@ namespace ApiExamples
         }
 
         [Test]
+        public void CreateLinkBetweenTextBoxes()
+        {
+            //ExStart
+            //ExFor:TextBox.IsValidLinkTarget(TextBox)
+            //ExFor:TextBox.Next
+            //ExFor:TextBox.Previous
+            //ExFor:TextBox.BreakForwardLink
+            //ExSummary:Shows how to work with textbox forward link
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create a few textboxes for example
+            Shape textBoxShape1 = builder.InsertShape(ShapeType.TextBox, 100, 100);
+            TextBox textBox1 = textBoxShape1.TextBox;
+            builder.Writeln();
+            
+            Shape textBoxShape2 = builder.InsertShape(ShapeType.TextBox, 100, 100);
+            TextBox textBox2 = textBoxShape2.TextBox;
+            builder.Writeln();
+            
+            Shape textBoxShape3 = builder.InsertShape(ShapeType.TextBox, 100, 100);
+            TextBox textBox3 = textBoxShape3.TextBox;
+            builder.Writeln();
+
+            Shape textBoxShape4 = builder.InsertShape(ShapeType.TextBox, 100, 100);
+            TextBox textBox4 = textBoxShape4.TextBox;
+            
+            // Create link between textboxes if possible
+            if (textBox1.IsValidLinkTarget(textBox2))
+                textBox1.Next = textBox2;
+
+            if (textBox2.IsValidLinkTarget(textBox3))
+                textBox2.Next = textBox3;
+
+            // You can only create link on empty textbox
+            builder.MoveTo(textBoxShape4.LastParagraph);
+            builder.Write("Vertical text");
+            // Thus it's not valid link target
+            Assert.IsFalse(textBox3.IsValidLinkTarget(textBox4));
+            
+            if (textBox1.Next != null && textBox1.Previous == null)
+                Console.WriteLine("This TextBox is the head of the sequence");
+ 
+            if (textBox2.Next != null && textBox2.Previous != null)
+                Console.WriteLine("This TextBox is the Middle of the sequence");
+ 
+            if (textBox3.Next == null && textBox3.Previous != null)
+            {
+                Console.WriteLine("This TextBox is the Tail of the sequence");
+                
+                // Break the forward link between textBox2 and textBox3
+                textBox3.Previous.BreakForwardLink();
+                // Check that link was break successfully
+                Assert.IsTrue(textBox2.Next == null);
+                Assert.IsTrue(textBox3.Previous == null);
+            }
+
+            doc.Save(ArtifactsDir + "Shape.CreateLinkBetweenTextBoxes.docx");
+            //ExEnd
+        }
+
+        [Test]
         public void GetTextBoxAndChangeTextAnchor()
         {
             //ExStart
@@ -1682,6 +1798,25 @@ namespace ApiExamples
         }
 
         [Test]
+        public void DocumentHasSmartArtObject()
+        {
+            //ExStart
+            //ExFor:Shape.HasSmartArt
+            //ExSummary:Shows how to detect that Shape has a SmartArt object.
+            Document doc = new Document(MyDir + "Shape.SmartArt.docx");
+ 
+            int count = 0;
+            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
+            {
+                if (shape.HasSmartArt)
+                    count++;
+            }
+ 
+            Console.WriteLine("The document has {0} shapes with SmartArt.", count);
+            //ExEnd
+        }
+
+        [Test]
         public void OfficeMathRenderer()
         {
             //ExStart
@@ -1736,53 +1871,5 @@ namespace ApiExamples
             Assert.AreEqual(31, bounds.Height);
             //ExEnd
         }
-
-#if !(NETSTANDARD2_0 || __MOBILE__)
-        //ExStart
-        //ExFor:NodeRendererBase.RenderToScale(Graphics, Single, Single, Single)
-        //ExFor:NodeRendererBase.RenderToSize(Graphics, Single, Single, Single, Single)
-        //ExFor:ShapeRenderer
-        //ExFor:ShapeRenderer.#ctor(ShapeBase)
-        //ExSummary:Shows how to render a shape with a Graphics object.
-        [Test, Category("IgnoreOnJenkins")] //ExSkip
-        public void DisplayShapeForm()
-        {
-            // Create a new ShapeForm instance and show it as a dialog box
-            ShapeForm shapeForm = new ShapeForm();
-            shapeForm.ShowDialog();
-        }
-
-        /// <summary>
-        /// Windows Form that renders and displays shapes from a document.
-        /// </summary>
-        private class ShapeForm : Form
-        {
-            protected override void OnPaint(PaintEventArgs e)
-            {
-                // Set the size of the Form canvas
-                this.Size = new Size(1000, 800);
-
-                // Open a document and get its first shape, which is a chart
-                Document doc = new Document(MyDir + "Shape.VarietyOfShapes.docx");
-                Shape shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
-
-                // Create a ShapeRenderer instance and a Graphics object
-                // The ShapeRenderer will render the shape that is passed during construction over the Graphics object
-                // Whatever is rendered on this Graphics object will be displayed on the screen inside this form
-                ShapeRenderer renderer = new ShapeRenderer(shape);
-                Graphics formGraphics = CreateGraphics();
-
-                // Call this method on the renderer to render the chart in the passed Graphics object,
-                // on a specified x/y coordinate and scale
-                renderer.RenderToScale(formGraphics, 0, 0, 1.5f);
-
-                // Get another shape from the document, and render it to a specific size instead of a linear scale
-                GroupShape groupShape = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
-                renderer = new ShapeRenderer(groupShape);
-                renderer.RenderToSize(formGraphics, 500, 400, 100, 200);
-            }
-        }
-        //ExEnd
-    #endif
     }
 }

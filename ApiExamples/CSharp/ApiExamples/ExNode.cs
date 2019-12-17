@@ -16,7 +16,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using NUnit.Framework;
-#if (NETSTANDARD2_0 || __MOBILE__)
+#if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -739,12 +739,13 @@ namespace ApiExamples
             builder.Write("Cell 2");
             builder.EndTable();
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
+            #if NETFRAMEWORK
             builder.InsertImage(Image.FromFile(ImageDir + "Aspose.Words.gif"));
-#else
+            #else
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
                 builder.InsertImage(image);
-#endif
+            #endif
+
             builder.CurrentParagraph.ParentNode.RemoveAllChildren();
         }
 
@@ -847,12 +848,13 @@ namespace ApiExamples
             builder.Write("Cell 2");
             builder.EndTable();
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
+            #if NETFRAMEWORK
             builder.InsertImage(Image.FromFile(ImageDir + "Aspose.Words.gif"));
-#else
+            #else
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
                 builder.InsertImage(image);
-#endif
+            #endif
+
             // Get all run nodes, of which we put 3 in the entire document
             NodeList nodeList = doc.SelectNodes("//Run");
             Assert.AreEqual(3, nodeList.Count);

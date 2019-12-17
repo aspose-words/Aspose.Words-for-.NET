@@ -55,7 +55,7 @@ namespace ApiExamples
 
             // Look at initial values of our bookmarks
             PrintAllBookmarkInfo(bookmarks);
-            
+
             // Obtain bookmarks from a bookmark collection by index/name and update their values
             bookmarks[0].Name = "Updated name of " + bookmarks[0].Name;
             bookmarks["MyBookmark 2"].Text = "Updated text content of " + bookmarks[1].Name;

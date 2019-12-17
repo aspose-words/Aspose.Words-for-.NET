@@ -19,7 +19,7 @@ namespace Aspose.Words.Examples.CSharp.Quick_Start
             // License is stored as an embedded resource 
             try
             {
-                license.SetLicense("Aspose.Words.lic");
+                license.SetLicense(@"Aspose.Total.NET.lic");
                 Console.WriteLine("License set successfully.");
             }
 
