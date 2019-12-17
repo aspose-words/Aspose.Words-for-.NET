@@ -14,7 +14,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
-#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
+#if NETFRAMEWORK
 using System.Data.OleDb;
 #endif
 
@@ -287,7 +287,7 @@ namespace ApiExamples
             Assert.IsTrue(logoImage.HasImage);
         }
 
-        #if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
+        #if NETFRAMEWORK
         [Test]
         [Category("SkipMono")]
         public void MailMergeImageFromBlob()

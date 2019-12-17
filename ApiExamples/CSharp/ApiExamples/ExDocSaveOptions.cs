@@ -62,7 +62,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "DocSaveOptions.TempFolder.doc", options);
             //ExEnd
-            }
+        }
 
         [Test]
         public void PictureBullets()

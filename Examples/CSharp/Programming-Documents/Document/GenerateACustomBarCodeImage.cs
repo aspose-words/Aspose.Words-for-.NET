@@ -161,7 +161,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 
             generator.Parameters.CaptionAbove.Text = "";
 
-            const float scale = 0.4f; // Empiric scaling factor for converting Word barcode to Aspose.BarCode
+            const float scale = 1.0f; // Empiric scaling factor for converting Word barcode to Aspose.BarCode
             float xdim = 1.0f;
 
             if (encodeType == EncodeTypes.QR)

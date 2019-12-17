@@ -210,7 +210,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlSaveOptions.Html5Support.html", saveOptions);
         }
 
-#if !(__MOBILE__ || MAC)
+#if NETFRAMEWORK || NETSTANDARD2_0
         [Test]
         [TestCase(false)]
         [TestCase(true)]
@@ -241,9 +241,7 @@ namespace ApiExamples
                     break;
             }
         }
-#endif
 
-#if !(__MOBILE__ || MAC)
         [Test]
         public void ResourceFolderPriority()
         {
@@ -264,9 +262,7 @@ namespace ApiExamples
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.calibri.ttf", SearchOption.AllDirectories));
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.css", SearchOption.AllDirectories));
         }
-#endif
 
-#if !(__MOBILE__ || MAC)
         [Test]
         public void ResourceFolderLowPriority()
         {
