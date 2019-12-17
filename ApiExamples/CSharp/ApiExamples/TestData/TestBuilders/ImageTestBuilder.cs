@@ -1,21 +1,19 @@
 ﻿using System.IO;
 using ApiExamples.TestData.TestClasses;
-#if NETSTANDARD2_0 || __MOBILE__
-using SkiaSharp;
-#endif
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#if NETFRAMEWORK
 using System.Drawing;
-
+#else
+using SkiaSharp;
 #endif
 
 namespace ApiExamples.TestData.TestBuilders
 {
     public class ImageTestBuilder : ApiExampleBase
     {
-#if NETSTANDARD2_0 || __MOBILE__
-        private SKBitmap mImage;
-#else
+#if NETFRAMEWORK        
         private Image mImage;
+#else
+        private SKBitmap mImage;
 #endif
         private Stream mImageStream;
         private byte[] mImageBytes;
@@ -23,26 +21,26 @@ namespace ApiExamples.TestData.TestBuilders
 
         public ImageTestBuilder()
         {
-#if NETSTANDARD2_0 || __MOBILE__
-            this.mImage = SKBitmap.Decode(ImageDir + "Watermark.png");
+#if NETFRAMEWORK
+            mImage = Image.FromFile(ImageDir + "Watermark.png");            
 #else
-            mImage = Image.FromFile(ImageDir + "Watermark.png");
+            this.mImage = SKBitmap.Decode(ImageDir + "Watermark.png");
 #endif
             mImageStream = Stream.Null;
             mImageBytes = new byte[0];
             mImageUri = string.Empty;
         }
 
-#if NETSTANDARD2_0 || __MOBILE__
-        public ImageTestBuilder WithImage(SKBitmap image)
-        {
-            this.mImage = image;
-            return this;
-        }
-#else
+#if NETFRAMEWORK        
         public ImageTestBuilder WithImage(Image image)
         {
             mImage = image;
+            return this;
+        }
+#else
+        public ImageTestBuilder WithImage(SKBitmap image)
+        {
+            this.mImage = image;
             return this;
         }
 #endif

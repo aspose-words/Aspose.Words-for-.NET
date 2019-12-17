@@ -10,7 +10,7 @@ using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Settings;
 using NUnit.Framework;
-#if !(__MOBILE__ || MAC)
+#if NETFRAMEWORK || NETSTANDARD2_0
 using System.Drawing.Printing;
 #endif
 
@@ -104,7 +104,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if !(__MOBILE__ || MAC)
+#if NETFRAMEWORK || NETSTANDARD2_0
         [Test]
         [Ignore("Run only when the printer driver is installed")]
         public void DefaultPaperTray()
