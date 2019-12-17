@@ -974,8 +974,7 @@ namespace ApiExamples
 
         [Test]
         [TestCase(true, "{{ testfield1 }}value 1{{ testfield3 }}\f")]
-        [TestCase(false,
-            "\u0013MERGEFIELD \"testfield1\"\u0014«testfield1»\u0015value 1\u0013MERGEFIELD \"testfield3\"\u0014«testfield3»\u0015\f")]
+        [TestCase(false, "\u0013MERGEFIELD \"testfield1\"\u0014«testfield1»\u0015value 1\u0013MERGEFIELD \"testfield3\"\u0014«testfield3»\u0015\f")]
         public void MustasheTemplateSyntax(bool restoreTags, String sectionText)
         {
             Document doc = new Document();

@@ -15,7 +15,7 @@ namespace ApiExamples
     /// <summary>
     /// Sample of custom barcode generator implementation (with underlying Aspose.BarCode module)
     /// </summary>
-    public class CustomBarcodeGenerator : IBarcodeGenerator
+    public class CustomBarcodeGenerator : ApiExampleBase, IBarcodeGenerator
     {
         /// <summary>
         /// Converts barcode image height from Word units to Aspose.BarCode units.

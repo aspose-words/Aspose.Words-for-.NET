@@ -796,12 +796,6 @@ namespace ApiExamples
             
             // Read the stream back into an image
             SkiaSharp.SKBitmap image = SkiaSharp.SKBitmap.Decode(stream);
-            
-            // Read the stream back into an image
-            using (Image image = Image.FromStream(stream))
-            {
-                // ...Do something.
-            }            
             //ExEnd
         }
 
