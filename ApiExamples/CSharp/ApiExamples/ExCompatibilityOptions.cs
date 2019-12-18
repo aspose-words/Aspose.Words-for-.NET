@@ -21,7 +21,7 @@ namespace ApiExamples
         //ExFor:CompatibilityOptions
         //ExFor:CompatibilityOptions.OptimizeFor(MsWordVersion)
         //ExFor:Document.CompatibilityOptions
-        //ExSummary:Shows how to optimize our document for different word versions.
+        //ExSummary:Shows how to optimize document for different word versions.
         [Test] //ExSkip
         public void CompatibilityOptionsOptimizeFor()
         {
@@ -76,263 +76,172 @@ namespace ApiExamples
         [Test]
         public void CompatibilityOptionsTable()
         {
-            //ExStart
-            //ExFor:CompatibilityOptions.AdjustLineHeightInTable
-            //ExFor:CompatibilityOptions.AlignTablesRowByRow
-            //ExFor:CompatibilityOptions.AllowSpaceOfSameStyleInTable
-            //ExFor:CompatibilityOptions.DoNotAutofitConstrainedTables
-            //ExFor:CompatibilityOptions.DoNotBreakConstrainedForcedTable
-            //ExFor:CompatibilityOptions.DoNotBreakWrappedTables
-            //ExFor:CompatibilityOptions.DoNotSnapToGridInCell
-            //ExFor:CompatibilityOptions.DoNotUseHTMLParagraphAutoSpacing
-            //ExFor:CompatibilityOptions.DoNotVertAlignCellWithSp		
-            //ExFor:CompatibilityOptions.ForgetLastTabAlignment
-            //ExFor:CompatibilityOptions.GrowAutofit
-            //ExFor:CompatibilityOptions.LayoutRawTableWidth
-            //ExFor:CompatibilityOptions.LayoutTableRowsApart
-            //ExFor:CompatibilityOptions.NoColumnBalance
-            //ExFor:CompatibilityOptions.OverrideTableStyleFontSizeAndJustification
-            //ExFor:CompatibilityOptions.UseSingleBorderforContiguousCells
-            //ExFor:CompatibilityOptions.UseWord2002TableStyleRules
-            //ExFor:CompatibilityOptions.UseWord2010TableStyleRules
-            //ExSummary:Shows how to set compatibility options pertaining to tables to Word 2002 settings.
             Document doc = new Document();
-            CompatibilityOptions co = doc.CompatibilityOptions;
 
-            co.OptimizeFor(MsWordVersion.Word2002);
+            CompatibilityOptions compatibilityOptions = doc.CompatibilityOptions;
+            compatibilityOptions.OptimizeFor(MsWordVersion.Word2002);
 
-            Assert.AreEqual(false, co.AdjustLineHeightInTable);
-            Assert.AreEqual(false, co.AlignTablesRowByRow);
-            Assert.AreEqual(true, co.AllowSpaceOfSameStyleInTable);
-            Assert.AreEqual(true, co.DoNotAutofitConstrainedTables);
-            Assert.AreEqual(true, co.DoNotBreakConstrainedForcedTable);
-            Assert.AreEqual(false, co.DoNotBreakWrappedTables);
-            Assert.AreEqual(false, co.DoNotSnapToGridInCell);
-            Assert.AreEqual(false, co.DoNotUseHTMLParagraphAutoSpacing);
-            Assert.AreEqual(true, co.DoNotVertAlignCellWithSp);
-            Assert.AreEqual(false, co.ForgetLastTabAlignment);
-            Assert.AreEqual(true, co.GrowAutofit);
-            Assert.AreEqual(false, co.LayoutRawTableWidth);
-            Assert.AreEqual(false, co.LayoutTableRowsApart);
-            Assert.AreEqual(false, co.NoColumnBalance);
-            Assert.AreEqual(false, co.OverrideTableStyleFontSizeAndJustification);
-            Assert.AreEqual(false, co.UseSingleBorderforContiguousCells);
-            Assert.AreEqual(true, co.UseWord2002TableStyleRules);
-            Assert.AreEqual(false, co.UseWord2010TableStyleRules);
+            Assert.AreEqual(false, compatibilityOptions.AdjustLineHeightInTable);
+            Assert.AreEqual(false, compatibilityOptions.AlignTablesRowByRow);
+            Assert.AreEqual(true, compatibilityOptions.AllowSpaceOfSameStyleInTable);
+            Assert.AreEqual(true, compatibilityOptions.DoNotAutofitConstrainedTables);
+            Assert.AreEqual(true, compatibilityOptions.DoNotBreakConstrainedForcedTable);
+            Assert.AreEqual(false, compatibilityOptions.DoNotBreakWrappedTables);
+            Assert.AreEqual(false, compatibilityOptions.DoNotSnapToGridInCell);
+            Assert.AreEqual(false, compatibilityOptions.DoNotUseHTMLParagraphAutoSpacing);
+            Assert.AreEqual(true, compatibilityOptions.DoNotVertAlignCellWithSp);
+            Assert.AreEqual(false, compatibilityOptions.ForgetLastTabAlignment);
+            Assert.AreEqual(true, compatibilityOptions.GrowAutofit);
+            Assert.AreEqual(false, compatibilityOptions.LayoutRawTableWidth);
+            Assert.AreEqual(false, compatibilityOptions.LayoutTableRowsApart);
+            Assert.AreEqual(false, compatibilityOptions.NoColumnBalance);
+            Assert.AreEqual(false, compatibilityOptions.OverrideTableStyleFontSizeAndJustification);
+            Assert.AreEqual(false, compatibilityOptions.UseSingleBorderforContiguousCells);
+            Assert.AreEqual(true, compatibilityOptions.UseWord2002TableStyleRules);
+            Assert.AreEqual(false, compatibilityOptions.UseWord2010TableStyleRules);
 
             // These options will become available in File > Options > Advanced > Compatibility Options in the output document
             doc.Save(ArtifactsDir + "CompatibilityOptionsTable.docx");
-            //ExEnd
         }
 
         [Test]
         public void CompatibilityOptionsBreaks()
         {
-            //ExStart
-            //ExFor:CompatibilityOptions.ApplyBreakingRules
-            //ExFor:CompatibilityOptions.DoNotUseEastAsianBreakRules
-            //ExFor:CompatibilityOptions.ShowBreaksInFrames
-            //ExFor:CompatibilityOptions.SplitPgBreakAndParaMark
-            //ExFor:CompatibilityOptions.UseAltKinsokuLineBreakRules
-            //ExFor:CompatibilityOptions.UseWord97LineBreakRules
-            //ExSummary:Shows how to set compatibility options pertaining to breaks to Word 2000 settings.
             Document doc = new Document();
-            CompatibilityOptions co = doc.CompatibilityOptions;
 
-            co.OptimizeFor(MsWordVersion.Word2000);
+            CompatibilityOptions compatibilityOptions = doc.CompatibilityOptions;
+            compatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
 
-            Assert.AreEqual(false, co.ApplyBreakingRules);
-            Assert.AreEqual(true, co.DoNotUseEastAsianBreakRules);
-            Assert.AreEqual(false, co.ShowBreaksInFrames);
-            Assert.AreEqual(true, co.SplitPgBreakAndParaMark);
-            Assert.AreEqual(true, co.UseAltKinsokuLineBreakRules);
-            Assert.AreEqual(false, co.UseWord97LineBreakRules);
+            Assert.AreEqual(false, compatibilityOptions.ApplyBreakingRules);
+            Assert.AreEqual(true, compatibilityOptions.DoNotUseEastAsianBreakRules);
+            Assert.AreEqual(false, compatibilityOptions.ShowBreaksInFrames);
+            Assert.AreEqual(true, compatibilityOptions.SplitPgBreakAndParaMark);
+            Assert.AreEqual(true, compatibilityOptions.UseAltKinsokuLineBreakRules);
+            Assert.AreEqual(false, compatibilityOptions.UseWord97LineBreakRules);
 
             // These options will become available in File > Options > Advanced > Compatibility Options in the output document
             doc.Save(ArtifactsDir + "CompatibilityOptionsBreaks.docx");
-            //ExEnd
         }
 
         [Test]
         public void CompatibilityOptionsSpacing()
         {
-            //ExStart
-            //ExFor:CompatibilityOptions.AutoSpaceLikeWord95
-            //ExFor:CompatibilityOptions.DisplayHangulFixedWidth
-            //ExFor:CompatibilityOptions.NoExtraLineSpacing
-            //ExFor:CompatibilityOptions.NoLeading
-            //ExFor:CompatibilityOptions.NoSpaceRaiseLower
-            //ExFor:CompatibilityOptions.SpaceForUL
-            //ExFor:CompatibilityOptions.SpacingInWholePoints
-            //ExFor:CompatibilityOptions.SuppressBottomSpacing
-            //ExFor:CompatibilityOptions.SuppressSpBfAfterPgBrk
-            //ExFor:CompatibilityOptions.SuppressSpacingAtTopOfPage
-            //ExFor:CompatibilityOptions.SuppressTopSpacing
-            //ExFor:CompatibilityOptions.UlTrailSpace
-            //ExSummary:Shows how to set compatibility options pertaining to spacing to Word 2000 settings.
             Document doc = new Document();
-            CompatibilityOptions co = doc.CompatibilityOptions;
 
-            co.OptimizeFor(MsWordVersion.Word2000);
+            CompatibilityOptions compatibilityOptions = doc.CompatibilityOptions;
+            compatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
 
-            Assert.AreEqual(false, co.AutoSpaceLikeWord95);
-            Assert.AreEqual(true, co.DisplayHangulFixedWidth);
-            Assert.AreEqual(false, co.NoExtraLineSpacing);
-            Assert.AreEqual(false, co.NoLeading);
-            Assert.AreEqual(false, co.NoSpaceRaiseLower);
-            Assert.AreEqual(false, co.SpaceForUL);
-            Assert.AreEqual(false, co.SpacingInWholePoints);
-            Assert.AreEqual(false, co.SuppressBottomSpacing);
-            Assert.AreEqual(false, co.SuppressSpBfAfterPgBrk);
-            Assert.AreEqual(false, co.SuppressSpacingAtTopOfPage);
-            Assert.AreEqual(false, co.SuppressTopSpacing);
-            Assert.AreEqual(false, co.UlTrailSpace);
+            Assert.AreEqual(false, compatibilityOptions.AutoSpaceLikeWord95);
+            Assert.AreEqual(true, compatibilityOptions.DisplayHangulFixedWidth);
+            Assert.AreEqual(false, compatibilityOptions.NoExtraLineSpacing);
+            Assert.AreEqual(false, compatibilityOptions.NoLeading);
+            Assert.AreEqual(false, compatibilityOptions.NoSpaceRaiseLower);
+            Assert.AreEqual(false, compatibilityOptions.SpaceForUL);
+            Assert.AreEqual(false, compatibilityOptions.SpacingInWholePoints);
+            Assert.AreEqual(false, compatibilityOptions.SuppressBottomSpacing);
+            Assert.AreEqual(false, compatibilityOptions.SuppressSpBfAfterPgBrk);
+            Assert.AreEqual(false, compatibilityOptions.SuppressSpacingAtTopOfPage);
+            Assert.AreEqual(false, compatibilityOptions.SuppressTopSpacing);
+            Assert.AreEqual(false, compatibilityOptions.UlTrailSpace);
 
             // These options will become available in File > Options > Advanced > Compatibility Options in the output document
             doc.Save(ArtifactsDir + "CompatibilityOptionsSpacing.docx");
-            //ExEnd
         }
 
         [Test]
         public void CompatibilityOptionsWordPerfect()
         {
-            //ExStart
-            //ExFor:CompatibilityOptions.SuppressTopSpacingWP
-            //ExFor:CompatibilityOptions.TruncateFontHeightsLikeWP6
-            //ExFor:CompatibilityOptions.WPJustification
-            //ExFor:CompatibilityOptions.WPSpaceWidth
-            //ExFor:CompatibilityOptions.WrapTrailSpaces
-            //ExSummary:Shows how to set compatibility options to emulate Corel WordPerfect.
             Document doc = new Document();
-            CompatibilityOptions co = doc.CompatibilityOptions;
 
-            co.OptimizeFor(MsWordVersion.Word2000);
+            CompatibilityOptions compatibilityOptions = doc.CompatibilityOptions;
+            compatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
 
-            Assert.AreEqual(false, co.SuppressTopSpacingWP);
-            Assert.AreEqual(false, co.TruncateFontHeightsLikeWP6);
-            Assert.AreEqual(false, co.WPJustification);
-            Assert.AreEqual(false, co.WPSpaceWidth);
-            Assert.AreEqual(false, co.WrapTrailSpaces);
+            Assert.AreEqual(false, compatibilityOptions.SuppressTopSpacingWP);
+            Assert.AreEqual(false, compatibilityOptions.TruncateFontHeightsLikeWP6);
+            Assert.AreEqual(false, compatibilityOptions.WPJustification);
+            Assert.AreEqual(false, compatibilityOptions.WPSpaceWidth);
+            Assert.AreEqual(false, compatibilityOptions.WrapTrailSpaces);
 
             // These options will become available in File > Options > Advanced > Compatibility Options in the output document
             doc.Save(ArtifactsDir + "CompatibilityOptionsWordPerfect.docx");
-            //ExEnd
         }
 
         [Test]
         public void CompatibilityOptionsAlignment()
         {
-            //ExStart
-            //ExFor:CompatibilityOptions.CachedColBalance
-            //ExFor:CompatibilityOptions.DoNotVertAlignInTxbx
-            //ExFor:CompatibilityOptions.DoNotWrapTextWithPunct
-            //ExFor:CompatibilityOptions.NoTabHangInd
-            //ExSummary:Shows how to set compatibility options pertaining to alignment to Word 2000 settings.
             Document doc = new Document();
-            CompatibilityOptions co = doc.CompatibilityOptions;
+            
+            CompatibilityOptions compatibilityOptions = doc.CompatibilityOptions;
+            compatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
 
-            co.OptimizeFor(MsWordVersion.Word2000);
-
-            Assert.AreEqual(true, co.CachedColBalance);
-            Assert.AreEqual(true, co.DoNotVertAlignInTxbx);
-            Assert.AreEqual(true, co.DoNotWrapTextWithPunct);
-            Assert.AreEqual(false, co.NoTabHangInd);
+            Assert.AreEqual(true, compatibilityOptions.CachedColBalance);
+            Assert.AreEqual(true, compatibilityOptions.DoNotVertAlignInTxbx);
+            Assert.AreEqual(true, compatibilityOptions.DoNotWrapTextWithPunct);
+            Assert.AreEqual(false, compatibilityOptions.NoTabHangInd);
 
             // These options will become available in File > Options > Advanced > Compatibility Options in the output document
             doc.Save(ArtifactsDir + "CompatibilityOptionsAlignment.docx");
-            //ExEnd
         }
 
         [Test]
         public void CompatibilityOptionsLegacy()
         {
-            //ExStart
-            //ExFor:CompatibilityOptions.FootnoteLayoutLikeWW8
-            //ExFor:CompatibilityOptions.LineWrapLikeWord6
-            //ExFor:CompatibilityOptions.MWSmallCaps
-            //ExFor:CompatibilityOptions.ShapeLayoutLikeWW8
-            //ExFor:CompatibilityOptions.UICompat97To2003
-            //ExSummary:Shows how to set compatibility options to emulate older Microsoft Word versions.
             Document doc = new Document();
-            CompatibilityOptions co = doc.CompatibilityOptions;
 
-            co.OptimizeFor(MsWordVersion.Word2000);
+            CompatibilityOptions compatibilityOptions = doc.CompatibilityOptions;
+            compatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
 
-            Assert.AreEqual(false, co.FootnoteLayoutLikeWW8);
-            Assert.AreEqual(false, co.LineWrapLikeWord6);
-            Assert.AreEqual(false, co.MWSmallCaps);
-            Assert.AreEqual(false, co.ShapeLayoutLikeWW8);
-            Assert.AreEqual(false, co.UICompat97To2003);
+            Assert.AreEqual(false, compatibilityOptions.FootnoteLayoutLikeWW8);
+            Assert.AreEqual(false, compatibilityOptions.LineWrapLikeWord6);
+            Assert.AreEqual(false, compatibilityOptions.MWSmallCaps);
+            Assert.AreEqual(false, compatibilityOptions.ShapeLayoutLikeWW8);
+            Assert.AreEqual(false, compatibilityOptions.UICompat97To2003);
 
             // These options will become available in File > Options > Advanced > Compatibility Options in the output document
             doc.Save(ArtifactsDir + "CompatibilityOptionsLegacy.docx");
-            //ExEnd
         }
 
         [Test]
         public void CompatibilityOptionsList()
         {
-            //ExStart
-            //ExFor:CompatibilityOptions.UnderlineTabInNumList
-            //ExFor:CompatibilityOptions.UseNormalStyleForList
-            //ExSummary:Shows how to set compatibility options pertaining to lists to Word 2000 settings.
             Document doc = new Document();
-            CompatibilityOptions co = doc.CompatibilityOptions;
 
-            co.OptimizeFor(MsWordVersion.Word2000);
+            CompatibilityOptions compatibilityOptions = doc.CompatibilityOptions;
+            compatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
 
-            Assert.AreEqual(true, co.UnderlineTabInNumList);
-            Assert.AreEqual(true, co.UseNormalStyleForList);
+            Assert.AreEqual(true, compatibilityOptions.UnderlineTabInNumList);
+            Assert.AreEqual(true, compatibilityOptions.UseNormalStyleForList);
 
             // These options will become available in File > Options > Advanced > Compatibility Options in the output document
             doc.Save(ArtifactsDir + "CompatibilityOptionsList.docx");
-            //ExEnd
         }
 
         [Test]
         public void CompatibilityOptionsMisc()
         {
-            //ExStart
-            //ExFor:CompatibilityOptions.BalanceSingleByteDoubleByteWidth
-            //ExFor:CompatibilityOptions.ConvMailMergeEsc
-            //ExFor:CompatibilityOptions.DoNotExpandShiftReturn
-            //ExFor:CompatibilityOptions.DoNotLeaveBackslashAlone
-            //ExFor:CompatibilityOptions.DoNotSuppressParagraphBorders
-            //ExFor:CompatibilityOptions.DoNotUseIndentAsNumberingTabStop
-            //ExFor:CompatibilityOptions.PrintBodyTextBeforeHeader
-            //ExFor:CompatibilityOptions.PrintColBlack
-            //ExFor:CompatibilityOptions.SelectFldWithFirstOrLastChar
-            //ExFor:CompatibilityOptions.SubFontBySize
-            //ExFor:CompatibilityOptions.SwapBordersFacingPgs
-            //ExFor:CompatibilityOptions.TransparentMetafiles
-            //ExFor:CompatibilityOptions.UseAnsiKerningPairs
-            //ExFor:CompatibilityOptions.UseFELayout
-            //ExFor:CompatibilityOptions.UsePrinterMetrics
-            //ExSummary:Shows how to set miscellaneous compatibility options to Word 2000 settings.
             Document doc = new Document();
-            CompatibilityOptions co = doc.CompatibilityOptions;
 
-            co.OptimizeFor(MsWordVersion.Word2000);
+            CompatibilityOptions compatibilityOptions = doc.CompatibilityOptions;
+            compatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
 
-            Assert.AreEqual(false, co.BalanceSingleByteDoubleByteWidth);
-            Assert.AreEqual(false, co.ConvMailMergeEsc);
-            Assert.AreEqual(false, co.DoNotExpandShiftReturn);
-            Assert.AreEqual(false, co.DoNotLeaveBackslashAlone);
-            Assert.AreEqual(false, co.DoNotSuppressParagraphBorders);
-            Assert.AreEqual(true, co.DoNotUseIndentAsNumberingTabStop);
-            Assert.AreEqual(false, co.PrintBodyTextBeforeHeader);
-            Assert.AreEqual(false, co.PrintColBlack);
-            Assert.AreEqual(true, co.SelectFldWithFirstOrLastChar);
-            Assert.AreEqual(false, co.SubFontBySize);
-            Assert.AreEqual(false, co.SwapBordersFacingPgs);
-            Assert.AreEqual(false, co.TransparentMetafiles);
-            Assert.AreEqual(true, co.UseAnsiKerningPairs);
-            Assert.AreEqual(false, co.UseFELayout);
-            Assert.AreEqual(false, co.UsePrinterMetrics);
+            Assert.AreEqual(false, compatibilityOptions.BalanceSingleByteDoubleByteWidth);
+            Assert.AreEqual(false, compatibilityOptions.ConvMailMergeEsc);
+            Assert.AreEqual(false, compatibilityOptions.DoNotExpandShiftReturn);
+            Assert.AreEqual(false, compatibilityOptions.DoNotLeaveBackslashAlone);
+            Assert.AreEqual(false, compatibilityOptions.DoNotSuppressParagraphBorders);
+            Assert.AreEqual(true, compatibilityOptions.DoNotUseIndentAsNumberingTabStop);
+            Assert.AreEqual(false, compatibilityOptions.PrintBodyTextBeforeHeader);
+            Assert.AreEqual(false, compatibilityOptions.PrintColBlack);
+            Assert.AreEqual(true, compatibilityOptions.SelectFldWithFirstOrLastChar);
+            Assert.AreEqual(false, compatibilityOptions.SubFontBySize);
+            Assert.AreEqual(false, compatibilityOptions.SwapBordersFacingPgs);
+            Assert.AreEqual(false, compatibilityOptions.TransparentMetafiles);
+            Assert.AreEqual(true, compatibilityOptions.UseAnsiKerningPairs);
+            Assert.AreEqual(false, compatibilityOptions.UseFELayout);
+            Assert.AreEqual(false, compatibilityOptions.UsePrinterMetrics);
 
             // These options will become available in File > Options > Advanced > Compatibility Options in the output document
             doc.Save(ArtifactsDir + "CompatibilityOptionsMisc.docx");
-            //ExEnd
         }
     }
 }
