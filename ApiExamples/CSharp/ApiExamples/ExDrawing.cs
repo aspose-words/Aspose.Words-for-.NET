@@ -20,7 +20,7 @@ namespace ApiExamples
     {
 #if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
-        public void DrawingVariousShapes()
+        public void VariousShapes()
         {
             //ExStart
             //ExFor:Drawing.ArrowLength
@@ -265,7 +265,7 @@ namespace ApiExamples
 #endif
 
         [Test]
-        public void TextBoxTextLayout()
+        public void TextBox()
         {
             //ExStart
             //ExFor:Drawing.LayoutFlow
@@ -312,7 +312,7 @@ namespace ApiExamples
             // Then, put the image data from that stream into another stream which creates an image file in the local file system
             using (Stream imgStream = shapes[0].ImageData.ToStream())
             {
-                using (FileStream outStream = new FileStream(ArtifactsDir + "MyImg.png", FileMode.CreateNew))
+                using (FileStream outStream = new FileStream(ArtifactsDir + "Drawing.GetDataFromImage.png", FileMode.CreateNew))
                 {
                     imgStream.CopyTo(outStream);
                 }
@@ -350,7 +350,7 @@ namespace ApiExamples
                     ImageFormat format = imageData.ToImage().RawFormat;
                     string fileExtension = formatConverter.ConvertToString(format);
 
-                    using (FileStream fileStream = File.Create(ArtifactsDir + $"Image from shape {i}.{fileExtension}"))
+                    using (FileStream fileStream = File.Create(ArtifactsDir + $"Drawing.SaveAllImages.{i}.{fileExtension}"))
                     {
                         imageData.Save(fileStream);
                     }
@@ -432,7 +432,7 @@ namespace ApiExamples
             importedShape.ImageData.CropTop = 0.3d;
             importedShape.ImageData.CropRight = 0.3d;
 
-            dstDoc.Save(ArtifactsDir + "ImageData.EditedImages.docx");
+            dstDoc.Save(ArtifactsDir + "Drawing.ImageData.docx");
             //ExEnd
         }
 
@@ -463,7 +463,7 @@ namespace ApiExamples
                 imgShape.Left = 150.0f;
             }
 
-            doc.Save(ArtifactsDir + "ImageData.ImportedImage.docx");
+            doc.Save(ArtifactsDir + "Drawing.ImportedImage.docx");
             //ExEnd
         }
 #endif
@@ -501,7 +501,7 @@ namespace ApiExamples
             shape.Width = imageSize.WidthPoints * 2;
             shape.Height = imageSize.HeightPoints * 2;
 
-            doc.Save(ArtifactsDir + "Image.ImageSize.docx");
+            doc.Save(ArtifactsDir + "Drawing.ImageSize.docx");
             //ExEnd
         }
     }
