@@ -1102,9 +1102,9 @@ namespace ApiExamples
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveEmptyTableRows;
             doc.MailMerge.ExecuteWithRegions(data);
 
-            doc.Save(ArtifactsDir + "MailMerge.CleanUp.docx");
+            doc.Save(ArtifactsDir + "MailMerge.CleanupOptions.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "MailMerge.CleanUp.docx", GoldsDir + "MailMerge.CleanUp Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "MailMerge.CleanupOptions.docx", GoldsDir + "MailMerge.CleanupOptions Gold.docx"));
         }
 
         /// <summary>

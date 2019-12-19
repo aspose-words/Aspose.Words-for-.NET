@@ -21,7 +21,7 @@ namespace ApiExamples
     public class ExHeaderFooter : ApiExampleBase
     {
         [Test]
-        public void HeaderFooterCreate()
+        public void Create()
         {
             //ExStart
             //ExFor:HeaderFooter
@@ -58,9 +58,9 @@ namespace ApiExamples
             Assert.AreEqual(footer.ParentSection, para.ParentSection);
             Assert.AreEqual(footer.ParentSection, header.ParentSection);
             
-            doc.Save(ArtifactsDir + "HeaderFooter.HeaderFooterCreate.docx");
+            doc.Save(ArtifactsDir + "HeaderFooter.Create.docx");
             //ExEnd
-            doc = new Document(ArtifactsDir + "HeaderFooter.HeaderFooterCreate.docx");
+            doc = new Document(ArtifactsDir + "HeaderFooter.Create.docx");
 
             Assert.True(doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].Range.Text
                 .Contains("My header"));
@@ -69,7 +69,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void HeaderFooterLink()
+        public void Link()
         {
             //ExStart
             //ExFor:HeaderFooter.IsLinkedToPrevious
@@ -137,7 +137,7 @@ namespace ApiExamples
             Assert.False(doc.Sections[2].HeadersFooters[4].IsLinkedToPrevious);
             Assert.False(doc.Sections[2].HeadersFooters[5].IsLinkedToPrevious);
     
-            doc.Save(ArtifactsDir + "HeaderFooter.HeaderFooterLink.docx");
+            doc.Save(ArtifactsDir + "HeaderFooter.Link.docx");
             //ExEnd
         }
 
@@ -173,7 +173,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetExportHeadersFootersMode()
+        public void DisableHeadersFooters()
         {
             //ExStart
             //ExFor:HtmlSaveOptions.ExportHeadersFootersMode
@@ -226,7 +226,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void HeaderFooterOrder()
+        public void Order()
         {
             //ExStart
             //ExFor:IReplacingCallback
@@ -244,7 +244,7 @@ namespace ApiExamples
 
             doc.Range.Replace(new Regex("(header|footer)"), "", options);
 
-            doc.Save(ArtifactsDir + "HeaderFooter.HeaderFooterOrder.docx");
+            doc.Save(ArtifactsDir + "HeaderFooter.Order.docx");
 #if __MOBILE__
             Assert.AreEqual("First header\nFirst footer\nSecond header\nSecond footer\nThird header\n" +
                             "Third footer\n", logger.Text);

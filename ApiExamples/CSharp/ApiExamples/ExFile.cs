@@ -127,7 +127,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DetectFileFormat_EnumConversions()
+        public void SaveToDetectedFileFormat()
         {
             //ExStart
             //ExFor:FileFormatUtil.DetectFileFormat(Stream)
@@ -165,7 +165,7 @@ namespace ApiExamples
 
             // Save the document with the original file name, " Out" and the document's file extension.
             doc.Save(
-                ArtifactsDir + "Document.WithFileExtension" + FileFormatUtil.SaveFormatToExtension(saveFormat));
+                ArtifactsDir + "File.SaveToDetectedFileFormat" + FileFormatUtil.SaveFormatToExtension(saveFormat));
             //ExEnd
 
             Assert.AreEqual(".doc", FileFormatUtil.SaveFormatToExtension(saveFormat));

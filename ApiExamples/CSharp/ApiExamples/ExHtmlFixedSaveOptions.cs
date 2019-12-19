@@ -33,14 +33,14 @@ namespace ApiExamples
                 Encoding = new ASCIIEncoding()
             };
 
-            doc.Save(ArtifactsDir + "UseEncoding.html", htmlFixedSaveOptions);
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.UseEncoding.html", htmlFixedSaveOptions);
             //ExEnd
         }
 
         // Note: Test doesn't contain validation result, because it's may take a lot of time for assert result
         // For validation result, you can save the document to HTML file and check out with notepad++, that file encoding will be correctly displayed (Encoding tab in Notepad++)
         [Test]
-        public void EncodingUsingGetEncoding()
+        public void GetEncoding()
         {
             Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
 
@@ -49,7 +49,7 @@ namespace ApiExamples
                 Encoding = Encoding.GetEncoding("utf-16")
             };
 
-            doc.Save(ArtifactsDir + "EncodingUsingGetEncoding.html", htmlFixedSaveOptions);
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.GetEncoding.html", htmlFixedSaveOptions);
         }
 
         // Note: Test doesn't contain validation result, because it's may take a lot of time for assert result
@@ -73,7 +73,7 @@ namespace ApiExamples
                 ExportEmbeddedSvg = true
             };
 
-            doc.Save(ArtifactsDir + "ExportEmbeddedObjects.html", htmlFixedSaveOptions);
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedObjects.html", htmlFixedSaveOptions);
             //ExEnd
         }
 
@@ -93,7 +93,7 @@ namespace ApiExamples
                 ExportFormFields = true
             };
 
-            doc.Save(ArtifactsDir + "ExportFormFields.html", htmlFixedSaveOptions);
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.ExportFormFields.html", htmlFixedSaveOptions);
             //ExEnd
         }
 
@@ -112,10 +112,10 @@ namespace ApiExamples
                 SaveFontFaceCssSeparately = true
             };
 
-            doc.Save(ArtifactsDir + "cssPrefix_Out.html", htmlFixedSaveOptions);
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.AddCssClassNamesPrefix.html", htmlFixedSaveOptions);
             //ExEnd
 
-            DocumentHelper.FindTextInFile(ArtifactsDir + "cssPrefix_Out/styles.css", "test");
+            DocumentHelper.FindTextInFile(ArtifactsDir + "HtmlFixedSaveOptions.AddCssClassNamesPrefix/styles.css", "test");
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace ApiExamples
                 PageHorizontalAlignment = HtmlFixedPageHorizontalAlignment.Left
             };
 
-            doc.Save(ArtifactsDir + "HtmlFixedPageHorizontalAlignment.html", htmlFixedSaveOptions);
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.HorizontalAlignment.html", htmlFixedSaveOptions);
             //ExEnd
         }
 
@@ -149,7 +149,7 @@ namespace ApiExamples
                 PageMargins = 10
             };
 
-            doc.Save(ArtifactsDir + "HtmlFixedPageMargins.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.PageMargins.html", saveOptions);
             //ExEnd
         }
 
@@ -170,7 +170,7 @@ namespace ApiExamples
 
             HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { OptimizeOutput = false };
 
-            doc.Save(ArtifactsDir + "HtmlFixedPageMargins.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html", saveOptions);
             //ExEnd
         }
 
@@ -192,7 +192,7 @@ namespace ApiExamples
                 ResourceSavingCallback = new ResourceSavingCallback()
             };
 
-            doc.Save(ArtifactsDir + "UseMachineFonts.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.UsingMachineFonts.html", saveOptions);
         }
 
         private class ResourceSavingCallback : IResourceSavingCallback
@@ -247,7 +247,7 @@ namespace ApiExamples
             // We must ensure the folder exists before the streams can put their resources into it
             Directory.CreateDirectory(options.ResourcesFolderAlias);
 
-            doc.Save(ArtifactsDir + "HtmlFixedResourceFolder.html", options);
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.HtmlFixedResourceFolder.html", options);
         }
 
         /// <summary>

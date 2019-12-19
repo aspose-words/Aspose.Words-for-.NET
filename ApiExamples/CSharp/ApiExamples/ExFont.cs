@@ -136,7 +136,7 @@ namespace ApiExamples
             fontInfos.EmbedSystemFonts = false;
             fontInfos.SaveSubsetFonts = false;
 
-            doc.Save(ArtifactsDir + "Document.docx");
+            doc.Save(ArtifactsDir + "Font.FontInfoCollection.docx");
             //ExEnd
         }
 
@@ -159,7 +159,7 @@ namespace ApiExamples
             fontInfos.EmbedSystemFonts = embedSystemFonts;
             fontInfos.SaveSubsetFonts = saveSubsetFonts;
 
-            doc.Save(ArtifactsDir + "Document.docx");
+            doc.Save(ArtifactsDir + "Font.WorkWithEmbeddedFonts.docx");
         }
 
         [Test]
@@ -513,7 +513,7 @@ namespace ApiExamples
                     run.Font.StyleIdentifier = StyleIdentifier.Strong;
             }
 
-            doc.Save(ArtifactsDir + "Font.StyleIdentifier.doc");
+            doc.Save(ArtifactsDir + "Font.ChangeStyleIdentifier.doc");
             //ExEnd
         }
 
@@ -538,7 +538,7 @@ namespace ApiExamples
                     run.Font.StyleName = "Strong";
             }
 
-            doc.Save(ArtifactsDir + "Font.StyleName.doc");
+            doc.Save(ArtifactsDir + "Font.ChangeStyleName.doc");
             //ExEnd
         }
 
@@ -598,7 +598,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ReceiveFontSubstitutionNotification()
+        public void SubstitutionNotification()
         {
             // Store the font sources currently used so we can restore them later. 
             FontSourceBase[] origFontSources = FontSettings.DefaultInstance.GetFontsSources();
@@ -624,7 +624,7 @@ namespace ApiExamples
             FontSettings.DefaultInstance.SetFontsFolder(String.Empty, false);
 
             // Pass the save options along with the save path to the save method.
-            doc.Save(ArtifactsDir + "Rendering.MissingFontNotification.pdf");
+            doc.Save(ArtifactsDir + "Font.SubstitutionNotification.pdf");
             //ExEnd
 
             Assert.Greater(callback.mFontWarnings.Count, 0);
@@ -694,7 +694,7 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void EnableFontSubstitutionTrue()
+        public void EnableFontSubstitution()
         {
             //ExStart
             //ExFor:Fonts.FontInfoSubstitutionRule
@@ -728,7 +728,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void EnableFontSubstitutionFalse()
+        public void DisableFontSubstitution()
         {
             Document doc = new Document(MyDir + "Font.EnableFontSubstitution.docx");
 
@@ -741,7 +741,7 @@ namespace ApiExamples
             fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = false;
 
             doc.FontSettings = fontSettings;
-            doc.Save(ArtifactsDir + "Font.EnableFontSubstitution.pdf");
+            doc.Save(ArtifactsDir + "Font.DisableFontSubstitution.pdf");
 
             Regex reg = new Regex("Font '28 Days Later' has not been found. Using (.*) font instead. Reason: default font setting.");
             
@@ -758,7 +758,7 @@ namespace ApiExamples
 
         [Test]
         [Category("SkipMono")]
-        public void FontSubstitutionWarnings()
+        public void SubstitutionWarnings()
         {
             Document doc = new Document(MyDir + "Rendering.doc");
 
@@ -772,7 +772,7 @@ namespace ApiExamples
             fontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Arial", "Arvo", "Slab");
             
             doc.FontSettings = fontSettings;
-            doc.Save(ArtifactsDir + "Rendering.MissingFontNotification.pdf");
+            doc.Save(ArtifactsDir + "Font.SubstitutionWarnings.pdf");
 
             Assert.AreEqual("Font \'Arial\' has not been found. Using \'Arvo\' font instead. Reason: table substitution.",
                 callback.mFontWarnings[0].Description);
@@ -781,7 +781,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void FontSubstitutionWarningsClosestMatch()
+        public void SubstitutionWarningsClosestMatch()
         {
             Document doc = new Document(MyDir + "Font.DisappearingBulletPoints.doc");
 
@@ -789,7 +789,7 @@ namespace ApiExamples
             HandleDocumentWarnings callback = new HandleDocumentWarnings();
             doc.WarningCallback = callback;
 
-            doc.Save(ArtifactsDir + "Font.DisapearingBulletPoints.pdf");
+            doc.Save(ArtifactsDir + "Font.SubstitutionWarningsClosestMatch.pdf");
 
             Assert.True(callback.mFontWarnings[0].Description
                 .Equals(
@@ -859,7 +859,7 @@ namespace ApiExamples
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             table.Accept(hiddenContentRemover);
 
-            doc.Save(ArtifactsDir + "Font.Hidden.doc");
+            doc.Save(ArtifactsDir + "Font.RemoveHiddenContentFromDocument.doc");
 
             Assert.AreEqual(13, doc.GetChildNodes(NodeType.Paragraph, true).Count); //ExSkip
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count); //ExSkip
@@ -1326,7 +1326,7 @@ namespace ApiExamples
             fontSettings.FallbackSettings.Load(MyDir + "Fallback.xml");
 
             doc.FontSettings = fontSettings;
-            doc.Save(ArtifactsDir + "LoadFontFallbackSettingsFromFile.pdf");
+            doc.Save(ArtifactsDir + "Font.LoadFontFallbackSettingsFromFile.pdf");
 
             // Saves font fallback setting by string
             doc.FontSettings.FallbackSettings.Save(ArtifactsDir + "FallbackSettings.xml");
@@ -1351,7 +1351,7 @@ namespace ApiExamples
                 doc.FontSettings = fontSettings;
             }
 
-            doc.Save(ArtifactsDir + "LoadFontFallbackSettingsFromStream.pdf");
+            doc.Save(ArtifactsDir + "Font.LoadFontFallbackSettingsFromStream.pdf");
 
             // Saves font fallback setting by stream
             using (FileStream fontFallbackStream =
@@ -1514,7 +1514,7 @@ namespace ApiExamples
             // We can also load a custom substitution scheme from a file like this
             // This scheme applies the "Arvo" font across the "0000-00ff" unicode blocks, the "Squarish Sans CT" font across "0100-024f",
             // and the "M+ 2m" font in every place that none of the other fonts cover
-            fontFallbackSettings.Load(MyDir + "Font.FallbackSettings.Custom.xml");
+            fontFallbackSettings.Load(MyDir + "Font.FallbackSettingsCustom.xml");
 
             // Create a document builder and set its font to one that doesn't exist in any of our sources
             // In doing that we will rely completely on our font fallback scheme to render text
@@ -1540,7 +1540,7 @@ namespace ApiExamples
                 builder.Write(Convert.ToChar(i).ToString());
             }
 
-            doc.Save(ArtifactsDir + "Font.FallbackSettings.Custom.pdf");
+            doc.Save(ArtifactsDir + "Font.FallbackSettingsCustom.pdf");
             //ExEnd
         }
 

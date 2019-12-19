@@ -34,7 +34,7 @@ namespace ApiExamples
                 UseGdiEmfRenderer = false
             };
 
-            doc.Save(ArtifactsDir + "SaveOptions.UseGdiEmfRenderer.docx", saveOptions);
+            doc.Save(ArtifactsDir + "ImageSaveOptions.UseGdiEmfRenderer.docx", saveOptions);
             //ExEnd
         }
 
@@ -51,7 +51,7 @@ namespace ApiExamples
                 PageIndex = 0 // Define which page will save
             };
 
-            doc.Save(ArtifactsDir + "SaveOptions.MyraidPro.gif", saveOptions);
+            doc.Save(ArtifactsDir + "ImageSaveOptions.SaveIntoGif.gif", saveOptions);
             //ExEnd
         }
 
@@ -84,14 +84,14 @@ namespace ApiExamples
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Jpeg);
             saveOptions.GraphicsQualityOptions = qualityOptions;
 
-            doc.Save(ArtifactsDir + "SaveOptions.GraphicsQuality.jpeg", saveOptions);
+            doc.Save(ArtifactsDir + "ImageSaveOptions.GraphicsQuality.jpeg", saveOptions);
             //ExEnd
         }
 #endif
 
         [Test]
         [Category("SkipMono")]
-        public void ConverImageColorsToBlackAndWhite()
+        public void BlackAndWhite()
         {
             //ExStart
             //ExFor:ImageColorMode
@@ -114,7 +114,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ThresholdForFloydSteinbergDithering()
+        public void FloydSteinbergDithering()
         {
             //ExStart
             //ExFor:ImageBinarizationMethod
@@ -131,7 +131,7 @@ namespace ApiExamples
                 ThresholdForFloydSteinbergDithering = 254 // The default value of this property is 128. The higher value, the darker image.
             };
 
-            doc.Save(ArtifactsDir + "ImagesSaveOptions.ThresholdForFloydSteinbergDithering.tiff", options);
+            doc.Save(ArtifactsDir + "ImagesSaveOptions.FloydSteinbergDithering.tiff", options);
             //ExEnd
         }
 

@@ -36,7 +36,7 @@ namespace ApiExamples
             loadOptions.WebRequestTimeout = 1000;
 
             Document doc = new Document(MyDir + "Shape.VmlAndDml.htm", loadOptions);
-            doc.Save(ArtifactsDir + "Shape.VmlAndDml.docx");
+            doc.Save(ArtifactsDir + "HtmlLoadOptions.SupportVml.docx");
             //ExEnd
         }
 
@@ -90,7 +90,7 @@ namespace ApiExamples
             Shape imgShape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
             Assert.True(imgShape.IsImage);
 
-            imgShape.ImageData.Save(ArtifactsDir + "BaseUri.png");
+            imgShape.ImageData.Save(ArtifactsDir + "HtmlLoadOptions.BaseUri.png");
             //ExEnd
         }
 

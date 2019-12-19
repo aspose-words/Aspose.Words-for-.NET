@@ -71,7 +71,7 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void InsertDocumentAtBookmark()
+        public void InsertAtBookmark()
         {
             Document mainDoc = new Document(MyDir + "InsertDocument1.doc");
             Document subDoc = new Document(MyDir + "InsertDocument2.doc");
@@ -79,11 +79,11 @@ namespace ApiExamples
             Bookmark bookmark = mainDoc.Range.Bookmarks["insertionPlace"];
             InsertDocument(bookmark.BookmarkStart.ParentNode, subDoc);
 
-            mainDoc.Save(ArtifactsDir + "InsertDocumentAtBookmark.doc");
+            mainDoc.Save(ArtifactsDir + "InsertDocument.InsertAtBookmark.doc");
         }
 
         [Test]
-        public void InsertDocumentAtMailMerge()
+        public void InsertAtMailMerge()
         {
             //ExStart
             //ExFor:CompositeNode.HasChildNodes
@@ -99,7 +99,7 @@ namespace ApiExamples
             // that should be inserted to this field.
             mainDoc.MailMerge.Execute(new String[] { "Document_1" }, new object[] { MyDir + "InsertDocument2.doc" });
 
-            mainDoc.Save(ArtifactsDir + "InsertDocumentAtMailMerge.doc");
+            mainDoc.Save(ArtifactsDir + "InsertDocument.InsertAtMailMerge.doc");
         }
 
         private class InsertDocumentAtMailMergeHandler : IFieldMergingCallback
@@ -158,7 +158,7 @@ namespace ApiExamples
             options.ReplacingCallback = new InsertDocumentAtReplaceHandler();
 
             mainDoc.Range.Replace(new Regex("\\[MY_DOCUMENT\\]"), "", options);
-            mainDoc.Save(ArtifactsDir + "InsertDocumentAtReplace.doc");
+            mainDoc.Save(ArtifactsDir + "InsertDocument.InsertDocumentAtReplace.doc");
         }
 
         private class InsertDocumentAtReplaceHandler : IReplacingCallback
