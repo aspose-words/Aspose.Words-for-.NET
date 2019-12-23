@@ -26,7 +26,6 @@ namespace ApiExamples
             //ExFor:Document.CustomDocumentProperties
             //ExFor:BuiltInDocumentProperties
             //ExFor:CustomDocumentProperties
-            //ExId:DocumentProperties
             //ExSummary:Enumerates through all built-in and custom properties in a document.
             Document doc = new Document(MyDir + "Properties.doc");
 
@@ -448,7 +447,35 @@ namespace ApiExamples
                 Console.WriteLine("The document is not authorized. Authorizing...");
                 doc.CustomDocumentProperties.Add("AuthorizedDate", DateTime.Now);
             }
+            //ExEnd
+        }
 
+        [Test]
+        public void LinkCustomDocumentPropertiesToBookmark()
+        {
+            //ExStart
+            //ExFor:CustomDocumentProperties.AddLinkToContent(String, String)
+            //ExFor:DocumentProperty.IsLinkToContent
+            //ExFor:DocumentProperty.LinkSource
+            //ExSummary:Shows how to add linked custom document property.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.StartBookmark("MyBookmark");
+            builder.Writeln("Text inside a bookmark.");
+            builder.EndBookmark("MyBookmark");
+
+            // Add linked to content property
+            CustomDocumentProperties customProperties = doc.CustomDocumentProperties;
+            DocumentProperty customProperty = customProperties.AddLinkToContent("Bookmark", "MyBookmark");
+
+            // Check whether the property is linked to content
+            Assert.AreEqual(true, customProperty.IsLinkToContent);
+            // Get the source of the property
+            Assert.AreEqual("MyBookmark", customProperty.LinkSource);
+            // Get the value of the property
+            Assert.AreEqual("Text inside a bookmark.\r", customProperty.Value);
+
+            doc.Save(ArtifactsDir + "Properties.LinkCustomDocumentPropertiesToBookmark.docx");
             //ExEnd
         }
 
@@ -468,7 +495,6 @@ namespace ApiExamples
             //ExFor:Properties.DocumentPropertyCollection.IndexOf(System.String)
             //ExFor:Properties.DocumentPropertyCollection.RemoveAt(System.Int32)
             //ExFor:Properties.DocumentPropertyCollection.Remove
-            //ExId:AddCustomProperties
             //ExSummary:Shows how to add custom properties to a document.
             // Create a blank document and get its custom property collection
             Document doc = new Document();

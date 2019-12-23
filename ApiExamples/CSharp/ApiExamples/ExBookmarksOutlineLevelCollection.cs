@@ -84,7 +84,8 @@ namespace ApiExamples
             // We can empty this dictionary to remove the contents table
             outlineLevels.Clear();
             //ExEnd
-#if !(__MOBILE__ || MAC)
+
+            #if NETFRAMEWORK || NETSTANDARD2_0            
             // Bind pdf with Aspose.Pdf
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "BookmarksOutlineLevelCollection.BookmarkLevels.pdf");
@@ -97,8 +98,8 @@ namespace ApiExamples
             // Assert that all the bookmarks title are with whitespaces
             Assert.AreEqual("Bookmark 1", bookmarks[0].Title);
             Assert.AreEqual("Bookmark 2", bookmarks[1].Title);
-            Assert.AreEqual("Bookmark 3", bookmarks[2].Title);
-#endif
+            Assert.AreEqual("Bookmark 3", bookmarks[2].Title);            
+            #endif
         }
     }
 }

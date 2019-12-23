@@ -150,7 +150,6 @@ namespace ApiExamples
             //ExFor:HeaderFooterCollection.Item(HeaderFooterType)
             //ExFor:HeaderFooter
             //ExFor:HeaderFooterType
-            //ExId:RemoveFooters
             //ExSummary:Deletes all footers from all sections, but leaves headers intact.
             Document doc = new Document(MyDir + "HeaderFooter.RemoveFooters.doc");
 
@@ -226,13 +225,13 @@ namespace ApiExamples
             Assert.IsTrue(doc.Range.Text.Contains("Copyright (C) 2011 by Aspose Pty Ltd."));
         }
 
-        [Test]
+        //ExStart
+        //ExFor:IReplacingCallback
+        //ExFor:Range.Replace(String, String, FindReplaceOptions)
+        //ExSummary:Show changes for headers and footers order.
+        [Test] //ExSkip
         public void HeaderFooterOrder()
-        {
-            //ExStart
-            //ExFor:IReplacingCallback
-            //ExFor:Range.Replace(String, String, FindReplaceOptions)
-            //ExSummary: Show changes for headers and footers order
+        {            
             Document doc = new Document(MyDir + "HeaderFooter.HeaderFooterOrder.docx");
 
             // Assert that we use special header and footer for the first page
@@ -242,30 +241,33 @@ namespace ApiExamples
 
             ReplaceLog logger = new ReplaceLog();
             FindReplaceOptions options = new FindReplaceOptions { ReplacingCallback = logger };
-
             doc.Range.Replace(new Regex("(header|footer)"), "", options);
 
             doc.Save(ArtifactsDir + "HeaderFooter.HeaderFooterOrder.docx");
-#if __MOBILE__
+            
+            #if NETFRAMEWORK || NETSTANDARD2_0
             Assert.AreEqual("First header\nFirst footer\nSecond header\nSecond footer\nThird header\n" +
-                            "Third footer\n", logger.Text);
-#else
+                "Third footer\n", logger.Text.Replace("\r", ""));            
+            #else
             Assert.AreEqual("First header\nFirst footer\nSecond header\nSecond footer\nThird header\n" +
-                            "Third footer\n", logger.Text.Replace("\r", ""));
-#endif
+                "Third footer\n", logger.Text);
+            #endif
+            
             // Prepare our string builder for assert results without "DifferentFirstPageHeaderFooter"
             logger.ClearText();
 
             // Remove special first page
             // The order for this: primary header, default header, primary footer, default footer, even header\footer
             firstPageSection.PageSetup.DifferentFirstPageHeaderFooter = false;
-
             doc.Range.Replace(new Regex("(header|footer)"), "", options);
-#if __MOBILE__
-            Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\nSecond footer\n", logger.Text);
-#else
-            Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\nSecond footer\n", logger.Text.Replace("\r", ""));
-#endif
+            
+            #if NETFRAMEWORK || NETSTANDARD2_0
+            Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\n" +
+                "Second footer\n", logger.Text.Replace("\r", ""));
+            #else
+            Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\n" +
+                "Second footer\n", logger.Text);
+            #endif
         }
 
         private class ReplaceLog : IReplacingCallback
@@ -293,9 +295,6 @@ namespace ApiExamples
         [Test]
         public void Primer()
         {
-            //ExStart
-            //ExId:HeaderFooterPrimer
-            //ExSummary:Maybe a bit complicated example, but demonstrates many things that can be done with headers/footers.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -428,7 +427,5 @@ namespace ApiExamples
                 section.HeadersFooters.Add(headerFooter.Clone(true));
             }
         }
-
-        //ExEnd
     }
 }

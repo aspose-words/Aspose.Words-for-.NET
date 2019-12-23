@@ -12,7 +12,7 @@ using Aspose.Words.Fields;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
-#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
+#if NETFRAMEWORK
 using System.Web;
 using System.Data.Odbc;
 #endif
@@ -22,7 +22,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExMailMerge : ApiExampleBase
     {
-#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
+#if NETFRAMEWORK
         [Test]
         public void ExecuteArray()
         {
@@ -32,7 +32,6 @@ namespace ApiExamples
             //ExFor:MailMerge.Execute(String[], Object[])
             //ExFor:ContentDisposition
             //ExFor:Document.Save(HttpResponse,String,ContentDisposition,SaveOptions)
-            //ExId:MailMergeArray
             //ExSummary:Performs a simple insertion of data into merge fields and sends the document to the browser inline.
             // Open an existing document.
             Document doc = new Document(MyDir + "MailMerge.ExecuteArray.doc");
@@ -42,83 +41,15 @@ namespace ApiExamples
                 new object[] { "James Bond", "MI5 Headquarters", "Milbank", "", "London" });
 
             // Send the document in Word format to the client browser with an option to save to disk or open inside the current browser.
-            Assert.That(() => doc.Save(Response, "Artifacts/MailMerge.ExecuteArray.doc", ContentDisposition.Inline, null), Throws.TypeOf<ArgumentNullException>()); //Thrown because HttpResponse is null in the test.
-            //ExEnd
-        }
-#endif
+            Assert.That(() => doc.Save(Response, "Artifacts/MailMerge.ExecuteArray.doc", ContentDisposition.Inline, null), 
+                Throws.TypeOf<ArgumentNullException>()); //Thrown because HttpResponse is null in the test.
 
-        [Test]
-        public void ExecuteDataTable()
-        {
-            //ExStart
-            //ExFor:Document
-            //ExFor:MailMerge
-            //ExFor:MailMerge.Execute(DataTable)
-            //ExFor:MailMerge.Execute(DataRow)
-            //ExFor:Document.MailMerge
-            //ExSummary:Executes mail merge from an ADO.NET DataTable.
-            Document doc = new Document(MyDir + "MailMerge.ExecuteDataTable.doc");
-
-            // This example creates a table, but you would normally load table from a database. 
-            DataTable table = new DataTable("Test");
-            table.Columns.Add("CustomerName");
-            table.Columns.Add("Address");
-            table.Rows.Add(new object[] { "Thomas Hardy", "120 Hanover Sq., London" });
-            table.Rows.Add(new object[] { "Paolo Accorti", "Via Monte Bianco 34, Torino" });
-
-            // Field values from the table are inserted into the mail merge fields found in the document.
-            doc.MailMerge.Execute(table);
-
-            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.doc");
-
-            // Open a fresh copy of our document to perform another mail merge.
-            doc = new Document(MyDir + "MailMerge.ExecuteDataTable.doc");
-
-            // We can also source values for a mail merge from a single row in the table
-            doc.MailMerge.Execute(table.Rows[1]);
-
-            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.OneRow.doc");
+            // The response will need to be closed manually to make sure that no superfluous content is added to the document after saving
+            Assert.That(() => Response.End(), 
+                Throws.TypeOf<NullReferenceException>());
             //ExEnd
         }
 
-        [Test]
-        public void ExecuteDataView()
-        {
-            //ExStart
-            //ExFor:MailMerge.Execute(DataView)
-            //ExSummary:Shows how to process a DataTable's data with a DataView before using it in a mail merge.
-            // Create a new document and populate it with merge fields
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Write("Congratulations ");
-            builder.InsertField(" MERGEFIELD Name");
-            builder.Write(" for passing with a grade of ");
-            builder.InsertField(" MERGEFIELD Grade");
-
-            // Create a data table that merge data will be sourced from 
-            DataTable table = new DataTable("ExamResults");
-            table.Columns.Add("Name");
-            table.Columns.Add("Grade");
-            table.Rows.Add(new object[] { "John Doe", "67" });
-            table.Rows.Add(new object[] { "Jane Doe", "81" });
-            table.Rows.Add(new object[] { "John Cardholder", "47" });
-            table.Rows.Add(new object[] { "Joe Bloggs", "75" });
-
-            // If we execute the mail merge on the table, a page will be created for each row in the order that it appears in the table
-            // If we want to sort/filter rows without changing the table, we can use a data view
-            DataView view = new DataView(table);
-            view.Sort = "Grade DESC";
-            view.RowFilter = "Grade >= 50";
-
-            // This mail merge will be executed on a view where the rows are sorted by the "Grade" column
-            // and rows where the Grade values are below 50 are filtered out
-            doc.MailMerge.Execute(view);
-
-            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataView.docx");
-            //ExEnd
-        }
-
-#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
         [Test]
         [Category("SkipMono")]
         public void ExecuteDataReader()
@@ -286,6 +217,77 @@ namespace ApiExamples
         }
         //ExEnd
 #endif
+
+        [Test]
+        public void ExecuteDataTable()
+        {
+            //ExStart
+            //ExFor:Document
+            //ExFor:MailMerge
+            //ExFor:MailMerge.Execute(DataTable)
+            //ExFor:MailMerge.Execute(DataRow)
+            //ExFor:Document.MailMerge
+            //ExSummary:Executes mail merge from an ADO.NET DataTable.
+            Document doc = new Document(MyDir + "MailMerge.ExecuteDataTable.doc");
+
+            // This example creates a table, but you would normally load table from a database. 
+            DataTable table = new DataTable("Test");
+            table.Columns.Add("CustomerName");
+            table.Columns.Add("Address");
+            table.Rows.Add(new object[] { "Thomas Hardy", "120 Hanover Sq., London" });
+            table.Rows.Add(new object[] { "Paolo Accorti", "Via Monte Bianco 34, Torino" });
+
+            // Field values from the table are inserted into the mail merge fields found in the document.
+            doc.MailMerge.Execute(table);
+
+            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.doc");
+
+            // Open a fresh copy of our document to perform another mail merge.
+            doc = new Document(MyDir + "MailMerge.ExecuteDataTable.doc");
+
+            // We can also source values for a mail merge from a single row in the table
+            doc.MailMerge.Execute(table.Rows[1]);
+
+            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.OneRow.doc");
+            //ExEnd
+        }
+
+        [Test]
+        public void ExecuteDataView()
+        {
+            //ExStart
+            //ExFor:MailMerge.Execute(DataView)
+            //ExSummary:Shows how to process a DataTable's data with a DataView before using it in a mail merge.
+            // Create a new document and populate it with merge fields
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("Congratulations ");
+            builder.InsertField(" MERGEFIELD Name");
+            builder.Write(" for passing with a grade of ");
+            builder.InsertField(" MERGEFIELD Grade");
+
+            // Create a data table that merge data will be sourced from 
+            DataTable table = new DataTable("ExamResults");
+            table.Columns.Add("Name");
+            table.Columns.Add("Grade");
+            table.Rows.Add(new object[] { "John Doe", "67" });
+            table.Rows.Add(new object[] { "Jane Doe", "81" });
+            table.Rows.Add(new object[] { "John Cardholder", "47" });
+            table.Rows.Add(new object[] { "Joe Bloggs", "75" });
+
+            // If we execute the mail merge on the table, a page will be created for each row in the order that it appears in the table
+            // If we want to sort/filter rows without changing the table, we can use a data view
+            DataView view = new DataView(table);
+            view.Sort = "Grade DESC";
+            view.RowFilter = "Grade >= 50";
+
+            // This mail merge will be executed on a view where the rows are sorted by the "Grade" column
+            // and rows where the Grade values are below 50 are filtered out
+            doc.MailMerge.Execute(view);
+
+            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataView.docx");
+            //ExEnd
+        }
 
         //ExStart
         //ExFor:MailMerge.ExecuteWithRegions(DataSet)
@@ -728,7 +730,6 @@ namespace ApiExamples
             Document doc = new Document();
             //ExStart
             //ExFor:MailMerge.GetFieldNames
-            //ExId:MailMergeGetFieldNames
             //ExSummary:Shows how to get names of all merge fields in a document.
             String[] fieldNames = doc.MailMerge.GetFieldNames();
             //ExEnd
@@ -740,7 +741,6 @@ namespace ApiExamples
             Document doc = new Document();
             //ExStart
             //ExFor:MailMerge.DeleteFields
-            //ExId:MailMergeDeleteFields
             //ExSummary:Shows how to delete all merge fields from a document without executing mail merge.
             doc.MailMerge.DeleteFields();
             //ExEnd
@@ -753,7 +753,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:MailMerge.CleanupOptions
             //ExFor:MailMergeCleanupOptions
-            //ExId:MailMergeRemoveContainingFields
             //ExSummary:Shows how to instruct the mail merge engine to remove any containing fields from around a merge field during mail merge.
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveContainingFields;
             //ExEnd
@@ -766,7 +765,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:MailMerge.CleanupOptions
             //ExFor:MailMergeCleanupOptions
-            //ExId:MailMergeRemoveUnusedFields
             //ExSummary:Shows how to automatically remove unmerged merge fields during mail merge.
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveUnusedFields;
             //ExEnd
@@ -779,7 +777,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:MailMerge.CleanupOptions
             //ExFor:MailMergeCleanupOptions
-            //ExId:MailMergeRemoveEmptyParagraphs
             //ExSummary:Shows how to make sure empty paragraphs that result from merging fields with no data are removed from the document.
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveEmptyParagraphs;
             //ExEnd
@@ -977,8 +974,7 @@ namespace ApiExamples
 
         [Test]
         [TestCase(true, "{{ testfield1 }}value 1{{ testfield3 }}\f")]
-        [TestCase(false,
-            "\u0013MERGEFIELD \"testfield1\"\u0014«testfield1»\u0015value 1\u0013MERGEFIELD \"testfield3\"\u0014«testfield3»\u0015\f")]
+        [TestCase(false, "\u0013MERGEFIELD \"testfield1\"\u0014«testfield1»\u0015value 1\u0013MERGEFIELD \"testfield3\"\u0014«testfield3»\u0015\f")]
         public void MustasheTemplateSyntax(bool restoreTags, String sectionText)
         {
             Document doc = new Document();

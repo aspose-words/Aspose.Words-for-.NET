@@ -23,7 +23,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:Range.FormFields
             //ExFor:FormFieldCollection
-            //ExId:FormFieldsGetFormFieldsCollection
             //ExSummary:Shows how to get a collection of form fields.
             Document doc = new Document(MyDir + "FormFields.doc");
             FormFieldCollection formFields = doc.Range.FormFields;
@@ -35,7 +34,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FormField
-            //ExId:FormFieldsGetByName
             //ExSummary:Shows how to access form fields.
             Document doc = new Document(MyDir + "FormFields.doc");
             FormFieldCollection documentFormFields = doc.Range.FormFields;
@@ -53,7 +51,6 @@ namespace ApiExamples
             //ExFor:FormField.Result
             //ExFor:FormField.Type
             //ExFor:FormField.Name
-            //ExId:FormFieldsWorkWithProperties
             //ExSummary:Shows how to work with form field name, type, and result.
             Document doc = new Document(MyDir + "FormFields.doc");
 
@@ -69,7 +66,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertTextInput
-            //ExId:FormFieldsInsertAndRetrieve
             //ExSummary:Shows how to insert form fields, set options and gather them back in for use 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

@@ -14,7 +14,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
-#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
+#if NETFRAMEWORK
 using System.Data.OleDb;
 #endif
 
@@ -179,7 +179,6 @@ namespace ApiExamples
         public void MailMergeAlternatingRows()
         {
             //ExStart
-            //ExId:MailMergeAlternatingRows
             //ExFor:MailMerge.ExecuteWithRegions(DataTable)
             //ExSummary:Demonstrates how to implement custom logic in the MergeField event to apply cell formatting.
             Document doc = new Document(MyDir + "MailMerge.AlternatingRows.doc");
@@ -288,7 +287,7 @@ namespace ApiExamples
             Assert.IsTrue(logoImage.HasImage);
         }
 
-        #if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
+        #if NETFRAMEWORK
         [Test]
         [Category("SkipMono")]
         public void MailMergeImageFromBlob()
@@ -301,7 +300,6 @@ namespace ApiExamples
             //ExFor:IFieldMergingCallback.FieldMerging
             //ExFor:IFieldMergingCallback.ImageFieldMerging
             //ExFor:ImageFieldMergingArgs.ImageStream
-            //ExId:MailMergeImageFromBlob
             //ExSummary:Shows how to insert images stored in a database BLOB field into a report.
             Document doc = new Document(MyDir + "MailMerge.MergeImage.doc");
 

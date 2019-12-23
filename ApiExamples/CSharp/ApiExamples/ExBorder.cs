@@ -7,6 +7,7 @@
 
 using System.Drawing;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 
@@ -28,7 +29,7 @@ namespace ApiExamples
             //ExFor:Font
             //ExFor:DocumentBuilder.Font
             //ExFor:DocumentBuilder.Write
-            //ExSummary:Inserts a String surrounded by a border into a document.
+            //ExSummary:Shows how to insert a string surrounded by a border into a document.
             DocumentBuilder builder = new DocumentBuilder();
 
             builder.Font.Border.Color = Color.Green;
@@ -47,7 +48,7 @@ namespace ApiExamples
             //ExFor:Border
             //ExFor:BorderType
             //ExFor:ParagraphFormat.Borders
-            //ExSummary:Inserts a paragraph with a top border.
+            //ExSummary:Shows how to insert a paragraph with a top border.
             DocumentBuilder builder = new DocumentBuilder();
 
             Border topBorder = builder.ParagraphFormat.Borders[BorderType.Top];
@@ -64,8 +65,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Border.ClearFormatting
-            //ExSummary:Shows how to remove borders from a paragraph one by one.
-            Document doc = new Document(MyDir + "Border.Borders.doc");
+            //ExSummary:Shows how to remove borders from a paragraph.
+            Document doc = new Document(MyDir + "Borders.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             BorderCollection borders = builder.ParagraphFormat.Borders;
@@ -85,12 +86,13 @@ namespace ApiExamples
         public void EqualityCountingAndVisibility()
         {
             //ExStart
-            //ExFor:Border.Equals(System.Object)
+            //ExFor:Border.Equals(Object)
+            //ExFor:Border.Equals(Border)
             //ExFor:Border.GetHashCode
             //ExFor:Border.IsVisible
             //ExFor:BorderCollection.Count
             //ExFor:BorderCollection.Equals(BorderCollection)
-            //ExFor:BorderCollection.Item(System.Int32)
+            //ExFor:BorderCollection.Item(Int32)
             //ExSummary:Shows the equality of BorderCollections as well counting, visibility of their elements.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

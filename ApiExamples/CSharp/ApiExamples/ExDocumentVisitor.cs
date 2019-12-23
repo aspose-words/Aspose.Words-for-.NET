@@ -21,6 +21,8 @@ namespace ApiExamples
     {
         //ExStart
         //ExFor:Document.Accept(DocumentVisitor)
+        //ExFor:Body.Accept(DocumentVisitor)
+        //ExFor:SubDocument.Accept(DocumentVisitor)
         //ExFor:DocumentVisitor
         //ExFor:DocumentVisitor.VisitRun(Run)
         //ExFor:DocumentVisitor.VisitDocumentEnd(Document)
@@ -64,7 +66,7 @@ namespace ApiExamples
             /// <summary>
             /// Gets the plain text of the document that was accumulated by the visitor.
             /// </summary>
-            public String GetText()
+            public string GetText()
             {
                 return mBuilder.ToString();
             }

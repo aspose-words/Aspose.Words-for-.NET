@@ -16,6 +16,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Aspose.Words.BuildingBlocks;
+using Aspose.Words.Saving;
+using Aspose.Words.Tables;
 
 namespace ApiExamples
 {
@@ -118,6 +120,7 @@ namespace ApiExamples
             Assert.That(sdt.XmlMapping.StoreItemId, Is.Empty); //Assert that this sdt has no StoreItemId
         }
 
+#if NETFRAMEWORK || NETSTANDARD2_0 // because of xamarin bug with CultureInfo (https://xamarin.github.io/bugzilla-archives/59/59077/bug.html)
         [Test]
         public void Date()
         {
@@ -164,6 +167,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "SDT.Date.docx");
             //ExEnd
         }
+#endif
 
         [Test]
         public void PlainText()
@@ -853,6 +857,127 @@ namespace ApiExamples
             Assert.AreEqual(SdtType.BuildingBlockGallery, buildingBlockSdt.SdtType);
             Assert.AreEqual("Table of Contents", buildingBlockSdt.BuildingBlockGallery);
             Assert.AreEqual("Built-in", buildingBlockSdt.BuildingBlockCategory);
+        }
+
+        [Test]
+        public void UpdateSdtContent()
+        {
+            //ExStart
+            //ExFor:SaveOptions.UpdateSdtContent
+            //ExSummary:Shows how structured document tags can be updated while saving to .pdf.
+            Document doc = new Document();
+
+            // Insert two StructuredDocumentTags; a date and a drop down list 
+            StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.Date, MarkupLevel.Block);
+            tag.FullDate = DateTime.Now;
+
+            doc.FirstSection.Body.AppendChild(tag);
+
+            tag = new StructuredDocumentTag(doc, SdtType.DropDownList, MarkupLevel.Block);
+            tag.ListItems.Add(new SdtListItem("Value 1"));
+            tag.ListItems.Add(new SdtListItem("Value 2"));
+            tag.ListItems.Add(new SdtListItem("Value 3"));
+            tag.ListItems.SelectedValue = tag.ListItems[1];
+
+            doc.FirstSection.Body.AppendChild(tag);
+
+            // We've selected default values for both tags
+            // We can save those values in the document without immediately updating the tags, leaving them in their default state
+            // by using a SaveOptions object with this flag set
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.UpdateSdtContent = false;
+
+            doc.Save(ArtifactsDir + "UpdateSdtContent.pdf", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void FillTableUsingRepeatingSectionItem()
+        {
+            //ExStart
+            //ExFor:SdtType
+            //ExSummary:Shows how to fill the table with data contained in the XML part.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+ 
+            CustomXmlPart xmlPart = doc.CustomXmlParts.Add("Books",
+                "<books>" +
+                "<book><title>Everyday Italian</title>" +
+                "<author>Giada De Laurentiis</author></book>" +
+                "<book><title>Harry Potter</title>" +
+                "<author>J K. Rowling</author></book>" +
+                "<book><title>Learning XML</title>" +
+                "<author>Erik T. Ray</author></book>" +
+                "</books>");
+ 
+            // Create headers for data from xml content
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Title");
+            builder.InsertCell();
+            builder.Write("Author");
+            builder.EndRow();
+            builder.EndTable();
+ 
+            // Create table with RepeatingSection inside
+            StructuredDocumentTag repeatingSectionSdt =
+                new StructuredDocumentTag(doc, SdtType.RepeatingSection, MarkupLevel.Row);
+            repeatingSectionSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book", "");
+            table.AppendChild(repeatingSectionSdt);
+ 
+            // Add RepeatingSectionItem inside RepeatingSection and mark it as a row
+            StructuredDocumentTag repeatingSectionItemSdt =
+                new StructuredDocumentTag(doc, SdtType.RepeatingSectionItem, MarkupLevel.Row);
+            repeatingSectionSdt.AppendChild(repeatingSectionItemSdt);
+ 
+            Row row = new Row(doc);
+            repeatingSectionItemSdt.AppendChild(row);
+ 
+            // Map xml data with created table cells for book title and author
+            StructuredDocumentTag titleSdt =
+                new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Cell);
+            titleSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book[1]/title[1]", "");
+            row.AppendChild(titleSdt);
+ 
+            StructuredDocumentTag authorSdt =
+                new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Cell);
+            authorSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book[1]/author[1]", "");
+            row.AppendChild(authorSdt);
+ 
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.RepeatingSectionItem.docx");
+			//ExEnd
+        }
+
+        [Test]
+        public void CustomXmlPart()
+        {
+            // Obtain an XML in the form of a string
+            string xmlString = "<?xml version=\"1.0\"?>" +
+                               "<Company>" +
+                               "<Employee id=\"1\">" +
+                               "<FirstName>John</FirstName>" +
+                               "<LastName>Doe</LastName>" +
+                               "</Employee>" +
+                               "<Employee id=\"2\">" +
+                               "<FirstName>Jane</FirstName>" +
+                               "<LastName>Doe</LastName>" +
+                               "</Employee>" +
+                               "</Company>";
+
+            // Create a blank document
+            Document doc = new Document();
+
+            // Insert the full XML document as a custom document part
+            // The mapping for this part will be seen in the "XML Mapping Pane" in the "Developer" tab, if it is enabled
+            CustomXmlPart xmlPart = doc.CustomXmlParts.Add(Guid.NewGuid().ToString("B"), xmlString);
+
+            // None of the XML is in the document body at this point
+            // Create a StructuredDocumentTag, which will refer to a single element from the XML with an XPath
+            StructuredDocumentTag sdt = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Block);
+            sdt.XmlMapping.SetMapping(xmlPart, "Company//Employee[@id='2']/FirstName", "");
+
+            // Add the StructuredDocumentTag to the document to display the element in the text 
+            doc.FirstSection.Body.AppendChild(sdt);
         }
     }
 }

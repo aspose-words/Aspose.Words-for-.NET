@@ -16,14 +16,12 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
-#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
+#if NETFRAMEWORK
 using System.Windows.Forms;
-#endif
-#if NETSTANDARD2_0 || __MOBILE__
-using SkiaSharp;
-#else
 using System.Drawing.Printing;
 using System.Drawing.Text;
+#else
+using SkiaSharp;
 #endif
 
 namespace ApiExamples
@@ -108,7 +106,6 @@ namespace ApiExamples
             //ExFor:Document.Save(String)
             //ExFor:Document.Save(Stream, SaveFormat)
             //ExFor:Document.Save(String, SaveOptions)
-            //ExId:SaveToPdf_NewAPI
             //ExSummary:Shows how to save a document to the PDF format using the Save method and the PdfSaveOptions class.
             // Open the document
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -202,7 +199,6 @@ namespace ApiExamples
             //ExFor:Document.Save(String)
             //ExFor:Document.Save(Stream, SaveFormat)
             //ExFor:Document.Save(String, SaveOptions)
-            //ExId:SaveToImage_NewAPI
             //ExSummary:Shows how to save a document to the JPEG format using the Save method and the ImageSaveOptions class.
             // Open the document
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -299,7 +295,6 @@ namespace ApiExamples
                 options.PageIndex = i;
                 doc.Save(ArtifactsDir + "Rendering.SaveToEmf." + i.ToString() + ".emf", options);
             }
-
             //ExEnd
         }
 
@@ -343,6 +338,7 @@ namespace ApiExamples
             //ExEnd
         }
 
+        #if NETFRAMEWORK
         [Test]
         public void SaveToImageStream()
         {
@@ -356,236 +352,12 @@ namespace ApiExamples
 
             // Rewind the stream and create a .NET image from it.
             stream.Position = 0;
-#if NETSTANDARD2_0 || __MOBILE__
-// Read the stream back into an image.
-            SkiaSharp.SKBitmap image = SkiaSharp.SKBitmap.Decode(stream);
-#else
+            
             // Read the stream back into an image.
             using (Image image = Image.FromStream(stream))
             {
                 // ...Do something.
             }
-#endif
-            //ExEnd
-        }
-
-        [Test]
-        public void UpdatePageLayout()
-        {
-            //ExStart
-            //ExFor:StyleCollection.Item(String)
-            //ExFor:SectionCollection.Item(Int32)
-            //ExFor:Document.UpdatePageLayout
-            //ExSummary:Shows when to request page layout of the document to be recalculated.
-            Document doc = new Document(MyDir + "Rendering.doc");
-
-            // Saving a document to PDF or to image or printing for the first time will automatically
-            // layout document pages and this information will be cached inside the document.
-            doc.Save(ArtifactsDir + "Rendering.UpdatePageLayout1.pdf");
-
-            // Modify the document in any way.
-            doc.Styles["Normal"].Font.Size = 6;
-            doc.Sections[0].PageSetup.Orientation = Aspose.Words.Orientation.Landscape;
-
-            // In the current version of Aspose.Words, modifying the document does not automatically rebuild 
-            // the cached page layout. If you want to save to PDF or render a modified document again,
-            // you need to manually request page layout to be updated.
-            doc.UpdatePageLayout();
-
-            doc.Save(ArtifactsDir + "Rendering.UpdatePageLayout2.pdf");
-            //ExEnd
-        }
-
-        [Test]
-        public void UpdateFieldsBeforeRendering()
-        {
-            //ExStart
-            //ExFor:Document.UpdateFields
-            //ExId:UpdateFieldsBeforeRendering
-            //ExSummary:Shows how to update all fields before rendering a document.
-            Document doc = new Document(MyDir + "Rendering.doc");
-
-            // This updates all fields in the document.
-            doc.UpdateFields();
-
-            doc.Save(ArtifactsDir + "Rendering.UpdateFields.pdf");
-            //ExEnd
-        }
-#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
-        [Ignore("Run only when the printer driver is installed")]
-        [Test]
-        public void Print()
-        {
-            //ExStart
-            //ExFor:Document.Print
-            //ExSummary:Prints the whole document to the default printer.
-            Document doc = new Document(MyDir + "Document.doc");
-
-            doc.Print();
-            //ExEnd
-        }
-
-        [Ignore("Run only when the printer driver is installed")]
-        [Test]
-        public void PrintToNamedPrinter()
-        {
-            //ExStart
-            //ExFor:Document.Print(String)
-            //ExSummary:Prints the whole document to a specified printer.
-            Document doc = new Document(MyDir + "Document.doc");
-
-            doc.Print("KONICA MINOLTA magicolor 2400W");
-            //ExEnd
-        }
-
-        [Ignore("Run only when the printer driver is installed")]
-        [Test]
-        public void PrintRange()
-        {
-            //ExStart
-            //ExFor:Document.Print(PrinterSettings)
-            //ExSummary:Prints a range of pages.
-            Document doc = new Document(MyDir + "Rendering.doc");
-
-            PrinterSettings printerSettings = new PrinterSettings();
-            // Page numbers in the .NET printing framework are 1-based.
-            printerSettings.FromPage = 1;
-            printerSettings.ToPage = 3;
-
-            doc.Print(printerSettings);
-            //ExEnd
-        }
-
-        [Ignore("Run only when the printer driver is installed")]
-        [Test]
-        public void PrintRangeWithDocumentName()
-        {
-            //ExStart
-            //ExFor:Document.Print(PrinterSettings, String)
-            //ExSummary:Prints a range of pages along with the name of the document.
-            Document doc = new Document(MyDir + "Rendering.doc");
-
-            PrinterSettings printerSettings = new PrinterSettings();
-            // Page numbers in the .NET printing framework are 1-based.
-            printerSettings.FromPage = 1;
-            printerSettings.ToPage = 3;
-
-            doc.Print(printerSettings, "My Print Document.doc");
-            //ExEnd
-        }
-
-        [Ignore("Run only when the printer driver is installed")]
-        [Test]
-        public void PreviewAndPrint()
-        {
-            //ExStart
-            //ExFor:AsposeWordsPrintDocument.#ctor(Document)
-            //ExFor:AsposeWordsPrintDocument.CachePrinterSettings
-            //ExSummary:Shows the Print dialog that allows selecting the printer and page range to print with. Then brings up the print preview from which you can preview the document and choose to print or close.
-            Document doc = new Document(MyDir + "Rendering.doc");
-
-            PrintPreviewDialog previewDlg = new PrintPreviewDialog();
-            // Show non-modal first is a hack for the print preview form to show on top.
-            previewDlg.Show();
-
-            // Initialize the Print Dialog with the number of pages in the document.
-            PrintDialog printDlg = new PrintDialog();
-            printDlg.AllowSomePages = true;
-            printDlg.PrinterSettings.MinimumPage = 1;
-            printDlg.PrinterSettings.MaximumPage = doc.PageCount;
-            printDlg.PrinterSettings.FromPage = 1;
-            printDlg.PrinterSettings.ToPage = doc.PageCount;
-
-            if (!printDlg.ShowDialog().Equals(DialogResult.OK))
-                return;
-
-            // Create the Aspose.Words' implementation of the .NET print document 
-            // and pass the printer settings from the dialog to the print document.
-            // Use 'CachePrinterSettings' to reduce time of first call of Print() method.
-            AsposeWordsPrintDocument awPrintDoc = new AsposeWordsPrintDocument(doc);
-            awPrintDoc.PrinterSettings = printDlg.PrinterSettings;
-            awPrintDoc.CachePrinterSettings();
-
-            // Hide and invalidate preview is a hack for print preview to show on top.
-            previewDlg.Hide();
-            previewDlg.PrintPreviewControl.InvalidatePreview();
-
-            // Pass the Aspose.Words' print document to the .NET Print Preview dialog.
-            previewDlg.Document = awPrintDoc;
-
-            previewDlg.ShowDialog();
-            //ExEnd
-        }
-#endif
-
-        [Test]
-        public void RenderToScale()
-        {
-            //ExStart
-            //ExFor:Document.RenderToScale
-            //ExFor:Document.GetPageInfo
-            //ExFor:PageInfo
-            //ExFor:PageInfo.GetSizeInPixels(Single, Single)
-            //ExSummary:Renders a page of a Word document into a bitmap using a specified zoom factor.
-            Document doc = new Document(MyDir + "Rendering.doc");
-
-            PageInfo pageInfo = doc.GetPageInfo(0);
-
-            // Let's say we want the image at 50% zoom.
-            const float myScale = 0.50f;
-
-            // Let's say we want the image at this resolution.
-            const float myResolution = 200.0f;
-
-            Size pageSize = pageInfo.GetSizeInPixels(myScale, myResolution);
-#if NETSTANDARD2_0 || __MOBILE__
-            using (SKBitmap bitmap = new SKBitmap(pageSize.Width, pageSize.Height))
-            {
-                using (SKCanvas canvas = new SKCanvas(bitmap))
-                {
-                    // Scale to compensate for the larger bitmap
-                    canvas.Scale(2);
-
-                    // Fill the page background.
-                    // If you need to set color without specific options, you can use "canvas.Clear(SKColors.White);"
-                    SKPaint paint = new SKPaint
-                    {
-                        Color = SKColors.White,
-                        IsAntialias = true,
-                        FilterQuality = SKFilterQuality.High
-                    };
-
-                    canvas.DrawPaint(paint);
-                    
-                    // Render the page using the zoom.
-                    doc.RenderToScale(0, canvas, 0, 0, myScale);
-                }
-
-                using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "Rendering.RenderToScale.png"))
-                {
-                    bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
-                }
-            }
-#else
-            using (Bitmap img = new Bitmap(pageSize.Width, pageSize.Height))
-            {
-                img.SetResolution(myResolution, myResolution);
-
-                using (Graphics gr = Graphics.FromImage(img))
-                {
-                    // You can apply various settings to the Graphics object.
-                    gr.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-
-                    // Fill the page background.
-                    gr.FillRectangle(Brushes.White, 0, 0, pageSize.Width, pageSize.Height);
-
-                    // Render the page using the zoom.
-                    doc.RenderToScale(0, gr, 0, 0, myScale);
-                }
-
-                img.Save(ArtifactsDir + "Rendering.RenderToScale.png");
-            }
-#endif
             //ExEnd
         }
 
@@ -596,62 +368,7 @@ namespace ApiExamples
             //ExFor:Document.RenderToSize
             //ExSummary:Render to a bitmap at a specified location and size.
             Document doc = new Document(MyDir + "Rendering.doc");
-#if NETSTANDARD2_0 || __MOBILE__
-            using (SKBitmap bitmap = new SKBitmap(700, 700))
-            {
-                // User has some sort of a Graphics object. In this case created from a bitmap.
-                using (SKCanvas canvas = new SKCanvas(bitmap))
-                {
-                    // Apply scale transform.
-                    canvas.Scale(70);
-
-                    // The output should be offset 0.5" from the edge and rotated.
-                    canvas.Translate(0.5f, 0.5f);
-                    canvas.RotateDegrees(10);
-
-                    // This is our test rectangle.
-                    SKRect rect = new SKRect(0f, 0f, 3f, 3f);
-                    canvas.DrawRect(rect, new SKPaint
-                    {
-                        Color = SKColors.Black,
-                        Style = SKPaintStyle.Stroke,
-                        StrokeWidth = 3f / 72f
-                    });
-
-                    // User specifies (in world coordinates) where on the Graphics to render and what size.
-                    float returnedScale = doc.RenderToSize(0, canvas, 0f, 0f, 3f, 3f);
-
-                    Console.WriteLine("The image was rendered at {0:P0} zoom.", returnedScale);
-
-                    // One more example, this time in millimeters.
-                    canvas.ResetMatrix();
-
-                    // Apply scale transform.
-                    canvas.Scale(5);
-
-                    // Move the origin 10mm 
-                    canvas.Translate(10, 10);
-
-                    // This is our test rectangle.
-                    rect = new SKRect(0, 0, 50, 100);
-                    rect.Offset(90, 10);
-                    canvas.DrawRect(rect, new SKPaint
-                    {
-                        Color = SKColors.Black,
-                        Style = SKPaintStyle.Stroke,
-                        StrokeWidth = 1
-                    });
-                    
-                    // User specifies (in world coordinates) where on the Graphics to render and what size.
-                    doc.RenderToSize(0, canvas, 90, 10, 50, 100);
-
-                    using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "Rendering.RenderToSize.png"))
-                    {
-                        bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
-                    }
-                }
-            }
-#else
+            
             using (Bitmap bmp = new Bitmap(700, 700))
             {
                 // User has some sort of a Graphics object. In this case created from a bitmap.
@@ -698,7 +415,6 @@ namespace ApiExamples
                     bmp.Save(ArtifactsDir + "Rendering.RenderToSize.png");
                 }
             }
-#endif
             //ExEnd
         }
 
@@ -731,44 +447,7 @@ namespace ApiExamples
             // Calculate the size of the image that will contain all the thumbnails.
             int imgWidth = thumbSize.Width * thumbColumns;
             int imgHeight = thumbSize.Height * thumbRows;
-#if NETSTANDARD2_0 || __MOBILE__
-            using (SKBitmap bitmap = new SKBitmap(imgWidth, imgHeight))
-            {
-                // The user has to provides a Graphics object to draw on.
-                // The Graphics object can be created from a bitmap, from a metafile, printer or window.
-                using (SKCanvas canvas = new SKCanvas(bitmap))
-                {
-                    // Fill the "paper" with white, otherwise it will be transparent.
-                    canvas.Clear(SKColors.White);
-
-                    for (int pageIndex = 0; pageIndex < doc.PageCount; pageIndex++)
-                    {
-                        int columnIdx;
-                        int rowIdx = Math.DivRem(pageIndex, thumbColumns, out columnIdx);
-
-                        // Specify where we want the thumbnail to appear.
-                        float thumbLeft = columnIdx * thumbSize.Width;
-                        float thumbTop = rowIdx * thumbSize.Height;
-
-                        SizeF size = doc.RenderToScale(pageIndex, canvas, thumbLeft, thumbTop, scale);
-
-                        // Draw the page rectangle.
-                        SKRect rect = new SKRect(0, 0, size.Width, size.Height);
-                        rect.Offset(thumbLeft, thumbTop);
-                        canvas.DrawRect(rect, new SKPaint
-                        {
-                            Color = SKColors.Black,
-                            Style = SKPaintStyle.Stroke
-                        });
-                    }
-
-                    using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "Rendering.Thumbnails.png"))
-                    {
-                        bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
-                    }
-                }
-            }
-#else
+            
             using (Bitmap img = new Bitmap(imgWidth, imgHeight))
             {
                 // The user has to provides a Graphics object to draw on.
@@ -798,11 +477,9 @@ namespace ApiExamples
                     img.Save(ArtifactsDir + "Rendering.Thumbnails.png");
                 }
             }
-#endif
             //ExEnd
         }
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
         [Ignore("Run only when the printer driver is installed")]
         [Test]
         public void CustomPrint()
@@ -997,7 +674,307 @@ namespace ApiExamples
             }
             //ExEnd
         }
-#endif
+
+        [Ignore("Run only when the printer driver is installed")]
+        [Test]
+        public void Print()
+        {
+            //ExStart
+            //ExFor:Document.Print
+            //ExSummary:Prints the whole document to the default printer.
+            Document doc = new Document(MyDir + "Document.doc");
+
+            doc.Print();
+            //ExEnd
+        }
+
+        [Ignore("Run only when the printer driver is installed")]
+        [Test]
+        public void PrintToNamedPrinter()
+        {
+            //ExStart
+            //ExFor:Document.Print(String)
+            //ExSummary:Prints the whole document to a specified printer.
+            Document doc = new Document(MyDir + "Document.doc");
+
+            doc.Print("KONICA MINOLTA magicolor 2400W");
+            //ExEnd
+        }
+
+        [Ignore("Run only when the printer driver is installed")]
+        [Test]
+        public void PrintRange()
+        {
+            //ExStart
+            //ExFor:Document.Print(PrinterSettings)
+            //ExSummary:Prints a range of pages.
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            PrinterSettings printerSettings = new PrinterSettings();
+            // Page numbers in the .NET printing framework are 1-based.
+            printerSettings.FromPage = 1;
+            printerSettings.ToPage = 3;
+
+            doc.Print(printerSettings);
+            //ExEnd
+        }
+
+        [Ignore("Run only when the printer driver is installed")]
+        [Test]
+        public void PrintRangeWithDocumentName()
+        {
+            //ExStart
+            //ExFor:Document.Print(PrinterSettings, String)
+            //ExSummary:Prints a range of pages along with the name of the document.
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            PrinterSettings printerSettings = new PrinterSettings();
+            // Page numbers in the .NET printing framework are 1-based.
+            printerSettings.FromPage = 1;
+            printerSettings.ToPage = 3;
+
+            doc.Print(printerSettings, "My Print Document.doc");
+            //ExEnd
+        }
+
+        [Ignore("Run only when the printer driver is installed")]
+        [Test]
+        public void PreviewAndPrint()
+        {
+            //ExStart
+            //ExFor:AsposeWordsPrintDocument.#ctor(Document)
+            //ExFor:AsposeWordsPrintDocument.CachePrinterSettings
+            //ExSummary:Shows the Print dialog that allows selecting the printer and page range to print with. Then brings up the print preview from which you can preview the document and choose to print or close.
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            PrintPreviewDialog previewDlg = new PrintPreviewDialog();
+            // Show non-modal first is a hack for the print preview form to show on top.
+            previewDlg.Show();
+
+            // Initialize the Print Dialog with the number of pages in the document.
+            PrintDialog printDlg = new PrintDialog();
+            printDlg.AllowSomePages = true;
+            printDlg.PrinterSettings.MinimumPage = 1;
+            printDlg.PrinterSettings.MaximumPage = doc.PageCount;
+            printDlg.PrinterSettings.FromPage = 1;
+            printDlg.PrinterSettings.ToPage = doc.PageCount;
+
+            if (!printDlg.ShowDialog().Equals(DialogResult.OK))
+                return;
+
+            // Create the Aspose.Words' implementation of the .NET print document 
+            // and pass the printer settings from the dialog to the print document.
+            // Use 'CachePrinterSettings' to reduce time of first call of Print() method.
+            AsposeWordsPrintDocument awPrintDoc = new AsposeWordsPrintDocument(doc);
+            awPrintDoc.PrinterSettings = printDlg.PrinterSettings;
+            awPrintDoc.CachePrinterSettings();
+
+            // Hide and invalidate preview is a hack for print preview to show on top.
+            previewDlg.Hide();
+            previewDlg.PrintPreviewControl.InvalidatePreview();
+
+            // Pass the Aspose.Words' print document to the .NET Print Preview dialog.
+            previewDlg.Document = awPrintDoc;
+
+            previewDlg.ShowDialog();
+            //ExEnd
+        }
+        #else
+        [Test]
+        public void SaveToImageStreamNetStandard2()
+        {
+            //ExStart
+            //ExFor:Document.Save(Stream, SaveFormat)
+            //ExSummary:Saves a document page as a BMP image into a stream (.NetStandard 2.0).
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            MemoryStream stream = new MemoryStream();
+            doc.Save(stream, SaveFormat.Bmp);
+
+            // Rewind the stream and create a .NET image from it
+            stream.Position = 0;
+            
+            // Read the stream back into an image
+            SkiaSharp.SKBitmap image = SkiaSharp.SKBitmap.Decode(stream);
+            //ExEnd
+        }
+
+        [Test]
+        public void RenderToSizeNetStandard2()
+        {
+            //ExStart
+            //ExFor:Document.RenderToSize
+            //ExSummary:Render to a bitmap at a specified location and size (.NetStandard 2.0).
+            Document doc = new Document(MyDir + "Rendering.doc");
+            
+            using (SKBitmap bitmap = new SKBitmap(700, 700))
+            {
+                // User has some sort of a Graphics object. In this case created from a bitmap.
+                using (SKCanvas canvas = new SKCanvas(bitmap))
+                {
+                    // Apply scale transform.
+                    canvas.Scale(70);
+
+                    // The output should be offset 0.5" from the edge and rotated.
+                    canvas.Translate(0.5f, 0.5f);
+                    canvas.RotateDegrees(10);
+
+                    // This is our test rectangle.
+                    SKRect rect = new SKRect(0f, 0f, 3f, 3f);
+                    canvas.DrawRect(rect, new SKPaint
+                    {
+                        Color = SKColors.Black,
+                        Style = SKPaintStyle.Stroke,
+                        StrokeWidth = 3f / 72f
+                    });
+
+                    // User specifies (in world coordinates) where on the Graphics to render and what size.
+                    float returnedScale = doc.RenderToSize(0, canvas, 0f, 0f, 3f, 3f);
+
+                    Console.WriteLine("The image was rendered at {0:P0} zoom.", returnedScale);
+
+                    // One more example, this time in millimeters.
+                    canvas.ResetMatrix();
+
+                    // Apply scale transform.
+                    canvas.Scale(5);
+
+                    // Move the origin 10mm 
+                    canvas.Translate(10, 10);
+
+                    // This is our test rectangle.
+                    rect = new SKRect(0, 0, 50, 100);
+                    rect.Offset(90, 10);
+                    canvas.DrawRect(rect, new SKPaint
+                    {
+                        Color = SKColors.Black,
+                        Style = SKPaintStyle.Stroke,
+                        StrokeWidth = 1
+                    });
+                    
+                    // User specifies (in world coordinates) where on the Graphics to render and what size.
+                    doc.RenderToSize(0, canvas, 90, 10, 50, 100);
+
+                    using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "Rendering.RenderToSize.png"))
+                    {
+                        bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
+                    }
+                }
+            }            
+            //ExEnd
+        }
+
+        [Test]
+        public void CreateThumbnailsNetStandard2()
+        {
+            //ExStart
+            //ExFor:Document.RenderToScale
+            //ExSummary:Renders individual pages to graphics to create one image with thumbnails of all pages (.NetStandard 2.0).
+            // The user opens or builds a document.
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            // This defines the number of columns to display the thumbnails in.
+            const int thumbColumns = 2;
+
+            // Calculate the required number of rows for thumbnails.
+            // We can now get the number of pages in the document.
+            int remainder;
+            int thumbRows = Math.DivRem(doc.PageCount, thumbColumns, out remainder);
+            if (remainder > 0)
+                thumbRows++;
+
+            // Lets say I want thumbnails to be of this zoom.
+            const float scale = 0.25f;
+
+            // For simplicity lets pretend all pages in the document are of the same size, 
+            // so we can use the size of the first page to calculate the size of the thumbnail.
+            Size thumbSize = doc.GetPageInfo(0).GetSizeInPixels(scale, 96);
+
+            // Calculate the size of the image that will contain all the thumbnails.
+            int imgWidth = thumbSize.Width * thumbColumns;
+            int imgHeight = thumbSize.Height * thumbRows;
+
+            using (SKBitmap bitmap = new SKBitmap(imgWidth, imgHeight))
+            {
+                // The user has to provides a Graphics object to draw on.
+                // The Graphics object can be created from a bitmap, from a metafile, printer or window.
+                using (SKCanvas canvas = new SKCanvas(bitmap))
+                {
+                    // Fill the "paper" with white, otherwise it will be transparent.
+                    canvas.Clear(SKColors.White);
+
+                    for (int pageIndex = 0; pageIndex < doc.PageCount; pageIndex++)
+                    {
+                        int columnIdx;
+                        int rowIdx = Math.DivRem(pageIndex, thumbColumns, out columnIdx);
+
+                        // Specify where we want the thumbnail to appear.
+                        float thumbLeft = columnIdx * thumbSize.Width;
+                        float thumbTop = rowIdx * thumbSize.Height;
+
+                        SizeF size = doc.RenderToScale(pageIndex, canvas, thumbLeft, thumbTop, scale);
+
+                        // Draw the page rectangle.
+                        SKRect rect = new SKRect(0, 0, size.Width, size.Height);
+                        rect.Offset(thumbLeft, thumbTop);
+                        canvas.DrawRect(rect, new SKPaint
+                        {
+                            Color = SKColors.Black,
+                            Style = SKPaintStyle.Stroke
+                        });
+                    }
+
+                    using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "Rendering.Thumbnails.png"))
+                    {
+                        bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
+                    }
+                }
+            }            
+            //ExEnd
+        }
+        #endif
+
+        [Test]
+        public void UpdatePageLayout()
+        {
+            //ExStart
+            //ExFor:StyleCollection.Item(String)
+            //ExFor:SectionCollection.Item(Int32)
+            //ExFor:Document.UpdatePageLayout
+            //ExSummary:Shows when to request page layout of the document to be recalculated.
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            // Saving a document to PDF or to image or printing for the first time will automatically
+            // layout document pages and this information will be cached inside the document
+            doc.Save(ArtifactsDir + "Rendering.UpdatePageLayout1.pdf");
+
+            // Modify the document in any way.
+            doc.Styles["Normal"].Font.Size = 6;
+            doc.Sections[0].PageSetup.Orientation = Aspose.Words.Orientation.Landscape;
+
+            // In the current version of Aspose.Words, modifying the document does not automatically rebuild 
+            // the cached page layout. If you want to save to PDF or render a modified document again,
+            // you need to manually request page layout to be updated
+            doc.UpdatePageLayout();
+
+            doc.Save(ArtifactsDir + "Rendering.UpdatePageLayout2.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void UpdateFieldsBeforeRendering()
+        {
+            //ExStart
+            //ExFor:Document.UpdateFields
+            //ExSummary:Shows how to update all fields before rendering a document.
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            // This updates all fields in the document.
+            doc.UpdateFields();
+
+            doc.Save(ArtifactsDir + "Rendering.UpdateFields.pdf");
+            //ExEnd
+        }
 
         [Test]
         public void SetTrueTypeFontsFolder()
@@ -1008,7 +985,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:FontSettings
             //ExFor:FontSettings.SetFontsFolder(String, Boolean)
-            //ExId:SetFontsFolderCustomFolder
             //ExSummary:Demonstrates how to set the folder Aspose.Words uses to look for TrueType fonts during rendering or embedding of fonts.
             Document doc = new Document(MyDir + "Rendering.doc");
 
@@ -1033,7 +1009,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:FontSettings
             //ExFor:FontSettings.SetFontsFolders(String[], Boolean)
-            //ExId:SetFontsFoldersMultipleFolders
             //ExSummary:Demonstrates how to set Aspose.Words to look in multiple folders for TrueType fonts when rendering or embedding fonts.
             Document doc = new Document(MyDir + "Rendering.doc");
 
@@ -1059,7 +1034,6 @@ namespace ApiExamples
             //ExFor:FontSettings            
             //ExFor:FontSettings.GetFontsSources()
             //ExFor:FontSettings.SetFontsSources()
-            //ExId:SetFontsFoldersSystemAndCustomFolder
             //ExSummary:Demonstrates how to set Aspose.Words to look for TrueType fonts in system folders as well as a custom defined folder when scanning for fonts.
             Document doc = new Document(MyDir + "Rendering.doc");
 
@@ -1185,7 +1159,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DefaultFontSubstitutionRule.DefaultFontName
-            //ExId:SetDefaultFontName
             //ExSummary:Demonstrates how to specify what font to substitute for a missing font during rendering.
             Document doc = new Document(MyDir + "Rendering.doc");
 
@@ -1219,17 +1192,13 @@ namespace ApiExamples
             // font specified under FontSettings.DefaultFontName. We can pick up on this substitution using our callback.
             FontSettings.DefaultInstance.SetFontsFolder(String.Empty, false);
 
-            //ExStart
-            //ExId:FontSubstitutionUpdatePageLayout
-            //ExSummary:Demonstrates how IWarningCallback will still receive warning notifications even if UpdatePageLayout is called before document save.
             // When you call UpdatePageLayout the document is rendered in memory. Any warnings that occurred during rendering
             // are stored until the document save and then sent to the appropriate WarningCallback.
             doc.UpdatePageLayout();
 
             // Even though the document was rendered previously, any save warnings are notified to the user during document save.
             doc.Save(ArtifactsDir + "Rendering.FontsNotificationUpdatePageLayout.pdf");
-            //ExEnd
-
+            
             Assert.That(callback.mFontWarnings.Count, Is.GreaterThan(0));
             Assert.True(callback.mFontWarnings[0].WarningType == WarningType.FontSubstitution);
             Assert.True(callback.mFontWarnings[0].Description.Contains("has not been found"));
@@ -1264,7 +1233,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfSaveOptions.#ctor
             //ExFor:PdfSaveOptions.EmbedFullFonts
-            //ExId:EmbedFullFonts
             //ExSummary:Demonstrates how to set Aspose.Words to embed full fonts in the output PDF document.
             // Load the document to render.
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -1284,7 +1252,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PdfSaveOptions.EmbedFullFonts
-            //ExId:Subset
             //ExSummary:Demonstrates how to set Aspose.Words to subset fonts in the output PDF.
             // Load the document to render.
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -1305,7 +1272,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfSaveOptions.FontEmbeddingMode
             //ExFor:PdfFontEmbeddingMode
-            //ExId:EmbedStandardWindowsFonts
             //ExSummary:Shows how to set Aspose.Words to skip embedding Arial and Times New Roman fonts into a PDF document.
             // Load the document to render.
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -1324,7 +1290,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PdfSaveOptions.UseCoreFonts
-            //ExId:DisableUseOfCoreFonts
             //ExSummary:Shows how to set Aspose.Words to avoid embedding core fonts and let the reader substitute PDF Type 1 fonts instead.
             // Load the document to render.
             Document doc = new Document(MyDir + "Rendering.doc");

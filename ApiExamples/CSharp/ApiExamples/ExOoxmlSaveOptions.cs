@@ -21,9 +21,29 @@ namespace ApiExamples
     internal class ExOoxmlSaveOptions : ApiExampleBase
     {
         [Test]
+        public void Password()
+        {
+            //ExStart
+            //ExFor:OoxmlSaveOptions.Password
+            //ExSummary:Shows how to create a password protected Office Open XML document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
+
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
+            saveOptions.Password = "MyPassword";
+
+            doc.Save(ArtifactsDir + "OoxmlSaveOptions.Password.docx", saveOptions);
+            //ExEnd
+        }
+
+        [Test]
         public void Iso29500Strict()
         {
             //ExStart
+            //ExFor:OoxmlSaveOptions
+            //ExFor:OoxmlSaveOptions.#ctor
+            //ExFor:OoxmlSaveOptions.SaveFormat
             //ExFor:OoxmlCompliance
             //ExFor:OoxmlSaveOptions.Compliance
             //ExFor:ShapeMarkupLanguage
@@ -50,6 +70,8 @@ namespace ApiExamples
                 Compliance = OoxmlCompliance.Iso29500_2008_Strict,
                 SaveFormat = SaveFormat.Docx
             };
+
+            doc.Save(ArtifactsDir + "OoxmlSaveOptions.Iso29500Strict.docx", saveOptions);
             //ExEnd
 
             MemoryStream dstStream = new MemoryStream();
@@ -115,6 +137,8 @@ namespace ApiExamples
             {
                 UpdateLastSavedTimeProperty = true
             };
+
+            doc.Save(ArtifactsDir + "OoxmlSaveOptions.UpdatingLastSavedTimeDocument.docx", saveOptions);
             //ExEnd
 
             MemoryStream dstStream = new MemoryStream();
@@ -129,11 +153,12 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OoxmlSaveOptions.KeepLegacyControlChars
+            //ExFor:OoxmlSaveOptions.#ctor(SaveFormat)
             //ExSummary:Shows how to support legacy control characters when converting to .docx
             Document doc = new Document(MyDir + "OoxmlSaveOptions.KeepLegacyControlChars.doc");
  
             // Note that only one legacy character (ShortDateTime) is supported which declared in the "DOC" format
-            OoxmlSaveOptions so = new OoxmlSaveOptions();
+            OoxmlSaveOptions so = new OoxmlSaveOptions(SaveFormat.Docx);
             so.KeepLegacyControlChars = true;
  
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.KeepLegacyControlChars.docx", so);

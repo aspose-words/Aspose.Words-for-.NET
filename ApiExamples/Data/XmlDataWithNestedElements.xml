@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Managers>
+   <Manager>
+       <Name>John Smith</Name>
+       <Contract>
+           <Client>
+               <Name>A Company</Name>
+           </Client>
+           <Price>1200000</Price>
+       </Contract>
+       <Contract>
+           <Client>
+               <Name>B Ltd.</Name>
+           </Client>
+           <Price>750000</Price>
+       </Contract>
+       <Contract>
+           <Client>
+               <Name>C &amp; D</Name>
+           </Client>
+           <Price>350000</Price>
+       </Contract>
+   </Manager>
+   <Manager>
+       <Name>Tony Anderson</Name>
+       <Contract>
+           <Client>
+               <Name>E Corp.</Name>
+           </Client>
+           <Price>650000</Price>
+       </Contract>
+       <Contract>
+           <Client>
+               <Name>F &amp; Partners</Name>
+           </Client>
+           <Price>550000</Price>
+       </Contract>
+   </Manager>
+   <Manager>
+       <Name>July James</Name>
+       <Contract>
+           <Client>
+               <Name>G &amp; Co.</Name>
+           </Client>
+           <Price>350000</Price>
+       </Contract>
+       <Contract>
+           <Client>
+               <Name>H Group</Name>
+           </Client>
+           <Price>250000</Price>
+       </Contract>
+       <Contract>
+           <Client>
+               <Name>I &amp; Sons</Name>
+           </Client>
+           <Price>100000</Price>
+       </Contract>
+       <Contract>
+           <Client>
+               <Name>J Ent.</Name>
+           </Client>
+           <Price>100000</Price>
+       </Contract>
+   </Manager>
+</Managers>

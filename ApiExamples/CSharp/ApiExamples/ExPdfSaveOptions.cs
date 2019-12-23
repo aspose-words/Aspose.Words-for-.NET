@@ -17,12 +17,12 @@ using SaveFormat = Aspose.Words.SaveFormat;
 using SaveOptions = Aspose.Words.Saving.SaveOptions;
 using WarningInfo = Aspose.Words.WarningInfo;
 using WarningType = Aspose.Words.WarningType;
-#if NETSTANDARD2_0 || __MOBILE__
-using SkiaSharp;
-#else 
+#if NETFRAMEWORK
 using Image = System.Drawing.Image;
+#else 
+using SkiaSharp;
 #endif
-#if  !(__MOBILE__ || MAC)
+#if NETFRAMEWORK || NETSTANDARD2_0
 using Aspose.Pdf.Facades;
 using Aspose.Pdf.Annotations;
 #endif
@@ -70,7 +70,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "CreateMissingOutlineLevels.pdf", pdfSaveOptions);
             //ExEnd
-#if !(__MOBILE__ || MAC)
+
+            #if NETFRAMEWORK || NETSTANDARD2_0
             // Bind PDF with Aspose.PDF
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "CreateMissingOutlineLevels.pdf");
@@ -79,7 +80,7 @@ namespace ApiExamples
             Bookmarks bookmarks = bookmarkEditor.ExtractBookmarks();
 
             Assert.AreEqual(11, bookmarks.Count);
-#endif
+            #endif
         }
 
         [Test]
@@ -102,7 +103,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "UpdateFields_False.pdf", pdfSaveOptions);
             //ExEnd
-#if !(__MOBILE__ || MAC)
+
+            #if NETFRAMEWORK || NETSTANDARD2_0
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "UpdateFields_False.pdf");
 
             // Get text fragment by search String
@@ -111,7 +113,7 @@ namespace ApiExamples
 
             // Assert that fields are not updated
             Assert.AreEqual("Page  of", textFragmentAbsorber.TextFragments[1].Text);
-#endif
+            #endif
         }
 
         [Test]
@@ -123,7 +125,8 @@ namespace ApiExamples
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { UpdateFields = true };
 
             doc.Save(ArtifactsDir + "UpdateFields_False.pdf", pdfSaveOptions);
-#if !(__MOBILE__ || MAC)
+
+            #if NETFRAMEWORK || NETSTANDARD2_0
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "UpdateFields_False.pdf");
 
             // Get text fragment by search String from PDF document
@@ -132,7 +135,7 @@ namespace ApiExamples
 
             // Assert that fields are updated
             Assert.AreEqual("Page 1 of 2", textFragmentAbsorber.TextFragments[1].Text);
-#endif
+            #endif
         }
 
         // For assert this test you need to open "SaveOptions.PdfImageCompression PDF_A_1_B Out.pdf" and "SaveOptions.PdfImageCompression PDF_A_1_A Out.pdf" 
@@ -183,6 +186,7 @@ namespace ApiExamples
         public void ColorRendering()
         {
             //ExStart
+            //ExFor:PdfSaveOptions
             //ExFor:SaveOptions.ColorMode
             //ExSummary:Shows how change image color with save options property
             // Open document with color image
@@ -208,18 +212,20 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfTitle.pdf", pdfSaveOptions);
             //ExEnd
-#if !(__MOBILE__ || MAC)
+
+            #if NETFRAMEWORK || NETSTANDARD2_0
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfTitle.pdf");
 
             Assert.IsTrue(pdfDocument.DisplayDocTitle);
             Assert.AreEqual("Windows bar pdf title", pdfDocument.Info.Title);
-#endif
+            #endif
         }
 
         [Test]
         public void MemoryOptimization()
         {
             //ExStart
+            //ExFor:SaveOptions.CreateSaveOptions(SaveFormat)
             //ExFor:SaveOptions.MemoryOptimization
             //ExSummary:Shows an option to optimize memory consumption when you work with large documents.
             Document doc = new Document(MyDir + "SaveOptions.MemoryOptimization.doc");
@@ -254,7 +260,7 @@ namespace ApiExamples
             builder.Document.Save(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf", options);
             //ExEnd
 
-#if !(__MOBILE__ || MAC)
+            #if NETFRAMEWORK || NETSTANDARD2_0
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf");
 
@@ -267,7 +273,7 @@ namespace ApiExamples
             string uriText = action.Script;
 
             Assert.AreEqual(result, uriText);
-#endif
+            #endif
         }
 
         [Test]
@@ -487,7 +493,9 @@ namespace ApiExamples
         public void CustomPropertiesExport()
         {
             //ExStart
+            //ExFor:PdfCustomPropertiesExport
             //ExFor:PdfSaveOptions.CustomPropertiesExport
+            //ExFor:SaveOptions.DmlEffectsRenderingMode
             //ExSummary:Shows how to export custom properties while saving to .pdf.
             Document doc = new Document();
 
@@ -540,7 +548,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
+        #if NETFRAMEWORK
         [Test]
         public void PreblendImages()
         {
@@ -561,7 +569,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
             //ExEnd
         }
-#else
+        #else
         [Test]
         public void PreblendImagesNetStandard2()
         {
@@ -584,6 +592,87 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
             //ExEnd
         }
-#endif
+        #endif
+
+        [Test]
+        public void PdfDigitalSignature()
+        {
+            //ExStart
+            //ExFor:PdfDigitalSignatureDetails
+            //ExFor:PdfDigitalSignatureDetails.#ctor
+            //ExFor:PdfDigitalSignatureDetails.#ctor(CertificateHolder, String, String, DateTime)
+            //ExFor:PdfDigitalSignatureDetails.HashAlgorithm
+            //ExFor:PdfDigitalSignatureDetails.Location
+            //ExFor:PdfDigitalSignatureDetails.Reason
+            //ExFor:PdfDigitalSignatureDetails.SignatureDate
+            //ExFor:PdfDigitalSignatureHashAlgorithm
+            //ExFor:PdfSaveOptions.DigitalSignatureDetails
+            //ExSummary:Shows how to sign a generated PDF using Aspose.Words.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Signed PDF contents.");
+
+            // Load the certificate from disk
+            // The other constructor overloads can be used to load certificates from different locations
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+
+            // Pass the certificate and details to the save options class to sign with
+            PdfSaveOptions options = new PdfSaveOptions();
+            DateTime signingTime = DateTime.Now;
+            options.DigitalSignatureDetails = new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", signingTime);
+
+            // We can use this attribute to set a different hash algorithm
+            options.DigitalSignatureDetails.HashAlgorithm = PdfDigitalSignatureHashAlgorithm.Sha256;
+
+            Assert.AreEqual("Test Signing", options.DigitalSignatureDetails.Reason);
+            Assert.AreEqual("Aspose Office", options.DigitalSignatureDetails.Location);
+            Assert.AreEqual(signingTime.ToUniversalTime(), options.DigitalSignatureDetails.SignatureDate);
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void PdfDigitalSignatureTimestamp()
+        {
+            //ExStart
+            //ExFor:PdfDigitalSignatureDetails.TimestampSettings
+            //ExFor:PdfDigitalSignatureTimestampSettings
+            //ExFor:PdfDigitalSignatureTimestampSettings.#ctor
+            //ExFor:PdfDigitalSignatureTimestampSettings.#ctor(String,String,String)
+            //ExFor:PdfDigitalSignatureTimestampSettings.#ctor(String,String,String,TimeSpan)
+            //ExFor:PdfDigitalSignatureTimestampSettings.Password
+            //ExFor:PdfDigitalSignatureTimestampSettings.ServerUrl
+            //ExFor:PdfDigitalSignatureTimestampSettings.Timeout
+            //ExFor:PdfDigitalSignatureTimestampSettings.UserName
+            //ExSummary:Shows how to sign a generated PDF and timestamp it using Aspose.Words.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Signed PDF contents.");
+
+            // Create a digital signature for the document that we will save
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.DigitalSignatureDetails = new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", DateTime.Now);
+
+            // We can set a verified timestamp for our signature as well, with a valid timestamp authority
+            options.DigitalSignatureDetails.TimestampSettings =
+                new PdfDigitalSignatureTimestampSettings("https://freetsa.org/tsr", "JohnDoe", "MyPassword");
+
+            // The default lifespan of the timestamp is 100 seconds
+            Assert.AreEqual(100.0d, options.DigitalSignatureDetails.TimestampSettings.Timeout.TotalSeconds);
+
+            // We can set our own timeout period via the constructor
+            options.DigitalSignatureDetails.TimestampSettings =
+                new PdfDigitalSignatureTimestampSettings("https://freetsa.org/tsr", "JohnDoe", "MyPassword", TimeSpan.FromMinutes(30));
+
+            Assert.AreEqual(1800.0d, options.DigitalSignatureDetails.TimestampSettings.Timeout.TotalSeconds);
+            Assert.AreEqual("https://freetsa.org/tsr", options.DigitalSignatureDetails.TimestampSettings.ServerUrl);
+            Assert.AreEqual("JohnDoe", options.DigitalSignatureDetails.TimestampSettings.UserName);
+            Assert.AreEqual("MyPassword", options.DigitalSignatureDetails.TimestampSettings.Password);
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf");
+            //ExEnd
+        }
     }
 }

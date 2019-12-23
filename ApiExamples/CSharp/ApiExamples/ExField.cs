@@ -24,7 +24,7 @@ using Aspose.Words.MailMerging;
 using Aspose.Words.Replacing;
 using NUnit.Framework;
 using LoadOptions = Aspose.Words.LoadOptions;
-#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
+#if NETFRAMEWORK
 using Aspose.BarCode.BarCodeRecognition;
 #else
 using SkiaSharp;
@@ -39,12 +39,7 @@ namespace ApiExamples
         public void UpdateToc()
         {
             Document doc = new Document();
-
-            //ExStart
-            //ExId:UpdateTOC
-            //ExSummary:Shows how to completely rebuild TOC fields in the document by invoking field update.
             doc.UpdateFields();
-            //ExEnd
         }
 
         [Test]
@@ -58,7 +53,6 @@ namespace ApiExamples
             //ExFor:FieldChar.IsLocked
             //ExFor:FieldChar.GetField
             //ExFor:Field.IsLocked
-            //ExId:GetField
             //ExSummary:Demonstrates how to retrieve the field class from an existing FieldStart node in the document.
             Document doc = new Document(MyDir + "Document.TableOfContents.doc");
 
@@ -152,16 +146,12 @@ namespace ApiExamples
         [Test]
         public void GetFieldFromFieldCollection()
         {
-            //ExStart
-            //ExId:GetFieldFromFieldCollection
-            //ExSummary:Demonstrates how to retrieve a field using the range of a node.
             Document doc = new Document(MyDir + "Document.TableOfContents.doc");
 
             Field field = doc.Range.Fields[0];
 
             // This should be the first field in the document - a TOC field.
             Console.WriteLine(field.Type);
-            //ExEnd
         }
 
         [Test]
@@ -190,9 +180,6 @@ namespace ApiExamples
         [Test]
         public void InsertTcField()
         {
-            //ExStart
-            //ExId:InsertTCField
-            //ExSummary:Shows how to insert a TC field into the document using DocumentBuilder.
             // Create a blank document.
             Document doc = new Document();
 
@@ -201,7 +188,6 @@ namespace ApiExamples
 
             // Insert a TC field at the current document builder position.
             builder.InsertField("TC \"Entry Text\" \\f t");
-            //ExEnd
         }
 
         [Test]
@@ -213,9 +199,6 @@ namespace ApiExamples
 
             builder.InsertField("MERGEFIELD Date");
 
-            //ExStart
-            //ExId:ChangeCurrentCulture
-            //ExSummary:Shows how to change the culture used in formatting fields during update.
             // Store the current culture so it can be set back once mail merge is complete.
             CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
             // Set to German language so dates and numbers are formatted using this culture during mail merge.
@@ -226,7 +209,6 @@ namespace ApiExamples
 
             // Restore the original culture.
             Thread.CurrentThread.CurrentCulture = currentCulture;
-            //ExEnd
 
             doc.Save(ArtifactsDir + "Field.ChangeLocale.doc");
         }
@@ -236,7 +218,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:CompositeNode.GetChildNodes(NodeType, Boolean)
-            //ExId:RemoveTableOfContents
             //ExSummary:Demonstrates how to remove a specified TOC from a document.
             // Open a document which contains a TOC.
             Document doc = new Document(MyDir + "Document.TableOfContents.doc");
@@ -251,9 +232,6 @@ namespace ApiExamples
         }
 
         [Test]
-        //ExStart
-        //ExId:TCFieldsRangeReplace
-        //ExSummary:Shows how to find and insert a TC field at text in a document.
         public void InsertTcFieldsAtText()
         {
             Document doc = new Document();
@@ -304,10 +282,8 @@ namespace ApiExamples
             }
         }
 
-        //ExEnd
-
         [Test]
-        [NUnit.Framework.Description("WORDSNET-16037")]
+        [Description("WORDSNET-16037")]
         public void InsertAndUpdateDirtyField()
         {
             //ExStart
@@ -350,7 +326,7 @@ namespace ApiExamples
                     .AddArgument(10).AddArgument(20.0).BuildAndInsert(run), Throws.TypeOf<ArgumentException>());
         }
 
-#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
+#if NETFRAMEWORK
         [Test]
         public void BarCodeWord2Pdf()
         {
@@ -399,6 +375,95 @@ namespace ApiExamples
 
             return barcodeReader;
         }
+
+        //ExStart
+        //ExFor:BarcodeParameters
+        //ExFor:BarcodeParameters.AddStartStopChar
+        //ExFor:BarcodeParameters.BackgroundColor
+        //ExFor:BarcodeParameters.BarcodeType
+        //ExFor:BarcodeParameters.BarcodeValue
+        //ExFor:BarcodeParameters.CaseCodeStyle
+        //ExFor:BarcodeParameters.DisplayText
+        //ExFor:BarcodeParameters.ErrorCorrectionLevel
+        //ExFor:BarcodeParameters.FacingIdentificationMark
+        //ExFor:BarcodeParameters.FixCheckDigit
+        //ExFor:BarcodeParameters.ForegroundColor
+        //ExFor:BarcodeParameters.IsBookmark
+        //ExFor:BarcodeParameters.IsUSPostalAddress
+        //ExFor:BarcodeParameters.PosCodeStyle
+        //ExFor:BarcodeParameters.PostalAddress
+        //ExFor:BarcodeParameters.ScalingFactor
+        //ExFor:BarcodeParameters.SymbolHeight
+        //ExFor:BarcodeParameters.SymbolRotation
+        //ExFor:IBarcodeGenerator
+        //ExFor:IBarcodeGenerator.GetBarcodeImage(BarcodeParameters)
+        //ExFor:IBarcodeGenerator.GetOldBarcodeImage(BarcodeParameters)
+        //ExFor:FieldOptions.BarcodeGenerator
+        //ExSummary:Shows how to create barcode images using a barcode generator.
+        [Test] //ExSkip
+        public void BarcodeGenerator()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            Assert.IsNull(doc.FieldOptions.BarcodeGenerator);
+
+            // Barcodes generated in this way will be images, and we can use a custom IBarcodeGenerator implementation to generate them
+            doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
+
+            // Configure barcode parameters for a QR barcode
+            BarcodeParameters barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "QR";
+            barcodeParameters.BarcodeValue = "ABC123";
+            barcodeParameters.BackgroundColor = "0xF8BD69";
+            barcodeParameters.ForegroundColor = "0xB5413B";
+            barcodeParameters.ErrorCorrectionLevel = "3";
+            barcodeParameters.ScalingFactor = "250";
+            barcodeParameters.SymbolHeight = "1000";
+            barcodeParameters.SymbolRotation = "0";
+
+            // Save the generated barcode image to the file system
+            System.Drawing.Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(ArtifactsDir + "Field.BarcodeGenerator.QR.jpg");
+
+            // Insert the image into the document
+            builder.InsertImage(img);
+
+            // Configure barcode parameters for a EAN13 barcode
+            barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "EAN13";
+            barcodeParameters.BarcodeValue = "501234567890";
+            barcodeParameters.DisplayText = true;
+            barcodeParameters.PosCodeStyle = "CASE";
+            barcodeParameters.FixCheckDigit = true;
+
+            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(ArtifactsDir + "Field.BarcodeGenerator.EAN13.jpg");
+            builder.InsertImage(img);
+
+            // Configure barcode parameters for a CODE39 barcode
+            barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "CODE39";
+            barcodeParameters.BarcodeValue = "12345ABCDE";
+            barcodeParameters.AddStartStopChar = true;
+
+            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(ArtifactsDir + "Field.BarcodeGenerator.CODE39.jpg");
+            builder.InsertImage(img);
+
+            // Configure barcode parameters for an ITF14 barcode
+            barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "ITF14";
+            barcodeParameters.BarcodeValue = "09312345678907";
+            barcodeParameters.CaseCodeStyle = "STD";
+
+            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(ArtifactsDir + "Field.BarcodeGenerator.ITF14.jpg");
+            builder.InsertImage(img);
+
+            doc.Save(ArtifactsDir + "Field.BarcodeGenerator.docx");
+        }
+        //ExEnd
 #endif
         //For assert result of the test you need to open document and check that image are added correct and without truncated inside frame
         [Test]
@@ -418,7 +483,7 @@ namespace ApiExamples
                 {
                     FieldIncludePicture includePicture = (FieldIncludePicture)field;
 
-                    includePicture.SourceFullName = MyDir + "Images/dotnet-logo.png";
+                    includePicture.SourceFullName = ImageDir + "dotnet-logo.png";
                     includePicture.Update(true);
                 }
             }
@@ -1639,24 +1704,24 @@ namespace ApiExamples
             fieldToc.PreserveTabs = true;
             fieldToc.UseParagraphOutlineLevel = false;
 
-            InsertHeading(builder, "First entry", "Heading 1");
+            InsertNewPageWithHeading(builder, "First entry", "Heading 1");
             builder.Writeln("Paragraph text.");
-            InsertHeading(builder, "Second entry", "Heading 1");
-            InsertHeading(builder, "Third entry", "Quote");
-            InsertHeading(builder, "Fourth entry", "Intense Quote");
+            InsertNewPageWithHeading(builder, "Second entry", "Heading 1");
+            InsertNewPageWithHeading(builder, "Third entry", "Quote");
+            InsertNewPageWithHeading(builder, "Fourth entry", "Intense Quote");
 
             // These two headings will have the page numbers omitted because they are within the "2-5" range
-            InsertHeading(builder, "Fifth entry", "Heading 2");
-            InsertHeading(builder, "Sixth entry", "Heading 3");
+            InsertNewPageWithHeading(builder, "Fifth entry", "Heading 2");
+            InsertNewPageWithHeading(builder, "Sixth entry", "Heading 3");
 
             // This entry will be omitted because "Heading 4" is outside of the "1-3" range we set earlier
-            InsertHeading(builder, "Seventh entry", "Heading 4");
+            InsertNewPageWithHeading(builder, "Seventh entry", "Heading 4");
 
             builder.EndBookmark("MyBookmark");
             builder.Writeln("Paragraph text.");
 
             // This entry will be omitted because it is outside the bookmark specified by the TOC
-            InsertHeading(builder, "Eighth entry", "Heading 1");
+            InsertNewPageWithHeading(builder, "Eighth entry", "Heading 1");
 
             Assert.AreEqual(" TOC  \\b MyBookmark \\t \"Quote; 6; Intense Quote; 7\" \\o 1-3 \\n 2-5 \\p - \\h \\x \\w", fieldToc.GetFieldCode());
 
@@ -1668,7 +1733,7 @@ namespace ApiExamples
         /// <summary>
         /// Start a new page and insert a paragraph of a specified style
         /// </summary>
-        public void InsertHeading(DocumentBuilder builder, string captionText, string styleName)
+        public void InsertNewPageWithHeading(DocumentBuilder builder, string captionText, string styleName)
         {
             builder.InsertBreak(BreakType.PageBreak);
             string originalStyle = builder.ParagraphFormat.StyleName;
@@ -2320,7 +2385,7 @@ namespace ApiExamples
             {
                 if (imageFilenames.ContainsKey(e.FieldValue.ToString()))
                 {
-                    #if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
+                    #if NETFRAMEWORK
                     e.Image = Image.FromFile(imageFilenames[e.FieldValue.ToString()]);
                     #else
                     e.Image = SKBitmap.Decode(imageFilenames[e.FieldValue.ToString()]);
@@ -2737,97 +2802,6 @@ namespace ApiExamples
             throw new ArgumentException("DataTable name and Column name must be declared.");
         }
         //ExEnd
-
-#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
-        //ExStart
-        //ExFor:BarcodeParameters
-        //ExFor:BarcodeParameters.AddStartStopChar
-        //ExFor:BarcodeParameters.BackgroundColor
-        //ExFor:BarcodeParameters.BarcodeType
-        //ExFor:BarcodeParameters.BarcodeValue
-        //ExFor:BarcodeParameters.CaseCodeStyle
-        //ExFor:BarcodeParameters.DisplayText
-        //ExFor:BarcodeParameters.ErrorCorrectionLevel
-        //ExFor:BarcodeParameters.FacingIdentificationMark
-        //ExFor:BarcodeParameters.FixCheckDigit
-        //ExFor:BarcodeParameters.ForegroundColor
-        //ExFor:BarcodeParameters.IsBookmark
-        //ExFor:BarcodeParameters.IsUSPostalAddress
-        //ExFor:BarcodeParameters.PosCodeStyle
-        //ExFor:BarcodeParameters.PostalAddress
-        //ExFor:BarcodeParameters.ScalingFactor
-        //ExFor:BarcodeParameters.SymbolHeight
-        //ExFor:BarcodeParameters.SymbolRotation
-        //ExFor:IBarcodeGenerator
-        //ExFor:IBarcodeGenerator.GetBarcodeImage(BarcodeParameters)
-        //ExFor:IBarcodeGenerator.GetOldBarcodeImage(BarcodeParameters)
-        //ExFor:FieldOptions.BarcodeGenerator
-        //ExSummary:Shows how to create barcode images using a barcode generator.
-        [Test] //ExSkip
-        public void BarcodeGenerator()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            Assert.IsNull(doc.FieldOptions.BarcodeGenerator);
-
-            // Barcodes generated in this way will be images, and we can use a custom IBarcodeGenerator implementation to generate them
-            doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
-
-            // Configure barcode parameters for a QR barcode
-            BarcodeParameters barcodeParameters = new BarcodeParameters();
-            barcodeParameters.BarcodeType = "QR";
-            barcodeParameters.BarcodeValue = "ABC123";
-            barcodeParameters.BackgroundColor = "0xF8BD69";
-            barcodeParameters.ForegroundColor = "0xB5413B";
-            barcodeParameters.ErrorCorrectionLevel = "3";
-            barcodeParameters.ScalingFactor = "250";
-            barcodeParameters.SymbolHeight = "1000";
-            barcodeParameters.SymbolRotation = "0";
-
-            // Save the generated barcode image to the file system
-            System.Drawing.Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-            img.Save(ArtifactsDir + "Field.BarcodeGenerator.QR.jpg");
-
-            // Insert the image into the document
-            builder.InsertImage(img);
-
-            // Configure barcode parameters for a EAN13 barcode
-            barcodeParameters = new BarcodeParameters();
-            barcodeParameters.BarcodeType = "EAN13";
-            barcodeParameters.BarcodeValue = "501234567890";
-            barcodeParameters.DisplayText = true;
-            barcodeParameters.PosCodeStyle = "CASE";
-            barcodeParameters.FixCheckDigit = true;
-
-            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-            img.Save(ArtifactsDir + "Field.BarcodeGenerator.EAN13.jpg");
-            builder.InsertImage(img);
-
-            // Configure barcode parameters for a CODE39 barcode
-            barcodeParameters = new BarcodeParameters();
-            barcodeParameters.BarcodeType = "CODE39";
-            barcodeParameters.BarcodeValue = "12345ABCDE";
-            barcodeParameters.AddStartStopChar = true;
-
-            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-            img.Save(ArtifactsDir + "Field.BarcodeGenerator.CODE39.jpg");
-            builder.InsertImage(img);
-
-            // Configure barcode parameters for an ITF14 barcode
-            barcodeParameters = new BarcodeParameters();
-            barcodeParameters.BarcodeType = "ITF14";
-            barcodeParameters.BarcodeValue = "09312345678907";
-            barcodeParameters.CaseCodeStyle = "STD";
-
-            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-            img.Save(ArtifactsDir + "Field.BarcodeGenerator.ITF14.jpg");
-            builder.InsertImage(img);
-
-            doc.Save(ArtifactsDir + "Field.BarcodeGenerator.docx");
-        }
-        //ExEnd
-#endif
 
         //ExStart
         //ExFor:FieldLink
@@ -3433,7 +3407,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if (!__MOBILE__)
+#if NETFRAMEWORK || NETSTANDARD2_0
         [Test]
         public void FieldDate()
         {
@@ -4392,6 +4366,7 @@ namespace ApiExamples
         //ExStart
         //ExFor:FieldOptions.FieldUpdateCultureProvider
         //ExFor:IFieldUpdateCultureProvider
+        //ExFor:IFieldUpdateCultureProvider.GetCulture(string, Field)
         //ExSummary:Shows how to specifying a culture defining date/time formatting on per field basis
         [Test]
         public void DefineDateTimeFormatting()
@@ -5349,6 +5324,7 @@ namespace ApiExamples
         public void BidiOutline()
         {
             //ExStart
+            //ExFor:FieldBidiOutline
             //ExFor:FieldShape
             //ExFor:FieldShape.Text
             //ExFor:ParagraphFormat.Bidi

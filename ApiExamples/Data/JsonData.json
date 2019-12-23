@@ -1,0 +1,25 @@
+[
+  {
+	Name: "John Doe",
+	Age: 30,
+	Money: 1160.90,
+	Birth: "1989-04-01 4:00:00 pm",
+	GotKids: true,
+	Child: [ "Ann Doe", "Charles Doe" ]
+  },
+  { 
+	Name: "Jane Doe",
+	Age: 27,
+	Money: 3010.15,
+	Birth: "1992-01-31 07:00:00 am",
+	GotKids: false
+  },
+  { 
+	Name: "John Smith",
+	Age: 51,
+	Money: 60.70,
+	Birth: "1968-03-08 1:00:00 pm",
+	GotKids: true,
+	Child: [ "Danny Smith", "Bob Smith" ]
+  }
+]
