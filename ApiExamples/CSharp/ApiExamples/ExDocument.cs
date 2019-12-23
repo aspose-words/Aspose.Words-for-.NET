@@ -2342,57 +2342,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CompatibilityOptions()
-        {
-            //ExStart
-            //ExFor:Document.CompatibilityOptions
-            //ExSummary:Shows how to optimize our document for different word versions.
-            Document doc = new Document();
-            CompatibilityOptions co = doc.CompatibilityOptions;
-
-            // Here are some default values
-            Assert.AreEqual(true, co.GrowAutofit);
-            Assert.AreEqual(false, co.DoNotBreakWrappedTables);
-            Assert.AreEqual(false, co.DoNotUseEastAsianBreakRules);
-            Assert.AreEqual(false, co.SelectFldWithFirstOrLastChar);
-            Assert.AreEqual(false, co.UseWord97LineBreakRules);
-            Assert.AreEqual(true, co.UseWord2002TableStyleRules);
-            Assert.AreEqual(false, co.UseWord2010TableStyleRules);
-
-            // This example covers only a small portion of all the compatibility attributes 
-            // To see the entire list, in any of the output files go into File > Options > Advanced > Compatibility for...
-            doc.Save(ArtifactsDir + "DefaultCompatibility.docx");
-
-            // We can hand pick any value and change it to create a custom compatibility
-            // We can also change a bunch of values at once to suit a defined compatibility scheme with the OptimizeFor method
-            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2010);
-
-            Assert.AreEqual(false, co.GrowAutofit);
-            Assert.AreEqual(false, co.GrowAutofit);
-            Assert.AreEqual(false, co.DoNotBreakWrappedTables);
-            Assert.AreEqual(false, co.DoNotUseEastAsianBreakRules);
-            Assert.AreEqual(false, co.SelectFldWithFirstOrLastChar);
-            Assert.AreEqual(false, co.UseWord97LineBreakRules);
-            Assert.AreEqual(false, co.UseWord2002TableStyleRules);
-            Assert.AreEqual(true, co.UseWord2010TableStyleRules);
-
-            doc.Save(ArtifactsDir + "Optimised for Word 2010.docx");
-
-            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
-
-            Assert.AreEqual(true, co.GrowAutofit);
-            Assert.AreEqual(true, co.DoNotBreakWrappedTables);
-            Assert.AreEqual(true, co.DoNotUseEastAsianBreakRules);
-            Assert.AreEqual(true, co.SelectFldWithFirstOrLastChar);
-            Assert.AreEqual(false, co.UseWord97LineBreakRules);
-            Assert.AreEqual(true, co.UseWord2002TableStyleRules);
-            Assert.AreEqual(false, co.UseWord2010TableStyleRules);
-
-            doc.Save(ArtifactsDir + "Optimised for Word 2000.docx");
-            //ExEnd
-        }
-
-        [Test]
         public void Sections()
         {
             //ExStart
