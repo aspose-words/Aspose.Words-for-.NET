@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -44,7 +44,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExDocument : ApiExampleBase
     {
-        #if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
         [Test]
         public void LicenseFromFileNoPath()
         {
@@ -124,9 +124,9 @@ namespace ApiExamples
             
             doc.Save(ArtifactsDir + "Document.NumberFormatting.pdf");
         }
-        #endif
+#endif
 
-        #if NETFRAMEWORK || MAC
+#if NETFRAMEWORK || MAC
         //ExStart
         //ExFor:LoadOptions.ResourceLoadingCallback
         //ExSummary:Shows how to handle external resources in Html documents during loading.
@@ -219,7 +219,7 @@ namespace ApiExamples
             CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
             //ExEnd
         }
-        #endif
+#endif
 
         [Test]
         public void DocumentCtor()
@@ -432,39 +432,6 @@ namespace ApiExamples
             {
                 Document doc = new Document(stream, new LoadOptions("qwerty"));
             }
-            //ExEnd
-        }
-
-        [Test] 
-        public void AnnotationsAtBlockLevel()
-        {
-            //ExStart
-            //ExFor:LoadOptions.AnnotationsAtBlockLevel
-            //ExFor:LoadOptions.AnnotationsAtBlockLevelAsDefault
-            //ExSummary:Shows how to place bookmark nodes on the block, cell and row levels.
-            // Any LoadOptions instances we create will have a default AnnotationsAtBlockLevel value equal to this
-            LoadOptions.AnnotationsAtBlockLevelAsDefault = false;
-
-            LoadOptions loadOptions = new LoadOptions();
-            Assert.AreEqual(loadOptions.AnnotationsAtBlockLevel, LoadOptions.AnnotationsAtBlockLevelAsDefault);
-
-            // If we want to work with annotations that transcend structures like tables, we will need to set this to true
-            loadOptions.AnnotationsAtBlockLevel = true;
-
-            // Open a document with a structured document tag and get that tag
-            Document doc = new Document(MyDir + "Document.AnnotationsAtBlockLevel.docx", loadOptions);
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            StructuredDocumentTag sdt = (StructuredDocumentTag)doc.GetChildNodes(NodeType.StructuredDocumentTag, true)[1];
-
-            // Insert a bookmark and make it envelop our tag
-            BookmarkStart start = builder.StartBookmark("MyBookmark");
-            BookmarkEnd end = builder.EndBookmark("MyBookmark");
-
-            sdt.ParentNode.InsertBefore(start, sdt);
-            sdt.ParentNode.InsertAfter(end, sdt);
-
-            doc.Save(ArtifactsDir + "Document.AnnotationsAtBlockLevel.docx", SaveFormat.Docx);
             //ExEnd
         }
 
@@ -1976,11 +1943,11 @@ namespace ApiExamples
             //ExSummary:Show how to simply extract text from a document.
             TxtLoadOptions loadOptions = new TxtLoadOptions { DetectNumberingWithWhitespaces = false };
 
-            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmark.docx");
-            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); //ExSkip 
+            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmarks.docx");
+            Assert.AreEqual("First bookmark.\rSecond bookmark.\rThird bookmark.\f", plaintext.Text); //ExSkip 
 
-            plaintext = new PlainTextDocument(MyDir + "Bookmark.docx", loadOptions);
-            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); //ExSkip
+            plaintext = new PlainTextDocument(MyDir + "Bookmarks.docx", loadOptions);
+            Assert.AreEqual("First bookmark.\rSecond bookmark.\rThird bookmark.\f", plaintext.Text); //ExSkip
             //ExEnd
         }
 
@@ -1990,7 +1957,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:PlainTextDocument.BuiltInDocumentProperties
             //ExSummary:Show how to get BuiltIn properties of plain text document.
-            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmark.docx");
+            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmarks.docx");
             BuiltInDocumentProperties builtInDocumentProperties = plaintext.BuiltInDocumentProperties;
             //ExEnd
 
@@ -2003,7 +1970,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:PlainTextDocument.CustomDocumentProperties
             //ExSummary:Show how to get custom properties of plain text document.
-            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmark.docx");
+            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmarks.docx");
             CustomDocumentProperties customDocumentProperties = plaintext.CustomDocumentProperties;
             //ExEnd
 
@@ -2019,13 +1986,13 @@ namespace ApiExamples
             //ExSummary:Show how to simply extract text from a stream.
             TxtLoadOptions loadOptions = new TxtLoadOptions { DetectNumberingWithWhitespaces = false };
 
-            Stream stream = new FileStream(MyDir + "Bookmark.docx", FileMode.Open);
+            Stream stream = new FileStream(MyDir + "Bookmarks.docx", FileMode.Open);
 
             PlainTextDocument plaintext = new PlainTextDocument(stream);
-            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); //ExSkip
+            Assert.AreEqual("First bookmark.\rSecond bookmark.\rThird bookmark.\f", plaintext.Text); //ExSkip
 
             plaintext = new PlainTextDocument(stream, loadOptions);
-            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); //ExSkip
+            Assert.AreEqual("First bookmark.\rSecond bookmark.\rThird bookmark.\f", plaintext.Text); //ExSkip
             //ExEnd
 
             stream.Close();
