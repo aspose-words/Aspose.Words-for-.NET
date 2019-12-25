@@ -57,8 +57,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ReplaceHyperlinks.Fields.doc");
         }
 
-        private const String NewUrl = @"http://www.aspose.com";
-        private const String NewName = "Aspose - The .NET & Java Component Publisher";
+        private const string NewUrl = @"http://www.aspose.com";
+        private const string NewName = "Aspose - The .NET & Java Component Publisher";
     }
 
     /// <summary>
@@ -100,7 +100,7 @@ namespace ApiExamples
             mFieldEnd = FindNextSibling(mFieldSeparator, NodeType.FieldEnd);
 
             // Field code looks something like [ HYPERLINK "http:\\www.myurl.com" ], but it can consist of several runs.
-            String fieldCode = GetTextSameParent(mFieldStart.NextSibling, mFieldSeparator);
+            string fieldCode = GetTextSameParent(mFieldStart.NextSibling, mFieldSeparator);
             Match match = gRegex.Match(fieldCode.Trim());
             mIsLocal = (match.Groups[1].Length > 0); //The link is local if \l is present in the field code.
             mTarget = match.Groups[2].Value;
@@ -109,7 +109,7 @@ namespace ApiExamples
         /// <summary>
         /// Gets or sets the display name of the hyperlink.
         /// </summary>
-        internal String Name
+        internal string Name
         {
             get { return GetTextSameParent(mFieldSeparator, mFieldEnd); }
             set
@@ -127,7 +127,7 @@ namespace ApiExamples
         /// <summary>
         /// Gets or sets the target url or bookmark name of the hyperlink.
         /// </summary>
-        internal String Target
+        internal string Target
         {
             get
             {
@@ -157,7 +157,7 @@ namespace ApiExamples
         {
             // Field code is stored in a Run node between field start and field separator.
             Run fieldCode = (Run) mFieldStart.NextSibling;
-            fieldCode.Text = String.Format("HYPERLINK {0}\"{1}\"", ((mIsLocal) ? "\\l " : ""), mTarget);
+            fieldCode.Text = string.Format("HYPERLINK {0}\"{1}\"", ((mIsLocal) ? "\\l " : ""), mTarget);
 
             // But sometimes the field code can consist of more than one run, delete these runs.
             RemoveSameParent(fieldCode.NextSibling, mFieldSeparator);
@@ -180,7 +180,7 @@ namespace ApiExamples
         /// <summary>
         /// Retrieves text from start up to but not including the end node.
         /// </summary>
-        private static String GetTextSameParent(Node startNode, Node endNode)
+        private static string GetTextSameParent(Node startNode, Node endNode)
         {
             if ((endNode != null) && (startNode.ParentNode != endNode.ParentNode))
                 throw new ArgumentException("Start and end nodes are expected to have the same parent.");
@@ -214,7 +214,7 @@ namespace ApiExamples
         private readonly Node mFieldSeparator;
         private readonly Node mFieldEnd;
         private bool mIsLocal;
-        private String mTarget;
+        private string mTarget;
 
         /// <summary>
         /// RK I am notoriously bad at regexes. It seems I don't understand their way of thinking.

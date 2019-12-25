@@ -138,7 +138,7 @@ namespace ApiExamples
                     string fieldValue = args.FieldValue.ToString();
 
                     // In this case, for every record index 'n', the corresponding field value is "Course n"
-                    Assert.AreEqual(Char.GetNumericValue(fieldValue[7]), args.RecordIndex);
+                    Assert.AreEqual(char.GetNumericValue(fieldValue[7]), args.RecordIndex);
 
                     builder.Write(fieldValue);
                     mCheckBoxCount++;

@@ -206,10 +206,7 @@ namespace ApiExamples
 
             // MS Word document does not support bookmark names with whitespaces by default
             // If you have document which contains bookmark names with underscores, you can simply replace them to whitespaces
-            foreach (Bookmark bookmark in doc.Range.Bookmarks)
-            {
-                bookmark.Name = bookmark.Name.Replace("_", " ");
-            }
+            foreach (Bookmark bookmark in doc.Range.Bookmarks) bookmark.Name = bookmark.Name.Replace("_", " ");
             //ExEnd
         }
     }

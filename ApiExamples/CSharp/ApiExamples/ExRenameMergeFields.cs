@@ -72,7 +72,7 @@ namespace ApiExamples
         /// <summary>
         /// Gets or sets the name of the merge field.
         /// </summary>
-        internal String Name
+        internal string Name
         {
             get { return GetTextSameParent(mFieldSeparator.NextSibling, mFieldEnd).Trim('«', '»'); }
             set
@@ -89,13 +89,13 @@ namespace ApiExamples
             }
         }
 
-        private void UpdateFieldCode(String fieldName)
+        private void UpdateFieldCode(string fieldName)
         {
             // Field code is stored in a Run node between field start and field separator.
             Run fieldCode = (Run) mFieldStart.NextSibling;
             Match match = gRegex.Match(fieldCode.Text);
 
-            String newFieldCode = $" {match.Groups["start"].Value}{fieldName} ";
+            string newFieldCode = $" {match.Groups["start"].Value}{fieldName} ";
             fieldCode.Text = newFieldCode;
 
             // But sometimes the field code can consist of more than one run, delete these runs.
@@ -119,7 +119,7 @@ namespace ApiExamples
         /// <summary>
         /// Retrieves text from start up to but not including the end node.
         /// </summary>
-        private static String GetTextSameParent(Node startNode, Node endNode)
+        private static string GetTextSameParent(Node startNode, Node endNode)
         {
             if ((endNode != null) && (startNode.ParentNode != endNode.ParentNode))
                 throw new ArgumentException("Start and end nodes are expected to have the same parent.");

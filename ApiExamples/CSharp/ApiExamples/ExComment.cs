@@ -40,10 +40,7 @@ namespace ApiExamples
             newComment.AddReply("John Doe", "JD", new DateTime(2017, 9, 25, 12, 15, 0), "New reply");
             //ExEnd
 
-            using (MemoryStream dstStream = new MemoryStream())
-            {
-                doc.Save(dstStream, SaveFormat.Docx);
-            }
+            using (MemoryStream dstStream = new MemoryStream()) doc.Save(dstStream, SaveFormat.Docx);
 
             Comment docComment = (Comment) doc.GetChild(NodeType.Comment, 0, true);
 
@@ -143,7 +140,7 @@ namespace ApiExamples
             {
                 if (!childComment.Done)
                 {
-                    // Update comment reply Done mark.
+                    // Update comment reply Done mark
                     childComment.Done = true;
                 }
             }
@@ -211,7 +208,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Extract comments from the document without replies
+        /// Extract comments from the document without replies.
         /// </summary>
         public static List<Comment> ExtractComments(Document doc)
         {
@@ -325,8 +322,8 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitCommentStart(Comment comment)
             {
-                IndentAndAppendLine(string.Format("[Comment start] For comment range ID {0}, By {1} on {2}", comment.Id,
-                    comment.Author, comment.DateTime));
+                IndentAndAppendLine(
+                    $"[Comment start] For comment range ID {comment.Id}, By {comment.Author} on {comment.DateTime}");
                 mDocTraversalDepth++;
                 mVisitorIsInsideComment = true;
 

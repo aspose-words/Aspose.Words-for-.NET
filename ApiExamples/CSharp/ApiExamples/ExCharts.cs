@@ -1,4 +1,11 @@
-﻿using System;
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
+
+using System;
 using System.IO;
 using System.Collections.Generic;
 using Aspose.Words;
@@ -78,17 +85,17 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add chart with default data.
+            // Add chart with default data
             Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
             Chart chart = shape.Chart;
 
             ChartSeriesCollection seriesColl = chart.Series;
             seriesColl.Clear();
 
-            // Create category names array, second category will be null.
+            // Create category names array, second category will be null
             string[] categories = { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
 
-            // Adding new series with empty (double.NaN) values.
+            // Adding new series with empty (double.NaN) values
             seriesColl.Add("AW Series 1", categories, new double[] { 1, 2, double.NaN, 4, 5, 6 });
             seriesColl.Add("AW Series 2", categories, new double[] { 2, 3, double.NaN, 5, 6, 7 });
 
@@ -107,17 +114,17 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add chart with default data.
+            // Add chart with default data
             Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
             Chart chart = shape.Chart;
 
             ChartSeriesCollection seriesColl = chart.Series;
             seriesColl.Clear();
 
-            // Create category names array, second category will be null.
+            // Create category names array, second category will be null
             string[] categories = { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
 
-            // Adding new series with empty (double.NaN) values.
+            // Adding new series with empty (double.NaN) values
             seriesColl.Add("AW Series 1", categories, new[] { 1, 2, double.NaN, 4, 5, 6 });
             seriesColl.Add("AW Series 2", categories, new[] { 2, 3, double.NaN, 5, 6, 7 });
             seriesColl.Add("AW Series 3", categories, new[] { double.NaN, 4, 5, double.NaN, 7, 8 });
@@ -210,11 +217,11 @@ namespace ApiExamples
             //ExFor:Charts.AxisTickLabelPosition
             //ExFor:Charts.AxisTimeUnit
             //ExFor:Charts.ChartAxis.BaseTimeUnit
-            //ExSummary:Shows how to insert chart with date/time values
+            //ExSummary:Shows how to insert chart with date/time values.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert chart.
+            // Insert chart
             Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
             Chart chart = shape.Chart;
             
@@ -504,7 +511,7 @@ namespace ApiExamples
         /// <summary>
         /// Apply uniform data labels with custom number format and separator to a number (determined by labelsCount) of data points in a series
         /// </summary>
-        private void ApplyDataLabels(ChartSeries series, int labelsCount, string numberFormat, string separator)
+        private static void ApplyDataLabels(ChartSeries series, int labelsCount, string numberFormat, string separator)
         {
             for (int i = 0; i < labelsCount; i++)
             {
@@ -560,10 +567,8 @@ namespace ApiExamples
             Chart chart = shape.Chart;
 
             // Apply diamond-shaped data points to the line of the first series
-            foreach (ChartSeries series in chart.Series)
-            {
+            foreach (ChartSeries series in chart.Series) 
                 ApplyDataPoints(series, 4, MarkerSymbol.Diamond, 15);
-            }
 
             // We can further decorate a series line by smoothing it
             chart.Series[0].Smooth = true;
@@ -590,7 +595,7 @@ namespace ApiExamples
         /// <summary>
         /// Applies a number of data points to a series
         /// </summary>
-        private void ApplyDataPoints(ChartSeries series, int dataPointsCount, MarkerSymbol markerSymbol, int dataPointSize)
+        private static void ApplyDataPoints(ChartSeries series, int dataPointsCount, MarkerSymbol markerSymbol, int dataPointSize)
         {
             for (int i = 0; i < dataPointsCount; i++)
             {
@@ -727,7 +732,7 @@ namespace ApiExamples
         /// <summary>
         /// Get the DocumentBuilder to insert a chart of a specified ChartType, width and height and clean out its default data
         /// </summary>
-        private Chart AppendChart(DocumentBuilder builder, ChartType chartType, double width, double height)
+        private static Chart AppendChart(DocumentBuilder builder, ChartType chartType, double width, double height)
         {
             Shape chartShape = builder.InsertChart(chartType, width, height);
             Chart chart = chartShape.Chart;

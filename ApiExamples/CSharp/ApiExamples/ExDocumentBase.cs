@@ -1,4 +1,11 @@
-﻿using Aspose.Words;
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
+
+using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
@@ -118,7 +125,7 @@ namespace ApiExamples
             Assert.IsNull(doc.BackgroundShape);
 
             // A background shape can only be a rectangle
-            // We will set the colour of this rectangle to light blue
+            // We will set the color of this rectangle to light blue
             Shape shapeRectangle = new Shape(doc, ShapeType.Rectangle);
             doc.BackgroundShape = shapeRectangle;
 
@@ -127,7 +134,7 @@ namespace ApiExamples
             shapeRectangle.FillColor = System.Drawing.Color.LightBlue;
             doc.Save(ArtifactsDir + "DocumentBase.BackgroundShapeFlatColor.docx");
 
-            // Setting the image will override the flat background colour with the image
+            // Setting the image will override the flat background color with the image
             shapeRectangle.ImageData.SetImage(ImageDir + "Watermark.png");
             Assert.IsTrue(doc.BackgroundShape.HasImage);
 

@@ -106,7 +106,7 @@ namespace ApiExamples
                 DecryptionPassword = "docPassword1"
             };
 
-            // Digitally sign encrypted with "docPassword" document in the specified path.
+            // Digitally sign encrypted with "docPassword" document in the specified path
             Assert.That(
                 new TestDelegate(() => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, certificateHolder, signOptions)),
                 Throws.TypeOf<IncorrectPasswordException>(), "The document password is incorrect.");
@@ -121,7 +121,7 @@ namespace ApiExamples
             //ExFor:SignOptions.DecryptionPassword
             //ExFor:LoadOptions.Password
             //ExSummary:Shows how to sign encrypted document file.
-            // Create certificate holder from a file.
+            // Create certificate holder from a file
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
             SignOptions signOptions = new SignOptions
@@ -131,24 +131,25 @@ namespace ApiExamples
                 DecryptionPassword = "docPassword"
             };
 
-            // Digitally sign encrypted with "docPassword" document in the specified path.
+            // Digitally sign encrypted with "docPassword" document in the specified path
             string inputFileName = MyDir + "Document.Encrypted.docx";
             string outputFileName = ArtifactsDir + "DigitalSignatureUtil.DecryptionPassword.docx";
 
             DigitalSignatureUtil.Sign(inputFileName, outputFileName, certificateHolder, signOptions);
             //ExEnd
 
-            // Open encrypted document from a file.
+            // Open encrypted document from a file
             LoadOptions loadOptions = new LoadOptions("docPassword");
             Assert.AreEqual(signOptions.DecryptionPassword,loadOptions.Password);
 
             Document signedDoc = new Document(outputFileName, loadOptions);
 
-            // Check that encrypted document was successfully signed.
+            // Check that encrypted document was successfully signed
             DigitalSignatureCollection signatures = signedDoc.DigitalSignatures;
             if (signatures.IsValid && (signatures.Count > 0))
             {
-                Assert.Pass(); //The document was signed successfully
+                //The document was signed successfully
+                Assert.Pass();
             }
         }
 
@@ -157,12 +158,12 @@ namespace ApiExamples
         {
             SignOptions signOptions = new SignOptions
             {
-                Comments = String.Empty,
+                Comments = string.Empty,
                 SignTime = DateTime.Now,
-                DecryptionPassword = String.Empty
+                DecryptionPassword = string.Empty
             };
 
-            Assert.That(() => DigitalSignatureUtil.Sign(String.Empty, String.Empty, null, signOptions),
+            Assert.That(() => DigitalSignatureUtil.Sign(string.Empty, string.Empty, null, signOptions),
                 Throws.TypeOf<ArgumentException>());
         }
 

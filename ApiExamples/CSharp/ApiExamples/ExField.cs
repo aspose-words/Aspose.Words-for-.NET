@@ -61,7 +61,7 @@ namespace ApiExamples
             Assert.AreEqual(true, fieldStart.IsDirty);
             Assert.AreEqual(false, fieldStart.IsLocked);
 
-            // Retrieve the facade object which represents the field in the document.
+            // Retrieve the facade object which represents the field in the document
             Field field = fieldStart.GetField();
 
             Assert.AreEqual(false, field.IsLocked);
@@ -79,7 +79,7 @@ namespace ApiExamples
             //ExFor:FieldBuilder.#ctor(FieldType)
             //ExFor:FieldBuilder.BuildAndInsert(Inline)
             //ExFor:FieldRevNum
-            //ExSummary:Builds and inserts a field into the document before the specified inline node
+            //ExSummary:Builds and inserts a field into the document before the specified inline node.
             Document doc = new Document();
             Run run = DocumentHelper.InsertNewRun(doc, " Hello World!", 0);
 
@@ -150,7 +150,7 @@ namespace ApiExamples
 
             Field field = doc.Range.Fields[0];
 
-            // This should be the first field in the document - a TOC field.
+            // This should be the first field in the document - a TOC field
             Console.WriteLine(field.Type);
         }
 
@@ -180,34 +180,34 @@ namespace ApiExamples
         [Test]
         public void InsertTcField()
         {
-            // Create a blank document.
+            // Create a blank document
             Document doc = new Document();
 
-            // Create a document builder to insert content with.
+            // Create a document builder to insert content with
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a TC field at the current document builder position.
+            // Insert a TC field at the current document builder position
             builder.InsertField("TC \"Entry Text\" \\f t");
         }
 
         [Test]
         public void ChangeLocale()
         {
-            // Create a blank document.
+            // Create a blank document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertField("MERGEFIELD Date");
 
-            // Store the current culture so it can be set back once mail merge is complete.
+            // Store the current culture so it can be set back once mail merge is complete
             CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
-            // Set to German language so dates and numbers are formatted using this culture during mail merge.
+            // Set to German language so dates and numbers are formatted using this culture during mail merge
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
 
-            // Execute mail merge.
+            // Execute mail merge
             doc.MailMerge.Execute(new[] { "Date" }, new object[] { DateTime.Now });
 
-            // Restore the original culture.
+            // Restore the original culture
             Thread.CurrentThread.CurrentCulture = currentCulture;
 
             doc.Save(ArtifactsDir + "Field.ChangeLocale.doc");
@@ -219,14 +219,14 @@ namespace ApiExamples
             //ExStart
             //ExFor:CompositeNode.GetChildNodes(NodeType, Boolean)
             //ExSummary:Demonstrates how to remove a specified TOC from a document.
-            // Open a document which contains a TOC.
+            // Open a document which contains a TOC
             Document doc = new Document(MyDir + "Document.TableOfContents.doc");
 
-            // Remove the first TOC from the document.
+            // Remove the first TOC from the document
             Field tocField = doc.Range.Fields[0];
             tocField.Remove();
 
-            // Save the output.
+            // Save the output
             doc.Save(ArtifactsDir + "Field.RemoveTocFromDocument.doc");
             //ExEnd
         }
@@ -239,13 +239,13 @@ namespace ApiExamples
             FindReplaceOptions options = new FindReplaceOptions();
             options.ReplacingCallback = new InsertTcFieldHandler("Chapter 1", "\\l 1");
 
-            // Insert a TC field which displays "Chapter 1" just before the text "The Beginning" in the document.
+            // Insert a TC field which displays "Chapter 1" just before the text "The Beginning" in the document
             doc.Range.Replace(new Regex("The Beginning"), "", options);
         }
 
         private class InsertTcFieldHandler : IReplacingCallback
         {
-            // Store the text and switches to be used for the TC fields.
+            // Store the text and switches to be used for the TC fields
             private readonly string mFieldText;
             private readonly string mFieldSwitches;
 
@@ -260,24 +260,19 @@ namespace ApiExamples
 
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)
             {
-                // Create a builder to insert the field.
+                // Create a builder to insert the field
                 DocumentBuilder builder = new DocumentBuilder((Document)args.MatchNode.Document);
-                // Move to the first node of the match.
+                // Move to the first node of the match
                 builder.MoveTo(args.MatchNode);
 
                 // If the user specified text to be used in the field as display text then use that, otherwise use the 
-                // match String as the display text.
-                String insertText;
+                // match String as the display text
+                string insertText = !string.IsNullOrEmpty(mFieldText) ? mFieldText : args.Match.Value;
 
-                if (!string.IsNullOrEmpty(mFieldText))
-                    insertText = mFieldText;
-                else
-                    insertText = args.Match.Value;
+                // Insert the TC field before this node using the specified String as the display text and user defined switches
+                builder.InsertField($"TC \"{insertText}\" {mFieldSwitches}");
 
-                // Insert the TC field before this node using the specified String as the display text and user defined switches.
-                builder.InsertField(string.Format("TC \"{0}\" {1}", insertText, mFieldSwitches));
-
-                // We have done what we want so skip replacement.
+                // We have done what we want so skip replacement
                 return ReplaceAction.Skip;
             }
         }
@@ -289,7 +284,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Field.IsDirty
             //ExFor:LoadOptions.UpdateDirtyFields
-            //ExSummary:Shows how to use special property for updating field result
+            //ExSummary:Shows how to use special property for updating field result.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -311,7 +306,7 @@ namespace ApiExamples
         {
             Document doc = new Document();
 
-            //Add some text into the paragraph
+            // Add some text into the paragraph
             Run run = DocumentHelper.InsertNewRun(doc, " Hello World!", 0);
 
             FieldArgumentBuilder argumentBuilder = new FieldArgumentBuilder();
@@ -341,36 +336,33 @@ namespace ApiExamples
             Assert.AreEqual("QR", barCode.GetCodeType().ToString());
         }
 
-        private BarCodeReader BarCodeReaderPdf(String filename)
+        private BarCodeReader BarCodeReaderPdf(string filename)
         {
-            //Set license for Aspose.BarCode
+            // Set license for Aspose.BarCode
             Aspose.BarCode.License licenceBarCode = new Aspose.BarCode.License();
             licenceBarCode.SetLicense(LicenseDir + "Aspose.Total.lic");
 
-            //bind the pdf document
+            // Bind the pdf document
             Aspose.Pdf.Facades.PdfExtractor pdfExtractor = new Aspose.Pdf.Facades.PdfExtractor();
             pdfExtractor.BindPdf(filename);
 
-            //set page range for image extraction
+            // Set page range for image extraction
             pdfExtractor.StartPage = 1;
             pdfExtractor.EndPage = 1;
 
             pdfExtractor.ExtractImage();
 
-            //save image to stream
+            // Save image to stream
             MemoryStream imageStream = new MemoryStream();
             pdfExtractor.GetNextImage(imageStream);
             imageStream.Position = 0;
 
-            //recognize the barcode from the image stream above
+            // Recognize the barcode from the image stream above
             BarCodeReader barcodeReader = new BarCodeReader(imageStream, DecodeType.QR);
             while (barcodeReader.Read())
-            {
-                Console.WriteLine("Codetext found: " + barcodeReader.GetCodeText() + ", Symbology: " +
-                                  barcodeReader.GetCodeType());
-            }
+                Console.WriteLine("Codetext found: " + barcodeReader.GetCodeText() + ", Symbology: " + barcodeReader.GetCodeType());
 
-            //close the reader
+            // Close the reader
             barcodeReader.Close();
 
             return barcodeReader;
@@ -423,7 +415,7 @@ namespace ApiExamples
             barcodeParameters.SymbolRotation = "0";
 
             // Save the generated barcode image to the file system
-            System.Drawing.Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
             img.Save(ArtifactsDir + "Field.BarcodeGenerator.QR.jpg");
 
             // Insert the image into the document
@@ -472,7 +464,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Field.Update(bool)
             //ExFor:LoadOptions.PreserveIncludePictureField
-            //ExSummary:Shows a way to update a field ignoring the MERGEFORMAT switch
+            //ExSummary:Shows a way to update a field ignoring the MERGEFORMAT switch.
             LoadOptions loadOptions = new LoadOptions { PreserveIncludePictureField = true };
 
             Document doc = new Document(MyDir + "Field.UpdateFieldIgnoringMergeFormat.docx", loadOptions);
@@ -510,7 +502,7 @@ namespace ApiExamples
             //ExFor:GeneralFormatCollection.Remove(GeneralFormat)
             //ExFor:GeneralFormatCollection.RemoveAt(Int32)
             //ExFor:GeneralFormatCollection.GetEnumerator
-            //ExSummary:Shows how to format fields
+            //ExSummary:Shows how to format fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -564,13 +556,13 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.UnlinkFields
-            //ExSummary:Shows how to unlink all fields in the document
+            //ExSummary:Shows how to unlink all fields in the document.
             Document doc = new Document(MyDir + "Field.UnlinkFields.docx");
 
             doc.UnlinkFields();
             //ExEnd
 
-            String paraWithFields = DocumentHelper.GetParagraphText(doc, 0);
+            string paraWithFields = DocumentHelper.GetParagraphText(doc, 0);
             Assert.AreEqual("Fields.Docx   Элементы указателя не найдены.     1.\r", paraWithFields);
         }
 
@@ -579,7 +571,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Range.UnlinkFields
-            //ExSummary:Shows how to unlink all fields in range
+            //ExSummary:Shows how to unlink all fields in range.
             Document doc = new Document(MyDir + "Field.UnlinkFields.docx");
 
             Section newSection = (Section)doc.Sections[0].Clone(true);
@@ -588,7 +580,7 @@ namespace ApiExamples
             doc.Sections[1].Range.UnlinkFields();
             //ExEnd
 
-            String secWithFields = DocumentHelper.GetSectionText(doc, 1);
+            string secWithFields = DocumentHelper.GetSectionText(doc, 1);
             Assert.AreEqual(
                 "Fields.Docx   Элементы указателя не найдены.     3.\rОшибка! Не указана последовательность.    Fields.Docx   Элементы указателя не найдены.     4.\r\r\r\r\r\f",
                 secWithFields);
@@ -599,12 +591,12 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Field.Unlink
-            //ExSummary:Shows how to unlink specific field
+            //ExSummary:Shows how to unlink specific field.
             Document doc = new Document(MyDir + "Field.UnlinkFields.docx");
             doc.Range.Fields[1].Unlink();
             //ExEnd
 
-            String paraWithFields = DocumentHelper.GetParagraphText(doc, 0);
+            string paraWithFields = DocumentHelper.GetParagraphText(doc, 0);
             Assert.AreEqual(
                 "\u0013 FILENAME  \\* Caps  \\* MERGEFORMAT \u0014Fields.Docx\u0015   Элементы указателя не найдены.     \u0013 LISTNUM  LegalDefault \u0015\r",
                 paraWithFields);
@@ -622,7 +614,7 @@ namespace ApiExamples
 
             foreach (Paragraph para in paragraphCollection.OfType<Paragraph>())
             {
-                // Check all runs in the paragraph for the first page breaks.
+                // Check all runs in the paragraph for the first page breaks
                 foreach (Run run in para.Runs.OfType<Run>())
                 {
                     if (run.Text.Contains(ControlChar.PageBreak))
@@ -657,15 +649,15 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Field.UpdateTocPageNumbers.docx");
         }
 
-        private void RemoveSequence(Node start, Node end)
+        private static void RemoveSequence(Node start, Node end)
         {
             Node curNode = start.NextPreOrder(start.Document);
             while (curNode != null && !curNode.Equals(end))
             {
-                //Move to next node
+                // Move to next node
                 Node nextNode = curNode.NextPreOrder(start.Document);
 
-                //Check whether current contains end node
+                // Check whether current contains end node
                 if (curNode.IsComposite)
                 {
                     CompositeNode curComposite = (CompositeNode)curNode;
@@ -775,7 +767,7 @@ namespace ApiExamples
             builder.Writeln();
 
             // ASK fields apply the default response to their respective REF fields during a mail merge
-            System.Data.DataTable table = new System.Data.DataTable("My Table");
+            DataTable table = new DataTable("My Table");
             table.Columns.Add("Column 1");
             table.Rows.Add("Row 1");
             table.Rows.Add("Row 2");
@@ -801,7 +793,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// IFieldUserPromptRespondent implementation that appends a line to the default response of an ASK field during a mail merge
+        /// IFieldUserPromptRespondent implementation that appends a line to the default response of an ASK field during a mail merge.
         /// </summary>
         private class MyPromptRespondent : IFieldUserPromptRespondent
         {
@@ -901,6 +893,7 @@ namespace ApiExamples
                 " ADDRESSBLOCK  \\c 2 \\d \\e \"United States\" \\f \"<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>\" \\l 1033",
                 field.GetFieldCode());
             //ExEnd
+
             Assert.AreEqual("2", field.IncludeCountryOrRegionName);
             Assert.AreEqual(true, field.FormatAddressOnCountryOrRegion);
             Assert.AreEqual("United States", field.ExcludedCountryOrRegionName);
@@ -981,7 +974,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Document visitor implementation that prints field info
+        /// Document visitor implementation that prints field info.
         /// </summary>
         public class FieldVisitor : DocumentVisitor
         {
@@ -993,7 +986,7 @@ namespace ApiExamples
             /// <summary>
             /// Gets the plain text of the document that was accumulated by the visitor.
             /// </summary>
-            public String GetText()
+            public string GetText()
             {
                 return mBuilder.ToString();
             }
@@ -1168,9 +1161,8 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // This string will be our paragraph text that
-            string loremIpsum =
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
-                "\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ";
+            const string loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
+                                      "\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ";
 
             // In this case our autonum legal field will number our first paragraph as "1."
             InsertNumberedClause(builder, "\tHeading 1", loremIpsum, StyleIdentifier.Heading1);
@@ -1205,9 +1197,9 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Get a document builder to insert a clause numbered by an autonum legal field
+        /// Get a document builder to insert a clause numbered by an autonum legal field.
         /// </summary>
-        private void InsertNumberedClause(DocumentBuilder builder, string heading, string contents, StyleIdentifier headingStyle)
+        private static void InsertNumberedClause(DocumentBuilder builder, string heading, string contents, StyleIdentifier headingStyle)
         {
             // This legal field will automatically number our clauses, taking heading style level into account
             builder.InsertField(FieldType.FieldAutoNumLegal, true);
@@ -1322,7 +1314,8 @@ namespace ApiExamples
             // Insert an auto text list using a document builder and change its properties
             DocumentBuilder builder = new DocumentBuilder(doc);
             FieldAutoTextList field = (FieldAutoTextList)builder.InsertField(FieldType.FieldAutoTextList, true);
-            field.EntryName = "Right click here to pick an AutoText block"; // This is the text that will be visible in the document
+            // This is the text that will be visible in the document
+            field.EntryName = "Right click here to pick an AutoText block";
             field.ListStyle = "Heading 1";
             field.ScreenTip = "Hover tip text for AutoTextList goes here";
 
@@ -1337,7 +1330,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Create an AutoText entry and add it to a glossary document
+        /// Create an AutoText entry and add it to a glossary document.
         /// </summary>
         private static void AppendAutoTextEntry(GlossaryDocument glossaryDoc, string name, string contents)
         {
@@ -1394,13 +1387,14 @@ namespace ApiExamples
             Assert.AreEqual(" GREETINGLINE  \\f \"<< _BEFORE_ Dear >><< _TITLE0_ >><< _LAST0_ >><< _AFTER_ ,>> \" \\e \"Sir or Madam\" \\l 1033", fieldGreetingLine.GetFieldCode());
 
             // Create a source table for our mail merge that has columns that our greeting line will look for
-            System.Data.DataTable table = new System.Data.DataTable("Employees");
+            DataTable table = new DataTable("Employees");
             table.Columns.Add("Courtesy Title");
             table.Columns.Add("First Name");
             table.Columns.Add("Last Name");
             table.Rows.Add("Mr.", "John", "Doe");
             table.Rows.Add("Mrs.", "Jane", "Cardholder");
-            table.Rows.Add("", "No", "Name"); // This row has an invalid value in the Courtesy Title column, so our greeting will default to the alternate text
+            // This row has an invalid value in the Courtesy Title column, so our greeting will default to the alternate text
+            table.Rows.Add("", "No", "Name");
 
             doc.MailMerge.Execute(table);
 
@@ -1430,7 +1424,8 @@ namespace ApiExamples
             fieldListNum.StartingNumber = "0";
             builder.Writeln("Paragraph 1");
 
-            // Placing several list num fields in one paragraph increases the list level instead of the current number, in this case resulting in "1)a)i)", list level 3
+            // Placing several list num fields in one paragraph increases the list level instead of the current number,
+            // in this case resulting in "1)a)i)", list level 3
             builder.InsertField(FieldType.FieldListNum, true);
             builder.InsertField(FieldType.FieldListNum, true);
             builder.InsertField(FieldType.FieldListNum, true);
@@ -1478,7 +1473,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Create data source for our merge fields
-            System.Data.DataTable table = new System.Data.DataTable("Employees");
+            DataTable table = new DataTable("Employees");
             table.Columns.Add("Courtesy Title");
             table.Columns.Add("First Name");
             table.Columns.Add("Last Name");
@@ -1734,7 +1729,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Start a new page and insert a paragraph of a specified style
+        /// Start a new page and insert a paragraph of a specified style.
         /// </summary>
         public void InsertNewPageWithHeading(DocumentBuilder builder, string captionText, string styleName)
         {
@@ -1787,7 +1782,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Insert a table of contents entry via a document builder
+        /// Insert a table of contents entry via a document builder.
         /// </summary>
         public void InsertTocEntry(DocumentBuilder builder, string text, string typeIdentifier, string entryLevel)
         {
@@ -1837,7 +1832,7 @@ namespace ApiExamples
             InsertSeqField(builder, "PrefixSequence ", "", "PrefixSequence");
             InsertSeqField(builder, ", MySequence ", "\n", "MySequence");
 
-            // If the sqeuence identifier doesn't match that of the TOC, the entry won't be included
+            // If the sequence identifier doesn't match that of the TOC, the entry won't be included
             InsertSeqField(builder, "PrefixSequence ", "", "PrefixSequence");           
             fieldSeq = InsertSeqField(builder, ", MySequence ", "", "OtherSequence");
             builder.Writeln(" This text, from a different sequence, won't be included in the same TOC as the one above.");
@@ -1935,7 +1930,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Insert a sequence field with preceding text and a specified sequence identifier
+        /// Insert a sequence field with preceding text and a specified sequence identifier.
         /// </summary>
         public FieldSeq InsertSeqField(DocumentBuilder builder, string textBefore, string textAfter, string sequenceIdentifier)
         {
@@ -2138,7 +2133,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             FieldIncludePicture fieldIncludePicture = (FieldIncludePicture)builder.InsertField(FieldType.FieldIncludePicture, true);
-            fieldIncludePicture.SourceFullName = MyDir + @"Images\Watermark.png";
+            fieldIncludePicture.SourceFullName = ImageDir + "Watermark.png";
 
             // Here we apply the PNG32.FLT filter
             fieldIncludePicture.GraphicFilter = "PNG32";
@@ -2191,7 +2186,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Use a document builder to insert an INCLUDETEXT field and set its properties
+        /// Use a document builder to insert an INCLUDETEXT field and set its properties.
         /// </summary>
         public FieldIncludeText CreateFieldIncludeText(DocumentBuilder builder, string sourceFullName, bool lockFields, string mimeType, string textConverter, string encoding)
         {
@@ -2269,7 +2264,7 @@ namespace ApiExamples
 
             // Create a data table for the mail merge
             // The name of the column that contains our image filenames needs to match the name of our merge field
-            System.Data.DataTable dataTable = CreateDataTable("Images", "ImageColumn",
+            DataTable dataTable = CreateDataTable("Images", "ImageColumn",
                 new string[]
                 {
                     ImageDir + "Aspose.Words.gif",
@@ -2285,16 +2280,16 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Creates a data table with a single column
+        /// Creates a data table with a single column.
         /// </summary>
-        private System.Data.DataTable CreateDataTable(string tableName, string columnName, string[] columnContents)
+        private static DataTable CreateDataTable(string tableName, string columnName, string[] columnContents)
         {
-            System.Data.DataTable dataTable = new System.Data.DataTable(tableName);
-            dataTable.Columns.Add(new System.Data.DataColumn(columnName));
+            DataTable dataTable = new DataTable(tableName);
+            dataTable.Columns.Add(new DataColumn(columnName));
 
             foreach (string s in columnContents)
             {
-                System.Data.DataRow dataRow = dataTable.NewRow();
+                DataRow dataRow = dataTable.NewRow();
                 dataRow[0] = s;
                 dataTable.Rows.Add(dataRow);
             }
@@ -2303,7 +2298,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Sets the size of all mail merged images to one defined width and height 
+        /// Sets the size of all mail merged images to one defined width and height.
         /// </summary>
         private class MergedImageResizer : IFieldMergingCallback
         {
@@ -2351,7 +2346,7 @@ namespace ApiExamples
 
             // When we merge images, our data table will normally have the full e. of the images we wish to merge
             // If this is cumbersome, we can move image filename logic to another place and populate the data table with just shorthands for images
-            System.Data.DataTable dataTable = CreateDataTable("Images", "ImageColumn",
+            DataTable dataTable = CreateDataTable("Images", "ImageColumn",
                 new string[]
                 {
                     "Aspose logo",
@@ -2367,16 +2362,16 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Image merging callback that pairs image shorthand names with filenames
+        /// Image merging callback that pairs image shorthand names with filenames.
         /// </summary>
         private class ImageFilenameCallback : IFieldMergingCallback
         {
             public ImageFilenameCallback()
             {
-                imageFilenames = new Dictionary<string, string>();
-                imageFilenames.Add("Aspose logo", ImageDir + "Aspose.Words.gif");
-                imageFilenames.Add(".Net logo", ImageDir + "dotnet-logo.png");
-                imageFilenames.Add("Watermark", ImageDir + "Watermark.png");
+                mImageFilenames = new Dictionary<string, string>();
+                mImageFilenames.Add("Aspose logo", ImageDir + "Aspose.Words.gif");
+                mImageFilenames.Add(".Net logo", ImageDir + "dotnet-logo.png");
+                mImageFilenames.Add("Watermark", ImageDir + "Watermark.png");
             }
 
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
@@ -2386,10 +2381,10 @@ namespace ApiExamples
 
             void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs e)
             {
-                if (imageFilenames.ContainsKey(e.FieldValue.ToString()))
+                if (mImageFilenames.ContainsKey(e.FieldValue.ToString()))
                 {
                     #if NETFRAMEWORK
-                    e.Image = Image.FromFile(imageFilenames[e.FieldValue.ToString()]);
+                    e.Image = Image.FromFile(mImageFilenames[e.FieldValue.ToString()]);
                     #else
                     e.Image = SKBitmap.Decode(imageFilenames[e.FieldValue.ToString()]);
                     e.ImageFileName = imageFilenames[e.FieldValue.ToString()];
@@ -2399,7 +2394,7 @@ namespace ApiExamples
                 Assert.NotNull(e.Image);
             }
 
-            private readonly Dictionary<string, string> imageFilenames;
+            private readonly Dictionary<string, string> mImageFilenames;
         }
         //ExEnd
 
@@ -2442,7 +2437,7 @@ namespace ApiExamples
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
             // Bookmark that will encompass a section that we want to index
-            string mainBookmarkName = "MainBookmark";
+            const string mainBookmarkName = "MainBookmark";
             builder.StartBookmark(mainBookmarkName);
             index.BookmarkName = mainBookmarkName;
             index.CrossReferenceSeparator = ":";
@@ -2473,7 +2468,7 @@ namespace ApiExamples
             Assert.AreEqual(false, indexEntry.HasPageRangeBookmarkName);
 
             // We can insert a bookmark and have the index field point to it
-            string subBookmarkName = "MyBookmark";
+            const string subBookmarkName = "MyBookmark";
             builder.StartBookmark(subBookmarkName);
             builder.Writeln("Bookmark text contents.");
             builder.EndBookmark(subBookmarkName);
@@ -2785,7 +2780,7 @@ namespace ApiExamples
 
         /// <summary>
         /// Creates a DataTable named by dataTableName, adds a column for every element in columnNames
-        /// and fills rows with data from dataSet
+        /// and fills rows with data from dataSet.
         /// </summary>
         public DataTable CreateTable(string dataTableName, string[] columnNames, object[,] dataSet)
         {
@@ -2793,15 +2788,9 @@ namespace ApiExamples
             {
                 DataTable table = new DataTable(dataTableName);
 
-                foreach (string columnName in columnNames)
-                {
-                    table.Columns.Add(columnName);
-                }
+                foreach (string columnName in columnNames) table.Columns.Add(columnName);
 
-                foreach (object data in dataSet)
-                {
-                    table.Rows.Add(data);
-                }
+                foreach (object data in dataSet) table.Rows.Add(data);
 
                 return table;
             }
@@ -2859,7 +2848,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert fields containing text from another document and present them as text (see InsertLinkedObjectAs enum).
+            // Insert fields containing text from another document and present them as text (see InsertLinkedObjectAs enum)
             builder.Writeln("FieldLink:\n");
             InsertFieldLink(builder, insertLinkedObjectAs, "Word.Document.8", MyDir + "Document.doc", null, true);
 
@@ -2884,7 +2873,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert one cell from a spreadsheet as an image (see InsertLinkedObjectAs enum).
+            // Insert one cell from a spreadsheet as an image (see InsertLinkedObjectAs enum)
             builder.Writeln("FieldLink:\n");
             InsertFieldLink(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "MySpreadsheet.xlsx",
                 "Sheet1!R2C2", true);
@@ -2902,9 +2891,9 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Use a document builder to insert a LINK field and set its properties according to parameters
+        /// Use a document builder to insert a LINK field and set its properties according to parameters.
         /// </summary>
-        private void InsertFieldLink(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs,
+        private static void InsertFieldLink(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs,
             string progId, string sourceFullName, string sourceItem, bool shouldAutoUpdate)
         {
             FieldLink field = (FieldLink)builder.InsertField(FieldType.FieldLink, true);
@@ -2940,9 +2929,9 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Use a document builder to insert a DDE field and set its properties according to parameters
+        /// Use a document builder to insert a DDE field and set its properties according to parameters.
         /// </summary>
-        private void InsertFieldDde(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs, string progId,
+        private static void InsertFieldDde(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs, string progId,
             string sourceFullName, string sourceItem, bool isLinked, bool shouldAutoUpdate)
         {
             FieldDde field = (FieldDde)builder.InsertField(FieldType.FieldDDE, true);
@@ -2979,9 +2968,9 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Use a document builder to insert a DDEAUTO field and set its properties according to parameters
+        /// Use a document builder to insert a DDEAUTO field and set its properties according to parameters.
         /// </summary>
-        private void InsertFieldDdeAuto(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs,
+        private static void InsertFieldDdeAuto(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs,
             string progId, string sourceFullName, string sourceItem, bool isLinked)
         {
             FieldDdeAuto field = (FieldDdeAuto)builder.InsertField(FieldType.FieldDDEAuto, true);
@@ -3890,7 +3879,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// IFieldUserPromptRespondent implementation that appends a line to the default response of an FILLIN field during a mail merge
+        /// IFieldUserPromptRespondent implementation that appends a line to the default response of an FILLIN field during a mail merge.
         /// </summary>
         private class PromptRespondent : IFieldUserPromptRespondent
         {
@@ -4135,7 +4124,7 @@ namespace ApiExamples
             builder.MoveTo(field.Separator);
             builder.InsertField(FieldType.FieldDate, true);
 
-            Assert.AreEqual(" QUOTE \u0013 DATE \u0014" + System.DateTime.Now.Date.ToShortDateString() + "\u0015", field.GetFieldCode());
+            Assert.AreEqual(" QUOTE \u0013 DATE \u0014" + DateTime.Now.Date.ToShortDateString() + "\u0015", field.GetFieldCode());
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.QUOTE.docx");
@@ -4200,7 +4189,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Uses a document builder to insert merge fields for a data table that has "Courtesy Title", "First Name" and "Last Name" columns
+        /// Uses a document builder to insert merge fields for a data table that has "Courtesy Title", "First Name" and "Last Name" columns.
         /// </summary>
         public void InsertMergeFields(DocumentBuilder builder, string firstFieldTextBefore)
         {
@@ -4211,7 +4200,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Uses a document builder to insert a merge field
+        /// Uses a document builder to insert a merge field.
         /// </summary>
         public void InsertMergeField(DocumentBuilder builder, string fieldName, string textBefore, string textAfter)
         {
@@ -4262,9 +4251,9 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Uses a document builder to insert a NOTEREF field and sets its attributes
+        /// Uses a document builder to insert a NOTEREF field and sets its attributes.
         /// </summary>
-        private FieldNoteRef InsertFieldNoteRef(DocumentBuilder builder, string bookmarkName, bool insertHyperlink, bool insertRelativePosition, bool insertReferenceMark, string textBefore)
+        private static FieldNoteRef InsertFieldNoteRef(DocumentBuilder builder, string bookmarkName, bool insertHyperlink, bool insertRelativePosition, bool insertReferenceMark, string textBefore)
         {
             builder.Write(textBefore);
 
@@ -4279,9 +4268,9 @@ namespace ApiExamples
         }
         
         /// <summary>
-        /// Uses a document builder to insert a named bookmark with a footnote at the end
+        /// Uses a document builder to insert a named bookmark with a footnote at the end.
         /// </summary>
-        private void InsertBookmarkWithFootnote(DocumentBuilder builder, string bookmarkName, string bookmarkText, string footnoteText)
+        private static void InsertBookmarkWithFootnote(DocumentBuilder builder, string bookmarkName, string bookmarkText, string footnoteText)
         {
             builder.StartBookmark(bookmarkName);
             builder.Write(bookmarkText);
@@ -4367,9 +4356,9 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Uses a document builder to insert a PAGEREF field and sets its attributes
+        /// Uses a document builder to insert a PAGEREF field and sets its attributes.
         /// </summary>
-        private FieldPageRef InsertFieldPageRef(DocumentBuilder builder, string bookmarkName, bool insertHyperlink, bool insertRelativePosition, string textBefore)
+        private static FieldPageRef InsertFieldPageRef(DocumentBuilder builder, string bookmarkName, bool insertHyperlink, bool insertRelativePosition, string textBefore)
         {
             builder.Write(textBefore);
 
@@ -4383,12 +4372,12 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Uses a document builder to insert a named bookmark
+        /// Uses a document builder to insert a named bookmark.
         /// </summary>
-        private void InsertAndNameBookmark(DocumentBuilder builder, string bookmarkName)
+        private static void InsertAndNameBookmark(DocumentBuilder builder, string bookmarkName)
         {
             builder.StartBookmark(bookmarkName);
-            builder.Writeln(string.Format("Contents of bookmark \"{0}\".", bookmarkName));
+            builder.Writeln($"Contents of bookmark \"{bookmarkName}\".");
             builder.EndBookmark(bookmarkName);
         }
         //ExEnd
@@ -4545,9 +4534,9 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Get the document builder to insert a REF field, reference a bookmark with it, and add text before and after
+        /// Get the document builder to insert a REF field, reference a bookmark with it, and add text before and after.
         /// </summary>
-        private FieldRef InsertFieldRef(DocumentBuilder builder, string bookmarkName, string textBefore, string textAfter)
+        private static FieldRef InsertFieldRef(DocumentBuilder builder, string bookmarkName, string textBefore, string textAfter)
         {
             builder.Write(textBefore);
             FieldRef field = (FieldRef)builder.InsertField(FieldType.FieldRef, true);
@@ -4603,12 +4592,12 @@ namespace ApiExamples
             //ExFor:FieldSkipIf.ComparisonOperator
             //ExFor:FieldSkipIf.LeftExpression
             //ExFor:FieldSkipIf.RightExpression
-            //ExSummary:Shows how to skip pages in a mail merge using the SKIPIF field
+            //ExSummary:Shows how to skip pages in a mail merge using the SKIPIF field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Create a data table that will be the source for our mail merge
-            System.Data.DataTable table = new System.Data.DataTable("Employees");
+            DataTable table = new DataTable("Employees");
             table.Columns.Add("Name");
             table.Columns.Add("Department");
             table.Rows.Add("John Doe", "Sales");
@@ -4708,7 +4697,7 @@ namespace ApiExamples
             //ExFor:FieldSymbol.IsAnsi
             //ExFor:FieldSymbol.IsShiftJis
             //ExFor:FieldSymbol.IsUnicode
-            //ExSummary:Shows how to use the SYMBOL field
+            //ExSummary:Shows how to use the SYMBOL field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -4917,9 +4906,9 @@ namespace ApiExamples
 
         /// <summary>
         /// Get a builder to insert a TA field, specifying its long citation and category,
-        /// then insert a page break and return the field we created
+        /// then insert a page break and return the field we created.
         /// </summary>
-        private FieldTA InsertToaEntry(DocumentBuilder builder, string entryCategory, string longCitation)
+        private static FieldTA InsertToaEntry(DocumentBuilder builder, string entryCategory, string longCitation)
         {
             FieldTA field = (FieldTA)builder.InsertField(FieldType.FieldTOAEntry, false);
             field.EntryCategory = entryCategory;
@@ -4992,7 +4981,7 @@ namespace ApiExamples
             // Here we use a document builder to insert an EQ field, with an "\f" switch, which corresponds to "Fraction"
             // No options are invoked, and the values 1 and 4 are passed as arguments
             // This field will display a fraction with 1 as the numerator and 4 as the denominator
-            FieldEQ field = InsertFieldEQ(builder, @"\f(1,4)");
+            FieldEQ field = InsertFieldEq(builder, @"\f(1,4)");
 
             Assert.AreEqual(@" EQ \f(1,4)", field.GetFieldCode());
 
@@ -5002,45 +4991,45 @@ namespace ApiExamples
             // https://blogs.msdn.microsoft.com/murrays/2018/01/23/microsoft-word-eq-field/
 
             // Array switch "\a", aligned left, 2 columns, 3 points of horizontal and vertical spacing
-            InsertFieldEQ(builder, @"\a \al \co2 \vs3 \hs3(4x,- 4y,-4x,+ y)");
+            InsertFieldEq(builder, @"\a \al \co2 \vs3 \hs3(4x,- 4y,-4x,+ y)");
 
             // Bracket switch "\b", bracket character "[", to enclose the contents in a set of square braces
             // Note that we are nesting an array inside the brackets, which will altogether look like a matrix in the output
-            InsertFieldEQ(builder, @"\b \bc\[ (\a \al \co3 \vs3 \hs3(1,0,0,0,1,0,0,0,1))");
+            InsertFieldEq(builder, @"\b \bc\[ (\a \al \co3 \vs3 \hs3(1,0,0,0,1,0,0,0,1))");
 
             // Displacement switch "\d", displacing text "B" 30 spaces to the right of "A", displaying the gap as an underline
-            InsertFieldEQ(builder, @"A \d \fo30 \li() B");
+            InsertFieldEq(builder, @"A \d \fo30 \li() B");
 
             // Formula consisting of multiple fractions
-            InsertFieldEQ(builder, @"\f(d,dx)(u + v) = \f(du,dx) + \f(dv,dx)");
+            InsertFieldEq(builder, @"\f(d,dx)(u + v) = \f(du,dx) + \f(dv,dx)");
 
             // Integral switch "\i", with a summation symbol
-            InsertFieldEQ(builder, @"\i \su(n=1,5,n)");
+            InsertFieldEq(builder, @"\i \su(n=1,5,n)");
 
             // List switch "\l"
-            InsertFieldEQ(builder, @"\l(1,1,2,3,n,8,13)");
+            InsertFieldEq(builder, @"\l(1,1,2,3,n,8,13)");
 
             // Radical switch "\r", displaying a cubed root of x
-            InsertFieldEQ(builder, @"\r (3,x)");
+            InsertFieldEq(builder, @"\r (3,x)");
 
             // Subscript/superscript switch "/s", first as a superscript and then as a subscript
-            InsertFieldEQ(builder, @"\s \up8(Superscript) Text \s \do8(Subscript)");
+            InsertFieldEq(builder, @"\s \up8(Superscript) Text \s \do8(Subscript)");
 
             // Box switch "\x", with lines at the top, bottom, left and right of the input
-            InsertFieldEQ(builder, @"\x \to \bo \le \ri(5)");
+            InsertFieldEq(builder, @"\x \to \bo \le \ri(5)");
 
             // More complex combinations
-            InsertFieldEQ(builder, @"\a \ac \vs1 \co1(lim,n→∞) \b (\f(n,n2 + 12) + \f(n,n2 + 22) + ... + \f(n,n2 + n2))");
-            InsertFieldEQ(builder, @"\i (,,  \b(\f(x,x2 + 3x + 2))) \s \up10(2)");
-            InsertFieldEQ(builder, @"\i \in( tan x, \s \up2(sec x), \b(\r(3) )\s \up4(t) \s \up7(2)  dt)");
+            InsertFieldEq(builder, @"\a \ac \vs1 \co1(lim,n→∞) \b (\f(n,n2 + 12) + \f(n,n2 + 22) + ... + \f(n,n2 + n2))");
+            InsertFieldEq(builder, @"\i (,,  \b(\f(x,x2 + 3x + 2))) \s \up10(2)");
+            InsertFieldEq(builder, @"\i \in( tan x, \s \up2(sec x), \b(\r(3) )\s \up4(t) \s \up7(2)  dt)");
 
             doc.Save(ArtifactsDir + "Field.EQ.docx");
         }
 
         /// <summary>
-        /// Use a document builder to insert an EQ field, set its arguments and start a new paragraph
+        /// Use a document builder to insert an EQ field, set its arguments and start a new paragraph.
         /// </summary>
-        private FieldEQ InsertFieldEQ(DocumentBuilder builder, string args)
+        private static FieldEQ InsertFieldEq(DocumentBuilder builder, string args)
         {
             FieldEQ field = (FieldEQ)builder.InsertField(FieldType.FieldEquation, true);
             builder.MoveTo(field.Separator);
@@ -5338,7 +5327,7 @@ namespace ApiExamples
         /// <summary>
         /// Use a document builder to insert a TIME field, insert a new paragraph and return the field
         /// </summary>
-        private FieldTime InsertFieldTime(DocumentBuilder builder, string format)
+        private static FieldTime InsertFieldTime(DocumentBuilder builder, string format)
         {
             FieldTime field = (FieldTime)builder.InsertField(FieldType.FieldTime, true);
             builder.MoveTo(field.Separator);

@@ -105,7 +105,7 @@ namespace ApiExamples
             protected override void OnPaint(PaintEventArgs e)
             {
                 // Set the size of the Form canvas
-                this.Size = new Size(1000, 800);
+                Size = new Size(1000, 800);
 
                 // Open a document and get its first shape, which is a chart
                 Document doc = new Document(MyDir + "Shape.VarietyOfShapes.docx");
