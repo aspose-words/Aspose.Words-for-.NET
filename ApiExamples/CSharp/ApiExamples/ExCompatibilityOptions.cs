@@ -50,7 +50,7 @@ namespace ApiExamples
         /// <summary>
         /// Prints all options of a CompatibilityOptions object and indicates whether they are enabled or disabled
         /// </summary>
-        private void PrintCompatibilityOptions(CompatibilityOptions options)
+        private static void PrintCompatibilityOptions(CompatibilityOptions options)
         {
             for (int i = 1; i >= 0; i--)
             {

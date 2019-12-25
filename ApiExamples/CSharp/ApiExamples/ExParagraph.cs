@@ -69,13 +69,13 @@ namespace ApiExamples
         [Test]
         public void InsertFieldAfterTextInParagraph()
         {
-            String date = DateTime.Today.ToString("d");
+            string date = DateTime.Today.ToString("d");
 
             Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
 
             InsertFieldUsingFieldCode(doc, " DATE ", null, true, 1);
 
-            Assert.AreEqual(String.Format("Hello World!\u0013 DATE \u0014{0}\u0015\r", date),
+            Assert.AreEqual(string.Format("Hello World!\u0013 DATE \u0014{0}\u0015\r", date),
                 DocumentHelper.GetParagraphText(doc, 1));
         }
 
@@ -289,7 +289,7 @@ namespace ApiExamples
         /// <summary>
         /// Insert field into the first paragraph of the current document using field code
         /// </summary>
-        private static void InsertFieldUsingFieldCode(Document doc, String fieldCode, Node refNode, bool isAfter,
+        private static void InsertFieldUsingFieldCode(Document doc, string fieldCode, Node refNode, bool isAfter,
             int paraIndex)
         {
             Paragraph para = DocumentHelper.GetParagraph(doc, paraIndex);
@@ -299,7 +299,7 @@ namespace ApiExamples
         /// <summary>
         /// Insert field into the first paragraph of the current document using field code and field String
         /// </summary>
-        private static void InsertFieldUsingFieldCodeFieldString(Document doc, String fieldCode, String fieldValue,
+        private static void InsertFieldUsingFieldCodeFieldString(Document doc, string fieldCode, string fieldValue,
             Node refNode, bool isAfter, int paraIndex)
         {
             Paragraph para = DocumentHelper.GetParagraph(doc, paraIndex);

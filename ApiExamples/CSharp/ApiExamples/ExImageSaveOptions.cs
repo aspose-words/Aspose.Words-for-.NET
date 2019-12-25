@@ -149,7 +149,8 @@ namespace ApiExamples
                 TiffCompression = TiffCompression.Ccitt3,
                 ImageColorMode = ImageColorMode.Grayscale,
                 TiffBinarizationMethod = ImageBinarizationMethod.FloydSteinbergDithering,
-                ThresholdForFloydSteinbergDithering = 254 // The default value of this property is 128. The higher value, the darker image.
+                // The default value of this property is 128. The higher value, the darker image
+                ThresholdForFloydSteinbergDithering = 254
             };
 
             doc.Save(ArtifactsDir + "ImagesSaveOptions.ThresholdForFloydSteinbergDithering.tiff", options);

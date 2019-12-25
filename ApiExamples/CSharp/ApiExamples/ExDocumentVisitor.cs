@@ -193,12 +193,9 @@ namespace ApiExamples
             /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
             /// </summary>
             /// <param name="text"></param>
-            private void IndentAndAppendLine(String text)
+            private void IndentAndAppendLine(string text)
             {
-                for (int i = 0; i < mDocTraversalDepth; i++)
-                {
-                    mBuilder.Append("|  ");
-                }
+                for (int i = 0; i < mDocTraversalDepth; i++) mBuilder.Append("|  ");
 
                 mBuilder.AppendLine(text);
             }
@@ -257,7 +254,7 @@ namespace ApiExamples
             /// <summary>
             /// Gets the plain text of the document that was accumulated by the visitor.
             /// </summary>
-            public String GetText()
+            public string GetText()
             {
                 return mBuilder.ToString();
             }
@@ -371,7 +368,7 @@ namespace ApiExamples
             /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
             /// </summary>
             /// <param name="text"></param>
-            private void IndentAndAppendLine(String text)
+            private void IndentAndAppendLine(string text)
             {
                 for (int i = 0; i < mDocTraversalDepth; i++)
                 {
@@ -425,7 +422,7 @@ namespace ApiExamples
             /// <summary>
             /// Gets the plain text of the document that was accumulated by the visitor.
             /// </summary>
-            public String GetText()
+            public string GetText()
             {
                 return mBuilder.ToString();
             }
@@ -469,8 +466,8 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitCommentStart(Comment comment)
             {
-                IndentAndAppendLine(String.Format("[Comment start] For comment range ID {0}, By {1} on {2}", comment.Id,
-                    comment.Author, comment.DateTime));
+                IndentAndAppendLine(
+                    $"[Comment start] For comment range ID {comment.Id}, By {comment.Author} on {comment.DateTime}");
                 mDocTraversalDepth++;
                 mVisitorIsInsideComment = true;
 
@@ -493,7 +490,7 @@ namespace ApiExamples
             /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
             /// </summary>
             /// <param name="text"></param>
-            private void IndentAndAppendLine(String text)
+            private void IndentAndAppendLine(string text)
             {
                 for (int i = 0; i < mDocTraversalDepth; i++)
                 {
@@ -546,7 +543,7 @@ namespace ApiExamples
             /// <summary>
             /// Gets the plain text of the document that was accumulated by the visitor.
             /// </summary>
-            public String GetText()
+            public string GetText()
             {
                 return mBuilder.ToString();
             }
@@ -599,7 +596,7 @@ namespace ApiExamples
             /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
             /// </summary>
             /// <param name="text"></param>
-            private void IndentAndAppendLine(String text)
+            private void IndentAndAppendLine(string text)
             {
                 for (int i = 0; i < mDocTraversalDepth; i++)
                 {
@@ -618,7 +615,7 @@ namespace ApiExamples
         //ExStart
         //ExFor:DocumentVisitor.VisitHeaderFooterStart(HeaderFooter)
         //ExFor:DocumentVisitor.VisitHeaderFooterEnd(HeaderFooter)
-        //ExFor:HeaderFooter.Accept(Aspose.Words.DocumentVisitor)
+        //ExFor:HeaderFooter.Accept(DocumentVisitor)
         //ExFor:HeaderFooterCollection.ToArray
         //ExFor:Run.Accept(DocumentVisitor)
         //ExFor:Run.GetText
@@ -632,7 +629,7 @@ namespace ApiExamples
             // Create an object that inherits from the DocumentVisitor class
             HeaderFooterInfoPrinter visitor = new HeaderFooterInfoPrinter();
 
-            // Accepring a visitor lets it start traversing the nodes in the document, 
+            // Accepting a visitor lets it start traversing the nodes in the document, 
             // starting with the node that accepted it to then recursively visit every child
             doc.Accept(visitor);
 
@@ -660,7 +657,7 @@ namespace ApiExamples
             /// <summary>
             /// Gets the plain text of the document that was accumulated by the visitor.
             /// </summary>
-            public String GetText()
+            public string GetText()
             {
                 return mBuilder.ToString();
             }
@@ -703,12 +700,9 @@ namespace ApiExamples
             /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
             /// </summary>
             /// <param name="text"></param>
-            private void IndentAndAppendLine(String text)
+            private void IndentAndAppendLine(string text)
             {
-                for (int i = 0; i < mDocTraversalDepth; i++)
-                {
-                    mBuilder.Append("|  ");
-                }
+                for (int i = 0; i < mDocTraversalDepth; i++) mBuilder.Append("|  ");
 
                 mBuilder.AppendLine(text);
             }
@@ -758,7 +752,7 @@ namespace ApiExamples
             /// <summary>
             /// Gets the plain text of the document that was accumulated by the visitor.
             /// </summary>
-            public String GetText()
+            public string GetText()
             {
                 return mBuilder.ToString();
             }
@@ -803,12 +797,9 @@ namespace ApiExamples
             /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
             /// </summary>
             /// <param name="text"></param>
-            private void IndentAndAppendLine(String text)
+            private void IndentAndAppendLine(string text)
             {
-                for (int i = 0; i < mDocTraversalDepth; i++)
-                {
-                    mBuilder.Append("|  ");
-                }
+                for (int i = 0; i < mDocTraversalDepth; i++) mBuilder.Append("|  ");
 
                 mBuilder.AppendLine(text);
             }
@@ -856,7 +847,7 @@ namespace ApiExamples
             /// <summary>
             /// Gets the plain text of the document that was accumulated by the visitor.
             /// </summary>
-            public String GetText()
+            public string GetText()
             {
                 return mBuilder.ToString();
             }
@@ -899,12 +890,9 @@ namespace ApiExamples
             /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
             /// </summary>
             /// <param name="text"></param>
-            private void IndentAndAppendLine(String text)
+            private void IndentAndAppendLine(string text)
             {
-                for (int i = 0; i < mDocTraversalDepth; i++)
-                {
-                    mBuilder.Append("|  ");
-                }
+                for (int i = 0; i < mDocTraversalDepth; i++) mBuilder.Append("|  ");
 
                 mBuilder.AppendLine(text);
             }
@@ -954,7 +942,7 @@ namespace ApiExamples
             /// <summary>
             /// Gets the plain text of the document that was accumulated by the visitor.
             /// </summary>
-            public String GetText()
+            public string GetText()
             {
                 return mBuilder.ToString();
             }
@@ -997,12 +985,9 @@ namespace ApiExamples
             /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
             /// </summary>
             /// <param name="text"></param>
-            private void IndentAndAppendLine(String text)
+            private void IndentAndAppendLine(string text)
             {
-                for (int i = 0; i < mDocTraversalDepth; i++)
-                {
-                    mBuilder.Append("|  ");
-                }
+                for (int i = 0; i < mDocTraversalDepth; i++) mBuilder.Append("|  ");
 
                 mBuilder.AppendLine(text);
             }
@@ -1049,7 +1034,7 @@ namespace ApiExamples
             /// <summary>
             /// Gets the plain text of the document that was accumulated by the visitor.
             /// </summary>
-            public String GetText()
+            public string GetText()
             {
                 return mBuilder.ToString();
             }
@@ -1092,12 +1077,9 @@ namespace ApiExamples
             /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
             /// </summary>
             /// <param name="text"></param>
-            private void IndentAndAppendLine(String text)
+            private void IndentAndAppendLine(string text)
             {
-                for (int i = 0; i < mDocTraversalDepth; i++)
-                {
-                    mBuilder.Append("|  ");
-                }
+                for (int i = 0; i < mDocTraversalDepth; i++) mBuilder.Append("|  ");
 
                 mBuilder.AppendLine(text);
             }
@@ -1122,7 +1104,7 @@ namespace ApiExamples
             // Create an object that inherits from the DocumentVisitor class
             StructuredDocumentTagInfoPrinter visitor = new StructuredDocumentTagInfoPrinter();
 
-            // Accepring a visitor lets it start traversing the nodes in the document, 
+            // Accepting a visitor lets it start traversing the nodes in the document, 
             // starting with the node that accepted it to then recursively visit every child
             doc.Accept(visitor);
 
@@ -1145,7 +1127,7 @@ namespace ApiExamples
             /// <summary>
             /// Gets the plain text of the document that was accumulated by the visitor.
             /// </summary>
-            public String GetText()
+            public string GetText()
             {
                 return mBuilder.ToString();
             }
@@ -1186,12 +1168,9 @@ namespace ApiExamples
             /// Append a line to the StringBuilder and indent it depending on how deep the visitor is into the document tree.
             /// </summary>
             /// <param name="text"></param>
-            private void IndentAndAppendLine(String text)
+            private void IndentAndAppendLine(string text)
             {
-                for (int i = 0; i < mDocTraversalDepth; i++)
-                {
-                    mBuilder.Append("|  ");
-                }
+                for (int i = 0; i < mDocTraversalDepth; i++) mBuilder.Append("|  ");
 
                 mBuilder.AppendLine(text);
             }

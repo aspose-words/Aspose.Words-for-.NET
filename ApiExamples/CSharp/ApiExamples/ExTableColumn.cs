@@ -92,7 +92,7 @@ namespace ApiExamples
             /// <summary>
             /// Returns the text of the column. 
             /// </summary>
-            public String ToTxt()
+            public string ToTxt()
             {
                 StringBuilder builder = new StringBuilder();
 

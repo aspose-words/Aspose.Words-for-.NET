@@ -145,7 +145,7 @@ namespace ApiExamples
             FindReplaceOptions options = new FindReplaceOptions();
             options.ReplacingCallback = new ReplaceWithHtmlEvaluator(options);
 
-            doc.Range.Replace(new Regex(@" <CustomerName>,"), String.Empty, options);
+            doc.Range.Replace(new Regex(@" <CustomerName>,"), string.Empty, options);
 
             // Save the modified document.
             doc.Save(ArtifactsDir + "Range.ReplaceWithInsertHtml.doc");
@@ -305,7 +305,7 @@ namespace ApiExamples
             //ExFor:Range.Text
             //ExSummary:Shows how to get plain, unformatted text of a range.
             Document doc = new Document(MyDir + "Document.doc");
-            String text = doc.Range.Text;
+            string text = doc.Range.Text;
             //ExEnd
         }
     }

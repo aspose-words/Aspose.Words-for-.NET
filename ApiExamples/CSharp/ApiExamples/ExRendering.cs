@@ -1015,7 +1015,7 @@ namespace ApiExamples
             // Note that this setting will override any default font sources that are being searched by default. Now only these folders will be searched for 
             // fonts when rendering or embedding fonts. To add an extra font source while keeping system font sources then use both FontSettings.GetFontSources and 
             // FontSettings.SetFontSources instead.
-            FontSettings.DefaultInstance.SetFontsFolders(new String[] { @"C:\MyFonts\", @"D:\Misc\Fonts\" }, true);
+            FontSettings.DefaultInstance.SetFontsFolders(new string[] { @"C:\MyFonts\", @"D:\Misc\Fonts\" }, true);
 
             doc.Save(ArtifactsDir + "Rendering.SetFontsFolders.pdf");
             //ExEnd
@@ -1096,7 +1096,7 @@ namespace ApiExamples
             //ExFor:TableSubstitutionRule.SetSubstitutes(String, String[])
             //ExSummary:Shows how to define alternative fonts if original does not exist
             FontSettings fontSettings = new FontSettings();
-            fontSettings.SubstitutionSettings.TableSubstitution.SetSubstitutes("Times New Roman", new String[] { "Slab", "Arvo" });
+            fontSettings.SubstitutionSettings.TableSubstitution.SetSubstitutes("Times New Roman", new string[] { "Slab", "Arvo" });
             //ExEnd
             Document doc = new Document(MyDir + "Rendering.doc");
             doc.FontSettings = fontSettings;
@@ -1110,15 +1110,15 @@ namespace ApiExamples
 
             Assert.AreEqual("Times New Roman", doc.FontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName);
 
-            String[] alternativeFonts = doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Times New Roman").ToArray();
-            Assert.AreEqual(new String[] { "Slab", "Arvo" }, alternativeFonts);
+            string[] alternativeFonts = doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Times New Roman").ToArray();
+            Assert.AreEqual(new string[] { "Slab", "Arvo" }, alternativeFonts);
         }
 
         [Test]
         public void SetSpecifyFontFolders()
         {
             FontSettings fontSettings = new FontSettings();
-            fontSettings.SetFontsFolders(new String[] { MyDir + @"MyFonts\", @"C:\Windows\Fonts\" }, true);
+            fontSettings.SetFontsFolders(new string[] { MyDir + @"MyFonts\", @"C:\Windows\Fonts\" }, true);
 
             // Using load options
             LoadOptions loadOptions = new LoadOptions();
@@ -1138,8 +1138,8 @@ namespace ApiExamples
         public void AddFontSubstitutes()
         {
             FontSettings fontSettings = new FontSettings();
-            fontSettings.SubstitutionSettings.TableSubstitution.SetSubstitutes("Slab", new String[] { "Times New Roman", "Arial" });
-            fontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Arvo", new String[] { "Open Sans", "Arial" });
+            fontSettings.SubstitutionSettings.TableSubstitution.SetSubstitutes("Slab", new string[] { "Times New Roman", "Arial" });
+            fontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Arvo", new string[] { "Open Sans", "Arial" });
 
             Document doc = new Document(MyDir + "Rendering.doc");
             doc.FontSettings = fontSettings;
@@ -1147,11 +1147,11 @@ namespace ApiExamples
             MemoryStream dstStream = new MemoryStream();
             doc.Save(dstStream, SaveFormat.Docx);
 
-            String[] alternativeFonts = doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Slab").ToArray();
-            Assert.AreEqual(new String[] { "Times New Roman", "Arial" }, alternativeFonts);
+            string[] alternativeFonts = doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Slab").ToArray();
+            Assert.AreEqual(new string[] { "Times New Roman", "Arial" }, alternativeFonts);
 
             alternativeFonts = doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Arvo").ToArray();
-            Assert.AreEqual(new String[] { "Open Sans", "Arial" }, alternativeFonts);
+            Assert.AreEqual(new string[] { "Open Sans", "Arial" }, alternativeFonts);
         }
 
         [Test]
@@ -1190,7 +1190,7 @@ namespace ApiExamples
             // For testing we will set Aspose.Words to look for fonts only in a folder which doesn't exist. Since Aspose.Words won't
             // find any fonts in the specified directory, then during rendering the fonts in the document will be substituted with the default 
             // font specified under FontSettings.DefaultFontName. We can pick up on this substitution using our callback.
-            FontSettings.DefaultInstance.SetFontsFolder(String.Empty, false);
+            FontSettings.DefaultInstance.SetFontsFolder(string.Empty, false);
 
             // When you call UpdatePageLayout the document is rendered in memory. Any warnings that occurred during rendering
             // are stored until the document save and then sent to the appropriate WarningCallback.

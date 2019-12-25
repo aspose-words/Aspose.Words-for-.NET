@@ -499,7 +499,7 @@ namespace ApiExamples
             //   ExportImagesAsBase64 = true
             //   CssStyleSheetType = CssStyleSheetType.Inline
             //   ExportFontResources = false
-            String nodeAsHtml = node.ToString(SaveFormat.Html);
+            string nodeAsHtml = node.ToString(SaveFormat.Html);
             //ExEnd
 
             Assert.AreEqual(
@@ -527,7 +527,7 @@ namespace ApiExamples
 
             // Convert the document to HTML and return as a String. Pass the instance of HtmlSaveOptions to
             // to use the specified options during the conversion.
-            String nodeAsHtml = node.ToString(saveOptions);
+            string nodeAsHtml = node.ToString(saveOptions);
             //ExEnd
 
             Assert.AreEqual(

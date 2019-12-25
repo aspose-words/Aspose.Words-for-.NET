@@ -37,7 +37,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "MailMerge.ExecuteArray.doc");
 
             // Fill the fields in the document with user data.
-            doc.MailMerge.Execute(new String[] { "FullName", "Company", "Address", "Address2", "City" },
+            doc.MailMerge.Execute(new string[] { "FullName", "Company", "Address", "Address2", "City" },
                 new object[] { "James Bond", "MI5 Headquarters", "Milbank", "", "London" });
 
             // Send the document in Word format to the client browser with an option to save to disk or open inside the current browser.
@@ -731,7 +731,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:MailMerge.GetFieldNames
             //ExSummary:Shows how to get names of all merge fields in a document.
-            String[] fieldNames = doc.MailMerge.GetFieldNames();
+            string[] fieldNames = doc.MailMerge.GetFieldNames();
             //ExEnd
         }
 
@@ -975,7 +975,7 @@ namespace ApiExamples
         [Test]
         [TestCase(true, "{{ testfield1 }}value 1{{ testfield3 }}\f")]
         [TestCase(false, "\u0013MERGEFIELD \"testfield1\"\u0014«testfield1»\u0015value 1\u0013MERGEFIELD \"testfield3\"\u0014«testfield3»\u0015\f")]
-        public void MustasheTemplateSyntax(bool restoreTags, String sectionText)
+        public void MustasheTemplateSyntax(bool restoreTags, string sectionText)
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -992,7 +992,7 @@ namespace ApiExamples
 
             doc.MailMerge.Execute(table);
 
-            String paraText = DocumentHelper.GetParagraphText(doc, 0);
+            string paraText = DocumentHelper.GetParagraphText(doc, 0);
 
             Assert.AreEqual(sectionText, paraText);
         }
@@ -1057,7 +1057,7 @@ namespace ApiExamples
             MailMergeCallbackStub mailMergeCallbackStub = new MailMergeCallbackStub();
             document.MailMerge.MailMergeCallback = mailMergeCallbackStub;
 
-            document.MailMerge.Execute(new String[0], new object[0]);
+            document.MailMerge.Execute(new string[0], new object[0]);
 
             Assert.AreEqual(1, mailMergeCallbackStub.TagsReplacedCounter);
         }

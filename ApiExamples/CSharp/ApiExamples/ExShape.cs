@@ -105,7 +105,7 @@ namespace ApiExamples
             protected override void OnPaint(PaintEventArgs e)
             {
                 // Set the size of the Form canvas
-                this.Size = new Size(1000, 800);
+                Size = new Size(1000, 800);
 
                 // Open a document and get its first shape, which is a chart
                 Document doc = new Document(MyDir + "Shape.VarietyOfShapes.docx");
@@ -729,7 +729,7 @@ namespace ApiExamples
 
             // Gets the file name suggested for the current embedded object if you want to save it into a file
             Shape oleShape = (Shape) doc.FirstSection.Body.GetChild(NodeType.Shape, 0, true);
-            String suggestedFileName = oleShape.OleFormat.SuggestedFileName;
+            string suggestedFileName = oleShape.OleFormat.SuggestedFileName;
             //ExEnd
 
             Assert.AreEqual("CSV.csv", suggestedFileName);

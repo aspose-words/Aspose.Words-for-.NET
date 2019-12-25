@@ -113,7 +113,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Hyphenation.UnregisterDictionary(String)
-            //ExSummary:Shows how to un-register a dictionary
+            //ExSummary:Shows how to un-register a dictionary.
             Document doc = new Document(MyDir + "Document.doc");
             Hyphenation.RegisterDictionary("en-US", MyDir + "hyph_en_US.dic");
 

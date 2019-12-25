@@ -78,7 +78,7 @@ namespace ApiExamples
                     for (int k = 0; k < cells.Count; k++)
                     {
                         // Get the plain text content of this cell.
-                        String cellText = cells[k].ToString(SaveFormat.Text).Trim();
+                        string cellText = cells[k].ToString(SaveFormat.Text).Trim();
                         // Print the content of the cell.
                         Console.WriteLine($"\t\tContents of Cell:{k} = \"{cellText}\"");
                     }
@@ -582,7 +582,7 @@ namespace ApiExamples
             foreach (Cell cell in tableClone.GetChildNodes(NodeType.Cell, true).OfType<Cell>())
                 cell.RemoveAllChildren();
             
-            Assert.AreEqual(String.Empty, tableClone.ToString(SaveFormat.Text).Trim());
+            Assert.AreEqual(string.Empty, tableClone.ToString(SaveFormat.Text).Trim());
         }
 
         [Test]
@@ -689,7 +689,7 @@ namespace ApiExamples
 
             // Verify that the row was cloned and appended properly.
             Assert.AreEqual(5, table.Rows.Count);
-            Assert.AreEqual(String.Empty, table.LastRow.ToString(SaveFormat.Text).Trim());
+            Assert.AreEqual(string.Empty, table.LastRow.ToString(SaveFormat.Text).Trim());
             Assert.AreEqual(2, table.LastRow.Cells.Count);
         }
 
@@ -939,7 +939,7 @@ namespace ApiExamples
         /// <summary>
         /// Creates a new table in the document with the given dimensions and text in each cell.
         /// </summary>
-        private Table CreateTable(Document doc, int rowCount, int cellCount, String cellText)
+        private Table CreateTable(Document doc, int rowCount, int cellCount, string cellText)
         {
             Table table = new Table(doc);
 
@@ -997,11 +997,11 @@ namespace ApiExamples
                 PrintCellMergeType(table.FirstRow.FirstCell)); //ExSkip
         }
 
-        public String PrintCellMergeType(Cell cell)
+        public string PrintCellMergeType(Cell cell)
         {
             bool isHorizontallyMerged = cell.CellFormat.HorizontalMerge != CellMerge.None;
             bool isVerticallyMerged = cell.CellFormat.VerticalMerge != CellMerge.None;
-            String cellLocation =
+            string cellLocation =
                 $"R{cell.ParentRow.ParentTable.IndexOf(cell.ParentRow) + 1}, C{cell.ParentRow.IndexOf(cell) + 1}";
 
             if (isHorizontallyMerged && isVerticallyMerged)

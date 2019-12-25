@@ -66,7 +66,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertTextInput
-            //ExSummary:Shows how to insert form fields, set options and gather them back in for use 
+            //ExSummary:Shows how to insert form fields, set options and gather them back in for use.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -81,7 +81,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FormField.RemoveField
-            //ExSummary:Shows how to delete complete form field
+            //ExSummary:Shows how to delete complete form field.
             Document doc = new Document(MyDir + "FormFields.doc");
 
             FormField formField = doc.Range.FormFields[3];

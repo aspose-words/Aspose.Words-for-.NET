@@ -97,13 +97,9 @@ namespace ApiExamples
             builder.Write("Row 1, Col 1");
             //ExEnd
 
-            using (MemoryStream dstStream = new MemoryStream())
-            {
-                builder.Document.Save(dstStream, SaveFormat.Docx);
-            }
+            using (MemoryStream dstStream = new MemoryStream()) builder.Document.Save(dstStream, SaveFormat.Docx);
 
             Table table = (Table) builder.Document.GetChild(NodeType.Table, 0, true);
-
             Cell cell = table.Rows[0].Cells[0];
 
             Assert.AreEqual(5, cell.CellFormat.LeftPadding);

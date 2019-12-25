@@ -798,7 +798,7 @@ namespace ApiExamples
                         properties[index++] = $"\"{cxp.Name}\" = \"{cxp.Value}\"";
                     }
 
-                    Console.WriteLine(String.Join(", ", properties));
+                    Console.WriteLine(string.Join(", ", properties));
                 }
 
                 return VisitorAction.Continue;

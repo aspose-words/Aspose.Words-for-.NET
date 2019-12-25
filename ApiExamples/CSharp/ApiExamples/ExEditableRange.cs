@@ -25,13 +25,13 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create an EditableRange so we can remove it. Does not have to be well-formed.
+            // Create an EditableRange so we can remove it. Does not have to be well-formed
             EditableRangeStart edRange1Start = builder.StartEditableRange();
             EditableRange editableRange1 = edRange1Start.EditableRange;
             builder.Writeln("Paragraph inside editable range");
             EditableRangeEnd edRange1End = builder.EndEditableRange();
 
-            // Remove the range that was just made.
+            // Remove the range that was just made
             editableRange1.Remove();
             //ExEnd
         }
