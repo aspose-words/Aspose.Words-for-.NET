@@ -8,7 +8,7 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
 using Shape = Aspose.Words.Drawing.Shape;
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#if NETFRAMEWORK
 using System.Drawing.Imaging;
 using System.Net;
 #endif
@@ -18,7 +18,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExDrawing : ApiExampleBase
     {
-#if !(NETSTANDARD2_0 || __MOBILE__)
+        #if NETFRAMEWORK
         [Test]
         public void VariousShapes()
         {
@@ -95,7 +95,7 @@ namespace ApiExamples
             {
                 byte[] imageBytes = webClient.DownloadData(AsposeLogoUrl);
 
-                using (System.IO.MemoryStream stream = new System.IO.MemoryStream(imageBytes))
+                using (MemoryStream stream = new MemoryStream(imageBytes))
                 {
                     Image image = Image.FromStream(stream);
                     // When we flipped the orientation of our arrow, the image content was flipped too
@@ -112,7 +112,101 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Drawing.VariousShapes.docx");
             //ExEnd
         }
-#endif
+
+        [Test]
+        public void TypeOfImage()
+        {
+            //ExStart
+            //ExFor:Drawing.ImageType
+            //ExSummary:Shows how to add an image to a shape and check its type
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            using (WebClient webClient = new WebClient())
+            {
+                byte[] imageBytes = webClient.DownloadData(AsposeLogoUrl);
+
+                using (MemoryStream stream = new MemoryStream(imageBytes))
+                {
+                    Image image = Image.FromStream(stream);
+
+                    // The image started off as an animated .gif but it gets converted to a .png since there cannot be animated images in documents
+                    Shape imgShape = builder.InsertImage(image);
+                    Assert.AreEqual(ImageType.Png, imgShape.ImageData.ImageType);
+                }
+            }
+
+            //ExEnd
+        }
+
+        [Test]
+        public void SaveAllImages()
+        {
+            //ExStart
+            //ExFor:ImageData.HasImage
+            //ExFor:ImageData.ToImage
+            //ExFor:ImageData.Save(Stream)
+            //ExSummary:Shows how to save all the images from a document to the file system.
+            Document imgSourceDoc = new Document(MyDir + "Image.SampleImages.doc");
+
+            // Images are stored as shapes
+            // Get into the document's shape collection to verify that it contains 6 images
+            List<Shape> shapes = imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
+            Assert.AreEqual(6, shapes.Count);
+
+            // We will use an ImageFormatConverter to determine an image's file extension
+            ImageFormatConverter formatConverter = new ImageFormatConverter();
+
+            // Go over all of the document's shapes
+            // If a shape contains image data, save the image in the local file system
+            for (int i = 0; i < shapes.Count; i++)
+            {
+                ImageData imageData = shapes[i].ImageData;
+
+                if (imageData.HasImage)
+                {
+                    ImageFormat format = imageData.ToImage().RawFormat;
+                    string fileExtension = formatConverter.ConvertToString(format);
+
+                    using (FileStream fileStream = File.Create(ArtifactsDir + $"Drawing.SaveAllImages.{i}.{fileExtension}"))
+                    {
+                        imageData.Save(fileStream);
+                    }
+                }
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void ImportImage()
+        {
+            //ExStart
+            //ExFor:ImageData.SetImage(Image)
+            //ExFor:ImageData.SetImage(Stream)
+            //ExSummary:Shows two ways of importing images from the local file system into a document.
+            Document doc = new Document();
+
+            // We can get an image from a file, set it as the image of a shape and append it to a paragraph
+            Image srcImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
+
+            Shape imgShape = new Shape(doc, ShapeType.Image);
+            doc.FirstSection.Body.FirstParagraph.AppendChild(imgShape);
+            imgShape.ImageData.SetImage(srcImage);
+            srcImage.Dispose();
+
+            // We can also open an image file using a stream and set its contents as a shape's image 
+            using (Stream stream = new FileStream(ImageDir + "Aspose.Words.gif", FileMode.Open, FileAccess.Read))
+            {
+                imgShape = new Shape(doc, ShapeType.Image);
+                doc.FirstSection.Body.FirstParagraph.AppendChild(imgShape);
+                imgShape.ImageData.SetImage(stream);
+                imgShape.Left = 150.0f;
+            }
+
+            doc.Save(ArtifactsDir + "ImageData.ImportImage.docx");
+            //ExEnd
+        }
+        #endif
 
         [Test]
         public void StrokePattern()
@@ -236,34 +330,6 @@ namespace ApiExamples
         }
         //ExEnd
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
-        [Test]
-        public void TypeOfImage()
-        {
-            //ExStart
-            //ExFor:Drawing.ImageType
-            //ExSummary:Shows how to add an image to a shape and check its type
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            using (WebClient webClient = new WebClient())
-            {
-                byte[] imageBytes = webClient.DownloadData(AsposeLogoUrl);
-
-                using (System.IO.MemoryStream stream = new System.IO.MemoryStream(imageBytes))
-                {
-                    Image image = Image.FromStream(stream);
-
-                    // The image started off as an animated .gif but it gets converted to a .png since there cannot be animated images in documents
-                    Shape imgShape = builder.InsertImage(image);
-                    Assert.AreEqual(ImageType.Png, imgShape.ImageData.ImageType);
-                }
-            }
-
-            //ExEnd
-        }
-#endif
-
         [Test]
         public void TextBox()
         {
@@ -319,46 +385,6 @@ namespace ApiExamples
             }        
             //ExEnd
         }
-
-#if !(NETSTANDARD2_0 || __MOBILE__)
-        [Test]
-        public void SaveAllImages()
-        {
-            //ExStart
-            //ExFor:ImageData.HasImage
-            //ExFor:ImageData.ToImage
-            //ExFor:ImageData.Save(Stream)
-            //ExSummary:Shows how to save all the images from a document to the file system.
-            Document imgSourceDoc = new Document(MyDir + "Image.SampleImages.doc");
-
-            // Images are stored as shapes
-            // Get into the document's shape collection to verify that it contains 6 images
-            List<Shape> shapes = imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
-            Assert.AreEqual(6, shapes.Count);
-
-            // We will use an ImageFormatConverter to determine an image's file extension
-            ImageFormatConverter formatConverter = new ImageFormatConverter();
-
-            // Go over all of the document's shapes
-            // If a shape contains image data, save the image in the local file system
-            for (int i = 0; i < shapes.Count; i++)
-            {
-                ImageData imageData = shapes[i].ImageData;
-
-                if (imageData.HasImage)
-                {
-                    ImageFormat format = imageData.ToImage().RawFormat;
-                    string fileExtension = formatConverter.ConvertToString(format);
-
-                    using (FileStream fileStream = File.Create(ArtifactsDir + $"Drawing.SaveAllImages.{i}.{fileExtension}"))
-                    {
-                        imageData.Save(fileStream);
-                    }
-                }
-            }
-            //ExEnd
-        }
-#endif
 
         [Test]
         public void ImageData()
@@ -435,38 +461,6 @@ namespace ApiExamples
             dstDoc.Save(ArtifactsDir + "Drawing.ImageData.docx");
             //ExEnd
         }
-
-#if !(NETSTANDARD2_0 || __MOBILE__)
-        [Test]
-        public void ImportImage()
-        {
-            //ExStart
-            //ExFor:ImageData.SetImage(Image)
-            //ExFor:ImageData.SetImage(Stream)
-            //ExSummary:Shows two ways of importing images from the local file system into a document.
-            Document doc = new Document();
-
-            // We can get an image from a file, set it as the image of a shape and append it to a paragraph
-            Image srcImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
-
-            Shape imgShape = new Shape(doc, ShapeType.Image);
-            doc.FirstSection.Body.FirstParagraph.AppendChild(imgShape);
-            imgShape.ImageData.SetImage(srcImage);
-            srcImage.Dispose();
-
-            // We can also open an image file using a stream and set its contents as a shape's image 
-            using (Stream stream = new FileStream(ImageDir + "Aspose.Words.gif", FileMode.Open, FileAccess.Read))
-            {
-                imgShape = new Shape(doc, ShapeType.Image);
-                doc.FirstSection.Body.FirstParagraph.AppendChild(imgShape);
-                imgShape.ImageData.SetImage(stream);
-                imgShape.Left = 150.0f;
-            }
-
-            doc.Save(ArtifactsDir + "Drawing.ImportedImage.docx");
-            //ExEnd
-        }
-#endif
 
         [Test]
         public void ImageSize()

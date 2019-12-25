@@ -24,7 +24,7 @@ using Aspose.Words.MailMerging;
 using Aspose.Words.Replacing;
 using NUnit.Framework;
 using LoadOptions = Aspose.Words.LoadOptions;
-#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
+#if NETFRAMEWORK
 using Aspose.BarCode.BarCodeRecognition;
 #else
 using SkiaSharp;
@@ -326,7 +326,7 @@ namespace ApiExamples
                     .AddArgument(10).AddArgument(20.0).BuildAndInsert(run), Throws.TypeOf<ArgumentException>());
         }
 
-#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
+#if NETFRAMEWORK
         [Test]
         public void BarCodeWord2Pdf()
         {
@@ -375,6 +375,95 @@ namespace ApiExamples
 
             return barcodeReader;
         }
+
+        //ExStart
+        //ExFor:BarcodeParameters
+        //ExFor:BarcodeParameters.AddStartStopChar
+        //ExFor:BarcodeParameters.BackgroundColor
+        //ExFor:BarcodeParameters.BarcodeType
+        //ExFor:BarcodeParameters.BarcodeValue
+        //ExFor:BarcodeParameters.CaseCodeStyle
+        //ExFor:BarcodeParameters.DisplayText
+        //ExFor:BarcodeParameters.ErrorCorrectionLevel
+        //ExFor:BarcodeParameters.FacingIdentificationMark
+        //ExFor:BarcodeParameters.FixCheckDigit
+        //ExFor:BarcodeParameters.ForegroundColor
+        //ExFor:BarcodeParameters.IsBookmark
+        //ExFor:BarcodeParameters.IsUSPostalAddress
+        //ExFor:BarcodeParameters.PosCodeStyle
+        //ExFor:BarcodeParameters.PostalAddress
+        //ExFor:BarcodeParameters.ScalingFactor
+        //ExFor:BarcodeParameters.SymbolHeight
+        //ExFor:BarcodeParameters.SymbolRotation
+        //ExFor:IBarcodeGenerator
+        //ExFor:IBarcodeGenerator.GetBarcodeImage(BarcodeParameters)
+        //ExFor:IBarcodeGenerator.GetOldBarcodeImage(BarcodeParameters)
+        //ExFor:FieldOptions.BarcodeGenerator
+        //ExSummary:Shows how to create barcode images using a barcode generator.
+        [Test] //ExSkip
+        public void BarcodeGenerator()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            Assert.IsNull(doc.FieldOptions.BarcodeGenerator);
+
+            // Barcodes generated in this way will be images, and we can use a custom IBarcodeGenerator implementation to generate them
+            doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
+
+            // Configure barcode parameters for a QR barcode
+            BarcodeParameters barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "QR";
+            barcodeParameters.BarcodeValue = "ABC123";
+            barcodeParameters.BackgroundColor = "0xF8BD69";
+            barcodeParameters.ForegroundColor = "0xB5413B";
+            barcodeParameters.ErrorCorrectionLevel = "3";
+            barcodeParameters.ScalingFactor = "250";
+            barcodeParameters.SymbolHeight = "1000";
+            barcodeParameters.SymbolRotation = "0";
+
+            // Save the generated barcode image to the file system
+            System.Drawing.Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(ArtifactsDir + "Field.BarcodeGenerator.QR.jpg");
+
+            // Insert the image into the document
+            builder.InsertImage(img);
+
+            // Configure barcode parameters for a EAN13 barcode
+            barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "EAN13";
+            barcodeParameters.BarcodeValue = "501234567890";
+            barcodeParameters.DisplayText = true;
+            barcodeParameters.PosCodeStyle = "CASE";
+            barcodeParameters.FixCheckDigit = true;
+
+            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(ArtifactsDir + "Field.BarcodeGenerator.EAN13.jpg");
+            builder.InsertImage(img);
+
+            // Configure barcode parameters for a CODE39 barcode
+            barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "CODE39";
+            barcodeParameters.BarcodeValue = "12345ABCDE";
+            barcodeParameters.AddStartStopChar = true;
+
+            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(ArtifactsDir + "Field.BarcodeGenerator.CODE39.jpg");
+            builder.InsertImage(img);
+
+            // Configure barcode parameters for an ITF14 barcode
+            barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "ITF14";
+            barcodeParameters.BarcodeValue = "09312345678907";
+            barcodeParameters.CaseCodeStyle = "STD";
+
+            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(ArtifactsDir + "Field.BarcodeGenerator.ITF14.jpg");
+            builder.InsertImage(img);
+
+            doc.Save(ArtifactsDir + "Field.BarcodeGenerator.docx");
+        }
+        //ExEnd
 #endif
         //For assert result of the test you need to open document and check that image are added correct and without truncated inside frame
         [Test]
@@ -394,7 +483,7 @@ namespace ApiExamples
                 {
                     FieldIncludePicture includePicture = (FieldIncludePicture)field;
 
-                    includePicture.SourceFullName = MyDir + "Images/dotnet-logo.png";
+                    includePicture.SourceFullName = ImageDir + "dotnet-logo.png";
                     includePicture.Update(true);
                 }
             }
@@ -2299,7 +2388,7 @@ namespace ApiExamples
             {
                 if (imageFilenames.ContainsKey(e.FieldValue.ToString()))
                 {
-                    #if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
+                    #if NETFRAMEWORK
                     e.Image = Image.FromFile(imageFilenames[e.FieldValue.ToString()]);
                     #else
                     e.Image = SKBitmap.Decode(imageFilenames[e.FieldValue.ToString()]);
@@ -2720,97 +2809,6 @@ namespace ApiExamples
             throw new ArgumentException("DataTable name and Column name must be declared.");
         }
         //ExEnd
-
-#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
-        //ExStart
-        //ExFor:BarcodeParameters
-        //ExFor:BarcodeParameters.AddStartStopChar
-        //ExFor:BarcodeParameters.BackgroundColor
-        //ExFor:BarcodeParameters.BarcodeType
-        //ExFor:BarcodeParameters.BarcodeValue
-        //ExFor:BarcodeParameters.CaseCodeStyle
-        //ExFor:BarcodeParameters.DisplayText
-        //ExFor:BarcodeParameters.ErrorCorrectionLevel
-        //ExFor:BarcodeParameters.FacingIdentificationMark
-        //ExFor:BarcodeParameters.FixCheckDigit
-        //ExFor:BarcodeParameters.ForegroundColor
-        //ExFor:BarcodeParameters.IsBookmark
-        //ExFor:BarcodeParameters.IsUSPostalAddress
-        //ExFor:BarcodeParameters.PosCodeStyle
-        //ExFor:BarcodeParameters.PostalAddress
-        //ExFor:BarcodeParameters.ScalingFactor
-        //ExFor:BarcodeParameters.SymbolHeight
-        //ExFor:BarcodeParameters.SymbolRotation
-        //ExFor:IBarcodeGenerator
-        //ExFor:IBarcodeGenerator.GetBarcodeImage(BarcodeParameters)
-        //ExFor:IBarcodeGenerator.GetOldBarcodeImage(BarcodeParameters)
-        //ExFor:FieldOptions.BarcodeGenerator
-        //ExSummary:Shows how to create barcode images using a barcode generator.
-        [Test] //ExSkip
-        public void BarcodeGenerator()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            
-            Assert.IsNull(doc.FieldOptions.BarcodeGenerator);
-
-            // Barcodes generated in this way will be images, and we can use a custom IBarcodeGenerator implementation to generate them
-            doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
-
-            // Configure barcode parameters for a QR barcode
-            BarcodeParameters barcodeParameters = new BarcodeParameters();
-            barcodeParameters.BarcodeType = "QR";
-            barcodeParameters.BarcodeValue = "ABC123";
-            barcodeParameters.BackgroundColor = "0xF8BD69";
-            barcodeParameters.ForegroundColor = "0xB5413B";
-            barcodeParameters.ErrorCorrectionLevel = "3";
-            barcodeParameters.ScalingFactor = "250";
-            barcodeParameters.SymbolHeight = "1000";
-            barcodeParameters.SymbolRotation = "0";
-
-            // Save the generated barcode image to the file system
-            System.Drawing.Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-            img.Save(ArtifactsDir + "Field.BarcodeGenerator.QR.jpg");
-
-            // Insert the image into the document
-            builder.InsertImage(img);
-
-            // Configure barcode parameters for a EAN13 barcode
-            barcodeParameters = new BarcodeParameters();
-            barcodeParameters.BarcodeType = "EAN13";
-            barcodeParameters.BarcodeValue = "501234567890";
-            barcodeParameters.DisplayText = true;
-            barcodeParameters.PosCodeStyle = "CASE";
-            barcodeParameters.FixCheckDigit = true;
-
-            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-            img.Save(ArtifactsDir + "Field.BarcodeGenerator.EAN13.jpg");
-            builder.InsertImage(img);
-
-            // Configure barcode parameters for a CODE39 barcode
-            barcodeParameters = new BarcodeParameters();
-            barcodeParameters.BarcodeType = "CODE39";
-            barcodeParameters.BarcodeValue = "12345ABCDE";
-            barcodeParameters.AddStartStopChar = true;
-
-            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-            img.Save(ArtifactsDir + "Field.BarcodeGenerator.CODE39.jpg");
-            builder.InsertImage(img);
-
-            // Configure barcode parameters for an ITF14 barcode
-            barcodeParameters = new BarcodeParameters();
-            barcodeParameters.BarcodeType = "ITF14";
-            barcodeParameters.BarcodeValue = "09312345678907";
-            barcodeParameters.CaseCodeStyle = "STD";
-
-            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-            img.Save(ArtifactsDir + "Field.BarcodeGenerator.ITF14.jpg");
-            builder.InsertImage(img);
-
-            doc.Save(ArtifactsDir + "Field.BarcodeGenerator.docx");
-        }
-        //ExEnd
-#endif
 
         //ExStart
         //ExFor:FieldLink
@@ -3428,7 +3426,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if (!__MOBILE__)
+#if NETFRAMEWORK || NETSTANDARD2_0
         [Test]
         public void FieldDate()
         {

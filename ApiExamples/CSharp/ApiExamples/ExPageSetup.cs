@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -10,7 +10,7 @@ using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Settings;
 using NUnit.Framework;
-#if !(__MOBILE__ || MAC)
+#if NETFRAMEWORK || NETSTANDARD2_0
 using System.Drawing.Printing;
 #endif
 
@@ -104,7 +104,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if !(__MOBILE__ || MAC)
+#if NETFRAMEWORK || NETSTANDARD2_0
         [Test]
         [Ignore("Run only when the printer driver is installed")]
         public void DefaultPaperTray()

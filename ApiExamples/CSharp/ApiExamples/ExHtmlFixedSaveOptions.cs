@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -104,7 +104,7 @@ namespace ApiExamples
             //ExFor:HtmlFixedSaveOptions.CssClassNamesPrefix
             //ExFor:HtmlFixedSaveOptions.SaveFontFaceCssSeparately
             //ExSummary:Shows how to add prefix to all class names in css file.
-            Document doc = new Document(MyDir + "Bookmark.doc");
+            Document doc = new Document(MyDir + "Bookmarks.docx");
 
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
@@ -125,7 +125,7 @@ namespace ApiExamples
             //ExFor:HtmlFixedSaveOptions.PageHorizontalAlignment
             //ExFor:HtmlFixedPageHorizontalAlignment
             //ExSummary:Shows how to set the horizontal alignment of pages in HTML file.
-            Document doc = new Document(MyDir + "Bookmark.doc");
+            Document doc = new Document(MyDir + "Bookmarks.docx");
 
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
@@ -142,7 +142,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:HtmlFixedSaveOptions.PageMargins
             //ExSummary:Shows how to set the margins around pages in HTML file.
-            Document doc = new Document(MyDir + "Bookmark.doc");
+            Document doc = new Document(MyDir + "Bookmarks.docx");
 
             HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions
             {

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -9,11 +9,11 @@ using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if (NETSTANDARD2_0 || __MOBILE__)
-using SkiaSharp;
-#else
+#if NETFRAMEWORK
 using System.Drawing;
 using System.Drawing.Imaging;
+#else
+using SkiaSharp;
 #endif
 
 namespace ApiExamples
@@ -75,7 +75,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
+        #if NETFRAMEWORK
         [Test]
         public void InsertImageFromImageClass()
         {
@@ -102,37 +102,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromImageClass.docx");
             //ExEnd
         }
-#else
-        [Test]
-        public void InsertImageFromImageClassNetStandard2()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertImage(Image)
-            //ExFor:DocumentBuilder.InsertImage(Image, Double, Double)
-            //ExFor:DocumentBuilder.InsertImage(Image, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Shows different solutions of how to import an image into a document from Image class (.NetStandard 2.0).
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            using (SKBitmap bitmap = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
-            {
-                builder.Writeln("\nInserted image from Image class: ");
-                builder.InsertImage(bitmap);
-
-                builder.Writeln("\nInserted image from Image class with a custom size: ");
-                builder.InsertImage(bitmap, ConvertUtil.PixelToPoint(250), ConvertUtil.PixelToPoint(144));
-
-                builder.Writeln("\nInserted image from Image class using relative positions: ");
-                builder.InsertImage(bitmap, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin,
-                    100, 200, 100, WrapType.Square);
-            }
-
-            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromImageClassNetStandard2.docx");
-            //ExEnd
-        }
-#endif
-
-#if !(NETSTANDARD2_0 || __MOBILE__)
         [Test]
         public void InsertImageFromByteArray()
         {
@@ -166,6 +136,34 @@ namespace ApiExamples
             //ExEnd
         }
 #else
+        [Test]
+        public void InsertImageFromImageClassNetStandard2()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertImage(Image)
+            //ExFor:DocumentBuilder.InsertImage(Image, Double, Double)
+            //ExFor:DocumentBuilder.InsertImage(Image, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
+            //ExSummary:Shows different solutions of how to import an image into a document from Image class (.NetStandard 2.0).
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            using (SKBitmap bitmap = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
+            {
+                builder.Writeln("\nInserted image from Image class: ");
+                builder.InsertImage(bitmap);
+
+                builder.Writeln("\nInserted image from Image class with a custom size: ");
+                builder.InsertImage(bitmap, ConvertUtil.PixelToPoint(250), ConvertUtil.PixelToPoint(144));
+
+                builder.Writeln("\nInserted image from Image class using relative positions: ");
+                builder.InsertImage(bitmap, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin,
+                    100, 200, 100, WrapType.Square);
+            }
+
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromImageClassNetStandard2.docx");
+            //ExEnd
+        }
+
         [Test]
         public void InsertImageFromByteArrayNetStandard2()
         {

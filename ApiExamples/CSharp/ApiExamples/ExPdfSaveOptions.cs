@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -17,12 +17,12 @@ using SaveFormat = Aspose.Words.SaveFormat;
 using SaveOptions = Aspose.Words.Saving.SaveOptions;
 using WarningInfo = Aspose.Words.WarningInfo;
 using WarningType = Aspose.Words.WarningType;
-#if NETSTANDARD2_0 || __MOBILE__
-using SkiaSharp;
-#else 
+#if NETFRAMEWORK
 using Image = System.Drawing.Image;
+#else 
+using SkiaSharp;
 #endif
-#if  !(__MOBILE__ || MAC)
+#if NETFRAMEWORK || NETSTANDARD2_0
 using Aspose.Pdf.Facades;
 using Aspose.Pdf.Annotations;
 #endif
@@ -70,7 +70,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "CreateMissingOutlineLevels.pdf", pdfSaveOptions);
             //ExEnd
-#if !(__MOBILE__ || MAC)
+
+            #if NETFRAMEWORK || NETSTANDARD2_0
             // Bind PDF with Aspose.PDF
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "CreateMissingOutlineLevels.pdf");
@@ -79,7 +80,7 @@ namespace ApiExamples
             Bookmarks bookmarks = bookmarkEditor.ExtractBookmarks();
 
             Assert.AreEqual(11, bookmarks.Count);
-#endif
+            #endif
         }
 
         [Test]
@@ -102,7 +103,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "UpdateFields_False.pdf", pdfSaveOptions);
             //ExEnd
-#if !(__MOBILE__ || MAC)
+
+            #if NETFRAMEWORK || NETSTANDARD2_0
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "UpdateFields_False.pdf");
 
             // Get text fragment by search String
@@ -111,7 +113,7 @@ namespace ApiExamples
 
             // Assert that fields are not updated
             Assert.AreEqual("Page  of", textFragmentAbsorber.TextFragments[1].Text);
-#endif
+            #endif
         }
 
         [Test]
@@ -123,7 +125,8 @@ namespace ApiExamples
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { UpdateFields = true };
 
             doc.Save(ArtifactsDir + "UpdateFields_False.pdf", pdfSaveOptions);
-#if !(__MOBILE__ || MAC)
+
+            #if NETFRAMEWORK || NETSTANDARD2_0
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "UpdateFields_False.pdf");
 
             // Get text fragment by search String from PDF document
@@ -132,7 +135,7 @@ namespace ApiExamples
 
             // Assert that fields are updated
             Assert.AreEqual("Page 1 of 2", textFragmentAbsorber.TextFragments[1].Text);
-#endif
+            #endif
         }
 
         // For assert this test you need to open "SaveOptions.PdfImageCompression PDF_A_1_B Out.pdf" and "SaveOptions.PdfImageCompression PDF_A_1_A Out.pdf" 
@@ -184,13 +187,13 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PdfSaveOptions
-            //ExFor:SaveOptions.ColorMode
+            //ExFor:FixedPageSaveOptions.ColorMode
             //ExSummary:Shows how change image color with save options property
             // Open document with color image
             Document doc = new Document(MyDir + "Rendering.doc");
             // Set grayscale mode for document
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { ColorMode = ColorMode.Grayscale };
-
+            
             // Assert that color image in document was grey
             doc.Save(ArtifactsDir + "ColorMode.PdfGrayscaleMode.pdf", pdfSaveOptions);
             //ExEnd
@@ -209,12 +212,13 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfTitle.pdf", pdfSaveOptions);
             //ExEnd
-#if !(__MOBILE__ || MAC)
+
+            #if NETFRAMEWORK || NETSTANDARD2_0
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfTitle.pdf");
 
             Assert.IsTrue(pdfDocument.DisplayDocTitle);
             Assert.AreEqual("Windows bar pdf title", pdfDocument.Info.Title);
-#endif
+            #endif
         }
 
         [Test]
@@ -256,7 +260,7 @@ namespace ApiExamples
             builder.Document.Save(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf", options);
             //ExEnd
 
-#if !(__MOBILE__ || MAC)
+            #if NETFRAMEWORK || NETSTANDARD2_0
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf");
 
@@ -269,7 +273,7 @@ namespace ApiExamples
             string uriText = action.Script;
 
             Assert.AreEqual(result, uriText);
-#endif
+            #endif
         }
 
         [Test]
@@ -544,7 +548,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
+        #if NETFRAMEWORK
         [Test]
         public void PreblendImages()
         {
@@ -565,8 +569,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
             //ExEnd
         }
-
-#else
+        #else
         [Test]
         public void PreblendImagesNetStandard2()
         {
@@ -589,7 +592,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
             //ExEnd
         }
-#endif
+        #endif
+
         [Test]
         public void PdfDigitalSignature()
         {

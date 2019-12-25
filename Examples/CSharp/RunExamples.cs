@@ -27,6 +27,7 @@ using Aspose.Words.Examples.CSharp.Rendering_and_Printing;
 using Aspose.Words.Examples.CSharp.Rendering_Printing;
 using QuickStart = Aspose.Words.Examples.CSharp.Quick_Start;
 using Aspose.Words.Examples.CSharp.Programming_Documents.Linked_Textboxes;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Web_Extensions;
 
 namespace Aspose.Words.Examples.CSharp
 {
@@ -90,7 +91,7 @@ namespace Aspose.Words.Examples.CSharp
             // ConvertDocumentToEPUB.Run();
             // ConvertDocumentToHtmlWithRoundtrip.Run();
             // DetectDocumentSignatures.Run();
-             WorkingWithTxt.Run();
+            // WorkingWithTxt.Run();
             // WorkingWithRTF.Run();
             // SaveOptionsHtmlFixed.Run();
             // SaveDocWithHtmlSaveOptions.Run();
@@ -206,7 +207,7 @@ namespace Aspose.Words.Examples.CSharp
             // WorkingWithSaveOptions.Run();
             // SetCompatibilityOptions.Run();
             // SetupLanguagePreferences.Run();
-            // DocumentBuilderInsertHorizontalRule.Run();
+            // DocumentBuilderHorizontalRule.Run();
             // GetFontLineSpacing.Run();
             // CheckDMLTextEffect.Run();
             // ParagraphStyleSeparator.Run();
@@ -357,7 +358,7 @@ namespace Aspose.Words.Examples.CSharp
             // MailMergeAndConditionalField.Run();
 
             // MailMergeCleanUp.Run();
-
+            WorkingWithWebExtension.Run();
             //// =====================================================
             //// =====================================================
             //// Rendering and Printing
@@ -536,6 +537,11 @@ namespace Aspose.Words.Examples.CSharp
         public static String GetDataDir_WorkingWithSections()
         {
             return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/Sections/");
+        }
+
+        public static String GetDataDir_WorkingWithWebExtensions()
+        {
+            return Path.GetFullPath(GetDataDir_Data() + "Programming-Documents/WebExtensions/");
         }
 
         public static String GetDataDir_MailMergeAndReporting()

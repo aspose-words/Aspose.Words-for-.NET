@@ -2,7 +2,7 @@
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#if NETFRAMEWORK
 using Aspose.Words.Loading;
 using System.Net;
 #endif
@@ -17,7 +17,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBase
-            //ExSummary:Shows how to initialize the subclasses of DocumentBase. 
+            //ExSummary:Shows how to initialize the subclasses of DocumentBase.
             // DocumentBase is the abstract base class for the Document and GlossaryDocument classes
             Document doc = new Document();
 
@@ -61,7 +61,7 @@ namespace ApiExamples
             Assert.AreNotEqual(dst, src.FirstSection.Document);
 
             // We can create a new node that belongs to the destination document
-            Section importedSection = (Section) dst.ImportNode(src.FirstSection, true);
+            Section importedSection = (Section)dst.ImportNode(src.FirstSection, true);
 
             // It has the same content but it is not the same node nor do they have the same owner
             Assert.AreNotEqual(importedSection, src.FirstSection);
@@ -128,7 +128,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocumentBase.BackgroundShapeFlatColor.docx");
 
             // Setting the image will override the flat background colour with the image
-            shapeRectangle.ImageData.SetImage(MyDir + "Images/Watermark.png");
+            shapeRectangle.ImageData.SetImage(ImageDir + "Watermark.png");
             Assert.IsTrue(doc.BackgroundShape.HasImage);
 
             // This image is a photo with a white background
@@ -144,7 +144,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
+        #if NETFRAMEWORK
         //ExStart
         //ExFor:DocumentBase.ResourceLoadingCallback
         //ExFor:IResourceLoadingCallback
@@ -178,7 +178,7 @@ namespace ApiExamples
 
             Assert.AreEqual(3, doc.GetChildNodes(NodeType.Shape, true).Count);
 
-            doc.Save(ArtifactsDir + "DocumentBase.ResourceLoadingCallback.docx");            
+            doc.Save(ArtifactsDir + "DocumentBase.ResourceLoadingCallback.docx");
         }
 
         private class ImageNameHandler : IResourceLoadingCallback
@@ -214,10 +214,10 @@ namespace ApiExamples
                     // We can find and add an image any way we like, as long as args.SetData() is called with some image byte array as a parameter
                     if (args.OriginalUri == "My Watermark")
                     {
-                        System.Drawing.Image watermark = System.Drawing.Image.FromFile(MyDir + "Images/Watermark.png");
+                        System.Drawing.Image watermark = System.Drawing.Image.FromFile(ImageDir + "Watermark.png");
 
                         System.Drawing.ImageConverter converter = new System.Drawing.ImageConverter();
-                        byte[] imageBytes = (byte[]) converter.ConvertTo(watermark, typeof(byte[]));
+                        byte[] imageBytes = (byte[])converter.ConvertTo(watermark, typeof(byte[]));
                         args.SetData(imageBytes);
 
                         return ResourceLoadingAction.UserProvided;
@@ -229,6 +229,6 @@ namespace ApiExamples
             }
         }
         //ExEnd
-#endif
+        #endif
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -30,13 +30,12 @@ using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using Aspose.Words.Tables;
-using Aspose.Words.Themes;
 using NUnit.Framework;
 using CompareOptions = Aspose.Words.CompareOptions;
-#if !(__MOBILE__ || MAC)
+#if NETFRAMEWORK || NETSTANDARD2_0
 using Aspose.Words.Shaping.HarfBuzz;
 #endif
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#if NETFRAMEWORK || MAC
 using Org.BouncyCastle.Pkcs;
 #endif
 
@@ -45,7 +44,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExDocument : ApiExampleBase
     {
-#if !(__MOBILE__ || MAC)
+#if NETFRAMEWORK || NETSTANDARD2_0
         [Test]
         public void LicenseFromFileNoPath()
         {
@@ -91,7 +90,137 @@ namespace ApiExamples
                 myStream.Close();
             }
         }
+
+        [Test]
+        public void OpenType()
+        {
+            //ExStart
+            //ExFor:LayoutOptions.TextShaperFactory
+            //ExSummary:Shows how to support OpenType features using HarfBuzz text shaping engine.
+            // Open a document
+            Document doc = new Document(MyDir + "OpenType.Document.docx");
+
+            // Please note that text shaping is only performed when exporting to PDF or XPS formats now
+
+            // Aspose.Words is capable of using text shaper objects provided externally.
+            // A text shaper represents a font and computes shaping information for a text.
+            // A document typically refers to multiple fonts thus a text shaper factory is necessary.
+            // When text shaper factory is set, layout starts to use OpenType features.
+            // An Instance property returns static BasicTextShaperCache object wrapping HarfBuzzTextShaperFactory
+            doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
+
+            // Render the document to PDF format
+            doc.Save(ArtifactsDir + "Document.OpenType.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void NumberFormatting()
+        {
+            Document doc = new Document(MyDir + "Document.NumberFormatting.docx");
+
+            // Use OpenType to correct displaying numbers in pdf
+            doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
+            
+            doc.Save(ArtifactsDir + "Document.NumberFormatting.pdf");
+        }
 #endif
+
+#if NETFRAMEWORK || MAC
+        //ExStart
+        //ExFor:LoadOptions.ResourceLoadingCallback
+        //ExSummary:Shows how to handle external resources in Html documents during loading.
+        [Test] //ExSkip
+        public void LoadOptionsCallback()
+        {
+            // Create a new LoadOptions object and set its ResourceLoadingCallback attribute
+            // as an instance of our IResourceLoadingCallback implementation 
+            LoadOptions loadOptions = new LoadOptions { ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback() };
+
+            // When we open an Html document, external resources such as references to CSS stylesheet files and external images
+            // will be handled in a custom manner by the loading callback as the document is loaded
+            Document doc = new Document(MyDir + "ResourcesForCallback.html", loadOptions);
+            doc.Save(ArtifactsDir + "Document.LoadOptionsCallback.pdf");
+        }
+
+        /// <summary>
+        /// Resource loading callback that, upon encountering external resources,
+        /// acknowledges CSS style sheets and replaces all images with a substitute.
+        /// </summary>
+        private class HtmlLinkedResourceLoadingCallback : IResourceLoadingCallback
+        {
+            public ResourceLoadingAction ResourceLoading(ResourceLoadingArgs args)
+            {
+                switch (args.ResourceType)
+                {
+                    case ResourceType.CssStyleSheet:
+                        Console.WriteLine($"External CSS Stylesheet found upon loading: {args.OriginalUri}");
+                        return ResourceLoadingAction.Default;
+                    case ResourceType.Image:
+                        Console.WriteLine($"External Image found upon loading: {args.OriginalUri}");
+
+                        string newImageFilename = "Images\\Aspose.Words.gif";
+                        Console.WriteLine($"\tImage will be substituted with: {newImageFilename}");
+
+                        Image newImage = Image.FromFile(MyDir + newImageFilename);
+
+                        ImageConverter converter = new ImageConverter();
+                        byte[] imageBytes = (byte[])converter.ConvertTo(newImage, typeof(byte[]));
+                        args.SetData(imageBytes);
+
+                        return ResourceLoadingAction.UserProvided;
+
+                }
+                return ResourceLoadingAction.Default;
+            }
+        }
+        //ExEnd
+
+        [Test]
+        public void CertificateHolderCreate()
+        {
+            //ExStart
+            //ExFor:CertificateHolder.Create(Byte[], SecureString)
+            //ExFor:CertificateHolder.Create(Byte[], String)
+            //ExFor:CertificateHolder.Create(String, String, String)
+            //ExSummary:Shows how to create CertificateHolder objects.
+            // 1: Load a PKCS #12 file into a byte array and apply its password to create the CertificateHolder
+            byte[] certBytes = File.ReadAllBytes(MyDir + "morzal.pfx");
+            CertificateHolder.Create(certBytes, "aw");
+
+            // 2: Pass a SecureString which contains the password instead of a normal string
+            SecureString password = new NetworkCredential("", "aw").SecurePassword;
+            CertificateHolder.Create(certBytes, password);
+
+            // 3: If the certificate has private keys corresponding to aliases, we can use the aliases to fetch their respective keys
+            // First, we'll check for valid aliases like this
+            using (FileStream certStream = new FileStream(MyDir + "morzal.pfx", FileMode.Open))
+            {
+                Pkcs12Store pkcs12Store = new Pkcs12Store(certStream, "aw".ToCharArray());
+                IEnumerator enumerator = pkcs12Store.Aliases.GetEnumerator();
+
+                while (enumerator.MoveNext())
+                {
+                    if (enumerator.Current != null)
+                    {
+                        string currentAlias = enumerator.Current.ToString();
+                        if (pkcs12Store.IsKeyEntry(currentAlias) && pkcs12Store.GetKey(currentAlias).Key.IsPrivate)
+                        {
+                            Console.WriteLine($"Valid alias found: {enumerator.Current}");
+                        }
+                    }
+                }
+            }
+
+            // For this file, we'll use an alias found above
+            CertificateHolder.Create(MyDir + "morzal.pfx", "aw", "c20be521-11ea-4976-81ed-865fbbfc9f24");
+
+            // If we leave the alias null, then the first possible alias that retrieves a private key will be used
+            CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
+            //ExEnd
+        }
+#endif
+
         [Test]
         public void DocumentCtor()
         {
@@ -312,39 +441,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test] 
-        public void AnnotationsAtBlockLevel()
-        {
-            //ExStart
-            //ExFor:LoadOptions.AnnotationsAtBlockLevel
-            //ExFor:LoadOptions.AnnotationsAtBlockLevelAsDefault
-            //ExSummary:Shows how to place bookmark nodes on the block, cell and row levels.
-            // Any LoadOptions instances we create will have a default AnnotationsAtBlockLevel value equal to this
-            LoadOptions.AnnotationsAtBlockLevelAsDefault = false;
-
-            LoadOptions loadOptions = new LoadOptions();
-            Assert.AreEqual(loadOptions.AnnotationsAtBlockLevel, LoadOptions.AnnotationsAtBlockLevelAsDefault);
-
-            // If we want to work with annotations that transcend structures like tables, we will need to set this to true
-            loadOptions.AnnotationsAtBlockLevel = true;
-
-            // Open a document with a structured document tag and get that tag
-            Document doc = new Document(MyDir + "Document.AnnotationsAtBlockLevel.docx", loadOptions);
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            StructuredDocumentTag sdt = (StructuredDocumentTag)doc.GetChildNodes(NodeType.StructuredDocumentTag, true)[1];
-
-            // Insert a bookmark and make it envelop our tag
-            BookmarkStart start = builder.StartBookmark("MyBookmark");
-            BookmarkEnd end = builder.EndBookmark("MyBookmark");
-
-            sdt.ParentNode.InsertBefore(start, sdt);
-            sdt.ParentNode.InsertAfter(end, sdt);
-
-            doc.Save(ArtifactsDir + "Document.AnnotationsAtBlockLevel.docx", SaveFormat.Docx);
-            //ExEnd
-        }
-
         [Test]
         public void ConvertShapeToOfficeMath()
         {
@@ -436,57 +532,6 @@ namespace ApiExamples
             Assert.AreEqual(12.95, doc.Styles.DefaultParagraphFormat.LineSpacing, 0.005f);
             //ExEnd
         }
-
-#if !(NETSTANDARD2_0 || __MOBILE__)
-        //ExStart
-        //ExFor:LoadOptions.ResourceLoadingCallback
-        //ExSummary:Shows how to handle external resources in Html documents during loading.
-        [Test] //ExSkip
-        public void LoadOptionsCallback()
-        {
-            // Create a new LoadOptions object and set its ResourceLoadingCallback attribute
-            // as an instance of our IResourceLoadingCallback implementation 
-            LoadOptions loadOptions = new LoadOptions { ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback() };
-
-            // When we open an Html document, external resources such as references to CSS stylesheet files and external images
-            // will be handled in a custom manner by the loading callback as the document is loaded
-            Document doc = new Document(MyDir + "ResourcesForCallback.html", loadOptions);
-            doc.Save(ArtifactsDir + "Document.LoadOptionsCallback.pdf");
-        }
-
-        /// <summary>
-        /// Resource loading callback that, upon encountering external resources,
-        /// acknowledges CSS style sheets and replaces all images with a substitute.
-        /// </summary>
-        private class HtmlLinkedResourceLoadingCallback : IResourceLoadingCallback
-        {
-            public ResourceLoadingAction ResourceLoading(ResourceLoadingArgs args)
-            {
-                switch (args.ResourceType)
-                {
-                    case ResourceType.CssStyleSheet:
-                        Console.WriteLine($"External CSS Stylesheet found upon loading: {args.OriginalUri}");
-                        return ResourceLoadingAction.Default;
-                    case ResourceType.Image:
-                        Console.WriteLine($"External Image found upon loading: {args.OriginalUri}");
-
-                        string newImageFilename =  "Images\\Aspose.Words.gif";
-                        Console.WriteLine($"\tImage will be substituted with: {newImageFilename}");
-
-                        System.Drawing.Image newImage = System.Drawing.Image.FromFile(MyDir + newImageFilename);
-
-                        System.Drawing.ImageConverter converter = new System.Drawing.ImageConverter();
-                        byte[] imageBytes = (byte[])converter.ConvertTo(newImage, typeof(byte[]));
-                        args.SetData(imageBytes);
-
-                        return ResourceLoadingAction.UserProvided;
-
-                }
-                return ResourceLoadingAction.Default;
-            }
-        }
-        //ExEnd
-#endif
 
         //ExStart
         //ExFor:LoadOptions.WarningCallback
@@ -867,7 +912,7 @@ namespace ApiExamples
                 Document srcDoc = new Document();
 
                 // Open the document to join.
-                Assert.That(() => srcDoc == new Document(@"C:\DetailsList.doc"),
+                Assert.That(() => srcDoc == new Document("C:\\DetailsList.doc"),
                     Throws.TypeOf<FileNotFoundException>());
 
                 // Append the source document at the end of the destination document.
@@ -952,52 +997,6 @@ namespace ApiExamples
             Assert.True(digitalSig.CertificateHolder.Certificate.IssuerName.Name != null &&
                         digitalSig.CertificateHolder.Certificate.IssuerName.Name.Contains("VeriSign"));
         }
-
-#if !(NETSTANDARD2_0 || __MOBILE__)
-        [Test]
-        public void CertificateHolderCreate()
-        {
-            //ExStart
-            //ExFor:CertificateHolder.Create(Byte[], SecureString)
-            //ExFor:CertificateHolder.Create(Byte[], String)
-            //ExFor:CertificateHolder.Create(String, String, String)
-            //ExSummary:Shows how to create CertificateHolder objects.
-            // 1: Load a PKCS #12 file into a byte array and apply its password to create the CertificateHolder
-            byte[] certBytes = File.ReadAllBytes(MyDir + "morzal.pfx");
-            CertificateHolder.Create(certBytes, "aw");
-
-            // 2: Pass a SecureString which contains the password instead of a normal string
-            SecureString password = new NetworkCredential("", "aw").SecurePassword;
-            CertificateHolder.Create(certBytes, password);
-
-            // 3: If the certificate has private keys corresponding to aliases, we can use the aliases to fetch their respective keys
-            // First, we'll check for valid aliases like this
-            using (FileStream certStream = new FileStream(MyDir + "morzal.pfx", FileMode.Open))
-            {
-                Pkcs12Store pkcs12Store = new Pkcs12Store(certStream, "aw".ToCharArray());
-                IEnumerator enumerator = pkcs12Store.Aliases.GetEnumerator();
-
-                while (enumerator.MoveNext())
-                {
-                    if (enumerator.Current != null)
-                    {
-                        string currentAlias = enumerator.Current.ToString();
-                        if (pkcs12Store.IsKeyEntry(currentAlias) && pkcs12Store.GetKey(currentAlias).Key.IsPrivate)
-                        {
-                            Console.WriteLine($"Valid alias found: {enumerator.Current}");
-                        }
-                    }
-                }
-            }
-
-            // For this file, we'll use an alias found above
-            CertificateHolder.Create(MyDir + "morzal.pfx", "aw", "c20be521-11ea-4976-81ed-865fbbfc9f24");
-
-            // If we leave the alias null, then the first possible alias that retrieves a private key will be used
-            CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
-            //ExEnd
-        }
-#endif
 
         [Test]
         public void DigitalSignatureSign()
@@ -1950,11 +1949,11 @@ namespace ApiExamples
             //ExSummary:Show how to simply extract text from a document.
             TxtLoadOptions loadOptions = new TxtLoadOptions { DetectNumberingWithWhitespaces = false };
 
-            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmark.docx");
-            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); //ExSkip 
+            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmarks.docx");
+            Assert.AreEqual("First bookmark.\rSecond bookmark.\rThird bookmark.\f", plaintext.Text); //ExSkip 
 
-            plaintext = new PlainTextDocument(MyDir + "Bookmark.docx", loadOptions);
-            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); //ExSkip
+            plaintext = new PlainTextDocument(MyDir + "Bookmarks.docx", loadOptions);
+            Assert.AreEqual("First bookmark.\rSecond bookmark.\rThird bookmark.\f", plaintext.Text); //ExSkip
             //ExEnd
         }
 
@@ -1964,7 +1963,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:PlainTextDocument.BuiltInDocumentProperties
             //ExSummary:Show how to get BuiltIn properties of plain text document.
-            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmark.docx");
+            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmarks.docx");
             BuiltInDocumentProperties builtInDocumentProperties = plaintext.BuiltInDocumentProperties;
             //ExEnd
 
@@ -1977,7 +1976,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:PlainTextDocument.CustomDocumentProperties
             //ExSummary:Show how to get custom properties of plain text document.
-            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmark.docx");
+            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmarks.docx");
             CustomDocumentProperties customDocumentProperties = plaintext.CustomDocumentProperties;
             //ExEnd
 
@@ -1993,13 +1992,13 @@ namespace ApiExamples
             //ExSummary:Show how to simply extract text from a stream.
             TxtLoadOptions loadOptions = new TxtLoadOptions { DetectNumberingWithWhitespaces = false };
 
-            Stream stream = new FileStream(MyDir + "Bookmark.docx", FileMode.Open);
+            Stream stream = new FileStream(MyDir + "Bookmarks.docx", FileMode.Open);
 
             PlainTextDocument plaintext = new PlainTextDocument(stream);
-            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); //ExSkip
+            Assert.AreEqual("First bookmark.\rSecond bookmark.\rThird bookmark.\f", plaintext.Text); //ExSkip
 
             plaintext = new PlainTextDocument(stream, loadOptions);
-            Assert.AreEqual("This is a bookmarked text.\f", plaintext.Text); //ExSkip
+            Assert.AreEqual("First bookmark.\rSecond bookmark.\rThird bookmark.\f", plaintext.Text); //ExSkip
             //ExEnd
 
             stream.Close();
@@ -2313,57 +2312,6 @@ namespace ApiExamples
             options.DefaultTemplate = MyDir + "Document.BusinessBrochureTemplate.dotx";
 
             doc.Save(ArtifactsDir + "Document.DefaultTemplate.docx", options);
-            //ExEnd
-        }
-
-        [Test]
-        public void CompatibilityOptions()
-        {
-            //ExStart
-            //ExFor:Document.CompatibilityOptions
-            //ExSummary:Shows how to optimize our document for different word versions.
-            Document doc = new Document();
-            CompatibilityOptions co = doc.CompatibilityOptions;
-
-            // Here are some default values
-            Assert.AreEqual(true, co.GrowAutofit);
-            Assert.AreEqual(false, co.DoNotBreakWrappedTables);
-            Assert.AreEqual(false, co.DoNotUseEastAsianBreakRules);
-            Assert.AreEqual(false, co.SelectFldWithFirstOrLastChar);
-            Assert.AreEqual(false, co.UseWord97LineBreakRules);
-            Assert.AreEqual(true, co.UseWord2002TableStyleRules);
-            Assert.AreEqual(false, co.UseWord2010TableStyleRules);
-
-            // This example covers only a small portion of all the compatibility attributes 
-            // To see the entire list, in any of the output files go into File > Options > Advanced > Compatibility for...
-            doc.Save(ArtifactsDir + "Document.CompatibilityOptions.docx");
-
-            // We can hand pick any value and change it to create a custom compatibility
-            // We can also change a bunch of values at once to suit a defined compatibility scheme with the OptimizeFor method
-            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2010);
-
-            Assert.AreEqual(false, co.GrowAutofit);
-            Assert.AreEqual(false, co.GrowAutofit);
-            Assert.AreEqual(false, co.DoNotBreakWrappedTables);
-            Assert.AreEqual(false, co.DoNotUseEastAsianBreakRules);
-            Assert.AreEqual(false, co.SelectFldWithFirstOrLastChar);
-            Assert.AreEqual(false, co.UseWord97LineBreakRules);
-            Assert.AreEqual(false, co.UseWord2002TableStyleRules);
-            Assert.AreEqual(true, co.UseWord2010TableStyleRules);
-
-            doc.Save(ArtifactsDir + "Document.CompatibilityOptions.Word2010.docx");
-
-            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
-
-            Assert.AreEqual(true, co.GrowAutofit);
-            Assert.AreEqual(true, co.DoNotBreakWrappedTables);
-            Assert.AreEqual(true, co.DoNotUseEastAsianBreakRules);
-            Assert.AreEqual(true, co.SelectFldWithFirstOrLastChar);
-            Assert.AreEqual(false, co.UseWord97LineBreakRules);
-            Assert.AreEqual(true, co.UseWord2002TableStyleRules);
-            Assert.AreEqual(false, co.UseWord2010TableStyleRules);
-
-            doc.Save(ArtifactsDir + "Document.CompatibilityOptions.Word2000.docx");
             //ExEnd
         }
 
@@ -3435,42 +3383,6 @@ namespace ApiExamples
             Assert.AreEqual(classModule.Name, "Class1");
             Assert.IsTrue(classModule.SourceCode.Contains("MsgBox \"Class test\""));
         }
-
-#if !(__MOBILE__ || MAC)
-        [Test]
-        public void OpenType()
-        {
-            //ExStart
-            //ExFor:LayoutOptions.TextShaperFactory
-            //ExSummary:Shows how to support OpenType features using HarfBuzz text shaping engine.
-            // Open a document
-            Document doc = new Document(MyDir + "OpenType.Document.docx");
-
-            // Please note that text shaping is only performed when exporting to PDF or XPS formats now
-
-            // Aspose.Words is capable of using text shaper objects provided externally.
-            // A text shaper represents a font and computes shaping information for a text.
-            // A document typically refers to multiple fonts thus a text shaper factory is necessary.
-            // When text shaper factory is set, layout starts to use OpenType features.
-            // An Instance property returns static BasicTextShaperCache object wrapping HarfBuzzTextShaperFactory
-            doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
-
-            // Render the document to PDF format
-            doc.Save(ArtifactsDir + "Document.OpenType.pdf");
-            //ExEnd
-        }
-
-        [Test]
-        public void NumberFormatting()
-        {
-            Document doc = new Document(MyDir + "Document.NumberFormatting.docx");
-
-            // Use OpenType to correct displaying numbers in pdf
-            doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
-            
-            doc.Save(ArtifactsDir + "Document.NumberFormatting.pdf");
-        }
-#endif
 
         [Test]
         public void SaveOutputParameters()

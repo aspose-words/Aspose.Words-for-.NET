@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -299,7 +299,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
+        #if NETFRAMEWORK
         [Test]
         public void InsertWatermark()
         {
@@ -334,6 +334,27 @@ namespace ApiExamples
             shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertWatermark.doc");
+            //ExEnd
+        }
+
+        [Test]
+        public void InsertOleObject()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, Boolean, Image)
+            //ExFor:DocumentBuilder.InsertOleObject(String, String, Boolean, Boolean, Image)
+            //ExSummary:Shows how to insert an OLE object into a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Image representingImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
+
+            // OleObject
+            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage); 
+            //OleObject with ProgId
+            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false, representingImage);
+
+            doc.Save(ArtifactsDir + "Document.InsertOleObject.docx");
             //ExEnd
         }
 #else
@@ -372,6 +393,29 @@ namespace ApiExamples
             }
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertWatermarkNetStandard2.doc");
+            //ExEnd
+        }
+
+        [Test]
+        public void InsertOleObjectNetStandard2()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, Boolean, Image)
+            //ExFor:DocumentBuilder.InsertOleObject(String, String, Boolean, Boolean, Image)
+            //ExSummary:Shows how to insert an OLE object into a document (.NetStandard 2.0).
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            using (SKBitmap representingImage = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
+            {
+                // OleObject
+                builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage);
+                //OleObject with ProgId
+                builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false,
+                    representingImage);
+            }
+
+            doc.Save(ArtifactsDir + "Document.InsertOleObjectNetStandard2.docx");
             //ExEnd
         }
 #endif
@@ -2037,53 +2081,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
-        [Test]
-        public void InsertOleObject()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, Boolean, Image)
-            //ExFor:DocumentBuilder.InsertOleObject(String, String, Boolean, Boolean, Image)
-            //ExSummary:Shows how to insert an OLE object into a document.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            Image representingImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
-
-            // OleObject
-            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage); 
-            //OleObject with ProgId
-            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false, representingImage);
-
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertedOleObject.docx");
-            //ExEnd
-        }
-
-#else
-        [Test]
-        public void InsertOleObjectNetStandard2()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, Boolean, Image)
-            //ExFor:DocumentBuilder.InsertOleObject(String, String, Boolean, Boolean, Image)
-            //ExSummary:Shows how to insert an OLE object into a document (.NetStandard 2.0).
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            using (SKBitmap representingImage = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
-            {
-                // OleObject
-                builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage);
-                //OleObject with ProgId
-                builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false,
-                    representingImage);
-            }
-
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObjectNetStandard2.docx");
-            //ExEnd
-        }
-#endif            
-
         [Test]
         public void InsertOleObjectException()
         {
@@ -2271,64 +2268,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if !__MOBILE__
-        [Test]
-        public void InsertOnlineVideo()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], Double, Double)
-            //ExFor:DocumentBuilder.InsertOnlineVideo(String, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Show how to insert online video into a document using html code
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Visible url
-            string vimeoVideoUrl = @"https://vimeo.com/52477838";
-
-            // Embed Html code
-            string vimeoEmbedCode =
-                "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
-
-            // This video will have an automatically generated thumbnail, and we are setting the size according to its 16:9 aspect ratio
-            builder.Writeln("Video with an automatically generated thumbnail at the top left corner of the page:");
-            builder.InsertOnlineVideo(vimeoVideoUrl, RelativeHorizontalPosition.LeftMargin, 0,
-                RelativeVerticalPosition.TopMargin, 0, 320, 180, WrapType.Square);
-            builder.InsertBreak(BreakType.PageBreak);
-
-            // We can get an image to use as a custom thumbnail
-            using (WebClient webClient = new WebClient())
-            {
-                byte[] imageBytes = webClient.DownloadData(AsposeLogoUrl);
-
-                using (MemoryStream stream = new MemoryStream(imageBytes))
-                {
-                    using (Image image = Image.FromStream(stream))
-                    {
-                        // This puts the video where we are with our document builder, with a custom thumbnail and size depending on the size of the image
-                        builder.Writeln("Custom thumbnail at document builder's cursor:");
-                        builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, image.Width, image.Height);
-                        builder.InsertBreak(BreakType.PageBreak);
-
-                        // We can put the video at the bottom right edge of the page too, but we'll have to take the page margins into account 
-                        double left = builder.PageSetup.RightMargin - image.Width;
-                        double top = builder.PageSetup.BottomMargin - image.Height;
-
-                        // Here we use a custom thumbnail and relative positioning to put it and the bottom right of tha page
-                        builder.Writeln("Bottom right of page with custom thumbnail:");
-
-                        builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes,
-                            RelativeHorizontalPosition.RightMargin, left, RelativeVerticalPosition.BottomMargin, top,
-                            image.Width, image.Height, WrapType.Square);
-                    }
-                }
-            }
-
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOnlineVideo.docx");
-            //ExEnd
-        }
-#endif
-
         [Test]
         public void InsertUnderline()
         {
@@ -2424,13 +2363,15 @@ namespace ApiExamples
                     {
                         byte[] imgBytes = webClient.DownloadData(AsposeLogoUrl);
 
-#if NETSTANDARD2_0 || __MOBILE__
+                        #if NETSTANDARD2_0 || __MOBILE__
+                        
                         SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(imgBytes);
-
                         builder.InsertParagraph();
                         builder.Writeln("Powerpoint Ole object:");
                         builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, bitmap);
-#else
+                        
+                        #else
+                        
                         using (MemoryStream stream = new MemoryStream(imgBytes))
                         {
                             using (Image image = Image.FromStream(stream))
@@ -2441,7 +2382,8 @@ namespace ApiExamples
                                 builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, image);
                             }
                         }
-#endif
+
+                        #endif
                     }
                 }
             }
@@ -2586,7 +2528,7 @@ namespace ApiExamples
             Assert.IsTrue(paraText.StartsWith("13->13"), paraText);
         }
 
-#if (!__MOBILE__)
+        #if NETFRAMEWORK || NETSTANDARD2_0
         /// <summary>
         /// All markdown tests work with the same file
         /// That's why we need order for them 
@@ -2882,6 +2824,62 @@ namespace ApiExamples
                 Assert.IsTrue(horizontalRuleShape.IsHorizontalRule);
             }
         }
-#endif
+
+        [Test]
+        public void InsertOnlineVideo()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], Double, Double)
+            //ExFor:DocumentBuilder.InsertOnlineVideo(String, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
+            //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
+            //ExSummary:Show how to insert online video into a document using html code
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Visible url
+            string vimeoVideoUrl = @"https://vimeo.com/52477838";
+
+            // Embed Html code
+            string vimeoEmbedCode =
+                "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
+
+            // This video will have an automatically generated thumbnail, and we are setting the size according to its 16:9 aspect ratio
+            builder.Writeln("Video with an automatically generated thumbnail at the top left corner of the page:");
+            builder.InsertOnlineVideo(vimeoVideoUrl, RelativeHorizontalPosition.LeftMargin, 0,
+                RelativeVerticalPosition.TopMargin, 0, 320, 180, WrapType.Square);
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // We can get an image to use as a custom thumbnail
+            using (WebClient webClient = new WebClient())
+            {
+                byte[] imageBytes = webClient.DownloadData(AsposeLogoUrl);
+
+                using (MemoryStream stream = new MemoryStream(imageBytes))
+                {
+                    using (Image image = Image.FromStream(stream))
+                    {
+                        // This puts the video where we are with our document builder, with a custom thumbnail and size depending on the size of the image
+                        builder.Writeln("Custom thumbnail at document builder's cursor:");
+                        builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, image.Width, image.Height);
+                        builder.InsertBreak(BreakType.PageBreak);
+
+                        // We can put the video at the bottom right edge of the page too, but we'll have to take the page margins into account 
+                        double left = builder.PageSetup.RightMargin - image.Width;
+                        double top = builder.PageSetup.BottomMargin - image.Height;
+
+                        // Here we use a custom thumbnail and relative positioning to put it and the bottom right of tha page
+                        builder.Writeln("Bottom right of page with custom thumbnail:");
+
+                        builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes,
+                            RelativeHorizontalPosition.RightMargin, left, RelativeVerticalPosition.BottomMargin, top,
+                            image.Width, image.Height, WrapType.Square);
+                    }
+                }
+            }
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOnlineVideo.docx");
+            //ExEnd
+        }
+        #endif
     }
 }

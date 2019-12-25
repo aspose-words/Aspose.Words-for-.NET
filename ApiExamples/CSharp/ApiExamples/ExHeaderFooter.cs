@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -21,7 +21,7 @@ namespace ApiExamples
     public class ExHeaderFooter : ApiExampleBase
     {
         [Test]
-        public void Create()
+        public void HeaderFooterCreate()
         {
             //ExStart
             //ExFor:HeaderFooter
@@ -35,7 +35,7 @@ namespace ApiExamples
             //ExFor:Story.AppendParagraph
             //ExSummary:Creates a header and footer using the document object model and insert them into a section.
             Document doc = new Document();
-            
+
             HeaderFooter header = new HeaderFooter(doc, HeaderFooterType.HeaderPrimary);
             doc.FirstSection.HeadersFooters.Add(header);
 
@@ -57,10 +57,10 @@ namespace ApiExamples
             Assert.AreEqual(footer, para.ParentStory);
             Assert.AreEqual(footer.ParentSection, para.ParentSection);
             Assert.AreEqual(footer.ParentSection, header.ParentSection);
-            
-            doc.Save(ArtifactsDir + "HeaderFooter.Create.docx");
+
+            doc.Save(ArtifactsDir + "HeaderFooter.HeaderFooterCreate.docx");
             //ExEnd
-            doc = new Document(ArtifactsDir + "HeaderFooter.Create.docx");
+            doc = new Document(ArtifactsDir + "HeaderFooter.HeaderFooterCreate.docx");
 
             Assert.True(doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].Range.Text
                 .Contains("My header"));
@@ -69,7 +69,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void Link()
+        public void HeaderFooterLink()
         {
             //ExStart
             //ExFor:HeaderFooter.IsLinkedToPrevious
@@ -113,7 +113,7 @@ namespace ApiExamples
             // We can also choose only certain header/footer types to get linked, like the footer in this case
             // The 3rd section now won't have the same header but will have the same footer as the 2nd and 1st sections
             doc.Sections[2].HeadersFooters.LinkToPrevious(HeaderFooterType.FooterPrimary, true);
-            
+
             // The first section's header/footers can't link themselves to anything because there is no previous section
             Assert.AreEqual(2, doc.Sections[0].HeadersFooters.Count);
             Assert.False(doc.Sections[0].HeadersFooters[0].IsLinkedToPrevious);
@@ -136,8 +136,8 @@ namespace ApiExamples
             Assert.True(doc.Sections[2].HeadersFooters[3].IsLinkedToPrevious);
             Assert.False(doc.Sections[2].HeadersFooters[4].IsLinkedToPrevious);
             Assert.False(doc.Sections[2].HeadersFooters[5].IsLinkedToPrevious);
-    
-            doc.Save(ArtifactsDir + "HeaderFooter.Link.docx");
+
+            doc.Save(ArtifactsDir + "HeaderFooter.HeaderFooterLink.docx");
             //ExEnd
         }
 
@@ -173,7 +173,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DisableHeadersFooters()
+        public void SetExportHeadersFootersMode()
         {
             //ExStart
             //ExFor:HtmlSaveOptions.ExportHeadersFootersMode
@@ -225,13 +225,13 @@ namespace ApiExamples
             Assert.IsTrue(doc.Range.Text.Contains("Copyright (C) 2011 by Aspose Pty Ltd."));
         }
 
-        [Test]
-        public void Order()
+        //ExStart
+        //ExFor:IReplacingCallback
+        //ExFor:Range.Replace(String, String, FindReplaceOptions)
+        //ExSummary:Show changes for headers and footers order.
+        [Test] //ExSkip
+        public void HeaderFooterOrder()
         {
-            //ExStart
-            //ExFor:IReplacingCallback
-            //ExFor:Range.Replace(String, String, FindReplaceOptions)
-            //ExSummary: Show changes for headers and footers order
             Document doc = new Document(MyDir + "HeaderFooter.HeaderFooterOrder.docx");
 
             // Assert that we use special header and footer for the first page
@@ -241,29 +241,32 @@ namespace ApiExamples
 
             ReplaceLog logger = new ReplaceLog();
             FindReplaceOptions options = new FindReplaceOptions { ReplacingCallback = logger };
-
             doc.Range.Replace(new Regex("(header|footer)"), "", options);
 
-            doc.Save(ArtifactsDir + "HeaderFooter.Order.docx");
-#if __MOBILE__
+            doc.Save(ArtifactsDir + "HeaderFooter.HeaderFooterOrder.docx");
+
+#if NETFRAMEWORK || NETSTANDARD2_0
             Assert.AreEqual("First header\nFirst footer\nSecond header\nSecond footer\nThird header\n" +
-                            "Third footer\n", logger.Text);
+                "Third footer\n", logger.Text.Replace("\r", ""));
 #else
             Assert.AreEqual("First header\nFirst footer\nSecond header\nSecond footer\nThird header\n" +
-                            "Third footer\n", logger.Text.Replace("\r", ""));
+                "Third footer\n", logger.Text);
 #endif
+
             // Prepare our string builder for assert results without "DifferentFirstPageHeaderFooter"
             logger.ClearText();
 
             // Remove special first page
             // The order for this: primary header, default header, primary footer, default footer, even header\footer
             firstPageSection.PageSetup.DifferentFirstPageHeaderFooter = false;
-
             doc.Range.Replace(new Regex("(header|footer)"), "", options);
-#if __MOBILE__
-            Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\nSecond footer\n", logger.Text);
+
+#if NETFRAMEWORK || NETSTANDARD2_0
+            Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\n" +
+                "Second footer\n", logger.Text.Replace("\r", ""));
 #else
-            Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\nSecond footer\n", logger.Text.Replace("\r", ""));
+            Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\n" +
+                "Second footer\n", logger.Text);
 #endif
         }
 
@@ -412,7 +415,7 @@ namespace ApiExamples
         /// </summary>
         private static void CopyHeadersFootersFromPreviousSection(Section section)
         {
-            Section previousSection = (Section) section.PreviousSibling;
+            Section previousSection = (Section)section.PreviousSibling;
 
             if (previousSection == null)
                 return;

@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFRAMEWORK</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
@@ -123,6 +123,7 @@
     <Compile Include="ExCellFormat.cs" />
     <Compile Include="ExCharts.cs" />
     <Compile Include="ExComment.cs" />
+    <Compile Include="ExCompatibilityOptions.cs" />
     <Compile Include="ExControlChar.cs" />
     <Compile Include="ExDocSaveOptions.cs" />
     <Compile Include="ExHtmlLoadOptions.cs" />
