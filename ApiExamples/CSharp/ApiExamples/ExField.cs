@@ -2382,8 +2382,8 @@ namespace ApiExamples
                     #if NETFRAMEWORK
                     e.Image = Image.FromFile(mImageFilenames[e.FieldValue.ToString()]);
                     #else
-                    e.Image = SKBitmap.Decode(imageFilenames[e.FieldValue.ToString()]);
-                    e.ImageFileName = imageFilenames[e.FieldValue.ToString()];
+                    e.Image = SKBitmap.Decode(mImageFilenames[e.FieldValue.ToString()]);
+                    e.ImageFileName = mImageFilenames[e.FieldValue.ToString()];
                     #endif
                 }
                 
