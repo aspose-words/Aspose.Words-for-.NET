@@ -164,7 +164,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertNode(sdtDate);
 
-            doc.Save(ArtifactsDir + "SDT.Date.docx");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.Date.docx");
             //ExEnd
         }
 #endif
@@ -224,7 +224,7 @@ namespace ApiExamples
             // We can remove the tag while keeping its contents where they were in the Paragraph by calling RemoveSelfOnly()
             tagClone.RemoveSelfOnly();
 
-            doc.Save(ArtifactsDir + "SDT.PlainText.docx");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.PlainText.docx");
             //ExEnd
         }
 
@@ -258,7 +258,7 @@ namespace ApiExamples
             builder.Write("\nTemporary checkbox: ");
             builder.InsertNode(tag);
 
-            doc.Save(ArtifactsDir + "SDT.IsTemporary.docx");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.IsTemporary.docx");
             //ExEnd
         }
 
@@ -305,7 +305,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertNode(tag);
 
-            doc.Save(ArtifactsDir + "SDT.PlaceholderBuildingBlock.docx");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.PlaceholderBuildingBlock.docx");
             //ExEnd
         }
 
@@ -338,7 +338,7 @@ namespace ApiExamples
             builder.Write("This StructuredDocumentTag cannot be deleted but its contents can be edited: ");
             builder.InsertNode(tag);
 
-            doc.Save(ArtifactsDir + "SDT.Lock.docx");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.Lock.docx");
             //ExEnd
         }
 
@@ -404,7 +404,7 @@ namespace ApiExamples
             // Make sure to update the SelectedValue's index if it ever ends up out of bounds before saving the document
             listItems.SelectedValue = listItems[1];
            
-            doc.Save(ArtifactsDir + "SDT.ListItemCollection.docx");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.ListItemCollection.docx");
 
             // We can clear the whole collection at once too
             listItems.Clear();
@@ -492,10 +492,10 @@ namespace ApiExamples
 
             doc.FirstSection.Body.AppendChild(sdt);
 
-            doc.Save(ArtifactsDir + "SDT.CustomXml.docx");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.CustomXml.docx");
             //ExEnd
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "SDT.CustomXml.docx", GoldsDir + "SDT.CustomXml Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "StructuredDocumentTag.CustomXml.docx", GoldsDir + "StructuredDocumentTag.CustomXml Gold.docx"));
         }
 
         [Test]
@@ -532,7 +532,7 @@ namespace ApiExamples
 
             // Add the StructuredDocumentTag to the document to display the content from our CustomXmlPart
             doc.FirstSection.Body.AppendChild(sdt);
-            doc.Save(ArtifactsDir + "SDT.XmlMapping.docx");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.XmlMapping.docx");
             //ExEnd
         }
 
@@ -887,7 +887,7 @@ namespace ApiExamples
             PdfSaveOptions options = new PdfSaveOptions();
             options.UpdateSdtContent = false;
 
-            doc.Save(ArtifactsDir + "UpdateSdtContent.pdf", options);
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf", options);
             //ExEnd
         }
 

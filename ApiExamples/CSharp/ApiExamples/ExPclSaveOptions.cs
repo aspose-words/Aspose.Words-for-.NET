@@ -29,7 +29,7 @@ namespace ApiExamples
                 RasterizeTransformedElements = true
             };
 
-            doc.Save(ArtifactsDir + "Document.EpubConversion.pcl", saveOptions);
+            doc.Save(ArtifactsDir + "PclSaveOptions.RasterizeElements.pcl", saveOptions);
             //ExEnd
         }
 
@@ -46,7 +46,7 @@ namespace ApiExamples
             saveOptions.AddPrinterFont("Courier", "Courier");
             saveOptions.FallbackFontName = "Times New Roman";
 
-            doc.Save(ArtifactsDir + "Document.EpubConversion.pcl", saveOptions);
+            doc.Save(ArtifactsDir + "PclSaveOptions.SetPrinterFont.pcl", saveOptions);
             //ExEnd
         }
 
@@ -64,7 +64,7 @@ namespace ApiExamples
                 section.PageSetup.OtherPagesTray = 12;
             }
 
-            doc.Save(ArtifactsDir + "Document.EpubConversion.pcl");
+            doc.Save(ArtifactsDir + "PclSaveOptions.GetPreservedPaperTrayInformation.pcl");
         }
     }
 }

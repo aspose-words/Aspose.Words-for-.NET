@@ -1766,7 +1766,7 @@ namespace ApiExamples
             doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.Format;
 
             //Check that revisions are in balloons 
-            doc.Save(ArtifactsDir + "ShowRevisionBalloons.pdf");
+            doc.Save(ArtifactsDir + "Document.ShowRevisionBalloons.pdf");
             //ExEnd
         }
 

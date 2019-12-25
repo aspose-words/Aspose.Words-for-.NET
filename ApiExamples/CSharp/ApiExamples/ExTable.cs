@@ -182,7 +182,7 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void ConvertTextboxToTable()
+        public void ConvertTextBoxToTable()
         {
             // Open the document
             Document doc = new Document(MyDir + "Shape.TextBox.doc");
@@ -332,7 +332,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetTableBordersOutline()
+        public void SetOutlineBorders()
         {
             //ExStart
             //ExFor:Table.Alignment
@@ -378,7 +378,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetTableBordersAll()
+        public void SetTableBorders()
         {
             //ExStart
             //ExFor:Table.SetBorders
@@ -405,7 +405,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void RowFormatProperties()
+        public void RowFormat()
         {
             //ExStart
             //ExFor:RowFormat
@@ -433,7 +433,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CellFormatProperties()
+        public void CellFormat()
         {
             //ExStart
             //ExFor:CellFormat
@@ -482,7 +482,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void RemoveBordersFromAllCells()
+        public void ClearBorders()
         {
             //ExStart
             //ExFor:Table
@@ -501,7 +501,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ReplaceTextInTable()
+        public void ReplaceCellText()
         {
             //ExStart
             //ExFor:Range.Replace(String, String, FindReplaceOptions)
@@ -573,7 +573,7 @@ namespace ApiExamples
             // upon save. This has to do with document validation.
             table.ParentNode.InsertAfter(new Paragraph(doc), table);
 
-            doc.Save(ArtifactsDir + "Table.CloneTableAndInsert.doc");
+            doc.Save(ArtifactsDir + "Table.CloneTable.doc");
             
             // Verify that the table was cloned and inserted properly.
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count);
@@ -586,7 +586,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void RowFormatDisableBreakAcrossPages()
+        public void DisableBreakAcrossPages()
         {
             Document doc = new Document(MyDir + "Table.TableAcrossPage.doc");
 
@@ -834,7 +834,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertTableUsingNodeConstructors()
+        public void InsertTableUsingNodes()
         {
             //ExStart
             //ExFor:Table
@@ -912,7 +912,7 @@ namespace ApiExamples
         //ExFor:Cell.#ctor(DocumentBase)
         //ExSummary:Shows how to build a nested table without using DocumentBuilder.
         [Test] //ExSkip
-        public void NestedTablesUsingNodeConstructors()
+        public void CreateNestedTable()
         {
             Document doc = new Document();
 

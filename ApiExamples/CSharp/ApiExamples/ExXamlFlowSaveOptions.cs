@@ -26,7 +26,7 @@ namespace ApiExamples
         //ExFor:XamlFlowSaveOptions.SaveFormat
         //ExSummary:Shows how to print the filenames of linked images created during conversion of a document to flow-form .xaml.
         [Test] //ExSkip
-        public void XamlFlowImageFolder()
+        public void ImageFolder()
         {
             // Open a document which contains images
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -43,7 +43,7 @@ namespace ApiExamples
             // We must ensure the folder exists before the streams can put their images into it
             Directory.CreateDirectory(options.ImagesFolderAlias);
 
-            doc.Save(ArtifactsDir + "XamlFlowImageFolder.xaml", options);
+            doc.Save(ArtifactsDir + "XamlFlowSaveOptions.ImageFolder.xaml", options);
         }
 
         /// <summary>

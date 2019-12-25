@@ -833,7 +833,7 @@ namespace ApiExamples
 
             doc.MailMerge.Execute(new[] { "Option_1", "Option_2" }, new object[] { null, null });
 
-            doc.Save(ArtifactsDir + "RemoveColonBetweenEmptyMergeFields.docx");
+            doc.Save(ArtifactsDir + "MailMerge.RemoveColonBetweenEmptyMergeFields.docx");
             //ExEnd
 
             Assert.AreEqual(resultText, doc.GetText());

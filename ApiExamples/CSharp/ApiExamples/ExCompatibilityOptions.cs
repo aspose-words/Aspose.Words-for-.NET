@@ -23,7 +23,7 @@ namespace ApiExamples
         //ExFor:Document.CompatibilityOptions
         //ExSummary:Shows how to optimize document for different word versions.
         [Test] //ExSkip
-        public void CompatibilityOptionsOptimizeFor()
+        public void OptimizeFor()
         {
             // Create a blank document and get its CompatibilityOptions object
             Document doc = new Document();
@@ -34,7 +34,7 @@ namespace ApiExamples
             PrintCompatibilityOptions(options);
 
             // These attributes can be accessed in the output document via File > Options > Advanced > Compatibility for...
-            doc.Save(ArtifactsDir + "DefaultCompatibility.docx");
+            doc.Save(ArtifactsDir + "CompatibilityOptions.OptimizeFor.DefaultSettings.docx");
 
             // We can use the OptimizeFor method to set these values automatically
             // for maximum compatibility with some Microsoft Word versions
@@ -74,7 +74,7 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void CompatibilityOptionsTable()
+        public void Tables()
         {
             Document doc = new Document();
 
@@ -101,11 +101,11 @@ namespace ApiExamples
             Assert.AreEqual(false, compatibilityOptions.UseWord2010TableStyleRules);
 
             // These options will become available in File > Options > Advanced > Compatibility Options in the output document
-            doc.Save(ArtifactsDir + "CompatibilityOptionsTable.docx");
+            doc.Save(ArtifactsDir + "CompatibilityOptions.Tables.docx");
         }
 
         [Test]
-        public void CompatibilityOptionsBreaks()
+        public void Breaks()
         {
             Document doc = new Document();
 
@@ -120,11 +120,11 @@ namespace ApiExamples
             Assert.AreEqual(false, compatibilityOptions.UseWord97LineBreakRules);
 
             // These options will become available in File > Options > Advanced > Compatibility Options in the output document
-            doc.Save(ArtifactsDir + "CompatibilityOptionsBreaks.docx");
+            doc.Save(ArtifactsDir + "CompatibilityOptions.Breaks.docx");
         }
 
         [Test]
-        public void CompatibilityOptionsSpacing()
+        public void Spacing()
         {
             Document doc = new Document();
 
@@ -145,11 +145,11 @@ namespace ApiExamples
             Assert.AreEqual(false, compatibilityOptions.UlTrailSpace);
 
             // These options will become available in File > Options > Advanced > Compatibility Options in the output document
-            doc.Save(ArtifactsDir + "CompatibilityOptionsSpacing.docx");
+            doc.Save(ArtifactsDir + "CompatibilityOptions.Spacing.docx");
         }
 
         [Test]
-        public void CompatibilityOptionsWordPerfect()
+        public void WordPerfect()
         {
             Document doc = new Document();
 
@@ -163,11 +163,11 @@ namespace ApiExamples
             Assert.AreEqual(false, compatibilityOptions.WrapTrailSpaces);
 
             // These options will become available in File > Options > Advanced > Compatibility Options in the output document
-            doc.Save(ArtifactsDir + "CompatibilityOptionsWordPerfect.docx");
+            doc.Save(ArtifactsDir + "CompatibilityOptions.WordPerfect.docx");
         }
 
         [Test]
-        public void CompatibilityOptionsAlignment()
+        public void Alignment()
         {
             Document doc = new Document();
             
@@ -180,11 +180,11 @@ namespace ApiExamples
             Assert.AreEqual(false, compatibilityOptions.NoTabHangInd);
 
             // These options will become available in File > Options > Advanced > Compatibility Options in the output document
-            doc.Save(ArtifactsDir + "CompatibilityOptionsAlignment.docx");
+            doc.Save(ArtifactsDir + "CompatibilityOptions.Alignment.docx");
         }
 
         [Test]
-        public void CompatibilityOptionsLegacy()
+        public void Legacy()
         {
             Document doc = new Document();
 
@@ -198,11 +198,11 @@ namespace ApiExamples
             Assert.AreEqual(false, compatibilityOptions.UICompat97To2003);
 
             // These options will become available in File > Options > Advanced > Compatibility Options in the output document
-            doc.Save(ArtifactsDir + "CompatibilityOptionsLegacy.docx");
+            doc.Save(ArtifactsDir + "CompatibilityOptions.Legacy.docx");
         }
 
         [Test]
-        public void CompatibilityOptionsList()
+        public void List()
         {
             Document doc = new Document();
 
@@ -213,11 +213,11 @@ namespace ApiExamples
             Assert.AreEqual(true, compatibilityOptions.UseNormalStyleForList);
 
             // These options will become available in File > Options > Advanced > Compatibility Options in the output document
-            doc.Save(ArtifactsDir + "CompatibilityOptionsList.docx");
+            doc.Save(ArtifactsDir + "CompatibilityOptions.List.docx");
         }
 
         [Test]
-        public void CompatibilityOptionsMisc()
+        public void Misc()
         {
             Document doc = new Document();
 
@@ -241,7 +241,7 @@ namespace ApiExamples
             Assert.AreEqual(false, compatibilityOptions.UsePrinterMetrics);
 
             // These options will become available in File > Options > Advanced > Compatibility Options in the output document
-            doc.Save(ArtifactsDir + "CompatibilityOptionsMisc.docx");
+            doc.Save(ArtifactsDir + "CompatibilityOptions.Misc.docx");
         }
     }
 }

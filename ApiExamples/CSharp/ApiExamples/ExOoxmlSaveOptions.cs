@@ -118,7 +118,7 @@ namespace ApiExamples
                 Compliance = OoxmlCompliance.Iso29500_2008_Transitional
             };
 
-            doc.Save(ArtifactsDir + "RestartingDocumentList.docx", options);
+            doc.Save(ArtifactsDir + "OoxmlSaveOptions.RestartingDocumentList.docx", options);
             //ExEnd
         }
 

@@ -77,7 +77,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DataTableTest()
+        public void TestDataTable()
         {
             Document doc = new Document(MyDir + "ReportingEngine.TestDataTable.docx");
 
@@ -89,7 +89,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ProgressiveTotal()
+        public void Total()
         {
             Document doc = new Document(MyDir + "ReportingEngine.Total.docx");
 
@@ -101,7 +101,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void NestedDataTableTest()
+        public void TestNestedDataTable()
         {
             Document doc = new Document(MyDir + "ReportingEngine.TestNestedDataTable.docx");
 
@@ -125,7 +125,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void RestartingListNumberingDynamicallyWhileInsertingDocumentDinamically()
+        public void RestartingListNumberingDynamicallyWhileInsertingDocumentDynamically()
         {
             Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document] -build>>");
             
@@ -134,13 +134,13 @@ namespace ApiExamples
 
             BuildReport(template, new object[] {doc, Common.GetManagers()} , new[] {"src", "Managers"}, ReportBuildOptions.RemoveEmptyParagraphs);
 
-            template.Save(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDinamically.docx");
+            template.Save(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDinamically.docx", GoldsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDinamically Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDynamically.docx", GoldsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDynamically Gold.docx"));
         }
 
         [Test]
-        public void RestartingListNumberingDynamicallyWhileMultipleInsertionsDocumentDinamically()
+        public void RestartingListNumberingDynamicallyWhileMultipleInsertionsDocumentDynamically()
         {
             Document mainTemplate = DocumentHelper.CreateSimpleDocument("<<doc [src] -build>>");
             Document template1 = DocumentHelper.CreateSimpleDocument("<<doc [src1] -build>>");
@@ -151,9 +151,9 @@ namespace ApiExamples
 
             BuildReport(mainTemplate, new object[] {template1, template2, doc, Common.GetManagers()} , new[] {"src", "src1", "src2", "Managers"}, ReportBuildOptions.RemoveEmptyParagraphs);
 
-            mainTemplate.Save(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileMultipleInsertionsDocumentDinamically.docx");
+            mainTemplate.Save(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileMultipleInsertionsDocumentDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileMultipleInsertionsDocumentDinamically.docx", GoldsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDinamically Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileMultipleInsertionsDocumentDynamically.docx", GoldsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDynamically Gold.docx"));
          }
 
         [Test]
@@ -183,19 +183,19 @@ namespace ApiExamples
         [Test]
         public void SetChartSeriesColorsDynamically()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.SetChartSeriesColorDinamically.docx");
+            Document doc = new Document(MyDir + "ReportingEngine.SetChartSeriesColorDynamically.docx");
 
             BuildReport(doc, Common.GetManagers(), "managers");
 
-            doc.Save(ArtifactsDir + "ReportingEngine.SetChartSeriesColorDinamically.docx");
+            doc.Save(ArtifactsDir + "ReportingEngine.SetChartSeriesColorDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SetChartSeriesColorDinamically.docx", GoldsDir + "ReportingEngine.SetChartSeriesColorDinamically Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SetChartSeriesColorDynamically.docx", GoldsDir + "ReportingEngine.SetChartSeriesColorDynamically Gold.docx"));
         }
 
         [Test]
         public void SetPointColorsDynamically()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.SetPointColorDinamically.docx");
+            Document doc = new Document(MyDir + "ReportingEngine.SetPointColorDynamically.docx");
 
             List<ColorItemTestClass> colors = new List<ColorItemTestClass>
             {
@@ -209,9 +209,9 @@ namespace ApiExamples
 
             BuildReport(doc, colors, "colorItems", new [] { typeof(ColorItemTestClass) });
 
-            doc.Save(ArtifactsDir + "ReportingEngine.SetPointColorDinamically.docx");
+            doc.Save(ArtifactsDir + "ReportingEngine.SetPointColorDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SetPointColorDinamically.docx", GoldsDir + "ReportingEngine.SetPointColorDinamically Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SetPointColorDynamically.docx", GoldsDir + "ReportingEngine.SetPointColorDynamically Gold.docx"));
         }
 
         [Test]
@@ -314,7 +314,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertDocumentDinamicallyWithAdditionalTemplateChecking()
+        public void InsertDocumentDynamicallyWithAdditionalTemplateChecking()
         {
             Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document] -build>>");
 
@@ -324,17 +324,17 @@ namespace ApiExamples
             BuildReport(template, new object[] { doc, Common.GetContracts() }, new[] { "src", "Contracts" }, 
                 ReportBuildOptions.None);
             template.Save(
-                ArtifactsDir + "ReportingEngine.InsertDocumentDinamicallyWithAdditionalTemplateChecking.docx");
+                ArtifactsDir + "ReportingEngine.InsertDocumentDynamicallyWithAdditionalTemplateChecking.docx");
 
             Assert.IsTrue(
                 DocumentHelper.CompareDocs(
-                    ArtifactsDir + "ReportingEngine.InsertDocumentDinamicallyWithAdditionalTemplateChecking.docx",
-                    GoldsDir + "ReportingEngine.InsertDocumentDinamicallyWithAdditionalTemplateChecking Gold.docx"),
+                    ArtifactsDir + "ReportingEngine.InsertDocumentDynamicallyWithAdditionalTemplateChecking.docx",
+                    GoldsDir + "ReportingEngine.InsertDocumentDynamicallyWithAdditionalTemplateChecking Gold.docx"),
                 "Fail inserting document by document");
         }
 
         [Test]
-        public void InsertDocumentDinamically()
+        public void InsertDocumentDynamically()
         {
             Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document]>>");
 
@@ -342,13 +342,13 @@ namespace ApiExamples
                 .WithDocument(new Document(MyDir + "ReportingEngine.TestDataTable.docx")).Build();
 
             BuildReport(template, doc, "src", ReportBuildOptions.None);
-            template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDinamically.docx");
+            template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDinamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDinamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by document");
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDynamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by document");
         }
 
         [Test]
-        public void InsertDocumentDinamicallyByStream()
+        public void InsertDocumentDynamicallyByStream()
         {
             Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.DocumentStream]>>");
 
@@ -356,13 +356,13 @@ namespace ApiExamples
                 .WithDocumentStream(new FileStream(mDocument, FileMode.Open, FileAccess.Read)).Build();
 
             BuildReport(template, docStream, "src", ReportBuildOptions.None);
-            template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDinamically.docx");
+            template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDinamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDinamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by stream");
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDynamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by stream");
         }
 
         [Test]
-        public void InsertDocumentDinamicallyByBytes()
+        public void InsertDocumentDynamicallyByBytes()
         {
             Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.DocumentBytes]>>");
 
@@ -370,13 +370,13 @@ namespace ApiExamples
                 .WithDocumentBytes(File.ReadAllBytes(MyDir + "ReportingEngine.TestDataTable.docx")).Build();
 
             BuildReport(template, docBytes, "src", ReportBuildOptions.None);
-            template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDinamically.docx");
+            template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDinamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDinamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDynamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
         }
 
         [Test]
-        public void InsertDocumentDinamicallyByUri()
+        public void InsertDocumentDynamicallyByUri()
         {
             Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.DocumentUri]>>");
 
@@ -384,13 +384,13 @@ namespace ApiExamples
                 .WithDocumentUri("http://www.snee.com/xml/xslt/sample.doc").Build();
 
             BuildReport(template, docUri, "src", ReportBuildOptions.None);
-            template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDinamically.docx");
+            template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDinamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDinamically(uri) Gold.docx"), "Fail inserting document by uri");
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDynamically(uri) Gold.docx"), "Fail inserting document by uri");
         }
 
         [Test]
-        public void InsertImageDinamically()
+        public void InsertImageDynamically()
         {
             Document template =
                 DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Image]>>", ShapeType.TextBox);
@@ -402,13 +402,13 @@ namespace ApiExamples
             #endif
             
             BuildReport(template, image, "src", ReportBuildOptions.None);
-            template.Save(ArtifactsDir + "ReportingEngine.InsertImageDinamically.docx");
+            template.Save(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDinamically.docx", GoldsDir + "ReportingEngine.InsertImageDinamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx", GoldsDir + "ReportingEngine.InsertImageDynamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
         }
 
         [Test]
-        public void InsertImageDinamicallyByStream()
+        public void InsertImageDynamicallyByStream()
         {
             Document template =
                 DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.ImageStream]>>", ShapeType.TextBox);
@@ -416,26 +416,26 @@ namespace ApiExamples
                 .WithImageStream(new FileStream(mImage, FileMode.Open, FileAccess.Read)).Build();
 
             BuildReport(template, imageStream, "src", ReportBuildOptions.None);
-            template.Save(ArtifactsDir + "ReportingEngine.InsertImageDinamically.docx");
+            template.Save(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDinamically.docx", GoldsDir + "ReportingEngine.InsertImageDinamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx", GoldsDir + "ReportingEngine.InsertImageDynamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
         }
 
         [Test]
-        public void InsertImageDinamicallyByBytes()
+        public void InsertImageDynamicallyByBytes()
         {
             Document template =
                 DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.ImageBytes]>>", ShapeType.TextBox);
             ImageTestClass imageBytes = new ImageTestBuilder().WithImageBytes(File.ReadAllBytes(mImage)).Build();
 
             BuildReport(template, imageBytes, "src", ReportBuildOptions.None);
-            template.Save(ArtifactsDir + "ReportingEngine.InsertImageDinamically.docx");
+            template.Save(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDinamically.docx", GoldsDir + "ReportingEngine.InsertImageDinamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx", GoldsDir + "ReportingEngine.InsertImageDynamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
         }
 
         [Test]
-        public void InsertImageDinamicallyByUri()
+        public void InsertImageDynamicallyByUri()
         {
             Document template =
                 DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.ImageUri]>>", ShapeType.TextBox);
@@ -445,18 +445,18 @@ namespace ApiExamples
                 .Build();
 
             BuildReport(template, imageUri, "src", ReportBuildOptions.None);
-            template.Save(ArtifactsDir + "ReportingEngine.InsertImageDinamically.docx");
+            template.Save(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx");
 
             Assert.IsTrue(
-                DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDinamically.docx",
-                    GoldsDir + "ReportingEngine.InsertImageDinamically(uri) Gold.docx"),
+                DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx",
+                    GoldsDir + "ReportingEngine.InsertImageDynamically(uri) Gold.docx"),
                 "Fail inserting document by bytes");
         }
 
         [Test]
         [TestCase("https://auckland.dynabic.com/wiki/display/org/Supported+dynamic+insertion+of+hyperlinks+for+LINQ+Reporting+Engine")]
         [TestCase("Bookmark")]
-        public void InsertHyperlinksDinamically(string link)
+        public void InsertHyperlinksDynamically(string link)
         {
             Document template = new Document(MyDir + "ReportingEngine.InsertingHyperlinks.docx");
             BuildReport(template, 
@@ -471,7 +471,7 @@ namespace ApiExamples
                     "display_text_expression"
                 });
 
-            template.Save(ArtifactsDir + "ReportingEngine.InsertHyperlinksDinamically.docx");
+            template.Save(ArtifactsDir + "ReportingEngine.InsertHyperlinksDynamically.docx");
         }
 
         [Test]

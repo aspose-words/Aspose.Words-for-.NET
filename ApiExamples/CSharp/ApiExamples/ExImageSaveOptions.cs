@@ -105,7 +105,7 @@ namespace ApiExamples
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
             options.MetafileRenderingOptions.RenderingMode = MetafileRenderingMode.Bitmap;
 
-            doc.Save(ArtifactsDir + "ImagesSaveOptions.WindowsMetaFile.png", options);
+            doc.Save(ArtifactsDir + "ImageSaveOptions.WindowsMetaFile.png", options);
             //ExEnd
         }
 #endif
@@ -152,7 +152,7 @@ namespace ApiExamples
                 ThresholdForFloydSteinbergDithering = 254 // The default value of this property is 128. The higher value, the darker image.
             };
 
-            doc.Save(ArtifactsDir + "ImagesSaveOptions.FloydSteinbergDithering.tiff", options);
+            doc.Save(ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff", options);
             //ExEnd
         }
 
@@ -179,7 +179,7 @@ namespace ApiExamples
                 Scale = 96f / 72f           // Default at 1.0 for normal scale, can be used to negate resolution impact in image size
             };
 
-            doc.Save(ArtifactsDir + "ImagesSaveOptions.EditImage.png", options);
+            doc.Save(ArtifactsDir + "ImageSaveOptions.EditImage.png", options);
             //ExEnd
         }
     }

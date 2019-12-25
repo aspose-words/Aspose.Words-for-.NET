@@ -68,13 +68,13 @@ namespace ApiExamples
             pdfSaveOptions.OutlineOptions.CreateMissingOutlineLevels = true;
             pdfSaveOptions.SaveFormat = SaveFormat.Pdf;
 
-            doc.Save(ArtifactsDir + "CreateMissingOutlineLevels.pdf", pdfSaveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.CreateMissingOutlineLevels.pdf", pdfSaveOptions);
             //ExEnd
 
             #if NETFRAMEWORK || NETSTANDARD2_0
             // Bind PDF with Aspose.PDF
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
-            bookmarkEditor.BindPdf(ArtifactsDir + "CreateMissingOutlineLevels.pdf");
+            bookmarkEditor.BindPdf(ArtifactsDir + "PdfSaveOptions.CreateMissingOutlineLevels.pdf");
 
             // Get all bookmarks from the document
             Bookmarks bookmarks = bookmarkEditor.ExtractBookmarks();
@@ -101,11 +101,11 @@ namespace ApiExamples
             // PdfSaveOptions objects can be cloned
             Assert.AreNotSame(pdfSaveOptions, pdfSaveOptions.Clone());
 
-            doc.Save(ArtifactsDir + "UpdateFields_False.pdf", pdfSaveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.WithoutUpdateFields.pdf", pdfSaveOptions);
             //ExEnd
 
             #if NETFRAMEWORK || NETSTANDARD2_0
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "UpdateFields_False.pdf");
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.WithoutUpdateFields.pdf");
 
             // Get text fragment by search String
             Aspose.Pdf.Text.TextFragmentAbsorber textFragmentAbsorber = new Aspose.Pdf.Text.TextFragmentAbsorber("Page  of");
@@ -124,10 +124,10 @@ namespace ApiExamples
 
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { UpdateFields = true };
 
-            doc.Save(ArtifactsDir + "UpdateFields_False.pdf", pdfSaveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.WithUpdateFields.pdf", pdfSaveOptions);
 
             #if NETFRAMEWORK || NETSTANDARD2_0
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "UpdateFields_False.pdf");
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.WithUpdateFields.pdf");
 
             // Get text fragment by search String from PDF document
             Aspose.Pdf.Text.TextFragmentAbsorber textFragmentAbsorber = new Aspose.Pdf.Text.TextFragmentAbsorber("Page 1 of 2");
@@ -159,7 +159,7 @@ namespace ApiExamples
                 ImageCompression = PdfImageCompression.Jpeg,
                 PreserveFormFields = true
             };
-            doc.Save(ArtifactsDir + "SaveOptions.PdfImageCompression.pdf", options);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PdfImageCompression.pdf", options);
 
             PdfSaveOptions optionsA1B = new PdfSaveOptions
             {
@@ -169,7 +169,7 @@ namespace ApiExamples
                 ImageColorSpaceExportMode = PdfImageColorSpaceExportMode.SimpleCmyk
             };
 
-            doc.Save(ArtifactsDir + "SaveOptions.PdfImageComppression PDF_A_1_B.pdf", optionsA1B);        
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_B.pdf", optionsA1B);        
             //ExEnd
 
             PdfSaveOptions optionsA1A = new PdfSaveOptions
@@ -179,7 +179,7 @@ namespace ApiExamples
                 ImageCompression = PdfImageCompression.Jpeg
             };
 
-            doc.Save(ArtifactsDir + "SaveOptions.PdfImageComppression PDF_A_1_A.pdf", optionsA1A);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_A.pdf", optionsA1A);
         }
 
         [Test]
@@ -195,7 +195,7 @@ namespace ApiExamples
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { ColorMode = ColorMode.Grayscale };
             
             // Assert that color image in document was grey
-            doc.Save(ArtifactsDir + "ColorMode.PdfGrayscaleMode.pdf", pdfSaveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ColorRendering.pdf", pdfSaveOptions);
             //ExEnd
         }
 
@@ -210,11 +210,11 @@ namespace ApiExamples
             
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { DisplayDocTitle = true };
 
-            doc.Save(ArtifactsDir + "PdfTitle.pdf", pdfSaveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.WindowsBarPdfTitle.pdf", pdfSaveOptions);
             //ExEnd
 
             #if NETFRAMEWORK || NETSTANDARD2_0
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfTitle.pdf");
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.WindowsBarPdfTitle.pdf");
 
             Assert.IsTrue(pdfDocument.DisplayDocTitle);
             Assert.AreEqual("Windows bar pdf title", pdfDocument.Info.Title);
@@ -234,7 +234,7 @@ namespace ApiExamples
             SaveOptions saveOptions = SaveOptions.CreateSaveOptions(SaveFormat.Pdf);
             saveOptions.MemoryOptimization = true;
 
-            doc.Save(ArtifactsDir + "SaveOptions.MemoryOptimization.pdf", saveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.MemoryOptimization.pdf", saveOptions);
             //ExEnd
         }
 
@@ -304,7 +304,7 @@ namespace ApiExamples
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.MetafileRenderingOptions = metafileRenderingOptions;
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.HandleRasterWarnings.pdf", saveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.HandleBinaryRasterWarnings.pdf", saveOptions);
 
             Assert.AreEqual(1, callback.mWarnings.Count);
             Assert.True(callback.mWarnings[0].Description.Contains("R2_XORPEN"));
@@ -354,7 +354,7 @@ namespace ApiExamples
                 HeaderFooterBookmarksExportMode = headerFooterBookmarksExportMode,
                 OutlineOptions = { DefaultBookmarksOutlineLevel = 1 }
             };
-            doc.Save(ArtifactsDir + "PdfSaveOption.HeaderFooterBookmarksExportMode.pdf", saveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf", saveOptions);
             //ExEnd
         }
 
@@ -366,7 +366,7 @@ namespace ApiExamples
             SaveWarningCallback saveWarningCallback = new SaveWarningCallback();
             doc.WarningCallback = saveWarningCallback;
 
-            doc.Save(ArtifactsDir + "PdfSaveOption.HeaderFooterBookmarksExportMode.pdf", SaveFormat.Pdf);
+            doc.Save(ArtifactsDir + "PdfSaveOption.UnsupportedImageFormatWarning.pdf", SaveFormat.Pdf);
 
             Assert.That(saveWarningCallback.mSaveWarnings[0].Description,
                 Is.EqualTo("Image can not be processed. Possibly unsupported image format."));
@@ -569,7 +569,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
             //ExEnd
         }
-        #else
+#else
         [Test]
         public void PreblendImagesNetStandard2()
         {
@@ -589,10 +589,10 @@ namespace ApiExamples
             PdfSaveOptions options = new PdfSaveOptions();
             options.PreblendImages = true;
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf", options);
             //ExEnd
         }
-        #endif
+#endif
 
         [Test]
         public void PdfDigitalSignature()

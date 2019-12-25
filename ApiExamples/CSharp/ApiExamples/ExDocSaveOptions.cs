@@ -77,7 +77,7 @@ namespace ApiExamples
             DocSaveOptions saveOptions = new DocSaveOptions(SaveFormat.Doc);
             saveOptions.SavePictureBullet = false;
 
-            doc.Save(ArtifactsDir + "Document.PictureBullets.doc", saveOptions);
+            doc.Save(ArtifactsDir + "DocSaveOptions.PictureBullets.doc", saveOptions);
             //ExEnd
         }
     }

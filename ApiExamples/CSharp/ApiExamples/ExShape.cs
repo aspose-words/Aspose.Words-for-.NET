@@ -39,7 +39,7 @@ namespace ApiExamples
     {
 #if NETFRAMEWORK
         [Test]
-        public void InsertShape()
+        public void Insert()
         {
             //ExStart
             //ExFor:ShapeBase.AlternativeText
@@ -79,7 +79,7 @@ namespace ApiExamples
             // Rotate the image
             shape.Rotation = 45.0;
 
-            doc.Save(ArtifactsDir + "Shape.InsertShapes.docx");
+            doc.Save(ArtifactsDir + "Shape.Insert.docx");
             //ExEnd
         }
 
@@ -194,7 +194,7 @@ namespace ApiExamples
 #endif
 
         [Test]
-        public void ShapeCoords()
+        public void Coordinates()
         {
             //ExStart
             //ExFor:ShapeBase.DistanceBottom
@@ -228,7 +228,7 @@ namespace ApiExamples
                 builder.Write("text ");
             }
 
-            doc.Save(ArtifactsDir + "Shape.ShapeCoords.docx");
+            doc.Save(ArtifactsDir + "Shape.Coordinates.docx");
             //ExEnd
         }
 
@@ -633,7 +633,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void OleLinked()
+        public void OleLinks()
         {
             //ExStart
             //ExFor:OleFormat.IconCaption
@@ -729,10 +729,10 @@ namespace ApiExamples
 
             // Gets the file name suggested for the current embedded object if you want to save it into a file
             Shape oleShape = (Shape) doc.FirstSection.Body.GetChild(NodeType.Shape, 0, true);
-            String suggestedFileName = oleShape.OleFormat.SuggestedFileName;
-            //ExEnd
+            string suggestedFileName = oleShape.OleFormat.SuggestedFileName;
 
             Assert.AreEqual("CSV.csv", suggestedFileName);
+            //ExEnd
         }
 
         [Test]
@@ -765,7 +765,7 @@ namespace ApiExamples
 
             //Get OfficeMath node from the document and render this as image (you can also do the same with the Shape node)
             OfficeMath math = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
-            math.GetMathRenderer().Save(ArtifactsDir + "Shape.OfficeMath.svg", new ImageSaveOptions(SaveFormat.Svg));
+            math.GetMathRenderer().Save(ArtifactsDir + "Shape.SaveShapeObjectAsImage.svg", new ImageSaveOptions(SaveFormat.Svg));
             //ExEnd
         }
 
@@ -793,7 +793,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void OfficeMathDisplayGold()
+        public void OfficeMath()
         {
             //ExStart
             //ExFor:OfficeMath
@@ -1000,7 +1000,7 @@ namespace ApiExamples
 
             builder.InsertOleObject("http://www.aspose.com", "htmlfile", true, false, null);
 
-            doc.Save(ArtifactsDir + "Document.InsertedOleObject.docx");
+            doc.Save(ArtifactsDir + "Shape.InsertOleObjectAsHtmlFile.docx");
         }
 
         [Test]
@@ -1054,7 +1054,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ReplaceRelativeSizeToAbsolute()
+        public void Resize()
         {
             Document doc = new Document(MyDir + "Shape.ShapeSize.docx");
 
@@ -1069,7 +1069,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DisplayTheShapeIntoATableCell()
+        public void LayoutInTableCell()
         {
             //ExStart
             //ExFor:ShapeBase.IsLayoutInCell
@@ -1116,7 +1116,7 @@ namespace ApiExamples
             // Adding the following line is needed to make the shape displayed in center of a page.
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2010);
 
-            doc.Save(ArtifactsDir + "Shape.LayoutInCell.docx");
+            doc.Save(ArtifactsDir + "Shape.LayoutInTableCell.docx");
             //ExEnd
         }
 
@@ -1148,7 +1148,7 @@ namespace ApiExamples
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
             saveOptions.Compliance = OoxmlCompliance.Iso29500_2008_Transitional;
             
-            doc.Save(ArtifactsDir + "RotatedShape.docx", saveOptions);
+            doc.Save(ArtifactsDir + "Shape.ShapeInsertion.docx", saveOptions);
             //ExEnd
         }
 
@@ -1346,7 +1346,7 @@ namespace ApiExamples
             // The object may be valid, but the signature itself isn't until it is signed
             Assert.False(signatureLine.IsValid);
 
-            doc.Save(ArtifactsDir + "Drawing.SignatureLine.docx");
+            doc.Save(ArtifactsDir + "Shape.SignatureLine.docx");
             //ExEnd
         }
 
@@ -1408,12 +1408,12 @@ namespace ApiExamples
             builder.MoveTo(textBoxShape.LastParagraph);
             builder.Write("Text placed according to textbox margins");
 
-            doc.Save(ArtifactsDir + "Drawing.TextBox.docx");
+            doc.Save(ArtifactsDir + "Shape.TextBox.docx");
             //ExEnd
         }
 
         [Test]
-        public void CreateNewTextBoxAndChangeTextAnchor()
+        public void TextBoxShapeType()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1429,7 +1429,7 @@ namespace ApiExamples
             builder.MoveTo(textBoxShape.LastParagraph);
             builder.Write("Text placed bottom");
 
-            doc.Save(ArtifactsDir + "Shape.CreateNewTextBoxAndChangeAnchor.docx");
+            doc.Save(ArtifactsDir + "Shape.TextBoxShapeType.docx");
         }
 
         [Test]
@@ -1598,7 +1598,7 @@ namespace ApiExamples
             shape.TextPath.Size = 24.0;
             shape.TextPath.TextPathAlignment = TextPathAlignment.Right;
 
-            doc.Save(ArtifactsDir + "Drawing.TextPath.docx");
+            doc.Save(ArtifactsDir + "Shape.InsertTextPaths.docx");
         }
 
         /// <summary>
@@ -1792,7 +1792,7 @@ namespace ApiExamples
             {
                 ShapeRenderer renderer = shape.GetShapeRenderer();
                 ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
-                renderer.Save(ArtifactsDir + $"Shape.ShapeRenderer {shape.Name}.png", options);
+                renderer.Save(ArtifactsDir + $"Shape.RenderAllShapes.{shape.Name}.png", options);
             }
             //ExEnd
         }

@@ -25,7 +25,7 @@ namespace ApiExamples
         /// Finds all merge fields in a Word document and changes their names.
         /// </summary>
         [Test] //ExSkip
-        public void RenameMergeFields()
+        public void Rename()
         {
             // Specify your document name here.
             Document doc = new Document(MyDir + "RenameMergeFields.doc");
@@ -41,7 +41,7 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(ArtifactsDir + "RenameMergeFields.doc");
+            doc.Save(ArtifactsDir + "RenameMergeFields.Rename.doc");
         }
     }
 

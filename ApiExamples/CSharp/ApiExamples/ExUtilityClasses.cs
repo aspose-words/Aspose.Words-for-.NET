@@ -48,7 +48,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void MillimeterToPointEx()
+        public void MillimeterToPoint()
         {
             //ExStart
             //ExFor:ConvertUtil.MillimeterToPoint
@@ -65,7 +65,7 @@ namespace ApiExamples
             pageSetup.FooterDistance = ConvertUtil.MillimeterToPoint(5.0);
 
             builder.Writeln("Hello world.");
-            builder.Document.Save(ArtifactsDir + "PageSetup.PageMargins.doc");
+            builder.Document.Save(ArtifactsDir + "UtilityClasses.MillimeterToPoint.doc");
             //ExEnd
         }
 
@@ -87,7 +87,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void PixelToPointEx()
+        public void PixelToPoint()
         {
             //ExStart
             //ExFor:ConvertUtil.PixelToPoint(double)
@@ -105,7 +105,7 @@ namespace ApiExamples
             pageSetupNoDpi.FooterDistance = ConvertUtil.PixelToPoint(20.0);
 
             builder.Writeln("Hello world.");
-            builder.Document.Save(ArtifactsDir + "PageSetup.PageMargins.DefaultResolution.doc");
+            builder.Document.Save(ArtifactsDir + "UtilityClasses.PixelToPoint.DefaultResolution.doc");
 
             double myDpi = 150.0;
 
@@ -117,7 +117,7 @@ namespace ApiExamples
             pageSetupWithDpi.HeaderDistance = ConvertUtil.PixelToPoint(20.0, myDpi);
             pageSetupWithDpi.FooterDistance = ConvertUtil.PixelToPoint(20.0, myDpi);
 
-            builder.Document.Save(ArtifactsDir + "PageSetup.PageMargins.CustomResolution.doc");
+            builder.Document.Save(ArtifactsDir + "UtilityClasses.PixelToPoint.CustomResolution.doc");
             //ExEnd
         }
 

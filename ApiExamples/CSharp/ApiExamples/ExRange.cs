@@ -66,7 +66,7 @@ namespace ApiExamples
 
             doc.Range.Replace("sad", "bad", options);
 
-            doc.Save(ArtifactsDir + "ReplaceWithString.docx");
+            doc.Save(ArtifactsDir + "Range.ReplaceWithString.docx");
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace ApiExamples
             doc.Range.Replace(new Regex("[s|m]ad"), "bad", options);
             //ExEnd
 
-            doc.Save(ArtifactsDir + "ReplaceWithRegex.docx");
+            doc.Save(ArtifactsDir + "Range.ReplaceWithRegex.docx");
         }
 
         // Note: Need more info from dev.

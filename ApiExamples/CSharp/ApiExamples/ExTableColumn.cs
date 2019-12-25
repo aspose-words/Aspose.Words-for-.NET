@@ -133,7 +133,7 @@ namespace ApiExamples
             Column column = Column.FromIndex(table, 2);
             column.Remove();
             
-            doc.Save(ArtifactsDir + "Table.RemoveColumn.doc");
+            doc.Save(ArtifactsDir + "TableColumn.RemoveColumn.doc");
 
             Assert.AreEqual(16, table.GetChildNodes(NodeType.Cell, true).Count);
             Assert.AreEqual("Cell 3 contents", table.Rows[2].Cells[2].ToString(SaveFormat.Text).Trim());
@@ -141,7 +141,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertNewColumnIntoTable()
+        public void Insert()
         {
             Document doc = new Document(MyDir + "Table.Document.doc");
             Table table = (Table) doc.GetChild(NodeType.Table, 1, true);
@@ -157,7 +157,7 @@ namespace ApiExamples
             foreach (Cell cell in newColumn.Cells)
                 cell.FirstParagraph.AppendChild(new Run(doc, "Column Text " + newColumn.IndexOf(cell)));
             
-            doc.Save(ArtifactsDir + "Table.InsertColumn.doc");
+            doc.Save(ArtifactsDir + "TableColumn.Insert.doc");
 
             Assert.AreEqual(24, table.GetChildNodes(NodeType.Cell, true).Count);
             Assert.AreEqual("Column Text 0", table.FirstRow.Cells[1].ToString(SaveFormat.Text).Trim());

@@ -25,7 +25,7 @@ namespace ApiExamples
         //ExFor:MailMerge.Execute(IMailMergeDataSourceCore)
         //ExSummary:Performs mail merge from a custom data source.
         [Test] //ExSkip
-        public void MailMergeCustomDataSource()
+        public void CustomDataSource()
         {
             // Create some data that we will use in the mail merge.
             CustomerList customers = new CustomerList();
@@ -42,7 +42,7 @@ namespace ApiExamples
             // Now you can pass your data source into Aspose.Words.
             doc.MailMerge.Execute(customersDataSource);
 
-            doc.Save(ArtifactsDir + "MailMerge.CustomDataSource.doc");
+            doc.Save(ArtifactsDir + "MailMergeCustom.CustomDataSource.doc");
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace ApiExamples
         //ExFor:MailMerge.ExecuteWithRegions(IMailMergeDataSourceRoot)
         //ExSummary:Performs mail merge from a custom data source with master-detail data.
         [Test] //ExSkip
-        public void MailMergeCustomDataSourceRoot()
+        public void CustomDataSourceRoot()
         {
             // Create a document with two mail merge regions named "Washington" and "Seattle"
             Document doc = CreateSourceDocumentWithMailMergeRegions(new string[] { "Washington", "Seattle" });
@@ -170,7 +170,7 @@ namespace ApiExamples
             // However, one mail merge source data root call every relevant data source and merge automatically 
             doc.MailMerge.ExecuteWithRegions(sourceRoot);
 
-            doc.Save(ArtifactsDir + "MailMerge.MailMergeCustomDataSourceRoot.docx");
+            doc.Save(ArtifactsDir + "MailMergeCustom.CustomDataSourceRoot.docx");
         }
 
         /// <summary>

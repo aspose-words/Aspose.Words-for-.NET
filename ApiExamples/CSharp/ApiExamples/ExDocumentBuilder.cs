@@ -354,7 +354,7 @@ namespace ApiExamples
             //OleObject with ProgId
             builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false, representingImage);
 
-            doc.Save(ArtifactsDir + "Document.InsertOleObject.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObject.docx");
             //ExEnd
         }
 #else
@@ -415,7 +415,7 @@ namespace ApiExamples
                     representingImage);
             }
 
-            doc.Save(ArtifactsDir + "Document.InsertOleObjectNetStandard2.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObjectNetStandard2.docx");
             //ExEnd
         }
 #endif

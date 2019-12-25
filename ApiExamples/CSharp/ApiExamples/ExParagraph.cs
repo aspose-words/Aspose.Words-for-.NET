@@ -328,7 +328,7 @@ namespace ApiExamples
             // This text will be affected
             para.Runs.Add(new Run(doc, "Hello World!"));
 
-            doc.Save(ArtifactsDir + "Paragraph.DropCap.docx");
+            doc.Save(ArtifactsDir + "Paragraph.DropCapPosition.docx");
             //ExEnd
         }
 

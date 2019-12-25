@@ -24,7 +24,7 @@ namespace ApiExamples
     public class ExMailMergeEvent : ApiExampleBase
     {
         [Test]
-        public void MailMergeInsertHtml()
+        public void InsertHtml()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertHtml(String)
@@ -57,7 +57,7 @@ namespace ApiExamples
             doc.MailMerge.Execute(new string[] { "htmlField1" }, new object[] { htmltext });
 
             // Save resulting document with a new name.
-            doc.Save(ArtifactsDir + "MailMerge.InsertHtml.doc");
+            doc.Save(ArtifactsDir + "MailMergeEvent.InsertHtml.doc");
         }
 
         private class HandleMergeFieldInsertHtml : IFieldMergingCallback
@@ -92,7 +92,7 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void MailMergeInsertCheckBox()
+        public void InsertCheckBox()
         {
             //ExStart
             //ExFor:DocumentBuilder.MoveToMergeField(String)
@@ -113,7 +113,7 @@ namespace ApiExamples
             doc.MailMerge.ExecuteWithRegions(dataTable);
 
             // Save resulting document with a new name.
-            doc.Save(ArtifactsDir + "MailMerge.InsertCheckBox.doc");
+            doc.Save(ArtifactsDir + "MailMergeEvent.InsertCheckBox.doc");
         }
 
         private class HandleMergeFieldInsertCheckBox : IFieldMergingCallback
@@ -176,7 +176,7 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void MailMergeAlternatingRows()
+        public void AlternatingRows()
         {
             //ExStart
             //ExFor:MailMerge.ExecuteWithRegions(DataTable)
@@ -190,7 +190,7 @@ namespace ApiExamples
             DataTable dataTable = GetSuppliersDataTable();
             doc.MailMerge.ExecuteWithRegions(dataTable);
 
-            doc.Save(ArtifactsDir + "MailMerge.AlternatingRows.doc");
+            doc.Save(ArtifactsDir + "MailMergeEvent.AlternatingRows.doc");
         }
 
         private class HandleMergeFieldAlternatingRows : IFieldMergingCallback
@@ -267,7 +267,7 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void MailMergeImageFromUrl()
+        public void ImageFromUrl()
         {
             //ExStart
             //ExFor:MailMerge.Execute(String[], Object[])
@@ -278,7 +278,7 @@ namespace ApiExamples
             doc.MailMerge.Execute(new string[] { "Logo" },
                 new object[] { AsposeLogoUrl });
 
-            doc.Save(ArtifactsDir + "MailMerge.MergeImageFromUrl.doc");
+            doc.Save(ArtifactsDir + "MailMergeEvent.ImageFromUrl.doc");
             //ExEnd
 
             // Verify the image was merged into the document.
@@ -290,7 +290,7 @@ namespace ApiExamples
         #if NETFRAMEWORK
         [Test]
         [Category("SkipMono")]
-        public void MailMergeImageFromBlob()
+        public void ImageFromBlob()
         {
             //ExStart
             //ExFor:MailMerge.FieldMergingCallback
@@ -321,7 +321,7 @@ namespace ApiExamples
             // Close the database.
             conn.Close();
 
-            doc.Save(ArtifactsDir + "MailMerge.MergeImage.doc");
+            doc.Save(ArtifactsDir + "MailMergeEvent.ImageFromBlob.doc");
         }
 
         private class HandleMergeImageFieldFromBlob : IFieldMergingCallback

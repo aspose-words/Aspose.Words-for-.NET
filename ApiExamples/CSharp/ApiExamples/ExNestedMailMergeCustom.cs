@@ -19,7 +19,7 @@ namespace ApiExamples
         //ExFor:MailMerge.ExecuteWithRegions(IMailMergeDataSource)
         //ExSummary:Performs mail merge with regions from a custom data source.
         [Test] //ExSkip
-        public void MailMergeCustomDataSource()
+        public void CustomDataSource()
         {
             // Create some data that we will use in the mail merge.
             CustomerList customers = new CustomerList();
@@ -41,7 +41,7 @@ namespace ApiExamples
             // Now you can pass your data source into Aspose.Words.
             doc.MailMerge.ExecuteWithRegions(customersDataSource);
 
-            doc.Save(ArtifactsDir + "NestedMailMerge.CustomDataSource.doc");
+            doc.Save(ArtifactsDir + "NestedMailMergeCustom.CustomDataSource.doc");
         }
 
         /// <summary>

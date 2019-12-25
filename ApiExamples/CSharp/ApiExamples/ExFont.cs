@@ -1514,7 +1514,7 @@ namespace ApiExamples
             // We can also load a custom substitution scheme from a file like this
             // This scheme applies the "Arvo" font across the "0000-00ff" unicode blocks, the "Squarish Sans CT" font across "0100-024f",
             // and the "M+ 2m" font in every place that none of the other fonts cover
-            fontFallbackSettings.Load(MyDir + "Font.FallbackSettingsCustom.xml");
+            fontFallbackSettings.Load(MyDir + "Font.FallbackSettings.Custom.xml");
 
             // Create a document builder and set its font to one that doesn't exist in any of our sources
             // In doing that we will rely completely on our font fallback scheme to render text

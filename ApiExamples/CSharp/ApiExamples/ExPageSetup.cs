@@ -228,7 +228,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ColumnsCustomWidth()
+        public void CustomColumnWidth()
         {
             //ExStart
             //ExFor:TextColumnCollection.LineBetween
@@ -263,7 +263,7 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.ColumnBreak);
             builder.Writeln("Wide column 2.");
 
-            builder.Document.Save(ArtifactsDir + "PageSetup.ColumnsCustomWidth.doc");
+            builder.Document.Save(ArtifactsDir + "PageSetup.CustomColumnWidth.doc");
             //ExEnd
         }
 
@@ -321,7 +321,7 @@ namespace ApiExamples
             border.Color = Color.Blue;
             border.DistanceFromText = 0;
 
-            doc.Save(ArtifactsDir + "PageSetup.PageBorderTop.doc");
+            doc.Save(ArtifactsDir + "PageSetup.PageBorderProperties.doc");
             //ExEnd
         }
 

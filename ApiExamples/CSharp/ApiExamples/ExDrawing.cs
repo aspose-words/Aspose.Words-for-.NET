@@ -203,7 +203,7 @@ namespace ApiExamples
                 imgShape.Left = 150.0f;
             }
 
-            doc.Save(ArtifactsDir + "ImageData.ImportImage.docx");
+            doc.Save(ArtifactsDir + "Drawing.ImportImage.docx");
             //ExEnd
         }
         #endif

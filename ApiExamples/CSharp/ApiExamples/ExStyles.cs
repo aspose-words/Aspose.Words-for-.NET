@@ -141,7 +141,7 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(ArtifactsDir + "Document.TableOfContentsTabStops.doc");
+            doc.Save(ArtifactsDir + "Styles.ChangeTocsTabStops.doc");
             //ExEnd
         }
 

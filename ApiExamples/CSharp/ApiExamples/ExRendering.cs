@@ -99,7 +99,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SaveAsPdf()
+        public void PdfCustomOptions()
         {
             //ExStart
             //ExFor:PdfSaveOptions.PreserveFormFields
@@ -203,7 +203,7 @@ namespace ApiExamples
             // Open the document
             Document doc = new Document(MyDir + "Rendering.doc");
             // Save as a JPEG image file with default options
-            doc.Save(ArtifactsDir + "Rendering.JpegDefaultOptions.jpg");
+            doc.Save(ArtifactsDir + "Rendering.SaveAsImage.DefaultJpgOptions.jpg");
 
             // Save document to stream as a JPEG with default options
             MemoryStream docStream = new MemoryStream();
@@ -219,7 +219,7 @@ namespace ApiExamples
             imageOptions.PageIndex = 2;
             imageOptions.PageCount = 1;
             imageOptions.JpegQuality = 80;
-            doc.Save(ArtifactsDir + "Rendering.JpegCustomOptions.jpg", imageOptions);
+            doc.Save(ArtifactsDir + "Rendering.SaveAsImage.CustomJpgOptions.jpg", imageOptions);
             //ExEnd
         }
 
@@ -311,11 +311,11 @@ namespace ApiExamples
 
             // Try worst quality.
             saveOptions.JpegQuality = 0;
-            doc.Save(ArtifactsDir + "Rendering.SaveToImageJpegQuality0.jpeg", saveOptions);
+            doc.Save(ArtifactsDir + "Rendering.SaveToImageJpegQuality.0.jpeg", saveOptions);
 
             // Try best quality.
             saveOptions.JpegQuality = 100;
-            doc.Save(ArtifactsDir + "Rendering.SaveToImageJpegQuality100.jpeg", saveOptions);
+            doc.Save(ArtifactsDir + "Rendering.SaveToImageJpegQuality.100.jpeg", saveOptions);
             //ExEnd
         }
 
@@ -331,10 +331,10 @@ namespace ApiExamples
             ImageSaveOptions imgOptions = new ImageSaveOptions(SaveFormat.Png);
 
             imgOptions.PaperColor = Color.Transparent;
-            doc.Save(ArtifactsDir + "Rendering.SaveToImagePaperColorTransparent.png", imgOptions);
+            doc.Save(ArtifactsDir + "Rendering.SaveToImagePaperColor.Transparent.png", imgOptions);
 
             imgOptions.PaperColor = Color.LightCoral;
-            doc.Save(ArtifactsDir + "Rendering.SaveToImagePaperColorCoral.png", imgOptions);
+            doc.Save(ArtifactsDir + "Rendering.SaveToImagePaperColor.Coral.png", imgOptions);
             //ExEnd
         }
 
@@ -419,7 +419,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CreateThumbnails()
+        public void Thumbnails()
         {
             //ExStart
             //ExFor:Document.RenderToScale
@@ -733,7 +733,7 @@ namespace ApiExamples
             printerSettings.FromPage = 1;
             printerSettings.ToPage = 3;
 
-            doc.Print(printerSettings, "My Print Document.doc");
+            doc.Print(printerSettings, "Rendering.PrintRangeWithDocumentName.doc");
             //ExEnd
         }
 
@@ -779,7 +779,7 @@ namespace ApiExamples
             previewDlg.ShowDialog();
             //ExEnd
         }
-        #else
+#else
         [Test]
         public void SaveToImageStreamNetStandard2()
         {
@@ -855,7 +855,7 @@ namespace ApiExamples
                     // User specifies (in world coordinates) where on the Graphics to render and what size.
                     doc.RenderToSize(0, canvas, 90, 10, 50, 100);
 
-                    using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "Rendering.RenderToSize.png"))
+                    using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "Rendering.RenderToSizeNetStandard2.png"))
                     {
                         bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
                     }
@@ -924,7 +924,7 @@ namespace ApiExamples
                         });
                     }
 
-                    using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "Rendering.Thumbnails.png"))
+                    using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "Rendering.CreateThumbnailsNetStandard2.png"))
                     {
                         bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
                     }
@@ -932,7 +932,7 @@ namespace ApiExamples
             }            
             //ExEnd
         }
-        #endif
+#endif
 
         [Test]
         public void UpdatePageLayout()
@@ -946,7 +946,7 @@ namespace ApiExamples
 
             // Saving a document to PDF or to image or printing for the first time will automatically
             // layout document pages and this information will be cached inside the document
-            doc.Save(ArtifactsDir + "Rendering.UpdatePageLayout1.pdf");
+            doc.Save(ArtifactsDir + "Rendering.UpdatePageLayout.1.pdf");
 
             // Modify the document in any way.
             doc.Styles["Normal"].Font.Size = 6;
@@ -957,12 +957,12 @@ namespace ApiExamples
             // you need to manually request page layout to be updated
             doc.UpdatePageLayout();
 
-            doc.Save(ArtifactsDir + "Rendering.UpdatePageLayout2.pdf");
+            doc.Save(ArtifactsDir + "Rendering.UpdatePageLayout.2.pdf");
             //ExEnd
         }
 
         [Test]
-        public void UpdateFieldsBeforeRendering()
+        public void UpdateFields()
         {
             //ExStart
             //ExFor:Document.UpdateFields
@@ -993,7 +993,7 @@ namespace ApiExamples
             // FontSettings.SetFontSources instead.
             FontSettings.DefaultInstance.SetFontsFolder(@"C:\MyFonts\", false);
 
-            doc.Save(ArtifactsDir + "Rendering.SetFontsFolder.pdf");
+            doc.Save(ArtifactsDir + "Rendering.SetTrueTypeFontsFolder.pdf");
             //ExEnd
 
             // Restore the original sources used to search for fonts.
@@ -1017,7 +1017,7 @@ namespace ApiExamples
             // FontSettings.SetFontSources instead.
             FontSettings.DefaultInstance.SetFontsFolders(new String[] { @"C:\MyFonts\", @"D:\Misc\Fonts\" }, true);
 
-            doc.Save(ArtifactsDir + "Rendering.SetFontsFolders.pdf");
+            doc.Save(ArtifactsDir + "Rendering.SetFontsFoldersMultipleFolders.pdf");
             //ExEnd
 
             // Restore the original sources used to search for fonts.
@@ -1053,7 +1053,7 @@ namespace ApiExamples
             // Apply the new set of font sources to use.
             FontSettings.DefaultInstance.SetFontsSources(updatedFontSources);
 
-            doc.Save(ArtifactsDir + "Rendering.SetFontsFolders.pdf");
+            doc.Save(ArtifactsDir + "Rendering.SetFontsFoldersSystemAndCustomFolder.pdf");
             //ExEnd
 
             // The first source should be a system font source.
@@ -1166,13 +1166,13 @@ namespace ApiExamples
             FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial Unicode MS";
 
             // Now the set default font is used in place of any missing fonts during any rendering calls.
-            doc.Save(ArtifactsDir + "Rendering.SetDefaultFont.pdf");
-            doc.Save(ArtifactsDir + "Rendering.SetDefaultFont.xps");
+            doc.Save(ArtifactsDir + "Rendering.SetDefaultFontName.pdf");
+            doc.Save(ArtifactsDir + "Rendering.SetDefaultFontName.xps");
             //ExEnd
         }
 
         [Test]
-        public void RecieveFontSubstitutionUpdatePageLayout()
+        public void UpdatePageLayoutWarnings()
         {
             // Store the font sources currently used so we can restore them later. 
             FontSourceBase[] origFontSources = FontSettings.DefaultInstance.GetFontsSources();
@@ -1197,7 +1197,7 @@ namespace ApiExamples
             doc.UpdatePageLayout();
 
             // Even though the document was rendered previously, any save warnings are notified to the user during document save.
-            doc.Save(ArtifactsDir + "Rendering.FontsNotificationUpdatePageLayout.pdf");
+            doc.Save(ArtifactsDir + "Rendering.UpdatePageLayoutWarnings.pdf");
             
             Assert.That(callback.mFontWarnings.Count, Is.GreaterThan(0));
             Assert.True(callback.mFontWarnings[0].WarningType == WarningType.FontSubstitution);
@@ -1228,7 +1228,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void EmbedFullFontsInPdf()
+        public void EmbedFullFonts()
         {
             //ExStart
             //ExFor:PdfSaveOptions.#ctor
@@ -1248,7 +1248,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SubsetFontsInPdf()
+        public void SubsetFonts()
         {
             //ExStart
             //ExFor:PdfSaveOptions.EmbedFullFonts
@@ -1267,7 +1267,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DisableEmbeddingStandardWindowsFonts()
+        public void DisableEmbedWindowsFonts()
         {
             //ExStart
             //ExFor:PdfSaveOptions.FontEmbeddingMode
@@ -1286,7 +1286,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DisableEmbeddingCoreFonts()
+        public void DisableEmbedCoreFonts()
         {
             //ExStart
             //ExFor:PdfSaveOptions.UseCoreFonts
@@ -1299,12 +1299,12 @@ namespace ApiExamples
             options.UseCoreFonts = true;
 
             // The output PDF will not be embedded with core fonts such as Arial, Times New Roman etc.
-            doc.Save(ArtifactsDir + "Rendering.DisableEmbedWindowsFonts.pdf");
+            doc.Save(ArtifactsDir + "Rendering.DisableEmbedCoreFonts.pdf");
             //ExEnd
         }
 
         [Test]
-        public void SetPdfEncryptionPermissions()
+        public void EncryptionPermissions()
         {
             //ExStart
             //ExFor:PdfEncryptionDetails.#ctor
@@ -1333,12 +1333,12 @@ namespace ApiExamples
             saveOptions.EncryptionDetails = encryptionDetails;
 
             // Render the document to PDF format with the specified permissions.
-            doc.Save(ArtifactsDir + "Rendering.SpecifyPermissions.pdf", saveOptions);
+            doc.Save(ArtifactsDir + "Rendering.EncryptionPermissions.pdf", saveOptions);
             //ExEnd
         }
 
         [Test]
-        public void SetPdfNumeralFormat()
+        public void SetNumeralFormat()
         {
             Document doc = new Document(MyDir + "Rendering.NumeralFormat.doc");
             //ExStart
@@ -1349,7 +1349,7 @@ namespace ApiExamples
             options.NumeralFormat = NumeralFormat.Context;
             //ExEnd
 
-            doc.Save(ArtifactsDir + "Rendering.NumeralFormat.pdf", options);
+            doc.Save(ArtifactsDir + "Rendering.SetNumeralFormat.pdf", options);
         }
     }
 }
