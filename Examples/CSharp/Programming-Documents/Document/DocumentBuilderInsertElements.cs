@@ -13,7 +13,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
     {
         public static void Run()
         {
-            
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             InsertTextInputFormField(dataDir);
@@ -24,11 +23,12 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             InsertTableOfContents(dataDir);
             InsertOleObject(dataDir);
             InsertOleObjectwithOlePackage(dataDir);
+            GetAccessToOLEObjectRawData(dataDir);
         }
         public static void InsertTextInputFormField(string dataDir)
         {
             // ExStart:DocumentBuilderInsertTextInputFormField
-            Document doc = new Document();
+            Words.Document doc = new Words.Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertTextInput("TextInput", TextFormFieldType.Regular, "", "Hello", 0);
@@ -180,6 +180,17 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             
             // ExEnd:InsertOleObjectwithOlePackage
             Console.WriteLine("\nOleObject using DocumentBuilder inserted successfully into a document.\nFile saved at " + dataDir);
+        }
+
+        public static void GetAccessToOLEObjectRawData(string dataDir)
+        {
+            // ExStart:GetAccessToOLEObjectRawData
+            // Load document with OLE object.
+            Document doc = new Document(dataDir + "DocumentBuilderInsertTextInputFormField_out.doc");
+            
+            Shape oleShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            byte[] oleRawData = oleShape.OleFormat.GetRawData();
+            // ExEnd:GetAccessToOLEObjectRawData
         }
     }
 }

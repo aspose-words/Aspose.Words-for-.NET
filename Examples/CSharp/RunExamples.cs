@@ -134,6 +134,7 @@ namespace Aspose.Words.Examples.CSharp
             // ReplaceWithEvaluator.Run();
             // ReplaceHtmlTextWithMeta_Characters.Run();
             // FindReplaceUsingMetaCharacters.Run();
+            // UsingLegacyOrder.Run();
 
             //// Bookmarks
             //// =====================================================
