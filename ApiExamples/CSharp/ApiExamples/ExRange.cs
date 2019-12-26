@@ -28,23 +28,23 @@ namespace ApiExamples
             //ExFor:FindReplaceOptions.MatchCase
             //ExFor:FindReplaceOptions.FindWholeWordsOnly
             //ExSummary:Simple find and replace operation.
-            // Open the document.
+            // Open the document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Writeln("Hello _CustomerName_,");
 
-            // Check the document contains what we are about to test.
+            // Check the document contains what we are about to test
             Console.WriteLine(doc.FirstSection.Body.Paragraphs[0].GetText());
 
             FindReplaceOptions options = new FindReplaceOptions();
             options.MatchCase = false;
             options.FindWholeWordsOnly = false;
 
-            // Replace the text in the document.
+            // Replace the text in the document
             doc.Range.Replace("_CustomerName_", "James Bond", options);
 
-            // Save the modified document.
+            // Save the modified document
             doc.Save(ArtifactsDir + "Range.ReplaceSimple.docx");
             //ExEnd
 
@@ -125,18 +125,18 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Range.FindAndReplaceWithMetacharacters.docx");
         }
 
-        [Test]
+        //ExStart
+        //ExFor:Range.Replace(Regex, String, FindReplaceOptions)
+        //ExFor:ReplacingArgs.Replacement
+        //ExFor:IReplacingCallback
+        //ExFor:IReplacingCallback.Replacing
+        //ExFor:ReplacingArgs
+        //ExFor:DocumentBuilder.InsertHtml(String)
+        //ExSummary:Replaces text specified with regular expression with HTML.
+        [Test] //ExSkip
         public void ReplaceWithInsertHtml()
         {
-            //ExStart
-            //ExFor:Range.Replace(Regex, String, FindReplaceOptions)
-            //ExFor:ReplacingArgs.Replacement
-            //ExFor:IReplacingCallback
-            //ExFor:IReplacingCallback.Replacing
-            //ExFor:ReplacingArgs
-            //ExFor:DocumentBuilder.InsertHtml(String)
-            //ExSummary:Replaces text specified with regular expression with HTML.
-            // Open the document.
+            // Open the document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -147,7 +147,7 @@ namespace ApiExamples
 
             doc.Range.Replace(new Regex(@" <CustomerName>,"), string.Empty, options);
 
-            // Save the modified document.
+            // Save the modified document
             doc.Save(ArtifactsDir + "Range.ReplaceWithInsertHtml.doc");
 
             Assert.AreEqual("James Bond, Hello\r\x000c", doc.GetText()); //ExSkip
@@ -169,7 +169,7 @@ namespace ApiExamples
                 DocumentBuilder builder = new DocumentBuilder((Document) args.MatchNode.Document);
                 builder.MoveTo(args.MatchNode);
 
-                // Replace '<CustomerName>' text with a red bold name.
+                // Replace '<CustomerName>' text with a red bold name
                 builder.InsertHtml("<b><font color='red'>James Bond, </font></b>");
                 args.Replacement = "";
 
@@ -218,7 +218,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Replaces arabic numbers with hexadecimal equivalents and appends the number of each replacement
+        /// Replaces arabic numbers with hexadecimal equivalents and appends the number of each replacement.
         /// </summary>
         private class NumberHexer : IReplacingCallback
         {
@@ -237,10 +237,9 @@ namespace ApiExamples
                 Console.WriteLine($"\tReplacement:\t{args.Replacement}");
                 Console.WriteLine($"\tOffset in parent {args.MatchNode.NodeType} node:\t{args.MatchOffset}");
 
-                if (string.IsNullOrEmpty(args.GroupName))
-                    Console.WriteLine($"\tGroup index:\t{args.GroupIndex}");
-                else
-                    Console.WriteLine($"\tGroup name:\t{args.GroupName}");
+                Console.WriteLine(string.IsNullOrEmpty(args.GroupName)
+                    ? $"\tGroup index:\t{args.GroupIndex}"
+                    : $"\tGroup name:\t{args.GroupName}");
 
                 return ReplaceAction.Replace;
             }
@@ -284,13 +283,14 @@ namespace ApiExamples
             // Open Word document.
             Document doc = new Document(MyDir + "Range.DeleteSection.doc");
 
-            // The document contains two sections. Each section has a paragraph of text.
+            // The document contains two sections
+            // Each section has a paragraph of text
             Console.WriteLine(doc.GetText());
 
-            // Delete the first section from the document.
+            // Delete the first section from the document
             doc.Sections[0].Range.Delete();
 
-            // Check the first section was deleted by looking at the text of the whole document again.
+            // Check the first section was deleted by looking at the text of the whole document again
             Console.WriteLine(doc.GetText());
             //ExEnd
 

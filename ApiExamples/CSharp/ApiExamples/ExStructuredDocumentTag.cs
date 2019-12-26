@@ -22,7 +22,7 @@ using Aspose.Words.Tables;
 namespace ApiExamples
 {
     /// <summary>
-    /// Tests that verify work with structured document tags in the document 
+    /// Tests that verify work with structured document tags in the document. 
     /// </summary>
     [TestFixture]
     internal class ExStructuredDocumentTag : ApiExampleBase
@@ -41,8 +41,8 @@ namespace ApiExamples
             {
                 Console.WriteLine("Type of this SDT is: {0}", sdTag.SdtType);
             }
-
             //ExEnd
+
             StructuredDocumentTag sdTagRepeatingSection = (StructuredDocumentTag) sdTags[0];
             Assert.AreEqual(SdtType.RepeatingSection, sdTagRepeatingSection.SdtType);
 
@@ -70,7 +70,8 @@ namespace ApiExamples
             sdtPlainText.Style = quoteStyle;
 
             StructuredDocumentTag sdtRichText = new StructuredDocumentTag(doc, SdtType.RichText, MarkupLevel.Inline);
-            sdtRichText.StyleName = "Quote"; // Second method to apply specific style to an SDT control
+            // Second method to apply specific style to an SDT control
+            sdtRichText.StyleName = "Quote";
 
             // Insert content controls into the document
             builder.InsertNode(sdtPlainText);
@@ -785,7 +786,6 @@ namespace ApiExamples
                 if (smartTag.Properties.Count == 0)
                 {
                     Console.WriteLine("\tContains no properties");
-
                 }
                 else
                 {
@@ -794,9 +794,7 @@ namespace ApiExamples
                     int index = 0;         
                     
                     foreach (CustomXmlProperty cxp in smartTag.Properties)
-                    {
                         properties[index++] = $"\"{cxp.Name}\" = \"{cxp.Value}\"";
-                    }
 
                     Console.WriteLine(string.Join(", ", properties));
                 }

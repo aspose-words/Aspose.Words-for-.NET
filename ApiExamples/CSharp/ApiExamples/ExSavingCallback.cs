@@ -49,7 +49,6 @@ namespace ApiExamples
         [Test] //ExSkip
         public void PageFileNameSavingCallback()
         {
-
             Document doc = new Document(MyDir + "Rendering.doc");
 
             HtmlFixedSaveOptions htmlFixedSaveOptions =
@@ -74,7 +73,7 @@ namespace ApiExamples
         {
             public void PageSaving(PageSavingArgs args)
             {
-                // Specify name of the output file for the current page.
+                // Specify name of the output file for the current page
                 args.PageFileName = string.Format(ArtifactsDir + "Page_{0}.html", args.PageIndex);
             }
         }
@@ -123,7 +122,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Renames saved document parts that are produced when an HTML document is saved while being split according to a criteria
+        /// Renames saved document parts that are produced when an HTML document is saved while being split according to a criteria.
         /// </summary>
         private class SavedDocumentPartRename : IDocumentPartSavingCallback
         {
@@ -172,7 +171,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Renames saved images that are produced when an HTML document is saved 
+        /// Renames saved images that are produced when an HTML document is saved.
         /// </summary>
         public class SavedImageRename : IImageSavingCallback
         {

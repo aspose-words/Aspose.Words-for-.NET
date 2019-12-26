@@ -26,7 +26,7 @@ namespace ApiExamples
             doc.Variables.Add("doc", "Word processing document");
             doc.Variables.Add("docx", "Word processing document");
             doc.Variables.Add("txt", "Word processing document");
-            // Duplicate values can be stored but adding a duplicate name overwrites the old one.
+            // Duplicate values can be stored but adding a duplicate name overwrites the old one
             doc.Variables.Add("txt", "Plain text file");
             doc.Variables.Add("bmp", "Image");
             doc.Variables.Add("png", "Image");
@@ -90,7 +90,6 @@ namespace ApiExamples
                     Console.WriteLine("Name: {0}, Value: {1}", de.Key, de.Value);
                 }
             }
-
             //ExEnd
         }
 

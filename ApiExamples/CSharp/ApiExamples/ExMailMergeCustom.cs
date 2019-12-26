@@ -27,19 +27,19 @@ namespace ApiExamples
         [Test] //ExSkip
         public void MailMergeCustomDataSource()
         {
-            // Create some data that we will use in the mail merge.
+            // Create some data that we will use in the mail merge
             CustomerList customers = new CustomerList();
             customers.Add(new Customer("Thomas Hardy", "120 Hanover Sq., London"));
             customers.Add(new Customer("Paolo Accorti", "Via Monte Bianco 34, Torino"));
 
-            // Open the template document.
+            // Open the template document
             Document doc = new Document(MyDir + "MailMerge.CustomDataSource.doc");
 
             // To be able to mail merge from your own data source, it must be wrapped
-            // into an object that implements the IMailMergeDataSource interface.
+            // into an object that implements the IMailMergeDataSource interface
             CustomerMailMergeDataSource customersDataSource = new CustomerMailMergeDataSource(customers);
 
-            // Now you can pass your data source into Aspose.Words.
+            // Now you can pass your data source into Aspose.Words
             doc.MailMerge.Execute(customersDataSource);
 
             doc.Save(ArtifactsDir + "MailMerge.CustomDataSource.doc");
@@ -174,9 +174,10 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Create document that contains consecutive mail merge regions, with names designated by the input array, for a data table of employees
+        /// Create document that contains consecutive mail merge regions, with names designated by the input array,
+        /// for a data table of employees.
         /// </summary>
-        private Document CreateSourceDocumentWithMailMergeRegions(string[] regions)
+        private static Document CreateSourceDocumentWithMailMergeRegions(string[] regions)
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -222,29 +223,29 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Data source root that can be passed directly into a mail merge which can register and contain many child data sources
+        /// Data source root that can be passed directly into a mail merge which can register and contain many child data sources.
         /// These sources must all implement IMailMergeDataSource, and are registered and differentiated by a name
-        /// which corresponds to a mail merge region that will read the respective data
+        /// which corresponds to a mail merge region that will read the respective data.
         /// </summary>
         private class DataSourceRoot : IMailMergeDataSourceRoot
         {
-            Dictionary<string, EmployeeListMailMergeSource> sources = new Dictionary<string, EmployeeListMailMergeSource>();
-
             public IMailMergeDataSource GetDataSource(string tableName)
             {
-                EmployeeListMailMergeSource source = sources[tableName];
+                EmployeeListMailMergeSource source = mSources[tableName];
                 source.Reset();
-                return sources[tableName];
+                return mSources[tableName];
             }
 
             public void RegisterSource(string sourceName, EmployeeListMailMergeSource source)
             {
-                sources.Add(sourceName, source);
+                mSources.Add(sourceName, source);
             }
+
+            private readonly Dictionary<string, EmployeeListMailMergeSource> mSources = new Dictionary<string, EmployeeListMailMergeSource>();
         }
 
         /// <summary>
-        /// Custom mail merge data source
+        /// Custom mail merge data source.
         /// </summary>
         private class EmployeeListMailMergeSource : IMailMergeDataSource
         {
@@ -298,14 +299,14 @@ namespace ApiExamples
                         return true;
                     default:
                         // A field with this name was not found, 
-                        // return false to the Aspose.Words mail merge engine.
+                        // return false to the Aspose.Words mail merge engine
                         fieldValue = null;
                         return false;
                 }
             }
 
             /// <summary>
-            /// Child data sources are for nested mail merges
+            /// Child data sources are for nested mail merges.
             /// </summary>
             public IMailMergeDataSource GetChildDataSource(string tableName)
             {

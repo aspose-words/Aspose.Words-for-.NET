@@ -34,7 +34,6 @@ namespace ApiExamples
 
                 wic.Clear();
             }
-
             //ExEnd
         }
     }

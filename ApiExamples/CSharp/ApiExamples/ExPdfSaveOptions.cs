@@ -40,7 +40,7 @@ namespace ApiExamples
             //ExFor:ParagraphFormat.IsHeading
             //ExFor:PdfSaveOptions.OutlineOptions
             //ExFor:PdfSaveOptions.SaveFormat
-            //ExSummary:Shows how to create missing outline levels saving the document in PDF
+            //ExSummary:Shows how to create missing outline levels saving the document in PDF.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -229,8 +229,9 @@ namespace ApiExamples
             //ExFor:SaveOptions.MemoryOptimization
             //ExSummary:Shows an option to optimize memory consumption when you work with large documents.
             Document doc = new Document(MyDir + "SaveOptions.MemoryOptimization.doc");
-            // When set to true it will improve document memory footprint but will add extra time to processing. 
-            // This optimization is only applied during save operation.
+            
+            // When set to true it will improve document memory footprint but will add extra time to processing
+            // This optimization is only applied during save operation
             SaveOptions saveOptions = SaveOptions.CreateSaveOptions(SaveFormat.Pdf);
             saveOptions.MemoryOptimization = true;
 
@@ -287,7 +288,7 @@ namespace ApiExamples
             //ExFor:MetafileRenderingOptions.RenderingMode
             //ExFor:IWarningCallback
             //ExFor:FixedPageSaveOptions.MetafileRenderingOptions
-            //ExSummary:Shows added fallback to bitmap rendering and changing type of warnings about unsupported metafile records
+            //ExSummary:Shows added fallback to bitmap rendering and changing type of warnings about unsupported metafile records.
             Document doc = new Document(MyDir + "PdfSaveOptions.HandleRasterWarnings.doc");
 
             MetafileRenderingOptions metafileRenderingOptions =
@@ -297,7 +298,7 @@ namespace ApiExamples
                     RenderingMode = MetafileRenderingMode.VectorWithFallback
                 };
 
-            // If Aspose.Words cannot correctly render some of the metafile records to vector graphics then Aspose.Words renders this metafile to a bitmap. 
+            // If Aspose.Words cannot correctly render some of the metafile records to vector graphics then Aspose.Words renders this metafile to a bitmap
             HandleDocumentWarnings callback = new HandleDocumentWarnings();
             doc.WarningCallback = callback;
 
@@ -306,8 +307,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.HandleRasterWarnings.pdf", saveOptions);
 
-            Assert.AreEqual(1, callback.mWarnings.Count);
-            Assert.True(callback.mWarnings[0].Description.Contains("R2_XORPEN"));
+            Assert.AreEqual(1, callback.Warnings.Count);
+            Assert.True(callback.Warnings[0].Description.Contains("R2_XORPEN"));
         }
 
         public class HandleDocumentWarnings : IWarningCallback
@@ -319,15 +320,16 @@ namespace ApiExamples
             /// </summary>
             public void Warning(WarningInfo info)
             {
-                //For now type of warnings about unsupported metafile records changed from DataLoss/UnexpectedContent to MinorFormattingLoss.
+                // For now type of warnings about unsupported metafile records changed from
+                // DataLoss/UnexpectedContent to MinorFormattingLoss
                 if (info.WarningType == WarningType.MinorFormattingLoss)
                 {
                     Console.WriteLine("Unsupported operation: " + info.Description);
-                    mWarnings.Warning(info);
+                    Warnings.Warning(info);
                 }
             }
 
-            public WarningInfoCollection mWarnings = new WarningInfoCollection();
+            public WarningInfoCollection Warnings = new WarningInfoCollection();
         }
         //ExEnd
 
@@ -368,7 +370,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOption.HeaderFooterBookmarksExportMode.pdf", SaveFormat.Pdf);
 
-            Assert.That(saveWarningCallback.mSaveWarnings[0].Description,
+            Assert.That(saveWarningCallback.SaveWarnings[0].Description,
                 Is.EqualTo("Image can not be processed. Possibly unsupported image format."));
         }
 
@@ -379,11 +381,11 @@ namespace ApiExamples
                 if (info.WarningType == WarningType.MinorFormattingLoss)
                 {
                     Console.WriteLine($"{info.WarningType}: {info.Description}.");
-                    mSaveWarnings.Warning(info);
+                    SaveWarnings.Warning(info);
                 }
             }
 
-            internal WarningInfoCollection mSaveWarnings = new WarningInfoCollection();
+            internal WarningInfoCollection SaveWarnings = new WarningInfoCollection();
 		}
 		
 		[Test]
@@ -391,13 +393,13 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:MetafileRenderingOptions.ScaleWmfFontsToMetafileSize
-            //ExSummary:Shows how to WMF fonts scaling according to metafile size on the page
+            //ExSummary:Shows how to WMF fonts scaling according to metafile size on the page.
             Document doc = new Document(MyDir + "PdfSaveOptions.FontsScaledToMetafileSize.docx");
 
             // There is a several options for this:
-            // 'True' - Aspose.Words emulates font scaling according to metafile size on the page.
-            // 'False' - Aspose.Words displays the fonts as metafile is rendered to its default size.
-            // Use 'False' option is used only when metafile is rendered as vector graphics.
+            // 'True' - Aspose.Words emulates font scaling according to metafile size on the page
+            // 'False' - Aspose.Words displays the fonts as metafile is rendered to its default size
+            // Use 'False' option is used only when metafile is rendered as vector graphics
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.MetafileRenderingOptions.ScaleWmfFontsToMetafileSize = true;
 
