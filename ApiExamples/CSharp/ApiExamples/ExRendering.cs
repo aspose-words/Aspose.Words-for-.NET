@@ -30,18 +30,6 @@ namespace ApiExamples
     public class ExRendering : ApiExampleBase
     {
         [Test]
-        public void SaveToPdfDefault()
-        {
-            //ExStart
-            //ExFor:Document.Save(String)
-            //ExSummary:Converts a whole document to PDF using default options.
-            Document doc = new Document(MyDir + "Rendering.doc");
-
-            doc.Save(ArtifactsDir + "Rendering.SaveToPdfDefault.pdf");
-            //ExEnd
-        }
-
-        [Test]
         public void SaveToPdfWithOutline()
         {
             //ExStart
@@ -103,9 +91,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PdfSaveOptions.PreserveFormFields
-            //ExFor:Document.Save(String)
-            //ExFor:Document.Save(Stream, SaveFormat)
-            //ExFor:Document.Save(String, SaveOptions)
             //ExSummary:Shows how to save a document to the PDF format using the Save method and the PdfSaveOptions class.
             // Open the document
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -137,9 +122,6 @@ namespace ApiExamples
             //ExFor:XpsSaveOptions.#ctor
             //ExFor:XpsSaveOptions.OutlineOptions
             //ExFor:XpsSaveOptions.SaveFormat
-            //ExFor:Document.Save(String)
-            //ExFor:Document.Save(Stream, SaveFormat)
-            //ExFor:Document.Save(String, SaveOptions)
             //ExSummary:Shows how to save a document to the XPS format in different ways.
             // Open the document
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -227,13 +209,9 @@ namespace ApiExamples
         [Category("SkipMono")]
         public void SaveToTiffDefault()
         {
-            //ExStart
-            //ExFor:Document.Save(String)
-            //ExSummary:Converts a whole document into a multipage TIFF file using default options.
             Document doc = new Document(MyDir + "Rendering.doc");
 
             doc.Save(ArtifactsDir + "Rendering.SaveToTiffDefault.tiff");
-            //ExEnd
         }
 
         [Test]
@@ -339,28 +317,6 @@ namespace ApiExamples
         }
 
         #if NETFRAMEWORK
-        [Test]
-        public void SaveToImageStream()
-        {
-            //ExStart
-            //ExFor:Document.Save(Stream, SaveFormat)
-            //ExSummary:Saves a document page as a BMP image into a stream.
-            Document doc = new Document(MyDir + "Rendering.doc");
-
-            MemoryStream stream = new MemoryStream();
-            doc.Save(stream, SaveFormat.Bmp);
-
-            // Rewind the stream and create a .NET image from it
-            stream.Position = 0;
-            
-            // Read the stream back into an image
-            using (Image image = Image.FromStream(stream))
-            {
-                // ...Do something
-            }
-            //ExEnd
-        }
-
         [Test]
         public void RenderToSize()
         {
@@ -778,25 +734,6 @@ namespace ApiExamples
             //ExEnd
         }
         #else
-        [Test]
-        public void SaveToImageStreamNetStandard2()
-        {
-            //ExStart
-            //ExFor:Document.Save(Stream, SaveFormat)
-            //ExSummary:Saves a document page as a BMP image into a stream (.NetStandard 2.0).
-            Document doc = new Document(MyDir + "Rendering.doc");
-
-            MemoryStream stream = new MemoryStream();
-            doc.Save(stream, SaveFormat.Bmp);
-
-            // Rewind the stream and create a .NET image from it
-            stream.Position = 0;
-            
-            // Read the stream back into an image
-            SkiaSharp.SKBitmap image = SkiaSharp.SKBitmap.Decode(stream);
-            //ExEnd
-        }
-
         [Test]
         public void RenderToSizeNetStandard2()
         {

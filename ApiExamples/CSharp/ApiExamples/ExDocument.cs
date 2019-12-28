@@ -232,27 +232,18 @@ namespace ApiExamples
         }
 
         [Test]
-        public void OpenFromFile()
+        public void ConvertToPdf()
         {
             //ExStart
             //ExFor:Document.#ctor(String)
-            //ExSummary:Opens a document from a file.
-            // Open a document. The file is opened read only and only for the duration of the constructor.
-            Document doc = new Document(MyDir + "Document.doc");
-            //ExEnd
-
-            //ExStart
             //ExFor:Document.Save(String)
-            //ExSummary:Saves a document to a file.
-            doc.Save(ArtifactsDir + "Document.OpenFromFile.doc");
-            //ExEnd
-        }
-
-        [Test]
-        public void OpenAndSaveToFile()
-        {
+            //ExSummary:Shows how to open a document and convert it to .PDF.
+            // Open a document that exists in the local file system
             Document doc = new Document(MyDir + "Document.doc");
-            doc.Save(ArtifactsDir + "Document.html");
+
+            // Save that document as a PDF to another location
+            doc.Save(ArtifactsDir + "Document.ConvertToPdf.pdf");
+            //ExEnd
         }
 
         [Test]
@@ -568,12 +559,8 @@ namespace ApiExamples
         [Test]
         public void ConvertToMhtml()
         {
-            //ExStart
-            //ExFor:Document.Save(String)
-            //ExSummary:Converts from DOC to MHTML format.
             Document doc = new Document(MyDir + "Document.doc");
             doc.Save(ArtifactsDir + "Document.ConvertToMhtml.mht");
-            //ExEnd
         }
 
         [Test]
@@ -582,18 +569,6 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.doc");
             doc.Save(ArtifactsDir + "Document.ConvertToTxt.txt");
             
-        }
-
-        [Test]
-        public void Doc2PdfSave()
-        {
-            //ExStart
-            //ExFor:Document
-            //ExFor:Document.Save(String)
-            //ExSummary:Converts a whole document from DOC to PDF using default options.
-            Document doc = new Document(MyDir + "Document.doc");
-            doc.Save(ArtifactsDir + "Document.Doc2PdfSave.pdf");
-            //ExEnd
         }
 
         [Test]
