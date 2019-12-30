@@ -27,7 +27,7 @@ namespace ApiExamples
             //ExFor:LineStyle
             //ExFor:Font
             //ExFor:DocumentBuilder.Font
-            //ExFor:DocumentBuilder.Write
+            //ExFor:DocumentBuilder.Write(String)
             //ExSummary:Shows how to insert a string surrounded by a border into a document.
             DocumentBuilder builder = new DocumentBuilder();
 

@@ -55,6 +55,7 @@ namespace ApiExamples
         public void HeadersAndFooters()
         {
             //ExStart
+            //ExFor:DocumentBuilder
             //ExFor:DocumentBuilder.#ctor(Document)
             //ExFor:DocumentBuilder.MoveToHeaderFooter
             //ExFor:DocumentBuilder.MoveToSection
@@ -310,7 +311,6 @@ namespace ApiExamples
         public void InsertWatermark()
         {
             //ExStart
-            //ExFor:HeaderFooterType
             //ExFor:DocumentBuilder.MoveToHeaderFooter
             //ExFor:PageSetup.PageWidth
             //ExFor:PageSetup.PageHeight
@@ -368,7 +368,6 @@ namespace ApiExamples
         public void InsertWatermarkNetStandard2()
         {
             //ExStart
-            //ExFor:HeaderFooterType
             //ExFor:DocumentBuilder.MoveToHeaderFooter
             //ExFor:PageSetup.PageWidth
             //ExFor:PageSetup.PageHeight
@@ -430,7 +429,6 @@ namespace ApiExamples
         public void InsertHtml()
         {
             //ExStart
-            //ExFor:DocumentBuilder
             //ExFor:DocumentBuilder.InsertHtml(String)
             //ExSummary:Inserts HTML into a document. The formatting specified in the HTML is applied.
             Document doc = new Document();
@@ -466,7 +464,6 @@ namespace ApiExamples
         public void InsertMathMl()
         {
             //ExStart
-            //ExFor:DocumentBuilder.InsertHtml(String)
             //ExSummary:Inserts MathMl into a document using.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -487,7 +484,6 @@ namespace ApiExamples
         public void InsertTextAndBookmark()
         {
             //ExStart
-            //ExFor:DocumentBuilder
             //ExFor:DocumentBuilder.StartBookmark
             //ExFor:DocumentBuilder.EndBookmark
             //ExSummary:Adds some text into the document and encloses the text in a bookmark using DocumentBuilder.
@@ -752,10 +748,6 @@ namespace ApiExamples
             //ExFor:RowFormat
             //ExFor:RowFormat.Borders
             //ExFor:RowFormat.ClearFormatting
-            //ExFor:RowFormat.HeightRule
-            //ExFor:RowFormat.Height
-            //ExFor:HeightRule
-            //ExFor:Shading.BackgroundPatternColor
             //ExFor:Shading.ClearFormatting
             //ExSummary:Shows how to build a nice bordered table.
             DocumentBuilder builder = new DocumentBuilder();
@@ -1075,60 +1067,12 @@ namespace ApiExamples
         }
 
         [Test]
-        public void BuildSimpleTable()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder
-            //ExFor:DocumentBuilder.Write
-            //ExFor:DocumentBuilder.InsertCell
-            //ExSummary:Shows how to create a simple table using DocumentBuilder with default formatting.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // We call this method to start building the table
-            builder.StartTable();
-            builder.InsertCell();
-            builder.Write("Row 1, Cell 1 Content.");
-
-            // Build the second cell
-            builder.InsertCell();
-            builder.Write("Row 1, Cell 2 Content.");
-            // Call the following method to end the row and start a new row
-            builder.EndRow();
-
-            // Build the first cell of the second row
-            builder.InsertCell();
-            builder.Write("Row 2, Cell 1 Content");
-
-            // Build the second cell.
-            builder.InsertCell();
-            builder.Write("Row 2, Cell 2 Content.");
-            builder.EndRow();
-
-            // Signal that we have finished building the table
-            builder.EndTable();
-
-            // Save the document to disk
-            doc.Save(ArtifactsDir + "DocumentBuilder.CreateSimpleTable.doc");
-            //ExEnd
-
-            // Verify that the cell count of the table is four
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
-            Assert.IsNotNull(table);
-            Assert.AreEqual(4, table.GetChildNodes(NodeType.Cell, true).Count);
-        }
-
-        [Test]
         public void BuildFormattedTable()
         {
             //ExStart
-            //ExFor:DocumentBuilder
-            //ExFor:DocumentBuilder.Write
-            //ExFor:DocumentBuilder.InsertCell
             //ExFor:RowFormat.Height
             //ExFor:RowFormat.HeightRule
             //ExFor:Table.LeftIndent
-            //ExFor:Shading.BackgroundPatternColor
             //ExFor:DocumentBuilder.ParagraphFormat
             //ExFor:DocumentBuilder.Font
             //ExSummary:Shows how to create a formatted table using DocumentBuilder.
@@ -1219,7 +1163,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Shading
-            //ExFor:Shading.BackgroundPatternColor
             //ExFor:Table.SetBorders
             //ExFor:BorderCollection.Left
             //ExFor:BorderCollection.Right
@@ -1498,15 +1441,12 @@ namespace ApiExamples
             //ExStart
             //ExFor:Table
             //ExFor:DocumentBuilder.StartTable
-            //ExFor:DocumentBuilder.InsertCell
             //ExFor:DocumentBuilder.EndRow
             //ExFor:DocumentBuilder.EndTable
             //ExFor:DocumentBuilder.CellFormat
             //ExFor:DocumentBuilder.RowFormat
-            //ExFor:DocumentBuilder.Write
+            //ExFor:DocumentBuilder.Write(String)
             //ExFor:DocumentBuilder.Writeln(String)
-            //ExFor:RowFormat.Height
-            //ExFor:RowFormat.HeightRule
             //ExFor:CellVerticalAlignment
             //ExFor:CellFormat.Orientation
             //ExFor:TextOrientation
@@ -1613,15 +1553,12 @@ namespace ApiExamples
         [Test]
         public void InsertImageFromUrl()
         {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertImage(String)
-            //ExSummary:Shows how to insert an image into a document from a web address.
+            // Insert an image from a URL
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertImage(AsposeLogoUrl);
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertImageFromUrl.doc");
-            //ExEnd
 
             // Verify that the image was inserted into the document
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
@@ -1871,6 +1808,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.RowFormat
+            //ExFor:HeightRule
             //ExFor:RowFormat.Height
             //ExFor:RowFormat.HeightRule
             //ExFor:Table.LeftPadding
@@ -1894,7 +1832,7 @@ namespace ApiExamples
             table.TopPadding = 30;
             table.BottomPadding = 30;
 
-            builder.Writeln("I'm a wonderful formatted row.");
+            builder.Writeln("Contents of formatted row.");
 
             builder.EndRow();
             builder.EndTable();

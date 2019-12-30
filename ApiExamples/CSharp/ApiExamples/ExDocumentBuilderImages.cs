@@ -80,7 +80,6 @@ namespace ApiExamples
         public void InsertImageFromImageClass()
         {
             //ExStart
-            //ExFor:DocumentBuilder.InsertImage(Image)
             //ExFor:DocumentBuilder.InsertImage(Image, Double, Double)
             //ExFor:DocumentBuilder.InsertImage(Image, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
             //ExSummary:Shows different solutions of how to import an image into a document from Image class.
@@ -140,7 +139,6 @@ namespace ApiExamples
         public void InsertImageFromImageClassNetStandard2()
         {
             //ExStart
-            //ExFor:DocumentBuilder.InsertImage(Image)
             //ExFor:DocumentBuilder.InsertImage(Image, Double, Double)
             //ExFor:DocumentBuilder.InsertImage(Image, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
             //ExSummary:Shows different solutions of how to import an image into a document from Image class (.NetStandard 2.0).

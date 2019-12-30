@@ -131,7 +131,6 @@ namespace ApiExamples
         //ExFor:IReplacingCallback
         //ExFor:IReplacingCallback.Replacing
         //ExFor:ReplacingArgs
-        //ExFor:DocumentBuilder.InsertHtml(String)
         //ExSummary:Replaces text specified with regular expression with HTML.
         [Test] //ExSkip
         public void ReplaceWithInsertHtml()
