@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -29,7 +29,7 @@ namespace ApiExamples
             //ExFor:Font
             //ExFor:DocumentBuilder.Font
             //ExFor:DocumentBuilder.Write
-            //ExSummary:Inserts a String surrounded by a border into a document.
+            //ExSummary:Shows how to insert a string surrounded by a border into a document.
             DocumentBuilder builder = new DocumentBuilder();
 
             builder.Font.Border.Color = Color.Green;
@@ -48,7 +48,7 @@ namespace ApiExamples
             //ExFor:Border
             //ExFor:BorderType
             //ExFor:ParagraphFormat.Borders
-            //ExSummary:Inserts a paragraph with a top border.
+            //ExSummary:Shows how to insert a paragraph with a top border.
             DocumentBuilder builder = new DocumentBuilder();
 
             Border topBorder = builder.ParagraphFormat.Borders[BorderType.Top];
@@ -65,19 +65,16 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Border.ClearFormatting
-            //ExSummary:Shows how to remove borders from a paragraph one by one.
-            Document doc = new Document(MyDir + "Border.Borders.doc");
+            //ExSummary:Shows how to remove borders from a paragraph.
+            Document doc = new Document(MyDir + "Borders.doc");
+            
             DocumentBuilder builder = new DocumentBuilder(doc);
-
             BorderCollection borders = builder.ParagraphFormat.Borders;
 
-            foreach (Border border in borders)
-            {
-                border.ClearFormatting();
-            }
-
+            foreach (Border border in borders) border.ClearFormatting();
+            
             builder.CurrentParagraph.Runs[0].Text = "Paragraph with no border";
-
+            
             doc.Save(ArtifactsDir + "Border.NoBorder.doc");
             //ExEnd
         }
@@ -131,7 +128,6 @@ namespace ApiExamples
             {
                 Assert.IsFalse(firstParaBorders[i].Equals(secondParaBorders[i]));
                 Assert.AreNotEqual(firstParaBorders[i].GetHashCode(), secondParaBorders[i].GetHashCode());
-
                 // Changing the line style made the borders visible
                 Assert.IsTrue(secondParaBorders[i].IsVisible);
             }

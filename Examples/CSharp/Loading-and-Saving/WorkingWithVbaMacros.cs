@@ -44,6 +44,30 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             Console.WriteLine("\nDocument saved successfully.\nFile saved at " + dataDir);
         }
 
+        public static void CreateVbaProject(string dataDir)
+        {
+            //ExStart:CreateVbaProject
+            Document doc = new Document();
+
+            // Create a new VBA project.
+            VbaProject project = new VbaProject();
+            project.Name = "AsposeProject";
+            doc.VbaProject = project;
+
+            // Create a new module and specify a macro source code.
+            VbaModule module = new VbaModule();
+            module.Name = "AsposeModule";
+            module.Type = VbaModuleType.ProceduralModule;
+            module.SourceCode = "New source code";
+
+            // Add module to the VBA project.
+            doc.VbaProject.Modules.Add(module);
+
+            doc.Save(dataDir + "VbaProject_out.docm");
+            //ExEnd:CreateVbaProject
+            Console.WriteLine("\nDocument saved successfully.\nFile saved at " + dataDir);
+        }
+
         public static void ReadVbaMacros(string dataDir)
         {
             //ExStart:ReadVbaMacros

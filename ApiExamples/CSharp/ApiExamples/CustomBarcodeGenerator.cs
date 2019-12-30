@@ -1,13 +1,20 @@
-﻿using System;
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
+
+using System;
 using System.Drawing;
 using System.Globalization;
 using Aspose.BarCode;
 using Aspose.Words.Fields;
 using Image =
-#if NETSTANDARD2_0 || __MOBILE__
-SkiaSharp.SKBitmap;
-#else
+#if NETFRAMEWORK
 System.Drawing.Image;
+#else
+SkiaSharp.SKBitmap;
 #endif
 
 namespace ApiExamples
@@ -15,7 +22,7 @@ namespace ApiExamples
     /// <summary>
     /// Sample of custom barcode generator implementation (with underlying Aspose.BarCode module)
     /// </summary>
-    public class CustomBarcodeGenerator : IBarcodeGenerator
+    public class CustomBarcodeGenerator : ApiExampleBase, IBarcodeGenerator
     {
         /// <summary>
         /// Converts barcode image height from Word units to Aspose.BarCode units.
@@ -168,13 +175,12 @@ namespace ApiExamples
 
                 builder.AutoSize = false;
             }
-
-#if NETSTANDARD2_0 || __MOBILE__
-            builder.BarCodeImage.Save(ApiExampleBase.ArtifactsDir + "GetBarcodeImage.png");
-
-            return Image.Decode(ApiExampleBase.ArtifactsDir + "OldBarcodeImage.png");
+            
+#if NETFRAMEWORK
+            return builder.BarCodeImage;            
 #else
-            return builder.BarCodeImage;
+            builder.BarCodeImage.Save(ArtifactsDir + "GetBarcodeImage.png");
+            return Image.Decode(ArtifactsDir + "OldBarcodeImage.png");
 #endif
         }
 
@@ -195,12 +201,11 @@ namespace ApiExamples
             };
 
             // Hardcode type for old-fashioned Barcode
-#if NETSTANDARD2_0 || __MOBILE__
-            builder.BarCodeImage.Save(ApiExampleBase.ArtifactsDir + "OldBarcodeImage.png");
-            
-            return Image.Decode(ApiExampleBase.ArtifactsDir + "OldBarcodeImage.png");
-#else
+#if NETFRAMEWORK
             return builder.BarCodeImage;
+#else
+            builder.BarCodeImage.Save(ApiExampleBase.ArtifactsDir + "OldBarcodeImage.png");            
+            return Image.Decode(ApiExampleBase.ArtifactsDir + "OldBarcodeImage.png");            
 #endif
         }
 

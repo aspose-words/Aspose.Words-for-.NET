@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -23,7 +23,7 @@ namespace ApiExamples
             //ExFor:OdtSaveOptions.IsStrictSchema11
             //ExFor:OdtSaveOptions.MeasureUnit
             //ExFor:OdtSaveMeasureUnit
-            //ExSummary:Shows how to work with units of measure of document content
+            //ExSummary:Shows how to work with units of measure of document content.
             Document doc = new Document(MyDir + "OdtSaveOptions.MeasureUnit.docx");
 
             // Open Office uses centimeters, MS Office uses inches
@@ -71,7 +71,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OdtSaveOptions.#ctor(String)
-            //ExSummary:Shows how to load and change odt/ott encrypted document
+            //ExSummary:Shows how to load and change odt/ott encrypted document.
             Document doc = new Document(MyDir + "OdtSaveOptions.LoadDocumentEncryptedWithAPassword" +
                                         FileFormatUtil.SaveFormatToExtension(saveFormat),
                 new LoadOptions("@sposeEncrypted_1145"));

@@ -1,11 +1,10 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System;
 using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Themes;
@@ -52,10 +51,10 @@ namespace ApiExamples
             theme.MajorFonts.Latin = "Courier New";
             theme.MinorFonts.Latin = "Agency FB";
 
-            Assert.AreEqual(String.Empty, theme.MajorFonts.ComplexScript);
-            Assert.AreEqual(String.Empty, theme.MajorFonts.EastAsian);
-            Assert.AreEqual(String.Empty, theme.MinorFonts.ComplexScript);
-            Assert.AreEqual(String.Empty, theme.MinorFonts.EastAsian);
+            Assert.AreEqual(string.Empty, theme.MajorFonts.ComplexScript);
+            Assert.AreEqual(string.Empty, theme.MajorFonts.EastAsian);
+            Assert.AreEqual(string.Empty, theme.MinorFonts.ComplexScript);
+            Assert.AreEqual(string.Empty, theme.MinorFonts.EastAsian);
 
             // This collection of colors corresponds to the color palette from Microsoft Word which appears when changing shading or font color 
             ThemeColors colors = theme.Colors;
@@ -87,12 +86,12 @@ namespace ApiExamples
             Assert.AreEqual(Color.Black.ToArgb(), doc.Theme.Colors.Hyperlink.ToArgb());
             Assert.AreEqual(Color.PaleGreen.ToArgb(), doc.Theme.Colors.Light1.ToArgb());
 
-            Assert.AreEqual(String.Empty, doc.Theme.MajorFonts.ComplexScript);
-            Assert.AreEqual(String.Empty, doc.Theme.MajorFonts.EastAsian);
+            Assert.AreEqual(string.Empty, doc.Theme.MajorFonts.ComplexScript);
+            Assert.AreEqual(string.Empty, doc.Theme.MajorFonts.EastAsian);
             Assert.AreEqual("Courier New", doc.Theme.MajorFonts.Latin);
 
-            Assert.AreEqual(String.Empty, doc.Theme.MinorFonts.ComplexScript);
-            Assert.AreEqual(String.Empty, doc.Theme.MinorFonts.EastAsian);
+            Assert.AreEqual(string.Empty, doc.Theme.MinorFonts.ComplexScript);
+            Assert.AreEqual(string.Empty, doc.Theme.MinorFonts.EastAsian);
             Assert.AreEqual("Agency FB", doc.Theme.MinorFonts.Latin);
         }
     }
