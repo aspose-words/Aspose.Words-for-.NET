@@ -223,7 +223,6 @@ namespace ApiExamples
             //ExFor:ImageSaveOptions.TiffCompression
             //ExFor:ImageSaveOptions.PageIndex
             //ExFor:ImageSaveOptions.PageCount
-            //ExFor:Document.Save(String, SaveOptions)
             //ExSummary:Converts a page of a Word document into a TIFF image and uses the CCITT compression.
             Document doc = new Document(MyDir + "Rendering.doc");
 

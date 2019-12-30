@@ -75,9 +75,6 @@ namespace ApiExamples
         [Category("SkipMono")]
         public void CreateFromImage()
         {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertImage(Image)
-            //ExSummary:Shows how to insert a .NET Image object into a document. The image is inserted inline and at 100% scale.
             // This creates a builder and also an empty document inside the builder
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -108,16 +105,12 @@ namespace ApiExamples
             }
 
             builder.Document.Save(ArtifactsDir + "Image.CreateFromImage.doc");
-            //ExEnd
         }
         #else
         [Test]
         [Category("SkipMono")]
         public void CreateFromImageNetStandard2()
         {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertImage(Image)
-            //ExSummary:Shows how to insert a .NET Image object into a document. The image is inserted inline and at 100% scale (.NetStandard 2.0).
             // This creates a builder and also an empty document inside the builder
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -131,7 +124,6 @@ namespace ApiExamples
             }
 
             builder.Document.Save(ArtifactsDir + "Image.CreateFromImage.doc");
-            //ExEnd
         }
         #endif
 
