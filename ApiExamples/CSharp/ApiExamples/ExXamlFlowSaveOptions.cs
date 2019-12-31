@@ -47,7 +47,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Counts and prints filenames of images while their parent document is converted to flow-form .xaml
+        /// Counts and prints filenames of images while their parent document is converted to flow-form .xaml.
         /// </summary>
         private class ImageUriPrinter : IImageSavingCallback
         {

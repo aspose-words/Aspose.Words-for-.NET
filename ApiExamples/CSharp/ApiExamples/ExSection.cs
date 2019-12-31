@@ -36,10 +36,10 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.SectionBreakContinuous);
             builder.Writeln("Section 2. Protected.");
 
-            // Section protection only works when document protection is turned and only editing in form fields is allowed.
+            // Section protection only works when document protection is turned and only editing in form fields is allowed
             doc.Protect(ProtectionType.AllowOnlyFormFields);
 
-            // By default, all sections are protected, but we can selectively turn protection off.
+            // By default, all sections are protected, but we can selectively turn protection off
             doc.Sections[0].ProtectedForForms = false;
 
             builder.Document.Save(ArtifactsDir + "Section.Protect.doc");
@@ -55,21 +55,21 @@ namespace ApiExamples
             //ExFor:SectionCollection
             //ExFor:NodeCollection.RemoveAt(Int32)
             //ExSummary:Shows how to add/remove sections in a document.
-            // Open the document.
+            // Open the document
             Document doc = new Document(MyDir + "Section.AddRemove.doc");
 
-            // This shows what is in the document originally. The document has two sections.
+            // This shows what is in the document originally. The document has two sections
             Console.WriteLine(doc.GetText());
 
             // Delete the first section from the document
             doc.Sections.RemoveAt(0);
 
-            // Duplicate the last section and append the copy to the end of the document.
+            // Duplicate the last section and append the copy to the end of the document
             int lastSectionIdx = doc.Sections.Count - 1;
             Section newSection = doc.Sections[lastSectionIdx].Clone();
             doc.Sections.Add(newSection);
 
-            // Check what the document contains after we changed it.
+            // Check what the document contains after we changed it
             Console.WriteLine(doc.GetText());
             //ExEnd
 
@@ -104,35 +104,34 @@ namespace ApiExamples
             //ExFor:Run.Text
             //ExFor:Inline.Font
             //ExSummary:Creates a simple document from scratch using the Aspose.Words object model.
-
             // Create an "empty" document. Note that like in Microsoft Word, 
-            // the empty document has one section, body and one paragraph in it.
+            // the empty document has one section, body and one paragraph in it
             Document doc = new Document();
 
-            // This truly makes the document empty. No sections (not possible in Microsoft Word).
+            // This truly makes the document empty. No sections (not possible in Microsoft Word)
             doc.RemoveAllChildren();
 
-            // Create a new section node. 
+            // Create a new section node
             // Note that the section has not yet been added to the document, 
-            // but we have to specify the parent document.
+            // but we have to specify the parent document
             Section section = new Section(doc);
 
-            // Append the section to the document.
+            // Append the section to the document
             doc.AppendChild(section);
 
-            // Lets set some properties for the section.
+            // Lets set some properties for the section
             section.PageSetup.SectionStart = SectionStart.NewPage;
             section.PageSetup.PaperSize = PaperSize.Letter;
 
-            // The section that we created is empty, lets populate it. The section needs at least the Body node.
+            // The section that we created is empty, lets populate it. The section needs at least the Body node
             Body body = new Body(doc);
             section.AppendChild(body);
 
-            // The body needs to have at least one paragraph.
+            // The body needs to have at least one paragraph
             // Note that the paragraph has not yet been added to the document, 
-            // but we have to specify the parent document.
+            // but we have to specify the parent document
             // The parent document is needed so the paragraph can correctly work
-            // with styles and other document-wide information.
+            // with styles and other document-wide information
             Paragraph para = new Paragraph(doc);
             body.AppendChild(para);
 
@@ -140,19 +139,19 @@ namespace ApiExamples
             para.ParagraphFormat.StyleName = "Heading 1";
             para.ParagraphFormat.Alignment = ParagraphAlignment.Center;
 
-            // So far we have one empty paragraph in the document.
-            // The document is valid and can be saved, but lets add some text before saving.
-            // Create a new run of text and add it to our paragraph.
+            // So far we have one empty paragraph in the document
+            // The document is valid and can be saved, but lets add some text before saving
+            // Create a new run of text and add it to our paragraph
             Run run = new Run(doc);
             run.Text = "Hello World!";
             run.Font.Color = Color.Red;
             para.AppendChild(run);
 
             // As a matter of interest, you can retrieve text of the whole document and
-            // see that \x000c is automatically appended. \x000c is the end of section character.
+            // see that \x000c is automatically appended. \x000c is the end of section character
             Console.WriteLine("Hello World!\x000c");
 
-            // Save the document.
+            // Save the document
             doc.Save(ArtifactsDir + "Section.CreateFromScratch.doc");
             //ExEnd
 
@@ -169,7 +168,7 @@ namespace ApiExamples
             Document doc = new Document();
             Section section = doc.FirstSection;
 
-            // Makes sure that the section contains a body with at least one paragraph.
+            // Makes sure that the section contains a body with at least one paragraph
             section.EnsureMinimum();
             //ExEnd
         }
@@ -181,28 +180,28 @@ namespace ApiExamples
             //ExFor:Section.Body
             //ExFor:Body.EnsureMinimum
             //ExSummary:Clears main text from all sections from the document leaving the sections themselves.
-
-            // Open a document.
+            // Open a document
             Document doc = new Document(MyDir + "Section.BodyEnsureMinimum.doc");
 
-            // This shows what is in the document originally. The document has two sections.
+            // This shows what is in the document originally
+            // The document has two sections
             Console.WriteLine(doc.GetText());
 
-            // Loop through all sections in the document.
+            // Loop through all sections in the document
             foreach (Section section in doc.Sections.OfType<Section>())
             {
-                // Each section has a Body node that contains main story (main text) of the section.
+                // Each section has a Body node that contains main story (main text) of the section
                 Body body = section.Body;
 
-                // This clears all nodes from the body.
+                // This clears all nodes from the body
                 body.RemoveAllChildren();
 
                 // Technically speaking, for the main story of a section to be valid, it needs to have
-                // at least one empty paragraph. That's what the EnsureMinimum method does.
+                // at least one empty paragraph. That's what the EnsureMinimum method does
                 body.EnsureMinimum();
             }
 
-            // Check how the content of the document looks now.
+            // Check how the content of the document looks now
             Console.WriteLine(doc.GetText());
             //ExEnd
 
@@ -217,35 +216,35 @@ namespace ApiExamples
             //ExFor:HeaderFooter.NodeType
             //ExFor:Document.FirstSection
             //ExSummary:Shows how you can enumerate through children of a composite node and detect types of the children nodes.
-            // Open a document.
+            // Open a document
             Document doc = new Document(MyDir + "Section.BodyNodeType.doc");
 
-            // Get the first section in the document.
+            // Get the first section in the document
             Section section = doc.FirstSection;
 
-            // A Section is a composite node and therefore can contain child nodes.
-            // Section can contain only Body and HeaderFooter nodes.
+            // A Section is a composite node and therefore can contain child nodes
+            // Section can contain only Body and HeaderFooter nodes
             foreach (Node node in section)
             {
-                // Every node has the NodeType property.
+                // Every node has the NodeType property
                 switch (node.NodeType)
                 {
                     case NodeType.Body:
                     {
-                        // If the node type is Body, we can cast the node to the Body class.
+                        // If the node type is Body, we can cast the node to the Body class
                         Body body = (Body) node;
 
-                        // Write the content of the main story of the section to the console.
+                        // Write the content of the main story of the section to the console
                         Console.WriteLine("*** Body ***");
                         Console.WriteLine(body.GetText());
                         break;
                     }
                     case NodeType.HeaderFooter:
                     {
-                        // If the node type is HeaderFooter, we can cast the node to the HeaderFooter class.
+                        // If the node type is HeaderFooter, we can cast the node to the HeaderFooter class
                         HeaderFooter headerFooter = (HeaderFooter) node;
 
-                        // Write the content of the header footer to the console.
+                        // Write the content of the header footer to the console
                         Console.WriteLine("*** HeaderFooter ***");
                         Console.WriteLine(headerFooter.HeaderFooterType);
                         Console.WriteLine(headerFooter.GetText());
@@ -253,7 +252,7 @@ namespace ApiExamples
                     }
                     default:
                     {
-                        // Other types of nodes never occur inside a Section node.
+                        // Other types of nodes never occur inside a Section node
                         throw new Exception("Unexpected node type in a section.");
                     }
                 }
@@ -312,14 +311,14 @@ namespace ApiExamples
             //ExSummary:Shows how to append content of an existing section. The number of sections in the document remains the same.
             Document doc = new Document(MyDir + "Section.AppendContent.doc");
 
-            // This is the section that we will append and prepend to.
+            // This is the section that we will append and prepend to
             Section section = doc.Sections[2];
 
-            // This copies content of the 1st section and inserts it at the beginning of the specified section.
+            // This copies content of the 1st section and inserts it at the beginning of the specified section
             Section sectionToPrepend = doc.Sections[0];
             section.PrependContent(sectionToPrepend);
 
-            // This copies content of the 2nd section and inserts it at the end of the specified section.
+            // This copies content of the 2nd section and inserts it at the end of the specified section
             Section sectionToAppend = doc.Sections[1];
             section.AppendContent(sectionToAppend);
             //ExEnd
@@ -396,7 +395,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Section.ModifyPageSetupInAllSections.doc");
 
             // It is important to understand that a document can contain many sections and each
-            // section has its own page setup. In this case we want to modify them all.
+            // section has its own page setup. In this case we want to modify them all
             foreach (Section section in doc.OfType<Section>())
                 section.PageSetup.PaperSize = PaperSize.Letter;
 
@@ -410,7 +409,7 @@ namespace ApiExamples
 
             Document docEn = new Document();
 
-            //Assert that page defaults comply current culture info
+            // Assert that page defaults comply current culture info
             Section sectionEn = docEn.Sections[0];
             Assert.AreEqual(72.0, sectionEn.PageSetup.LeftMargin); // 2.54 cm         
             Assert.AreEqual(72.0, sectionEn.PageSetup.RightMargin); // 2.54 cm
@@ -420,7 +419,7 @@ namespace ApiExamples
             Assert.AreEqual(36.0, sectionEn.PageSetup.FooterDistance); // 1.27 cm
             Assert.AreEqual(36.0, sectionEn.PageSetup.TextColumns.Spacing); // 1.27 cm
 
-            //Change culture and assert that the page defaults are changed
+            // Change culture and assert that the page defaults are changed
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-de");
 
             Document docDe = new Document();
@@ -434,7 +433,7 @@ namespace ApiExamples
             Assert.AreEqual(35.4, sectionDe.PageSetup.FooterDistance); // 1.25 cm
             Assert.AreEqual(35.4, sectionDe.PageSetup.TextColumns.Spacing); // 1.25 cm
 
-            //Change page defaults
+            // Change page defaults
             sectionDe.PageSetup.LeftMargin = 90; // 3.17 cm
             sectionDe.PageSetup.RightMargin = 90; // 3.17 cm
             sectionDe.PageSetup.TopMargin = 72; // 2.54 cm

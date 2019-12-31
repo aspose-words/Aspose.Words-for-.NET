@@ -106,7 +106,7 @@ namespace ApiExamples
         {
             Document doc = new Document();
             
-            // Retrieve the style used for the first level of the TOC and change the formatting of the style.
+            // Retrieve the style used for the first level of the TOC and change the formatting of the style
             doc.Styles[StyleIdentifier.Toc1].Font.Bold = true;
         }
 
@@ -127,15 +127,15 @@ namespace ApiExamples
             // Iterate through all paragraphs in the document
             foreach (Paragraph para in doc.GetChildNodes(NodeType.Paragraph, true).OfType<Paragraph>())
             {
-                // Check if this paragraph is formatted using the TOC result based styles. This is any style between TOC and TOC9.
+                // Check if this paragraph is formatted using the TOC result based styles. This is any style between TOC and TOC9
                 if (para.ParagraphFormat.Style.StyleIdentifier >= StyleIdentifier.Toc1 &&
                     para.ParagraphFormat.Style.StyleIdentifier <= StyleIdentifier.Toc9)
                 {
-                    // Get the first tab used in this paragraph, this should be the tab used to align the page numbers.
+                    // Get the first tab used in this paragraph, this should be the tab used to align the page numbers
                     TabStop tab = para.ParagraphFormat.TabStops[0];
-                    // Remove the old tab from the collection.
+                    // Remove the old tab from the collection
                     para.ParagraphFormat.TabStops.RemoveByPosition(tab.Position);
-                    // Insert a new tab using the same properties but at a modified position. 
+                    // Insert a new tab using the same properties but at a modified position
                     // We could also change the separators used (dots) by passing a different Leader type
                     para.ParagraphFormat.TabStops.Add(tab.Position - 50, tab.Alignment, tab.Leader);
                 }
@@ -154,10 +154,10 @@ namespace ApiExamples
             //ExFor:StyleCollection.AddCopy
             //ExFor:Style.Name
             //ExSummary:Demonstrates how to copy a style within the same document.
-            // The AddCopy method creates a copy of the specified style and automatically generates a new name for the style, such as "Heading 1_0".
+            // The AddCopy method creates a copy of the specified style and automatically generates a new name for the style, such as "Heading 1_0"
             Style newStyle = doc.Styles.AddCopy(doc.Styles["Heading 1"]);
 
-            // You can change the new style name if required as the Style.Name property is read-write.
+            // You can change the new style name if required as the Style.Name property is read-write
             newStyle.Name = "My Heading 1";
             //ExEnd
 
@@ -175,13 +175,13 @@ namespace ApiExamples
             //ExStart
             //ExFor:StyleCollection.AddCopy
             //ExSummary:Demonstrates how to copy style from one document into a different document.
-            // This is the style in the source document to copy to the destination document.
+            // This is the style in the source document to copy to the destination document
             Style srcStyle = srcDoc.Styles[StyleIdentifier.Heading1];
 
-            // Change the font of the heading style to red.
+            // Change the font of the heading style to red
             srcStyle.Font.Color = Color.Red;
 
-            // The AddCopy method can be used to copy a style from a different document.
+            // The AddCopy method can be used to copy a style from a different document
             Style newStyle = dstDoc.Styles.AddCopy(srcStyle);
             //ExEnd
 
@@ -199,16 +199,16 @@ namespace ApiExamples
             //ExStart
             //ExFor:StyleCollection.AddCopy
             //ExSummary:Demonstrates how to copy a style from one document to another and override an existing style in the destination document.
-            // This is the style in the source document to copy to the destination document.
+            // This is the style in the source document to copy to the destination document
             Style srcStyle = srcDoc.Styles[StyleIdentifier.Heading1];
 
-            // Change the font of the heading style to red.
+            // Change the font of the heading style to red
             srcStyle.Font.Color = Color.Red;
 
-            // The AddCopy method can be used to copy a style to a different document.
+            // The AddCopy method can be used to copy a style to a different document
             Style newStyle = dstDoc.Styles.AddCopy(srcStyle);
 
-            // The name of the new style can be changed to the name of any existing style. Doing this will override the existing style.
+            // The name of the new style can be changed to the name of any existing style. Doing this will override the existing style
             newStyle.Name = "Heading 1";
             //ExEnd
 
@@ -223,7 +223,7 @@ namespace ApiExamples
         {
             Document doc = new Document();
 
-            //Add document-wide defaults parameters
+            // Add document-wide defaults parameters
             doc.Styles.DefaultFont.Name = "PMingLiU";
             doc.Styles.DefaultFont.Bold = true;
 

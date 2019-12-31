@@ -45,12 +45,12 @@ namespace ApiExamples
             string certificatePath = MyDir + "morzal.pfx";
             string certificatePassword = "aw";
 
-            // We need to create simple list with test signers for this example.
+            // We need to create simple list with test signers for this example
             CreateSignPersonData();
             Console.WriteLine("Test data successfully added!");
 
-            // Get sign person object by name of the person who must sign a document.
-            // This an example, in real use case you would return an object from a database.
+            // Get sign person object by name of the person who must sign a document
+            // This an example, in real use case you would return an object from a database
             SignPersonTestClass signPersonInfo =
                 (from c in gSignPersonList where c.Name == signPersonName select c).FirstOrDefault();
 
@@ -65,8 +65,8 @@ namespace ApiExamples
                 Assert.Fail(); //ExSkip
             }
 
-            // Now do something with a signed document, for example, save it to your database.
-            // Use 'new Document(dstDocumentPath)' for loading a signed document.
+            // Now do something with a signed document, for example, save it to your database
+            // Use 'new Document(dstDocumentPath)' for loading a signed document
         }
 
         /// <summary>
@@ -75,39 +75,39 @@ namespace ApiExamples
         private static void SignDocument(string srcDocumentPath, string dstDocumentPath,
             SignPersonTestClass signPersonInfo, string certificatePath, string certificatePassword)
         {
-            // Create new document instance based on a test file that we need to sign.
+            // Create new document instance based on a test file that we need to sign
             Document document = new Document(srcDocumentPath);
             DocumentBuilder builder = new DocumentBuilder(document);
 
-            // Add info about responsible person who sign a document.
+            // Add info about responsible person who sign a document
             SignatureLineOptions signatureLineOptions =
                 new SignatureLineOptions { Signer = signPersonInfo.Name, SignerTitle = signPersonInfo.Position };
 
-            // Add signature line for responsible person who sign a document.
+            // Add signature line for responsible person who sign a document
             SignatureLine signatureLine = builder.InsertSignatureLine(signatureLineOptions).SignatureLine;
             signatureLine.Id = signPersonInfo.PersonId;
 
-            // Save a document with line signatures into temporary file for future signing.
+            // Save a document with line signatures into temporary file for future signing
             builder.Document.Save(dstDocumentPath);
 
-            // Create holder of certificate instance based on your personal certificate.
-            // This is the test certificate generated for this example.
+            // Create holder of certificate instance based on your personal certificate
+            // This is the test certificate generated for this example
             CertificateHolder certificateHolder = CertificateHolder.Create(certificatePath, certificatePassword);
 
-            // Link our signature line with personal signature.
+            // Link our signature line with personal signature
             SignOptions signOptions = new SignOptions
             {
                 SignatureLineId = signPersonInfo.PersonId,
                 SignatureLineImage = signPersonInfo.Image
             };
 
-            // Sign a document which contains signature line with personal certificate.
+            // Sign a document which contains signature line with personal certificate
             DigitalSignatureUtil.Sign(dstDocumentPath, dstDocumentPath, certificateHolder, signOptions);
         }
 
         #if NETFRAMEWORK
         /// <summary>
-        /// Converting image file to bytes array
+        /// Converting image file to bytes array.
         /// </summary>
         private static byte[] ImageToByteArray(Image imageIn)
         {

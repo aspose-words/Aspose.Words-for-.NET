@@ -21,24 +21,24 @@ namespace ApiExamples
         [Test] //ExSkip
         public void CustomDataSource()
         {
-            // Create some data that we will use in the mail merge.
+            // Create some data that we will use in the mail merge
             CustomerList customers = new CustomerList();
             customers.Add(new Customer("Thomas Hardy", "120 Hanover Sq., London"));
             customers.Add(new Customer("Paolo Accorti", "Via Monte Bianco 34, Torino"));
 
-            // Create some data for nesting in the mail merge.
+            // Create some data for nesting in the mail merge
             customers[0].Orders.Add(new Order("Rugby World Cup Cap", 2));
             customers[0].Orders.Add(new Order("Rugby World Cup Ball", 1));
             customers[1].Orders.Add(new Order("Rugby World Cup Guide", 1));
 
-            // Open the template document.
+            // Open the template document
             Document doc = new Document(MyDir + "NestedMailMerge.CustomDataSource.doc");
 
             // To be able to mail merge from your own data source, it must be wrapped
-            // into an object that implements the IMailMergeDataSource interface.
+            // into an object that implements the IMailMergeDataSource interface
             CustomerMailMergeDataSource customersDataSource = new CustomerMailMergeDataSource(customers);
 
-            // Now you can pass your data source into Aspose.Words.
+            // Now you can pass your data source into Aspose.Words
             doc.MailMerge.ExecuteWithRegions(customersDataSource);
 
             doc.Save(ArtifactsDir + "NestedMailMergeCustom.CustomDataSource.doc");
@@ -110,7 +110,7 @@ namespace ApiExamples
             {
                 mCustomers = customers;
 
-                // When the data source is initialized, it must be positioned before the first record.
+                // When the data source is initialized, it must be positioned before the first record
                 mRecordIndex = -1;
             }
 
@@ -140,7 +140,7 @@ namespace ApiExamples
                         return true;
                     default:
                         // A field with this name was not found, 
-                        // return false to the Aspose.Words mail merge engine.
+                        // return false to the Aspose.Words mail merge engine
                         fieldValue = null;
                         return false;
                 }
@@ -161,7 +161,7 @@ namespace ApiExamples
             {
                 switch (tableName)
                 {
-                    // Get the child collection to merge it with the region provided with tableName variable.
+                    // Get the child collection to merge it with the region provided with tableName variable
                     case "Order":
                         return new OrderMailMergeDataSource(mCustomers[mRecordIndex].Orders);
                     default:
@@ -184,7 +184,7 @@ namespace ApiExamples
             {
                 mOrders = orders;
 
-                // When the data source is initialized, it must be positioned before the first record.
+                // When the data source is initialized, it must be positioned before the first record
                 mRecordIndex = -1;
             }
 
@@ -211,7 +211,7 @@ namespace ApiExamples
                         return true;
                     default:
                         // A field with this name was not found, 
-                        // return false to the Aspose.Words mail merge engine.
+                        // return false to the Aspose.Words mail merge engine
                         fieldValue = null;
                         return false;
                 }
@@ -228,7 +228,9 @@ namespace ApiExamples
                 return (!IsEof);
             }
 
-            // Return null because we haven't any child elements for this sort of object.
+            /// <summary>
+            /// Return null because we haven't any child elements for this sort of object.
+            /// </summary>
             public IMailMergeDataSource GetChildDataSource(string tableName)
             {
                 return null;

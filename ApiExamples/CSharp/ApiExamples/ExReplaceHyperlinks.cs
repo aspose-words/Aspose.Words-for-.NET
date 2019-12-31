@@ -31,24 +31,24 @@ namespace ApiExamples
         [Test] //ExSkip
         public void Fields()
         {
-            // Specify your document name here.
+            // Specify your document name here
             Document doc = new Document(MyDir + "ReplaceHyperlinks.doc");
 
-            // Hyperlinks in a Word documents are fields, select all field start nodes so we can find the hyperlinks.
+            // Hyperlinks in a Word documents are fields, select all field start nodes so we can find the hyperlinks
             NodeList fieldStarts = doc.SelectNodes("//FieldStart");
             foreach (FieldStart fieldStart in fieldStarts.OfType<FieldStart>())
             {
                 if (fieldStart.FieldType.Equals(FieldType.FieldHyperlink))
                 {
-                    // The field is a hyperlink field, use the "facade" class to help to deal with the field.
+                    // The field is a hyperlink field, use the "facade" class to help to deal with the field
                     Hyperlink hyperlink = new Hyperlink(fieldStart);
 
-                    // Some hyperlinks can be local (links to bookmarks inside the document), ignore these.
+                    // Some hyperlinks can be local (links to bookmarks inside the document), ignore these
                     if (hyperlink.IsLocal)
                         continue;
 
                     // The Hyperlink class allows to set the target URL and the display name 
-                    // of the link easily by setting the properties.
+                    // of the link easily by setting the properties
                     hyperlink.Target = NewUrl;
                     hyperlink.Name = NewName;
                 }
@@ -88,7 +88,7 @@ namespace ApiExamples
 
             mFieldStart = fieldStart;
 
-            // Find the field separator node.
+            // Find the field separator node
             mFieldSeparator = FindNextSibling(mFieldStart, NodeType.FieldSeparator);
             if (mFieldSeparator == null)
                 throw new InvalidOperationException("Cannot find field separator.");
@@ -96,13 +96,13 @@ namespace ApiExamples
             // Find the field end node. Normally field end will always be found, but in the example document 
             // there happens to be a paragraph break included in the hyperlink and this puts the field end 
             // in the next paragraph. It will be much more complicated to handle fields which span several 
-            // paragraphs correctly, but in this case allowing field end to be null is enough for our purposes.
+            // paragraphs correctly, but in this case allowing field end to be null is enough for our purposes
             mFieldEnd = FindNextSibling(mFieldSeparator, NodeType.FieldEnd);
 
-            // Field code looks something like [ HYPERLINK "http:\\www.myurl.com" ], but it can consist of several runs.
+            // Field code looks something like [ HYPERLINK "http:\\www.myurl.com" ], but it can consist of several runs
             string fieldCode = GetTextSameParent(mFieldStart.NextSibling, mFieldSeparator);
             Match match = gRegex.Match(fieldCode.Trim());
-            mIsLocal = (match.Groups[1].Length > 0); //The link is local if \l is present in the field code.
+            mIsLocal = match.Groups[1].Length > 0; //The link is local if \l is present in the field code
             mTarget = match.Groups[2].Value;
         }
 
@@ -115,11 +115,11 @@ namespace ApiExamples
             set
             {
                 // Hyperlink display name is stored in the field result which is a Run 
-                // node between field separator and field end.
+                // node between field separator and field end
                 Run fieldResult = (Run) mFieldSeparator.NextSibling;
                 fieldResult.Text = value;
 
-                // But sometimes the field result can consist of more than one run, delete these runs.
+                // But sometimes the field result can consist of more than one run, delete these runs
                 RemoveSameParent(fieldResult.NextSibling, mFieldEnd);
             }
         }
@@ -155,11 +155,11 @@ namespace ApiExamples
 
         private void UpdateFieldCode()
         {
-            // Field code is stored in a Run node between field start and field separator.
+            // Field code is stored in a Run node between field start and field separator
             Run fieldCode = (Run) mFieldStart.NextSibling;
             fieldCode.Text = string.Format("HYPERLINK {0}\"{1}\"", ((mIsLocal) ? "\\l " : ""), mTarget);
 
-            // But sometimes the field code can consist of more than one run, delete these runs.
+            // But sometimes the field code can consist of more than one run, delete these runs
             RemoveSameParent(fieldCode.NextSibling, mFieldSeparator);
         }
 
@@ -198,7 +198,7 @@ namespace ApiExamples
         /// </summary>
         private static void RemoveSameParent(Node startNode, Node endNode)
         {
-            if ((endNode != null) && (startNode.ParentNode != endNode.ParentNode))
+            if (endNode != null && startNode.ParentNode != endNode.ParentNode)
                 throw new ArgumentException("Start and end nodes are expected to have the same parent.");
 
             Node curChild = startNode;
@@ -216,9 +216,6 @@ namespace ApiExamples
         private bool mIsLocal;
         private string mTarget;
 
-        /// <summary>
-        /// RK I am notoriously bad at regexes. It seems I don't understand their way of thinking.
-        /// </summary>
         private static readonly Regex gRegex = new Regex(
             "\\S+" + // one or more non spaces HYPERLINK or other word in other languages
             "\\s+" + // one or more spaces

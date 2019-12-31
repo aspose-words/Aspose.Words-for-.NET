@@ -56,8 +56,8 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Document.EpubConversion.doc");
 
-            // Paper tray information is now preserved when saving document to PCL format.
-            // Following information is transferred from document's model to PCL file.
+            // Paper tray information is now preserved when saving document to PCL format
+            // Following information is transferred from document's model to PCL file
             foreach (Section section in doc.Sections.OfType<Section>())
             {
                 section.PageSetup.FirstPageTray = 15;

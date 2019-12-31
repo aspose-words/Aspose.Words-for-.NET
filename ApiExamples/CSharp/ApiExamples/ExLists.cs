@@ -18,7 +18,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExLists : ApiExampleBase
     {
-        private readonly string _image = ImageDir + "Test_636_852.gif";
+        private readonly string mImage = ImageDir + "Test_636_852.gif";
 
         [Test]
         public void ApplyDefaultBulletsAndNumbers()
@@ -760,7 +760,7 @@ namespace ApiExamples
             list.ListLevels[0].CreatePictureBullet();
 
             // Set your own picture bullet image through the ImageData
-            list.ListLevels[0].ImageData.SetImage(_image);
+            list.ListLevels[0].ImageData.SetImage(mImage);
 
             Assert.IsTrue(list.ListLevels[0].ImageData.HasImage);
 

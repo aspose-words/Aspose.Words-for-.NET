@@ -1,4 +1,11 @@
-﻿using System;
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
+
+using System;
 using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Fields;
@@ -277,7 +284,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Insert field into the first paragraph of the current document using field type
+        /// Insert field into the first paragraph of the current document using field type.
         /// </summary>
         private static void InsertFieldUsingFieldType(Document doc, FieldType fieldType, bool updateField, Node refNode,
             bool isAfter, int paraIndex)
@@ -287,7 +294,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Insert field into the first paragraph of the current document using field code
+        /// Insert field into the first paragraph of the current document using field code.
         /// </summary>
         private static void InsertFieldUsingFieldCode(Document doc, string fieldCode, Node refNode, bool isAfter,
             int paraIndex)
@@ -297,7 +304,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Insert field into the first paragraph of the current document using field code and field String
+        /// Insert field into the first paragraph of the current document using field code and field String.
         /// </summary>
         private static void InsertFieldUsingFieldCodeFieldString(Document doc, string fieldCode, string fieldValue,
             Node refNode, bool isAfter, int paraIndex)

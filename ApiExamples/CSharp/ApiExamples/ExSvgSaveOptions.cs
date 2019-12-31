@@ -70,7 +70,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Counts and prints URIs of resources contained by as they are converted to .svg
+        /// Counts and prints URIs of resources contained by as they are converted to .svg.
         /// </summary>
         private class ResourceUriPrinter : IResourceSavingCallback
         {

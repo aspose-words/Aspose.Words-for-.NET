@@ -45,7 +45,7 @@ namespace ApiExamples
 
             // Here we get all tables from the Document node. You can do this for any other composite node
             // which can contain block level nodes. For example you can retrieve tables from header or from a cell
-            // containing another table (nested tables).
+            // containing another table (nested tables)
             TableCollection tables = doc.FirstSection.Body.Tables;
 
             // We can make a new array to clone all of the tables in the collection
@@ -77,9 +77,9 @@ namespace ApiExamples
                     // Iterate through all cells in the row
                     for (int k = 0; k < cells.Count; k++)
                     {
-                        // Get the plain text content of this cell.
+                        // Get the plain text content of this cell
                         string cellText = cells[k].ToString(SaveFormat.Text).Trim();
-                        // Print the content of the cell.
+                        // Print the content of the cell
                         Console.WriteLine($"\t\tContents of Cell:{k} = \"{cellText}\"");
                     }
 
@@ -109,11 +109,11 @@ namespace ApiExamples
 
             foreach (Table table in doc.GetChildNodes(NodeType.Table, true).OfType<Table>())
             {
-                // First lets find if any cells in the table have tables themselves as children.
+                // First lets find if any cells in the table have tables themselves as children
                 int count = GetChildTableCount(table);
                 Console.WriteLine("Table #{0} has {1} tables directly within its cells", tableIndex, count);
 
-                // Now let's try the other way around, lets try find if the table is nested inside another table and at what depth.
+                // Now let's try the other way around, lets try find if the table is nested inside another table and at what depth
                 int tableDepth = GetNestedDepthOfTable(table);
 
                 if (tableDepth > 0)
@@ -144,7 +144,7 @@ namespace ApiExamples
             while (parent != null)
             {
                 // Every time we find a table a level up we increase the depth counter and then try to find an
-                // ancestor of type table from the parent.
+                // ancestor of type table from the parent
                 depth++;
                 parent = parent.GetAncestor(typeof(Table));
             }
@@ -187,9 +187,9 @@ namespace ApiExamples
             // Open the document
             Document doc = new Document(MyDir + "Shape.TextBox.doc");
 
-            // Convert all shape nodes which contain child nodes.
+            // Convert all shape nodes which contain child nodes
             // We convert the collection to an array as static "snapshot" because the original textboxes will be removed after conversion which will
-            // invalidate the enumerator.
+            // invalidate the enumerator
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).ToArray().OfType<Shape>())
             {
                 if (shape.HasChildNodes)
@@ -215,37 +215,37 @@ namespace ApiExamples
             Document doc = (Document) textBox.Document;
             Section section = (Section) textBox.GetAncestor(NodeType.Section);
 
-            // Create a table to replace the textbox and transfer the same content and formatting.
+            // Create a table to replace the textbox and transfer the same content and formatting
             Table table = new Table(doc);
-            // Ensure that the table contains a row and a cell.
+            // Ensure that the table contains a row and a cell
             table.EnsureMinimum();
-            // Use fixed column widths.
+            // Use fixed column widths
             table.AutoFit(AutoFitBehavior.FixedColumnWidths);
 
             // A shape is inline level (within a paragraph) where a table can only be block level so insert the table
-            // after the paragraph which contains the shape.
+            // after the paragraph which contains the shape
             Node shapeParent = textBox.ParentNode;
             shapeParent.ParentNode.InsertAfter(table, shapeParent);
 
-            // If the textbox is not inline then try to match the shape's left position using the table's left indent.
+            // If the textbox is not inline then try to match the shape's left position using the table's left indent
             if (!textBox.IsInline && textBox.Left < section.PageSetup.PageWidth)
                 table.LeftIndent = textBox.Left;
 
-            // We are only using one cell to replicate a textbox so we can make use of the FirstRow and FirstCell property.
-            // Carry over borders and shading.
+            // We are only using one cell to replicate a textbox so we can make use of the FirstRow and FirstCell property
+            // Carry over borders and shading
             Row firstRow = table.FirstRow;
             Cell firstCell = firstRow.FirstCell;
             firstCell.CellFormat.Borders.Color = textBox.StrokeColor;
             firstCell.CellFormat.Borders.LineWidth = textBox.StrokeWeight;
             firstCell.CellFormat.Shading.BackgroundPatternColor = textBox.Fill.Color;
 
-            // Transfer the same height and width of the textbox to the table.
+            // Transfer the same height and width of the textbox to the table
             firstRow.RowFormat.HeightRule = HeightRule.Exactly;
             firstRow.RowFormat.Height = textBox.Height;
             firstCell.CellFormat.Width = textBox.Width;
             table.AllowAutoFit = false;
 
-            // Replicate the textbox's horizontal alignment.
+            // Replicate the textbox's horizontal alignment
             TableAlignment horizontalAlignment;
             switch (textBox.HorizontalAlignment)
             {
@@ -259,7 +259,7 @@ namespace ApiExamples
                     horizontalAlignment = TableAlignment.Right;
                     break;
                 default:
-                    // Most other options are left by default.
+                    // Most other options are left by default
                     horizontalAlignment = TableAlignment.Left;
                     break;
             }
@@ -273,7 +273,7 @@ namespace ApiExamples
                 table.FirstRow.FirstCell.AppendChild(node);
             }
 
-            // Remove the empty textbox from the document.
+            // Remove the empty textbox from the document
             textBox.Remove();
         }
 
@@ -285,11 +285,11 @@ namespace ApiExamples
             //ExSummary:Shows how to ensure a table node is valid.
             Document doc = new Document();
 
-            // Create a new table and add it to the document.
+            // Create a new table and add it to the document
             Table table = new Table(doc);
             doc.FirstSection.Body.AppendChild(table);
 
-            // Ensure the table is valid (has at least one row with one cell).
+            // Ensure the table is valid (has at least one row with one cell)
             table.EnsureMinimum();
             //ExEnd
         }
@@ -302,15 +302,15 @@ namespace ApiExamples
             //ExSummary:Shows how to ensure a row node is valid.
             Document doc = new Document();
 
-            // Create a new table and add it to the document.
+            // Create a new table and add it to the document
             Table table = new Table(doc);
             doc.FirstSection.Body.AppendChild(table);
 
-            // Create a new row and add it to the table.
+            // Create a new row and add it to the table
             Row row = new Row(doc);
             table.AppendChild(row);
 
-            // Ensure the row is valid (has at least one cell).
+            // Ensure the row is valid (has at least one cell)
             row.EnsureMinimum();
             //ExEnd
         }
@@ -323,10 +323,10 @@ namespace ApiExamples
             //ExSummary:Shows how to ensure a cell node is valid.
             Document doc = new Document(MyDir + "Table.Document.doc");
 
-            // Gets the first cell in the document.
+            // Gets the first cell in the document
             Cell cell = (Cell) doc.GetChild(NodeType.Cell, 0, true);
 
-            // Ensure the cell is valid (the last child is a paragraph).
+            // Ensure the cell is valid (the last child is a paragraph)
             cell.EnsureMinimum();
             //ExEnd
         }
@@ -346,26 +346,26 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Table.EmptyTable.doc");
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
-            // Align the table to the center of the page.
+            // Align the table to the center of the page
             table.Alignment = TableAlignment.Center;
 
-            // Clear any existing borders and shading from the table.
+            // Clear any existing borders and shading from the table
             table.ClearBorders();
             table.ClearShading();
 
-            // Set a green border around the table but not inside. 
+            // Set a green border around the table but not inside
             table.SetBorder(BorderType.Left, LineStyle.Single, 1.5, Color.Green, true);
             table.SetBorder(BorderType.Right, LineStyle.Single, 1.5, Color.Green, true);
             table.SetBorder(BorderType.Top, LineStyle.Single, 1.5, Color.Green, true);
             table.SetBorder(BorderType.Bottom, LineStyle.Single, 1.5, Color.Green, true);
 
-            // Fill the cells with a light green solid color.
+            // Fill the cells with a light green solid color
             table.SetShading(TextureIndex.TextureSolid, Color.LightGreen, Color.Empty);
 
             doc.Save(ArtifactsDir + "Table.SetOutlineBorders.doc");
             //ExEnd
 
-            // Verify the borders were set correctly.
+            // Verify the borders were set correctly
             Assert.AreEqual(TableAlignment.Center, table.Alignment);
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Top.Color.ToArgb());
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Left.Color.ToArgb());
@@ -386,16 +386,16 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Table.EmptyTable.doc");
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
-            // Clear any existing borders from the table.
+            // Clear any existing borders from the table
             table.ClearBorders();
 
-            // Set a green border around and inside the table.
+            // Set a green border around and inside the table
             table.SetBorders(LineStyle.Single, 1.5, Color.Green);
 
             doc.Save(ArtifactsDir + "Table.SetAllBorders.doc");
             //ExEnd
 
-            // Verify the borders were set correctly.
+            // Verify the borders were set correctly
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Top.Color.ToArgb());
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Left.Color.ToArgb());
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Right.Color.ToArgb());
@@ -414,10 +414,10 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Table.Document.doc");
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
-            // Retrieve the first row in the table.
+            // Retrieve the first row in the table
             Row firstRow = table.FirstRow;
 
-            // Modify some row level properties.
+            // Modify some row level properties
             firstRow.RowFormat.Borders.LineStyle = LineStyle.None;
             firstRow.RowFormat.HeightRule = HeightRule.Auto;
             firstRow.RowFormat.AllowBreakAcrossPages = true;
@@ -442,10 +442,10 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Table.Document.doc");
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
-            // Retrieve the first cell in the table.
+            // Retrieve the first cell in the table
             Cell firstCell = table.FirstRow.FirstCell;
 
-            // Modify some row level properties.
+            // Modify some row level properties
             firstCell.CellFormat.Width = 30; // in points
             firstCell.CellFormat.Orientation = TextOrientation.Downward;
             firstCell.CellFormat.Shading.ForegroundPatternColor = Color.LightGreen;
@@ -490,10 +490,10 @@ namespace ApiExamples
             //ExSummary:Shows how to remove all borders from a table.
             Document doc = new Document(MyDir + "Table.Document.doc");
 
-            // Remove all borders from the first table in the document.
+            // Remove all borders from the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
-            // Clear the borders all cells in the table.
+            // Clear the borders all cells in the table
             table.ClearBorders();
 
             doc.Save(ArtifactsDir + "Table.ClearBorders.doc");
@@ -509,16 +509,16 @@ namespace ApiExamples
             //ExSummary:Shows how to replace all instances of String of text in a table and cell.
             Document doc = new Document(MyDir + "Table.SimpleTable.doc");
 
-            // Get the first table in the document.
+            // Get the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
             FindReplaceOptions options = new FindReplaceOptions();
             options.MatchCase = true;
             options.FindWholeWordsOnly = true;
 
-            // Replace any instances of our String in the entire table.
+            // Replace any instances of our String in the entire table
             table.Range.Replace("Carrots", "Eggs", options);
-            // Replace any instances of our String in the last cell of the table only.
+            // Replace any instances of our String in the last cell of the table only
             table.LastRow.LastCell.Range.Replace("50", "20", options);
 
             doc.Save(ArtifactsDir + "Table.ReplaceCellText.doc");
@@ -532,21 +532,21 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Table.SimpleTable.doc");
 
-            // Get the first table in the document.
+            // Get the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
-            // The range text will include control characters such as "\a" for a cell.
-            // You can call ToString on the desired node to retrieve the plain text content.
+            // The range text will include control characters such as "\a" for a cell
+            // You can call ToString on the desired node to retrieve the plain text content
 
-            // Print the plain text range of the table to the screen.
+            // Print the plain text range of the table to the screen
             Console.WriteLine("Contents of the table: ");
             Console.WriteLine(table.Range.Text);
             
-            // Print the contents of the second row to the screen.
+            // Print the contents of the second row to the screen
             Console.WriteLine("\nContents of the row: ");
             Console.WriteLine(table.Rows[1].Range.Text);
 
-            // Print the contents of the last cell in the table to the screen.
+            // Print the contents of the last cell in the table to the screen
             Console.WriteLine("\nContents of the cell: ");
             Console.WriteLine(table.LastRow.LastCell.Range.Text);
             
@@ -560,22 +560,22 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Table.SimpleTable.doc");
 
-            // Retrieve the first table in the document.
+            // Retrieve the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
-            // Create a clone of the table.
+            // Create a clone of the table
             Table tableClone = (Table) table.Clone(true);
 
             // Insert the cloned table into the document after the original
             table.ParentNode.InsertAfter(tableClone, table);
 
             // Insert an empty paragraph between the two tables or else they will be combined into one
-            // upon save. This has to do with document validation.
+            // upon save. This has to do with document validation
             table.ParentNode.InsertAfter(new Paragraph(doc), table);
 
             doc.Save(ArtifactsDir + "Table.CloneTable.doc");
             
-            // Verify that the table was cloned and inserted properly.
+            // Verify that the table was cloned and inserted properly
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count);
             Assert.AreEqual(table.Range.Text, tableClone.Range.Text);
 
@@ -590,13 +590,13 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Table.TableAcrossPage.doc");
 
-            // Retrieve the first table in the document.
+            // Retrieve the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
             //ExStart
             //ExFor:RowFormat.AllowBreakAcrossPages
             //ExSummary:Shows how to disable rows breaking across pages for every row in a table.
-            // Disable breaking across pages for all rows in the table.
+            // Disable breaking across pages for all rows in the table
             foreach (Row row in table.OfType<Row>())
                 row.RowFormat.AllowBreakAcrossPages = false;
             //ExEnd
@@ -627,7 +627,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Table.TableAcrossPage.doc");
 
-            // Retrieve the first table in the document.
+            // Retrieve the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
             //ExStart
@@ -640,7 +640,7 @@ namespace ApiExamples
             //ExSummary:Shows how to set a table to stay together on the same page.
             // To keep a table from breaking across a page we need to enable KeepWithNext 
             // for every paragraph in the table except for the last paragraphs in the last 
-            // row of the table.
+            // row of the table
             foreach (Cell cell in table.GetChildNodes(NodeType.Cell, true).OfType<Cell>())
             foreach (Paragraph para in cell.Paragraphs.OfType<Paragraph>())
             {
@@ -654,7 +654,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Table.KeepTableTogether.doc");
 
-            // Verify the correct paragraphs were set properly.
+            // Verify the correct paragraphs were set properly
             foreach (Paragraph para in table.GetChildNodes(NodeType.Paragraph, true).OfType<Paragraph>())
                 if (para.IsEndOfCell && ((Cell) para.ParentNode).ParentRow.IsLastRow)
                     Assert.False(para.ParagraphFormat.KeepWithNext);
@@ -670,24 +670,24 @@ namespace ApiExamples
             //ExSummary:Shows how to make a clone of the last row of a table and append it to the table.
             Document doc = new Document(MyDir + "Table.SimpleTable.doc");
 
-            // Retrieve the first table in the document.
+            // Retrieve the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
-            // Clone the last row in the table.
+            // Clone the last row in the table
             Row clonedRow = (Row) table.LastRow.Clone(true);
 
             // Remove all content from the cloned row's cells. This makes the row ready for
-            // new content to be inserted into.
+            // new content to be inserted into
             foreach (Cell cell in clonedRow.Cells.OfType<Cell>())
                 cell.RemoveAllChildren();
 
-            // Add the row to the end of the table.
+            // Add the row to the end of the table
             table.AppendChild(clonedRow);
 
             doc.Save(ArtifactsDir + "Table.AddCloneRowToTable.doc");
             //ExEnd
 
-            // Verify that the row was cloned and appended properly.
+            // Verify that the row was cloned and appended properly
             Assert.AreEqual(5, table.Rows.Count);
             Assert.AreEqual(string.Empty, table.LastRow.ToString(SaveFormat.Text).Trim());
             Assert.AreEqual(2, table.LastRow.Cells.Count);
@@ -699,16 +699,16 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Keep a reference to the table being built.
+            // Keep a reference to the table being built
             Table table = builder.StartTable();
 
-            // Apply some formatting.
+            // Apply some formatting
             builder.CellFormat.Width = 100;
             builder.CellFormat.Shading.BackgroundPatternColor = Color.Red;
 
             builder.InsertCell();
             // This will cause the table to be structured using column widths as in previous versions
-            // instead of fitted to the page width like in the newer versions.
+            // instead of fitted to the page width like in the newer versions
             table.AutoFit(AutoFitBehavior.FixedColumnWidths);
 
             // Continue with building your table as usual...
@@ -720,11 +720,11 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Keep a reference to the table being built.
+            // Keep a reference to the table being built
             Table table = builder.StartTable();
 
             builder.InsertCell();
-            // Clear all borders to match the defaults used in previous versions.
+            // Clear all borders to match the defaults used in previous versions
             table.ClearBorders();
 
             // Continue with building your table as usual...
@@ -736,12 +736,12 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Keep a reference to the table being built.
+            // Keep a reference to the table being built
             Table table = builder.StartTable();
 
-            // We must first insert a new cell which in turn inserts a row into the table.
+            // We must first insert a new cell which in turn inserts a row into the table
             builder.InsertCell();
-            // Once a row exists in our table we can apply table wide formatting.
+            // Once a row exists in our table we can apply table wide formatting
             table.AllowAutoFit = true;
 
             // Continue with building your table as usual...
@@ -755,7 +755,7 @@ namespace ApiExamples
 
             builder.StartTable();
 
-            // For the first row this will be set correctly.
+            // For the first row this will be set correctly
             builder.RowFormat.HeadingFormat = true;
 
             builder.InsertCell();
@@ -763,16 +763,16 @@ namespace ApiExamples
             builder.InsertCell();
             builder.Writeln("Text");
 
-            // End the first row.
+            // End the first row
             builder.EndRow();
 
             // Here we would normally define some other row formatting, such as disabling the 
             // heading format. However at the moment this will be ignored and the value from the 
-            // first row reapplied to the row.
+            // first row reapplied to the row
 
             builder.InsertCell();
 
-            // Instead make sure to specify the row formatting for the second row here.
+            // Instead make sure to specify the row formatting for the second row here
             builder.RowFormat.HeadingFormat = false;
 
             // Continue with building your table as usual...
@@ -852,22 +852,22 @@ namespace ApiExamples
 
             // We start by creating the table object. Note how we must pass the document object
             // to the constructor of each node. This is because every node we create must belong
-            // to some document.
+            // to some document
             Table table = new Table(doc);
-            // Add the table to the document.
+            // Add the table to the document
             doc.FirstSection.Body.AppendChild(table);
 
             // Here we could call EnsureMinimum to create the rows and cells for us. This method is used
             // to ensure that the specified node is valid, in this case a valid table should have at least one
-            // row and one cell, therefore this method creates them for us.
+            // row and one cell, therefore this method creates them for us
 
             // Instead we will handle creating the row and table ourselves. This would be the best way to do this
-            // if we were creating a table inside an algorithm for example.
+            // if we were creating a table inside an algorithm for example
             Row row = new Row(doc);
             row.RowFormat.AllowBreakAcrossPages = true;
             table.AppendChild(row);
 
-            // We can now apply any auto fit settings.
+            // We can now apply any auto fit settings
             table.AutoFit(AutoFitBehavior.FixedColumnWidths);
 
             // Create a cell and add it to the row
@@ -875,15 +875,15 @@ namespace ApiExamples
             cell.CellFormat.Shading.BackgroundPatternColor = Color.LightBlue;
             cell.CellFormat.Width = 80;
 
-            // Add a paragraph to the cell as well as a new run with some text.
+            // Add a paragraph to the cell as well as a new run with some text
             cell.AppendChild(new Paragraph(doc));
             cell.FirstParagraph.AppendChild(new Run(doc, "Row 1, Cell 1 Text"));
 
-            // Add the cell to the row.
+            // Add the cell to the row
             row.AppendChild(cell);
 
-            // We would then repeat the process for the other cells and rows in the table.
-            // We can also speed things up by cloning existing cells and rows.
+            // We would then repeat the process for the other cells and rows in the table
+            // We can also speed things up by cloning existing cells and rows
             row.AppendChild(cell.Clone(false));
             row.LastCell.AppendChild(new Paragraph(doc));
             row.LastCell.FirstParagraph.AppendChild(new Run(doc, "Row 1, Cell 2 Text"));
@@ -916,14 +916,14 @@ namespace ApiExamples
         {
             Document doc = new Document();
 
-            // Create the outer table with three rows and four columns.
+            // Create the outer table with three rows and four columns
             Table outerTable = CreateTable(doc, 3, 4, "Outer Table");
-            // Add it to the document body.
+            // Add it to the document body
             doc.FirstSection.Body.AppendChild(outerTable);
 
-            // Create another table with two rows and two columns.
+            // Create another table with two rows and two columns
             Table innerTable = CreateTable(doc, 2, 2, "Inner Table");
-            // Add this table to the first cell of the outer table.
+            // Add this table to the first cell of the outer table
             outerTable.FirstRow.FirstCell.AppendChild(innerTable);
 
             doc.Save(ArtifactsDir + "Table.CreateNestedTable.doc");
@@ -939,25 +939,25 @@ namespace ApiExamples
         /// <summary>
         /// Creates a new table in the document with the given dimensions and text in each cell.
         /// </summary>
-        private Table CreateTable(Document doc, int rowCount, int cellCount, string cellText)
+        private static Table CreateTable(Document doc, int rowCount, int cellCount, string cellText)
         {
             Table table = new Table(doc);
 
-            // Create the specified number of rows.
+            // Create the specified number of rows
             for (int rowId = 1; rowId <= rowCount; rowId++)
             {
                 Row row = new Row(doc);
                 table.AppendChild(row);
 
-                // Create the specified number of cells for each row.
+                // Create the specified number of cells for each row
                 for (int cellId = 1; cellId <= cellCount; cellId++)
                 {
                     Cell cell = new Cell(doc);
                     row.AppendChild(cell);
-                    // Add a blank paragraph to the cell.
+                    // Add a blank paragraph to the cell
                     cell.AppendChild(new Paragraph(doc));
 
-                    // Add the text.
+                    // Add the text
                     cell.FirstParagraph.AppendChild(new Run(doc, cellText));
                 }
             }
@@ -982,7 +982,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Table.MergedCells.doc");
 
-            // Retrieve the first table in the document.
+            // Retrieve the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
             foreach (Row row in table.Rows.OfType<Row>())
@@ -1006,12 +1006,10 @@ namespace ApiExamples
 
             if (isHorizontallyMerged && isVerticallyMerged)
                 return $"The cell at {cellLocation} is both horizontally and vertically merged";
-            else if (isHorizontallyMerged)
+            if (isHorizontallyMerged)
                 return $"The cell at {cellLocation} is horizontally merged.";
-            else if (isVerticallyMerged)
-                return $"The cell at {cellLocation} is vertically merged";
-            else
-                return $"The cell at {cellLocation} is not merged";
+
+            return isVerticallyMerged ? $"The cell at {cellLocation} is vertically merged" : $"The cell at {cellLocation} is not merged";
         }
         //ExEnd
 
@@ -1021,17 +1019,17 @@ namespace ApiExamples
             // Open the document
             Document doc = new Document(MyDir + "Table.Document.doc");
 
-            // Retrieve the first table in the body of the first section.
+            // Retrieve the first table in the body of the first section
             Table table = doc.FirstSection.Body.Tables[0];
 
-            // We want to merge the range of cells found in between these two cells.
+            // We want to merge the range of cells found in between these two cells
             Cell cellStartRange = table.Rows[2].Cells[2];
             Cell cellEndRange = table.Rows[3].Cells[3];
 
-            // Merge all the cells between the two specified cells into one.
+            // Merge all the cells between the two specified cells into one
             MergeCells(cellStartRange, cellEndRange);
 
-            // Save the document.
+            // Save the document
             doc.Save(ArtifactsDir + "Table.MergeCellRange.doc");
 
             // Verify the cells were merged
@@ -1058,11 +1056,12 @@ namespace ApiExamples
         {
             Table parentTable = startCell.ParentRow.ParentTable;
 
-            // Find the row and cell indices for the start and end cell.
+            // Find the row and cell indices for the start and end cell
             Point startCellPos = new Point(startCell.ParentRow.IndexOf(startCell),
                 parentTable.IndexOf(startCell.ParentRow));
             Point endCellPos = new Point(endCell.ParentRow.IndexOf(endCell), parentTable.IndexOf(endCell.ParentRow));
-            // Create the range of cells to be merged based off these indices. Inverse each index if the end cell if before the start cell. 
+            // Create the range of cells to be merged based off these indices
+            // Inverse each index if the end cell if before the start cell
             Rectangle mergeRange = new Rectangle(
                 Math.Min(startCellPos.X, endCellPos.X),
                 Math.Min(startCellPos.Y, endCellPos.Y),
@@ -1074,7 +1073,7 @@ namespace ApiExamples
                 foreach (Cell cell in row.Cells.OfType<Cell>())
                 {
                     Point currentPos = new Point(row.IndexOf(cell), parentTable.IndexOf(row));
-                    // Check if the current cell is inside our merge range then merge it.
+                    // Check if the current cell is inside our merge range then merge it
                     if (mergeRange.Contains(currentPos))
                     {
                         cell.CellFormat.HorizontalMerge =
@@ -1097,20 +1096,20 @@ namespace ApiExamples
             //ExFor:Table.FirstRow
             //ExFor:CellFormat.ClearFormatting
             //ExSummary:Shows how to combine the rows from two tables into one.
-            // Load the document.
+            // Load the document
             Document doc = new Document(MyDir + "Table.Document.doc");
 
-            // Get the first and second table in the document.
-            // The rows from the second table will be appended to the end of the first table.
+            // Get the first and second table in the document
+            // The rows from the second table will be appended to the end of the first table
             Table firstTable = (Table) doc.GetChild(NodeType.Table, 0, true);
             Table secondTable = (Table) doc.GetChild(NodeType.Table, 1, true);
 
-            // Append all rows from the current table to the next.
-            // Due to the design of tables even tables with different cell count and widths can be joined into one table.
+            // Append all rows from the current table to the next
+            // Due to the design of tables even tables with different cell count and widths can be joined into one table
             while (secondTable.HasChildNodes)
                 firstTable.Rows.Add(secondTable.FirstRow);
 
-            // Remove the empty table container.
+            // Remove the empty table container
             secondTable.Remove();
 
             doc.Save(ArtifactsDir + "Table.CombineTables.doc");
@@ -1124,22 +1123,22 @@ namespace ApiExamples
         [Test]
         public void SplitTable()
         {
-            // Load the document.
+            // Load the document
             Document doc = new Document(MyDir + "Table.SimpleTable.doc");
 
-            // Get the first table in the document.
+            // Get the first table in the document
             Table firstTable = (Table) doc.GetChild(NodeType.Table, 0, true);
 
-            // We will split the table at the third row (inclusive).
+            // We will split the table at the third row (inclusive)
             Row row = firstTable.Rows[2];
 
-            // Create a new container for the split table.
+            // Create a new container for the split table
             Table table = (Table) firstTable.Clone(false);
 
-            // Insert the container after the original.
+            // Insert the container after the original
             firstTable.ParentNode.InsertAfter(table, firstTable);
 
-            // Add a buffer paragraph to ensure the tables stay apart.
+            // Add a buffer paragraph to ensure the tables stay apart
             firstTable.ParentNode.InsertAfter(new Paragraph(doc), firstTable);
 
             Row currentRow;
@@ -1154,7 +1153,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Table.SplitTable.doc");
             // Test we are adding the rows in the correct order and the 
-            // selected row was also moved.
+            // selected row was also moved
             Assert.AreEqual(row, table.FirstRow);
 
             Assert.AreEqual(2, firstTable.Rows.Count);
@@ -1387,11 +1386,7 @@ namespace ApiExamples
                 while (enumerator.MoveNext())
                 {
                     ConditionalStyle currentStyle = enumerator.Current;
-
-                    if (currentStyle != null)
-                    {
-                        Console.WriteLine(currentStyle.Type);
-                    }
+                    if (currentStyle != null) Console.WriteLine(currentStyle.Type);
                 }
             }
             //ExEnd

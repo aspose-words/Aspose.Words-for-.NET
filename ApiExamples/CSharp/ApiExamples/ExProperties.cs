@@ -203,7 +203,7 @@ namespace ApiExamples
             Assert.AreEqual(1114, properties.Characters);
             Assert.AreEqual(1310, properties.CharactersWithSpaces);
 
-            // Line count: Count the lines in a document and assign value to the Lines property\
+            // Line count: Count the lines in a document and assign value to the Lines property
             LineCounter lineCounter = new LineCounter(doc);
             properties.Lines = lineCounter.GetLineCount();
             Assert.AreEqual(14, properties.Lines);
@@ -233,8 +233,9 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Util class that counts the lines in a document
-        /// Upon construction, traverses the document's layout entities tree, counting entities of the "Line" type that also contain real text
+        /// Util class that counts the lines in a document.
+        /// Upon construction, traverses the document's layout entities tree,
+        /// counting entities of the "Line" type that also contain real text.
         /// </summary>
         private class LineCounter
         {
