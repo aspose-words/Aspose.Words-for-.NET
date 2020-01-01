@@ -1593,14 +1593,20 @@ namespace ApiExamples
         }
 
         [Test]
+        [Category("SkipTearDown")]
         public void Compare()
         {
             //ExStart
             //ExFor:Document.Compare(Document, String, DateTime)
             //ExFor:RevisionCollection.AcceptAll
             //ExSummary:Shows how to apply the compare method to two documents and then use the results. 
-            Document doc1 = new Document(MyDir + "Document.Compare.1.doc");
-            Document doc2 = new Document(MyDir + "Document.Compare.2.doc");
+            Document doc1 = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc1);
+            builder.Writeln("This is the original document.");
+
+            Document doc2 = new Document();
+            builder = new DocumentBuilder(doc2);
+            builder.Writeln("This is the edited document.");
 
             // If either document has a revision, an exception will be thrown
             if (doc1.Revisions.Count == 0 && doc2.Revisions.Count == 0)
@@ -1608,14 +1614,34 @@ namespace ApiExamples
 
             // If doc1 and doc2 are different, doc1 now has some revisions after the comparison, which can now be viewed and processed
             foreach (Revision r in doc1.Revisions)
-                Console.WriteLine(r.RevisionType);
+            {
+                Console.WriteLine($"Revision type: {r.RevisionType}, on a node of type \"{r.ParentNode.NodeType}\"");
+                Console.WriteLine($"\tChanged text: \"{r.ParentNode.GetText()}\"");
+            }
 
             // All the revisions in doc1 are differences between doc1 and doc2, so accepting them on doc1 transforms doc1 into doc2
             doc1.Revisions.AcceptAll();
 
             // doc1, when saved, now resembles doc2
-            doc1.Save(ArtifactsDir + "Document.Compare.doc");
+            doc1.Save(ArtifactsDir + "Document.Compare.docx");
             //ExEnd
+        }
+
+        [Test]
+        public void CompareDocumentWithRevisions()
+        {
+            Document doc1 = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc1);
+            builder.Writeln("Hello world! This text is not a revision.");
+
+            Document docWithRevision = new Document();
+            builder = new DocumentBuilder(docWithRevision);
+
+            docWithRevision.StartTrackRevisions("John Doe");
+            builder.Writeln("This is a revision.");
+
+            Assert.That(() => docWithRevision.Compare(doc1, "John Doe", DateTime.Now),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
         [Test]
@@ -1674,17 +1700,6 @@ namespace ApiExamples
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "Document.UseCurrentDocumentFormatting.docx",
                 GoldsDir + "Document.UseCurrentDocumentFormatting Gold.docx"));
-        }
-
-        [Test]
-        public void CompareDocumentWithRevisions()
-        {
-            Document doc1 = new Document(MyDir + "Document.Compare.1.doc");
-            Document docWithRevision = new Document(MyDir + "Document.Compare.Revisions.doc");
-
-            if (docWithRevision.Revisions.Count > 0)
-                Assert.That(() => docWithRevision.Compare(doc1, "authorName", DateTime.Now),
-                    Throws.TypeOf<InvalidOperationException>());
         }
 
         [Test]
@@ -2968,7 +2983,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:LayoutOptions.ShowComments
             //ExSummary:Shows how to show or hide comments in PDF document.
-            Document doc = new Document(MyDir + "Comment.Document.docx");
+            Document doc = new Document(MyDir + "Comments.docx");
             
             doc.LayoutOptions.ShowComments = false;
             
@@ -3297,8 +3312,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocSaveOptions.AlwaysCompressMetafiles
             //ExSummary:Shows how to change metafiles compression in a document while saving.
-            // The document has a mathematical formula
-            Document doc = new Document(MyDir + "Document.AlwaysCompressMetafiles.doc");
+            // Open a document that contains a Microsoft Equation 3.0 mathematical formula
+            Document doc = new Document(MyDir + "MicrosoftEquationObject.doc");
             
             // Large metafiles are always compressed when exporting a document in Aspose.Words, but small metafiles are not
             // compressed for performance reason. Some other document editors, such as LibreOffice, cannot read uncompressed
