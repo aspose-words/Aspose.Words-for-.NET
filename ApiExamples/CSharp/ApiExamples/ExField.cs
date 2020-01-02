@@ -926,8 +926,17 @@ namespace ApiExamples
         [Test] //ExSkip
         public void FieldCollection()
         {
-            // Open a document that has fields
-            Document doc = new Document(MyDir + "Document.ContainsFields.docx");
+            // Create a new document and insert some fields
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertField(" DATE \\@ \"dddd, d MMMM yyyy\" ");
+            builder.InsertField(" TIME ");
+            builder.InsertField(" REVNUM ");
+            builder.InsertField(" AUTHOR  \"John Doe\" ");
+            builder.InsertField(" SUBJECT \"My Subject\" ");
+            builder.InsertField(" QUOTE \"Hello world!\" ");
+            doc.UpdateFields();
 
             // Get the collection that contains all the fields in a document
             FieldCollection fields = doc.Range.Fields;
