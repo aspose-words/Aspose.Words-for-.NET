@@ -17,7 +17,7 @@ namespace ApiExamples
     /// </summary>
     public class ApiExampleBase
     {
-        private static readonly string mExternalAppPath = "/Users/vyacheslav/falleretic.Aspose.Words-for-.NET/ApiExamples/";
+        private const string ExternalAppPath = "/Users/vyacheslav/falleretic.Aspose.Words-for-.NET/ApiExamples/";
 
         [SetUp]
         public void OneTimeSetUp()
@@ -82,42 +82,32 @@ namespace ApiExamples
         /// <summary>
         /// Gets the path to the documents used by the code examples. Ends with a back slash.
         /// </summary>
-        internal static String ArtifactsDir
-        {
-            get { return gArtifactsDir; }
-        }
+        internal static string ArtifactsDir { get; }
 
         /// <summary>
         /// Gets the path to the documents used by the code examples. Ends with a back slash.
         /// </summary>
-        internal static String MyDir
-        {
-            get { return gMyDir; }
-        }
+        internal static string MyDir { get; }
 
         /// <summary>
         /// Gets the path to the images used by the code examples. Ends with a back slash.
         /// </summary>
-        internal static String ImageDir
-        {
-            get { return gImageDir; }
-        }
+        internal static string ImageDir { get; }
 
         /// <summary>
         /// Gets the path of the demo database. Ends with a back slash.
         /// </summary>
-        internal static String DatabaseDir
-        {
-            get { return gDatabaseDir; }
-        }
+        internal static string DatabaseDir { get; }
+
+        /// <summary>
+        /// Gets the path of the free fonts. Ends with a back slash.
+        /// </summary>
+        internal static string FontsDir { get; }
 
         /// <summary>
         /// Gets the path to the documents used by the code examples. Ends with a back slash.
         /// </summary>
-        internal static String GoldsDir
-        {
-            get { return gGoldsDir; }
-        }
+        internal static string GoldsDir { get; }
 
         /// <summary>
         /// Gets the url of the Aspose logo.
@@ -126,20 +116,15 @@ namespace ApiExamples
 
         static ApiExampleBase()
         {
-            gArtifactsDir = Path.Combine(mExternalAppPath, "Data/Artifacts/");
-            gMyDir = Path.Combine(mExternalAppPath, "Data/");
-            gImageDir = Path.Combine(mExternalAppPath, "Data/Images/");
-            gDatabaseDir = Path.Combine(mExternalAppPath, "Data/Database/");
-            gGoldsDir = Path.Combine(mExternalAppPath, "Data/Golds/");
+            ArtifactsDir = Path.Combine(ExternalAppPath, "Data/Artifacts/");
+            MyDir = Path.Combine(ExternalAppPath, "Data/");
+            ImageDir = Path.Combine(ExternalAppPath, "Data/Images/");
+            DatabaseDir = Path.Combine(ExternalAppPath, "Data/Database/");
+            GoldsDir = Path.Combine(ExternalAppPath, "Data/Golds/");
+            FontsDir = Path.Combine(ExternalAppPath, "Data/MyFonts/");
             AsposeLogoUrl = new Uri("https://www.aspose.cloud/templates/aspose/App_Themes/V3/images/words/header/aspose_words-for-net.png").AbsoluteUri;
         }
 
-        private static readonly String gArtifactsDir;
-        private static readonly String gMyDir;
-        private static readonly String gImageDir;
-        private static readonly String gDatabaseDir;
-        private static readonly String gGoldsDir;
-
-        internal static readonly string TestLicenseFileName = Path.Combine(mExternalAppPath, "Data/License/Aspose.Words.lic");
+        internal static readonly string TestLicenseFileName = Path.Combine(ExternalAppPath, "Data/License/Aspose.Words.lic");
     }
 }
