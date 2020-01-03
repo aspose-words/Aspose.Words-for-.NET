@@ -22,7 +22,7 @@ namespace ApiExamples
             //ExFor:PclSaveOptions
             //ExFor:PclSaveOptions.RasterizeTransformedElements
             //ExSummary:Shows how rasterized or not transformed elements before saving.
-            Document doc = new Document(MyDir + "Document.EpubConversion.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             PclSaveOptions saveOptions = new PclSaveOptions
             {
@@ -40,7 +40,7 @@ namespace ApiExamples
             //ExFor:PclSaveOptions.AddPrinterFont(string, string)
             //ExFor:PclSaveOptions.FallbackFontName
             //ExSummary:Shows how to add information about font that is uploaded to the printer and set the font that will be used if no expected font is found in printer and built-in fonts collections.
-            Document doc = new Document(MyDir + "Document.EpubConversion.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             PclSaveOptions saveOptions = new PclSaveOptions();
             saveOptions.AddPrinterFont("Courier", "Courier");
@@ -54,7 +54,7 @@ namespace ApiExamples
         [Ignore("This test is manual check that PaperTray information are preserved in pcl document.")]
         public void GetPreservedPaperTrayInformation()
         {
-            Document doc = new Document(MyDir + "Document.EpubConversion.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // Paper tray information is now preserved when saving document to PCL format
             // Following information is transferred from document's model to PCL file

@@ -624,7 +624,7 @@ namespace ApiExamples
         public void Doc2EpubSave()
         {
             // Open an existing document from disk
-            Document doc = new Document(MyDir + "Document.EpubConversion.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // Save the document in EPUB format
             doc.Save(ArtifactsDir + "Document.Doc2EpubSave.epub");
@@ -644,7 +644,7 @@ namespace ApiExamples
             //ExFor:SaveOptions.SaveFormat
             //ExSummary:Converts a document to EPUB with save options specified.
             // Open an existing document from disk
-            Document doc = new Document(MyDir + "Document.EpubConversion.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // Create a new instance of HtmlSaveOptions. This object allows us to set options that control
             // how the output document is saved
