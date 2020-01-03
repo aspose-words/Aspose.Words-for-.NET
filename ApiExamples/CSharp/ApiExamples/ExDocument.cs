@@ -1661,13 +1661,79 @@ namespace ApiExamples
             //ExFor:ComparisonTargetType
             //ExFor:Document.Compare(Document, String, DateTime, CompareOptions)
             //ExSummary:Shows how to specify which document shall be used as a target during comparison.
-            Document doc1 = new Document(MyDir + "Document.CompareOptions.1.docx");
-            Document doc2 = new Document(MyDir + "Document.CompareOptions.2.docx");
+            // Create our original document
+            Document docOriginal = new Document();
+            DocumentBuilder builder = new DocumentBuilder(docOriginal);
 
-            // ComparisonTargetType with IgnoreFormatting setting determines which document has to be used as formatting source for ranges of equal text
+            // Insert paragraph text with an endnote
+            builder.Writeln("Hello world! This is the first paragraph.");
+            builder.InsertFootnote(FootnoteType.Endnote, "Original endnote text.");
+
+            // Insert a table
+            builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Original cell 1 text");
+            builder.InsertCell();
+            builder.Write("Original cell 2 text");
+            builder.EndTable();
+
+            // Insert a textbox
+            Shape textBox = builder.InsertShape(ShapeType.TextBox, 150, 20);
+            builder.MoveTo(textBox.FirstParagraph);
+            builder.Write("Original textbox contents");
+
+            // Insert a DATE field
+            builder.MoveTo(docOriginal.FirstSection.Body.AppendParagraph(""));
+            builder.InsertField(" DATE ");
+
+            // Insert a comment
+            Comment newComment = new Comment(docOriginal, "John Doe", "J.D.", DateTime.Now);
+            newComment.SetText("Original comment.");
+            builder.CurrentParagraph.AppendChild(newComment);
+
+            // Insert a header
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            builder.Writeln("Original header contents.");
+
+            // Create a clone of our document, which we will edit and later compare to the original
+            Document docEdited = (Document)docOriginal.Clone(true);
+            Paragraph firstParagraph = docEdited.FirstSection.Body.FirstParagraph;
+
+            // Change the formatting of the first paragraph, change casing of original characters and add text
+            firstParagraph.Runs[0].Text = "hello world! this is the first paragraph, after editing.";
+            firstParagraph.ParagraphFormat.Style = docEdited.Styles[StyleIdentifier.Heading1];
+            
+            // Edit the footnote
+            Footnote footnote = (Footnote)docEdited.GetChild(NodeType.Footnote, 0, true);
+            footnote.FirstParagraph.Runs[1].Text = "Edited endnote text.";
+
+            // Edit the table
+            Table table = (Table)docEdited.GetChild(NodeType.Table, 0, true);
+            table.FirstRow.Cells[1].FirstParagraph.Runs[0].Text = "Edited Cell 2 contents";
+
+            // Edit the textbox
+            textBox = (Shape)docEdited.GetChild(NodeType.Shape, 0, true);
+            textBox.FirstParagraph.Runs[0].Text = "Edited textbox contents";
+
+            // Edit the DATE field
+            FieldDate fieldDate = (FieldDate)docEdited.Range.Fields[0];
+            fieldDate.UseLunarCalendar = true;
+
+            // Edit the comment
+            Comment comment = (Comment)docEdited.GetChild(NodeType.Comment, 0, true);
+            comment.FirstParagraph.Runs[0].Text = "Edited comment.";
+
+            // Edit the header
+            docEdited.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].FirstParagraph.Runs[0].Text =
+                "Edited header contents.";
+
+            // When we compare documents, the differences of the latter document from the former show up as revisions to the former
+            // Each edit that we've made above will have its own revision, after we run the Compare method
+            // We can compare with a CompareOptions object, which can suppress changes done to certain types of objects within the original document
+            // from registering as revisions after the comparison by setting some of these members to "true"
             CompareOptions compareOptions = new CompareOptions
             {
-                IgnoreFormatting = true,
+                IgnoreFormatting = false,
                 IgnoreCaseChanges = false,
                 IgnoreComments = false,
                 IgnoreTables = false,
@@ -1677,29 +1743,10 @@ namespace ApiExamples
                 IgnoreHeadersAndFooters = false,
                 Target = ComparisonTargetType.New
             };
-            doc1.Compare(doc2, "vderyushev", DateTime.Now, compareOptions);
 
-            doc1.Save(ArtifactsDir + "Document.CompareOptions.docx");
+            docOriginal.Compare(docEdited, "John Doe", DateTime.Now, compareOptions);
+            docOriginal.Save(ArtifactsDir + "Document.CompareOptions.docx");
             //ExEnd
-        }
-
-        [Test]
-        [Description("Result of this test is normal behavior MS Word. The bullet is missing for the 3rd list item")]
-        public void UseCurrentDocumentFormatting()
-        {
-            Document doc1 = new Document(MyDir + "Document.CompareOptions.1.docx");
-            Document doc2 = new Document(MyDir + "Document.CompareOptions.2.docx");
-
-            CompareOptions compareOptions = new CompareOptions();
-            compareOptions.IgnoreFormatting = true;
-            compareOptions.Target = ComparisonTargetType.Current;
-
-            doc1.Compare(doc2, "vderyushev", DateTime.Now, compareOptions);
-
-            doc1.Save(ArtifactsDir + "Document.UseCurrentDocumentFormatting.docx");
-
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "Document.UseCurrentDocumentFormatting.docx",
-                GoldsDir + "Document.UseCurrentDocumentFormatting Gold.docx"));
         }
 
         [Test]
