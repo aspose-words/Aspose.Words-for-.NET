@@ -2928,7 +2928,7 @@ namespace ApiExamples
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.LanguagePreferences.AddEditingLanguage(EditingLanguage.Japanese);
             
-            Document doc = new Document(MyDir + "Document.EditingLanguage.docx", loadOptions);
+            Document doc = new Document(MyDir + "Document.doc", loadOptions);
 
             int localeIdFarEast = doc.Styles.DefaultFont.LocaleIdFarEast;
             Console.WriteLine(localeIdFarEast == (int) EditingLanguage.Japanese
@@ -2947,7 +2947,7 @@ namespace ApiExamples
             // You can set language which only
             loadOptions.LanguagePreferences.DefaultEditingLanguage = EditingLanguage.Russian;
 
-            Document doc = new Document(MyDir + "Document.EditingLanguage.docx", loadOptions);
+            Document doc = new Document(MyDir + "Document.doc", loadOptions);
 
             int localeId = doc.Styles.DefaultFont.LocaleId;
             Console.WriteLine(localeId == (int) EditingLanguage.Russian
