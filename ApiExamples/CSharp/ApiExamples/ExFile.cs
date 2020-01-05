@@ -149,7 +149,7 @@ namespace ApiExamples
             // Load the document without a file extension into a stream and use the DetectFileFormat method to detect it's format
             // These are both times where you might need extract the file format as it's not visible
             // The file format of this document is actually ".doc"
-            FileStream docStream = File.OpenRead(MyDir + "Document.FileWithoutExtension");
+            FileStream docStream = File.OpenRead(MyDir + "DocWithMissingExtension");
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(docStream);
 
             // Retrieve the LoadFormat of the document

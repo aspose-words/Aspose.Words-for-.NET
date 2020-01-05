@@ -479,7 +479,7 @@ namespace ApiExamples
             //ExFor:PdfSaveOptions.CreateNoteHyperlinks
             //ExSummary:Shows how to make footnotes and endnotes work like hyperlinks.
             // Open a document with footnotes/endnotes
-            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
 
             // Creating a PdfSaveOptions instance with this flag set will convert footnote/endnote number symbols in the text
             // into hyperlinks pointing to the footnotes, and the actual footnotes/endnotes at the end of pages into links to their

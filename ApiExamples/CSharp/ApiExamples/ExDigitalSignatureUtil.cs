@@ -96,7 +96,7 @@ namespace ApiExamples
         {
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
-            Document doc = new Document(MyDir + "Document.Encrypted.docx", new LoadOptions("docPassword"));
+            Document doc = new Document(MyDir + "Encrypted.docx", new LoadOptions("docPassword"));
             string outputFileName = ArtifactsDir + "DigitalSignatureUtil.IncorrectDecryptionPassword.docx";
 
             SignOptions signOptions = new SignOptions
@@ -132,7 +132,7 @@ namespace ApiExamples
             };
 
             // Digitally sign encrypted with "docPassword" document in the specified path
-            string inputFileName = MyDir + "Document.Encrypted.docx";
+            string inputFileName = MyDir + "Encrypted.docx";
             string outputFileName = ArtifactsDir + "DigitalSignatureUtil.DecryptionPassword.docx";
 
             DigitalSignatureUtil.Sign(inputFileName, outputFileName, certificateHolder, signOptions);

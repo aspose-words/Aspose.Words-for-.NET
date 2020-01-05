@@ -1476,11 +1476,11 @@ namespace ApiExamples
             //ExFor:FootnoteOptions
             //ExFor:FootnoteOptions.Columns
             //ExSummary:Shows how to set the number of columns with which the footnotes area is formatted.
-            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
 
             Assert.AreEqual(0, doc.FootnoteOptions.Columns); //ExSkip
 
-            // Lets change number of columns for footnotes on page. If columns value is 0 than footnotes area
+            // Let's change number of columns for footnotes on page. If columns value is 0 than footnotes area
             // is formatted with a number of columns based on the number of columns on the displayed page
             doc.FootnoteOptions.Columns = 2;
             doc.Save(ArtifactsDir + "Document.FootnoteColumns.docx");
@@ -1499,7 +1499,7 @@ namespace ApiExamples
             //ExFor:FootnoteOptions.Position
             //ExFor:FootnotePosition
             //ExSummary:Shows how to define footnote position in the document.
-            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
 
             doc.FootnoteOptions.Position = FootnotePosition.BeneathText;
             //ExEnd
@@ -1511,7 +1511,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FootnoteOptions.NumberStyle
             //ExSummary:Shows how to define numbering format for footnotes in the document.
-            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
 
             doc.FootnoteOptions.NumberStyle = NumberStyle.Arabic1;
             //ExEnd
@@ -1524,7 +1524,7 @@ namespace ApiExamples
             //ExFor:FootnoteOptions.RestartRule
             //ExFor:FootnoteNumberingRule
             //ExSummary:Shows how to define when automatic numbering for footnotes restarts in the document.
-            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
 
             doc.FootnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
             //ExEnd
@@ -1536,7 +1536,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FootnoteOptions.StartNumber
             //ExSummary:Shows how to define the starting number or character for the first automatically numbered footnotes.
-            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
 
             doc.FootnoteOptions.StartNumber = 1;
             //ExEnd
@@ -1550,7 +1550,7 @@ namespace ApiExamples
             //ExFor:EndnoteOptions.Position
             //ExFor:EndnotePosition
             //ExSummary:Shows how to define endnote position in the document.
-            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
 
             doc.EndnoteOptions.Position = EndnotePosition.EndOfSection;
             //ExEnd
@@ -1562,7 +1562,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:EndnoteOptions.NumberStyle
             //ExSummary:Shows how to define numbering format for endnotes in the document.
-            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
 
             doc.EndnoteOptions.NumberStyle = NumberStyle.Arabic1;
             //ExEnd
@@ -1574,7 +1574,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:EndnoteOptions.RestartRule
             //ExSummary:Shows how to define when automatic numbering for endnotes restarts in the document.
-            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
 
             doc.EndnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
             //ExEnd
@@ -1586,7 +1586,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:EndnoteOptions.StartNumber
             //ExSummary:Shows how to define the starting number or character for the first automatically numbered endnotes.
-            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
 
             doc.EndnoteOptions.StartNumber = 1;
             //ExEnd

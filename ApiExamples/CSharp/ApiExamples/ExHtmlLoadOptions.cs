@@ -56,7 +56,7 @@ namespace ApiExamples
                 DecryptionPassword = "docPassword"
             };
 
-            string inputFileName = MyDir + "Document.Encrypted.docx";
+            string inputFileName = MyDir + "Encrypted.docx";
             string outputFileName = ArtifactsDir + "HtmlLoadOptions.EncryptedHtml.html";
             DigitalSignatureUtil.Sign(inputFileName, outputFileName, certificateHolder, signOptions);
 
