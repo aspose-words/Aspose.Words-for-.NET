@@ -1335,11 +1335,14 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderCursorPosition()
         {
-            Document doc = new Document(MyDir + "DocumentBuilder.doc");
+            Document doc = new Document(MyDir + "Document.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Node curNode = builder.CurrentNode;
+            Assert.AreEqual(NodeType.Run, curNode.NodeType);
+
             Paragraph curParagraph = builder.CurrentParagraph;
+            Assert.AreEqual("Hello World!", curParagraph.GetText().Trim());
         }
 
         [Test]
@@ -1349,7 +1352,7 @@ namespace ApiExamples
             //ExFor:Story.LastParagraph
             //ExFor:DocumentBuilder.MoveTo(Node)
             //ExSummary:Shows how to move a cursor position to a specified node.
-            Document doc = new Document(MyDir + "DocumentBuilder.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveTo(doc.FirstSection.Body.LastParagraph);
@@ -1359,7 +1362,7 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderMoveToDocumentStartEnd()
         {
-            Document doc = new Document(MyDir + "DocumentBuilder.doc");
+            Document doc = new Document(MyDir + "Document.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveToDocumentEnd();
@@ -1372,12 +1375,15 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderMoveToSection()
         {
-            Document doc = new Document(MyDir + "DocumentBuilder.doc");
+            // Create a blank document and append a section to it, giving it two sections
+            Document doc = new Document();
+            doc.AppendChild(new Section(doc));
+
+            // Move a DocumentBuilder to the second section and add text
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Parameters are 0-index. Moves to third section
-            builder.MoveToSection(2);
-            builder.Writeln("This is the 3rd section.");
+            builder.MoveToSection(1);
+            builder.Writeln("Text added to the 2nd section.");
         }
 
         [Test]
@@ -1386,12 +1392,12 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.MoveToParagraph
             //ExSummary:Shows how to move a cursor position to the specified paragraph.
-            Document doc = new Document(MyDir + "DocumentBuilder.doc");
+            Document doc = new Document(MyDir + "Paragraphs.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Parameters are 0-index. Moves to third paragraph
             builder.MoveToParagraph(2, 0);
-            builder.Writeln("This is the 3rd paragraph.");
+            builder.Writeln("Text added to the 3rd paragraph. ");
             //ExEnd
         }
 
@@ -1401,23 +1407,13 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.MoveToCell
             //ExSummary:Shows how to move a cursor position to the specified table cell.
-            Document doc = new Document(MyDir + "DocumentBuilder.doc");
+            Document doc = new Document(MyDir + "Table.EmptyTable.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // All parameters are 0-index. Moves to the 2nd table, 3rd row, 5th cell
-            builder.MoveToCell(1, 2, 4, 0);
-            builder.Writeln("Hello World!");
+            // All parameters are 0-index. Moves to the 1st table, 3rd row, 4th cell
+            builder.MoveToCell(0, 2, 3, 0);
+            builder.Write("Cell contents added by DocumentBuilder");
             //ExEnd
-        }
-
-        [Test]
-        public void DocumentBuilderMoveToBookmark()
-        {
-            Document doc = new Document(MyDir + "DocumentBuilder.doc");
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.MoveToBookmark("CoolBookmark");
-            builder.Writeln("This is a very cool bookmark.");
         }
 
         [Test]
@@ -1426,22 +1422,13 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.MoveToBookmark(String, Boolean, Boolean)
             //ExSummary:Shows how to move a cursor position to just after the bookmark end.
-            Document doc = new Document(MyDir + "DocumentBuilder.doc");
+            Document doc = new Document(MyDir + "Bookmarks.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.MoveToBookmark("CoolBookmark", false, true);
-            builder.Writeln("This is a very cool bookmark.");
+            // Move to the end of the first bookmark
+            Assert.True(builder.MoveToBookmark("MyBookmark1", false, true));
+            builder.Write(" Text appended via DocumentBuilder.");
             //ExEnd
-        }
-
-        [Test]
-        public void DocumentBuilderMoveToMergeField()
-        {
-            Document doc = new Document(MyDir + "DocumentBuilder.doc");
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.MoveToMergeField("NiceMergeField");
-            builder.Writeln("This is a very nice merge field.");
         }
 
         [Test]

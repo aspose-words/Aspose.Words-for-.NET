@@ -113,17 +113,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.OpenType.pdf");
             //ExEnd
         }
-
-        [Test]
-        public void NumberFormatting()
-        {
-            Document doc = new Document(MyDir + "Document.NumberFormatting.docx");
-
-            // Use OpenType to correct displaying numbers in pdf
-            doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
-            
-            doc.Save(ArtifactsDir + "Document.NumberFormatting.pdf");
-        }
 #endif
 
 #if NETFRAMEWORK || MAC
@@ -282,14 +271,8 @@ namespace ApiExamples
             //ExFor:ShapeBase.IsImage
             //ExSummary:Opens an HTML document with images from a stream using a base URI.
             Document doc = new Document();
-            // We are opening this HTML file:      
-            //    <html>
-            //    <body>
-            //    <p>Simple file.</p>
-            //    <p><img src="Aspose.Words.gif" width="80" height="60"></p>
-            //    </body>
-            //    </html>
-            string fileName = MyDir + "Document.OpenFromStreamWithBaseUri.html";
+            string fileName = MyDir + "Document.html";
+
             // Open the stream
             using (Stream stream = File.OpenRead(fileName))
             {
@@ -311,8 +294,8 @@ namespace ApiExamples
             // Verify some properties of the image
             Assert.IsTrue(shape.IsImage);
             Assert.IsNotNull(shape.ImageData.ImageBytes);
-            Assert.AreEqual(80.0, ConvertUtil.PointToPixel(shape.Width));
-            Assert.AreEqual(60.0, ConvertUtil.PointToPixel(shape.Height));
+            Assert.AreEqual(32.0, ConvertUtil.PointToPixel(shape.Width), 0.01);
+            Assert.AreEqual(32.0, ConvertUtil.PointToPixel(shape.Height), 0.01);
         }
 
         [Test]
@@ -393,7 +376,7 @@ namespace ApiExamples
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.LoadFormat = Aspose.Words.LoadFormat.Html;
 
-            Document doc = new Document(MyDir + "Document.LoadFormat.html", loadOptions);
+            Document doc = new Document(MyDir + "Document.html", loadOptions);
             //ExEnd
         }
 
@@ -424,7 +407,7 @@ namespace ApiExamples
             // Trying to open a password-encrypted document the normal way will cause an exception to be thrown
             Assert.Throws<IncorrectPasswordException>(() =>
             {
-                doc = new Document(MyDir + "Document.LoadEncrypted.doc");
+                doc = new Document(MyDir + "Encrypted.doc");
             });
 
             // To open it and access its contents, we need to open it using the correct password
@@ -432,9 +415,9 @@ namespace ApiExamples
             LoadOptions options = new LoadOptions("qwerty");
 
             // We can now open the document either by filename or stream
-            doc = new Document(MyDir + "Document.LoadEncrypted.doc", options);
+            doc = new Document(MyDir + "Encrypted.doc", options);
 
-            using (Stream stream = File.OpenRead(MyDir + "Document.LoadEncrypted.doc"))
+            using (Stream stream = File.OpenRead(MyDir + "Encrypted.doc"))
             {
                 doc = new Document(stream, options);
             }
@@ -450,7 +433,7 @@ namespace ApiExamples
             LoadOptions loadOptions = new LoadOptions { ConvertShapeToOfficeMath = false };
 
             // Specify load option to convert math shapes to office math objects on loading stage
-            Document doc = new Document(MyDir + "Document.ConvertShapeToOfficeMath.docx", loadOptions);
+            Document doc = new Document(MyDir + "MathShapes.docx", loadOptions);
             doc.Save(ArtifactsDir + "Document.ConvertShapeToOfficeMath.docx", SaveFormat.Docx);
             //ExEnd
         }
@@ -877,23 +860,24 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
+        [Category("SkipTearDown")]
         public void AppendDocument()
         {
             //ExStart
             //ExFor:Document.AppendDocument(Document, ImportFormatMode)
             //ExSummary:Shows how to append a document to the end of another document.
             // The document that the content will be appended to
-            Document dstDoc = new Document(MyDir + "Document.doc");
+            Document dstDoc = new Document(MyDir + "Document.docx");
             
             // The document to append
-            Document srcDoc = new Document(MyDir + "DocumentBuilder.doc");
+            Document srcDoc = new Document(MyDir + "Paragraphs.docx");
 
             // Append the source document to the destination document
             // Pass format mode to retain the original formatting of the source document when importing it
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
 
             // Save the document
-            dstDoc.Save(ArtifactsDir + "Document.AppendDocument.doc");
+            dstDoc.Save(ArtifactsDir + "Document.AppendDocument.docx");
             //ExEnd
         }
 
@@ -943,7 +927,7 @@ namespace ApiExamples
             //ExFor:DigitalSignatureType
             //ExSummary:Shows how to validate all signatures in a document.
             // Load the signed document
-            Document doc = new Document(MyDir + "Document.DigitalSignature.docx");
+            Document doc = new Document(MyDir + "DigitalSignature.docx");
             DigitalSignatureCollection digitalSignatureCollection = doc.DigitalSignatures;
 
             if (digitalSignatureCollection.IsValid)
@@ -975,7 +959,7 @@ namespace ApiExamples
             //ExFor:DigitalSignature.Certificate
             //ExSummary:Shows how to validate each signature in a document and display basic information about the signature.
             // Load the document which contains signature
-            Document doc = new Document(MyDir + "Document.DigitalSignature.docx");
+            Document doc = new Document(MyDir + "DigitalSignature.docx");
 
             foreach (DigitalSignature signature in doc.DigitalSignatures)
             {
@@ -2765,7 +2749,7 @@ namespace ApiExamples
             // CustomParts are arbitrary content OOXML parts
             // Not to be confused with Custom XML data which is represented by CustomXmlParts
             // This part is internal, meaning it is contained inside the OOXML package
-            Document doc = new Document(MyDir + "Document.PackageCustomParts.docx");
+            Document doc = new Document(MyDir + "CustomPartsOOXML.docx");
             Assert.AreEqual(2, doc.PackageCustomParts.Count);
 
             // Clone the second part
@@ -3223,7 +3207,7 @@ namespace ApiExamples
             // Open a document that contains a variety of layout entities
             // Layout entities are pages, cells, rows, lines and other objects included in the LayoutEntityType enum
             // They are defined visually by the rectangular space that they occupy in the document
-            Document doc = new Document(MyDir + "Document.LayoutEntities.docx");
+            Document doc = new Document(MyDir + "LayoutEntities.docx");
 
             // Create an enumerator that can traverse these entities
             LayoutEnumerator layoutEnumerator = new LayoutEnumerator(doc);
@@ -3235,7 +3219,7 @@ namespace ApiExamples
             layoutEnumerator.MoveLastChild();
             layoutEnumerator.MovePrevious();
             Assert.AreEqual(LayoutEntityType.Span, layoutEnumerator.Type);
-            Assert.AreEqual("TTT", layoutEnumerator.Text);
+            Assert.AreEqual("000", layoutEnumerator.Text);
 
             // Only spans can contain text
             layoutEnumerator.MoveParent(LayoutEntityType.Page);

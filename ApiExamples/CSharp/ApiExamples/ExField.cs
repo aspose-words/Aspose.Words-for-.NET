@@ -1972,7 +1972,7 @@ namespace ApiExamples
             //ExFor:FieldBibliography.FormatLanguageId
             //ExSummary:Shows how to work with CITATION and BIBLIOGRAPHY fields.
             // Open a document that has bibliographical sources
-            Document doc = new Document(MyDir + "Document.HasBibliography.docx");
+            Document doc = new Document(MyDir + "Bibliography.docx");
 
             // Add text that we can cite
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -3949,7 +3949,7 @@ namespace ApiExamples
             //ExFor:FieldMacroButton.MacroName
             //ExSummary:Shows how to use MACROBUTTON fields that enable us to run macros by clicking.
             // Open a document that contains macros
-            Document doc = new Document(MyDir + "Document.HasMacro.docm");
+            Document doc = new Document(MyDir + "Macro.docm");
             DocumentBuilder builder = new DocumentBuilder(doc);
             Assert.IsTrue(doc.HasMacros);
 

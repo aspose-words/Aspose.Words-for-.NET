@@ -76,21 +76,19 @@ namespace ApiExamples
             //ExStart
             //ExFor:HtmlLoadOptions.#ctor(LoadFormat,String,String)
             //ExSummary:Shows how to specify a base URI when opening an html document.
-            // Create and sign an encrypted html document from an encrypted .docx
             // If we want to load an .html document which contains an image linked by a relative URI
             // while the image is in a different location, we will need to resolve the relative URI into an absolute one
             // by creating an HtmlLoadOptions and providing a base URI 
             HtmlLoadOptions loadOptions = new HtmlLoadOptions(LoadFormat.Html, "", ImageDir);
-
-            Document doc = new Document(MyDir + "Document.OpenFromStreamWithBaseUri.html", loadOptions);
-
-            // The image will be displayed correctly by the output document and
-            doc.Save(ArtifactsDir + "Shape.BaseUri.docx");
+            Document doc = new Document(MyDir + "MissingImage.html", loadOptions);
         
-            Shape imgShape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
-            Assert.True(imgShape.IsImage);
+            // While the image was broken in the input .html, it was successfully found in our base URI
+            Shape imageShape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
+            Assert.True(imageShape.IsImage);
+            Assert.AreEqual(11406, imageShape.ImageData.ImageBytes.Length);
 
-            imgShape.ImageData.Save(ArtifactsDir + "HtmlLoadOptions.BaseUri.png");
+            // The image will be displayed correctly by the output document
+            doc.Save(ArtifactsDir + "HtmlLoadOptions.BaseUri.docx");
             //ExEnd
         }
 

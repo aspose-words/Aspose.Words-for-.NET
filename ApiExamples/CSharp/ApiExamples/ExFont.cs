@@ -1670,7 +1670,7 @@ namespace ApiExamples
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.FontSettings = fontSettings;
             // The same for SVG document
-            Document doc = new Document(MyDir + "Document.LoadFormat.html", loadOptions);
+            Document doc = new Document(MyDir + "Document.html", loadOptions);
             //ExEnd
         }
         

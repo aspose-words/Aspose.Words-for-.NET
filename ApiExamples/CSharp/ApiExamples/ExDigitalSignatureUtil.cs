@@ -26,14 +26,14 @@ namespace ApiExamples
             //ExFor:DigitalSignatureUtil.RemoveAllSignatures(String, String)
             //ExSummary:Shows how to load and remove digital signatures from a digitally signed document.
             // Load digital signatures via filename string to verify that the document is signed
-            DigitalSignatureCollection digitalSignatures = DigitalSignatureUtil.LoadSignatures(MyDir + "Document.DigitalSignature.docx");
+            DigitalSignatureCollection digitalSignatures = DigitalSignatureUtil.LoadSignatures(MyDir + "DigitalSignature.docx");
             Assert.AreEqual(1, digitalSignatures.Count);
 
             // Re-save the document to an output filename with all digital signatures removed
-            DigitalSignatureUtil.RemoveAllSignatures(MyDir + "Document.DigitalSignature.docx", ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromString.docx");
+            DigitalSignatureUtil.RemoveAllSignatures(MyDir + "DigitalSignature.docx", ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromString.docx");
 
             // Remove all signatures from the document using stream parameters
-            using (Stream streamIn = new FileStream(MyDir + "Document.DigitalSignature.docx", FileMode.Open))
+            using (Stream streamIn = new FileStream(MyDir + "DigitalSignature.docx", FileMode.Open))
             {
                 using (Stream streamOut = new FileStream(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx", FileMode.Create))
                 {
@@ -66,7 +66,7 @@ namespace ApiExamples
 
             SignOptions signOptions = new SignOptions { Comments = "My comment", SignTime = DateTime.Now };
 
-            using (Stream streamIn = new FileStream(MyDir + "Document.DigitalSignature.docx", FileMode.Open))
+            using (Stream streamIn = new FileStream(MyDir + "DigitalSignature.docx", FileMode.Open))
             {
                 using (Stream streamOut = new FileStream(ArtifactsDir + "DigitalSignatureUtil.SignDocument.docx", FileMode.OpenOrCreate))
                 {
@@ -170,7 +170,7 @@ namespace ApiExamples
         [Test]
         public void NoCertificateForSign()
         {
-            Document doc = new Document(MyDir + "Document.DigitalSignature.docx");
+            Document doc = new Document(MyDir + "DigitalSignature.docx");
             string outputFileName = ArtifactsDir + "DigitalSignatureUtil.NoCertificateForSign.docx";
 
             SignOptions signOptions = new SignOptions

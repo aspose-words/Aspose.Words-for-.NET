@@ -49,7 +49,7 @@ namespace ApiExamples
             Assert.IsNull(info.Encoding);
 
             // This time the property will not be null
-            info = FileFormatUtil.DetectFileFormat(MyDir + "Document.LoadFormat.html");
+            info = FileFormatUtil.DetectFileFormat(MyDir + "Document.html");
             Assert.AreEqual(LoadFormat.Html, info.LoadFormat);
             Assert.IsNotNull(info.Encoding);
 
@@ -203,7 +203,7 @@ namespace ApiExamples
             //ExFor:FileFormatInfo.HasDigitalSignature
             //ExSummary:Shows how to check a document for digital signatures before loading it into a Document object.
             // The path to the document which is to be processed
-            string filePath = MyDir + "Document.Signed.docx";
+            string filePath = MyDir + "DigitalSignature.docx";
 
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(filePath);
             if (info.HasDigitalSignature)

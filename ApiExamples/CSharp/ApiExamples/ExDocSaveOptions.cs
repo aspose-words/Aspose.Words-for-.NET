@@ -70,7 +70,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocSaveOptions.SavePictureBullet
             //ExSummary:Shows how to remove PictureBullet data from the document.
-            Document doc = new Document(MyDir + "Document.PictureBullets.docx");
+            Document doc = new Document(MyDir + "PictureBulletPoints.docx");
 
             // Word 97 cannot work correctly with PictureBullet data
             // To remove PictureBullet data, set the option to "false"
