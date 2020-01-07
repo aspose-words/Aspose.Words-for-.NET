@@ -195,6 +195,7 @@
     <Compile Include="Programming-Documents\Document\CleansUnusedStylesandLists.cs" />
     <Compile Include="Programming-Documents\Document\DocumentBuilderHorizontalRule.cs" />
     <Compile Include="Programming-Documents\Document\DocumentPageSetup.cs" />
+    <Compile Include="Programming-Documents\Document\ExtractTableOfContents.cs" />
     <Compile Include="Programming-Documents\Document\GenerateACustomBarCodeImage.cs" />
     <Compile Include="Programming-Documents\Document\CloningDocument.cs" />
     <Compile Include="Programming-Documents\Document\AccessStyles.cs" />

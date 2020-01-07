@@ -28,7 +28,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 
             doc.Save(dataDir + "output.rtf", saveOpts);
             //ExEnd:SavingImagesAsWmf
-            Console.WriteLine("\nAdded watermark to the document successfully.\nFile saved at " + dataDir);
+            Console.WriteLine("\nThe document saved successfully.\nFile saved at " + dataDir);
         }
 
     }

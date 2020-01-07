@@ -194,6 +194,7 @@ namespace Aspose.Words.Examples.CSharp
             // DocumentBuilderInsertElements.Run();
             // DocumentBuilderSetFormatting.Run();
             // DocumentBuilderMovingCursor.Run();
+            ExtractTableOfContents.Run();
             // ExtractTextOnly.Run();
             // InsertDoc.Run();
             // DocumentBuilderInsertTOC.Run();
