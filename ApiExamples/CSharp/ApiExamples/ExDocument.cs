@@ -381,19 +381,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void OldLoadFormat()
-        {
-            //ExStart
-            //ExFor:LoadFormat
-            //ExSummary:Shows how to open older binary DOC format for Word6.0/Word95 documents.
-            LoadOptions loadOptions = new LoadOptions();
-            loadOptions.LoadFormat = Aspose.Words.LoadFormat.DocPreWord60;
-
-            Document doc = new Document(MyDir + "Document.PreWord60.doc", loadOptions);
-            //ExEnd
-        }
-
-        [Test]
         public void LoadEncrypted()
         {
             //ExStart
@@ -1842,7 +1829,7 @@ namespace ApiExamples
             //ExFor:ParagraphCollection.Item(Int32)
             //ExFor:Story.Paragraphs
             //ExSummary:Shows how to get paragraph that was moved (deleted/inserted) in Microsoft Word while change tracking was enabled.
-            Document doc = new Document(MyDir + "Document.Revisions.docx");
+            Document doc = new Document(MyDir + "Revisions.docx");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
             // There are two sets of move revisions in this document
@@ -2243,7 +2230,7 @@ namespace ApiExamples
             builder.Writeln("This also does not count as a revision.");
             Assert.AreEqual(0, doc.Revisions.Count);
 
-            doc.Save(ArtifactsDir + "Document.Revisions.docx");
+            doc.Save(ArtifactsDir + "Revisions.docx");
             //ExEnd
         }
 
@@ -2258,7 +2245,7 @@ namespace ApiExamples
             //ExFor:RevisionGroupCollection.GetEnumerator
             //ExSummary:Shows how to look through a document's revisions.
             // Open a document that contains revisions and get its revision collection
-            Document doc = new Document(MyDir + "Document.Revisions.docx");
+            Document doc = new Document(MyDir + "Revisions.docx");
             RevisionCollection revisions = doc.Revisions;
             
             // This collection itself has a collection of revision groups, which are merged sequences of adjacent revisions
@@ -2951,7 +2938,7 @@ namespace ApiExamples
             //ExFor:RevisionGroupCollection
             //ExFor:RevisionGroupCollection.Count
             //ExSummary:Shows how to get info about a set of revisions in document.
-            Document doc = new Document(MyDir + "Document.Revisions.docx");
+            Document doc = new Document(MyDir + "Revisions.docx");
 
             Console.WriteLine("Revision groups count: {0}\n", doc.Revisions.Groups.Count);
 
@@ -2972,7 +2959,7 @@ namespace ApiExamples
             //ExFor:RevisionGroupCollection.Item(Int32)
             //ExFor:RevisionType
             //ExSummary:Shows how to get a set of revisions in document.
-            Document doc = new Document(MyDir + "Document.Revisions.docx");
+            Document doc = new Document(MyDir + "Revisions.docx");
 
             // Get revision group by index
             RevisionGroup revisionGroup = doc.Revisions.Groups[1];
@@ -3044,7 +3031,7 @@ namespace ApiExamples
             //ExFor:RevisionOptions.ShowRevisionMarks
             //ExFor:RevisionTextEffect
             //ExSummary:Show how to render revisions in the balloons and edit their appearance.
-            Document doc = new Document(MyDir + "Document.Revisions.docx");
+            Document doc = new Document(MyDir + "Revisions.docx");
 
             // Get the RevisionOptions object that controls the appearance of revisions
             RevisionOptions revisionOptions = doc.LayoutOptions.RevisionOptions;
@@ -3371,7 +3358,7 @@ namespace ApiExamples
             //ExFor:VbaModule.Name
             //ExFor:VbaModule.SourceCode
             //ExSummary:Shows how to get access to VBA project information in the document.
-            Document doc = new Document(MyDir + "Document.TestButton.docm");
+            Document doc = new Document(MyDir + "VBAProject.docm");
 
             // A VBA project inside the document is defined as a collection of VBA modules
             VbaProject vbaProject = doc.VbaProject;

@@ -1006,7 +1006,7 @@ namespace ApiExamples
         public void SmartTagToText()
         {
             // Open the document that has smart tags we want to print the info of
-            Document doc = new Document(MyDir + "DocumentVisitor.SmartTag.docx");
+            Document doc = new Document(MyDir + "SmartTag.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             SmartTagInfoPrinter visitor = new SmartTagInfoPrinter();

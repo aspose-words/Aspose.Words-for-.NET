@@ -21,7 +21,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:TabStopCollection.Clear
             //ExSummary:Shows how to remove all tab stops from a document.
-            Document doc = new Document(MyDir + "Document.TableOfContents.doc");
+            Document doc = new Document(MyDir + "TableOfContents.doc");
 
             // Clear all tab stops from every paragraph
             foreach (Paragraph para in doc.GetChildNodes(NodeType.Paragraph, true).OfType<Paragraph>())

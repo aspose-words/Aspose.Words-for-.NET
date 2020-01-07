@@ -1043,9 +1043,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Shape oleObject = builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, null);
+            Shape oleObject = builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, null);
             Shape oleObjectAsOlePackage =
-                builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false, null);
+                builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, false, null);
 
             Assert.AreEqual(null, oleObject.OleFormat.OlePackage);
             Assert.AreEqual(typeof(OlePackage), oleObjectAsOlePackage.OleFormat.OlePackage.GetType());

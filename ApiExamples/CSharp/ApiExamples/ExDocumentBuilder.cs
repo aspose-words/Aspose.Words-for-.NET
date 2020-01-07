@@ -7,9 +7,9 @@
 
 using System;
 using System.Collections;
-using System.Drawing;
 using System.IO;
 using System.Net;
+using Aspose.Pdf;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
@@ -17,6 +17,13 @@ using Aspose.Words.Fields;
 using Aspose.Words.Replacing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
+using Cell = Aspose.Words.Tables.Cell;
+using Color = System.Drawing.Color;
+using Document = Aspose.Words.Document;
+using Image = System.Drawing.Image;
+using SaveFormat = Aspose.Words.SaveFormat;
+using Table = Aspose.Words.Tables.Table;
+
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
@@ -345,9 +352,9 @@ namespace ApiExamples
             Image representingImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
 
             // OleObject
-            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage); 
+            builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, representingImage); 
             // OleObject with ProgId
-            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false, representingImage);
+            builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, false, representingImage);
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObject.docx");
             //ExEnd
@@ -404,9 +411,9 @@ namespace ApiExamples
             using (SKBitmap representingImage = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
             {
                 // OleObject
-                builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage);
+                builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, representingImage);
                 // OleObject with ProgId
-                builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false,
+                builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, false,
                     representingImage);
             }
 
@@ -638,29 +645,33 @@ namespace ApiExamples
         }
 
         [Test]
-        public void FillingDocument()
+        public void FillMergeFields()
         {
             //ExStart
             //ExFor:DocumentBuilder.MoveToMergeField(String)
             //ExFor:DocumentBuilder.Bold
             //ExFor:DocumentBuilder.Italic
-            //ExSummary:Fills document merge fields with some data.
-            Document doc = new Document(MyDir + "DocumentBuilder.FillingDocument.doc");
+            //ExSummary:Shows how to fill MERGEFIELDs with data with a DocumentBuilder and without a mail merge.
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.MoveToMergeField("TeamLeaderName");
+            builder.InsertField(" MERGEFIELD Chairman ");
+            builder.InsertField(" MERGEFIELD ChiefFinancialOfficer ");
+            builder.InsertField(" MERGEFIELD ChiefTechnologyOfficer ");
+
+            builder.MoveToMergeField("Chairman");
             builder.Bold = true;
-            builder.Writeln("Roman Korchagin");
+            builder.Writeln("John Doe");
 
-            builder.MoveToMergeField("SoftwareDeveloper1Name");
+            builder.MoveToMergeField("ChiefFinancialOfficer");
             builder.Italic = true;
-            builder.Writeln("Dmitry Vorobyev");
+            builder.Writeln("Jane Doe");
 
-            builder.MoveToMergeField("SoftwareDeveloper2Name");
+            builder.MoveToMergeField("ChiefTechnologyOfficer");
             builder.Italic = true;
-            builder.Writeln("Vladimir Averkin");
+            builder.Writeln("John Bloggs");
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.FillingDocument.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.FillMergeFields.doc");
             //ExEnd
         }
 
@@ -2006,7 +2017,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.DeleteRow
             //ExSummary:Shows how to delete a row from a table.
-            Document doc = new Document(MyDir + "DocumentBuilder.DocWithTable.doc");
+            Document doc = new Document(MyDir + "Table.Document.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Delete the first row of the first table in the document
@@ -2073,7 +2084,7 @@ namespace ApiExamples
             //ExSummary:Shows how to manage formatting in the text boxes of the source destination during the import.
             Document dstDoc = new Document(MyDir + "DocumentBuilder.IgnoreTextBoxes.DestinationDocument.docx");
             Document srcDoc = new Document(MyDir + "DocumentBuilder.IgnoreTextBoxes.SourceDocument.docx");
-            
+
             ImportFormatOptions importFormatOptions = new ImportFormatOptions();
             // Keep the source text boxes formatting when importing
             importFormatOptions.IgnoreTextBoxes = false;
@@ -2093,7 +2104,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void MoveToFieldEx()
+        public void MoveToField()
         {
             //ExStart
             //ExFor:DocumentBuilder.MoveToField

@@ -54,7 +54,7 @@ namespace ApiExamples
             //ExFor:FieldChar.GetField
             //ExFor:Field.IsLocked
             //ExSummary:Demonstrates how to retrieve the field class from an existing FieldStart node in the document.
-            Document doc = new Document(MyDir + "Document.TableOfContents.doc");
+            Document doc = new Document(MyDir + "TableOfContents.doc");
 
             FieldChar fieldStart = (FieldChar)doc.GetChild(NodeType.FieldStart, 0, true);
             Assert.AreEqual(FieldType.FieldTOC, fieldStart.FieldType);
@@ -146,7 +146,7 @@ namespace ApiExamples
         [Test]
         public void GetFieldFromFieldCollection()
         {
-            Document doc = new Document(MyDir + "Document.TableOfContents.doc");
+            Document doc = new Document(MyDir + "TableOfContents.doc");
 
             Field field = doc.Range.Fields[0];
 
@@ -220,7 +220,7 @@ namespace ApiExamples
             //ExFor:CompositeNode.GetChildNodes(NodeType, Boolean)
             //ExSummary:Demonstrates how to remove a specified TOC from a document.
             // Open a document which contains a TOC
-            Document doc = new Document(MyDir + "Document.TableOfContents.doc");
+            Document doc = new Document(MyDir + "TableOfContents.doc");
 
             // Remove the first TOC from the document
             Field tocField = doc.Range.Fields[0];
@@ -2862,11 +2862,11 @@ namespace ApiExamples
             InsertFieldLink(builder, insertLinkedObjectAs, "Word.Document.8", MyDir + "Document.doc", null, true);
 
             builder.Writeln("FieldDde:\n");
-            InsertFieldDde(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Document.Spreadsheet.xlsx",
+            InsertFieldDde(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Spreadsheet.xlsx",
                 "Sheet1!R1C1", true, true);
 
             builder.Writeln("FieldDdeAuto:\n");
-            InsertFieldDdeAuto(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Document.Spreadsheet.xlsx",
+            InsertFieldDdeAuto(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Spreadsheet.xlsx",
                 "Sheet1!R1C1", true);
 
             doc.UpdateFields();
@@ -2888,11 +2888,11 @@ namespace ApiExamples
                 "Sheet1!R2C2", true);
 
             builder.Writeln("FieldDde:\n");
-            InsertFieldDde(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Document.Spreadsheet.xlsx",
+            InsertFieldDde(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Spreadsheet.xlsx",
                 "Sheet1!R1C1", true, true);
 
             builder.Writeln("FieldDdeAuto:\n");
-            InsertFieldDdeAuto(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Document.Spreadsheet.xlsx",
+            InsertFieldDdeAuto(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Spreadsheet.xlsx",
                 "Sheet1!R1C1", true);
 
             doc.UpdateFields();
