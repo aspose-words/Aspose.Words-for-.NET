@@ -325,7 +325,7 @@ namespace ApiExamples
         [Test]
         public void BarCodeWord2Pdf()
         {
-            Document doc = new Document(MyDir + "Field.BarCode.docx");
+            Document doc = new Document(MyDir + "Field BARCODE.docx");
 
             // Set custom barcode generator
             doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
@@ -467,7 +467,7 @@ namespace ApiExamples
             //ExSummary:Shows a way to update a field ignoring the MERGEFORMAT switch.
             LoadOptions loadOptions = new LoadOptions { PreserveIncludePictureField = true };
 
-            Document doc = new Document(MyDir + "Field.UpdateFieldIgnoringMergeFormat.docx", loadOptions);
+            Document doc = new Document(MyDir + "Field INCLUDEPICTURE.docx", loadOptions);
 
             foreach (Field field in doc.Range.Fields)
             {
@@ -557,7 +557,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.UnlinkFields
             //ExSummary:Shows how to unlink all fields in the document.
-            Document doc = new Document(MyDir + "Field.UnlinkFields.docx");
+            Document doc = new Document(MyDir + "LinkedFields.docx");
 
             doc.UnlinkFields();
             //ExEnd
@@ -572,7 +572,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Range.UnlinkFields
             //ExSummary:Shows how to unlink all fields in range.
-            Document doc = new Document(MyDir + "Field.UnlinkFields.docx");
+            Document doc = new Document(MyDir + "LinkedFields.docx");
 
             Section newSection = (Section)doc.Sections[0].Clone(true);
             doc.Sections.Add(newSection);
@@ -592,7 +592,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Field.Unlink
             //ExSummary:Shows how to unlink specific field.
-            Document doc = new Document(MyDir + "Field.UnlinkFields.docx");
+            Document doc = new Document(MyDir + "LinkedFields.docx");
             doc.Range.Fields[1].Unlink();
             //ExEnd
 
@@ -605,7 +605,7 @@ namespace ApiExamples
         [Test]
         public void UpdateTocPageNumbers()
         {
-            Document doc = new Document(MyDir + "Field.UpdateTocPages.docx");
+            Document doc = new Document(MyDir + "Field TOC.docx");
 
             Node startNode = DocumentHelper.GetParagraph(doc, 2);
             Node endNode = null;
@@ -2050,8 +2050,8 @@ namespace ApiExamples
 
             // Add an INCLUDE field with document builder and import a portion of the document defined by a bookmark
             FieldInclude fieldInclude = (FieldInclude)builder.InsertField(FieldType.FieldInclude, true);
-            fieldInclude.SourceFullName = MyDir + "Field.Include.Source.docx";
-            fieldInclude.BookmarkName = "Source_paragraph_2";
+            fieldInclude.SourceFullName = MyDir + "Bookmarks.docx";
+            fieldInclude.BookmarkName = "MyBookmark1";
             fieldInclude.LockFields = false;
             fieldInclude.TextConverter = "Microsoft Word";
 
@@ -2181,13 +2181,13 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Use a document builder to insert an include text field and perform an XSL transformation on an XML document
-            FieldIncludeText fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "Field.IncludeText.Source.xml", false, "text/xml", "XML", "ISO-8859-1");
-            fieldIncludeText.XslTransformation = MyDir + "Field.IncludeText.Source.xsl";
+            FieldIncludeText fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "CDCollectionData.xml", false, "text/xml", "XML", "ISO-8859-1");
+            fieldIncludeText.XslTransformation = MyDir + "CDCollectionXSLTransformation.xsl";
 
             builder.Writeln();
 
             // Use a document builder to insert an include text field and use an XPath to take specific elements
-            fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "Field.IncludeText.Source.xml", false, "text/xml", "XML", "ISO-8859-1");
+            fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "CDCollectionData.xml", false, "text/xml", "XML", "ISO-8859-1");
             fieldIncludeText.NamespaceMappings = "xmlns:n='myNamespace'";
             fieldIncludeText.XPath = "/catalog/cd/title";
 
@@ -4399,8 +4399,11 @@ namespace ApiExamples
         [Test]
         public void DefineDateTimeFormatting()
         {
-            Document doc = new Document(MyDir + "Field.UpdateDateTimeFormatting.docx");
-            
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertField(FieldType.FieldTime, true);
+
             doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode;
             // Set a provider that return a culture object specific for each particular field
             doc.FieldOptions.FieldUpdateCultureProvider = new FieldUpdateCultureProvider();
@@ -4408,7 +4411,7 @@ namespace ApiExamples
             FieldTime fieldDate = (FieldTime) doc.Range.Fields[0];
             if (fieldDate.LocaleId != (int) EditingLanguage.Russian)
                 fieldDate.LocaleId = (int) EditingLanguage.Russian;
-            
+
             doc.Save(ArtifactsDir + "Field.UpdateDateTimeFormatting.pdf");
         }
 
@@ -4936,9 +4939,9 @@ namespace ApiExamples
             //ExFor:FieldAddIn
             //ExSummary:Shows how to process an ADDIN field.
             // Open a document that contains an ADDIN field
-            Document doc = new Document(MyDir + "Field.Addin.docx");
+            Document doc = new Document(MyDir + "Field ADDIN.docx");
 
-            // Aspose.Words does not support inserting ADDIN fields, but they can be read
+            // Aspose.Words does not support inserting ADDIN fields, they can be read
             FieldAddIn field = (FieldAddIn)doc.Range.Fields[0];
             Assert.AreEqual(" ADDIN \"My value\" ", field.GetFieldCode());
             //ExEnd
@@ -5060,7 +5063,7 @@ namespace ApiExamples
             //ExSummary:Shows how to process FORMCHECKBOX, FORMDROPDOWN and FORMTEXT fields.
             // These fields are legacy equivalents of the FormField, and they can be read and not inserted by Aspose.Words,
             // and are inserted in Microsoft Word 2019 via the Legacy Tools menu in the Developer tab
-            Document doc = new Document(MyDir + "Field.FieldForms.doc");
+            Document doc = new Document(MyDir + "FormFields.doc");
 
             FieldFormCheckBox fieldFormCheckBox = (FieldFormCheckBox)doc.Range.Fields[1];
             Assert.AreEqual(" FORMCHECKBOX \u0001", fieldFormCheckBox.GetFieldCode());
@@ -5199,7 +5202,7 @@ namespace ApiExamples
         public void FieldPrivate()
         {
             // Open a Corel WordPerfect document that was converted to .docx format
-            Document doc = new Document(MyDir + "Field.FromWpd.docx");
+            Document doc = new Document(MyDir + "Field PRIVATE.docx");
 
             // WordPerfect 5.x/6.x documents like the one we opened may contain PRIVATE fields
             // The PRIVATE field is a WordPerfect artifact that is preserved when a file is opened and saved in Microsoft Word
@@ -5396,7 +5399,7 @@ namespace ApiExamples
             //ExFor:FieldShape.Text
             //ExSummary:Shows how some older Microsoft Word fields such as SHAPE and EMBED are handled.
             // Open a document that was created in Microsoft Word 2003
-            Document doc = new Document(MyDir + "Field.Legacy.doc");
+            Document doc = new Document(MyDir + "LegacyFields.doc");
 
             // If we open the document in Word and press Alt+F9, we will see a SHAPE and an EMBED field
             // A SHAPE field is the anchor/canvas for an autoshape object with the "In line with text" wrapping style enabled
@@ -5429,7 +5432,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Field.DisplayResult
             //ExSummary:Shows how to get the text that represents the displayed field result.
-            Document document = new Document(MyDir + "Field.FieldDisplayResult.docx");
+            Document document = new Document(MyDir + "VariousFields.docx");
  
             FieldCollection fields = document.Range.Fields;
  

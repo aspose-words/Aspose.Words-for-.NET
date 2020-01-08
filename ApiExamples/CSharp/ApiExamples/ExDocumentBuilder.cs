@@ -210,7 +210,7 @@ namespace ApiExamples
             //ExFor:Field.GetFieldCode
             //ExFor:Field.GetFieldCode(bool)
             //ExSummary:Shows how to get text between field start and field separator (or field end if there is no separator).
-            Document doc = new Document(MyDir + "Field.FieldCode.docx");
+            Document doc = new Document(MyDir + "NestedFields.docx");
 
             foreach (Field field in doc.Range.Fields)
             {
@@ -219,17 +219,17 @@ namespace ApiExamples
                     FieldIf fieldIf = (FieldIf)field;
 
                     string fieldCode = fieldIf.GetFieldCode();
-                    Assert.AreEqual(" IF " + ControlChar.FieldStartChar + " MERGEFIELD Q223 " + ControlChar.FieldSeparatorChar + ControlChar.FieldEndChar + " > 0 \" (and additionally London Weighting of  " + ControlChar.FieldStartChar + " MERGEFIELD  Q223 \\f £ " + ControlChar.FieldSeparatorChar + ControlChar.FieldEndChar + " per hour) \" \"\" ",fieldCode); //ExSkip
+                    Assert.AreEqual($" IF {ControlChar.FieldStartChar} MERGEFIELD NetIncome {ControlChar.FieldSeparatorChar}{ControlChar.FieldEndChar} > 0 \" (surplus of {ControlChar.FieldStartChar} MERGEFIELD  NetIncome \\f $ {ControlChar.FieldSeparatorChar}{ControlChar.FieldEndChar}) \" \"\" ", fieldCode); //ExSkip
 
                     if (containsNestedFields)
                     {
                         fieldCode = fieldIf.GetFieldCode(true);
-                        Assert.AreEqual(" IF " + ControlChar.FieldStartChar + " MERGEFIELD Q223 " + ControlChar.FieldSeparatorChar + ControlChar.FieldEndChar + " > 0 \" (and additionally London Weighting of  " + ControlChar.FieldStartChar + " MERGEFIELD  Q223 \\f £ " + ControlChar.FieldSeparatorChar + ControlChar.FieldEndChar + " per hour) \" \"\" ",fieldCode); //ExSkip
+                        Assert.AreEqual($" IF {ControlChar.FieldStartChar} MERGEFIELD NetIncome {ControlChar.FieldSeparatorChar}{ControlChar.FieldEndChar} > 0 \" (surplus of {ControlChar.FieldStartChar} MERGEFIELD  NetIncome \\f $ {ControlChar.FieldSeparatorChar}{ControlChar.FieldEndChar}) \" \"\" ", fieldCode); //ExSkip
                     }
                     else
                     {
                         fieldCode = fieldIf.GetFieldCode(false);
-                        Assert.AreEqual(" IF  > 0 \" (and additionally London Weighting of   per hour) \" \"\" ",fieldCode); //ExSkip
+                        Assert.AreEqual(" IF  > 0 \" (surplus of ) \" \"\" ",fieldCode); //ExSkip
                     }
                 }
             }
@@ -601,11 +601,11 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.IsAtEndOfParagraph
             //ExFor:DocumentBuilder.IsAtStartOfParagraph
             //ExSummary:Shows how to move between nodes and manipulate current ones.
-            Document doc = new Document(MyDir + "DocumentBuilder.WorkingWithNodes.doc");
+            Document doc = new Document(MyDir + "Bookmarks.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Move to a bookmark and delete the parent paragraph
-            builder.MoveToBookmark("ParaToDelete");
+            builder.MoveToBookmark("MyBookmark1");
             builder.CurrentParagraph.Remove();
 
             FindReplaceOptions options = new FindReplaceOptions
@@ -614,31 +614,34 @@ namespace ApiExamples
                 FindWholeWordsOnly = true
             };
 
-            // Move to a particular paragraph's run and replace all occurrences of "bad" with "good" within this run
-            builder.MoveTo(doc.LastSection.Body.Paragraphs[0].Runs[0]);
+            // Move to a particular paragraph's run and use replacement to change its text contents
+            // from "Third bookmark." to "My third bookmark."
+            builder.MoveTo(doc.LastSection.Body.Paragraphs[1].Runs[0]);
             Assert.IsTrue(builder.IsAtStartOfParagraph);
             Assert.IsFalse(builder.IsAtEndOfParagraph);
-            builder.CurrentNode.Range.Replace("bad", "good", options);
+            builder.CurrentNode.Range.Replace("Third", "My third", options);
 
             // Mark the beginning of the document
             builder.MoveToDocumentStart();
             builder.Writeln("Start of document.");
 
             // builder.WriteLn puts an end to its current paragraph after writing the text and starts a new one
-            Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
+            Assert.AreEqual(3, doc.FirstSection.Body.Paragraphs.Count);
             Assert.IsTrue(builder.IsAtStartOfParagraph);
-            Assert.IsTrue(builder.IsAtEndOfParagraph);
+            Assert.IsFalse(builder.IsAtEndOfParagraph);
 
             // builder.Write doesn't end the paragraph
             builder.Write("Second paragraph.");
 
-            Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
+            Assert.AreEqual(3, doc.FirstSection.Body.Paragraphs.Count);
             Assert.IsFalse(builder.IsAtStartOfParagraph);
-            Assert.IsTrue(builder.IsAtEndOfParagraph);
+            Assert.IsFalse(builder.IsAtEndOfParagraph);
 
             // Mark the ending of the document
             builder.MoveToDocumentEnd();
-            builder.Writeln("End of document.");
+            builder.Write("End of document.");
+            Assert.IsFalse(builder.IsAtStartOfParagraph);
+            Assert.IsTrue(builder.IsAtEndOfParagraph);
 
             doc.Save(ArtifactsDir + "DocumentBuilder.WorkingWithNodes.doc");
             //ExEnd
@@ -1544,7 +1547,7 @@ namespace ApiExamples
         [Test]
         public void TableCellVerticalRotatedFarEastTextOrientation()
         {
-            Document doc = new Document(MyDir + "DocumentBuilder.TableCellVerticalRotatedFarEastTextOrientation.docx");
+            Document doc = new Document(MyDir + "FarEastRotatedCellText.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             Cell cell = table.FirstRow.FirstCell;

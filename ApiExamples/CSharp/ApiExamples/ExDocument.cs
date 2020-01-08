@@ -847,7 +847,6 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        [Category("SkipTearDown")]
         public void AppendDocument()
         {
             //ExStart
@@ -1564,7 +1563,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Category("SkipTearDown")]
         public void Compare()
         {
             //ExStart
@@ -2047,7 +2045,7 @@ namespace ApiExamples
             //ExEnd
             Assert.AreEqual(compliance, OoxmlCompliance.Ecma376_2006);
 
-            doc = new Document(MyDir + "Field.BarCode.docx");
+            doc = new Document(MyDir + "Field BARCODE.docx");
             compliance = doc.Compliance;
 
             Assert.AreEqual(compliance, OoxmlCompliance.Iso29500_2008_Transitional);
