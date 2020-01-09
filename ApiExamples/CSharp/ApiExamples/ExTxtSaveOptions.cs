@@ -52,7 +52,7 @@ namespace ApiExamples
             //ExFor:TxtSaveOptionsBase.ExportHeadersFootersMode
             //ExFor:TxtExportHeadersFootersMode
             //ExSummary:Shows how to specifies the way headers and footers are exported to plain text format.
-            Document doc = new Document(MyDir + "HeaderFooter.HeaderFooterOrder.docx");
+            Document doc = new Document(MyDir + "HeaderFooterTypes.docx");
 
             // Three values are available in TxtExportHeadersFootersMode enum:
             // "None" - No headers and footers are exported

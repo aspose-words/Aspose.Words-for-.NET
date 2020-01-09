@@ -166,7 +166,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FixedPageSaveOptions.OptimizeOutput
             //ExSummary:Shows how to optimize document objects while saving to html.
-            Document doc = new Document(MyDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.doc");
+            Document doc = new Document(MyDir + "Graphics.doc");
 
             HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { OptimizeOutput = false };
 
@@ -178,11 +178,11 @@ namespace ApiExamples
         //ExFor:HtmlFixedSaveOptions.UseTargetMachineFonts
         //ExFor:IResourceSavingCallback
         //ExFor:IResourceSavingCallback.ResourceSaving(ResourceSavingArgs)
-        //ExSummary: Shows how used target machine fonts to display the document.
+        //ExSummary:Shows how used target machine fonts to display the document.
         [Test] //ExSkip
         public void UsingMachineFonts()
         {
-            Document doc = new Document(MyDir + "Font.DisappearingBulletPoints.doc");
+            Document doc = new Document(MyDir + "AltFontBulletPoints.docx");
 
             HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions
             {

@@ -31,7 +31,7 @@ namespace ApiExamples
         [TestCase(SaveFormat.Epub)]
         public void ExportPageMargins(SaveFormat saveFormat)
         {
-            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportPageMargins.docx");
+            Document doc = new Document(MyDir + "TextBoxes.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
@@ -64,7 +64,7 @@ namespace ApiExamples
         {
             string[] dirFiles;
 
-            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportTextBoxAsSvg.docx");
+            Document doc = new Document(MyDir + "TextBox.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(saveFormat);
             saveOptions.ExportTextBoxAsSvg = isTextBoxAsSvg;
@@ -118,7 +118,7 @@ namespace ApiExamples
         [TestCase(false)]
         public void ExportUrlForLinkedImage(bool export)
         {
-            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportUrlForLinkedImage.docx");
+            Document doc = new Document(MyDir + "LinkedImage.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions { ExportOriginalUrlForLinkedImages = export };
 
@@ -135,7 +135,7 @@ namespace ApiExamples
         [Test]
         public void ExportRoundtripInformation()
         {
-            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportPageMargins.docx");
+            Document doc = new Document(MyDir + "TextBoxes.docx");
             HtmlSaveOptions saveOptions = new HtmlSaveOptions { ExportRoundtripInformation = true };
             
             doc.Save(ArtifactsDir + "HtmlSaveOptions.RoundtripInformation.html", saveOptions);
@@ -158,7 +158,7 @@ namespace ApiExamples
         [Test]
         public void ExternalResourceSavingConfig()
         {
-            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportPageMargins.docx");
+            Document doc = new Document(MyDir + "TextBoxes.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
@@ -185,7 +185,7 @@ namespace ApiExamples
         [Test]
         public void ConvertFontsAsBase64()
         {
-            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportPageMargins.docx");
+            Document doc = new Document(MyDir + "TextBoxes.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.CssStyleSheetType = CssStyleSheetType.External;
@@ -245,7 +245,7 @@ namespace ApiExamples
         [Test]
         public void ResourceFolderPriority()
         {
-            Document doc = new Document(MyDir + "HtmlSaveOptions.ResourceFolder.docx");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.CssStyleSheetType = CssStyleSheetType.External;
@@ -257,16 +257,16 @@ namespace ApiExamples
 
             string[] a = Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.001.jpeg",
                 SearchOption.AllDirectories);
-            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.001.jpeg", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.001.png", SearchOption.AllDirectories));
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.002.png", SearchOption.AllDirectories));
-            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.calibri.ttf", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.arial.ttf", SearchOption.AllDirectories));
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.css", SearchOption.AllDirectories));
         }
 
         [Test]
         public void ResourceFolderLowPriority()
         {
-            Document doc = new Document(MyDir + "HtmlSaveOptions.ResourceFolder.docx");
+            Document doc = new Document(MyDir + "Rendering.doc");
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
                 CssStyleSheetType = CssStyleSheetType.External,
@@ -280,11 +280,11 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ResourceFolderLowPriority.html", saveOptions);
 
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Images",
-                "HtmlSaveOptions.ResourceFolderLowPriority.001.jpeg", SearchOption.AllDirectories));
+                "HtmlSaveOptions.ResourceFolderLowPriority.001.png", SearchOption.AllDirectories));
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Images", "HtmlSaveOptions.ResourceFolderLowPriority.002.png",
                 SearchOption.AllDirectories));
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Fonts",
-                "HtmlSaveOptions.ResourceFolderLowPriority.calibri.ttf", SearchOption.AllDirectories));
+                "HtmlSaveOptions.ResourceFolderLowPriority.arial.ttf", SearchOption.AllDirectories));
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderLowPriority.css",
                 SearchOption.AllDirectories));
         }
@@ -346,8 +346,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlSaveOptions.CssClassNamePrefix
-            //ExSummary: Shows how to specifies a prefix which is added to all CSS class names.
-            Document doc = new Document(MyDir + "HtmlSaveOptions.CssClassNamePrefix.docx");
+            //ExSummary:Shows how to specifies a prefix which is added to all CSS class names.
+            Document doc = new Document(MyDir + "Paragraphs.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
@@ -355,6 +355,7 @@ namespace ApiExamples
                 CssClassNamePrefix = "aspose-"
             };
 
+            // The prefix will be found before CSS element names in the embedded stylesheet
             doc.Save(ArtifactsDir + "HtmlSaveOptions.CssClassNamePrefix.html", saveOptions);
             //ExEnd
         }
@@ -370,7 +371,7 @@ namespace ApiExamples
         [Test]
         public void CssClassNamesNullPrefix()
         {
-            Document doc = new Document(MyDir + "HtmlSaveOptions.CssClassNamePrefix.docx");
+            Document doc = new Document(MyDir + "Paragraphs.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
@@ -384,7 +385,7 @@ namespace ApiExamples
         [Test]
         public void ContentIdScheme()
         {
-            Document doc = new Document(MyDir + "HtmlSaveOptions.ContentIdScheme.docx");
+            Document doc = new Document(MyDir + "Barcodes.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Mhtml)
             {
@@ -402,7 +403,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:HtmlSaveOptions.ResolveFontNames
             //ExSummary:Shows how to resolve all font names before writing them to HTML.
-            Document document = new Document(MyDir + "HtmlSaveOptions.ResolveFontNames.docx");
+            Document document = new Document(MyDir + "MissingFont.docx");
 
             FontSettings fontSettings = new FontSettings
             {

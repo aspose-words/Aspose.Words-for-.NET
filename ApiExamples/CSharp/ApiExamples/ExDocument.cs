@@ -2351,7 +2351,7 @@ namespace ApiExamples
             //ExFor:Document.LastSection
             //ExSummary:Shows how to edit the last section of a document.
             // Open the template document, containing obsolete copyright information in the footer
-            Document doc = new Document(MyDir + "HeaderFooter.ReplaceText.doc");
+            Document doc = new Document(MyDir + "Footer.doc");
 
             // We have a document with 2 sections, this way FirstSection and LastSection are not the same
             Assert.AreEqual(2, doc.Sections.Count);
