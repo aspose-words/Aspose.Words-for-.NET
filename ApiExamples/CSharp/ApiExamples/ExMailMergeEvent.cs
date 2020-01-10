@@ -39,24 +39,20 @@ namespace ApiExamples
         [Test] //ExSkip
         public void InsertHtml()
         {
-            // File 'MailMerge.InsertHtml.doc' has merge field named 'htmlField1' in it
-            // File 'MailMerge.HtmlData.html' contains some valid HTML data
-            // The same approach can be used when merging HTML data from database
-            Document doc = new Document(MyDir + "MailMerge.InsertHtml.doc");
+            Document doc = new Document(MyDir + "ContentMergefield.docx");
 
             // Add a handler for the MergeField event
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldInsertHtml();
 
-            // Load some HTML from file
-            StreamReader sr = File.OpenText(MyDir + "MailMerge.HtmlData.html");
-            string htmltext = sr.ReadToEnd();
-            sr.Close();
+            const string html = @"<html>
+                    <h1>Hello world!</h1>
+            </html>";
 
             // Execute mail merge
-            doc.MailMerge.Execute(new string[] { "htmlField1" }, new object[] { htmltext });
+            doc.MailMerge.Execute(new string[] { "htmlField1" }, new object[] { html });
 
             // Save resulting document with a new name
-            doc.Save(ArtifactsDir + "MailMergeEvent.InsertHtml.doc");
+            doc.Save(ArtifactsDir + "MailMergeEvent.InsertHtml.docx");
         }
 
         private class HandleMergeFieldInsertHtml : IFieldMergingCallback
@@ -100,10 +96,16 @@ namespace ApiExamples
         [Test] //ExSkip
         public void InsertCheckBox()
         {
-            // File 'MailMerge.InsertCheckBox.doc' is a template
-            // containing the table with the following fields in it:
-            // <<TableStart:StudentCourse>> <<CourseName>> <<TableEnd:StudentCourse>>
-            Document doc = new Document(MyDir + "MailMerge.InsertCheckBox.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.StartTable();
+            builder.InsertCell();
+            builder.InsertField(" MERGEFIELD  TableStart:StudentCourse ");
+            builder.InsertCell();
+            builder.InsertField(" MERGEFIELD  CourseName ");
+            builder.InsertCell();
+            builder.InsertField(" MERGEFIELD  TableEnd:StudentCourse ");
+            builder.EndTable();
 
             // Add a handler for the MergeField event
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldInsertCheckBox();

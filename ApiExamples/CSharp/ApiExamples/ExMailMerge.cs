@@ -34,11 +34,19 @@ namespace ApiExamples
             //ExFor:Document.Save(HttpResponse,String,ContentDisposition,SaveOptions)
             //ExSummary:Performs a simple insertion of data into merge fields and sends the document to the browser inline.
             // Open an existing document
-            Document doc = new Document(MyDir + "MailMerge.ExecuteArray.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertField(" MERGEFIELD FullName ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD Company ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD Address ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD City ");
 
             // Fill the fields in the document with user data
-            doc.MailMerge.Execute(new string[] { "FullName", "Company", "Address", "Address2", "City" },
-                new object[] { "James Bond", "MI5 Headquarters", "Milbank", "", "London" });
+            doc.MailMerge.Execute(new string[] { "FullName", "Company", "Address", "City" },
+                new object[] { "James Bond", "MI5 Headquarters", "Milbank", "London" });
 
             // Send the document in Word format to the client browser with an option to save to disk or open inside the current browser
             Assert.That(() => doc.Save(response, "Artifacts/MailMerge.ExecuteArray.doc", ContentDisposition.Inline, null), 
@@ -228,7 +236,11 @@ namespace ApiExamples
             //ExFor:MailMerge.Execute(DataRow)
             //ExFor:Document.MailMerge
             //ExSummary:Executes mail merge from an ADO.NET DataTable.
-            Document doc = new Document(MyDir + "MailMerge.ExecuteDataTable.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertField(" MERGEFIELD CustomerName ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD Address ");
 
             // This example creates a table, but you would normally load table from a database
             DataTable table = new DataTable("Test");
@@ -242,8 +254,12 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.doc");
 
-            // Open a fresh copy of our document to perform another mail merge
-            doc = new Document(MyDir + "MailMerge.ExecuteDataTable.doc");
+            // Create a copy of our document to perform another mail merge
+            doc = new Document();
+            builder = new DocumentBuilder(doc);
+            builder.InsertField(" MERGEFIELD CustomerName ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD Address ");
 
             // We can also source values for a mail merge from a single row in the table
             doc.MailMerge.Execute(table.Rows[1]);
@@ -939,7 +955,7 @@ namespace ApiExamples
             //ExFor:FieldAddressBlock
             //ExFor:FieldAddressBlock.GetFieldNames
             //ExSummary:Shows how to get mail merge field names used by the field.
-            Document doc = new Document(MyDir + "MailMerge.GetFieldNames.docx");
+            Document doc = new Document(MyDir + "AddressBlockFieldNames.docx");
 
             string[] addressFieldsExpect =
             {

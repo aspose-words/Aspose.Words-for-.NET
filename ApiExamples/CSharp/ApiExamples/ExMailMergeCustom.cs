@@ -27,13 +27,17 @@ namespace ApiExamples
         [Test] //ExSkip
         public void CustomDataSource()
         {
+            // Create a destination document for the mail merge
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertField(" MERGEFIELD FullName ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD Address ");
+
             // Create some data that we will use in the mail merge
             CustomerList customers = new CustomerList();
             customers.Add(new Customer("Thomas Hardy", "120 Hanover Sq., London"));
             customers.Add(new Customer("Paolo Accorti", "Via Monte Bianco 34, Torino"));
-
-            // Open the template document
-            Document doc = new Document(MyDir + "MailMerge.CustomDataSource.doc");
 
             // To be able to mail merge from your own data source, it must be wrapped
             // into an object that implements the IMailMergeDataSource interface
