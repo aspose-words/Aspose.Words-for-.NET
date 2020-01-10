@@ -270,7 +270,9 @@ namespace ApiExamples
             //ExStart
             //ExFor:MailMerge.Execute(String[], Object[])
             //ExSummary:Demonstrates how to merge an image from a web address using an Image field.
-            Document doc = new Document(MyDir + "MailMerge.MergeImageSimple.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertField("MERGEFIELD  Image:Logo ");
 
             // Pass a URL which points to the image to merge into the document
             doc.MailMerge.Execute(new string[] { "Logo" },
@@ -299,7 +301,7 @@ namespace ApiExamples
         [Category("SkipMono")] //ExSkip
         public void ImageFromBlob()
         {
-            Document doc = new Document(MyDir + "MailMerge.MergeImage.doc");
+            Document doc = new Document(MyDir + "MailMergeDestinationNorthwindEmployees.doc");
 
             // Set up the event handler for image fields
             doc.MailMerge.FieldMergingCallback = new HandleMergeImageFieldFromBlob();

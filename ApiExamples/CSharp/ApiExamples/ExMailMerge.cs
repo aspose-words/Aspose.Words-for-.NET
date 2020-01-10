@@ -1026,7 +1026,7 @@ namespace ApiExamples
             //ExFor:MailMergeRegionInfo.EndField
             //ExFor:MailMergeRegionInfo.Level
             //ExSummary:Shows how to get MailMergeRegionInfo and work with it.
-            Document doc = new Document(MyDir + "MailMerge.TestRegionsHierarchy.doc");
+            Document doc = new Document(MyDir + "MailMergeRegions.doc");
 
             // Returns a full hierarchy of regions (with fields) available in the document
             MailMergeRegionInfo regionInfo = doc.MailMerge.GetRegionsHierarchy();
@@ -1090,16 +1090,21 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        [TestCase("Region1")]
-        [TestCase("NestedRegion1")]
-        public void GetRegionsByName(string regionName)
+        public void GetRegionsByName()
         {
-            Document doc = new Document(MyDir + "MailMerge.RegionsByName.doc");
+            Document doc = new Document(MyDir + "MailMergeRegions.doc");
 
-            IList<MailMergeRegionInfo> regions = doc.MailMerge.GetRegionsByName(regionName);
-            Assert.AreEqual(2, regions.Count);
+            IList<MailMergeRegionInfo> regions = doc.MailMerge.GetRegionsByName("Region1");
+            Assert.AreEqual(1, doc.MailMerge.GetRegionsByName("Region1").Count);
+            foreach (MailMergeRegionInfo region in regions) Assert.AreEqual("Region1", region.Name);
 
-            foreach (MailMergeRegionInfo region in regions) Assert.AreEqual(regionName, region.Name);
+            regions = doc.MailMerge.GetRegionsByName("Region2");
+            Assert.AreEqual(1, doc.MailMerge.GetRegionsByName("Region2").Count);
+            foreach (MailMergeRegionInfo region in regions) Assert.AreEqual("Region2", region.Name);
+
+            regions = doc.MailMerge.GetRegionsByName("NestedRegion1");
+            Assert.AreEqual(2, doc.MailMerge.GetRegionsByName("NestedRegion1").Count);
+            foreach (MailMergeRegionInfo region in regions) Assert.AreEqual("NestedRegion1", region.Name);
         }
 
         [Test]
@@ -1155,16 +1160,25 @@ namespace ApiExamples
             //ExStart
             //ExFor:MailMerge.UnconditionalMergeFieldsAndRegions
             //ExSummary:Shows how to merge fields or regions regardless of the parent IF field's condition.
-            Document doc = new Document(MyDir + "MailMerge.UnconditionalMergeFieldsAndRegions.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Merge fields and merge regions are merged regardless of the parent IF field's condition
+            // Insert a MERGEFIELD nested inside an IF field
+            // Since the statement of the IF field is false, the result of the inner MERGEFIELD will not be displayed
+            // and the MERGEFIELD will not receive any data during a mail merge
+            FieldIf fieldIf = (FieldIf)builder.InsertField(" IF 1 = 2 ");
+            builder.MoveTo(fieldIf.Separator);
+            builder.InsertField(" MERGEFIELD  FullName ");
+
+            // We can still count MERGEFIELDs inside false-statement IF fields if we set this flag to true
             doc.MailMerge.UnconditionalMergeFieldsAndRegions = true;
 
-            // Fill the fields in the document with user data
+            // Execute the mail merge
             doc.MailMerge.Execute(
                 new string[] { "FullName" },
                 new object[] { "James Bond" });
 
+            // The result will not be visible in the document because the IF field is false, but the inner MERGEFIELD did indeed receive data
             doc.Save(ArtifactsDir + "MailMerge.UnconditionalMergeFieldsAndRegions.docx");
             //ExEnd
         }

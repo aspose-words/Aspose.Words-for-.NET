@@ -37,7 +37,7 @@ namespace ApiExamples
                 Directory.CreateDirectory(ArtifactsDir);
         }
 
-        //[TearDown]
+        [TearDown]
         public void TearDown()
         {
             if (!CheckForSkipTearDown())
