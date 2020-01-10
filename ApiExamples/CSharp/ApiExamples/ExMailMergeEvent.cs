@@ -181,7 +181,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void AlternatingRows()
         {
-            Document doc = new Document(MyDir + "MailMerge.AlternatingRows.doc");
+            Document doc = new Document(MyDir + "MailMergeDestination.doc");
 
             // Add a handler for the MergeField event
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldAlternatingRows();

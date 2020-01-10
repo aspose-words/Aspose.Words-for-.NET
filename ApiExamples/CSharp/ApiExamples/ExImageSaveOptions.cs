@@ -121,7 +121,7 @@ namespace ApiExamples
             //ExFor:ImageSaveOptions.ImageColorMode
             //ExFor:ImageSaveOptions.PixelFormat
             //ExSummary:Show how to convert document images to black and white with 1 bit per pixel
-            Document doc = new Document(MyDir + "ImageSaveOptions.BlackAndWhite.docx");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
             imageSaveOptions.ImageColorMode = ImageColorMode.BlackAndWhite;
@@ -142,7 +142,7 @@ namespace ApiExamples
             //ExFor:ImageSaveOptions.ThresholdForFloydSteinbergDithering
             //ExFor:ImageSaveOptions.TiffBinarizationMethod
             //ExSummary: Shows how to control the threshold for TIFF binarization in the Floyd-Steinberg method
-            Document doc = new Document (MyDir + "ImagesSaveOptions.ThresholdForFloydSteinbergDithering.docx");
+            Document doc = new Document (MyDir + "Rendering.doc");
 
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff)
             {

@@ -73,8 +73,8 @@ namespace ApiExamples
         [Test]
         public void InsertAtBookmark()
         {
-            Document mainDoc = new Document(MyDir + "InsertDocument1.doc");
-            Document subDoc = new Document(MyDir + "InsertDocument2.doc");
+            Document mainDoc = new Document(MyDir + "InsertDocumentDestination.docx");
+            Document subDoc = new Document(MyDir + "InsertDocumentTarget.docx");
 
             Bookmark bookmark = mainDoc.Range.Bookmarks["insertionPlace"];
             InsertDocument(bookmark.BookmarkStart.ParentNode, subDoc);
@@ -89,7 +89,7 @@ namespace ApiExamples
         public void InsertAtMailMerge()
         {
             // Open the main document
-            Document mainDoc = new Document(MyDir + "InsertDocument1.doc");
+            Document mainDoc = new Document(MyDir + "InsertDocumentDestination.docx");
 
             // Add a handler to MergeField event
             mainDoc.MailMerge.FieldMergingCallback = new InsertDocumentAtMailMergeHandler();
@@ -97,7 +97,7 @@ namespace ApiExamples
             // The main document has a merge field in it called "Document_1"
             // The corresponding data for this field contains fully qualified path to the document
             // that should be inserted to this field
-            mainDoc.MailMerge.Execute(new string[] { "Document_1" }, new object[] { MyDir + "InsertDocument2.doc" });
+            mainDoc.MailMerge.Execute(new string[] { "Document_1" }, new object[] { MyDir + "InsertDocumentTarget.docx" });
 
             mainDoc.Save(ArtifactsDir + "InsertDocument.InsertAtMailMerge.doc");
         }
@@ -151,7 +151,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void InsertDocumentAtReplace()
         {
-            Document mainDoc = new Document(MyDir + "InsertDocument1.doc");
+            Document mainDoc = new Document(MyDir + "InsertDocumentDestination.docx");
 
             FindReplaceOptions options = new FindReplaceOptions();
             options.Direction = FindReplaceDirection.Backward;
@@ -165,7 +165,7 @@ namespace ApiExamples
         {
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)
             {
-                Document subDoc = new Document(MyDir + "InsertDocument2.doc");
+                Document subDoc = new Document(MyDir + "InsertDocumentTarget.docx");
 
                 // Insert a document after the paragraph, containing the match text
                 Paragraph para = (Paragraph) args.MatchNode.ParentNode;

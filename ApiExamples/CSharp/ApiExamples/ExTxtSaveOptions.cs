@@ -133,7 +133,7 @@ namespace ApiExamples
             //ExFor:TxtSaveOptions.SimplifyListLabels
             //ExSummary:Shows how to change the appearance of tables and lists during conversion to a txt document output.
             // Open a document with a table
-            Document doc = new Document(MyDir + "Lists.PrintOutAllLists.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // Due to the nature of text documents, table grids and text wrapping will be lost during conversion
             // from a file type that supports tables

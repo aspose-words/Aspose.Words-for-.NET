@@ -153,7 +153,7 @@ namespace ApiExamples
             //ExFor:ImageData.ToImage
             //ExFor:ImageData.Save(Stream)
             //ExSummary:Shows how to save all the images from a document to the file system.
-            Document imgSourceDoc = new Document(MyDir + "Image.SampleImages.doc");
+            Document imgSourceDoc = new Document(MyDir + "SampleImages.doc");
 
             // Images are stored as shapes
             // Get into the document's shape collection to verify that it contains 6 images
@@ -370,7 +370,7 @@ namespace ApiExamples
             //ExFor:ImageData.ToByteArray
             //ExFor:ImageData.ToStream
             //ExSummary:Shows how to access raw image data in a shape's ImageData object.
-            Document imgSourceDoc = new Document(MyDir + "Image.SampleImages.doc");
+            Document imgSourceDoc = new Document(MyDir + "SampleImages.doc");
 
             // Images are stored as shapes
             // Get into the document's shape collection to verify that it contains 6 images
@@ -411,7 +411,7 @@ namespace ApiExamples
             //ExFor:ImageData.Title
             //ExSummary:Shows how to edit images using the ImageData attribute.
             // Open a document that contains images
-            Document imgSourceDoc = new Document(MyDir + "Image.SampleImages.doc");
+            Document imgSourceDoc = new Document(MyDir + "SampleImages.doc");
 
             Shape sourceShape = (Shape)imgSourceDoc.GetChildNodes(NodeType.Shape, true)[0];
             

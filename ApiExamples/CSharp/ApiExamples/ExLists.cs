@@ -519,8 +519,8 @@ namespace ApiExamples
         [Test] //ExSkip
         public void PrintOutAllLists()
         {
-            // You can use any of your documents to try this little program out
-            Document srcDoc = new Document(MyDir + "Lists.PrintOutAllLists.doc");
+            // Open a document that contains lists
+            Document srcDoc = new Document(MyDir + "Rendering.doc");
 
             // This will be the sample document we product
             Document dstDoc = new Document();
@@ -713,7 +713,7 @@ namespace ApiExamples
             //ExFor:ListLabel.LabelValue
             //ExFor:ListLabel.LabelString
             //ExSummary:Shows how to extract the label of each paragraph in a list as a value or a String.
-            Document doc = new Document(MyDir + "Lists.PrintOutAllLists.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
             doc.UpdateListLabels();
             int listParaCount = 1;
 

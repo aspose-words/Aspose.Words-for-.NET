@@ -4019,7 +4019,7 @@ namespace ApiExamples
             //ExFor:FieldNumWords
             //ExSummary:Shows how to use NUMCHARS, NUMWORDS, NUMPAGES and PAGE fields to track the size of our documents.
             // Open a document to which we want to add character/word/page counts
-            Document doc = new Document(MyDir + "Lists.PrintOutAllLists.doc");
+            Document doc = new Document(MyDir + "Paragraphs.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Move the document builder to the footer, where we will store our fields

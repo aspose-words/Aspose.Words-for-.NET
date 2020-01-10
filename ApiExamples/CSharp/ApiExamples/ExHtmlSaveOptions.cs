@@ -99,7 +99,15 @@ namespace ApiExamples
         [TestCase(ExportListLabels.ByHtmlTags)]
         public void ControlListLabelsExport(ExportListLabels howExportListLabels)
         {
-            Document doc = new Document(MyDir + "Lists.PrintOutAllLists.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Aspose.Words.Lists.List bulletedList = doc.Lists.Add(ListTemplate.BulletDefault);
+            builder.ListFormat.List = bulletedList;
+            builder.ParagraphFormat.LeftIndent = 72;
+            builder.Writeln("Bulleted list item 1.");
+            builder.Writeln("Bulleted list item 2.");
+            builder.ParagraphFormat.ClearFormatting();
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html)
             {
@@ -110,7 +118,7 @@ namespace ApiExamples
                 ExportListLabels = howExportListLabels
             };
 
-            doc.Save(ArtifactsDir + "HtmlSaveOptions.ControlListLabelsExport.html", saveOptions);
+            doc.Save(ArtifactsDir + $"HtmlSaveOptions.ControlListLabelsExport.html", saveOptions);
         }
 
         [Test]

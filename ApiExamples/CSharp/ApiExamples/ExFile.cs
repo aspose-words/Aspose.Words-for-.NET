@@ -228,7 +228,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void ExtractImagesToFiles()
         {
-            Document doc = new Document(MyDir + "Image.SampleImages.doc");
+            Document doc = new Document(MyDir + "SampleImages.doc");
 
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
             int imageIndex = 0;

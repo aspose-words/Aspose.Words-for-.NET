@@ -1089,7 +1089,16 @@ namespace ApiExamples
         [Test]
         public void CleanupOptions()
         {
-            Document doc = new Document(MyDir + "MailMerge.CleanUp.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.StartTable();
+            builder.InsertCell();
+            builder.InsertField(" MERGEFIELD  TableStart:StudentCourse ");
+            builder.InsertCell();
+            builder.InsertField(" MERGEFIELD  CourseName ");
+            builder.InsertCell();
+            builder.InsertField(" MERGEFIELD  TableEnd:StudentCourse ");
+            builder.EndTable();
 
             DataTable data = GetDataTable();
 
