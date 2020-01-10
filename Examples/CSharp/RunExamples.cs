@@ -147,7 +147,7 @@ namespace Aspose.Words.Examples.CSharp
 
             //// Shapes
             //// =====================================================
-            // WorkingWithShapes.Run();
+             WorkingWithShapes.Run();
 
             //// Comments
             //// =====================================================
@@ -194,7 +194,7 @@ namespace Aspose.Words.Examples.CSharp
             // DocumentBuilderInsertElements.Run();
             // DocumentBuilderSetFormatting.Run();
             // DocumentBuilderMovingCursor.Run();
-            ExtractTableOfContents.Run();
+            // ExtractTableOfContents.Run();
             // ExtractTextOnly.Run();
             // InsertDoc.Run();
             // DocumentBuilderInsertTOC.Run();
