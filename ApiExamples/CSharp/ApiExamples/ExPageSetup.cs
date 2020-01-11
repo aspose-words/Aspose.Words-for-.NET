@@ -363,11 +363,15 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.InsertField(String, String)
             //ExSummary:Shows how to control page numbering per section.
             // This document has two sections, but no page numbers yet
-            Document doc = new Document(MyDir + "PageSetup.PageNumbering.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Section 1");
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.Writeln("Section 2");
 
             // Use document builder to create a header with a page number field for the first section
             // The page number will look like "Page V"
-            DocumentBuilder builder = new DocumentBuilder(doc);
             builder.MoveToSection(0);
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             builder.Write("Page ");
@@ -394,7 +398,7 @@ namespace ApiExamples
             section.PageSetup.RestartPageNumbering = true;
             section.PageSetup.PageNumberStyle = NumberStyle.Arabic;
 
-            doc.Save(ArtifactsDir + "PageSetup.PageNumbering.doc");
+            doc.Save(ArtifactsDir + "PageSetup.PageNumbering.docx");
             //ExEnd
         }
 

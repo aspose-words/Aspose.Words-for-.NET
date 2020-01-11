@@ -98,7 +98,7 @@ namespace ApiExamples
             //ExFor:LayoutOptions.TextShaperFactory
             //ExSummary:Shows how to support OpenType features using HarfBuzz text shaping engine.
             // Open a document
-            Document doc = new Document(MyDir + "OpenType.Document.docx");
+            Document doc = new Document(MyDir + "OpenTypeTextShaping.docx");
 
             // Please note that text shaping is only performed when exporting to PDF or XPS formats now
 

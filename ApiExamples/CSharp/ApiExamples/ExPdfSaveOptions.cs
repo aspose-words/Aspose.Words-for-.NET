@@ -289,7 +289,7 @@ namespace ApiExamples
             //ExFor:IWarningCallback
             //ExFor:FixedPageSaveOptions.MetafileRenderingOptions
             //ExSummary:Shows added fallback to bitmap rendering and changing type of warnings about unsupported metafile records.
-            Document doc = new Document(MyDir + "PdfSaveOptions.HandleRasterWarnings.doc");
+            Document doc = new Document(MyDir + "WindowsMetafileImage.doc");
 
             MetafileRenderingOptions metafileRenderingOptions =
                 new MetafileRenderingOptions
@@ -344,7 +344,7 @@ namespace ApiExamples
             //ExFor:OutlineOptions
             //ExFor:OutlineOptions.DefaultBookmarksOutlineLevel
             //ExSummary:Shows how bookmarks in headers/footers are exported to pdf.
-            Document doc = new Document(MyDir + "PdfSaveOption.HeaderFooterBookmarksExportMode.docx");
+            Document doc = new Document(MyDir + "HeaderFooterBookmarks.docx");
 
             // You can specify how bookmarks in headers/footers are exported
             // There is a several options for this:
@@ -363,7 +363,7 @@ namespace ApiExamples
         [Test]
         public void UnsupportedImageFormatWarning()
         {
-            Document doc = new Document(MyDir + "PdfSaveOptions.TestCorruptedImage.docx");
+            Document doc = new Document(MyDir + "CorruptedImage.docx");
 
             SaveWarningCallback saveWarningCallback = new SaveWarningCallback();
             doc.WarningCallback = saveWarningCallback;
@@ -394,7 +394,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:MetafileRenderingOptions.ScaleWmfFontsToMetafileSize
             //ExSummary:Shows how to WMF fonts scaling according to metafile size on the page.
-            Document doc = new Document(MyDir + "PdfSaveOptions.FontsScaledToMetafileSize.docx");
+            Document doc = new Document(MyDir + "WindowsMetafile.docx");
 
             // There is a several options for this:
             // 'True' - Aspose.Words emulates font scaling according to metafile size on the page
@@ -413,10 +413,11 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfSaveOptions.AdditionalTextPositioning
             //ExSummary:Show how to write additional text positioning operators.
-            Document doc = new Document(MyDir + "PdfSaveOptions.AdditionalTextPositioning.docx");
+            Document doc = new Document(MyDir + "Paragraphs.docx");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions();
-            // This may help to overcome issues with inaccurate text positioning with some printers
+            // This may help to overcome issues with inaccurate text positioning with some printers, even if the PDF looks fine,
+            // but the file size will increase due to higher text positioning precision used
             saveOptions.AdditionalTextPositioning = true;
             saveOptions.TextCompression = PdfTextCompression.None;
 

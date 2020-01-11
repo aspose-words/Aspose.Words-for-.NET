@@ -222,7 +222,7 @@ namespace ApiExamples
             //ExFor:FrameFormat.RelativeVerticalPosition
             //ExFor:FrameFormat.VerticalDistanceFromText
             //ExSummary:Shows how to get information about formatting properties of paragraph as frame.
-            Document doc = new Document(MyDir + "Paragraph.Frame.docx");
+            Document doc = new Document(MyDir + "ParagraphFrame.docx");
 
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
