@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Diagnostics;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
@@ -152,7 +153,7 @@ namespace ApiExamples
             //ExFor:PdfCompliance
             //ExFor:PdfImageColorSpaceExportMode
             //ExSummary:Shows how to save images to PDF using JPEG encoding to decrease file size.
-            Document doc = new Document(MyDir + "SaveOptions.PdfImageCompression.rtf");
+            Document doc = new Document(MyDir + "Rendering.doc");
             
             PdfSaveOptions options = new PdfSaveOptions
             {
@@ -228,10 +229,9 @@ namespace ApiExamples
             //ExFor:SaveOptions.CreateSaveOptions(SaveFormat)
             //ExFor:SaveOptions.MemoryOptimization
             //ExSummary:Shows an option to optimize memory consumption when you work with large documents.
-            Document doc = new Document(MyDir + "SaveOptions.MemoryOptimization.doc");
-            
+            Document doc = new Document(MyDir + "LargeDocument.doc");
+
             // When set to true it will improve document memory footprint but will add extra time to processing
-            // This optimization is only applied during save operation
             SaveOptions saveOptions = SaveOptions.CreateSaveOptions(SaveFormat.Pdf);
             saveOptions.MemoryOptimization = true;
 

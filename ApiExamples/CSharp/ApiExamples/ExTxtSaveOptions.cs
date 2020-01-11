@@ -20,7 +20,14 @@ namespace ApiExamples
             //ExStart
             //ExFor:TxtSaveOptionsBase.ForcePageBreaks
             //ExSummary:Shows how to specify whether the page breaks should be preserved during export.
-            Document doc = new Document(MyDir + "SaveOptions.PageBreaks.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Page 1");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 2");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 3");
 
             TxtSaveOptions saveOptions = new TxtSaveOptions { ForcePageBreaks = false };
 

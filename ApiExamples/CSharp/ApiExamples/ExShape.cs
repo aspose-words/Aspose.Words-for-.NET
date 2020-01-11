@@ -18,6 +18,7 @@ using Aspose.Words.Math;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
+using Aspose.Words.Tables;
 using NUnit.Framework;
 using Color = System.Drawing.Color;
 using DashStyle = Aspose.Words.Drawing.DashStyle;
@@ -108,7 +109,7 @@ namespace ApiExamples
                 Size = new Size(1000, 800);
 
                 // Open a document and get its first shape, which is a chart
-                Document doc = new Document(MyDir + "Shape.VarietyOfShapes.docx");
+                Document doc = new Document(MyDir + "VariousShapes.docx");
                 Shape shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
                 // Create a ShapeRenderer instance and a Graphics object
@@ -314,25 +315,50 @@ namespace ApiExamples
         [Test]
         public void DeleteAllShapes()
         {
-            Document doc = new Document(MyDir + "Shape.DeleteAllShapes.doc");
 
             //ExStart
             //ExFor:Shape
             //ExSummary:Shows how to delete all shapes from a document.
             // Here we get all shapes from the document node, but you can do this for any smaller
             // node too, for example delete shapes from a single section or a paragraph
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert 2 shapes
+            builder.InsertShape(ShapeType.Rectangle, 400, 200);
+            builder.InsertShape(ShapeType.Star, 300, 300);
+
+            // Insert a GroupShape with an inner shape
+            GroupShape group = new GroupShape(doc);
+            group.Bounds = new RectangleF(100, 50, 200, 100);
+            group.CoordOrigin = new Point(-1000, -500);
+
+            Shape subShape = new Shape(doc, ShapeType.Cube);
+            subShape.Width = 500;
+            subShape.Height = 700;
+            subShape.Left = 0;
+            subShape.Top = 0;
+            group.AppendChild(subShape);
+            builder.InsertNode(group);
+
+            Assert.AreEqual(3, doc.GetChildNodes(NodeType.Shape, true).Count);
+            Assert.AreEqual(1, doc.GetChildNodes(NodeType.GroupShape, true).Count);
+
+            // Delete all Shape nodes
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
             shapes.Clear();
 
-            // There could also be group shapes, they have different node type, remove them all too
+            // The GroupShape node is still present even though there are no sub Shapes
+            Assert.AreEqual(1, doc.GetChildNodes(NodeType.GroupShape, true).Count);
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).Count);
+
+            // GroupShapes also have to be deleted manually
             NodeCollection groupShapes = doc.GetChildNodes(NodeType.GroupShape, true);
             groupShapes.Clear();
-            //ExEnd
 
-            Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).Count);
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.GroupShape, true).Count);
-
-            doc.Save(ArtifactsDir + "Shape.DeleteAllShapes.doc");
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).Count);
+            //ExEnd
         }
 
         [Test]
@@ -464,7 +490,7 @@ namespace ApiExamples
             //ExFor:CompositeNode.InsertAfter(Node, Node)
             //ExFor:NodeCollection.ToArray
             //ExSummary:Shows how to replace all textboxes with images.
-            Document doc = new Document(MyDir + "Shape.ReplaceTextboxesWithImages.doc");
+            Document doc = new Document(MyDir + "DrawingCanvasAndTextboxes.doc");
 
             // This gets a live collection of all shape nodes in the document
             NodeCollection shapeCollection = doc.GetChildNodes(NodeType.Shape, true);
@@ -569,8 +595,8 @@ namespace ApiExamples
             //ExFor:Forms2OleControl.Enabled
             //ExFor:Forms2OleControl.Type
             //ExFor:Forms2OleControl.ChildNodes
-            //ExSummary: Shows how to get ActiveX control and properties from the document.
-            Document doc = new Document(MyDir + "Shape.ActiveXObject.docx");
+            //ExSummary:Shows how to get ActiveX control and properties from the document.
+            Document doc = new Document(MyDir + "ActiveXControls.docx");
 
             // Get ActiveX control from the document 
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
@@ -603,7 +629,7 @@ namespace ApiExamples
             //ExFor:OleFormat.Save(String)
             //ExFor:OleFormat.SuggestedExtension
             //ExSummary:Shows how to extract embedded OLE objects into files.
-            Document doc = new Document(MyDir + "Shape.Ole.Spreadsheet.docm");
+            Document doc = new Document(MyDir + "OLESpreadsheet.docm");
 
             // The first shape will contain an OLE object
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
@@ -691,7 +717,7 @@ namespace ApiExamples
             //ExFor:Ole.Forms2OleControlCollection.Item(Int32)
             //ExSummary:Shows how to access an OLE control embedded in a document and its child controls.
             // Open a document that contains a Microsoft Forms OLE control with child controls
-            Document doc = new Document(MyDir + "Shape.Ole.ControlCollection.docm");
+            Document doc = new Document(MyDir + "OLEWithActiveXControls.docm");
 
             // Get the shape that contains the control
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
@@ -723,7 +749,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:OleFormat.SuggestedFileName
             //ExSummary:Shows how to get suggested file name from the object.
-            Document doc = new Document(MyDir + "Shape.SuggestedFileName.rtf");
+            Document doc = new Document(MyDir + "OLEShape.rtf");
 
             // Gets the file name suggested for the current embedded object if you want to save it into a file
             Shape oleShape = (Shape) doc.FirstSection.Body.GetChild(NodeType.Shape, 0, true);
@@ -736,7 +762,7 @@ namespace ApiExamples
         [Test]
         public void ObjectDidNotHaveSuggestedFileName()
         {
-            Document doc = new Document(MyDir + "Shape.ActiveXObject.docx");
+            Document doc = new Document(MyDir + "ActiveXControls.docx");
 
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             Assert.That(shape.OleFormat.SuggestedFileName, Is.Empty);
@@ -759,7 +785,7 @@ namespace ApiExamples
             //ExFor:OfficeMath.GetMathRenderer
             //ExFor:NodeRendererBase.Save(String, ImageSaveOptions)
             //ExSummary:Shows how to convert specific object into image
-            Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
+            Document doc = new Document(MyDir + "OfficeMath.docx");
 
             // Get OfficeMath node from the document and render this as image (you can also do the same with the Shape node)
             OfficeMath math = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
@@ -770,7 +796,7 @@ namespace ApiExamples
         [Test]
         public void OfficeMathDisplayException()
         {
-            Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
+            Document doc = new Document(MyDir + "OfficeMath.docx");
 
             OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
             officeMath.DisplayType = OfficeMathDisplayType.Display;
@@ -782,7 +808,7 @@ namespace ApiExamples
         [Test]
         public void OfficeMathDefaultValue()
         {
-            Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
+            Document doc = new Document(MyDir + "OfficeMath.docx");
 
             OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
 
@@ -803,7 +829,7 @@ namespace ApiExamples
             //ExFor:OfficeMathDisplayType
             //ExFor:OfficeMathJustification
             //ExSummary:Shows how to set office math display formatting.
-            Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
+            Document doc = new Document(MyDir + "OfficeMath.docx");
 
             OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
 
@@ -828,7 +854,7 @@ namespace ApiExamples
         [Test]
         public void CannotBeSetDisplayWithInlineJustification()
         {
-            Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
+            Document doc = new Document(MyDir + "OfficeMath.docx");
 
             OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
             officeMath.DisplayType = OfficeMathDisplayType.Display;
@@ -839,7 +865,7 @@ namespace ApiExamples
         [Test]
         public void CannotBeSetInlineDisplayWithJustification()
         {
-            Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
+            Document doc = new Document(MyDir + "OfficeMath.docx");
 
             OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
             officeMath.DisplayType = OfficeMathDisplayType.Inline;
@@ -850,7 +876,7 @@ namespace ApiExamples
         [Test]
         public void OfficeMathDisplayNestedObjects()
         {
-            Document doc = new Document(MyDir + "Shape.NestedOfficeMath.docx");
+            Document doc = new Document(MyDir + "NestedOfficeMath.docx");
 
             OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
 
@@ -867,7 +893,7 @@ namespace ApiExamples
         [TestCase(4, MathObjectType.SuperscriptPart)]
         public void WorkWithMathObjectType(int index, MathObjectType objectType)
         {
-            Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
+            Document doc = new Document(MyDir + "OfficeMath.docx");
 
             OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, index, true);
             Assert.AreEqual(objectType, officeMath.MathObjectType);
@@ -881,7 +907,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:ShapeBase.AspectRatioLocked
             //ExSummary:Shows how to set "AspectRatioLocked" for the shape object.
-            Document doc = new Document(MyDir + "Shape.ActiveXObject.docx");
+            Document doc = new Document(MyDir + "ActiveXControls.docx");
 
             // Get shape object from the document and set AspectRatioLocked(it is possible to get/set AspectRatioLocked for child shapes (mimic MS Word behavior), 
             // but AspectRatioLocked has effect only for top level shapes!)
@@ -1054,9 +1080,10 @@ namespace ApiExamples
         [Test]
         public void Resize()
         {
-            Document doc = new Document(MyDir + "Shape.ShapeSize.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, 200, 300);
 
             // Change shape size and rotation
             shape.Height = 300;
@@ -1073,8 +1100,22 @@ namespace ApiExamples
             //ExFor:ShapeBase.IsLayoutInCell
             //ExFor:MsWordVersion
             //ExSummary:Shows how to display the shape, inside a table or outside of it.
-            Document doc = new Document(MyDir + "Shape.LayoutInCell.docx");
+            //Document doc = new Document(MyDir + "Shape.LayoutInCell.docx");
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.StartTable();
+            builder.RowFormat.Height = 100;
+            builder.RowFormat.HeightRule = HeightRule.Exactly;
+
+            for (int i = 0; i < 31; i++)
+            {
+                if (i != 0 && i % 7 == 0) builder.EndRow();
+                builder.InsertCell();
+                builder.Write("Cell contents");
+            }
+
+            builder.EndTable();
 
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
             int num = 1;
@@ -1168,7 +1209,7 @@ namespace ApiExamples
         public void VisitShapes()
         {
             // Open a document that contains shapes
-            Document doc = new Document(MyDir + "Shape.Revisions.docx");
+            Document doc = new Document(MyDir + "RevisionsOnShape.docx");
             
             // Create a ShapeVisitor and get the document to accept it
             ShapeVisitor shapeVisitor = new ShapeVisitor();
@@ -1496,12 +1537,15 @@ namespace ApiExamples
             //ExFor:TextBoxAnchor
             //ExFor:TextBox.VerticalAnchor
             //ExSummary:Shows how to change text position inside textbox shape.
-            Document doc = new Document(MyDir + "Shape.GetTextBoxAndChangeAnchor.docx");
-            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Shape textbox = (Shape) shapes[0];
-            textbox.TextBox.VerticalAnchor = TextBoxAnchor.Bottom;
+            Shape textBox = builder.InsertShape(ShapeType.TextBox, 200, 200);
+            textBox.TextBox.VerticalAnchor = TextBoxAnchor.Bottom;
             
+            builder.MoveTo(textBox.FirstParagraph);
+            builder.Write("Textbox contents");
+
             doc.Save(ArtifactsDir + "Shape.GetTextBoxAndChangeAnchor.docx");
             //ExEnd
         }
@@ -1682,7 +1726,7 @@ namespace ApiExamples
             // A move revision is when we, while changes are tracked, cut(not copy)-and-paste or highlight and drag text from one place to another
             // If inline shapes are caught up in the text movement, they will count as move revisions as well
             // Moving a floating shape will not count as a move revision
-            Document doc = new Document(MyDir + "Shape.Revisions.docx");
+            Document doc = new Document(MyDir + "RevisionsOnShape.docx");
 
             // The document has one shape that was moved, but shape move revisions will have two instances of that shape
             // One will be the shape at its arrival destination and the other will be the shape at its original location
@@ -1707,7 +1751,7 @@ namespace ApiExamples
             //ExFor:ShapeBase.BoundsWithEffects
             //ExSummary:Shows how to check how a shape's bounds are affected by shape effects.
             // Open a document that contains two shapes and get its shape collection
-            Document doc = new Document(MyDir + "Shape.AdjustWithEffects.docx");
+            Document doc = new Document(MyDir + "ShapeShadowEffect.docx");
             List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
             Assert.AreEqual(2, shapes.Count);
 
@@ -1777,7 +1821,7 @@ namespace ApiExamples
             //ExFor:NodeRendererBase.Save(Stream, ImageSaveOptions)
             //ExSummary:Shows how to export shapes to files in the local file system using a shape renderer.
             // Open a document that contains shapes and get its shape collection
-            Document doc = new Document(MyDir + "Shape.VarietyOfShapes.docx");
+            Document doc = new Document(MyDir + "VariousShapes.docx");
             List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
             Assert.AreEqual(7, shapes.Count);
 
@@ -1798,7 +1842,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Shape.HasSmartArt
             //ExSummary:Shows how to detect that Shape has a SmartArt object.
-            Document doc = new Document(MyDir + "Shape.SmartArt.docx");
+            Document doc = new Document(MyDir + "SmartArt.docx");
  
             int count = 0;
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
@@ -1829,7 +1873,7 @@ namespace ApiExamples
             //ExFor:OfficeMathRenderer.#ctor(Math.OfficeMath)
             //ExSummary:Shows how to measure and scale shapes.
             // Open a document that contains an OfficeMath object
-            Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
+            Document doc = new Document(MyDir + "OfficeMath.docx");
 
             // Create a renderer for the OfficeMath object 
             OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);

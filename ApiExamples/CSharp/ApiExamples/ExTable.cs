@@ -184,8 +184,15 @@ namespace ApiExamples
         [Test]
         public void ConvertTextBoxToTable()
         {
-            // Open the document
-            Document doc = new Document(MyDir + "Shape.TextBox.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a text box
+            Shape textBox = builder.InsertShape(ShapeType.TextBox, 300, 50);
+
+            // Move the builder into the text box and write text
+            builder.MoveTo(textBox.LastParagraph);
+            builder.Write("Hello world!");
 
             // Convert all shape nodes which contain child nodes
             // We convert the collection to an array as static "snapshot" because the original textboxes will be removed after conversion which will

@@ -957,7 +957,7 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions.OfficeMathOutputMode
             //ExSummary:Shows how to control the way how OfficeMath objects are exported to .html.
             // Open a document that contains OfficeMath objects
-            Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
+            Document doc = new Document(MyDir + "OfficeMath.docx");
 
             // Create a HtmlSaveOptions object and configure it to export OfficeMath objects as images
             HtmlSaveOptions options = new HtmlSaveOptions();

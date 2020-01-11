@@ -28,7 +28,7 @@ namespace ApiExamples
     public class ExReportingEngine : ApiExampleBase
     {
         private readonly string mImage = ImageDir + "Test_636_852.gif";
-        private readonly string mDocument = MyDir + "ReportingEngine.TestDataTable.docx";
+        private readonly string mDocument = MyDir + "ReportingEngineTemplateTestDataTable.docx";
 
         [Test]
         public void SimpleCase()
@@ -79,7 +79,7 @@ namespace ApiExamples
         [Test]
         public void TestDataTable()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.TestDataTable.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateTestDataTable.docx");
 
             BuildReport(doc, Common.GetContracts(), "Contracts");
 
@@ -91,7 +91,7 @@ namespace ApiExamples
         [Test]
         public void Total()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.Total.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateTotal.docx");
 
             BuildReport(doc, Common.GetContracts(), "Contracts");
 
@@ -103,7 +103,7 @@ namespace ApiExamples
         [Test]
         public void TestNestedDataTable()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.TestNestedDataTable.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateTestNestedDataTable.docx");
 
             BuildReport(doc, Common.GetManagers(), "Managers");
 
@@ -115,7 +115,7 @@ namespace ApiExamples
         [Test]
         public void RestartingListNumberingDynamically()
         {
-            Document template = new Document(MyDir + "ReportingEngine.RestartingListNumberingDynamically.docx");
+            Document template = new Document(MyDir + "ReportingEngineTemplateRestartingListNumberingDynamically.docx");
 
             BuildReport(template, Common.GetManagers(), "Managers", ReportBuildOptions.RemoveEmptyParagraphs);
 
@@ -130,7 +130,7 @@ namespace ApiExamples
             Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document] -build>>");
             
             DocumentTestClass doc = new DocumentTestBuilder()
-                .WithDocument(new Document(MyDir + "ReportingEngine.RestartingListNumberingDynamically.docx")).Build();
+                .WithDocument(new Document(MyDir + "ReportingEngineTemplateRestartingListNumberingDynamically.docx")).Build();
 
             BuildReport(template, new object[] {doc, Common.GetManagers()} , new[] {"src", "Managers"}, ReportBuildOptions.RemoveEmptyParagraphs);
 
@@ -147,7 +147,7 @@ namespace ApiExamples
             Document template2 = DocumentHelper.CreateSimpleDocument("<<doc [src2.Document] -build>>");
             
             DocumentTestClass doc = new DocumentTestBuilder()
-                .WithDocument(new Document(MyDir + "ReportingEngine.RestartingListNumberingDynamically.docx")).Build();
+                .WithDocument(new Document(MyDir + "ReportingEngineTemplateRestartingListNumberingDynamically.docx")).Build();
 
             BuildReport(mainTemplate, new object[] {template1, template2, doc, Common.GetManagers()} , new[] {"src", "src1", "src2", "Managers"}, ReportBuildOptions.RemoveEmptyParagraphs);
 
@@ -159,7 +159,7 @@ namespace ApiExamples
         [Test]
         public void ChartTest()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.TestChart.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateTestChart.docx");
 
             BuildReport(doc, Common.GetManagers(), "managers");
 
@@ -171,7 +171,7 @@ namespace ApiExamples
         [Test]
         public void BubbleChartTest()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.TestBubbleChart.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateTestBubbleChart.docx");
 
             BuildReport(doc, Common.GetManagers(), "managers");
 
@@ -183,7 +183,7 @@ namespace ApiExamples
         [Test]
         public void SetChartSeriesColorsDynamically()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.SetChartSeriesColorDynamically.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateSetChartSeriesColorDynamically.docx");
 
             BuildReport(doc, Common.GetManagers(), "managers");
 
@@ -195,7 +195,7 @@ namespace ApiExamples
         [Test]
         public void SetPointColorsDynamically()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.SetPointColorDynamically.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateSetPointColorDynamically.docx");
 
             List<ColorItemTestClass> colors = new List<ColorItemTestClass>
             {
@@ -217,7 +217,7 @@ namespace ApiExamples
         [Test]
         public void ConditionalExpressionForLeaveChartSeries()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.TestRemoveChartSeries.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateTestRemoveChartSeries.docx");
 
             doc.Save(ArtifactsDir + "ReportingEngine.TestLeaveChartSeries.docx");
 
@@ -227,7 +227,7 @@ namespace ApiExamples
         [Test]
         public void ConditionalExpressionForRemoveChartSeries()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.TestRemoveChartSeries.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateTestRemoveChartSeries.docx");
 
             doc.Save(ArtifactsDir + "ReportingEngine.TestRemoveChartSeries.docx");
 
@@ -237,7 +237,7 @@ namespace ApiExamples
         [Test]
         public void IndexOf()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.TestIndexOf.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateTestIndexOf.docx");
 
             BuildReport(doc, Common.GetManagers(), "Managers");
 
@@ -250,7 +250,7 @@ namespace ApiExamples
         [Test]
         public void IfElse()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.IfElse.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateIfElse.docx");
 
             BuildReport(doc, Common.GetManagers(), "m");
 
@@ -263,7 +263,7 @@ namespace ApiExamples
         [Test]
         public void IfElseWithoutData()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.IfElse.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateIfElse.docx");
 
             BuildReport(doc, Common.GetEmptyManagers(), "m");
 
@@ -276,7 +276,7 @@ namespace ApiExamples
         [Test]
         public void ExtensionMethods()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.ExtensionMethods.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateExtensionMethods.docx");
 
             BuildReport(doc, Common.GetManagers(), "Managers");
 
@@ -288,7 +288,7 @@ namespace ApiExamples
         [Test]
         public void Operators()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.Operators.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateOperators.docx");
 
             NumericTestClass testData = new NumericTestBuilder().WithValuesAndLogical(1, 2.0, 3, null, true).Build();
 
@@ -304,7 +304,7 @@ namespace ApiExamples
         [Test]
         public void ContextualObjectMemberAccess()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.ContextualObjectMemberAccess.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateContextualObjectMemberAccess.docx");
 
             BuildReport(doc, Common.GetManagers(), "Managers");
 
@@ -319,7 +319,7 @@ namespace ApiExamples
             Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document] -build>>");
 
             DocumentTestClass doc = new DocumentTestBuilder()
-                .WithDocument(new Document(MyDir + "ReportingEngine.TestDataTable.docx")).Build();
+                .WithDocument(new Document(MyDir + "ReportingEngineTemplateTestDataTable.docx")).Build();
 
             BuildReport(template, new object[] { doc, Common.GetContracts() }, new[] { "src", "Contracts" }, 
                 ReportBuildOptions.None);
@@ -339,7 +339,7 @@ namespace ApiExamples
             Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document]>>");
 
             DocumentTestClass doc = new DocumentTestBuilder()
-                .WithDocument(new Document(MyDir + "ReportingEngine.TestDataTable.docx")).Build();
+                .WithDocument(new Document(MyDir + "ReportingEngineTemplateTestDataTable.docx")).Build();
 
             BuildReport(template, doc, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
@@ -367,7 +367,7 @@ namespace ApiExamples
             Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.DocumentBytes]>>");
 
             DocumentTestClass docBytes = new DocumentTestBuilder()
-                .WithDocumentBytes(File.ReadAllBytes(MyDir + "ReportingEngine.TestDataTable.docx")).Build();
+                .WithDocumentBytes(File.ReadAllBytes(MyDir + "ReportingEngineTemplateTestDataTable.docx")).Build();
 
             BuildReport(template, docBytes, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
@@ -458,7 +458,7 @@ namespace ApiExamples
         [TestCase("Bookmark")]
         public void InsertHyperlinksDynamically(string link)
         {
-            Document template = new Document(MyDir + "ReportingEngine.InsertingHyperlinks.docx");
+            Document template = new Document(MyDir + "ReportingEngineTemplateInsertingHyperlinks.docx");
             BuildReport(template, 
                 new object[]
                 {
@@ -508,7 +508,7 @@ namespace ApiExamples
         [Test]
         public void WorkWithSingleColumnTableRow()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.SingleColumnTableRow.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateSingleColumnTableRow.docx");
             BuildReport(doc, Common.GetManagers(), "Managers");
 
             doc.Save(ArtifactsDir + "ReportingEngine.SingleColumnTableRow.docx");
@@ -517,7 +517,7 @@ namespace ApiExamples
         [Test]
         public void WorkWithSingleColumnTableRowGreedy()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.SingleColumnTableRowGreedy.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateSingleColumnTableRowGreedy.docx");
             BuildReport(doc, Common.GetManagers(), "Managers");
 
             doc.Save(ArtifactsDir + "ReportingEngine.SingleColumnTableRowGreedy.docx");
@@ -526,7 +526,7 @@ namespace ApiExamples
         [Test]
         public void TableRowConditionalBlocks()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.TableRowConditionalBlocks.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateTableRowConditionalBlocks.docx");
 
             List<ClientTestClass> clients = new List<ClientTestClass>
             {
@@ -558,7 +558,7 @@ namespace ApiExamples
         [Test]
         public void IfGreedy()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.IfGreedy.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateIfGreedy.docx");
 
             AsposeData obj = new AsposeData
             {
@@ -746,7 +746,7 @@ namespace ApiExamples
         [Test]
         public void SetBackgroundColor()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.BackColor.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateBackColor.docx");
 
             List<ColorItemTestClass> colors = new List<ColorItemTestClass>
             {
@@ -766,7 +766,7 @@ namespace ApiExamples
         [Test]
         public void DoNotRemoveEmptyParagraphs()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.RemoveEmptyParagraphs.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateRemoveEmptyParagraphs.docx");
 
             BuildReport(doc, Common.GetManagers(), "Managers");
 
@@ -779,7 +779,7 @@ namespace ApiExamples
         [Test]
         public void RemoveEmptyParagraphs()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.RemoveEmptyParagraphs.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateRemoveEmptyParagraphs.docx");
 
             BuildReport(doc, Common.GetManagers(), "Managers", ReportBuildOptions.RemoveEmptyParagraphs);
 
@@ -798,7 +798,7 @@ namespace ApiExamples
             string goldPath = GoldsDir + resultDocumentName + " Gold" +
                               FileFormatUtil.SaveFormatToExtension(SaveFormat.Docx);
             
-            Document doc = new Document(MyDir + "ReportingEngine.MergingTableCellsDynamically.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateMergingTableCellsDynamically.docx");
 
             List<ClientTestClass> clients = new List<ClientTestClass>
             {
@@ -831,7 +831,7 @@ namespace ApiExamples
         [Test]
         public void XmlDataStringWithoutSchema()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.DataSource.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateDataSource.docx");
 
             XmlDataSource dataSource = new XmlDataSource(MyDir + "XmlData.xml");
             BuildReport(doc, dataSource, "persons");
@@ -845,7 +845,7 @@ namespace ApiExamples
         [Test]
         public void XmlDataStreamWithoutSchema()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.DataSource.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateDataSource.docx");
 
             using (FileStream stream = File.OpenRead(MyDir + "XmlData.xml"))
             {
@@ -862,7 +862,7 @@ namespace ApiExamples
         [Test]
         public void XmlDataWithNestedElements()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.DataSourceWithNestedElements.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateDataSourceWithNestedElements.docx");
 
             XmlDataSource dataSource = new XmlDataSource(MyDir + "XmlDataWithNestedElements.xml");
             BuildReport(doc, dataSource, "managers");
@@ -876,7 +876,7 @@ namespace ApiExamples
         [Test]
         public void JsonDataString()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.DataSource.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateDataSource.docx");
 
             JsonDataSource dataSource = new JsonDataSource(MyDir + "JsonData.json");
             BuildReport(doc, dataSource, "persons");
@@ -890,7 +890,7 @@ namespace ApiExamples
         [Test]
         public void JsonDataStream()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.DataSource.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateDataSource.docx");
             using (FileStream stream = File.OpenRead(MyDir + "JsonData.json"))
             {
                 JsonDataSource dataSource = new JsonDataSource(stream);
@@ -906,7 +906,7 @@ namespace ApiExamples
         [Test]
         public void JsonDataWithNestedElements()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.DataSourceWithNestedElements.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateDataSourceWithNestedElements.docx");
 
             JsonDataSource dataSource = new JsonDataSource(MyDir + "JsonDataWithNestedElements.json");
             BuildReport(doc, dataSource, "managers");
@@ -920,7 +920,7 @@ namespace ApiExamples
         [Test]
         public void CsvDataString()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.CsvData.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateCsvData.docx");
             
             CsvDataLoadOptions loadOptions = new CsvDataLoadOptions(true);
             loadOptions.Delimiter = ';';
@@ -938,7 +938,7 @@ namespace ApiExamples
         [Test]
         public void CsvDataStream()
         {
-            Document doc = new Document(MyDir + "ReportingEngine.CsvData.docx");
+            Document doc = new Document(MyDir + "ReportingEngineTemplateCsvData.docx");
             
             CsvDataLoadOptions loadOptions = new CsvDataLoadOptions(true);
             loadOptions.Delimiter = ';';

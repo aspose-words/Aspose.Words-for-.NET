@@ -35,7 +35,7 @@ namespace ApiExamples
             // Wait for a response, when loading external resources
             loadOptions.WebRequestTimeout = 1000;
 
-            Document doc = new Document(MyDir + "Shape.VmlAndDml.htm", loadOptions);
+            Document doc = new Document(MyDir + "ConditionalComments.htm", loadOptions);
             doc.Save(ArtifactsDir + "HtmlLoadOptions.SupportVml.docx");
             //ExEnd
         }

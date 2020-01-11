@@ -223,7 +223,7 @@ namespace ApiExamples
             //ExSummary:Shows how to process shape stroke features from older versions of Microsoft Word.
             // Open a document which contains a rectangle with a thick, two-tone-patterned outline
             // These features cannot be recreated in new versions of Microsoft Word, so we will open an older .doc file
-            Document doc = new Document(MyDir + "Shape.StrokePattern.doc");
+            Document doc = new Document(MyDir + "ShapeWithStrokePatternBorder.doc");
 
             // Get the first shape's stroke
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);

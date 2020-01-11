@@ -27,7 +27,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:ImageSaveOptions.UseGdiEmfRenderer
             //ExSummary:Shows how to save metafiles directly without using GDI+ to EMF.
-            Document doc = new Document(MyDir + "SaveOptions.MyriadPro.docx");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Emf)
             {
@@ -44,11 +44,11 @@ namespace ApiExamples
             //ExStart
             //ExFor:ImageSaveOptions.PageIndex
             //ExSummary:Shows how to save specific document page as image file.
-            Document doc = new Document(MyDir + "SaveOptions.MyriadPro.docx");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Gif)
             {
-                PageIndex = 0 // Define which page will save
+                PageIndex = 1 // Define which page will save
             };
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.SaveIntoGif.gif", saveOptions);
@@ -69,7 +69,7 @@ namespace ApiExamples
             //ExFor:GraphicsQualityOptions.TextRenderingHint
             //ExFor:ImageSaveOptions.GraphicsQualityOptions
             //ExSummary:Shows how to set render quality options when converting documents to image formats. 
-            Document doc = new Document(MyDir + "SaveOptions.MyriadPro.docx");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             GraphicsQualityOptions qualityOptions = new GraphicsQualityOptions
             {
