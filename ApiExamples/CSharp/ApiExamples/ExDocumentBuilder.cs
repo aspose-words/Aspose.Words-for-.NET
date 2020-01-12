@@ -1421,12 +1421,12 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.MoveToCell
             //ExSummary:Shows how to move a cursor position to the specified table cell.
-            Document doc = new Document(MyDir + "Table.EmptyTable.doc");
+            Document doc = new Document(MyDir + "Tables.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // All parameters are 0-index. Moves to the 1st table, 3rd row, 4th cell
             builder.MoveToCell(0, 2, 3, 0);
-            builder.Write("Cell contents added by DocumentBuilder");
+            builder.Write("\nCell contents added by DocumentBuilder");
             //ExEnd
         }
 
@@ -2020,7 +2020,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.DeleteRow
             //ExSummary:Shows how to delete a row from a table.
-            Document doc = new Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Tables.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Delete the first row of the first table in the document

@@ -336,7 +336,7 @@ namespace ApiExamples
             //ExFor:NodeList.GetEnumerator
             //ExFor:NodeList.ToArray
             //ExSummary:Shows how to select certain nodes by using an XPath expression.
-            Document doc = new Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Tables.doc");
 
             // This expression will extract all paragraph nodes which are descendants of any table node in the document
             // This will return any paragraphs which are in a table

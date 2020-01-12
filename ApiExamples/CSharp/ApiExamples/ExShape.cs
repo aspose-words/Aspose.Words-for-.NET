@@ -367,7 +367,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:ShapeBase.IsInline
             //ExSummary:Shows how to test if a shape in the document is inline or floating.
-            Document doc = new Document(MyDir + "Shape.DeleteAllShapes.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())
             {

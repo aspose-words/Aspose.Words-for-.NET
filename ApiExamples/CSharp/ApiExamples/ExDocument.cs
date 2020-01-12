@@ -1362,7 +1362,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.ExpandTableStylesToDirectFormatting
             //ExSummary:Shows how to expand the formatting from styles onto the rows and cells of the table as direct formatting.
-            Document doc = new Document(MyDir + "Table.TableStyle.docx");
+            Document doc = new Document(MyDir + "Tables.doc");
 
             // Get the first cell of the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
