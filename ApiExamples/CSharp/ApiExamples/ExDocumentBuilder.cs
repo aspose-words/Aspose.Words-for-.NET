@@ -463,8 +463,6 @@ namespace ApiExamples
         [Test]
         public void InsertMathMl()
         {
-            //ExStart
-            //ExSummary:Inserts MathMl into a document using.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -472,7 +470,6 @@ namespace ApiExamples
                 "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mn>1</mn></mrow></msub></mrow></math>";
 
             builder.InsertHtml(mathMl);
-            //ExEnd
 
             doc.Save(ArtifactsDir + "MathML.docx");
             doc.Save(ArtifactsDir + "MathML.pdf");
