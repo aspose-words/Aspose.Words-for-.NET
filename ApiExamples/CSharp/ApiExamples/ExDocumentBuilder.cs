@@ -2644,7 +2644,7 @@ namespace ApiExamples
         [Test, Order(2), Category("SkipTearDown")]
         public void MarkdownDocumentHeadings()
         {
-            Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocumentEmphases.md");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Prepare our created document for further work
@@ -2707,7 +2707,7 @@ namespace ApiExamples
         [Test, Order(3), Category("SkipTearDown")]
         public void MarkdownDocumentBlockquotes()
         {
-            Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocumentEmphases.md");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Prepare our created document for further work
@@ -2765,7 +2765,7 @@ namespace ApiExamples
         [Test, Order(4), Category("SkipTearDown")]
         public void MarkdownDocumentHeadingsAsBlockquotes()
         {
-            Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocumentEmphases.md");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Prepare our created document for further work
@@ -2831,7 +2831,7 @@ namespace ApiExamples
         [Test, Order(5), Category("SkipTearDown")]
         public void MarkdownDocumentHorizontalRule()
         {
-            Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocumentEmphases.md");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Prepare our created document for further work
