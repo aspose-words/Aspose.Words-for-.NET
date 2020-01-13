@@ -118,7 +118,7 @@ namespace ApiExamples
                 Compliance = OoxmlCompliance.Iso29500_2008_Transitional
             };
 
-            doc.Save(ArtifactsDir + "RestartingDocumentList.docx", options);
+            doc.Save(ArtifactsDir + "OoxmlSaveOptions.RestartingDocumentList.docx", options);
             //ExEnd
         }
 
@@ -155,7 +155,7 @@ namespace ApiExamples
             //ExFor:OoxmlSaveOptions.KeepLegacyControlChars
             //ExFor:OoxmlSaveOptions.#ctor(SaveFormat)
             //ExSummary:Shows how to support legacy control characters when converting to .docx.
-            Document doc = new Document(MyDir + "OoxmlSaveOptions.KeepLegacyControlChars.doc");
+            Document doc = new Document(MyDir + "LegacyControlCharacter.doc");
  
             // Note that only one legacy character (ShortDateTime) is supported which declared in the "DOC" format
             OoxmlSaveOptions so = new OoxmlSaveOptions(SaveFormat.Docx);

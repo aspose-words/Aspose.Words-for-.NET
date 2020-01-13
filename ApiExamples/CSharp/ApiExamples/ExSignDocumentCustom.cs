@@ -37,11 +37,11 @@ namespace ApiExamples
         //ExSummary:Demonstrates how to add new signature line to the document and sign it with personal signature using SignatureLineId.
         [Test] //ExSkip
         [Description("WORDSNET-16868")]
-        public static void SignSignatureLineUsingSignatureLineId()
+        public static void Sign()
         {
             string signPersonName = "Ron Williams";
             string srcDocumentPath = MyDir + "Document.docx";
-            string dstDocumentPath = ArtifactsDir + "Document.Signed.docx";
+            string dstDocumentPath = ArtifactsDir + "SignDocumentCustom.Sign.docx";
             string certificatePath = MyDir + "morzal.pfx";
             string certificatePassword = "aw";
 

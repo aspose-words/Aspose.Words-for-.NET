@@ -24,7 +24,7 @@ namespace ApiExamples
 
             XpsSaveOptions saveOptions = new XpsSaveOptions { OptimizeOutput = true };
 
-            doc.Save(ArtifactsDir + "XPSOutputOptimize.xps", saveOptions);
+            doc.Save(ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps", saveOptions);
             //ExEnd
         }
     }

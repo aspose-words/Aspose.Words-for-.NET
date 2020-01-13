@@ -55,8 +55,12 @@ namespace ApiExamples
             //ExFor:SectionCollection
             //ExFor:NodeCollection.RemoveAt(Int32)
             //ExSummary:Shows how to add/remove sections in a document.
-            // Open the document
-            Document doc = new Document(MyDir + "Section.AddRemove.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Section 1");
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.Write("Section 2");
 
             // This shows what is in the document originally. The document has two sections
             Console.WriteLine(doc.GetText());
@@ -73,7 +77,7 @@ namespace ApiExamples
             Console.WriteLine(doc.GetText());
             //ExEnd
 
-            Assert.AreEqual("Hello2\x000cHello2\x000c", doc.GetText());
+            Assert.AreEqual("Section 2\x000cSection 2\x000c", doc.GetText());
         }
 
         [Test]
@@ -181,7 +185,12 @@ namespace ApiExamples
             //ExFor:Body.EnsureMinimum
             //ExSummary:Clears main text from all sections from the document leaving the sections themselves.
             // Open a document
-            Document doc = new Document(MyDir + "Section.BodyEnsureMinimum.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Section 1");
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.Write("Section 2");
 
             // This shows what is in the document originally
             // The document has two sections
@@ -217,7 +226,14 @@ namespace ApiExamples
             //ExFor:Document.FirstSection
             //ExSummary:Shows how you can enumerate through children of a composite node and detect types of the children nodes.
             // Open a document
-            Document doc = new Document(MyDir + "Section.BodyNodeType.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Section 1");
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            builder.Write("Primary header");
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            builder.Write("Primary footer");
 
             // Get the first section in the document
             Section section = doc.FirstSection;
@@ -309,7 +325,14 @@ namespace ApiExamples
             //ExFor:Section.AppendContent
             //ExFor:Section.PrependContent
             //ExSummary:Shows how to append content of an existing section. The number of sections in the document remains the same.
-            Document doc = new Document(MyDir + "Section.AppendContent.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Section 1");
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.Write("Section 2");
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.Write("Section 3");
 
             // This is the section that we will append and prepend to
             Section section = doc.Sections[2];
@@ -392,7 +415,12 @@ namespace ApiExamples
         [Test]
         public void ModifyPageSetupInAllSections()
         {
-            Document doc = new Document(MyDir + "Section.ModifyPageSetupInAllSections.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Section 1");
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.Write("Section 2");
 
             // It is important to understand that a document can contain many sections and each
             // section has its own page setup. In this case we want to modify them all

@@ -172,7 +172,7 @@ namespace ApiExamples
         public void RecurseAllNodes()
         {
             // Open a document
-            Document doc = new Document(MyDir + "Node.RecurseAllNodes.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             // Invoke the recursive function that will walk the tree
             TraverseAllNodes(doc);
@@ -336,7 +336,7 @@ namespace ApiExamples
             //ExFor:NodeList.GetEnumerator
             //ExFor:NodeList.ToArray
             //ExSummary:Shows how to select certain nodes by using an XPath expression.
-            Document doc = new Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Tables.doc");
 
             // This expression will extract all paragraph nodes which are descendants of any table node in the document
             // This will return any paragraphs which are in a table
@@ -371,7 +371,7 @@ namespace ApiExamples
             //ExFor:CompositeNode.GetChild
             //ExSummary:Shows how to test if a node is inside a field by using an XPath expression.
             // Let's pick a document we know has some fields in
-            Document doc = new Document(MyDir + "MailMerge.MergeImage.doc");
+            Document doc = new Document(MyDir + "MailMergeDestinationNorthwindEmployees.doc");
 
             // Let's say we want to check if the Run below is inside a field
             Run run = (Run) doc.GetChild(NodeType.Run, 5, true);

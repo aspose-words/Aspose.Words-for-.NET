@@ -15,7 +15,7 @@ namespace ApiExamples
     internal class ExOdtSaveOptions : ApiExampleBase
     {
         [Test]
-        public void MeasureUnitOption()
+        public void MeasureUnit()
         {
             //ExStart
             //ExFor:OdtSaveOptions
@@ -24,7 +24,7 @@ namespace ApiExamples
             //ExFor:OdtSaveOptions.MeasureUnit
             //ExFor:OdtSaveMeasureUnit
             //ExSummary:Shows how to work with units of measure of document content.
-            Document doc = new Document(MyDir + "OdtSaveOptions.MeasureUnit.docx");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // Open Office uses centimeters, MS Office uses inches
             OdtSaveOptions saveOptions = new OdtSaveOptions
@@ -40,7 +40,7 @@ namespace ApiExamples
         [Test]
         [TestCase(SaveFormat.Odt)]
         [TestCase(SaveFormat.Ott)]
-        public void SaveDocumentEncryptedWithAPassword(SaveFormat saveFormat)
+        public void Encrypt(SaveFormat saveFormat)
         {
             //ExStart
             //ExFor:OdtSaveOptions.#ctor(SaveFormat)
@@ -53,13 +53,13 @@ namespace ApiExamples
             saveOptions.Password = "@sposeEncrypted_1145";
 
             // Saving document using password property of OdtSaveOptions
-            doc.Save(ArtifactsDir + "OdtSaveOptions.SaveDocumentEncryptedWithAPassword" +
+            doc.Save(ArtifactsDir + "OdtSaveOptions.Encrypt" +
                      FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
             //ExEnd
 
             // Check that all documents are encrypted with a password
             FileFormatInfo docInfo = FileFormatUtil.DetectFileFormat(
-                ArtifactsDir + "OdtSaveOptions.SaveDocumentEncryptedWithAPassword" +
+                ArtifactsDir + "OdtSaveOptions.Encrypt" +
                 FileFormatUtil.SaveFormatToExtension(saveFormat));
             Assert.IsTrue(docInfo.IsEncrypted);
         }
@@ -67,12 +67,12 @@ namespace ApiExamples
         [Test]
         [TestCase(SaveFormat.Odt)]
         [TestCase(SaveFormat.Ott)]
-        public void WorkWithDocumentEncryptedWithAPassword(SaveFormat saveFormat)
+        public void WorkWithEncryptedDocument(SaveFormat saveFormat)
         {
             //ExStart
             //ExFor:OdtSaveOptions.#ctor(String)
             //ExSummary:Shows how to load and change odt/ott encrypted document.
-            Document doc = new Document(MyDir + "OdtSaveOptions.LoadDocumentEncryptedWithAPassword" +
+            Document doc = new Document(MyDir + "Encrypted" +
                                         FileFormatUtil.SaveFormatToExtension(saveFormat),
                 new LoadOptions("@sposeEncrypted_1145"));
 
@@ -81,13 +81,13 @@ namespace ApiExamples
             builder.Writeln("Encrypted document after changes.");
 
             // Saving document using new instance of OdtSaveOptions
-            doc.Save(ArtifactsDir + "OdtSaveOptions.LoadDocumentEncryptedWithAPassword" +
+            doc.Save(ArtifactsDir + "OdtSaveOptions.WorkWithEncryptedDocument" +
                      FileFormatUtil.SaveFormatToExtension(saveFormat), new OdtSaveOptions("@sposeEncrypted_1145"));
             //ExEnd
 
             // Check that document is still encrypted with a password
             FileFormatInfo docInfo = FileFormatUtil.DetectFileFormat(
-                ArtifactsDir + "OdtSaveOptions.LoadDocumentEncryptedWithAPassword" +
+                ArtifactsDir + "OdtSaveOptions.WorkWithEncryptedDocument" +
                 FileFormatUtil.SaveFormatToExtension(saveFormat));
             Assert.IsTrue(docInfo.IsEncrypted);
         }

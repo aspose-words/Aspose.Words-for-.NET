@@ -37,7 +37,7 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(ArtifactsDir + "Border.ChangedColorBorder.doc");                                                    
+            doc.Save(ArtifactsDir + "BorderCollection.GetBordersEnumerator.doc");                                                    
             //ExEnd
         }
 

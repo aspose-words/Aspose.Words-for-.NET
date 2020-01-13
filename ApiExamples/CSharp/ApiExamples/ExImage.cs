@@ -309,7 +309,7 @@ namespace ApiExamples
         [Test]
         public void DeleteAllImages()
         {
-            Document doc = new Document(MyDir + "Image.SampleImages.doc");
+            Document doc = new Document(MyDir + "SampleImages.doc");
             Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
 
             //ExStart
@@ -342,7 +342,7 @@ namespace ApiExamples
         [Test]
         public void DeleteAllImagesPreOrder()
         {
-            Document doc = new Document(MyDir + "Image.SampleImages.doc");
+            Document doc = new Document(MyDir + "SampleImages.doc");
             Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
 
             //ExStart

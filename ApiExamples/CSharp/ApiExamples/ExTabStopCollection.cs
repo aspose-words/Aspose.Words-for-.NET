@@ -16,18 +16,18 @@ namespace ApiExamples
     public class ExTabStopCollection : ApiExampleBase
     {
         [Test]
-        public void ClearEx()
+        public void ClearAll()
         {
             //ExStart
             //ExFor:TabStopCollection.Clear
             //ExSummary:Shows how to remove all tab stops from a document.
-            Document doc = new Document(MyDir + "Document.TableOfContents.doc");
+            Document doc = new Document(MyDir + "TableOfContents.doc");
 
             // Clear all tab stops from every paragraph
             foreach (Paragraph para in doc.GetChildNodes(NodeType.Paragraph, true).OfType<Paragraph>())
                 para.ParagraphFormat.TabStops.Clear();
 
-            doc.Save(ArtifactsDir + "Document.AllTabStopsRemoved.doc");
+            doc.Save(ArtifactsDir + "TabStopCollection.ClearAll.doc");
             //ExEnd
         }
 
@@ -85,7 +85,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void AddEx()
+        public void AddTabStops()
         {
             //ExStart
             //ExFor:TabStopCollection.Add(TabStop)
@@ -109,12 +109,12 @@ namespace ApiExamples
                     TabLeader.Dashes);
             }
 
-            doc.Save(ArtifactsDir + "Document.AddedTabStops.doc");
+            doc.Save(ArtifactsDir + "TabStopCollection.AddTabStops.doc");
             //ExEnd
         }
 
         [Test]
-        public void RemoveByIndexEx()
+        public void RemoveByIndex()
         {
             //ExStart
             //ExFor:TabStopCollection.RemoveByIndex
@@ -132,7 +132,7 @@ namespace ApiExamples
 
             Console.WriteLine(paragraph.ParagraphFormat.TabStops.Count);
 
-            doc.Save(ArtifactsDir + "Document.RemovedTabStopsByIndex.doc");
+            doc.Save(ArtifactsDir + "TabStopCollection.RemoveByIndex.doc");
             //ExEnd
         }
 
