@@ -479,6 +479,7 @@ namespace ApiExamples
         public void NegativeIndent()
         {
             //ExStart
+            //ExFor:HtmlElementSizeOutputMode
             //ExFor:HtmlSaveOptions.AllowNegativeIndent
             //ExFor:HtmlSaveOptions.TableWidthOutputMode
             //ExSummary:Shows how to preserve negative indents in the output .html.
@@ -545,6 +546,7 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions.#ctor(SaveFormat)
             //ExFor:HtmlSaveOptions.ExportXhtmlTransitional
             //ExFor:HtmlSaveOptions.HtmlVersion
+            //ExFor:HtmlVersion
             //ExSummary:Shows how to set a saved .html document to a specific version.
             Document doc = new Document(MyDir + "Rendering.doc");
 
@@ -695,6 +697,7 @@ namespace ApiExamples
         public void List()
         {
             //ExStart
+            //ExFor:ExportListLabels
             //ExFor:HtmlSaveOptions.ExportListLabels
             //ExSummary:Shows how to export an indented list to .html as plain text.
             Document doc = new Document();
@@ -928,6 +931,7 @@ namespace ApiExamples
         public void MetafileFormat()
         {
             //ExStart
+            //ExFor:HtmlMetafileFormat
             //ExFor:HtmlSaveOptions.MetafileFormat
             //ExSummary:Shows how to set a meta file in a different format.
             // Create a document from an html string
@@ -954,6 +958,7 @@ namespace ApiExamples
         public void OfficeMathOutputMode()
         {
             //ExStart
+            //ExFor:HtmlOfficeMathOutputMode
             //ExFor:HtmlSaveOptions.OfficeMathOutputMode
             //ExSummary:Shows how to control the way how OfficeMath objects are exported to .html.
             // Open a document that contains OfficeMath objects

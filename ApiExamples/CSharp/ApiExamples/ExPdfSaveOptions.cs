@@ -188,6 +188,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PdfSaveOptions
+            //ExFor:ColorMode
             //ExFor:FixedPageSaveOptions.ColorMode
             //ExSummary:Shows how change image color with save options property
             // Open document with color image
@@ -498,7 +499,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfCustomPropertiesExport
             //ExFor:PdfSaveOptions.CustomPropertiesExport
-            //ExFor:SaveOptions.DmlEffectsRenderingMode
             //ExSummary:Shows how to export custom properties while saving to .pdf.
             Document doc = new Document();
 
@@ -519,7 +519,9 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DmlRenderingMode
+            //ExFor:DmlEffectsRenderingMode
             //ExFor:PdfSaveOptions.DmlEffectsRenderingMode
+            //ExFor:SaveOptions.DmlEffectsRenderingMode
             //ExFor:SaveOptions.DmlRenderingMode
             //ExSummary:Shows how to configure DrawingML rendering quality with PdfSaveOptions.
             Document doc = new Document(MyDir + "DrawingMLEffects.docx");
@@ -528,6 +530,7 @@ namespace ApiExamples
             // strip the shapes of all their shading effects in the output pdf
             PdfSaveOptions options = new PdfSaveOptions();
             options.DmlEffectsRenderingMode = DmlEffectsRenderingMode.None;
+            options.DmlRenderingMode = DmlRenderingMode.Fallback; 
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.DrawingML.pdf", options);
             //ExEnd

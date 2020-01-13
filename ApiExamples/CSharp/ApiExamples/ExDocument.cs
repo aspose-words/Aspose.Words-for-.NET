@@ -604,6 +604,7 @@ namespace ApiExamples
         public void Doc2EpubSaveOptions()
         {
             //ExStart
+            //ExFor:DocumentSplitCriteria
             //ExFor:HtmlSaveOptions
             //ExFor:HtmlSaveOptions.#ctor
             //ExFor:HtmlSaveOptions.Encoding

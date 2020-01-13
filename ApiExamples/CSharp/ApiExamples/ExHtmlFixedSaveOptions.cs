@@ -175,9 +175,16 @@ namespace ApiExamples
         }
 
         //ExStart
+        //ExFor:ExportFontFormat
         //ExFor:HtmlFixedSaveOptions.UseTargetMachineFonts
         //ExFor:IResourceSavingCallback
         //ExFor:IResourceSavingCallback.ResourceSaving(ResourceSavingArgs)
+        //ExFor:ResourceSavingArgs
+        //ExFor:ResourceSavingArgs.Document
+        //ExFor:ResourceSavingArgs.KeepResourceStreamOpen
+        //ExFor:ResourceSavingArgs.ResourceFileName
+        //ExFor:ResourceSavingArgs.ResourceFileUri
+        //ExFor:ResourceSavingArgs.ResourceStream
         //ExSummary:Shows how used target machine fonts to display the document.
         [Test] //ExSkip
         public void UsingMachineFonts()
@@ -202,6 +209,10 @@ namespace ApiExamples
             /// </summary>
             public void ResourceSaving(ResourceSavingArgs args)
             {
+                Console.WriteLine($"Original document URI:\t{args.Document.OriginalFileName}");
+                Console.WriteLine($"Resource being saved:\t{args.ResourceFileName}");
+                Console.WriteLine($"Full uri after saving:\t{args.ResourceFileUri}");
+
                 args.ResourceStream = new MemoryStream();
                 args.KeepResourceStreamOpen = true;
 
