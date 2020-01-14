@@ -284,6 +284,7 @@ namespace ApiExamples
         public void SaveToEmf()
         {
             //ExStart
+            //ExFor:FixedPageSaveOptions
             //ExFor:Document.Save(String, SaveOptions)
             //ExSummary:Converts every page of a DOC file into a separate scalable EMF file.
             Document doc = new Document(MyDir + "Rendering.doc");
@@ -302,6 +303,7 @@ namespace ApiExamples
         public void SaveToImageJpegQuality()
         {
             //ExStart
+            //ExFor:FixedPageSaveOptions.JpegQuality
             //ExFor:ImageSaveOptions
             //ExFor:ImageSaveOptions.JpegQuality
             //ExSummary:Converts a page of a Word document into JPEG images of different qualities.

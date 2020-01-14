@@ -165,6 +165,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FixedPageSaveOptions.OptimizeOutput
+            //ExFor:HtmlFixedSaveOptions.OptimizeOutput
             //ExSummary:Shows how to optimize document objects while saving to html.
             Document doc = new Document(MyDir + "Graphics.doc");
 
@@ -176,6 +177,7 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:ExportFontFormat
+        //ExFor:HtmlFixedSaveOptions.FontFormat
         //ExFor:HtmlFixedSaveOptions.UseTargetMachineFonts
         //ExFor:IResourceSavingCallback
         //ExFor:IResourceSavingCallback.ResourceSaving(ResourceSavingArgs)
@@ -236,6 +238,7 @@ namespace ApiExamples
         //ExFor:HtmlFixedSaveOptions.ResourceSavingCallback
         //ExFor:HtmlFixedSaveOptions.ResourcesFolder
         //ExFor:HtmlFixedSaveOptions.ResourcesFolderAlias
+        //ExFor:HtmlFixedSaveOptions.SaveFormat
         //ExFor:HtmlFixedSaveOptions.ShowPageBorder
         //ExSummary:Shows how to print the URIs of linked resources created during conversion of a document to fixed-form .html.
         [Test] //ExSkip

@@ -20,12 +20,14 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PclSaveOptions
+            //ExFor:PclSaveOptions.SaveFormat
             //ExFor:PclSaveOptions.RasterizeTransformedElements
             //ExSummary:Shows how rasterized or not transformed elements before saving.
             Document doc = new Document(MyDir + "Rendering.doc");
 
             PclSaveOptions saveOptions = new PclSaveOptions
             {
+                SaveFormat = SaveFormat.Pcl,
                 RasterizeTransformedElements = true
             };
 

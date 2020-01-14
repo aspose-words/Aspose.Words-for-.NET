@@ -42,6 +42,7 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:IPageSavingCallback
+        //ExFor:IPageSavingCallback.PageSaving(PageSavingArgs)
         //ExFor:PageSavingArgs
         //ExFor:PageSavingArgs.PageFileName
         //ExFor:PageSavingArgs.KeepPageStreamOpen
