@@ -28,7 +28,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
         public static void InsertTextInputFormField(string dataDir)
         {
             // ExStart:DocumentBuilderInsertTextInputFormField
-            Words.Document doc = new Words.Document();
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertTextInput("TextInput", TextFormFieldType.Regular, "", "Hello", 0);
