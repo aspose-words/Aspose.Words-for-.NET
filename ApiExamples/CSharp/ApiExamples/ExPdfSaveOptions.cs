@@ -41,7 +41,7 @@ namespace ApiExamples
             //ExFor:ParagraphFormat.IsHeading
             //ExFor:PdfSaveOptions.OutlineOptions
             //ExFor:PdfSaveOptions.SaveFormat
-            //ExSummary:Shows how to create missing outline levels saving the document in PDF.
+            //ExSummary:Shows how to create PDF document outline entries for headings.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -82,6 +82,36 @@ namespace ApiExamples
 
             Assert.AreEqual(11, bookmarks.Count);
             #endif
+        }
+
+        [Test]
+        public void TableHeadingOutlines()
+        {
+            //ExStart
+            //ExFor:OutlineOptions.CreateOutlinesForHeadingsInTables
+            //ExSummary:Shows how to create PDF document outline entries for headings inside tables.
+            // Create a blank document and insert a table with a heading-style text inside it
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.StartTable();
+            builder.InsertCell();
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
+            builder.Write("Heading 1");
+            builder.EndRow();
+            builder.InsertCell();
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Normal;
+            builder.Write("Cell 1");
+            builder.EndTable();
+
+            // Create a PdfSaveOptions object that, when saving to .pdf with it, creates entries in the document outline for all headings levels 1-9,
+            // and make sure headings inside tables are registered by the outline also
+            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
+            pdfSaveOptions.OutlineOptions.HeadingsOutlineLevels = 9;
+            pdfSaveOptions.OutlineOptions.CreateOutlinesForHeadingsInTables = true;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.TableHeadingOutlines.pdf", pdfSaveOptions);
+            //ExEnd
         }
 
         [Test]
@@ -188,6 +218,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PdfSaveOptions
+            //ExFor:ColorMode
             //ExFor:FixedPageSaveOptions.ColorMode
             //ExSummary:Shows how change image color with save options property
             // Open document with color image
@@ -498,7 +529,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfCustomPropertiesExport
             //ExFor:PdfSaveOptions.CustomPropertiesExport
-            //ExFor:SaveOptions.DmlEffectsRenderingMode
             //ExSummary:Shows how to export custom properties while saving to .pdf.
             Document doc = new Document();
 
@@ -519,7 +549,9 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DmlRenderingMode
+            //ExFor:DmlEffectsRenderingMode
             //ExFor:PdfSaveOptions.DmlEffectsRenderingMode
+            //ExFor:SaveOptions.DmlEffectsRenderingMode
             //ExFor:SaveOptions.DmlRenderingMode
             //ExSummary:Shows how to configure DrawingML rendering quality with PdfSaveOptions.
             Document doc = new Document(MyDir + "DrawingMLEffects.docx");
@@ -528,6 +560,7 @@ namespace ApiExamples
             // strip the shapes of all their shading effects in the output pdf
             PdfSaveOptions options = new PdfSaveOptions();
             options.DmlEffectsRenderingMode = DmlEffectsRenderingMode.None;
+            options.DmlRenderingMode = DmlRenderingMode.Fallback; 
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.DrawingML.pdf", options);
             //ExEnd
@@ -675,6 +708,24 @@ namespace ApiExamples
             Assert.AreEqual("MyPassword", options.DigitalSignatureDetails.TimestampSettings.Password);
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void RenderMetafile()
+        {
+            //ExStart
+            //ExFor:EmfPlusDualRenderingMode
+            //ExFor:MetafileRenderingOptions.EmfPlusDualRenderingMode
+            //ExFor:MetafileRenderingOptions.UseEmfEmbeddedToWmf
+            //ExSummary:Shows how to adjust EMF (Enhanced Windows Metafile) rendering options when saving to PDF.
+            Document doc = new Document(MyDir + "WindowsMetafileEnhanced.docx");
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.MetafileRenderingOptions.EmfPlusDualRenderingMode = EmfPlusDualRenderingMode.EmfPlus;
+            saveOptions.MetafileRenderingOptions.UseEmfEmbeddedToWmf = false;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf", saveOptions);
             //ExEnd
         }
     }

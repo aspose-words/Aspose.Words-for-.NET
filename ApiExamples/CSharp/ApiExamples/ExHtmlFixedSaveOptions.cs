@@ -165,6 +165,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FixedPageSaveOptions.OptimizeOutput
+            //ExFor:HtmlFixedSaveOptions.OptimizeOutput
             //ExSummary:Shows how to optimize document objects while saving to html.
             Document doc = new Document(MyDir + "Graphics.doc");
 
@@ -175,9 +176,17 @@ namespace ApiExamples
         }
 
         //ExStart
+        //ExFor:ExportFontFormat
+        //ExFor:HtmlFixedSaveOptions.FontFormat
         //ExFor:HtmlFixedSaveOptions.UseTargetMachineFonts
         //ExFor:IResourceSavingCallback
         //ExFor:IResourceSavingCallback.ResourceSaving(ResourceSavingArgs)
+        //ExFor:ResourceSavingArgs
+        //ExFor:ResourceSavingArgs.Document
+        //ExFor:ResourceSavingArgs.KeepResourceStreamOpen
+        //ExFor:ResourceSavingArgs.ResourceFileName
+        //ExFor:ResourceSavingArgs.ResourceFileUri
+        //ExFor:ResourceSavingArgs.ResourceStream
         //ExSummary:Shows how used target machine fonts to display the document.
         [Test] //ExSkip
         public void UsingMachineFonts()
@@ -202,6 +211,10 @@ namespace ApiExamples
             /// </summary>
             public void ResourceSaving(ResourceSavingArgs args)
             {
+                Console.WriteLine($"Original document URI:\t{args.Document.OriginalFileName}");
+                Console.WriteLine($"Resource being saved:\t{args.ResourceFileName}");
+                Console.WriteLine($"Full uri after saving:\t{args.ResourceFileUri}");
+
                 args.ResourceStream = new MemoryStream();
                 args.KeepResourceStreamOpen = true;
 
@@ -225,6 +238,7 @@ namespace ApiExamples
         //ExFor:HtmlFixedSaveOptions.ResourceSavingCallback
         //ExFor:HtmlFixedSaveOptions.ResourcesFolder
         //ExFor:HtmlFixedSaveOptions.ResourcesFolderAlias
+        //ExFor:HtmlFixedSaveOptions.SaveFormat
         //ExFor:HtmlFixedSaveOptions.ShowPageBorder
         //ExSummary:Shows how to print the URIs of linked resources created during conversion of a document to fixed-form .html.
         [Test] //ExSkip

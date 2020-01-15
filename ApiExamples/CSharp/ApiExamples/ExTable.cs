@@ -508,7 +508,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Category("SkipTearDown")]
         public void ReplaceCellText()
         {
             //ExStart

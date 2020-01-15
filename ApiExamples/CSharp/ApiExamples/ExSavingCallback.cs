@@ -42,8 +42,12 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:IPageSavingCallback
+        //ExFor:IPageSavingCallback.PageSaving(PageSavingArgs)
         //ExFor:PageSavingArgs
         //ExFor:PageSavingArgs.PageFileName
+        //ExFor:PageSavingArgs.KeepPageStreamOpen
+        //ExFor:PageSavingArgs.PageIndex
+        //ExFor:PageSavingArgs.PageStream
         //ExFor:FixedPageSaveOptions.PageSavingCallback
         //ExSummary:Shows how separate pages are saved when a document is exported to fixed page format.
         [Test] //ExSkip
@@ -55,13 +59,13 @@ namespace ApiExamples
                 new HtmlFixedSaveOptions { PageIndex = 0, PageCount = doc.PageCount };
             htmlFixedSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
 
-            doc.Save(ArtifactsDir + "SavingCallback.PageFileName.html", htmlFixedSaveOptions);
+            doc.Save($"{ArtifactsDir}SavingCallback.PageFileName.html", htmlFixedSaveOptions);
 
             string[] filePaths = Directory.GetFiles(ArtifactsDir, "SavingCallback.PageFileName.Page_*.html");
 
             for (int i = 0; i < doc.PageCount; i++)
             {
-                string file = string.Format(ArtifactsDir + "SavingCallback.PageFileName.Page_{0}.html", i);
+                string file = $"{ArtifactsDir}SavingCallback.PageFileName.Page_{i}.html";
                 Assert.AreEqual(file, filePaths[i]);//ExSkip
             }
         }
@@ -73,8 +77,14 @@ namespace ApiExamples
         {
             public void PageSaving(PageSavingArgs args)
             {
-                // Specify name of the output file for the current page
-                args.PageFileName = string.Format(ArtifactsDir + "SavingCallback.PageFileName.Page_{0}.html", args.PageIndex);
+                string outFileName = $"{ArtifactsDir}SavingCallback.PageFileName.Page_{args.PageIndex}.html";
+
+                // Specify name of the output file for the current page either in this 
+                args.PageFileName = outFileName;
+
+                // ..or by setting up a custom stream
+                args.PageStream = new FileStream(outFileName, FileMode.Create);
+                Assert.False(args.KeepPageStreamOpen);
             }
         }
         //ExEnd
