@@ -264,7 +264,6 @@ namespace ApiExamples
             //ExFor:ListCollection.AddCopy(List)
             //ExFor:ListLevel.StartAt
             //ExFor:ListTemplate
-            //ExFor:ListFormat.List
             //ExSummary:Shows how to restart numbering in a list by copying a list.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -413,7 +412,6 @@ namespace ApiExamples
             Document doc = new Document();
 
             //ExStart
-            //ExFor:Paragraph.ListFormat
             //ExFor:ListFormat.RemoveNumbers
             //ExSummary:Removes bullets and numbering from all paragraphs in the main text of a section.
             Body body = doc.FirstSection.Body;
@@ -430,8 +428,6 @@ namespace ApiExamples
             doc.Lists.Add(ListTemplate.NumberDefault);
 
             //ExStart
-            //ExFor:Paragraph.ListFormat
-            //ExFor:ListFormat.List
             //ExFor:ListFormat.ListLevelNumber
             //ExFor:ListCollection.Item(Int32)
             //ExSummary:Applies list formatting of an existing list to a collection of paragraphs.
@@ -451,7 +447,6 @@ namespace ApiExamples
             Document doc = new Document();
 
             //ExStart
-            //ExFor:Paragraph.ListFormat
             //ExFor:ListFormat.ListLevelNumber
             //ExFor:ListCollection.Add(ListTemplate)
             //ExSummary:Creates new list formatting and applies it to a collection of paragraphs.

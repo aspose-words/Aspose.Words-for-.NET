@@ -149,7 +149,6 @@ namespace ApiExamples
             //ExFor:HeaderFooterCollection
             //ExFor:HeaderFooterCollection.Item(HeaderFooterType)
             //ExFor:HeaderFooter
-            //ExFor:HeaderFooterType
             //ExSummary:Deletes all footers from all sections, but leaves headers intact.
             Document doc = new Document(MyDir + "HeaderFooterTypes.docx");
 
@@ -227,7 +226,6 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:IReplacingCallback
-        //ExFor:Range.Replace(String, String, FindReplaceOptions)
         //ExSummary:Show changes for headers and footers order.
         [Test] //ExSkip
         public void HeaderFooterOrder()

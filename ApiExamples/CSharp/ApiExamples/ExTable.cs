@@ -492,7 +492,6 @@ namespace ApiExamples
         public void ClearBorders()
         {
             //ExStart
-            //ExFor:Table
             //ExFor:Table.ClearBorders
             //ExSummary:Shows how to remove all borders from a table.
             Document doc = new Document(MyDir + "Tables.doc");
@@ -512,7 +511,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Range.Replace(String, String, FindReplaceOptions)
-            //ExFor:Cell
             //ExSummary:Shows how to replace all instances of String of text in a table and cell.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -702,7 +700,6 @@ namespace ApiExamples
             table.AppendChild(clonedRow);
 
             doc.Save(ArtifactsDir + "Table.AddCloneRowToTable.doc");
-            //ExEnd
 
             // Verify that the row was cloned and appended properly
             Assert.AreEqual(6, table.Rows.Count);
@@ -806,21 +803,11 @@ namespace ApiExamples
             //ExSummary:Retrieves the index of a table in the document.
             NodeCollection allTables = doc.GetChildNodes(NodeType.Table, true);
             int tableIndex = allTables.IndexOf(table);
-            //ExEnd
 
             Row row = table.Rows[2];
-            //ExStart
-            //ExFor:Row
-            //ExFor:CompositeNode.IndexOf
-            //ExSummary:Retrieves the index of a row in a table.
             int rowIndex = table.IndexOf(row);
-            //ExEnd
 
             Cell cell = row.LastCell;
-            //ExStart
-            //ExFor:Cell
-            //ExFor:CompositeNode.IndexOf
-            //ExSummary:Retrieves the index of a cell in a row.
             int cellIndex = row.IndexOf(cell);
             //ExEnd
 
@@ -854,12 +841,10 @@ namespace ApiExamples
         public void InsertTableUsingNodes()
         {
             //ExStart
-            //ExFor:Table
             //ExFor:Table.AllowCellSpacing
             //ExFor:Row
             //ExFor:Row.RowFormat
             //ExFor:RowFormat
-            //ExFor:Cell
             //ExFor:Cell.CellFormat
             //ExFor:CellFormat
             //ExFor:CellFormat.Shading
@@ -1106,7 +1091,6 @@ namespace ApiExamples
         public void CombineTables()
         {
             //ExStart
-            //ExFor:Table
             //ExFor:Cell.CellFormat
             //ExFor:CellFormat.Borders
             //ExFor:Table.Rows
