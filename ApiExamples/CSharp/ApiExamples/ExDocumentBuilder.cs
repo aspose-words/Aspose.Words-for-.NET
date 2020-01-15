@@ -2634,7 +2634,7 @@ namespace ApiExamples
             builder.Writeln("ItalicBold");
             
             // Markdown treats asterisks (*) and underscores (_) as indicators of emphasis
-            builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocumentEmphases.md");
+            builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
         /// <summary>
@@ -2644,7 +2644,7 @@ namespace ApiExamples
         [Test, Order(2), Category("SkipTearDown")]
         public void MarkdownDocumentHeadings()
         {
-            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocumentEmphases.md");
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Prepare our created document for further work
@@ -2697,7 +2697,7 @@ namespace ApiExamples
             builder.Font.Bold = true;
             builder.Writeln("BoldHeading 6");
             
-            doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocumentHeadings.md");
+            doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
         /// <summary>
@@ -2707,7 +2707,7 @@ namespace ApiExamples
         [Test, Order(3), Category("SkipTearDown")]
         public void MarkdownDocumentBlockquotes()
         {
-            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocumentEmphases.md");
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Prepare our created document for further work
@@ -2755,7 +2755,7 @@ namespace ApiExamples
             builder.Font.Bold = true;
             builder.Writeln("ItalicBoldBlockquote 6");
             
-            doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocumentBlockquotes.md");
+            doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
         /// <summary>
@@ -2765,7 +2765,7 @@ namespace ApiExamples
         [Test, Order(4), Category("SkipTearDown")]
         public void MarkdownDocumentHeadingsAsBlockquotes()
         {
-            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocumentEmphases.md");
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Prepare our created document for further work
@@ -2821,7 +2821,7 @@ namespace ApiExamples
             builder.ParagraphFormat.Style = headingQuoteLevel6;
             builder.Writeln("HeadingBlockquote 6");
             
-            doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocumentHeadingsAsBlockquotes.md");
+            doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
         /// <summary>
@@ -2831,7 +2831,7 @@ namespace ApiExamples
         [Test, Order(5), Category("SkipTearDown")]
         public void MarkdownDocumentHorizontalRule()
         {
-            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocumentEmphases.md");
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Prepare our created document for further work
@@ -2843,7 +2843,7 @@ namespace ApiExamples
             // Insert HorizontalRule that will be present in .md file as '-----'
             builder.InsertHorizontalRule();
  
-            builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocumentHorizontalRule.md");
+            builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
         /// <summary>
@@ -2877,7 +2877,7 @@ namespace ApiExamples
         public void LoadMarkdownDocumentAndAssertContent(string text, string styleName, bool isItalic, bool isBold)
         {
             // Load created document from previous tests
-            Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
             foreach (Paragraph paragraph in paragraphs)
