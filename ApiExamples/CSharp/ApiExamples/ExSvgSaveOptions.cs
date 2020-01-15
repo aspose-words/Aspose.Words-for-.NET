@@ -35,7 +35,7 @@ namespace ApiExamples
                 TextOutputMode = SvgTextOutputMode.UsePlacedGlyphs
             };
 
-            doc.Save(ArtifactsDir + "SaveLikeImage.svg", options);
+            doc.Save(ArtifactsDir + "SvgSaveOptions.SaveLikeImage.svg", options);
             //ExEnd
         }
 
@@ -66,7 +66,7 @@ namespace ApiExamples
 
             Directory.CreateDirectory(options.ResourcesFolderAlias);
 
-            doc.Save(ArtifactsDir + "SvgResourceFolder.svg", options);
+            doc.Save(ArtifactsDir + "SvgSaveOptions.SvgResourceFolder.svg", options);
         }
 
         /// <summary>

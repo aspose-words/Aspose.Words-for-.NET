@@ -29,7 +29,7 @@ namespace ApiExamples
         /// Finds all hyperlinks in a Word document and changes their URL and display name.
         /// </summary>
         [Test] //ExSkip
-        public void ReplaceHyperlinks()
+        public void Fields()
         {
             // Specify your document name here
             Document doc = new Document(MyDir + "ReplaceHyperlinks.doc");
@@ -54,7 +54,7 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(ArtifactsDir + "ReplaceHyperlinks.doc");
+            doc.Save(ArtifactsDir + "ReplaceHyperlinks.Fields.doc");
         }
 
         private const string NewUrl = @"http://www.aspose.com";

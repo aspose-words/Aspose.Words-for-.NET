@@ -45,7 +45,7 @@ namespace ApiExamples
                     100, 200, 100, WrapType.Square);
             }
 
-            doc.Save(ArtifactsDir + "InsertImageFromStream.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromStream.docx");
             //ExEnd
         }
 
@@ -71,7 +71,7 @@ namespace ApiExamples
             builder.InsertImage(ImageDir + "Aspose.Words.gif", RelativeHorizontalPosition.Margin, 100, 
                 RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
 
-            doc.Save(ArtifactsDir + "InsertImageFromString.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromString.docx");
             //ExEnd
         }
 
@@ -98,7 +98,7 @@ namespace ApiExamples
             builder.InsertImage(image, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin,
                 100, 200, 100, WrapType.Square);
 
-            doc.Save(ArtifactsDir + "InsertImageFromImageClass.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromImageClass.docx");
             //ExEnd
         }
 
@@ -131,10 +131,10 @@ namespace ApiExamples
                     100, 200, 100, WrapType.Square);
             }
 
-            doc.Save(ArtifactsDir + "InsertImageFromByteArray.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromByteArray.docx");
             //ExEnd
         }
-        #else
+#else
         [Test]
         public void InsertImageFromImageClassNetStandard2()
         {
@@ -158,7 +158,7 @@ namespace ApiExamples
                     100, 200, 100, WrapType.Square);
             }
 
-            doc.Save(ArtifactsDir + "InsertImageFromImageClass.NetStandard2.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromImageClassNetStandard2.docx");
             //ExEnd
         }
 
@@ -194,9 +194,9 @@ namespace ApiExamples
                 }
             }
             
-            doc.Save(ArtifactsDir + "InsertImageFromByteArray.NetStandard2.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromByteArrayNetStandard2.docx");
             //ExEnd
         }
-        #endif
+#endif
     }
 }

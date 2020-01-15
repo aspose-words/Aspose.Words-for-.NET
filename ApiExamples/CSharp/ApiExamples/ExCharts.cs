@@ -135,7 +135,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertChartUsingAxisProperties()
+        public void AxisProperties()
         {
             //ExStart
             //ExFor:ChartAxis
@@ -200,11 +200,11 @@ namespace ApiExamples
             yAxis.TickLabelPosition = AxisTickLabelPosition.NextToAxis;
             //ExEnd
 
-            doc.Save(ArtifactsDir + "Charts.InsertChartUsingAxisProperties.docx");
+            doc.Save(ArtifactsDir + "Charts.AxisProperties.docx");
         }
 
         [Test]
-        public void InsertChartWithDateTimeValues()
+        public void DateTimeValues()
         {
             //ExStart
             //ExFor:AxisBound
@@ -259,7 +259,7 @@ namespace ApiExamples
             yAxis.Scaling.Minimum = new AxisBound(100);
             yAxis.Scaling.Maximum = new AxisBound(700);
 
-            doc.Save(ArtifactsDir + "Charts.ChartAxisProperties.docx");
+            doc.Save(ArtifactsDir + "Charts.DateTimeValues.docx");
             //ExEnd
         }
 
@@ -386,7 +386,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void WorkWithChartDataLabelCollection()
+        public void ChartDataLabelCollection()
         {
             //ExStart
             //ExFor:ChartDataLabelCollection.ShowBubbleSize
@@ -436,7 +436,7 @@ namespace ApiExamples
             pieChartDataLabels.ShowPercentage = true;
             pieChartDataLabels.ShowValue = true;
 
-            doc.Save(ArtifactsDir + "Charts.WorkWithChartDataLabelCollection.docx");
+            doc.Save(ArtifactsDir + "Charts.ChartDataLabelCollection.docx");
             //ExEnd
         }
 

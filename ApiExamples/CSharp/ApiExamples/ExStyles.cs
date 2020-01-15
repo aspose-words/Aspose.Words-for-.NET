@@ -122,7 +122,7 @@ namespace ApiExamples
             //ExFor:TabStop.Position
             //ExFor:TabStop.Leader
             //ExSummary:Shows how to modify the position of the right tab stop in TOC related paragraphs.
-            Document doc = new Document(MyDir + "Document.TableOfContents.doc");
+            Document doc = new Document(MyDir + "TableOfContents.doc");
 
             // Iterate through all paragraphs in the document
             foreach (Paragraph para in doc.GetChildNodes(NodeType.Paragraph, true).OfType<Paragraph>())
@@ -141,7 +141,7 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(ArtifactsDir + "Document.TableOfContentsTabStops.doc");
+            doc.Save(ArtifactsDir + "Styles.ChangeTocsTabStops.doc");
             //ExEnd
         }
 

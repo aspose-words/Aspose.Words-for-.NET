@@ -34,11 +34,19 @@ namespace ApiExamples
             //ExFor:Document.Save(HttpResponse,String,ContentDisposition,SaveOptions)
             //ExSummary:Performs a simple insertion of data into merge fields and sends the document to the browser inline.
             // Open an existing document
-            Document doc = new Document(MyDir + "MailMerge.ExecuteArray.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertField(" MERGEFIELD FullName ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD Company ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD Address ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD City ");
 
             // Fill the fields in the document with user data
-            doc.MailMerge.Execute(new string[] { "FullName", "Company", "Address", "Address2", "City" },
-                new object[] { "James Bond", "MI5 Headquarters", "Milbank", "", "London" });
+            doc.MailMerge.Execute(new string[] { "FullName", "Company", "Address", "City" },
+                new object[] { "James Bond", "MI5 Headquarters", "Milbank", "London" });
 
             // Send the document in Word format to the client browser with an option to save to disk or open inside the current browser
             Assert.That(() => doc.Save(response, "Artifacts/MailMerge.ExecuteArray.doc", ContentDisposition.Inline, null), 
@@ -228,7 +236,11 @@ namespace ApiExamples
             //ExFor:MailMerge.Execute(DataRow)
             //ExFor:Document.MailMerge
             //ExSummary:Executes mail merge from an ADO.NET DataTable.
-            Document doc = new Document(MyDir + "MailMerge.ExecuteDataTable.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertField(" MERGEFIELD CustomerName ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD Address ");
 
             // This example creates a table, but you would normally load table from a database
             DataTable table = new DataTable("Test");
@@ -242,8 +254,12 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.doc");
 
-            // Open a fresh copy of our document to perform another mail merge
-            doc = new Document(MyDir + "MailMerge.ExecuteDataTable.doc");
+            // Create a copy of our document to perform another mail merge
+            doc = new Document();
+            builder = new DocumentBuilder(doc);
+            builder.InsertField(" MERGEFIELD CustomerName ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD Address ");
 
             // We can also source values for a mail merge from a single row in the table
             doc.MailMerge.Execute(table.Rows[1]);
@@ -836,7 +852,7 @@ namespace ApiExamples
 
             doc.MailMerge.Execute(new[] { "Option_1", "Option_2" }, new object[] { null, null });
 
-            doc.Save(ArtifactsDir + "RemoveColonBetweenEmptyMergeFields.docx");
+            doc.Save(ArtifactsDir + "MailMerge.RemoveColonBetweenEmptyMergeFields.docx");
             //ExEnd
 
             Assert.AreEqual(resultText, doc.GetText());
@@ -939,7 +955,7 @@ namespace ApiExamples
             //ExFor:FieldAddressBlock
             //ExFor:FieldAddressBlock.GetFieldNames
             //ExSummary:Shows how to get mail merge field names used by the field.
-            Document doc = new Document(MyDir + "MailMerge.GetFieldNames.docx");
+            Document doc = new Document(MyDir + "AddressBlockFieldNames.docx");
 
             string[] addressFieldsExpect =
             {
@@ -1010,7 +1026,7 @@ namespace ApiExamples
             //ExFor:MailMergeRegionInfo.EndField
             //ExFor:MailMergeRegionInfo.Level
             //ExSummary:Shows how to get MailMergeRegionInfo and work with it.
-            Document doc = new Document(MyDir + "MailMerge.TestRegionsHierarchy.doc");
+            Document doc = new Document(MyDir + "MailMergeRegions.doc");
 
             // Returns a full hierarchy of regions (with fields) available in the document
             MailMergeRegionInfo regionInfo = doc.MailMerge.GetRegionsHierarchy();
@@ -1074,31 +1090,45 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        [TestCase("Region1")]
-        [TestCase("NestedRegion1")]
-        public void GetRegionsByName(string regionName)
+        public void GetRegionsByName()
         {
-            Document doc = new Document(MyDir + "MailMerge.RegionsByName.doc");
+            Document doc = new Document(MyDir + "MailMergeRegions.doc");
 
-            IList<MailMergeRegionInfo> regions = doc.MailMerge.GetRegionsByName(regionName);
-            Assert.AreEqual(2, regions.Count);
+            IList<MailMergeRegionInfo> regions = doc.MailMerge.GetRegionsByName("Region1");
+            Assert.AreEqual(1, doc.MailMerge.GetRegionsByName("Region1").Count);
+            foreach (MailMergeRegionInfo region in regions) Assert.AreEqual("Region1", region.Name);
 
-            foreach (MailMergeRegionInfo region in regions) Assert.AreEqual(regionName, region.Name);
+            regions = doc.MailMerge.GetRegionsByName("Region2");
+            Assert.AreEqual(1, doc.MailMerge.GetRegionsByName("Region2").Count);
+            foreach (MailMergeRegionInfo region in regions) Assert.AreEqual("Region2", region.Name);
+
+            regions = doc.MailMerge.GetRegionsByName("NestedRegion1");
+            Assert.AreEqual(2, doc.MailMerge.GetRegionsByName("NestedRegion1").Count);
+            foreach (MailMergeRegionInfo region in regions) Assert.AreEqual("NestedRegion1", region.Name);
         }
 
         [Test]
         public void CleanupOptions()
         {
-            Document doc = new Document(MyDir + "MailMerge.CleanUp.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.StartTable();
+            builder.InsertCell();
+            builder.InsertField(" MERGEFIELD  TableStart:StudentCourse ");
+            builder.InsertCell();
+            builder.InsertField(" MERGEFIELD  CourseName ");
+            builder.InsertCell();
+            builder.InsertField(" MERGEFIELD  TableEnd:StudentCourse ");
+            builder.EndTable();
 
             DataTable data = GetDataTable();
 
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveEmptyTableRows;
             doc.MailMerge.ExecuteWithRegions(data);
 
-            doc.Save(ArtifactsDir + "MailMerge.CleanUp.docx");
+            doc.Save(ArtifactsDir + "MailMerge.CleanupOptions.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "MailMerge.CleanUp.docx", GoldsDir + "MailMerge.CleanUp Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "MailMerge.CleanupOptions.docx", GoldsDir + "MailMerge.CleanupOptions Gold.docx"));
         }
 
         /// <summary>
@@ -1130,16 +1160,25 @@ namespace ApiExamples
             //ExStart
             //ExFor:MailMerge.UnconditionalMergeFieldsAndRegions
             //ExSummary:Shows how to merge fields or regions regardless of the parent IF field's condition.
-            Document doc = new Document(MyDir + "MailMerge.UnconditionalMergeFieldsAndRegions.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Merge fields and merge regions are merged regardless of the parent IF field's condition
+            // Insert a MERGEFIELD nested inside an IF field
+            // Since the statement of the IF field is false, the result of the inner MERGEFIELD will not be displayed
+            // and the MERGEFIELD will not receive any data during a mail merge
+            FieldIf fieldIf = (FieldIf)builder.InsertField(" IF 1 = 2 ");
+            builder.MoveTo(fieldIf.Separator);
+            builder.InsertField(" MERGEFIELD  FullName ");
+
+            // We can still count MERGEFIELDs inside false-statement IF fields if we set this flag to true
             doc.MailMerge.UnconditionalMergeFieldsAndRegions = true;
 
-            // Fill the fields in the document with user data
+            // Execute the mail merge
             doc.MailMerge.Execute(
                 new string[] { "FullName" },
                 new object[] { "James Bond" });
 
+            // The result will not be visible in the document because the IF field is false, but the inner MERGEFIELD did indeed receive data
             doc.Save(ArtifactsDir + "MailMerge.UnconditionalMergeFieldsAndRegions.docx");
             //ExEnd
         }

@@ -20,16 +20,18 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PclSaveOptions
+            //ExFor:PclSaveOptions.SaveFormat
             //ExFor:PclSaveOptions.RasterizeTransformedElements
             //ExSummary:Shows how rasterized or not transformed elements before saving.
-            Document doc = new Document(MyDir + "Document.EpubConversion.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             PclSaveOptions saveOptions = new PclSaveOptions
             {
+                SaveFormat = SaveFormat.Pcl,
                 RasterizeTransformedElements = true
             };
 
-            doc.Save(ArtifactsDir + "Document.EpubConversion.pcl", saveOptions);
+            doc.Save(ArtifactsDir + "PclSaveOptions.RasterizeElements.pcl", saveOptions);
             //ExEnd
         }
 
@@ -40,13 +42,13 @@ namespace ApiExamples
             //ExFor:PclSaveOptions.AddPrinterFont(string, string)
             //ExFor:PclSaveOptions.FallbackFontName
             //ExSummary:Shows how to add information about font that is uploaded to the printer and set the font that will be used if no expected font is found in printer and built-in fonts collections.
-            Document doc = new Document(MyDir + "Document.EpubConversion.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             PclSaveOptions saveOptions = new PclSaveOptions();
             saveOptions.AddPrinterFont("Courier", "Courier");
             saveOptions.FallbackFontName = "Times New Roman";
 
-            doc.Save(ArtifactsDir + "Document.EpubConversion.pcl", saveOptions);
+            doc.Save(ArtifactsDir + "PclSaveOptions.SetPrinterFont.pcl", saveOptions);
             //ExEnd
         }
 
@@ -54,7 +56,7 @@ namespace ApiExamples
         [Ignore("This test is manual check that PaperTray information are preserved in pcl document.")]
         public void GetPreservedPaperTrayInformation()
         {
-            Document doc = new Document(MyDir + "Document.EpubConversion.doc");
+            Document doc = new Document(MyDir + "Rendering.doc");
 
             // Paper tray information is now preserved when saving document to PCL format
             // Following information is transferred from document's model to PCL file
@@ -64,7 +66,7 @@ namespace ApiExamples
                 section.PageSetup.OtherPagesTray = 12;
             }
 
-            doc.Save(ArtifactsDir + "Document.EpubConversion.pcl");
+            doc.Save(ArtifactsDir + "PclSaveOptions.GetPreservedPaperTrayInformation.pcl");
         }
     }
 }

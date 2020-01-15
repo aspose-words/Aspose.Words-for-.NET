@@ -96,7 +96,7 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void IsDictionaryRegisteredEx()
+        public void IsDictionaryRegistered()
         {
             //ExStart
             //ExFor:Hyphenation.IsDictionaryRegistered(String)
@@ -109,7 +109,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void UnregisteredDictionaryEx()
+        public void UnregisteredDictionary()
         {
             //ExStart
             //ExFor:Hyphenation.UnregisterDictionary(String)
