@@ -66,7 +66,7 @@ namespace ApiExamples
             Assert.AreEqual(signOptions.DecryptionPassword, loadOptions.Password);
 
             Document doc = new Document(outputFileName, loadOptions);
-            Assert.AreEqual("Test signed document.", doc.GetText().Trim());       
+            Assert.AreEqual("Test encrypted document.", doc.GetText().Trim());       
             //ExEnd
         }
 

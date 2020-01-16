@@ -3802,14 +3802,14 @@ namespace ApiExamples
             // By default, file size is displayed in bytes
             FieldFileSize field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
             field.Update();
-            Assert.AreEqual("23040", field.Result);
+            Assert.AreEqual("24064", field.Result);
             builder.InsertParagraph();
 
             // Set the field to display size in kilobytes
             field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
             field.IsInKilobytes = true;
             field.Update();
-            Assert.AreEqual("23", field.Result);
+            Assert.AreEqual("24", field.Result);
             builder.InsertParagraph();
 
             // Set the field to display size in megabytes

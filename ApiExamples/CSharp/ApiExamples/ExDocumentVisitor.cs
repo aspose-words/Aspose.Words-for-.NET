@@ -640,7 +640,7 @@ namespace ApiExamples
             // An alternative way of visiting a document's header/footers section-by-section is by accessing the collection
             // We can also turn it into an array
             HeaderFooter[] headerFooters = doc.FirstSection.HeadersFooters.ToArray();
-            Assert.AreEqual(6, headerFooters.Length);
+            Assert.AreEqual(2, headerFooters.Length);
         }
 
         /// <summary>

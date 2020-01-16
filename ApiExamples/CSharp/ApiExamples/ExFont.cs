@@ -613,7 +613,7 @@ namespace ApiExamples
             Assert.True(callback.FontWarnings[0].WarningType == WarningType.FontSubstitution);
             Assert.True(callback.FontWarnings[0].Description
                 .Equals(
-                    "Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font."));
+                    "Font 'Calibri' has not been found. Using 'Fanwood' font instead. Reason: first available font."));
 
             // Restore default fonts
             FontSettings.DefaultInstance.SetFontsSources(origFontSources);
