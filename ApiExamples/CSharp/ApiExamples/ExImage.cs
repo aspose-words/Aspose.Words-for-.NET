@@ -301,13 +301,13 @@ namespace ApiExamples
         [Test]
         public void DeleteAllImages()
         {
-            Document doc = new Document(MyDir + "SampleImages.doc");
-            Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
-
             //ExStart
             //ExFor:Shape.HasImage
             //ExFor:Node.Remove
             //ExSummary:Shows how to delete all images from a document.
+            Document doc = new Document(MyDir + "SampleImages.docx");
+            Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
+
             // Here we get all shapes from the document node, but you can do this for any smaller
             // node too, for example delete shapes from a single section or a paragraph
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
@@ -325,22 +325,22 @@ namespace ApiExamples
             // Now we can delete shapes
             foreach (Shape shape in shapesToDelete)
                 shape.Remove();
-            //ExEnd
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
-            doc.Save(ArtifactsDir + "Image.DeleteAllImages.doc");
+            doc.Save(ArtifactsDir + "Image.DeleteAllImages.docx");
+            //ExEnd
         }
 
         [Test]
         public void DeleteAllImagesPreOrder()
         {
-            Document doc = new Document(MyDir + "SampleImages.doc");
-            Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
-
             //ExStart
             //ExFor:Node.NextPreOrder(Node)
             //ExFor:Node.PreviousPreOrder(Node)
             //ExSummary:Shows how to delete all images from a document using pre-order tree traversal.
+            Document doc = new Document(MyDir + "SampleImages.docx");
+            Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
+
             Node curNode = doc;
             while (curNode != null)
             {
@@ -362,10 +362,10 @@ namespace ApiExamples
 
                 curNode = nextNode;
             }
-            //ExEnd
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
-            doc.Save(ArtifactsDir + "Image.DeleteAllImagesPreOrder.doc");
+            doc.Save(ArtifactsDir + "Image.DeleteAllImagesPreOrder.docx");
+            //ExEnd
         }
 
         [Test]

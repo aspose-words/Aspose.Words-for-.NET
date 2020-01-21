@@ -667,7 +667,7 @@ namespace ApiExamples
             //ExFor:CustomXmlPropertyCollection.RemoveAt(Int32)
             //ExSummary:Shows how to work with smart tag properties to get in depth information about smart tags.
             // Open a document that contains smart tags and their collection
-            Document doc = new Document(MyDir + "SmartTags.doc");
+            Document doc = new Document(MyDir + "SmartTags.docx");
 
             // Smart tags are an older Microsoft Word feature that can automatically detect and tag
             // any parts of the text that it registers as commonly used information objects such as names, addresses, stock tickers, dates etc

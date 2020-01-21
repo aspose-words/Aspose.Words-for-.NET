@@ -515,7 +515,7 @@ namespace ApiExamples
         public void PrintOutAllLists()
         {
             // Open a document that contains lists
-            Document srcDoc = new Document(MyDir + "Rendering.doc");
+            Document srcDoc = new Document(MyDir + "Rendering.docx");
 
             // This will be the sample document we product
             Document dstDoc = new Document();
@@ -708,7 +708,7 @@ namespace ApiExamples
             //ExFor:ListLabel.LabelValue
             //ExFor:ListLabel.LabelString
             //ExSummary:Shows how to extract the label of each paragraph in a list as a value or a String.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
             doc.UpdateListLabels();
             int listParaCount = 1;
 

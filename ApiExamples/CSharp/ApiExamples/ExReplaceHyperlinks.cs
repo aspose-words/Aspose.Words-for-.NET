@@ -32,7 +32,7 @@ namespace ApiExamples
         public void Fields()
         {
             // Specify your document name here
-            Document doc = new Document(MyDir + "ReplaceHyperlinks.doc");
+            Document doc = new Document(MyDir + "ReplaceHyperlinks.docx");
 
             // Hyperlinks in a Word documents are fields, select all field start nodes so we can find the hyperlinks
             NodeList fieldStarts = doc.SelectNodes("//FieldStart");
@@ -54,7 +54,7 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(ArtifactsDir + "ReplaceHyperlinks.Fields.doc");
+            doc.Save(ArtifactsDir + "ReplaceHyperlinks.Fields.docx");
         }
 
         private const string NewUrl = @"http://www.aspose.com";

@@ -183,7 +183,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void AlternatingRows()
         {
-            Document doc = new Document(MyDir + "MailMergeDestination.doc");
+            Document doc = new Document(MyDir + "MailMergeDestination.docx");
 
             // Add a handler for the MergeField event
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldAlternatingRows();
@@ -192,7 +192,7 @@ namespace ApiExamples
             DataTable dataTable = GetSuppliersDataTable();
             doc.MailMerge.ExecuteWithRegions(dataTable);
 
-            doc.Save(ArtifactsDir + "MailMergeEvent.AlternatingRows.doc");
+            doc.Save(ArtifactsDir + "MailMergeEvent.AlternatingRows.docx");
         }
 
         private class HandleMergeFieldAlternatingRows : IFieldMergingCallback
@@ -301,7 +301,7 @@ namespace ApiExamples
         [Category("SkipMono")] //ExSkip
         public void ImageFromBlob()
         {
-            Document doc = new Document(MyDir + "MailMergeDestinationNorthwindEmployees.doc");
+            Document doc = new Document(MyDir + "MailMergeDestinationNorthwindEmployees.docx");
 
             // Set up the event handler for image fields
             doc.MailMerge.FieldMergingCallback = new HandleMergeImageFieldFromBlob();
@@ -321,7 +321,7 @@ namespace ApiExamples
             // Close the database
             conn.Close();
 
-            doc.Save(ArtifactsDir + "MailMergeEvent.ImageFromBlob.doc");
+            doc.Save(ArtifactsDir + "MailMergeEvent.ImageFromBlob.docx");
         }
 
         private class HandleMergeImageFieldFromBlob : IFieldMergingCallback

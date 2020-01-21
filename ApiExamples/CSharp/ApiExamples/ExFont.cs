@@ -88,7 +88,7 @@ namespace ApiExamples
             //ExFor:FontInfo.Name
             //ExFor:FontInfo.IsTrueType
             //ExSummary:Shows how to gather the details of what fonts are present in a document.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             FontInfoCollection fonts = doc.FontInfos;
             int fontIndex = 1;
@@ -152,7 +152,7 @@ namespace ApiExamples
         [TestCase(false, false, false, Description = "Remove embedded fonts from the saved document.")]
         public void WorkWithEmbeddedFonts(bool embedTrueTypeFonts, bool embedSystemFonts, bool saveSubsetFonts)
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             FontInfoCollection fontInfos = doc.FontInfos;
             fontInfos.EmbedTrueTypeFonts = embedTrueTypeFonts;
@@ -531,7 +531,7 @@ namespace ApiExamples
             //ExFor:Font.Style
             //ExFor:Style.BuiltIn
             //ExSummary:Applies double underline to all runs in a document that are formatted with custom character styles.
-            Document doc = new Document(MyDir + "CustomStyle.doc");
+            Document doc = new Document(MyDir + "CustomStyle.docx");
 
             // Select all run nodes in the document
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
@@ -556,7 +556,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Run
             //ExSummary:Gets all fonts used in a document.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // Select all runs in the document
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
@@ -591,7 +591,7 @@ namespace ApiExamples
             //ExFor:Fonts.FontSettings.DefaultInstance
             //ExSummary:Demonstrates how to receive notifications of font substitutions by using IWarningCallback.
             // Load the document to render
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class
             HandleDocumentWarnings callback = new HandleDocumentWarnings();
@@ -613,7 +613,7 @@ namespace ApiExamples
             Assert.True(callback.FontWarnings[0].WarningType == WarningType.FontSubstitution);
             Assert.True(callback.FontWarnings[0].Description
                 .Equals(
-                    "Font 'Calibri' has not been found. Using 'Fanwood' font instead. Reason: first available font."));
+                    "Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font."));
 
             // Restore default fonts
             FontSettings.DefaultInstance.SetFontsSources(origFontSources);
@@ -742,7 +742,7 @@ namespace ApiExamples
         [Category("SkipMono")]
         public void SubstitutionWarnings()
         {
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class
             HandleDocumentWarnings callback = new HandleDocumentWarnings();
@@ -821,7 +821,7 @@ namespace ApiExamples
         public void RemoveHiddenContentFromDocument()
         {
             // Open the document we want to remove hidden content from.
-            Document doc = new Document(MyDir + "HiddenContent.doc");
+            Document doc = new Document(MyDir + "HiddenContent.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             RemoveHiddenContentVisitor hiddenContentRemover = new RemoveHiddenContentVisitor();
@@ -1310,7 +1310,7 @@ namespace ApiExamples
             //ExFor:FontFallbackSettings.Load(String)
             //ExFor:FontFallbackSettings.Save(String)
             //ExSummary:Shows how to load and save font fallback settings from file.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
             
             // By default fallback settings are initialized with predefined settings which mimics the Microsoft Word fallback
             FontSettings fontSettings = new FontSettings();
@@ -1331,7 +1331,7 @@ namespace ApiExamples
             //ExFor:FontFallbackSettings.Load(Stream)
             //ExFor:FontFallbackSettings.Save(Stream)
             //ExSummary:Shows how to load and save font fallback settings from stream.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // By default fallback settings are initialized with predefined settings which mimics the Microsoft Word fallback
             using (FileStream fontFallbackStream = new FileStream(MyDir + "Fallback.xml", FileMode.Open))

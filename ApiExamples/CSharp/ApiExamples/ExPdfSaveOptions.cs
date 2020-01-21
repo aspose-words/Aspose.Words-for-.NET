@@ -183,7 +183,7 @@ namespace ApiExamples
             //ExFor:PdfCompliance
             //ExFor:PdfImageColorSpaceExportMode
             //ExSummary:Shows how to save images to PDF using JPEG encoding to decrease file size.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
             
             PdfSaveOptions options = new PdfSaveOptions
             {
@@ -222,7 +222,7 @@ namespace ApiExamples
             //ExFor:FixedPageSaveOptions.ColorMode
             //ExSummary:Shows how change image color with save options property
             // Open document with color image
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
             // Set grayscale mode for document
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { ColorMode = ColorMode.Grayscale };
             
@@ -237,7 +237,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfSaveOptions.DisplayDocTitle
             //ExSummary:Shows how to display title of the document as title bar.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
             doc.BuiltInDocumentProperties.Title = "Windows bar pdf title";
             
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { DisplayDocTitle = true };
@@ -260,7 +260,7 @@ namespace ApiExamples
             //ExFor:SaveOptions.CreateSaveOptions(SaveFormat)
             //ExFor:SaveOptions.MemoryOptimization
             //ExSummary:Shows an option to optimize memory consumption when you work with large documents.
-            Document doc = new Document(MyDir + "LargeDocument.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // When set to true it will improve document memory footprint but will add extra time to processing
             SaveOptions saveOptions = SaveOptions.CreateSaveOptions(SaveFormat.Pdf);
@@ -320,7 +320,7 @@ namespace ApiExamples
             //ExFor:IWarningCallback
             //ExFor:FixedPageSaveOptions.MetafileRenderingOptions
             //ExSummary:Shows added fallback to bitmap rendering and changing type of warnings about unsupported metafile records.
-            Document doc = new Document(MyDir + "WindowsMetafileImage.doc");
+            Document doc = new Document(MyDir + "WindowsMetafileImage.docx");
 
             MetafileRenderingOptions metafileRenderingOptions =
                 new MetafileRenderingOptions
@@ -491,7 +491,7 @@ namespace ApiExamples
             //ExFor:PdfZoomBehavior
             //ExSummary:Shows how to set the default zooming of an output PDF to 1/4 of default size.
             // Open a document with multiple paragraphs
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             PdfSaveOptions options = new PdfSaveOptions();
             options.ZoomBehavior = PdfZoomBehavior.ZoomFactor;

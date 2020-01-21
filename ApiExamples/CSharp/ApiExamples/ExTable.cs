@@ -41,7 +41,7 @@ namespace ApiExamples
             //ExFor:TableCollection.Item(System.Int32)
             //ExFor:TableCollection.ToArray
             //ExSummary:Shows how to iterate through all tables in the document and display the content from each cell.
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
 
             // Here we get all tables from the Document node. You can do this for any other composite node
             // which can contain block level nodes. For example you can retrieve tables from header or from a cell
@@ -104,7 +104,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void CalculateDepthOfNestedTables()
         {
-            Document doc = new Document(MyDir + "NestedTables.doc");
+            Document doc = new Document(MyDir + "NestedTables.docx");
             int tableIndex = 0;
 
             foreach (Table table in doc.GetChildNodes(NodeType.Table, true).OfType<Table>())
@@ -328,7 +328,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Cell.EnsureMinimum
             //ExSummary:Shows how to ensure a cell node is valid.
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
 
             // Gets the first cell in the document
             Cell cell = (Cell) doc.GetChild(NodeType.Cell, 0, true);
@@ -350,7 +350,7 @@ namespace ApiExamples
             //ExFor:TextureIndex
             //ExFor:Table.SetShading
             //ExSummary:Shows how to apply a outline border to a table.
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
             // Align the table to the center of the page
@@ -390,7 +390,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Table.SetBorders
             //ExSummary:Shows how to build a table with all borders enabled (grid).
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
             // Clear any existing borders from the table
@@ -418,7 +418,7 @@ namespace ApiExamples
             //ExFor:RowFormat
             //ExFor:Row.RowFormat
             //ExSummary:Shows how to modify formatting of a table row.
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
             // Retrieve the first row in the table
@@ -446,7 +446,7 @@ namespace ApiExamples
             //ExFor:CellFormat
             //ExFor:Cell.CellFormat
             //ExSummary:Shows how to modify formatting of a table cell.
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
             // Retrieve the first cell in the table
@@ -494,7 +494,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Table.ClearBorders
             //ExSummary:Shows how to remove all borders from a table.
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
 
             // Remove all borders from the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -546,7 +546,7 @@ namespace ApiExamples
         [Test]
         public void PrintTableRange()
         {
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
 
             // Get the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -573,7 +573,7 @@ namespace ApiExamples
         [Test]
         public void CloneTable()
         {
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
 
             // Retrieve the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -603,20 +603,20 @@ namespace ApiExamples
         [Test]
         public void DisableBreakAcrossPages()
         {
-            Document doc = new Document(MyDir + "TableSpanningMultiplePages.doc");
-
-            // Retrieve the first table in the document
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
-
             //ExStart
             //ExFor:RowFormat.AllowBreakAcrossPages
             //ExSummary:Shows how to disable rows breaking across pages for every row in a table.
             // Disable breaking across pages for all rows in the table
+            Document doc = new Document(MyDir + "TableSpanningMultiplePages.docx");
+
+            // Retrieve the first table in the document
+            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+
             foreach (Row row in table.OfType<Row>())
                 row.RowFormat.AllowBreakAcrossPages = false;
-            //ExEnd
 
-            doc.Save(ArtifactsDir + "Table.DisableBreakAcrossPages.doc");
+            doc.Save(ArtifactsDir + "Table.DisableBreakAcrossPages.docx");
+            //ExEnd
 
             Assert.False(table.FirstRow.RowFormat.AllowBreakAcrossPages);
             Assert.False(table.LastRow.RowFormat.AllowBreakAcrossPages);
@@ -640,7 +640,7 @@ namespace ApiExamples
         [Test]
         public void KeepTableTogether()
         {
-            Document doc = new Document(MyDir + "TableSpanningMultiplePages.doc");
+            Document doc = new Document(MyDir + "TableSpanningMultiplePages.docx");
 
             // Retrieve the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -683,7 +683,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Row
             //ExSummary:Shows how to make a clone of the last row of a table and append it to the table.
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
 
             // Retrieve the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -795,7 +795,7 @@ namespace ApiExamples
         [Test]
         public void GetIndexOfTableElements()
         {
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             //ExStart
@@ -819,7 +819,7 @@ namespace ApiExamples
         [Test]
         public void GetPreferredWidthTypeAndValue()
         {
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
 
             // Find the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -1019,7 +1019,7 @@ namespace ApiExamples
         public void MergeCellRange()
         {
             // Open the document
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
 
             // Retrieve the first table in the body of the first section
             Table table = doc.FirstSection.Body.Tables[0];
@@ -1098,7 +1098,7 @@ namespace ApiExamples
             //ExFor:CellFormat.ClearFormatting
             //ExSummary:Shows how to combine the rows from two tables into one.
             // Load the document
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
 
             // Get the first and second table in the document
             // The rows from the second table will be appended to the end of the first table
@@ -1125,7 +1125,7 @@ namespace ApiExamples
         public void SplitTable()
         {
             // Load the document
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
 
             // Get the first table in the document
             Table firstTable = (Table) doc.GetChild(NodeType.Table, 0, true);

@@ -336,7 +336,7 @@ namespace ApiExamples
             //ExFor:NodeList.GetEnumerator
             //ExFor:NodeList.ToArray
             //ExSummary:Shows how to select certain nodes by using an XPath expression.
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
 
             // This expression will extract all paragraph nodes which are descendants of any table node in the document
             // This will return any paragraphs which are in a table
@@ -371,7 +371,7 @@ namespace ApiExamples
             //ExFor:CompositeNode.GetChild
             //ExSummary:Shows how to test if a node is inside a field by using an XPath expression.
             // Let's pick a document we know has some fields in
-            Document doc = new Document(MyDir + "MailMergeDestinationNorthwindEmployees.doc");
+            Document doc = new Document(MyDir + "MailMergeDestinationNorthwindEmployees.docx");
 
             // Let's say we want to check if the Run below is inside a field
             Run run = (Run) doc.GetChild(NodeType.Run, 5, true);
@@ -411,7 +411,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:CompositeNode.RemoveSmartTags
             //ExSummary:Removes all smart tags from descendant nodes of the composite node.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             // Remove smart tags from the first paragraph in the document
             doc.FirstSection.Body.FirstParagraph.RemoveSmartTags();
@@ -424,7 +424,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:CompositeNode.IndexOf
             //ExSummary:Shows how to get the index of a given child node from its parent.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // Get the body of the first section in the document
             Body body = doc.FirstSection.Body;
@@ -465,7 +465,7 @@ namespace ApiExamples
             //ExFor:GroupShape.NodeType
             //ExFor:CommentRangeStart.NodeType
             //ExSummary:Shows how to retrieve the NodeType enumeration of nodes.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             // Let's pick a node that we can't be quite sure of what type it is
             // In this case lets pick the first node of the first paragraph in the body of the document
@@ -490,7 +490,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Node.ToString(SaveFormat)
             //ExSummary:Exports the content of a node to String in HTML format using default options.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             // Extract the last paragraph in the document to convert to HTML
             Node node = doc.LastSection.Body.LastParagraph;
@@ -504,7 +504,7 @@ namespace ApiExamples
             //ExEnd
 
             Assert.AreEqual(
-                "<p style=\"margin-top:0pt; margin-bottom:0pt; font-size:12pt\"><span style=\"font-family:Calibri\">Hello World!</span></p>",
+                "<p style=\"margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:12pt\"><span style=\"font-family:'Times New Roman'\">Hello World!</span></p>",
                 nodeAsHtml);
         }
 
@@ -514,7 +514,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Node.ToString(SaveOptions)
             //ExSummary:Exports the content of a node to String in HTML format using custom specified options.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             // Extract the last paragraph in the document to convert to HTML
             Node node = doc.LastSection.Body.LastParagraph;
@@ -532,7 +532,7 @@ namespace ApiExamples
             //ExEnd
 
             Assert.AreEqual(
-                "<p style=\"margin-top:0pt; margin-bottom:0pt\"><span style=\"font-family:Calibri\">Hello World!</span></p>",
+                "<p style=\"margin-top:0pt; margin-bottom:10pt; line-height:115%\"><span style=\"font-family:'Times New Roman'\">Hello World!</span></p>",
                 nodeAsHtml);
         }
 

@@ -153,7 +153,7 @@ namespace ApiExamples
             //ExFor:ImageData.ToImage
             //ExFor:ImageData.Save(Stream)
             //ExSummary:Shows how to save all the images from a document to the file system.
-            Document imgSourceDoc = new Document(MyDir + "SampleImages.doc");
+            Document imgSourceDoc = new Document(MyDir + "SampleImages.docx");
 
             // Images are stored as shapes
             // Get into the document's shape collection to verify that it contains 6 images
@@ -220,10 +220,9 @@ namespace ApiExamples
             //ExStart
             //ExFor:Stroke.Color2
             //ExFor:Stroke.ImageBytes
-            //ExSummary:Shows how to process shape stroke features from older versions of Microsoft Word.
+            //ExSummary:Shows how to process shape stroke features.
             // Open a document which contains a rectangle with a thick, two-tone-patterned outline
-            // These features cannot be recreated in new versions of Microsoft Word, so we will open an older .doc file
-            Document doc = new Document(MyDir + "ShapeWithStrokePatternBorder.doc");
+            Document doc = new Document(MyDir + "ShapeWithStrokePatternBorder.docx");
 
             // Get the first shape's stroke
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
@@ -370,7 +369,7 @@ namespace ApiExamples
             //ExFor:ImageData.ToByteArray
             //ExFor:ImageData.ToStream
             //ExSummary:Shows how to access raw image data in a shape's ImageData object.
-            Document imgSourceDoc = new Document(MyDir + "SampleImages.doc");
+            Document imgSourceDoc = new Document(MyDir + "SampleImages.docx");
 
             // Images are stored as shapes
             // Get into the document's shape collection to verify that it contains 6 images
@@ -384,7 +383,7 @@ namespace ApiExamples
             // Then, put the image data from that stream into another stream which creates an image file in the local file system
             using (Stream imgStream = shapes[0].ImageData.ToStream())
             {
-                using (FileStream outStream = new FileStream(ArtifactsDir + "Drawing.GetDataFromImage.png", FileMode.CreateNew))
+                using (FileStream outStream = new FileStream(ArtifactsDir + "Drawing.GetDataFromImage.png", FileMode.Create))
                 {
                     imgStream.CopyTo(outStream);
                 }
@@ -411,7 +410,7 @@ namespace ApiExamples
             //ExFor:ImageData.Title
             //ExSummary:Shows how to edit images using the ImageData attribute.
             // Open a document that contains images
-            Document imgSourceDoc = new Document(MyDir + "SampleImages.doc");
+            Document imgSourceDoc = new Document(MyDir + "SampleImages.docx");
 
             Shape sourceShape = (Shape)imgSourceDoc.GetChildNodes(NodeType.Shape, true)[0];
             

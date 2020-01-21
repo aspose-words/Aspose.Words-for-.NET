@@ -21,7 +21,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:BorderCollection.GetEnumerator
             //ExSummary:Shows how to enumerate all borders in a collection.
-            Document doc = new Document(MyDir + "Borders.doc");
+            Document doc = new Document(MyDir + "Borders.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             BorderCollection borders = builder.ParagraphFormat.Borders;
@@ -47,7 +47,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:BorderCollection.ClearFormatting
             //ExSummary:Shows how to remove all borders from a paragraph at once.
-            Document doc = new Document(MyDir + "Borders.doc");
+            Document doc = new Document(MyDir + "Borders.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
             BorderCollection borders = builder.ParagraphFormat.Borders;
 

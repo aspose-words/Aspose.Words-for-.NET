@@ -167,9 +167,9 @@ namespace ApiExamples
             //ExFor:FixedPageSaveOptions.OptimizeOutput
             //ExFor:HtmlFixedSaveOptions.OptimizeOutput
             //ExSummary:Shows how to optimize document objects while saving to html.
-            Document doc = new Document(MyDir + "Graphics.doc");
+            Document doc = new Document(MyDir + "Graphics.docx");
 
-            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { OptimizeOutput = false };
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { OptimizeOutput = true };
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html", saveOptions);
             //ExEnd
@@ -245,7 +245,7 @@ namespace ApiExamples
         public void HtmlFixedResourceFolder()
         {
             // Open a document which contains images
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlFixedSaveOptions options = new HtmlFixedSaveOptions
             {

@@ -228,7 +228,7 @@ namespace ApiExamples
             //ExFor:Document.Save(String)
             //ExSummary:Shows how to open a document and convert it to .PDF.
             // Open a document that exists in the local file system
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             // Save that document as a PDF to another location
             doc.Save(ArtifactsDir + "Document.ConvertToPdf.pdf");
@@ -238,7 +238,7 @@ namespace ApiExamples
         [Test]
         public void OpenAndSaveToFile()
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             doc.Save(ArtifactsDir + "Document.OpenAndSaveToFile.html");
         }
 
@@ -249,7 +249,7 @@ namespace ApiExamples
             //ExFor:Document.#ctor(Stream)
             //ExSummary:Opens a document from a stream.
             // Open the stream. Read only access is enough for Aspose.Words to load a document.
-            using (Stream stream = File.OpenRead(MyDir + "Document.doc"))
+            using (Stream stream = File.OpenRead(MyDir + "Document.docx"))
             {
                 // Load the entire document into memory.
                 Document doc = new Document(stream);
@@ -392,17 +392,17 @@ namespace ApiExamples
             // Trying to open a password-encrypted document the normal way will cause an exception to be thrown
             Assert.Throws<IncorrectPasswordException>(() =>
             {
-                doc = new Document(MyDir + "Encrypted.doc");
+                doc = new Document(MyDir + "Encrypted.docx");
             });
 
             // To open it and access its contents, we need to open it using the correct password
             // The password is delivered via a LoadOptions object, after being passed to it's constructor
-            LoadOptions options = new LoadOptions("qwerty");
+            LoadOptions options = new LoadOptions("docPassword");
 
             // We can now open the document either by filename or stream
-            doc = new Document(MyDir + "Encrypted.doc", options);
+            doc = new Document(MyDir + "Encrypted.docx", options);
 
-            using (Stream stream = File.OpenRead(MyDir + "Encrypted.doc"))
+            using (Stream stream = File.OpenRead(MyDir + "Encrypted.docx"))
             {
                 doc = new Document(stream, options);
             }
@@ -533,8 +533,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.Save(String,SaveFormat)
             //ExFor:SaveFormat
-            //ExSummary:Converts from DOC to HTML format.
-            Document doc = new Document(MyDir + "Document.doc");
+            //ExSummary:Converts from DOCX to HTML format.
+            Document doc = new Document(MyDir + "Document.docx");
             doc.Save(ArtifactsDir + "Document.ConvertToHtml.html", SaveFormat.Html);
             //ExEnd
         }
@@ -542,14 +542,14 @@ namespace ApiExamples
         [Test]
         public void ConvertToMhtml()
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             doc.Save(ArtifactsDir + "Document.ConvertToMhtml.mht");
         }
 
         [Test]
         public void ConvertToTxt()
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             doc.Save(ArtifactsDir + "Document.ConvertToTxt.txt");
             
         }
@@ -560,7 +560,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.Save(Stream,SaveFormat)
             //ExSummary:Shows how to save a document to a stream.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             using (MemoryStream dstStream = new MemoryStream())
             {
@@ -576,7 +576,7 @@ namespace ApiExamples
         public void Doc2EpubSave()
         {
             // Open an existing document from disk
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // Save the document in EPUB format
             doc.Save(ArtifactsDir + "Document.Doc2EpubSave.epub");
@@ -597,7 +597,7 @@ namespace ApiExamples
             //ExFor:SaveOptions.SaveFormat
             //ExSummary:Converts a document to EPUB with save options specified.
             // Open an existing document from disk
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // Create a new instance of HtmlSaveOptions. This object allows us to set options that control
             // how the output document is saved
@@ -633,7 +633,7 @@ namespace ApiExamples
             //ExFor:PdfSaveOptions.DownsampleOptions
             //ExSummary:Shows how to change the resolution of images in output pdf documents.
             // Open a document that contains images 
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // If we want to convert the document to .pdf, we can use a SaveOptions implementation to customize the saving process
             PdfSaveOptions options = new PdfSaveOptions();
@@ -660,7 +660,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:SaveOptions.PrettyFormat
             //ExSummary:Shows how to pass an option to export HTML tags in a well spaced, human readable format.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             HtmlSaveOptions htmlOptions = new HtmlSaveOptions(SaveFormat.Html);
             // Enabling the PrettyFormat setting will export HTML in an indented format that is easy to read
@@ -679,7 +679,7 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions.ExportTextInputFormFieldAsText
             //ExFor:HtmlSaveOptions.ImagesFolder
             //ExSummary:Shows how to set save options before saving a document to HTML.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // This is the directory we want the exported images to be saved to
             string imagesDir = Path.Combine(ArtifactsDir, "SaveHtmlWithOptions");
@@ -727,7 +727,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void SaveHtmlExportFonts()
         {
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // Set the option to export font resources
             HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
@@ -762,7 +762,7 @@ namespace ApiExamples
                 Assert.False(args.KeepFontStreamOpen);
 
                 // We can access the source document from here also
-                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.doc"));
+                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.docx"));
             }
         }
         //ExEnd
@@ -1059,7 +1059,7 @@ namespace ApiExamples
             //ExSummary:Shows how to join runs in a document to reduce unneeded runs.
             // Let's load this particular document. It contains a lot of content that has been edited many times
             // This means the document will most likely contain a large number of runs with duplicate formatting
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // This is for illustration purposes only, remember how many run nodes we had in the original document
             int runsBefore = doc.GetChildNodes(NodeType.Run, true).Count;
@@ -1106,7 +1106,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.Clone
             //ExSummary:Shows how to deep clone a document.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             Document clone = doc.Clone();
             //ExEnd
         }
@@ -1176,7 +1176,7 @@ namespace ApiExamples
         public void DocumentByteArray()
         {
             // Load the document.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             // Create a new memory stream
             MemoryStream streamOut = new MemoryStream();
@@ -1241,7 +1241,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.ProtectionType
             //ExSummary:Shows how to get protection type currently set in the document.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             ProtectionType protectionType = doc.ProtectionType;
             //ExEnd
         }
@@ -1268,7 +1268,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.RemoveMacros
             //ExSummary:Shows how to remove all macros from a document.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             doc.RemoveMacros();
             //ExEnd
         }
@@ -1279,7 +1279,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.UpdateTableLayout
             //ExSummary:Shows how to update the layout of tables in a document.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             // Normally this method is not necessary to call, as cell and table widths are maintained automatically
             // This method may need to be called when exporting to PDF in rare cases when the table layout appears
@@ -1294,7 +1294,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.PageCount
             //ExSummary:Shows how to invoke page layout and retrieve the number of pages in the document.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             // This invokes page layout which builds the document in memory so note that with large documents this
             // property can take time. After invoking this property, any rendering operation e.g rendering to PDF or image
@@ -1311,7 +1311,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.UpdateFields
             //ExSummary:Shows how to update all fields in a document.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             doc.UpdateFields();
             //ExEnd
         }
@@ -1325,7 +1325,7 @@ namespace ApiExamples
             //ExFor:BuiltInDocumentProperties.Words
             //ExFor:BuiltInDocumentProperties.Paragraphs
             //ExSummary:Shows how to update all list labels in a document.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             // Some work should be done here that changes the document's content
 
@@ -1345,7 +1345,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.ExpandTableStylesToDirectFormatting
             //ExSummary:Shows how to expand the formatting from styles onto the rows and cells of the table as direct formatting.
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
 
             // Get the first cell of the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -1378,7 +1378,7 @@ namespace ApiExamples
             //ExFor:Document.OriginalFileName
             //ExFor:Document.OriginalLoadFormat
             //ExSummary:Shows how to retrieve the details of the path, filename and LoadFormat of a document from when the document was first loaded into memory.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             // This property will return the full path and file name where the document was loaded from
             string originalFilePath = doc.OriginalFileName;
@@ -1396,7 +1396,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:CompositeNode.RemoveSmartTags
             //ExSummary:Shows how to remove all smart tags from a document.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             doc.RemoveSmartTags();
             //ExEnd
         }
@@ -1408,7 +1408,7 @@ namespace ApiExamples
             //ExFor:Document.Variables
             //ExFor:VariableCollection
             //ExSummary:Shows how to enumerate over document variables.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             foreach (KeyValuePair<string, string> entry in doc.Variables)
             {
@@ -1707,7 +1707,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.RemoveExternalSchemaReferences
             //ExSummary:Shows how to remove all external XML schema references from a document. 
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             doc.RemoveExternalSchemaReferences();
             //ExEnd
         }
@@ -1721,7 +1721,7 @@ namespace ApiExamples
             //ExFor:CleanupOptions.UnusedLists
             //ExFor:CleanupOptions.UnusedStyles
             //ExSummary:Shows how to remove all unused styles and lists from a document. 
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             
             CleanupOptions cleanupOptions = new CleanupOptions { UnusedLists = true, UnusedStyles = true };
             doc.Cleanup(cleanupOptions);
@@ -1788,7 +1788,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.AcceptAllRevisions
             //ExSummary:Shows how to accept all tracking changes in the document.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             // Start tracking and make some revisions
             doc.StartTrackRevisions("Author");
@@ -2022,16 +2022,18 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.Compliance
             //ExSummary:Shows how to get OOXML compliance version.
+            // Open a DOC and check its OOXML compliance version
             Document doc = new Document(MyDir + "Document.doc");
 
             OoxmlCompliance compliance = doc.Compliance;
-            //ExEnd
             Assert.AreEqual(compliance, OoxmlCompliance.Ecma376_2006);
 
-            doc = new Document(MyDir + "Field BARCODE.docx");
+            // Open a DOCX which should have a newer one
+            doc = new Document(MyDir + "Document.docx");
             compliance = doc.Compliance;
 
             Assert.AreEqual(compliance, OoxmlCompliance.Iso29500_2008_Transitional);
+            //ExEnd
         }
 
         [Test]
@@ -2334,7 +2336,7 @@ namespace ApiExamples
             //ExFor:Document.LastSection
             //ExSummary:Shows how to edit the last section of a document.
             // Open the template document, containing obsolete copyright information in the footer
-            Document doc = new Document(MyDir + "Footer.doc");
+            Document doc = new Document(MyDir + "Footer.docx");
 
             // We have a document with 2 sections, this way FirstSection and LastSection are not the same
             Assert.AreEqual(2, doc.Sections.Count);
@@ -2546,7 +2548,7 @@ namespace ApiExamples
             //ExFor:Odso.TableName
             //ExFor:Odso.UdlConnectString
             //ExSummary:Shows how to execute a mail merge while connecting to an external data source.
-            Document doc = new Document(MyDir + "OdsoData.doc");
+            Document doc = new Document(MyDir + "OdsoData.docx");
 
             MailMergeSettings settings = doc.MailMergeSettings;
 
@@ -2595,8 +2597,8 @@ namespace ApiExamples
 
             // The "header" document contains column names for the data in the "data" document,
             // which will correspond to the names of our MERGEFIELDs
-            settings.HeaderSource = MyDir + "MailingLabelMergeHeader.doc";
-            settings.DataSource = MyDir + "MailingLabelMergeData.doc";
+            settings.HeaderSource = MyDir + "MailingLabelMergeHeader.docx";
+            settings.DataSource = MyDir + "MailingLabelMergeData.docx";
 
             // Configure the rest of the MailMergeSettings object
             settings.Query = "SELECT * FROM " + doc.MailMergeSettings.DataSource;
@@ -2606,7 +2608,7 @@ namespace ApiExamples
             settings.ViewMergedData = true;
 
             // The mail merge will be performed when this document is opened 
-            doc.Save(ArtifactsDir + "Document.MailingLabelMerge.doc");
+            doc.Save(ArtifactsDir + "Document.MailingLabelMerge.docx");
             //ExEnd
         }
 
@@ -2630,7 +2632,7 @@ namespace ApiExamples
             //ExFor:OdsoFieldMapDataCollection.RemoveAt(Int32)
             //ExFor:OdsoFieldMappingType
             //ExSummary:Shows how to access the collection of data that maps data source columns to merge fields.
-            Document doc = new Document(MyDir + "OdsoData.doc");
+            Document doc = new Document(MyDir + "OdsoData.docx");
 
             // This collection defines how columns from an external data source will be mapped to predefined MERGEFIELD,
             // ADDRESSBLOCK and GREETINGLINE fields during a mail merge
@@ -2672,7 +2674,7 @@ namespace ApiExamples
             //ExFor:OdsoRecipientDataCollection.Item(Int32)
             //ExFor:OdsoRecipientDataCollection.RemoveAt(Int32)
             //ExSummary:Shows how to access the collection of data that designates merge data source records to be excluded from a merge.
-            Document doc = new Document(MyDir + "OdsoData.doc");
+            Document doc = new Document(MyDir + "OdsoData.docx");
 
             // Records in this collection that do not have the "Active" flag set to true will be excluded from the mail merge
             OdsoRecipientDataCollection odsoRecipientDataCollection = doc.MailMergeSettings.Odso.RecipientDatas;
@@ -2880,7 +2882,7 @@ namespace ApiExamples
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.LanguagePreferences.AddEditingLanguage(EditingLanguage.Japanese);
             
-            Document doc = new Document(MyDir + "Document.doc", loadOptions);
+            Document doc = new Document(MyDir + "Document.docx", loadOptions);
 
             int localeIdFarEast = doc.Styles.DefaultFont.LocaleIdFarEast;
             Console.WriteLine(localeIdFarEast == (int) EditingLanguage.Japanese
@@ -2899,7 +2901,7 @@ namespace ApiExamples
             // You can set language which only
             loadOptions.LanguagePreferences.DefaultEditingLanguage = EditingLanguage.Russian;
 
-            Document doc = new Document(MyDir + "Document.doc", loadOptions);
+            Document doc = new Document(MyDir + "Document.docx", loadOptions);
 
             int localeId = doc.Styles.DefaultFont.LocaleId;
             Console.WriteLine(localeId == (int) EditingLanguage.Russian
@@ -3058,7 +3060,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.CopyStylesFromTemplate(Document)
             //ExSummary:Shows how to copies styles from the template to a document via Document.
-            Document template = new Document(MyDir + "Rendering.doc");
+            Document template = new Document(MyDir + "Rendering.docx");
 
             Document target = new Document(MyDir + "Document.docx");
             target.CopyStylesFromTemplate(template);
@@ -3073,7 +3075,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.CopyStylesFromTemplate(String)
             //ExSummary:Shows how to copies styles from the template to a document via string.
-            string templatePath = MyDir + "Rendering.doc";
+            string templatePath = MyDir + "Rendering.docx";
             
             Document target = new Document(MyDir + "Document.docx");
             target.CopyStylesFromTemplate(templatePath);
@@ -3312,7 +3314,7 @@ namespace ApiExamples
             //ExFor:DocSaveOptions.AlwaysCompressMetafiles
             //ExSummary:Shows how to change metafiles compression in a document while saving.
             // Open a document that contains a Microsoft Equation 3.0 mathematical formula
-            Document doc = new Document(MyDir + "MicrosoftEquationObject.doc");
+            Document doc = new Document(MyDir + "MicrosoftEquationObject.docx");
             
             // Large metafiles are always compressed when exporting a document in Aspose.Words, but small metafiles are not
             // compressed for performance reason. Some other document editors, such as LibreOffice, cannot read uncompressed
@@ -3382,11 +3384,13 @@ namespace ApiExamples
             //ExFor:SaveOutputParameters
             //ExFor:SaveOutputParameters.ContentType
             //ExSummary:Shows how to verify Content-Type strings from save output parameters.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
+            // Save the document as a .doc and check parameters
             SaveOutputParameters parameters = doc.Save(ArtifactsDir + "Document.SaveOutputParameters.doc");
             Assert.AreEqual("application/msword", parameters.ContentType);
 
+            // A .docx or a .pdf will have different parameters
             parameters = doc.Save(ArtifactsDir + "Document.SaveOutputParameters.pdf");
             Assert.AreEqual("application/pdf", parameters.ContentType);
             //ExEnd

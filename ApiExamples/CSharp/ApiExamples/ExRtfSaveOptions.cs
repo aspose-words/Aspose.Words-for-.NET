@@ -24,7 +24,7 @@ namespace ApiExamples
             //ExFor:RtfSaveOptions.SaveFormat
             //ExSummary:Shows how to save a document to .rtf with custom options.
             // Open a document with images
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // Configure a RtfSaveOptions instance to make our output document more suitable for older devices
             RtfSaveOptions options = new RtfSaveOptions

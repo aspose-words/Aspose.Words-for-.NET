@@ -203,7 +203,7 @@ namespace ApiExamples
             //ExFor:Range.Replace(String, String, FindReplaceOptions)
             //ExSummary:Shows how to replace text in the document footer.
             // Open the template document, containing obsolete copyright information in the footer
-            Document doc = new Document(MyDir + "Footer.doc");
+            Document doc = new Document(MyDir + "Footer.docx");
 
             HeaderFooterCollection headersFooters = doc.FirstSection.HeadersFooters;
             HeaderFooter footer = headersFooters[HeaderFooterType.FooterPrimary];
@@ -214,14 +214,15 @@ namespace ApiExamples
                 FindWholeWordsOnly = false
             };
 
-            footer.Range.Replace("(C) 2006 Aspose Pty Ltd.", "Copyright (C) 2020 by Aspose Pty Ltd.", options);
+            int currentYear = System.DateTime.Now.Year;
+            footer.Range.Replace("(C) 2006 Aspose Pty Ltd.", $"Copyright (C) {currentYear} by Aspose Pty Ltd.", options);
 
             doc.Save(ArtifactsDir + "HeaderFooter.ReplaceText.doc");
             //ExEnd
 
             // Verify that the appropriate changes were made to the output document
             doc = new Document(ArtifactsDir + "HeaderFooter.ReplaceText.doc");
-            Assert.IsTrue(doc.Range.Text.Contains("Copyright (C) 2020 by Aspose Pty Ltd."));
+            Assert.IsTrue(doc.Range.Text.Contains($"Copyright (C) {currentYear} by Aspose Pty Ltd."));
         }
 
         //ExStart

@@ -49,7 +49,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:SaveOptions.TempFolder
             //ExSummary:Shows how to save a document using temporary files.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // We can use a SaveOptions object to set the saving method of a document from a MemoryStream to temporary files
             // While saving, the files will briefly pop up in the folder we set as the TempFolder attribute below

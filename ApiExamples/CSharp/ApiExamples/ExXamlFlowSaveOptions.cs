@@ -29,7 +29,7 @@ namespace ApiExamples
         public void ImageFolder()
         {
             // Open a document which contains images
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             XamlFlowSaveOptions options = new XamlFlowSaveOptions
             {

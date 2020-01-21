@@ -367,7 +367,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:ShapeBase.IsInline
             //ExSummary:Shows how to test if a shape in the document is inline or floating.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())
             {
@@ -490,7 +490,7 @@ namespace ApiExamples
             //ExFor:CompositeNode.InsertAfter(Node, Node)
             //ExFor:NodeCollection.ToArray
             //ExSummary:Shows how to replace all textboxes with images.
-            Document doc = new Document(MyDir + "DrawingCanvasAndTextboxes.doc");
+            Document doc = new Document(MyDir + "DrawingCanvasAndTextboxes.docx");
 
             // This gets a live collection of all shape nodes in the document
             NodeCollection shapeCollection = doc.GetChildNodes(NodeType.Shape, true);

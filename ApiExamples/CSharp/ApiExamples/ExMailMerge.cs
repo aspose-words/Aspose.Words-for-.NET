@@ -1026,7 +1026,7 @@ namespace ApiExamples
             //ExFor:MailMergeRegionInfo.EndField
             //ExFor:MailMergeRegionInfo.Level
             //ExSummary:Shows how to get MailMergeRegionInfo and work with it.
-            Document doc = new Document(MyDir + "MailMergeRegions.doc");
+            Document doc = new Document(MyDir + "MailMergeRegions.docx");
 
             // Returns a full hierarchy of regions (with fields) available in the document
             MailMergeRegionInfo regionInfo = doc.MailMerge.GetRegionsHierarchy();
@@ -1092,7 +1092,7 @@ namespace ApiExamples
         [Test]
         public void GetRegionsByName()
         {
-            Document doc = new Document(MyDir + "MailMergeRegions.doc");
+            Document doc = new Document(MyDir + "MailMergeRegions.docx");
 
             IList<MailMergeRegionInfo> regions = doc.MailMerge.GetRegionsByName("Region1");
             Assert.AreEqual(1, doc.MailMerge.GetRegionsByName("Region1").Count);

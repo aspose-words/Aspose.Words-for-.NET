@@ -54,11 +54,11 @@ namespace ApiExamples
             //ExFor:FieldChar.GetField
             //ExFor:Field.IsLocked
             //ExSummary:Demonstrates how to retrieve the field class from an existing FieldStart node in the document.
-            Document doc = new Document(MyDir + "TableOfContents.doc");
+            Document doc = new Document(MyDir + "TableOfContents.docx");
 
             FieldChar fieldStart = (FieldChar)doc.GetChild(NodeType.FieldStart, 0, true);
             Assert.AreEqual(FieldType.FieldTOC, fieldStart.FieldType);
-            Assert.AreEqual(true, fieldStart.IsDirty);
+            Assert.AreEqual(false, fieldStart.IsDirty);
             Assert.AreEqual(false, fieldStart.IsLocked);
 
             // Retrieve the facade object which represents the field in the document
@@ -146,7 +146,7 @@ namespace ApiExamples
         [Test]
         public void GetFieldFromFieldCollection()
         {
-            Document doc = new Document(MyDir + "TableOfContents.doc");
+            Document doc = new Document(MyDir + "TableOfContents.docx");
 
             Field field = doc.Range.Fields[0];
 
@@ -220,14 +220,14 @@ namespace ApiExamples
             //ExFor:CompositeNode.GetChildNodes(NodeType, Boolean)
             //ExSummary:Demonstrates how to remove a specified TOC from a document.
             // Open a document which contains a TOC
-            Document doc = new Document(MyDir + "TableOfContents.doc");
+            Document doc = new Document(MyDir + "TableOfContents.docx");
 
             // Remove the first TOC from the document
             Field tocField = doc.Range.Fields[0];
             tocField.Remove();
 
             // Save the output
-            doc.Save(ArtifactsDir + "Field.RemoveTocFromDocument.doc");
+            doc.Save(ArtifactsDir + "Field.RemoveTocFromDocument.docx");
             //ExEnd
         }
 
@@ -2859,7 +2859,7 @@ namespace ApiExamples
 
             // Insert fields containing text from another document and present them as text (see InsertLinkedObjectAs enum)
             builder.Writeln("FieldLink:\n");
-            InsertFieldLink(builder, insertLinkedObjectAs, "Word.Document.8", MyDir + "Document.doc", null, true);
+            InsertFieldLink(builder, insertLinkedObjectAs, "Word.Document.8", MyDir + "Document.docx", null, true);
 
             builder.Writeln("FieldDde:\n");
             InsertFieldDde(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Spreadsheet.xlsx",
@@ -3795,21 +3795,22 @@ namespace ApiExamples
             //ExFor:FieldFileSize.IsInKilobytes
             //ExFor:FieldFileSize.IsInMegabytes            
             //ExSummary:Shows how to display the file size of a document with a FILESIZE field.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.MoveToDocumentEnd();
+            builder.InsertParagraph();
 
             // By default, file size is displayed in bytes
             FieldFileSize field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
             field.Update();
-            Assert.AreEqual("24064", field.Result);
+            Assert.AreEqual("10590", field.Result);
             builder.InsertParagraph();
 
             // Set the field to display size in kilobytes
             field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
             field.IsInKilobytes = true;
             field.Update();
-            Assert.AreEqual("24", field.Result);
+            Assert.AreEqual("11", field.Result);
             builder.InsertParagraph();
 
             // Set the field to display size in megabytes
@@ -5061,9 +5062,9 @@ namespace ApiExamples
             //ExFor:FieldFormDropDown
             //ExFor:FieldFormText
             //ExSummary:Shows how to process FORMCHECKBOX, FORMDROPDOWN and FORMTEXT fields.
-            // These fields are legacy equivalents of the FormField, and they can be read and not inserted by Aspose.Words,
+            // These fields are legacy equivalents of the FormField, and they can be read but not inserted by Aspose.Words,
             // and are inserted in Microsoft Word 2019 via the Legacy Tools menu in the Developer tab
-            Document doc = new Document(MyDir + "FormFields.doc");
+            Document doc = new Document(MyDir + "FormFields.docx");
 
             FieldFormCheckBox fieldFormCheckBox = (FieldFormCheckBox)doc.Range.Fields[1];
             Assert.AreEqual(" FORMCHECKBOX \u0001", fieldFormCheckBox.GetFieldCode());

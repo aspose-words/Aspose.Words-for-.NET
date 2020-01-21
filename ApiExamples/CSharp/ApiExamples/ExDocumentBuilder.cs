@@ -1333,14 +1333,20 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderCursorPosition()
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            // Write some text in a blank Document using a DocumentBuilder
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("Hello world!");
 
-            Node curNode = builder.CurrentNode;
-            Assert.AreEqual(NodeType.Run, curNode.NodeType);
+            // If the builder's cursor is at the end of the document, there will be no nodes in front of it so the current node will be null
+            Assert.Null(builder.CurrentNode);
 
-            Paragraph curParagraph = builder.CurrentParagraph;
-            Assert.AreEqual("Hello World!", curParagraph.GetText().Trim());
+            // However, the current paragraph the cursor is in will be valid
+            Assert.AreEqual("Hello world!", builder.CurrentParagraph.GetText().Trim());
+
+            // Move to the beginning of the document and place the cursor at an existing node
+            builder.MoveToDocumentStart();          
+            Assert.AreEqual(NodeType.Run, builder.CurrentNode.NodeType);
         }
 
         [Test]
@@ -1360,7 +1366,7 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderMoveToDocumentStartEnd()
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveToDocumentEnd();
@@ -1405,7 +1411,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.MoveToCell
             //ExSummary:Shows how to move a cursor position to the specified table cell.
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // All parameters are 0-index. Moves to the 1st table, 3rd row, 4th cell
@@ -1999,7 +2005,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.DeleteRow
             //ExSummary:Shows how to delete a row from a table.
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Delete the first row of the first table in the document
@@ -2091,7 +2097,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.MoveToField
             //ExSummary:Shows how to move document builder's cursor to a specific field.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Field field = builder.InsertField("MERGEFIELD field");

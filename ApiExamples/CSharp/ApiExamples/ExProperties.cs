@@ -27,7 +27,7 @@ namespace ApiExamples
             //ExFor:BuiltInDocumentProperties
             //ExFor:CustomDocumentProperties
             //ExSummary:Enumerates through all built-in and custom properties in a document.
-            Document doc = new Document(MyDir + "Properties.doc");
+            Document doc = new Document(MyDir + "Properties.docx");
 
             Console.WriteLine("1. Document name: {0}", doc.OriginalFileName);
 
@@ -52,7 +52,7 @@ namespace ApiExamples
             //ExFor:DocumentProperty.Value
             //ExFor:DocumentProperty.Type
             //ExSummary:Enumerates through all built-in and custom properties in a document using indexed access.
-            Document doc = new Document(MyDir + "Properties.doc");
+            Document doc = new Document(MyDir + "Properties.docx");
 
             Console.WriteLine("1. Document name: {0}", doc.OriginalFileName);
 
@@ -79,7 +79,7 @@ namespace ApiExamples
             //ExFor:BuiltInDocumentProperties.Item(String)
             //ExFor:DocumentProperty.ToString
             //ExSummary:Retrieves a built-in document property by name.
-            Document doc = new Document(MyDir + "Properties.doc");
+            Document doc = new Document(MyDir + "Properties.docx");
 
             DocumentProperty docProperty = doc.BuiltInDocumentProperties["Keywords"];
             Console.WriteLine(docProperty.ToString());
@@ -139,7 +139,7 @@ namespace ApiExamples
             //ExFor:BuiltInDocumentProperties.Version
             //ExSummary:Shows how to work with document properties in the "Origin" category.
             // Open a document 
-            Document doc = new Document(MyDir + "Properties.doc");
+            Document doc = new Document(MyDir + "Properties.docx");
 
             // The properties we will work with are members of the BuiltInDocumentProperties attribute
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
@@ -435,7 +435,7 @@ namespace ApiExamples
             //ExFor:CustomDocumentProperties.Add(String,DateTime)
             //ExFor:DocumentProperty.ToDateTime
             //ExSummary:Retrieves a custom document property by name.
-            Document doc = new Document(MyDir + "Properties.doc");
+            Document doc = new Document(MyDir + "Properties.docx");
 
             DocumentProperty docProperty = doc.CustomDocumentProperties["Authorized Date"];
 
@@ -554,7 +554,7 @@ namespace ApiExamples
             //ExFor:DocumentProperty.ToDateTime
             //ExFor:PropertyType
             //ExSummary:Retrieves the types and values of the custom document properties.
-            Document doc = new Document(MyDir + "Properties.doc");
+            Document doc = new Document(MyDir + "Properties.docx");
 
             foreach (DocumentProperty docProperty in doc.CustomDocumentProperties)
             {

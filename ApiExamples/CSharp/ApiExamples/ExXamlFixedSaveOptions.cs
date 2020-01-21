@@ -27,7 +27,7 @@ namespace ApiExamples
         public void ResourceFolder()
         {
             // Open a document which contains resources
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             XamlFixedSaveOptions options = new XamlFixedSaveOptions
             {

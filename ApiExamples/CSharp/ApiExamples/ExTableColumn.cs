@@ -126,7 +126,7 @@ namespace ApiExamples
         [Test]
         public void RemoveColumnFromTable()
         {
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             Table table = (Table) doc.GetChild(NodeType.Table, 1, true);
 
             // Get the third column from the table and remove it
@@ -143,7 +143,7 @@ namespace ApiExamples
         [Test]
         public void Insert()
         {
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             Table table = (Table) doc.GetChild(NodeType.Table, 1, true);
 
             // Get the second column in the table
@@ -167,7 +167,7 @@ namespace ApiExamples
         [Test]
         public void TableColumnToTxt()
         {
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             Table table = (Table) doc.GetChild(NodeType.Table, 1, true);
 
             // Get the first column in the table

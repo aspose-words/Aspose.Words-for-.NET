@@ -128,7 +128,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:SaveOptions.UpdateLastSavedTimeProperty
             //ExSummary:Shows how to update a document time property when you want to save it.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             // Get last saved time
             DateTime documentTimeBeforeSave = doc.BuiltInDocumentProperties.LastSavedTime;
