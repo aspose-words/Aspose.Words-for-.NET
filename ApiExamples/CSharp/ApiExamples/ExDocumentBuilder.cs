@@ -14,6 +14,7 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
 using Aspose.Words.Fields;
+using Aspose.Words.Lists;
 using Aspose.Words.Replacing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
@@ -21,6 +22,7 @@ using Cell = Aspose.Words.Tables.Cell;
 using Color = System.Drawing.Color;
 using Document = Aspose.Words.Document;
 using Image = System.Drawing.Image;
+using List = NUnit.Framework.List;
 using SaveFormat = Aspose.Words.SaveFormat;
 using Table = Aspose.Words.Tables.Table;
 
@@ -2573,43 +2575,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        public void MarkdownTest()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-        
-            builder.ParagraphFormat.StyleName = "Quote";
-            builder.Writeln("12345");
-            
-            Style quoteLevel2 = doc.Styles.Add(StyleType.Paragraph, "Quote1");
-            builder.ParagraphFormat.Style = quoteLevel2;
-            doc.Styles["Quote1"].BaseStyleName  = "Quote";
-            builder.Writeln("123456");
-                    
-            // Save to md file
-            Document mdDoc = SaveOpen(doc, ArtifactsDir + "AddedParagraphStyle.md");
-
-            ParagraphCollection paragraphs = mdDoc.FirstSection.Body.Paragraphs;
-
-            foreach (Paragraph paragraph in paragraphs)
-            {
-                if (paragraph.Runs.Count != 0)
-                {
-                    if (paragraph.Runs[0].Text == "Blockquote 1")
-                    {
-                        Assert.AreEqual("Quote1", paragraph.ParagraphFormat.Style.Name);
-                    }
-                }
-            }
-        }
-        
-        private static Document SaveOpen(Document doc, string path)
-        {
-            doc.Save(path);
-            return new Document(path);
-        }
-
         #if NETFRAMEWORK || NETSTANDARD2_0
         /// <summary>
         /// All markdown tests work with the same file
@@ -2622,23 +2587,30 @@ namespace ApiExamples
             
             // Bold and Italic are represented as Font.Bold and Font.Italic
             builder.Font.Italic = true;
-            builder.Writeln("Italic");
+            builder.Writeln("This text will be italic");
             
             // Use clear formatting if don't want to combine styles between paragraphs
             builder.Font.ClearFormatting();
             
             builder.Font.Bold = true;
-            builder.Writeln("Bold");
+            builder.Writeln("This text will be bold");
             
-            // Use clear formatting if don't want to combine styles between paragraphs
             builder.Font.ClearFormatting();
             
             // You can also write create BoldItalic text
             builder.Font.Italic = true;
+            builder.Write("You ");
             builder.Font.Bold = true;
-            builder.Writeln("ItalicBold");
+            builder.Write("can");
+            builder.Font.Bold = false;
+            builder.Writeln(" combine them");
+
+            builder.Font.ClearFormatting();
+
+            builder.Font.StrikeThrough = true;
+            builder.Writeln("This text will be strikethrough");
             
-            // Markdown treats asterisks (*) and underscores (_) as indicators of emphasis
+            // Markdown treats asterisks (*), underscores (_) and tilde (~) as indicators of emphasis
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
@@ -2647,6 +2619,38 @@ namespace ApiExamples
         /// That's why we need order for them 
         /// </summary>
         [Test, Order(2), Category("SkipTearDown")]
+        public void MarkdownDocumentInlineCode()
+        {
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            // Prepare our created document for further work
+            // And clear paragraph formatting not to use the previous styles
+            builder.MoveToDocumentEnd();
+            builder.ParagraphFormat.ClearFormatting();
+            builder.Writeln("\n");
+            
+            // Style with name that starts from word InlineCode, followed by optional dot (.) and number of backticks (`)
+            // If number of backticks is missed, then one backtick will be used by default
+            Style inlineCode1BackTicks = doc.Styles.Add(StyleType.Character, "InlineCode");
+            builder.Font.Style = inlineCode1BackTicks;
+            builder.Writeln("Text with InlineCode style with one backtick");
+            
+            // Use optional dot (.) and number of backticks (`)
+            // There will be 3 backticks
+            Style inlineCode3BackTicks = doc.Styles.Add(StyleType.Character, "InlineCode.3");
+            builder.Font.Style = inlineCode3BackTicks;
+            builder.Writeln("Text with InlineCode style with 3 backticks");
+
+            builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
+        }
+
+        /// <summary>
+        /// All markdown tests work with the same file
+        /// That's why we need order for them 
+        /// </summary>
+        [Test, Order(3), Category("SkipTearDown")]
+        [Description("WORDSNET-19850")]
         public void MarkdownDocumentHeadings()
         {
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
@@ -2655,8 +2659,8 @@ namespace ApiExamples
             // Prepare our created document for further work
             // And clear paragraph formatting not to use the previous styles
             builder.MoveToDocumentEnd();
-            builder.Writeln("\n");
             builder.ParagraphFormat.ClearFormatting();
+            builder.Writeln("\n");
             
             // By default Heading styles in Word may have bold and italic formatting
             // If we do not want text to be emphasized, set these properties explicitly to false
@@ -2664,101 +2668,55 @@ namespace ApiExamples
             builder.Font.Bold = false;
             builder.Font.Italic = false;
             
-            // Create one heading for each level
-            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
+            // Create for one heading for each level
+            builder.ParagraphFormat.StyleName = "Heading 1";
             builder.Font.Italic = true;
-            builder.Writeln("ItalicHeading 1");
-            // Reset our styles from the previous paragraph to not combine styles between paragraphs
-            builder.Font.Bold = false;
-            builder.Font.Italic = false;
-            
-            builder.ParagraphFormat.Style = doc.Styles["Heading 2"];
-            builder.Writeln("Heading 2");
-            // Reset our styles from the previous paragraph to not combine styles between paragraphs
-            builder.Font.Bold = false;
-            builder.Font.Italic = false;
-            
-            builder.ParagraphFormat.Style = doc.Styles["Heading 3"];
-            builder.Writeln("Heading 3");
+            builder.Writeln("This is an italic H1 tag");
+
             // Reset our styles from the previous paragraph to not combine styles between paragraphs
             builder.Font.Bold = false;
             builder.Font.Italic = false;
 
+            // Structure-enhanced text heading can be added through style inheritance
+            Style setextHeading1 = doc.Styles.Add(StyleType.Paragraph, "SetextHeading1");
+            builder.ParagraphFormat.Style = setextHeading1;
+            doc.Styles["SetextHeading1"].BaseStyleName = "Heading 1";
+            builder.Writeln("SetextHeading 1");
+            
+            builder.ParagraphFormat.StyleName = "Heading 2";
+            builder.Writeln("This is an H2 tag");
+
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
+
+            Style setextHeading2 = doc.Styles.Add(StyleType.Paragraph, "SetextHeading2");
+            builder.ParagraphFormat.Style = setextHeading2;
+            doc.Styles["SetextHeading2"].BaseStyleName = "Heading 2";
+            builder.Writeln("SetextHeading 2");
+            
+            builder.ParagraphFormat.Style = doc.Styles["Heading 3"];
+            builder.Writeln("This is an H3 tag");
+            
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
+
             builder.ParagraphFormat.Style = doc.Styles["Heading 4"];
-            builder.Writeln("Heading 4");
-            // Reset our styles from the previous paragraph to not combine styles between paragraphs
+            builder.Font.Bold = true;
+            builder.Writeln("This is an bold H4 tag");
+            
             builder.Font.Bold = false;
             builder.Font.Italic = false;
 
             builder.ParagraphFormat.Style = doc.Styles["Heading 5"];
             builder.Font.Italic = true;
             builder.Font.Bold = true;
-            builder.Writeln("ItalicBoldHeading 5");
-            // Reset our styles from the previous paragraph to not combine styles between paragraphs
+            builder.Writeln("This is an italic and bold H5 tag");
+            
             builder.Font.Bold = false;
             builder.Font.Italic = false;
 
             builder.ParagraphFormat.Style = doc.Styles["Heading 6"];
-            builder.Font.Bold = true;
-            builder.Writeln("BoldHeading 6");
-            
-            doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
-        }
-
-        /// <summary>
-        /// All markdown tests work with the same file
-        /// That's why we need order for them 
-        /// </summary>
-        [Test, Order(3), Category("SkipTearDown")]
-        public void MarkdownDocumentBlockquotes()
-        {
-            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Prepare our created document for further work
-            // And clear paragraph formatting not to use the previous styles
-            builder.MoveToDocumentEnd();
-            builder.Writeln("\n");
-            builder.ParagraphFormat.ClearFormatting();
-            
-            // By default document stores blockquote style for the first level
-            builder.ParagraphFormat.Style = doc.Styles["Quote"];
-            builder.Writeln("Blockquote");
-            
-            // But you also can create styles for nested levels
-            Style quoteLevel2 = doc.Styles.Add(StyleType.Paragraph, "Quote1");
-            builder.ParagraphFormat.Style = quoteLevel2;
-            builder.Writeln("Blockquote 1");
-            
-            Style quoteLevel3 = doc.Styles.Add(StyleType.Paragraph, "Quote2");
-            builder.ParagraphFormat.Style = quoteLevel3;
-            builder.Font.Italic = true;
-            builder.Writeln("ItalicBlockquote 2");
-            
-            // Use clear formatting if don't want to combine styles between paragraphs
-            builder.Font.ClearFormatting();
-            
-            Style quoteLevel4 = doc.Styles.Add(StyleType.Paragraph, "Quote3");
-            builder.ParagraphFormat.Style = quoteLevel4;
-            builder.Font.Bold = true;
-            builder.Writeln("BoldBlockquote 3");
-            
-            // Use clear formatting if don't want to combine styles between paragraphs
-            builder.Font.ClearFormatting();
-            
-            Style quoteLevel5 = doc.Styles.Add(StyleType.Paragraph, "Quote4");
-            builder.ParagraphFormat.Style = quoteLevel5;
-            builder.Writeln("Blockquote 4");
-            
-            Style quoteLevel6 = doc.Styles.Add(StyleType.Paragraph, "Quote5");
-            builder.ParagraphFormat.Style = quoteLevel6;
-            builder.Writeln("Blockquote 5");
-            
-            Style quoteLevel7 = doc.Styles.Add(StyleType.Paragraph, "Quote6");
-            builder.ParagraphFormat.Style = quoteLevel7;
-            builder.Font.Italic = true;
-            builder.Font.Bold = true;
-            builder.Writeln("ItalicBoldBlockquote 6");
+            builder.Writeln("This is an H6 tag");
             
             doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
@@ -2768,7 +2726,7 @@ namespace ApiExamples
         /// That's why we need order for them 
         /// </summary>
         [Test, Order(4), Category("SkipTearDown")]
-        public void MarkdownDocumentHeadingsAsBlockquotes()
+        public void MarkdownDocumentBlockquotes()
         {
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2776,55 +2734,49 @@ namespace ApiExamples
             // Prepare our created document for further work
             // And clear paragraph formatting not to use the previous styles
             builder.MoveToDocumentEnd();
-            builder.Writeln("\n");
             builder.ParagraphFormat.ClearFormatting();
             builder.Writeln("\n");
 
-            // By default Heading styles in Word may have bold and italic formatting
-            // If we do not want text to be emphasized, set these properties explicitly to false
-            // Thus we can't use 'builder.Font.ClearFormatting()' because Bold/Italic will be set to true
-            builder.Font.Bold = false;
-            builder.Font.Italic = false;
-
-            Style headingQuoteLevel1 = doc.Styles.Add(StyleType.Paragraph, "Quote.Heading 1");
-            builder.ParagraphFormat.Style = headingQuoteLevel1;
-            builder.Writeln("HeadingBlockquote 1");
+            // By default document stores blockquote style for the first level
+            builder.ParagraphFormat.StyleName = "Quote";
+            builder.Writeln("Blockquote");
             
-            Style headingQuoteLevel2 = doc.Styles.Add(StyleType.Paragraph, "Quote1.Heading 2");
-            builder.ParagraphFormat.Style = headingQuoteLevel2;
+            // Create styles for nested levels through style inheritance
+            Style quoteLevel2 = doc.Styles.Add(StyleType.Paragraph, "Quote1");
+            builder.ParagraphFormat.Style = quoteLevel2;
+            doc.Styles["Quote1"].BaseStyleName = "Quote";
+            builder.Writeln("1. Nested blockquote");
+            
+            Style quoteLevel3 = doc.Styles.Add(StyleType.Paragraph, "Quote2");
+            builder.ParagraphFormat.Style = quoteLevel3;
+            doc.Styles["Quote2"].BaseStyleName = "Quote1";
             builder.Font.Italic = true;
-            builder.Writeln("ItalicHeadingBlockquote 2");
+            builder.Writeln("2. Nested italic blockquote");
             
-            // Reset our styles from the previous paragraph to not combine styles between paragraphs
-            builder.Font.Bold = false;
+            Style quoteLevel4 = doc.Styles.Add(StyleType.Paragraph, "Quote3");
+            builder.ParagraphFormat.Style = quoteLevel4;
+            doc.Styles["Quote3"].BaseStyleName = "Quote2";
             builder.Font.Italic = false;
-            
-            Style headingQuoteLevel3 = doc.Styles.Add(StyleType.Paragraph, "Quote2.Heading 3");
-            builder.ParagraphFormat.Style = headingQuoteLevel3;
             builder.Font.Bold = true;
-            builder.Writeln("BoldHeadingBlockquote 3");
+            builder.Writeln("3. Nested bold blockquote");
             
-            // Reset our styles from the previous paragraph to not combine styles between paragraphs
+            Style quoteLevel5 = doc.Styles.Add(StyleType.Paragraph, "Quote4");
+            builder.ParagraphFormat.Style = quoteLevel5;
+            doc.Styles["Quote4"].BaseStyleName = "Quote3";
             builder.Font.Bold = false;
-            builder.Font.Italic = false;
+            builder.Writeln("4. Nested blockquote");
             
-            Style headingQuoteLevel4 = doc.Styles.Add(StyleType.Paragraph, "Quote3.Heading 4");
-            builder.ParagraphFormat.Style = headingQuoteLevel4;
+            Style quoteLevel6 = doc.Styles.Add(StyleType.Paragraph, "Quote5");
+            builder.ParagraphFormat.Style = quoteLevel6;
+            doc.Styles["Quote5"].BaseStyleName = "Quote4";
+            builder.Writeln("5. Nested blockquote");
+            
+            Style quoteLevel7 = doc.Styles.Add(StyleType.Paragraph, "Quote6");
+            builder.ParagraphFormat.Style = quoteLevel7;
+            doc.Styles["Quote6"].BaseStyleName = "Quote5";
             builder.Font.Italic = true;
             builder.Font.Bold = true;
-            builder.Writeln("ItalicBoldHeadingBlockquote 4");
-            
-            // Reset our styles from the previous paragraph to not combine styles between paragraphs
-            builder.Font.Bold = false;
-            builder.Font.Italic = false;
-            
-            Style headingQuoteLevel5 = doc.Styles.Add(StyleType.Paragraph, "Quote4.Heading 5");
-            builder.ParagraphFormat.Style = headingQuoteLevel5;
-            builder.Writeln("HeadingBlockquote 5");
-            
-            Style headingQuoteLevel6 = doc.Styles.Add(StyleType.Paragraph, "Quote5.Heading 6");
-            builder.ParagraphFormat.Style = headingQuoteLevel6;
-            builder.Writeln("HeadingBlockquote 6");
+            builder.Writeln("6. Nested italic bold blockquote");
             
             doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
@@ -2834,7 +2786,7 @@ namespace ApiExamples
         /// That's why we need order for them 
         /// </summary>
         [Test, Order(5), Category("SkipTearDown")]
-        public void MarkdownDocumentHorizontalRule()
+        public void MarkdownDocumentIndentedCode()
         {
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2844,6 +2796,58 @@ namespace ApiExamples
             builder.MoveToDocumentEnd();
             builder.Writeln("\n");
             builder.ParagraphFormat.ClearFormatting();
+            builder.Writeln("\n");
+
+            Style indentedCode = doc.Styles.Add(StyleType.Paragraph, "IndentedCode");
+            builder.ParagraphFormat.Style = indentedCode;
+            builder.Writeln("This is an indented code");
+            
+            doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
+        }
+
+        /// <summary>
+        /// All markdown tests work with the same file
+        /// That's why we need order for them 
+        /// </summary>
+        [Test, Order(6), Category("SkipTearDown")]
+        public void MarkdownDocumentFencedCode()
+        {
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Prepare our created document for further work
+            // And clear paragraph formatting not to use the previous styles
+            builder.MoveToDocumentEnd();
+            builder.Writeln("\n");
+            builder.ParagraphFormat.ClearFormatting();
+            builder.Writeln("\n");
+
+            Style fencedCode = doc.Styles.Add(StyleType.Paragraph, "FencedCode");
+            builder.ParagraphFormat.Style = fencedCode;
+            builder.Writeln("This is a fenced code");
+
+            Style fencedCodeWithInfo = doc.Styles.Add(StyleType.Paragraph, "FencedCode.C#");
+            builder.ParagraphFormat.Style = fencedCodeWithInfo;
+            builder.Writeln("This is a fenced code with info string");
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
+        }
+
+        /// <summary>
+        /// All markdown tests work with the same file
+        /// That's why we need order for them 
+        /// </summary>
+        [Test, Order(7), Category("SkipTearDown")]
+        public void MarkdownDocumentHorizontalRule()
+        {
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Prepare our created document for further work
+            // And clear paragraph formatting not to use the previous styles
+            builder.MoveToDocumentEnd();
+            builder.ParagraphFormat.ClearFormatting();
+            builder.Writeln("\n");
 
             // Insert HorizontalRule that will be present in .md file as '-----'
             builder.InsertHorizontalRule();
@@ -2852,49 +2856,85 @@ namespace ApiExamples
         }
 
         /// <summary>
+        /// All markdown tests work with the same file
+        /// That's why we need order for them 
+        /// </summary>
+        [Test, Order(8), Category("SkipTearDown")]
+        public void MarkdownDocumentBulletedList()
+        {
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Prepare our created document for further work
+            // And clear paragraph formatting not to use the previous styles
+            builder.MoveToDocumentEnd();
+            builder.ParagraphFormat.ClearFormatting();
+            builder.Writeln("\n");
+
+            // Bulleted lists are represented using paragraph numbering
+            builder.ListFormat.ApplyBulletDefault();
+            // There can be 3 types of bulleted lists
+            // The only diff in a numbering format of the very first level are: ‘-’, ‘+’ or ‘*’ respectively
+            builder.ListFormat.List.ListLevels[0].NumberFormat = "-";
+            
+            builder.Writeln("Item 1");
+            builder.Writeln("Item 2");
+            builder.ListFormat.ListIndent();
+            builder.Writeln("Item 2a");
+            builder.Writeln("Item 2b");
+ 
+            builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
+        }
+
+        /// <summary>
         /// All markdown tests work with the same file.
         /// That's why we need order for them.
         /// </summary>
-        [Test, Order(6)]
+        [Test, Order(9)]
         [TestCase("Italic", "Normal", true, false, Category = "SkipTearDown")]
         [TestCase("Bold", "Normal", false, true, Category = "SkipTearDown")]
         [TestCase("ItalicBold", "Normal", true, true, Category = "SkipTearDown")]
-        [TestCase("ItalicHeading 1", "Heading 1", true, false, Category = "SkipTearDown")]
-        [TestCase("Heading 2", "Heading 2", false, false, Category = "SkipTearDown")]
-        [TestCase("Heading 3", "Heading 3", false, false, Category = "SkipTearDown")]
-        [TestCase("Heading 4", "Heading 4", false, false, Category = "SkipTearDown")]
-        [TestCase("ItalicBoldHeading 5", "Heading 5", true, true, Category = "SkipTearDown")]
-        [TestCase("BoldHeading 6", "Heading 6", false, true, Category = "SkipTearDown")]
+        [TestCase("Text with InlineCode style with one backtick", "InlineCode", false, false, Category = "SkipTearDown")]
+        [TestCase("Text with InlineCode style with 3 backticks", "InlineCode.3", false, false, Category = "SkipTearDown")]
+        [TestCase("This is an italic H1 tag", "Heading 1", true, false, Category = "SkipTearDown")]
+        [TestCase("SetextHeading 1", "SetextHeading1", false, false, Category = "SkipTearDown")]
+        [TestCase("This is an H2 tag", "Heading 2", false, false, Category = "SkipTearDown")]
+        [TestCase("SetextHeading 2", "SetextHeading2", false, false, Category = "SkipTearDown")]
+        [TestCase("This is an H3 tag", "Heading 3", false, false, Category = "SkipTearDown")]
+        [TestCase("This is an bold H4 tag", "Heading 4", false, true, Category = "SkipTearDown")]
+        [TestCase("This is an italic and bold H5 tag", "Heading 5", true, true, Category = "SkipTearDown")]
+        [TestCase("This is an H6 tag", "Heading 6", false, false, Category = "SkipTearDown")]
         [TestCase("Blockquote", "Quote", false, false, Category = "SkipTearDown")]
-        [TestCase("Blockquote 1", "Quote1", false, false, Category = "SkipTearDown")]
-        [TestCase("ItalicBlockquote 2", "Quote2", true, false, Category = "SkipTearDown")]
-        [TestCase("BoldBlockquote 3", "Quote3", false, true, Category = "SkipTearDown")]
-        [TestCase("Blockquote 4", "Quote4", false, false, Category = "SkipTearDown")]
-        [TestCase("Blockquote 5", "Quote5", false, false, Category = "SkipTearDown")]
-        [TestCase("ItalicBoldBlockquote 6", "Quote6", true, true, Category = "SkipTearDown")]
-        [TestCase("HeadingBlockquote 1", "Quote.Heading 1", false, false, Category = "SkipTearDown")]
-        [TestCase("ItalicHeadingBlockquote 2", "Quote1.Heading 2", true, false, Category = "SkipTearDown")]
-        [TestCase("BoldHeadingBlockquote 3", "Quote2.Heading 3", false, true, Category = "SkipTearDown")]
-        [TestCase("ItalicBoldHeadingBlockquote 4", "Quote3.Heading 4", true, true, Category = "SkipTearDown")]
-        [TestCase("HeadingBlockquote 5", "Quote4.Heading 5", false, false, Category = "SkipTearDown")]
-        [TestCase("HeadingBlockquote 6", "Quote5.Heading 6", false, false)]
-        [Ignore("WORDSNET-19631")]
+        [TestCase("1. Nested blockquote", "Quote1", false, false, Category = "SkipTearDown")]
+        [TestCase("2. Nested italic blockquote", "Quote2", true, false, Category = "SkipTearDown")]
+        [TestCase("3. Nested bold blockquote", "Quote3", false, true, Category = "SkipTearDown")]
+        [TestCase("4. Nested blockquote", "Quote4", false, false, Category = "SkipTearDown")]
+        [TestCase("5. Nested blockquote", "Quote5", false, false, Category = "SkipTearDown")]
+        [TestCase("6. Nested italic bold blockquote", "Quote6", true, true, Category = "SkipTearDown")]
+        [TestCase("This is an indented code", "IndentedCode", false, false, Category = "SkipTearDown")]
+        [TestCase("This is a fenced code", "FencedCode", false, false, Category = "SkipTearDown")]
+        [TestCase("This is a fenced code with info string", "FencedCode.C#", false, false, Category = "SkipTearDown")]
+        [TestCase("Item 1", "Normal", false, false)]
         public void LoadMarkdownDocumentAndAssertContent(string text, string styleName, bool isItalic, bool isBold)
         {
             // Load created document from previous tests
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
-
+            
             foreach (Paragraph paragraph in paragraphs)
             {
                 if (paragraph.Runs.Count != 0)
                 {
-                    if (paragraph.Runs[0].Text == text)
+                    // Check that all document text has the necessary styles
+                    if (paragraph.Runs[0].Text == text && !text.Contains("InlineCode"))
                     {
-                        // Check that all document text has the necessary styles
                         Assert.AreEqual(styleName, paragraph.ParagraphFormat.Style.Name);
                         Assert.AreEqual(isItalic, paragraph.Runs[0].Font.Italic);
                         Assert.AreEqual(isBold, paragraph.Runs[0].Font.Bold);
+                    }
+                    else if (paragraph.Runs[0].Text == text && text.Contains("InlineCode"))
+                    {
+                        Assert.AreEqual(styleName, paragraph.Runs[0].Font.StyleName);
                     }
                 }
 
