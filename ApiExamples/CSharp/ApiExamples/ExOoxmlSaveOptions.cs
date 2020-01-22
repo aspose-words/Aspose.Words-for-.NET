@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -47,7 +47,7 @@ namespace ApiExamples
             //ExFor:OoxmlCompliance
             //ExFor:OoxmlSaveOptions.Compliance
             //ExFor:ShapeMarkupLanguage
-            //ExSummary:Shows conversion VML shapes to DML using ISO/IEC 29500:2008 Strict compliance level
+            //ExSummary:Shows conversion VML shapes to DML using ISO/IEC 29500:2008 Strict compliance level.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -96,7 +96,7 @@ namespace ApiExamples
 
             Aspose.Words.Lists.List list = doc.Lists[0];
 
-            // Set true to specify that the list has to be restarted at each section.
+            // Set true to specify that the list has to be restarted at each section
             list.IsRestartAtEachSection = true;
 
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -107,7 +107,7 @@ namespace ApiExamples
             {
                 builder.Write($"List Item {i}\n");
 
-                // Insert section break.
+                // Insert section break
                 if (i == 15 || i == 30)
                     builder.InsertBreak(BreakType.SectionBreakNewPage);
             }
@@ -127,7 +127,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:SaveOptions.UpdateLastSavedTimeProperty
-            //ExSummary:Shows how to update a document time property when you want to save it
+            //ExSummary:Shows how to update a document time property when you want to save it.
             Document doc = new Document(MyDir + "Document.doc");
 
             // Get last saved time
@@ -154,7 +154,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:OoxmlSaveOptions.KeepLegacyControlChars
             //ExFor:OoxmlSaveOptions.#ctor(SaveFormat)
-            //ExSummary:Shows how to support legacy control characters when converting to .docx
+            //ExSummary:Shows how to support legacy control characters when converting to .docx.
             Document doc = new Document(MyDir + "OoxmlSaveOptions.KeepLegacyControlChars.doc");
  
             // Note that only one legacy character (ShortDateTime) is supported which declared in the "DOC" format

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -25,7 +25,7 @@ namespace ApiExamples
             //ExSummary:Shows how to load plain text as is.
             TxtLoadOptions loadOptions = new TxtLoadOptions
             {
-                // If it sets to true Aspose.Words insert additional periods after numbers in the content.
+                // If it sets to true Aspose.Words insert additional periods after numbers in the content
                 DetectNumberingWithWhitespaces = false, 
                 TrailingSpacesOptions = TxtTrailingSpacesOptions.Preserve,
                 LeadingSpacesOptions = TxtLeadingSpacesOptions.Preserve

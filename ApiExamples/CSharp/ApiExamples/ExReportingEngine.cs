@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -394,11 +394,13 @@ namespace ApiExamples
         {
             Document template =
                 DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Image]>>", ShapeType.TextBox);
-#if NETSTANDARD2_0 || __MOBILE__
-            ImageTestClass image = new ImageTestBuilder().WithImage(SKBitmap.Decode(mImage)).Build();
-#else
+            
+            #if NETFRAMEWORK
             ImageTestClass image = new ImageTestBuilder().WithImage(Image.FromFile(mImage, true)).Build();
-#endif
+            #else
+            ImageTestClass image = new ImageTestBuilder().WithImage(SKBitmap.Decode(mImage)).Build();
+            #endif
+            
             BuildReport(template, image, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertImageDinamically.docx");
 

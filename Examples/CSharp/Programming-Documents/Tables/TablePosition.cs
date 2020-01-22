@@ -1,4 +1,5 @@
-﻿using Aspose.Words.Tables;
+﻿using Aspose.Words.Drawing;
+using Aspose.Words.Tables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             string dataDir = RunExamples.GetDataDir_WorkingWithTables();
             GetTablePosition(dataDir);
             GetFloatingTablePosition(dataDir);
+            SetFloatingTablePosition(dataDir);
         }
 
         private static void GetTablePosition(string dataDir)
@@ -53,12 +55,33 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
                     Console.WriteLine(table.AbsoluteHorizontalDistance);
                     Console.WriteLine(table.AbsoluteVerticalDistance);
                     Console.WriteLine(table.AllowOverlap);
+                    Console.WriteLine(table.AbsoluteHorizontalDistance);
+                    Console.WriteLine(table.RelativeVerticalAlignment);
                     Console.WriteLine("..............................");
                 }
             }
 
             // ExEnd:GetFloatingTablePosition
             Console.WriteLine("\nGet the Table position successfully.");
+        }
+
+        private static void SetFloatingTablePosition(string dataDir)
+        {
+            // ExStart:SetFloatingTablePosition
+            Document doc = new Document(dataDir + "FloatingTablePosition.docx");
+
+            Table table = doc.FirstSection.Body.Tables[0];
+
+            // sets absolute table horizontal position at 10pt.
+            table.AbsoluteHorizontalDistance = 10;
+
+            // sets vertical table position to center of entity specified by Table.VerticalAnchor.
+            table.RelativeVerticalAlignment = VerticalAlignment.Center;
+
+            // Save the document to disk.
+            doc.Save(dataDir + "Table.SetFloatingTablePosition.docx");
+            // ExEnd:SetFloatingTablePosition
+            Console.WriteLine("\nSet the Table position successfully.");
         }
     }
 }

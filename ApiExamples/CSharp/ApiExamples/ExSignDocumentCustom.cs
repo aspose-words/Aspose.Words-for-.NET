@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -12,12 +12,10 @@ using ApiExamples.TestData.TestClasses;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-
-#if !(NETSTANDARD2_0 || __MOBILE__)
+#if NETFRAMEWORK
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-
 #endif
 
 namespace ApiExamples
@@ -47,12 +45,12 @@ namespace ApiExamples
             string certificatePath = MyDir + "morzal.pfx";
             string certificatePassword = "aw";
 
-            // We need to create simple list with test signers for this example.
+            // We need to create simple list with test signers for this example
             CreateSignPersonData();
             Console.WriteLine("Test data successfully added!");
 
-            // Get sign person object by name of the person who must sign a document.
-            // This an example, in real use case you would return an object from a database.
+            // Get sign person object by name of the person who must sign a document
+            // This an example, in real use case you would return an object from a database
             SignPersonTestClass signPersonInfo =
                 (from c in gSignPersonList where c.Name == signPersonName select c).FirstOrDefault();
 
@@ -67,8 +65,8 @@ namespace ApiExamples
                 Assert.Fail(); //ExSkip
             }
 
-            // Now do something with a signed document, for example, save it to your database.
-            // Use 'new Document(dstDocumentPath)' for loading a signed document.
+            // Now do something with a signed document, for example, save it to your database
+            // Use 'new Document(dstDocumentPath)' for loading a signed document
         }
 
         /// <summary>
@@ -77,39 +75,39 @@ namespace ApiExamples
         private static void SignDocument(string srcDocumentPath, string dstDocumentPath,
             SignPersonTestClass signPersonInfo, string certificatePath, string certificatePassword)
         {
-            // Create new document instance based on a test file that we need to sign.
+            // Create new document instance based on a test file that we need to sign
             Document document = new Document(srcDocumentPath);
             DocumentBuilder builder = new DocumentBuilder(document);
 
-            // Add info about responsible person who sign a document.
+            // Add info about responsible person who sign a document
             SignatureLineOptions signatureLineOptions =
                 new SignatureLineOptions { Signer = signPersonInfo.Name, SignerTitle = signPersonInfo.Position };
 
-            // Add signature line for responsible person who sign a document.
+            // Add signature line for responsible person who sign a document
             SignatureLine signatureLine = builder.InsertSignatureLine(signatureLineOptions).SignatureLine;
             signatureLine.Id = signPersonInfo.PersonId;
 
-            // Save a document with line signatures into temporary file for future signing.
+            // Save a document with line signatures into temporary file for future signing
             builder.Document.Save(dstDocumentPath);
 
-            // Create holder of certificate instance based on your personal certificate.
-            // This is the test certificate generated for this example.
+            // Create holder of certificate instance based on your personal certificate
+            // This is the test certificate generated for this example
             CertificateHolder certificateHolder = CertificateHolder.Create(certificatePath, certificatePassword);
 
-            // Link our signature line with personal signature.
+            // Link our signature line with personal signature
             SignOptions signOptions = new SignOptions
             {
                 SignatureLineId = signPersonInfo.PersonId,
                 SignatureLineImage = signPersonInfo.Image
             };
 
-            // Sign a document which contains signature line with personal certificate.
+            // Sign a document which contains signature line with personal certificate
             DigitalSignatureUtil.Sign(dstDocumentPath, dstDocumentPath, certificateHolder, signOptions);
         }
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
+        #if NETFRAMEWORK
         /// <summary>
-        /// Converting image file to bytes array
+        /// Converting image file to bytes array.
         /// </summary>
         private static byte[] ImageToByteArray(Image imageIn)
         {
@@ -119,7 +117,7 @@ namespace ApiExamples
                 return ms.ToArray();
             }
         }
-#endif
+        #endif
 
         /// <summary>
         /// Create test data that contains info about sing persons
@@ -128,18 +126,21 @@ namespace ApiExamples
         {
             gSignPersonList = new List<SignPersonTestClass>
             {
-#if NETSTANDARD2_0 || __MOBILE__
-                new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer", SkiaSharp.SKBitmap.Decode(ImageDir + "LogoSmall.png").Bytes),
-#else
+                #if NETFRAMEWORK
                 new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer",
                     ImageToByteArray(Image.FromFile(ImageDir + "LogoSmall.png"))),
-#endif
-#if NETSTANDARD2_0 || __MOBILE__
-                new SignPersonTestClass(Guid.NewGuid(), "Stephen Morse", "Head of Compliance", SkiaSharp.SKBitmap.Decode(ImageDir + "LogoSmall.png").Bytes)
-#else
+                #else
+                new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer", 
+                    SkiaSharp.SKBitmap.Decode(ImageDir + "LogoSmall.png").Bytes),
+                #endif
+                
+                #if NETFRAMEWORK
                 new SignPersonTestClass(Guid.NewGuid(), "Stephen Morse", "Head of Compliance",
                     ImageToByteArray(Image.FromFile(ImageDir + "LogoSmall.png")))
-#endif
+                #else
+                new SignPersonTestClass(Guid.NewGuid(), "Stephen Morse", "Head of Compliance", 
+                    SkiaSharp.SKBitmap.Decode(ImageDir + "LogoSmall.png").Bytes)
+                #endif
             };
         }
 

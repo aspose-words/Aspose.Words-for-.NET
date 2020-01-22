@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -21,7 +21,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:BorderCollection.GetEnumerator
             //ExSummary:Shows how to enumerate all borders in a collection.
-            Document doc = new Document(MyDir + "Border.Borders.doc");
+            Document doc = new Document(MyDir + "Borders.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             BorderCollection borders = builder.ParagraphFormat.Borders;
@@ -47,7 +47,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:BorderCollection.ClearFormatting
             //ExSummary:Shows how to remove all borders from a paragraph at once.
-            Document doc = new Document(MyDir + "Border.Borders.doc");
+            Document doc = new Document(MyDir + "Borders.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
             BorderCollection borders = builder.ParagraphFormat.Borders;
 

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -17,12 +17,12 @@ using SaveFormat = Aspose.Words.SaveFormat;
 using SaveOptions = Aspose.Words.Saving.SaveOptions;
 using WarningInfo = Aspose.Words.WarningInfo;
 using WarningType = Aspose.Words.WarningType;
-#if NETSTANDARD2_0 || __MOBILE__
-using SkiaSharp;
-#else 
+#if NETFRAMEWORK
 using Image = System.Drawing.Image;
+#else 
+using SkiaSharp;
 #endif
-#if  !(__MOBILE__ || MAC)
+#if NETFRAMEWORK || NETSTANDARD2_0
 using Aspose.Pdf.Facades;
 using Aspose.Pdf.Annotations;
 #endif
@@ -40,7 +40,7 @@ namespace ApiExamples
             //ExFor:ParagraphFormat.IsHeading
             //ExFor:PdfSaveOptions.OutlineOptions
             //ExFor:PdfSaveOptions.SaveFormat
-            //ExSummary:Shows how to create missing outline levels saving the document in PDF
+            //ExSummary:Shows how to create missing outline levels saving the document in PDF.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -70,7 +70,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "CreateMissingOutlineLevels.pdf", pdfSaveOptions);
             //ExEnd
-#if !(__MOBILE__ || MAC)
+
+            #if NETFRAMEWORK || NETSTANDARD2_0
             // Bind PDF with Aspose.PDF
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "CreateMissingOutlineLevels.pdf");
@@ -79,7 +80,7 @@ namespace ApiExamples
             Bookmarks bookmarks = bookmarkEditor.ExtractBookmarks();
 
             Assert.AreEqual(11, bookmarks.Count);
-#endif
+            #endif
         }
 
         [Test]
@@ -102,7 +103,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "UpdateFields_False.pdf", pdfSaveOptions);
             //ExEnd
-#if !(__MOBILE__ || MAC)
+
+            #if NETFRAMEWORK || NETSTANDARD2_0
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "UpdateFields_False.pdf");
 
             // Get text fragment by search String
@@ -111,7 +113,7 @@ namespace ApiExamples
 
             // Assert that fields are not updated
             Assert.AreEqual("Page  of", textFragmentAbsorber.TextFragments[1].Text);
-#endif
+            #endif
         }
 
         [Test]
@@ -123,7 +125,8 @@ namespace ApiExamples
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { UpdateFields = true };
 
             doc.Save(ArtifactsDir + "UpdateFields_False.pdf", pdfSaveOptions);
-#if !(__MOBILE__ || MAC)
+
+            #if NETFRAMEWORK || NETSTANDARD2_0
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "UpdateFields_False.pdf");
 
             // Get text fragment by search String from PDF document
@@ -132,7 +135,7 @@ namespace ApiExamples
 
             // Assert that fields are updated
             Assert.AreEqual("Page 1 of 2", textFragmentAbsorber.TextFragments[1].Text);
-#endif
+            #endif
         }
 
         // For assert this test you need to open "SaveOptions.PdfImageCompression PDF_A_1_B Out.pdf" and "SaveOptions.PdfImageCompression PDF_A_1_A Out.pdf" 
@@ -184,13 +187,13 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PdfSaveOptions
-            //ExFor:SaveOptions.ColorMode
+            //ExFor:FixedPageSaveOptions.ColorMode
             //ExSummary:Shows how change image color with save options property
             // Open document with color image
             Document doc = new Document(MyDir + "Rendering.doc");
             // Set grayscale mode for document
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { ColorMode = ColorMode.Grayscale };
-
+            
             // Assert that color image in document was grey
             doc.Save(ArtifactsDir + "ColorMode.PdfGrayscaleMode.pdf", pdfSaveOptions);
             //ExEnd
@@ -209,12 +212,13 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfTitle.pdf", pdfSaveOptions);
             //ExEnd
-#if !(__MOBILE__ || MAC)
+
+            #if NETFRAMEWORK || NETSTANDARD2_0
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfTitle.pdf");
 
             Assert.IsTrue(pdfDocument.DisplayDocTitle);
             Assert.AreEqual("Windows bar pdf title", pdfDocument.Info.Title);
-#endif
+            #endif
         }
 
         [Test]
@@ -225,8 +229,9 @@ namespace ApiExamples
             //ExFor:SaveOptions.MemoryOptimization
             //ExSummary:Shows an option to optimize memory consumption when you work with large documents.
             Document doc = new Document(MyDir + "SaveOptions.MemoryOptimization.doc");
-            // When set to true it will improve document memory footprint but will add extra time to processing. 
-            // This optimization is only applied during save operation.
+            
+            // When set to true it will improve document memory footprint but will add extra time to processing
+            // This optimization is only applied during save operation
             SaveOptions saveOptions = SaveOptions.CreateSaveOptions(SaveFormat.Pdf);
             saveOptions.MemoryOptimization = true;
 
@@ -256,7 +261,7 @@ namespace ApiExamples
             builder.Document.Save(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf", options);
             //ExEnd
 
-#if !(__MOBILE__ || MAC)
+            #if NETFRAMEWORK || NETSTANDARD2_0
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf");
 
@@ -269,7 +274,7 @@ namespace ApiExamples
             string uriText = action.Script;
 
             Assert.AreEqual(result, uriText);
-#endif
+            #endif
         }
 
         [Test]
@@ -283,7 +288,7 @@ namespace ApiExamples
             //ExFor:MetafileRenderingOptions.RenderingMode
             //ExFor:IWarningCallback
             //ExFor:FixedPageSaveOptions.MetafileRenderingOptions
-            //ExSummary:Shows added fallback to bitmap rendering and changing type of warnings about unsupported metafile records
+            //ExSummary:Shows added fallback to bitmap rendering and changing type of warnings about unsupported metafile records.
             Document doc = new Document(MyDir + "PdfSaveOptions.HandleRasterWarnings.doc");
 
             MetafileRenderingOptions metafileRenderingOptions =
@@ -293,7 +298,7 @@ namespace ApiExamples
                     RenderingMode = MetafileRenderingMode.VectorWithFallback
                 };
 
-            // If Aspose.Words cannot correctly render some of the metafile records to vector graphics then Aspose.Words renders this metafile to a bitmap. 
+            // If Aspose.Words cannot correctly render some of the metafile records to vector graphics then Aspose.Words renders this metafile to a bitmap
             HandleDocumentWarnings callback = new HandleDocumentWarnings();
             doc.WarningCallback = callback;
 
@@ -302,8 +307,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.HandleRasterWarnings.pdf", saveOptions);
 
-            Assert.AreEqual(1, callback.mWarnings.Count);
-            Assert.True(callback.mWarnings[0].Description.Contains("R2_XORPEN"));
+            Assert.AreEqual(1, callback.Warnings.Count);
+            Assert.True(callback.Warnings[0].Description.Contains("R2_XORPEN"));
         }
 
         public class HandleDocumentWarnings : IWarningCallback
@@ -315,15 +320,16 @@ namespace ApiExamples
             /// </summary>
             public void Warning(WarningInfo info)
             {
-                //For now type of warnings about unsupported metafile records changed from DataLoss/UnexpectedContent to MinorFormattingLoss.
+                // For now type of warnings about unsupported metafile records changed from
+                // DataLoss/UnexpectedContent to MinorFormattingLoss
                 if (info.WarningType == WarningType.MinorFormattingLoss)
                 {
                     Console.WriteLine("Unsupported operation: " + info.Description);
-                    mWarnings.Warning(info);
+                    Warnings.Warning(info);
                 }
             }
 
-            public WarningInfoCollection mWarnings = new WarningInfoCollection();
+            public WarningInfoCollection Warnings = new WarningInfoCollection();
         }
         //ExEnd
 
@@ -364,7 +370,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOption.HeaderFooterBookmarksExportMode.pdf", SaveFormat.Pdf);
 
-            Assert.That(saveWarningCallback.mSaveWarnings[0].Description,
+            Assert.That(saveWarningCallback.SaveWarnings[0].Description,
                 Is.EqualTo("Image can not be processed. Possibly unsupported image format."));
         }
 
@@ -375,11 +381,11 @@ namespace ApiExamples
                 if (info.WarningType == WarningType.MinorFormattingLoss)
                 {
                     Console.WriteLine($"{info.WarningType}: {info.Description}.");
-                    mSaveWarnings.Warning(info);
+                    SaveWarnings.Warning(info);
                 }
             }
 
-            internal WarningInfoCollection mSaveWarnings = new WarningInfoCollection();
+            internal WarningInfoCollection SaveWarnings = new WarningInfoCollection();
 		}
 		
 		[Test]
@@ -387,13 +393,13 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:MetafileRenderingOptions.ScaleWmfFontsToMetafileSize
-            //ExSummary:Shows how to WMF fonts scaling according to metafile size on the page
+            //ExSummary:Shows how to WMF fonts scaling according to metafile size on the page.
             Document doc = new Document(MyDir + "PdfSaveOptions.FontsScaledToMetafileSize.docx");
 
             // There is a several options for this:
-            // 'True' - Aspose.Words emulates font scaling according to metafile size on the page.
-            // 'False' - Aspose.Words displays the fonts as metafile is rendered to its default size.
-            // Use 'False' option is used only when metafile is rendered as vector graphics.
+            // 'True' - Aspose.Words emulates font scaling according to metafile size on the page
+            // 'False' - Aspose.Words displays the fonts as metafile is rendered to its default size
+            // Use 'False' option is used only when metafile is rendered as vector graphics
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.MetafileRenderingOptions.ScaleWmfFontsToMetafileSize = true;
 
@@ -544,7 +550,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if !(NETSTANDARD2_0 || __MOBILE__)
+        #if NETFRAMEWORK
         [Test]
         public void PreblendImages()
         {
@@ -565,8 +571,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
             //ExEnd
         }
-
-#else
+        #else
         [Test]
         public void PreblendImagesNetStandard2()
         {
@@ -589,7 +594,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
             //ExEnd
         }
-#endif
+        #endif
+
         [Test]
         public void PdfDigitalSignature()
         {
