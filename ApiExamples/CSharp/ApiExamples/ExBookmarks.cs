@@ -49,7 +49,7 @@ namespace ApiExamples
             // Create a document with 3 bookmarks: "MyBookmark 1", "MyBookmark 2", "MyBookmark 3"
             Document doc = CreateDocumentWithBookmarks();
             BookmarkCollection bookmarks = doc.Range.Bookmarks;
-            
+
             // Check that we have 3 bookmarks
             Assert.AreEqual(3, bookmarks.Count);
             Assert.AreEqual("MyBookmark 1", bookmarks[0].Name); //ExSkip
@@ -65,7 +65,7 @@ namespace ApiExamples
             // The bookmarked text is not deleted
             bookmarks[2].Remove();
 
-            bookmarks = doc.Range.Bookmarks;            
+            bookmarks = doc.Range.Bookmarks;
             // Check that we have 2 bookmarks after the latest bookmark was deleted
             Assert.AreEqual(2, bookmarks.Count);
             Assert.AreEqual("Updated name of MyBookmark 1", bookmarks[0].Name); //ExSkip
@@ -186,7 +186,7 @@ namespace ApiExamples
             Assert.IsTrue(secondTableColumnBookmark.IsColumn);
             Assert.AreEqual(0, secondTableColumnBookmark.FirstColumn);
             Assert.AreEqual(3, secondTableColumnBookmark.LastColumn);
-            }
+        }
 
         [Test]
         public void ClearBookmarks()
@@ -196,7 +196,7 @@ namespace ApiExamples
             //ExSummary:Shows how to remove all bookmarks from a document.
             // Open a document with 3 bookmarks: "MyBookmark1", "My_Bookmark2", "MyBookmark3"
             Document doc = new Document(MyDir + "Bookmarks.docx");
-            
+
             // Remove all bookmarks from the document
             // The bookmarked text is not deleted
             doc.Range.Bookmarks.Clear();
@@ -247,7 +247,6 @@ namespace ApiExamples
             // If you have document which contains bookmark names with underscores, you can simply replace them to whitespaces
             foreach (Bookmark bookmark in doc.Range.Bookmarks) bookmark.Name = bookmark.Name.Replace("_", " ");
             //ExEnd
->>>>>>> master
         }
     }
 }
