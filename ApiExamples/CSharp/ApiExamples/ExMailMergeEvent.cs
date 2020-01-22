@@ -1,11 +1,10 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -14,7 +13,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
-#if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
+#if NETFRAMEWORK
 using System.Data.OleDb;
 #endif
 
@@ -23,40 +22,40 @@ namespace ApiExamples
     [TestFixture]
     public class ExMailMergeEvent : ApiExampleBase
     {
-        [Test]
+        //ExStart
+        //ExFor:DocumentBuilder.InsertHtml(String)
+        //ExFor:MailMerge.FieldMergingCallback
+        //ExFor:IFieldMergingCallback
+        //ExFor:FieldMergingArgs
+        //ExFor:FieldMergingArgsBase
+        //ExFor:FieldMergingArgsBase.Field
+        //ExFor:FieldMergingArgsBase.DocumentFieldName
+        //ExFor:FieldMergingArgsBase.Document
+        //ExFor:FieldMergingArgsBase.FieldValue
+        //ExFor:IFieldMergingCallback.FieldMerging
+        //ExFor:FieldMergingArgs.Text
+        //ExFor:FieldMergeField.TextBefore
+        //ExSummary:Shows how to mail merge HTML data into a document.
+        [Test] //ExSkip
         public void MailMergeInsertHtml()
         {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertHtml(String)
-            //ExFor:MailMerge.FieldMergingCallback
-            //ExFor:IFieldMergingCallback
-            //ExFor:FieldMergingArgs
-            //ExFor:FieldMergingArgsBase
-            //ExFor:FieldMergingArgsBase.Field
-            //ExFor:FieldMergingArgsBase.DocumentFieldName
-            //ExFor:FieldMergingArgsBase.Document
-            //ExFor:FieldMergingArgsBase.FieldValue
-            //ExFor:IFieldMergingCallback.FieldMerging
-            //ExFor:FieldMergingArgs.Text
-            //ExFor:FieldMergeField.TextBefore
-            //ExSummary:Shows how to mail merge HTML data into a document.
-            // File 'MailMerge.InsertHtml.doc' has merge field named 'htmlField1' in it.
-            // File 'MailMerge.HtmlData.html' contains some valid HTML data.
-            // The same approach can be used when merging HTML data from database.
+            // File 'MailMerge.InsertHtml.doc' has merge field named 'htmlField1' in it
+            // File 'MailMerge.HtmlData.html' contains some valid HTML data
+            // The same approach can be used when merging HTML data from database
             Document doc = new Document(MyDir + "MailMerge.InsertHtml.doc");
 
-            // Add a handler for the MergeField event.
+            // Add a handler for the MergeField event
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldInsertHtml();
 
-            // Load some HTML from file.
+            // Load some HTML from file
             StreamReader sr = File.OpenText(MyDir + "MailMerge.HtmlData.html");
             string htmltext = sr.ReadToEnd();
             sr.Close();
 
-            // Execute mail merge.
+            // Execute mail merge
             doc.MailMerge.Execute(new string[] { "htmlField1" }, new object[] { htmltext });
 
-            // Save resulting document with a new name.
+            // Save resulting document with a new name
             doc.Save(ArtifactsDir + "MailMerge.InsertHtml.doc");
         }
 
@@ -67,52 +66,52 @@ namespace ApiExamples
             /// </summary>
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
             {
-                // All merge fields that expect HTML data should be marked with some prefix, e.g. 'html'.
+                // All merge fields that expect HTML data should be marked with some prefix, e.g. 'html'
                 if (args.DocumentFieldName.StartsWith("html") && args.Field.GetFieldCode().Contains("\\b"))
                 {
                     FieldMergeField field = args.Field;
 
-                    // Insert the text for this merge field as HTML data, using DocumentBuilder.
+                    // Insert the text for this merge field as HTML data, using DocumentBuilder
                     DocumentBuilder builder = new DocumentBuilder(args.Document);
                     builder.MoveToMergeField(args.DocumentFieldName);
                     builder.Write(field.TextBefore);
                     builder.InsertHtml((string) args.FieldValue);
 
-                    // The HTML text itself should not be inserted.
-                    // We have already inserted it as an HTML.
+                    // The HTML text itself should not be inserted
+                    // We have already inserted it as an HTML
                     args.Text = "";
                 }
             }
 
             void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs args)
             {
-                // Do nothing.
+                // Do nothing
             }
         }
         //ExEnd
 
-        [Test]
+        //ExStart
+        //ExFor:DocumentBuilder.MoveToMergeField(String)
+        //ExFor:FieldMergingArgsBase.FieldName
+        //ExFor:FieldMergingArgsBase.TableName
+        //ExFor:FieldMergingArgsBase.RecordIndex
+        //ExSummary:Shows how to insert checkbox form fields into a document during mail merge.
+        [Test] //ExSkip
         public void MailMergeInsertCheckBox()
         {
-            //ExStart
-            //ExFor:DocumentBuilder.MoveToMergeField(String)
-            //ExFor:FieldMergingArgsBase.FieldName
-            //ExFor:FieldMergingArgsBase.TableName
-            //ExFor:FieldMergingArgsBase.RecordIndex
-            //ExSummary:Shows how to insert checkbox form fields into a document during mail merge.
             // File 'MailMerge.InsertCheckBox.doc' is a template
             // containing the table with the following fields in it:
-            // <<TableStart:StudentCourse>> <<CourseName>> <<TableEnd:StudentCourse>>.
+            // <<TableStart:StudentCourse>> <<CourseName>> <<TableEnd:StudentCourse>>
             Document doc = new Document(MyDir + "MailMerge.InsertCheckBox.doc");
 
-            // Add a handler for the MergeField event.
+            // Add a handler for the MergeField event
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldInsertCheckBox();
 
-            // Execute mail merge with regions.
+            // Execute mail merge with regions
             DataTable dataTable = GetStudentCourseDataTable();
             doc.MailMerge.ExecuteWithRegions(dataTable);
 
-            // Save resulting document with a new name.
+            // Save resulting document with a new name
             doc.Save(ArtifactsDir + "MailMerge.InsertCheckBox.doc");
         }
 
@@ -129,7 +128,7 @@ namespace ApiExamples
                     // The name of the table that we are merging can be found here
                     Assert.AreEqual("StudentCourse", args.TableName);
 
-                    // Insert the checkbox for this merge field, using DocumentBuilder.
+                    // Insert the checkbox for this merge field, using DocumentBuilder
                     DocumentBuilder builder = new DocumentBuilder(args.Document);
                     builder.MoveToMergeField(args.FieldName);
                     builder.InsertCheckBox(args.DocumentFieldName + mCheckBoxCount, false, 0);
@@ -138,7 +137,7 @@ namespace ApiExamples
                     string fieldValue = args.FieldValue.ToString();
 
                     // In this case, for every record index 'n', the corresponding field value is "Course n"
-                    Assert.AreEqual(Char.GetNumericValue(fieldValue[7]), args.RecordIndex);
+                    Assert.AreEqual(char.GetNumericValue(fieldValue[7]), args.RecordIndex);
 
                     builder.Write(fieldValue);
                     mCheckBoxCount++;
@@ -147,11 +146,11 @@ namespace ApiExamples
 
             void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs args)
             {
-                // Do nothing.
+                // Do nothing
             }
 
             /// <summary>
-            /// Counter for CheckBox name generation
+            /// Counter for CheckBox name generation.
             /// </summary>
             private int mCheckBoxCount;
         }
@@ -175,18 +174,18 @@ namespace ApiExamples
         }
         //ExEnd
 
-        [Test]
+        //ExStart
+        //ExFor:MailMerge.ExecuteWithRegions(DataTable)
+        //ExSummary:Demonstrates how to implement custom logic in the MergeField event to apply cell formatting.
+        [Test] //ExSkip
         public void MailMergeAlternatingRows()
         {
-            //ExStart
-            //ExFor:MailMerge.ExecuteWithRegions(DataTable)
-            //ExSummary:Demonstrates how to implement custom logic in the MergeField event to apply cell formatting.
             Document doc = new Document(MyDir + "MailMerge.AlternatingRows.doc");
 
-            // Add a handler for the MergeField event.
+            // Add a handler for the MergeField event
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldAlternatingRows();
 
-            // Execute mail merge with regions.
+            // Execute mail merge with regions
             DataTable dataTable = GetSuppliersDataTable();
             doc.MailMerge.ExecuteWithRegions(dataTable);
 
@@ -205,18 +204,14 @@ namespace ApiExamples
                 if (mBuilder == null)
                     mBuilder = new DocumentBuilder(args.Document);
 
-                // This way we catch the beginning of a new row.
+                // This way we catch the beginning of a new row
                 if (args.FieldName.Equals("CompanyName"))
                 {
-                    // Select the color depending on whether the row number is even or odd.
-                    Color rowColor;
-                    if (IsOdd(mRowIdx))
-                        rowColor = Color.FromArgb(213, 227, 235);
-                    else
-                        rowColor = Color.FromArgb(242, 242, 242);
+                    // Select the color depending on whether the row number is even or odd
+                    Color rowColor = IsOdd(mRowIdx) ? Color.FromArgb(213, 227, 235) : Color.FromArgb(242, 242, 242);
 
                     // There is no way to set cell properties for the whole row at the moment,
-                    // so we have to iterate over all cells in the row.
+                    // so we have to iterate over all cells in the row
                     for (int colIdx = 0; colIdx < 4; colIdx++)
                     {
                         mBuilder.MoveToCell(0, mRowIdx, colIdx, 0);
@@ -229,7 +224,7 @@ namespace ApiExamples
 
             void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs args)
             {
-                // Do nothing.
+                // Do nothing
             }
 
             private DocumentBuilder mBuilder;
@@ -241,8 +236,8 @@ namespace ApiExamples
         /// </summary>
         private static bool IsOdd(int value)
         {
-            // The code is a bit complex, but otherwise automatic conversion to VB does not work.
-            return ((value / 2) * 2).Equals(value);
+            // The code is a bit complex, but otherwise automatic conversion to VB does not work
+            return (value / 2 * 2).Equals(value);
         }
 
         /// <summary>
@@ -274,51 +269,51 @@ namespace ApiExamples
             //ExSummary:Demonstrates how to merge an image from a web address using an Image field.
             Document doc = new Document(MyDir + "MailMerge.MergeImageSimple.doc");
 
-            // Pass a URL which points to the image to merge into the document.
+            // Pass a URL which points to the image to merge into the document
             doc.MailMerge.Execute(new string[] { "Logo" },
                 new object[] { AsposeLogoUrl });
 
             doc.Save(ArtifactsDir + "MailMerge.MergeImageFromUrl.doc");
             //ExEnd
 
-            // Verify the image was merged into the document.
+            // Verify the image was merged into the document
             Shape logoImage = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             Assert.IsNotNull(logoImage);
             Assert.IsTrue(logoImage.HasImage);
         }
 
-        #if !(NETSTANDARD2_0 || __MOBILE__ || MAC)
-        [Test]
-        [Category("SkipMono")]
+        #if NETFRAMEWORK
+        //ExStart
+        //ExFor:MailMerge.FieldMergingCallback
+        //ExFor:MailMerge.ExecuteWithRegions(IDataReader,String)
+        //ExFor:IFieldMergingCallback
+        //ExFor:ImageFieldMergingArgs
+        //ExFor:IFieldMergingCallback.FieldMerging
+        //ExFor:IFieldMergingCallback.ImageFieldMerging
+        //ExFor:ImageFieldMergingArgs.ImageStream
+        //ExSummary:Shows how to insert images stored in a database BLOB field into a report.
+        [Test] //ExSkip
+        [Category("SkipMono")] //ExSkip
         public void MailMergeImageFromBlob()
         {
-            //ExStart
-            //ExFor:MailMerge.FieldMergingCallback
-            //ExFor:MailMerge.ExecuteWithRegions(IDataReader,String)
-            //ExFor:IFieldMergingCallback
-            //ExFor:ImageFieldMergingArgs
-            //ExFor:IFieldMergingCallback.FieldMerging
-            //ExFor:IFieldMergingCallback.ImageFieldMerging
-            //ExFor:ImageFieldMergingArgs.ImageStream
-            //ExSummary:Shows how to insert images stored in a database BLOB field into a report.
             Document doc = new Document(MyDir + "MailMerge.MergeImage.doc");
 
-            // Set up the event handler for image fields.
+            // Set up the event handler for image fields
             doc.MailMerge.FieldMergingCallback = new HandleMergeImageFieldFromBlob();
 
-            // Open a database connection.
+            // Open a database connection
             string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.mdb";
             OleDbConnection conn = new OleDbConnection(connString);
             conn.Open();
 
-            // Open the data reader. It needs to be in the normal mode that reads all record at once.
+            // Open the data reader. It needs to be in the normal mode that reads all record at once
             OleDbCommand cmd = new OleDbCommand("SELECT * FROM Employees", conn);
             IDataReader dataReader = cmd.ExecuteReader();
 
-            // Perform mail merge.
+            // Perform mail merge
             doc.MailMerge.ExecuteWithRegions(dataReader, "Employees");
 
-            // Close the database.
+            // Close the database
             conn.Close();
 
             doc.Save(ArtifactsDir + "MailMerge.MergeImage.doc");
@@ -328,7 +323,7 @@ namespace ApiExamples
         {
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
             {
-                // Do nothing.
+                // Do nothing
             }
 
             /// <summary>
@@ -337,9 +332,9 @@ namespace ApiExamples
             /// </summary>
             void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs e)
             {
-                // The field value is a byte array, just cast it and create a stream on it.
+                // The field value is a byte array, just cast it and create a stream on it
                 MemoryStream imageStream = new MemoryStream((byte[])e.FieldValue);
-                // Now the mail merge engine will retrieve the image from the stream.
+                // Now the mail merge engine will retrieve the image from the stream
                 e.ImageStream = imageStream;
             }
         }

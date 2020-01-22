@@ -11,7 +11,6 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
     {
         public static void Run()
         {
-            // ExStart:SetTrueTypeFontsFolder
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting();
 
@@ -19,6 +18,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             ExportHeaderFooterBookmarks(dataDir);
             ScaleWmfFontsToMetafileSize(dataDir);
             AdditionalTextPositioning(dataDir);
+            ConversionToPDF17(dataDir);
         }
 
         public static void EscapeUriInPdf(String dataDir)
@@ -86,6 +86,22 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             dataDir = dataDir + "AdditionalTextPositioning_out.pdf";
             doc.Save(dataDir, options);
             // ExEnd:AdditionalTextPositioning
+            Console.WriteLine("\nFile saved at " + dataDir);
+        }
+
+        public static void ConversionToPDF17(string dataDir)
+        {
+            // ExStart:ConversionToPDF17
+            // The path to the documents directory.
+            Document originalDoc = new Document(dataDir + "Document.docx");
+
+            // Provide PDFSaveOption compliance to PDF17
+            // or just convert without SaveOptions
+            PdfSaveOptions pso = new PdfSaveOptions();
+            pso.Compliance = PdfCompliance.Pdf17;
+
+            originalDoc.Save(dataDir + "Output.pdf", pso);
+            // ExEnd:ConversionToPDF17
             Console.WriteLine("\nFile saved at " + dataDir);
         }
     }

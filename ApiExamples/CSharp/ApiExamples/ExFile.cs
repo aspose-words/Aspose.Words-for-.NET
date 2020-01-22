@@ -1,4 +1,11 @@
-﻿using System;
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
+
+using System;
 using System.IO;
 using System.Linq;
 using Aspose.Words;
@@ -15,7 +22,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FileCorruptedException
-            //ExSummary:Shows how to catch a FileCorruptedException
+            //ExSummary:Shows how to catch a FileCorruptedException.
             try
             {
                 Document doc = new Document(MyDir + "Corrupted.docx");
@@ -138,34 +145,32 @@ namespace ApiExamples
             //ExFor:Document.OriginalFileName
             //ExFor:FileFormatInfo.LoadFormat
             //ExSummary:Shows how to use the FileFormatUtil methods to detect the format of a document without any extension and save it with the correct file extension.
-            // Load the document without a file extension into a stream and use the DetectFileFormat method to detect it's format. 
+            // Load the document without a file extension into a stream and use the DetectFileFormat method to detect it's format
             // These are both times where you might need extract the file format as it's not visible
-            FileStream
-                docStream = File.OpenRead(
-                    MyDir + "Document.FileWithoutExtension"); // The file format of this document is actually ".doc"
+            // The file format of this document is actually ".doc"
+            FileStream docStream = File.OpenRead(MyDir + "Document.FileWithoutExtension");
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(docStream);
 
-            // Retrieve the LoadFormat of the document.
+            // Retrieve the LoadFormat of the document
             LoadFormat loadFormat = info.LoadFormat;
 
-            // Let's show the different methods of converting LoadFormat enumerations to SaveFormat enumerations.
+            // Let's show the different methods of converting LoadFormat enumerations to SaveFormat enumerations
             //
             // Method #1
-            // Convert the LoadFormat to a String first for working with. The String will include the leading dot in front of the extension.
-            String fileExtension = FileFormatUtil.LoadFormatToExtension(loadFormat);
+            // Convert the LoadFormat to a String first for working with. The String will include the leading dot in front of the extension
+            string fileExtension = FileFormatUtil.LoadFormatToExtension(loadFormat);
             // Now convert this extension into the corresponding SaveFormat enumeration
             SaveFormat saveFormat = FileFormatUtil.ExtensionToSaveFormat(fileExtension);
 
             // Method #2
-            // Convert the LoadFormat enumeration directly to the SaveFormat enumeration.
+            // Convert the LoadFormat enumeration directly to the SaveFormat enumeration
             saveFormat = FileFormatUtil.LoadFormatToSaveFormat(loadFormat);
 
             // Load a document from the stream.
             Document doc = new Document(docStream);
 
-            // Save the document with the original file name, " Out" and the document's file extension.
-            doc.Save(
-                ArtifactsDir + "Document.WithFileExtension" + FileFormatUtil.SaveFormatToExtension(saveFormat));
+            // Save the document with the original file name, " Out" and the document's file extension
+            doc.Save(ArtifactsDir + "Document.WithFileExtension" + FileFormatUtil.SaveFormatToExtension(saveFormat));
             //ExEnd
 
             Assert.AreEqual(".doc", FileFormatUtil.SaveFormatToExtension(saveFormat));
@@ -177,9 +182,9 @@ namespace ApiExamples
             //ExStart
             //ExFor:FileFormatUtil.SaveFormatToLoadFormat(SaveFormat)
             //ExSummary:Shows how to use the FileFormatUtil class and to convert a SaveFormat enumeration into the corresponding LoadFormat enumeration.
-            // Define the SaveFormat enumeration to convert.
-            SaveFormat saveFormat = SaveFormat.Html;
-            // Convert the SaveFormat enumeration to LoadFormat enumeration.
+            // Define the SaveFormat enumeration to convert
+            const SaveFormat saveFormat = SaveFormat.Html;
+            // Convert the SaveFormat enumeration to LoadFormat enumeration
             LoadFormat loadFormat = FileFormatUtil.SaveFormatToLoadFormat(saveFormat);
             Console.WriteLine("The converted LoadFormat is: " + FileFormatUtil.LoadFormatToExtension(loadFormat));
             //ExEnd
@@ -195,8 +200,8 @@ namespace ApiExamples
             //ExFor:FileFormatUtil.DetectFileFormat(String)
             //ExFor:FileFormatInfo.HasDigitalSignature
             //ExSummary:Shows how to check a document for digital signatures before loading it into a Document object.
-            // The path to the document which is to be processed.
-            String filePath = MyDir + "Document.Signed.docx";
+            // The path to the document which is to be processed
+            string filePath = MyDir + "Document.Signed.docx";
 
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(filePath);
             if (info.HasDigitalSignature)
@@ -205,7 +210,6 @@ namespace ApiExamples
                     "Document {0} has digital signatures, they will be lost if you open/save this document with Aspose.Words.",
                     Path.GetFileName(filePath));
             }
-
             //ExEnd
         }
 
@@ -230,8 +234,8 @@ namespace ApiExamples
             {
                 if (shape.HasImage)
                 {
-                    string imageFileName = string.Format("Image.ExportImages.{0}{1}", imageIndex,
-                        FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType));
+                    string imageFileName =
+                        $"Image.ExportImages.{imageIndex}{FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType)}";
                     shape.ImageData.Save(ArtifactsDir + imageFileName);
                     imageIndex++;
                 }

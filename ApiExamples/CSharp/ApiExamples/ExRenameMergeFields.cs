@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -27,10 +27,10 @@ namespace ApiExamples
         [Test] //ExSkip
         public void RenameMergeFields()
         {
-            // Specify your document name here.
+            // Specify your document name here
             Document doc = new Document(MyDir + "RenameMergeFields.doc");
 
-            // Select all field start nodes so we can find the merge fields.
+            // Select all field start nodes so we can find the merge fields
             NodeCollection fieldStarts = doc.GetChildNodes(NodeType.FieldStart, true);
             foreach (FieldStart fieldStart in fieldStarts.OfType<FieldStart>())
             {
@@ -57,7 +57,7 @@ namespace ApiExamples
 
             mFieldStart = fieldStart;
 
-            // Find the field separator node.
+            // Find the field separator node
             mFieldSeparator = FindNextSibling(mFieldStart, NodeType.FieldSeparator);
             if (mFieldSeparator == null)
                 throw new InvalidOperationException("Cannot find field separator.");
@@ -65,40 +65,40 @@ namespace ApiExamples
             // Find the field end node. Normally field end will always be found, but in the example document 
             // there happens to be a paragraph break included in the hyperlink and this puts the field end 
             // in the next paragraph. It will be much more complicated to handle fields which span several 
-            // paragraphs correctly, but in this case allowing field end to be null is enough for our purposes.
+            // paragraphs correctly, but in this case allowing field end to be null is enough for our purposes
             mFieldEnd = FindNextSibling(mFieldSeparator, NodeType.FieldEnd);
         }
 
         /// <summary>
         /// Gets or sets the name of the merge field.
         /// </summary>
-        internal String Name
+        internal string Name
         {
             get { return GetTextSameParent(mFieldSeparator.NextSibling, mFieldEnd).Trim('«', '»'); }
             set
             {
                 // Merge field name is stored in the field result which is a Run 
-                // node between field separator and field end.
+                // node between field separator and field end
                 Run fieldResult = (Run) mFieldSeparator.NextSibling;
                 fieldResult.Text = $"«{value}»";
 
-                // But sometimes the field result can consist of more than one run, delete these runs.
+                // But sometimes the field result can consist of more than one run, delete these runs
                 RemoveSameParent(fieldResult.NextSibling, mFieldEnd);
 
                 UpdateFieldCode(value);
             }
         }
 
-        private void UpdateFieldCode(String fieldName)
+        private void UpdateFieldCode(string fieldName)
         {
-            // Field code is stored in a Run node between field start and field separator.
+            // Field code is stored in a Run node between field start and field separator
             Run fieldCode = (Run) mFieldStart.NextSibling;
             Match match = gRegex.Match(fieldCode.Text);
 
-            String newFieldCode = $" {match.Groups["start"].Value}{fieldName} ";
+            string newFieldCode = $" {match.Groups["start"].Value}{fieldName} ";
             fieldCode.Text = newFieldCode;
 
-            // But sometimes the field code can consist of more than one run, delete these runs.
+            // But sometimes the field code can consist of more than one run, delete these runs
             RemoveSameParent(fieldCode.NextSibling, mFieldSeparator);
         }
 
@@ -119,9 +119,9 @@ namespace ApiExamples
         /// <summary>
         /// Retrieves text from start up to but not including the end node.
         /// </summary>
-        private static String GetTextSameParent(Node startNode, Node endNode)
+        private static string GetTextSameParent(Node startNode, Node endNode)
         {
-            if ((endNode != null) && (startNode.ParentNode != endNode.ParentNode))
+            if (endNode != null && startNode.ParentNode != endNode.ParentNode)
                 throw new ArgumentException("Start and end nodes are expected to have the same parent.");
 
             StringBuilder builder = new StringBuilder();
@@ -137,7 +137,7 @@ namespace ApiExamples
         /// </summary>
         private static void RemoveSameParent(Node startNode, Node endNode)
         {
-            if ((endNode != null) && (startNode.ParentNode != endNode.ParentNode))
+            if (endNode != null && startNode.ParentNode != endNode.ParentNode)
                 throw new ArgumentException("Start and end nodes are expected to have the same parent.");
 
             Node curChild = startNode;
