@@ -1,4 +1,11 @@
-﻿using System;
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -118,7 +125,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Drawing.ImageType
-            //ExSummary:Shows how to add an image to a shape and check its type
+            //ExSummary:Shows how to add an image to a shape and check its type.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -135,7 +142,6 @@ namespace ApiExamples
                     Assert.AreEqual(ImageType.Png, imgShape.ImageData.ImageType);
                 }
             }
-
             //ExEnd
         }
 

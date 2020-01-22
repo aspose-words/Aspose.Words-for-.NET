@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -105,7 +105,7 @@ namespace ApiExamples
             protected override void OnPaint(PaintEventArgs e)
             {
                 // Set the size of the Form canvas
-                this.Size = new Size(1000, 800);
+                Size = new Size(1000, 800);
 
                 // Open a document and get its first shape, which is a chart
                 Document doc = new Document(MyDir + "Shape.VarietyOfShapes.docx");
@@ -135,11 +135,11 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The best place for the watermark image is in the header or footer so it is shown on every page.
+            // The best place for the watermark image is in the header or footer so it is shown on every page
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             Image image = Image.FromFile(ImageDir + "Watermark.png");
 
-            // Insert a floating picture.
+            // Insert a floating picture
             Shape shape = builder.InsertImage(image);
             shape.WrapType = WrapType.None;
             shape.BehindText = true;
@@ -147,7 +147,7 @@ namespace ApiExamples
             shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
             shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
 
-            // Calculate image left and top position so it appears in the centre of the page.
+            // Calculate image left and top position so it appears in the centre of the page
             shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
             shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
 
@@ -164,7 +164,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The best place for the watermark image is in the header or footer so it is shown on every page.
+            // The best place for the watermark image is in the header or footer so it is shown on every page
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             
             using (SKManagedStream stream = new SKManagedStream(File.OpenRead(ImageDir + "Watermark.png")))
@@ -179,7 +179,7 @@ namespace ApiExamples
                     shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
                     shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
 
-                    // Calculate image left and top position so it appears in the centre of the page.
+                    // Calculate image left and top position so it appears in the centre of the page
                     shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
                     shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
 
@@ -320,11 +320,11 @@ namespace ApiExamples
             //ExFor:Shape
             //ExSummary:Shows how to delete all shapes from a document.
             // Here we get all shapes from the document node, but you can do this for any smaller
-            // node too, for example delete shapes from a single section or a paragraph.
+            // node too, for example delete shapes from a single section or a paragraph
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
             shapes.Clear();
 
-            // There could also be group shapes, they have different node type, remove them all too.
+            // There could also be group shapes, they have different node type, remove them all too
             NodeCollection groupShapes = doc.GetChildNodes(NodeType.GroupShape, true);
             groupShapes.Clear();
             //ExEnd
@@ -345,14 +345,11 @@ namespace ApiExamples
 
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())
             {
-                if (shape.IsInline)
-                    Console.WriteLine("Shape is inline.");
-                else
-                    Console.WriteLine("Shape is floating.");
+                Console.WriteLine(shape.IsInline ? "Shape is inline." : "Shape is floating.");
             }
             //ExEnd
 
-            // Verify that the first shape in the document is not inline.
+            // Verify that the first shape in the document is not inline
             Assert.False(((Shape) doc.GetChild(NodeType.Shape, 0, true)).IsInline);
         }
 
@@ -367,11 +364,11 @@ namespace ApiExamples
             //ExSummary:Shows how to create line shapes and set specific location and size.
             Document doc = new Document();
 
-            // The lines will cross the whole page.
+            // The lines will cross the whole page
             float pageWidth = (float) doc.FirstSection.PageSetup.PageWidth;
             float pageHeight = (float) doc.FirstSection.PageSetup.PageHeight;
 
-            // This line goes from top left to bottom right by default.
+            // This line goes from top left to bottom right by default
             Shape lineA = new Shape(doc, ShapeType.Line)
             {
                 Bounds = new RectangleF(0, 0, pageWidth, pageHeight),
@@ -381,7 +378,7 @@ namespace ApiExamples
 
             Assert.AreEqual(new RectangleF(0, 0, pageWidth, pageHeight), lineA.BoundsInPoints);
 
-            // This line goes from bottom left to top right because we flipped it.
+            // This line goes from bottom left to top right because we flipped it
             Shape lineB = new Shape(doc, ShapeType.Line)
             {
                 Bounds = new RectangleF(0, 0, pageWidth, pageHeight),
@@ -392,7 +389,7 @@ namespace ApiExamples
 
             Assert.AreEqual(new RectangleF(0, 0, pageWidth, pageHeight), lineB.BoundsInPoints);
 
-            // Add lines to the document.
+            // Add lines to the document
             doc.FirstSection.Body.FirstParagraph.AppendChild(lineA);
             doc.FirstSection.Body.FirstParagraph.AppendChild(lineB);
 
@@ -416,8 +413,8 @@ namespace ApiExamples
             builder.Writeln();
             builder.Write("Some text under the shape.");
 
-            // Create a red balloon, semitransparent.
-            // The shape is floating and its coordinates are (0,0) by default, relative to the current paragraph.
+            // Create a red balloon, semitransparent
+            // The shape is floating and its coordinates are (0,0) by default, relative to the current paragraph
             Shape shape = new Shape(builder.Document, ShapeType.Balloon);
             shape.FillColor = Color.Red;
             shape.Fill.Opacity = 0.3;
@@ -439,7 +436,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create test shape.
+            // Create test shape
             Shape shape = new Shape(doc, ShapeType.Cube);
             shape.Width = 431.5;
             shape.Height = 346.35;
@@ -469,25 +466,25 @@ namespace ApiExamples
             //ExSummary:Shows how to replace all textboxes with images.
             Document doc = new Document(MyDir + "Shape.ReplaceTextboxesWithImages.doc");
 
-            // This gets a live collection of all shape nodes in the document.
+            // This gets a live collection of all shape nodes in the document
             NodeCollection shapeCollection = doc.GetChildNodes(NodeType.Shape, true);
 
             // Since we will be adding/removing nodes, it is better to copy all collection
-            // into a fixed size array, otherwise iterator will be invalidated.
+            // into a fixed size array, otherwise iterator will be invalidated
             Node[] shapes = shapeCollection.ToArray();
 
             foreach (Shape shape in shapes.OfType<Shape>())
             {
-                // Filter out all shapes that we don't need.
+                // Filter out all shapes that we don't need
                 if (shape.ShapeType.Equals(ShapeType.TextBox))
                 {
-                    // Create a new shape that will replace the existing shape.
+                    // Create a new shape that will replace the existing shape
                     Shape image = new Shape(doc, ShapeType.Image);
 
-                    // Load the image into the new shape.
+                    // Load the image into the new shape
                     image.ImageData.SetImage(ImageDir + "Hammer.wmf");
 
-                    // Make new shape's position to match the old shape.
+                    // Make new shape's position to match the old shape
                     image.Left = shape.Left;
                     image.Top = shape.Top;
                     image.Width = shape.Width;
@@ -499,7 +496,7 @@ namespace ApiExamples
                     image.WrapType = shape.WrapType;
                     image.WrapSide = shape.WrapSide;
 
-                    // Insert new shape after the old shape and remove the old shape.
+                    // Insert new shape after the old shape and remove the old shape
                     shape.ParentNode.InsertAfter(image, shape);
                     shape.Remove();
                 }
@@ -519,37 +516,38 @@ namespace ApiExamples
             //ExFor:Shape.FirstParagraph
             //ExFor:ShapeBase.WrapType
             //ExSummary:Creates a textbox with some text and different formatting options in a new document.
-            // Create a blank document.
+            // Create a blank document
             Document doc = new Document();
 
             // Create a new shape of type TextBox
             Shape textBox = new Shape(doc, ShapeType.TextBox);
 
-            // Set some settings of the textbox itself.
+            // Set some settings of the textbox itself
             // Set the wrap of the textbox to inline
             textBox.WrapType = WrapType.None;
-            // Set the horizontal and vertical alignment of the text inside the shape.
+            // Set the horizontal and vertical alignment of the text inside the shape
             textBox.HorizontalAlignment = HorizontalAlignment.Center;
             textBox.VerticalAlignment = VerticalAlignment.Top;
 
-            // Set the textbox height and width.
+            // Set the textbox height and width
             textBox.Height = 50;
             textBox.Width = 200;
 
             // Set the textbox in front of other shapes with a lower ZOrder
             textBox.ZOrder = 2;
 
-            // Let's create a new paragraph for the textbox manually and align it in the center. Make sure we add the new nodes to the textbox as well.
+            // Let's create a new paragraph for the textbox manually and align it in the center
+            // Make sure we add the new nodes to the textbox as well
             textBox.AppendChild(new Paragraph(doc));
             Paragraph para = textBox.FirstParagraph;
             para.ParagraphFormat.Alignment = ParagraphAlignment.Center;
 
-            // Add some text to the paragraph.
+            // Add some text to the paragraph
             Run run = new Run(doc);
             run.Text = "Content in textbox";
             para.AppendChild(run);
 
-            // Append the textbox to the first paragraph in the body.
+            // Append the textbox to the first paragraph in the body
             doc.FirstSection.Body.FirstParagraph.AppendChild(textBox);
 
             // Save the output
@@ -574,13 +572,13 @@ namespace ApiExamples
             //ExSummary: Shows how to get ActiveX control and properties from the document.
             Document doc = new Document(MyDir + "Shape.ActiveXObject.docx");
 
-            //Get ActiveX control from the document 
+            // Get ActiveX control from the document 
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             OleControl oleControl = shape.OleFormat.OleControl;
 
             Assert.AreEqual(null, oleControl.Name);
 
-            //Get ActiveX control properties
+            // Get ActiveX control properties
             if (oleControl.IsForms2OleControl)
             {
                 Forms2OleControl checkBox = (Forms2OleControl) oleControl;
@@ -729,7 +727,7 @@ namespace ApiExamples
 
             // Gets the file name suggested for the current embedded object if you want to save it into a file
             Shape oleShape = (Shape) doc.FirstSection.Body.GetChild(NodeType.Shape, 0, true);
-            String suggestedFileName = oleShape.OleFormat.SuggestedFileName;
+            string suggestedFileName = oleShape.OleFormat.SuggestedFileName;
             //ExEnd
 
             Assert.AreEqual("CSV.csv", suggestedFileName);
@@ -763,7 +761,7 @@ namespace ApiExamples
             //ExSummary:Shows how to convert specific object into image
             Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
 
-            //Get OfficeMath node from the document and render this as image (you can also do the same with the Shape node)
+            // Get OfficeMath node from the document and render this as image (you can also do the same with the Shape node)
             OfficeMath math = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
             math.GetMathRenderer().Save(ArtifactsDir + "Shape.OfficeMath.svg", new ImageSaveOptions(SaveFormat.Svg));
             //ExEnd
@@ -856,7 +854,7 @@ namespace ApiExamples
 
             OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
 
-            //Always inline
+            // Always inline
             Assert.AreEqual(OfficeMathDisplayType.Inline, officeMath.DisplayType);
             Assert.AreEqual(OfficeMathJustification.Inline, officeMath.Justification);
         }
@@ -882,7 +880,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ShapeBase.AspectRatioLocked
-            //ExSummary:Shows how to set "AspectRatioLocked" for the shape object
+            //ExSummary:Shows how to set "AspectRatioLocked" for the shape object.
             Document doc = new Document(MyDir + "Shape.ActiveXObject.docx");
 
             // Get shape object from the document and set AspectRatioLocked(it is possible to get/set AspectRatioLocked for child shapes (mimic MS Word behavior), 
@@ -904,12 +902,12 @@ namespace ApiExamples
             //ExStart
             //ExFor:ShapeBase.MarkupLanguage
             //ExFor:ShapeBase.SizeInPoints
-            //ExSummary:Shows how get markup language for shape object in document
+            //ExSummary:Shows how get markup language for shape object in document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertImage(ImageDir + "dotnet-logo.png");
 
-            // Loop through all single shapes inside document.
+            // Loop through all single shapes inside document
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())
             {
                 Assert.AreEqual(ShapeMarkupLanguage.Dml, shape.MarkupLanguage); //ExSkip
@@ -937,7 +935,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertImage(ImageDir + "dotnet-logo.png");
 
-            // Loop through all single shapes inside document.
+            // Loop through all single shapes inside document
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())
             {
                 Assert.AreEqual(shapeMarkupLanguage, shape.MarkupLanguage);
@@ -954,14 +952,14 @@ namespace ApiExamples
             //ExFor:Stroke.JoinStyle
             //ExFor:Stroke.LineStyle
             //ExFor:ShapeLineStyle
-            //ExSummary:Shows how change stroke properties
+            //ExSummary:Shows how change stroke properties.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Create a new shape of type Rectangle
             Shape rectangle = new Shape(doc, ShapeType.Rectangle);
 
-            //Change stroke properties
+            // Change stroke properties
             Stroke stroke = rectangle.Stroke;
             stroke.On = true;
             stroke.Weight = 5;
@@ -971,7 +969,7 @@ namespace ApiExamples
             stroke.EndCap = EndCap.Square;
             stroke.LineStyle = ShapeLineStyle.Triple;
 
-            //Insert shape object
+            // Insert shape object
             builder.InsertNode(rectangle);
             //ExEnd
 
@@ -1086,8 +1084,8 @@ namespace ApiExamples
                 Shape watermark = new Shape(doc, ShapeType.TextPlainText);
                 watermark.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
                 watermark.RelativeVerticalPosition = RelativeVerticalPosition.Page;
-                watermark.IsLayoutInCell =
-                    true; // False - display the shape outside of table cell, True - display the shape outside of table cell
+                // False - display the shape outside of table cell, True - display the shape outside of table cell
+                watermark.IsLayoutInCell = true; 
 
                 watermark.Width = 30;
                 watermark.Height = 30;
@@ -1101,9 +1099,9 @@ namespace ApiExamples
                 watermark.TextPath.Text = string.Format("{0}", num);
                 watermark.TextPath.FontFamily = "Arial";
 
-                watermark.Name = string.Format("WaterMark_{0}", Guid.NewGuid());
-                watermark.WrapType =
-                    WrapType.None; // Property will take effect only if the WrapType property is set to something other than WrapType.Inline
+                watermark.Name = $"WaterMark_{Guid.NewGuid()}";
+                // Property will take effect only if the WrapType property is set to something other than WrapType.Inline
+                watermark.WrapType = WrapType.None; 
                 watermark.BehindText = true;
 
                 builder.MoveTo(run);
@@ -1112,8 +1110,8 @@ namespace ApiExamples
                 num = num + 1;
             }
 
-            // Behaviour of MS Word on working with shapes in table cells is changed in the last versions.
-            // Adding the following line is needed to make the shape displayed in center of a page.
+            // Behaviour of MS Word on working with shapes in table cells is changed in the last versions
+            // Adding the following line is needed to make the shape displayed in center of a page
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2010);
 
             doc.Save(ArtifactsDir + "Shape.LayoutInCell.docx");
@@ -1181,7 +1179,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// DocumentVisitor implementation that collects information about visited shapes into a StringBuilder, to be printed to the console
+        /// DocumentVisitor implementation that collects information about visited shapes into a StringBuilder, to be printed to the console.
         /// </summary>
         private class ShapeVisitor : DocumentVisitor
         {
@@ -1193,20 +1191,17 @@ namespace ApiExamples
             }
 
             /// <summary>
-            /// Appends a line to the StringBuilder with one prepended tab character for each indent level 
+            /// Appends a line to the StringBuilder with one prepended tab character for each indent level.
             /// </summary>
             private void AppendLine(string text)
             {
-                for (int i = 0; i < mTextIndentLevel; i++)
-                {
-                    mStringBuilder.Append('\t');
-                }
+                for (int i = 0; i < mTextIndentLevel; i++) mStringBuilder.Append('\t');
 
                 mStringBuilder.AppendLine(text);
             }
 
             /// <summary>
-            /// Return all the text that the StringBuilder has accumulated
+            /// Return all the text that the StringBuilder has accumulated.
             /// </summary>
             public string GetText()
             {
@@ -1214,7 +1209,7 @@ namespace ApiExamples
             }
 
             /// <summary>
-            /// Called when the start of a Shape node is visited
+            /// Called when the start of a Shape node is visited.
             /// </summary>
             public override VisitorAction VisitShapeStart(Shape shape)
             {
@@ -1250,7 +1245,7 @@ namespace ApiExamples
             }
 
             /// <summary>
-            /// Called when the end of a Shape node is visited
+            /// Called when the end of a Shape node is visited.
             /// </summary>
             public override VisitorAction VisitShapeEnd(Shape shape)
             {
@@ -1262,7 +1257,7 @@ namespace ApiExamples
             }
 
             /// <summary>
-            /// Called when the start of a GroupShape node is visited
+            /// Called when the start of a GroupShape node is visited.
             /// </summary>
             public override VisitorAction VisitGroupShapeStart(GroupShape groupShape)
             {
@@ -1273,7 +1268,7 @@ namespace ApiExamples
             }
 
             /// <summary>
-            /// Called when the end of a GroupShape node is visited
+            /// Called when the end of a GroupShape node is visited.
             /// </summary>
             public override VisitorAction VisitGroupShapeEnd(GroupShape groupShape)
             {
@@ -1602,9 +1597,9 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Insert a new paragraph with a WordArt shape inside it 
+        /// Insert a new paragraph with a WordArt shape inside it.
         /// </summary>
-        private Shape AppendWordArt(Document doc, string text, string textFontFamily, double shapeWidth, double shapeHeight, Color wordArtFill, Color line, ShapeType wordArtShapeType)
+        private static Shape AppendWordArt(Document doc, string text, string textFontFamily, double shapeWidth, double shapeHeight, Color wordArtFill, Color line, ShapeType wordArtShapeType)
         {
             // Insert a new paragraph
             Paragraph para = (Paragraph)doc.FirstSection.Body.AppendChild(new Paragraph(doc));

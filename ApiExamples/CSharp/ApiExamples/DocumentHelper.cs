@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -73,7 +73,7 @@ namespace ApiExamples
             return doc;
         }
 
-        internal static void FindTextInFile(String path, String expression)
+        internal static void FindTextInFile(string path, string expression)
         {
             using (var sr = new StreamReader(path))
             {
@@ -81,7 +81,7 @@ namespace ApiExamples
                 {
                     var line = sr.ReadLine();
 
-                    if (String.IsNullOrEmpty(line)) continue;
+                    if (string.IsNullOrEmpty(line)) continue;
 
                     if (line.Contains(expression))
                     {
@@ -264,7 +264,7 @@ namespace ApiExamples
         /// </summary>
         /// <param name="doc">Current document</param>
         /// <param name="secIndex">Section number from collection</param>
-        internal static String GetSectionText(Document doc, int secIndex)
+        internal static string GetSectionText(Document doc, int secIndex)
         {
             return doc.Sections[secIndex].GetText();
         }

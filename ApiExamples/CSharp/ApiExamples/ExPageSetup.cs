@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -36,12 +36,12 @@ namespace ApiExamples
             //ExSummary:Shows how to insert sections using DocumentBuilder, specify page setup for a section and reset page setup to defaults.
             DocumentBuilder builder = new DocumentBuilder();
 
-            // Modify the first section in the document.
+            // Modify the first section in the document
             builder.PageSetup.Orientation = Orientation.Landscape;
             builder.PageSetup.VerticalAlignment = PageVerticalAlignment.Center;
             builder.Writeln("Section 1, landscape oriented and text vertically centered.");
 
-            // Start a new section and reset its formatting to defaults.
+            // Start a new section and reset its formatting to defaults
             builder.InsertBreak(BreakType.SectionBreakNewPage);
             builder.PageSetup.ClearFormatting();
             builder.Writeln("Section 2, back to default Letter paper size, portrait orientation and top alignment.");
@@ -79,7 +79,7 @@ namespace ApiExamples
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             builder.Writeln("Odd pages header.");
 
-            // Move back to the main story of the first section.
+            // Move back to the main story of the first section
             builder.MoveToSection(0);
             builder.Writeln("Text page 1.");
             builder.InsertBreak(BreakType.PageBreak);
@@ -115,13 +115,14 @@ namespace ApiExamples
             //ExSummary:Changes all sections in a document to use the default paper tray of the selected printer.
             Document doc = new Document();
 
-            // Find the printer that will be used for printing this document. In this case it is the default printer.
-            // You can define a specific printer using PrinterName.
+            // Find the printer that will be used for printing this document
+            // In this case it is the default printer
+            // You can define a specific printer using PrinterName
             PrinterSettings settings = new PrinterSettings();
 
-            // The paper tray value stored in documents is completely printer specific. This means 
-            // The code below resets all page tray values to use the current printers default tray.
-            // You can enumerate PrinterSettings.PaperSources to find the other valid paper tray values of the selected printer.
+            // The paper tray value stored in documents is completely printer specific
+            // This means the code below resets all page tray values to use the current printers default tray
+            // You can enumerate PrinterSettings.PaperSources to find the other valid paper tray values of the selected printer
             foreach (Section section in doc.Sections.OfType<Section>())
             {
                 section.PageSetup.FirstPageTray = settings.DefaultPageSettings.PaperSource.RawKind;
@@ -141,15 +142,17 @@ namespace ApiExamples
             //ExSummary:Shows how to set up printing using different printer trays for different paper sizes.
             Document doc = new Document();
 
-            // Choose the default printer to be used for printing this document.
+            // Choose the default printer to be used for printing this document
             PrinterSettings settings = new PrinterSettings();
 
-            // This is the tray we will use for A4 paper size. This is the first tray in the paper sources collection.
+            // This is the tray we will use for A4 paper size
+            // This is the first tray in the paper sources collection
             int printerTrayForA4 = settings.PaperSources[0].RawKind;
-            // The is the tray we will use for Letter paper size. This is the second tray in the paper sources collection.
+            // The is the tray we will use for Letter paper size
+            // This is the second tray in the paper sources collection
             int printerTrayForLetter = settings.PaperSources[1].RawKind;
 
-            // Set the page tray used for each section based off the paper size used in the section.
+            // Set the page tray used for each section based off the paper size used in the section
             foreach (Section section in doc.Sections.OfType<Section>())
             {
                 if (section.PageSetup.PaperSize == Aspose.Words.PaperSize.Letter)
@@ -214,9 +217,9 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             TextColumnCollection columns = builder.PageSetup.TextColumns;
-            // Make spacing between columns wider.
+            // Make spacing between columns wider
             columns.Spacing = 100;
-            // This creates two columns of equal width.
+            // This creates two columns of equal width
             columns.SetCount(2);
 
             builder.Writeln("Text in column 1.");
@@ -241,19 +244,19 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             TextColumnCollection columns = builder.PageSetup.TextColumns;
-            // Show vertical line between columns.
+            // Show vertical line between columns
             columns.LineBetween = true;
-            // Indicate we want to create column with different widths.
+            // Indicate we want to create column with different widths
             columns.EvenlySpaced = false;
-            // Create two columns, note they will be created with zero widths, need to set them.
+            // Create two columns, note they will be created with zero widths, need to set them
             columns.SetCount(2);
 
-            // Set the first column to be narrow.
+            // Set the first column to be narrow
             TextColumn c1 = columns[0];
             c1.Width = 100;
             c1.SpaceAfter = 20;
 
-            // Set the second column to take the rest of the space available on the page.
+            // Set the second column to take the rest of the space available on the page
             TextColumn c2 = columns[1];
             PageSetup ps = builder.PageSetup;
             double contentWidth = ps.PageWidth - ps.LeftMargin - ps.RightMargin;
@@ -290,7 +293,7 @@ namespace ApiExamples
             Assert.False(builder.ParagraphFormat.SuppressLineNumbers);
 
             for (int i = 1; i <= 20; i++)
-                builder.Writeln(string.Format("Line {0}.", i));
+                builder.Writeln($"Line {i}.");
 
             builder.Document.Save(ArtifactsDir + "PageSetup.LineNumbers.docx");
             //ExEnd
@@ -359,24 +362,24 @@ namespace ApiExamples
             //ExFor:PageSetup.PageNumberStyle
             //ExFor:DocumentBuilder.InsertField(String, String)
             //ExSummary:Shows how to control page numbering per section.
-            // This document has two sections, but no page numbers yet.
+            // This document has two sections, but no page numbers yet
             Document doc = new Document(MyDir + "PageSetup.PageNumbering.doc");
 
-            // Use document builder to create a header with a page number field for the first section.
-            // The page number will look like "Page V".
+            // Use document builder to create a header with a page number field for the first section
+            // The page number will look like "Page V"
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.MoveToSection(0);
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             builder.Write("Page ");
             builder.InsertField("PAGE", "");
 
-            // Set first section page numbering.
+            // Set first section page numbering
             Section section = doc.Sections[0];
             section.PageSetup.RestartPageNumbering = true;
             section.PageSetup.PageStartingNumber = 5;
             section.PageSetup.PageNumberStyle = NumberStyle.UppercaseRoman;
 
-            // Create a header for the section. 
+            // Create a header for the section
             // The page number will look like " - 10 - ".
             builder.MoveToSection(1);
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
@@ -385,7 +388,7 @@ namespace ApiExamples
             builder.InsertField("PAGE", "");
             builder.Write(" - ");
 
-            // Set second section page numbering.
+            // Set second section page numbering
             section = doc.Sections[1];
             section.PageSetup.PageStartingNumber = 10;
             section.PageSetup.RestartPageNumbering = true;
@@ -400,7 +403,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PageSetup.FootnoteOptions
-            //ExSummary:Shows how to set options for footnotes in current section
+            //ExSummary:Shows how to set options for footnotes in current section.
             Document doc = new Document();
 
             PageSetup pageSetup = doc.Sections[0].PageSetup;
@@ -418,7 +421,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PageSetup.EndnoteOptions
-            //ExSummary:Shows how to set options for endnotes in current section
+            //ExSummary:Shows how to set options for endnotes in current section.
             Document doc = new Document();
 
             PageSetup pageSetup = doc.Sections[0].PageSetup;
@@ -599,9 +602,9 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Add a section to the end of a document, give it a body and a paragraph, then add text and an endnote to that paragraph
+        /// Add a section to the end of a document, give it a body and a paragraph, then add text and an endnote to that paragraph.
         /// </summary>
-        private void InsertSection(Document doc, string sectionBodyText, string endnoteText)
+        private static void InsertSection(Document doc, string sectionBodyText, string endnoteText)
         {
             Section section = new Section(doc);
 

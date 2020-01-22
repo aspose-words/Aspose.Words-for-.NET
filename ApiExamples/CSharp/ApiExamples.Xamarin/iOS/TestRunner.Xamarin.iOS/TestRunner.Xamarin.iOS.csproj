@@ -102,8 +102,8 @@
     <BundleResource Include="Resources\Default-568h@2x.png" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words, Version=19.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Aspose.Words.19.12.0\lib\Xamarin.iOS10\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=20.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Aspose.Words.20.1.0\lib\Xamarin.iOS10\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="MonoTouch.NUnitLite" />
     <Reference Include="Aspose.BarCode">

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -23,7 +23,7 @@ namespace ApiExamples
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        public static void MossDoc2Pdf(String[] args)
+        public static void MossDoc2Pdf(string[] args)
         {
             // Although SharePoint passes "-log <filename>" to us and we are
             // supposed to log there, for the sake of simplicity, we will use 
@@ -65,12 +65,12 @@ namespace ApiExamples
             }
         }
 
-        private static void ParseCommandLine(String[] args)
+        private static void ParseCommandLine(string[] args)
         {
             int i = 0;
             while (i < args.Length)
             {
-                String s = args[i];
+                string s = args[i];
                 switch (s.ToLower())
                 {
                     case "-in":
@@ -97,7 +97,7 @@ namespace ApiExamples
             }
         }
 
-        private static void ConvertDoc2Pdf(String inFileName, String outFileName)
+        private static void ConvertDoc2Pdf(string inFileName, string outFileName)
         {
             // You can load not only DOC here, but any format supported by
             // Aspose.Words: DOC, DOCX, RTF, WordML, HTML, MHTML, ODT etc.
@@ -106,8 +106,8 @@ namespace ApiExamples
             doc.Save(outFileName, new PdfSaveOptions());
         }
 
-        private static String gInFileName;
-        private static String gOutFileName;
+        private static string gInFileName;
+        private static string gOutFileName;
         private static StreamWriter gLog;
     }
 }

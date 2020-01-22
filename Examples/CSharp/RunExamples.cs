@@ -134,6 +134,7 @@ namespace Aspose.Words.Examples.CSharp
             // ReplaceWithEvaluator.Run();
             // ReplaceHtmlTextWithMeta_Characters.Run();
             // FindReplaceUsingMetaCharacters.Run();
+            // UsingLegacyOrder.Run();
 
             //// Bookmarks
             //// =====================================================
@@ -146,7 +147,7 @@ namespace Aspose.Words.Examples.CSharp
 
             //// Shapes
             //// =====================================================
-            // WorkingWithShapes.Run();
+             WorkingWithShapes.Run();
 
             //// Comments
             //// =====================================================
@@ -193,6 +194,7 @@ namespace Aspose.Words.Examples.CSharp
             // DocumentBuilderInsertElements.Run();
             // DocumentBuilderSetFormatting.Run();
             // DocumentBuilderMovingCursor.Run();
+            // ExtractTableOfContents.Run();
             // ExtractTextOnly.Run();
             // InsertDoc.Run();
             // DocumentBuilderInsertTOC.Run();

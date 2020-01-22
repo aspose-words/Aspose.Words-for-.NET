@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -104,9 +104,9 @@ namespace ApiExamples
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html)
             {
                 // 'ExportListLabels.Auto' - this option uses <ul> and <ol> tags are used for list label representation if it doesn't cause formatting loss, 
-                // otherwise HTML <p> tag is used. This is also the default value.
-                // 'ExportListLabels.AsInlineText' - using this option the <p> tag is used for any list label representation.
-                // 'ExportListLabels.ByHtmlTags' - The <ul> and <ol> tags are used for list label representation. Some formatting loss is possible.
+                // otherwise HTML <p> tag is used. This is also the default value
+                // 'ExportListLabels.AsInlineText' - using this option the <p> tag is used for any list label representation
+                // 'ExportListLabels.ByHtmlTags' - The <ul> and <ol> tags are used for list label representation. Some formatting loss is possible
                 ExportListLabels = howExportListLabels
             };
 
@@ -144,7 +144,7 @@ namespace ApiExamples
         [Test]
         public void RoundtripInformationDefaulValue()
         {
-            //Assert that default value is true for HTML and false for MHTML and EPUB.
+            //Assert that default value is true for HTML and false for MHTML and EPUB
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html);
             Assert.AreEqual(true, saveOptions.ExportRoundtripInformation);
 
@@ -346,7 +346,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlSaveOptions.CssClassNamePrefix
-            //ExSummary: Shows how to specifies a prefix which is added to all CSS class names
+            //ExSummary: Shows how to specifies a prefix which is added to all CSS class names.
             Document doc = new Document(MyDir + "HtmlSaveOptions.CssClassNamePrefix.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
@@ -420,7 +420,7 @@ namespace ApiExamples
             
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html)
             {
-                // By default this option is set to 'False' and Aspose.Words writes font names as specified in the source document.
+                // By default this option is set to 'False' and Aspose.Words writes font names as specified in the source document
                 ResolveFontNames = true 
             };
 

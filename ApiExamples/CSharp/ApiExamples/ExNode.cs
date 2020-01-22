@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -32,16 +32,16 @@ namespace ApiExamples
             //ExFor:Node
             //ExFor:Node.Clone
             //ExSummary:Shows how to clone composite nodes with and without their child nodes.
-            // Create a new empty document.
+            // Create a new empty document
             Document doc = new Document();
 
             // Add some text to the first paragraph
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
             para.AppendChild(new Run(doc, "Some text"));
 
-            // Clone the paragraph and the child nodes.
+            // Clone the paragraph and the child nodes
             Node cloneWithChildren = para.Clone(true);
-            // Only clone the paragraph and no child nodes.
+            // Only clone the paragraph and no child nodes
             Node cloneWithoutChildren = para.Clone(false);
             //ExEnd
 
@@ -55,13 +55,13 @@ namespace ApiExamples
             //ExStart
             //ExFor:Node.ParentNode
             //ExSummary:Shows how to access the parent node.
-            // Create a new empty document. It has one section.
+            // Create a new empty document. It has one section
             Document doc = new Document();
 
-            // The section is the first child node of the document.
+            // The section is the first child node of the document
             Node section = doc.FirstChild;
 
-            // The section's parent node is the document.
+            // The section's parent node is the document
             Console.WriteLine("Section parent is the document: " + (doc == section.ParentNode));
             //ExEnd
 
@@ -75,26 +75,26 @@ namespace ApiExamples
             //ExFor:Node.Document
             //ExFor:Node.ParentNode
             //ExSummary:Shows that when you create any node, it requires a document that will own the node.
-            // Open a file from disk.
+            // Open a file from disk
             Document doc = new Document();
 
-            // Creating a new node of any type requires a document passed into the constructor.
+            // Creating a new node of any type requires a document passed into the constructor
             Paragraph para = new Paragraph(doc);
 
-            // The new paragraph node does not yet have a parent.
+            // The new paragraph node does not yet have a parent
             Console.WriteLine("Paragraph has no parent node: " + (para.ParentNode == null));
 
-            // But the paragraph node knows its document.
+            // But the paragraph node knows its document
             Console.WriteLine("Both nodes' documents are the same: " + (para.Document == doc));
 
             // The fact that a node always belongs to a document allows us to access and modify 
-            // properties that reference the document-wide data such as styles or lists.
+            // properties that reference the document-wide data such as styles or lists
             para.ParagraphFormat.StyleName = "Heading 1";
 
-            // Now add the paragraph to the main text of the first section.
+            // Now add the paragraph to the main text of the first section
             doc.FirstSection.Body.AppendChild(para);
 
-            // The paragraph node is now a child of the Body node.
+            // The paragraph node is now a child of the Body node
             Console.WriteLine("Paragraph has a parent node: " + (para.ParentNode != null));
             //ExEnd
 
@@ -122,10 +122,10 @@ namespace ApiExamples
             NodeCollection children = paragraph.ChildNodes;
             foreach (Node child in children)
             {
-                // Paragraph may contain children of various types such as runs, shapes and so on.
+                // Paragraph may contain children of various types such as runs, shapes and so on
                 if (child.NodeType.Equals(NodeType.Run))
                 {
-                    // Say we found the node that we want, do something useful.
+                    // Say we found the node that we want, do something useful
                     Run run = (Run) child;
                     Console.WriteLine(run.Text);
                 }
@@ -149,10 +149,10 @@ namespace ApiExamples
             {
                 Node child = children[i];
 
-                // Paragraph may contain children of various types such as runs, shapes and so on.
+                // Paragraph may contain children of various types such as runs, shapes and so on
                 if (child.NodeType.Equals(NodeType.Run))
                 {
-                    // Say we found the node that we want, do something useful.
+                    // Say we found the node that we want, do something useful
                     Run run = (Run) child;
                     Console.WriteLine(run.Text);
                 }
@@ -171,10 +171,10 @@ namespace ApiExamples
         [Test] //ExSkip
         public void RecurseAllNodes()
         {
-            // Open a document.
+            // Open a document
             Document doc = new Document(MyDir + "Node.RecurseAllNodes.doc");
 
-            // Invoke the recursive function that will walk the tree.
+            // Invoke the recursive function that will walk the tree
             TraverseAllNodes(doc);
         }
 
@@ -184,13 +184,13 @@ namespace ApiExamples
         /// </summary>
         public void TraverseAllNodes(CompositeNode parentNode)
         {
-            // This is the most efficient way to loop through immediate children of a node.
+            // This is the most efficient way to loop through immediate children of a node
             for (Node childNode = parentNode.FirstChild; childNode != null; childNode = childNode.NextSibling)
             {
-                // Do some useful work.
+                // Do some useful work
                 Console.WriteLine(Node.NodeTypeToString(childNode.NodeType));
 
-                // Recurse into the node if it is a composite node.
+                // Recurse into the node if it is a composite node
                 if (childNode.IsComposite)
                     TraverseAllNodes((CompositeNode) childNode);
             }
@@ -206,27 +206,28 @@ namespace ApiExamples
             //ExFor:Node
             //ExFor:Node.NodeType
             //ExFor:Node.Remove
-            //ExSummary:Shows how to remove all nodes of a specific type from a composite node. In this example we remove tables from a section body.
-            // Get the section that we want to work on.
+            //ExSummary:Shows how to remove all nodes of a specific type from a composite node.
+            // In this example we remove tables from a section body
+            // Get the section that we want to work on
             Section section = doc.Sections[0];
             Body body = section.Body;
 
-            // Select the first child node in the body.
+            // Select the first child node in the body
             Node curNode = body.FirstChild;
 
             while (curNode != null)
             {
                 // Save the pointer to the next sibling node because if the current 
                 // node is removed from the parent in the next step, we will have 
-                // no way of finding the next node to continue the loop.
+                // no way of finding the next node to continue the loop
                 Node nextNode = curNode.NextSibling;
 
-                // A section body can contain Paragraph and Table nodes.
-                // If the node is a Table, remove it from the parent.
+                // A section body can contain Paragraph and Table nodes
+                // If the node is a Table, remove it from the parent
                 if (curNode.NodeType.Equals(NodeType.Table))
                     curNode.Remove();
 
-                // Continue going through child nodes until null (no more siblings) is reached.
+                // Continue going through child nodes until null (no more siblings) is reached
                 curNode = nextNode;
             }
 
@@ -243,15 +244,16 @@ namespace ApiExamples
             //ExFor:Node.NextSibling
             //ExFor:Node.NodeTypeToString
             //ExFor:Node.NodeType
-            //ExSummary:Shows how to enumerate immediate child nodes of a composite node using NextSibling. In this example we enumerate all paragraphs of a section body.
-            // Get the section that we want to work on.
+            //ExSummary:Shows how to enumerate immediate child nodes of a composite node using NextSibling.
+            // In this example we enumerate all paragraphs of a section body
+            // Get the section that we want to work on
             Section section = doc.Sections[0];
             Body body = section.Body;
 
-            // Loop starting from the first child until we reach null.
+            // Loop starting from the first child until we reach null
             for (Node node = body.FirstChild; node != null; node = node.NextSibling)
             {
-                // Output the types of the nodes that we come across.
+                // Output the types of the nodes that we come across
                 Console.WriteLine(Node.NodeTypeToString(node.NodeType));
             }
 
@@ -268,25 +270,24 @@ namespace ApiExamples
             //ExFor:Table.FirstRow
             //ExFor:Table.LastRow
             //ExFor:TableCollection
-            //ExSummary:Demonstrates how to use typed properties to access nodes of the document tree.
-            // Quick typed access to the first child Section node of the Document.
+            //ExSummary:Shows how to use typed properties to access nodes of the document tree.
+            // Quick typed access to the first child Section node of the Document
             Section section = doc.FirstSection;
 
-            // Quick typed access to the Body child node of the Section.
+            // Quick typed access to the Body child node of the Section
             Body body = section.Body;
 
-            // Quick typed access to all Table child nodes contained in the Body.
+            // Quick typed access to all Table child nodes contained in the Body
             TableCollection tables = body.Tables;
 
             foreach (Table table in tables.OfType<Table>())
             {
-                // Quick typed access to the first row of the table.
+                // Quick typed access to the first row of the table
                 table.FirstRow?.Remove();
 
-                // Quick typed access to the last row of the table.
+                // Quick typed access to the last row of the table
                 table.LastRow?.Remove();
             }
-
             //ExEnd
         }
 
@@ -297,7 +298,7 @@ namespace ApiExamples
 
             //ExStart
             //ExFor:Range.UpdateFields
-            //ExSummary:Demonstrates how to update document fields in the body of the first section only.
+            //ExSummary:Shows how to update document fields in the body of the first section only.
             doc.FirstSection.Body.Range.UpdateFields();
             //ExEnd
         }
@@ -311,14 +312,14 @@ namespace ApiExamples
             //ExFor:CompositeNode.LastChild
             //ExFor:Node.PreviousSibling
             //ExFor:CompositeNode.RemoveChild
-            //ExSummary:Demonstrates use of methods of Node and CompositeNode to remove a section before the last section in the document.
-            // Document is a CompositeNode and LastChild returns the last child node in the Document node.
-            // Since the Document can contain only Section nodes, the last child is the last section.
+            //ExSummary:Shows how to use of methods of Node and CompositeNode to remove a section before the last section in the document.
+            // Document is a CompositeNode and LastChild returns the last child node in the Document node
+            // Since the Document can contain only Section nodes, the last child is the last section
             Node lastSection = doc.LastChild;
 
-            // Each node knows its next and previous sibling nodes.
-            // Previous sibling of a section is a section before the specified section.
-            // If the node is the first child, PreviousSibling will return null.
+            // Each node knows its next and previous sibling nodes
+            // Previous sibling of a section is a section before the specified section
+            // If the node is the first child, PreviousSibling will return null
             Node sectionBeforeLast = lastSection.PreviousSibling;
 
             if (sectionBeforeLast != null)
@@ -337,8 +338,8 @@ namespace ApiExamples
             //ExSummary:Shows how to select certain nodes by using an XPath expression.
             Document doc = new Document(MyDir + "Table.Document.doc");
 
-            // This expression will extract all paragraph nodes which are descendants of any table node in the document.
-            // This will return any paragraphs which are in a table.
+            // This expression will extract all paragraph nodes which are descendants of any table node in the document
+            // This will return any paragraphs which are in a table
             NodeList nodeList = doc.SelectNodes("//Table//Paragraph");
 
             // Iterate through the list with an enumerator and print the contents of every paragraph in each cell of the table
@@ -351,13 +352,13 @@ namespace ApiExamples
                 }
             }
 
-            // This expression will select any paragraphs that are direct children of any body node in the document.
+            // This expression will select any paragraphs that are direct children of any body node in the document
             nodeList = doc.SelectNodes("//Body/Paragraph");
 
             // We can treat the list as an array too
             Assert.AreEqual(4, nodeList.ToArray().Length);
 
-            // Use SelectSingleNode to select the first result of the same expression as above.
+            // Use SelectSingleNode to select the first result of the same expression as above
             Node node = doc.SelectSingleNode("//Body/Paragraph");
             //ExEnd
         }
@@ -369,19 +370,19 @@ namespace ApiExamples
             //ExFor:CompositeNode.SelectNodes
             //ExFor:CompositeNode.GetChild
             //ExSummary:Shows how to test if a node is inside a field by using an XPath expression.
-            // Let's pick a document we know has some fields in.
+            // Let's pick a document we know has some fields in
             Document doc = new Document(MyDir + "MailMerge.MergeImage.doc");
 
-            // Let's say we want to check if the Run below is inside a field.
+            // Let's say we want to check if the Run below is inside a field
             Run run = (Run) doc.GetChild(NodeType.Run, 5, true);
 
             // Evaluate the XPath expression. The resulting NodeList will contain all nodes found inside a field a field (between FieldStart 
             // and FieldEnd exclusive). There can however be FieldStart and FieldEnd nodes in the list if there are nested fields 
-            // in the path. Currently does not find rare fields in which the FieldCode or FieldResult spans across multiple paragraphs.
+            // in the path. Currently does not find rare fields in which the FieldCode or FieldResult spans across multiple paragraphs
             NodeList resultList =
                 doc.SelectNodes("//FieldStart/following-sibling::node()[following-sibling::FieldEnd]");
 
-            // Check if the specified run is one of the nodes that are inside the field.
+            // Check if the specified run is one of the nodes that are inside the field
             foreach (Node node in resultList)
             {
                 if (node == run)
@@ -390,7 +391,6 @@ namespace ApiExamples
                     break;
                 }
             }
-
             //ExEnd
         }
 
@@ -413,7 +413,7 @@ namespace ApiExamples
             //ExSummary:Removes all smart tags from descendant nodes of the composite node.
             Document doc = new Document(MyDir + "Document.doc");
 
-            // Remove smart tags from the first paragraph in the document.
+            // Remove smart tags from the first paragraph in the document
             doc.FirstSection.Body.FirstParagraph.RemoveSmartTags();
             //ExEnd
         }
@@ -426,13 +426,13 @@ namespace ApiExamples
             //ExSummary:Shows how to get the index of a given child node from its parent.
             Document doc = new Document(MyDir + "Rendering.doc");
 
-            // Get the body of the first section in the document.
+            // Get the body of the first section in the document
             Body body = doc.FirstSection.Body;
-            // Retrieve the index of the last paragraph in the body.
+            // Retrieve the index of the last paragraph in the body
             int index = body.ChildNodes.IndexOf(body.LastParagraph);
             //ExEnd
 
-            // Verify that the index is correct.
+            // Verify that the index is correct
             Assert.AreEqual(24, index);
         }
 
@@ -467,17 +467,18 @@ namespace ApiExamples
             //ExSummary:Shows how to retrieve the NodeType enumeration of nodes.
             Document doc = new Document(MyDir + "Document.doc");
 
-            // Let's pick a node that we can't be quite sure of what type it is.
+            // Let's pick a node that we can't be quite sure of what type it is
             // In this case lets pick the first node of the first paragraph in the body of the document
             Node node = doc.FirstSection.Body.FirstParagraph.FirstChild;
             Console.WriteLine("NodeType of first child: " + Node.NodeTypeToString(node.NodeType));
 
-            // This time let's pick a node that we know the type of. Create a new paragraph and a table node.
+            // This time let's pick a node that we know the type of
+            // Create a new paragraph and a table node
             Paragraph para = new Paragraph(doc);
             Table table = new Table(doc);
 
-            // Access to NodeType for typed nodes will always return their specific NodeType. 
-            // i.e A paragraph node will always return NodeType.Paragraph, a table node will always return NodeType.Table.
+            // Access to NodeType for typed nodes will always return their specific NodeType
+            // i.e A paragraph node will always return NodeType.Paragraph, a table node will always return NodeType.Table
             Console.WriteLine("NodeType of Paragraph: " + Node.NodeTypeToString(para.NodeType));
             Console.WriteLine("NodeType of Table: " + Node.NodeTypeToString(table.NodeType));
             //ExEnd
@@ -491,15 +492,15 @@ namespace ApiExamples
             //ExSummary:Exports the content of a node to String in HTML format using default options.
             Document doc = new Document(MyDir + "Document.doc");
 
-            // Extract the last paragraph in the document to convert to HTML.
+            // Extract the last paragraph in the document to convert to HTML
             Node node = doc.LastSection.Body.LastParagraph;
 
-            // When ToString is called using the SaveFormat overload then conversion is executed using default save options. 
+            // When ToString is called using the SaveFormat overload then conversion is executed using default save options
             // When saving to HTML using default options the following settings are set:
             //   ExportImagesAsBase64 = true
             //   CssStyleSheetType = CssStyleSheetType.Inline
             //   ExportFontResources = false
-            String nodeAsHtml = node.ToString(SaveFormat.Html);
+            string nodeAsHtml = node.ToString(SaveFormat.Html);
             //ExEnd
 
             Assert.AreEqual(
@@ -515,10 +516,10 @@ namespace ApiExamples
             //ExSummary:Exports the content of a node to String in HTML format using custom specified options.
             Document doc = new Document(MyDir + "Document.doc");
 
-            // Extract the last paragraph in the document to convert to HTML.
+            // Extract the last paragraph in the document to convert to HTML
             Node node = doc.LastSection.Body.LastParagraph;
 
-            // Create an instance of HtmlSaveOptions and set a few options.
+            // Create an instance of HtmlSaveOptions and set a few options
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
                 ExportHeadersFootersMode = ExportHeadersFootersMode.PerSection,
@@ -526,8 +527,8 @@ namespace ApiExamples
             };
 
             // Convert the document to HTML and return as a String. Pass the instance of HtmlSaveOptions to
-            // to use the specified options during the conversion.
-            String nodeAsHtml = node.ToString(saveOptions);
+            // to use the specified options during the conversion
+            string nodeAsHtml = node.ToString(saveOptions);
             //ExEnd
 
             Assert.AreEqual(
@@ -543,7 +544,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:ParagraphCollection.ToArray
             //ExSummary:Demonstrates typed implementations of ToArray on classes derived from NodeCollection.
-            // You can use ToArray to return a typed array of nodes.
+            // You can use ToArray to return a typed array of nodes
             Paragraph[] paras = doc.FirstSection.Body.Paragraphs.ToArray();
             //ExEnd
 
@@ -562,17 +563,16 @@ namespace ApiExamples
             builder.Writeln("The third paragraph");
             builder.Writeln("The fourth paragraph");
 
-            // Hot remove allows a node to be removed from a live collection and have the enumeration continue.
+            // Hot remove allows a node to be removed from a live collection and have the enumeration continue
             foreach (Paragraph para in builder.Document.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true)
                 .OfType<Paragraph>())
             {
                 if (para.Range.Text.Contains("third"))
                 {
-                    // Enumeration will continue even after this node is removed.
+                    // Enumeration will continue even after this node is removed
                     para.Remove();
                 }
             }
-
             //ExEnd
         }
 
@@ -588,7 +588,7 @@ namespace ApiExamples
             builder.Writeln("The third paragraph");
             builder.Writeln("The fourth paragraph");
 
-            // This causes unexpected behavior, the fourth paragraph in the collection is not visited.
+            // This causes unexpected behavior, the fourth paragraph in the collection is not visited
             foreach (Paragraph para in builder.Document.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true)
                 .OfType<Paragraph>())
             {
@@ -652,7 +652,7 @@ namespace ApiExamples
         }
 
         //ExStart
-        //ExFor:Aspose.Words.CompositeNode.CreateNavigator
+        //ExFor:CompositeNode.CreateNavigator
         //ExSummary:Shows how to create an XPathNavigator and use it to traverse and read nodes.
         [Test] //ExSkip
         public void NodeXPathNavigator()
@@ -691,7 +691,7 @@ namespace ApiExamples
         /// This will traverse all children of a composite node and map the structure in the style of a directory tree.
         /// Amount of space indentation indicates depth relative to initial node. Only runs will have their values printed.
         /// </summary>
-        private void MapDocument(XPathNavigator navigator, StringBuilder stringBuilder, int depth)
+        private static void MapDocument(XPathNavigator navigator, StringBuilder stringBuilder, int depth)
         {
             do
             {
@@ -750,7 +750,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Prints all inserted/removed nodes as well as their parent nodes
+        /// Prints all inserted/removed nodes as well as their parent nodes.
         /// </summary>
         private class NodeChangingPrinter : INodeChangingCallback
         {

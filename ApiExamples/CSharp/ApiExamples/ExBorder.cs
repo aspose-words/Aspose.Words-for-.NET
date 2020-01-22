@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -67,14 +67,11 @@ namespace ApiExamples
             //ExFor:Border.ClearFormatting
             //ExSummary:Shows how to remove borders from a paragraph.
             Document doc = new Document(MyDir + "Borders.doc");
-            DocumentBuilder builder = new DocumentBuilder(doc);
 
+            DocumentBuilder builder = new DocumentBuilder(doc);
             BorderCollection borders = builder.ParagraphFormat.Borders;
 
-            foreach (Border border in borders)
-            {
-                border.ClearFormatting();
-            }
+            foreach (Border border in borders) border.ClearFormatting();
 
             builder.CurrentParagraph.Runs[0].Text = "Paragraph with no border";
 
@@ -131,7 +128,6 @@ namespace ApiExamples
             {
                 Assert.IsFalse(firstParaBorders[i].Equals(secondParaBorders[i]));
                 Assert.AreNotEqual(firstParaBorders[i].GetHashCode(), secondParaBorders[i].GetHashCode());
-
                 // Changing the line style made the borders visible
                 Assert.IsTrue(secondParaBorders[i].IsVisible);
             }

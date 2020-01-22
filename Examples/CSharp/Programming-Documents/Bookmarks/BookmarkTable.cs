@@ -10,10 +10,15 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Bookmarks
     {
         public static void Run()
         {
-            // ExStart:BookmarkTable
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithBookmarks();
-            
+
+            InsertBookmarkTable(dataDir);
+            BookmarkTableColumns(dataDir);
+        }
+        public static void InsertBookmarkTable(string dataDir)
+        {
+            // ExStart:BookmarkTable
             // Create empty document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -53,6 +58,23 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Bookmarks
             // ExEnd:BookmarkTable
             Console.WriteLine("\nTable bookmarked successfully.\nFile saved at " + dataDir);
         }
-        
+
+        public static void BookmarkTableColumns(string dataDir)
+        {
+            // ExStart:BookmarkTableColumns
+            // Create empty document
+            Document doc = new Document(dataDir + "Bookmark.Table_out.doc");
+            foreach (Bookmark bookmark in doc.Range.Bookmarks)
+            {
+                Console.WriteLine("Bookmark: {0}{1}", bookmark.Name, bookmark.IsColumn ? " (Column)" : "");
+                if (bookmark.IsColumn)
+                {
+                    Row row = bookmark.BookmarkStart.GetAncestor(NodeType.Row) as Row;
+                    if (row != null && bookmark.FirstColumn < row.Cells.Count)
+                        Console.WriteLine(row.Cells[bookmark.FirstColumn].GetText().TrimEnd(ControlChar.CellChar));
+                }
+            }
+            // ExEnd:BookmarkTableColumns
+        }
     }
 }

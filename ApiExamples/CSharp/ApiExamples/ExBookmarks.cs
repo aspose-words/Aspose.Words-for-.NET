@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -206,10 +206,7 @@ namespace ApiExamples
 
             // MS Word document does not support bookmark names with whitespaces by default
             // If you have document which contains bookmark names with underscores, you can simply replace them to whitespaces
-            foreach (Bookmark bookmark in doc.Range.Bookmarks)
-            {
-                bookmark.Name = bookmark.Name.Replace("_", " ");
-            }
+            foreach (Bookmark bookmark in doc.Range.Bookmarks) bookmark.Name = bookmark.Name.Replace("_", " ");
             //ExEnd
         }
     }

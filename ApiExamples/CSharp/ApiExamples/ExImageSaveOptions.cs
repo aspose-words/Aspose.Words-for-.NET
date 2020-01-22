@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -149,7 +149,8 @@ namespace ApiExamples
                 TiffCompression = TiffCompression.Ccitt3,
                 ImageColorMode = ImageColorMode.Grayscale,
                 TiffBinarizationMethod = ImageBinarizationMethod.FloydSteinbergDithering,
-                ThresholdForFloydSteinbergDithering = 254 // The default value of this property is 128. The higher value, the darker image.
+                // The default value of this property is 128. The higher value, the darker image
+                ThresholdForFloydSteinbergDithering = 254
             };
 
             doc.Save(ArtifactsDir + "ImagesSaveOptions.ThresholdForFloydSteinbergDithering.tiff", options);

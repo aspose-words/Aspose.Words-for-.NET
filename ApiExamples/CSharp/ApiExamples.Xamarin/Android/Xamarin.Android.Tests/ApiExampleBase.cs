@@ -100,6 +100,11 @@ namespace ApiExamples
         internal static string DatabaseDir { get; }
 
         /// <summary>
+        /// Gets the path of the free fonts. Ends with a back slash.
+        /// </summary>
+        internal static string FontsDir { get; }
+
+        /// <summary>
         /// Gets the path to the documents used by the code examples. Ends with a back slash.
         /// </summary>
         internal static string GoldsDir { get; }
@@ -116,6 +121,7 @@ namespace ApiExamples
             ImageDir = Path.Combine(mExternalAppPath, "Data/Images/");
             DatabaseDir = Path.Combine(mExternalAppPath, "Data/Database/");
             GoldsDir = Path.Combine(mExternalAppPath, "Data/Golds/");
+            FontsDir = Path.Combine(mExternalAppPath, "Data/MyFonts/");
             AsposeLogoUrl = new Uri("https://www.aspose.cloud/templates/aspose/App_Themes/V3/images/words/header/aspose_words-for-net.png").AbsoluteUri;
         }
 

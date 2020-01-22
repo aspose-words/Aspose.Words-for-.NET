@@ -16,6 +16,8 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             CreateVbaProject(dataDir);
             ReadVbaMacros(dataDir);
             ModifyVbaMacros(dataDir);
+            CloneVbaProject(dataDir);
+            CloneVbaModule(dataDir);
         }
 
         public static void CreateVbaProject(string dataDir)
@@ -70,6 +72,41 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
 
             doc.Save(dataDir + "VbaProject_out.docm");
             //ExEnd:ModifyVbaMacros
+            Console.WriteLine("\nDocument saved successfully.\nFile saved at " + dataDir);
+        }
+
+        public static void CloneVbaProject(string dataDir)
+        {
+            //ExStart:CloneVbaProject
+            Document doc = new Document(dataDir + "VbaProject_source.docm");
+            VbaProject project = doc.VbaProject;
+
+            Document destDoc = new Document();
+
+            // Clone the whole project.
+            destDoc.VbaProject = doc.VbaProject.Clone();
+
+            destDoc.Save(dataDir + "output.docm");
+            //ExEnd:CloneVbaProject
+            Console.WriteLine("\nDocument saved successfully.\nFile saved at " + dataDir);
+        }
+
+        public static void CloneVbaModule(string dataDir)
+        {
+            //ExStart:CloneVbaModule
+            Document doc = new Document(dataDir + "VbaProject_source.docm");
+            VbaProject project = doc.VbaProject;
+
+            Document destDoc = new Document();
+
+            destDoc.VbaProject = new VbaProject();
+
+            // Clone a single module.
+            VbaModule copyModule = doc.VbaProject.Modules["Module1"].Clone();
+            destDoc.VbaProject.Modules.Add(copyModule);
+
+            destDoc.Save(dataDir + "output.docm");
+            //ExEnd:CloneVbaModule
             Console.WriteLine("\nDocument saved successfully.\nFile saved at " + dataDir);
         }
     }

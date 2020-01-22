@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2019 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -113,7 +113,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Hyphenation.UnregisterDictionary(String)
-            //ExSummary:Shows how to un-register a dictionary
+            //ExSummary:Shows how to un-register a dictionary.
             Document doc = new Document(MyDir + "Document.doc");
             Hyphenation.RegisterDictionary("en-US", MyDir + "hyph_en_US.dic");
 
