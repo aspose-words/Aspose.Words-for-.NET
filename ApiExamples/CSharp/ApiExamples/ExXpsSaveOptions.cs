@@ -20,11 +20,11 @@ namespace ApiExamples
             //ExStart
             //ExFor:FixedPageSaveOptions.OptimizeOutput
             //ExSummary:Shows how to optimize document objects while saving to xps.
-            Document doc = new Document(MyDir + "XPSOutputOptimize.docx");
+            Document doc = new Document(MyDir + "Unoptimized document.docx");
 
-            XpsSaveOptions saveOptions = new XpsSaveOptions { OptimizeOutput = true };
+            XpsSaveOptions saveOptions = new XpsSaveOptions { OptimizeOutput = false };
 
-            doc.Save(ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps", saveOptions);
+            doc.Save(ArtifactsDir + "XpsSaveOptions.OptimizeOutputF.xps", saveOptions);
             //ExEnd
         }
     }

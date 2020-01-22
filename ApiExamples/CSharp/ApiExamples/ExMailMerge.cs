@@ -955,7 +955,7 @@ namespace ApiExamples
             //ExFor:FieldAddressBlock
             //ExFor:FieldAddressBlock.GetFieldNames
             //ExSummary:Shows how to get mail merge field names used by the field.
-            Document doc = new Document(MyDir + "AddressBlockFieldNames.docx");
+            Document doc = new Document(MyDir + "Field ADDRESSBLOCK.docx");
 
             string[] addressFieldsExpect =
             {
@@ -1026,7 +1026,7 @@ namespace ApiExamples
             //ExFor:MailMergeRegionInfo.EndField
             //ExFor:MailMergeRegionInfo.Level
             //ExSummary:Shows how to get MailMergeRegionInfo and work with it.
-            Document doc = new Document(MyDir + "MailMergeRegions.docx");
+            Document doc = new Document(MyDir + "Mail merge regions.docx");
 
             // Returns a full hierarchy of regions (with fields) available in the document
             MailMergeRegionInfo regionInfo = doc.MailMerge.GetRegionsHierarchy();
@@ -1092,7 +1092,7 @@ namespace ApiExamples
         [Test]
         public void GetRegionsByName()
         {
-            Document doc = new Document(MyDir + "MailMergeRegions.docx");
+            Document doc = new Document(MyDir + "Mail merge regions.docx");
 
             IList<MailMergeRegionInfo> regions = doc.MailMerge.GetRegionsByName("Region1");
             Assert.AreEqual(1, doc.MailMerge.GetRegionsByName("Region1").Count);

@@ -98,7 +98,7 @@ namespace ApiExamples
             //ExFor:LayoutOptions.TextShaperFactory
             //ExSummary:Shows how to support OpenType features using HarfBuzz text shaping engine.
             // Open a document
-            Document doc = new Document(MyDir + "OpenTypeTextShaping.docx");
+            Document doc = new Document(MyDir + "OpenType text shaping.docx");
 
             // Please note that text shaping is only performed when exporting to PDF or XPS formats now
 
@@ -128,7 +128,7 @@ namespace ApiExamples
 
             // When we open an Html document, external resources such as references to CSS stylesheet files and external images
             // will be handled in a custom manner by the loading callback as the document is loaded
-            Document doc = new Document(MyDir + "ResourcesForCallback.html", loadOptions);
+            Document doc = new Document(MyDir + "Images.html", loadOptions);
             doc.Save(ArtifactsDir + "Document.LoadOptionsCallback.pdf");
         }
 
@@ -418,7 +418,7 @@ namespace ApiExamples
             LoadOptions loadOptions = new LoadOptions { ConvertShapeToOfficeMath = false };
 
             // Specify load option to convert math shapes to office math objects on loading stage
-            Document doc = new Document(MyDir + "MathShapes.docx", loadOptions);
+            Document doc = new Document(MyDir + "Math shapes.docx", loadOptions);
             doc.Save(ArtifactsDir + "Document.ConvertShapeToOfficeMath.docx", SaveFormat.Docx);
             //ExEnd
         }
@@ -430,7 +430,7 @@ namespace ApiExamples
             //ExFor:LoadOptions.Encoding
             //ExSummary:Shows how to set the encoding with which to open a document.
             // Get the file format info of a file in our local file system
-            FileFormatInfo fileFormatInfo = FileFormatUtil.DetectFileFormat(MyDir + "EncodedInUTF-7.txt");
+            FileFormatInfo fileFormatInfo = FileFormatUtil.DetectFileFormat(MyDir + "Encoded in UTF-7.txt");
 
             // One of the aspects of a document that the FileFormatUtil can pick up is the text encoding
             // This automatically takes place every time we open a document programmatically
@@ -441,13 +441,13 @@ namespace ApiExamples
 
             // If we open the document normally, the wrong encoding will be applied,
             // and the content of the document will not be represented correctly
-            Document doc = new Document(MyDir + "EncodedInUTF-7.txt");
+            Document doc = new Document(MyDir + "Encoded in UTF-7.txt");
             Assert.AreEqual("Hello world+ACE-\r\n\r\n", doc.ToString(SaveFormat.Text));
 
             // In these cases we can set the Encoding attribute in a LoadOptions object
             // to override the automatically chosen encoding with the one we know to be correct
             LoadOptions loadOptions = new LoadOptions { Encoding = Encoding.UTF7 };
-            doc = new Document(MyDir + "EncodedInUTF-7.txt", loadOptions);
+            doc = new Document(MyDir + "Encoded in UTF-7.txt", loadOptions);
 
             // This will give us the correct text
             Assert.AreEqual("Hello world!\r\n\r\n", doc.ToString(SaveFormat.Text));
@@ -896,7 +896,7 @@ namespace ApiExamples
             //ExFor:DigitalSignatureType
             //ExSummary:Shows how to validate all signatures in a document.
             // Load the signed document
-            Document doc = new Document(MyDir + "DigitalSignature.docx");
+            Document doc = new Document(MyDir + "Digitally signed.docx");
             DigitalSignatureCollection digitalSignatureCollection = doc.DigitalSignatures;
 
             if (digitalSignatureCollection.IsValid)
@@ -928,7 +928,7 @@ namespace ApiExamples
             //ExFor:DigitalSignature.Certificate
             //ExSummary:Shows how to validate each signature in a document and display basic information about the signature.
             // Load the document which contains signature
-            Document doc = new Document(MyDir + "DigitalSignature.docx");
+            Document doc = new Document(MyDir + "Digitally signed.docx");
 
             foreach (DigitalSignature signature in doc.DigitalSignatures)
             {
@@ -1429,7 +1429,7 @@ namespace ApiExamples
             //ExFor:FootnoteOptions
             //ExFor:FootnoteOptions.Columns
             //ExSummary:Shows how to set the number of columns with which the footnotes area is formatted.
-            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
+            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
 
             Assert.AreEqual(0, doc.FootnoteOptions.Columns); //ExSkip
 
@@ -1452,7 +1452,7 @@ namespace ApiExamples
             //ExFor:FootnoteOptions.Position
             //ExFor:FootnotePosition
             //ExSummary:Shows how to define footnote position in the document.
-            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
+            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
 
             doc.FootnoteOptions.Position = FootnotePosition.BeneathText;
             //ExEnd
@@ -1464,7 +1464,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FootnoteOptions.NumberStyle
             //ExSummary:Shows how to define numbering format for footnotes in the document.
-            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
+            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
 
             doc.FootnoteOptions.NumberStyle = NumberStyle.Arabic1;
             //ExEnd
@@ -1477,7 +1477,7 @@ namespace ApiExamples
             //ExFor:FootnoteOptions.RestartRule
             //ExFor:FootnoteNumberingRule
             //ExSummary:Shows how to define when automatic numbering for footnotes restarts in the document.
-            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
+            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
 
             doc.FootnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
             //ExEnd
@@ -1489,7 +1489,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FootnoteOptions.StartNumber
             //ExSummary:Shows how to define the starting number or character for the first automatically numbered footnotes.
-            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
+            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
 
             doc.FootnoteOptions.StartNumber = 1;
             //ExEnd
@@ -1503,7 +1503,7 @@ namespace ApiExamples
             //ExFor:EndnoteOptions.Position
             //ExFor:EndnotePosition
             //ExSummary:Shows how to define endnote position in the document.
-            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
+            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
 
             doc.EndnoteOptions.Position = EndnotePosition.EndOfSection;
             //ExEnd
@@ -1515,7 +1515,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:EndnoteOptions.NumberStyle
             //ExSummary:Shows how to define numbering format for endnotes in the document.
-            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
+            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
 
             doc.EndnoteOptions.NumberStyle = NumberStyle.Arabic1;
             //ExEnd
@@ -1527,7 +1527,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:EndnoteOptions.RestartRule
             //ExSummary:Shows how to define when automatic numbering for endnotes restarts in the document.
-            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
+            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
 
             doc.EndnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
             //ExEnd
@@ -1539,7 +1539,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:EndnoteOptions.StartNumber
             //ExSummary:Shows how to define the starting number or character for the first automatically numbered endnotes.
-            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
+            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
 
             doc.EndnoteOptions.StartNumber = 1;
             //ExEnd
@@ -1772,10 +1772,11 @@ namespace ApiExamples
             //ExStart
             //ExFor:RevisionOptions.ShowInBalloons
             //ExSummary:Shows how render tracking changes in balloons
-            Document doc = new Document(MyDir + "ShowRevisionBalloons.docx");
+            Document doc = new Document(MyDir + "Revisions.docx");
 
-            // Set option true, if you need render tracking changes in balloons in pdf document
-            doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.Format;
+            // Set option true, if you need render tracking changes in balloons in pdf document,
+            // while comments will stay visible
+            doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.None;
 
             // Check that revisions are in balloons 
             doc.Save(ArtifactsDir + "Document.ShowRevisionBalloons.pdf");
@@ -1833,7 +1834,7 @@ namespace ApiExamples
             //ExFor:RevisionsView
             //ExFor:Document.RevisionsView
             //ExSummary:Shows how to get revised version of list label and list level formatting in a document.
-            Document doc = new Document(MyDir + "GetRevisedVersionOfDocument.docx");
+            Document doc = new Document(MyDir + "Revisions at list levels.docx");
             doc.UpdateListLabels();
 
             // Switch to the revised version of the document
@@ -2294,9 +2295,9 @@ namespace ApiExamples
             // For AutomaticallyUpdateStyles to have any effect, we need a document with a template
             // We can make a document with word and open it
             // Or we can attach a template from our file system, as below
-            doc.AttachedTemplate = MyDir + "Document.BusinessBrochureTemplate.dotx";
+            doc.AttachedTemplate = MyDir + "Busniess brochure.dotx";
 
-            Assert.IsTrue(doc.AttachedTemplate.EndsWith("Document.BusinessBrochureTemplate.dotx"));
+            Assert.IsTrue(doc.AttachedTemplate.EndsWith("Busniess brochure.dotx"));
 
             // Any changes to the styles in this template will be propagated to those styles in the document
             doc.AutomaticallyUpdateSyles = true;
@@ -2323,7 +2324,7 @@ namespace ApiExamples
             // We can set a default template document filename in a SaveOptions object to make it apply to
             // all documents we save with it that have no AttachedTemplate value
             SaveOptions options = SaveOptions.CreateSaveOptions("Document.DefaultTemplate.docx");
-            options.DefaultTemplate = MyDir + "Document.BusinessBrochureTemplate.dotx";
+            options.DefaultTemplate = MyDir + "Busniess brochure.dotx";
 
             doc.Save(ArtifactsDir + "Document.DefaultTemplate.docx", options);
             //ExEnd
@@ -2548,7 +2549,7 @@ namespace ApiExamples
             //ExFor:Odso.TableName
             //ExFor:Odso.UdlConnectString
             //ExSummary:Shows how to execute a mail merge while connecting to an external data source.
-            Document doc = new Document(MyDir + "OdsoData.docx");
+            Document doc = new Document(MyDir + "Odso data.docx");
 
             MailMergeSettings settings = doc.MailMergeSettings;
 
@@ -2583,10 +2584,37 @@ namespace ApiExamples
             //ExFor:MailMergeSettings.DataSource
             //ExFor:MailMergeSettings.HeaderSource
             //ExSummary:Shows how to execute a mail merge while drawing data from a header and a data file.
+            // Create a mailing label merge header file, which will consist of a table with one row 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            builder.StartTable();
+            builder.InsertCell();
+            builder.Write("FirstName");
+            builder.InsertCell();
+            builder.Write("LastName");
+            builder.EndTable();
+
+            doc.Save(ArtifactsDir + "Document.MailingLabelMerge.Header.docx");
+
+            // Create a mailing label merge date file, which will consist of a table with one row and the same amount of columns as 
+            // the header table, which will determine the names for these columns
+            doc = new Document();
+            builder = new DocumentBuilder(doc);
+
+            builder.StartTable();
+            builder.InsertCell();
+            builder.Write("John");
+            builder.InsertCell();
+            builder.Write("Doe");
+            builder.EndTable();
+
+            doc.Save(ArtifactsDir + "Document.MailingLabelMerge.Data.docx");
+
             // Create a merge destination document with MERGEFIELDS that will accept data
+            doc = new Document();
+            builder = new DocumentBuilder(doc);
+
             builder.Write("Dear ");
             builder.InsertField("MERGEFIELD FirstName", "<FirstName>");
             builder.Write(" ");
@@ -2597,8 +2625,8 @@ namespace ApiExamples
 
             // The "header" document contains column names for the data in the "data" document,
             // which will correspond to the names of our MERGEFIELDs
-            settings.HeaderSource = MyDir + "MailingLabelMergeHeader.docx";
-            settings.DataSource = MyDir + "MailingLabelMergeData.docx";
+            settings.HeaderSource = ArtifactsDir + "Document.MailingLabelMerge.Header.docx";
+            settings.DataSource = ArtifactsDir + "Document.MailingLabelMerge.Data.docx";
 
             // Configure the rest of the MailMergeSettings object
             settings.Query = "SELECT * FROM " + doc.MailMergeSettings.DataSource;
@@ -2632,7 +2660,7 @@ namespace ApiExamples
             //ExFor:OdsoFieldMapDataCollection.RemoveAt(Int32)
             //ExFor:OdsoFieldMappingType
             //ExSummary:Shows how to access the collection of data that maps data source columns to merge fields.
-            Document doc = new Document(MyDir + "OdsoData.docx");
+            Document doc = new Document(MyDir + "Odso data.docx");
 
             // This collection defines how columns from an external data source will be mapped to predefined MERGEFIELD,
             // ADDRESSBLOCK and GREETINGLINE fields during a mail merge
@@ -2674,7 +2702,7 @@ namespace ApiExamples
             //ExFor:OdsoRecipientDataCollection.Item(Int32)
             //ExFor:OdsoRecipientDataCollection.RemoveAt(Int32)
             //ExSummary:Shows how to access the collection of data that designates merge data source records to be excluded from a merge.
-            Document doc = new Document(MyDir + "OdsoData.docx");
+            Document doc = new Document(MyDir + "Odso data.docx");
 
             // Records in this collection that do not have the "Active" flag set to true will be excluded from the mail merge
             OdsoRecipientDataCollection odsoRecipientDataCollection = doc.MailMergeSettings.Odso.RecipientDatas;
@@ -2719,7 +2747,7 @@ namespace ApiExamples
             // CustomParts are arbitrary content OOXML parts
             // Not to be confused with Custom XML data which is represented by CustomXmlParts
             // This part is internal, meaning it is contained inside the OOXML package
-            Document doc = new Document(MyDir + "CustomPartsOOXML.docx");
+            Document doc = new Document(MyDir + "Custom parts OOXML package.docx");
             Assert.AreEqual(2, doc.PackageCustomParts.Count);
 
             // Clone the second part
@@ -3177,7 +3205,7 @@ namespace ApiExamples
             // Open a document that contains a variety of layout entities
             // Layout entities are pages, cells, rows, lines and other objects included in the LayoutEntityType enum
             // They are defined visually by the rectangular space that they occupy in the document
-            Document doc = new Document(MyDir + "LayoutEntities.docx");
+            Document doc = new Document(MyDir + "Layout entities.docx");
 
             // Create an enumerator that can traverse these entities
             LayoutEnumerator layoutEnumerator = new LayoutEnumerator(doc);
@@ -3314,7 +3342,7 @@ namespace ApiExamples
             //ExFor:DocSaveOptions.AlwaysCompressMetafiles
             //ExSummary:Shows how to change metafiles compression in a document while saving.
             // Open a document that contains a Microsoft Equation 3.0 mathematical formula
-            Document doc = new Document(MyDir + "MicrosoftEquationObject.docx");
+            Document doc = new Document(MyDir + "Microsoft equation object.docx");
             
             // Large metafiles are always compressed when exporting a document in Aspose.Words, but small metafiles are not
             // compressed for performance reason. Some other document editors, such as LibreOffice, cannot read uncompressed
@@ -3341,7 +3369,7 @@ namespace ApiExamples
             //ExFor:VbaModule.Name
             //ExFor:VbaModule.SourceCode
             //ExSummary:Shows how to get access to VBA project information in the document.
-            Document doc = new Document(MyDir + "VBAProject.docm");
+            Document doc = new Document(MyDir + "VBA project.docm");
 
             // A VBA project inside the document is defined as a collection of VBA modules
             VbaProject vbaProject = doc.VbaProject;
@@ -3403,7 +3431,7 @@ namespace ApiExamples
             //ExFor:SubDocument
             //ExFor:SubDocument.NodeType
             //ExSummary:Shows how to access a master document's subdocument.
-            Document doc = new Document(MyDir + "SubDocumentMaster.docx");
+            Document doc = new Document(MyDir + "Master document.docx");
 
             NodeCollection subDocuments = doc.GetChildNodes(NodeType.SubDocument, true);
             Assert.AreEqual(1, subDocuments.Count);

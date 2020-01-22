@@ -305,7 +305,7 @@ namespace ApiExamples
             //ExFor:Shape.HasImage
             //ExFor:Node.Remove
             //ExSummary:Shows how to delete all images from a document.
-            Document doc = new Document(MyDir + "SampleImages.docx");
+            Document doc = new Document(MyDir + "Images.docx");
             Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
 
             // Here we get all shapes from the document node, but you can do this for any smaller
@@ -338,7 +338,7 @@ namespace ApiExamples
             //ExFor:Node.NextPreOrder(Node)
             //ExFor:Node.PreviousPreOrder(Node)
             //ExSummary:Shows how to delete all images from a document using pre-order tree traversal.
-            Document doc = new Document(MyDir + "SampleImages.docx");
+            Document doc = new Document(MyDir + "Images.docx");
             Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
 
             Node curNode = doc;

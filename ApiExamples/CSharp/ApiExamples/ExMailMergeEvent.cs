@@ -39,7 +39,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void InsertHtml()
         {
-            Document doc = new Document(MyDir + "ContentMergefield.docx");
+            Document doc = new Document(MyDir + "Field MERGEFIELD.docx");
 
             // Add a handler for the MergeField event
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldInsertHtml();
@@ -183,7 +183,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void AlternatingRows()
         {
-            Document doc = new Document(MyDir + "MailMergeDestination.docx");
+            Document doc = new Document(MyDir + "Mail merge destination - Northwind suppliers.docx");
 
             // Add a handler for the MergeField event
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldAlternatingRows();
@@ -301,7 +301,7 @@ namespace ApiExamples
         [Category("SkipMono")] //ExSkip
         public void ImageFromBlob()
         {
-            Document doc = new Document(MyDir + "MailMergeDestinationNorthwindEmployees.docx");
+            Document doc = new Document(MyDir + "Mail merge destination - Northwind employees.docx");
 
             // Set up the event handler for image fields
             doc.MailMerge.FieldMergingCallback = new HandleMergeImageFieldFromBlob();

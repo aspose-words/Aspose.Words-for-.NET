@@ -32,7 +32,7 @@ namespace ApiExamples
         public void Fields()
         {
             // Specify your document name here
-            Document doc = new Document(MyDir + "ReplaceHyperlinks.docx");
+            Document doc = new Document(MyDir + "Hyperlinks.docx");
 
             // Hyperlinks in a Word documents are fields, select all field start nodes so we can find the hyperlinks
             NodeList fieldStarts = doc.SelectNodes("//FieldStart");

@@ -54,7 +54,7 @@ namespace ApiExamples
             //ExFor:FieldChar.GetField
             //ExFor:Field.IsLocked
             //ExSummary:Demonstrates how to retrieve the field class from an existing FieldStart node in the document.
-            Document doc = new Document(MyDir + "TableOfContents.docx");
+            Document doc = new Document(MyDir + "Table of contents.docx");
 
             FieldChar fieldStart = (FieldChar)doc.GetChild(NodeType.FieldStart, 0, true);
             Assert.AreEqual(FieldType.FieldTOC, fieldStart.FieldType);
@@ -146,7 +146,7 @@ namespace ApiExamples
         [Test]
         public void GetFieldFromFieldCollection()
         {
-            Document doc = new Document(MyDir + "TableOfContents.docx");
+            Document doc = new Document(MyDir + "Table of contents.docx");
 
             Field field = doc.Range.Fields[0];
 
@@ -220,7 +220,7 @@ namespace ApiExamples
             //ExFor:CompositeNode.GetChildNodes(NodeType, Boolean)
             //ExSummary:Demonstrates how to remove a specified TOC from a document.
             // Open a document which contains a TOC
-            Document doc = new Document(MyDir + "TableOfContents.docx");
+            Document doc = new Document(MyDir + "Table of contents.docx");
 
             // Remove the first TOC from the document
             Field tocField = doc.Range.Fields[0];
@@ -557,7 +557,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.UnlinkFields
             //ExSummary:Shows how to unlink all fields in the document.
-            Document doc = new Document(MyDir + "LinkedFields.docx");
+            Document doc = new Document(MyDir + "Linked fields.docx");
 
             doc.UnlinkFields();
             //ExEnd
@@ -572,7 +572,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Range.UnlinkFields
             //ExSummary:Shows how to unlink all fields in range.
-            Document doc = new Document(MyDir + "LinkedFields.docx");
+            Document doc = new Document(MyDir + "Linked fields.docx");
 
             Section newSection = (Section)doc.Sections[0].Clone(true);
             doc.Sections.Add(newSection);
@@ -592,7 +592,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Field.Unlink
             //ExSummary:Shows how to unlink specific field.
-            Document doc = new Document(MyDir + "LinkedFields.docx");
+            Document doc = new Document(MyDir + "Linked fields.docx");
             doc.Range.Fields[1].Unlink();
             //ExEnd
 
@@ -1289,7 +1289,7 @@ namespace ApiExamples
             Assert.AreEqual(" AUTOTEXT  MyBlock", fieldAutoText.GetFieldCode());
 
             // Put additional templates here
-            doc.FieldOptions.BuiltInTemplatesPaths = new[] { MyDir + "Document.BusinessBrochureTemplate.dotx" };
+            doc.FieldOptions.BuiltInTemplatesPaths = new[] { MyDir + "Busniess brochure.dotx" };
 
             // We can also display our building block with a GLOSSARY field
             FieldGlossary fieldGlossary = (FieldGlossary)builder.InsertField(FieldType.FieldGlossary, true);
@@ -2181,13 +2181,13 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Use a document builder to insert an include text field and perform an XSL transformation on an XML document
-            FieldIncludeText fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "CDCollectionData.xml", false, "text/xml", "XML", "ISO-8859-1");
-            fieldIncludeText.XslTransformation = MyDir + "CDCollectionXSLTransformation.xsl";
+            FieldIncludeText fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "CD collection data.xml", false, "text/xml", "XML", "ISO-8859-1");
+            fieldIncludeText.XslTransformation = MyDir + "CD collection XSL transformation.xsl";
 
             builder.Writeln();
 
             // Use a document builder to insert an include text field and use an XPath to take specific elements
-            fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "CDCollectionData.xml", false, "text/xml", "XML", "ISO-8859-1");
+            fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "CD collection data.xml", false, "text/xml", "XML", "ISO-8859-1");
             fieldIncludeText.NamespaceMappings = "xmlns:n='myNamespace'";
             fieldIncludeText.XPath = "/catalog/cd/title";
 
@@ -2230,15 +2230,15 @@ namespace ApiExamples
             FieldHyperlink fieldHyperlink = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
 
             // When link is clicked, open a document and place the cursor on the bookmarked location
-            fieldHyperlink.Address = MyDir + "Field.HyperlinkDestination.docx";
-            fieldHyperlink.SubAddress = "My_Bookmark";
+            fieldHyperlink.Address = MyDir + "Bookmarks.docx";
+            fieldHyperlink.SubAddress = "MyBookmark3";
             fieldHyperlink.ScreenTip = "Open " + fieldHyperlink.Address + " on bookmark " + fieldHyperlink.SubAddress + " in a new window";
 
             builder.Writeln();
 
             // Open html file at a specific frame
             fieldHyperlink = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
-            fieldHyperlink.Address = MyDir + "Field.HyperlinkDestination.html";
+            fieldHyperlink.Address = MyDir + "Iframes.html";
             fieldHyperlink.ScreenTip = "Open " + fieldHyperlink.Address;
             fieldHyperlink.Target = "iframe_3";
             fieldHyperlink.OpenInNewWindow = true;
@@ -5064,7 +5064,7 @@ namespace ApiExamples
             //ExSummary:Shows how to process FORMCHECKBOX, FORMDROPDOWN and FORMTEXT fields.
             // These fields are legacy equivalents of the FormField, and they can be read but not inserted by Aspose.Words,
             // and are inserted in Microsoft Word 2019 via the Legacy Tools menu in the Developer tab
-            Document doc = new Document(MyDir + "FormFields.docx");
+            Document doc = new Document(MyDir + "Form fields.docx");
 
             FieldFormCheckBox fieldFormCheckBox = (FieldFormCheckBox)doc.Range.Fields[1];
             Assert.AreEqual(" FORMCHECKBOX \u0001", fieldFormCheckBox.GetFieldCode());
@@ -5400,7 +5400,7 @@ namespace ApiExamples
             //ExFor:FieldShape.Text
             //ExSummary:Shows how some older Microsoft Word fields such as SHAPE and EMBED are handled.
             // Open a document that was created in Microsoft Word 2003
-            Document doc = new Document(MyDir + "LegacyFields.doc");
+            Document doc = new Document(MyDir + "Legacy fields.doc");
 
             // If we open the document in Word and press Alt+F9, we will see a SHAPE and an EMBED field
             // A SHAPE field is the anchor/canvas for an autoshape object with the "In line with text" wrapping style enabled
@@ -5433,7 +5433,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Field.DisplayResult
             //ExSummary:Shows how to get the text that represents the displayed field result.
-            Document document = new Document(MyDir + "VariousFields.docx");
+            Document document = new Document(MyDir + "Various fields.docx");
  
             FieldCollection fields = document.Range.Fields;
  

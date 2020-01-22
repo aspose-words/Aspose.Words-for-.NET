@@ -39,7 +39,7 @@ namespace ApiExamples
         public void DocStructureToText()
         {
             // Open the document that has nodes we want to print the info of
-            Document doc = new Document(MyDir + "DocumentVisitorDestination.docx");
+            Document doc = new Document(MyDir + "DocumentVisitor-compatible features.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             DocStructurePrinter visitor = new DocStructurePrinter();
@@ -226,7 +226,7 @@ namespace ApiExamples
         public void TableToText()
         {
             // Open the document that has tables we want to print the info of
-            Document doc = new Document(MyDir + "DocumentVisitorDestination.docx");
+            Document doc = new Document(MyDir + "DocumentVisitor-compatible features.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             TableInfoPrinter visitor = new TableInfoPrinter();
@@ -394,7 +394,7 @@ namespace ApiExamples
         public void CommentsToText()
         {
             // Open the document that has comments/comment ranges we want to print the info of
-            Document doc = new Document(MyDir + "DocumentVisitorDestination.docx");
+            Document doc = new Document(MyDir + "DocumentVisitor-compatible features.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             CommentInfoPrinter visitor = new CommentInfoPrinter();
@@ -515,7 +515,7 @@ namespace ApiExamples
         public void FieldToText()
         {
             // Open the document that has fields that we want to print the info of
-            Document doc = new Document(MyDir + "DocumentVisitorDestination.docx");
+            Document doc = new Document(MyDir + "DocumentVisitor-compatible features.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             FieldInfoPrinter visitor = new FieldInfoPrinter();
@@ -624,7 +624,7 @@ namespace ApiExamples
         public void HeaderFooterToText()
         {
             // Open the document that has headers and/or footers we want to print the info of
-            Document doc = new Document(MyDir + "DocumentVisitorDestination.docx");
+            Document doc = new Document(MyDir + "DocumentVisitor-compatible features.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             HeaderFooterInfoPrinter visitor = new HeaderFooterInfoPrinter();
@@ -721,7 +721,7 @@ namespace ApiExamples
         public void EditableRangeToText()
         {
             // Open the document that has editable ranges we want to print the info of
-            Document doc = new Document(MyDir + "DocumentVisitorDestination.docx");
+            Document doc = new Document(MyDir + "DocumentVisitor-compatible features.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             EditableRangeInfoPrinter visitor = new EditableRangeInfoPrinter();
@@ -819,7 +819,7 @@ namespace ApiExamples
         public void FootnoteToText()
         {
             // Open the document that has footnotes we want to print the info of
-            Document doc = new Document(MyDir + "DocumentVisitorDestination.docx");
+            Document doc = new Document(MyDir + "DocumentVisitor-compatible features.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             FootnoteInfoPrinter visitor = new FootnoteInfoPrinter();
@@ -914,7 +914,7 @@ namespace ApiExamples
         public void OfficeMathToText()
         {
             // Open the document that has office math objects we want to print the info of
-            Document doc = new Document(MyDir + "DocumentVisitorDestination.docx");
+            Document doc = new Document(MyDir + "DocumentVisitor-compatible features.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             OfficeMathInfoPrinter visitor = new OfficeMathInfoPrinter();
@@ -1006,7 +1006,7 @@ namespace ApiExamples
         public void SmartTagToText()
         {
             // Open the document that has smart tags we want to print the info of
-            Document doc = new Document(MyDir + "SmartTag.docx");
+            Document doc = new Document(MyDir + "Smart tags.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             SmartTagInfoPrinter visitor = new SmartTagInfoPrinter();
@@ -1099,7 +1099,7 @@ namespace ApiExamples
         public void StructuredDocumentTagToText()
         {
             // Open the document that has structured document tags we want to print the info of
-            Document doc = new Document(MyDir + "DocumentVisitorDestination.docx");
+            Document doc = new Document(MyDir + "DocumentVisitor-compatible features.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             StructuredDocumentTagInfoPrinter visitor = new StructuredDocumentTagInfoPrinter();

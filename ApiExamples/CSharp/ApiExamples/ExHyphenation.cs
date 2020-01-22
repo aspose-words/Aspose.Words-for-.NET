@@ -40,7 +40,7 @@ namespace ApiExamples
             Assert.AreEqual(0, warningInfoCollection.Count);
 
             // Open a document with a German locale that might not get automatically hyphenated by Microsoft Word an english machine
-            Document doc = new Document(MyDir + "RandomGermanWords.docx");
+            Document doc = new Document(MyDir + "Unhyphenated German text.docx");
 
             // To hyphenate that document upon saving, we need a hyphenation dictionary for the "de-CH" language code
             // This callback will handle the automatic request for that dictionary 

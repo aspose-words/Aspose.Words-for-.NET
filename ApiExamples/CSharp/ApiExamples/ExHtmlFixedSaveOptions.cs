@@ -191,7 +191,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void UsingMachineFonts()
         {
-            Document doc = new Document(MyDir + "AltFontBulletPoints.docx");
+            Document doc = new Document(MyDir + "Bullet points with alternative font.docx");
 
             HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions
             {

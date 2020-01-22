@@ -104,7 +104,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void CalculateDepthOfNestedTables()
         {
-            Document doc = new Document(MyDir + "NestedTables.docx");
+            Document doc = new Document(MyDir + "Nested tables.docx");
             int tableIndex = 0;
 
             foreach (Table table in doc.GetChildNodes(NodeType.Table, true).OfType<Table>())
@@ -477,7 +477,7 @@ namespace ApiExamples
             //ExFor:Table.DistanceRight
             //ExFor:Table.DistanceTop
             //ExSummary:Shows the minimum distance operations between table boundaries and text.
-            Document doc = new Document(MyDir + "TableWrappedByText.docx");
+            Document doc = new Document(MyDir + "Table wrapped by text.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
@@ -607,7 +607,7 @@ namespace ApiExamples
             //ExFor:RowFormat.AllowBreakAcrossPages
             //ExSummary:Shows how to disable rows breaking across pages for every row in a table.
             // Disable breaking across pages for all rows in the table
-            Document doc = new Document(MyDir + "TableSpanningMultiplePages.docx");
+            Document doc = new Document(MyDir + "Table spanning two pages.docx");
 
             // Retrieve the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -640,7 +640,7 @@ namespace ApiExamples
         [Test]
         public void KeepTableTogether()
         {
-            Document doc = new Document(MyDir + "TableSpanningMultiplePages.docx");
+            Document doc = new Document(MyDir + "Table spanning two pages.docx");
 
             // Retrieve the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -982,7 +982,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void CheckCellsMerged()
         {
-            Document doc = new Document(MyDir + "TableWithMergedCells.docx");
+            Document doc = new Document(MyDir + "Table with merged cells.docx");
 
             // Retrieve the first table in the document
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -1200,7 +1200,7 @@ namespace ApiExamples
             //ExFor:Table.AllowOverlap
             //ExFor:ShapeBase.AllowOverlap
             //ExSummary:Shows how get properties for floating tables
-            Document doc = new Document(MyDir + "TableWrappedByText.docx");
+            Document doc = new Document(MyDir + "Table wrapped by text.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
@@ -1454,7 +1454,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Table.ConvertToHorizontallyMergedCells
             //ExSummary:Shows how to convert cells horizontally merged by width to cells merged by CellFormat.HorizontalMerge.
-            Document doc = new Document(MyDir + "TableWithMergedCells.docx");
+            Document doc = new Document(MyDir + "Table with merged cells.docx");
 
             // MS Word does not write merge flags anymore, they define merged cells by its width
             // So AW by default define only 5 cells in a row and all of it didn't have horizontal merge flag

@@ -33,7 +33,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:StructuredDocumentTag.SdtType
             //ExSummary:Shows how to get type of structured document tag.
-            Document doc = new Document(MyDir + "TestRepeatingSection.docx");
+            Document doc = new Document(MyDir + "Structured document tags.docx");
 
             NodeCollection sdTags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
 
@@ -595,7 +595,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:XmlMapping.StoreItemId
             //ExSummary:Shows how to get special id of your xml part.
-            Document doc = new Document(MyDir + "SDT.CustomXml.docx");
+            Document doc = new Document(MyDir + "Custom XML part in structured document tag.docx");
 
             StructuredDocumentTag sdt = (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
             Console.WriteLine("The Id of your custom xml part is: " + sdt.XmlMapping.StoreItemId);
@@ -627,7 +627,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:StructuredDocumentTag.Clear
             //ExSummary:Shows how to delete content of StructuredDocumentTag elements.
-            Document doc = new Document(MyDir + "TestRepeatingSection.docx");
+            Document doc = new Document(MyDir + "Structured document tags.docx");
 
             NodeCollection sdts = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
             Assert.IsNotNull(sdts);
@@ -667,7 +667,7 @@ namespace ApiExamples
             //ExFor:CustomXmlPropertyCollection.RemoveAt(Int32)
             //ExSummary:Shows how to work with smart tag properties to get in depth information about smart tags.
             // Open a document that contains smart tags and their collection
-            Document doc = new Document(MyDir + "SmartTags.docx");
+            Document doc = new Document(MyDir + "Smart tags.docx");
 
             // Smart tags are an older Microsoft Word feature that can automatically detect and tag
             // any parts of the text that it registers as commonly used information objects such as names, addresses, stock tickers, dates etc
@@ -807,7 +807,7 @@ namespace ApiExamples
         [Test]
         public void AccessToBuildingBlockPropertiesFromDocPartObjSdt()
         {
-            Document doc = new Document(MyDir + "StructuredDocumentTag.BuildingBlocks.docx");
+            Document doc = new Document(MyDir + "Structured document tags with building blocks.docx");
 
             StructuredDocumentTag docPartObjSdt =
                 (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
@@ -819,7 +819,7 @@ namespace ApiExamples
         [Test]
         public void AccessToBuildingBlockPropertiesFromPlainTextSdt()
         {
-            Document doc = new Document(MyDir + "StructuredDocumentTag.BuildingBlocks.docx");
+            Document doc = new Document(MyDir + "Structured document tags with building blocks.docx");
 
             StructuredDocumentTag plainTextSdt =
                 (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 1, true);

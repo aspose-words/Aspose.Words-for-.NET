@@ -155,7 +155,7 @@ namespace ApiExamples
             //ExFor:OoxmlSaveOptions.KeepLegacyControlChars
             //ExFor:OoxmlSaveOptions.#ctor(SaveFormat)
             //ExSummary:Shows how to support legacy control characters when converting to .docx.
-            Document doc = new Document(MyDir + "LegacyControlCharacter.doc");
+            Document doc = new Document(MyDir + "Legacy control character.doc");
  
             // Note that only one legacy character (ShortDateTime) is supported which declared in the "DOC" format
             OoxmlSaveOptions so = new OoxmlSaveOptions(SaveFormat.Docx);

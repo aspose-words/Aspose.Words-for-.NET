@@ -48,7 +48,7 @@ namespace ApiExamples
         [TestCase(SaveFormat.Epub, HtmlOfficeMathOutputMode.Text, Category = "SkipMono")]
         public void ExportOfficeMath(SaveFormat saveFormat, HtmlOfficeMathOutputMode outputMode)
         {
-            Document doc = new Document(MyDir + "OfficeMath.docx");
+            Document doc = new Document(MyDir + "Office math.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.OfficeMathOutputMode = outputMode;
@@ -126,7 +126,7 @@ namespace ApiExamples
         [TestCase(false)]
         public void ExportUrlForLinkedImage(bool export)
         {
-            Document doc = new Document(MyDir + "LinkedImage.docx");
+            Document doc = new Document(MyDir + "Linked image.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions { ExportOriginalUrlForLinkedImages = export };
 
@@ -411,7 +411,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:HtmlSaveOptions.ResolveFontNames
             //ExSummary:Shows how to resolve all font names before writing them to HTML.
-            Document document = new Document(MyDir + "MissingFont.docx");
+            Document document = new Document(MyDir + "Missing font.docx");
 
             FontSettings fontSettings = new FontSettings
             {
@@ -962,7 +962,7 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions.OfficeMathOutputMode
             //ExSummary:Shows how to control the way how OfficeMath objects are exported to .html.
             // Open a document that contains OfficeMath objects
-            Document doc = new Document(MyDir + "OfficeMath.docx");
+            Document doc = new Document(MyDir + "Office math.docx");
 
             // Create a HtmlSaveOptions object and configure it to export OfficeMath objects as images
             HtmlSaveOptions options = new HtmlSaveOptions();

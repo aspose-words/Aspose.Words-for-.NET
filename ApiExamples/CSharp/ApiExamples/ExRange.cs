@@ -117,7 +117,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FindReplaceOptions.PreserveMetaCharacters
             //ExSummary:Shows how to preserved meta-characters that beginning with "&".
-            Document doc = new Document(MyDir + "Range.FindAndReplaceWithPreserveMetaCharacters.docx");
+            Document doc = new Document(MyDir + "Meta characters.docx");
 
             FindReplaceOptions options = new FindReplaceOptions();
             options.FindWholeWordsOnly = true;
@@ -283,21 +283,23 @@ namespace ApiExamples
             //ExFor:Node.Range
             //ExFor:Range.Delete
             //ExSummary:Shows how to delete all characters of a range.
-            // Open Word document.
-            Document doc = new Document(MyDir + "Range.DeleteSection.docx");
+            // Insert two sections into a blank document
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The document contains two sections
-            // Each section has a paragraph of text
-            Console.WriteLine(doc.GetText());
+            builder.Write("Section 1. ");
+            builder.InsertBreak(BreakType.SectionBreakContinuous);
+            builder.Write("Section 2.");
+
+            // Verify the whole text of the document
+            Assert.AreEqual("Section 1. \fSection 2.", doc.GetText().Trim());
 
             // Delete the first section from the document
             doc.Sections[0].Range.Delete();
 
             // Check the first section was deleted by looking at the text of the whole document again
-            Console.WriteLine(doc.GetText());
+            Assert.AreEqual("Section 2.", doc.GetText().Trim());
             //ExEnd
-
-            Assert.AreEqual("Hello2\x000c", doc.GetText());
         }
 
         [Test]

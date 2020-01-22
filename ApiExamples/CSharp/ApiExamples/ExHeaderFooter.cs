@@ -150,7 +150,7 @@ namespace ApiExamples
             //ExFor:HeaderFooterCollection.Item(HeaderFooterType)
             //ExFor:HeaderFooter
             //ExSummary:Deletes all footers from all sections, but leaves headers intact.
-            Document doc = new Document(MyDir + "HeaderFooterTypes.docx");
+            Document doc = new Document(MyDir + "Header and footer types.docx");
 
             foreach (Section section in doc.OfType<Section>())
             {
@@ -178,7 +178,7 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions.ExportHeadersFootersMode
             //ExFor:ExportHeadersFootersMode
             //ExSummary:Demonstrates how to disable the export of headers and footers when saving to HTML based formats.
-            Document doc = new Document(MyDir + "HeaderFooterTypes.docx");
+            Document doc = new Document(MyDir + "Header and footer types.docx");
 
             // Disables exporting headers and footers
             HtmlSaveOptions saveOptions =
@@ -231,7 +231,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void HeaderFooterOrder()
         {
-            Document doc = new Document(MyDir + "HeaderFooterTypes.docx");
+            Document doc = new Document(MyDir + "Header and footer types.docx");
 
             // Assert that we use special header and footer for the first page
             // The order for this: first header\footer, even header\footer, primary header\footer

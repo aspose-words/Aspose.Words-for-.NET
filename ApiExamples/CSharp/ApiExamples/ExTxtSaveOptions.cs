@@ -59,7 +59,7 @@ namespace ApiExamples
             //ExFor:TxtSaveOptionsBase.ExportHeadersFootersMode
             //ExFor:TxtExportHeadersFootersMode
             //ExSummary:Shows how to specifies the way headers and footers are exported to plain text format.
-            Document doc = new Document(MyDir + "HeaderFooterTypes.docx");
+            Document doc = new Document(MyDir + "Header and footer types.docx");
 
             // Three values are available in TxtExportHeadersFootersMode enum:
             // "None" - No headers and footers are exported
@@ -80,7 +80,7 @@ namespace ApiExamples
             //ExFor:TxtListIndentation.Character
             //ExFor:TxtSaveOptions.ListIndentation
             //ExSummary:Shows how list levels are displayed when the document is converting to plain text format.
-            Document doc = new Document(MyDir + "TxtSaveOptions.TxtListIndentation.docx");
+            Document doc = new Document(MyDir + "List indentation.docx");
  
             TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
             txtSaveOptions.ListIndentation.Count = 3;

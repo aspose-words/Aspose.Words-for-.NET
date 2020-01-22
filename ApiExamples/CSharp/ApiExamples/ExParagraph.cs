@@ -193,7 +193,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Paragraph.IsFormatRevision
             //ExSummary:Shows how to get information about whether this object was formatted in Microsoft Word while change tracking was enabled
-            Document doc = new Document(MyDir + "Paragraph.IsFormatRevision.docx");
+            Document doc = new Document(MyDir + "Format revision.docx");
 
             Paragraph firstParagraph = DocumentHelper.GetParagraph(doc, 0);
             Assert.IsTrue(firstParagraph.IsFormatRevision);
@@ -222,7 +222,7 @@ namespace ApiExamples
             //ExFor:FrameFormat.RelativeVerticalPosition
             //ExFor:FrameFormat.VerticalDistanceFromText
             //ExSummary:Shows how to get information about formatting properties of paragraph as frame.
-            Document doc = new Document(MyDir + "ParagraphFrame.docx");
+            Document doc = new Document(MyDir + "Paragraph frame.docx");
 
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 

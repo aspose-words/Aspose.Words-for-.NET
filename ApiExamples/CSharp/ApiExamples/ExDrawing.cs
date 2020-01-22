@@ -153,7 +153,7 @@ namespace ApiExamples
             //ExFor:ImageData.ToImage
             //ExFor:ImageData.Save(Stream)
             //ExSummary:Shows how to save all the images from a document to the file system.
-            Document imgSourceDoc = new Document(MyDir + "SampleImages.docx");
+            Document imgSourceDoc = new Document(MyDir + "Images.docx");
 
             // Images are stored as shapes
             // Get into the document's shape collection to verify that it contains 6 images
@@ -222,7 +222,7 @@ namespace ApiExamples
             //ExFor:Stroke.ImageBytes
             //ExSummary:Shows how to process shape stroke features.
             // Open a document which contains a rectangle with a thick, two-tone-patterned outline
-            Document doc = new Document(MyDir + "ShapeWithStrokePatternBorder.docx");
+            Document doc = new Document(MyDir + "Shape stroke pattern border.docx");
 
             // Get the first shape's stroke
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
@@ -369,7 +369,7 @@ namespace ApiExamples
             //ExFor:ImageData.ToByteArray
             //ExFor:ImageData.ToStream
             //ExSummary:Shows how to access raw image data in a shape's ImageData object.
-            Document imgSourceDoc = new Document(MyDir + "SampleImages.docx");
+            Document imgSourceDoc = new Document(MyDir + "Images.docx");
 
             // Images are stored as shapes
             // Get into the document's shape collection to verify that it contains 6 images
@@ -410,7 +410,7 @@ namespace ApiExamples
             //ExFor:ImageData.Title
             //ExSummary:Shows how to edit images using the ImageData attribute.
             // Open a document that contains images
-            Document imgSourceDoc = new Document(MyDir + "SampleImages.docx");
+            Document imgSourceDoc = new Document(MyDir + "Images.docx");
 
             Shape sourceShape = (Shape)imgSourceDoc.GetChildNodes(NodeType.Shape, true)[0];
             
