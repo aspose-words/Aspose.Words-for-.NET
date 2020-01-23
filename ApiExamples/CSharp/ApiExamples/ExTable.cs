@@ -1187,32 +1187,58 @@ namespace ApiExamples
         }
 
         [Test]
-        public void FloatingTableProperties()
+        public void GetFloatingTableProperties()
         {
             //ExStart
-            //ExFor:Table.RelativeHorizontalAlignment
-            //ExFor:Table.RelativeVerticalAlignment
             //ExFor:Table.HorizontalAnchor
             //ExFor:Table.VerticalAnchor
-            //ExFor:Table.AbsoluteHorizontalDistance
-            //ExFor:Table.AbsoluteVerticalDistance
             //ExFor:Table.AllowOverlap
             //ExFor:ShapeBase.AllowOverlap
-            //ExSummary:Shows how get properties for floating tables
+            //ExSummary:Shows how get properties for floating tables.
             Document doc = new Document(MyDir + "Table.Distance.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
             if (table.TextWrapping == TextWrapping.Around)
             {
-                Assert.AreEqual(HorizontalAlignment.Default, table.RelativeHorizontalAlignment);
-                Assert.AreEqual(VerticalAlignment.Default, table.RelativeVerticalAlignment);
                 Assert.AreEqual(RelativeHorizontalPosition.Margin, table.HorizontalAnchor);
                 Assert.AreEqual(RelativeVerticalPosition.Paragraph, table.VerticalAnchor);
-                Assert.AreEqual(0, table.AbsoluteHorizontalDistance);
-                Assert.AreEqual(4.8, table.AbsoluteVerticalDistance);
                 Assert.AreEqual(true, table.AllowOverlap);
             }
+            //ExEnd
+        }
+
+        [Test]
+        public void ChangeFloatingTableProperties()
+        {
+            //ExStart
+            //ExFor:Table.RelativeHorizontalAlignment
+            //ExFor:Table.RelativeVerticalAlignment
+            //ExFor:Table.AbsoluteHorizontalDistance
+            //ExFor:Table.AbsoluteVerticalDistance
+            //ExSummary:Shows how get/set properties for floating tables.
+            Document doc = new Document(MyDir + "Table.Distance.docx");
+
+            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            table.AbsoluteHorizontalDistance = 10;
+            table.AbsoluteVerticalDistance = 15;
+
+            // Check that absolute distance was set correct
+            Assert.AreEqual(10, table.AbsoluteHorizontalDistance);
+            Assert.AreEqual(15, table.AbsoluteVerticalDistance);
+
+            // Setting RelativeHorizontalAlignment will reset AbsoluteHorizontalDistance to default value and vice versa,
+            // the same is for vertical positioning
+            table.RelativeVerticalAlignment = VerticalAlignment.Top;
+            table.RelativeHorizontalAlignment = HorizontalAlignment.Center;
+            
+            // Check that AbsoluteHorizontalDistance and AbsoluteVerticalDistance are reset 
+            Assert.AreEqual(0, table.AbsoluteHorizontalDistance);
+            Assert.AreEqual(0, table.AbsoluteVerticalDistance);
+            Assert.AreEqual(VerticalAlignment.Top, table.RelativeVerticalAlignment);
+            Assert.AreEqual(HorizontalAlignment.Center, table.RelativeHorizontalAlignment);
+
+            doc.Save(ArtifactsDir + "Table.ChangeFloatingTableProperties.docx");
             //ExEnd
         }
 

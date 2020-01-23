@@ -349,21 +349,25 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, Boolean, Image)
             //ExFor:DocumentBuilder.InsertOleObject(String, String, Boolean, Boolean, Image)
+            //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, String, String)
             //ExSummary:Shows how to insert an OLE object into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Image representingImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
 
-            // OleObject
-            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage); 
-            // OleObject with ProgId
-            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false, representingImage);
+            // Insert ole object
+            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage);
+            // Insert ole object with ProgId
+            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, true, null);
+            // Insert ole object as Icon
+            builder.InsertOleObjectAsIcon(MyDir + "Document.Spreadsheet.xlsx", false, ImageDir + "AsIcon.ico",
+                "Caption (can not be null)");
 
             doc.Save(ArtifactsDir + "Document.InsertedOleObject.docx");
             //ExEnd
         }
-        #else
+#else
         [Test]
         public void InsertWatermarkNetStandard2()
         {
