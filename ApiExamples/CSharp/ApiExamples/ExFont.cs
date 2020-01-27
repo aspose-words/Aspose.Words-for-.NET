@@ -1719,6 +1719,17 @@ namespace ApiExamples
             }
         }
         //ExEnd
+
+        [Test]
+        public void CheckScanUserFontsFolder()
+        {
+            // On Windows 10 fonts may be installed either into system folder "%windir%\fonts" for all users
+            // or into user folder "%userprofile%\AppData\Local\Microsoft\Windows\Fonts" for current user
+            SystemFontSource systemFontSource = new SystemFontSource();
+            Assert.NotNull(systemFontSource.GetAvailableFonts()
+                    .FirstOrDefault(x => x.FilePath.Contains("\\AppData\\Local\\Microsoft\\Windows\\Fonts")),
+                "Fonts did not install to the user font folder");
+        }
     }
 }
 #endif

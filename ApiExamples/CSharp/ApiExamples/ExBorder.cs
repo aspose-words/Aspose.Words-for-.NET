@@ -7,6 +7,7 @@
 
 using System.Drawing;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 
@@ -66,14 +67,14 @@ namespace ApiExamples
             //ExFor:Border.ClearFormatting
             //ExSummary:Shows how to remove borders from a paragraph.
             Document doc = new Document(MyDir + "Borders.doc");
-            
+
             DocumentBuilder builder = new DocumentBuilder(doc);
             BorderCollection borders = builder.ParagraphFormat.Borders;
 
             foreach (Border border in borders) border.ClearFormatting();
-            
+
             builder.CurrentParagraph.Runs[0].Text = "Paragraph with no border";
-            
+
             doc.Save(ArtifactsDir + "Border.NoBorder.doc");
             //ExEnd
         }

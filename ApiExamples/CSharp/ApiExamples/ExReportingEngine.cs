@@ -475,6 +475,19 @@ namespace ApiExamples
         }
 
         [Test]
+        public void InsertBookmarksDynamically()
+        {
+            Document doc =
+                DocumentHelper.CreateSimpleDocument(
+                    "<<bookmark [bookmark_expression]>><<foreach [m in Contracts]>><<[m.Client.Name]>><</foreach>><</bookmark>>");
+
+            BuildReport(doc, new object[] { "BookmarkOne", Common.GetContracts() },
+                new[] { "bookmark_expression", "Contracts" });
+
+            doc.Save(ArtifactsDir + "ReportingEngine.InsertBookmarksDynamically.docx");
+        }
+
+        [Test]
         public void WithoutKnownType()
         {
             Document doc = new Document();

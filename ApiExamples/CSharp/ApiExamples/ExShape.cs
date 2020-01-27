@@ -618,6 +618,28 @@ namespace ApiExamples
         }
 
         [Test]
+        public void GetOleObjectRawData()
+        {
+            //ExStart
+            //ExFor:OleFormat.GetRawData
+            //ExSummary:Shows how to get access to OLE object raw data.
+            // The document contains linked and embedded objects
+            Document doc = new Document(MyDir + "Shape.OleObjects.doc");
+
+            foreach (Node shape in doc.GetChildNodes(NodeType.Shape, true))
+            {
+                // Get access to OLE data
+                OleFormat oleFormat = ((Shape)shape).OleFormat;
+                if (oleFormat != null)
+                {
+                    Console.WriteLine($"This is {(oleFormat.IsLink ? "linked" : "embedded")} object");
+                    byte[] oleRawData = oleFormat.GetRawData();
+                }
+            }
+            //ExEnd
+        }
+
+        [Test]
         public void OleControl()
         {
             //ExStart
