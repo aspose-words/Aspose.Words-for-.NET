@@ -3462,7 +3462,7 @@ namespace ApiExamples
             //ExFor:VbaProject.Clone
             //ExFor:VbaModule.Clone
             //ExSummary:Shows how to deep clone VbaProject and VbaModule.
-            Document doc = new Document(MyDir + "Document.TestButton.docm");
+            Document doc = new Document(MyDir + "VBAProject.docm");
             Document destDoc = new Document();
 
             // Clone VbaProject to the document
@@ -3499,7 +3499,7 @@ namespace ApiExamples
             //ExFor:VbaModuleCollection.Item(System.String)
             //ExFor:VbaModuleCollection.Remove
             //ExSummary:Shows how to get access to VBA project information in the document.
-            Document doc = new Document(MyDir + "VBA project.docm");
+            Document doc = new Document(MyDir + "VBAProject.docm");
 
             // A VBA project inside the document is defined as a collection of VBA modules
             VbaProject vbaProject = doc.VbaProject;

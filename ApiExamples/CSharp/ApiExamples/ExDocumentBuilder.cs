@@ -395,11 +395,11 @@ namespace ApiExamples
             Image representingImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
 
             // Insert ole object
-            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage);
+            builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, representingImage);
             // Insert ole object with ProgId
-            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, true, null);
+            builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, true, null);
             // Insert ole object as Icon
-            builder.InsertOleObjectAsIcon(MyDir + "Document.Spreadsheet.xlsx", false, ImageDir + "AsIcon.ico",
+            builder.InsertOleObjectAsIcon(MyDir + "Spreadsheet.xlsx", false, ImageDir + "AsIcon.ico",
                 "Caption (can not be null)");
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObject.docx");

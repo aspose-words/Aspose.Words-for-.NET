@@ -324,7 +324,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.Save(Stream, SaveFormat)
             //ExSummary:Saves a document page as a BMP image into a stream.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             MemoryStream stream = new MemoryStream();
             doc.Save(stream, SaveFormat.Bmp);

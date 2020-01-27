@@ -1204,7 +1204,7 @@ namespace ApiExamples
             {
                 Assert.AreEqual(RelativeHorizontalPosition.Margin, table.HorizontalAnchor);
                 Assert.AreEqual(RelativeVerticalPosition.Paragraph, table.VerticalAnchor);
-                Assert.AreEqual(true, table.AllowOverlap);
+                Assert.AreEqual(false, table.AllowOverlap);
             }
             //ExEnd
         }
@@ -1218,7 +1218,7 @@ namespace ApiExamples
             //ExFor:Table.AbsoluteHorizontalDistance
             //ExFor:Table.AbsoluteVerticalDistance
             //ExSummary:Shows how get/set properties for floating tables.
-            Document doc = new Document(MyDir + "Table.Distance.docx");
+            Document doc = new Document(MyDir + "Table.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             table.AbsoluteHorizontalDistance = 10;
