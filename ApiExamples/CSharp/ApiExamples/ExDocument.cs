@@ -35,6 +35,7 @@ using Aspose.Words.Tables;
 using Aspose.Words.Themes;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using CompareOptions = Aspose.Words.CompareOptions;
 #if NETFRAMEWORK || NETSTANDARD2_0
 using Aspose.Words.Shaping.HarfBuzz;
@@ -3401,9 +3402,9 @@ namespace ApiExamples
             doc.VbaProject.Modules.Add(module);
 
             doc.Save(ArtifactsDir + "Document.CreateVBAMacros.docm");
-            }
-            
-		{Test}
+        }
+
+        [Test]
         public void CloneVbaProject()
         {
             //ExStart
