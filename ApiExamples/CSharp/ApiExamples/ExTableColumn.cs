@@ -136,8 +136,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "TableColumn.RemoveColumn.doc");
 
             Assert.AreEqual(16, table.GetChildNodes(NodeType.Cell, true).Count);
-            Assert.AreEqual("Cell 3 contents", table.Rows[2].Cells[2].ToString(SaveFormat.Text).Trim());
-            Assert.AreEqual("Cell 3 contents", table.LastRow.Cells[2].ToString(SaveFormat.Text).Trim());
+            Assert.AreEqual("Cell 7 contents", table.Rows[2].Cells[2].ToString(SaveFormat.Text).Trim());
+            Assert.AreEqual("Cell 11 contents", table.LastRow.Cells[2].ToString(SaveFormat.Text).Trim());
         }
 
         [Test]

@@ -1962,11 +1962,11 @@ namespace ApiExamples
             //ExSummary:Show how to simply extract text from a document.
             TxtLoadOptions loadOptions = new TxtLoadOptions { DetectNumberingWithWhitespaces = false };
 
-            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmarks.docx");
-            Assert.AreEqual("First bookmark.\rSecond bookmark.\rThird bookmark.\f", plaintext.Text); //ExSkip 
+            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Document.docx");
+            Assert.AreEqual("Hello World!", plaintext.Text.Trim()); //ExSkip 
 
-            plaintext = new PlainTextDocument(MyDir + "Bookmarks.docx", loadOptions);
-            Assert.AreEqual("First bookmark.\rSecond bookmark.\rThird bookmark.\f", plaintext.Text); //ExSkip
+            plaintext = new PlainTextDocument(MyDir + "Document.docx", loadOptions);
+            Assert.AreEqual("Hello World!", plaintext.Text.Trim()); //ExSkip
             //ExEnd
         }
 
@@ -2005,13 +2005,13 @@ namespace ApiExamples
             //ExSummary:Show how to simply extract text from a stream.
             TxtLoadOptions loadOptions = new TxtLoadOptions { DetectNumberingWithWhitespaces = false };
 
-            Stream stream = new FileStream(MyDir + "Bookmarks.docx", FileMode.Open);
+            Stream stream = new FileStream(MyDir + "Document.docx", FileMode.Open);
 
             PlainTextDocument plaintext = new PlainTextDocument(stream);
-            Assert.AreEqual("First bookmark.\rSecond bookmark.\rThird bookmark.\f", plaintext.Text); //ExSkip
+            Assert.AreEqual("Hello World!", plaintext.Text.Trim()); //ExSkip
 
             plaintext = new PlainTextDocument(stream, loadOptions);
-            Assert.AreEqual("First bookmark.\rSecond bookmark.\rThird bookmark.\f", plaintext.Text); //ExSkip
+            Assert.AreEqual("Hello World!", plaintext.Text.Trim()); //ExSkip
             //ExEnd
 
             stream.Close();
@@ -2342,7 +2342,7 @@ namespace ApiExamples
             // We have a document with 2 sections, this way FirstSection and LastSection are not the same
             Assert.AreEqual(2, doc.Sections.Count);
 
-            string newCopyrightInformation = string.Format("Copyright (C) {0} by Aspose Pty Ltd.", DateTime.Now.Year);
+            string newCopyrightInformation = $"Copyright (C) {DateTime.Now.Year} by Aspose Pty Ltd.";
             FindReplaceOptions findReplaceOptions =
                 new FindReplaceOptions { MatchCase = false, FindWholeWordsOnly = false };
 
@@ -2357,7 +2357,7 @@ namespace ApiExamples
             Assert.AreEqual(doc.FirstSection, doc.Sections[0]);
             Assert.AreEqual(doc.LastSection, doc.Sections[1]);
 
-            doc.Save(ArtifactsDir + "Document.Sections.doc");
+            doc.Save(ArtifactsDir + "Document.Sections.docx");
             //ExEnd
         }
 

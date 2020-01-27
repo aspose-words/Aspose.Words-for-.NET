@@ -74,7 +74,7 @@ namespace ApiExamples
         public void InsertAtBookmark()
         {
             Document mainDoc = new Document(MyDir + "Document insertion destination.docx");
-            Document subDoc = new Document(MyDir + "Document insertion target.docx");
+            Document subDoc = new Document(MyDir + "Document.docx");
 
             Bookmark bookmark = mainDoc.Range.Bookmarks["insertionPlace"];
             InsertDocument(bookmark.BookmarkStart.ParentNode, subDoc);
@@ -97,9 +97,9 @@ namespace ApiExamples
             // The main document has a merge field in it called "Document_1"
             // The corresponding data for this field contains fully qualified path to the document
             // that should be inserted to this field
-            mainDoc.MailMerge.Execute(new string[] { "Document_1" }, new object[] { MyDir + "Document insertion target.docx" });
+            mainDoc.MailMerge.Execute(new string[] { "Document_1" }, new object[] { MyDir + "Document.docx" });
 
-            mainDoc.Save(ArtifactsDir + "InsertDocument.InsertAtMailMerge.doc");
+            mainDoc.Save(ArtifactsDir + "InsertDocument.InsertAtMailMerge.docx");
         }
 
         private class InsertDocumentAtMailMergeHandler : IFieldMergingCallback
@@ -165,7 +165,7 @@ namespace ApiExamples
         {
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)
             {
-                Document subDoc = new Document(MyDir + "Document insertion target.docx");
+                Document subDoc = new Document(MyDir + "Document.docx");
 
                 // Insert a document after the paragraph, containing the match text
                 Paragraph para = (Paragraph) args.MatchNode.ParentNode;

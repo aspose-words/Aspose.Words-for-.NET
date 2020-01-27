@@ -202,7 +202,7 @@ namespace ApiExamples
             //ExSummary:Shows how to replace elements in bookmark name
             // Open a document with 3 bookmarks: "MyBookmark1", "My_Bookmark2", "MyBookmark3"
             Document doc = new Document(MyDir + "Bookmarks.docx");
-            Assert.AreEqual("My_Bookmark2", doc.Range.Bookmarks[2].Name); //ExSkip
+            Assert.AreEqual("MyBookmark3", doc.Range.Bookmarks[2].Name); //ExSkip
 
             // MS Word document does not support bookmark names with whitespaces by default
             // If you have document which contains bookmark names with underscores, you can simply replace them to whitespaces

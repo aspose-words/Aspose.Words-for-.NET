@@ -640,7 +640,7 @@ namespace ApiExamples
             // An alternative way of visiting a document's header/footers section-by-section is by accessing the collection
             // We can also turn it into an array
             HeaderFooter[] headerFooters = doc.FirstSection.HeadersFooters.ToArray();
-            Assert.AreEqual(2, headerFooters.Length);
+            Assert.AreEqual(6, headerFooters.Length);
         }
 
         /// <summary>
@@ -1006,7 +1006,7 @@ namespace ApiExamples
         public void SmartTagToText()
         {
             // Open the document that has smart tags we want to print the info of
-            Document doc = new Document(MyDir + "Smart tags.docx");
+            Document doc = new Document(MyDir + "Smart tags.doc");
 
             // Create an object that inherits from the DocumentVisitor class
             SmartTagInfoPrinter visitor = new SmartTagInfoPrinter();

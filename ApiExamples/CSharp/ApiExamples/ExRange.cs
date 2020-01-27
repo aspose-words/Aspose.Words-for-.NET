@@ -116,14 +116,18 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FindReplaceOptions.PreserveMetaCharacters
-            //ExSummary:Shows how to preserved meta-characters that beginning with "&".
-            Document doc = new Document(MyDir + "Meta characters.docx");
+            //ExSummary:Shows how to preserved meta-characters that begin with "&".
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("one");
+            builder.Writeln("two");
+            builder.Writeln("three");
 
             FindReplaceOptions options = new FindReplaceOptions();
             options.FindWholeWordsOnly = true;
             options.PreserveMetaCharacters = true;
 
-            doc.Range.Replace("sad", "&ldquo; some text &rdquo;", options);
+            doc.Range.Replace("two", "&ldquo; four &rdquo;", options);
             //ExEnd
 
             doc.Save(ArtifactsDir + "Range.FindAndReplaceWithMetacharacters.docx");

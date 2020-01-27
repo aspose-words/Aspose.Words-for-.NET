@@ -567,7 +567,7 @@ namespace ApiExamples
             Console.WriteLine(table.LastRow.LastCell.Range.Text);
             
             Assert.AreEqual("\aColumn 1\aColumn 2\aColumn 3\aColumn 4\a\a", table.Rows[1].Range.Text);
-            Assert.AreEqual("Cell 4 contents\a", table.LastRow.LastCell.Range.Text);
+            Assert.AreEqual("Cell 12 contents\a", table.LastRow.LastCell.Range.Text);
         }
 
         [Test]

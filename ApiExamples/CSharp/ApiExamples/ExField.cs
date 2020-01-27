@@ -579,11 +579,10 @@ namespace ApiExamples
 
             doc.Sections[1].Range.UnlinkFields();
             //ExEnd
-
             string secWithFields = DocumentHelper.GetSectionText(doc, 1);
-            Assert.AreEqual(
-                "Fields.Docx   Элементы указателя не найдены.     3.\rОшибка! Не указана последовательность.    Fields.Docx   Элементы указателя не найдены.     4.\r\r\r\r\r\f",
-                secWithFields);
+
+            Assert.True(secWithFields.Trim().EndsWith(
+                "Fields.Docx   Элементы указателя не найдены.     3.\rОшибка! Не указана последовательность.    Fields.Docx   Элементы указателя не найдены.     4."));
         }
 
         [Test]
@@ -595,11 +594,10 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Linked fields.docx");
             doc.Range.Fields[1].Unlink();
             //ExEnd
-
             string paraWithFields = DocumentHelper.GetParagraphText(doc, 0);
-            Assert.AreEqual(
-                "\u0013 FILENAME  \\* Caps  \\* MERGEFORMAT \u0014Fields.Docx\u0015   Элементы указателя не найдены.     \u0013 LISTNUM  LegalDefault \u0015\r",
-                paraWithFields);
+
+            Assert.True(paraWithFields.Trim().EndsWith(
+                "FILENAME  \\* Caps  \\* MERGEFORMAT \u0014Fields.Docx\u0015   Элементы указателя не найдены.     \u0013 LISTNUM  LegalDefault \u0015"));
         }
 
         [Test]

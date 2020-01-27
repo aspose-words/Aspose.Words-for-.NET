@@ -810,10 +810,10 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Office math.docx");
 
-            OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
+            OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 6, true);
 
-            Assert.AreEqual(OfficeMathDisplayType.Display, officeMath.DisplayType);
-            Assert.AreEqual(OfficeMathJustification.Center, officeMath.Justification);
+            Assert.AreEqual(OfficeMathDisplayType.Inline, officeMath.DisplayType);
+            Assert.AreEqual(OfficeMathJustification.Inline, officeMath.Justification);
         }
 
         [Test]
@@ -876,13 +876,13 @@ namespace ApiExamples
         [Test]
         public void OfficeMathDisplayNestedObjects()
         {
-            Document doc = new Document(MyDir + "Nested office math.docx");
+            Document doc = new Document(MyDir + "Office math.docx");
 
             OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
 
             // Always inline
-            Assert.AreEqual(OfficeMathDisplayType.Inline, officeMath.DisplayType);
-            Assert.AreEqual(OfficeMathJustification.Inline, officeMath.Justification);
+            Assert.AreEqual(OfficeMathDisplayType.Display, officeMath.DisplayType);
+            Assert.AreEqual(OfficeMathJustification.Center, officeMath.Justification);
         }
 
         [Test]

@@ -206,14 +206,14 @@ namespace ApiExamples
             // Line count: Count the lines in a document and assign value to the Lines property
             LineCounter lineCounter = new LineCounter(doc);
             properties.Lines = lineCounter.GetLineCount();
-            Assert.AreEqual(130, properties.Lines);
+            Assert.AreEqual(142, properties.Lines);
 
             // Paragraph count: Assign the size of the count of child Paragraph-nodes to the Paragraphs built in property
             properties.Paragraphs = doc.GetChildNodes(NodeType.Paragraph, true).Count;
-            Assert.AreEqual(22, properties.Paragraphs);
+            Assert.AreEqual(29, properties.Paragraphs);
 
             // Check the real file size of our document
-            Assert.AreEqual(18373, properties.Bytes);
+            Assert.AreEqual(20310, properties.Bytes);
 
             // Template: The Template attribute can reflect the filename of the attached template document
             doc.AttachedTemplate = MyDir + "Busniess brochure.dotx";

@@ -64,7 +64,12 @@ namespace ApiExamples
         {
             string[] dirFiles;
 
-            Document doc = new Document(MyDir + "TextBox.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape textbox = builder.InsertShape(ShapeType.TextBox, 300, 100);
+            builder.MoveTo(textbox.FirstParagraph);
+            builder.Write("Hello world!");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(saveFormat);
             saveOptions.ExportTextBoxAsSvg = isTextBoxAsSvg;
@@ -393,7 +398,7 @@ namespace ApiExamples
         [Test]
         public void ContentIdScheme()
         {
-            Document doc = new Document(MyDir + "Barcodes.docx");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Mhtml)
             {

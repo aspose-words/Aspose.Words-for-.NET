@@ -843,7 +843,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Font.RemoveHiddenContentFromDocument.doc");
 
-            Assert.AreEqual(13, doc.GetChildNodes(NodeType.Paragraph, true).Count); //ExSkip
+            Assert.AreEqual(20, doc.GetChildNodes(NodeType.Paragraph, true).Count); //ExSkip
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count); //ExSkip
         }
 
@@ -1086,11 +1086,14 @@ namespace ApiExamples
             //ExFor:Fonts.FontInfoCollection.Item(String)
             //ExSummary:Shows how to extract embedded font from a document.
             Document doc = new Document(MyDir + "Embedded font.docx");
-            // Let's get the font we are interested in
-            FontInfo mittelschriftInfo = doc.FontInfos[2];
+
+            // Get the FontInfo for the embedded font
+            FontInfo embeddedFont = doc.FontInfos["Alte DIN 1451 Mittelschrift"];
+
             // We can now extract this embedded font
-            byte[] embeddedFontBytes = mittelschriftInfo.GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular);
+            byte[] embeddedFontBytes = embeddedFont.GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular);
             Assert.IsNotNull(embeddedFontBytes);
+
             // Then we can save the font to our directory
             File.WriteAllBytes(ArtifactsDir + "Alte DIN 1451 Mittelschrift.ttf", embeddedFontBytes);
             
