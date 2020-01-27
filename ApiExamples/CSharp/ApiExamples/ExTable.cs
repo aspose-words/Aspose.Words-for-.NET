@@ -1218,7 +1218,7 @@ namespace ApiExamples
             //ExFor:Table.AbsoluteHorizontalDistance
             //ExFor:Table.AbsoluteVerticalDistance
             //ExSummary:Shows how get/set properties for floating tables.
-            Document doc = new Document(MyDir + "Table.docx");
+            Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             table.AbsoluteHorizontalDistance = 10;
