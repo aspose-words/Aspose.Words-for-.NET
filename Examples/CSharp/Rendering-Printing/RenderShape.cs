@@ -152,10 +152,6 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void FindShapeSizes(Shape shape)
         {
             // ExStart:FindShapeSizes
-            SizeF shapeSizeInDocument = shape.GetShapeRenderer().SizeInPoints;
-            float width = shapeSizeInDocument.Width; // The width of the shape.
-            float height = shapeSizeInDocument.Height; // The height of the shape.
-            
             Size shapeRenderedSize = shape.GetShapeRenderer().GetSizeInPixels(1.0f, 96.0f);
 
             using (Bitmap image = new Bitmap(shapeRenderedSize.Width, shapeRenderedSize.Height))

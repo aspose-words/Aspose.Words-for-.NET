@@ -7,6 +7,7 @@
 
 using System.Drawing;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 
@@ -71,9 +72,9 @@ namespace ApiExamples
             BorderCollection borders = builder.ParagraphFormat.Borders;
 
             foreach (Border border in borders) border.ClearFormatting();
-            
+
             builder.CurrentParagraph.Runs[0].Text = "Paragraph with no border";
-            
+
             doc.Save(ArtifactsDir + "Border.NoBorder.doc");
             //ExEnd
         }

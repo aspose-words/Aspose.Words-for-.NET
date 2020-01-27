@@ -173,15 +173,55 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.InsertHorizontalRule
             //ExFor:ShapeBase.IsHorizontalRule
-            //ExSummary:Shows how to insert horizontal rule shape in a document.
+            //ExFor:Shape.HorizontalRuleFormat
+            //ExFor:HorizontalRuleFormat
+            //ExFor:HorizontalRuleFormat.Alignment
+            //ExFor:HorizontalRuleFormat.WidthPercent
+            //ExFor:HorizontalRuleFormat.Height
+            //ExFor:HorizontalRuleFormat.Color
+            //ExFor:HorizontalRuleFormat.NoShade
+            //ExSummary:Shows how to insert horizontal rule shape in a document and customize the formatting.
             // Use a document builder to insert a horizontal rule
             DocumentBuilder builder = new DocumentBuilder();
-            builder.InsertHorizontalRule();
+            Shape shape = builder.InsertHorizontalRule();
+
+            HorizontalRuleFormat horizontalRuleFormat = shape.HorizontalRuleFormat;
+            horizontalRuleFormat.Alignment = HorizontalRuleAlignment.Center;
+            horizontalRuleFormat.WidthPercent = 70;
+            horizontalRuleFormat.Height = 3;
+            horizontalRuleFormat.Color = Color.Blue;
+            horizontalRuleFormat.NoShade = true;
+
+            MemoryStream stream = new MemoryStream();
+            builder.Document.Save(stream, SaveFormat.Docx);
 
             // Get the rule from the document's shape collection and verify it
             Shape horizontalRule = (Shape)builder.Document.GetChild(NodeType.Shape, 0, true);
             Assert.True(horizontalRule.IsHorizontalRule);
+            Assert.True(horizontalRule.HorizontalRuleFormat.NoShade);
+            Assert.AreEqual(HorizontalRuleAlignment.Center, horizontalRule.HorizontalRuleFormat.Alignment);
+            Assert.AreEqual(70, horizontalRule.HorizontalRuleFormat.WidthPercent);
+            Assert.AreEqual(3, horizontalRule.HorizontalRuleFormat.Height);
+            Assert.AreEqual(Color.Blue.ToArgb(), horizontalRule.HorizontalRuleFormat.Color.ToArgb());
             //ExEnd
+        }
+
+        [Test(Description = "Checking the boundary conditions of WidthPercent and Height properties")]
+        public void HorizontalRuleFormatExceptions()
+        {
+            DocumentBuilder builder = new DocumentBuilder();
+            Shape shape = builder.InsertHorizontalRule();
+
+            HorizontalRuleFormat horizontalRuleFormat = shape.HorizontalRuleFormat;
+            horizontalRuleFormat.WidthPercent = 1;
+            horizontalRuleFormat.WidthPercent = 100;
+            Assert.That(() => horizontalRuleFormat.WidthPercent = 0, Throws.TypeOf<ArgumentOutOfRangeException>());
+            Assert.That(() => horizontalRuleFormat.WidthPercent = 101, Throws.TypeOf<ArgumentOutOfRangeException>());
+            
+            horizontalRuleFormat.Height = 0;
+            horizontalRuleFormat.Height = 1584;
+            Assert.That(() => horizontalRuleFormat.Height = -1, Throws.TypeOf<ArgumentOutOfRangeException>());
+            Assert.That(() => horizontalRuleFormat.Height = 1585, Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
         [Test]
@@ -347,16 +387,20 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, Boolean, Image)
             //ExFor:DocumentBuilder.InsertOleObject(String, String, Boolean, Boolean, Image)
+            //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, String, String)
             //ExSummary:Shows how to insert an OLE object into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Image representingImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
 
-            // OleObject
-            builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, representingImage); 
-            // OleObject with ProgId
-            builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, false, representingImage);
+            // Insert ole object
+            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage);
+            // Insert ole object with ProgId
+            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, true, null);
+            // Insert ole object as Icon
+            builder.InsertOleObjectAsIcon(MyDir + "Document.Spreadsheet.xlsx", false, ImageDir + "AsIcon.ico",
+                "Caption (can not be null)");
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObject.docx");
             //ExEnd

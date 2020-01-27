@@ -23,6 +23,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
             GetActualShapeBoundsPoints(dataDir);
             SpecifyVerticalAnchor(dataDir);
             DetectSmartArtShape(dataDir);
+            InsertOLEObjectAsIcon(dataDir);
         }
 
         public static void InsertShapeUsingDocumentBuilder(string dataDir)
@@ -168,6 +169,20 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
 
             Console.WriteLine("The document has {0} shapes with SmartArt.", count);
             // ExEnd:DetectSmartArtShape
+        }
+
+        public static void InsertOLEObjectAsIcon(string dataDir)
+        {
+            // ExStart:InsertOLEObjectAsIcon
+            Document doc = new Document();
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            Shape shape = builder.InsertOleObjectAsIcon(dataDir + "embedded.xlsx", false, dataDir + "icon.ico", "My embedded file");
+
+            doc.Save(dataDir + "EmbeddeWithIcon_out.docx");
+
+            Console.WriteLine("The document has been saved with OLE Object as an Icon.");
+            // ExEnd:InsertOLEObjectAsIcon
         }
     }
 }

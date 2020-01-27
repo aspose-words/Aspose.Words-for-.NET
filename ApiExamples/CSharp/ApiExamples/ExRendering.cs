@@ -319,6 +319,28 @@ namespace ApiExamples
 
         #if NETFRAMEWORK
         [Test]
+        public void SaveToImageStream()
+        {
+            //ExStart
+            //ExFor:Document.Save(Stream, SaveFormat)
+            //ExSummary:Saves a document page as a BMP image into a stream.
+            Document doc = new Document(MyDir + "Rendering.doc");
+
+            MemoryStream stream = new MemoryStream();
+            doc.Save(stream, SaveFormat.Bmp);
+
+            // Rewind the stream and create a .NET image from it
+            stream.Position = 0;
+
+            // Read the stream back into an image
+            using (Image image = Image.FromStream(stream))
+            {
+                // ...Do something
+            }
+            //ExEnd
+        }
+
+        [Test]
         public void RenderToSize()
         {
             //ExStart
@@ -787,7 +809,7 @@ namespace ApiExamples
                         Style = SKPaintStyle.Stroke,
                         StrokeWidth = 1
                     });
-                    
+
                     // User specifies (in world coordinates) where on the Graphics to render and what size
                     doc.RenderToSize(0, canvas, 90, 10, 50, 100);
 
