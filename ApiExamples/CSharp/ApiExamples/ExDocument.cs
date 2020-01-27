@@ -3440,6 +3440,7 @@ namespace ApiExamples
             //ExFor:VbaProject.Name
             //ExFor:VbaProject.Modules
             //ExFor:VbaProject.CodePage
+            //ExFor:VbaProject.IsSigned
             //ExFor:VbaModule.Name
             //ExFor:VbaModule.SourceCode
             //ExFor:VbaModuleCollection.Item(System.Int32)
@@ -3450,12 +3451,13 @@ namespace ApiExamples
 
             // A VBA project inside the document is defined as a collection of VBA modules
             VbaProject vbaProject = doc.VbaProject;
-            Console.WriteLine(
-                $"Project name: {vbaProject.Name}; Project code page: {vbaProject.CodePage}; Modules count: {vbaProject.Modules.Count}\n");
+            Console.WriteLine(vbaProject.IsSigned
+                ? $"Project name: {vbaProject.Name} signed; Project code page: {vbaProject.CodePage}; Modules count: {vbaProject.Modules.Count()}\n"
+                : $"Project name: {vbaProject.Name} not signed; Project code page: {vbaProject.CodePage}; Modules count: {vbaProject.Modules.Count()}\n");
 
-            Assert.AreEqual("AsposeVBAtest", vbaProject.Name); //ExSkip
-            Assert.AreEqual(1251, vbaProject.CodePage); //ExSkip
-            Assert.AreEqual(3, vbaProject.Modules.Count); //ExSkip
+            Assert.AreEqual(vbaProject.Name, "AsposeVBAtest"); //ExSkip
+            Assert.AreEqual(vbaProject.Modules.Count(), 3); //ExSkip
+            Assert.True(vbaProject.IsSigned); //ExSkip
 
             VbaModuleCollection vbaModules = doc.VbaProject.Modules;
             foreach (VbaModule module in vbaModules)
