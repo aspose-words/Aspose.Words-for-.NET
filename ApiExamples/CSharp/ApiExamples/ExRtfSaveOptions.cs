@@ -5,7 +5,9 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Saving;
 using NUnit.Framework;
 
@@ -35,6 +37,31 @@ namespace ApiExamples
             };
 
             doc.Save(ArtifactsDir + "RtfSaveOptions.ExportImages.rtf", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void SaveImagesAsWmf()
+        {
+            //ExStart
+            //ExFor:RtfSaveOptions.SaveImagesAsWmf
+            //ExSummary:Shows how to save all images as Wmf when saving to the Rtf document.
+            // Document contains 3 images with png and bmp formats
+            Document doc = new Document(MyDir + "DocumentWithImages.docx");
+
+            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
+            Shape shapeWithPng = (Shape)shapes[0];
+            Assert.AreEqual(ImageType.Png, shapeWithPng.ImageData.ImageType);
+
+            RtfSaveOptions rtfSaveOptions = new RtfSaveOptions();
+            rtfSaveOptions.SaveImagesAsWmf = true;
+            doc.Save(ArtifactsDir + "RtfSaveOptions.SaveImagesAsWmf.rtf", rtfSaveOptions);
+            
+            doc = new Document(ArtifactsDir + "RtfSaveOptions.SaveImagesAsWmf.rtf");
+
+            shapes = doc.GetChildNodes(NodeType.Shape, true);
+            Shape shapeWithWmf = (Shape)shapes[0];
+            Assert.AreEqual(ImageType.Wmf, shapeWithWmf.ImageData.ImageType);
             //ExEnd
         }
     }

@@ -15,6 +15,7 @@ using System.Linq;
 using System.Net;
 using System.Security;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using Aspose.Words;
@@ -2337,6 +2338,57 @@ namespace ApiExamples
             //ExEnd
         }
 
+        //ExStart
+        //ExFor:FindReplaceOptions.UseLegacyOrder
+        //ExSummary:Shows how to include text box analyzing, during replacing text.
+        [TestCase(true)] //ExSkip
+        [TestCase(false)] //ExSkip
+        public void UseLegacyOrder(bool isUseLegacyOrder)
+        {
+            Document doc = new Document(MyDir + "Document.UseLegacyOrder.doc");
+
+            UseLegacyOrderReplacingCallback callback = new UseLegacyOrderReplacingCallback();
+            
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.ReplacingCallback = callback;
+            // Use this option if want to search text sequentially from top to bottom considering the text boxes
+            options.UseLegacyOrder = isUseLegacyOrder;
+ 
+            doc.Range.Replace(new Regex(@"\[(.*?)\]"), "", options);
+
+            CheckUseLegacyOrderResults(isUseLegacyOrder, callback); //ExSkip
+        }
+
+        private class UseLegacyOrderReplacingCallback : IReplacingCallback
+        {
+            ReplaceAction IReplacingCallback.Replacing(ReplacingArgs e)
+            {
+                Matches.Add(e.Match.Value); //ExSkip
+
+                Console.Write(e.Match.Value);
+                return ReplaceAction.Replace;
+            }
+
+            public List<string> Matches { get; } = new List<string>(); //ExSkip
+        }
+        //ExEnd
+
+        private static void CheckUseLegacyOrderResults(bool isUseLegacyOrder, UseLegacyOrderReplacingCallback callback)
+        {
+            if (isUseLegacyOrder)
+            {
+                Assert.AreEqual("[tag 1]", callback.Matches[0]);
+                Assert.AreEqual("[tag 2]", callback.Matches[1]);
+                Assert.AreEqual("[tag 3]", callback.Matches[2]);
+            }
+            else
+            {
+                Assert.AreEqual("[tag 1]", callback.Matches[0]);
+                Assert.AreEqual("[tag 3]", callback.Matches[1]);
+                Assert.AreEqual("[tag 2]", callback.Matches[2]);
+            }
+        }
+
         [Test]
         public void SetEndnoteOptions()
         {
@@ -3349,6 +3401,30 @@ namespace ApiExamples
             doc.VbaProject.Modules.Add(module);
 
             doc.Save(ArtifactsDir + "Document.CreateVBAMacros.docm");
+            }
+            
+		{Test}
+        public void CloneVbaProject()
+        {
+            //ExStart
+            //ExFor:VbaProject.Clone
+            //ExFor:VbaModule.Clone
+            //ExSummary:Shows how to deep clone VbaProject and VbaModule.
+            Document doc = new Document(MyDir + "Document.TestButton.docm");
+            Document destDoc = new Document();
+
+            // Clone VbaProject to the document
+            VbaProject copyVbaProject = doc.VbaProject.Clone();
+            destDoc.VbaProject = copyVbaProject;
+
+            // In destination document we already have "Module1", because he was cloned with VbaProject
+            // Therefore need to remove it before cloning
+            VbaModule oldVbaModule = destDoc.VbaProject.Modules["Module1"];
+            VbaModule copyVbaModule = doc.VbaProject.Modules["Module1"].Clone();
+            destDoc.VbaProject.Modules.Remove(oldVbaModule);
+            destDoc.VbaProject.Modules.Add(copyVbaModule);
+
+            destDoc.Save(ArtifactsDir + "Document.CloneVbaProject.docm");
             //ExEnd
         }
 
@@ -3512,7 +3588,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.WebExtension.docx");
 
             Assert.AreEqual(1, doc.WebExtensionTaskPanes.Count);
-            
+
             // Add new taskpane to the collection
             TaskPane newTaskPane = new TaskPane();
             doc.WebExtensionTaskPanes.Add(newTaskPane);
@@ -3538,7 +3614,7 @@ namespace ApiExamples
             Assert.AreEqual(0, doc.WebExtensionTaskPanes.Count); //ExSkip
             //ExEnd
 		}
-		
+
 		[Test]
         public void EpubCover()
         {
