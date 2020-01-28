@@ -323,7 +323,7 @@ namespace ApiExamples
 
             // Insert absolutely positioned image into the top/left corner of the header
             // Distance from the top/left edges of the page is set to 10 points
-            string imageFileName = ImageDir + "Aspose.Words.gif";
+            string imageFileName = ImageDir + "Aspose.Words.jpg";
             builder.InsertImage(imageFileName, RelativeHorizontalPosition.Page, 10, RelativeVerticalPosition.Page, 10,
                 50, 50, WrapType.Through);
 

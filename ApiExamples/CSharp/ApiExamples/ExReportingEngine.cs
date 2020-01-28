@@ -27,7 +27,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExReportingEngine : ApiExampleBase
     {
-        private readonly string mImage = ImageDir + "Test_636_852.gif";
+        private readonly string mImage = ImageDir + "Aspose.Words.jpg";
         private readonly string mDocument = MyDir + "Reporting engine template - Data table.docx";
 
         [Test]
@@ -704,8 +704,8 @@ namespace ApiExamples
                 Assert.IsNotNull(shape.Fill.ImageBytes);
 
                 // Assert that textbox size are equal image size
-                Assert.AreEqual(346.35, shape.Height);
-                Assert.AreEqual(258.54, shape.Width);
+                Assert.AreEqual(300.0d, shape.Height);
+                Assert.AreEqual(300.0d, shape.Width);
             }
 
             dstStream.Dispose();

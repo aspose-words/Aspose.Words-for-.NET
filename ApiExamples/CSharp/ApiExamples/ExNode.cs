@@ -740,9 +740,9 @@ namespace ApiExamples
             builder.EndTable();
 
             #if NETFRAMEWORK
-            builder.InsertImage(Image.FromFile(ImageDir + "Aspose.Words.gif"));
+            builder.InsertImage(Image.FromFile(ImageDir + "Aspose.Words.jpg"));
             #else
-            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
+            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Aspose.Words.jpg"))
                 builder.InsertImage(image);
             #endif
 
@@ -849,9 +849,9 @@ namespace ApiExamples
             builder.EndTable();
 
             #if NETFRAMEWORK
-            builder.InsertImage(Image.FromFile(ImageDir + "Aspose.Words.gif"));
+            builder.InsertImage(Image.FromFile(ImageDir + "Aspose.Words.jpg"));
             #else
-            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
+            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Aspose.Words.jpg"))
                 builder.InsertImage(image);
             #endif
 

@@ -2273,7 +2273,7 @@ namespace ApiExamples
             DataTable dataTable = CreateDataTable("Images", "ImageColumn",
                 new string[]
                 {
-                    ImageDir + "Aspose.Words.gif",
+                    ImageDir + "Aspose.Words.jpg",
                     ImageDir + "Watermark.png",
                     ImageDir + "dotnet-logo.png"
                 });
@@ -2375,7 +2375,7 @@ namespace ApiExamples
             public ImageFilenameCallback()
             {
                 mImageFilenames = new Dictionary<string, string>();
-                mImageFilenames.Add("Aspose logo", ImageDir + "Aspose.Words.gif");
+                mImageFilenames.Add("Aspose logo", ImageDir + "Aspose.Words.jpg");
                 mImageFilenames.Add(".Net logo", ImageDir + "dotnet-logo.png");
                 mImageFilenames.Add("Watermark", ImageDir + "Watermark.png");
             }

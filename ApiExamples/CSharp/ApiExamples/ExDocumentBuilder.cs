@@ -392,7 +392,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Image representingImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
+            Image representingImage = Image.FromFile(ImageDir + "Aspose.Words.jpg");
 
             // Insert ole object
             builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, representingImage);
@@ -453,7 +453,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            using (SKBitmap representingImage = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
+            using (SKBitmap representingImage = SKBitmap.Decode(ImageDir + "Aspose.Words.jpg"))
             {
                 // OleObject
                 builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, representingImage);
@@ -1660,7 +1660,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Pass a negative value to the width and height values to specify using the size of the source image
-            builder.InsertImage(ImageDir + "LogoSmall.png", RelativeHorizontalPosition.Margin, 200,
+            builder.InsertImage(ImageDir + "Aspose.Words.jpg", RelativeHorizontalPosition.Margin, 200,
                 RelativeVerticalPosition.Margin, 100, -1, -1, WrapType.Square);
             //ExEnd
 

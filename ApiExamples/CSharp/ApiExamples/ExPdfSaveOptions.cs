@@ -8,6 +8,7 @@
 using System;
 using System.Diagnostics;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
@@ -395,6 +396,10 @@ namespace ApiExamples
         public void UnsupportedImageFormatWarning()
         {
             Document doc = new Document(MyDir + "Corrupted image.docx");
+
+            Shape s = (Shape) doc.GetChildNodes(NodeType.Shape, true)[0];
+            
+            s.ImageData.Save(ImageDir + "Img.png");
 
             SaveWarningCallback saveWarningCallback = new SaveWarningCallback();
             doc.WarningCallback = saveWarningCallback;

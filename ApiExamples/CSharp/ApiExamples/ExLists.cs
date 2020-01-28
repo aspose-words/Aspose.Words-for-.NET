@@ -18,8 +18,6 @@ namespace ApiExamples
     [TestFixture]
     public class ExLists : ApiExampleBase
     {
-        private readonly string mImage = ImageDir + "Test_636_852.gif";
-
         [Test]
         public void ApplyDefaultBulletsAndNumbers()
         {
@@ -755,14 +753,24 @@ namespace ApiExamples
             list.ListLevels[0].CreatePictureBullet();
 
             // Set your own picture bullet image through the ImageData
-            list.ListLevels[0].ImageData.SetImage(mImage);
+            list.ListLevels[0].ImageData.SetImage(ImageDir + "AsIcon.ico");
 
             Assert.IsTrue(list.ListLevels[0].ImageData.HasImage);
+
+            // Create a list, configure its bullets to use our image and add two list items
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.ListFormat.List = list;
+            builder.Writeln("Hello world!");
+            builder.Write("Hello again!");
+
+            doc.Save(ArtifactsDir + "Lists.CreatePictureBullet.docx");
 
             // Delete picture bullet
             list.ListLevels[0].DeletePictureBullet();
 
             Assert.IsNull(list.ListLevels[0].ImageData);
+
             //ExEnd
         }
     }

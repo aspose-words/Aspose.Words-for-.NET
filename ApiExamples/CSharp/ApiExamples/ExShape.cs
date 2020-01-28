@@ -73,7 +73,7 @@ namespace ApiExamples
             builder.MoveTo(shape.ParentParagraph);         
 
             // Insert a shape with an image
-            shape = builder.InsertImage(Image.FromFile(ImageDir + "Aspose.Words.gif"));
+            shape = builder.InsertImage(Image.FromFile(ImageDir + "Aspose.Words.jpg"));
             Assert.True(shape.CanHaveImage);
             Assert.True(shape.HasImage);
 
