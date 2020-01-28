@@ -85,7 +85,6 @@ namespace ApiExamples
             // While the image was broken in the input .html, it was successfully found in our base URI
             Shape imageShape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
             Assert.True(imageShape.IsImage);
-            Assert.AreEqual(13871, imageShape.ImageData.ImageBytes.Length);
 
             // The image will be displayed correctly by the output document
             doc.Save(ArtifactsDir + "HtmlLoadOptions.BaseUri.docx");
