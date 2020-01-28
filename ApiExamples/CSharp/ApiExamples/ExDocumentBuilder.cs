@@ -9,25 +9,22 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Net;
-using Aspose.Pdf;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
 using Aspose.Words.Fields;
-using Aspose.Words.Lists;
 using Aspose.Words.Replacing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 using Cell = Aspose.Words.Tables.Cell;
 using Color = System.Drawing.Color;
 using Document = Aspose.Words.Document;
-using Image = System.Drawing.Image;
-using List = NUnit.Framework.List;
 using SaveFormat = Aspose.Words.SaveFormat;
 using Table = Aspose.Words.Tables.Table;
-
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
+#else
+using System.Drawing;
 #endif
 
 namespace ApiExamples
@@ -387,7 +384,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, Boolean, Image)
             //ExFor:DocumentBuilder.InsertOleObject(String, String, Boolean, Boolean, Image)
-            //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, String, String)
+            //ExFor:DocumentBuilder.InsertOleObjectAsIcon(String, Boolean, String, String)
             //ExSummary:Shows how to insert an OLE object into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -399,6 +396,7 @@ namespace ApiExamples
             // Insert ole object with ProgId
             builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, true, null);
             // Insert ole object as Icon
+            // There is one limitation for now: the maximum size of the icon must be 32x32 for the correct display
             builder.InsertOleObjectAsIcon(MyDir + "Spreadsheet.xlsx", false, ImageDir + "AsIcon.ico",
                 "Caption (can not be null)");
 

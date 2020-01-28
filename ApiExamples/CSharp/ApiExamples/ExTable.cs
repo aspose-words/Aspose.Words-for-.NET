@@ -700,7 +700,7 @@ namespace ApiExamples
             table.AppendChild(clonedRow);
 
             doc.Save(ArtifactsDir + "Table.AddCloneRowToTable.doc");
-
+            
             // Verify that the row was cloned and appended properly
             Assert.AreEqual(6, table.Rows.Count);
             Assert.AreEqual(string.Empty, table.LastRow.ToString(SaveFormat.Text).Trim());
@@ -1218,7 +1218,7 @@ namespace ApiExamples
             //ExFor:Table.AbsoluteHorizontalDistance
             //ExFor:Table.AbsoluteVerticalDistance
             //ExSummary:Shows how get/set properties for floating tables.
-            Document doc = new Document(MyDir + "Tables.docx");
+            Document doc = new Document(MyDir + "Table wrapped by text.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             table.AbsoluteHorizontalDistance = 10;

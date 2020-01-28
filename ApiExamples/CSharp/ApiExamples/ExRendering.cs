@@ -1032,7 +1032,7 @@ namespace ApiExamples
         public void SetSpecifyFontFolder()
         {
             FontSettings fontSettings = new FontSettings();
-            fontSettings.SetFontsFolder(MyDir + @"MyFonts\", false);
+            fontSettings.SetFontsFolder(FontsDir, false);
 
             // Using load options
             LoadOptions loadOptions = new LoadOptions();
@@ -1042,7 +1042,7 @@ namespace ApiExamples
 
             FolderFontSource folderSource = ((FolderFontSource) doc.FontSettings.GetFontsSources()[0]);
 
-            Assert.AreEqual(MyDir + @"MyFonts\", folderSource.FolderPath);
+            Assert.AreEqual(FontsDir, folderSource.FolderPath);
             Assert.False(folderSource.ScanSubfolders);
         }
 
@@ -1076,7 +1076,7 @@ namespace ApiExamples
         public void SetSpecifyFontFolders()
         {
             FontSettings fontSettings = new FontSettings();
-            fontSettings.SetFontsFolders(new string[] { MyDir + @"MyFonts\", @"C:\Windows\Fonts\" }, true);
+            fontSettings.SetFontsFolders(new string[] { FontsDir, @"C:\Windows\Fonts\" }, true);
 
             // Using load options
             LoadOptions loadOptions = new LoadOptions();
@@ -1084,7 +1084,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Rendering.docx", loadOptions);
 
             FolderFontSource folderSource = ((FolderFontSource) doc.FontSettings.GetFontsSources()[0]);
-            Assert.AreEqual(MyDir + @"MyFonts\", folderSource.FolderPath);
+            Assert.AreEqual(FontsDir, folderSource.FolderPath);
             Assert.True(folderSource.ScanSubfolders);
 
             folderSource = ((FolderFontSource) doc.FontSettings.GetFontsSources()[1]);
