@@ -680,9 +680,6 @@ namespace ApiExamples
         [Test]
         public void AddClonedRowToTable()
         {
-            //ExStart
-            //ExFor:Row
-            //ExSummary:Shows how to make a clone of the last row of a table and append it to the table.
             Document doc = new Document(MyDir + "Tables.doc");
 
             // Retrieve the first table in the document
@@ -700,7 +697,7 @@ namespace ApiExamples
             table.AppendChild(clonedRow);
 
             doc.Save(ArtifactsDir + "Table.AddCloneRowToTable.doc");
-
+            
             // Verify that the row was cloned and appended properly
             Assert.AreEqual(6, table.Rows.Count);
             Assert.AreEqual(string.Empty, table.LastRow.ToString(SaveFormat.Text).Trim());
@@ -1204,7 +1201,7 @@ namespace ApiExamples
             {
                 Assert.AreEqual(RelativeHorizontalPosition.Margin, table.HorizontalAnchor);
                 Assert.AreEqual(RelativeVerticalPosition.Paragraph, table.VerticalAnchor);
-                Assert.AreEqual(true, table.AllowOverlap);
+                Assert.AreEqual(false, table.AllowOverlap);
             }
             //ExEnd
         }
@@ -1218,7 +1215,7 @@ namespace ApiExamples
             //ExFor:Table.AbsoluteHorizontalDistance
             //ExFor:Table.AbsoluteVerticalDistance
             //ExSummary:Shows how get/set properties for floating tables.
-            Document doc = new Document(MyDir + "Table.Distance.docx");
+            Document doc = new Document(MyDir + "TableWrappedByText.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             table.AbsoluteHorizontalDistance = 10;

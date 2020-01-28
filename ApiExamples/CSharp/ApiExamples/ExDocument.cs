@@ -2286,7 +2286,7 @@ namespace ApiExamples
         public void AutomaticallyUpdateStyles()
         {
             //ExStart
-            //ExFor:Document.AutomaticallyUpdateStyles
+            //ExFor:Document.AutomaticallyUpdateSyles
             //ExSummary:Shows how to update a document's styles based on its template.
             Document doc = new Document();
 
@@ -3423,6 +3423,7 @@ namespace ApiExamples
             doc.VbaProject.Modules.Add(module);
 
             doc.Save(ArtifactsDir + "Document.CreateVBAMacros.docm");
+            //ExEnd
         }
 
         [Test]
@@ -3432,7 +3433,7 @@ namespace ApiExamples
             //ExFor:VbaProject.Clone
             //ExFor:VbaModule.Clone
             //ExSummary:Shows how to deep clone VbaProject and VbaModule.
-            Document doc = new Document(MyDir + "Document.TestButton.docm");
+            Document doc = new Document(MyDir + "VBAProject.docm");
             Document destDoc = new Document();
 
             // Clone VbaProject to the document
@@ -3562,9 +3563,7 @@ namespace ApiExamples
             //ExFor:WebExtensionBindingType
             //ExFor:TaskPaneDockState
             //ExFor:TaskPaneCollection
-            //ExFor:WebExtensionBindingCollection
-            //ExFor:WebExtensionPropertyCollection
-            //ExSummary:Shows how to create add-ins inside the document
+            //ExSummary:Shows how to create add-ins inside the document.
             Document doc = new Document();
 
             // Create taskpane with "MyScript" add-in which will be used by the document
