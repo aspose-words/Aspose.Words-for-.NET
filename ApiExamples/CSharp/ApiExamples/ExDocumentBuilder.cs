@@ -399,6 +399,7 @@ namespace ApiExamples
             // Insert ole object with ProgId
             builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, true, null);
             // Insert ole object as Icon
+            // There is one limitation for now: the maximum size of the icon must be 32x32 for the correct display
             builder.InsertOleObjectAsIcon(MyDir + "Document.Spreadsheet.xlsx", false, ImageDir + "AsIcon.ico",
                 "Caption (can not be null)");
 
