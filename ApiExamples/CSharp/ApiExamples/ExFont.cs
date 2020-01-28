@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using Font = Aspose.Words.Font;
 #if NETFRAMEWORK || NETSTANDARD2_0
 using System;
 using System.Collections;
@@ -631,7 +632,7 @@ namespace ApiExamples
             //ExFor:PhysicalFontInfo.FilePath
             //ExSummary:Shows how to get available fonts and information about them.
             // Add a new folder source which will instruct Aspose.Words to search the following folder for fonts
-            FontSourceBase[] folderFontSource = { new FolderFontSource(MyDir + @"MyFonts\", true) };
+            FontSourceBase[] folderFontSource = { new FolderFontSource(FontsDir, true) };
             
             foreach (PhysicalFontInfo fontInfo in folderFontSource[0].GetAvailableFonts())
             {
@@ -750,7 +751,7 @@ namespace ApiExamples
 
             FontSettings fontSettings = new FontSettings();
             fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
-            fontSettings.SetFontsFolder(MyDir + @"MyFonts\", false);
+            fontSettings.SetFontsFolder(FontsDir, false);
             fontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Arial", "Arvo", "Slab");
             
             doc.FontSettings = fontSettings;
@@ -1290,7 +1291,7 @@ namespace ApiExamples
             Assert.Contains("Calibri", doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Kreon-Regular").ToArray());
 
             // Alternatively, we could add a folder font source in which the corresponding folder contains the font
-            FolderFontSource folderFontSource = new FolderFontSource(MyDir + "MyFonts", false);
+            FolderFontSource folderFontSource = new FolderFontSource(FontsDir, false);
             doc.FontSettings.SetFontsSources(new FontSourceBase[] { systemFontSource, folderFontSource });
             Assert.AreEqual(2, doc.FontSettings.GetFontsSources().Length);
 
@@ -1494,7 +1495,7 @@ namespace ApiExamples
             FontFallbackSettings fontFallbackSettings = fontSettings.FallbackSettings;
 
             // Set our fonts to be sourced exclusively from the "MyFonts" folder
-            FolderFontSource folderFontSource = new FolderFontSource(MyDir + @"\MyFonts", false);
+            FolderFontSource folderFontSource = new FolderFontSource(FontsDir, false);
             fontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
 
             // Calling BuildAutomatic() will generate a fallback scheme that distributes accessible fonts across as many unicode character codes as possible
@@ -1593,7 +1594,7 @@ namespace ApiExamples
             TableSubstitutionRule tableSubstitutionRule = fontSettings.SubstitutionSettings.TableSubstitution;
 
             // If we select fonts exclusively from our own folder, we will need a custom substitution table
-            FolderFontSource folderFontSource = new FolderFontSource(MyDir + @"\MyFonts", false);
+            FolderFontSource folderFontSource = new FolderFontSource(FontsDir, false);
             fontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
 
             // There are two ways of loading a substitution table from a file in the local file system
@@ -1656,7 +1657,7 @@ namespace ApiExamples
             //ExEnd
         }
         
-		[Test]
+        [Test]
         public void GetFontLeading()
         {
             //ExStart
@@ -1721,6 +1722,7 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
+        [Ignore("WORDSNET-19907")]
         public void CheckScanUserFontsFolder()
         {
             // On Windows 10 fonts may be installed either into system folder "%windir%\fonts" for all users

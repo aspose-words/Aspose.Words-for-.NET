@@ -9,25 +9,22 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Net;
-using Aspose.Pdf;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
 using Aspose.Words.Fields;
-using Aspose.Words.Lists;
 using Aspose.Words.Replacing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 using Cell = Aspose.Words.Tables.Cell;
 using Color = System.Drawing.Color;
 using Document = Aspose.Words.Document;
-using Image = System.Drawing.Image;
-using List = NUnit.Framework.List;
 using SaveFormat = Aspose.Words.SaveFormat;
 using Table = Aspose.Words.Tables.Table;
-
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
+#else
+using System.Drawing;
 #endif
 
 namespace ApiExamples

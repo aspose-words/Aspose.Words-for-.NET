@@ -13,18 +13,15 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Windows.Forms;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Fonts;
 using Aspose.Words.Layout;
 using Aspose.Words.Lists;
-using Aspose.Words.Loading;
 using Aspose.Words.Markup;
 using Aspose.Words.Properties;
 using Aspose.Words.Rendering;
@@ -32,16 +29,16 @@ using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using Aspose.Words.Tables;
-using Aspose.Words.Themes;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using CompareOptions = Aspose.Words.CompareOptions;
 #if NETFRAMEWORK || NETSTANDARD2_0
 using Aspose.Words.Shaping.HarfBuzz;
 #endif
 #if NETFRAMEWORK || MAC
+using Aspose.Words.Loading;
 using Org.BouncyCastle.Pkcs;
+using System.Security;
 #endif
 
 namespace ApiExamples
