@@ -36,7 +36,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             builder.Write("Image from local file: ");
-            builder.InsertImage(ImageDir + "Aspose.Words.gif");
+            builder.InsertImage(ImageDir + "Aspose.Words.jpg");
             builder.Writeln();
 
             builder.Write("Image from an Internet url, automatically downloaded for you: ");
@@ -56,7 +56,7 @@ namespace ApiExamples
             // This creates a builder and also an empty document inside the builder
             DocumentBuilder builder = new DocumentBuilder();
 
-            Stream stream = File.OpenRead(ImageDir + "Aspose.Words.gif");
+            Stream stream = File.OpenRead(ImageDir + "Aspose.Words.jpg");
             try
             {
                 builder.Write("Image from stream: ");
@@ -80,7 +80,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             // Insert a raster image
-            Image rasterImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
+            Image rasterImage = Image.FromFile(ImageDir + "Aspose.Words.jpg");
             try
             {
                 builder.Write("Raster image: ");
@@ -117,7 +117,7 @@ namespace ApiExamples
 
             // Insert a raster image
             // SKBitmap doesn't allow to insert a metafiles
-            using (SKBitmap rasterImage = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
+            using (SKBitmap rasterImage = SKBitmap.Decode(ImageDir + "Aspose.Words.jpg"))
             {
                 builder.Write("Raster image: ");
                 builder.InsertImage(rasterImage);
@@ -151,7 +151,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             // By default, the image is inline
-            Shape shape = builder.InsertImage(ImageDir + "Aspose.Words.gif");
+            Shape shape = builder.InsertImage(ImageDir + "Aspose.Words.jpg");
 
             // Make the image float, put it behind text and center on the page
             shape.WrapType = WrapType.None;
@@ -182,7 +182,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             // By default, the image is inline
-            Shape shape = builder.InsertImage(ImageDir + "Aspose.Words.gif");
+            Shape shape = builder.InsertImage(ImageDir + "Aspose.Words.jpg");
 
             // Make the image float, put it behind text and center on the page
             shape.WrapType = WrapType.None;
@@ -302,13 +302,13 @@ namespace ApiExamples
         [Test]
         public void DeleteAllImages()
         {
-            Document doc = new Document(MyDir + "SampleImages.doc");
-            Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
-
             //ExStart
             //ExFor:Shape.HasImage
             //ExFor:Node.Remove
             //ExSummary:Shows how to delete all images from a document.
+            Document doc = new Document(MyDir + "Images.docx");
+            Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
+
             // Here we get all shapes from the document node, but you can do this for any smaller
             // node too, for example delete shapes from a single section or a paragraph
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
@@ -326,22 +326,22 @@ namespace ApiExamples
             // Now we can delete shapes
             foreach (Shape shape in shapesToDelete)
                 shape.Remove();
-            //ExEnd
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
-            doc.Save(ArtifactsDir + "Image.DeleteAllImages.doc");
+            doc.Save(ArtifactsDir + "Image.DeleteAllImages.docx");
+            //ExEnd
         }
 
         [Test]
         public void DeleteAllImagesPreOrder()
         {
-            Document doc = new Document(MyDir + "SampleImages.doc");
-            Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
-
             //ExStart
             //ExFor:Node.NextPreOrder(Node)
             //ExFor:Node.PreviousPreOrder(Node)
             //ExSummary:Shows how to delete all images from a document using pre-order tree traversal.
+            Document doc = new Document(MyDir + "Images.docx");
+            Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
+
             Node curNode = doc;
             while (curNode != null)
             {
@@ -363,10 +363,10 @@ namespace ApiExamples
 
                 curNode = nextNode;
             }
-            //ExEnd
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
-            doc.Save(ArtifactsDir + "Image.DeleteAllImagesPreOrder.doc");
+            doc.Save(ArtifactsDir + "Image.DeleteAllImagesPreOrder.docx");
+            //ExEnd
         }
 
         [Test]
@@ -383,7 +383,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             // By default, the image is inserted at 100% scale
-            Shape shape = builder.InsertImage(ImageDir + "Aspose.Words.gif");
+            Shape shape = builder.InsertImage(ImageDir + "Aspose.Words.jpg");
 
             // It is easy to change the shape size. In this case, make it 50% relative to the current shape size
             shape.Width = shape.Width * 0.5;

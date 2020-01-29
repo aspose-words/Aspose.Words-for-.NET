@@ -22,7 +22,7 @@ namespace ApiExamples
             //ExFor:Range.FormFields
             //ExFor:FormFieldCollection
             //ExSummary:Shows how to get a collection of form fields.
-            Document doc = new Document(MyDir + "FormFields.doc");
+            Document doc = new Document(MyDir + "Form fields.docx");
             FormFieldCollection formFields = doc.Range.FormFields;
             //ExEnd
         }
@@ -33,7 +33,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FormField
             //ExSummary:Shows how to access form fields.
-            Document doc = new Document(MyDir + "FormFields.doc");
+            Document doc = new Document(MyDir + "Form fields.docx");
             FormFieldCollection documentFormFields = doc.Range.FormFields;
 
             FormField formField1 = documentFormFields[3];
@@ -50,7 +50,7 @@ namespace ApiExamples
             //ExFor:FormField.Type
             //ExFor:FormField.Name
             //ExSummary:Shows how to work with form field name, type, and result.
-            Document doc = new Document(MyDir + "FormFields.doc");
+            Document doc = new Document(MyDir + "Form fields.docx");
 
             FormField formField = doc.Range.FormFields[3];
 
@@ -80,7 +80,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FormField.RemoveField
             //ExSummary:Shows how to delete complete form field.
-            Document doc = new Document(MyDir + "FormFields.doc");
+            Document doc = new Document(MyDir + "Form fields.docx");
 
             FormField formField = doc.Range.FormFields[3];
             formField.RemoveField();

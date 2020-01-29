@@ -133,7 +133,7 @@ namespace ApiExamples
             //ExFor:InlineStory.IsMoveToRevision
             //ExSummary:Shows how to process revision-related properties of InlineStory nodes.
             // Open a document that has revisions from changes being tracked
-            Document doc = new Document(MyDir + "RevisionFootnotes.docx");
+            Document doc = new Document(MyDir + "Revision footnotes.docx");
             Assert.IsTrue(doc.HasRevisions);
 
             // Get a collection of all footnotes from the document

@@ -89,7 +89,7 @@ namespace ApiExamples
             //ExFor:FontInfo.Name
             //ExFor:FontInfo.IsTrueType
             //ExSummary:Shows how to gather the details of what fonts are present in a document.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             FontInfoCollection fonts = doc.FontInfos;
             int fontIndex = 1;
@@ -153,7 +153,7 @@ namespace ApiExamples
         [TestCase(false, false, false, Description = "Remove embedded fonts from the saved document.")]
         public void WorkWithEmbeddedFonts(bool embedTrueTypeFonts, bool embedSystemFonts, bool saveSubsetFonts)
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             FontInfoCollection fontInfos = doc.FontInfos;
             fontInfos.EmbedTrueTypeFonts = embedTrueTypeFonts;
@@ -532,7 +532,7 @@ namespace ApiExamples
             //ExFor:Font.Style
             //ExFor:Style.BuiltIn
             //ExSummary:Applies double underline to all runs in a document that are formatted with custom character styles.
-            Document doc = new Document(MyDir + "CustomStyle.doc");
+            Document doc = new Document(MyDir + "Custom style.docx");
 
             // Select all run nodes in the document
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
@@ -557,7 +557,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Run
             //ExSummary:Gets all fonts used in a document.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // Select all runs in the document
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
@@ -592,7 +592,7 @@ namespace ApiExamples
             //ExFor:Fonts.FontSettings.DefaultInstance
             //ExSummary:Demonstrates how to receive notifications of font substitutions by using IWarningCallback.
             // Load the document to render
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class
             HandleDocumentWarnings callback = new HandleDocumentWarnings();
@@ -683,7 +683,7 @@ namespace ApiExamples
             //ExFor:Fonts.FontInfoSubstitutionRule
             //ExFor:Fonts.FontSubstitutionSettings.FontInfoSubstitution
             //ExSummary:Shows how to set the property for finding the closest match font among the available font sources instead missing font.
-            Document doc = new Document(MyDir + "MissingFont.docx");
+            Document doc = new Document(MyDir + "Missing font.docx");
 
             // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class
             HandleDocumentWarnings callback = new HandleDocumentWarnings();
@@ -713,7 +713,7 @@ namespace ApiExamples
         [Test]
         public void DisableFontSubstitution()
         {
-            Document doc = new Document(MyDir + "MissingFont.docx");
+            Document doc = new Document(MyDir + "Missing font.docx");
 
             // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class
             HandleDocumentWarnings callback = new HandleDocumentWarnings();
@@ -743,7 +743,7 @@ namespace ApiExamples
         [Category("SkipMono")]
         public void SubstitutionWarnings()
         {
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class
             HandleDocumentWarnings callback = new HandleDocumentWarnings();
@@ -766,7 +766,7 @@ namespace ApiExamples
         [Test]
         public void SubstitutionWarningsClosestMatch()
         {
-            Document doc = new Document(MyDir + "AltFontBulletPoints.docx");
+            Document doc = new Document(MyDir + "Bullet points with alternative font.docx");
 
             // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class
             HandleDocumentWarnings callback = new HandleDocumentWarnings();
@@ -822,7 +822,7 @@ namespace ApiExamples
         public void RemoveHiddenContentFromDocument()
         {
             // Open the document we want to remove hidden content from.
-            Document doc = new Document(MyDir + "HiddenContent.doc");
+            Document doc = new Document(MyDir + "Hidden content.docx");
 
             // Create an object that inherits from the DocumentVisitor class
             RemoveHiddenContentVisitor hiddenContentRemover = new RemoveHiddenContentVisitor();
@@ -844,7 +844,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Font.RemoveHiddenContentFromDocument.doc");
 
-            Assert.AreEqual(13, doc.GetChildNodes(NodeType.Paragraph, true).Count); //ExSkip
+            Assert.AreEqual(20, doc.GetChildNodes(NodeType.Paragraph, true).Count); //ExSkip
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count); //ExSkip
         }
 
@@ -1086,17 +1086,20 @@ namespace ApiExamples
             //ExFor:Fonts.FontInfoCollection.Item(Int32)
             //ExFor:Fonts.FontInfoCollection.Item(String)
             //ExSummary:Shows how to extract embedded font from a document.
-            Document doc = new Document(MyDir + "EmbeddedFont.docx");
-            // Let's get the font we are interested in
-            FontInfo mittelschriftInfo = doc.FontInfos[2];
+            Document doc = new Document(MyDir + "Embedded font.docx");
+
+            // Get the FontInfo for the embedded font
+            FontInfo embeddedFont = doc.FontInfos["Alte DIN 1451 Mittelschrift"];
+
             // We can now extract this embedded font
-            byte[] embeddedFontBytes = mittelschriftInfo.GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular);
+            byte[] embeddedFontBytes = embeddedFont.GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular);
             Assert.IsNotNull(embeddedFontBytes);
+
             // Then we can save the font to our directory
             File.WriteAllBytes(ArtifactsDir + "Alte DIN 1451 Mittelschrift.ttf", embeddedFontBytes);
             
             // If we want to extract a font from a .doc as opposed to a .docx, we need to make sure to set the appropriate embedded font format
-            doc = new Document(MyDir + "EmbeddedFont.doc");
+            doc = new Document(MyDir + "Embedded font.doc");
 
             Assert.IsNull(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular));
             Assert.IsNotNull(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.EmbeddedOpenType, EmbeddedFontStyle.Regular));
@@ -1311,11 +1314,11 @@ namespace ApiExamples
             //ExFor:FontFallbackSettings.Load(String)
             //ExFor:FontFallbackSettings.Save(String)
             //ExSummary:Shows how to load and save font fallback settings from file.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
             
             // By default fallback settings are initialized with predefined settings which mimics the Microsoft Word fallback
             FontSettings fontSettings = new FontSettings();
-            fontSettings.FallbackSettings.Load(MyDir + "Fallback.xml");
+            fontSettings.FallbackSettings.Load(MyDir + "Font fallback rules.xml");
 
             doc.FontSettings = fontSettings;
             doc.Save(ArtifactsDir + "Font.LoadFontFallbackSettingsFromFile.pdf");
@@ -1332,10 +1335,10 @@ namespace ApiExamples
             //ExFor:FontFallbackSettings.Load(Stream)
             //ExFor:FontFallbackSettings.Save(Stream)
             //ExSummary:Shows how to load and save font fallback settings from stream.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // By default fallback settings are initialized with predefined settings which mimics the Microsoft Word fallback
-            using (FileStream fontFallbackStream = new FileStream(MyDir + "Fallback.xml", FileMode.Open))
+            using (FileStream fontFallbackStream = new FileStream(MyDir + "Font fallback rules.xml", FileMode.Open))
             {
                 FontSettings fontSettings = new FontSettings();
                 fontSettings.FallbackSettings.Load(fontFallbackStream);
@@ -1506,7 +1509,7 @@ namespace ApiExamples
             // We can also load a custom substitution scheme from a file like this
             // This scheme applies the "Arvo" font across the "0000-00ff" unicode blocks, the "Squarish Sans CT" font across "0100-024f",
             // and the "M+ 2m" font in every place that none of the other fonts cover
-            fontFallbackSettings.Load(MyDir + "CustomFontFallbackSettings.xml");
+            fontFallbackSettings.Load(MyDir + "Custom font fallback settings.xml");
 
             // Create a document builder and set its font to one that doesn't exist in any of our sources
             // In doing that we will rely completely on our font fallback scheme to render text
@@ -1599,13 +1602,13 @@ namespace ApiExamples
 
             // There are two ways of loading a substitution table from a file in the local file system
             // 1: Loading from a stream
-            using (FileStream fileStream = new FileStream(MyDir + "FontSubstitutionRuleTable.xml", FileMode.Open))
+            using (FileStream fileStream = new FileStream(MyDir + "Font substitution rules.xml", FileMode.Open))
             {
                 tableSubstitutionRule.Load(fileStream);
             }
 
             // 2: Load directly from file
-            tableSubstitutionRule.Load(MyDir + "FontSubstitutionRuleTable.xml");
+            tableSubstitutionRule.Load(MyDir + "Font substitution rules.xml");
 
             // Since we no longer have access to "Arial", our font table will first try substitute it with "Nonexistent Font", which we don't have,
             // and then with "Kreon", found in the "MyFonts" folder
@@ -1679,7 +1682,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Font.HasDmlEffect(TextDmlEffect)
             //ExSummary:Shows how to checks if particular Dml text effect is applied.
-            Document doc = new Document(MyDir + "DrawingMLTextEffects.docx");
+            Document doc = new Document(MyDir + "DrawingML text effects.docx");
             
             RunCollection runs = doc.FirstSection.Body.FirstParagraph.Runs;
             

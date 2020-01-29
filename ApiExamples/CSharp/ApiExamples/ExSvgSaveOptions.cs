@@ -51,7 +51,7 @@ namespace ApiExamples
         public void SvgResourceFolder()
         {
             // Open a document which contains images
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             SvgSaveOptions options = new SvgSaveOptions
             {

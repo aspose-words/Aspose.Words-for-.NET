@@ -150,7 +150,7 @@ namespace ApiExamples
             //ExFor:HeaderFooterCollection.Item(HeaderFooterType)
             //ExFor:HeaderFooter
             //ExSummary:Deletes all footers from all sections, but leaves headers intact.
-            Document doc = new Document(MyDir + "HeaderFooterTypes.docx");
+            Document doc = new Document(MyDir + "Header and footer types.docx");
 
             foreach (Section section in doc.OfType<Section>())
             {
@@ -178,7 +178,7 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions.ExportHeadersFootersMode
             //ExFor:ExportHeadersFootersMode
             //ExSummary:Demonstrates how to disable the export of headers and footers when saving to HTML based formats.
-            Document doc = new Document(MyDir + "HeaderFooterTypes.docx");
+            Document doc = new Document(MyDir + "Header and footer types.docx");
 
             // Disables exporting headers and footers
             HtmlSaveOptions saveOptions =
@@ -203,7 +203,7 @@ namespace ApiExamples
             //ExFor:Range.Replace(String, String, FindReplaceOptions)
             //ExSummary:Shows how to replace text in the document footer.
             // Open the template document, containing obsolete copyright information in the footer
-            Document doc = new Document(MyDir + "Footer.doc");
+            Document doc = new Document(MyDir + "Footer.docx");
 
             HeaderFooterCollection headersFooters = doc.FirstSection.HeadersFooters;
             HeaderFooter footer = headersFooters[HeaderFooterType.FooterPrimary];
@@ -214,14 +214,15 @@ namespace ApiExamples
                 FindWholeWordsOnly = false
             };
 
-            footer.Range.Replace("(C) 2006 Aspose Pty Ltd.", "Copyright (C) 2020 by Aspose Pty Ltd.", options);
+            int currentYear = System.DateTime.Now.Year;
+            footer.Range.Replace("(C) 2006 Aspose Pty Ltd.", $"Copyright (C) {currentYear} by Aspose Pty Ltd.", options);
 
             doc.Save(ArtifactsDir + "HeaderFooter.ReplaceText.doc");
             //ExEnd
 
             // Verify that the appropriate changes were made to the output document
             doc = new Document(ArtifactsDir + "HeaderFooter.ReplaceText.doc");
-            Assert.IsTrue(doc.Range.Text.Contains("Copyright (C) 2020 by Aspose Pty Ltd."));
+            Assert.IsTrue(doc.Range.Text.Contains($"Copyright (C) {currentYear} by Aspose Pty Ltd."));
         }
 
         //ExStart
@@ -230,7 +231,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void HeaderFooterOrder()
         {
-            Document doc = new Document(MyDir + "HeaderFooterTypes.docx");
+            Document doc = new Document(MyDir + "Header and footer types.docx");
 
             // Assert that we use special header and footer for the first page
             // The order for this: first header\footer, even header\footer, primary header\footer
@@ -322,7 +323,7 @@ namespace ApiExamples
 
             // Insert absolutely positioned image into the top/left corner of the header
             // Distance from the top/left edges of the page is set to 10 points
-            string imageFileName = ImageDir + "Aspose.Words.gif";
+            string imageFileName = ImageDir + "Aspose.Words.jpg";
             builder.InsertImage(imageFileName, RelativeHorizontalPosition.Page, 10, RelativeVerticalPosition.Page, 10,
                 50, 50, WrapType.Through);
 

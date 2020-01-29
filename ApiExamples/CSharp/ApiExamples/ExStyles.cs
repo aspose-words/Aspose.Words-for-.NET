@@ -122,7 +122,7 @@ namespace ApiExamples
             //ExFor:TabStop.Position
             //ExFor:TabStop.Leader
             //ExSummary:Shows how to modify the position of the right tab stop in TOC related paragraphs.
-            Document doc = new Document(MyDir + "TableOfContents.doc");
+            Document doc = new Document(MyDir + "Table of contents.docx");
 
             // Iterate through all paragraphs in the document
             foreach (Paragraph para in doc.GetChildNodes(NodeType.Paragraph, true).OfType<Paragraph>())
@@ -141,14 +141,14 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(ArtifactsDir + "Styles.ChangeTocsTabStops.doc");
+            doc.Save(ArtifactsDir + "Styles.ChangeTocsTabStops.docx");
             //ExEnd
         }
 
         [Test]
         public void CopyStyleSameDocument()
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             //ExStart
             //ExFor:StyleCollection.AddCopy
@@ -260,7 +260,7 @@ namespace ApiExamples
             //ExFor:Style.LinkedStyleName
             //ExSummary:Shows how to use style aliases.
             // Open a document that had a style inserted with commas in its name which separate the style name and aliases
-            Document doc = new Document(MyDir + "StyleWithAlias.docx");
+            Document doc = new Document(MyDir + "Style with alias.docx");
 
             // The aliases, separate from the name can be found here
             Style style = doc.Styles["MyStyle"];

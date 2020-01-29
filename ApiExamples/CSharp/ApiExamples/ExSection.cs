@@ -283,7 +283,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:SectionCollection.Item(Int32)
             //ExSummary:Shows how to access a section at the specified index.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             Section section = doc.Sections[0];
             //ExEnd
         }
@@ -294,7 +294,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:NodeCollection.Add
             //ExSummary:Shows how to add a section to the end of the document.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             Section sectionToAdd = new Section(doc);
             doc.Sections.Add(sectionToAdd);
             //ExEnd
@@ -303,7 +303,7 @@ namespace ApiExamples
         [Test]
         public void SectionsDeleteSection()
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             doc.Sections.RemoveAt(0);
         }
 
@@ -313,7 +313,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:NodeCollection.Clear
             //ExSummary:Shows how to remove all sections from a document.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             doc.Sections.Clear();
             //ExEnd
         }
@@ -353,7 +353,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Section.ClearContent
             //ExSummary:Shows how to delete main content of a section.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             Section section = doc.Sections[0];
             section.ClearContent();
             //ExEnd
@@ -365,7 +365,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Section.ClearHeadersFooters
             //ExSummary:Clears content of all headers and footers in a section.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             Section section = doc.Sections[0];
             section.ClearHeadersFooters();
             //ExEnd
@@ -377,7 +377,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Section.DeleteHeaderFooterShapes
             //ExSummary:Removes all images and shapes from all headers footers in a section.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             Section section = doc.Sections[0];
             section.DeleteHeaderFooterShapes();
             //ExEnd
@@ -386,14 +386,14 @@ namespace ApiExamples
         [Test]
         public void SectionsCloneSection()
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             Section cloneSection = doc.Sections[0].Clone();
         }
 
         [Test]
         public void SectionsImportSection()
         {
-            Document srcDoc = new Document(MyDir + "Document.doc");
+            Document srcDoc = new Document(MyDir + "Document.docx");
             Document dstDoc = new Document();
 
             Section sourceSection = srcDoc.Sections[0];

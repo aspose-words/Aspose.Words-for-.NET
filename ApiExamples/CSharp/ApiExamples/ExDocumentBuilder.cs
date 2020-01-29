@@ -250,7 +250,7 @@ namespace ApiExamples
             //ExFor:Field.GetFieldCode
             //ExFor:Field.GetFieldCode(bool)
             //ExSummary:Shows how to get text between field start and field separator (or field end if there is no separator).
-            Document doc = new Document(MyDir + "NestedFields.docx");
+            Document doc = new Document(MyDir + "Nested fields.docx");
 
             foreach (Field field in doc.Range.Fields)
             {
@@ -389,7 +389,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Image representingImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
+            Image representingImage = Image.FromFile(ImageDir + "Aspose.Words.jpg");
 
             // Insert ole object
             builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, representingImage);
@@ -451,7 +451,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            using (SKBitmap representingImage = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
+            using (SKBitmap representingImage = SKBitmap.Decode(ImageDir + "Aspose.Words.jpg"))
             {
                 // OleObject
                 builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, representingImage);
@@ -1377,14 +1377,20 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderCursorPosition()
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            // Write some text in a blank Document using a DocumentBuilder
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("Hello world!");
 
-            Node curNode = builder.CurrentNode;
-            Assert.AreEqual(NodeType.Run, curNode.NodeType);
+            // If the builder's cursor is at the end of the document, there will be no nodes in front of it so the current node will be null
+            Assert.Null(builder.CurrentNode);
 
-            Paragraph curParagraph = builder.CurrentParagraph;
-            Assert.AreEqual("Hello World!", curParagraph.GetText().Trim());
+            // However, the current paragraph the cursor is in will be valid
+            Assert.AreEqual("Hello world!", builder.CurrentParagraph.GetText().Trim());
+
+            // Move to the beginning of the document and place the cursor at an existing node
+            builder.MoveToDocumentStart();          
+            Assert.AreEqual(NodeType.Run, builder.CurrentNode.NodeType);
         }
 
         [Test]
@@ -1404,7 +1410,7 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderMoveToDocumentStartEnd()
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveToDocumentEnd();
@@ -1449,7 +1455,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.MoveToCell
             //ExSummary:Shows how to move a cursor position to the specified table cell.
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // All parameters are 0-index. Moves to the 1st table, 3rd row, 4th cell
@@ -1572,7 +1578,7 @@ namespace ApiExamples
         [Test]
         public void TableCellVerticalRotatedFarEastTextOrientation()
         {
-            Document doc = new Document(MyDir + "FarEastRotatedCellText.docx");
+            Document doc = new Document(MyDir + "Rotated cell text.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             Cell cell = table.FirstRow.FirstCell;
@@ -1652,7 +1658,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Pass a negative value to the width and height values to specify using the size of the source image
-            builder.InsertImage(ImageDir + "LogoSmall.png", RelativeHorizontalPosition.Margin, 200,
+            builder.InsertImage(ImageDir + "Aspose.Words.jpg", RelativeHorizontalPosition.Margin, 200,
                 RelativeVerticalPosition.Margin, 100, -1, -1, WrapType.Square);
             //ExEnd
 
@@ -2043,7 +2049,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.DeleteRow
             //ExSummary:Shows how to delete a row from a table.
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Delete the first row of the first table in the document
@@ -2065,7 +2071,7 @@ namespace ApiExamples
             builder.MoveToDocumentEnd();
             builder.InsertBreak(BreakType.PageBreak);
 
-            Document docToInsert = new Document(MyDir + "DocumentBuilder.KeepSourceFormatting.docx");
+            Document docToInsert = new Document(MyDir + "Formatted elements.docx");
 
             builder.InsertDocument(docToInsert, ImportFormatMode.KeepSourceFormatting);
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.InsertDocument.docx");
@@ -2081,12 +2087,15 @@ namespace ApiExamples
             //ExFor:ImportFormatOptions.KeepSourceNumbering
             //ExFor:NodeImporter.#ctor(DocumentBase, DocumentBase, ImportFormatMode, ImportFormatOptions)
             //ExSummary:Shows how the numbering will be imported when it clashes in source and destination documents.
-            Document dstDoc = new Document(MyDir + "DocumentBuilder.KeepSourceNumbering.DestinationDocument.docx");
-            Document srcDoc = new Document(MyDir + "DocumentBuilder.KeepSourceNumbering.SourceDocument.docx");
-            
+            // Open a document with a custom list numbering scheme and clone it
+            // Since both have the same numbering format, the formats will clash if we import one document into the other
+            Document srcDoc = new Document(MyDir + "Custom list numbering.docx");
+            Document dstDoc = srcDoc.Clone();
+
             ImportFormatOptions importFormatOptions = new ImportFormatOptions();
-            // Keep source list formatting when importing numbered paragraphs
-            importFormatOptions.KeepSourceNumbering = true;
+            // Both documents have the same numbering in their lists, but if we set this flag to false and then import one document into the other
+            // the numbering of the imported source document will continue from where it ends in the destination document
+            importFormatOptions.KeepSourceNumbering = false;
             
             NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
             
@@ -2098,7 +2107,7 @@ namespace ApiExamples
                 dstDoc.FirstSection.Body.AppendChild(importedNode);
             }
  
-            dstDoc.Save(ArtifactsDir + "DocumentBuilder.KeepSourceNumbering.ResultDocument.docx");
+            dstDoc.Save(ArtifactsDir + "DocumentBuilder.KeepSourceNumbering.docx");
             //ExEnd
         }
 
@@ -2108,12 +2117,26 @@ namespace ApiExamples
             //ExStart
             //ExFor:ImportFormatOptions.IgnoreTextBoxes
             //ExSummary:Shows how to manage formatting in the text boxes of the source destination during the import.
-            Document dstDoc = new Document(MyDir + "DocumentBuilder.IgnoreTextBoxes.DestinationDocument.docx");
-            Document srcDoc = new Document(MyDir + "DocumentBuilder.IgnoreTextBoxes.SourceDocument.docx");
+            // Create a document and add text
+            Document dstDoc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(dstDoc);
 
+            builder.Writeln("Hello world! Text box to follow.");
+
+            // Create another document with a textbox, and insert some formatted text into it
+            Document srcDoc = new Document();
+            builder = new DocumentBuilder(srcDoc);
+
+            Shape textBox = builder.InsertShape(ShapeType.TextBox, 300, 100);
+            builder.MoveTo(textBox.FirstParagraph);
+            builder.ParagraphFormat.Style.Font.Name = "Courier New";
+            builder.ParagraphFormat.Style.Font.Size = 24.0d;
+            builder.Write("Textbox contents");
+
+            // When we import the document with the textbox as a node into the first document, by default the text inside the text box will keep its formatting
+            // Setting the IgnoreTextBoxes flag will clear the formatting during importing of the node
             ImportFormatOptions importFormatOptions = new ImportFormatOptions();
-            // Keep the source text boxes formatting when importing
-            importFormatOptions.IgnoreTextBoxes = false;
+            importFormatOptions.IgnoreTextBoxes = true;
 
             NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
  
@@ -2124,8 +2147,8 @@ namespace ApiExamples
                 Node importedNode = importer.ImportNode(srcPara, true);
                 dstDoc.FirstSection.Body.AppendChild(importedNode);
             }
- 
-            dstDoc.Save(ArtifactsDir + "DocumentBuilder.IgnoreTextBoxes.ResultDocument.docx");
+
+            dstDoc.Save(ArtifactsDir + "DocumentBuilder.IgnoreTextBoxes.docx");
             //ExEnd
         }
 
@@ -2135,7 +2158,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.MoveToField
             //ExSummary:Shows how to move document builder's cursor to a specific field.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Field field = builder.InsertField("MERGEFIELD field");
@@ -2409,16 +2432,16 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Let's take a spreadsheet from our system and insert it into the document
-            using (Stream spreadsheetStream = File.Open(MyDir + "MySpreadsheet.xlsx", FileMode.Open))
+            using (Stream spreadsheetStream = File.Open(MyDir + "Spreadsheet.xlsx", FileMode.Open))
             {
                 // The spreadsheet can be activated by double clicking the panel that you'll see in the document immediately under the text we will add
                 // We did not set the area to double click as an icon nor did we change its appearance so it looks like a simple panel
                 builder.Writeln("Spreadsheet Ole object:");
-                builder.InsertOleObject(spreadsheetStream, "MyOleObject.xlsx", false, null);
+                builder.InsertOleObject(spreadsheetStream, "OleObject.xlsx", false, null);
 
                 // A powerpoint presentation is another type of object we can embed in our document
                 // This time we'll also exercise some control over how it looks 
-                using (Stream powerpointStream = File.Open(MyDir + "MyPresentation.pptx", FileMode.Open))
+                using (Stream powerpointStream = File.Open(MyDir + "Presentation.pptx", FileMode.Open))
                 {
                     // If we insert the Ole object as an icon, we are still provided with a default icon
                     // If that is not suitable, we can make the icon to look like any image
@@ -2442,7 +2465,7 @@ namespace ApiExamples
                                 // If we double click the image, the powerpoint presentation will open
                                 builder.InsertParagraph();
                                 builder.Writeln("Powerpoint Ole object:");
-                                builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, image);
+                                builder.InsertOleObject(powerpointStream, "OleObject.pptx", true, image);
                             }
                         }
 
@@ -2537,33 +2560,32 @@ namespace ApiExamples
             //ExFor:ImportFormatOptions.SmartStyleBehavior
             //ExFor:DocumentBuilder.InsertDocument(Document, ImportFormatMode, ImportFormatOptions)
             //ExSummary:Shows how to resolve styles behavior while inserting documents.
-            Document destDoc = new Document(MyDir + "DocumentBuilder.SmartStyleBehavior.DestinationDocument.docx");
-            Document sourceDoc1 = new Document(MyDir + "DocumentBuilder.SmartStyleBehavior.SourceDocument01.docx");
-            Document sourceDoc2 = new Document(MyDir + "DocumentBuilder.SmartStyleBehavior.SourceDocument02.docx");
+            Document dstDoc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(dstDoc);
 
-            DocumentBuilder builder = new DocumentBuilder(destDoc);
+            Style myStyle = builder.Document.Styles.Add(StyleType.Paragraph, "MyStyle");
+            myStyle.Font.Size = 14;
+            myStyle.Font.Name = "Courier New";
+            myStyle.Font.Color = Color.Blue;
 
-            builder.MoveToDocumentEnd();
-            builder.InsertBreak(BreakType.PageBreak);
-            builder.MoveToDocumentEnd();
+            // Append text with custom style
+            builder.ParagraphFormat.StyleName = myStyle.Name;
+            builder.Writeln("Hello world!");
 
-            ImportFormatOptions importFormatOptions = new ImportFormatOptions();
-            importFormatOptions.SmartStyleBehavior = true;
-            
+            // Clone the document, and edit the clone's "MyStyle" style so it is a different color than that of the original
+            // If we append this document to the original, the different styles will clash since they are the same name, and we will need to resolve it
+            Document srcDoc = dstDoc.Clone();
+            srcDoc.Styles["MyStyle"].Font.Color = Color.Red;
+
             // When SmartStyleBehavior is enabled,
             // a source style will be expanded into a direct attributes inside a destination document,
             // if KeepSourceFormatting importing mode is used
-            builder.InsertDocument(sourceDoc1, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
-            
-            builder.MoveToDocumentEnd();
-            builder.InsertBreak(BreakType.PageBreak);
-            
-            // When SmartStyleBehavior is disabled,
-            // a source style will be expanded only if it is numbered.
-            // Existing destination attributes will not be overridden, including lists
-            builder.InsertDocument(sourceDoc2, ImportFormatMode.UseDestinationStyles);
+            ImportFormatOptions options = new ImportFormatOptions();
+            options.SmartStyleBehavior = true;
 
-            destDoc.Save(ArtifactsDir + @"DocumentBuilder.SmartStyleBehavior.ResultDocument.docx");
+            builder.InsertDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, options);
+
+            dstDoc.Save(ArtifactsDir + @"DocumentBuilder.SmartStyleBehavior.docx");
             //ExEnd
         }
 
@@ -2573,22 +2595,26 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.AppendDocument(Document, ImportFormatMode, ImportFormatOptions)
             //ExSummary:Shows how to resolve styles behavior while append document.
-            Document srcDoc = new Document(MyDir + "DocumentBuilder.ResolveStyleBehaviorWhileAppendDocument.Source.docx");
-            Document dstDoc = new Document(MyDir + "DocumentBuilder.ResolveStyleBehaviorWhileAppendDocument.Destination.docx");
+            // Open a document with text in a custom style and clone it
+            Document srcDoc = new Document(MyDir + "Custom list numbering.docx");
+            Document dstDoc = srcDoc.Clone();
+
+            // We now have two documents, each with an identical style named "CustomStyle" 
+            // We can change the text color of one of the styles
+            dstDoc.Styles["CustomStyle"].Font.Color = Color.DarkRed;
 
             ImportFormatOptions options = new ImportFormatOptions();
             // Specify that if numbering clashes in source and destination documents
             // then a numbering from the source document will be used
             options.KeepSourceNumbering = true;
-            dstDoc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles, options);
+
+            // If we join two documents which have different styles that share the same name,
+            // we can resolve the style clash with an ImportFormatMode
+            dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepDifferentStyles, options);
             dstDoc.UpdateListLabels();
+
+            dstDoc.Save(ArtifactsDir + "DocumentBuilder.ResolveStyleBehaviorWhileAppendDocument.docx");
             //ExEnd
-
-            Paragraph para = dstDoc.Sections[1].Body.LastParagraph;
-            string paraText = para.GetText();
-
-            Assert.AreEqual("1.", para.ListLabel.LabelString);
-            Assert.IsTrue(paraText.StartsWith("13->13"), paraText);
         }
 
         #if NETFRAMEWORK || NETSTANDARD2_0

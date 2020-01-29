@@ -24,7 +24,7 @@ namespace ApiExamples
             //ExFor:OdtSaveOptions.MeasureUnit
             //ExFor:OdtSaveMeasureUnit
             //ExSummary:Shows how to work with units of measure of document content.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // Open Office uses centimeters, MS Office uses inches
             OdtSaveOptions saveOptions = new OdtSaveOptions

@@ -54,7 +54,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void PageFileName()
         {
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlFixedSaveOptions htmlFixedSaveOptions =
                 new HtmlFixedSaveOptions { PageIndex = 0, PageCount = doc.PageCount };
@@ -110,7 +110,7 @@ namespace ApiExamples
         public void DocumentParts()
         {
             // Open a document to be converted to html
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
             string outFileName = "SavingCallback.DocumentParts.Rendering.html";
 
             // We can use an appropriate SaveOptions subclass to customize the conversion process
@@ -145,7 +145,7 @@ namespace ApiExamples
 
             void IDocumentPartSavingCallback.DocumentPartSaving(DocumentPartSavingArgs args)
             {
-                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.doc"));
+                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.docx"));
 
                 string partType = "";
 
@@ -226,7 +226,7 @@ namespace ApiExamples
         public void CssSavingCallback()
         {
             // Open a document to be converted to html
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // If our output document will produce a CSS stylesheet, we can use an HtmlSaveOptions to control where it is saved
             HtmlSaveOptions options = new HtmlSaveOptions();
@@ -268,7 +268,7 @@ namespace ApiExamples
                 args.KeepCssStreamOpen = mKeepCssStreamOpen;
 
                 // We can also access the original document here like this
-                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.doc"));
+                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.docx"));
             }
 
             private readonly string mCssTextFileName;

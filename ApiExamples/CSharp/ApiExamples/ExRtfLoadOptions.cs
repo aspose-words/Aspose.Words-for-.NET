@@ -26,7 +26,7 @@ namespace ApiExamples
                 RecognizeUtf8Text = true
             };
 
-            Document doc = new Document(MyDir + "UTF8Characters.rtf", loadOptions);
+            Document doc = new Document(MyDir + "UTF-8 characters.rtf", loadOptions);
             doc.Save(ArtifactsDir + "RtfLoadOptions.RecognizeUtf8Text.rtf");
             //ExEnd
         }

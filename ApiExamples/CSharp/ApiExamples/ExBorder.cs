@@ -66,8 +66,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:Border.ClearFormatting
             //ExSummary:Shows how to remove borders from a paragraph.
-            Document doc = new Document(MyDir + "Borders.doc");
-
+            Document doc = new Document(MyDir + "Borders.docx");
+            
             DocumentBuilder builder = new DocumentBuilder(doc);
             BorderCollection borders = builder.ParagraphFormat.Borders;
 

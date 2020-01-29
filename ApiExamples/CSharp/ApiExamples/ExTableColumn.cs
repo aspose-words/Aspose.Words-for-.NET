@@ -126,7 +126,7 @@ namespace ApiExamples
         [Test]
         public void RemoveColumnFromTable()
         {
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             Table table = (Table) doc.GetChild(NodeType.Table, 1, true);
 
             // Get the third column from the table and remove it
@@ -136,14 +136,14 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "TableColumn.RemoveColumn.doc");
 
             Assert.AreEqual(16, table.GetChildNodes(NodeType.Cell, true).Count);
-            Assert.AreEqual("Cell 3 contents", table.Rows[2].Cells[2].ToString(SaveFormat.Text).Trim());
-            Assert.AreEqual("Cell 3 contents", table.LastRow.Cells[2].ToString(SaveFormat.Text).Trim());
+            Assert.AreEqual("Cell 7 contents", table.Rows[2].Cells[2].ToString(SaveFormat.Text).Trim());
+            Assert.AreEqual("Cell 11 contents", table.LastRow.Cells[2].ToString(SaveFormat.Text).Trim());
         }
 
         [Test]
         public void Insert()
         {
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             Table table = (Table) doc.GetChild(NodeType.Table, 1, true);
 
             // Get the second column in the table
@@ -167,7 +167,7 @@ namespace ApiExamples
         [Test]
         public void TableColumnToTxt()
         {
-            Document doc = new Document(MyDir + "Tables.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             Table table = (Table) doc.GetChild(NodeType.Table, 1, true);
 
             // Get the first column in the table

@@ -8,6 +8,7 @@
 using System;
 using System.Diagnostics;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
@@ -183,7 +184,7 @@ namespace ApiExamples
             //ExFor:PdfCompliance
             //ExFor:PdfImageColorSpaceExportMode
             //ExSummary:Shows how to save images to PDF using JPEG encoding to decrease file size.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
             
             PdfSaveOptions options = new PdfSaveOptions
             {
@@ -222,7 +223,7 @@ namespace ApiExamples
             //ExFor:FixedPageSaveOptions.ColorMode
             //ExSummary:Shows how change image color with save options property
             // Open document with color image
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
             // Set grayscale mode for document
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { ColorMode = ColorMode.Grayscale };
             
@@ -237,7 +238,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfSaveOptions.DisplayDocTitle
             //ExSummary:Shows how to display title of the document as title bar.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
             doc.BuiltInDocumentProperties.Title = "Windows bar pdf title";
             
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { DisplayDocTitle = true };
@@ -260,7 +261,7 @@ namespace ApiExamples
             //ExFor:SaveOptions.CreateSaveOptions(SaveFormat)
             //ExFor:SaveOptions.MemoryOptimization
             //ExSummary:Shows an option to optimize memory consumption when you work with large documents.
-            Document doc = new Document(MyDir + "LargeDocument.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // When set to true it will improve document memory footprint but will add extra time to processing
             SaveOptions saveOptions = SaveOptions.CreateSaveOptions(SaveFormat.Pdf);
@@ -320,7 +321,7 @@ namespace ApiExamples
             //ExFor:IWarningCallback
             //ExFor:FixedPageSaveOptions.MetafileRenderingOptions
             //ExSummary:Shows added fallback to bitmap rendering and changing type of warnings about unsupported metafile records.
-            Document doc = new Document(MyDir + "WindowsMetafileImage.doc");
+            Document doc = new Document(MyDir + "WMF with image.docx");
 
             MetafileRenderingOptions metafileRenderingOptions =
                 new MetafileRenderingOptions
@@ -375,7 +376,7 @@ namespace ApiExamples
             //ExFor:OutlineOptions
             //ExFor:OutlineOptions.DefaultBookmarksOutlineLevel
             //ExSummary:Shows how bookmarks in headers/footers are exported to pdf.
-            Document doc = new Document(MyDir + "HeaderFooterBookmarks.docx");
+            Document doc = new Document(MyDir + "Bookmarks in headers and footers.docx");
 
             // You can specify how bookmarks in headers/footers are exported
             // There is a several options for this:
@@ -394,7 +395,11 @@ namespace ApiExamples
         [Test]
         public void UnsupportedImageFormatWarning()
         {
-            Document doc = new Document(MyDir + "CorruptedImage.docx");
+            Document doc = new Document(MyDir + "Corrupted image.docx");
+
+            Shape s = (Shape) doc.GetChildNodes(NodeType.Shape, true)[0];
+            
+            s.ImageData.Save(ImageDir + "Img.png");
 
             SaveWarningCallback saveWarningCallback = new SaveWarningCallback();
             doc.WarningCallback = saveWarningCallback;
@@ -425,7 +430,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:MetafileRenderingOptions.ScaleWmfFontsToMetafileSize
             //ExSummary:Shows how to WMF fonts scaling according to metafile size on the page.
-            Document doc = new Document(MyDir + "WindowsMetafile.docx");
+            Document doc = new Document(MyDir + "WMF with text.docx");
 
             // There is a several options for this:
             // 'True' - Aspose.Words emulates font scaling according to metafile size on the page
@@ -491,7 +496,7 @@ namespace ApiExamples
             //ExFor:PdfZoomBehavior
             //ExSummary:Shows how to set the default zooming of an output PDF to 1/4 of default size.
             // Open a document with multiple paragraphs
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             PdfSaveOptions options = new PdfSaveOptions();
             options.ZoomBehavior = PdfZoomBehavior.ZoomFactor;
@@ -511,7 +516,7 @@ namespace ApiExamples
             //ExFor:PdfSaveOptions.CreateNoteHyperlinks
             //ExSummary:Shows how to make footnotes and endnotes work like hyperlinks.
             // Open a document with footnotes/endnotes
-            Document doc = new Document(MyDir + "FootnotesAndEndnotes.docx");
+            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
 
             // Creating a PdfSaveOptions instance with this flag set will convert footnote/endnote number symbols in the text
             // into hyperlinks pointing to the footnotes, and the actual footnotes/endnotes at the end of pages into links to their
@@ -554,7 +559,7 @@ namespace ApiExamples
             //ExFor:SaveOptions.DmlEffectsRenderingMode
             //ExFor:SaveOptions.DmlRenderingMode
             //ExSummary:Shows how to configure DrawingML rendering quality with PdfSaveOptions.
-            Document doc = new Document(MyDir + "DrawingMLEffects.docx");
+            Document doc = new Document(MyDir + "DrawingML shape effects.docx");
 
             // Creating a new PdfSaveOptions object and setting its DmlEffectsRenderingMode to "None" will
             // strip the shapes of all their shading effects in the output pdf
@@ -719,7 +724,7 @@ namespace ApiExamples
             //ExFor:MetafileRenderingOptions.EmfPlusDualRenderingMode
             //ExFor:MetafileRenderingOptions.UseEmfEmbeddedToWmf
             //ExSummary:Shows how to adjust EMF (Enhanced Windows Metafile) rendering options when saving to PDF.
-            Document doc = new Document(MyDir + "WindowsMetafileEnhanced.docx");
+            Document doc = new Document(MyDir + "EMF.docx");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.MetafileRenderingOptions.EmfPlusDualRenderingMode = EmfPlusDualRenderingMode.EmfPlus;

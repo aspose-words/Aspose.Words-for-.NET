@@ -167,9 +167,9 @@ namespace ApiExamples
             //ExFor:FixedPageSaveOptions.OptimizeOutput
             //ExFor:HtmlFixedSaveOptions.OptimizeOutput
             //ExSummary:Shows how to optimize document objects while saving to html.
-            Document doc = new Document(MyDir + "Graphics.doc");
+            Document doc = new Document(MyDir + "Unoptimized content.docx");
 
-            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { OptimizeOutput = false };
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { OptimizeOutput = true };
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html", saveOptions);
             //ExEnd
@@ -191,7 +191,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void UsingMachineFonts()
         {
-            Document doc = new Document(MyDir + "AltFontBulletPoints.docx");
+            Document doc = new Document(MyDir + "Bullet points with alternative font.docx");
 
             HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions
             {
@@ -245,7 +245,7 @@ namespace ApiExamples
         public void HtmlFixedResourceFolder()
         {
             // Open a document which contains images
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlFixedSaveOptions options = new HtmlFixedSaveOptions
             {

@@ -21,13 +21,13 @@ namespace ApiExamples
             //ExStart
             //ExFor:TabStopCollection.Clear
             //ExSummary:Shows how to remove all tab stops from a document.
-            Document doc = new Document(MyDir + "TableOfContents.doc");
+            Document doc = new Document(MyDir + "Table of contents.docx");
 
             // Clear all tab stops from every paragraph
             foreach (Paragraph para in doc.GetChildNodes(NodeType.Paragraph, true).OfType<Paragraph>())
                 para.ParagraphFormat.TabStops.Clear();
 
-            doc.Save(ArtifactsDir + "TabStopCollection.ClearAll.doc");
+            doc.Save(ArtifactsDir + "TabStopCollection.ClearAll.docx");
             //ExEnd
         }
 
@@ -91,7 +91,7 @@ namespace ApiExamples
             //ExFor:TabStopCollection.Add(TabStop)
             //ExFor:TabStopCollection.Add(Double, TabAlignment, TabLeader)
             //ExSummary:Shows how to create tab stops and add them to a document.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             Paragraph paragraph = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
             // Create a TabStop object and add it to the document
@@ -119,7 +119,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:TabStopCollection.RemoveByIndex
             //ExSummary:Shows how to select a tab stop in a document by its index and remove it.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             Paragraph paragraph = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
             paragraph.ParagraphFormat.TabStops.Add(ConvertUtil.MillimeterToPoint(30), TabAlignment.Left,
@@ -142,7 +142,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:TabStopCollection.GetPositionByIndex
             //ExSummary:Shows how to find a tab stop by it's index and get its position.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             Paragraph paragraph = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
             paragraph.ParagraphFormat.TabStops.Add(ConvertUtil.MillimeterToPoint(30), TabAlignment.Left,
@@ -161,7 +161,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:TabStopCollection.GetIndexByPosition
             //ExSummary:Shows how to look up a position to see if a tab stop exists there, and if so, obtain its index.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             Paragraph paragraph = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
             paragraph.ParagraphFormat.TabStops.Add(ConvertUtil.MillimeterToPoint(30), TabAlignment.Left,

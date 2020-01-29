@@ -22,7 +22,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:EditableRange.Remove
             //ExSummary:Shows how to remove an editable range from a document.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Create an EditableRange so we can remove it. Does not have to be well-formed
@@ -59,7 +59,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void CreateEditableRanges()
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Start an editable range

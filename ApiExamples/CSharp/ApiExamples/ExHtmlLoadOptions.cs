@@ -35,7 +35,7 @@ namespace ApiExamples
             // Wait for a response, when loading external resources
             loadOptions.WebRequestTimeout = 1000;
 
-            Document doc = new Document(MyDir + "ConditionalComments.htm", loadOptions);
+            Document doc = new Document(MyDir + "Conditional comments.htm", loadOptions);
             doc.Save(ArtifactsDir + "HtmlLoadOptions.SupportVml.docx");
             //ExEnd
         }
@@ -66,7 +66,7 @@ namespace ApiExamples
             Assert.AreEqual(signOptions.DecryptionPassword, loadOptions.Password);
 
             Document doc = new Document(outputFileName, loadOptions);
-            Assert.AreEqual("Test signed document.", doc.GetText().Trim());       
+            Assert.AreEqual("Test encrypted document.", doc.GetText().Trim());       
             //ExEnd
         }
 
@@ -80,12 +80,12 @@ namespace ApiExamples
             // while the image is in a different location, we will need to resolve the relative URI into an absolute one
             // by creating an HtmlLoadOptions and providing a base URI 
             HtmlLoadOptions loadOptions = new HtmlLoadOptions(LoadFormat.Html, "", ImageDir);
-            Document doc = new Document(MyDir + "MissingImage.html", loadOptions);
+            Document doc = new Document(MyDir + "Missing image.html", loadOptions);
         
             // While the image was broken in the input .html, it was successfully found in our base URI
             Shape imageShape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
             Assert.True(imageShape.IsImage);
-            
+
             // The image will be displayed correctly by the output document
             doc.Save(ArtifactsDir + "HtmlLoadOptions.BaseUri.docx");
             //ExEnd

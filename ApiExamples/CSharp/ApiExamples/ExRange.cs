@@ -75,16 +75,20 @@ namespace ApiExamples
             //ExStart
             //ExFor:Range.Replace(Regex, String, FindReplaceOptions)
             //ExSummary:Shows how to replace all occurrences of words "sad" or "mad" to "bad".
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("sad mad bad");
+
+            Assert.AreEqual("sad mad bad", doc.GetText().Trim());
 
             FindReplaceOptions options = new FindReplaceOptions();
             options.MatchCase = false;
             options.FindWholeWordsOnly = false;
 
             doc.Range.Replace(new Regex("[s|m]ad"), "bad", options);
-            //ExEnd
 
-            doc.Save(ArtifactsDir + "Range.ReplaceWithRegex.docx");
+            Assert.AreEqual("bad bad bad", doc.GetText().Trim());
+            //ExEnd
         }
 
         // Note: Need more info from dev.
@@ -112,14 +116,18 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FindReplaceOptions.PreserveMetaCharacters
-            //ExSummary:Shows how to preserved meta-characters that beginning with "&".
-            Document doc = new Document(MyDir + "Range.FindAndReplaceWithPreserveMetaCharacters.docx");
+            //ExSummary:Shows how to preserved meta-characters that begin with "&".
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("one");
+            builder.Writeln("two");
+            builder.Writeln("three");
 
             FindReplaceOptions options = new FindReplaceOptions();
             options.FindWholeWordsOnly = true;
             options.PreserveMetaCharacters = true;
 
-            doc.Range.Replace("sad", "&ldquo; some text &rdquo;", options);
+            doc.Range.Replace("two", "&ldquo; four &rdquo;", options);
             //ExEnd
 
             doc.Save(ArtifactsDir + "Range.FindAndReplaceWithMetacharacters.docx");
@@ -279,21 +287,23 @@ namespace ApiExamples
             //ExFor:Node.Range
             //ExFor:Range.Delete
             //ExSummary:Shows how to delete all characters of a range.
-            // Open Word document.
-            Document doc = new Document(MyDir + "Range.DeleteSection.doc");
+            // Insert two sections into a blank document
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The document contains two sections
-            // Each section has a paragraph of text
-            Console.WriteLine(doc.GetText());
+            builder.Write("Section 1. ");
+            builder.InsertBreak(BreakType.SectionBreakContinuous);
+            builder.Write("Section 2.");
+
+            // Verify the whole text of the document
+            Assert.AreEqual("Section 1. \fSection 2.", doc.GetText().Trim());
 
             // Delete the first section from the document
             doc.Sections[0].Range.Delete();
 
             // Check the first section was deleted by looking at the text of the whole document again
-            Console.WriteLine(doc.GetText());
+            Assert.AreEqual("Section 2.", doc.GetText().Trim());
             //ExEnd
-
-            Assert.AreEqual("Hello2\x000c", doc.GetText());
         }
 
         [Test]
@@ -303,7 +313,7 @@ namespace ApiExamples
             //ExFor:Range
             //ExFor:Range.Text
             //ExSummary:Shows how to get plain, unformatted text of a range.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             string text = doc.Range.Text;
             //ExEnd
         }
