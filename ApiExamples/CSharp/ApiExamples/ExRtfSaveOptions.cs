@@ -46,12 +46,12 @@ namespace ApiExamples
             //ExStart
             //ExFor:RtfSaveOptions.SaveImagesAsWmf
             //ExSummary:Shows how to save all images as Wmf when saving to the Rtf document.
-            // Document contains 3 images with png and bmp formats
-            Document doc = new Document(MyDir + "DocumentWithImages.docx");
+            // Open a document that contains images in the jpeg format
+            Document doc = new Document(MyDir + "Images.docx");
 
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
-            Shape shapeWithPng = (Shape)shapes[0];
-            Assert.AreEqual(ImageType.Png, shapeWithPng.ImageData.ImageType);
+            Shape shapeWithJpg = (Shape)shapes[0];
+            Assert.AreEqual(ImageType.Jpeg, shapeWithJpg.ImageData.ImageType);
 
             RtfSaveOptions rtfSaveOptions = new RtfSaveOptions();
             rtfSaveOptions.SaveImagesAsWmf = true;

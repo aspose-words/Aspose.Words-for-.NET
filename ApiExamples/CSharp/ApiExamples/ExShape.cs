@@ -624,7 +624,7 @@ namespace ApiExamples
             //ExFor:OleFormat.GetRawData
             //ExSummary:Shows how to get access to OLE object raw data.
             // The document contains linked and embedded objects
-            Document doc = new Document(MyDir + "Shape.OleObjects.doc");
+            Document doc = new Document(MyDir + "OLE objects.docx");
 
             foreach (Node shape in doc.GetChildNodes(NodeType.Shape, true))
             {
