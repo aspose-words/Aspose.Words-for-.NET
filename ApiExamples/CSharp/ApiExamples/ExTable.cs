@@ -700,7 +700,8 @@ namespace ApiExamples
             table.AppendChild(clonedRow);
 
             doc.Save(ArtifactsDir + "Table.AddCloneRowToTable.doc");
-            
+            //ExEnd
+
             // Verify that the row was cloned and appended properly
             Assert.AreEqual(6, table.Rows.Count);
             Assert.AreEqual(string.Empty, table.LastRow.ToString(SaveFormat.Text).Trim());

@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections;
+using System.Drawing;
 using System.IO;
 using System.Net;
 using Aspose.Words;
@@ -23,8 +24,6 @@ using SaveFormat = Aspose.Words.SaveFormat;
 using Table = Aspose.Words.Tables.Table;
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
-#else
-using System.Drawing;
 #endif
 
 namespace ApiExamples
