@@ -508,7 +508,7 @@ namespace ApiExamples
                     Shape image = new Shape(doc, ShapeType.Image);
 
                     // Load the image into the new shape
-                    image.ImageData.SetImage(ImageDir + "Hammer.wmf");
+                    image.ImageData.SetImage(ImageDir + "AsposeLogo.wmf");
 
                     // Make new shape's position to match the old shape
                     image.Left = shape.Left;

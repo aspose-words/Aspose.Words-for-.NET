@@ -397,10 +397,6 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Corrupted image.docx");
 
-            Shape s = (Shape) doc.GetChildNodes(NodeType.Shape, true)[0];
-            
-            s.ImageData.Save(ImageDir + "Img.png");
-
             SaveWarningCallback saveWarningCallback = new SaveWarningCallback();
             doc.WarningCallback = saveWarningCallback;
 

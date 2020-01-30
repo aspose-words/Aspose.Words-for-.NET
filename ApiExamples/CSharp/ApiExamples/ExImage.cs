@@ -93,7 +93,7 @@ namespace ApiExamples
             }
 
             // Aspose.Words allows to insert a metafile too
-            Image metafile = Image.FromFile(ImageDir + "Hammer.wmf");
+            Image metafile = Image.FromFile(ImageDir + "AsposeLogo.wmf");
             try
             {
                 builder.Write("Metafile: ");
@@ -220,7 +220,7 @@ namespace ApiExamples
             // This creates a builder and also an empty document inside the builder
             DocumentBuilder builder = new DocumentBuilder();
 
-            Shape shape = builder.InsertImage(ImageDir + "Hammer.wmf");
+            Shape shape = builder.InsertImage(ImageDir + "AsposeLogo.wmf");
             shape.HRef = "http://www.aspose.com/Community/Forums/75/ShowForum.aspx";
             shape.Target = "New Window";
             shape.ScreenTip = "Aspose.Words Support Forums";
@@ -243,7 +243,7 @@ namespace ApiExamples
             // TopCornersOneRoundedOneSnipped, SingleCornerRounded, TopCornersRounded, DiagonalCornersRounded
             // please use DocumentBuilder.InsertShape methods
             Shape shape = new Shape(doc, ShapeType.Image);
-            shape.ImageData.SetImage(ImageDir + "Hammer.wmf");
+            shape.ImageData.SetImage(ImageDir + "AsposeLogo.wmf");
             shape.Width = 100;
             shape.Height = 100;
 
@@ -265,7 +265,7 @@ namespace ApiExamples
             //ExSummary:Shows how to insert a linked image into a document. 
             DocumentBuilder builder = new DocumentBuilder();
 
-            string imageFileName = ImageDir + "Hammer.wmf";
+            string imageFileName = ImageDir + "AsposeLogo.wmf";
 
             builder.Write("Image linked, not stored in the document: ");
 
