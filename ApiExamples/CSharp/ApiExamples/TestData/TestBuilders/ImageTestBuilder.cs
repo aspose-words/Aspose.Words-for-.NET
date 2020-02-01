@@ -22,9 +22,9 @@ namespace ApiExamples.TestData.TestBuilders
         public ImageTestBuilder()
         {
 #if NETFRAMEWORK
-            mImage = Image.FromFile(ImageDir + "Watermark.png");            
+            mImage = Image.FromFile(ImageDir + "Aspose logo transparent background.png");            
 #else
-            this.mImage = SKBitmap.Decode(ImageDir + "Watermark.png");
+            this.mImage = SKBitmap.Decode(ImageDir + "Aspose logo transparent background.png");
 #endif
             mImageStream = Stream.Null;
             mImageBytes = new byte[0];

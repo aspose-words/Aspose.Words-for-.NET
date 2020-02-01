@@ -27,7 +27,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExReportingEngine : ApiExampleBase
     {
-        private readonly string mImage = ImageDir + "Aspose.Words.jpg";
+        private readonly string mImage = ImageDir + "Aspose logo dark background.jpg";
         private readonly string mDocument = MyDir + "Reporting engine template - Data table.docx";
 
         [Test]

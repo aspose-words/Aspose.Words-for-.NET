@@ -595,7 +595,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Image img = Image.FromFile(ImageDir + "TransparentBG.png");
+            Image img = Image.FromFile(ImageDir + "Aspose logo transparent background.png");
             builder.InsertImage(img);
 
             // Create a PdfSaveOptions object and setting this flag may change the quality and size of the output .pdf
@@ -603,7 +603,7 @@ namespace ApiExamples
             PdfSaveOptions options = new PdfSaveOptions();
             options.PreblendImages = true;
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImagest.pdf", options);
             //ExEnd
         }
 #else
@@ -616,7 +616,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            using (SKBitmap image = SKBitmap.Decode(ImageDir + "TransparentBG.png"))
+            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Aspose logo transparent background.png"))
             {
                 builder.InsertImage(image);
             }

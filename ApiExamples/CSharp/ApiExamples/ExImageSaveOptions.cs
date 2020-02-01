@@ -98,7 +98,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Use a DocumentBuilder to insert a .wmf image into the document
-            builder.InsertImage(Image.FromFile(ImageDir + "AsposeLogo.wmf"));
+            builder.InsertImage(Image.FromFile(ImageDir + "Aspose logo.wmf"));
 
             // For documents that contain .wmf images, when converting the documents themselves to images,
             // we can use a ImageSaveOptions object to designate a rendering method for the .wmf images

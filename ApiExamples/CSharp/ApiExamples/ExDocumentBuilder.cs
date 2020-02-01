@@ -359,7 +359,7 @@ namespace ApiExamples
             // The best place for the watermark image is in the header or footer so it is shown on every page
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
 
-            Image image = Image.FromFile(ImageDir + "Watermark.png");
+            Image image = Image.FromFile(ImageDir + "Aspose logo transparent background.png");
 
             // Insert a floating picture
             Shape shape = builder.InsertImage(image);
@@ -388,7 +388,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Image representingImage = Image.FromFile(ImageDir + "Aspose.Words.jpg");
+            Image representingImage = Image.FromFile(ImageDir + "Aspose logo dark background.jpg");
 
             // Insert ole object
             builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, representingImage);
@@ -396,7 +396,7 @@ namespace ApiExamples
             builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, true, null);
             // Insert ole object as Icon
             // There is one limitation for now: the maximum size of the icon must be 32x32 for the correct display
-            builder.InsertOleObjectAsIcon(MyDir + "Spreadsheet.xlsx", false, ImageDir + "AsIcon.ico",
+            builder.InsertOleObjectAsIcon(MyDir + "Spreadsheet.xlsx", false, ImageDir + "Aspose logo icon.ico",
                 "Caption (can not be null)");
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObject.docx");
@@ -421,7 +421,7 @@ namespace ApiExamples
             // The best place for the watermark image is in the header or footer so it is shown on every page
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
 
-            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Watermark.png"))
+            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Aspose logo transparent background.png"))
             {
                 // Insert a floating picture
                 Shape shape = builder.InsertImage(image);
@@ -450,7 +450,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            using (SKBitmap representingImage = SKBitmap.Decode(ImageDir + "Aspose.Words.jpg"))
+            using (SKBitmap representingImage = SKBitmap.Decode(ImageDir + "Aspose logo dark background.jpg"))
             {
                 // OleObject
                 builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, representingImage);
@@ -1614,7 +1614,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertImage(ImageDir + "Watermark.png");
+            builder.InsertImage(ImageDir + "Aspose logo transparent background.png");
         }
 
         [Test]
@@ -1626,7 +1626,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertImage(ImageDir + "Watermark.png", RelativeHorizontalPosition.Margin, 100,
+            builder.InsertImage(ImageDir + "Aspose logo transparent background.png", RelativeHorizontalPosition.Margin, 100,
                 RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
             //ExEnd
         }
@@ -1657,7 +1657,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Pass a negative value to the width and height values to specify using the size of the source image
-            builder.InsertImage(ImageDir + "Aspose.Words.jpg", RelativeHorizontalPosition.Margin, 200,
+            builder.InsertImage(ImageDir + "Aspose logo dark background.jpg", RelativeHorizontalPosition.Margin, 200,
                 RelativeVerticalPosition.Margin, 100, -1, -1, WrapType.Square);
             //ExEnd
 
