@@ -2286,7 +2286,7 @@ namespace ApiExamples
         public void AutomaticallyUpdateStyles()
         {
             //ExStart
-            //ExFor:Document.AutomaticallyUpdateSyles
+            //ExFor:Document.AutomaticallyUpdateStyles
             //ExSummary:Shows how to update a document's styles based on its template.
             Document doc = new Document();
 
@@ -2302,7 +2302,7 @@ namespace ApiExamples
             Assert.IsTrue(doc.AttachedTemplate.EndsWith("Busniess brochure.dotx"));
 
             // Any changes to the styles in this template will be propagated to those styles in the document
-            doc.AutomaticallyUpdateSyles = true;
+            doc.AutomaticallyUpdateStyles = true;
 
             doc.Save(ArtifactsDir + "Document.AutomaticallyUpdateStyles.docx");
             //ExEnd
@@ -2320,7 +2320,7 @@ namespace ApiExamples
 
             // If we set this flag to true while not having a template attached to the document,
             // there will be no effect because there is no template document to draw style changes from
-            doc.AutomaticallyUpdateSyles = true;
+            doc.AutomaticallyUpdateStyles = true;
             Assert.That(doc.AttachedTemplate, Is.Empty);
 
             // We can set a default template document filename in a SaveOptions object to make it apply to
