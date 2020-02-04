@@ -31,7 +31,7 @@ namespace ApiExamples
         [TestCase(SaveFormat.Epub)]
         public void ExportPageMargins(SaveFormat saveFormat)
         {
-            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportPageMargins.docx");
+            Document doc = new Document(MyDir + "TextBoxes.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
@@ -48,12 +48,12 @@ namespace ApiExamples
         [TestCase(SaveFormat.Epub, HtmlOfficeMathOutputMode.Text, Category = "SkipMono")]
         public void ExportOfficeMath(SaveFormat saveFormat, HtmlOfficeMathOutputMode outputMode)
         {
-            Document doc = new Document(MyDir + "OfficeMath.docx");
+            Document doc = new Document(MyDir + "Office math.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.OfficeMathOutputMode = outputMode;
 
-            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportToHtmlUsingImage" + FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportOfficeMath" + FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
         }
 
         [Test]
@@ -64,7 +64,12 @@ namespace ApiExamples
         {
             string[] dirFiles;
 
-            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportTextBoxAsSvg.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape textbox = builder.InsertShape(ShapeType.TextBox, 300, 100);
+            builder.MoveTo(textbox.FirstParagraph);
+            builder.Write("Hello world!");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(saveFormat);
             saveOptions.ExportTextBoxAsSvg = isTextBoxAsSvg;
@@ -97,9 +102,17 @@ namespace ApiExamples
         [TestCase(ExportListLabels.Auto)]
         [TestCase(ExportListLabels.AsInlineText)]
         [TestCase(ExportListLabels.ByHtmlTags)]
-        public void ControlListLabelsExportToHtml(ExportListLabels howExportListLabels)
+        public void ControlListLabelsExport(ExportListLabels howExportListLabels)
         {
-            Document doc = new Document(MyDir + "Lists.PrintOutAllLists.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Aspose.Words.Lists.List bulletedList = doc.Lists.Add(ListTemplate.BulletDefault);
+            builder.ListFormat.List = bulletedList;
+            builder.ParagraphFormat.LeftIndent = 72;
+            builder.Writeln("Bulleted list item 1.");
+            builder.Writeln("Bulleted list item 2.");
+            builder.ParagraphFormat.ClearFormatting();
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html)
             {
@@ -110,7 +123,7 @@ namespace ApiExamples
                 ExportListLabels = howExportListLabels
             };
 
-            doc.Save(ArtifactsDir + "Document.ExportListLabels.html", saveOptions);
+            doc.Save(ArtifactsDir + $"HtmlSaveOptions.ControlListLabelsExport.html", saveOptions);
         }
 
         [Test]
@@ -118,7 +131,7 @@ namespace ApiExamples
         [TestCase(false)]
         public void ExportUrlForLinkedImage(bool export)
         {
-            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportUrlForLinkedImage.docx");
+            Document doc = new Document(MyDir + "Linked image.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions { ExportOriginalUrlForLinkedImages = export };
 
@@ -135,7 +148,7 @@ namespace ApiExamples
         [Test]
         public void ExportRoundtripInformation()
         {
-            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportPageMargins.docx");
+            Document doc = new Document(MyDir + "TextBoxes.docx");
             HtmlSaveOptions saveOptions = new HtmlSaveOptions { ExportRoundtripInformation = true };
             
             doc.Save(ArtifactsDir + "HtmlSaveOptions.RoundtripInformation.html", saveOptions);
@@ -156,9 +169,9 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ConfigForSavingExternalResources()
+        public void ExternalResourceSavingConfig()
         {
-            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportPageMargins.docx");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
@@ -168,24 +181,24 @@ namespace ApiExamples
                 ResourceFolderAlias = "https://www.aspose.com/"
             };
 
-            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportPageMargins.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExternalResourceSavingConfig.html", saveOptions);
 
-            string[] imageFiles = Directory.GetFiles(ArtifactsDir + "Resources/", "*.png", SearchOption.AllDirectories);
-            Assert.AreEqual(3, imageFiles.Length);
+            string[] imageFiles = Directory.GetFiles(ArtifactsDir + "Resources/", "HtmlSaveOptions.ExternalResourceSavingConfig*.png", SearchOption.AllDirectories);
+            Assert.AreEqual(8, imageFiles.Length);
 
-            string[] fontFiles = Directory.GetFiles(ArtifactsDir + "Resources/", "*.ttf", SearchOption.AllDirectories);
-            Assert.AreEqual(1, fontFiles.Length);
+            string[] fontFiles = Directory.GetFiles(ArtifactsDir + "Resources/", "HtmlSaveOptions.ExternalResourceSavingConfig*.ttf", SearchOption.AllDirectories);
+            Assert.AreEqual(10, fontFiles.Length);
 
-            string[] cssFiles = Directory.GetFiles(ArtifactsDir + "Resources/", "*.css", SearchOption.AllDirectories);
+            string[] cssFiles = Directory.GetFiles(ArtifactsDir + "Resources/", "HtmlSaveOptions.ExternalResourceSavingConfig*.css", SearchOption.AllDirectories);
             Assert.AreEqual(1, cssFiles.Length);
 
-            DocumentHelper.FindTextInFile(ArtifactsDir + "HtmlSaveOptions.ExportPageMargins.html", "<link href=\"https://www.aspose.com/HtmlSaveOptions.ExportPageMargins.css\"");
+            DocumentHelper.FindTextInFile(ArtifactsDir + "HtmlSaveOptions.ExternalResourceSavingConfig.html", "<link href=\"https://www.aspose.com/HtmlSaveOptions.ExternalResourceSavingConfig.css\"");
         }
 
         [Test]
         public void ConvertFontsAsBase64()
         {
-            Document doc = new Document(MyDir + "HtmlSaveOptions.ExportPageMargins.docx");
+            Document doc = new Document(MyDir + "TextBoxes.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.CssStyleSheetType = CssStyleSheetType.External;
@@ -193,14 +206,14 @@ namespace ApiExamples
             saveOptions.ExportFontResources = true;
             saveOptions.ExportFontsAsBase64 = true;
             
-            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportPageMargins.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ConvertFontsAsBase64.html", saveOptions);
 		}
 
         [TestCase(Aspose.Words.Saving.HtmlVersion.Html5)]
         [TestCase(Aspose.Words.Saving.HtmlVersion.Xhtml)]
         public void Html5Support(HtmlVersion htmlVersion)
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
@@ -216,7 +229,7 @@ namespace ApiExamples
         [TestCase(true)]
         public void ExportFonts(bool exportAsBase64)
         {
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
@@ -228,15 +241,15 @@ namespace ApiExamples
             {
                 case false:
 
-                    doc.Save(ArtifactsDir + "DocumentExportFonts 1.html", saveOptions);
-                    Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir, "DocumentExportFonts 1.times.ttf",
+                    doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportFonts.False.html", saveOptions);
+                    Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportFonts.False.times.ttf",
                         SearchOption.AllDirectories));
                     break;
 
                 case true:
 
-                    doc.Save(ArtifactsDir + "DocumentExportFonts 2.html", saveOptions);
-                    Assert.IsEmpty(Directory.GetFiles(ArtifactsDir, "DocumentExportFonts 2.times.ttf",
+                    doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportFonts.True.html", saveOptions);
+                    Assert.IsEmpty(Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportFonts.True.times.ttf",
                         SearchOption.AllDirectories));
                     break;
             }
@@ -245,7 +258,7 @@ namespace ApiExamples
         [Test]
         public void ResourceFolderPriority()
         {
-            Document doc = new Document(MyDir + "HtmlSaveOptions.ResourceFolder.docx");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.CssStyleSheetType = CssStyleSheetType.External;
@@ -253,20 +266,20 @@ namespace ApiExamples
             saveOptions.ResourceFolder = ArtifactsDir + "Resources";
             saveOptions.ResourceFolderAlias = "http://example.com/resources";
 
-            doc.Save(ArtifactsDir + "HtmlSaveOptions.ResourceFolder.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ResourceFolderPriority.html", saveOptions);
 
-            string[] a = Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.001.jpeg",
+            string[] a = Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.001.jpeg",
                 SearchOption.AllDirectories);
-            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.001.jpeg", SearchOption.AllDirectories));
-            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.002.png", SearchOption.AllDirectories));
-            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.calibri.ttf", SearchOption.AllDirectories));
-            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.css", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.001.png", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.002.png", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.arial.ttf", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.css", SearchOption.AllDirectories));
         }
 
         [Test]
         public void ResourceFolderLowPriority()
         {
-            Document doc = new Document(MyDir + "HtmlSaveOptions.ResourceFolder.docx");
+            Document doc = new Document(MyDir + "Rendering.docx");
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
                 CssStyleSheetType = CssStyleSheetType.External,
@@ -277,15 +290,15 @@ namespace ApiExamples
                 ResourceFolderAlias = "http://example.com/resources"
             };
 
-            doc.Save(ArtifactsDir + "HtmlSaveOptions.ResourceFolder.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ResourceFolderLowPriority.html", saveOptions);
 
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Images",
-                "HtmlSaveOptions.ResourceFolder.001.jpeg", SearchOption.AllDirectories));
-            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Images", "HtmlSaveOptions.ResourceFolder.002.png",
+                "HtmlSaveOptions.ResourceFolderLowPriority.001.png", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Images", "HtmlSaveOptions.ResourceFolderLowPriority.002.png",
                 SearchOption.AllDirectories));
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Fonts",
-                "HtmlSaveOptions.ResourceFolder.calibri.ttf", SearchOption.AllDirectories));
-            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolder.css",
+                "HtmlSaveOptions.ResourceFolderLowPriority.arial.ttf", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderLowPriority.css",
                 SearchOption.AllDirectories));
         }
 #endif
@@ -302,7 +315,7 @@ namespace ApiExamples
                         style='fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;' />
                   </svg> ");
 
-            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.MetafileFormat.html",
+            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.SvgMetafileFormat.html",
                 new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.Png });
         }
 
@@ -318,7 +331,7 @@ namespace ApiExamples
                         style='fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;' />
                   </svg> ");
 
-            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.MetafileFormat.html",
+            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.PngMetafileFormat.html",
                 new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.Png });
         }
 
@@ -337,7 +350,7 @@ namespace ApiExamples
                     ch9//q1uH4TLzw4d6+ErXMMcXuHWxId3KOETnnXXV6MJpcq2MLaI97CER3N0
                     vr4MkhoXe0rZigAAAABJRU5ErkJggg=="" alt=""Red dot"" />");
 
-            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.MetafileFormat.html",
+            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.EmfOrWmfMetafileFormat.html",
                 new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.EmfOrWmf });
         }
 
@@ -346,8 +359,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlSaveOptions.CssClassNamePrefix
-            //ExSummary: Shows how to specifies a prefix which is added to all CSS class names.
-            Document doc = new Document(MyDir + "HtmlSaveOptions.CssClassNamePrefix.docx");
+            //ExSummary:Shows how to specifies a prefix which is added to all CSS class names.
+            Document doc = new Document(MyDir + "Paragraphs.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
@@ -355,6 +368,7 @@ namespace ApiExamples
                 CssClassNamePrefix = "aspose-"
             };
 
+            // The prefix will be found before CSS element names in the embedded stylesheet
             doc.Save(ArtifactsDir + "HtmlSaveOptions.CssClassNamePrefix.html", saveOptions);
             //ExEnd
         }
@@ -370,7 +384,7 @@ namespace ApiExamples
         [Test]
         public void CssClassNamesNullPrefix()
         {
-            Document doc = new Document(MyDir + "HtmlSaveOptions.CssClassNamePrefix.docx");
+            Document doc = new Document(MyDir + "Paragraphs.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
@@ -384,7 +398,7 @@ namespace ApiExamples
         [Test]
         public void ContentIdScheme()
         {
-            Document doc = new Document(MyDir + "HtmlSaveOptions.ContentIdScheme.docx");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Mhtml)
             {
@@ -402,7 +416,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:HtmlSaveOptions.ResolveFontNames
             //ExSummary:Shows how to resolve all font names before writing them to HTML.
-            Document document = new Document(MyDir + "HtmlSaveOptions.ResolveFontNames.docx");
+            Document document = new Document(MyDir + "Missing font.docx");
 
             FontSettings fontSettings = new FontSettings
             {
@@ -470,6 +484,7 @@ namespace ApiExamples
         public void NegativeIndent()
         {
             //ExStart
+            //ExFor:HtmlElementSizeOutputMode
             //ExFor:HtmlSaveOptions.AllowNegativeIndent
             //ExFor:HtmlSaveOptions.TableWidthOutputMode
             //ExSummary:Shows how to preserve negative indents in the output .html.
@@ -492,7 +507,7 @@ namespace ApiExamples
             options.TableWidthOutputMode = HtmlElementSizeOutputMode.RelativeOnly;
 
             // The first cell with "Cell 1" will not be visible in the output 
-            doc.Save(ArtifactsDir + "HtmlSaveOptions.AllowNegativeIndent.html", options);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.NegativeIndent.html", options);
             //ExEnd
         }
 
@@ -508,7 +523,7 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions.ResourceFolder
             //ExFor:HtmlSaveOptions.ResourceFolderAlias
             //ExSummary:Shows how to set folders and folder aliases for externally saved resources when saving to html.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlSaveOptions options = new HtmlSaveOptions
             {
@@ -536,8 +551,9 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions.#ctor(SaveFormat)
             //ExFor:HtmlSaveOptions.ExportXhtmlTransitional
             //ExFor:HtmlSaveOptions.HtmlVersion
+            //ExFor:HtmlVersion
             //ExSummary:Shows how to set a saved .html document to a specific version.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // Save the document to a .html file of the XHTML 1.0 Transitional standard
             HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
@@ -593,7 +609,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:HtmlSaveOptions.ExportCidUrlsForMhtmlResources
             //ExSummary:Shows how to enable content IDs for output MHTML documents.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // Setting this flag will replace "Content-Location" tags with "Content-ID" tags for each resource from the input document
             // The file names that were next to each "Content-Location" tag are re-purposed as content IDs
@@ -637,7 +653,7 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions.ExportFontsAsBase64
             //ExFor:HtmlSaveOptions.ExportImagesAsBase64
             //ExSummary:Shows how to save a .html document with resources embedded inside it.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // By default, when converting a document with images to .html, resources such as images will be linked to in external files
             // We can set these flags to embed resources inside the output .html instead, cutting down on the amount of files created during the conversion
@@ -686,6 +702,7 @@ namespace ApiExamples
         public void List()
         {
             //ExStart
+            //ExFor:ExportListLabels
             //ExFor:HtmlSaveOptions.ExportListLabels
             //ExSummary:Shows how to export an indented list to .html as plain text.
             Document doc = new Document();
@@ -833,7 +850,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:HtmlSaveOptions.ExportRoundtripInformation
             //ExSummary:Shows how to preserve hidden elements when converting to .html.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // When converting a document to .html, some elements such as hidden bookmarks, original shape positions,
             // or footnotes will be either removed or converted to plain text and effectively be lost
@@ -919,6 +936,7 @@ namespace ApiExamples
         public void MetafileFormat()
         {
             //ExStart
+            //ExFor:HtmlMetafileFormat
             //ExFor:HtmlSaveOptions.MetafileFormat
             //ExSummary:Shows how to set a meta file in a different format.
             // Create a document from an html string
@@ -945,10 +963,11 @@ namespace ApiExamples
         public void OfficeMathOutputMode()
         {
             //ExStart
+            //ExFor:HtmlOfficeMathOutputMode
             //ExFor:HtmlSaveOptions.OfficeMathOutputMode
             //ExSummary:Shows how to control the way how OfficeMath objects are exported to .html.
             // Open a document that contains OfficeMath objects
-            Document doc = new Document(MyDir + "Shape.OfficeMath.docx");
+            Document doc = new Document(MyDir + "Office math.docx");
 
             // Create a HtmlSaveOptions object and configure it to export OfficeMath objects as images
             HtmlSaveOptions options = new HtmlSaveOptions();
@@ -965,7 +984,7 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions.ScaleImageToShapeSize
             //ExSummary:Shows how to disable the scaling of images to their parent shape dimensions when saving to .html.
             // Open a document which contains shapes with images
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // By default, images inside shapes get scaled to the size of their shapes while the document gets 
             // converted to .html, reducing image file size
@@ -989,7 +1008,7 @@ namespace ApiExamples
         public void ImageSavingCallback()
         {
             // Open a document which contains shapes with images
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // Create a HtmlSaveOptions object with a custom image saving callback that will print image information
             HtmlSaveOptions options = new HtmlSaveOptions();

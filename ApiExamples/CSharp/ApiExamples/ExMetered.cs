@@ -38,7 +38,7 @@ namespace ApiExamples
             Console.WriteLine($"Consumption quantity before operation: {Metered.GetConsumptionQuantity()}");
 
             // Do something
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             // Print credit/usage to see how much was spent
             Console.WriteLine($"Credit after operation: {Metered.GetConsumptionCredit()}");

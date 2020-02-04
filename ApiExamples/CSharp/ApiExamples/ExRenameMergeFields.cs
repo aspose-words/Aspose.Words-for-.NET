@@ -25,12 +25,20 @@ namespace ApiExamples
         /// Finds all merge fields in a Word document and changes their names.
         /// </summary>
         [Test] //ExSkip
-        public void RenameMergeFields()
+        public void Rename()
         {
-            // Specify your document name here
-            Document doc = new Document(MyDir + "RenameMergeFields.doc");
+            // Create a blank document and insert MERGEFIELDs
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Select all field start nodes so we can find the merge fields
+            builder.Write("Dear ");
+            builder.InsertField("MERGEFIELD  FirstName ");
+            builder.Write(" ");
+            builder.InsertField("MERGEFIELD  LastName ");
+            builder.Writeln(",");
+            builder.InsertField("MERGEFIELD  CustomGreeting ");
+
+            // Select all field start nodes so we can find the MERGEFIELDs
             NodeCollection fieldStarts = doc.GetChildNodes(NodeType.FieldStart, true);
             foreach (FieldStart fieldStart in fieldStarts.OfType<FieldStart>())
             {
@@ -41,7 +49,7 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(ArtifactsDir + "RenameMergeFields.doc");
+            doc.Save(ArtifactsDir + "RenameMergeFields.Rename.docx");
         }
     }
 

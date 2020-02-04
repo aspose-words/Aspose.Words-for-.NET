@@ -19,7 +19,6 @@ namespace ApiExamples
         public void VerticalMerge()
         {
             //ExStart
-            //ExFor:DocumentBuilder.InsertCell
             //ExFor:DocumentBuilder.EndRow
             //ExFor:CellMerge
             //ExFor:CellFormat.VerticalMerge

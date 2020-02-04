@@ -53,11 +53,11 @@ namespace ApiExamples
             //ExFor:FieldChar.GetField
             //ExFor:Field.IsLocked
             //ExSummary:Demonstrates how to retrieve the field class from an existing FieldStart node in the document.
-            Document doc = new Document(MyDir + "Document.TableOfContents.doc");
+            Document doc = new Document(MyDir + "Table of contents.docx");
 
             FieldChar fieldStart = (FieldChar)doc.GetChild(NodeType.FieldStart, 0, true);
             Assert.AreEqual(FieldType.FieldTOC, fieldStart.FieldType);
-            Assert.AreEqual(true, fieldStart.IsDirty);
+            Assert.AreEqual(false, fieldStart.IsDirty);
             Assert.AreEqual(false, fieldStart.IsLocked);
 
             // Retrieve the facade object which represents the field in the document
@@ -145,7 +145,7 @@ namespace ApiExamples
         [Test]
         public void GetFieldFromFieldCollection()
         {
-            Document doc = new Document(MyDir + "Document.TableOfContents.doc");
+            Document doc = new Document(MyDir + "Table of contents.docx");
 
             Field field = doc.Range.Fields[0];
 
@@ -219,14 +219,14 @@ namespace ApiExamples
             //ExFor:CompositeNode.GetChildNodes(NodeType, Boolean)
             //ExSummary:Demonstrates how to remove a specified TOC from a document.
             // Open a document which contains a TOC
-            Document doc = new Document(MyDir + "Document.TableOfContents.doc");
+            Document doc = new Document(MyDir + "Table of contents.docx");
 
             // Remove the first TOC from the document
             Field tocField = doc.Range.Fields[0];
             tocField.Remove();
 
             // Save the output
-            doc.Save(ArtifactsDir + "Document.TableOfContentsRemoveTOC.doc");
+            doc.Save(ArtifactsDir + "Field.RemoveTocFromDocument.docx");
             //ExEnd
         }
 
@@ -324,14 +324,14 @@ namespace ApiExamples
         [Test]
         public void BarCodeWord2Pdf()
         {
-            Document doc = new Document(MyDir + "Field.BarCode.docx");
+            Document doc = new Document(MyDir + "Field BARCODE.docx");
 
             // Set custom barcode generator
             doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
 
-            doc.Save(ArtifactsDir + "Field.BarCode.pdf");
+            doc.Save(ArtifactsDir + "Field.BarCodeWord2Pdf.pdf");
 
-            BarCodeReader barCode = BarCodeReaderPdf(ArtifactsDir + "Field.BarCode.pdf");
+            BarCodeReader barCode = BarCodeReaderPdf(ArtifactsDir + "Field.BarCodeWord2Pdf.pdf");
             Assert.AreEqual("QR", barCode.GetCodeType().ToString());
         }
 
@@ -466,7 +466,7 @@ namespace ApiExamples
             //ExSummary:Shows a way to update a field ignoring the MERGEFORMAT switch.
             LoadOptions loadOptions = new LoadOptions { PreserveIncludePictureField = true };
 
-            Document doc = new Document(MyDir + "Field.UpdateFieldIgnoringMergeFormat.docx", loadOptions);
+            Document doc = new Document(MyDir + "Field INCLUDEPICTURE.docx", loadOptions);
 
             foreach (Field field in doc.Range.Fields)
             {
@@ -556,7 +556,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.UnlinkFields
             //ExSummary:Shows how to unlink all fields in the document.
-            Document doc = new Document(MyDir + "Field.UnlinkFields.docx");
+            Document doc = new Document(MyDir + "Linked fields.docx");
 
             doc.UnlinkFields();
             //ExEnd
@@ -571,18 +571,17 @@ namespace ApiExamples
             //ExStart
             //ExFor:Range.UnlinkFields
             //ExSummary:Shows how to unlink all fields in range.
-            Document doc = new Document(MyDir + "Field.UnlinkFields.docx");
+            Document doc = new Document(MyDir + "Linked fields.docx");
 
             Section newSection = (Section)doc.Sections[0].Clone(true);
             doc.Sections.Add(newSection);
 
             doc.Sections[1].Range.UnlinkFields();
             //ExEnd
-
             string secWithFields = DocumentHelper.GetSectionText(doc, 1);
-            Assert.AreEqual(
-                "Fields.Docx   Элементы указателя не найдены.     3.\rОшибка! Не указана последовательность.    Fields.Docx   Элементы указателя не найдены.     4.\r\r\r\r\r\f",
-                secWithFields);
+
+            Assert.True(secWithFields.Trim().EndsWith(
+                "Fields.Docx   Элементы указателя не найдены.     3.\rОшибка! Не указана последовательность.    Fields.Docx   Элементы указателя не найдены.     4."));
         }
 
         [Test]
@@ -591,20 +590,19 @@ namespace ApiExamples
             //ExStart
             //ExFor:Field.Unlink
             //ExSummary:Shows how to unlink specific field.
-            Document doc = new Document(MyDir + "Field.UnlinkFields.docx");
+            Document doc = new Document(MyDir + "Linked fields.docx");
             doc.Range.Fields[1].Unlink();
             //ExEnd
-
             string paraWithFields = DocumentHelper.GetParagraphText(doc, 0);
-            Assert.AreEqual(
-                "\u0013 FILENAME  \\* Caps  \\* MERGEFORMAT \u0014Fields.Docx\u0015   Элементы указателя не найдены.     \u0013 LISTNUM  LegalDefault \u0015\r",
-                paraWithFields);
+
+            Assert.True(paraWithFields.Trim().EndsWith(
+                "FILENAME  \\* Caps  \\* MERGEFORMAT \u0014Fields.Docx\u0015   Элементы указателя не найдены.     \u0013 LISTNUM  LegalDefault \u0015"));
         }
 
         [Test]
-        public void UpdatePageNumbersInToc()
+        public void UpdateTocPageNumbers()
         {
-            Document doc = new Document(MyDir + "Field.UpdateTocPages.docx");
+            Document doc = new Document(MyDir + "Field TOC.docx");
 
             Node startNode = DocumentHelper.GetParagraph(doc, 2);
             Node endNode = null;
@@ -645,7 +643,7 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(ArtifactsDir + "Field.UpdateTocPages.docx");
+            doc.Save(ArtifactsDir + "Field.UpdateTocPageNumbers.docx");
         }
 
         private static void RemoveSequence(Node start, Node end)
@@ -728,7 +726,7 @@ namespace ApiExamples
             Assert.IsFalse(dropDownItems.Contains("Three and a half"));
             Assert.IsFalse(dropDownItems.Contains("Four"));
 
-            doc.Save(ArtifactsDir + "Fields.DropDownItems.docx");
+            doc.Save(ArtifactsDir + "Field.DropDownItemCollection.docx");
             //ExEnd
 
             // Empty the collection
@@ -779,7 +777,7 @@ namespace ApiExamples
             doc.MailMerge.Execute(table);
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Fields.AskField.docx");
+            doc.Save(ArtifactsDir + "Field.ASK.docx");
 
             Assert.AreEqual(
                 " ASK  MyAskField \"Please provide a response for this ASK field\" \\d \"Response from within the field.\" \\o",
@@ -851,7 +849,7 @@ namespace ApiExamples
 
             builder.Write("This text is in a custom position.");
 
-            doc.Save(ArtifactsDir + "Field.Advance.docx");
+            doc.Save(ArtifactsDir + "Field.ADVANCE.docx");
             //ExEnd
         }
 
@@ -925,8 +923,17 @@ namespace ApiExamples
         [Test] //ExSkip
         public void FieldCollection()
         {
-            // Open a document that has fields
-            Document doc = new Document(MyDir + "Document.ContainsFields.docx");
+            // Create a new document and insert some fields
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertField(" DATE \\@ \"dddd, d MMMM yyyy\" ");
+            builder.InsertField(" TIME ");
+            builder.InsertField(" REVNUM ");
+            builder.InsertField(" AUTHOR  \"John Doe\" ");
+            builder.InsertField(" SUBJECT \"My Subject\" ");
+            builder.InsertField(" QUOTE \"Hello world!\" ");
+            doc.UpdateFields();
 
             // Get the collection that contains all the fields in a document
             FieldCollection fields = doc.Range.Fields;
@@ -1061,7 +1068,7 @@ namespace ApiExamples
             Assert.AreEqual(" COMPARE  5 = \"2 + 3\"", field.GetFieldCode());
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.Compare.docx");
+            doc.Save(ArtifactsDir + "Field.COMPARE.docx");
             //ExEnd
         }
 
@@ -1110,7 +1117,7 @@ namespace ApiExamples
             Assert.AreEqual(FieldIfComparisonResult.True, fieldIf.EvaluateCondition());
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.If.docx");
+            doc.Save(ArtifactsDir + "Field.IF.docx");
             //ExEnd
         }
 
@@ -1144,7 +1151,7 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(ArtifactsDir + "Field.AutoNum.docx");
+            doc.Save(ArtifactsDir + "Field.AUTONUM.docx");
             //ExEnd
         }
 
@@ -1192,7 +1199,7 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(ArtifactsDir + "Field.AutoNumLegal.docx");
+            doc.Save(ArtifactsDir + "Field.AUTONUMLGL.docx");
         }
 
         /// <summary>
@@ -1235,7 +1242,7 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(ArtifactsDir + "Field.AutoNumOut.docx");
+            doc.Save(ArtifactsDir + "Field.AUTONUMOUT.docx");
             //ExEnd
         }
 
@@ -1279,7 +1286,7 @@ namespace ApiExamples
             Assert.AreEqual(" AUTOTEXT  MyBlock", fieldAutoText.GetFieldCode());
 
             // Put additional templates here
-            doc.FieldOptions.BuiltInTemplatesPaths = new[] { MyDir + "Document.BusinessBrochureTemplate.dotx" };
+            doc.FieldOptions.BuiltInTemplatesPaths = new[] { MyDir + "Busniess brochure.dotx" };
 
             // We can also display our building block with a GLOSSARY field
             FieldGlossary fieldGlossary = (FieldGlossary)builder.InsertField(FieldType.FieldGlossary, true);
@@ -1289,7 +1296,7 @@ namespace ApiExamples
 
             // The text content of our building block will be visible in the output
 			doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.AutoText.dotx");
+            doc.Save(ArtifactsDir + "Field.AUTOTEXT.dotx");
             //ExEnd
         }
 
@@ -1325,7 +1332,7 @@ namespace ApiExamples
                             "\\s \"Heading 1\" " +
                             "\\t \"Hover tip text for AutoTextList goes here\"", field.GetFieldCode());
 
-            doc.Save(ArtifactsDir + "Field.AutoTextList.dotx");
+            doc.Save(ArtifactsDir + "Field.AUTOTEXTLIST.dotx");
         }
 
         /// <summary>
@@ -1398,7 +1405,7 @@ namespace ApiExamples
             doc.MailMerge.Execute(table);
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.GreetingLine.docx");
+            doc.Save(ArtifactsDir + "Field.GREETINGLINE.docx");
             //ExEnd
         }
 
@@ -1450,8 +1457,10 @@ namespace ApiExamples
             fieldListNum.ListName = "OutlineDefault";
             builder.Writeln("Paragraph 5");
 
+            Assert.AreEqual(" LISTNUM  OutlineDefault", fieldListNum.GetFieldCode());
+
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.FieldListNum.docx");
+            doc.Save(ArtifactsDir + "Field.LISTNUM.docx");
             //ExEnd
         }
 
@@ -1485,6 +1494,8 @@ namespace ApiExamples
             fieldMergeField.TextBefore = "Dear ";
             fieldMergeField.TextAfter = " ";
 
+            Assert.AreEqual(" MERGEFIELD  \"Courtesy Title\" \\m \\b \"Dear \" \\f \" \"", fieldMergeField.GetFieldCode());
+
             // Insert another merge field for another column
             // We don't need to use every column to perform a mail merge
             fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
@@ -1493,7 +1504,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.MailMerge.Execute(table);
-            doc.Save(ArtifactsDir + "Field.MergeField.docx");
+            doc.Save(ArtifactsDir + "Field.MERGEFIELD.docx");
             //ExEnd
         }
 
@@ -1720,7 +1731,7 @@ namespace ApiExamples
 
             fieldToc.UpdatePageNumbers();
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.FieldTOC.docx");
+            doc.Save(ArtifactsDir + "Field.TOC.docx");
         }
 
         /// <summary>
@@ -1773,7 +1784,7 @@ namespace ApiExamples
             Assert.AreEqual(" TOC  \\f A \\l 1-3", fieldToc.GetFieldCode());
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.FieldTOC.TC.docx");
+            doc.Save(ArtifactsDir + "Field.TC.docx");
         }
 
         /// <summary>
@@ -1835,7 +1846,7 @@ namespace ApiExamples
             Assert.AreEqual(" SEQ  OtherSequence", fieldSeq.GetFieldCode());
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.TOC.SEQ.Prefix.docx");
+            doc.Save(ArtifactsDir + "Field.TOC.SEQ.docx");
         }
 
         [Test] //ExSkip
@@ -1877,7 +1888,7 @@ namespace ApiExamples
             Assert.AreEqual(" SEQ  MySequence \\n", fieldSeq.GetFieldCode());
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.TOC.SEQ.ResetNumbering.docx");
+            doc.Save(ArtifactsDir + "Field.SEQ.ResetNumbering.docx");
         }
 
         [Test] //ExSkip
@@ -1921,7 +1932,7 @@ namespace ApiExamples
             builder.EndBookmark("TOCBookmark");
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.TOC.SEQ.Bookmark.docx");
+            doc.Save(ArtifactsDir + "Field.SEQ.Bookmark.docx");
         }
 
         /// <summary>
@@ -1958,7 +1969,7 @@ namespace ApiExamples
             //ExFor:FieldBibliography.FormatLanguageId
             //ExSummary:Shows how to work with CITATION and BIBLIOGRAPHY fields.
             // Open a document that has bibliographical sources
-            Document doc = new Document(MyDir + "Document.HasBibliography.docx");
+            Document doc = new Document(MyDir + "Bibliography.docx");
 
             // Add text that we can cite
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2002,7 +2013,7 @@ namespace ApiExamples
             Assert.AreEqual(" BIBLIOGRAPHY  \\l 1124", fieldBibliography.GetFieldCode());
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.Citation.docx");
+            doc.Save(ArtifactsDir + "Field.CITATION.docx");
             //ExEnd
         }
 
@@ -2036,13 +2047,13 @@ namespace ApiExamples
 
             // Add an INCLUDE field with document builder and import a portion of the document defined by a bookmark
             FieldInclude fieldInclude = (FieldInclude)builder.InsertField(FieldType.FieldInclude, true);
-            fieldInclude.SourceFullName = MyDir + "Field.Include.Source.docx";
-            fieldInclude.BookmarkName = "Source_paragraph_2";
+            fieldInclude.SourceFullName = MyDir + "Bookmarks.docx";
+            fieldInclude.BookmarkName = "MyBookmark1";
             fieldInclude.LockFields = false;
             fieldInclude.TextConverter = "Microsoft Word";
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.Include.docx");
+            doc.Save(ArtifactsDir + "Field.INCLUDE.docx");
             //ExEnd
         }
 
@@ -2105,7 +2116,7 @@ namespace ApiExamples
             field.InsertOnceOnMailMerge = true;
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.Database.docx");
+            doc.Save(ArtifactsDir + "Field.DATABASE.docx");
             //ExEnd
         }
 
@@ -2143,7 +2154,7 @@ namespace ApiExamples
             fieldImport.SourceFullName = MyDir + @"Images\Watermark.png";
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.IncludePicture.docx");
+            doc.Save(ArtifactsDir + "Field.INCLUDEPICTURE.docx");
             //ExEnd
         }
 
@@ -2167,17 +2178,17 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Use a document builder to insert an include text field and perform an XSL transformation on an XML document
-            FieldIncludeText fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "Field.IncludeText.Source.xml", false, "text/xml", "XML", "ISO-8859-1");
-            fieldIncludeText.XslTransformation = MyDir + "Field.IncludeText.Source.xsl";
+            FieldIncludeText fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "CD collection data.xml", false, "text/xml", "XML", "ISO-8859-1");
+            fieldIncludeText.XslTransformation = MyDir + "CD collection XSL transformation.xsl";
 
             builder.Writeln();
 
             // Use a document builder to insert an include text field and use an XPath to take specific elements
-            fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "Field.IncludeText.Source.xml", false, "text/xml", "XML", "ISO-8859-1");
+            fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "CD collection data.xml", false, "text/xml", "XML", "ISO-8859-1");
             fieldIncludeText.NamespaceMappings = "xmlns:n='myNamespace'";
             fieldIncludeText.XPath = "/catalog/cd/title";
 
-            doc.Save(ArtifactsDir + "Field.IncludeText.docx");
+            doc.Save(ArtifactsDir + "Field.INCLUDETEXT.docx");
         }
 
         /// <summary>
@@ -2216,22 +2227,22 @@ namespace ApiExamples
             FieldHyperlink fieldHyperlink = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
 
             // When link is clicked, open a document and place the cursor on the bookmarked location
-            fieldHyperlink.Address = MyDir + "Field.HyperlinkDestination.docx";
-            fieldHyperlink.SubAddress = "My_Bookmark";
+            fieldHyperlink.Address = MyDir + "Bookmarks.docx";
+            fieldHyperlink.SubAddress = "MyBookmark3";
             fieldHyperlink.ScreenTip = "Open " + fieldHyperlink.Address + " on bookmark " + fieldHyperlink.SubAddress + " in a new window";
 
             builder.Writeln();
 
             // Open html file at a specific frame
             fieldHyperlink = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
-            fieldHyperlink.Address = MyDir + "Field.HyperlinkDestination.html";
+            fieldHyperlink.Address = MyDir + "Iframes.html";
             fieldHyperlink.ScreenTip = "Open " + fieldHyperlink.Address;
             fieldHyperlink.Target = "iframe_3";
             fieldHyperlink.OpenInNewWindow = true;
             fieldHyperlink.IsImageMap = false;
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.Hyperlink.docx");
+            doc.Save(ArtifactsDir + "Field.HYPERLINK.docx");
             //ExEnd
         }
 
@@ -2262,7 +2273,7 @@ namespace ApiExamples
             DataTable dataTable = CreateDataTable("Images", "ImageColumn",
                 new string[]
                 {
-                    ImageDir + "Aspose.Words.gif",
+                    ImageDir + "Aspose.Words.jpg",
                     ImageDir + "Watermark.png",
                     ImageDir + "dotnet-logo.png"
                 });
@@ -2271,7 +2282,7 @@ namespace ApiExamples
             doc.MailMerge.Execute(dataTable);
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.MergeFieldImageDimension.docx");
+            doc.Save(ArtifactsDir + "Field.MERGEFIELD.ImageDimension.docx");
         }
 
         /// <summary>
@@ -2353,7 +2364,7 @@ namespace ApiExamples
             doc.MailMerge.FieldMergingCallback = new ImageFilenameCallback();
             doc.MailMerge.Execute(dataTable);
 
-            doc.Save(ArtifactsDir + "Field.MergeFieldImages.docx");
+            doc.Save(ArtifactsDir + "Field.MERGEFIELD.Images.docx");
         }
 
         /// <summary>
@@ -2364,7 +2375,7 @@ namespace ApiExamples
             public ImageFilenameCallback()
             {
                 mImageFilenames = new Dictionary<string, string>();
-                mImageFilenames.Add("Aspose logo", ImageDir + "Aspose.Words.gif");
+                mImageFilenames.Add("Aspose logo", ImageDir + "Aspose.Words.jpg");
                 mImageFilenames.Add(".Net logo", ImageDir + "dotnet-logo.png");
                 mImageFilenames.Add("Watermark", ImageDir + "Watermark.png");
             }
@@ -2502,7 +2513,7 @@ namespace ApiExamples
             builder.EndBookmark(mainBookmarkName);
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.XE.docx");
+            doc.Save(ArtifactsDir + "Field.INDEX.XE.docx");
             //ExEnd
         }
 
@@ -2532,6 +2543,8 @@ namespace ApiExamples
             fieldBarcode.PostalAddress = "96801";
             fieldBarcode.IsUSPostalAddress = true;
 
+            Assert.AreEqual(" BARCODE  96801 \\f C \\u", fieldBarcode.GetFieldCode());
+
             builder.Writeln();
 
             // Reference a US postal code from a bookmark
@@ -2539,8 +2552,10 @@ namespace ApiExamples
             fieldBarcode.PostalAddress = "BarcodeBookmark";
             fieldBarcode.IsBookmark = true;
 
+            Assert.AreEqual(" BARCODE  BarcodeBookmark \\b", fieldBarcode.GetFieldCode());
+
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.USAddressBarcode.docx");
+            doc.Save(ArtifactsDir + "Field.BARCODE.docx");
             //ExEnd
         }
 
@@ -2610,7 +2625,7 @@ namespace ApiExamples
             Assert.AreEqual(" DISPLAYBARCODE  09312345678907 ITF14 \\c STD", field.GetFieldCode());
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.DisplayBarcode.docx");
+            doc.Save(ArtifactsDir + "Field.DISPLAYBARCODE.docx");
             //ExEnd
         }
 
@@ -2672,7 +2687,7 @@ namespace ApiExamples
             Assert.AreEqual("DISPLAYBARCODE \"DEF456\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B",
                 doc.Range.Fields[1].GetFieldCode());
 
-            doc.Save(ArtifactsDir + "Field.MergeBarcode_QR.docx");
+            doc.Save(ArtifactsDir + "Field.MERGEBARCODE.docx");
         }
 
         [Test] //ExSkip
@@ -2705,7 +2720,7 @@ namespace ApiExamples
             Assert.AreEqual("DISPLAYBARCODE \"123456789012\" EAN13 \\t \\p CASE \\x",
                 doc.Range.Fields[1].GetFieldCode());
 
-            doc.Save(ArtifactsDir + "Field.MergeBarcode_EAN13.docx");
+            doc.Save(ArtifactsDir + "Field.MERGEBARCODE.EAN13.docx");
         }
 
         [Test] //ExSkip
@@ -2736,7 +2751,7 @@ namespace ApiExamples
             Assert.AreEqual("DISPLAYBARCODE \"67890FGHIJ\" CODE39 \\d",
                 doc.Range.Fields[1].GetFieldCode());
 
-            doc.Save(ArtifactsDir + "Field.MergeBarcode_CODE39.docx");
+            doc.Save(ArtifactsDir + "Field.MERGEBARCODE.CODE39.docx");
         }
 
         [Test] //ExSkip
@@ -2766,7 +2781,7 @@ namespace ApiExamples
             Assert.AreEqual("DISPLAYBARCODE \"1234567891234\" ITF14 \\c STD",
                 doc.Range.Fields[1].GetFieldCode());
 
-            doc.Save(ArtifactsDir + "Field.MergeBarcode_ITF14.docx");
+            doc.Save(ArtifactsDir + "Field.MERGEBARCODE.ITF14.docx");
         }
 
         /// <summary>
@@ -2841,18 +2856,18 @@ namespace ApiExamples
 
             // Insert fields containing text from another document and present them as text (see InsertLinkedObjectAs enum)
             builder.Writeln("FieldLink:\n");
-            InsertFieldLink(builder, insertLinkedObjectAs, "Word.Document.8", MyDir + "Document.doc", null, true);
+            InsertFieldLink(builder, insertLinkedObjectAs, "Word.Document.8", MyDir + "Document.docx", null, true);
 
             builder.Writeln("FieldDde:\n");
-            InsertFieldDde(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Document.Spreadsheet.xlsx",
+            InsertFieldDde(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Spreadsheet.xlsx",
                 "Sheet1!R1C1", true, true);
 
             builder.Writeln("FieldDdeAuto:\n");
-            InsertFieldDdeAuto(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Document.Spreadsheet.xlsx",
+            InsertFieldDdeAuto(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Spreadsheet.xlsx",
                 "Sheet1!R1C1", true);
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.LinkedObjectsAsText.docx");
+            doc.Save(ArtifactsDir + "Field.LINK.DDE.DDEAUTO.docx");
         }
 
         [Test] //ExSkip
@@ -2870,15 +2885,15 @@ namespace ApiExamples
                 "Sheet1!R2C2", true);
 
             builder.Writeln("FieldDde:\n");
-            InsertFieldDde(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Document.Spreadsheet.xlsx",
+            InsertFieldDde(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Spreadsheet.xlsx",
                 "Sheet1!R1C1", true, true);
 
             builder.Writeln("FieldDdeAuto:\n");
-            InsertFieldDdeAuto(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Document.Spreadsheet.xlsx",
+            InsertFieldDdeAuto(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Spreadsheet.xlsx",
                 "Sheet1!R1C1", true);
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.LinkedObjectsAsImage.docx");
+            doc.Save(ArtifactsDir + "Field.LINK.DDE.DDEAUTO.AsImage.docx");
         }
 
         /// <summary>
@@ -3042,6 +3057,9 @@ namespace ApiExamples
             Assert.AreEqual("Default User", builder.InsertField(" USERNAME ").Result);
             Assert.AreEqual("D. U.", builder.InsertField(" USERINITIALS ").Result);
             Assert.AreEqual("One Microsoft Way", builder.InsertField(" USERADDRESS ").Result);
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.FieldOptionsCurrentUser.docx");
             //ExEnd
         }
 
@@ -3076,6 +3094,9 @@ namespace ApiExamples
 
             // This does not change the value in the user information object
             Assert.AreEqual("123 Main Street", doc.FieldOptions.CurrentUser.Address);
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.USERADDRESS.docx");
             //ExEnd
         }
 
@@ -3110,6 +3131,9 @@ namespace ApiExamples
 
             // This does not change the value in the user information object
             Assert.AreEqual("J. D.", doc.FieldOptions.CurrentUser.Initials);
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.USERINITIALS.docx");
             //ExEnd
         }
 
@@ -3145,6 +3169,9 @@ namespace ApiExamples
 
             // This does not change the value in the user information object
             Assert.AreEqual("John Doe", doc.FieldOptions.CurrentUser.Name);
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.USERNAME.docx");
             //ExEnd
         }
 
@@ -3177,11 +3204,11 @@ namespace ApiExamples
 
             // We can override the values displayed by our FILENAME fields by setting this attribute
             Assert.IsNull(doc.FieldOptions.FileName);
-            doc.FieldOptions.FileName = "Field.FileName.docx";
+            doc.FieldOptions.FileName = "Field.FILENAME.docx";
             field.Update();
 
             Assert.AreEqual(" FILENAME  \\p", field.GetFieldCode());
-            Assert.AreEqual("Field.FileName.docx", field.Result);
+            Assert.AreEqual("Field.FILENAME.docx", field.Result);
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "" + doc.FieldOptions.FileName);
@@ -3289,7 +3316,7 @@ namespace ApiExamples
             builder.InsertField("TA \\c 2 \\l \"entry 3\"");
             
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.TableOfAuthorities.Categories.docx");
+            doc.Save(ArtifactsDir + "Field.TOA.Categories.docx");
             //ExEnd
         }
 
@@ -3390,7 +3417,7 @@ namespace ApiExamples
             fieldStyleRef.SuppressNonDelimiters = true;
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.FieldStyleRef.docx");
+            doc.Save(ArtifactsDir + "Field.STYLEREF.docx");
             //ExEnd
         }
 
@@ -3435,7 +3462,7 @@ namespace ApiExamples
             builder.Writeln();
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.Date.docx");
+            doc.Save(ArtifactsDir + "Field.DATE.docx");
             //ExEnd
         }
 #endif
@@ -3478,7 +3505,7 @@ namespace ApiExamples
             builder.Writeln();
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.CreateDate.docx");
+            doc.Save(ArtifactsDir + "Field.CREATEDATE.docx");
             //ExEnd
         }
 
@@ -3519,7 +3546,7 @@ namespace ApiExamples
             builder.Writeln();
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.SaveDate.docx");
+            doc.Save(ArtifactsDir + "Field.SAVEDATE.docx");
             //ExEnd
         }
 
@@ -3607,7 +3634,7 @@ namespace ApiExamples
             builder.BuildAndInsert(doc.FirstSection.Body.AppendParagraph(""));
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.FieldBuilder.docx");
+            doc.Save(ArtifactsDir + "Field.SYMBOL.docx");
             //ExEnd
         }
         
@@ -3689,6 +3716,8 @@ namespace ApiExamples
 
             Assert.AreEqual(" DOCVARIABLE  \"My Variable\"", fieldDocVariable.GetFieldCode());
             Assert.AreEqual("My variable's value", fieldDocVariable.Result);
+
+            doc.Save(ArtifactsDir + "Field.DOCPROPERTY.DOCVARIABLE.docx");
             //ExEnd
         }
 
@@ -3721,6 +3750,8 @@ namespace ApiExamples
 
             // As well as displaying a new value in our field, we also changed the value of the document property
             Assert.AreEqual("My new subject", doc.BuiltInDocumentProperties.Subject);
+
+            doc.Save(ArtifactsDir + "Field.SUBJECT.docx");
             //ExEnd
         }
 
@@ -3749,7 +3780,7 @@ namespace ApiExamples
 
             Assert.AreEqual("My overriding comment.", field.Result);
 
-            doc.Save(ArtifactsDir + "Field.Comments.docx");
+            doc.Save(ArtifactsDir + "Field.COMMENTS.docx");
             //ExEnd
         }
         
@@ -3761,26 +3792,34 @@ namespace ApiExamples
             //ExFor:FieldFileSize.IsInKilobytes
             //ExFor:FieldFileSize.IsInMegabytes            
             //ExSummary:Shows how to display the file size of a document with a FILESIZE field.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.MoveToDocumentEnd();
+            builder.InsertParagraph();
 
             // By default, file size is displayed in bytes
             FieldFileSize field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
             field.Update();
-            Assert.AreEqual("23040", field.Result);
+            Assert.AreEqual("10590", field.Result);
+            builder.InsertParagraph();
 
             // Set the field to display size in kilobytes
             field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
             field.IsInKilobytes = true;
             field.Update();
-            Assert.AreEqual("23", field.Result);
+            Assert.AreEqual("11", field.Result);
+            builder.InsertParagraph();
 
             // Set the field to display size in megabytes
             field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
             field.IsInMegabytes = true;
             field.Update();
             Assert.AreEqual("0", field.Result);
+            builder.InsertParagraph();
+
+            // To update the values of these fields while editing in Microsoft Word,
+            // the changes first have to be saved, then the fields manually updated
+            doc.Save(ArtifactsDir + "Field.FILESIZE.docx");
             //ExEnd
         }
 
@@ -3809,7 +3848,7 @@ namespace ApiExamples
             builder.EndBookmark(field.Location);
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.GoToButton.docx");
+            doc.Save(ArtifactsDir + "Field.GOTOBUTTON.docx");
             //ExEnd
         }
         
@@ -3843,7 +3882,7 @@ namespace ApiExamples
             doc.MailMerge.Execute(new [] { "MergeField" }, new object[] { "" });
             
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.FillIn.docx");
+            doc.Save(ArtifactsDir + "Field.FILLIN.docx");
         }
 
         /// <summary>
@@ -3894,7 +3933,7 @@ namespace ApiExamples
             Assert.AreEqual("New comment", field.Result);
             Assert.AreEqual("New comment", doc.BuiltInDocumentProperties.Comments);
 
-            doc.Save(ArtifactsDir + "Field.Info.docx");
+            doc.Save(ArtifactsDir + "Field.INFO.docx");
             //ExEnd
         }
 
@@ -3908,7 +3947,7 @@ namespace ApiExamples
             //ExFor:FieldMacroButton.MacroName
             //ExSummary:Shows how to use MACROBUTTON fields that enable us to run macros by clicking.
             // Open a document that contains macros
-            Document doc = new Document(MyDir + "Document.HasMacro.docm");
+            Document doc = new Document(MyDir + "Macro.docm");
             DocumentBuilder builder = new DocumentBuilder(doc);
             Assert.IsTrue(doc.HasMacros);
 
@@ -3930,7 +3969,7 @@ namespace ApiExamples
             Assert.AreEqual(" MACROBUTTON  ViewZoom200 Run ViewZoom200", field.GetFieldCode());
 
             // Save the document as a macro-enabled document type
-            doc.Save(ArtifactsDir + "Field.MacroButton.docm");
+            doc.Save(ArtifactsDir + "Field.MACROBUTTON.docm");
             //ExEnd
         }
         
@@ -3964,7 +4003,7 @@ namespace ApiExamples
             // Setting a KEYWORDS field's Text property also updates the document's keywords to our new value
             Assert.AreEqual("OverridingKeyword", doc.BuiltInDocumentProperties.Keywords);
 
-            doc.Save(ArtifactsDir + "Field.Keywords.docx");
+            doc.Save(ArtifactsDir + "Field.KEYWORDS.docx");
             //ExEnd
         }
 
@@ -3978,7 +4017,7 @@ namespace ApiExamples
             //ExFor:FieldNumWords
             //ExSummary:Shows how to use NUMCHARS, NUMWORDS, NUMPAGES and PAGE fields to track the size of our documents.
             // Open a document to which we want to add character/word/page counts
-            Document doc = new Document(MyDir + "Lists.PrintOutAllLists.doc");
+            Document doc = new Document(MyDir + "Paragraphs.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Move the document builder to the footer, where we will store our fields
@@ -4004,7 +4043,7 @@ namespace ApiExamples
             Assert.AreEqual(" PAGE ", fieldPage.GetFieldCode());
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.Num.docx");
+            doc.Save(ArtifactsDir + "Field.NUMCHARS.NUMWORDS.NUMPAGES.PAGE.docx");
             //ExEnd
         }
 
@@ -4062,7 +4101,7 @@ namespace ApiExamples
             Assert.AreEqual(" PRINTDATE  \\u", fieldPrintDate.GetFieldCode());
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.Print.docx");
+            doc.Save(ArtifactsDir + "Field.PRINT.PRINTDATE.docx");
             //ExEnd
         }
 
@@ -4095,7 +4134,7 @@ namespace ApiExamples
             Assert.AreEqual(" QUOTE \u0013 DATE \u0014" + DateTime.Now.Date.ToShortDateString() + "\u0015", field.GetFieldCode());
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.Quote.docx");
+            doc.Save(ArtifactsDir + "Field.QUOTE.docx");
             //ExEnd
         }
 
@@ -4153,7 +4192,7 @@ namespace ApiExamples
             Assert.AreEqual(" NEXT ", fieldNext.GetFieldCode());
             Assert.AreEqual(" NEXTIF  5 = \"2 + 3\"", fieldNextIf.GetFieldCode());
 
-            doc.Save(ArtifactsDir + "Field.Next.docx");
+            doc.Save(ArtifactsDir + "Field.NEXT.NEXTIF.docx");
         }
 
         /// <summary>
@@ -4215,7 +4254,7 @@ namespace ApiExamples
             InsertBookmarkWithFootnote(builder, "MyBookmark2", "Contents of MyBookmark2", "Footnote from MyBookmark2");
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.NoteRef.docx");
+            doc.Save(ArtifactsDir + "Field.NOTEREF.docx");
         }
 
         /// <summary>
@@ -4278,7 +4317,7 @@ namespace ApiExamples
             Assert.AreEqual(field.GetFieldCode(), " FOOTNOTEREF CrossRefBookmark");
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.FootnoteRef.docx");
+            doc.Save(ArtifactsDir + "Field.FOOTNOTEREF.docx");
             //ExEnd
         }
 
@@ -4320,7 +4359,7 @@ namespace ApiExamples
             InsertAndNameBookmark(builder, "MyBookmark3");
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.PageRef.docx");
+            doc.Save(ArtifactsDir + "Field.PAGEREF.docx");
         }
 
         /// <summary>
@@ -4358,8 +4397,11 @@ namespace ApiExamples
         [Test]
         public void DefineDateTimeFormatting()
         {
-            Document doc = new Document(MyDir + "Field.UpdateDateTimeFormatting.docx");
-            
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertField(FieldType.FieldTime, true);
+
             doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode;
             // Set a provider that return a culture object specific for each particular field
             doc.FieldOptions.FieldUpdateCultureProvider = new FieldUpdateCultureProvider();
@@ -4367,7 +4409,7 @@ namespace ApiExamples
             FieldTime fieldDate = (FieldTime) doc.Range.Fields[0];
             if (fieldDate.LocaleId != (int) EditingLanguage.Russian)
                 fieldDate.LocaleId = (int) EditingLanguage.Russian;
-            
+
             doc.Save(ArtifactsDir + "Field.UpdateDateTimeFormatting.pdf");
         }
 
@@ -4498,7 +4540,7 @@ namespace ApiExamples
             builder.ListFormat.ListLevel.NumberFormat = ">>> \x0002";
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.Ref.docx");
+            doc.Save(ArtifactsDir + "Field.REF.docx");
         }
 
         /// <summary>
@@ -4548,7 +4590,7 @@ namespace ApiExamples
             referencedDoc.Save(ArtifactsDir + "ReferencedDocument.docx");
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.RefDoc.docx");
+            doc.Save(ArtifactsDir + "Field.RD.docx");
             //ExEnd
         }
       
@@ -4895,9 +4937,9 @@ namespace ApiExamples
             //ExFor:FieldAddIn
             //ExSummary:Shows how to process an ADDIN field.
             // Open a document that contains an ADDIN field
-            Document doc = new Document(MyDir + "Field.Addin.docx");
+            Document doc = new Document(MyDir + "Field ADDIN.docx");
 
-            // Aspose.Words does not support inserting ADDIN fields, but they can be read
+            // Aspose.Words does not support inserting ADDIN fields, they can be read
             FieldAddIn field = (FieldAddIn)doc.Range.Fields[0];
             Assert.AreEqual(" ADDIN \"My value\" ", field.GetFieldCode());
             //ExEnd
@@ -5017,9 +5059,9 @@ namespace ApiExamples
             //ExFor:FieldFormDropDown
             //ExFor:FieldFormText
             //ExSummary:Shows how to process FORMCHECKBOX, FORMDROPDOWN and FORMTEXT fields.
-            // These fields are legacy equivalents of the FormField, and they can be read and not inserted by Aspose.Words,
+            // These fields are legacy equivalents of the FormField, and they can be read but not inserted by Aspose.Words,
             // and are inserted in Microsoft Word 2019 via the Legacy Tools menu in the Developer tab
-            Document doc = new Document(MyDir + "Field.FieldForms.doc");
+            Document doc = new Document(MyDir + "Form fields.docx");
 
             FieldFormCheckBox fieldFormCheckBox = (FieldFormCheckBox)doc.Range.Fields[1];
             Assert.AreEqual(" FORMCHECKBOX \u0001", fieldFormCheckBox.GetFieldCode());
@@ -5158,7 +5200,7 @@ namespace ApiExamples
         public void FieldPrivate()
         {
             // Open a Corel WordPerfect document that was converted to .docx format
-            Document doc = new Document(MyDir + "Field.FromWpd.docx");
+            Document doc = new Document(MyDir + "Field PRIVATE.docx");
 
             // WordPerfect 5.x/6.x documents like the one we opened may contain PRIVATE fields
             // The PRIVATE field is a WordPerfect artifact that is preserved when a file is opened and saved in Microsoft Word
@@ -5355,7 +5397,7 @@ namespace ApiExamples
             //ExFor:FieldShape.Text
             //ExSummary:Shows how some older Microsoft Word fields such as SHAPE and EMBED are handled.
             // Open a document that was created in Microsoft Word 2003
-            Document doc = new Document(MyDir + "Field.Legacy.doc");
+            Document doc = new Document(MyDir + "Legacy fields.doc");
 
             // If we open the document in Word and press Alt+F9, we will see a SHAPE and an EMBED field
             // A SHAPE field is the anchor/canvas for an autoshape object with the "In line with text" wrapping style enabled
@@ -5388,7 +5430,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Field.DisplayResult
             //ExSummary:Shows how to get the text that represents the displayed field result.
-            Document document = new Document(MyDir + "Field.FieldDisplayResult.docx");
+            Document document = new Document(MyDir + "Various fields.docx");
  
             FieldCollection fields = document.Range.Fields;
  

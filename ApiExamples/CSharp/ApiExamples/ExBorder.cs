@@ -28,7 +28,7 @@ namespace ApiExamples
             //ExFor:LineStyle
             //ExFor:Font
             //ExFor:DocumentBuilder.Font
-            //ExFor:DocumentBuilder.Write
+            //ExFor:DocumentBuilder.Write(String)
             //ExSummary:Shows how to insert a string surrounded by a border into a document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -66,15 +66,15 @@ namespace ApiExamples
             //ExStart
             //ExFor:Border.ClearFormatting
             //ExSummary:Shows how to remove borders from a paragraph.
-            Document doc = new Document(MyDir + "Borders.doc");
+            Document doc = new Document(MyDir + "Borders.docx");
             
             DocumentBuilder builder = new DocumentBuilder(doc);
             BorderCollection borders = builder.ParagraphFormat.Borders;
 
             foreach (Border border in borders) border.ClearFormatting();
-            
+
             builder.CurrentParagraph.Runs[0].Text = "Paragraph with no border";
-            
+
             doc.Save(ArtifactsDir + "Border.NoBorder.doc");
             //ExEnd
         }

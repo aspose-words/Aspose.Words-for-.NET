@@ -118,7 +118,7 @@ namespace ApiExamples
                 Compliance = OoxmlCompliance.Iso29500_2008_Transitional
             };
 
-            doc.Save(ArtifactsDir + "RestartingDocumentList.docx", options);
+            doc.Save(ArtifactsDir + "OoxmlSaveOptions.RestartingDocumentList.docx", options);
             //ExEnd
         }
 
@@ -128,7 +128,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:SaveOptions.UpdateLastSavedTimeProperty
             //ExSummary:Shows how to update a document time property when you want to save it.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             // Get last saved time
             DateTime documentTimeBeforeSave = doc.BuiltInDocumentProperties.LastSavedTime;
@@ -155,7 +155,7 @@ namespace ApiExamples
             //ExFor:OoxmlSaveOptions.KeepLegacyControlChars
             //ExFor:OoxmlSaveOptions.#ctor(SaveFormat)
             //ExSummary:Shows how to support legacy control characters when converting to .docx.
-            Document doc = new Document(MyDir + "OoxmlSaveOptions.KeepLegacyControlChars.doc");
+            Document doc = new Document(MyDir + "Legacy control character.doc");
  
             // Note that only one legacy character (ShortDateTime) is supported which declared in the "DOC" format
             OoxmlSaveOptions so = new OoxmlSaveOptions(SaveFormat.Docx);

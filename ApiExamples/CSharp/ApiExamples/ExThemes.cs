@@ -42,7 +42,7 @@ namespace ApiExamples
             //ExFor:Themes.ThemeFonts.EastAsian
             //ExFor:Themes.ThemeFonts.Latin
             //ExSummary:Shows how to set custom theme colors and fonts.
-            Document doc = new Document(MyDir + "ThemeColors.docx");
+            Document doc = new Document(MyDir + "Theme colors.docx");
 
             // This object gives us access to the document theme, which is a source of default fonts and colors
             Theme theme = doc.Theme;

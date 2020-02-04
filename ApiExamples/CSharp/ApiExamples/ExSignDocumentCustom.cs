@@ -37,11 +37,11 @@ namespace ApiExamples
         //ExSummary:Demonstrates how to add new signature line to the document and sign it with personal signature using SignatureLineId.
         [Test] //ExSkip
         [Description("WORDSNET-16868")]
-        public static void SignSignatureLineUsingSignatureLineId()
+        public static void Sign()
         {
             string signPersonName = "Ron Williams";
             string srcDocumentPath = MyDir + "Document.docx";
-            string dstDocumentPath = ArtifactsDir + "Document.Signed.docx";
+            string dstDocumentPath = ArtifactsDir + "SignDocumentCustom.Sign.docx";
             string certificatePath = MyDir + "morzal.pfx";
             string certificatePassword = "aw";
 
@@ -128,18 +128,18 @@ namespace ApiExamples
             {
                 #if NETFRAMEWORK
                 new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer",
-                    ImageToByteArray(Image.FromFile(ImageDir + "LogoSmall.png"))),
+                    ImageToByteArray(Image.FromFile(ImageDir + "Aspose.Words.jpg"))),
                 #else
                 new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer", 
-                    SkiaSharp.SKBitmap.Decode(ImageDir + "LogoSmall.png").Bytes),
+                    SkiaSharp.SKBitmap.Decode(ImageDir + "Aspose.Words.jpg").Bytes),
                 #endif
                 
                 #if NETFRAMEWORK
                 new SignPersonTestClass(Guid.NewGuid(), "Stephen Morse", "Head of Compliance",
-                    ImageToByteArray(Image.FromFile(ImageDir + "LogoSmall.png")))
+                    ImageToByteArray(Image.FromFile(ImageDir + "Aspose.Words.jpg")))
                 #else
                 new SignPersonTestClass(Guid.NewGuid(), "Stephen Morse", "Head of Compliance", 
-                    SkiaSharp.SKBitmap.Decode(ImageDir + "LogoSmall.png").Bytes)
+                    SkiaSharp.SKBitmap.Decode(ImageDir + "Aspose.Words.jpg").Bytes)
                 #endif
             };
         }

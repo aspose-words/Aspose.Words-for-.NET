@@ -21,7 +21,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:VariableCollection.Add
             //ExSummary:Shows how to create document variables and add them to a document's variable collection.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             doc.Variables.Add("doc", "Word processing document");
             doc.Variables.Add("docx", "Word processing document");
@@ -40,7 +40,7 @@ namespace ApiExamples
             //ExFor:VariableCollection.Clear
             //ExFor:VariableCollection.Count
             //ExSummary:Shows how to clear all document variables from a document.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             doc.Variables.Add("doc", "Word processing document");
             doc.Variables.Add("docx", "Word processing document");
@@ -59,7 +59,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:VariableCollection.Contains
             //ExSummary:Shows how to check if a collection of document variables contains a key.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             doc.Variables.Add("doc", "Word processing document");
 
@@ -74,7 +74,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:VariableCollection.GetEnumerator
             //ExSummary:Shows how to obtain an enumerator from a collection of document variables and use it.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             doc.Variables.Add("doc", "Word processing document");
             doc.Variables.Add("docx", "Word processing document");
@@ -99,7 +99,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:VariableCollection.IndexOfKey
             //ExSummary:Shows how to get the index of a key.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             doc.Variables.Add("doc", "Word processing document");
             doc.Variables.Add("docx", "Word processing document");
@@ -118,7 +118,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:VariableCollection.Remove
             //ExSummary:Shows how to remove an element from a document's variable collection by key.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             doc.Variables.Add("doc", "Word processing document");
             doc.Variables.Add("docx", "Word processing document");
@@ -137,7 +137,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:VariableCollection.RemoveAt
             //ExSummary:Shows how to remove an element from a document's variable collection by index.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document(MyDir + "Document.docx");
 
             doc.Variables.Add("doc", "Word processing document");
             doc.Variables.Add("docx", "Word processing document");
