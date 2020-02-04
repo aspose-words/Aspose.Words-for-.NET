@@ -504,7 +504,7 @@ namespace ApiExamples
             //ExEnd
 
             Assert.AreEqual(
-                "<p style=\"margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:12pt\"><span style=\"font-family:'Times New Roman'\">Hello World!</span></p>",
+                "<p style=\"margin-top:0pt; margin-bottom:8pt; line-height:108%; font-size:12pt\"><span style=\"font-family:'Times New Roman'\">Hello World!</span></p>",
                 nodeAsHtml);
         }
 
@@ -532,7 +532,7 @@ namespace ApiExamples
             //ExEnd
 
             Assert.AreEqual(
-                "<p style=\"margin-top:0pt; margin-bottom:10pt; line-height:115%\"><span style=\"font-family:'Times New Roman'\">Hello World!</span></p>",
+                "<p style=\"margin-top:0pt; margin-bottom:8pt; line-height:108%\"><span style=\"font-family:'Times New Roman'\">Hello World!</span></p>",
                 nodeAsHtml);
         }
 
