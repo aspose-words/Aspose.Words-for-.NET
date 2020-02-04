@@ -955,7 +955,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DigitalSignatureSign()
+        public void DigitalSignature()
         {
             //ExStart
             //ExFor:DigitalSignature.CertificateHolder
@@ -969,37 +969,30 @@ namespace ApiExamples
 
             // Verify that it isn't signed
             Assert.False(FileFormatUtil.DetectFileFormat(MyDir + "Document.docx").HasDigitalSignature);
-            Assert.AreEqual(0, unSignedDoc.DigitalSignatures.Count);
 
             // Create a CertificateHolder object from a PKCS #12 file, which we will use to sign the document
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
 
             // There are 2 ways of saving a signed copy of a document to the local file system
             // 1: Designate unsigned input and signed output files by filename and sign with the passed CertificateHolder 
-            DigitalSignatureUtil.Sign(MyDir + "Document.docx", ArtifactsDir + "Document.Signed.1.docx", 
+            DigitalSignatureUtil.Sign(MyDir + "Document.docx", ArtifactsDir + "Document.DigitalSignature.docx", 
                 certificateHolder, new SignOptions() { SignTime = DateTime.Now } );
+
+            Assert.True(FileFormatUtil.DetectFileFormat(ArtifactsDir + "Document.DigitalSignature.docx").HasDigitalSignature);
 
             // 2: Create a stream for the input file and one for the output and create a file, signed with the CertificateHolder, at the file system location determine
             using (FileStream inDoc = new FileStream(MyDir + "Document.docx", FileMode.Open))
             {
-                using (FileStream outDoc = new FileStream(ArtifactsDir + "Document.Signed.2.docx", FileMode.Create))
+                using (FileStream outDoc = new FileStream(ArtifactsDir + "Document.DigitalSignature.docx", FileMode.Create))
                 {
                     DigitalSignatureUtil.Sign(inDoc, outDoc, certificateHolder);
                 }
             }
 
-            // Verify that our documents are signed
-            Document signedDoc = new Document(ArtifactsDir + "Document.Signed.1.docx");
-            Assert.True(FileFormatUtil.DetectFileFormat(ArtifactsDir + "Document.Signed.1.docx").HasDigitalSignature);
-            Assert.AreEqual(1,signedDoc.DigitalSignatures.Count);
-            Assert.True(signedDoc.DigitalSignatures[0].IsValid);
+            Assert.True(FileFormatUtil.DetectFileFormat(ArtifactsDir + "Document.DigitalSignature.docx").HasDigitalSignature);
 
-            signedDoc = new Document(ArtifactsDir + "Document.Signed.2.docx");
-            Assert.True(FileFormatUtil.DetectFileFormat(ArtifactsDir + "Document.Signed.2.docx").HasDigitalSignature);
-            Assert.AreEqual(1, signedDoc.DigitalSignatures.Count);
-            Assert.True(signedDoc.DigitalSignatures[0].IsValid);
-
-            // These digital signatures will have some of the properties from the X.509 certificate from the .pfx file we used
+            // Verify signature details
+            Document signedDoc = new Document(ArtifactsDir + "Document.DigitalSignature.docx");
             Assert.AreEqual("CN=Morzal.Me", signedDoc.DigitalSignatures[0].IssuerName);
             Assert.AreEqual("CN=Morzal.Me", signedDoc.DigitalSignatures[0].SubjectName);
             //ExEnd
