@@ -150,7 +150,7 @@ namespace ApiExamples
                     case ResourceType.Image:
                         Console.WriteLine($"External Image found upon loading: {args.OriginalUri}");
 
-                        const string newImageFilename = "Aspose logo dark background.jpg";
+                        const string newImageFilename = "Logo.jpg";
                         Console.WriteLine($"\tImage will be substituted with: {newImageFilename}");
 
                         Image newImage = Image.FromFile(ImageDir + newImageFilename);
@@ -3689,7 +3689,7 @@ namespace ApiExamples
             doc.BuiltInDocumentProperties.Title = "My Book Title";
 
             // The thumbnail we specify here can become the cover image
-            byte[] image = File.ReadAllBytes(ImageDir + "Aspose logo transparent background.png");
+            byte[] image = File.ReadAllBytes(ImageDir + "Transparent background logo.png");
             doc.BuiltInDocumentProperties.Thumbnail = image;
 
             doc.Save(ArtifactsDir + "Document.EpubCover.epub");

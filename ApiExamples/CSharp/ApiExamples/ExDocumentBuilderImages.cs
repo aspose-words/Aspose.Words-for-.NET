@@ -32,7 +32,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            using (Stream stream = File.OpenRead(ImageDir + "Aspose logo dark background.jpg"))
+            using (Stream stream = File.OpenRead(ImageDir + "Logo.jpg"))
             {
                 builder.Writeln("Inserted image from stream: ");
                 builder.InsertImage(stream);
@@ -61,14 +61,14 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Writeln("\nInserted image from string: ");
-            builder.InsertImage(ImageDir + "Aspose logo dark background.jpg");
+            builder.InsertImage(ImageDir + "Logo.jpg");
 
             builder.Writeln("\nInserted image from string with a custom size: ");
-            builder.InsertImage(ImageDir + "Aspose logo dark background.jpg", ConvertUtil.PixelToPoint(250),
+            builder.InsertImage(ImageDir + "Logo.jpg", ConvertUtil.PixelToPoint(250),
                 ConvertUtil.PixelToPoint(144));
 
             builder.Writeln("\nInserted image from string using relative positions: ");
-            builder.InsertImage(ImageDir + "Aspose logo dark background.jpg", RelativeHorizontalPosition.Margin, 100, 
+            builder.InsertImage(ImageDir + "Logo.jpg", RelativeHorizontalPosition.Margin, 100, 
                 RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
 
             doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromString.docx");
@@ -86,7 +86,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Image image = Image.FromFile(ImageDir + "Aspose logo dark background.jpg");
+            Image image = Image.FromFile(ImageDir + "Logo.jpg");
 
             builder.Writeln("\nInserted image from Image class: ");
             builder.InsertImage(image);
@@ -113,7 +113,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Image image = Image.FromFile(ImageDir + "Aspose logo dark background.jpg");
+            Image image = Image.FromFile(ImageDir + "Logo.jpg");
 
             using (MemoryStream ms = new MemoryStream())
             {
@@ -145,7 +145,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            using (SKBitmap bitmap = SKBitmap.Decode(ImageDir + "Aspose logo dark background.jpg"))
+            using (SKBitmap bitmap = SKBitmap.Decode(ImageDir + "Logo.jpg"))
             {
                 builder.Writeln("\nInserted image from Image class: ");
                 builder.InsertImage(bitmap);
@@ -173,7 +173,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            using (SKBitmap bitmap = SKBitmap.Decode(ImageDir + "Aspose logo dark background.jpg"))
+            using (SKBitmap bitmap = SKBitmap.Decode(ImageDir + "Logo.jpg"))
             {
                 using (SKImage image = SKImage.FromBitmap(bitmap))
                 {

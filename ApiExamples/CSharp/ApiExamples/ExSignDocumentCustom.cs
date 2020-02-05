@@ -128,18 +128,18 @@ namespace ApiExamples
             {
                 #if NETFRAMEWORK
                 new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer",
-                    ImageToByteArray(Image.FromFile(ImageDir + "Aspose logo dark background.jpg"))),
+                    ImageToByteArray(Image.FromFile(ImageDir + "Logo.jpg"))),
                 #else
                 new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer", 
-                    SkiaSharp.SKBitmap.Decode(ImageDir + "Aspose logo dark background.jpg").Bytes),
+                    SkiaSharp.SKBitmap.Decode(ImageDir + "Logo.jpg").Bytes),
                 #endif
                 
                 #if NETFRAMEWORK
                 new SignPersonTestClass(Guid.NewGuid(), "Stephen Morse", "Head of Compliance",
-                    ImageToByteArray(Image.FromFile(ImageDir + "Aspose logo dark background.jpg")))
+                    ImageToByteArray(Image.FromFile(ImageDir + "Logo.jpg")))
                 #else
                 new SignPersonTestClass(Guid.NewGuid(), "Stephen Morse", "Head of Compliance", 
-                    SkiaSharp.SKBitmap.Decode(ImageDir + "Aspose logo dark background.jpg").Bytes)
+                    SkiaSharp.SKBitmap.Decode(ImageDir + "Logo.jpg").Bytes)
                 #endif
             };
         }

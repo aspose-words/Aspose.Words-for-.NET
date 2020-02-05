@@ -73,7 +73,7 @@ namespace ApiExamples
             builder.MoveTo(shape.ParentParagraph);         
 
             // Insert a shape with an image
-            shape = builder.InsertImage(Image.FromFile(ImageDir + "Aspose logo dark background.jpg"));
+            shape = builder.InsertImage(Image.FromFile(ImageDir + "Logo.jpg"));
             Assert.True(shape.CanHaveImage);
             Assert.True(shape.HasImage);
 
@@ -138,7 +138,7 @@ namespace ApiExamples
 
             // The best place for the watermark image is in the header or footer so it is shown on every page
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-            Image image = Image.FromFile(ImageDir + "Aspose logo transparent background.png");
+            Image image = Image.FromFile(ImageDir + "Transparent background logo.png");
 
             // Insert a floating picture
             Shape shape = builder.InsertImage(image);
@@ -168,7 +168,7 @@ namespace ApiExamples
             // The best place for the watermark image is in the header or footer so it is shown on every page
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             
-            using (SKManagedStream stream = new SKManagedStream(File.OpenRead(ImageDir + "Aspose logo transparent background.png")))
+            using (SKManagedStream stream = new SKManagedStream(File.OpenRead(ImageDir + "Transparent background logo.png")))
             {
                 using (SKBitmap bitmap = SKBitmap.Decode(stream))
                 {
@@ -508,7 +508,7 @@ namespace ApiExamples
                     Shape image = new Shape(doc, ShapeType.Image);
 
                     // Load the image into the new shape
-                    image.ImageData.SetImage(ImageDir + "Aspose logo.wmf");
+                    image.ImageData.SetImage(ImageDir + "Windows MetaFile.wmf");
 
                     // Make new shape's position to match the old shape
                     image.Left = shape.Left;
@@ -693,10 +693,10 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Embed a Microsoft Visio drawing as an OLE object into the document
-            builder.InsertOleObject(ImageDir + "Aspose logo.vsd", "Package", false, false, null);
+            builder.InsertOleObject(ImageDir + "Microsoft Visio drawing.vsd", "Package", false, false, null);
 
             // Insert a link to the file in the local file system and display it as an icon
-            builder.InsertOleObject(ImageDir + "Aspose logo.vsd", "Package", true, true, null);
+            builder.InsertOleObject(ImageDir + "Microsoft Visio drawing.vsd", "Package", true, true, null);
             
             // Both the OLE objects are stored within shapes
             List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
@@ -713,7 +713,7 @@ namespace ApiExamples
             Assert.AreEqual(true, oleFormat.OleIcon);
 
             // Get the name or the source file and verify that the whole file is linked
-            Assert.True(oleFormat.SourceFullName.EndsWith(@"Images" + Path.DirectorySeparatorChar + "Aspose logo.vsd"));
+            Assert.True(oleFormat.SourceFullName.EndsWith(@"Images" + Path.DirectorySeparatorChar + "Microsoft Visio drawing.vsd"));
             Assert.AreEqual("", oleFormat.SourceItem);
 
             Assert.AreEqual("Packager", oleFormat.IconCaption);
@@ -953,7 +953,7 @@ namespace ApiExamples
             //ExSummary:Shows how get markup language for shape object in document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.InsertImage(ImageDir + "Aspose logo transparent background.png");
+            builder.InsertImage(ImageDir + "Transparent background logo.png");
 
             // Loop through all single shapes inside document
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())
@@ -981,7 +981,7 @@ namespace ApiExamples
             doc.CompatibilityOptions.OptimizeFor(msWordVersion);
 
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.InsertImage(ImageDir + "Aspose logo transparent background.png");
+            builder.InsertImage(ImageDir + "Transparent background logo.png");
 
             // Loop through all single shapes inside document
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())

@@ -193,7 +193,7 @@ namespace ApiExamples
             Document doc = new Document();
 
             // We can get an image from a file, set it as the image of a shape and append it to a paragraph
-            Image srcImage = Image.FromFile(ImageDir + "Aspose logo dark background.jpg");
+            Image srcImage = Image.FromFile(ImageDir + "Logo.jpg");
 
             Shape imgShape = new Shape(doc, ShapeType.Image);
             doc.FirstSection.Body.FirstParagraph.AppendChild(imgShape);
@@ -201,7 +201,7 @@ namespace ApiExamples
             srcImage.Dispose();
 
             // We can also open an image file using a stream and set its contents as a shape's image 
-            using (Stream stream = new FileStream(ImageDir + "Aspose logo dark background.jpg", FileMode.Open, FileAccess.Read))
+            using (Stream stream = new FileStream(ImageDir + "Logo.jpg", FileMode.Open, FileAccess.Read))
             {
                 imgShape = new Shape(doc, ShapeType.Image);
                 doc.FirstSection.Body.FirstParagraph.AppendChild(imgShape);
@@ -480,7 +480,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a shape into the document which contains an image taken from our local file system
-            Shape shape = builder.InsertImage(ImageDir + "Aspose logo dark background.jpg");
+            Shape shape = builder.InsertImage(ImageDir + "Logo.jpg");
 
             // If the shape contains an image, its ImageData property will be valid, and it will contain an ImageSize object
             ImageSize imageSize = shape.ImageData.ImageSize; 
