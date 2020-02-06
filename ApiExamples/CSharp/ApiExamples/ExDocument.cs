@@ -150,7 +150,7 @@ namespace ApiExamples
                     case ResourceType.Image:
                         Console.WriteLine($"External Image found upon loading: {args.OriginalUri}");
 
-                        const string newImageFilename = "Aspose.Words.jpg";
+                        const string newImageFilename = "Logo.jpg";
                         Console.WriteLine($"\tImage will be substituted with: {newImageFilename}");
 
                         Image newImage = Image.FromFile(ImageDir + newImageFilename);
@@ -2362,12 +2362,21 @@ namespace ApiExamples
         [TestCase(false)] //ExSkip
         public void UseLegacyOrder(bool isUseLegacyOrder)
         {
-            Document doc = new Document(MyDir + "Document.UseLegacyOrder.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            UseLegacyOrderReplacingCallback callback = new UseLegacyOrderReplacingCallback();
-            
+            // Insert 3 tags to appear in sequential order, the second of which will be inside a text box
+            builder.Writeln("[tag 1]");
+            Shape textBox = builder.InsertShape(ShapeType.TextBox, 100, 50);
+            builder.Writeln("[tag 3]");
+
+            builder.MoveTo(textBox.FirstParagraph);
+            builder.Write("[tag 2]");
+
+            UseLegacyOrderReplacingCallback callback = new UseLegacyOrderReplacingCallback();     
             FindReplaceOptions options = new FindReplaceOptions();
             options.ReplacingCallback = callback;
+
             // Use this option if want to search text sequentially from top to bottom considering the text boxes
             options.UseLegacyOrder = isUseLegacyOrder;
  
@@ -3452,7 +3461,7 @@ namespace ApiExamples
             //ExFor:VbaProject.Clone
             //ExFor:VbaModule.Clone
             //ExSummary:Shows how to deep clone VbaProject and VbaModule.
-            Document doc = new Document(MyDir + "VBAProject.docm");
+            Document doc = new Document(MyDir + "VBA project.docm");
             Document destDoc = new Document();
 
             // Clone VbaProject to the document
@@ -3489,7 +3498,7 @@ namespace ApiExamples
             //ExFor:VbaModuleCollection.Item(System.String)
             //ExFor:VbaModuleCollection.Remove
             //ExSummary:Shows how to get access to VBA project information in the document.
-            Document doc = new Document(MyDir + "VBAProject.docm");
+            Document doc = new Document(MyDir + "VBA project.docm");
 
             // A VBA project inside the document is defined as a collection of VBA modules
             VbaProject vbaProject = doc.VbaProject;
@@ -3629,7 +3638,7 @@ namespace ApiExamples
             //ExFor:BaseWebExtensionCollection`1.Count
             //ExFor:BaseWebExtensionCollection`1.Item(Int32)
             //ExSummary:Shows how to work with web extension collections.
-            Document doc = new Document(MyDir + "Document.WebExtension.docx");
+            Document doc = new Document(MyDir + "Web extension.docx");
 
             Assert.AreEqual(1, doc.WebExtensionTaskPanes.Count);
 
@@ -3673,7 +3682,7 @@ namespace ApiExamples
             doc.BuiltInDocumentProperties.Title = "My Book Title";
 
             // The thumbnail we specify here can become the cover image
-            byte[] image = File.ReadAllBytes(ImageDir + "Watermark.png");
+            byte[] image = File.ReadAllBytes(ImageDir + "Transparent background logo.png");
             doc.BuiltInDocumentProperties.Thumbnail = image;
 
             doc.Save(ArtifactsDir + "Document.EpubCover.epub");
