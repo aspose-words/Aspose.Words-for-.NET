@@ -133,7 +133,6 @@
     <Compile Include="Loading-and-Saving\Load_Options.cs" />
     <Compile Include="Loading-and-Saving\WorkingWithDoc.cs" />
     <Compile Include="Loading-and-Saving\WorkingWithOoxml.cs" />
-    <Compile Include="Loading-and-Saving\WorkingWithPDF.cs" />
     <Compile Include="Loading-and-Saving\WorkingWithRTF.cs" />
     <Compile Include="Loading-and-Saving\WorkingwithTxt.cs" />
     <Compile Include="Loading-and-Saving\ImageLoadingWithCredentialsHandler.cs" />
