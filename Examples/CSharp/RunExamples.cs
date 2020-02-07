@@ -96,6 +96,7 @@ namespace Aspose.Words.Examples.CSharp
             // SaveOptionsHtmlFixed.Run();
             // SaveDocWithHtmlSaveOptions.Run();
             // WorkingWithVbaMacros.Run();
+            WorkingWithPDF.Run();
 
             //// =====================================================
             //// =====================================================
@@ -147,7 +148,7 @@ namespace Aspose.Words.Examples.CSharp
 
             //// Shapes
             //// =====================================================
-             WorkingWithShapes.Run();
+            // WorkingWithShapes.Run();
 
             //// Comments
             //// =====================================================
