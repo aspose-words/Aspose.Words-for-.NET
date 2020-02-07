@@ -46,11 +46,11 @@
     </MtouchVerbosity>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words, Version=19.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Aspose.Words.19.12.0\lib\Xamarin.iOS10\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=20.2.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Aspose.Words.20.2.0\lib\Xamarin.iOS10\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="SkiaSharp, Version=1.68.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\SkiaSharp.1.68.1\lib\Xamarin.iOS\SkiaSharp.dll</HintPath>
+      <HintPath>..\..\..\packages\SkiaSharp.1.68.1.1\lib\Xamarin.iOS\SkiaSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />

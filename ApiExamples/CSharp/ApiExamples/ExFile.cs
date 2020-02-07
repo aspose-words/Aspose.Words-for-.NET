@@ -25,7 +25,7 @@ namespace ApiExamples
             //ExSummary:Shows how to catch a FileCorruptedException.
             try
             {
-                Document doc = new Document(MyDir + "Corrupted.docx");
+                Document doc = new Document(MyDir + "Corrupted document.docx");
             }
             catch (FileCorruptedException e)
             {
@@ -43,12 +43,12 @@ namespace ApiExamples
             //ExFor:FileFormatUtil
             //ExSummary:Shows how to detect encoding in an html file.
             // 'DetectFileFormat' not working on a non-html files
-            FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.doc");
-            Assert.AreEqual(LoadFormat.Doc, info.LoadFormat);
+            FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.docx");
+            Assert.AreEqual(LoadFormat.Docx, info.LoadFormat);
             Assert.IsNull(info.Encoding);
 
             // This time the property will not be null
-            info = FileFormatUtil.DetectFileFormat(MyDir + "Document.LoadFormat.html");
+            info = FileFormatUtil.DetectFileFormat(MyDir + "Document.html");
             Assert.AreEqual(LoadFormat.Html, info.LoadFormat);
             Assert.IsNotNull(info.Encoding);
 
@@ -126,7 +126,7 @@ namespace ApiExamples
             //ExFor:FileFormatInfo.IsEncrypted
             //ExFor:FileFormatInfo.HasDigitalSignature
             //ExSummary:Shows how to use the FileFormatUtil class to detect the document format and other features of the document.
-            FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.doc");
+            FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.docx");
             Console.WriteLine("The document format is: " + FileFormatUtil.LoadFormatToExtension(info.LoadFormat));
             Console.WriteLine("Document is encrypted: " + info.IsEncrypted);
             Console.WriteLine("Document has a digital signature: " + info.HasDigitalSignature);
@@ -134,7 +134,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DetectFileFormat_EnumConversions()
+        public void SaveToDetectedFileFormat()
         {
             //ExStart
             //ExFor:FileFormatUtil.DetectFileFormat(Stream)
@@ -148,7 +148,7 @@ namespace ApiExamples
             // Load the document without a file extension into a stream and use the DetectFileFormat method to detect it's format
             // These are both times where you might need extract the file format as it's not visible
             // The file format of this document is actually ".doc"
-            FileStream docStream = File.OpenRead(MyDir + "Document.FileWithoutExtension");
+            FileStream docStream = File.OpenRead(MyDir + "Word document with missing file extension");
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(docStream);
 
             // Retrieve the LoadFormat of the document
@@ -170,7 +170,8 @@ namespace ApiExamples
             Document doc = new Document(docStream);
 
             // Save the document with the original file name, " Out" and the document's file extension
-            doc.Save(ArtifactsDir + "Document.WithFileExtension" + FileFormatUtil.SaveFormatToExtension(saveFormat));
+            doc.Save(
+                ArtifactsDir + "File.SaveToDetectedFileFormat" + FileFormatUtil.SaveFormatToExtension(saveFormat));
             //ExEnd
 
             Assert.AreEqual(".doc", FileFormatUtil.SaveFormatToExtension(saveFormat));
@@ -201,7 +202,7 @@ namespace ApiExamples
             //ExFor:FileFormatInfo.HasDigitalSignature
             //ExSummary:Shows how to check a document for digital signatures before loading it into a Document object.
             // The path to the document which is to be processed
-            string filePath = MyDir + "Document.Signed.docx";
+            string filePath = MyDir + "Digitally signed.docx";
 
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(filePath);
             if (info.HasDigitalSignature)
@@ -226,7 +227,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void ExtractImagesToFiles()
         {
-            Document doc = new Document(MyDir + "Image.SampleImages.doc");
+            Document doc = new Document(MyDir + "Images.docx");
 
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
             int imageIndex = 0;
@@ -235,7 +236,7 @@ namespace ApiExamples
                 if (shape.HasImage)
                 {
                     string imageFileName =
-                        $"Image.ExportImages.{imageIndex}{FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType)}";
+                        $"File.ExtractImagesToFiles.{imageIndex}{FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType)}";
                     shape.ImageData.Save(ArtifactsDir + imageFileName);
                     imageIndex++;
                 }

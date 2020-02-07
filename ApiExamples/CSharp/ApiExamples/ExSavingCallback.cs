@@ -43,26 +43,30 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:IPageSavingCallback
+        //ExFor:IPageSavingCallback.PageSaving(PageSavingArgs)
         //ExFor:PageSavingArgs
         //ExFor:PageSavingArgs.PageFileName
+        //ExFor:PageSavingArgs.KeepPageStreamOpen
+        //ExFor:PageSavingArgs.PageIndex
+        //ExFor:PageSavingArgs.PageStream
         //ExFor:FixedPageSaveOptions.PageSavingCallback
         //ExSummary:Shows how separate pages are saved when a document is exported to fixed page format.
         [Test] //ExSkip
-        public void PageFileNameSavingCallback()
+        public void PageFileName()
         {
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlFixedSaveOptions htmlFixedSaveOptions =
                 new HtmlFixedSaveOptions { PageIndex = 0, PageCount = doc.PageCount };
             htmlFixedSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
 
-            doc.Save(ArtifactsDir + "Rendering.html", htmlFixedSaveOptions);
+            doc.Save($"{ArtifactsDir}SavingCallback.PageFileName.html", htmlFixedSaveOptions);
 
-            string[] filePaths = Directory.GetFiles(ArtifactsDir + "", "Page_*.html");
+            string[] filePaths = Directory.GetFiles(ArtifactsDir, "SavingCallback.PageFileName.Page_*.html");
 
             for (int i = 0; i < doc.PageCount; i++)
             {
-                string file = string.Format(ArtifactsDir + "Page_{0}.html", i);
+                string file = $"{ArtifactsDir}SavingCallback.PageFileName.Page_{i}.html";
                 Assert.AreEqual(file, filePaths[i]);//ExSkip
             }
         }
@@ -74,8 +78,14 @@ namespace ApiExamples
         {
             public void PageSaving(PageSavingArgs args)
             {
-                // Specify name of the output file for the current page
-                args.PageFileName = string.Format(ArtifactsDir + "Page_{0}.html", args.PageIndex);
+                string outFileName = $"{ArtifactsDir}SavingCallback.PageFileName.Page_{args.PageIndex}.html";
+
+                // Specify name of the output file for the current page either in this 
+                args.PageFileName = outFileName;
+
+                // ..or by setting up a custom stream
+                args.PageStream = new FileStream(outFileName, FileMode.Create);
+                Assert.False(args.KeepPageStreamOpen);
             }
         }
         //ExEnd
@@ -100,7 +110,7 @@ namespace ApiExamples
         public void DocumentParts()
         {
             // Open a document to be converted to html
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
             string outFileName = "SavingCallback.DocumentParts.Rendering.html";
 
             // We can use an appropriate SaveOptions subclass to customize the conversion process
@@ -135,7 +145,7 @@ namespace ApiExamples
 
             void IDocumentPartSavingCallback.DocumentPartSaving(DocumentPartSavingArgs args)
             {
-                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.doc"));
+                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.docx"));
 
                 string partType = "";
 
@@ -216,7 +226,7 @@ namespace ApiExamples
         public void CssSavingCallback()
         {
             // Open a document to be converted to html
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // If our output document will produce a CSS stylesheet, we can use an HtmlSaveOptions to control where it is saved
             HtmlSaveOptions options = new HtmlSaveOptions();
@@ -225,16 +235,16 @@ namespace ApiExamples
             options.CssStyleSheetType = CssStyleSheetType.External;
 
             // We can designate a filename for our stylesheet like this
-            options.CssStyleSheetFileName = ArtifactsDir + "Rendering.CssSavingCallback.css";
+            options.CssStyleSheetFileName = ArtifactsDir + "SavingCallback.CssSavingCallback.css";
 
             // A custom ICssSavingCallback implementation can also control where that stylesheet will be saved and linked to by the Html document
             // This callback will override the filename we specified above in options.CssStyleSheetFileName,
             // but will give us more control over the saving process
             options.CssSavingCallback =
-                new CustomCssSavingCallback(ArtifactsDir + "Rendering.CssSavingCallback.css", true, false);
+                new CustomCssSavingCallback(ArtifactsDir + "SavingCallback.CssSavingCallback.css", true, false);
 
             // The CssSaving() method of our callback will be called at this stage
-            doc.Save(ArtifactsDir + "Rendering.CssSavingCallback.html", options);
+            doc.Save(ArtifactsDir + "SavingCallback.CssSavingCallback.html", options);
         }
 
         /// <summary>
@@ -258,7 +268,7 @@ namespace ApiExamples
                 args.KeepCssStreamOpen = mKeepCssStreamOpen;
 
                 // We can also access the original document here like this
-                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.doc"));
+                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.docx"));
             }
 
             private readonly string mCssTextFileName;

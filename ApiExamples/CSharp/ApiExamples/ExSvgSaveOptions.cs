@@ -35,7 +35,7 @@ namespace ApiExamples
                 TextOutputMode = SvgTextOutputMode.UsePlacedGlyphs
             };
 
-            doc.Save(ArtifactsDir + "SaveLikeImage.svg", options);
+            doc.Save(ArtifactsDir + "SvgSaveOptions.SaveLikeImage.svg", options);
             //ExEnd
         }
 
@@ -51,7 +51,7 @@ namespace ApiExamples
         public void SvgResourceFolder()
         {
             // Open a document which contains images
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             SvgSaveOptions options = new SvgSaveOptions
             {
@@ -66,7 +66,7 @@ namespace ApiExamples
 
             Directory.CreateDirectory(options.ResourcesFolderAlias);
 
-            doc.Save(ArtifactsDir + "SvgResourceFolder.svg", options);
+            doc.Save(ArtifactsDir + "SvgSaveOptions.SvgResourceFolder.svg", options);
         }
 
         /// <summary>

@@ -59,7 +59,7 @@ namespace ApiExamples
             //ExFor:Comment.Author
             //ExFor:Comment.Replies
             //ExSummary:Shows how to get all comments with all replies.
-            Document doc = new Document(MyDir + "Comment.Document.docx");
+            Document doc = new Document(MyDir + "Comments.docx");
 
             // Get all comment from the document
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
@@ -94,7 +94,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Comment.RemoveAllReplies
             //ExSummary:Shows how to remove comment replies.
-            Document doc = new Document(MyDir + "Comment.Document.docx");
+            Document doc = new Document(MyDir + "Comments.docx");
 
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
             Comment comment = (Comment) comments[0];
@@ -110,7 +110,7 @@ namespace ApiExamples
             //ExFor:Comment.RemoveReply(Comment)
             //ExFor:CommentCollection.Item(Int32)
             //ExSummary:Shows how to remove specific comment reply.
-            Document doc = new Document(MyDir + "Comment.Document.docx");
+            Document doc = new Document(MyDir + "Comments.docx");
 
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
 
@@ -129,7 +129,7 @@ namespace ApiExamples
             //ExFor:Comment.Done
             //ExFor:CommentCollection
             //ExSummary:Shows how to mark comment as Done.
-            Document doc = new Document(MyDir + "Comment.Document.docx");
+            Document doc = new Document(MyDir + "Comments.docx");
 
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
             

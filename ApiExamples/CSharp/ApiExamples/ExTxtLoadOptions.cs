@@ -31,14 +31,14 @@ namespace ApiExamples
                 LeadingSpacesOptions = TxtLeadingSpacesOptions.Preserve
             };
 
-            Document doc = new Document(MyDir + "TxtLoadOptions.DetectNumberingWithWhitespaces.txt", loadOptions);
+            Document doc = new Document(MyDir + "Numbers and whitespaces.txt", loadOptions);
             doc.Save(ArtifactsDir + "TxtLoadOptions.DetectNumberingWithWhitespaces.txt");
             //ExEnd
         }
 
         [Test]
-        [TestCase("TxtLoadOptions.Hebrew.txt", true)]
-        [TestCase("TxtLoadOptions.English.txt", false)]
+        [TestCase("Hebrew text.txt", true)]
+        [TestCase("English text.txt", false)]
         public void DetectDocumentDirection(string documentPath, bool isBidi)
         {
             //ExStart

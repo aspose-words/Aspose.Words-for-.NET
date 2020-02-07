@@ -27,14 +27,14 @@ namespace ApiExamples
             //ExStart
             //ExFor:ImageSaveOptions.UseGdiEmfRenderer
             //ExSummary:Shows how to save metafiles directly without using GDI+ to EMF.
-            Document doc = new Document(MyDir + "SaveOptions.MyriadPro.docx");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Emf)
             {
                 UseGdiEmfRenderer = false
             };
 
-            doc.Save(ArtifactsDir + "SaveOptions.UseGdiEmfRenderer.docx", saveOptions);
+            doc.Save(ArtifactsDir + "ImageSaveOptions.UseGdiEmfRenderer.docx", saveOptions);
             //ExEnd
         }
 
@@ -44,14 +44,14 @@ namespace ApiExamples
             //ExStart
             //ExFor:ImageSaveOptions.PageIndex
             //ExSummary:Shows how to save specific document page as image file.
-            Document doc = new Document(MyDir + "SaveOptions.MyriadPro.docx");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Gif)
             {
-                PageIndex = 0 // Define which page will save
+                PageIndex = 1 // Define which page will save
             };
 
-            doc.Save(ArtifactsDir + "SaveOptions.MyraidPro.gif", saveOptions);
+            doc.Save(ArtifactsDir + "ImageSaveOptions.SaveIntoGif.gif", saveOptions);
             //ExEnd
         }
 
@@ -69,7 +69,7 @@ namespace ApiExamples
             //ExFor:GraphicsQualityOptions.TextRenderingHint
             //ExFor:ImageSaveOptions.GraphicsQualityOptions
             //ExSummary:Shows how to set render quality options when converting documents to image formats. 
-            Document doc = new Document(MyDir + "SaveOptions.MyriadPro.docx");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             GraphicsQualityOptions qualityOptions = new GraphicsQualityOptions
             {
@@ -84,7 +84,7 @@ namespace ApiExamples
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Jpeg);
             saveOptions.GraphicsQualityOptions = qualityOptions;
 
-            doc.Save(ArtifactsDir + "SaveOptions.GraphicsQuality.jpeg", saveOptions);
+            doc.Save(ArtifactsDir + "ImageSaveOptions.GraphicsQuality.jpeg", saveOptions);
             //ExEnd
         }
 
@@ -105,14 +105,14 @@ namespace ApiExamples
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
             options.MetafileRenderingOptions.RenderingMode = MetafileRenderingMode.Bitmap;
 
-            doc.Save(ArtifactsDir + "ImagesSaveOptions.WindowsMetaFile.png", options);
+            doc.Save(ArtifactsDir + "ImageSaveOptions.WindowsMetaFile.png", options);
             //ExEnd
         }
 #endif
 
         [Test]
         [Category("SkipMono")]
-        public void ConverImageColorsToBlackAndWhite()
+        public void BlackAndWhite()
         {
             //ExStart
             //ExFor:ImageColorMode
@@ -121,7 +121,7 @@ namespace ApiExamples
             //ExFor:ImageSaveOptions.ImageColorMode
             //ExFor:ImageSaveOptions.PixelFormat
             //ExSummary:Show how to convert document images to black and white with 1 bit per pixel
-            Document doc = new Document(MyDir + "ImageSaveOptions.BlackAndWhite.docx");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
             imageSaveOptions.ImageColorMode = ImageColorMode.BlackAndWhite;
@@ -135,14 +135,14 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ThresholdForFloydSteinbergDithering()
+        public void FloydSteinbergDithering()
         {
             //ExStart
             //ExFor:ImageBinarizationMethod
             //ExFor:ImageSaveOptions.ThresholdForFloydSteinbergDithering
             //ExFor:ImageSaveOptions.TiffBinarizationMethod
             //ExSummary: Shows how to control the threshold for TIFF binarization in the Floyd-Steinberg method
-            Document doc = new Document (MyDir + "ImagesSaveOptions.ThresholdForFloydSteinbergDithering.docx");
+            Document doc = new Document (MyDir + "Rendering.docx");
 
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff)
             {
@@ -153,7 +153,7 @@ namespace ApiExamples
                 ThresholdForFloydSteinbergDithering = 254
             };
 
-            doc.Save(ArtifactsDir + "ImagesSaveOptions.ThresholdForFloydSteinbergDithering.tiff", options);
+            doc.Save(ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff", options);
             //ExEnd
         }
 
@@ -168,7 +168,7 @@ namespace ApiExamples
             //ExFor:ImageSaveOptions.Scale
             //ExFor:ImageSaveOptions.VerticalResolution
             //ExSummary:
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // When saving the document as an image, we can use an ImageSaveOptions object to edit various aspects of it
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png)
@@ -180,7 +180,7 @@ namespace ApiExamples
                 Scale = 96f / 72f           // Default at 1.0 for normal scale, can be used to negate resolution impact in image size
             };
 
-            doc.Save(ArtifactsDir + "ImagesSaveOptions.EditImage.png", options);
+            doc.Save(ArtifactsDir + "ImageSaveOptions.EditImage.png", options);
             //ExEnd
         }
     }

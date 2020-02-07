@@ -25,15 +25,19 @@ namespace ApiExamples
         //ExFor:MailMerge.Execute(IMailMergeDataSourceCore)
         //ExSummary:Performs mail merge from a custom data source.
         [Test] //ExSkip
-        public void MailMergeCustomDataSource()
+        public void CustomDataSource()
         {
+            // Create a destination document for the mail merge
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertField(" MERGEFIELD FullName ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD Address ");
+
             // Create some data that we will use in the mail merge
             CustomerList customers = new CustomerList();
             customers.Add(new Customer("Thomas Hardy", "120 Hanover Sq., London"));
             customers.Add(new Customer("Paolo Accorti", "Via Monte Bianco 34, Torino"));
-
-            // Open the template document
-            Document doc = new Document(MyDir + "MailMerge.CustomDataSource.doc");
 
             // To be able to mail merge from your own data source, it must be wrapped
             // into an object that implements the IMailMergeDataSource interface
@@ -42,7 +46,7 @@ namespace ApiExamples
             // Now you can pass your data source into Aspose.Words
             doc.MailMerge.Execute(customersDataSource);
 
-            doc.Save(ArtifactsDir + "MailMerge.CustomDataSource.doc");
+            doc.Save(ArtifactsDir + "MailMergeCustom.CustomDataSource.doc");
         }
 
         /// <summary>
@@ -147,7 +151,7 @@ namespace ApiExamples
         //ExFor:MailMerge.ExecuteWithRegions(IMailMergeDataSourceRoot)
         //ExSummary:Performs mail merge from a custom data source with master-detail data.
         [Test] //ExSkip
-        public void MailMergeCustomDataSourceRoot()
+        public void CustomDataSourceRoot()
         {
             // Create a document with two mail merge regions named "Washington" and "Seattle"
             Document doc = CreateSourceDocumentWithMailMergeRegions(new string[] { "Washington", "Seattle" });
@@ -170,7 +174,7 @@ namespace ApiExamples
             // However, one mail merge source data root call every relevant data source and merge automatically 
             doc.MailMerge.ExecuteWithRegions(sourceRoot);
 
-            doc.Save(ArtifactsDir + "MailMerge.MailMergeCustomDataSourceRoot.docx");
+            doc.Save(ArtifactsDir + "MailMergeCustom.CustomDataSourceRoot.docx");
         }
 
         /// <summary>

@@ -24,10 +24,10 @@ namespace ApiExamples
         //ExFor:XamlFixedSaveOptions.SaveFormat
         //ExSummary:Shows how to print the URIs of linked resources created during conversion of a document to fixed-form .xaml.
         [Test] //ExSkip
-        public void XamlFixedResourceFolder()
+        public void ResourceFolder()
         {
             // Open a document which contains resources
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             XamlFixedSaveOptions options = new XamlFixedSaveOptions
             {
@@ -41,7 +41,7 @@ namespace ApiExamples
             // We must ensure the folder exists before the streams can put their resources into it
             Directory.CreateDirectory(options.ResourcesFolderAlias);
 
-            doc.Save(ArtifactsDir + "XamlFixedResourceFolder.xaml", options);
+            doc.Save(ArtifactsDir + "XamlFixedSaveOptions.ResourceFolder.xaml", options);
         }
 
         /// <summary>

@@ -20,11 +20,18 @@ namespace ApiExamples
             //ExStart
             //ExFor:TxtSaveOptionsBase.ForcePageBreaks
             //ExSummary:Shows how to specify whether the page breaks should be preserved during export.
-            Document doc = new Document(MyDir + "SaveOptions.PageBreaks.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Page 1");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 2");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 3");
 
             TxtSaveOptions saveOptions = new TxtSaveOptions { ForcePageBreaks = false };
 
-            doc.Save(ArtifactsDir + "SaveOptions.PageBreaks.txt", saveOptions);
+            doc.Save(ArtifactsDir + "TxtSaveOptions.PageBreaks.txt", saveOptions);
             //ExEnd
         }
 
@@ -38,7 +45,7 @@ namespace ApiExamples
             
             TxtSaveOptions saveOptions = new TxtSaveOptions { AddBidiMarks = true };
 
-            doc.Save(ArtifactsDir + "AddBidiMarks.txt", saveOptions);
+            doc.Save(ArtifactsDir + "TxtSaveOptions.AddBidiMarks.txt", saveOptions);
             //ExEnd
         }
 
@@ -52,7 +59,7 @@ namespace ApiExamples
             //ExFor:TxtSaveOptionsBase.ExportHeadersFootersMode
             //ExFor:TxtExportHeadersFootersMode
             //ExSummary:Shows how to specifies the way headers and footers are exported to plain text format.
-            Document doc = new Document(MyDir + "HeaderFooter.HeaderFooterOrder.docx");
+            Document doc = new Document(MyDir + "Header and footer types.docx");
 
             // Three values are available in TxtExportHeadersFootersMode enum:
             // "None" - No headers and footers are exported
@@ -60,7 +67,7 @@ namespace ApiExamples
             // "PrimaryOnly" - Only primary headers and footers are exported at the beginning and end of each section (default value)
             TxtSaveOptions saveOptions = new TxtSaveOptions { ExportHeadersFootersMode = txtExportHeadersFootersMode };
 
-            doc.Save(ArtifactsDir + "ExportHeadersFooters.txt", saveOptions);
+            doc.Save(ArtifactsDir + "TxtSaveOptions.ExportHeadersFooters.txt", saveOptions);
             //ExEnd
         }
 
@@ -73,7 +80,7 @@ namespace ApiExamples
             //ExFor:TxtListIndentation.Character
             //ExFor:TxtSaveOptions.ListIndentation
             //ExSummary:Shows how list levels are displayed when the document is converting to plain text format.
-            Document doc = new Document(MyDir + "TxtSaveOptions.TxtListIndentation.docx");
+            Document doc = new Document(MyDir + "List indentation.docx");
  
             TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
             txtSaveOptions.ListIndentation.Count = 3;
@@ -133,7 +140,7 @@ namespace ApiExamples
             //ExFor:TxtSaveOptions.SimplifyListLabels
             //ExSummary:Shows how to change the appearance of tables and lists during conversion to a txt document output.
             // Open a document with a table
-            Document doc = new Document(MyDir + "Lists.PrintOutAllLists.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             // Due to the nature of text documents, table grids and text wrapping will be lost during conversion
             // from a file type that supports tables

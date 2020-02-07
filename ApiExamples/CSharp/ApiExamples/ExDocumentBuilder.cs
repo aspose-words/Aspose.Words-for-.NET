@@ -17,6 +17,11 @@ using Aspose.Words.Fields;
 using Aspose.Words.Replacing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
+using Cell = Aspose.Words.Tables.Cell;
+using Color = System.Drawing.Color;
+using Document = Aspose.Words.Document;
+using SaveFormat = Aspose.Words.SaveFormat;
+using Table = Aspose.Words.Tables.Table;
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
@@ -55,6 +60,7 @@ namespace ApiExamples
         public void HeadersAndFooters()
         {
             //ExStart
+            //ExFor:DocumentBuilder
             //ExFor:DocumentBuilder.#ctor(Document)
             //ExFor:DocumentBuilder.MoveToHeaderFooter
             //ExFor:DocumentBuilder.MoveToSection
@@ -94,7 +100,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertMergeField()
+        public void MergeFields()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertField(String)
@@ -163,15 +169,55 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.InsertHorizontalRule
             //ExFor:ShapeBase.IsHorizontalRule
-            //ExSummary:Shows how to insert horizontal rule shape in a document.
+            //ExFor:Shape.HorizontalRuleFormat
+            //ExFor:HorizontalRuleFormat
+            //ExFor:HorizontalRuleFormat.Alignment
+            //ExFor:HorizontalRuleFormat.WidthPercent
+            //ExFor:HorizontalRuleFormat.Height
+            //ExFor:HorizontalRuleFormat.Color
+            //ExFor:HorizontalRuleFormat.NoShade
+            //ExSummary:Shows how to insert horizontal rule shape in a document and customize the formatting.
             // Use a document builder to insert a horizontal rule
             DocumentBuilder builder = new DocumentBuilder();
-            builder.InsertHorizontalRule();
+            Shape shape = builder.InsertHorizontalRule();
+
+            HorizontalRuleFormat horizontalRuleFormat = shape.HorizontalRuleFormat;
+            horizontalRuleFormat.Alignment = HorizontalRuleAlignment.Center;
+            horizontalRuleFormat.WidthPercent = 70;
+            horizontalRuleFormat.Height = 3;
+            horizontalRuleFormat.Color = Color.Blue;
+            horizontalRuleFormat.NoShade = true;
+
+            MemoryStream stream = new MemoryStream();
+            builder.Document.Save(stream, SaveFormat.Docx);
 
             // Get the rule from the document's shape collection and verify it
             Shape horizontalRule = (Shape)builder.Document.GetChild(NodeType.Shape, 0, true);
             Assert.True(horizontalRule.IsHorizontalRule);
+            Assert.True(horizontalRule.HorizontalRuleFormat.NoShade);
+            Assert.AreEqual(HorizontalRuleAlignment.Center, horizontalRule.HorizontalRuleFormat.Alignment);
+            Assert.AreEqual(70, horizontalRule.HorizontalRuleFormat.WidthPercent);
+            Assert.AreEqual(3, horizontalRule.HorizontalRuleFormat.Height);
+            Assert.AreEqual(Color.Blue.ToArgb(), horizontalRule.HorizontalRuleFormat.Color.ToArgb());
             //ExEnd
+        }
+
+        [Test(Description = "Checking the boundary conditions of WidthPercent and Height properties")]
+        public void HorizontalRuleFormatExceptions()
+        {
+            DocumentBuilder builder = new DocumentBuilder();
+            Shape shape = builder.InsertHorizontalRule();
+
+            HorizontalRuleFormat horizontalRuleFormat = shape.HorizontalRuleFormat;
+            horizontalRuleFormat.WidthPercent = 1;
+            horizontalRuleFormat.WidthPercent = 100;
+            Assert.That(() => horizontalRuleFormat.WidthPercent = 0, Throws.TypeOf<ArgumentOutOfRangeException>());
+            Assert.That(() => horizontalRuleFormat.WidthPercent = 101, Throws.TypeOf<ArgumentOutOfRangeException>());
+            
+            horizontalRuleFormat.Height = 0;
+            horizontalRuleFormat.Height = 1584;
+            Assert.That(() => horizontalRuleFormat.Height = -1, Throws.TypeOf<ArgumentOutOfRangeException>());
+            Assert.That(() => horizontalRuleFormat.Height = 1585, Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
         [Test]
@@ -203,7 +249,7 @@ namespace ApiExamples
             //ExFor:Field.GetFieldCode
             //ExFor:Field.GetFieldCode(bool)
             //ExSummary:Shows how to get text between field start and field separator (or field end if there is no separator).
-            Document doc = new Document(MyDir + "Field.FieldCode.docx");
+            Document doc = new Document(MyDir + "Nested fields.docx");
 
             foreach (Field field in doc.Range.Fields)
             {
@@ -212,32 +258,21 @@ namespace ApiExamples
                     FieldIf fieldIf = (FieldIf)field;
 
                     string fieldCode = fieldIf.GetFieldCode();
-                    Assert.AreEqual(" IF " + ControlChar.FieldStartChar + " MERGEFIELD Q223 " + ControlChar.FieldSeparatorChar + ControlChar.FieldEndChar + " > 0 \" (and additionally London Weighting of  " + ControlChar.FieldStartChar + " MERGEFIELD  Q223 \\f £ " + ControlChar.FieldSeparatorChar + ControlChar.FieldEndChar + " per hour) \" \"\" ",fieldCode); //ExSkip
+                    Assert.AreEqual($" IF {ControlChar.FieldStartChar} MERGEFIELD NetIncome {ControlChar.FieldSeparatorChar}{ControlChar.FieldEndChar} > 0 \" (surplus of {ControlChar.FieldStartChar} MERGEFIELD  NetIncome \\f $ {ControlChar.FieldSeparatorChar}{ControlChar.FieldEndChar}) \" \"\" ", fieldCode); //ExSkip
 
                     if (containsNestedFields)
                     {
                         fieldCode = fieldIf.GetFieldCode(true);
-                        Assert.AreEqual(" IF " + ControlChar.FieldStartChar + " MERGEFIELD Q223 " + ControlChar.FieldSeparatorChar + ControlChar.FieldEndChar + " > 0 \" (and additionally London Weighting of  " + ControlChar.FieldStartChar + " MERGEFIELD  Q223 \\f £ " + ControlChar.FieldSeparatorChar + ControlChar.FieldEndChar + " per hour) \" \"\" ",fieldCode); //ExSkip
+                        Assert.AreEqual($" IF {ControlChar.FieldStartChar} MERGEFIELD NetIncome {ControlChar.FieldSeparatorChar}{ControlChar.FieldEndChar} > 0 \" (surplus of {ControlChar.FieldStartChar} MERGEFIELD  NetIncome \\f $ {ControlChar.FieldSeparatorChar}{ControlChar.FieldEndChar}) \" \"\" ", fieldCode); //ExSkip
                     }
                     else
                     {
                         fieldCode = fieldIf.GetFieldCode(false);
-                        Assert.AreEqual(" IF  > 0 \" (and additionally London Weighting of   per hour) \" \"\" ",fieldCode); //ExSkip
+                        Assert.AreEqual(" IF  > 0 \" (surplus of ) \" \"\" ",fieldCode); //ExSkip
                     }
                 }
             }
             //ExEnd
-        }
-
-        [Test]
-        public void DocumentBuilderAndSave()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.Writeln("Hello World!");
-
-            doc.Save(ArtifactsDir + "DocumentBuilderAndSave.docx");
         }
 
         [Test]
@@ -310,7 +345,6 @@ namespace ApiExamples
         public void InsertWatermark()
         {
             //ExStart
-            //ExFor:HeaderFooterType
             //ExFor:DocumentBuilder.MoveToHeaderFooter
             //ExFor:PageSetup.PageWidth
             //ExFor:PageSetup.PageHeight
@@ -349,26 +383,30 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, Boolean, Image)
             //ExFor:DocumentBuilder.InsertOleObject(String, String, Boolean, Boolean, Image)
+            //ExFor:DocumentBuilder.InsertOleObjectAsIcon(String, Boolean, String, String)
             //ExSummary:Shows how to insert an OLE object into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Image representingImage = Image.FromFile(ImageDir + "Aspose.Words.gif");
+            Image representingImage = Image.FromFile(ImageDir + "Aspose.Words.jpg");
 
-            // OleObject
-            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage); 
-            // OleObject with ProgId
-            builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false, representingImage);
+            // Insert ole object
+            builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, representingImage);
+            // Insert ole object with ProgId
+            builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, true, null);
+            // Insert ole object as Icon
+            // There is one limitation for now: the maximum size of the icon must be 32x32 for the correct display
+            builder.InsertOleObjectAsIcon(MyDir + "Spreadsheet.xlsx", false, ImageDir + "AsIcon.ico",
+                "Caption (can not be null)");
 
-            doc.Save(ArtifactsDir + "Document.InsertedOleObject.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObject.docx");
             //ExEnd
         }
-        #else
+#else
         [Test]
         public void InsertWatermarkNetStandard2()
         {
             //ExStart
-            //ExFor:HeaderFooterType
             //ExFor:DocumentBuilder.MoveToHeaderFooter
             //ExFor:PageSetup.PageWidth
             //ExFor:PageSetup.PageHeight
@@ -398,7 +436,7 @@ namespace ApiExamples
                 shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
             }
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertWatermark.NetStandard2.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertWatermarkNetStandard2.doc");
             //ExEnd
         }
 
@@ -412,25 +450,24 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            using (SKBitmap representingImage = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
+            using (SKBitmap representingImage = SKBitmap.Decode(ImageDir + "Aspose.Words.jpg"))
             {
                 // OleObject
-                builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", false, false, representingImage);
+                builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, representingImage);
                 // OleObject with ProgId
-                builder.InsertOleObject(MyDir + "Document.Spreadsheet.xlsx", "Excel.Sheet", false, false,
+                builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, false,
                     representingImage);
             }
 
-            doc.Save(ArtifactsDir + "Document.InsertedOleObject.NetStandard2.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObjectNetStandard2.docx");
             //ExEnd
         }
-        #endif
+#endif
 
         [Test]
         public void InsertHtml()
         {
             //ExStart
-            //ExFor:DocumentBuilder
             //ExFor:DocumentBuilder.InsertHtml(String)
             //ExSummary:Inserts HTML into a document. The formatting specified in the HTML is applied.
             Document doc = new Document();
@@ -446,7 +483,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertHtmlWithCurrentDocumentFormatting()
+        public void InsertHtmlWithFormatting()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertHtml(String, Boolean)
@@ -458,16 +495,13 @@ namespace ApiExamples
                 "<P align='right'>Paragraph right</P>" + "<b>Implicit paragraph left</b>" +
                 "<div align='center'>Div center</div>" + "<h1 align='left'>Heading 1 left.</h1>", true);
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertHtml.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertHtmlWithFormatting.doc");
             //ExEnd
         }
 
         [Test]
-        public void InsertMathMl()
+        public void MathML()
         {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertHtml(String)
-            //ExSummary:Inserts MathMl into a document using.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -475,19 +509,17 @@ namespace ApiExamples
                 "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><msub><mi>a</mi><mrow><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>b</mi><mrow><mn>1</mn></mrow></msub></mrow></math>";
 
             builder.InsertHtml(mathMl);
-            //ExEnd
 
-            doc.Save(ArtifactsDir + "MathML.docx");
-            doc.Save(ArtifactsDir + "MathML.pdf");
+            doc.Save(ArtifactsDir + "DocumentBuilder.MathML.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.MathML.pdf");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(GoldsDir + "MathML Gold.docx", ArtifactsDir + "MathML.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(GoldsDir + "DocumentBuilder.MathML Gold.docx", ArtifactsDir + "DocumentBuilder.MathML.docx"));
         }
 
         [Test]
         public void InsertTextAndBookmark()
         {
             //ExStart
-            //ExFor:DocumentBuilder
             //ExFor:DocumentBuilder.StartBookmark
             //ExFor:DocumentBuilder.EndBookmark
             //ExSummary:Adds some text into the document and encloses the text in a bookmark using DocumentBuilder.
@@ -605,11 +637,11 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.IsAtEndOfParagraph
             //ExFor:DocumentBuilder.IsAtStartOfParagraph
             //ExSummary:Shows how to move between nodes and manipulate current ones.
-            Document doc = new Document(MyDir + "DocumentBuilder.WorkingWithNodes.doc");
+            Document doc = new Document(MyDir + "Bookmarks.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Move to a bookmark and delete the parent paragraph
-            builder.MoveToBookmark("ParaToDelete");
+            builder.MoveToBookmark("MyBookmark1");
             builder.CurrentParagraph.Remove();
 
             FindReplaceOptions options = new FindReplaceOptions
@@ -618,60 +650,67 @@ namespace ApiExamples
                 FindWholeWordsOnly = true
             };
 
-            // Move to a particular paragraph's run and replace all occurrences of "bad" with "good" within this run
-            builder.MoveTo(doc.LastSection.Body.Paragraphs[0].Runs[0]);
+            // Move to a particular paragraph's run and use replacement to change its text contents
+            // from "Third bookmark." to "My third bookmark."
+            builder.MoveTo(doc.LastSection.Body.Paragraphs[1].Runs[0]);
             Assert.IsTrue(builder.IsAtStartOfParagraph);
             Assert.IsFalse(builder.IsAtEndOfParagraph);
-            builder.CurrentNode.Range.Replace("bad", "good", options);
+            builder.CurrentNode.Range.Replace("Third", "My third", options);
 
             // Mark the beginning of the document
             builder.MoveToDocumentStart();
             builder.Writeln("Start of document.");
 
             // builder.WriteLn puts an end to its current paragraph after writing the text and starts a new one
-            Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
+            Assert.AreEqual(3, doc.FirstSection.Body.Paragraphs.Count);
             Assert.IsTrue(builder.IsAtStartOfParagraph);
-            Assert.IsTrue(builder.IsAtEndOfParagraph);
+            Assert.IsFalse(builder.IsAtEndOfParagraph);
 
             // builder.Write doesn't end the paragraph
             builder.Write("Second paragraph.");
 
-            Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
+            Assert.AreEqual(3, doc.FirstSection.Body.Paragraphs.Count);
             Assert.IsFalse(builder.IsAtStartOfParagraph);
-            Assert.IsTrue(builder.IsAtEndOfParagraph);
+            Assert.IsFalse(builder.IsAtEndOfParagraph);
 
             // Mark the ending of the document
             builder.MoveToDocumentEnd();
-            builder.Writeln("End of document.");
+            builder.Write("End of document.");
+            Assert.IsFalse(builder.IsAtStartOfParagraph);
+            Assert.IsTrue(builder.IsAtEndOfParagraph);
 
             doc.Save(ArtifactsDir + "DocumentBuilder.WorkingWithNodes.doc");
             //ExEnd
         }
 
         [Test]
-        public void FillingDocument()
+        public void FillMergeFields()
         {
             //ExStart
             //ExFor:DocumentBuilder.MoveToMergeField(String)
             //ExFor:DocumentBuilder.Bold
             //ExFor:DocumentBuilder.Italic
-            //ExSummary:Fills document merge fields with some data.
-            Document doc = new Document(MyDir + "DocumentBuilder.FillingDocument.doc");
+            //ExSummary:Shows how to fill MERGEFIELDs with data with a DocumentBuilder and without a mail merge.
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.MoveToMergeField("TeamLeaderName");
+            builder.InsertField(" MERGEFIELD Chairman ");
+            builder.InsertField(" MERGEFIELD ChiefFinancialOfficer ");
+            builder.InsertField(" MERGEFIELD ChiefTechnologyOfficer ");
+
+            builder.MoveToMergeField("Chairman");
             builder.Bold = true;
-            builder.Writeln("Roman Korchagin");
+            builder.Writeln("John Doe");
 
-            builder.MoveToMergeField("SoftwareDeveloper1Name");
+            builder.MoveToMergeField("ChiefFinancialOfficer");
             builder.Italic = true;
-            builder.Writeln("Dmitry Vorobyev");
+            builder.Writeln("Jane Doe");
 
-            builder.MoveToMergeField("SoftwareDeveloper2Name");
+            builder.MoveToMergeField("ChiefTechnologyOfficer");
             builder.Italic = true;
-            builder.Writeln("Vladimir Averkin");
+            builder.Writeln("John Bloggs");
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.FillingDocument.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.FillMergeFields.doc");
             //ExEnd
         }
 
@@ -736,6 +775,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder
+            //ExFor:DocumentBuilder.Write
             //ExFor:DocumentBuilder.StartTable
             //ExFor:DocumentBuilder.InsertCell
             //ExFor:DocumentBuilder.EndRow
@@ -752,10 +792,6 @@ namespace ApiExamples
             //ExFor:RowFormat
             //ExFor:RowFormat.Borders
             //ExFor:RowFormat.ClearFormatting
-            //ExFor:RowFormat.HeightRule
-            //ExFor:RowFormat.Height
-            //ExFor:HeightRule
-            //ExFor:Shading.BackgroundPatternColor
             //ExFor:Shading.ClearFormatting
             //ExSummary:Shows how to build a nice bordered table.
             DocumentBuilder builder = new DocumentBuilder();
@@ -819,7 +855,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertTableWithTableStyle()
+        public void InsertTableWithStyle()
         {
             //ExStart
             //ExFor:Table.StyleIdentifier
@@ -867,7 +903,7 @@ namespace ApiExamples
             builder.Writeln("50");
             builder.EndRow();
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.SetTableStyle.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertTableWithStyle.docx");
             //ExEnd
 
             // Verify that the style was set by expanding to direct formatting
@@ -916,7 +952,7 @@ namespace ApiExamples
                 builder.EndRow();
             }
 
-            doc.Save(ArtifactsDir + "Table.HeadingRow.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertTableSetHeadingRow.doc");
             //ExEnd
 
             Assert.True(table.FirstRow.RowFormat.HeadingFormat);
@@ -949,7 +985,7 @@ namespace ApiExamples
             builder.InsertCell();
             builder.Writeln("Cell #3");
 
-            doc.Save(ArtifactsDir + "Table.PreferredWidth.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertTableWithPreferredWidth.doc");
             //ExEnd
 
             // Verify the correct settings were applied
@@ -958,7 +994,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertCellsWithDifferentPreferredCellWidths()
+        public void InsertCellsWithPreferredWidths()
         {
             //ExStart
             //ExFor:CellFormat.PreferredWidth
@@ -1006,7 +1042,7 @@ namespace ApiExamples
                 "Cell automatically sized. The size of this cell is calculated from the table preferred width.");
             builder.Writeln("In this case the cell will fill up the rest of the available space.");
 
-            doc.Save(ArtifactsDir + "Table.CellPreferredWidths.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertCellsWithPreferredWidths.docx");
             //ExEnd
 
             // Verify the correct settings were applied
@@ -1035,7 +1071,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void BuildNestedTableUsingDocumentBuilder()
+        public void InsertNestedTable()
         {
             //ExStart
             //ExFor:Cell.FirstParagraph
@@ -1075,7 +1111,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void BuildSimpleTable()
+        public void CreateSimpleTable()
         {
             //ExStart
             //ExFor:DocumentBuilder
@@ -1122,13 +1158,9 @@ namespace ApiExamples
         public void BuildFormattedTable()
         {
             //ExStart
-            //ExFor:DocumentBuilder
-            //ExFor:DocumentBuilder.Write
-            //ExFor:DocumentBuilder.InsertCell
             //ExFor:RowFormat.Height
             //ExFor:RowFormat.HeightRule
             //ExFor:Table.LeftIndent
-            //ExFor:Shading.BackgroundPatternColor
             //ExFor:DocumentBuilder.ParagraphFormat
             //ExFor:DocumentBuilder.Font
             //ExSummary:Shows how to create a formatted table using DocumentBuilder.
@@ -1215,11 +1247,10 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetCellShadingAndBorders()
+        public void TableBordersAndShading()
         {
             //ExStart
             //ExFor:Shading
-            //ExFor:Shading.BackgroundPatternColor
             //ExFor:Table.SetBorders
             //ExFor:BorderCollection.Left
             //ExFor:BorderCollection.Right
@@ -1265,7 +1296,7 @@ namespace ApiExamples
             builder.CellFormat.ClearFormatting();
             builder.Writeln("Cell #4");
 
-            doc.Save(ArtifactsDir + "Table.SetBordersAndShading.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.TableBordersAndShading.doc");
             //ExEnd
 
             // Verify the table was created correctly
@@ -1345,11 +1376,20 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderCursorPosition()
         {
-            Document doc = new Document(MyDir + "DocumentBuilder.doc");
+            // Write some text in a blank Document using a DocumentBuilder
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("Hello world!");
 
-            Node curNode = builder.CurrentNode;
-            Paragraph curParagraph = builder.CurrentParagraph;
+            // If the builder's cursor is at the end of the document, there will be no nodes in front of it so the current node will be null
+            Assert.Null(builder.CurrentNode);
+
+            // However, the current paragraph the cursor is in will be valid
+            Assert.AreEqual("Hello world!", builder.CurrentParagraph.GetText().Trim());
+
+            // Move to the beginning of the document and place the cursor at an existing node
+            builder.MoveToDocumentStart();          
+            Assert.AreEqual(NodeType.Run, builder.CurrentNode.NodeType);
         }
 
         [Test]
@@ -1359,7 +1399,7 @@ namespace ApiExamples
             //ExFor:Story.LastParagraph
             //ExFor:DocumentBuilder.MoveTo(Node)
             //ExSummary:Shows how to move a cursor position to a specified node.
-            Document doc = new Document(MyDir + "DocumentBuilder.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveTo(doc.FirstSection.Body.LastParagraph);
@@ -1369,7 +1409,7 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderMoveToDocumentStartEnd()
         {
-            Document doc = new Document(MyDir + "DocumentBuilder.doc");
+            Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveToDocumentEnd();
@@ -1382,12 +1422,15 @@ namespace ApiExamples
         [Test]
         public void DocumentBuilderMoveToSection()
         {
-            Document doc = new Document(MyDir + "DocumentBuilder.doc");
+            // Create a blank document and append a section to it, giving it two sections
+            Document doc = new Document();
+            doc.AppendChild(new Section(doc));
+
+            // Move a DocumentBuilder to the second section and add text
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Parameters are 0-index. Moves to third section
-            builder.MoveToSection(2);
-            builder.Writeln("This is the 3rd section.");
+            builder.MoveToSection(1);
+            builder.Writeln("Text added to the 2nd section.");
         }
 
         [Test]
@@ -1396,12 +1439,12 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.MoveToParagraph
             //ExSummary:Shows how to move a cursor position to the specified paragraph.
-            Document doc = new Document(MyDir + "DocumentBuilder.doc");
+            Document doc = new Document(MyDir + "Paragraphs.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Parameters are 0-index. Moves to third paragraph
             builder.MoveToParagraph(2, 0);
-            builder.Writeln("This is the 3rd paragraph.");
+            builder.Writeln("Text added to the 3rd paragraph. ");
             //ExEnd
         }
 
@@ -1411,23 +1454,13 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.MoveToCell
             //ExSummary:Shows how to move a cursor position to the specified table cell.
-            Document doc = new Document(MyDir + "DocumentBuilder.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // All parameters are 0-index. Moves to the 2nd table, 3rd row, 5th cell
-            builder.MoveToCell(1, 2, 4, 0);
-            builder.Writeln("Hello World!");
+            // All parameters are 0-index. Moves to the 1st table, 3rd row, 4th cell
+            builder.MoveToCell(0, 2, 3, 0);
+            builder.Write("\nCell contents added by DocumentBuilder");
             //ExEnd
-        }
-
-        [Test]
-        public void DocumentBuilderMoveToBookmark()
-        {
-            Document doc = new Document(MyDir + "DocumentBuilder.doc");
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.MoveToBookmark("CoolBookmark");
-            builder.Writeln("This is a very cool bookmark.");
         }
 
         [Test]
@@ -1436,22 +1469,13 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.MoveToBookmark(String, Boolean, Boolean)
             //ExSummary:Shows how to move a cursor position to just after the bookmark end.
-            Document doc = new Document(MyDir + "DocumentBuilder.doc");
+            Document doc = new Document(MyDir + "Bookmarks.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.MoveToBookmark("CoolBookmark", false, true);
-            builder.Writeln("This is a very cool bookmark.");
+            // Move to the end of the first bookmark
+            Assert.True(builder.MoveToBookmark("MyBookmark1", false, true));
+            builder.Write(" Text appended via DocumentBuilder.");
             //ExEnd
-        }
-
-        [Test]
-        public void DocumentBuilderMoveToMergeField()
-        {
-            Document doc = new Document(MyDir + "DocumentBuilder.doc");
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.MoveToMergeField("NiceMergeField");
-            builder.Writeln("This is a very nice merge field.");
         }
 
         [Test]
@@ -1498,15 +1522,12 @@ namespace ApiExamples
             //ExStart
             //ExFor:Table
             //ExFor:DocumentBuilder.StartTable
-            //ExFor:DocumentBuilder.InsertCell
             //ExFor:DocumentBuilder.EndRow
             //ExFor:DocumentBuilder.EndTable
             //ExFor:DocumentBuilder.CellFormat
             //ExFor:DocumentBuilder.RowFormat
-            //ExFor:DocumentBuilder.Write
+            //ExFor:DocumentBuilder.Write(String)
             //ExFor:DocumentBuilder.Writeln(String)
-            //ExFor:RowFormat.Height
-            //ExFor:RowFormat.HeightRule
             //ExFor:CellVerticalAlignment
             //ExFor:CellFormat.Orientation
             //ExFor:TextOrientation
@@ -1556,7 +1577,7 @@ namespace ApiExamples
         [Test]
         public void TableCellVerticalRotatedFarEastTextOrientation()
         {
-            Document doc = new Document(MyDir + "DocumentBuilder.TableCellVerticalRotatedFarEastTextOrientation.docx");
+            Document doc = new Document(MyDir + "Rotated cell text.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             Cell cell = table.FirstRow.FirstCell;
@@ -1613,15 +1634,12 @@ namespace ApiExamples
         [Test]
         public void InsertImageFromUrl()
         {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertImage(String)
-            //ExSummary:Shows how to insert an image into a document from a web address.
+            // Insert an image from a URL
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertImage(AsposeLogoUrl);
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertImageFromUrl.doc");
-            //ExEnd
 
             // Verify that the image was inserted into the document
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
@@ -1630,7 +1648,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentBuilderInsertImageSourceSize()
+        public void InsertImageOriginalSize()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertImage(String, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
@@ -1639,7 +1657,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Pass a negative value to the width and height values to specify using the size of the source image
-            builder.InsertImage(ImageDir + "LogoSmall.png", RelativeHorizontalPosition.Margin, 200,
+            builder.InsertImage(ImageDir + "Aspose.Words.jpg", RelativeHorizontalPosition.Margin, 200,
                 RelativeVerticalPosition.Margin, 100, -1, -1, WrapType.Square);
             //ExEnd
 
@@ -1700,7 +1718,7 @@ namespace ApiExamples
 
         [Test]
         [Description("WORDSNET-16868")]
-        public void CreateAndSignSignatureLineUsingProviderId()
+        public void SignatureLineProviderId()
         {
             //ExStart
             //ExFor:SignatureLine.ProviderId
@@ -1871,6 +1889,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.RowFormat
+            //ExFor:HeightRule
             //ExFor:RowFormat.Height
             //ExFor:RowFormat.HeightRule
             //ExFor:Table.LeftPadding
@@ -1894,7 +1913,7 @@ namespace ApiExamples
             table.TopPadding = 30;
             table.BottomPadding = 30;
 
-            builder.Writeln("I'm a wonderful formatted row.");
+            builder.Writeln("Contents of formatted row.");
 
             builder.EndRow();
             builder.EndTable();
@@ -2029,7 +2048,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.DeleteRow
             //ExSummary:Shows how to delete a row from a table.
-            Document doc = new Document(MyDir + "DocumentBuilder.DocWithTable.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Delete the first row of the first table in the document
@@ -2051,7 +2070,7 @@ namespace ApiExamples
             builder.MoveToDocumentEnd();
             builder.InsertBreak(BreakType.PageBreak);
 
-            Document docToInsert = new Document(MyDir + "DocumentBuilder.KeepSourceFormatting.docx");
+            Document docToInsert = new Document(MyDir + "Formatted elements.docx");
 
             builder.InsertDocument(docToInsert, ImportFormatMode.KeepSourceFormatting);
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.InsertDocument.docx");
@@ -2067,12 +2086,15 @@ namespace ApiExamples
             //ExFor:ImportFormatOptions.KeepSourceNumbering
             //ExFor:NodeImporter.#ctor(DocumentBase, DocumentBase, ImportFormatMode, ImportFormatOptions)
             //ExSummary:Shows how the numbering will be imported when it clashes in source and destination documents.
-            Document dstDoc = new Document(MyDir + "DocumentBuilder.KeepSourceNumbering.DestinationDocument.docx");
-            Document srcDoc = new Document(MyDir + "DocumentBuilder.KeepSourceNumbering.SourceDocument.docx");
-            
+            // Open a document with a custom list numbering scheme and clone it
+            // Since both have the same numbering format, the formats will clash if we import one document into the other
+            Document srcDoc = new Document(MyDir + "Custom list numbering.docx");
+            Document dstDoc = srcDoc.Clone();
+
             ImportFormatOptions importFormatOptions = new ImportFormatOptions();
-            // Keep source list formatting when importing numbered paragraphs
-            importFormatOptions.KeepSourceNumbering = true;
+            // Both documents have the same numbering in their lists, but if we set this flag to false and then import one document into the other
+            // the numbering of the imported source document will continue from where it ends in the destination document
+            importFormatOptions.KeepSourceNumbering = false;
             
             NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
             
@@ -2084,7 +2106,7 @@ namespace ApiExamples
                 dstDoc.FirstSection.Body.AppendChild(importedNode);
             }
  
-            dstDoc.Save(ArtifactsDir + "DocumentBuilder.KeepSourceNumbering.ResultDocument.docx");
+            dstDoc.Save(ArtifactsDir + "DocumentBuilder.KeepSourceNumbering.docx");
             //ExEnd
         }
 
@@ -2094,12 +2116,26 @@ namespace ApiExamples
             //ExStart
             //ExFor:ImportFormatOptions.IgnoreTextBoxes
             //ExSummary:Shows how to manage formatting in the text boxes of the source destination during the import.
-            Document dstDoc = new Document(MyDir + "DocumentBuilder.IgnoreTextBoxes.DestinationDocument.docx");
-            Document srcDoc = new Document(MyDir + "DocumentBuilder.IgnoreTextBoxes.SourceDocument.docx");
-            
+            // Create a document and add text
+            Document dstDoc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(dstDoc);
+
+            builder.Writeln("Hello world! Text box to follow.");
+
+            // Create another document with a textbox, and insert some formatted text into it
+            Document srcDoc = new Document();
+            builder = new DocumentBuilder(srcDoc);
+
+            Shape textBox = builder.InsertShape(ShapeType.TextBox, 300, 100);
+            builder.MoveTo(textBox.FirstParagraph);
+            builder.ParagraphFormat.Style.Font.Name = "Courier New";
+            builder.ParagraphFormat.Style.Font.Size = 24.0d;
+            builder.Write("Textbox contents");
+
+            // When we import the document with the textbox as a node into the first document, by default the text inside the text box will keep its formatting
+            // Setting the IgnoreTextBoxes flag will clear the formatting during importing of the node
             ImportFormatOptions importFormatOptions = new ImportFormatOptions();
-            // Keep the source text boxes formatting when importing
-            importFormatOptions.IgnoreTextBoxes = false;
+            importFormatOptions.IgnoreTextBoxes = true;
 
             NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
  
@@ -2110,25 +2146,25 @@ namespace ApiExamples
                 Node importedNode = importer.ImportNode(srcPara, true);
                 dstDoc.FirstSection.Body.AppendChild(importedNode);
             }
- 
-            dstDoc.Save(ArtifactsDir + "DocumentBuilder.IgnoreTextBoxes.ResultDocument.docx");
+
+            dstDoc.Save(ArtifactsDir + "DocumentBuilder.IgnoreTextBoxes.docx");
             //ExEnd
         }
 
         [Test]
-        public void MoveToFieldEx()
+        public void MoveToField()
         {
             //ExStart
             //ExFor:DocumentBuilder.MoveToField
             //ExSummary:Shows how to move document builder's cursor to a specific field.
-            Document doc = new Document(MyDir + "Document.doc");
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Field field = builder.InsertField("MERGEFIELD field");
 
             builder.MoveToField(field, true);
             //ExEnd
-        }          
+        }
 
         [Test]
         public void InsertOleObjectException()
@@ -2151,7 +2187,7 @@ namespace ApiExamples
 
             builder.InsertChart(ChartType.Pie, ConvertUtil.PixelToPoint(300), ConvertUtil.PixelToPoint(300));
 
-            doc.Save(ArtifactsDir + "Document.InsertedChartDouble.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertedChartDouble.doc");
             //ExEnd
         }
 
@@ -2167,12 +2203,12 @@ namespace ApiExamples
             builder.InsertChart(ChartType.Pie, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin,
                 100, 200, 100, WrapType.Square);
 
-            doc.Save(ArtifactsDir + "Document.InsertedChartRelativePosition.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertedChartRelativePosition.doc");
             //ExEnd
         }
 
         [Test]
-        public void InsertFieldFieldType()
+        public void InsertFieldByType()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertField(FieldType, Boolean)
@@ -2183,7 +2219,7 @@ namespace ApiExamples
             builder.Write("This field was inserted/updated at ");
             builder.InsertField(FieldType.FieldTime, true);
 
-            doc.Save(ArtifactsDir + "Document.InsertedField.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertFieldByType.doc");
             //ExEnd
         }
 
@@ -2339,12 +2375,12 @@ namespace ApiExamples
 
             builder.Writeln("Underlined text.");
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.Underline.docx");         
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertUnderline.docx");         
             //ExEnd
         }
 
         [Test]
-        public void AddTextToCurrentStory()
+        public void CurrentStory()
         {
             //ExStart
             //ExFor:DocumentBuilder.CurrentStory
@@ -2386,7 +2422,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void BuilderInsertOleObject()
+        public void InsertOlePowerpoint()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertOleObject(Stream, String, Boolean, Image)
@@ -2395,16 +2431,16 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Let's take a spreadsheet from our system and insert it into the document
-            using (Stream spreadsheetStream = File.Open(MyDir + "MySpreadsheet.xlsx", FileMode.Open))
+            using (Stream spreadsheetStream = File.Open(MyDir + "Spreadsheet.xlsx", FileMode.Open))
             {
                 // The spreadsheet can be activated by double clicking the panel that you'll see in the document immediately under the text we will add
                 // We did not set the area to double click as an icon nor did we change its appearance so it looks like a simple panel
                 builder.Writeln("Spreadsheet Ole object:");
-                builder.InsertOleObject(spreadsheetStream, "MyOleObject.xlsx", false, null);
+                builder.InsertOleObject(spreadsheetStream, "OleObject.xlsx", false, null);
 
                 // A powerpoint presentation is another type of object we can embed in our document
                 // This time we'll also exercise some control over how it looks 
-                using (Stream powerpointStream = File.Open(MyDir + "MyPresentation.pptx", FileMode.Open))
+                using (Stream powerpointStream = File.Open(MyDir + "Presentation.pptx", FileMode.Open))
                 {
                     // If we insert the Ole object as an icon, we are still provided with a default icon
                     // If that is not suitable, we can make the icon to look like any image
@@ -2428,7 +2464,7 @@ namespace ApiExamples
                                 // If we double click the image, the powerpoint presentation will open
                                 builder.InsertParagraph();
                                 builder.Writeln("Powerpoint Ole object:");
-                                builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, image);
+                                builder.InsertOleObject(powerpointStream, "OleObject.pptx", true, image);
                             }
                         }
 
@@ -2437,12 +2473,12 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObject.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOlePowerpoint.docx");
             //ExEnd
         }
 
         [Test]
-        public void BuilderInsertStyleSeparator()
+        public void StyleSeparator()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertStyleSeparator
@@ -2512,44 +2548,43 @@ namespace ApiExamples
             builder.ParagraphFormat.StyleName = paraStyle.Name;
             builder.Write("This is text with some other formatting ");
 
-            builder.Document.Save(ArtifactsDir + "DocumentBuilder.InsertTextWithoutStyleSeparator.docx");
+            builder.Document.Save(ArtifactsDir + "DocumentBuilder.WithoutStyleSeparator.docx");
         }
 
         [Test]
-        public void ResolveStyleBehaviorWhileInsertDocument()
+        public void SmartStyleBehavior()
         {
             //ExStart
             //ExFor:ImportFormatOptions
             //ExFor:ImportFormatOptions.SmartStyleBehavior
             //ExFor:DocumentBuilder.InsertDocument(Document, ImportFormatMode, ImportFormatOptions)
             //ExSummary:Shows how to resolve styles behavior while inserting documents.
-            Document destDoc = new Document(MyDir + "DocumentBuilder.SmartStyleBehavior.DestinationDocument.docx");
-            Document sourceDoc1 = new Document(MyDir + "DocumentBuilder.SmartStyleBehavior.SourceDocument01.docx");
-            Document sourceDoc2 = new Document(MyDir + "DocumentBuilder.SmartStyleBehavior.SourceDocument02.docx");
+            Document dstDoc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(dstDoc);
 
-            DocumentBuilder builder = new DocumentBuilder(destDoc);
+            Style myStyle = builder.Document.Styles.Add(StyleType.Paragraph, "MyStyle");
+            myStyle.Font.Size = 14;
+            myStyle.Font.Name = "Courier New";
+            myStyle.Font.Color = Color.Blue;
 
-            builder.MoveToDocumentEnd();
-            builder.InsertBreak(BreakType.PageBreak);
-            builder.MoveToDocumentEnd();
+            // Append text with custom style
+            builder.ParagraphFormat.StyleName = myStyle.Name;
+            builder.Writeln("Hello world!");
 
-            ImportFormatOptions importFormatOptions = new ImportFormatOptions();
-            importFormatOptions.SmartStyleBehavior = true;
-            
+            // Clone the document, and edit the clone's "MyStyle" style so it is a different color than that of the original
+            // If we append this document to the original, the different styles will clash since they are the same name, and we will need to resolve it
+            Document srcDoc = dstDoc.Clone();
+            srcDoc.Styles["MyStyle"].Font.Color = Color.Red;
+
             // When SmartStyleBehavior is enabled,
             // a source style will be expanded into a direct attributes inside a destination document,
             // if KeepSourceFormatting importing mode is used
-            builder.InsertDocument(sourceDoc1, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
-            
-            builder.MoveToDocumentEnd();
-            builder.InsertBreak(BreakType.PageBreak);
-            
-            // When SmartStyleBehavior is disabled,
-            // a source style will be expanded only if it is numbered.
-            // Existing destination attributes will not be overridden, including lists
-            builder.InsertDocument(sourceDoc2, ImportFormatMode.UseDestinationStyles);
+            ImportFormatOptions options = new ImportFormatOptions();
+            options.SmartStyleBehavior = true;
 
-            destDoc.Save(ArtifactsDir + @"DocumentBuilder.SmartStyleBehavior.ResultDocument.docx");
+            builder.InsertDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, options);
+
+            dstDoc.Save(ArtifactsDir + @"DocumentBuilder.SmartStyleBehavior.docx");
             //ExEnd
         }
 
@@ -2559,59 +2594,26 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.AppendDocument(Document, ImportFormatMode, ImportFormatOptions)
             //ExSummary:Shows how to resolve styles behavior while append document.
-            Document srcDoc = new Document(MyDir + "DocumentBuilder.ResolveStyleBehaviorWhileAppendDocument.Source.docx");
-            Document dstDoc = new Document(MyDir + "DocumentBuilder.ResolveStyleBehaviorWhileAppendDocument.Destination.docx");
+            // Open a document with text in a custom style and clone it
+            Document srcDoc = new Document(MyDir + "Custom list numbering.docx");
+            Document dstDoc = srcDoc.Clone();
+
+            // We now have two documents, each with an identical style named "CustomStyle" 
+            // We can change the text color of one of the styles
+            dstDoc.Styles["CustomStyle"].Font.Color = Color.DarkRed;
 
             ImportFormatOptions options = new ImportFormatOptions();
             // Specify that if numbering clashes in source and destination documents
             // then a numbering from the source document will be used
             options.KeepSourceNumbering = true;
-            dstDoc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles, options);
+
+            // If we join two documents which have different styles that share the same name,
+            // we can resolve the style clash with an ImportFormatMode
+            dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepDifferentStyles, options);
             dstDoc.UpdateListLabels();
+
+            dstDoc.Save(ArtifactsDir + "DocumentBuilder.ResolveStyleBehaviorWhileAppendDocument.docx");
             //ExEnd
-
-            Paragraph para = dstDoc.Sections[1].Body.LastParagraph;
-            string paraText = para.GetText();
-
-            Assert.AreEqual("1.", para.ListLabel.LabelString);
-            Assert.IsTrue(paraText.StartsWith("13->13"), paraText);
-        }
-
-        [Test]
-        public void MarkdownTest()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-        
-            builder.ParagraphFormat.StyleName = "Quote";
-            builder.Writeln("12345");
-            
-            Style quoteLevel2 = doc.Styles.Add(StyleType.Paragraph, "Quote1");
-            builder.ParagraphFormat.Style = quoteLevel2;
-            doc.Styles["Quote1"].BaseStyleName  = "Quote";
-            builder.Writeln("123456");
-                    
-            // Save to md file
-            Document mdDoc = SaveOpen(doc, ArtifactsDir + "AddedParagraphStyle.md");
-
-            ParagraphCollection paragraphs = mdDoc.FirstSection.Body.Paragraphs;
-
-            foreach (Paragraph paragraph in paragraphs)
-            {
-                if (paragraph.Runs.Count != 0)
-                {
-                    if (paragraph.Runs[0].Text == "Blockquote 1")
-                    {
-                        Assert.AreEqual("Quote1", paragraph.ParagraphFormat.Style.Name);
-                    }
-                }
-            }
-        }
-        
-        private static Document SaveOpen(Document doc, string path)
-        {
-            doc.Save(path);
-            return new Document(path);
         }
 
         #if NETFRAMEWORK || NETSTANDARD2_0
@@ -2620,30 +2622,37 @@ namespace ApiExamples
         /// That's why we need order for them 
         /// </summary>
         [Test, Order(1), Category("SkipTearDown")]
-        public void CreateMarkdownDocumentWithEmphases()
+        public void MarkdownDocumentEmphases()
         {
             DocumentBuilder builder = new DocumentBuilder();
             
             // Bold and Italic are represented as Font.Bold and Font.Italic
             builder.Font.Italic = true;
-            builder.Writeln("Italic");
+            builder.Writeln("This text will be italic");
             
             // Use clear formatting if don't want to combine styles between paragraphs
             builder.Font.ClearFormatting();
             
             builder.Font.Bold = true;
-            builder.Writeln("Bold");
+            builder.Writeln("This text will be bold");
             
-            // Use clear formatting if don't want to combine styles between paragraphs
             builder.Font.ClearFormatting();
             
             // You can also write create BoldItalic text
             builder.Font.Italic = true;
+            builder.Write("You ");
             builder.Font.Bold = true;
-            builder.Writeln("ItalicBold");
+            builder.Write("can");
+            builder.Font.Bold = false;
+            builder.Writeln(" combine them");
+
+            builder.Font.ClearFormatting();
+
+            builder.Font.StrikeThrough = true;
+            builder.Writeln("This text will be strikethrough");
             
-            // Markdown treats asterisks (*) and underscores (_) as indicators of emphasis
-            builder.Document.Save(ArtifactsDir + "MarkdownExample.md");
+            // Markdown treats asterisks (*), underscores (_) and tilde (~) as indicators of emphasis
+            builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
         /// <summary>
@@ -2651,62 +2660,30 @@ namespace ApiExamples
         /// That's why we need order for them 
         /// </summary>
         [Test, Order(2), Category("SkipTearDown")]
-        public void AddHeadingsToMarkdownDocument()
+        public void MarkdownDocumentInlineCode()
         {
-            Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
             DocumentBuilder builder = new DocumentBuilder(doc);
-
+            
             // Prepare our created document for further work
             // And clear paragraph formatting not to use the previous styles
             builder.MoveToDocumentEnd();
-            builder.Writeln("\n");
             builder.ParagraphFormat.ClearFormatting();
+            builder.Writeln("\n");
             
-            // By default Heading styles in Word may have bold and italic formatting
-            // If we do not want text to be emphasized, set these properties explicitly to false
-            // Thus we can't use 'builder.Font.ClearFormatting()' because Bold/Italic will be set to true
-            builder.Font.Bold = false;
-            builder.Font.Italic = false;
+            // Style with name that starts from word InlineCode, followed by optional dot (.) and number of backticks (`)
+            // If number of backticks is missed, then one backtick will be used by default
+            Style inlineCode1BackTicks = doc.Styles.Add(StyleType.Character, "InlineCode");
+            builder.Font.Style = inlineCode1BackTicks;
+            builder.Writeln("Text with InlineCode style with one backtick");
             
-            // Create one heading for each level
-            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
-            builder.Font.Italic = true;
-            builder.Writeln("ItalicHeading 1");
-            // Reset our styles from the previous paragraph to not combine styles between paragraphs
-            builder.Font.Bold = false;
-            builder.Font.Italic = false;
-            
-            builder.ParagraphFormat.Style = doc.Styles["Heading 2"];
-            builder.Writeln("Heading 2");
-            // Reset our styles from the previous paragraph to not combine styles between paragraphs
-            builder.Font.Bold = false;
-            builder.Font.Italic = false;
-            
-            builder.ParagraphFormat.Style = doc.Styles["Heading 3"];
-            builder.Writeln("Heading 3");
-            // Reset our styles from the previous paragraph to not combine styles between paragraphs
-            builder.Font.Bold = false;
-            builder.Font.Italic = false;
+            // Use optional dot (.) and number of backticks (`)
+            // There will be 3 backticks
+            Style inlineCode3BackTicks = doc.Styles.Add(StyleType.Character, "InlineCode.3");
+            builder.Font.Style = inlineCode3BackTicks;
+            builder.Writeln("Text with InlineCode style with 3 backticks");
 
-            builder.ParagraphFormat.Style = doc.Styles["Heading 4"];
-            builder.Writeln("Heading 4");
-            // Reset our styles from the previous paragraph to not combine styles between paragraphs
-            builder.Font.Bold = false;
-            builder.Font.Italic = false;
-
-            builder.ParagraphFormat.Style = doc.Styles["Heading 5"];
-            builder.Font.Italic = true;
-            builder.Font.Bold = true;
-            builder.Writeln("ItalicBoldHeading 5");
-            // Reset our styles from the previous paragraph to not combine styles between paragraphs
-            builder.Font.Bold = false;
-            builder.Font.Italic = false;
-
-            builder.ParagraphFormat.Style = doc.Styles["Heading 6"];
-            builder.Font.Bold = true;
-            builder.Writeln("BoldHeading 6");
-            
-            doc.Save(ArtifactsDir + "MarkdownExample.md");
+            builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
         /// <summary>
@@ -2714,57 +2691,75 @@ namespace ApiExamples
         /// That's why we need order for them 
         /// </summary>
         [Test, Order(3), Category("SkipTearDown")]
-        public void AddBlockquotesToMarkdownDocument()
+        [Description("WORDSNET-19850")]
+        public void MarkdownDocumentHeadings()
         {
-            Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Prepare our created document for further work
             // And clear paragraph formatting not to use the previous styles
             builder.MoveToDocumentEnd();
-            builder.Writeln("\n");
             builder.ParagraphFormat.ClearFormatting();
+            builder.Writeln("\n");
             
-            // By default document stores blockquote style for the first level
-            builder.ParagraphFormat.Style = doc.Styles["Quote"];
-            builder.Writeln("Blockquote");
+            // By default Heading styles in Word may have bold and italic formatting
+            // If we do not want text to be emphasized, set these properties explicitly to false
+            // Thus we can't use 'builder.Font.ClearFormatting()' because Bold/Italic will be set to true
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
             
-            // But you also can create styles for nested levels
-            Style quoteLevel2 = doc.Styles.Add(StyleType.Paragraph, "Quote1");
-            builder.ParagraphFormat.Style = quoteLevel2;
-            builder.Writeln("Blockquote 1");
-            
-            Style quoteLevel3 = doc.Styles.Add(StyleType.Paragraph, "Quote2");
-            builder.ParagraphFormat.Style = quoteLevel3;
+            // Create for one heading for each level
+            builder.ParagraphFormat.StyleName = "Heading 1";
             builder.Font.Italic = true;
-            builder.Writeln("ItalicBlockquote 2");
+            builder.Writeln("This is an italic H1 tag");
+
+            // Reset our styles from the previous paragraph to not combine styles between paragraphs
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
+
+            // Structure-enhanced text heading can be added through style inheritance
+            Style setextHeading1 = doc.Styles.Add(StyleType.Paragraph, "SetextHeading1");
+            builder.ParagraphFormat.Style = setextHeading1;
+            doc.Styles["SetextHeading1"].BaseStyleName = "Heading 1";
+            builder.Writeln("SetextHeading 1");
             
-            // Use clear formatting if don't want to combine styles between paragraphs
-            builder.Font.ClearFormatting();
+            builder.ParagraphFormat.StyleName = "Heading 2";
+            builder.Writeln("This is an H2 tag");
+
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
+
+            Style setextHeading2 = doc.Styles.Add(StyleType.Paragraph, "SetextHeading2");
+            builder.ParagraphFormat.Style = setextHeading2;
+            doc.Styles["SetextHeading2"].BaseStyleName = "Heading 2";
+            builder.Writeln("SetextHeading 2");
             
-            Style quoteLevel4 = doc.Styles.Add(StyleType.Paragraph, "Quote3");
-            builder.ParagraphFormat.Style = quoteLevel4;
+            builder.ParagraphFormat.Style = doc.Styles["Heading 3"];
+            builder.Writeln("This is an H3 tag");
+            
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
+
+            builder.ParagraphFormat.Style = doc.Styles["Heading 4"];
             builder.Font.Bold = true;
-            builder.Writeln("BoldBlockquote 3");
+            builder.Writeln("This is an bold H4 tag");
             
-            // Use clear formatting if don't want to combine styles between paragraphs
-            builder.Font.ClearFormatting();
-            
-            Style quoteLevel5 = doc.Styles.Add(StyleType.Paragraph, "Quote4");
-            builder.ParagraphFormat.Style = quoteLevel5;
-            builder.Writeln("Blockquote 4");
-            
-            Style quoteLevel6 = doc.Styles.Add(StyleType.Paragraph, "Quote5");
-            builder.ParagraphFormat.Style = quoteLevel6;
-            builder.Writeln("Blockquote 5");
-            
-            Style quoteLevel7 = doc.Styles.Add(StyleType.Paragraph, "Quote6");
-            builder.ParagraphFormat.Style = quoteLevel7;
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
+
+            builder.ParagraphFormat.Style = doc.Styles["Heading 5"];
             builder.Font.Italic = true;
             builder.Font.Bold = true;
-            builder.Writeln("ItalicBoldBlockquote 6");
+            builder.Writeln("This is an italic and bold H5 tag");
             
-            doc.Save(ArtifactsDir + "MarkdownExample.md");
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
+
+            builder.ParagraphFormat.Style = doc.Styles["Heading 6"];
+            builder.Writeln("This is an H6 tag");
+            
+            doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
         /// <summary>
@@ -2772,65 +2767,59 @@ namespace ApiExamples
         /// That's why we need order for them 
         /// </summary>
         [Test, Order(4), Category("SkipTearDown")]
-        public void AddHeadingsAsBlockquotesToMarkdownDocument()
+        public void MarkdownDocumentBlockquotes()
         {
-            Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Prepare our created document for further work
             // And clear paragraph formatting not to use the previous styles
             builder.MoveToDocumentEnd();
-            builder.Writeln("\n");
             builder.ParagraphFormat.ClearFormatting();
             builder.Writeln("\n");
 
-            // By default Heading styles in Word may have bold and italic formatting
-            // If we do not want text to be emphasized, set these properties explicitly to false
-            // Thus we can't use 'builder.Font.ClearFormatting()' because Bold/Italic will be set to true
-            builder.Font.Bold = false;
-            builder.Font.Italic = false;
-
-            Style headingQuoteLevel1 = doc.Styles.Add(StyleType.Paragraph, "Quote.Heading 1");
-            builder.ParagraphFormat.Style = headingQuoteLevel1;
-            builder.Writeln("HeadingBlockquote 1");
+            // By default document stores blockquote style for the first level
+            builder.ParagraphFormat.StyleName = "Quote";
+            builder.Writeln("Blockquote");
             
-            Style headingQuoteLevel2 = doc.Styles.Add(StyleType.Paragraph, "Quote1.Heading 2");
-            builder.ParagraphFormat.Style = headingQuoteLevel2;
+            // Create styles for nested levels through style inheritance
+            Style quoteLevel2 = doc.Styles.Add(StyleType.Paragraph, "Quote1");
+            builder.ParagraphFormat.Style = quoteLevel2;
+            doc.Styles["Quote1"].BaseStyleName = "Quote";
+            builder.Writeln("1. Nested blockquote");
+            
+            Style quoteLevel3 = doc.Styles.Add(StyleType.Paragraph, "Quote2");
+            builder.ParagraphFormat.Style = quoteLevel3;
+            doc.Styles["Quote2"].BaseStyleName = "Quote1";
             builder.Font.Italic = true;
-            builder.Writeln("ItalicHeadingBlockquote 2");
+            builder.Writeln("2. Nested italic blockquote");
             
-            // Reset our styles from the previous paragraph to not combine styles between paragraphs
-            builder.Font.Bold = false;
+            Style quoteLevel4 = doc.Styles.Add(StyleType.Paragraph, "Quote3");
+            builder.ParagraphFormat.Style = quoteLevel4;
+            doc.Styles["Quote3"].BaseStyleName = "Quote2";
             builder.Font.Italic = false;
-            
-            Style headingQuoteLevel3 = doc.Styles.Add(StyleType.Paragraph, "Quote2.Heading 3");
-            builder.ParagraphFormat.Style = headingQuoteLevel3;
             builder.Font.Bold = true;
-            builder.Writeln("BoldHeadingBlockquote 3");
+            builder.Writeln("3. Nested bold blockquote");
             
-            // Reset our styles from the previous paragraph to not combine styles between paragraphs
+            Style quoteLevel5 = doc.Styles.Add(StyleType.Paragraph, "Quote4");
+            builder.ParagraphFormat.Style = quoteLevel5;
+            doc.Styles["Quote4"].BaseStyleName = "Quote3";
             builder.Font.Bold = false;
-            builder.Font.Italic = false;
+            builder.Writeln("4. Nested blockquote");
             
-            Style headingQuoteLevel4 = doc.Styles.Add(StyleType.Paragraph, "Quote3.Heading 4");
-            builder.ParagraphFormat.Style = headingQuoteLevel4;
+            Style quoteLevel6 = doc.Styles.Add(StyleType.Paragraph, "Quote5");
+            builder.ParagraphFormat.Style = quoteLevel6;
+            doc.Styles["Quote5"].BaseStyleName = "Quote4";
+            builder.Writeln("5. Nested blockquote");
+            
+            Style quoteLevel7 = doc.Styles.Add(StyleType.Paragraph, "Quote6");
+            builder.ParagraphFormat.Style = quoteLevel7;
+            doc.Styles["Quote6"].BaseStyleName = "Quote5";
             builder.Font.Italic = true;
             builder.Font.Bold = true;
-            builder.Writeln("ItalicBoldHeadingBlockquote 4");
+            builder.Writeln("6. Nested italic bold blockquote");
             
-            // Reset our styles from the previous paragraph to not combine styles between paragraphs
-            builder.Font.Bold = false;
-            builder.Font.Italic = false;
-            
-            Style headingQuoteLevel5 = doc.Styles.Add(StyleType.Paragraph, "Quote4.Heading 5");
-            builder.ParagraphFormat.Style = headingQuoteLevel5;
-            builder.Writeln("HeadingBlockquote 5");
-            
-            Style headingQuoteLevel6 = doc.Styles.Add(StyleType.Paragraph, "Quote5.Heading 6");
-            builder.ParagraphFormat.Style = headingQuoteLevel6;
-            builder.Writeln("HeadingBlockquote 6");
-            
-            doc.Save(ArtifactsDir + "MarkdownExample.md");
+            doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
         /// <summary>
@@ -2838,9 +2827,9 @@ namespace ApiExamples
         /// That's why we need order for them 
         /// </summary>
         [Test, Order(5), Category("SkipTearDown")]
-        public void AddHorizontalRuleToMarkdownDocument()
+        public void MarkdownDocumentIndentedCode()
         {
-            Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Prepare our created document for further work
@@ -2848,57 +2837,145 @@ namespace ApiExamples
             builder.MoveToDocumentEnd();
             builder.Writeln("\n");
             builder.ParagraphFormat.ClearFormatting();
+            builder.Writeln("\n");
+
+            Style indentedCode = doc.Styles.Add(StyleType.Paragraph, "IndentedCode");
+            builder.ParagraphFormat.Style = indentedCode;
+            builder.Writeln("This is an indented code");
+            
+            doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
+        }
+
+        /// <summary>
+        /// All markdown tests work with the same file
+        /// That's why we need order for them 
+        /// </summary>
+        [Test, Order(6), Category("SkipTearDown")]
+        public void MarkdownDocumentFencedCode()
+        {
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Prepare our created document for further work
+            // And clear paragraph formatting not to use the previous styles
+            builder.MoveToDocumentEnd();
+            builder.Writeln("\n");
+            builder.ParagraphFormat.ClearFormatting();
+            builder.Writeln("\n");
+
+            Style fencedCode = doc.Styles.Add(StyleType.Paragraph, "FencedCode");
+            builder.ParagraphFormat.Style = fencedCode;
+            builder.Writeln("This is a fenced code");
+
+            Style fencedCodeWithInfo = doc.Styles.Add(StyleType.Paragraph, "FencedCode.C#");
+            builder.ParagraphFormat.Style = fencedCodeWithInfo;
+            builder.Writeln("This is a fenced code with info string");
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
+        }
+
+        /// <summary>
+        /// All markdown tests work with the same file
+        /// That's why we need order for them 
+        /// </summary>
+        [Test, Order(7), Category("SkipTearDown")]
+        public void MarkdownDocumentHorizontalRule()
+        {
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Prepare our created document for further work
+            // And clear paragraph formatting not to use the previous styles
+            builder.MoveToDocumentEnd();
+            builder.ParagraphFormat.ClearFormatting();
+            builder.Writeln("\n");
 
             // Insert HorizontalRule that will be present in .md file as '-----'
             builder.InsertHorizontalRule();
  
-            builder.Document.Save(ArtifactsDir + "MarkdownExample.md");
+            builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
+        }
+
+        /// <summary>
+        /// All markdown tests work with the same file
+        /// That's why we need order for them 
+        /// </summary>
+        [Test, Order(8), Category("SkipTearDown")]
+        public void MarkdownDocumentBulletedList()
+        {
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Prepare our created document for further work
+            // And clear paragraph formatting not to use the previous styles
+            builder.MoveToDocumentEnd();
+            builder.ParagraphFormat.ClearFormatting();
+            builder.Writeln("\n");
+
+            // Bulleted lists are represented using paragraph numbering
+            builder.ListFormat.ApplyBulletDefault();
+            // There can be 3 types of bulleted lists
+            // The only diff in a numbering format of the very first level are: ‘-’, ‘+’ or ‘*’ respectively
+            builder.ListFormat.List.ListLevels[0].NumberFormat = "-";
+            
+            builder.Writeln("Item 1");
+            builder.Writeln("Item 2");
+            builder.ListFormat.ListIndent();
+            builder.Writeln("Item 2a");
+            builder.Writeln("Item 2b");
+ 
+            builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
         /// <summary>
         /// All markdown tests work with the same file.
         /// That's why we need order for them.
         /// </summary>
-        [Test, Order(6)]
+        [Test, Order(9)]
         [TestCase("Italic", "Normal", true, false, Category = "SkipTearDown")]
         [TestCase("Bold", "Normal", false, true, Category = "SkipTearDown")]
         [TestCase("ItalicBold", "Normal", true, true, Category = "SkipTearDown")]
-        [TestCase("ItalicHeading 1", "Heading 1", true, false, Category = "SkipTearDown")]
-        [TestCase("Heading 2", "Heading 2", false, false, Category = "SkipTearDown")]
-        [TestCase("Heading 3", "Heading 3", false, false, Category = "SkipTearDown")]
-        [TestCase("Heading 4", "Heading 4", false, false, Category = "SkipTearDown")]
-        [TestCase("ItalicBoldHeading 5", "Heading 5", true, true, Category = "SkipTearDown")]
-        [TestCase("BoldHeading 6", "Heading 6", false, true, Category = "SkipTearDown")]
+        [TestCase("Text with InlineCode style with one backtick", "InlineCode", false, false, Category = "SkipTearDown")]
+        [TestCase("Text with InlineCode style with 3 backticks", "InlineCode.3", false, false, Category = "SkipTearDown")]
+        [TestCase("This is an italic H1 tag", "Heading 1", true, false, Category = "SkipTearDown")]
+        [TestCase("SetextHeading 1", "SetextHeading1", false, false, Category = "SkipTearDown")]
+        [TestCase("This is an H2 tag", "Heading 2", false, false, Category = "SkipTearDown")]
+        [TestCase("SetextHeading 2", "SetextHeading2", false, false, Category = "SkipTearDown")]
+        [TestCase("This is an H3 tag", "Heading 3", false, false, Category = "SkipTearDown")]
+        [TestCase("This is an bold H4 tag", "Heading 4", false, true, Category = "SkipTearDown")]
+        [TestCase("This is an italic and bold H5 tag", "Heading 5", true, true, Category = "SkipTearDown")]
+        [TestCase("This is an H6 tag", "Heading 6", false, false, Category = "SkipTearDown")]
         [TestCase("Blockquote", "Quote", false, false, Category = "SkipTearDown")]
-        [TestCase("Blockquote 1", "Quote1", false, false, Category = "SkipTearDown")]
-        [TestCase("ItalicBlockquote 2", "Quote2", true, false, Category = "SkipTearDown")]
-        [TestCase("BoldBlockquote 3", "Quote3", false, true, Category = "SkipTearDown")]
-        [TestCase("Blockquote 4", "Quote4", false, false, Category = "SkipTearDown")]
-        [TestCase("Blockquote 5", "Quote5", false, false, Category = "SkipTearDown")]
-        [TestCase("ItalicBoldBlockquote 6", "Quote6", true, true, Category = "SkipTearDown")]
-        [TestCase("HeadingBlockquote 1", "Quote.Heading 1", false, false, Category = "SkipTearDown")]
-        [TestCase("ItalicHeadingBlockquote 2", "Quote1.Heading 2", true, false, Category = "SkipTearDown")]
-        [TestCase("BoldHeadingBlockquote 3", "Quote2.Heading 3", false, true, Category = "SkipTearDown")]
-        [TestCase("ItalicBoldHeadingBlockquote 4", "Quote3.Heading 4", true, true, Category = "SkipTearDown")]
-        [TestCase("HeadingBlockquote 5", "Quote4.Heading 5", false, false, Category = "SkipTearDown")]
-        [TestCase("HeadingBlockquote 6", "Quote5.Heading 6", false, false)]
-        [Ignore("WORDSNET-19631")]
+        [TestCase("1. Nested blockquote", "Quote1", false, false, Category = "SkipTearDown")]
+        [TestCase("2. Nested italic blockquote", "Quote2", true, false, Category = "SkipTearDown")]
+        [TestCase("3. Nested bold blockquote", "Quote3", false, true, Category = "SkipTearDown")]
+        [TestCase("4. Nested blockquote", "Quote4", false, false, Category = "SkipTearDown")]
+        [TestCase("5. Nested blockquote", "Quote5", false, false, Category = "SkipTearDown")]
+        [TestCase("6. Nested italic bold blockquote", "Quote6", true, true, Category = "SkipTearDown")]
+        [TestCase("This is an indented code", "IndentedCode", false, false, Category = "SkipTearDown")]
+        [TestCase("This is a fenced code", "FencedCode", false, false, Category = "SkipTearDown")]
+        [TestCase("This is a fenced code with info string", "FencedCode.C#", false, false, Category = "SkipTearDown")]
+        [TestCase("Item 1", "Normal", false, false)]
         public void LoadMarkdownDocumentAndAssertContent(string text, string styleName, bool isItalic, bool isBold)
         {
             // Load created document from previous tests
-            Document doc = new Document(ArtifactsDir + "MarkdownExample.md");
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
-
+            
             foreach (Paragraph paragraph in paragraphs)
             {
                 if (paragraph.Runs.Count != 0)
                 {
-                    if (paragraph.Runs[0].Text == text)
+                    // Check that all document text has the necessary styles
+                    if (paragraph.Runs[0].Text == text && !text.Contains("InlineCode"))
                     {
-                        // Check that all document text has the necessary styles
                         Assert.AreEqual(styleName, paragraph.ParagraphFormat.Style.Name);
                         Assert.AreEqual(isItalic, paragraph.Runs[0].Font.Italic);
                         Assert.AreEqual(isBold, paragraph.Runs[0].Font.Bold);
+                    }
+                    else if (paragraph.Runs[0].Text == text && text.Contains("InlineCode"))
+                    {
+                        Assert.AreEqual(styleName, paragraph.Runs[0].Font.StyleName);
                     }
                 }
 
@@ -2912,7 +2989,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertVideoWithHtmlCode()
+        public void InsertOnlineVideo()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], Double, Double)

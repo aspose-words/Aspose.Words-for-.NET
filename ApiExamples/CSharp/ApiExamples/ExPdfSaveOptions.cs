@@ -6,7 +6,9 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Diagnostics;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
@@ -40,7 +42,7 @@ namespace ApiExamples
             //ExFor:ParagraphFormat.IsHeading
             //ExFor:PdfSaveOptions.OutlineOptions
             //ExFor:PdfSaveOptions.SaveFormat
-            //ExSummary:Shows how to create missing outline levels saving the document in PDF.
+            //ExSummary:Shows how to create PDF document outline entries for headings.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -68,19 +70,49 @@ namespace ApiExamples
             pdfSaveOptions.OutlineOptions.CreateMissingOutlineLevels = true;
             pdfSaveOptions.SaveFormat = SaveFormat.Pdf;
 
-            doc.Save(ArtifactsDir + "CreateMissingOutlineLevels.pdf", pdfSaveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.CreateMissingOutlineLevels.pdf", pdfSaveOptions);
             //ExEnd
 
             #if NETFRAMEWORK || NETSTANDARD2_0
             // Bind PDF with Aspose.PDF
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
-            bookmarkEditor.BindPdf(ArtifactsDir + "CreateMissingOutlineLevels.pdf");
+            bookmarkEditor.BindPdf(ArtifactsDir + "PdfSaveOptions.CreateMissingOutlineLevels.pdf");
 
             // Get all bookmarks from the document
             Bookmarks bookmarks = bookmarkEditor.ExtractBookmarks();
 
             Assert.AreEqual(11, bookmarks.Count);
             #endif
+        }
+
+        [Test]
+        public void TableHeadingOutlines()
+        {
+            //ExStart
+            //ExFor:OutlineOptions.CreateOutlinesForHeadingsInTables
+            //ExSummary:Shows how to create PDF document outline entries for headings inside tables.
+            // Create a blank document and insert a table with a heading-style text inside it
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.StartTable();
+            builder.InsertCell();
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
+            builder.Write("Heading 1");
+            builder.EndRow();
+            builder.InsertCell();
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Normal;
+            builder.Write("Cell 1");
+            builder.EndTable();
+
+            // Create a PdfSaveOptions object that, when saving to .pdf with it, creates entries in the document outline for all headings levels 1-9,
+            // and make sure headings inside tables are registered by the outline also
+            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
+            pdfSaveOptions.OutlineOptions.HeadingsOutlineLevels = 9;
+            pdfSaveOptions.OutlineOptions.CreateOutlinesForHeadingsInTables = true;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.TableHeadingOutlines.pdf", pdfSaveOptions);
+            //ExEnd
         }
 
         [Test]
@@ -101,11 +133,11 @@ namespace ApiExamples
             // PdfSaveOptions objects can be cloned
             Assert.AreNotSame(pdfSaveOptions, pdfSaveOptions.Clone());
 
-            doc.Save(ArtifactsDir + "UpdateFields_False.pdf", pdfSaveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.WithoutUpdateFields.pdf", pdfSaveOptions);
             //ExEnd
 
             #if NETFRAMEWORK || NETSTANDARD2_0
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "UpdateFields_False.pdf");
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.WithoutUpdateFields.pdf");
 
             // Get text fragment by search String
             Aspose.Pdf.Text.TextFragmentAbsorber textFragmentAbsorber = new Aspose.Pdf.Text.TextFragmentAbsorber("Page  of");
@@ -124,10 +156,10 @@ namespace ApiExamples
 
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { UpdateFields = true };
 
-            doc.Save(ArtifactsDir + "UpdateFields_False.pdf", pdfSaveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.WithUpdateFields.pdf", pdfSaveOptions);
 
             #if NETFRAMEWORK || NETSTANDARD2_0
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "UpdateFields_False.pdf");
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.WithUpdateFields.pdf");
 
             // Get text fragment by search String from PDF document
             Aspose.Pdf.Text.TextFragmentAbsorber textFragmentAbsorber = new Aspose.Pdf.Text.TextFragmentAbsorber("Page 1 of 2");
@@ -152,14 +184,14 @@ namespace ApiExamples
             //ExFor:PdfCompliance
             //ExFor:PdfImageColorSpaceExportMode
             //ExSummary:Shows how to save images to PDF using JPEG encoding to decrease file size.
-            Document doc = new Document(MyDir + "SaveOptions.PdfImageCompression.rtf");
+            Document doc = new Document(MyDir + "Rendering.docx");
             
             PdfSaveOptions options = new PdfSaveOptions
             {
                 ImageCompression = PdfImageCompression.Jpeg,
                 PreserveFormFields = true
             };
-            doc.Save(ArtifactsDir + "SaveOptions.PdfImageCompression.pdf", options);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PdfImageCompression.pdf", options);
 
             PdfSaveOptions optionsA1B = new PdfSaveOptions
             {
@@ -169,7 +201,7 @@ namespace ApiExamples
                 ImageColorSpaceExportMode = PdfImageColorSpaceExportMode.SimpleCmyk
             };
 
-            doc.Save(ArtifactsDir + "SaveOptions.PdfImageComppression PDF_A_1_B.pdf", optionsA1B);        
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_B.pdf", optionsA1B);        
             //ExEnd
 
             PdfSaveOptions optionsA1A = new PdfSaveOptions
@@ -179,7 +211,7 @@ namespace ApiExamples
                 ImageCompression = PdfImageCompression.Jpeg
             };
 
-            doc.Save(ArtifactsDir + "SaveOptions.PdfImageComppression PDF_A_1_A.pdf", optionsA1A);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_A.pdf", optionsA1A);
         }
 
         [Test]
@@ -187,15 +219,16 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PdfSaveOptions
+            //ExFor:ColorMode
             //ExFor:FixedPageSaveOptions.ColorMode
             //ExSummary:Shows how change image color with save options property
             // Open document with color image
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
             // Set grayscale mode for document
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { ColorMode = ColorMode.Grayscale };
             
             // Assert that color image in document was grey
-            doc.Save(ArtifactsDir + "ColorMode.PdfGrayscaleMode.pdf", pdfSaveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ColorRendering.pdf", pdfSaveOptions);
             //ExEnd
         }
 
@@ -205,16 +238,16 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfSaveOptions.DisplayDocTitle
             //ExSummary:Shows how to display title of the document as title bar.
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
             doc.BuiltInDocumentProperties.Title = "Windows bar pdf title";
             
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { DisplayDocTitle = true };
 
-            doc.Save(ArtifactsDir + "PdfTitle.pdf", pdfSaveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.WindowsBarPdfTitle.pdf", pdfSaveOptions);
             //ExEnd
 
             #if NETFRAMEWORK || NETSTANDARD2_0
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfTitle.pdf");
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.WindowsBarPdfTitle.pdf");
 
             Assert.IsTrue(pdfDocument.DisplayDocTitle);
             Assert.AreEqual("Windows bar pdf title", pdfDocument.Info.Title);
@@ -228,14 +261,13 @@ namespace ApiExamples
             //ExFor:SaveOptions.CreateSaveOptions(SaveFormat)
             //ExFor:SaveOptions.MemoryOptimization
             //ExSummary:Shows an option to optimize memory consumption when you work with large documents.
-            Document doc = new Document(MyDir + "SaveOptions.MemoryOptimization.doc");
-            
+            Document doc = new Document(MyDir + "Rendering.docx");
+
             // When set to true it will improve document memory footprint but will add extra time to processing
-            // This optimization is only applied during save operation
             SaveOptions saveOptions = SaveOptions.CreateSaveOptions(SaveFormat.Pdf);
             saveOptions.MemoryOptimization = true;
 
-            doc.Save(ArtifactsDir + "SaveOptions.MemoryOptimization.pdf", saveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.MemoryOptimization.pdf", saveOptions);
             //ExEnd
         }
 
@@ -289,7 +321,7 @@ namespace ApiExamples
             //ExFor:IWarningCallback
             //ExFor:FixedPageSaveOptions.MetafileRenderingOptions
             //ExSummary:Shows added fallback to bitmap rendering and changing type of warnings about unsupported metafile records.
-            Document doc = new Document(MyDir + "PdfSaveOptions.HandleRasterWarnings.doc");
+            Document doc = new Document(MyDir + "WMF with image.docx");
 
             MetafileRenderingOptions metafileRenderingOptions =
                 new MetafileRenderingOptions
@@ -305,7 +337,7 @@ namespace ApiExamples
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.MetafileRenderingOptions = metafileRenderingOptions;
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.HandleRasterWarnings.pdf", saveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.HandleBinaryRasterWarnings.pdf", saveOptions);
 
             Assert.AreEqual(1, callback.Warnings.Count);
             Assert.True(callback.Warnings[0].Description.Contains("R2_XORPEN"));
@@ -344,7 +376,7 @@ namespace ApiExamples
             //ExFor:OutlineOptions
             //ExFor:OutlineOptions.DefaultBookmarksOutlineLevel
             //ExSummary:Shows how bookmarks in headers/footers are exported to pdf.
-            Document doc = new Document(MyDir + "PdfSaveOption.HeaderFooterBookmarksExportMode.docx");
+            Document doc = new Document(MyDir + "Bookmarks in headers and footers.docx");
 
             // You can specify how bookmarks in headers/footers are exported
             // There is a several options for this:
@@ -356,19 +388,23 @@ namespace ApiExamples
                 HeaderFooterBookmarksExportMode = headerFooterBookmarksExportMode,
                 OutlineOptions = { DefaultBookmarksOutlineLevel = 1 }
             };
-            doc.Save(ArtifactsDir + "PdfSaveOption.HeaderFooterBookmarksExportMode.pdf", saveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf", saveOptions);
             //ExEnd
         }
 
         [Test]
         public void UnsupportedImageFormatWarning()
         {
-            Document doc = new Document(MyDir + "PdfSaveOptions.TestCorruptedImage.docx");
+            Document doc = new Document(MyDir + "Corrupted image.docx");
+
+            Shape s = (Shape) doc.GetChildNodes(NodeType.Shape, true)[0];
+            
+            s.ImageData.Save(ImageDir + "Img.png");
 
             SaveWarningCallback saveWarningCallback = new SaveWarningCallback();
             doc.WarningCallback = saveWarningCallback;
 
-            doc.Save(ArtifactsDir + "PdfSaveOption.HeaderFooterBookmarksExportMode.pdf", SaveFormat.Pdf);
+            doc.Save(ArtifactsDir + "PdfSaveOption.UnsupportedImageFormatWarning.pdf", SaveFormat.Pdf);
 
             Assert.That(saveWarningCallback.SaveWarnings[0].Description,
                 Is.EqualTo("Image can not be processed. Possibly unsupported image format."));
@@ -394,7 +430,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:MetafileRenderingOptions.ScaleWmfFontsToMetafileSize
             //ExSummary:Shows how to WMF fonts scaling according to metafile size on the page.
-            Document doc = new Document(MyDir + "PdfSaveOptions.FontsScaledToMetafileSize.docx");
+            Document doc = new Document(MyDir + "WMF with text.docx");
 
             // There is a several options for this:
             // 'True' - Aspose.Words emulates font scaling according to metafile size on the page
@@ -413,10 +449,11 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfSaveOptions.AdditionalTextPositioning
             //ExSummary:Show how to write additional text positioning operators.
-            Document doc = new Document(MyDir + "PdfSaveOptions.AdditionalTextPositioning.docx");
+            Document doc = new Document(MyDir + "Paragraphs.docx");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions();
-            // This may help to overcome issues with inaccurate text positioning with some printers
+            // This may help to overcome issues with inaccurate text positioning with some printers, even if the PDF looks fine,
+            // but the file size will increase due to higher text positioning precision used
             saveOptions.AdditionalTextPositioning = true;
             saveOptions.TextCompression = PdfTextCompression.None;
 
@@ -459,7 +496,7 @@ namespace ApiExamples
             //ExFor:PdfZoomBehavior
             //ExSummary:Shows how to set the default zooming of an output PDF to 1/4 of default size.
             // Open a document with multiple paragraphs
-            Document doc = new Document(MyDir + "Rendering.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             PdfSaveOptions options = new PdfSaveOptions();
             options.ZoomBehavior = PdfZoomBehavior.ZoomFactor;
@@ -479,7 +516,7 @@ namespace ApiExamples
             //ExFor:PdfSaveOptions.CreateNoteHyperlinks
             //ExSummary:Shows how to make footnotes and endnotes work like hyperlinks.
             // Open a document with footnotes/endnotes
-            Document doc = new Document(MyDir + "Document.FootnoteEndnote.docx");
+            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
 
             // Creating a PdfSaveOptions instance with this flag set will convert footnote/endnote number symbols in the text
             // into hyperlinks pointing to the footnotes, and the actual footnotes/endnotes at the end of pages into links to their
@@ -497,7 +534,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfCustomPropertiesExport
             //ExFor:PdfSaveOptions.CustomPropertiesExport
-            //ExFor:SaveOptions.DmlEffectsRenderingMode
             //ExSummary:Shows how to export custom properties while saving to .pdf.
             Document doc = new Document();
 
@@ -518,15 +554,18 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DmlRenderingMode
+            //ExFor:DmlEffectsRenderingMode
             //ExFor:PdfSaveOptions.DmlEffectsRenderingMode
+            //ExFor:SaveOptions.DmlEffectsRenderingMode
             //ExFor:SaveOptions.DmlRenderingMode
             //ExSummary:Shows how to configure DrawingML rendering quality with PdfSaveOptions.
-            Document doc = new Document(MyDir + "DrawingMLEffects.docx");
+            Document doc = new Document(MyDir + "DrawingML shape effects.docx");
 
             // Creating a new PdfSaveOptions object and setting its DmlEffectsRenderingMode to "None" will
             // strip the shapes of all their shading effects in the output pdf
             PdfSaveOptions options = new PdfSaveOptions();
             options.DmlEffectsRenderingMode = DmlEffectsRenderingMode.None;
+            options.DmlRenderingMode = DmlRenderingMode.Fallback; 
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.DrawingML.pdf", options);
             //ExEnd
@@ -571,7 +610,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
             //ExEnd
         }
-        #else
+#else
         [Test]
         public void PreblendImagesNetStandard2()
         {
@@ -591,10 +630,10 @@ namespace ApiExamples
             PdfSaveOptions options = new PdfSaveOptions();
             options.PreblendImages = true;
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf", options);
             //ExEnd
         }
-        #endif
+#endif
 
         [Test]
         public void PdfDigitalSignature()
@@ -674,6 +713,24 @@ namespace ApiExamples
             Assert.AreEqual("MyPassword", options.DigitalSignatureDetails.TimestampSettings.Password);
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void RenderMetafile()
+        {
+            //ExStart
+            //ExFor:EmfPlusDualRenderingMode
+            //ExFor:MetafileRenderingOptions.EmfPlusDualRenderingMode
+            //ExFor:MetafileRenderingOptions.UseEmfEmbeddedToWmf
+            //ExSummary:Shows how to adjust EMF (Enhanced Windows Metafile) rendering options when saving to PDF.
+            Document doc = new Document(MyDir + "EMF.docx");
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.MetafileRenderingOptions.EmfPlusDualRenderingMode = EmfPlusDualRenderingMode.EmfPlus;
+            saveOptions.MetafileRenderingOptions.UseEmfEmbeddedToWmf = false;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf", saveOptions);
             //ExEnd
         }
     }

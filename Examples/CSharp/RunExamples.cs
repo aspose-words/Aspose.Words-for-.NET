@@ -361,7 +361,7 @@ namespace Aspose.Words.Examples.CSharp
             // MailMergeAndConditionalField.Run();
 
             // MailMergeCleanUp.Run();
-            WorkingWithWebExtension.Run();
+            // WorkingWithWebExtension.Run();
             //// =====================================================
             //// =====================================================
             //// Rendering and Printing

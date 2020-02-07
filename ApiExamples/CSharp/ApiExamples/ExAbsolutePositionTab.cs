@@ -23,7 +23,7 @@ namespace ApiExamples
         public void DocumentToTxt()
         {
             // This document contains two sentences separated by an absolute position tab
-            Document doc = new Document(MyDir + "AbsolutePositionTab.docx");
+            Document doc = new Document(MyDir + "Absolute position tab.docx");
 
             // An AbsolutePositionTab is a child node of a paragraph
             // AbsolutePositionTabs get picked up when looking for nodes of the SpecialChar type

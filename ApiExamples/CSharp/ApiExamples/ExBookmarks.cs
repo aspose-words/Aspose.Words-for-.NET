@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Aspose.Words;
+using Aspose.Words.Tables;
+using Bookmark = Aspose.Words.Bookmark;
 
 namespace ApiExamples
 {
@@ -47,7 +49,7 @@ namespace ApiExamples
             // Create a document with 3 bookmarks: "MyBookmark 1", "MyBookmark 2", "MyBookmark 3"
             Document doc = CreateDocumentWithBookmarks();
             BookmarkCollection bookmarks = doc.Range.Bookmarks;
-            
+
             // Check that we have 3 bookmarks
             Assert.AreEqual(3, bookmarks.Count);
             Assert.AreEqual("MyBookmark 1", bookmarks[0].Name); //ExSkip
@@ -63,7 +65,7 @@ namespace ApiExamples
             // The bookmarked text is not deleted
             bookmarks[2].Remove();
 
-            bookmarks = doc.Range.Bookmarks;            
+            bookmarks = doc.Range.Bookmarks;
             // Check that we have 2 bookmarks after the latest bookmark was deleted
             Assert.AreEqual(2, bookmarks.Count);
             Assert.AreEqual("Updated name of MyBookmark 1", bookmarks[0].Name); //ExSkip
@@ -150,6 +152,43 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
+        public void TableColumnBookmarks()
+        {
+            //ExStart
+            //ExFor:Bookmark.IsColumn
+            //ExFor:Bookmark.FirstColumn
+            //ExFor:Bookmark.LastColumn
+            //ExSummary:Shows how to get information about table column bookmark.
+            Document doc = new Document(MyDir + "TableColumnBookmark.doc");
+            foreach (Bookmark bookmark in doc.Range.Bookmarks)
+            {
+                Console.WriteLine("Bookmark: {0}{1}", bookmark.Name, bookmark.IsColumn ? " (Column)" : "");
+                if (bookmark.IsColumn)
+                {
+                    if (bookmark.BookmarkStart.GetAncestor(NodeType.Row) is Row row &&
+                        bookmark.FirstColumn < row.Cells.Count)
+                    {
+                        // Print text from the first and last cells containing in bookmark
+                        Console.WriteLine(row.Cells[bookmark.FirstColumn].GetText().TrimEnd(ControlChar.CellChar));
+                        Console.WriteLine(row.Cells[bookmark.LastColumn].GetText().TrimEnd(ControlChar.CellChar));
+                    }
+                }
+            }
+            //ExEnd
+
+            Bookmark firstTableColumnBookmark = doc.Range.Bookmarks["FirstTableColumnBookmark"];
+            Bookmark secondTableColumnBookmark = doc.Range.Bookmarks["SecondTableColumnBookmark"];
+
+            Assert.IsTrue(firstTableColumnBookmark.IsColumn);
+            Assert.AreEqual(1, firstTableColumnBookmark.FirstColumn);
+            Assert.AreEqual(3, firstTableColumnBookmark.LastColumn);
+
+            Assert.IsTrue(secondTableColumnBookmark.IsColumn);
+            Assert.AreEqual(0, secondTableColumnBookmark.FirstColumn);
+            Assert.AreEqual(3, secondTableColumnBookmark.LastColumn);
+        }
+
+        [Test]
         public void ClearBookmarks()
         {
             //ExStart
@@ -157,7 +196,7 @@ namespace ApiExamples
             //ExSummary:Shows how to remove all bookmarks from a document.
             // Open a document with 3 bookmarks: "MyBookmark1", "My_Bookmark2", "MyBookmark3"
             Document doc = new Document(MyDir + "Bookmarks.docx");
-            
+
             // Remove all bookmarks from the document
             // The bookmarked text is not deleted
             doc.Range.Bookmarks.Clear();
@@ -202,7 +241,7 @@ namespace ApiExamples
             //ExSummary:Shows how to replace elements in bookmark name
             // Open a document with 3 bookmarks: "MyBookmark1", "My_Bookmark2", "MyBookmark3"
             Document doc = new Document(MyDir + "Bookmarks.docx");
-            Assert.AreEqual("My_Bookmark2", doc.Range.Bookmarks[2].Name); //ExSkip
+            Assert.AreEqual("MyBookmark3", doc.Range.Bookmarks[2].Name); //ExSkip
 
             // MS Word document does not support bookmark names with whitespaces by default
             // If you have document which contains bookmark names with underscores, you can simply replace them to whitespaces
