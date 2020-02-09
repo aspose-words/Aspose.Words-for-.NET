@@ -88,8 +88,7 @@ namespace ApiExamples
             //ExEnd
 
             Document outDoc = new Document(ArtifactsDir + "Charts.DefineNumberFormatForDataLabels.docx");
-            Shape outChartShape = (Shape)outDoc.GetChild(NodeType.Shape, 0, true);
-            ChartSeries outChartSeries = outChartShape.Chart.Series[0];
+            ChartSeries outChartSeries = ((Shape)outDoc.GetChild(NodeType.Shape, 0, true)).Chart.Series[0];
 
             Assert.AreEqual("\"$\"#,##0.00", outChartSeries.DataLabels.NumberFormat.FormatCode);
         }
