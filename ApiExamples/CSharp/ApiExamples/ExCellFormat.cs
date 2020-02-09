@@ -53,6 +53,8 @@ namespace ApiExamples
             Assert.AreEqual(CellMerge.First, table.Rows[0].Cells[0].CellFormat.VerticalMerge);
             Assert.AreEqual(CellMerge.Previous, table.Rows[1].Cells[0].CellFormat.VerticalMerge);
 
+            // After the merge both cells still exist, and the one with the VerticalMerge set to "First" overlaps both of them 
+            // and only that cell contains the shared text
             Assert.AreEqual("Text in merged cells.", table.Rows[0].Cells[0].GetText().Trim('\a'));
             Assert.AreNotEqual(table.Rows[0].Cells[0].GetText(), table.Rows[1].Cells[0].GetText());
         }
@@ -90,6 +92,10 @@ namespace ApiExamples
 
             Document outDoc = new Document(ArtifactsDir + "CellFormat.HorizontalMerge.docx");
             Table table = (Table)outDoc.GetChild(NodeType.Table, 0, true);
+
+            // Compared to the vertical merge, where both cells are still present, 
+            // the horizontal merge actually removes cells with a HorizontalMerge set to "Previous" if overlapped by ones with "First"
+            // Thus the first row that we inserted two cells into now has one, which is a normal cell with a HorizontalMerge of "None"
             Assert.AreEqual(1, table.Rows[0].Cells.Count);
             Assert.AreEqual(CellMerge.None, table.Rows[0].Cells[0].CellFormat.HorizontalMerge);
 
