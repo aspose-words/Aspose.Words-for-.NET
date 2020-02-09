@@ -44,7 +44,17 @@ namespace ApiExamples
             builder.Write("Text in another cell");
             builder.EndRow();
             builder.EndTable();
+
+            doc.Save(ArtifactsDir + "CellFormat.VerticalMerge.docx");
             //ExEnd
+
+            Document outDoc = new Document(ArtifactsDir + "CellFormat.VerticalMerge.docx");
+            Table table = (Table)outDoc.GetChild(NodeType.Table, 0, true);
+            Assert.AreEqual(CellMerge.First, table.Rows[0].Cells[0].CellFormat.VerticalMerge);
+            Assert.AreEqual(CellMerge.Previous, table.Rows[1].Cells[0].CellFormat.VerticalMerge);
+
+            Assert.AreEqual("Text in merged cells.", table.Rows[0].Cells[0].GetText().Trim('\a'));
+            Assert.AreNotEqual(table.Rows[0].Cells[0].GetText(), table.Rows[1].Cells[0].GetText());
         }
 
         [Test]
@@ -74,7 +84,16 @@ namespace ApiExamples
             builder.Write("Text in another cell.");
             builder.EndRow();
             builder.EndTable();
+
+            doc.Save(ArtifactsDir + "CellFormat.HorizontalMerge.docx");
             //ExEnd
+
+            Document outDoc = new Document(ArtifactsDir + "CellFormat.HorizontalMerge.docx");
+            Table table = (Table)outDoc.GetChild(NodeType.Table, 0, true);
+            Assert.AreEqual(1, table.Rows[0].Cells.Count);
+            Assert.AreEqual(CellMerge.None, table.Rows[0].Cells[0].CellFormat.HorizontalMerge);
+
+            Assert.AreEqual("Text in merged cells.", table.Rows[0].Cells[0].GetText().Trim('\a'));
         }
 
         [Test]
