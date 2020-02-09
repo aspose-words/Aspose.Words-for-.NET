@@ -35,9 +35,6 @@ namespace ApiExamples
             // Use a document builder to insert a bar chart
             Shape chartShape = builder.InsertChart(ChartType.Bar, 400, 300);
 
-            Assert.AreEqual(ShapeType.NonPrimitive, chartShape.ShapeType);
-            Assert.True(chartShape.HasChart);
-
             // Get the chart object from the containing shape
             Chart chart = chartShape.Chart;
             
@@ -49,6 +46,18 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Charts.ChartTitle.docx");
             //ExEnd
+
+            Document outDoc = new Document(ArtifactsDir + "Charts.ChartTitle.docx");
+            Shape outChartShape = (Shape)outDoc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(ShapeType.NonPrimitive, outChartShape.ShapeType);
+            Assert.True(outChartShape.HasChart);
+
+            ChartTitle outChartTitle = outChartShape.Chart.Title;
+
+            Assert.AreEqual("MyChart", outChartTitle.Text);
+            Assert.True(outChartTitle.Overlay);
+            Assert.True(outChartTitle.Show);
         }
 
         [Test]
@@ -77,6 +86,12 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Charts.DefineNumberFormatForDataLabels.docx");
             //ExEnd
+
+            Document outDoc = new Document(ArtifactsDir + "Charts.DefineNumberFormatForDataLabels.docx");
+            Shape outChartShape = (Shape)outDoc.GetChild(NodeType.Shape, 0, true);
+            ChartSeries outChartSeries = outChartShape.Chart.Series[0];
+
+            Assert.AreEqual("\"$\"#,##0.00", outChartSeries.DataLabels.NumberFormat.FormatCode);
         }
 
         [Test]
