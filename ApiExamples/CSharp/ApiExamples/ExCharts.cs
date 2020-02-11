@@ -986,8 +986,12 @@ namespace ApiExamples
             chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
 
             Assert.AreEqual(AxisScaleType.Linear, chart.AxisX.Scaling.Type);
-            Assert.AreEqual(AxisScaleType.Logarithmic, chart.AxisY.Scaling.Type);
-            Assert.AreEqual(20.0d, chart.AxisY.Scaling.LogBase);
+            Assert.AreEqual(0.0d, chart.AxisX.Scaling.Minimum.Value);
+            Assert.AreEqual(10.0d, chart.AxisX.Scaling.Maximum.Value);
+
+            Assert.AreEqual(AxisScaleType.Linear, chart.AxisY.Scaling.Type);
+            Assert.AreEqual(0.0d, chart.AxisY.Scaling.Minimum.Value);
+            Assert.AreEqual(10.0d, chart.AxisY.Scaling.Maximum.Value);
         }
 
         [Test]
