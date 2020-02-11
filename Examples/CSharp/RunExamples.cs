@@ -147,7 +147,7 @@ namespace Aspose.Words.Examples.CSharp
 
             //// Shapes
             //// =====================================================
-             WorkingWithShapes.Run();
+             //WorkingWithShapes.Run();
 
             //// Comments
             //// =====================================================
@@ -360,7 +360,7 @@ namespace Aspose.Words.Examples.CSharp
             // MailMergeAndConditionalField.Run();
 
             // MailMergeCleanUp.Run();
-            WorkingWithWebExtension.Run();
+            // WorkingWithWebExtension.Run();
             //// =====================================================
             //// =====================================================
             //// Rendering and Printing
