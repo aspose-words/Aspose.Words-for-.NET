@@ -908,16 +908,21 @@ namespace ApiExamples
             chart.Series.Add("Series 1", new[] { 1.0, 2.0, 3.0, 4.0, 5.0 }, new[] { 1.0, 20.0, 400.0, 8000.0, 160000.0 });
 
             // The scaling of the X axis is linear by default, which means it will display "0, 1, 2, 3..."
-            Assert.AreEqual(AxisScaleType.Linear, chart.AxisX.Scaling.Type);
-
-            // Linear axis scaling is suitable for our X-values, but not our erratic Y-values 
+            // Linear axis scaling is suitable for our X-values, but our Y-values call for a logarithmic scale to be represented accurately on a graph 
             // We can set the scaling of the Y-axis to Logarithmic with a base of 20
             // The Y-axis will now display "1, 20, 400, 8000...", which is ideal for accurate representation of this set of Y-values
             chart.AxisY.Scaling.Type = AxisScaleType.Logarithmic;
-            chart.AxisY.Scaling.LogBase = 20.0;
+            chart.AxisY.Scaling.LogBase = 20.0d;
 
             doc.Save(ArtifactsDir + "Charts.AxisScaling.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.AxisScaling.docx");
+            chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
+
+            Assert.AreEqual(AxisScaleType.Linear, chart.AxisX.Scaling.Type);
+            Assert.AreEqual(AxisScaleType.Logarithmic, chart.AxisY.Scaling.Type);
+            Assert.AreEqual(20.0d, chart.AxisY.Scaling.LogBase);
         }
 
         [Test]
@@ -976,6 +981,13 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Charts.AxisBound.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.AxisBound.docx");
+            chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
+
+            Assert.AreEqual(AxisScaleType.Linear, chart.AxisX.Scaling.Type);
+            Assert.AreEqual(AxisScaleType.Logarithmic, chart.AxisY.Scaling.Type);
+            Assert.AreEqual(20.0d, chart.AxisY.Scaling.LogBase);
         }
 
         [Test]
@@ -992,11 +1004,10 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a line graph
-            Shape chartShape = builder.InsertChart(ChartType.Line, 450, 300);
-            Chart chart = chartShape.Chart;
+            Shape shape = builder.InsertChart(ChartType.Line, 450, 300);
 
             // Get its legend
-            ChartLegend legend = chart.Legend;
+            ChartLegend legend = shape.Chart.Legend;
 
             // By default, other elements of a chart will not overlap with its legend
             Assert.False(legend.Overlay);
@@ -1006,6 +1017,17 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Charts.ChartLegend.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.ChartLegend.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(450.0d, shape.Width);
+            Assert.AreEqual(300.0d, shape.Height);
+
+            legend = shape.Chart.Legend;
+
+            Assert.False(legend.Overlay);
+            Assert.AreEqual(LegendPosition.TopRight, legend.Position);
         }
 
         [Test]
@@ -1032,6 +1054,18 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Charts.AxisCross.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.AxisCross.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(450.0d, shape.Width);
+            Assert.AreEqual(250.0d, shape.Height);
+
+            axis = shape.Chart.AxisX;
+
+            Assert.True(axis.AxisBetweenCategories);
+            Assert.AreEqual(AxisCrosses.Custom, axis.Crosses);
+            Assert.AreEqual(3.0, axis.CrossesAt);
         }
 
         [Test]
@@ -1062,8 +1096,8 @@ namespace ApiExamples
             axis.MajorTickMark = AxisTickMark.Outside;
             axis.MinorTickMark = AxisTickMark.Outside;
 
-            axis.MajorUnit = 10.0;
-            axis.MinorUnit = 1.0;
+            axis.MajorUnit = 10.0d;
+            axis.MinorUnit = 1.0d;
 
             // Stretch out the bounds of the axis out to show 3 major ticks and 27 minor ticks
             axis.Scaling.Minimum = new AxisBound(-10);
@@ -1085,14 +1119,43 @@ namespace ApiExamples
 
             // Get the axis to display values, but in millions
             axis.DisplayUnit.Unit = AxisBuiltInUnit.Millions;
+            Assert.AreEqual(AxisBuiltInUnit.Millions, axis.DisplayUnit.Unit); //ExSkip
 
             // Besides the built-in axis units we can choose from,
             // we can also set the axis to display values in some custom denomination, using the following attribute
             // The statement below is equivalent to the one above
             axis.DisplayUnit.CustomUnit = 1000000.0;
+            Assert.AreEqual(AxisBuiltInUnit.Custom, axis.DisplayUnit.Unit); //ExSkip
 
             doc.Save(ArtifactsDir + "Charts.ChartAxisDisplayUnit.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.ChartAxisDisplayUnit.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(450.0d, shape.Width);
+            Assert.AreEqual(250.0d, shape.Height);
+
+            axis = shape.Chart.AxisX;
+
+            Assert.AreEqual(AxisTickMark.Inside, axis.MajorTickMark);
+            Assert.AreEqual(AxisTickMark.Inside, axis.MinorTickMark);
+            Assert.AreEqual(10.0d, axis.MajorUnit);
+            Assert.AreEqual(-10.0d, axis.Scaling.Minimum.Value);
+            Assert.AreEqual(30.0d, axis.Scaling.Maximum.Value);
+            Assert.AreEqual(1, axis.TickLabelSpacing);
+            Assert.AreEqual(ParagraphAlignment.Right, axis.TickLabelAlignment);
+            Assert.AreEqual(AxisBuiltInUnit.Custom, axis.DisplayUnit.Unit);
+            Assert.AreEqual(1000000.0d, axis.DisplayUnit.CustomUnit);
+
+            axis = shape.Chart.AxisY;
+
+            Assert.AreEqual(AxisTickMark.Outside, axis.MajorTickMark);
+            Assert.AreEqual(AxisTickMark.Outside, axis.MinorTickMark);
+            Assert.AreEqual(10.0d, axis.MajorUnit);
+            Assert.AreEqual(1.0d, axis.MinorUnit);
+            Assert.AreEqual(-10.0d, axis.Scaling.Minimum.Value);
+            Assert.AreEqual(20.0d, axis.Scaling.Maximum.Value);
         }
     }
 }
