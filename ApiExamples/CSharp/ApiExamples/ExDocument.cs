@@ -253,11 +253,11 @@ namespace ApiExamples
             // Open the stream. Read only access is enough for Aspose.Words to load a document.
             using (Stream stream = File.OpenRead(MyDir + "Document.docx"))
             {
-                // Load the entire document into memory.
+                // Load the entire document into memory and read its contents
                 Document doc = new Document(stream);
-                Assert.AreEqual("Hello World!\x000c", doc.GetText()); //ExSkip
+
+                Assert.AreEqual("Hello World!", doc.GetText().Trim());
             }
-            // ... do something with the document
             //ExEnd
         }
 
@@ -305,7 +305,8 @@ namespace ApiExamples
             //ExFor:Document.#ctor(Stream)
             //ExSummary:Retrieves a document from a URL and saves it to disk in a different format.
             // This is the URL address pointing to where to find the document
-            const string url = "https://is.gd/URJluZ";
+            const string url = "https://omextemplates.content.office.net/support/templates/en-us/tf16402488.dotx";
+
             // The easiest way to load our document from the internet is make use of the 
             // System.Net.WebClient class. Create an instance of it and pass the URL
             // to download from.
@@ -313,6 +314,7 @@ namespace ApiExamples
             {
                 // Download the bytes from the location referenced by the URL
                 byte[] dataBytes = webClient.DownloadData(url);
+                Assert.IsNotEmpty(dataBytes); //ExSkip
 
                 // Wrap the bytes representing the document in memory into a MemoryStream object
                 using (MemoryStream byteStream = new MemoryStream(dataBytes))
@@ -321,8 +323,9 @@ namespace ApiExamples
                     // The file format of the passed data is inferred from the content of the bytes itself
                     // You can load any document format supported by Aspose.Words in the same way
                     Document doc = new Document(byteStream);
+                    Assert.True(doc.GetText().Contains("First Name last name")); //ExSkip
 
-                    // Convert the document to any format supported by Aspose.Words
+                    // Convert the document to any format supported by Aspose.Words and save
                     doc.Save(ArtifactsDir + "Document.OpenDocumentFromWeb.docx");
                 }
             }
@@ -339,7 +342,7 @@ namespace ApiExamples
             //ExSummary:Shows how to insert the HTML contents from a web page into a new document.
             // The url of the page to load 
             const string url = "http://www.aspose.com/";
-
+            
             // Create a WebClient object to easily extract the HTML from the page
             WebClient client = new WebClient();
             string pageSource = client.DownloadString(url);
@@ -358,9 +361,8 @@ namespace ApiExamples
                 // Load the HTML document from stream and pass the LoadOptions object
                 Document doc = new Document(stream, options);
 
-                // Save the document to disk
-                // The extension of the filename can be changed to save the document into other formats. e.g PDF, DOCX, ODT, RTF.
-                doc.Save(ArtifactsDir + "Document.InsertHtmlFromWebPage.doc");
+                // Save the document to the local file system while converting it to .docx
+                doc.Save(ArtifactsDir + "Document.InsertHtmlFromWebPage.docx");
             }
             //ExEnd
         }
