@@ -2356,8 +2356,7 @@ namespace ApiExamples
                 new string[]
                 {
                     "Dark logo",
-                    "Transparent logo",
-                    "Enhanced Windows Metafile"
+                    "Transparent logo"
                 });
 
             // A custom merging callback will contain filenames that our shorthands will refer to
@@ -2377,7 +2376,6 @@ namespace ApiExamples
                 mImageFilenames = new Dictionary<string, string>();
                 mImageFilenames.Add("Dark logo", ImageDir + "Logo.jpg");
                 mImageFilenames.Add("Transparent logo", ImageDir + "Transparent background logo.png");
-                mImageFilenames.Add("Enhanced Windows Metafile", ImageDir + "Enhanced Windows MetaFile.emf");
             }
 
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
