@@ -408,31 +408,35 @@ namespace ApiExamples
             }
             //ExEnd
 
-            Assert.Throws<IncorrectPasswordException>(() =>
-            {
-                doc = new Document(MyDir + "Encrypted.docx");
-            });
+            Assert.Throws<IncorrectPasswordException>(() => doc = new Document(MyDir + "Encrypted.docx"));
         }
 
         [Test]
-        public void ConvertShapeToOfficeMath()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ConvertShapeToOfficeMath(bool isConvertShapeToOfficeMath)
         {
             //ExStart
             //ExFor:LoadOptions.ConvertShapeToOfficeMath
             //ExSummary:Shows how to convert shapes with EquationXML to Office Math objects.
-            LoadOptions loadOptions = new LoadOptions { ConvertShapeToOfficeMath = true };
-
+            LoadOptions loadOptions = new LoadOptions();
+            // Use 'true'/'false' values to convert shapes with EquationXML to Office Math objects or not
+            loadOptions.ConvertShapeToOfficeMath = isConvertShapeToOfficeMath;
+            
             // Specify load option to convert math shapes to office math objects on loading stage
             Document doc = new Document(MyDir + "Math shapes.docx", loadOptions);
-            Assert.AreEqual(16, doc.GetChildNodes(NodeType.Shape, true).Count); //ExSkip
-            Assert.AreEqual(34, doc.GetChildNodes(NodeType.OfficeMath, true).Count); //ExSkip
             //ExEnd
 
-            loadOptions.ConvertShapeToOfficeMath = false;
-            doc = new Document(MyDir + "Math shapes.docx", loadOptions);
-
-            Assert.AreEqual(24, doc.GetChildNodes(NodeType.Shape, true).Count);
-            Assert.AreEqual(0, doc.GetChildNodes(NodeType.OfficeMath, true).Count);
+            if (isConvertShapeToOfficeMath)
+            {
+                Assert.AreEqual(16, doc.GetChildNodes(NodeType.Shape, true).Count);
+                Assert.AreEqual(34, doc.GetChildNodes(NodeType.OfficeMath, true).Count);
+            }
+            else
+            {
+                Assert.AreEqual(24, doc.GetChildNodes(NodeType.Shape, true).Count);
+                Assert.AreEqual(0, doc.GetChildNodes(NodeType.OfficeMath, true).Count);
+            }
         }
 
         [Test]
