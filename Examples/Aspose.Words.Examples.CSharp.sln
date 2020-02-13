@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.572
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp", "CSharp\CSharp.csproj", "{10D7FE6F-656B-4ADB-A3CC-E2B69CDD7C49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsposeWordsDockerTest", "AsposeWordsDockerTest\AsposeWordsDockerTest.csproj", "{4DE72EB4-1975-4D11-8B59-1BA32DF9C5BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsposeWordsDockerTest", "AsposeWordsDockerTest\AsposeWordsDockerTest.csproj", "{4DE72EB4-1975-4D11-8B59-1BA32DF9C5BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamplesCore", "ExamplesCore\ExamplesCore.csproj", "{ED6C80F4-FA05-4EFC-A285-894331484EC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{4DE72EB4-1975-4D11-8B59-1BA32DF9C5BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DE72EB4-1975-4D11-8B59-1BA32DF9C5BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DE72EB4-1975-4D11-8B59-1BA32DF9C5BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED6C80F4-FA05-4EFC-A285-894331484EC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED6C80F4-FA05-4EFC-A285-894331484EC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED6C80F4-FA05-4EFC-A285-894331484EC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED6C80F4-FA05-4EFC-A285-894331484EC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
