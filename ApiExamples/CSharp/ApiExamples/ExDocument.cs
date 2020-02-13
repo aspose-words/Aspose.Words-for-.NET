@@ -380,6 +380,8 @@ namespace ApiExamples
 
             Document doc = new Document(MyDir + "Document.html", loadOptions);
             //ExEnd
+
+            Assert.AreEqual("Hello world!", doc.GetText().Trim());
         }
 
         [Test]
@@ -391,26 +393,25 @@ namespace ApiExamples
             //ExFor:LoadOptions
             //ExFor:LoadOptions.#ctor(String)
             //ExSummary:Shows how to load a Microsoft Word document encrypted with a password.
-            Document doc;
-
-            // Trying to open a password-encrypted document the normal way will cause an exception to be thrown
-            Assert.Throws<IncorrectPasswordException>(() =>
-            {
-                doc = new Document(MyDir + "Encrypted.docx");
-            });
-
-            // To open it and access its contents, we need to open it using the correct password
-            // The password is delivered via a LoadOptions object, after being passed to it's constructor
+            // If we try open an encrypted document without the password, an IncorrectPasswordException will be thrown
+            // We can construct a LoadOptions object with the correct encryption password
             LoadOptions options = new LoadOptions("docPassword");
 
-            // We can now open the document either by filename or stream
-            doc = new Document(MyDir + "Encrypted.docx", options);
+            // Then, we can use that object as a parameter when opening an encrypted document
+            Document doc = new Document(MyDir + "Encrypted.docx", options);
+            Assert.AreEqual("Test encrypted document.", doc.GetText().Trim()); //ExSkip
 
             using (Stream stream = File.OpenRead(MyDir + "Encrypted.docx"))
             {
                 doc = new Document(stream, options);
+                Assert.AreEqual("Test encrypted document.", doc.GetText().Trim()); //ExSkip
             }
             //ExEnd
+
+            Assert.Throws<IncorrectPasswordException>(() =>
+            {
+                doc = new Document(MyDir + "Encrypted.docx");
+            });
         }
 
         [Test]
@@ -419,12 +420,19 @@ namespace ApiExamples
             //ExStart
             //ExFor:LoadOptions.ConvertShapeToOfficeMath
             //ExSummary:Shows how to convert shapes with EquationXML to Office Math objects.
-            LoadOptions loadOptions = new LoadOptions { ConvertShapeToOfficeMath = false };
+            LoadOptions loadOptions = new LoadOptions { ConvertShapeToOfficeMath = true };
 
             // Specify load option to convert math shapes to office math objects on loading stage
             Document doc = new Document(MyDir + "Math shapes.docx", loadOptions);
-            doc.Save(ArtifactsDir + "Document.ConvertShapeToOfficeMath.docx", SaveFormat.Docx);
+            Assert.AreEqual(16, doc.GetChildNodes(NodeType.Shape, true).Count); //ExSkip
+            Assert.AreEqual(34, doc.GetChildNodes(NodeType.OfficeMath, true).Count); //ExSkip
             //ExEnd
+
+            loadOptions.ConvertShapeToOfficeMath = false;
+            doc = new Document(MyDir + "Math shapes.docx", loadOptions);
+
+            Assert.AreEqual(24, doc.GetChildNodes(NodeType.Shape, true).Count);
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.OfficeMath, true).Count);
         }
 
         [Test]
