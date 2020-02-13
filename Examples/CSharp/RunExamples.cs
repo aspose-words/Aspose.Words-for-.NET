@@ -77,7 +77,7 @@ namespace Aspose.Words.Examples.CSharp
             // CheckFormat.Run();
             // SplitIntoHtmlPages.Run();
             // LoadTxt.Run();
-             Load_Options.Run();
+            // Load_Options.Run();
             // PageSplitter.Run();
             // ImageToPdf.Run();
             // SpecifySaveOption.Run();
@@ -96,7 +96,7 @@ namespace Aspose.Words.Examples.CSharp
             // SaveOptionsHtmlFixed.Run();
             // SaveDocWithHtmlSaveOptions.Run();
             // WorkingWithVbaMacros.Run();
-            
+
 
             //// =====================================================
             //// =====================================================
@@ -145,6 +145,7 @@ namespace Aspose.Words.Examples.CSharp
             // BookmarkNameAndText.Run();
             // AccessBookmarks.Run();
             // CreateBookmark.Run();
+             ShowHideBookmarks.Run();
 
             //// Shapes
             //// =====================================================
