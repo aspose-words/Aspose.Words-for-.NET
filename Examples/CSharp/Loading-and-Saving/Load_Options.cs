@@ -1,5 +1,6 @@
 ﻿using Aspose.Words.Markup;
 using Aspose.Words.Saving;
+using Aspose.Words.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             LoadAndSaveEncryptedODT(dataDir);
             VerifyODTdocument(dataDir);
             ConvertShapeToOfficeMath(dataDir);
+            SetMSWordVersion(dataDir);
         }
 
         public static void LoadOptionsUpdateDirtyFields(string dataDir)
@@ -67,6 +69,18 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             //Save the document into DOCX
             doc.Save(dataDir + "ConvertShapeToOfficeMath_out.docx", SaveFormat.Docx);
             // ExEnd:ConvertShapeToOfficeMath  
+        }
+
+        public static void SetMSWordVersion(string dataDir)
+        {
+            // ExStart:SetMSWordVersion  
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.MswVersion = MsWordVersion.Word2003;
+            Document doc = new Document(dataDir + @"document.doc", loadOptions);
+
+            doc.Save(dataDir + "Word2003_out.docx");
+            // ExEnd:SetMSWordVersion 
+            Console.WriteLine("\n Loaded with MS Word Version successfully.\nFile saved at " + dataDir); 
         }
     }
 }
