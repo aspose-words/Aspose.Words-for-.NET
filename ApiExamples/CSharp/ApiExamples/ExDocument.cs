@@ -448,11 +448,8 @@ namespace ApiExamples
             // Get the file format info of a file in our local file system
             FileFormatInfo fileFormatInfo = FileFormatUtil.DetectFileFormat(MyDir + "Encoded in UTF-7.txt");
 
-            // One of the aspects of a document that the FileFormatUtil can pick up is the text encoding
-            // This automatically takes place every time we open a document programmatically
-            // Occasionally, due to the text content in the document as well as the lack of an encoding declaration,
-            // the encoding of a document may be ambiguous 
-            // In this case, while we know that our document is in UTF-7, the file encoding detector doesn't
+            // A FileFormatInfo object can detect the encoding of the text content in a file, but in some cases it may be ambiguous
+            // We know that the above file is encoded in UTF-7, but the text could be valid in others
             Assert.AreNotEqual(Encoding.UTF7, fileFormatInfo.Encoding);
 
             // If we open the document normally, the wrong encoding will be applied,
@@ -518,15 +515,28 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:LoadOptions.WarningCallback
-        //ExSummary:Shows how to print warnings that occur during document loading.
+        //ExSummary:Shows how to print and store warnings that occur during document loading.
         [Test] //ExSkip
         public void LoadOptionsWarningCallback()
         {
             // Create a new LoadOptions object and set its WarningCallback attribute as an instance of our IWarningCallback implementation 
             LoadOptions loadOptions = new LoadOptions { WarningCallback = new DocumentLoadingWarningCallback() };
 
-            // Minor warnings that might not prevent the effective loading of the document will now be printed
+            // Warnings that occur during loading of the document will now be printed and stored
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
+
+            List<WarningInfo> warnings = ((DocumentLoadingWarningCallback)loadOptions.WarningCallback).GetWarnings();
+            Assert.AreEqual(3, warnings.Count);
+            Assert.AreEqual(WarningType.UnexpectedContent, warnings[0].WarningType); //ExSkip
+            Assert.AreEqual(WarningSource.Docx, warnings[0].Source); //ExSkip
+            Assert.AreEqual("3F01", warnings[0].Description); //ExSkip
+            Assert.AreEqual(WarningType.MinorFormattingLoss, warnings[1].WarningType); //ExSkip
+            Assert.AreEqual(WarningSource.Docx, warnings[1].Source); //ExSkip
+            Assert.AreEqual("Import of element 'shapedefaults' is not supported in Docx format by Aspose.Words.", warnings[1].Description); //ExSkip
+            Assert.AreEqual(WarningType.MinorFormattingLoss, warnings[2].WarningType); //ExSkip
+            Assert.AreEqual(WarningSource.Docx, warnings[2].Source); //ExSkip
+            Assert.AreEqual("Import of element 'extraClrSchemeLst' is not supported in Docx format by Aspose.Words.", warnings[2].Description); //ExSkip
+
         }
 
         /// <summary>
@@ -536,9 +546,18 @@ namespace ApiExamples
         {
             public void Warning(WarningInfo info)
             {
-                Console.WriteLine($"WARNING: {info.WarningType}, source: {info.Source}");
+                Console.WriteLine($"Warning: {info.WarningType}");
+                Console.WriteLine($"\tSource: {info.Source}");
                 Console.WriteLine($"\tDescription: {info.Description}");
+                mWarnings.Add(info);
             }
+
+            public List<WarningInfo> GetWarnings()
+            {
+                return mWarnings;
+            }
+
+            private readonly List<WarningInfo> mWarnings = new List<WarningInfo>();
         }
         //ExEnd
 
@@ -583,6 +602,7 @@ namespace ApiExamples
 
                 // Rewind the stream position back to zero so it is ready for next reader
                 dstStream.Position = 0;
+                Assert.AreEqual("Hello World!", new Document(dstStream).GetText().Trim()); //ExSkip
             }
             //ExEnd
         }
