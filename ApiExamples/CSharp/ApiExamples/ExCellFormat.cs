@@ -48,8 +48,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "CellFormat.VerticalMerge.docx");
             //ExEnd
 
-            Document outDoc = new Document(ArtifactsDir + "CellFormat.VerticalMerge.docx");
-            Table table = (Table)outDoc.GetChild(NodeType.Table, 0, true);
+            doc = new Document(ArtifactsDir + "CellFormat.VerticalMerge.docx");
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
             Assert.AreEqual(CellMerge.First, table.Rows[0].Cells[0].CellFormat.VerticalMerge);
             Assert.AreEqual(CellMerge.Previous, table.Rows[1].Cells[0].CellFormat.VerticalMerge);
 
@@ -90,8 +90,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "CellFormat.HorizontalMerge.docx");
             //ExEnd
 
-            Document outDoc = new Document(ArtifactsDir + "CellFormat.HorizontalMerge.docx");
-            Table table = (Table)outDoc.GetChild(NodeType.Table, 0, true);
+            doc = new Document(ArtifactsDir + "CellFormat.HorizontalMerge.docx");
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             // Compared to the vertical merge, where both cells are still present, 
             // the horizontal merge actually removes cells with a HorizontalMerge set to "Previous" if overlapped by ones with "First"
@@ -124,9 +124,9 @@ namespace ApiExamples
             using (MemoryStream dstStream = new MemoryStream())
             {
                 builder.Document.Save(dstStream, SaveFormat.Docx);
-                Document outDoc = new Document(dstStream);
+                Document doc = new Document(dstStream);
 
-                Table table = (Table)outDoc.GetChild(NodeType.Table, 0, true);
+                Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
                 Cell cell = table.Rows[0].Cells[0];
 
                 Assert.AreEqual(5, cell.CellFormat.LeftPadding);

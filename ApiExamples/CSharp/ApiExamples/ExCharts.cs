@@ -500,16 +500,14 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Charts.ChartDataLabelCollection.docx");
-            chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
-            bubbleChartDataLabels = chart.Series[0].DataLabels;
+            bubbleChartDataLabels = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.Series[0].DataLabels;
 
             Assert.True(bubbleChartDataLabels.ShowBubbleSize);
             Assert.True(bubbleChartDataLabels.ShowCategoryName);
             Assert.True(bubbleChartDataLabels.ShowSeriesName);
             Assert.AreEqual(" - ", bubbleChartDataLabels.Separator);
 
-            chart = ((Shape)doc.GetChild(NodeType.Shape, 1, true)).Chart;
-            pieChartDataLabels = chart.Series[0].DataLabels;
+            pieChartDataLabels = ((Shape)doc.GetChild(NodeType.Shape, 1, true)).Chart.Series[0].DataLabels;
 
             Assert.True(pieChartDataLabels.ShowLeaderLines);
             Assert.True(pieChartDataLabels.ShowLegendKey);
@@ -709,10 +707,10 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Charts.PieChartExplosion.docx");
-            chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
+            ChartSeries series = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.Series[0];
 
-            Assert.AreEqual(10, chart.Series[0].DataPoints[0].Explosion);
-            Assert.AreEqual(40, chart.Series[0].DataPoints[1].Explosion);
+            Assert.AreEqual(10, series.DataPoints[0].Explosion);
+            Assert.AreEqual(40, series.DataPoints[1].Explosion);
         }
 
         [Test]
@@ -742,11 +740,11 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Charts.Bubble3D.docx");
-            chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
+            ChartSeries series = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.Series[0];
 
             for (int i = 0; i < 3; i++)
             {
-                Assert.True(chart.Series[0].DataLabels[i].ShowBubbleSize);
+                Assert.True(series.DataLabels[i].ShowBubbleSize);
             }
         }
 
@@ -984,13 +982,21 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Charts.AxisBound.docx");
             chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
 
-            Assert.AreEqual(AxisScaleType.Linear, chart.AxisX.Scaling.Type);
+            Assert.False(chart.AxisX.Scaling.Minimum.IsAuto);
             Assert.AreEqual(0.0d, chart.AxisX.Scaling.Minimum.Value);
             Assert.AreEqual(10.0d, chart.AxisX.Scaling.Maximum.Value);
 
-            Assert.AreEqual(AxisScaleType.Linear, chart.AxisY.Scaling.Type);
+            Assert.False(chart.AxisY.Scaling.Minimum.IsAuto);
             Assert.AreEqual(0.0d, chart.AxisY.Scaling.Minimum.Value);
             Assert.AreEqual(10.0d, chart.AxisY.Scaling.Maximum.Value);
+
+            chart = ((Shape)doc.GetChild(NodeType.Shape, 1, true)).Chart;
+
+            Assert.False(chart.AxisX.Scaling.Minimum.IsAuto);
+            Assert.AreEqual(new AxisBound(new DateTime(1980, 1, 1)), chart.AxisX.Scaling.Minimum);
+            Assert.AreEqual(new AxisBound(new DateTime(1990, 1, 1)), chart.AxisX.Scaling.Maximum);
+
+            Assert.True(chart.AxisY.Scaling.Minimum.IsAuto);
         }
 
         [Test]
@@ -1022,12 +1028,8 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Charts.ChartLegend.docx");
-            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.AreEqual(450.0d, shape.Width);
-            Assert.AreEqual(300.0d, shape.Height);
-
-            legend = shape.Chart.Legend;
+            legend = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.Legend;
 
             Assert.False(legend.Overlay);
             Assert.AreEqual(LegendPosition.TopRight, legend.Position);
@@ -1059,12 +1061,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Charts.AxisCross.docx");
-            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-
-            Assert.AreEqual(450.0d, shape.Width);
-            Assert.AreEqual(250.0d, shape.Height);
-
-            axis = shape.Chart.AxisX;
+            axis = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.AxisX;
 
             Assert.True(axis.AxisBetweenCategories);
             Assert.AreEqual(AxisCrosses.Custom, axis.Crosses);

@@ -41,8 +41,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Border.FontBorder.docx");
             //ExEnd
 
-            Document outDoc = new Document(ArtifactsDir + "Border.FontBorder.docx");
-            Border border = outDoc.FirstSection.Body.FirstParagraph.Runs[0].Font.Border;
+            doc = new Document(ArtifactsDir + "Border.FontBorder.docx");
+            Border border = doc.FirstSection.Body.FirstParagraph.Runs[0].Font.Border;
 
             Assert.AreEqual(Color.Green.ToArgb(), border.Color.ToArgb());
             Assert.AreEqual(2.5d, border.LineWidth);
@@ -71,8 +71,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Border.ParagraphTopBorder.docx");
             //ExEnd
 
-            Document outDoc = new Document(ArtifactsDir + "Border.ParagraphTopBorder.docx");
-            Border border = outDoc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders[BorderType.Top];
+            doc = new Document(ArtifactsDir + "Border.ParagraphTopBorder.docx");
+            Border border = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders[BorderType.Top];
 
             Assert.AreEqual(Color.Red.ToArgb(), border.Color.ToArgb());
             Assert.AreEqual(4.0d, border.LineWidth);
@@ -101,9 +101,9 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Border.ClearFormatting.docx");
             //ExEnd
 
-            Document outDoc = new Document(ArtifactsDir + "Border.ClearFormatting.docx");
+            doc = new Document(ArtifactsDir + "Border.ClearFormatting.docx");
 
-            foreach (Border testBorder in outDoc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders)
+            foreach (Border testBorder in doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders)
             {
                 Assert.AreEqual(Color.Empty.ToArgb(), testBorder.Color.ToArgb());
                 Assert.AreEqual(0.0d, testBorder.LineWidth);
@@ -166,8 +166,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Border.EqualityCountingAndVisibility.docx");
             //ExEnd
 
-            Document outDoc = new Document(ArtifactsDir + "Border.EqualityCountingAndVisibility.docx");
-            ParagraphCollection paragraphs = outDoc.FirstSection.Body.Paragraphs;
+            doc = new Document(ArtifactsDir + "Border.EqualityCountingAndVisibility.docx");
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
             foreach (Border testBorder in paragraphs[0].ParagraphFormat.Borders)
                 Assert.AreEqual(LineStyle.None, testBorder.LineStyle);
@@ -240,13 +240,13 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Border.VerticalAndHorizontalBorders.docx");
             //ExEnd
 
-            Document outDoc = new Document(ArtifactsDir + "Border.VerticalAndHorizontalBorders.docx");
-            ParagraphCollection paragraphs = outDoc.FirstSection.Body.Paragraphs;
+            doc = new Document(ArtifactsDir + "Border.VerticalAndHorizontalBorders.docx");
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
             Assert.AreEqual(LineStyle.DashSmallGap, paragraphs[0].ParagraphFormat.Borders[BorderType.Horizontal].LineStyle);
             Assert.AreEqual(LineStyle.DashSmallGap, paragraphs[1].ParagraphFormat.Borders[BorderType.Horizontal].LineStyle);
 
-            Table outTable = (Table)outDoc.GetChild(NodeType.Table, 0, true);
+            Table outTable = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             foreach (Row row in outTable.GetChildNodes(NodeType.Row, true))
             {

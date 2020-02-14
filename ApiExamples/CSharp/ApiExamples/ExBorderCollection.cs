@@ -40,9 +40,9 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "BorderCollection.GetBordersEnumerator.docx");
             //ExEnd
 
-            Document outDoc = new Document(ArtifactsDir + "BorderCollection.GetBordersEnumerator.docx");
+            doc = new Document(ArtifactsDir + "BorderCollection.GetBordersEnumerator.docx");
 
-            foreach (Border border in outDoc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders)
+            foreach (Border border in doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders)
             {
                 Assert.AreEqual(Color.RoyalBlue.ToArgb(), border.Color.ToArgb());
                 Assert.AreEqual(LineStyle.Double, border.LineStyle);
@@ -64,9 +64,9 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "BorderCollection.RemoveAllBorders.docx");
             //ExEnd
 
-            Document outDoc = new Document(ArtifactsDir + "BorderCollection.RemoveAllBorders.docx");
+            doc = new Document(ArtifactsDir + "BorderCollection.RemoveAllBorders.docx");
 
-            foreach (Border border in outDoc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders)
+            foreach (Border border in doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders)
             {
                 Assert.AreEqual(Color.Empty.ToArgb(), border.Color.ToArgb());
                 Assert.AreEqual(LineStyle.None, border.LineStyle);

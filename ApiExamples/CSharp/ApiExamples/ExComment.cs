@@ -95,12 +95,10 @@ namespace ApiExamples
 
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
             Comment comment = (Comment)comments[0];
-
-            Assert.AreEqual(2, comment.Replies.Count());
+            Assert.AreEqual(2, comment.Replies.Count()); //ExSkip
 
             comment.RemoveAllReplies();
-
-            Assert.AreEqual(0, comment.Replies.Count());
+            Assert.AreEqual(0, comment.Replies.Count()); //ExSkip
             //ExEnd
         }
 
