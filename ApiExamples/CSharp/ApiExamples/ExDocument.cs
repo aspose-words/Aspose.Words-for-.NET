@@ -690,20 +690,33 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SaveHtmlPrettyFormat()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void SaveHtmlPrettyFormat(bool isPrettyFormat)
         {
             //ExStart
             //ExFor:SaveOptions.PrettyFormat
             //ExSummary:Shows how to pass an option to export HTML tags in a well spaced, human readable format.
             Document doc = new Document(MyDir + "Document.docx");
 
-            HtmlSaveOptions htmlOptions = new HtmlSaveOptions(SaveFormat.Html);
             // Enabling the PrettyFormat setting will export HTML in an indented format that is easy to read
             // If this is setting is false (by default) then the HTML tags will be exported in condensed form with no indentation
-            htmlOptions.PrettyFormat = true;
+            HtmlSaveOptions htmlOptions = new HtmlSaveOptions(SaveFormat.Html)
+            {
+                PrettyFormat = isPrettyFormat
+            };
 
             doc.Save(ArtifactsDir + "Document.SaveHtmlPrettyFormat.html", htmlOptions);
             //ExEnd
+
+            string html = File.ReadAllText(ArtifactsDir + "Document.SaveHtmlPrettyFormat.html");
+
+            // Enabling HtmlSaveOptions.PrettyFormat places tabs and newlines in places where it would improve the readability of html source
+            if (isPrettyFormat) 
+            Assert.True(html.StartsWith("<html>\r\n\t<head>\r\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n\t\t"));
+            else
+            Assert.True(html.StartsWith("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />"));
+
         }
 
         [Test]
@@ -764,13 +777,16 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Set the option to export font resources
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
-            options.ExportFontResources = true;
-            // Create and pass the object which implements the handler methods
-            options.FontSavingCallback = new HandleFontSaving();
-
+            // Set the option to export font resources and create and pass the object which implements the handler methods
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
+            {
+                ExportFontResources = true,
+                FontSavingCallback = new HandleFontSaving()
+            };
+            
+            // The fonts from the input document will now be exported as .ttf files and saved alongside the output document
             doc.Save(ArtifactsDir + "Document.SaveHtmlExportFonts.html", options);
+            Assert.AreEqual(10, Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")).Length); //ExSkip
         }
 
         /// <summary>
@@ -825,12 +841,10 @@ namespace ApiExamples
             // Insert sample HTML content
             builder.InsertHtml("<p>Hello World</p>");
 
-            doc.Save(ArtifactsDir + "Document.FontChangeViaCallback.doc");
-
-            // Check that the inserted content has the correct formatting
-            Run run = (Run) doc.GetChild(NodeType.Run, 0, true);
-            Assert.AreEqual(24.0, run.Font.Size);
-            Assert.AreEqual("Arial", run.Font.Name);
+            doc.Save(ArtifactsDir + "Document.FontChangeViaCallback.docx");
+            Run run = (Run)doc.GetChild(NodeType.Run, 0, true); //ExSkip
+            Assert.AreEqual(24.0, run.Font.Size); //ExSkip
+            Assert.AreEqual("Arial", run.Font.Name); //ExSkip
         }
 
         public class HandleNodeChangingFontChanger : INodeChangingCallback
@@ -871,18 +885,26 @@ namespace ApiExamples
             //ExFor:Document.AppendDocument(Document, ImportFormatMode)
             //ExSummary:Shows how to append a document to the end of another document.
             // The document that the content will be appended to
-            Document dstDoc = new Document(MyDir + "Document.docx");
-            
+            Document dstDoc = new Document();
+            dstDoc.FirstSection.Body.AppendParagraph("Destination document text. ");
+
             // The document to append
-            Document srcDoc = new Document(MyDir + "Paragraphs.docx");
+            Document srcDoc = new Document();
+            srcDoc.FirstSection.Body.AppendParagraph("Source document text. ");
 
             // Append the source document to the destination document
             // Pass format mode to retain the original formatting of the source document when importing it
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
+            Assert.AreEqual(2, dstDoc.Sections.Count); //ExSkip
 
             // Save the document
             dstDoc.Save(ArtifactsDir + "Document.AppendDocument.docx");
             //ExEnd
+
+            string outDocText = new Document(ArtifactsDir + "Document.AppendDocument.docx").GetText();
+
+            Assert.True(outDocText.StartsWith(dstDoc.GetText()));
+            Assert.True(outDocText.EndsWith(srcDoc.GetText()));
         }
 
         [Test]
@@ -917,34 +939,6 @@ namespace ApiExamples
                     Assert.That(() => doc.Sections[i].HeadersFooters.LinkToPrevious(false),
                         Throws.TypeOf<NullReferenceException>());
             }
-        }
-
-        [Test]
-        public void ValidateAllDocumentSignatures()
-        {
-            //ExStart
-            //ExFor:Document.DigitalSignatures
-            //ExFor:DigitalSignatureCollection
-            //ExFor:DigitalSignatureCollection.IsValid
-            //ExFor:DigitalSignatureCollection.Count
-            //ExFor:DigitalSignatureCollection.Item(Int32)
-            //ExFor:DigitalSignatureType
-            //ExSummary:Shows how to validate all signatures in a document.
-            // Load the signed document
-            Document doc = new Document(MyDir + "Digitally signed.docx");
-            DigitalSignatureCollection digitalSignatureCollection = doc.DigitalSignatures;
-
-            if (digitalSignatureCollection.IsValid)
-            {
-                Console.WriteLine("Signatures belonging to this document are valid");
-                Console.WriteLine(digitalSignatureCollection.Count);
-                Console.WriteLine(digitalSignatureCollection[0].SignatureType);
-            }
-            else
-            {
-                Console.WriteLine("Signatures belonging to this document are NOT valid");
-            }
-            //ExEnd
         }
 
         [Test]
@@ -995,13 +989,16 @@ namespace ApiExamples
             //ExFor:DigitalSignature.CertificateHolder
             //ExFor:DigitalSignature.IssuerName
             //ExFor:DigitalSignature.SubjectName
+            //ExFor:DigitalSignatureCollection
+            //ExFor:DigitalSignatureCollection.IsValid
+            //ExFor:DigitalSignatureCollection.Count
+            //ExFor:DigitalSignatureCollection.Item(Int32)
             //ExFor:DigitalSignatureUtil.Sign(Stream, Stream, CertificateHolder)
             //ExFor:DigitalSignatureUtil.Sign(String, String, CertificateHolder)
+            //ExFor:DigitalSignatureType
+            //ExFor:Document.DigitalSignatures
             //ExSummary:Shows how to sign documents with X.509 certificates.
-            // Open an unsigned document
-            Document unSignedDoc = new Document(MyDir + "Document.docx");
-
-            // Verify that it isn't signed
+            // Verify that a document isn't signed
             Assert.False(FileFormatUtil.DetectFileFormat(MyDir + "Document.docx").HasDigitalSignature);
 
             // Create a CertificateHolder object from a PKCS #12 file, which we will use to sign the document
@@ -1025,8 +1022,14 @@ namespace ApiExamples
 
             Assert.True(FileFormatUtil.DetectFileFormat(ArtifactsDir + "Document.DigitalSignature.docx").HasDigitalSignature);
 
-            // Verify signature details
+            // Open the signed document and get its digital signature collection
             Document signedDoc = new Document(ArtifactsDir + "Document.DigitalSignature.docx");
+            DigitalSignatureCollection digitalSignatureCollection = signedDoc.DigitalSignatures;
+
+            // Verify that all of the document's digital signatures are valid and check their details
+            Assert.True(digitalSignatureCollection.IsValid);
+            Assert.AreEqual(1, digitalSignatureCollection.Count);
+            Assert.AreEqual(DigitalSignatureType.XmlDsig, digitalSignatureCollection[0].SignatureType);
             Assert.AreEqual("CN=Morzal.Me", signedDoc.DigitalSignatures[0].IssuerName);
             Assert.AreEqual("CN=Morzal.Me", signedDoc.DigitalSignatures[0].SubjectName);
             //ExEnd
@@ -1085,29 +1088,20 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.JoinRunsWithSameFormatting
             //ExSummary:Shows how to join runs in a document to reduce unneeded runs.
-            // Let's load this particular document. It contains a lot of content that has been edited many times
-            // This means the document will most likely contain a large number of runs with duplicate formatting
+            // Open a document which contains adjacent runs of text with identical formatting
+            // This can, for example, occur if we edit one paragraph many times
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // This is for illustration purposes only, remember how many run nodes we had in the original document
-            int runsBefore = doc.GetChildNodes(NodeType.Run, true).Count;
+            // Get the number of runs our document contains
+            Assert.AreEqual(317, doc.GetChildNodes(NodeType.Run, true).Count);
 
-            // Join runs with the same formatting. This is useful to speed up processing and may also reduce redundant
-            // tags when exporting to HTML which will reduce the output file size
-            int joinCount = doc.JoinRunsWithSameFormatting();
+            // We can merge all nearby runs with the same formatting to reduce that number by calling JoinRunsWithSameFormatting()
+            // This method will also notify us of the number of run joins that took place
+            Assert.AreEqual(121, doc.JoinRunsWithSameFormatting());
 
-            // This is for illustration purposes only, see how many runs are left after joining
-            int runsAfter = doc.GetChildNodes(NodeType.Run, true).Count;
-
-            Console.WriteLine("Number of runs before: {0}, after: {1}, joins: {2}", runsBefore, runsAfter, joinCount);
-
-            // Save the optimized document to disk
-            doc.Save(ArtifactsDir + "Document.JoinRunsWithSameFormatting.html");
+            // Get the number of runs after joining
+            Assert.AreEqual(196, doc.GetChildNodes(NodeType.Run, true).Count);
             //ExEnd
-
-            // Verify that runs were joined in the document
-            Assert.That(runsAfter, Is.LessThan(runsBefore));
-            Assert.AreNotEqual(0, joinCount);
         }
 
         [Test]
@@ -1118,7 +1112,8 @@ namespace ApiExamples
             //ExFor:ControlChar.Tab
             //ExFor:ControlChar.TabChar
             //ExSummary:Changes default tab positions for the document and inserts text with some tab characters.
-            DocumentBuilder builder = new DocumentBuilder();
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Set default tab stop to 72 points (1 inch)
             builder.Document.DefaultTabStop = 72;
@@ -1126,6 +1121,13 @@ namespace ApiExamples
             builder.Writeln("Hello" + ControlChar.Tab + "World!");
             builder.Writeln("Hello" + ControlChar.TabChar + "World!");
             //ExEnd
+
+            using (MemoryStream docStream = new MemoryStream())
+            {
+                doc.Save(docStream, SaveFormat.Docx);
+                doc = new Document(docStream);
+                Assert.AreEqual(72, doc.DefaultTabStop);
+            }
         }
 
         [Test]
@@ -1136,45 +1138,46 @@ namespace ApiExamples
             //ExSummary:Shows how to deep clone a document.
             Document doc = new Document(MyDir + "Document.docx");
             Document clone = doc.Clone();
+
+            Assert.AreNotEqual(doc, clone);
             //ExEnd
         }
 
         [Test]
         public void ChangeFieldUpdateCultureSource()
         {
-            // We will test this functionality creating a document with two fields with date formatting
-            // field where the set language is different than the current culture, e.g German
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Insert content with German locale
-            builder.Font.LocaleId = 1031;
-            builder.InsertField("MERGEFIELD Date1 \\@ \"dddd, d MMMM yyyy\"");
-            builder.Write(" - ");
-            builder.InsertField("MERGEFIELD Date2 \\@ \"dddd, d MMMM yyyy\"");
-
-            // Make sure that English culture is set then execute mail merge using current culture for
-            // date formatting
-            CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-            doc.MailMerge.Execute(new[] { "Date1" }, new object[] { new DateTime(2011, 1, 01) });
-
             //ExStart
             //ExFor:Document.FieldOptions
             //ExFor:FieldOptions
             //ExFor:FieldOptions.FieldUpdateCultureSource
             //ExFor:FieldUpdateCultureSource
             //ExSummary:Shows how to specify where the culture used for date formatting during field update and mail merge is chosen from.
-            // Set the culture used during field update to the culture used by the field
-            doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode;
-            doc.MailMerge.Execute(new[] { "Date2" }, new object[] { new DateTime(2011, 1, 01) });
-            //ExEnd
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Verify the field update behavior is correct
-            Assert.AreEqual("Saturday, 1 January 2011 - Samstag, 1 Januar 2011", doc.Range.Text.Trim());
+            // Insert two merge fields with German locale
+            builder.Font.LocaleId = 1031;
+            builder.InsertField("MERGEFIELD Date1 \\@ \"dddd, d MMMM yyyy\"");
+            builder.Write(" - ");
+            builder.InsertField("MERGEFIELD Date2 \\@ \"dddd, d MMMM yyyy\"");
+
+            // Store the current culture in a variable and explicitly set it to US English
+            CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+
+            // Execute a mail merge for the first MERGEFIELD using the current culture (US English) for date formatting
+            doc.MailMerge.Execute(new[] { "Date1" }, new object[] { new DateTime(2020, 1, 01) });
+
+            // Execute a mail merge for the second MERGEFIELD using the field's culture (German) for date formatting
+            doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode;
+            doc.MailMerge.Execute(new[] { "Date2" }, new object[] { new DateTime(2020, 1, 01) });
+
+            // The first MERGEFIELD has received a date formatted in English, while the second one is in German
+            Assert.AreEqual("Wednesday, 1 January 2020 - Mittwoch, 1 Januar 2020", doc.Range.Text.Trim());
 
             // Restore the original culture
             Thread.CurrentThread.CurrentCulture = currentCulture;
+            //ExEnd
         }
 
         [Test]
@@ -1186,17 +1189,15 @@ namespace ApiExamples
             //ExSummary:Shows the difference between calling the GetText and ToString methods on a node.
             Document doc = new Document();
 
-            // Enter a dummy field into the document
+            // Enter a field into the document
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertField("MERGEFIELD Field");
 
             // GetText will retrieve all field codes and special characters
-            Console.WriteLine("GetText() Result: " + doc.GetText());
+            Assert.AreEqual("\u0013MERGEFIELD Field\u0014«Field»\u0015\u000c", doc.GetText());
 
-            // ToString will export the node to the specified format. When converted to text it will not retrieve fields code 
-            // or special characters, but will still contain some natural formatting characters such as paragraph markers etc. 
-            // This is the same as "viewing" the document as if it was opened in a text editor
-            Console.WriteLine("ToString() Result: " + doc.ToString(SaveFormat.Text));
+            // ToString will give us the plaintext version of the document in the save format we put into the parameter
+            Assert.AreEqual("«Field»\r\n", doc.ToString(SaveFormat.Text));
             //ExEnd
         }
 
@@ -1225,52 +1226,43 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ProtectUnprotectDocument()
+        public void Protect()
         {
             //ExStart
             //ExFor:Document.Protect(ProtectionType,String)
-            //ExSummary:Shows how to protect a document.
-            Document doc = new Document();
-            doc.Protect(ProtectionType.AllowOnlyFormFields, "password");
-            //ExEnd
-
-            //ExStart
-            //ExFor:Document.Unprotect
-            //ExSummary:Shows how to unprotect a document. Note that the password is not required.
-            doc.Unprotect();
-            //ExEnd
-
-            //ExStart
-            //ExFor:Document.Unprotect(String)
-            //ExSummary:Shows how to unprotect a document using a password.
-            doc.Unprotect("password");
-            //ExEnd
-        }
-
-        [Test]
-        public void PasswordVerification()
-        {
-            //ExStart
-            //ExFor:WriteProtection.SetPassword(String)
-            //ExSummary:Sets the write protection password for the document.
-            Document doc = new Document();
-            doc.WriteProtection.SetPassword("pwd");
-            //ExEnd
-
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
-            Assert.True(doc.WriteProtection.ValidatePassword("pwd"));
-        }
-
-        [Test]
-        public void GetProtectionType()
-        {
-            //ExStart
             //ExFor:Document.ProtectionType
-            //ExSummary:Shows how to get protection type currently set in the document.
-            Document doc = new Document(MyDir + "Document.docx");
-            ProtectionType protectionType = doc.ProtectionType;
+            //ExFor:Document.Unprotect
+            //ExFor:Document.Unprotect(String)
+            //ExSummary:Shows how to protect a document.
+            // Create a new document and protect it with a password
+            Document doc = new Document();
+            doc.Protect(ProtectionType.ReadOnly, "password");
+            Assert.AreEqual(ProtectionType.ReadOnly, doc.ProtectionType);
+
+            // If we open this document with Microsoft Word and wish to edit it, 
+            // we will first need to stop the protection, which can only be done with the password
+            doc.Save(ArtifactsDir + "Document.Protect.docx");
+
+            // Note that the protection only applies to Microsoft Word users opening out document
+            // The document can still be opened and edited programmatically without a password, despite its protection status
+            // Encryption offers a more robust option for protecting document content
+            Document protectedDoc = new Document(ArtifactsDir + "Document.Protect.docx");
+            Assert.AreEqual(ProtectionType.ReadOnly, protectedDoc.ProtectionType);
+
+            DocumentBuilder builder = new DocumentBuilder(protectedDoc);
+            builder.Writeln("Text added to a protected document.");
+            Assert.AreEqual("Text added to a protected document.", protectedDoc.Range.Text.Trim()); //ExSkip
+
+            // Documents can have protection removed either with no password, or with the correct password
+            doc.Unprotect();
+            Assert.AreEqual(ProtectionType.NoProtection, doc.ProtectionType);
+
+            doc.Protect(ProtectionType.ReadOnly, "newPassword");
+            doc.Unprotect("wrongPassword");
+            Assert.AreEqual(ProtectionType.ReadOnly, doc.ProtectionType);
+
+            doc.Unprotect("newPassword");
+            Assert.AreEqual(ProtectionType.NoProtection, doc.ProtectionType);
             //ExEnd
         }
 
@@ -1280,14 +1272,29 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.EnsureMinimum
             //ExSummary:Shows how to ensure the Document is valid (has the minimum nodes required to be valid).
-            // Create a blank document then remove all nodes from it, the result will be a completely empty document
+            // Create a blank document
             Document doc = new Document();
-            doc.RemoveAllChildren();
 
-            // Ensure that the document is valid. Since the document has no nodes this method will create an empty section
-            // and add an empty paragraph to make it valid.
+            // Every blank document will contain the minimal set nodes requited for editing; a Section, Body and Paragraph
+            Assert.AreEqual(3, doc.GetChildNodes(NodeType.Any, true).Count);
+
+            // We can remove every node from the document with RemoveAllChildren()
+            doc.RemoveAllChildren();
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.Any, true).Count);
+
+            // EnsureMinimum() can ensure that the document has at least those three nodes
             doc.EnsureMinimum();
+            Assert.AreEqual(3, doc.GetChildNodes(NodeType.Any, true).Count);
             //ExEnd
+
+            NodeCollection nodes = doc.GetChildNodes(NodeType.Any, true);
+
+            Assert.AreEqual(NodeType.Section, nodes[0].NodeType);
+            Assert.AreEqual(NodeType.Body, nodes[1].NodeType);
+            Assert.AreEqual(NodeType.Paragraph, nodes[2].NodeType);
+
+            Assert.True(nodes[1].ParentNode == nodes[0]);
+            Assert.True(nodes[2].ParentNode == nodes[1]);
         }
 
         [Test]
@@ -2954,6 +2961,7 @@ namespace ApiExamples
             //ExFor:WriteProtection
             //ExFor:WriteProtection.IsWriteProtected
             //ExFor:WriteProtection.ReadOnlyRecommended
+            //ExFor:WriteProtection.SetPassword(String)
             //ExFor:WriteProtection.ValidatePassword(String)
             //ExSummary:Shows how to protect a document with a password.
             Document doc = new Document();
