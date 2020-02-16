@@ -1377,18 +1377,6 @@ namespace ApiExamples
             // which can save time with larger documents
             doc.Save(ArtifactsDir + "Document.GetPageCount.pdf");
             //ExEnd
-
-        }
-
-        [Test]
-        public void UpdateFields()
-        {
-            //ExStart
-            //ExFor:Document.UpdateFields
-            //ExSummary:Shows how to update all fields in a document.
-            Document doc = new Document(MyDir + "Document.docx");
-            doc.UpdateFields();
-            //ExEnd
         }
 
         [Test]

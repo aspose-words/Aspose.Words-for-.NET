@@ -35,13 +35,6 @@ namespace ApiExamples
     public class ExField : ApiExampleBase
     {
         [Test]
-        public void UpdateToc()
-        {
-            Document doc = new Document();
-            doc.UpdateFields();
-        }
-
-        [Test]
         public void GetFieldFromDocument()
         {
             //ExStart
@@ -3024,6 +3017,7 @@ namespace ApiExamples
         public void FieldOptionsCurrentUser()
         {
             //ExStart
+            //ExFor:Document.UpdateFields
             //ExFor:FieldOptions.CurrentUser
             //ExFor:UserInformation
             //ExFor:UserInformation.Name
@@ -4109,6 +4103,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldQuote
             //ExFor:FieldQuote.Text
+            //ExFor:Document.UpdateFields
             //ExSummary:Shows to use the QUOTE field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -4131,7 +4126,11 @@ namespace ApiExamples
 
             Assert.AreEqual(" QUOTE \u0013 DATE \u0014" + DateTime.Now.Date.ToShortDateString() + "\u0015", field.GetFieldCode());
 
+            // Some field types don't display the correct result until they are manually updated
+            Assert.AreEqual(String.Empty, doc.Range.Fields[0].Result); 
             doc.UpdateFields();
+            Assert.AreEqual("\"Quoted text\"", doc.Range.Fields[0].Result);
+
             doc.Save(ArtifactsDir + "Field.QUOTE.docx");
             //ExEnd
         }

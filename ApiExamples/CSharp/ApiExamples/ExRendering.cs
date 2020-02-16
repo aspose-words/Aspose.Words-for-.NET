@@ -918,21 +918,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void UpdateFields()
-        {
-            //ExStart
-            //ExFor:Document.UpdateFields
-            //ExSummary:Shows how to update all fields before rendering a document.
-            Document doc = new Document(MyDir + "Rendering.docx");
-
-            // This updates all fields in the document
-            doc.UpdateFields();
-
-            doc.Save(ArtifactsDir + "Rendering.UpdateFields.pdf");
-            //ExEnd
-        }
-
-        [Test]
         public void SetTrueTypeFontsFolder()
         {
             // Store the font sources currently used so we can restore them later
