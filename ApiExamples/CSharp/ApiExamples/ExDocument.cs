@@ -1458,26 +1458,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void GetDocumentVariables()
-        {
-            //ExStart
-            //ExFor:Document.Variables
-            //ExFor:VariableCollection
-            //ExSummary:Shows how to enumerate over document variables.
-            Document doc = new Document(MyDir + "Document.docx");
-
-            foreach (KeyValuePair<string, string> entry in doc.Variables)
-            {
-                string name = entry.Key;
-                string value = entry.Value;
-
-                // Do something useful
-                Console.WriteLine("Name: {0}, Value: {1}", name, value);
-            }
-            //ExEnd
-        }
-
-        [Test]
         [Description("WORDSNET-16099")]
         public void FootnoteColumns()
         {
