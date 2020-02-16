@@ -1542,55 +1542,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetEndnotePosition()
-        {
-            //ExStart
-            //ExFor:EndnoteOptions.Position
-            //ExFor:EndnotePosition
-            //ExSummary:Shows how to define endnote position in the document.
-            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
-
-            doc.EndnoteOptions.Position = EndnotePosition.EndOfSection;
-            //ExEnd
-        }
-
-        [Test]
-        public void SetEndnoteNumberFormat()
-        {
-            //ExStart
-            //ExFor:EndnoteOptions.NumberStyle
-            //ExSummary:Shows how to define numbering format for endnotes in the document.
-            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
-
-            doc.EndnoteOptions.NumberStyle = NumberStyle.Arabic1;
-            //ExEnd
-        }
-
-        [Test]
-        public void SetEndnoteRestartNumbering()
-        {
-            //ExStart
-            //ExFor:EndnoteOptions.RestartRule
-            //ExSummary:Shows how to define when automatic numbering for endnotes restarts in the document.
-            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
-
-            doc.EndnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
-            //ExEnd
-        }
-
-        [Test]
-        public void SetEndnoteStartingNumber()
-        {
-            //ExStart
-            //ExFor:EndnoteOptions.StartNumber
-            //ExSummary:Shows how to define the starting number or character for the first automatically numbered endnotes.
-            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
-
-            doc.EndnoteOptions.StartNumber = 1;
-            //ExEnd
-        }
-
-        [Test]
         public void Compare()
         {
             //ExStart
