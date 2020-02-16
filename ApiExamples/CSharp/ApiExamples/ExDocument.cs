@@ -1466,7 +1466,6 @@ namespace ApiExamples
             //ExFor:FootnoteOptions.Columns
             //ExSummary:Shows how to set the number of columns with which the footnotes area is formatted.
             Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
-
             Assert.AreEqual(0, doc.FootnoteOptions.Columns); //ExSkip
 
             // Let's change number of columns for footnotes on page. If columns value is 0 than footnotes area
@@ -1482,52 +1481,63 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetFootnotePosition()
+        public void Footnotes()
         {
             //ExStart
+            //ExFor:FootnoteOptions
+            //ExFor:FootnoteOptions.NumberStyle
             //ExFor:FootnoteOptions.Position
+            //ExFor:FootnoteOptions.RestartRule
+            //ExFor:FootnoteOptions.StartNumber
+            //ExFor:FootnoteNumberingRule
             //ExFor:FootnotePosition
-            //ExSummary:Shows how to define footnote position in the document.
-            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Text 1. ");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 1");
+            builder.Write("Text 2. ");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 2");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Write("Text 3. ");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 3");
 
             doc.FootnoteOptions.Position = FootnotePosition.BeneathText;
-            //ExEnd
-        }
-
-        [Test]
-        public void SetFootnoteNumberFormat()
-        {
-            //ExStart
-            //ExFor:FootnoteOptions.NumberStyle
-            //ExSummary:Shows how to define numbering format for footnotes in the document.
-            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
-
-            doc.FootnoteOptions.NumberStyle = NumberStyle.Arabic1;
-            //ExEnd
-        }
-
-        [Test]
-        public void SetFootnoteRestartNumbering()
-        {
-            //ExStart
-            //ExFor:FootnoteOptions.RestartRule
-            //ExFor:FootnoteNumberingRule
-            //ExSummary:Shows how to define when automatic numbering for footnotes restarts in the document.
-            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
-
-            doc.FootnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
-            //ExEnd
-        }
-
-        [Test]
-        public void SetFootnoteStartingNumber()
-        {
-            //ExStart
-            //ExFor:FootnoteOptions.StartNumber
-            //ExSummary:Shows how to define the starting number or character for the first automatically numbered footnotes.
-            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
-
+            doc.FootnoteOptions.NumberStyle = NumberStyle.UppercaseRoman;
+            doc.FootnoteOptions.RestartRule = FootnoteNumberingRule.Continuous;
             doc.FootnoteOptions.StartNumber = 1;
+
+            doc.Save(ArtifactsDir + "Document.Footnotes.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void Endnotes()
+        {
+            //ExStart
+            //ExFor:EndnoteOptions
+            //ExFor:EndnoteOptions.NumberStyle
+            //ExFor:EndnoteOptions.Position
+            //ExFor:EndnoteOptions.RestartRule
+            //ExFor:EndnoteOptions.StartNumber
+            //ExFor:EndnotePosition
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Text 1. ");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 1");
+            builder.Write("Text 2. ");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 2");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Write("Text 3. ");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 3");
+
+            doc.EndnoteOptions.Position = EndnotePosition.EndOfDocument;
+            doc.EndnoteOptions.NumberStyle = NumberStyle.UppercaseRoman;
+            doc.EndnoteOptions.RestartRule = FootnoteNumberingRule.Continuous;
+            doc.EndnoteOptions.StartNumber = 1;
+
+            doc.Save(ArtifactsDir + "Document.Endnotes.docx");
             //ExEnd
         }
 
@@ -1535,7 +1545,6 @@ namespace ApiExamples
         public void SetEndnotePosition()
         {
             //ExStart
-            //ExFor:EndnoteOptions
             //ExFor:EndnoteOptions.Position
             //ExFor:EndnotePosition
             //ExSummary:Shows how to define endnote position in the document.
