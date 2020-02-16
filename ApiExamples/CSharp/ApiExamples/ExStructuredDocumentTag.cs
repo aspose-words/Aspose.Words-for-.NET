@@ -715,6 +715,7 @@ namespace ApiExamples
         }
 
         //ExStart
+        //ExFor:CompositeNode.RemoveSmartTags
         //ExFor:CustomXmlProperty
         //ExFor:CustomXmlProperty.#ctor(String,String,String)
         //ExFor:CustomXmlProperty.Name
@@ -759,7 +760,13 @@ namespace ApiExamples
             // Print all the smart tags in our document with a document visitor
             doc.Accept(new SmartTagVisitor());
 
-            doc.Save(ArtifactsDir + "StructuredDocumentTag.SmartTags.docx");
+            // SmartTags are supported by older versions of microsoft Word
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.SmartTags.doc");
+
+            // We can strip a document of all its smart tags with RemoveSmartTags()
+            Assert.AreEqual(2, doc.GetChildNodes(NodeType.SmartTag, true).Count);
+            doc.RemoveSmartTags();
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.SmartTag, true).Count);
         }
 
         /// <summary>
