@@ -1303,8 +1303,17 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.RemoveMacros
             //ExSummary:Shows how to remove all macros from a document.
-            Document doc = new Document(MyDir + "Document.docx");
+            // Open a document that contains a VBA project and macros
+            Document doc = new Document(MyDir + "Macro.docm");
+
+            Assert.IsTrue(doc.HasMacros);
+            Assert.AreEqual("Project", doc.VbaProject.Name);
+
+            // We can strip the document of this content by calling this method
             doc.RemoveMacros();
+
+            Assert.IsFalse(doc.HasMacros);
+            Assert.Null(doc.VbaProject);
             //ExEnd
         }
 
@@ -1314,12 +1323,33 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.UpdateTableLayout
             //ExSummary:Shows how to update the layout of tables in a document.
-            Document doc = new Document(MyDir + "Document.docx");
+            // Create a new document and insert a table
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Normally this method is not necessary to call, as cell and table widths are maintained automatically
-            // This method may need to be called when exporting to PDF in rare cases when the table layout appears
-            // incorrectly in the rendered output
+            builder.InsertCell();
+            builder.Write("Cell 1");
+            builder.InsertCell();
+            builder.Write("Cell 2");
+            builder.InsertCell();
+            builder.Write("Cell 3");
+
+            // Create a SaveOptions object to prepare this document to be saved to .txt
+            TxtSaveOptions options = new TxtSaveOptions
+            {
+                PreserveTableLayout = true
+            };
+
+            // Previewing the appearance of the document in .txt form shows that the table will not be represented accurately
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true); //ExSkip
+            Assert.AreEqual(0.0d, table.FirstRow.Cells[0].CellFormat.Width); //ExSkip
+            Assert.AreEqual("CCC\r\neee\r\nlll\r\nlll\r\n   \r\n123\r\n\r\n", doc.ToString(options));
+
+            // We can call UpdateTableLayout() to fix some of these issues
             doc.UpdateTableLayout();
+
+            Assert.AreEqual(155.65d, table.FirstRow.Cells[0].CellFormat.Width); //ExSkip
+            Assert.AreEqual("Cell 1             Cell 2             Cell 3\r\n\r\n", doc.ToString(options));
             //ExEnd
         }
 
@@ -1329,15 +1359,25 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.PageCount
             //ExSummary:Shows how to invoke page layout and retrieve the number of pages in the document.
-            Document doc = new Document(MyDir + "Document.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // This invokes page layout which builds the document in memory so note that with large documents this
-            // property can take time. After invoking this property, any rendering operation e.g rendering to PDF or image
-            // will be instantaneous
-            int pageCount = doc.PageCount;
+            // Insert text spanning 3 pages
+            builder.Write("Page 1");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Write("Page 2");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Write("Page 3");
+
+            // Get the page count
+            Assert.AreEqual(3, doc.PageCount);
+
+            // Getting the PageCount property invoked the document's page layout to calculate the value
+            // This operation will not need to be re-done when rendering the document to a save format like .pdf,
+            // which can save time with larger documents
+            doc.Save(ArtifactsDir + "Document.GetPageCount.pdf");
             //ExEnd
 
-            Assert.AreEqual(1, pageCount);
         }
 
         [Test]
