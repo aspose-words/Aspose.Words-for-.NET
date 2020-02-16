@@ -1495,14 +1495,16 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Insert 3 paragraphs with a footnote at the end of each one
             builder.Write("Text 1. ");
             builder.InsertFootnote(FootnoteType.Footnote, "Footnote 1");
+            builder.InsertBreak(BreakType.PageBreak);
             builder.Write("Text 2. ");
             builder.InsertFootnote(FootnoteType.Footnote, "Footnote 2");
-            builder.InsertBreak(BreakType.PageBreak);
             builder.Write("Text 3. ");
-            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 3");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 3", "Custom reference mark");
 
+            // Edit the numbering and positioning of footnotes 
             doc.FootnoteOptions.Position = FootnotePosition.BeneathText;
             doc.FootnoteOptions.NumberStyle = NumberStyle.UppercaseRoman;
             doc.FootnoteOptions.RestartRule = FootnoteNumberingRule.Continuous;
@@ -1510,6 +1512,24 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Document.Footnotes.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Document.Footnotes.docx");
+
+            NodeCollection footnotes = doc.GetChildNodes(NodeType.Footnote, true);
+            Assert.AreEqual(3, footnotes.Count);
+
+            Assert.AreEqual(String.Empty, ((Footnote)footnotes[0]).ReferenceMark);
+            Assert.AreEqual("\u0002 Footnote 1", ((Footnote)footnotes[0]).GetText().Trim());
+            Assert.AreEqual(StoryType.Footnotes, ((Footnote)footnotes[0]).StoryType);
+
+            Assert.AreEqual(String.Empty, ((Footnote)footnotes[1]).ReferenceMark);
+            Assert.AreEqual("\u0002 Footnote 2", ((Footnote)footnotes[1]).GetText().Trim());
+            Assert.AreEqual(StoryType.Footnotes, ((Footnote)footnotes[1]).StoryType);
+
+            Assert.AreEqual("Custom reference mark", ((Footnote)footnotes[2]).ReferenceMark);
+            Assert.AreEqual("Custom reference mark Footnote 3", ((Footnote)footnotes[2]).GetText().Trim());
+            Assert.AreEqual(StoryType.Footnotes, ((Footnote)footnotes[2]).StoryType);
+
         }
 
         [Test]
@@ -1526,14 +1546,16 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Insert 3 paragraphs with an endnote at the end of each one
             builder.Write("Text 1. ");
             builder.InsertFootnote(FootnoteType.Endnote, "Endnote 1");
             builder.Write("Text 2. ");
             builder.InsertFootnote(FootnoteType.Endnote, "Endnote 2");
             builder.InsertBreak(BreakType.PageBreak);
             builder.Write("Text 3. ");
-            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 3");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 3", "Custom reference mark");
 
+            // Edit the numbering and positioning of endnotes 
             doc.EndnoteOptions.Position = EndnotePosition.EndOfDocument;
             doc.EndnoteOptions.NumberStyle = NumberStyle.UppercaseRoman;
             doc.EndnoteOptions.RestartRule = FootnoteNumberingRule.Continuous;
@@ -1541,6 +1563,23 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Document.Endnotes.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Document.Endnotes.docx");
+
+            NodeCollection Endnotes = doc.GetChildNodes(NodeType.Footnote, true);
+            Assert.AreEqual(3, Endnotes.Count);
+
+            Assert.AreEqual(String.Empty, ((Footnote)Endnotes[0]).ReferenceMark);
+            Assert.AreEqual("\u0002 Endnote 1", ((Footnote)Endnotes[0]).GetText().Trim());
+            Assert.AreEqual(StoryType.Endnotes, ((Footnote)Endnotes[0]).StoryType);
+
+            Assert.AreEqual(String.Empty, ((Footnote)Endnotes[1]).ReferenceMark);
+            Assert.AreEqual("\u0002 Endnote 2", ((Footnote)Endnotes[1]).GetText().Trim());
+            Assert.AreEqual(StoryType.Endnotes, ((Footnote)Endnotes[1]).StoryType);
+
+            Assert.AreEqual("Custom reference mark", ((Footnote)Endnotes[2]).ReferenceMark);
+            Assert.AreEqual("Custom reference mark Endnote 3", ((Footnote)Endnotes[2]).GetText().Trim());
+            Assert.AreEqual(StoryType.Endnotes, ((Footnote)Endnotes[2]).StoryType);
         }
 
         [Test]
@@ -1563,6 +1602,7 @@ namespace ApiExamples
                 doc1.Compare(doc2, "authorName", DateTime.Now);
 
             // If doc1 and doc2 are different, doc1 now has some revisions after the comparison, which can now be viewed and processed
+            Assert.AreEqual(2, doc1.Revisions.Count); //ExSkip
             foreach (Revision r in doc1.Revisions)
             {
                 Console.WriteLine($"Revision type: {r.RevisionType}, on a node of type \"{r.ParentNode.NodeType}\"");
@@ -1575,6 +1615,10 @@ namespace ApiExamples
             // doc1, when saved, now resembles doc2
             doc1.Save(ArtifactsDir + "Document.Compare.docx");
             //ExEnd
+
+            doc1 = new Document(ArtifactsDir + "Document.Compare.docx");
+            Assert.AreEqual(0, doc1.Revisions.Count);
+            Assert.AreEqual(doc2.GetText().Trim(), doc1.GetText().Trim());
         }
 
         [Test]
@@ -1687,7 +1731,7 @@ namespace ApiExamples
                 IgnoreCaseChanges = false,
                 IgnoreComments = false,
                 IgnoreTables = false,
-                IgnoreFields = false,
+                IgnoreFields = true,
                 IgnoreFootnotes = false,
                 IgnoreTextboxes = false,
                 IgnoreHeadersAndFooters = false,
@@ -1697,6 +1741,27 @@ namespace ApiExamples
             docOriginal.Compare(docEdited, "John Doe", DateTime.Now, compareOptions);
             docOriginal.Save(ArtifactsDir + "Document.CompareOptions.docx");
             //ExEnd
+
+            docOriginal = new Document(ArtifactsDir + "Document.CompareOptions.docx");
+
+            Assert.AreNotEqual(compareOptions.IgnoreFormatting, docOriginal.Revisions.Any(rev => rev.RevisionType == RevisionType.FormatChange));
+            Assert.AreNotEqual(compareOptions.IgnoreComments, docOriginal.Revisions.Any(rev => HasParentOfType(rev.ParentNode, NodeType.Comment)));
+            Assert.AreNotEqual(compareOptions.IgnoreTables, docOriginal.Revisions.Any(rev => HasParentOfType(rev.ParentNode, NodeType.Table)));
+            Assert.AreNotEqual(compareOptions.IgnoreFields, docOriginal.Revisions.Any(rev => HasParentOfType(rev.ParentNode, NodeType.FieldStart)));
+            Assert.AreNotEqual(compareOptions.IgnoreFootnotes, docOriginal.Revisions.Any(rev => HasParentOfType(rev.ParentNode, NodeType.Footnote)));
+            Assert.AreNotEqual(compareOptions.IgnoreTextboxes, docOriginal.Revisions.Any(rev => HasParentOfType(rev.ParentNode, NodeType.Shape)));
+            Assert.AreNotEqual(compareOptions.IgnoreHeadersAndFooters, docOriginal.Revisions.Any(rev => HasParentOfType(rev.ParentNode, NodeType.HeaderFooter)));
+        }
+
+        private bool HasParentOfType(Node n, NodeType parentType)
+        {
+            while (n.ParentNode != null)
+            {
+                if (n.NodeType == parentType) return true;
+                n = n.ParentNode;
+            }
+
+            return false;
         }
 
         [Test]
