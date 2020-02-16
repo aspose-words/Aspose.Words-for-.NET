@@ -1491,6 +1491,7 @@ namespace ApiExamples
             //ExFor:FootnoteOptions.StartNumber
             //ExFor:FootnoteNumberingRule
             //ExFor:FootnotePosition
+            //ExSummary:Shows how to insert footnotes and edit their appearance.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1521,6 +1522,7 @@ namespace ApiExamples
             //ExFor:EndnoteOptions.RestartRule
             //ExFor:EndnoteOptions.StartNumber
             //ExFor:EndnotePosition
+            //ExSummary:Shows how to insert endnotes and edit their appearance.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
