@@ -1388,17 +1388,23 @@ namespace ApiExamples
             //ExFor:BuiltInDocumentProperties.Words
             //ExFor:BuiltInDocumentProperties.Paragraphs
             //ExSummary:Shows how to update all list labels in a document.
-            Document doc = new Document(MyDir + "Document.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            // Add a paragraph of text to the document
+            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+            Assert.AreEqual(0, doc.BuiltInDocumentProperties.Characters); //ExSkip
+            Assert.AreEqual(0, doc.BuiltInDocumentProperties.Words); //ExSkip
+            Assert.AreEqual(1, doc.BuiltInDocumentProperties.Paragraphs); //ExSkip
 
-            // Some work should be done here that changes the document's content
-
-            // Update the word, character and paragraph count of the document
+            // Update word count properties of the document
             doc.UpdateWordCount();
 
-            // Display the updated document properties
-            Console.WriteLine("Characters: {0}", doc.BuiltInDocumentProperties.Characters);
-            Console.WriteLine("Words: {0}", doc.BuiltInDocumentProperties.Words);
-            Console.WriteLine("Paragraphs: {0}", doc.BuiltInDocumentProperties.Paragraphs);
+            // Check the values of the properties
+            Assert.AreEqual(105, doc.BuiltInDocumentProperties.Characters);
+            Assert.AreEqual(19, doc.BuiltInDocumentProperties.Words);
+            Assert.AreEqual(1, doc.BuiltInDocumentProperties.Paragraphs);
             //ExEnd
         }
 
@@ -1444,23 +1450,10 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx");
 
             // This property will return the full path and file name where the document was loaded from
-            string originalFilePath = doc.OriginalFileName;
-            // Let's get just the file name from the full path
-            string originalFileName = Path.GetFileName(originalFilePath);
+            Assert.AreEqual(MyDir + "Document.docx", doc.OriginalFileName);
 
             // This is the original LoadFormat of the document
-            LoadFormat loadFormat = doc.OriginalLoadFormat;
-            //ExEnd
-        }
-
-        [Test]
-        public void RemoveSmartTagsFromDocument()
-        {
-            //ExStart
-            //ExFor:CompositeNode.RemoveSmartTags
-            //ExSummary:Shows how to remove all smart tags from a document.
-            Document doc = new Document(MyDir + "Document.docx");
-            doc.RemoveSmartTags();
+            Assert.AreEqual(Aspose.Words.LoadFormat.Docx, doc.OriginalLoadFormat);
             //ExEnd
         }
 
