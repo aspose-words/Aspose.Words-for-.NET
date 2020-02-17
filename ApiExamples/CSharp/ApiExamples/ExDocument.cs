@@ -1384,27 +1384,40 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.UpdateWordCount()
+            //ExFor:Document.UpdateWordCount(Boolean)
             //ExFor:BuiltInDocumentProperties.Characters
             //ExFor:BuiltInDocumentProperties.Words
             //ExFor:BuiltInDocumentProperties.Paragraphs
+            //ExFor:BuiltInDocumentProperties.Lines
             //ExSummary:Shows how to update all list labels in a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
             // Add a paragraph of text to the document
-            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
-            Assert.AreEqual(0, doc.BuiltInDocumentProperties.Characters); //ExSkip
-            Assert.AreEqual(0, doc.BuiltInDocumentProperties.Words); //ExSkip
-            Assert.AreEqual(1, doc.BuiltInDocumentProperties.Paragraphs); //ExSkip
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+            builder.Write("Ut enim ad minim veniam, " +
+                            "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
 
-            // Update word count properties of the document
+            // Document metrics are not tracked in code in real time
+            Assert.AreEqual(0, doc.BuiltInDocumentProperties.Characters);
+            Assert.AreEqual(0, doc.BuiltInDocumentProperties.Words);
+            Assert.AreEqual(1, doc.BuiltInDocumentProperties.Paragraphs);
+            Assert.AreEqual(1, doc.BuiltInDocumentProperties.Lines);
+
+            // We will need to call this method to update them
             doc.UpdateWordCount();
 
             // Check the values of the properties
-            Assert.AreEqual(105, doc.BuiltInDocumentProperties.Characters);
-            Assert.AreEqual(19, doc.BuiltInDocumentProperties.Words);
-            Assert.AreEqual(1, doc.BuiltInDocumentProperties.Paragraphs);
+            Assert.AreEqual(196, doc.BuiltInDocumentProperties.Characters);
+            Assert.AreEqual(36, doc.BuiltInDocumentProperties.Words);
+            Assert.AreEqual(2, doc.BuiltInDocumentProperties.Paragraphs);
+            Assert.AreEqual(1, doc.BuiltInDocumentProperties.Lines);
+
+            // To also get the line count as it would appear in Microsoft Word,
+            // we will need to pass "true" to UpdateWordCount()
+            doc.UpdateWordCount(true);
+            Assert.AreEqual(4, doc.BuiltInDocumentProperties.Lines);
             //ExEnd
         }
 
@@ -1731,12 +1744,13 @@ namespace ApiExamples
                 IgnoreCaseChanges = false,
                 IgnoreComments = false,
                 IgnoreTables = false,
-                IgnoreFields = true,
+                IgnoreFields = false,
                 IgnoreFootnotes = false,
                 IgnoreTextboxes = false,
                 IgnoreHeadersAndFooters = false,
                 Target = ComparisonTargetType.New
             };
+
 
             docOriginal.Compare(docEdited, "John Doe", DateTime.Now, compareOptions);
             docOriginal.Save(ArtifactsDir + "Document.CompareOptions.docx");
@@ -1744,17 +1758,33 @@ namespace ApiExamples
 
             docOriginal = new Document(ArtifactsDir + "Document.CompareOptions.docx");
 
-            Assert.AreNotEqual(compareOptions.IgnoreFormatting, docOriginal.Revisions.Any(rev => rev.RevisionType == RevisionType.FormatChange));
-            Assert.AreNotEqual(compareOptions.IgnoreComments, docOriginal.Revisions.Any(rev => HasParentOfType(rev.ParentNode, NodeType.Comment)));
-            Assert.AreNotEqual(compareOptions.IgnoreTables, docOriginal.Revisions.Any(rev => HasParentOfType(rev.ParentNode, NodeType.Table)));
-            Assert.AreNotEqual(compareOptions.IgnoreFields, docOriginal.Revisions.Any(rev => HasParentOfType(rev.ParentNode, NodeType.FieldStart)));
-            Assert.AreNotEqual(compareOptions.IgnoreFootnotes, docOriginal.Revisions.Any(rev => HasParentOfType(rev.ParentNode, NodeType.Footnote)));
-            Assert.AreNotEqual(compareOptions.IgnoreTextboxes, docOriginal.Revisions.Any(rev => HasParentOfType(rev.ParentNode, NodeType.Shape)));
-            Assert.AreNotEqual(compareOptions.IgnoreHeadersAndFooters, docOriginal.Revisions.Any(rev => HasParentOfType(rev.ParentNode, NodeType.HeaderFooter)));
+            // If we set compareOptions to ignore certain types of changes,
+            // then revisions done on those types of nodes will not appear in the output document
+            // We can tell what kind of node a revision was done on by looking at the NodeType of the revision's parent nodes
+            Assert.AreNotEqual(compareOptions.IgnoreFormatting,
+                docOriginal.Revisions.Any(rev => rev.RevisionType == RevisionType.FormatChange));
+            Assert.AreNotEqual(compareOptions.IgnoreCaseChanges,
+                docOriginal.Revisions.Any(s => s.ParentNode.GetText().Contains("hello")));
+            Assert.AreNotEqual(compareOptions.IgnoreComments,
+                docOriginal.Revisions.Any(rev => HasParentOfType(rev, NodeType.Comment)));
+            Assert.AreNotEqual(compareOptions.IgnoreTables,
+                docOriginal.Revisions.Any(rev => HasParentOfType(rev, NodeType.Table)));
+            Assert.AreNotEqual(compareOptions.IgnoreFields,
+                docOriginal.Revisions.Any(rev => HasParentOfType(rev, NodeType.FieldStart)));
+            Assert.AreNotEqual(compareOptions.IgnoreFootnotes,
+                docOriginal.Revisions.Any(rev => HasParentOfType(rev, NodeType.Footnote)));
+            Assert.AreNotEqual(compareOptions.IgnoreTextboxes,
+                docOriginal.Revisions.Any(rev => HasParentOfType(rev, NodeType.Shape)));
+            Assert.AreNotEqual(compareOptions.IgnoreHeadersAndFooters,
+                docOriginal.Revisions.Any(rev => HasParentOfType(rev, NodeType.HeaderFooter)));
         }
 
-        private bool HasParentOfType(Node n, NodeType parentType)
+        /// <summary>
+        /// Returns true if the passed revision has a parent node with the type specified by parentType
+        /// </summary>
+        private bool HasParentOfType(Revision revision, NodeType parentType)
         {
+            Node n = revision.ParentNode;
             while (n.ParentNode != null)
             {
                 if (n.NodeType == parentType) return true;
@@ -1770,7 +1800,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.RemoveExternalSchemaReferences
             //ExSummary:Shows how to remove all external XML schema references from a document. 
-            Document doc = new Document(MyDir + "Document.docx");
+            Document doc = new Document(MyDir + "External XML schema.docx");
+
             doc.RemoveExternalSchemaReferences();
             //ExEnd
         }
@@ -1784,11 +1815,46 @@ namespace ApiExamples
             //ExFor:CleanupOptions.UnusedLists
             //ExFor:CleanupOptions.UnusedStyles
             //ExSummary:Shows how to remove all unused styles and lists from a document. 
-            Document doc = new Document(MyDir + "Document.docx");
-            
-            CleanupOptions cleanupOptions = new CleanupOptions { UnusedLists = true, UnusedStyles = true };
+            Document doc = new Document();
+            Assert.AreEqual(4, doc.Styles.Count); //ExSkip
+
+            // Insert some styles into a blank document
+            doc.Styles.Add(StyleType.List, "MyListStyle1");
+            doc.Styles.Add(StyleType.List, "MyListStyle2");
+            doc.Styles.Add(StyleType.Character, "MyParagraphStyle1");
+            doc.Styles.Add(StyleType.Character, "MyParagraphStyle2");
+
+            // Combined with the built in styles, the document now has 8 styles in total,
+            // but all 4 of the ones we added count as unused
+            Assert.AreEqual(8, doc.Styles.Count);
+
+            // A character style counts as used when the document contains text in that style
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Font.Style = doc.Styles["MyParagraphStyle1"];
+            builder.Writeln("Hello world!");
+
+            // A list style is also "used" when there is a list that uses it
+            Aspose.Words.Lists.List list = doc.Lists.Add(doc.Styles["MyListStyle1"]);
+            builder.ListFormat.List = list;
+            builder.Writeln("Item 1");
+            builder.Writeln("Item 2");
+
+            // The Cleanup() method, when configured with a CleanupOptions object, can target unused styles and remove them
+            CleanupOptions cleanupOptions = new CleanupOptions
+            {
+                UnusedLists = true, 
+                UnusedStyles = true
+            };
+
+            // We've added 4 styles and used 2 of them, so the other two will be removed when this method is called
             doc.Cleanup(cleanupOptions);
+            Assert.AreEqual(6, doc.Styles.Count);
             //ExEnd
+
+            doc.FirstSection.Body.RemoveAllChildren();
+            doc.Cleanup(cleanupOptions);
+
+            Assert.AreEqual(4, doc.Styles.Count);
         }
 
         [Test]
@@ -1803,7 +1869,7 @@ namespace ApiExamples
 
             // This text will appear as normal text in the document and no revisions will be counted
             doc.FirstSection.Body.FirstParagraph.Runs.Add(new Run(doc, "Hello world!"));
-            Console.WriteLine(doc.Revisions.Count); // 0
+            Assert.AreEqual(0, doc.Revisions.Count);
 
             doc.StartTrackRevisions("Author");
 
@@ -1811,21 +1877,21 @@ namespace ApiExamples
             // We did not specify a time while calling StartTrackRevisions(), so the date/time that's noted
             // on the revision will be the real time when StartTrackRevisions() executes
             doc.FirstSection.Body.AppendParagraph("Hello again!");
-            Console.WriteLine(doc.Revisions.Count); // 2
+            Assert.AreEqual(2, doc.Revisions.Count);
 
             // Stopping the tracking of revisions makes this text appear as normal text
             // Revisions are not counted when the document is changed
             doc.StopTrackRevisions();
             doc.FirstSection.Body.AppendParagraph("Hello again!");
-            Console.WriteLine(doc.Revisions.Count); // 2
+            Assert.AreEqual(2, doc.Revisions.Count);
 
             // Specifying some date/time will apply that date/time to all subsequent revisions until StopTrackRevisions() is called
             // Note that placing values such as DateTime.MinValue as an argument will create revisions that do not have a date/time at all
             doc.StartTrackRevisions("Author", new DateTime(1970, 1, 1));
             doc.FirstSection.Body.AppendParagraph("Hello again!");
-            Console.WriteLine(doc.Revisions.Count);
+            Assert.AreEqual(4, doc.Revisions.Count);
 
-            doc.Save(ArtifactsDir + "Document.StartTrackRevisions.doc");
+            doc.Save(ArtifactsDir + "Document.StartTrackRevisions.docx");
             //ExEnd
         }
 
@@ -1857,10 +1923,12 @@ namespace ApiExamples
             // Start tracking and make some revisions
             doc.StartTrackRevisions("Author");
             doc.FirstSection.Body.AppendParagraph("Hello world!");
+            Assert.AreEqual(2, doc.Revisions.Count); //ExSkip
 
             // Revisions will now show up as normal text in the output document
             doc.AcceptAllRevisions();
-            doc.Save(ArtifactsDir + "Document.AcceptAllRevisions.doc");
+            doc.Save(ArtifactsDir + "Document.AcceptAllRevisions.docx");
+            Assert.AreEqual(0, doc.Revisions.Count); //ExSKip
             //ExEnd
         }
 
@@ -1875,11 +1943,11 @@ namespace ApiExamples
             //ExFor:Story.Paragraphs
             //ExSummary:Shows how to get paragraph that was moved (deleted/inserted) in Microsoft Word while change tracking was enabled.
             Document doc = new Document(MyDir + "Revisions.docx");
-            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
             // There are two sets of move revisions in this document
             // One moves a small part of a paragraph, while the other moves a whole paragraph
             // Paragraph.IsMoveFromRevision/IsMoveToRevision will only be true if a whole paragraph is moved, as in the latter case
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
             for (int i = 0; i < paragraphs.Count; i++)
             {
                 if (paragraphs[i].IsMoveFromRevision)
@@ -1888,6 +1956,11 @@ namespace ApiExamples
                     Console.WriteLine("The paragraph {0} has been moved (inserted).", i);
             }
             //ExEnd
+
+            Assert.AreEqual(11, doc.Revisions.Count());
+            Assert.AreEqual(6, doc.Revisions.Count(r => r.RevisionType == RevisionType.Moving));
+            Assert.AreEqual(1, paragraphs.Count(p => ((Paragraph)p).IsMoveFromRevision));
+            Assert.AreEqual(1, paragraphs.Count(p => ((Paragraph)p).IsMoveToRevision));
         }
 
         [Test]
@@ -1918,6 +1991,15 @@ namespace ApiExamples
                 }
             }
             //ExEnd
+            Assert.AreEqual("", ((Paragraph)doc.Revisions[0].ParentNode).ListLabel.LabelString);
+            Assert.AreEqual("1.", ((Paragraph)doc.Revisions[1].ParentNode).ListLabel.LabelString);
+            Assert.AreEqual("a.", ((Paragraph)doc.Revisions[3].ParentNode).ListLabel.LabelString);
+
+            doc.RevisionsView = RevisionsView.Original;
+
+            Assert.AreEqual("1.", ((Paragraph)doc.Revisions[0].ParentNode).ListLabel.LabelString);
+            Assert.AreEqual("a.", ((Paragraph)doc.Revisions[1].ParentNode).ListLabel.LabelString);
+            Assert.AreEqual("", ((Paragraph)doc.Revisions[3].ParentNode).ListLabel.LabelString);
         }
 
         [Test]
@@ -1930,18 +2012,26 @@ namespace ApiExamples
             //ExFor:ThumbnailGeneratingOptions.GenerateFromFirstPage
             //ExFor:ThumbnailGeneratingOptions.ThumbnailSize
             //ExSummary:Shows how to update a document's thumbnail.
-            Document doc = new Document();
+            Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Update document's thumbnail the default way
+            // If we aren't setting the thumbnail via built in document properties,
+            // we can set the first page of the document to be the thumbnail in an output .epub like this
             doc.UpdateThumbnail();
+            doc.Save(ArtifactsDir + "Document.UpdateThumbnail.FirstPage.epub");
 
-            // Review/change thumbnail options and then update document's thumbnail
-            ThumbnailGeneratingOptions tgo = new ThumbnailGeneratingOptions();
+            // Another way is to use the first image shape found in the document as the thumbnail
+            // Insert an image with a builder that we want to use as a thumbnail
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertImage(ImageDir + "Logo.jpg");
 
-            Console.WriteLine("Thumbnail size: {0}", tgo.ThumbnailSize);
-            tgo.GenerateFromFirstPage = true;
+            ThumbnailGeneratingOptions options = new ThumbnailGeneratingOptions();
+            Assert.AreEqual(new Size(600, 900), options.ThumbnailSize); //ExSKip
+            Assert.IsTrue(options.GenerateFromFirstPage); //ExSkip
+            options.ThumbnailSize = new Size(400, 400);
+            options.GenerateFromFirstPage = false;
 
-            doc.UpdateThumbnail(tgo);
+            doc.UpdateThumbnail(options);
+            doc.Save(ArtifactsDir + "Document.UpdateThumbnail.FirstImage.epub");
             //ExEnd
         }
 
@@ -2056,7 +2146,7 @@ namespace ApiExamples
             CustomDocumentProperties customDocumentProperties = plaintext.CustomDocumentProperties;
             //ExEnd
 
-            Assert.That(customDocumentProperties, Is.Empty);
+            Assert.IsEmpty(customDocumentProperties);
         }
 
         [Test]
@@ -2115,7 +2205,8 @@ namespace ApiExamples
             builder.Writeln("Some text.");
 
             SaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
-            Assert.AreEqual(false, options.UseAntiAliasing);
+            Assert.IsFalse(options.UseAntiAliasing); //ExSkip
+            Assert.IsFalse(options.UseHighQualityRendering); //ExSkip
 
             doc.Save(ArtifactsDir + "Document.ImageSaveOptions.Default.jpg", options);
 
@@ -2123,40 +2214,6 @@ namespace ApiExamples
             options.UseHighQualityRendering = true;
 
             doc.Save(ArtifactsDir + "Document.ImageSaveOptions.HighQuality.jpg", options);
-            //ExEnd
-        }
-
-        [Test]
-        public void WordCountUpdate()
-        {
-            //ExStart
-            //ExFor:Document.UpdateWordCount(Boolean)
-            //ExSummary:Shows how to keep track of the word count.
-            // Create an empty document
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.Writeln("This is the first line.");
-            builder.Writeln("This is the second line.");
-            builder.Writeln("These three lines contain eighteen words in total.");
-
-            // The fields that keep track of how many lines and words a document has are not automatically updated
-            // An empty document has one paragraph by default, which contains one empty line
-            Assert.AreEqual(0, doc.BuiltInDocumentProperties.Words);
-            Assert.AreEqual(1, doc.BuiltInDocumentProperties.Lines);
-
-            // To update them we have to use this method
-            // The default constructor updates just the word count
-            doc.UpdateWordCount();
-
-            Assert.AreEqual(18, doc.BuiltInDocumentProperties.Words);
-            Assert.AreEqual(1, doc.BuiltInDocumentProperties.Lines);
-
-            // If we want to update the line count as well, we have to use this overload
-            doc.UpdateWordCount(true);
-
-            Assert.AreEqual(18, doc.BuiltInDocumentProperties.Words);
-            Assert.AreEqual(3, doc.BuiltInDocumentProperties.Lines);
             //ExEnd
         }
 
@@ -2170,39 +2227,31 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Brand new documents have 4 styles and 0 lists by default
-            Assert.AreEqual(4, doc.Styles.Count);
-            Assert.AreEqual(0, doc.Lists.Count);
-
-            // We will add one style and one list and mark them as "used" by applying them to the builder 
+            // Add two styles and apply them to the builder's formats, marking them as "used" 
             builder.ParagraphFormat.Style = doc.Styles.Add(StyleType.Paragraph, "My Used Style");
             builder.ListFormat.List = doc.Lists.Add(ListTemplate.BulletDiamonds);
 
-            // These items were added to their respective collections
-            Assert.AreEqual(5, doc.Styles.Count);
-            Assert.AreEqual(1, doc.Lists.Count);
-
-            // doc.Cleanup() removes all unused styles and lists
-            doc.Cleanup();
-
-            // It currently has no effect because the 2 items we added plus the original 4 styles are all used
-            Assert.AreEqual(5, doc.Styles.Count);
-            Assert.AreEqual(1, doc.Lists.Count);
-
-            // These two items will be added but will not associated with any part of the document
+            // And two more styles and leave them unused by not applying them to anything
             doc.Styles.Add(StyleType.Paragraph, "My Unused Style");
             doc.Lists.Add(ListTemplate.NumberArabicDot);
-
-            // They also get stored in the document and are ready to be used
-            Assert.AreEqual(6, doc.Styles.Count);
-            Assert.AreEqual(2, doc.Lists.Count);
+            Assert.NotNull(doc.Styles["My Used Style"]); //ExSkip
+            Assert.NotNull(doc.Styles["My Unused Style"]); //ExSkip
+            Assert.IsTrue(doc.Lists.Any(l => l.ListLevels[0].NumberStyle == NumberStyle.Bullet)); //ExSkip
+            Assert.IsTrue(doc.Lists.Any(l => l.ListLevels[0].NumberStyle == NumberStyle.Arabic)); //ExSkip
 
             doc.Cleanup();
 
-            // Since we didn't apply them anywhere, the two unused items are removed by doc.Cleanup()
-            Assert.AreEqual(5, doc.Styles.Count);
-            Assert.AreEqual(1, doc.Lists.Count);
+            // The used styles are still in the document
+            Assert.NotNull(doc.Styles["My Used Style"]);
+            Assert.IsTrue(doc.Lists.Any(l => l.ListLevels[0].NumberStyle == NumberStyle.Bullet));
+
+            // The unused styles have been removed
+            Assert.IsNull(doc.Styles["My Unused Style"]);
+            Assert.IsFalse(doc.Lists.Any(l => l.ListLevels[0].NumberStyle == NumberStyle.Arabic));
             //ExEnd
+
+            Assert.AreEqual(5, doc.Styles.Count); 
+            Assert.AreEqual(1, doc.Lists.Count);
         }
 
         [Test]
@@ -2270,14 +2319,6 @@ namespace ApiExamples
             doc.Revisions[0].Reject();
             Assert.AreEqual(0, doc.Revisions.Count);
             Assert.AreEqual("", doc.GetText().Trim());
-
-            // This takes us back to not counting changes as revisions
-            doc.StopTrackRevisions();
-
-            builder.Writeln("This also does not count as a revision.");
-            Assert.AreEqual(0, doc.Revisions.Count);
-
-            doc.Save(ArtifactsDir + "Revisions.docx");
             //ExEnd
         }
 
@@ -2296,6 +2337,7 @@ namespace ApiExamples
             RevisionCollection revisions = doc.Revisions;
             
             // This collection itself has a collection of revision groups, which are merged sequences of adjacent revisions
+            Assert.AreEqual(7, revisions.Groups.Count); //ExSkip
             Console.WriteLine($"{revisions.Groups.Count} revision groups:");
 
             // We can iterate over the collection of groups and access the text that the revision concerns
@@ -2311,6 +2353,7 @@ namespace ApiExamples
             // The collection of revisions is considerably larger than the condensed form we printed above,
             // depending on how many Runs the text has been segmented into during editing in Microsoft Word,
             // since each Run affected by a revision gets its own Revision object
+            Assert.AreEqual(11, revisions.Count); //ExSkip
             Console.WriteLine($"\n{revisions.Count} revisions:");
 
             using (IEnumerator<Revision> e = revisions.GetEnumerator())
