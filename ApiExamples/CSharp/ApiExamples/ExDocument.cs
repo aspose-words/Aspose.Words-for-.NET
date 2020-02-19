@@ -13,6 +13,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -1549,6 +1550,7 @@ namespace ApiExamples
         public void Endnotes()
         {
             //ExStart
+            //ExFor:Document.EndnoteOptions
             //ExFor:EndnoteOptions
             //ExFor:EndnoteOptions.NumberStyle
             //ExFor:EndnoteOptions.Position
@@ -1569,6 +1571,10 @@ namespace ApiExamples
             builder.InsertFootnote(FootnoteType.Endnote, "Endnote 3", "Custom reference mark");
 
             // Edit the numbering and positioning of endnotes 
+            Assert.AreEqual(1, doc.EndnoteOptions.StartNumber); //ExSkip
+            Assert.AreEqual(EndnotePosition.EndOfDocument, doc.EndnoteOptions.Position); //ExSkip
+            Assert.AreEqual(NumberStyle.LowercaseRoman, doc.EndnoteOptions.NumberStyle); //ExSkip
+            Assert.AreEqual(FootnoteNumberingRule.Default, doc.EndnoteOptions.RestartRule); //ExSkip
             doc.EndnoteOptions.Position = EndnotePosition.EndOfDocument;
             doc.EndnoteOptions.NumberStyle = NumberStyle.UppercaseRoman;
             doc.EndnoteOptions.RestartRule = FootnoteNumberingRule.Continuous;
@@ -2268,6 +2274,7 @@ namespace ApiExamples
             //ExFor:RevisionCollection
             //ExFor:RevisionCollection.Item(Int32)
             //ExFor:RevisionCollection.Count
+            //ExFor:RevisionType
             //ExFor:Document.HasRevisions
             //ExFor:Document.TrackRevisions
             //ExFor:Document.Revisions
@@ -2380,9 +2387,7 @@ namespace ApiExamples
             // the changes must be accepted/rejected by the revisions themselves, the RevisionCollection, or the document
             // In this case we will reject all revisions via the collection, reverting the document to its original form, which we will then save
             revisions.RejectAll();
-            Assert.AreEqual(0, revisions.Count);
-
-            doc.Save(ArtifactsDir + "Document.RevisionCollection.docx");
+            Assert.AreEqual(0, revisions.Count); 
             //ExEnd
         }
 
@@ -2401,15 +2406,19 @@ namespace ApiExamples
             // For AutomaticallyUpdateStyles to have any effect, we need a document with a template
             // We can make a document with word and open it
             // Or we can attach a template from our file system, as below
-            doc.AttachedTemplate = MyDir + "Busniess brochure.dotx";
-
-            Assert.IsTrue(doc.AttachedTemplate.EndsWith("Busniess brochure.dotx"));
+            doc.AttachedTemplate = MyDir + "Business brochure.dotx";
 
             // Any changes to the styles in this template will be propagated to those styles in the document
             doc.AutomaticallyUpdateStyles = true;
 
             doc.Save(ArtifactsDir + "Document.AutomaticallyUpdateStyles.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Document.AutomaticallyUpdateStyles.docx");
+
+            Assert.True(doc.AutomaticallyUpdateStyles);
+            Assert.AreEqual(MyDir + "Business brochure.dotx", doc.AttachedTemplate);
+            Assert.True(File.Exists(doc.AttachedTemplate));
         }
 
         [Test]
@@ -2430,11 +2439,12 @@ namespace ApiExamples
             // We can set a default template document filename in a SaveOptions object to make it apply to
             // all documents we save with it that have no AttachedTemplate value
             SaveOptions options = SaveOptions.CreateSaveOptions("Document.DefaultTemplate.docx");
-            options.DefaultTemplate = MyDir + "Busniess brochure.dotx";
+            options.DefaultTemplate = MyDir + "Business brochure.dotx";
 
             doc.Save(ArtifactsDir + "Document.DefaultTemplate.docx", options);
             //ExEnd
-        }
+
+            Assert.True(File.Exists(options.DefaultTemplate)); }
 
         [Test]
         public void Sections()
@@ -2444,27 +2454,32 @@ namespace ApiExamples
             //ExSummary:Shows how to edit the last section of a document.
             // Open the template document, containing obsolete copyright information in the footer
             Document doc = new Document(MyDir + "Footer.docx");
-
-            // We have a document with 2 sections, this way FirstSection and LastSection are not the same
-            Assert.AreEqual(2, doc.Sections.Count);
-
-            string newCopyrightInformation = $"Copyright (C) {DateTime.Now.Year} by Aspose Pty Ltd.";
+            
+            // Create a new copyright information string to replace an older one with
+            int currentYear = DateTime.Now.Year;
+            string newCopyrightInformation = $"Copyright (C) {currentYear} by Aspose Pty Ltd.";
             FindReplaceOptions findReplaceOptions =
                 new FindReplaceOptions { MatchCase = false, FindWholeWordsOnly = false };
 
-            // Access the first and the last sections
+            // Each section has its own set of headers/footers,
+            // so the text in each one has to be replaced individually if we want the entire document to be affected
             HeaderFooter firstSectionFooter = doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary];
             firstSectionFooter.Range.Replace("(C) 2006 Aspose Pty Ltd.", newCopyrightInformation, findReplaceOptions);
 
             HeaderFooter lastSectionFooter = doc.LastSection.HeadersFooters[HeaderFooterType.FooterPrimary];
             lastSectionFooter.Range.Replace("(C) 2006 Aspose Pty Ltd.", newCopyrightInformation, findReplaceOptions);
 
-            // Sections are also accessible via an array
+            doc.Save(ArtifactsDir + "Document.Sections.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Document.Sections.docx");
             Assert.AreEqual(doc.FirstSection, doc.Sections[0]);
             Assert.AreEqual(doc.LastSection, doc.Sections[1]);
 
-            doc.Save(ArtifactsDir + "Document.Sections.docx");
-            //ExEnd
+            Assert.True(doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetText().Contains($"Copyright (C) {currentYear} by Aspose Pty Ltd."));
+            Assert.True(doc.LastSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetText().Contains($"Copyright (C) {currentYear} by Aspose Pty Ltd."));
+            Assert.False(doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetText().Contains("(C) 2006 Aspose Pty Ltd."));
+            Assert.False(doc.LastSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetText().Contains("(C) 2006 Aspose Pty Ltd."));
         }
 
         //ExStart
@@ -2493,53 +2508,30 @@ namespace ApiExamples
             options.UseLegacyOrder = isUseLegacyOrder;
  
             doc.Range.Replace(new Regex(@"\[(.*?)\]"), "", options);
-
             CheckUseLegacyOrderResults(isUseLegacyOrder, callback); //ExSkip
+
+            foreach (string match in ((UseLegacyOrderReplacingCallback)options.ReplacingCallback).Matches)
+                Console.WriteLine(match);
         }
 
         private class UseLegacyOrderReplacingCallback : IReplacingCallback
         {
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs e)
             {
-                Matches.Add(e.Match.Value); //ExSkip
-
-                Console.Write(e.Match.Value);
+                Matches.Add(e.Match.Value); 
                 return ReplaceAction.Replace;
             }
 
-            public List<string> Matches { get; } = new List<string>(); //ExSkip
+            public List<string> Matches { get; } = new List<string>();
         }
         //ExEnd
 
         private static void CheckUseLegacyOrderResults(bool isUseLegacyOrder, UseLegacyOrderReplacingCallback callback)
         {
             if (isUseLegacyOrder)
-            {
-                Assert.AreEqual("[tag 1]", callback.Matches[0]);
-                Assert.AreEqual("[tag 2]", callback.Matches[1]);
-                Assert.AreEqual("[tag 3]", callback.Matches[2]);
-            }
+                Assert.AreEqual(new List<string> { "[tag 1]", "[tag 2]", "[tag 3]" }, callback.Matches);
             else
-            {
-                Assert.AreEqual("[tag 1]", callback.Matches[0]);
-                Assert.AreEqual("[tag 3]", callback.Matches[1]);
-                Assert.AreEqual("[tag 2]", callback.Matches[2]);
-            }
-        }
-
-        [Test]
-        public void SetEndnoteOptions()
-        {
-            //ExStart
-            //ExFor:Document.EndnoteOptions
-            //ExSummary:Shows how access a document's endnote options and see some of its default values.
-            Document doc = new Document();
-
-            Assert.AreEqual(1, doc.EndnoteOptions.StartNumber);
-            Assert.AreEqual(EndnotePosition.EndOfDocument, doc.EndnoteOptions.Position);
-            Assert.AreEqual(NumberStyle.LowercaseRoman, doc.EndnoteOptions.NumberStyle);
-            Assert.AreEqual(FootnoteNumberingRule.Default, doc.EndnoteOptions.RestartRule);
-            //ExEnd
+                Assert.AreEqual(new List<string> { "[tag 1]", "[tag 3]", "[tag 2]" }, callback.Matches);
         }
 
         [Test]
@@ -2551,35 +2543,32 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // We'll add a date field
+            // Add a date field
             Field field = builder.InsertField("DATE", null);
 
-            // The FieldDate field type corresponds to the "DATE" field so our field's type property gets automatically set to it
+            // Based on the field code we entered above, the type of the field has been set to "FieldDate"
             Assert.AreEqual(FieldType.FieldDate, field.Type);
-            Assert.AreEqual(1, doc.Range.Fields.Count);
 
             // We can manually access the content of the field we added and change it
-            Run fieldText = (Run) doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Run, true)[0];
-            Assert.AreEqual("DATE", fieldText.Text);
+            Run fieldText = (Run)doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Run, true)[0];
+            Assert.AreEqual("DATE", fieldText.Text); //ExSkip
             fieldText.Text = "PAGE";
 
             // We changed the text to "PAGE" but the field's type property did not update accordingly
             Assert.AreEqual("PAGE", fieldText.GetText());
-            Assert.AreNotEqual(FieldType.FieldPage, field.Type);
-
-            // The type of the field as well as its components is still "FieldDate"
             Assert.AreEqual(FieldType.FieldDate, field.Type);
-            Assert.AreEqual(FieldType.FieldDate, field.Start.FieldType);
-            Assert.AreEqual(FieldType.FieldDate, field.Separator.FieldType);
-            Assert.AreEqual(FieldType.FieldDate, field.End.FieldType);
+            Assert.AreEqual(FieldType.FieldDate, field.Start.FieldType); //ExSkip
+            Assert.AreEqual(FieldType.FieldDate, field.Separator.FieldType); //ExSkip
+            Assert.AreEqual(FieldType.FieldDate, field.End.FieldType); //ExSkip
 
+            // After running this method the type of the field, as well as its FieldStart,
+            // FieldSeparator and FieldEnd nodes to "FieldPage", which matches the text "PAGE"
             doc.NormalizeFieldTypes();
 
-            // After running this method the type changes everywhere to "FieldPage", which matches the text "PAGE"
             Assert.AreEqual(FieldType.FieldPage, field.Type);
-            Assert.AreEqual(FieldType.FieldPage, field.Start.FieldType);
-            Assert.AreEqual(FieldType.FieldPage, field.Separator.FieldType);
-            Assert.AreEqual(FieldType.FieldPage, field.End.FieldType);
+            Assert.AreEqual(FieldType.FieldPage, field.Start.FieldType); //ExSkip
+            Assert.AreEqual(FieldType.FieldPage, field.Separator.FieldType); //ExSkip
+            Assert.AreEqual(FieldType.FieldPage, field.End.FieldType); //ExSkip
             //ExEnd
         }
 
@@ -2598,14 +2587,16 @@ namespace ApiExamples
             //ExFor:RevisionOptions.ShowRevisionBars
             //ExSummary:Shows how to set a document's layout options.
             Document doc = new Document();
-
-            Assert.IsFalse(doc.LayoutOptions.ShowHiddenText);
-            Assert.IsFalse(doc.LayoutOptions.ShowParagraphMarks);
+            LayoutOptions options = doc.LayoutOptions;
+            Assert.IsFalse(options.ShowHiddenText); //ExSkip
+            Assert.IsFalse(options.ShowParagraphMarks); //ExSkip
 
             // The appearance of revisions can be controlled from the layout options property
             doc.StartTrackRevisions("John Doe", DateTime.Now);
-            doc.LayoutOptions.RevisionOptions.InsertedTextColor = RevisionColor.BrightGreen;
-            doc.LayoutOptions.RevisionOptions.ShowRevisionBars = false;
+            Assert.AreEqual(RevisionColor.ByAuthor, options.RevisionOptions.InsertedTextColor); //ExSkip
+            Assert.True(options.RevisionOptions.ShowRevisionBars); //ExSkip
+            options.RevisionOptions.InsertedTextColor = RevisionColor.BrightGreen;
+            options.RevisionOptions.ShowRevisionBars = false;
 
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln(
@@ -2619,7 +2610,11 @@ namespace ApiExamples
             builder.Writeln(
                 "This text is hidden. It will only show up in the output if we allow it to via doc.LayoutOptions.");
 
-            doc.LayoutOptions.ShowHiddenText = true;
+            options.ShowHiddenText = true;
+
+            // This option is equivalent to enabling paragraph marks in Microsoft Word via Home > paragraph > Show Paragraph Marks,
+            // and can be used to display these features in a .pdf
+            options.ShowParagraphMarks = true;
 
             doc.Save(ArtifactsDir + "Document.LayoutOptions.pdf");
             //ExEnd
@@ -2700,6 +2695,23 @@ namespace ApiExamples
             // The mail merge will be performed when this document is opened 
             doc.Save(ArtifactsDir + "Document.MailMergeSettings.docx");
             //ExEnd
+
+            settings = new Document(ArtifactsDir + "Document.MailMergeSettings.docx").MailMergeSettings;
+
+            Assert.AreEqual(MailMergeMainDocumentType.MailingLabels, settings.MainDocumentType);
+            Assert.AreEqual(MailMergeCheckErrors.Simulate, settings.CheckErrors);
+            Assert.AreEqual(MailMergeDataType.Native, settings.DataType);
+            Assert.AreEqual(ArtifactsDir + "Document.MailMergeSettings.DataSource.txt", settings.DataSource);
+            Assert.AreEqual("SELECT * FROM " + doc.MailMergeSettings.DataSource, settings.Query);
+            Assert.True(settings.LinkToQuery);
+            Assert.True(settings.ViewMergedData);
+
+            odso = settings.Odso;
+            Assert.AreEqual(ArtifactsDir + "Document.MailMergeSettings.DataSource.txt", odso.DataSource);
+            Assert.AreEqual(OdsoDataSourceType.Text, odso.DataSourceType);
+            Assert.AreEqual('|', odso.ColumnDelimiter);
+            Assert.True(odso.FirstRowContainsColumnNames);
+
         }
 
         [Test]
@@ -2716,7 +2728,7 @@ namespace ApiExamples
             //ExFor:Odso.UdlConnectString
             //ExSummary:Shows how to execute a mail merge while connecting to an external data source.
             Document doc = new Document(MyDir + "Odso data.docx");
-
+            TestOdsoEmail(doc); //ExSkip
             MailMergeSettings settings = doc.MailMergeSettings;
 
             Console.WriteLine($"Connection string:\n\t{settings.ConnectString}");
@@ -2726,10 +2738,10 @@ namespace ApiExamples
             Console.WriteLine($"Active record:\n\t{settings.ActiveRecord}");
             
             Odso odso = settings.Odso;
-            
+
             Console.WriteLine($"File will connect to data source located in:\n\t\"{odso.DataSource}\"");
             Console.WriteLine($"Source type:\n\t{odso.DataSourceType}");
-            Console.WriteLine($"UDL connection string string:\n\t{odso.UdlConnectString}");
+            Console.WriteLine($"UDL connection string:\n\t{odso.UdlConnectString}");
             Console.WriteLine($"Table:\n\t{odso.TableName}");
             Console.WriteLine($"Query:\n\t{doc.MailMergeSettings.Query}");
 
@@ -2737,10 +2749,28 @@ namespace ApiExamples
             settings.Clear();
 
             doc.Save(ArtifactsDir + "Document.OdsoEmail.docx");
+            //ExEnd
 
             doc = new Document(ArtifactsDir + "Document.OdsoEmail.docx");
             Assert.That(doc.MailMergeSettings.ConnectString, Is.Empty);
-            //ExEnd
+        }
+
+        private void TestOdsoEmail(Document doc)
+        {
+            MailMergeSettings settings = doc.MailMergeSettings;
+
+            Assert.False(settings.MailAsAttachment);
+            Assert.AreEqual("test subject", settings.MailSubject);
+            Assert.AreEqual("Email_Address", settings.AddressFieldName);
+            Assert.AreEqual(66, settings.ActiveRecord);
+            Assert.AreEqual("SELECT * FROM `Contacts` ", settings.Query);
+
+            Odso odso = settings.Odso;
+
+            Assert.AreEqual(settings.ConnectString, odso.UdlConnectString);
+            Assert.AreEqual("Personal Folders|", odso.DataSource);
+            Assert.AreEqual(OdsoDataSourceType.Email, odso.DataSourceType);
+            Assert.AreEqual("Contacts", odso.TableName);
         }
 
         [Test]
@@ -2795,7 +2825,7 @@ namespace ApiExamples
             settings.DataSource = ArtifactsDir + "Document.MailingLabelMerge.Data.docx";
 
             // Configure the rest of the MailMergeSettings object
-            settings.Query = "SELECT * FROM " + doc.MailMergeSettings.DataSource;
+            settings.Query = "SELECT * FROM " + settings.DataSource;
             settings.MainDocumentType = MailMergeMainDocumentType.MailingLabels;
             settings.DataType = MailMergeDataType.TextFile;
             settings.LinkToQuery = true;
@@ -2804,6 +2834,28 @@ namespace ApiExamples
             // The mail merge will be performed when this document is opened 
             doc.Save(ArtifactsDir + "Document.MailingLabelMerge.docx");
             //ExEnd
+
+            Assert.AreEqual("FirstName\aLastName\a\a", 
+                new Document(ArtifactsDir + "Document.MailingLabelMerge.Header.docx").
+                    GetChild(NodeType.Table, 0, true).GetText().Trim());
+
+            Assert.AreEqual("John\aDoe\a\a",
+                new Document(ArtifactsDir + "Document.MailingLabelMerge.Data.docx").
+                    GetChild(NodeType.Table, 0, true).GetText().Trim());
+
+            doc = new Document(ArtifactsDir + "Document.MailingLabelMerge.docx");
+
+            Assert.AreEqual(2, doc.Range.Fields.Count);
+
+            settings = doc.MailMergeSettings;
+
+            Assert.AreEqual(ArtifactsDir + "Document.MailingLabelMerge.Header.docx", settings.HeaderSource);
+            Assert.AreEqual(ArtifactsDir + "Document.MailingLabelMerge.Data.docx", settings.DataSource);
+            Assert.AreEqual("SELECT * FROM " + settings.DataSource, settings.Query);
+            Assert.AreEqual(MailMergeMainDocumentType.MailingLabels, settings.MainDocumentType);
+            Assert.AreEqual(MailMergeDataType.TextFile, settings.DataType);
+            Assert.True(settings.LinkToQuery);
+            Assert.True(settings.ViewMergedData);
         }
 
         [Test]
@@ -2830,22 +2882,31 @@ namespace ApiExamples
 
             // This collection defines how columns from an external data source will be mapped to predefined MERGEFIELD,
             // ADDRESSBLOCK and GREETINGLINE fields during a mail merge
-            OdsoFieldMapDataCollection fieldMapDataCollection = doc.MailMergeSettings.Odso.FieldMapDatas;
+            OdsoFieldMapDataCollection dataCollection = doc.MailMergeSettings.Odso.FieldMapDatas;
+            Assert.AreEqual(30, dataCollection.Count);
 
-            Assert.AreEqual(30, fieldMapDataCollection.Count);
-            int index = 0;
-
-            foreach (OdsoFieldMapData data in fieldMapDataCollection)
+            using (IEnumerator<OdsoFieldMapData> enumerator = dataCollection.GetEnumerator())
             {
-                Console.WriteLine($"Field map data index #{index++}, type \"{data.Type}\":");
+                int index = 0;
+                while (enumerator.MoveNext())
+                {
+                    Console.WriteLine($"Field map data index {index++}, type \"{enumerator.Current.Type}\":");
 
-                Console.WriteLine(
-                    data.Type != OdsoFieldMappingType.Null
-                        ? $"\tColumn named {data.Name}, number {data.Column} in the data source mapped to merge field named {data.MappedName}."
-                        : "\tNo valid column to field mapping data present.");
-
-                Assert.AreNotEqual(data, data.Clone());
+                    Console.WriteLine(
+                        enumerator.Current.Type != OdsoFieldMappingType.Null
+                            ? $"\tColumn \"{enumerator.Current.Name}\", number {enumerator.Current.Column} mapped to merge field \"{enumerator.Current.MappedName}\"."
+                            : "\tNo valid column to field mapping data present.");
+                }
             }
+
+            // Elements of the collection can be cloned
+            Assert.AreNotEqual(dataCollection[0], dataCollection[0].Clone());
+
+            // The collection can have individual entries removed or be cleared like this
+            dataCollection.RemoveAt(0);
+            Assert.AreEqual(29, dataCollection.Count); //ExSkip
+            dataCollection.Clear();
+            Assert.AreEqual(0, dataCollection.Count); //ExSkip
             //ExEnd
         }
 
@@ -2871,20 +2932,31 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Odso data.docx");
 
             // Records in this collection that do not have the "Active" flag set to true will be excluded from the mail merge
-            OdsoRecipientDataCollection odsoRecipientDataCollection = doc.MailMergeSettings.Odso.RecipientDatas;
+            OdsoRecipientDataCollection dataCollection = doc.MailMergeSettings.Odso.RecipientDatas;
 
-            Assert.AreEqual(70, odsoRecipientDataCollection.Count);
-            int index = 0;
+            Assert.AreEqual(70, dataCollection.Count);
 
-            foreach (OdsoRecipientData data in odsoRecipientDataCollection)
+            using (IEnumerator<OdsoRecipientData> enumerator = dataCollection.GetEnumerator())
             {
-                Console.WriteLine($"Odso recipient data index #{index++}, will {(data.Active ? "" : "not ")}be imported upon mail merge.");
-                Console.WriteLine($"\tColumn #{data.Column}");
-                Console.WriteLine($"\tHash code: {data.Hash}");
-                Console.WriteLine($"\tContents array length: {data.UniqueTag.Length}");
-
-                Assert.AreNotEqual(data, data.Clone());
+                int index = 0;
+                while (enumerator.MoveNext())
+                {
+                    Console.WriteLine(
+                        $"Odso recipient data index {index++} will {(enumerator.Current.Active ? "" : "not ")}be imported upon mail merge.");
+                    Console.WriteLine($"\tColumn #{enumerator.Current.Column}");
+                    Console.WriteLine($"\tHash code: {enumerator.Current.Hash}");
+                    Console.WriteLine($"\tContents array length: {enumerator.Current.UniqueTag.Length}");
+                }
             }
+
+            // Elements of the collection can be cloned
+            Assert.AreNotEqual(dataCollection[0], dataCollection[0].Clone());
+
+            // The collection can have individual entries removed or be cleared like this
+            dataCollection.RemoveAt(0);
+            Assert.AreEqual(69, dataCollection.Count); //ExSkip
+            dataCollection.Clear();
+            Assert.AreEqual(0, dataCollection.Count); //ExSkip
             //ExEnd
         }
 
@@ -2914,15 +2986,13 @@ namespace ApiExamples
             // Not to be confused with Custom XML data which is represented by CustomXmlParts
             // This part is internal, meaning it is contained inside the OOXML package
             Document doc = new Document(MyDir + "Custom parts OOXML package.docx");
-            Assert.AreEqual(2, doc.PackageCustomParts.Count);
 
             // Clone the second part
             CustomPart clonedPart = doc.PackageCustomParts[1].Clone();
 
             // Add the clone to the collection
             doc.PackageCustomParts.Add(clonedPart);
-            
-            Assert.AreEqual(3, doc.PackageCustomParts.Count);
+            TestDocPackageCustomParts(doc.PackageCustomParts); //ExSkip
 
             // Use an enumerator to print information about the contents of each part 
             using (IEnumerator<CustomPart> enumerator = doc.PackageCustomParts.GetEnumerator())
@@ -2941,8 +3011,6 @@ namespace ApiExamples
                 }
             }
 
-            TestCustomPartRead(doc); //ExSkip
-
             // Delete parts one at a time based on index
             doc.PackageCustomParts.RemoveAt(2);
             Assert.AreEqual(2, doc.PackageCustomParts.Count);
@@ -2953,26 +3021,28 @@ namespace ApiExamples
             //ExEnd
         }
 
-        private static void TestCustomPartRead(Document docWithCustomParts)
+        private static void TestDocPackageCustomParts(CustomPartCollection parts)
         {
-            Assert.AreEqual("/payload/payload_on_package.test", docWithCustomParts.PackageCustomParts[0].Name); 
-            Assert.AreEqual("mytest/somedata", docWithCustomParts.PackageCustomParts[0].ContentType); 
-            Assert.AreEqual("http://mytest.payload.internal", docWithCustomParts.PackageCustomParts[0].RelationshipType); 
-            Assert.AreEqual(false, docWithCustomParts.PackageCustomParts[0].IsExternal); 
-            Assert.AreEqual(18, docWithCustomParts.PackageCustomParts[0].Data.Length); 
+            Assert.AreEqual(3, parts.Count);
+
+            Assert.AreEqual("/payload/payload_on_package.test", parts[0].Name); 
+            Assert.AreEqual("mytest/somedata", parts[0].ContentType); 
+            Assert.AreEqual("http://mytest.payload.internal", parts[0].RelationshipType); 
+            Assert.AreEqual(false, parts[0].IsExternal); 
+            Assert.AreEqual(18, parts[0].Data.Length); 
 
             // This part is external and its content is sourced from outside the document
-            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", docWithCustomParts.PackageCustomParts[1].Name); 
-            Assert.AreEqual("", docWithCustomParts.PackageCustomParts[1].ContentType); 
-            Assert.AreEqual("http://mytest.payload.external", docWithCustomParts.PackageCustomParts[1].RelationshipType); 
-            Assert.AreEqual(true, docWithCustomParts.PackageCustomParts[1].IsExternal); 
-            Assert.AreEqual(0, docWithCustomParts.PackageCustomParts[1].Data.Length); 
+            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", parts[1].Name); 
+            Assert.AreEqual("", parts[1].ContentType); 
+            Assert.AreEqual("http://mytest.payload.external", parts[1].RelationshipType); 
+            Assert.AreEqual(true, parts[1].IsExternal); 
+            Assert.AreEqual(0, parts[1].Data.Length); 
 
-            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", docWithCustomParts.PackageCustomParts[2].Name); 
-            Assert.AreEqual("", docWithCustomParts.PackageCustomParts[2].ContentType); 
-            Assert.AreEqual("http://mytest.payload.external", docWithCustomParts.PackageCustomParts[2].RelationshipType); 
-            Assert.AreEqual(true, docWithCustomParts.PackageCustomParts[2].IsExternal); 
-            Assert.AreEqual(0, docWithCustomParts.PackageCustomParts[2].Data.Length); 
+            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", parts[2].Name); 
+            Assert.AreEqual("", parts[2].ContentType); 
+            Assert.AreEqual("http://mytest.payload.external", parts[2].RelationshipType); 
+            Assert.AreEqual(true, parts[2].IsExternal); 
+            Assert.AreEqual(0, parts[2].Data.Length); 
         }
 
         [Test]
@@ -2996,6 +3066,9 @@ namespace ApiExamples
             doc.ShadeFormData = false;
             doc.Save(ArtifactsDir + "Document.ShadeFormData.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Document.ShadeFormData.docx");
+            Assert.IsFalse(doc.ShadeFormData);
         }
 
         [Test]
@@ -3004,22 +3077,17 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.VersionsCount
             //ExSummary:Shows how to count how many previous versions a document has.
-            Document doc = new Document();
-
-            // No versions are in the document by default
-            // We also can't add any since they are not supported
-            Assert.AreEqual(0, doc.VersionsCount);
-
-            // Let's open a document with versions
-            doc = new Document(MyDir + "Versions.doc");
+            // Document versions are not supported but we can open an older document that has them
+            Document doc = new Document(MyDir + "Versions.doc");
 
             // We can use this property to see how many there are
+            // If we save and open the document, they will be lost
             Assert.AreEqual(4, doc.VersionsCount);
+            //ExEnd
 
             doc.Save(ArtifactsDir + "Document.VersionsCount.docx");      
             doc = new Document(ArtifactsDir + "Document.VersionsCount.docx");
 
-            // If we save and open the document, the versions are lost
             Assert.AreEqual(0, doc.VersionsCount);
             //ExEnd
         }
@@ -3036,33 +3104,40 @@ namespace ApiExamples
             //ExFor:WriteProtection.ValidatePassword(String)
             //ExSummary:Shows how to protect a document with a password.
             Document doc = new Document();
-            Assert.IsFalse(doc.WriteProtection.IsWriteProtected);
-            Assert.IsFalse(doc.WriteProtection.ReadOnlyRecommended);
+            Assert.IsFalse(doc.WriteProtection.IsWriteProtected); //ExSkip
+            Assert.IsFalse(doc.WriteProtection.ReadOnlyRecommended); //ExSkip
 
-            // Enter a password that's 15 or less characters long
-            doc.WriteProtection.SetPassword("docpassword123");
+            // Enter a password that's up to 15 characters long
+            doc.WriteProtection.SetPassword("MyPassword");
+
             Assert.IsTrue(doc.WriteProtection.IsWriteProtected);
+            Assert.IsTrue(doc.WriteProtection.ValidatePassword("MyPassword"));
 
-            Assert.IsFalse(doc.WriteProtection.ValidatePassword("wrongpassword"));
+            // This flag applies to RTF documents and will be ignored by Microsoft Word
+            doc.WriteProtection.ReadOnlyRecommended = true;
 
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Writeln("We can still edit the document at this stage.");
+            builder.Writeln("Write protection does not prevent us from editing the document programmatically.");
 
             // Save the document
             // Without the password, we can only read this document in Microsoft Word
             // With the password, we can read and write
             doc.Save(ArtifactsDir + "Document.WriteProtection.docx");
-
-            // Re-open our document
-            Document docProtected = new Document(ArtifactsDir + "Document.WriteProtection.docx");
-            DocumentBuilder docProtectedBuilder = new DocumentBuilder(docProtected);
-            docProtectedBuilder.MoveToDocumentEnd();
-
-            // We can programmatically edit this document without using our password
-            // However, if we wish to edit it in Microsoft Word, we will need the password to open it
-            Assert.IsTrue(docProtected.WriteProtection.IsWriteProtected);
-            docProtectedBuilder.Writeln("Writing text in a protected document.");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Document.WriteProtection.docx");
+
+            Assert.IsTrue(doc.WriteProtection.IsWriteProtected);
+            Assert.IsTrue(doc.WriteProtection.ReadOnlyRecommended);
+            Assert.IsTrue(doc.WriteProtection.ValidatePassword("MyPassword"));
+            Assert.IsFalse(doc.WriteProtection.ValidatePassword("wrongpassword"));
+
+            builder = new DocumentBuilder(doc);
+            builder.MoveToDocumentEnd();
+            builder.Writeln("Writing text in a protected document.");
+
+            Assert.AreEqual("Write protection does not prevent us from editing the document programmatically." +
+                            "\rWriting text in a protected document.", doc.GetText().Trim());
         }
         
         [Test]
@@ -3076,14 +3151,20 @@ namespace ApiExamples
             //ExSummary:Shows how to set up language preferences that will be used when document is loading
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.LanguagePreferences.AddEditingLanguage(EditingLanguage.Japanese);
-            
-            Document doc = new Document(MyDir + "Document.docx", loadOptions);
+
+            Document doc = new Document(MyDir + "No default editing language.docx", loadOptions);
 
             int localeIdFarEast = doc.Styles.DefaultFont.LocaleIdFarEast;
-            Console.WriteLine(localeIdFarEast == (int) EditingLanguage.Japanese
+            Console.WriteLine(localeIdFarEast == (int)EditingLanguage.Japanese
                 ? "The document either has no any FarEast language set in defaults or it was set to Japanese originally."
                 : "The document default FarEast language was set to another than Japanese language originally, so it is not overridden.");
             //ExEnd
+
+            Assert.AreEqual((int)EditingLanguage.Japanese, doc.Styles.DefaultFont.LocaleIdFarEast);
+
+            doc = new Document(MyDir + "No default editing language.docx");
+
+            Assert.AreEqual((int)EditingLanguage.EnglishUS, doc.Styles.DefaultFont.LocaleIdFarEast);
         }
 
         [Test]
@@ -3093,18 +3174,23 @@ namespace ApiExamples
             //ExFor:LanguagePreferences.DefaultEditingLanguage
             //ExSummary:Shows how to set language as default
             LoadOptions loadOptions = new LoadOptions();
-            // You can set language which only
             loadOptions.LanguagePreferences.DefaultEditingLanguage = EditingLanguage.Russian;
 
-            Document doc = new Document(MyDir + "Document.docx", loadOptions);
+            Document doc = new Document(MyDir + "No default editing language.docx", loadOptions);
 
             int localeId = doc.Styles.DefaultFont.LocaleId;
-            Console.WriteLine(localeId == (int) EditingLanguage.Russian
+            Console.WriteLine(localeId == (int)EditingLanguage.Russian
                 ? "The document either has no any language set in defaults or it was set to Russian originally."
                 : "The document default language was set to another than Russian language originally, so it is not overridden.");
             //ExEnd
-        }
 
+            Assert.AreEqual((int)EditingLanguage.Russian, doc.Styles.DefaultFont.LocaleId);
+
+            doc = new Document(MyDir + "No default editing language.docx");
+
+            Assert.AreEqual((int)EditingLanguage.EnglishUS, doc.Styles.DefaultFont.LocaleId);
+        }
+        
         [Test]
         public void GetInfoAboutRevisionsInRevisionGroups()
         {
@@ -3115,16 +3201,16 @@ namespace ApiExamples
             //ExFor:RevisionGroup.Text
             //ExFor:RevisionGroupCollection
             //ExFor:RevisionGroupCollection.Count
-            //ExSummary:Shows how to get info about a set of revisions in document.
+            //ExSummary:Shows how to get info about a group of revisions in document.
             Document doc = new Document(MyDir + "Revisions.docx");
 
-            Console.WriteLine("Revision groups count: {0}\n", doc.Revisions.Groups.Count);
+            Assert.AreEqual(7, doc.Revisions.Groups.Count);
 
             // Get info about all of revisions in document
             foreach (RevisionGroup group in doc.Revisions.Groups)
             {
-                Console.WriteLine("Revision author: {0}; Revision type: {1} \nRevision text: {2}", group.Author,
-                    group.RevisionType, group.RevisionType);
+                Console.WriteLine(
+                    $"Revision author: {group.Author}; Revision type: {group.RevisionType} \n\tRevision text: {group.Text}");
             }
             //ExEnd
         }
@@ -3135,22 +3221,16 @@ namespace ApiExamples
             //ExStart
             //ExFor:RevisionGroupCollection
             //ExFor:RevisionGroupCollection.Item(Int32)
-            //ExFor:RevisionType
-            //ExSummary:Shows how to get a set of revisions in document.
+            //ExSummary:Shows how to get a group of revisions in document.
             Document doc = new Document(MyDir + "Revisions.docx");
 
             // Get revision group by index
-            RevisionGroup revisionGroup = doc.Revisions.Groups[1];
+            RevisionGroup revisionGroup = doc.Revisions.Groups[0];
 
-            // Get info about specific revision groups sorted by RevisionType
-            IEnumerable<string> revisionGroupCollectionInsertionType =
-                doc.Revisions.Groups.Where(p => p.RevisionType == RevisionType.Insertion).Select(p =>
-                    $"Revision type: {p.RevisionType.ToString()},\nRevision author: {p.Author},\nRevision text: {p.Text}.\n");
-
-            foreach (string revisionGroupInfo in revisionGroupCollectionInsertionType)
-            {
-                Console.WriteLine(revisionGroupInfo);
-            }
+            // Check revision group details
+            Assert.AreEqual(RevisionType.Deletion, revisionGroup.RevisionType);
+            Assert.AreEqual("Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. ", 
+                revisionGroup.Text);
             //ExEnd
         }
 
@@ -3160,7 +3240,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.RemovePersonalInformation
             //ExSummary:Shows how to get or set a flag to remove all user information upon saving the MS Word document.
-            Document doc = new Document(MyDir + "Document.docx")
+            Document doc = new Document(MyDir + "Revisions.docx")
             {
                 // If flag sets to 'true' that MS Word will remove all user information from comments, revisions and
                 // document properties upon saving the document. In MS Word 2013 and 2016 you can see this using
@@ -3168,9 +3248,15 @@ namespace ApiExamples
                 // checkbox "Remove personal information from file properties on save"
                 RemovePersonalInformation = true
             };
-            
+
+            // Personal information will not be removed at this time
+            // This will happen when we open this document in Microsoft Word and save it manually
+            // Once noticeable change will be the revisions losing their author names
             doc.Save(ArtifactsDir + "Document.RemovePersonalInformation.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Document.RemovePersonalInformation.docx");
+            Assert.IsTrue(doc.RemovePersonalInformation);
         }
 
         [Test]
@@ -3180,7 +3266,7 @@ namespace ApiExamples
             //ExFor:LayoutOptions.ShowComments
             //ExSummary:Shows how to show or hide comments in PDF document.
             Document doc = new Document(MyDir + "Comments.docx");
-            
+            Assert.True(doc.LayoutOptions.ShowComments);
             doc.LayoutOptions.ShowComments = false;
             
             doc.Save(ArtifactsDir + "Document.HideComments.pdf");
@@ -3208,15 +3294,11 @@ namespace ApiExamples
             //ExFor:RevisionOptions.ShowOriginalRevision
             //ExFor:RevisionOptions.ShowRevisionMarks
             //ExFor:RevisionTextEffect
-            //ExSummary:Show how to render revisions in the balloons and edit their appearance.
+            //ExSummary:Show how to edit appearance of revisions.
             Document doc = new Document(MyDir + "Revisions.docx");
 
             // Get the RevisionOptions object that controls the appearance of revisions
             RevisionOptions revisionOptions = doc.LayoutOptions.RevisionOptions;
-
-            // Get movement, deletion, formatting revisions and comments to show up in green balloons on the right side of the page
-            revisionOptions.ShowInBalloons = ShowInBalloons.Format;
-            revisionOptions.CommentColor = RevisionColor.BrightGreen;
 
             // Render text inserted while revisions were being tracked in italic green
             revisionOptions.InsertedTextColor = RevisionColor.Green;
@@ -3245,6 +3327,11 @@ namespace ApiExamples
             revisionOptions.ShowOriginalRevision = true;
             revisionOptions.ShowRevisionMarks = true;
 
+            // Get movement, deletion, formatting revisions and comments to show up in green balloons on the right side of the page
+            revisionOptions.ShowInBalloons = ShowInBalloons.Format;
+            revisionOptions.CommentColor = RevisionColor.BrightGreen;
+
+            // These features are only applicable to formats such as .pdf or .jpg
             doc.Save(ArtifactsDir + "Document.ShowRevisionsInBalloons.pdf");
             //ExEnd
         }
@@ -3256,11 +3343,15 @@ namespace ApiExamples
             //ExFor:Document.CopyStylesFromTemplate(Document)
             //ExSummary:Shows how to copies styles from the template to a document via Document.
             Document template = new Document(MyDir + "Rendering.docx");
+            Assert.AreEqual(18, template.Styles.Count); //ExSkip
 
             Document target = new Document(MyDir + "Document.docx");
-            target.CopyStylesFromTemplate(template);
 
-            target.Save(ArtifactsDir + "Document.CopyTemplateStylesViaDocument.docx");
+            Assert.AreEqual(4, target.Styles.Count);
+
+            target.CopyStylesFromTemplate(template);
+            
+            Assert.AreEqual(18, target.Styles.Count);
             //ExEnd
         }
 
@@ -3270,12 +3361,13 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.CopyStylesFromTemplate(String)
             //ExSummary:Shows how to copies styles from the template to a document via string.
-            string templatePath = MyDir + "Rendering.docx";
-            
             Document target = new Document(MyDir + "Document.docx");
-            target.CopyStylesFromTemplate(templatePath);
 
-            target.Save(ArtifactsDir + "Document.CopyTemplateStylesViaString.docx");
+            Assert.AreEqual(4, target.Styles.Count);
+
+            target.CopyStylesFromTemplate(MyDir + "Rendering.docx");
+
+            Assert.AreEqual(18, target.Styles.Count);
             //ExEnd
         }
 
@@ -3374,21 +3466,13 @@ namespace ApiExamples
             // They are defined visually by the rectangular space that they occupy in the document
             Document doc = new Document(MyDir + "Layout entities.docx");
 
-            // Create an enumerator that can traverse these entities
+            // Create an enumerator that can traverse these entities like a tree
             LayoutEnumerator layoutEnumerator = new LayoutEnumerator(doc);
             Assert.AreEqual(doc, layoutEnumerator.Document);
 
-            // The enumerator points to the first element on the first page and can be traversed like a tree
-            layoutEnumerator.MoveFirstChild();
-            layoutEnumerator.MoveFirstChild();
-            layoutEnumerator.MoveLastChild();
-            layoutEnumerator.MovePrevious();
-            Assert.AreEqual(LayoutEntityType.Span, layoutEnumerator.Type);
-            Assert.AreEqual("000", layoutEnumerator.Text);
-
-            // Only spans can contain text
-            layoutEnumerator.MoveParent(LayoutEntityType.Page);
+            layoutEnumerator.MoveParent(LayoutEntityType.Page); 
             Assert.AreEqual(LayoutEntityType.Page, layoutEnumerator.Type);
+            Assert.Throws<InvalidOperationException>(() => Console.WriteLine(layoutEnumerator.Text));
 
             // We can call this method to make sure that the enumerator points to the very first entity before we go through it forwards
             layoutEnumerator.Reset();
@@ -3491,6 +3575,7 @@ namespace ApiExamples
                 ? $"{tabs}-> Entity type: {layoutEnumerator.Type}"
                 : $"{tabs}-> Entity type & kind: {layoutEnumerator.Type}, {layoutEnumerator.Kind}");
 
+            // Only spans can contain text
             if (layoutEnumerator.Type == LayoutEntityType.Span)
                 Console.WriteLine($"{tabs}   Span contents: \"{layoutEnumerator.Text}\"");
 
@@ -3519,8 +3604,14 @@ namespace ApiExamples
             // True - all metafiles are compressed regardless of its size
             saveOptions.AlwaysCompressMetafiles = isAlwaysCompressMetafiles;
             
-            doc.Save(ArtifactsDir + "Document.AlwaysCompressMetafiles.doc", saveOptions);
+            doc.Save(ArtifactsDir + "Document.AlwaysCompressMetafiles.docx", saveOptions);
             //ExEnd
+
+            if (isAlwaysCompressMetafiles)
+                Assert.AreEqual(13312, File.ReadAllBytes(ArtifactsDir + "Document.AlwaysCompressMetafiles.docx").Length);
+            else
+                Assert.AreEqual(21504, File.ReadAllBytes(ArtifactsDir + "Document.AlwaysCompressMetafiles.docx").Length);
+            
         }
 
         [Test]
@@ -3565,6 +3656,22 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Document.CreateVBAMacros.docm");
             //ExEnd
+
+            project = new Document(ArtifactsDir + "Document.CreateVBAMacros.docm").VbaProject;
+
+            Assert.AreEqual("Aspose.Project", project.Name);
+
+            VbaModuleCollection modules = doc.VbaProject.Modules;
+
+            Assert.AreEqual(2, modules.Count);
+
+            Assert.AreEqual("ThisDocument", modules[0].Name);
+            Assert.AreEqual(VbaModuleType.DocumentModule, modules[0].Type);
+            Assert.Null(modules[0].SourceCode);
+
+            Assert.AreEqual("Aspose.Module", modules[1].Name);
+            Assert.AreEqual(VbaModuleType.ProceduralModule, modules[1].Type);
+            Assert.AreEqual("New source code", modules[1].SourceCode);
         }
 
         [Test]
@@ -3590,6 +3697,20 @@ namespace ApiExamples
 
             destDoc.Save(ArtifactsDir + "Document.CloneVbaProject.docm");
             //ExEnd
+
+            VbaProject originalVbaProject = new Document(ArtifactsDir + "Document.CloneVbaProject.docm").VbaProject;
+
+            Assert.AreEqual(copyVbaProject.Name, originalVbaProject.Name);
+            Assert.AreEqual(copyVbaProject.CodePage, originalVbaProject.CodePage);
+            Assert.AreEqual(copyVbaProject.IsSigned, originalVbaProject.IsSigned);
+            Assert.AreEqual(copyVbaProject.Modules.Count, originalVbaProject.Modules.Count);
+
+            for (int i = 0; i < originalVbaProject.Modules.Count; i++)
+            {
+                Assert.AreEqual(copyVbaProject.Modules[i].Name, originalVbaProject.Modules[i].Name);
+                Assert.AreEqual(copyVbaProject.Modules[i].Type, originalVbaProject.Modules[i].Type);
+                Assert.AreEqual(copyVbaProject.Modules[i].SourceCode, originalVbaProject.Modules[i].SourceCode);
+            }
         }
 
         [Test]
@@ -3597,33 +3718,33 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.VbaProject
-            //ExFor:VbaProject
             //ExFor:VbaModuleCollection
             //ExFor:VbaModuleCollection.Count
+            //ExFor:VbaModuleCollection.Item(System.Int32)
+            //ExFor:VbaModuleCollection.Item(System.String)
+            //ExFor:VbaModuleCollection.Remove
             //ExFor:VbaModule
+            //ExFor:VbaModule.Name
+            //ExFor:VbaModule.SourceCode
+            //ExFor:VbaProject
             //ExFor:VbaProject.Name
             //ExFor:VbaProject.Modules
             //ExFor:VbaProject.CodePage
             //ExFor:VbaProject.IsSigned
-            //ExFor:VbaModule.Name
-            //ExFor:VbaModule.SourceCode
-            //ExFor:VbaModuleCollection.Item(System.Int32)
-            //ExFor:VbaModuleCollection.Item(System.String)
-            //ExFor:VbaModuleCollection.Remove
             //ExSummary:Shows how to get access to VBA project information in the document.
             Document doc = new Document(MyDir + "VBA project.docm");
 
             // A VBA project inside the document is defined as a collection of VBA modules
             VbaProject vbaProject = doc.VbaProject;
+            Assert.True(vbaProject.IsSigned); //ExSkip
             Console.WriteLine(vbaProject.IsSigned
                 ? $"Project name: {vbaProject.Name} signed; Project code page: {vbaProject.CodePage}; Modules count: {vbaProject.Modules.Count()}\n"
                 : $"Project name: {vbaProject.Name} not signed; Project code page: {vbaProject.CodePage}; Modules count: {vbaProject.Modules.Count()}\n");
 
-            Assert.AreEqual(vbaProject.Name, "AsposeVBAtest"); //ExSkip
-            Assert.AreEqual(vbaProject.Modules.Count(), 3); //ExSkip
-            Assert.True(vbaProject.IsSigned); //ExSkip
+            VbaModuleCollection vbaModules = doc.VbaProject.Modules; 
 
-            VbaModuleCollection vbaModules = doc.VbaProject.Modules;
+            Assert.AreEqual(vbaModules.Count(), 3);
+
             foreach (VbaModule module in vbaModules)
                 Console.WriteLine($"Module name: {module.Name};\nModule code:\n{module.SourceCode}\n");
 
@@ -3636,9 +3757,16 @@ namespace ApiExamples
             vbaModules.Remove(vbaModules[2]);
             //ExEnd
 
+            Assert.AreEqual("AsposeVBAtest", vbaProject.Name);
+            Assert.AreEqual(2, vbaProject.Modules.Count());
+            Assert.AreEqual(1251, vbaProject.CodePage);
+            Assert.False(vbaProject.IsSigned);
+
+            Assert.AreEqual("ThisDocument", vbaModules[0].Name);
             Assert.AreEqual("Your VBA code...", vbaModules[0].SourceCode);
+
+            Assert.AreEqual("Module1", vbaModules[1].Name);
             Assert.AreEqual("Your VBA code...", vbaModules[1].SourceCode);
-            Assert.That(() => vbaModules[2], Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
         [Test]
@@ -3661,7 +3789,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void Subdocument()
+        public void SubDocument()
         {
             //ExStart
             //ExFor:SubDocument
@@ -3670,9 +3798,11 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Master document.docx");
 
             NodeCollection subDocuments = doc.GetChildNodes(NodeType.SubDocument, true);
-            Assert.AreEqual(1, subDocuments.Count);
+            Assert.AreEqual(1, subDocuments.Count); //ExSkip
 
-            SubDocument subDocument = (SubDocument)doc.GetChildNodes(NodeType.SubDocument, true)[0];
+            SubDocument subDocument = (SubDocument)subDocuments[0];
+
+            // The SubDocument object by itself does not contain the documents of the subdocument and only serves as a reference
             Assert.False(subDocument.IsComposite);
             //ExEnd
         }
@@ -3722,21 +3852,49 @@ namespace ApiExamples
             myScriptTaskPane.Row = 1;
 
             // Add "MyScript Math Sample" add-in which will be displayed inside task pane
+            WebExtension webExtension = myScriptTaskPane.WebExtension;
+
             // Application Id from store
-            myScriptTaskPane.WebExtension.Reference.Id = "WA104380646";
+            webExtension.Reference.Id = "WA104380646";
             // The current version of the application used
-            myScriptTaskPane.WebExtension.Reference.Version = "1.0.0.0";
+            webExtension.Reference.Version = "1.0.0.0";
             // Type of marketplace
-            myScriptTaskPane.WebExtension.Reference.StoreType = WebExtensionStoreType.OMEX;
+            webExtension.Reference.StoreType = WebExtensionStoreType.OMEX;
             // Marketplace based on your locale
-            myScriptTaskPane.WebExtension.Reference.Store = "en-us";
-            myScriptTaskPane.WebExtension.Properties.Add(new WebExtensionProperty("MyScript", "MyScript Math Sample"));
-            myScriptTaskPane.WebExtension.Bindings.Add(new WebExtensionBinding("Binding1", WebExtensionBindingType.Text, "104380646"));
+            webExtension.Reference.Store = CultureInfo.CurrentCulture.Name;
+
+            webExtension.Properties.Add(new WebExtensionProperty("MyScript", "MyScript Math Sample"));
+            webExtension.Bindings.Add(new WebExtensionBinding("MyScript", WebExtensionBindingType.Text, "104380646"));
+
             // Use this option if you need to block web extension from any action
-            myScriptTaskPane.WebExtension.IsFrozen = false;
+            webExtension.IsFrozen = false;
 
             doc.Save(ArtifactsDir + "Document.WebExtension.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Document.WebExtension.docx");
+            myScriptTaskPane = doc.WebExtensionTaskPanes[0];
+
+            Assert.AreEqual(TaskPaneDockState.Right, myScriptTaskPane.DockState);
+            Assert.True(myScriptTaskPane.IsVisible);
+            Assert.AreEqual(300.0d, myScriptTaskPane.Width);
+            Assert.True(myScriptTaskPane.IsLocked);
+            Assert.AreEqual(1, myScriptTaskPane.Row);
+            webExtension = myScriptTaskPane.WebExtension;
+
+            Assert.AreEqual("WA104380646", webExtension.Reference.Id);
+            Assert.AreEqual("1.0.0.0", webExtension.Reference.Version);
+            Assert.AreEqual(WebExtensionStoreType.OMEX, webExtension.Reference.StoreType);
+            Assert.AreEqual(CultureInfo.CurrentCulture.Name, webExtension.Reference.Store);
+
+            Assert.AreEqual("MyScript", webExtension.Properties[0].Name);
+            Assert.AreEqual("MyScript Math Sample", webExtension.Properties[0].Value);
+
+            Assert.AreEqual("MyScript", webExtension.Bindings[0].Id);
+            Assert.AreEqual(WebExtensionBindingType.Text, webExtension.Bindings[0].BindingType);
+            Assert.AreEqual("104380646", webExtension.Bindings[0].AppRef);
+
+            Assert.False(webExtension.IsFrozen);
         }
 
         [Test]
@@ -3752,13 +3910,12 @@ namespace ApiExamples
             //ExFor:BaseWebExtensionCollection`1.Item(Int32)
             //ExSummary:Shows how to work with web extension collections.
             Document doc = new Document(MyDir + "Web extension.docx");
-
-            Assert.AreEqual(1, doc.WebExtensionTaskPanes.Count);
+            Assert.AreEqual(1, doc.WebExtensionTaskPanes.Count); //ExSkip
 
             // Add new taskpane to the collection
             TaskPane newTaskPane = new TaskPane();
             doc.WebExtensionTaskPanes.Add(newTaskPane);
-            Assert.AreEqual(2, doc.WebExtensionTaskPanes.Count);
+            Assert.AreEqual(2, doc.WebExtensionTaskPanes.Count); //ExSkip
 
             // Enumerate all WebExtensionProperty in a collection
             WebExtensionPropertyCollection webExtensionPropertyCollection = doc.WebExtensionTaskPanes[0].WebExtension.Properties;
@@ -3771,11 +3928,9 @@ namespace ApiExamples
                 }
             }
 
-            // Delete specific taskpane from the collection
+            // We can remove task panes one by one or clead the entire collection
             doc.WebExtensionTaskPanes.Remove(1);
             Assert.AreEqual(1, doc.WebExtensionTaskPanes.Count); //ExSkip
-
-            // Or remove all items from the collection
             doc.WebExtensionTaskPanes.Clear();
             Assert.AreEqual(0, doc.WebExtensionTaskPanes.Count); //ExSkip
             //ExEnd
