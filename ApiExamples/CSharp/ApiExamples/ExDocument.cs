@@ -13,7 +13,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -528,16 +527,7 @@ namespace ApiExamples
 
             List<WarningInfo> warnings = ((DocumentLoadingWarningCallback)loadOptions.WarningCallback).GetWarnings();
             Assert.AreEqual(3, warnings.Count);
-            Assert.AreEqual(WarningType.UnexpectedContent, warnings[0].WarningType); //ExSkip
-            Assert.AreEqual(WarningSource.Docx, warnings[0].Source); //ExSkip
-            Assert.AreEqual("3F01", warnings[0].Description); //ExSkip
-            Assert.AreEqual(WarningType.MinorFormattingLoss, warnings[1].WarningType); //ExSkip
-            Assert.AreEqual(WarningSource.Docx, warnings[1].Source); //ExSkip
-            Assert.AreEqual("Import of element 'shapedefaults' is not supported in Docx format by Aspose.Words.", warnings[1].Description); //ExSkip
-            Assert.AreEqual(WarningType.MinorFormattingLoss, warnings[2].WarningType); //ExSkip
-            Assert.AreEqual(WarningSource.Docx, warnings[2].Source); //ExSkip
-            Assert.AreEqual("Import of element 'extraClrSchemeLst' is not supported in Docx format by Aspose.Words.", warnings[2].Description); //ExSkip
-
+            TestLoadOptionsWarningCallback(warnings); //ExSkip
         }
 
         /// <summary>
@@ -561,6 +551,19 @@ namespace ApiExamples
             private readonly List<WarningInfo> mWarnings = new List<WarningInfo>();
         }
         //ExEnd
+
+        private void TestLoadOptionsWarningCallback(List<WarningInfo> warnings)
+        {
+            Assert.AreEqual(WarningType.UnexpectedContent, warnings[0].WarningType);
+            Assert.AreEqual(WarningSource.Docx, warnings[0].Source);
+            Assert.AreEqual("3F01", warnings[0].Description);
+            Assert.AreEqual(WarningType.MinorFormattingLoss, warnings[1].WarningType);
+            Assert.AreEqual(WarningSource.Docx, warnings[1].Source);
+            Assert.AreEqual("Import of element 'shapedefaults' is not supported in Docx format by Aspose.Words.", warnings[1].Description); 
+            Assert.AreEqual(WarningType.MinorFormattingLoss, warnings[2].WarningType); 
+            Assert.AreEqual(WarningSource.Docx, warnings[2].Source);
+            Assert.AreEqual("Import of element 'extraClrSchemeLst' is not supported in Docx format by Aspose.Words.", warnings[2].Description); 
+        }
 
         [Test]
         public void ConvertToHtml()
@@ -670,6 +673,8 @@ namespace ApiExamples
             //ExSummary:Shows how to change the resolution of images in output pdf documents.
             // Open a document that contains images 
             Document doc = new Document(MyDir + "Rendering.docx");
+            doc.Save(ArtifactsDir + "Document.DownsampleOptions.pdf"); //ExSkip
+            Assert.AreEqual(234440, new FileInfo(ArtifactsDir + "Document.DownsampleOptions.pdf").Length); //ExSkip
 
             // If we want to convert the document to .pdf, we can use a SaveOptions implementation to customize the saving process
             PdfSaveOptions options = new PdfSaveOptions();
@@ -686,7 +691,8 @@ namespace ApiExamples
             // This value will prevent the second image in the input document from being downsampled
             options.DownsampleOptions.ResolutionThreshold = 128;
 
-            doc.Save(ArtifactsDir + "Document.DownsampleOptions.pdf", options);
+            doc.Save(ArtifactsDir + "Document.DownsampleOptions.pdf", options); //ExSkip
+            Assert.AreEqual(213177, new FileInfo(ArtifactsDir + "Document.DownsampleOptions.pdf").Length); //ExSKip
             //ExEnd
         }
 
@@ -714,9 +720,9 @@ namespace ApiExamples
 
             // Enabling HtmlSaveOptions.PrettyFormat places tabs and newlines in places where it would improve the readability of html source
             if (isPrettyFormat) 
-            Assert.True(html.StartsWith("<html>\r\n\t<head>\r\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n\t\t"));
+                Assert.True(html.StartsWith("<html>\r\n\t<head>\r\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n\t\t"));
             else
-            Assert.True(html.StartsWith("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />"));
+                Assert.True(html.StartsWith("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />"));
 
         }
 
@@ -843,6 +849,7 @@ namespace ApiExamples
             builder.InsertHtml("<p>Hello World</p>");
 
             doc.Save(ArtifactsDir + "Document.FontChangeViaCallback.docx");
+            doc = new Document(ArtifactsDir + "Document.FontChangeViaCallback.docx"); //ExSkip
             Run run = (Run)doc.GetChild(NodeType.Run, 0, true); //ExSkip
             Assert.AreEqual(24.0, run.Font.Size); //ExSkip
             Assert.AreEqual("Arial", run.Font.Name); //ExSkip
@@ -974,7 +981,10 @@ namespace ApiExamples
             }
             //ExEnd
 
+            Assert.AreEqual(1, doc.DigitalSignatures.Count);
+
             DigitalSignature digitalSig = doc.DigitalSignatures[0];
+
             Assert.True(digitalSig.IsValid);
             Assert.AreEqual("Test Sign", digitalSig.Comments);
             Assert.AreEqual("XmlDsig", digitalSig.SignatureType.ToString());
@@ -1062,8 +1072,12 @@ namespace ApiExamples
             // In this case we add the optional parameter to include the search only for files with the ".doc" extension
             ArrayList files = new ArrayList(Directory.GetFiles(MyDir, "*.doc")
                 .Where(file => file.EndsWith(".doc", StringComparison.CurrentCultureIgnoreCase)).ToArray());
+            Assert.AreEqual(7, files.Count); //ExSkip
+
             // The list of files may come in any order, let's sort the files by name so the documents are enumerated alphabetically
             files.Sort();
+            Assert.AreEqual(5, baseDoc.Styles.Count); //ExSkip
+            Assert.AreEqual(1, baseDoc.Sections.Count); //ExSkip
 
             // Iterate through every file in the directory and append each one to the end of the template document
             foreach (string fileName in files)
@@ -1081,6 +1095,9 @@ namespace ApiExamples
             // Save the combined document to disk
             baseDoc.Save(path);
             //ExEnd
+
+            Assert.AreEqual(7, baseDoc.Styles.Count);
+            Assert.AreEqual(8, baseDoc.Sections.Count);
         }
 
         [Test]
@@ -1100,7 +1117,7 @@ namespace ApiExamples
             // This method will also notify us of the number of run joins that took place
             Assert.AreEqual(121, doc.JoinRunsWithSameFormatting());
 
-            // Get the number of runs after joining
+            // Get the number of runs after joining, which, together with the number of joins should add up to the original number of runs
             Assert.AreEqual(196, doc.GetChildNodes(NodeType.Run, true).Count);
             //ExEnd
         }
@@ -1216,9 +1233,7 @@ namespace ApiExamples
             // Convert the document to byte form
             byte[] docBytes = streamOut.ToArray();
 
-            // The bytes are now ready to be stored/transmitted
-
-            // Now reverse the steps to load the bytes back into a document object
+            // We can load the bytes back into a document object
             MemoryStream streamIn = new MemoryStream(docBytes);
 
             // Load the stream into a new document object
@@ -1259,9 +1274,8 @@ namespace ApiExamples
             Assert.AreEqual(ProtectionType.NoProtection, doc.ProtectionType);
 
             doc.Protect(ProtectionType.ReadOnly, "newPassword");
-            doc.Unprotect("wrongPassword");
-            Assert.AreEqual(ProtectionType.ReadOnly, doc.ProtectionType);
-
+            doc.Unprotect("wrongPassword"); //ExSkip
+            Assert.AreEqual(ProtectionType.ReadOnly, doc.ProtectionType); //ExSkip
             doc.Unprotect("newPassword");
             Assert.AreEqual(ProtectionType.NoProtection, doc.ProtectionType);
             //ExEnd
@@ -1997,6 +2011,7 @@ namespace ApiExamples
                 }
             }
             //ExEnd
+
             Assert.AreEqual("", ((Paragraph)doc.Revisions[0].ParentNode).ListLabel.LabelString);
             Assert.AreEqual("1.", ((Paragraph)doc.Revisions[1].ParentNode).ListLabel.LabelString);
             Assert.AreEqual("a.", ((Paragraph)doc.Revisions[3].ParentNode).ListLabel.LabelString);
@@ -2164,16 +2179,15 @@ namespace ApiExamples
             //ExSummary:Show how to simply extract text from a stream.
             TxtLoadOptions loadOptions = new TxtLoadOptions { DetectNumberingWithWhitespaces = false };
 
-            Stream stream = new FileStream(MyDir + "Document.docx", FileMode.Open);
+            using (Stream stream = new FileStream(MyDir + "Document.docx", FileMode.Open))
+            {
+                PlainTextDocument plaintext = new PlainTextDocument(stream);
+                Assert.AreEqual("Hello World!", plaintext.Text.Trim()); //ExSkip
 
-            PlainTextDocument plaintext = new PlainTextDocument(stream);
-            Assert.AreEqual("Hello World!", plaintext.Text.Trim()); //ExSkip
-
-            plaintext = new PlainTextDocument(stream, loadOptions);
-            Assert.AreEqual("Hello World!", plaintext.Text.Trim()); //ExSkip
+                plaintext = new PlainTextDocument(stream, loadOptions);
+                Assert.AreEqual("Hello World!", plaintext.Text.Trim()); //ExSkip
+            }
             //ExEnd
-
-            stream.Close();
         }
 
         [Test]
@@ -2204,7 +2218,7 @@ namespace ApiExamples
             //ExFor:SaveOptions.UseAntiAliasing
             //ExFor:SaveOptions.UseHighQualityRendering
             //ExSummary:Improve the quality of a rendered document with SaveOptions.
-            Document doc = new Document();
+            Document doc = new Document(MyDir + "Rendering.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Font.Size = 60;
@@ -2221,6 +2235,9 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Document.ImageSaveOptions.HighQuality.jpg", options);
             //ExEnd
+
+            Assert.AreEqual(238885, new FileInfo(ArtifactsDir + "Document.ImageSaveOptions.Default.jpg").Length);
+            Assert.AreEqual(239839, new FileInfo(ArtifactsDir + "Document.ImageSaveOptions.HighQuality.jpg").Length);
         }
 
         [Test]
@@ -2258,6 +2275,12 @@ namespace ApiExamples
 
             Assert.AreEqual(5, doc.Styles.Count); 
             Assert.AreEqual(1, doc.Lists.Count);
+
+            doc.RemoveAllChildren();
+            doc.Cleanup();
+
+            Assert.AreEqual(4, doc.Styles.Count);
+            Assert.AreEqual(0, doc.Lists.Count);
         }
 
         [Test]
@@ -2440,11 +2463,11 @@ namespace ApiExamples
             // all documents we save with it that have no AttachedTemplate value
             SaveOptions options = SaveOptions.CreateSaveOptions("Document.DefaultTemplate.docx");
             options.DefaultTemplate = MyDir + "Business brochure.dotx";
+            Assert.True(File.Exists(options.DefaultTemplate)); //ExSkip
 
             doc.Save(ArtifactsDir + "Document.DefaultTemplate.docx", options);
             //ExEnd
-
-            Assert.True(File.Exists(options.DefaultTemplate)); }
+        }
 
         [Test]
         public void Sections()
@@ -3011,13 +3034,11 @@ namespace ApiExamples
                 }
             }
 
-            // Delete parts one at a time based on index
+            // The parts collection can have individual entries removed or be cleared like this
             doc.PackageCustomParts.RemoveAt(2);
-            Assert.AreEqual(2, doc.PackageCustomParts.Count);
-
-            // Delete all parts
+            Assert.AreEqual(2, doc.PackageCustomParts.Count); //ExSkip
             doc.PackageCustomParts.Clear();
-            Assert.AreEqual(0, doc.PackageCustomParts.Count);
+            Assert.AreEqual(0, doc.PackageCustomParts.Count); //ExSkip
             //ExEnd
         }
 
@@ -3274,7 +3295,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ShowRevisionsInBalloons()
+        public void RevisionOptions()
         {
             //ExStart
             //ExFor:ShowInBalloons
@@ -3332,7 +3353,7 @@ namespace ApiExamples
             revisionOptions.CommentColor = RevisionColor.BrightGreen;
 
             // These features are only applicable to formats such as .pdf or .jpg
-            doc.Save(ArtifactsDir + "Document.ShowRevisionsInBalloons.pdf");
+            doc.Save(ArtifactsDir + "Document.RevisionOptions.pdf");
             //ExEnd
         }
 
@@ -3608,9 +3629,9 @@ namespace ApiExamples
             //ExEnd
 
             if (isAlwaysCompressMetafiles)
-                Assert.AreEqual(13312, File.ReadAllBytes(ArtifactsDir + "Document.AlwaysCompressMetafiles.docx").Length);
+                Assert.AreEqual(13312, new FileInfo(ArtifactsDir + "Document.AlwaysCompressMetafiles.docx").Length);
             else
-                Assert.AreEqual(21504, File.ReadAllBytes(ArtifactsDir + "Document.AlwaysCompressMetafiles.docx").Length);
+                Assert.AreEqual(21504, new FileInfo(ArtifactsDir + "Document.AlwaysCompressMetafiles.docx").Length);
             
         }
 
@@ -3802,7 +3823,7 @@ namespace ApiExamples
 
             SubDocument subDocument = (SubDocument)subDocuments[0];
 
-            // The SubDocument object by itself does not contain the documents of the subdocument and only serves as a reference
+            // The SubDocument object itself does not contain the documents of the subdocument and only serves as a reference
             Assert.False(subDocument.IsComposite);
             //ExEnd
         }
@@ -3848,7 +3869,7 @@ namespace ApiExamples
             myScriptTaskPane.IsVisible = true;
             myScriptTaskPane.Width = 300;
             myScriptTaskPane.IsLocked = true;
-            // Use this option if you have several taskpanes
+            // Use this option if you have several task panes
             myScriptTaskPane.Row = 1;
 
             // Add "MyScript Math Sample" add-in which will be displayed inside task pane
@@ -3928,7 +3949,7 @@ namespace ApiExamples
                 }
             }
 
-            // We can remove task panes one by one or clead the entire collection
+            // We can remove task panes one by one or clear the entire collection
             doc.WebExtensionTaskPanes.Remove(1);
             Assert.AreEqual(1, doc.WebExtensionTaskPanes.Count); //ExSkip
             doc.WebExtensionTaskPanes.Clear();
