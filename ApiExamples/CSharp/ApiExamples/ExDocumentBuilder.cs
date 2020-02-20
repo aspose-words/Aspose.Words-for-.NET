@@ -49,11 +49,26 @@ namespace ApiExamples
             font.Size = 16;
             font.Bold = true;
             font.Color = Color.Blue;
-            font.Name = "Arial";
+            font.Name = "Courier New";
             font.Underline = Underline.Dash;
 
-            builder.Write("Sample text.");
+            builder.Write("Hello world!");
             //ExEnd
+
+            using (MemoryStream docStream = new MemoryStream())
+            {
+                builder.Document.Save(docStream, SaveFormat.Docx);
+                Document doc = new Document(docStream);
+
+                Run firstRun = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+                Assert.AreEqual("Hello world!", firstRun.GetText().Trim());
+                Assert.AreEqual(16, firstRun.Font.Size);
+                Assert.True(firstRun.Font.Bold);
+                Assert.AreEqual("Courier New", firstRun.Font.Name);
+                Assert.AreEqual(Color.Blue.ToArgb(), firstRun.Font.Color.ToArgb());
+                Assert.AreEqual(Underline.Dash, firstRun.Font.Underline);
+
+            }
         }
 
         [Test]
@@ -81,11 +96,11 @@ namespace ApiExamples
 
             // Create the headers
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderFirst);
-            builder.Write("Header First");
+            builder.Write("Header for the first page");
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderEven);
-            builder.Write("Header Even");
+            builder.Write("Header for even pages");
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-            builder.Write("Header Odd");
+            builder.Write("Header for all other pages");
 
             // Create three pages in the document
             builder.MoveToSection(0);
@@ -95,8 +110,17 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             builder.Writeln("Page3");
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.HeadersAndFooters.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.HeadersAndFooters.docx");
             //ExEnd
+
+            HeaderFooterCollection headersFooters = 
+                new Document(ArtifactsDir + "DocumentBuilder.HeadersAndFooters.docx").FirstSection.HeadersFooters;
+
+            Assert.AreEqual(3, headersFooters.Count);
+            Assert.AreEqual("Header for the first page", headersFooters[HeaderFooterType.HeaderFirst].GetText().Trim());
+            Assert.AreEqual("Header for even pages", headersFooters[HeaderFooterType.HeaderEven].GetText().Trim());
+            Assert.AreEqual("Header for all other pages", headersFooters[HeaderFooterType.HeaderPrimary].GetText().Trim());
+
         }
 
         [Test]
@@ -111,16 +135,21 @@ namespace ApiExamples
             builder.InsertField(@"MERGEFIELD MyMergeField1 \* MERGEFORMAT");
             builder.InsertField(@"MERGEFIELD MyMergeField2 \* MERGEFORMAT");
 
-            Assert.AreEqual(2, doc.Range.Fields.Count);
-
             // The second merge field starts immediately after the end of the first
             // We'll move the builder's cursor to the end of the first so we can split them by text
             builder.MoveToMergeField("MyMergeField1", true, false);
+            Assert.AreEqual(doc.Range.Fields[1].Start, builder.CurrentNode);
 
             builder.Write(" Text between our two merge fields. ");
 
             doc.Save(ArtifactsDir + "DocumentBuilder.MergeFields.docx");
-            //ExEnd			
+            //ExEnd		
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.MergeFields.docx");
+
+            Assert.AreEqual(2, doc.Range.Fields.Count);
+            Assert.AreEqual(@"MERGEFIELD MyMergeField1 \* MERGEFORMAT", doc.Range.Fields[0].GetFieldCode());
+            Assert.AreEqual(@"MERGEFIELD MyMergeField2 \* MERGEFORMAT", doc.Range.Fields[1].GetFieldCode());
         }
 
         [Test]
