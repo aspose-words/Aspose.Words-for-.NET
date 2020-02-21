@@ -384,7 +384,9 @@
     <Compile Include="Rendering-Printing\EmbeddedFontsInPDF.cs" />
     <Compile Include="Rendering-Printing\Print_CachePrinterSettings.cs" />
     <Compile Include="Rendering-Printing\ReceiveNotificationsOfFont .cs" />
+    <Compile Include="Rendering-Printing\SaveDocumentToJPEG.cs" />
     <Compile Include="Rendering-Printing\SetFontSettings.cs" />
+    <Compile Include="Rendering-Printing\SetFontsFolders.cs" />
     <Compile Include="Rendering-Printing\WorkingWithFontResolution.cs" />
     <Compile Include="Rendering-Printing\WorkingWithFontSources.cs" />
     <Compile Include="Rendering-Printing\WorkingWithPdfSaveOptions.cs" />
@@ -504,13 +506,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\SkiaSharp.1.68.0\build\net45\SkiaSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SkiaSharp.1.68.0\build\net45\SkiaSharp.targets'))" />
-    <Error Condition="!Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.20.2.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Aspose.Words.Shaping.HarfBuzz.20.2.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets'))" />
-  </Target>
   <Import Project="..\packages\Aspose.Words.Shaping.HarfBuzz.20.2.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets" Condition="Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.20.2.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
