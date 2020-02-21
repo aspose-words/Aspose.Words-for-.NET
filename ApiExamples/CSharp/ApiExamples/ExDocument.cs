@@ -126,8 +126,9 @@ namespace ApiExamples
         {
             // Create a new LoadOptions object and set its ResourceLoadingCallback attribute
             // as an instance of our IResourceLoadingCallback implementation 
-            LoadOptions loadOptions = new LoadOptions { ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback() };
-
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback();
+            
             // When we open an Html document, external resources such as references to CSS stylesheet files and external images
             // will be handled in a custom manner by the loading callback as the document is loaded
             Document doc = new Document(MyDir + "Images.html", loadOptions);
@@ -160,8 +161,8 @@ namespace ApiExamples
                         args.SetData(imageBytes);
 
                         return ResourceLoadingAction.UserProvided;
-
                 }
+
                 return ResourceLoadingAction.Default;
             }
         }
@@ -175,15 +176,15 @@ namespace ApiExamples
             //ExFor:CertificateHolder.Create(Byte[], String)
             //ExFor:CertificateHolder.Create(String, String, String)
             //ExSummary:Shows how to create CertificateHolder objects.
-            // 1: Load a PKCS #12 file into a byte array and apply its password to create the CertificateHolder
+            // Load a PKCS #12 file into a byte array and apply its password to create the CertificateHolder
             byte[] certBytes = File.ReadAllBytes(MyDir + "morzal.pfx");
             CertificateHolder.Create(certBytes, "aw");
 
-            // 2: Pass a SecureString which contains the password instead of a normal string
+            // Pass a SecureString which contains the password instead of a normal string
             SecureString password = new NetworkCredential("", "aw").SecurePassword;
             CertificateHolder.Create(certBytes, password);
 
-            // 3: If the certificate has private keys corresponding to aliases, we can use the aliases to fetch their respective keys
+            // If the certificate has private keys corresponding to aliases, we can use the aliases to fetch their respective keys
             // First, we'll check for valid aliases like this
             using (FileStream certStream = new FileStream(MyDir + "morzal.pfx", FileMode.Open))
             {
@@ -217,7 +218,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.#ctor(Boolean)
-            //ExSummary:Shows how to create a blank document. Note the blank document contains one section and one paragraph.
+            //ExSummary:Shows how to create a blank document.
+            // Note the blank document contains one section and one paragraph.
             Document doc = new Document();
             //ExEnd
         }
@@ -249,7 +251,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.#ctor(Stream)
-            //ExSummary:Opens a document from a stream.
+            //ExSummary:Shows how to open a document from a stream.
             // Open the stream. Read only access is enough for Aspose.Words to load a document.
             using (Stream stream = File.OpenRead(MyDir + "Document.docx"))
             {
@@ -264,30 +266,28 @@ namespace ApiExamples
         [Test]
         public void OpenFromStreamWithBaseUri()
         {
+            Document doc;
+
             //ExStart
             //ExFor:Document.#ctor(Stream,LoadOptions)
             //ExFor:LoadOptions.#ctor
             //ExFor:LoadOptions.BaseUri
-            //ExFor:ShapeBase.IsImage
-            //ExSummary:Opens an HTML document with images from a stream using a base URI.
-            Document doc = new Document();
-            string fileName = MyDir + "Document.html";
-
+            //ExSummary:Shows how to open an HTML document with images from a stream using a base URI.
             // Open the stream
-            using (Stream stream = File.OpenRead(fileName))
+            using (Stream stream = File.OpenRead(MyDir + "Document.html"))
             {
-                // Open the document. Note the Document constructor detects HTML format automatically
                 // Pass the URI of the base folder so any images with relative URIs in the HTML document can be found
+                // Note the Document constructor detects HTML format automatically
                 LoadOptions loadOptions = new LoadOptions();
                 loadOptions.BaseUri = ImageDir;
 
                 doc = new Document(stream, loadOptions);
             }
+            //ExEnd
 
             // Save in the DOC format
             doc.Save(ArtifactsDir + "Document.OpenFromStreamWithBaseUri.doc");
-            //ExEnd
-
+            
             // Lets make sure the image was imported successfully into a Shape node
             // Get the first shape node in the document
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
@@ -303,7 +303,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.#ctor(Stream)
-            //ExSummary:Retrieves a document from a URL and saves it to disk in a different format.
+            //ExSummary:Shows how to retrieve a document from a URL and saves it to disk in a different format.
             // This is the URL address pointing to where to find the document
             const string url = "https://omextemplates.content.office.net/support/templates/en-us/tf16402488.dotx";
 
@@ -352,7 +352,7 @@ namespace ApiExamples
             Encoding encoding = client.Encoding;
             byte[] pageBytes = encoding.GetBytes(pageSource);
 
-            // Load the HTML into a stream.
+            // Load the HTML into a stream
             using (MemoryStream stream = new MemoryStream(pageBytes))
             {
                 // The baseUri property should be set to ensure any relative img paths are retrieved correctly
@@ -374,7 +374,7 @@ namespace ApiExamples
             //ExFor:Document.#ctor(String,LoadOptions)
             //ExFor:LoadOptions.LoadFormat
             //ExFor:LoadFormat
-            //ExSummary:Explicitly loads a document as HTML without automatic file format detection.
+            //ExSummary:Shows how to load a document as HTML without automatic file format detection.
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.LoadFormat = Aspose.Words.LoadFormat.Html;
 
@@ -420,7 +420,7 @@ namespace ApiExamples
             //ExFor:LoadOptions.ConvertShapeToOfficeMath
             //ExSummary:Shows how to convert shapes with EquationXML to Office Math objects.
             LoadOptions loadOptions = new LoadOptions();
-            // Use 'true'/'false' values to convert shapes with EquationXML to Office Math objects or not
+            // Use 'true/false' values to convert shapes with EquationXML to Office Math objects or not
             loadOptions.ConvertShapeToOfficeMath = isConvertShapeToOfficeMath;
             
             // Specify load option to convert math shapes to office math objects on loading stage
@@ -479,7 +479,8 @@ namespace ApiExamples
             fontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Times New Roman", "Arvo");
 
             // Set that FontSettings object as a member of a newly created LoadOptions object
-            LoadOptions loadOptions = new LoadOptions { FontSettings = fontSettings };
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.FontSettings = fontSettings;
 
             // We can now open a document while also passing the LoadOptions object into the constructor so the font substitution occurs upon loading
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
@@ -520,7 +521,8 @@ namespace ApiExamples
         public void LoadOptionsWarningCallback()
         {
             // Create a new LoadOptions object and set its WarningCallback attribute as an instance of our IWarningCallback implementation 
-            LoadOptions loadOptions = new LoadOptions { WarningCallback = new DocumentLoadingWarningCallback() };
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.WarningCallback = new DocumentLoadingWarningCallback();
 
             // Warnings that occur during loading of the document will now be printed and stored
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
@@ -552,14 +554,16 @@ namespace ApiExamples
         }
         //ExEnd
 
-        private void TestLoadOptionsWarningCallback(List<WarningInfo> warnings)
+        private static void TestLoadOptionsWarningCallback(List<WarningInfo> warnings)
         {
             Assert.AreEqual(WarningType.UnexpectedContent, warnings[0].WarningType);
             Assert.AreEqual(WarningSource.Docx, warnings[0].Source);
             Assert.AreEqual("3F01", warnings[0].Description);
+
             Assert.AreEqual(WarningType.MinorFormattingLoss, warnings[1].WarningType);
             Assert.AreEqual(WarningSource.Docx, warnings[1].Source);
             Assert.AreEqual("Import of element 'shapedefaults' is not supported in Docx format by Aspose.Words.", warnings[1].Description); 
+
             Assert.AreEqual(WarningType.MinorFormattingLoss, warnings[2].WarningType); 
             Assert.AreEqual(WarningSource.Docx, warnings[2].Source);
             Assert.AreEqual("Import of element 'extraClrSchemeLst' is not supported in Docx format by Aspose.Words.", warnings[2].Description); 
@@ -641,8 +645,7 @@ namespace ApiExamples
             // Create a new instance of HtmlSaveOptions. This object allows us to set options that control
             // how the output document is saved
             HtmlSaveOptions saveOptions = new HtmlSaveOptions();
-
-            // Specify the desired encoding.
+            // Specify the desired encoding
             saveOptions.Encoding = Encoding.UTF8;
 
             // Specify at what elements to split the internal HTML at. This creates a new HTML within the EPUB 
@@ -692,7 +695,7 @@ namespace ApiExamples
             options.DownsampleOptions.ResolutionThreshold = 128;
 
             doc.Save(ArtifactsDir + "Document.DownsampleOptions.pdf", options); //ExSkip
-            Assert.AreEqual(213177, new FileInfo(ArtifactsDir + "Document.DownsampleOptions.pdf").Length); //ExSKip
+            Assert.AreEqual(213177, new FileInfo(ArtifactsDir + "Document.DownsampleOptions.pdf").Length); //ExSkip
             //ExEnd
         }
 
@@ -708,10 +711,8 @@ namespace ApiExamples
 
             // Enabling the PrettyFormat setting will export HTML in an indented format that is easy to read
             // If this is setting is false (by default) then the HTML tags will be exported in condensed form with no indentation
-            HtmlSaveOptions htmlOptions = new HtmlSaveOptions(SaveFormat.Html)
-            {
-                PrettyFormat = isPrettyFormat
-            };
+            HtmlSaveOptions htmlOptions = new HtmlSaveOptions(SaveFormat.Html);
+            htmlOptions.PrettyFormat = isPrettyFormat;
 
             doc.Save(ArtifactsDir + "Document.SaveHtmlPrettyFormat.html", htmlOptions);
             //ExEnd
@@ -719,11 +720,11 @@ namespace ApiExamples
             string html = File.ReadAllText(ArtifactsDir + "Document.SaveHtmlPrettyFormat.html");
 
             // Enabling HtmlSaveOptions.PrettyFormat places tabs and newlines in places where it would improve the readability of html source
-            if (isPrettyFormat) 
-                Assert.True(html.StartsWith("<html>\r\n\t<head>\r\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n\t\t"));
-            else
-                Assert.True(html.StartsWith("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />"));
-
+            Assert.True(isPrettyFormat
+                ? html.StartsWith(
+                    "<html>\r\n\t<head>\r\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n\t\t")
+                : html.StartsWith(
+                    "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />"));
         }
 
         [Test]
@@ -785,11 +786,9 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // Set the option to export font resources and create and pass the object which implements the handler methods
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
-            {
-                ExportFontResources = true,
-                FontSavingCallback = new HandleFontSaving()
-            };
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
+            options.ExportFontResources = true;
+            options.FontSavingCallback = new HandleFontSaving();
             
             // The fonts from the input document will now be exported as .ttf files and saved alongside the output document
             doc.Save(ArtifactsDir + "Document.SaveHtmlExportFonts.html", options);
@@ -971,8 +970,8 @@ namespace ApiExamples
             {
                 Console.WriteLine("*** Signature Found ***");
                 Console.WriteLine("Is valid: " + signature.IsValid);
-                Console.WriteLine("Reason for signing: " +
-                                  signature.Comments); // This property is available in MS Word documents only
+                // This property is available in MS Word documents only
+                Console.WriteLine("Reason for signing: " + signature.Comments); 
                 Console.WriteLine("Signature type: " + signature.SignatureType);
                 Console.WriteLine("Time of signing: " + signature.SignTime);
                 Console.WriteLine("Subject name: " + signature.CertificateHolder.Certificate.SubjectName);
@@ -1222,7 +1221,7 @@ namespace ApiExamples
         [Test]
         public void DocumentByteArray()
         {
-            // Load the document.
+            // Load the document
             Document doc = new Document(MyDir + "Document.docx");
 
             // Create a new memory stream
@@ -1322,13 +1321,13 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Macro.docm");
 
             Assert.IsTrue(doc.HasMacros);
-            Assert.AreEqual("Project", doc.VbaProject.Name);
+            Assert.AreEqual("Project", doc.VbaProject.Name); //ExSkip
 
             // We can strip the document of this content by calling this method
             doc.RemoveMacros();
 
             Assert.IsFalse(doc.HasMacros);
-            Assert.Null(doc.VbaProject);
+            Assert.Null(doc.VbaProject); //ExSkip
             //ExEnd
         }
 
@@ -1350,11 +1349,9 @@ namespace ApiExamples
             builder.Write("Cell 3");
 
             // Create a SaveOptions object to prepare this document to be saved to .txt
-            TxtSaveOptions options = new TxtSaveOptions
-            {
-                PreserveTableLayout = true
-            };
-
+            TxtSaveOptions options = new TxtSaveOptions();
+            options.PreserveTableLayout = true;
+        
             // Previewing the appearance of the document in .txt form shows that the table will not be represented accurately
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true); //ExSkip
             Assert.AreEqual(0.0d, table.FirstRow.Cells[0].CellFormat.Width); //ExSkip
@@ -1443,11 +1440,8 @@ namespace ApiExamples
             //ExFor:Document.ExpandTableStylesToDirectFormatting
             //ExSummary:Shows how to expand the formatting from styles onto the rows and cells of the table as direct formatting.
             Document doc = new Document(MyDir + "Tables.docx");
-
-            // Get the first cell of the first table in the document
+            
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
-            Cell firstCell = table.FirstRow.FirstCell;
-
             // First print the color of the cell shading. This should be empty as the current shading
             // is stored in the table style
             double cellShadingBefore = table.FirstRow.RowFormat.Height;
@@ -1584,11 +1578,12 @@ namespace ApiExamples
             builder.Write("Text 3. ");
             builder.InsertFootnote(FootnoteType.Endnote, "Endnote 3", "Custom reference mark");
 
-            // Edit the numbering and positioning of endnotes 
             Assert.AreEqual(1, doc.EndnoteOptions.StartNumber); //ExSkip
             Assert.AreEqual(EndnotePosition.EndOfDocument, doc.EndnoteOptions.Position); //ExSkip
             Assert.AreEqual(NumberStyle.LowercaseRoman, doc.EndnoteOptions.NumberStyle); //ExSkip
             Assert.AreEqual(FootnoteNumberingRule.Default, doc.EndnoteOptions.RestartRule); //ExSkip
+            
+            // Edit the numbering and positioning of endnotes
             doc.EndnoteOptions.Position = EndnotePosition.EndOfDocument;
             doc.EndnoteOptions.NumberStyle = NumberStyle.UppercaseRoman;
             doc.EndnoteOptions.RestartRule = FootnoteNumberingRule.Continuous;
@@ -1599,20 +1594,20 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Document.Endnotes.docx");
 
-            NodeCollection Endnotes = doc.GetChildNodes(NodeType.Footnote, true);
-            Assert.AreEqual(3, Endnotes.Count);
+            NodeCollection endnotes = doc.GetChildNodes(NodeType.Footnote, true);
+            Assert.AreEqual(3, endnotes.Count);
 
-            Assert.AreEqual(String.Empty, ((Footnote)Endnotes[0]).ReferenceMark);
-            Assert.AreEqual("\u0002 Endnote 1", ((Footnote)Endnotes[0]).GetText().Trim());
-            Assert.AreEqual(StoryType.Endnotes, ((Footnote)Endnotes[0]).StoryType);
+            Assert.AreEqual(String.Empty, ((Footnote)endnotes[0]).ReferenceMark);
+            Assert.AreEqual("\u0002 Endnote 1", ((Footnote)endnotes[0]).GetText().Trim());
+            Assert.AreEqual(StoryType.Endnotes, ((Footnote)endnotes[0]).StoryType);
 
-            Assert.AreEqual(String.Empty, ((Footnote)Endnotes[1]).ReferenceMark);
-            Assert.AreEqual("\u0002 Endnote 2", ((Footnote)Endnotes[1]).GetText().Trim());
-            Assert.AreEqual(StoryType.Endnotes, ((Footnote)Endnotes[1]).StoryType);
+            Assert.AreEqual(String.Empty, ((Footnote)endnotes[1]).ReferenceMark);
+            Assert.AreEqual("\u0002 Endnote 2", ((Footnote)endnotes[1]).GetText().Trim());
+            Assert.AreEqual(StoryType.Endnotes, ((Footnote)endnotes[1]).StoryType);
 
-            Assert.AreEqual("Custom reference mark", ((Footnote)Endnotes[2]).ReferenceMark);
-            Assert.AreEqual("Custom reference mark Endnote 3", ((Footnote)Endnotes[2]).GetText().Trim());
-            Assert.AreEqual(StoryType.Endnotes, ((Footnote)Endnotes[2]).StoryType);
+            Assert.AreEqual("Custom reference mark", ((Footnote)endnotes[2]).ReferenceMark);
+            Assert.AreEqual("Custom reference mark Endnote 3", ((Footnote)endnotes[2]).GetText().Trim());
+            Assert.AreEqual(StoryType.Endnotes, ((Footnote)endnotes[2]).StoryType);
         }
 
         [Test]
@@ -1758,19 +1753,16 @@ namespace ApiExamples
             // Each edit that we've made above will have its own revision, after we run the Compare method
             // We can compare with a CompareOptions object, which can suppress changes done to certain types of objects within the original document
             // from registering as revisions after the comparison by setting some of these members to "true"
-            CompareOptions compareOptions = new CompareOptions
-            {
-                IgnoreFormatting = false,
-                IgnoreCaseChanges = false,
-                IgnoreComments = false,
-                IgnoreTables = false,
-                IgnoreFields = false,
-                IgnoreFootnotes = false,
-                IgnoreTextboxes = false,
-                IgnoreHeadersAndFooters = false,
-                Target = ComparisonTargetType.New
-            };
-
+            CompareOptions compareOptions = new CompareOptions();
+            compareOptions.IgnoreFormatting = false;
+            compareOptions.IgnoreCaseChanges = false;
+            compareOptions.IgnoreComments = false;
+            compareOptions.IgnoreTables = false;
+            compareOptions.IgnoreFields = false;
+            compareOptions.IgnoreFootnotes = false;
+            compareOptions.IgnoreTextboxes = false;
+            compareOptions.IgnoreHeadersAndFooters = false;
+            compareOptions.Target = ComparisonTargetType.New;
 
             docOriginal.Compare(docEdited, "John Doe", DateTime.Now, compareOptions);
             docOriginal.Save(ArtifactsDir + "Document.CompareOptions.docx");
@@ -1860,12 +1852,10 @@ namespace ApiExamples
             builder.Writeln("Item 2");
 
             // The Cleanup() method, when configured with a CleanupOptions object, can target unused styles and remove them
-            CleanupOptions cleanupOptions = new CleanupOptions
-            {
-                UnusedLists = true, 
-                UnusedStyles = true
-            };
-
+            CleanupOptions cleanupOptions = new CleanupOptions();
+            cleanupOptions.UnusedLists = true;
+            cleanupOptions.UnusedStyles = true;
+            
             // We've added 4 styles and used 2 of them, so the other two will be removed when this method is called
             doc.Cleanup(cleanupOptions);
             Assert.AreEqual(6, doc.Styles.Count);
@@ -1893,7 +1883,7 @@ namespace ApiExamples
 
             doc.StartTrackRevisions("Author");
 
-            // This text will appear as a revision. 
+            // This text will appear as a revision
             // We did not specify a time while calling StartTrackRevisions(), so the date/time that's noted
             // on the revision will be the real time when StartTrackRevisions() executes
             doc.FirstSection.Body.AppendParagraph("Hello again!");
@@ -2177,7 +2167,8 @@ namespace ApiExamples
             //ExFor:PlainTextDocument.#ctor(Stream)
             //ExFor:PlainTextDocument.#ctor(Stream, LoadOptions)
             //ExSummary:Show how to simply extract text from a stream.
-            TxtLoadOptions loadOptions = new TxtLoadOptions { DetectNumberingWithWhitespaces = false };
+            TxtLoadOptions loadOptions = new TxtLoadOptions();
+            loadOptions.DetectNumberingWithWhitespaces = false;
 
             using (Stream stream = new FileStream(MyDir + "Document.docx", FileMode.Open))
             {
@@ -2481,9 +2472,11 @@ namespace ApiExamples
             // Create a new copyright information string to replace an older one with
             int currentYear = DateTime.Now.Year;
             string newCopyrightInformation = $"Copyright (C) {currentYear} by Aspose Pty Ltd.";
-            FindReplaceOptions findReplaceOptions =
-                new FindReplaceOptions { MatchCase = false, FindWholeWordsOnly = false };
-
+            
+            FindReplaceOptions findReplaceOptions = new FindReplaceOptions();
+            findReplaceOptions.MatchCase = false;
+            findReplaceOptions.FindWholeWordsOnly = false;
+            
             // Each section has its own set of headers/footers,
             // so the text in each one has to be replaced individually if we want the entire document to be affected
             HeaderFooter firstSectionFooter = doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary];
@@ -2551,10 +2544,10 @@ namespace ApiExamples
 
         private static void CheckUseLegacyOrderResults(bool isUseLegacyOrder, UseLegacyOrderReplacingCallback callback)
         {
-            if (isUseLegacyOrder)
-                Assert.AreEqual(new List<string> { "[tag 1]", "[tag 2]", "[tag 3]" }, callback.Matches);
-            else
-                Assert.AreEqual(new List<string> { "[tag 1]", "[tag 3]", "[tag 2]" }, callback.Matches);
+            Assert.AreEqual(
+                isUseLegacyOrder
+                    ? new List<string> { "[tag 1]", "[tag 2]", "[tag 3]" }
+                    : new List<string> { "[tag 1]", "[tag 3]", "[tag 2]" }, callback.Matches);
         }
 
         [Test]
@@ -3206,9 +3199,9 @@ namespace ApiExamples
             //ExEnd
 
             Assert.AreEqual((int)EditingLanguage.Russian, doc.Styles.DefaultFont.LocaleId);
-
+            
             doc = new Document(MyDir + "No default editing language.docx");
-
+            
             Assert.AreEqual((int)EditingLanguage.EnglishUS, doc.Styles.DefaultFont.LocaleId);
         }
         
@@ -3224,7 +3217,7 @@ namespace ApiExamples
             //ExFor:RevisionGroupCollection.Count
             //ExSummary:Shows how to get info about a group of revisions in document.
             Document doc = new Document(MyDir + "Revisions.docx");
-
+            
             Assert.AreEqual(7, doc.Revisions.Groups.Count);
 
             // Get info about all of revisions in document
@@ -3247,12 +3240,12 @@ namespace ApiExamples
 
             // Get revision group by index
             RevisionGroup revisionGroup = doc.Revisions.Groups[0];
+            //ExEnd
 
             // Check revision group details
             Assert.AreEqual(RevisionType.Deletion, revisionGroup.RevisionType);
             Assert.AreEqual("Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. ", 
                 revisionGroup.Text);
-            //ExEnd
         }
 
         [Test]
@@ -3261,15 +3254,13 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.RemovePersonalInformation
             //ExSummary:Shows how to get or set a flag to remove all user information upon saving the MS Word document.
-            Document doc = new Document(MyDir + "Revisions.docx")
-            {
-                // If flag sets to 'true' that MS Word will remove all user information from comments, revisions and
-                // document properties upon saving the document. In MS Word 2013 and 2016 you can see this using
-                // File -> Options -> Trust Center -> Trust Center Settings -> Privacy Options -> then the
-                // checkbox "Remove personal information from file properties on save"
-                RemovePersonalInformation = true
-            };
-
+            Document doc = new Document(MyDir + "Revisions.docx");
+            // If flag sets to 'true' that MS Word will remove all user information from comments, revisions and
+            // document properties upon saving the document. In MS Word 2013 and 2016 you can see this using
+            // File -> Options -> Trust Center -> Trust Center Settings -> Privacy Options -> then the
+            // checkbox "Remove personal information from file properties on save"
+            doc.RemovePersonalInformation = true;
+            
             // Personal information will not be removed at this time
             // This will happen when we open this document in Microsoft Word and save it manually
             // Once noticeable change will be the revisions losing their author names
@@ -3287,11 +3278,12 @@ namespace ApiExamples
             //ExFor:LayoutOptions.ShowComments
             //ExSummary:Shows how to show or hide comments in PDF document.
             Document doc = new Document(MyDir + "Comments.docx");
-            Assert.True(doc.LayoutOptions.ShowComments);
             doc.LayoutOptions.ShowComments = false;
             
             doc.Save(ArtifactsDir + "Document.HideComments.pdf");
             //ExEnd
+
+            Assert.False(doc.LayoutOptions.ShowComments);
         }
 
         [Test]
@@ -3364,15 +3356,13 @@ namespace ApiExamples
             //ExFor:Document.CopyStylesFromTemplate(Document)
             //ExSummary:Shows how to copies styles from the template to a document via Document.
             Document template = new Document(MyDir + "Rendering.docx");
-            Assert.AreEqual(18, template.Styles.Count); //ExSkip
-
             Document target = new Document(MyDir + "Document.docx");
 
-            Assert.AreEqual(4, target.Styles.Count);
+            Assert.AreEqual(18, template.Styles.Count); //ExSkip
+            Assert.AreEqual(4, target.Styles.Count); //ExSkip
 
             target.CopyStylesFromTemplate(template);
-            
-            Assert.AreEqual(18, target.Styles.Count);
+            Assert.AreEqual(18, target.Styles.Count); //ExSkip
             //ExEnd
         }
 
@@ -3383,12 +3373,10 @@ namespace ApiExamples
             //ExFor:Document.CopyStylesFromTemplate(String)
             //ExSummary:Shows how to copies styles from the template to a document via string.
             Document target = new Document(MyDir + "Document.docx");
-
-            Assert.AreEqual(4, target.Styles.Count);
+            Assert.AreEqual(4, target.Styles.Count); //ExSkip
 
             target.CopyStylesFromTemplate(MyDir + "Rendering.docx");
-
-            Assert.AreEqual(18, target.Styles.Count);
+            Assert.AreEqual(18, target.Styles.Count); //ExSkip
             //ExEnd
         }
 
@@ -3628,11 +3616,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.AlwaysCompressMetafiles.docx", saveOptions);
             //ExEnd
 
-            if (isAlwaysCompressMetafiles)
-                Assert.AreEqual(13312, new FileInfo(ArtifactsDir + "Document.AlwaysCompressMetafiles.docx").Length);
-            else
-                Assert.AreEqual(21504, new FileInfo(ArtifactsDir + "Document.AlwaysCompressMetafiles.docx").Length);
-            
+            Assert.AreEqual(isAlwaysCompressMetafiles ? 13312 : 21504,
+                new FileInfo(ArtifactsDir + "Document.AlwaysCompressMetafiles.docx").Length);
         }
 
         [Test]
