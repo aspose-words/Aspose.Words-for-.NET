@@ -148,48 +148,14 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.MergeFields.docx");
 
             Assert.AreEqual(2, doc.Range.Fields.Count);
+
             Assert.AreEqual(@"MERGEFIELD MyMergeField1 \* MERGEFORMAT", doc.Range.Fields[0].GetFieldCode());
+            Assert.AreEqual(FieldType.FieldMergeField, doc.Range.Fields[0].Type);
+            Assert.AreEqual("«MyMergeField1»", doc.Range.Fields[0].Result);
+
             Assert.AreEqual(@"MERGEFIELD MyMergeField2 \* MERGEFORMAT", doc.Range.Fields[1].GetFieldCode());
-        }
-
-        [Test]
-        public void InsertFieldFieldCode()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertField(String)
-            //ExFor:Field
-            //ExFor:Field.Update
-            //ExFor:Field.Result
-            //ExFor:Field.GetFieldCode
-            //ExFor:Field.Type
-            //ExFor:Field.Remove
-            //ExFor:FieldType
-            //ExSummary:Inserts a field into a document using DocumentBuilder and FieldCode.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Insert a simple Date field into the document
-            // When we insert a field through the DocumentBuilder class we can get the
-            // special Field object which contains information about the field
-            Field dateField = builder.InsertField(@"DATE \* MERGEFORMAT");
-
-            // Update this particular field in the document so we can get the FieldResult
-            dateField.Update();
-
-            // Display some information from this field
-            // The field result is where the last evaluated value is stored. This is what is displayed in the document
-            // When field codes are not showing
-            Console.WriteLine("FieldResult: {0}", dateField.Result);
-
-            // Display the field code which defines the behavior of the field. This can been seen in Microsoft Word by pressing ALT+F9
-            Console.WriteLine("FieldCode: {0}", dateField.GetFieldCode());
-
-            // The field type defines what type of field in the Document this is. In this case the type is "FieldDate" 
-            Console.WriteLine("FieldType: {0}", dateField.Type);
-
-            // Finally let's completely remove the field from the document. This can easily be done by invoking the Remove method on the object
-            dateField.Remove();
-            //ExEnd			
+            Assert.AreEqual(FieldType.FieldMergeField, doc.Range.Fields[1].Type);
+            Assert.AreEqual("«MyMergeField1»", doc.Range.Fields[1].Result);
         }
 
         [Test]
@@ -2234,6 +2200,48 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertedChartRelativePosition.doc");
             //ExEnd
+        }
+
+        [Test]
+        public void InsertField()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertField(String)
+            //ExFor:Field
+            //ExFor:Field.Update
+            //ExFor:Field.Result
+            //ExFor:Field.GetFieldCode
+            //ExFor:Field.Type
+            //ExFor:Field.Remove
+            //ExFor:FieldType
+            //ExSummary:Shows how to insert a field into a document by FieldCode.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a simple Date field into the document
+            // When we insert a field through the DocumentBuilder class we can get the
+            // special Field object which contains information about the field
+            Field dateField = builder.InsertField(@"DATE \* MERGEFORMAT");
+
+            // Update this particular field in the document so we can get the FieldResult
+            dateField.Update();
+
+            // Display some information from this field
+            // The field result is where the last evaluated value is stored. This is what is displayed in the document
+            // When field codes are not showing
+            Assert.AreEqual(DateTime.Today, DateTime.Parse(dateField.Result));
+
+            // Display the field code which defines the behavior of the field. This can been seen in Microsoft Word by pressing ALT+F9
+            Assert.AreEqual(@"DATE \* MERGEFORMAT", dateField.GetFieldCode());
+
+            // The field type defines what type of field in the Document this is. In this case the type is "FieldDate" 
+            Assert.AreEqual(FieldType.FieldDate, dateField.Type);
+
+            // Finally let's completely remove the field from the document. This can easily be done by invoking the Remove method on the object
+            dateField.Remove();
+            //ExEnd			
+
+            Assert.AreEqual(0, doc.Range.Fields.Count);
         }
 
         [Test]
