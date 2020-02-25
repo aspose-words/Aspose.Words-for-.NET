@@ -386,8 +386,11 @@
     <Compile Include="Rendering-Printing\ReceiveNotificationsOfFont .cs" />
     <Compile Include="Rendering-Printing\SaveDocumentToJPEG.cs" />
     <Compile Include="Rendering-Printing\SetFontSettings.cs" />
+    <Compile Include="Rendering-Printing\SetFontsFoldersDefaultInstance.cs" />
+    <Compile Include="Rendering-Printing\SetFontsFoldersWithPriority.cs" />
     <Compile Include="Rendering-Printing\SetFontsFolders.cs" />
     <Compile Include="Rendering-Printing\WorkingWithFontResolution.cs" />
+    <Compile Include="Rendering-Printing\WorkingWithFontSettings.cs" />
     <Compile Include="Rendering-Printing\WorkingWithFontSources.cs" />
     <Compile Include="Rendering-Printing\WorkingWithPdfSaveOptions.cs" />
     <Compile Include="Rendering-Printing\SpecifyDefaultFontWhenRendering.cs" />

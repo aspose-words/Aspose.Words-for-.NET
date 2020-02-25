@@ -46,6 +46,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             PdfSaveOptions options = new PdfSaveOptions();
             options.EmbedFullFonts = false;
             dataDir = dataDir + "Rendering.SubsetFonts_out.pdf";
+
             // The output PDF will contain subsets of the fonts in the document. Only the glyphs used
             // In the document are included in the PDF fonts.
             doc.Save(dataDir, options);

@@ -95,7 +95,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
 
         public static void RenderMetafileToBitmap(string dataDir)
         {
-
+            // Load the document from disk.
             Document doc = new Document(dataDir + "PdfRenderWarnings.doc");
 
             MetafileRenderingOptions metafileRenderingOptions =

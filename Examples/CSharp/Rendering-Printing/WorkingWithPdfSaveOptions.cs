@@ -47,7 +47,6 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             // The path to the documents directory.
             Document doc = new Document(dataDir + "TestFile.docx");
 
-
             PdfSaveOptions options = new PdfSaveOptions();
             options.OutlineOptions.DefaultBookmarksOutlineLevel = 1;
             options.HeaderFooterBookmarksExportMode = HeaderFooterBookmarksExportMode.First;
@@ -201,6 +200,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
 
             doc.Save(dataDir + "SaveOptions.PdfImageComppression PDF_A_1_B.pdf", optionsA1B);
             // ExEnd:PdfImageComppression
+            Console.WriteLine("\nFile saved at " + dataDir);
         }
     }
 }
