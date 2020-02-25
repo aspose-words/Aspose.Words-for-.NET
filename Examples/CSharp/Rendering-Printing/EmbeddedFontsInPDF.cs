@@ -30,6 +30,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             options.EmbedFullFonts = true;
 
             string outPath = dataDir + "Rendering.EmbedFullFonts_out.pdf";
+
             // The output PDF will be embedded with all fonts found in the document.
             doc.Save(outPath, options);
             // ExEnd:EmbeddAllFonts
@@ -45,6 +46,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             // To subset fonts in the output PDF document, simply create new PdfSaveOptions and set EmbedFullFonts to false.
             PdfSaveOptions options = new PdfSaveOptions();
             options.EmbedFullFonts = false;
+            
             dataDir = dataDir + "Rendering.SubsetFonts_out.pdf";
 
             // The output PDF will contain subsets of the fonts in the document. Only the glyphs used
