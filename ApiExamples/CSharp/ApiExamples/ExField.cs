@@ -183,6 +183,43 @@ namespace ApiExamples
         }
 
         [Test]
+        public void FieldLocale()
+        {
+            //ExStart
+            //ExFor:Field.LocaleId
+            //ExSummary:Shows how to insert a field and work with its locale.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a DATE field and print the date it will display, in your thread's current culture
+            Field field = builder.InsertField(@"DATE");
+            Console.WriteLine($"Today's date, as displayed in the \"{CultureInfo.CurrentCulture.EnglishName}\" culture: {field.Result}");
+
+            Assert.AreEqual(CultureInfo.CurrentCulture.LCID, field.LocaleId);
+            Assert.AreEqual(FieldUpdateCultureSource.CurrentThread, doc.FieldOptions.FieldUpdateCultureSource); //ExSkip
+
+            // We can get the field to display a date in a different format if we change the current thread's culture
+            // If we want to avoid making such an all encompassing change, we can set this option to get the document's fields to get their culture from themselves
+            // Then, we can change a field's LocaleId and it will display its result in any culture we choose
+            doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode;
+            field.LocaleId = new CultureInfo("de-DE").LCID;
+            field.Update();
+
+            Console.WriteLine($"Today's date, as displayed in the \"{CultureInfo.GetCultureInfo(field.LocaleId).EnglishName}\" culture: {field.Result}");
+            //ExEnd
+
+            using (MemoryStream dstStream = new MemoryStream())
+            {
+                doc.Save(dstStream, SaveFormat.Docx);
+                doc = new Document(dstStream);
+                field = doc.Range.Fields[0];
+
+                Assert.AreEqual(new CultureInfo("de-DE").LCID, field.LocaleId);
+                Assert.IsTrue(Regex.IsMatch(field.Result, "[0-9]{2}.[0-9]{2}.[0-9]{4}"));
+            }
+        }
+
+        [Test]
         public void ChangeLocale()
         {
             // Create a blank document

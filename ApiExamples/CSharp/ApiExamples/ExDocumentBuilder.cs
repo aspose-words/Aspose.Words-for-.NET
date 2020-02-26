@@ -173,7 +173,8 @@ namespace ApiExamples
             //ExFor:HorizontalRuleFormat.NoShade
             //ExSummary:Shows how to insert horizontal rule shape in a document and customize the formatting.
             // Use a document builder to insert a horizontal rule
-            DocumentBuilder builder = new DocumentBuilder();
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
             Shape shape = builder.InsertHorizontalRule();
 
             HorizontalRuleFormat horizontalRuleFormat = shape.HorizontalRuleFormat;
@@ -183,18 +184,21 @@ namespace ApiExamples
             horizontalRuleFormat.Color = Color.Blue;
             horizontalRuleFormat.NoShade = true;
 
-            MemoryStream stream = new MemoryStream();
-            builder.Document.Save(stream, SaveFormat.Docx);
-
-            // Get the rule from the document's shape collection and verify it
-            Shape horizontalRule = (Shape)builder.Document.GetChild(NodeType.Shape, 0, true);
-            Assert.True(horizontalRule.IsHorizontalRule);
-            Assert.True(horizontalRule.HorizontalRuleFormat.NoShade);
-            Assert.AreEqual(HorizontalRuleAlignment.Center, horizontalRule.HorizontalRuleFormat.Alignment);
-            Assert.AreEqual(70, horizontalRule.HorizontalRuleFormat.WidthPercent);
-            Assert.AreEqual(3, horizontalRule.HorizontalRuleFormat.Height);
-            Assert.AreEqual(Color.Blue.ToArgb(), horizontalRule.HorizontalRuleFormat.Color.ToArgb());
+            Assert.True(shape.IsHorizontalRule);
+            Assert.True(shape.HorizontalRuleFormat.NoShade);
             //ExEnd
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                doc.Save(stream, SaveFormat.Docx);
+                doc = new Document(stream);
+                shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+                Assert.AreEqual(HorizontalRuleAlignment.Center, shape.HorizontalRuleFormat.Alignment);
+                Assert.AreEqual(70, shape.HorizontalRuleFormat.WidthPercent);
+                Assert.AreEqual(3, shape.HorizontalRuleFormat.Height);
+                Assert.AreEqual(Color.Blue.ToArgb(), shape.HorizontalRuleFormat.Color.ToArgb());
+            }
         }
 
         [Test(Description = "Checking the boundary conditions of WidthPercent and Height properties")]
@@ -213,26 +217,6 @@ namespace ApiExamples
             horizontalRuleFormat.Height = 1584;
             Assert.That(() => horizontalRuleFormat.Height = -1, Throws.TypeOf<ArgumentOutOfRangeException>());
             Assert.That(() => horizontalRuleFormat.Height = 1585, Throws.TypeOf<ArgumentOutOfRangeException>());
-        }
-
-        [Test]
-        public void FieldLocale()
-        {
-            //ExStart
-            //ExFor:Field.LocaleId
-            //ExSummary: Get or sets locale for fields
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            Field field = builder.InsertField(@"DATE \* MERGEFORMAT");
-            field.LocaleId = 2064;
-
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
-            Field newField = doc.Range.Fields[0];
-            Assert.AreEqual(2064, newField.LocaleId);
-            //ExEnd
         }
 
         [Test]
