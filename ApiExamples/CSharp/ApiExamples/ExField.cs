@@ -64,6 +64,42 @@ namespace ApiExamples
             //ExEnd
         }
 
+
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        public void GetFieldCode(bool containsNestedFields)
+        {
+            //ExStart
+            //ExFor:Field.GetFieldCode
+            //ExFor:Field.GetFieldCode(bool)
+            //ExSummary:Shows how to get text between field start and field separator (or field end if there is no separator).
+            Document doc = new Document(MyDir + "Nested fields.docx");
+
+            foreach (Field field in doc.Range.Fields)
+            {
+                if (field.Type == FieldType.FieldIf)
+                {
+                    FieldIf fieldIf = (FieldIf)field;
+
+                    string fieldCode = fieldIf.GetFieldCode();
+                    Assert.AreEqual($" IF {ControlChar.FieldStartChar} MERGEFIELD NetIncome {ControlChar.FieldSeparatorChar}{ControlChar.FieldEndChar} > 0 \" (surplus of {ControlChar.FieldStartChar} MERGEFIELD  NetIncome \\f $ {ControlChar.FieldSeparatorChar}{ControlChar.FieldEndChar}) \" \"\" ", fieldCode); //ExSkip
+
+                    if (containsNestedFields)
+                    {
+                        fieldCode = fieldIf.GetFieldCode(true);
+                        Assert.AreEqual($" IF {ControlChar.FieldStartChar} MERGEFIELD NetIncome {ControlChar.FieldSeparatorChar}{ControlChar.FieldEndChar} > 0 \" (surplus of {ControlChar.FieldStartChar} MERGEFIELD  NetIncome \\f $ {ControlChar.FieldSeparatorChar}{ControlChar.FieldEndChar}) \" \"\" ", fieldCode); //ExSkip
+                    }
+                    else
+                    {
+                        fieldCode = fieldIf.GetFieldCode(false);
+                        Assert.AreEqual(" IF  > 0 \" (surplus of ) \" \"\" ", fieldCode); //ExSkip
+                    }
+                }
+            }
+            //ExEnd
+        }
+
         [Test]
         public void CreateRevNumFieldWithFieldBuilder()
         {
