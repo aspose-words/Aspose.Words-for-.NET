@@ -13,6 +13,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             SaveDoc2Pdf(dataDir);
             DisplayDocTitleInWindowTitlebar(dataDir);
             PdfRenderWarnings(dataDir);
+            RenderMetafileToBitmap(dataDir);
         }
 
         public static void SaveDoc2Pdf(string dataDir)
@@ -70,7 +71,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
                 Console.WriteLine(warningInfo.Description);
             }
         }
-
+        // ExStart:RenderMetafileToBitmap
         public class HandleDocumentWarnings : IWarningCallback
         {
             /// <summary>
@@ -91,5 +92,28 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             public WarningInfoCollection mWarnings = new WarningInfoCollection();
         }
         // ExEnd:PdfRenderWarnings
+
+        public static void RenderMetafileToBitmap(string dataDir)
+        {
+            // Load the document from disk.
+            Document doc = new Document(dataDir + "PdfRenderWarnings.doc");
+
+            MetafileRenderingOptions metafileRenderingOptions =
+                new MetafileRenderingOptions
+                {
+                    EmulateRasterOperations = false,
+                    RenderingMode = MetafileRenderingMode.VectorWithFallback
+                };
+
+            // If Aspose.Words cannot correctly render some of the metafile records to vector graphics then Aspose.Words renders this metafile to a bitmap. 
+            HandleDocumentWarnings callback = new HandleDocumentWarnings();
+            doc.WarningCallback = callback;
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.MetafileRenderingOptions = metafileRenderingOptions;
+
+            doc.Save(dataDir + "PdfSaveOptions.HandleRasterWarnings.pdf", saveOptions);
+        }
+        // ExEnd:RenderMetafileToBitmap
     }
 }

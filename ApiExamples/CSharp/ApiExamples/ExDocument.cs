@@ -961,7 +961,6 @@ namespace ApiExamples
             //ExFor:DigitalSignature.Comments
             //ExFor:DigitalSignature.SignTime
             //ExFor:DigitalSignature.SignatureType
-            //ExFor:DigitalSignature.Certificate
             //ExSummary:Shows how to validate each signature in a document and display basic information about the signature.
             // Load the document which contains signature
             Document doc = new Document(MyDir + "Digitally signed.docx");
@@ -3818,7 +3817,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:BaseWebExtensionCollection`1.Add(`0)
-            //ExFor:TaskPane.#ctor
+            //ExFor:TaskPane
             //ExFor:TaskPane.DockState
             //ExFor:TaskPane.IsVisible
             //ExFor:TaskPane.Width

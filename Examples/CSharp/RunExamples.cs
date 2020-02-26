@@ -77,7 +77,7 @@ namespace Aspose.Words.Examples.CSharp
             // CheckFormat.Run();
             // SplitIntoHtmlPages.Run();
             // LoadTxt.Run();
-             Load_Options.Run();
+            // Load_Options.Run();
             // PageSplitter.Run();
             // ImageToPdf.Run();
             // SpecifySaveOption.Run();
@@ -96,7 +96,7 @@ namespace Aspose.Words.Examples.CSharp
             // SaveOptionsHtmlFixed.Run();
             // SaveDocWithHtmlSaveOptions.Run();
             // WorkingWithVbaMacros.Run();
-            
+
 
             //// =====================================================
             //// =====================================================
@@ -145,6 +145,7 @@ namespace Aspose.Words.Examples.CSharp
             // BookmarkNameAndText.Run();
             // AccessBookmarks.Run();
             // CreateBookmark.Run();
+            // ShowHideBookmarks.Run();
 
             //// Shapes
             //// =====================================================
@@ -378,6 +379,8 @@ namespace Aspose.Words.Examples.CSharp
             // SetTrueTypeFontsFolder.Run();
             // SetFontsFoldersMultipleFolders.Run();
             // SetFontsFoldersSystemAndCustomFolder.Run();
+            // SetFontsFolders.Run();
+            // SetFontsFoldersWithPriority.Run();
             // SpecifyDefaultFontWhenRendering.Run();
             // ReceiveNotificationsOfFont.Run();
             // EmbeddedFontsInPDF.Run();
@@ -390,6 +393,7 @@ namespace Aspose.Words.Examples.CSharp
             // WorkingWithPdfSaveOptions.Run();
             // WorkingWithFontSources.Run();
             // ResourceSteamFontSourceExample.Run();
+            // SaveDocumentToJPEG.Run();
 
             //// =====================================================
             //// =====================================================
