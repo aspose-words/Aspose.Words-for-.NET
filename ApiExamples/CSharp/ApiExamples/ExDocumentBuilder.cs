@@ -228,7 +228,7 @@ namespace ApiExamples
             //ExFor:Font.Color
             //ExFor:Font.Underline
             //ExFor:Underline
-            //ExSummary:Inserts a hyperlink into a document using DocumentBuilder.
+            //ExSummary:Shows how to insert a hyperlink into a document using DocumentBuilder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -237,16 +237,31 @@ namespace ApiExamples
             // Specify font formatting for the hyperlink
             builder.Font.Color = Color.Blue;
             builder.Font.Underline = Underline.Single;
+
             // Insert the link.
             builder.InsertHyperlink("Aspose Website", "http://www.aspose.com", false);
 
             // Revert to default formatting
             builder.Font.ClearFormatting();
-
             builder.Write(" for more information.");
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertHyperlink.doc");
+            // Holding Ctrl and left clicking on the field in Microsoft Word will take you to the link's address in a web browser
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertHyperlink.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertHyperlink.docx");
+
+            FieldHyperlink hyperlink = (FieldHyperlink)doc.Range.Fields[0];
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(hyperlink.Address);
+            request.Method = "HEAD";
+
+            Assert.AreEqual(HttpStatusCode.OK, ((HttpWebResponse)request.GetResponse()).StatusCode);
+
+            Run fieldContents = (Run) hyperlink.Start.NextSibling;
+
+            Assert.AreEqual(Color.Blue.ToArgb(), fieldContents.Font.Color.ToArgb());
+            Assert.AreEqual(Underline.Single, fieldContents.Font.Underline);
+            Assert.AreEqual("HYPERLINK \"http://www.aspose.com\"", fieldContents.GetText().Trim());
         }
 
         [Test]
@@ -264,7 +279,7 @@ namespace ApiExamples
             builder.Font.Name = "Arial";
             builder.Font.Size = 24;
             builder.Font.Bold = true;
-            builder.Write("To go to an important location, click ");
+            builder.Write("To visit Google, hold Ctrl and click ");
 
             // Save the font formatting so we use different formatting for hyperlink and restore old formatting later
             builder.PushFont();
@@ -278,10 +293,26 @@ namespace ApiExamples
             // Restore the formatting that was before the hyperlink.
             builder.PopFont();
 
-            builder.Writeln(". We hope you enjoyed the example.");
+            builder.Write(". We hope you enjoyed the example.");
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.PushPopFont.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.PushPopFont.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.PushPopFont.docx");
+            RunCollection runs = doc.FirstSection.Body.FirstParagraph.Runs;
+
+            Assert.AreEqual(4, runs.Count);
+
+            Assert.AreEqual("To visit Google, hold Ctrl and click", runs[0].GetText().Trim());
+            Assert.AreEqual(". We hope you enjoyed the example.", runs[3].GetText().Trim());
+            Assert.AreEqual(runs[0].Font.Color, runs[3].Font.Color);
+            Assert.AreEqual(runs[0].Font.Underline, runs[3].Font.Underline);
+
+            Assert.AreEqual("here", runs[2].GetText().Trim());
+            Assert.AreEqual(Color.Blue.ToArgb(), runs[2].Font.Color.ToArgb());
+            Assert.AreEqual(Underline.Single, runs[2].Font.Underline);
+            Assert.AreNotEqual(runs[0].Font.Color, runs[2].Font.Color);
+            Assert.AreNotEqual(runs[0].Font.Underline, runs[2].Font.Underline);
         }
 
         #if NETFRAMEWORK
@@ -317,7 +348,7 @@ namespace ApiExamples
             shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
             shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertWatermark.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertWatermark.docx");
             //ExEnd
         }
 
