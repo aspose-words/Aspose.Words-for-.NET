@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 using Aspose.Words;
 using Aspose.Words.Drawing;
@@ -22,6 +23,7 @@ using Color = System.Drawing.Color;
 using Document = Aspose.Words.Document;
 using SaveFormat = Aspose.Words.SaveFormat;
 using Table = Aspose.Words.Tables.Table;
+
 #if NETSTANDARD2_0 || __MOBILE__
 using SkiaSharp;
 #endif
@@ -327,7 +329,7 @@ namespace ApiExamples
             //ExFor:WrapType
             //ExFor:RelativeHorizontalPosition
             //ExFor:RelativeVerticalPosition
-            //ExSummary:Inserts a watermark image into a document using DocumentBuilder.
+            //ExSummary:Shows how to a watermark image into a document using DocumentBuilder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -350,6 +352,20 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertWatermark.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertWatermark.docx");
+            shape = (Shape)doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChild(NodeType.Shape, 0, true);
+
+            Assert.True(shape.HasImage);
+            Assert.AreEqual(27458, shape.ImageData.ToByteArray().Length);
+
+            Assert.AreEqual(WrapType.None, shape.WrapType);
+            Assert.True(shape.BehindText);
+            Assert.AreEqual(RelativeHorizontalPosition.Page, shape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Page, shape.RelativeVerticalPosition);
+            Assert.AreEqual((doc.FirstSection.PageSetup.PageWidth - shape.Width) / 2, shape.Left);
+            Assert.AreEqual((doc.FirstSection.PageSetup.PageHeight - shape.Height) / 2, shape.Top);
+
         }
 
         [Test]
@@ -362,20 +378,40 @@ namespace ApiExamples
             //ExSummary:Shows how to insert an OLE object into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-
-            Image representingImage = Image.FromFile(ImageDir + "Logo.jpg");
-
+            
             // Insert ole object
+            Image representingImage = Image.FromFile(ImageDir + "Logo.jpg");
             builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, representingImage);
+
             // Insert ole object with ProgId
             builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, true, null);
+
             // Insert ole object as Icon
             // There is one limitation for now: the maximum size of the icon must be 32x32 for the correct display
-            builder.InsertOleObjectAsIcon(MyDir + "Spreadsheet.xlsx", false, ImageDir + "Logo icon.ico",
+            builder.InsertOleObjectAsIcon(MyDir + "Presentation.pptx", false, ImageDir + "Logo icon.ico",
                 "Caption (can not be null)");
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObject.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOleObject.docx");
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape,0, true);
+            
+            Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
+            Assert.AreEqual("Excel.Sheet.12", shape.OleFormat.ProgId);
+            Assert.AreEqual(".xlsx", shape.OleFormat.SuggestedExtension);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
+            Assert.AreEqual("Package", shape.OleFormat.ProgId);
+            Assert.AreEqual(".xlsx", shape.OleFormat.SuggestedExtension);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
+
+            Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
+            Assert.AreEqual("PowerPoint.Show.12", shape.OleFormat.ProgId);
+            Assert.AreEqual(".pptx", shape.OleFormat.SuggestedExtension);
         }
 #else
         [Test]
@@ -444,7 +480,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertHtml(String)
-            //ExSummary:Inserts HTML into a document. The formatting specified in the HTML is applied.
+            //ExSummary:Shows how to insert Html content into a document using a builder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -453,8 +489,24 @@ namespace ApiExamples
 
             builder.InsertHtml(html);
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertHtml.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertHtml.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertHtml.docx");
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+
+            Assert.AreEqual("Paragraph right", paragraphs[0].GetText().Trim());
+            Assert.AreEqual(ParagraphAlignment.Right, paragraphs[0].ParagraphFormat.Alignment);
+
+            Assert.AreEqual("Implicit paragraph left", paragraphs[1].GetText().Trim());
+            Assert.AreEqual(ParagraphAlignment.Left, paragraphs[1].ParagraphFormat.Alignment);
+            Assert.True(paragraphs[1].Runs[0].Font.Bold);
+
+            Assert.AreEqual("Div center", paragraphs[2].GetText().Trim());
+            Assert.AreEqual(ParagraphAlignment.Center, paragraphs[2].ParagraphFormat.Alignment);
+
+            Assert.AreEqual("Heading 1 left.", paragraphs[3].GetText().Trim());
+            Assert.AreEqual("Heading 1", paragraphs[3].ParagraphFormat.Style.Name);
         }
 
         [Test]
@@ -462,16 +514,38 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertHtml(String, Boolean)
-            //ExSummary:Inserts HTML into a document using. The current document formatting at the insertion position is applied to the inserted text. 
+            //ExSummary:Shows how to insert Html content into a document using a builder while applying the builder's formatting. 
             Document doc = new Document();
-
             DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set the builder's text alignment
+            builder.ParagraphFormat.Alignment = ParagraphAlignment.Distributed;
+
+            // If we insert text while setting useBuilderFormatting to true, any formatting applied to the builder will be applied to inserted .html content
+            // However, if the html text has formatting coded into it, that formatting takes precedence over the builder's formatting
+            // In this case, elements with "align" attributes do not get affected by the ParagraphAlignment we specified above
             builder.InsertHtml(
                 "<P align='right'>Paragraph right</P>" + "<b>Implicit paragraph left</b>" +
                 "<div align='center'>Div center</div>" + "<h1 align='left'>Heading 1 left.</h1>", true);
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertHtmlWithFormatting.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertHtmlWithFormatting.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertHtmlWithFormatting.docx");
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+
+            Assert.AreEqual("Paragraph right", paragraphs[0].GetText().Trim());
+            Assert.AreEqual(ParagraphAlignment.Right, paragraphs[0].ParagraphFormat.Alignment);
+
+            Assert.AreEqual("Implicit paragraph left", paragraphs[1].GetText().Trim());
+            Assert.AreEqual(ParagraphAlignment.Distributed, paragraphs[1].ParagraphFormat.Alignment);
+            Assert.True(paragraphs[1].Runs[0].Font.Bold);
+
+            Assert.AreEqual("Div center", paragraphs[2].GetText().Trim());
+            Assert.AreEqual(ParagraphAlignment.Center, paragraphs[2].ParagraphFormat.Alignment);
+
+            Assert.AreEqual("Heading 1 left.", paragraphs[3].GetText().Trim());
+            Assert.AreEqual("Heading 1", paragraphs[3].ParagraphFormat.Style.Name);
         }
 
         [Test]
@@ -504,6 +578,16 @@ namespace ApiExamples
             builder.Writeln("Text inside a bookmark.");
             builder.EndBookmark("MyBookmark");
             //ExEnd
+
+            using (MemoryStream docStream = new MemoryStream())
+            {
+                builder.Document.Save(docStream, SaveFormat.Docx);
+                Document doc = new Document(docStream);
+
+                Assert.AreEqual(1, doc.Range.Bookmarks.Count);
+                Assert.AreEqual("MyBookmark", doc.Range.Bookmarks[0].Name);
+                Assert.AreEqual("Text inside a bookmark.", doc.Range.Bookmarks[0].Text.Trim());
+            }
         }
 
         [Test]
@@ -536,8 +620,22 @@ namespace ApiExamples
             builder.Writeln("");
             builder.Writeln("");
 
-            builder.Document.Save(ArtifactsDir + "DocumentBuilder.CreateForm.doc");
+            builder.Document.Save(ArtifactsDir + "DocumentBuilder.CreateForm.docx");
             //ExEnd
+
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.CreateForm.docx");
+            FormField formField = doc.Range.FormFields[0];
+
+            Assert.AreEqual(TextFormFieldType.Regular, formField.TextInputType);
+            Assert.AreEqual("Enter your name here", formField.Result);
+
+            formField = doc.Range.FormFields[1];
+
+            Assert.AreEqual(TextFormFieldType.Regular, formField.TextInputType);
+            Assert.AreEqual("-- Select your favorite footwear --", formField.Result);
+            Assert.AreEqual(0, formField.DropDownSelectedIndex);
+            Assert.AreEqual(new[] { "-- Select your favorite footwear --", "Sneakers", "Oxfords", "Flip-flops", "Other",
+                "I prefer to be barefoot" }, formField.DropDownItems.ToArray());
         }
 
         [Test]
@@ -654,7 +752,7 @@ namespace ApiExamples
             Assert.IsFalse(builder.IsAtStartOfParagraph);
             Assert.IsTrue(builder.IsAtEndOfParagraph);
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.WorkingWithNodes.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.WorkingWithNodes.docx");
             //ExEnd
         }
 
