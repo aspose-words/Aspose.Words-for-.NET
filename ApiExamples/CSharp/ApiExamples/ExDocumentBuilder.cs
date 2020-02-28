@@ -15,7 +15,6 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
 using Aspose.Words.Fields;
-using Aspose.Words.Replacing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 using Cell = Aspose.Words.Tables.Cell;
@@ -157,7 +156,7 @@ namespace ApiExamples
 
             Assert.AreEqual(@"MERGEFIELD MyMergeField2 \* MERGEFORMAT", doc.Range.Fields[1].GetFieldCode());
             Assert.AreEqual(FieldType.FieldMergeField, doc.Range.Fields[1].Type);
-            Assert.AreEqual("«MyMergeField1»", doc.Range.Fields[1].Result);
+            Assert.AreEqual("«MyMergeField2»", doc.Range.Fields[1].Result);
         }
 
         [Test]
@@ -709,50 +708,39 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.MoveToDocumentEnd
             //ExFor:DocumentBuilder.IsAtEndOfParagraph
             //ExFor:DocumentBuilder.IsAtStartOfParagraph
-            //ExSummary:Shows how to move between nodes and manipulate current ones.
-            Document doc = new Document(MyDir + "Bookmarks.docx");
+            //ExSummary:Shows how to move a DocumentBuilder to different nodes in a document.
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Move to a bookmark and delete the parent paragraph
-            builder.MoveToBookmark("MyBookmark1");
-            builder.CurrentParagraph.Remove();
+            // Start a bookmark and add content to it using a DocumentBuilder
+            builder.StartBookmark("MyBookmark");
+            builder.Writeln("Bookmark contents.");
+            builder.EndBookmark("MyBookmark");
 
-            FindReplaceOptions options = new FindReplaceOptions
-            {
-                MatchCase = false,
-                FindWholeWordsOnly = true
-            };
+            // The node that the DocumentBuilder is currently at is past the boundaries of the bookmark  
+            Assert.AreEqual(doc.Range.Bookmarks[0].BookmarkEnd, builder.CurrentParagraph.FirstChild);
 
-            // Move to a particular paragraph's run and use replacement to change its text contents
-            // from "Third bookmark." to "My third bookmark."
-            builder.MoveTo(doc.LastSection.Body.Paragraphs[1].Runs[0]);
+            // If we wish to revise the content of our bookmark with the DocumentBuilder, we can move back to it like this
+            builder.MoveToBookmark("MyBookmark");
+
+            // Now we're located between the bookmark's BookmarkStart and BookmarkEnd nodes, so any text the builder adds will be within it
+            Assert.AreEqual(doc.Range.Bookmarks[0].BookmarkStart, builder.CurrentParagraph.FirstChild);
+
+            // We can move the builder to an individual node,
+            // which in this case will be the first node of the first paragraph, like this
+            builder.MoveTo(doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Any, false)[0]);
+
+            Assert.AreEqual(NodeType.BookmarkStart, builder.CurrentNode.NodeType);
             Assert.IsTrue(builder.IsAtStartOfParagraph);
-            Assert.IsFalse(builder.IsAtEndOfParagraph);
-            builder.CurrentNode.Range.Replace("Third", "My third", options);
 
-            // Mark the beginning of the document
-            builder.MoveToDocumentStart();
-            builder.Writeln("Start of document.");
-
-            // builder.WriteLn puts an end to its current paragraph after writing the text and starts a new one
-            Assert.AreEqual(3, doc.FirstSection.Body.Paragraphs.Count);
-            Assert.IsTrue(builder.IsAtStartOfParagraph);
-            Assert.IsFalse(builder.IsAtEndOfParagraph);
-
-            // builder.Write doesn't end the paragraph
-            builder.Write("Second paragraph.");
-
-            Assert.AreEqual(3, doc.FirstSection.Body.Paragraphs.Count);
-            Assert.IsFalse(builder.IsAtStartOfParagraph);
-            Assert.IsFalse(builder.IsAtEndOfParagraph);
-
-            // Mark the ending of the document
+            // A shorter way of moving the very start/end of a document is with these methods
             builder.MoveToDocumentEnd();
-            builder.Write("End of document.");
-            Assert.IsFalse(builder.IsAtStartOfParagraph);
+
             Assert.IsTrue(builder.IsAtEndOfParagraph);
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.WorkingWithNodes.docx");
+            builder.MoveToDocumentStart();
+
+            Assert.IsTrue(builder.IsAtStartOfParagraph);
             //ExEnd
         }
 
@@ -767,10 +755,12 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Insert some MERGEFIELDS, which accept data from columns of the same name in a data source during a mail merge
             builder.InsertField(" MERGEFIELD Chairman ");
             builder.InsertField(" MERGEFIELD ChiefFinancialOfficer ");
             builder.InsertField(" MERGEFIELD ChiefTechnologyOfficer ");
 
+            // They can also be filled in manually like this
             builder.MoveToMergeField("Chairman");
             builder.Bold = true;
             builder.Writeln("John Doe");
@@ -783,8 +773,21 @@ namespace ApiExamples
             builder.Italic = true;
             builder.Writeln("John Bloggs");
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.FillMergeFields.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.FillMergeFields.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.FillMergeFields.docx");
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+
+            Assert.True(paragraphs[0].Runs[0].Font.Bold);
+            Assert.AreEqual("John Doe", paragraphs[0].Runs[0].GetText().Trim());
+
+            Assert.True(paragraphs[1].Runs[0].Font.Italic);
+            Assert.AreEqual("Jane Doe", paragraphs[1].Runs[0].GetText().Trim());
+
+            Assert.True(paragraphs[2].Runs[0].Font.Italic);
+            Assert.AreEqual("John Bloggs", paragraphs[2].Runs[0].GetText().Trim());
+
         }
 
         [Test]
@@ -797,50 +800,55 @@ namespace ApiExamples
             //ExFor:ParagraphFormat.StyleIdentifier
             //ExFor:DocumentBuilder.InsertBreak
             //ExFor:BreakType
-            //ExSummary:Demonstrates how to insert a Table of contents (TOC) into a document using heading styles as entries.
-            // Use a blank document
+            //ExSummary:Shows how to insert a Table of contents (TOC) into a document using heading styles as entries.
             Document doc = new Document();
-            // Create a document builder to insert content with into document
             DocumentBuilder builder = new DocumentBuilder(doc);
-            // Insert a table of contents at the beginning of the document
+
+            // Insert a table of contents at the beginning of the document,
+            // and set it to pick up paragraphs with headings of levels 1 to 3 and entries to act like hyperlinks
             builder.InsertTableOfContents("\\o \"1-3\" \\h \\z \\u");
+
             // Start the actual document content on the second page
             builder.InsertBreak(BreakType.PageBreak);
-            // Build a document with complex structure by applying different heading styles thus creating TOC entries
-            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
 
+            // Build a document with complex structure by applying different heading styles thus creating TOC entries
+            // The heading levels we use below will affect the list levels in which these items will appear in the TOC,
+            // and only levels 1-3 will be picked up by our TOC due to its settings
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
             builder.Writeln("Heading 1");
 
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading2;
-
             builder.Writeln("Heading 1.1");
             builder.Writeln("Heading 1.2");
 
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
-
             builder.Writeln("Heading 2");
             builder.Writeln("Heading 3");
 
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading2;
-
             builder.Writeln("Heading 3.1");
 
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading3;
-
             builder.Writeln("Heading 3.1.1");
             builder.Writeln("Heading 3.1.2");
             builder.Writeln("Heading 3.1.3");
 
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading2;
-
             builder.Writeln("Heading 3.2");
             builder.Writeln("Heading 3.3");
 
-            // Call the method below to update the TOC
+            // Call the method below to update the TOC and save
             doc.UpdateFields();
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertToc.docx");
             //ExEnd
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertToc.docx");
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertToc.docx");
+            FieldToc tableOfContents = (FieldToc)doc.Range.Fields[0];
+
+            Assert.AreEqual("1-3", tableOfContents.HeadingLevelRange);
+            Assert.IsTrue(tableOfContents.InsertHyperlinks);
+            Assert.IsTrue(tableOfContents.HideInWebLayout);
+            Assert.IsTrue(tableOfContents.UseParagraphOutlineLevel);
         }
 
         [Test]
@@ -867,7 +875,8 @@ namespace ApiExamples
             //ExFor:RowFormat.ClearFormatting
             //ExFor:Shading.ClearFormatting
             //ExSummary:Shows how to build a nice bordered table.
-            DocumentBuilder builder = new DocumentBuilder();
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Start building a table
             builder.StartTable();
@@ -923,8 +932,54 @@ namespace ApiExamples
 
             builder.EndTable();
 
-            builder.Document.Save(ArtifactsDir + "DocumentBuilder.InsertTable.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertTable.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTable.docx");
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Assert.AreEqual("Row 1, Col 1\a", table.Rows[0].Cells[0].GetText().Trim());
+            Assert.AreEqual("Row 1, Col 2\a", table.Rows[0].Cells[1].GetText().Trim());
+            Assert.AreEqual(HeightRule.Exactly, table.Rows[0].RowFormat.HeightRule);
+            Assert.AreEqual(50.0d, table.Rows[0].RowFormat.Height);
+            Assert.AreEqual(LineStyle.Engrave3D, table.Rows[0].RowFormat.Borders.LineStyle);
+            Assert.AreEqual(Color.Orange.ToArgb(), table.Rows[0].RowFormat.Borders.Color.ToArgb());
+
+            foreach (Cell c in table.Rows[0].Cells)
+            {
+                Assert.AreEqual(150, c.CellFormat.Width);
+                Assert.AreEqual(CellVerticalAlignment.Center, c.CellFormat.VerticalAlignment);
+                Assert.AreEqual(Color.GreenYellow.ToArgb(), c.CellFormat.Shading.BackgroundPatternColor.ToArgb());
+                Assert.IsFalse(c.CellFormat.WrapText);
+                Assert.IsTrue(c.CellFormat.FitText);
+
+                Assert.AreEqual(ParagraphAlignment.Center, c.FirstParagraph.ParagraphFormat.Alignment);
+            }
+
+            Assert.AreEqual("Row 2, Col 1\a", table.Rows[1].Cells[0].GetText().Trim());
+            Assert.AreEqual("Row 2, Col 2\a", table.Rows[1].Cells[1].GetText().Trim());
+
+
+            foreach (Cell c in table.Rows[1].Cells)
+            {
+                Assert.AreEqual(150, c.CellFormat.Width);
+                Assert.AreEqual(CellVerticalAlignment.Center, c.CellFormat.VerticalAlignment);
+                Assert.AreEqual(Color.Empty.ToArgb(), c.CellFormat.Shading.BackgroundPatternColor.ToArgb());
+                Assert.IsFalse(c.CellFormat.WrapText);
+                Assert.IsTrue(c.CellFormat.FitText);
+
+                Assert.AreEqual(ParagraphAlignment.Center, c.FirstParagraph.ParagraphFormat.Alignment);
+            }
+
+            Assert.AreEqual(150, table.Rows[2].RowFormat.Height);
+
+            Assert.AreEqual("Row 3, Col 1\a", table.Rows[2].Cells[0].GetText().Trim());
+            Assert.AreEqual(TextOrientation.Upward, table.Rows[2].Cells[0].CellFormat.Orientation);
+            Assert.AreEqual(ParagraphAlignment.Center, table.Rows[2].Cells[0].FirstParagraph.ParagraphFormat.Alignment);
+
+            Assert.AreEqual("Row 3, Col 2\a", table.Rows[2].Cells[1].GetText().Trim());
+            Assert.AreEqual(TextOrientation.Downward, table.Rows[2].Cells[1].CellFormat.Orientation);
+            Assert.AreEqual(ParagraphAlignment.Center, table.Rows[2].Cells[1].FirstParagraph.ParagraphFormat.Alignment);
         }
 
         [Test]
@@ -939,13 +994,15 @@ namespace ApiExamples
             //ExSummary:Shows how to build a new table with a table style applied.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-
             Table table = builder.StartTable();
+
             // We must insert at least one row first before setting any table formatting
             builder.InsertCell();
+
             // Set the table style used based of the unique style identifier
             // Note that not all table styles are available when saving as .doc format
             table.StyleIdentifier = StyleIdentifier.MediumShading1Accent1;
+
             // Apply which features should be formatted by the style
             table.StyleOptions =
                 TableStyleOptions.FirstColumn | TableStyleOptions.RowBands | TableStyleOptions.FirstRow;
@@ -978,6 +1035,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertTableWithStyle.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTableWithStyle.docx");
 
             // Verify that the style was set by expanding to direct formatting
             doc.ExpandTableStylesToDirectFormatting();
