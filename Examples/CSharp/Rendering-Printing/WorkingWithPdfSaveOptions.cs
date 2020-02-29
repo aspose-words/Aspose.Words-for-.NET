@@ -29,6 +29,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void EscapeUriInPdf(String dataDir)
         {
             // ExStart:EscapeUriInPdf
+            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // The path to the documents directory.
             Document doc = new Document(dataDir + "EscapeUri.docx");
 
@@ -44,6 +45,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void ExportHeaderFooterBookmarks(String dataDir)
         {
             // ExStart:ExportHeaderFooterBookmarks
+            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // The path to the documents directory.
             Document doc = new Document(dataDir + "TestFile.docx");
 
@@ -60,6 +62,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void ScaleWmfFontsToMetafileSize(String dataDir)
         {
             // ExStart:ScaleWmfFontsToMetafileSize
+            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // The path to the documents directory.
             Document doc = new Document(dataDir + "MetafileRendering.docx");
 
@@ -81,6 +84,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void AdditionalTextPositioning(string dataDir)
         {
             // ExStart:AdditionalTextPositioning
+            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // The path to the documents directory.
             Document doc = new Document(dataDir + "TestFile.docx");
 
@@ -96,6 +100,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void ConversionToPDF17(string dataDir)
         {
             // ExStart:ConversionToPDF17
+            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // The path to the documents directory.
             Document originalDoc = new Document(dataDir + "Rendering.doc");
 
@@ -112,6 +117,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void DownsamplingImages(string dataDir)
         {
             // ExStart:DownsamplingImages
+            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // Open a document that contains images 
             Document doc = new Document(dataDir + "Rendering.doc");
 
@@ -133,6 +139,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void SaveToPdfWithOutline(string dataDir)
         {
             // ExStart:SaveToPdfWithOutline
+            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // Open a document
             Document doc = new Document(dataDir + "Rendering.doc");
 
@@ -147,6 +154,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void CustomPropertiesExport(string dataDir)
         {
             // ExStart:CustomPropertiesExport
+            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // Open a document
             Document doc = new Document();
 
@@ -165,6 +173,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void ExportDocumentStructure(string dataDir)
         {
             // ExStart:ExportDocumentStructure
+            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // Open a document
             Document doc = new Document(dataDir + "Paragraphs.docx");
 
@@ -181,6 +190,8 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void PdfImageComppression(string dataDir)
         {
             // ExStart:PdfImageComppression
+            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
+            // Open a document
             Document doc = new Document(dataDir + "SaveOptions.PdfImageCompression.rtf");
 
             PdfSaveOptions options = new PdfSaveOptions
@@ -188,16 +199,19 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
                 ImageCompression = PdfImageCompression.Jpeg,
                 PreserveFormFields = true
             };
+            
             doc.Save(dataDir + "SaveOptions.PdfImageCompression.pdf", options);
 
             PdfSaveOptions optionsA1B = new PdfSaveOptions
             {
                 Compliance = PdfCompliance.PdfA1b,
                 ImageCompression = PdfImageCompression.Jpeg,
-                JpegQuality = 100, // Use JPEG compression at 50% quality to reduce file size
+
+                // Use JPEG compression at 50% quality to reduce file size
+                JpegQuality = 100, 
                 ImageColorSpaceExportMode = PdfImageColorSpaceExportMode.SimpleCmyk
             };
-
+            
             doc.Save(dataDir + "SaveOptions.PdfImageComppression PDF_A_1_B.pdf", optionsA1B);
             // ExEnd:PdfImageComppression
             Console.WriteLine("\nFile saved at " + dataDir);

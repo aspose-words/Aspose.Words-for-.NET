@@ -21,6 +21,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         private static void EmbeddAllFonts(string dataDir)
         {
             // ExStart:EmbeddAllFonts
+            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // Load the document to render.
             Document doc = new Document(dataDir + "Rendering.doc");
 
@@ -40,6 +41,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         private static void EmbeddSubsetFonts(string dataDir)
         {
             // ExStart:EmbeddSubsetFonts
+            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // Load the document to render.
             Document doc = new Document(dataDir + "Rendering.doc");
 
@@ -59,6 +61,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         private static void SetFontEmbeddingMode(string dataDir)
         {
             // ExStart:SetFontEmbeddingMode
+            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // Load the document to render.
             Document doc = new Document(dataDir + "Rendering.doc");
 
