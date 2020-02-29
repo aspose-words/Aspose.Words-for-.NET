@@ -32,6 +32,15 @@ namespace ApiExamples
     [TestFixture]
     public class ExDocumentBuilder : ApiExampleBase
     {
+
+        [Test]
+        public void DocumentBuilderCtor()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("Hello World!");
+        }
+
         [Test]
         public void WriteAndFont()
         {
@@ -1040,6 +1049,7 @@ namespace ApiExamples
 
             // Verify that the style was set by expanding to direct formatting
             doc.ExpandTableStylesToDirectFormatting();
+
             Assert.AreEqual("Medium Shading 1 Accent 1", table.Style.Name);
             Assert.AreEqual(TableStyleOptions.FirstColumn | TableStyleOptions.RowBands | TableStyleOptions.FirstRow,
                 table.StyleOptions);
@@ -1059,7 +1069,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Table table = builder.StartTable();
+            builder.StartTable();
             builder.RowFormat.HeadingFormat = true;
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
             builder.CellFormat.Width = 100;
@@ -1084,8 +1094,11 @@ namespace ApiExamples
                 builder.EndRow();
             }
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertTableSetHeadingRow.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertTableSetHeadingRow.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTableSetHeadingRow.docx");
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             Assert.True(table.FirstRow.RowFormat.HeadingFormat);
             Assert.True(table.Rows[1].RowFormat.HeadingFormat);
@@ -1117,10 +1130,12 @@ namespace ApiExamples
             builder.InsertCell();
             builder.Writeln("Cell #3");
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertTableWithPreferredWidth.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertTableWithPreferredWidth.docx");
             //ExEnd
 
-            // Verify the correct settings were applied
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTableWithPreferredWidth.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
             Assert.AreEqual(PreferredWidthType.Percent, table.PreferredWidth.Type);
             Assert.AreEqual(50, table.PreferredWidth.Value);
         }
@@ -1177,10 +1192,20 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertCellsWithPreferredWidths.docx");
             //ExEnd
 
-            // Verify the correct settings were applied
-            Assert.AreEqual(PreferredWidthType.Points, table.FirstRow.FirstCell.CellFormat.PreferredWidth.Type);
+            Assert.AreEqual(100.0d, PreferredWidth.FromPercent(100).Value);
+            Assert.AreEqual(100.0d, PreferredWidth.FromPoints(100).Value);
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertCellsWithPreferredWidths.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            
+            Assert.AreEqual(PreferredWidthType.Points, table.FirstRow.Cells[0].CellFormat.PreferredWidth.Type);
+            Assert.AreEqual(40.0d, table.FirstRow.Cells[0].CellFormat.PreferredWidth.Value);
+
             Assert.AreEqual(PreferredWidthType.Percent, table.FirstRow.Cells[1].CellFormat.PreferredWidth.Type);
+            Assert.AreEqual(20.0d, table.FirstRow.Cells[1].CellFormat.PreferredWidth.Value);
+
             Assert.AreEqual(PreferredWidthType.Auto, table.FirstRow.Cells[2].CellFormat.PreferredWidth.Type);
+            Assert.AreEqual(0.0d, table.FirstRow.Cells[2].CellFormat.PreferredWidth.Value);
         }
 
         [Test]
@@ -1194,9 +1219,11 @@ namespace ApiExamples
             builder.InsertHtml("<table>" + "<tr>" + "<td>Row 1, Cell 1</td>" + "<td>Row 1, Cell 2</td>" + "</tr>" +
                                "<tr>" + "<td>Row 2, Cell 2</td>" + "<td>Row 2, Cell 2</td>" + "</tr>" + "</table>");
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertTableFromHtml.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertTableFromHtml.docx");
 
             // Verify the table was constructed properly
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTableFromHtml.docx");
+
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count);
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.Row, true).Count);
             Assert.AreEqual(4, doc.GetChildNodes(NodeType.Cell, true).Count);
@@ -1233,8 +1260,10 @@ namespace ApiExamples
 
             builder.EndTable();
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertNestedTable.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertNestedTable.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertNestedTable.docx");
 
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count);
             Assert.AreEqual(4, doc.GetChildNodes(NodeType.Cell, true).Count);
@@ -1266,7 +1295,7 @@ namespace ApiExamples
 
             // Build the first cell of the second row
             builder.InsertCell();
-            builder.Write("Row 2, Cell 1 Content");
+            builder.Write("Row 2, Cell 1 Content.");
 
             // Build the second cell.
             builder.InsertCell();
@@ -1277,13 +1306,19 @@ namespace ApiExamples
             builder.EndTable();
 
             // Save the document to disk
-            doc.Save(ArtifactsDir + "DocumentBuilder.CreateSimpleTable.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.CreateSimpleTable.docx");
             //ExEnd
 
-            // Verify that the cell count of the table is four
+            doc = new Document(ArtifactsDir + "DocumentBuilder.CreateSimpleTable.docx");
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
-            Assert.IsNotNull(table);
+
             Assert.AreEqual(4, table.GetChildNodes(NodeType.Cell, true).Count);
+
+            Assert.AreEqual("Row 1, Cell 1 Content.\a", table.Rows[0].Cells[0].GetText().Trim());
+            Assert.AreEqual("Row 1, Cell 2 Content.\a", table.Rows[0].Cells[1].GetText().Trim());
+            Assert.AreEqual("Row 2, Cell 1 Content.\a", table.Rows[1].Cells[0].GetText().Trim());
+            Assert.AreEqual("Row 2, Cell 2 Content.\a", table.Rows[1].Cells[1].GetText().Trim());
+
         }
 
         [Test]
@@ -1367,15 +1402,37 @@ namespace ApiExamples
             builder.EndRow();
             builder.EndTable();
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.CreateFormattedTable.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.CreateFormattedTable.docx");
             //ExEnd
 
-            // Verify that the cell style is different compared to default
-            Assert.AreNotEqual(table.LeftIndent, 0.0);
-            Assert.AreNotEqual(table.FirstRow.RowFormat.HeightRule, HeightRule.Auto);
-            Assert.AreNotEqual(table.FirstRow.FirstCell.CellFormat.Shading.BackgroundPatternColor, Color.Empty);
-            Assert.AreNotEqual(table.FirstRow.FirstCell.FirstParagraph.ParagraphFormat.Alignment,
-                ParagraphAlignment.Left);
+            doc = new Document(ArtifactsDir + "DocumentBuilder.CreateFormattedTable.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Assert.AreEqual(20.0d, table.LeftIndent);
+
+            Assert.AreEqual(HeightRule.AtLeast, table.Rows[0].RowFormat.HeightRule);
+            Assert.AreEqual(40.0d, table.Rows[0].RowFormat.Height);
+
+            foreach (Cell c in doc.GetChildNodes(NodeType.Cell, true))
+            {
+                Assert.AreEqual(ParagraphAlignment.Center, c.FirstParagraph.ParagraphFormat.Alignment);
+
+                foreach (Run r in c.FirstParagraph.Runs)
+                {
+                    Assert.AreEqual("Arial", r.Font.Name);
+
+                    if (c.ParentRow == table.FirstRow)
+                    {
+                        Assert.AreEqual(16, r.Font.Size);
+                        Assert.True(r.Font.Bold);
+                    }
+                    else
+                    {
+                        Assert.AreEqual(12, r.Font.Size);
+                        Assert.False(r.Font.Bold);
+                    }
+                }
+            }
         }
 
         [Test]
@@ -1392,17 +1449,17 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Start a table and set a default color/thickness for its borders
             Table table = builder.StartTable();
-            builder.InsertCell();
-
-            // Set the borders for the entire table
             table.SetBorders(LineStyle.Single, 2.0, Color.Black);
+
             // Set the cell shading for this cell
+            builder.InsertCell();
             builder.CellFormat.Shading.BackgroundPatternColor = Color.Red;
             builder.Writeln("Cell #1");
 
-            builder.InsertCell();
             // Specify a different cell shading for the second cell
+            builder.InsertCell();
             builder.CellFormat.Shading.BackgroundPatternColor = Color.Green;
             builder.Writeln("Cell #2");
 
@@ -1414,38 +1471,52 @@ namespace ApiExamples
 
             // Create the second row
             builder.InsertCell();
+            builder.Writeln("Cell #3");
 
-            // Create larger borders for the first cell of this row. This will be different
-            // compared to the borders set for the table
+            // Clear the cell formatting from the previous cell
+            builder.CellFormat.ClearFormatting();
+
             builder.CellFormat.Borders.Left.LineWidth = 4.0;
             builder.CellFormat.Borders.Right.LineWidth = 4.0;
             builder.CellFormat.Borders.Top.LineWidth = 4.0;
             builder.CellFormat.Borders.Bottom.LineWidth = 4.0;
-            builder.Writeln("Cell #3");
 
             builder.InsertCell();
-            // Clear the cell formatting from the previous cell
-            builder.CellFormat.ClearFormatting();
             builder.Writeln("Cell #4");
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.TableBordersAndShading.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.TableBordersAndShading.docx");
             //ExEnd
 
-            // Verify the table was created correctly
+            doc = new Document(ArtifactsDir + "DocumentBuilder.TableBordersAndShading.docx");
+            table = (Table) doc.GetChild(NodeType.Table, 0, true);
+
+            foreach (Cell c in table.FirstRow)
+            {
+                Assert.AreEqual(0.5d, c.CellFormat.Borders.Top.LineWidth);
+                Assert.AreEqual(0.5d, c.CellFormat.Borders.Bottom.LineWidth);
+                Assert.AreEqual(0.5d, c.CellFormat.Borders.Left.LineWidth);
+                Assert.AreEqual(0.5d, c.CellFormat.Borders.Right.LineWidth);
+
+                Assert.AreEqual(Color.Empty.ToArgb(), c.CellFormat.Borders.Left.Color.ToArgb());
+                Assert.AreEqual(LineStyle.Single, c.CellFormat.Borders.Left.LineStyle);
+            }
+
             Assert.AreEqual(Color.Red.ToArgb(),
                 table.FirstRow.FirstCell.CellFormat.Shading.BackgroundPatternColor.ToArgb());
             Assert.AreEqual(Color.Green.ToArgb(),
                 table.FirstRow.Cells[1].CellFormat.Shading.BackgroundPatternColor.ToArgb());
-            Assert.AreEqual(Color.Green.ToArgb(),
-                table.FirstRow.Cells[1].CellFormat.Shading.BackgroundPatternColor.ToArgb());
-            Assert.AreEqual(Color.Empty.ToArgb(),
-                table.LastRow.FirstCell.CellFormat.Shading.BackgroundPatternColor.ToArgb());
 
-            Assert.AreEqual(Color.Black.ToArgb(), table.FirstRow.FirstCell.CellFormat.Borders.Left.Color.ToArgb());
-            Assert.AreEqual(Color.Black.ToArgb(), table.FirstRow.FirstCell.CellFormat.Borders.Left.Color.ToArgb());
-            Assert.AreEqual(LineStyle.Single, table.FirstRow.FirstCell.CellFormat.Borders.Left.LineStyle);
-            Assert.AreEqual(2.0, table.FirstRow.FirstCell.CellFormat.Borders.Left.LineWidth);
-            Assert.AreEqual(4.0, table.LastRow.FirstCell.CellFormat.Borders.Left.LineWidth);
+            foreach (Cell c in table.LastRow)
+            {
+                Assert.AreEqual(4.0d, c.CellFormat.Borders.Top.LineWidth);
+                Assert.AreEqual(4.0d, c.CellFormat.Borders.Bottom.LineWidth);
+                Assert.AreEqual(4.0d, c.CellFormat.Borders.Left.LineWidth);
+                Assert.AreEqual(4.0d, c.CellFormat.Borders.Right.LineWidth);
+
+                Assert.AreEqual(Color.Empty.ToArgb(), c.CellFormat.Borders.Left.Color.ToArgb());
+                Assert.AreEqual(LineStyle.Single, c.CellFormat.Borders.Left.LineStyle);
+                Assert.AreEqual(Color.Empty.ToArgb(), c.CellFormat.Shading.BackgroundPatternColor.ToArgb());
+            }
         }
 
         [Test]
@@ -1472,7 +1543,7 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.StartBookmark
             //ExFor:DocumentBuilder.EndBookmark
             //ExFor:DocumentBuilder.InsertHyperlink
-            //ExSummary:Inserts a hyperlink referencing local bookmark.
+            //ExSummary:Shows how to insert a hyperlink referencing a local bookmark.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1493,16 +1564,15 @@ namespace ApiExamples
             // Clear hyperlink formatting
             builder.Font.ClearFormatting();
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertHyperlinkToLocalBookmark.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertHyperlinkToLocalBookmark.docx");
             //ExEnd
-        }
 
-        [Test]
-        public void DocumentBuilderCtor()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Write("Hello World!");
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertHyperlinkToLocalBookmark.docx");
+            FieldHyperlink hyperlink = (FieldHyperlink)doc.Range.Fields[0];
+
+            Assert.AreEqual(" HYPERLINK \\l \"Bookmark1\" \\o \"Hyperlink Tip\" ", hyperlink.GetFieldCode());
+            Assert.AreEqual("Bookmark1", hyperlink.SubAddress);
+            Assert.IsTrue(doc.Range.Bookmarks.Any(b => b.Name == "Bookmark1"));
         }
 
         [Test]
@@ -1530,11 +1600,30 @@ namespace ApiExamples
             //ExStart
             //ExFor:Story.LastParagraph
             //ExFor:DocumentBuilder.MoveTo(Node)
-            //ExSummary:Shows how to move a cursor position to a specified node.
-            Document doc = new Document(MyDir + "Document.docx");
+            //ExSummary:Shows how to move a DocumentBuilder's cursor position to a specified node.
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            // Write a paragraph with the DocumentBuilder
+            builder.Writeln("Text 1. ");
 
+            // Move the DocumentBuilder to the first paragraph of the document and add another paragraph
+            Assert.AreEqual(doc.FirstSection.Body.LastParagraph, builder.CurrentParagraph); //ExSkip
+            builder.MoveTo(doc.FirstSection.Body.FirstParagraph.Runs[0]);
+            Assert.AreEqual(doc.FirstSection.Body.FirstParagraph, builder.CurrentParagraph); //ExSkip
+            builder.Writeln("Text 2. ");
+
+            // Since we moved to a node before the first paragraph before we added a second paragraph,
+            // the second paragraph will appear in front of the first paragraph
+            Assert.AreEqual("Text 2. \rText 1.", doc.GetText().Trim());
+
+            // We can move the DocumentBuilder back to the end of the document like this
+            // and carry on adding text to the end of the document
             builder.MoveTo(doc.FirstSection.Body.LastParagraph);
+            builder.Writeln("Text 3. ");
+
+            Assert.AreEqual("Text 2. \rText 1. \rText 3.", doc.GetText().Trim());
+            Assert.AreEqual(doc.FirstSection.Body.LastParagraph, builder.CurrentParagraph); //ExSkip
             //ExEnd
         }
 
