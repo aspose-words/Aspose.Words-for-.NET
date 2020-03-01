@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Cell = Aspose.Words.Tables.Cell;
 using Color = System.Drawing.Color;
 using Document = Aspose.Words.Document;
+using Font = Aspose.Words.Font;
 using SaveFormat = Aspose.Words.SaveFormat;
 using Table = Aspose.Words.Tables.Table;
 
@@ -1660,13 +1661,33 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.MoveToParagraph
             //ExSummary:Shows how to move a cursor position to the specified paragraph.
+            // Open a document with a lot of paragraphs
             Document doc = new Document(MyDir + "Paragraphs.docx");
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+
+            Assert.AreEqual(22, paragraphs.Count);
+
+            // When we create a DocumentBuilder for a document, its cursor is at the very beginning of the document by default,
+            // and any content added by the DocumentBuilder will just be prepended to the document
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Parameters are 0-index. Moves to third paragraph
+            Assert.AreEqual(0, paragraphs.IndexOf(builder.CurrentParagraph));
+
+            // We can manually move the DocumentBuilder to any paragraph in the document via a 0-based index like this
             builder.MoveToParagraph(2, 0);
-            builder.Writeln("Text added to the 3rd paragraph. ");
+            Assert.AreEqual(2, paragraphs.IndexOf(builder.CurrentParagraph)); //ExSkip
+            builder.Writeln("This is a new third paragraph. ");
             //ExEnd
+
+            Assert.AreEqual(3, paragraphs.IndexOf(builder.CurrentParagraph));
+
+            using (MemoryStream docStream = new MemoryStream())
+            {
+                doc.Save(docStream, SaveFormat.Docx);
+                doc = new Document(docStream);
+
+                Assert.AreEqual("This is a new third paragraph.", doc.FirstSection.Body.Paragraphs[2].GetText().Trim());
+            }
         }
 
         [Test]
@@ -1678,10 +1699,16 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Tables.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // All parameters are 0-index. Moves to the 1st table, 3rd row, 4th cell
+            // Move the builder to row 3, cell 4 of the first table
             builder.MoveToCell(0, 2, 3, 0);
             builder.Write("\nCell contents added by DocumentBuilder");
             //ExEnd
+
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Assert.AreEqual(table.Rows[2].Cells[3], builder.CurrentNode.ParentNode.ParentNode);
+            Assert.AreEqual("Cell contents added by DocumentBuilderCell 3 contents\a", table.Rows[2].Cells[3].GetText().Trim());
+
         }
 
         [Test]
@@ -1693,10 +1720,18 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Bookmarks.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Move to the end of the first bookmark
+            // Move to after the end of the first bookmark
             Assert.True(builder.MoveToBookmark("MyBookmark1", false, true));
             builder.Write(" Text appended via DocumentBuilder.");
             //ExEnd
+
+            using (MemoryStream docStream = new MemoryStream())
+            {
+                doc.Save(docStream, SaveFormat.Docx);
+                doc = new Document(docStream);
+
+                Assert.False(doc.Range.Bookmarks["MyBookmark1"].Text.Contains(" Text appended via DocumentBuilder."));
+            }
         }
 
         [Test]
@@ -1730,11 +1765,35 @@ namespace ApiExamples
             paragraphFormat.AddSpaceBetweenFarEastAndDigit = true;
             paragraphFormat.KeepTogether = true;
 
+            // Using Writeln() ends the paragraph after writing and makes a new one, while Write() stays on the same paragraph
             builder.Writeln("A whole paragraph.");
 
             // We can use this flag to ensure that we're at the end of the document
             Assert.True(builder.CurrentParagraph.IsEndOfDocument);
             //ExEnd
+
+            using (MemoryStream docStream = new MemoryStream())
+            {
+                doc.Save(docStream, SaveFormat.Docx);
+                doc = new Document(docStream);
+
+                Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
+
+                Assert.AreEqual(8, paragraph.ParagraphFormat.FirstLineIndent);
+                Assert.AreEqual(ParagraphAlignment.Justify, paragraph.ParagraphFormat.Alignment);
+                Assert.True(paragraph.ParagraphFormat.AddSpaceBetweenFarEastAndAlpha);
+                Assert.True(paragraph.ParagraphFormat.AddSpaceBetweenFarEastAndDigit);
+                Assert.True(paragraph.ParagraphFormat.KeepTogether);
+                Assert.AreEqual("A whole paragraph.", paragraph.GetText().Trim());
+
+                Font runFont = paragraph.Runs[0].Font;
+
+                Assert.AreEqual(16.0d, runFont.Size);
+                Assert.True(runFont.Bold);
+                Assert.AreEqual(Color.Blue.ToArgb(), runFont.Color.ToArgb());
+                Assert.AreEqual("Arial", runFont.Name);
+                Assert.AreEqual(Underline.Dash, runFont.Underline);
+            }
         }
 
         [Test]
@@ -1762,16 +1821,15 @@ namespace ApiExamples
 
             // Insert a cell
             builder.InsertCell();
-            // Use fixed column widths
-            table.AutoFit(AutoFitBehavior.FixedColumnWidths);
-
             builder.CellFormat.VerticalAlignment = CellVerticalAlignment.Center;
             builder.Write("This is row 1 cell 1");
+
+            // Use fixed column widths
+            table.AutoFit(AutoFitBehavior.FixedColumnWidths);
 
             // Insert a cell
             builder.InsertCell();
             builder.Write("This is row 1 cell 2");
-
             builder.EndRow();
 
             // Insert a cell
@@ -1782,17 +1840,45 @@ namespace ApiExamples
             builder.RowFormat.HeightRule = HeightRule.Exactly;
 
             builder.CellFormat.Orientation = TextOrientation.Upward;
-            builder.Writeln("This is row 2 cell 1");
+            builder.Write("This is row 2 cell 1");
 
             // Insert a cell
             builder.InsertCell();
             builder.CellFormat.Orientation = TextOrientation.Downward;
-            builder.Writeln("This is row 2 cell 2");
+            builder.Write("This is row 2 cell 2");
 
             builder.EndRow();
-
             builder.EndTable();
             //ExEnd
+
+            using (MemoryStream docStream = new MemoryStream())
+            {
+                doc.Save(docStream, SaveFormat.Docx);
+                doc = new Document(docStream);
+
+                table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+                Assert.AreEqual(2, table.Rows.Count);
+                Assert.AreEqual(2, table.Rows[0].Cells.Count);
+                Assert.AreEqual(2, table.Rows[1].Cells.Count);
+                Assert.False(table.AllowAutoFit);
+
+                Assert.AreEqual(0, table.Rows[0].RowFormat.Height);
+                Assert.AreEqual(HeightRule.Auto, table.Rows[0].RowFormat.HeightRule);
+                Assert.AreEqual(100, table.Rows[1].RowFormat.Height);
+                Assert.AreEqual(HeightRule.Exactly, table.Rows[1].RowFormat.HeightRule);
+
+                Assert.AreEqual("This is row 1 cell 1\a", table.Rows[0].Cells[0].GetText().Trim());
+                Assert.AreEqual(CellVerticalAlignment.Center, table.Rows[0].Cells[0].CellFormat.VerticalAlignment);
+
+                Assert.AreEqual("This is row 1 cell 2\a", table.Rows[0].Cells[1].GetText().Trim());
+
+                Assert.AreEqual("This is row 2 cell 1\a", table.Rows[1].Cells[0].GetText().Trim());
+                Assert.AreEqual(TextOrientation.Upward, table.Rows[1].Cells[0].CellFormat.Orientation);
+
+                Assert.AreEqual("This is row 2 cell 2\a", table.Rows[1].Cells[1].GetText().Trim());
+                Assert.AreEqual(TextOrientation.Downward, table.Rows[1].Cells[1].CellFormat.Orientation);
+            }
         }
 
         [Test]
@@ -1850,6 +1936,25 @@ namespace ApiExamples
             builder.InsertImage(ImageDir + "Transparent background logo.png", RelativeHorizontalPosition.Margin, 100,
                 RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
             //ExEnd
+
+            using (MemoryStream docStream = new MemoryStream())
+            {
+                doc.Save(docStream, SaveFormat.Docx);
+                doc = new Document(docStream);
+
+                Shape image = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+                Assert.True(image.HasImage);
+                Assert.AreEqual(15698, image.ImageData.ImageBytes.Length);
+
+                Assert.AreEqual(100.0d, image.Left);
+                Assert.AreEqual(100.0d, image.Top);
+                Assert.AreEqual(200.0d, image.Width);
+                Assert.AreEqual(100.0d, image.Height);
+                Assert.AreEqual(WrapType.Square, image.WrapType);
+                Assert.AreEqual(RelativeHorizontalPosition.Margin, image.RelativeHorizontalPosition);
+                Assert.AreEqual(RelativeVerticalPosition.Margin, image.RelativeVerticalPosition);
+            }
         }
 
         [Test]
@@ -1882,18 +1987,24 @@ namespace ApiExamples
                 RelativeVerticalPosition.Margin, 100, -1, -1, WrapType.Square);
             //ExEnd
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertImageOriginalSize.doc");
-        }
+            using (MemoryStream docStream = new MemoryStream())
+            {
+                doc.Save(docStream, SaveFormat.Docx);
+                doc = new Document(docStream);
 
-        [Test]
-        public void DocumentBuilderInsertBookmark()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
+                Shape image = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            builder.StartBookmark("FineBookmark");
-            builder.Writeln("This is just a fine bookmark.");
-            builder.EndBookmark("FineBookmark");
+                Assert.True(image.HasImage);
+                Assert.AreEqual(20115, image.ImageData.ImageBytes.Length);
+
+                Assert.AreEqual(200.0d, image.Left);
+                Assert.AreEqual(100.0d, image.Top);
+                Assert.AreEqual(268.0d, image.Width);
+                Assert.AreEqual(268.0d, image.Height);
+                Assert.AreEqual(WrapType.Square, image.WrapType);
+                Assert.AreEqual(RelativeHorizontalPosition.Margin, image.RelativeHorizontalPosition);
+                Assert.AreEqual(RelativeVerticalPosition.Margin, image.RelativeVerticalPosition);
+            }
         }
 
         [Test]
@@ -1907,6 +2018,21 @@ namespace ApiExamples
 
             builder.InsertTextInput("TextInput", TextFormFieldType.Regular, "", "Hello", 0);
             //ExEnd
+
+            using (MemoryStream docStream = new MemoryStream())
+            {
+                doc.Save(docStream, SaveFormat.Docx);
+                doc = new Document(docStream);
+                FormField formField = doc.Range.FormFields[0];
+
+                Assert.True(formField.Enabled);
+                Assert.AreEqual("TextInput", formField.Name);
+                Assert.AreEqual(0, formField.MaxLength);
+                Assert.AreEqual("Hello", formField.Result);
+                Assert.AreEqual(FieldType.FieldFormTextInput, formField.Type);
+                Assert.AreEqual("", formField.TextInputFormat);
+                Assert.AreEqual(TextFormFieldType.Regular, formField.TextInputType);
+            }
         }
 
         [Test]
@@ -1921,6 +2047,19 @@ namespace ApiExamples
             string[] items = { "One", "Two", "Three" };
             builder.InsertComboBox("DropDown", items, 0);
             //ExEnd
+
+            using (MemoryStream docStream = new MemoryStream())
+            {
+                doc.Save(docStream, SaveFormat.Docx);
+                doc = new Document(docStream);
+                FormField formField = doc.Range.FormFields[0];
+
+                Assert.True(formField.Enabled);
+                Assert.AreEqual("DropDown", formField.Name);
+                Assert.AreEqual(0, formField.DropDownSelectedIndex);
+                Assert.AreEqual(new[] { "One", "Two", "Three" } , formField.DropDownItems);
+                Assert.AreEqual(FieldType.FieldFormDropDown, formField.Type);
+            }
         }
 
         [Test]
@@ -1968,20 +2107,44 @@ namespace ApiExamples
             SignatureLine signatureLine = builder.InsertSignatureLine(signatureLineOptions).SignatureLine;
             signatureLine.ProviderId = Guid.Parse("CF5A7BB4-8F3C-4756-9DF6-BEF7F13259A2");
             
-            doc.Save(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId In.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.docx");
 
-            SignOptions signOptions = new SignOptions();
-            signOptions.SignatureLineId = signatureLine.Id;
-            signOptions.ProviderId = signatureLine.ProviderId;
-            signOptions.Comments = "Document was signed by vderyushev";
-            signOptions.SignTime = DateTime.Now;
+            SignOptions signOptions = new SignOptions
+            {
+                SignatureLineId = signatureLine.Id,
+                ProviderId = signatureLine.ProviderId,
+                Comments = "Document was signed by vderyushev",
+                SignTime = DateTime.Now
+            };
 
             CertificateHolder certHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
-            DigitalSignatureUtil.Sign(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId In.docx", ArtifactsDir + "DocumentBuilder.SignatureLineProviderId Out.docx", certHolder, signOptions);
+            DigitalSignatureUtil.Sign(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.docx", ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.Signed.docx", certHolder, signOptions);
             //ExEnd
+            
+            doc = new Document(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.Signed.docx");
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            signatureLine = shape.SignatureLine;
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId Out.docx", GoldsDir + "DocumentBuilder.SignatureLineProviderId Gold.docx"));
+            Assert.AreEqual("vderyushev", signatureLine.Signer);
+            Assert.AreEqual("QA", signatureLine.SignerTitle);
+            Assert.AreEqual("vderyushev@aspose.com", signatureLine.Email);
+            Assert.True(signatureLine.ShowDate);
+            Assert.False(signatureLine.DefaultInstructions);
+            Assert.AreEqual("You need more info about signature line", signatureLine.Instructions);
+            Assert.True(signatureLine.AllowComments);
+            Assert.True(signatureLine.IsSigned);
+            Assert.True(signatureLine.IsValid);
+
+            DigitalSignatureCollection signatures = DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.Signed.docx");
+
+            Assert.AreEqual(1, signatures.Count);
+            Assert.True(signatures[0].IsValid);
+            Assert.AreEqual("Document was signed by vderyushev", signatures[0].Comments);
+            Assert.AreEqual(DateTime.Today, signatures[0].SignTime.Date);
+            Assert.AreEqual("CN=Morzal.Me", signatures[0].IssuerName);
+            Assert.AreEqual(DigitalSignatureType.XmlDsig, signatures[0].SignatureType);
+
         }
 
         [Test]
@@ -2012,18 +2175,17 @@ namespace ApiExamples
             doc.Save(dstStream, SaveFormat.Docx);
 
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
-
             SignatureLine signatureLine = shape.SignatureLine;
 
             Assert.AreEqual("John Doe", signatureLine.Signer);
             Assert.AreEqual("Manager", signatureLine.SignerTitle);
             Assert.AreEqual("johndoe@aspose.com", signatureLine.Email);
-            Assert.AreEqual(true, signatureLine.ShowDate);
-            Assert.AreEqual(false, signatureLine.DefaultInstructions);
+            Assert.True(signatureLine.ShowDate);
+            Assert.False(signatureLine.DefaultInstructions);
             Assert.AreEqual("You need more info about signature line", signatureLine.Instructions);
-            Assert.AreEqual(true, signatureLine.AllowComments);
-            Assert.AreEqual(false, signatureLine.IsSigned);
-            Assert.AreEqual(false, signatureLine.IsValid);
+            Assert.True(signatureLine.AllowComments);
+            Assert.False(signatureLine.IsSigned);
+            Assert.False(signatureLine.IsValid);
         }
 
         [Test]
