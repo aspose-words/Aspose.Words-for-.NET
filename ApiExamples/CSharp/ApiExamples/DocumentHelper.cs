@@ -10,7 +10,11 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Tables;
 using System;
 using System.IO;
+using Aspose.Words.Saving;
 using NUnit.Framework;
+using Document = Aspose.Words.Document;
+using SaveFormat = Aspose.Words.SaveFormat;
+using Table = Aspose.Words.Tables.Table;
 
 namespace ApiExamples
 {
@@ -277,6 +281,22 @@ namespace ApiExamples
         internal static Paragraph GetParagraph(Document doc, int paraIndex)
         {
             return doc.FirstSection.Body.Paragraphs[paraIndex];
+        }
+
+        /// <summary>
+        /// Save the document to a stream, immediately re-open it and return the newly opened version
+        /// </summary>
+        /// <remarks>
+        /// Used for testing how document features are preserved after saving/loading
+        /// </remarks>
+        /// <param name="doc">The document we wish to re-open</param>
+        internal static Document SaveOpen(Document doc)
+        {
+            using (MemoryStream docStream = new MemoryStream())
+            {
+                doc.Save(docStream, new OoxmlSaveOptions(SaveFormat.Docx));
+                return new Document(docStream);
+            }
         }
     }
 }

@@ -40,8 +40,7 @@ namespace ApiExamples
             newComment.AddReply("John Doe", "JD", new DateTime(2017, 9, 25, 12, 15, 0), "New reply");
             //ExEnd
 
-            using (MemoryStream dstStream = new MemoryStream()) doc.Save(dstStream, SaveFormat.Docx);
-
+            doc = DocumentHelper.SaveOpen(doc);
             Comment docComment = (Comment)doc.GetChild(NodeType.Comment, 0, true);
 
             Assert.AreEqual(1, docComment.Count);
@@ -147,18 +146,13 @@ namespace ApiExamples
             }
             //ExEnd
 
-            using (MemoryStream dstStream = new MemoryStream())
+            doc = DocumentHelper.SaveOpen(doc);
+            comment = (Comment)doc.GetChildNodes(NodeType.Comment, true)[0];
+            repliesCollection = comment.Replies;
+
+            foreach (Comment childComment in repliesCollection)
             {
-                doc.Save(dstStream, SaveFormat.Docx);
-                doc = new Document(dstStream);
-
-                comment = (Comment)comments[0];
-                repliesCollection = comment.Replies;
-
-                foreach (Comment childComment in repliesCollection)
-                {
-                    Assert.True(childComment.Done);
-                }
+                Assert.True(childComment.Done);
             }
         }
         

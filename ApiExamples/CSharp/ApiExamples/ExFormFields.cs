@@ -101,8 +101,7 @@ namespace ApiExamples
             builder.InsertTextInput("TextInput1", TextFormFieldType.Regular, "TestFormField", "SomeText", 0);
             builder.EndBookmark("MyBookmark");
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             BookmarkCollection bookmarkBeforeDeleteFormField = doc.Range.Bookmarks;
             Assert.AreEqual("MyBookmark", bookmarkBeforeDeleteFormField[0].Name);

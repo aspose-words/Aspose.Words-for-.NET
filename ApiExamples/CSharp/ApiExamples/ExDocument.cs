@@ -1138,12 +1138,8 @@ namespace ApiExamples
             builder.Writeln("Hello" + ControlChar.TabChar + "World!");
             //ExEnd
 
-            using (MemoryStream docStream = new MemoryStream())
-            {
-                doc.Save(docStream, SaveFormat.Docx);
-                doc = new Document(docStream);
-                Assert.AreEqual(72, doc.DefaultTabStop);
-            }
+            doc = DocumentHelper.SaveOpen(doc);
+            Assert.AreEqual(72, doc.DefaultTabStop);
         }
 
         [Test]
@@ -2091,9 +2087,7 @@ namespace ApiExamples
         public void HyphenationOptionsDefaultValues()
         {
             Document doc = new Document();
-
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             Assert.AreEqual(false, doc.HyphenationOptions.AutoHyphenation);
             Assert.AreEqual(0, doc.HyphenationOptions.ConsecutiveHyphenLimit);

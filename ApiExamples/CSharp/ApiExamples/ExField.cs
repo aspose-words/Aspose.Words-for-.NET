@@ -116,8 +116,8 @@ namespace ApiExamples
 
             doc.UpdateFields();
             //ExEnd
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+
+            doc = DocumentHelper.SaveOpen(doc);
 
             FieldRevNum revNum = (FieldRevNum)doc.Range.Fields[0];
             Assert.NotNull(revNum);
@@ -131,8 +131,7 @@ namespace ApiExamples
 
             builder.InsertField("REVNUM MERGEFORMAT");
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             FieldRevNum revNum = (FieldRevNum)doc.Range.Fields[0];
             Assert.NotNull(revNum);
@@ -148,9 +147,7 @@ namespace ApiExamples
             fieldBuilder.BuildAndInsert(run);
 
             doc.UpdateFields();
-
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             FieldInfo info = (FieldInfo)doc.Range.Fields[0];
             Assert.NotNull(info);
@@ -164,8 +161,7 @@ namespace ApiExamples
 
             builder.InsertField("INFO MERGEFORMAT");
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             FieldInfo info = (FieldInfo)doc.Range.Fields[0];
             Assert.NotNull(info);
@@ -192,9 +188,6 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertField(FieldType.FieldNone, false);
-
-            MemoryStream stream = new MemoryStream();
-            doc.Save(stream, SaveFormat.Docx);
 
             FieldUnknown fieldUnknown = (FieldUnknown)doc.Range.Fields.FirstOrDefault(p => p.Type == FieldType.FieldNone);
             if (fieldUnknown != null)
@@ -244,15 +237,12 @@ namespace ApiExamples
             Console.WriteLine($"Today's date, as displayed in the \"{CultureInfo.GetCultureInfo(field.LocaleId).EnglishName}\" culture: {field.Result}");
             //ExEnd
 
-            using (MemoryStream dstStream = new MemoryStream())
-            {
-                doc.Save(dstStream, SaveFormat.Docx);
-                doc = new Document(dstStream);
-                field = doc.Range.Fields[0];
+            doc = DocumentHelper.SaveOpen(doc);
+            field = doc.Range.Fields[0];
 
-                Assert.AreEqual(new CultureInfo("de-DE").LCID, field.LocaleId);
-                Assert.IsTrue(Regex.IsMatch(field.Result, "[0-9]{2}.[0-9]{2}.[0-9]{4}"));
-            }
+            Assert.AreEqual(new CultureInfo("de-DE").LCID, field.LocaleId);
+            Assert.IsTrue(Regex.IsMatch(field.Result, "[0-9]{2}.[0-9]{2}.[0-9]{4}"));
+        
         }
 
         [Test]

@@ -219,8 +219,7 @@ namespace ApiExamples
             startRange1.EditableRange.EditorGroup = EditorType.Everyone;
             //ExEnd
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             // Assert that it's not valid structure and editable ranges aren't added to the current document
             NodeCollection startNodes = doc.GetChildNodes(NodeType.EditableRangeStart, true);

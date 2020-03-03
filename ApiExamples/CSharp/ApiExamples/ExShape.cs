@@ -152,8 +152,7 @@ namespace ApiExamples
             shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
             shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             Assert.AreEqual(true, shape.AspectRatioLocked);            
@@ -184,9 +183,8 @@ namespace ApiExamples
                     shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
                     shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
 
-                    MemoryStream dstStream = new MemoryStream();
-                    doc.Save(dstStream, SaveFormat.Docx);
-
+                    doc = DocumentHelper.SaveOpen(doc);
+        
                     shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
                     Assert.AreEqual(true, shape.AspectRatioLocked);
                 }
@@ -469,14 +467,9 @@ namespace ApiExamples
             shape.Title = "Alt Text Title";
 
             builder.InsertNode(shape);
-
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
-            shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
-            Console.WriteLine("Shape text: " + shape.Title);
             //ExEnd
 
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             Assert.AreEqual("Alt Text Title", shape.Title);
         }
 
@@ -937,9 +930,7 @@ namespace ApiExamples
             shape.AspectRatioLocked = isLocked;
             //ExEnd
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
+            doc = DocumentHelper.SaveOpen(doc);
             shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             Assert.AreEqual(isLocked, shape.AspectRatioLocked);
         }
@@ -1021,9 +1012,7 @@ namespace ApiExamples
             builder.InsertNode(rectangle);
             //ExEnd
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
+            doc = DocumentHelper.SaveOpen(doc);
             rectangle = (Shape) doc.GetChild(NodeType.Shape, 0, true);
 
             Stroke strokeAfter = rectangle.Stroke;

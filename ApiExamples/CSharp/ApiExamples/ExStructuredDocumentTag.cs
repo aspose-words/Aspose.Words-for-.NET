@@ -77,9 +77,6 @@ namespace ApiExamples
             builder.InsertNode(sdtPlainText);
             builder.InsertNode(sdtRichText);
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
             // We can get a collection of StructuredDocumentTags by looking for the document's child nodes of this NodeType
             Assert.AreEqual(NodeType.StructuredDocumentTag, sdtPlainText.NodeType);
 
@@ -111,8 +108,8 @@ namespace ApiExamples
             // Insert content control into the document
             builder.InsertNode(sdtCheckBox);
             //ExEnd
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+
+            doc = DocumentHelper.SaveOpen(doc);
 
             NodeCollection sdts = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
 
@@ -613,9 +610,8 @@ namespace ApiExamples
 
             // Insert content control into the document
             builder.InsertNode(sdtCheckBox);
-            
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+
+            doc = DocumentHelper.SaveOpen(doc);
 
             StructuredDocumentTag sdt = (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
             Console.WriteLine("The Id of your custom xml part is: " + sdt.XmlMapping.StoreItemId);
@@ -638,9 +634,8 @@ namespace ApiExamples
             }
 
             //ExEnd
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
 
+            doc = DocumentHelper.SaveOpen(doc);
             sdts = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
 
             Assert.AreEqual(

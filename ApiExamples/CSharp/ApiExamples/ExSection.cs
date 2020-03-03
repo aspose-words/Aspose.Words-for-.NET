@@ -470,8 +470,7 @@ namespace ApiExamples
             sectionDe.PageSetup.FooterDistance = 35.4; // 1.25 cm
             sectionDe.PageSetup.TextColumns.Spacing = 35.4; // 1.25 cm
 
-            MemoryStream dstStream = new MemoryStream();
-            docDe.Save(dstStream, SaveFormat.Docx);
+            docDe = DocumentHelper.SaveOpen(docDe);
 
             Section sectionDeAfter = docDe.Sections[0];
             Assert.AreEqual(90.0, sectionDeAfter.PageSetup.LeftMargin); // 3.17 cm         

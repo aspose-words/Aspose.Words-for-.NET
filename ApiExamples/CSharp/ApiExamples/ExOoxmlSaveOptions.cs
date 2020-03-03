@@ -74,8 +74,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.Iso29500Strict.docx", saveOptions);
             //ExEnd
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, saveOptions);
+            doc = DocumentHelper.SaveOpen(doc);
 
             // Assert that image have drawingML markup language
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())
@@ -141,8 +140,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.UpdatingLastSavedTimeDocument.docx", saveOptions);
             //ExEnd
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, saveOptions);
+            doc = DocumentHelper.SaveOpen(doc);
 
             DateTime documentTimeAfterSave = doc.BuiltInDocumentProperties.LastSavedTime;
             Assert.AreNotEqual(documentTimeBeforeSave, documentTimeAfterSave);

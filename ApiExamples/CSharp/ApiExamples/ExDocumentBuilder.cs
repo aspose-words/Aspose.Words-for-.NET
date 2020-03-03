@@ -53,7 +53,8 @@ namespace ApiExamples
             //ExFor:Font.Underline
             //ExFor:DocumentBuilder.#ctor
             //ExSummary:Inserts formatted text using DocumentBuilder.
-            DocumentBuilder builder = new DocumentBuilder();
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Specify font formatting before adding text
             Aspose.Words.Font font = builder.Font;
@@ -66,20 +67,15 @@ namespace ApiExamples
             builder.Write("Hello world!");
             //ExEnd
 
-            using (MemoryStream docStream = new MemoryStream())
-            {
-                builder.Document.Save(docStream, SaveFormat.Docx);
-                Document doc = new Document(docStream);
+            doc = DocumentHelper.SaveOpen(builder.Document);
+            Run firstRun = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-                Run firstRun = doc.FirstSection.Body.Paragraphs[0].Runs[0];
-                Assert.AreEqual("Hello world!", firstRun.GetText().Trim());
-                Assert.AreEqual(16, firstRun.Font.Size);
-                Assert.True(firstRun.Font.Bold);
-                Assert.AreEqual("Courier New", firstRun.Font.Name);
-                Assert.AreEqual(Color.Blue.ToArgb(), firstRun.Font.Color.ToArgb());
-                Assert.AreEqual(Underline.Dash, firstRun.Font.Underline);
-
-            }
+            Assert.AreEqual("Hello world!", firstRun.GetText().Trim());
+            Assert.AreEqual(16, firstRun.Font.Size);
+            Assert.True(firstRun.Font.Bold);
+            Assert.AreEqual("Courier New", firstRun.Font.Name);
+            Assert.AreEqual(Color.Blue.ToArgb(), firstRun.Font.Color.ToArgb());
+            Assert.AreEqual(Underline.Dash, firstRun.Font.Underline);
         }
 
         [Test]
@@ -199,17 +195,13 @@ namespace ApiExamples
             Assert.True(shape.HorizontalRuleFormat.NoShade);
             //ExEnd
 
-            using (MemoryStream stream = new MemoryStream())
-            {
-                doc.Save(stream, SaveFormat.Docx);
-                doc = new Document(stream);
-                shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            doc = DocumentHelper.SaveOpen(doc);
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-                Assert.AreEqual(HorizontalRuleAlignment.Center, shape.HorizontalRuleFormat.Alignment);
-                Assert.AreEqual(70, shape.HorizontalRuleFormat.WidthPercent);
-                Assert.AreEqual(3, shape.HorizontalRuleFormat.Height);
-                Assert.AreEqual(Color.Blue.ToArgb(), shape.HorizontalRuleFormat.Color.ToArgb());
-            }
+            Assert.AreEqual(HorizontalRuleAlignment.Center, shape.HorizontalRuleFormat.Alignment);
+            Assert.AreEqual(70, shape.HorizontalRuleFormat.WidthPercent);
+            Assert.AreEqual(3, shape.HorizontalRuleFormat.Height);
+            Assert.AreEqual(Color.Blue.ToArgb(), shape.HorizontalRuleFormat.Color.ToArgb());
         }
 
         [Test(Description = "Checking the boundary conditions of WidthPercent and Height properties")]
@@ -588,15 +580,11 @@ namespace ApiExamples
             builder.EndBookmark("MyBookmark");
             //ExEnd
 
-            using (MemoryStream docStream = new MemoryStream())
-            {
-                builder.Document.Save(docStream, SaveFormat.Docx);
-                Document doc = new Document(docStream);
+            Document doc = DocumentHelper.SaveOpen(builder.Document);
 
-                Assert.AreEqual(1, doc.Range.Bookmarks.Count);
-                Assert.AreEqual("MyBookmark", doc.Range.Bookmarks[0].Name);
-                Assert.AreEqual("Text inside a bookmark.", doc.Range.Bookmarks[0].Text.Trim());
-            }
+            Assert.AreEqual(1, doc.Range.Bookmarks.Count);
+            Assert.AreEqual("MyBookmark", doc.Range.Bookmarks[0].Name);
+            Assert.AreEqual("Text inside a bookmark.", doc.Range.Bookmarks[0].Text.Trim());
         }
 
         [Test]
@@ -662,8 +650,7 @@ namespace ApiExamples
             builder.InsertCheckBox("CheckBox_OnlyCheckedValue", true, 100);
             //ExEnd
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             // Get checkboxes from the document
             FormFieldCollection formFields = doc.Range.FormFields;
@@ -1681,13 +1668,9 @@ namespace ApiExamples
 
             Assert.AreEqual(3, paragraphs.IndexOf(builder.CurrentParagraph));
 
-            using (MemoryStream docStream = new MemoryStream())
-            {
-                doc.Save(docStream, SaveFormat.Docx);
-                doc = new Document(docStream);
+            doc = DocumentHelper.SaveOpen(doc);
 
-                Assert.AreEqual("This is a new third paragraph.", doc.FirstSection.Body.Paragraphs[2].GetText().Trim());
-            }
+            Assert.AreEqual("This is a new third paragraph.", doc.FirstSection.Body.Paragraphs[2].GetText().Trim());
         }
 
         [Test]
@@ -1725,13 +1708,9 @@ namespace ApiExamples
             builder.Write(" Text appended via DocumentBuilder.");
             //ExEnd
 
-            using (MemoryStream docStream = new MemoryStream())
-            {
-                doc.Save(docStream, SaveFormat.Docx);
-                doc = new Document(docStream);
+            doc = DocumentHelper.SaveOpen(doc);
 
-                Assert.False(doc.Range.Bookmarks["MyBookmark1"].Text.Contains(" Text appended via DocumentBuilder."));
-            }
+            Assert.False(doc.Range.Bookmarks["MyBookmark1"].Text.Contains(" Text appended via DocumentBuilder."));
         }
 
         [Test]
@@ -1772,28 +1751,23 @@ namespace ApiExamples
             Assert.True(builder.CurrentParagraph.IsEndOfDocument);
             //ExEnd
 
-            using (MemoryStream docStream = new MemoryStream())
-            {
-                doc.Save(docStream, SaveFormat.Docx);
-                doc = new Document(docStream);
+            doc = DocumentHelper.SaveOpen(doc);
+            Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
 
-                Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
+            Assert.AreEqual(8, paragraph.ParagraphFormat.FirstLineIndent);
+            Assert.AreEqual(ParagraphAlignment.Justify, paragraph.ParagraphFormat.Alignment);
+            Assert.True(paragraph.ParagraphFormat.AddSpaceBetweenFarEastAndAlpha);
+            Assert.True(paragraph.ParagraphFormat.AddSpaceBetweenFarEastAndDigit);
+            Assert.True(paragraph.ParagraphFormat.KeepTogether);
+            Assert.AreEqual("A whole paragraph.", paragraph.GetText().Trim());
 
-                Assert.AreEqual(8, paragraph.ParagraphFormat.FirstLineIndent);
-                Assert.AreEqual(ParagraphAlignment.Justify, paragraph.ParagraphFormat.Alignment);
-                Assert.True(paragraph.ParagraphFormat.AddSpaceBetweenFarEastAndAlpha);
-                Assert.True(paragraph.ParagraphFormat.AddSpaceBetweenFarEastAndDigit);
-                Assert.True(paragraph.ParagraphFormat.KeepTogether);
-                Assert.AreEqual("A whole paragraph.", paragraph.GetText().Trim());
+            Font runFont = paragraph.Runs[0].Font;
 
-                Font runFont = paragraph.Runs[0].Font;
-
-                Assert.AreEqual(16.0d, runFont.Size);
-                Assert.True(runFont.Bold);
-                Assert.AreEqual(Color.Blue.ToArgb(), runFont.Color.ToArgb());
-                Assert.AreEqual("Arial", runFont.Name);
-                Assert.AreEqual(Underline.Dash, runFont.Underline);
-            }
+            Assert.AreEqual(16.0d, runFont.Size);
+            Assert.True(runFont.Bold);
+            Assert.AreEqual(Color.Blue.ToArgb(), runFont.Color.ToArgb());
+            Assert.AreEqual("Arial", runFont.Name);
+            Assert.AreEqual(Underline.Dash, runFont.Underline);
         }
 
         [Test]
@@ -1851,34 +1825,29 @@ namespace ApiExamples
             builder.EndTable();
             //ExEnd
 
-            using (MemoryStream docStream = new MemoryStream())
-            {
-                doc.Save(docStream, SaveFormat.Docx);
-                doc = new Document(docStream);
+            doc = DocumentHelper.SaveOpen(doc);
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
-                table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Assert.AreEqual(2, table.Rows.Count);
+            Assert.AreEqual(2, table.Rows[0].Cells.Count);
+            Assert.AreEqual(2, table.Rows[1].Cells.Count);
+            Assert.False(table.AllowAutoFit);
 
-                Assert.AreEqual(2, table.Rows.Count);
-                Assert.AreEqual(2, table.Rows[0].Cells.Count);
-                Assert.AreEqual(2, table.Rows[1].Cells.Count);
-                Assert.False(table.AllowAutoFit);
+            Assert.AreEqual(0, table.Rows[0].RowFormat.Height);
+            Assert.AreEqual(HeightRule.Auto, table.Rows[0].RowFormat.HeightRule);
+            Assert.AreEqual(100, table.Rows[1].RowFormat.Height);
+            Assert.AreEqual(HeightRule.Exactly, table.Rows[1].RowFormat.HeightRule);
 
-                Assert.AreEqual(0, table.Rows[0].RowFormat.Height);
-                Assert.AreEqual(HeightRule.Auto, table.Rows[0].RowFormat.HeightRule);
-                Assert.AreEqual(100, table.Rows[1].RowFormat.Height);
-                Assert.AreEqual(HeightRule.Exactly, table.Rows[1].RowFormat.HeightRule);
+            Assert.AreEqual("This is row 1 cell 1\a", table.Rows[0].Cells[0].GetText().Trim());
+            Assert.AreEqual(CellVerticalAlignment.Center, table.Rows[0].Cells[0].CellFormat.VerticalAlignment);
 
-                Assert.AreEqual("This is row 1 cell 1\a", table.Rows[0].Cells[0].GetText().Trim());
-                Assert.AreEqual(CellVerticalAlignment.Center, table.Rows[0].Cells[0].CellFormat.VerticalAlignment);
+            Assert.AreEqual("This is row 1 cell 2\a", table.Rows[0].Cells[1].GetText().Trim());
 
-                Assert.AreEqual("This is row 1 cell 2\a", table.Rows[0].Cells[1].GetText().Trim());
+            Assert.AreEqual("This is row 2 cell 1\a", table.Rows[1].Cells[0].GetText().Trim());
+            Assert.AreEqual(TextOrientation.Upward, table.Rows[1].Cells[0].CellFormat.Orientation);
 
-                Assert.AreEqual("This is row 2 cell 1\a", table.Rows[1].Cells[0].GetText().Trim());
-                Assert.AreEqual(TextOrientation.Upward, table.Rows[1].Cells[0].CellFormat.Orientation);
-
-                Assert.AreEqual("This is row 2 cell 2\a", table.Rows[1].Cells[1].GetText().Trim());
-                Assert.AreEqual(TextOrientation.Downward, table.Rows[1].Cells[1].CellFormat.Orientation);
-            }
+            Assert.AreEqual("This is row 2 cell 2\a", table.Rows[1].Cells[1].GetText().Trim());
+            Assert.AreEqual(TextOrientation.Downward, table.Rows[1].Cells[1].CellFormat.Orientation);
         }
 
         [Test]
@@ -1891,8 +1860,7 @@ namespace ApiExamples
 
             Assert.AreEqual(TextOrientation.VerticalRotatedFarEast, cell.CellFormat.Orientation);
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             table = (Table) doc.GetChild(NodeType.Table, 0, true);
             cell = table.FirstRow.FirstCell;
@@ -1937,24 +1905,19 @@ namespace ApiExamples
                 RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
             //ExEnd
 
-            using (MemoryStream docStream = new MemoryStream())
-            {
-                doc.Save(docStream, SaveFormat.Docx);
-                doc = new Document(docStream);
+            doc = DocumentHelper.SaveOpen(doc);
+            Shape image = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-                Shape image = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Assert.True(image.HasImage);
+            Assert.AreEqual(15698, image.ImageData.ImageBytes.Length);
 
-                Assert.True(image.HasImage);
-                Assert.AreEqual(15698, image.ImageData.ImageBytes.Length);
-
-                Assert.AreEqual(100.0d, image.Left);
-                Assert.AreEqual(100.0d, image.Top);
-                Assert.AreEqual(200.0d, image.Width);
-                Assert.AreEqual(100.0d, image.Height);
-                Assert.AreEqual(WrapType.Square, image.WrapType);
-                Assert.AreEqual(RelativeHorizontalPosition.Margin, image.RelativeHorizontalPosition);
-                Assert.AreEqual(RelativeVerticalPosition.Margin, image.RelativeVerticalPosition);
-            }
+            Assert.AreEqual(100.0d, image.Left);
+            Assert.AreEqual(100.0d, image.Top);
+            Assert.AreEqual(200.0d, image.Width);
+            Assert.AreEqual(100.0d, image.Height);
+            Assert.AreEqual(WrapType.Square, image.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Margin, image.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Margin, image.RelativeVerticalPosition);
         }
 
         [Test]
@@ -1987,24 +1950,19 @@ namespace ApiExamples
                 RelativeVerticalPosition.Margin, 100, -1, -1, WrapType.Square);
             //ExEnd
 
-            using (MemoryStream docStream = new MemoryStream())
-            {
-                doc.Save(docStream, SaveFormat.Docx);
-                doc = new Document(docStream);
+            doc = DocumentHelper.SaveOpen(doc);
+            Shape image = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-                Shape image = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Assert.True(image.HasImage);
+            Assert.AreEqual(20115, image.ImageData.ImageBytes.Length);
 
-                Assert.True(image.HasImage);
-                Assert.AreEqual(20115, image.ImageData.ImageBytes.Length);
-
-                Assert.AreEqual(200.0d, image.Left);
-                Assert.AreEqual(100.0d, image.Top);
-                Assert.AreEqual(268.0d, image.Width);
-                Assert.AreEqual(268.0d, image.Height);
-                Assert.AreEqual(WrapType.Square, image.WrapType);
-                Assert.AreEqual(RelativeHorizontalPosition.Margin, image.RelativeHorizontalPosition);
-                Assert.AreEqual(RelativeVerticalPosition.Margin, image.RelativeVerticalPosition);
-            }
+            Assert.AreEqual(200.0d, image.Left);
+            Assert.AreEqual(100.0d, image.Top);
+            Assert.AreEqual(268.0d, image.Width);
+            Assert.AreEqual(268.0d, image.Height);
+            Assert.AreEqual(WrapType.Square, image.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Margin, image.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Margin, image.RelativeVerticalPosition);
         }
 
         [Test]
@@ -2019,20 +1977,16 @@ namespace ApiExamples
             builder.InsertTextInput("TextInput", TextFormFieldType.Regular, "", "Hello", 0);
             //ExEnd
 
-            using (MemoryStream docStream = new MemoryStream())
-            {
-                doc.Save(docStream, SaveFormat.Docx);
-                doc = new Document(docStream);
-                FormField formField = doc.Range.FormFields[0];
+            doc = DocumentHelper.SaveOpen(doc);
+            FormField formField = doc.Range.FormFields[0];
 
-                Assert.True(formField.Enabled);
-                Assert.AreEqual("TextInput", formField.Name);
-                Assert.AreEqual(0, formField.MaxLength);
-                Assert.AreEqual("Hello", formField.Result);
-                Assert.AreEqual(FieldType.FieldFormTextInput, formField.Type);
-                Assert.AreEqual("", formField.TextInputFormat);
-                Assert.AreEqual(TextFormFieldType.Regular, formField.TextInputType);
-            }
+            Assert.True(formField.Enabled);
+            Assert.AreEqual("TextInput", formField.Name);
+            Assert.AreEqual(0, formField.MaxLength);
+            Assert.AreEqual("Hello", formField.Result);
+            Assert.AreEqual(FieldType.FieldFormTextInput, formField.Type);
+            Assert.AreEqual("", formField.TextInputFormat);
+            Assert.AreEqual(TextFormFieldType.Regular, formField.TextInputType);
         }
 
         [Test]
@@ -2048,18 +2002,14 @@ namespace ApiExamples
             builder.InsertComboBox("DropDown", items, 0);
             //ExEnd
 
-            using (MemoryStream docStream = new MemoryStream())
-            {
-                doc.Save(docStream, SaveFormat.Docx);
-                doc = new Document(docStream);
-                FormField formField = doc.Range.FormFields[0];
+            doc = DocumentHelper.SaveOpen(doc);
+            FormField formField = doc.Range.FormFields[0];
 
-                Assert.True(formField.Enabled);
-                Assert.AreEqual("DropDown", formField.Name);
-                Assert.AreEqual(0, formField.DropDownSelectedIndex);
-                Assert.AreEqual(new[] { "One", "Two", "Three" } , formField.DropDownItems);
-                Assert.AreEqual(FieldType.FieldFormDropDown, formField.Type);
-            }
+            Assert.True(formField.Enabled);
+            Assert.AreEqual("DropDown", formField.Name);
+            Assert.AreEqual(0, formField.DropDownSelectedIndex);
+            Assert.AreEqual(new[] { "One", "Two", "Three" } , formField.DropDownItems);
+            Assert.AreEqual(FieldType.FieldFormDropDown, formField.Type);
         }
 
         [Test]
@@ -2171,8 +2121,7 @@ namespace ApiExamples
                 RelativeVerticalPosition.Page, 3.0, WrapType.Inline);
             //ExEnd
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             SignatureLine signatureLine = shape.SignatureLine;

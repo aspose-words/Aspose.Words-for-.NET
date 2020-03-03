@@ -121,19 +121,15 @@ namespace ApiExamples
             builder.Write("Row 1, Col 1");
             //ExEnd
 
-            using (MemoryStream dstStream = new MemoryStream())
-            {
-                builder.Document.Save(dstStream, SaveFormat.Docx);
-                Document doc = new Document(dstStream);
+            Document doc = DocumentHelper.SaveOpen(builder.Document);
 
-                Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
-                Cell cell = table.Rows[0].Cells[0];
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Cell cell = table.Rows[0].Cells[0];
 
-                Assert.AreEqual(5, cell.CellFormat.LeftPadding);
-                Assert.AreEqual(10, cell.CellFormat.TopPadding);
-                Assert.AreEqual(40, cell.CellFormat.RightPadding);
-                Assert.AreEqual(50, cell.CellFormat.BottomPadding);
-            }
+            Assert.AreEqual(5, cell.CellFormat.LeftPadding);
+            Assert.AreEqual(10, cell.CellFormat.TopPadding);
+            Assert.AreEqual(40, cell.CellFormat.RightPadding);
+            Assert.AreEqual(50, cell.CellFormat.BottomPadding);
         }
     }
 }
