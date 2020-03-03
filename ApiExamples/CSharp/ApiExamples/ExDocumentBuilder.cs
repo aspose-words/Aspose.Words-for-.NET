@@ -2176,10 +2176,23 @@ namespace ApiExamples
 
             // Output text
             builder.Writeln(
-                "I'm a very nice formatted paragraph. I'm intended to demonstrate how the left and right indents affect word wrapping.");
+                "This paragraph demonstrates how the left and right indents affect word wrapping.");
             builder.Writeln(
-                "I'm another nice formatted paragraph. I'm intended to demonstrate how the space after paragraph looks like.");
+                "The space between the above paragraph and this one depends on the DocumentBuilder's paragraph format.");
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.DocumentBuilderSetParagraphFormatting.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.DocumentBuilderSetParagraphFormatting.docx");
+
+            foreach (Paragraph paragraph in doc.FirstSection.Body.Paragraphs)
+            {
+                Assert.AreEqual(ParagraphAlignment.Center, paragraph.ParagraphFormat.Alignment);
+                Assert.AreEqual(50.0d, paragraph.ParagraphFormat.LeftIndent);
+                Assert.AreEqual(50.0d, paragraph.ParagraphFormat.RightIndent);
+                Assert.AreEqual(25.0d, paragraph.ParagraphFormat.SpaceAfter);
+
+            }
         }
 
         [Test]
@@ -2209,11 +2222,24 @@ namespace ApiExamples
             cellFormat.TopPadding = 30;
             cellFormat.BottomPadding = 30;
 
-            builder.Writeln("I'm a wonderful formatted cell.");
-
+            builder.Write("Formatted cell");
             builder.EndRow();
             builder.EndTable();
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.DocumentBuilderSetCellFormatting.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.DocumentBuilderSetCellFormatting.docx");
+            Cell firstCell = ((Table)doc.GetChild(NodeType.Table,0, true)).FirstRow.FirstCell;
+
+            Assert.AreEqual("Formatted cell\a", firstCell.GetText().Trim());
+
+            Assert.AreEqual(250.0d, firstCell.CellFormat.Width);
+            Assert.AreEqual(30.0d, firstCell.CellFormat.LeftPadding);
+            Assert.AreEqual(30.0d, firstCell.CellFormat.RightPadding);
+            Assert.AreEqual(30.0d, firstCell.CellFormat.TopPadding);
+            Assert.AreEqual(30.0d, firstCell.CellFormat.BottomPadding);
+
         }
 
         [Test]
@@ -2249,7 +2275,20 @@ namespace ApiExamples
 
             builder.EndRow();
             builder.EndTable();
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.DocumentBuilderSetRowFormatting.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.DocumentBuilderSetRowFormatting.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Assert.AreEqual(30.0d, table.LeftPadding);
+            Assert.AreEqual(30.0d, table.RightPadding);
+            Assert.AreEqual(30.0d, table.TopPadding);
+            Assert.AreEqual(30.0d, table.BottomPadding);
+
+            Assert.AreEqual(100.0d, table.FirstRow.RowFormat.Height);
+            Assert.AreEqual(HeightRule.Exactly, table.FirstRow.RowFormat.HeightRule);
         }
 
         [Test]
@@ -2370,8 +2409,23 @@ namespace ApiExamples
             shading.BackgroundPatternColor = Color.LightCoral;
             shading.ForegroundPatternColor = Color.LightSalmon;
 
-            builder.Write("I'm a formatted paragraph with double border and nice shading.");
+            builder.Write("This paragraph is formatted with a double border and shading.");
+            doc.Save(ArtifactsDir + "DocumentBuilder.DocumentBuilderApplyBordersAndShading.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.DocumentBuilderApplyBordersAndShading.docx");
+            borders = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders;
+
+            Assert.AreEqual(20.0d, borders.DistanceFromText);
+            Assert.AreEqual(LineStyle.Double, borders[BorderType.Left].LineStyle);
+            Assert.AreEqual(LineStyle.Double, borders[BorderType.Right].LineStyle);
+            Assert.AreEqual(LineStyle.Double, borders[BorderType.Top].LineStyle);
+            Assert.AreEqual(LineStyle.Double, borders[BorderType.Bottom].LineStyle);
+
+            Assert.AreEqual(TextureIndex.TextureDiagonalCross, shading.Texture);
+            Assert.AreEqual(Color.LightCoral.ToArgb(), shading.BackgroundPatternColor.ToArgb());
+            Assert.AreEqual(Color.LightSalmon.ToArgb(), shading.ForegroundPatternColor.ToArgb());
+
         }
 
         [Test]
@@ -2380,12 +2434,31 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.DeleteRow
             //ExSummary:Shows how to delete a row from a table.
-            Document doc = new Document(MyDir + "Tables.docx");
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a table with 2 rows
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Cell 1");
+            builder.InsertCell();
+            builder.Write("Cell 2");
+            builder.EndRow();
+            builder.InsertCell();
+            builder.Write("Cell 3");
+            builder.InsertCell();
+            builder.Write("Cell 4");
+            builder.EndTable();
+
+            Assert.AreEqual(2, table.Rows.Count);
 
             // Delete the first row of the first table in the document
             builder.DeleteRow(0, 0);
+
+            Assert.AreEqual(1, table.Rows.Count);
             //ExEnd
+
+            Assert.AreEqual("Cell 3\aCell 4\a\a", table.GetText().Trim());
         }
 
         [Test]
@@ -2408,6 +2481,7 @@ namespace ApiExamples
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.InsertDocument.docx");
             //ExEnd
 
+            Assert.AreEqual(29, doc.Styles.Count);
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "DocumentBuilder.InsertDocument.docx", GoldsDir + "DocumentBuilder.InsertDocument Gold.docx"));
         }
 
@@ -2422,23 +2496,50 @@ namespace ApiExamples
             // Since both have the same numbering format, the formats will clash if we import one document into the other
             Document srcDoc = new Document(MyDir + "Custom list numbering.docx");
             Document dstDoc = srcDoc.Clone();
-
-            ImportFormatOptions importFormatOptions = new ImportFormatOptions();
+            
             // Both documents have the same numbering in their lists, but if we set this flag to false and then import one document into the other
             // the numbering of the imported source document will continue from where it ends in the destination document
+            ImportFormatOptions importFormatOptions = new ImportFormatOptions();
             importFormatOptions.KeepSourceNumbering = false;
-            
-            NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
-            
-            ParagraphCollection srcParas = srcDoc.FirstSection.Body.Paragraphs;
-            foreach (Node node in srcParas)
+
+            NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepDifferentStyles, importFormatOptions);
+            foreach (Paragraph paragraph in srcDoc.FirstSection.Body.Paragraphs)
             {
-                Paragraph srcPara = (Paragraph) node;
-                Node importedNode = importer.ImportNode(srcPara, true);
+                Node importedNode = importer.ImportNode(paragraph, true);
                 dstDoc.FirstSection.Body.AppendChild(importedNode);
             }
- 
+            
+            dstDoc.UpdateListLabels();
             dstDoc.Save(ArtifactsDir + "DocumentBuilder.KeepSourceNumbering.docx");
+            //ExEnd
+        }
+
+
+        [Test]
+        public void ResolveStyleBehaviorWhileAppendDocument()
+        {
+            //ExStart
+            //ExFor:Document.AppendDocument(Document, ImportFormatMode, ImportFormatOptions)
+            //ExSummary:Shows how to resolve styles behavior while append document.
+            // Open a document with text in a custom style and clone it
+            Document srcDoc = new Document(MyDir + "Custom list numbering.docx");
+            Document dstDoc = srcDoc.Clone();
+
+            // We now have two documents, each with an identical style named "CustomStyle" 
+            // We can change the text color of one of the styles
+            dstDoc.Styles["CustomStyle"].Font.Color = Color.DarkRed;
+
+            ImportFormatOptions options = new ImportFormatOptions();
+            // Specify that if numbering clashes in source and destination documents
+            // then a numbering from the source document will be used
+            options.KeepSourceNumbering = true;
+
+            // If we join two documents which have different styles that share the same name,
+            // we can resolve the style clash with an ImportFormatMode
+            dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepDifferentStyles, options);
+            dstDoc.UpdateListLabels();
+
+            dstDoc.Save(ArtifactsDir + "DocumentBuilder.ResolveStyleBehaviorWhileAppendDocument.docx");
             //ExEnd
         }
 
@@ -2470,12 +2571,10 @@ namespace ApiExamples
             importFormatOptions.IgnoreTextBoxes = true;
 
             NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
- 
-            ParagraphCollection srcParas = srcDoc.FirstSection.Body.Paragraphs;
-            foreach (Node node in srcParas)
+
+            foreach (Paragraph paragraph in srcDoc.FirstSection.Body.Paragraphs)
             {
-                Paragraph srcPara = (Paragraph) node;
-                Node importedNode = importer.ImportNode(srcPara, true);
+                Node importedNode = importer.ImportNode(paragraph, true);
                 dstDoc.FirstSection.Body.AppendChild(importedNode);
             }
 
@@ -2959,34 +3058,6 @@ namespace ApiExamples
             builder.InsertDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, options);
 
             dstDoc.Save(ArtifactsDir + @"DocumentBuilder.SmartStyleBehavior.docx");
-            //ExEnd
-        }
-
-        [Test]
-        public void ResolveStyleBehaviorWhileAppendDocument()
-        {
-            //ExStart
-            //ExFor:Document.AppendDocument(Document, ImportFormatMode, ImportFormatOptions)
-            //ExSummary:Shows how to resolve styles behavior while append document.
-            // Open a document with text in a custom style and clone it
-            Document srcDoc = new Document(MyDir + "Custom list numbering.docx");
-            Document dstDoc = srcDoc.Clone();
-
-            // We now have two documents, each with an identical style named "CustomStyle" 
-            // We can change the text color of one of the styles
-            dstDoc.Styles["CustomStyle"].Font.Color = Color.DarkRed;
-
-            ImportFormatOptions options = new ImportFormatOptions();
-            // Specify that if numbering clashes in source and destination documents
-            // then a numbering from the source document will be used
-            options.KeepSourceNumbering = true;
-
-            // If we join two documents which have different styles that share the same name,
-            // we can resolve the style clash with an ImportFormatMode
-            dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepDifferentStyles, options);
-            dstDoc.UpdateListLabels();
-
-            dstDoc.Save(ArtifactsDir + "DocumentBuilder.ResolveStyleBehaviorWhileAppendDocument.docx");
             //ExEnd
         }
 
