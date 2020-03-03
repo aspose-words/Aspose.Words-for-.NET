@@ -12,9 +12,6 @@ using System;
 using System.IO;
 using Aspose.Words.Saving;
 using NUnit.Framework;
-using Document = Aspose.Words.Document;
-using SaveFormat = Aspose.Words.SaveFormat;
-using Table = Aspose.Words.Tables.Table;
 
 namespace ApiExamples
 {
