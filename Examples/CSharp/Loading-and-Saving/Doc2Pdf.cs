@@ -1,7 +1,4 @@
-﻿
-using System.IO;
-using Aspose.Words;
-using System;
+﻿using System;
 using Aspose.Words.Saving;
 
 namespace Aspose.Words.Examples.CSharp.Loading_Saving
@@ -10,47 +7,47 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
     {
         public static void Run()
         {
-            // ExStart:Doc2Pdf
             // The path to the documents directory.
-            string dataDir = RunExamples.GetDataDir_QuickStart();
+            string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
+            SaveDoc2Pdf(dataDir);
+            DisplayDocTitleInWindowTitlebar(dataDir);
+            PdfRenderWarnings(dataDir);
+            RenderMetafileToBitmap(dataDir);
+        }
+
+        public static void SaveDoc2Pdf(string dataDir)
+        {
+            // ExStart:Doc2Pdf
             // Load the document from disk.
-            Document doc = new Document(dataDir + "Template.doc");
-
-            dataDir = dataDir + "Template_out.pdf";
+            Document doc = new Document(dataDir + "Rendering.doc");
 
             // Save the document in PDF format.
-            doc.Save(dataDir);
+            doc.Save(dataDir + "SaveDoc2Pdf.pdf");
             // ExEnd:Doc2Pdf
+
             Console.WriteLine("\nDocument converted to PDF successfully.\nFile saved at " + dataDir);
         }
 
-        public static void DisplayDocTitleInWindowTitlebar()
+        public static void DisplayDocTitleInWindowTitlebar(string dataDir)
         {
             // ExStart:DisplayDocTitleInWindowTitlebar
-            // The path to the documents directory.
-            string dataDir = RunExamples.GetDataDir_QuickStart();
-
             // Load the document from disk.
-            Document doc = new Document(dataDir + "Template.doc");
+            Document doc = new Document(dataDir + "Rendering.doc");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.DisplayDocTitle = true;
 
-            dataDir = dataDir + "Template_out.pdf";
-
             // Save the document in PDF format.
-            doc.Save(dataDir, saveOptions);
+            doc.Save(dataDir + "DisplayDocTitleInWindowTitlebar.pdf", saveOptions);
             // ExEnd:DisplayDocTitleInWindowTitlebar
+            
             Console.WriteLine("\nDocument converted to PDF successfully.\nFile saved at " + dataDir);
         }
 
         // ExStart:PdfRenderWarnings
-        public void PdfRenderWarnings()
+        public static void PdfRenderWarnings(string dataDir)
         {
-            // The path to the documents directory.
-            string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
-
             // Load the document from disk.
             Document doc = new Document(dataDir + "PdfRenderWarnings.doc");
 
@@ -74,7 +71,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
                 Console.WriteLine(warningInfo.Description);
             }
         }
-
+        // ExStart:RenderMetafileToBitmap
         public class HandleDocumentWarnings : IWarningCallback
         {
             /// <summary>
@@ -95,5 +92,28 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             public WarningInfoCollection mWarnings = new WarningInfoCollection();
         }
         // ExEnd:PdfRenderWarnings
+
+        public static void RenderMetafileToBitmap(string dataDir)
+        {
+            // Load the document from disk.
+            Document doc = new Document(dataDir + "PdfRenderWarnings.doc");
+
+            MetafileRenderingOptions metafileRenderingOptions =
+                new MetafileRenderingOptions
+                {
+                    EmulateRasterOperations = false,
+                    RenderingMode = MetafileRenderingMode.VectorWithFallback
+                };
+
+            // If Aspose.Words cannot correctly render some of the metafile records to vector graphics then Aspose.Words renders this metafile to a bitmap. 
+            HandleDocumentWarnings callback = new HandleDocumentWarnings();
+            doc.WarningCallback = callback;
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.MetafileRenderingOptions = metafileRenderingOptions;
+
+            doc.Save(dataDir + "PdfSaveOptions.HandleRasterWarnings.pdf", saveOptions);
+        }
+        // ExEnd:RenderMetafileToBitmap
     }
 }

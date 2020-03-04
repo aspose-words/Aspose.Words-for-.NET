@@ -126,24 +126,24 @@ namespace ApiExamples
         [Test]
         public void RemoveColumnFromTable()
         {
-            Document doc = new Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             Table table = (Table) doc.GetChild(NodeType.Table, 1, true);
 
             // Get the third column from the table and remove it
             Column column = Column.FromIndex(table, 2);
             column.Remove();
             
-            doc.Save(ArtifactsDir + "Table.RemoveColumn.doc");
+            doc.Save(ArtifactsDir + "TableColumn.RemoveColumn.doc");
 
             Assert.AreEqual(16, table.GetChildNodes(NodeType.Cell, true).Count);
-            Assert.AreEqual("Cell 3 contents", table.Rows[2].Cells[2].ToString(SaveFormat.Text).Trim());
-            Assert.AreEqual("Cell 3 contents", table.LastRow.Cells[2].ToString(SaveFormat.Text).Trim());
+            Assert.AreEqual("Cell 7 contents", table.Rows[2].Cells[2].ToString(SaveFormat.Text).Trim());
+            Assert.AreEqual("Cell 11 contents", table.LastRow.Cells[2].ToString(SaveFormat.Text).Trim());
         }
 
         [Test]
-        public void InsertNewColumnIntoTable()
+        public void Insert()
         {
-            Document doc = new Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             Table table = (Table) doc.GetChild(NodeType.Table, 1, true);
 
             // Get the second column in the table
@@ -157,7 +157,7 @@ namespace ApiExamples
             foreach (Cell cell in newColumn.Cells)
                 cell.FirstParagraph.AppendChild(new Run(doc, "Column Text " + newColumn.IndexOf(cell)));
             
-            doc.Save(ArtifactsDir + "Table.InsertColumn.doc");
+            doc.Save(ArtifactsDir + "TableColumn.Insert.doc");
 
             Assert.AreEqual(24, table.GetChildNodes(NodeType.Cell, true).Count);
             Assert.AreEqual("Column Text 0", table.FirstRow.Cells[1].ToString(SaveFormat.Text).Trim());
@@ -167,7 +167,7 @@ namespace ApiExamples
         [Test]
         public void TableColumnToTxt()
         {
-            Document doc = new Document(MyDir + "Table.Document.doc");
+            Document doc = new Document(MyDir + "Tables.docx");
             Table table = (Table) doc.GetChild(NodeType.Table, 1, true);
 
             // Get the first column in the table

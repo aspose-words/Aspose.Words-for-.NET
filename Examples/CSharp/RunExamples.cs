@@ -97,6 +97,7 @@ namespace Aspose.Words.Examples.CSharp
             // SaveDocWithHtmlSaveOptions.Run();
             // WorkingWithVbaMacros.Run();
 
+
             //// =====================================================
             //// =====================================================
             //// Programming with Documents
@@ -144,10 +145,11 @@ namespace Aspose.Words.Examples.CSharp
             // BookmarkNameAndText.Run();
             // AccessBookmarks.Run();
             // CreateBookmark.Run();
+            // ShowHideBookmarks.Run();
 
             //// Shapes
             //// =====================================================
-             WorkingWithShapes.Run();
+            // WorkingWithShapes.Run();
 
             //// Comments
             //// =====================================================
@@ -360,7 +362,7 @@ namespace Aspose.Words.Examples.CSharp
             // MailMergeAndConditionalField.Run();
 
             // MailMergeCleanUp.Run();
-            WorkingWithWebExtension.Run();
+            // WorkingWithWebExtension.Run();
             //// =====================================================
             //// =====================================================
             //// Rendering and Printing
@@ -370,6 +372,7 @@ namespace Aspose.Words.Examples.CSharp
             // DocumentLayoutHelper.Run();
             // EnumerateLayoutElements.Run();
             // DocumentPreviewAndPrint.Run();
+            // PrintPreviewSettingsDialog.Run();
             // ImageColorFilters.Run();
             // RenderShape.Run();
             // SaveAsMultipageTiff.Run();
@@ -377,6 +380,8 @@ namespace Aspose.Words.Examples.CSharp
             // SetTrueTypeFontsFolder.Run();
             // SetFontsFoldersMultipleFolders.Run();
             // SetFontsFoldersSystemAndCustomFolder.Run();
+            // SetFontsFolders.Run();
+            // SetFontsFoldersWithPriority.Run();
             // SpecifyDefaultFontWhenRendering.Run();
             // ReceiveNotificationsOfFont.Run();
             // EmbeddedFontsInPDF.Run();
@@ -389,6 +394,7 @@ namespace Aspose.Words.Examples.CSharp
             // WorkingWithPdfSaveOptions.Run();
             // WorkingWithFontSources.Run();
             // ResourceSteamFontSourceExample.Run();
+            // SaveDocumentToJPEG.Run();
 
             //// =====================================================
             //// =====================================================
@@ -415,6 +421,7 @@ namespace Aspose.Words.Examples.CSharp
             // ConditionalBlocks.Run();
             // SettingBackgroundColor.Run();
             // BuildOptions.RemoveEmptyParagraphs();
+            ChartSeries.Run();
 
             //Stop before exiting
             Console.WriteLine("\n\nProgram Finished. Press any key to exit....");

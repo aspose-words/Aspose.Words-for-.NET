@@ -193,7 +193,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Paragraph.IsFormatRevision
             //ExSummary:Shows how to get information about whether this object was formatted in Microsoft Word while change tracking was enabled
-            Document doc = new Document(MyDir + "Paragraph.IsFormatRevision.docx");
+            Document doc = new Document(MyDir + "Format revision.docx");
 
             Paragraph firstParagraph = DocumentHelper.GetParagraph(doc, 0);
             Assert.IsTrue(firstParagraph.IsFormatRevision);
@@ -222,7 +222,7 @@ namespace ApiExamples
             //ExFor:FrameFormat.RelativeVerticalPosition
             //ExFor:FrameFormat.VerticalDistanceFromText
             //ExSummary:Shows how to get information about formatting properties of paragraph as frame.
-            Document doc = new Document(MyDir + "Paragraph.Frame.docx");
+            Document doc = new Document(MyDir + "Paragraph frame.docx");
 
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
@@ -251,10 +251,10 @@ namespace ApiExamples
             {
                 Assert.AreEqual(233.3, paragraphs[0].FrameFormat.Width);
                 Assert.AreEqual(138.8, paragraphs[0].FrameFormat.Height);
-                Assert.AreEqual(21.05, paragraphs[0].FrameFormat.HorizontalPosition);
+                Assert.AreEqual(34.05, paragraphs[0].FrameFormat.HorizontalPosition);
                 Assert.AreEqual(RelativeHorizontalPosition.Page, paragraphs[0].FrameFormat.RelativeHorizontalPosition);
                 Assert.AreEqual(9, paragraphs[0].FrameFormat.HorizontalDistanceFromText);
-                Assert.AreEqual(-17.65, paragraphs[0].FrameFormat.VerticalPosition);
+                Assert.AreEqual(20.5, paragraphs[0].FrameFormat.VerticalPosition);
                 Assert.AreEqual(RelativeVerticalPosition.Paragraph, paragraphs[0].FrameFormat.RelativeVerticalPosition);
                 Assert.AreEqual(0, paragraphs[0].FrameFormat.VerticalDistanceFromText);
             }
@@ -335,7 +335,7 @@ namespace ApiExamples
             // This text will be affected
             para.Runs.Add(new Run(doc, "Hello World!"));
 
-            doc.Save(ArtifactsDir + "Paragraph.DropCap.docx");
+            doc.Save(ArtifactsDir + "Paragraph.DropCapPosition.docx");
             //ExEnd
         }
 

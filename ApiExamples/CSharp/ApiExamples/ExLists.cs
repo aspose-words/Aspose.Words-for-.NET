@@ -18,8 +18,6 @@ namespace ApiExamples
     [TestFixture]
     public class ExLists : ApiExampleBase
     {
-        private readonly string mImage = ImageDir + "Test_636_852.gif";
-
         [Test]
         public void ApplyDefaultBulletsAndNumbers()
         {
@@ -264,7 +262,6 @@ namespace ApiExamples
             //ExFor:ListCollection.AddCopy(List)
             //ExFor:ListLevel.StartAt
             //ExFor:ListTemplate
-            //ExFor:ListFormat.List
             //ExSummary:Shows how to restart numbering in a list by copying a list.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -413,7 +410,6 @@ namespace ApiExamples
             Document doc = new Document();
 
             //ExStart
-            //ExFor:Paragraph.ListFormat
             //ExFor:ListFormat.RemoveNumbers
             //ExSummary:Removes bullets and numbering from all paragraphs in the main text of a section.
             Body body = doc.FirstSection.Body;
@@ -430,8 +426,6 @@ namespace ApiExamples
             doc.Lists.Add(ListTemplate.NumberDefault);
 
             //ExStart
-            //ExFor:Paragraph.ListFormat
-            //ExFor:ListFormat.List
             //ExFor:ListFormat.ListLevelNumber
             //ExFor:ListCollection.Item(Int32)
             //ExSummary:Applies list formatting of an existing list to a collection of paragraphs.
@@ -451,7 +445,6 @@ namespace ApiExamples
             Document doc = new Document();
 
             //ExStart
-            //ExFor:Paragraph.ListFormat
             //ExFor:ListFormat.ListLevelNumber
             //ExFor:ListCollection.Add(ListTemplate)
             //ExSummary:Creates new list formatting and applies it to a collection of paragraphs.
@@ -519,8 +512,8 @@ namespace ApiExamples
         [Test] //ExSkip
         public void PrintOutAllLists()
         {
-            // You can use any of your documents to try this little program out
-            Document srcDoc = new Document(MyDir + "Lists.PrintOutAllLists.doc");
+            // Open a document that contains lists
+            Document srcDoc = new Document(MyDir + "Rendering.docx");
 
             // This will be the sample document we product
             Document dstDoc = new Document();
@@ -713,7 +706,7 @@ namespace ApiExamples
             //ExFor:ListLabel.LabelValue
             //ExFor:ListLabel.LabelString
             //ExSummary:Shows how to extract the label of each paragraph in a list as a value or a String.
-            Document doc = new Document(MyDir + "Lists.PrintOutAllLists.doc");
+            Document doc = new Document(MyDir + "Rendering.docx");
             doc.UpdateListLabels();
             int listParaCount = 1;
 
@@ -760,14 +753,24 @@ namespace ApiExamples
             list.ListLevels[0].CreatePictureBullet();
 
             // Set your own picture bullet image through the ImageData
-            list.ListLevels[0].ImageData.SetImage(mImage);
+            list.ListLevels[0].ImageData.SetImage(ImageDir + "AsIcon.ico");
 
             Assert.IsTrue(list.ListLevels[0].ImageData.HasImage);
+
+            // Create a list, configure its bullets to use our image and add two list items
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.ListFormat.List = list;
+            builder.Writeln("Hello world!");
+            builder.Write("Hello again!");
+
+            doc.Save(ArtifactsDir + "Lists.CreatePictureBullet.docx");
 
             // Delete picture bullet
             list.ListLevels[0].DeletePictureBullet();
 
             Assert.IsNull(list.ListLevels[0].ImageData);
+
             //ExEnd
         }
     }

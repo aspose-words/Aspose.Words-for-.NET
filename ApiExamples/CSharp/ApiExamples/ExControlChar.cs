@@ -89,7 +89,7 @@ namespace ApiExamples
             builder.Write("Text at end of column 1." + ControlChar.ColumnBreak + "Text at beginning of column 2.");
 
             // Save document to see the characters we added
-            doc.Save(ArtifactsDir + "ControlChar.Misc.docx");
+            doc.Save(ArtifactsDir + "ControlChar.InsertControlChars.docx");
 
             // There are char and string counterparts for most characters
             Assert.AreEqual(Convert.ToChar(ControlChar.Cell), ControlChar.CellChar);

@@ -32,7 +32,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            using (Stream stream = File.OpenRead(ImageDir + "Aspose.Words.gif"))
+            using (Stream stream = File.OpenRead(ImageDir + "Aspose.Words.jpg"))
             {
                 builder.Writeln("Inserted image from stream: ");
                 builder.InsertImage(stream);
@@ -45,7 +45,7 @@ namespace ApiExamples
                     100, 200, 100, WrapType.Square);
             }
 
-            doc.Save(ArtifactsDir + "InsertImageFromStream.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromStream.docx");
             //ExEnd
         }
 
@@ -61,17 +61,17 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Writeln("\nInserted image from string: ");
-            builder.InsertImage(ImageDir + "Aspose.Words.gif");
+            builder.InsertImage(ImageDir + "Aspose.Words.jpg");
 
             builder.Writeln("\nInserted image from string with a custom size: ");
-            builder.InsertImage(ImageDir + "Aspose.Words.gif", ConvertUtil.PixelToPoint(250),
+            builder.InsertImage(ImageDir + "Aspose.Words.jpg", ConvertUtil.PixelToPoint(250),
                 ConvertUtil.PixelToPoint(144));
 
             builder.Writeln("\nInserted image from string using relative positions: ");
-            builder.InsertImage(ImageDir + "Aspose.Words.gif", RelativeHorizontalPosition.Margin, 100, 
+            builder.InsertImage(ImageDir + "Aspose.Words.jpg", RelativeHorizontalPosition.Margin, 100, 
                 RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
 
-            doc.Save(ArtifactsDir + "InsertImageFromString.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromString.docx");
             //ExEnd
         }
 
@@ -80,14 +80,13 @@ namespace ApiExamples
         public void InsertImageFromImageClass()
         {
             //ExStart
-            //ExFor:DocumentBuilder.InsertImage(Image)
             //ExFor:DocumentBuilder.InsertImage(Image, Double, Double)
             //ExFor:DocumentBuilder.InsertImage(Image, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
             //ExSummary:Shows different solutions of how to import an image into a document from Image class.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Image image = Image.FromFile(ImageDir + "Aspose.Words.gif");
+            Image image = Image.FromFile(ImageDir + "Aspose.Words.jpg");
 
             builder.Writeln("\nInserted image from Image class: ");
             builder.InsertImage(image);
@@ -99,7 +98,7 @@ namespace ApiExamples
             builder.InsertImage(image, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin,
                 100, 200, 100, WrapType.Square);
 
-            doc.Save(ArtifactsDir + "InsertImageFromImageClass.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromImageClass.docx");
             //ExEnd
         }
 
@@ -114,7 +113,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Image image = Image.FromFile(ImageDir + "Aspose.Words.gif");
+            Image image = Image.FromFile(ImageDir + "Aspose.Words.jpg");
 
             using (MemoryStream ms = new MemoryStream())
             {
@@ -132,22 +131,21 @@ namespace ApiExamples
                     100, 200, 100, WrapType.Square);
             }
 
-            doc.Save(ArtifactsDir + "InsertImageFromByteArray.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromByteArray.docx");
             //ExEnd
         }
-        #else
+#else
         [Test]
         public void InsertImageFromImageClassNetStandard2()
         {
             //ExStart
-            //ExFor:DocumentBuilder.InsertImage(Image)
             //ExFor:DocumentBuilder.InsertImage(Image, Double, Double)
             //ExFor:DocumentBuilder.InsertImage(Image, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
             //ExSummary:Shows different solutions of how to import an image into a document from Image class (.NetStandard 2.0).
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            using (SKBitmap bitmap = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
+            using (SKBitmap bitmap = SKBitmap.Decode(ImageDir + "Aspose.Words.jpg"))
             {
                 builder.Writeln("\nInserted image from Image class: ");
                 builder.InsertImage(bitmap);
@@ -160,7 +158,7 @@ namespace ApiExamples
                     100, 200, 100, WrapType.Square);
             }
 
-            doc.Save(ArtifactsDir + "InsertImageFromImageClass.NetStandard2.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromImageClassNetStandard2.docx");
             //ExEnd
         }
 
@@ -175,7 +173,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            using (SKBitmap bitmap = SKBitmap.Decode(ImageDir + "Aspose.Words.gif"))
+            using (SKBitmap bitmap = SKBitmap.Decode(ImageDir + "Aspose.Words.jpg"))
             {
                 using (SKImage image = SKImage.FromBitmap(bitmap))
                 {
@@ -196,9 +194,9 @@ namespace ApiExamples
                 }
             }
             
-            doc.Save(ArtifactsDir + "InsertImageFromByteArray.NetStandard2.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromByteArrayNetStandard2.docx");
             //ExEnd
         }
-        #endif
+#endif
     }
 }

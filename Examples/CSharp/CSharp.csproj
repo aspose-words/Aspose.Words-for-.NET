@@ -56,20 +56,17 @@
     <StartupObject>Aspose.Words.Examples.CSharp.RunExamples</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.BarCode, Version=19.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.BarCode.19.12.0\lib\net45\Aspose.BarCode.dll</HintPath>
+    <Reference Include="Aspose.BarCode, Version=20.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.BarCode.20.1.0\lib\net45\Aspose.BarCode.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Email, Version=19.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Email.19.12.0\lib\net40\Aspose.Email.dll</HintPath>
+    <Reference Include="Aspose.Email, Version=20.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Email.20.1.0\lib\net40\Aspose.Email.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Words, Version=20.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.20.1.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=20.2.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.20.2.0\lib\net40\Aspose.Words.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Words.Shaping.HarfBuzz, Version=20.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.Shaping.HarfBuzz.20.1.0\lib\net40\Aspose.Words.Shaping.HarfBuzz.dll</HintPath>
-    </Reference>
-    <Reference Include="SkiaSharp, Version=1.68.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\packages\SkiaSharp.1.68.1\lib\net45\SkiaSharp.dll</HintPath>
+    <Reference Include="Aspose.Words.Shaping.HarfBuzz, Version=20.2.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.Shaping.HarfBuzz.20.2.0\lib\net40\Aspose.Words.Shaping.HarfBuzz.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -100,6 +97,7 @@
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="LINQ\BuildOptions.cs" />
+    <Compile Include="LINQ\ChartSeries.cs" />
     <Compile Include="LINQ\Common.cs" />
     <Compile Include="LINQ\Contract.cs" />
     <Compile Include="LINQ\Client.cs" />
@@ -177,6 +175,7 @@
     <Compile Include="Programming-Documents\Bookmarks\BookmarkNameAndText.cs" />
     <Compile Include="Programming-Documents\Bookmarks\AccessBookmarks.cs" />
     <Compile Include="Programming-Documents\Bookmarks\CreateBookmark.cs" />
+    <Compile Include="Programming-Documents\Bookmarks\ShowHideBookmarks.cs" />
     <Compile Include="Programming-Documents\Charts\ChartNumberFormat.cs" />
     <Compile Include="Programming-Documents\Charts\WorkingWithChartAxis.cs" />
     <Compile Include="Programming-Documents\Charts\WorkWithSingleChartSeries.cs" />
@@ -379,6 +378,7 @@
     <Compile Include="Quick-Start\WorkingWithNodes.cs" />
     <Compile Include="Rendering-Printing\PrintMultiplePagesOnOneSheet.cs" />
     <Compile Include="Rendering-Printing\PrintDocViaXpsPrint.cs" />
+    <Compile Include="Rendering-Printing\PrintPreviewSettingsDialog.cs" />
     <Compile Include="Rendering-Printing\PrintProgressDialog.cs" />
     <Compile Include="Rendering-Printing\LoadHyphenationDictionaryForLanguage.cs" />
     <Compile Include="Rendering-Printing\HyphenateWordsOfLanguages.cs" />
@@ -386,8 +386,13 @@
     <Compile Include="Rendering-Printing\EmbeddedFontsInPDF.cs" />
     <Compile Include="Rendering-Printing\Print_CachePrinterSettings.cs" />
     <Compile Include="Rendering-Printing\ReceiveNotificationsOfFont .cs" />
+    <Compile Include="Rendering-Printing\SaveDocumentToJPEG.cs" />
     <Compile Include="Rendering-Printing\SetFontSettings.cs" />
+    <Compile Include="Rendering-Printing\SetFontsFoldersDefaultInstance.cs" />
+    <Compile Include="Rendering-Printing\SetFontsFoldersWithPriority.cs" />
+    <Compile Include="Rendering-Printing\SetFontsFolders.cs" />
     <Compile Include="Rendering-Printing\WorkingWithFontResolution.cs" />
+    <Compile Include="Rendering-Printing\WorkingWithFontSettings.cs" />
     <Compile Include="Rendering-Printing\WorkingWithFontSources.cs" />
     <Compile Include="Rendering-Printing\WorkingWithPdfSaveOptions.cs" />
     <Compile Include="Rendering-Printing\SpecifyDefaultFontWhenRendering.cs" />
@@ -506,14 +511,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\SkiaSharp.1.68.0\build\net45\SkiaSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SkiaSharp.1.68.0\build\net45\SkiaSharp.targets'))" />
-    <Error Condition="!Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.20.1.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Aspose.Words.Shaping.HarfBuzz.20.1.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets'))" />
-  </Target>
-  <Import Project="..\packages\Aspose.Words.Shaping.HarfBuzz.20.1.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets" Condition="Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.20.1.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" />
+  <Import Project="..\packages\Aspose.Words.Shaping.HarfBuzz.20.2.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets" Condition="Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.20.2.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

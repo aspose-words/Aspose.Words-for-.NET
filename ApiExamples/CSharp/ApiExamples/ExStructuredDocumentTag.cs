@@ -33,7 +33,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:StructuredDocumentTag.SdtType
             //ExSummary:Shows how to get type of structured document tag.
-            Document doc = new Document(MyDir + "TestRepeatingSection.docx");
+            Document doc = new Document(MyDir + "Structured document tags.docx");
 
             NodeCollection sdTags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
 
@@ -165,7 +165,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertNode(sdtDate);
 
-            doc.Save(ArtifactsDir + "SDT.Date.docx");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.Date.docx");
             //ExEnd
         }
 #endif
@@ -225,7 +225,7 @@ namespace ApiExamples
             // We can remove the tag while keeping its contents where they were in the Paragraph by calling RemoveSelfOnly()
             tagClone.RemoveSelfOnly();
 
-            doc.Save(ArtifactsDir + "SDT.PlainText.docx");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.PlainText.docx");
             //ExEnd
         }
 
@@ -259,7 +259,7 @@ namespace ApiExamples
             builder.Write("\nTemporary checkbox: ");
             builder.InsertNode(tag);
 
-            doc.Save(ArtifactsDir + "SDT.IsTemporary.docx");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.IsTemporary.docx");
             //ExEnd
         }
 
@@ -306,7 +306,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertNode(tag);
 
-            doc.Save(ArtifactsDir + "SDT.PlaceholderBuildingBlock.docx");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.PlaceholderBuildingBlock.docx");
             //ExEnd
         }
 
@@ -339,7 +339,7 @@ namespace ApiExamples
             builder.Write("This StructuredDocumentTag cannot be deleted but its contents can be edited: ");
             builder.InsertNode(tag);
 
-            doc.Save(ArtifactsDir + "SDT.Lock.docx");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.Lock.docx");
             //ExEnd
         }
 
@@ -405,7 +405,7 @@ namespace ApiExamples
             // Make sure to update the SelectedValue's index if it ever ends up out of bounds before saving the document
             listItems.SelectedValue = listItems[1];
            
-            doc.Save(ArtifactsDir + "SDT.ListItemCollection.docx");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.ListItemCollection.docx");
 
             // We can clear the whole collection at once too
             listItems.Clear();
@@ -493,10 +493,10 @@ namespace ApiExamples
 
             doc.FirstSection.Body.AppendChild(sdt);
 
-            doc.Save(ArtifactsDir + "SDT.CustomXml.docx");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.CustomXml.docx");
             //ExEnd
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "SDT.CustomXml.docx", GoldsDir + "SDT.CustomXml Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "StructuredDocumentTag.CustomXml.docx", GoldsDir + "StructuredDocumentTag.CustomXml Gold.docx"));
         }
 
         [Test]
@@ -533,7 +533,7 @@ namespace ApiExamples
 
             // Add the StructuredDocumentTag to the document to display the content from our CustomXmlPart
             doc.FirstSection.Body.AppendChild(sdt);
-            doc.Save(ArtifactsDir + "SDT.XmlMapping.docx");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.XmlMapping.docx");
             //ExEnd
         }
 
@@ -595,7 +595,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:XmlMapping.StoreItemId
             //ExSummary:Shows how to get special id of your xml part.
-            Document doc = new Document(MyDir + "SDT.CustomXml.docx");
+            Document doc = new Document(MyDir + "Custom XML part in structured document tag.docx");
 
             StructuredDocumentTag sdt = (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
             Console.WriteLine("The Id of your custom xml part is: " + sdt.XmlMapping.StoreItemId);
@@ -627,7 +627,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:StructuredDocumentTag.Clear
             //ExSummary:Shows how to delete content of StructuredDocumentTag elements.
-            Document doc = new Document(MyDir + "TestRepeatingSection.docx");
+            Document doc = new Document(MyDir + "Structured document tags.docx");
 
             NodeCollection sdts = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
             Assert.IsNotNull(sdts);
@@ -667,7 +667,7 @@ namespace ApiExamples
             //ExFor:CustomXmlPropertyCollection.RemoveAt(Int32)
             //ExSummary:Shows how to work with smart tag properties to get in depth information about smart tags.
             // Open a document that contains smart tags and their collection
-            Document doc = new Document(MyDir + "SmartTags.doc");
+            Document doc = new Document(MyDir + "Smart tags.doc");
 
             // Smart tags are an older Microsoft Word feature that can automatically detect and tag
             // any parts of the text that it registers as commonly used information objects such as names, addresses, stock tickers, dates etc
@@ -807,7 +807,7 @@ namespace ApiExamples
         [Test]
         public void AccessToBuildingBlockPropertiesFromDocPartObjSdt()
         {
-            Document doc = new Document(MyDir + "StructuredDocumentTag.BuildingBlocks.docx");
+            Document doc = new Document(MyDir + "Structured document tags with building blocks.docx");
 
             StructuredDocumentTag docPartObjSdt =
                 (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
@@ -819,7 +819,7 @@ namespace ApiExamples
         [Test]
         public void AccessToBuildingBlockPropertiesFromPlainTextSdt()
         {
-            Document doc = new Document(MyDir + "StructuredDocumentTag.BuildingBlocks.docx");
+            Document doc = new Document(MyDir + "Structured document tags with building blocks.docx");
 
             StructuredDocumentTag plainTextSdt =
                 (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 1, true);
@@ -885,7 +885,7 @@ namespace ApiExamples
             PdfSaveOptions options = new PdfSaveOptions();
             options.UpdateSdtContent = false;
 
-            doc.Save(ArtifactsDir + "UpdateSdtContent.pdf", options);
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf", options);
             //ExEnd
         }
 

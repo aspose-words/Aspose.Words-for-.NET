@@ -27,7 +27,7 @@ namespace ApiExamples
             //ExFor:BuiltInDocumentProperties
             //ExFor:CustomDocumentProperties
             //ExSummary:Enumerates through all built-in and custom properties in a document.
-            Document doc = new Document(MyDir + "Properties.doc");
+            Document doc = new Document(MyDir + "Properties.docx");
 
             Console.WriteLine("1. Document name: {0}", doc.OriginalFileName);
 
@@ -52,7 +52,7 @@ namespace ApiExamples
             //ExFor:DocumentProperty.Value
             //ExFor:DocumentProperty.Type
             //ExSummary:Enumerates through all built-in and custom properties in a document using indexed access.
-            Document doc = new Document(MyDir + "Properties.doc");
+            Document doc = new Document(MyDir + "Properties.docx");
 
             Console.WriteLine("1. Document name: {0}", doc.OriginalFileName);
 
@@ -79,7 +79,7 @@ namespace ApiExamples
             //ExFor:BuiltInDocumentProperties.Item(String)
             //ExFor:DocumentProperty.ToString
             //ExSummary:Retrieves a built-in document property by name.
-            Document doc = new Document(MyDir + "Properties.doc");
+            Document doc = new Document(MyDir + "Properties.docx");
 
             DocumentProperty docProperty = doc.BuiltInDocumentProperties["Keywords"];
             Console.WriteLine(docProperty.ToString());
@@ -139,7 +139,7 @@ namespace ApiExamples
             //ExFor:BuiltInDocumentProperties.Version
             //ExSummary:Shows how to work with document properties in the "Origin" category.
             // Open a document 
-            Document doc = new Document(MyDir + "Properties.doc");
+            Document doc = new Document(MyDir + "Properties.docx");
 
             // The properties we will work with are members of the BuiltInDocumentProperties attribute
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
@@ -183,7 +183,7 @@ namespace ApiExamples
         public void Content()
         {
             // Open a document with a couple paragraphs of content
-            Document doc = new Document(MyDir + "Properties.Content.docx");
+            Document doc = new Document(MyDir + "Paragraphs.docx");
 
             // The properties we will work with are members of the BuiltInDocumentProperties attribute
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
@@ -195,28 +195,28 @@ namespace ApiExamples
             // Also, these values can also be viewed in Microsoft Word by navigating File > Properties > Advanced Properties > Statistics
             // Page count: The PageCount attribute shows the page count in real time and its value can be assigned to the Pages property
             properties.Pages = doc.PageCount;
-            Assert.AreEqual(2, properties.Pages);
+            Assert.AreEqual(6, properties.Pages);
 
             // Word count: The UpdateWordCount() automatically assigns the real time word/character counts to the respective built in properties
             doc.UpdateWordCount();
-            Assert.AreEqual(198, properties.Words);
-            Assert.AreEqual(1114, properties.Characters);
-            Assert.AreEqual(1310, properties.CharactersWithSpaces);
+            Assert.AreEqual(1035, properties.Words);
+            Assert.AreEqual(6026, properties.Characters);
+            Assert.AreEqual(7041, properties.CharactersWithSpaces);
 
             // Line count: Count the lines in a document and assign value to the Lines property
             LineCounter lineCounter = new LineCounter(doc);
             properties.Lines = lineCounter.GetLineCount();
-            Assert.AreEqual(14, properties.Lines);
+            Assert.AreEqual(142, properties.Lines);
 
             // Paragraph count: Assign the size of the count of child Paragraph-nodes to the Paragraphs built in property
             properties.Paragraphs = doc.GetChildNodes(NodeType.Paragraph, true).Count;
-            Assert.AreEqual(2, properties.Paragraphs);
+            Assert.AreEqual(29, properties.Paragraphs);
 
             // Check the real file size of our document
-            Assert.AreEqual(13485, properties.Bytes);
+            Assert.AreEqual(20310, properties.Bytes);
 
             // Template: The Template attribute can reflect the filename of the attached template document
-            doc.AttachedTemplate = MyDir + "Document.BusinessBrochureTemplate.dot";
+            doc.AttachedTemplate = MyDir + "Busniess brochure.dotx";
             Assert.AreEqual("Normal", properties.Template);          
             properties.Template = doc.AttachedTemplate;
 
@@ -295,7 +295,7 @@ namespace ApiExamples
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
 
             // Load an image from our file system into a byte array
-            byte[] thumbnailBytes = File.ReadAllBytes(ImageDir + "Aspose.Words.gif");
+            byte[] thumbnailBytes = File.ReadAllBytes(ImageDir + "Aspose.Words.jpg");
 
             // Set the value of the Thumbnail property to the array from above
             properties.Thumbnail = thumbnailBytes;
@@ -346,7 +346,7 @@ namespace ApiExamples
             //ExFor:Properties.BuiltInDocumentProperties.TitlesOfParts
             //ExSummary:Shows the relationship between HeadingPairs and TitlesOfParts properties.
             // Open a document that contains entries in the HeadingPairs/TitlesOfParts properties
-            Document doc = new Document(MyDir + "Properties.HeadingPairs.docx");
+            Document doc = new Document(MyDir + "Heading pairs and titles of parts.docx");
             
             // We can find the combined values of these collections in File > Properties > Advanced Properties > Contents tab
 
@@ -435,7 +435,7 @@ namespace ApiExamples
             //ExFor:CustomDocumentProperties.Add(String,DateTime)
             //ExFor:DocumentProperty.ToDateTime
             //ExSummary:Retrieves a custom document property by name.
-            Document doc = new Document(MyDir + "Properties.doc");
+            Document doc = new Document(MyDir + "Properties.docx");
 
             DocumentProperty docProperty = doc.CustomDocumentProperties["Authorized Date"];
 
@@ -554,7 +554,7 @@ namespace ApiExamples
             //ExFor:DocumentProperty.ToDateTime
             //ExFor:PropertyType
             //ExSummary:Retrieves the types and values of the custom document properties.
-            Document doc = new Document(MyDir + "Properties.doc");
+            Document doc = new Document(MyDir + "Properties.docx");
 
             foreach (DocumentProperty docProperty in doc.CustomDocumentProperties)
             {
