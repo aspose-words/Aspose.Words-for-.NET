@@ -295,7 +295,7 @@ namespace ApiExamples
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
 
             // Load an image from our file system into a byte array
-            byte[] thumbnailBytes = File.ReadAllBytes(ImageDir + "Aspose.Words.jpg");
+            byte[] thumbnailBytes = File.ReadAllBytes(ImageDir + "Logo.jpg");
 
             // Set the value of the Thumbnail property to the array from above
             properties.Thumbnail = thumbnailBytes;

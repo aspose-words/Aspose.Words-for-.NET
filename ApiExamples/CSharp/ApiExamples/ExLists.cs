@@ -753,7 +753,7 @@ namespace ApiExamples
             list.ListLevels[0].CreatePictureBullet();
 
             // Set your own picture bullet image through the ImageData
-            list.ListLevels[0].ImageData.SetImage(ImageDir + "AsIcon.ico");
+            list.ListLevels[0].ImageData.SetImage(ImageDir + "Logo icon.ico");
 
             Assert.IsTrue(list.ListLevels[0].ImageData.HasImage);
 

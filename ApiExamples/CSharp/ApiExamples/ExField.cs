@@ -474,7 +474,7 @@ namespace ApiExamples
                 {
                     FieldIncludePicture includePicture = (FieldIncludePicture)field;
 
-                    includePicture.SourceFullName = ImageDir + "dotnet-logo.png";
+                    includePicture.SourceFullName = ImageDir + "Transparent background logo.png";
                     includePicture.Update(true);
                 }
             }
@@ -2139,7 +2139,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             FieldIncludePicture fieldIncludePicture = (FieldIncludePicture)builder.InsertField(FieldType.FieldIncludePicture, true);
-            fieldIncludePicture.SourceFullName = ImageDir + "Watermark.png";
+            fieldIncludePicture.SourceFullName = ImageDir + "Transparent background logo.png";
 
             // Here we apply the PNG32.FLT filter
             fieldIncludePicture.GraphicFilter = "PNG32";
@@ -2151,7 +2151,7 @@ namespace ApiExamples
             FieldImport fieldImport = (FieldImport)builder.InsertField(FieldType.FieldImport, true);
             fieldImport.GraphicFilter = "PNG32";
             fieldImport.IsLinked = true;
-            fieldImport.SourceFullName = MyDir + @"Images\Watermark.png";
+            fieldImport.SourceFullName = MyDir + @"Images\Transparent background logo.png";
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.INCLUDEPICTURE.docx");
@@ -2273,12 +2273,12 @@ namespace ApiExamples
             DataTable dataTable = CreateDataTable("Images", "ImageColumn",
                 new string[]
                 {
-                    ImageDir + "Aspose.Words.jpg",
-                    ImageDir + "Watermark.png",
-                    ImageDir + "dotnet-logo.png"
+                    ImageDir + "Logo.jpg",
+                    ImageDir + "Transparent background logo.png",
+                    ImageDir + "Enhanced Windows MetaFile.emf"
                 });
 
-            doc.MailMerge.FieldMergingCallback = new MergedImageResizer(450, 200, MergeFieldImageDimensionUnit.Point);
+            doc.MailMerge.FieldMergingCallback = new MergedImageResizer(200, 200, MergeFieldImageDimensionUnit.Point);
             doc.MailMerge.Execute(dataTable);
 
             doc.UpdateFields();
@@ -2355,9 +2355,8 @@ namespace ApiExamples
             DataTable dataTable = CreateDataTable("Images", "ImageColumn",
                 new string[]
                 {
-                    "Aspose logo",
-                    ".Net logo",
-                    "Watermark"
+                    "Dark logo",
+                    "Transparent logo"
                 });
 
             // A custom merging callback will contain filenames that our shorthands will refer to
@@ -2375,9 +2374,8 @@ namespace ApiExamples
             public ImageFilenameCallback()
             {
                 mImageFilenames = new Dictionary<string, string>();
-                mImageFilenames.Add("Aspose logo", ImageDir + "Aspose.Words.jpg");
-                mImageFilenames.Add(".Net logo", ImageDir + "dotnet-logo.png");
-                mImageFilenames.Add("Watermark", ImageDir + "Watermark.png");
+                mImageFilenames.Add("Dark logo", ImageDir + "Logo.jpg");
+                mImageFilenames.Add("Transparent logo", ImageDir + "Transparent background logo.png");
             }
 
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
