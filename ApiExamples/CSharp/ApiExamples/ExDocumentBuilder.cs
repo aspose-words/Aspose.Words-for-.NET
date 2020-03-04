@@ -2544,7 +2544,9 @@ namespace ApiExamples
         }
 
         [Test]
-        public void IgnoreTextBoxes()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void IgnoreTextBoxes(bool isIgnoreTextBoxes)
         {
             //ExStart
             //ExFor:ImportFormatOptions.IgnoreTextBoxes
@@ -2568,7 +2570,7 @@ namespace ApiExamples
             // When we import the document with the textbox as a node into the first document, by default the text inside the text box will keep its formatting
             // Setting the IgnoreTextBoxes flag will clear the formatting during importing of the node
             ImportFormatOptions importFormatOptions = new ImportFormatOptions();
-            importFormatOptions.IgnoreTextBoxes = true;
+            importFormatOptions.IgnoreTextBoxes = isIgnoreTextBoxes;
 
             NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
 
@@ -2580,6 +2582,22 @@ namespace ApiExamples
 
             dstDoc.Save(ArtifactsDir + "DocumentBuilder.IgnoreTextBoxes.docx");
             //ExEnd
+
+            dstDoc = new Document(ArtifactsDir + "DocumentBuilder.IgnoreTextBoxes.docx");
+            textBox = (Shape)dstDoc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual("Textbox contents", textBox.GetText().Trim());
+
+            if (isIgnoreTextBoxes)
+            {
+                Assert.AreEqual(12.0d, textBox.FirstParagraph.Runs[0].Font.Size);
+                Assert.AreEqual("Times New Roman", textBox.FirstParagraph.Runs[0].Font.Name);
+            }
+            else
+            {
+                Assert.AreEqual(24.0d, textBox.FirstParagraph.Runs[0].Font.Size);
+                Assert.AreEqual("Courier New", textBox.FirstParagraph.Runs[0].Font.Name);
+            }
         }
 
         [Test]
@@ -2591,10 +2609,27 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Insert a field using the DocumentBuilder and add a run of text after it
             Field field = builder.InsertField("MERGEFIELD field");
+            builder.Write(" Text after the field.");
 
+            // The builder's cursor is currently at end of the document
+            Assert.Null(builder.CurrentNode);
+
+            // We can move the builder to a field like this, placing the cursor at immediately after the field
             builder.MoveToField(field, true);
+
+            // Note that the cursor is at a place past the FieldEnd node of the field, meaning that we are not actually inside the field
+            // If we wish to move the DocumentBuilder to inside a field,
+            // we will need to move it to a field's FieldStart or FieldSeparator node using the DocumentBuilder.MoveTo() method
+            Assert.AreEqual(field.End, builder.CurrentNode.PreviousSibling);
+
+            builder.Write(" Text immediately after the field.");
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+
+            Assert.AreEqual("\u0013MERGEFIELD field\u0014«field»\u0015 Text immediately after the field. Text after the field.", doc.GetText().Trim());
         }
 
         [Test]
@@ -2617,9 +2652,17 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertChart(ChartType.Pie, ConvertUtil.PixelToPoint(300), ConvertUtil.PixelToPoint(300));
+            Assert.AreEqual(225.0d, ConvertUtil.PixelToPoint(300)); //ExSkip
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertedChartDouble.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertedChartDouble.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertedChartDouble.docx");
+            Shape chartShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual("Chart Title", chartShape.Chart.Title.Text);
+            Assert.AreEqual(225.0d, chartShape.Width);
+            Assert.AreEqual(225.0d, chartShape.Height);
         }
 
         [Test]
@@ -2634,8 +2677,19 @@ namespace ApiExamples
             builder.InsertChart(ChartType.Pie, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin,
                 100, 200, 100, WrapType.Square);
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertedChartRelativePosition.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertedChartRelativePosition.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertedChartRelativePosition.docx");
+            Shape chartShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(100.0d, chartShape.Top);
+            Assert.AreEqual(100.0d, chartShape.Left);
+            Assert.AreEqual(200.0d, chartShape.Width);
+            Assert.AreEqual(100.0d, chartShape.Height);
+            Assert.AreEqual(WrapType.Square, chartShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Margin, chartShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Margin, chartShape.RelativeVerticalPosition);
         }
 
         [Test]
@@ -2689,11 +2743,36 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Write("This field was inserted/updated at ");
-            builder.InsertField(FieldType.FieldTime, true);
+            // Insert an AUTHOR field using a DocumentBuilder
+            doc.BuiltInDocumentProperties.Author = "John Doe";
+            builder.Write("This document was written by ");
+            builder.InsertField(FieldType.FieldAuthor, true);
+            Assert.AreEqual(" AUTHOR ", doc.Range.Fields[0].GetFieldCode()); //ExSkip
+            Assert.AreEqual("John Doe", doc.Range.Fields[0].Result); //ExSkip
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertFieldByType.doc");
+            // Insert a PAGE field using a DocumentBuilder, but do not immediately update it
+            builder.Write("\nThis is page ");
+            builder.InsertField(FieldType.FieldPage, false);
+            Assert.AreEqual(" PAGE ", doc.Range.Fields[1].GetFieldCode()); //ExSkip
+            Assert.AreEqual("", doc.Range.Fields[1].Result); //ExSkip
+            
+            // Some fields types, such as ones that display document word/page counts may not keep track of their results in real time,
+            // and will only display an accurate result during a field update
+            // We can defer the updating of those fields until right before we need to see an accurate result
+            // This method will manually update all the fields in a document
+            doc.UpdateFields();
+
+            Assert.AreEqual("1", doc.Range.Fields[1].Result);
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+
+            Assert.AreEqual("This document was written by \u0013 AUTHOR \u0014John Doe\u0015" +
+                            "\rThis is page \u0013 PAGE \u00141\u0015", doc.GetText().Trim());
+
+            Assert.AreEqual(2, doc.Range.Fields.Count);
+            Assert.AreEqual(FieldType.FieldAuthor, doc.Range.Fields[0].Type);
+            Assert.AreEqual(FieldType.FieldPage, doc.Range.Fields[1].Type);
         }
 
         //ExStart
@@ -2816,14 +2895,26 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Pass direct url from youtu.be.
-            const string url = "https://youtu.be/t_1LYZ102RA";
+            // Insert a video from Youtube
+            builder.InsertOnlineVideo("https://youtu.be/t_1LYZ102RA", 360, 270);
 
-            const double width = 360;
-            const double height = 270;
-
-            builder.InsertOnlineVideo(url, width, height);
+            // Click on the shape in the output document to watch the video from Microsoft Word
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertVideoWithUrl.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertVideoWithUrl.docx");
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(360.0d, shape.Width);
+            Assert.AreEqual(270.0d, shape.Height);
+
+            Assert.True(shape.IsImage);
+            Assert.AreEqual(21027, shape.ImageData.ImageBytes.Length);
+            Assert.AreEqual("https://youtu.be/t_1LYZ102RA", shape.HRef);
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(shape.HRef);
+            request.Method = "HEAD";
+            Assert.AreEqual(HttpStatusCode.OK, ((HttpWebResponse)request.GetResponse()).StatusCode);
         }
 
         [Test]
@@ -2848,8 +2939,16 @@ namespace ApiExamples
 
             builder.Writeln("Underlined text.");
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertUnderline.docx");         
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertUnderline.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertUnderline.docx");
+            Run firstRun = doc.FirstSection.Body.FirstParagraph.Runs[0];
+
+            Assert.AreEqual("Underlined text.", firstRun.GetText().Trim());
+            Assert.AreEqual(Underline.Dash, firstRun.Font.Underline);
+            Assert.AreEqual(Color.Blue.ToArgb(), firstRun.Font.Color.ToArgb());
+            Assert.AreEqual(32.0d, firstRun.Font.Size);
         }
 
         [Test]
@@ -2861,37 +2960,29 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The body of the current section is the same object as the current story
+            // A Story is a type of node that have child Paragraph nodes, such as a Body,
+            // which would usually be a parent node to a DocumentBuilder's current paragraph
             Assert.AreEqual(builder.CurrentStory, doc.FirstSection.Body);
             Assert.AreEqual(builder.CurrentStory, builder.CurrentParagraph.ParentNode);
-
             Assert.AreEqual(StoryType.MainText, builder.CurrentStory.StoryType);
 
             builder.CurrentStory.AppendParagraph("Text added to current Story.");
 
-            // A story can contain tables too
+            // A Story can contain tables too
             Table table = builder.StartTable();
-
             builder.InsertCell();
-            builder.Write("This is row 1 cell 1");
+            builder.Write("Row 1 cell 1");
             builder.InsertCell();
-            builder.Write("This is row 1 cell 2");
-
-            builder.EndRow();
-
-            builder.InsertCell();
-            builder.Writeln("This is row 2 cell 1");
-            builder.InsertCell();
-            builder.Writeln("This is row 2 cell 2");
-
-            builder.EndRow();
+            builder.Write("Row 1 cell 2");
             builder.EndTable();
 
             // The table we just made is automatically placed in the story
             Assert.IsTrue(builder.CurrentStory.Tables.Contains(table));
-
-            doc.Save(ArtifactsDir + "DocumentBuilder.CurrentStory.docx");
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+            Assert.AreEqual(1, doc.FirstSection.Body.Tables.Count);
+            Assert.AreEqual("Row 1 cell 1\aRow 1 cell 2\a\a\rText added to current Story.", doc.FirstSection.Body.GetText().Trim());
         }
 
         [Test]
@@ -2948,33 +3039,18 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertOlePowerpoint.docx");
             //ExEnd
-        }
 
-        [Test]
-        public void StyleSeparator()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertStyleSeparator
-            //ExSummary:Shows how to use and separate multiple styles in a paragraph
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOlePowerpoint.docx");
 
-            builder.Write("This text is in the default style. ");
+            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Shape, true).Count);
 
-            builder.InsertStyleSeparator();
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Assert.AreEqual("", shape.OleFormat.IconCaption);
+            Assert.False(shape.OleFormat.OleIcon);
 
-            // Create a custom style
-            Style myStyle = builder.Document.Styles.Add(StyleType.Paragraph, "MyStyle");
-            myStyle.Font.Size = 14;
-            myStyle.Font.Name = "Courier New";
-            myStyle.Font.Color = Color.Blue;
-
-            // Append text with custom style
-            builder.ParagraphFormat.StyleName = myStyle.Name;
-            builder.Write("This is text in the same paragraph but with my custom style.");
-
-            doc.Save(ArtifactsDir + "DocumentBuilder.StyleSeparator.docx");
-            //ExEnd
+            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+            Assert.AreEqual("Unknown", shape.OleFormat.IconCaption);
+            Assert.True(shape.OleFormat.OleIcon);
         }
 
         [Test]
@@ -2983,24 +3059,40 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.InsertStyleSeparator
             //ExSummary:Shows how to separate styles from two different paragraphs used in one logical printed paragraph.
-            DocumentBuilder builder = new DocumentBuilder(new Document());
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Append text in the "Heading 1" style
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
+            builder.Write("This text is in a Heading style. ");
+
+            // Insert a style separator
+            builder.InsertStyleSeparator();
+
+            // The style separator appears in the form of a paragraph break that doesn't start a new line
+            // So, while this looks like one continuous paragraph with two styles in the output document, 
+            // it is actually two paragraphs with different styles, but no line break between the first and second paragraph
+            Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
+
+            // Append text with another style
             Style paraStyle = builder.Document.Styles.Add(StyleType.Paragraph, "MyParaStyle");
             paraStyle.Font.Bold = false;
             paraStyle.Font.Size = 8;
             paraStyle.Font.Name = "Arial";
 
-            // Append text with "Heading 1" style
-            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
-            builder.Write("Heading 1");
-            builder.InsertStyleSeparator();
-
-            // Append text with another style
+            // Set the style of the current paragraph to our custom style
+            // This will apply to only the text after the style separator
             builder.ParagraphFormat.StyleName = paraStyle.Name;
-            builder.Write("This is text with some other formatting ");
+            builder.Write("This text is in a custom style. ");
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertStyleSeparator.docx");
             //ExEnd
 
-            builder.Document.Save(ArtifactsDir + "DocumentBuilder.InsertStyleSeparator.docx");
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertStyleSeparator.docx");
+
+            Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
+            Assert.AreEqual("This text is in a Heading style. \r This text is in a custom style.",
+                doc.GetText().Trim());
         }
 
         [Test]
@@ -3015,11 +3107,11 @@ namespace ApiExamples
 
             // Append text with "Heading 1" style
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
-            builder.Write("Heading 1");
+            builder.Write("This text is in a Heading style. ");
 
             // Append text with another style
             builder.ParagraphFormat.StyleName = paraStyle.Name;
-            builder.Write("This is text with some other formatting ");
+            builder.Write("This text is in a custom style. ");
 
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.WithoutStyleSeparator.docx");
         }
@@ -3057,11 +3149,21 @@ namespace ApiExamples
 
             builder.InsertDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, options);
 
-            dstDoc.Save(ArtifactsDir + @"DocumentBuilder.SmartStyleBehavior.docx");
+            dstDoc.Save(ArtifactsDir + "DocumentBuilder.SmartStyleBehavior.docx");
             //ExEnd
+
+            dstDoc = new Document(ArtifactsDir + "DocumentBuilder.SmartStyleBehavior.docx");
+
+            Assert.AreEqual(Color.Blue.ToArgb(), dstDoc.Styles["MyStyle"].Font.Color.ToArgb());
+            Assert.AreEqual("MyStyle", dstDoc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Style.Name);
+
+            Assert.AreEqual("Normal", dstDoc.FirstSection.Body.Paragraphs[1].ParagraphFormat.Style.Name);
+            Assert.AreEqual(14, dstDoc.FirstSection.Body.Paragraphs[1].Runs[0].Font.Size);
+            Assert.AreEqual("Courier New", dstDoc.FirstSection.Body.Paragraphs[1].Runs[0].Font.Name);
+            Assert.AreEqual(Color.Red.ToArgb(), dstDoc.FirstSection.Body.Paragraphs[1].Runs[0].Font.Color.ToArgb());
         }
 
-        #if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
         /// <summary>
         /// All markdown tests work with the same file
         /// That's why we need order for them 
@@ -3440,7 +3542,7 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], Double, Double)
             //ExFor:DocumentBuilder.InsertOnlineVideo(String, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
             //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Show how to insert online video into a document using html code.
+            //ExSummary:Shows how to insert online video into a document using html code.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -3487,6 +3589,40 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertOnlineVideo.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOnlineVideo.docx");
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(320.0d, shape.Width);
+            Assert.AreEqual(180.0d, shape.Height);
+            Assert.AreEqual(0.0d, shape.Left);
+            Assert.AreEqual(0.0d, shape.Top);
+            Assert.AreEqual(WrapType.Square, shape.WrapType);
+            Assert.AreEqual(RelativeVerticalPosition.TopMargin, shape.RelativeVerticalPosition);
+            Assert.AreEqual(RelativeHorizontalPosition.LeftMargin, shape.RelativeHorizontalPosition);
+
+            Assert.True(shape.IsImage);
+            Assert.AreEqual(17784, shape.ImageData.ImageBytes.Length);
+            Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            Assert.AreEqual(320.0d, shape.Width);
+            Assert.AreEqual(320.0d, shape.Height);
+            Assert.AreEqual(0.0d, shape.Left);
+            Assert.AreEqual(0.0d, shape.Top);
+            Assert.AreEqual(WrapType.Inline, shape.WrapType);
+            Assert.AreEqual(RelativeVerticalPosition.Paragraph, shape.RelativeVerticalPosition);
+            Assert.AreEqual(RelativeHorizontalPosition.Column, shape.RelativeHorizontalPosition);
+
+            Assert.True(shape.IsImage);
+            Assert.AreEqual(7498, shape.ImageData.ImageBytes.Length);
+            Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(shape.HRef);
+            request.Method = "HEAD";
+            Assert.AreEqual(HttpStatusCode.OK, ((HttpWebResponse)request.GetResponse()).StatusCode);
         }
         #endif
     }
