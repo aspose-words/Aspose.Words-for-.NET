@@ -118,6 +118,47 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Drawing.VariousShapes.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Drawing.VariousShapes.docx");
+
+            Assert.AreEqual(4, doc.GetChildNodes(NodeType.Shape, true).Count);
+
+            arrow = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(200.0d, arrow.Width);
+            Assert.AreEqual(Color.Red.ToArgb(), arrow.Stroke.Color.ToArgb());
+            Assert.AreEqual(ArrowType.Arrow, arrow.Stroke.StartArrowType);
+            Assert.AreEqual(ArrowLength.Long, arrow.Stroke.StartArrowLength);
+            Assert.AreEqual(ArrowWidth.Wide, arrow.Stroke.StartArrowWidth);
+            Assert.AreEqual(ArrowType.Diamond, arrow.Stroke.EndArrowType);
+            Assert.AreEqual(ArrowLength.Long, arrow.Stroke.EndArrowLength);
+            Assert.AreEqual(ArrowWidth.Wide, arrow.Stroke.EndArrowWidth);
+            Assert.AreEqual(DashStyle.Dash, arrow.Stroke.DashStyle);
+            Assert.AreEqual(0.5d, arrow.Stroke.Opacity);
+
+            line = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            Assert.AreEqual(40.0d, line.Top);
+            Assert.AreEqual(200.0d, line.Width);
+            Assert.AreEqual(20.0d, line.Height);
+            Assert.AreEqual(5.0d, line.StrokeWeight);
+            Assert.AreEqual(EndCap.Round, line.Stroke.EndCap);
+
+            filledInArrow = (Shape)doc.GetChild(NodeType.Shape, 2, true);
+
+            Assert.AreEqual(200.0d, filledInArrow.Width);
+            Assert.AreEqual(40.0d, filledInArrow.Height);
+            Assert.AreEqual(100.0d, filledInArrow.Top);
+            Assert.AreEqual(Color.Green.ToArgb(), filledInArrow.Fill.Color.ToArgb());
+            Assert.True(filledInArrow.Fill.On);
+
+            filledInArrowImg = (Shape)doc.GetChild(NodeType.Shape, 3, true);
+
+            Assert.AreEqual(200.0d, filledInArrowImg.Width);
+            Assert.AreEqual(40.0d, filledInArrowImg.Height);
+            Assert.AreEqual(160.0d, filledInArrowImg.Top);
+            Assert.AreEqual(FlipOrientation.Both, filledInArrowImg.FlipOrientation);
+
         }
 
         [Test]
@@ -156,9 +197,9 @@ namespace ApiExamples
             Document imgSourceDoc = new Document(MyDir + "Images.docx");
 
             // Images are stored as shapes
-            // Get into the document's shape collection to verify that it contains 10 images
-            List<Shape> shapes = imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
-            Assert.AreEqual(10, shapes.Count);
+            // Get into the document's shape collection to verify that it contains 9 images
+            List<Shape> shapes = imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().Where(s => s.HasImage).ToList();
+            Assert.AreEqual(9, shapes.Count);
 
             // We will use an ImageFormatConverter to determine an image's file extension
             ImageFormatConverter formatConverter = new ImageFormatConverter();
@@ -181,6 +222,10 @@ namespace ApiExamples
                 }
             }
             //ExEnd
+
+            string[] imageFileNames = Directory.GetFiles(ArtifactsDir).Where(s => s.StartsWith(ArtifactsDir + "Drawing.SaveAllImages")).ToArray();
+
+            Assert.AreEqual(9, imageFileNames.Length);
         }
 
         [Test]
