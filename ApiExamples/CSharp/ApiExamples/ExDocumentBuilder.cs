@@ -318,7 +318,7 @@ namespace ApiExamples
             Assert.AreNotEqual(runs[0].Font.Underline, runs[2].Font.Underline);
         }
 
-        #if NETFRAMEWORK
+        #if NETFRAMEWORK || JAVA
         [Test]
         public void InsertWatermark()
         {
@@ -3163,7 +3163,7 @@ namespace ApiExamples
             Assert.AreEqual(Color.Red.ToArgb(), dstDoc.FirstSection.Body.Paragraphs[1].Runs[0].Font.Color.ToArgb());
         }
 
-#if NETFRAMEWORK || NETSTANDARD2_0
+        #if NETFRAMEWORK || NETSTANDARD2_0 || JAVA
         /// <summary>
         /// All markdown tests work with the same file
         /// That's why we need order for them 

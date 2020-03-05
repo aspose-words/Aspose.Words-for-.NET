@@ -1,5 +1,5 @@
 ﻿using System.IO;
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
 using System.Drawing;
 #else
 using SkiaSharp;
@@ -9,7 +9,7 @@ namespace ApiExamples.TestData.TestClasses
 {
     public class ImageTestClass
     {
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
         public Image Image { get; set; }        
 #else
         public SKBitmap Image { get; set; }
@@ -18,7 +18,7 @@ namespace ApiExamples.TestData.TestClasses
         public byte[] ImageBytes { get; set; }
         public string ImageUri { get; set; }
 
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
         public ImageTestClass(Image image, Stream imageStream, byte[] imageBytes, string imageUri)
         {
             Image = image;

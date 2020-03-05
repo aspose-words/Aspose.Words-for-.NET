@@ -19,7 +19,7 @@ using SaveFormat = Aspose.Words.SaveFormat;
 using SaveOptions = Aspose.Words.Saving.SaveOptions;
 using WarningInfo = Aspose.Words.WarningInfo;
 using WarningType = Aspose.Words.WarningType;
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
 using Image = System.Drawing.Image;
 #else 
 using SkiaSharp;
@@ -585,7 +585,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        #if NETFRAMEWORK
+        #if NETFRAMEWORK || JAVA
         [Test]
         public void PreblendImages()
         {

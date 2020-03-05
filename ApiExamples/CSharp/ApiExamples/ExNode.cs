@@ -739,7 +739,7 @@ namespace ApiExamples
             builder.Write("Cell 2");
             builder.EndTable();
 
-            #if NETFRAMEWORK
+            #if NETFRAMEWORK || JAVA
             builder.InsertImage(Image.FromFile(ImageDir + "Logo.jpg"));
             #else
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
@@ -848,7 +848,7 @@ namespace ApiExamples
             builder.Write("Cell 2");
             builder.EndTable();
 
-            #if NETFRAMEWORK
+            #if NETFRAMEWORK || JAVA
             builder.InsertImage(Image.FromFile(ImageDir + "Logo.jpg"));
             #else
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))

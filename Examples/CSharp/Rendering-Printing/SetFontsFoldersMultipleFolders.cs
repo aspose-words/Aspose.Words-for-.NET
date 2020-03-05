@@ -13,6 +13,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void Run()
         {
             // ExStart:SetFontsFoldersMultipleFolders
+            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); 
 
@@ -23,6 +24,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             // Fonts when rendering or embedding fonts. To add an extra font source while keeping system font sources then use both FontSettings.GetFontSources and
             // FontSettings.SetFontSources instead.
             FontSettings.SetFontsFolders(new string[] { @"C:\MyFonts\", @"D:\Misc\Fonts\" }, true);
+
             // Set font settings
             doc.FontSettings = FontSettings;
             dataDir = dataDir + "Rendering.SetFontsFolders_out.pdf";

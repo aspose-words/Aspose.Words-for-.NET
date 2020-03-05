@@ -38,7 +38,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExShape : ApiExampleBase
     {
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
         [Test]
         public void Insert()
         {
