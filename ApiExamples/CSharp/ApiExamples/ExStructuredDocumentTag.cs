@@ -121,7 +121,7 @@ namespace ApiExamples
             Assert.That(sdt.XmlMapping.StoreItemId, Is.Empty); //Assert that this sdt has no StoreItemId
         }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 // because of xamarin bug with CultureInfo (https://xamarin.github.io/bugzilla-archives/59/59077/bug.html)
+#if NETFRAMEWORK || NETSTANDARD2_0 || JAVA // because of xamarin bug with CultureInfo (https://xamarin.github.io/bugzilla-archives/59/59077/bug.html)
         [Test]
         public void Date()
         {
