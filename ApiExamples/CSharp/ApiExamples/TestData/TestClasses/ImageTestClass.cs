@@ -19,7 +19,7 @@ namespace ApiExamples.TestData.TestClasses
         public string ImageString { get; set; }
 
 #if NETFRAMEWORK || JAVA
-        public ImageTestClass(Image image, Stream imageStream, byte[] imageBytes, string imageUri)
+        public ImageTestClass(Image image, Stream imageStream, byte[] imageBytes, string imageString)
         {
             Image = image;
             ImageStream = imageStream;
