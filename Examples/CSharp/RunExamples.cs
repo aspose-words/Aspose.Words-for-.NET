@@ -372,6 +372,7 @@ namespace Aspose.Words.Examples.CSharp
             // DocumentLayoutHelper.Run();
             // EnumerateLayoutElements.Run();
             // DocumentPreviewAndPrint.Run();
+            // PrintPreviewSettingsDialog.Run();
             // ImageColorFilters.Run();
             // RenderShape.Run();
             // SaveAsMultipageTiff.Run();
@@ -420,6 +421,7 @@ namespace Aspose.Words.Examples.CSharp
             // ConditionalBlocks.Run();
             // SettingBackgroundColor.Run();
             // BuildOptions.RemoveEmptyParagraphs();
+            ChartSeries.Run();
 
             //Stop before exiting
             Console.WriteLine("\n\nProgram Finished. Press any key to exit....");

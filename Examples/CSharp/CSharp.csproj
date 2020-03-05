@@ -97,6 +97,7 @@
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="LINQ\BuildOptions.cs" />
+    <Compile Include="LINQ\ChartSeries.cs" />
     <Compile Include="LINQ\Common.cs" />
     <Compile Include="LINQ\Contract.cs" />
     <Compile Include="LINQ\Client.cs" />
@@ -377,6 +378,7 @@
     <Compile Include="Quick-Start\WorkingWithNodes.cs" />
     <Compile Include="Rendering-Printing\PrintMultiplePagesOnOneSheet.cs" />
     <Compile Include="Rendering-Printing\PrintDocViaXpsPrint.cs" />
+    <Compile Include="Rendering-Printing\PrintPreviewSettingsDialog.cs" />
     <Compile Include="Rendering-Printing\PrintProgressDialog.cs" />
     <Compile Include="Rendering-Printing\LoadHyphenationDictionaryForLanguage.cs" />
     <Compile Include="Rendering-Printing\HyphenateWordsOfLanguages.cs" />

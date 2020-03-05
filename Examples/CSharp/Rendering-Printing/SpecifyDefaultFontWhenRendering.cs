@@ -22,8 +22,10 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
 
             // If the default font defined here cannot be found during rendering then the closest font on the machine is used instead.
             FontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial Unicode MS";
+
             // Set font settings
             doc.FontSettings = FontSettings;
+            
             dataDir = dataDir + "Rendering.SetDefaultFont_out.pdf";
             // Now the set default font is used in place of any missing fonts during any rendering calls.
             doc.Save(dataDir);            
