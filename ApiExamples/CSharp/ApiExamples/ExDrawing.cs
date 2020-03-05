@@ -125,6 +125,7 @@ namespace ApiExamples
 
             arrow = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
+            Assert.AreEqual(ShapeType.Line, arrow.ShapeType);
             Assert.AreEqual(200.0d, arrow.Width);
             Assert.AreEqual(Color.Red.ToArgb(), arrow.Stroke.Color.ToArgb());
             Assert.AreEqual(ArrowType.Arrow, arrow.Stroke.StartArrowType);
@@ -138,6 +139,7 @@ namespace ApiExamples
 
             line = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
+            Assert.AreEqual(ShapeType.Line, line.ShapeType);
             Assert.AreEqual(40.0d, line.Top);
             Assert.AreEqual(200.0d, line.Width);
             Assert.AreEqual(20.0d, line.Height);
@@ -146,6 +148,7 @@ namespace ApiExamples
 
             filledInArrow = (Shape)doc.GetChild(NodeType.Shape, 2, true);
 
+            Assert.AreEqual(ShapeType.Arrow, filledInArrow.ShapeType);
             Assert.AreEqual(200.0d, filledInArrow.Width);
             Assert.AreEqual(40.0d, filledInArrow.Height);
             Assert.AreEqual(100.0d, filledInArrow.Top);
@@ -154,6 +157,7 @@ namespace ApiExamples
 
             filledInArrowImg = (Shape)doc.GetChild(NodeType.Shape, 3, true);
 
+            Assert.AreEqual(ShapeType.Arrow, filledInArrowImg.ShapeType);
             Assert.AreEqual(200.0d, filledInArrowImg.Width);
             Assert.AreEqual(40.0d, filledInArrowImg.Height);
             Assert.AreEqual(160.0d, filledInArrowImg.Top);
