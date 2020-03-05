@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using ApiExamples.TestData.TestClasses;
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
 using System.Drawing;
 #else
 using SkiaSharp;
@@ -10,7 +10,7 @@ namespace ApiExamples.TestData.TestBuilders
 {
     public class ImageTestBuilder : ApiExampleBase
     {
-#if NETFRAMEWORK        
+#if NETFRAMEWORK || JAVA
         private Image mImage;
 #else
         private SKBitmap mImage;
@@ -21,7 +21,7 @@ namespace ApiExamples.TestData.TestBuilders
 
         public ImageTestBuilder()
         {
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
             mImage = Image.FromFile(ImageDir + "Transparent background logo.png");            
 #else
             this.mImage = SKBitmap.Decode(ImageDir + "Transparent background logo.png");
@@ -31,7 +31,7 @@ namespace ApiExamples.TestData.TestBuilders
             mImageString = string.Empty;
         }
 
-#if NETFRAMEWORK        
+#if NETFRAMEWORK || JAVA
         public ImageTestBuilder WithImage(Image image)
         {
             mImage = image;

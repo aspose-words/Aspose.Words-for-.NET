@@ -14,7 +14,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
 using System.Data.OleDb;
 #endif
 
@@ -340,7 +340,7 @@ namespace ApiExamples
             Assert.IsTrue(logoImage.HasImage);
         }
 
-        #if NETFRAMEWORK
+        #if NETFRAMEWORK || JAVA
         //ExStart
         //ExFor:MailMerge.FieldMergingCallback
         //ExFor:MailMerge.ExecuteWithRegions(IDataReader,String)

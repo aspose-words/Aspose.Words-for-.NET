@@ -9,7 +9,7 @@ using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
 using Aspose.Words.Loading;
 using System.Net;
 #endif
@@ -151,7 +151,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        #if NETFRAMEWORK
+        #if NETFRAMEWORK || JAVA
         //ExStart
         //ExFor:DocumentBase.ResourceLoadingCallback
         //ExFor:IResourceLoadingCallback

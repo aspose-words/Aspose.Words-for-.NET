@@ -15,7 +15,7 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
 using Shape = Aspose.Words.Drawing.Shape;
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
 using System.Drawing.Imaging;
 using System.Net;
 #endif
@@ -25,7 +25,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExDrawing : ApiExampleBase
     {
-        #if NETFRAMEWORK
+        #if NETFRAMEWORK || JAVA
         [Test]
         public void VariousShapes()
         {

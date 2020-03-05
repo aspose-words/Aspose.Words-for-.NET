@@ -23,7 +23,7 @@ using Aspose.Words.MailMerging;
 using Aspose.Words.Replacing;
 using NUnit.Framework;
 using LoadOptions = Aspose.Words.LoadOptions;
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
 using Aspose.BarCode.BarCodeRecognition;
 #else
 using SkiaSharp;
@@ -320,7 +320,7 @@ namespace ApiExamples
                     .AddArgument(10).AddArgument(20.0).BuildAndInsert(run), Throws.TypeOf<ArgumentException>());
         }
 
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
         [Test]
         public void BarCodeWord2Pdf()
         {
@@ -2387,7 +2387,7 @@ namespace ApiExamples
             {
                 if (mImageFilenames.ContainsKey(e.FieldValue.ToString()))
                 {
-                    #if NETFRAMEWORK
+                    #if NETFRAMEWORK || JAVA
                     e.Image = Image.FromFile(mImageFilenames[e.FieldValue.ToString()]);
                     #else
                     e.Image = SKBitmap.Decode(mImageFilenames[e.FieldValue.ToString()]);
@@ -3419,7 +3419,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || JAVA
         [Test]
         public void FieldDate()
         {

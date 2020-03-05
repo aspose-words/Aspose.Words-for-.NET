@@ -9,7 +9,7 @@ using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
 using System.Drawing;
 using System.Drawing.Imaging;
 #else
@@ -75,7 +75,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        #if NETFRAMEWORK
+        #if NETFRAMEWORK || JAVA
         [Test]
         public void InsertImageFromImageClass()
         {
