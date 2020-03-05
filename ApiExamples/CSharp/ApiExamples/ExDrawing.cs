@@ -225,9 +225,30 @@ namespace ApiExamples
             }
             //ExEnd
 
-            string[] imageFileNames = Directory.GetFiles(ArtifactsDir).Where(s => s.StartsWith(ArtifactsDir + "Drawing.SaveAllImages")).ToArray();
+            string[] imageFileNames = Directory.GetFiles(ArtifactsDir).Where(s => s.StartsWith(ArtifactsDir + "Drawing.SaveAllImages.")).ToArray();
 
             Assert.AreEqual(9, imageFileNames.Length);
+
+            List<FileInfo> fileInfos = imageFileNames.Select(s => new FileInfo(s)).ToList();
+
+            Assert.AreEqual(399039, fileInfos[0].Length);
+            Assert.AreEqual(".Jpeg", fileInfos[0].Extension);
+            Assert.AreEqual(15698, fileInfos[1].Length);
+            Assert.AreEqual(".Png", fileInfos[1].Extension);
+            Assert.AreEqual(16872, fileInfos[2].Length);
+            Assert.AreEqual(".Emf", fileInfos[2].Extension);
+            Assert.AreEqual(1422618, fileInfos[3].Length);
+            Assert.AreEqual(".Wmf", fileInfos[3].Extension);
+            Assert.AreEqual(5891176, fileInfos[4].Length);
+            Assert.AreEqual(".Emf", fileInfos[4].Extension);
+            Assert.AreEqual(180766, fileInfos[5].Length);
+            Assert.AreEqual(".Jpeg", fileInfos[5].Extension);
+            Assert.AreEqual(28208, fileInfos[6].Length);
+            Assert.AreEqual(".Jpeg", fileInfos[6].Extension);
+            Assert.AreEqual(184914, fileInfos[7].Length);
+            Assert.AreEqual(".Jpeg", fileInfos[7].Extension);
+            Assert.AreEqual(173891, fileInfos[8].Length);
+            Assert.AreEqual(".Jpeg", fileInfos[8].Extension);
         }
 
         [Test]
