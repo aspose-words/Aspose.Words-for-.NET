@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -279,8 +280,31 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Drawing.ImportImage.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Drawing.ImportImage.docx");
+
+            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Shape, true).Count);
+
+            imgShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(0.0d, imgShape.Left);
+            Assert.AreEqual(0.0d, imgShape.Top);
+            Assert.AreEqual(300.0d, imgShape.Height);
+            Assert.AreEqual(300.0d, imgShape.Width);
+            Assert.True(imgShape.IsImage);
+            Assert.AreEqual(17106, imgShape.ImageData.ImageBytes.Length);
+
+            imgShape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            Assert.AreEqual(150.0d, imgShape.Left);
+            Assert.AreEqual(0.0d, imgShape.Top);
+            Assert.AreEqual(300.0d, imgShape.Height);
+            Assert.AreEqual(300.0d, imgShape.Width);
+            Assert.True(imgShape.IsImage);
+            Assert.AreEqual(20115, imgShape.ImageData.ImageBytes.Length);
+
         }
-        #endif
+#endif
 
         [Test]
         public void StrokePattern()
@@ -305,6 +329,12 @@ namespace ApiExamples
             Assert.NotNull(s.ImageBytes);
             File.WriteAllBytes(ArtifactsDir + "Drawing.StrokePattern.png", s.ImageBytes);
             //ExEnd
+
+            FileInfo imageFileInfo = new FileInfo(ArtifactsDir + "Drawing.StrokePattern.png");
+
+            Assert.AreEqual(".png", imageFileInfo.Extension);
+            Assert.AreEqual(77, imageFileInfo.Length);
+
         }
 
         //ExStart
@@ -354,6 +384,7 @@ namespace ApiExamples
             group.Accept(printer);
 
             Console.WriteLine(printer.GetText());
+            TestGroupShapes(doc); //ExSkip
         }
 
         /// <summary>
@@ -403,6 +434,28 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestGroupShapes(Document doc)
+        {
+            doc = DocumentHelper.SaveOpen(doc);
+            GroupShape shapes = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
+
+            Assert.AreEqual(2, shapes.ChildNodes.Count);
+
+            Shape shape = (Shape)shapes.ChildNodes[0];
+
+            Assert.AreEqual(ShapeType.Balloon, shape.ShapeType);
+            Assert.AreEqual(200.0d, shape.Width);
+            Assert.AreEqual(200.0d, shape.Height);
+            Assert.AreEqual(Color.Red.ToArgb(), shape.StrokeColor.ToArgb());
+
+            shape = (Shape)shapes.ChildNodes[1];
+
+            Assert.AreEqual(ShapeType.Cube, shape.ShapeType);
+            Assert.AreEqual(100.0d, shape.Width);
+            Assert.AreEqual(100.0d, shape.Height);
+            Assert.AreEqual(Color.Blue.ToArgb(), shape.StrokeColor.ToArgb());
+        }
+
         [Test]
         public void TextBox()
         {
@@ -427,6 +480,15 @@ namespace ApiExamples
             
             doc.Save(ArtifactsDir + "Drawing.TextBox.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Drawing.TextBox.docx");
+            textbox = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(ShapeType.TextBox, textbox.ShapeType);
+            Assert.AreEqual(100.0d, textbox.Width);
+            Assert.AreEqual(100.0d, textbox.Height);
+            Assert.AreEqual(LayoutFlow.BottomToTop, textbox.TextBox.LayoutFlow);
+            Assert.AreEqual("This text is flipped 90 degrees to the left.", textbox.GetText().Trim());
         }
 
         [Test]
@@ -438,25 +500,29 @@ namespace ApiExamples
             //ExFor:ImageData.ToStream
             //ExSummary:Shows how to access raw image data in a shape's ImageData object.
             Document imgSourceDoc = new Document(MyDir + "Images.docx");
+            Assert.AreEqual(10, imgSourceDoc.GetChildNodes(NodeType.Shape, true).Count); //ExSkip
 
-            // Images are stored as shapes
-            // Get into the document's shape collection to verify that it contains 10 images
-            List<Shape> shapes = imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
-            Assert.AreEqual(10, shapes.Count);
+            // Get a shape from the document that contains an image
+            Shape imgShape = (Shape)imgSourceDoc.GetChild(NodeType.Shape, 0, true);
 
             // ToByteArray() returns the value of the ImageBytes property
-            Assert.AreEqual(shapes[0].ImageData.ImageBytes, shapes[0].ImageData.ToByteArray());
+            Assert.AreEqual(imgShape.ImageData.ImageBytes, imgShape.ImageData.ToByteArray());
 
             // Put the shape's image data into a stream
             // Then, put the image data from that stream into another stream which creates an image file in the local file system
-            using (Stream imgStream = shapes[0].ImageData.ToStream())
+            using (Stream imgStream = imgShape.ImageData.ToStream())
             {
                 using (FileStream outStream = new FileStream(ArtifactsDir + "Drawing.GetDataFromImage.png", FileMode.Create))
                 {
                     imgStream.CopyTo(outStream);
                 }
-            }        
+            }
             //ExEnd
+
+            FileInfo imageFileInfo = new FileInfo(ArtifactsDir + "Drawing.GetDataFromImage.png");
+
+            Assert.AreEqual(".png", imageFileInfo.Extension);
+            Assert.AreEqual(399039, imageFileInfo.Length);
         }
 
         [Test]
@@ -481,7 +547,6 @@ namespace ApiExamples
             Document imgSourceDoc = new Document(MyDir + "Images.docx");
 
             Shape sourceShape = (Shape)imgSourceDoc.GetChildNodes(NodeType.Shape, true)[0];
-            
             Document dstDoc = new Document();
 
             // Import a shape from the source document and append it to the first paragraph, effectively cloning it
@@ -533,6 +598,36 @@ namespace ApiExamples
 
             dstDoc.Save(ArtifactsDir + "Drawing.ImageData.docx");
             //ExEnd
+
+            imgSourceDoc = new Document(ArtifactsDir + "Drawing.ImageData.docx");
+            sourceShape = (Shape)imgSourceDoc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.True(sourceShape.IsImage);
+            Assert.AreEqual(399039, sourceShape.ImageData.ImageBytes.Length);
+            Assert.AreEqual("Imported Image", sourceShape.ImageData.Title);
+            Assert.True(sourceShape.ImageData.HasImage);
+            Assert.AreEqual(0.8d, sourceShape.ImageData.Brightness, 0.1d);
+            Assert.AreEqual(1.0d, sourceShape.ImageData.Contrast, 0.1d);
+            Assert.AreEqual(Color.White.ToArgb(), sourceShape.ImageData.ChromaKey.ToArgb());
+
+            sourceShape = (Shape)imgSourceDoc.GetChild(NodeType.Shape, 1, true);
+
+            Assert.True(sourceShape.IsImage);
+            Assert.AreEqual(399039, sourceShape.ImageData.ImageBytes.Length);
+            Assert.True(sourceShape.ImageData.HasImage);
+            Assert.True(sourceShape.ImageData.GrayScale);
+
+            sourceShape = (Shape)imgSourceDoc.GetChild(NodeType.Shape, 2, true);
+
+            Assert.True(sourceShape.IsImage);
+            Assert.AreEqual(399039, sourceShape.ImageData.ImageBytes.Length);
+            Assert.True(sourceShape.ImageData.HasImage);
+            Assert.True(sourceShape.ImageData.BiLevel);
+            Assert.AreEqual(0.3d, sourceShape.ImageData.CropBottom, 0.1d);
+            Assert.AreEqual(0.3d, sourceShape.ImageData.CropLeft, 0.1d);
+            Assert.AreEqual(0.3d, sourceShape.ImageData.CropTop, 0.1d);
+            Assert.AreEqual(0.3d, sourceShape.ImageData.CropRight, 0.1d);
+
         }
 
         [Test]
@@ -570,6 +665,21 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Drawing.ImageSize.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Drawing.ImageSize.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.True(shape.IsImage);
+            Assert.AreEqual(600.0d, shape.Width);
+            Assert.AreEqual(600.0d, shape.Height);
+            Assert.AreEqual(20115, shape.ImageData.ImageBytes.Length);
+
+            imageSize = shape.ImageData.ImageSize;
+
+            Assert.AreEqual(400, imageSize.HeightPixels);
+            Assert.AreEqual(400, imageSize.WidthPixels);
+            Assert.AreEqual(95.98d, imageSize.HorizontalResolution, delta);
+            Assert.AreEqual(95.98d, imageSize.VerticalResolution, delta);
         }
     }
 }
