@@ -16,23 +16,23 @@ namespace ApiExamples.TestData.TestClasses
 #endif
         public Stream ImageStream { get; set; }
         public byte[] ImageBytes { get; set; }
-        public string ImageUri { get; set; }
+        public string ImageString { get; set; }
 
 #if NETFRAMEWORK
-        public ImageTestClass(Image image, Stream imageStream, byte[] imageBytes, string imageUri)
+        public ImageTestClass(Image image, Stream imageStream, byte[] imageBytes, string imageString)
         {
             Image = image;
             ImageStream = imageStream;
             ImageBytes = imageBytes;
-            ImageUri = imageUri;
+            ImageString = imageString;
         }
 #else
-        public ImageTestClass(SKBitmap image, Stream imageStream, byte[] imageBytes, string imageUri)
+        public ImageTestClass(SKBitmap image, Stream imageStream, byte[] imageBytes, string imageString)
         {
             this.Image = image;
             this.ImageStream = imageStream;
             this.ImageBytes = imageBytes;
-            this.ImageUri = imageUri;
+            this.ImageString = imageString;
         }        
 #endif
     }

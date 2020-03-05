@@ -17,7 +17,7 @@ namespace ApiExamples.TestData.TestBuilders
 #endif
         private Stream mImageStream;
         private byte[] mImageBytes;
-        private string mImageUri;
+        private string mImageString;
 
         public ImageTestBuilder()
         {
@@ -28,7 +28,7 @@ namespace ApiExamples.TestData.TestBuilders
 #endif
             mImageStream = Stream.Null;
             mImageBytes = new byte[0];
-            mImageUri = string.Empty;
+            mImageString = string.Empty;
         }
 
 #if NETFRAMEWORK        
@@ -57,15 +57,15 @@ namespace ApiExamples.TestData.TestBuilders
             return this;
         }
 
-        public ImageTestBuilder WithImageUri(string imageUri)
+        public ImageTestBuilder WithImageString(string imageString)
         {
-            mImageUri = imageUri;
+            mImageString = imageString;
             return this;
         }
 
         public ImageTestClass Build()
         {
-            return new ImageTestClass(mImage, mImageStream, mImageBytes, mImageUri);
+            return new ImageTestClass(mImage, mImageStream, mImageBytes, mImageString);
         }
     }
 }
