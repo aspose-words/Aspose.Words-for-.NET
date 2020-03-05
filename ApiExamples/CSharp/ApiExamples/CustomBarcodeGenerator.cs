@@ -11,7 +11,7 @@ using System.Globalization;
 using Aspose.BarCode;
 using Aspose.Words.Fields;
 using Image =
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
 System.Drawing.Image;
 #else
 SkiaSharp.SKBitmap;
@@ -176,7 +176,7 @@ namespace ApiExamples
                 builder.AutoSize = false;
             }
             
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
             return builder.BarCodeImage;            
 #else
             builder.BarCodeImage.Save(ArtifactsDir + "GetBarcodeImage.png");
@@ -201,7 +201,7 @@ namespace ApiExamples
             };
 
             // Hardcode type for old-fashioned Barcode
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
             return builder.BarCodeImage;
 #else
             builder.BarCodeImage.Save(ApiExampleBase.ArtifactsDir + "OldBarcodeImage.png");            

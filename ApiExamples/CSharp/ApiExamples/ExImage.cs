@@ -12,7 +12,7 @@ using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
 using System.Drawing;
 #else
 using SkiaSharp;
@@ -71,7 +71,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        #if NETFRAMEWORK
+        #if NETFRAMEWORK || JAVA
         [Test]
         [Category("SkipMono")]
         public void CreateFromImage()

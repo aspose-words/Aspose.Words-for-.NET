@@ -9,7 +9,7 @@ using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 #else
@@ -55,7 +55,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
         [Test]
         public void GraphicsQuality()
         {
