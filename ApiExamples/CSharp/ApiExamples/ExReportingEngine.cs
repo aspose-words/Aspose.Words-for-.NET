@@ -27,7 +27,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExReportingEngine : ApiExampleBase
     {
-        private readonly string mImage = ImageDir + "Aspose.Words.jpg";
+        private readonly string mImage = ImageDir + "Logo.jpg";
         private readonly string mDocument = MyDir + "Reporting engine template - Data table.docx";
 
         [Test]
@@ -395,7 +395,7 @@ namespace ApiExamples
             Document template =
                 DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Image]>>", ShapeType.TextBox);
             
-            #if NETFRAMEWORK
+            #if NETFRAMEWORK || JAVA
             ImageTestClass image = new ImageTestBuilder().WithImage(Image.FromFile(mImage, true)).Build();
             #else
             ImageTestClass image = new ImageTestBuilder().WithImage(SKBitmap.Decode(mImage)).Build();

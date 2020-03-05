@@ -9,7 +9,7 @@ using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
 using Aspose.Words.Loading;
 using System.Net;
 #endif
@@ -135,7 +135,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocumentBase.BackgroundShapeFlatColor.docx");
 
             // Setting the image will override the flat background color with the image
-            shapeRectangle.ImageData.SetImage(ImageDir + "Watermark.png");
+            shapeRectangle.ImageData.SetImage(ImageDir + "Transparent background logo.png");
             Assert.IsTrue(doc.BackgroundShape.HasImage);
 
             // This image is a photo with a white background
@@ -151,7 +151,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        #if NETFRAMEWORK
+        #if NETFRAMEWORK || JAVA
         //ExStart
         //ExFor:DocumentBase.ResourceLoadingCallback
         //ExFor:IResourceLoadingCallback
@@ -221,7 +221,7 @@ namespace ApiExamples
                     // We can find and add an image any way we like, as long as args.SetData() is called with some image byte array as a parameter
                     if (args.OriginalUri == "My Watermark")
                     {
-                        System.Drawing.Image watermark = System.Drawing.Image.FromFile(ImageDir + "Watermark.png");
+                        System.Drawing.Image watermark = System.Drawing.Image.FromFile(ImageDir + "Transparent background logo.png");
 
                         System.Drawing.ImageConverter converter = new System.Drawing.ImageConverter();
                         byte[] imageBytes = (byte[])converter.ConvertTo(watermark, typeof(byte[]));

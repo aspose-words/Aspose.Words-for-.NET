@@ -9,7 +9,7 @@ using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 #else
@@ -55,7 +55,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
         [Test]
         public void GraphicsQuality()
         {
@@ -98,7 +98,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Use a DocumentBuilder to insert a .wmf image into the document
-            builder.InsertImage(Image.FromFile(ImageDir + "Hammer.wmf"));
+            builder.InsertImage(Image.FromFile(ImageDir + "Windows MetaFile.wmf"));
 
             // For documents that contain .wmf images, when converting the documents themselves to images,
             // we can use a ImageSaveOptions object to designate a rendering method for the .wmf images

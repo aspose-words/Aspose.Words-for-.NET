@@ -15,7 +15,7 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
 using Shape = Aspose.Words.Drawing.Shape;
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
 using System.Drawing.Imaging;
 using System.Net;
 #endif
@@ -25,7 +25,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExDrawing : ApiExampleBase
     {
-        #if NETFRAMEWORK
+        #if NETFRAMEWORK || JAVA
         [Test]
         public void VariousShapes()
         {
@@ -156,9 +156,9 @@ namespace ApiExamples
             Document imgSourceDoc = new Document(MyDir + "Images.docx");
 
             // Images are stored as shapes
-            // Get into the document's shape collection to verify that it contains 6 images
+            // Get into the document's shape collection to verify that it contains 10 images
             List<Shape> shapes = imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
-            Assert.AreEqual(6, shapes.Count);
+            Assert.AreEqual(10, shapes.Count);
 
             // We will use an ImageFormatConverter to determine an image's file extension
             ImageFormatConverter formatConverter = new ImageFormatConverter();
@@ -193,7 +193,7 @@ namespace ApiExamples
             Document doc = new Document();
 
             // We can get an image from a file, set it as the image of a shape and append it to a paragraph
-            Image srcImage = Image.FromFile(ImageDir + "Aspose.Words.jpg");
+            Image srcImage = Image.FromFile(ImageDir + "Logo.jpg");
 
             Shape imgShape = new Shape(doc, ShapeType.Image);
             doc.FirstSection.Body.FirstParagraph.AppendChild(imgShape);
@@ -201,7 +201,7 @@ namespace ApiExamples
             srcImage.Dispose();
 
             // We can also open an image file using a stream and set its contents as a shape's image 
-            using (Stream stream = new FileStream(ImageDir + "Aspose.Words.jpg", FileMode.Open, FileAccess.Read))
+            using (Stream stream = new FileStream(ImageDir + "Logo.jpg", FileMode.Open, FileAccess.Read))
             {
                 imgShape = new Shape(doc, ShapeType.Image);
                 doc.FirstSection.Body.FirstParagraph.AppendChild(imgShape);
@@ -372,9 +372,9 @@ namespace ApiExamples
             Document imgSourceDoc = new Document(MyDir + "Images.docx");
 
             // Images are stored as shapes
-            // Get into the document's shape collection to verify that it contains 6 images
+            // Get into the document's shape collection to verify that it contains 10 images
             List<Shape> shapes = imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
-            Assert.AreEqual(6, shapes.Count);
+            Assert.AreEqual(10, shapes.Count);
 
             // ToByteArray() returns the value of the ImageBytes property
             Assert.AreEqual(shapes[0].ImageData.ImageBytes, shapes[0].ImageData.ToByteArray());
@@ -480,7 +480,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a shape into the document which contains an image taken from our local file system
-            Shape shape = builder.InsertImage(ImageDir + "Aspose.Words.jpg");
+            Shape shape = builder.InsertImage(ImageDir + "Logo.jpg");
 
             // If the shape contains an image, its ImageData property will be valid, and it will contain an ImageSize object
             ImageSize imageSize = shape.ImageData.ImageSize; 

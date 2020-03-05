@@ -739,10 +739,10 @@ namespace ApiExamples
             builder.Write("Cell 2");
             builder.EndTable();
 
-            #if NETFRAMEWORK
-            builder.InsertImage(Image.FromFile(ImageDir + "Aspose.Words.jpg"));
+            #if NETFRAMEWORK || JAVA
+            builder.InsertImage(Image.FromFile(ImageDir + "Logo.jpg"));
             #else
-            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Aspose.Words.jpg"))
+            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
                 builder.InsertImage(image);
             #endif
 
@@ -848,10 +848,10 @@ namespace ApiExamples
             builder.Write("Cell 2");
             builder.EndTable();
 
-            #if NETFRAMEWORK
-            builder.InsertImage(Image.FromFile(ImageDir + "Aspose.Words.jpg"));
+            #if NETFRAMEWORK || JAVA
+            builder.InsertImage(Image.FromFile(ImageDir + "Logo.jpg"));
             #else
-            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Aspose.Words.jpg"))
+            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
                 builder.InsertImage(image);
             #endif
 

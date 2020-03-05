@@ -244,7 +244,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "HeaderFooter.HeaderFooterOrder.docx");
 
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || JAVA
             Assert.AreEqual("First header\nFirst footer\nSecond header\nSecond footer\nThird header\n" +
                 "Third footer\n", logger.Text.Replace("\r", ""));
 #else
@@ -260,7 +260,7 @@ namespace ApiExamples
             firstPageSection.PageSetup.DifferentFirstPageHeaderFooter = false;
             doc.Range.Replace(new Regex("(header|footer)"), "", options);
 
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || JAVA
             Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\n" +
                 "Second footer\n", logger.Text.Replace("\r", ""));
 #else
@@ -323,7 +323,7 @@ namespace ApiExamples
 
             // Insert absolutely positioned image into the top/left corner of the header
             // Distance from the top/left edges of the page is set to 10 points
-            string imageFileName = ImageDir + "Aspose.Words.jpg";
+            string imageFileName = ImageDir + "Logo.jpg";
             builder.InsertImage(imageFileName, RelativeHorizontalPosition.Page, 10, RelativeVerticalPosition.Page, 10,
                 50, 50, WrapType.Through);
 
