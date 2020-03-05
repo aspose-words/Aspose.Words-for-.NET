@@ -719,7 +719,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Charts.ChartDataLabel.ShowBubbleSize
             //ExFor:Charts.IChartDataPoint.Bubble3D
-            //ExSummary:Demonstrates bubble chart-exclusive features.
+            //ExSummary:Shows how to use 3D effects with bubble charts.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -757,7 +757,7 @@ namespace ApiExamples
         //ExFor:ChartSeriesCollection.Add(String,Double[],Double[])
         //ExFor:ChartSeriesCollection.Add(String,Double[],Double[],Double[])
         //ExFor:ChartSeriesCollection.Add(String,String[],Double[])
-        //ExSummary:Shows an appropriate graph type for each chart series.
+        //ExSummary:Shows how to pick an appropriate graph type for a chart series.
         [Test] //ExSkip
         public void ChartSeriesCollection()
         {

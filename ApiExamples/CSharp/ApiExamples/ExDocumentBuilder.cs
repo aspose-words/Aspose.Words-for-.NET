@@ -92,7 +92,7 @@ namespace ApiExamples
             //ExFor:PageSetup.DifferentFirstPageHeaderFooter
             //ExFor:PageSetup.OddAndEvenPagesHeaderFooter
             //ExFor:BreakType
-            //ExSummary:Creates headers and footers in a document using DocumentBuilder.
+            //ExSummary:Shows how to create headers and footers in a document using DocumentBuilder.
             // Create a blank document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -426,7 +426,7 @@ namespace ApiExamples
             //ExFor:WrapType
             //ExFor:RelativeHorizontalPosition
             //ExFor:RelativeVerticalPosition
-            //ExSummary:Inserts a watermark image into a document using DocumentBuilder (.NetStandard 2.0).
+            //ExSummary:Shows how to insert a watermark image into a document using DocumentBuilder (.NetStandard 2.0).
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -572,7 +572,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.StartBookmark
             //ExFor:DocumentBuilder.EndBookmark
-            //ExSummary:Adds some text into the document and encloses the text in a bookmark using DocumentBuilder.
+            //ExSummary:Shows how to add some text into the document and encloses the text in a bookmark using DocumentBuilder.
             DocumentBuilder builder = new DocumentBuilder();
 
             builder.StartBookmark("MyBookmark");
@@ -594,7 +594,7 @@ namespace ApiExamples
             //ExFor:TextFormFieldType
             //ExFor:DocumentBuilder.InsertTextInput
             //ExFor:DocumentBuilder.InsertComboBox
-            //ExSummary:Builds a sample form to fill.
+            //ExSummary:Shows how to build a form field.
             DocumentBuilder builder = new DocumentBuilder();
 
             // Insert a text form field for input a name
@@ -2891,7 +2891,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertOnlineVideo(String, Double, Double)
-            //ExSummary:Show how to insert online video into a document using video url
+            //ExSummary:Shows how to insert online video into a document using video url
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

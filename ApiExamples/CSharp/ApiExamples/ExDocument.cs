@@ -82,7 +82,7 @@ namespace ApiExamples
             {
                 //ExStart
                 //ExFor:License.SetLicense(Stream)
-                //ExSummary:Initializes a license from a stream.
+                //ExSummary:Shows how to initialize a license from a stream.
                 License license = new License();
                 license.SetLicense(myStream);
                 //ExEnd
@@ -575,7 +575,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.Save(String,SaveFormat)
             //ExFor:SaveFormat
-            //ExSummary:Converts from DOCX to HTML format.
+            //ExSummary:Shows how to convert from DOCX to HTML format.
             Document doc = new Document(MyDir + "Document.docx");
             doc.Save(ArtifactsDir + "Document.ConvertToHtml.html", SaveFormat.Html);
             //ExEnd
@@ -638,7 +638,7 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions.SaveFormat
             //ExFor:SaveOptions
             //ExFor:SaveOptions.SaveFormat
-            //ExSummary:Converts a document to EPUB with save options specified.
+            //ExSummary:Shows how to convert a document to EPUB with save options specified.
             // Open an existing document from disk
             Document doc = new Document(MyDir + "Rendering.docx");
 
@@ -1127,7 +1127,7 @@ namespace ApiExamples
             //ExFor:Document.DefaultTabStop
             //ExFor:ControlChar.Tab
             //ExFor:ControlChar.TabChar
-            //ExSummary:Changes default tab positions for the document and inserts text with some tab characters.
+            //ExSummary:Shows how to change default tab positions for the document and inserts text with some tab characters.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -2116,7 +2116,7 @@ namespace ApiExamples
             //ExFor:PlainTextDocument.#ctor(String)
             //ExFor:PlainTextDocument.#ctor(String, LoadOptions)
             //ExFor:PlainTextDocument.Text
-            //ExSummary:Show how to simply extract text from a document.
+            //ExSummary:Shows how to simply extract text from a document.
             TxtLoadOptions loadOptions = new TxtLoadOptions { DetectNumberingWithWhitespaces = false };
 
             PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Document.docx");
@@ -2132,7 +2132,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PlainTextDocument.BuiltInDocumentProperties
-            //ExSummary:Show how to get BuiltIn properties of plain text document.
+            //ExSummary:Shows how to get BuiltIn properties of plain text document.
             PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmarks.docx");
             BuiltInDocumentProperties builtInDocumentProperties = plaintext.BuiltInDocumentProperties;
             //ExEnd
@@ -2145,7 +2145,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PlainTextDocument.CustomDocumentProperties
-            //ExSummary:Show how to get custom properties of plain text document.
+            //ExSummary:Shows how to get custom properties of plain text document.
             PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmarks.docx");
             CustomDocumentProperties customDocumentProperties = plaintext.CustomDocumentProperties;
             //ExEnd
@@ -2159,7 +2159,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:PlainTextDocument.#ctor(Stream)
             //ExFor:PlainTextDocument.#ctor(Stream, LoadOptions)
-            //ExSummary:Show how to simply extract text from a stream.
+            //ExSummary:Shows how to simply extract text from a stream.
             TxtLoadOptions loadOptions = new TxtLoadOptions();
             loadOptions.DetectNumberingWithWhitespaces = false;
 
@@ -2201,7 +2201,7 @@ namespace ApiExamples
             //ExFor:Document.Save(Stream, String, Saving.SaveOptions)
             //ExFor:SaveOptions.UseAntiAliasing
             //ExFor:SaveOptions.UseHighQualityRendering
-            //ExSummary:Improve the quality of a rendered document with SaveOptions.
+            //ExSummary:Shows how to improve the quality of a rendered document with SaveOptions.
             Document doc = new Document(MyDir + "Rendering.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -3300,7 +3300,7 @@ namespace ApiExamples
             //ExFor:RevisionOptions.ShowOriginalRevision
             //ExFor:RevisionOptions.ShowRevisionMarks
             //ExFor:RevisionTextEffect
-            //ExSummary:Show how to edit appearance of revisions.
+            //ExSummary:Shows how to edit appearance of revisions.
             Document doc = new Document(MyDir + "Revisions.docx");
 
             // Get the RevisionOptions object that controls the appearance of revisions
@@ -3459,7 +3459,7 @@ namespace ApiExamples
         //ExFor:Layout.LayoutEnumerator.Reset
         //ExFor:Layout.LayoutEnumerator.Text
         //ExFor:Layout.LayoutEnumerator.Type
-        //ExSummary:Demonstrates ways of traversing a document's layout entities.
+        //ExSummary:Shows ways of traversing a document's layout entities.
         [Test] //ExSkip
         public void LayoutEnumerator()
         {
