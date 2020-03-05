@@ -200,29 +200,27 @@ namespace ApiExamples
             //ExSummary:Shows how to save all the images from a document to the file system.
             Document imgSourceDoc = new Document(MyDir + "Images.docx");
 
-            // Images are stored as shapes
-            // Get into the document's shape collection to verify that it contains 9 images
-            List<Shape> shapes = imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().Where(s => s.HasImage).ToList();
-            Assert.AreEqual(9, shapes.Count);
-
+            // Images are stored inside shapes, and if a shape contains an image, its "HasImage" flag will be set
+            // Get an enumerator for all shapes with that flag in the document
+            IEnumerable<Shape> shapes = imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().Where(s => s.HasImage);
+            
             // We will use an ImageFormatConverter to determine an image's file extension
             ImageFormatConverter formatConverter = new ImageFormatConverter();
 
             // Go over all of the document's shapes
             // If a shape contains image data, save the image in the local file system
-            for (int i = 0; i < shapes.Count; i++)
+            using (IEnumerator<Shape> enumerator = shapes.GetEnumerator())
             {
-                ImageData imageData = shapes[i].ImageData;
+                int shapeIndex = 0;
 
-                if (imageData.HasImage)
+                while (enumerator.MoveNext())
                 {
+                    ImageData imageData = enumerator.Current.ImageData;
                     ImageFormat format = imageData.ToImage().RawFormat;
                     string fileExtension = formatConverter.ConvertToString(format);
 
-                    using (FileStream fileStream = File.Create(ArtifactsDir + $"Drawing.SaveAllImages.{i}.{fileExtension}"))
-                    {
+                    using (FileStream fileStream = File.Create(ArtifactsDir + $"Drawing.SaveAllImages.{++shapeIndex}.{fileExtension}"))
                         imageData.Save(fileStream);
-                    }
                 }
             }
             //ExEnd
