@@ -12,7 +12,7 @@ using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
 using System.Drawing;
 #else
 using SkiaSharp;
@@ -36,7 +36,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             builder.Write("Image from local file: ");
-            builder.InsertImage(ImageDir + "Aspose.Words.jpg");
+            builder.InsertImage(ImageDir + "Logo.jpg");
             builder.Writeln();
 
             builder.Write("Image from an Internet url, automatically downloaded for you: ");
@@ -56,7 +56,7 @@ namespace ApiExamples
             // This creates a builder and also an empty document inside the builder
             DocumentBuilder builder = new DocumentBuilder();
 
-            Stream stream = File.OpenRead(ImageDir + "Aspose.Words.jpg");
+            Stream stream = File.OpenRead(ImageDir + "Logo.jpg");
             try
             {
                 builder.Write("Image from stream: ");
@@ -71,7 +71,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        #if NETFRAMEWORK
+        #if NETFRAMEWORK || JAVA
         [Test]
         [Category("SkipMono")]
         public void CreateFromImage()
@@ -80,7 +80,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             // Insert a raster image
-            Image rasterImage = Image.FromFile(ImageDir + "Aspose.Words.jpg");
+            Image rasterImage = Image.FromFile(ImageDir + "Logo.jpg");
             try
             {
                 builder.Write("Raster image: ");
@@ -93,7 +93,7 @@ namespace ApiExamples
             }
 
             // Aspose.Words allows to insert a metafile too
-            Image metafile = Image.FromFile(ImageDir + "Hammer.wmf");
+            Image metafile = Image.FromFile(ImageDir + "Windows MetaFile.wmf");
             try
             {
                 builder.Write("Metafile: ");
@@ -117,7 +117,7 @@ namespace ApiExamples
 
             // Insert a raster image
             // SKBitmap doesn't allow to insert a metafiles
-            using (SKBitmap rasterImage = SKBitmap.Decode(ImageDir + "Aspose.Words.jpg"))
+            using (SKBitmap rasterImage = SKBitmap.Decode(ImageDir + "Logo.jpg"))
             {
                 builder.Write("Raster image: ");
                 builder.InsertImage(rasterImage);
@@ -151,7 +151,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             // By default, the image is inline
-            Shape shape = builder.InsertImage(ImageDir + "Aspose.Words.jpg");
+            Shape shape = builder.InsertImage(ImageDir + "Logo.jpg");
 
             // Make the image float, put it behind text and center on the page
             shape.WrapType = WrapType.None;
@@ -182,7 +182,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             // By default, the image is inline
-            Shape shape = builder.InsertImage(ImageDir + "Aspose.Words.jpg");
+            Shape shape = builder.InsertImage(ImageDir + "Logo.jpg");
 
             // Make the image float, put it behind text and center on the page
             shape.WrapType = WrapType.None;
@@ -220,7 +220,7 @@ namespace ApiExamples
             // This creates a builder and also an empty document inside the builder
             DocumentBuilder builder = new DocumentBuilder();
 
-            Shape shape = builder.InsertImage(ImageDir + "Hammer.wmf");
+            Shape shape = builder.InsertImage(ImageDir + "Windows MetaFile.wmf");
             shape.HRef = "http://www.aspose.com/Community/Forums/75/ShowForum.aspx";
             shape.Target = "New Window";
             shape.ScreenTip = "Aspose.Words Support Forums";
@@ -243,7 +243,7 @@ namespace ApiExamples
             // TopCornersOneRoundedOneSnipped, SingleCornerRounded, TopCornersRounded, DiagonalCornersRounded
             // please use DocumentBuilder.InsertShape methods
             Shape shape = new Shape(doc, ShapeType.Image);
-            shape.ImageData.SetImage(ImageDir + "Hammer.wmf");
+            shape.ImageData.SetImage(ImageDir + "Windows MetaFile.wmf");
             shape.Width = 100;
             shape.Height = 100;
 
@@ -265,7 +265,7 @@ namespace ApiExamples
             //ExSummary:Shows how to insert a linked image into a document. 
             DocumentBuilder builder = new DocumentBuilder();
 
-            string imageFileName = ImageDir + "Hammer.wmf";
+            string imageFileName = ImageDir + "Windows MetaFile.wmf";
 
             builder.Write("Image linked, not stored in the document: ");
 
@@ -307,7 +307,7 @@ namespace ApiExamples
             //ExFor:Node.Remove
             //ExSummary:Shows how to delete all images from a document.
             Document doc = new Document(MyDir + "Images.docx");
-            Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
+            Assert.AreEqual(10, doc.GetChildNodes(NodeType.Shape, true).Count);
 
             // Here we get all shapes from the document node, but you can do this for any smaller
             // node too, for example delete shapes from a single section or a paragraph
@@ -340,7 +340,7 @@ namespace ApiExamples
             //ExFor:Node.PreviousPreOrder(Node)
             //ExSummary:Shows how to delete all images from a document using pre-order tree traversal.
             Document doc = new Document(MyDir + "Images.docx");
-            Assert.AreEqual(6, doc.GetChildNodes(NodeType.Shape, true).Count);
+            Assert.AreEqual(10, doc.GetChildNodes(NodeType.Shape, true).Count);
 
             Node curNode = doc;
             while (curNode != null)
@@ -383,7 +383,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             // By default, the image is inserted at 100% scale
-            Shape shape = builder.InsertImage(ImageDir + "Aspose.Words.jpg");
+            Shape shape = builder.InsertImage(ImageDir + "Logo.jpg");
 
             // It is easy to change the shape size. In this case, make it 50% relative to the current shape size
             shape.Width = shape.Width * 0.5;

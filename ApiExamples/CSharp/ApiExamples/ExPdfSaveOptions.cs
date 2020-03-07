@@ -19,7 +19,7 @@ using SaveFormat = Aspose.Words.SaveFormat;
 using SaveOptions = Aspose.Words.Saving.SaveOptions;
 using WarningInfo = Aspose.Words.WarningInfo;
 using WarningType = Aspose.Words.WarningType;
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
 using Image = System.Drawing.Image;
 #else 
 using SkiaSharp;
@@ -397,10 +397,6 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Corrupted image.docx");
 
-            Shape s = (Shape) doc.GetChildNodes(NodeType.Shape, true)[0];
-            
-            s.ImageData.Save(ImageDir + "Img.png");
-
             SaveWarningCallback saveWarningCallback = new SaveWarningCallback();
             doc.WarningCallback = saveWarningCallback;
 
@@ -589,7 +585,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        #if NETFRAMEWORK
+        #if NETFRAMEWORK || JAVA
         [Test]
         public void PreblendImages()
         {
@@ -599,7 +595,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Image img = Image.FromFile(ImageDir + "TransparentBG.png");
+            Image img = Image.FromFile(ImageDir + "Transparent background logo.png");
             builder.InsertImage(img);
 
             // Create a PdfSaveOptions object and setting this flag may change the quality and size of the output .pdf
@@ -607,7 +603,7 @@ namespace ApiExamples
             PdfSaveOptions options = new PdfSaveOptions();
             options.PreblendImages = true;
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImagest.pdf", options);
             //ExEnd
         }
 #else
@@ -620,7 +616,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            using (SKBitmap image = SKBitmap.Decode(ImageDir + "TransparentBG.png"))
+            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Transparent background logo.png"))
             {
                 builder.InsertImage(image);
             }

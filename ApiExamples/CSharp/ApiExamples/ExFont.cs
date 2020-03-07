@@ -5,8 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using Font = Aspose.Words.Font;
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || JAVA
 using System;
 using System.Collections;
 using System.Drawing;
