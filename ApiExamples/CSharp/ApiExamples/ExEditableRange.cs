@@ -30,10 +30,17 @@ namespace ApiExamples
             EditableRange editableRange1 = edRange1Start.EditableRange;
             builder.Writeln("Paragraph inside editable range");
             EditableRangeEnd edRange1End = builder.EndEditableRange();
+            Assert.AreEqual(1, doc.GetChildNodes(NodeType.EditableRangeStart, true).Count); //ExSkip
+            Assert.AreEqual(1, doc.GetChildNodes(NodeType.EditableRangeEnd, true).Count); //ExSkip
+            Assert.AreEqual(0, edRange1Start.EditableRange.Id); //ExSkip
+            Assert.AreEqual("", edRange1Start.EditableRange.SingleUser); //ExSkip
 
             // Remove the range that was just made
             editableRange1.Remove();
             //ExEnd
+
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.EditableRangeStart, true).Count);
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.EditableRangeEnd, true).Count);
         }
 
         //ExStart
@@ -119,6 +126,7 @@ namespace ApiExamples
             doc.Accept(editableRangeReader);
 
             Console.WriteLine(editableRangeReader.ToText());
+            TestCreateEditableRanges(doc, editableRangeReader); //ExSkip
         }
 
         /// <summary>
@@ -186,6 +194,31 @@ namespace ApiExamples
             private readonly StringBuilder mBuilder;
         }
         //ExEnd
+
+        private void TestCreateEditableRanges(Document doc, EditableRangeInfoPrinter visitor)
+        {
+            NodeCollection editableRangeStarts = doc.GetChildNodes(NodeType.EditableRangeStart, true);
+
+            Assert.AreEqual(2, editableRangeStarts.Count);
+            Assert.AreEqual(2, doc.GetChildNodes(NodeType.EditableRangeEnd, true).Count);
+
+            EditableRange range = ((EditableRangeStart)editableRangeStarts[0]).EditableRange;
+
+            Assert.AreEqual(0, range.Id);
+            Assert.AreEqual("john.doe@myoffice.com", range.SingleUser);
+            Assert.AreEqual(EditorType.Unspecified, range.EditorGroup);
+
+            range = ((EditableRangeStart)editableRangeStarts[1]).EditableRange;
+
+            Assert.AreEqual(1, range.Id);
+            Assert.AreEqual("jane.doe@myoffice.com", range.SingleUser);
+            Assert.AreEqual(EditorType.Unspecified, range.EditorGroup);
+
+            string visitorText = visitor.ToText();
+
+            Assert.True(visitorText.Contains("Paragraph inside first editable range"));
+            Assert.True(visitorText.Contains("Paragraph inside second editable range"));
+        }
 
         [Test]
         public void IncorrectStructureException()
