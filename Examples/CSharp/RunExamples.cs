@@ -136,6 +136,7 @@ namespace Aspose.Words.Examples.CSharp
             // ReplaceHtmlTextWithMeta_Characters.Run();
             // FindReplaceUsingMetaCharacters.Run();
             // UsingLegacyOrder.Run();
+            // IgnoreTextInsideFields.Run();
 
             //// Bookmarks
             //// =====================================================
@@ -360,9 +361,10 @@ namespace Aspose.Words.Examples.CSharp
             // RemoveRowsFromTable.Run();
             // HandleMailMergeSwitches.Run();
             // MailMergeAndConditionalField.Run();
-
+             
             // MailMergeCleanUp.Run();
             // WorkingWithWebExtension.Run();
+
             //// =====================================================
             //// =====================================================
             //// Rendering and Printing
@@ -421,7 +423,7 @@ namespace Aspose.Words.Examples.CSharp
             // ConditionalBlocks.Run();
             // SettingBackgroundColor.Run();
             // BuildOptions.RemoveEmptyParagraphs();
-            ChartSeries.Run();
+            // ChartSeries.Run();
 
             //Stop before exiting
             Console.WriteLine("\n\nProgram Finished. Press any key to exit....");
