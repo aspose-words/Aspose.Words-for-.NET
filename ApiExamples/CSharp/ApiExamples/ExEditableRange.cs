@@ -6,7 +6,6 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.IO;
 using System.Text;
 using Aspose.Words;
 using NUnit.Framework;
