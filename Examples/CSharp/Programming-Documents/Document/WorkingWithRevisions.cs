@@ -20,8 +20,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             SetShowCommentsinPDF(dataDir);
             GetRevisionGroupDetails(dataDir);
             AccessRevisedVersion(dataDir);
-            IgnoreTextInsideDeleteRevisions(dataDir);
-            IgnoreTextInsideInsertRevisions(dataDir);
         }
 
         private static void AcceptRevisions(string dataDir)
@@ -144,65 +142,5 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // ExEnd:AccessRevisedVersion
         }
 
-        private static void IgnoreTextInsideDeleteRevisions(string dataDir)
-        {
-            // ExStart:IgnoreTextInsideDeleteRevisions
-            // Create new document.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Insert non-revised text.
-            builder.Writeln("Deleted");
-            builder.Write("Text");
-
-            // Remove first paragraph with tracking revisions.
-            doc.StartTrackRevisions("author", DateTime.Now);
-            doc.FirstSection.Body.FirstParagraph.Remove();
-            doc.StopTrackRevisions();
-
-            Regex regex = new Regex("e");
-            FindReplaceOptions options = new FindReplaceOptions();
-
-            // Replace 'e' in document ignoring deleted text.
-            options.IgnoreDeleted = true;
-            doc.Range.Replace(regex, "*", options);
-            Console.WriteLine(doc.GetText()); // The output is: Deleted\rT*xt\f
-
-            // Replace 'e' in document NOT ignoring deleted text.
-            options.IgnoreDeleted = false;
-            doc.Range.Replace(regex, "*", options);
-            Console.WriteLine(doc.GetText()); // The output is: D*l*t*d\rT*xt\f
-            // ExEnd:IgnoreTextInsideDeleteRevisions
-        }
-
-        private static void IgnoreTextInsideInsertRevisions(string dataDir)
-        {
-            // ExStart:IgnoreTextInsideInsertRevisions
-            // Create new document.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Insert text with tracking revisions.
-            doc.StartTrackRevisions("author", DateTime.Now);
-            builder.Writeln("Inserted");
-            doc.StopTrackRevisions();
-
-            // Insert non-revised text.
-            builder.Write("Text");
-
-            Regex regex = new Regex("e");
-            FindReplaceOptions options = new FindReplaceOptions();
-
-            // Replace 'e' in document ignoring inserted text.
-            options.IgnoreInserted = true;
-            doc.Range.Replace(regex, "*", options);
-            Console.WriteLine(doc.GetText()); // The output is: Inserted\rT*xt\f
-
-            // Replace 'e' in document NOT ignoring inserted text.
-            options.IgnoreInserted = false;
-            doc.Range.Replace(regex, "*", options);
-            Console.WriteLine(doc.GetText()); // The output is: Ins*rt*d\rT*xt\f
-            // ExEnd:IgnoreTextInsideInsertRevisions
-        }
     }
 }

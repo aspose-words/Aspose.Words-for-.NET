@@ -259,7 +259,7 @@
     <Compile Include="Programming-Documents\Fields\UpdateDocFields.cs" />
     <Compile Include="Programming-Documents\Fields\SpecifylocaleAtFieldlevel.cs" />
     <Compile Include="Programming-Documents\Find-Replace\FindReplaceUsingMetaCharacters.cs" />
-    <Compile Include="Programming-Documents\Find-Replace\IgnoreTextInsideFields.cs" />
+    <Compile Include="Programming-Documents\Find-Replace\IgnoreText.cs" />
     <Compile Include="Programming-Documents\Find-Replace\UsingLegacyOrder.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceHtmlTextWithMeta-Characters.cs" />
     <Compile Include="Programming-Documents\Find-Replace\ReplaceInHeaderAndFooter.cs" />
