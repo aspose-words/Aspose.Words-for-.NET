@@ -279,9 +279,6 @@ namespace ApiExamples
         [Test]
         public void RemoveTocFromDocument()
         {
-            //ExStart
-            //ExFor:CompositeNode.GetChildNodes(NodeType, Boolean)
-            //ExSummary:Demonstrates how to remove a specified TOC from a document.
             // Open a document which contains a TOC
             Document doc = new Document(MyDir + "Table of contents.docx");
             
@@ -291,7 +288,6 @@ namespace ApiExamples
 
             // Save the output
             doc.Save(ArtifactsDir + "Field.RemoveTocFromDocument.docx");
-            //ExEnd
         }
 
         [Test]

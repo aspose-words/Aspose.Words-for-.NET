@@ -57,6 +57,7 @@ namespace ApiExamples
             //ExFor:Comment.Ancestor
             //ExFor:Comment.Author
             //ExFor:Comment.Replies
+            //ExFor:CompositeNode.GetChildNodes(NodeType, Boolean)
             //ExSummary:Shows how to get all comments with all replies.
             Document doc = new Document(MyDir + "Comments.docx");
 
