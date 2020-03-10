@@ -133,15 +133,37 @@ namespace ApiExamples
         [Test]
         public void CreateRevNumFieldByDocumentBuilder()
         {
+            //ExStart
+            //ExFor:FieldRevNum
+            //ExSummary:Shows how to work with REVNUM fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertField("REVNUM MERGEFORMAT");
+            // Add some text to a blank document with a DocumentBuilder
+            builder.Write("Current revision #");
+
+            // Insert a REVNUM field, which displays the document's current revision number property
+            FieldRevNum field = (FieldRevNum)builder.InsertField(FieldType.FieldRevisionNum, true);
+
+            Assert.AreEqual(" REVNUM ", field.GetFieldCode());
+            Assert.AreEqual("1", field.Result);
+            Assert.AreEqual(1, doc.BuiltInDocumentProperties.RevisionNumber);
+
+            // This property counts how many times a document has been saved in Microsoft Word, is unrelated to revision tracking,
+            // can be found by right clicking the document in Windows Explorer via Properties > Details
+            // This property is only manually updated by Aspose.Words
+            doc.BuiltInDocumentProperties.RevisionNumber++;
+            Assert.AreEqual("1", field.Result); //ExSkip
+            field.Update();
+
+            Assert.AreEqual("2", field.Result);
+            //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
+            field = (FieldRevNum)doc.Range.Fields[0];
 
-            FieldRevNum revNum = (FieldRevNum)doc.Range.Fields[0];
-            Assert.NotNull(revNum);
+            Assert.AreEqual("2", field.Result);
+            Assert.AreEqual(2, doc.BuiltInDocumentProperties.RevisionNumber);
         }
 
         [Test]
