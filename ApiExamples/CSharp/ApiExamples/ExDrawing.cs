@@ -162,7 +162,6 @@ namespace ApiExamples
             Assert.AreEqual(40.0d, filledInArrowImg.Height);
             Assert.AreEqual(160.0d, filledInArrowImg.Top);
             Assert.AreEqual(FlipOrientation.Both, filledInArrowImg.FlipOrientation);
-
         }
 
         [Test]
@@ -301,7 +300,6 @@ namespace ApiExamples
             Assert.AreEqual(300.0d, imgShape.Width);
             Assert.True(imgShape.IsImage);
             Assert.AreEqual(20115, imgShape.ImageData.ImageBytes.Length);
-
         }
 #endif
 
@@ -333,7 +331,6 @@ namespace ApiExamples
 
             Assert.AreEqual(".png", imageFileInfo.Extension);
             Assert.AreEqual(77, imageFileInfo.Length);
-
         }
 
         //ExStart
@@ -626,7 +623,6 @@ namespace ApiExamples
             Assert.AreEqual(0.3d, sourceShape.ImageData.CropLeft, 0.1d);
             Assert.AreEqual(0.3d, sourceShape.ImageData.CropTop, 0.1d);
             Assert.AreEqual(0.3d, sourceShape.ImageData.CropRight, 0.1d);
-
         }
 
         [Test]
