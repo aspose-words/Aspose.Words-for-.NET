@@ -34,14 +34,6 @@ namespace ApiExamples
     public class ExDocumentBuilder : ApiExampleBase
     {
         [Test]
-        public void DocumentBuilderCtor() //INSP: We have ExFor:DocumentBuilder.#ctor below, why do we need this test?
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Write("Hello World!");
-        }
-
-        [Test]
         public void WriteAndFont()
         {
             //ExStart
@@ -611,7 +603,7 @@ namespace ApiExamples
             builder.EndBookmark("MyBookmark");
             //ExEnd
 
-            Document doc = DocumentHelper.SaveOpen(builder.Document); //INSP: Can we use SaveOpen everywhere?
+            Document doc = DocumentHelper.SaveOpen(builder.Document);
 
             Assert.AreEqual(1, doc.Range.Bookmarks.Count);
             Assert.AreEqual("MyBookmark", doc.Range.Bookmarks[0].Name);
