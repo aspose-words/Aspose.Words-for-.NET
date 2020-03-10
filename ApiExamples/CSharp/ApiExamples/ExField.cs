@@ -483,33 +483,34 @@ namespace ApiExamples
             return barcodeReader;
         }
 
-        //ExStart
-        //ExFor:BarcodeParameters
-        //ExFor:BarcodeParameters.AddStartStopChar
-        //ExFor:BarcodeParameters.BackgroundColor
-        //ExFor:BarcodeParameters.BarcodeType
-        //ExFor:BarcodeParameters.BarcodeValue
-        //ExFor:BarcodeParameters.CaseCodeStyle
-        //ExFor:BarcodeParameters.DisplayText
-        //ExFor:BarcodeParameters.ErrorCorrectionLevel
-        //ExFor:BarcodeParameters.FacingIdentificationMark
-        //ExFor:BarcodeParameters.FixCheckDigit
-        //ExFor:BarcodeParameters.ForegroundColor
-        //ExFor:BarcodeParameters.IsBookmark
-        //ExFor:BarcodeParameters.IsUSPostalAddress
-        //ExFor:BarcodeParameters.PosCodeStyle
-        //ExFor:BarcodeParameters.PostalAddress
-        //ExFor:BarcodeParameters.ScalingFactor
-        //ExFor:BarcodeParameters.SymbolHeight
-        //ExFor:BarcodeParameters.SymbolRotation
-        //ExFor:IBarcodeGenerator
-        //ExFor:IBarcodeGenerator.GetBarcodeImage(BarcodeParameters)
-        //ExFor:IBarcodeGenerator.GetOldBarcodeImage(BarcodeParameters)
-        //ExFor:FieldOptions.BarcodeGenerator
-        //ExSummary:Shows how to create barcode images using a barcode generator.
-        [Test] //ExSkip
+
+        [Test]
         public void BarcodeGenerator()
         {
+            //ExStart
+            //ExFor:BarcodeParameters
+            //ExFor:BarcodeParameters.AddStartStopChar
+            //ExFor:BarcodeParameters.BackgroundColor
+            //ExFor:BarcodeParameters.BarcodeType
+            //ExFor:BarcodeParameters.BarcodeValue
+            //ExFor:BarcodeParameters.CaseCodeStyle
+            //ExFor:BarcodeParameters.DisplayText
+            //ExFor:BarcodeParameters.ErrorCorrectionLevel
+            //ExFor:BarcodeParameters.FacingIdentificationMark
+            //ExFor:BarcodeParameters.FixCheckDigit
+            //ExFor:BarcodeParameters.ForegroundColor
+            //ExFor:BarcodeParameters.IsBookmark
+            //ExFor:BarcodeParameters.IsUSPostalAddress
+            //ExFor:BarcodeParameters.PosCodeStyle
+            //ExFor:BarcodeParameters.PostalAddress
+            //ExFor:BarcodeParameters.ScalingFactor
+            //ExFor:BarcodeParameters.SymbolHeight
+            //ExFor:BarcodeParameters.SymbolRotation
+            //ExFor:IBarcodeGenerator
+            //ExFor:IBarcodeGenerator.GetBarcodeImage(BarcodeParameters)
+            //ExFor:IBarcodeGenerator.GetOldBarcodeImage(BarcodeParameters)
+            //ExFor:FieldOptions.BarcodeGenerator
+            //ExSummary:Shows how to create barcode images using a barcode generator.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -569,8 +570,19 @@ namespace ApiExamples
             builder.InsertImage(img);
 
             doc.Save(ArtifactsDir + "Field.BarcodeGenerator.docx");
+            //ExEnd
+            
+            Assert.AreEqual(11453, new FileInfo(ArtifactsDir + "Field.BarcodeGenerator.QR.jpg").Length);
+            Assert.AreEqual(5472, new FileInfo(ArtifactsDir + "Field.BarcodeGenerator.EAN13.jpg").Length);
+            Assert.AreEqual(7215, new FileInfo(ArtifactsDir + "Field.BarcodeGenerator.CODE39.jpg").Length);
+            Assert.AreEqual(4970, new FileInfo(ArtifactsDir + "Field.BarcodeGenerator.ITF14.jpg").Length);
+
+            doc = new Document(ArtifactsDir + "Field.BarcodeGenerator.docx");
+            Shape barcode = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.True(barcode.IsImage);
+            Assert.AreEqual(11453, barcode.ImageData.ImageBytes.Length);
         }
-        //ExEnd
 #endif
         //For assert result of the test you need to open document and check that image are added correct and without truncated inside frame
         [Test]
