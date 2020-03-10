@@ -48,7 +48,6 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBase.SetPageColor.docx");
-
             Assert.AreEqual(System.Drawing.Color.LightGray.ToArgb(), doc.PageColor.ToArgb());
         }
 

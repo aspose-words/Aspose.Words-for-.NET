@@ -33,9 +33,8 @@ namespace ApiExamples
     [TestFixture]
     public class ExDocumentBuilder : ApiExampleBase
     {
-
         [Test]
-        public void DocumentBuilderCtor()
+        public void DocumentBuilderCtor() //INSP: We have ExFor:DocumentBuilder.#ctor below, why do we need this test?
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -241,7 +240,7 @@ namespace ApiExamples
             builder.Font.Color = Color.Blue;
             builder.Font.Underline = Underline.Single;
 
-            // Insert the link.
+            // Insert the link
             builder.InsertHyperlink("Aspose Website", "http://www.aspose.com", false);
 
             // Revert to default formatting
@@ -293,7 +292,7 @@ namespace ApiExamples
             builder.Font.StyleIdentifier = StyleIdentifier.Hyperlink;
             builder.InsertHyperlink("here", "http://www.google.com", false);
 
-            // Restore the formatting that was before the hyperlink.
+            // Restore the formatting that was before the hyperlink
             builder.PopFont();
 
             builder.Write(". We hope you enjoyed the example.");
@@ -448,8 +447,21 @@ namespace ApiExamples
                 shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
             }
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertWatermarkNetStandard2.doc");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertWatermarkNetStandard2.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertWatermark.docx");
+            shape = (Shape)doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChild(NodeType.Shape, 0, true);
+
+            Assert.True(shape.HasImage);
+            Assert.AreEqual(27458, shape.ImageData.ToByteArray().Length);
+
+            Assert.AreEqual(WrapType.None, shape.WrapType);
+            Assert.True(shape.BehindText);
+            Assert.AreEqual(RelativeHorizontalPosition.Page, shape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Page, shape.RelativeVerticalPosition);
+            Assert.AreEqual((doc.FirstSection.PageSetup.PageWidth - shape.Width) / 2, shape.Left);
+            Assert.AreEqual((doc.FirstSection.PageSetup.PageHeight - shape.Height) / 2, shape.Top);
         }
 
         [Test]
@@ -473,6 +485,25 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObjectNetStandard2.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOleObject.docx");
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape,0, true);
+            
+            Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
+            Assert.AreEqual("Excel.Sheet.12", shape.OleFormat.ProgId);
+            Assert.AreEqual(".xlsx", shape.OleFormat.SuggestedExtension);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
+            Assert.AreEqual("Package", shape.OleFormat.ProgId);
+            Assert.AreEqual(".xlsx", shape.OleFormat.SuggestedExtension);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
+
+            Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
+            Assert.AreEqual("PowerPoint.Show.12", shape.OleFormat.ProgId);
+            Assert.AreEqual(".pptx", shape.OleFormat.SuggestedExtension);
         }
 #endif
 
@@ -580,7 +611,7 @@ namespace ApiExamples
             builder.EndBookmark("MyBookmark");
             //ExEnd
 
-            Document doc = DocumentHelper.SaveOpen(builder.Document);
+            Document doc = DocumentHelper.SaveOpen(builder.Document); //INSP: Can we use SaveOpen everywhere?
 
             Assert.AreEqual(1, doc.Range.Bookmarks.Count);
             Assert.AreEqual("MyBookmark", doc.Range.Bookmarks[0].Name);
@@ -1451,7 +1482,7 @@ namespace ApiExamples
             builder.CellFormat.Shading.BackgroundPatternColor = Color.Green;
             builder.Writeln("Cell #2");
 
-            // End this row.
+            // End this row
             builder.EndRow();
 
             // Clear the cell formatting from previous operations
@@ -2069,7 +2100,8 @@ namespace ApiExamples
 
             CertificateHolder certHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
-            DigitalSignatureUtil.Sign(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.docx", ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.Signed.docx", certHolder, signOptions);
+            DigitalSignatureUtil.Sign(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.docx", 
+                ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.Signed.docx", certHolder, signOptions);
             //ExEnd
             
             doc = new Document(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.Signed.docx");
@@ -2086,7 +2118,8 @@ namespace ApiExamples
             Assert.True(signatureLine.IsSigned);
             Assert.True(signatureLine.IsValid);
 
-            DigitalSignatureCollection signatures = DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.Signed.docx");
+            DigitalSignatureCollection signatures = DigitalSignatureUtil.LoadSignatures(
+                ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.Signed.docx");
 
             Assert.AreEqual(1, signatures.Count);
             Assert.True(signatures[0].IsValid);
@@ -2482,7 +2515,8 @@ namespace ApiExamples
             //ExEnd
 
             Assert.AreEqual(29, doc.Styles.Count);
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "DocumentBuilder.InsertDocument.docx", GoldsDir + "DocumentBuilder.InsertDocument Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "DocumentBuilder.InsertDocument.docx", 
+                GoldsDir + "DocumentBuilder.InsertDocument Gold.docx"));
         }
 
         [Test]
