@@ -228,7 +228,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-
         [Test]
         public void InsertTcField()
         {
@@ -266,14 +265,14 @@ namespace ApiExamples
             field.LocaleId = new CultureInfo("de-DE").LCID;
             field.Update();
 
-            Console.WriteLine($"Today's date, as displayed in the \"{CultureInfo.GetCultureInfo(field.LocaleId).EnglishName}\" culture: {field.Result}");
+            Console.WriteLine($"Today's date, as displayed according to the \"{CultureInfo.GetCultureInfo(field.LocaleId).EnglishName}\" culture: {field.Result}");
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
             field = doc.Range.Fields[0];
 
             Assert.AreEqual(new CultureInfo("de-DE").LCID, field.LocaleId);
-            Assert.IsTrue(Regex.IsMatch(field.Result, "[0-9]{2}.[0-9]{2}.[0-9]{4}"));
+            Assert.IsTrue(Regex.IsMatch(field.Result, "[0-9]{2}[.]{1}[0-9]{2}[.]{1}[0-9]{4}"));
         }
 
         [Test]
