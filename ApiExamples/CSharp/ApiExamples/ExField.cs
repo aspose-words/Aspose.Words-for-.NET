@@ -593,23 +593,23 @@ namespace ApiExamples
             //ExFor:LoadOptions.PreserveIncludePictureField
             //ExSummary:Shows a way to update a field ignoring the MERGEFORMAT switch.
             LoadOptions loadOptions = new LoadOptions { PreserveIncludePictureField = true };
-
             Document doc = new Document(MyDir + "Field INCLUDEPICTURE.docx", loadOptions);
 
-            foreach (Field field in doc.Range.Fields)
-            {
-                if (field.Type.Equals(FieldType.FieldIncludePicture))
-                {
-                    FieldIncludePicture includePicture = (FieldIncludePicture)field;
-
-                    includePicture.SourceFullName = ImageDir + "Transparent background logo.png";
-                    includePicture.Update(true);
-                }
-            }
+            FieldIncludePicture includePicture = (FieldIncludePicture)doc.Range.Fields.First(f => f.Type == FieldType.FieldIncludePicture);
+            includePicture.SourceFullName = ImageDir + "Transparent background logo.png";
+            includePicture.Update(true);
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.UpdateFieldIgnoringMergeFormat.docx");
             //ExEnd
+
+            Assert.True(doc.Range.Fields.Any(f => f.Type == FieldType.FieldIncludePicture));
+
+            doc = new Document(ArtifactsDir + "Field.UpdateFieldIgnoringMergeFormat.docx");
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.True(shape.IsImage);
+            Assert.False(doc.Range.Fields.Any(f => f.Type == FieldType.FieldIncludePicture));
         }
 
         [Test]
@@ -641,12 +641,16 @@ namespace ApiExamples
             format.NumericFormat = "$###.00";
             field.Update();
 
+            Assert.AreEqual("$  5.00", field.Result);
+
             // Apply a date/time format
             field = builder.InsertField("DATE");
             format = field.Format;
             format.DateTimeFormat = "dddd, MMMM dd, yyyy";
             field.Update();
             
+            Console.WriteLine($"Today's date, in {format.DateTimeFormat} format:\n\t{field.Result}");
+
             // Apply 2 general formats at the same time
             field = builder.InsertField("= 25 + 33");
             format = field.Format;
@@ -656,12 +660,8 @@ namespace ApiExamples
 
             int index = 0;
             using (IEnumerator<GeneralFormat> generalFormatEnumerator = format.GeneralFormats.GetEnumerator())
-            {
                 while (generalFormatEnumerator.MoveNext())
-                {
                     Console.WriteLine($"General format index {index++}: {generalFormatEnumerator.Current}");
-                }
-            }
 
             Assert.AreEqual("LVIII", field.Result);
             Assert.AreEqual(2, format.GeneralFormats.Count);
@@ -676,6 +676,18 @@ namespace ApiExamples
             // Our field has no general formats left and is back to default form
             Assert.AreEqual("58", field.Result);
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+
+            Assert.AreEqual("$###.00", doc.Range.Fields[0].Format.NumericFormat);
+            Assert.AreEqual("$  5.00", doc.Range.Fields[0].Result);
+
+            Assert.AreEqual("dddd, MMMM dd, yyyy", doc.Range.Fields[1].Format.DateTimeFormat);
+            Assert.AreEqual(DateTime.Today, DateTime.Parse(doc.Range.Fields[1].Result));
+
+            Assert.IsEmpty(doc.Range.Fields[2].Format.GeneralFormats);
+            Assert.AreEqual("58", doc.Range.Fields[2].Result);
+
         }
 
         [Test]
@@ -689,7 +701,9 @@ namespace ApiExamples
             doc.UnlinkFields();
             //ExEnd
 
+            doc = DocumentHelper.SaveOpen(doc);
             string paraWithFields = DocumentHelper.GetParagraphText(doc, 0);
+
             Assert.AreEqual("Fields.Docx   Элементы указателя не найдены.     1.\r", paraWithFields);
         }
 
@@ -706,6 +720,8 @@ namespace ApiExamples
 
             doc.Sections[1].Range.UnlinkFields();
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
             string secWithFields = DocumentHelper.GetSectionText(doc, 1);
 
             Assert.True(secWithFields.Trim().EndsWith(
@@ -721,6 +737,8 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Linked fields.docx");
             doc.Range.Fields[1].Unlink();
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
             string paraWithFields = DocumentHelper.GetParagraphText(doc, 0);
 
             Assert.True(paraWithFields.Trim().EndsWith(
@@ -840,13 +858,8 @@ namespace ApiExamples
 
             // Iterate over the collection and print every element
             using (IEnumerator<string> dropDownCollectionEnumerator = dropDownItems.GetEnumerator())
-            {
                 while (dropDownCollectionEnumerator.MoveNext())
-                {
-                    string currentItem = dropDownCollectionEnumerator.Current;
-                    Console.WriteLine(currentItem);
-                }
-            }
+                    Console.WriteLine(dropDownCollectionEnumerator.Current);
 
             // We can remove elements in the same way we added them
             dropDownItems.Remove("Four");
@@ -855,11 +868,23 @@ namespace ApiExamples
             Assert.IsFalse(dropDownItems.Contains("Four"));
 
             doc.Save(ArtifactsDir + "Field.DropDownItemCollection.docx");
-            //ExEnd
 
             // Empty the collection
             dropDownItems.Clear();
+            //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+            dropDownItems = doc.Range.FormFields[0].DropDownItems;
+
             Assert.AreEqual(0, dropDownItems.Count);
+
+            doc = new Document(ArtifactsDir + "Field.DropDownItemCollection.docx");
+            dropDownItems = doc.Range.FormFields[0].DropDownItems;
+
+            Assert.AreEqual(3, dropDownItems.Count);
+            Assert.AreEqual("One", dropDownItems[0]);
+            Assert.AreEqual("Two", dropDownItems[1]);
+            Assert.AreEqual("Three", dropDownItems[2]);
         }
 
         //ExStart
@@ -907,14 +932,11 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.ASK.docx");
 
+            Assert.AreEqual(" REF  MyAskField", fieldRef.GetFieldCode());
             Assert.AreEqual(
                 " ASK  MyAskField \"Please provide a response for this ASK field\" \\d \"Response from within the field.\" \\o",
                 fieldAsk.GetFieldCode());
-
-            Assert.AreEqual("MyAskField", fieldAsk.BookmarkName); //ExSkip
-            Assert.AreEqual("Please provide a response for this ASK field", fieldAsk.PromptText); // ExSkip
-            Assert.AreEqual("Response from within the field.", fieldAsk.DefaultResponse); //ExSkip
-            Assert.AreEqual(true, fieldAsk.PromptOnceOnMailMerge); //ExSkip
+            TestFieldAsk(doc); //ExSkip
         }
 
         /// <summary>
@@ -928,6 +950,26 @@ namespace ApiExamples
             }
         }
         //ExEnd
+
+        private void TestFieldAsk(Document doc)
+        {
+            doc = DocumentHelper.SaveOpen(doc);
+
+            FieldRef fieldRef = (FieldRef)doc.Range.Fields.First(f => f.Type == FieldType.FieldRef);
+
+            Assert.AreEqual("MyAskField", fieldRef.BookmarkName);
+            Assert.AreEqual(" REF  MyAskField", fieldRef.GetFieldCode());
+
+            FieldAsk fieldAsk = (FieldAsk)doc.Range.Fields.First(f => f.Type == FieldType.FieldAsk);
+
+            Assert.AreEqual("MyAskField", fieldAsk.BookmarkName);
+            Assert.AreEqual("Please provide a response for this ASK field", fieldAsk.PromptText);
+            Assert.AreEqual("Response from within the field.", fieldAsk.DefaultResponse);
+            Assert.AreEqual(true, fieldAsk.PromptOnceOnMailMerge);
+            Assert.AreEqual(
+                " ASK  MyAskField \"Please provide a response for this ASK field\" \\d \"Response from within the field.\" \\o",
+                fieldAsk.GetFieldCode());
+        }
 
         [Test]
         public void FieldAdvance()
@@ -950,8 +992,8 @@ namespace ApiExamples
 
             builder.Write("This text is moved up and to the right.");
 
-            Assert.AreEqual(FieldType.FieldAdvance, field.Type);
-            Assert.AreEqual(" ADVANCE ", field.GetFieldCode());
+            Assert.AreEqual(FieldType.FieldAdvance, field.Type); //ExSkip
+            Assert.AreEqual(" ADVANCE ", field.GetFieldCode()); //ExSkip
             // The second text that the builder added will now be moved
             field.RightOffset = "5";
             field.UpOffset = "5";
@@ -979,6 +1021,26 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Field.ADVANCE.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.ADVANCE.docx");
+
+            field = (FieldAdvance)doc.Range.Fields[0];
+
+            Assert.AreEqual(" ADVANCE  \\r 5 \\u 5", field.GetFieldCode());
+            Assert.AreEqual("5", field.RightOffset);
+            Assert.AreEqual("5", field.UpOffset);
+
+            field = (FieldAdvance)doc.Range.Fields[1];
+
+            Assert.AreEqual(" ADVANCE  \\d 5 \\l 100", field.GetFieldCode());
+            Assert.AreEqual("5", field.DownOffset);
+            Assert.AreEqual("100", field.LeftOffset);
+
+            field = (FieldAdvance)doc.Range.Fields[2];
+
+            Assert.AreEqual(" ADVANCE  \\x -100 \\y 200", field.GetFieldCode());
+            Assert.AreEqual("-100", field.HorizontalPosition);
+            Assert.AreEqual("200", field.VerticalPosition);
         }
 
 
@@ -1018,6 +1080,9 @@ namespace ApiExamples
                 " ADDRESSBLOCK  \\c 2 \\d \\e \"United States\" \\f \"<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>\" \\l 1033",
                 field.GetFieldCode());
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+            field = (FieldAddressBlock)doc.Range.Fields[0];
 
             Assert.AreEqual("2", field.IncludeCountryOrRegionName);
             Assert.AreEqual(true, field.FormatAddressOnCountryOrRegion);
@@ -1198,6 +1263,24 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.COMPARE.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.COMPARE.docx");
+
+            field = (FieldCompare)doc.Range.Fields[0];
+            
+            Assert.AreEqual(" COMPARE  3 < 2", field.GetFieldCode());
+            Assert.AreEqual("0", field.Result);
+            Assert.AreEqual("3", field.LeftExpression);
+            Assert.AreEqual("<", field.ComparisonOperator);
+            Assert.AreEqual("2", field.RightExpression);
+
+            field = (FieldCompare)doc.Range.Fields[1];
+
+            Assert.AreEqual(" COMPARE  5 = \"2 + 3\"", field.GetFieldCode());
+            Assert.AreEqual("1", field.Result);
+            Assert.AreEqual("5", field.LeftExpression);
+            Assert.AreEqual("=", field.ComparisonOperator);
+            Assert.AreEqual("\"2 + 3\"", field.RightExpression);
         }
 
         [Test]
@@ -1219,34 +1302,55 @@ namespace ApiExamples
             builder.Write("Statement 1: ");
 
             // Use document builder to insert an if field
-            FieldIf fieldIf = (FieldIf)builder.InsertField(FieldType.FieldIf, true);
+            FieldIf field = (FieldIf)builder.InsertField(FieldType.FieldIf, true);
 
             // The if field will output either the TrueText or FalseText string into the document, depending on the truth of the statement
             // In this case, "0 = 1" is incorrect, so the output will be "False"
-            fieldIf.LeftExpression = "0";
-            fieldIf.ComparisonOperator = "=";
-            fieldIf.RightExpression = "1";
-            fieldIf.TrueText = "True";
-            fieldIf.FalseText = "False";
+            field.LeftExpression = "0";
+            field.ComparisonOperator = "=";
+            field.RightExpression = "1";
+            field.TrueText = "True";
+            field.FalseText = "False";
 
-            Assert.AreEqual(" IF  0 = 1 True False", fieldIf.GetFieldCode());
-            Assert.AreEqual(FieldIfComparisonResult.False, fieldIf.EvaluateCondition());
+            Assert.AreEqual(" IF  0 = 1 True False", field.GetFieldCode());
+            Assert.AreEqual(FieldIfComparisonResult.False, field.EvaluateCondition());
 
             // This time, the statement is correct, so the output will be "True"
             builder.Write("\nStatement 2: ");
-            fieldIf = (FieldIf)builder.InsertField(FieldType.FieldIf, true);
-            fieldIf.LeftExpression = "5";
-            fieldIf.ComparisonOperator = "=";
-            fieldIf.RightExpression = "2 + 3";
-            fieldIf.TrueText = "True";
-            fieldIf.FalseText = "False";
+            field = (FieldIf)builder.InsertField(FieldType.FieldIf, true);
+            field.LeftExpression = "5";
+            field.ComparisonOperator = "=";
+            field.RightExpression = "2 + 3";
+            field.TrueText = "True";
+            field.FalseText = "False";
 
-            Assert.AreEqual(" IF  5 = \"2 + 3\" True False", fieldIf.GetFieldCode());
-            Assert.AreEqual(FieldIfComparisonResult.True, fieldIf.EvaluateCondition());
+            Assert.AreEqual(" IF  5 = \"2 + 3\" True False", field.GetFieldCode());
+            Assert.AreEqual(FieldIfComparisonResult.True, field.EvaluateCondition());
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.IF.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.IF.docx");
+            field = (FieldIf)doc.Range.Fields[0];
+
+            Assert.AreEqual(" IF  0 = 1 True False", field.GetFieldCode());
+            Assert.AreEqual("0", field.LeftExpression);
+            Assert.AreEqual("=", field.ComparisonOperator);
+            Assert.AreEqual("1", field.RightExpression);
+            Assert.AreEqual("True", field.TrueText);
+            Assert.AreEqual("False", field.FalseText);
+            Assert.AreEqual("False", field.Result);
+
+            field = (FieldIf)doc.Range.Fields[1];
+
+            Assert.AreEqual(" IF  5 = \"2 + 3\" True False", field.GetFieldCode());
+            Assert.AreEqual("5", field.LeftExpression);
+            Assert.AreEqual("=", field.ComparisonOperator);
+            Assert.AreEqual("\"2 + 3\"", field.RightExpression);
+            Assert.AreEqual("True", field.TrueText);
+            Assert.AreEqual("False", field.FalseText);
+            Assert.AreEqual("True", field.Result);
         }
 
         [Test]
@@ -1260,27 +1364,35 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // The two fields we insert here will be automatically numbered 1 and 2
-            builder.InsertField(FieldType.FieldAutoNum, true);
+            FieldAutoNum field = (FieldAutoNum)builder.InsertField(FieldType.FieldAutoNum, true);
             builder.Writeln("\tParagraph 1.");
-            builder.InsertField(FieldType.FieldAutoNum, true);
+
+            Assert.AreEqual(" AUTONUM ", field.GetFieldCode());
+
+            field = (FieldAutoNum)builder.InsertField(FieldType.FieldAutoNum, true);
             builder.Writeln("\tParagraph 2.");
 
-            foreach (Field field in doc.Range.Fields)
-            {
-                if (field.Type == FieldType.FieldAutoNum)
-                {
-                    // Leaving the FieldAutoNum.SeparatorCharacter field null will set the separator character to '.' by default
-                    Assert.IsNull(((FieldAutoNum)field).SeparatorCharacter);
+            // Leaving the FieldAutoNum.SeparatorCharacter field null will set the separator character to '.' by default
+            Assert.IsNull(field.SeparatorCharacter);
 
-                    // The first character of the string entered here will be used as the separator character
-                    ((FieldAutoNum)field).SeparatorCharacter = ":";
+            // The first character of the string entered here will be used as the separator character
+            field.SeparatorCharacter = ":";
 
-                    Assert.AreEqual(" AUTONUM  \\s :", field.GetFieldCode());
-                }
-            }
+            Assert.AreEqual(" AUTONUM  \\s :", field.GetFieldCode());
 
             doc.Save(ArtifactsDir + "Field.AUTONUM.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.AUTONUM.docx");
+            field = (FieldAutoNum)doc.Range.Fields[0];
+
+            Assert.AreEqual(" AUTONUM ", field.GetFieldCode());
+            Assert.AreEqual("", field.Result); // These fields are shown to have no result here but appear as expected in the output document
+
+            field = (FieldAutoNum)doc.Range.Fields[1];
+
+            Assert.AreEqual(" AUTONUM  \\s :", field.GetFieldCode());
+            Assert.AreEqual("", field.Result);
         }
 
         //ExStart
