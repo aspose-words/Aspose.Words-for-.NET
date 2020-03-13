@@ -1399,14 +1399,14 @@ namespace ApiExamples
         //ExFor:FieldAutoNumLgl
         //ExFor:FieldAutoNumLgl.RemoveTrailingPeriod
         //ExFor:FieldAutoNumLgl.SeparatorCharacter
-        //ExSummary:Shows how to organize a document using autonum legal fields
+        //ExSummary:Shows how to organize a document using AUTONUMLGL fields.
         [Test] //ExSkip
         public void FieldAutoNumLgl()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // This string will be our paragraph text that
+            // Set a filler paragraph string
             const string loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
                                       "\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ";
 
@@ -1425,25 +1425,23 @@ namespace ApiExamples
             // Our heading style is 2, and the next field number at that level is "2.2."
             InsertNumberedClause(builder, "\tHeading 5", loremIpsum, StyleIdentifier.Heading2);
 
-            foreach (Field field in doc.Range.Fields)
+            foreach (FieldAutoNumLgl field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumLegal))
             {
-                if (field.Type == FieldType.FieldAutoNumLegal)
-                {
-                    // By default the separator will appear as "." in the document but here it is null
-                    Assert.IsNull(((FieldAutoNumLgl)field).SeparatorCharacter);
+                // By default the separator will appear as "." in the document but here it is null
+                Assert.IsNull(field.SeparatorCharacter);
 
-                    // Change the separator character and remove trailing separators
-                    ((FieldAutoNumLgl)field).SeparatorCharacter = ":";
-                    ((FieldAutoNumLgl)field).RemoveTrailingPeriod = true;
-                    Assert.AreEqual(" AUTONUMLGL  \\s : \\e", field.GetFieldCode());
-                }
+                // Change the separator character and remove trailing separators
+                field.SeparatorCharacter = ":";
+                field.RemoveTrailingPeriod = true;
+                Assert.AreEqual(" AUTONUMLGL  \\s : \\e", field.GetFieldCode());
             }
 
             doc.Save(ArtifactsDir + "Field.AUTONUMLGL.docx");
+            TestFieldAutoNumLgl(doc); //ExSkip
         }
 
         /// <summary>
-        /// Get a document builder to insert a clause numbered by an autonum legal field.
+        /// Get a document builder to insert a clause numbered by an AUTONUMLGL field.
         /// </summary>
         private static void InsertNumberedClause(DocumentBuilder builder, string heading, string contents, StyleIdentifier headingStyle)
         {
@@ -1459,12 +1457,25 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestFieldAutoNumLgl(Document doc)
+        {
+            doc = DocumentHelper.SaveOpen(doc);
+
+            foreach (FieldAutoNumLgl field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumLegal))
+            {
+                Assert.AreEqual(":", field.SeparatorCharacter);
+                Assert.True(field.RemoveTrailingPeriod);
+                Assert.AreEqual(" AUTONUMLGL  \\s : \\e", field.GetFieldCode());
+                Assert.AreEqual(String.Empty, doc.Range.Fields[0].Result); // These fields are shown to have no result here but appear as expected in the output document
+            }
+        }
+
         [Test]
         public void FieldAutoNumOut()
         {
             //ExStart
             //ExFor:FieldAutoNumOut
-            //ExSummary:Shows how to number paragraphs using autonum outline fields.
+            //ExSummary:Shows how to number paragraphs using AUTONUMOUT fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1474,16 +1485,19 @@ namespace ApiExamples
             builder.InsertField(FieldType.FieldAutoNumOutline, true);
             builder.Writeln("\tParagraph 2.");
 
-            foreach (Field field in doc.Range.Fields)
-            {
-                if (field.Type == FieldType.FieldAutoNumOutline)
-                {
-                    Assert.AreEqual(" AUTONUMOUT ", field.GetFieldCode());
-                }
-            }
+            foreach (FieldAutoNumOut field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumOutline))
+                Assert.AreEqual(" AUTONUMOUT ", field.GetFieldCode());
 
             doc.Save(ArtifactsDir + "Field.AUTONUMOUT.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.AUTONUMOUT.docx");
+
+            foreach (FieldAutoNumOut field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumOutline))
+            {
+                Assert.AreEqual(" AUTONUMOUT ", field.GetFieldCode());
+                Assert.AreEqual(String.Empty, doc.Range.Fields[0].Result); // These fields are shown to have no result here but appear as expected in the output document
+            }
         }
 
         [Test]
@@ -1538,6 +1552,22 @@ namespace ApiExamples
 			doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.AUTOTEXT.dotx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.AUTOTEXT.dotx");
+            
+            Assert.IsEmpty(doc.FieldOptions.BuiltInTemplatesPaths);
+
+            fieldAutoText = (FieldAutoText)doc.Range.Fields[0];
+
+            Assert.AreEqual(" AUTOTEXT  MyBlock", fieldAutoText.GetFieldCode());
+            Assert.AreEqual("Hello World!\r", fieldAutoText.Result);
+            Assert.AreEqual("MyBlock", fieldAutoText.EntryName);
+
+            fieldGlossary = (FieldGlossary)doc.Range.Fields[1];
+
+            Assert.AreEqual(" GLOSSARY  MyBlock", fieldGlossary.GetFieldCode());
+            Assert.AreEqual("Hello World!\r", fieldGlossary.Result);
+            Assert.AreEqual("MyBlock", fieldGlossary.EntryName);
         }
 
         //ExStart
@@ -1565,14 +1595,12 @@ namespace ApiExamples
             field.ListStyle = "Heading 1";
             field.ScreenTip = "Hover tip text for AutoTextList goes here";
 
-            Assert.AreEqual("Right click here to pick an AutoText block", field.EntryName); //ExSkip
-            Assert.AreEqual("Heading 1", field.ListStyle); //ExSkip
-            Assert.AreEqual("Hover tip text for AutoTextList goes here", field.ScreenTip); //ExSkip
             Assert.AreEqual(" AUTOTEXTLIST  \"Right click here to pick an AutoText block\" " +
                             "\\s \"Heading 1\" " +
                             "\\t \"Hover tip text for AutoTextList goes here\"", field.GetFieldCode());
 
             doc.Save(ArtifactsDir + "Field.AUTOTEXTLIST.dotx");
+            TestFieldAutoTextList(doc); //ExSkip
         }
 
         /// <summary>
@@ -1597,6 +1625,30 @@ namespace ApiExamples
             glossaryDoc.AppendChild(buildingBlock);
         }
         //ExEnd
+
+        private void TestFieldAutoTextList(Document doc)
+        {
+            doc = DocumentHelper.SaveOpen(doc);
+            FieldAutoTextList field = (FieldAutoTextList)doc.Range.Fields[0];
+
+            Assert.AreEqual("Right click here to pick an AutoText block", field.EntryName);
+            Assert.AreEqual("Heading 1", field.ListStyle);
+            Assert.AreEqual("Hover tip text for AutoTextList goes here", field.ScreenTip);
+
+            Assert.AreEqual(" AUTOTEXTLIST  \"Right click here to pick an AutoText block\" " +
+                            "\\s \"Heading 1\" " +
+                            "\\t \"Hover tip text for AutoTextList goes here\"", field.GetFieldCode());
+
+            Assert.AreEqual("", field.Result); // These fields are shown to have no result here but appear as expected in the output document
+
+            Assert.AreEqual(3, doc.GlossaryDocument.Count);
+            Assert.AreEqual("AutoText 1", doc.GlossaryDocument.BuildingBlocks[0].Name);
+            Assert.AreEqual("Contents of AutoText 1", doc.GlossaryDocument.BuildingBlocks[0].GetText().Trim());
+            Assert.AreEqual("AutoText 2", doc.GlossaryDocument.BuildingBlocks[1].Name);
+            Assert.AreEqual("Contents of AutoText 2", doc.GlossaryDocument.BuildingBlocks[1].GetText().Trim()); 
+            Assert.AreEqual("AutoText 3", doc.GlossaryDocument.BuildingBlocks[2].Name);
+            Assert.AreEqual("Contents of AutoText 3", doc.GlossaryDocument.BuildingBlocks[2].GetText().Trim());
+        }
 
         [Test]
         public void FieldGreetingLine()
