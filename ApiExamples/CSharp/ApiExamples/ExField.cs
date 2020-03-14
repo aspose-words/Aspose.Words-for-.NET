@@ -1663,26 +1663,26 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a custom greeting field with document builder, and also some content
-            FieldGreetingLine fieldGreetingLine = (FieldGreetingLine)builder.InsertField(FieldType.FieldGreetingLine, true);
+            // Insert a custom greeting field with document builder along with some content
+            FieldGreetingLine field = (FieldGreetingLine)builder.InsertField(FieldType.FieldGreetingLine, true);
             builder.Writeln("\n\n\tThis is your custom greeting, created programmatically using Aspose Words!");
 
             // This array contains strings that correspond to column names in the data table that we will mail merge into our document
-            Assert.AreEqual(0, fieldGreetingLine.GetFieldNames().Length);
+            Assert.AreEqual(0, field.GetFieldNames().Length);
 
             // To populate that array, we need to specify a format for our greeting line
-            fieldGreetingLine.NameFormat = "<< _BEFORE_ Dear >><< _TITLE0_ >><< _LAST0_ >><< _AFTER_ ,>> ";
+            field.NameFormat = "<< _BEFORE_ Dear >><< _TITLE0_ >><< _LAST0_ >><< _AFTER_ ,>> ";
 
             // In this case, our greeting line's field names array now has "Courtesy Title" and "Last Name"
-            Assert.AreEqual(2, fieldGreetingLine.GetFieldNames().Length);
+            Assert.AreEqual(2, field.GetFieldNames().Length);
 
             // This string will cover any cases where the data in the data table is incorrect by substituting the malformed name with a string
-            fieldGreetingLine.AlternateText = "Sir or Madam";
+            field.AlternateText = "Sir or Madam";
 
             // We can set the language ID here too
-            fieldGreetingLine.LanguageId = "1033";
+            field.LanguageId = "1033";
 
-            Assert.AreEqual(" GREETINGLINE  \\f \"<< _BEFORE_ Dear >><< _TITLE0_ >><< _LAST0_ >><< _AFTER_ ,>> \" \\e \"Sir or Madam\" \\l 1033", fieldGreetingLine.GetFieldCode());
+            Assert.AreEqual(" GREETINGLINE  \\f \"<< _BEFORE_ Dear >><< _TITLE0_ >><< _LAST0_ >><< _AFTER_ ,>> \" \\e \"Sir or Madam\" \\l 1033", field.GetFieldCode());
 
             // Create a source table for our mail merge that has columns that our greeting line will look for
             DataTable table = new DataTable("Employees");
@@ -1699,6 +1699,15 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.GREETINGLINE.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.GREETINGLINE.docx");
+
+            Assert.AreEqual("Dear Mr. Doe,\r\r\tThis is your custom greeting, created programmatically using Aspose Words!\r" +
+                            "\fDear Mrs. Cardholder,\r\r\tThis is your custom greeting, created programmatically using Aspose Words!\r" +
+                            "\fDear Sir or Madam,\r\r\tThis is your custom greeting, created programmatically using Aspose Words!", 
+                doc.GetText().Trim());
+
+            Assert.IsEmpty(doc.Range.Fields);
         }
 
         [Test]
@@ -1715,11 +1724,11 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a list num field using a document builder
-            FieldListNum fieldListNum = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
+            FieldListNum field = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
 
             // Lists start counting at 1 by default, but we can change this number at any time
             // In this case, we'll do a zero-based count
-            fieldListNum.StartingNumber = "0";
+            field.StartingNumber = "0";
             builder.Writeln("Paragraph 1");
 
             // Placing several list num fields in one paragraph increases the list level instead of the current number,
@@ -1730,30 +1739,58 @@ namespace ApiExamples
             builder.Writeln("Paragraph 2");
 
             // The list level resets with new paragraphs, so to keep counting at a desired list level, we need to set the ListLevel property accordingly
-            fieldListNum = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
-            fieldListNum.ListLevel = "3";
+            field = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
+            field.ListLevel = "3";
             builder.Writeln("Paragraph 3");
 
-            fieldListNum = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
+            field = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
 
             // Setting this property to this particular value will emulate the AUTONUMOUT field
-            fieldListNum.ListName = "OutlineDefault";
-            Assert.IsTrue(fieldListNum.HasListName);
+            field.ListName = "OutlineDefault";
+            Assert.IsTrue(field.HasListName);
 
             // Start counting from 1
-            fieldListNum.StartingNumber = "1";
+            field.StartingNumber = "1";
             builder.Writeln("Paragraph 4");
 
             // Our fields keep track of the count automatically, but the ListName needs to be set with each new field
-            fieldListNum = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
-            fieldListNum.ListName = "OutlineDefault";
+            field = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
+            field.ListName = "OutlineDefault";
             builder.Writeln("Paragraph 5");
 
-            Assert.AreEqual(" LISTNUM  OutlineDefault", fieldListNum.GetFieldCode());
+            Assert.AreEqual(" LISTNUM  OutlineDefault", field.GetFieldCode());
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.LISTNUM.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.LISTNUM.docx");
+
+            Assert.AreEqual(7, doc.Range.Fields.Count);
+
+            foreach (FieldListNum fieldListNum in doc.Range.Fields)
+                Assert.AreEqual("", fieldListNum.Result); // These fields are shown to have no result here but appear as expected in the output document
+
+            field = (FieldListNum)doc.Range.Fields[0];
+
+            Assert.AreEqual("0", field.StartingNumber);
+            Assert.Null(field.ListLevel);
+            Assert.False(field.HasListName);
+            Assert.Null(field.ListName);
+
+            field = (FieldListNum)doc.Range.Fields[4];
+
+            Assert.Null(field.StartingNumber);
+            Assert.AreEqual("3", field.ListLevel);
+            Assert.False(field.HasListName);
+            Assert.Null(field.ListName);
+
+            field = (FieldListNum)doc.Range.Fields[5];
+
+            Assert.AreEqual("1", field.StartingNumber);
+            Assert.Null(field.ListLevel);
+            Assert.IsTrue(field.HasListName);
+            Assert.AreEqual("OutlineDefault", field.ListName);
         }
 
         [Test]
@@ -1798,6 +1835,11 @@ namespace ApiExamples
             doc.MailMerge.Execute(table);
             doc.Save(ArtifactsDir + "Field.MERGEFIELD.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.MERGEFIELD.docx");
+
+            Assert.AreEqual(0, doc.Range.Fields.Count);
+            Assert.AreEqual("Dear Mr. Doe:\u000cDear Mrs. Cardholder:", doc.GetText().Trim());
         }
 
         //ExStart
@@ -1840,9 +1882,7 @@ namespace ApiExamples
             comboBox.CalculateOnExit = true;
             Assert.AreEqual(3, comboBox.DropDownItems.Count);
             Assert.AreEqual(0, comboBox.DropDownSelectedIndex);
-            Assert.AreEqual(true, comboBox.Enabled);
-
-            builder.Writeln();
+            Assert.True(comboBox.Enabled);
 
             // Use a document builder to insert a check box
             FormField checkBox = builder.InsertCheckBox("MyCheckBox", false, 50);
@@ -1852,14 +1892,13 @@ namespace ApiExamples
             checkBox.StatusText = "Checkbox status text";
             checkBox.OwnStatus = true;
             Assert.AreEqual(50.0d, checkBox.CheckBoxSize);
-            Assert.AreEqual(false, checkBox.Checked);
-            Assert.AreEqual(false, checkBox.Default);
+            Assert.False(checkBox.Checked);
+            Assert.False(checkBox.Default);
 
             builder.Writeln();
 
             // Use a document builder to insert text input form field
             FormField textInput = builder.InsertTextInput("MyTextInput", TextFormFieldType.Regular, "", "Your text goes here", 50);
-            Assert.AreEqual(3, doc.Range.Fields.Count);
             textInput.EntryMacro = "EntryMacro";
             textInput.ExitMacro = "ExitMacro";
             textInput.TextInputDefault = "Regular";
@@ -1872,21 +1911,23 @@ namespace ApiExamples
             FormFieldCollection formFields = doc.Range.FormFields;
             Assert.AreEqual(3, formFields.Count);
 
+            // Our form fields are represented as fields, with field codes FORMDROPDOWN, FORMCHECKBOX and FORMTEXT respectively,
+            // made visible by pressing Alt + F9 in Microsoft Word
+            // These fields have no switches and the content of their form fields is fully governed by members of the FormField object
+            Assert.AreEqual(3, doc.Range.Fields.Count);
+
             // Iterate over the collection with an enumerator, accepting a visitor with each form field
             FormFieldVisitor formFieldVisitor = new FormFieldVisitor();
 
             using (IEnumerator<FormField> fieldEnumerator = formFields.GetEnumerator())
-            {
                 while (fieldEnumerator.MoveNext())
-                {
                     fieldEnumerator.Current.Accept(formFieldVisitor);
-                }
-            }
 
             Console.WriteLine(formFieldVisitor.GetText());
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.FormField.docx");
+            TestFormField(doc); //ExSkip
         }
 
         /// <summary>
@@ -1949,6 +1990,52 @@ namespace ApiExamples
             private readonly StringBuilder mBuilder;
         }
         //ExEnd
+
+        private void TestFormField(Document doc)
+        {
+            doc = DocumentHelper.SaveOpen(doc);
+            FieldCollection fields = doc.Range.Fields;
+            Assert.AreEqual(3, fields.Count);
+
+            Assert.AreEqual(FieldType.FieldFormDropDown, fields[0].Type);
+            Assert.AreEqual(" FORMDROPDOWN \u0001", fields[0].GetFieldCode());
+
+            Assert.AreEqual(FieldType.FieldFormCheckBox, fields[1].Type);
+            Assert.AreEqual(" FORMCHECKBOX \u0001", fields[1].GetFieldCode());
+
+            Assert.AreEqual(FieldType.FieldFormTextInput, fields[2].Type);
+            Assert.AreEqual(" FORMTEXT \u0001", fields[2].GetFieldCode());
+
+            FormFieldCollection formFields = doc.Range.FormFields;
+            Assert.AreEqual(3, formFields.Count);
+
+            Assert.AreEqual(FieldType.FieldFormDropDown, formFields[0].Type);
+            Assert.AreEqual(new[] { "One", "Two", "Three" }, formFields[0].DropDownItems);
+            Assert.True(formFields[0].CalculateOnExit);
+            Assert.AreEqual(0, formFields[0].DropDownSelectedIndex);
+            Assert.True(formFields[0].Enabled);
+            Assert.AreEqual("One", formFields[0].Result);
+
+            Assert.AreEqual(FieldType.FieldFormCheckBox, formFields[1].Type);
+            Assert.True(formFields[1].IsCheckBoxExactSize);
+            Assert.AreEqual("Right click to check this box", formFields[1].HelpText);
+            Assert.True(formFields[1].OwnHelp);
+            Assert.AreEqual("Checkbox status text", formFields[1].StatusText);
+            Assert.True(formFields[1].OwnStatus);
+            Assert.AreEqual(50.0d, formFields[1].CheckBoxSize);
+            Assert.False(formFields[1].Checked);
+            Assert.False(formFields[1].Default);
+            Assert.AreEqual("0", formFields[1].Result);
+
+            Assert.AreEqual(FieldType.FieldFormTextInput, formFields[2].Type);
+            Assert.AreEqual("EntryMacro", formFields[2].EntryMacro);
+            Assert.AreEqual("ExitMacro", formFields[2].ExitMacro);
+            Assert.AreEqual("Regular", formFields[2].TextInputDefault);
+            Assert.AreEqual("FIRST CAPITAL", formFields[2].TextInputFormat);
+            Assert.AreEqual(TextFormFieldType.Regular, formFields[2].TextInputType);
+            Assert.AreEqual(50, formFields[2].MaxLength);
+            Assert.AreEqual("This value overrides the one we set during initialization", formFields[2].Result);
+        }
 
         //ExStart
         //ExFor:FieldToc
