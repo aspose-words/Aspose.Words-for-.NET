@@ -1867,30 +1867,30 @@ namespace ApiExamples
             builder.StartBookmark("MyBookmark");
 
             // Insert a list num field using a document builder
-            FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
+            FieldToc field = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
 
             // Limit possible TOC entries to only those within the bookmark we name here
-            fieldToc.BookmarkName = "MyBookmark";
+            field.BookmarkName = "MyBookmark";
 
             // Normally paragraphs with a "Heading n" style will be the only ones that will be added to a TOC as entries
             // We can set this attribute to include other styles, such as "Quote" and "Intense Quote" in this case
-            fieldToc.CustomStyles = "Quote; 6; Intense Quote; 7";
+            field.CustomStyles = "Quote; 6; Intense Quote; 7";
 
             // Styles are normally separated by a comma (",") but we can use this property to set a custom delimiter
             doc.FieldOptions.CustomTocStyleSeparator = ";";
 
             // Filter out any headings that are outside this range
-            fieldToc.HeadingLevelRange = "1-3";
+            field.HeadingLevelRange = "1-3";
 
             // Headings in this range won't display their page number in their TOC entry
-            fieldToc.PageNumberOmittingLevelRange = "2-5";
+            field.PageNumberOmittingLevelRange = "2-5";
 
-            fieldToc.EntrySeparator = "-";
-            fieldToc.InsertHyperlinks = true;
-            fieldToc.HideInWebLayout = false;
-            fieldToc.PreserveLineBreaks = true;
-            fieldToc.PreserveTabs = true;
-            fieldToc.UseParagraphOutlineLevel = false;
+            field.EntrySeparator = "-";
+            field.InsertHyperlinks = true;
+            field.HideInWebLayout = false;
+            field.PreserveLineBreaks = true;
+            field.PreserveTabs = true;
+            field.UseParagraphOutlineLevel = false;
 
             InsertNewPageWithHeading(builder, "First entry", "Heading 1");
             builder.Writeln("Paragraph text.");
@@ -1911,11 +1911,12 @@ namespace ApiExamples
             // This entry will be omitted because it is outside the bookmark specified by the TOC
             InsertNewPageWithHeading(builder, "Eighth entry", "Heading 1");
 
-            Assert.AreEqual(" TOC  \\b MyBookmark \\t \"Quote; 6; Intense Quote; 7\" \\o 1-3 \\n 2-5 \\p - \\h \\x \\w", fieldToc.GetFieldCode());
+            Assert.AreEqual(" TOC  \\b MyBookmark \\t \"Quote; 6; Intense Quote; 7\" \\o 1-3 \\n 2-5 \\p - \\h \\x \\w", field.GetFieldCode());
 
-            fieldToc.UpdatePageNumbers();
+            field.UpdatePageNumbers();
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.TOC.docx");
+            TestFieldToc(doc); //ExSkip
         }
 
         /// <summary>
@@ -1930,6 +1931,32 @@ namespace ApiExamples
             builder.ParagraphFormat.Style = builder.Document.Styles[originalStyle];
         }
         //ExEnd
+
+        [Test]
+        private void TestFieldToc(Document doc)
+        {
+            doc = DocumentHelper.SaveOpen(doc);
+            FieldToc field = (FieldToc)doc.Range.Fields[0];
+
+            Assert.AreEqual("MyBookmark", field.BookmarkName);
+            Assert.AreEqual("Quote; 6; Intense Quote; 7", field.CustomStyles);
+            Assert.AreEqual("-", field.EntrySeparator);
+            Assert.AreEqual("1-3", field.HeadingLevelRange);
+            Assert.AreEqual("2-5", field.PageNumberOmittingLevelRange);
+            Assert.False(field.HideInWebLayout);
+            Assert.True(field.InsertHyperlinks);
+            Assert.True(field.PreserveLineBreaks);
+            Assert.True(field.PreserveTabs);
+            Assert.True(field.UpdatePageNumbers());
+            Assert.False(field.UseParagraphOutlineLevel);
+            Assert.AreEqual(" TOC  \\b MyBookmark \\t \"Quote; 6; Intense Quote; 7\" \\o 1-3 \\n 2-5 \\p - \\h \\x \\w", field.GetFieldCode());
+            Assert.AreEqual("\u0013 HYPERLINK \\l \"_Toc256000001\" \u0014First entry-\u0013 PAGEREF _Toc256000001 \\h \u00142\u0015\u0015\r" +
+                            "\u0013 HYPERLINK \\l \"_Toc256000002\" \u0014Second entry-\u0013 PAGEREF _Toc256000002 \\h \u00143\u0015\u0015\r" +
+                            "\u0013 HYPERLINK \\l \"_Toc256000003\" \u0014Third entry-\u0013 PAGEREF _Toc256000003 \\h \u00144\u0015\u0015\r" +
+                            "\u0013 HYPERLINK \\l \"_Toc256000004\" \u0014Fourth entry-\u0013 PAGEREF _Toc256000004 \\h \u00145\u0015\u0015\r" +
+                            "\u0013 HYPERLINK \\l \"_Toc256000005\" \u0014Fifth entry\u0015\r" +
+                            "\u0013 HYPERLINK \\l \"_Toc256000006\" \u0014Sixth entry\u0015\r", field.Result);
+        }
 
         //ExStart
         //ExFor:FieldToc.EntryIdentifier
@@ -1969,6 +1996,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.TC.docx");
+            TestFieldTocEntryIdentifier(doc); //ExSkip
         }
 
         /// <summary>
@@ -1983,6 +2011,45 @@ namespace ApiExamples
             fieldTc.EntryLevel = entryLevel;
         }
         //ExEnd
+
+        private void TestFieldTocEntryIdentifier(Document doc)
+        {
+            doc = DocumentHelper.SaveOpen(doc);
+            FieldToc fieldToc = (FieldToc)doc.Range.Fields[0];
+
+            Assert.AreEqual("A", fieldToc.EntryIdentifier);
+            Assert.AreEqual("1-3", fieldToc.EntryLevelRange);
+            Assert.AreEqual(" TOC  \\f A \\l 1-3", fieldToc.GetFieldCode());
+            Assert.AreEqual("TC field 1\rTC field 2\r", fieldToc.Result);
+
+            FieldTC fieldTc = (FieldTC)doc.Range.Fields[1];
+
+            Assert.True(fieldTc.OmitPageNumber);
+            Assert.AreEqual("TC field 1", fieldTc.Text);
+            Assert.AreEqual("A", fieldTc.TypeIdentifier);
+            Assert.AreEqual("1", fieldTc.EntryLevel);
+
+            fieldTc = (FieldTC)doc.Range.Fields[2];
+
+            Assert.True(fieldTc.OmitPageNumber);
+            Assert.AreEqual("TC field 2", fieldTc.Text);
+            Assert.AreEqual("A", fieldTc.TypeIdentifier);
+            Assert.AreEqual("2", fieldTc.EntryLevel);
+
+            fieldTc = (FieldTC)doc.Range.Fields[3];
+
+            Assert.True(fieldTc.OmitPageNumber);
+            Assert.AreEqual("TC field 3", fieldTc.Text);
+            Assert.AreEqual("B", fieldTc.TypeIdentifier);
+            Assert.AreEqual("1", fieldTc.EntryLevel);
+
+            fieldTc = (FieldTC)doc.Range.Fields[4];
+
+            Assert.True(fieldTc.OmitPageNumber);
+            Assert.AreEqual("TC field 4", fieldTc.Text);
+            Assert.AreEqual("A", fieldTc.TypeIdentifier);
+            Assert.AreEqual("5", fieldTc.EntryLevel);
+        }
 
         //ExStart
         //ExFor:FieldToc.TableOfFiguresLabel
@@ -2034,7 +2101,6 @@ namespace ApiExamples
         }
 
         [Test] //ExSkip
-        [Ignore("WORDSNET-18083")]
         public void TocSeqNumbering()
         {
             Document doc = new Document();
@@ -2076,7 +2142,7 @@ namespace ApiExamples
         }
 
         [Test] //ExSkip
-        [Ignore("WORDSNET-18084")]
+        [Ignore("WORDSNET-18083")] //ExSkip
         public void TocSeqBookmark()
         {
             Document doc = new Document();
