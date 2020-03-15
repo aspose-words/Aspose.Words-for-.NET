@@ -2051,27 +2051,28 @@ namespace ApiExamples
             Assert.AreEqual("5", fieldTc.EntryLevel);
         }
 
-        //ExStart
-        //ExFor:FieldToc.TableOfFiguresLabel
-        //ExFor:FieldToc.CaptionlessTableOfFiguresLabel
-        //ExFor:FieldToc.PrefixedSequenceIdentifier
-        //ExFor:FieldToc.SequenceSeparator
-        //ExFor:FieldSeq
-        //ExFor:FieldSeq.BookmarkName
-        //ExFor:FieldSeq.InsertNextNumber
-        //ExFor:FieldSeq.ResetHeadingLevel
-        //ExFor:FieldSeq.ResetNumber
-        //ExFor:FieldSeq.SequenceIdentifier
-        //ExSummary:Insert a TOC field and build the table with SEQ fields.
-        [Test] //ExSkip
+        [Test]
         public void TocSeqPrefix()
         {
+            //ExStart
+            //ExFor:FieldToc
+            //ExFor:FieldToc.TableOfFiguresLabel
+            //ExFor:FieldToc.PrefixedSequenceIdentifier
+            //ExFor:FieldToc.SequenceSeparator
+            //ExFor:FieldSeq
+            //ExFor:FieldSeq.SequenceIdentifier
+            //ExSummary:Shows how to populate a TOC field with entries using SEQ fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Filter by sequence identifier and a prefix sequence identifier, and change sequence separator
+            // Insert a TOC field that creates a table of contents entry for each paragraph
+            // that contains a SEQ field with a sequence identifier of "MySequence" with the number of the page which contains that field
             FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
             fieldToc.TableOfFiguresLabel = "MySequence";
+
+            // This identifier is for a parallel SEQ sequence,
+            // the number that it is at will be displayed in front of the page number of the paragraph with the other sequence,
+            // separated by a sequence separator character also defined below
             fieldToc.PrefixedSequenceIdentifier = "PrefixSequence";
             fieldToc.SequenceSeparator = ">";
 
@@ -2079,72 +2080,151 @@ namespace ApiExamples
 
             builder.InsertBreak(BreakType.PageBreak);
 
-            // Add two SEQ fields in one paragraph, setting the TOC's sequence and prefix sequence as their sequence identifiers
-            FieldSeq fieldSeq = InsertSeqField(builder, "PrefixSequence ", "", "PrefixSequence");
+            // Insert a SEQ field to increment the sequence counter of "PrefixSequence" to 1
+            // Since this paragraph doesn't contain a SEQ field of the "MySequence" sequence,
+            // this will not appear as an entry in the TOC
+            FieldSeq fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
+            fieldSeq.SequenceIdentifier = "PrefixSequence";
+            builder.InsertParagraph();
+
             Assert.AreEqual(" SEQ  PrefixSequence", fieldSeq.GetFieldCode());
 
-            fieldSeq = InsertSeqField(builder, ", MySequence ", "\n", "MySequence");
-            Assert.AreEqual(" SEQ  MySequence", fieldSeq.GetFieldCode());
-
-            InsertSeqField(builder, "PrefixSequence ", "", "PrefixSequence");
-            InsertSeqField(builder, ", MySequence ", "\n", "MySequence");
-
-            // If the sequence identifier doesn't match that of the TOC, the entry won't be included
-            InsertSeqField(builder, "PrefixSequence ", "", "PrefixSequence");           
-            fieldSeq = InsertSeqField(builder, ", MySequence ", "", "OtherSequence");
-            builder.Writeln(" This text, from a different sequence, won't be included in the same TOC as the one above.");
-
-            Assert.AreEqual(" SEQ  OtherSequence", fieldSeq.GetFieldCode());
+            // Insert two SEQ fields, one for each of the sequences we defined above
+            // The "MySequence" SEQ appears on page 2 and the "PrefixSequence" is at number 1 in this paragraph,
+            // which means that our TOC will display this as an entry with the contents on the left and "1>2" on the right
+            builder.Write("First TOC entry, MySequence #");
+            fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
+            fieldSeq.SequenceIdentifier = "MySequence";
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.TOC.SEQ.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.TOC.SEQ.docx");
+
+            Assert.AreEqual(5, doc.Range.Fields.Count);
+
+            fieldToc = (FieldToc)doc.Range.Fields[0];
+
+            Assert.AreEqual("MySequence", fieldToc.TableOfFiguresLabel);
+            Assert.AreEqual("PrefixSequence", fieldToc.PrefixedSequenceIdentifier);
+            Assert.AreEqual(">", fieldToc.SequenceSeparator);
+            Assert.AreEqual(" TOC  \\c MySequence \\s PrefixSequence \\d >", fieldToc.GetFieldCode());
+            Assert.AreEqual("First TOC entry, MySequence #1\t\u0013 SEQ PrefixSequence _Toc256000000 \\* ARABIC \u00141\u0015>\u0013 PAGEREF _Toc256000000 \\h \u00142\u0015\r", 
+                fieldToc.Result);
+
+            fieldSeq = (FieldSeq)doc.Range.Fields[1];
+
+            Assert.AreEqual("PrefixSequence", fieldSeq.SequenceIdentifier);
+            Assert.AreEqual(" SEQ PrefixSequence _Toc256000000 \\* ARABIC ", fieldSeq.GetFieldCode());
+            Assert.AreEqual("1", fieldSeq.Result);
+
+            // Byproduct field created by Aspose.Words
+            FieldPageRef fieldPageRef = (FieldPageRef)doc.Range.Fields[2];
+
+            Assert.AreEqual("_Toc256000000", fieldPageRef.BookmarkName);
+
+            fieldSeq = (FieldSeq)doc.Range.Fields[3];
+
+            Assert.AreEqual("PrefixSequence", fieldSeq.SequenceIdentifier);
+            Assert.AreEqual(" SEQ  PrefixSequence", fieldSeq.GetFieldCode());
+            Assert.AreEqual("1", fieldSeq.Result);
+
+            fieldSeq = (FieldSeq)doc.Range.Fields[4];
+
+            Assert.AreEqual("MySequence", fieldSeq.SequenceIdentifier);
+            Assert.AreEqual(" SEQ  MySequence", fieldSeq.GetFieldCode());
+            Assert.AreEqual("1", fieldSeq.Result);
         }
 
-        [Test] //ExSkip
+        [Test]
         public void TocSeqNumbering()
         {
+            //ExStart
+            //ExFor:FieldSeq
+            //ExFor:FieldSeq.InsertNextNumber
+            //ExFor:FieldSeq.ResetHeadingLevel
+            //ExFor:FieldSeq.ResetNumber
+            //ExFor:FieldSeq.SequenceIdentifier
+            //ExSummary:Shows how to reset numbering of a SEQ field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Filter by sequence identifier and a prefix sequence identifier, and change sequence separator
-            FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
-            fieldToc.TableOfFiguresLabel = "MySequence";
-
-            Assert.AreEqual(" TOC  \\c MySequence", fieldToc.GetFieldCode());
-
-            builder.InsertBreak(BreakType.PageBreak);
-
             // Set the current number of the sequence to 100
-            FieldSeq fieldSeq = InsertSeqField(builder, "MySequence ", "\n", "MySequence");
+            builder.Write("#");
+            FieldSeq fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
+            fieldSeq.SequenceIdentifier = "MySequence";
             fieldSeq.ResetNumber = "100";
+
             Assert.AreEqual(" SEQ  MySequence \\r 100", fieldSeq.GetFieldCode());
 
-            fieldSeq = InsertSeqField(builder, "MySequence ", "\n", "MySequence");
+            builder.Write(", #");
+            fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
+            fieldSeq.SequenceIdentifier = "MySequence";
 
             // Insert a heading
             builder.InsertBreak(BreakType.ParagraphBreak);
             builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
-            builder.Writeln("My heading");
+            builder.Writeln("This level 1 heading will reset MySequence to 1");
             builder.ParagraphFormat.Style = doc.Styles["Normal"];
 
-            // Reset sequence when we encounter a heading, resetting the sequence back to 1
-            fieldSeq = InsertSeqField(builder, "MySequence ", "\n", "MySequence");
+            // Reset the sequence back to 1 when we encounter a heading of a specified level, which in this case is "1", same as the heading above
+            builder.Write("\n#");
+            fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
+            fieldSeq.SequenceIdentifier = "MySequence";
             fieldSeq.ResetHeadingLevel = "1";
+
             Assert.AreEqual(" SEQ  MySequence \\s 1", fieldSeq.GetFieldCode());
 
             // Move to the next number
-            fieldSeq = InsertSeqField(builder, "MySequence ", "\n", "MySequence");
+            builder.Write(", #");
+            fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
+            fieldSeq.SequenceIdentifier = "MySequence";
             fieldSeq.InsertNextNumber = true;
+
             Assert.AreEqual(" SEQ  MySequence \\n", fieldSeq.GetFieldCode());
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.SEQ.ResetNumbering.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.SEQ.ResetNumbering.docx");
+
+            Assert.AreEqual(4, doc.Range.Fields.Count);
+
+            fieldSeq = (FieldSeq)doc.Range.Fields[0];
+
+            Assert.AreEqual("MySequence", fieldSeq.SequenceIdentifier);
+            Assert.AreEqual(" SEQ  MySequence \\r 100", fieldSeq.GetFieldCode());
+            Assert.AreEqual("100", fieldSeq.Result);
+
+            fieldSeq = (FieldSeq)doc.Range.Fields[1];
+
+            Assert.AreEqual("MySequence", fieldSeq.SequenceIdentifier);
+            Assert.AreEqual(" SEQ  MySequence", fieldSeq.GetFieldCode());
+            Assert.AreEqual("101", fieldSeq.Result);
+
+            fieldSeq = (FieldSeq)doc.Range.Fields[2];
+
+            Assert.AreEqual("MySequence", fieldSeq.SequenceIdentifier);
+            Assert.AreEqual(" SEQ  MySequence \\s 1", fieldSeq.GetFieldCode());
+            Assert.AreEqual("1", fieldSeq.Result);
+
+            fieldSeq = (FieldSeq)doc.Range.Fields[3];
+
+            Assert.AreEqual("MySequence", fieldSeq.SequenceIdentifier);
+            Assert.AreEqual(" SEQ  MySequence \\n", fieldSeq.GetFieldCode());
+            Assert.AreEqual("2", fieldSeq.Result);
         }
 
-        [Test] //ExSkip
-        [Ignore("WORDSNET-18083")] //ExSkip
+        [Test]
+        [Ignore("WORDSNET-18083")]
         public void TocSeqBookmark()
         {
+            //ExStart
+            //ExFor:FieldSeq
+            //ExFor:FieldSeq.BookmarkName
+            //ExSummary:
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -2156,48 +2236,95 @@ namespace ApiExamples
 
             Assert.AreEqual(" TOC  \\c MySequence \\b TOCBookmark", fieldToc.GetFieldCode());
 
-            InsertSeqField(builder, "MySequence ", "", "MySequence");
-            builder.Writeln(" This text won't show up in the TOC because it is outside of the bookmark.");
+            builder.Write("MySequence #");
+            FieldSeq fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
+            fieldSeq.SequenceIdentifier = "MySequence";
+            builder.Writeln(", won't show up in the TOC because it is outside of the bookmark.");
 
             builder.StartBookmark("TOCBookmark");
 
-            InsertSeqField(builder, "MySequence ", "", "MySequence");
-            builder.Writeln(" This text will show up in the TOC next to the entry for the above caption.");
+            builder.Write("MySequence #");
+            fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
+            fieldSeq.SequenceIdentifier = "MySequence";
+            builder.Writeln(", will show up in the TOC next to the entry for the above caption.");
 
-            InsertSeqField(builder, "OtherSequence ", "", "OtherSequence");
-            builder.Writeln(" This text, from a different sequence, won't be included in the same TOC as the one above.");
+            builder.Write("MySequence #");
+            fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
+            fieldSeq.SequenceIdentifier = "OtherSequence";
+            builder.Writeln(", won't show up in the TOC because it's from a different sequence identifier.");
 
             // The contents of the bookmark we reference here will not appear at the SEQ field, but will appear in the corresponding TOC entry
-            FieldSeq fieldSeq = InsertSeqField(builder, " MySequence ", "\n", "MySequence");
+            fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
+            fieldSeq.SequenceIdentifier = "MySequence";
             fieldSeq.BookmarkName = "SEQBookmark";
             Assert.AreEqual(" SEQ  MySequence SEQBookmark", fieldSeq.GetFieldCode());
 
             // Add bookmark to reference
             builder.InsertBreak(BreakType.PageBreak);
             builder.StartBookmark("SEQBookmark");
-            InsertSeqField(builder, " MySequence ", "", "MySequence");
-            builder.Writeln(" Text inside SEQBookmark.");
+            builder.Write("MySequence #");
+            fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
+            fieldSeq.SequenceIdentifier = "MySequence";
+            builder.Writeln(", text from inside SEQBookmark.");
             builder.EndBookmark("SEQBookmark");
 
             builder.EndBookmark("TOCBookmark");
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.SEQ.Bookmark.docx");
-        }
+            //ExEnd
 
-        /// <summary>
-        /// Insert a sequence field with preceding text and a specified sequence identifier.
-        /// </summary>
-        public FieldSeq InsertSeqField(DocumentBuilder builder, string textBefore, string textAfter, string sequenceIdentifier)
-        {
-            builder.Write(textBefore);
-            FieldSeq fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
-            fieldSeq.SequenceIdentifier = sequenceIdentifier;
-            builder.Write(textAfter);
+            doc = new Document(ArtifactsDir + "Field.SEQ.Bookmark.docx");
 
-            return fieldSeq;
+            Assert.AreEqual(8, doc.Range.Fields.Count);
+
+            fieldToc = (FieldToc)doc.Range.Fields[0];
+
+            Assert.AreEqual("MySequence", fieldToc.TableOfFiguresLabel);
+            Assert.AreEqual(" TOC  \\c MySequence \\b TOCBookmark", fieldToc.GetFieldCode());
+            Assert.AreEqual("MySequence #2, will show up in the TOC next to the entry for the above caption.\t\u0013 PAGEREF _Toc35217805 \\h \u00142\u0015\r" +
+                            "3MySequence #3, text from inside SEQBookmark.\t\u0013 PAGEREF _Toc35217806 \\h \u00142\u0015\r",
+                fieldToc.Result);
+
+            FieldPageRef fieldPageRef = (FieldPageRef)doc.Range.Fields[1];
+
+            Assert.AreEqual("_Toc35217805", fieldPageRef.BookmarkName);
+            
+            fieldPageRef = (FieldPageRef)doc.Range.Fields[2];
+
+            Assert.AreEqual("_Toc35217806", fieldPageRef.BookmarkName);
+
+            fieldSeq = (FieldSeq)doc.Range.Fields[3];
+
+            Assert.AreEqual("MySequence", fieldSeq.SequenceIdentifier);
+            Assert.AreEqual(" SEQ  MySequence", fieldSeq.GetFieldCode());
+            Assert.AreEqual("1", fieldSeq.Result);
+
+            fieldSeq = (FieldSeq)doc.Range.Fields[4];
+
+            Assert.AreEqual("MySequence", fieldSeq.SequenceIdentifier);
+            Assert.AreEqual(" SEQ  MySequence", fieldSeq.GetFieldCode());
+            Assert.AreEqual("2", fieldSeq.Result);
+
+            fieldSeq = (FieldSeq)doc.Range.Fields[5];
+
+            Assert.AreEqual("OtherSequence", fieldSeq.SequenceIdentifier);
+            Assert.AreEqual(" SEQ  OtherSequence", fieldSeq.GetFieldCode());
+            Assert.AreEqual("1", fieldSeq.Result);
+
+            fieldSeq = (FieldSeq)doc.Range.Fields[6];
+
+            Assert.AreEqual("MySequence", fieldSeq.SequenceIdentifier);
+            Assert.AreEqual("SEQBookmark", fieldSeq.BookmarkName);
+            Assert.AreEqual(" SEQ  MySequence SEQBookmark", fieldSeq.GetFieldCode());
+            Assert.AreEqual("3", fieldSeq.Result);
+
+            fieldSeq = (FieldSeq)doc.Range.Fields[7];
+
+            Assert.AreEqual("MySequence", fieldSeq.SequenceIdentifier);
+            Assert.AreEqual(" SEQ  MySequence", fieldSeq.GetFieldCode());
+            Assert.AreEqual("3", fieldSeq.Result);
         }
-        //ExEnd
 
         [Test]
         [Ignore("WORDSNET-13854")]
