@@ -3053,7 +3053,7 @@ namespace ApiExamples
         }
 
         [Test]
-        //[Ignore("WORDSNET-17524")]
+        [Ignore("WORDSNET-17524")]
         public void FieldXE()
         {
             //ExStart
@@ -3165,6 +3165,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Field.INDEX.XE.docx");
             //ExEnd
         }
+
+
 
         [Test]
         public void FieldBarcode()
