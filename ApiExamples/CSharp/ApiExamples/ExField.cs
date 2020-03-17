@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.OleDb;
 using System.Drawing;
 using System.Text;
 using System.Globalization;
@@ -15,12 +16,14 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Xml;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using Aspose.Words.Replacing;
+using Aspose.Words.Tables;
 using NUnit.Framework;
 using LoadOptions = Aspose.Words.LoadOptions;
 #if NETFRAMEWORK || JAVA
@@ -2347,38 +2350,40 @@ namespace ApiExamples
             //ExSummary:Shows how to work with CITATION and BIBLIOGRAPHY fields.
             // Open a document that has bibliographical sources
             Document doc = new Document(MyDir + "Bibliography.docx");
+            Assert.AreEqual(2, doc.Range.Fields.Count); //ExSkip
 
             // Add text that we can cite
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Write("Text to be cited with one source.");
 
             // Create a citation field using the document builder
-            FieldCitation field = (FieldCitation)builder.InsertField(FieldType.FieldCitation, true);
+            FieldCitation fieldCitation = (FieldCitation)builder.InsertField(FieldType.FieldCitation, true);
 
             // A simple citation can have just the page number and author's name
-            field.SourceTag = "Book1"; // We refer to sources using their tag names
-            field.PageNumber = "85";
-            field.SuppressAuthor = false;
-            field.SuppressTitle = true;
-            field.SuppressYear = true;
+            fieldCitation.SourceTag = "Book1"; // We refer to sources using their tag names
+            fieldCitation.PageNumber = "85";
+            fieldCitation.SuppressAuthor = false;
+            fieldCitation.SuppressTitle = true;
+            fieldCitation.SuppressYear = true;
 
-            Assert.AreEqual(" CITATION  Book1 \\p 85 \\t \\y", field.GetFieldCode());
+            Assert.AreEqual(" CITATION  Book1 \\p 85 \\t \\y", fieldCitation.GetFieldCode());
 
             // We can make a more detailed citation and make it cite 2 sources
+            builder.InsertParagraph();
             builder.Write("Text to be cited with two sources.");
-            field = (FieldCitation)builder.InsertField(FieldType.FieldCitation, true);
-            field.SourceTag = "Book1";
-            field.AnotherSourceTag = "Book2";
-            field.FormatLanguageId = "en-US";
-            field.PageNumber = "19";
-            field.Prefix = "Prefix ";
-            field.Suffix = " Suffix";
-            field.SuppressAuthor = false;
-            field.SuppressTitle = false;
-            field.SuppressYear = false;
-            field.VolumeNumber = "VII";
+            fieldCitation = (FieldCitation)builder.InsertField(FieldType.FieldCitation, true);
+            fieldCitation.SourceTag = "Book1";
+            fieldCitation.AnotherSourceTag = "Book2";
+            fieldCitation.FormatLanguageId = "en-US";
+            fieldCitation.PageNumber = "19";
+            fieldCitation.Prefix = "Prefix ";
+            fieldCitation.Suffix = " Suffix";
+            fieldCitation.SuppressAuthor = false;
+            fieldCitation.SuppressTitle = false;
+            fieldCitation.SuppressYear = false;
+            fieldCitation.VolumeNumber = "VII";
 
-            Assert.AreEqual(" CITATION  Book1 \\m Book2 \\l en-US \\p 19 \\f \"Prefix \" \\s \" Suffix\" \\v VII", field.GetFieldCode());
+            Assert.AreEqual(" CITATION  Book1 \\m Book2 \\l en-US \\p 19 \\f \"Prefix \" \\s \" Suffix\" \\v VII", fieldCitation.GetFieldCode());
 
             // Insert a new page which will contain our bibliography
             builder.InsertBreak(BreakType.PageBreak);
@@ -2392,6 +2397,52 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.CITATION.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.CITATION.docx");
+
+            Assert.AreEqual(5, doc.Range.Fields.Count);
+
+            fieldCitation = (FieldCitation)doc.Range.Fields[0];
+
+            Assert.AreEqual("Book1", fieldCitation.SourceTag);
+            Assert.AreEqual("85", fieldCitation.PageNumber);
+            Assert.False(fieldCitation.SuppressAuthor);
+            Assert.True(fieldCitation.SuppressTitle);
+            Assert.True(fieldCitation.SuppressYear);
+            Assert.AreEqual(" CITATION  Book1 \\p 85 \\t \\y", fieldCitation.GetFieldCode());
+            Assert.AreEqual(" (Doe, p. 85)", fieldCitation.Result);
+
+            fieldCitation = (FieldCitation)doc.Range.Fields[1];
+
+            Assert.AreEqual("Book1", fieldCitation.SourceTag);
+            Assert.AreEqual("Book2", fieldCitation.AnotherSourceTag);
+            Assert.AreEqual("en-US", fieldCitation.FormatLanguageId);
+            Assert.AreEqual("Prefix ", fieldCitation.Prefix);
+            Assert.AreEqual(" Suffix", fieldCitation.Suffix);
+            Assert.AreEqual("19", fieldCitation.PageNumber);
+            Assert.False(fieldCitation.SuppressAuthor);
+            Assert.False(fieldCitation.SuppressTitle);
+            Assert.False(fieldCitation.SuppressYear);
+            Assert.AreEqual("VII", fieldCitation.VolumeNumber);
+            Assert.AreEqual(" CITATION  Book1 \\m Book2 \\l en-US \\p 19 \\f \"Prefix \" \\s \" Suffix\" \\v VII", fieldCitation.GetFieldCode());
+            Assert.AreEqual(" (Doe, 2018; Prefix Cardholder, 2018, VII:19 Suffix)", fieldCitation.Result);
+
+            fieldBibliography = (FieldBibliography)doc.Range.Fields[2];
+            Assert.AreEqual("1124", fieldBibliography.FormatLanguageId);
+            Assert.AreEqual(" BIBLIOGRAPHY  \\l 1124", fieldBibliography.GetFieldCode());
+            Assert.AreEqual("Cardholder, A. (2018). My Book, Vol. II. New York: Doe Co. Ltd.\r" +
+                            "Doe, J. (2018). My Book, Vol I. London: Doe Co. Ltd.\r", fieldBibliography.Result);
+
+            fieldCitation = (FieldCitation)doc.Range.Fields[3];
+            Assert.AreEqual("Book1", fieldCitation.SourceTag);
+            Assert.AreEqual("1033", fieldCitation.FormatLanguageId);
+            Assert.AreEqual(" CITATION Book1 \\l 1033 ", fieldCitation.GetFieldCode());
+            Assert.AreEqual("(Doe, 2018)", fieldCitation.Result);
+
+            fieldBibliography = (FieldBibliography)doc.Range.Fields[4];
+            Assert.AreEqual(" BIBLIOGRAPHY ", fieldBibliography.GetFieldCode());
+            Assert.AreEqual("Cardholder, A. (2018). My Book, Vol. II. New York: Doe Co. Ltd.\r" +
+                            "Doe, J. (2018). My Book, Vol I. London: Doe Co. Ltd.\r", fieldBibliography.Result);
         }
 
         [Test]
@@ -2407,6 +2458,13 @@ namespace ApiExamples
             FieldData field = (FieldData)builder.InsertField(FieldType.FieldData, true);
             Assert.AreEqual(" DATA ", field.GetFieldCode());
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+            field = (FieldData)doc.Range.Fields[0];
+
+            Assert.AreEqual(FieldType.FieldData, field.Type);
+            Assert.AreEqual(" DATA ", field.GetFieldCode());
+            Assert.AreEqual(String.Empty, field.Result);
         }
 
         [Test]
@@ -2423,15 +2481,23 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Add an INCLUDE field with document builder and import a portion of the document defined by a bookmark
-            FieldInclude fieldInclude = (FieldInclude)builder.InsertField(FieldType.FieldInclude, true);
-            fieldInclude.SourceFullName = MyDir + "Bookmarks.docx";
-            fieldInclude.BookmarkName = "MyBookmark1";
-            fieldInclude.LockFields = false;
-            fieldInclude.TextConverter = "Microsoft Word";
+            FieldInclude field = (FieldInclude)builder.InsertField(FieldType.FieldInclude, true);
+            field.SourceFullName = MyDir + "Bookmarks.docx";
+            field.BookmarkName = "MyBookmark1";
+            field.LockFields = false;
+            field.TextConverter = "Microsoft Word";
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.INCLUDE.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.INCLUDE.docx");
+            field = (FieldInclude)doc.Range.Fields[0];
+
+            Assert.AreEqual(MyDir + "Bookmarks.docx", field.SourceFullName);
+            Assert.AreEqual("MyBookmark1", field.BookmarkName);
+            Assert.False(field.LockFields);
+            Assert.AreEqual("Microsoft Word", field.TextConverter);
         }
 
         [Test]
@@ -2474,7 +2540,7 @@ namespace ApiExamples
                 "GROUP BY[Products].ProductName " +
                 "ORDER BY SUM([Order Details].UnitPrice* (1 - [Order Details].Discount) * [Order Details].Quantity) DESC";
 
-            // You can use these variables instead of a LIMIT clause, to simplify your query
+            // You can use these variables instead of a LIMIT or TOP clause, to simplify your query
             // In this case we are taking the first 10 values of the result of our query
             field.FirstRecord = "1";
             field.LastRecord = "10";
@@ -2488,13 +2554,66 @@ namespace ApiExamples
             // The number we use is a sum of a combination of values corresponding to which elements we choose
             // 63 represents borders (1) + shading (2) + font (4) + colour (8) + autofit (16) + heading rows (32)
             field.FormatAttributes = "63";
-
             field.InsertHeadings = true;
             field.InsertOnceOnMailMerge = true;
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.DATABASE.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.DATABASE.docx");
+
+            Assert.AreEqual(2, doc.Range.Fields.Count);
+
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            field = (FieldDatabase)doc.Range.Fields[0];
+
+            Assert.AreEqual(77, table.Rows.Count);
+            Assert.AreEqual(10, table.Rows[0].Cells.Count);
+
+            TestTableEquality(field.Query, DatabaseDir + "Northwind.mdb", table);
+
+            table = (Table)doc.GetChild(NodeType.Table, 1, true);
+            field = (FieldDatabase)doc.Range.Fields[1];
+
+            Assert.AreEqual(11, table.Rows.Count);
+            Assert.AreEqual(2, table.Rows[0].Cells.Count);
+            Assert.AreEqual("ProductName\a", table.Rows[0].Cells[0].GetText());
+            Assert.AreEqual("GrossSales\a", table.Rows[0].Cells[1].GetText());
+
+            table.Rows[0].Remove();
+
+            TestTableEquality(field.Query.Insert(7, " TOP 10 "), DatabaseDir + "Northwind.mdb", table);
+        }
+
+        /// <summary>
+        /// Performs an SQL query on a database file in the local file system, then checks if the resulting table matches the input table.
+        /// </summary>
+        /// <param name="sqlQuery">The Microsoft.Jet.OLEDB-compliant SQL query.</param>
+        /// <param name="dbFilename">Absolute URI of a local Microsoft Access Database file that the query will be performed on.</param>
+        /// <param name="expectedResult">The Aspose.Words Table object that we expect the result of the query to resemble.</param>
+        private void TestTableEquality(string sqlQuery, string dbFilename, Table expectedResult)
+        {
+            using (OleDbConnection connection = new OleDbConnection())
+            {
+                connection.ConnectionString = $"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={dbFilename};";
+                connection.Open();
+
+                OleDbCommand command = connection.CreateCommand();
+                command.CommandText = sqlQuery;
+                OleDbDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection);
+
+                DataTable myDataTable = new DataTable();
+                myDataTable.Load(reader);
+
+                Assert.AreEqual(expectedResult.Rows.Count, myDataTable.Rows.Count);
+                Assert.AreEqual(expectedResult.Rows[0].Cells.Count, myDataTable.Columns.Count);
+
+                for (int i = 0; i < myDataTable.Rows.Count; i++)
+                    for (int j = 0; j < myDataTable.Columns.Count; j++)
+                        Assert.AreEqual(expectedResult.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, String.Empty),
+                            myDataTable.Rows[i][j].ToString());
+            }
         }
 
         [Test]
@@ -2526,13 +2645,41 @@ namespace ApiExamples
 
             // We can do the same thing with an IMPORT field
             FieldImport fieldImport = (FieldImport)builder.InsertField(FieldType.FieldImport, true);
+            fieldImport.SourceFullName = MyDir + @"Images\Transparent background logo.png";
             fieldImport.GraphicFilter = "PNG32";
             fieldImport.IsLinked = true;
-            fieldImport.SourceFullName = MyDir + @"Images\Transparent background logo.png";
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.INCLUDEPICTURE.docx");
             //ExEnd
+
+            Assert.AreEqual(ImageDir + "Transparent background logo.png", fieldIncludePicture.SourceFullName);
+            Assert.AreEqual("PNG32", fieldIncludePicture.GraphicFilter);
+            Assert.True(fieldIncludePicture.IsLinked);
+            Assert.True(fieldIncludePicture.ResizeHorizontally);
+            Assert.True(fieldIncludePicture.ResizeVertically);
+
+            Assert.AreEqual(MyDir + @"Images\Transparent background logo.png", fieldImport.SourceFullName);
+            Assert.AreEqual("PNG32", fieldImport.GraphicFilter);
+            Assert.True(fieldImport.IsLinked);
+            
+            doc = new Document(ArtifactsDir + "Field.INCLUDEPICTURE.docx");
+
+            // The INCLUDEPICTURE fields have been converted into shapes with linked images during loading
+            Assert.AreEqual(0, doc.Range.Fields.Count);
+            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Shape, true).Count);
+
+            Shape image = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.True(image.IsImage);
+            Assert.Null(image.ImageData.ImageBytes);
+            Assert.AreEqual(ImageDir + "Transparent background logo.png", image.ImageData.SourceFullName);
+
+            image = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            Assert.True(image.IsImage);
+            Assert.Null(image.ImageData.ImageBytes);
+            Assert.AreEqual(ImageDir + "Transparent background logo.png", image.ImageData.SourceFullName);
         }
 
         //ExStart
@@ -2566,6 +2713,7 @@ namespace ApiExamples
             fieldIncludeText.XPath = "/catalog/cd/title";
 
             doc.Save(ArtifactsDir + "Field.INCLUDETEXT.docx");
+            TestFieldIncludeText(new Document(ArtifactsDir + "Field.INCLUDETEXT.docx")); //ExSkip
         }
 
         /// <summary>
@@ -2584,6 +2732,77 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestFieldIncludeText(Document doc)
+        {
+            doc = DocumentHelper.SaveOpen(doc);
+
+            FieldIncludeText fieldIncludeText = (FieldIncludeText)doc.Range.Fields[0];
+            Assert.AreEqual(MyDir + "CD collection data.xml", fieldIncludeText.SourceFullName);
+            Assert.AreEqual(MyDir + "CD collection XSL transformation.xsl", fieldIncludeText.XslTransformation);
+            Assert.False(fieldIncludeText.LockFields);
+            Assert.AreEqual("text/xml", fieldIncludeText.MimeType);
+            Assert.AreEqual("XML", fieldIncludeText.TextConverter);
+            Assert.AreEqual("ISO-8859-1", fieldIncludeText.Encoding);
+            Assert.AreEqual(" INCLUDETEXT  \"" + MyDir.Replace("\\", "\\\\") + "CD collection data.xml\" \\m text/xml \\c XML \\e ISO-8859-1 \\t \"" + MyDir.Replace("\\", "\\\\") + "CD collection XSL transformation.xsl\"", fieldIncludeText.GetFieldCode());
+            Assert.True(fieldIncludeText.Result.StartsWith("My CD Collection"));
+
+            XmlDocument cdCollectionData = new XmlDocument();
+            cdCollectionData.LoadXml(File.ReadAllText(MyDir + "CD collection data.xml"));
+            XmlNode catalogData = cdCollectionData.ChildNodes[0];
+
+            XmlDocument cdCollectionXslTransformation = new XmlDocument();
+            cdCollectionXslTransformation.LoadXml(File.ReadAllText(MyDir + "CD collection XSL transformation.xsl"));
+
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            XmlNamespaceManager manager = new XmlNamespaceManager(cdCollectionXslTransformation.NameTable);
+            manager.AddNamespace("xsl", "http://www.w3.org/1999/XSL/Transform");
+
+            for (int i = 0; i < table.Rows.Count; i++)
+                for (int j = 0; j < table.Rows[i].Count; j++)
+                {
+                    if (i == 0)
+                    {
+                        // When on the first row from the input document's table, ensure that all of the table's cells match all XML element Names
+                        for (int k = 0; k < table.Rows.Count - 1; k++)
+                            Assert.AreEqual(catalogData.ChildNodes[k].ChildNodes[j].Name,
+                                table.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, String.Empty).ToLower());
+
+                        // Also make sure that the whole first row has the same color as the XSL transform
+                        Assert.AreEqual(cdCollectionXslTransformation.SelectNodes("//xsl:stylesheet/xsl:template/html/body/table/tr", manager)[0].Attributes.GetNamedItem("bgcolor").Value,
+                            ColorTranslator.ToHtml(table.Rows[i].Cells[j].CellFormat.Shading.BackgroundPatternColor).ToLower());
+                    }
+                    else
+                    {
+                        // When on all other rows of the input document's table, ensure that cell contents match XML element Values
+                        Assert.AreEqual(catalogData.ChildNodes[i - 1].ChildNodes[j].FirstChild.Value,
+                            table.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, String.Empty));
+                        Assert.AreEqual(Color.Empty, table.Rows[i].Cells[j].CellFormat.Shading.BackgroundPatternColor);
+                    }
+
+                    Assert.AreEqual(
+                        Double.Parse(cdCollectionXslTransformation.SelectNodes("//xsl:stylesheet/xsl:template/html/body/table", manager)[0].Attributes.GetNamedItem("border").Value) * 0.75, 
+                        table.FirstRow.RowFormat.Borders.Bottom.LineWidth);
+                }
+
+            fieldIncludeText = (FieldIncludeText)doc.Range.Fields[1];
+            Assert.AreEqual(MyDir + "CD collection data.xml", fieldIncludeText.SourceFullName);
+            Assert.Null(fieldIncludeText.XslTransformation);
+            Assert.False(fieldIncludeText.LockFields);
+            Assert.AreEqual("text/xml", fieldIncludeText.MimeType);
+            Assert.AreEqual("XML", fieldIncludeText.TextConverter);
+            Assert.AreEqual("ISO-8859-1", fieldIncludeText.Encoding);
+            Assert.AreEqual(" INCLUDETEXT  \"" + MyDir.Replace("\\", "\\\\") + "CD collection data.xml\" \\m text/xml \\c XML \\e ISO-8859-1 \\n xmlns:n='myNamespace' \\x /catalog/cd/title", fieldIncludeText.GetFieldCode());
+
+            string expectedFieldResult = "";
+            for (int i = 0; i < catalogData.ChildNodes.Count; i++)
+            {
+                expectedFieldResult += catalogData.ChildNodes[i].ChildNodes[0].ChildNodes[0].Value;
+            }
+
+            Assert.AreEqual(expectedFieldResult, fieldIncludeText.Result);
+        }
+
         [Test]
         [Ignore("WORDSNET-17545")]
         public void FieldHyperlink()
@@ -2601,26 +2820,45 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a hyperlink with a document builder
-            FieldHyperlink fieldHyperlink = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
+            FieldHyperlink field = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
 
             // When link is clicked, open a document and place the cursor on the bookmarked location
-            fieldHyperlink.Address = MyDir + "Bookmarks.docx";
-            fieldHyperlink.SubAddress = "MyBookmark3";
-            fieldHyperlink.ScreenTip = "Open " + fieldHyperlink.Address + " on bookmark " + fieldHyperlink.SubAddress + " in a new window";
+            field.Address = MyDir + "Bookmarks.docx";
+            field.SubAddress = "MyBookmark3";
+            field.ScreenTip = "Open " + field.Address + " on bookmark " + field.SubAddress + " in a new window";
 
             builder.Writeln();
 
             // Open html file at a specific frame
-            fieldHyperlink = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
-            fieldHyperlink.Address = MyDir + "Iframes.html";
-            fieldHyperlink.ScreenTip = "Open " + fieldHyperlink.Address;
-            fieldHyperlink.Target = "iframe_3";
-            fieldHyperlink.OpenInNewWindow = true;
-            fieldHyperlink.IsImageMap = false;
+            field = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
+            field.Address = MyDir + "Iframes.html";
+            field.ScreenTip = "Open " + field.Address;
+            field.Target = "iframe_3";
+            field.OpenInNewWindow = true;
+            field.IsImageMap = false;
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.HYPERLINK.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.HYPERLINK.docx");
+            field = (FieldHyperlink)doc.Range.Fields[0];
+
+            Assert.AreEqual(MyDir + "Bookmarks.docx", field.Address);
+            Assert.AreEqual("MyBookmark3", field.SubAddress);
+            Assert.AreEqual("Open " + field.Address.Replace("\\", String.Empty) + " on bookmark " + field.SubAddress + " in a new window", field.ScreenTip);
+            Assert.AreEqual(" HYPERLINK \"" + MyDir.Replace("\\", "\\\\") + "Bookmarks.docx\" \\l \"MyBookmark3\" \\o \"Open " + MyDir + "Bookmarks.docx on bookmark MyBookmark3 in a new window\" ", field.GetFieldCode());
+            Assert.AreEqual(MyDir + "Bookmarks.docx - MyBookmark3", field.Result);
+
+            field = (FieldHyperlink)doc.Range.Fields[1];
+
+            Assert.AreEqual("file:///" + MyDir.Replace(" ", "%20") + "Iframes.html", field.Address);
+            Assert.AreEqual("Open " + MyDir + "Iframes.html", field.ScreenTip);
+            Assert.AreEqual("iframe_3", field.Target);
+            Assert.False(field.OpenInNewWindow);
+            Assert.False(field.IsImageMap);
+            Assert.AreEqual(" HYPERLINK \"file:///" + MyDir.Replace("\\", "\\\\").Replace(" ", "%20") + "Iframes.html\" \\t \"iframe_3\" \\o \"Open " + MyDir.Replace("\\", "\\\\") + "Iframes.html\" ", field.GetFieldCode());
+            Assert.AreEqual(MyDir + "Iframes.html", field.Result);
         }
 
         //ExStart
@@ -2643,41 +2881,24 @@ namespace ApiExamples
 
             // Insert a merge field where images will be placed during the mail merge
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.InsertField("MERGEFIELD Image:ImageColumn");
+            FieldMergeField field = (FieldMergeField)builder.InsertField("MERGEFIELD Image:ImageColumn");
+
+            Assert.AreEqual("Image:ImageColumn", field.FieldName);
 
             // Create a data table for the mail merge
             // The name of the column that contains our image filenames needs to match the name of our merge field
-            DataTable dataTable = CreateDataTable("Images", "ImageColumn",
-                new string[]
-                {
-                    ImageDir + "Logo.jpg",
-                    ImageDir + "Transparent background logo.png",
-                    ImageDir + "Enhanced Windows MetaFile.emf"
-                });
+            DataTable dataTable = new DataTable("Images");
+            dataTable.Columns.Add(new DataColumn("ImageColumn"));
+            dataTable.Rows.Add(ImageDir + "Logo.jpg");
+            dataTable.Rows.Add(ImageDir + "Transparent background logo.png");
+            dataTable.Rows.Add(ImageDir + "Enhanced Windows MetaFile.emf");
 
             doc.MailMerge.FieldMergingCallback = new MergedImageResizer(200, 200, MergeFieldImageDimensionUnit.Point);
             doc.MailMerge.Execute(dataTable);
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.MERGEFIELD.ImageDimension.docx");
-        }
-
-        /// <summary>
-        /// Creates a data table with a single column.
-        /// </summary>
-        private static DataTable CreateDataTable(string tableName, string columnName, string[] columnContents)
-        {
-            DataTable dataTable = new DataTable(tableName);
-            dataTable.Columns.Add(new DataColumn(columnName));
-
-            foreach (string s in columnContents)
-            {
-                DataRow dataRow = dataTable.NewRow();
-                dataRow[0] = s;
-                dataTable.Rows.Add(dataRow);
-            }
-
-            return dataTable;
+            TestMergeFieldImageDimension(doc); //ExSkip
         }
 
         /// <summary>
@@ -2715,6 +2936,35 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestMergeFieldImageDimension(Document doc)
+        {
+            doc = DocumentHelper.SaveOpen(doc);
+
+            Assert.AreEqual(0, doc.Range.Fields.Count);
+            Assert.AreEqual(3, doc.GetChildNodes(NodeType.Shape, true).Count);
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.True(shape.IsImage);
+            Assert.AreEqual(20115, shape.ImageData.ImageBytes.Length);
+            Assert.AreEqual(200.0d, shape.Width);
+            Assert.AreEqual(200.0d, shape.Height);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            Assert.True(shape.IsImage);
+            Assert.AreEqual(15698, shape.ImageData.ImageBytes.Length);
+            Assert.AreEqual(200.0d, shape.Width);
+            Assert.AreEqual(200.0d, shape.Height);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
+
+            Assert.True(shape.IsImage);
+            Assert.AreEqual(5891176, shape.ImageData.ImageBytes.Length);
+            Assert.AreEqual(200.0d, shape.Width);
+            Assert.AreEqual(200.0d, shape.Height);
+        }
+
         //ExStart
         //ExFor:ImageFieldMergingArgs.Image
         //ExSummary:Shows how to set which images to merge during the mail merge.
@@ -2725,22 +2975,23 @@ namespace ApiExamples
 
             // Insert a merge field where images will be placed during the mail merge
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.InsertField("MERGEFIELD Image:ImageColumn");
+            FieldMergeField field = (FieldMergeField)builder.InsertField("MERGEFIELD Image:ImageColumn");
+
+            Assert.AreEqual("Image:ImageColumn", field.FieldName);
 
             // When we merge images, our data table will normally have the full e. of the images we wish to merge
             // If this is cumbersome, we can move image filename logic to another place and populate the data table with just shorthands for images
-            DataTable dataTable = CreateDataTable("Images", "ImageColumn",
-                new string[]
-                {
-                    "Dark logo",
-                    "Transparent logo"
-                });
+            DataTable dataTable = new DataTable("Images");
+            dataTable.Columns.Add(new DataColumn("ImageColumn"));
+            dataTable.Rows.Add("Dark logo");
+            dataTable.Rows.Add("Transparent logo");
 
             // A custom merging callback will contain filenames that our shorthands will refer to
             doc.MailMerge.FieldMergingCallback = new ImageFilenameCallback();
             doc.MailMerge.Execute(dataTable);
 
             doc.Save(ArtifactsDir + "Field.MERGEFIELD.Images.docx");
+            TestMergeFieldImages(new Document(ArtifactsDir + "Field.MERGEFIELD.Images.docx"));
         }
 
         /// <summary>
@@ -2779,8 +3030,30 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestMergeFieldImages(Document doc)
+        {
+            doc = DocumentHelper.SaveOpen(doc);
+
+            Assert.AreEqual(0, doc.Range.Fields.Count);
+            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Shape, true).Count);
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.True(shape.IsImage);
+            Assert.AreEqual(17106, shape.ImageData.ImageBytes.Length);
+            Assert.AreEqual(300.0d, shape.Width);
+            Assert.AreEqual(300.0d, shape.Height);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            Assert.True(shape.IsImage);
+            Assert.AreEqual(27458, shape.ImageData.ImageBytes.Length);
+            Assert.AreEqual(300.0d, shape.Width);
+            Assert.AreEqual(300.0d, shape.Height);
+        }
+
         [Test]
-        [Ignore("WORDSNET-17524")]
+        //[Ignore("WORDSNET-17524")]
         public void FieldXE()
         {
             //ExStart
@@ -2817,9 +3090,7 @@ namespace ApiExamples
             // Create an index field which will contain all the index entries
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
-            // Bookmark that will encompass a section that we want to index
             const string mainBookmarkName = "MainBookmark";
-            builder.StartBookmark(mainBookmarkName);
             index.BookmarkName = mainBookmarkName;
             index.CrossReferenceSeparator = ":";
             index.Heading = ">";
@@ -2838,6 +3109,9 @@ namespace ApiExamples
 
             // Our index will take up page 1
             builder.InsertBreak(BreakType.PageBreak);
+
+            // Bookmark that will encompass a section that we want to index
+            builder.StartBookmark(mainBookmarkName);
 
             // Use a document builder to insert an index entry
             // Index entries are not added to the index manually, it will find them on its own
