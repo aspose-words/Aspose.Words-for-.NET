@@ -3054,119 +3054,652 @@ namespace ApiExamples
 
         [Test]
         [Ignore("WORDSNET-17524")]
-        public void FieldXE()
+        public void FieldIndexFilter()
         {
             //ExStart
             //ExFor:FieldIndex
             //ExFor:FieldIndex.BookmarkName
-            //ExFor:FieldIndex.CrossReferenceSeparator
             //ExFor:FieldIndex.EntryType
-            //ExFor:FieldIndex.HasPageNumberSeparator
-            //ExFor:FieldIndex.HasSequenceName
-            //ExFor:FieldIndex.Heading
-            //ExFor:FieldIndex.LanguageId
-            //ExFor:FieldIndex.LetterRange
-            //ExFor:FieldIndex.NumberOfColumns
-            //ExFor:FieldIndex.PageNumberListSeparator
-            //ExFor:FieldIndex.PageNumberSeparator
-            //ExFor:FieldIndex.PageRangeSeparator
-            //ExFor:FieldIndex.RunSubentriesOnSameLine
-            //ExFor:FieldIndex.SequenceName
-            //ExFor:FieldIndex.SequenceSeparator
-            //ExFor:FieldIndex.UseYomi
             //ExFor:FieldXE
             //ExFor:FieldXE.EntryType
-            //ExFor:FieldXE.HasPageRangeBookmarkName
-            //ExFor:FieldXE.IsBold
-            //ExFor:FieldXE.IsItalic
-            //ExFor:FieldXE.PageNumberReplacement
-            //ExFor:FieldXE.PageRangeBookmarkName
             //ExFor:FieldXE.Text
-            //ExFor:FieldXE.Yomi
-            //ExSummary:Shows how to populate an index field with index entries.
+            //ExSummary:Shows how to omit entries while populating an INDEX field with entries from XE fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create an index field which will contain all the index entries
+            // Create an INDEX field which will display the page locations of XE fields in the document body
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
-            const string mainBookmarkName = "MainBookmark";
-            index.BookmarkName = mainBookmarkName;
-            index.CrossReferenceSeparator = ":";
-            index.Heading = ">";
-            index.LanguageId = "1033";
-            index.LetterRange = "a-j";
-            index.NumberOfColumns = "2";
-            index.PageNumberListSeparator = "|";
-            index.PageNumberSeparator = "|";
-            index.PageRangeSeparator = "/";
-            index.UseYomi = true;
-            index.RunSubentriesOnSameLine = false;
-            index.SequenceName = "Chapter";
-            index.SequenceSeparator = ":";
-            Assert.IsTrue(index.HasPageNumberSeparator);
-            Assert.IsTrue(index.HasSequenceName);
+            // Set these attributes so that an XE field shows up in the INDEX field's result
+            // only if it is within the bounds of a bookmark named "MainBookmark", and is of type "A"
+            index.BookmarkName = "MainBookmark";
+            index.EntryType = "A";
 
-            // Our index will take up page 1
+            Assert.AreEqual(" INDEX  \\b MainBookmark \\f A", index.GetFieldCode());
+
+            // Our index will take up the first page
             builder.InsertBreak(BreakType.PageBreak);
 
-            // Bookmark that will encompass a section that we want to index
-            builder.StartBookmark(mainBookmarkName);
+            // Start the bookmark that will contain all eligible XE entries
+            builder.StartBookmark("MainBookmark");
 
-            // Use a document builder to insert an index entry
-            // Index entries are not added to the index manually, it will find them on its own
+            // This entry will be picked up by the INDEX field because it is inside the bookmark
+            // and its type matches the INDEX field's type
+            // Note that even though the type is a string, it is defined by only the first character
             FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Index entry 1";
-            indexEntry.EntryType = "Type1";
-            indexEntry.IsBold = true;
-            indexEntry.IsItalic = true;
-            Assert.AreEqual(false, indexEntry.HasPageRangeBookmarkName);
+            indexEntry.EntryType = "A";
 
-            // We can insert a bookmark and have the index field point to it
-            const string subBookmarkName = "MyBookmark";
-            builder.StartBookmark(subBookmarkName);
-            builder.Writeln("Bookmark text contents.");
-            builder.EndBookmark(subBookmarkName);
+            Assert.AreEqual(" XE  \"Index entry 1\" \\f A", indexEntry.GetFieldCode());
 
-            // Put the bookmark and index entry field on different pages
-            // Our index will use the page that the bookmark is on, not that of the index entry field, as the page number
+            // Insert an XE field that will not appear in the INDEX field because it is of the wrong type
             builder.InsertBreak(BreakType.PageBreak);
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Index entry 2";
-            indexEntry.EntryType = "Type1";
-            indexEntry.PageRangeBookmarkName = subBookmarkName;
-            Assert.AreEqual(true, indexEntry.HasPageRangeBookmarkName);
+            indexEntry.EntryType = "B";
 
-            // We can use the PageNumberReplacement property to point to any page we want, even one that may not exist
+            // End the bookmark and insert an XE field afterwards
+            // It is of the same type as the INDEX field, but will not appear since it is outside of the bookmark
+            // Note that the INDEX field itself does not have to be within its bookmark
+            builder.EndBookmark("MainBookmark");
             builder.InsertBreak(BreakType.PageBreak);
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Index entry 3";
-            indexEntry.EntryType = "Type1";
-            indexEntry.PageNumberReplacement = "999";
-
-            // If we are using an East Asian language, we can sort entries phonetically (using Furigana) instead of alphabetically
-            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
-            indexEntry.Text = "漢字";
-            indexEntry.EntryType = "Type1";
-
-            // The Yomi field will contain the character looked up for sorting
-            indexEntry.Yomi = "か";
-
-            // If we are sorting phonetically, we need to notify the index
-            index.UseYomi = true;
-
-            // For all our entry fields, we set the entry type to "Type1"
-            // Our field index will not list those entries unless we set its entry type to that of the entries
-            index.EntryType = "Type1";
-
-            builder.EndBookmark(mainBookmarkName);
+            indexEntry.EntryType = "A";
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.INDEX.XE.docx");
+            doc.Save(ArtifactsDir + "Field.INDEX.XE.Filtering.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.INDEX.XE.Filtering.docx");
+            index = (FieldIndex)doc.Range.Fields[0];
+
+            Assert.AreEqual("MainBookmark", index.BookmarkName);
+            Assert.AreEqual("A", index.EntryType);
+            Assert.AreEqual(" INDEX  \\b MainBookmark \\f A", index.GetFieldCode());
+            Assert.AreEqual("Index entry 1, 2\r", index.Result);
+
+            indexEntry = (FieldXE)doc.Range.Fields[1];
+            Assert.AreEqual("Index entry 1", indexEntry.Text);
+            Assert.AreEqual("A", indexEntry.EntryType);
+            Assert.AreEqual(String.Empty, indexEntry.Result);
+
+            indexEntry = (FieldXE)doc.Range.Fields[2];
+            Assert.AreEqual("Index entry 2", indexEntry.Text);
+            Assert.AreEqual("B", indexEntry.EntryType);
+            Assert.AreEqual(String.Empty, indexEntry.Result);
+
+            indexEntry = (FieldXE)doc.Range.Fields[3];
+            Assert.AreEqual("Index entry 3", indexEntry.Text);
+            Assert.AreEqual("A", indexEntry.EntryType);
+            Assert.AreEqual(String.Empty, indexEntry.Result);
         }
 
+        [Test]
+        [Ignore("WORDSNET-17524")]
+        public void FieldIndexFormatting()
+        {
+            //ExStart
+            //ExFor:FieldIndex
+            //ExFor:FieldIndex.Heading
+            //ExFor:FieldIndex.NumberOfColumns
+            //ExFor:FieldIndex.LanguageId
+            //ExFor:FieldIndex.LetterRange
+            //ExFor:FieldXE
+            //ExFor:FieldXE.IsBold
+            //ExFor:FieldXE.IsItalic
+            //ExFor:FieldXE.Text
+            //ExSummary:Shows how to modify an INDEX field's appearance while populating it with XE field entries.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Create an INDEX field which will display the page locations of XE fields in the document body
+            FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
+            index.LanguageId = "1033";
+
+            // Setting this attribute's value to "A" will group all the entries by their first letter
+            // and place that letter in uppercase above each group
+            index.Heading = "A";
+
+            // Set the table created by the INDEX field to span over 2 columns
+            index.NumberOfColumns = "2";
+
+            // Set any entries with starting letters outside the "a-c" character range to be omitted
+            index.LetterRange = "a-c";
+
+            Assert.AreEqual(" INDEX  \\z 1033 \\h A \\c 2 \\p a-c", index.GetFieldCode());
+
+            // These next two XE fields will show up under the "A" heading,
+            // with their respective text stylings also applied to their page numbers 
+            builder.InsertBreak(BreakType.PageBreak);
+            FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Apple";
+            indexEntry.IsItalic = true;
+
+            Assert.AreEqual(" XE  Apple \\i", indexEntry.GetFieldCode());
+
+            builder.InsertBreak(BreakType.PageBreak);
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Apricot";
+            indexEntry.IsBold = true;
+
+            Assert.AreEqual(" XE  Apricot \\b", indexEntry.GetFieldCode());
+
+            // Both the next two XE fields will be under a "B" and "C" heading in the INDEX fields table of contents
+            builder.InsertBreak(BreakType.PageBreak);
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Banana";
+
+            builder.InsertBreak(BreakType.PageBreak);
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Cherry";
+
+            // All INDEX field entries are sorted alphabetically, so this entry will show up under "A" with the other two
+            builder.InsertBreak(BreakType.PageBreak);
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Avocado";
+
+            // This entry will be excluded because, starting with the letter "D", it is outside the "a-c" range
+            builder.InsertBreak(BreakType.PageBreak);
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Durian";
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.INDEX.XE.Formatting.docx");
+            //ExEnd
+            
+            doc = new Document(ArtifactsDir + "Field.INDEX.XE.Formatting.docx");
+            index = (FieldIndex)doc.Range.Fields[0];
+
+            Assert.AreEqual("1033", index.LanguageId);
+            Assert.AreEqual("A", index.Heading);
+            Assert.AreEqual("2", index.NumberOfColumns);
+            Assert.AreEqual("a-c", index.LetterRange);
+            Assert.AreEqual(" INDEX  \\z 1033 \\h A \\c 2 \\p a-c", index.GetFieldCode());
+            Assert.AreEqual("\fA\r" +
+                            "Apple, 2\r" +
+                            "Apricot, 3\r" +
+                            "Avocado, 6\r" +
+                            "B\r" +
+                            "Banana, 4\r" +
+                            "C\r" +
+                            "Cherry, 5\r\f", index.Result);
+
+            indexEntry = (FieldXE)doc.Range.Fields[1];
+            Assert.AreEqual("Apple", indexEntry.Text);
+            Assert.False(indexEntry.IsBold);
+            Assert.True(indexEntry.IsItalic);
+            Assert.AreEqual(" XE  Apple \\i", indexEntry.GetFieldCode());
+            Assert.AreEqual(String.Empty, indexEntry.Result);
+
+            indexEntry = (FieldXE)doc.Range.Fields[2];
+            Assert.AreEqual("Apricot", indexEntry.Text);
+            Assert.True(indexEntry.IsBold);
+            Assert.False(indexEntry.IsItalic);
+            Assert.AreEqual(" XE  Apricot \\b", indexEntry.GetFieldCode());
+            Assert.AreEqual(String.Empty, indexEntry.Result);
+
+            indexEntry = (FieldXE)doc.Range.Fields[3];
+            Assert.AreEqual("Banana", indexEntry.Text);
+            Assert.False(indexEntry.IsBold);
+            Assert.False(indexEntry.IsItalic);
+            Assert.AreEqual(" XE  Banana", indexEntry.GetFieldCode());
+            Assert.AreEqual(String.Empty, indexEntry.Result);
+
+            indexEntry = (FieldXE)doc.Range.Fields[4];
+            Assert.AreEqual("Cherry", indexEntry.Text);
+            Assert.False(indexEntry.IsBold);
+            Assert.False(indexEntry.IsItalic);
+            Assert.AreEqual(" XE  Cherry", indexEntry.GetFieldCode());
+            Assert.AreEqual(String.Empty, indexEntry.Result);
+
+            indexEntry = (FieldXE)doc.Range.Fields[5];
+            Assert.AreEqual("Avocado", indexEntry.Text);
+            Assert.False(indexEntry.IsBold);
+            Assert.False(indexEntry.IsItalic);
+            Assert.AreEqual(" XE  Avocado", indexEntry.GetFieldCode());
+            Assert.AreEqual(String.Empty, indexEntry.Result);
+
+            indexEntry = (FieldXE)doc.Range.Fields[6];
+            Assert.AreEqual("Durian", indexEntry.Text);
+            Assert.False(indexEntry.IsBold);
+            Assert.False(indexEntry.IsItalic);
+            Assert.AreEqual(" XE  Durian", indexEntry.GetFieldCode());
+            Assert.AreEqual(String.Empty, indexEntry.Result);
+        }
+
+        [Test]
+        [Ignore("WORDSNET-17524")]
+        public void FieldIndexSequence()
+        {
+            //ExStart
+            //ExFor:FieldIndex.HasSequenceName
+            //ExFor:FieldIndex.SequenceName
+            //ExFor:FieldIndex.SequenceSeparator
+            //ExSummary:Shows how to split a document into sections by combining INDEX and SEQ fields.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create an INDEX field which will display the page locations of XE fields in the document body
+            FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
+
+            // Set these two attributes to get the INDEX field's table of contents
+            // to place the number that the "MySeq" sequence is at in each XE entry's location before the entry's page number,
+            // separated by a custom character
+            // Note that PageNumberSeparator and SequenceSeparator cannot be longer than 15 characters
+            index.SequenceName = "MySequence";
+            index.PageNumberSeparator = "\tMySequence at ";
+            index.SequenceSeparator = " on page ";
+            Assert.IsTrue(index.HasSequenceName);
+
+            Assert.AreEqual(" INDEX  \\s MySequence \\e \"\tMySequence at \" \\d \" on page \"", index.GetFieldCode());
+
+            // Insert a SEQ field which moves the "MySequence" sequence to 1
+            // This field is treated as normal document text and will not show up on an INDEX field's table of contents
+            builder.InsertBreak(BreakType.PageBreak);
+            FieldSeq sequenceField = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
+            sequenceField.SequenceIdentifier = "MySequence";
+
+            Assert.AreEqual(" SEQ  MySequence", sequenceField.GetFieldCode());
+
+            // Insert a XE field which will show up in the INDEX field
+            // Since "MySequence" is at 1 and this XE field is on page 2, along with with the custom separators we defined above,
+            // this field's INDEX entry will say "MySequence at 1 on page 2"
+            FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Cat";
+
+            Assert.AreEqual(" XE  Cat", indexEntry.GetFieldCode());
+
+            // Insert a page break and advance "MySequence" by 2
+            builder.InsertBreak(BreakType.PageBreak);
+            sequenceField = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
+            sequenceField.SequenceIdentifier = "MySequence";
+            sequenceField = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
+            sequenceField.SequenceIdentifier = "MySequence";
+
+            // Insert a XE field with the same text as the one above, which will thus be appended to the same entry in the INDEX field
+            // Since we are on page 2 with "MySequence" at 3, ", 3 on page 3" will be appended to the same INDEX entry as above
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Cat";
+
+            // Insert an XE field which makes a new entry with MySequence at 3 on page 4
+            builder.InsertBreak(BreakType.PageBreak);
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Dog";
+            
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.INDEX.XE.Sequence.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.INDEX.XE.Sequence.docx");
+            index = (FieldIndex)doc.Range.Fields[0];
+
+            Assert.AreEqual("MySequence", index.SequenceName);
+            Assert.AreEqual("\tMySequence at ", index.PageNumberSeparator);
+            Assert.AreEqual(" on page ", index.SequenceSeparator);
+            Assert.True(index.HasSequenceName);
+            Assert.AreEqual(" INDEX  \\s MySequence \\e \"\tMySequence at \" \\d \" on page \"", index.GetFieldCode());
+            Assert.AreEqual("Cat\tMySequence at 1 on page 2, 3 on page 3\r" +
+                            "Dog\tMySequence at 3 on page 4\r", index.Result);
+
+            Assert.AreEqual(3, doc.Range.Fields.Where(f => f.Type == FieldType.FieldSequence).Count());
+        }
+
+        [Test]
+        [Ignore("WORDSNET-17524")]
+        public void FieldIndexPageNumberSeparator()
+        {
+            //ExStart
+            //ExFor:FieldIndex.HasPageNumberSeparator
+            //ExFor:FieldIndex.PageNumberSeparator
+            //ExFor:FieldIndex.PageNumberListSeparator
+            //ExSummary:Shows how to edit the page number separator in an INDEX field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create an INDEX field which will display a table with the page locations of XE fields in the document body
+            FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
+
+            // Set a page number separator and a page number separator
+            // The page number separator will go between the INDEX entry's name and first page a corresponsing XE field appears,
+            // while the page number list separator will appear between page numbers if there are multiple in the same INDEX field entry
+            index.PageNumberSeparator = ", on page(s) ";
+            index.PageNumberListSeparator = " & ";
+            
+            Assert.AreEqual(" INDEX  \\e \", on page(s) \" \\l \" & \"", index.GetFieldCode());
+            Assert.True(index.HasPageNumberSeparator);
+
+            // Insert 3 XE entries with the same name on three different pages so they all end up in one INDEX field table entry,
+            // where both our separators will be applied, resulting in a value of "First entry, on page(s) 2 & 3 & 4"
+            builder.InsertBreak(BreakType.PageBreak);
+            FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "First entry";
+
+            Assert.AreEqual(" XE  \"First entry\"", indexEntry.GetFieldCode());
+
+            builder.InsertBreak(BreakType.PageBreak);
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "First entry";
+
+            builder.InsertBreak(BreakType.PageBreak);
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "First entry";
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.INDEX.XE.PageNumberList.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.INDEX.XE.PageNumberList.docx");
+            index = (FieldIndex)doc.Range.Fields[0];
+
+            Assert.AreEqual(", on page(s) ", index.PageNumberSeparator);
+            Assert.AreEqual(" & ", index.PageNumberListSeparator);
+            Assert.True(index.HasPageNumberSeparator);
+            Assert.AreEqual(" INDEX  \\e \", on page(s) \" \\l \" & \"", index.GetFieldCode());
+            Assert.AreEqual("First entry, on page(s) 2 & 3 & 4\r", index.Result);
+        }
+
+        [Test]
+        [Ignore("WORDSNET-17524")]
+        public void FieldIndexPageRangeBookmark()
+        {
+            //ExStart
+            //ExFor:FieldIndex.PageRangeSeparator
+            //ExFor:FieldXE.HasPageRangeBookmarkName
+            //ExFor:FieldXE.PageRangeBookmarkName
+            //ExSummary:Shows how to specify a bookmark's spanned pages as a page range for an INDEX field entry.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create an INDEX field which will display the page locations of XE fields in the document body
+            FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
+
+            index.PageNumberSeparator = ", on page(s) ";
+            index.PageRangeSeparator = " to ";
+
+            Assert.AreEqual(" INDEX  \\e \", on page(s) \" \\g \" to \"", index.GetFieldCode());
+
+            // Insert an XE field on page 2
+            builder.InsertBreak(BreakType.PageBreak);
+            FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "My entry";
+
+            // If we use this attribute to refer to a bookmark,
+            // this XE field's page number will be substituted by the page range that the referenced bookmark spans 
+            indexEntry.PageRangeBookmarkName = "MyBookmark";
+
+            Assert.AreEqual(" XE  \"My entry\" \\r MyBookmark", indexEntry.GetFieldCode());
+            Assert.True(indexEntry.HasPageRangeBookmarkName);
+
+            // Insert a bookmark that starts on page 3 and ends on page 5
+            // Since the XE field references this bookmark,
+            // its location page number will show up in the INDEX field's table as "3 to 5" instead of "2",
+            // which is its actual page
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.StartBookmark("MyBookmark");
+            builder.Write("Start of MyBookmark");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Write("End of MyBookmark");
+            builder.EndBookmark("MyBookmark");
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.INDEX.XE.PageRangeBookmark.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.INDEX.XE.PageRangeBookmark.docx");
+            index = (FieldIndex)doc.Range.Fields[0];
+
+            Assert.AreEqual(", on page(s) ", index.PageNumberSeparator);
+            Assert.AreEqual(" to ", index.PageRangeSeparator);
+            Assert.AreEqual(" INDEX  \\e \", on page(s) \" \\g \" to \"", index.GetFieldCode());
+            Assert.AreEqual("My entry, on page(s) 3 to 5\r", index.Result);
+
+            indexEntry = (FieldXE)doc.Range.Fields[1];
+            Assert.AreEqual("My entry", indexEntry.Text);
+            Assert.AreEqual("MyBookmark", indexEntry.PageRangeBookmarkName);
+            Assert.True(indexEntry.HasPageRangeBookmarkName);
+            Assert.AreEqual(" XE  \"My entry\" \\r MyBookmark", indexEntry.GetFieldCode());
+            Assert.AreEqual(String.Empty, indexEntry.Result);
+        }
+
+        [Test]
+        [Ignore("WORDSNET-17524")]
+        public void FieldIndexCrossReferenceSeparator()
+        {
+            //ExStart
+            //ExFor:FieldIndex.CrossReferenceSeparator
+            //ExFor:FieldXE.PageNumberReplacement
+            //ExSummary:Shows how to define cross references in an INDEX field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create an INDEX field which will display the page locations of XE fields in the document body
+            FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
+
+            // Define a custom separator that is applied if an XE field contains a page number replacement
+            index.CrossReferenceSeparator = ", see: ";
+
+            Assert.AreEqual(" INDEX  \\k \", see: \"", index.GetFieldCode());
+
+            // Insert an XE field on page 2
+            // That page number, together with the field's Text attribute, will show up as a table of contents entry in the INDEX field,
+            builder.InsertBreak(BreakType.PageBreak);
+            FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Apple";
+
+            Assert.AreEqual(" XE  Apple", indexEntry.GetFieldCode());
+
+            // Insert another XE field on page 3, and set a value for "PageNumberReplacement"
+            // In the INDEX field's table, this field will display the value of that attribute after the field's CrossReferenceSeparator instead of the page number
+            builder.InsertBreak(BreakType.PageBreak);
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Banana";
+            indexEntry.PageNumberReplacement = "Tropical fruit";
+
+            Assert.AreEqual(" XE  Banana \\t \"Tropical fruit\"", indexEntry.GetFieldCode());
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.INDEX.XE.CrossReferenceSeparator.docx");
+            //ExEnd
+            
+            doc = new Document(ArtifactsDir + "Field.INDEX.XE.CrossReferenceSeparator.docx");
+            index = (FieldIndex)doc.Range.Fields[0];
+
+            Assert.AreEqual(", see: ", index.CrossReferenceSeparator);
+            Assert.AreEqual(" INDEX  \\k \", see: \"", index.GetFieldCode());
+            Assert.AreEqual("Apple, 2\r" +
+                            "Banana, see: Tropical fruit\r", index.Result);
+
+            indexEntry = (FieldXE)doc.Range.Fields[1];
+            Assert.AreEqual("Apple", indexEntry.Text);
+            Assert.Null(indexEntry.PageNumberReplacement);
+            Assert.AreEqual(" XE  Apple", indexEntry.GetFieldCode());
+            Assert.AreEqual(String.Empty, indexEntry.Result);
+
+            indexEntry = (FieldXE)doc.Range.Fields[2];
+            Assert.AreEqual("Banana", indexEntry.Text);
+            Assert.AreEqual("Tropical fruit", indexEntry.PageNumberReplacement);
+            Assert.AreEqual(" XE  Banana \\t \"Tropical fruit\"", indexEntry.GetFieldCode());
+            Assert.AreEqual(String.Empty, indexEntry.Result);
+        }
+
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        [Ignore("WORDSNET-17524")]
+        public void FieldIndexSubheading(bool doRunSubentriesOnTheSameLine)
+        {
+            //ExStart
+            //ExFor:FieldIndex.RunSubentriesOnSameLine
+            //ExSummary:Shows how to work with subentries in an INDEX field.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create an INDEX field which will display the page locations of XE fields in the document body
+            FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
+
+            // Normally, every XE field that's a subheading of any level is displayed on a unique line entry
+            // in the INDEX field's table of contents
+            // We can reduce the length of our INDEX table by putting all subheading entries along with their page locations on one line
+            index.RunSubentriesOnSameLine = doRunSubentriesOnTheSameLine;
+            index.PageNumberSeparator = ", see page ";
+            index.Heading = "A";
+
+            if (doRunSubentriesOnTheSameLine)
+                Assert.AreEqual(" INDEX  \\r \\e \", see page \" \\h A", index.GetFieldCode());
+            else
+                Assert.AreEqual(" INDEX  \\e \", see page \" \\h A", index.GetFieldCode());
+
+            // An XE field's "Text" attribute is the same thing as the "Heading" that will appear in the INDEX field's table of contents
+            // This attribute can also contain one or multiple subheadings, separated by a colon (:),
+            // which will be grouped under their parent headings/subheadings in the INDEX field
+            // If index.RunSubentriesOnSameLine is false, "Heading 1" will take up one line as a heading,
+            // followed by a two-line indented list of "Subheading 1" and "Subheading 2" with their respective page numbers
+            // Otherwise, the two subheadings and their page numbers will be on tha same line as their heading
+            builder.InsertBreak(BreakType.PageBreak);
+            FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Heading 1:Subheading 1";
+
+            Assert.AreEqual(" XE  \"Heading 1:Subheading 1\"", indexEntry.GetFieldCode());
+
+            builder.InsertBreak(BreakType.PageBreak);
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "Heading 1:Subheading 2";
+            
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.INDEX.XE.Subheading.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.INDEX.XE.Subheading.docx");
+            index = (FieldIndex)doc.Range.Fields[0];
+
+            Assert.True(index.RunSubentriesOnSameLine);
+            if (doRunSubentriesOnTheSameLine)
+            {
+                Assert.AreEqual(" INDEX  \\r \\e \", see page \" \\h A", index.GetFieldCode());
+                Assert.AreEqual("H\r" +
+                                "Heading 1: Subheading 1, see page 2; Subheading 2, see page 3\r", index.Result);
+            }
+            else
+            {
+                Assert.AreEqual(" INDEX  \\e \", see page \" \\h A", index.GetFieldCode());
+                Assert.AreEqual("H\rHeading 1\rSubheading 1, see page 2\rSubheading 2, see page 3\r", index.Result);
+            }
+
+            indexEntry = (FieldXE)doc.Range.Fields[1];
+            Assert.AreEqual("Heading 1:Subheading 1", indexEntry.Text);
+            Assert.AreEqual(" XE  \"Heading 1:Subheading 1\"", indexEntry.GetFieldCode());
+            Assert.AreEqual(String.Empty, indexEntry.Result);
+
+            indexEntry = (FieldXE)doc.Range.Fields[2];
+            Assert.AreEqual("Heading 1:Subheading 2", indexEntry.Text);
+            Assert.AreEqual(" XE  \"Heading 1:Subheading 2\"", indexEntry.GetFieldCode());
+            Assert.AreEqual(String.Empty, indexEntry.Result);
+        }
+
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        [Ignore("WORDSNET-17524")]
+        public void FieldIndexYomi(bool doSortEntriesUsingYomi)
+        {
+            //ExStart
+            //ExFor:FieldIndex.UseYomi
+            //ExFor:FieldXE.Yomi
+            //ExSummary:Shows how to sort INDEX field entries phonetically.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create an INDEX field which will display the page locations of XE fields in the document body
+            FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
+
+            // Set the INDEX table to sort entries phonetically using Hiragana
+            index.UseYomi = doSortEntriesUsingYomi;
+
+            if (doSortEntriesUsingYomi)
+                Assert.AreEqual(" INDEX  \\y", index.GetFieldCode());
+            else
+                Assert.AreEqual(" INDEX ", index.GetFieldCode());
+
+            // Insert 4 XE fields, which would show up as entries in the INDEX field's table of contents,
+            // sorted in lexicographic order on their "Text" attribute
+            builder.InsertBreak(BreakType.PageBreak);
+            FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "愛子";
+
+            // The "Text" attrubute may contain a word's spelling in Kanji, whose pronounciation may be ambiguous,
+            // while a "Yomi" version of the word will be spelled exactly how it is pronounced using Hiragana
+            // If our INDEX field is set to use Yomi, then we can sort phonetically using the "Yomi" attribute values instead of the "Text" attribute
+            indexEntry.Yomi = "あ";
+
+            Assert.AreEqual(" XE  愛子 \\y あ", indexEntry.GetFieldCode());
+
+            builder.InsertBreak(BreakType.PageBreak);
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "明美";
+            indexEntry.Yomi = "あ";
+
+            builder.InsertBreak(BreakType.PageBreak);
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "恵美";
+            indexEntry.Yomi = "え";
+
+            builder.InsertBreak(BreakType.PageBreak);
+            indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
+            indexEntry.Text = "愛美";
+            indexEntry.Yomi = "え";
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.INDEX.XE.Yomi.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.INDEX.XE.Yomi.docx");
+            index = (FieldIndex)doc.Range.Fields[0];
+
+            if (doSortEntriesUsingYomi)
+            {
+                Assert.True(index.UseYomi);
+                Assert.AreEqual(" INDEX  \\y", index.GetFieldCode());
+                Assert.AreEqual("愛子, 2\r" +
+                                "明美, 3\r" +
+                                "恵美, 4\r" +
+                                "愛美, 5\r", index.Result);
+            }
+            else
+            {
+                Assert.False(index.UseYomi);
+                Assert.AreEqual(" INDEX ", index.GetFieldCode());
+                Assert.AreEqual("恵美, 4\r" +
+                                "愛子, 2\r" +
+                                "愛美, 5\r" +
+                                "明美, 3\r", index.Result);
+            }
+
+            indexEntry = (FieldXE)doc.Range.Fields[1];
+            Assert.AreEqual("愛子", indexEntry.Text);
+            Assert.AreEqual("あ", indexEntry.Yomi);
+            Assert.AreEqual(" XE  愛子 \\y あ", indexEntry.GetFieldCode());
+            Assert.AreEqual(String.Empty, indexEntry.Result);
+
+            indexEntry = (FieldXE)doc.Range.Fields[2];
+            Assert.AreEqual("明美", indexEntry.Text);
+            Assert.AreEqual("あ", indexEntry.Yomi);
+            Assert.AreEqual(" XE  明美 \\y あ", indexEntry.GetFieldCode());
+            Assert.AreEqual(String.Empty, indexEntry.Result);
+
+            indexEntry = (FieldXE)doc.Range.Fields[3];
+            Assert.AreEqual("恵美", indexEntry.Text);
+            Assert.AreEqual("え", indexEntry.Yomi);
+            Assert.AreEqual(" XE  恵美 \\y え", indexEntry.GetFieldCode());
+            Assert.AreEqual(String.Empty, indexEntry.Result);
+
+            indexEntry = (FieldXE)doc.Range.Fields[4];
+            Assert.AreEqual("愛美", indexEntry.Text);
+            Assert.AreEqual("え", indexEntry.Yomi);
+            Assert.AreEqual(" XE  愛美 \\y え", indexEntry.GetFieldCode());
+            Assert.AreEqual(String.Empty, indexEntry.Result);
+        }
 
         [Test]
         public void FieldBarcode()
