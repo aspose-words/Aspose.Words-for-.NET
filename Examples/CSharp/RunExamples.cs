@@ -361,6 +361,7 @@ namespace Aspose.Words.Examples.CSharp
             // RemoveRowsFromTable.Run();
             // HandleMailMergeSwitches.Run();
             // MailMergeAndConditionalField.Run();
+            // MailMergeImageField.Run();
             // MailMergeCleanUp.Run();
             // WorkingWithWebExtension.Run();
 
