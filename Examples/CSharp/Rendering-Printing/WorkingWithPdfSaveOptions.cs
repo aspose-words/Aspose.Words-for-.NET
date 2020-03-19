@@ -22,8 +22,9 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             DownsamplingImages(dataDir);
             SaveToPdfWithOutline(dataDir);
             CustomPropertiesExport(dataDir);
-            ExportDocumentStructure(dataDir);
-            PdfImageComppression(dataDir);
+            //ExportDocumentStructure(dataDir);
+            //PdfImageComppression(dataDir);
+            UpdateIfLastPrinted(dataDir);
         }
 
         public static void EscapeUriInPdf(String dataDir)
@@ -215,6 +216,20 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             doc.Save(dataDir + "SaveOptions.PdfImageComppression PDF_A_1_B.pdf", optionsA1B);
             // ExEnd:PdfImageComppression
             Console.WriteLine("\nFile saved at " + dataDir);
+        }
+
+        public static void UpdateIfLastPrinted(string dataDir)
+        {
+            // ExStart:UpdateIfLastPrinted
+            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
+            // Open a document
+            Document doc = new Document(dataDir + "Rendering.doc");
+
+            SaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.UpdateLastPrintedProperty = false;
+
+            doc.Save(dataDir + "PdfSaveOptions.UpdateIfLastPrinted.pdf", saveOptions);
+            // ExEnd:UpdateIfLastPrinted
         }
     }
 }

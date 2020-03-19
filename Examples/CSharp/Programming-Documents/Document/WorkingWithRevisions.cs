@@ -3,6 +3,8 @@ using System.IO;
 using Aspose.Words;
 using System;
 using Aspose.Words.Layout;
+using System.Text.RegularExpressions;
+using Aspose.Words.Replacing;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
@@ -139,5 +141,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             }
             // ExEnd:AccessRevisedVersion
         }
+
     }
 }
