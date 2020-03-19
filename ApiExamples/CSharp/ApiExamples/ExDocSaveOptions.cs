@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.Saving;
@@ -79,6 +80,30 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "DocSaveOptions.PictureBullets.doc", saveOptions);
             //ExEnd
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void UpdateLastPrintedProperty(bool isUpdateLastPrintedProperty)
+        {
+            //ExStart
+            //ExFor:SaveOptions.UpdateLastPrintedProperty
+            //ExSummary:Shows how to update BuiltInDocumentProperties.LastPrinted property before saving.
+            Document doc = new Document();
+
+            // Aspose.Words update BuiltInDocumentProperties.LastPrinted property by default
+            DocSaveOptions saveOptions = new DocSaveOptions();
+            saveOptions.UpdateLastPrintedProperty = isUpdateLastPrintedProperty;
+
+            doc.Save(ArtifactsDir + "DocSaveOptions.UpdateLastPrintedProperty.docx", saveOptions);
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocSaveOptions.UpdateLastPrintedProperty.docx");
+
+            DateTime currentDateTime = DateTime.Now.Date;
+
+            Assert.AreEqual(isUpdateLastPrintedProperty ? (object) currentDateTime : DateTime.Parse("1/1/0001 00:00:00"),
+                doc.BuiltInDocumentProperties.LastPrinted.Date);
         }
     }
 }
