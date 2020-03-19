@@ -3875,35 +3875,33 @@ namespace ApiExamples
             Assert.AreEqual(String.Empty, field.Result);
         }
 
-        //ExStart
-        //ExFor:FieldMergeBarcode
-        //ExFor:FieldMergeBarcode.AddStartStopChar
-        //ExFor:FieldMergeBarcode.BackgroundColor
-        //ExFor:FieldMergeBarcode.BarcodeType
-        //ExFor:FieldMergeBarcode.BarcodeValue
-        //ExFor:FieldMergeBarcode.CaseCodeStyle
-        //ExFor:FieldMergeBarcode.DisplayText
-        //ExFor:FieldMergeBarcode.ErrorCorrectionLevel
-        //ExFor:FieldMergeBarcode.FixCheckDigit
-        //ExFor:FieldMergeBarcode.ForegroundColor
-        //ExFor:FieldMergeBarcode.PosCodeStyle
-        //ExFor:FieldMergeBarcode.ScalingFactor
-        //ExFor:FieldMergeBarcode.SymbolHeight
-        //ExFor:FieldMergeBarcode.SymbolRotation
-        //ExSummary:Shows how to use MERGEBARCODE fields to integrate barcodes into mail merge operations.
-        [Test] //ExSkip
+
+        [Test]
         public void FieldMergeBarcode_QR()
         {
+            //ExStart
+            //ExFor:FieldDisplayBarcode
+            //ExFor:FieldMergeBarcode
+            //ExFor:FieldMergeBarcode.BackgroundColor
+            //ExFor:FieldMergeBarcode.BarcodeType
+            //ExFor:FieldMergeBarcode.BarcodeValue
+            //ExFor:FieldMergeBarcode.ErrorCorrectionLevel
+            //ExFor:FieldMergeBarcode.ForegroundColor
+            //ExFor:FieldMergeBarcode.ScalingFactor
+            //ExFor:FieldMergeBarcode.SymbolHeight
+            //ExFor:FieldMergeBarcode.SymbolRotation
+            //ExSummary:Shows how to perform a mail merge on QR barcodes.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a QR code
-            FieldMergeBarcode field = (FieldMergeBarcode) builder.InsertField(FieldType.FieldMergeBarcode, true);
+            // Insert a MERGEBARCODE field,
+            // which functions similar to a MERGEFIELD by creating a barcode from the merged data source's values
+            // This field will convert all rows in a merge data source's "MyQRCode" column into QR barcodes
+            FieldMergeBarcode field = (FieldMergeBarcode)builder.InsertField(FieldType.FieldMergeBarcode, true);
             field.BarcodeType = "QR";
-
-            // In a DISPLAYBARCODE field, the BarcodeValue attribute decides what value the barcode will display
-            // However in our MERGEBARCODE fields, it has the same function as the FieldName attribute of a MERGEFIELD
             field.BarcodeValue = "MyQRCode";
+
+            // Edit its appearance such as colors and scale
             field.BackgroundColor = "0xF8BD69";
             field.ForegroundColor = "0xB5413B";
             field.ErrorCorrectionLevel = "3";
@@ -3916,36 +3914,68 @@ namespace ApiExamples
                 field.GetFieldCode());
             builder.Writeln();
 
-            // Create a data source for our mail merge
-            // This source is a data table, whose column names correspond to the FieldName attributes of MERGEFIELD fields
-            // as well as BarcodeValue attributes of DISPLAYBARCODE fields
-            DataTable table = CreateTable("Barcodes", new[] { "MyQRCode" },
-                new[,] { { "ABC123" }, { "DEF456" } });
+            // Create a DataTable with a column with the same name as our MERGEBARCODE field's BarcodeValue
+            // When we execute the mail merge,
+            // a barcode of a type we specified in the MERGEBARCODE field will be created with each row's value
+            DataTable table = new DataTable("Barcodes");
+            table.Columns.Add("MyQRCode");
+            table.Rows.Add(new[] { "ABC123" });
+            table.Rows.Add(new[] { "DEF456" });
 
-            // During the mail merge, all our MERGEBARCODE fields will be converted into DISPLAYBARCODE fields,
-            // with values from the data table rows deposited into corresponding BarcodeValue attributes
             doc.MailMerge.Execute(table);
 
+            // Every row in the "MyQRCode" column has created a DISPLAYBARCODE field, which shows a barcode with the merged value
             Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
-            Assert.AreEqual("DISPLAYBARCODE \"ABC123\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B",
+            Assert.AreEqual("DISPLAYBARCODE \"ABC123\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B", 
                 doc.Range.Fields[0].GetFieldCode());
             Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[1].Type);
             Assert.AreEqual("DISPLAYBARCODE \"DEF456\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B",
                 doc.Range.Fields[1].GetFieldCode());
 
-            doc.Save(ArtifactsDir + "Field.MERGEBARCODE.docx");
+            doc.Save(ArtifactsDir + "Field.MERGEBARCODE.QR.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.MERGEBARCODE.QR.docx");
+
+            FieldDisplayBarcode barcode = (FieldDisplayBarcode)doc.Range.Fields[0];
+
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, barcode.Type);
+            Assert.AreEqual("DISPLAYBARCODE \"ABC123\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B",
+                barcode.GetFieldCode());
+            Assert.AreEqual("ABC123", barcode.BarcodeValue);
+            Assert.AreEqual("QR", barcode.BarcodeType);
+
+            barcode = (FieldDisplayBarcode)doc.Range.Fields[1];
+
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, barcode.Type);
+            Assert.AreEqual("DISPLAYBARCODE \"DEF456\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B",
+                barcode.GetFieldCode());
+            Assert.AreEqual("DEF456", barcode.BarcodeValue);
+            Assert.AreEqual("QR", barcode.BarcodeType);
         }
 
-        [Test] //ExSkip
+        [Test]
         public void FieldMergeBarcode_EAN13()
         {
+            //ExStart
+            //ExFor:FieldMergeBarcode
+            //ExFor:FieldMergeBarcode.BarcodeType
+            //ExFor:FieldMergeBarcode.BarcodeValue
+            //ExFor:FieldMergeBarcode.DisplayText
+            //ExFor:FieldMergeBarcode.FixCheckDigit
+            //ExFor:FieldMergeBarcode.PosCodeStyle
+            //ExSummary:Shows how to perform a mail merge on EAN13 barcodes.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a EAN13 barcode
-            FieldMergeBarcode field = (FieldMergeBarcode) builder.InsertField(FieldType.FieldMergeBarcode, true);
+            // Insert a MERGEBARCODE field,
+            // which functions similar to a MERGEFIELD by creating a barcode from the merged data source's values
+            // This field will convert all rows in a merge data source's "MyEAN13Barcode" column into EAN13 barcodes
+            FieldMergeBarcode field = (FieldMergeBarcode)builder.InsertField(FieldType.FieldMergeBarcode, true);
             field.BarcodeType = "EAN13";
             field.BarcodeValue = "MyEAN13Barcode";
+
+            // Edit its appearance to display barcode data under the lines
             field.DisplayText = true;
             field.PosCodeStyle = "CASE";
             field.FixCheckDigit = true;
@@ -3954,11 +3984,18 @@ namespace ApiExamples
             Assert.AreEqual(" MERGEBARCODE  MyEAN13Barcode EAN13 \\t \\p CASE \\x", field.GetFieldCode());
             builder.Writeln();
 
-            DataTable table = CreateTable("Barcodes", new[] { "MyEAN13Barcode" },
-                new[,] { { "501234567890" }, { "123456789012" } });
+            // Create a DataTable with a column with the same name as our MERGEBARCODE field's BarcodeValue
+            // When we execute the mail merge,
+            // a barcode of a type we specified in the MERGEBARCODE field will be created with each row's value
+            DataTable table = new DataTable("Barcodes");
+            table.Columns.Add("MyEAN13Barcode");
+            table.Rows.Add(new[] { "501234567890" });
+            table.Rows.Add(new[] { "123456789012" });
 
             doc.MailMerge.Execute(table);
 
+            // Every row in the "MyEAN13Barcode" column has created a DISPLAYBARCODE field,
+            // which shows a barcode with the merged value
             Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
             Assert.AreEqual("DISPLAYBARCODE \"501234567890\" EAN13 \\t \\p CASE \\x",
                 doc.Range.Fields[0].GetFieldCode());
@@ -3967,29 +4004,64 @@ namespace ApiExamples
                 doc.Range.Fields[1].GetFieldCode());
 
             doc.Save(ArtifactsDir + "Field.MERGEBARCODE.EAN13.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.MERGEBARCODE.EAN13.docx");
+
+            FieldDisplayBarcode barcode = (FieldDisplayBarcode)doc.Range.Fields[0];
+
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, barcode.Type);
+            Assert.AreEqual("DISPLAYBARCODE \"501234567890\" EAN13 \\t \\p CASE \\x",
+                barcode.GetFieldCode());
+            Assert.AreEqual("501234567890", barcode.BarcodeValue);
+            Assert.AreEqual("EAN13", barcode.BarcodeType);
+
+            barcode = (FieldDisplayBarcode)doc.Range.Fields[1];
+
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, barcode.Type);
+            Assert.AreEqual("DISPLAYBARCODE \"123456789012\" EAN13 \\t \\p CASE \\x",
+                barcode.GetFieldCode());
+            Assert.AreEqual("123456789012", barcode.BarcodeValue);
+            Assert.AreEqual("EAN13", barcode.BarcodeType);
         }
 
-        [Test] //ExSkip
+        [Test]
         public void FieldMergeBarcode_CODE39()
         {
+            //ExStart
+            //ExFor:FieldMergeBarcode
+            //ExFor:FieldMergeBarcode.AddStartStopChar
+            //ExFor:FieldMergeBarcode.BarcodeType
+            //ExSummary:Shows how to perform a mail merge on CODE39 barcodes.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a CODE39 barcode
-            FieldMergeBarcode field = (FieldMergeBarcode) builder.InsertField(FieldType.FieldMergeBarcode, true);
+            // Insert a MERGEBARCODE field,
+            // which functions similar to a MERGEFIELD by creating a barcode from the merged data source's values
+            // This field will convert all rows in a merge data source's "MyCODE39Barcode" column into CODE39 barcodes
+            FieldMergeBarcode field = (FieldMergeBarcode)builder.InsertField(FieldType.FieldMergeBarcode, true);
             field.BarcodeType = "CODE39";
             field.BarcodeValue = "MyCODE39Barcode";
+
+            // Edit its appearance to display start/stop characters
             field.AddStartStopChar = true;
 
             Assert.AreEqual(FieldType.FieldMergeBarcode, field.Type);
             Assert.AreEqual(" MERGEBARCODE  MyCODE39Barcode CODE39 \\d", field.GetFieldCode());
             builder.Writeln();
 
-            DataTable table = CreateTable("Barcodes", new[] { "MyCODE39Barcode" },
-                new[,] { { "12345ABCDE" }, { "67890FGHIJ" } });
+            // Create a DataTable with a column with the same name as our MERGEBARCODE field's BarcodeValue
+            // When we execute the mail merge,
+            // a barcode of a type we specified in the MERGEBARCODE field will be created with each row's value
+            DataTable table = new DataTable("Barcodes");
+            table.Columns.Add("MyCODE39Barcode");
+            table.Rows.Add(new[] { "12345ABCDE" });
+            table.Rows.Add(new[] { "67890FGHIJ" });
 
             doc.MailMerge.Execute(table);
 
+            // Every row in the "MyCODE39Barcode" column has created a DISPLAYBARCODE field,
+            // which shows a barcode with the merged value
             Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
             Assert.AreEqual("DISPLAYBARCODE \"12345ABCDE\" CODE39 \\d",
                 doc.Range.Fields[0].GetFieldCode());
@@ -3998,16 +4070,42 @@ namespace ApiExamples
                 doc.Range.Fields[1].GetFieldCode());
 
             doc.Save(ArtifactsDir + "Field.MERGEBARCODE.CODE39.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.MERGEBARCODE.CODE39.docx");
+
+            FieldDisplayBarcode barcode = (FieldDisplayBarcode)doc.Range.Fields[0];
+
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, barcode.Type);
+            Assert.AreEqual("DISPLAYBARCODE \"12345ABCDE\" CODE39 \\d",
+                barcode.GetFieldCode());
+            Assert.AreEqual("12345ABCDE", barcode.BarcodeValue);
+            Assert.AreEqual("CODE39", barcode.BarcodeType);
+
+            barcode = (FieldDisplayBarcode)doc.Range.Fields[1];
+
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, barcode.Type);
+            Assert.AreEqual("DISPLAYBARCODE \"67890FGHIJ\" CODE39 \\d",
+                barcode.GetFieldCode());
+            Assert.AreEqual("67890FGHIJ", barcode.BarcodeValue);
+            Assert.AreEqual("CODE39", barcode.BarcodeType);
         }
 
-        [Test] //ExSkip
+        [Test]
         public void FieldMergeBarcode_ITF14()
         {
+            //ExStart
+            //ExFor:FieldMergeBarcode
+            //ExFor:FieldMergeBarcode.BarcodeType
+            //ExFor:FieldMergeBarcode.CaseCodeStyle
+            //ExSummary:Shows how to perform a mail merge on ITF14 barcodes.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a ITF14 barcode
-            FieldMergeBarcode field = (FieldMergeBarcode) builder.InsertField(FieldType.FieldMergeBarcode, true);
+            // Insert a MERGEBARCODE field,
+            // which functions similar to a MERGEFIELD by creating a barcode from the merged data source's values
+            // This field will convert all rows in a merge data source's "MyITF14Barcode" column into ITF14 barcodes
+            FieldMergeBarcode field = (FieldMergeBarcode)builder.InsertField(FieldType.FieldMergeBarcode, true);
             field.BarcodeType = "ITF14";
             field.BarcodeValue = "MyITF14Barcode";
             field.CaseCodeStyle = "STD";
@@ -4015,11 +4113,18 @@ namespace ApiExamples
             Assert.AreEqual(FieldType.FieldMergeBarcode, field.Type);
             Assert.AreEqual(" MERGEBARCODE  MyITF14Barcode ITF14 \\c STD", field.GetFieldCode());
 
-            DataTable table = CreateTable("Barcodes", new[] { "MyITF14Barcode" },
-                new[,] { { "09312345678907" }, { "1234567891234" } });
+            // Create a DataTable with a column with the same name as our MERGEBARCODE field's BarcodeValue
+            // When we execute the mail merge,
+            // a barcode of a type we specified in the MERGEBARCODE field will be created with each row's value
+            DataTable table = new DataTable("Barcodes");
+            table.Columns.Add("MyITF14Barcode");
+            table.Rows.Add(new[] { "09312345678907" });
+            table.Rows.Add(new[] { "1234567891234" });
 
             doc.MailMerge.Execute(table);
 
+            // Every row in the "MyITF14Barcode" column has created a DISPLAYBARCODE field,
+            // which shows a barcode with the merged value
             Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
             Assert.AreEqual("DISPLAYBARCODE \"09312345678907\" ITF14 \\c STD",
                 doc.Range.Fields[0].GetFieldCode());
@@ -4028,28 +4133,26 @@ namespace ApiExamples
                 doc.Range.Fields[1].GetFieldCode());
 
             doc.Save(ArtifactsDir + "Field.MERGEBARCODE.ITF14.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.MERGEBARCODE.ITF14.docx");
+
+            FieldDisplayBarcode barcode = (FieldDisplayBarcode)doc.Range.Fields[0];
+
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, barcode.Type);
+            Assert.AreEqual("DISPLAYBARCODE \"09312345678907\" ITF14 \\c STD",
+                barcode.GetFieldCode());
+            Assert.AreEqual("09312345678907", barcode.BarcodeValue);
+            Assert.AreEqual("ITF14", barcode.BarcodeType);
+
+            barcode = (FieldDisplayBarcode)doc.Range.Fields[1];
+
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, barcode.Type);
+            Assert.AreEqual("DISPLAYBARCODE \"1234567891234\" ITF14 \\c STD",
+                barcode.GetFieldCode());
+            Assert.AreEqual("1234567891234", barcode.BarcodeValue);
+            Assert.AreEqual("ITF14", barcode.BarcodeType);
         }
-
-        /// <summary>
-        /// Creates a DataTable named by dataTableName, adds a column for every element in columnNames
-        /// and fills rows with data from dataSet.
-        /// </summary>
-        public DataTable CreateTable(string dataTableName, string[] columnNames, object[,] dataSet)
-        {
-            if (dataTableName != string.Empty || columnNames.Length != 0)
-            {
-                DataTable table = new DataTable(dataTableName);
-
-                foreach (string columnName in columnNames) table.Columns.Add(columnName);
-
-                foreach (object data in dataSet) table.Rows.Add(data);
-
-                return table;
-            }
-
-            throw new ArgumentException("DataTable name and Column name must be declared.");
-        }
-        //ExEnd
 
         //ExStart
         //ExFor:FieldLink
@@ -6420,8 +6523,11 @@ namespace ApiExamples
             // Since a SKIPIF field will be triggered once by that value, the output of our mail merge will have 2 pages instead of 3
             // On page 1, the MERGESEQ and MERGEREC fields will both display "1"
             // On page 2, the MERGEREC field will display "3" and the MERGESEQ field will display "2"
-            DataTable table = CreateTable("Employees", new[] { "Name" },
-                new[,] { { "Jane Doe" }, { "John Doe" }, { "Joe Bloggs" } });
+            DataTable table = new DataTable("Employees");
+            table.Columns.Add("Name");
+            table.Rows.Add(new[] { "Jane Doe" });
+            table.Rows.Add(new[] { "John Doe" });
+            table.Rows.Add(new[] { "Joe Bloggs" });
 
             // Execute mail merge and save document
             doc.MailMerge.Execute(table);
