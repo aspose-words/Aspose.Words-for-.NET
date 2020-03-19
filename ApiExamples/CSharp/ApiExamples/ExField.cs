@@ -3722,25 +3722,44 @@ namespace ApiExamples
             builder.Writeln();
 
             // Reference a US postal code directly
-            FieldBarcode fieldBarcode = (FieldBarcode)builder.InsertField(FieldType.FieldBarcode, true);
-            fieldBarcode.FacingIdentificationMark = "C";
-            fieldBarcode.PostalAddress = "96801";
-            fieldBarcode.IsUSPostalAddress = true;
+            FieldBarcode field = (FieldBarcode)builder.InsertField(FieldType.FieldBarcode, true);
+            field.FacingIdentificationMark = "C";
+            field.PostalAddress = "96801";
+            field.IsUSPostalAddress = true;
 
-            Assert.AreEqual(" BARCODE  96801 \\f C \\u", fieldBarcode.GetFieldCode());
+            Assert.AreEqual(" BARCODE  96801 \\f C \\u", field.GetFieldCode());
 
             builder.Writeln();
 
             // Reference a US postal code from a bookmark
-            fieldBarcode = (FieldBarcode)builder.InsertField(FieldType.FieldBarcode, true);
-            fieldBarcode.PostalAddress = "BarcodeBookmark";
-            fieldBarcode.IsBookmark = true;
+            field = (FieldBarcode)builder.InsertField(FieldType.FieldBarcode, true);
+            field.PostalAddress = "BarcodeBookmark";
+            field.IsBookmark = true;
 
-            Assert.AreEqual(" BARCODE  BarcodeBookmark \\b", fieldBarcode.GetFieldCode());
+            Assert.AreEqual(" BARCODE  BarcodeBookmark \\b", field.GetFieldCode());
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.BARCODE.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.BARCODE.docx");
+
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).Count);
+
+            field = (FieldBarcode)doc.Range.Fields[0];
+
+            Assert.AreEqual("C", field.FacingIdentificationMark);
+            Assert.AreEqual("96801", field.PostalAddress);
+            Assert.True(field.IsUSPostalAddress);
+            Assert.AreEqual(" BARCODE  96801 \\f C \\u", field.GetFieldCode());
+            Assert.AreEqual(String.Empty, field.Result);
+
+            field = (FieldBarcode)doc.Range.Fields[1];
+
+            Assert.AreEqual("BarcodeBookmark", field.PostalAddress);
+            Assert.True(field.IsBookmark);
+            Assert.AreEqual(" BARCODE  BarcodeBookmark \\b", field.GetFieldCode());
+            Assert.AreEqual(String.Empty, field.Result);
         }
 
         [Test]
@@ -3811,6 +3830,49 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.DISPLAYBARCODE.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.DISPLAYBARCODE.docx");
+
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).Count);
+
+            field = (FieldDisplayBarcode)doc.Range.Fields[0];
+
+            Assert.AreEqual("QR", field.BarcodeType);
+            Assert.AreEqual("ABC123", field.BarcodeValue);
+            Assert.AreEqual("0xF8BD69", field.BackgroundColor);
+            Assert.AreEqual("0xB5413B", field.ForegroundColor);
+            Assert.AreEqual("3", field.ErrorCorrectionLevel);
+            Assert.AreEqual("250", field.ScalingFactor);
+            Assert.AreEqual("1000", field.SymbolHeight);
+            Assert.AreEqual("0", field.SymbolRotation);
+            Assert.AreEqual(" DISPLAYBARCODE  ABC123 QR \\b 0xF8BD69 \\f 0xB5413B \\q 3 \\s 250 \\h 1000 \\r 0", field.GetFieldCode());
+            Assert.AreEqual(String.Empty, field.Result);
+
+            field = (FieldDisplayBarcode)doc.Range.Fields[1];
+
+            Assert.AreEqual("EAN13", field.BarcodeType);
+            Assert.AreEqual("501234567890", field.BarcodeValue);
+            Assert.True(field.DisplayText);
+            Assert.AreEqual("CASE", field.PosCodeStyle);
+            Assert.True(field.FixCheckDigit);
+            Assert.AreEqual(" DISPLAYBARCODE  501234567890 EAN13 \\t \\p CASE \\x", field.GetFieldCode());
+            Assert.AreEqual(String.Empty, field.Result);
+
+            field = (FieldDisplayBarcode)doc.Range.Fields[2];
+
+            Assert.AreEqual("CODE39", field.BarcodeType);
+            Assert.AreEqual("12345ABCDE", field.BarcodeValue);
+            Assert.True(field.AddStartStopChar);
+            Assert.AreEqual(" DISPLAYBARCODE  12345ABCDE CODE39 \\d", field.GetFieldCode());
+            Assert.AreEqual(String.Empty, field.Result);
+
+            field = (FieldDisplayBarcode)doc.Range.Fields[3];
+
+            Assert.AreEqual("ITF14", field.BarcodeType);
+            Assert.AreEqual("09312345678907", field.BarcodeValue);
+            Assert.AreEqual("STD", field.CaseCodeStyle);
+            Assert.AreEqual(" DISPLAYBARCODE  09312345678907 ITF14 \\c STD", field.GetFieldCode());
+            Assert.AreEqual(String.Empty, field.Result);
         }
 
         //ExStart
@@ -3849,6 +3911,7 @@ namespace ApiExamples
             field.SymbolHeight = "1000";
             field.SymbolRotation = "0";
 
+            Assert.AreEqual(FieldType.FieldMergeBarcode, field.Type);
             Assert.AreEqual(" MERGEBARCODE  MyQRCode QR \\b 0xF8BD69 \\f 0xB5413B \\q 3 \\s 250 \\h 1000 \\r 0",
                 field.GetFieldCode());
             builder.Writeln();
@@ -3864,10 +3927,9 @@ namespace ApiExamples
             doc.MailMerge.Execute(table);
 
             Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
-            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[1].Type);
-
             Assert.AreEqual("DISPLAYBARCODE \"ABC123\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B",
                 doc.Range.Fields[0].GetFieldCode());
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[1].Type);
             Assert.AreEqual("DISPLAYBARCODE \"DEF456\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B",
                 doc.Range.Fields[1].GetFieldCode());
 
@@ -3888,6 +3950,7 @@ namespace ApiExamples
             field.PosCodeStyle = "CASE";
             field.FixCheckDigit = true;
 
+            Assert.AreEqual(FieldType.FieldMergeBarcode, field.Type);
             Assert.AreEqual(" MERGEBARCODE  MyEAN13Barcode EAN13 \\t \\p CASE \\x", field.GetFieldCode());
             builder.Writeln();
 
@@ -3897,10 +3960,9 @@ namespace ApiExamples
             doc.MailMerge.Execute(table);
 
             Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
-            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[1].Type);
-
             Assert.AreEqual("DISPLAYBARCODE \"501234567890\" EAN13 \\t \\p CASE \\x",
                 doc.Range.Fields[0].GetFieldCode());
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[1].Type);
             Assert.AreEqual("DISPLAYBARCODE \"123456789012\" EAN13 \\t \\p CASE \\x",
                 doc.Range.Fields[1].GetFieldCode());
 
@@ -3919,6 +3981,7 @@ namespace ApiExamples
             field.BarcodeValue = "MyCODE39Barcode";
             field.AddStartStopChar = true;
 
+            Assert.AreEqual(FieldType.FieldMergeBarcode, field.Type);
             Assert.AreEqual(" MERGEBARCODE  MyCODE39Barcode CODE39 \\d", field.GetFieldCode());
             builder.Writeln();
 
@@ -3928,10 +3991,9 @@ namespace ApiExamples
             doc.MailMerge.Execute(table);
 
             Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
-            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[1].Type);
-
             Assert.AreEqual("DISPLAYBARCODE \"12345ABCDE\" CODE39 \\d",
                 doc.Range.Fields[0].GetFieldCode());
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[1].Type);
             Assert.AreEqual("DISPLAYBARCODE \"67890FGHIJ\" CODE39 \\d",
                 doc.Range.Fields[1].GetFieldCode());
 
@@ -3950,6 +4012,7 @@ namespace ApiExamples
             field.BarcodeValue = "MyITF14Barcode";
             field.CaseCodeStyle = "STD";
 
+            Assert.AreEqual(FieldType.FieldMergeBarcode, field.Type);
             Assert.AreEqual(" MERGEBARCODE  MyITF14Barcode ITF14 \\c STD", field.GetFieldCode());
 
             DataTable table = CreateTable("Barcodes", new[] { "MyITF14Barcode" },
@@ -3958,10 +4021,9 @@ namespace ApiExamples
             doc.MailMerge.Execute(table);
 
             Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
-            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[1].Type);
-
             Assert.AreEqual("DISPLAYBARCODE \"09312345678907\" ITF14 \\c STD",
                 doc.Range.Fields[0].GetFieldCode());
+            Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[1].Type);
             Assert.AreEqual("DISPLAYBARCODE \"1234567891234\" ITF14 \\c STD",
                 doc.Range.Fields[1].GetFieldCode());
 
