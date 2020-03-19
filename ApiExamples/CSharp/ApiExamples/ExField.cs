@@ -4411,6 +4411,25 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.FieldOptionsCurrentUser.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.FieldOptionsCurrentUser.docx");
+
+            Assert.Null(doc.FieldOptions.CurrentUser);
+
+            FieldUserName fieldUserName = (FieldUserName)doc.Range.Fields[0];
+
+            Assert.Null(fieldUserName.UserName);
+            Assert.AreEqual("Default User", fieldUserName.Result);
+
+            FieldUserInitials fieldUserInitials = (FieldUserInitials)doc.Range.Fields[1];
+
+            Assert.Null(fieldUserInitials.UserInitials);
+            Assert.AreEqual("D. U.", fieldUserInitials.Result);
+
+            FieldUserAddress fieldUserAddress = (FieldUserAddress)doc.Range.Fields[2];
+
+            Assert.Null(fieldUserAddress.UserAddress);
+            Assert.AreEqual("One Microsoft Way", fieldUserAddress.Result);
         }
 
         [Test]
@@ -4448,6 +4467,14 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.USERADDRESS.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.USERADDRESS.docx");
+
+            fieldUserAddress = (FieldUserAddress)doc.Range.Fields[0];
+
+            Assert.AreEqual("456 North Road", fieldUserAddress.UserAddress);
+            Assert.AreEqual(" USERADDRESS  \"456 North Road\"", fieldUserAddress.GetFieldCode());
+            Assert.AreEqual("456 North Road", fieldUserAddress.Result);
         }
 
         [Test]
@@ -4485,6 +4512,14 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.USERINITIALS.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.USERINITIALS.docx");
+
+            fieldUserInitials = (FieldUserInitials)doc.Range.Fields[0];
+
+            Assert.AreEqual("J. C.", fieldUserInitials.UserInitials);
+            Assert.AreEqual(" USERINITIALS  \"J. C.\"", fieldUserInitials.GetFieldCode());
+            Assert.AreEqual("J. C.", fieldUserInitials.Result);
         }
 
         [Test]
@@ -4523,6 +4558,14 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.USERNAME.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.USERNAME.docx");
+
+            fieldUserName = (FieldUserName)doc.Range.Fields[0];
+
+            Assert.AreEqual("Jane Doe", fieldUserName.UserName);
+            Assert.AreEqual(" USERNAME  \"Jane Doe\"", fieldUserName.GetFieldCode());
+            Assert.AreEqual("Jane Doe", fieldUserName.Result);
         }
 
         [Test]
@@ -4553,7 +4596,6 @@ namespace ApiExamples
             field.IncludeFullPath = true;
 
             // We can override the values displayed by our FILENAME fields by setting this attribute
-            Assert.IsNull(doc.FieldOptions.FileName);
             doc.FieldOptions.FileName = "Field.FILENAME.docx";
             field.Update();
 
@@ -4561,8 +4603,17 @@ namespace ApiExamples
             Assert.AreEqual("Field.FILENAME.docx", field.Result);
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "" + doc.FieldOptions.FileName);
+            doc.Save(ArtifactsDir + doc.FieldOptions.FileName);
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.FILENAME.docx");
+
+            Assert.IsNull(doc.FieldOptions.FileName);
+
+            field = (FieldFileName)doc.Range.Fields[0];
+
+            Assert.AreEqual(" FILENAME ", field.GetFieldCode());
+            Assert.AreEqual("Field.FILENAME.docx", field.Result);
         }
 
         [Test]
@@ -4584,6 +4635,14 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.FieldOptionsBidi.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.FieldOptionsBidi.docx");
+
+            Assert.False(doc.FieldOptions.IsBidiTextSupportedOnUpdate);
+
+            comboBox = doc.Range.FormFields[0];
+            
+            Assert.AreEqual("עֶשְׂרִים", comboBox.Result);
         }
 
         [Test]
@@ -4604,6 +4663,16 @@ namespace ApiExamples
 
             Assert.AreEqual("$5", field.Result);
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+
+            Assert.False(doc.FieldOptions.LegacyNumberFormat);
+
+            field = doc.Range.Fields[0];
+            
+            Assert.AreEqual(FieldType.FieldFormula, field.Type);
+            Assert.AreEqual("= 2 + 3 \\# $##", field.GetFieldCode());
+            Assert.AreEqual("$5", field.Result);
         }
 
         [Test]
@@ -4628,6 +4697,11 @@ namespace ApiExamples
             // After switching to the invariant culture, the date/time will be presented in the "mm/dd/yyyy hh:mm" format
             Assert.IsTrue(Regex.Match(field.Result, @"\d{2}[/]\d{2}[/]\d{4} \d{2}[:]\d{2}").Success);
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+
+            Assert.Null(doc.FieldOptions.PreProcessCulture);
+            Assert.IsTrue(Regex.Match(doc.Range.Fields[0].Result, @"\d{2}[/]\d{2}[/]\d{4} \d{2}[:]\d{2}").Success);
         }
 
         [Test]
@@ -4668,6 +4742,24 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.TOA.Categories.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.TOA.Categories.docx");
+
+            Assert.Null(doc.FieldOptions.ToaCategories);
+
+            FieldToa field = (FieldToa)doc.Range.Fields[0];
+
+            Assert.AreEqual(FieldType.FieldTOA, field.Type);
+            Assert.AreEqual("TOA \\c 1 \\h", field.GetFieldCode());
+            Assert.AreEqual("My Category 1\rentry 2\t3\r", field.Result);
+
+            field = (FieldToa)doc.Range.Fields[1];
+
+            Assert.AreEqual(FieldType.FieldTOA, field.Type);
+            Assert.AreEqual("TOA \\c 2 \\h", field.GetFieldCode());
+            Assert.AreEqual("My Category 2\r" +
+                            "entry 1\t2\r" +
+                            "entry 3\t4\r", field.Result);
         }
 
         [Test]
@@ -4692,10 +4784,19 @@ namespace ApiExamples
             field.Update();
             Assert.AreEqual("$1.234.567,89", field.Result);
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+
+            Assert.False(doc.FieldOptions.UseInvariantCultureNumberFormat);
+
+            field = doc.Range.Fields[0];
+            Assert.AreEqual(FieldType.FieldFormula, field.Type);
+            Assert.AreEqual(" = 1234567,89 \\# $#,###,###.##", field.GetFieldCode());
+            Assert.AreEqual("$1.234.567,89", field.Result);
         }
 
         [Test]
-        [Ignore("WORDSNET-17657")]
+        //[Ignore("WORDSNET-17657")]
         public void FieldStyleRefParagraphNumbers()
         {
             //ExStart
