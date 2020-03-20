@@ -4546,42 +4546,86 @@ namespace ApiExamples
 
             // Place a STYLEREF field in the header and have it display the first "List Paragraph"-styled text in the document
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-            FieldStyleRef fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
-            fieldStyleRef.StyleName = "List Paragraph";
+            FieldStyleRef field = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            field.StyleName = "List Paragraph";
 
             // Place a STYLEREF field in the footer and have it display the last text
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
-            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
-            fieldStyleRef.StyleName = "List Paragraph";
-            fieldStyleRef.SearchFromBottom = true;
+            field = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            field.StyleName = "List Paragraph";
+            field.SearchFromBottom = true;
 
             builder.MoveToDocumentEnd();
 
             // We can also use STYLEREF fields to reference the list numbers of lists
             builder.Write("\nParagraph number: ");
-            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
-            fieldStyleRef.StyleName = "Quote";
-            fieldStyleRef.InsertParagraphNumber = true;
+            field = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            field.StyleName = "Quote";
+            field.InsertParagraphNumber = true;
 
             builder.Write("\nParagraph number, relative context: ");
-            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
-            fieldStyleRef.StyleName = "Quote";
-            fieldStyleRef.InsertParagraphNumberInRelativeContext = true;
+            field = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            field.StyleName = "Quote";
+            field.InsertParagraphNumberInRelativeContext = true;
 
             builder.Write("\nParagraph number, full context: ");
-            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
-            fieldStyleRef.StyleName = "Quote";
-            fieldStyleRef.InsertParagraphNumberInFullContext = true;
+            field = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            field.StyleName = "Quote";
+            field.InsertParagraphNumberInFullContext = true;
 
             builder.Write("\nParagraph number, full context, non-delimiter chars suppressed: ");
-            fieldStyleRef = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
-            fieldStyleRef.StyleName = "Quote";
-            fieldStyleRef.InsertParagraphNumberInFullContext = true;
-            fieldStyleRef.SuppressNonDelimiters = true;
+            field = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
+            field.StyleName = "Quote";
+            field.InsertParagraphNumberInFullContext = true;
+            field.SuppressNonDelimiters = true;
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.STYLEREF.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.STYLEREF.docx");
+
+            field = (FieldStyleRef)doc.Range.Fields[0];
+
+            Assert.AreEqual("List Paragraph", field.StyleName);
+            Assert.AreEqual(" STYLEREF  \"List Paragraph\"", field.GetFieldCode());
+            Assert.AreEqual("Item 1", field.Result);
+
+            field = (FieldStyleRef)doc.Range.Fields[1];
+
+            Assert.AreEqual("List Paragraph", field.StyleName);
+            Assert.True(field.SearchFromBottom);
+            Assert.AreEqual(" STYLEREF  \"List Paragraph\" \\l", field.GetFieldCode());
+            Assert.AreEqual("Item 3", field.Result);
+
+            field = (FieldStyleRef)doc.Range.Fields[2];
+
+            Assert.AreEqual("Quote", field.StyleName);
+            Assert.True(field.InsertParagraphNumber);
+            Assert.AreEqual(" STYLEREF  Quote \\n", field.GetFieldCode());
+            Assert.AreEqual("b )", field.Result);
+
+            field = (FieldStyleRef)doc.Range.Fields[3];
+
+            Assert.AreEqual("Quote", field.StyleName);
+            Assert.True(field.InsertParagraphNumberInRelativeContext);
+            Assert.AreEqual(" STYLEREF  Quote \\r", field.GetFieldCode());
+            Assert.AreEqual("b )", field.Result);
+
+            field = (FieldStyleRef)doc.Range.Fields[4];
+
+            Assert.AreEqual("Quote", field.StyleName);
+            Assert.True(field.InsertParagraphNumberInFullContext);
+            Assert.AreEqual(" STYLEREF  Quote \\w", field.GetFieldCode());
+            Assert.AreEqual("1.b )", field.Result);
+
+            field = (FieldStyleRef)doc.Range.Fields[5];
+
+            Assert.AreEqual("Quote", field.StyleName);
+            Assert.True(field.InsertParagraphNumberInFullContext);
+            Assert.True(field.SuppressNonDelimiters);
+            Assert.AreEqual(" STYLEREF  Quote \\w \\t", field.GetFieldCode());
+            Assert.AreEqual("1.b)", field.Result);
         }
 
 #if NETFRAMEWORK || NETSTANDARD2_0 || JAVA
@@ -4599,34 +4643,69 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // One way of putting dates into our documents is inserting DATE fields with document builder
-            FieldDate fieldDate = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
+            FieldDate field = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
 
             // Set the field's date to the current date of the Islamic Lunar Calendar
-            fieldDate.UseLunarCalendar = true;
-            Assert.AreEqual(" DATE  \\h", fieldDate.GetFieldCode());
+            field.UseLunarCalendar = true;
+            Assert.AreEqual(" DATE  \\h", field.GetFieldCode());
             builder.Writeln();
 
             // Insert a date field with the current date of the Umm al-Qura calendar
-            fieldDate = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
-            fieldDate.UseUmAlQuraCalendar = true;
-            Assert.AreEqual(" DATE  \\u", fieldDate.GetFieldCode());
+            field = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
+            field.UseUmAlQuraCalendar = true;
+            Assert.AreEqual(" DATE  \\u", field.GetFieldCode());
             builder.Writeln();
 
             // Insert a date field with the current date of the Indian national calendar
-            fieldDate = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
-            fieldDate.UseSakaEraCalendar = true;
-            Assert.AreEqual(" DATE  \\s", fieldDate.GetFieldCode());
+            field = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
+            field.UseSakaEraCalendar = true;
+            Assert.AreEqual(" DATE  \\s", field.GetFieldCode());
             builder.Writeln();
 
             // Insert a date field with the current date of the calendar used in the (Insert > Date and Time) dialog box
-            fieldDate = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
-            fieldDate.UseLastFormat = true;
-            Assert.AreEqual(" DATE  \\l", fieldDate.GetFieldCode());
+            field = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
+            field.UseLastFormat = true;
+            Assert.AreEqual(" DATE  \\l", field.GetFieldCode());
             builder.Writeln();
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.DATE.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.DATE.docx");
+
+            field = (FieldDate)doc.Range.Fields[0];
+
+            Assert.AreEqual(FieldType.FieldDate, field.Type);
+            Assert.True(field.UseLunarCalendar);
+            Assert.AreEqual(" DATE  \\h", field.GetFieldCode());
+
+            DateTime expectedDate = DateTime.Today.AddDays(1);
+            Calendar umAlQuraCalendar = new UmAlQuraCalendar();
+            
+            Assert.AreEqual($"{umAlQuraCalendar.GetMonth(expectedDate)}/{umAlQuraCalendar.GetDayOfMonth(expectedDate)}/{umAlQuraCalendar.GetYear(expectedDate)}", 
+                field.Result);
+
+            field = (FieldDate)doc.Range.Fields[1];
+
+            Assert.AreEqual(FieldType.FieldDate, field.Type);
+            Assert.True(field.UseUmAlQuraCalendar);
+            Assert.AreEqual(" DATE  \\u", field.GetFieldCode());
+            Assert.AreEqual(DateTime.Today.Date.ToString("M/dd/yyyy"), field.Result);
+
+            field = (FieldDate)doc.Range.Fields[2];
+
+            Assert.AreEqual(FieldType.FieldDate, field.Type);
+            Assert.True(field.UseSakaEraCalendar);
+            Assert.AreEqual(" DATE  \\s", field.GetFieldCode());
+            Assert.AreEqual(DateTime.Today.Date.ToString("M/dd/yyyy"), field.Result);
+
+            field = (FieldDate)doc.Range.Fields[3];
+
+            Assert.AreEqual(FieldType.FieldDate, field.Type);
+            Assert.True(field.UseLastFormat);
+            Assert.AreEqual(" DATE  \\l", field.GetFieldCode());
+            Assert.AreEqual(DateTime.Today.Date.ToString("M/dd/yyyy"), field.Result);
         }
 #endif
 
@@ -4648,28 +4727,53 @@ namespace ApiExamples
 
             // Insert a CREATEDATE field and display, using the Lunar Calendar, the date the document was created
             builder.Write("According to the Lunar Calendar - ");
-            FieldCreateDate fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
-            fieldCreateDate.UseLunarCalendar = true;
-            Assert.AreEqual(" CREATEDATE  \\h", fieldCreateDate.GetFieldCode());
-            builder.Writeln();
+            FieldCreateDate field = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
+            field.UseLunarCalendar = true;
+
+            Assert.AreEqual(" CREATEDATE  \\h", field.GetFieldCode());
 
             // Display the date using the Umm al-Qura Calendar
-            builder.Write("According to the Umm al-Qura Calendar - ");
-            fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
-            fieldCreateDate.UseUmAlQuraCalendar = true;
-            Assert.AreEqual(" CREATEDATE  \\u", fieldCreateDate.GetFieldCode());
-            builder.Writeln();
+            builder.Write("\nAccording to the Umm al-Qura Calendar - ");
+            field = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
+            field.UseUmAlQuraCalendar = true;
+
+            Assert.AreEqual(" CREATEDATE  \\u", field.GetFieldCode());
 
             // Display the date using the Indian National Calendar
-            builder.Write("According to the Indian National Calendar - ");
-            fieldCreateDate = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
-            fieldCreateDate.UseSakaEraCalendar = true;
-            Assert.AreEqual(" CREATEDATE  \\s", fieldCreateDate.GetFieldCode());
-            builder.Writeln();
+            builder.Write("\nAccording to the Indian National Calendar - ");
+            field = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
+            field.UseSakaEraCalendar = true;
+
+            Assert.AreEqual(" CREATEDATE  \\s", field.GetFieldCode());
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.CREATEDATE.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.CREATEDATE.docx");
+
+            Assert.AreEqual(new DateTime(2017, 12, 5, 9, 56, 0), doc.BuiltInDocumentProperties.CreatedTime);
+            DateTime expectedDate = doc.BuiltInDocumentProperties.CreatedTime.AddHours(TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours);
+
+            field = (FieldCreateDate)doc.Range.Fields[0];
+
+            Assert.AreEqual(FieldType.FieldCreateDate, field.Type);
+            Assert.True(field.UseLunarCalendar);
+            Assert.AreEqual(" CREATEDATE  \\h", field.GetFieldCode());
+
+            Calendar umAlQuraCalendar = new UmAlQuraCalendar();
+
+            Assert.AreEqual($"{umAlQuraCalendar.GetMonth(expectedDate)}/{umAlQuraCalendar.GetDayOfMonth(expectedDate)}/{umAlQuraCalendar.GetYear(expectedDate)} " + 
+                            expectedDate.ToString("hh:mm:ss tt"), field.Result);
+
+            field = (FieldCreateDate)doc.Range.Fields[1];
+
+            Assert.AreEqual(FieldType.FieldCreateDate, field.Type);
+            Assert.True(field.UseUmAlQuraCalendar);
+            Assert.AreEqual(" CREATEDATE  \\u", field.GetFieldCode());
+
+            Assert.AreEqual($"{umAlQuraCalendar.GetMonth(expectedDate)}/{umAlQuraCalendar.GetDayOfMonth(expectedDate)}/{umAlQuraCalendar.GetYear(expectedDate)} " + 
+                            expectedDate.ToString("hh:mm:ss tt"), field.Result);
         }
 
         [Test]
@@ -4689,30 +4793,30 @@ namespace ApiExamples
 
             // Insert a SAVEDATE field and display, using the Lunar Calendar, the date the document was last saved
             builder.Write("According to the Lunar Calendar - ");
-            FieldSaveDate fieldSaveDate = (FieldSaveDate)builder.InsertField(FieldType.FieldSaveDate, true);
-            fieldSaveDate.UseLunarCalendar = true;
-            Assert.AreEqual(" SAVEDATE  \\h", fieldSaveDate.GetFieldCode());
+            FieldSaveDate field = (FieldSaveDate)builder.InsertField(FieldType.FieldSaveDate, true);
+            field.UseLunarCalendar = true;
+            Assert.AreEqual(" SAVEDATE  \\h", field.GetFieldCode());
             builder.Writeln();
 
             // Display the date using the Umm al-Qura Calendar
             builder.Write("According to the Umm al-Qura calendar - ");
-            fieldSaveDate = (FieldSaveDate)builder.InsertField(FieldType.FieldSaveDate, true);
-            fieldSaveDate.UseUmAlQuraCalendar = true;
-            Assert.AreEqual(" SAVEDATE  \\u", fieldSaveDate.GetFieldCode());
+            field = (FieldSaveDate)builder.InsertField(FieldType.FieldSaveDate, true);
+            field.UseUmAlQuraCalendar = true;
+            Assert.AreEqual(" SAVEDATE  \\u", field.GetFieldCode());
             builder.Writeln();
 
             // Display the date using the Indian National Calendar
             builder.Write("According to the Indian National calendar - ");
-            fieldSaveDate = (FieldSaveDate)builder.InsertField(FieldType.FieldSaveDate, true);
-            fieldSaveDate.UseSakaEraCalendar = true;
-            Assert.AreEqual(" SAVEDATE  \\s", fieldSaveDate.GetFieldCode());
+            field = (FieldSaveDate)builder.InsertField(FieldType.FieldSaveDate, true);
+            field.UseSakaEraCalendar = true;
+            Assert.AreEqual(" SAVEDATE  \\s", field.GetFieldCode());
             builder.Writeln();
-
+            
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.SAVEDATE.docx");
             //ExEnd
         }
-
+    
         [Test]
         public void FieldBuilder()
         {
