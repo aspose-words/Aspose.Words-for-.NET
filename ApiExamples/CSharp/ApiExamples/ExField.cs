@@ -4753,8 +4753,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Field.CREATEDATE.docx");
 
             Assert.AreEqual(new DateTime(2017, 12, 5, 9, 56, 0), doc.BuiltInDocumentProperties.CreatedTime);
-            DateTime expectedDate = doc.BuiltInDocumentProperties.CreatedTime.AddHours(TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours);
 
+            DateTime expectedDate = doc.BuiltInDocumentProperties.CreatedTime.AddHours(TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours);
             field = (FieldCreateDate)doc.Range.Fields[0];
 
             Assert.AreEqual(FieldType.FieldCreateDate, field.Type);
@@ -4777,6 +4777,7 @@ namespace ApiExamples
         }
 
         [Test]
+        [Ignore("WORDSNET-17669")]
         public void FieldSaveDate()
         {
             //ExStart
@@ -4795,26 +4796,55 @@ namespace ApiExamples
             builder.Write("According to the Lunar Calendar - ");
             FieldSaveDate field = (FieldSaveDate)builder.InsertField(FieldType.FieldSaveDate, true);
             field.UseLunarCalendar = true;
-            Assert.AreEqual(" SAVEDATE  \\h", field.GetFieldCode());
-            builder.Writeln();
 
+            Assert.AreEqual(" SAVEDATE  \\h", field.GetFieldCode());
+            
             // Display the date using the Umm al-Qura Calendar
-            builder.Write("According to the Umm al-Qura calendar - ");
+            builder.Write("\nAccording to the Umm al-Qura calendar - ");
             field = (FieldSaveDate)builder.InsertField(FieldType.FieldSaveDate, true);
             field.UseUmAlQuraCalendar = true;
+
             Assert.AreEqual(" SAVEDATE  \\u", field.GetFieldCode());
-            builder.Writeln();
 
             // Display the date using the Indian National Calendar
-            builder.Write("According to the Indian National calendar - ");
+            builder.Write("\nAccording to the Indian National calendar - ");
             field = (FieldSaveDate)builder.InsertField(FieldType.FieldSaveDate, true);
             field.UseSakaEraCalendar = true;
+
             Assert.AreEqual(" SAVEDATE  \\s", field.GetFieldCode());
-            builder.Writeln();
             
+            // While the date/time of the most recent save operation is tracked automatically by Microsoft Word,
+            // we will need to update the value manually if we wish to do the same thing when calling the Save() method
+            doc.BuiltInDocumentProperties.LastSavedTime = DateTime.Now;
+
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.SAVEDATE.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.SAVEDATE.docx");
+
+            Console.WriteLine(doc.BuiltInDocumentProperties.LastSavedTime);
+
+            DateTime expectedDate = doc.BuiltInDocumentProperties.LastSavedTime.AddHours(TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours);
+            field = (FieldSaveDate)doc.Range.Fields[0];
+
+            Assert.AreEqual(FieldType.FieldSaveDate, field.Type);
+            Assert.True(field.UseLunarCalendar);
+            Assert.AreEqual(" SAVEDATE  \\h", field.GetFieldCode());
+
+            Calendar umAlQuraCalendar = new UmAlQuraCalendar();
+
+            Assert.AreEqual($"{umAlQuraCalendar.GetMonth(expectedDate)}/{umAlQuraCalendar.GetDayOfMonth(expectedDate.AddDays(1))}/{umAlQuraCalendar.GetYear(expectedDate)} " +
+                            expectedDate.ToString("hh:mm:ss tt"), field.Result);
+
+            field = (FieldSaveDate)doc.Range.Fields[1];
+
+            Assert.AreEqual(FieldType.FieldSaveDate, field.Type);
+            Assert.True(field.UseUmAlQuraCalendar);
+            Assert.AreEqual(" SAVEDATE  \\u", field.GetFieldCode());
+
+            Assert.AreEqual($"{umAlQuraCalendar.GetMonth(expectedDate)}/{umAlQuraCalendar.GetDayOfMonth(expectedDate)}/{umAlQuraCalendar.GetYear(expectedDate)} " +
+                            expectedDate.ToString("hh:mm:ss tt"), field.Result);
         }
     
         [Test]
@@ -4903,8 +4933,89 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.SYMBOL.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.SYMBOL.docx");
+
+            FieldSymbol fieldSymbol = (FieldSymbol)doc.Range.Fields[0];
+
+            Assert.AreEqual(FieldType.FieldSymbol, fieldSymbol.Type);
+            Assert.AreEqual(" SYMBOL 402 \\f Arial \\s 25 \\u ", fieldSymbol.GetFieldCode());
+            Assert.AreEqual("", fieldSymbol.Result);
+            Assert.AreEqual("ƒ", fieldSymbol.DisplayResult);
+
+            fieldSymbol = (FieldSymbol)doc.Range.Fields[1];
+
+            Assert.AreEqual(FieldType.FieldSymbol, fieldSymbol.Type);
+            Assert.AreEqual(" SYMBOL \u0013 = 100 + 74 \u0014174\u0015 ", fieldSymbol.GetFieldCode());
+            Assert.AreEqual("", fieldSymbol.Result);
+            Assert.AreEqual("®", fieldSymbol.DisplayResult);
+            Assert.False(FieldsAreNested(doc.Range.Fields[1], doc.Range.Fields[0]));
+
+            FieldFormula fieldFormula = (FieldFormula)doc.Range.Fields[2];
+
+            Assert.AreEqual(FieldType.FieldFormula, fieldFormula.Type);
+            Assert.AreEqual(" = 100 + 74 ", fieldFormula.GetFieldCode());
+            Assert.AreEqual("174", fieldFormula.Result);
+
+            FieldIf fieldIf = (FieldIf)doc.Range.Fields[3];
+
+            Assert.AreEqual(FieldType.FieldIf, fieldIf.Type);
+            Assert.AreEqual(" IF \u0013 = 2 + 3 \u00145\u0015 = \u0013 = 2.5 * 5.2 \u001413\u0015 " +
+                            "\"True, both expressions amount to \u0013 = 2 + 3 \u0014\u0015\" " +
+                            "\"False, \u0013 = 2 + 3 \u00145\u0015 does not equal \u0013 = 2.5 * 5.2 \u001413\u0015\" ", fieldIf.GetFieldCode());
+            Assert.AreEqual("False, 5 does not equal 13", fieldIf.Result);
+
+            fieldFormula = (FieldFormula)doc.Range.Fields[4];
+
+            Assert.AreEqual(FieldType.FieldFormula, fieldFormula.Type);
+            Assert.AreEqual(" = 2 + 3 ", fieldFormula.GetFieldCode());
+            Assert.AreEqual("5", fieldFormula.Result);
+            Assert.True(FieldsAreNested(doc.Range.Fields[4], doc.Range.Fields[3]));
+
+            fieldFormula = (FieldFormula)doc.Range.Fields[5];
+
+            Assert.AreEqual(FieldType.FieldFormula, fieldFormula.Type);
+            Assert.AreEqual(" = 2.5 * 5.2 ", fieldFormula.GetFieldCode());
+            Assert.AreEqual("13", fieldFormula.Result);
+            Assert.True(FieldsAreNested(doc.Range.Fields[5], doc.Range.Fields[3]));
+
+            fieldFormula = (FieldFormula)doc.Range.Fields[6];
+
+            Assert.AreEqual(FieldType.FieldFormula, fieldFormula.Type);
+            Assert.AreEqual(" = 2 + 3 ", fieldFormula.GetFieldCode());
+            Assert.AreEqual("", fieldFormula.Result);
+            Assert.True(FieldsAreNested(doc.Range.Fields[6], doc.Range.Fields[3]));
+
+            fieldFormula = (FieldFormula)doc.Range.Fields[7];
+
+            Assert.AreEqual(FieldType.FieldFormula, fieldFormula.Type);
+            Assert.AreEqual(" = 2 + 3 ", fieldFormula.GetFieldCode());
+            Assert.AreEqual("5", fieldFormula.Result);
+            Assert.True(FieldsAreNested(doc.Range.Fields[7], doc.Range.Fields[3]));
+
+            fieldFormula = (FieldFormula)doc.Range.Fields[8];
+
+            Assert.AreEqual(FieldType.FieldFormula, fieldFormula.Type);
+            Assert.AreEqual(" = 2.5 * 5.2 ", fieldFormula.GetFieldCode());
+            Assert.AreEqual("13", fieldFormula.Result);
+            Assert.True(FieldsAreNested(doc.Range.Fields[8], doc.Range.Fields[3]));
         }
-        
+
+        /// <summary>
+        /// Tests whether one field is nested by another field.
+        /// If both fields have the same parent node, the indexes of their respective FieldStart and FieldEnd nodes in their shared parent node's child node collection are compared.
+        /// If the inner field's FieldStart appears after the outer field's FieldStart, and if the inner field's FieldEnd appears before the other field's FieldEnd,
+        /// then the inner field is fully nested by the outer field.
+        /// </summary>
+        bool FieldsAreNested(Field innerField, Field outerField)
+        {
+            CompositeNode parent = innerField.Start.ParentNode;
+
+            return (parent == outerField.Start.ParentNode) && 
+                   (parent.ChildNodes.IndexOf(innerField.Start) > parent.ChildNodes.IndexOf(outerField.Start)) && 
+                   (parent.ChildNodes.IndexOf(innerField.End) < parent.ChildNodes.IndexOf(outerField.End));
+        }
+
         [Test]
         public void FieldAuthor()
         {
@@ -4947,6 +5058,17 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Field.AUTHOR.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.AUTHOR.docx");
+
+            Assert.Null(doc.FieldOptions.DefaultDocumentAuthor);
+            Assert.AreEqual("Jane Doe", doc.BuiltInDocumentProperties.Author);
+
+            field = (FieldAuthor)doc.Range.Fields[0];
+
+            Assert.AreEqual("Jane Doe", field.AuthorName);
+            Assert.AreEqual(" AUTHOR  \"Jane Doe\"", field.GetFieldCode());
+            Assert.AreEqual("Jane Doe", field.Result);
         }
 
         [Test]
@@ -4973,7 +5095,7 @@ namespace ApiExamples
             builder.Writeln();
 
             // While the set of a document's properties is fixed, we can add, name and define our own values in the variables collection
-            Assert.That(doc.Variables, Is.Empty);
+            Assert.IsEmpty(doc.Variables);
             doc.Variables.Add("My variable", "My variable's value");
 
             // We can access a variable using its name and display it with a DOCVARIABLE field
@@ -4986,6 +5108,21 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Field.DOCPROPERTY.DOCVARIABLE.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.DOCPROPERTY.DOCVARIABLE.docx");
+
+            Assert.AreEqual("My category", doc.BuiltInDocumentProperties.Category);
+
+            fieldDocProperty = (FieldDocProperty)doc.Range.Fields[0];
+
+            Assert.AreEqual(" DOCPROPERTY Category ", fieldDocProperty.GetFieldCode());
+            Assert.AreEqual("My category", fieldDocProperty.Result);
+
+            fieldDocVariable = (FieldDocVariable)doc.Range.Fields[1];
+
+            Assert.AreEqual("My Variable", fieldDocVariable.VariableName);
+            Assert.AreEqual(" DOCVARIABLE  \"My Variable\"", fieldDocVariable.GetFieldCode());
+            Assert.AreEqual("My variable's value", fieldDocVariable.Result);
         }
 
         [Test]
@@ -5020,6 +5157,16 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Field.SUBJECT.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.SUBJECT.docx");
+
+            Assert.AreEqual("My new subject", doc.BuiltInDocumentProperties.Subject);
+
+            field = (FieldSubject)doc.Range.Fields[0];
+
+            Assert.AreEqual("My new subject", field.Text);
+            Assert.AreEqual(" SUBJECT  \"My new subject\"", field.GetFieldCode());
+            Assert.AreEqual("My new subject", field.Result);
         }
 
         [Test]
@@ -5039,16 +5186,28 @@ namespace ApiExamples
             FieldComments field = (FieldComments)builder.InsertField(FieldType.FieldComments, true);
             field.Update();
 
+            Assert.AreEqual(" COMMENTS ", field.GetFieldCode());
             Assert.AreEqual("My comment.", field.Result);
 
             // We can override the comment from the document's built in properties and display any text we put here instead
             field.Text = "My overriding comment.";
             field.Update();
 
+            Assert.AreEqual(" COMMENTS  \"My overriding comment.\"", field.GetFieldCode());
             Assert.AreEqual("My overriding comment.", field.Result);
 
             doc.Save(ArtifactsDir + "Field.COMMENTS.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.COMMENTS.docx");
+
+            Assert.AreEqual("My overriding comment.", doc.BuiltInDocumentProperties.Comments);
+
+            field = (FieldComments)doc.Range.Fields[0];
+
+            Assert.AreEqual("My overriding comment.", field.Text);
+            Assert.AreEqual(" COMMENTS  \"My overriding comment.\"", field.GetFieldCode());
+            Assert.AreEqual("My overriding comment.", field.Result);
         }
         
         [Test]
@@ -5059,7 +5218,11 @@ namespace ApiExamples
             //ExFor:FieldFileSize.IsInKilobytes
             //ExFor:FieldFileSize.IsInMegabytes            
             //ExSummary:Shows how to display the file size of a document with a FILESIZE field.
+            // Open a document and verify its file size
             Document doc = new Document(MyDir + "Document.docx");
+
+            Assert.AreEqual(10590, doc.BuiltInDocumentProperties.Bytes);
+
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.MoveToDocumentEnd();
             builder.InsertParagraph();
@@ -5067,27 +5230,58 @@ namespace ApiExamples
             // By default, file size is displayed in bytes
             FieldFileSize field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
             field.Update();
+
+            Assert.AreEqual(" FILESIZE ", field.GetFieldCode());
             Assert.AreEqual("10590", field.Result);
-            builder.InsertParagraph();
 
             // Set the field to display size in kilobytes
+            builder.InsertParagraph();
             field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
             field.IsInKilobytes = true;
             field.Update();
+
+            Assert.AreEqual(" FILESIZE  \\k", field.GetFieldCode());
             Assert.AreEqual("11", field.Result);
-            builder.InsertParagraph();
 
             // Set the field to display size in megabytes
+            builder.InsertParagraph();
             field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
             field.IsInMegabytes = true;
             field.Update();
+
+            Assert.AreEqual(" FILESIZE  \\m", field.GetFieldCode());
             Assert.AreEqual("0", field.Result);
-            builder.InsertParagraph();
 
             // To update the values of these fields while editing in Microsoft Word,
             // the changes first have to be saved, then the fields manually updated
             doc.Save(ArtifactsDir + "Field.FILESIZE.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.FILESIZE.docx");
+
+            Assert.AreEqual(8723, doc.BuiltInDocumentProperties.Bytes);
+
+            field = (FieldFileSize)doc.Range.Fields[0];
+
+            Assert.AreEqual(" FILESIZE ", field.GetFieldCode());
+            Assert.AreEqual("10590", field.Result);
+
+            // These fields will need to be updated to produce an accurate result
+            doc.UpdateFields();
+
+            Assert.AreEqual("8723", field.Result);
+
+            field = (FieldFileSize)doc.Range.Fields[1];
+
+            Assert.AreEqual(" FILESIZE  \\k", field.GetFieldCode());
+            Assert.True(field.IsInKilobytes);
+            Assert.AreEqual("9", field.Result);
+
+            field = (FieldFileSize)doc.Range.Fields[2];
+
+            Assert.AreEqual(" FILESIZE  \\m", field.GetFieldCode());
+            Assert.True(field.IsInMegabytes);
+            Assert.AreEqual("0", field.Result);
         }
 
         [Test]
@@ -5117,6 +5311,14 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.GOTOBUTTON.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.GOTOBUTTON.docx");
+            field = (FieldGoToButton)doc.Range.Fields[0];
+
+            Assert.AreEqual("My Button", field.DisplayText);
+            Assert.AreEqual("MyBookmark", field.Location);
+            Assert.AreEqual(" GOTOBUTTON  MyBookmark My Button", field.GetFieldCode());
+            Assert.AreEqual(String.Empty, field.Result);
         }
         
         [Test]
@@ -5134,12 +5336,12 @@ namespace ApiExamples
             // Insert a FILLIN field with a document builder
             FieldFillIn field = (FieldFillIn)builder.InsertField(FieldType.FieldFillIn, true);
             field.PromptText = "Please enter a response:";
-            field.DefaultResponse = "A default response";
+            field.DefaultResponse = "A default response.";
 
             // Set this to prompt the user for a response when a mail merge is performed
             field.PromptOnceOnMailMerge = true;
 
-            Assert.AreEqual(" FILLIN  \"Please enter a response:\" \\d \"A default response\" \\o", field.GetFieldCode());
+            Assert.AreEqual(" FILLIN  \"Please enter a response:\" \\d \"A default response.\" \\o", field.GetFieldCode());
 
             // Perform a simple mail merge
             FieldMergeField mergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
@@ -5150,6 +5352,7 @@ namespace ApiExamples
             
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.FILLIN.docx");
+            TestFieldFillIn(new Document(ArtifactsDir + "Field.FILLIN.docx")); //ExSKip
         }
 
         /// <summary>
@@ -5159,10 +5362,25 @@ namespace ApiExamples
         {
             public string Respond(string promptText, string defaultResponse)
             {
-                return "Response from PromptRespondent. " + defaultResponse;
+                return "Response modified by PromptRespondent. " + defaultResponse;
             }
         }
         //ExEnd
+
+        private void TestFieldFillIn(Document doc)
+        {
+            doc = DocumentHelper.SaveOpen(doc);
+
+            Assert.AreEqual(1, doc.Range.Fields.Count);
+
+            FieldFillIn field = (FieldFillIn)doc.Range.Fields[0];
+
+            Assert.AreEqual("Please enter a response:", field.PromptText);
+            Assert.AreEqual("A default response.", field.DefaultResponse);
+            Assert.True(field.PromptOnceOnMailMerge);
+            Assert.AreEqual(" FILLIN  \"Please enter a response:\" \\d \"A default response.\" \\o", field.GetFieldCode());
+            Assert.AreEqual("Response modified by PromptRespondent. A default response.", field.Result);
+        }
 
         [Test]
         public void FieldInfo()
@@ -5202,6 +5420,23 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Field.INFO.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.INFO.docx");
+
+            Assert.AreEqual("New comment", doc.BuiltInDocumentProperties.Comments);
+            
+            field = (FieldInfo)doc.Range.Fields[0];
+
+            Assert.AreEqual("Comments", field.InfoType);
+            Assert.AreEqual(" INFO  Comments", field.GetFieldCode());
+            Assert.AreEqual("My comment", field.Result);
+
+            field = (FieldInfo)doc.Range.Fields[1];
+
+            Assert.AreEqual("Comments", field.InfoType);
+            Assert.AreEqual("New comment", field.NewValue);
+            Assert.AreEqual(" INFO  Comments \"New comment\"", field.GetFieldCode());
+            Assert.AreEqual("New comment", field.Result);
         }
 
         [Test]
@@ -5216,6 +5451,7 @@ namespace ApiExamples
             // Open a document that contains macros
             Document doc = new Document(MyDir + "Macro.docm");
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             Assert.IsTrue(doc.HasMacros);
 
             // Insert a MACROBUTTON field and reference by name a macro that exists within the input document
@@ -5225,10 +5461,9 @@ namespace ApiExamples
 
             Assert.AreEqual(" MACROBUTTON  MyMacro Double click to run macro: MyMacro", field.GetFieldCode());
 
-            builder.InsertParagraph();
-
             // Reference "ViewZoom200", a macro that was shipped with Microsoft Word, found under "Word commands"
             // If our document has a macro of the same name as one from another source, the field will select ours to run
+            builder.InsertParagraph();
             field = (FieldMacroButton)builder.InsertField(FieldType.FieldMacroButton, true);
             field.MacroName = "ViewZoom200";
             field.DisplayText = "Run " + field.MacroName;
@@ -5238,8 +5473,24 @@ namespace ApiExamples
             // Save the document as a macro-enabled document type
             doc.Save(ArtifactsDir + "Field.MACROBUTTON.docm");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.MACROBUTTON.docm");
+
+            field = (FieldMacroButton)doc.Range.Fields[0];
+
+            Assert.AreEqual("MyMacro", field.MacroName);
+            Assert.AreEqual("Double click to run macro: MyMacro", field.DisplayText);
+            Assert.AreEqual(" MACROBUTTON  MyMacro Double click to run macro: MyMacro", field.GetFieldCode());
+            Assert.AreEqual(String.Empty, field.Result);
+
+            field = (FieldMacroButton)doc.Range.Fields[1];
+
+            Assert.AreEqual("ViewZoom200", field.MacroName);
+            Assert.AreEqual("Run ViewZoom200", field.DisplayText);
+            Assert.AreEqual(" MACROBUTTON  ViewZoom200 Run ViewZoom200", field.GetFieldCode());
+            Assert.AreEqual(String.Empty, field.Result);
         }
-        
+
         [Test]
         public void FieldKeywords()
         {
@@ -5272,6 +5523,16 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Field.KEYWORDS.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.KEYWORDS.docx");
+
+            Assert.AreEqual("OverridingKeyword", doc.BuiltInDocumentProperties.Keywords);
+
+            field = (FieldKeywords)doc.Range.Fields[0];
+
+            Assert.AreEqual("OverridingKeyword", field.Text);
+            Assert.AreEqual(" KEYWORDS  OverridingKeyword", field.GetFieldCode());
+            Assert.AreEqual("OverridingKeyword", field.Result);
         }
 
         [Test]
@@ -5312,6 +5573,28 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.NUMCHARS.NUMWORDS.NUMPAGES.PAGE.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.NUMCHARS.NUMWORDS.NUMPAGES.PAGE.docx");
+
+            fieldNumChars = (FieldNumChars)doc.Range.Fields[0];
+            
+            Assert.AreEqual(" NUMCHARS ", fieldNumChars.GetFieldCode());
+            Assert.AreEqual("6009", fieldNumChars.Result);
+
+            fieldNumWords = (FieldNumWords)doc.Range.Fields[1];
+
+            Assert.AreEqual(" NUMWORDS ", fieldNumWords.GetFieldCode());
+            Assert.AreEqual("1054", fieldNumWords.Result);
+
+            fieldPage = (FieldPage)doc.Range.Fields[2];
+
+            Assert.AreEqual(" PAGE ", fieldPage.GetFieldCode());
+            Assert.AreEqual("6", fieldPage.Result);
+
+            fieldNumPages = (FieldNumPages)doc.Range.Fields[3];
+
+            Assert.AreEqual(" NUMPAGES ", fieldNumPages.GetFieldCode());
+            Assert.AreEqual("6", fieldNumPages.Result);
         }
 
         [Test]
