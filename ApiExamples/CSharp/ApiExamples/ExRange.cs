@@ -17,8 +17,6 @@ namespace ApiExamples
     [TestFixture]
     public class ExRange : ApiExampleBase
     {
-        #region Replace 
-
         [Test]
         public void ReplaceSimple()
         {
@@ -49,6 +47,98 @@ namespace ApiExamples
             //ExEnd
 
             Assert.AreEqual("Hello James Bond,\r\x000c", doc.GetText());
+        }
+
+        [Test]
+        public void IgnoreDeleted()
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.IgnoreDeleted
+            //ExSummary:Shows how to ignore text inside delete revisions.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+ 
+            // Insert non-revised text
+            builder.Writeln("Deleted");
+            builder.Write("Text");
+ 
+            // Remove first paragraph with tracking revisions
+            doc.StartTrackRevisions("John Doe", DateTime.Now);
+            doc.FirstSection.Body.FirstParagraph.Remove();
+            doc.StopTrackRevisions();
+ 
+            Regex regex = new Regex("e");
+            FindReplaceOptions options = new FindReplaceOptions();
+ 
+            // Replace 'e' in document ignoring deleted text
+            options.IgnoreDeleted = true;
+            doc.Range.Replace(regex, "*", options);
+            Assert.AreEqual(doc.GetText(), "Deleted\rT*xt\f");
+            
+            // Replace 'e' in document NOT ignoring deleted text
+            options.IgnoreDeleted = false;
+            doc.Range.Replace(regex, "*", options);
+            Assert.AreEqual(doc.GetText(), "D*l*t*d\rT*xt\f");
+            //ExEnd
+        }
+
+        [Test]
+        public void IgnoreInserted()
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.IgnoreInserted
+            //ExSummary:Shows how to ignore text inside insert revisions.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+ 
+            // Insert text with tracking revisions
+            doc.StartTrackRevisions("John Doe", DateTime.Now);
+            builder.Writeln("Inserted");
+            doc.StopTrackRevisions();
+ 
+            // Insert non-revised text
+            builder.Write("Text");
+ 
+            Regex regex = new Regex("e");
+            FindReplaceOptions options = new FindReplaceOptions();
+ 
+            // Replace 'e' in document ignoring inserted text
+            options.IgnoreInserted = true;
+            doc.Range.Replace(regex, "*", options);
+            Assert.AreEqual(doc.GetText(), "Inserted\rT*xt\f");
+            
+            // Replace 'e' in document NOT ignoring inserted text
+            options.IgnoreInserted = false;
+            doc.Range.Replace(regex, "*", options);
+            Assert.AreEqual(doc.GetText(), "Ins*rt*d\rT*xt\f");
+            //ExEnd
+        }
+
+        [Test]
+        public void IgnoreFields()
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.IgnoreFields
+            //ExSummary:Shows how to ignore text inside fields.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+ 
+            // Insert field with text inside
+            builder.InsertField("INCLUDETEXT", "Text in field");
+ 
+            Regex regex = new Regex("e");
+            FindReplaceOptions options = new FindReplaceOptions();
+ 
+            // Replace 'e' in document ignoring text inside field
+            options.IgnoreFields = true;
+            doc.Range.Replace(regex, "*", options);
+            Assert.AreEqual(doc.GetText(), "\u0013INCLUDETEXT\u0014Text in field\u0015\f");
+            
+            // Replace 'e' in document NOT ignoring text inside field
+            options.IgnoreFields = false;
+            doc.Range.Replace(regex, "*", options);
+            Assert.AreEqual(doc.GetText(), "\u0013INCLUDETEXT\u0014T*xt in fi*ld\u0015\f");
+            //ExEnd
         }
 
         [Test]
@@ -254,8 +344,6 @@ namespace ApiExamples
             private int mCurrentReplacementNumber;
         }
         //ExEnd
-
-        #endregion
 
         [Test]
         public void ApplyParagraphFormat()
