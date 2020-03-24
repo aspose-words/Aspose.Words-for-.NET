@@ -443,7 +443,7 @@ namespace ApiExamples
         [Test]
         public void BarCodeWord2Pdf()
         {
-            Document doc = new Document(MyDir + "Field BARCODE.docx");
+            Document doc = new Document(MyDir + "Field sample - BARCODE.docx");
 
             // Set custom barcode generator
             doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
@@ -596,7 +596,7 @@ namespace ApiExamples
             //ExFor:LoadOptions.PreserveIncludePictureField
             //ExSummary:Shows a way to update a field ignoring the MERGEFORMAT switch.
             LoadOptions loadOptions = new LoadOptions { PreserveIncludePictureField = true };
-            Document doc = new Document(MyDir + "Field INCLUDEPICTURE.docx", loadOptions);
+            Document doc = new Document(MyDir + "Field sample - INCLUDEPICTURE.docx", loadOptions);
 
             FieldIncludePicture includePicture = (FieldIncludePicture)doc.Range.Fields.First(f => f.Type == FieldType.FieldIncludePicture);
             includePicture.SourceFullName = ImageDir + "Transparent background logo.png";
@@ -751,7 +751,7 @@ namespace ApiExamples
         [Test]
         public void UpdateTocPageNumbers()
         {
-            Document doc = new Document(MyDir + "Field TOC.docx");
+            Document doc = new Document(MyDir + "Field sample - TOC.docx");
 
             Node startNode = DocumentHelper.GetParagraph(doc, 2);
             Node endNode = null;
@@ -1935,7 +1935,6 @@ namespace ApiExamples
         }
         //ExEnd
 
-        [Test]
         private void TestFieldToc(Document doc)
         {
             doc = DocumentHelper.SaveOpen(doc);
@@ -4680,7 +4679,7 @@ namespace ApiExamples
             Assert.True(field.UseLunarCalendar);
             Assert.AreEqual(" DATE  \\h", field.GetFieldCode());
 
-            DateTime expectedDate = DateTime.Today.AddDays(1);
+            DateTime expectedDate = DateTime.Today;
             Calendar umAlQuraCalendar = new UmAlQuraCalendar();
             
             Assert.AreEqual($"{umAlQuraCalendar.GetMonth(expectedDate)}/{umAlQuraCalendar.GetDayOfMonth(expectedDate)}/{umAlQuraCalendar.GetYear(expectedDate)}", 
@@ -5604,10 +5603,6 @@ namespace ApiExamples
             //ExFor:FieldPrint
             //ExFor:FieldPrint.PostScriptGroup
             //ExFor:FieldPrint.PrinterInstructions
-            //ExFor:FieldPrintDate
-            //ExFor:FieldPrintDate.UseLunarCalendar
-            //ExFor:FieldPrintDate.UseSakaEraCalendar
-            //ExFor:FieldPrintDate.UseUmAlQuraCalendar
             //ExSummary:Shows to insert a PRINT field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -5626,32 +5621,58 @@ namespace ApiExamples
             field.PrinterInstructions = "erasepage";
 
             Assert.AreEqual(" PRINT  erasepage \\p para", field.GetFieldCode());
+            
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.PRINT.docx");
+            //ExEnd
 
-            builder.InsertParagraph();
+            doc = new Document(ArtifactsDir + "Field.PRINT.docx");
 
-            // PRINTDATE field will display "0/0/0000" by default
+            field = (FieldPrint)doc.Range.Fields[0];
+
+            Assert.AreEqual("para", field.PostScriptGroup);
+            Assert.AreEqual("erasepage", field.PrinterInstructions);
+            Assert.AreEqual(" PRINT  erasepage \\p para", field.GetFieldCode());
+            Assert.AreEqual(String.Empty, field.Result);
+        }
+
+        [Test]
+        public void FieldPrintDate()
+        {
+            //ExStart
+            //ExFor:FieldPrintDate
+            //ExFor:FieldPrintDate.UseLunarCalendar
+            //ExFor:FieldPrintDate.UseSakaEraCalendar
+            //ExFor:FieldPrintDate.UseUmAlQuraCalendar
+            //ExSummary:Shows read PRINTDATE fields.
+            Document doc = new Document(MyDir + "Field sample - PRINTDATE.docx");
+            
+            // A PRINTDATE field will display "0/0/0000" by default
             // When a document is printed by a printer or printed as a PDF (but not exported as PDF),
-            // these fields will display the date/time of the printing operation, in various calendars
-            FieldPrintDate fieldPrintDate = (FieldPrintDate)builder.InsertField(FieldType.FieldPrintDate, true);
-            fieldPrintDate.UseLunarCalendar = true;
-            builder.Writeln();
+            // these fields will display the date/time of that print operation
+            FieldPrintDate fieldPrintDate = (FieldPrintDate)doc.Range.Fields[0];
 
+            Assert.AreEqual("3/25/2020 12:00:00 AM", fieldPrintDate.Result);
+            Assert.AreEqual(" PRINTDATE ", fieldPrintDate.GetFieldCode());
+
+            // These fields can also display the date using other various international calendars
+            fieldPrintDate = (FieldPrintDate)doc.Range.Fields[1];
+
+            Assert.True(fieldPrintDate.UseLunarCalendar);
+            Assert.AreEqual("8/1/1441 12:00:00 AM", fieldPrintDate.Result);
             Assert.AreEqual(" PRINTDATE  \\h", fieldPrintDate.GetFieldCode());
 
-            fieldPrintDate = (FieldPrintDate)builder.InsertField(FieldType.FieldPrintDate, true);
-            fieldPrintDate.UseSakaEraCalendar = true;
-            builder.Writeln();
+            fieldPrintDate = (FieldPrintDate)doc.Range.Fields[2];
 
-            Assert.AreEqual(" PRINTDATE  \\s", fieldPrintDate.GetFieldCode());
-
-            fieldPrintDate = (FieldPrintDate)builder.InsertField(FieldType.FieldPrintDate, true);
-            fieldPrintDate.UseUmAlQuraCalendar = true;
-            builder.Writeln();
-
+            Assert.True(fieldPrintDate.UseUmAlQuraCalendar);
+            Assert.AreEqual("8/1/1441 12:00:00 AM", fieldPrintDate.Result);
             Assert.AreEqual(" PRINTDATE  \\u", fieldPrintDate.GetFieldCode());
 
-            doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.PRINT.PRINTDATE.docx");
+            fieldPrintDate = (FieldPrintDate)doc.Range.Fields[3];
+
+            Assert.True(fieldPrintDate.UseSakaEraCalendar);
+            Assert.AreEqual("1/5/1942 12:00:00 AM", fieldPrintDate.Result);
+            Assert.AreEqual(" PRINTDATE  \\s", fieldPrintDate.GetFieldCode());
             //ExEnd
         }
 
@@ -6424,7 +6445,7 @@ namespace ApiExamples
             //ExFor:FieldAddIn
             //ExSummary:Shows how to process an ADDIN field.
             // Open a document that contains an ADDIN field
-            Document doc = new Document(MyDir + "Field ADDIN.docx");
+            Document doc = new Document(MyDir + "Field sample - ADDIN.docx");
 
             // Aspose.Words does not support inserting ADDIN fields, they can be read
             FieldAddIn field = (FieldAddIn)doc.Range.Fields[0];
@@ -6690,7 +6711,7 @@ namespace ApiExamples
         public void FieldPrivate()
         {
             // Open a Corel WordPerfect document that was converted to .docx format
-            Document doc = new Document(MyDir + "Field PRIVATE.docx");
+            Document doc = new Document(MyDir + "Field sample - PRIVATE.docx");
 
             // WordPerfect 5.x/6.x documents like the one we opened may contain PRIVATE fields
             // The PRIVATE field is a WordPerfect artifact that is preserved when a file is opened and saved in Microsoft Word

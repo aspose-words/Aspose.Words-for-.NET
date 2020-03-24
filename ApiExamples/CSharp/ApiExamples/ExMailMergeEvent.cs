@@ -39,7 +39,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void InsertHtml()
         {
-            Document doc = new Document(MyDir + "Field MERGEFIELD.docx");
+            Document doc = new Document(MyDir + "Field sample - MERGEFIELD.docx");
 
             // Add a handler for the MergeField event
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldInsertHtml();
