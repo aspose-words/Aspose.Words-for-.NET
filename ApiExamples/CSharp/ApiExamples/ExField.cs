@@ -5650,29 +5650,29 @@ namespace ApiExamples
             // A PRINTDATE field will display "0/0/0000" by default
             // When a document is printed by a printer or printed as a PDF (but not exported as PDF),
             // these fields will display the date/time of that print operation
-            FieldPrintDate fieldPrintDate = (FieldPrintDate)doc.Range.Fields[0];
+            FieldPrintDate field = (FieldPrintDate)doc.Range.Fields[0];
 
-            Assert.AreEqual("3/25/2020 12:00:00 AM", fieldPrintDate.Result);
-            Assert.AreEqual(" PRINTDATE ", fieldPrintDate.GetFieldCode());
+            Assert.AreEqual("3/25/2020 12:00:00 AM", field.Result);
+            Assert.AreEqual(" PRINTDATE ", field.GetFieldCode());
 
             // These fields can also display the date using other various international calendars
-            fieldPrintDate = (FieldPrintDate)doc.Range.Fields[1];
+            field = (FieldPrintDate)doc.Range.Fields[1];
 
-            Assert.True(fieldPrintDate.UseLunarCalendar);
-            Assert.AreEqual("8/1/1441 12:00:00 AM", fieldPrintDate.Result);
-            Assert.AreEqual(" PRINTDATE  \\h", fieldPrintDate.GetFieldCode());
+            Assert.True(field.UseLunarCalendar);
+            Assert.AreEqual("8/1/1441 12:00:00 AM", field.Result);
+            Assert.AreEqual(" PRINTDATE  \\h", field.GetFieldCode());
 
-            fieldPrintDate = (FieldPrintDate)doc.Range.Fields[2];
+            field = (FieldPrintDate)doc.Range.Fields[2];
 
-            Assert.True(fieldPrintDate.UseUmAlQuraCalendar);
-            Assert.AreEqual("8/1/1441 12:00:00 AM", fieldPrintDate.Result);
-            Assert.AreEqual(" PRINTDATE  \\u", fieldPrintDate.GetFieldCode());
+            Assert.True(field.UseUmAlQuraCalendar);
+            Assert.AreEqual("8/1/1441 12:00:00 AM", field.Result);
+            Assert.AreEqual(" PRINTDATE  \\u", field.GetFieldCode());
 
-            fieldPrintDate = (FieldPrintDate)doc.Range.Fields[3];
+            field = (FieldPrintDate)doc.Range.Fields[3];
 
-            Assert.True(fieldPrintDate.UseSakaEraCalendar);
-            Assert.AreEqual("1/5/1942 12:00:00 AM", fieldPrintDate.Result);
-            Assert.AreEqual(" PRINTDATE  \\s", fieldPrintDate.GetFieldCode());
+            Assert.True(field.UseSakaEraCalendar);
+            Assert.AreEqual("1/5/1942 12:00:00 AM", field.Result);
+            Assert.AreEqual(" PRINTDATE  \\s", field.GetFieldCode());
             //ExEnd
         }
 
@@ -5693,12 +5693,10 @@ namespace ApiExamples
 
             Assert.AreEqual(" QUOTE  \"\\\"Quoted text\\\"\"", field.GetFieldCode());
 
-            builder.InsertParagraph();
-
             // Insert a QUOTE field with a nested DATE field
             // DATE fields normally update their value to the current date every time the document is opened
             // Nesting the DATE field inside the QUOTE field like this will freeze its value to the date when we created the document
-            builder.Write("Document creation date: ");
+            builder.Write("\nDocument creation date: ");
             field = (FieldQuote)builder.InsertField(FieldType.FieldQuote, true);
             builder.MoveTo(field.Separator);
             builder.InsertField(FieldType.FieldDate, true);
@@ -5707,11 +5705,25 @@ namespace ApiExamples
 
             // Some field types don't display the correct result until they are manually updated
             Assert.AreEqual(String.Empty, doc.Range.Fields[0].Result); 
+
             doc.UpdateFields();
+
             Assert.AreEqual("\"Quoted text\"", doc.Range.Fields[0].Result);
 
             doc.Save(ArtifactsDir + "Field.QUOTE.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.QUOTE.docx");
+
+            field = (FieldQuote)doc.Range.Fields[0];
+
+            Assert.AreEqual("\"Quoted text\"", field.Result);
+            Assert.AreEqual(" QUOTE  \"\\\"Quoted text\\\"\"", field.GetFieldCode());
+
+            field = (FieldQuote)doc.Range.Fields[1];
+
+            Assert.AreEqual(DateTime.Now.Date.ToShortDateString(), field.Result);
+            Assert.AreEqual(" QUOTE \u0013 DATE \u0014" + DateTime.Now.Date.ToShortDateString() + "\u0015", field.GetFieldCode());
         }
 
         //ExStart
@@ -5726,6 +5738,7 @@ namespace ApiExamples
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             // Create a data source for our mail merge with 3 rows,
             // This would normally amount to 3 pages in the output of a mail merge
             DataTable table = new DataTable("Employees");
@@ -5746,6 +5759,8 @@ namespace ApiExamples
             // Make sure not to skip with a NEXT/NEXTIF field while on the last row
             FieldNext fieldNext = (FieldNext)builder.InsertField(FieldType.FieldNext, true);
 
+            Assert.AreEqual(" NEXT ", fieldNext.GetFieldCode());
+
             // These merge fields are the same as the ones as above but will take values from the second row
             InsertMergeFields(builder, "Second row: ");
 
@@ -5765,10 +5780,10 @@ namespace ApiExamples
             // with data from all 3 rows
             doc.MailMerge.Execute(table);
 
-            Assert.AreEqual(" NEXT ", fieldNext.GetFieldCode());
             Assert.AreEqual(" NEXTIF  5 = \"2 + 3\"", fieldNextIf.GetFieldCode());
 
             doc.Save(ArtifactsDir + "Field.NEXT.NEXTIF.docx");
+            TestFieldNext(doc); //ExSKip
         }
 
         /// <summary>
@@ -5793,7 +5808,17 @@ namespace ApiExamples
             field.TextAfter = textAfter;
         }
         //ExEnd
-        
+
+        private void TestFieldNext(Document doc)
+        {
+            doc = DocumentHelper.SaveOpen(doc);
+
+            Assert.AreEqual(0, doc.Range.Fields.Count);
+            Assert.AreEqual("First row: Mr. John Doe\r" +
+                            "Second row: Mrs. Jane Cardholder\r" +
+                            "Third row: Mr. Joe Bloggs\r\f", doc.GetText());
+        }
+
         //ExStart
         //ExFor:FieldNoteRef
         //ExFor:FieldNoteRef.BookmarkName
@@ -5823,7 +5848,7 @@ namespace ApiExamples
 
             // Bookmark2 is below this field and contains footnote number 2, so the field will display "2 below"
             // The \f flag makes the number 2 appear in the same format as the footnote number label in the actual text
-            Assert.AreEqual(" NOTEREF  MyBookmark2 \\h \\f \\p",
+            Assert.AreEqual(" NOTEREF  MyBookmark2 \\h \\p \\f",
                 InsertFieldNoteRef(builder, "MyBookmark2", true, true, true, "Bookmark2, with footnote number ").GetFieldCode());
 
             builder.InsertBreak(BreakType.PageBreak);
@@ -5831,6 +5856,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.NOTEREF.docx");
+            TestNoteRef(new Document(ArtifactsDir + "Field.NOTEREF.docx")); //ExSkip
         }
 
         /// <summary>
@@ -5843,8 +5869,8 @@ namespace ApiExamples
             FieldNoteRef field = (FieldNoteRef)builder.InsertField(FieldType.FieldNoteRef, true);
             field.BookmarkName = bookmarkName;
             field.InsertHyperlink = insertHyperlink;
-            field.InsertReferenceMark = insertReferenceMark;
             field.InsertRelativePosition = insertRelativePosition;
+            field.InsertReferenceMark = insertReferenceMark;
             builder.Writeln();
             
             return field;
@@ -5863,7 +5889,38 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestNoteRef(Document doc)
+        {
+            FieldNoteRef field = (FieldNoteRef)doc.Range.Fields[0];
+
+            Assert.AreEqual("MyBookmark2", field.BookmarkName);
+            Assert.True(field.InsertHyperlink);
+            Assert.False(field.InsertRelativePosition);
+            Assert.False(field.InsertReferenceMark);
+            Assert.AreEqual("2", field.Result);
+            Assert.AreEqual(" NOTEREF  MyBookmark2 \\h", field.GetFieldCode());
+
+            field = (FieldNoteRef)doc.Range.Fields[1];
+
+            Assert.AreEqual("MyBookmark1", field.BookmarkName);
+            Assert.True(field.InsertHyperlink);
+            Assert.True(field.InsertRelativePosition);
+            Assert.False(field.InsertReferenceMark);
+            Assert.AreEqual("1 above", field.Result);
+            Assert.AreEqual(" NOTEREF  MyBookmark1 \\h \\p", field.GetFieldCode());
+
+            field = (FieldNoteRef)doc.Range.Fields[2];
+
+            Assert.AreEqual("MyBookmark2", field.BookmarkName);
+            Assert.True(field.InsertHyperlink);
+            Assert.True(field.InsertRelativePosition);
+            Assert.True(field.InsertReferenceMark);
+            Assert.AreEqual("2 below", field.Result);
+            Assert.AreEqual(" NOTEREF  MyBookmark2 \\h \\p \\f", field.GetFieldCode());
+        }
+
         [Test]
+        [Ignore("WORDSNET-17845")]
         public void FootnoteRef()
         {
             //ExStart
@@ -5890,11 +5947,20 @@ namespace ApiExamples
             builder.MoveTo(field.Separator);
             builder.Write("CrossRefBookmark");
 
-            Assert.AreEqual(field.GetFieldCode(), " FOOTNOTEREF CrossRefBookmark");
+            Assert.AreEqual(" FOOTNOTEREF CrossRefBookmark", field.GetFieldCode());
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.FOOTNOTEREF.docx");
+
+            // This field works only in older versions of Microsoft Word
+            doc.Save(ArtifactsDir + "Field.FOOTNOTEREF.doc");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.FOOTNOTEREF.doc");
+
+            field = (FieldFootnoteRef)doc.Range.Fields[0];
+
+            Assert.AreEqual("1", field.Result);
+            Assert.AreEqual(" FOOTNOTEREF CrossRefBookmark", field.GetFieldCode());
         }
 
         //ExStart
