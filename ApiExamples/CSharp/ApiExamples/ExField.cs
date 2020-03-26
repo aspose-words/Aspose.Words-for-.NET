@@ -100,6 +100,31 @@ namespace ApiExamples
         }
 
         [Test]
+        public void FieldDisplayResult()
+        {
+            //ExStart
+            //ExFor:Field.DisplayResult
+            //ExSummary:Shows how to get the text that represents the displayed field result.
+            Document document = new Document(MyDir + "Various fields.docx");
+
+            FieldCollection fields = document.Range.Fields;
+
+            Assert.AreEqual("111", fields[0].DisplayResult);
+            Assert.AreEqual("222", fields[1].DisplayResult);
+            Assert.AreEqual("Multi\rLine\rText", fields[2].DisplayResult);
+            Assert.AreEqual("%", fields[3].DisplayResult);
+            Assert.AreEqual("Macro Button Text", fields[4].DisplayResult);
+            Assert.AreEqual(string.Empty, fields[5].DisplayResult);
+
+            // Method must be called to obtain correct value for the "FieldListNum", "FieldAutoNum",
+            // "FieldAutoNumOut" and "FieldAutoNumLgl" fields
+            document.UpdateListLabels();
+
+            Assert.AreEqual("1)", fields[5].DisplayResult);
+            //ExEnd
+        }
+
+        [Test]
         public void CreateWithFieldBuilder()
         {
             //ExStart
@@ -6002,6 +6027,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.PAGEREF.docx");
+            TestPageRef(new Document(ArtifactsDir + "Field.PAGEREF.docx")); //ExSkip
         }
 
         /// <summary>
@@ -6031,6 +6057,41 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestPageRef(Document doc)
+        {
+            FieldPageRef field = (FieldPageRef)doc.Range.Fields[0];
+
+            Assert.AreEqual("MyBookmark3", field.BookmarkName);
+            Assert.True(field.InsertHyperlink);
+            Assert.False(field.InsertRelativePosition);
+            Assert.AreEqual(" PAGEREF  MyBookmark3 \\h", field.GetFieldCode());
+            Assert.AreEqual("2", field.Result);
+
+            field = (FieldPageRef)doc.Range.Fields[1];
+
+            Assert.AreEqual("MyBookmark1", field.BookmarkName);
+            Assert.True(field.InsertHyperlink);
+            Assert.True(field.InsertRelativePosition);
+            Assert.AreEqual(" PAGEREF  MyBookmark1 \\h \\p", field.GetFieldCode());
+            Assert.AreEqual("above", field.Result);
+
+            field = (FieldPageRef)doc.Range.Fields[2];
+
+            Assert.AreEqual("MyBookmark2", field.BookmarkName);
+            Assert.True(field.InsertHyperlink);
+            Assert.True(field.InsertRelativePosition);
+            Assert.AreEqual(" PAGEREF  MyBookmark2 \\h \\p", field.GetFieldCode());
+            Assert.AreEqual("below", field.Result);
+
+            field = (FieldPageRef)doc.Range.Fields[3];
+
+            Assert.AreEqual("MyBookmark3", field.BookmarkName);
+            Assert.True(field.InsertHyperlink);
+            Assert.True(field.InsertRelativePosition);
+            Assert.AreEqual(" PAGEREF  MyBookmark3 \\h \\p", field.GetFieldCode());
+            Assert.AreEqual("on page 2", field.Result);
+        }
+
         //ExStart
         //ExFor:FieldRef
         //ExFor:FieldRef.BookmarkName
@@ -6044,7 +6105,7 @@ namespace ApiExamples
         //ExFor:FieldRef.SuppressNonDelimiters
         //ExSummary:Shows how to insert REF fields to reference bookmarks and present them in various ways.
         [Test] //ExSkip
-        [Ignore("WORDSNET-18067")]
+        [Ignore("WORDSNET-18067")] //ExSkip
         public void FieldRef()
         {
             Document doc = new Document();
@@ -6115,6 +6176,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.REF.docx");
+            TestFieldRef(new Document(ArtifactsDir + "Field.REF.docx")); //ExSkip
         }
 
         /// <summary>
@@ -6129,6 +6191,53 @@ namespace ApiExamples
             return field;
         }
         //ExEnd
+
+        private void TestFieldRef(Document doc)
+        {
+            FieldRef field = (FieldRef)doc.Range.Fields[0];
+
+            Assert.AreEqual("MyBookmark", field.BookmarkName);
+            Assert.True(field.IncludeNoteOrComment);
+            Assert.True(field.InsertHyperlink);
+            Assert.AreEqual(" REF  MyBookmark \\f \\h", field.GetFieldCode());
+            Assert.AreEqual("\u0002 MyBookmark footnote #1\rText that will appear in REF field\u0002 MyBookmark footnote #2\r", field.Result);
+
+            field = (FieldRef)doc.Range.Fields[1];
+
+            Assert.AreEqual("MyBookmark", field.BookmarkName);
+            Assert.True(field.InsertRelativePosition);
+            Assert.AreEqual(" REF  MyBookmark \\p", field.GetFieldCode());
+            Assert.AreEqual("below", field.Result);
+
+            field = (FieldRef)doc.Range.Fields[2];
+
+            Assert.AreEqual("MyBookmark", field.BookmarkName);
+            Assert.True(field.InsertParagraphNumber);
+            Assert.AreEqual(" REF  MyBookmark \\n", field.GetFieldCode());
+            Assert.AreEqual(">>> i", field.Result);
+
+            field = (FieldRef)doc.Range.Fields[3];
+
+            Assert.AreEqual("MyBookmark", field.BookmarkName);
+            Assert.True(field.InsertParagraphNumber);
+            Assert.True(field.SuppressNonDelimiters);
+            Assert.AreEqual(" REF  MyBookmark \\n \\t", field.GetFieldCode());
+            Assert.AreEqual("i", field.Result);
+
+            field = (FieldRef)doc.Range.Fields[4];
+
+            Assert.AreEqual("MyBookmark", field.BookmarkName);
+            Assert.True(field.InsertParagraphNumberInFullContext);
+            Assert.AreEqual(" REF  MyBookmark \\w", field.GetFieldCode());
+            Assert.AreEqual("> 4>> c>>> i", field.Result);
+
+            field = (FieldRef)doc.Range.Fields[5];
+
+            Assert.AreEqual("MyBookmark", field.BookmarkName);
+            Assert.True(field.InsertParagraphNumberInRelativeContext);
+            Assert.AreEqual(" REF  MyBookmark \\r", field.GetFieldCode());
+            Assert.AreEqual(">> c>>> i", field.Result);
+        }
 
         [Test]
         [Ignore("WORDSNET-18068")]
@@ -6166,8 +6275,27 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.RD.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.RD.docx");
+
+            FieldToc fieldToc = (FieldToc)doc.Range.Fields[0];
+
+            Assert.AreEqual("TOC entry from within this document\t\u0013 PAGEREF _Toc36149519 \\h \u00142\u0015\r" +
+                            "TOC entry from referenced document\t1\r", fieldToc.Result);
+
+            FieldPageRef fieldPageRef = (FieldPageRef)doc.Range.Fields[1];
+
+            Assert.AreEqual(" PAGEREF _Toc36149519 \\h ", fieldPageRef.GetFieldCode());
+            Assert.AreEqual("2", fieldPageRef.Result);
+
+            field = (FieldRD)doc.Range.Fields[2];
+
+            Assert.AreEqual("ReferencedDocument.docx", field.FileName);
+            Assert.True(field.IsPathRelative);
+            Assert.AreEqual(" RD  ReferencedDocument.docx \\f", field.GetFieldCode());
+            Assert.AreEqual(String.Empty, field.Result);
         }
-      
+
         [Test]
         public void SkipIf()
         {
@@ -6210,6 +6338,12 @@ namespace ApiExamples
             doc.MailMerge.Execute(table);
             doc.Save(ArtifactsDir + "Field.SKIPIF.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.SKIPIF.docx");
+
+            Assert.AreEqual(0, doc.Range.Fields.Count);
+            Assert.AreEqual("Dear John Doe, \r" +
+                            "\fDear Jane Doe, \r\f", doc.GetText());
         }
       
         [Test]
@@ -6240,10 +6374,18 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Field.SET.docx");
             //ExEnd
 
-            bookmark = doc.Range.Bookmarks["MyBookmark"];
-            Assert.AreEqual("New text", bookmark.Text);
+            doc = new Document(ArtifactsDir + "Field.SET.docx");
+
+            Assert.AreEqual("New text", doc.Range.Bookmarks[0].Text);
+
+            field = (FieldSet)doc.Range.Fields[0];
+
+            Assert.AreEqual("MyBookmark", field.BookmarkName);
+            Assert.AreEqual("New text", field.BookmarkText);
+            Assert.AreEqual(" SET  MyBookmark \"New text\"", field.GetFieldCode());
+            Assert.AreEqual("New text", field.Result);
         }
-      
+
         [Test]
         [Ignore("WORDSNET-18137")]
         public void FieldTemplate()
@@ -6267,8 +6409,19 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.TEMPLATE.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.TEMPLATE.docx");
+
+            field = (FieldTemplate)doc.Range.Fields[0];
+            Assert.AreEqual(" TEMPLATE ", field.GetFieldCode());
+            Assert.AreEqual("Normal.dotm", field.Result);
+
+            field = (FieldTemplate)doc.Range.Fields[1];
+            Assert.AreEqual(" TEMPLATE  \\p", field.GetFieldCode());
+            Assert.True(field.Result.EndsWith("\\Microsoft\\Templates\\Normal.dotm"));
+
         }
-      
+
         [Test]
         public void FieldSymbol()
         {
@@ -6327,6 +6480,33 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Field.SYMBOL.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.SYMBOL.docx");
+
+            field = (FieldSymbol)doc.Range.Fields[0];
+
+            Assert.AreEqual(0x00a9.ToString(), field.CharacterCode);
+            Assert.True(field.IsAnsi);
+            Assert.AreEqual(" SYMBOL  169 \\a", field.GetFieldCode());
+            Assert.AreEqual(String.Empty, field.Result); // These fields are shown to have no result here but appear as expected in the output document
+
+            field = (FieldSymbol)doc.Range.Fields[1];
+
+            Assert.AreEqual(0x221E.ToString(), field.CharacterCode);
+            Assert.AreEqual("Calibri", field.FontName);
+            Assert.AreEqual("24", field.FontSize);
+            Assert.True(field.IsUnicode);
+            Assert.True(field.DontAffectsLineSpacing);
+            Assert.AreEqual(" SYMBOL  8734 \\u \\f Calibri \\s 24 \\h", field.GetFieldCode());
+            Assert.AreEqual(String.Empty, field.Result);
+
+            field = (FieldSymbol)doc.Range.Fields[2];
+
+            Assert.AreEqual(0x82A0.ToString(), field.CharacterCode);
+            Assert.AreEqual("MS Gothic", field.FontName);
+            Assert.True(field.IsShiftJis);
+            Assert.AreEqual(" SYMBOL  33440 \\f \"MS Gothic\" \\j", field.GetFieldCode());
+            Assert.AreEqual(String.Empty, field.Result);
         }
 
         [Test]
@@ -6349,9 +6529,8 @@ namespace ApiExamples
             Assert.AreEqual(" TITLE ", field.GetFieldCode());
             Assert.AreEqual("My Title", field.Result);
 
-            builder.Writeln();
-
             // Set the Text attribute to display a different value
+            builder.Writeln();
             field = (FieldTitle)builder.InsertField(FieldType.FieldTitle, false);
             field.Text = "My New Title";
             field.Update();
@@ -6365,6 +6544,21 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.TITLE.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.TITLE.docx");
+
+            Assert.AreEqual("My New Title", doc.BuiltInDocumentProperties.Title);
+
+            field = (FieldTitle)doc.Range.Fields[0];
+
+            Assert.AreEqual(" TITLE ", field.GetFieldCode());
+            Assert.AreEqual("My New Title", field.Result);
+
+            field = (FieldTitle)doc.Range.Fields[1];
+
+            Assert.AreEqual(" TITLE  \"My New Title\"", field.GetFieldCode());
+            Assert.AreEqual("My New Title", field.Text);
+            Assert.AreEqual("My New Title", field.Result);
         }
 
         //ExStart
@@ -6486,6 +6680,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.TOA.TA.docx");
+            TestFieldTOA(new Document(ArtifactsDir + "Field.TOA.TA.docx")); //ExSKip
         }
 
         /// <summary>
@@ -6504,8 +6699,77 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestFieldTOA(Document doc)
+        {
+            FieldToa fieldTOA = (FieldToa)doc.Range.Fields[0];
+
+            Assert.AreEqual("1", fieldTOA.EntryCategory);
+            Assert.True(fieldTOA.UseHeading);
+            Assert.AreEqual("MyBookmark", fieldTOA.BookmarkName);
+            Assert.AreEqual(" \t p.", fieldTOA.EntrySeparator);
+            Assert.AreEqual(" & p. ", fieldTOA.PageNumberListSeparator);
+            Assert.True(fieldTOA.UsePassim);
+            Assert.AreEqual(" to ", fieldTOA.PageRangeSeparator);
+            Assert.True(fieldTOA.RemoveEntryFormatting);
+
+            Assert.AreEqual(" TOA  \\c 1 \\h \\b MyBookmark \\e \" \t p.\" \\l \" & p. \" \\p \\g \" to \" \\f", fieldTOA.GetFieldCode());
+            Assert.AreEqual("Cases\r" +
+                            "Source 2 \t p.5\r" +
+                            "Source 3 \t p.4 & p. 7 to 10\r" +
+                            "Source 4 \t p.passim\r", fieldTOA.Result);
+
+            FieldTA fieldTA = (FieldTA)doc.Range.Fields[1];
+
+            Assert.AreEqual("1", fieldTA.EntryCategory);
+            Assert.AreEqual("Source 1", fieldTA.LongCitation);
+            Assert.AreEqual(" TA  \\c 1 \\l \"Source 1\"", fieldTA.GetFieldCode());
+            Assert.AreEqual(String.Empty, fieldTA.Result);
+
+            fieldTA = (FieldTA)doc.Range.Fields[2];
+
+            Assert.AreEqual("2", fieldTA.EntryCategory);
+            Assert.AreEqual("Source 2", fieldTA.LongCitation);
+            Assert.AreEqual(" TA  \\c 2 \\l \"Source 2\"", fieldTA.GetFieldCode());
+            Assert.AreEqual(String.Empty, fieldTA.Result);
+
+            fieldTA = (FieldTA)doc.Range.Fields[3];
+
+            Assert.AreEqual("1", fieldTA.EntryCategory);
+            Assert.AreEqual("Source 3", fieldTA.LongCitation);
+            Assert.AreEqual("S.3", fieldTA.ShortCitation);
+            Assert.AreEqual(" TA  \\c 1 \\l \"Source 3\" \\s S.3", fieldTA.GetFieldCode());
+            Assert.AreEqual(String.Empty, fieldTA.Result);
+
+            fieldTA = (FieldTA)doc.Range.Fields[4];
+
+            Assert.AreEqual("1", fieldTA.EntryCategory);
+            Assert.AreEqual("Source 2", fieldTA.LongCitation);
+            Assert.True(fieldTA.IsBold);
+            Assert.True(fieldTA.IsItalic);
+            Assert.AreEqual(" TA  \\c 1 \\l \"Source 2\" \\b \\i", fieldTA.GetFieldCode());
+            Assert.AreEqual(String.Empty, fieldTA.Result);
+
+            fieldTA = (FieldTA)doc.Range.Fields[5];
+
+            Assert.AreEqual("1", fieldTA.EntryCategory);
+            Assert.AreEqual("Source 3", fieldTA.LongCitation);
+            Assert.AreEqual("MyMultiPageBookmark", fieldTA.PageRangeBookmarkName);
+            Assert.AreEqual(" TA  \\c 1 \\l \"Source 3\" \\r MyMultiPageBookmark", fieldTA.GetFieldCode());
+            Assert.AreEqual(String.Empty, fieldTA.Result);
+
+            for (int i = 6; i < 11; i++)
+            {
+                fieldTA = (FieldTA)doc.Range.Fields[i];
+
+                Assert.AreEqual("1", fieldTA.EntryCategory);
+                Assert.AreEqual("Source 4", fieldTA.LongCitation);
+                Assert.AreEqual(" TA  \\c 1 \\l \"Source 4\"", fieldTA.GetFieldCode());
+                Assert.AreEqual(String.Empty, fieldTA.Result);
+            }
+        }
+
         [Test]
-        public void FieldAddin()
+        public void FieldAddIn()
         {
             //ExStart
             //ExFor:FieldAddIn
@@ -6515,8 +6779,15 @@ namespace ApiExamples
 
             // Aspose.Words does not support inserting ADDIN fields, they can be read
             FieldAddIn field = (FieldAddIn)doc.Range.Fields[0];
+
             Assert.AreEqual(" ADDIN \"My value\" ", field.GetFieldCode());
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+
+            field = (FieldAddIn)doc.Range.Fields[0];
+
+            Assert.AreEqual(" ADDIN \"My value\" ", field.GetFieldCode());
         }
 
         [Test]
@@ -6547,6 +6818,15 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.EDITTIME.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.EDITTIME.docx");
+
+            Assert.AreEqual(10, doc.BuiltInDocumentProperties.TotalEditingTime);
+
+            field = (FieldEditTime)doc.Range.Fields[0];
+
+            Assert.AreEqual(" EDITTIME ", field.GetFieldCode());
+            Assert.AreEqual("10", field.Result);
         }
 
         //ExStart
@@ -6565,7 +6845,7 @@ namespace ApiExamples
             // Here we use a document builder to insert an EQ field, with an "\f" switch, which corresponds to "Fraction"
             // No options are invoked, and the values 1 and 4 are passed as arguments
             // This field will display a fraction with 1 as the numerator and 4 as the denominator
-            FieldEQ field = InsertFieldEq(builder, @"\f(1,4)");
+            FieldEQ field = InsertFieldEQ(builder, @"\f(1,4)");
 
             Assert.AreEqual(@" EQ \f(1,4)", field.GetFieldCode());
 
@@ -6575,55 +6855,73 @@ namespace ApiExamples
             // https://blogs.msdn.microsoft.com/murrays/2018/01/23/microsoft-word-eq-field/
 
             // Array switch "\a", aligned left, 2 columns, 3 points of horizontal and vertical spacing
-            InsertFieldEq(builder, @"\a \al \co2 \vs3 \hs3(4x,- 4y,-4x,+ y)");
+            InsertFieldEQ(builder, @"\a \al \co2 \vs3 \hs3(4x,- 4y,-4x,+ y)");
 
             // Bracket switch "\b", bracket character "[", to enclose the contents in a set of square braces
             // Note that we are nesting an array inside the brackets, which will altogether look like a matrix in the output
-            InsertFieldEq(builder, @"\b \bc\[ (\a \al \co3 \vs3 \hs3(1,0,0,0,1,0,0,0,1))");
+            InsertFieldEQ(builder, @"\b \bc\[ (\a \al \co3 \vs3 \hs3(1,0,0,0,1,0,0,0,1))");
 
             // Displacement switch "\d", displacing text "B" 30 spaces to the right of "A", displaying the gap as an underline
-            InsertFieldEq(builder, @"A \d \fo30 \li() B");
+            InsertFieldEQ(builder, @"A \d \fo30 \li() B");
 
             // Formula consisting of multiple fractions
-            InsertFieldEq(builder, @"\f(d,dx)(u + v) = \f(du,dx) + \f(dv,dx)");
+            InsertFieldEQ(builder, @"\f(d,dx)(u + v) = \f(du,dx) + \f(dv,dx)");
 
             // Integral switch "\i", with a summation symbol
-            InsertFieldEq(builder, @"\i \su(n=1,5,n)");
+            InsertFieldEQ(builder, @"\i \su(n=1,5,n)");
 
             // List switch "\l"
-            InsertFieldEq(builder, @"\l(1,1,2,3,n,8,13)");
+            InsertFieldEQ(builder, @"\l(1,1,2,3,n,8,13)");
 
             // Radical switch "\r", displaying a cubed root of x
-            InsertFieldEq(builder, @"\r (3,x)");
+            InsertFieldEQ(builder, @"\r (3,x)");
 
             // Subscript/superscript switch "/s", first as a superscript and then as a subscript
-            InsertFieldEq(builder, @"\s \up8(Superscript) Text \s \do8(Subscript)");
+            InsertFieldEQ(builder, @"\s \up8(Superscript) Text \s \do8(Subscript)");
 
             // Box switch "\x", with lines at the top, bottom, left and right of the input
-            InsertFieldEq(builder, @"\x \to \bo \le \ri(5)");
+            InsertFieldEQ(builder, @"\x \to \bo \le \ri(5)");
 
             // More complex combinations
-            InsertFieldEq(builder, @"\a \ac \vs1 \co1(lim,n→∞) \b (\f(n,n2 + 12) + \f(n,n2 + 22) + ... + \f(n,n2 + n2))");
-            InsertFieldEq(builder, @"\i (,,  \b(\f(x,x2 + 3x + 2))) \s \up10(2)");
-            InsertFieldEq(builder, @"\i \in( tan x, \s \up2(sec x), \b(\r(3) )\s \up4(t) \s \up7(2)  dt)");
+            InsertFieldEQ(builder, @"\a \ac \vs1 \co1(lim,n→∞) \b (\f(n,n2 + 12) + \f(n,n2 + 22) + ... + \f(n,n2 + n2))");
+            InsertFieldEQ(builder, @"\i (,,  \b(\f(x,x2 + 3x + 2))) \s \up10(2)");
+            InsertFieldEQ(builder, @"\i \in( tan x, \s \up2(sec x), \b(\r(3) )\s \up4(t) \s \up7(2)  dt)");
 
             doc.Save(ArtifactsDir + "Field.EQ.docx");
+            TestFieldEQ(new Document(ArtifactsDir + "Field.EQ.docx")); //ExSkip
         }
 
         /// <summary>
         /// Use a document builder to insert an EQ field, set its arguments and start a new paragraph.
         /// </summary>
-        private static FieldEQ InsertFieldEq(DocumentBuilder builder, string args)
+        private static FieldEQ InsertFieldEQ(DocumentBuilder builder, string args)
         {
             FieldEQ field = (FieldEQ)builder.InsertField(FieldType.FieldEquation, true);
             builder.MoveTo(field.Separator);
             builder.Write(args);
             builder.MoveTo(field.Start.ParentNode);
-
+            
             builder.InsertParagraph();
             return field;
         }
         //ExEnd
+
+        private void TestFieldEQ(Document doc)
+        {
+            Assert.AreEqual(@" EQ \f(1,4)", doc.Range.Fields[0].GetFieldCode());
+            Assert.AreEqual(@" EQ \a \al \co2 \vs3 \hs3(4x,- 4y,-4x,+ y)", doc.Range.Fields[1].GetFieldCode());
+            Assert.AreEqual(@" EQ \b \bc\[ (\a \al \co3 \vs3 \hs3(1,0,0,0,1,0,0,0,1))", doc.Range.Fields[2].GetFieldCode());
+            Assert.AreEqual(@" EQ A \d \fo30 \li() B", doc.Range.Fields[3].GetFieldCode());
+            Assert.AreEqual(@" EQ \f(d,dx)(u + v) = \f(du,dx) + \f(dv,dx)", doc.Range.Fields[4].GetFieldCode());
+            Assert.AreEqual(@" EQ \i \su(n=1,5,n)", doc.Range.Fields[5].GetFieldCode());
+            Assert.AreEqual(@" EQ \l(1,1,2,3,n,8,13)", doc.Range.Fields[6].GetFieldCode());
+            Assert.AreEqual(@" EQ \r (3,x)", doc.Range.Fields[7].GetFieldCode());
+            Assert.AreEqual(@" EQ \s \up8(Superscript) Text \s \do8(Subscript)", doc.Range.Fields[8].GetFieldCode());
+            Assert.AreEqual(@" EQ \x \to \bo \le \ri(5)", doc.Range.Fields[9].GetFieldCode());
+            Assert.AreEqual(@" EQ \a \ac \vs1 \co1(lim,n→∞) \b (\f(n,n2 + 12) + \f(n,n2 + 22) + ... + \f(n,n2 + n2))", doc.Range.Fields[10].GetFieldCode());
+            Assert.AreEqual(@" EQ \i (,,  \b(\f(x,x2 + 3x + 2))) \s \up10(2)", doc.Range.Fields[11].GetFieldCode());
+            Assert.AreEqual(@" EQ \i \in( tan x, \s \up2(sec x), \b(\r(3) )\s \up4(t) \s \up7(2)  dt)", doc.Range.Fields[12].GetFieldCode());
+        }
 
         [Test]
         public void FieldForms()
@@ -6634,7 +6932,7 @@ namespace ApiExamples
             //ExFor:FieldFormText
             //ExSummary:Shows how to process FORMCHECKBOX, FORMDROPDOWN and FORMTEXT fields.
             // These fields are legacy equivalents of the FormField, and they can be read but not inserted by Aspose.Words,
-            // and are inserted in Microsoft Word 2019 via the Legacy Tools menu in the Developer tab
+            // and can be inserted in Microsoft Word 2019 via the Legacy Tools menu in the Developer tab
             Document doc = new Document(MyDir + "Form fields.docx");
 
             FieldFormCheckBox fieldFormCheckBox = (FieldFormCheckBox)doc.Range.Fields[1];
@@ -6671,6 +6969,13 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.FORMULA.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.FORMULA.docx");
+
+            field = (FieldFormula)doc.Range.Fields[0];
+            
+            Assert.AreEqual(" = 2 * 5 ", field.GetFieldCode());
+            Assert.AreEqual("10", field.Result);
         }
 
         [Test]
@@ -6697,6 +7002,16 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.LASTSAVEDBY.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.LASTSAVEDBY.docx");
+
+            Assert.AreEqual("John Doe", doc.BuiltInDocumentProperties.LastSavedBy);
+
+            field = (FieldLastSavedBy)doc.Range.Fields[0];
+
+            // The value from our document property appears here
+            Assert.AreEqual(" LASTSAVEDBY ", field.GetFieldCode());
+            Assert.AreEqual("John Doe", field.Result);
         }
 
         [Test]
@@ -6748,10 +7063,20 @@ namespace ApiExamples
             table.Rows.Add(new[] { "John Doe" });
             table.Rows.Add(new[] { "Joe Bloggs" });
 
-            // Execute mail merge and save document
+            // Execute the mail merge and save document
             doc.MailMerge.Execute(table);
             doc.Save(ArtifactsDir + "Field.MERGEREC.MERGESEQ.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.MERGEREC.MERGESEQ.docx");
+
+            Assert.AreEqual("Dear Jane Doe,\r" +
+                            "\r" +
+                            "Row number of record in data source: 1\r" +
+                            "Successful merge number: 1\fDear Joe Bloggs,\r" +
+                            "\r" +
+                            "Row number of record in data source: 2\r" +
+                            "Successful merge number: 3", doc.GetText().Trim());
         }
 
         [Test]
@@ -6768,6 +7093,8 @@ namespace ApiExamples
 
             Assert.AreEqual(" OCX ", field.GetFieldCode());
             //ExEnd
+
+            Assert.AreEqual(" OCX ", DocumentHelper.SaveOpen(doc).Range.Fields[0].GetFieldCode());
         }
 
         //ExStart
@@ -6802,7 +7129,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Visitor implementation that removes all PRIVATE fields that it comes across.
+        /// Visitor implementation that removes all PRIVATE fields that it encounters.
         /// </summary>
         public class FieldPrivateRemover : DocumentVisitor
         {
@@ -6885,6 +7212,23 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.SECTION.SECTIONPAGES.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.SECTION.SECTIONPAGES.docx");
+
+            fieldSection = (FieldSection)doc.Range.Fields[0];
+
+            Assert.AreEqual(" SECTION ", fieldSection.GetFieldCode());
+            Assert.AreEqual("2", fieldSection.Result);
+
+            fieldPage = (FieldPage)doc.Range.Fields[1];
+
+            Assert.AreEqual(" PAGE ", fieldPage.GetFieldCode());
+            Assert.AreEqual("2", fieldPage.Result);
+
+            fieldSectionPages = (FieldSectionPages)doc.Range.Fields[2];
+
+            Assert.AreEqual(" SECTIONPAGES ", fieldSectionPages.GetFieldCode());
+            Assert.AreEqual("2", fieldSectionPages.Result);
         }
 
         //ExStart
@@ -6898,17 +7242,21 @@ namespace ApiExamples
 
             // By default, time is displayed in the "h:mm am/pm" format
             FieldTime field = InsertFieldTime(builder, "");
+
             Assert.AreEqual(" TIME ", field.GetFieldCode());
 
             // By using the \@ flag, we can change the appearance of our time
             field = InsertFieldTime(builder, "\\@ HHmm");
+
             Assert.AreEqual(" TIME \\@ HHmm", field.GetFieldCode());
 
             // We can even display the date, according to the gregorian calendar
             field = InsertFieldTime(builder, "\\@ \"M/d/yyyy h mm:ss am/pm\"");
+
             Assert.AreEqual(" TIME \\@ \"M/d/yyyy h mm:ss am/pm\"", field.GetFieldCode());
 
             doc.Save(ArtifactsDir + "Field.TIME.docx");
+            TestFieldTime(new Document(ArtifactsDir + "Field.TIME.docx")); //ExSkip
         }
 
         /// <summary>
@@ -6925,6 +7273,27 @@ namespace ApiExamples
             return field;
         }
         //ExEnd
+
+        private void TestFieldTime(Document doc)
+        {
+            DateTime docLoadingTime = DateTime.Now;
+            doc = DocumentHelper.SaveOpen(doc);
+
+            FieldTime field = (FieldTime)doc.Range.Fields[0];
+
+            Assert.AreEqual(" TIME ", field.GetFieldCode());
+            Assert.AreEqual(DateTime.Parse(field.Result), DateTime.Today.AddHours(docLoadingTime.Hour).AddMinutes(docLoadingTime.Minute));
+
+            field = (FieldTime)doc.Range.Fields[1];
+
+            Assert.AreEqual(" TIME \\@ HHmm", field.GetFieldCode());
+            Assert.AreEqual(DateTime.Parse(field.Result), DateTime.Today.AddHours(docLoadingTime.Hour).AddMinutes(docLoadingTime.Minute));
+
+            field = (FieldTime)doc.Range.Fields[2];
+
+            Assert.AreEqual(" TIME \\@ \"M/d/yyyy h mm:ss am/pm\"", field.GetFieldCode());
+            Assert.AreEqual(DateTime.Parse(field.Result), DateTime.Today.AddHours(docLoadingTime.Hour).AddMinutes(docLoadingTime.Minute));
+        }
 
         [Test]
         public void BidiOutline()
@@ -6944,8 +7313,9 @@ namespace ApiExamples
             // but is only visible when a RTL editing language is enabled, such as Hebrew or Arabic
             // The following field will display ".1", the RTL equivalent of list number "1."
             FieldBidiOutline field = (FieldBidiOutline)builder.InsertField(FieldType.FieldBidiOutline, true);
-            Assert.AreEqual(" BIDIOUTLINE ", field.GetFieldCode());
             builder.Writeln("שלום");
+
+            Assert.AreEqual(" BIDIOUTLINE ", field.GetFieldCode());
 
             // Add two more BIDIOUTLINE fields, which will be automatically numbered ".2" and ".3"
             builder.InsertField(FieldType.FieldBidiOutline, true);
@@ -6963,6 +7333,14 @@ namespace ApiExamples
             // Otherwise, they will appear as "###" 
             doc.Save(ArtifactsDir + "Field.BIDIOUTLINE.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.BIDIOUTLINE.docx");
+
+            foreach (Field fieldBidiOutline in doc.Range.Fields)
+            {
+                Assert.AreEqual(" BIDIOUTLINE ", fieldBidiOutline.GetFieldCode());
+                Assert.AreEqual(String.Empty, fieldBidiOutline.Result);
+            }
         }
 
         [Test]
@@ -6998,31 +7376,6 @@ namespace ApiExamples
             // The third Shape is what was the EMBED field that contained the external spreadsheet
             shape = (Shape)shapes[2];
             Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
-            //ExEnd
-        }
-
-        [Test]
-        public void FieldDisplayResult()
-        {
-            //ExStart
-            //ExFor:Field.DisplayResult
-            //ExSummary:Shows how to get the text that represents the displayed field result.
-            Document document = new Document(MyDir + "Various fields.docx");
- 
-            FieldCollection fields = document.Range.Fields;
- 
-            Assert.AreEqual("111", fields[0].DisplayResult);
-            Assert.AreEqual("222", fields[1].DisplayResult);
-            Assert.AreEqual("Multi\rLine\rText", fields[2].DisplayResult);
-            Assert.AreEqual("%", fields[3].DisplayResult);
-            Assert.AreEqual("Macro Button Text", fields[4].DisplayResult);
-            Assert.AreEqual(string.Empty, fields[5].DisplayResult);
- 
-            // Method must be called to obtain correct value for the "FieldListNum", "FieldAutoNum",
-            // "FieldAutoNumOut" and "FieldAutoNumLgl" fields
-            document.UpdateListLabels();
- 
-            Assert.AreEqual("1)", fields[5].DisplayResult);
             //ExEnd
         }
     }
