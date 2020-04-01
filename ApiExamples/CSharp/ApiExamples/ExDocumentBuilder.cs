@@ -246,12 +246,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertHyperlink.docx");
 
             FieldHyperlink hyperlink = (FieldHyperlink)doc.Range.Fields[0];
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(hyperlink.Address);
-            request.Method = "HEAD";
+            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, hyperlink.Address);
 
-            Assert.AreEqual(HttpStatusCode.OK, ((HttpWebResponse)request.GetResponse()).StatusCode);
-
-            Run fieldContents = (Run) hyperlink.Start.NextSibling;
+            Run fieldContents = (Run)hyperlink.Start.NextSibling;
 
             Assert.AreEqual(Color.Blue.ToArgb(), fieldContents.Font.Color.ToArgb());
             Assert.AreEqual(Underline.Single, fieldContents.Font.Underline);
@@ -2938,9 +2935,7 @@ namespace ApiExamples
             Assert.AreEqual(21027, shape.ImageData.ImageBytes.Length);
             Assert.AreEqual("https://youtu.be/t_1LYZ102RA", shape.HRef);
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(shape.HRef);
-            request.Method = "HEAD";
-            Assert.AreEqual(HttpStatusCode.OK, ((HttpWebResponse)request.GetResponse()).StatusCode);
+            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
         }
 
         [Test]
@@ -3646,10 +3641,8 @@ namespace ApiExamples
             Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(shape.HRef);
-            request.Method = "HEAD";
-            Assert.AreEqual(HttpStatusCode.OK, ((HttpWebResponse)request.GetResponse()).StatusCode);
+            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
         }
-        #endif
+#endif
     }
 }

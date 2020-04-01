@@ -309,7 +309,7 @@ namespace ApiExamples
         //ExFor:FieldOptions.FieldUpdateCultureProvider
         //ExFor:IFieldUpdateCultureProvider
         //ExFor:IFieldUpdateCultureProvider.GetCulture(string, Field)
-        //ExSummary:Shows how to specifying a culture defining date/time formatting on per field basis
+        //ExSummary:Shows how to specify a culture defining date/time formatting on per field basis.
         [Test]
         public void DefineDateTimeFormatting()
         {

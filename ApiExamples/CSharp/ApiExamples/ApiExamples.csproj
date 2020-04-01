@@ -209,6 +209,7 @@
     <Compile Include="TestData\TestClasses\MessageTestClass.cs" />
     <Compile Include="TestData\TestClasses\NumericTestClass.cs" />
     <Compile Include="TestData\TestClasses\SignPersonTestClass.cs" />
+    <Compile Include="TestUtil.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
