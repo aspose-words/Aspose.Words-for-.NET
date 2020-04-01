@@ -1724,7 +1724,6 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        [Ignore("WORDSNET-19907")]
         public void CheckScanUserFontsFolder()
         {
             // On Windows 10 fonts may be installed either into system folder "%windir%\fonts" for all users
