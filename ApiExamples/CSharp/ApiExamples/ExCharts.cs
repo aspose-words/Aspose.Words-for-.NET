@@ -575,10 +575,10 @@ namespace ApiExamples
             }
 
             // If the chart looks too busy, we can remove data labels one by one
-            chart.Series[1].DataLabels.RemoveAt(2);
+            chart.Series[1].DataLabels[2].ClearFormat();
 
             // We can also clear an entire data label collection for one whole series
-            chart.Series[2].DataLabels.Clear();
+            chart.Series[2].DataLabels.ClearFormat();
 
             doc.Save(ArtifactsDir + "Charts.ChartDataLabels.docx");
         }
@@ -590,24 +590,24 @@ namespace ApiExamples
         {
             for (int i = 0; i < labelsCount; i++)
             {
-                ChartDataLabel label = series.DataLabels.Add(i);
-                Assert.False(label.IsVisible);
+                series.HasDataLabels = true;
+                Assert.False(series.DataLabels[i].IsVisible);
 
                 // Edit the appearance of the new data label
-                label.ShowCategoryName = true;
-                label.ShowSeriesName = true;
-                label.ShowValue = true;
-                label.ShowLeaderLines = true;
-                label.ShowLegendKey = true;
-                label.ShowPercentage = false;
-                Assert.False(label.ShowDataLabelsRange);
+                series.DataLabels[i].ShowCategoryName = true;
+                series.DataLabels[i].ShowSeriesName = true;
+                series.DataLabels[i].ShowValue = true;
+                series.DataLabels[i].ShowLeaderLines = true;
+                series.DataLabels[i].ShowLegendKey = true;
+                series.DataLabels[i].ShowPercentage = false;
+                Assert.False(series.DataLabels[i].ShowDataLabelsRange);
 
                 // Apply number format and separator
-                label.NumberFormat.FormatCode = numberFormat;
-                label.Separator = separator;
+                series.DataLabels[i].NumberFormat.FormatCode = numberFormat;
+                series.DataLabels[i].Separator = separator;
 
                 // The label automatically becomes visible
-                Assert.True(label.IsVisible);
+                Assert.True(series.DataLabels[i].IsVisible);
             }
         }
         //ExEnd
@@ -732,8 +732,8 @@ namespace ApiExamples
             // Apply a data label to each bubble that displays the size of its bubble
             for (int i = 0; i < 3; i++)
             {
-                ChartDataLabel cdl = chart.Series[0].DataLabels.Add(i);
-                cdl.ShowBubbleSize = true;
+                chart.Series[0].HasDataLabels = true;
+                chart.Series[0].DataLabels[i].ShowBubbleSize = true;
             }
             
             doc.Save(ArtifactsDir + "Charts.Bubble3D.docx");
