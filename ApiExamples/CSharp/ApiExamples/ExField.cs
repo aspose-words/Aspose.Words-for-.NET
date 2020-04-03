@@ -6863,12 +6863,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Field.LASTSAVEDBY.docx");
 
             Assert.AreEqual("John Doe", doc.BuiltInDocumentProperties.LastSavedBy);
-
-            field = (FieldLastSavedBy)doc.Range.Fields[0];
-
-            // The value from our document property appears here
-            Assert.AreEqual(" LASTSAVEDBY ", field.GetFieldCode());
-            Assert.AreEqual("John Doe", field.Result);
+            TestUtil.VerifyField(FieldType.FieldLastSavedBy, " LASTSAVEDBY ", "John Doe", doc.Range.Fields[0]);
         }
 
         [Test]
