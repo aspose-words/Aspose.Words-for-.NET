@@ -660,7 +660,6 @@ namespace ApiExamples
             //ExFor:Document.Print
             //ExSummary:Prints the whole document to the default printer.
             Document doc = new Document(MyDir + "Document.docx");
-
             doc.Print();
             //ExEnd
         }
@@ -673,7 +672,6 @@ namespace ApiExamples
             //ExFor:Document.Print(String)
             //ExSummary:Prints the whole document to a specified printer.
             Document doc = new Document(MyDir + "Document.docx");
-
             doc.Print("KONICA MINOLTA magicolor 2400W");
             //ExEnd
         }
@@ -689,6 +687,7 @@ namespace ApiExamples
 
             PrinterSettings printerSettings = new PrinterSettings();
             // Page numbers in the .NET printing framework are 1-based
+            printerSettings.PrintRange = System.Drawing.Printing.PrintRange.SomePages;
             printerSettings.FromPage = 1;
             printerSettings.ToPage = 3;
 
@@ -707,10 +706,11 @@ namespace ApiExamples
 
             PrinterSettings printerSettings = new PrinterSettings();
             // Page numbers in the .NET printing framework are 1-based
+            printerSettings.PrintRange = System.Drawing.Printing.PrintRange.SomePages;
             printerSettings.FromPage = 1;
             printerSettings.ToPage = 3;
 
-            doc.Print(printerSettings, "Rendering.PrintRangeWithDocumentName.doc");
+            doc.Print(printerSettings, "Rendering.PrintRangeWithDocumentName.docx");
             //ExEnd
         }
 
