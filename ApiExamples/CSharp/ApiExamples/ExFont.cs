@@ -1723,7 +1723,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        [Test]
+        [Test, Category("IgnoreOnJenkins")]
         public void CheckScanUserFontsFolder()
         {
             // On Windows 10 fonts may be installed either into system folder "%windir%\fonts" for all users
