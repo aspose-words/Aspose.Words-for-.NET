@@ -19,32 +19,6 @@ namespace ApiExamples
     public class ExFormFields : ApiExampleBase
     {
         [Test]
-        public void FormFieldsGetFormFieldsCollection()
-        {
-            //ExStart
-            //ExFor:Range.FormFields
-            //ExFor:FormFieldCollection
-            //ExSummary:Shows how to get a collection of form fields.
-            Document doc = new Document(MyDir + "Form fields.docx");
-            FormFieldCollection formFields = doc.Range.FormFields;
-            //ExEnd
-        }
-
-        [Test]
-        public void FormFieldsGetByName()
-        {
-            //ExStart
-            //ExFor:FormField
-            //ExSummary:Shows how to access form fields.
-            Document doc = new Document(MyDir + "Form fields.docx");
-            FormFieldCollection documentFormFields = doc.Range.FormFields;
-
-            FormField formField1 = documentFormFields[3];
-            FormField formField2 = documentFormFields["CustomerName"];
-            //ExEnd
-        }
-
-        [Test]
         public void FormFieldsWorkWithProperties()
         {
             //ExStart
@@ -53,13 +27,24 @@ namespace ApiExamples
             //ExFor:FormField.Type
             //ExFor:FormField.Name
             //ExSummary:Shows how to work with form field name, type, and result.
-            Document doc = new Document(MyDir + "Form fields.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            FormField formField = doc.Range.FormFields[3];
+            // Use a DocumentBuilder to insert a combo box form field
+            FormField comboBox = builder.InsertComboBox("MyComboBox", new[] { "One", "Two", "Three" }, 0);
 
-            if (formField.Type.Equals(FieldType.FieldFormTextInput))
-                formField.Result = "My name is " + formField.Name;
+            // Verify some of our form field's attributes
+            Assert.AreEqual("MyComboBox", comboBox.Name);
+            Assert.AreEqual(FieldType.FieldFormDropDown, comboBox.Type);
+            Assert.AreEqual("One", comboBox.Result);
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+            comboBox = doc.Range.FormFields[0];
+
+            Assert.AreEqual("MyComboBox", comboBox.Name);
+            Assert.AreEqual(FieldType.FieldFormDropDown, comboBox.Type);
+            Assert.AreEqual("One", comboBox.Result);
         }
 
         [Test]
@@ -75,6 +60,15 @@ namespace ApiExamples
             // what type of FormField it is, the format of the text, the field result and the maximum text length (0 = no limit)
             builder.InsertTextInput("TextInput1", TextFormFieldType.Regular, "", "", 0);
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+            FormField textInput = doc.Range.FormFields[0];
+
+            Assert.AreEqual("TextInput1", textInput.Name);
+            Assert.AreEqual(TextFormFieldType.Regular, textInput.TextInputType);
+            Assert.AreEqual(String.Empty, textInput.TextInputFormat);
+            Assert.AreEqual(String.Empty, textInput.Result);
+            Assert.AreEqual(0, textInput.MaxLength);
         }
 
         [Test]
@@ -137,6 +131,7 @@ namespace ApiExamples
         //ExFor:FormField.TextInputDefault
         //ExFor:FormField.TextInputFormat
         //ExFor:FormField.TextInputType
+        //ExFor:FormFieldCollection
         //ExFor:FormFieldCollection.Clear
         //ExFor:FormFieldCollection.Count
         //ExFor:FormFieldCollection.GetEnumerator
@@ -144,6 +139,7 @@ namespace ApiExamples
         //ExFor:FormFieldCollection.Item(String)
         //ExFor:FormFieldCollection.Remove(String)
         //ExFor:FormFieldCollection.RemoveAt(Int32)
+        //ExFor:Range.FormFields
         //ExSummary:Shows how insert different kinds of form fields into a document and process them with a visitor implementation.
         [Test] //ExSkip
         public void FormField()
