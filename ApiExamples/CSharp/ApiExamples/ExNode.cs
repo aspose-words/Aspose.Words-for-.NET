@@ -611,6 +611,7 @@ namespace ApiExamples
             //ExFor:CompositeNode.InsertBefore(Node, Node)
             //ExFor:CompositeNode.PrependChild(Node) 
             //ExFor:Paragraph.GetText
+            //ExFor:Run
             //ExSummary:Shows how to add, update and delete child nodes from within a CompositeNode.
             Document doc = new Document();
 

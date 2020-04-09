@@ -9,8 +9,10 @@
 using System;
 using System.Collections;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.Drawing;
@@ -18,6 +20,7 @@ using Aspose.Words.Fields;
 using Aspose.Words.Fonts;
 using Aspose.Words.Tables;
 using NUnit.Framework;
+using Font = Aspose.Words.Font;
 
 namespace ApiExamples
 {
@@ -53,6 +56,15 @@ namespace ApiExamples
             // in the body of the first section of the document
             doc.FirstSection.Body.FirstParagraph.AppendChild(run);
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+            run = doc.FirstSection.Body.FirstParagraph.Runs[0];
+
+            Assert.AreEqual("Hello", run.GetText().Trim());
+            Assert.AreEqual("Courier New", run.Font.Name);
+            Assert.AreEqual(36, run.Font.Size);
+            Assert.AreEqual(Color.Yellow.ToArgb(), run.Font.HighlightColor.ToArgb());
+
         }
 
         [Test]
@@ -64,8 +76,6 @@ namespace ApiExamples
             //ExSummary:Shows how to use all capitals and small capitals character formatting properties.
             // Create an empty document. It contains one empty paragraph
             Document doc = new Document();
-
-            // Get the paragraph from the document, we will be adding runs of text to it
             Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
             Run run = new Run(doc, "All capitals");
@@ -75,7 +85,20 @@ namespace ApiExamples
             run = new Run(doc, "SMALL CAPITALS");
             run.Font.SmallCaps = true;
             para.AppendChild(run);
+
+            doc.Save(ArtifactsDir + "Font.Caps.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.Caps.docx");
+            run = doc.FirstSection.Body.FirstParagraph.Runs[0];
+
+            Assert.AreEqual("All capitals", run.GetText().Trim());
+            Assert.True(run.Font.AllCaps);
+
+            run = doc.FirstSection.Body.FirstParagraph.Runs[1];
+
+            Assert.AreEqual("SMALL CAPITALS", run.GetText().Trim());
+            Assert.True(run.Font.SmallCaps);
         }
 
         [Test]
@@ -87,24 +110,21 @@ namespace ApiExamples
             //ExFor:FontInfo
             //ExFor:FontInfo.Name
             //ExFor:FontInfo.IsTrueType
-            //ExSummary:Shows how to gather the details of what fonts are present in a document.
-            Document doc = new Document(MyDir + "Document.docx");
+            //ExSummary:Shows how to print the details of what fonts are present in a document.
+            Document doc = new Document(MyDir + "Embedded font.docx");
 
             FontInfoCollection fonts = doc.FontInfos;
-            int fontIndex = 1;
+            Assert.AreEqual(5, fonts.Count); //ExSkip
 
             // The fonts info extracted from this document does not necessarily mean that the fonts themselves are
             // used in the document. If a font is present but not used then most likely they were referenced at some time
             // and then removed from the Document
-            foreach (FontInfo info in fonts)
+            for (int i = 0; i < fonts.Count; i++)
             {
-                // Print out some important details about the font
-                Console.WriteLine("Font #{0}", fontIndex);
-                Console.WriteLine("Name: {0}", info.Name);
-                Console.WriteLine("IsTrueType: {0}", info.IsTrueType);
-                fontIndex++;
+                Console.WriteLine($"Font index #{i}");
+                Console.WriteLine($"\tName: {fonts[i].Name}");
+                Console.WriteLine($"\tIs {(fonts[i].IsTrueType ? "" : "not ")}a trueType font");
             }
-
             //ExEnd
         }
 
@@ -138,6 +158,13 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Font.FontInfoCollection.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.FontInfoCollection.docx");
+            fontInfos = doc.FontInfos;
+
+            Assert.True(fontInfos.EmbedTrueTypeFonts);
+            Assert.False(fontInfos.EmbedSystemFonts);
+            Assert.False(fontInfos.SaveSubsetFonts);
         }
 
         [Test]
@@ -169,10 +196,7 @@ namespace ApiExamples
             //ExFor:Font.StrikeThrough
             //ExFor:Font.DoubleStrikeThrough
             //ExSummary:Shows how to use strike-through character formatting properties.
-            // Create an empty document. It contains one empty paragraph
             Document doc = new Document();
-
-            // Get the paragraph from the document, we will be adding runs of text to it
             Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
             Run run = new Run(doc, "Double strike through text");
@@ -182,7 +206,20 @@ namespace ApiExamples
             run = new Run(doc, "Single strike through text");
             run.Font.StrikeThrough = true;
             para.AppendChild(run);
+
+            doc.Save(ArtifactsDir + "Font.StrikeThrough.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.StrikeThrough.docx");
+            run = doc.FirstSection.Body.FirstParagraph.Runs[0];
+
+            Assert.AreEqual("Double strike through text", run.GetText().Trim());
+            Assert.True(run.Font.DoubleStrikeThrough);
+
+            run = doc.FirstSection.Body.FirstParagraph.Runs[1];
+
+            Assert.AreEqual("Single strike through text", run.GetText().Trim());
+            Assert.True(run.Font.StrikeThrough);
         }
 
         [Test]
@@ -193,10 +230,7 @@ namespace ApiExamples
             //ExFor:Font.Subscript
             //ExFor:Font.Superscript
             //ExSummary:Shows how to use subscript, superscript, complex script, text effects, and baseline text position properties.
-            // Create an empty document. It contains one empty paragraph
             Document doc = new Document();
-
-            // Get the paragraph from the document, we will be adding runs of text to it
             Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
             // Add a run of text that is raised 5 points above the baseline
@@ -217,7 +251,25 @@ namespace ApiExamples
             run = new Run(doc, "Superscript");
             run.Font.Superscript = true;
             para.AppendChild(run);
+
+            doc.Save(ArtifactsDir + "Font.PositionSubscript.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.PositionSubscript.docx");
+            run = doc.FirstSection.Body.FirstParagraph.Runs[0];
+
+            Assert.AreEqual("Raised text", run.GetText().Trim());
+            Assert.AreEqual(5, run.Font.Position);
+
+            run = doc.FirstSection.Body.FirstParagraph.Runs[2];
+
+            Assert.AreEqual("Subscript", run.GetText().Trim());
+            Assert.True(run.Font.Subscript);
+
+            run = doc.FirstSection.Body.FirstParagraph.Runs[3];
+
+            Assert.AreEqual("Superscript", run.GetText().Trim());
+            Assert.True(run.Font.Superscript);
         }
 
         [Test]
@@ -227,168 +279,330 @@ namespace ApiExamples
             //ExFor:Font.Scaling
             //ExFor:Font.Spacing
             //ExSummary:Shows how to use character scaling and spacing properties.
-            // Create an empty document. It contains one empty paragraph
             Document doc = new Document();
-
-            // Get the paragraph from the document, we will be adding runs of text to it
-            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Add a run of text with characters 150% width of normal characters
-            Run run = new Run(doc, "Wide characters");
-            run.Font.Scaling = 150;
-            para.AppendChild(run);
+            builder.Font.Scaling = 150;
+            builder.Writeln("Wide characters");
 
             // Add a run of text with extra 1pt space between characters
-            run = new Run(doc, "Expanded by 1pt");
-            run.Font.Spacing = 1;
-            para.AppendChild(run);
+            builder.Font.Spacing = 1;
+            builder.Writeln("Expanded by 1pt");
 
             // Add a run of text with space between characters reduced by 1pt
-            run = new Run(doc, "Condensed by 1pt");
-            run.Font.Spacing = -1;
-            para.AppendChild(run);
+            builder.Font.Spacing = -1;
+            builder.Writeln("Condensed by 1pt");
+
+            doc.Save(ArtifactsDir + "Font.ScalingSpacing.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.ScalingSpacing.docx");
+            Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("Wide characters", run.GetText().Trim());
+            Assert.AreEqual(150, run.Font.Scaling);
+
+            run = doc.FirstSection.Body.Paragraphs[1].Runs[0];
+
+            Assert.AreEqual("Expanded by 1pt", run.GetText().Trim());
+            Assert.AreEqual(1, run.Font.Spacing);
+
+            run = doc.FirstSection.Body.Paragraphs[2].Runs[0];
+
+            Assert.AreEqual("Condensed by 1pt", run.GetText().Trim());
+            Assert.AreEqual(-1, run.Font.Spacing);
         }
 
         [Test]
-        public void EmbossItalic()
+        public void Italic()
         {
+            //ExStart
+            //ExFor:Font.Italic
+            //ExSummary:Shows how to italicize a run of text.
             Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Font.Size = 36;
+            builder.Font.Italic = true;
+
+            builder.Writeln("Hello world!");
+
+            doc.Save(ArtifactsDir + "Font.Italic.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.Italic.docx");
+            Run run = doc.FirstSection.Body.FirstParagraph.Runs[0];
+
+            Assert.AreEqual("Hello world!", run.GetText().Trim());
+            Assert.True(run.Font.Italic);
+        }
+
+        [Test]
+        public void EngraveEmboss()
+        {
             //ExStart
             //ExFor:Font.Emboss
-            //ExFor:Font.Italic
-            //ExSummary:Shows how to create a run of formatted text.
-            Run run = new Run(doc, "Hello");
-            run.Font.Emboss = true;
-            run.Font.Italic = true;
-            //ExEnd
-        }
-
-        [Test]
-        public void Engrave()
-        {
-            Document doc = new Document();
-            //ExStart
             //ExFor:Font.Engrave
-            //ExSummary:Shows how to create a run of text formatted as engraved.
-            Run run = new Run(doc, "Hello");
-            run.Font.Engrave = true;
+            //ExSummary:Shows the difference between embossing and engraving text via font formatting.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Font.Size = 36;
+            builder.Font.Color = Color.White;
+            builder.Font.Engrave = true;
+
+            builder.Writeln("This text is engraved.");
+
+            builder.Font.Engrave = false;
+            builder.Font.Emboss = true;
+
+            builder.Writeln("This text is embossed.");
+
+            doc.Save(ArtifactsDir + "Font.EngraveEmboss.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.EngraveEmboss.docx");
+            Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("This text is engraved.", run.GetText().Trim());
+            Assert.True(run.Font.Engrave);
+            Assert.False(run.Font.Emboss);
+
+            run = doc.FirstSection.Body.Paragraphs[1].Runs[0];
+
+            Assert.AreEqual("This text is embossed.", run.GetText().Trim());
+            Assert.False(run.Font.Engrave);
+            Assert.True(run.Font.Emboss);
         }
 
         [Test]
         public void Shadow()
         {
-            Document doc = new Document();
             //ExStart
             //ExFor:Font.Shadow
             //ExSummary:Shows how to create a run of text formatted with a shadow.
-            Run run = new Run(doc, "Hello");
-            run.Font.Shadow = true;
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Font.Size = 36;
+            builder.Font.Shadow = true;
+
+            builder.Writeln("This text has a shadow.");
+
+            doc.Save(ArtifactsDir + "Font.Shadow.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.Shadow.docx");
+            Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("This text has a shadow.", run.GetText().Trim());
+            Assert.True(run.Font.Shadow);
         }
 
         [Test]
         public void Outline()
         {
-            Document doc = new Document();
             //ExStart
             //ExFor:Font.Outline
             //ExSummary:Shows how to create a run of text formatted as outline.
-            Run run = new Run(doc, "Hello");
-            run.Font.Outline = true;
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Font.Size = 36;
+            builder.Font.Outline = true;
+
+            builder.Writeln("This text has an outline.");
+
+            doc.Save(ArtifactsDir + "Font.Outline.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.Outline.docx");
+            Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("This text has an outline.", run.GetText().Trim());
+            Assert.True(run.Font.Outline);
         }
 
         [Test]
         public void Hidden()
         {
-            Document doc = new Document();
             //ExStart
             //ExFor:Font.Hidden
             //ExSummary:Shows how to create a hidden run of text.
-            Run run = new Run(doc, "Hello");
-            run.Font.Hidden = true;
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Font.Size = 36;
+            builder.Font.Hidden = true;
+
+            // With the Hidden flag set to true, we can add text that will be present but invisible in the document
+            // It is not recommended to use this as a way of hiding sensitive information as the text is still easily reachable
+            builder.Writeln("This text won't be visible in the document.");
+
+            doc.Save(ArtifactsDir + "Font.Hidden.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.Hidden.docx");
+            Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("This text won't be visible in the document.", run.GetText().Trim());
+            Assert.True(run.Font.Hidden);
         }
 
         [Test]
         public void Kerning()
         {
-            Document doc = new Document();
             //ExStart
             //ExFor:Font.Kerning
             //ExSummary:Shows how to specify the font size at which kerning starts.
-            Run run = new Run(doc, "Hello");
-            run.Font.Kerning = 24;
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Font.Name = "Arial Black";
+
+            // Set the font's kerning size threshold and font size 
+            builder.Font.Kerning = 24;
+            builder.Font.Size = 18;
+
+            // The font size falls below the kerning threshold so kerning will not be applied
+            builder.Writeln("TALLY. (Kerning not applied)");
+
+            // If we add runs of text with a document builder's writing methods,
+            // the Font attributes of any new runs will inherit the values from the Font attributes of the previous runs
+            // The font size is still 18, and we will change the kerning threshold to a value below that
+            builder.Font.Kerning = 12;
+            
+            // Kerning has now been applied to this run
+            builder.Writeln("TALLY. (Kerning applied)");
+
+            doc.Save(ArtifactsDir + "Font.Kerning.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.Kerning.docx");
+            Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("TALLY. (Kerning not applied)", run.GetText().Trim());
+            Assert.AreEqual(24, run.Font.Kerning);
+            Assert.AreEqual(18, run.Font.Size);
+
+            run = doc.FirstSection.Body.Paragraphs[1].Runs[0];
+
+            Assert.AreEqual("TALLY. (Kerning applied)", run.GetText().Trim());
+            Assert.AreEqual(12, run.Font.Kerning);
+            Assert.AreEqual(18, run.Font.Size);
         }
 
         [Test]
         public void NoProofing()
         {
-            Document doc = new Document();
             //ExStart
             //ExFor:Font.NoProofing
             //ExSummary:Shows how to specify that the run of text is not to be spell checked by Microsoft Word.
-            Run run = new Run(doc, "Hello");
-            run.Font.NoProofing = true;
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Font.NoProofing = true;
+
+            builder.Writeln("Proofing has been disabled for this run, so these spelking errrs will not display red lines underneath.");
+
+            doc.Save(ArtifactsDir + "Font.NoProofing.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.NoProofing.docx");
+            Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("Proofing has been disabled for this run, so these spelking errrs will not display red lines underneath.", run.GetText().Trim());
+            Assert.True(run.Font.NoProofing);
         }
 
         [Test]
         public void LocaleId()
         {
-            Document doc = new Document();
-
             //ExStart
             //ExFor:Font.LocaleId
             //ExSummary:Shows how to specify the language of a text run so Microsoft Word can use a proper spell checker.
-            // Create a run of text that contains Russian text
-            Run run = new Run(doc, "Привет");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Specify the locale so Microsoft Word recognizes this text as Russian
-            // For the list of locale identifiers see https://docs.microsoft.com/en-us/deployoffice/office2016/language-identifiers-and-optionstate-id-values-in-office-2016
-            run.Font.LocaleId = 1049;
+            builder.Font.LocaleId = new CultureInfo("ru-RU", false).LCID;
+            builder.Writeln("Привет!");
+
+            doc.Save(ArtifactsDir + "Font.LocaleId.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.LocaleId.docx");
+            Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("Привет!", run.GetText().Trim());
+            Assert.AreEqual(1049, run.Font.LocaleId);
         }
 
         [Test]
         public void Underlines()
         {
-            Document doc = new Document();
             //ExStart
             //ExFor:Font.Underline
             //ExFor:Font.UnderlineColor
             //ExSummary:Shows how use the underline character formatting properties.
-            Run run = new Run(doc, "Hello");
-            run.Font.Underline = Underline.Dotted;
-            run.Font.UnderlineColor = Color.Red;
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Set an underline color and style
+            builder.Font.Underline = Underline.Dotted;
+            builder.Font.UnderlineColor = Color.Red;
+
+            builder.Writeln("Underlined text.");
+
+            doc.Save(ArtifactsDir + "Font.Underlines.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.Underlines.docx");
+            Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("Underlined text.", run.GetText().Trim());
+            Assert.AreEqual(Underline.Dotted, run.Font.Underline);
+            Assert.AreEqual(Color.Red.ToArgb(), run.Font.UnderlineColor.ToArgb());
         }
 
         [Test]
         public void ComplexScript()
         {
-            Document doc = new Document();
             //ExStart
             //ExFor:Font.ComplexScript
             //ExSummary:Shows how to make a run that's always treated as complex script.
-            Run run = new Run(doc, "Complex script");
-            run.Font.ComplexScript = true;
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Font.ComplexScript = true;
+
+            builder.Writeln("Text treated as complex script.");
+
+            doc.Save(ArtifactsDir + "Font.ComplexScript.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.ComplexScript.docx");
+            Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("Text treated as complex script.", run.GetText().Trim());
+            Assert.True(run.Font.ComplexScript);
         }
 
         [Test]
         public void SparklingText()
         {
-            Document doc = new Document();
             //ExStart
             //ExFor:Font.TextEffect
             //ExSummary:Shows how to apply a visual effect to a run.
-            Run run = new Run(doc, "Text with effect");
-            run.Font.TextEffect = TextEffect.SparkleText;
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Font.Size = 36;
+            builder.Font.TextEffect = TextEffect.SparkleText;
+
+            builder.Writeln("Text with a sparkle effect.");
+            
+            // Font animation effects are only visible in older versions of Microsoft Word
+            doc.Save(ArtifactsDir + "Font.SparklingText.doc");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.SparklingText.doc");
+            Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("Text with a sparkle effect.", run.GetText().Trim());
+            Assert.AreEqual(TextEffect.SparkleText, run.Font.TextEffect);
         }
 
         [Test]
@@ -397,17 +611,30 @@ namespace ApiExamples
             //ExStart
             //ExFor:Font.Shading
             //ExSummary:Shows how to apply shading for a run of text.
-            DocumentBuilder builder = new DocumentBuilder();
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             Shading shd = builder.Font.Shading;
-            shd.Texture = TextureIndex.TextureDiagonalCross;
-            shd.BackgroundPatternColor = Color.Blue;
-            shd.ForegroundPatternColor = Color.BlueViolet;
+            shd.Texture = TextureIndex.TextureDiagonalUp;
+            shd.BackgroundPatternColor = Color.OrangeRed;
+            shd.ForegroundPatternColor = Color.DarkBlue;
 
             builder.Font.Color = Color.White;
 
-            builder.Writeln("White text on a blue background with texture.");
+            builder.Writeln("White text on an orange background with texture.");
+
+            doc.Save(ArtifactsDir + "Font.Shading.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.Shading.docx");
+            Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("White text on an orange background with texture.", run.GetText().Trim());
+            Assert.AreEqual(Color.White.ToArgb(), run.Font.Color.ToArgb());
+
+            Assert.AreEqual(TextureIndex.TextureDiagonalUp, run.Font.Shading.Texture);
+            Assert.AreEqual(Color.OrangeRed.ToArgb(), run.Font.Shading.BackgroundPatternColor.ToArgb());
+            Assert.AreEqual(Color.DarkBlue.ToArgb(), run.Font.Shading.ForegroundPatternColor.ToArgb());
         }
 
         [Test]
@@ -421,7 +648,8 @@ namespace ApiExamples
             //ExFor:Font.BoldBi
             //ExFor:Font.LocaleIdBi
             //ExSummary:Shows how to insert and format right-to-left text.
-            DocumentBuilder builder = new DocumentBuilder();
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Signal to Microsoft Word that this run of text contains right-to-left text
             builder.Font.Bidi = true;
@@ -435,14 +663,24 @@ namespace ApiExamples
             builder.Font.BoldBi = true;
 
             // Specify the locale so Microsoft Word recognizes this text as Arabic - Saudi Arabia
-            // For the list of locale identifiers see https://docs.microsoft.com/en-us/deployoffice/office2016/language-identifiers-and-optionstate-id-values-in-office-2016
-            builder.Font.LocaleIdBi = 1025;
+            builder.Font.LocaleIdBi = new CultureInfo("ar-AR", false).LCID;
 
             // Insert some Arabic text
             builder.Writeln("مرحبًا");
 
-            builder.Document.Save(ArtifactsDir + "Font.Bidi.doc");
+            doc.Save(ArtifactsDir + "Font.Bidi.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.Bidi.docx");
+            Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("مرحبًا", run.GetText().Trim());
+            Assert.AreEqual(1033, run.Font.LocaleId);
+            Assert.True(run.Font.Bidi);
+            Assert.AreEqual(48, run.Font.SizeBi);
+            Assert.AreEqual("Andalus", run.Font.NameBi);
+            Assert.True(run.Font.ItalicBi);
+            Assert.True(run.Font.BoldBi);
         }
 
         [Test]
@@ -451,23 +689,28 @@ namespace ApiExamples
             //ExStart
             //ExFor:Font.NameFarEast
             //ExFor:Font.LocaleIdFarEast
-            //ExSummary:Shows how to insert and format text in Chinese or any other Far East language.
-            DocumentBuilder builder = new DocumentBuilder();
+            //ExSummary:Shows how to insert and format text in a Far East language.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Font.Size = 48;
-
-            // Specify the font name. Make sure it the font has the glyphs that you want to display
+            // Specify the font name
             builder.Font.NameFarEast = "SimSun";
 
             // Specify the locale so Microsoft Word recognizes this text as Chinese
-            // For the list of locale identifiers see https://docs.microsoft.com/en-us/deployoffice/office2016/language-identifiers-and-optionstate-id-values-in-office-2016
-            builder.Font.LocaleIdFarEast = 2052;
+            builder.Font.LocaleIdFarEast = new CultureInfo("zh-CN", false).LCID;
 
             // Insert some Chinese text
             builder.Writeln("你好世界");
 
-            builder.Document.Save(ArtifactsDir + "Font.FarEast.doc");
+            doc.Save(ArtifactsDir + "Font.FarEast.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.FarEast.docx");
+            Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("你好世界", run.GetText().Trim());
+            Assert.AreEqual(2052, run.Font.LocaleIdFarEast);
+            Assert.AreEqual("SimSun", run.Font.NameFarEast);
         }
 
         [Test]
@@ -476,19 +719,34 @@ namespace ApiExamples
             //ExStart
             //ExFor:Font.NameAscii
             //ExFor:Font.NameOther
-            //ExSummary:A pretty unusual example of how Microsoft Word can combine two different fonts in one run.
-            DocumentBuilder builder = new DocumentBuilder();
+            //ExSummary:Shows how Microsoft Word can combine two different fonts in one run.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // This tells Microsoft Word to use Arial for characters 0..127 and
-            // Times New Roman for characters 128..255
-            // Looks like a pretty strange case to me, but it is possible
-            builder.Font.NameAscii = "Arial";
-            builder.Font.NameOther = "Times New Roman";
+            // Specify a font to use for all characters that fall within the ASCII character set
+            builder.Font.NameAscii = "Calibri";
 
+            // Specify a font to use for all other characters
+            // This font should have a glyph for every other required character code
+            builder.Font.NameOther = "Courier New";
+
+            // The builder's font is the ASCII font
+            Assert.AreEqual("Calibri", builder.Font.Name);
+
+            // Insert a run with one word consisting of ASCII characters, and one word with all characters outside that range
+            // This will create a run with two fonts
             builder.Writeln("Hello, Привет");
 
-            builder.Document.Save(ArtifactsDir + "Font.Names.doc");
+            doc.Save(ArtifactsDir + "Font.Names.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.Names.docx");
+            Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("Hello, Привет", run.GetText().Trim());
+            Assert.AreEqual("Calibri", run.Font.Name);
+            Assert.AreEqual("Calibri", run.Font.NameAscii);
+            Assert.AreEqual("Courier New", run.Font.NameOther);
         }
 
         [Test]
@@ -522,6 +780,19 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Font.ChangeStyle.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.ChangeStyle.docx");
+            Run docRun = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("Text originally in \"Emphasis\" style", docRun.GetText().Trim());
+            Assert.AreEqual(StyleIdentifier.Strong, docRun.Font.StyleIdentifier);
+            Assert.AreEqual("Strong", docRun.Font.StyleName);
+
+            docRun = doc.FirstSection.Body.Paragraphs[1].Runs[0];
+
+            Assert.AreEqual("Text originally in \"Intense Emphasis\" style", docRun.GetText().Trim());
+            Assert.AreEqual(StyleIdentifier.Strong, docRun.Font.StyleIdentifier);
+            Assert.AreEqual("Strong", docRun.Font.StyleName);
         }
 
         [Test]
@@ -531,52 +802,41 @@ namespace ApiExamples
             //ExFor:Font.Style
             //ExFor:Style.BuiltIn
             //ExSummary:Applies double underline to all runs in a document that are formatted with custom character styles.
-            Document doc = new Document(MyDir + "Custom style.docx");
+            //Document doc = new Document(MyDir + "Custom style.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Select all run nodes in the document
-            NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
+            // Insert a custom style
+            Style style = doc.Styles.Add(StyleType.Character, "MyStyle");
+            style.Font.Color = Color.Red;
+            style.Font.Name = "Courier New";
 
-            // Loop through every run node
-            foreach (Run run in runs.OfType<Run>())
+            // Set the style of the current paragraph to our custom style
+            // This will apply to only the text after the style separator
+            builder.Font.StyleName = "MyStyle";
+            builder.Write("This text is in a custom style.");
+            
+            // Iterate through every run node and apply underlines to the run if its style is not a built in style,
+            // like the one we added
+            foreach (Node node in doc.GetChildNodes(NodeType.Run, true))
             {
+                Run run = (Run)node;
                 Style charStyle = run.Font.Style;
 
-                // If the style of the run is not a built-in character style, apply double underline
                 if (!charStyle.BuiltIn)
                     run.Font.Underline = Underline.Double;
             }
 
-            doc.Save(ArtifactsDir + "Font.Style.doc");
-            //ExEnd
-        }
-
-        [Test]
-        public void GetAllFonts()
-        {
-            //ExStart
-            //ExFor:Run
-            //ExSummary:Gets all fonts used in a document.
-            Document doc = new Document(MyDir + "Rendering.docx");
-
-            // Select all runs in the document
-            NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
-
-            // Use a hashtable so we will keep only unique font names
-            Hashtable fontNames = new Hashtable();
-
-            foreach (Run run in runs.OfType<Run>())
-            {
-                // This adds an entry into the hashtable
-                // The key is the font name. The value is null, we don't need the value
-                fontNames[run.Font.Name] = null;
-            }
-
-            // There are two fonts used in this document
-            Console.WriteLine("Font Count: " + fontNames.Count);
+            doc.Save(ArtifactsDir + "Font.Style.docx");
             //ExEnd
 
-            // Verify the font count is correct
-            Assert.AreEqual(6, fontNames.Count);
+            doc = new Document(ArtifactsDir + "Font.Style.docx");
+            Run docRun = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("This text is in a custom style.", docRun.GetText().Trim());
+            Assert.AreEqual("MyStyle", docRun.Font.StyleName);
+            Assert.False(docRun.Font.Style.BuiltIn);
+            Assert.AreEqual(Underline.Double, docRun.Font.Underline);
         }
 
         [Test]
@@ -641,6 +901,8 @@ namespace ApiExamples
                 Console.WriteLine("FilePath : {0}\n", fontInfo.FilePath);
             }
             //ExEnd
+
+            Assert.AreEqual(folderFontSource[0].GetAvailableFonts().Count, Directory.GetFiles(FontsDir).Count(f => f.EndsWith(".ttf")));
         }
 
         //ExStart
@@ -784,19 +1046,37 @@ namespace ApiExamples
             //ExStart
             //ExFor:Font.AutoColor
             //ExSummary:Shows how calculated color of the text (black or white) to be used for 'auto color'
-            Run run = new Run(new Document());
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Remove direct color, so it can be calculated automatically with Font.AutoColor
-            run.Font.Color = Color.Empty;
+            builder.Font.Color = Color.Empty;
 
             // When we set black color for background, autocolor for font must be white
-            run.Font.Shading.BackgroundPatternColor = Color.Black;
-            Assert.AreEqual(Color.White, run.Font.AutoColor);
+            builder.Font.Shading.BackgroundPatternColor = Color.Black;
+
+            builder.Writeln("The text color automatically chosen for this run is white.");
 
             // When we set white color for background, autocolor for font must be black
-            run.Font.Shading.BackgroundPatternColor = Color.White;
-            Assert.AreEqual(Color.Black, run.Font.AutoColor);
+            builder.Font.Shading.BackgroundPatternColor = Color.White;
+
+            builder.Writeln("The text color automatically chosen for this run is black.");
+
+            doc.Save(ArtifactsDir + "Font.SetFontAutoColor.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.SetFontAutoColor.docx");
+            Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("The text color automatically chosen for this run is white.", run.GetText().Trim());
+            Assert.AreEqual(Color.Empty.ToArgb(), run.Font.Color.ToArgb());
+            Assert.AreEqual(Color.Black.ToArgb(), run.Font.Shading.BackgroundPatternColor.ToArgb());
+
+            run = doc.FirstSection.Body.Paragraphs[1].Runs[0];
+
+            Assert.AreEqual("The text color automatically chosen for this run is black.", run.GetText().Trim());
+            Assert.AreEqual(Color.Empty.ToArgb(), run.Font.Color.ToArgb());
+            Assert.AreEqual(Color.White.ToArgb(), run.Font.Shading.BackgroundPatternColor.ToArgb());
         }
 
         //ExStart
