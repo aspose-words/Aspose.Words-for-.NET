@@ -82,5 +82,15 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             // ExEnd:SetMSWordVersion 
             Console.WriteLine("\n Loaded with MS Word Version successfully.\nFile saved at " + dataDir); 
         }
+
+        public static void SetTempFolder(string dataDir)
+        {
+            // ExStart:SetTempFolder  
+            LoadOptions lo = new LoadOptions();
+            lo.TempFolder = @"C:\TempFolder\";
+
+            Document doc = new Document(dataDir + "document.docx", lo);
+            // ExEnd:SetTempFolder  
+        }
     }
 }

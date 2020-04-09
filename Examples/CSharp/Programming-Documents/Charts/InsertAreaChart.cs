@@ -23,11 +23,12 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
 
             // Use this overload to add series to any type of Area, Radar and Stock charts.
             chart.Series.Add("AW Series 1", new DateTime[] { 
-    new DateTime(2002, 05, 01), 
-    new DateTime(2002, 06, 01),
-    new DateTime(2002, 07, 01),
-    new DateTime(2002, 08, 01),
-    new DateTime(2002, 09, 01)}, new double[] { 32, 32, 28, 12, 15 });
+                new DateTime(2002, 05, 01), 
+                new DateTime(2002, 06, 01),
+                new DateTime(2002, 07, 01),
+                new DateTime(2002, 08, 01),
+                new DateTime(2002, 09, 01)}, 
+                new double[] { 32, 32, 28, 12, 15 });
             dataDir = dataDir + @"TestInsertAreaChart_out.docx";
             doc.Save(dataDir);
             // ExEnd:InsertAreaChart

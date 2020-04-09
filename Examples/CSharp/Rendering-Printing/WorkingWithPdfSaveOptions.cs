@@ -25,6 +25,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             //ExportDocumentStructure(dataDir);
             //PdfImageComppression(dataDir);
             UpdateIfLastPrinted(dataDir);
+            EffectsRendering(dataDir);
         }
 
         public static void EscapeUriInPdf(String dataDir)
@@ -230,6 +231,31 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
 
             doc.Save(dataDir + "PdfSaveOptions.UpdateIfLastPrinted.pdf", saveOptions);
             // ExEnd:UpdateIfLastPrinted
+        }
+
+        public static void EffectsRendering(string dataDir)
+        {
+            // ExStart:EffectsRendering
+            // Open a document
+            Document doc = new Document(dataDir + "Rendering.doc");
+
+            SaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.Dml3DEffectsRenderingMode = Dml3DEffectsRenderingMode.Advanced;
+            
+            doc.Save(dataDir, saveOptions);
+            // ExEnd:EffectsRendering
+        }
+
+        public static void SetImageInterpolation(string dataDir)
+        {
+            // ExStart:SetImageInterpolation
+            Document doc = new Document(dataDir);
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.InterpolateImages = true;
+            
+            doc.Save(dataDir, saveOptions);
+            // ExEnd:SetImageInterpolation
         }
     }
 }

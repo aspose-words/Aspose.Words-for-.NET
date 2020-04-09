@@ -23,6 +23,8 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             ApplyParagraphStyle(dataDir);
             ApplyBordersAndShadingToParagraph(dataDir);
             SetAsianTypographyLinebreakGroupProp(dataDir);
+            ChangeAsianParagraphSpacingandIndents(dataDir);
+            SetSnapToGrid(dataDir);
         }
 
         public static void SetSpacebetweenAsianandLatintext(string dataDir)
@@ -255,5 +257,30 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             Console.WriteLine("\nBorders and shading using DocumentBuilder applied successfully to paragraph.\nFile saved at " + dataDir);
         }
         
+        public static void ChangeAsianParagraphSpacingandIndents(string dataDir)
+        {
+            // ExStart:ChangeAsianParagraphSpacingandIndents
+            Document doc = new Document(dataDir + "Input.docx");
+
+            ParagraphFormat format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
+            format.CharacterUnitLeftIndent = 10;       // ParagraphFormat.LeftIndent will be updated
+            format.CharacterUnitRightIndent = 10;      // ParagraphFormat.RightIndent will be updated
+            format.CharacterUnitFirstLineIndent = 20;  // ParagraphFormat.FirstLineIndent will be updated
+            format.LineUnitBefore = 5;                 // ParagraphFormat.SpaceBefore will be updated
+            format.LineUnitAfter = 10;                 // ParagraphFormat.SpaceAfter will be updated
+
+            dataDir = dataDir + "ChangeAsianParagraphSpacingandIndents_out.doc";
+            doc.Save(dataDir);
+            // ExEnd:ChangeAsianParagraphSpacingandIndents
+            Console.WriteLine("\nSpacing and Indents applied successfully to paragraph.\nFile saved at " + dataDir);
+        }
+
+        public static void SetSnapToGrid(string dataDir)
+        {
+            //Document doc = new Document(dataDir);
+            //Paragraph par = doc.FirstSection.Body.FirstParagraph;
+            //par.ParagraphFormat.SnapToGrid = true;
+            //par.FirstRun.Font.SnapToGrid = true;
+        }
     }
 }
