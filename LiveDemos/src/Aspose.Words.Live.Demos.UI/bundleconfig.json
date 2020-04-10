@@ -1,0 +1,104 @@
+[
+  {
+    "outputFileName": "Editor/Trumbowyg/plugins/fontsize/trumbowyg.fontsize.min.js",
+    "inputFiles": [
+      "Editor/Trumbowyg/plugins/fontsize/trumbowyg.fontsize.js"
+    ]
+  },
+  {
+    "outputFileName": "Editor/Trumbowyg/trumbowyg.min.js",
+    "inputFiles": [
+      "Editor/Trumbowyg/trumbowyg.js"
+    ]
+  },
+  {
+    "outputFileName": "ProductTools/Words/Viewer/Resources/viewer/js/viewer.min.js",
+    "inputFiles": [
+      "ProductTools/Words/Viewer/Resources/viewer/js/viewer.js"
+    ]
+  },
+  {
+    "outputFileName": "ProductTools/Words/Viewer/Resources/viewer/css/viewer.min.css",
+    "inputFiles": [
+      "ProductTools/Words/Viewer/Resources/viewer/css/viewer.css"
+    ]
+  },
+  {
+    "outputFileName": "Editor/Trumbowyg/plugins/resizimg/trumbowyg.resizimg.min.js",
+    "inputFiles": [
+      "Editor/Trumbowyg/plugins/resizimg/trumbowyg.resizimg.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Words/base.min.js",
+    "inputFiles": [
+      "Scripts/Words/base.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Words/merger.min.js",
+    "inputFiles": [
+      "Scripts/Words/merger.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Words/viewer.min.js",
+    "inputFiles": [
+      "Scripts/Words/viewer.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Words/parser.min.js",
+    "inputFiles": [
+      "Scripts/Words/parser.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Words/signature.min.js",
+    "inputFiles": [
+      "Scripts/Words/signature.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Words/filedrop.min.js",
+    "inputFiles": [
+      "Scripts/Words/filedrop.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Words/metadata.min.js",
+    "inputFiles": [
+      "Scripts/Words/metadata.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Words/splitter.min.js",
+    "inputFiles": [
+      "Scripts/Words/splitter.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Pdf/base.min.js",
+    "inputFiles": [
+      "Scripts/Pdf/base.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Pdf/signature.min.js",
+    "inputFiles": [
+      "Scripts/Pdf/signature.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Pdf/metadata.min.js",
+    "inputFiles": [
+      "Scripts/Pdf/metadata.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Pdf/filedrop.min.js",
+    "inputFiles": [
+      "Scripts/Pdf/filedrop.js"
+    ]
+  }
+]

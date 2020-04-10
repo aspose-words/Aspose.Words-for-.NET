@@ -1,0 +1,19 @@
+﻿@model ViewModel
+
+@* Section SaveToHeader must be in the Action View *@
+
+<div class="saveas">
+    <em>@Model.Resources["SaveAs"]</em>
+    <div class="btn-group">
+        <select id="saveAs" name="saveAs" style="display: none" onchange="">
+            @if (Model.SaveAsOriginal)
+            {
+                <option value="-" selected="selected">-</option>
+            }
+            @foreach (var ext in Model.SaveAsOptions)
+            {
+                <option value="@ext.ToUpper()">@ext</option>
+            }
+        </select>
+    </div>
+</div>

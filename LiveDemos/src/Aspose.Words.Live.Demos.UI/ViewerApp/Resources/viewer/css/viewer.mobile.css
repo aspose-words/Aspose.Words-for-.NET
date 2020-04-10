@@ -1,0 +1,407 @@
+@media (max-width: 800px){		
+		#gd-header {
+			height: 50px;
+            width: 100%;
+		}
+        #gd-pages {
+            margin-top: 100px;
+        }
+		#gd-header-logo {
+			background-size: 180px 20px;
+			background-position: 15px 40px;
+			width: 210px;
+			height: 100%;
+			padding: 0;
+			margin: 0;
+		}
+		#gd-navbar > li {
+			font-size: 30px;
+			padding: 0;
+			margin: 33px 20px 0 17px;
+		}
+		.gd-nav-separator {
+			height: 10px;    
+		}
+        #gd-thumbnails {
+            display: none;
+        }
+	}
+	
+@media (max-width: 800px){		
+	#gd-navbar > li {			
+		margin: 11px 20px 0 17px;
+	}		
+}
+
+@media (max-width: 630px){		
+	#gd-navbar > li {			
+		margin: 13px 14px 0 12px;
+		font-size: 20px;
+	}		
+}
+
+@media (max-width: 800px) {
+    /*
+	******************************************
+	Dashboard
+	******************************************
+	*/
+    #gd-zoom-val-container, #gd-btn-zoom-in, #gd-btn-zoom-out, #gd-nav-right, #gd-btn-print {
+        display: none;
+    }
+
+    #gd-navbar li:hover .gd-tooltip, #gd-header-logo:hover .gd-tooltip {
+        visibility: hidden;
+    }
+
+    #gd-nav-search-container {
+        width: 100%;
+        position: fixed;
+        padding: 8px;
+        top: 99px;
+    }
+
+        #gd-nav-search-container input[type='text'] {
+            font-size: 22px;
+            width: calc(100% - 250px);
+            height: 42px;
+        }
+
+    #gd-search-count {
+        right: 275px;
+        left: unset;
+        top: 17px;
+        font-size: 21px;
+        width: 100px;
+    }
+
+    .gd-nav-search-btn {
+        margin: 3px 20px;
+        padding: 0 5px;
+    }
+
+    #gd-nav-search-cancel {
+        font-size: 36px;
+        float: right;
+        width: 25px;
+    }
+
+    #gd-navigation-block {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 60px;
+        align-items: baseline;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    /*
+	******************************************
+	MODAL
+	******************************************
+	*/
+    .gd-modal-dialog {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
+
+    .gd-modal-body {
+        max-height: calc(100% - 100px);
+    }
+
+    .gd-modal-title {
+        font-size: 32px;
+        padding: 28px;
+    }
+
+    .gd-modal-table > tbody > tr > td {
+        font-size: 42px;
+        padding: 35px 0px;
+        min-width: 60px;
+    }
+
+        .gd-modal-table > tbody > tr > td:nth-child(2) {
+            max-width: 100vw;
+        }
+
+    .col-md-1, .col-md-3, .col-md-5, .gd-modal-table td:nth-child(3), .gd-modal-table td:last-child {
+        display: none !important;
+    }
+
+    .nav-link {
+        height: 62px;
+        padding-top: 17px;
+        font-size: 23px;
+    }
+
+    .tabs label {
+        display: inline-block;
+        margin: 0 0 -1px;
+        padding: 15px 25px;
+        font-weight: 600;
+        text-align: center;
+        color: #bbb;
+        background-color: #f0f8ff;
+        width: 456px;
+        height: 108px;
+        font-size: 50px;
+    }
+
+    #gd-upload-section {
+        position: inherit;
+        width: 100%;
+    }
+
+        #gd-upload-section span {
+            height: 113px;
+            font-size: 42px;
+            padding: 20px;
+            width: 100%;
+        }
+
+    #gd-upload-label {
+        top: -288px;
+        left: 0px;
+        font-size: -webkit-xxx-large;
+        height: 63px;
+    }
+
+    #gd-upload-button, #gd-open-document {
+        width: calc(50% - 20px);
+        height: 97px;
+        font-size: 38px;
+        position: inherit;
+        margin: 0 10px;
+    }
+
+    .nav-item a {
+        font-size: 53px;
+        height: 111px;
+        padding: 44px;
+    }
+
+    #gd-dropZone {
+        width: 100%;
+        background: transparent;
+        border: 0;
+        height: auto;
+    }
+
+    .gd-drag-n-drop-wrap h2, .gd-drag-n-drop-wrap h4, .gd-drag-n-drop-icon {
+        display: none;
+    }
+
+    .gd-drag-n-drop-buttons {
+        position: inherit;
+        margin-bottom: 25px;
+        width: 100%;
+        top: 0;
+        left: 0;
+    }
+
+    #gd-upload-files-table {
+        width: calc(100% - 20px);
+        margin: 20px 10px;
+    }
+
+    #gd-upload-section label {
+        width: calc(50% - 20px);
+        height: 77px;
+        font-size: 26px;
+        padding-top: 18px;
+    }
+
+        #gd-upload-section label > i {
+            font-size: 26px;
+        }
+
+    #gd-upload-section div {
+        font-size: 38px;
+    }
+
+    #gd-upload-files-table > div {
+        height: 185px !important;
+    }
+
+    #gd-upload-files-table div > i {
+        font-size: 40px !important;
+        top: 72px !important;
+    }
+
+    #gd-upload-files-table .gd-filetree-name {
+        top: 55px;
+        left: 75px;
+        width: calc(100% - 285px);
+    }
+
+        #gd-upload-files-table .gd-filetree-name > span {
+            font-size: 30px;
+            padding-left: 0;
+        }
+
+    .gd-pregress {
+        width: 39px !important;
+        height: 39px !important;
+        left: calc(100% - 135px) !important;
+        top: Calc(100% - 91px) !important;
+    }
+
+    .gd-upload-complete {
+        font-size: 24px !important;
+        left: calc(100% - 136px) !important;
+        top: Calc(100% - 166px) !important;
+    }
+
+    .files-table-remove i {
+        position: absolute;
+        top: 66px;
+        left: 35px;
+        font-size: 50px;
+        color: #ffffff;
+    }
+
+    .gd-cancel-button {
+        width: 100%;
+        height: 100%;
+        font-size: 40px;
+        font-weight: 200;
+        color: #ffffff;
+        text-align: left;
+        padding-left: 110px;
+    }
+
+    .gd-url-wrap, .gd-password-wrap {
+        height: 91px;
+        margin: 8px 0px 47px !important;
+    }
+
+        .gd-url-wrap > input {
+            margin-left: 67px;
+            width: 78%;
+            height: 91px;
+            font-size: -webkit-xxx-large;
+        }
+
+        .gd-url-wrap > .btn-danger {
+            position: absolute;
+            top: 11px;
+            left: -2px;
+        }
+
+    #gd-url-button {
+        width: 46%;
+        height: 77px;
+        margin: 0 10px;
+        font-size: -webkit-xxx-large;
+    }
+
+    #gd-add-url {
+        right: -7px;
+        height: 89px;
+        border-radius: 0px;
+        width: 152px;
+        font-size: 51px;
+    }
+
+    #gd-url-cancel {
+        position: inherit;
+        top: -12px;
+        left: -800px;
+        width: 83px;
+        height: 90px;
+    }
+
+    .gd-password-wrap > input {
+        margin-left: 79px;
+        margin-top: 3px;
+        width: 69%;
+        height: 89px;
+        font-size: -webkit-xxx-large;
+    }
+
+    #gd-password-submit {
+        right: 9px;
+        height: 89px;
+        border-radius: 0px;
+        width: 201px;
+        font-size: 51px;
+    }
+
+    .gd-password-error {
+        top: 96px;
+        left: 83px;
+        font-size: -webkit-xxx-large;
+    }
+
+    #gd-url-cancel i {
+        font-size: 53px;
+    }
+
+    .gd-file-name {
+        width: 80%;
+    }
+
+    #gd-modal-error {
+        margin: 0;
+    }
+
+    .gd-container-spinner {
+        left: 29%;
+    }
+
+    .gd-url-wrap, .gd-password-wrap {
+        height: 35px;
+        margin: 36px 0 10px 0 !important;
+        position: absolute;
+    }
+
+    #gd-add-url {
+        height: 25px;
+        width: 31px;
+        font-size: 23px;
+    }
+
+    .gd-url-wrap > input {
+        margin-left: 0px;
+        width: 303px;
+        height: 25px;
+        font-size: 12px;
+    }
+    /*
+	******************************************
+	PAGES
+	******************************************
+	*/
+    .gd-page {
+        width: -webkit-fill-available !important;
+        height: auto !important;
+        min-width: unset !important;
+        min-height: unset !important;
+        margin: 5px 0px;
+    }
+
+    .gd-landscape {
+        margin: -111px;
+    }
+
+    /*
+	******************************************
+	Swiper
+	******************************************
+	*/
+    .swiper-slide-cancel {
+        background-color: #c34224;
+        height: 100% !important;
+        width: 100% !important;
+        margin-left: 10px;
+    }
+
+    .swiper-wrapper {
+        height: 180px !important;
+    }
+}

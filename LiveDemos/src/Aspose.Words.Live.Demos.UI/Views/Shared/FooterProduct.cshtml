@@ -1,0 +1,77 @@
+﻿@model ViewModel
+
+
+
+
+    <div class="col-md-12 pt-5 app-product-section tl">
+        <div class="container">
+            <div class="col-md-3 pull-right">
+                <img id="ProductImage" src="~/img/aspose-@Model.Product-app.png" alt="@Model.PageProductTitle " />
+            </div>
+
+            <div class="col-md-9 pull-left">
+                <h2 id="AsposeProductTitle">@($"{Model.PageProductTitle} {Model.AppName}")</h2>
+				<ul>
+					@if (Model.AppFeatures != null)
+					{
+						foreach (var feature in Model.AppFeatures)
+						{
+							<li>@feature</li>
+						}
+					}
+
+
+					<li>
+
+						Supported Documents:  @($" {Model.ExtensionsString.Replace("|.", ", ").Replace(".", "").ToUpper()}")
+
+
+
+					</li>
+					@if (Model.SaveAsOptions != null)
+					{
+						<li>Save as:  @($" {Model.SaveAsOptionsList}")</li>
+					}
+					</ul>
+					
+            </div>
+        </div>
+    </div>
+
+
+@if (Model.HowTo)
+{
+    @Html.Partial("HowTo", Model.HowToModel)
+}
+
+@if (Model.IsCanonical)
+{
+    <div class="col-md-12 pt-5 app-features-section">
+        <div class="container tc pt-5">
+            <div class="col-md-4">
+                <div class="imgcircle fasteasy">
+                    <img src="../../img/fast-easy.png" alt="@Model.Resources[$"{Model.AppName}Feature1"]"/>
+                </div>
+                <h4>@Model.Resources[$"{Model.AppName}Feature1"]</h4>
+                <p>@Model.Resources[$"{Model.AppName}Feature1Description"].</p>
+            </div>
+
+            <div class="col-md-4">
+                <div class="imgcircle anywhere">
+                    <img src="../../img/anywhere.png" alt="@Model.Resources[$"{Model.AppName}Feature2"]"/>
+                </div>
+                <h4>@Model.Resources[$"{Model.AppName}Feature2"]</h4>
+                <p>@(Model.Resources[$"{Model.AppName}Feature2Description"]).</p>
+            </div>
+
+            <div class="col-md-4">
+                <div class="imgcircle quality">
+                    <img src="../../img/quality.png" alt="@Model.Resources[$"{Model.AppName}Feature3"]"/>
+                </div>
+                <h4>@Model.Resources[$"{Model.AppName}Feature3"]</h4>
+                <p>@Model.Resources["PoweredBy"] <a target="_blank" id="PoweredBy" href="@($"https://products.aspose.com/{Model.Product}")" rel="noopener">@Model.PageProductTitle</a>@(Model.Resources["Feature3Description"]).</p>
+            </div>
+        </div>
+    </div>
+}
+

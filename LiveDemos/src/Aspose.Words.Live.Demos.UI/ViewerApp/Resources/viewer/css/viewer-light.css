@@ -1,0 +1,51 @@
+/*
+Header, modal header, modal footer buttons
+*/
+#gd-header, #gd-nav-search-container, .gd-modal-header, .gd-modal-header-lightbox, .gd-modal-footer > .btn {
+    background-color: #FFFFFF;
+    border-bottom: #E6E6E6 1px solid;
+}
+/*
+Header logo
+*/
+#gd-header-logo{
+	background-image: url('../images/logo.png');
+	background-color: #F54B51;
+}
+/*
+Navigation bar buttons, search buttons, modal close button
+*/
+#gd-navbar > li, .gd-nav-search-btn, .gd-modal-close{
+	color: #878A8E;
+}
+/*
+Hover for:
+Navigation bar buttons, search buttons, modal close button
+*/
+#gd-navbar > li:hover, .gd-nav-search-btn:hover, .gd-modal-close:hover, #gd-navbar .open{
+	color: #F54B51;
+}
+/*
+Search
+*/
+#gd-nav-search-container input[type='text']{
+	border: #EAEAEA 1px solid;
+}
+/*
+Text color 1
+*/
+.gd-nav-dropdown-menu li, .gd-modal-table{
+	color: #777777;
+}
+/*
+Text color 2
+*/
+.gd-modal-table td:nth-child(3), .gd-modal-table td:last-child{
+	color: #b2b8bd;
+}
+/*
+Text color 3
+*/
+.gd-modal-title, .gd-modal-footer > .btn{
+	color: #333333;
+}
