@@ -277,10 +277,17 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 
         public static void SetSnapToGrid(string dataDir)
         {
-            //Document doc = new Document(dataDir);
-            //Paragraph par = doc.FirstSection.Body.FirstParagraph;
-            //par.ParagraphFormat.SnapToGrid = true;
-            //par.FirstRun.Font.SnapToGrid = true;
+            // ExStart:SetSnapToGrid
+            Document doc = new Document(dataDir);
+
+            Paragraph par = doc.FirstSection.Body.FirstParagraph;
+            par.ParagraphFormat.SnapToGrid = true;
+            par.Runs[0].Font.SnapToGrid = true;
+
+            dataDir = dataDir + "SetSnapToGrid_out.doc";
+            doc.Save(dataDir);
+            // ExEnd:SetSnapToGrid
+            Console.WriteLine("\nSetSnapToGrid successfully to paragraph.\nFile saved at " + dataDir);
         }
     }
 }
