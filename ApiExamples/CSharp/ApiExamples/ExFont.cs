@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Xml;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
@@ -1100,8 +1101,10 @@ namespace ApiExamples
         [Test] //ExSkip
         public void RemoveHiddenContentFromDocument()
         {
-            // Open the document we want to remove hidden content from.
+            // Open the document we want to remove hidden content from
             Document doc = new Document(MyDir + "Hidden content.docx");
+            Assert.AreEqual(26, doc.GetChildNodes(NodeType.Paragraph, true).Count); //ExSkip
+            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count); //ExSkip
 
             // Create an object that inherits from the DocumentVisitor class
             RemoveHiddenContentVisitor hiddenContentRemover = new RemoveHiddenContentVisitor();
@@ -1121,10 +1124,8 @@ namespace ApiExamples
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             table.Accept(hiddenContentRemover);
 
-            doc.Save(ArtifactsDir + "Font.RemoveHiddenContentFromDocument.doc");
-
-            Assert.AreEqual(20, doc.GetChildNodes(NodeType.Paragraph, true).Count); //ExSkip
-            Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count); //ExSkip
+            doc.Save(ArtifactsDir + "Font.RemoveHiddenContentFromDocument.docx");
+            TestRemoveHiddenContent(new Document(ArtifactsDir + "Font.RemoveHiddenContentFromDocument.docx")); //ExSkip
         }
 
         /// <summary>
@@ -1137,8 +1138,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitFieldStart(FieldStart fieldStart)
             {
-                // If this node is hidden, then remove it.
-                if (IsHidden(fieldStart))
+                if (fieldStart.Font.Hidden)
                     fieldStart.Remove();
 
                 return VisitorAction.Continue;
@@ -1149,7 +1149,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitFieldEnd(FieldEnd fieldEnd)
             {
-                if (IsHidden(fieldEnd))
+                if (fieldEnd.Font.Hidden)
                     fieldEnd.Remove();
 
                 return VisitorAction.Continue;
@@ -1160,7 +1160,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitFieldSeparator(FieldSeparator fieldSeparator)
             {
-                if (IsHidden(fieldSeparator))
+                if (fieldSeparator.Font.Hidden)
                     fieldSeparator.Remove();
 
                 return VisitorAction.Continue;
@@ -1171,7 +1171,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                if (IsHidden(run))
+                if (run.Font.Hidden)
                     run.Remove();
 
                 return VisitorAction.Continue;
@@ -1182,7 +1182,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitParagraphStart(Paragraph paragraph)
             {
-                if (IsHidden(paragraph))
+                if (paragraph.ParagraphBreakFont.Hidden)
                     paragraph.Remove();
 
                 return VisitorAction.Continue;
@@ -1193,7 +1193,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitFormField(FormField formField)
             {
-                if (IsHidden(formField))
+                if (formField.Font.Hidden)
                     formField.Remove();
 
                 return VisitorAction.Continue;
@@ -1204,7 +1204,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitGroupShapeStart(GroupShape groupShape)
             {
-                if (IsHidden(groupShape))
+                if (groupShape.Font.Hidden)
                     groupShape.Remove();
 
                 return VisitorAction.Continue;
@@ -1215,7 +1215,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitShapeStart(Shape shape)
             {
-                if (IsHidden(shape))
+                if (shape.Font.Hidden)
                     shape.Remove();
 
                 return VisitorAction.Continue;
@@ -1226,7 +1226,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitCommentStart(Comment comment)
             {
-                if (IsHidden(comment))
+                if (comment.Font.Hidden)
                     comment.Remove();
 
                 return VisitorAction.Continue;
@@ -1237,8 +1237,19 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitFootnoteStart(Footnote footnote)
             {
-                if (IsHidden(footnote))
+                if (footnote.Font.Hidden)
                     footnote.Remove();
+
+                return VisitorAction.Continue;
+            }
+
+            /// <summary>
+            /// Called when a SpecialCharacter is encountered in the document.
+            /// </summary>
+            public override VisitorAction VisitSpecialChar(SpecialChar specialChar)
+            {
+                if (specialChar.Font.Hidden)
+                    specialChar.Remove();
 
                 return VisitorAction.Continue;
             }
@@ -1283,60 +1294,54 @@ namespace ApiExamples
 
                 return VisitorAction.Continue;
             }
+        }
+        //ExEnd
 
-            /// <summary>
-            /// Called when a SpecialCharacter is encountered in the document.
-            /// </summary>
-            public override VisitorAction VisitSpecialChar(SpecialChar specialChar)
-            {
-                if (IsHidden(specialChar))
-                    specialChar.Remove();
+        private void TestRemoveHiddenContent(Document doc)
+        {
+            Assert.AreEqual(20, doc.GetChildNodes(NodeType.Paragraph, true).Count); //ExSkip
+            Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count); //ExSkip
 
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Returns true if the node passed is set as hidden, returns false if it is visible.
-            /// </summary>
-            private static bool IsHidden(Node node)
+            foreach (Node node in doc.GetChildNodes(NodeType.Any, true))
             {
                 switch (node)
                 {
-                    case Inline currentNode:
-                        // If the node is Inline then cast it to retrieve the Font property which contains the hidden property
-                        return currentNode.Font.Hidden;
-                    default:
-                        switch (node.NodeType)
-                        {
-                            case NodeType.Paragraph:
-                            {
-                                // If the node is a paragraph cast it to retrieve the ParagraphBreakFont which contains the hidden property
-                                Paragraph para = (Paragraph) node;
-                                return para.ParagraphBreakFont.Hidden;
-                            }
-                            default:
-                                switch (node)
-                                {
-                                    case ShapeBase shape:
-                                        // Node is a shape or groupshape
-                                        return shape.Font.Hidden;
-                                    case InlineStory inlineStory:
-                                        // Node is a comment or footnote
-                                        return inlineStory.Font.Hidden;
-                                }
-
-                                break;
-                        }
-
+                    case FieldStart fieldStart:
+                        Assert.False(fieldStart.Font.Hidden);
+                        break;
+                    case FieldEnd fieldEnd:
+                        Assert.False(fieldEnd.Font.Hidden);
+                        break;
+                    case FieldSeparator fieldSeparator:
+                        Assert.False(fieldSeparator.Font.Hidden);
+                        break;
+                    case Run run:
+                        Assert.False(run.Font.Hidden);
+                        break;
+                    case Paragraph paragraph:
+                        Assert.False(paragraph.ParagraphBreakFont.Hidden);
+                        break;
+                    case FormField formField:
+                        Assert.False(formField.Font.Hidden);
+                        break;
+                    case GroupShape groupShape:
+                        Assert.False(groupShape.Font.Hidden);
+                        break;
+                    case Shape shape:
+                        Assert.False(shape.Font.Hidden);
+                        break;
+                    case Comment comment:
+                        Assert.False(comment.Font.Hidden);
+                        break;
+                    case Footnote footnote:
+                        Assert.False(footnote.Font.Hidden);
+                        break;
+                    case SpecialChar specialChar:
+                        Assert.False(specialChar.Font.Hidden);
                         break;
                 }
-
-                // A node that is passed to this method which does not contain a hidden property will end up here
-                // By default nodes are not hidden so return false
-                return false;
-            }
+            } 
         }
-        //ExEnd
 
         [Test]
         public void BlankDocumentFonts()
@@ -1347,11 +1352,14 @@ namespace ApiExamples
             //ExSummary:Shows info about the fonts that are present in the blank document.
             // Create a new document
             Document doc = new Document();
+
             // A blank document comes with 3 fonts
             Assert.AreEqual(3, doc.FontInfos.Count);
-            Assert.AreEqual(true, doc.FontInfos.Contains("Times New Roman"));
-            Assert.AreEqual(true, doc.FontInfos.Contains("Symbol"));
-            Assert.AreEqual(true, doc.FontInfos.Contains("Arial"));
+
+            // Their names can be looked up like this
+            Assert.AreEqual("Times New Roman", doc.FontInfos[0].Name);
+            Assert.AreEqual("Symbol", doc.FontInfos[1].Name);
+            Assert.AreEqual("Arial", doc.FontInfos[2].Name);
             //ExEnd
         }
 
@@ -1383,6 +1391,8 @@ namespace ApiExamples
             Assert.IsNull(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular));
             Assert.IsNotNull(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.EmbeddedOpenType, EmbeddedFontStyle.Regular));
             //ExEnd
+
+            Assert.AreEqual(52028, new FileInfo(ArtifactsDir + "Alte DIN 1451 Mittelschrift.ttf").Length);
         }
 
         [Test]
@@ -1634,6 +1644,32 @@ namespace ApiExamples
                 doc.FontSettings.FallbackSettings.Save(fontFallbackStream);
             }
             //ExEnd
+
+            XmlDocument fallbackSettingsDoc = new XmlDocument();
+            fallbackSettingsDoc.LoadXml(File.ReadAllText(ArtifactsDir + "FallbackSettings.xml"));
+
+            XmlNamespaceManager manager = new XmlNamespaceManager(fallbackSettingsDoc.NameTable);
+            manager.AddNamespace("aw", "Aspose.Words");
+
+            XmlNodeList rules = fallbackSettingsDoc.SelectNodes("//aw:FontFallbackSettings/aw:FallbackTable/aw:Rule", manager);
+
+            Assert.AreEqual("0B80-0BFF", rules[0].Attributes["Ranges"].Value);
+            Assert.AreEqual("Vijaya", rules[0].Attributes["FallbackFonts"].Value);
+
+            Assert.AreEqual("1F300-1F64F", rules[1].Attributes["Ranges"].Value);
+            Assert.AreEqual("Segoe UI Emoji, Segoe UI Symbol", rules[1].Attributes["FallbackFonts"].Value);
+
+            Assert.AreEqual("2000-206F, 2070-209F, 20B9", rules[2].Attributes["Ranges"].Value);
+            Assert.AreEqual("Arial", rules[2].Attributes["FallbackFonts"].Value);
+
+            Assert.AreEqual("3040-309F", rules[3].Attributes["Ranges"].Value);
+            Assert.AreEqual("MS Gothic", rules[3].Attributes["FallbackFonts"].Value);
+            Assert.AreEqual("Times New Roman", rules[3].Attributes["BaseFonts"].Value);
+
+            Assert.AreEqual("3040-309F", rules[4].Attributes["Ranges"].Value);
+            Assert.AreEqual("MS Mincho", rules[4].Attributes["FallbackFonts"].Value);
+
+            Assert.AreEqual("Arial Unicode MS", rules[5].Attributes["FallbackFonts"].Value);
         }
 
         [Test]
@@ -1643,9 +1679,11 @@ namespace ApiExamples
             //ExFor:FontFallbackSettings.LoadNotoFallbackSettings
             //ExSummary:Shows how to add predefined font fallback settings for Google Noto fonts.
             FontSettings fontSettings = new FontSettings();
+
             // These are free fonts licensed under SIL OFL
             // They can be downloaded from https://www.google.com/get/noto/#sans-lgc
             fontSettings.SetFontsFolder(FontsDir + "Noto", false);
+
             // Note that only Sans style Noto fonts with regular weight are used in the predefined settings
             // Some of the Noto fonts uses advanced typography features
             // Advanced typography is currently not supported by AW and these fonts may be rendered inaccurately

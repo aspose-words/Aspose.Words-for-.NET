@@ -80,9 +80,9 @@ namespace ApiExamples
                 Assert.AreEqual(expectedResult.Rows[0].Cells.Count, myDataTable.Columns.Count);
 
                 for (int i = 0; i < myDataTable.Rows.Count; i++)
-                for (int j = 0; j < myDataTable.Columns.Count; j++)
-                    Assert.AreEqual(expectedResult.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, String.Empty),
-                        myDataTable.Rows[i][j].ToString());
+                    for (int j = 0; j < myDataTable.Columns.Count; j++)
+                        Assert.AreEqual(expectedResult.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, String.Empty),
+                            myDataTable.Rows[i][j].ToString());
             }
         }
 
