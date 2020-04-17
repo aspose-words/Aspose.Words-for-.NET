@@ -1647,7 +1647,6 @@ namespace ApiExamples
 
             XmlDocument fallbackSettingsDoc = new XmlDocument();
             fallbackSettingsDoc.LoadXml(File.ReadAllText(ArtifactsDir + "FallbackSettings.xml"));
-
             XmlNamespaceManager manager = new XmlNamespaceManager(fallbackSettingsDoc.NameTable);
             manager.AddNamespace("aw", "Aspose.Words");
 
@@ -1726,6 +1725,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Font.DefaultFontSubstitutionRule.pdf");
             //ExEnd
+
+            Assert.AreEqual("Courier New", defaultFontSubstitutionRule.DefaultFontName);
         }
 
         [Test]
@@ -1744,20 +1745,20 @@ namespace ApiExamples
             FontSettings fontSettings = new FontSettings();
             FontConfigSubstitutionRule fontConfigSubstitution = fontSettings.SubstitutionSettings.FontConfigSubstitution;
 
+            bool isWindows = new[] { PlatformID.Win32NT, PlatformID.Win32S, PlatformID.Win32Windows, PlatformID.WinCE }
+                .Any(p => Environment.OSVersion.Platform == p);
+
             // The FontConfigSubstitutionRule object works differently on Windows/non-Windows platforms
             // On Windows, it is unavailable
-            PlatformID pid = Environment.OSVersion.Platform;
-            bool isWindows = pid == PlatformID.Win32NT || pid == PlatformID.Win32S || pid == PlatformID.Win32Windows || pid == PlatformID.WinCE;
-
             if (isWindows)
             {
                 Assert.False(fontConfigSubstitution.Enabled);
                 Assert.False(fontConfigSubstitution.IsFontConfigAvailable());
             }
 
-            // On Linux/Mac, we will have access and will be able to perform operations
-            bool isLinuxOrMac = pid == PlatformID.Unix || pid == PlatformID.MacOSX;
+            bool isLinuxOrMac = new[] { PlatformID.Unix, PlatformID.MacOSX }.Any(p => Environment.OSVersion.Platform == p);
 
+            // On Linux/Mac, we will have access and will be able to perform operations
             if (isLinuxOrMac)
             {
                 Assert.True(fontConfigSubstitution.Enabled);
@@ -1797,6 +1798,16 @@ namespace ApiExamples
             fontFallbackSettings.LoadNotoFallbackSettings();
             fontFallbackSettings.Save(ArtifactsDir + "Font.FallbackSettings.LoadNotoFallbackSettings.xml");
             //ExEnd
+
+            XmlDocument fallbackSettingsDoc = new XmlDocument();
+            fallbackSettingsDoc.LoadXml(File.ReadAllText(ArtifactsDir + "Font.FallbackSettings.Default.xml"));
+            XmlNamespaceManager manager = new XmlNamespaceManager(fallbackSettingsDoc.NameTable);
+            manager.AddNamespace("aw", "Aspose.Words");
+
+            XmlNodeList rules = fallbackSettingsDoc.SelectNodes("//aw:FontFallbackSettings/aw:FallbackTable/aw:Rule", manager);
+
+            Assert.AreEqual("0C00-0C7F", rules[2].Attributes["Ranges"].Value);
+            Assert.AreEqual("Vani", rules[2].Attributes["FallbackFonts"].Value);
         }
 
         [Test]
@@ -1849,11 +1860,30 @@ namespace ApiExamples
                         break;
                 }
 
-                builder.Write(Convert.ToChar(i).ToString());
+                builder.Write($"{Convert.ToChar(i)}");
             }
 
             doc.Save(ArtifactsDir + "Font.FallbackSettingsCustom.pdf");
             //ExEnd
+
+            XmlDocument fallbackSettingsDoc = new XmlDocument();
+            fallbackSettingsDoc.LoadXml(File.ReadAllText(ArtifactsDir + "Font.FallbackSettingsCustom.BuildAutomatic.xml"));
+            XmlNamespaceManager manager = new XmlNamespaceManager(fallbackSettingsDoc.NameTable);
+            manager.AddNamespace("aw", "Aspose.Words");
+
+            XmlNodeList rules = fallbackSettingsDoc.SelectNodes("//aw:FontFallbackSettings/aw:FallbackTable/aw:Rule", manager);
+
+            Assert.AreEqual("0000-007F", rules[0].Attributes["Ranges"].Value);
+            Assert.AreEqual("Arvo", rules[0].Attributes["FallbackFonts"].Value);
+
+            Assert.AreEqual("0180-024F", rules[3].Attributes["Ranges"].Value);
+            Assert.AreEqual("M+ 2m", rules[3].Attributes["FallbackFonts"].Value);
+
+            Assert.AreEqual("0300-036F", rules[6].Attributes["Ranges"].Value);
+            Assert.AreEqual("Noticia Text", rules[6].Attributes["FallbackFonts"].Value);
+
+            Assert.AreEqual("0590-05FF", rules[10].Attributes["Ranges"].Value);
+            Assert.AreEqual("Squarish Sans CT", rules[10].Attributes["FallbackFonts"].Value);
         }
 
         [Test]
@@ -1892,6 +1922,22 @@ namespace ApiExamples
                 tableSubstitutionRule.Save(fileStream);
             }
             //ExEnd
+
+            XmlDocument fallbackSettingsDoc = new XmlDocument();
+            fallbackSettingsDoc.LoadXml(File.ReadAllText(ArtifactsDir + "Font.TableSubstitutionRule.Windows.xml"));
+            XmlNamespaceManager manager = new XmlNamespaceManager(fallbackSettingsDoc.NameTable);
+            manager.AddNamespace("aw", "Aspose.Words");
+
+            XmlNodeList rules = fallbackSettingsDoc.SelectNodes("//aw:TableSubstitutionSettings/aw:SubstitutesTable/aw:Item", manager);
+
+            Assert.AreEqual("Times New Roman CE", rules[16].Attributes["OriginalFont"].Value);
+            Assert.AreEqual("Times New Roman", rules[16].Attributes["SubstituteFonts"].Value);
+
+            fallbackSettingsDoc.LoadXml(File.ReadAllText(ArtifactsDir + "Font.TableSubstitutionRule.Linux.xml"));
+            rules = fallbackSettingsDoc.SelectNodes("//aw:TableSubstitutionSettings/aw:SubstitutesTable/aw:Item", manager);
+
+            Assert.AreEqual("Times New Roman CE", rules[31].Attributes["OriginalFont"].Value);
+            Assert.AreEqual("FreeSerif, Liberation Serif, DejaVu Serif", rules[31].Attributes["SubstituteFonts"].Value);
         }
 
         [Test]
@@ -1963,33 +2009,39 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:LoadOptions.FontSettings
-            //ExSummary:Shows how to resolve fonts before loading HTML and SVG documents.
-            FontSettings fontSettings = new FontSettings();
-            TableSubstitutionRule substitutionRule = fontSettings.SubstitutionSettings.TableSubstitution;
-            // If "HaettenSchweiler" is not installed on the local machine,
-            // it is still considered available, because it is substituted with "Comic Sans MS"
-            substitutionRule.AddSubstitutes("HaettenSchweiler", new string[] { "Comic Sans MS" });
-            
+            //ExSummary:Shows how to designate font substitutes during loading.
             LoadOptions loadOptions = new LoadOptions();
-            loadOptions.FontSettings = fontSettings;
-            // The same for SVG document
-            Document doc = new Document(MyDir + "Document.html", loadOptions);
+            loadOptions.FontSettings = new FontSettings();
+
+            // Set a font substitution rule for a LoadOptions object that replaces a font that's not installed in our system with one that is
+            TableSubstitutionRule substitutionRule = loadOptions.FontSettings.SubstitutionSettings.TableSubstitution;
+            substitutionRule.AddSubstitutes("MissingFont", new string[] { "Comic Sans MS" });
+
+            // If we pass that object while loading a document, any text with the "MissingFont" font will change to "Comic Sans MS"
+            Document doc = new Document(MyDir + "Missing font.html", loadOptions);
+
+            // At this point such text will still be in "MissingFont", and font substitution will be carried out once we save
+            Assert.AreEqual("MissingFont", doc.FirstSection.Body.FirstParagraph.Runs[0].Font.Name);
+
+            doc.Save(ArtifactsDir + "Font.ResolveFontsBeforeLoadingDocument.pdf");
             //ExEnd
         }
         
         [Test]
-        public void GetFontLeading()
+        public void LineSpacing()
         {
             //ExStart
             //ExFor:Font.LineSpacing
             //ExSummary:Shows how to get line spacing of current font (in points).
-            DocumentBuilder builder = new DocumentBuilder(new Document());
-            builder.Font.Name = "Calibri";
-            builder.Writeln("qText");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Obtain line spacing
-            Aspose.Words.Font font = builder.Document.FirstSection.Body.FirstParagraph.Runs[0].Font;
-            Console.WriteLine($"lineSpacing = { font.LineSpacing }");
+            // Set different fonts for the DocumentBuilder and verify their line spacing
+            builder.Font.Name = "Calibri";
+            Assert.AreEqual(14.6484375d, builder.Font.LineSpacing);
+
+            builder.Font.Name = "Times New Roman";
+            Assert.AreEqual(13.798828125d, builder.Font.LineSpacing);
             //ExEnd
         }
 
