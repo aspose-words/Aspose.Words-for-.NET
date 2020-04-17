@@ -292,11 +292,11 @@ namespace Aspose.Words.Live.Demos.UI.Models
 
 		private void SetTitles()
 		{
-			PageTitle = Resources[Product + AppName + "PageTitle"];
-			MetaDescription = Resources[Product + AppName + "MetaDescription"];
+			PageTitle = Resources[ProductAppName + "PageTitle"];
+			MetaDescription = Resources[ProductAppName + "MetaDescription"];
 			MetaKeywords = "";
-			Title = Resources[Product + AppName + "Title"];
-			TitleSub = Resources[Product + AppName + "SubTitle"];
+			Title = Resources[ProductAppName + "Title"];
+			TitleSub = Resources[ProductAppName + "SubTitle"];
 			Controller.ViewBag.CanonicalTag = null;
 		}
 
