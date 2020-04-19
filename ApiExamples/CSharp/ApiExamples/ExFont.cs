@@ -1037,8 +1037,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Font.SubstitutionWarningsClosestMatch.pdf");
 
             Assert.True(callback.FontWarnings[0].Description
-                .Equals(
-                    "Font \'SymbolPS\' has not been found. Using \'Wingdings\' font instead. Reason: font info substitution."));
+                .Equals("Font \'SymbolPS\' has not been found. Using \'Wingdings\' font instead. Reason: font info substitution."));
         }
 
         [Test]

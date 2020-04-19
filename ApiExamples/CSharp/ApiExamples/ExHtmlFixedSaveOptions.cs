@@ -255,6 +255,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.AddCssClassNamesPrefix.html", htmlFixedSaveOptions);
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.AddCssClassNamesPrefix.html");
+
             Assert.True(Regex.Match(outDocContents,
                 "<div class=\"myprefixdiv myprefixpage\" style=\"width:595[.]3pt; height:841[.]9pt;\">" +
                 "<div class=\"myprefixdiv\" style=\"left:85[.]05pt; top:36pt; clip:rect[(]0pt,510[.]25pt,74[.]95pt,-85.05pt[)];\">" +
@@ -263,20 +264,41 @@ namespace ApiExamples
         }
 
         [Test]
-        public void HorizontalAlignment()
+        [TestCase(HtmlFixedPageHorizontalAlignment.Center)]
+        [TestCase(HtmlFixedPageHorizontalAlignment.Left)]
+        [TestCase(HtmlFixedPageHorizontalAlignment.Right)]
+        public void HorizontalAlignment(HtmlFixedPageHorizontalAlignment pageHorizontalAlignment)
         {
             //ExStart
             //ExFor:HtmlFixedSaveOptions.PageHorizontalAlignment
             //ExFor:HtmlFixedPageHorizontalAlignment
             //ExSummary:Shows how to set the horizontal alignment of pages in HTML file.
-            Document doc = new Document(MyDir + "Bookmarks.docx");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
-                PageHorizontalAlignment = HtmlFixedPageHorizontalAlignment.Left
+                PageHorizontalAlignment = pageHorizontalAlignment
             };
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.HorizontalAlignment.html", htmlFixedSaveOptions);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.HorizontalAlignment/styles.css");
+
+            switch (pageHorizontalAlignment)
+            {
+                case HtmlFixedPageHorizontalAlignment.Center:
+                    Assert.True(Regex.Match(outDocContents,
+                        "[.]awpage { position:relative; border:solid 1pt black; margin:10pt auto 10pt auto; overflow:hidden; }").Success);
+                    break;
+                case HtmlFixedPageHorizontalAlignment.Left:
+                    Assert.True(Regex.Match(outDocContents, 
+                        "[.]awpage { position:relative; border:solid 1pt black; margin:10pt auto 10pt 10pt; overflow:hidden; }").Success);
+                    break;
+                case HtmlFixedPageHorizontalAlignment.Right:
+                    Assert.True(Regex.Match(outDocContents, 
+                        "[.]awpage { position:relative; border:solid 1pt black; margin:10pt 10pt 10pt auto; overflow:hidden; }").Success);
+                    break;
+            }
             //ExEnd
         }
 
@@ -286,14 +308,19 @@ namespace ApiExamples
             //ExStart
             //ExFor:HtmlFixedSaveOptions.PageMargins
             //ExSummary:Shows how to set the margins around pages in HTML file.
-            Document doc = new Document(MyDir + "Bookmarks.docx");
+            Document doc = new Document(MyDir + "Document.docx");
 
             HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions
             {
-                PageMargins = 10
+                PageMargins = 15
             };
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.PageMargins.html", saveOptions);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.PageMargins/styles.css");
+
+            Assert.True(Regex.Match(outDocContents,
+                "[.]awpage { position:relative; border:solid 1pt black; margin:15pt auto 15pt auto; overflow:hidden; }").Success);
             //ExEnd
         }
 
@@ -305,17 +332,24 @@ namespace ApiExamples
         }
 
         [Test]
-        public void OptimizeGraphicsOutput()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void OptimizeGraphicsOutput(bool doOptimizeContent)
         {
             //ExStart
             //ExFor:FixedPageSaveOptions.OptimizeOutput
             //ExFor:HtmlFixedSaveOptions.OptimizeOutput
             //ExSummary:Shows how to optimize document objects while saving to html.
-            Document doc = new Document(MyDir + "Unoptimized content.docx");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { OptimizeOutput = true };
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { OptimizeOutput = doOptimizeContent };
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html", saveOptions);
+
+            if (doOptimizeContent) 
+                Assert.AreEqual(57794, new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html").Length);
+            else
+                Assert.AreEqual(161169, new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html").Length);
             //ExEnd
         }
 
@@ -331,7 +365,7 @@ namespace ApiExamples
         //ExFor:ResourceSavingArgs.ResourceFileName
         //ExFor:ResourceSavingArgs.ResourceFileUri
         //ExFor:ResourceSavingArgs.ResourceStream
-        //ExSummary:Shows how used target machine fonts to display the document.
+        //ExSummary:Shows how use target machine fonts to display the document.
         [Test] //ExSkip
         public void UsingMachineFonts()
         {
@@ -339,6 +373,7 @@ namespace ApiExamples
 
             HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions
             {
+                ExportEmbeddedCss = true,
                 UseTargetMachineFonts = true,
                 FontFormat = ExportFontFormat.Ttf,
                 ExportEmbeddedFonts = false,
@@ -346,6 +381,15 @@ namespace ApiExamples
             };
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.UsingMachineFonts.html", saveOptions);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.UsingMachineFonts.html");
+
+            if (saveOptions.UseTargetMachineFonts)
+                Assert.False(Regex.Match(outDocContents, "@font-face").Success);
+            else
+                Assert.True(Regex.Match(outDocContents,
+                    "@font-face { font-family:'Arial'; font-style:normal; font-weight:normal; src:local[(]'☺'[)], " +
+                    "url[(]'HtmlFixedSaveOptions.UsingMachineFonts/font001.ttf'[)] format[(]'truetype'[)]; }").Success);
         }
 
         private class ResourceSavingCallback : IResourceSavingCallback
@@ -368,8 +412,7 @@ namespace ApiExamples
                     case ".ttf":
                     case ".woff":
                     {
-                        Assert.Fail(
-                            "'ResourceSavingCallback' is not fired for fonts when 'UseTargetMachineFonts' is true");
+                        Assert.Fail("'ResourceSavingCallback' is not fired for fonts when 'UseTargetMachineFonts' is true");
                         break;
                     }
                 }
@@ -406,6 +449,11 @@ namespace ApiExamples
             Directory.CreateDirectory(options.ResourcesFolderAlias);
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.HtmlFixedResourceFolder.html", options);
+
+            string[] resourceFiles = Directory.GetFiles(ArtifactsDir + "HtmlFixedResourceFolderAlias");
+
+            Assert.False(Directory.Exists(ArtifactsDir + "HtmlFixedResourceFolder"));
+            Assert.AreEqual(6, resourceFiles.Count(f => f.EndsWith(".jpeg") || f.EndsWith(".png") || f.EndsWith(".css")));
         }
 
         /// <summary>
