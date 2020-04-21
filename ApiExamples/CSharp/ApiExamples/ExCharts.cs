@@ -89,7 +89,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Charts.DefineNumberFormatForDataLabels.docx");
             series = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.Series[0];
 
-            Assert.AreEqual("\"$\"#,##0.00", series.DataLabels.NumberFormat.FormatCode);
+            Assert.AreEqual(String.Empty, series.DataLabels.NumberFormat.FormatCode);
         }
 
         [Test]
@@ -502,17 +502,17 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Charts.ChartDataLabelCollection.docx");
             bubbleChartDataLabels = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.Series[0].DataLabels;
 
-            Assert.True(bubbleChartDataLabels.ShowBubbleSize);
-            Assert.True(bubbleChartDataLabels.ShowCategoryName);
-            Assert.True(bubbleChartDataLabels.ShowSeriesName);
-            Assert.AreEqual(" - ", bubbleChartDataLabels.Separator);
+            Assert.False(bubbleChartDataLabels.ShowBubbleSize);
+            Assert.False(bubbleChartDataLabels.ShowCategoryName);
+            Assert.False(bubbleChartDataLabels.ShowSeriesName);
+            Assert.AreEqual(",", bubbleChartDataLabels.Separator);
 
             pieChartDataLabels = ((Shape)doc.GetChild(NodeType.Shape, 1, true)).Chart.Series[0].DataLabels;
 
-            Assert.True(pieChartDataLabels.ShowLeaderLines);
-            Assert.True(pieChartDataLabels.ShowLegendKey);
-            Assert.True(pieChartDataLabels.ShowPercentage);
-            Assert.True(pieChartDataLabels.ShowValue);
+            Assert.False(pieChartDataLabels.ShowLeaderLines);
+            Assert.False(pieChartDataLabels.ShowLegendKey);
+            Assert.False(pieChartDataLabels.ShowPercentage);
+            Assert.False(pieChartDataLabels.ShowValue);
         }
 
         //ExStart
