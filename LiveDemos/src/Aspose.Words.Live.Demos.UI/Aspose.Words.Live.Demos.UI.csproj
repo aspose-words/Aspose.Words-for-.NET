@@ -407,7 +407,6 @@
     <Content Include="Assembly\Invitation.pdf" />
     <Content Include="Assembly\SampleTemplates\Data.xlsx" />
     <Content Include="Assembly\SampleTemplates\Template.xlsx" />
-    <None Include="bundleconfig.json" />
     <Content Include="Editor\Trumbowyg\plugins\colors\ui\sass\trumbowyg.colors.scss" />
     <Content Include="Editor\Trumbowyg\plugins\emoji\ui\sass\trumbowyg.emoji.scss" />
     <Content Include="Editor\Trumbowyg\plugins\highlight\ui\sass\trumbowyg.highlight.scss" />

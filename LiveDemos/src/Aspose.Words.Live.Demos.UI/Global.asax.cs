@@ -147,12 +147,7 @@ namespace Aspose.Words.Live.Demos.UI
 				"AsposeWordsSignatureRoute",
 				"{Product}/signature",
 				 new { controller = "Signature", action = "Signature" }
-			);
-			routes.MapRoute(
-				"AsposeWordsDocumentInfoViewerRoute",
-				"{product}/viewer/documentInfo",
-				 new { controller = "Viewer", action = "DocumentInfo" }
-			);
+			);			
 
 			routes.MapRoute(
 				"DownloadFileRoute",
