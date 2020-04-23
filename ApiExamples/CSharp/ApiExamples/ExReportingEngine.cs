@@ -372,15 +372,29 @@ namespace ApiExamples
         [Test]
         public void InsertDocumentDynamicallyByUri()
         {
-            Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.DocumentUri]>>");
+            Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.DocumentString]>>");
 
             DocumentTestClass docUri = new DocumentTestBuilder()
-                .WithDocumentUri("http://www.snee.com/xml/xslt/sample.doc").Build();
+                .WithDocumentString("http://www.snee.com/xml/xslt/sample.doc").Build();
 
             BuildReport(template, docUri, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDynamically(uri) Gold.docx"), "Fail inserting document by uri");
+        }
+
+        [Test]
+        public void InsertDocumentDynamicallyByBase64()
+        {
+            Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.DocumentString]>>");
+            string base64Template = File.ReadAllText(MyDir + "Reporting engine template - Data table (base64).txt");
+
+            DocumentTestClass docBase64 = new DocumentTestBuilder().WithDocumentString(base64Template).Build();
+
+            BuildReport(template, docBase64, "src", ReportBuildOptions.None);
+            template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDynamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by uri");
         }
 
         [Test]
@@ -432,9 +446,9 @@ namespace ApiExamples
         public void InsertImageDynamicallyByUri()
         {
             Document template =
-                DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.ImageUri]>>", ShapeType.TextBox);
+                DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.ImageString]>>", ShapeType.TextBox);
             ImageTestClass imageUri = new ImageTestBuilder()
-                .WithImageUri(
+                .WithImageString(
                     "http://joomla-aspose.dynabic.com/templates/aspose/App_Themes/V3/images/customers/americanexpress.png")
                 .Build();
 
@@ -445,6 +459,44 @@ namespace ApiExamples
                 DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx",
                     GoldsDir + "ReportingEngine.InsertImageDynamically(uri) Gold.docx"),
                 "Fail inserting document by bytes");
+        }
+
+        [Test]
+        public void InsertImageDynamicallyByBase64()
+        {
+            Document template =
+                DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.ImageString]>>", ShapeType.TextBox);
+            string base64Template = File.ReadAllText(MyDir + "Reporting engine template - base64 image.txt");
+
+            ImageTestClass imageBase64 = new ImageTestBuilder().WithImageString(base64Template).Build();
+
+            BuildReport(template, imageBase64, "src", ReportBuildOptions.None);
+            template.Save(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx");
+
+            Assert.IsTrue(
+                DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx",
+                    GoldsDir + "ReportingEngine.InsertImageDynamically(stream,doc,bytes) Gold.docx"),
+                "Fail inserting document by bytes");
+
+        }
+        
+        [Test]
+        public void DynamicStretchingImageWithinTextBox()
+        {
+            Document template = new Document(MyDir + "Reporting engine template - Dynamic stretching.docx");
+            
+#if NETFRAMEWORK || JAVA
+            ImageTestClass image = new ImageTestBuilder().WithImage(Image.FromFile(mImage, true)).Build();
+#else
+            ImageTestClass image = new ImageTestBuilder().WithImage(SKBitmap.Decode(mImage)).Build();
+#endif
+            
+            BuildReport(template, image, "src", ReportBuildOptions.None);
+            template.Save(ArtifactsDir + "ReportingEngine.DynamicStretchingImageWithinTextBox.docx");
+
+            Assert.IsTrue(
+                DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.DynamicStretchingImageWithinTextBox.docx",
+                    GoldsDir + "ReportingEngine.DynamicStretchingImageWithinTextBox Gold.docx"));
         }
 
         [Test]
@@ -510,6 +562,15 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ReportingEngine.KnownTypes.docx");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.KnownTypes.docx", GoldsDir + "ReportingEngine.KnownTypes Gold.docx"));
+        }
+
+        [Test]
+        public void WorkWithContentControls()
+        {
+            Document doc = new Document(MyDir + "Reporting engine template - CheckBox Content Control.docx");
+            BuildReport(doc, Common.GetManagers(), "Managers");
+
+            doc.Save(ArtifactsDir + "ReportingEngine.WorkWithContentControls.docx");
         }
 
         [Test]

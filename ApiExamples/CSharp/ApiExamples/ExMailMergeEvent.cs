@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -31,7 +32,6 @@ namespace ApiExamples
         //ExFor:FieldMergingArgsBase.Field
         //ExFor:FieldMergingArgsBase.DocumentFieldName
         //ExFor:FieldMergingArgsBase.Document
-        //ExFor:FieldMergingArgsBase.FieldValue
         //ExFor:IFieldMergingCallback.FieldMerging
         //ExFor:FieldMergingArgs.Text
         //ExFor:FieldMergeField.TextBefore
@@ -86,6 +86,59 @@ namespace ApiExamples
         }
         //ExEnd
 
+        //ExStart
+        //ExFor:FieldMergingArgsBase.FieldValue
+        //ExSummary:Shows how to use data source value of the field.
+        [Test] //ExSkip
+        public void FieldFormats()
+        {
+            DocumentBuilder builder = new DocumentBuilder();
+            builder.InsertField("MERGEFIELD TextField \\* Caps", null);
+            builder.InsertField("MERGEFIELD TextField2 \\* Upper", null);
+            builder.InsertField("MERGEFIELD NumericField \\# 0.0", null);
+
+            builder.Document.MailMerge.FieldMergingCallback = new FieldValueMergingCallback();
+
+            builder.Document.MailMerge.Execute(
+                new string[] { "TextField", "TextField2", "NumericField" },
+                new object[] { "Original value", "Original value", 15.34 });
+
+            Assert.AreEqual(
+                "New ValueNew value from e.Text43.2",
+                builder.Document.GetText().Trim());
+        }
+
+        private class FieldValueMergingCallback : IFieldMergingCallback
+        {
+            /// <summary>
+            /// This is called when merge field is actually merged with data in the document.
+            /// </summary>
+            void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
+            {
+                switch (e.FieldName)
+                {
+                    case "TextField":
+                        Assert.AreEqual("Original value", e.FieldValue);
+                        e.FieldValue = "New value";
+                        break;
+                    case "TextField2":
+                        Assert.AreEqual("Original value", e.FieldValue);
+                        e.Text = "New value from e.Text";   // Should suppress e.FieldValue and ignore format
+                        e.FieldValue = "new value";
+                        break;
+                    case "NumericField":
+                        Assert.AreEqual(15.34, e.FieldValue);
+                        e.FieldValue = 43.236;
+                        break;
+                }
+            }
+
+            void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs e)
+            {
+                // Do nothing
+            }
+        }
+        //ExEnd
 
         //ExStart
         //ExFor:DocumentBuilder.MoveToMergeField(String)

@@ -3019,24 +3019,24 @@ namespace ApiExamples
                 mImageFilenames.Add("Transparent logo", ImageDir + "Transparent background logo.png");
             }
 
-            void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
+            void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
             {
                 throw new NotImplementedException();
             }
 
-            void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs e)
+            void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs args)
             {
-                if (mImageFilenames.ContainsKey(e.FieldValue.ToString()))
+                if (mImageFilenames.ContainsKey(args.FieldValue.ToString()))
                 {
                     #if NETFRAMEWORK || JAVA
-                    e.Image = Image.FromFile(mImageFilenames[e.FieldValue.ToString()]);
+                    args.Image = Image.FromFile(mImageFilenames[args.FieldValue.ToString()]);
                     #else
                     e.Image = SKBitmap.Decode(mImageFilenames[e.FieldValue.ToString()]);
                     e.ImageFileName = mImageFilenames[e.FieldValue.ToString()];
                     #endif
                 }
                 
-                Assert.NotNull(e.Image);
+                Assert.NotNull(args.Image);
             }
 
             private readonly Dictionary<string, string> mImageFilenames;
