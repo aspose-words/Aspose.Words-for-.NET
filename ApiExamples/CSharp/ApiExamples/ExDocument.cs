@@ -212,6 +212,34 @@ namespace ApiExamples
         }
 #endif
 
+#if NETSTANDARD2_0
+        [Test]
+        public void Pdf2Word()
+        {
+            // Check that PDF document format detects correctly
+            FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Pdf Document.pdf");
+            Assert.AreEqual(info.LoadFormat, Aspose.Words.LoadFormat.Pdf);
+
+            // Check that PDF document opens correctly
+            Document doc = new Document(MyDir + "Pdf Document.pdf");
+            Assert.AreEqual(
+                "Heading 1\rHeading 1.1.1.1 Heading 1.1.1.2\rHeading 1.1.1.1.1.1.1.1.1 Heading 1.1.1.1.1.1.1.1.2\u000c",
+                doc.Range.Text);
+
+            // Check that protected PDF document opens correctly
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.EncryptionDetails = new PdfEncryptionDetails("Aspose", null, PdfEncryptionAlgorithm.RC4_40);
+
+            doc.Save(ArtifactsDir + "Document.PdfDocumentEncrypted.pdf", saveOptions);
+
+            PdfLoadOptions loadOptions = new PdfLoadOptions();
+            loadOptions.Password = "Aspose";
+            loadOptions.LoadFormat = Aspose.Words.LoadFormat.Pdf;
+
+            doc = new Document(ArtifactsDir + "Document.PdfDocumentEncrypted.pdf", loadOptions);
+        }
+#endif
+
         [Test]
         public void DocumentCtor()
         {
