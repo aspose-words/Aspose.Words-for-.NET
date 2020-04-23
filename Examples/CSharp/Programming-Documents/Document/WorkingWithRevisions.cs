@@ -3,6 +3,8 @@ using System.IO;
 using Aspose.Words;
 using System;
 using Aspose.Words.Layout;
+using System.Text.RegularExpressions;
+using Aspose.Words.Replacing;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
@@ -16,6 +18,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             GetRevisionTypes(dataDir);
             GetRevisionGroups(dataDir);
             SetShowCommentsinPDF(dataDir);
+            SetShowInBalloons(dataDir);
             GetRevisionGroupDetails(dataDir);
             AccessRevisedVersion(dataDir);
         }
@@ -84,13 +87,13 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // ExStart:SetShowInBalloons
             Document doc = new Document(dataDir + "Revisions.docx");
 
-            // Renders insert and delete revisions inline, format revisions in balloons.
-            doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.Format;
+            // Get the RevisionOptions object that controls the appearance of revisions
+            RevisionOptions revisionOptions = doc.LayoutOptions.RevisionOptions;
 
-            // Renders insert revisions inline, delete and format revisions in balloons.
-            //doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.FormatAndDelete;
+            // Show deletion revisions in balloon
+            revisionOptions.ShowInBalloons = ShowInBalloons.FormatAndDelete;
 
-            doc.Save(dataDir + "SetShowInBalloons_out.pdf");
+            doc.Save(dataDir + "Revisions.ShowRevisionsInBalloons_out.pdf");
             // ExEnd:SetShowInBalloons
             Console.WriteLine("\nFile saved at " + dataDir);
         }
@@ -139,5 +142,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             }
             // ExEnd:AccessRevisedVersion
         }
+
     }
 }
