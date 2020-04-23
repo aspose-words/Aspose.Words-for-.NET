@@ -87,7 +87,7 @@ namespace ApiExamples
         internal static void SetUnlimitedLicense()
         {
             // This is where the test license is on my development machine.
-            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Words.lic");
+            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Total.lic");
 
             if (File.Exists(testLicenseFileName))
             {
@@ -95,8 +95,14 @@ namespace ApiExamples
                 // You don't have to specify full path as shown here. You can specify just the 
                 // file name if you copy the license file into the same folder as your application
                 // binaries or you add the license to your project as an embedded resource.
-                License license = new License();
-                license.SetLicense(testLicenseFileName);
+                License wordsLicense = new License();
+                wordsLicense.SetLicense(testLicenseFileName);
+
+                Aspose.Pdf.License pdfLicense = new Aspose.Pdf.License();
+                pdfLicense.SetLicense(testLicenseFileName);
+
+                Aspose.BarCode.License barcodeLicense = new Aspose.BarCode.License();
+                barcodeLicense.SetLicense(testLicenseFileName);
             }
         }
 

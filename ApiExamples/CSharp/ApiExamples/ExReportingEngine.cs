@@ -483,6 +483,26 @@ namespace ApiExamples
                 DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx",
                     GoldsDir + "ReportingEngine.InsertImageDynamically(stream,doc,bytes) Gold.docx"),
                 "Fail inserting document by bytes");
+
+        }
+        
+        [Test]
+        public void DynamicStretchingImageWithinTextBox()
+        {
+            Document template = new Document(MyDir + "Reporting engine template - Dynamic stretching.docx");
+            
+#if NETFRAMEWORK || JAVA
+            ImageTestClass image = new ImageTestBuilder().WithImage(Image.FromFile(mImage, true)).Build();
+#else
+            ImageTestClass image = new ImageTestBuilder().WithImage(SKBitmap.Decode(mImage)).Build();
+#endif
+            
+            BuildReport(template, image, "src", ReportBuildOptions.None);
+            template.Save(ArtifactsDir + "ReportingEngine.DynamicStretchingImageWithinTextBox.docx");
+
+            Assert.IsTrue(
+                DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.DynamicStretchingImageWithinTextBox.docx",
+                    GoldsDir + "ReportingEngine.DynamicStretchingImageWithinTextBox Gold.docx"));
         }
 
         [Test]
