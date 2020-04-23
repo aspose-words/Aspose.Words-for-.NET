@@ -585,7 +585,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        #if NETFRAMEWORK || JAVA
+#if NETFRAMEWORK || JAVA
         [Test]
         public void PreblendImages()
         {
