@@ -10,7 +10,7 @@ namespace TestRunner.Xamarin.Android
         protected override void OnCreate(Bundle bundle)
         {
             AddTest(typeof(ApiExamples.ApiExampleBase).Assembly);
-
+            
             // Once you called base.OnCreate(), you cannot add more assemblies.
             base.OnCreate(bundle);
         }
