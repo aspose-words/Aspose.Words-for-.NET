@@ -12,7 +12,6 @@ using System.Globalization;
 using Aspose.Words;
 using Aspose.Words.Markup;
 using NUnit.Framework;
-using System.IO;
 using System.Linq;
 using System.Text;
 using Aspose.Words.BuildingBlocks;

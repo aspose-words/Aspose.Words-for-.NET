@@ -18,7 +18,6 @@ using Aspose.Words.Math;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
-using Aspose.Words.Tables;
 using NUnit.Framework;
 using Color = System.Drawing.Color;
 using DashStyle = Aspose.Words.Drawing.DashStyle;

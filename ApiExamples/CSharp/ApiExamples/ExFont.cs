@@ -12,7 +12,6 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Xml;
 using Aspose.Words;
@@ -21,7 +20,6 @@ using Aspose.Words.Fields;
 using Aspose.Words.Fonts;
 using Aspose.Words.Tables;
 using NUnit.Framework;
-using Font = Aspose.Words.Font;
 
 namespace ApiExamples
 {
