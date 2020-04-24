@@ -66,7 +66,7 @@ namespace ApiExamples
             Assert.AreEqual(false, field.IsLocked);
             Assert.AreEqual(" DATE  \\@ \"dddd, MMMM dd, yyyy\"", field.GetFieldCode());
 
-            // This updates only this field in the document.
+            // This updates only this field in the document
             field.Update();         
             //ExEnd
         }
@@ -151,7 +151,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Field.CreateWithFieldBuilder.docx");
 
-            TestUtil.VerifyField(FieldType.FieldBarcode, " BARCODE 90210 \\f A \\u ", String.Empty, doc.Range.Fields[0]);
+            TestUtil.VerifyField(FieldType.FieldBarcode, " BARCODE 90210 \\f A \\u ", string.Empty, doc.Range.Fields[0]);
 
             Assert.AreEqual(doc.FirstSection.Body.FirstParagraph.Runs[11].PreviousSibling, doc.Range.Fields[0].End);
             Assert.AreEqual($"{ControlChar.FieldStartChar} BARCODE 90210 \\f A \\u {ControlChar.FieldEndChar} Hello world! This text is one Run, which is an inline node.", 
@@ -188,8 +188,8 @@ namespace ApiExamples
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
-
             Assert.AreEqual(2, doc.BuiltInDocumentProperties.RevisionNumber);
+
             TestUtil.VerifyField(FieldType.FieldRevisionNum, " REVNUM ", "2", doc.Range.Fields[0]);
         }
 
@@ -262,10 +262,7 @@ namespace ApiExamples
         [Test]
         public void InsertTcField()
         {
-            // Create a blank document
             Document doc = new Document();
-
-            // Create a document builder to insert content with
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a TC field at the current document builder position
@@ -300,8 +297,11 @@ namespace ApiExamples
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
-            field = doc.Range.Fields[0];
+            field = doc.Range.Fields[0]; 
 
+            // INSP: Different approach to verification in the examples
+            // INSP: I think you can use TestUtil.VerifyField for the base checks and Assert.AreEqual for additional
+            // INSP: as in 'CreateWithFieldBuilder'
             Assert.AreEqual("DATE", field.GetFieldCode());
             Assert.AreEqual(new CultureInfo("de-DE").LCID, field.LocaleId);
             Assert.IsTrue(Regex.IsMatch(field.Result, "[0-9]{2}[.]{1}[0-9]{2}[.]{1}[0-9]{4}"));
@@ -310,7 +310,9 @@ namespace ApiExamples
         [Test]
         public void ChangeLocale()
         {
-            // Create a blank document
+            // INSP: Please delete such comments if you'll see
+            // INSP: Simple comments without any explanations will not bring any benefit to examples
+            // Create a blank document 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -321,7 +323,6 @@ namespace ApiExamples
             // Set to German language so dates and numbers are formatted using this culture during mail merge
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
 
-            // Execute mail merge
             doc.MailMerge.Execute(new[] { "Date" }, new object[] { DateTime.Now });
 
             // Restore the original culture and save the document
@@ -339,7 +340,6 @@ namespace ApiExamples
             Field tocField = doc.Range.Fields[0];
             tocField.Remove();
 
-            // Save the output
             doc.Save(ArtifactsDir + "Field.RemoveTocFromDocument.docx");
         }
 
@@ -389,7 +389,6 @@ namespace ApiExamples
             }
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         [Ignore("WORDSNET-16037")]
@@ -409,7 +408,7 @@ namespace ApiExamples
             Assert.False(field.IsDirty);
             Assert.AreEqual("John Doe", field.Result);
 
-            // Updare the "Author" property
+            // Update the "Author" property
             doc.BuiltInDocumentProperties.Author = "John & Jane Doe";
 
             // AUTHOR is one of the field types whose fields do not update according to their source values in real time,
@@ -419,7 +418,6 @@ namespace ApiExamples
             // Since the field's value is out of date, we can mark it as "Dirty"
             field.IsDirty = true;
             
-            // Save the document to a stream
             using (MemoryStream docStream = new MemoryStream())
             {
                 doc.Save(docStream, SaveFormat.Docx);
@@ -604,6 +602,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Field.BarcodeGenerator.docx");
             //ExEnd
             
+            // INSP: Can these checks fail to depend on the system?
             Assert.AreEqual(11453, new FileInfo(ArtifactsDir + "Field.BarcodeGenerator.QR.jpg").Length);
             Assert.AreEqual(5472, new FileInfo(ArtifactsDir + "Field.BarcodeGenerator.EAN13.jpg").Length);
             Assert.AreEqual(7215, new FileInfo(ArtifactsDir + "Field.BarcodeGenerator.CODE39.jpg").Length);
@@ -616,7 +615,6 @@ namespace ApiExamples
             Assert.AreEqual(11453, barcode.ImageData.ImageBytes.Length);
         }
 #endif
-        //For assert result of the test you need to open document and check that image are added correct and without truncated inside frame
         [Test]
         public void UpdateFieldIgnoringMergeFormat()
         {
@@ -988,15 +986,14 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
 
             FieldRef fieldRef = (FieldRef)doc.Range.Fields.First(f => f.Type == FieldType.FieldRef);
-
             TestUtil.VerifyField(FieldType.FieldRef, 
                 " REF  MyAskField", "Response from MyPromptRespondent. Response from within the field.", fieldRef);
 
             FieldAsk fieldAsk = (FieldAsk)doc.Range.Fields.First(f => f.Type == FieldType.FieldAsk);
-
             TestUtil.VerifyField(FieldType.FieldAsk, 
                 " ASK  MyAskField \"Please provide a response for this ASK field\" \\d \"Response from within the field.\" \\o", 
                 "Response from MyPromptRespondent. Response from within the field.", fieldAsk);
+            
             Assert.AreEqual("MyAskField", fieldAsk.BookmarkName);
             Assert.AreEqual("Please provide a response for this ASK field", fieldAsk.PromptText);
             Assert.AreEqual("Response from within the field.", fieldAsk.DefaultResponse);
@@ -1058,19 +1055,19 @@ namespace ApiExamples
 
             field = (FieldAdvance)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldAdvance, " ADVANCE  \\r 5 \\u 5", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldAdvance, " ADVANCE  \\r 5 \\u 5", string.Empty, field);
             Assert.AreEqual("5", field.RightOffset);
             Assert.AreEqual("5", field.UpOffset);
 
             field = (FieldAdvance)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldAdvance, " ADVANCE  \\d 5 \\l 100", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldAdvance, " ADVANCE  \\d 5 \\l 100", string.Empty, field);
             Assert.AreEqual("5", field.DownOffset);
             Assert.AreEqual("100", field.LeftOffset);
 
             field = (FieldAdvance)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldAdvance, " ADVANCE  \\x -100 \\y 200", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldAdvance, " ADVANCE  \\x -100 \\y 200", string.Empty, field);
             Assert.AreEqual("-100", field.HorizontalPosition);
             Assert.AreEqual("200", field.VerticalPosition);
         }
@@ -1416,8 +1413,8 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Field.AUTONUM.docx");
 
-            TestUtil.VerifyField(FieldType.FieldAutoNum, " AUTONUM ", String.Empty, doc.Range.Fields[0]);
-            TestUtil.VerifyField(FieldType.FieldAutoNum, " AUTONUM  \\s :", String.Empty, doc.Range.Fields[1]);
+            TestUtil.VerifyField(FieldType.FieldAutoNum, " AUTONUM ", string.Empty, doc.Range.Fields[0]);
+            TestUtil.VerifyField(FieldType.FieldAutoNum, " AUTONUM  \\s :", string.Empty, doc.Range.Fields[1]);
         }
 
         //ExStart
@@ -1488,7 +1485,8 @@ namespace ApiExamples
 
             foreach (FieldAutoNumLgl field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumLegal))
             {
-                TestUtil.VerifyField(FieldType.FieldAutoNumLegal, " AUTONUMLGL  \\s : \\e", String.Empty, field);
+                TestUtil.VerifyField(FieldType.FieldAutoNumLegal, " AUTONUMLGL  \\s : \\e", string.Empty, field);
+                
                 Assert.AreEqual(":", field.SeparatorCharacter);
                 Assert.True(field.RemoveTrailingPeriod);
             }
@@ -1518,7 +1516,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Field.AUTONUMOUT.docx");
 
             foreach (Field field in doc.Range.Fields)
-                TestUtil.VerifyField(FieldType.FieldAutoNumOutline, " AUTONUMOUT ", String.Empty, field);
+                TestUtil.VerifyField(FieldType.FieldAutoNumOutline, " AUTONUMOUT ", string.Empty, field);
         }
 
         [Test]
@@ -1661,7 +1659,7 @@ namespace ApiExamples
 
             TestUtil.VerifyField(FieldType.FieldAutoTextList,
                 " AUTOTEXTLIST  \"Right click here to pick an AutoText block\" \\s \"Heading 1\" \\t \"Hover tip text for AutoTextList goes here\"",
-                String.Empty, field);
+                string.Empty, field);
             Assert.AreEqual("Right click here to pick an AutoText block", field.EntryName);
             Assert.AreEqual("Heading 1", field.ListStyle);
             Assert.AreEqual("Hover tip text for AutoTextList goes here", field.ScreenTip);
@@ -1791,7 +1789,7 @@ namespace ApiExamples
 
             field = (FieldListNum)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldListNum, " LISTNUM  \\s 0", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldListNum, " LISTNUM  \\s 0", string.Empty, field);
             Assert.AreEqual("0", field.StartingNumber);
             Assert.Null(field.ListLevel);
             Assert.False(field.HasListName);
@@ -1801,7 +1799,7 @@ namespace ApiExamples
             {
                 field = (FieldListNum)doc.Range.Fields[i];
 
-                TestUtil.VerifyField(FieldType.FieldListNum, " LISTNUM ", String.Empty, field);
+                TestUtil.VerifyField(FieldType.FieldListNum, " LISTNUM ", string.Empty, field);
                 Assert.Null(field.StartingNumber);
                 Assert.Null(field.ListLevel);
                 Assert.False(field.HasListName);
@@ -1810,7 +1808,7 @@ namespace ApiExamples
 
             field = (FieldListNum)doc.Range.Fields[4];
 
-            TestUtil.VerifyField(FieldType.FieldListNum, " LISTNUM  \\l 3", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldListNum, " LISTNUM  \\l 3", string.Empty, field);
             Assert.Null(field.StartingNumber);
             Assert.AreEqual("3", field.ListLevel);
             Assert.False(field.HasListName);
@@ -1818,7 +1816,7 @@ namespace ApiExamples
 
             field = (FieldListNum)doc.Range.Fields[5];
 
-            TestUtil.VerifyField(FieldType.FieldListNum, " LISTNUM  OutlineDefault \\s 1", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldListNum, " LISTNUM  OutlineDefault \\s 1", string.Empty, field);
             Assert.AreEqual("1", field.StartingNumber);
             Assert.Null(field.ListLevel);
             Assert.IsTrue(field.HasListName);
@@ -1948,6 +1946,7 @@ namespace ApiExamples
             field.UpdatePageNumbers();
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.TOC.docx");
+            
             TestFieldToc(doc); //ExSkip
         }
 
@@ -2055,7 +2054,7 @@ namespace ApiExamples
 
             FieldTC fieldTc = (FieldTC)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldTOCEntry, " TC  \"TC field 1\" \\n \\f A \\l 1", String.Empty, fieldTc);
+            TestUtil.VerifyField(FieldType.FieldTOCEntry, " TC  \"TC field 1\" \\n \\f A \\l 1", string.Empty, fieldTc);
             Assert.True(fieldTc.OmitPageNumber);
             Assert.AreEqual("TC field 1", fieldTc.Text);
             Assert.AreEqual("A", fieldTc.TypeIdentifier);
@@ -2063,7 +2062,7 @@ namespace ApiExamples
 
             fieldTc = (FieldTC)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldTOCEntry, " TC  \"TC field 2\" \\n \\f A \\l 2", String.Empty, fieldTc);
+            TestUtil.VerifyField(FieldType.FieldTOCEntry, " TC  \"TC field 2\" \\n \\f A \\l 2", string.Empty, fieldTc);
             Assert.True(fieldTc.OmitPageNumber);
             Assert.AreEqual("TC field 2", fieldTc.Text);
             Assert.AreEqual("A", fieldTc.TypeIdentifier);
@@ -2071,7 +2070,7 @@ namespace ApiExamples
 
             fieldTc = (FieldTC)doc.Range.Fields[3];
 
-            TestUtil.VerifyField(FieldType.FieldTOCEntry, " TC  \"TC field 3\" \\n \\f B \\l 1", String.Empty, fieldTc);
+            TestUtil.VerifyField(FieldType.FieldTOCEntry, " TC  \"TC field 3\" \\n \\f B \\l 1", string.Empty, fieldTc);
             Assert.True(fieldTc.OmitPageNumber);
             Assert.AreEqual("TC field 3", fieldTc.Text);
             Assert.AreEqual("B", fieldTc.TypeIdentifier);
@@ -2079,7 +2078,7 @@ namespace ApiExamples
 
             fieldTc = (FieldTC)doc.Range.Fields[4];
 
-            TestUtil.VerifyField(FieldType.FieldTOCEntry, " TC  \"TC field 4\" \\n \\f A \\l 5", String.Empty, fieldTc);
+            TestUtil.VerifyField(FieldType.FieldTOCEntry, " TC  \"TC field 4\" \\n \\f A \\l 5", string.Empty, fieldTc);
             Assert.True(fieldTc.OmitPageNumber);
             Assert.AreEqual("TC field 4", fieldTc.Text);
             Assert.AreEqual("A", fieldTc.TypeIdentifier);
@@ -2483,7 +2482,7 @@ namespace ApiExamples
             Assert.AreEqual(" DATA ", field.GetFieldCode());
             //ExEnd
             
-            TestUtil.VerifyField(FieldType.FieldData, " DATA ", String.Empty, DocumentHelper.SaveOpen(doc).Range.Fields[0]);
+            TestUtil.VerifyField(FieldType.FieldData, " DATA ", string.Empty, DocumentHelper.SaveOpen(doc).Range.Fields[0]);
         }
 
         [Test]
@@ -2779,7 +2778,7 @@ namespace ApiExamples
                         // When on the first row from the input document's table, ensure that all of the table's cells match all XML element Names
                         for (int k = 0; k < table.Rows.Count - 1; k++)
                             Assert.AreEqual(catalogData.ChildNodes[k].ChildNodes[j].Name,
-                                table.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, String.Empty).ToLower());
+                                table.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, string.Empty).ToLower());
 
                         // Also make sure that the whole first row has the same color as the XSL transform
                         Assert.AreEqual(cdCollectionXslTransformation.SelectNodes("//xsl:stylesheet/xsl:template/html/body/table/tr", manager)[0].Attributes.GetNamedItem("bgcolor").Value,
@@ -2789,12 +2788,12 @@ namespace ApiExamples
                     {
                         // When on all other rows of the input document's table, ensure that cell contents match XML element Values
                         Assert.AreEqual(catalogData.ChildNodes[i - 1].ChildNodes[j].FirstChild.Value,
-                            table.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, String.Empty));
+                            table.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, string.Empty));
                         Assert.AreEqual(Color.Empty, table.Rows[i].Cells[j].CellFormat.Shading.BackgroundPatternColor);
                     }
 
                     Assert.AreEqual(
-                        Double.Parse(cdCollectionXslTransformation.SelectNodes("//xsl:stylesheet/xsl:template/html/body/table", manager)[0].Attributes.GetNamedItem("border").Value) * 0.75, 
+                        double.Parse(cdCollectionXslTransformation.SelectNodes("//xsl:stylesheet/xsl:template/html/body/table", manager)[0].Attributes.GetNamedItem("border").Value) * 0.75, 
                         table.FirstRow.RowFormat.Borders.Bottom.LineWidth);
                 }
 
@@ -2859,7 +2858,7 @@ namespace ApiExamples
 
             Assert.AreEqual(MyDir + "Bookmarks.docx", field.Address);
             Assert.AreEqual("MyBookmark3", field.SubAddress);
-            Assert.AreEqual("Open " + field.Address.Replace("\\", String.Empty) + " on bookmark " + field.SubAddress + " in a new window", field.ScreenTip);
+            Assert.AreEqual("Open " + field.Address.Replace("\\", string.Empty) + " on bookmark " + field.SubAddress + " in a new window", field.ScreenTip);
             Assert.AreEqual(" HYPERLINK \"" + MyDir.Replace("\\", "\\\\") + "Bookmarks.docx\" \\l \"MyBookmark3\" \\o \"Open " + MyDir + "Bookmarks.docx on bookmark MyBookmark3 in a new window\" ", field.GetFieldCode());
             Assert.AreEqual(MyDir + "Bookmarks.docx - MyBookmark3", field.Result);
 
@@ -3133,19 +3132,19 @@ namespace ApiExamples
 
             indexEntry = (FieldXE)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  \"Index entry 1\" \\f A", String.Empty, indexEntry);
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  \"Index entry 1\" \\f A", string.Empty, indexEntry);
             Assert.AreEqual("Index entry 1", indexEntry.Text);
             Assert.AreEqual("A", indexEntry.EntryType);
 
             indexEntry = (FieldXE)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  \"Index entry 2\" \\f B", String.Empty, indexEntry);
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  \"Index entry 2\" \\f B", string.Empty, indexEntry);
             Assert.AreEqual("Index entry 2", indexEntry.Text);
             Assert.AreEqual("B", indexEntry.EntryType);
 
             indexEntry = (FieldXE)doc.Range.Fields[3];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  \"Index entry 3\" \\f A", String.Empty, indexEntry);
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  \"Index entry 3\" \\f A", string.Empty, indexEntry);
             Assert.AreEqual("Index entry 3", indexEntry.Text);
             Assert.AreEqual("A", indexEntry.EntryType);
         }
@@ -3242,42 +3241,42 @@ namespace ApiExamples
 
             indexEntry = (FieldXE)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  Apple \\i", String.Empty, indexEntry);
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  Apple \\i", string.Empty, indexEntry);
             Assert.AreEqual("Apple", indexEntry.Text);
             Assert.False(indexEntry.IsBold);
             Assert.True(indexEntry.IsItalic);
 
             indexEntry = (FieldXE)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  Apricot \\b", String.Empty, indexEntry);
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  Apricot \\b", string.Empty, indexEntry);
             Assert.AreEqual("Apricot", indexEntry.Text);
             Assert.True(indexEntry.IsBold);
             Assert.False(indexEntry.IsItalic);
 
             indexEntry = (FieldXE)doc.Range.Fields[3];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  Banana", String.Empty, indexEntry);
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  Banana", string.Empty, indexEntry);
             Assert.AreEqual("Banana", indexEntry.Text);
             Assert.False(indexEntry.IsBold);
             Assert.False(indexEntry.IsItalic);
 
             indexEntry = (FieldXE)doc.Range.Fields[4];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  Cherry", String.Empty, indexEntry);
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  Cherry", string.Empty, indexEntry);
             Assert.AreEqual("Cherry", indexEntry.Text);
             Assert.False(indexEntry.IsBold);
             Assert.False(indexEntry.IsItalic);
 
             indexEntry = (FieldXE)doc.Range.Fields[5];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  Avocado", String.Empty, indexEntry);
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  Avocado", string.Empty, indexEntry);
             Assert.AreEqual("Avocado", indexEntry.Text);
             Assert.False(indexEntry.IsBold);
             Assert.False(indexEntry.IsItalic);
 
             indexEntry = (FieldXE)doc.Range.Fields[6];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  Durian", String.Empty, indexEntry);
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  Durian", string.Empty, indexEntry);
             Assert.AreEqual("Durian", indexEntry.Text);
             Assert.False(indexEntry.IsBold);
             Assert.False(indexEntry.IsItalic);
@@ -3470,7 +3469,7 @@ namespace ApiExamples
 
             indexEntry = (FieldXE)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  \"My entry\" \\r MyBookmark", String.Empty, indexEntry);
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  \"My entry\" \\r MyBookmark", string.Empty, indexEntry);
             Assert.AreEqual("My entry", indexEntry.Text);
             Assert.AreEqual("MyBookmark", indexEntry.PageRangeBookmarkName);
             Assert.True(indexEntry.HasPageRangeBookmarkName);
@@ -3526,13 +3525,13 @@ namespace ApiExamples
 
             indexEntry = (FieldXE)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  Apple", String.Empty, indexEntry);
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  Apple", string.Empty, indexEntry);
             Assert.AreEqual("Apple", indexEntry.Text);
             Assert.Null(indexEntry.PageNumberReplacement);
 
             indexEntry = (FieldXE)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  Banana \\t \"Tropical fruit\"", String.Empty, indexEntry);
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  Banana \\t \"Tropical fruit\"", string.Empty, indexEntry);
             Assert.AreEqual("Banana", indexEntry.Text);
             Assert.AreEqual("Tropical fruit", indexEntry.PageNumberReplacement);
         }
@@ -3606,12 +3605,12 @@ namespace ApiExamples
 
             indexEntry = (FieldXE)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  \"Heading 1:Subheading 1\"", String.Empty, indexEntry);
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  \"Heading 1:Subheading 1\"", string.Empty, indexEntry);
             Assert.AreEqual("Heading 1:Subheading 1", indexEntry.Text);
 
             indexEntry = (FieldXE)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  \"Heading 1:Subheading 2\"", String.Empty, indexEntry);
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  \"Heading 1:Subheading 2\"", string.Empty, indexEntry);
             Assert.AreEqual("Heading 1:Subheading 2", indexEntry.Text);
         }
 
@@ -3695,25 +3694,25 @@ namespace ApiExamples
 
             indexEntry = (FieldXE)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  愛子 \\y あ", String.Empty, indexEntry);
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  愛子 \\y あ", string.Empty, indexEntry);
             Assert.AreEqual("愛子", indexEntry.Text);
             Assert.AreEqual("あ", indexEntry.Yomi);
 
             indexEntry = (FieldXE)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  明美 \\y あ", String.Empty, indexEntry);
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  明美 \\y あ", string.Empty, indexEntry);
             Assert.AreEqual("明美", indexEntry.Text);
             Assert.AreEqual("あ", indexEntry.Yomi);
 
             indexEntry = (FieldXE)doc.Range.Fields[3];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  恵美 \\y え", String.Empty, indexEntry);
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  恵美 \\y え", string.Empty, indexEntry);
             Assert.AreEqual("恵美", indexEntry.Text);
             Assert.AreEqual("え", indexEntry.Yomi);
 
             indexEntry = (FieldXE)doc.Range.Fields[4];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  愛美 \\y え", String.Empty, indexEntry);
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  愛美 \\y え", string.Empty, indexEntry);
             Assert.AreEqual("愛美", indexEntry.Text);
             Assert.AreEqual("え", indexEntry.Yomi);
         }
@@ -3765,14 +3764,14 @@ namespace ApiExamples
 
             field = (FieldBarcode)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldBarcode, " BARCODE  96801 \\f C \\u", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldBarcode, " BARCODE  96801 \\f C \\u", string.Empty, field);
             Assert.AreEqual("C", field.FacingIdentificationMark);
             Assert.AreEqual("96801", field.PostalAddress);
             Assert.True(field.IsUSPostalAddress);
 
             field = (FieldBarcode)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldBarcode, " BARCODE  BarcodeBookmark \\b", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldBarcode, " BARCODE  BarcodeBookmark \\b", string.Empty, field);
             Assert.AreEqual("BarcodeBookmark", field.PostalAddress);
             Assert.True(field.IsBookmark);
         }
@@ -3852,7 +3851,7 @@ namespace ApiExamples
 
             field = (FieldDisplayBarcode)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, " DISPLAYBARCODE  ABC123 QR \\b 0xF8BD69 \\f 0xB5413B \\q 3 \\s 250 \\h 1000 \\r 0", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, " DISPLAYBARCODE  ABC123 QR \\b 0xF8BD69 \\f 0xB5413B \\q 3 \\s 250 \\h 1000 \\r 0", string.Empty, field);
             Assert.AreEqual("QR", field.BarcodeType);
             Assert.AreEqual("ABC123", field.BarcodeValue);
             Assert.AreEqual("0xF8BD69", field.BackgroundColor);
@@ -3864,7 +3863,7 @@ namespace ApiExamples
 
             field = (FieldDisplayBarcode)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, " DISPLAYBARCODE  501234567890 EAN13 \\t \\p CASE \\x", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, " DISPLAYBARCODE  501234567890 EAN13 \\t \\p CASE \\x", string.Empty, field);
             Assert.AreEqual("EAN13", field.BarcodeType);
             Assert.AreEqual("501234567890", field.BarcodeValue);
             Assert.True(field.DisplayText);
@@ -3873,14 +3872,14 @@ namespace ApiExamples
 
             field = (FieldDisplayBarcode)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, " DISPLAYBARCODE  12345ABCDE CODE39 \\d", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, " DISPLAYBARCODE  12345ABCDE CODE39 \\d", string.Empty, field);
             Assert.AreEqual("CODE39", field.BarcodeType);
             Assert.AreEqual("12345ABCDE", field.BarcodeValue);
             Assert.True(field.AddStartStopChar);
 
             field = (FieldDisplayBarcode)doc.Range.Fields[3];
 
-            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, " DISPLAYBARCODE  09312345678907 ITF14 \\c STD", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, " DISPLAYBARCODE  09312345678907 ITF14 \\c STD", string.Empty, field);
             Assert.AreEqual("ITF14", field.BarcodeType);
             Assert.AreEqual("09312345678907", field.BarcodeValue);
             Assert.AreEqual("STD", field.CaseCodeStyle);
@@ -3953,14 +3952,14 @@ namespace ApiExamples
             FieldDisplayBarcode barcode = (FieldDisplayBarcode)doc.Range.Fields[0];
 
             TestUtil.VerifyField(FieldType.FieldDisplayBarcode, 
-                "DISPLAYBARCODE \"ABC123\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B", String.Empty, barcode);
+                "DISPLAYBARCODE \"ABC123\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B", string.Empty, barcode);
             Assert.AreEqual("ABC123", barcode.BarcodeValue);
             Assert.AreEqual("QR", barcode.BarcodeType);
 
             barcode = (FieldDisplayBarcode)doc.Range.Fields[1];
 
             TestUtil.VerifyField(FieldType.FieldDisplayBarcode, 
-                "DISPLAYBARCODE \"DEF456\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B", String.Empty, barcode);
+                "DISPLAYBARCODE \"DEF456\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B", string.Empty, barcode);
             Assert.AreEqual("DEF456", barcode.BarcodeValue);
             Assert.AreEqual("QR", barcode.BarcodeType);
         }
@@ -4023,13 +4022,13 @@ namespace ApiExamples
 
             FieldDisplayBarcode barcode = (FieldDisplayBarcode)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, "DISPLAYBARCODE \"501234567890\" EAN13 \\t \\p CASE \\x", String.Empty, barcode);
+            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, "DISPLAYBARCODE \"501234567890\" EAN13 \\t \\p CASE \\x", string.Empty, barcode);
             Assert.AreEqual("501234567890", barcode.BarcodeValue);
             Assert.AreEqual("EAN13", barcode.BarcodeType);
 
             barcode = (FieldDisplayBarcode)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, "DISPLAYBARCODE \"123456789012\" EAN13 \\t \\p CASE \\x", String.Empty, barcode);
+            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, "DISPLAYBARCODE \"123456789012\" EAN13 \\t \\p CASE \\x", string.Empty, barcode);
             Assert.AreEqual("123456789012", barcode.BarcodeValue);
             Assert.AreEqual("EAN13", barcode.BarcodeType);
         }
@@ -4087,13 +4086,13 @@ namespace ApiExamples
 
             FieldDisplayBarcode barcode = (FieldDisplayBarcode)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, "DISPLAYBARCODE \"12345ABCDE\" CODE39 \\d", String.Empty, barcode);
+            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, "DISPLAYBARCODE \"12345ABCDE\" CODE39 \\d", string.Empty, barcode);
             Assert.AreEqual("12345ABCDE", barcode.BarcodeValue);
             Assert.AreEqual("CODE39", barcode.BarcodeType);
 
             barcode = (FieldDisplayBarcode)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, "DISPLAYBARCODE \"67890FGHIJ\" CODE39 \\d", String.Empty, barcode);
+            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, "DISPLAYBARCODE \"67890FGHIJ\" CODE39 \\d", string.Empty, barcode);
             Assert.AreEqual("67890FGHIJ", barcode.BarcodeValue);
             Assert.AreEqual("CODE39", barcode.BarcodeType);
         }
@@ -4148,13 +4147,13 @@ namespace ApiExamples
 
             FieldDisplayBarcode barcode = (FieldDisplayBarcode)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, "DISPLAYBARCODE \"09312345678907\" ITF14 \\c STD", String.Empty, barcode);
+            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, "DISPLAYBARCODE \"09312345678907\" ITF14 \\c STD", string.Empty, barcode);
             Assert.AreEqual("09312345678907", barcode.BarcodeValue);
             Assert.AreEqual("ITF14", barcode.BarcodeType);
 
             barcode = (FieldDisplayBarcode)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, "DISPLAYBARCODE \"1234567891234\" ITF14 \\c STD", String.Empty, barcode);
+            TestUtil.VerifyField(FieldType.FieldDisplayBarcode, "DISPLAYBARCODE \"1234567891234\" ITF14 \\c STD", string.Empty, barcode);
             Assert.AreEqual("1234567891234", barcode.BarcodeValue);
             Assert.AreEqual("ITF14", barcode.BarcodeType);
         }
@@ -4928,12 +4927,12 @@ namespace ApiExamples
 
             FieldSymbol fieldSymbol = (FieldSymbol)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldSymbol, " SYMBOL 402 \\f Arial \\s 25 \\u ", String.Empty, fieldSymbol);
+            TestUtil.VerifyField(FieldType.FieldSymbol, " SYMBOL 402 \\f Arial \\s 25 \\u ", string.Empty, fieldSymbol);
             Assert.AreEqual("ƒ", fieldSymbol.DisplayResult);
 
             fieldSymbol = (FieldSymbol)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldSymbol, " SYMBOL \u0013 = 100 + 74 \u0014174\u0015 ", String.Empty, fieldSymbol);
+            TestUtil.VerifyField(FieldType.FieldSymbol, " SYMBOL \u0013 = 100 + 74 \u0014174\u0015 ", string.Empty, fieldSymbol);
             Assert.AreEqual("®", fieldSymbol.DisplayResult);
 
             TestUtil.VerifyField(FieldType.FieldFormula, " = 100 + 74 ", "174", doc.Range.Fields[2]);
@@ -4953,7 +4952,7 @@ namespace ApiExamples
             TestUtil.VerifyField(FieldType.FieldFormula, " = 2.5 * 5.2 ", "13", doc.Range.Fields[5]);
             TestUtil.FieldsAreNested(doc.Range.Fields[5], doc.Range.Fields[3]);
 
-            TestUtil.VerifyField(FieldType.FieldFormula, " = 2 + 3 ", String.Empty, doc.Range.Fields[6]);
+            TestUtil.VerifyField(FieldType.FieldFormula, " = 2 + 3 ", string.Empty, doc.Range.Fields[6]);
             TestUtil.FieldsAreNested(doc.Range.Fields[6], doc.Range.Fields[3]);
 
             TestUtil.VerifyField(FieldType.FieldFormula, " = 2 + 3 ", "5", doc.Range.Fields[7]);
@@ -5254,7 +5253,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Field.GOTOBUTTON.docx");
             field = (FieldGoToButton)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldGoToButton, " GOTOBUTTON  MyBookmark My Button", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldGoToButton, " GOTOBUTTON  MyBookmark My Button", string.Empty, field);
             Assert.AreEqual("My Button", field.DisplayText);
             Assert.AreEqual("MyBookmark", field.Location);
         }
@@ -5414,13 +5413,13 @@ namespace ApiExamples
 
             field = (FieldMacroButton)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldMacroButton, " MACROBUTTON  MyMacro Double click to run macro: MyMacro", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldMacroButton, " MACROBUTTON  MyMacro Double click to run macro: MyMacro", string.Empty, field);
             Assert.AreEqual("MyMacro", field.MacroName);
             Assert.AreEqual("Double click to run macro: MyMacro", field.DisplayText);
 
             field = (FieldMacroButton)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldMacroButton, " MACROBUTTON  ViewZoom200 Run ViewZoom200", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldMacroButton, " MACROBUTTON  ViewZoom200 Run ViewZoom200", string.Empty, field);
             Assert.AreEqual("ViewZoom200", field.MacroName);
             Assert.AreEqual("Run ViewZoom200", field.DisplayText);
         }
@@ -5549,7 +5548,7 @@ namespace ApiExamples
 
             field = (FieldPrint)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldPrint, " PRINT  erasepage \\p para", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldPrint, " PRINT  erasepage \\p para", string.Empty, field);
             Assert.AreEqual("para", field.PostScriptGroup);
             Assert.AreEqual("erasepage", field.PrinterInstructions);
         }
@@ -5622,7 +5621,7 @@ namespace ApiExamples
             Assert.AreEqual(" QUOTE \u0013 DATE \u0014" + DateTime.Now.Date.ToShortDateString() + "\u0015", field.GetFieldCode());
 
             // Some field types don't display the correct result until they are manually updated
-            Assert.AreEqual(String.Empty, doc.Range.Fields[0].Result); 
+            Assert.AreEqual(string.Empty, doc.Range.Fields[0].Result); 
 
             doc.UpdateFields();
 
@@ -6168,7 +6167,7 @@ namespace ApiExamples
 
             field = (FieldRD)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldRefDoc, " RD  ReferencedDocument.docx \\f", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldRefDoc, " RD  ReferencedDocument.docx \\f", string.Empty, field);
             Assert.AreEqual("ReferencedDocument.docx", field.FileName);
             Assert.True(field.IsPathRelative);
         }
@@ -6361,14 +6360,14 @@ namespace ApiExamples
 
             field = (FieldSymbol)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldSymbol, " SYMBOL  169 \\a", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldSymbol, " SYMBOL  169 \\a", string.Empty, field);
             Assert.AreEqual(0x00a9.ToString(), field.CharacterCode);
             Assert.True(field.IsAnsi);
             Assert.AreEqual("©", field.DisplayResult);
                 
             field = (FieldSymbol)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldSymbol, " SYMBOL  8734 \\u \\f Calibri \\s 24 \\h", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldSymbol, " SYMBOL  8734 \\u \\f Calibri \\s 24 \\h", string.Empty, field);
             Assert.AreEqual(0x221E.ToString(), field.CharacterCode);
             Assert.AreEqual("Calibri", field.FontName);
             Assert.AreEqual("24", field.FontSize);
@@ -6378,7 +6377,7 @@ namespace ApiExamples
 
             field = (FieldSymbol)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldSymbol, " SYMBOL  33440 \\f \"MS Gothic\" \\j", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldSymbol, " SYMBOL  33440 \\f \"MS Gothic\" \\j", string.Empty, field);
             Assert.AreEqual(0x82A0.ToString(), field.CharacterCode);
             Assert.AreEqual("MS Gothic", field.FontName);
             Assert.True(field.IsShiftJis);
@@ -6592,26 +6591,26 @@ namespace ApiExamples
 
             FieldTA fieldTA = (FieldTA)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldTOAEntry, " TA  \\c 1 \\l \"Source 1\"", String.Empty, fieldTA);
+            TestUtil.VerifyField(FieldType.FieldTOAEntry, " TA  \\c 1 \\l \"Source 1\"", string.Empty, fieldTA);
             Assert.AreEqual("1", fieldTA.EntryCategory);
             Assert.AreEqual("Source 1", fieldTA.LongCitation);
 
             fieldTA = (FieldTA)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldTOAEntry, " TA  \\c 2 \\l \"Source 2\"", String.Empty, fieldTA);
+            TestUtil.VerifyField(FieldType.FieldTOAEntry, " TA  \\c 2 \\l \"Source 2\"", string.Empty, fieldTA);
             Assert.AreEqual("2", fieldTA.EntryCategory);
             Assert.AreEqual("Source 2", fieldTA.LongCitation);
 
             fieldTA = (FieldTA)doc.Range.Fields[3];
 
-            TestUtil.VerifyField(FieldType.FieldTOAEntry, " TA  \\c 1 \\l \"Source 3\" \\s S.3", String.Empty, fieldTA);
+            TestUtil.VerifyField(FieldType.FieldTOAEntry, " TA  \\c 1 \\l \"Source 3\" \\s S.3", string.Empty, fieldTA);
             Assert.AreEqual("1", fieldTA.EntryCategory);
             Assert.AreEqual("Source 3", fieldTA.LongCitation);
             Assert.AreEqual("S.3", fieldTA.ShortCitation);
 
             fieldTA = (FieldTA)doc.Range.Fields[4];
 
-            TestUtil.VerifyField(FieldType.FieldTOAEntry, " TA  \\c 1 \\l \"Source 2\" \\b \\i", String.Empty, fieldTA);
+            TestUtil.VerifyField(FieldType.FieldTOAEntry, " TA  \\c 1 \\l \"Source 2\" \\b \\i", string.Empty, fieldTA);
             Assert.AreEqual("1", fieldTA.EntryCategory);
             Assert.AreEqual("Source 2", fieldTA.LongCitation);
             Assert.True(fieldTA.IsBold);
@@ -6619,7 +6618,7 @@ namespace ApiExamples
 
             fieldTA = (FieldTA)doc.Range.Fields[5];
 
-            TestUtil.VerifyField(FieldType.FieldTOAEntry, " TA  \\c 1 \\l \"Source 3\" \\r MyMultiPageBookmark", String.Empty, fieldTA);
+            TestUtil.VerifyField(FieldType.FieldTOAEntry, " TA  \\c 1 \\l \"Source 3\" \\r MyMultiPageBookmark", string.Empty, fieldTA);
             Assert.AreEqual("1", fieldTA.EntryCategory);
             Assert.AreEqual("Source 3", fieldTA.LongCitation);
             Assert.AreEqual("MyMultiPageBookmark", fieldTA.PageRangeBookmarkName);
@@ -6628,7 +6627,7 @@ namespace ApiExamples
             {
                 fieldTA = (FieldTA)doc.Range.Fields[i];
 
-                TestUtil.VerifyField(FieldType.FieldTOAEntry, " TA  \\c 1 \\l \"Source 4\"", String.Empty, fieldTA);
+                TestUtil.VerifyField(FieldType.FieldTOAEntry, " TA  \\c 1 \\l \"Source 4\"", string.Empty, fieldTA);
                 Assert.AreEqual("1", fieldTA.EntryCategory);
                 Assert.AreEqual("Source 4", fieldTA.LongCitation);
             }
@@ -6651,7 +6650,7 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            TestUtil.VerifyField(FieldType.FieldAddin, " ADDIN \"My value\" ", String.Empty, doc.Range.Fields[0]);
+            TestUtil.VerifyField(FieldType.FieldAddin, " ADDIN \"My value\" ", string.Empty, doc.Range.Fields[0]);
         }
 
         [Test]
@@ -6769,19 +6768,19 @@ namespace ApiExamples
 
         private void TestFieldEQ(Document doc)
         {
-            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \f(1,4)", String.Empty, doc.Range.Fields[0]);
-            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \a \al \co2 \vs3 \hs3(4x,- 4y,-4x,+ y)", String.Empty, doc.Range.Fields[1]);
-            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \b \bc\[ (\a \al \co3 \vs3 \hs3(1,0,0,0,1,0,0,0,1))", String.Empty, doc.Range.Fields[2]);
-            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ A \d \fo30 \li() B", String.Empty, doc.Range.Fields[3]);
-            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \f(d,dx)(u + v) = \f(du,dx) + \f(dv,dx)", String.Empty, doc.Range.Fields[4]);
-            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \i \su(n=1,5,n)", String.Empty, doc.Range.Fields[5]);
-            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \l(1,1,2,3,n,8,13)", String.Empty, doc.Range.Fields[6]);
-            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \r (3,x)", String.Empty, doc.Range.Fields[7]);
-            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \s \up8(Superscript) Text \s \do8(Subscript)", String.Empty, doc.Range.Fields[8]);
-            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \x \to \bo \le \ri(5)", String.Empty, doc.Range.Fields[9]);
-            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \a \ac \vs1 \co1(lim,n→∞) \b (\f(n,n2 + 12) + \f(n,n2 + 22) + ... + \f(n,n2 + n2))", String.Empty, doc.Range.Fields[10]);
-            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \i (,,  \b(\f(x,x2 + 3x + 2))) \s \up10(2)", String.Empty, doc.Range.Fields[11]);
-            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \i \in( tan x, \s \up2(sec x), \b(\r(3) )\s \up4(t) \s \up7(2)  dt)", String.Empty, doc.Range.Fields[12]);
+            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \f(1,4)", string.Empty, doc.Range.Fields[0]);
+            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \a \al \co2 \vs3 \hs3(4x,- 4y,-4x,+ y)", string.Empty, doc.Range.Fields[1]);
+            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \b \bc\[ (\a \al \co3 \vs3 \hs3(1,0,0,0,1,0,0,0,1))", string.Empty, doc.Range.Fields[2]);
+            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ A \d \fo30 \li() B", string.Empty, doc.Range.Fields[3]);
+            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \f(d,dx)(u + v) = \f(du,dx) + \f(dv,dx)", string.Empty, doc.Range.Fields[4]);
+            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \i \su(n=1,5,n)", string.Empty, doc.Range.Fields[5]);
+            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \l(1,1,2,3,n,8,13)", string.Empty, doc.Range.Fields[6]);
+            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \r (3,x)", string.Empty, doc.Range.Fields[7]);
+            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \s \up8(Superscript) Text \s \do8(Subscript)", string.Empty, doc.Range.Fields[8]);
+            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \x \to \bo \le \ri(5)", string.Empty, doc.Range.Fields[9]);
+            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \a \ac \vs1 \co1(lim,n→∞) \b (\f(n,n2 + 12) + \f(n,n2 + 22) + ... + \f(n,n2 + n2))", string.Empty, doc.Range.Fields[10]);
+            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \i (,,  \b(\f(x,x2 + 3x + 2))) \s \up10(2)", string.Empty, doc.Range.Fields[11]);
+            TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \i \in( tan x, \s \up2(sec x), \b(\r(3) )\s \up4(t) \s \up7(2)  dt)", string.Empty, doc.Range.Fields[12]);
         }
 
         [Test]
@@ -6949,7 +6948,7 @@ namespace ApiExamples
             Assert.AreEqual(" OCX ", field.GetFieldCode());
             //ExEnd
 
-            TestUtil.VerifyField(FieldType.FieldOcx, " OCX ", String.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldOcx, " OCX ", string.Empty, field);
         }
 
         //ExStart
@@ -7186,7 +7185,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Field.BIDIOUTLINE.docx");
 
             foreach (Field fieldBidiOutline in doc.Range.Fields)
-                TestUtil.VerifyField(FieldType.FieldBidiOutline, " BIDIOUTLINE ", String.Empty, fieldBidiOutline);
+                TestUtil.VerifyField(FieldType.FieldBidiOutline, " BIDIOUTLINE ", string.Empty, fieldBidiOutline);
         }
 
         [Test]

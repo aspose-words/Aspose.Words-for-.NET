@@ -7,10 +7,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using NUnit.Framework;
 using Aspose.Words;
+using Aspose.Words.Fields;
 using Aspose.Words.Tables;
 using Bookmark = Aspose.Words.Bookmark;
+using Font = Aspose.Words.Font;
 
 namespace ApiExamples
 {

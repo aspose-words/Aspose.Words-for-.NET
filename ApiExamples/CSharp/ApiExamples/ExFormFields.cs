@@ -66,8 +66,8 @@ namespace ApiExamples
 
             Assert.AreEqual("TextInput1", textInput.Name);
             Assert.AreEqual(TextFormFieldType.Regular, textInput.TextInputType);
-            Assert.AreEqual(String.Empty, textInput.TextInputFormat);
-            Assert.AreEqual(String.Empty, textInput.Result);
+            Assert.AreEqual(string.Empty, textInput.TextInputFormat);
+            Assert.AreEqual(string.Empty, textInput.Result);
             Assert.AreEqual(0, textInput.MaxLength);
         }
 

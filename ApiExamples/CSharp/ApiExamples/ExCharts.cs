@@ -89,7 +89,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Charts.DefineNumberFormatForDataLabels.docx");
             series = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.Series[0];
 
-            Assert.AreEqual(String.Empty, series.DataLabels.NumberFormat.FormatCode);
+            Assert.AreEqual(string.Empty, series.DataLabels.NumberFormat.FormatCode);
         }
 
         [Test]

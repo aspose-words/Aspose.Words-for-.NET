@@ -1563,11 +1563,11 @@ namespace ApiExamples
             NodeCollection footnotes = doc.GetChildNodes(NodeType.Footnote, true);
             Assert.AreEqual(3, footnotes.Count);
 
-            Assert.AreEqual(String.Empty, ((Footnote)footnotes[0]).ReferenceMark);
+            Assert.AreEqual(string.Empty, ((Footnote)footnotes[0]).ReferenceMark);
             Assert.AreEqual("\u0002 Footnote 1", ((Footnote)footnotes[0]).GetText().Trim());
             Assert.AreEqual(StoryType.Footnotes, ((Footnote)footnotes[0]).StoryType);
 
-            Assert.AreEqual(String.Empty, ((Footnote)footnotes[1]).ReferenceMark);
+            Assert.AreEqual(string.Empty, ((Footnote)footnotes[1]).ReferenceMark);
             Assert.AreEqual("\u0002 Footnote 2", ((Footnote)footnotes[1]).GetText().Trim());
             Assert.AreEqual(StoryType.Footnotes, ((Footnote)footnotes[1]).StoryType);
 
@@ -1620,11 +1620,11 @@ namespace ApiExamples
             NodeCollection endnotes = doc.GetChildNodes(NodeType.Footnote, true);
             Assert.AreEqual(3, endnotes.Count);
 
-            Assert.AreEqual(String.Empty, ((Footnote)endnotes[0]).ReferenceMark);
+            Assert.AreEqual(string.Empty, ((Footnote)endnotes[0]).ReferenceMark);
             Assert.AreEqual("\u0002 Endnote 1", ((Footnote)endnotes[0]).GetText().Trim());
             Assert.AreEqual(StoryType.Endnotes, ((Footnote)endnotes[0]).StoryType);
 
-            Assert.AreEqual(String.Empty, ((Footnote)endnotes[1]).ReferenceMark);
+            Assert.AreEqual(string.Empty, ((Footnote)endnotes[1]).ReferenceMark);
             Assert.AreEqual("\u0002 Endnote 2", ((Footnote)endnotes[1]).GetText().Trim());
             Assert.AreEqual(StoryType.Endnotes, ((Footnote)endnotes[1]).StoryType);
 

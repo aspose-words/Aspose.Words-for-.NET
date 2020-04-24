@@ -300,10 +300,7 @@ namespace ApiExamples
                 mTextBuilder.Clear();
             }
 
-            internal string Text
-            {
-                get { return mTextBuilder.ToString(); }
-            }
+            internal string Text => mTextBuilder.ToString();
 
             private readonly StringBuilder mTextBuilder = new StringBuilder();
         }

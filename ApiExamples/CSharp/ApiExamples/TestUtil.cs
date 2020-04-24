@@ -81,7 +81,7 @@ namespace ApiExamples
 
                 for (int i = 0; i < myDataTable.Rows.Count; i++)
                     for (int j = 0; j < myDataTable.Columns.Count; j++)
-                        Assert.AreEqual(expectedResult.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, String.Empty),
+                        Assert.AreEqual(expectedResult.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, string.Empty),
                             myDataTable.Rows[i][j].ToString());
             }
         }
