@@ -319,7 +319,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:DropCapPosition
             //ExSummary:Shows how to set the position of a drop cap.
-            // Create a blank document
             Document doc = new Document();
 
             // Every paragraph has its own drop cap setting

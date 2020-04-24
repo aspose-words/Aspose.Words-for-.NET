@@ -267,14 +267,9 @@ namespace ApiExamples
             FieldCollection fields = doc.Range.Fields;
             Assert.AreEqual(3, fields.Count);
 
-            Assert.AreEqual(FieldType.FieldFormDropDown, fields[0].Type);
-            Assert.AreEqual(" FORMDROPDOWN \u0001", fields[0].GetFieldCode());
-
-            Assert.AreEqual(FieldType.FieldFormCheckBox, fields[1].Type);
-            Assert.AreEqual(" FORMCHECKBOX \u0001", fields[1].GetFieldCode());
-
-            Assert.AreEqual(FieldType.FieldFormTextInput, fields[2].Type);
-            Assert.AreEqual(" FORMTEXT \u0001", fields[2].GetFieldCode());
+            TestUtil.VerifyField(FieldType.FieldFormDropDown, " FORMDROPDOWN \u0001", string.Empty, doc.Range.Fields[0]);
+            TestUtil.VerifyField(FieldType.FieldFormCheckBox, " FORMCHECKBOX \u0001", string.Empty, doc.Range.Fields[1]);
+            TestUtil.VerifyField(FieldType.FieldFormTextInput, " FORMTEXT \u0001", "This value overrides the one we set during initialization", doc.Range.Fields[2]);
 
             FormFieldCollection formFields = doc.Range.FormFields;
             Assert.AreEqual(3, formFields.Count);

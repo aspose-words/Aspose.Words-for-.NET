@@ -123,8 +123,7 @@ namespace ApiExamples
             {
                 Assert.True(Regex.Match(outDocContents,
                     "@font-face { font-family:'Arial'; font-style:normal; font-weight:normal; src:local[(]'☺'[)], url[(]'font001[.]woff'[)] format[(]'woff'[)]; }").Success);
-                Assert.AreEqual(21044, new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedFonts/font001.woff").Length);
-                Assert.AreEqual(5840, new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedFonts/font002.woff").Length);
+                Assert.AreEqual(2, Directory.GetFiles(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedFonts").Count(f => f.EndsWith(".woff")));
             }
             //ExEnd
         }

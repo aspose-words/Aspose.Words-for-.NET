@@ -126,7 +126,6 @@ namespace ApiExamples
             //ExFor:FileFormatInfo.LoadFormat
             //ExFor:FileFormatInfo.IsEncrypted
             //ExSummary:Shows how to use the FileFormatUtil class to detect the document format and encryption.
-            // Create a blank document
             Document doc = new Document();
 
             // Save it as an encrypted .odt

@@ -5,13 +5,15 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.Data;
 using System.Data.OleDb;
 using System.Net;
 using Aspose.Words;
 using Aspose.Words.Fields;
-using Aspose.Words.Tables;
 using NUnit.Framework;
+using Table = Aspose.Words.Tables.Table;
+using Image = System.Drawing.Image;
 
 namespace ApiExamples
 {
@@ -99,6 +101,31 @@ namespace ApiExamples
             request.Method = "HEAD";
 
             Assert.AreEqual(expectedHttpStatusCode, ((HttpWebResponse)request.GetResponse()).StatusCode);
+        }
+
+        /// <summary>
+        /// Checks whether a filename points to a valid image with specified dimensions.
+        /// </summary>
+        /// <remarks>
+        /// Serves as a way to check that an image file is valid and nonempty without looking up its file size.
+        /// </remarks>
+        /// <param name="expectedWidth"></param>
+        /// <param name="expectedHeight"></param>
+        /// <param name="filename"></param>
+        internal static void VerifyImage(int expectedWidth, int expectedHeight, string filename)
+        {
+            try
+            {
+                using (Image image = Image.FromFile(filename))
+                {
+                    Assert.AreEqual(expectedWidth, image.Width);
+                    Assert.AreEqual(expectedHeight, image.Height);
+                }
+            }
+            catch (OutOfMemoryException e)
+            {
+                Assert.Fail($"No valid image in this location:\n{filename}");
+            }
         }
     }
 }

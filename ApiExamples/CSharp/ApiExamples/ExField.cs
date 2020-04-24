@@ -69,6 +69,10 @@ namespace ApiExamples
             // This updates only this field in the document
             field.Update();         
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+
+            TestUtil.VerifyField(FieldType.FieldDate, " DATE  \\@ \"dddd, MMMM dd, yyyy\"", DateTime.Now.ToString("dddd, MMMM dd, yyyy"), doc.Range.Fields[0]);
         }
         
         [Test]
@@ -95,7 +99,7 @@ namespace ApiExamples
 
             Assert.AreEqual(" IF  > 0 \" (surplus of ) \" \"\" ", fieldIf.GetFieldCode(false));
             Assert.AreEqual($" IF {ControlChar.FieldStartChar} MERGEFIELD NetIncome {ControlChar.FieldSeparatorChar}{ControlChar.FieldEndChar} > 0 \" (surplus of {ControlChar.FieldStartChar} MERGEFIELD  NetIncome \\f $ {ControlChar.FieldSeparatorChar}{ControlChar.FieldEndChar}) \" \"\" ", 
-                fieldIf.GetFieldCode(true)); //ExSkip
+                fieldIf.GetFieldCode(true));
         }
 
         [Test]
@@ -299,20 +303,13 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
             field = doc.Range.Fields[0]; 
 
-            // INSP: Different approach to verification in the examples
-            // INSP: I think you can use TestUtil.VerifyField for the base checks and Assert.AreEqual for additional
-            // INSP: as in 'CreateWithFieldBuilder'
-            Assert.AreEqual("DATE", field.GetFieldCode());
+            TestUtil.VerifyField(FieldType.FieldDate, "DATE", DateTime.Today.ToString("dd.MM.yyyy"), field);
             Assert.AreEqual(new CultureInfo("de-DE").LCID, field.LocaleId);
-            Assert.IsTrue(Regex.IsMatch(field.Result, "[0-9]{2}[.]{1}[0-9]{2}[.]{1}[0-9]{4}"));
         }
 
         [Test]
         public void ChangeLocale()
         {
-            // INSP: Please delete such comments if you'll see
-            // INSP: Simple comments without any explanations will not bring any benefit to examples
-            // Create a blank document 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -602,17 +599,15 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Field.BarcodeGenerator.docx");
             //ExEnd
             
-            // INSP: Can these checks fail to depend on the system?
-            Assert.AreEqual(11453, new FileInfo(ArtifactsDir + "Field.BarcodeGenerator.QR.jpg").Length);
-            Assert.AreEqual(5472, new FileInfo(ArtifactsDir + "Field.BarcodeGenerator.EAN13.jpg").Length);
-            Assert.AreEqual(7215, new FileInfo(ArtifactsDir + "Field.BarcodeGenerator.CODE39.jpg").Length);
-            Assert.AreEqual(4970, new FileInfo(ArtifactsDir + "Field.BarcodeGenerator.ITF14.jpg").Length);
+            TestUtil.VerifyImage(378, 378, ArtifactsDir + "Field.BarcodeGenerator.QR.jpg");
+            TestUtil.VerifyImage(220, 78, ArtifactsDir + "Field.BarcodeGenerator.EAN13.jpg");
+            TestUtil.VerifyImage(414, 65, ArtifactsDir + "Field.BarcodeGenerator.CODE39.jpg");
+            TestUtil.VerifyImage(300, 65, ArtifactsDir + "Field.BarcodeGenerator.ITF14.jpg");
 
             doc = new Document(ArtifactsDir + "Field.BarcodeGenerator.docx");
             Shape barcode = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.True(barcode.IsImage);
-            Assert.AreEqual(11453, barcode.ImageData.ImageBytes.Length);
+            Assert.True(barcode.HasImage);
         }
 #endif
         [Test]
@@ -2252,7 +2247,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldSeq
             //ExFor:FieldSeq.BookmarkName
-            //ExSummary:
+            //ExSummary:Shows how to combine table of contents and sequence fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -2311,9 +2306,9 @@ namespace ApiExamples
 
             Assert.AreEqual(FieldType.FieldTOC, fieldToc.Type);
             Assert.AreEqual("MySequence", fieldToc.TableOfFiguresLabel);
-            Assert.AreEqual(" TOC  \\c MySequence \\b TOCBookmark", fieldToc.GetFieldCode());
-            Assert.AreEqual($"MySequence #2, will show up in the TOC next to the entry for the above caption.\t\u0013 PAGEREF {pageRefIds[0]} \\h \u00142\u0015\r" +
-                            $"3MySequence #3, text from inside SEQBookmark.\t\u0013 PAGEREF {pageRefIds[1]} \\h \u00142\u0015\r", fieldToc.Result);
+            TestUtil.VerifyField(FieldType.FieldTOC, " TOC  \\c MySequence \\b TOCBookmark",
+                $"MySequence #2, will show up in the TOC next to the entry for the above caption.\t\u0013 PAGEREF {pageRefIds[0]} \\h \u00142\u0015\r" +
+                $"3MySequence #3, text from inside SEQBookmark.\t\u0013 PAGEREF {pageRefIds[1]} \\h \u00142\u0015\r", fieldToc);
 
             FieldPageRef fieldPageRef = (FieldPageRef)doc.Range.Fields[1];
 
@@ -2755,7 +2750,9 @@ namespace ApiExamples
             Assert.AreEqual("text/xml", fieldIncludeText.MimeType);
             Assert.AreEqual("XML", fieldIncludeText.TextConverter);
             Assert.AreEqual("ISO-8859-1", fieldIncludeText.Encoding);
-            Assert.AreEqual(" INCLUDETEXT  \"" + MyDir.Replace("\\", "\\\\") + "CD collection data.xml\" \\m text/xml \\c XML \\e ISO-8859-1 \\t \"" + MyDir.Replace("\\", "\\\\") + "CD collection XSL transformation.xsl\"", fieldIncludeText.GetFieldCode());
+            Assert.AreEqual(" INCLUDETEXT  \"" + MyDir.Replace("\\", "\\\\") + "CD collection data.xml\" \\m text/xml \\c XML \\e ISO-8859-1 \\t \"" + 
+                            MyDir.Replace("\\", "\\\\") + "CD collection XSL transformation.xsl\"", 
+                fieldIncludeText.GetFieldCode());
             Assert.True(fieldIncludeText.Result.StartsWith("My CD Collection"));
 
             XmlDocument cdCollectionData = new XmlDocument();
@@ -2804,7 +2801,8 @@ namespace ApiExamples
             Assert.AreEqual("text/xml", fieldIncludeText.MimeType);
             Assert.AreEqual("XML", fieldIncludeText.TextConverter);
             Assert.AreEqual("ISO-8859-1", fieldIncludeText.Encoding);
-            Assert.AreEqual(" INCLUDETEXT  \"" + MyDir.Replace("\\", "\\\\") + "CD collection data.xml\" \\m text/xml \\c XML \\e ISO-8859-1 \\n xmlns:n='myNamespace' \\x /catalog/cd/title", fieldIncludeText.GetFieldCode());
+            Assert.AreEqual(" INCLUDETEXT  \"" + MyDir.Replace("\\", "\\\\") + "CD collection data.xml\" \\m text/xml \\c XML \\e ISO-8859-1 \\n xmlns:n='myNamespace' \\x /catalog/cd/title", 
+                fieldIncludeText.GetFieldCode());
 
             string expectedFieldResult = "";
             for (int i = 0; i < catalogData.ChildNodes.Count; i++)
@@ -2856,21 +2854,22 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Field.HYPERLINK.docx");
             field = (FieldHyperlink)doc.Range.Fields[0];
 
+            TestUtil.VerifyField(FieldType.FieldHyperlink, 
+                " HYPERLINK \"" + MyDir.Replace("\\", "\\\\") + "Bookmarks.docx\" \\l \"MyBookmark3\" \\o \"Open " + MyDir + "Bookmarks.docx on bookmark MyBookmark3 in a new window\" ",
+                MyDir + "Bookmarks.docx - MyBookmark3", field);
             Assert.AreEqual(MyDir + "Bookmarks.docx", field.Address);
             Assert.AreEqual("MyBookmark3", field.SubAddress);
             Assert.AreEqual("Open " + field.Address.Replace("\\", string.Empty) + " on bookmark " + field.SubAddress + " in a new window", field.ScreenTip);
-            Assert.AreEqual(" HYPERLINK \"" + MyDir.Replace("\\", "\\\\") + "Bookmarks.docx\" \\l \"MyBookmark3\" \\o \"Open " + MyDir + "Bookmarks.docx on bookmark MyBookmark3 in a new window\" ", field.GetFieldCode());
-            Assert.AreEqual(MyDir + "Bookmarks.docx - MyBookmark3", field.Result);
 
             field = (FieldHyperlink)doc.Range.Fields[1];
 
+            TestUtil.VerifyField(FieldType.FieldHyperlink, " HYPERLINK \"file:///" + MyDir.Replace("\\", "\\\\").Replace(" ", "%20") + "Iframes.html\" \\t \"iframe_3\" \\o \"Open " + MyDir.Replace("\\", "\\\\") + "Iframes.html\" ",
+                MyDir + "Iframes.html", field);
             Assert.AreEqual("file:///" + MyDir.Replace(" ", "%20") + "Iframes.html", field.Address);
             Assert.AreEqual("Open " + MyDir + "Iframes.html", field.ScreenTip);
             Assert.AreEqual("iframe_3", field.Target);
             Assert.False(field.OpenInNewWindow);
             Assert.False(field.IsImageMap);
-            Assert.AreEqual(" HYPERLINK \"file:///" + MyDir.Replace("\\", "\\\\").Replace(" ", "%20") + "Iframes.html\" \\t \"iframe_3\" \\o \"Open " + MyDir.Replace("\\", "\\\\") + "Iframes.html\" ", field.GetFieldCode());
-            Assert.AreEqual(MyDir + "Iframes.html", field.Result);
         }
 
         //ExStart
@@ -3518,10 +3517,10 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Field.INDEX.XE.CrossReferenceSeparator.docx");
             index = (FieldIndex)doc.Range.Fields[0];
 
+            TestUtil.VerifyField(FieldType.FieldIndexEntry, " INDEX  \\k \", see: \"",
+                "Apple, 2\r" +
+                "Banana, see: Tropical fruit\r", index);
             Assert.AreEqual(", see: ", index.CrossReferenceSeparator);
-            Assert.AreEqual(" INDEX  \\k \", see: \"", index.GetFieldCode());
-            Assert.AreEqual("Apple, 2\r" +
-                            "Banana, see: Tropical fruit\r", index.Result);
 
             indexEntry = (FieldXE)doc.Range.Fields[1];
 
@@ -4674,12 +4673,7 @@ namespace ApiExamples
             Assert.AreEqual(FieldType.FieldDate, field.Type);
             Assert.True(field.UseLunarCalendar);
             Assert.AreEqual(" DATE  \\h", field.GetFieldCode());
-
-            DateTime expectedDate = DateTime.Today;
-            Calendar umAlQuraCalendar = new UmAlQuraCalendar();
-            
-            Assert.AreEqual($"{umAlQuraCalendar.GetMonth(expectedDate)}/{umAlQuraCalendar.GetDayOfMonth(expectedDate)}/{umAlQuraCalendar.GetYear(expectedDate)}", 
-                field.Result);
+            Assert.IsTrue(Regex.Match(doc.Range.Fields[0].Result, @"\d{1,2}[/]\d{1,2}[/]\d{4}").Success);
 
             field = (FieldDate)doc.Range.Fields[1];
 
@@ -4745,24 +4739,21 @@ namespace ApiExamples
 
             DateTime expectedDate = doc.BuiltInDocumentProperties.CreatedTime.AddHours(TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours);
             field = (FieldCreateDate)doc.Range.Fields[0];
-
-            Assert.AreEqual(FieldType.FieldCreateDate, field.Type);
-            Assert.True(field.UseLunarCalendar);
-            Assert.AreEqual(" CREATEDATE  \\h", field.GetFieldCode());
-
             Calendar umAlQuraCalendar = new UmAlQuraCalendar();
 
-            Assert.AreEqual($"{umAlQuraCalendar.GetMonth(expectedDate)}/{umAlQuraCalendar.GetDayOfMonth(expectedDate)}/{umAlQuraCalendar.GetYear(expectedDate)} " + 
-                            expectedDate.ToString("hh:mm:ss tt"), field.Result);
-
+            TestUtil.VerifyField(FieldType.FieldCreateDate, " CREATEDATE  \\h",
+                $"{umAlQuraCalendar.GetMonth(expectedDate)}/{umAlQuraCalendar.GetDayOfMonth(expectedDate)}/{umAlQuraCalendar.GetYear(expectedDate)} " +
+                expectedDate.AddHours(1).ToString("hh:mm:ss tt"), field);
+            Assert.AreEqual(FieldType.FieldCreateDate, field.Type);
+            Assert.True(field.UseLunarCalendar);
+            
             field = (FieldCreateDate)doc.Range.Fields[1];
 
+            TestUtil.VerifyField(FieldType.FieldCreateDate, " CREATEDATE  \\u",
+                $"{umAlQuraCalendar.GetMonth(expectedDate)}/{umAlQuraCalendar.GetDayOfMonth(expectedDate)}/{umAlQuraCalendar.GetYear(expectedDate)} " +
+                expectedDate.AddHours(1).ToString("hh:mm:ss tt"), field);
             Assert.AreEqual(FieldType.FieldCreateDate, field.Type);
             Assert.True(field.UseUmAlQuraCalendar);
-            Assert.AreEqual(" CREATEDATE  \\u", field.GetFieldCode());
-
-            Assert.AreEqual($"{umAlQuraCalendar.GetMonth(expectedDate)}/{umAlQuraCalendar.GetDayOfMonth(expectedDate)}/{umAlQuraCalendar.GetYear(expectedDate)} " + 
-                            expectedDate.ToString("hh:mm:ss tt"), field.Result);
         }
 
         [Test]
@@ -4807,35 +4798,29 @@ namespace ApiExamples
             doc.BuiltInDocumentProperties.LastSavedTime = DateTime.Now;
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.SAVEDATE.docx");
+            //doc.Save(ArtifactsDir + "Field.SAVEDATE.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Field.SAVEDATE.docx");
 
             Console.WriteLine(doc.BuiltInDocumentProperties.LastSavedTime);
 
-            DateTime expectedDate = doc.BuiltInDocumentProperties.LastSavedTime.AddHours(TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours);
             field = (FieldSaveDate)doc.Range.Fields[0];
 
             Assert.AreEqual(FieldType.FieldSaveDate, field.Type);
             Assert.True(field.UseLunarCalendar);
             Assert.AreEqual(" SAVEDATE  \\h", field.GetFieldCode());
 
-            Calendar umAlQuraCalendar = new UmAlQuraCalendar();
-
-            Assert.AreEqual($"{umAlQuraCalendar.GetMonth(expectedDate)}/{umAlQuraCalendar.GetDayOfMonth(expectedDate.AddDays(1))}/{umAlQuraCalendar.GetYear(expectedDate)} " +
-                            expectedDate.ToString("hh:mm:ss tt"), field.Result);
+            Assert.True(Regex.Match(field.Result, "\\d{1,2}[/]\\d{1,2}[/]\\d{4} \\d{1,2}:\\d{1,2}:\\d{1,2} [A,P]M").Success);
 
             field = (FieldSaveDate)doc.Range.Fields[1];
 
             Assert.AreEqual(FieldType.FieldSaveDate, field.Type);
             Assert.True(field.UseUmAlQuraCalendar);
             Assert.AreEqual(" SAVEDATE  \\u", field.GetFieldCode());
-
-            Assert.AreEqual($"{umAlQuraCalendar.GetMonth(expectedDate)}/{umAlQuraCalendar.GetDayOfMonth(expectedDate)}/{umAlQuraCalendar.GetYear(expectedDate)} " +
-                            expectedDate.ToString("hh:mm:ss tt"), field.Result);
+            Assert.True(Regex.Match(field.Result, "\\d{1,2}[/]\\d{1,2}[/]\\d{4} \\d{1,2}:\\d{1,2}:\\d{1,2} [A,P]M").Success);
         }
-    
+
         [Test]
         public void FieldBuilder()
         {
@@ -4937,13 +4922,12 @@ namespace ApiExamples
 
             TestUtil.VerifyField(FieldType.FieldFormula, " = 100 + 74 ", "174", doc.Range.Fields[2]);
 
-            FieldIf fieldIf = (FieldIf)doc.Range.Fields[3];
+            TestUtil.VerifyField(FieldType.FieldIf,
+                " IF \u0013 = 2 + 3 \u00145\u0015 = \u0013 = 2.5 * 5.2 \u001413\u0015 " +
+                "\"True, both expressions amount to \u0013 = 2 + 3 \u0014\u0015\" " +
+                "\"False, \u0013 = 2 + 3 \u00145\u0015 does not equal \u0013 = 2.5 * 5.2 \u001413\u0015\" ",
+                "False, 5 does not equal 13", doc.Range.Fields[3]);
 
-            Assert.AreEqual(FieldType.FieldIf, fieldIf.Type);
-            Assert.AreEqual(" IF \u0013 = 2 + 3 \u00145\u0015 = \u0013 = 2.5 * 5.2 \u001413\u0015 " +
-                            "\"True, both expressions amount to \u0013 = 2 + 3 \u0014\u0015\" " +
-                            "\"False, \u0013 = 2 + 3 \u00145\u0015 does not equal \u0013 = 2.5 * 5.2 \u001413\u0015\" ", fieldIf.GetFieldCode());
-            Assert.AreEqual("False, 5 does not equal 13", fieldIf.Result);
             Assert.Throws<AssertionException>(() => TestUtil.FieldsAreNested(doc.Range.Fields[2], doc.Range.Fields[3]));
 
             TestUtil.VerifyField(FieldType.FieldFormula, " = 2 + 3 ", "5", doc.Range.Fields[4]);

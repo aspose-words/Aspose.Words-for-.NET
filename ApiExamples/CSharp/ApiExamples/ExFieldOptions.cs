@@ -119,11 +119,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "FieldOptions.FILENAME.docx");
 
             Assert.IsNull(doc.FieldOptions.FileName);
-
-            field = (FieldFileName)doc.Range.Fields[0];
-
-            Assert.AreEqual(" FILENAME ", field.GetFieldCode());
-            Assert.AreEqual("FieldOptions.FILENAME.docx", field.Result);
+            TestUtil.VerifyField(FieldType.FieldFileName, " FILENAME ", "FieldOptions.FILENAME.docx", doc.Range.Fields[0]);
         }
 
         [Test]
@@ -177,12 +173,7 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
 
             Assert.False(doc.FieldOptions.LegacyNumberFormat);
-
-            field = doc.Range.Fields[0];
-
-            Assert.AreEqual(FieldType.FieldFormula, field.Type);
-            Assert.AreEqual("= 2 + 3 \\# $##", field.GetFieldCode());
-            Assert.AreEqual("$5", field.Result);
+            TestUtil.VerifyField(FieldType.FieldFormula, "= 2 + 3 \\# $##", "$5", doc.Range.Fields[0]);
         }
 
         [Test]
@@ -257,19 +248,11 @@ namespace ApiExamples
 
             Assert.Null(doc.FieldOptions.ToaCategories);
 
-            FieldToa field = (FieldToa)doc.Range.Fields[0];
-
-            Assert.AreEqual(FieldType.FieldTOA, field.Type);
-            Assert.AreEqual("TOA \\c 1 \\h", field.GetFieldCode());
-            Assert.AreEqual("My Category 1\rentry 2\t3\r", field.Result);
-
-            field = (FieldToa)doc.Range.Fields[1];
-
-            Assert.AreEqual(FieldType.FieldTOA, field.Type);
-            Assert.AreEqual("TOA \\c 2 \\h", field.GetFieldCode());
-            Assert.AreEqual("My Category 2\r" +
-                            "entry 1\t2\r" +
-                            "entry 3\t4\r", field.Result);
+            TestUtil.VerifyField(FieldType.FieldTOA, "TOA \\c 1 \\h", "My Category 1\rentry 2\t3\r", doc.Range.Fields[0]);
+            TestUtil.VerifyField(FieldType.FieldTOA, "TOA \\c 2 \\h",
+                "My Category 2\r" +
+                "entry 1\t2\r" +
+                "entry 3\t4\r", doc.Range.Fields[1]);
         }
 
         [Test]
@@ -298,11 +281,7 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
 
             Assert.False(doc.FieldOptions.UseInvariantCultureNumberFormat);
-
-            field = doc.Range.Fields[0];
-            Assert.AreEqual(FieldType.FieldFormula, field.Type);
-            Assert.AreEqual(" = 1234567,89 \\# $#,###,###.##", field.GetFieldCode());
-            Assert.AreEqual("$1.234.567,89", field.Result);
+            TestUtil.VerifyField(FieldType.FieldFormula, " = 1234567,89 \\# $#,###,###.##", "$1.234.567,89", doc.Range.Fields[0]);
         }
 
         //ExStart

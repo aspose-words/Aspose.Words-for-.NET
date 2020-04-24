@@ -96,7 +96,6 @@ namespace ApiExamples
             //ExFor:BuiltInDocumentProperties.Subject
             //ExFor:BuiltInDocumentProperties.Title
             //ExSummary:Shows how to work with document properties in the "Description" category.
-            // Create a blank document 
             Document doc = new Document();
 
             // The properties we will work with are members of the BuiltInDocumentProperties attribute

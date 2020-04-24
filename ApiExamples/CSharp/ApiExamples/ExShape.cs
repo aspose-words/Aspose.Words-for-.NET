@@ -534,7 +534,6 @@ namespace ApiExamples
             //ExFor:Shape.FirstParagraph
             //ExFor:ShapeBase.WrapType
             //ExSummary:Creates a textbox with some text and different formatting options in a new document.
-            // Create a blank document
             Document doc = new Document();
 
             // Create a new shape of type TextBox

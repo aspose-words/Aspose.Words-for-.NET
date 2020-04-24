@@ -963,7 +963,6 @@ namespace ApiExamples
                                "</Employee>" +
                                "</Company>";
 
-            // Create a blank document
             Document doc = new Document();
 
             // Insert the full XML document as a custom document part

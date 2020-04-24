@@ -39,7 +39,6 @@ namespace ApiExamples
             //ExFor:Run.#ctor(DocumentBase,String)
             //ExFor:Story.FirstParagraph
             //ExSummary:Shows how to add a formatted run of text to a document using the object model.
-            // Create an empty document. It contains one empty paragraph
             Document doc = new Document();
 
             // Create a new run of text
@@ -73,9 +72,8 @@ namespace ApiExamples
             //ExFor:Font.AllCaps
             //ExFor:Font.SmallCaps
             //ExSummary:Shows how to use all capitals and small capitals character formatting properties.
-            // Create an empty document. It contains one empty paragraph
             Document doc = new Document();
-            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
+            Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
 
             Run run = new Run(doc, "All capitals");
             run.Font.AllCaps = true;
@@ -1347,7 +1345,6 @@ namespace ApiExamples
             //ExFor:Fonts.FontInfoCollection.Contains(String)
             //ExFor:Fonts.FontInfoCollection.Count
             //ExSummary:Shows info about the fonts that are present in the blank document.
-            // Create a new document
             Document doc = new Document();
 
             // A blank document comes with 3 fonts
@@ -1388,8 +1385,6 @@ namespace ApiExamples
             Assert.IsNull(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular));
             Assert.IsNotNull(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.EmbeddedOpenType, EmbeddedFontStyle.Regular));
             //ExEnd
-
-            Assert.AreEqual(52028, new FileInfo(ArtifactsDir + "Alte DIN 1451 Mittelschrift.ttf").Length);
         }
 
         [Test]

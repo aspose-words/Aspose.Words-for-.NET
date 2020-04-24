@@ -84,7 +84,6 @@ namespace ApiExamples
             //ExFor:PageSetup.OddAndEvenPagesHeaderFooter
             //ExFor:BreakType
             //ExSummary:Shows how to create headers and footers in a document using DocumentBuilder.
-            // Create a blank document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -147,13 +146,8 @@ namespace ApiExamples
 
             Assert.AreEqual(2, doc.Range.Fields.Count);
 
-            Assert.AreEqual(@"MERGEFIELD MyMergeField1 \* MERGEFORMAT", doc.Range.Fields[0].GetFieldCode());
-            Assert.AreEqual(FieldType.FieldMergeField, doc.Range.Fields[0].Type);
-            Assert.AreEqual("«MyMergeField1»", doc.Range.Fields[0].Result);
-
-            Assert.AreEqual(@"MERGEFIELD MyMergeField2 \* MERGEFORMAT", doc.Range.Fields[1].GetFieldCode());
-            Assert.AreEqual(FieldType.FieldMergeField, doc.Range.Fields[1].Type);
-            Assert.AreEqual("«MyMergeField2»", doc.Range.Fields[1].Result);
+            TestUtil.VerifyField(FieldType.FieldMergeField, @"MERGEFIELD MyMergeField1 \* MERGEFORMAT", "«MyMergeField1»", doc.Range.Fields[0]);
+            TestUtil.VerifyField(FieldType.FieldMergeField, @"MERGEFIELD MyMergeField2 \* MERGEFORMAT", "«MyMergeField2»", doc.Range.Fields[1]);
         }
 
         [Test]
@@ -1578,7 +1572,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertHyperlinkToLocalBookmark.docx");
             FieldHyperlink hyperlink = (FieldHyperlink)doc.Range.Fields[0];
 
-            Assert.AreEqual(" HYPERLINK \\l \"Bookmark1\" \\o \"Hyperlink Tip\" ", hyperlink.GetFieldCode());
+            TestUtil.VerifyField(FieldType.FieldHyperlink, " HYPERLINK \\l \"Bookmark1\" \\o \"Hyperlink Tip\" ", "Hyperlink Text", hyperlink);
             Assert.AreEqual("Bookmark1", hyperlink.SubAddress);
             Assert.IsTrue(doc.Range.Bookmarks.Any(b => b.Name == "Bookmark1"));
         }
@@ -2793,9 +2787,8 @@ namespace ApiExamples
             Assert.AreEqual("This document was written by \u0013 AUTHOR \u0014John Doe\u0015" +
                             "\rThis is page \u0013 PAGE \u00141\u0015", doc.GetText().Trim());
 
-            Assert.AreEqual(2, doc.Range.Fields.Count);
-            Assert.AreEqual(FieldType.FieldAuthor, doc.Range.Fields[0].Type);
-            Assert.AreEqual(FieldType.FieldPage, doc.Range.Fields[1].Type);
+            TestUtil.VerifyField(FieldType.FieldAuthor, " AUTHOR ", "John Doe", doc.Range.Fields[0]);
+            TestUtil.VerifyField(FieldType.FieldPage, " PAGE ", "1", doc.Range.Fields[1]);
         }
 
         //ExStart

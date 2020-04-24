@@ -247,8 +247,13 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.#ctor(Boolean)
             //ExSummary:Shows how to create a blank document.
-            // Note the blank document contains one section and one paragraph.
+            // Create a blank document, which will contain a section, body and paragraph by default
             Document doc = new Document();
+
+            // Create a document object from an existing document in the local file system
+            doc = new Document(MyDir + "Document.docx");
+
+            Assert.AreEqual("Hello World!", doc.FirstSection.Body.FirstParagraph.GetText().Trim());
             //ExEnd
         }
 
@@ -865,7 +870,6 @@ namespace ApiExamples
         [Test] //ExSkip
         public void FontChangeViaCallback()
         {
-            // Create a blank document object
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1309,10 +1313,10 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.EnsureMinimum
             //ExSummary:Shows how to ensure the Document is valid (has the minimum nodes required to be valid).
-            // Create a blank document
             Document doc = new Document();
 
-            // Every blank document will contain the minimal set nodes requited for editing; a Section, Body and Paragraph
+            // Every blank document that we create will contain
+            // the minimal set nodes requited for editing; a Section, Body and Paragraph
             Assert.AreEqual(3, doc.GetChildNodes(NodeType.Any, true).Count);
 
             // We can remove every node from the document with RemoveAllChildren()
@@ -2248,8 +2252,11 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.ImageSaveOptions.HighQuality.jpg", options);
             //ExEnd
 
-            Assert.AreEqual(238885, new FileInfo(ArtifactsDir + "Document.ImageSaveOptions.Default.jpg").Length);
-            Assert.AreEqual(239839, new FileInfo(ArtifactsDir + "Document.ImageSaveOptions.HighQuality.jpg").Length);
+            TestUtil.VerifyImage(794, 1122, ArtifactsDir + "Document.ImageSaveOptions.Default.jpg");
+            TestUtil.VerifyImage(794, 1122, ArtifactsDir + "Document.ImageSaveOptions.HighQuality.jpg");
+
+            Assert.True(new FileInfo(ArtifactsDir + "Document.ImageSaveOptions.Default.jpg").Length <
+                        new FileInfo(ArtifactsDir + "Document.ImageSaveOptions.HighQuality.jpg").Length);
         }
 
         [Test]
@@ -3966,9 +3973,7 @@ namespace ApiExamples
 		[Test]
         public void EpubCover()
         {
-            // Create a blank document and insert some text
             Document doc = new Document();
-
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello world!");
 
