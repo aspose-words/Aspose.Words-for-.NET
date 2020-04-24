@@ -1,0 +1,14 @@
+/Scripts/bootstrap*
+/Scripts/jquery*
+/Scripts/modernizr*
+/Scripts/respond*
+/Scripts/popper*
+/Scripts/esm/**
+/Scripts/umd/**
+/Scripts/WebForms/**
+/ViewerApp/qi/js/**
+/Editor/Trumbowyg/**
+/Editor/jquery*
+/js/bootstrap*
+/js/jquery*
+/js/popper*

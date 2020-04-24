@@ -1,0 +1,76 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="sicontainer.menu.min.jste.Master.cs" Inherits="Aspose.Words.Live.Demos.UI.SiteMaster" %>
+
+
+
+
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head runat="server">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Save time and software maintenance costs by running single instance of software, but serving multiple tenants/websites. Customization available for Joomla, Wordpress, Discourse, Confluence and other popular applications." />
+    <meta name="generator" content="aspose.app" />
+
+    <link href="img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+
+    <!-- Bootstrap & Font CSS -->
+    <link rel="stylesheet" href="https://cms.dynabic.com/templates/aspose/css/bootstrap.css?v=331" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" type="text/css" />
+
+    <!-- Common CSS -->
+    <link rel="stylesheet" href="https://cms.dynabic.com/templates/aspose/css/common.css" type="text/css" />
+    <link rel="stylesheet" href="https://products.aspose.app/css/error404.css" type="text/css" />
+
+    <!-- Dynabic.Menu CSS -->
+    <!-- script src="https://code.jquery.com/jquery-1.10.2.js" -->
+
+    <link href="https://cms.admin.containerize.com/templates/aspose/css/AsposePtyLtdMenu.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cms.admin.containerize.com/templates/aspose/css/font-awesome.css" type="text/css" />
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <link rel="stylesheet" href="~/css/asposeapp.css" type="text/css" />
+
+    
+
+    
+
+</head>
+<body>
+    <form id="form" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true">
+            <Scripts>
+                <%--<asp:ScriptReference Name="jquery" />--%>
+                <asp:ScriptReference Path="https://ajax.aspnetcdn.com/ajax/4.5.1/1/WebUIValidation.js" />
+                <asp:ScriptReference Path="https://ajax.aspnetcdn.com/ajax/4.5.1/1/WebForms.js" />
+                <asp:ScriptReference Path="https://ajax.aspnetcdn.com/ajax/4.5.1/1/WebParts.js" />
+            </Scripts>
+        </asp:ScriptManager>
+
+       <div id='DynabicMenuInnerDiv'></div>
+
+
+
+        <asp:ContentPlaceHolder ID="MainContent" runat="server">
+        </asp:ContentPlaceHolder>
+
+
+
+
+
+
+     <div id='DynabicMenuFooter'></div>
+    </form>
+
+    <script src="https://products.aspose.app/js/bootstrap.min.js"></script>
+    <script src="https://menu.containerize.com/Scripts/Containerize.Menu.min.js"></script>
+    <script>
+     
+        LoadMenu("AsposeApp");
+     
+    </script>
+
+</body>
+</html>

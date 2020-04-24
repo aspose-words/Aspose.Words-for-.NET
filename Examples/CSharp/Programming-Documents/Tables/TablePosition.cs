@@ -17,6 +17,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             GetTablePosition(dataDir);
             GetFloatingTablePosition(dataDir);
             SetFloatingTablePosition(dataDir);
+            SetRelativeHorizontalOrVerticalPosition(dataDir);
         }
 
         private static void GetTablePosition(string dataDir)
@@ -81,6 +82,21 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Tables
             // Save the document to disk.
             doc.Save(dataDir + "Table.SetFloatingTablePosition.docx");
             // ExEnd:SetFloatingTablePosition
+            Console.WriteLine("\nSet the Table position successfully.");
+        }
+
+        private static void SetRelativeHorizontalOrVerticalPosition(string dataDir)
+        {
+            // ExStart:SetRelativeHorizontalOrVerticalPosition
+            Document doc = new Document(dataDir + "FloatingTablePosition.docx");
+            Table table = doc.FirstSection.Body.Tables[0];
+
+            table.HorizontalAnchor = RelativeHorizontalPosition.Column;
+            table.VerticalAnchor = RelativeVerticalPosition.Page;
+
+            // Save the document to disk.
+            doc.Save(dataDir + "Table.SetFloatingTablePosition.docx");
+            // ExEnd:SetRelativeHorizontalOrVerticalPosition
             Console.WriteLine("\nSet the Table position successfully.");
         }
     }

@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<res name="ApplicationTitle">Free File Format Apps</res>
+	<res name="ApplicationTitle2">Convert your Word, PDF and Excel documents online from anywhere</res>	
+	<res name="HomePageTitle">Home</res>	
+	<res name="AsposeProductFamilyInclude">{0} Product Family Includes</res>
+	<res name="FileConvertedSuccessMessage">Your file has been converted successfully, please check your email to download converted file</res>
+	<res name="InvalidFileExtension">Invalid file, please upload a file with extension</res>
+	<res name="InvalidFile">Invalid file, please ensure that uploading correct file</res>
+	<res name="SuccessfullyUploaded">Successfully uploaded</res>
+	<res name="btnConvertNow">CONVERT NOW</res>
+	<res name="AssemblyAPPName">Assembly</res>
+	<res name="AsposeWords">Aspose.Words</res>
+	<res name="PageNotFound">404 Page not found</res>
+	<res name="DropOrUploadImageFile">Drop or upload your image</res>
+	<res name="BrokenLinkTitle">The link you followed probably broken or the page has been moved</res>
+	<res name="btnBackHome">Back to Home</res>
+  <res name="SaveAs">Save as</res>  
+  <res name="DropOrUploadFile">Drop or upload your file</res>
+  <res name="DropOrUploadFiles">Drop or upload your files</res>
+  <res name="FileConvertedSuccessMessage1">Your file has been converted successfully</res>
+  <res name="DownLoadNow">DOWNLOAD NOW</res>
+  <res name="FileWrongTypeMessage">You are trying to upload document(s) of unsupported type: </res>
+  <res name="FileWrongTypeMessage2">Please, use our full version of {0} for uploading this type of document(s): </res>
+   <res name="Send">Send</res>
+  <res name="SelectorDropFileMessage">Drop or upload your file</res>
+    <res name="ConvertAnotherFile">Convert another file</res>
+	<res name="UnlockPasswordPlaceholder">Type Password</res>
+	<res name="PasswordPlaceholderErrorMessage">Password input can&apos;t be empty</res>
+	<res name="AsposeProductFor"></res>
+	<res name="UnlockButton">UNLOCK NOW</res>
+	<res name="RedactionButton">REDACT NOW</res>
+	<res name="AddWatermarkTextPlaceholder">Add Watermark Text</res>
+  <res name="AsposeWordsDescription">Convert Word documents to PDF, HTML, Open Office, image and other formats</res>
+    <res name="Feature1">Fast and Easy Conversion</res>
+  <res name="Feature1Description">Upload your document, choose the save format type and click on “Convert” button. You will get the download link as soon as the file is converted</res>
+    <res name="Feature2">Convert from Anywhere</res>
+  <res name="Feature2Description">It works from all platforms including Windows, Mac, Android and iOS. All files are processed on our servers. No plugin or software installation required for you</res>
+  <res name="Feature3">Conversion Quality</res>
+  <res name="Feature3Description">. All files are processed using Aspose APIs, which are being used by many Fortune 100 companies across 114 countries</res>
+   <res name="PoweredBy">Powered by</res>
+  <res name="Conversionh4">Conversion</res>
+  <res name="DOCXExtension">DOCX</res>
+	<res name="SupportedDocuments">Supported Documents: {0}</res> 
+  <res name="ConversionCategory">conversion</res>
+  <res name="WordsPageMainTitle">Free Word Document Apps</res>
+  <res name="WordsPageSubHeading">Convert, Compare, Extract Images, Add Watermark or View your Word documents online from anywhere</res>
+  <res name="ProductFamily">Product Family</res>
+  <res name="ViewerAPPName">Viewer</res>
+  <res name="wordsViewerDesc">View Microsoft Word &amp; OpenOffice documents online from anywhere, any platform.</res>
+  <res name="wordsViewerPageTitle">Word Viewer Online</res>
+  <res name="wordsViewerMetaDescription">Free online word document viewer. View, read, search in text, convert word documents online.</res>
+  <res name="wordsViewerTitle">Free online document viewer</res>
+  <res name="wordsViewerSubTitle">View, read and convert Word documents online.</res>
+  <res name="wordsViewerValidationExpression">.docx|.doc|.dotx|.dot|.rtf|.odt|.ott|.txt</res>
+  <res name="wordsViewerLiFeature1">Use navigation pane, thumbnails like in Microsoft Word</res>
+  <res name="wordsViewerLiFeature2">Convert your document in viewer to desired format: PDF, HTML and others</res>
+  <res name="wordsViewerLiFeature3">Open Word files online</res>
+	<res name="HowtoViewerTitle">How to View {0} file using {1}</res>
+	<res name="HowtoViewerFeature1">Click inside the file drop area to upload file or drag &amp; drop file.</res>
+	<res name="HowtoViewerFeature2">Your document file will be automatically rendered for you to view instantly.</res>
+	<res name="HowtoViewerFeature3">Download the document file in original, image or PDF format.</res>
+
+	<res name="HowtoRedactionTitle">How to Redact Text in Word Document using {1}</res>
+	<res name="HowtoRedactionFeature1">Click inside the file drop area to upload a document file or drag &amp; drop a document file.</res>
+	<res name="HowtoRedactionFeature2">Click on "REDACT NOW" button, file will be automatically uploaded to redact.</res>
+	<res name="HowtoRedactionFeature3">Download link of document file will be available instantly after redact.</res>
+
+	<res name="HowtoSplitterTitle">How to Split a Document using {1}</res>
+	<res name="HowtoSplitterFeature1">Click inside the file drop area to upload a document file or drag &amp; drop a document file.</res>
+	<res name="HowtoSplitterFeature2">Click on "SPLIT" button, file will be automatically uploaded to split.</res>
+	<res name="HowtoSplitterFeature3">Download link of document file will be available instantly after splitting.</res>
+
+	<res name="HowtoSearchTitle">How to Search Text in Word Document using {1}</res>
+	<res name="HowtoSearchFeature1">Click inside the file drop area to upload a document file or drag &amp; drop a document file.</res>
+	<res name="HowtoSearchFeature2">Type text or regular expression and click on “SEARCH NOW” button.</res>
+	<res name="HowtoSearchFeature3">File will be automatically rendered for you to view results &amp; download instantly.</res>
+
+
+	<res name="HowtoUnlockTitle">How to Unlock Word files using {1}</res>
+	<res name="HowtoUnlockFeature1">Click inside the file drop area to upload file or drag &amp; drop file.</res>
+	<res name="HowtoUnlockFeature2">Your document file will be rendered automatically to unlock.</res>
+	<res name="HowtoUnlockFeature3">Download link of document file will be available instantly after unlock.</res>
+
+  <res name="Viewerh4">Viewer</res>
+  <res name="btnViewNow">VIEW NOW</res>
+  <res name="ViewerPageTitle">View your {0} online from anywhere</res>
+  <res name="ViewerFeature1">Quick and Easy Viewer</res>
+  <res name="ViewerFeature1Description">Upload your document and you will be redirected to the Viewer app with great user experience and many more features</res>
+  <res name="ViewerFeature1DescriptionChoice">Upload your document and you will be redirected to the {0} Viewer app with great user experience and many more features</res>
+  <res name="ViewerFeature2">View from Anywhere</res>
+  <res name="ViewerFeature2Description">It works from all platforms including Windows, Mac, Android and iOS. All files are processed on our servers. No plugin or software installation required for you</res>
+  <res name="ViewerFeature3">Viewer Quality</res>
+  <res name="ViewerLiFeature1">View your documents online</res>
+  <res name="ViewerAction">View</res>
+  <res name="ConvertoSlide">Slides</res>
+  <res name="ViewerFeature3Description">. All files are processed using Aspose APIs, which are being used by many Fortune 100 companies across 114 countries</res>
+  <res name="ProductFeature4">View your {0} as an image representation</res>
+  <res name="ViewerFeatureTitle">View your {0} online from anywhere</res>
+  <res name="WordViewerLink1">Document Viewer</res>
+  <res name="wordsValidFileExtensions">DOC, DOCX, DOT, DOTX, RTF or ODT</res>  
+  <res name="wordsDocTitle">Document</res>  
+  <res name="wordsValidationExpression">.docx|.doc|.dotx|.dot|.rtf|.odt|.ott|.txt|.html|.mht|.mhtml|.xhtml</res> 
+  <res name="Supported">Supported</res>
+  <res name="Documents"> Documents</res>
+  <res name="FileSelectMessage">Please select a file(s)</res>
+  <res name="RemovePrevious">Please, remove previous file(s)</res>
+  <res name="ResponseTime">Response timeout</res>
+  <res name="Save">Save</res>
+  <res name="Cancel">Cancel</res>
+  <res name="Document">document</res>
+  <res name="DropAFile">Drop or upload your file</res>
+  <res name="UploadAnother">Upload another file</res>
+  <res name="SendTo">Send the download link to</res>
+  <res name="MetadataAPPName">Metadata</res>
+  <res name="MetadataSavedTitle">File successfully saved</res>
+  <res name="MetadataFeature1">Fast and Easy Metadata</res>
+  <res name="MetadataFeature1Description">Upload your document, update the Metadata and click on "Save" button. You will get the download link as soon as the file is saved</res>
+  <res name="MetadataFeature2">Edit Metadata from Anywhere</res>
+  <res name="MetadataFeature2Description">It works from all platforms including Windows, Mac, Android and iOS. All files are processed on our servers. No plugin or software installation required by you</res>
+  <res name="MetadataFeature3">Metadata Quality</res>
+  <res name="QualityDescMetadata">All files are processed using Aspose APIs, which are being used by many Fortune 100 companies across 114 countries</res>
+  <res name="btnViewMetadata">View Metadata</res>
+  <res name="MetadataSuccessMessage">Metadata has been saved successfully</res>
+  <res name="FindAndEdit">View and edit metadata information in</res>
+  <res name="MetadataSentEmailSuccessMessage">Your files has been processed successfully, please check your email to download results</res>
+  <res name="MetadataAction">Edit metadata in</res>
+  <res name="MetadataAnotherFile">Edit metadata in another document</res>
+  <res name="MetadataClearButton">Clear All</res>
+	<res name="wordsMetadataValidationExpression">.docx|.doc|.dotx|.dot|.rtf|.odt</res>
+	
+	<res name="wordsMetadataPageTitle">Edit Metadata in Word Document Online</res>
+	<res name="wordsMetadataMetaDescription">Edit Word document properties. Metadata viewer and editor.</res>
+	<res name="wordsMetadataTitle">Online Word metadata editor</res>
+	<res name="wordsMetadataSubTitle">View or edit Word document properties, known as metadata.</res>
+	<res name="wordsMetadataDesc">View &amp; edit Metadata properties of Microsoft Word &amp; OpenOffice documents.</res>
+	
+  <res name="WatermarkAPPName">Watermark</res>
+  <res name="wordsWatermarkDesc">Add or remove watermark in documents online</res>
+  <res name="wordsWatermarkTitle">Free online document watermark</res>
+  <res name="wordsWatermarkTitleSub">Add or remove watermark to Microsoft Word and OpenOffice documents.</res>
+  <res name="wordsWatermarkTextTitleSub">Add text watermark in Microsoft Office (DOC, DOCX, DOT, DOTX, RTF) and Open Document (ODT) files</res>
+  <res name="wordsWatermarkImageTitleSub">Add image watermark in Microsoft Office (DOC, DOCX, DOT, DOTX, RTF) and Open Document (ODT) files</res>
+  <res name="wordsWatermarkValidationExpression">.docx|.doc|.dotx|.dot|.rtf|.odt|.ott</res>
+  <res name="wordsWatermarkImageValidationExpression">.jpg|.jpeg|.bmp|.png|.tiff</res>
+  <res name="TextWatermarkButton">ADD TEXT WATERMARK</res>
+  <res name="ImageWatermarkButton">ADD IMAGE WATERMARK</res>
+  <res name="RemoveWatermarkButton">REMOVE WATERMARK</res>
+  <res name="WordsWatermarkFeature1">Fast and Easy Watermark</res>
+  <res name="WordsWatermarkFeature1Description">Upload your document and click on “ADD” or “REMOVE” button. You will get the download link as soon as the watermark process is performed.</res>
+  <res name="WordsWatermarkFeature2">Add Watermark from Anywhere</res>
+  <res name="WordsWatermarkFeature2Description">It works from all platforms including Windows, Mac, Android and iOS. All files are processed on our servers. No plugin or software installation required for you</res>
+  <res name="WordsWatermarkFeature3">Watermark Quality</res>
+  <res name="WordsWatermarkLiFeature1">Instantly download output file</res>
+  <res name="WatermarkViewer">VIEW RESULTS</res>
+  <res name="WatermarkAnotherFile">Add or remove watermark in another file</res>
+  <res name="WatermarkAction">Add watermark in</res>
+  <res name="btnAddWatermark">{0} Watermark</res>
+  <res name="WatermarkAddedSuccessMessage">Watermark added successfully</res>
+  <res name="WatermarkRemovedSuccessMessage">Watermark removed successfully</res>
+  <res name="AddWatermkinAnotherFile">{0} Watermark in another file</res>
+  <res name="Watermarkh4">Watermark</res>
+  <res name="AddWatermark">add-watermark</res>
+  <res name="AddWatermarkURL">add</res>
+  <res name="RemoveWatermarkURL">remove</res>
+  <res name="AddWatermarkintablecellURL">add-watermark-in-table-cell</res>
+  <res name="AddWatermarkPageTitle">Add Watermark</res>
+  <res name="AddWatermarkSubPageTitle">Add Watermark to your Word document</res>
+  <res name="RemoveWatermarkPageTitle">Remove Watermark</res>
+	<res name="wordsWatermarkPageTitle">Watermark Word Documents</res>
+	<res name="wordsWatermarkMetaDescription">Add a watermark in Word documents online.</res>
+  <res name="RemoveWatermarkSubPageTitle">Remove Watermark from your Word document</res>
+  <res name="AddWatermarkinTableCellPageTitle">Add Watermark in Table Cell</res>
+  <res name="AddWatermarkinTableCellPageSubTitle">Add Watermark in Table Cell of your word document</res>
+  <res name="WatermarkFeature1">Fast and Easy {0}</res>
+  <res name="WatermarkAddText">Add</res>
+  <res name="WatermarkRemoveText">Remove</res>
+  <res name="AddWatermarkFeature1Description">Upload your file, enter watermark text and click on “Add Watermark” button. You will get the download link as soon as the watermark text is added.</res>
+  <res name="RemoveWatermarkFeature1Description">Upload your file and click on “Remove Watermark” button. You will get the download link as soon as the watermark is removed.</res>
+  <res name="AddWatermarkinTableCellFeature1Description">Upload your file, enter watermark text and click on “Add Watermark” button. You will get the download link as soon as the watermark text is added in table cell.</res>
+  <res name="AddWatermarktoChartPageTitle">Add Watermark to Chart</res>
+  <res name="AddWatermarktoChartSubPageTitle">Add Watermark to Chart of your Excel Worksheet</res>
+  <res name="ExcelWatermarkDesc">Add Watermark in your worksheets online from anywhere</res> 
+  <res name="BackButton">Back</res>
+  <res name="RotateAngleLabel">Rotate Angle</res>
+  <res name="ZoomFactorLabel">Zoom factor</res>
+  <res name="GrayscaledLabel">Gray scaled</res>
+  <res name="ColoredLabel">Colored</res>
+  <res name="ConvertoPNG">PNG</res>
+  <res name="ExcelToXPSConverter">Excel to XPS Conversion</res>
+  <res name="WatermarkFeature2">{0} Watermark from Anywhere</res>
+  <res name="WatermarkFeature3">Watermark Quality</res>
+  <res name="WatermarkTextMessage">Please enter watermark text</res>
+	<res name="WatermarkLiFeature1">Instantly download or send output file as an email</res>
+  <res name="ViewerAnotherFile">View another document</res>
+  <res name="ViewerSuccessMessage">Your files have been processed successfully</res>
+  <res name="ConversionAPPName">Conversion</res>
+  <res name="AnnotationAPPName">Annotation</res>
+
+  <res name="wordsAnnotationDesc">A robust App to remove annotations from Microsoft Word and OpenOffice documents.</res>
+  <res name="wordsAnnotationPageTitle">Remove Annotations from word documents</res>
+  <res name="wordsAnnotationMetaDescription">Free online app to remove comments (annotations) from Word documents.</res>
+  <res name="wordsAnnotationTitle">Free online remove annotations</res>
+  <res name="wordsAnnotationSubTitle">Remove comments from your Word documents.</res>
+  <res name="wordsAnnotationValidationExpression">.docx|.doc|.dotx|.dot|.rtf|.odt|.ott</res>  
+  <res name="WatermarkFeature1Description">Upload your document and click on “REMOVE” button. You will get the download link as soon as the watermark are removed.</res>
+  <res name="WatermarkFeature1DescriptionChoice">Upload your document and click on “{0}” button. You will get the download link as soon as the watermark are removed.</res>
+  <res name="WatermarkFeature2Choice">{0} Watermark from Anywhere</res>
+  <res name="WatermarkFeature2Description">It works from all platforms including Windows, Mac, Android and iOS. All files are processed on our servers. No plugin or software installation required for you</res>
+
+	<res name="wordsAnnotationLiFeature1">Fast and Easy Remove Annotation</res>
+  
+  <res name="AnnotationAnotherFile">Remove annotations from other documents</res>
+  <res name="AnnotationSuccessMessage">Annotations removed successfully</res>
+  
+  <res name="AddTextAnnotationURL">add</res>
+  <res name="AddAnnotationAnotherFile">Add Annotation Text in another file</res>
+  <res name="AnnotationAddedSuccessMessage">Annotation Text added successfully</res>
+  <res name="AnnotationButton">REMOVE</res>
+  <res name="AnnotationButtonChoice">{0} Annotation</res>
+  <res name="EnterContentseMessage">Please enter contents</res>
+  <res name="AnnotationTitle">Title</res>
+  <res name="AnnotationSubject">Subject</res>
+  <res name="AnnotationContents">Contents</res>
+  <res name="AnnotationAction">Remove annotations in</res>
+  <res name="AddAnnotationPageTitle">Add Annotation Text</res>
+  <res name="AddAnnotationSubPageTitle">Add Annotation text to your PDF document</res>
+  <res name="AddAnnotationFeature1Description">Upload your PDF document, enter title, subject, contents and click on “Add Annotation” button. You will get the download link as soon as the annotation is added.</res>
+  <res name="RemoveAnnotationURL">remove</res>
+    <res name="wordsRemoveAnnotationTitle">Remove Annotations from Word Processing Files</res>
+  <res name="wordsRemoveAnnotationTitleSub">Remove annotations from your Microsoft Word &amp; OpenOffice Writer documents.</res>
+	<res name="wordsRemoveAnnotationPageTitle">Remove Annotations from Word Documents</res>
+	<res name="wordsRemoveAnnotationMetaDescription">Free online app to remove annotations from Microsoft Word (DOC, DOCX, DOT, DOTX, RTF) or OpenOffice (ODT, OTT) document files.</res>
+   
+  <res name="RemoveAnnotationButton">REMOVE</res>
+  <res name="RemoveAnnotationAnotherFile">Remove annotations from another document</res>
+  <res name="RemoveAnnotationSuccessMessage">Annotations removed successfully</res>
+  <res name="RemoveAnnotationLiFeature1">Instantly download or send output file as an email</res>
+
+
+  <res name="wordsExtractImagesTitle">Extract images from Word Document</res>
+  <res name="wordsExtractImagesDesc">Extract Images from Word Document</res>
+  
+  <res name="wordsExtractImagesTitleSub">Read all images from Microsoft Office (DOC, DOCX, DOT, DOTX, RTF) and Open Document (ODT) files</res>
+  
+ 
+
+  <res name="ComparisonAPPName">Comparison</res>
+  
+  <res name="wordsComparisonDesc">Compare two Word documents and download the resultant file highlighting the differences.</res>
+  <res name="wordsComparisonPageTitle">Compare Word Documents Online</res>
+  <res name="wordsComparisonMetaDescription">Free online comparison of Word files. Highlight differences and view them online. Compare different file formats like Word, OpenOffice, HTML, etc.</res>
+  <res name="wordsComparisonTitle">Document comparison online</res>
+  <res name="wordsComparisonSubTitle">Compare the contents of Word, OpenOffice, Text or HTML files.</res>
+  
+  <res name="wordsComparisonLiFeature1">Quickly compare two versions of a document and view the difference</res>
+  <res name="wordsComparisonLiFeature2">Compare different file formats</res>
+  
+  <res name="ComparisonButton">COMPARE NOW</res>
+
+  <res name="ComparisonDownloadNow">DOWNLOAD DIFF FILE</res>
+  <res name="ComparisonFeature1">Fast and Easy Document Comparison</res>
+  <res name="ComparisonFeature1Description">Upload your documents and click on “COMPARE” button. You will get the word-file as soon as the comparison is performed</res>
+  <res name="ComparisonFeature2">Compare Documents from Anywhere</res>
+  <res name="ComparisonFeature2Description">It works from all platforms including Windows, Mac, Android and iOS. All files are processed on our servers. No plugin or software installation required for you</res>
+  <res name="ComparisonFeature3">Compare Documents Quality</res>
+  <res name="ComparisonLiFeature1">Instantly download, view or send output file as an email</res>
+  <res name="ComparisonAnotherFile">Compare other documents</res>
+  <res name="ComparisonSuccessMessage">Your files have been processed successfully</res>
+  
+  <res name="ComparisonViewer">VIEW DIFFERENCES</res>
+  <res name="ComparisonOtherFeaturesTitle">Other Supported Comparisons</res>
+  <res name="ComparisonOtherFeaturesTitleSub">You can also do comparison of other file formats. Please see the list below.</res>
+  <res name="ComparisonAction">Compare</res>
+	<res name="MetadataViewer">VIEW DOCUMENT</res>
+  <res name="MergerAPPName">Merger</res>
+  <res name="wordsMergerPageTitle">Merge Word Documents Online</res>
+  <res name="wordsMergerMetaDescription">Free online document merger. Merge, concatenate or combine Word documents online.</res>
+  <res name="wordsMergerTitle">Free online document merger</res>
+  <res name="wordsMergerSubTitle">Merge/Combine Word documents.</res>
+  <res name="wordsMergerDesc">Merge multiple Word documents to generate a single resultant file.</res>
+
+  <res name="wordsMergerLiFeature1">Combine different file formats into one</res>
+ 
+  <res name="wordsMergerLiFeature2">Choose the order of merged files</res>
+
+	<!-- Conversion App - How To-->
+	<res name="HowtoMergerTitle">How to merger {0} file using {1}</res>
+	<res name="HowtoMergerFeature1">Click inside the file drop area to upload files or drag &amp; drop files.</res>
+	<res name="HowtoMergerFeature2">Click the "MERGE NOW" button to start merging files.</res>
+	<res name="HowtoMergerFeature3">Download link of merged file will be available instantly after merger.</res>
+
+	<res name="HowtoAnnotationTitle">How to remove annotations from word document using {1}</res>
+	<res name="HowtoAnnotationFeature1">Click inside the file drop area to upload a document file or drag &amp; drop a document file.</res>
+	<res name="HowtoAnnotationFeature2">Your document file will be rendered automatically to remove annotations.</res>
+	<res name="HowtoAnnotationFeature3">Download link of document file will be available instantly after remove annotations.</res>
+
+	<res name="HowtoMetadataTitle">How to edit document metadata using {1}</res>
+	<res name="HowtoMetadataFeature1">Click inside the file drop area to upload files or drag &amp; drop files.</res>
+	<res name="HowtoMetadataFeature2">File will be automatically rendered for you to view &amp; edit metadata instantly.</res>
+	<res name="HowtoMetadataFeature3">Download updated document file with metadata.</res>
+	<res name="wordsMetadataLiFeature1">Quick way to change document properties</res>
+	<res name="wordsMetadataLiFeature2">Clean metadata</res>
+	<res name="wordsMetadataLiFeature3">Add custom document properties</res>
+  
+  <res name="MergerButton">MERGE NOW</res>
+  <res name="pdfMergerButton">MERGE</res>
+  <res name="MergerFeature1">Fast and Easy Way to Merge</res>
+  <res name="MergerFeature1Description">Upload your documents and click on “MERGE NOW” button. It will merge your document files into one and provide you a download link to download merged document. The output format will be the output format of your first document</res>
+  <res name="MergerFeature2">Merge from Anywhere</res>
+  <res name="MergerFeature2Description">It works from all platforms including Windows, Mac, Android and iOS. All files are processed on our servers. No plugin or software installation required for you</res>
+  <res name="MergerFeature3">Merge Quality</res>
+  <res name="MergerLiFeature1">Instantly download, view or send output file as an email</res>
+  <res name="MergerAnotherFile">Merge other documents</res>
+  <res name="MergerSuccessMessage">Your files have been processed successfully</res>
+  <res name="MergerSentEmailSuccessMessage">Your files has been merged successfully, please check your email to download the merged file</res>
+  <res name="MergerViewer">VIEW DOCUMENT</res>
+  <res name="MergerFileAmountMessage">Please select between two and ten files</res>
+  <res name="FileAmountMessageLessTen">Please select less than ten files</res>
+  <res name="FileAmountMessageOne">Please select only one file</res>
+  <res name="MergerOtherFeaturesTitle">Other Supported Mergers</res>
+  <res name="MergerOtherFeaturesTitleSub">You can also merge other file formats. Please see the list below.</res>
+  <res name="MergerAction">Merge</res>
+
+  <res name="ParserAPPName">Parser</res>
+  <res name="wordsParserDesc">Extract text and images from Microsoft Word &amp; OpenOffice documents.</res>
+	<res name="wordsParserPageTitle">Extract Text &amp; Images from Word document</res>
+	<res name="wordsParserMetaDescription">Free online document parser. Extract text and images from Word document.</res>
+  <res name="wordsParserTitle">Free online document parser</res>
+  <res name="wordsParserSubTitle">Extract text &amp; images from word documents.</res>
+  <res name="wordsParserValidationExpression">.docx|.doc|.dotx|.dot|.rtf|.odt|.ott|.html|.mhtml|.xhtml</res>
+  <res name="wordsParserLiFeature1">Quick way to extract text and images</res>
+  <res name="wordsParserLiFeature2">Extract from multiple files</res>
+  <res name="wordsParserLiFeature3">Parse OpenOffice document</res>
+ 
+  <res name="ParserButton">PARSE NOW</res>
+  <res name="pdfParserButton">PARSE</res>
+  <res name="ParserFeature1">Fast and Easy Parser</res>
+  <res name="ParserFeature1Description">Upload your document and click on “PARSE NOW” button. You will get the text file or zip-file with text and images as soon as the Parsing is performed</res>
+  <res name="ParserFeature2">Parse from Anywhere</res>
+  <res name="ParserFeature2Description">It works from all platforms including Windows, Mac, Android and iOS. All files are processed on our servers. No plugin or software installation required for you</res>
+  <res name="ParserFeature3">Parse Quality</res>
+  <res name="ParserLiFeature1">Instantly download or send output file as an email</res>
+  <res name="ParserAnotherFile">Parse other document</res>
+  <res name="ParserSuccessMessage">Your file has been processed successfully</res>
+  <res name="ParserSentEmailSuccessMessage">Your file has been parsed successfully, please check your email to download parsed files</res>
+  <res name="ParserAction">Parse</res>
+
+  <res name="SplitterAPPName">Splitter</res>
+  <res name="wordsSplitterDesc">Split Microsoft Word or OpenOffice documents by page number or by pattern.</res>
+  <res name="wordsSplitterPageTitle">Split Word Document Online</res>
+  <res name="wordsSplitterMetaDescription">Free online Word document splitter. Customize how to split: every page, odd and even, by number of pages, by page range.</res>
+  <res name="wordsSplitterTitle">Free online document splitter</res>
+  <res name="wordsSplitterSubTitle">Split Word documents by page number, by pattern.</res>
+  <res name="wordsSplitterValidationExpression">.docx|.doc|.dotx|.dot|.rtf|.odt|.ott|.txt</res>
+  <res name="wordsSplitterLiFeature1">Split a word document in half</res>
+  <res name="wordsSplitterLiFeature2">Split into multiple documents</res>
+  <res name="wordsSplitterLiFeature3">Choose how to split: every page, odd and even, by number of pages, by page range</res>
+ 
+  <res name="SplitterButton">SPLIT</res>
+  <res name="SplitterFeature1">Fast and Easy Splitter</res>
+  <res name="SplitterFeature1Description">Upload your document and click on “SPLIT” button. You will get the text file or zip-file with text and images as soon as the Parsing is performed</res>
+  <res name="SplitterFeature2">Parse from Anywhere</res>
+  <res name="SplitterFeature2Description">It works from all platforms including Windows, Mac, Android and iOS. All files are processed on our servers. No plugin or software installation required for you</res>
+  <res name="SplitterFeature3">Parse Quality</res>
+  <res name="SplitterLiFeature1">Instantly download or send output file as an email</res>
+  <res name="SplitterAnotherFile">Split other documents</res>
+  <res name="SplitterSuccessMessage">Your file has been processed successfully</res>
+  <res name="SplitterSentEmailSuccessMessage">Your files have been split successfully, please check your email to download split files</res>
+  <res name="SplitterAction">Split</res>
+  <res name="SplitterIntoMany">Split into many</res>
+  <res name="SplitterIntoSingle">Split into single</res>
+  <res name="SplitterEvery">Every page</res>
+  <res name="SplitterOdd">Odd and even pages</res>
+  <res name="SplitterByNumber">By page number</res>
+  <res name="SplitterPageRange">By page range</res>
+  <res name="SplitterNumberException">Please, enter number in the field</res>
+  <res name="SplitterRangeException">Please, enter valid page range in the field</res>
+
+  <res name="EditorAPPName">Editor</res>
+  
+  <res name="wordsEditorDesc">Edit Microsoft Office (DOC, DOCX, DOTX, RTF), Open Document (ODT), TXT and HTML files online.</res>
+  <res name="wordsEditorPageTitle">Word Editor Online</res>
+  <res name="wordsEditorMetaDescription">Free online document editor. View, edit, convert word documents with advanced WYSIWYG editor.</res>
+  <res name="wordsEditorTitle">Free online document editor</res>
+  <res name="wordsEditorSubTitle">Edit word document online.</res>
+  <res name="wordsEditorLiFeature1">Advanced WYSIWYG editor</res>
+  <res name="wordsEditorLiFeature2">Paste images, use styles, make text easier</res>
+  <res name="wordsEditorLiFeature3">Compatible with all recent browsers like Chrome, Opera and Firefox</res>
+
+  <res name="EditorFeature1">Fast and Easy Editor</res>
+  <res name="EditorFeature1Description">Upload your document and you will be redirected to the HTML Editor app with great user experience and many more features</res>
+  <res name="EditorFeature2">Edit from Anywhere</res>
+  <res name="EditorFeature2Description">It works from all platforms including Windows, Mac, Android and iOS. All files are processed on our servers. No plugin or software installation required for you</res>
+  <res name="EditorFeature3">Editor Quality</res>
+  <res name="EditorLiFeature1">Save edited document to desired format: PDF, HTML and others</res>
+  <res name="EditorReturnQuestion">Are you sure you want to return?</res>
+  <res name="EditorAction">Edit</res>
+
+  <res name="RedactionAPPName">Redaction</res>
+  <res name="wordsRedactionDesc">Expunge or remove sensitive information from Microsoft Word or OpenOffice documents.</res>
+	<res name="wordsRedactionPageTitle">Search and Replace Text in Word documents using RegEx</res>
+	<res name="wordsRedactionMetaDescription">Free online redaction/editing. Search and replace text in word documents using RegEx.</res>
+  <res name="wordsRedactionTitle">Redact sensitive information</res>
+  <res name="wordsRedactionSubTitle">Search and replace text in contents, comments or metadata in word documents.</res>
+  <res name="wordsRedactionLiFeature1">Search and replace in multiple files</res>
+  <res name="wordsRedactionLiFeature2">Search with regular expression</res>
+  <res name="wordsRedactionLiFeature3">Parse words and change them easily</res>
+
+  <res name="RedactionFeature1">Fast and Easy Redaction</res>
+  <res name="RedactionFeature1Description">Upload your document and click on “REDACT NOW” button. You will get the document file as soon as the redaction is performed</res>
+  <res name="RedactionFeature2">Redact from Anywhere</res>
+  <res name="RedactionFeature2Description">It works from all platforms including Windows, Mac, Android and iOS. All files are processed on our servers. No plugin or software installation required for you</res>
+  <res name="RedactionFeature3">Redaction Quality</res>
+  <res name="RedactionLiFeature1">Instantly download or send output file as an email</res>
+  <res name="RedactionAnotherFile">Redact other document</res>
+  <res name="RedactionSuccessMessage">Your file has been processed successfully</res>
+  <res name="RedactionSentEmailSuccessMessage">Your file has been redacted successfully, please check your email to download file</res>
+  <res name="CaseSensitive">Case sensitive</res>
+  <res name="Comments">Comments</res>
+  <res name="Text">Text</res>
+  <res name="Metadata">Metadata</res>
+  <res name="RedactionViewer">VIEW RESULTS</res>
+  <res name="RedactionSearchPlaceholder">Type text or regular expression</res>
+  <res name="RedactionSearchErrorMessage">Search query can&apos;t be empty</res>
+  <res name="RedactionReplacePlaceholder">Type replace text</res>
+  <res name="RedactionAction">Search and replace text in</res>
+
+  <res name="SearchAPPName">Search</res>
+  <res name="wordsSearchDesc">Search content inside Word documents based on string or regular expression.</res>
+	<res name="wordsSearchPageTitle">Search words with pattern in word documents using RegEx</res>
+	<res name="wordsSearchMetaDescription">Free online word document search. Find text, keyword or phrase through multiple word documents.</res>
+  <res name="wordsSearchTitle">Free online search words</res>
+  <res name="wordsSearchSubTitle">Search for words in word documents without opening the document.</res>
+  <res name="wordsSearchLiFeature1">Search with regular expression</res>
+  <res name="wordsSearchLiFeature2">Search in multiple files</res>
+  <res name="wordsSearchLiFeature3">You can use Aspose.Words Redaction to replace text</res>
+  <res name="wordsSearchQueryPlaceholder">Type text or regular expression</res>
+  <res name="SearchAction">Search</res>
+
+	
+
+  <res name="SearchButton">SEARCH NOW</res>
+  
+  <res name="SearchFeature1">Fast and Easy Search</res>
+  <res name="SearchFeature1Description">Upload your document and click on “SEARCH NOW” button. You will get the file with search results as soon as the operation is performed</res>
+  <res name="SearchFeature2">Search from Anywhere</res>
+  <res name="SearchFeature2Description">It works from all platforms including Windows, Mac, Android and iOS. All files are processed on our servers. No plugin or software installation required for you</res>
+  <res name="SearchFeature3">Search Quality</res>
+  
+  <res name="SearchAnotherFile">Search in other document</res>
+  <res name="SearchSuccessMessage">Your file has been processed successfully</res>
+  <res name="SearchSentEmailSuccessMessage">The search in your file has been completed successfully, please check your email to download the file with search results</res>
+  <res name="SearchViewer">VIEW RESULTS</res>
+  <res name="NoSearchResultsMessage">No search results</res>
+  <res name="WrongRegExpMessage">Wrong regular expression</res>
+  <res name="SearchQueryErrorMessage">Search query can&apos;t be empty</res>
+
+ 
+  <res name="wordsAssemblyDesc">Generate reports from templates</res>
+  <res name="wordsAssemblyPageTitle">Report Generation in Word documents</res>
+  <res name="wordsAssemblyMetaDescription">Free online report generation for Word documents. Load a template and fill it with data. Make a report with a template.</res>
+  <res name="wordsAssemblyH1">Free online report generation</res>
+  <res name="wordsAssemblyH4">Create reports from templates in Microsoft Word and OpenOffice documents.</res>
+  <res name="wordsAssemblyTitle">Free online report generation</res>
+  <res name="wordsAssemblyTitleSub">Create reports from templates in Microsoft Word and OpenOffice documents.</res>
+  <res name="wordsAssemblyValidationExpression">.docx|.doc|.dotx|.dot|.rtf|.odt|.ott|.txt|.html|.xhtml|.mhtml|.json|.csv|.xml|.xls|.xlsx</res>
+  
+  <res name="AssemblyButton">ASSEMBLE NOW</res>
+  <res name="AssemblyFeature1">Fast and Easy Assemble Data</res>
+  <res name="AssemblyFeature1Description">Upload your template and data-source files, choose the appropriate options and click on “ASSEMBLE NOW” button. You will get the output file as soon as the files are assembled.</res>
+  <res name="AssemblyFeature2">Assemble from Anywhere</res>
+  <res name="AssemblyFeature2Description">It works from all platforms including Windows, Mac, Android and iOS. All files are processed on our servers. No plugin or software installation required for you.</res>
+  <res name="AssemblyFeature3">Assemble Quality</res>
+  <res name="AssemblyLiFeature1">Instantly download the assembled file</res>
+  <res name="AssemblyOtherFeaturesTitle">Other Supported Assemblies</res>
+  <res name="AssemblyOtherFeaturesTitleSub">You can also assemble data into reports in other file formats. Please see the list below.</res>
+  <res name="AssemblyAnotherFile">Assemble another document</res>
+  <res name="AssemblySuccessMessage">Your document has been assembled successfully</res>
+  <res name="AssemblyReady">Your document is ready to be assembled</res>
+  <res name="AssemblyDropTemplate">Drop or upload your template file</res>
+  <res name="AssemblyDropDataSource">Drop or upload your data-source file</res>
+  <res name="ErrorFileSizeMax">File size should be less than</res>
+  <res name="AssemblyAction">Generate report</res>
+	
+	<res name="wordsUnlockPageTitle">Word Documents Unlocker Online Free</res>
+	<res name="wordsUnlockMetaDescription">Unlock password protected word documents online for free. Remove password online.</res>
+	<res name="wordsUnlockTitle">Free online documents unlocker</res>
+	<res name="wordsUnlockSubTitle">Unlock password protected word documents.</res>
+	<res name="wordsUnlockLiFeature1">Remove password in multiple files</res>
+	<res name="wordsUnlockLiFeature2">We don't decrypt or recover your documents</res>
+	<res name="wordsUnlockValidationExpression">.docx|.doc|.dotx|.dot|.odt|.ott</res>
+
+	<res name="wordsProtectValidationExpression">.docx|.doc|.dotx|.dot|.odt|.ott</res>
+  
+	<res name ="wordsSaveAsOptions">DOCX,PDF,EPUB,HTML,TXT,DOC,DOT,DOCM,DOTX,DOTM,RTF,MHTML,ODT,OTT,PS,PCL,XPS,BMP,EMF,PNG,JPG,GIF,TIFF</res>
+	<res name="photoshopSaveAsExtensions">PSD</res>
+  <res name="rasterSaveAsExtensions">JPG, GIF, PNG, BMP, TIFF</res>
+  <res name="markdownSaveAsExtensions">MD</res> 
+ 
+  <res name="404">404</res>
+  <res name="HomePage">Home Page</res>
+  <res name="EnterNumericData">Please enter data as numeric value</res>
+  <res name="ImagingWatermarkDesc">Add Watermark to image online from anywhere</res>
+  <res name="AddWatermarktoImageSubPageTitle">Add Watermark to your image</res>
+  <res name="AdddiagonalWatermarkURL">add-diagonal</res>
+  <res name="AddWatermarktoImageURL">add</res>
+  <res name="AddDiagnolWatermakPageTitle">Add Diagonal Watermark</res>
+  <res name="AddDiagnolWatermarktoImageSubPageTitle">Add Diagonal Watermark to your image</res>  
+  <res name="wordsConversionSaveAsOptions">PDF,DOCX,EPUB,HTML,TXT,DOC,DOT,DOCM,DOTX,DOTM,RTF,MHTML,ODT,OTT,PS,PCL,XPS,BMP,EMF,PNG,JPG,GIF,TIFF</res> 
+  <res name="AddAnnotationText">Annotation</res>
+  <res name="AddInvisibleAnnotationText">Invisible Annotation</res>
+  <res name="AddLnkAnnotationText">Lnk Annotation</res>
+  <res name="AddWatermarkAnnotationText">Watermak Annotation</res>
+  <res name="AnnotationType">Annotation Type</res>
+  <res name="WordsViewer">Free Online Word Document</res> 
+  <res name="SupportedDocumentsViewer">Supported documents: {0}</res>
+  <res name="ViewerProductFeature3">View your files instantly without installing anything</res>
+  <res name="ViewerProductFeature4">Fast and easy to use</res>
+  <res name="WatermarkPickColor">Pick Color</res>
+  <res name="ConversionFeatureDescription">Convert your Word, PDF and Excel documents from anywhere</res>
+  <res name="FromGoogleDrive">google</res>
+  <res name="FromDropbox">dropbox</res>
+  <res name="SelectFromGoogleDrive">From Google Drive</res>
+  <res name="SelectFromDropBox">From DropBox</res>
+  <res name="FileSaveSuccessfully">File {0} saved successfully.</res>
+  <res name="DropUploadFiles">Drop or upload your files</res>
+  <!-- Conversion App - How To-->
+  <res name="HowtoConversionTitle">How to convert {0} file using {1}</res>
+  <res name="HowtoConversionFeature1">Click inside the file drop area to upload file or drag &amp; drop file.</res>  
+  <res name="HowtoConversionFeature2">Your file will be uploaded and will be converted to required format.</res>
+  <res name="HowtoConversionFeature3">Download link of converted file will be available instantly after conversion.</res>	
+	<res name="HowtoComparisonTitle">How to Compare {0} files using {1}</res>
+	<res name="HowtoComparisonFeature1">Click inside the file drop area to upload file or drag &amp; drop file.</res>
+	<res name="HowtoComparisonFeature2">Likewise, upload second document file or drag &amp; drop it.</res>
+	<res name="HowtoComparisonFeature3">Click the "COMPARE NOW" button to start comparison of both files.</res>
+	<res name="HowtoEditorTitle">How to Compare edit document file using {1}</res>
+	<res name="HowtoEditorFeature1">Click inside the file drop area to upload file or drag &amp; drop file.</res>
+	<res name="HowtoEditorFeature2">File will be automatically rendered for you to view, edit &amp; download instantly.</res>
+	<res name="HowtoEditorFeature3">Download the original or edited document file.</res>	
+	<res name="HowtoParserTitle">How to Parse {0} files using {1}</res>
+	<res name="HowtoParserFeature1">Click inside the file drop area to upload file or drag &amp; drop file.</res>
+	<res name="HowtoParserFeature2">Click on "PARSE NOW" button, file will be automatically uploaded to parse.</res>
+	<res name="HowtoParserFeature3">Download link of document file will be available instantly after parse.</res>
+	
+	<!-- Conversion Apps page title, meta description, H1 and H4-->
+	<res name="wordsConversionPageTitle">Convert Word Document Online</res>
+	<res name="wordsConversionMetaDescription">Free online Word, OpenOffice, Text or HTML converter. Convert multiple files in one click.</res>
+	<res name="wordsConversionTitle">Free online converter</res>  
+	<res name="wordsConversionDesc">Convert Microsoft Word and OpenOffice documents to PDF, ePUB or HTML formats.</res>  
+  <res name="ConversionFeature1">Fast and Easy Conversion</res>
+  <res name="ConversionFeature1Description">Upload your document, choose the save format type and click on “Convert” button. You will get the download link as soon as the file is converted</res>
+  <res name="ConversionFeature1TasksDescription">Upload your project (or select online), choose the save format type and click on “Convert” button. You will get the download link as soon as the file is converted</res>
+  <res name="ConversionFeature2">Convert from Anywhere</res>
+  <res name="ConversionFeature2Description">It works from all platforms including Windows, Mac, Android and iOS. All files are processed on our servers. No plugin or software installation required for you</res>
+  <res name="ConversionFeature3">Conversion Quality</res>
+  <res name="ConversionButton">CONVERT</res>
+  <res name="ConversionAnotherFile">Convert other documents</res>
+  <res name="ConversionSuccessMessage">Your files have been processed successfully</res>
+  <res name="ConversionSentEmailSuccessMessage">Your file(s) has been converted successfully, please check your email to download converted file(s)</res>
+  <res name="ConversionViewer">VIEW RESULTS</res>
+  <res name="ConversionAction">Convert</res>
+  <res name="wordsConversionSubTitle">Convert Word, OpenOffice, Text or HTML documents to PDF, HTML &amp; images.</res>
+	<res name ="UnlockAPPName">Unlock</res>
+	<res name="wordsUnlockDesc">Unlock your password protected MS Word and OpenOffice Documents within web browser.</res>
+	<res name="UnlockFeature1">Fast and Easy Unlock</res>
+	<res name="UnlockFeature1Description">Upload your password protected file, enter current password and click on "UNLOCK NOW" button. You will get unlocked file as soon as the unlocking is performed</res>
+	<res name="UnlockFeature2">Unlock from Anywhere</res>
+	<res name="UnlockFeature2Description">It works from all platforms including Windows, Mac, Android and iOS. All files are processed on our servers. No plugin or software installation required for you</res>
+	<res name="UnlockFeature3">Unlock Quality</res>
+	<res name="UnlockLiFeature1">Instantly download or send output file as an email</res>
+	<res name="UnlockAnotherFile">Unlock another file</res>
+	<res name="UnlockSuccessMessage">Your file has been unlocked successfully</res>	
+	<res name="UnlockAction">Unlock</res>
+	<res name="ProtectAPPName">Protect</res>
+	<res name="ProtectButton">PROTECT NOW</res>
+	<res name="ProtectFeature1">Fast and Easy Protection</res>
+	<res name="ProtectFeature1Description">Upload your file, enter new password and click on "PROTECT NOW" button. You will get protected file as soon as the protection is performed</res>
+	<res name="ProtectFeature2">Protect from Anywhere</res>
+	<res name="ProtectFeature2Description">It works from all platforms including Windows, Mac, Android and iOS. All files are processed on our servers. No plugin or software installation required for you</res>
+	<res name="ProtectFeature3">Protection Quality</res>
+	<res name="ProtectLiFeature1">Protect your word documents with password</res>	
+	<res name="ProtectAnotherFile">Protect another file</res>
+	<res name="ProtectSuccessMessage">Your file has been protected successfully</res>
+	<res name="ProtectPasswordPlaceholder">Type Password</res>
+	<res name="ProtectAction">Protect</res>
+	<!-- Protect Apps - How To-->
+	<res name="wordsProtectTitle">Free Online Microsoft Word and OpenOffice documents Protection</res>
+	<res name="wordsProtectSubTitle">Protect Microsoft Word and OpenOffice documents with a password.</res>
+	<res name="HowtoProtectTitle">How to Protect Word Documents using {1} App</res>
+	<res name="HowtoProtectFeature1">Click inside the file drop area to upload a file or drag &amp; drop a file.</res>
+	<res name="HowtoProtectFeature2">Enter new password in Password input field to make your word document password protected.</res>
+	<res name="HowtoProtectFeature3">Click on Protect Now button. Download link of password protected word document will be shown.</res>
+	<res name="wordsProtectPageTitle">Free Online Microsoft Word and OpenOffice documents Protection</res>
+	<res name="wordsProtectMetaDescription">Protect Microsoft Word and OpenOffice documents online. Make password protected documents.</res>
+	<res name="wordsProtectDesc">Protect your documents with a password.</res>
+	<res name="AnnotationFeature1">Fast and Easy Annotation</res>
+	<res name="AnnotationFeature1Description">Upload your document and click on “REMOVE” button. You will get the download link as soon as the annotations are removed.</res>
+	<res name="AnnotationFeature1DescriptionChoice">Upload your document and click on “{0}” button. You will get the download link as soon as the annotations are removed.</res>
+	<res name="AnnotationFeature2">Remove Annotations from Anywhere</res>
+	<res name="AnnotationFeature2Choice">{0} Annotations from Anywhere</res>
+	<res name="AnnotationFeature2Description">It works from all platforms including Windows, Mac, Android and iOS. All files are processed on our servers. No plugin or software installation required for you</res>
+	<res name="AnnotationFeature3">Annotation Quality</res>
+
+
+	<!-- Signature resources  -->
+	
+	<res name="wordsSignaturePageTitle">Sign Word Document Online Free</res>
+	<res name="wordsSignatureMetaDescription">Free online signature maker. Sign word documents.</res>
+	<res name="wordsSignatureTitle">Free online signature</res>
+	<res name="wordsSignatureSubTitle">Add signature as text, image or drawing in word documents.</res>
+	<res name="wordsSignatureSaveAsOptions">DOCX,DOC,DOT,DOCM,DOTX,DOTM,RTF,ODT,PDF,HTML,MHTML,EPUB,XPS,BMP,EMF,PNG,JPEG,GIF,TIFF</res>
+	<res name="wordsSignatureLiFeature1">Quick way to sign document</res>
+	<res name="wordsSignatureLiFeature2">Add signature to multiple files</res>
+	<res name="wordsSignatureLiFeature3">Draw signature</res>	
+	<res name="HowtoSignatureTitle">How to Sign Word Document using {1}</res>
+	<res name="HowtoSignatureFeature1">Click inside the file drop area to upload file or drag &amp; drop file.</res>
+	<res name="HowtoSignatureFeature2">From dropdown, please choose one of the options i.e. Drawing, Text or Image.</res>
+	<res name="HowtoSignatureFeature3">If you opt for Drawing, please draw your signature. You can also choose the drawing color. If you opt for Text, please add your signature text inside the textbox. If you opt for Image, please upload your signature image.</res>
+	<res name="HowtoSignatureFeature4">Select your "Save as" type or leave it as default.</res>
+	<res name="HowtoSignatureFeature5">Click "SIGN DOCUMENT" button to eSign your document.</res>
+	<res name="SignatureTextErrorMessage">Enter the text</res>
+	<res name="SignatureDrawingErrorMessage">Draw the signature</res>
+	<res name="AddSignatureinAnotherFile">Sign another document</res>
+	<res name="AddSignatureButton">SIGN DOCUMENT</res>
+	<res name="AddSignatureTextPlaceholder">Add Your Text Signature</res>
+	<res name="SignatureFeature1">Fast and Easy Signature</res>
+	<res name="SignatureFeature1Description">Upload your document, select signature type and click on “SIGN DOCUMENT” button. You will get the download link as soon as the file is signed</res>
+	<res name="SignatureFeature2">Sign from Anywhere</res>
+	<res name="SignatureFeature2Description">It works from all platforms including Windows, Mac, Android and iOS. All files are processed on our servers. No plugin or software installation required for you</res>
+	<res name="SignatureFeature3">Signature Quality</res>
+	<res name="SignatureLiFeature1">Instantly download or send output file as an email</res>
+	<res name="SignatureOtherFeaturesTitle">Other Supported Signatures</res>
+	<res name="SignatureOtherFeaturesTitleSub">You can also add signature in other file formats. Please see the list below.</res>
+	<res name="AddSignatureImageFileExtenstions">.jpg|.jpeg|.png|.bmp</res>
+	<res name="AddSignatureSuccessMessage">Signature has been added successfully</res>
+	<res name="AddSignatureURL">sign</res>
+	<res name="SignatureViewer">VIEW RESULTS</res>
+	<res name="SignatureTypeDrawing">Drawing</res>
+	<res name="SignatureTypeText">Text</res>
+	<res name="SignatureTypeImage">Image</res>
+	<res name="SignatureButton">SIGN</res>
+	<res name="SignatureSuccessMessage">Signature has been added successfully</res>
+	<res name="SignatureSentEmailSuccessMessage">Your files has been signed successfully, please check your email to download them</res>
+	<res name="SignatureAnotherFile">Sign other documents</res>
+	<res name="SignatureAction">Sign</res>
+</resources>
+
+
+

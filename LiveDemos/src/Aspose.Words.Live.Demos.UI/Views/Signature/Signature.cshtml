@@ -1,0 +1,26 @@
+﻿@model  ViewModel
+
+@{
+    Layout = "~/Views/Shared/Layout.cshtml";
+    ViewBag.MainColor = "#000000";
+}
+
+@Html.Partial("Main")
+
+@Html.Partial("FooterProduct")
+
+@section scripts {
+    @Scripts.Render("~/scripts/shared/signature.js")
+    <script type="text/javascript">
+        var o = @Html.Raw(Model.JSOptions);
+        $.extend(o, {
+            Method: requestSignature,
+            signatureType: 'drawing',
+            validationTextMessage: "@Html.Raw(Model.Resources["SignatureTextErrorMessage"])",
+            validationDrawMessage: "@Html.Raw(Model.Resources["SignatureDrawingErrorMessage"])"
+        });
+    </script>
+}
+@section styles {
+    <link href="/css/colorpicker.css" rel="stylesheet" type="text/css" />
+}

@@ -14,6 +14,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             NormalComparison(dataDir);
             CompareForEqual(dataDir);
             CompareDocumentWithComparisonTarget(dataDir);
+            SpecifyComparisonGranularity(dataDir);
         }             
 
         private static void NormalComparison(string dataDir)
@@ -81,6 +82,22 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             dataDir = dataDir + "TestFile_Out.doc";
 
             Console.WriteLine("\nDocuments have compared successfully.\nFile saved at " + dataDir);
+        }
+
+        public static void SpecifyComparisonGranularity(string dataDir)
+        {
+            // ExStart:SpecifyComparisonGranularity
+            DocumentBuilder builderA = new DocumentBuilder(new Document());
+            DocumentBuilder builderB = new DocumentBuilder(new Document());
+
+            builderA.Writeln("This is A simple word");
+            builderB.Writeln("This is B simple words");
+
+            CompareOptions co = new CompareOptions();
+            co.Granularity = Granularity.CharLevel;
+
+            builderA.Document.Compare(builderB.Document, "author", DateTime.Now, co);
+            // ExEnd:SpecifyComparisonGranularity      
         }
     }
 }
