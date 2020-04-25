@@ -1,0 +1,30 @@
+﻿@model ViewModel
+
+<div class="form-horizontal">
+    <div class="search" style="margin-bottom:25px">
+        <input type="text" id="searchQuery" class="form-control" placeholder="@Model.Resources["RedactionSearchPlaceholder"]" />
+        <br />
+    </div>
+    <div class="search" style="margin-bottom:25px;margin-top:40px;">
+        <input type="text" id="replaceText" class="form-control" placeholder="@Model.Resources["RedactionReplacePlaceholder"]" />
+    </div>
+</div>
+<div class="form-inline">
+    <div class="form-group" style="margin-bottom:5px;">
+        <p style="display: inline-block;margin-bottom:5px;">&nbsp;&nbsp;@Model.Resources["CaseSensitive"]</p>
+        <input type="checkbox" id="caseSensitive"/>
+    </div>
+    <div class="form-group" style="margin-bottom:5px;">
+        <p style="display: inline-block;margin-bottom:5px;">&nbsp;&nbsp;@Model.Resources["Text"]</p>
+        <input type="checkbox" id="text" checked="checked" />
+    </div>
+    <div class="form-group" style="margin-bottom:5px;">
+        <p style="display: inline-block;margin-bottom:5px;">&nbsp;&nbsp;@Model.Resources["Comments"]</p>
+        <input type="checkbox" id="comments" checked="checked" />
+    </div>
+    <div class="form-group">
+        <p style="display: inline-block;margin-bottom:15px;">&nbsp;&nbsp;@Model.Resources["Metadata"]</p>
+        <input type="checkbox" id="metadata" />
+    </div>
+
+</div>
