@@ -132,6 +132,7 @@
     <Compile Include="ExCompatibilityOptions.cs" />
     <Compile Include="ExControlChar.cs" />
     <Compile Include="ExDocSaveOptions.cs" />
+    <Compile Include="ExFieldOptions.cs" />
     <Compile Include="ExHtmlLoadOptions.cs" />
     <Compile Include="ExDigitalSignatureCollection.cs" />
     <Compile Include="ExDigitalSignatureUtil.cs" />
@@ -214,6 +215,7 @@
     <Compile Include="TestData\TestClasses\MessageTestClass.cs" />
     <Compile Include="TestData\TestClasses\NumericTestClass.cs" />
     <Compile Include="TestData\TestClasses\SignPersonTestClass.cs" />
+    <Compile Include="TestUtil.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -37,8 +37,16 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(ArtifactsDir + "BorderCollection.GetBordersEnumerator.doc");                                                    
+            doc.Save(ArtifactsDir + "BorderCollection.GetBordersEnumerator.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "BorderCollection.GetBordersEnumerator.docx");
+
+            foreach (Border border in doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders)
+            {
+                Assert.AreEqual(Color.RoyalBlue.ToArgb(), border.Color.ToArgb());
+                Assert.AreEqual(LineStyle.Double, border.LineStyle);
+            }
         }
 
         [Test]
@@ -52,7 +60,17 @@ namespace ApiExamples
             BorderCollection borders = builder.ParagraphFormat.Borders;
 
             borders.ClearFormatting();
+
+            doc.Save(ArtifactsDir + "BorderCollection.RemoveAllBorders.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "BorderCollection.RemoveAllBorders.docx");
+
+            foreach (Border border in doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders)
+            {
+                Assert.AreEqual(Color.Empty.ToArgb(), border.Color.ToArgb());
+                Assert.AreEqual(LineStyle.None, border.LineStyle);
+            }
         }
     }
 }

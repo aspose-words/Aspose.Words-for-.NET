@@ -8,8 +8,10 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.Drawing;
+using Aspose.Words.Saving;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -31,7 +33,6 @@ namespace ApiExamples
             {
                 Console.WriteLine(e.Message);
             }
-
             //ExEnd
         }
 
@@ -117,19 +118,58 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DetectFileFormat()
+        public void DetectDocumentEncryption()
         {
             //ExStart
             //ExFor:FileFormatUtil.DetectFileFormat(String)
             //ExFor:FileFormatInfo
             //ExFor:FileFormatInfo.LoadFormat
             //ExFor:FileFormatInfo.IsEncrypted
+            //ExSummary:Shows how to use the FileFormatUtil class to detect the document format and encryption.
+            Document doc = new Document();
+
+            // Save it as an encrypted .odt
+            OdtSaveOptions saveOptions = new OdtSaveOptions(SaveFormat.Odt);
+            saveOptions.Password = "MyPassword";
+
+            doc.Save(ArtifactsDir + "File.DetectDocumentEncryption.odt", saveOptions);
+            
+            // Create a FileFormatInfo object for this document
+            FileFormatInfo info = FileFormatUtil.DetectFileFormat(ArtifactsDir + "File.DetectDocumentEncryption.odt");
+
+            // Verify the file type of our document and its encryption status
+            Assert.AreEqual(".odt", FileFormatUtil.LoadFormatToExtension(info.LoadFormat));
+            Assert.True(info.IsEncrypted);
+            //ExEnd
+        }
+
+        [Test]
+        public void DetectDigitalSignatures()
+        {
+            //ExStart
+            //ExFor:FileFormatUtil.DetectFileFormat(String)
+            //ExFor:FileFormatInfo
+            //ExFor:FileFormatInfo.LoadFormat
             //ExFor:FileFormatInfo.HasDigitalSignature
-            //ExSummary:Shows how to use the FileFormatUtil class to detect the document format and other features of the document.
+            //ExSummary:Shows how to use the FileFormatUtil class to detect the document format and presence of digital signatures.
+            // Use a FileFormatInfo instance to verify that a document is not digitally signed
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.docx");
-            Console.WriteLine("The document format is: " + FileFormatUtil.LoadFormatToExtension(info.LoadFormat));
-            Console.WriteLine("Document is encrypted: " + info.IsEncrypted);
-            Console.WriteLine("Document has a digital signature: " + info.HasDigitalSignature);
+
+            Assert.AreEqual(".docx", FileFormatUtil.LoadFormatToExtension(info.LoadFormat));
+            Assert.False(info.HasDigitalSignature);
+
+            // Sign the document
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
+            DigitalSignatureUtil.Sign(MyDir + "Document.docx", ArtifactsDir + "File.DetectDigitalSignatures.docx",
+                certificateHolder, new SignOptions() { SignTime = DateTime.Now });
+
+            // Use a new FileFormatInstance to confirm that it is signed
+            info = FileFormatUtil.DetectFileFormat(ArtifactsDir + "File.DetectDigitalSignatures.docx");
+
+            Assert.True(info.HasDigitalSignature);
+
+            // The signatures can then be accessed like this
+            Assert.AreEqual(1, DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "File.DetectDigitalSignatures.docx").Count);
             //ExEnd
         }
 
@@ -194,42 +234,25 @@ namespace ApiExamples
             Assert.AreEqual(".html", FileFormatUtil.LoadFormatToExtension(loadFormat));
         }
 
+
         [Test]
-        public void DetectDocumentSignatures()
-        {
-            //ExStart
-            //ExFor:FileFormatUtil.DetectFileFormat(String)
-            //ExFor:FileFormatInfo.HasDigitalSignature
-            //ExSummary:Shows how to check a document for digital signatures before loading it into a Document object.
-            // The path to the document which is to be processed
-            string filePath = MyDir + "Digitally signed.docx";
-
-            FileFormatInfo info = FileFormatUtil.DetectFileFormat(filePath);
-            if (info.HasDigitalSignature)
-            {
-                Console.WriteLine(
-                    "Document {0} has digital signatures, they will be lost if you open/save this document with Aspose.Words.",
-                    Path.GetFileName(filePath));
-            }
-            //ExEnd
-        }
-
-        //ExStart
-        //ExFor:Shape
-        //ExFor:Shape.ImageData
-        //ExFor:Shape.HasImage
-        //ExFor:ImageData
-        //ExFor:FileFormatUtil.ImageTypeToExtension(ImageType)
-        //ExFor:ImageData.ImageType
-        //ExFor:ImageData.Save(String)
-        //ExFor:CompositeNode.GetChildNodes(NodeType, bool)
-        //ExSummary:Shows how to extract images from a document and save them as files.
-        [Test] //ExSkip
         public void ExtractImagesToFiles()
         {
+            //ExStart
+            //ExFor:Shape
+            //ExFor:Shape.ImageData
+            //ExFor:Shape.HasImage
+            //ExFor:ImageData
+            //ExFor:FileFormatUtil.ImageTypeToExtension(ImageType)
+            //ExFor:ImageData.ImageType
+            //ExFor:ImageData.Save(String)
+            //ExFor:CompositeNode.GetChildNodes(NodeType, bool)
+            //ExSummary:Shows how to extract images from a document and save them as files.
             Document doc = new Document(MyDir + "Images.docx");
 
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
+            Assert.AreEqual(9, shapes.Count(s => ((Shape)s).HasImage));
+
             int imageIndex = 0;
             foreach (Shape shape in shapes.OfType<Shape>())
             {
@@ -241,7 +264,10 @@ namespace ApiExamples
                     imageIndex++;
                 }
             }
+            //ExEnd
+
+            Assert.AreEqual(9,Directory.GetFiles(ArtifactsDir).
+                Count(s => Regex.IsMatch(s, @"^.+\.(jpeg|png|emf|wmf)$") && s.StartsWith(ArtifactsDir + "File.ExtractImagesToFiles")));
         }
-        //ExEnd
     }
 }

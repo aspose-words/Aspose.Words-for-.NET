@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
@@ -45,6 +46,9 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "DocumentBase.SetPageColor.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBase.SetPageColor.docx");
+            Assert.AreEqual(System.Drawing.Color.LightGray.ToArgb(), doc.PageColor.ToArgb());
         }
 
         [Test]
@@ -58,31 +62,29 @@ namespace ApiExamples
 
             // Add text to both documents
             src.FirstSection.Body.FirstParagraph.AppendChild(new Run(src, "Source document first paragraph text."));
-            dst.FirstSection.Body.FirstParagraph.AppendChild(new Run(dst,
-                "Destination document first paragraph text."));
+            dst.FirstSection.Body.FirstParagraph.AppendChild(new Run(dst, "Destination document first paragraph text."));
 
-            // If we want to add the section from doc2 to doc1, we can't just append them like this:
-            // dst.AppendChild(src.FirstSection);
-            // Uncommenting that line throws an exception because doc2's first section belongs to doc2,
-            // but each node in a document must belong to the document
+            // In order for a child node to be successfully appended to another node in a document,
+            // both nodes must have the same parent document, or an exception is thrown
             Assert.AreNotEqual(dst, src.FirstSection.Document);
+            Assert.Throws<ArgumentException>(() => { dst.AppendChild(src.FirstSection); });
 
-            // We can create a new node that belongs to the destination document
+            // For that reason, we can't just append a section of the source document to the destination document using Node.AppendChild()
+            // Document.ImportNode() lets us get around this by creating a clone of a node and sets its parent to the calling document
             Section importedSection = (Section)dst.ImportNode(src.FirstSection, true);
-
-            // It has the same content but it is not the same node nor do they have the same owner
-            Assert.AreNotEqual(importedSection, src.FirstSection);
-            Assert.AreNotEqual(importedSection.Document, src.FirstSection.Document);
-            Assert.AreEqual(importedSection.Body.FirstParagraph.GetText(),
-                src.FirstSection.Body.FirstParagraph.GetText());
 
             // Now it is ready to be placed in the document
             dst.AppendChild(importedSection);
 
-            // Our document does indeed contain both the original and imported section
+            // Our document now contains both the original and imported section
             Assert.AreEqual("Destination document first paragraph text.\r\nSource document first paragraph text.\r\n",
                 dst.ToString(SaveFormat.Text));
             //ExEnd
+
+            Assert.AreNotEqual(importedSection, src.FirstSection);
+            Assert.AreNotEqual(importedSection.Document, src.FirstSection.Document);
+            Assert.AreEqual(importedSection.Body.FirstParagraph.GetText(),
+                src.FirstSection.Body.FirstParagraph.GetText());
         }
 
         [Test]
@@ -91,27 +93,35 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBase.ImportNode(Node, System.Boolean, ImportFormatMode)
             //ExSummary:Shows how to import node from source document to destination document with specific options.
-            // Create two documents with two styles that aren't the same but have the same name
+            // Create two documents with two styles that differ in font but have the same name
             Document src = new Document();
             Style srcStyle = src.Styles.Add(StyleType.Character, "My style");
+            srcStyle.Font.Name = "Courier New";
             DocumentBuilder srcBuilder = new DocumentBuilder(src);
             srcBuilder.Font.Style = srcStyle;
             srcBuilder.Writeln("Source document text.");
 
             Document dst = new Document();
             Style dstStyle = dst.Styles.Add(StyleType.Character, "My style");
-            dstStyle.Font.Bold = true;
+            dstStyle.Font.Name = "Calibri";
             DocumentBuilder dstBuilder = new DocumentBuilder(dst);
             dstBuilder.Font.Style = dstStyle;
-            srcBuilder.Writeln("Destination document text.");
+            dstBuilder.Writeln("Destination document text.");
 
-            dst.ImportNode(src.FirstSection, true, ImportFormatMode.UseDestinationStyles);
+            // Import the Section from the destination document into the source document, causing a style name collision
+            // If we use destination styles then the imported source text with the same style name as destination text
+            // will adopt the destination style 
+            Section importedSection = (Section)dst.ImportNode(src.FirstSection, true, ImportFormatMode.UseDestinationStyles);
+            Assert.AreEqual("Source document text.", importedSection.Body.Paragraphs[0].Runs[0].GetText().Trim()); //ExSkip
+            Assert.IsNull(dst.Styles["My style_0"]); //ExSkip
+            Assert.AreEqual(dstStyle.Font.Name, importedSection.Body.FirstParagraph.Runs[0].Font.Name);
+            Assert.AreEqual(dstStyle.Name, importedSection.Body.FirstParagraph.Runs[0].Font.StyleName);
 
-            Assert.IsNull(dst.Styles["My style_0"]);
-
+            // If we use ImportFormatMode.KeepDifferentStyles,
+            // the source style is preserved and the naming clash is resolved by adding a suffix 
             dst.ImportNode(src.FirstSection, true, ImportFormatMode.KeepDifferentStyles);
-
-            Assert.IsNotNull(dst.Styles["My style_0"]);
+            Assert.AreEqual(dstStyle.Font.Name, dst.Styles["My style"].Font.Name);
+            Assert.AreEqual(srcStyle.Font.Name, dst.Styles["My style_0"].Font.Name);
             //ExEnd
         }
 
@@ -149,6 +159,9 @@ namespace ApiExamples
             // However, we can see our watermark in an output pdf
             doc.Save(ArtifactsDir + "DocumentBase.BackgroundShape.pdf");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBase.BackgroundShapeFlatColor.docx");
+            Assert.AreEqual(System.Drawing.Color.LightBlue.ToArgb(), doc.BackgroundShape.FillColor.ToArgb());
         }
 
         #if NETFRAMEWORK || JAVA
@@ -168,10 +181,6 @@ namespace ApiExamples
         {
             Document doc = new Document();
 
-            // Images belong to NodeType.Shape
-            // There are none in a blank document
-            Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).Count);
-
             // Enable our custom image loading
             doc.ResourceLoadingCallback = new ImageNameHandler();
 
@@ -183,9 +192,11 @@ namespace ApiExamples
             builder.InsertImage("Aspose Logo");
             builder.InsertImage("My Watermark");
 
+            // Images belong to Shape objects, which are placed and scaled in the document
             Assert.AreEqual(3, doc.GetChildNodes(NodeType.Shape, true).Count);
 
             doc.Save(ArtifactsDir + "DocumentBase.ResourceLoadingCallback.docx");
+            TestResourceLoadingCallback(new Document(ArtifactsDir + "DocumentBase.ResourceLoadingCallback.docx")); //ExSkip
         }
 
         private class ImageNameHandler : IResourceLoadingCallback
@@ -236,6 +247,15 @@ namespace ApiExamples
             }
         }
         //ExEnd
+
+        private void TestResourceLoadingCallback(Document doc)
+        {
+            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
+            {
+                Assert.IsTrue(shape.HasImage);
+                Assert.IsNotEmpty(shape.ImageData.ImageBytes);
+            }
+        }
         #endif
     }
 }

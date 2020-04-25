@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
@@ -365,7 +366,7 @@ namespace ApiExamples
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
                 CssStyleSheetType = CssStyleSheetType.Embedded,
-                CssClassNamePrefix = "aspose-"
+                CssClassNamePrefix = "myprefix-"
             };
 
             // The prefix will be found before CSS element names in the embedded stylesheet
@@ -439,9 +440,11 @@ namespace ApiExamples
             };
 
             document.Save(ArtifactsDir + "HtmlSaveOptions.ResolveFontNames.html", saveOptions);
-            //ExEnd
 
-            DocumentHelper.FindTextInFile(ArtifactsDir + "HtmlSaveOptions.ResolveFontNames.html", "<span style=\"font-family:Arial\">");
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ResolveFontNames.html");
+
+            Assert.True(Regex.Match(outDocContents, "<span style=\"font-family:Arial\">").Success);
+            //ExEnd
         }
 
         [Test]

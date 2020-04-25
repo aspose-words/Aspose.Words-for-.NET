@@ -40,8 +40,15 @@ namespace ApiExamples
             // If the document contains a routing slip, we can preserve it while saving by setting this flag to true
             options.SaveRoutingSlip = true;
 
-            doc.Save(ArtifactsDir + "DocSaveOptions.SaveAsDoc.doc", options);          
+            doc.Save(ArtifactsDir + "DocSaveOptions.SaveAsDoc.doc", options);
             //ExEnd
+
+            Assert.Throws<IncorrectPasswordException>(() => doc = new Document(ArtifactsDir + "DocSaveOptions.SaveAsDoc.doc"));
+
+            LoadOptions loadOptions = new LoadOptions("MyPassword");
+            doc = new Document(ArtifactsDir + "DocSaveOptions.SaveAsDoc.doc", loadOptions);
+
+            Assert.AreEqual("Hello world!", doc.GetText().Trim());
         }
 
         [Test]
@@ -72,6 +79,7 @@ namespace ApiExamples
             //ExFor:DocSaveOptions.SavePictureBullet
             //ExSummary:Shows how to remove PictureBullet data from the document.
             Document doc = new Document(MyDir + "Image bullet points.docx");
+            Assert.NotNull(doc.Lists[0].ListLevels[0].ImageData); //ExSkip
 
             // Word 97 cannot work correctly with PictureBullet data
             // To remove PictureBullet data, set the option to "false"
@@ -80,6 +88,10 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "DocSaveOptions.PictureBullets.doc", saveOptions);
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocSaveOptions.PictureBullets.doc");
+
+            Assert.Null(doc.Lists[0].ListLevels[0].ImageData);
         }
 
         [TestCase(true)]

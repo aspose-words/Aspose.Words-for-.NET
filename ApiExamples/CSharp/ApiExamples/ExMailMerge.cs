@@ -955,7 +955,7 @@ namespace ApiExamples
             //ExFor:FieldAddressBlock
             //ExFor:FieldAddressBlock.GetFieldNames
             //ExSummary:Shows how to get mail merge field names used by the field.
-            Document doc = new Document(MyDir + "Field ADDRESSBLOCK.docx");
+            Document doc = new Document(MyDir + "Field sample - ADDRESSBLOCK.docx");
 
             string[] addressFieldsExpect =
             {

@@ -38,8 +38,7 @@ namespace ApiExamples
             MessageTestClass sender = new MessageTestClass("LINQ Reporting Engine", "Hello World");
             BuildReport(doc, sender, "s", ReportBuildOptions.InlineErrorMessages);
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             Assert.AreEqual("LINQ Reporting Engine says: Hello World\f", doc.GetText());
         }
@@ -53,8 +52,7 @@ namespace ApiExamples
             MessageTestClass sender = new MessageTestClass("LINQ Reporting Engine", "hello world");
             BuildReport(doc, sender, "s");
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             Assert.AreEqual("linq reporting engine says: HELLO WORLD, Hello World, Hello world\f", doc.GetText());
         }
@@ -70,8 +68,7 @@ namespace ApiExamples
                 .WithValuesAndDate(1, 2.2, 200, null, DateTime.Parse("10.09.2016 10:00:00")).Build();
             BuildReport(doc, sender, "s");
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             Assert.AreEqual("A : ii, 200th, FIRST, Two, C8, - 200 -\f", doc.GetText());
         }
@@ -241,8 +238,7 @@ namespace ApiExamples
 
             BuildReport(doc, Common.GetManagers(), "Managers");
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             Assert.AreEqual("The names are: John Smith, Tony Anderson, July James\f", doc.GetText());
         }
@@ -254,8 +250,7 @@ namespace ApiExamples
 
             BuildReport(doc, Common.GetManagers(), "m");
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             Assert.AreEqual("You have chosen 3 item(s).\f", doc.GetText());
         }
@@ -267,8 +262,7 @@ namespace ApiExamples
 
             BuildReport(doc, Common.GetEmptyManagers(), "m");
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             Assert.AreEqual("You have chosen no items.\f", doc.GetText());
         }
@@ -663,10 +657,8 @@ namespace ApiExamples
                 .WithImageStream(new FileStream(mImage, FileMode.Open, FileAccess.Read)).Build();
             BuildReport(doc, imageStream, "src", ReportBuildOptions.None);
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
-            doc = new Document(dstStream);
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
             foreach (Shape shape in shapes.OfType<Shape>())
@@ -678,8 +670,6 @@ namespace ApiExamples
                 Assert.AreNotEqual(346.35, shape.Height);
                 Assert.AreEqual(431.5, shape.Width);
             }
-
-            dstStream.Dispose();
         }
 
         [Test]
@@ -693,10 +683,8 @@ namespace ApiExamples
                 .WithImageStream(new FileStream(mImage, FileMode.Open, FileAccess.Read)).Build();
             BuildReport(doc, imageStream, "src", ReportBuildOptions.None);
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
-            doc = new Document(dstStream);
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
             foreach (Shape shape in shapes.OfType<Shape>())
@@ -708,8 +696,6 @@ namespace ApiExamples
                 Assert.AreNotEqual(431.5, shape.Width);
                 Assert.AreEqual(346.35, shape.Height);
             }
-
-            dstStream.Dispose();
         }
 
         [Test]
@@ -723,10 +709,8 @@ namespace ApiExamples
                 .WithImageStream(new FileStream(mImage, FileMode.Open, FileAccess.Read)).Build();
             BuildReport(doc, imageStream, "src", ReportBuildOptions.None);
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
-            doc = new Document(dstStream);
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
             foreach (Shape shape in shapes.OfType<Shape>())
@@ -738,8 +722,6 @@ namespace ApiExamples
                 Assert.AreNotEqual(346.35, shape.Height);
                 Assert.AreNotEqual(431.5, shape.Width);
             }
-
-            dstStream.Dispose();
         }
 
         [Test]
@@ -753,10 +735,8 @@ namespace ApiExamples
                 .WithImageStream(new FileStream(mImage, FileMode.Open, FileAccess.Read)).Build();
             BuildReport(doc, imageStream, "src", ReportBuildOptions.None);
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
-            doc = new Document(dstStream);
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
             foreach (Shape shape in shapes.OfType<Shape>())
@@ -768,8 +748,6 @@ namespace ApiExamples
                 Assert.AreEqual(300.0d, shape.Height);
                 Assert.AreEqual(300.0d, shape.Width);
             }
-
-            dstStream.Dispose();
         }
 
         [Test]

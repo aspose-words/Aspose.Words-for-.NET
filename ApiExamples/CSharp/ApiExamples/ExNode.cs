@@ -32,10 +32,7 @@ namespace ApiExamples
             //ExFor:Node
             //ExFor:Node.Clone
             //ExSummary:Shows how to clone composite nodes with and without their child nodes.
-            // Create a new empty document
             Document doc = new Document();
-
-            // Add some text to the first paragraph
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
             para.AppendChild(new Run(doc, "Some text"));
 
@@ -55,10 +52,9 @@ namespace ApiExamples
             //ExStart
             //ExFor:Node.ParentNode
             //ExSummary:Shows how to access the parent node.
-            // Create a new empty document. It has one section
             Document doc = new Document();
 
-            // The section is the first child node of the document
+            // A newly created document has one section
             Node section = doc.FirstChild;
 
             // The section's parent node is the document
@@ -611,6 +607,7 @@ namespace ApiExamples
             //ExFor:CompositeNode.InsertBefore(Node, Node)
             //ExFor:CompositeNode.PrependChild(Node) 
             //ExFor:Paragraph.GetText
+            //ExFor:Run
             //ExSummary:Shows how to add, update and delete child nodes from within a CompositeNode.
             Document doc = new Document();
 
@@ -657,7 +654,6 @@ namespace ApiExamples
         [Test] //ExSkip
         public void NodeXPathNavigator()
         {
-            // Create a blank document
             Document doc = new Document();
 
             // A document is a composite node so we can make a navigator straight away

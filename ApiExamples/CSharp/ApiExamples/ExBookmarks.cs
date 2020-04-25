@@ -49,9 +49,7 @@ namespace ApiExamples
             // Create a document with 3 bookmarks: "MyBookmark 1", "MyBookmark 2", "MyBookmark 3"
             Document doc = CreateDocumentWithBookmarks();
             BookmarkCollection bookmarks = doc.Range.Bookmarks;
-
-            // Check that we have 3 bookmarks
-            Assert.AreEqual(3, bookmarks.Count);
+            Assert.AreEqual(3, bookmarks.Count); //ExSkip
             Assert.AreEqual("MyBookmark 1", bookmarks[0].Name); //ExSkip
             Assert.AreEqual("Text content of MyBookmark 2", bookmarks[1].Text); //ExSkip
 

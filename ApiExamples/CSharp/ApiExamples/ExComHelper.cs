@@ -30,13 +30,13 @@ namespace ApiExamples
             // There are two ways of using a ComHelper to open a document
             // 1: Using a filename
             Document doc = comHelper.Open(MyDir + "Document.docx");
-            Assert.AreEqual("Hello World!\f", doc.GetText());
+            Assert.AreEqual("Hello World!", doc.GetText().Trim());
 
             // 2: Using a Stream
             using (FileStream stream = new FileStream(MyDir + "Document.docx", FileMode.Open))
             {
                 doc = comHelper.Open(stream);
-                Assert.AreEqual("Hello World!\f", doc.GetText());
+                Assert.AreEqual("Hello World!", doc.GetText().Trim());
             }
             //ExEnd
         }

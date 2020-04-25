@@ -5,7 +5,6 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -39,7 +38,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void InsertHtml()
         {
-            Document doc = new Document(MyDir + "Field MERGEFIELD.docx");
+            Document doc = new Document(MyDir + "Field sample - MERGEFIELD.docx");
 
             // Add a handler for the MergeField event
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldInsertHtml();

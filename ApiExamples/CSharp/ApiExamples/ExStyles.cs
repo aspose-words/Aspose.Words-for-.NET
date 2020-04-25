@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using Aspose.Words;
 using NUnit.Framework;
@@ -230,8 +229,7 @@ namespace ApiExamples
             doc.Styles.DefaultParagraphFormat.SpaceAfter = 20;
             doc.Styles.DefaultParagraphFormat.Alignment = ParagraphAlignment.Right;
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Rtf);
+            doc = DocumentHelper.SaveOpen(doc);
 
             Assert.IsTrue(doc.Styles.DefaultFont.Bold);
             Assert.AreEqual("PMingLiU", doc.Styles.DefaultFont.Name);

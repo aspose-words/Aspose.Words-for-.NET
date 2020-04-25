@@ -6,7 +6,6 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.IO;
 using System.Collections.Generic;
 using Aspose.Words;
 using Aspose.Words.Drawing;
@@ -35,9 +34,6 @@ namespace ApiExamples
             // Use a document builder to insert a bar chart
             Shape chartShape = builder.InsertChart(ChartType.Bar, 400, 300);
 
-            Assert.AreEqual(ShapeType.NonPrimitive, chartShape.ShapeType);
-            Assert.True(chartShape.HasChart);
-
             // Get the chart object from the containing shape
             Chart chart = chartShape.Chart;
             
@@ -49,6 +45,18 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Charts.ChartTitle.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.ChartTitle.docx");
+            chartShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(ShapeType.NonPrimitive, chartShape.ShapeType);
+            Assert.True(chartShape.HasChart);
+
+            title = chartShape.Chart.Title;
+
+            Assert.AreEqual("MyChart", title.Text);
+            Assert.True(title.Overlay);
+            Assert.True(title.Show);
         }
 
         [Test]
@@ -77,6 +85,11 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Charts.DefineNumberFormatForDataLabels.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.DefineNumberFormatForDataLabels.docx");
+            series = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.Series[0];
+
+            Assert.AreEqual(string.Empty, series.DataLabels.NumberFormat.FormatCode);
         }
 
         [Test]
@@ -182,8 +195,8 @@ namespace ApiExamples
             xAxis.ReverseOrder = false;
             xAxis.MajorTickMark = AxisTickMark.Inside;
             xAxis.MinorTickMark = AxisTickMark.Cross;
-            xAxis.MajorUnit = 10;
-            xAxis.MinorUnit = 15;
+            xAxis.MajorUnit = 10.0d;
+            xAxis.MinorUnit = 15.0d;
             xAxis.TickLabelOffset = 50;
             xAxis.TickLabelPosition = AxisTickLabelPosition.Low;
             xAxis.TickLabelSpacingIsAuto = false;
@@ -195,12 +208,36 @@ namespace ApiExamples
             yAxis.ReverseOrder = true;
             yAxis.MajorTickMark = AxisTickMark.Inside;
             yAxis.MinorTickMark = AxisTickMark.Cross;
-            yAxis.MajorUnit = 100;
-            yAxis.MinorUnit = 20;
+            yAxis.MajorUnit = 100.0d;
+            yAxis.MinorUnit = 20.0d;
             yAxis.TickLabelPosition = AxisTickLabelPosition.NextToAxis;
-            //ExEnd
 
             doc.Save(ArtifactsDir + "Charts.AxisProperties.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.AxisProperties.docx");
+            chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
+
+            Assert.AreEqual(AxisCategoryType.Category, chart.AxisX.CategoryType);
+            Assert.AreEqual(AxisCrosses.Minimum, chart.AxisX.Crosses);
+            Assert.False(chart.AxisX.ReverseOrder);
+            Assert.AreEqual(AxisTickMark.Inside, chart.AxisX.MajorTickMark);
+            Assert.AreEqual(AxisTickMark.Cross, chart.AxisX.MinorTickMark);
+            Assert.AreEqual(1.0d, chart.AxisX.MajorUnit);
+            Assert.AreEqual(0.5d, chart.AxisX.MinorUnit);
+            Assert.AreEqual(50, chart.AxisX.TickLabelOffset);
+            Assert.AreEqual(AxisTickLabelPosition.Low, chart.AxisX.TickLabelPosition);
+            Assert.False(chart.AxisX.TickLabelSpacingIsAuto);
+            Assert.AreEqual(1, chart.AxisX.TickMarkSpacing);
+
+            Assert.AreEqual(AxisCategoryType.Category, chart.AxisY.CategoryType);
+            Assert.AreEqual(AxisCrosses.Maximum, chart.AxisY.Crosses);
+            Assert.True(chart.AxisY.ReverseOrder);
+            Assert.AreEqual(AxisTickMark.Inside, chart.AxisY.MajorTickMark);
+            Assert.AreEqual(AxisTickMark.Cross, chart.AxisY.MinorTickMark);
+            Assert.AreEqual(100.0d, chart.AxisY.MajorUnit);
+            Assert.AreEqual(20.0d, chart.AxisY.MinorUnit);
+            Assert.AreEqual(AxisTickLabelPosition.NextToAxis, chart.AxisY.TickLabelPosition);
         }
 
         [Test]
@@ -246,21 +283,39 @@ namespace ApiExamples
 
             // Set major units to a week and minor units to a day
             xAxis.BaseTimeUnit = AxisTimeUnit.Days;
-            xAxis.MajorUnit = 7;
-            xAxis.MinorUnit = 1;
+            xAxis.MajorUnit = 7.0d;
+            xAxis.MinorUnit = 1.0d;
             xAxis.MajorTickMark = AxisTickMark.Cross;
             xAxis.MinorTickMark = AxisTickMark.Outside;
 
             // Define Y axis properties
             yAxis.TickLabelPosition = AxisTickLabelPosition.High;
-            yAxis.MajorUnit = 100;
-            yAxis.MinorUnit = 50;
+            yAxis.MajorUnit = 100.0d;
+            yAxis.MinorUnit = 50.0d;
             yAxis.DisplayUnit.Unit = AxisBuiltInUnit.Hundreds;
             yAxis.Scaling.Minimum = new AxisBound(100);
             yAxis.Scaling.Maximum = new AxisBound(700);
 
             doc.Save(ArtifactsDir + "Charts.DateTimeValues.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.DateTimeValues.docx");
+            chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
+
+            Assert.AreEqual(new AxisBound(new DateTime(2017, 11, 05).ToOADate()), chart.AxisX.Scaling.Minimum);
+            Assert.AreEqual(new AxisBound(new DateTime(2017, 12, 03)), chart.AxisX.Scaling.Maximum);
+            Assert.AreEqual(AxisTimeUnit.Days, chart.AxisX.BaseTimeUnit);
+            Assert.AreEqual(7.0d, chart.AxisX.MajorUnit);
+            Assert.AreEqual(1.0d, chart.AxisX.MinorUnit);
+            Assert.AreEqual(AxisTickMark.Cross, chart.AxisX.MajorTickMark);
+            Assert.AreEqual(AxisTickMark.Outside, chart.AxisX.MinorTickMark);
+
+            Assert.AreEqual(AxisTickLabelPosition.High, chart.AxisY.TickLabelPosition);
+            Assert.AreEqual(100.0d, chart.AxisY.MajorUnit);
+            Assert.AreEqual(50.0d, chart.AxisY.MinorUnit);
+            Assert.AreEqual(AxisBuiltInUnit.Hundreds, chart.AxisY.DisplayUnit.Unit);
+            Assert.AreEqual(new AxisBound(100), chart.AxisY.Scaling.Minimum);
+            Assert.AreEqual(new AxisBound(700), chart.AxisY.Scaling.Maximum);
         }
 
         [Test]
@@ -268,13 +323,15 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ChartAxis.Hidden
-            //ExSummary:Shows how to hide chart axises.
+            //ExSummary:Shows how to hide chart axes.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert chart
             Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
             Chart chart = shape.Chart;
+
+            // Hide both the X and Y axes
             chart.AxisX.Hidden = true;
             chart.AxisY.Hidden = true;
 
@@ -284,15 +341,14 @@ namespace ApiExamples
                 new string[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" },
                 new double[] { 1.2, 0.3, 2.1, 2.9, 4.2 });
 
-            MemoryStream stream = new MemoryStream();
-            doc.Save(stream, SaveFormat.Docx);
-
-            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            chart = shape.Chart;
-
-            Assert.AreEqual(true, chart.AxisX.Hidden);
-            Assert.AreEqual(true, chart.AxisY.Hidden);
+            doc.Save(ArtifactsDir + "Charts.HideChartAxis.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.HideChartAxis.docx");
+            chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
+
+            Assert.True(chart.AxisX.Hidden);
+            Assert.True(chart.AxisY.Hidden);
         }
 
         [Test]
@@ -311,21 +367,25 @@ namespace ApiExamples
             Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
             Chart chart = shape.Chart;
 
-            // Clear demo data
+            // Clear demo data and replace it with a new custom chart series
             chart.Series.Clear();
-
             chart.Series.Add("Aspose Test Series",
                 new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
-                new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
+                new double[] { 1900000.0d, 850000.0d, 2100000.0d, 600000.0d, 1500000.0d });
 
             // Set number format
             chart.AxisY.NumberFormat.FormatCode = "#,##0";
 
             // Set this to override the above value and draw the number format from the source cell
             Assert.False(chart.AxisY.NumberFormat.IsLinkedToSource);
-            //ExEnd
 
             doc.Save(ArtifactsDir + "Charts.SetNumberFormatToChartAxis.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.SetNumberFormatToChartAxis.docx");
+            chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
+
+            Assert.AreEqual("#,##0", chart.AxisY.NumberFormat.FormatCode);
         }
 
         // Note: Tests below used for verification conversion docx to pdf and the correct display.
@@ -402,11 +462,11 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert bubble chart
-            Shape shapeWithBubbleChart = builder.InsertChart(ChartType.Bubble, 432, 252);
+            Chart chart = builder.InsertChart(ChartType.Bubble, 432, 252).Chart;
             // Clear demo data
-            shapeWithBubbleChart.Chart.Series.Clear();
+            chart.Series.Clear();
             
-            ChartSeries bubbleChartSeries = shapeWithBubbleChart.Chart.Series.Add("Aspose Test Series",
+            ChartSeries bubbleChartSeries = chart.Series.Add("Aspose Test Series",
                 new[] { 2.9, 3.5, 1.1, 4, 4 },
                 new[] { 1.9, 8.5, 2.1, 6, 1.5 },
                 new[] { 9, 4.5, 2.5, 8, 5 });
@@ -438,6 +498,21 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Charts.ChartDataLabelCollection.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.ChartDataLabelCollection.docx");
+            bubbleChartDataLabels = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.Series[0].DataLabels;
+
+            Assert.False(bubbleChartDataLabels.ShowBubbleSize);
+            Assert.False(bubbleChartDataLabels.ShowCategoryName);
+            Assert.False(bubbleChartDataLabels.ShowSeriesName);
+            Assert.AreEqual(",", bubbleChartDataLabels.Separator);
+
+            pieChartDataLabels = ((Shape)doc.GetChild(NodeType.Shape, 1, true)).Chart.Series[0].DataLabels;
+
+            Assert.False(pieChartDataLabels.ShowLeaderLines);
+            Assert.False(pieChartDataLabels.ShowLegendKey);
+            Assert.False(pieChartDataLabels.ShowPercentage);
+            Assert.False(pieChartDataLabels.ShowValue);
         }
 
         //ExStart
@@ -630,6 +705,12 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Charts.PieChartExplosion.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.PieChartExplosion.docx");
+            ChartSeries series = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.Series[0];
+
+            Assert.AreEqual(10, series.DataPoints[0].Explosion);
+            Assert.AreEqual(40, series.DataPoints[1].Explosion);
         }
 
         [Test]
@@ -638,7 +719,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Charts.ChartDataLabel.ShowBubbleSize
             //ExFor:Charts.IChartDataPoint.Bubble3D
-            //ExSummary:Demonstrates bubble chart-exclusive features.
+            //ExSummary:Shows how to use 3D effects with bubble charts.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -657,6 +738,14 @@ namespace ApiExamples
             
             doc.Save(ArtifactsDir + "Charts.Bubble3D.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.Bubble3D.docx");
+            ChartSeries series = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.Series[0];
+
+            for (int i = 0; i < 3; i++)
+            {
+                Assert.True(series.DataLabels[i].ShowBubbleSize);
+            }
         }
 
         //ExStart
@@ -668,7 +757,7 @@ namespace ApiExamples
         //ExFor:ChartSeriesCollection.Add(String,Double[],Double[])
         //ExFor:ChartSeriesCollection.Add(String,Double[],Double[],Double[])
         //ExFor:ChartSeriesCollection.Add(String,String[],Double[])
-        //ExSummary:Shows an appropriate graph type for each chart series.
+        //ExSummary:Shows how to pick an appropriate graph type for a chart series.
         [Test] //ExSkip
         public void ChartSeriesCollection()
         {
@@ -765,7 +854,7 @@ namespace ApiExamples
             // All charts come with demo data
             // This column chart currently has 3 series with 4 categories, which means 4 clusters, 3 columns in each
             ChartSeriesCollection chartData = chart.Series;
-            Assert.AreEqual(3, chartData.Count);
+            Assert.AreEqual(3, chartData.Count); //ExSkip
 
             // Iterate through the series with an enumerator and print their names
             using (IEnumerator<ChartSeries> enumerator = chart.Series.GetEnumerator())
@@ -781,22 +870,18 @@ namespace ApiExamples
             // We will match the existing category/series names in the demo data and add a 4th column to each column cluster
             string[] categories = { "Category 1", "Category 2", "Category 3", "Category 4" };
             chart.Series.Add("Series 4", categories, new[] { 4.4, 7.0, 3.5, 2.1 });
-
-            Assert.AreEqual(4, chartData.Count);
-            Assert.AreEqual("Series 4", chartData[3].Name);
+            Assert.AreEqual(4, chartData.Count); //ExSkip
+            Assert.AreEqual("Series 4", chartData[3].Name); //ExSkip
 
             // We can remove series by index
             chartData.RemoveAt(2);
-
-            Assert.AreEqual(3, chartData.Count);
-            Assert.AreEqual("Series 4", chartData[2].Name);
+            Assert.AreEqual(3, chartData.Count); //ExSkip
+            Assert.AreEqual("Series 4", chartData[2].Name); //ExSkip
 
             // We can also remove out all the series
             // This leaves us with an empty graph and is a convenient way of wiping out demo data
             chartData.Clear();
-
-            Assert.AreEqual(0, chartData.Count);
-            //ExEnd
+            Assert.AreEqual(0, chartData.Count); //ExSkip
         }
 
         [Test]
@@ -820,16 +905,21 @@ namespace ApiExamples
             chart.Series.Add("Series 1", new[] { 1.0, 2.0, 3.0, 4.0, 5.0 }, new[] { 1.0, 20.0, 400.0, 8000.0, 160000.0 });
 
             // The scaling of the X axis is linear by default, which means it will display "0, 1, 2, 3..."
-            Assert.AreEqual(AxisScaleType.Linear, chart.AxisX.Scaling.Type);
-
-            // Linear axis scaling is suitable for our X-values, but not our erratic Y-values 
+            // Linear axis scaling is suitable for our X-values, but our Y-values call for a logarithmic scale to be represented accurately on a graph 
             // We can set the scaling of the Y-axis to Logarithmic with a base of 20
             // The Y-axis will now display "1, 20, 400, 8000...", which is ideal for accurate representation of this set of Y-values
             chart.AxisY.Scaling.Type = AxisScaleType.Logarithmic;
-            chart.AxisY.Scaling.LogBase = 20.0;
+            chart.AxisY.Scaling.LogBase = 20.0d;
 
             doc.Save(ArtifactsDir + "Charts.AxisScaling.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.AxisScaling.docx");
+            chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
+
+            Assert.AreEqual(AxisScaleType.Linear, chart.AxisX.Scaling.Type);
+            Assert.AreEqual(AxisScaleType.Logarithmic, chart.AxisY.Scaling.Type);
+            Assert.AreEqual(20.0d, chart.AxisY.Scaling.LogBase);
         }
 
         [Test]
@@ -888,6 +978,25 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Charts.AxisBound.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.AxisBound.docx");
+            chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
+
+            Assert.False(chart.AxisX.Scaling.Minimum.IsAuto);
+            Assert.AreEqual(0.0d, chart.AxisX.Scaling.Minimum.Value);
+            Assert.AreEqual(10.0d, chart.AxisX.Scaling.Maximum.Value);
+
+            Assert.False(chart.AxisY.Scaling.Minimum.IsAuto);
+            Assert.AreEqual(0.0d, chart.AxisY.Scaling.Minimum.Value);
+            Assert.AreEqual(10.0d, chart.AxisY.Scaling.Maximum.Value);
+
+            chart = ((Shape)doc.GetChild(NodeType.Shape, 1, true)).Chart;
+
+            Assert.False(chart.AxisX.Scaling.Minimum.IsAuto);
+            Assert.AreEqual(new AxisBound(new DateTime(1980, 1, 1)), chart.AxisX.Scaling.Minimum);
+            Assert.AreEqual(new AxisBound(new DateTime(1990, 1, 1)), chart.AxisX.Scaling.Maximum);
+
+            Assert.True(chart.AxisY.Scaling.Minimum.IsAuto);
         }
 
         [Test]
@@ -904,11 +1013,10 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a line graph
-            Shape chartShape = builder.InsertChart(ChartType.Line, 450, 300);
-            Chart chart = chartShape.Chart;
+            Shape shape = builder.InsertChart(ChartType.Line, 450, 300);
 
             // Get its legend
-            ChartLegend legend = chart.Legend;
+            ChartLegend legend = shape.Chart.Legend;
 
             // By default, other elements of a chart will not overlap with its legend
             Assert.False(legend.Overlay);
@@ -918,6 +1026,13 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Charts.ChartLegend.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.ChartLegend.docx");
+
+            legend = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.Legend;
+
+            Assert.False(legend.Overlay);
+            Assert.AreEqual(LegendPosition.TopRight, legend.Position);
         }
 
         [Test]
@@ -944,6 +1059,13 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Charts.AxisCross.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.AxisCross.docx");
+            axis = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.AxisX;
+
+            Assert.True(axis.AxisBetweenCategories);
+            Assert.AreEqual(AxisCrosses.Custom, axis.Crosses);
+            Assert.AreEqual(3.0, axis.CrossesAt);
         }
 
         [Test]
@@ -974,8 +1096,8 @@ namespace ApiExamples
             axis.MajorTickMark = AxisTickMark.Outside;
             axis.MinorTickMark = AxisTickMark.Outside;
 
-            axis.MajorUnit = 10.0;
-            axis.MinorUnit = 1.0;
+            axis.MajorUnit = 10.0d;
+            axis.MinorUnit = 1.0d;
 
             // Stretch out the bounds of the axis out to show 3 major ticks and 27 minor ticks
             axis.Scaling.Minimum = new AxisBound(-10);
@@ -997,14 +1119,43 @@ namespace ApiExamples
 
             // Get the axis to display values, but in millions
             axis.DisplayUnit.Unit = AxisBuiltInUnit.Millions;
+            Assert.AreEqual(AxisBuiltInUnit.Millions, axis.DisplayUnit.Unit); //ExSkip
 
             // Besides the built-in axis units we can choose from,
             // we can also set the axis to display values in some custom denomination, using the following attribute
             // The statement below is equivalent to the one above
             axis.DisplayUnit.CustomUnit = 1000000.0;
+            Assert.AreEqual(AxisBuiltInUnit.Custom, axis.DisplayUnit.Unit); //ExSkip
 
             doc.Save(ArtifactsDir + "Charts.ChartAxisDisplayUnit.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.ChartAxisDisplayUnit.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(450.0d, shape.Width);
+            Assert.AreEqual(250.0d, shape.Height);
+
+            axis = shape.Chart.AxisX;
+
+            Assert.AreEqual(AxisTickMark.Inside, axis.MajorTickMark);
+            Assert.AreEqual(AxisTickMark.Inside, axis.MinorTickMark);
+            Assert.AreEqual(10.0d, axis.MajorUnit);
+            Assert.AreEqual(-10.0d, axis.Scaling.Minimum.Value);
+            Assert.AreEqual(30.0d, axis.Scaling.Maximum.Value);
+            Assert.AreEqual(1, axis.TickLabelSpacing);
+            Assert.AreEqual(ParagraphAlignment.Right, axis.TickLabelAlignment);
+            Assert.AreEqual(AxisBuiltInUnit.Custom, axis.DisplayUnit.Unit);
+            Assert.AreEqual(1000000.0d, axis.DisplayUnit.CustomUnit);
+
+            axis = shape.Chart.AxisY;
+
+            Assert.AreEqual(AxisTickMark.Outside, axis.MajorTickMark);
+            Assert.AreEqual(AxisTickMark.Outside, axis.MinorTickMark);
+            Assert.AreEqual(10.0d, axis.MajorUnit);
+            Assert.AreEqual(1.0d, axis.MinorUnit);
+            Assert.AreEqual(-10.0d, axis.Scaling.Minimum.Value);
+            Assert.AreEqual(20.0d, axis.Scaling.Maximum.Value);
         }
     }
 }
