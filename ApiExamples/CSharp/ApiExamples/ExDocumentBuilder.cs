@@ -434,7 +434,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertWatermarkNetStandard2.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertWatermark.docx");
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertWatermarkNetStandard2.docx");
             shape = (Shape)doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChild(NodeType.Shape, 0, true);
 
             Assert.True(shape.HasImage);
@@ -470,7 +470,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObjectNetStandard2.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOleObject.docx");
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOleObjectNetStandard2.docx");
             Shape shape = (Shape)doc.GetChild(NodeType.Shape,0, true);
             
             Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
