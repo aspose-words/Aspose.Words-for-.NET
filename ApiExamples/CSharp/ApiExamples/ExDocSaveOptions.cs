@@ -112,10 +112,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "DocSaveOptions.UpdateLastPrintedProperty.docx");
 
-            DateTime currentDateTime = DateTime.Now.Date;
-
-            Assert.AreEqual(isUpdateLastPrintedProperty ? (object) currentDateTime : DateTime.Parse("1/1/0001 00:00:00"),
-                doc.BuiltInDocumentProperties.LastPrinted.Date);
+            Assert.AreNotEqual(isUpdateLastPrintedProperty, DateTime.Parse("1/1/0001 00:00:00") == doc.BuiltInDocumentProperties.LastPrinted.Date);
         }
     }
 }

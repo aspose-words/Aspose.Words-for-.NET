@@ -709,8 +709,8 @@ namespace ApiExamples
             //ExSummary:Shows how to change the resolution of images in output pdf documents.
             // Open a document that contains images 
             Document doc = new Document(MyDir + "Rendering.docx");
-            doc.Save(ArtifactsDir + "Document.DownsampleOptions.pdf"); //ExSkip
-            Assert.AreEqual(234440, new FileInfo(ArtifactsDir + "Document.DownsampleOptions.pdf").Length); //ExSkip
+
+            doc.Save(ArtifactsDir + "Document.DownsampleOptions.Default.pdf");
 
             // If we want to convert the document to .pdf, we can use a SaveOptions implementation to customize the saving process
             PdfSaveOptions options = new PdfSaveOptions();
@@ -724,11 +724,13 @@ namespace ApiExamples
             options.DownsampleOptions.Resolution = 36;
 
             // We can set a minimum threshold for downsampling 
-            // This value will prevent the second image in the input document from being downsampled
+            // This value will prevent some images in the input document from being downsampled
             options.DownsampleOptions.ResolutionThreshold = 128;
 
-            doc.Save(ArtifactsDir + "Document.DownsampleOptions.pdf", options); //ExSkip
-            Assert.AreEqual(213177, new FileInfo(ArtifactsDir + "Document.DownsampleOptions.pdf").Length); //ExSkip
+            doc.Save(ArtifactsDir + "Document.DownsampleOptions.LowerThreshold.pdf", options);
+
+            Assert.True(new FileInfo(ArtifactsDir + "Document.DownsampleOptions.Default.pdf").Length > 
+                        new FileInfo(ArtifactsDir + "Document.DownsampleOptions.LowerThreshold.pdf").Length);
             //ExEnd
         }
 
@@ -3622,9 +3624,7 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        [TestCase(false)]
-        [TestCase(true)]
-        public void AlwaysCompressMetafiles(bool isAlwaysCompressMetafiles)
+        public void AlwaysCompressMetafiles()
         {
             //ExStart
             //ExFor:DocSaveOptions.AlwaysCompressMetafiles
@@ -3637,14 +3637,18 @@ namespace ApiExamples
             // metafiles. The following option 'AlwaysCompressMetafiles' was introduced to choose appropriate behavior
             DocSaveOptions saveOptions = new DocSaveOptions();
             // False - small metafiles are not compressed for performance reason
-            // True - all metafiles are compressed regardless of its size
-            saveOptions.AlwaysCompressMetafiles = isAlwaysCompressMetafiles;
+            saveOptions.AlwaysCompressMetafiles = false;
             
-            doc.Save(ArtifactsDir + "Document.AlwaysCompressMetafiles.docx", saveOptions);
-            //ExEnd
+            doc.Save(ArtifactsDir + "Document.AlwaysCompressMetafiles.False.docx", saveOptions);
 
-            Assert.AreEqual(isAlwaysCompressMetafiles ? 13312 : 21504,
-                new FileInfo(ArtifactsDir + "Document.AlwaysCompressMetafiles.docx").Length);
+            // True - all metafiles are compressed regardless of its size
+            saveOptions.AlwaysCompressMetafiles = true;
+
+            doc.Save(ArtifactsDir + "Document.AlwaysCompressMetafiles.True.docx", saveOptions);
+
+            Assert.True(new FileInfo(ArtifactsDir + "Document.AlwaysCompressMetafiles.True.docx").Length <
+                        new FileInfo(ArtifactsDir + "Document.AlwaysCompressMetafiles.False.docx").Length);
+            //ExEnd
         }
 
         [Test]

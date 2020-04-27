@@ -186,8 +186,7 @@ namespace ApiExamples
             {
                 Assert.False(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedSvgs/svg001.svg"));
                 Assert.True(Regex.Match(outDocContents,
-                    "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" " +
-                    "version=\"1.1\" width=\"213\" height=\"213\"><defs><image id=\"image004\" xlink:href=.+/>").Success);
+                    "<image id=\"image004\" xlink:href=.+/>").Success);
             }
             else
             {
@@ -330,9 +329,7 @@ namespace ApiExamples
         }
 
         [Test]
-        [TestCase(true)]
-        [TestCase(false)]
-        public void OptimizeGraphicsOutput(bool doOptimizeContent)
+        public void OptimizeGraphicsOutput()
         {
             //ExStart
             //ExFor:FixedPageSaveOptions.OptimizeOutput
@@ -340,14 +337,16 @@ namespace ApiExamples
             //ExSummary:Shows how to optimize document objects while saving to html.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { OptimizeOutput = doOptimizeContent };
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { OptimizeOutput = false };
 
-            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.Unoptimized.html", saveOptions);
 
-            if (doOptimizeContent) 
-                Assert.AreEqual(57794, new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html").Length);
-            else
-                Assert.AreEqual(161169, new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html").Length);
+            saveOptions.OptimizeOutput = true;
+
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.Optimized.html", saveOptions);
+
+            Assert.True(new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.Unoptimized.html").Length > 
+                            new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.Optimized.html").Length);
             //ExEnd
         }
 

@@ -1520,7 +1520,6 @@ namespace ApiExamples
             // Add that font source to our document
             doc.FontSettings.SetFontsSources(new FontSourceBase[] { memoryFontSource });
 
-            Assert.AreEqual(52208, memoryFontSource.FontData.Length);
             Assert.AreEqual(FontSourceType.MemoryFont, memoryFontSource.Type);
             Assert.AreEqual(0, memoryFontSource.Priority);
             //ExEnd

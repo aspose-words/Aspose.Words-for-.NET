@@ -10,6 +10,7 @@ using System.Data;
 using System.Data.OleDb;
 using System.Net;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using NUnit.Framework;
 using Table = Aspose.Words.Tables.Table;
@@ -111,9 +112,9 @@ namespace ApiExamples
         /// <remarks>
         /// Serves as a way to check that an image file is valid and nonempty without looking up its file size.
         /// </remarks>
-        /// <param name="expectedWidth"></param>
-        /// <param name="expectedHeight"></param>
-        /// <param name="filename"></param>
+        /// <param name="expectedWidth">Expected width of the image, in pixels.</param>
+        /// <param name="expectedHeight">Expected height of the image, in pixels.</param>
+        /// <param name="filename">Local file system filename of the image file.</param>
         internal static void VerifyImage(int expectedWidth, int expectedHeight, string filename)
         {
             try
@@ -128,6 +129,24 @@ namespace ApiExamples
             {
                 Assert.Fail($"No valid image in this location:\n{filename}");
             }
+        }
+
+        /// <summary>
+        /// Checks whether a shape contains a valid image with specified dimensions.
+        /// </summary>
+        /// <remarks>
+        /// Serves as a way to check that an image file is valid and nonempty without looking up its data length.
+        /// </remarks>
+        /// <param name="expectedWidth">Expected width of the image, in pixels.</param>
+        /// <param name="expectedHeight">Expected height of the image, in pixels.</param>
+        /// <param name="expectedImageType">Expected format of the image.</param>
+        /// <param name="imageShape">Shape that contains the image.</param>
+        internal static void VerifyImage(int expectedWidth, int expectedHeight, ImageType expectedImageType, Shape imageShape)
+        {
+            Assert.True(imageShape.HasImage);
+            Assert.AreEqual(expectedImageType, imageShape.ImageData.ImageType);
+            Assert.AreEqual(expectedWidth, imageShape.ImageData.ImageSize.WidthPixels);
+            Assert.AreEqual(expectedHeight, imageShape.ImageData.ImageSize.HeightPixels);
         }
     }
 }
