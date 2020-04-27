@@ -3131,7 +3131,6 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Document.VersionsCount.docx");
 
             Assert.AreEqual(0, doc.VersionsCount);
-            //ExEnd
         }
 
         [Test]

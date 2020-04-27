@@ -882,6 +882,7 @@ namespace ApiExamples
             // This leaves us with an empty graph and is a convenient way of wiping out demo data
             chartData.Clear();
             Assert.AreEqual(0, chartData.Count); //ExSkip
+            //ExEnd
         }
 
         [Test]
