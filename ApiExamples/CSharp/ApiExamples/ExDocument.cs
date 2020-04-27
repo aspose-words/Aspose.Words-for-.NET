@@ -728,9 +728,6 @@ namespace ApiExamples
             options.DownsampleOptions.ResolutionThreshold = 128;
 
             doc.Save(ArtifactsDir + "Document.DownsampleOptions.LowerThreshold.pdf", options);
-
-            Assert.True(new FileInfo(ArtifactsDir + "Document.DownsampleOptions.Default.pdf").Length > 
-                        new FileInfo(ArtifactsDir + "Document.DownsampleOptions.LowerThreshold.pdf").Length);
             //ExEnd
         }
 
@@ -2256,9 +2253,6 @@ namespace ApiExamples
 
             TestUtil.VerifyImage(794, 1122, ArtifactsDir + "Document.ImageSaveOptions.Default.jpg");
             TestUtil.VerifyImage(794, 1122, ArtifactsDir + "Document.ImageSaveOptions.HighQuality.jpg");
-
-            Assert.True(new FileInfo(ArtifactsDir + "Document.ImageSaveOptions.Default.jpg").Length <
-                        new FileInfo(ArtifactsDir + "Document.ImageSaveOptions.HighQuality.jpg").Length);
         }
 
         [Test]
