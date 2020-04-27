@@ -225,28 +225,25 @@ namespace ApiExamples
             //ExEnd
 
             string[] imageFileNames = Directory.GetFiles(ArtifactsDir).Where(s => s.StartsWith(ArtifactsDir + "Drawing.SaveAllImages.")).ToArray();
-
-            Assert.AreEqual(9, imageFileNames.Length);
-
             List<FileInfo> fileInfos = imageFileNames.Select(s => new FileInfo(s)).ToList();
 
-            Assert.AreEqual(399039, fileInfos[0].Length);
+            TestUtil.VerifyImage(2467, 1500, fileInfos[0].FullName);
             Assert.AreEqual(".Jpeg", fileInfos[0].Extension);
-            Assert.AreEqual(15698, fileInfos[1].Length);
+            TestUtil.VerifyImage(400, 400, fileInfos[1].FullName);
             Assert.AreEqual(".Png", fileInfos[1].Extension);
-            Assert.AreEqual(16872, fileInfos[2].Length);
+            TestUtil.VerifyImage(382, 138, fileInfos[2].FullName);
             Assert.AreEqual(".Emf", fileInfos[2].Extension);
-            Assert.AreEqual(1422618, fileInfos[3].Length);
+            TestUtil.VerifyImage(1600, 1600, fileInfos[3].FullName);
             Assert.AreEqual(".Wmf", fileInfos[3].Extension);
-            Assert.AreEqual(5891176, fileInfos[4].Length);
+            TestUtil.VerifyImage(534, 534, fileInfos[4].FullName);
             Assert.AreEqual(".Emf", fileInfos[4].Extension);
-            Assert.AreEqual(180766, fileInfos[5].Length);
+            TestUtil.VerifyImage(1260, 660, fileInfos[5].FullName);
             Assert.AreEqual(".Jpeg", fileInfos[5].Extension);
-            Assert.AreEqual(28208, fileInfos[6].Length);
+            TestUtil.VerifyImage(1125, 1500, fileInfos[6].FullName);
             Assert.AreEqual(".Jpeg", fileInfos[6].Extension);
-            Assert.AreEqual(184914, fileInfos[7].Length);
+            TestUtil.VerifyImage(1027, 1500, fileInfos[7].FullName);
             Assert.AreEqual(".Jpeg", fileInfos[7].Extension);
-            Assert.AreEqual(173891, fileInfos[8].Length);
+            TestUtil.VerifyImage(1200, 1500, fileInfos[8].FullName);
             Assert.AreEqual(".Jpeg", fileInfos[8].Extension);
         }
 
@@ -285,21 +282,20 @@ namespace ApiExamples
 
             imgShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imgShape);
             Assert.AreEqual(0.0d, imgShape.Left);
             Assert.AreEqual(0.0d, imgShape.Top);
             Assert.AreEqual(300.0d, imgShape.Height);
             Assert.AreEqual(300.0d, imgShape.Width);
-            Assert.True(imgShape.IsImage);
-            Assert.AreEqual(17106, imgShape.ImageData.ImageBytes.Length);
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imgShape);
 
             imgShape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imgShape);
             Assert.AreEqual(150.0d, imgShape.Left);
             Assert.AreEqual(0.0d, imgShape.Top);
             Assert.AreEqual(300.0d, imgShape.Height);
             Assert.AreEqual(300.0d, imgShape.Width);
-            Assert.True(imgShape.IsImage);
-            Assert.AreEqual(20115, imgShape.ImageData.ImageBytes.Length);
         }
 #endif
 
@@ -327,10 +323,7 @@ namespace ApiExamples
             File.WriteAllBytes(ArtifactsDir + "Drawing.StrokePattern.png", s.ImageBytes);
             //ExEnd
 
-            FileInfo imageFileInfo = new FileInfo(ArtifactsDir + "Drawing.StrokePattern.png");
-
-            Assert.AreEqual(".png", imageFileInfo.Extension);
-            Assert.AreEqual(77, imageFileInfo.Length);
+            TestUtil.VerifyImage(8, 8, ArtifactsDir + "Drawing.StrokePattern.png");
         }
 
         //ExStart
@@ -515,10 +508,7 @@ namespace ApiExamples
             }
             //ExEnd
 
-            FileInfo imageFileInfo = new FileInfo(ArtifactsDir + "Drawing.GetDataFromImage.png");
-
-            Assert.AreEqual(".png", imageFileInfo.Extension);
-            Assert.AreEqual(399039, imageFileInfo.Length);
+            TestUtil.VerifyImage(2467, 1500, ArtifactsDir + "Drawing.GetDataFromImage.png");
         }
 
         [Test]
@@ -598,26 +588,20 @@ namespace ApiExamples
             imgSourceDoc = new Document(ArtifactsDir + "Drawing.ImageData.docx");
             sourceShape = (Shape)imgSourceDoc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.True(sourceShape.IsImage);
-            Assert.AreEqual(399039, sourceShape.ImageData.ImageBytes.Length);
+            TestUtil.VerifyImage(2467, 1500, ImageType.Jpeg, sourceShape);
             Assert.AreEqual("Imported Image", sourceShape.ImageData.Title);
-            Assert.True(sourceShape.ImageData.HasImage);
             Assert.AreEqual(0.8d, sourceShape.ImageData.Brightness, 0.1d);
             Assert.AreEqual(1.0d, sourceShape.ImageData.Contrast, 0.1d);
             Assert.AreEqual(Color.White.ToArgb(), sourceShape.ImageData.ChromaKey.ToArgb());
 
             sourceShape = (Shape)imgSourceDoc.GetChild(NodeType.Shape, 1, true);
 
-            Assert.True(sourceShape.IsImage);
-            Assert.AreEqual(399039, sourceShape.ImageData.ImageBytes.Length);
-            Assert.True(sourceShape.ImageData.HasImage);
+            TestUtil.VerifyImage(2467, 1500, ImageType.Jpeg, sourceShape);
             Assert.True(sourceShape.ImageData.GrayScale);
 
             sourceShape = (Shape)imgSourceDoc.GetChild(NodeType.Shape, 2, true);
 
-            Assert.True(sourceShape.IsImage);
-            Assert.AreEqual(399039, sourceShape.ImageData.ImageBytes.Length);
-            Assert.True(sourceShape.ImageData.HasImage);
+            TestUtil.VerifyImage(2467, 1500, ImageType.Jpeg, sourceShape);
             Assert.True(sourceShape.ImageData.BiLevel);
             Assert.AreEqual(0.3d, sourceShape.ImageData.CropBottom, 0.1d);
             Assert.AreEqual(0.3d, sourceShape.ImageData.CropLeft, 0.1d);
@@ -664,10 +648,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Drawing.ImageSize.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.True(shape.IsImage);
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, shape);
             Assert.AreEqual(600.0d, shape.Width);
             Assert.AreEqual(600.0d, shape.Height);
-            Assert.AreEqual(20115, shape.ImageData.ImageBytes.Length);
 
             imageSize = shape.ImageData.ImageSize;
 

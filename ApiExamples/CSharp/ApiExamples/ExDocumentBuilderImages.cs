@@ -61,9 +61,7 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
             Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
 
-            Assert.True(imageShape.HasImage);
-            Assert.AreEqual(20115, imageShape.ImageData.ImageBytes.Length);
-            Assert.AreEqual(ImageType.Jpeg, imageShape.ImageData.ImageType);
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imageShape);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
 
@@ -78,9 +76,7 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
             Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
 
-            Assert.True(imageShape.HasImage);
-            Assert.AreEqual(20115, imageShape.ImageData.ImageBytes.Length);
-            Assert.AreEqual(ImageType.Jpeg, imageShape.ImageData.ImageType);
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imageShape);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
 
@@ -95,9 +91,7 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.Margin, imageShape.RelativeHorizontalPosition);
             Assert.AreEqual(RelativeVerticalPosition.Margin, imageShape.RelativeVerticalPosition);
 
-            Assert.True(imageShape.HasImage);
-            Assert.AreEqual(20115, imageShape.ImageData.ImageBytes.Length);
-            Assert.AreEqual(ImageType.Jpeg, imageShape.ImageData.ImageType);
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imageShape);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
         }
@@ -140,9 +134,7 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
             Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
 
-            Assert.True(imageShape.HasImage);
-            Assert.AreEqual(20115, imageShape.ImageData.ImageBytes.Length);
-            Assert.AreEqual(ImageType.Jpeg, imageShape.ImageData.ImageType);
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imageShape);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
 
@@ -157,9 +149,7 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
             Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
 
-            Assert.True(imageShape.HasImage);
-            Assert.AreEqual(15698, imageShape.ImageData.ImageBytes.Length);
-            Assert.AreEqual(ImageType.Png, imageShape.ImageData.ImageType);
+            TestUtil.VerifyImage(400, 400, ImageType.Png, imageShape);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
 
@@ -174,9 +164,7 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.Margin, imageShape.RelativeHorizontalPosition);
             Assert.AreEqual(RelativeVerticalPosition.Margin, imageShape.RelativeVerticalPosition);
 
-            Assert.True(imageShape.HasImage);
-            Assert.AreEqual(1422618, imageShape.ImageData.ImageBytes.Length);
-            Assert.AreEqual(ImageType.Wmf, imageShape.ImageData.ImageType);
+            TestUtil.VerifyImage(1600, 1600, ImageType.Wmf, imageShape);
             Assert.AreEqual(400.0d, imageShape.ImageData.ImageSize.HeightPoints);
             Assert.AreEqual(400.0d, imageShape.ImageData.ImageSize.WidthPoints);
         }
@@ -220,9 +208,7 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
             Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
 
-            Assert.True(imageShape.HasImage);
-            Assert.AreEqual(17106, imageShape.ImageData.ImageBytes.Length);
-            Assert.AreEqual(ImageType.Jpeg, imageShape.ImageData.ImageType);
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imageShape);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
 
@@ -237,9 +223,7 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
             Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
 
-            Assert.True(imageShape.HasImage);
-            Assert.AreEqual(17106, imageShape.ImageData.ImageBytes.Length);
-            Assert.AreEqual(ImageType.Jpeg, imageShape.ImageData.ImageType);
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imageShape);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
 
@@ -254,9 +238,7 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.Margin, imageShape.RelativeHorizontalPosition);
             Assert.AreEqual(RelativeVerticalPosition.Margin, imageShape.RelativeVerticalPosition);
 
-            Assert.True(imageShape.HasImage);
-            Assert.AreEqual(17106, imageShape.ImageData.ImageBytes.Length);
-            Assert.AreEqual(ImageType.Jpeg, imageShape.ImageData.ImageType);
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imageShape);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
         }
@@ -306,9 +288,7 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
             Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
 
-            Assert.True(imageShape.HasImage);
-            Assert.AreEqual(135782, imageShape.ImageData.ImageBytes.Length);
-            Assert.AreEqual(ImageType.Png, imageShape.ImageData.ImageType);
+            TestUtil.VerifyImage(400, 400, ImageType.Png, imageShape);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints, 0.1d);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints, 0.1d);
 
@@ -323,9 +303,7 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
             Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
 
-            Assert.True(imageShape.HasImage);
-            Assert.AreEqual(135782, imageShape.ImageData.ImageBytes.Length);
-            Assert.AreEqual(ImageType.Png, imageShape.ImageData.ImageType);
+            TestUtil.VerifyImage(400, 400, ImageType.Png, imageShape);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints, 0.1d);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints, 0.1d);
 
@@ -340,9 +318,7 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.Margin, imageShape.RelativeHorizontalPosition);
             Assert.AreEqual(RelativeVerticalPosition.Margin, imageShape.RelativeVerticalPosition);
 
-            Assert.True(imageShape.HasImage);
-            Assert.AreEqual(135782, imageShape.ImageData.ImageBytes.Length);
-            Assert.AreEqual(ImageType.Png, imageShape.ImageData.ImageType);
+            TestUtil.VerifyImage(400, 400, ImageType.Png, imageShape);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints, 0.1d);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints, 0.1d);
         }

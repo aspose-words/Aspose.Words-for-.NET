@@ -43,9 +43,9 @@ namespace ApiExamples
             Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             if (doSupportVml)
-                Assert.AreEqual(20115, imageShape.ImageData.ImageBytes.Length);
+                TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imageShape);
             else
-                Assert.AreEqual(15698, imageShape.ImageData.ImageBytes.Length);
+                TestUtil.VerifyImage(400, 400, ImageType.Png, imageShape);
             //ExEnd
         }
 

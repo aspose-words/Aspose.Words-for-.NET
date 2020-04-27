@@ -339,16 +339,13 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertWatermark.docx");
             shape = (Shape)doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChild(NodeType.Shape, 0, true);
 
-            Assert.True(shape.HasImage);
-            Assert.AreEqual(27458, shape.ImageData.ToByteArray().Length);
-
+            TestUtil.VerifyImage(400, 400, ImageType.Png, shape);
             Assert.AreEqual(WrapType.None, shape.WrapType);
             Assert.True(shape.BehindText);
             Assert.AreEqual(RelativeHorizontalPosition.Page, shape.RelativeHorizontalPosition);
             Assert.AreEqual(RelativeVerticalPosition.Page, shape.RelativeVerticalPosition);
             Assert.AreEqual((doc.FirstSection.PageSetup.PageWidth - shape.Width) / 2, shape.Left);
             Assert.AreEqual((doc.FirstSection.PageSetup.PageHeight - shape.Height) / 2, shape.Top);
-
         }
 
         [Test]
@@ -434,12 +431,10 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertWatermarkNetStandard2.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertWatermark.docx");
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertWatermarkNetStandard2.docx");
             shape = (Shape)doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChild(NodeType.Shape, 0, true);
 
-            Assert.True(shape.HasImage);
-            Assert.AreEqual(27458, shape.ImageData.ToByteArray().Length);
-
+            TestUtil.VerifyImage(400, 400, ImageType.Png, shape);
             Assert.AreEqual(WrapType.None, shape.WrapType);
             Assert.True(shape.BehindText);
             Assert.AreEqual(RelativeHorizontalPosition.Page, shape.RelativeHorizontalPosition);
@@ -470,7 +465,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObjectNetStandard2.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOleObject.docx");
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOleObjectNetStandard2.docx");
             Shape shape = (Shape)doc.GetChild(NodeType.Shape,0, true);
             
             Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
@@ -482,12 +477,6 @@ namespace ApiExamples
             Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
             Assert.AreEqual("Package", shape.OleFormat.ProgId);
             Assert.AreEqual(".xlsx", shape.OleFormat.SuggestedExtension);
-
-            shape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
-
-            Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
-            Assert.AreEqual("PowerPoint.Show.12", shape.OleFormat.ProgId);
-            Assert.AreEqual(".pptx", shape.OleFormat.SuggestedExtension);
         }
 #endif
 
@@ -1923,9 +1912,7 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
             Shape image = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.True(image.HasImage);
-            Assert.AreEqual(15698, image.ImageData.ImageBytes.Length);
-
+            TestUtil.VerifyImage(400, 400, ImageType.Png, image);
             Assert.AreEqual(100.0d, image.Left);
             Assert.AreEqual(100.0d, image.Top);
             Assert.AreEqual(200.0d, image.Width);
@@ -1968,9 +1955,7 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
             Shape image = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.True(image.HasImage);
-            Assert.AreEqual(20115, image.ImageData.ImageBytes.Length);
-
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, image);
             Assert.AreEqual(200.0d, image.Left);
             Assert.AreEqual(100.0d, image.Top);
             Assert.AreEqual(268.0d, image.Width);
@@ -2922,14 +2907,11 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertVideoWithUrl.docx");
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
+            TestUtil.VerifyImage(480, 360, ImageType.Jpeg, shape);
+            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
+
             Assert.AreEqual(360.0d, shape.Width);
             Assert.AreEqual(270.0d, shape.Height);
-
-            Assert.True(shape.IsImage);
-            Assert.AreEqual(21027, shape.ImageData.ImageBytes.Length);
-            Assert.AreEqual("https://youtu.be/t_1LYZ102RA", shape.HRef);
-
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
         }
 
         [Test]
@@ -3608,6 +3590,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOnlineVideo.docx");
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
+            TestUtil.VerifyImage(640, 360, ImageType.Jpeg, shape);
+
             Assert.AreEqual(320.0d, shape.Width);
             Assert.AreEqual(180.0d, shape.Height);
             Assert.AreEqual(0.0d, shape.Left);
@@ -3616,12 +3600,11 @@ namespace ApiExamples
             Assert.AreEqual(RelativeVerticalPosition.TopMargin, shape.RelativeVerticalPosition);
             Assert.AreEqual(RelativeHorizontalPosition.LeftMargin, shape.RelativeHorizontalPosition);
 
-            Assert.True(shape.IsImage);
-            Assert.AreEqual(17784, shape.ImageData.ImageBytes.Length);
             Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
+            TestUtil.VerifyImage(320, 320, ImageType.Png, shape);
             Assert.AreEqual(320.0d, shape.Width);
             Assert.AreEqual(320.0d, shape.Height);
             Assert.AreEqual(0.0d, shape.Left);
@@ -3630,8 +3613,6 @@ namespace ApiExamples
             Assert.AreEqual(RelativeVerticalPosition.Paragraph, shape.RelativeVerticalPosition);
             Assert.AreEqual(RelativeHorizontalPosition.Column, shape.RelativeHorizontalPosition);
 
-            Assert.True(shape.IsImage);
-            Assert.AreEqual(7498, shape.ImageData.ImageBytes.Length);
             Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;

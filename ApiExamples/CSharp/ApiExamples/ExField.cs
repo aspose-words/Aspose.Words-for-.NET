@@ -2601,7 +2601,7 @@ namespace ApiExamples
             field.LockFields = false;
             field.TextConverter = "Microsoft Word";
 
-            Assert.AreEqual($" INCLUDE  \"{MyDir.Replace("\\", "\\\\") + "Bookmarks.docx"}\" MyBookmark1 \\c \"Microsoft Word\"", field.GetFieldCode());
+            Assert.True(Regex.Match(field.GetFieldCode(), " INCLUDE .* MyBookmark1 \\\\c \"Microsoft Word\"").Success);
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.INCLUDE.docx");
@@ -2610,8 +2610,10 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Field.INCLUDE.docx");
             field = (FieldInclude)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldInclude, 
-                $" INCLUDE  \"{MyDir.Replace("\\", "\\\\") + "Bookmarks.docx"}\" MyBookmark1 \\c \"Microsoft Word\"", "First bookmark.", field);
+            Assert.AreEqual(FieldType.FieldInclude, field.Type);
+            Assert.AreEqual("First bookmark.", field.Result);
+            Assert.True(Regex.Match(field.GetFieldCode(), " INCLUDE .* MyBookmark1 \\\\c \"Microsoft Word\"").Success);
+
             Assert.AreEqual(MyDir + "Bookmarks.docx", field.SourceFullName);
             Assert.AreEqual("MyBookmark1", field.BookmarkName);
             Assert.False(field.LockFields);
@@ -2639,8 +2641,7 @@ namespace ApiExamples
             FieldIncludePicture fieldIncludePicture = (FieldIncludePicture)builder.InsertField(FieldType.FieldIncludePicture, true);
             fieldIncludePicture.SourceFullName = ImageDir + "Transparent background logo.png";
 
-            Assert.AreEqual($" INCLUDEPICTURE  \"{ImageDir.Replace("\\", "\\\\") + "Transparent background logo.png"}\"", 
-                fieldIncludePicture.GetFieldCode());
+            Assert.True(Regex.Match(fieldIncludePicture.GetFieldCode(), " INCLUDEPICTURE  .*").Success);
 
             // Here we apply the PNG32.FLT filter
             fieldIncludePicture.GraphicFilter = "PNG32";
@@ -2654,7 +2655,7 @@ namespace ApiExamples
             fieldImport.GraphicFilter = "PNG32";
             fieldImport.IsLinked = true;
 
-            Assert.AreEqual($" IMPORT  \"{ImageDir.Replace("\\", "\\\\") + "Transparent background logo.png"}\" \\c PNG32 \\d", fieldImport.GetFieldCode());
+            Assert.True(Regex.Match(fieldImport.GetFieldCode(), " IMPORT  .* \\\\c PNG32 \\\\d").Success);
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.INCLUDEPICTURE.docx");
@@ -2956,22 +2957,19 @@ namespace ApiExamples
 
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.True(shape.IsImage);
-            Assert.AreEqual(20115, shape.ImageData.ImageBytes.Length);
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, shape);
             Assert.AreEqual(200.0d, shape.Width);
             Assert.AreEqual(200.0d, shape.Height);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
-            Assert.True(shape.IsImage);
-            Assert.AreEqual(15698, shape.ImageData.ImageBytes.Length);
+            TestUtil.VerifyImage(400, 400, ImageType.Png, shape);
             Assert.AreEqual(200.0d, shape.Width);
             Assert.AreEqual(200.0d, shape.Height);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
 
-            Assert.True(shape.IsImage);
-            Assert.AreEqual(5891176, shape.ImageData.ImageBytes.Length);
+            TestUtil.VerifyImage(534, 534, ImageType.Emf, shape);
             Assert.AreEqual(200.0d, shape.Width);
             Assert.AreEqual(200.0d, shape.Height);
         }
@@ -3050,15 +3048,13 @@ namespace ApiExamples
 
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.True(shape.IsImage);
-            Assert.AreEqual(17106, shape.ImageData.ImageBytes.Length);
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, shape);
             Assert.AreEqual(300.0d, shape.Width);
             Assert.AreEqual(300.0d, shape.Height);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
-            Assert.True(shape.IsImage);
-            Assert.AreEqual(27458, shape.ImageData.ImageBytes.Length);
+            TestUtil.VerifyImage(400, 400, ImageType.Png, shape);
             Assert.AreEqual(300.0d, shape.Width);
             Assert.AreEqual(300.0d, shape.Height);
         }
