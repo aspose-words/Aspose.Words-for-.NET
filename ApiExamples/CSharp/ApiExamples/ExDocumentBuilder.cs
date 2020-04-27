@@ -415,10 +415,11 @@ namespace ApiExamples
             // The best place for the watermark image is in the header or footer so it is shown on every page
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
 
+            Shape shape;
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Transparent background logo.png"))
             {
                 // Insert a floating picture
-                Shape shape = builder.InsertImage(image);
+                shape = builder.InsertImage(image);
                 shape.WrapType = WrapType.None;
                 shape.BehindText = true;
 
