@@ -58,6 +58,7 @@ namespace ApiExamples
             Assert.True(innerFieldParent.ChildNodes.IndexOf(innerField.End) < innerFieldParent.ChildNodes.IndexOf(outerField.End));
         }
 
+#if NETFRAMEWORK || JAVA
         /// <summary>
         /// Checks whether an SQL query performed on a database file stored in the local file system
         /// produces a result that resembles an input Aspose.Words Table.
@@ -88,6 +89,7 @@ namespace ApiExamples
                             myDataTable.Rows[i][j].ToString());
             }
         }
+#endif
 
         /// <summary>
         /// Checks whether an HTTP request sent to the specified address produces an expected web response. 

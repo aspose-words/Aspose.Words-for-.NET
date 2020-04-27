@@ -92,6 +92,7 @@
     <Compile Include="..\ApiExamples\TestData\TestClasses\MessageTestClass.cs" Link="TestData\TestClasses\MessageTestClass.cs" />
     <Compile Include="..\ApiExamples\TestData\TestClasses\NumericTestClass.cs" Link="TestData\TestClasses\NumericTestClass.cs" />
     <Compile Include="..\ApiExamples\TestData\TestClasses\SignPersonTestClass.cs" Link="TestData\TestClasses\SignPersonTestClass.cs" />
+    <Compile Include="..\ApiExamples\TestUtil.cs" Link="TestUtil.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -105,6 +106,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>

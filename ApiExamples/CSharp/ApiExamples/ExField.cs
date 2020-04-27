@@ -609,6 +609,107 @@ namespace ApiExamples
 
             Assert.True(barcode.HasImage);
         }
+
+        [Test]
+        [Ignore("WORDSNET-13854")]
+        public void FieldDatabase()
+        {
+            //ExStart
+            //ExFor:FieldDatabase
+            //ExFor:FieldDatabase.Connection
+            //ExFor:FieldDatabase.FileName
+            //ExFor:FieldDatabase.FirstRecord
+            //ExFor:FieldDatabase.FormatAttributes
+            //ExFor:FieldDatabase.InsertHeadings
+            //ExFor:FieldDatabase.InsertOnceOnMailMerge
+            //ExFor:FieldDatabase.LastRecord
+            //ExFor:FieldDatabase.Query
+            //ExFor:FieldDatabase.TableFormat
+            //ExSummary:Shows how to extract data from a database and insert it as a field into a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use a document builder to insert a database field
+            FieldDatabase field = (FieldDatabase)builder.InsertField(FieldType.FieldDatabase, true);
+
+            // Create a simple query that extracts one table from the database
+            field.FileName = MyDir + @"Database\Northwind.mdb";
+            field.Connection = "DSN=MS Access Databases";
+            field.Query = "SELECT * FROM [Products]";
+
+            Assert.AreEqual($" DATABASE  \\d \"{DatabaseDir.Replace("\\", "\\\\") + "Northwind.mdb"}\" \\c \"DSN=MS Access Databases\" \\s \"SELECT * FROM [Products]\"", 
+                field.GetFieldCode());
+
+            // Insert another database field
+            field = (FieldDatabase)builder.InsertField(FieldType.FieldDatabase, true);
+            field.FileName = MyDir + @"Database\Northwind.mdb";
+            field.Connection = "DSN=MS Access Databases";
+
+            // This query will sort all the products by their gross sales in descending order
+            field.Query =
+                "SELECT [Products].ProductName, FORMAT(SUM([Order Details].UnitPrice * (1 - [Order Details].Discount) * [Order Details].Quantity), 'Currency') AS GrossSales " +
+                "FROM([Products] " +
+                "LEFT JOIN[Order Details] ON[Products].[ProductID] = [Order Details].[ProductID]) " +
+                "GROUP BY[Products].ProductName " +
+                "ORDER BY SUM([Order Details].UnitPrice* (1 - [Order Details].Discount) * [Order Details].Quantity) DESC";
+
+            // You can use these variables instead of a LIMIT or TOP clause, to simplify your query
+            // In this case we are taking the first 10 values of the result of our query
+            field.FirstRecord = "1";
+            field.LastRecord = "10";
+
+            // The number we put here is the index of the format we want to use for our table
+            // The list of table formats is in the "Table AutoFormat..." menu we find in MS Word when we create a data table field
+            // Index "10" corresponds to the "Colorful 3" format
+            field.TableFormat = "10";
+
+            // This attribute decides which elements of the table format we picked above we incorporate into our table
+            // The number we use is a sum of a combination of values corresponding to which elements we choose
+            // 63 represents borders (1) + shading (2) + font (4) + colour (8) + autofit (16) + heading rows (32)
+            field.FormatAttributes = "63";
+            field.InsertHeadings = true;
+            field.InsertOnceOnMailMerge = true;
+
+            doc.UpdateFields();
+            doc.Save(ArtifactsDir + "Field.DATABASE.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.DATABASE.docx");
+
+            Assert.AreEqual(2, doc.Range.Fields.Count);
+            
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Assert.AreEqual(77, table.Rows.Count);
+            Assert.AreEqual(10, table.Rows[0].Cells.Count);
+
+            field = (FieldDatabase)doc.Range.Fields[0];
+
+            Assert.AreEqual($" DATABASE  \\d \"{DatabaseDir.Replace("\\", "\\\\") + "Northwind.mdb"}\" \\c \"DSN=MS Access Databases\" \\s \"SELECT * FROM [Products]\"",
+                field.GetFieldCode());
+
+            TestUtil.TableMatchesQueryResult(table, DatabaseDir + "Northwind.mdb", field.Query);
+
+            table = (Table)doc.GetChild(NodeType.Table, 1, true);
+            field = (FieldDatabase)doc.Range.Fields[1];
+
+            Assert.AreEqual(11, table.Rows.Count);
+            Assert.AreEqual(2, table.Rows[0].Cells.Count);
+            Assert.AreEqual("ProductName\a", table.Rows[0].Cells[0].GetText());
+            Assert.AreEqual("GrossSales\a", table.Rows[0].Cells[1].GetText());
+
+            Assert.AreEqual($" DATABASE  \\d \"{DatabaseDir.Replace("\\", "\\\\") + "Northwind.mdb"}\" \\c \"DSN=MS Access Databases\" " +
+                            $"\\s \"SELECT [Products].ProductName, FORMAT(SUM([Order Details].UnitPrice * (1 - [Order Details].Discount) * [Order Details].Quantity), 'Currency') AS GrossSales " +
+                            "FROM([Products] " +
+                            "LEFT JOIN[Order Details] ON[Products].[ProductID] = [Order Details].[ProductID]) " +
+                            "GROUP BY[Products].ProductName " +
+                            "ORDER BY SUM([Order Details].UnitPrice* (1 - [Order Details].Discount) * [Order Details].Quantity) DESC\" \\f 1 \\t 10 \\l 10 \\b 63 \\h \\o",
+                field.GetFieldCode());
+
+            table.Rows[0].Remove();
+
+            TestUtil.TableMatchesQueryResult(table, DatabaseDir + "Northwind.mdb", field.Query.Insert(7, " TOP 10 "));
+        }
 #endif
         [Test]
         public void UpdateFieldIgnoringMergeFormat()
@@ -2518,107 +2619,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Ignore("WORDSNET-13854")]
-        public void FieldDatabase()
-        {
-            //ExStart
-            //ExFor:FieldDatabase
-            //ExFor:FieldDatabase.Connection
-            //ExFor:FieldDatabase.FileName
-            //ExFor:FieldDatabase.FirstRecord
-            //ExFor:FieldDatabase.FormatAttributes
-            //ExFor:FieldDatabase.InsertHeadings
-            //ExFor:FieldDatabase.InsertOnceOnMailMerge
-            //ExFor:FieldDatabase.LastRecord
-            //ExFor:FieldDatabase.Query
-            //ExFor:FieldDatabase.TableFormat
-            //ExSummary:Shows how to extract data from a database and insert it as a field into a document.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Use a document builder to insert a database field
-            FieldDatabase field = (FieldDatabase)builder.InsertField(FieldType.FieldDatabase, true);
-
-            // Create a simple query that extracts one table from the database
-            field.FileName = MyDir + @"Database\Northwind.mdb";
-            field.Connection = "DSN=MS Access Databases";
-            field.Query = "SELECT * FROM [Products]";
-
-            Assert.AreEqual($" DATABASE  \\d \"{DatabaseDir.Replace("\\", "\\\\") + "Northwind.mdb"}\" \\c \"DSN=MS Access Databases\" \\s \"SELECT * FROM [Products]\"", 
-                field.GetFieldCode());
-
-            // Insert another database field
-            field = (FieldDatabase)builder.InsertField(FieldType.FieldDatabase, true);
-            field.FileName = MyDir + @"Database\Northwind.mdb";
-            field.Connection = "DSN=MS Access Databases";
-
-            // This query will sort all the products by their gross sales in descending order
-            field.Query =
-                "SELECT [Products].ProductName, FORMAT(SUM([Order Details].UnitPrice * (1 - [Order Details].Discount) * [Order Details].Quantity), 'Currency') AS GrossSales " +
-                "FROM([Products] " +
-                "LEFT JOIN[Order Details] ON[Products].[ProductID] = [Order Details].[ProductID]) " +
-                "GROUP BY[Products].ProductName " +
-                "ORDER BY SUM([Order Details].UnitPrice* (1 - [Order Details].Discount) * [Order Details].Quantity) DESC";
-
-            // You can use these variables instead of a LIMIT or TOP clause, to simplify your query
-            // In this case we are taking the first 10 values of the result of our query
-            field.FirstRecord = "1";
-            field.LastRecord = "10";
-
-            // The number we put here is the index of the format we want to use for our table
-            // The list of table formats is in the "Table AutoFormat..." menu we find in MS Word when we create a data table field
-            // Index "10" corresponds to the "Colorful 3" format
-            field.TableFormat = "10";
-
-            // This attribute decides which elements of the table format we picked above we incorporate into our table
-            // The number we use is a sum of a combination of values corresponding to which elements we choose
-            // 63 represents borders (1) + shading (2) + font (4) + colour (8) + autofit (16) + heading rows (32)
-            field.FormatAttributes = "63";
-            field.InsertHeadings = true;
-            field.InsertOnceOnMailMerge = true;
-
-            doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.DATABASE.docx");
-            //ExEnd
-
-            doc = new Document(ArtifactsDir + "Field.DATABASE.docx");
-
-            Assert.AreEqual(2, doc.Range.Fields.Count);
-            
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
-
-            Assert.AreEqual(77, table.Rows.Count);
-            Assert.AreEqual(10, table.Rows[0].Cells.Count);
-
-            field = (FieldDatabase)doc.Range.Fields[0];
-
-            Assert.AreEqual($" DATABASE  \\d \"{DatabaseDir.Replace("\\", "\\\\") + "Northwind.mdb"}\" \\c \"DSN=MS Access Databases\" \\s \"SELECT * FROM [Products]\"",
-                field.GetFieldCode());
-
-            TestUtil.TableMatchesQueryResult(table, DatabaseDir + "Northwind.mdb", field.Query);
-
-            table = (Table)doc.GetChild(NodeType.Table, 1, true);
-            field = (FieldDatabase)doc.Range.Fields[1];
-
-            Assert.AreEqual(11, table.Rows.Count);
-            Assert.AreEqual(2, table.Rows[0].Cells.Count);
-            Assert.AreEqual("ProductName\a", table.Rows[0].Cells[0].GetText());
-            Assert.AreEqual("GrossSales\a", table.Rows[0].Cells[1].GetText());
-
-            Assert.AreEqual($" DATABASE  \\d \"{DatabaseDir.Replace("\\", "\\\\") + "Northwind.mdb"}\" \\c \"DSN=MS Access Databases\" " +
-                            $"\\s \"SELECT [Products].ProductName, FORMAT(SUM([Order Details].UnitPrice * (1 - [Order Details].Discount) * [Order Details].Quantity), 'Currency') AS GrossSales " +
-                            "FROM([Products] " +
-                            "LEFT JOIN[Order Details] ON[Products].[ProductID] = [Order Details].[ProductID]) " +
-                            "GROUP BY[Products].ProductName " +
-                            "ORDER BY SUM([Order Details].UnitPrice* (1 - [Order Details].Discount) * [Order Details].Quantity) DESC\" \\f 1 \\t 10 \\l 10 \\b 63 \\h \\o",
-                field.GetFieldCode());
-
-            table.Rows[0].Remove();
-
-            TestUtil.TableMatchesQueryResult(table, DatabaseDir + "Northwind.mdb", field.Query.Insert(7, " TOP 10 "));
-        }
-        
-        [Test]
         public void FieldIncludePicture()
         {
             //ExStart
@@ -3029,8 +3029,8 @@ namespace ApiExamples
                     #if NETFRAMEWORK || JAVA
                     args.Image = Image.FromFile(mImageFilenames[args.FieldValue.ToString()]);
                     #else
-                    e.Image = SKBitmap.Decode(mImageFilenames[e.FieldValue.ToString()]);
-                    e.ImageFileName = mImageFilenames[e.FieldValue.ToString()];
+                    args.Image = SKBitmap.Decode(mImageFilenames[args.FieldValue.ToString()]);
+                    args.ImageFileName = mImageFilenames[args.FieldValue.ToString()];
                     #endif
                 }
                 
