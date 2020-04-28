@@ -22,37 +22,43 @@ namespace ApiExamples
     internal class ExImageSaveOptions : ApiExampleBase
     {
         [Test]
-        public void UseGdiEmfRenderer()
+        public void Renderer()
         {
             //ExStart
-            //ExFor:ImageSaveOptions.UseGdiEmfRenderer
+            //ExFor:ImageSaveOptions.Renderer
             //ExSummary:Shows how to save metafiles directly without using GDI+ to EMF.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            Document doc = new Document(MyDir + "Images.docx");
 
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Emf)
             {
-                UseGdiEmfRenderer = false
+                UseGdiEmfRenderer = true
             };
 
-            doc.Save(ArtifactsDir + "ImageSaveOptions.UseGdiEmfRenderer.docx", saveOptions);
+            doc.Save(ArtifactsDir + "ImageSaveOptions.Renderer.emf", saveOptions);
             //ExEnd
+
+            TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.Renderer.emf");
         }
 
         [Test]
-        public void SaveIntoGif()
+        public void SaveSinglePage()
         {
             //ExStart
             //ExFor:ImageSaveOptions.PageIndex
             //ExSummary:Shows how to save specific document page as image file.
             Document doc = new Document(MyDir + "Rendering.docx");
 
+            // For formats that can only save one page at a time,
+            // the SaveOptions object can determine which page gets saved
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Gif)
             {
-                PageIndex = 1 // Define which page will save
+                PageIndex = 1
             };
 
-            doc.Save(ArtifactsDir + "ImageSaveOptions.SaveIntoGif.gif", saveOptions);
+            doc.Save(ArtifactsDir + "ImageSaveOptions.SaveSinglePage.gif", saveOptions);
             //ExEnd
+
+            TestUtil.VerifyImage(794, 1123, ArtifactsDir + "ImageSaveOptions.SaveSinglePage.gif");
         }
 
 #if NETFRAMEWORK || JAVA
@@ -84,8 +90,10 @@ namespace ApiExamples
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Jpeg);
             saveOptions.GraphicsQualityOptions = qualityOptions;
 
-            doc.Save(ArtifactsDir + "ImageSaveOptions.GraphicsQuality.jpeg", saveOptions);
+            doc.Save(ArtifactsDir + "ImageSaveOptions.GraphicsQuality.jpg", saveOptions);
             //ExEnd
+
+            TestUtil.VerifyImage(794, 1122, ArtifactsDir + "ImageSaveOptions.GraphicsQuality.jpg");
         }
 
         [Test]
@@ -100,13 +108,15 @@ namespace ApiExamples
             // Use a DocumentBuilder to insert a .wmf image into the document
             builder.InsertImage(Image.FromFile(ImageDir + "Windows MetaFile.wmf"));
 
-            // For documents that contain .wmf images, when converting the documents themselves to images,
-            // we can use a ImageSaveOptions object to designate a rendering method for the .wmf images
+            // Save the document as an image while setting different metafile rendering modes,
+            // which will be applied to the image we inserted
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
-            options.MetafileRenderingOptions.RenderingMode = MetafileRenderingMode.Bitmap;
+            options.MetafileRenderingOptions.RenderingMode = MetafileRenderingMode.Vector;
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.WindowsMetaFile.png", options);
             //ExEnd
+
+            TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.WindowsMetaFile.png");
         }
 #endif
 
@@ -132,6 +142,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.BlackAndWhite.png", imageSaveOptions);
             //ExEnd
+
+            TestUtil.VerifyImage(794, 1123, ArtifactsDir + "ImageSaveOptions.BlackAndWhite.png");
         }
 
         [Test]
@@ -155,6 +167,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff", options);
             //ExEnd
+
+            TestUtil.VerifyImage(794, 1123, ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff");
         }
 
         [Test]
@@ -182,6 +196,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.EditImage.png", options);
             //ExEnd
+
+            TestUtil.VerifyImage(794, 1123, ArtifactsDir + "ImageSaveOptions.EditImage.png");
         }
     }
 }
