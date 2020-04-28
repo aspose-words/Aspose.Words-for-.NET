@@ -12,7 +12,7 @@ using Aspose.Words.Fields;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
 using System.Web;
 using System.Data.Odbc;
 #endif
@@ -22,7 +22,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExMailMerge : ApiExampleBase
     {
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
         [Test]
         public void ExecuteArray()
         {

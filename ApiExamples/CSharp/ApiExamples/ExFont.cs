@@ -5,7 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
 using System;
 using System.Collections;
 using System.Drawing;

@@ -11,9 +11,9 @@ using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
 using System.Drawing;
-#else
+#elif NETCOREAPP2_1
 using SkiaSharp;
 #endif
 
@@ -70,7 +70,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        #if NETFRAMEWORK || JAVA
+        #if NET462 || JAVA
         [Test]
         [Category("SkipMono")]
         public void CreateFromImage()
@@ -106,7 +106,7 @@ namespace ApiExamples
 
             builder.Document.Save(ArtifactsDir + "Image.CreateFromImage.doc");
         }
-        #else
+        #elif NETCOREAPP2_1
         [Test]
         [Category("SkipMono")]
         public void CreateFromImageNetStandard2()

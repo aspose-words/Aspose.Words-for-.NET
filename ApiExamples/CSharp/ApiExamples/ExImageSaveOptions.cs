@@ -9,10 +9,10 @@ using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-#else
+#elif NETCOREAPP2_1
 using SkiaSharp;
 #endif
 
@@ -55,7 +55,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
         [Test]
         public void GraphicsQuality()
         {

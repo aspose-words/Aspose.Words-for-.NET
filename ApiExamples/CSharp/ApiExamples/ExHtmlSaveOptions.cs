@@ -224,7 +224,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlSaveOptions.Html5Support.html", saveOptions);
         }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
         [Test]
         [TestCase(false)]
         [TestCase(true)]

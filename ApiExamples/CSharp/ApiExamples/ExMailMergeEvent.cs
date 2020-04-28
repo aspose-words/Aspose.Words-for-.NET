@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System.Data;
+using System.Data.OleDb;
 using System.Drawing;
 using System.IO;
 using Aspose.Words;
@@ -13,9 +14,6 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
-#if NETFRAMEWORK || JAVA
-using System.Data.OleDb;
-#endif
 
 namespace ApiExamples
 {
@@ -339,7 +337,6 @@ namespace ApiExamples
             Assert.IsTrue(logoImage.HasImage);
         }
 
-        #if NETFRAMEWORK || JAVA
         //ExStart
         //ExFor:MailMerge.FieldMergingCallback
         //ExFor:MailMerge.ExecuteWithRegions(IDataReader,String)
@@ -359,7 +356,7 @@ namespace ApiExamples
             doc.MailMerge.FieldMergingCallback = new HandleMergeImageFieldFromBlob();
 
             // Open a database connection
-            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.mdb";
+            string connString = $"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={DatabaseDir + "Northwind.mdb"};";
             OleDbConnection conn = new OleDbConnection(connString);
             conn.Open();
 
@@ -396,6 +393,5 @@ namespace ApiExamples
             }
         }
         //ExEnd
-#endif
     }
 }

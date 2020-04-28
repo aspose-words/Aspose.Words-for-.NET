@@ -16,11 +16,11 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
 using System.Windows.Forms;
 using System.Drawing.Printing;
 using System.Drawing.Text;
-#else
+#elif NETCOREAPP2_1
 using SkiaSharp;
 #endif
 
@@ -317,7 +317,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        #if NETFRAMEWORK || JAVA
+        #if NET462 || JAVA
         [Test]
         public void SaveToImageStream()
         {
@@ -756,7 +756,7 @@ namespace ApiExamples
             previewDlg.ShowDialog();
             //ExEnd
         }
-#else
+#elif NETCOREAPP2_1
         [Test]
         public void RenderToSizeNetStandard2()
         {
