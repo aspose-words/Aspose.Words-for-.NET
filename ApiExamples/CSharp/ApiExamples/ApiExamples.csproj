@@ -9,17 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <COMReference Include="ADODB.dll">
-      <Guid>ef53050b-882e-4776-b643-eda472e8e3f2</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>7</VersionMinor>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-    </COMReference>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Aspose.BarCode" Version="18.8.0" />
     <PackageReference Include="Aspose.PDF" Version="20.4.0" />
     <PackageReference Include="Aspose.Words" Version="20.4.0" />
@@ -34,6 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Interop.ADODB">
+      <HintPath>..\..\Data\Dlls\Interop.ADODB.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
   </ItemGroup>
 
