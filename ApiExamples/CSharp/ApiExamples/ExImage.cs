@@ -62,7 +62,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertImage(String)
-            //ExSummary:Shows how to inserts an image from a URL. The image is inserted inline and at 100% scale.
+            //ExSummary:Shows how to inserts an image from a URL.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -70,7 +70,7 @@ namespace ApiExamples
             builder.InsertImage(ImageDir + "Logo.jpg");
             builder.Writeln();
 
-            builder.Write("Image from an Internet url, automatically downloaded for you: ");
+            builder.Write("Image from a URL: ");
             builder.InsertImage(AsposeLogoUrl);
             builder.Writeln();
 
@@ -90,19 +90,14 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertImage(Stream)
-            //ExSummary:Shows how to insert an image from a stream. The image is inserted inline and at 100% scale.
+            //ExSummary:Shows how to insert an image from a stream. 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Stream stream = File.OpenRead(ImageDir + "Logo.jpg");
-            try
+            using (Stream stream = File.OpenRead(ImageDir + "Logo.jpg"))
             {
                 builder.Write("Image from stream: ");
                 builder.InsertImage(stream);
-            }
-            finally
-            {
-                stream.Close();
             }
 
             doc.Save(ArtifactsDir + "Image.CreateFromStream.docx");
@@ -122,29 +117,19 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             // Insert a raster image
-            Image rasterImage = Image.FromFile(ImageDir + "Logo.jpg");
-            try
+            using (Image rasterImage = Image.FromFile(ImageDir + "Logo.jpg"))
             {
                 builder.Write("Raster image: ");
                 builder.InsertImage(rasterImage);
                 builder.Writeln();
             }
-            finally
-            {
-                rasterImage.Dispose();
-            }
 
             // Aspose.Words allows to insert a metafile too
-            Image metafile = Image.FromFile(ImageDir + "Windows MetaFile.wmf");
-            try
+            using (Image metafile = Image.FromFile(ImageDir + "Windows MetaFile.wmf"))
             {
                 builder.Write("Metafile: ");
                 builder.InsertImage(metafile);
                 builder.Writeln();
-            }
-            finally
-            {
-                metafile.Dispose();
             }
 
             builder.Document.Save(ArtifactsDir + "Image.CreateFromImage.docx");
@@ -388,19 +373,19 @@ namespace ApiExamples
             // We cannot delete shape nodes while we enumerate through the collection
             // One solution is to add nodes that we want to delete to a temporary array and delete afterwards
             ArrayList shapesToDelete = new ArrayList();
+
+            // Several shape types can have an image including image shapes and OLE objects
             foreach (Shape shape in shapes.OfType<Shape>())
-            {
-                // Several shape types can have an image including image shapes and OLE objects
                 if (shape.HasImage)
                     shapesToDelete.Add(shape);
-            }
 
             // Now we can delete shapes
             foreach (Shape shape in shapesToDelete)
                 shape.Remove();
 
+            // The only remaining shape doesn't have an image
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
-            doc.Save(ArtifactsDir + "Image.DeleteAllImages.docx");
+            Assert.False(((Shape)doc.GetChild(NodeType.Shape, 0, true)).HasImage);
             //ExEnd
         }
 
@@ -420,24 +405,18 @@ namespace ApiExamples
                 Node nextNode = curNode.NextPreOrder(doc);
 
                 if (curNode.PreviousPreOrder(doc) != null && nextNode != null)
-                {
                     Assert.AreEqual(curNode, nextNode.PreviousPreOrder(doc));
-                }
 
-                if (curNode.NodeType.Equals(NodeType.Shape))
-                {
-                    Shape shape = (Shape) curNode;
-
-                    // Several shape types can have an image including image shapes and OLE objects
-                    if (shape.HasImage)
-                        shape.Remove();
-                }
-
+                // Several shape types can have an image including image shapes and OLE objects
+                if (curNode.NodeType == NodeType.Shape && ((Shape)curNode).HasImage)
+                    curNode.Remove();
+                
                 curNode = nextNode;
             }
 
+            // The only remaining shape doesn't have an image
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
-            doc.Save(ArtifactsDir + "Image.DeleteAllImagesPreOrder.docx");
+            Assert.False(((Shape)doc.GetChild(NodeType.Shape, 0, true)).HasImage);
             //ExEnd
         }
 
@@ -451,23 +430,41 @@ namespace ApiExamples
             //ExFor:ImageSize.HeightPoints
             //ExFor:ShapeBase.Width
             //ExFor:ShapeBase.Height
-            //ExSummary:Shows how to resize an image shape.
-            DocumentBuilder builder = new DocumentBuilder();
+            //ExSummary:Shows how to resize a shape with an image.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             // By default, the image is inserted at 100% scale
             Shape shape = builder.InsertImage(ImageDir + "Logo.jpg");
 
-            // It is easy to change the shape size. In this case, make it 50% relative to the current shape size
+            // Reduce the overall size of the shape by 50%
             shape.Width = shape.Width * 0.5;
             shape.Height = shape.Height * 0.5;
 
-            // However, we can also go back to the original image size and scale from there, say 110%
+            Assert.AreEqual(75.0d, shape.Width);
+            Assert.AreEqual(75.0d, shape.Height);
+
+            // However, we can also go back to the original image size and scale from there, for example, to 110%
             ImageSize imageSize = shape.ImageData.ImageSize;
             shape.Width = imageSize.WidthPoints * 1.1;
             shape.Height = imageSize.HeightPoints * 1.1;
 
-            builder.Document.Save(ArtifactsDir + "Image.ScaleImage.doc");
+            Assert.AreEqual(330.0d, shape.Width);
+            Assert.AreEqual(330.0d, shape.Height);
+
+            doc.Save(ArtifactsDir + "Image.ScaleImage.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Image.ScaleImage.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(330.0d, shape.Width);
+            Assert.AreEqual(330.0d, shape.Height);
+
+            imageSize = shape.ImageData.ImageSize;
+
+            Assert.AreEqual(300.0d, imageSize.WidthPoints);
+            Assert.AreEqual(300.0d, imageSize.HeightPoints);
         }
     }
 }
