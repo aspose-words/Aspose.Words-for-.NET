@@ -2228,7 +2228,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
+        [Test, Ignore("WORDSNET-20342")]
         public void ImageSaveOptions()
         {
             //ExStart
