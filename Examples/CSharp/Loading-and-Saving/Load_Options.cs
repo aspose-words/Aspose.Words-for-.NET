@@ -84,7 +84,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             // Change the loading version to Microsoft Word 2010.
             loadOptions.MswVersion = MsWordVersion.Word2010;
             
-            Document doc = new Document(dataDir + "document.doc", loadOptions);
+            Document doc = new Document(dataDir + "document.docx", loadOptions);
             doc.Save(dataDir + "Word2003_out.docx");
             // ExEnd:SetMSWordVersion 
             Console.WriteLine("\n Loaded with MS Word Version successfully.\nFile saved at " + dataDir); 

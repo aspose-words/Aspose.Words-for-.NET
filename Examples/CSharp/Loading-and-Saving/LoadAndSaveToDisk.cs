@@ -1,8 +1,4 @@
-﻿
-using System.IO;
-
-using Aspose.Words;
-using System;
+﻿using System;
 
 namespace Aspose.Words.Examples.CSharp.Loading_Saving
 {
@@ -14,7 +10,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             // ExStart:OpenDocument
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_QuickStart();
-            string fileName = "Document.doc";
+            string fileName = "Document.docx";
             // Load the document from the absolute path on disk.
             Document doc = new Document(dataDir + fileName);
             // ExEnd:OpenDocument
