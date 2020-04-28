@@ -127,12 +127,60 @@ namespace ApiExamples
             // Create a new LoadOptions object and set its ResourceLoadingCallback attribute
             // as an instance of our IResourceLoadingCallback implementation 
             LoadOptions loadOptions = new LoadOptions();
-            loadOptions.ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback();
+            loadOptions.ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback1();
             
             // When we open an Html document, external resources such as references to CSS stylesheet files and external images
             // will be handled in a custom manner by the loading callback as the document is loaded
             Document doc = new Document(MyDir + "Images.html", loadOptions);
             doc.Save(ArtifactsDir + "Document.LoadOptionsCallback.pdf");
+        }
+
+        /// <summary>
+        /// Resource loading callback that, upon encountering external resources,
+        /// acknowledges CSS style sheets and replaces all images with a substitute.
+        /// </summary>
+        private class HtmlLinkedResourceLoadingCallback1 : IResourceLoadingCallback
+        {
+            public ResourceLoadingAction ResourceLoading(ResourceLoadingArgs args)
+            {
+                switch (args.ResourceType)
+                {
+                    case ResourceType.CssStyleSheet:
+                    {
+                        Console.WriteLine($"External CSS Stylesheet found upon loading: {args.OriginalUri}");
+ 
+                        // CSS file will don't used in the document
+                        return ResourceLoadingAction.Skip;
+                    }
+                    case ResourceType.Image:
+                    {
+                        // Replaces all images with a substitute.
+                        Uri uri = new Uri(args.Uri);
+
+                        mWebClient.Credentials = uri.Host == "www.aspose.com" 
+                            ? new NetworkCredential("User1", "akjdlsfkjs") 
+                            : new NetworkCredential("SomeOtherUserID", "wiurlnlvs");
+
+                        // Download the bytes from the location referenced by the URI.
+                        byte[] imageBytes = mWebClient.DownloadData(args.Uri); 
+                        args.SetData(imageBytes);
+ 
+                        // New images will be used instead of presented in the document
+                        return ResourceLoadingAction.UserProvided;
+                    }
+                    case ResourceType.Document:
+                    {
+                        Console.WriteLine($"External document found upon loading: {args.OriginalUri}");
+ 
+                        // Will be used as usual
+                        return ResourceLoadingAction.Default;
+                    }
+                    default:
+                        throw new InvalidOperationException("Unexpected ResourceType value.");
+                }
+            }
+
+            private WebClient mWebClient;
         }
 
         /// <summary>
