@@ -5846,10 +5846,11 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Field.FOOTNOTEREF.doc");
-
             field = (FieldFootnoteRef)doc.Range.Fields[0];
 
             TestUtil.VerifyField(FieldType.FieldFootnoteRef, " FOOTNOTEREF CrossRefBookmark", "1", field);
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty, "Cross referenced footnote.", 
+                (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
         }
 
         //ExStart
@@ -6054,6 +6055,11 @@ namespace ApiExamples
 
         private void TestFieldRef(Document doc)
         {
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty, "MyBookmark footnote #1", 
+                (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty, "MyBookmark footnote #2", 
+                (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
+
             FieldRef field = (FieldRef)doc.Range.Fields[0];
 
             TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark \\f \\h", 

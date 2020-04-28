@@ -22,7 +22,7 @@ namespace ApiExamples
     class TestUtil
     {
         /// <summary>
-        /// Checks whether a field has an expected FieldType, field code and output result equal to their expected values.
+        /// Checks whether values of a field's attributes are equal to their expected values.
         /// </summary>
         /// <remarks>
         /// Best used when there are many fields closely being tested and should be avoided if a field has a long field code/result.
@@ -148,6 +148,22 @@ namespace ApiExamples
             Assert.AreEqual(expectedImageType, imageShape.ImageData.ImageType);
             Assert.AreEqual(expectedWidth, imageShape.ImageData.ImageSize.WidthPixels);
             Assert.AreEqual(expectedHeight, imageShape.ImageData.ImageSize.HeightPixels);
+        }
+
+        /// <summary>
+        /// Checks whether values of a footnote's attributes are equal to their expected values.
+        /// </summary>
+        /// <param name="expectedFootnoteType">Expected type of the footnote/endnote.</param>
+        /// <param name="expectedIsAuto">Expected auto-numbered status of this footnote.</param>
+        /// <param name="expectedReferenceMark">If "IsAuto" is false, then the footnote is expected to display this string instead of a number after referenced text.</param>
+        /// <param name="expectedContents">Expected side comment provided by the footnote.</param>
+        /// <param name="footnote">Footnote node in question.</param>
+        internal static void VerifyFootnote(FootnoteType expectedFootnoteType, bool expectedIsAuto, string expectedReferenceMark, string expectedContents, Footnote footnote)
+        {
+            Assert.AreEqual(expectedFootnoteType, footnote.FootnoteType);
+            Assert.AreEqual(expectedIsAuto, footnote.IsAuto);
+            Assert.AreEqual(expectedReferenceMark, footnote.ReferenceMark);
+            Assert.AreEqual(expectedContents, footnote.ToString(SaveFormat.Text).Trim());
         }
     }
 }
