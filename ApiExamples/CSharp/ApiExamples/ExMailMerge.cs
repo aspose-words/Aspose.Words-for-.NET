@@ -989,10 +989,10 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Uses TestCaseSource instead of TestCase because of some strange behavior when using long data.
+        /// Without TestCaseSource/TestCase because of some strange behavior when using long data.
         /// </summary>
-        [Test, TestCaseSource("MustacheTemplateSyntaxCases")]
-        public void MustacheTemplateSyntax(bool restoreTags, string sectionText)
+        [Test]
+        public void MustacheTemplateSyntaxTrue()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1001,7 +1001,7 @@ namespace ApiExamples
             builder.Write("{{ testfield3 }}");
 
             doc.MailMerge.UseNonMergeFields = true;
-            doc.MailMerge.PreserveUnusedTags = restoreTags;
+            doc.MailMerge.PreserveUnusedTags = true;
 
             DataTable table = new DataTable("Test");
             table.Columns.Add("testfield2");
@@ -1011,14 +1011,31 @@ namespace ApiExamples
 
             string paraText = DocumentHelper.GetParagraphText(doc, 0);
 
-            Assert.AreEqual(sectionText, paraText);
+            Assert.AreEqual("{{ testfield1 }}value 1{{ testfield3 }}\f", paraText);
         }
 
-        private static readonly object[] MustacheTemplateSyntaxCases =
+        [Test]
+        public void MustacheTemplateSyntaxFalse()
         {
-            new object[] { true, "{{ testfield1 }}value 1{{ testfield3 }}\f" },
-            new object[] { false, "\u0013MERGEFIELD \"testfield1\"\u0014«testfield1»\u0015value 1\u0013MERGEFIELD \"testfield3\"\u0014«testfield3»\u0015\f" }
-        };
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("{{ testfield1 }}");
+            builder.Write("{{ testfield2 }}");
+            builder.Write("{{ testfield3 }}");
+
+            doc.MailMerge.UseNonMergeFields = true;
+            doc.MailMerge.PreserveUnusedTags = false;
+
+            DataTable table = new DataTable("Test");
+            table.Columns.Add("testfield2");
+            table.Rows.Add("value 1");
+
+            doc.MailMerge.Execute(table);
+
+            string paraText = DocumentHelper.GetParagraphText(doc, 0);
+
+            Assert.AreEqual("\u0013MERGEFIELD \"testfield1\"\u0014«testfield1»\u0015value 1\u0013MERGEFIELD \"testfield3\"\u0014«testfield3»\u0015\f", paraText);
+        }
 
         [Test]
         public void TestMailMergeGetRegionsHierarchy()
