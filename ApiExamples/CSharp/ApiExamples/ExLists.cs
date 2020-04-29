@@ -85,18 +85,9 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Lists.ApplyDefaultBulletsAndNumbers.docx");
 
-            Assert.AreEqual("\0.", doc.Lists[0].ListLevels[0].NumberFormat);
-            Assert.AreEqual(18.0d, doc.Lists[0].ListLevels[0].NumberPosition);
-            Assert.AreEqual(NumberStyle.Arabic, doc.Lists[0].ListLevels[0].NumberStyle);
-
-            Assert.AreEqual("\u0001.", doc.Lists[0].ListLevels[1].NumberFormat);
-            Assert.AreEqual(54.0d, doc.Lists[0].ListLevels[1].NumberPosition);
-            Assert.AreEqual(NumberStyle.LowercaseLetter, doc.Lists[0].ListLevels[1].NumberStyle);
-
-            Assert.AreEqual("\uf0b7", doc.Lists[1].ListLevels[0].NumberFormat);
-            Assert.AreEqual(18.0d, doc.Lists[1].ListLevels[0].NumberPosition);
-            Assert.AreEqual(NumberStyle.Bullet, doc.Lists[1].ListLevels[0].NumberStyle);
-
+            TestUtil.VerifyListLevel("\0.", 18.0d, NumberStyle.Arabic, doc.Lists[0].ListLevels[0]);
+            TestUtil.VerifyListLevel("\u0001.", 54.0d, NumberStyle.LowercaseLetter, doc.Lists[0].ListLevels[1]);
+            TestUtil.VerifyListLevel("\uf0b7", 18.0d, NumberStyle.Bullet, doc.Lists[1].ListLevels[0]);
         }
 
         [Test]
@@ -144,9 +135,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Lists.SpecifyListLevel.docx");
 
-            Assert.AreEqual("\0.", doc.Lists[0].ListLevels[0].NumberFormat);
-            Assert.AreEqual(18.0d, doc.Lists[0].ListLevels[0].NumberPosition);
-            Assert.AreEqual(NumberStyle.Arabic, doc.Lists[0].ListLevels[0].NumberStyle);
+            TestUtil.VerifyListLevel("\0.", 18.0d, NumberStyle.Arabic, doc.Lists[0].ListLevels[0]);
         }
 
         [Test]
@@ -200,6 +189,12 @@ namespace ApiExamples
 
             builder.Document.Save(ArtifactsDir + "Lists.NestedLists.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Lists.NestedLists.docx");
+
+            TestUtil.VerifyListLevel("\0)", 0.0d, NumberStyle.Arabic, doc.Lists[0].ListLevels[0]);
+            TestUtil.VerifyListLevel("\0.", 18.0d, NumberStyle.Arabic, doc.Lists[1].ListLevels[0]);
+            TestUtil.VerifyListLevel("\uf0b7", 18.0d, NumberStyle.Bullet, doc.Lists[2].ListLevels[0]);
         }
 
         [Test]

@@ -12,9 +12,11 @@ using System.Net;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
+using Aspose.Words.Lists;
 using NUnit.Framework;
 using Table = Aspose.Words.Tables.Table;
 using Image = System.Drawing.Image;
+using List = Aspose.Words.Lists.List;
 using Shape = Aspose.Words.Drawing.Shape;
 
 namespace ApiExamples
@@ -164,6 +166,23 @@ namespace ApiExamples
             Assert.AreEqual(expectedIsAuto, footnote.IsAuto);
             Assert.AreEqual(expectedReferenceMark, footnote.ReferenceMark);
             Assert.AreEqual(expectedContents, footnote.ToString(SaveFormat.Text).Trim());
+        }
+
+        /// <summary>
+        /// Checks whether values of a list level's attributes are equal to their expected values.
+        /// </summary>
+        /// <remarks>
+        /// Only necessary for list levels that have been explicitly created by the user.
+        /// </remarks>
+        /// <param name="expectedListFormat">Expected format for the list symbol.</param>
+        /// <param name="expectedNumberPosition">Expected indent for this level, usually growing larger with each level.</param>
+        /// <param name="expectedNumberStyle"></param>
+        /// <param name="listLevel">List level in question.</param>
+        internal static void VerifyListLevel(string expectedListFormat, double expectedNumberPosition, NumberStyle expectedNumberStyle, ListLevel listLevel)
+        {
+            Assert.AreEqual(expectedListFormat, listLevel.NumberFormat);
+            Assert.AreEqual(expectedNumberPosition, listLevel.NumberPosition);
+            Assert.AreEqual(expectedNumberStyle, listLevel.NumberStyle);
         }
     }
 }
