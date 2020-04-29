@@ -4,7 +4,11 @@
     <TargetFrameworks>net462;netcoreapp2.1</TargetFrameworks>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net462|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net462|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.1|AnyCPU'">
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
 
