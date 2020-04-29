@@ -29,7 +29,8 @@ namespace ApiExamples
             //ExFor:ListFormat.ListOutdent
             //ExFor:ListFormat.RemoveNumbers
             //ExSummary:Shows how to apply default bulleted or numbered list formatting to paragraphs when using DocumentBuilder.
-            DocumentBuilder builder = new DocumentBuilder();
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Writeln("Aspose.Words allows:");
             builder.Writeln();
@@ -79,8 +80,23 @@ namespace ApiExamples
             // End the bulleted list
             builder.ListFormat.RemoveNumbers();
 
-            builder.Document.Save(ArtifactsDir + "Lists.ApplyDefaultBulletsAndNumbers.doc");
+            doc.Save(ArtifactsDir + "Lists.ApplyDefaultBulletsAndNumbers.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Lists.ApplyDefaultBulletsAndNumbers.docx");
+
+            Assert.AreEqual("\0.", doc.Lists[0].ListLevels[0].NumberFormat);
+            Assert.AreEqual(18.0d, doc.Lists[0].ListLevels[0].NumberPosition);
+            Assert.AreEqual(NumberStyle.Arabic, doc.Lists[0].ListLevels[0].NumberStyle);
+
+            Assert.AreEqual("\u0001.", doc.Lists[0].ListLevels[1].NumberFormat);
+            Assert.AreEqual(54.0d, doc.Lists[0].ListLevels[1].NumberPosition);
+            Assert.AreEqual(NumberStyle.LowercaseLetter, doc.Lists[0].ListLevels[1].NumberStyle);
+
+            Assert.AreEqual("\uf0b7", doc.Lists[1].ListLevels[0].NumberFormat);
+            Assert.AreEqual(18.0d, doc.Lists[1].ListLevels[0].NumberPosition);
+            Assert.AreEqual(NumberStyle.Bullet, doc.Lists[1].ListLevels[0].NumberStyle);
+
         }
 
         [Test]
@@ -103,7 +119,7 @@ namespace ApiExamples
             // apply it to the current paragraph in the document builder
             builder.ListFormat.List = doc.Lists.Add(ListTemplate.NumberArabicDot);
 
-            // There are 9 levels in this list, lets try them all
+            // Insert text at each of the 9 indent levels
             for (int i = 0; i < 9; i++)
             {
                 builder.ListFormat.ListLevelNumber = i;
@@ -114,7 +130,6 @@ namespace ApiExamples
             // and apply it to the current paragraph in the document builder
             builder.ListFormat.List = doc.Lists.Add(ListTemplate.BulletDiamonds);
 
-            // There are 9 levels in this list, lets try them all
             for (int i = 0; i < 9; i++)
             {
                 builder.ListFormat.ListLevelNumber = i;
@@ -124,8 +139,14 @@ namespace ApiExamples
             // This is a way to stop list formatting
             builder.ListFormat.List = null;
 
-            builder.Document.Save(ArtifactsDir + "Lists.SpecifyListLevel.doc");
+            doc.Save(ArtifactsDir + "Lists.SpecifyListLevel.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Lists.SpecifyListLevel.docx");
+
+            Assert.AreEqual("\0.", doc.Lists[0].ListLevels[0].NumberFormat);
+            Assert.AreEqual(18.0d, doc.Lists[0].ListLevels[0].NumberPosition);
+            Assert.AreEqual(NumberStyle.Arabic, doc.Lists[0].ListLevels[0].NumberStyle);
         }
 
         [Test]
