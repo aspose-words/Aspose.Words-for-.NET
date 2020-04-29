@@ -127,7 +127,7 @@
     <Compile Include="ExImageSaveOptions.cs" />
     <Compile Include="ExInline.cs" />
     <Compile Include="ExInlineStory.cs" />
-    <Compile Include="ExInsertDocument.cs" />
+    <Compile Include="ExNodeImporter.cs" />
     <Compile Include="ExLists.cs" />
     <Compile Include="ExMailMerge.cs" />
     <Compile Include="ExMailMergeCustom.cs" />
