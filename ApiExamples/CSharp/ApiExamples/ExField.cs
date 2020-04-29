@@ -5180,7 +5180,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Field.FILESIZE.docx");
 
-            Assert.AreEqual(8724, doc.BuiltInDocumentProperties.Bytes);
+            Assert.AreEqual(8726, doc.BuiltInDocumentProperties.Bytes);
 
             field = (FieldFileSize)doc.Range.Fields[0];
 
@@ -5189,7 +5189,7 @@ namespace ApiExamples
             // These fields will need to be updated to produce an accurate result
             doc.UpdateFields();
 
-            Assert.AreEqual("8724", field.Result);
+            Assert.AreEqual("8726", field.Result);
 
             field = (FieldFileSize)doc.Range.Fields[1];
 

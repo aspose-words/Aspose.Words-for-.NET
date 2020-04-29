@@ -1797,8 +1797,8 @@ namespace ApiExamples
 
             XmlNodeList rules = fallbackSettingsDoc.SelectNodes("//aw:FontFallbackSettings/aw:FallbackTable/aw:Rule", manager);
 
-            Assert.AreEqual("0C00-0C7F", rules[2].Attributes["Ranges"].Value);
-            Assert.AreEqual("Vani", rules[2].Attributes["FallbackFonts"].Value);
+            Assert.AreEqual("0C00-0C7F", rules[3].Attributes["Ranges"].Value);
+            Assert.AreEqual("Vani", rules[3].Attributes["FallbackFonts"].Value);
         }
 
         [Test]

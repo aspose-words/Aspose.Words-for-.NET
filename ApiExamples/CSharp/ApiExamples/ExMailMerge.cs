@@ -988,9 +988,10 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        [TestCase(true, "{{ testfield1 }}value 1{{ testfield3 }}\f")]
-        [TestCase(false, "\u0013MERGEFIELD \"testfield1\"\u0014«testfield1»\u0015value 1\u0013MERGEFIELD \"testfield3\"\u0014«testfield3»\u0015\f")]
+        /// <summary>
+        /// Uses TestCaseSource instead of TestCase because of some strange behavior when using long data.
+        /// </summary>
+        [Test, TestCaseSource("MustacheTemplateSyntaxCases")]
         public void MustacheTemplateSyntax(bool restoreTags, string sectionText)
         {
             Document doc = new Document();
@@ -1012,6 +1013,12 @@ namespace ApiExamples
 
             Assert.AreEqual(sectionText, paraText);
         }
+
+        private static readonly object[] MustacheTemplateSyntaxCases =
+        {
+            new object[] { true, "{{ testfield1 }}value 1{{ testfield3 }}\f" },
+            new object[] { false, "\u0013MERGEFIELD \"testfield1\"\u0014«testfield1»\u0015value 1\u0013MERGEFIELD \"testfield3\"\u0014«testfield3»\u0015\f" }
+        };
 
         [Test]
         public void TestMailMergeGetRegionsHierarchy()

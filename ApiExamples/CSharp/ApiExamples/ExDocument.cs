@@ -93,7 +93,7 @@ namespace ApiExamples
             }
         }
 
-        [Test]
+        [Test, Category("IgnoreOnJenkins")]
         public void OpenType()
         {
             //ExStart
