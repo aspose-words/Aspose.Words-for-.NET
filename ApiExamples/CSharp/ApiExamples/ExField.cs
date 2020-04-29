@@ -286,7 +286,7 @@ namespace ApiExamples
             Field field = builder.InsertField(@"DATE");
             Console.WriteLine($"Today's date, as displayed in the \"{CultureInfo.CurrentCulture.EnglishName}\" culture: {field.Result}");
 
-            Assert.AreEqual(CultureInfo.CurrentCulture.LCID, field.LocaleId);
+            Assert.AreEqual(1033, field.LocaleId);
             Assert.AreEqual(FieldUpdateCultureSource.CurrentThread, doc.FieldOptions.FieldUpdateCultureSource); //ExSkip
 
             // We can get the field to display a date in a different format if we change the current thread's culture
@@ -294,7 +294,8 @@ namespace ApiExamples
             // we can set this option to get the document's fields to get their culture from themselves
             // Then, we can change a field's LocaleId and it will display its result in any culture we choose
             doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode;
-            field.LocaleId = new CultureInfo("de-DE").LCID;
+            CultureInfo de = new CultureInfo("de-DE");
+            field.LocaleId = de.LCID;
             field.Update();
 
             Console.WriteLine($"Today's date, as displayed according to the \"{CultureInfo.GetCultureInfo(field.LocaleId).EnglishName}\" culture: {field.Result}");
@@ -303,7 +304,7 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
             field = doc.Range.Fields[0]; 
 
-            TestUtil.VerifyField(FieldType.FieldDate, "DATE", DateTime.Today.ToString("dd.MM.yyyy"), field);
+            TestUtil.VerifyField(FieldType.FieldDate, "DATE", DateTime.Now.ToString(de.DateTimeFormat.ShortDatePattern), field);
             Assert.AreEqual(new CultureInfo("de-DE").LCID, field.LocaleId);
         }
 
@@ -4673,17 +4674,17 @@ namespace ApiExamples
 
             field = (FieldDate)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldDate, " DATE  \\u", DateTime.Today.Date.ToString("M/d/yyyy"), field);
+            TestUtil.VerifyField(FieldType.FieldDate, " DATE  \\u", DateTime.Now.ToShortDateString(), field);
             Assert.True(field.UseUmAlQuraCalendar);
 
             field = (FieldDate)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldDate, " DATE  \\s", DateTime.Today.Date.ToString("M/d/yyyy"), field);
+            TestUtil.VerifyField(FieldType.FieldDate, " DATE  \\s", DateTime.Now.ToShortDateString(), field);
             Assert.True(field.UseSakaEraCalendar);
 
             field = (FieldDate)doc.Range.Fields[3];
 
-            TestUtil.VerifyField(FieldType.FieldDate, " DATE  \\l", DateTime.Today.Date.ToString("M/d/yyyy"), field);
+            TestUtil.VerifyField(FieldType.FieldDate, " DATE  \\l", DateTime.Now.ToShortDateString(), field);
             Assert.True(field.UseLastFormat);
         }
 #endif
