@@ -23,7 +23,7 @@ namespace ApiExamples
         public void Renderer()
         {
             //ExStart
-            //ExFor:ImageSaveOptions.UseGdiEmfRenderer
+            //ExFor:ImageSaveOptions.Renderer
             //ExSummary:Shows how to save metafiles directly without using GDI+ to EMF.
             Document doc = new Document(MyDir + "Images.docx");
 
@@ -32,6 +32,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.Renderer.emf", saveOptions);
             //ExEnd
+
             #if NET462 || JAVA // NetStandard doesn't work with emf 
             TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.Renderer.emf");
             #endif

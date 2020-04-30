@@ -134,6 +134,7 @@ namespace ApiExamples
 
             builder.Document.Save(ArtifactsDir + "Image.CreateFromImage.docx");
         }
+
         #elif NETCOREAPP2_1 || __MOBILE__
         [Test]
         [Category("SkipMono")]

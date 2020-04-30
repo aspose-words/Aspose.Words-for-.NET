@@ -175,6 +175,7 @@ namespace ApiExamples
             
 #if NET462 || JAVA
             return builder.BarCodeImage;            
+
 #elif NETCOREAPP2_1 || __MOBILE__
             builder.BarCodeImage.Save(ArtifactsDir + "GetBarcodeImage.png");
             return Image.Decode(ArtifactsDir + "OldBarcodeImage.png");

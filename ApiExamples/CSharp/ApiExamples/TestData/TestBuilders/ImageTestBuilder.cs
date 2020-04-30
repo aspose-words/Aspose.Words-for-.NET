@@ -13,7 +13,7 @@ namespace ApiExamples.TestData.TestBuilders
 #if NET462 || JAVA
         private Image mImage;
 #elif NETCOREAPP2_1 || __MOBILE__
-        private SKBitmap mImage;
+private SKBitmap mImage;
 #endif
         private Stream mImageStream;
         private byte[] mImageBytes;
@@ -24,7 +24,7 @@ namespace ApiExamples.TestData.TestBuilders
 #if NET462 || JAVA
             mImage = Image.FromFile(ImageDir + "Transparent background logo.png");            
 #elif NETCOREAPP2_1 || __MOBILE__
-            this.mImage = SKBitmap.Decode(ImageDir + "Transparent background logo.png");
+this.mImage = SKBitmap.Decode(ImageDir + "Transparent background logo.png");
 #endif
             mImageStream = Stream.Null;
             mImageBytes = new byte[0];
@@ -38,7 +38,7 @@ namespace ApiExamples.TestData.TestBuilders
             return this;
         }
 #elif NETCOREAPP2_1 || __MOBILE__
-        public ImageTestBuilder WithImage(SKBitmap image)
+public ImageTestBuilder WithImage(SKBitmap image)
         {
             this.mImage = image;
             return this;

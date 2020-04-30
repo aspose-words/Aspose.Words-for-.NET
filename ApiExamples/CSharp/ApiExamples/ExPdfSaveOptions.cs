@@ -604,6 +604,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImagest.pdf", options);
             //ExEnd
         }
+
 #elif NETCOREAPP2_1 || __MOBILE__
         [Test]
         public void PreblendImagesNetStandard2()

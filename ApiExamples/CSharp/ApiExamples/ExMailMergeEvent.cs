@@ -394,6 +394,5 @@ namespace ApiExamples
             }
         }
         //ExEnd
-#endif
     }
 }
