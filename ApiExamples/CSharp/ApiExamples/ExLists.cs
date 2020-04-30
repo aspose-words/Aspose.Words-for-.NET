@@ -29,7 +29,8 @@ namespace ApiExamples
             //ExFor:ListFormat.ListOutdent
             //ExFor:ListFormat.RemoveNumbers
             //ExSummary:Shows how to apply default bulleted or numbered list formatting to paragraphs when using DocumentBuilder.
-            DocumentBuilder builder = new DocumentBuilder();
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Writeln("Aspose.Words allows:");
             builder.Writeln();
@@ -79,8 +80,14 @@ namespace ApiExamples
             // End the bulleted list
             builder.ListFormat.RemoveNumbers();
 
-            builder.Document.Save(ArtifactsDir + "Lists.ApplyDefaultBulletsAndNumbers.doc");
+            doc.Save(ArtifactsDir + "Lists.ApplyDefaultBulletsAndNumbers.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Lists.ApplyDefaultBulletsAndNumbers.docx");
+
+            TestUtil.VerifyListLevel("\0.", 18.0d, NumberStyle.Arabic, doc.Lists[0].ListLevels[0]);
+            TestUtil.VerifyListLevel("\u0001.", 54.0d, NumberStyle.LowercaseLetter, doc.Lists[0].ListLevels[1]);
+            TestUtil.VerifyListLevel("\uf0b7", 18.0d, NumberStyle.Bullet, doc.Lists[1].ListLevels[0]);
         }
 
         [Test]
@@ -103,7 +110,7 @@ namespace ApiExamples
             // apply it to the current paragraph in the document builder
             builder.ListFormat.List = doc.Lists.Add(ListTemplate.NumberArabicDot);
 
-            // There are 9 levels in this list, lets try them all
+            // Insert text at each of the 9 indent levels
             for (int i = 0; i < 9; i++)
             {
                 builder.ListFormat.ListLevelNumber = i;
@@ -114,7 +121,6 @@ namespace ApiExamples
             // and apply it to the current paragraph in the document builder
             builder.ListFormat.List = doc.Lists.Add(ListTemplate.BulletDiamonds);
 
-            // There are 9 levels in this list, lets try them all
             for (int i = 0; i < 9; i++)
             {
                 builder.ListFormat.ListLevelNumber = i;
@@ -124,8 +130,12 @@ namespace ApiExamples
             // This is a way to stop list formatting
             builder.ListFormat.List = null;
 
-            builder.Document.Save(ArtifactsDir + "Lists.SpecifyListLevel.doc");
+            doc.Save(ArtifactsDir + "Lists.SpecifyListLevel.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Lists.SpecifyListLevel.docx");
+
+            TestUtil.VerifyListLevel("\0.", 18.0d, NumberStyle.Arabic, doc.Lists[0].ListLevels[0]);
         }
 
         [Test]
@@ -179,6 +189,12 @@ namespace ApiExamples
 
             builder.Document.Save(ArtifactsDir + "Lists.NestedLists.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Lists.NestedLists.docx");
+
+            TestUtil.VerifyListLevel("\0)", 0.0d, NumberStyle.Arabic, doc.Lists[0].ListLevels[0]);
+            TestUtil.VerifyListLevel("\0.", 18.0d, NumberStyle.Arabic, doc.Lists[1].ListLevels[0]);
+            TestUtil.VerifyListLevel("\uf0b7", 18.0d, NumberStyle.Bullet, doc.Lists[2].ListLevels[0]);
         }
 
         [Test]
@@ -209,27 +225,27 @@ namespace ApiExamples
             List list = doc.Lists.Add(ListTemplate.NumberDefault);
 
             // Completely customize one list level
-            ListLevel level1 = list.ListLevels[0];
-            level1.Font.Color = Color.Red;
-            level1.Font.Size = 24;
-            level1.NumberStyle = NumberStyle.OrdinalText;
-            level1.StartAt = 21;
-            level1.NumberFormat = "\x0000";
+            ListLevel listLevel = list.ListLevels[0];
+            listLevel.Font.Color = Color.Red;
+            listLevel.Font.Size = 24;
+            listLevel.NumberStyle = NumberStyle.OrdinalText;
+            listLevel.StartAt = 21;
+            listLevel.NumberFormat = "\x0000";
 
-            level1.NumberPosition = -36;
-            level1.TextPosition = 144;
-            level1.TabPosition = 144;
+            listLevel.NumberPosition = -36;
+            listLevel.TextPosition = 144;
+            listLevel.TabPosition = 144;
 
-            // Completely customize yet another list level
-            ListLevel level2 = list.ListLevels[1];
-            level2.Alignment = ListLevelAlignment.Right;
-            level2.NumberStyle = NumberStyle.Bullet;
-            level2.Font.Name = "Wingdings";
-            level2.Font.Color = Color.Blue;
-            level2.Font.Size = 24;
-            level2.NumberFormat = "\xf0af"; // A bullet that looks like some sort of a star
-            level2.TrailingCharacter = ListTrailingCharacter.Space;
-            level2.NumberPosition = 144;
+            // Customize another list level
+            listLevel = list.ListLevels[1];
+            listLevel.Alignment = ListLevelAlignment.Right;
+            listLevel.NumberStyle = NumberStyle.Bullet;
+            listLevel.Font.Name = "Wingdings";
+            listLevel.Font.Color = Color.Blue;
+            listLevel.Font.Size = 24;
+            listLevel.NumberFormat = "\xf0af"; // A bullet that looks like a star
+            listLevel.TrailingCharacter = ListTrailingCharacter.Space;
+            listLevel.NumberPosition = 144;
 
             // Now add some text that uses the list that we created
             // It does not matter when to customize the list - before or after adding the paragraphs
@@ -248,8 +264,18 @@ namespace ApiExamples
 
             builder.ListFormat.RemoveNumbers();
 
-            builder.Document.Save(ArtifactsDir + "Lists.CreateCustomList.doc");
+            builder.Document.Save(ArtifactsDir + "Lists.CreateCustomList.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Lists.CreateCustomList.docx");
+
+            listLevel = doc.Lists[0].ListLevels[0];
+
+            TestUtil.VerifyListLevel("\0", -36.0d, NumberStyle.OrdinalText, listLevel);
+
+            listLevel = doc.Lists[0].ListLevels[1];
+
+            TestUtil.VerifyListLevel("\xf0af", 144.0d, NumberStyle.Bullet, listLevel);
         }
 
         [Test]

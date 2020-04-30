@@ -12,7 +12,7 @@ using ApiExamples.TestData.TestClasses;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -105,7 +105,7 @@ namespace ApiExamples
             DigitalSignatureUtil.Sign(dstDocumentPath, dstDocumentPath, certificateHolder, signOptions);
         }
 
-        #if NETFRAMEWORK || JAVA
+        #if NET462 || JAVA
         /// <summary>
         /// Converting image file to bytes array.
         /// </summary>
@@ -126,18 +126,18 @@ namespace ApiExamples
         {
             gSignPersonList = new List<SignPersonTestClass>
             {
-                #if NETFRAMEWORK || JAVA
+                #if NET462 || JAVA
                 new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer",
                     ImageToByteArray(Image.FromFile(ImageDir + "Logo.jpg"))),
-                #else
+                #elif NETCOREAPP2_1
                 new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer", 
                     SkiaSharp.SKBitmap.Decode(ImageDir + "Logo.jpg").Bytes),
                 #endif
                 
-                #if NETFRAMEWORK || JAVA
+                #if NET462 || JAVA
                 new SignPersonTestClass(Guid.NewGuid(), "Stephen Morse", "Head of Compliance",
                     ImageToByteArray(Image.FromFile(ImageDir + "Logo.jpg")))
-                #else
+                #elif NETCOREAPP2_1
                 new SignPersonTestClass(Guid.NewGuid(), "Stephen Morse", "Head of Compliance", 
                     SkiaSharp.SKBitmap.Decode(ImageDir + "Logo.jpg").Bytes)
                 #endif

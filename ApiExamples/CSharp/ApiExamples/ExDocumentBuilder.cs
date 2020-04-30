@@ -23,8 +23,7 @@ using Document = Aspose.Words.Document;
 using Font = Aspose.Words.Font;
 using SaveFormat = Aspose.Words.SaveFormat;
 using Table = Aspose.Words.Tables.Table;
-
-#if NETSTANDARD2_0 || __MOBILE__
+#if NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -300,7 +299,7 @@ namespace ApiExamples
             Assert.AreNotEqual(runs[0].Font.Underline, runs[2].Font.Underline);
         }
 
-        #if NETFRAMEWORK || JAVA
+        #if NET462 || JAVA
         [Test]
         public void InsertWatermark()
         {
@@ -393,7 +392,7 @@ namespace ApiExamples
             Assert.AreEqual("PowerPoint.Show.12", shape.OleFormat.ProgId);
             Assert.AreEqual(".pptx", shape.OleFormat.SuggestedExtension);
         }
-#else
+#elif NETCOREAPP2_1
         [Test]
         public void InsertWatermarkNetStandard2()
         {
@@ -2342,32 +2341,35 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FootnoteType
-            //ExFor:Document.FootnoteOptions
             //ExFor:DocumentBuilder.InsertFootnote(FootnoteType,String)
             //ExFor:DocumentBuilder.InsertFootnote(FootnoteType,String,String)
-            //ExSummary:Shows how to add a footnote to a paragraph in the document using DocumentBuilder.
+            //ExSummary:Shows how to reference text with a footnote and an endnote.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            // Insert some text and mark it with a footnote with the IsAuto attribute set to "true" by default,
+            // so the marker seen in the body text will be auto-numbered at "1", and the footnote will appear at the bottom of the page
+            builder.Write("This text will be referenced by a footnote.");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote comment regarding referenced text.");
 
-            for (int i = 0; i <= 100; i++)
-            {
-                builder.Write("Some text " + i);
+            // Insert more text and mark it with an endnote with a custom reference mark,
+            // which will be used in place of the number "2" and will set "IsAuto" to false
+            builder.Write("This text will be referenced by an endnote.");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote comment regarding referenced text.", "CustomMark");
 
-                builder.InsertFootnote(FootnoteType.Footnote, "Footnote text " + i);
-                builder.InsertFootnote(FootnoteType.Footnote, "Footnote text " + i, "242");
-            }
-            //ExEnd
-
-            Assert.AreEqual("Footnote text 0",
-                doc.GetChildNodes(NodeType.Footnote, true)[0].ToString(SaveFormat.Text).Trim());
-
-            doc.FootnoteOptions.NumberStyle = NumberStyle.Arabic;
-            doc.FootnoteOptions.StartNumber = 1;
-            doc.FootnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
+            // Footnotes always appear at the bottom of the page of their referenced text, so this page break will not affect the footnote
+            // On the other hand, endnotes are always at the end of the document, so this page break will push the endnote down to the next page
+            builder.InsertBreak(BreakType.PageBreak);
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertFootnote.docx");
+            //ExEnd
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "DocumentBuilder.InsertFootnote.docx", GoldsDir + "DocumentBuilder.InsertFootnote Gold.docx"));
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertFootnote.docx");
+
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
+                "Footnote comment regarding referenced text.", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, false, "CustomMark",
+                "CustomMark Endnote comment regarding referenced text.", (Footnote)doc.GetChild(NodeType.Footnote, 1, true));
         }
 
         [Test]
@@ -3009,14 +3011,14 @@ namespace ApiExamples
                     {
                         byte[] imgBytes = webClient.DownloadData(AsposeLogoUrl);
 
-                        #if NETSTANDARD2_0 || __MOBILE__
+                        #if NETCOREAPP2_1 || __MOBILE__
                         
                         SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(imgBytes);
                         builder.InsertParagraph();
                         builder.Writeln("Powerpoint Ole object:");
                         builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, bitmap);
                         
-                        #else
+                        #elif NET462
                         
                         using (MemoryStream stream = new MemoryStream(imgBytes))
                         {
@@ -3160,7 +3162,7 @@ namespace ApiExamples
             Assert.AreEqual(Color.Red.ToArgb(), dstDoc.FirstSection.Body.Paragraphs[1].Runs[0].Font.Color.ToArgb());
         }
 
-        #if NETFRAMEWORK || NETSTANDARD2_0 || JAVA
+        #if NET462 || NETCOREAPP2_1 || JAVA
         /// <summary>
         /// All markdown tests work with the same file
         /// That's why we need order for them 

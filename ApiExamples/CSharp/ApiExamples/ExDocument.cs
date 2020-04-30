@@ -32,10 +32,10 @@ using Aspose.Words.Tables;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;
 using CompareOptions = Aspose.Words.CompareOptions;
-#if NETFRAMEWORK || NETSTANDARD2_0 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
 using Aspose.Words.Shaping.HarfBuzz;
 #endif
-#if NETFRAMEWORK || MAC || JAVA
+#if NET462 || MAC || JAVA
 using Aspose.Words.Loading;
 using Org.BouncyCastle.Pkcs;
 using System.Security;
@@ -46,7 +46,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExDocument : ApiExampleBase
     {
-#if NETFRAMEWORK || NETSTANDARD2_0 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
         [Test]
         public void LicenseFromFileNoPath()
         {
@@ -93,7 +93,7 @@ namespace ApiExamples
             }
         }
 
-        [Test]
+        [Test, Category("IgnoreOnJenkins")]
         public void OpenType()
         {
             //ExStart
@@ -117,7 +117,7 @@ namespace ApiExamples
         }
 #endif
 
-#if NETFRAMEWORK || MAC || JAVA
+#if NET462 || MAC || JAVA
         //ExStart
         //ExFor:LoadOptions.ResourceLoadingCallback
         //ExSummary:Shows how to handle external resources in Html documents during loading.
@@ -213,7 +213,7 @@ namespace ApiExamples
         }
 #endif
 
-#if NETSTANDARD2_0
+#if NETCOREAPP2_1
         [Test]
         public void Pdf2Word()
         {
@@ -1563,21 +1563,12 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Document.Footnotes.docx");
 
-            NodeCollection footnotes = doc.GetChildNodes(NodeType.Footnote, true);
-            Assert.AreEqual(3, footnotes.Count);
-
-            Assert.AreEqual(string.Empty, ((Footnote)footnotes[0]).ReferenceMark);
-            Assert.AreEqual("\u0002 Footnote 1", ((Footnote)footnotes[0]).GetText().Trim());
-            Assert.AreEqual(StoryType.Footnotes, ((Footnote)footnotes[0]).StoryType);
-
-            Assert.AreEqual(string.Empty, ((Footnote)footnotes[1]).ReferenceMark);
-            Assert.AreEqual("\u0002 Footnote 2", ((Footnote)footnotes[1]).GetText().Trim());
-            Assert.AreEqual(StoryType.Footnotes, ((Footnote)footnotes[1]).StoryType);
-
-            Assert.AreEqual("Custom reference mark", ((Footnote)footnotes[2]).ReferenceMark);
-            Assert.AreEqual("Custom reference mark Footnote 3", ((Footnote)footnotes[2]).GetText().Trim());
-            Assert.AreEqual(StoryType.Footnotes, ((Footnote)footnotes[2]).StoryType);
-
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty, 
+                "Footnote 1", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty, 
+                "Footnote 2", (Footnote)doc.GetChild(NodeType.Footnote, 1, true));
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, false, "Custom reference mark", 
+                "Custom reference mark Footnote 3", (Footnote)doc.GetChild(NodeType.Footnote, 2, true));
         }
 
         [Test]
@@ -1620,20 +1611,12 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Document.Endnotes.docx");
 
-            NodeCollection endnotes = doc.GetChildNodes(NodeType.Footnote, true);
-            Assert.AreEqual(3, endnotes.Count);
-
-            Assert.AreEqual(string.Empty, ((Footnote)endnotes[0]).ReferenceMark);
-            Assert.AreEqual("\u0002 Endnote 1", ((Footnote)endnotes[0]).GetText().Trim());
-            Assert.AreEqual(StoryType.Endnotes, ((Footnote)endnotes[0]).StoryType);
-
-            Assert.AreEqual(string.Empty, ((Footnote)endnotes[1]).ReferenceMark);
-            Assert.AreEqual("\u0002 Endnote 2", ((Footnote)endnotes[1]).GetText().Trim());
-            Assert.AreEqual(StoryType.Endnotes, ((Footnote)endnotes[1]).StoryType);
-
-            Assert.AreEqual("Custom reference mark", ((Footnote)endnotes[2]).ReferenceMark);
-            Assert.AreEqual("Custom reference mark Endnote 3", ((Footnote)endnotes[2]).GetText().Trim());
-            Assert.AreEqual(StoryType.Endnotes, ((Footnote)endnotes[2]).StoryType);
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
+                "Endnote 1", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
+                "Endnote 2", (Footnote)doc.GetChild(NodeType.Footnote, 1, true));
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, false, "Custom reference mark",
+                "Custom reference mark Endnote 3", (Footnote)doc.GetChild(NodeType.Footnote, 2, true));
         }
 
         [Test]
@@ -1795,6 +1778,9 @@ namespace ApiExamples
             //ExEnd
 
             docOriginal = new Document(ArtifactsDir + "Document.CompareOptions.docx");
+
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
+                "OriginalEdited endnote text.", (Footnote)docOriginal.GetChild(NodeType.Footnote, 0, true));
 
             // If we set compareOptions to ignore certain types of changes,
             // then revisions done on those types of nodes will not appear in the output document
@@ -2225,7 +2211,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
+        [Test, Ignore("WORDSNET-20342")]
         public void ImageSaveOptions()
         {
             //ExStart
