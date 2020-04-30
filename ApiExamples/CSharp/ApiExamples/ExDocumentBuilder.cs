@@ -391,7 +391,6 @@ namespace ApiExamples
             Assert.AreEqual("PowerPoint.Show.12", shape.OleFormat.ProgId);
             Assert.AreEqual(".pptx", shape.OleFormat.SuggestedExtension);
         }
-
 #elif NETCOREAPP2_1 || __MOBILE__
         [Test]
         public void InsertWatermarkNetStandard2()

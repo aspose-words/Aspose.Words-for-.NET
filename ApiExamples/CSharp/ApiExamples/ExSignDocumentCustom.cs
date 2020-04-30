@@ -129,8 +129,7 @@ namespace ApiExamples
                 #if NET462 || JAVA
                 new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer",
                     ImageToByteArray(Image.FromFile(ImageDir + "Logo.jpg"))),
-
-              #elif NETCOREAPP2_1 || __MOBILE__
+                #elif NETCOREAPP2_1 || __MOBILE__
                 new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer", 
                     SkiaSharp.SKBitmap.Decode(ImageDir + "Logo.jpg").Bytes),
                 #endif
