@@ -29,10 +29,8 @@ namespace ApiExamples
             //ExSummary:Shows how to save metafiles directly without using GDI+ to EMF.
             Document doc = new Document(MyDir + "Images.docx");
 
-            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Emf)
-            {
-                UseGdiEmfRenderer = true
-            };
+            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Emf);
+            saveOptions.UseGdiEmfRenderer = true;
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.Renderer.emf", saveOptions);
             //ExEnd
@@ -50,10 +48,8 @@ namespace ApiExamples
 
             // For formats that can only save one page at a time,
             // the SaveOptions object can determine which page gets saved
-            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Gif)
-            {
-                PageIndex = 1
-            };
+            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Gif);
+            saveOptions.PageIndex = 1;
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.SaveSinglePage.gif", saveOptions);
             //ExEnd
