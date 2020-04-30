@@ -387,9 +387,8 @@ namespace ApiExamples
             Assert.AreEqual(listStyle, list1.Style);
 
             // Modify formatting of the list style to our liking
-            for (int i = 0; i < list1.ListLevels.Count; i++)
+            foreach (ListLevel level in list1.ListLevels)
             {
-                ListLevel level = list1.ListLevels[i];
                 level.Font.Name = "Verdana";
                 level.Font.Color = Color.Blue;
                 level.Font.Bold = true;
