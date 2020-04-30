@@ -16,7 +16,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using NUnit.Framework;
-#if NETSTANDARD2_0 || __MOBILE__
+#if NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -735,9 +735,9 @@ namespace ApiExamples
             builder.Write("Cell 2");
             builder.EndTable();
 
-            #if NETFRAMEWORK || JAVA
+            #if NET462 || JAVA
             builder.InsertImage(Image.FromFile(ImageDir + "Logo.jpg"));
-            #else
+            #elif NETCOREAPP2_1
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
                 builder.InsertImage(image);
             #endif
@@ -844,9 +844,9 @@ namespace ApiExamples
             builder.Write("Cell 2");
             builder.EndTable();
 
-            #if NETFRAMEWORK || JAVA
+            #if NET462 || JAVA
             builder.InsertImage(Image.FromFile(ImageDir + "Logo.jpg"));
-            #else
+            #elif NETCOREAPP2_1
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
                 builder.InsertImage(image);
             #endif

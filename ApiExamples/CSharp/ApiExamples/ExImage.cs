@@ -12,9 +12,9 @@ using System.Net;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
 using System.Drawing;
-#else
+#elif NETCOREAPP2_1
 using SkiaSharp;
 #endif
 
@@ -108,7 +108,7 @@ namespace ApiExamples
             TestUtil.VerifyImage(400, 400, ImageType.Jpeg, (Shape)doc.GetChildNodes(NodeType.Shape, true)[0]);
         }
 
-        #if NETFRAMEWORK || JAVA
+        #if NET462 || JAVA
         [Test]
         [Category("SkipMono")]
         public void CreateFromImage()
@@ -134,7 +134,7 @@ namespace ApiExamples
 
             builder.Document.Save(ArtifactsDir + "Image.CreateFromImage.docx");
         }
-        #else
+        #elif NETCOREAPP2_1
         [Test]
         [Category("SkipMono")]
         public void CreateFromImageNetStandard2()

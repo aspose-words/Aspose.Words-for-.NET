@@ -12,7 +12,7 @@ using Aspose.Words.Fields;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
 using System.Web;
 using System.Data.Odbc;
 #endif
@@ -22,7 +22,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExMailMerge : ApiExampleBase
     {
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
         [Test]
         public void ExecuteArray()
         {
@@ -988,10 +988,11 @@ namespace ApiExamples
             //ExEnd
         }
 
+        /// <summary>
+        /// Without TestCaseSource/TestCase because of some strange behavior when using long data.
+        /// </summary>
         [Test]
-        [TestCase(true, "{{ testfield1 }}value 1{{ testfield3 }}\f")]
-        [TestCase(false, "\u0013MERGEFIELD \"testfield1\"\u0014«testfield1»\u0015value 1\u0013MERGEFIELD \"testfield3\"\u0014«testfield3»\u0015\f")]
-        public void MustacheTemplateSyntax(bool restoreTags, string sectionText)
+        public void MustacheTemplateSyntaxTrue()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1000,7 +1001,7 @@ namespace ApiExamples
             builder.Write("{{ testfield3 }}");
 
             doc.MailMerge.UseNonMergeFields = true;
-            doc.MailMerge.PreserveUnusedTags = restoreTags;
+            doc.MailMerge.PreserveUnusedTags = true;
 
             DataTable table = new DataTable("Test");
             table.Columns.Add("testfield2");
@@ -1010,7 +1011,30 @@ namespace ApiExamples
 
             string paraText = DocumentHelper.GetParagraphText(doc, 0);
 
-            Assert.AreEqual(sectionText, paraText);
+            Assert.AreEqual("{{ testfield1 }}value 1{{ testfield3 }}\f", paraText);
+        }
+
+        [Test]
+        public void MustacheTemplateSyntaxFalse()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("{{ testfield1 }}");
+            builder.Write("{{ testfield2 }}");
+            builder.Write("{{ testfield3 }}");
+
+            doc.MailMerge.UseNonMergeFields = true;
+            doc.MailMerge.PreserveUnusedTags = false;
+
+            DataTable table = new DataTable("Test");
+            table.Columns.Add("testfield2");
+            table.Rows.Add("value 1");
+
+            doc.MailMerge.Execute(table);
+
+            string paraText = DocumentHelper.GetParagraphText(doc, 0);
+
+            Assert.AreEqual("\u0013MERGEFIELD \"testfield1\"\u0014«testfield1»\u0015value 1\u0013MERGEFIELD \"testfield3\"\u0014«testfield3»\u0015\f", paraText);
         }
 
         [Test]

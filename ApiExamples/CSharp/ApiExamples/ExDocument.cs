@@ -32,10 +32,10 @@ using Aspose.Words.Tables;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;
 using CompareOptions = Aspose.Words.CompareOptions;
-#if NETFRAMEWORK || NETSTANDARD2_0 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
 using Aspose.Words.Shaping.HarfBuzz;
 #endif
-#if NETFRAMEWORK || MAC || JAVA
+#if NET462 || MAC || JAVA
 using Aspose.Words.Loading;
 using Org.BouncyCastle.Pkcs;
 using System.Security;
@@ -46,7 +46,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExDocument : ApiExampleBase
     {
-#if NETFRAMEWORK || NETSTANDARD2_0 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
         [Test]
         public void LicenseFromFileNoPath()
         {
@@ -93,7 +93,7 @@ namespace ApiExamples
             }
         }
 
-        [Test]
+        [Test, Category("IgnoreOnJenkins")]
         public void OpenType()
         {
             //ExStart
@@ -117,7 +117,7 @@ namespace ApiExamples
         }
 #endif
 
-#if NETFRAMEWORK || MAC || JAVA
+#if NET462 || MAC || JAVA
         //ExStart
         //ExFor:LoadOptions.ResourceLoadingCallback
         //ExSummary:Shows how to handle external resources in Html documents during loading.
@@ -213,7 +213,7 @@ namespace ApiExamples
         }
 #endif
 
-#if NETSTANDARD2_0
+#if NETCOREAPP2_1
         [Test]
         public void Pdf2Word()
         {
@@ -2211,7 +2211,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
+        [Test, Ignore("WORDSNET-20342")]
         public void ImageSaveOptions()
         {
             //ExStart
