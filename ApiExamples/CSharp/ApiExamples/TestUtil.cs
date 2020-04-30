@@ -16,7 +16,6 @@ using Aspose.Words.Lists;
 using NUnit.Framework;
 using Table = Aspose.Words.Tables.Table;
 using Image = System.Drawing.Image;
-using List = Aspose.Words.Lists.List;
 using Shape = Aspose.Words.Drawing.Shape;
 
 namespace ApiExamples
